@@ -1,0 +1,41 @@
+/**
+ * Copyright 2012 Amadeus s.a.s.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+{TextTemplate {$classpath: 'aria.ext.filesgenerator.tpl.FlowController'}}
+{macro main()}
+${(function(){
+	var superClassName = data.$extends.split(".");			
+	data.superClassName = "\$" + superClassName[superClassName.length-1];			
+})()}
+/\**
+ * ${data.$description}
+ * @class ${data.$classpath}
+ * @extends ${data.$extends}
+ */
+Aria.classDefinition(\{
+	\$classpath : "${data.$classpath}",
+	\$extends : "${data.$extends}",{if data.$dependencies}
+	\$dependencies : [{foreach d in data.$dependencies}{separator}, {/separator}"${d}"{/foreach}],{/if}
+	\$implements : ["${data.$publicInterface}"{if data.$implements}{foreach i in data.$implements}, "${i}"{/foreach}{/if}],
+	\$constructor : function () \{
+		this.${data.superClassName}.constructor.call(this);
+	\},
+	\$destructor : function () \{
+		this.${data.superClassName}.$destructor.call(this);
+	\},
+	\$prototype : \{
+		\$publicInterfaceName : "${data.$publicInterface}"
+	\}
+\});{/macro}
+{/TextTemplate}

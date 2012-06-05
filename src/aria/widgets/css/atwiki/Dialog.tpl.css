@@ -1,0 +1,62 @@
+/**
+ * Copyright 2012 Amadeus s.a.s.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
+{CSSTemplate {
+	$classpath : "aria.widgets.css.atwiki.Dialog"
+}}
+
+{macro main()}
+
+.xDialog_titleBar {
+	position:absolute;
+}
+.xDialog_icon {
+	float:left;
+}
+.xDialog_title {
+	float:left;
+}
+.xDialog_close {
+	float:right;
+	cursor:pointer;
+
+}
+
+/* Dialog classes */
+.xDialog_std_titleBar {
+	top:0px;
+	left:0px;
+	right:10px;
+	height:32px;
+}
+.xDialog_std_title {
+	padding-left: 6px;
+	padding-top: 6px;
+	color:#615E55;
+	font-weight:bold;
+}
+.xDialog_std_icon {
+	padding-left: 6px;
+	padding-top: 6px;
+}
+.xDialog_std_close {
+	padding-right: 6px;
+	padding-top: 6px;
+}
+
+
+{/macro}
+{/CSSTemplate}

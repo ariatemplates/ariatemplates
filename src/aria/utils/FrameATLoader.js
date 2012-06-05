@@ -1,0 +1,268 @@
+/**
+ * Copyright 2012 Amadeus s.a.s.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+/**
+ * Utility class used to load Aria Templates in an iframe. This is used by aria.jsunit.TestWrapper to isolate tests, but
+ * it can be used for any purpose. It is still experimental for now.
+ */
+Aria.classDefinition({
+	$classpath : 'aria.utils.FrameATLoader',
+	$singleton : true,
+	$events : {
+		"bootstrapLoaded" : "Raised when the bootstrap is loaded."
+	},
+	$constructor : function () {
+		/**
+		 * Pattern used to find the script tag corresponding to the framework js file.
+		 * @type RegExp
+		 */
+		this.frameworkHrefPattern = /aria-templates-([^\/]+)\.js/;
+
+		/**
+		 * Address of the framework JS file.
+		 * @type String
+		 */
+		this.frameworkHref = null;
+
+		/**
+		 * Content of Aria Templates bootstrap js file.
+		 * @type String
+		 */
+		this.frameworkJS = null;
+
+		/**
+		 * rootFolderPath to be used when loading the framework.
+		 * @type String
+		 */
+		this.bootRootFolderPath = null;
+
+		/**
+		 * Whether it is currently downloading the Aria Templates bootstrap JS file.
+		 * @type Boolean
+		 */
+		this._loadingFrameworkJs = false;
+
+		/**
+		 * Callback objects to be called from the iframe.
+		 */
+		this._callbacks = {};
+
+		/**
+		 * Counter used as index in this._callbacks.
+		 */
+		this._counter = 0;
+	},
+	$prototype : {
+
+		/**
+		 * Load Aria Templates in the given frame and call the callback. This replaces the content of the frame.
+		 * @param {DOMElement} frame frame
+		 * @param {aria.core.CfgBeans.Callback} cb callback
+		 */
+		loadAriaTemplatesInFrame : function (frame, cb) {
+			this.loadBootstrap({
+				fn : this._loadATInFrameCb1,
+				scope : this,
+				args : {
+					frame : frame,
+					cb : cb
+				}
+			});
+		},
+
+		/**
+		 * First part of the load of Aria Templates in the iframe: replace the document inside the iframe.
+		 * @param {Object} res unused
+		 * @param {Object} args object containing the frame and callback
+		 */
+		_loadATInFrameCb1 : function (res, args) {
+			var callbackId = this._createCallbackId({
+				fn : this._loadATInFrameCb2,
+				scope : this,
+				args : args
+			});
+			var docUrl = [aria.core.DownloadMgr.resolveURL("aria/utils/FrameATLoaderHTML.html"), '?',
+					encodeURIComponent(Aria.$frameworkWindow.location.href.replace(/(\?|\#).*$/, "")), '#', callbackId].join('');
+			var window = args.frame.contentWindow;
+			window.location = docUrl;
+		},
+
+		/**
+		 * Second part of the load of Aria Templates in the iframe: evaluate the bootstrap JS file of Aria Templates.
+		 * @param {Object} res unused
+		 * @param {Object} args object containing the frame and callback
+		 */
+		_loadATInFrameCb2 : function (res, args) {
+			var window = args.frame.contentWindow;
+			var document = window.document;
+			var iFrameAria = window.Aria;
+			iFrameAria.rootFolderPath = this.bootRootFolderPath;
+			iFrameAria.debug = Aria.debug;
+			iFrameAria.memCheckMode = Aria.memCheckMode;
+			window.Aria.eval(this.frameworkJS); // note that using window.eval leads to strange errors in FF
+			document.write('<script type="text/javascript">parent.aria.utils.FrameATLoader.callFromFrame('
+					+ this._createCallbackId({
+						fn : this._loadATInFrameCb3,
+						scope : this,
+						args : args
+					}) + ');</script>');
+		},
+
+		/**
+		 * Third part of the load of Aria Templates in the iframe: copy the skin, rootmap and cache.
+		 * @param {Object} res unused
+		 * @param {Object} args object containing the frame and callback
+		 */
+		_loadATInFrameCb3 : function (res, args) {
+			var window = args.frame.contentWindow;
+			if (window.aria == null) {
+				this.$callback(args.cb, {
+					success : false
+				});
+				return;
+			}
+			var document = window.document;
+			window.Aria.rootFolderPath = Aria.rootFolderPath;
+			var rootMap = window.aria.utils.Json.copy(aria.core.DownloadMgr._rootMap);
+			window.aria.core.DownloadMgr.updateRootMap(rootMap);
+			if (aria.widgets && aria.widgets.AriaSkin) {
+				var skin = aria.widgets.AriaSkin.classDefinition;
+				window.Aria['classDefinition']({
+					$classpath : 'aria.widgets.AriaSkin',
+					$singleton : true,
+					$prototype : window.aria.utils.Json.copy(skin.$prototype)
+				});
+			}
+			// fill the cache with already loaded classes
+
+			var newDownloadMgr = window.aria.core.DownloadMgr;
+			var newCache = window.aria.core.Cache;
+			var cache = aria.core.Cache;
+			var filesCache = cache.content.files;
+			var urlsCache = cache.content.urls;
+			var loadedStatus = cache.STATUS_AVAILABLE;
+			var errorStatus = cache.STATUS_ERROR;
+			for (var file in filesCache) {
+				if (filesCache.hasOwnProperty(file)) {
+					var item = filesCache[file];
+					if (item.status == loadedStatus) {
+						newDownloadMgr.loadFileContent(file, item.value, false);
+					} else if (item.status == errorStatus) {
+						newDownloadMgr.loadFileContent(file, null, true);
+					}
+				}
+			}
+			for (var url in urlsCache) {
+				if (urlsCache.hasOwnProperty(url)) {
+					var item = urlsCache[url];
+					var newItem = newCache.getItem("urls", url, true);
+					if (item.status == loadedStatus) {
+						newItem.status = loadedStatus;
+					} else if (item.status == errorStatus) {
+						newItem.status = errorStatus;
+					}
+				}
+			}
+			this.$callback(args.cb, {
+				success : true
+			});
+		},
+
+		/**
+		 * Return a javascript id which can be used from the iframe to call the corresponding callback.
+		 * @param {aria.core.CfgBeans.Callback} cb callback
+		 * @return {String}
+		 */
+		_createCallbackId : function (cb) {
+			this._counter++;
+			this._callbacks[this._counter] = cb;
+			return this._counter;
+		},
+
+		/**
+		 * This method is called from the iframe to call a callback specified by its id.
+		 * @param {Number} id Callback number to call.
+		 */
+		callFromFrame : function (id) {
+			var cb = this._callbacks[id];
+			delete this._callbacks[id];
+			this.$callback(cb);
+		},
+
+		/**
+		 * Loop over script tags in the current document and return the address of the script which matches the pattern.
+		 * @param {RegExp} pattern
+		 * @return {String}
+		 */
+		_findScriptPattern : function (pattern) {
+			var scripts = Aria.$frameworkWindow.document.getElementsByTagName("script");
+			for (var i = 0, l = scripts.length; i < l; i++) {
+				var script = scripts[i];
+				if (script.attributes && script.attributes["src"]) {
+					var src = script.attributes["src"].nodeValue;
+					if (this.frameworkHrefPattern.exec(src)) {
+						return src;
+					}
+				}
+			}
+			this.$logError("Could not find the script corresponding to pattern: %1. Please set the aria.jsunit.FrameATLoader.frameworkHref property manually.");
+			return null;
+		},
+
+		/**
+		 * Set the following property if they are not defined already: bootRootFolderPath, frameworkHref, frameworkJS
+		 * @param {aria.core.CfgBeans.Callback} cb callback called when the properties are set.
+		 */
+		loadBootstrap : function (cb) {
+			if (this.bootRootFolderPath == null) {
+				var bootRootFolderPath = aria.core.DownloadMgr.resolveURL("aria/Aria.js", true);
+				this.bootRootFolderPath = bootRootFolderPath.replace(/aria\/Aria\.js$/, "");
+			}
+			if (this.frameworkJS) {
+				this.$callback(cb);
+				return;
+			}
+			if (this.frameworkHref == null) {
+				this.frameworkHref = this._findScriptPattern(this.frameworkHrefPattern);
+				if (this.frameworkHref == null) {
+					return;
+				}
+			}
+			this.$onOnce({
+				bootstrapLoaded : cb
+			});
+			if (this._loadingFrameworkJs) {
+				return;
+			}
+			this._loadingFrameworkJs = true;
+			aria.core.IO.asyncRequest({
+				url : this.frameworkHref,
+				callback : {
+					fn : this._frameworkLoaded,
+					scope : this
+				}
+			});
+		},
+
+		/**
+		 * Called when the framework bootstrap js file is loaded.
+		 * @param {aria.core.CfgBeans.IOAsyncRequestResponseCfg} res
+		 */
+		_frameworkLoaded : function (res) {
+			this._loadingFrameworkJs = false;
+			this.frameworkJS = res.responseText;
+			this.$raiseEvent('bootstrapLoaded');
+		}
+	}
+});
