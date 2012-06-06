@@ -1,5 +1,16 @@
-/*
- * Copyright Amadeus
+/**
+ * Copyright 2012 Amadeus s.a.s.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 Aria.classDefinition({$classpath:"aria.widgets.AriaSkin",$singleton:true,$constructor:function(){},$prototype:{skinName:"atskin",scIcon:{sortIndicator:{cssClass:"xICNsortIndicator",spriteSpacing:0,iconWidth:15,iconHeight:11,biDimensional:false,direction:"x",content:{si_ascending:"2",si_normal:"0",si_descending:"1"}},dropdown:{cssClass:"xICNdropdown",spriteSpacing:2,iconWidth:14,iconHeight:20,biDimensional:false,direction:"x",content:{datepicker_error:"5",selectbox_focused:"1",datepicker_normal:"3",
 multiselect_focused:"7",selectbox_normal:"0",multiselect_error:"8",multiselect_normal:"6",datepicker_focused:"4",selectbox_error:"2"}},std:{cssClass:"xICNstd",spriteSpacing:2,iconWidth:16,iconHeight:16,biDimensional:false,direction:"x",content:{zoom_in:"21",amn_roo:"11",close:"24",amn_mee:"6",amn_gym:"4",amn_air:"0",amn_lau:"5",rm_line:"20",help:"41",amn_wif:"16",expand:"30",amn_saf:"12",amn_swi:"15",add_line:"19",validated:"36",warning:"37",right_arrow:"34",amn_pet:"9",amn_chi:"3",hand_bag:"29",
