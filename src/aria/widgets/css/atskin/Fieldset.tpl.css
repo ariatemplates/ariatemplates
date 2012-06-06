@@ -1,0 +1,70 @@
+/**
+ * Copyright 2012 Amadeus s.a.s.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
+{CSSTemplate {
+	$classpath : "aria.widgets.css.atskin.Fieldset"
+}}
+
+{macro main()}
+
+
+.xFieldset_std_normal_bkgA {
+	${aria.widgets.AriaSkinInterface.backgroundMacro("transparent","atskin/sprites/fieldset.gif","no-repeat scroll 0 0")}
+	font-size:1px;
+}
+.xFieldset_std_normal_bkgB {
+	${aria.widgets.AriaSkinInterface.backgroundMacro("transparent","atskin/sprites/fieldset_v.gif","repeat-x 0 0")}
+	font-size:1px;
+}
+.xFieldset_std_normal_bkgC {
+	${aria.widgets.AriaSkinInterface.backgroundMacro("transparent","atskin/sprites/fieldset_h.gif","repeat-y 0 0")}
+	font-size:1px;
+}
+.xFieldset_std_normal_c {
+	margin: 10px 0px 0px 0px;
+	color: #000;
+}
+.xFieldset_std_normal_m {
+	background-color: #FFFFF7
+}
+.xFieldset_std_normal_tlc {width:6px; height:12px; background-position:0 0px;}
+.xFieldset_std_normal_ts {height:12px; background-position:0 0px; }
+.xFieldset_std_normal_trc {width:7px; height:12px; background-position: -6px 0px;}
+.xFieldset_std_normal_rs {width:7px; background-position:-6px 0;}
+.xFieldset_std_normal_brc {width:7px; height:4px; background-position: -6px -12px;}
+.xFieldset_std_normal_bs {height: 4px; background-position:0 -12px;}
+.xFieldset_std_normal_blc {width:6px; height:4px; background-position: 0 -12px;}
+.xFieldset_std_normal_ls {width: 6px; background-position:0px 0;}
+.xFieldset_std_normal_frameIcon {
+		display: block;
+		height:px;
+	${aria.widgets.AriaSkinInterface.backgroundMacro("","","no-repeat left")}
+}
+.xFieldset_std_normal_label {
+	left: 10px;
+	top: 2px;
+	padding-top: 0px;
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-bottom: 0px;
+	background-color: #FFFFF7;
+	font-weight: bold;
+	color: black;
+	position: absolute;
+}
+
+{/macro}
+{/CSSTemplate}

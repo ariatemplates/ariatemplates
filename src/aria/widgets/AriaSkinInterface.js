@@ -99,10 +99,10 @@ Aria.classDefinition({
 
 		/**
 		 * Return the name of the skin loaded
-		 * @return {String} Name of the skin, Default atdefskin
+		 * @return {String} Name of the skin, Default atskin
 		 */
 		getSkinName : function () {
-			return aria.widgets.AriaSkin.skinName || "atdefskin";
+			return aria.widgets.AriaSkin.skinName || "atskin";
 		},
 
 		/**
@@ -128,12 +128,12 @@ Aria.classDefinition({
 					baseUrl += "/";
 				}
 
-				fullUrl = "url(" + baseUrl + "css/" + imageurl + ") ";
+				fullUrl = "url(" + baseUrl + "aria/css/" + imageurl + ") ";
 
 				if (aria.utils.String.endsWith(imageurl, ".png")) {
-					gifUrl = baseUrl + "css/" + imageurl.substring(0, imageurl.length - 4) + ".gif";
+					gifUrl = baseUrl + "aria/css/" + imageurl.substring(0, imageurl.length - 4) + ".gif";
 				} else {
-					gifUrl = baseUrl + "css/" + imageurl;
+					gifUrl = baseUrl + "aria/css/" + imageurl;
 				}
 			}
 

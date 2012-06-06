@@ -44,7 +44,7 @@ Aria.classDefinition({
 
 		/**
 		 * Classpath of the module controller to load in subwindow and classpath of root display. Also title
-		 * 
+		 *
 		 * <pre>
 		 * 	{
 		 * 		moduleCtrlClasspath : ...
@@ -52,7 +52,7 @@ Aria.classDefinition({
 		 * 		title : ...
 		 * 	}
 		 * </pre>
-		 * 
+		 *
 		 * @protected
 		 * @type Object
 		 */
@@ -154,7 +154,7 @@ Aria.classDefinition({
 					"'></script>", // AT script
 
 					"<script language='JavaScript' src='", // AT Skin script
-					root + "css/atdefskin-" + version + ".js", // AT Skin script
+					root + "css/atskin-" + version + ".js", // AT Skin script
 					"'></script>", // AT Skin script
 
 					"</head>", // END HEAD

@@ -1,0 +1,77 @@
+/**
+ * Copyright 2012 Amadeus s.a.s.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
+{CSSTemplate {
+	$classpath : "aria.widgets.css.atskin.Icon",
+	$dependencies : ["aria.widgets.environment.WidgetSettings"]
+}}
+
+{macro main()}
+
+{var widgetSettings = aria.widgets.environment.WidgetSettings.getWidgetSettings() /}
+/* Icon class: autoCompleteAirTrain */
+.xICNautoCompleteAirTrain {
+	{if !widgetSettings.middleAlignment}vertical-align:top;{/if}
+	font-size:1px;
+	width:16px;
+	height:16px;
+	${aria.widgets.AriaSkinInterface.backgroundMacro("","atskin/sprites/airtrainicons_16x16.gif","no-repeat top left")}
+}
+
+/* Icon class: checkBoxes */
+.xICNcheckBoxes {
+	{if !widgetSettings.middleAlignment}vertical-align:top;{/if}
+	font-size:1px;
+	width:19px;
+	height:18px;
+	${aria.widgets.AriaSkinInterface.backgroundMacro("","atskin/sprites/checkbox.png","no-repeat top left")}
+}
+
+{if !widgetSettings.middleAlignment}
+.xICNcheckBoxes {
+	vertical-align:middle;
+}
+{/if}
+/* Icon class: std */
+.xICNstd {
+	{if !widgetSettings.middleAlignment}vertical-align:top;{/if}
+	font-size:1px;
+	width:16px;
+	height:16px;
+	${aria.widgets.AriaSkinInterface.backgroundMacro("","atskin/sprites/icons_16x16.gif","no-repeat top left")}
+}
+
+/* Icon class: dropdown */
+.xICNdropdown {
+	{if !widgetSettings.middleAlignment}vertical-align:top;{/if}
+	font-size:1px;
+	width:14px;
+	height:20px;
+	${aria.widgets.AriaSkinInterface.backgroundMacro("","atskin/imgs/dropdownbtns.gif","no-repeat top left")}
+}
+
+/* Icon class: sortIndicator */
+.xICNsortIndicator {
+	{if !widgetSettings.middleAlignment}vertical-align:top;{/if}
+	font-size:1px;
+	width:15px;
+	height:11px;
+	${aria.widgets.AriaSkinInterface.backgroundMacro("","atskin/sprites/sortlist.gif","no-repeat top left")}
+}
+
+
+{/macro}
+{/CSSTemplate}

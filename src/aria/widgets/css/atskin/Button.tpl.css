@@ -1,0 +1,296 @@
+/**
+ * Copyright 2012 Amadeus s.a.s.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
+{CSSTemplate {
+	$classpath : "aria.widgets.css.atskin.Button"
+}}
+
+{macro main()}
+
+.xButton {
+	background:none repeat scroll 0 0 transparent;
+	border:0 none;
+	cursor:pointer;
+	margin: -1px -3px -1px -3px;
+	padding:0;
+	vertical-align:top;
+	tabindex:10;
+}
+
+.xButtonDisabled {
+	cursor:default;
+}
+
+.xBTNbkg_stdDlgCloseBtn {
+	/* old type of button (to remove) */
+	${aria.widgets.AriaSkinInterface.backgroundMacro("transparent","","no-repeat")}
+}
+
+	.xButton_stdDlgCloseBtn_normal_c {
+		font-weight: normal
+	}
+	.xButton_stdDlgCloseBtn_msdown_c {
+		font-weight: normal
+	}
+	.xButton_stdDlgCloseBtn_msover_c {
+		font-weight: normal
+	}
+	.xButton_stdDlgCloseBtn_selected_c {
+		font-weight: normal
+	}
+	.xButton_stdDlgCloseBtn_disabled_c {
+		font-weight: normal
+	}
+.xBTNbkg_important {
+	/* old type of button (to remove) */
+	${aria.widgets.AriaSkinInterface.backgroundMacro("transparent","","no-repeat")}
+}
+
+.xButton_important_normal_bkgA {
+	${aria.widgets.AriaSkinInterface.backgroundMacro("transparent","atskin/sprites/buttonEdges.gif","no-repeat scroll 0 0")}
+	font-size:1px;
+}
+.xButton_important_normal_bkgB {
+	${aria.widgets.AriaSkinInterface.backgroundMacro("transparent","atskin/sprites/buttonCentre.gif","repeat-x 0 0")}
+}
+.xButton_important_normal_w {
+    height:25px;
+}
+.xButton_important_normal_c {
+	margin: 5px 0px 5px 0px;
+	color: #000000;
+}
+.xButton_important_normal_b {width:8px; height:25px; background-position:0 0px;}
+.xButton_important_normal_m {height:25px; background-position:0 0px;}
+.xButton_important_normal_e {width:9px; height:25px; background-position: -8px 0px;}
+	.xButton_important_normal_c {
+		font-weight: bold
+	}
+
+.xButton_important_msdown_bkgA {
+	${aria.widgets.AriaSkinInterface.backgroundMacro("transparent","atskin/sprites/buttonEdges.gif","no-repeat scroll 0 0")}
+	font-size:1px;
+}
+.xButton_important_msdown_bkgB {
+	${aria.widgets.AriaSkinInterface.backgroundMacro("transparent","atskin/sprites/buttonCentre.gif","repeat-x 0 0")}
+}
+.xButton_important_msdown_w {
+    height:25px;
+}
+.xButton_important_msdown_c {
+	margin: 7px 0px 3px 0px;
+	color: #000000;
+}
+.xButton_important_msdown_b {width:8px; height:25px; background-position:0 -27px;}
+.xButton_important_msdown_m {height:25px; background-position:0 -27px;}
+.xButton_important_msdown_e {width:9px; height:25px; background-position: -8px -27px;}
+	.xButton_important_msdown_c {
+		font-weight: bold
+	}
+
+.xButton_important_msover_bkgA {
+	${aria.widgets.AriaSkinInterface.backgroundMacro("transparent","atskin/sprites/buttonEdges.gif","no-repeat scroll 0 0")}
+	font-size:1px;
+}
+.xButton_important_msover_bkgB {
+	${aria.widgets.AriaSkinInterface.backgroundMacro("transparent","atskin/sprites/buttonCentre.gif","repeat-x 0 0")}
+}
+.xButton_important_msover_w {
+    height:25px;
+}
+.xButton_important_msover_c {
+	margin: 5px 0px 5px 0px;
+	color: #000000;
+}
+.xButton_important_msover_b {width:8px; height:25px; background-position:0 0px;}
+.xButton_important_msover_m {height:25px; background-position:0 0px;}
+.xButton_important_msover_e {width:9px; height:25px; background-position: -8px 0px;}
+	.xButton_important_msover_c {
+		font-weight: bold
+	}
+
+.xButton_important_selected_bkgA {
+	${aria.widgets.AriaSkinInterface.backgroundMacro("transparent","atskin/sprites/buttonEdges.gif","no-repeat scroll 0 0")}
+	font-size:1px;
+}
+.xButton_important_selected_bkgB {
+	${aria.widgets.AriaSkinInterface.backgroundMacro("transparent","atskin/sprites/buttonCentre.gif","repeat-x 0 0")}
+}
+.xButton_important_selected_w {
+    height:25px;
+}
+.xButton_important_selected_c {
+	margin: 5px 0px 5px 0px;
+	color: #000000;
+}
+.xButton_important_selected_b {width:8px; height:25px; background-position:0 0px;}
+.xButton_important_selected_m {height:25px; background-position:0 0px;}
+.xButton_important_selected_e {width:9px; height:25px; background-position: -8px 0px;}
+	.xButton_important_selected_c {
+		font-weight: bold
+	}
+
+.xButton_important_disabled_bkgA {
+	${aria.widgets.AriaSkinInterface.backgroundMacro("transparent","atskin/sprites/buttonEdges.gif","no-repeat scroll 0 0")}
+	font-size:1px;
+}
+.xButton_important_disabled_bkgB {
+	${aria.widgets.AriaSkinInterface.backgroundMacro("transparent","atskin/sprites/buttonCentre.gif","repeat-x 0 0")}
+}
+.xButton_important_disabled_w {
+    height:25px;
+}
+.xButton_important_disabled_c {
+	margin: 5px 0px 5px 0px;
+	color: #000000;
+}
+.xButton_important_disabled_b {width:8px; height:25px; background-position:0 -54px;}
+.xButton_important_disabled_m {height:25px; background-position:0 -54px;}
+.xButton_important_disabled_e {width:9px; height:25px; background-position: -8px -54px;}
+	.xButton_important_disabled_c {
+		font-weight: bold
+	}
+.xBTNbkg_simple {
+	/* old type of button (to remove) */
+	${aria.widgets.AriaSkinInterface.backgroundMacro("transparent","","no-repeat")}
+}
+	.xButton_simple_normal_c {
+		font-weight: normal
+	}
+	.xButton_simple_msdown_c {
+		font-weight: normal
+	}
+	.xButton_simple_msover_c {
+		font-weight: normal
+	}
+	.xButton_simple_selected_c {
+		font-weight: normal
+	}
+	.xButton_simple_disabled_c {
+		font-weight: normal
+	}
+.xBTNbkg_std {
+	/* old type of button (to remove) */
+	${aria.widgets.AriaSkinInterface.backgroundMacro("transparent","","no-repeat")}
+}
+
+.xButton_std_normal_bkgA {
+	${aria.widgets.AriaSkinInterface.backgroundMacro("transparent","atskin/sprites/buttonEdges.gif","no-repeat scroll 0 0")}
+	font-size:1px;
+}
+.xButton_std_normal_bkgB {
+	${aria.widgets.AriaSkinInterface.backgroundMacro("transparent","atskin/sprites/buttonCentre.gif","repeat-x 0 0")}
+}
+.xButton_std_normal_w {
+    height:25px;
+}
+.xButton_std_normal_c {
+	margin: 5px 0px 5px 0px;
+	color: #000000;
+}
+.xButton_std_normal_b {width:8px; height:25px; background-position:0 0px;}
+.xButton_std_normal_m {height:25px; background-position:0 0px;}
+.xButton_std_normal_e {width:9px; height:25px; background-position: -8px 0px;}
+	.xButton_std_normal_c {
+		font-weight: normal
+	}
+
+.xButton_std_msdown_bkgA {
+	${aria.widgets.AriaSkinInterface.backgroundMacro("transparent","atskin/sprites/buttonEdges.gif","no-repeat scroll 0 0")}
+	font-size:1px;
+}
+.xButton_std_msdown_bkgB {
+	${aria.widgets.AriaSkinInterface.backgroundMacro("transparent","atskin/sprites/buttonCentre.gif","repeat-x 0 0")}
+}
+.xButton_std_msdown_w {
+    height:25px;
+}
+.xButton_std_msdown_c {
+	margin: 7px 0px 3px 0px;
+	color: #000000;
+}
+.xButton_std_msdown_b {width:8px; height:25px; background-position:0 -27px;}
+.xButton_std_msdown_m {height:25px; background-position:0 -27px;}
+.xButton_std_msdown_e {width:9px; height:25px; background-position: -8px -27px;}
+	.xButton_std_msdown_c {
+		font-weight: normal
+	}
+
+.xButton_std_msover_bkgA {
+	${aria.widgets.AriaSkinInterface.backgroundMacro("transparent","atskin/sprites/buttonEdges.gif","no-repeat scroll 0 0")}
+	font-size:1px;
+}
+.xButton_std_msover_bkgB {
+	${aria.widgets.AriaSkinInterface.backgroundMacro("transparent","atskin/sprites/buttonCentre.gif","repeat-x 0 0")}
+}
+.xButton_std_msover_w {
+    height:25px;
+}
+.xButton_std_msover_c {
+	margin: 5px 0px 5px 0px;
+	color: #000000;
+}
+.xButton_std_msover_b {width:8px; height:25px; background-position:0 0px;}
+.xButton_std_msover_m {height:25px; background-position:0 0px;}
+.xButton_std_msover_e {width:9px; height:25px; background-position: -8px 0px;}
+	.xButton_std_msover_c {
+		font-weight: normal
+	}
+
+.xButton_std_selected_bkgA {
+	${aria.widgets.AriaSkinInterface.backgroundMacro("transparent","atskin/sprites/buttonEdges.gif","no-repeat scroll 0 0")}
+	font-size:1px;
+}
+.xButton_std_selected_bkgB {
+	${aria.widgets.AriaSkinInterface.backgroundMacro("transparent","atskin/sprites/buttonCentre.gif","repeat-x 0 0")}
+}
+.xButton_std_selected_w {
+    height:25px;
+}
+.xButton_std_selected_c {
+	margin: 5px 0px 5px 0px;
+	color: #000000;
+}
+.xButton_std_selected_b {width:8px; height:25px; background-position:0 0px;}
+.xButton_std_selected_m {height:25px; background-position:0 0px;}
+.xButton_std_selected_e {width:9px; height:25px; background-position: -8px 0px;}
+	.xButton_std_selected_c {
+		font-weight: normal
+	}
+
+.xButton_std_disabled_bkgA {
+	${aria.widgets.AriaSkinInterface.backgroundMacro("transparent","atskin/sprites/buttonEdges.gif","no-repeat scroll 0 0")}
+	font-size:1px;
+}
+.xButton_std_disabled_bkgB {
+	${aria.widgets.AriaSkinInterface.backgroundMacro("transparent","atskin/sprites/buttonCentre.gif","repeat-x 0 0")}
+}
+.xButton_std_disabled_w {
+    height:25px;
+}
+.xButton_std_disabled_c {
+	margin: 5px 0px 5px 0px;
+	color: #000000;
+}
+.xButton_std_disabled_b {width:8px; height:25px; background-position:0 -54px;}
+.xButton_std_disabled_m {height:25px; background-position:0 -54px;}
+.xButton_std_disabled_e {width:9px; height:25px; background-position: -8px -54px;}
+	.xButton_std_disabled_c {
+		font-weight: normal
+	}
+
+{/macro}
+{/CSSTemplate}
