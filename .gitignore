@@ -1,2 +1,7 @@
-.packman
-packmanvisitors
+node_modules
+.DS_Store
+node-templates
+tplgenerator.js
+_visitors_tmp
+target
+build/at-bootstrap

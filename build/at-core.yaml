@@ -1,0 +1,26 @@
+source: src
+destination: build/at-core
+eraseIfExists: true
+visitors:
+- ./build/visitors/license.js
+- ./build/visitors/separator.js
+- ./build/visitors/tplgenerator.js
+- uglify
+packages:
+    at-core.js:
+        files:
+        - "aria/Aria.js"
+        - "aria/core/JsObject.js"
+        - "aria/utils/Type.js"
+        - "aria/core/IO.js"
+        - "aria/core/FileLoader.js"
+        - "aria/core/DownloadMgr.js"
+        - "aria/core/Cache.js"
+        - "aria/core/ClassLoader.js"
+        - "aria/core/JsClassLoader.js"
+        - "aria/core/MultiLoader.js"
+        - "aria/core/ClassMgr.js"
+        - "aria/core/Interfaces.js"
+        - "aria/core/transport/ITransports.js"
+        - "aria/core/transport/BaseXHR.js"
+        - "aria/core/transport/XHR.js"
