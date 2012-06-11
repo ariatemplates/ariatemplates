@@ -1,25 +1,8 @@
 // This visitor adds the copyright header at the top of all packages, and removes it from the top of all source files
 
 var fs = require("fs");
-
-var licenseHeaderText = fs.readFileSync(process.cwd() + "/licensefileheader.js", "utf8");
-
-var validExtensions = [
-	".js",
-	".tpl",
-	".tpl.css",
-	".tml",
-	".tpl.txt"
-];
-
-function isValidFile(fileName) {
-	for(var i = 0; i < validExtensions.length; i ++) {
-		if(fileName.substring(fileName.length - validExtensions[i].length) === validExtensions[i]) {
-			return true;
-		}
-	}
-	return false;
-}
+var isValidFile = require('./atfileextensions.js');
+var licenseHeaderText = fs.readFileSync("./build/visitors/licensefileheader.js", "utf8");
 
 function hasCopyright(content) {
 	return content.indexOf(licenseHeaderText) !== -1;

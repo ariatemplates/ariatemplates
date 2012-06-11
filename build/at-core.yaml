@@ -4,7 +4,6 @@ eraseIfExists: true
 visitors:
 - ./build/visitors/license.js
 - ./build/visitors/separator.js
-- ./build/visitors/tplgenerator.js
 - uglify
 packages:
     at-core.js:
