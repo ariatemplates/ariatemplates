@@ -5,8 +5,8 @@ urlmap: ./build/releases/standard/map.json
 visitors:
 - uglify
 - "./build/visitors/atmapreader.js"
-- "./build/visitors/atmultipart.js"
 - "./build/visitors/license.js"
+- "./build/visitors/atmultipart.js"
 packages:
     aria/ariatemplates.js:
         files:
