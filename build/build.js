@@ -13,15 +13,19 @@ function runCmd(cmd, args, callback) {
 		console.log(data+"");
 	});
 	childProcess.on('exit', function (code) {
-		callback(code);
+		// TODO: When packman issue 7 will be implemented, we will have real exit codes to deal with failing packages
+		// https://github.com/captainbrosset/packman/issues/7
+		if(code === 1) {
+			process.exit(1);
+		} else {
+			callback(code);
+		}
 	});
 }
 
-var packmanBootstrap = ['node_modules/packman/packman.js', '-c', 'build/at-bootstrap.yaml'];
-var packmanRelease = ['node_modules/packman/packman.js', '-c', 'build/releases/standard/config.yaml'];
+var packmanBootstrap = ['node_modules/packman/packman.js', '-c', 'build/at-bootstrap.yaml', '-n'];
+var packmanRelease = ['node_modules/packman/packman.js', '-c', 'build/releases/standard/config.yaml', '-n'];
 
 runCmd("node", packmanBootstrap, function(code) {
-	runCmd("node", packmanRelease, function(code) {
-		// done
-	});
+	runCmd("node", packmanRelease, function(code) {});
 });

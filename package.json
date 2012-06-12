@@ -12,7 +12,7 @@
   },
   "devDependencies": {
     "wrench": "",
-    "packman": "0.2.4"
+    "packman": "0.2.5"
   },
   "scripts": {
     "install": "node build/build.js"
