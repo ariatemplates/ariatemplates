@@ -1,5 +1,26 @@
 # Building AriaTemplates
 
+First of all, make sure you download and install [nodejs](http://nodejs.org/#download).
+With nodejs comes [npm](http://npmjs.org/) which is AT's build orchestrator.
+
+## Build the standard release
+
+Just `cd` to the root of AT's repository and type `npm install`.
+
+The release is then available in `build/releases/standard/target`.
+
+One of the sub-steps of building the release is first to build the bootstrap, which you will find in `build/at-bootstrap`. This is what you may want to use as a starting point to build your own release.
+
+## Run the tests
+
+Simply `npm test` (*not implemented yet, we do have tests, but they can not yet be run from npm directly*).
+
+## Bump AT's version
+
+AT's current version is stored in the npm's configuration file: `package.json`. To update this version and generate the new release, type `npm version 1.2.3` and then `npm install`.
+
+# Some background information
+
 The build process of AT contains the following steps:
 
 - validating the javascript syntax
