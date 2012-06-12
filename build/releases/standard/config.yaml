@@ -7,9 +7,14 @@ visitors:
 - "./build/visitors/atmapreader.js"
 - "./build/visitors/license.js"
 - "./build/visitors/atmultipart.js"
+- "./build/visitors/md5.js"
+- "./build/visitors/atmapwriter.js"
 packages:
     aria/ariatemplates.js:
+        appendUrlMap: true # This is how we know where to append the urlMap
         files:
         - aria/ariatemplates.js
+        # Mandatory to have visitors on this package, otherwise the global visitors will apply
+        # we only want them to apply to dynamically generated packages (the ones coming from the urlmap json file)
         visitors:
-        - "./build/visitors/atmapwriter.js"
+        - "./build/visitors/npmbasedversion.js"
