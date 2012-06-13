@@ -8,6 +8,7 @@
     "type": "git",
     "url": "git://github.com/ariatemplates/ariatemplates.git"
   },
+  "private": true,
   "dependencies": {
   },
   "devDependencies": {
