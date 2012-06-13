@@ -1,2 +1,5 @@
-.packman
-packmanvisitors
+node_modules
+.DS_Store
+target
+build/at-bootstrap
+build/at-core
