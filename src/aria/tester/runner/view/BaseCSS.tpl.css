@@ -1,0 +1,114 @@
+/*
+ * Copyright 2012 Amadeus s.a.s.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+{CSSTemplate {
+    $classpath : 'aria.tester.runner.view.BaseCSS'
+}}
+{macro getErrorCountStyle(state, r, g, b)}
+    .errorCounterBox.${state} {
+        color : {call rgb(r, g, b, 160)/};
+        text-shadow : 1px 1px 1px {call rgb(r, g, b,-10)/};
+
+        {call getButtonStyle(r, g, b)/}
+        {call borderRadius("3px")/}
+    }
+    .errorCounterBox.${state}Pushed {
+        color : {call rgb(r, g, b, 160)/};
+        text-shadow : 1px 1px 1px {call rgb(r, g, b,-10)/};
+        {call getPushedButtonStyle(r, g, b, 20)/}
+        {call borderRadius("3px")/}
+    }
+    .errorCounterBox.${state}:hover {
+        {call getButtonStyle(r, g, b, 10)/}
+    }
+{/macro}
+
+{macro getButtonStyle(r, g, b, mod)}
+    {if aria.core.Browser.isIE7 || aria.core.Browser.isIE8}
+        color :  white;
+    {/if}
+    {var m = mod || 0/}
+    {var buttonWidth = 1/}
+    background : {call rgb(r,g,b,m)/};
+    {call gradient(r,g,b, 60+m, m)/}
+    border : Solid ${buttonWidth}px {call rgb(r,g,b,m-20)/};
+    border-top : Solid ${buttonWidth}px {call rgb(r,g,b,m-40)/};
+    border-bottom : Solid ${buttonWidth}px {call rgb(r,g,b,m-40)/};
+    cursor : pointer;
+{/macro}
+
+{macro getPushedButtonStyle(r, g, b, mod)}
+    {if aria.core.Browser.isIE7 || aria.core.Browser.isIE8}
+        color :  {call rgb(r,g,b,-90)/};
+    {/if}
+    {var mod = mod || 0/}
+    {var buttonWidth = 1/}
+    background : {call rgb(r,g,b,mod)/};
+    {call gradient(r,g,b, mod-20, mod)/}
+    border : Solid ${buttonWidth}px {call rgb(r,g,b,mod-40)/};
+    border-top : Solid ${buttonWidth}px {call rgb(r,g,b,mod-60)/};
+    border-bottom : Solid ${buttonWidth}px {call rgb(r,g,b,mod-60)/};
+    cursor : default;
+{/macro}
+    {macro gradient(r, g, b, from, to)}
+        {if aria.core.Browser.isFirefox}
+            background-image: -moz-linear-gradient(top, {call rgb(r,g,b,from)/}, {call rgb(r,g,b,to)/});
+        {elseif aria.core.Browser.isIE9/}
+            background-image: linear-gradient(top, {call rgb(r,g,b,from)/}, {call rgb(r,g,b,to)/});
+        {elseif aria.core.Browser.isChrome/}
+            background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from({call rgb(r,g,b,from)/}), to({call rgb(r,g,b,to)/}));
+        {elseif aria.core.Browser.isSafari/}
+            background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from({call rgb(r,g,b,from)/}), to({call rgb(r,g,b,to)/}));
+        {/if}
+    {/macro}
+    
+    {macro gradientH(r, g, b, from, to)}
+        {if aria.core.Browser.isFirefox}
+            background-image: -moz-linear-gradient(left, {call rgb(r,g,b,from)/}, {call rgb(r,g,b,to)/});
+        {elseif aria.core.Browser.isIE9/}
+            background-image: linear-gradient(left, {call rgb(r,g,b,from)/}, {call rgb(r,g,b,to)/});
+        {elseif (aria.core.Browser.isChrome || aria.core.Browser.isSafari)/}
+            background-image: -webkit-gradient(linear, 0% 0%, 100% 0%, from({call rgb(r,g,b,from)/}), to({call rgb(r,g,b,to)/}));
+        {/if}
+    {/macro}
+    {macro shadow(textContent)}
+        {if aria.core.Browser.isFirefox}
+            box-shadow : ${textContent};
+            -moz-box-shadow : ${textContent};
+        {elseif aria.core.Browser.isIE9/}
+            box-shadow : ${textContent};
+        {elseif aria.core.Browser.isChrome/}
+            -webkit-box-shadow : ${textContent};
+        {elseif aria.core.Browser.isSafari/}
+            -webkit-box-shadow : ${textContent};
+        {/if}
+    {/macro}
+    
+    {macro borderRadius(textContent)}
+        {if aria.core.Browser.isFirefox}
+            border-radius : ${textContent};
+            -moz-border-radius : ${textContent};
+        {elseif aria.core.Browser.isIE9/}
+            border-radius : ${textContent};
+        {elseif aria.core.Browser.isChrome/}
+            -webkit-border-radius : ${textContent};
+        {elseif aria.core.Browser.isSafari/}
+            -webkit-border-radius : ${textContent};
+        {/if}
+    {/macro}
+    
+    {macro rgb(r,g,b,mod)}rgb(${Math.min(Math.max(r+mod,0),255)}, ${Math.min(Math.max(g+mod,0),255)}, ${Math.min(Math.max(b+mod,0),255)}){/macro}
+
+{/CSSTemplate}

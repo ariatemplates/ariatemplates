@@ -1,0 +1,60 @@
+/*
+ * Copyright 2012 Amadeus s.a.s.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+{CSSTemplate {
+    $classpath : 'aria.tester.runner.view.popup.warning.WarningCSS',
+    $extends : "aria.tester.runner.view.BaseCSS"
+}}
+
+{macro main()}
+    .optionsList {
+        padding-left : 20px;
+    }
+    
+    .popup, .content {
+        height : auto;
+        width : auto;
+    }
+    
+    {var popupWidth =400/}
+    {var popupHeight = 250/}
+    
+    .popup {
+        width:${popupWidth-2}px;
+        height:${popupHeight-2}px;
+        
+        margin-top:-${popupHeight/2}px;
+        margin-left:-${popupWidth/2}px;
+        
+        z-index:12001;
+    }
+    
+    .content {
+        height : ${popupHeight-80}px;
+        width : ${popupWidth-30}px;
+    }
+    
+    .separator {
+        width : ${popupWidth-30}px;
+    }
+    
+    .optionTitle {
+        color : {call rgb(baseColor.r, baseColor.g, baseColor.b, 0)/};
+        margin-top : 5px;
+        margin-bottom : 5px;
+        font-size : 11px;
+    }
+{/macro}
+{/CSSTemplate}

@@ -1,0 +1,83 @@
+/*
+ * Copyright 2012 Amadeus s.a.s.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+{CSSTemplate {
+    $classpath : 'aria.tester.runner.view.popup.report.ReportCSS',
+    $extends : "aria.tester.runner.view.BaseCSS"
+}}
+
+{macro main()}    
+    {var popupWidth =800/}
+    {var popupHeight = 500/}
+    {var failedColor = "rgb(245,70,70)"/}
+    
+    .popup, .content {
+        height : auto;
+        width : auto;
+    }
+    
+    .popup {
+        width:${popupWidth-2}px;
+        height:${popupHeight-2}px;
+        
+        margin-top:-${popupHeight/2}px;
+        margin-left:-${popupWidth/2}px;
+        
+        z-index:12001;
+    }
+    
+    .content {
+        height : ${popupHeight-80}px;
+        width : ${popupWidth-30}px;
+    }
+    
+    .separator {
+        width : ${popupWidth-30}px;
+    }
+    
+    .noerrors {
+        text-align : center;
+        font-size:20px;
+        color : #ddd;
+        text-shadow : 0px 1px 0px #eee;
+        margin-top : ${(popupHeight-100)/2}px;
+    }
+    
+    .test {
+        background : white;
+        margin-top : 15px;
+        font-size : 11px;
+        font-family:tahoma;
+        border-left : 10px Solid ${failedColor};
+        border-bottom : 1px Solid ${failedColor};
+        border-top : 1px Solid ${failedColor};
+        padding : 5px 10px 0px;
+    }
+    .test.highlight {
+        background : rgb(255,240,240);
+    }
+    .classpath {
+        text-decoration : underline;
+        float : left;
+    }
+    .count {
+        margin-left : 10px;
+        display : inline-block;
+    }
+    .error {
+        font-size : 11px;
+    }
+{/macro}
+{/CSSTemplate}

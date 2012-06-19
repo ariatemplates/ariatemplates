@@ -1,0 +1,113 @@
+/*
+ * Copyright 2012 Amadeus s.a.s.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+{CSSTemplate {
+    $classpath : 'aria.tester.runner.view.popup.PopupCSS',
+    $extends : "aria.tester.runner.view.BaseCSS"
+}}
+
+{macro main()}
+    .mask, .popup {
+        position:fixed;
+    }
+    .mask {
+        position : fixed;
+        top:0px;
+        left:0px;
+        {if (aria.core.Browser.isIE && !aria.core.Browser.isIE9)}
+            height : 100%;
+            width : 100%;
+            background:rgb(0,0,0);
+            filter: alpha(opacity=20);
+        {else/}
+            right:0px;
+            bottom:0px;
+            background:rgba(0,0,0,0.2);
+        {/if}
+        z-index:12000;
+    }
+    .popup {
+        top:50%;
+        left:50%;
+        
+        background:white;
+        border: 1px Solid #ddd;
+        
+        {call borderRadius("8px")/}
+        {call shadow("0px 0 4px rgba(0,0,0,0.6)")/} 
+        
+        z-index:12001;
+    }
+    
+    h1 {
+        margin-top : 7px;
+        margin-bottom : 5px;
+        color :  {call rgb(baseColor.r, baseColor.g, baseColor.b, 0)/};
+        text-shadow : 0px 1px 0px #D4E3F7, 0px -1px 0px #0F2E57;
+        text-align:center;
+        font-size : 25px;
+        font-family : Verdana;
+        font-weight : normal;
+        
+    }
+    .separator {
+        margin-left : 19px;
+        height : 1px;
+        background: rgb(200,200,200);
+        {call gradientH(255, 255, 255, -10, -40)/}
+    }
+    
+    {var failedColor = "rgb(245,70,70)"/}
+    .content {
+        margin-left : 19px;
+        overflow-y : scroll;
+        color : ${failedColor};
+    }
+    
+    .buttonContainer {
+        float : right;   
+        margin-bottom: 5px;
+        margin-right: 10px;
+        margin-top: 5px;
+    }
+    
+    .popupButton {
+        float:left;
+        padding-top : 2px;
+        color :  #444;
+        font-weight : bold;
+        text-shadow : 0px 1px 0px white;
+        cursor : pointer;
+        width : 50px;
+        text-align : center;
+        {call borderRadius("4px")/}
+        {call getButtonStyle(200, 200, 200)/}
+        margin-top:1px;
+        margin-left:5px;
+        height : 16px;
+    }
+    .popupButton:hover {
+        {call getButtonStyle(200, 200, 200, 20)/}
+    }
+    .popupButton.reload {
+        color :  {call rgb(baseColor.r, baseColor.g, baseColor.b,-90)/};
+        text-shadow : 0px 1px 0px {call rgb(baseColor.r, baseColor.g, baseColor.b,70)/};
+        {call getButtonStyle(baseColor.r, baseColor.g, baseColor.b)/}
+    }
+    .popupButton.reload:hover {
+        {call getButtonStyle(baseColor.r, baseColor.g, baseColor.b, 20)/}
+    }
+{/macro}
+{/CSSTemplate}
