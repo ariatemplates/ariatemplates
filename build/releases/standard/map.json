@@ -37,11 +37,6 @@
                     "*": "aria/pack-widgets1.js"
                 }
             },
-            "css": {
-                "atskin": {
-                    "*": "aria/pack-widgets-css.js"
-                }
-            },
             "errorlist": {
                 "*": "aria/pack-widgets1.js"
             },
