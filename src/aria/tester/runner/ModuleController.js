@@ -211,8 +211,9 @@ Aria.classDefinition({
             }
 
             // Coverage report
-            if (typeof _$jscoverage != "undefined") {
-                testReport.coverage = _$jscoverage;
+            var coverage = Aria.$window._$jscoverage;
+            if (typeof coverage != "undefined") {
+                testReport.coverage = coverage;
             }
 
             for (var a = 0; a < this._reportAppenders.length; a++) {
