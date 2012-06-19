@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2012 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,13 +13,11 @@
  * limitations under the License.
  */
 
-
 {CSSTemplate {
-	$classpath : "aria.widgets.css.atskin.CheckBox"
+    $classpath : "aria.widgets.container.TabPanelStyle",
+    $extends : "aria.widgets.WidgetStyle"
 }}
-
-{macro main()}
-
-
-{/macro}
+    {var skinnableClassName="TabPanel"/}
+    {var useFrame=true/}
+    
 {/CSSTemplate}

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2012 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,29 +12,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * Validator for a mandatory value
  * @class aria.utils.validators.Mandatory
  * @extends aria.utils.validators.Validator
  */
 Aria.classDefinition({
-	$classpath : "aria.utils.validators.Mandatory",
-	$extends : "aria.utils.validators.Validator",
-	$constructor : function (message) {
-		this.$Validator.constructor.call(this, message);
-	},
-	$destructor : function () {
-		this.$Validator.$destructor.call(this);
-	},
-	$statics : {
-		DEFAULT_LOCALIZED_MESSAGE : "This field is a mandatory field."
-	},
-	$prototype : {
-		validate : function (value) {
-			if (value) {
-				return this._validationSucceeded();
-			}
-			return this._validationFailed();
-		}
-	}
+    $classpath : "aria.utils.validators.Mandatory",
+    $extends : "aria.utils.validators.Validator",
+    $constructor : function (message) {
+        this.$Validator.constructor.call(this, message);
+    },
+    $destructor : function () {
+        this.$Validator.$destructor.call(this);
+    },
+    $statics : {
+        DEFAULT_LOCALIZED_MESSAGE : "This field is a mandatory field."
+    },
+    $prototype : {
+        validate : function (value) {
+            if (value) {
+                return this._validationSucceeded();
+            }
+            return this._validationFailed();
+        }
+    }
 });

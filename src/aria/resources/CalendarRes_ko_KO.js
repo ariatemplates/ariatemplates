@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2012 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,13 +12,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * Aria resource object for calendar ko_KO
  */
 Aria.resourcesDefinition({
-	$classpath : 'aria.resources.CalendarRes',
-	$resources : {
-		today : "\uc624\ub298",
-		selectedDate : "\uc120\ud0dd\ud55c \ub0a0\uc9dc"
-	}
+    $classpath : 'aria.resources.CalendarRes',
+    $resources : {
+        today : "\uc624\ub298",
+        selectedDate : "\uc120\ud0dd\ud55c \ub0a0\uc9dc"
+    }
 });

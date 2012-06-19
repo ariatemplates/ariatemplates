@@ -1,0 +1,42 @@
+/*
+ * Copyright 2012 Amadeus s.a.s.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+{CSSTemplate {
+    $classpath : "aria.widgets.IconStyle",
+    $extends : "aria.widgets.WidgetStyle",
+    $dependencies : ["aria.widgets.environment.WidgetSettings"]
+}}
+    {var skinnableClassName="Icon"/}
+
+    {macro writeSkinClass(info)}
+        {var widgetSettings = aria.widgets.environment.WidgetSettings.getWidgetSettings() /}
+        
+        /* Icon class: ${info.skinClassName} */
+        .xICN${info.skinClassName} {
+            {if !widgetSettings.middleAlignment}vertical-align:top;{/if}
+            font-size:1px;
+            width:${info.skinClass.iconWidth}px;
+            height:${info.skinClass.iconHeight}px;
+            {call background("",info.skinClass.spriteURL,"no-repeat top left") /}
+        }
+        
+        {if info.skinClassName == "checkBoxes" && !widgetSettings.middleAlignment}
+            .xICN${info.skinClassName} {
+                vertical-align:middle;    
+            }
+        {/if}
+    {/macro}
+    
+{/CSSTemplate}

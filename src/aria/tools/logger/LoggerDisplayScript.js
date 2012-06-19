@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2012 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,20 +12,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * Script for highlight display
  * @class aria.tools.logger.LoggerDisplayScript
  */
 Aria.tplScriptDefinition({
-	$classpath : 'aria.tools.logger.LoggerDisplayScript',
-	$prototype : {
+    $classpath : 'aria.tools.logger.LoggerDisplayScript',
+    $prototype : {
 
-		/**
-		 * Act on module event
-		 * @param {Object} event
-		 */
-		onModuleEvent : function (event) {
-			this.$refresh();
-		}
-	}
+        /**
+         * Act on module event
+         * @param {Object} event
+         */
+        onModuleEvent : function (event) {
+            this.$refresh();
+        }
+    }
 });

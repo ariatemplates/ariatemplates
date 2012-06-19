@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2012 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,38 +12,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * DO NOT FORMAT
  * Aria resource object for dates en-US
  */
 Aria.resourcesDefinition({
-	$classpath : 'aria.resources.DateRes',
-	$resources : {
-		firstDayOfWeek : 0 /* Sunday */,
-		day : [
-			"Domingo",
-			"Lunes",
-			"Martes",
-			"Mi\u00E9rcoles",
-			"Jueves",
-			"Viernes",
-			"S\u00E1bado"
-		],
-		month : [
-			"Enero",
-			"Febrero",
-			"Marzo",
-			"Abril",
-			"Mayo",
-			"Junio",
-			"Julio",
-			"Agosto",
-			"Septiembre",
-			"Octubre",
-			"Noviembre",
-			"Diciembre"
-		]
-	}
+    $classpath : 'aria.resources.DateRes',
+    $resources : {
+        firstDayOfWeek : 0 /* Sunday */,
+        day : [
+            "Domingo",
+            "Lunes",
+            "Martes",
+            "Mi\u00E9rcoles",
+            "Jueves",
+            "Viernes",
+            "S\u00E1bado"
+        ],
+        month : [
+            "Enero",
+            "Febrero",
+            "Marzo",
+            "Abril",
+            "Mayo",
+            "Junio",
+            "Julio",
+            "Agosto",
+            "Septiembre",
+            "Octubre",
+            "Noviembre",
+            "Diciembre"
+        ]
+    }
 });
 /*
 uic.r.shortdate.jan=Ene

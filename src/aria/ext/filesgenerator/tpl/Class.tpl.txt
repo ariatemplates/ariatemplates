@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2012 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 {TextTemplate {$classpath: 'aria.ext.filesgenerator.tpl.Class'}}
 {macro main()}/\**
  * ${data.$description}
@@ -20,13 +21,13 @@
  * @singleton{/if}
  */
 Aria.classDefinition(\{
-	\$classpath : "${data.$classpath}",
-	\$extends : "${data.$extends}",{if data.$singleton}
-	\$singleton : true,{/if}{if data.$dependencies}
-	\$dependencies : [{foreach d in data.$dependencies}{separator}, {/separator}"${d}"{/foreach}],{/if}{if data.$implements}
-	\$implements : [{foreach i in data.$implements}{separator}, {/separator}"${i}"{/foreach}],{/if}
-	\$constructor : function () \{\},
-	\$destructor : function () \{\},
-	\$prototype : \{\}
+    \$classpath : "${data.$classpath}",
+    \$extends : "${data.$extends}",{if data.$singleton}
+    \$singleton : true,{/if}{if data.$dependencies}
+    \$dependencies : [{foreach d in data.$dependencies}{separator}, {/separator}"${d}"{/foreach}],{/if}{if data.$implements}
+    \$implements : [{foreach i in data.$implements}{separator}, {/separator}"${i}"{/foreach}],{/if}
+    \$constructor : function () \{\},
+    \$destructor : function () \{\},
+    \$prototype : \{\}
 \});{/macro}
 {/TextTemplate}

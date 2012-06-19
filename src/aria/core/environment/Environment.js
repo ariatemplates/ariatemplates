@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2012 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * Public API for retrieving, applying application variables.
  * @class aria.core.environment.Environment
@@ -19,162 +20,162 @@
  * @singleton
  */
 Aria.classDefinition({
-	$classpath : "aria.core.environment.Environment",
-	$singleton : true,
-	$dependencies : ["aria.core.environment.EnvironmentBaseCfgBeans", "aria.core.AppEnvironment"],
-	$extends : "aria.core.environment.EnvironmentBase",
-	$constructor : function () {
-		this.$EnvironmentBase.constructor.call(this);
-		// hook for JsonValidator and logs, which were loaded before
-		this.$on({
-			"debugChanged" : function () {
-				aria.core.JsonValidator._options.checkEnabled = this.isDebug();
-				var logs = aria.core.Log;
-				// PTR 05038013: aria.core.Log may not be available
-				if (logs) {
-					logs.setLoggingLevel("*", this.isDebug() ? logs.LEVEL_DEBUG : logs.LEVEL_ERROR);
-				}
-			},
-			scope : this
-		});
-	},
-	$events : {
-		"debugChanged" : {
-			description : "Notifies that debug mode has changed."
-		}
-	},
-	$prototype : {
-		/**
-		 * Classpath of the bean which allows to validate the part of the environment managed by this class.
-		 * @type String
-		 */
-		_cfgPackage : "aria.core.environment.EnvironmentBaseCfgBeans.AppCfg",
+    $classpath : "aria.core.environment.Environment",
+    $singleton : true,
+    $dependencies : ["aria.core.environment.EnvironmentBaseCfgBeans", "aria.core.AppEnvironment"],
+    $extends : "aria.core.environment.EnvironmentBase",
+    $constructor : function () {
+        this.$EnvironmentBase.constructor.call(this);
+        // hook for JsonValidator and logs, which were loaded before
+        this.$on({
+            "debugChanged" : function () {
+                aria.core.JsonValidator._options.checkEnabled = this.isDebug();
+                var logs = aria.core.Log;
+                // PTR 05038013: aria.core.Log may not be available
+                if (logs) {
+                    logs.setLoggingLevel("*", this.isDebug() ? logs.LEVEL_DEBUG : logs.LEVEL_ERROR);
+                }
+            },
+            scope : this
+        });
+    },
+    $events : {
+        "debugChanged" : {
+            description : "Notifies that debug mode has changed."
+        }
+    },
+    $prototype : {
+        /**
+         * Classpath of the bean which allows to validate the part of the environment managed by this class.
+         * @type String
+         */
+        _cfgPackage : "aria.core.environment.EnvironmentBaseCfgBeans.AppCfg",
 
-		/**
-		 * Apply the current environment.
-		 * @protected
-		 * @param {aria.core.JsObject.Callback} callback Will be called after the environment variables are applied
-		 */
-		_applyEnvironment : function (callback) {
-			var debug = this.isDebug();
-			if (debug != Aria.debug) {
-				// always usefull as a shortcut
-				Aria.debug = debug;
-				this.$raiseEvent("debugChanged");
-			}
-			if (aria.core.ResMgr) { // the resource manager may not be already loaded
-				aria.core.ResMgr.changeLocale(this.getLanguage(), callback);
-			} else {
-				this.$callback(callback);
-			}
-		},
+        /**
+         * Apply the current environment.
+         * @protected
+         * @param {aria.core.JsObject.Callback} callback Will be called after the environment variables are applied
+         */
+        _applyEnvironment : function (callback) {
+            var debug = this.isDebug();
+            if (debug != Aria.debug) {
+                // always usefull as a shortcut
+                Aria.debug = debug;
+                this.$raiseEvent("debugChanged");
+            }
+            if (aria.core.ResMgr) { // the resource manager may not be already loaded
+                aria.core.ResMgr.changeLocale(this.getLanguage(), callback);
+            } else {
+                this.$callback(callback);
+            }
+        },
 
-		/**
-		 * Get language
-		 * @public
-		 * @return {String} language (lower case) and region (upper case) separated by an underscore.
-		 */
-		getLanguage : function () {
-			var language = this.checkApplicationSettings("language");
-			return language.primaryLanguage.toLowerCase() + "_" + language.region.toUpperCase();
-		},
+        /**
+         * Get language
+         * @public
+         * @return {String} language (lower case) and region (upper case) separated by an underscore.
+         */
+        getLanguage : function () {
+            var language = this.checkApplicationSettings("language");
+            return language.primaryLanguage.toLowerCase() + "_" + language.region.toUpperCase();
+        },
 
-		/**
-		 * Get region (ex: US)
-		 * @public
-		 * @return {String} The region
-		 */
-		getRegion : function () {
-			var region = this.checkApplicationSettings("language");
-			return region.region;
-		},
+        /**
+         * Get region (ex: US)
+         * @public
+         * @return {String} The region
+         */
+        getRegion : function () {
+            var region = this.checkApplicationSettings("language");
+            return region.region;
+        },
 
-		/**
-		 * Sets the current application locale (ex: en_US)
-		 * @public
-		 * @param {String} locale New locale
-		 * @param {aria.core.JsObject.Callback} cb Method to be called after the locale is changed
-		 */
-		setLanguage : function (locale, cb) {
-			var err = false;
-			if (locale == null) {
-				err = true;
-			} else {
-				var s = locale.split("_");
-				if (locale === "" || (locale.length === 5 && s !== null && s.length === 2) || locale.length == 2) {
-					aria.core.AppEnvironment.setEnvironment({
-						"language" : {
-							"primaryLanguage" : s[0],
-							"region" : s[1]
-						}
-					}, cb);
-					// setEnvironment will automatically call ResMgr.changeLocale, so there is no need to do it here
-					// aria.core.ResMgr.changeLocale(locale, cb);
-				} else {
-					err = true;
-				}
-			}
-			if (err) {
-				this.$logError(this.INVALID_LOCALE, [locale]);
-			}
-		},
+        /**
+         * Sets the current application locale (ex: en_US)
+         * @public
+         * @param {String} locale New locale
+         * @param {aria.core.JsObject.Callback} cb Method to be called after the locale is changed
+         */
+        setLanguage : function (locale, cb) {
+            var err = false;
+            if (locale == null) {
+                err = true;
+            } else {
+                var s = locale.split("_");
+                if (locale === "" || (locale.length === 5 && s !== null && s.length === 2) || locale.length == 2) {
+                    aria.core.AppEnvironment.setEnvironment({
+                        "language" : {
+                            "primaryLanguage" : s[0],
+                            "region" : s[1]
+                        }
+                    }, cb);
+                    // setEnvironment will automatically call ResMgr.changeLocale, so there is no need to do it here
+                    // aria.core.ResMgr.changeLocale(locale, cb);
+                } else {
+                    err = true;
+                }
+            }
+            if (err) {
+                this.$logError(this.INVALID_LOCALE, [locale]);
+            }
+        },
 
-		/**
-		 * Enable debug mode, and notify listeners.
-		 * @public
-		 * @param {Boolean} mode
-		 */
-		setDebug : function (mode) {
-			var debug = this.isDebug();
-			if (debug !== mode && (mode === true || mode === false)) {
-				aria.core.AppEnvironment.setEnvironment({
-					"appSettings" : {
-						"debug" : mode
-					}
-				}, null, true);
-			}
-		},
+        /**
+         * Enable debug mode, and notify listeners.
+         * @public
+         * @param {Boolean} mode
+         */
+        setDebug : function (mode) {
+            var debug = this.isDebug();
+            if (debug !== mode && (mode === true || mode === false)) {
+                aria.core.AppEnvironment.setEnvironment({
+                    "appSettings" : {
+                        "debug" : mode
+                    }
+                }, null, true);
+            }
+        },
 
-		/**
-		 * Enable dev mode, and notify listeners.
-		 * @public
-		 * @param {Boolean} mode
-		 */
-		setDevMode : function (mode) {
-			var dev = this.isDevMode();
-			if (dev !== mode && (mode === true || mode === false)) {
-				aria.core.AppEnvironment.setEnvironment({
-					"appSettings" : {
-						"devMode" : mode
-					}
-				}, null, true);
-			}
-		},
+        /**
+         * Enable dev mode, and notify listeners.
+         * @public
+         * @param {Boolean} mode
+         */
+        setDevMode : function (mode) {
+            var dev = this.isDevMode();
+            if (dev !== mode && (mode === true || mode === false)) {
+                aria.core.AppEnvironment.setEnvironment({
+                    "appSettings" : {
+                        "devMode" : mode
+                    }
+                }, null, true);
+            }
+        },
 
-		/**
-		 * Get the value indicating if app is in dev mode
-		 * @public
-		 * @return {Boolean} devMode flag value
-		 */
-		isDevMode : function () {
-			var settings = this.checkApplicationSettings("appSettings");
-			if (settings.devMode) {
-				return true;
-			}
-			return false;
-		},
+        /**
+         * Get the value indicating if app is in dev mode
+         * @public
+         * @return {Boolean} devMode flag value
+         */
+        isDevMode : function () {
+            var settings = this.checkApplicationSettings("appSettings");
+            if (settings.devMode) {
+                return true;
+            }
+            return false;
+        },
 
-		/**
-		 * Return true if debug mode is on.
-		 * @public
-		 * @return {Boolean}
-		 */
-		isDebug : function () {
-			var settings = this.checkApplicationSettings("appSettings");
-			if (settings.debug) {
-				return true;
-			}
-			return false;
-		}
-	}
+        /**
+         * Return true if debug mode is on.
+         * @public
+         * @return {Boolean}
+         */
+        isDebug : function () {
+            var settings = this.checkApplicationSettings("appSettings");
+            if (settings.debug) {
+                return true;
+            }
+            return false;
+        }
+    }
 });

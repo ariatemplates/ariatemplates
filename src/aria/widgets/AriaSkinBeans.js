@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2012 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,717 +12,1541 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
- * The beans contained in this file describe the structure of a skin configuration and the aria.widgets.AriaSkin class.
- * @class aria.widgets.AriaSkinBeans
+ * The beans contained in this file describe the structure of a skin configuration in the aria.widgets.AriaSkin class.
  */
 Aria.beanDefinitions({
-	$package : "aria.widgets.AriaSkinBeans",
-	$description : "Structure of a skin.",
-	$namespaces : {
-		"json" : "aria.core.JsonTypes"
-	},
-	$beans : {
-		"SkinCfg" : {
-			$type : "json:Object",
-			$description : "Whole configuration of a skin (both CSS and JS part), as an application developper can describe it.",
-			$properties : {
-				"name" : {
-					$type : "json:String",
-					$description : ""
-				},
-				"palette" : {
-					$type : "json:Object",
-					$description : "",
-					$properties : {
-						"background" : {
-							$type : "json:Object",
-							$description : ""
-						},
-						"border" : {
-							$type : "json:Object",
-							$description : ""
-						},
-						"text" : {
-							$type : "json:Object",
-							$description : ""
-						}
-					}
-				},
-				"parent" : {
-					$type : "json:Object",
-					$description : "",
-					$properties : {
-						"name" : {
-							$type : "json:String",
-							$description : ""
-						},
-						"version" : {
-							$type : "json:String",
-							$description : ""
-						}
-					}
-				},
-				/*
-				 * The following three items (general, icons, widgets) are of type ObjectRef temporarily, so that the
-				 * validation passes without errors, until documented more precisely.
-				 */
-				"general" : {
-					$type : "json:ObjectRef",
-					$description : ""
-				},
-				"widgets" : {
-					$type : "json:Object",
-					$description : "",
-					$properties : {
-						"TextInput" : {
-							/* TODO: replace type with json:Object and complete it */
-							$type : "json:ObjectRef",
-							$description : ""
-						},
-						"Dialog" : {
-							/* TODO: replace type with json:Object and complete it */
-							$type : "json:ObjectRef",
-							$description : ""
-						},
-						"SelectBox" : {
-							/* TODO: replace type with json:Object and complete it */
-							$type : "json:ObjectRef",
-							$description : ""
-						},
-						"Select" : {
-							/* TODO: replace type with json:Object and complete it */
-							$type : "json:ObjectRef",
-							$description : ""
-						},
-						"DatePicker" : {
-							/* TODO: replace type with json:Object and complete it */
-							$type : "json:ObjectRef",
-							$description : ""
-						},
-						"MultiSelect" : {
-							/* TODO: replace type with json:Object and complete it */
-							$type : "json:ObjectRef",
-							$description : ""
-						},
-						"Div" : {
-							/* TODO: replace type with json:Object and complete it */
-							$type : "json:ObjectRef",
-							$description : ""
-						},
-						"Button" : {
-							/* TODO: replace type with json:Object and complete it */
-							$type : "json:ObjectRef",
-							$description : ""
-						},
-						"CheckBox" : {
-							/* TODO: replace type with json:Object and complete it */
-							$type : "json:ObjectRef",
-							$description : ""
-						},
-						"RadioButton" : {
-							/* TODO: replace type with json:Object and complete it */
-							$type : "json:ObjectRef",
-							$description : ""
-						},
-						"Icon" : {
-							/* TODO: replace type with json:Object and complete it */
-							$type : "json:ObjectRef",
-							$description : ""
-						},
-						"List" : {
-							/* TODO: replace type with json:Object and complete it */
-							$type : "json:ObjectRef",
-							$description : ""
-						},
-						"Calendar" : {
-							/* TODO: replace type with json:Object and complete it */
-							$type : "json:ObjectRef",
-							$description : ""
-						},
-						"Gauge" : {
-							/* TODO: replace type with json:Object and complete it */
-							$type : "json:ObjectRef",
-							$description : ""
-						},
-						"SortIndicator" : {
-							/* TODO: replace type with json:Object and complete it */
-							$type : "json:ObjectRef",
-							$description : ""
-						},
-						"Tab" : {
-							/* TODO: replace type with json:Object and complete it */
-							$type : "json:ObjectRef",
-							$description : ""
-						},
-						"TabPanel" : {
-							/* TODO: replace type with json:Object and complete it */
-							$type : "json:ObjectRef",
-							$description : ""
-						},
-						"Text" : {
-							/* TODO: replace type with json:Object and complete it */
-							$type : "json:ObjectRef",
-							$description : ""
-						},
-						"Link" : {
-							/* TODO: replace type with json:Object and complete it */
-							$type : "json:ObjectRef",
-							$description : ""							
-						},
-						/******** Mobile skins ********/
-						"scFieldSet" : {
-							$type: "BaseWidgetJsSkinCfg",
-							$description: "",
-							$mandatory: false
-						}						
-					}
-				}
-			}
-		},
-		"DivSkinCfg" : {
-			$type : "json:Object",
-			$description : "",
-			$properties : {
-				"sprType" : {
-					$type: "json:Integer",
-					$description : "",
-					$minValue: 0,
-					$maxValue: 3
-				},
-				"states" : { 
-					$type: "json:Map",
-					$description: "",
-					$contentType: {
-						$type: "json:ObjectRef",
-						$description : ""/*,
-						$properties : {
-							
-						}*/
-					}
-				}
-			}
-		},
-		/*"TextInputSkinCfg" : {
-			$type : "DivSkinCfg",
-			$description : "",
-			$properties : {
-				/* TODO: complete this part with TextInput properties not dependent on the state */
-				/*"states" : {
-					$type : "DivSkinCfg.states",
-					$description : "",
-					$contentType : {
-						$type : "DivSkinCfg.states.$contentType",
-						$description : "",
-						$properties : {
-							
-/* TODO: complete this part with TextInput properties dependent on the state */
-/*}
-					}
-				}
-			}
-		},*/
+    $package : "aria.widgets.AriaSkinBeans",
+    $description : "Structure of a skin.",
+    $namespaces : {
+        "json" : "aria.core.JsonTypes"
+    },
+    $beans : {
+        "Object" : {
+            $type : "json:Object",
+            $description : "",
+            $default : {}
+        },
+        "Color" : {
+            $type : "json:String",
+            $description : ""
+        },
+        "Opacity" : {
+            $type : "json:Float",
+            $description : "",
+            $minValue : 0,
+            $maxValue : 100
+        },
+        "GeneralCfg" : {
+            $type : "Object",
+            $description : "",
+            $properties : {
+                "imagesRoot" : {
+                    $type : "json:String",
+                    $description : "Root path for skin images (relative to Aria.rootFolderPath). It is supposed to end with a slash.",
+                    $default : "css/"
+                },
+                "font" : {
+                    $type : "Object",
+                    $description : "",
+                    $properties : {
+                        "size" : {
+                            $type : "json:Integer",
+                            $description : ""
+                        },
+                        "family" : {
+                            $type : "json:String",
+                            $description : ""
+                        }
+                    }
+                },
+                "colors" : {
+                    $type : "Object",
+                    $description : "",
+                    $properties : {
+                        "bkg" : {
+                            $type : "Color",
+                            $description : ""
+                        },
+                        "disabled" : {
+                            $type : "Color",
+                            // used in aria.widgets.calendar.CalendarStyle
+                            $description : ""
+                        }
+                    }
+                },
+                "loadingOverlay" : {
+                    $type : "Object",
+                    $description : "",
+                    $properties : {
+                        "backgroundColor" : {
+                            $type : "Color",
+                            $description : ""
+                        },
+                        "spriteURL" : {
+                            $type : "json:String",
+                            $description : ""
+                        },
+                        "opacity" : {
+                            $type : "Opacity",
+                            $description : ""
+                        }
+                    }
+                },
+                "overlay" : {
+                    $type : "Object",
+                    $description : "",
+                    $properties : {
+                        "backgroundColor" : {
+                            $type : "Color",
+                            $default : "#ddd"
+                        },
+                        "opacity" : {
+                            $type : "Opacity",
+                            $description : ""
+                        },
+                        "border" : {
+                            $type : "json:String",
+                            $description : "",
+                            $default : "1px solid black"
+                        }
+                    }
+                },
+                "dialogMask" : {
+                    $type : "Object",
+                    $description : "",
+                    $properties : {
+                        "backgroundColor" : {
+                            $type : "Color",
+                            $description : "",
+                            $default : "black"
+                        },
+                        "opacity" : {
+                            $type : "Opacity",
+                            $description : "",
+                            $default : 40
+                        }
+                    }
+                },
+                "anchor" : {
+                    $type : "Object",
+                    $description : "",
+                    $properties : {
+                        "states" : {
+                            $type : "StatesSet",
+                            $description : "",
+                            $properties : {
+                                "normal" : {
+                                    $type : "AnchorState"
+                                },
+                                "link" : {
+                                    $type : "AnchorState"
+                                },
+                                "visited" : {
+                                    $type : "AnchorState"
+                                },
+                                "hover" : {
+                                    $type : "AnchorState"
+                                },
+                                "focus" : {
+                                    $type : "AnchorState"
+                                }
+                            }
+                        }
+                    }
+                },
+                "disable" : {
+                    $type : "Object",
+                    $description : "",
+                    $properties : {
+                        "ul" : {
+                            $type : "Object",
+                            $description : "",
+                            $properties : {
+                                "list" : {
+                                    $type : "Object",
+                                    $description : "",
+                                    $properties : {
+                                        "style" : {
+                                            $type : "json:Boolean",
+                                            $description : ""
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "AnchorState" : {
+            $type : "Object",
+            $description : "",
+            $properties : {
+                "color" : {
+                    $type : "Color",
+                    $description : ""
+                },
+                "text" : {
+                    $type : "Object",
+                    $properties : {
+                        "decoration" : {
+                            $type : "json:String",
+                            $description : ""
+                        }
+                    }
+                },
+                "outline" : {
+                    $type : "json:String",
+                    $description : ""
+                }
+            }
+        },
+        "Icons" : {
+            $type : "json:String",
+            $description : ""
+        },
+        "IconsLeft" : {
+            $type : "Icons",
+            $description : ""
+        },
+        "IconsRight" : {
+            $type : "Icons",
+            $description : ""
+        },
+        "StatesSet" : {
+            $type : "Object",
+            $description : ""
+        },
+        "StateWithFrame" : {
+            $type : "Object",
+            $description : "",
+            $properties : {
+                "frame" : {
+                    $type : "json:ObjectRef",
+                    $description : "",
+                    $default : {}
+                }
+            }
+        },
+        "StateWithFrameWithIcons" : {
+            $type : "StateWithFrame",
+            $description : "",
+            $properties : {
+                "icons" : {
+                    $type : "json:Map",
+                    $description : "",
+                    $contentType : {
+                        $type : "json:MultiTypes",
+                        $description : "",
+                        $contentTypes : [{
+                                    $type : "json:Boolean",
+                                    $description : ""
+                                }, {
+                                    $type : "json:String",
+                                    $description : ""
+                                }]
+                    }
+                }
+            }
+        },
+        "Frame" : {
+            $type : "json:ObjectRef",
+            $description : ""
+        },
+        "BaseFrame" : {
+            $type : "Object",
+            $description : "",
+            $properties : {
+                "sprType" : {
+                    $type : "json:Integer",
+                    $description : "Deprecated, please use frameType instead."
+                },
+                "frameType" : {
+                    $type : "json:Enum",
+                    $enumValues : ["FixedHeight", "Simple", "Table", "SimpleHTML", "Old0", "Old1", "Old2"],
+                    $description : ""
+                }
+            }
+        },
+        "ButtonCfg" : {
+            $type : "Object",
+            $description : "",
+            $properties : {
+                "states" : {
+                    $type : "StatesSet",
+                    $properties : {
+                        "normal" : {
+                            $type : "StateWithFrame"
+                        },
+                        "msdown" : {
+                            $type : "StateWithFrame"
+                        },
+                        "msover" : {
+                            $type : "StateWithFrame"
+                        },
+                        "selected" : {
+                            $type : "StateWithFrame"
+                        },
+                        "disabled" : {
+                            $type : "StateWithFrame"
+                        }
+                    }
+                },
+                "frame" : {
+                    $type : "Frame"
+                },
+                "simpleHTML" : {
+                    $type : "json:Boolean",
+                    $description : "",
+                    $default : false
+                },
+                "label" : {
+                    $type : "Object",
+                    $description : "",
+                    $properties : {
+                        "fontWeight" : {
+                            $type : "json:String",
+                            $description : "",
+                            $default : "normal"
+                        }
+                    }
+                }
+            }
+        },
+        "CalendarCfg" : {
+            $type : "Object",
+            $description : "",
+            $properties : {
+                "generalBackgroundColor" : {
+                    $type : "Color",
+                    $description : ""
+                },
+                "monthTitleBorderColor" : {
+                    $type : "Color",
+                    $description : "",
+                    $default : "#E6D9C6"
+                },
+                "monthTitleColor" : {
+                    $type : "Color",
+                    $description : "",
+                    $default : "black"
+                },
+                "monthTitleBackgroundColor" : {
+                    $type : "Color",
+                    $description : "",
+                    $default : "transparent"
+                },
+                "monthTitlePaddingTop" : {
+                    $type : "json:String",
+                    $description : "",
+                    $default : "0px"
+                },
+                "monthTitlePaddingBottom" : {
+                    $type : "json:String",
+                    $description : "",
+                    $default : "0px"
+                },
+                "dayBorderColor" : {
+                    $type : "Color",
+                    $description : ""
+                },
+                "dayBackgroundColor" : {
+                    $type : "Color",
+                    $description : "",
+                    $default : "transparent"
+                },
+                "dayColor" : {
+                    $type : "Color",
+                    $description : "",
+                    $default : "black"
+                },
+                "dayPadding" : {
+                    $type : "json:String",
+                    $description : "",
+                    $default : "0px"
+                },
+                "dayFontWeight" : {
+                    $type : "json:String",
+                    $description : "",
+                    $default : "normal"
+                },
+                "weekEndBackgroundColor" : {
+                    $type : "Color",
+                    $description : "",
+                    $default : "#F2ECDE"
+                },
+                "weekEndBorderColor" : {
+                    $type : "Color",
+                    $description : "",
+                    $default : "#F2ECDE"
+                },
+                "weekEndColor" : {
+                    $type : "Color",
+                    $description : "",
+                    $default : "black"
+                },
+                "unselectableBorderColor" : {
+                    $type : "Color",
+                    $description : ""
+                },
+                "unselectableBackgroundColor" : {
+                    $type : "Color",
+                    $description : ""
+                },
+                "unselectableColor" : {
+                    $type : "Color",
+                    $description : ""
+                },
+                "todayBorderColor" : {
+                    $type : "Color",
+                    $description : "",
+                    $default : "black"
+                },
+                "todayBackgroundColor" : {
+                    $type : "Color",
+                    $description : "",
+                    $default : "transparent"
+                },
+                "todayColor" : {
+                    $type : "Color",
+                    $description : "",
+                    $default : "black"
+                },
+                "weekNumberBackgroundColor" : {
+                    $type : "Color",
+                    $description : "",
+                    $default : "#E7DBC6"
+                },
+                "weekNumberBorderColor" : {
+                    $type : "Color",
+                    $description : "",
+                    $default : "#E7DBC6"
+                },
+                "weekDaysLabelBackgroundColor" : {
+                    $type : "Color",
+                    $description : "",
+                    $default : "transparent"
+                },
+                "weekDaysLabelBorderColor" : {
+                    $type : "Color",
+                    $description : "",
+                    $default : "white"
+                },
+                "weekDaysLabelFontWeight" : {
+                    $type : "json:String",
+                    $description : "",
+                    $default : "bold"
+                },
+                "weekDaysLabelColor" : {
+                    $type : "Color",
+                    $description : "",
+                    $default : "black"
+                },
+                "weekDaysLabelPadding" : {
+                    $type : "json:String",
+                    $description : "",
+                    $default : "0px"
+                },
+                "selectedBackgroundColor" : {
+                    $type : "Color",
+                    $description : "",
+                    $default : "#FFCC66"
+                },
+                "selectedBorderColor" : {
+                    $type : "Color",
+                    $description : "",
+                    $default : "black"
+                },
+                "selectedColor" : {
+                    $type : "Color",
+                    $description : "",
+                    $default : "black"
+                },
+                "defaultTemplate" : {
+                    $type : "json:String",
+                    $description : ""
+                },
+                "divsclass" : {
+                    $type : "json:String",
+                    $description : ""
+                },
+                "previousPageIcon" : {
+                    $type : "json:String",
+                    $description : ""
+                },
+                "nextPageIcon" : {
+                    $type : "json:String",
+                    $description : ""
+                }
 
-		/*
-		 * Maybe, in the future, this file should be split in two. Up to here, it is the whole skin configuration. Down
-		 * to the end, it is the part of the skin stored in the JS file (notice the JsSkinCfg suffix). Some parts may be
-		 * common (Color, for example...).
-		 */
+            }
+        },
+        "ListCfg" : {
+            $type : "Object",
+            $description : "",
+            $properties : {
+                "divsclass" : {
+                    $type : "json:String",
+                    $description : ""
+                },
+                "enabledColor" : {
+                    $type : "Color",
+                    $description : "",
+                    $default : "#666"
+                },
+                "mouseOverBackgroundColor" : {
+                    $type : "Color",
+                    $description : ""
+                },
+                "mouseOverColor" : {
+                    $type : "Color",
+                    $description : ""
+                },
+                "highlightMouseOver" : {
+                    $type : "json:Boolean",
+                    $description : "",
+                    $default : true
+                },
+                "selectedItemBackgroundColor" : {
+                    $type : "Color",
+                    $description : ""
+                },
+                "selectedItemColor" : {
+                    $type : "Color",
+                    $description : ""
+                },
+                "link" : {
+                    $type : "Object",
+                    $description : "",
+                    $properties : {
+                        marginLeft : {
+                            $type : "json:Integer",
+                            $description : "",
+                            $default : 3
+                        },
+                        marginRight : {
+                            $type : "json:Integer",
+                            $description : "",
+                            $default : 3
+                        }
+                    }
+                },
+                "footer" : {
+                    $type : "Object",
+                    $description : "",
+                    $properties : {
+                        "padding" : {
+                            $type : "json:Integer",
+                            $description : "",
+                            $default : 5
+                        },
+                        "backgroundColor" : {
+                            $type : "Color",
+                            $description : "",
+                            $default : "#eadbc8"
+                        },
+                        "borderColor" : {
+                            $type : "Color",
+                            $description : "",
+                            $default : "#d3c3ab"
+                        },
+                        "borderTopOnly" : {
+                            $type : "json:Boolean",
+                            $description : "",
+                            $default : false
+                        },
+                        "borderStyle" : {
+                            $type : "json:String",
+                            $description : "",
+                            $default : "solid"
+                        },
+                        "borderWidth" : {
+                            $type : "json:Integer",
+                            $description : "",
+                            $default : 1
+                        },
+                        "marginTop" : {
+                            $type : "json:Integer",
+                            $description : "",
+                            $default : 5
+                        },
+                        "marginRight" : {
+                            $type : "json:Integer",
+                            $description : "",
+                            $default : 0
+                        },
+                        "marginBottom" : {
+                            $type : "json:Integer",
+                            $description : "",
+                            $default : 0
+                        },
+                        "marginLeft" : {
+                            $type : "json:Integer",
+                            $description : "",
+                            $default : -1
+                        }
+                    }
+                }
+            }
+        },
+        "LinkCfg" : {
+            $type : "Object",
+            $description : "",
+            $properties : {
+                "states" : {
+                    $type : "StatesSet",
+                    $properties : {
+                        "normal" : {
+                            $type : "LinkStateCfg"
+                        },
+                        "hover" : {
+                            $type : "LinkStateCfg"
+                        },
+                        "focus" : {
+                            $type : "LinkStateCfg"
+                        }
+                    }
+                }
 
-		"Color" : {
-			$type : "json:String",
-			$description : ""
-		},
-		"JsSkinCfg" : {
-			$type : "json:Object",
-			$description : "Part of the skin configuration which is stored as a JS file (as opposed to the part of the skin which is stored as a CSS file).",
-			$properties : {
-				"scDiv" : {
-					$type : "DivJsSkinCfg",
-					$description : "",
-					$mandatory : true
-				},
-				"scTextInput" : {
-					$type : "TextInputJsSkinCfg",
-					$description : "",
-					$mandatory : true
-				},
-				"scButton" : {
-					$type : "ButtonJsSkinCfg",
-					$description : "",
-					$mandatory : true
-				},
-				"scCheckBox" : {
-					$type : "CheckBoxJsSkinCfg",
-					$description : "",
-					$mandatory : true
-				},
-				"scSortIndicator" : {
-					$type : "SortIndicatorJsSkinCfg",
-					$description : "",
-					$mandatory : true
-				},
-				"scTab" : {
-					$type : "TabJsSkinCfg",
-					$description : "",
-					$mandatory : true
-				},
-				"scTabPanel" : {
-					$type : "TabPanelJsSkinCfg",
-					$description : "",
-					$mandatory : true
-				},
-				"scText" : {
-					$type : "TextJsSkinCfg",
-					$description : "",
-					$mandatory : true
-				},
-				"scRadioButton" : {
-					$type : "RadioButtonJsSkinCfg",
-					$description : "",
-					$mandatory : true
-				},
-				"scIcon" : {
-					$type : "IconJsSkinCfg",
-					$description : "",
-					$mandatory : true
-				},
-				"scList" : {
-					$type : "ListJsSkinCfg",
-					$description : "",
-					$mandatory : true
-				},
-				"scCalendar" : {
-					$type : "CalendarJsSkinCfg",
-					$description : "",
-					$mandatory : true
-				},
-				"scGauge" : {
-					$type : "GaugeJsSkinCfg",
-					$description : "",
-					$mandatory : true
-				},
-				"scDialog" : {
-					$type : "DialogJsSkinCfg",
-					$description : "",
-					$mandatory : true
-				}
-			}
-		},
-		"BaseWidgetJsSkinCfg" : {
-			$type : "json:Map",
-			$description : "",
-			$contentType : {
-				$type : "json:Object",
-				$description : ""
-			}
-		},
-		"CheckBoxJsSkinCfg" : {
-			$type : "BaseWidgetJsSkinCfg",
-			$description : "",
-			$contentType : {
-				$type : "BaseWidgetJsSkinCfg.$contentType",
-				$properties : {
-					iconset : {
-						$type : "json:String",
-						$description : ""
-					},
-					iconprefix : {
-						$type : "json:String",
-						$description : ""
-					},
-					states : {
-						$type : "json:Map",
-						$description : "",
-						$contentType : {
-							$type : "json:Object",
-							$description : "",
-							$properties : {
-								color : {
-									$type : "Color",
-									$description : ""
-								}
-							}
-						}
-					}
-				}
-			}
-		},
-		"SortIndicatorJsSkinCfg" : {
-			$type : "BaseWidgetJsSkinCfg",
-			$description : "",
-			$contentType : {
-				$type : "BaseWidgetJsSkinCfg.$contentType",
-				$properties : {
-					iconset : {
-						$type : "json:String",
-						$description : ""
-					},
-					iconprefix : {
-						$type : "json:String",
-						$description : ""
-					},
-					states : {
-						$type : "json:Map",
-						$description : "",
-						$contentType : {
-							$type : "json:Object",
-							$description : "",
-							$properties : {
-								color : {
-									$type : "Color",
-									$description : ""
-								}
-							}
-						}
-					}
-				}
-			}
-		},
-		"TabJsSkinCfg" : {
-			$type : "DivJsSkinCfg",
-			$description : "",
-			$contentType : {
-				$type : "DivJsSkinCfg.$contentType",
-				$description : ""
-			}			
-		},
-		"TabPanelJsSkinCfg" : {
-			$type : "DivJsSkinCfg",
-			$description : "",
-			$contentType : {
-				$type : "DivJsSkinCfg.$contentType",
-				$description : ""
-			}			
-		},
-		"TextJsSkinCfg" : { 
-			$type : "BaseWidgetJsSkinCfg",
-			$description : "",
-			$contentType : {
-				$type : "BaseWidgetJsSkinCfg.$contentType",
-				$description : ""
-			}			
-		},
-		"RadioButtonJsSkinCfg" : {
-			$type : "BaseWidgetJsSkinCfg",
-			$description : "",
-			$contentType : {
-				$type : "BaseWidgetJsSkinCfg.$contentType",
-				$properties : {
-					iconset : {
-						$type : "json:String",
-						$description : ""
-					},
-					iconprefix : {
-						$type : "json:String",
-						$description : ""
-					}
-				}
-			}
-		},
-		"IconJsSkinCfg" : {
-			$type : "BaseWidgetJsSkinCfg",
-			$description : "",
-			$contentType : {
-				$type : "BaseWidgetJsSkinCfg.$contentType",
-				$description : "",
-				$properties : {
-					cssClass : {
-						$type : "json:String",
-						$description : ""
-					},
-					spriteURL : {
-						$type : "json:String",
-						$description : ""
-					},
-					spriteSpacing : {
-						$type : "json:Integer",
-						$description : ""
-					},
-					iconWidth : {
-						$type : "json:Integer",
-						$description : ""
-					},
-					iconHeight : {
-						$type : "json:Integer",
-						$description : ""
-					},
-					verticalAlign : {
-						$type : "json:String",
-						$description : ""
-					},
-					margins : {
-						$type : "json:String",
-						$description : ""
-					},
-					biDimensional : {
-						$type : "json:Boolean",
-						$description : ""
-					},
-					direction : {
-						$type : "json:Enum",
-						$description : "",
-						$enumValues : ["x", "y"]
-					},
-					content : {
-						$type : "json:Map",
-						$description : "",
-						$contentType : {
-							$type : "json:MultiTypes",
-							$description : "",
-							$contentTypes : [{
-										$type : "json:String",
-										$description : ""
-									}, {
-										$type : "json:Integer",
-										$description : ""
-									}]
-						}
-					}
-				}
-			}
-		},
-		"DivJsSkinCfg" : {
-			$type : "BaseWidgetJsSkinCfg",
-			$description : "",
-			$contentType : {
-				$type : "BaseWidgetJsSkinCfg.$contentType",
-				$description : "",
-				$properties : {
-					spcLeft : {
-						$type : "json:Integer",
-						$description : ""
-					},
-					spcRight : {
-						$type : "json:Integer",
-						$description : ""
-					},
-					spcTop : {
-						$type : "json:Integer",
-						$description : ""
-					},
-					spcBottom : {
-						$type : "json:Integer",
-						$description : ""
-					},
-					offsetLeft : {
-						$type : "json:Integer",
-						$description : ""
-					},
-					sprType : {
-						$type : "json:Integer",
-						$description : ""
-					},
-					sprHeight : {
-						$type : "json:Integer",
-						$description : ""
-					},
-					sprWidth : {
-						$type : "json:Integer",
-						$description : ""
-					},
-					bgRepeat : {
-						$type : "json:Boolean",
-						$description : ""
-					},
-					fixedHeight : {
-						$type : "json:Boolean",
-						$description : ""
-					},
-					states : {
-						$type : "json:Map",
-						$description : "",
-						$contentType : {
-							$type : "json:Object",
-							$description : "",
-							$properties : {
-								topPos : {
-									$type : "json:Integer",
-									$description : ""
-								},
-								sprIdx : {
-									$type : "json:Integer",
-									$description : ""
-								},
-								color : {
-									$type : "Color",
-									$description : ""
-								},
-								textAlign : {
-									$type : "json:String",
-									$description : ""
-								}
-							}
-						}
-					}
-				}
-			}
-		},
-		"TextInputJsSkinCfg" : {
-			$type : "DivJsSkinCfg",
-			$description : "",
-			$contentType : {
-				$type : "DivJsSkinCfg.$contentType",
-				$description : "",
-				$properties : {
-					helpText : {
-						$type : "json:Object",
-						$description : "",
-						$properties : {
-							color : {
-								$type : "Color",
-								$description : ""
-							},
-							italics : {
-								$type : "json:Boolean",
-								$description : ""
-							}
-						}
-					}
-				}
-			}
-		},
-		"ButtonJsSkinCfg" : {
-			$type : "DivJsSkinCfg",
-			$description : "",
-			$contentType : {
-				$type : "DivJsSkinCfg.$contentType",
-				$description : ""
-			}
-		},
-		"ListJsSkinCfg" : {
-			$type : "BaseWidgetJsSkinCfg",
-			$description : "",
-			$contentType : {
-				$type : "BaseWidgetJsSkinCfg.$contentType",
-				$description : "",
-				$properties : {
-					"divsclass" : {
-						$type : "json:String",
-						$description : ""
-					},
-					"cssClassItem" : {
-						$type : "json:String",
-						$description : ""
-					},
-					"cssClassEnabled" : {
-						$type : "json:String",
-						$description : ""
-					},
-					"cssClassSelected" : {
-						$type : "json:String",
-						$description : ""
-					},
-					"cssClassDisabled" : {
-						$type : "json:String",
-						$description : ""
-					},
-					"cssClassFooter" : {
-						$type : "json:String",
-						$description : "Class for the footer of the list"
-					}
-				}
-			}
-		},
-		"CalendarJsSkinCfg" : {
-			$type : "BaseWidgetJsSkinCfg",
-			$description : "",
-			$contentType : {
-				$type : "BaseWidgetJsSkinCfg.$contentType",
-				$description : "",
-				$properties : {
-					"defaultTemplate" : {
-						$type : "json:String",
-						$description : ""
-					},
-					"cssClass" : {
-						$type : "json:String",
-						$description : ""
-					},
-					"cssClassMonthTitle" : {
-						$type : "json:String",
-						$description : ""
-					},
-					"cssClassSelected" : {
-						$type : "json:String",
-						$description : ""
-					},
-					"cssClassUnselectable" : {
-						$type : "json:String",
-						$description : ""
-					},
-					"cssClassSelectable" : {
-						$type : "json:String",
-						$description : ""
-					},
-					"cssClassDay" : {
-						$type : "json:String",
-						$description : ""
-					},
-					"cssClassWeekend" : {
-						$type : "json:String",
-						$description : ""
-					},
-					"cssClassToday" : {
-						$type : "json:String",
-						$description : ""
-					},
-					"cssClassMouseover" : {
-						$type : "json:String",
-						$description : ""
-					},
-					"cssClassMouseout" : {
-						$type : "json:String",
-						$description : ""
-					},
-					"previousPageIcon" : {
-						$type : "json:String",
-						$description : ""
-					},
-					"nextPageIcon" : {
-						$type : "json:String",
-						$description : ""
-					}
-				}
-			}
-		},
-		"DialogJsSkinCfg" : {
-			$type : "BaseWidgetJsSkinCfg",
-			$description : "",
-			$contentType : {
-				$type : "BaseWidgetJsSkinCfg.$contentType",
-				$description : ""
-			}
-		},
-		"GaugeJsSkinCfg" : {
-			$type : "BaseWidgetJsSkinCfg",
-			$description : "",
-			$contentType : {
-				$type : "BaseWidgetJsSkinCfg.$contentType",
-				$description : "",
-				$properties : {
-					sprHeight : {
-						$type : "json:Integer",
-						$description : "Specifies the sprite height used for the background of the whole gauge and the progress bar"
-					},
-					border : {
-						$type : "json:String",
-						$description : "Specifies the gauge border style, width and color"
-					},
-					borderPadding : {
-						$type : "json:Integer",
-						$description : "Specifies the border padding"
-					},
-					labelMargins : {
-						$type : "json:String",
-						$description : ""
-					},
-					labelFontSize : {
-						$type : "json:Integer",
-						$description : "Font size in pixels"
-					}
-				}
-			}
-		}
-	}
+            }
+        },
+        "LinkStateCfg" : {
+            $type : "Object",
+            $description : "",
+            $properties : {
+                "color" : {
+                    $type : "Color",
+                    $description : ""
+                }
+
+            }
+        },
+        "GaugeCfg" : {
+            $type : "Object",
+            $description : "",
+            $properties : {
+                "spriteUrl" : {
+                    $type : "json:String",
+                    $description : "",
+                    $default : 'atdefskin/sprites/back.gif'
+                },
+                "sprHeight" : {
+                    $type : "json:Integer",
+                    $description : ""
+                },
+                "border" : {
+                    $type : "json:String",
+                    $description : ""
+                },
+                "borderPadding" : {
+                    $type : "json:Integer",
+                    $description : ""
+                },
+                "labelMargins" : {
+                    $type : "json:String",
+                    $description : ""
+                },
+                "labelFontSize" : {
+                    $type : "json:Integer",
+                    $description : ""
+                }
+            }
+        },
+        "RadioButtonCfg" : {
+            $type : "CheckBoxCfg",
+            $description : ""
+        },
+        "CheckBoxCfg" : {
+            $type : "Object",
+            $description : "",
+            $properties : {
+                "states" : {
+                    $type : "StatesSet",
+                    $properties : {
+                        "normal" : {
+                            $type : "CheckBoxStateCfg"
+                        },
+                        "normalSelected" : {
+                            $type : "CheckBoxStateCfg"
+                        },
+                        "focused" : {
+                            $type : "CheckBoxStateCfg"
+                        },
+                        "focusedSelected" : {
+                            $type : "CheckBoxStateCfg"
+                        },
+                        "disabled" : {
+                            $type : "CheckBoxStateCfg"
+                        },
+                        "disabledSelected" : {
+                            $type : "CheckBoxStateCfg"
+                        },
+                        "readonly" : {
+                            $type : "CheckBoxStateCfg"
+                        },
+                        "readonlySelected" : {
+                            $type : "CheckBoxStateCfg"
+                        }
+                    }
+                },
+                "simpleHTML" : {
+                    $type : "json:Boolean",
+                    $description : "",
+                    $default : false
+                },
+                "iconset" : {
+                    $type : "json:String",
+                    $description : ""
+                },
+                "iconprefix" : {
+                    $type : "json:String",
+                    $description : ""
+                }
+            }
+        },
+        "CheckBoxStateCfg" : {
+            $type : "Object",
+            $description : "",
+            $properties : {
+                "color" : {
+                    $type : "Color",
+                    $description : ""
+                }
+            }
+        },
+        "DatePickerCfg" : {
+            $type : "DropDownTextInputCfg",
+            $description : "",
+            $properties : {
+                calendar : {
+                    $type : "Object",
+                    $properties : {
+                        showWeekNumbers : {
+                            $type : "json:Boolean",
+                            $description : "",
+                            $default : true
+                        },
+                        restrainedNavigation : {
+                            $type : "json:Boolean",
+                            $description : "",
+                            $default : true
+                        },
+                        showShortcuts : {
+                            $type : "json:Boolean",
+                            $description : "",
+                            $default : true
+                        },
+                        numberOfUnits : {
+                            $type : "json:Integer",
+                            $description : "",
+                            $default : 3
+                        }
+                    }
+                }
+            }
+        },
+        "SelectBoxCfg" : {
+            $type : "DropDownTextInputCfg",
+            $description : ""
+        },
+        "TextareaCfg" : {
+            $type : "TextInputCfg",
+            $description : ""
+        },
+        "ErrorListCfg" : {
+            $type : "Object",
+            $description : "",
+            $properties : {
+                "divsclass" : {
+                    $type : "json:String",
+                    $description : ""
+                }
+            }
+        },
+        "FieldsetCfg" : {
+            $type : "Object",
+            $description : "",
+            $properties : {
+                "states" : {
+                    $type : "StatesSet",
+                    $properties : {
+                        "normal" : {
+                            $type : "FieldsetStateCfg"
+                        }
+                    }
+                },
+                "frame" : {
+                    $type : "Frame"
+                }
+            }
+        },
+        "FieldsetStateCfg" : {
+            $type : "StateWithFrame",
+            $description : "",
+            $properties : {
+                "label" : {
+                    $type : "Object",
+                    $description : "",
+                    $properties : {
+                        "left" : {
+                            $type : "json:Integer",
+                            $description : "",
+                            $default : 0
+                        },
+                        "top" : {
+                            $type : "json:Integer",
+                            $description : "",
+                            $default : 0
+                        },
+                        "paddingTop" : {
+                            $type : "json:Integer",
+                            $description : "",
+                            $default : 0
+                        },
+                        "paddingLeft" : {
+                            $type : "json:Integer",
+                            $description : "",
+                            $default : 0
+                        },
+                        "paddingRight" : {
+                            $type : "json:Integer",
+                            $description : "",
+                            $default : 0
+                        },
+                        "paddingBottom" : {
+                            $type : "json:Integer",
+                            $description : "",
+                            $default : 0
+                        },
+                        "backgroundColor" : {
+                            $type : "Color",
+                            $description : "",
+                            $default : "white"
+                        },
+                        "fontWeight" : {
+                            $type : "json:String",
+                            $description : "",
+                            $default : "bold"
+                        },
+                        "color" : {
+                            $type : "Color",
+                            $description : "",
+                            $default : "black"
+                        }
+                    }
+                }
+            }
+        },
+        "MultiSelectCfg" : {
+            $type : "DropDownTextInputCfg",
+            $description : ""
+        },
+        "SelectCfg" : {
+            $type : "Object",
+            $description : "",
+            $properties : {
+                "states" : {
+                    $type : "StatesSet",
+                    $properties : {
+                        "normal" : {
+                            $type : "StateWithFrameWithIcons"
+                        },
+                        "normalFocused" : {
+                            $type : "StateWithFrameWithIcons"
+                        },
+                        "mandatory" : {
+                            $type : "StateWithFrameWithIcons"
+                        },
+                        "mandatoryFocused" : {
+                            $type : "StateWithFrameWithIcons"
+                        },
+                        "disabled" : {
+                            $type : "StateWithFrameWithIcons"
+                        },
+                        "readOnly" : {
+                            $type : "StateWithFrameWithIcons"
+                        },
+                        "normalError" : {
+                            $type : "StateWithFrameWithIcons"
+                        },
+                        "normalErrorFocused" : {
+                            $type : "StateWithFrameWithIcons"
+                        },
+                        "mandatoryError" : {
+                            $type : "StateWithFrameWithIcons"
+                        },
+                        "mandatoryErrorFocused" : {
+                            $type : "StateWithFrameWithIcons"
+                        }
+                    }
+                },
+                "frame" : {
+                    $type : "Frame"
+                },
+                "iconsLeft" : {
+                    $type : "IconsLeft"
+                },
+                "iconsRight" : {
+                    $type : "IconsRight"
+                },
+                "simpleHTML" : {
+                    $type : "json:Boolean",
+                    $description : "",
+                    $default : false
+                },
+                "offsetTop" : {
+                    $type : "json:Integer",
+                    $description : ""
+                }
+            }
+        },
+        "SortIndicatorCfg" : {
+            $type : "Object",
+            $description : "",
+            $properties : {
+                iconset : {
+                    $type : "json:String",
+                    $description : ""
+                },
+                iconprefix : {
+                    $type : "json:String",
+                    $description : ""
+                }
+            }
+        },
+        "SplitterCfg" : {
+            $type : "Object",
+            $description : "",
+            $properties : {
+                separatorHeight : {
+                    $type : "json:Integer",
+                    $description : ""
+                },
+                handleBackgroundColor : {
+                    $type : "Color",
+                    $description : "",
+                    $default : "transparent"
+                },
+                handleSpriteURLh : {
+                    $type : "json:String",
+                    $description : ""
+                },
+                proxyBackgroundColor : {
+                    $type : "Color",
+                    $description : "",
+                    $default : "transparent"
+                },
+                proxySpriteURLh : {
+                    $type : "json:String",
+                    $description : ""
+                },
+                borderColor : {
+                    $type : "Color",
+                    $description : ""
+                }
+            }
+        },
+        "IconCfg" : {
+            $type : "Object",
+            $description : "",
+            $properties : {
+                "iconWidth" : {
+                    $type : "json:Integer",
+                    $description : ""
+                },
+                "iconHeight" : {
+                    $type : "json:Integer",
+                    $description : ""
+                },
+                "spriteSpacing" : {
+                    $type : "json:Integer",
+                    $description : ""
+                },
+                "biDimensional" : {
+                    $type : "json:Boolean",
+                    $description : "",
+                    $default : false
+                },
+                "direction" : {
+                    $type : "json:Enum",
+                    $description : "",
+                    $enumValues : ["x", "y"]
+                },
+                "content" : {
+                    $type : "json:Map",
+                    $default : {},
+                    $description : "",
+                    $contentType : {
+                        $type : "json:Integer",
+                        $description : ""
+                    }
+                },
+                "spriteURL" : {
+                    $type : "json:String",
+                    $description : ""
+                }
+
+            }
+        },
+        "DivCfg" : {
+            $type : "Object",
+            $description : "",
+            $properties : {
+                "states" : {
+                    $type : "StatesSet",
+                    $properties : {
+                        "normal" : {
+                            $type : "StateWithFrame"
+                        },
+                        "topLeft" : {
+                            $type : "StateWithFrame"
+                        },
+                        "bottomRight" : {
+                            $type : "StateWithFrame"
+                        },
+                        "bottomLeft" : {
+                            $type : "StateWithFrame"
+                        }
+                    }
+                },
+                "frame" : {
+                    $type : "Frame"
+                }
+            }
+        },
+        "DialogCfg" : {
+            $type : "Object",
+            $description : "",
+            $properties : {
+                "titleBarTop" : {
+                    $type : "json:Integer",
+                    $description : ""
+                },
+                "titleBarLeft" : {
+                    $type : "json:Integer",
+                    $description : ""
+                },
+                "titleBarRight" : {
+                    $type : "json:Integer",
+                    $description : ""
+                },
+                "titleBarHeight" : {
+                    $type : "json:Integer",
+                    $description : ""
+                },
+                "titleColor" : {
+                    $type : "Color",
+                    $description : "",
+                    $default : "#615E55"
+                },
+                "divsclass" : {
+                    $type : "json:String",
+                    $description : ""
+                },
+                "closeIcon" : {
+                    $type : "json:String",
+                    $description : ""
+                }
+            }
+        },
+        "TextInputCfg" : {
+            $type : "Object",
+            $description : "",
+            $properties : {
+                "states" : {
+                    $type : "StatesSet",
+                    $properties : {
+                        "normal" : {
+                            $type : "TextInputStateCfg"
+                        },
+                        "normalFocused" : {
+                            $type : "TextInputStateCfg"
+                        },
+                        "mandatory" : {
+                            $type : "TextInputStateCfg"
+                        },
+                        "mandatoryFocused" : {
+                            $type : "TextInputStateCfg"
+                        },
+                        "normalError" : {
+                            $type : "TextInputStateCfg"
+                        },
+                        "normalErrorFocused" : {
+                            $type : "TextInputStateCfg"
+                        },
+                        "mandatoryError" : {
+                            $type : "TextInputStateCfg"
+                        },
+                        "mandatoryErrorFocused" : {
+                            $type : "TextInputStateCfg"
+                        },
+                        "disabled" : {
+                            $type : "TextInputStateCfg"
+                        },
+                        "readOnly" : {
+                            $type : "TextInputStateCfg"
+                        },
+                        "prefill" : {
+                            $type : "TextInputStateCfg"
+                        }
+                    }
+                },
+                "simpleHTML" : {
+                    $type : "json:Boolean",
+                    $description : "",
+                    $default : false
+                },
+                "frame" : {
+                    $type : "Frame"
+                },
+                "iconsLeft" : {
+                    $type : "IconsLeft"
+                },
+                "iconsRight" : {
+                    $type : "IconsRight"
+                },
+                "label" : {
+                    $type : "Object",
+                    $description : "",
+                    $properties : {
+                        "fontWeight" : {
+                            $type : "json:String",
+                            $description : "",
+                            $default : "normal"
+                        }
+                    }
+                },
+                "helpText" : {
+                    $type : "Object",
+                    $description : "",
+                    $properties : {
+                        "color" : {
+                            $type : "Color",
+                            $description : ""
+                        },
+                        "italics" : {
+                            $type : "json:Boolean",
+                            $description : ""
+                        }
+                    }
+                },
+                "innerPaddingTop" : {
+                    $type : "json:Integer",
+                    $description : "",
+                    $default : 0
+                },
+                "innerPaddingRight" : {
+                    $type : "json:Integer",
+                    $description : "",
+                    $default : 0
+                },
+                "innerPaddingBottom" : {
+                    $type : "json:Integer",
+                    $description : "",
+                    $default : 0
+                },
+                "innerPaddingLeft" : {
+                    $type : "json:Integer",
+                    $description : "",
+                    $default : 0
+                }
+            }
+        },
+        "TextInputStateCfg" : {
+            $type : "StateWithFrameWithIcons",
+            $description : "",
+            $properties : {
+                "color" : {
+                    $type : "Color",
+                    $description : "",
+                    $default : "#000"
+                }
+            }
+        },
+        "DropDownTextInputCfg" : {
+            $type : "TextInputCfg",
+            $description : "",
+            $properties : {
+                "offsetTop" : {
+                    $type : "json:Integer",
+                    $description : ""
+                }
+            }
+        },
+        "AutoCompleteCfg" : {
+            $type : "DropDownTextInputCfg",
+            $description : ""
+        },
+        "TabPanelCfg" : {
+            $type : "Object",
+            $description : "",
+            $properties : {
+                "states" : {
+                    $type : "StatesSet",
+                    $properties : {
+                        "normal" : {
+                            $type : "StateWithFrame"
+                        }
+                    }
+                },
+                "frame" : {
+                    $type : "Frame"
+                }
+            }
+        },
+        "TabCfg" : {
+            $type : "Object",
+            $description : "",
+            $properties : {
+                "states" : {
+                    $type : "StatesSet",
+                    $properties : {
+                        "normal" : {
+                            $type : "StateWithFrame"
+                        },
+                        "msover" : {
+                            $type : "StateWithFrame"
+                        },
+                        "selected" : {
+                            $type : "StateWithFrame"
+                        },
+                        "disabled" : {
+                            $type : "StateWithFrame"
+                        },
+                        "normalFocused" : {
+                            $type : "StateWithFrame"
+                        },
+                        "msoverFocused" : {
+                            $type : "StateWithFrame"
+                        },
+                        "selectedFocused" : {
+                            $type : "StateWithFrame"
+                        }
+                    }
+                },
+                "frame" : {
+                    $type : "Frame"
+                }
+            }
+        },
+        "SimpleFrameCfg" : {
+            $type : "BaseFrame"
+        },
+        "SimpleFrameStateCfg" : {
+            $type : "Object",
+            $description : "",
+            $properties : {
+                "paddingTop" : {
+                    $type : "json:Integer",
+                    $description : "",
+                    $default : 0
+                },
+                "paddingRight" : {
+                    $type : "json:Integer",
+                    $description : "",
+                    $default : 0
+                },
+                "paddingBottom" : {
+                    $type : "json:Integer",
+                    $description : "",
+                    $default : 0
+                },
+                "paddingLeft" : {
+                    $type : "json:Integer",
+                    $description : "",
+                    $default : 0
+                },
+                "border" : {
+                    $type : "json:String",
+                    $description : "",
+                    $default : ""
+                },
+                "borderSize" : {
+                    $type : "json:Integer",
+                    $description : "",
+                    $default : 0
+                },
+                "borderColor" : {
+                    $type : "Color",
+                    $description : "",
+                    $default : ""
+                },
+                "backgroundColor" : {
+                    $type : "Color",
+                    $description : "",
+                    $default : "#FFF"
+                },
+                "color" : {
+                    $type : "Color",
+                    $description : "",
+                    $default : ""
+                }
+            }
+        },
+        "SkipBorderCfg" : {
+            $type : "json:MultiTypes",
+            $description : "",
+            $default : false,
+            $contentTypes : [{
+                        $type : "json:Boolean",
+                        $description : ""
+                    }, {
+                        $type : "json:Enum",
+                        $description : "",
+                        $enumValues : ["dependsOnIcon"]
+                    }]
+
+        },
+        "FixedHeightFrameCfg" : {
+            $type : "BaseFrame"
+        },
+        "FixedHeightFrameStateCfg" : {
+            $type : "Object",
+            $description : "",
+            $properties : {
+                "color" : {
+                    $type : "Color",
+                    $description : "",
+                    $default : "#000"
+                },
+                "spriteURL" : {
+                    $type : "json:String",
+                    $description : ""
+                },
+                "spriteURLv" : {
+                    $type : "json:String",
+                    $description : ""
+                },
+                "skipLeftBorder" : {
+                    $type : "SkipBorderCfg",
+                    $description : ""
+                },
+                "skipRightBorder" : {
+                    $type : "SkipBorderCfg",
+                    $description : ""
+                },
+                "sprWidth" : {
+                    $type : "json:Integer",
+                    $description : ""
+                },
+                "sprHeight" : {
+                    $type : "json:Integer",
+                    $description : ""
+                },
+                "sprIdx" : {
+                    $type : "json:Integer",
+                    $description : ""
+                },
+                "sprSpacing" : {
+                    $type : "json:Integer",
+                    $description : "",
+                    $default : 2
+                },
+                "spcLeft" : {
+                    $type : "json:Integer",
+                    $description : ""
+                },
+                "marginTop" : {
+                    $type : "json:Integer",
+                    $description : "",
+                    $default : 0
+                },
+                "marginLeft" : {
+                    $type : "json:Integer",
+                    $description : "",
+                    $default : 0
+                },
+                "marginRight" : {
+                    $type : "json:Integer",
+                    $description : "",
+                    $default : 0
+                },
+                "marginBottom" : {
+                    $type : "json:Integer",
+                    $description : "",
+                    $default : 0
+                }
+            }
+        },
+        "TableFrameCfg" : {
+            $type : "BaseFrame"
+        },
+        "TableFrameStateCfg" : {
+            $type : "Object",
+            $description : "",
+            $properties : {
+                "sprWidth" : {
+                    $type : "json:Integer",
+                    $description : ""
+                },
+                "sprHeight" : {
+                    $type : "json:Integer",
+                    $description : ""
+                },
+                "sprIdx" : {
+                    $type : "json:Integer",
+                    $description : "",
+                    $default : 0
+                },
+                "sprSpacing" : {
+                    $type : "json:Integer",
+                    $description : "",
+                    $default : 2
+                },
+                "spcLeft" : {
+                    $type : "json:Integer",
+                    $description : ""
+                },
+                "spcTop" : {
+                    $type : "json:Integer",
+                    $description : ""
+                },
+                "spriteURL" : {
+                    $type : "json:String",
+                    $description : ""
+                },
+                "spriteURLv" : {
+                    $type : "json:String",
+                    $description : ""
+                },
+                "spriteURLh" : {
+                    $type : "json:String",
+                    $description : ""
+                },
+                "marginTop" : {
+                    $type : "json:Integer",
+                    $description : "",
+                    $default : 0
+                },
+                "marginLeft" : {
+                    $type : "json:Integer",
+                    $description : "",
+                    $default : 0
+                },
+                "marginRight" : {
+                    $type : "json:Integer",
+                    $description : "",
+                    $default : 0
+                },
+                "marginBottom" : {
+                    $type : "json:Integer",
+                    $description : "",
+                    $default : 0
+                },
+                "color" : {
+                    $type : "Color",
+                    $description : "",
+                    $default : "#000"
+                },
+                "backgroundColor" : {
+                    $type : "Color",
+                    $description : "",
+                    $default : "#FFF"
+                },
+                "frameHeight" : {
+                    $type : "json:Integer",
+                    $description : ""
+                },
+                "frameIcon" : {
+                    $type : "json:String",
+                    $description : "",
+                    $default : ""
+                },
+                "frameIconHPos" : {
+                    $type : "json:String",
+                    $description : "",
+                    $default : "left"
+                },
+                "frameIconVPos" : {
+                    $type : "json:String",
+                    $description : "",
+                    $default : "bottom"
+                }
+            }
+        },
+        "OldFrame" : {
+            $type : "BaseFrame",
+            $description : "",
+            $properties : {
+                spriteURL : {
+                    $type : "json:String",
+                    $description : ""
+                },
+                spcLeft : {
+                    $type : "json:Integer",
+                    $description : ""
+                },
+                spcRight : {
+                    $type : "json:Integer",
+                    $description : ""
+                },
+                spcTop : {
+                    $type : "json:Integer",
+                    $description : ""
+                },
+                spcBottom : {
+                    $type : "json:Integer",
+                    $description : ""
+                },
+                sprWidth : {
+                    $type : "json:Integer",
+                    $description : ""
+                },
+                sprHeight : {
+                    $type : "json:Integer",
+                    $description : ""
+                },
+                offsetLeft : {
+                    $type : "json:Integer",
+                    $description : ""
+                }
+            }
+        },
+        "Old0FrameCfg" : {
+            $type : "OldFrame"
+        },
+        "Old1FrameCfg" : {
+            $type : "OldFrame"
+        },
+        "Old2FrameCfg" : {
+            $type : "OldFrame"
+        },
+        "OldFrameState" : {
+            $type : "Object",
+            $description : "",
+            $properties : {
+                sprIdx : {
+                    $type : "json:Integer",
+                    $description : ""
+                },
+                textAlign : {
+                    $type : "json:String",
+                    $description : ""
+                },
+                color : {
+                    $type : "Color",
+                    $description : ""
+                }
+            }
+        },
+        "Old0FrameStateCfg" : {
+            $type : "OldFrameState"
+        },
+        "Old1FrameStateCfg" : {
+            $type : "OldFrameState"
+        },
+        "Old2FrameStateCfg" : {
+            $type : "OldFrameState"
+        },
+        "SimpleHTMLFrameCfg" : {
+            $type : "BaseFrame"
+        },
+        "SimpleHTMLFrameStateCfg" : {
+            $type : "Object",
+            $description : "",
+            $properties : {}
+        }
+    }
 });

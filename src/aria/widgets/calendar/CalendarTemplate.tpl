@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2012 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,106 +12,107 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 {Template {
-	$classpath: "aria.widgets.calendar.CalendarTemplate",
-	$hasScript: true,
-	$res: {
-		res:"aria.resources.CalendarRes"
-	}
+    $classpath: "aria.widgets.calendar.CalendarTemplate",
+    $hasScript: true,
+    $res: {
+        res:"aria.resources.CalendarRes"
+    }
 }}
 
-	{var calendar=data.calendar/}
-	{var settings=data.settings/}
-	{var skin=data.skin/}
+    {var calendar=data.calendar/}
+    {var settings=data.settings/}
+    {var skin=data.skin/}
 
-	{macro main()}
-		{if settings.displayUnit == "M"}
-			{@aria:Div {
-				sclass: skin.skinObject.divsclass,
-				margins: "0 0 0 0",
-				block: true,
-				cssClass: skin.baseCSS+"general"
-			}}
-  			{call renderCalendar()/}
-			{/@aria:Div}
-		{/if}
-	{/macro}
+    {macro main()}
+        {if settings.displayUnit == "M"}
+            {@aria:Div {
+                sclass: skin.skinObject.divsclass,
+                margins: "0 0 0 0",
+                block: true,
+                cssClass: skin.baseCSS+"general"
+            }}
+              {call renderCalendar()/}
+            {/@aria:Div}
+        {/if}
+    {/macro}
 
-	{macro renderCalendar()}
-		{if settings.label}
-			<div class="${skin.baseCSS}label">${settings.label}</div>
-		{/if}
-		{for var startIndex = calendar.startMonthIndex, endIndex = calendar.endMonthIndex, index = startIndex ; index <= endIndex ; index++}
-			<span style="display: inline-block; vertical-align: top; margin: 2px;">
-				{call renderMonth(calendar.months[index],index == startIndex, index == endIndex)/}
-			</span>
-		{/for}
-		{if settings.showShortcuts}
-			<div style="text-align: center; margin: 1px;">
-				<a title="${calendar.today|dateformat:settings.completeDateLabelFormat}" tabIndex="-1" href="javascript:;" {on click {fn: "navigate", scope: moduleCtrl, args: {date:calendar.today}}/}>${res.today}</a>
-				{section {
-					id : "selectedDay",
-					macro : "selectedDay"
-				} /}
-			</div>
-		{/if}
-	{/macro}
+    {macro renderCalendar()}
+        {if settings.label}
+            <div class="${skin.baseCSS}label">${settings.label}</div>
+        {/if}
+        {for var startIndex = calendar.startMonthIndex, endIndex = calendar.endMonthIndex, index = startIndex ; index <= endIndex ; index++}
+            <span style="display: inline-block; vertical-align: top; margin: 2px;">
+                {call renderMonth(calendar.months[index],index == startIndex, index == endIndex)/}
+            </span>
+        {/for}
+        {if settings.showShortcuts}
+            <div style="text-align: center; margin: 1px;">
+                <a title="${calendar.today|dateformat:settings.completeDateLabelFormat}" tabIndex="-1" href="javascript:;" {on click {fn: "navigate", scope: moduleCtrl, args: {date:calendar.today}}/}>${res.today}</a>
+                {section {
+                    id : "selectedDay",
+                    macro : "selectedDay"
+                } /}
+            </div>
+        {/if}
+    {/macro}
 
-	{macro selectedDay()}
-		{if settings.value}
-			&nbsp;|&nbsp; <a title="${settings.value|dateformat:settings.completeDateLabelFormat}" tabIndex="-1" href="javascript:;" {on click {fn: "navigate", scope: moduleCtrl, args: {date:settings.value}}/}>${res.selectedDate}</a>
-		{/if}
-	{/macro}
+    {macro selectedDay()}
+        {if settings.value}
+            &nbsp;|&nbsp; <a title="${settings.value|dateformat:settings.completeDateLabelFormat}" tabIndex="-1" href="javascript:;" {on click {fn: "navigate", scope: moduleCtrl, args: {date:settings.value}}/}>${res.selectedDate}</a>
+        {/if}
+    {/macro}
 
-	{macro renderMonth(month,first,last)}
-		<table class="${skin.baseCSS}month" cellspacing="0" style="width: ${settings.showWeekNumbers?138:128}px;">
-			<thead>
-				<tr>
-					<th colspan="8">
-						<div class="${skin.baseCSS}monthTitle" style="position: relative;">
-							{if first && (calendar.previousPageEnabled || !settings.restrainedNavigation)}
-								<div style="position: absolute; left: 0px; top: -2px; cursor: pointer;" {on click {fn: "navigate", args : { increment: -1, incrementUnit: "M" }, scope : moduleCtrl}/}>{@aria:Icon { icon: skin.skinObject.previousPageIcon }/}</div>
-							{/if}
-							{if last && (calendar.nextPageEnabled || !settings.restrainedNavigation)}
-								<div style="position: absolute; right: 0px; top: -2px; cursor: pointer;" {on click {fn: "navigate", args : { increment: 1, incrementUnit: "M" }, scope : moduleCtrl}/}>{@aria:Icon { icon: skin.skinObject.nextPageIcon }/}</div>
-							{/if}
-							${month.label}
-						</div>
-					</th>
-				</tr>
-				<tr>
-					{if settings.showWeekNumbers}<th  class="${skin.baseCSS}weekNumber">&nbsp;</th>{/if}
-					{foreach day inArray calendar.daysOfWeek}
-						<th class="${skin.baseCSS}weekDaysLabel">${day.label}</th>
-					{/foreach}
-				</tr>
-			</thead>
-			<tbody {on click clickDay/} {on mouseover mouseOverDay/} {on mouseout mouseOutDay/} {id "month_"+month.monthKey/}>
-				{var nbweeks=0/}
-				{foreach week inArray month.weeks}
-					{set nbweeks+=1/}
-					<tr>
-						{if settings.showWeekNumbers}<td class="${skin.baseCSS}weekNumber">{if week.overlappingDays == 0 || week.monthEnd == month.monthKey}${week.weekNumber}{else/}&nbsp;{/if}</td>{/if}
-						{foreach day inArray week.days}
-							{call renderDay(day,month)/}
-						{/foreach}
-					</tr>
-				{/foreach}
-				{for ;nbweeks<=5;nbweeks++}
-					<tr><td colspan="${settings.showWeekNumbers?8:7}" style="border: 1px solid; visibility: hidden;">&nbsp;</td></tr>
-				{/for}
-			</tbody>
-		</table>
-	{/macro}
+    {macro renderMonth(month,first,last)}
+        <table class="${skin.baseCSS}month" cellspacing="0" style="width: ${settings.showWeekNumbers?138:128}px;">
+            <thead>
+                <tr>
+                    <th colspan="8">
+                        <div class="${skin.baseCSS}monthTitle" style="position: relative;">
+                            {if first && (calendar.previousPageEnabled || !settings.restrainedNavigation)}
+                                <div style="position: absolute; left: 0px; top: -2px; cursor: pointer;" {on click {fn: "navigate", args : { increment: -1, incrementUnit: "M" }, scope : moduleCtrl}/}>{@aria:Icon { icon: skin.skinObject.previousPageIcon }/}</div>
+                            {/if}
+                            {if last && (calendar.nextPageEnabled || !settings.restrainedNavigation)}
+                                <div style="position: absolute; right: 0px; top: -2px; cursor: pointer;" {on click {fn: "navigate", args : { increment: 1, incrementUnit: "M" }, scope : moduleCtrl}/}>{@aria:Icon { icon: skin.skinObject.nextPageIcon }/}</div>
+                            {/if}
+                            ${month.label}
+                        </div>
+                    </th>
+                </tr>
+                <tr>
+                    {if settings.showWeekNumbers}<th  class="${skin.baseCSS}weekNumber">&nbsp;</th>{/if}
+                    {foreach day inArray calendar.daysOfWeek}
+                        <th class="${skin.baseCSS}weekDaysLabel">${day.label}</th>
+                    {/foreach}
+                </tr>
+            </thead>
+            <tbody {on click clickDay/} {on mouseover mouseOverDay/} {on mouseout mouseOutDay/} {id "month_"+month.monthKey/}>
+                {var nbweeks=0/}
+                {foreach week inArray month.weeks}
+                    {set nbweeks+=1/}
+                    <tr>
+                        {if settings.showWeekNumbers}<td class="${skin.baseCSS}weekNumber">{if week.overlappingDays == 0 || week.monthEnd == month.monthKey}${week.weekNumber}{else/}&nbsp;{/if}</td>{/if}
+                        {foreach day inArray week.days}
+                            {call renderDay(day,month)/}
+                        {/foreach}
+                    </tr>
+                {/foreach}
+                {for ;nbweeks<=5;nbweeks++}
+                    <tr><td colspan="${settings.showWeekNumbers?8:7}" style="border: 1px solid; visibility: hidden;">&nbsp;</td></tr>
+                {/for}
+            </tbody>
+        </table>
+    {/macro}
 
-	{macro renderDay(day, month)}
-		{var jsDate=day.jsDate/}
-		{if day.monthKey==month.monthKey}
-			<td ${day.isSelectable ? "_date=\""+jsDate.getTime()+"\"":""}
-				class="${getClassForDay(day)}"
-			>${day.label}</td>
-		{else/}
-			<td />
-		{/if}
-	{/macro}
+    {macro renderDay(day, month)}
+        {var jsDate=day.jsDate/}
+        {if day.monthKey==month.monthKey}
+            <td ${day.isSelectable ? "_date=\""+jsDate.getTime()+"\"":""}
+                class="${getClassForDay(day)}"
+            >${day.label}</td>
+        {else/}
+            <td />
+        {/if}
+    {/macro}
 {/Template}

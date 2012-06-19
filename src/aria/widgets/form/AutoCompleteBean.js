@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2012 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,23 +12,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 Aria.beanDefinitions({
-	$package : "aria.widgets.form.AutoCompleteBean",
-	$description : "Definition of the suggestions used in the autocomplete",
-	$namespaces : {
-		"json" : "aria.core.JsonTypes"
-	},
-	$beans : {
-		"Suggestion" : {
-			$type : "json:Object",
-			$description : "A Label-Code suggestion",
-			$properties : {
-				"exactMatch" : {
-					$type : "json:Boolean",
-					$description : "is this entry an exact match in the suggestions",
-					$default : false
-				}
-			}
-		}
-	}
+    $package : "aria.widgets.form.AutoCompleteBean",
+    $description : "Definition of the suggestions used in the autocomplete",
+    $namespaces : {
+        "json" : "aria.core.JsonTypes"
+    },
+    $beans : {
+        "Suggestion" : {
+            $type : "json:Object",
+            $description : "A Label-Code suggestion",
+            $properties : {
+                "exactMatch" : {
+                    $type : "json:Boolean",
+                    $description : "is this entry an exact match in the suggestions",
+                    $default : false
+                }
+            }
+        }
+    }
 });

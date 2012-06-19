@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2012 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,13 +12,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * Aria resource object for calendar pt_PT
  */
 Aria.resourcesDefinition({
-	$classpath : 'aria.resources.CalendarRes',
-	$resources : {
-		today : "Hoje",
-		selectedDate : "Data seleccionada"
-	}
+    $classpath : 'aria.resources.CalendarRes',
+    $resources : {
+        today : "Hoje",
+        selectedDate : "Data seleccionada"
+    }
 });

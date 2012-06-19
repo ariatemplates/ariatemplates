@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2012 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,18 +12,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 Aria.classDefinition({
-	$classpath : 'aria.jsunit.WidgetTestCase',
-	$extends : 'aria.jsunit.TestCase',
-	$dependencies : ["aria.jsunit.helpers.OutObj", "aria.widgets.AriaSkinInterface"],
-	$constructor : function () {
-		this.$TestCase.constructor.call(this);
-		this.outObj = aria.jsunit.helpers.OutObj;
-	},
-	$destructor : function () {
-		this.outObj.clearAll();
-		this.outObj = null;
-		
-		this.$TestCase.$destructor.call(this);
-	}
+    $classpath : 'aria.jsunit.WidgetTestCase',
+    $extends : 'aria.jsunit.TestCase',
+    $dependencies : ["aria.jsunit.helpers.OutObj"],
+    $constructor : function () {
+        this.$TestCase.constructor.call(this);
+        this.outObj = aria.jsunit.helpers.OutObj;
+    },
+    $destructor : function () {
+        this.outObj.clearAll();
+        this.outObj = null;
+        
+        this.$TestCase.$destructor.call(this);
+    }
 });

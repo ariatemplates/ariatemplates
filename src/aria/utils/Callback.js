@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2012 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,67 +12,68 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * Object representing a callback. Does normalization on creation, and expose a simple call method
  * @class aria.utils.Callback
  */
 Aria.classDefinition({
-	$classpath : 'aria.utils.Callback',
-	$statics : {
-		INVALID_CALLBACK : "The call method was called after $dispose."
-	},
-	/**
-	 * Creates a callback instance
-	 * @param {Object} callbackDefinition, an object or directly a function reference.
-	 *
-	 * <pre>
-	 * 	{
-	 * 		fn : ..., // a function reference
-	 *  	scope : ..., // Object to use as a scope, optional
-	 *  	args : ... // callback second argument, optional
-	 * 	}
-	 * </pre>
-	 */
-	$constructor : function (callbackDefinition) {
+    $classpath : 'aria.utils.Callback',
+    $statics : {
+        INVALID_CALLBACK : "The call method was called after $dispose."
+    },
+    /**
+     * Creates a callback instance
+     * @param {Object} callbackDefinition, an object or directly a function reference.
+     *
+     * <pre>
+     *     {
+     *         fn : ..., // a function reference
+     *      scope : ..., // Object to use as a scope, optional
+     *      args : ... // callback second argument, optional
+     *     }
+     * </pre>
+     */
+    $constructor : function (callbackDefinition) {
 
-		// normalise definition
-		callbackDefinition = this.$normCallback(callbackDefinition);
+        // normalise definition
+        callbackDefinition = this.$normCallback(callbackDefinition);
 
-		/**
-		 * Scope for callback execution
-		 * @type Object
-		 */
-		this._scope = callbackDefinition.scope;
+        /**
+         * Scope for callback execution
+         * @type Object
+         */
+        this._scope = callbackDefinition.scope;
 
-		/**
-		 * Function to execute
-		 * @type Function
-		 */
-		this._function = callbackDefinition.fn;
+        /**
+         * Function to execute
+         * @type Function
+         */
+        this._function = callbackDefinition.fn;
 
-		/**
-		 * Arguments given when creating the callback
-		 */
-		this._args = callbackDefinition.args;
+        /**
+         * Arguments given when creating the callback
+         */
+        this._args = callbackDefinition.args;
 
-	},
-	$destructor : function () {
-		this._scope = null;
-		this._function = this._warnDisposed;
-		this._args = null;
-	},
-	$prototype : {
+    },
+    $destructor : function () {
+        this._scope = null;
+        this._function = this._warnDisposed;
+        this._args = null;
+    },
+    $prototype : {
 
-		/**
-		 * Execute the callback
-		 * @param {Object} event
-		 */
-		call : function (evt) {
-			return this._function.call(this._scope, evt, this._args);
-		},
+        /**
+         * Execute the callback
+         * @param {Object} event
+         */
+        call : function (evt) {
+            return this._function.call(this._scope, evt, this._args);
+        },
 
-		_warnDisposed : function () {
-			this.$logError(this.INVALID_CALLBACK);
-		}
-	}
+        _warnDisposed : function () {
+            this.$logError(this.INVALID_CALLBACK);
+        }
+    }
 });

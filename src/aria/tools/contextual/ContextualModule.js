@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2012 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,20 +12,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * Module controller for contextual menu.
  * @class aria.tools.contextual.ContextualModuleCtrl
  */
 Aria.classDefinition({
-	$classpath : 'aria.tools.contextual.ContextualModule',
-	$extends : 'aria.templates.ModuleCtrl',
-	$constructor : function () {
-		this.$ModuleCtrl.constructor.call(this);
-	},
-	$prototype : {
-		init : function (args, cb) {
-			this._data = args;
-			this.$callback(cb);
-		}
-	}
+    $classpath : 'aria.tools.contextual.ContextualModule',
+    $extends : 'aria.templates.ModuleCtrl',
+    $constructor : function () {
+        this.$ModuleCtrl.constructor.call(this);
+    },
+    $prototype : {
+        init : function (args, cb) {
+            this._data = args;
+            this.$callback(cb);
+        }
+    }
 });

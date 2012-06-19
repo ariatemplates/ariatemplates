@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2012 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,25 +12,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * Default interface for an embed controller
  * @class aria.embed.IEmbedController
  */
 Aria.interfaceDefinition({
-	$classpath : 'aria.embed.IEmbedController',
-	$extends : 'aria.templates.IModuleCtrl',
-	$interface : {
-		/**
-		 * Called when the widget is being displayed
-		 * @param {HtmlElement} domContainer Container of this embed based widget
-		 * @param {json} args arguments given in the embed Element widget
-		 */
-		onEmbededElementCreate : function (domContainer, arg) {},
-		/**
-		 * Called when the widget is being disposed
-		 * @param {HtmlElement} domContainer Container of this embed based widget
-		 * @param {json} args arguments given in the embed Element widget
-		 */
-		onEmbededElementDispose : function (domContainer, arg) {}
-	}
+    $classpath : 'aria.embed.IEmbedController',
+    $extends : 'aria.templates.IModuleCtrl',
+    $interface : {
+        /**
+         * Called when the widget is being displayed
+         * @param {HtmlElement} domContainer Container of this embed based widget
+         * @param {json} args arguments given in the embed Element widget
+         */
+        onEmbededElementCreate : function (domContainer, arg) {},
+        /**
+         * Called when the widget is being disposed
+         * @param {HtmlElement} domContainer Container of this embed based widget
+         * @param {json} args arguments given in the embed Element widget
+         */
+        onEmbededElementDispose : function (domContainer, arg) {}
+    }
 });

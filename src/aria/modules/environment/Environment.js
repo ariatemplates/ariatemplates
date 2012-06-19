@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2012 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * Public API for retrieving, applying application variables relative to the RequestMgr.
  * @class aria.modules.environment.Environment
@@ -19,27 +20,27 @@
  * @singleton
  */
 Aria.classDefinition({
-	$classpath : "aria.modules.environment.Environment",
-	$dependencies : ["aria.modules.requestHandler.environment.RequestHandler", "aria.modules.environment.EnvironmentCfgBeans"],
-	$singleton : true,
-	$extends : "aria.core.environment.EnvironmentBase",
-	$prototype : {
-		/**
-		 * Classpath of the bean which allows to validate the part of the environment managed by this class.
-		 * @type String
-		 */
-		_cfgPackage : "aria.modules.environment.EnvironmentCfgBeans.AppCfg",
+    $classpath : "aria.modules.environment.Environment",
+    $dependencies : ["aria.modules.requestHandler.environment.RequestHandler", "aria.modules.environment.EnvironmentCfgBeans"],
+    $singleton : true,
+    $extends : "aria.core.environment.EnvironmentBase",
+    $prototype : {
+        /**
+         * Classpath of the bean which allows to validate the part of the environment managed by this class.
+         * @type String
+         */
+        _cfgPackage : "aria.modules.environment.EnvironmentCfgBeans.AppCfg",
 
-		/**
-		 * Get the requestJsonSerializer configuration. It is the current configuration
-		 * @public
-		 * @return {aria.modules.environment.EnvironmentCfgBeans.RequestJsonSerializerCfg} The JSON serializer
-		 * configuration
-		 */
-		getRequestJsonSerializerCfg : function () {
-			this.$logWarn("The getRequestJsonSerializerCfg on this object is deprecated. Please use aria.modules.requestHandler.environment.RequestHandler.getRequestJsonSerializerCfg instead.");
-			return aria.modules.requestHandler.environment.RequestHandler.getRequestJsonSerializerCfg();
-		}
-	}
+        /**
+         * Get the requestJsonSerializer configuration. It is the current configuration
+         * @public
+         * @return {aria.modules.environment.EnvironmentCfgBeans.RequestJsonSerializerCfg} The JSON serializer
+         * configuration
+         */
+        getRequestJsonSerializerCfg : function () {
+            this.$logWarn("The getRequestJsonSerializerCfg on this object is deprecated. Please use aria.modules.requestHandler.environment.RequestHandler.getRequestJsonSerializerCfg instead.");
+            return aria.modules.requestHandler.environment.RequestHandler.getRequestJsonSerializerCfg();
+        }
+    }
 });
 //BACKWARD COMPATIBILITY ONLY: PLEASE REMOVE FILE

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2012 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,20 +13,26 @@
  * limitations under the License.
  */
 
-
 {CSSTemplate {
-	$classpath : "aria.widgets.css.atskin.SortIndicator"
+    $classpath : "aria.widgets.container.TabStyle",
+    $extends : "aria.widgets.WidgetStyle"
 }}
-
-{macro main()}
-
-a.sortIndicatorLink label {
-	cursor:pointer;
-}
-a.sortIndicatorLink:focus {
-	border-bottom:1px dotted #000;
-}
-
-
-{/macro}
+    {var skinnableClassName="Tab"/}
+    {var useFrame=true/}
+    
+    {macro main()}
+        .xTab_std_selectedFocused_c {
+            outline: 1px dotted;
+        }
+        
+        .xTab_std_normalFocused_c {
+            outline: 1px dotted;
+        }
+        
+        .xTab_std_msoverFocused_c {
+            outline: 1px dotted;
+        }
+        {call startLooping()/}
+    {/macro}
+    
 {/CSSTemplate}

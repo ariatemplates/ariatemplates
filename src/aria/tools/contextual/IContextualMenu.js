@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2012 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,27 +12,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * Interface for aria.tools.ContextualMenu to be accessible from outside the framework, when developping tools to debug
  * or customize Aria Templates applications.
  * @class aria.tools.contextual.IContextualMenu
  */
 Aria.interfaceDefinition({
-	$classpath : 'aria.tools.contextual.IContextualMenu',
-	$interface : {
-		/**
-		 * Close the contextual menu
-		 */
-		close : "Function",
-		
-		/**
-		 * open the contextual menu
-		 */
-		open : "Function",
+    $classpath : 'aria.tools.contextual.IContextualMenu',
+    $interface : {
+        /**
+         * Close the contextual menu
+         */
+        close : "Function",
+        
+        /**
+         * open the contextual menu
+         */
+        open : "Function",
 
-		/**
-		 * Start the tools module with a template context to inspect
-		 */
-		openTools : "Function"
-	}
+        /**
+         * Start the tools module with a template context to inspect
+         */
+        openTools : "Function"
+    }
 });

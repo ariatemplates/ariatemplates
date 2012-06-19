@@ -1,0 +1,82 @@
+/*
+ * Copyright 2012 Amadeus s.a.s.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+{CSSTemplate {
+    $classpath : "aria.widgets.form.list.ListStyle",
+    $extends : "aria.widgets.WidgetStyle"
+}}
+    {var skinnableClassName="List"/}
+    
+    {macro writeSkinClass(info)}
+        {var skinClassName=info.skinClassName/}
+        {var skinClass=info.skinClass/}
+        /* List Widget classes */
+        
+        a.xLISTItem_${skinClassName},
+        a.xLISTItem_${skinClassName}:link,
+        a.xLISTItem_${skinClassName}:active,
+        a.xLISTItem_${skinClassName}:visited {
+            color: #000;
+            text-decoration:none;
+        }
+        
+        a.xLISTItem_${skinClassName} {
+            display: block;
+            padding:1px 1px 1px 2px;
+            margin: 1px ${skinClass.link.marginRight}px 1px ${skinClass.link.marginLeft}px;
+        }
+        
+        
+        .xLISTEnabledItem_${skinClassName} {
+            color:${skinClass.enabledColor};
+            cursor:pointer;
+        }
+        
+        .xLISTMouseOverItem_${skinClassName} {
+            background-color:${skinClass.mouseOverBackgroundColor};
+            color:${skinClass.mouseOverColor};
+        }
+        
+        .xLISTEnabledItem_${skinClassName}:hover {
+        {if skinClass.highlightMouseOver}
+            background-color:${skinClass.mouseOverBackgroundColor};
+            color: ${skinClass.mouseOverColor};
+        {/if}
+            text-decoration: none;
+        }
+        
+        .xLISTSelectedItem_${skinClassName}, .xLISTSelectedItem_${skinClassName}:link, .xLISTSelectedItem_${skinClassName}:visited, .xLISTSelectedItem_${skinClassName}:active  {
+            background-color: ${skinClass.selectedItemBackgroundColor};
+            color: ${skinClass.selectedItemColor};
+        }
+        
+        .xLISTDisabledItem_${skinClassName},
+        a.xLISTDisabledItem_${skinClassName}:visited,
+        a.xLISTDisabledItem_${skinClassName}:hover,
+        a.xLISTDisabledItem_${skinClassName}:link {
+            color:#888;
+        }
+        
+        .xLISTFooter_${skinClassName} {
+            padding:${skinClass.footer.padding}px;
+            background-color: ${skinClass.footer.backgroundColor};
+            border-color: ${skinClass.footer.borderColor};
+            {if skinClass.footer.borderTopOnly}border-top-style{else/}border-style{/if}: ${skinClass.footer.borderStyle};
+            border-width: ${skinClass.footer.borderWidth}px;
+            margin:    ${skinClass.footer.marginTop}px ${skinClass.footer.marginRight}px ${skinClass.footer.marginBottom}px ${skinClass.footer.marginLeft}px;
+        }
+    {/macro}
+    
+{/CSSTemplate}

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2012 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * Contains getters for the ContextualMenu environment.
  * @class aria.tools.contextual.environment.ContextualMenu
@@ -19,24 +20,24 @@
  * @singleton
  */
 Aria.classDefinition({
-	$classpath : "aria.tools.contextual.environment.ContextualMenu",
-	$dependencies : ["aria.tools.contextual.environment.ContextualMenuCfgBeans"],
-	$extends : "aria.core.environment.EnvironmentBase",
-	$singleton : true,
-	$prototype : {
-		/**
-		 * Classpath of the bean which allows to validate the part of the environment managed by this class.
-		 * @type String
-		 */
-		_cfgPackage : "aria.tools.contextual.environment.ContextualMenuCfgBeans.AppCfg",
+    $classpath : "aria.tools.contextual.environment.ContextualMenu",
+    $dependencies : ["aria.tools.contextual.environment.ContextualMenuCfgBeans"],
+    $extends : "aria.core.environment.EnvironmentBase",
+    $singleton : true,
+    $prototype : {
+        /**
+         * Classpath of the bean which allows to validate the part of the environment managed by this class.
+         * @type String
+         */
+        _cfgPackage : "aria.tools.contextual.environment.ContextualMenuCfgBeans.AppCfg",
 
-		/**
-		 * Returns the contextual menu settings
-		 * @public
-		 * @return {aria.core.environment.Environment.EnvironmentBaseCfgBeans.AppCfg}
-		 */
-		getContextualMenu : function () {
-			return this.checkApplicationSettings("contextualMenu");
-		}
-	}
+        /**
+         * Returns the contextual menu settings
+         * @public
+         * @return {aria.core.environment.Environment.EnvironmentBaseCfgBeans.AppCfg}
+         */
+        getContextualMenu : function () {
+            return this.checkApplicationSettings("contextualMenu");
+        }
+    }
 });

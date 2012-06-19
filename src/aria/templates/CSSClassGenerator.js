@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2012 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,31 +12,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * Generate the class definition for a CSS Template
  * @class aria.templates.CSSClassGenerator
  * @extends aria.templates.ClassGenerator
  */
 Aria.classDefinition({
-	$classpath : 'aria.templates.CSSClassGenerator',
-	$extends : 'aria.templates.ClassGenerator',
-	$singleton : true,
-	$dependencies : ['aria.templates.CSSParser'],
-	$constructor : function () {
-		this.$ClassGenerator.constructor.call(this);
+    $classpath : 'aria.templates.CSSClassGenerator',
+    $extends : 'aria.templates.ClassGenerator',
+    $singleton : true,
+    $dependencies : ['aria.templates.CSSParser'],
+    $constructor : function () {
+        this.$ClassGenerator.constructor.call(this);
 
-		// Load the Template specific statements
-		this.$ClassGenerator._loadStatements.call(this, ["CSSTemplate", "macro", "call"]);
+        // Load the Template specific statements
+        this.$ClassGenerator._loadStatements.call(this, ["CSSTemplate"]);
 
-		// Redefine the protected parser
-		this._parser = aria.templates.CSSParser;
+        // Redefine the protected parser
+        this._parser = aria.templates.CSSParser;
 
-		// Redefine the class used as the parent for templates which do not inherit from any other template
-		this._superClass = "aria.templates.CSSTemplate";
+        // Redefine the class used as the parent for templates which do not inherit from any other template
+        this._superClass = "aria.templates.CSSTemplate";
 
-		this._classType = "CSS";
-		this._rootStatement = "CSSTemplate";
-		this._templateParamBean = "aria.templates.CfgBeans.CSSTemplateCfg";
-	},
-	$prototype : {}
+        this._classType = "CSS";
+        this._rootStatement = "CSSTemplate";
+        this._templateParamBean = "aria.templates.CfgBeans.CSSTemplateCfg";
+    },
+    $prototype : {}
 });

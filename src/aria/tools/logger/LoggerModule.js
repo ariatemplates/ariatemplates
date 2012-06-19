@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2012 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,151 +12,152 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * Utility to manage and highligh template and modules on an application
  * @class aria.tools.logger.LoggerModule
  */
 Aria.classDefinition({
-	$classpath : 'aria.tools.logger.LoggerModule',
-	$extends : 'aria.templates.ModuleCtrl',
-	$dependencies : ['aria.utils.Date'],
-	$templates : ['aria.tools.logger.LoggerDisplay'],
-	$implements : ['aria.tools.logger.ILoggerModule'],
-	$constructor : function () {
+    $classpath : 'aria.tools.logger.LoggerModule',
+    $extends : 'aria.templates.ModuleCtrl',
+    $dependencies : ['aria.utils.Date'],
+    $templates : ['aria.tools.logger.LoggerDisplay'],
+    $implements : ['aria.tools.logger.ILoggerModule'],
+    $constructor : function () {
 
-		// call parent constructor
-		this.$ModuleCtrl.constructor.call(this);
+        // call parent constructor
+        this.$ModuleCtrl.constructor.call(this);
 
-		/**
-		 * Bridge used to communicate with main window.
-		 * @type {aria.tools.Bridge}
-		 */
-		this.bridge = null;
+        /**
+         * Bridge used to communicate with main window.
+         * @type {aria.tools.Bridge}
+         */
+        this.bridge = null;
 
-		/**
-		 * Datas analysis of the application
-		 * @type Object
-		 */
-		this._data = {
-			// list of logs to display
-			logs : []
-		};
+        /**
+         * Datas analysis of the application
+         * @type Object
+         */
+        this._data = {
+            // list of logs to display
+            logs : []
+        };
 
-		/**
-		 * Number of messages to keep
-		 * @type Number
-		 */
-		this.logsMaxLength = 20;
+        /**
+         * Number of messages to keep
+         * @type Number
+         */
+        this.logsMaxLength = 20;
 
-	},
-	$destructor : function () {
-		this.bridge.getAriaPackage().core.Log.removeAppender(this);
-		this.$ModuleCtrl.$destructor.call(this);
-	},
-	$prototype : {
-		$publicInterfaceName : "aria.tools.logger.ILoggerModule",
+    },
+    $destructor : function () {
+        this.bridge.getAriaPackage().core.Log.removeAppender(this);
+        this.$ModuleCtrl.$destructor.call(this);
+    },
+    $prototype : {
+        $publicInterfaceName : "aria.tools.logger.ILoggerModule",
 
-		/**
-		 * Override default init of moduleCtrl
-		 * @param {Object} initArgs init argument - actual type is defined by the sub-class
-		 * @param {aria.core.JsObject.Callback} callback the callback description
-		 */
-		init : function (args, cb) {
+        /**
+         * Override default init of moduleCtrl
+         * @param {Object} initArgs init argument - actual type is defined by the sub-class
+         * @param {aria.core.JsObject.Callback} callback the callback description
+         */
+        init : function (args, cb) {
 
-			this.bridge = args.bridge;
-			this.$assert(77, !!this.bridge);
+            this.bridge = args.bridge;
+            this.$assert(77, !!this.bridge);
 
-			// add this module as an appender
-			// PTR 05038013: aria.core.Log may not be loaded
-			this.bridge.getAria().load({
-				classes : ['aria.core.Log'],
-				oncomplete : {
-					fn : function () {
-						this.bridge.getAriaPackage().core.Log.addAppender(this);
-						this.$callback(cb);
-					},
-					scope : this
-				}
-			});
-		},
+            // add this module as an appender
+            // PTR 05038013: aria.core.Log may not be loaded
+            this.bridge.getAria().load({
+                classes : ['aria.core.Log'],
+                oncomplete : {
+                    fn : function () {
+                        this.bridge.getAriaPackage().core.Log.addAppender(this);
+                        this.$callback(cb);
+                    },
+                    scope : this
+                }
+            });
+        },
 
-		/**
-		 * Debug
-		 * @param {String} className
-		 * @param {String} msg
-		 * @param {String} msgId The message id
-		 * @param {Object} o An optional object to be inspected
-		 */
-		debug : function (className, msg, msgId, o) {
-			this._log(aria.core.Log.LEVEL_DEBUG, className, msg, msgId, o);
-		},
+        /**
+         * Debug
+         * @param {String} className
+         * @param {String} msg
+         * @param {String} msgId The message id
+         * @param {Object} o An optional object to be inspected
+         */
+        debug : function (className, msg, msgId, o) {
+            this._log(aria.core.Log.LEVEL_DEBUG, className, msg, msgId, o);
+        },
 
-		/**
-		 * Info
-		 * @param {String} className
-		 * @param {String} msg
-		 * @param {String} msgId The message id
-		 * @param {Object} o An optional object to be inspected
-		 */
-		info : function (className, msg, msgId, o) {
-			this._log(aria.core.Log.LEVEL_INFO, className, msg, msgId, o);
-		},
+        /**
+         * Info
+         * @param {String} className
+         * @param {String} msg
+         * @param {String} msgId The message id
+         * @param {Object} o An optional object to be inspected
+         */
+        info : function (className, msg, msgId, o) {
+            this._log(aria.core.Log.LEVEL_INFO, className, msg, msgId, o);
+        },
 
-		/**
-		 * Warn
-		 * @param {String} className
-		 * @param {String} msg
-		 * @param {String} msgId The message id
-		 * @param {Object} o An optional object to be inspected
-		 */
-		warn : function (className, msg, msgId, o) {
-			this._log(aria.core.Log.LEVEL_WARN, className, msg, msgId, o);
-		},
+        /**
+         * Warn
+         * @param {String} className
+         * @param {String} msg
+         * @param {String} msgId The message id
+         * @param {Object} o An optional object to be inspected
+         */
+        warn : function (className, msg, msgId, o) {
+            this._log(aria.core.Log.LEVEL_WARN, className, msg, msgId, o);
+        },
 
-		/**
-		 * Error
-		 * @param {String} className
-		 * @param {String} msg
-		 * @param {String} msgId The message id
-		 * @param {Object} e The exception to format
-		 */
-		error : function (className, msg, msgId, e) {
-			this._log(aria.core.Log.LEVEL_ERROR, className, msg, msgId, e);
-		},
+        /**
+         * Error
+         * @param {String} className
+         * @param {String} msg
+         * @param {String} msgId The message id
+         * @param {Object} e The exception to format
+         */
+        error : function (className, msg, msgId, e) {
+            this._log(aria.core.Log.LEVEL_ERROR, className, msg, msgId, e);
+        },
 
-		/**
-		 * Log any message
-		 * @protected
-		 * @param {Number}
-		 * @param {String} className
-		 * @param {String} msg
-		 * @param {String} msgId The message id
-		 * @param {Object} o An optional object to be inspected
-		 */
-		_log : function (type, className, msg, msgId, o) {
-			var logs = this._data.logs;
-			var length = logs.unshift({
-				type : type,
-				className : className,
-				msg : msg,
-				msgId : msgId,
-				object : o,
-				date : aria.utils.Date.format(new Date(), "HH:mm:ss")
-			});
-			// remove first element of array if size exceed limit
-			if (length > this.logsMaxLength) {
-				logs.pop();
-			}
-			this.$raiseEvent("newLog");
-		},
+        /**
+         * Log any message
+         * @protected
+         * @param {Number}
+         * @param {String} className
+         * @param {String} msg
+         * @param {String} msgId The message id
+         * @param {Object} o An optional object to be inspected
+         */
+        _log : function (type, className, msg, msgId, o) {
+            var logs = this._data.logs;
+            var length = logs.unshift({
+                type : type,
+                className : className,
+                msg : msg,
+                msgId : msgId,
+                object : o,
+                date : aria.utils.Date.format(new Date(), "HH:mm:ss")
+            });
+            // remove first element of array if size exceed limit
+            if (length > this.logsMaxLength) {
+                logs.pop();
+            }
+            this.$raiseEvent("newLog");
+        },
 
-		/**
-		 * Clean the logs
-		 */
-		clean : function () {
-			this._data.logs = [];
-			this.$raiseEvent("newLog");
-		}
+        /**
+         * Clean the logs
+         */
+        clean : function () {
+            this._data.logs = [];
+            this.$raiseEvent("newLog");
+        }
 
-	}
+    }
 });

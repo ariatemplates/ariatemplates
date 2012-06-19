@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2012 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,20 +12,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * Validates that a string is an Alpha type
  * @class aria.utils.validators.Alpha
  * @extends aria.utils.validators.RegExp
  */
 Aria.classDefinition({
-	$classpath : "aria.utils.validators.Alpha",
-	$extends : "aria.utils.validators.RegExp",
-	$constructor : function (message) {
-		this.$RegExp.constructor.call(this, this.ALPHA_REGEXP, message);
-	},
-	$statics : {
-		ALPHA_REGEXP : /^[A-Za-z]+$/,
-		DEFAULT_LOCALIZED_MESSAGE : "Invalid ALPHA string."
-	},
-	$prototype : {}
+    $classpath : "aria.utils.validators.Alpha",
+    $extends : "aria.utils.validators.RegExp",
+    $constructor : function (message) {
+        this.$RegExp.constructor.call(this, this.ALPHA_REGEXP, message);
+    },
+    $statics : {
+        ALPHA_REGEXP : /^[A-Za-z]+$/,
+        DEFAULT_LOCALIZED_MESSAGE : "Invalid ALPHA string."
+    },
+    $prototype : {}
 });

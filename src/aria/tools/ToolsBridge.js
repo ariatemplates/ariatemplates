@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2012 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,29 +12,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * Entry point for the tools
  * @singleton
  * @class aria.tools.ToolsBridge
  */
 Aria.classDefinition({
-	$classpath : 'aria.tools.ToolsBridge',
-	$extends : 'aria.utils.Bridge',
-	$singleton : true,
-	$constructor : function () {
-		this.$Bridge.constructor.call(this);
-	},
-	$prototype : {
+    $classpath : 'aria.tools.ToolsBridge',
+    $extends : 'aria.utils.Bridge',
+    $singleton : true,
+    $constructor : function () {
+        this.$Bridge.constructor.call(this);
+    },
+    $prototype : {
 
-		/**
-		 * Open the tools bridge
-		 */
-		open : function () {
-			return this.$Bridge.open.call(this, {
-				moduleCtrlClasspath : "aria.tools.ToolsModule",
-				displayClasspath : "aria.tools.ToolsDisplay",
-				title : "Tools"
-			});
-		}
-	}
+        /**
+         * Open the tools bridge
+         */
+        open : function () {
+            return this.$Bridge.open.call(this, {
+                moduleCtrlClasspath : "aria.tools.ToolsModule",
+                displayClasspath : "aria.tools.ToolsDisplay",
+                title : "Tools"
+            });
+        }
+    }
 });

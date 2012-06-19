@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2012 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,17 +12,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 {TextTemplate {$classpath: 'aria.ext.filesgenerator.tpl.HtmlTemplate'}}
 {macro main()}\{Template \{
-	\$classpath : "${data.$classpath}",{if data.$extends}
-	\$extends : "${data.$extends}",{/if}
-	\$hasScript : ${data.$hasScript}{if data.$css},
-	\$css : [{foreach c in data.$css}{separator}, {/separator}"${c}"{/foreach}]{/if}
+    \$classpath : "${data.$classpath}",{if data.$extends}
+    \$extends : "${data.$extends}",{/if}
+    \$hasScript : ${data.$hasScript}{if data.$css},
+    \$css : [{foreach c in data.$css}{separator}, {/separator}"${c}"{/foreach}]{/if}
 \}\}
 
-	{if (data.content)}${data.content}{else/}\{macro main()\}
-	\{/macro\}{/if}
-	
+    {if (data.content)}${data.content}{else/}\{macro main()\}
+    \{/macro\}{/if}
+    
 \{/Template\}
 {/macro}
 {/TextTemplate}

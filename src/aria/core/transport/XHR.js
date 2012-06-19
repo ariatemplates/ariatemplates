@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2012 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * Transport class for XHR requests.
  * @class aria.core.transport.XHR
@@ -19,19 +20,19 @@
  * @singleton
  */
 Aria.classDefinition({
-	$classpath : "aria.core.transport.XHR",
-	$extends : "aria.core.transport.BaseXHR",
-	$singleton : true,
-	$constructor : function () {
-		this.$BaseXHR.constructor.call(this);
-	},
-	$prototype : {
-		/**
-		 * Tells if the browser implementation of XMLHttpRequest supports CORS
-		 * @return {Boolean}
-		 */
-		hasCORS : function () {
-			return ("withCredentials" in this._standardXHR());
-		}
-	}
+    $classpath : "aria.core.transport.XHR",
+    $extends : "aria.core.transport.BaseXHR",
+    $singleton : true,
+    $constructor : function () {
+        this.$BaseXHR.constructor.call(this);
+    },
+    $prototype : {
+        /**
+         * Tells if the browser implementation of XMLHttpRequest supports CORS
+         * @return {Boolean}
+         */
+        hasCORS : function () {
+            return ("withCredentials" in this._standardXHR());
+        }
+    }
 });

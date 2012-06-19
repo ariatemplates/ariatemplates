@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2012 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,33 +12,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 Aria.beanDefinitions({
-	$package : "aria.html.beans.AutoCompleteCfg",
-	$description : "Configuration for AutoComplete widget.",
-	$namespaces : {
-		"json" : "aria.core.JsonTypes",
-		"input" : "aria.html.beans.TextInputCfg"
-	},
-	$beans : {
-		"Properties" : {
-			$type : "input:Properties",
-			$description : "Properties of an AutoComplete widget.",
-			$properties : {
-				"bind" : {
-					$type : "input:Properties.bind",
-					$properties : {
-						"suggestions" : {
-							$type : "json:Array",
-							$description : "List of suggestions taken from the Resources Handler",
-							$contentType : {
-								$type : "json:Object",
-								$description : "Suggestion"
-							},
-							$default : []
-						}
-					}
-				}
-			}
-		}
-	}
+    $package : "aria.html.beans.AutoCompleteCfg",
+    $description : "Configuration for AutoComplete widget.",
+    $namespaces : {
+        "json" : "aria.core.JsonTypes",
+        "input" : "aria.html.beans.TextInputCfg"
+    },
+    $beans : {
+        "Properties" : {
+            $type : "input:Properties",
+            $description : "Properties of an AutoComplete widget.",
+            $properties : {
+                "bind" : {
+                    $type : "input:Properties.bind",
+                    $properties : {
+                        "suggestions" : {
+                            $type : "json:Array",
+                            $description : "List of suggestions taken from the Resources Handler",
+                            $contentType : {
+                                $type : "json:Object",
+                                $description : "Suggestion"
+                            },
+                            $default : []
+                        }
+                    }
+                }
+            }
+        }
+    }
 });

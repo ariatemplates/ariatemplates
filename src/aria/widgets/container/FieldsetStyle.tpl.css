@@ -1,0 +1,39 @@
+/*
+ * Copyright 2012 Amadeus s.a.s.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+{CSSTemplate {
+    $classpath : "aria.widgets.container.FieldsetStyle",
+    $extends : "aria.widgets.WidgetStyle"
+}}
+    {var skinnableClassName="Fieldset"/}
+    {var useFrame=true/}
+    
+    {macro writeState(info)}
+        {var state=info.state/}
+        .{call cssPrefix(info)/}label {
+            left: ${state.label.left}px;
+            top: ${state.label.top}px;
+            padding-top: ${state.label.paddingTop}px;
+            padding-left: ${state.label.paddingLeft}px;
+            padding-right: ${state.label.paddingRight}px;
+            padding-bottom: ${state.label.paddingBottom}px;
+            background-color: ${state.label.backgroundColor};
+            font-weight: ${state.label.fontWeight};
+            color: ${state.label.color};
+            position: absolute;
+        }
+    {/macro}
+    
+{/CSSTemplate}

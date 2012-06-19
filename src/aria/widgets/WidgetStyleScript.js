@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2012 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,13 +13,14 @@
  * limitations under the License.
  */
 
-
-{CSSTemplate {
-	$classpath : "aria.widgets.css.atskin.Textarea"
-}}
-
-{macro main()}
-
-
-{/macro}
-{/CSSTemplate}
+Aria.tplScriptDefinition({
+    $classpath : 'aria.widgets.WidgetStyleScript',
+    $prototype : {
+        macro_writeStateOfFrame : function (info) {
+            var macro = this["macro_writeStateOf" + info.skinClass.frame.frameType + "Frame"];
+            if (macro) {
+                macro.call(this, info);
+            }
+        }
+    }
+});

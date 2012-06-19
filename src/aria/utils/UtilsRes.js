@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2012 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,12 +12,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 Aria.resourcesDefinition({
-	$classpath: 'aria.utils.UtilsRes',
-	$resources: {
-		"timeFormatLabels":{
-			"am":"AM",
-			"pm":"PM"
-		} 
-	}
+    $classpath: 'aria.utils.UtilsRes',
+    $resources: {
+        "timeFormatLabels":{
+            "am":"AM",
+            "pm":"PM"
+        } 
+    }
 });

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2012 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,35 +12,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * Definition of the suggestions used in the LC resource handler
  * @class aria.resources.handlers.LCResourcesHandlerBean
  */
 Aria.beanDefinitions({
-	$package : "aria.resources.handlers.LCResourcesHandlerBean",
-	$description : "Definition of the suggestions used in the LC resource handler",
-	$namespaces : {
-		"base" : "aria.widgets.form.AutoCompleteBean",
-		"json" : "aria.core.JsonTypes"
-	},
-	$beans : {
-		"Suggestion" : {
-			$type : "base:Suggestion",
-			$description : "A Label-Code suggestion",
-			$restricted : false,
-			$properties : {
-				"label" : {
-					$type : "json:String",
-					$description : "label for this suggestion",
-					$sample : "Paris",
-					$mandatory : true
-				},
-				"code" : {
-					$type : "json:String",
-					$description : "A code matching this suggestion",
-					$sample : "PAR"
-				}
-			}
-		}
-	}
+    $package : "aria.resources.handlers.LCResourcesHandlerBean",
+    $description : "Definition of the suggestions used in the LC resource handler",
+    $namespaces : {
+        "base" : "aria.widgets.form.AutoCompleteBean",
+        "json" : "aria.core.JsonTypes"
+    },
+    $beans : {
+        "Suggestion" : {
+            $type : "base:Suggestion",
+            $description : "A Label-Code suggestion",
+            $restricted : false,
+            $properties : {
+                "label" : {
+                    $type : "json:String",
+                    $description : "label for this suggestion",
+                    $sample : "Paris",
+                    $mandatory : true
+                },
+                "code" : {
+                    $type : "json:String",
+                    $description : "A code matching this suggestion",
+                    $sample : "PAR"
+                }
+            }
+        }
+    }
 });

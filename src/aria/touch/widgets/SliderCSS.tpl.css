@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2012 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,30 +12,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 {CSSTemplate {
-	$classpath : "aria.touch.widgets.SliderCSS"
+    $classpath : "aria.touch.widgets.SliderCSS"
 }}
 
-	{macro main()}
+    {macro main()}
 
-		div.touchLibSlider {
-		    background: none repeat scroll 0 0 #EFF9FF;
-		    border: 2px solid #999999;
-		    border-radius: 32px 32px 32px 32px;
-		    height: 17px;
-		}
+        div.touchLibSlider {
+            background: none repeat scroll 0 0 #EFF9FF;
+            border: 2px solid #999999;
+            border-radius: 32px 32px 32px 32px;
+            height: 17px;
+        }
 
-		div.touchLibSlider span {
-			position: absolute;
-		}
+        div.touchLibSlider span {
+            position: absolute;
+        }
 
-		div.touchLibSlider span.sliderButton {
-			background: none repeat scroll 0 0 #ffffff;
-		  border: 2px solid #4776A7;
-		  border-radius: 32px 32px 32px 32px;
-		  width: 14px;
-		}
+        div.touchLibSlider span.sliderButton {
+            background: none repeat scroll 0 0 #ffffff;
+          border: 2px solid #4776A7;
+          border-radius: 32px 32px 32px 32px;
+          width: 14px;
+        }
 
-	{/macro}
+    {/macro}
 
 {/CSSTemplate}

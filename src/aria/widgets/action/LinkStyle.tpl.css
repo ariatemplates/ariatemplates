@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2012 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,13 +13,21 @@
  * limitations under the License.
  */
 
-
 {CSSTemplate {
-	$classpath : "aria.widgets.css.atskin.RadioButton"
+    $classpath : "aria.widgets.action.LinkStyle",
+    $extends : "aria.widgets.WidgetStyle"
 }}
+    {var skinnableClassName="Link"/}
 
-{macro main()}
-
-
-{/macro}
+    {macro writeState(info)}
+        {var pseudoclass=""/}
+        {if info.stateName != "normal"}
+            {set pseudoclass=":"+info.stateName/}
+        {/if}
+        
+        a${pseudoclass}.xLink_${info.skinClassName} {
+            color:${info.state.color};
+        }
+    {/macro}
+    
 {/CSSTemplate}

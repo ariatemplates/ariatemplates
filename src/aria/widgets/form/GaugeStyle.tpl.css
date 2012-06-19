@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2012 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,17 +13,15 @@
  * limitations under the License.
  */
 
-
 {CSSTemplate {
-	$classpath : "aria.widgets.css.atskin.Gauge"
+    $classpath : "aria.widgets.form.GaugeStyle",
+    $extends : "aria.widgets.WidgetStyle"
 }}
-
-{macro main()}
-
-/* Gauge classes */
-.xGAUGE_progress_std{
-	${aria.widgets.AriaSkinInterface.backgroundMacro("transparent","atskin/sprites/back.gif","repeat-x")}
-}
-
-{/macro}
+    {var skinnableClassName="Gauge"/}
+    
+    {macro writeSkinClass(info)}
+        .xGAUGE_progress_${info.skinClassName}{
+            {call background("transparent",info.skinClass.spriteUrl,"repeat-x")/}    
+        }
+    {/macro}
 {/CSSTemplate}

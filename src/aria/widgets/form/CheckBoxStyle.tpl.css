@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2012 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,14 +13,10 @@
  * limitations under the License.
  */
 
-
 {CSSTemplate {
-  $classpath : "aria.widgets.css.atskin.Splitter"
+    $classpath : "aria.widgets.form.CheckBoxStyle",
+    $extends : "aria.widgets.WidgetStyle"
 }}
-
-{macro main()}
-
-
-
-{/macro}
+    {var skinnableClassName="CheckBox"/}
+    
 {/CSSTemplate}

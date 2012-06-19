@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2012 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,36 +12,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * DO NOT FORMAT
  * Aria resource object for dates en-US
  */
 Aria.resourcesDefinition({
-	$classpath : 'aria.resources.DateRes',
-	$resources : {
-		firstDayOfWeek : 0 /* Sunday */,
-		day : [
-			"S\u00F8ndag",
-			"Mandag",
-			"Tirsdag",
-			"Onsdag",
-			"Torsdag",
-			"Fredag",
-			"L\u00F8rdag"
-		],
-		month : [
-			"Januar",
-			"Februar",
-			"Marts",
-			"April",
-			"Maj",
-			"Juni",
-			"Juli",
-			"August",
-			"September",
-			"Oktober",
-			"November",
-			"December"
-		]
-	}
+    $classpath : 'aria.resources.DateRes',
+    $resources : {
+        firstDayOfWeek : 0 /* Sunday */,
+        day : [
+            "S\u00F8ndag",
+            "Mandag",
+            "Tirsdag",
+            "Onsdag",
+            "Torsdag",
+            "Fredag",
+            "L\u00F8rdag"
+        ],
+        month : [
+            "Januar",
+            "Februar",
+            "Marts",
+            "April",
+            "Maj",
+            "Juni",
+            "Juli",
+            "August",
+            "September",
+            "Oktober",
+            "November",
+            "December"
+        ]
+    }
 });

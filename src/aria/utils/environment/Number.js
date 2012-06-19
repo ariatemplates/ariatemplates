@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2012 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,35 +12,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * Contains getters for the Number environment.
  */
 Aria.classDefinition({
-	$classpath : "aria.utils.environment.Number",
-	$extends : "aria.core.environment.EnvironmentBase",
-	$dependencies : ["aria.utils.environment.NumberCfgBeans"],
-	$singleton : true,
-	$prototype : {
-		/**
-		 * Classpath of the bean which allows to validate the part of the environment managed by this class.
-		 * @type String
-		 */
-		_cfgPackage : "aria.utils.environment.NumberCfgBeans.AppCfg",
+    $classpath : "aria.utils.environment.Number",
+    $extends : "aria.core.environment.EnvironmentBase",
+    $dependencies : ["aria.utils.environment.NumberCfgBeans"],
+    $singleton : true,
+    $prototype : {
+        /**
+         * Classpath of the bean which allows to validate the part of the environment managed by this class.
+         * @type String
+         */
+        _cfgPackage : "aria.utils.environment.NumberCfgBeans.AppCfg",
 
-		/**
-		 * Return currency formats
-		 * @return {aria.utils.environment.Number.CurrencyFormatsCfg}
-		 */
-		getCurrencyFormats : function () {
-			return this.checkApplicationSettings("currencyFormats");
-		},
+        /**
+         * Return currency formats
+         * @return {aria.utils.environment.Number.CurrencyFormatsCfg}
+         */
+        getCurrencyFormats : function () {
+            return this.checkApplicationSettings("currencyFormats");
+        },
 
-		/**
-		 * Return decimal format symbols
-		 * @return {aria.utils.environment.NumberCfgBeans.DecimalFormatSymbols}
-		 */
-		getDecimalFormatSymbols : function () {
-			return this.checkApplicationSettings("decimalFormatSymbols");
-		}
-	}
+        /**
+         * Return decimal format symbols
+         * @return {aria.utils.environment.NumberCfgBeans.DecimalFormatSymbols}
+         */
+        getDecimalFormatSymbols : function () {
+            return this.checkApplicationSettings("decimalFormatSymbols");
+        }
+    }
 });

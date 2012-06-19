@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2012 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,22 +14,32 @@
  */
 
 {CSSTemplate {
-	$classpath : "aria.widgets.css.atskin.Global",
-	$dependencies : ["aria.widgets.environment.WidgetSettings"]
+    $classpath : "aria.widgets.GlobalStyle",
+    $dependencies : ["aria.widgets.environment.WidgetSettings","aria.widgets.AriaSkinInterface"],
+    $extends: "aria.widgets.WidgetStyle"
 }}
 
 {macro main()}
-
-/* Skin: atskin */
+    {var general = aria.widgets.AriaSkinInterface.getGeneral()/}
+/* Skin: ${skin.name} */
 /* Note: all private classes start with 'x' - these classes must not be used in application pages as they can change when new features are implemented */
 
 /* Global classes */
 body, textarea, select, input, button, table {
+{if general.font.size}
+  font-size: ${general.font.size}px;
+{/if}
+{if general.font.family}
+  font-family: ${general.font.family};
+{/if}
 }
 body {
   padding: 0;
   margin: 0;
   cursor:default;
+{if general.colors.bkg}
+  background-color: ${general.colors.bkg};
+{/if}
 }
 
 .xLDI-text {
@@ -42,28 +52,34 @@ body {
 }
 
 .xLDI {
-	${aria.widgets.AriaSkinInterface.backgroundMacro("#fff","atskin/imgs/loading.gif","no-repeat center center")}
-  filter: alpha(opacity=80);
-  -moz-opacity: .80;
-  opacity: .80;
+  {call background(general.loadingOverlay.backgroundColor, general.loadingOverlay.spriteURL,"no-repeat center center")/}
+  {call opacity(general.loadingOverlay.opacity)/}
 }
 
 .xOverlay {
-  background-color: #ddd;
-  border: 1px solid black;
+  background-color: ${general.overlay.backgroundColor};
+  {if general.overlay.opacity}
+      {call opacity(general.overlay.opacity)/}
+  {/if}
+  border: ${general.overlay.border};
 }
 
 a {
+{call writeAnchorState(general.anchor.states.normal)/}
 }
 a:link {
+{call writeAnchorState(general.anchor.states.link)/}
 }
 a:visited {
+{call writeAnchorState(general.anchor.states.visited)/}    
 }
 a:hover {
+{call writeAnchorState(general.anchor.states.hover)/}
 }
 
+{if ! general.disable.ul.list.style}
   ul, li {list-style-type:none;}
-
+{/if}
 
 /* Hide input focus on safari*/
 {if aria.core.Browser.isSafari || aria.core.Browser.isChrome}
@@ -73,8 +89,8 @@ a:hover {
 {/if}
 
 a:focus {
+{call writeAnchorState(general.anchor.states.focus)/}
 }
-
 
 /*AT Widget wrapper DOMElm */
 {var widgetSettings = aria.widgets.environment.WidgetSettings.getWidgetSettings() /}
@@ -121,37 +137,55 @@ a:focus {
   /* width and height are required for IE6 to work correctly */
   width:100%;
   height:100%;
-  background-color: black;
-  filter: alpha(opacity=40);
-  -moz-opacity: .40;
-  opacity: .40;
+  background-color: ${general.dialogMask.backgroundColor};
+  {call opacity(general.dialogMask.opacity || 40) /}
 }
 
-/* Frames and abstract classes */
 .xFrameContent {
-	display: inline-block;
-	position:relative;
-	padding: 0 0 0 0 !important;
-	border: 0 0 0 0 !important;
+    display: inline-block;
+    position:relative;
+    padding: 0 0 0 0 !important;
+    border: 0 0 0 0 !important;
 }
 
-{/* widgetSettings is defined in Global.tpl.css.ftl */}
 .xFixedHeightFrame_w {
-	display: inline-block;
-	position: relative;
-	overflow: hidden;
-	vertical-align: {if widgetSettings.middleAlignment}middle{else/}top{/if};
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+    vertical-align: {if widgetSettings.middleAlignment}middle{else/}top{/if};
 }
 .xFixedHeightFrame_bme {
-	display: inline-block;
-	vertical-align: {if widgetSettings.middleAlignment}middle{else/}top{/if};
+    display: inline-block; 
+    vertical-align: {if widgetSettings.middleAlignment}middle{else/}top{/if}; 
 }
-
 .xSimpleFrame {
-	display: inline-block;
-	position: relative;
+    display: inline-block;
+    position: relative;
 }
 
+{if aria.core.Browser.isIE7 }
+.xFixedHeightFrame_w {
+  vertical-align:top;
+}
+{/if}
 
+{if aria.core.Browser.isIE7 }
+.xFixedHeightFrame_bme {
+  vertical-align:top;
+}
+{/if}
 {/macro}
+
+{macro writeAnchorState(state)}
+{if state.color}
+  color: ${state.color};
+{/if}
+{if state.text.decoration}
+  text-decoration: ${state.text.decoration};
+{/if}
+{if state.outline}
+  outline: ${state.outline};
+{/if}
+{/macro}
+
 {/CSSTemplate}

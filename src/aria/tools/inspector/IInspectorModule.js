@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2012 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,23 +12,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * Interface for the inspector module
  */
 Aria.interfaceDefinition({
-	$classpath : "aria.tools.inspector.IInspectorModule",
-	$extends : "aria.templates.IModuleCtrl",
-	$interface : {
-		// The $interface section contains empty functions and empty object or array properties
-		displayHighlight : function () {},
-		reloadTemplate : function () {},
-		refreshTemplate : function () {},
-		reloadModule : function () {},
-		getSource : function () {}
-	},
-	$events : {
-		contentChanged : {
-			description : "Raised when application content has changed"
-		}
-	}
+    $classpath : "aria.tools.inspector.IInspectorModule",
+    $extends : "aria.templates.IModuleCtrl",
+    $interface : {
+        // The $interface section contains empty functions and empty object or array properties
+        displayHighlight : function () {},
+        reloadTemplate : function () {},
+        refreshTemplate : function () {},
+        reloadModule : function () {},
+        getSource : function () {}
+    },
+    $events : {
+        contentChanged : {
+            description : "Raised when application content has changed"
+        }
+    }
 });
