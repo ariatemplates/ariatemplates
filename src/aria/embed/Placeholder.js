@@ -22,7 +22,7 @@ Aria.classDefinition({
     $classpath : "aria.embed.Placeholder",
     $extends : "aria.widgetLibs.BaseWidget",
     $dependencies : ['aria.embed.CfgBeans', 'aria.utils.Html', 'aria.core.JsonValidator', 'aria.core.Log',
-            'aria.utils.Dom', 'aria.html.Template', 'aria.html.HtmlLibrary'],
+            'aria.utils.Dom', 'aria.html.Template', 'aria.html.HtmlLibrary', 'aria.embed.PlaceholderManager'],
     $statics : {
         INVALID_CONFIGURATION : "%1Configuration for widget is not valid."
     },
