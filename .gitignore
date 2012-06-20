@@ -3,3 +3,5 @@ node_modules
 target
 build/at-bootstrap
 build/at-core
+.project
+.settings
