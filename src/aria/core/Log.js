@@ -202,7 +202,8 @@ Aria.classDefinition({
         getLoggingLevel : function (className) {
             var loggingLevel = this._loggingLevels[className];
             if (loggingLevel != undefined) {
-                // If there is a logging level stored for the exact classname passed in parameter
+                // If there is a logging level stored for the exact classname
+                // passed in parameter
                 return loggingLevel;
             } else {
                 // Else, look for package names
@@ -231,11 +232,13 @@ Aria.classDefinition({
         isLogEnabled : function (level, className) {
             var minimumLevel = this.getLoggingLevel(className);
 
-            // If we could find a minimum level authorized for this className (or a best match)
+            // If we could find a minimum level authorized for this className
+            // (or a best match)
             if (minimumLevel) {
                 return level >= minimumLevel;
             } else {
-                // If nothing was found in the conf for this class, no logging is possible
+                // If nothing was found in the conf for this class, no logging
+                // is possible
                 return false;
             }
         },
@@ -290,9 +293,10 @@ Aria.classDefinition({
          */
         prepareLoggedMessage : function (msg, msgArgs, errorContext) {
             if (msgArgs) {
-                if (typeof msgArgs == "string") msgArgs = [msgArgs];
-                msg = msg.replace(/%[0-9]+/g, function(token) {
-                    return msgArgs[parseInt(token.substring(1)) - 1];
+                if (typeof msgArgs == "string")
+                    msgArgs = [msgArgs];
+                msg = msg.replace(/%[0-9]+/g, function (token) {
+                    return msgArgs[parseInt(token.substring(1), 10) - 1];
                 });
             }
             for (var error in errorContext) {

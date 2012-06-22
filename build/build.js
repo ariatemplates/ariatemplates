@@ -23,9 +23,12 @@ function runCmd(cmd, args, callback) {
 	});
 }
 
+var packmanLint = ['node_modules/packman/packman.js', '-c', 'build/lint.yaml', '-n'];
 var packmanBootstrap = ['node_modules/packman/packman.js', '-c', 'build/at-bootstrap.yaml', '-n'];
 var packmanRelease = ['node_modules/packman/packman.js', '-c', 'build/releases/standard/config.yaml', '-n'];
 
-runCmd("node", packmanBootstrap, function(code) {
-	runCmd("node", packmanRelease, function(code) {});
+runCmd("node", packmanLint, function(code) {
+	runCmd("node", packmanBootstrap, function(code) {
+		runCmd("node", packmanRelease, function(code) {});
+	});
 });

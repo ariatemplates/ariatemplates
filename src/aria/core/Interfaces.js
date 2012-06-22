@@ -374,7 +374,7 @@
                         : ''), 'var k=g(i);\ni[k]=obj;\nthis.', keyProperty, '=k;\n', initProperties.join(''), '};\n', methods.join(''), 'Aria.$global.', classpath, '=evalContext.c;\n', 'p=null;\nevalContext=null;\n');
                 out = out.join('');
                 // alert(out);
-                Aria.eval(out, classpath.replace(/\./g, "/") + "-wrapper.js", evalContext);
+                Aria["eval"](out, classpath.replace(/\./g, "/") + "-wrapper.js", evalContext);
                 var constructor = evalContext.c;
                 proto.$interfaces[classpath] = constructor;
                 constructor.prototype = proto;

@@ -111,7 +111,7 @@ Aria.classDefinition({
             iFrameAria.rootFolderPath = this.bootRootFolderPath;
             iFrameAria.debug = Aria.debug;
             iFrameAria.memCheckMode = Aria.memCheckMode;
-            window.Aria.eval(this.frameworkJS); // note that using window.eval leads to strange errors in FF
+            window.Aria["eval"](this.frameworkJS); // note that using window.eval leads to strange errors in FF
             document.write('<script type="text/javascript">parent.aria.utils.FrameATLoader.callFromFrame('
                     + this._createCallbackId({
                         fn : this._loadATInFrameCb3,

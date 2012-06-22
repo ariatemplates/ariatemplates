@@ -290,7 +290,7 @@
                     var Event = Aria.$window.Event;
                     var c = this.getEvent.caller;
                     while (c) {
-                        ev = c.arguments[0];
+                        ev = c["arguments"][0];
                         if (ev && Event == ev.constructor) {
                             break;
                         }

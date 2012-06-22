@@ -26,9 +26,9 @@ Aria.tplScriptDefinition({
                 if (evt.propertiesNbr == 1 && valueInfos) {
                     this.updateClass(valueInfos.oldValuePosition);
                     this.updateClass(valueInfos.newValuePosition);
-                    if(evt.propertyshowShortcuts){
+                    if (evt.propertyshowShortcuts) {
                         this.$refresh({
-                        outputSection : "selectedDay"
+                            outputSection : "selectedDay"
                         });
                     }
                 } else {
@@ -51,7 +51,7 @@ Aria.tplScriptDefinition({
         clickDay : function (evt) {
             var date = evt.target.getExpando("date");
             if (date) {
-                var jsDate = new Date(parseInt(date));
+                var jsDate = new Date(parseInt(date, 10));
                 this.moduleCtrl.dateClick({
                     date : jsDate
                 });
@@ -61,32 +61,34 @@ Aria.tplScriptDefinition({
         getClassForDay : function (day) {
             var res = [];
             var baseCSS = this.skin.baseCSS;
-            res.push(baseCSS+"day");
-            res.push(baseCSS+"mouseOut");
+            res.push(baseCSS + "day");
+            res.push(baseCSS + "mouseOut");
             if (day.isWeekend && day.isSelectable) {
-                res.push(baseCSS+"weekEnd");
+                res.push(baseCSS + "weekEnd");
             }
             if (day.isSelected) {
-                res.push(baseCSS+"selected");
+                res.push(baseCSS + "selected");
             }
             if (day.isToday) {
-                res.push(baseCSS+"today");
+                res.push(baseCSS + "today");
             }
-            res.push(day.isSelectable ? baseCSS+"selectable" : baseCSS+"unselectable");
+            res.push(day.isSelectable ? baseCSS + "selectable" : baseCSS + "unselectable");
             return res.join(' ');
         },
 
         mouseOverDay : function (evt) {
             var date = evt.target.getExpando("date");
             if (date) {
-                evt.target.classList.setClassName(evt.target.getClassName().replace(this.skin.baseCSS+"mouseOut", this.skin.baseCSS+"mouseOver"));
+                evt.target.classList.setClassName(evt.target.getClassName().replace(this.skin.baseCSS + "mouseOut", this.skin.baseCSS
+                        + "mouseOver"));
             }
         },
 
         mouseOutDay : function (evt) {
             var date = evt.target.getExpando("date");
             if (date) {
-                evt.target.classList.setClassName(evt.target.getClassName().replace(this.skin.baseCSS+"mouseOver", this.skin.baseCSS+"mouseOut"));
+                evt.target.classList.setClassName(evt.target.getClassName().replace(this.skin.baseCSS + "mouseOver", this.skin.baseCSS
+                        + "mouseOut"));
             }
         }
     }
