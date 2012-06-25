@@ -26,6 +26,7 @@
      */
     Aria.classDefinition({
         $classpath : "aria.resources.handlers.LCResourcesHandler",
+        $implements : ["aria.resources.handlers.IResourcesHandler"],
         $dependencies : ["aria.utils.String", "aria.resources.handlers.LCResourcesHandlerBean"],
         $statics : {
             /**
