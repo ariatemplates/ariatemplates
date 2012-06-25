@@ -24,8 +24,11 @@ Aria.classDefinition({
     $singleton : true,
     $constructor : function (cfg, context, lineNumber) {},
     $statics : {
-        _providers : []
-    },
+        _providers : [],
+
+        // ERROR MESSAGES:
+        PLACEHOLDER_PATH_NOT_FOUND : "No content has been found for the placeholder path '%1'"
+   },
     $prototype : {
         /**
          * Return an array of contents, each item is an html string or an html template configuration
@@ -50,6 +53,12 @@ Aria.classDefinition({
                     }
                 }
             }
+            
+            // Warn if no content has been found
+            if (contents.length == 0) {
+	            this.$logWarn(this.PLACEHOLDER_PATH_NOT_FOUND, [placeholderPath]);
+            }
+            
             return contents;
         },
 
