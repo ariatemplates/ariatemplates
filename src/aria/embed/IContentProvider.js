@@ -19,7 +19,6 @@
  */
 Aria.interfaceDefinition({
     $classpath : 'aria.embed.IContentProvider',
-    $extends : 'aria.templates.IModuleCtrl',
     $interface : {
         /**
          * Called by the placeholder manager to get the content configuration, which will be used by the placehoder to
