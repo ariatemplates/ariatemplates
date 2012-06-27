@@ -939,7 +939,51 @@
         if (doLoad) {
             aria.core.Interfaces.loadInterface(def);
         }
-    };
+    };	
+	
+	/**
+	 * Base method used to declare test cases.
+	 * Will automatically extend the base TestCase class provided by the framework.
+	 **/
+	Aria.testDefinition = function (def) {
+		var userConstructor = def.$constructor || function (){},
+			userDestructor = def.$destructor || function () {};
+			
+		def.$constructor = function () {
+			this.$TestCase.constructor.call(this);
+			userConstructor.call(this);
+		};
+		def.$destructor : function () {
+			userDestructor.call(this);
+			this.$TestCase.$destructor.call(this);
+		};
+		def.$extends = "aria.jsunit.TestCase";
+		Aria['classDefinition'](def);
+	};
+	
+	/**
+	 * Base method used to declare test suites.
+	 * Extends from the base TestSuite class and allows to directly declare the list of tests as a definition property : 
+     * 
+     * <pre>
+     * {
+     *     $classpath // {String} contain the classpath of the interface this interface inherits from,
+     *     $tests // {Array} array of strings containing the classpaths of the tests managed by the suite
+     * }
+     * </pre>
+	 **/
+	Aria.testSuiteDefinition = function (def) {
+		def.$extends = "aria.jsunit.TestSuite";
+		
+		var tests = def.$tests;
+		var userConstructor = def.$constructor || function () {};
+		def.$constructor = function () {
+			this.$TestSuite.constructor.call(this);
+			userConstructor.call(this);
+			this.addTests.apply(this, tests);
+		};
+		Aria['classDefinition'](def);
+	};
 
     /**
      * Copy members of object src into dst.
