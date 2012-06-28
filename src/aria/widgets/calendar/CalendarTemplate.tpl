@@ -99,7 +99,10 @@
                     </tr>
                 {/foreach}
                 {for ;nbweeks<=5;nbweeks++}
-                    <tr><td colspan="${settings.showWeekNumbers?8:7}" style="border: 1px solid; visibility: hidden;">&nbsp;</td></tr>
+                    <tr>
+                        {if settings.showWeekNumbers}<td class="${skin.baseCSS}weekNumber" style="visibility: hidden;">&nbsp;</td>{/if}
+                        <td class="${skin.baseCSS}day" colspan="7" style="visibility: hidden;">&nbsp;</td>
+                    </tr>
                 {/for}
             </tbody>
         </table>
