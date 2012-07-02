@@ -85,7 +85,8 @@ Aria.classDefinition({
             change : true,
             paste : true,
             cut : true,
-            submit : true
+            submit : true,
+            error : true
         };
 
         // note that the change event does not bubble on all browsers (e.g.: on IE) but is necessary as it is the only
