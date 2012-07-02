@@ -31,7 +31,7 @@ Aria.classDefinition({
         /**
          * List of overlays objects
          * @type Object
-         * 
+         *
          * <pre>
          * {
          *     uinqueId : aria.utils.overlay.LoadingOverlay
@@ -165,7 +165,7 @@ Aria.classDefinition({
          * @private
          * @param {HTMLElement} element
          * @return {Object}
-         * 
+         *
          * <pre>
          * {overlay: Overlay object, id : unique verlay id}
          * </pre>
@@ -211,7 +211,7 @@ Aria.classDefinition({
 
                     overlay.refreshPosition();
                 }
-            };
+            }
         },
 
         /**

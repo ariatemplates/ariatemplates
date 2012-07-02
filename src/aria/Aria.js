@@ -758,7 +758,7 @@
      * Base methods used to declare classes
      * @param {aria.core.CfgBeans.ClassDefinitionCfg} def def The definition object describing the class - must have the
      * following properties: All objects create through this method will automatically have the following properties:
-     * 
+     *
      * <pre>
      * {
      *     $CLASSNAME // reference to the class prototype (useful for subclasses)
@@ -905,7 +905,7 @@
     /**
      * Base method used to declare interfaces.
      * @param {Object} def Interface definition. The interface definition can contain the following properties:
-     * 
+     *
      * <pre>
      * {
      *     $extends // {String} contain the classpath of the interface this interface inherits from,
@@ -1300,7 +1300,7 @@
      * Dynamically load some dependencies and calls the callback function when ready (Shortcut to
      * aria.core.MultiLoader.load) Note: this method may be synchronous if all dependencies are already in cache
      * @param {Object} desc the description of the files to load and the callback [loadDesc]
-     * 
+     *
      * <pre>
      * { classes:[] {Array} list of classpaths to be loaded
      *         oncomplete:{
@@ -1316,7 +1316,7 @@
      *         }
      * }
      * </pre>
-     * 
+     *
      * Alternatively, if there is no need to specify a scope and args, the callback property can contain directly the
      * callback function oncomplete: function () {...} instead of: oncomplete: {fn: function () {...}}
      */
@@ -1524,7 +1524,7 @@
     };
 
     /*
-     * We need __temporaryIsIE outside of the closure to define the correct version of Aria.eval. In IE with Selenium,
+     * We need __temporaryIsIE outside of the closure to define the correct version of Aria["eval"]. In IE with Selenium,
      * adding the sourceURL raises an error. (PTR 05647136)
      */
     Aria.__tempIE = __temporaryIsIE;
@@ -1540,7 +1540,7 @@
  * @param {Object} evalContext An object to be available from the javascript code being evaluated. The object is named
  * evalContext.
  */
-Aria.eval = Aria.__tempIE ? function (srcJS, srcURL, evalContext) {
+Aria["eval"] = Aria.__tempIE ? function (srcJS, srcURL, evalContext) {
     // PTR 05647136: on IE with Selenium, adding the sourceURL raises an error.
     // Moreover, the debugger in IE does not make any use of sourceURL.
     return eval(srcJS);

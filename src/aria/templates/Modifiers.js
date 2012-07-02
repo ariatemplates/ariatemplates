@@ -195,8 +195,8 @@
                 out.addDependencies(["aria.utils.String", "aria.utils.Type"]);
             },
             /**
-             * Will highlight with &lt;strong&gt; tag the begining of a word that matches any of the words in the highligh
-             * value.
+             * Will highlight with &lt;strong&gt; tag the begining of a word that matches any of the words in the
+             * highligh value.
              * @example
              * Given the input string, str: "Using highlight"
              * and the matching string, highlight: "us hi"
@@ -220,16 +220,16 @@
                             if (toBeHighlighted[i] == undefined || toBeHighlighted[i] == "") {
                                 continue;
                             }
-                            var frmtdHighlightStr = toBeHighlighted[i].replace(regExSpecials,"\\$1");
-                            var highlightStr = new RegExp('\\b'+frmtdHighlightStr,'gim');
+                            var frmtdHighlightStr = toBeHighlighted[i].replace(regExSpecials, "\\$1");
+                            var highlightStr = new RegExp('\\b' + frmtdHighlightStr, 'gim');
                             if (!!frmtdHighlightStr.match(/\(/)) {
-                                highlightStr = new RegExp('[\\b\\(]'+frmtdHighlightStr.replace('\\\(',''),'gim');
+                                highlightStr = new RegExp('[\\b\\(]' + frmtdHighlightStr.replace('\\(', ''), 'gim');
                             }
                             var replaceArr = highlightStr.exec(value);
                             if (replaceArr != null && replaceArr.length > 0) {
                                 var replaceStr = "<strong>" + replaceArr[0] + "</strong>";
-                                array[index] = value.replace(highlightStr,replaceStr);
-                                if(!!value.match(highlightStr)) {
+                                array[index] = value.replace(highlightStr, replaceStr);
+                                if (!!value.match(highlightStr)) {
                                     break;
                                 }
                             }

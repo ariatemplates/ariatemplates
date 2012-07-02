@@ -178,7 +178,7 @@ Aria.classDefinition({
                 this.name = "IE";
                 if (/msie[\/\s]((?:\d+\.?)+)/.test(ua)) {
                     this.version = RegExp.$1;
-                    var ieVersion = parseInt(this.version);
+                    var ieVersion = parseInt(this.version, 10);
 
                     if (ieVersion == 6) {
                         this.isIE6 = true;
@@ -186,11 +186,15 @@ Aria.classDefinition({
                         var detectedIEVersion;
 
                         // PTR 05207453
-                        // With compatibility view, it can become tricky to detect the version.
-                        // What is important to detect here is the document mode (which defines how the browser really
-                        // reacts), NOT the browser mode (how the browser says it reacts, through conditional comments
+                        // With compatibility view, it can become tricky to
+                        // detect the version.
+                        // What is important to detect here is the document mode
+                        // (which defines how the browser really
+                        // reacts), NOT the browser mode (how the browser says
+                        // it reacts, through conditional comments
                         // and ua string)
-                        // For this, we use a trick: defineProperty is not defined in IE 7, it is buggy in IE 8 and it
+                        // For this, we use a trick: defineProperty is not
+                        // defined in IE 7, it is buggy in IE 8 and it
                         // works well in IE 9
 
                         if (Object.defineProperty) {
@@ -212,7 +216,8 @@ Aria.classDefinition({
                         this["isIE" + detectedIEVersion] = true;
                         if (detectedIEVersion != ieVersion) {
                             // the browser is not what it claims to be!
-                            // make sure this.version is consistent with isIE... variables
+                            // make sure this.version is consistent with isIE...
+                            // variables
                             this.version = detectedIEVersion + ".0";
                         }
                     }
@@ -291,7 +296,8 @@ Aria.classDefinition({
                 }
             }
 
-            this.code = this.name + this.majorVersion; // browser code : name+majorVersion
+            this.code = this.name + this.majorVersion; // browser code :
+            // name+majorVersion
         }
     }
 });

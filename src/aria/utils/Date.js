@@ -1214,13 +1214,13 @@ Aria.classDefinition({
          */
         getStartOfWeek : function (date, firstDayOfWeek) {
             if (firstDayOfWeek == null) {
-                firstDayOfWeek = this._environment.getFirstDayOfWeek();;
+                firstDayOfWeek = this._environment.getFirstDayOfWeek();
             }
             var res = new Date(date);
             var difference = date.getDay() - firstDayOfWeek;
             if (difference < 0) {
                 difference += 7;
-            };
+            }
             res.setDate(res.getDate() - difference);
             return res;
         },

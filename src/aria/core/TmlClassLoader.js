@@ -113,7 +113,7 @@ Aria.classDefinition({
         __evalGeneratedTml : function (generatedClass, args) {
             var classDef = generatedClass.classDef;
             try {
-                Aria.eval(classDef, args.logicalPath);
+                Aria["eval"](classDef, args.logicalPath);
                 if (!this._classDefinitionCalled) {
                     this.$logError(this.MISSING_CLASS_DEFINITION, [this.getRefLogicalPath(), this._refClasspath]);
                     aria.core.ClassMgr.notifyClassLoadError(this._refClasspath);

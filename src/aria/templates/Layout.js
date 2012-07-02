@@ -69,7 +69,7 @@
     };
 
     var __computeSOSizeValue = function (obj) {
-        var res = undefined;
+        var res;
         if (obj.min != null || obj.max != null) {
             res = (Aria.minSizeMode && obj.min != null ? obj.min : obj.viewport);
             if (res != null) {
@@ -317,7 +317,7 @@
                 if (coeff == null) {
                     coeff = 1;
                 }
-                var res = parseInt(min + (tvp - tmin) * coeff);
+                var res = parseInt(min + (tvp - tmin) * coeff, 10);
                 if (max != null && res > max) {
                     res = max;
                 }

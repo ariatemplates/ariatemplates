@@ -123,7 +123,7 @@ Aria.classDefinition({
             var geometry = domUtil.getGeometry(element);
             if (geometry === null) {
                 return;
-            };
+            }
 
             domUtil.scrollIntoView(element);
             var top = geometry.y;

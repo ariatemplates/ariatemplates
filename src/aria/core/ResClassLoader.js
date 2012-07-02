@@ -51,7 +51,7 @@ Aria.classDefinition({
             var resClassRef = Aria.getClassRef(this._refClasspath);
             // load the class only once, on reload the resources will be injected
             if (!this._classDefinitionCalled) {
-                Aria.eval(classdef, lp);
+                Aria["eval"](classdef, lp);
                 if (!resClassRef && !this._classDefinitionCalled) {
                     this.$logError(this.MISSING_CLASS_DEFINITION, [this.getRefLogicalPath(), this._refClasspath]);
                     aria.core.ClassMgr.notifyClassLoadError(this._refClasspath);
@@ -136,7 +136,7 @@ Aria.classDefinition({
          * specified it is appended to the logical path unless we are in dev mode. If devMode is true the full path is
          * built by aria.modules.RequestMgr.createI18nUrl that is asynchronous. This method calls the callback passing
          * as arguments an object containing
-         * 
+         *
          * <pre>
          * {
          * logical : logical path,
@@ -144,7 +144,7 @@ Aria.classDefinition({
          * full : full logical path, different from null if serverResource is true
          * }
          * </pre>
-         * 
+         *
          * @param {String} refClasspath Reference classpath
          * @param {String} logicalPath Logical file path
          * @param {aria.core.JsObject.Callback} callback Callback called when the full path is ready
