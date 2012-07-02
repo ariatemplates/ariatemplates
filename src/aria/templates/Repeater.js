@@ -372,12 +372,11 @@
                 // on the array, and several other modifications may have happened after that
                 var change = arg.change;
                 var items = this.items;
-                var undefined;
                 if (change == jsonUtils.VALUE_CHANGED || change == jsonUtils.KEY_REMOVED
                         || change == jsonUtils.KEY_ADDED) {
                     // note that KEY_REMOVED is not different from VALUE_CHANGED with an undefined new value in this
                     // case
-                    var index = parseInt(arg.dataName);
+                    var index = parseInt(arg.dataName, 10);
                     if (index != arg.dataName || index < 0) {
                         // ignore indexes which are not positive integers
                         return;

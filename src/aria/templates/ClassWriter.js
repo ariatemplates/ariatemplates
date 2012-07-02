@@ -346,7 +346,7 @@ Aria.classDefinition({
          */
         newVarName : function () {
             this._varNameNumber++;
-            return "__v_" + this._varNameNumber + "_" + parseInt(10 * Math.random());
+            return "__v_" + this._varNameNumber + "_" + parseInt(10 * Math.random(), 10);
         },
 
         /**
