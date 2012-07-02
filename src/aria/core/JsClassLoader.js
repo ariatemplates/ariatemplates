@@ -32,7 +32,7 @@ Aria.classDefinition({
          * @protected
          */
         _loadClass : function (classdef, lp) {
-            Aria.eval(classdef, lp);
+            Aria["eval"](classdef, lp);
             if (!this._classDefinitionCalled) {
                 this.$logError(this.MISSING_CLASS_DEFINITION, [this.getRefLogicalPath(), this._refClasspath]);
                 aria.core.ClassMgr.notifyClassLoadError(this._refClasspath);

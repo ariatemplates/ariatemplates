@@ -135,10 +135,10 @@ Aria.classDefinition({
          */
         _removeFrame : function () {
             if (this._frame) {
-                // Here, we are using Aria.eval in the sub window because otherwise, any exception raised by the test
+                // Here, we are using Aria["eval"] in the sub window because otherwise, any exception raised by the test
                 // $dispose method or Aria.dispose cannot be caught on IE7
-                if (this._subWindow.Aria && this._subWindow.Aria.eval) {
-                    var disposeResult = this._subWindow.Aria.eval("(function () { try { if (this._testInstance) {this._testInstance.$dispose();} return Aria.dispose(); } catch (e) { return { error: e }; }}).call(arguments[2])", null, this);
+                if (this._subWindow.Aria && this._subWindow.Aria["eval"]) {
+                    var disposeResult = this._subWindow.Aria["eval"]("(function () { try { if (this._testInstance) {this._testInstance.$dispose();} return Aria.dispose(); } catch (e) { return { error: e }; }}).call(arguments[2])", null, this);
                     this._testInstance = null;
                     if (disposeResult) {
                         if (disposeResult.error) {

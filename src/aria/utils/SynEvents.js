@@ -77,16 +77,16 @@
     };
     /**
      * README: LIST OF CHANGES COMPARE TO MASTER:
-     * 
+     *
      * <pre>
-     * 
+     *
      *     create / focus (line 533)
      *     ----------------------------
      *     Filter document.body to avoid window blur on IE
      *     if (doc.activeElement != document.body) {
      *         doc.activeElement.blur();
      *     }
-     * 
+     *
      *     center (line 2497)
      *     ----------------------------
      *     Support non jQuery center
@@ -95,13 +95,13 @@
      *         pageX : rect.left + (el.clientWidth / 2),
      *         pageY : rect.top + (el.clientHeight / 2)
      *     }
-     * 
+     *
      * check element in DOM
      * -----------------------------
      *     Check that an element is in the DOM before sending an event to it.
      *     This change includes the _isInDom method (line 2) and a call to it
      *     at the begining of the trigger method (line 589):
-     * 
+     *
      * trigger : function (type, options, element) {
      *     // Check that the element is in the DOM
      *     if (!_isInDom(element)) {
@@ -437,7 +437,8 @@
                  */
                 tabIndex : function (elem) {
                     var attributeNode = elem.getAttributeNode("tabIndex");
-                    return attributeNode && attributeNode.specified && (parseInt(elem.getAttribute('tabIndex')) || 0);
+                    return attributeNode && attributeNode.specified
+                            && (parseInt(elem.getAttribute('tabIndex'), 10) || 0);
                 },
                 bind : bind,
                 unbind : unbind,
@@ -2582,22 +2583,22 @@
             if (typeof option == 'string' && relative.test(option) && from) {
                 var cent = center(from), parts = option.match(relative);
                 option = {
-                    pageX : cent.pageX + parseInt(parts[1]),
-                    pageY : cent.pageY + parseInt(parts[2])
+                    pageX : cent.pageX + parseInt(parts[1], 10),
+                    pageY : cent.pageY + parseInt(parts[2], 10)
                 }
             }
             if (typeof option == 'string' && page.test(option)) {
                 var parts = option.match(page)
                 option = {
-                    pageX : parseInt(parts[1]),
-                    pageY : parseInt(parts[2])
+                    pageX : parseInt(parts[1], 10),
+                    pageY : parseInt(parts[2], 10)
                 }
             }
             if (typeof option == 'string' && client.test(option)) {
                 var parts = option.match(client)
                 option = {
-                    clientX : parseInt(parts[1]),
-                    clientY : parseInt(parts[2])
+                    clientX : parseInt(parts[1], 10),
+                    clientY : parseInt(parts[2], 10)
                 }
             }
             if (typeof option == 'string') {

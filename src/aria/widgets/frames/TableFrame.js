@@ -79,7 +79,7 @@ Aria.classDefinition({
                 /*
                  * TODO: find why -7 is needed (where are these 7 pixels lost in IE?) especially test on IE8 if changing
                  * -7
-                 */;
+                 */
                 this.innerHeight = h > 0 ? h : 0;
             } else {
                 this.innerHeight = -1;

@@ -137,14 +137,14 @@ Aria.classDefinition({
          * @private
          */
         _onFileReceive : function (ioRes) {
-
+            var multipart;
             // store file in cache
             var downloadFailed = (ioRes.status != '200');
             this.$assert(79, this._logicalPaths.length > 0);
 
             if (!downloadFailed) {
                 // check if the file received is multipart
-                var multipart = this._multiPartHeader.exec(ioRes.responseText);
+                multipart = this._multiPartHeader.exec(ioRes.responseText);
                 if (multipart != null) {
                     // it is multipart, we split it; separator is multipart[2]
                     var parts = ioRes.responseText.split(multipart[2]), partsLength = parts.length;

@@ -70,7 +70,6 @@
 
                     if (!this._applet) {
                         throw new Error(this._appletName + " applet was not found in the document");
-                        return;
                     }
                 }
             },

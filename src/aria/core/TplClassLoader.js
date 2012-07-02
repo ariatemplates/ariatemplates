@@ -21,7 +21,7 @@
         var classDef = generatedClass.classDef; // classDef may be null, in this case the error has already been
         // reported
         try {
-            Aria.eval(classDef, args.logicalPath);
+            Aria["eval"](classDef, args.logicalPath);
             if (!this._classDefinitionCalled) {
                 this.$logError(this.MISSING_CLASS_DEFINITION, [this.getRefLogicalPath(), this._refClasspath]);
                 aria.core.ClassMgr.notifyClassLoadError(this._refClasspath);

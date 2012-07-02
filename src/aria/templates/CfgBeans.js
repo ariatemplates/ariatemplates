@@ -682,7 +682,7 @@ Aria.beanDefinitions({
                 },
                 "bindRefreshTo" : {
                     $type : "json:Array",
-                    $description : "Binding configurations for this section. If specified, this section will refresh automatically if a change is made on the data it is bind to.",
+                    $description : "Binding configurations for this section. If specified, this section will refresh automatically if a change is made on the data it is bound to.",
                     $default : [],
                     $contentType : {
                         $type : "BindingConfiguration",
@@ -820,9 +820,9 @@ Aria.beanDefinitions({
             $properties : {
                 "writerCallback" : {
                     $type : "json:ObjectRef" /*
-                                                 * TODO: when it is possible to put $beans in an Aria.classDefinition,
-                                                 * replace with a ref to aria.core.JsObject.Callback
-                                                 */,
+                        * TODO: when it is possible to put $beans in an Aria.classDefinition,
+                        * replace with a ref to aria.core.JsObject.Callback
+                        */,
                     $description : "If specified, macro is ignored and this callback is called instead, with the out object (MarkupWriter) as its parameter."
                 }
             }
@@ -965,20 +965,20 @@ Aria.beanDefinitions({
                     }
                 },
                 "$prototype" : {
-          $type : "json:MultiTypes",
-          $description : "Either a function or a map",
-          $contentTypes : [{
-                $type : "json:Map",
-                $description : "Methods and properties in the prototype of the class.",
-                $contentType : {
-                  $type : "json:MultiTypes",
-                  $description : "Property or method."
-                }
-              }, {
-                $type : "json:FunctionRef",
-                $description : "Reference to a JavaScript function, the function should return an object that will be the prototype."
-              }]
-        },
+                    $type : "json:MultiTypes",
+                    $description : "Either a function or a map",
+                    $contentTypes : [{
+                                $type : "json:Map",
+                                $description : "Methods and properties in the prototype of the class.",
+                                $contentType : {
+                                    $type : "json:MultiTypes",
+                                    $description : "Property or method."
+                                }
+                            }, {
+                                $type : "json:FunctionRef",
+                                $description : "Reference to a JavaScript function, the function should return an object that will be the prototype."
+                            }]
+                },
                 "$constructor" : {
                     $type : "json:FunctionRef",
                     $description : "Constructor function to run when the object is created through the new statement."
