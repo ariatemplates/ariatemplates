@@ -703,7 +703,7 @@ Aria.classDefinition({
                 // call the error callback
                 if (cb.onerror == null) {
                     // Generic IO error mgt
-                    this.$logError(this.IO_REQUEST_FAILED, [res.error, res.url]);
+                    this.$logError(this.IO_REQUEST_FAILED, [res.url, res.error]);
                 } else {
                     var scope = cb.onerrorScope;
                     if (!scope) {
