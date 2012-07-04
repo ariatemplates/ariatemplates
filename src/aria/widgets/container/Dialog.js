@@ -159,7 +159,6 @@ Aria.classDefinition({
             var maxWidth = math.min(this._cfg.maxWidth, viewport.width);
             this._div = new aria.widgets.container.Div({
                 sclass : this._skinObj.divsclass,
-                block : true,
                 margins : "0 0 0 0",
                 cssClass : this._context.getCSSClassNames(true) + " " + this._cfg.cssClass,
                 height : this._cfg.height,
