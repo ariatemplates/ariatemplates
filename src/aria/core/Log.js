@@ -47,7 +47,7 @@
 Aria.classDefinition({
     $classpath : 'aria.core.Log',
     $singleton : true,
-    $dependencies : ["aria.core.log.DefaultAppender"],
+    $dependencies : ["aria.core.log.DefaultAppender", "aria.utils.String"],
     $statics : {
         /**
          * Debug log level
@@ -293,11 +293,7 @@ Aria.classDefinition({
          */
         prepareLoggedMessage : function (msg, msgArgs, errorContext) {
             if (msgArgs) {
-                if (typeof msgArgs == "string")
-                    msgArgs = [msgArgs];
-                msg = msg.replace(/%[0-9]+/g, function (token) {
-                    return msgArgs[parseInt(token.substring(1), 10) - 1];
-                });
+                msg = aria.utils.String.substitute(msg, msgArgs);
             }
             for (var error in errorContext) {
                 if (errorContext.hasOwnProperty(error)) {
