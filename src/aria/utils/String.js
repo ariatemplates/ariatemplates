@@ -25,17 +25,19 @@ Aria.classDefinition({
         /**
          * Substitute %n parameters in a string
          * @param {String} string The source string to substitue %n occurences in
-         * @param {Array} params The parameters to use for the substitution. Index 0 will replace %1, index 1, %2 and so on
+         * @param {Array|String} params The parameters to use for the substitution. Index 0 will replace %1, index 1, %2 and so on. If a string is passed, only %1 will be replaced
          * @return {String} The final string, with %n occurences replaced with their equivalent
          */
         substitute : function(string, params) {
-            if (aria.utils.Type.isArray(params)) {
-                string = string.replace(/%[0-9]+/g, function (token) {
-                    return params[parseInt(token.substring(1), 10) - 1];
-                });
-            } else {
-                this.$logError("Please provide an array of parameters to the substitute function");
+            if (!aria.utils.Type.isArray(params)) {
+                params = [params];
             }
+
+            string = string.replace(/%[0-9]+/g, function (token) {
+                var replacement = params[parseInt(token.substring(1), 10) - 1];
+                return typeof replacement !== "undefined" ? replacement : token;
+            });
+
             return string;
         },
 
