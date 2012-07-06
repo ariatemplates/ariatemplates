@@ -1,16 +1,10 @@
 /*
- * Copyright 2012 Amadeus s.a.s.
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Copyright 2012 Amadeus s.a.s. Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0 Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied. See the License for the specific language governing permissions and limitations under the
+ * License.
  */
 
 /**
@@ -862,7 +856,9 @@ Aria.classDefinition({
         },
 
         /**
-         * Given a position + size couple, return a corrected position that should fit in the viewport
+         * Given a position + size couple, return a corrected position that should fit in the viewport. If the size is
+         * bigger than the vieport it returns a position such that the top left corner of the element to be fit is in
+         * the viewport.
          * @param {aria.utils.DomBeans.Position} position
          * @param {aria.utils.DomBeans.Size} size
          * @param {Object} base The base element used to account for scrolling offsets
@@ -873,11 +869,11 @@ Aria.classDefinition({
             var documentScroll = this._getDocumentScroll(base);
 
             var minTopValue = documentScroll.scrollTop;
-            var maxTopValue = documentScroll.scrollTop + viewportSize.height - size.height;
+            var maxTopValue = Math.max(0, documentScroll.scrollTop + viewportSize.height - size.height);
             var top = aria.utils.Math.normalize(position.top, minTopValue, maxTopValue);
 
             var minLeftValue = documentScroll.scrollLeft;
-            var maxLeftValue = documentScroll.scrollLeft + viewportSize.width - size.width;
+            var maxLeftValue = Math.max(0, documentScroll.scrollLeft + viewportSize.width - size.width);
             var left = aria.utils.Math.normalize(position.left, minLeftValue, maxLeftValue);
 
             return {
