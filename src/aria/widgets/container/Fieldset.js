@@ -22,6 +22,12 @@ Aria.classDefinition({
     $extends : "aria.widgets.container.Container",
     $dependencies : ["aria.utils.Function", "aria.DomEvent", "aria.widgets.frames.FrameFactory", "aria.utils.String"],
     $css : ["aria.widgets.container.FieldsetStyle"],
+
+    /**
+     * Fieldset constructor
+     * @param {aria.widgets.CfgBeans.FieldsetCfg} cfg the widget configuration
+     * @param {aria.templates.TemplateCtxt} ctxt template context
+     */
     $constructor : function (cfg, ctxt) {
         this.$Container.constructor.apply(this, arguments);
         if (!this._frame) {
