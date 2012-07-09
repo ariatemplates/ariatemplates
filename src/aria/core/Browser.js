@@ -62,6 +62,12 @@ Aria.classDefinition({
         this.isIE9 = false;
 
         /**
+         * True if the browser is Internet Explorer 10.
+         * @type Boolean
+         */
+        this.isIE10 = false;
+
+        /**
          * True if the browser is any version of Opera.
          * @type Boolean
          */
@@ -192,26 +198,15 @@ Aria.classDefinition({
                         // (which defines how the browser really
                         // reacts), NOT the browser mode (how the browser says
                         // it reacts, through conditional comments
-                        // and ua string)
-                        // For this, we use a trick: defineProperty is not
-                        // defined in IE 7, it is buggy in IE 8 and it
-                        // works well in IE 9
+                        // and ua string).
+                        //
+                        // In IE7 document.documentMode is undefined. For IE8+
+                        // (also in document mode emulating IE7) it is defined.
 
-                        if (Object.defineProperty) {
-                            try {
-                                var testVar = {};
-                                Object.defineProperty(testVar, "a", {
-                                    get : function () {}
-                                });
-                                // defineProperty exists and works: IE 9
-                                detectedIEVersion = 9;
-                            } catch (e) {
-                                // defineProperty exists but does not work: IE 8
-                                detectedIEVersion = 8;
-                            }
-                        } else {
-                            // defineProperty does not exist: IE 7
+                        if (typeof(document.documentMode) === "undefined") {
                             detectedIEVersion = 7;
+                        } else {
+                            detectedIEVersion = document.documentMode;
                         }
                         this["isIE" + detectedIEVersion] = true;
                         if (detectedIEVersion != ieVersion) {
