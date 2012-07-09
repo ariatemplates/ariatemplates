@@ -27,6 +27,7 @@
                 callback : callback
             };
         };
+        this.$dispose = Aria.empty;
     }
 
     /**
