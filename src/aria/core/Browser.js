@@ -189,8 +189,6 @@ Aria.classDefinition({
                     if (ieVersion == 6) {
                         this.isIE6 = true;
                     } else if (ieVersion >= 7) {
-                        var detectedIEVersion;
-
                         // PTR 05207453
                         // With compatibility view, it can become tricky to
                         // detect the version.
@@ -201,13 +199,11 @@ Aria.classDefinition({
                         // and ua string).
                         //
                         // In IE7 document.documentMode is undefined. For IE8+
-                        // (also in document mode emulating IE7) it is defined.
+                        // (also in document modes emulating IE7) it is defined
+                        // and readonly.
 
-                        if (typeof(document.documentMode) === "undefined") {
-                            detectedIEVersion = 7;
-                        } else {
-                            detectedIEVersion = document.documentMode;
-                        }
+                        var document = Aria.$frameworkWindow.document;
+                        var detectedIEVersion = document.documentMode || 7;
                         this["isIE" + detectedIEVersion] = true;
                         if (detectedIEVersion != ieVersion) {
                             // the browser is not what it claims to be!
