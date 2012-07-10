@@ -186,6 +186,12 @@
             "TEXTAREA" : "rw"
         },
         "namespaceURI" : "r-",
+        "naturalWidth" : {
+            "IMG" : "r-"
+        },
+        "naturalHeight" : {
+            "IMG" : "r-"
+        },
         "nodeName" : "r-",
         "nodeType" : "r-",
         "nodeValue" : "r-",
