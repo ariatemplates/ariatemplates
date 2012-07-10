@@ -22,6 +22,24 @@ Aria.classDefinition({
     $dependencies : ["aria.utils.Type", "aria.utils.Json"],
     $constructor : function () {},
     $prototype : {
+        /**
+         * Substitute %n parameters in a string
+         * @param {String} string The source string to substitue %n occurences in
+         * @param {Array|String} params The parameters to use for the substitution. Index 0 will replace %1, index 1, %2 and so on. If a string is passed, only %1 will be replaced
+         * @return {String} The final string, with %n occurences replaced with their equivalent
+         */
+        substitute : function(string, params) {
+            if (!aria.utils.Type.isArray(params)) {
+                params = [params];
+            }
+
+            string = string.replace(/%[0-9]+/g, function (token) {
+                var replacement = params[parseInt(token.substring(1), 10) - 1];
+                return typeof replacement !== "undefined" ? replacement : token;
+            });
+
+            return string;
+        },
 
         /**
          * Trim a String (remove trailing and leading white spaces)
@@ -221,17 +239,17 @@ Aria.classDefinition({
          * @param {Boolean} begin If true chunks are created from right to left. Default false
          * @return {Array} List of chunks. Calling join('') on this array always returns the initial string.
          * @example
-         * 
+         *
          * <pre>
          * chunk('abcdefg', 3, true);
          * ['abc', 'def', 'g']
-         * 
+         *
          * chunk('abcdefg', 3, false);
          * ['a', 'bcd', 'efg']
-         * 
+         *
          * chunk('abcdefg', [1, 2], true);
          * ['ab', 'c', 'defg']
-         * 
+         *
          * chunk('abcdefg', [1, 2], false);
          * ['abcd', 'e', 'fg']
          * </pre>
