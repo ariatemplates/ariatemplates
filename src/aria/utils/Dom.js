@@ -758,9 +758,11 @@ Aria.classDefinition({
          * @param {String} property The CSS property to retrieve
          */
         getStyle : function (element, property) {
-            if (aria.core.Browser.isIE) {
+            var browser = aria.core.Browser;
+            if (browser.isIE) {
+                var isIE8orLess = browser.isIE8 || browser.isIE7 || browser.isIE6;
                 this.getStyle = function (element, property) {
-                    if (property == 'opacity') {// IE opacity uses filter
+                    if (isIE8orLess && property == 'opacity') {// IE<=8 opacity uses filter
                         var val = 100;
                         try { // will error if no DXImageTransform
                             val = element.filters['DXImageTransform.Microsoft.Alpha'].opacity;
@@ -1058,27 +1060,29 @@ Aria.classDefinition({
          * @param {Number} opacity must be between 0 and 1
          */
         setOpacity : function (element, opacity) {
-            this.setOpacity = (aria.core.Browser.isIE) ? this._setOpacityOnIE : this._setOpacityOnOthers;
+            var browser = aria.core.Browser;
+            var isIE8OrLess = (browser.isIE8 || browser.isIE7 || browser.isIE6);
+            this.setOpacity = isIE8OrLess ? this._setOpacityLegacyIE : this._setOpacityW3C;
             this.setOpacity(element, opacity);
         },
 
         /**
-         * Set the opacity of an element on IE
+         * Set the opacity of an element on IE<=8
          * @private
          * @param {HTMLElement} element
          * @param {Number} opacity must be between 0 and 1
          */
-        _setOpacityOnIE : function (element, opacity) {
+        _setOpacityLegacyIE : function (element, opacity) {
             element.style.cssText += ";filter:alpha(opacity=" + (opacity * 100) + ");";
         },
 
         /**
-         * Set the opacity of an element on browsers different from IE
+         * Set the opacity of an element on modern browsers (IE9+ and non-IE)
          * @private
          * @param {HTMLElement} element
          * @param {Number} opacity must be between 0 and 1
          */
-        _setOpacityOnOthers : function (element, opacity) {
+        _setOpacityW3C : function (element, opacity) {
             element.style.opacity = opacity;
         }
     }
