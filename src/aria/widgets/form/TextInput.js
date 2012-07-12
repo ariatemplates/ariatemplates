@@ -267,7 +267,7 @@ Aria.classDefinition({
 
                 ].join(''));
             } else {
-                out.write(['<input', Aria.testMode ? ' id="' + this._domId + '_input"' : '',
+                out.write(['<input class="xTextInputInput" ', Aria.testMode ? ' id="' + this._domId + '_input"' : '',
                         cfg.disabled ? ' disabled="disabled"' : cfg.readOnly ? ' readonly="readonly"' : '', ' type="',
                         type, '" style="', inlineStyle.join(''), 'color:', color, ';width:', inputWidth, 'px;"',
                         'value="', stringUtils.encodeForQuotedHTMLAttribute((this._helpTextSet) ? cfg.helptext : text),
