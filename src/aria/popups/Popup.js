@@ -389,10 +389,11 @@ Aria.classDefinition({
          */
         _getFreeSize : function () {
             var domElement = this.domElement;
+            var browser = aria.core.Browser;
             domElement.style.cssText = "position:absolute;top:-15000px;left:-15000px;visibility:hidden;display:block;";
 
             // PTR05398297: fixes rounding issue in IE9 for offsetWidth.
-            var width = (aria.core.Browser.isIE9) ? domElement.offsetWidth + 1 : domElement.offsetWidth;
+            var width = (browser.isIE9 || browser.isIE10) ? domElement.offsetWidth + 1 : domElement.offsetWidth;
             return {
                 width : width,
                 height : domElement.offsetHeight
