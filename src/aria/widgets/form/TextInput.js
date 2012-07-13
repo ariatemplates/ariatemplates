@@ -259,7 +259,7 @@ Aria.classDefinition({
                 out.write(['<textarea', Aria.testMode ? ' id="' + this._domId + '_textarea"' : '',
                         cfg.disabled ? ' disabled="disabled"' : cfg.readOnly ? ' readonly="readonly"' : '', ' type="',
                         type, '" style="', inlineStyle.join(''), 'color:', color,
-                        ';resize:none;height: ' + this._frame.innerHeight + 'px; width:', inputWidth, 'px;"',
+                        ';overflow:auto;resize:none;height: ' + this._frame.innerHeight + 'px; width:', inputWidth, 'px;"',
                         'value=""', (cfg.maxlength > -1 ? 'maxlength="' + cfg.maxlength + '" ' : ' '),
                         (cfg.tabIndex != null ? 'tabindex="' + this._calculateTabIndex() + '" ' : ' '), spellCheck,
                         '>', stringUtils.encodeForQuotedHTMLAttribute((this._helpTextSet) ? cfg.helptext : text),
