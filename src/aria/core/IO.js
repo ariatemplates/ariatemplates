@@ -740,11 +740,41 @@ Aria.classDefinition({
                     }
                 }
 
-                cb.fn.call(cb.scope, res, cb.args);
-            }
-            req = cb = null;
-        },
+                 var callback = cb.fn, scope = cb.scope;
+					if (cb.resIndex != undefined){
+						if (cb.args && cb.args.constructor == Array) {
+							if ( cb.resIndex == -1) {
+								return callback.apply(scope, cb.args);
+							} else {
+								cb.args.splice(cb.resIndex, 0, res);
+								return callback.apply(scope, cb.args);
+							}
+						}
+						if (cb.args && cb.args.constructor == Object) {
+							if ( cb.resIndex == -1) {
+								return callback.call(scope, cb.args);
+							} else if (cb.resIndex == 0) {
+									return callback.apply(scope, [res, cb.args]);
+							} else {
+							  return callback.apply(scope, [cb.args, res]);
+							}						
+						} else {
+							return callback.call(scope, res, cb.args);
+						}
+					} else {// fallback
+						return callback.call(scope, res, cb.args);
+					}
 
+					if (cb.args && cb.args.constructor == Array) {
+						cb.args.push(res);
+						cb.fn.apply(cb.scope, cb.args);
+					} else {
+						cb.fn.call(cb.scope, res, cb.args);
+					}
+			}
+			req = cb = null;
+		},
+		
         /**
          * Internal callback called in case of errors
          * @param {Res or timerCallbackArgs} o

@@ -1,0 +1,2434 @@
+
+
+aria/Aria.js jshint results
+=========================================
+
+line 630, col 20, Use '===' to compare with ''.
+line 1466, col 30, Use '===' to compare with ''.
+
+
+aria/bootstrap.js jshint results
+=========================================
+
+
+
+aria/core/AppEnvironment.js jshint results
+=========================================
+
+line 62, col 33, Use '===' to compare with '0'.
+
+
+aria/core/BaseTypes.js jshint results
+=========================================
+
+
+
+aria/core/Browser.js jshint results
+=========================================
+
+
+
+aria/core/Cache.js jshint results
+=========================================
+
+line 83, col 30, Use '!==' to compare with 'true'.
+
+
+aria/core/CfgBeans.js jshint results
+=========================================
+
+
+
+aria/core/ClassLoader.js jshint results
+=========================================
+
+line 200, col 21, Use '===' to compare with 'false'.
+line 298, col 34, Use '!==' to compare with ''.
+line 343, col 38, Use '!==' to compare with ''.
+
+
+aria/core/ClassMgr.js jshint results
+=========================================
+
+
+
+aria/core/CSSClassLoader.js jshint results
+=========================================
+
+
+
+aria/core/DownloadMgr.js jshint results
+=========================================
+
+
+
+aria/core/environment/Customizations.js jshint results
+=========================================
+
+
+
+aria/core/environment/CustomizationsCfgBeans.js jshint results
+=========================================
+
+
+
+aria/core/environment/Environment.js jshint results
+=========================================
+
+
+
+aria/core/environment/EnvironmentBase.js jshint results
+=========================================
+
+
+
+aria/core/environment/EnvironmentBaseCfgBeans.js jshint results
+=========================================
+
+
+
+aria/core/FileLoader.js jshint results
+=========================================
+
+
+
+aria/core/Interfaces.js jshint results
+=========================================
+
+
+
+aria/core/IO.js jshint results
+=========================================
+
+
+
+aria/core/IOFilter.js jshint results
+=========================================
+
+
+
+aria/core/IOFiltersMgr.js jshint results
+=========================================
+
+line 263, col 48, Use '===' to compare with '0'.
+
+
+aria/core/JsClassLoader.js jshint results
+=========================================
+
+
+
+aria/core/JsObject.js jshint results
+=========================================
+
+line 69, col 28, Use '===' to compare with '0'.
+line 800, col 58, Use '===' to compare with '0'.
+
+
+aria/core/JsonTypes.js jshint results
+=========================================
+
+
+
+aria/core/JsonTypesCheck.js jshint results
+=========================================
+
+line 142, col 30, Use '!==' to compare with 'undefined'.
+line 149, col 30, Use '!==' to compare with 'undefined'.
+line 284, col 56, Use '===' to compare with '0'.
+line 554, col 47, Use '===' to compare with '0'.
+
+
+aria/core/JsonValidator.js jshint results
+=========================================
+
+line 231, col 35, Use '===' to compare with '0'.
+line 354, col 62, Use '===' to compare with ''.
+line 390, col 67, Use '!==' to compare with ''.
+line 439, col 44, Use '===' to compare with 'true'.
+
+
+aria/core/log/AjaxAppender.js jshint results
+=========================================
+
+
+
+aria/core/log/DefaultAppender.js jshint results
+=========================================
+
+
+
+aria/core/log/DivAppender.js jshint results
+=========================================
+
+
+
+aria/core/log/SilentArrayAppender.js jshint results
+=========================================
+
+line 34, col 37, Use '===' to compare with '0'.
+
+
+aria/core/log/WindowAppender.js jshint results
+=========================================
+
+
+
+aria/core/Log.js jshint results
+=========================================
+
+line 204, col 30, Use '!==' to compare with 'undefined'.
+
+
+aria/core/MultiLoader.js jshint results
+=========================================
+
+line 37, col 42, Use '!==' to compare with 'false'.
+line 63, col 24, Use '===' to compare with 'false'.
+line 63, col 42, Use '===' to compare with 'false'.
+line 63, col 61, Use '===' to compare with 'false'.
+line 63, col 80, Use '===' to compare with 'false'.
+line 63, col 99, Use '===' to compare with 'false'.
+line 64, col 30, Use '===' to compare with 'false'.
+
+
+aria/core/ResClassLoader.js jshint results
+=========================================
+
+
+
+aria/core/ResMgr.js jshint results
+=========================================
+
+
+
+aria/core/Sequencer.js jshint results
+=========================================
+
+line 98, col 88, Use '===' to compare with ''.
+line 182, col 35, Use '!==' to compare with 'true'.
+line 202, col 27, Use '!==' to compare with 'true'.
+line 218, col 27, Use '===' to compare with 'true'.
+
+
+aria/core/Timer.js jshint results
+=========================================
+
+
+
+aria/core/TmlClassLoader.js jshint results
+=========================================
+
+
+
+aria/core/TplClassLoader.js jshint results
+=========================================
+
+
+
+aria/core/transport/BaseXHR.js jshint results
+=========================================
+
+
+
+aria/core/transport/IFrame.js jshint results
+=========================================
+
+
+
+aria/core/transport/ITransports.js jshint results
+=========================================
+
+
+
+aria/core/transport/JsonP.js jshint results
+=========================================
+
+
+
+aria/core/transport/Local.js jshint results
+=========================================
+
+
+
+aria/core/transport/XDR.js jshint results
+=========================================
+
+
+
+aria/core/transport/XHR.js jshint results
+=========================================
+
+
+
+aria/core/TxtClassLoader.js jshint results
+=========================================
+
+
+
+aria/css/atskin.js jshint results
+=========================================
+
+
+
+aria/dom/DomReady.js jshint results
+=========================================
+
+
+
+aria/DomEvent.js jshint results
+=========================================
+
+line 244, col 41, Use '===' to compare with '0'.
+
+
+aria/embed/CfgBeans.js jshint results
+=========================================
+
+
+
+aria/embed/controllers/MapController.js jshint results
+=========================================
+
+
+
+aria/embed/Element.js jshint results
+=========================================
+
+
+
+aria/embed/EmbedLib.js jshint results
+=========================================
+
+
+
+aria/embed/IContentProvider.js jshint results
+=========================================
+
+
+
+aria/embed/IEmbedController.js jshint results
+=========================================
+
+
+
+aria/embed/Map.js jshint results
+=========================================
+
+
+
+aria/embed/Placeholder.js jshint results
+=========================================
+
+
+
+aria/embed/PlaceholderManager.js jshint results
+=========================================
+
+line 58, col 33, Use '===' to compare with '0'.
+
+
+aria/ext/filesgenerator/Generator.js jshint results
+=========================================
+
+
+
+aria/ext/filesgenerator/GeneratorBeans.js jshint results
+=========================================
+
+
+
+aria/ext/StressCss.js jshint results
+=========================================
+
+
+
+aria/html/beans/AutoCompleteCfg.js jshint results
+=========================================
+
+
+
+aria/html/beans/ElementCfg.js jshint results
+=========================================
+
+
+
+aria/html/beans/TemplateCfg.js jshint results
+=========================================
+
+
+
+aria/html/beans/TextInputCfg.js jshint results
+=========================================
+
+
+
+aria/html/controllers/Suggestions.js jshint results
+=========================================
+
+
+
+aria/html/Element.js jshint results
+=========================================
+
+
+
+aria/html/HtmlLibrary.js jshint results
+=========================================
+
+
+
+aria/html/Template.js jshint results
+=========================================
+
+
+
+aria/html/TextInput.js jshint results
+=========================================
+
+
+
+aria/jsunit/AppletWorker.js jshint results
+=========================================
+
+
+
+aria/jsunit/Assert.js jshint results
+=========================================
+
+line 241, col 52, Use '!==' to compare with 'false'.
+line 540, col 53, Use '===' to compare with '0'.
+
+
+aria/jsunit/ConnectionSession.js jshint results
+=========================================
+
+
+
+aria/jsunit/helpers/OutObj.js jshint results
+=========================================
+
+
+
+aria/jsunit/IOViewer.js jshint results
+=========================================
+
+
+
+aria/jsunit/JsCoverage.js jshint results
+=========================================
+
+line 96, col 60, Use '!==' to compare with '0'.
+
+
+aria/jsunit/JsCoverageObject.js jshint results
+=========================================
+
+
+
+aria/jsunit/JsCoverageReport.js jshint results
+=========================================
+
+
+
+aria/jsunit/JsCoverageStore.js jshint results
+=========================================
+
+
+
+aria/jsunit/LayoutTester.js jshint results
+=========================================
+
+line 128, col 30, Use '===' to compare with '0'.
+line 128, col 52, Use '===' to compare with '0'.
+line 145, col 51, Use '!==' to compare with ''.
+line 158, col 42, Use '!==' to compare with ''.
+line 158, col 77, Use '!==' to compare with ''.
+line 158, col 115, Use '!==' to compare with ''.
+line 159, col 54, Use '!==' to compare with ''.
+line 159, col 95, Use '!==' to compare with ''.
+line 160, col 55, Use '!==' to compare with ''.
+line 161, col 50, Use '!==' to compare with ''.
+line 162, col 55, Use '!==' to compare with ''.
+line 162, col 139, Use '!==' to compare with ''.
+line 201, col 34, Use '!==' to compare with ''.
+
+
+aria/jsunit/ModuleCtrlTestCase.js jshint results
+=========================================
+
+
+
+aria/jsunit/NewTestRunner.js jshint results
+=========================================
+
+
+
+aria/jsunit/Robot.js jshint results
+=========================================
+
+
+
+aria/jsunit/ScreenCapture.js jshint results
+=========================================
+
+
+
+aria/jsunit/SikuliTestCase.js jshint results
+=========================================
+
+
+
+aria/jsunit/SonarReport.js jshint results
+=========================================
+
+
+
+aria/jsunit/SynEvents.js jshint results
+=========================================
+
+
+
+aria/jsunit/TemplateTestCase.js jshint results
+=========================================
+
+
+
+aria/jsunit/TemplateUITestCase.js jshint results
+=========================================
+
+
+
+aria/jsunit/Test.js jshint results
+=========================================
+
+
+
+aria/jsunit/TestacularReport.js jshint results
+=========================================
+
+line 84, col 61, Use '===' to compare with '0'.
+line 84, col 100, Use '===' to compare with '0'.
+
+
+aria/jsunit/TestCase.js jshint results
+=========================================
+
+line 183, col 35, Use '!==' to compare with 'true'.
+line 184, col 79, Use '===' to compare with 'true'.
+line 247, col 27, Use '!==' to compare with 'false'.
+
+
+aria/jsunit/TestCommunicator.js jshint results
+=========================================
+
+
+
+aria/jsunit/TestEngine.js jshint results
+=========================================
+
+line 173, col 20, Use '===' to compare with '0'.
+
+
+aria/jsunit/TestMsgHandler.js jshint results
+=========================================
+
+
+
+aria/jsunit/TestReport.js jshint results
+=========================================
+
+line 56, col 35, Use '===' to compare with '0'.
+
+
+aria/jsunit/TestRunner.js jshint results
+=========================================
+
+line 158, col 69, Use '===' to compare with '0'.
+line 158, col 101, Use '===' to compare with '0'.
+
+
+aria/jsunit/TestSuite.js jshint results
+=========================================
+
+line 86, col 39, Use '===' to compare with '0'.
+line 141, col 35, Use '===' to compare with '0'.
+
+
+aria/jsunit/TestWrapper.js jshint results
+=========================================
+
+line 146, col 64, Use '!==' to compare with '0'.
+
+
+aria/jsunit/UITestCase.js jshint results
+=========================================
+
+
+
+aria/jsunit/WidgetTestCase.js jshint results
+=========================================
+
+
+
+aria/map/CfgBeans.js jshint results
+=========================================
+
+
+
+aria/map/MapManager.js jshint results
+=========================================
+
+
+
+aria/map/providers/Microsoft7MapProvider.js jshint results
+=========================================
+
+
+
+aria/modules/environment/Environment.js jshint results
+=========================================
+
+
+
+aria/modules/environment/EnvironmentCfgBeans.js jshint results
+=========================================
+
+
+
+aria/modules/queuing/SimpleSessionQueuing.js jshint results
+=========================================
+
+
+
+aria/modules/RequestBeans.js jshint results
+=========================================
+
+
+
+aria/modules/requestHandler/environment/RequestHandler.js jshint results
+=========================================
+
+
+
+aria/modules/requestHandler/environment/RequestHandlerCfgBeans.js jshint results
+=========================================
+
+
+
+aria/modules/requestHandler/IRequestHandler.js jshint results
+=========================================
+
+
+
+aria/modules/requestHandler/JSONRequestHandler.js jshint results
+=========================================
+
+
+
+aria/modules/requestHandler/RequestHandler.js jshint results
+=========================================
+
+
+
+aria/modules/requestHandler/XMLRequestHandler.js jshint results
+=========================================
+
+
+
+aria/modules/RequestMgr.js jshint results
+=========================================
+
+
+
+aria/modules/urlService/environment/UrlService.js jshint results
+=========================================
+
+
+
+aria/modules/urlService/environment/UrlServiceCfgBeans.js jshint results
+=========================================
+
+
+
+aria/modules/urlService/IUrlService.js jshint results
+=========================================
+
+
+
+aria/modules/urlService/PatternURLCreationImpl.js jshint results
+=========================================
+
+
+
+aria/popups/Beans.js jshint results
+=========================================
+
+
+
+aria/popups/Popup.js jshint results
+=========================================
+
+
+
+aria/popups/PopupManager.js jshint results
+=========================================
+
+line 320, col 46, Use '===' to compare with '0'.
+line 403, col 42, Use '===' to compare with '0'.
+line 425, col 42, Use '===' to compare with '0'.
+
+
+aria/resources/CalendarRes.js jshint results
+=========================================
+
+
+
+aria/resources/CalendarRes_cn_CN.js jshint results
+=========================================
+
+
+
+aria/resources/CalendarRes_da_DK.js jshint results
+=========================================
+
+
+
+aria/resources/CalendarRes_de_DE.js jshint results
+=========================================
+
+
+
+aria/resources/CalendarRes_en_GB.js jshint results
+=========================================
+
+
+
+aria/resources/CalendarRes_en_US.js jshint results
+=========================================
+
+
+
+aria/resources/CalendarRes_es_ES.js jshint results
+=========================================
+
+
+
+aria/resources/CalendarRes_fi_FI.js jshint results
+=========================================
+
+
+
+aria/resources/CalendarRes_fr_FR.js jshint results
+=========================================
+
+
+
+aria/resources/CalendarRes_is_IS.js jshint results
+=========================================
+
+
+
+aria/resources/CalendarRes_it_IT.js jshint results
+=========================================
+
+
+
+aria/resources/CalendarRes_ja_JP.js jshint results
+=========================================
+
+
+
+aria/resources/CalendarRes_ko_KO.js jshint results
+=========================================
+
+
+
+aria/resources/CalendarRes_nl_NL.js jshint results
+=========================================
+
+
+
+aria/resources/CalendarRes_no_NO.js jshint results
+=========================================
+
+
+
+aria/resources/CalendarRes_pl_PL.js jshint results
+=========================================
+
+
+
+aria/resources/CalendarRes_pt_BR.js jshint results
+=========================================
+
+
+
+aria/resources/CalendarRes_pt_PT.js jshint results
+=========================================
+
+
+
+aria/resources/CalendarRes_ru_RU.js jshint results
+=========================================
+
+
+
+aria/resources/CalendarRes_sp_AR.js jshint results
+=========================================
+
+
+
+aria/resources/CalendarRes_sv_SE.js jshint results
+=========================================
+
+
+
+aria/resources/CalendarRes_th_TH.js jshint results
+=========================================
+
+
+
+aria/resources/CalendarRes_tr_TR.js jshint results
+=========================================
+
+
+
+aria/resources/CalendarRes_tw_TW.js jshint results
+=========================================
+
+
+
+aria/resources/DateRes.js jshint results
+=========================================
+
+
+
+aria/resources/DateRes_cn_CN.js jshint results
+=========================================
+
+
+
+aria/resources/DateRes_da_DK.js jshint results
+=========================================
+
+
+
+aria/resources/DateRes_de_DE.js jshint results
+=========================================
+
+
+
+aria/resources/DateRes_en_GB.js jshint results
+=========================================
+
+
+
+aria/resources/DateRes_en_US.js jshint results
+=========================================
+
+
+
+aria/resources/DateRes_es_ES.js jshint results
+=========================================
+
+
+
+aria/resources/DateRes_fi_FI.js jshint results
+=========================================
+
+
+
+aria/resources/DateRes_fr_FR.js jshint results
+=========================================
+
+
+
+aria/resources/DateRes_is_IS.js jshint results
+=========================================
+
+
+
+aria/resources/DateRes_it_IT.js jshint results
+=========================================
+
+
+
+aria/resources/DateRes_ja_JP.js jshint results
+=========================================
+
+
+
+aria/resources/DateRes_ko_KO.js jshint results
+=========================================
+
+
+
+aria/resources/DateRes_nl_NL.js jshint results
+=========================================
+
+
+
+aria/resources/DateRes_no_NO.js jshint results
+=========================================
+
+
+
+aria/resources/DateRes_pl_PL.js jshint results
+=========================================
+
+
+
+aria/resources/DateRes_pt_BR.js jshint results
+=========================================
+
+line 67, col 21, Unsafe character.
+
+
+aria/resources/DateRes_pt_PT.js jshint results
+=========================================
+
+
+
+aria/resources/DateRes_ru_RU.js jshint results
+=========================================
+
+
+
+aria/resources/DateRes_sp_AR.js jshint results
+=========================================
+
+
+
+aria/resources/DateRes_sv_SE.js jshint results
+=========================================
+
+
+
+aria/resources/DateRes_th_TH.js jshint results
+=========================================
+
+
+
+aria/resources/DateRes_tk_TK.js jshint results
+=========================================
+
+
+
+aria/resources/DateRes_tr_TR.js jshint results
+=========================================
+
+
+
+aria/resources/DateRes_tw_TW.js jshint results
+=========================================
+
+
+
+aria/resources/handlers/IResourcesHandler.js jshint results
+=========================================
+
+
+
+aria/resources/handlers/LCResourcesHandler.js jshint results
+=========================================
+
+
+
+aria/resources/handlers/LCResourcesHandlerBean.js jshint results
+=========================================
+
+
+
+aria/storage/AbstractStorage.js jshint results
+=========================================
+
+
+
+aria/storage/Beans.js jshint results
+=========================================
+
+
+
+aria/storage/EventBus.js jshint results
+=========================================
+
+
+
+aria/storage/HTML5Storage.js jshint results
+=========================================
+
+
+
+aria/storage/IStorage.js jshint results
+=========================================
+
+
+
+aria/storage/LocalStorage.js jshint results
+=========================================
+
+
+
+aria/storage/SessionStorage.js jshint results
+=========================================
+
+
+
+aria/storage/UserData.js jshint results
+=========================================
+
+
+
+aria/templates/BaseCtxt.js jshint results
+=========================================
+
+line 154, col 29, Use '===' to compare with '0'.
+
+
+aria/templates/BaseTemplate.js jshint results
+=========================================
+
+
+
+aria/templates/CfgBeans.js jshint results
+=========================================
+
+
+
+aria/templates/ClassGenerator.js jshint results
+=========================================
+
+
+
+aria/templates/ClassWriter.js jshint results
+=========================================
+
+
+
+aria/templates/CSSClassGenerator.js jshint results
+=========================================
+
+
+
+aria/templates/CSSCtxt.js jshint results
+=========================================
+
+
+
+aria/templates/CSSCtxtManager.js jshint results
+=========================================
+
+
+
+aria/templates/CSSMgr.js jshint results
+=========================================
+
+
+
+aria/templates/CSSParser.js jshint results
+=========================================
+
+line 82, col 38, Use '===' to compare with '0'.
+line 109, col 38, Use '===' to compare with '0'.
+
+
+aria/templates/CSSTemplate.js jshint results
+=========================================
+
+
+
+aria/templates/DomElementWrapper.js jshint results
+=========================================
+
+
+
+aria/templates/DomEventWrapper.js jshint results
+=========================================
+
+
+
+aria/templates/FlowCtrl.js jshint results
+=========================================
+
+
+
+aria/templates/IBaseTemplate.js jshint results
+=========================================
+
+
+
+aria/templates/ICSS.js jshint results
+=========================================
+
+
+
+aria/templates/IFlowCtrl.js jshint results
+=========================================
+
+
+
+aria/templates/IModuleCtrl.js jshint results
+=========================================
+
+
+
+aria/templates/IObjectLoading.js jshint results
+=========================================
+
+
+
+aria/templates/ITemplate.js jshint results
+=========================================
+
+
+
+aria/templates/ITemplateCtxt.js jshint results
+=========================================
+
+
+
+aria/templates/Layout.js jshint results
+=========================================
+
+line 65, col 66, Use '===' to compare with '0'.
+line 242, col 36, Use '===' to compare with '0'.
+
+
+aria/templates/MarkupWriter.js jshint results
+=========================================
+
+
+
+aria/templates/Modifiers.js jshint results
+=========================================
+
+line 99, col 38, Use '===' to compare with 'true'.
+line 220, col 52, Use '===' to compare with 'undefined'.
+line 220, col 87, Use '===' to compare with ''.
+
+
+aria/templates/ModuleCtrl.js jshint results
+=========================================
+
+
+
+aria/templates/ModuleCtrlFactory.js jshint results
+=========================================
+
+line 497, col 39, Use '===' to compare with '0'.
+
+
+aria/templates/NavigationManager.js jshint results
+=========================================
+
+line 93, col 60, Confusing use of '!'.
+line 93, col 83, Confusing use of '!'.
+line 94, col 29, Confusing use of '!'.
+line 94, col 54, Confusing use of '!'.
+line 94, col 77, Confusing use of '!'.
+line 94, col 101, Confusing use of '!'.
+line 227, col 38, Use '===' to compare with 'false'.
+line 315, col 37, Confusing use of '!'.
+line 315, col 73, Confusing use of '!'.
+line 316, col 42, Confusing use of '!'.
+
+
+aria/templates/ObjectLoading.js jshint results
+=========================================
+
+
+
+aria/templates/Parser.js jshint results
+=========================================
+
+line 328, col 42, Use '===' to compare with '0'.
+
+
+aria/templates/PublicWrapper.js jshint results
+=========================================
+
+
+
+aria/templates/RefreshManager.js jshint results
+=========================================
+
+
+
+aria/templates/Repeater.js jshint results
+=========================================
+
+
+
+aria/templates/Section.js jshint results
+=========================================
+
+line 262, col 40, Use '!==' to compare with 'true'.
+line 920, col 58, Use '!==' to compare with 'true'.
+line 941, col 58, Use '===' to compare with 'true'.
+
+
+aria/templates/SectionWrapper.js jshint results
+=========================================
+
+
+
+aria/templates/Statements.js jshint results
+=========================================
+
+line 71, col 78, Use '!==' to compare with ''.
+
+
+aria/templates/Template.js jshint results
+=========================================
+
+
+
+aria/templates/TemplateCtxt.js jshint results
+=========================================
+
+
+
+aria/templates/TemplateCtxtManager.js jshint results
+=========================================
+
+
+
+aria/templates/TemplateManager.js jshint results
+=========================================
+
+
+
+aria/templates/TemplateTrait.js jshint results
+=========================================
+
+line 79, col 42, Use '===' to compare with 'false'.
+
+
+aria/templates/TextTemplate.js jshint results
+=========================================
+
+
+
+aria/templates/TmlClassGenerator.js jshint results
+=========================================
+
+
+
+aria/templates/TplClassGenerator.js jshint results
+=========================================
+
+
+
+aria/templates/TplParser.js jshint results
+=========================================
+
+
+
+aria/templates/TreeBeans.js jshint results
+=========================================
+
+
+
+aria/templates/TxtClassGenerator.js jshint results
+=========================================
+
+
+
+aria/templates/TxtCtxt.js jshint results
+=========================================
+
+
+
+aria/templates/TxtParser.js jshint results
+=========================================
+
+
+
+aria/templates/View.js jshint results
+=========================================
+
+
+
+aria/templates/ViewCfgBeans.js jshint results
+=========================================
+
+
+
+aria/tester/runner/appenders/JsonTextDivAppender.js jshint results
+=========================================
+
+
+
+aria/tester/runner/BaseFlow.js jshint results
+=========================================
+
+
+
+aria/tester/runner/datamodel/DataDefinitions.js jshint results
+=========================================
+
+
+
+aria/tester/runner/ModuleController.js jshint results
+=========================================
+
+line 320, col 92, Use '===' to compare with '0'.
+
+
+aria/tester/runner/ModuleControllerFlow.js jshint results
+=========================================
+
+
+
+aria/tester/runner/ModuleControllerFlowInterface.js jshint results
+=========================================
+
+
+
+aria/tester/runner/ModuleControllerInterface.js jshint results
+=========================================
+
+
+
+aria/tester/runner/utils/Hash.js jshint results
+=========================================
+
+line 84, col 57, Use '===' to compare with ''.
+
+
+aria/tester/runner/utils/TestUtils.js jshint results
+=========================================
+
+line 134, col 50, Use '!==' to compare with '0'.
+line 159, col 50, Use '===' to compare with '0'.
+
+
+aria/tester/runner/view/config/ConfigScript.js jshint results
+=========================================
+
+
+
+aria/tester/runner/view/filter/FilterScript.js jshint results
+=========================================
+
+
+
+aria/tester/runner/view/header/HeaderScript.js jshint results
+=========================================
+
+
+
+aria/tester/runner/view/links/LinksScript.js jshint results
+=========================================
+
+
+
+aria/tester/runner/view/main/MainScript.js jshint results
+=========================================
+
+
+
+aria/tester/runner/view/mini/MiniScript.js jshint results
+=========================================
+
+
+
+aria/tester/runner/view/normal/NormalScript.js jshint results
+=========================================
+
+
+
+aria/tester/runner/view/popup/generic/GenericScript.js jshint results
+=========================================
+
+
+
+aria/tester/runner/view/popup/options/OptionsScript.js jshint results
+=========================================
+
+
+
+aria/tester/runner/view/popup/PopupScript.js jshint results
+=========================================
+
+
+
+aria/tester/runner/view/popup/report/ReportScript.js jshint results
+=========================================
+
+
+
+aria/tester/runner/view/popup/warning/WarningScript.js jshint results
+=========================================
+
+
+
+aria/tester/runner/view/report/ReportScript.js jshint results
+=========================================
+
+
+
+aria/tools/common/ObjectTreeDisplayScript.js jshint results
+=========================================
+
+line 95, col 122, Use '!==' to compare with '0'.
+
+
+aria/tools/contextual/ContextualDisplayScript.js jshint results
+=========================================
+
+
+
+aria/tools/contextual/ContextualMenu.js jshint results
+=========================================
+
+
+
+aria/tools/contextual/ContextualModule.js jshint results
+=========================================
+
+
+
+aria/tools/contextual/environment/ContextualMenu.js jshint results
+=========================================
+
+
+
+aria/tools/contextual/environment/ContextualMenuCfgBeans.js jshint results
+=========================================
+
+
+
+aria/tools/contextual/IContextualMenu.js jshint results
+=========================================
+
+
+
+aria/tools/inspector/IInspectorModule.js jshint results
+=========================================
+
+
+
+aria/tools/inspector/InspectorDisplayScript.js jshint results
+=========================================
+
+
+
+aria/tools/inspector/InspectorModule.js jshint results
+=========================================
+
+
+
+aria/tools/inspector/ModuleInspectorScript.js jshint results
+=========================================
+
+
+
+aria/tools/inspector/TemplateInspectorScript.js jshint results
+=========================================
+
+
+
+aria/tools/IToolsModule.js jshint results
+=========================================
+
+
+
+aria/tools/logger/ILoggerModule.js jshint results
+=========================================
+
+
+
+aria/tools/logger/LoggerDisplayScript.js jshint results
+=========================================
+
+
+
+aria/tools/logger/LoggerModule.js jshint results
+=========================================
+
+
+
+aria/tools/ToolsBridge.js jshint results
+=========================================
+
+
+
+aria/tools/ToolsDisplayScript.js jshint results
+=========================================
+
+
+
+aria/tools/ToolsModule.js jshint results
+=========================================
+
+
+
+aria/touch/Event.js jshint results
+=========================================
+
+
+
+aria/touch/Swipe.js jshint results
+=========================================
+
+
+
+aria/touch/Tap.js jshint results
+=========================================
+
+
+
+aria/touch/widgets/Slider.js jshint results
+=========================================
+
+
+
+aria/touch/widgets/SliderCfgBeans.js jshint results
+=========================================
+
+
+
+aria/touch/widgets/TouchWidgetLib.js jshint results
+=========================================
+
+
+
+aria/utils/AriaWindow.js jshint results
+=========================================
+
+
+
+aria/utils/Array.js jshint results
+=========================================
+
+
+
+aria/utils/Bridge.js jshint results
+=========================================
+
+
+
+aria/utils/Callback.js jshint results
+=========================================
+
+
+
+aria/utils/ClassList.js jshint results
+=========================================
+
+
+
+aria/utils/Data.js jshint results
+=========================================
+
+
+
+aria/utils/Date.js jshint results
+=========================================
+
+line 257, col 70, Unescaped '/'.
+line 264, col 70, Unescaped '/'.
+line 1258, col 33, Use '!==' to compare with '0'.
+line 1258, col 59, Use '!==' to compare with '0'.
+line 1258, col 85, Use '!==' to compare with '0'.
+line 1258, col 116, Use '!==' to compare with '0'.
+
+
+aria/utils/Delegate.js jshint results
+=========================================
+
+
+
+aria/utils/Dom.js jshint results
+=========================================
+
+
+
+aria/utils/DomBeans.js jshint results
+=========================================
+
+
+
+aria/utils/DomOverlay.js jshint results
+=========================================
+
+line 156, col 34, Use '===' to compare with '0'.
+line 234, col 34, Use '===' to compare with '0'.
+
+
+aria/utils/dragdrop/Drag.js jshint results
+=========================================
+
+
+
+aria/utils/dragdrop/DragDropBean.js jshint results
+=========================================
+
+
+
+aria/utils/dragdrop/IDrag.js jshint results
+=========================================
+
+
+
+aria/utils/Ellipsis.js jshint results
+=========================================
+
+
+
+aria/utils/environment/Date.js jshint results
+=========================================
+
+
+
+aria/utils/environment/DateCfgBeans.js jshint results
+=========================================
+
+
+
+aria/utils/environment/Number.js jshint results
+=========================================
+
+
+
+aria/utils/environment/NumberCfgBeans.js jshint results
+=========================================
+
+
+
+aria/utils/environment/VisualFocus.js jshint results
+=========================================
+
+
+
+aria/utils/environment/VisualFocusCfgBeans.js jshint results
+=========================================
+
+
+
+aria/utils/Event.js jshint results
+=========================================
+
+
+
+aria/utils/filters/DisplayXmlResponse.js jshint results
+=========================================
+
+
+
+aria/utils/FireDomEvent.js jshint results
+=========================================
+
+line 395, col 32, Use '!==' to compare with 'undefined'.
+
+
+aria/utils/FormatFactory.js jshint results
+=========================================
+
+line 36, col 38, Expected a number and instead saw '['.
+line 36, col 39, Expected '}' and instead saw '^'.
+line 36, col 41, Unescaped '}'.
+line 36, col 42, Unescaped ']'.
+line 36, col 44, Unescaped '}'.
+
+
+aria/utils/FrameATLoader.js jshint results
+=========================================
+
+
+
+aria/utils/Function.js jshint results
+=========================================
+
+
+
+aria/utils/FunctionWriter.js jshint results
+=========================================
+
+line 132, col 20, Wrap the /regexp/ literal in parens to disambiguate the slash operator.
+
+
+aria/utils/HashManager.js jshint results
+=========================================
+
+line 186, col 36, Use '===' to compare with '0'.
+line 432, col 42, Use '===' to compare with '0'.
+
+
+aria/utils/Html.js jshint results
+=========================================
+
+
+
+aria/utils/IdManager.js jshint results
+=========================================
+
+
+
+aria/utils/InheritanceNormalization.js jshint results
+=========================================
+
+
+
+aria/utils/json/ISerializer.js jshint results
+=========================================
+
+
+
+aria/utils/json/JsonSerializer.js jshint results
+=========================================
+
+
+
+aria/utils/json/JsonSerializerBeans.js jshint results
+=========================================
+
+
+
+aria/utils/Json.js jshint results
+=========================================
+
+line 471, col 34, Use '===' to compare with '0'.
+line 471, col 57, Use '===' to compare with '0'.
+
+
+aria/utils/Math.js jshint results
+=========================================
+
+
+
+aria/utils/Mouse.js jshint results
+=========================================
+
+line 307, col 51, Confusing use of '!'.
+
+
+aria/utils/Number.js jshint results
+=========================================
+
+
+
+aria/utils/Object.js jshint results
+=========================================
+
+line 60, col 33, Use '===' to compare with '0'.
+
+
+aria/utils/overlay/CloneOverlay.js jshint results
+=========================================
+
+
+
+aria/utils/overlay/LoadingOverlay.js jshint results
+=========================================
+
+
+
+aria/utils/overlay/Overlay.js jshint results
+=========================================
+
+
+
+aria/utils/Path.js jshint results
+=========================================
+
+
+
+aria/utils/Profiling.js jshint results
+=========================================
+
+line 152, col 21, Confusing use of '!'.
+
+
+aria/utils/ProfilingDisplayScript.js jshint results
+=========================================
+
+
+
+aria/utils/QueryString.js jshint results
+=========================================
+
+line 47, col 59, Use '===' to compare with '0'.
+
+
+aria/utils/Rand.js jshint results
+=========================================
+
+line 47, col 27, Use '===' to compare with 'undefined'.
+
+
+aria/utils/resize/Resize.js jshint results
+=========================================
+
+
+
+aria/utils/sandbox/DOMProperties.js jshint results
+=========================================
+
+
+
+aria/utils/ScriptLoader.js jshint results
+=========================================
+
+
+
+aria/utils/Size.js jshint results
+=========================================
+
+
+
+aria/utils/StackHashMap.js jshint results
+=========================================
+
+line 254, col 25, Expected an operator and instead saw 'delete'.
+
+
+aria/utils/Store.js jshint results
+=========================================
+
+
+
+aria/utils/String.js jshint results
+=========================================
+
+
+
+aria/utils/SynEvents.js jshint results
+=========================================
+
+line 1642, col 90, Use '===' to compare with '0'.
+line 1676, col 39, Use '!==' to compare with '0'.
+line 1676, col 55, Use '===' to compare with ''.
+line 1679, col 37, Use '!==' to compare with '0'.
+line 1679, col 53, Use '===' to compare with ''.
+line 1819, col 25, Duplicate member '-'.
+line 1820, col 25, Duplicate member '.'.
+line 1821, col 25, Duplicate member '/'.
+line 2119, col 42, Use '===' to compare with '0'.
+line 2121, col 49, Use '===' to compare with '0'.
+line 2158, col 64, Use '===' to compare with '0'.
+line 2160, col 64, Use '===' to compare with '0'.
+line 2427, col 59, Use '===' to compare with ''.
+line 2538, col 103, Use '===' to compare with '0'.
+
+
+aria/utils/Type.js jshint results
+=========================================
+
+
+
+aria/utils/UtilsRes.js jshint results
+=========================================
+
+
+
+aria/utils/validators/Alpha.js jshint results
+=========================================
+
+
+
+aria/utils/validators/AlphaInternational.js jshint results
+=========================================
+
+
+
+aria/utils/validators/AlphaNum.js jshint results
+=========================================
+
+
+
+aria/utils/validators/CfgBeans.js jshint results
+=========================================
+
+
+
+aria/utils/validators/Email.js jshint results
+=========================================
+
+line 28, col 44, Unescaped '^'.
+line 28, col 91, Unescaped '^'.
+
+
+aria/utils/validators/IValidator.js jshint results
+=========================================
+
+
+
+aria/utils/validators/Mandatory.js jshint results
+=========================================
+
+
+
+aria/utils/validators/MinMaxLength.js jshint results
+=========================================
+
+
+
+aria/utils/validators/MultipleValidator.js jshint results
+=========================================
+
+
+
+aria/utils/validators/Number.js jshint results
+=========================================
+
+
+
+aria/utils/validators/Object.js jshint results
+=========================================
+
+
+
+aria/utils/validators/Phone.js jshint results
+=========================================
+
+
+
+aria/utils/validators/RegExp.js jshint results
+=========================================
+
+
+
+aria/utils/validators/String.js jshint results
+=========================================
+
+line 28, col 69, Unexpected escaped character '<' in regular expression.
+
+
+aria/utils/validators/Validator.js jshint results
+=========================================
+
+
+
+aria/utils/VisualFocus.js jshint results
+=========================================
+
+
+
+aria/utils/Xml.js jshint results
+=========================================
+
+
+
+aria/widgetLibs/BaseWidget.js jshint results
+=========================================
+
+
+
+aria/widgetLibs/BindableWidget.js jshint results
+=========================================
+
+
+
+aria/widgetLibs/CommonBeans.js jshint results
+=========================================
+
+
+
+aria/widgetLibs/environment/WidgetLibsSettings.js jshint results
+=========================================
+
+
+
+aria/widgetLibs/environment/WidgetLibsSettingsCfgBeans.js jshint results
+=========================================
+
+
+
+aria/widgetLibs/WidgetLib.js jshint results
+=========================================
+
+
+
+aria/widgets/action/ActionWidget.js jshint results
+=========================================
+
+
+
+aria/widgets/action/Button.js jshint results
+=========================================
+
+
+
+aria/widgets/action/IconButton.js jshint results
+=========================================
+
+
+
+aria/widgets/action/Link.js jshint results
+=========================================
+
+
+
+aria/widgets/action/SortIndicator.js jshint results
+=========================================
+
+
+
+aria/widgets/AriaLib.js jshint results
+=========================================
+
+
+
+aria/widgets/AriaSkinBeans.js jshint results
+=========================================
+
+
+
+aria/widgets/AriaSkinInterface.js jshint results
+=========================================
+
+
+
+aria/widgets/AriaSkinNormalization.js jshint results
+=========================================
+
+
+
+aria/widgets/calendar/Calendar.js jshint results
+=========================================
+
+
+
+aria/widgets/calendar/CalendarController.js jshint results
+=========================================
+
+line 224, col 43, Use '===' to compare with 'true'.
+line 335, col 46, Use '===' to compare with '0'.
+line 530, col 48, Use '===' to compare with '0'.
+line 545, col 37, Use '===' to compare with '0'.
+line 588, col 25, Use '===' to compare with '0'.
+
+
+aria/widgets/calendar/CalendarRes.js jshint results
+=========================================
+
+
+
+aria/widgets/calendar/CalendarRes_en_US.js jshint results
+=========================================
+
+
+
+aria/widgets/calendar/CalendarTemplateScript.js jshint results
+=========================================
+
+
+
+aria/widgets/calendar/CfgBeans.js jshint results
+=========================================
+
+
+
+aria/widgets/calendar/ICalendarController.js jshint results
+=========================================
+
+
+
+aria/widgets/CfgBeans.js jshint results
+=========================================
+
+
+
+aria/widgets/container/Container.js jshint results
+=========================================
+
+
+
+aria/widgets/container/Dialog.js jshint results
+=========================================
+
+
+
+aria/widgets/container/Div.js jshint results
+=========================================
+
+
+
+aria/widgets/container/Fieldset.js jshint results
+=========================================
+
+
+
+aria/widgets/container/Splitter.js jshint results
+=========================================
+
+line 256, col 37, Use '!==' to compare with '0'.
+
+
+aria/widgets/container/Tab.js jshint results
+=========================================
+
+
+
+aria/widgets/container/TabPanel.js jshint results
+=========================================
+
+
+
+aria/widgets/container/Tooltip.js jshint results
+=========================================
+
+
+
+aria/widgets/controllers/AutoCompleteController.js jshint results
+=========================================
+
+
+
+aria/widgets/controllers/DateController.js jshint results
+=========================================
+
+
+
+aria/widgets/controllers/DatePickerController.js jshint results
+=========================================
+
+
+
+aria/widgets/controllers/DropDownListController.js jshint results
+=========================================
+
+
+
+aria/widgets/controllers/MultiSelectController.js jshint results
+=========================================
+
+
+
+aria/widgets/controllers/NumberController.js jshint results
+=========================================
+
+
+
+aria/widgets/controllers/reports/ControllerReport.js jshint results
+=========================================
+
+
+
+aria/widgets/controllers/reports/DropDownControllerReport.js jshint results
+=========================================
+
+
+
+aria/widgets/controllers/SelectBoxController.js jshint results
+=========================================
+
+line 185, col 35, Use '===' to compare with ''.
+
+
+aria/widgets/controllers/SelectController.js jshint results
+=========================================
+
+line 115, col 36, Use '===' to compare with '0'.
+
+
+aria/widgets/controllers/TextDataController.js jshint results
+=========================================
+
+line 110, col 26, Use '===' to compare with '0'.
+line 119, col 21, Use '===' to compare with ''.
+line 127, col 42, Use '===' to compare with ''.
+line 166, col 42, Use '===' to compare with ''.
+
+
+aria/widgets/controllers/TimeController.js jshint results
+=========================================
+
+
+
+aria/widgets/environment/WidgetSettings.js jshint results
+=========================================
+
+
+
+aria/widgets/environment/WidgetSettingsCfgBeans.js jshint results
+=========================================
+
+
+
+aria/widgets/errorlist/CfgBeans.js jshint results
+=========================================
+
+
+
+aria/widgets/errorlist/ErrorList.js jshint results
+=========================================
+
+
+
+aria/widgets/errorlist/ErrorListController.js jshint results
+=========================================
+
+
+
+aria/widgets/errorlist/ErrorListTemplateScript.js jshint results
+=========================================
+
+
+
+aria/widgets/errorlist/IErrorListController.js jshint results
+=========================================
+
+
+
+aria/widgets/form/AutoComplete.js jshint results
+=========================================
+
+
+
+aria/widgets/form/AutoCompleteBean.js jshint results
+=========================================
+
+
+
+aria/widgets/form/CheckBox.js jshint results
+=========================================
+
+
+
+aria/widgets/form/DateField.js jshint results
+=========================================
+
+
+
+aria/widgets/form/DatePicker.js jshint results
+=========================================
+
+
+
+aria/widgets/form/DropDownInput.js jshint results
+=========================================
+
+
+
+aria/widgets/form/DropDownListTrait.js jshint results
+=========================================
+
+
+
+aria/widgets/form/DropDownTextInput.js jshint results
+=========================================
+
+line 155, col 38, Use '===' to compare with 'true'.
+line 157, col 45, Use '===' to compare with 'false'.
+
+
+aria/widgets/form/DropDownTrait.js jshint results
+=========================================
+
+
+
+aria/widgets/form/Gauge.js jshint results
+=========================================
+
+
+
+aria/widgets/form/Input.js jshint results
+=========================================
+
+line 205, col 38, Use '===' to compare with '0'.
+
+
+aria/widgets/form/InputValidationHandler.js jshint results
+=========================================
+
+line 59, col 53, Use '!==' to compare with 'undefined'.
+
+
+aria/widgets/form/InputWithFrame.js jshint results
+=========================================
+
+
+
+aria/widgets/form/list/CfgBeans.js jshint results
+=========================================
+
+
+
+aria/widgets/form/list/IListController.js jshint results
+=========================================
+
+
+
+aria/widgets/form/list/List.js jshint results
+=========================================
+
+
+
+aria/widgets/form/list/ListController.js jshint results
+=========================================
+
+line 266, col 42, Use '===' to compare with '0'.
+line 522, col 33, Confusing use of '!'.
+line 538, col 33, Confusing use of '!'.
+line 554, col 33, Confusing use of '!'.
+
+
+aria/widgets/form/list/templates/ListTemplateScript.js jshint results
+=========================================
+
+line 108, col 35, Use '===' to compare with '0'.
+
+
+aria/widgets/form/MultiSelect.js jshint results
+=========================================
+
+
+
+aria/widgets/form/NumberField.js jshint results
+=========================================
+
+
+
+aria/widgets/form/PasswordField.js jshint results
+=========================================
+
+
+
+aria/widgets/form/RadioButton.js jshint results
+=========================================
+
+
+
+aria/widgets/form/Select.js jshint results
+=========================================
+
+line 121, col 38, Use '===' to compare with 'true'.
+line 123, col 45, Use '===' to compare with 'false'.
+
+
+aria/widgets/form/SelectBox.js jshint results
+=========================================
+
+
+
+aria/widgets/form/templates/TemplateMultiSelectScript.js jshint results
+=========================================
+
+line 64, col 80, Use '===' to compare with '0'.
+
+
+aria/widgets/form/Textarea.js jshint results
+=========================================
+
+
+
+aria/widgets/form/TextField.js jshint results
+=========================================
+
+
+
+aria/widgets/form/TextInput.js jshint results
+=========================================
+
+line 430, col 58, Use '!==' to compare with 'false'.
+line 645, col 37, Use '===' to compare with 'false'.
+line 1000, col 72, Use '===' to compare with ''.
+
+
+aria/widgets/form/TimeField.js jshint results
+=========================================
+
+
+
+aria/widgets/frames/CfgBeans.js jshint results
+=========================================
+
+
+
+aria/widgets/frames/FixedHeightFrame.js jshint results
+=========================================
+
+line 176, col 45, Use '===' to compare with 'false'.
+line 178, col 47, Use '===' to compare with '0'.
+
+
+aria/widgets/frames/Frame.js jshint results
+=========================================
+
+
+
+aria/widgets/frames/FrameFactory.js jshint results
+=========================================
+
+
+
+aria/widgets/frames/FrameWithIcons.js jshint results
+=========================================
+
+line 128, col 70, Use '===' to compare with ''.
+line 133, col 72, Use '===' to compare with ''.
+line 143, col 34, Use '===' to compare with '0'.
+line 143, col 60, Use '===' to compare with '0'.
+
+
+aria/widgets/frames/OldFrame.js jshint results
+=========================================
+
+
+
+aria/widgets/frames/SimpleFrame.js jshint results
+=========================================
+
+
+
+aria/widgets/frames/SimpleHTMLFrame.js jshint results
+=========================================
+
+line 60, col 21, Use '===' to compare with '0'.
+
+
+aria/widgets/frames/TableFrame.js jshint results
+=========================================
+
+line 96, col 50, Use '!==' to compare with 'true'.
+
+
+aria/widgets/Icon.js jshint results
+=========================================
+
+line 77, col 48, Use '!==' to compare with ''.
+
+
+aria/widgets/IconLib.js jshint results
+=========================================
+
+
+
+aria/widgets/Template.js jshint results
+=========================================
+
+line 377, col 42, Use '===' to compare with 'false'.
+
+
+aria/widgets/TemplateBasedWidget.js jshint results
+=========================================
+
+
+
+aria/widgets/Text.js jshint results
+=========================================
+
+
+
+aria/widgets/transform/NotTransform.js jshint results
+=========================================
+
+
+
+aria/widgets/Widget.js jshint results
+=========================================
+
+
+
+aria/widgets/WidgetsRes.js jshint results
+=========================================
+
+
+
+aria/widgets/WidgetStyleScript.js jshint results
+=========================================
+
