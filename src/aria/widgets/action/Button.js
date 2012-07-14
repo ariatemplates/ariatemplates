@@ -275,10 +275,7 @@ Aria.classDefinition({
             this._mouseOver = true;
             this._mousePressed = true;
             this._updateState();
-
-            if (aria.core.Browser.isChrome || aria.core.Browser.isSafari) {
-                this.currTarget = domEvt.currentTarget;
-            }
+            this.currTarget = domEvt.currentTarget;
         },
 
         /**
@@ -289,14 +286,11 @@ Aria.classDefinition({
         _dom_onmouseup : function (domEvt) {
             // TODO: this method should also be called when the mouse button is released, not depending on where it is
             // released
-
-            if (aria.core.Browser.isChrome || aria.core.Browser.isSafari) {
-                if (this._mousePressed && domEvt.currentTarget == this.currTarget) {
-                    // handle an onclick event
-                    this._performAction(domEvt);
-                }
-                this.currTarget = null;
+            if (this._mousePressed && domEvt.currentTarget == this.currTarget) {
+                // handle an onclick event
+                this._performAction(domEvt);
             }
+            this.currTarget = null;
 
             if (this._cfg) { // this._cfg can become null if e.g. the button triggers a template substitution
                 // and the button is part of that template
@@ -317,9 +311,9 @@ Aria.classDefinition({
                 this._updateState();
                 domEvt.stopPropagation();
                 return false;
+            } else {
+                return true;
             }
-
-            return true;
         },
 
         /**
@@ -328,15 +322,9 @@ Aria.classDefinition({
          * @method
          * @private
          */
-        _dom_onclick : (aria.core.Browser.isChrome || aria.core.Browser.isSafari) ? function (domEvent) {
+        _dom_onclick : function (domEvent) {
             this._keyPressed = false;
-            return; // we don't catch onclick's for buttons on chrome & safari. we catch mouseup's instead
-        } : function (domEvent) {
-            if (this._keyPressed) {
-                this._keyPressed = false;
-                return;
-            }
-            this._performAction(domEvent);
+            return;
         },
 
         /**
@@ -348,12 +336,10 @@ Aria.classDefinition({
             if (domEvt.keyCode == aria.DomEvent.KC_SPACE || domEvt.keyCode == aria.DomEvent.KC_ENTER) {
                 this._keyPressed = false;
                 this._updateState();
-
                 if (!this._performAction(domEvt)) {
                     domEvt.stopPropagation();
                     return false;
                 }
-                return true;
             }
             return true;
         }
