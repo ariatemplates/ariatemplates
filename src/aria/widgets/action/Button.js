@@ -275,7 +275,6 @@ Aria.classDefinition({
             this._mouseOver = true;
             this._mousePressed = true;
             this._updateState();
-            this.currTarget = domEvt.currentTarget;
         },
 
         /**
@@ -286,18 +285,22 @@ Aria.classDefinition({
         _dom_onmouseup : function (domEvt) {
             // TODO: this method should also be called when the mouse button is released, not depending on where it is
             // released
-            if (this._mousePressed && domEvt.currentTarget == this.currTarget) {
-                // handle an onclick event
-                this._performAction(domEvt);
-            }
-            this.currTarget = null;
 
             if (this._cfg) { // this._cfg can become null if e.g. the button triggers a template substitution
                 // and the button is part of that template
                 this._mousePressed = false;
                 this._updateState();
             }
+        }, 
 
+        /**
+         * The method called when the markup is clicked
+         * @param {aria.DomEvent} evt Event
+         * @method
+         * @private
+         */
+        _dom_onclick : function (domEvent) {
+            this._performAction(domEvent);
         },
 
         /**
@@ -311,20 +314,8 @@ Aria.classDefinition({
                 this._updateState();
                 domEvt.stopPropagation();
                 return false;
-            } else {
-                return true;
             }
-        },
-
-        /**
-         * The method called when the markup is clicked
-         * @param {aria.DomEvent} evt Event
-         * @method
-         * @private
-         */
-        _dom_onclick : function (domEvent) {
-            this._keyPressed = false;
-            return;
+            return true;
         },
 
         /**
@@ -336,10 +327,8 @@ Aria.classDefinition({
             if (domEvt.keyCode == aria.DomEvent.KC_SPACE || domEvt.keyCode == aria.DomEvent.KC_ENTER) {
                 this._keyPressed = false;
                 this._updateState();
-                if (!this._performAction(domEvt)) {
-                    domEvt.stopPropagation();
-                    return false;
-                }
+                domEvt.stopPropagation();
+                return false;
             }
             return true;
         }
