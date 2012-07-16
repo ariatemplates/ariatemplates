@@ -312,16 +312,21 @@
                     // empty array : no suggestions for this entry
                     var suggestionsAvailable = (suggestions !== null);
 
-                    if (suggestionsAvailable) {
+					if (suggestionsAvailable) {
+						if (args.keepSelectedValue && dataModel.value) {
+							var code = dataModel.value.code;
+							for (var i = 0; i < suggestions.length; i += 1) {
+								suggestions[i].exactMatch = (suggestions[i].code === code);
+							}
+							// to reset the suggestions exactmatch
+						} else {
+							for (var j in suggestions) {
+								suggestions[j].exactMatch = false;
+							}
 
-                        if (args.keepSelectedValue && dataModel.value) {
-                            var code = dataModel.value.code;
-                            for (var i = 0; i < suggestions.length; i += 1) {
-                                suggestions[i].exactMatch = (suggestions[i].code === code);
-                            }
-                        }
-                        // reformat the suggestions to be compatible with the list widget
-                        matchValueIndex = this._prepareSuggestionsAndMatch(suggestions, nextValue);
+						}
+						// reformat the suggestions to be compatible with the list widget
+						matchValueIndex = this._prepareSuggestionsAndMatch(suggestions, nextValue);
 
                     } else {
                         suggestions = [];
