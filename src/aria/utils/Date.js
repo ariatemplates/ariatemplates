@@ -309,7 +309,7 @@ Aria.classDefinition({
          */
         interpretTime : function (entryStr) {
 
-            var entry, jsTime, hours = 0, minutes = 0, seconds = 0, pmCorrection = 0, i = 0;
+            var entry, jsTime, hours = 0, minutes = 0, seconds = 0, pmCorrection = 0, amCorrection = 0, i = 0;
 
             if (!entryStr) {
                 return null;
@@ -327,6 +327,12 @@ Aria.classDefinition({
             if (this._isPM(entry)) {
                 pmCorrection = 12;
             }
+
+            // need to check for AM
+             if (this._isAM(entry)) {
+                amCorrection = 00;
+            }
+
 
             // need to replace am/pm from string
             entry = this._removeAMPM(entry);
@@ -359,6 +365,11 @@ Aria.classDefinition({
             // action pmCorrection
             if (hours < 12) {
                 hours += pmCorrection;
+            }
+
+            // action amCorrection
+            if (hours === 12 && !pmCorrection) {
+                hours = amCorrection;
             }
 
             // reset 24 to 0
@@ -431,6 +442,23 @@ Aria.classDefinition({
             pm = pm.match(this._interpret_time_ampm);
 
             if (pm !== null && pm[0].indexOf("p") !== -1) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+
+        /**
+         * Tests string contains am.
+         * @protected
+         * @param {String} time
+         * @return {Boolean}
+         */
+        _isAM : function (time) {
+            var am = time.toLowerCase();
+            am = am.match(this._interpret_time_ampm);
+
+            if (am !== null && am[0].indexOf("a") !== -1) {
                 return true;
             } else {
                 return false;
