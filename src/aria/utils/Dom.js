@@ -932,7 +932,7 @@ Aria.classDefinition({
          * @return {Boolean} True if the given child is a child of the given parent
          */
         isAncestor : function (child, parent) {
-            if (!child) {
+            if (!( child && child.ownerDocument)) {
                 return false;
             }
             var document = child.ownerDocument;
