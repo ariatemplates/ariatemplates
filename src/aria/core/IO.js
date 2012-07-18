@@ -740,8 +740,66 @@ Aria.classDefinition({
                     }
                 }
 
-                cb.fn.call(cb.scope, res, cb.args);
-            }
+                var callback = cb.fn, scope = cb.scope;
+	            var applyCheck;  
+	            // Here a check for "apply" parameter is done. Default apply:false,
+	            // this.$callback({fn: myFunction, args: [1,2,3], apply:true },"hello");
+	            // we should call: myFunction("hello",1,2,3);
+	            if (cb.apply != undefined) {
+	                if (cb.apply == true) {
+	                    applyCheck = true;
+	                } else {
+	                    applyCheck = false;
+	                }
+	            }
+	
+	            if (cb.resIndex != undefined && applyCheck == true) {
+	                if (cb.args && aria.utils.Type.isArray(cb.args)) {
+	                    if (cb.resIndex == -1) {
+	                        return callback.apply(scope, cb.args);
+	                    } else {
+	                        cb.args.splice(cb.resIndex, 0, res);
+	                        return callback.apply(scope, cb.args);
+	                    }
+	                }
+	                if (cb.args && aria.utils.Type.isObject(cb.args)) {
+	                    if (cb.resIndex == -1) {
+	                        return callback.call(scope, cb.args);
+	                    } else if (cb.resIndex == 0) {
+	                        return callback.apply(scope, [res, cb.args]);
+	                    } else {
+	                        return callback.apply(scope, [cb.args, res]);
+	                    }
+	                }
+	            } else if (cb.resIndex != undefined && (applyCheck == false || applyCheck == undefined)) {
+	                if (cb.args && aria.utils.Type.isArray(cb.args)) {
+	                    if (cb.resIndex == -1) {
+	                        return callback.call(scope, cb.args);
+	                    } else {
+	                        cb.args.splice(cb.resIndex, 0, res);
+	                        return callback.call(scope, cb.args);
+	                    }
+	                }
+	                if (cb.args && aria.utils.Type.isObject(cb.args)) {
+	                    if (cb.resIndex == -1) {
+	                        return callback.call(scope, cb.args);
+	                    } else if (cb.resIndex == 0) {
+	                        return callback.call(scope, res, cb.args);
+	                    } else {
+	                        return callback.call(scope, cb.args, res);
+	                    }
+	                }
+	            } else if ((cb.resIndex == undefined) && (applyCheck == true)) {
+	                if (cb.args && aria.utils.Type.isArray(cb.args)) {
+	                    return callback.apply(scope, cb.args);
+	                }
+	                if (cb.args && aria.utils.Type.isObject(cb.args)) {
+	                    return callback.call(scope, cb.args);
+	                }
+	            } else {// fallback
+	                return callback.call(scope, res, cb.args);
+	                }
+	            }
             req = cb = null;
         },
 

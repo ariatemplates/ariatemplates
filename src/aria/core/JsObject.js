@@ -353,6 +353,20 @@
                 if (typeof(callback) == 'string') {
                     callback = scope[callback];
                 }
+                
+                //Reshuffling the argument result
+                //if resIndex = -1 , we are removing the event object, Hence we are introducing a non-backward compatible change
+                //if resIndex is more than 0, we are putting the res object in 'resIndex' Position.
+                if(res != undefined && res.args != undefined){
+                 var spliceUtil = Array.prototype.splice;
+                  if( res.args[2] == -1){
+                    spliceUtil.call(res.args,0, 1);
+                  } 
+                  else if ( res.args[2] > 0){
+                    var removeItem = spliceUtil.call(res.args, 0, 1)[0];
+                    spliceUtil.call(res.args,2,0,removeItem);
+                  }
+                }
 
                 try {
                     return callback.call(scope, res, cb.args);
@@ -381,7 +395,9 @@
                 return {
                     fn : callback,
                     scope : scope,
-                    args : cb.args
+                    args : cb.args,
+                    resIndex:cb.resIndex,
+                    apply:cb.apply
                 };
             },
 
