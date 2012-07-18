@@ -151,7 +151,7 @@ Aria.classDefinition({
 
             tplcfg.tplDiv = tplDiv;
 
-            tplcfg.data = this._cfg.data ? this._cfg.data : this._context.data;
+            tplcfg.data = this._cfg.data;
 
             // if a module controller was created, inject it in template initialization
             if (res.moduleCtrl) {
