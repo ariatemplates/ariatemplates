@@ -385,14 +385,10 @@ Aria.beanDefinitions({
                     $type : "json:ObjectRef",
                     $description : "Scope of execution of the function."
                 },
-				"args" : {
-					$type : "json:MultiTypes",
-					$description : "Optional argument passed to the function."
-				},
-				"resIndex" : {
-					$type : "json:Integer",
-					$description : "Optional param to get the index of the result or event."
-				}
+                "args" : {
+                    $type : "json:MultiTypes",
+                    $description : "Optional argument passed to the function."
+                }
             }
         }
     }

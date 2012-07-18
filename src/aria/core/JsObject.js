@@ -80,14 +80,6 @@
      */
     var __callWrapper = function (args, commonInfo, interceptorIndex) {
         if (interceptorIndex >= commonInfo.nbInterceptors) {
-			var splice = Array.prototype.splice;
-			  if( args[2] == -1){
-				Array.prototype.splice.call(args,0, 1);
-			  } 
-			  if( args[2] > 0){
-				var removeItem = splice.call(args, 0, 1)[0];
-				splice.call(args, 2,0,removeItem);
-			  }
             // end of recursion: call the real method:
             return this[commonInfo.method].apply(this, args)
         }
