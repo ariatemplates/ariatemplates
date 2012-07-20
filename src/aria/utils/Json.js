@@ -658,7 +658,7 @@
              * @param {Object} container reference to the data holder object - e.g. data.search.preferedCity
              * @param {String} property name of a given property in the targeted container. If specified, the callback
              * will be called only if this property is changed.
-             * @param {Array} callback {aria.core.JsObject.Callback} listener callback to add. Note that
+             * @param {aria.core.CfgBeans.Callback} callback listener callback to add. Note that
              * JsObject.$callback is not used for performance reasons, so that only the form { fn : {Function}, scope:
              * {Object}, args : {MultiTypes}} is supported for this callback.
              * @param {Boolean} throwError if true, throws errors instead of logging it.
