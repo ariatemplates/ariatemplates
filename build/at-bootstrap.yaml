@@ -7,6 +7,12 @@ visitors:
 - ./build/visitors/separator.js
 - uglify
 packages:
+    aria/css/atskin.js:
+        visitors:
+        - ./build/visitors/normalizeSkin.js
+        - ./build/visitors/license.js
+        files:
+        - "aria/css/atskin.js"
     aria/ariatemplates.js:
         files:
         - "aria/Aria.js"
