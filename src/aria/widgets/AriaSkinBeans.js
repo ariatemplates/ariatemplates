@@ -30,7 +30,11 @@ Aria.beanDefinitions({
         },
         "Color" : {
             $type : "json:String",
-            $description : ""
+            $description : "Description of the desired color in any accepted format."
+        },
+        "Pixels" : {
+            $type : "json:Integer",
+            $description : "Number of pixels for the property."
         },
         "Opacity" : {
             $type : "json:Float",
@@ -52,37 +56,36 @@ Aria.beanDefinitions({
                     $description : "",
                     $properties : {
                         "size" : {
-                            $type : "json:Integer",
-                            $description : ""
+                            $type : "Pixels",
+                            $description : "General font size for the application (in pixels)."
                         },
                         "family" : {
                             $type : "json:String",
-                            $description : ""
+                            $description : "General font family for the application."
                         }
                     }
                 },
                 "colors" : {
                     $type : "Object",
-                    $description : "",
+                    $description : "General color settings for your application",
                     $properties : {
                         "bkg" : {
                             $type : "Color",
-                            $description : ""
+                            $description : "General background color of the application."
                         },
                         "disabled" : {
                             $type : "Color",
                             // used in aria.widgets.calendar.CalendarStyle
-                            $description : ""
+                            $description : "Background color assigned to disabled elements."
                         }
                     }
                 },
                 "loadingOverlay" : {
                     $type : "Object",
-                    $description : "",
+                    $description : "General settings for loading indicators.",
                     $properties : {
                         "backgroundColor" : {
-                            $type : "Color",
-                            $description : ""
+                            $type : "Color"
                         },
                         "spriteURL" : {
                             $type : "json:String",
@@ -96,7 +99,7 @@ Aria.beanDefinitions({
                 },
                 "overlay" : {
                     $type : "Object",
-                    $description : "",
+                    $description : "General settings for overlays.",
                     $properties : {
                         "backgroundColor" : {
                             $type : "Color",
@@ -115,11 +118,10 @@ Aria.beanDefinitions({
                 },
                 "dialogMask" : {
                     $type : "Object",
-                    $description : "",
+                    $description : "General settings for the mask displayed in modal dialogs.",
                     $properties : {
                         "backgroundColor" : {
                             $type : "Color",
-                            $description : "",
                             $default : "black"
                         },
                         "opacity" : {
@@ -131,7 +133,7 @@ Aria.beanDefinitions({
                 },
                 "anchor" : {
                     $type : "Object",
-                    $description : "",
+                    $description : "General settings for anchors.",
                     $properties : {
                         "states" : {
                             $type : "StatesSet",
@@ -182,11 +184,10 @@ Aria.beanDefinitions({
         },
         "AnchorState" : {
             $type : "Object",
-            $description : "",
+            $description : "Settings for anchors.",
             $properties : {
                 "color" : {
-                    $type : "Color",
-                    $description : ""
+                    $type : "Color"
                 },
                 "text" : {
                     $type : "Object",
@@ -205,34 +206,49 @@ Aria.beanDefinitions({
         },
         "Icons" : {
             $type : "json:String",
-            $description : ""
+            $description : "Identifier for the icon to use. It has the syntax \"group:name\": the group is the key used to define the group of icons and the name represents the key used to refer to a specific icon inside the \"content\" property of the group of icons."
         },
         "IconsLeft" : {
             $type : "Icons",
-            $description : ""
+            $description : "Identifier for the icon to place at the left of the widget. It has the syntax \"group:name\": the group is the key used to define the group of icons and the name represents the key used to refer to a specific icon inside the \"content\" property of the group of icons."
         },
         "IconsRight" : {
             $type : "Icons",
-            $description : ""
+            $description : "Identifier for the icon to place at the right of the widget. It has the syntax \"group:name\": the group is the key used to define the group of icons and the name represents the key used to refer to a specific icon inside the \"content\" property of the group of icons."
         },
         "StatesSet" : {
             $type : "Object",
-            $description : ""
+            $description : "Description of the properties to apply to a widget depending on the state in which it is. Every widget has at least a \"normal\" state."
         },
         "StateWithFrame" : {
-            $type : "Object",
-            $description : "",
+            $type : "json:Object",
+            $description : "Description of the properties to applied in a certain state of a widget which has a frame.",
             $properties : {
                 "frame" : {
-                    $type : "json:ObjectRef",
-                    $description : "",
-                    $default : {}
+                    $type : "json:MultiTypes",
+                    $description : "Description of the properties of a frame. The available properties depend on the type of frame that has been selected in the general widget skin settings.",
+                    $contentTypes : [{
+                                $type : "FixedHeightFrameStateCfg"
+                            }, {
+                                $type : "SimpleFrameStateCfg"
+                            }, {
+                                $type : "TableFrameStateCfg"
+                            }, {
+                                $type : "SimpleHTMLFrameStateCfg"
+                            }, {
+                                $type : "Old0FrameStateCfg"
+                            }, {
+                                $type : "Old1FrameStateCfg"
+                            }, {
+                                $type : "Old2FrameStateCfg"
+                            }]
                 }
-            }
+            },
+            $default : {}
         },
         "StateWithFrameWithIcons" : {
             $type : "StateWithFrame",
-            $description : "",
+            $description : "Description of the properties to applied in a certain state of a widget which has a frame with icons.",
             $properties : {
                 "icons" : {
                     $type : "json:Map",
@@ -244,31 +260,30 @@ Aria.beanDefinitions({
                                     $type : "json:Boolean",
                                     $description : ""
                                 }, {
-                                    $type : "json:String",
-                                    $description : ""
+                                    $type : "Icons"
                                 }]
                     }
                 }
             }
         },
         "Frame" : {
-            $type : "json:ObjectRef",
-            $description : ""
-        },
-        "BaseFrame" : {
-            $type : "Object",
-            $description : "",
-            $properties : {
-                "sprType" : {
-                    $type : "json:Integer",
-                    $description : "Deprecated, please use frameType instead."
-                },
-                "frameType" : {
-                    $type : "json:Enum",
-                    $enumValues : ["FixedHeight", "Simple", "Table", "SimpleHTML", "Old0", "Old1", "Old2"],
-                    $description : ""
-                }
-            }
+            $type : "json:MultiTypes",
+            $description : "General state-independent settings for the frame of a widget. This object allows to define the type of frame to use. Its properties can also be set on the parent object for backward compatibility.",
+            $contentTypes : [{
+                        $type : "FixedHeightFrameCfg"
+                    }, {
+                        $type : "SimpleFrameCfg"
+                    }, {
+                        $type : "TableFrameCfg"
+                    }, {
+                        $type : "SimpleHTMLFrameCfg"
+                    }, {
+                        $type : "Old0FrameCfg"
+                    }, {
+                        $type : "Old1FrameCfg"
+                    }, {
+                        $type : "Old2FrameCfg"
+                    }]
         },
         "ButtonCfg" : {
             $type : "Object",
@@ -299,7 +314,7 @@ Aria.beanDefinitions({
                 },
                 "simpleHTML" : {
                     $type : "json:Boolean",
-                    $description : "",
+                    $description : "true when the widget has to have a basic markup as close as possible to standard HTML. As a consequence, a frame of type \"SimpleHTML\" will be used, which basically means that no further frame markup will be added.",
                     $default : false
                 },
                 "label" : {
@@ -320,22 +335,18 @@ Aria.beanDefinitions({
             $description : "",
             $properties : {
                 "generalBackgroundColor" : {
-                    $type : "Color",
-                    $description : ""
+                    $type : "Color"
                 },
                 "monthTitleBorderColor" : {
                     $type : "Color",
-                    $description : "",
                     $default : "#E6D9C6"
                 },
                 "monthTitleColor" : {
                     $type : "Color",
-                    $description : "",
                     $default : "black"
                 },
                 "monthTitleBackgroundColor" : {
                     $type : "Color",
-                    $description : "",
                     $default : "transparent"
                 },
                 "monthTitlePaddingTop" : {
@@ -349,17 +360,14 @@ Aria.beanDefinitions({
                     $default : "0px"
                 },
                 "dayBorderColor" : {
-                    $type : "Color",
-                    $description : ""
+                    $type : "Color"
                 },
                 "dayBackgroundColor" : {
                     $type : "Color",
-                    $description : "",
                     $default : "transparent"
                 },
                 "dayColor" : {
                     $type : "Color",
-                    $description : "",
                     $default : "black"
                 },
                 "dayPadding" : {
@@ -374,64 +382,51 @@ Aria.beanDefinitions({
                 },
                 "weekEndBackgroundColor" : {
                     $type : "Color",
-                    $description : "",
                     $default : "#F2ECDE"
                 },
                 "weekEndBorderColor" : {
                     $type : "Color",
-                    $description : "",
                     $default : "#F2ECDE"
                 },
                 "weekEndColor" : {
                     $type : "Color",
-                    $description : "",
                     $default : "black"
                 },
                 "unselectableBorderColor" : {
-                    $type : "Color",
-                    $description : ""
+                    $type : "Color"
                 },
                 "unselectableBackgroundColor" : {
-                    $type : "Color",
-                    $description : ""
+                    $type : "Color"
                 },
                 "unselectableColor" : {
-                    $type : "Color",
-                    $description : ""
+                    $type : "Color"
                 },
                 "todayBorderColor" : {
                     $type : "Color",
-                    $description : "",
                     $default : "black"
                 },
                 "todayBackgroundColor" : {
                     $type : "Color",
-                    $description : "",
                     $default : "transparent"
                 },
                 "todayColor" : {
                     $type : "Color",
-                    $description : "",
                     $default : "black"
                 },
                 "weekNumberBackgroundColor" : {
                     $type : "Color",
-                    $description : "",
                     $default : "#E7DBC6"
                 },
                 "weekNumberBorderColor" : {
                     $type : "Color",
-                    $description : "",
                     $default : "#E7DBC6"
                 },
                 "weekDaysLabelBackgroundColor" : {
                     $type : "Color",
-                    $description : "",
                     $default : "transparent"
                 },
                 "weekDaysLabelBorderColor" : {
                     $type : "Color",
-                    $description : "",
                     $default : "white"
                 },
                 "weekDaysLabelFontWeight" : {
@@ -441,7 +436,6 @@ Aria.beanDefinitions({
                 },
                 "weekDaysLabelColor" : {
                     $type : "Color",
-                    $description : "",
                     $default : "black"
                 },
                 "weekDaysLabelPadding" : {
@@ -451,34 +445,29 @@ Aria.beanDefinitions({
                 },
                 "selectedBackgroundColor" : {
                     $type : "Color",
-                    $description : "",
                     $default : "#FFCC66"
                 },
                 "selectedBorderColor" : {
                     $type : "Color",
-                    $description : "",
                     $default : "black"
                 },
                 "selectedColor" : {
                     $type : "Color",
-                    $description : "",
                     $default : "black"
                 },
                 "defaultTemplate" : {
-                    $type : "json:String",
-                    $description : ""
+                    $type : "json:PackageName",
+                    $description : "Classpath of the default template used to display the Calendar widget."
                 },
                 "divsclass" : {
                     $type : "json:String",
-                    $description : ""
+                    $description : "sclass of the Div to use inside the widget. It must be defined in the skin."
                 },
                 "previousPageIcon" : {
-                    $type : "json:String",
-                    $description : ""
+                    $type : "Icons"
                 },
                 "nextPageIcon" : {
-                    $type : "json:String",
-                    $description : ""
+                    $type : "Icons"
                 }
 
             }
@@ -489,20 +478,17 @@ Aria.beanDefinitions({
             $properties : {
                 "divsclass" : {
                     $type : "json:String",
-                    $description : ""
+                    $description : "sclass of the Div to use inside the widget. It must be defined in the skin."
                 },
                 "enabledColor" : {
                     $type : "Color",
-                    $description : "",
                     $default : "#666"
                 },
                 "mouseOverBackgroundColor" : {
-                    $type : "Color",
-                    $description : ""
+                    $type : "Color"
                 },
                 "mouseOverColor" : {
-                    $type : "Color",
-                    $description : ""
+                    $type : "Color"
                 },
                 "highlightMouseOver" : {
                     $type : "json:Boolean",
@@ -510,25 +496,21 @@ Aria.beanDefinitions({
                     $default : true
                 },
                 "selectedItemBackgroundColor" : {
-                    $type : "Color",
-                    $description : ""
+                    $type : "Color"
                 },
                 "selectedItemColor" : {
-                    $type : "Color",
-                    $description : ""
+                    $type : "Color"
                 },
                 "link" : {
                     $type : "Object",
                     $description : "",
                     $properties : {
                         marginLeft : {
-                            $type : "json:Integer",
-                            $description : "",
+                            $type : "Pixels",
                             $default : 3
                         },
                         marginRight : {
-                            $type : "json:Integer",
-                            $description : "",
+                            $type : "Pixels",
                             $default : 3
                         }
                     }
@@ -538,18 +520,15 @@ Aria.beanDefinitions({
                     $description : "",
                     $properties : {
                         "padding" : {
-                            $type : "json:Integer",
-                            $description : "",
+                            $type : "Pixels",
                             $default : 5
                         },
                         "backgroundColor" : {
                             $type : "Color",
-                            $description : "",
                             $default : "#eadbc8"
                         },
                         "borderColor" : {
                             $type : "Color",
-                            $description : "",
                             $default : "#d3c3ab"
                         },
                         "borderTopOnly" : {
@@ -563,28 +542,23 @@ Aria.beanDefinitions({
                             $default : "solid"
                         },
                         "borderWidth" : {
-                            $type : "json:Integer",
-                            $description : "",
+                            $type : "Pixels",
                             $default : 1
                         },
                         "marginTop" : {
-                            $type : "json:Integer",
-                            $description : "",
+                            $type : "Pixels",
                             $default : 5
                         },
                         "marginRight" : {
-                            $type : "json:Integer",
-                            $description : "",
+                            $type : "Pixels",
                             $default : 0
                         },
                         "marginBottom" : {
-                            $type : "json:Integer",
-                            $description : "",
+                            $type : "Pixels",
                             $default : 0
                         },
                         "marginLeft" : {
-                            $type : "json:Integer",
-                            $description : "",
+                            $type : "Pixels",
                             $default : -1
                         }
                     }
@@ -617,8 +591,7 @@ Aria.beanDefinitions({
             $description : "",
             $properties : {
                 "color" : {
-                    $type : "Color",
-                    $description : ""
+                    $type : "Color"
                 }
 
             }
@@ -633,24 +606,21 @@ Aria.beanDefinitions({
                     $default : 'atdefskin/sprites/back.gif'
                 },
                 "sprHeight" : {
-                    $type : "json:Integer",
-                    $description : ""
+                    $type : "Pixels"
                 },
                 "border" : {
                     $type : "json:String",
                     $description : ""
                 },
                 "borderPadding" : {
-                    $type : "json:Integer",
-                    $description : ""
+                    $type : "Pixels"
                 },
                 "labelMargins" : {
                     $type : "json:String",
                     $description : ""
                 },
                 "labelFontSize" : {
-                    $type : "json:Integer",
-                    $description : ""
+                    $type : "Pixels"
                 }
             }
         },
@@ -693,7 +663,7 @@ Aria.beanDefinitions({
                 },
                 "simpleHTML" : {
                     $type : "json:Boolean",
-                    $description : "",
+                    $description : "true when the widget has to have a basic markup as close as possible to standard HTML. As a consequence, a frame of type \"SimpleHTML\" will be used, which basically means that no further frame markup will be added.",
                     $default : false
                 },
                 "iconset" : {
@@ -711,8 +681,7 @@ Aria.beanDefinitions({
             $description : "",
             $properties : {
                 "color" : {
-                    $type : "Color",
-                    $description : ""
+                    $type : "Color"
                 }
             }
         },
@@ -761,7 +730,7 @@ Aria.beanDefinitions({
             $properties : {
                 "divsclass" : {
                     $type : "json:String",
-                    $description : ""
+                    $description : "sclass of the Div to use inside the widget. It must be defined in the skin."
                 }
             }
         },
@@ -791,38 +760,31 @@ Aria.beanDefinitions({
                     $description : "",
                     $properties : {
                         "left" : {
-                            $type : "json:Integer",
-                            $description : "",
+                            $type : "Pixels",
                             $default : 0
                         },
                         "top" : {
-                            $type : "json:Integer",
-                            $description : "",
+                            $type : "Pixels",
                             $default : 0
                         },
                         "paddingTop" : {
-                            $type : "json:Integer",
-                            $description : "",
+                            $type : "Pixels",
                             $default : 0
                         },
                         "paddingLeft" : {
-                            $type : "json:Integer",
-                            $description : "",
+                            $type : "Pixels",
                             $default : 0
                         },
                         "paddingRight" : {
-                            $type : "json:Integer",
-                            $description : "",
+                            $type : "Pixels",
                             $default : 0
                         },
                         "paddingBottom" : {
-                            $type : "json:Integer",
-                            $description : "",
+                            $type : "Pixels",
                             $default : 0
                         },
                         "backgroundColor" : {
                             $type : "Color",
-                            $description : "",
                             $default : "white"
                         },
                         "fontWeight" : {
@@ -832,7 +794,6 @@ Aria.beanDefinitions({
                         },
                         "color" : {
                             $type : "Color",
-                            $description : "",
                             $default : "black"
                         }
                     }
@@ -893,12 +854,11 @@ Aria.beanDefinitions({
                 },
                 "simpleHTML" : {
                     $type : "json:Boolean",
-                    $description : "",
+                    $description : "true when the widget has to have a basic markup as close as possible to standard HTML. As a consequence, a frame of type \"SimpleHTML\" will be used, which basically means that no further frame markup will be added.",
                     $default : false
                 },
                 "offsetTop" : {
-                    $type : "json:Integer",
-                    $description : ""
+                    $type : "Pixels"
                 }
             }
         },
@@ -921,12 +881,10 @@ Aria.beanDefinitions({
             $description : "",
             $properties : {
                 separatorHeight : {
-                    $type : "json:Integer",
-                    $description : ""
+                    $type : "Pixels"
                 },
                 handleBackgroundColor : {
                     $type : "Color",
-                    $description : "",
                     $default : "transparent"
                 },
                 handleSpriteURLh : {
@@ -935,7 +893,6 @@ Aria.beanDefinitions({
                 },
                 proxyBackgroundColor : {
                     $type : "Color",
-                    $description : "",
                     $default : "transparent"
                 },
                 proxySpriteURLh : {
@@ -943,26 +900,22 @@ Aria.beanDefinitions({
                     $description : ""
                 },
                 borderColor : {
-                    $type : "Color",
-                    $description : ""
+                    $type : "Color"
                 }
             }
         },
         "IconCfg" : {
             $type : "Object",
-            $description : "",
+            $description : "Description of a group of icons.",
             $properties : {
                 "iconWidth" : {
-                    $type : "json:Integer",
-                    $description : ""
+                    $type : "Pixels"
                 },
                 "iconHeight" : {
-                    $type : "json:Integer",
-                    $description : ""
+                    $type : "Pixels"
                 },
                 "spriteSpacing" : {
-                    $type : "json:Integer",
-                    $description : ""
+                    $type : "Pixels"
                 },
                 "biDimensional" : {
                     $type : "json:Boolean",
@@ -971,7 +924,7 @@ Aria.beanDefinitions({
                 },
                 "direction" : {
                     $type : "json:Enum",
-                    $description : "",
+                    $description : "Whether the sprite is horizontal or vertical",
                     $enumValues : ["x", "y"]
                 },
                 "content" : {
@@ -980,7 +933,11 @@ Aria.beanDefinitions({
                     $description : "",
                     $contentType : {
                         $type : "json:Integer",
-                        $description : ""
+                        $description : "Index of the icon inside the sprite."
+                    },
+                    $keyType : {
+                        $type : "json:String",
+                        $description : "Name of the icon within this sprite. To be used to refer to a specific icon with the syntax \"group:icon\"."
                     }
                 },
                 "spriteURL" : {
@@ -1021,29 +978,24 @@ Aria.beanDefinitions({
             $description : "",
             $properties : {
                 "titleBarTop" : {
-                    $type : "json:Integer",
-                    $description : ""
+                    $type : "Pixels"
                 },
                 "titleBarLeft" : {
-                    $type : "json:Integer",
-                    $description : ""
+                    $type : "Pixels"
                 },
                 "titleBarRight" : {
-                    $type : "json:Integer",
-                    $description : ""
+                    $type : "Pixels"
                 },
                 "titleBarHeight" : {
-                    $type : "json:Integer",
-                    $description : ""
+                    $type : "Pixels"
                 },
                 "titleColor" : {
                     $type : "Color",
-                    $description : "",
                     $default : "#615E55"
                 },
                 "divsclass" : {
                     $type : "json:String",
-                    $description : ""
+                    $description : "sclass of the Div to use inside the widget. It must be defined in the skin."
                 },
                 "closeIcon" : {
                     $type : "json:String",
@@ -1095,7 +1047,7 @@ Aria.beanDefinitions({
                 },
                 "simpleHTML" : {
                     $type : "json:Boolean",
-                    $description : "",
+                    $description : "true when the widget has to have a basic markup as close as possible to standard HTML. As a consequence, a frame of type \"SimpleHTML\" will be used, which basically means that no further frame markup will be added.",
                     $default : false
                 },
                 "frame" : {
@@ -1123,8 +1075,7 @@ Aria.beanDefinitions({
                     $description : "",
                     $properties : {
                         "color" : {
-                            $type : "Color",
-                            $description : ""
+                            $type : "Color"
                         },
                         "italics" : {
                             $type : "json:Boolean",
@@ -1133,23 +1084,19 @@ Aria.beanDefinitions({
                     }
                 },
                 "innerPaddingTop" : {
-                    $type : "json:Integer",
-                    $description : "",
+                    $type : "Pixels",
                     $default : 0
                 },
                 "innerPaddingRight" : {
-                    $type : "json:Integer",
-                    $description : "",
+                    $type : "Pixels",
                     $default : 0
                 },
                 "innerPaddingBottom" : {
-                    $type : "json:Integer",
-                    $description : "",
+                    $type : "Pixels",
                     $default : 0
                 },
                 "innerPaddingLeft" : {
-                    $type : "json:Integer",
-                    $description : "",
+                    $type : "Pixels",
                     $default : 0
                 }
             }
@@ -1160,7 +1107,6 @@ Aria.beanDefinitions({
             $properties : {
                 "color" : {
                     $type : "Color",
-                    $description : "",
                     $default : "#000"
                 }
             }
@@ -1170,8 +1116,7 @@ Aria.beanDefinitions({
             $description : "",
             $properties : {
                 "offsetTop" : {
-                    $type : "json:Integer",
-                    $description : ""
+                    $type : "Pixels"
                 }
             }
         },
@@ -1232,55 +1177,60 @@ Aria.beanDefinitions({
             }
         },
         "SimpleFrameCfg" : {
-            $type : "BaseFrame"
+            $type : "Object",
+            $description : "Used for widgets which have a basic frame around them. Frame properties are then specified state-wise.",
+            $properties : {
+                "sprType" : {
+                    $type : "json:Integer",
+                    $description : "Deprecated, please use frameType instead. The value corresponding to this type of frame is 6."
+                },
+                "frameType" : {
+                    $type : "json:Enum",
+                    $enumValues : ["Simple"],
+                    $description : "The value that indicates that a simple frame is desired is \"Simple\"."
+                }
+            }
         },
         "SimpleFrameStateCfg" : {
             $type : "Object",
-            $description : "",
+            $description : "Properties of a frame of type \"Simple\" for this state.",
             $properties : {
                 "paddingTop" : {
-                    $type : "json:Integer",
-                    $description : "",
+                    $type : "Pixels",
                     $default : 0
                 },
                 "paddingRight" : {
-                    $type : "json:Integer",
-                    $description : "",
+                    $type : "Pixels",
                     $default : 0
                 },
                 "paddingBottom" : {
-                    $type : "json:Integer",
-                    $description : "",
+                    $type : "Pixels",
                     $default : 0
                 },
                 "paddingLeft" : {
-                    $type : "json:Integer",
-                    $description : "",
+                    $type : "Pixels",
                     $default : 0
                 },
                 "border" : {
                     $type : "json:String",
-                    $description : "",
-                    $default : ""
+                    $description : "Style of the border",
+                    $default : "",
+                    $sample : "solid"
                 },
                 "borderSize" : {
-                    $type : "json:Integer",
-                    $description : "",
+                    $type : "Pixels",
                     $default : 0
                 },
                 "borderColor" : {
                     $type : "Color",
-                    $description : "",
                     $default : ""
                 },
                 "backgroundColor" : {
                     $type : "Color",
-                    $description : "",
                     $default : "#FFF"
                 },
                 "color" : {
                     $type : "Color",
-                    $description : "",
                     $default : ""
                 }
             }
@@ -1300,15 +1250,26 @@ Aria.beanDefinitions({
 
         },
         "FixedHeightFrameCfg" : {
-            $type : "BaseFrame"
+            $type : "Object",
+            $description : "Used for widgets which have a fixed height. Frame properties are then specified state-wise.",
+            $properties : {
+                "sprType" : {
+                    $type : "json:Integer",
+                    $description : "Deprecated, please use frameType instead. The value corresponding to this type of frame is 2."
+                },
+                "frameType" : {
+                    $type : "json:Enum",
+                    $enumValues : ["FixedHeight"],
+                    $description : "The value that indicates that a fixed height frame is desired is \"FixedHeight\"."
+                }
+            }
         },
         "FixedHeightFrameStateCfg" : {
             $type : "Object",
-            $description : "",
+            $description : "Properties of a frame of type \"FixedHeight\" for this state.",
             $properties : {
                 "color" : {
                     $type : "Color",
-                    $description : "",
                     $default : "#000"
                 },
                 "spriteURL" : {
@@ -1328,62 +1289,64 @@ Aria.beanDefinitions({
                     $description : ""
                 },
                 "sprWidth" : {
-                    $type : "json:Integer",
-                    $description : ""
+                    $type : "Pixels"
                 },
                 "sprHeight" : {
-                    $type : "json:Integer",
-                    $description : ""
+                    $type : "Pixels"
                 },
                 "sprIdx" : {
                     $type : "json:Integer",
                     $description : ""
                 },
                 "sprSpacing" : {
-                    $type : "json:Integer",
-                    $description : "",
+                    $type : "Pixels",
                     $default : 2
                 },
                 "spcLeft" : {
-                    $type : "json:Integer",
-                    $description : ""
+                    $type : "Pixels"
                 },
                 "marginTop" : {
-                    $type : "json:Integer",
-                    $description : "",
+                    $type : "Pixels",
                     $default : 0
                 },
                 "marginLeft" : {
-                    $type : "json:Integer",
-                    $description : "",
+                    $type : "Pixels",
                     $default : 0
                 },
                 "marginRight" : {
-                    $type : "json:Integer",
-                    $description : "",
+                    $type : "Pixels",
                     $default : 0
                 },
                 "marginBottom" : {
-                    $type : "json:Integer",
-                    $description : "",
+                    $type : "Pixels",
                     $default : 0
                 }
             }
         },
         "TableFrameCfg" : {
-            $type : "BaseFrame"
+            $type : "Object",
+            $description : "Used for widgets which have a layout based on a table. Frame properties are then specified state-wise.",
+            $properties : {
+                "sprType" : {
+                    $type : "json:Integer",
+                    $description : "Deprecated, please use frameType instead. The value corresponding to this type of frame is 3."
+                },
+                "frameType" : {
+                    $type : "json:Enum",
+                    $enumValues : ["Table"],
+                    $description : "The value that indicates that a table layout is desired is \"Table\"."
+                }
+            }
         },
         "TableFrameStateCfg" : {
             $type : "Object",
-            $description : "",
+            $description : "Properties of a frame of type \"Table\" for this state.",
             $properties : {
                 "sprWidth" : {
-                    $type : "json:Integer",
-                    $description : ""
+                    $type : "Pixels"
                 },
                 "sprHeight" : {
-                    $type : "json:Integer",
-                    $description : ""
+                    $type : "Pixels"
                 },
                 "sprIdx" : {
                     $type : "json:Integer",
@@ -1391,17 +1354,14 @@ Aria.beanDefinitions({
                     $default : 0
                 },
                 "sprSpacing" : {
-                    $type : "json:Integer",
-                    $description : "",
+                    $type : "Pixels",
                     $default : 2
                 },
                 "spcLeft" : {
-                    $type : "json:Integer",
-                    $description : ""
+                    $type : "Pixels"
                 },
                 "spcTop" : {
-                    $type : "json:Integer",
-                    $description : ""
+                    $type : "Pixels"
                 },
                 "spriteURL" : {
                     $type : "json:String",
@@ -1416,38 +1376,31 @@ Aria.beanDefinitions({
                     $description : ""
                 },
                 "marginTop" : {
-                    $type : "json:Integer",
-                    $description : "",
+                    $type : "Pixels",
                     $default : 0
                 },
                 "marginLeft" : {
-                    $type : "json:Integer",
-                    $description : "",
+                    $type : "Pixels",
                     $default : 0
                 },
                 "marginRight" : {
-                    $type : "json:Integer",
-                    $description : "",
+                    $type : "Pixels",
                     $default : 0
                 },
                 "marginBottom" : {
-                    $type : "json:Integer",
-                    $description : "",
+                    $type : "Pixels",
                     $default : 0
                 },
                 "color" : {
                     $type : "Color",
-                    $description : "",
                     $default : "#000"
                 },
                 "backgroundColor" : {
                     $type : "Color",
-                    $description : "",
                     $default : "#FFF"
                 },
                 "frameHeight" : {
-                    $type : "json:Integer",
-                    $description : ""
+                    $type : "Pixels"
                 },
                 "frameIcon" : {
                     $type : "json:String",
@@ -1467,7 +1420,7 @@ Aria.beanDefinitions({
             }
         },
         "OldFrame" : {
-            $type : "BaseFrame",
+            $type : "Object",
             $description : "",
             $properties : {
                 spriteURL : {
@@ -1475,59 +1428,87 @@ Aria.beanDefinitions({
                     $description : ""
                 },
                 spcLeft : {
-                    $type : "json:Integer",
-                    $description : ""
+                    $type : "Pixels"
                 },
                 spcRight : {
-                    $type : "json:Integer",
-                    $description : ""
+                    $type : "Pixels"
                 },
                 spcTop : {
-                    $type : "json:Integer",
-                    $description : ""
+                    $type : "Pixels"
                 },
                 spcBottom : {
-                    $type : "json:Integer",
-                    $description : ""
+                    $type : "Pixels"
                 },
                 sprWidth : {
-                    $type : "json:Integer",
-                    $description : ""
+                    $type : "Pixels"
                 },
                 sprHeight : {
-                    $type : "json:Integer",
-                    $description : ""
+                    $type : "Pixels"
                 },
                 offsetLeft : {
-                    $type : "json:Integer",
-                    $description : ""
+                    $type : "Pixels"
                 }
             }
         },
         "Old0FrameCfg" : {
-            $type : "OldFrame"
+            $type : "OldFrame",
+            $description : "Deprecated, please use farmes of types \"FixedHeight\", \"Simple\", \"Table\", \"SimpleHTML\" instead. Frame properties have to be specified state-wise.",
+            $properties : {
+                "sprType" : {
+                    $type : "json:Integer",
+                    $description : "Deprecated, please use frameType instead. The value corresponding to this type of frame is 0."
+                },
+                "frameType" : {
+                    $type : "json:Enum",
+                    $enumValues : ["Old0"],
+                    $description : "The value that indicates that no frame is desired is \"Old0\"."
+                }
+            }
         },
         "Old1FrameCfg" : {
-            $type : "OldFrame"
+            $type : "OldFrame",
+            $description : "Deprecated, please use farmes of types \"FixedHeight\", \"Simple\", \"Table\", \"SimpleHTML\" instead. Frame properties have to be specified state-wise.",
+            $properties : {
+                "sprType" : {
+                    $type : "json:Integer",
+                    $description : "Deprecated, please use frameType instead. The value corresponding to this type of frame is 1."
+                },
+                "frameType" : {
+                    $type : "json:Enum",
+                    $enumValues : ["Old1"],
+                    $description : "The value that indicates that no frame is desired is \"Old1\"."
+                }
+            }
         },
         "Old2FrameCfg" : {
-            $type : "OldFrame"
+            $type : "OldFrame",
+            $description : "Deprecated, please use farmes of types \"FixedHeight\", \"Simple\", \"Table\", \"SimpleHTML\" instead. Frame properties have to be specified state-wise.",
+            $properties : {
+                "sprType" : {
+                    $type : "json:Integer",
+                    $description : "Deprecated, please use frameType instead. The value corresponding to this type of frame is 2."
+                },
+                "frameType" : {
+                    $type : "json:Enum",
+                    $enumValues : ["Old2"],
+                    $description : "The value that indicates that no frame is desired is \"Old2\"."
+                }
+            }
         },
         "OldFrameState" : {
             $type : "Object",
-            $description : "",
+            $description : "Deprecated properties of a frames of old types for this state.",
             $properties : {
-                sprIdx : {
+                "sprIdx" : {
                     $type : "json:Integer",
                     $description : ""
                 },
-                textAlign : {
+                "textAlign" : {
                     $type : "json:String",
                     $description : ""
                 },
-                color : {
-                    $type : "Color",
-                    $description : ""
+                "color" : {
+                    $type : "Color"
                 }
             }
         },
@@ -1541,11 +1522,23 @@ Aria.beanDefinitions({
             $type : "OldFrameState"
         },
         "SimpleHTMLFrameCfg" : {
-            $type : "BaseFrame"
+            $type : "Object",
+            $description : "Used for widgets which have no frame at all. No frame properties have to be specified state-wise.",
+            $properties : {
+                "sprType" : {
+                    $type : "json:Integer",
+                    $description : "Deprecated, please use frameType instead. The value corresponding to this type of frame is 5."
+                },
+                "frameType" : {
+                    $type : "json:Enum",
+                    $enumValues : ["SimpleHTML"],
+                    $description : "The value that indicates that no frame is desired is \"SimpleHTML\"."
+                }
+            }
         },
         "SimpleHTMLFrameStateCfg" : {
             $type : "Object",
-            $description : "",
+            $description : "No properties to specify when the selected frame type is \"SimpleHTML\".",
             $properties : {}
         }
     }
