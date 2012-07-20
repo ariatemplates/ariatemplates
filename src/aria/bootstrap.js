@@ -90,6 +90,7 @@
 
             // mandatory utils
             'aria/utils/Array.js',
+            'aria/utils/String.js',
             'aria/utils/QueryString.js',
             'aria/utils/Type.js',
             'aria/utils/json/JsonSerializer.js',
