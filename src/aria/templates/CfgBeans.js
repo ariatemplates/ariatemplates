@@ -162,7 +162,17 @@ Aria.beanDefinitions({
                         $description : "Classpath of the macro library.",
                         $mandatory : true
                     }
+                },
+                "$res" : {
+                    $type : "json:Map",
+                    $description : "Resource class to be accessible through the res variable in the library.",
+                    $contentType : {
+                        $type : "json:PackageName",
+                        $description : "Any resource class that the library is dependent of",
+                        $sample : "aria.widgets.WidgetsRes"
+                    }
                 }
+
             }
         },
         "CSSTemplateCfg" : {
@@ -819,10 +829,7 @@ Aria.beanDefinitions({
             $type : "RefreshCfg",
             $properties : {
                 "writerCallback" : {
-                    $type : "json:ObjectRef" /*
-                        * TODO: when it is possible to put $beans in an Aria.classDefinition,
-                        * replace with a ref to aria.core.JsObject.Callback
-                        */,
+                    $type : "coreBeans:Callback",
                     $description : "If specified, macro is ignored and this callback is called instead, with the out object (MarkupWriter) as its parameter."
                 }
             }
