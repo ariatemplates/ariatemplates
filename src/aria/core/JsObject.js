@@ -353,24 +353,57 @@
                 if (typeof(callback) == 'string') {
                     callback = scope[callback];
                 }
-                
-                //Reshuffling the argument result
-                //if resIndex = -1 , we are removing the event object, Hence we are introducing a non-backward compatible change
-                //if resIndex is more than 0, we are putting the res object in 'resIndex' Position.
-                if(res != undefined && res.args != undefined){
-                 var spliceUtil = Array.prototype.splice;
-                  if( res.args[2] == -1){
-                    spliceUtil.call(res.args,0, 1);
-                  } 
-                  else if ( res.args[2] > 0){
-                    var removeItem = spliceUtil.call(res.args, 0, 1)[0];
-                    spliceUtil.call(res.args,2,0,removeItem);
-                  }
-                }
 
-                try {
-                    return callback.call(scope, res, cb.args);
-                } catch (ex) {
+                var resArray = [];
+                 
+                if(cb != undefined){
+                    if ((!cb.apply ) && cb.resIndex != undefined){
+                      if( cb.resIndex == -1){
+                            res = cb.args;
+                      } 
+                    }
+                    
+                    if(cb.apply){
+                        if(cb.resIndex == undefined && aria.utils.Type.isArray(cb.args)){
+                            var resArray = cb.args;
+                            resArray.unshift(res);
+                            cb.args = resArray;
+                        }
+                        else if(cb.resIndex == -1 ){
+                            res = cb.args;
+                        }
+                        else if(cb.resIndex == 0 ){
+                            var resArray = cb.args;
+                            resArray.unshift(res);
+                            cb.args = resArray;
+                        }
+                        else if(cb.resIndex >0){//1 means put it in 2nd position of result
+                            Array.prototype.splice.call(cb.args,cb.resIndex,0,res)
+                        }
+                    }
+                }   
+                        
+                try { 
+                    if( cb.resIndex == -1 && (!cb.apply )){
+                        return callback.call(scope,res);
+                        }
+                    else if(cb.resIndex>0  && (!cb.apply )){
+                        return callback.call(scope, cb.args,res);
+                        }
+                    else if ( cb.resIndex == -1 && (cb.apply )){
+                        return callback.apply(scope,res);
+                        }
+                    else if((cb.resIndex==undefined)  && (cb.apply) && ( aria.utils.Type.isArray(cb.args))){
+                        return callback.apply(scope,resArray);
+                        }
+                    else if(cb.resIndex >=0 && (cb.apply )){
+                        return callback.apply(scope,cb.args);
+                        }
+                    else {
+                        return callback.call(scope,res,cb.args);
+                        }
+                    }
+                 catch (ex) {
                     this.$logError(errorId, [this.$classpath, scope.$classpath], ex);
                 }
             },
