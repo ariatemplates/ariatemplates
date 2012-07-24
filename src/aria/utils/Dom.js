@@ -811,8 +811,8 @@ Aria.classDefinition({
             var viewportSize = this._getViewportSize();
             var documentScroll = this._getDocumentScroll(base);
             return {
-                left : parseInt(documentScroll.scrollLeft + (viewportSize.width - size.width) / 2, 10),
-                top : parseInt(documentScroll.scrollTop + (viewportSize.height - size.height) / 2, 10)
+                left : documentScroll.scrollLeft + (viewportSize.width - size.width) / 2,
+                top : documentScroll.scrollTop + (viewportSize.height - size.height) / 2
             };
         },
 
