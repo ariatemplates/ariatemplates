@@ -46,20 +46,25 @@ Aria.classDefinition({
             this.$callback(cb);
         },
 
-        /**
-         * Method to be called when changing the messages data structure.
-         * @param {aria.utils.validators.CfgBeans.MessagesList} messages list of messages
-         */
-        setMessages : function (messages) {
-            if (messages == null) {
-                messages = [];
+		/**
+		 * Method to be called when changing the messages data structure.
+		 * @param {aria.utils.validators.CfgBeans.MessagesList} messages list of messages
+		 */
+		setMessages : function (messages, domId) {
+			if (messages == null) {
+				messages = [];
+			}
+			var map = {};
+			var filteredMessages = this._processMessages(messages, map, this._data.filterTypes);
+			this.json.setValue(this._data, "messageTypes", map);
+			this.json.setValue(this._data, "messages", filteredMessages);
+			if(filteredMessages.length > 0){
+               this.$raiseEvent({
+                name : "messagesChanged",
+                domRef : domId
+				});
             }
-            var map = {};
-            var filteredMessages = this._processMessages(messages, map, this._data.filterTypes);
-            this.json.setValue(this._data, "messageTypes", map);
-            this.json.setValue(this._data, "messages", filteredMessages);
-            this.$raiseEvent("messagesChanged");
-        },
+		},
 
         /**
          * Set the focus on the field which corresponds to the specified message.
