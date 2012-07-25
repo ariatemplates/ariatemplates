@@ -49,8 +49,9 @@ Aria.classDefinition({
 		/**
 		 * Method to be called when changing the messages data structure.
 		 * @param {aria.utils.validators.CfgBeans.MessagesList} messages list of messages
+         * @param {HTMLElement} element to which is to be made visible
 		 */
-		setMessages : function (messages, domId) {
+		setMessages : function (messages, element) {
 			if (messages == null) {
 				messages = [];
 			}
@@ -61,7 +62,7 @@ Aria.classDefinition({
 			if(filteredMessages.length > 0){
                this.$raiseEvent({
                 name : "messagesChanged",
-                domRef : domId
+                domRef : element
 				});
             }
 		},
