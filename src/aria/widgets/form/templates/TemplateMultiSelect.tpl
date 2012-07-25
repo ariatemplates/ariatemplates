@@ -16,7 +16,10 @@
 // Default template for List Widget 
 {Template {
     $classpath:'aria.widgets.form.templates.TemplateMultiSelect',
-    $hasScript:true
+    $hasScript:true,
+    $res:{
+      footerRes : 'aria.resources.multiselect.FooterRes'
+    }
 }}
     {macro main()}
         // The Div is used to wrap the items with good looking border.
@@ -131,7 +134,7 @@
         <div class="${data.skin.cssClassFooter}">
             <div style="width:120px">
                 {@aria:Link { 
-                    label : "Select All",
+                    label : footerRes.selectAll,
                     sclass : 'multiSelectFooter',
                     onclick : {
                         fn : "selectAll",
@@ -141,7 +144,7 @@
             </div>    
             <span style="position:absolute;right:2px;text-align:right;">        
                 {@aria:Link { 
-                    label:"Close",
+                    label:footerRes.close,
                     sclass : 'multiSelectFooter',
                     onclick: {
                         fn: "close",
@@ -151,7 +154,7 @@
             </span>                
             <span>
                 {@aria:Link {
-                    label:"Deselect All",
+                    label:footerRes.deselectAll,
                     sclass : 'multiSelectFooter',
                     onclick: {
                         fn: "deselectAll",
