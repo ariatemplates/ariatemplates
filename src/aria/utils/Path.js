@@ -15,19 +15,61 @@
 
 /**
  * Utility to handle JSON path. NOTE: this could be extended to support XPath like queries
- * @class aria.utils.Path
  */
 Aria.classDefinition({
-    $classpath : 'aria.utils.Path',
-    $dependencies : ['aria.utils.String'],
+    $classpath : "aria.utils.Path",
+    $dependencies : ["aria.utils.String", "aria.utils.Type"],
     $singleton : true,
-    $constructor : function () {},
     $statics : {
-        // ERROR MESSAGES:
         WRONG_PATH_SYNTAX : "Syntax for path %1 is not valid. Note that variables cannot be used in paths.",
         RESOLVE_FAIL : "Resolve for path %1 failed, root element does not contain this path"
     },
     $prototype : {
+        /**
+         * Set a value inside a container object given a path. <code>setValue(obj, "a.b.c", true)</code> corresponds
+         * functionally to <code>obj.a.b.c = true</code> however this function creates all the necessary intermediate
+         * objects in order to set the value correctly on the specified path. <br />
+         * Path can be anything acceptable for parse function, so
+         * <ul>
+         * <li>dot notation : first.second.third</li>
+         * <li>bracket notation : first['second']['third']</li>
+         * <li>array notation : array[0][1], in this case array will actaully be an array and not an object. An object
+         * with key '0' can be created using array['0']['1']</li>
+         * </ul>
+         * @param {Object} inside Container object
+         * @param {String} path Where the value should be set in the object
+         * @param {Object} value What should be set on the given path
+         */
+        setValue : function (inside, path, value) {
+            var typeUtils = aria.utils.Type;
+            if (!inside || !path || !typeUtils.isObject(inside)) {
+                return;
+            }
+            if (typeUtils.isString(path)) {
+                path = this.parse(path);
+            }
+            if (!typeUtils.isArray(path) || typeUtils.isNumber(path[0])) {
+                return;
+            }
+
+            var container = inside, param, content, next;
+            for (var i = 0, len = path.length; i < len; i += 1) {
+                param = path[i];
+
+                if (i === len - 1) {
+                    container[param] = value;
+                } else {
+                    next = path[i + 1];
+                    if (typeUtils.isNumber(next) && !typeUtils.isArray(container[param])) {
+                        container[param] = [];
+                    }
+                    if (typeUtils.isString(next) && (!typeUtils.isObject(container[param]) || !(param in container))) {
+                        container[param] = {};
+                    }
+                    container = container[param];
+                }
+            }
+        },
 
         /**
          * Resolve a path inside an object, and return result
@@ -39,7 +81,7 @@ Aria.classDefinition({
             if (aria.utils.Type.isString(path)) {
                 path = this.parse(path);
             }
-            if (aria.utils.Type.isArray) {
+            if (aria.utils.Type.isArray(path)) {
                 for (var index = 0, param, len = path.length; index < len; index++) {
                     param = path[index];
                     inside = inside[param];
@@ -92,7 +134,7 @@ Aria.classDefinition({
                     next = path.substring(closing + 1);
                     if (/^\d+$/.test(part)) {
                         nextParse = this._paramParse(next);
-                        nextParse.unshift(part);
+                        nextParse.unshift(parseInt(part, 10));
                         return nextParse;
                     } else {
                         // check that part is "something" or 'somethingelse'
@@ -131,9 +173,66 @@ Aria.classDefinition({
         pathArrayToString : function (pathParts) {
             var path = [pathParts[0]];
             for (var index = 1, len = pathParts.length; index < len; index++) {
-                path.push("[\"" + pathParts[index].replace(/"/gi, '\\"') + "\"]");
+                path.push("[\"" + ("" + pathParts[index]).replace(/"/gi, '\\"') + "\"]");
             }
             return path.join('');
+        },
+
+        /**
+         * Describe the object referred by a certain path in the container object. Returns an object containing
+         * <ul>
+         * <li>container : The last containing object, it's the object in which the last property is defined</li>
+         * <li>property : The name of the last property in the path</li>
+         * <li>value : The value of the property specified by the path</li>
+         * </ul>
+         * For example calling <code>describe(obj, "a.b.c")</code> returns
+         *
+         * <pre>
+         * {
+         *    container : obj.a.b,
+         *    property : 'c',
+         *    value : 'the value of obj.a.b.c'
+         * }
+         * </pre>
+         *
+         * If the path doesn't exist in the container object this function returns null
+         * @param {Object} container
+         * @param {String} path
+         * @return {Object}
+         */
+        describe : function (container, path) {
+            var typeUtils = aria.utils.Type;
+            if (!container || !path || !typeUtils.isObject(container)) {
+                return;
+            }
+            if (typeUtils.isString(path)) {
+                path = this.parse(path);
+            }
+            if (!typeUtils.isArray(path) || typeUtils.isNumber(path[0])) {
+                return;
+            }
+
+            var obj = container, param, content;
+            for (var i = 0, len = path.length; i < len; i += 1) {
+                param = path[i];
+
+                if (typeUtils.isNumber(param) && !typeUtils.isArray(obj)) {
+                    return null;
+                }
+                if (typeUtils.isString(param) && (!typeUtils.isObject(obj) || !(param in obj))) {
+                    return null;
+                }
+
+                if (i === len - 1) {
+                    return {
+                        container : obj,
+                        property : param,
+                        value : obj[param]
+                    };
+                } else {
+                    obj = obj[param];
+                }
+            }
         }
     }
 });
