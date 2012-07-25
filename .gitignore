@@ -5,3 +5,5 @@ build/at-bootstrap
 build/at-core
 .project
 .settings
+.benchmarks.rb.swp
+.checkstyle

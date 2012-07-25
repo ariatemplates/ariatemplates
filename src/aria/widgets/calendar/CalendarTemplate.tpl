@@ -26,6 +26,7 @@
     {var skin=data.skin/}
 
     {macro main()}
+
         {if settings.displayUnit == "M"}
             {@aria:Div {
                 sclass: skin.skinObject.divsclass,
@@ -111,7 +112,7 @@
     {macro renderDay(day, month)}
         {var jsDate=day.jsDate/}
         {if day.monthKey==month.monthKey}
-            <td ${day.isSelectable ? "_date=\""+jsDate.getTime()+"\"":""}
+            <td ${day.isSelectable ? "data-date=\""+jsDate.getTime()+"\"":""}
                 class="${getClassForDay(day)}"
             >${day.label}</td>
         {else/}

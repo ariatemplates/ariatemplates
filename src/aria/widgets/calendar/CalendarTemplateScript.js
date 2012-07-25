@@ -49,7 +49,7 @@ Aria.tplScriptDefinition({
         },
 
         clickDay : function (evt) {
-            var date = evt.target.getExpando("date");
+            var date = evt.target.getData("date");
             if (date) {
                 var jsDate = new Date(parseInt(date, 10));
                 this.moduleCtrl.dateClick({
@@ -77,17 +77,17 @@ Aria.tplScriptDefinition({
         },
 
         mouseOverDay : function (evt) {
-            var date = evt.target.getExpando("date");
+            var date = evt.target.getData("date");
             if (date) {
-                evt.target.classList.setClassName(evt.target.getClassName().replace(this.skin.baseCSS + "mouseOut", this.skin.baseCSS
+                evt.target.classList.setClassName(evt.target.classList.getClassName().replace(this.skin.baseCSS + "mouseOut", this.skin.baseCSS
                         + "mouseOver"));
             }
         },
 
         mouseOutDay : function (evt) {
-            var date = evt.target.getExpando("date");
+            var date = evt.target.getData("date");
             if (date) {
-                evt.target.classList.setClassName(evt.target.getClassName().replace(this.skin.baseCSS + "mouseOver", this.skin.baseCSS
+                evt.target.classList.setClassName(evt.target.classList.getClassName().replace(this.skin.baseCSS + "mouseOver", this.skin.baseCSS
                         + "mouseOut"));
             }
         }
