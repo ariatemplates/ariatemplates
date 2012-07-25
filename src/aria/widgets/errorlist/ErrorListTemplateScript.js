@@ -18,16 +18,16 @@
  * @class aria.widgets.errorlist.ErrorListTemplateScript
  */
 Aria.tplScriptDefinition({
-    $classpath : "aria.widgets.errorlist.ErrorListTemplateScript",
-    $dependencies : ["aria.utils.Data"],
-    $statics : {
-        /**
-         * Links each type of message with an icon. The order in the array is important as the first entry for which
-         * messages of that type exist in the messages list is used. Since it depends on aria.utils.Data wait for it to
-         * be loaded by the dependency manager
-         * @type Array
-         */
-        ICONS : [],
+	$classpath : "aria.widgets.errorlist.ErrorListTemplateScript",
+	$dependencies : ["aria.utils.Data","aria.utils.Dom"],
+	$statics : {
+		/**
+		 * Links each type of message with an icon. The order in the array is important as the first entry for which
+		 * messages of that type exist in the messages list is used. Since it depends on aria.utils.Data wait for it to
+		 * be loaded by the dependency manager
+		 * @type Array
+		 */
+		ICONS : [],
 
         /**
          * Icon used if there is no matching icon in ICONS.
@@ -68,24 +68,28 @@ Aria.tplScriptDefinition({
             });
         },
 
-        /**
-         * React to module events
-         * @param {Event} evt
-         */
-        onModuleEvent : function (evt) {
-            if (evt.name == "messagesChanged") {
-                this.$refresh();
-            }
-        },
-
-        /**
-         * Click on an error message
-         * @param {Event} evt Not used
-         * @param {Object} msg Error message
-         */
-        clickOnMessage : function (evt, msg) {
-            this.moduleCtrl.focusField(msg);
-        },
+		/**
+		 * React to module events
+		 * @param {Event} evt
+		 */
+		onModuleEvent : function (evt) {
+			
+			if (evt.name == "messagesChanged") {
+				if(evt.domRef){
+                    var domConfig = aria.utils.Dom.scrollIntoView(evt.domRef);
+                }
+				this.$refresh();
+			}
+		},
+		
+		/**
+		 * Click on an error message
+		 * @param {Event} evt Not used
+		 * @param {Object} msg Error message
+		 */
+		clickOnMessage : function (evt, msg) {
+			this.moduleCtrl.focusField(msg);
+		},
 
         /**
          * Get the icon name for the current message type
