@@ -126,24 +126,77 @@ Aria.classDefinition({
         },
 
         /**
+         * Return an url list from an array containing the starting url, this function is usefull to retrieve package
+         * name with md5 from the name without it
+         * @param {String|Array} urls starting url string
+         * @return {Array} array of full url
+         */
+        getPackages : function (urls) {
+
+            if (this._typeUtils.isString(urls)) {
+                urls = [urls];
+            }
+
+            var _getPackages = function (urls, urlMap, packages) {
+                if (urls.length === 0) {
+                    // everything has been found, leave back the recursive loop
+                    return;
+                }
+                for (var key in urlMap) {
+                    var value = urlMap[key];
+                    if (typeof(value) == 'string') {
+                        // Check if something match
+                        for (var i = 0, ii = urls.length; i < ii; i++) {
+                            var file = urls[i];
+                            if (value.substr(0, file.length) == file) {
+                                packages[value] = true;
+                                // remove found item from the url list, for performance reason
+                                urls.slice(i, i);
+                                break;
+                            }
+                        }
+                    } else {
+                        _getPackages(urls, urlMap[key], packages);
+                    }
+                }
+            };
+
+            // Clone urls array
+            var urlClone = [];
+            for (var i = 0, ii = urls.length; i < ii; i++) {
+                urlClone.push(urls[i]);
+            }
+
+            var packages = {};
+            _getPackages(urls, this._urlMap, packages);
+
+            // return the keys only
+            var keys = [];
+            for (var key in packages) {
+                keys.push(key);
+            }
+            return keys;
+        },
+
+        /**
          * Get a file from its logical path
          * @param {String} logicalPath file logical path e.g. aria/core/Sequencer.js
          * @param {aria.core.JsObject.Callback} cb callback description - warning callback may be called synchronously
          * if the file is already available
-         *
+         * 
          * <pre>
-         *
+         * 
          *     {
          *         fn: // {Function} callback function
          *         scope: // {Object} object context associated to the callback function (i.e. 'this' object)
          *         args: // {Object} optional argument object passed to the callback function when called
          *     }
          * </pre>
-         *
+         * 
          * When called the callback will be called with the following arguments: fn(evt,args) where evt corresponds to
          * aria.core.FileLoader.$events.fileReady
          * @param {Object} args Additional arguments for the file loader
-         *
+         * 
          * <pre>
          *     {
          *         fullLogicalPath: // {String} Full logical path of the file to be loaded.
