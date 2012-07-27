@@ -318,13 +318,7 @@
 							for (var i = 0; i < suggestions.length; i += 1) {
 								suggestions[i].exactMatch = (suggestions[i].code === code);
 							}
-							// to reset the suggestions exactmatch
-						} else {
-							for (var j in suggestions) {
-								suggestions[j].exactMatch = false;
-							}
-
-						}
+						} 
 						// reformat the suggestions to be compatible with the list widget
 						matchValueIndex = this._prepareSuggestionsAndMatch(suggestions, nextValue);
 
