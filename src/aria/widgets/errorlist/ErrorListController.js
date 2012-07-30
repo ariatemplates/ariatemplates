@@ -59,12 +59,11 @@ Aria.classDefinition({
 			var filteredMessages = this._processMessages(messages, map, this._data.filterTypes);
 			this.json.setValue(this._data, "messageTypes", map);
 			this.json.setValue(this._data, "messages", filteredMessages);
-			if(filteredMessages.length > 0){
-               this.$raiseEvent({
+			this.$raiseEvent({
                 name : "messagesChanged",
                 domRef : element
 				});
-            }
+            
 		},
 
         /**
