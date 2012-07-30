@@ -356,8 +356,9 @@ Aria.classDefinition({
             // convert hours to integer
             hours = parseFloat(hours);
 
+
             // action pmCorrection
-            if (hours < 12) {
+            if (hours < 12 && (pmCorrection)) {
                 hours += pmCorrection;
             }
 
