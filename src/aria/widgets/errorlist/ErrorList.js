@@ -71,17 +71,17 @@ Aria.classDefinition({
             p.bindableProperties = p.bindableProperties.concat(["messages"]);
         },
 
-		_onBoundPropertyChange : function (propertyName, newValue, oldValue) {
-			this._inOnBoundPropertyChange = true;
-			try {
-				if (propertyName == "messages") {
-					var domId = this._domElt;
-					this._subTplModuleCtrl.setMessages(newValue, domId);
-				}
-				this._cfg[propertyName] = newValue
-			} finally {
-				this._inOnBoundPropertyChange = false;
-			}
-		}
-	}
+        _onBoundPropertyChange : function (propertyName, newValue, oldValue) {
+            this._inOnBoundPropertyChange = true;
+            try {
+                if (propertyName == "messages") {
+                    var domId = this._domElt;
+                    this._subTplModuleCtrl.setMessages(newValue, domId);
+                }
+                this._cfg[propertyName] = newValue
+            } finally {
+                this._inOnBoundPropertyChange = false;
+            }
+        }
+    }
 });
