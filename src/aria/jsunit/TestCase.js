@@ -118,14 +118,14 @@ Aria.classDefinition({
          * Conditionnal wait before calling the callback
          * It takes only one json parameter
          * @param {args} args json parameter with the following attributes:
-         * <br />{integer} delay : Optional. Time interval between two test  
+         * <br />{integer} delay : Optional. Time interval between two test
          * <br />{Function} condition : function which returns true or false. If true, the callback will be called, if false, this method will will call again after a delay.
          * <br />{Function} callback : callback wich be called when the condition function returns true
          */
         waitFor : function (args) {
             var delay = args.delay || 250;
             var condition = args.condition;
-            
+
             var timeoutFn = function() {
                 if (this.$callback(condition)) {
                     this.$callback(args.callback);
@@ -143,7 +143,7 @@ Aria.classDefinition({
                 delay : delay
             });
         },
-        
+
         /**
          * Internal method called for each test metod
          * @param {Object} evt the event sent by the sequencer

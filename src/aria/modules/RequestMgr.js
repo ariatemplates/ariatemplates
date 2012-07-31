@@ -566,13 +566,13 @@ Aria.classDefinition({
          * Internal function used to build the request I18N URL. This call is asynchronous as submitJsonRequest. The
          * reason is that it might have to download the urlService implementation class. The final url is added to the
          * arguments passed to the callback
-         * 
+         *
          * <pre>
          *     {
          *         full : // I18n url built by the implementation
          *     }
          * </pre>
-         * 
+         *
          * @param {String} moduleName - the name of the calling module
          * @param {String} the locale to be used
          * @param {aria.core.JsObject.Callback} callback Callback called when the full path is ready

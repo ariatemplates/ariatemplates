@@ -18,13 +18,13 @@
  * particularly useful when debugging or when you need to get the response as text to copy/paste it into a local XML
  * file to work 'offline'. This filter outputs information using the logger system, so you might need to adapt the level
  * like so:
- * 
+ *
  * <pre>
  * aria.core.Log.setLoggingLevel(&quot;aria.utils.filters.DisplayXmlResponse&quot;, aria.core.Log.LEVEL_INFO);
  * </pre>
- * 
+ *
  * To use this filter, do the following, like any other filter:
- * 
+ *
  * <pre>
  * aria.core.IOFiltersMgr.addFilter(&quot;aria.utils.filters.DisplayXmlResponse&quot;);
  * </pre>

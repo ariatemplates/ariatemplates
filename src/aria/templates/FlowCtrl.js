@@ -42,15 +42,15 @@ Aria.classDefinition({
          * Interceptor dispatch function.
          * @param {Object} param interceptor parameters
          */
-        interceptModuleCtrl : function (param) {    
+        interceptModuleCtrl : function (param) {
             var methodName = aria.utils.String.capitalize(param.method);
             var fctRef = this["on" + methodName + param.step];
             if (fctRef) {
                 return fctRef.call(this, param);
             }
             fctRef = this["on" + param.method + param.step];
-            if (fctRef) {                 
-                return fctRef.call(this, param);                 
+            if (fctRef) {
+                return fctRef.call(this, param);
             }
         },
 

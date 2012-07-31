@@ -16,7 +16,7 @@
 (function (){
 /**
  * Mutualize most of the test formatting and information extraction logic
- * @class aria.tester.runner.Utils.TestUtils 
+ * @class aria.tester.runner.Utils.TestUtils
  * @extends extends
  */
 var classDefinition = {
@@ -29,16 +29,16 @@ var classDefinition = {
     },
     $prototype : {
         /**
-         * 
+         *
          */
         getTestSuiteInfo : function (testSuite) {
             var instance = testSuite.instance;
             var suitesCount = instance.getAllSubTestSuites().length;
             var casesCount = instance.getAllSubTestCases().length;
-            
+
             return this._formatTestSuiteInfo(suitesCount, casesCount);
         },
-        
+
         /**
          * Format information about a test suite for display purposes, with an abstraction on the testsuite.
          * (0,3) => "(3 test cases)"
@@ -50,9 +50,9 @@ var classDefinition = {
          */
         _formatTestSuiteInfo : function (suitesCount, casesCount) {
             var testSuitesText = suitesCount ? suitesCount + " test suite" + (suitesCount > 1 ? "s" : ""): null;
-            
+
             var testCasesText = casesCount ?  casesCount + " test case" + (casesCount > 1 ? "s" : ""): null;
-            
+
             if (casesCount && suitesCount) {
                 return [testSuitesText, testCasesText].join(" and ");
             } else if (casesCount || suitesCount) {
@@ -61,7 +61,7 @@ var classDefinition = {
                 return "no test available in this suite !"
             }
         },
-        
+
         /**
          * Format the classpath of a given test case
          * @param {Object} testCase : test preload wrapper {instance, classpath}
@@ -72,7 +72,7 @@ var classDefinition = {
             var formattedClasspath = this._formatTestCaseClasspath(classpath, mini);
             return formattedClasspath;
         },
-        
+
         /**
          * Apply display transformation to a given test case classpath
          * @param {String} classpath
@@ -83,20 +83,20 @@ var classDefinition = {
             var splitClasspath = classpath.split(".");
             var lastElem = splitClasspath[splitClasspath.length-1];
             splitClasspath[splitClasspath.length-1] = "<b>" + lastElem + "</b>";
-            
+
             if (mini) {
                  return "<b>" + lastElem + "</b>";
             } else {
                  return splitClasspath.join(".");
             }
         },
-        
+
         formatTestErrorsCount : function (testCase) {
             var errors = testCase.instance.getErrors();
             var l = errors.length;
             return (l + " error" + (l!=1?"s":""));
         },
-        
+
         /**
          * @param {Object}
          */
@@ -105,19 +105,19 @@ var classDefinition = {
             var formattedClasspath = this._formatTestSuiteClasspath(classpath);
             return formattedClasspath;
         },
-        
+
         /**
-         * 
+         *
          */
         _formatTestSuiteClasspath : function (classpath) {
             var splitClasspath = classpath.split(".");
             return splitClasspath[splitClasspath.length-1].replace("TestSuite", "");
         },
-        
+
         /**
          * Retrieve all the selected tests (cases and suites) nested inside a given suite
          * as a flat array
-         * @param {aria.jsunit.TestSuite} suite 
+         * @param {aria.jsunit.TestSuite} suite
          * @return {Array}
          */
         getSubTestsAsArray : function (suite) {
@@ -125,7 +125,7 @@ var classDefinition = {
             var subTests = suite.getSubTests();
             for (var i = 0, l = subTests.length ; i < l ; i++) {
                 var test = subTests[i];
-                var instance = test.instance; 
+                var instance = test.instance;
                 if (instance && instance.$TestSuite) {
                     if (instance.isSelected() !== -1 && !instance.isSkipped()) {
                         var suiteSubTests = this.getSubTestsAsArray(instance);
@@ -136,17 +136,17 @@ var classDefinition = {
                             tests.push(test);
                         }
                         tests = tests.concat(suiteSubTests);
-                    }                    
+                    }
                 }  else {
                     tests.push(test);
                 }
             }
             return tests;
         },
-        
+
         /**
          * Retrieve the classpaths of all the unselected test suites nested inside a given suite
-         * @param {aria.jsunit.TestSuite} suite 
+         * @param {aria.jsunit.TestSuite} suite
          * @return {Array}
          */
         getUnselectedSubSuites : function (suite) {

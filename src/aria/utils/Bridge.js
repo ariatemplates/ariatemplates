@@ -45,7 +45,7 @@ Aria.classDefinition({
 
         /**
          * Classpath of the module controller to load in subwindow and classpath of root display. Also title
-         * 
+         *
          * <pre>
          *     {
          *         moduleCtrlClasspath : ...
@@ -53,7 +53,7 @@ Aria.classDefinition({
          *         title : ...
          *     }
          * </pre>
-         * 
+         *
          * @protected
          * @type Object
          */

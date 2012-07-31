@@ -26,9 +26,9 @@ Aria.classDefinition({
     $constructor : function () {
         /**
          * List or callbacks currently defined (indexed by callback id) Items have the following form:
-         * 
+         *
          * <pre>
-         * '456' : { // callback internal id 
+         * '456' : { // callback internal id
          *    fn : cb.fn,
          *    scope : cb.scope,
          *    delay : delay,
@@ -36,7 +36,7 @@ Aria.classDefinition({
          *    cancelId : 123456413
          * }
          * </pre>
-         * 
+         *
          * @type Map
          * @private
          */
@@ -44,12 +44,12 @@ Aria.classDefinition({
 
         /**
          * Association map between interval/timeout ids and internal ids Items have the following form:
-         * 
+         *
          * <pre>
          * '4578912156'
          * : '456' // key=timeout id, value=internal callback id
          * </pre>
-         * 
+         *
          * @private
          */
         this._cancelIds = {};
@@ -99,13 +99,13 @@ Aria.classDefinition({
          * Create a new callback and return a callback id note: callbacks are automatically removed from the list once
          * executed.
          * <code>
-         * aria.core.Timer.addCallback({ 
-         *     fn : obj.method, // mandatory 
+         * aria.core.Timer.addCallback({
+         *     fn : obj.method, // mandatory
          *     scope : obj, // mandatory
-         *     onerror : obj2.method2 // callback error handler - optional - default: Timer error log 
-         *     onerrorScope : obj2 // optional - default: Timer or scope if onError is provided 
-         *     delay : 100, // optional - default: 1ms 
-         *     args : {x:123} // optional - default: null 
+         *     onerror : obj2.method2 // callback error handler - optional - default: Timer error log
+         *     onerrorScope : obj2 // optional - default: Timer or scope if onError is provided
+         *     delay : 100, // optional - default: 1ms
+         *     args : {x:123} // optional - default: null
          * });
          * </code>
          * @param {Object} cb the callback description

@@ -63,7 +63,7 @@ Aria.classDefinition({
                 delete this._freeIdMap[i];
                 return i;
             }
-            
+
             var id = this.prefix + this._idCounter;
             this._idCounter++;
             return id;

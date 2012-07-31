@@ -81,11 +81,11 @@ Aria.classDefinition({
          * Keep track of the number of classpath that are using a certain CSS template class. A CSS template can be
          * removed only when no other templates in the page depend on it.
          * @type Object
-         * 
+         *
          * <pre>
          * {cssClassPath : [classPath, ...] }
          * </pre>
-         * 
+         *
          * @private
          */
         this.__cssUsage = {};
@@ -94,11 +94,11 @@ Aria.classDefinition({
          * Keep track of the number of classpath that are using a certain CSS template class in the application. It is
          * used to manage when css can be invalidated.
          * @type Object
-         * 
+         *
          * <pre>
          * {cssClassPath : [classPath, ...] }
          * </pre>
-         * 
+         *
          * @private
          */
         this.__globalUsage = {};
@@ -107,13 +107,13 @@ Aria.classDefinition({
          * Each CSS template class has it's own unique prefix, store the association between the CSS template class and
          * the prefix. The prefix is a CSS class
          * @type Object
-         * 
+         *
          * <pre>
          * {
          *     cssClassPath : prefix
          * }
          * </pre>
-         * 
+         *
          * @private
          */
         this.__prefixes = {};
@@ -129,11 +129,11 @@ Aria.classDefinition({
         /**
          * Keep a map of the text loaded into the DOM for each CSS template.
          * @type Object
-         * 
+         *
          * <pre>
          * {cssClassPath : {text: CSS file, lines: Number of selectors}}
          * </pre>
-         * 
+         *
          * @private
          */
         this.__textLoaded = {};
@@ -141,11 +141,11 @@ Aria.classDefinition({
         /**
          * Since we are using a pool of style tags, keep track of where is loaded each css classpath
          * @type Object
-         * 
+         *
          * <pre>
          * {classPath : Id of the style tag}
          * </pre>
-         * 
+         *
          * @private
          */
         this.__styleTagAssociation = {};
@@ -301,7 +301,7 @@ Aria.classDefinition({
          * @param {Array} dependencies Array of CSS template dependencies
          * @param {Object} contextArgs Optional parameters to be passed to CSSCtxt.initTemplate
          * @return {Object}
-         * 
+         *
          * <pre>
          * {
          *    classes : Array of prefixes added for CSS scoping,
@@ -599,13 +599,13 @@ Aria.classDefinition({
          * This is the only function that has access to the DOM. It generates the style tag if missing and keeps a
          * pointer to it to update the content of the tag when needed.
          * @param {Object}
-         * 
+         *
          * <pre>
          * {
          *   styleTagId : Array of text tokens for that style tag
          * }
          * </pre>
-         * 
+         *
          * @private
          */
         __reloadStyleTags : function (styleBuilders) {

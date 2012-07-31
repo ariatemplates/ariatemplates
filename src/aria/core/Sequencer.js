@@ -81,7 +81,7 @@ Aria.classDefinition({
          * Append a task to the task list. Tasks will be triggered through events - as such task processors are
          * considered as special listeners for the Sequencer object Note: asynchronous tasks should call the
          * notifyTaskEnd() method of the sequencer
-         * 
+         *
          * <pre>
          *     o.addTask({
          *         name: &quot;task name&quot;, // mandatory
@@ -91,7 +91,7 @@ Aria.classDefinition({
          *         asynchronous: false // optional - default: false
          *     })
          * </pre>
-         * 
+         *
          * @param {Object} taskDesc the task description object
          */
         addTask : function (taskDesc) {

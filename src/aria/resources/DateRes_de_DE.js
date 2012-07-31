@@ -46,7 +46,7 @@ Aria.resourcesDefinition({
         ]
     }
 });
-/* 
+/*
 uic.r.shortdate.jan=Jan
 uic.r.shortdate.feb=Feb
 uic.r.shortdate.mar=M\u00E4r

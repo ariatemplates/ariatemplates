@@ -22,7 +22,7 @@ Aria.interfaceDefinition({
     $interface : {
         /**
          * Sub modules, one for each tool available. Each will load a sub module and appropriate display.
-         * @type Array 
+         * @type Array
          */
         subModulesList : []
     },

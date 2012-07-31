@@ -25,7 +25,7 @@ Aria.interfaceDefinition({
          * Close the contextual menu
          */
         close : "Function",
-        
+
         /**
          * open the contextual menu
          */

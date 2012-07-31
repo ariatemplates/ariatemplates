@@ -75,7 +75,7 @@ Aria.classDefinition({
     $prototype : {
         /**
          * Check that a macro object is correctly defined A macro object should have
-         * 
+         *
          * <pre>
          * {name : String, args: Array}
          * </pre>

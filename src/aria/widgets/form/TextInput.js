@@ -312,7 +312,7 @@ Aria.classDefinition({
         /**
          * Check that the value displayed in the field is correct If not, set the field in error
          * @param {JSON cfg} arg - optional arguments to control the check behavior
-         * 
+         *
          * <pre>
          * {
          *     text: {String} (default:null) - display text,

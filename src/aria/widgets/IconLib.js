@@ -33,7 +33,7 @@ Aria.classDefinition({
         //aria.widgets.AriaLib.registerWidget("IconLib",aria.widgets.IconLib);
     },
     $constructor:function () {
-        
+
         // Internal library map where the sprites are stored.
         this._sprites = {
             iconsSTD:{
@@ -188,7 +188,7 @@ Aria.classDefinition({
             return false;
         },
         /**
-         * A method to remove a sprite from the iconLib. Shouldn't be allowed to 
+         * A method to remove a sprite from the iconLib. Shouldn't be allowed to
          * delete aria-defined sprites. Declared as internal for the moment.
          * @param {Object} name
          * @return {Boolean} returns whether the sprite was found and correctly deleted.
@@ -201,7 +201,7 @@ Aria.classDefinition({
             return false;
         },
         /**
-         * Will return either false if the sprite and icon aren't in the library, or it returns an object 
+         * Will return either false if the sprite and icon aren't in the library, or it returns an object
          * with the necessary information for building the markup inside the aria Icon object.
          * @param {String} sprite
          * @param {String} icon
@@ -217,7 +217,7 @@ Aria.classDefinition({
                     iconTop = (curSprite.iconHeight + curSprite.spriteSpacing)*XY[1];
                 }
                 else if(curSprite.direction==="x") {
-                    iconLeft = (curSprite.iconWidth + curSprite.spriteSpacing)*iconContent; 
+                    iconLeft = (curSprite.iconWidth + curSprite.spriteSpacing)*iconContent;
                 }
                 else if(curSprite.direction==="y"){
                     iconTop = (curSprite.iconHeight + curSprite.spriteSpacing)*iconContent;
@@ -232,12 +232,12 @@ Aria.classDefinition({
                     "height": curSprite.iconHeight
                 };
             }
-            
+
             return false;
         },
         /**
-         * This is used to catalogue all the icon sets and icons inside this library. 
-         * There is no cfg object passed through as is normal for other widgets. This shouldn't ever be 
+         * This is used to catalogue all the icon sets and icons inside this library.
+         * There is no cfg object passed through as is normal for other widgets. This shouldn't ever be
          * called inside a real application, only as documentation or during development.
          * @param {Object} out - the output stream where we can write to
          */
@@ -254,12 +254,12 @@ Aria.classDefinition({
                         iconTop = (curSprite.iconHeight + curSprite.spriteSpacing)*XY[1];
                     }
                     else if(curSprite.direction==="x") {
-                        iconLeft = (curSprite.iconWidth + curSprite.spriteSpacing)*iconContent; 
+                        iconLeft = (curSprite.iconWidth + curSprite.spriteSpacing)*iconContent;
                     }
                     else if(curSprite.direction==="y"){
                         iconTop = (curSprite.iconHeight + curSprite.spriteSpacing)*iconContent;
                     }
-                    
+
                     var cssClass = curSprite.cssClass?'class="'+curSprite.cssClass+'" ':'';
                     var background = curSprite.spriteURL?'background:url('+curSprite.spriteURL+') no-repeat;':'';
                     var width = (curSprite.iconWidth<600)?'width:'+(curSprite.iconWidth+100)+'px;':'';

@@ -26,7 +26,7 @@ Aria.tplScriptDefinition({
         $beforeRefresh : function () {
             this._backupScrollPosition();
         },
-        $afterRefresh : function () {            
+        $afterRefresh : function () {
             var divToScroll = this.$getElementById("left");
             var state = this.data.flow.currentState;
             if (this.lastFinishedId > 10 && state == this.flowCtrl.STATES.ONGOING) {
@@ -40,25 +40,25 @@ Aria.tplScriptDefinition({
                 }
             }
         },
-        
+
         _backupScrollPosition : function () {
             var divToScroll = this.$getElementById("left");
             if (divToScroll) {
                 this.$json.setValue(
-                    this.data.view.scrollPositions, 
-                    "ReportScript_left", 
+                    this.data.view.scrollPositions,
+                    "ReportScript_left",
                     divToScroll.getScroll()
                 );
             }
         },
-        
+
         _setLastFinishedId : function (index) {
             this.lastFinishedId = index-1;
         },
-        
+
         getTestsArray : function () {
             var __testUtils = aria.tester.runner.utils.TestUtils;
-            
+
             var rootSuite = this.data.campaign.testsTree[0];
             if (!rootSuite) {
                 return [];
@@ -68,11 +68,11 @@ Aria.tplScriptDefinition({
                     instance : rootSuite
                 }]
             }
-            
+
             var subTests = __testUtils.getSubTestsAsArray(rootSuite);
             return subTests;
         },
-        
+
         getFilteredTestsArray : function () {
             var subTests = this.getTestsArray();
             var filteredTests = [];
@@ -90,13 +90,13 @@ Aria.tplScriptDefinition({
                     i--;
                 }
             }
-            
+
             return filteredTests;
         },
-        
+
         _isFiltered : function (test) {
             var instance = test.instance;
-            
+
             if (this.data.view.filter.type == "all") {
                 return true;
             }
@@ -110,7 +110,7 @@ Aria.tplScriptDefinition({
                 if (instance.hasError()) {
                     return true;
                 }
-            } 
+            }
             if (this.data.view.filter.type == "warnings") {
                 if (instance.hasWarning()) {
                     return true;
@@ -118,11 +118,11 @@ Aria.tplScriptDefinition({
             }
             return false;
         },
-        
+
         getSuiteName : function (suite) {
             var __testUtils = aria.tester.runner.utils.TestUtils;
             var displayName = __testUtils.formatTestSuiteName(suite);
-            
+
             var parentSuite = suite.getParentTest();
             if (parentSuite && parentSuite.getParentTest()) {
                 return this.getSuiteName(parentSuite) + " | " + displayName;
@@ -130,28 +130,28 @@ Aria.tplScriptDefinition({
                 return displayName;
             }
         },
-        
+
         getTestName : function (testCase) {
             var __testUtils = aria.tester.runner.utils.TestUtils;
             return __testUtils.formatTestCaseName(testCase, this.data.view.configuration.mini);
         },
-        
+
         formatTestErrorsCount : function (testCase) {
             var __testUtils = aria.tester.runner.utils.TestUtils;
             return __testUtils.formatTestErrorsCount(testCase);
         },
-        
+
         formatTestInfo : function (testCase) {
             var __testUtils = aria.tester.runner.utils.TestUtils;
             var assertCount = testCase.instance._totalAssertCount;
             var assertReport = assertCount + " asserts";
-            
+
             var testsCount = testCase.instance._testsCount;
             var testsReport = testsCount + " tests and ";
-            
+
             return "(" + testsReport + assertReport + ")";
         },
-        
+
         _beforeDisplayReport : function () {
             this.counter = 0;
             this.currentAssigned = false;

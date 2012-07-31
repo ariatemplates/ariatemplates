@@ -24,7 +24,7 @@ Aria.classDefinition({
     $destructor : function () {
         this.outObj.clearAll();
         this.outObj = null;
-        
+
         this.$TestCase.$destructor.call(this);
     }
 });

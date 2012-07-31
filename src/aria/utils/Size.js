@@ -83,23 +83,23 @@ Aria.classDefinition({
          * Set the size of a given DOM element with contrains (min and max)
          * @param {HTMLElement} element
          * @param {Object} widthConf
-         * 
+         *
          * <pre>
          * {
          *     min : Integer
          *     max : Integer
          * }
          * </pre>
-         * 
+         *
          * @param {Object} heightConf
-         * 
+         *
          * <pre>
          * {
          *     min : Integer
          *     max : Integer
          * }
          * </pre>
-         * 
+         *
          * @return {Object} new width and height if one of them have changed
          */
         setContrains : function (element, widthConf, heightConf) {
