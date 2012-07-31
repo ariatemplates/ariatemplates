@@ -33,16 +33,16 @@ var tplScriptDefinition = {
                 this.reload();
             }
         },
-        
+
         _onErrorCountClick : function (evt, args) {
             this.flowCtrl.navigate(this.flowCtrl.STATES.REPORT);
         },
-        
+
         isButtonDisabled : function () {
             var state = this.data.flow.currentState;
             return this.__isButtonDisabledForState(state);
         },
-        
+
         __isButtonDisabledForState : function (state) {
             var disabledStates = [
                 this.flowCtrl.STATES.INIT,
@@ -56,7 +56,7 @@ var tplScriptDefinition = {
             }
             return false;
         },
-        
+
         /**
          * For the current flow state, retrieve the label to use for the action button
          * @return {String} The label to use for the action button
@@ -65,8 +65,8 @@ var tplScriptDefinition = {
             var state = this.data.flow.currentState;
             return this.__getButtonLabelForState(state);
         },
-        
-        
+
+
         /**
          * Given a state, retrieve the label to use for the action button
          * @private
@@ -74,17 +74,17 @@ var tplScriptDefinition = {
          */
         __getButtonLabelForState : function (state) {
             if (
-                state == this.flowCtrl.STATES.READY || 
+                state == this.flowCtrl.STATES.READY ||
                 state == this.flowCtrl.STATES.OPTIONS) {
                 return "Run";
             } else if (
                 state == this.flowCtrl.STATES.INIT ||
-                state == this.flowCtrl.STATES.FAILURE 
+                state == this.flowCtrl.STATES.FAILURE
             ) {
                 return "Loading";
             } else if (
                 state == this.flowCtrl.STATES.FINISHED ||
-                state == this.flowCtrl.STATES.REPORT            
+                state == this.flowCtrl.STATES.REPORT
             ) {
                 return "Reload";
             } else if (state == this.flowCtrl.STATES.ONGOING) {
@@ -92,10 +92,10 @@ var tplScriptDefinition = {
             } else {
                 return "#"+state+"#"
             }
-        },    
-        
+        },
+
         /**
-         * 
+         *
          */
         reload : function () {
             this.moduleCtrl.reload();

@@ -14,7 +14,7 @@
  */
 
 /**
- * 
+ *
  */
 Aria.beanDefinitions({
     $package : "aria.tester.runner.datamodel.DataDefinitions",
@@ -158,7 +158,7 @@ Aria.beanDefinitions({
             $type : "json:Object",
             $description : "",
             $properties : {
-            
+
             },
             $default : {}
         },
@@ -166,7 +166,7 @@ Aria.beanDefinitions({
             $type : "json:Object",
             $description : "",
             $properties : {
-            
+
             },
             $default : {}
         },
@@ -191,9 +191,9 @@ Aria.beanDefinitions({
             $type : "json:Object",
             $description : "",
             $properties : {
-            
+
             },
             $default : {}
-        } 
+        }
     }
 });

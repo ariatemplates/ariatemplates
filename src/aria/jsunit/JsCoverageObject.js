@@ -16,11 +16,11 @@
 (function () {
     /**
      * Simple class to extract the information provided by the files instrumented by jscoverage-server.
-     * 
+     *
      * Documentation on JsCoverage available at http://siliconforks.com/jscoverage/manual.html
-     * 
+     *
      * This wrapper can be used to easily process raw JsCoverage data, and then make the data easier to use.
-     * 
+     *
      * @class aria.jsunit.JsCoverageObject description
      * @extends aria.core.JsObject
      */

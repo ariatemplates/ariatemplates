@@ -33,7 +33,7 @@ Aria.classDefinition({
         /**
          * Return an array of contents, each item is an html string or an html template configuration
          * @param {String} placeholderPath The placeholder path
-         * @return {Array} 
+         * @return {Array}
          */
         getContent : function (placeholderPath) {
             var contents = [];
@@ -53,12 +53,12 @@ Aria.classDefinition({
                     }
                 }
             }
-            
+
             // Warn if no content has been found
             if (contents.length == 0) {
 	            this.$logWarn(this.PLACEHOLDER_PATH_NOT_FOUND, [placeholderPath]);
             }
-            
+
             return contents;
         },
 

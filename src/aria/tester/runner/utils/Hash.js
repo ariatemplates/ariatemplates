@@ -40,7 +40,7 @@
             },
 
             /**
-             * 
+             *
              */
             getParameter : function (key) {
                 var hash = this._getHash();

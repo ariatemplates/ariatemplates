@@ -22,7 +22,7 @@ Aria.tplScriptDefinition({
         'aria.tester.runner.utils.TestUtils',
         'aria.tester.runner.utils.Hash'
     ],
-    $prototype : {        
+    $prototype : {
         /**
          * Format information about a test suite for display purposes.
          * @param {aria.jsunit.TestSuite} testSuite
@@ -32,15 +32,15 @@ Aria.tplScriptDefinition({
             var __testUtils = aria.tester.runner.utils.TestUtils;
             return __testUtils.getTestSuiteInfo(testSuite);
         },
-        
-        
+
+
         getSuiteName : function (testSuite) {
             var __testUtils = aria.tester.runner.utils.TestUtils;
             return __testUtils.formatTestSuiteName(testSuite);
         },
-        
+
         /**
-         * 
+         *
          * @param {Object} evt
          * @param {Object} args
          */
@@ -51,7 +51,7 @@ Aria.tplScriptDefinition({
             } else {
                 suite.setUnselected();
             }
-            
+
             this.moduleCtrl.updateTests();
         }
     }

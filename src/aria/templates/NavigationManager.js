@@ -75,7 +75,7 @@ Aria.classDefinition({
         /**
          * Remove a key map at window level
          * @param {Object} configuration
-         * 
+         *
          * <pre>
          * {
          *         key: 'A',
@@ -84,7 +84,7 @@ Aria.classDefinition({
          *         alt : true
          * }
          * </pre>
-         * 
+         *
          * @return {Boolean} true if success
          */
         removeGlobalKeyMap : function (configuration) {
@@ -462,7 +462,7 @@ Aria.classDefinition({
          * @param {HTMLElement} tbody
          * @param {HTMLElement} targetCell
          * @return {Object}
-         * 
+         *
          * <pre>
          *     {
          *         map : ...,

@@ -38,7 +38,7 @@ Aria.classDefinition({
         this.context = context;
         this.ellipsisElement = el;
         this.ellipsesNeeded = false;
-        
+
         if (el.childNodes.length == 1 && el.childNodes[0].nodeType == 3) {
 
             // Get the width automatically from the parent if none was specified

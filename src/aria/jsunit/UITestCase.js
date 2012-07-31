@@ -36,7 +36,7 @@ Aria.classDefinition({
         /**
          * Runs the UI comparison test
          * @param {Object} args arguments for the UI test
-         * 
+         *
          * <pre>
          *     {
          *         testCaseName: // {String}- name of the testcase

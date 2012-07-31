@@ -18,17 +18,17 @@
  * hand in hand with a Java Applet that needs to be present inside the page to allow communication with the remote
  * screen capture windows application. For the screencapture to work, you need to add an applet tag to your HTML page in
  * the following way:
- * 
+ *
  * <pre>
  *         &lt;applet code='ScreenCaptureApplet.class' archive='ScreenCapture.jar' name='myTestApplet' width='1000' height='100' MAYSCRIPT&gt;&lt;/applet&gt;
  * </pre>
- * 
+ *
  * And then instantiate the ScreenCapture class, passing it the name of the applet like so:
- * 
+ *
  * <pre>
  * var sc = new ScreenCapture('myTestApplet');
  * </pre>
- * 
+ *
  * @class aria.jsunit.ScreenCapture
  */
 Aria.classDefinition({
@@ -73,13 +73,13 @@ Aria.classDefinition({
 
         /**
          * Capture a screenshot for a specific use case. A simple capture of the whole screen may be done like so:
-         * 
+         *
          * <pre>
          * sc.capture('homePageSimpleUseCase');
          * </pre>
-         * 
+         *
          * Specifying a custom area to capture:
-         * 
+         *
          * <pre>
          * sc.capture('homePageSimpleUseCase', {
          *     x : 50,
@@ -88,16 +88,16 @@ Aria.classDefinition({
          *     height : 500
          * });
          * </pre>
-         * 
+         *
          * Subscribing a callback to be notified when the capture is done
-         * 
+         *
          * <pre>
          * sc.capture('homePageSimpleUseCase', {}, this.myCallbackMethod, this);
          * </pre>
-         * 
+         *
          * @param {String} useCaseName Name of the use case
          * @param {Object} conf The screenshot configuration object. It should be something like:
-         * 
+         *
          * <pre>
          *     {
          *         x : // Start x coordinate of the capture (starting from the browser's internal border)
@@ -107,7 +107,7 @@ Aria.classDefinition({
          *         threshold : // Optional threshold for image comparison to be used, by default, 100% precision will be defined
          *     }
          * </pre>
-         * 
+         *
          * @param {Function} callback An option callback method to be executed when the screencapture server has
          * finished taking the image
          * @param {Object} callbackScope If a callback method was specified, optionally pass an object to be used as the
@@ -141,7 +141,7 @@ Aria.classDefinition({
         /**
          * Get the applet response (after an instruction was requested)
          * @return {Object}
-         * 
+         *
          * <pre>
          *     {
          *         code : //(0=SUCCESS, 1=FAILURE),

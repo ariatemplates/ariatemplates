@@ -37,7 +37,7 @@ Aria.classDefinition({
     },
     $prototype : {
         /**
-         * Compare newValue with the one stored in _cfg[propertyName] 
+         * Compare newValue with the one stored in _cfg[propertyName]
          * For a Textfield, undefined, null and an empty string are considered as equal.
          * @param {String} propertyName
          * @param {Multitype} newValue If transformation is used, this should be the widget value and not the data model

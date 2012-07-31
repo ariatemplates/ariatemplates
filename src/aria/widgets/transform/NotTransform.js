@@ -28,6 +28,6 @@ Aria.classDefinition({
         },
         fromWidget : function(val) {
             return !val;
-        }        
+        }
     }
 });

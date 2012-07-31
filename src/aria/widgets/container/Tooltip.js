@@ -17,7 +17,7 @@
 
     /**
      * @type Object
-     * 
+     *
      * <pre>
      *     {
      *         key : // @type String id of the tooltip

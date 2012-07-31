@@ -104,7 +104,7 @@ Aria.classDefinition({
             }
             return res;
         },
-        
+
         /**
          * Get the logical filename from the classpath.
          * Returns null if the classpath is not inside the cache.
@@ -113,7 +113,7 @@ Aria.classDefinition({
          */
         getFilename : function (classpath) {
             var classContent = this.getItem("classes", classpath, false);
-            
+
             if (classContent) {
                 return classpath.replace(/\./g, "/") + this.EXTENSION_MAP[classContent.content];
             }

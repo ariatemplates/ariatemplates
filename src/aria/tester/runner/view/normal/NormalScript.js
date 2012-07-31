@@ -20,7 +20,7 @@ Aria.tplScriptDefinition({
             // TODO: offer the possibility to support callbacks without res arg
             this.flowCtrl.navigate(transition)
         },
-        
+
         $displayReady : function () {
             this.flowCtrl.displayReady();
         }

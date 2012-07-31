@@ -270,7 +270,7 @@ Aria.classDefinition({
          * Perform an asynchronous request to the server Note: callback is always called in an asynchronous way (even in
          * case of errors)
          * @param {aria.core.CfgBeans.IOAsyncRequestCfg} req the request description
-         * 
+         *
          * <pre>
          * [req] {
          *    url:&quot;myfile.txt&quot;, // absolute or relative URL
@@ -298,7 +298,7 @@ Aria.classDefinition({
          * }
          * and cbArgs == args object in the req object
          * </pre>
-         * 
+         *
          * @return {Integer} a request id
          */
         asyncRequest : function (req) {
@@ -329,7 +329,7 @@ Aria.classDefinition({
         /**
          * Make a pseudo asynchronous form submission.
          * @param {aria.core.CfgBeans.IOAsyncRequestCfg} request Request description
-         * 
+         *
          * <pre>
          * [request] {
          *    formId: &quot;callback&quot;,  // ID of the form that is to be submitted
@@ -357,7 +357,7 @@ Aria.classDefinition({
          * }
          * and callbackArgs == args object in the request callback object
          * </pre>
-         * 
+         *
          * @return {Integer} Request identifier
          */
         asyncFormSubmit : function (request) {
@@ -582,14 +582,14 @@ Aria.classDefinition({
          * Get the correct transport for the uri. It uses the Location argument to distinguish between XHR and XDR
          * @param {String} uri URI of the request
          * @param {Object} location Location object as in window.location or null if not run in a browser
-         * 
+         *
          * <pre>
          * {
          *    protocol: the protocol of the URL
          *    host: the hostname and port number
          * }
          * </pre>
-         * 
+         *
          * @return {String} Transport class classpath
          * @protected
          */
@@ -867,7 +867,7 @@ Aria.classDefinition({
          * Updates the transport to be used for same domain, cross domain, and jsonp requests. Currently transports must
          * be singletons.
          * @param {Object} transports class name and path
-         * 
+         *
          * <pre>
          * aria.core.IO.updateTransport({
          *     'sameDomain' : 'myApplication.transports.SameDomainCustomTransport',
@@ -877,7 +877,7 @@ Aria.classDefinition({
          *     'iframe' : 'myApplication.transports.IFrame'
          * });
          * </pre>
-         * 
+         *
          * @public
          */
         updateTransports : function (transports) {
@@ -1141,7 +1141,7 @@ Aria.classDefinition({
         /**
          * Make a JSON-P request.
          * @param {aria.core.CfgBeans.IOAsyncRequestCfg} request Request description
-         * 
+         *
          * <pre>
          * [request] {
          *    url: &quot;myfile.txt&quot;,  // absolute or relative URL
@@ -1170,7 +1170,7 @@ Aria.classDefinition({
          * }
          * and callbackArgs == args object in the request callback object
          * </pre>
-         * 
+         *
          * @return {Integer} Request identifier
          */
         jsonp : function (request) {

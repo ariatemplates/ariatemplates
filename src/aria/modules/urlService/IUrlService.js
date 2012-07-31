@@ -25,7 +25,7 @@ Aria.interfaceDefinition({
          * Generate an action URL.
          * @param {String} moduleName Name of the module that is making the request
          * @param {String} actionName Action to be called on the server
-         * @param {Number} sessionId Value of the session id 
+         * @param {Number} sessionId Value of the session id
          * @return {String} Full URL
          */
         createActionUrl : function (moduleName, actionName, sessionId) {},

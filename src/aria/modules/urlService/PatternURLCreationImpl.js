@@ -29,11 +29,11 @@ Aria.classDefinition({
     $prototype : {
         /**
          * Generate an action URL. The pattern recognized are
-         * 
+         *
          * <pre>
          *  ${moduleName}, ${actionName} and ${sessionId}
          * </pre>
-         * 
+         *
          * @param {String} Name of the module that is making the request. ${moduleName}
          * @param {String} Action to be called on the server. ${actionName}
          * @param {String} Value of the session id. ${sessionId}
@@ -49,11 +49,11 @@ Aria.classDefinition({
 
         /**
          * Generate an i18n URL. The pattern recognized are
-         * 
+         *
          * <pre>
          *  ${moduleName}, ${sessionId} amd ${locale}
          * </pre>
-         * 
+         *
          * @param {String} Name of the module that is making the request. ${moduleName}
          * @param {String} Value of the session id. ${sessionId}
          * @param {String} Locale for i18n, if not present defaults to currentLocale. ${locale}

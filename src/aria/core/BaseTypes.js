@@ -41,12 +41,12 @@ Aria.beanDefinitions({
 
                 '$dependencies' : {
                     $type : "json:Array",
-                    $description : "Contains an array of dependencies to be loaded for the bean package.",                    
+                    $description : "Contains an array of dependencies to be loaded for the bean package.",
                     $contentType : {
-                        $type : "json:String",                        
+                        $type : "json:String",
                         $description : "The class path for the dependency to be loaded."
                     }
-                },                
+                },
 
                 '$namespaces' : {
                     $type : "json:Map",

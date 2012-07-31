@@ -28,7 +28,7 @@ Aria.classDefinition({
     $destructor : function () {
         this.testArea = null;
         this.store = null;
-    }, 
+    },
     $prototype : {
         tplCtxt : {
             $getId : function (id) {

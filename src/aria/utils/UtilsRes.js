@@ -19,6 +19,6 @@ Aria.resourcesDefinition({
         "timeFormatLabels":{
             "am":"AM",
             "pm":"PM"
-        } 
+        }
     }
 });

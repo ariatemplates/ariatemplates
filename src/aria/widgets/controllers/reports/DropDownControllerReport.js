@@ -25,7 +25,7 @@ Aria.classDefinition({
     $constructor : function () {
 
         this.$ControllerReport.constructor.call(this);
-        
+
         /**
          * Report notifies that dropdown has to be opened or closed
          * null value is for the case where nothing has to be done.

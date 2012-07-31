@@ -58,7 +58,7 @@ Aria.classDefinition({
     },
     $prototype: {
         $publicInterfaceName: 'aria.tester.runner.ModuleControllerFlowInterface',
-        
+
         // Intercepting method called at the end of the module controller initialization:
         oninitCallback : function (param) {
             this.$BaseFlow.oninitCallback.call(this, param); // call the method of the parent which sets this.data
@@ -67,37 +67,37 @@ Aria.classDefinition({
             if (!this.data.campaign.loadSuccessful) {
                 this.navigate(this.STATES.FAILURE);
             } else {
-                this.moduleCtrl.preloadSuites();            
+                this.moduleCtrl.preloadSuites();
             }
         },
-        
+
         /**
-         * The flow between init and ready is a bit complex because we have to wait for two 
+         * The flow between init and ready is a bit complex because we have to wait for two
          * parallel activities to be finished : view has to be ready, tests have to be preloaded
          * The Main template script will notify the flow when the view is ready.
          * The Module controller will do the same (through interceptors) for the preload.
          * We have to synchronize both activities for which we use two booleans : _isDisplayReady and _isPreloadFinished
          * Later on we could improve a bit the flow in order to manage this kind of complex transitions
-         */        
+         */
         displayReady : function () {
             if (!this._isDisplayReady) {
                 this._isDisplayReady = true;
                 if (this._isPreloadFinished) {
-                    this.navigate(this.STATES.READY);    
+                    this.navigate(this.STATES.READY);
                 }
-            }            
+            }
         },
-        
+
         /**
          * @see displayReady
          */
         onpreloadSuitesCallback : function () {
             this._isPreloadFinished = true;
             if (this._isDisplayReady) {
-                this.navigate(this.STATES.READY);    
+                this.navigate(this.STATES.READY);
             }
         },
-        
+
         /**
          * Triggered when the campaign is launched
          * The application switches to ongoing mode. Most of the UI is disabled
@@ -105,22 +105,22 @@ Aria.classDefinition({
         onstartCampaignCallBegin : function () {
             this.navigate(this.STATES.ONGOING)
         },
-        
+
         /**
          * Triggered when the campaign is finished
          */
         onstartCampaignCallback : function () {
             this.navigate(this.STATES.FINISHED);
         },
-        
+
         /**
-         * Callback triggered when 
+         * Callback triggered when
          */
         onreloadCallback : function () {
             this.navigate(this.STATES.INIT);
             this.moduleCtrl.init();
         },
-        
+
         /**
          * @see aria.tester.runner.BaseFlow
          * @param {String} state
@@ -130,7 +130,7 @@ Aria.classDefinition({
                 this._onReadyState();
             }
         },
-        
+
         /**
          * @private
          */

@@ -16,20 +16,20 @@
 /**
  * Res
  * @class aria.core.ResManager
- * @extends aria.core.JsObject 
+ * @extends aria.core.JsObject
  */
 Aria.classDefinition({
     $classpath : 'aria.core.ResMgr',
     $dependencies : ["aria.core.environment.Environment"],
     $singleton : true,
     $constructor : function () {
-        this.devMode = true;        
+        this.devMode = true;
         this.currentLocale = aria.core.environment.Environment.getLanguage();
         this.loadedResources = {};
     },
     $destructor : function () {
         this.currentLocale = null;
-        this.loadedResources = null;        
+        this.loadedResources = null;
     },
     $prototype : {
 
@@ -83,15 +83,15 @@ Aria.classDefinition({
          * @param {aria.core.JsObject.Callback} callback Callback to be called when resource files are loaded and locale changed
          * @public
          */
-        changeLocale : function (newLocale, cb) {            
+        changeLocale : function (newLocale, cb) {
             this.currentLocale = newLocale;
             aria.core.ClassMgr.unloadClassesByType("RES");
-            this.__loadResourceFiles(this.loadedResources, cb);                
+            this.__loadResourceFiles(this.loadedResources, cb);
         },
 
         /**
          * Public method for storing the classpaths/locales of resource files that has been loaded
-         * @param {String} resClassPath The classpath of the resource file than has loaded 
+         * @param {String} resClassPath The classpath of the resource file than has loaded
          * @param {aria.core.JsObject.Callback} callback Callback to be called when resource files are loaded and locale changed
          * @public
          */
@@ -107,7 +107,7 @@ Aria.classDefinition({
             return this.loadedResources[resClassPath];
         },
         /**
-         * Gets the fallback locale for a specific locale 
+         * Gets the fallback locale for a specific locale
          * @param {String} resClassPath Classpath of the resource set
          * @return {String} Resource fallback locale
          */
@@ -140,7 +140,7 @@ Aria.classDefinition({
          * @param {Object} args Arguments passed to the callback
          * [args] {
          *         cb: {aria.core.JsObject.Callback} The callback method to be called  // optional
-         * }  
+         * }
          * @private
          */
         __resourceFileLoaded : function (args) {
@@ -152,7 +152,7 @@ Aria.classDefinition({
          * @param {Object} args Arguments passed to the callback
          * [args] {
          *         cb: {aria.core.JsObject.Callback} The callback method to be called after the error is processed  // optional
-         * }  
+         * }
          * @private
          */
         __resourceFileLoadError : function (args) {

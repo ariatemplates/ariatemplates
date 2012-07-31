@@ -20,8 +20,8 @@ Aria.tplScriptDefinition({
     $classpath : 'aria.tester.runner.view.popup.PopupScript',
     $dependencies : ['aria.tester.runner.utils.TestUtils'],
     $prototype : {
-        
-        
-        
+
+
+
     }
 });

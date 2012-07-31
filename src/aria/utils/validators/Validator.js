@@ -22,7 +22,7 @@ Aria.classDefinition({
     $implements : ['aria.utils.validators.IValidator'],
     $extends : "aria.core.JsObject",
     $constructor : function (message) {
-        
+
         /**
          * Default message sent by this validator
          * @type Object

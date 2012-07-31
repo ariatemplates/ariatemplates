@@ -21,7 +21,7 @@ Aria.tplScriptDefinition({
     $dependencies : [],
     $constructor : function () {
         this.keys = this._getKeys();
-        var keys = this.keys;    
+        var keys = this.keys;
         for (var i = 0, l = keys.length ; i < l ; i++) {
             aria.templates.NavigationManager.addGlobalKeyMap({
                 key : keys[i][0],
@@ -32,9 +32,9 @@ Aria.tplScriptDefinition({
             });
         }
     },
-    
+
     $destructor : function () {
-        var keys = this.keys;    
+        var keys = this.keys;
         for (var i = 0, l = keys.length ; i < l ; i++) {
             aria.templates.NavigationManager.removeGlobalKeyMap({
                 key : keys[i][0],

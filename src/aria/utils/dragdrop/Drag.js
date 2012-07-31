@@ -320,7 +320,7 @@
              * Instantiate the proxy instance.
              * @protected
              * @param {Object} args Initialization arguments
-             * 
+             *
              * <pre>
              * {
              *     classpath : Proxy's classpath,

@@ -20,7 +20,7 @@
 Aria.interfaceDefinition({
     $classpath : 'aria.tester.runner.ModuleControllerInterface',
     $extends : 'aria.templates.IModuleCtrl',
-    $events : {    
+    $events : {
         "initSuccessful" : "initSuccessful",
         "preloadEnd" : "preloadEnd",
         "testEnd" : "testEnd",
@@ -29,24 +29,24 @@ Aria.interfaceDefinition({
     $interface : {
         "startCampaign" : {
             $type : "Function",
-            $callbackParam : 0            
+            $callbackParam : 0
         },
-        
+
         "preloadSuites" : {
             $type : "Function",
-            $callbackParam : 0            
-        },        
-        
+            $callbackParam : 0
+        },
+
         "updateTests" : {
             $type : "Function",
-            $callbackParam : 0            
+            $callbackParam : 0
         },
-        
+
         "reload" : {
             $type : "Function",
             $callbackParam : 0
         },
-        
+
         "switchView" : {
             $type : "Function",
             $callbackParam : 0

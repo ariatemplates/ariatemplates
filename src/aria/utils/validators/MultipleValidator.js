@@ -43,7 +43,7 @@ Aria.classDefinition({
     $prototype : {
         /**
          * loops through each validator within the multiple validator and calls it's validate method.
-         * 
+         *
          * @param {String} value to be validated.
          * @param {Array} groups to validate against.
          * @param {String} event that validation occurs on.

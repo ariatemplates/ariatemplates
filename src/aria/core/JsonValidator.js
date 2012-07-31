@@ -118,7 +118,7 @@
              * for several types before succeeding, so errors are discarded) Error objects structure:
              * @type Array
              * @protected
-             * 
+             *
              * <pre>
              *  {
              *    msgId: {String} the message key in the resource file
@@ -544,7 +544,7 @@
             /**
              * Check that the given json complies with the given bean (recursive function).
              * @param {Object} args
-             * 
+             *
              * <pre>
              *  {
              *    dataHolder: //, container
@@ -741,14 +741,14 @@
             /**
              * Check that the json structure complies with the given bean and add default values. All errors are logged.
              * @param {Object} args
-             * 
+             *
              * <pre>
              *  {
              *    json: json to check.
              *    beanName: bean to use
              *  }
              * </pre>
-             * 
+             *
              * @param {Boolean} throwsErrors (default false)
              * @return {Boolean} true if the json structure complies with the given bean, false otherwise
              */

@@ -23,11 +23,11 @@ Aria.tplScriptDefinition({
         _onApplyButtonClicked : function () {
             this.flowCtrl.navigate(this.flowCtrl.STATES.READY);
         },
-        
+
         _onCancelButtonClicked : function () {
             this.flowCtrl.navigate(this.flowCtrl.STATES.READY);
         },
-        
+
         _getKeys : function () {
             var keys = [
                 ["A", this._onApplyButtonClicked],
