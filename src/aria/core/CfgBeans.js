@@ -388,6 +388,16 @@ Aria.beanDefinitions({
                 "args" : {
                     $type : "json:MultiTypes",
                     $description : "Optional argument passed to the function."
+                },
+                "resIndex" : {
+                    $type : "json:Integer",
+                    $description : "Optional param to specify the index of the result or event object in the arguments passed to the callback function.",
+                    $default : 0
+                },
+                "apply" : {
+                    $type : "json:Boolean",
+                    $description : "Whether we should use Function.call or Function.apply for args. Used only if args is an array",
+                    $default : false
                 }
             }
         }
