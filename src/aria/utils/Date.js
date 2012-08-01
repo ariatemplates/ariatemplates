@@ -309,7 +309,7 @@ Aria.classDefinition({
          */
         interpretTime : function (entryStr) {
 
-            var entry, jsTime, hours = 0, minutes = 0, seconds = 0, pmCorrection = 0, amCorrection = 0, i = 0;
+            var entry, jsTime, hours = 0, minutes = 0, seconds = 0, pmCorrection = 0, amCorrection = false, i = 0;
 
             if (!entryStr) {
                 return null;
@@ -329,10 +329,9 @@ Aria.classDefinition({
             }
 
             // need to check for AM
-             if (this._isAM(entry)) {
-                amCorrection = 00;
+            if (this._isAM(entry)) {
+                amCorrection = true;
             }
-
 
             // need to replace am/pm from string
             entry = this._removeAMPM(entry);
@@ -362,15 +361,14 @@ Aria.classDefinition({
             // convert hours to integer
             hours = parseFloat(hours);
 
-
             // action pmCorrection
             if (hours < 12 && (pmCorrection)) {
                 hours += pmCorrection;
             }
 
             // action amCorrection
-            if (hours === 12 && !pmCorrection) {
-                hours = amCorrection;
+            if (hours === 12 && amCorrection) {
+                hours = 0;
             }
 
             // reset 24 to 0
