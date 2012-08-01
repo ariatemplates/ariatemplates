@@ -326,7 +326,7 @@
 
             /**
              * Generic method allowing to call-back a caller in asynchronous processes
-             * @param {aria.core.JsObject.Callback} cb callback description
+             * @param {aria.core.CfgBeans.Callback} cb callback description
              * @param {MultiTypes} res first result argument to pass to cb.fn (second argument will be cb.args)
              * @param {String} errorId error raised if an exception occurs in the callback
              * @return the value returned by the callback, or undefined if the callback could not be called.
@@ -354,8 +354,15 @@
                     callback = scope[callback];
                 }
 
+                var args = (cb.apply === true && cb.args && Object.prototype.toString.apply(cb.args) === "[object Array]") ? cb.args : [cb.args];
+                var resIndex = (cb.resIndex === undefined) ? 0 : cb.resIndex;
+
+                if (resIndex > -1) {
+                    args.splice(resIndex, 0, res);
+                }
+
                 try {
-                    return callback.call(scope, res, cb.args);
+                    return callback.apply(scope, args);
                 } catch (ex) {
                     this.$logError(errorId, [this.$classpath, scope.$classpath], ex);
                 }
@@ -381,26 +388,11 @@
                 return {
                     fn : callback,
                     scope : scope,
-                    args : cb.args
+                    args : cb.args,
+                    resIndex : cb.resIndex,
+                    apply : cb.apply
                 };
             },
-
-            /*
-             * if (cb == null) return; // callback is sometimes not used
-             * if (errorId == null) errorId = "20007_CALLBACK_ERROR";
-             * try { if (typeof(cb) == 'string') { // shortcut :
-             * scope=this and no arg return this[cb].call(this, res); }
-             * else if (typeof(cb) == 'function') { // shortcut :
-             * scope=this and no arg return cb.call(this, res); } else {
-             * var scope = cb.scope ? cb.scope : this; // use this as
-             * default scope (useful for templates, for // example) if
-             * (typeof(cb.fn) == 'string') { return
-             * scope[cb.fn].call(scope, res, cb.args); } else { return
-             * cb.fn.call(scope, res, cb.args); } } } catch (ex) { var
-             * scope = cb.scope; if (!scope) { scope = this; }
-             * this.$logError(errorId, [this.$classpath,
-             * scope.$classpath], ex); }
-             */
 
             /**
              * Display all internal values in a message box (debug and test purpose - usefull on low-end browsers)
