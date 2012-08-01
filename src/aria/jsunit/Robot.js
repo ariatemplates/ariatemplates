@@ -339,8 +339,8 @@ Aria.classDefinition({
             var viewport = aria.utils.Dom._getViewportSize();
             if (position.x < 0 || position.y < 0 || position.x > viewport.width || position.y > viewport.height) {
                 // FIXME: log error correctly
-                this.$logError("MouseMove position outside of the viewport.");
-                return;
+                this.$logWarn("MouseMove position outside of the viewport.");
+                //return;
             }
             this._updateAppletPosition({
                 fn : this._mouseMoveCb,
