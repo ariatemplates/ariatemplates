@@ -852,6 +852,9 @@ Aria.classDefinition({
          * @protected
          */
         _dom_onblur : function (event) {
+            if (!this._hasFocus) {
+                return;
+            }
             if (!this._keepFocus) {
                 var cfg = this._cfg, htc = this._skinObj.helpText;
                 this._hasFocus = false;
