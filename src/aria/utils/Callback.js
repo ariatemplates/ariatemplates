@@ -55,6 +55,8 @@ Aria.classDefinition({
          * Arguments given when creating the callback
          */
         this._args = callbackDefinition.args;
+        this._resIndex = callbackDefinition.resIndex;
+        this._apply = callbackDefinition.apply;
 
     },
     $destructor : function () {
@@ -69,7 +71,7 @@ Aria.classDefinition({
          * @param {Object} event
          */
         call : function (evt) {
-            return this._function.call(this._scope, evt, this._args);
+            return this._function.call(this._scope, evt, this._args,this._resIndex,this._apply);
         },
 
         _warnDisposed : function () {
