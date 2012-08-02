@@ -14,12 +14,10 @@
  */
 
 /**
- * Res
- * @class aria.core.ResManager
- * @extends aria.core.JsObject
+ * Resources Manager. It keeps the list of loaded resources in order to reload them in case of locale change.
  */
 Aria.classDefinition({
-    $classpath : 'aria.core.ResMgr',
+    $classpath : "aria.core.ResMgr",
     $dependencies : ["aria.core.environment.Environment"],
     $singleton : true,
     $constructor : function () {
@@ -81,7 +79,6 @@ Aria.classDefinition({
          * To switch the language call the aria.core.environment.Environment.setLanguage method
          * @param {String} newLocale The new locale i.e. "en-US"
          * @param {aria.core.JsObject.Callback} callback Callback to be called when resource files are loaded and locale changed
-         * @public
          */
         changeLocale : function (newLocale, cb) {
             this.currentLocale = newLocale;
@@ -92,12 +89,11 @@ Aria.classDefinition({
         /**
          * Public method for storing the classpaths/locales of resource files that has been loaded
          * @param {String} resClassPath The classpath of the resource file than has loaded
-         * @param {aria.core.JsObject.Callback} callback Callback to be called when resource files are loaded and locale changed
-         * @public
          */
         addResFile : function (resClassPath) {
             this.loadedResources[resClassPath] = this.currentLocale;
         },
+
         /**
          * Gets the current locale of a resource set
          * @param {String} resClassPath Classpath of the resource set
@@ -106,6 +102,7 @@ Aria.classDefinition({
         getResourceLocale : function (resClassPath) {
             return this.loadedResources[resClassPath];
         },
+
         /**
          * Gets the fallback locale for a specific locale
          * @param {String} resClassPath Classpath of the resource set
@@ -159,8 +156,10 @@ Aria.classDefinition({
             //TODO: implement fallback mechanism, log error
             this.$callback(args.cb);
         },
+
         /**
          * Obsolete
+         * @deprecated
          */
         __getModuleResourceSetClassPath : function (moduleClassPath) {
             // build resource file classpath
