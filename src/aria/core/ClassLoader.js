@@ -14,35 +14,26 @@
  */
 
 /**
- * @class aria.core.ClassLoader Class Loader: base class from which all class loaders inherit. Each class loader must
- * override the _loadClass method to define the action when receiving a class definition. Manage the load of the class
- * files and the synchronization of the class load when all declared dependencies are ready
- * @extends aria.core.JsObject
+ * Base class from which all class loaders inherit. <br />
+ * Each class loader must override the <code>_loadClass</code> method to define the action when receiving a class
+ * definition. Manage the load of the class files and the synchronization of the class load when all declared
+ * dependencies are ready
  */
 Aria.classDefinition({
-    $classpath : 'aria.core.ClassLoader',
+    $classpath : "aria.core.ClassLoader",
     $events : {
-        /**
-         * @event classReady
-         */
         "classReady" : {
             description : "notifies that all class dependencies (and the ref class if any) have been loaded and are ready to use",
             properties : {
                 refClasspath : "{String} classpath of the reference class if any"
             }
         },
-        /**
-         * @event classError
-         */
         "classError" : {
             description : "notifies that the class loading process has failed",
             properties : {
                 refClasspath : "{String} classpath of the reference class if any"
             }
         },
-        /**
-         * @event complete
-         */
         "complete" : {
             description : "notifies that the class loader process is done and that it can be disposed (thus classReady listeners have already been called when this event is raised)",
             properties : {
@@ -56,23 +47,45 @@ Aria.classDefinition({
      * @param {String} refClasspath reference classpath which this loader is associated to (may be null)
      */
     $constructor : function (refClasspath, classType) {
-        // TODO delete mgt!
+        /**
+         * Reference classpath. It's the classpath of the expected class
+         * @type String
+         */
         this._refClasspath = refClasspath;
         if (refClasspath) {
+            /**
+             * Reference logical path. It's the logical path corresponding to the reference classpath
+             * @type String
+             */
             this._refLogicalPath = aria.core.ClassMgr.getBaseLogicalPath(refClasspath, classType);
         }
 
+        /**
+         * Full logical classpath. It's the complete logical path. It might differ from the reference logical path for
+         * the presence of additional information like locale/language in resources
+         * @type String
+         */
         this._fullLogicalPath = null;
 
-        // Array of missing dependencies - items have the following structure:
-        // {classpath:"", isReady:true/false, loader: {Object}}
-
-        // at this time, we don't know which function to call back to load the class,
-        // after all its dependencies are loaded
-        // (it can be loadClass or loadBean..., depending on the content of the js file)
+        /**
+         * Callback to be executed when tha class is loaded. At this time, we don't know which function to call back to
+         * load the class, after all its dependencies are loaded (it can be loadClass or loadBean..., depending on the
+         * content of the js file). This should be set by extending classes
+         * @type aria.core.CfgBeans.Callback
+         */
         this.callback = null;
 
         /**
+         * Array of missing dependencies - items have the following structure:
+         *
+         * <pre>
+         * {
+         *    classpath : '',
+         *    isReady : true/false,
+         *    loader : {Object}
+         * }
+         * </pre>
+         *
          * Can either be null (meaning no dependency is missing) or a non-empty array (meaning we are waiting for these
          * dependencies to be ready)
          * @protected
@@ -96,14 +109,15 @@ Aria.classDefinition({
         this._isLoadingRefDefinition = false;
 
         /**
-         * TODOC
+         * Whether the class definition was called after an Aria.eval. If this is still false after evaluating the file,
+         * it means that an error occurred
          * @protected
          * @type Boolean
          */
         this._classDefinitionCalled = false;
 
         /**
-         * TODOC
+         * Whether error should be logged or not
          * @type Boolean
          */
         this.handleError = true;
@@ -132,7 +146,6 @@ Aria.classDefinition({
                 return;
             }
 
-            // call Download manager
             // warning: may be synchronous if the file has already been downloaded
             aria.core.DownloadMgr.loadFile(this.getRefLogicalPath(), {
                 fn : this._onClassDefinitionReceive,
@@ -149,9 +162,11 @@ Aria.classDefinition({
         getRefLogicalPath : function () {
             return this._refLogicalPath;
         },
+
         /**
          * Internal callback called when the class definition file has been downloaded
          * @param {aria.core.FileLoader.$events.fileReady} evt
+         * @return {Boolean} Whether there was an error or not
          * @protected
          */
         _onClassDefinitionReceive : function (evt) {
@@ -177,15 +192,16 @@ Aria.classDefinition({
             if (error) {
                 aria.core.ClassMgr.notifyClassLoadError(this._refClasspath);
             }
-            lp = classdef = error = null;
+            lp = classdef = null;
+            return error;
         },
 
         /**
+         * abstract function to be replaced in inherited classes
          * @private
          */
         _loadClass : function (classDef, logicalPath) {
-            // abstract function to be replaced in inherited classes
-            this.$assert(164, false);
+            this.$assert(204, false);
         },
 
         /**
