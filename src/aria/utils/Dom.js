@@ -932,7 +932,7 @@ Aria.classDefinition({
          * @return {Boolean} True if the given child is a child of the given parent
          */
         isAncestor : function (child, parent) {
-            if (!(child && child.ownerDocument)) {
+            if (!( child && child.ownerDocument)) {
                 return false;
             }
             var document = child.ownerDocument;
@@ -973,12 +973,6 @@ Aria.classDefinition({
          * not specified, does "minimal job".
          */
         scrollIntoView : function (element, alignTop) {
-            var hasVerticalScrollbar = element.scrollHeight > element.clientHeight;
-            var hasHorizontalScrollbar = element.scrollWidth > element.clientWidth;
-            if (!hasVerticalScrollbar && !hasHorizontalScrollbar) {
-                return;
-            }
-
             var document = element.ownerDocument;
             var origin = element, originRect = origin.getBoundingClientRect();
             var parent, hasScroll = false, docElementOk = false;
