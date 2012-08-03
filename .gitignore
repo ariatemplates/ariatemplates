@@ -3,6 +3,7 @@ node_modules
 target
 build/at-bootstrap
 build/at-core
+build/at-lint
 .project
 .settings
 .benchmarks.rb.swp
