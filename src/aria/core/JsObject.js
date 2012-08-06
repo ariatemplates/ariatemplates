@@ -337,8 +337,8 @@
                     return; // callback is sometimes not used
                 }
 
-                if (errorId == null) {
-                    errorId = this.CALLBACK_ERROR;
+                if (cb.$Callback) {
+                    return cb.call(res);
                 }
 
                 // perf optimisation : duplicated code on purpose
@@ -354,7 +354,9 @@
                     callback = scope[callback];
                 }
 
-                var args = (cb.apply === true && cb.args && Object.prototype.toString.apply(cb.args) === "[object Array]") ? cb.args : [cb.args];
+                var args = (cb.apply === true && cb.args && Object.prototype.toString.apply(cb.args) === "[object Array]")
+                        ? cb.args
+                        : [cb.args];
                 var resIndex = (cb.resIndex === undefined) ? 0 : cb.resIndex;
 
                 if (resIndex > -1) {
@@ -364,7 +366,7 @@
                 try {
                     return callback.apply(scope, args);
                 } catch (ex) {
-                    this.$logError(errorId, [this.$classpath, scope.$classpath], ex);
+                    this.$logError(errorId || this.CALLBACK_ERROR, [this.$classpath, scope.$classpath], ex);
                 }
             },
 
@@ -512,14 +514,36 @@
             /**
              * Adds a listener to the current object
              * @param {Object} lstCfg list of events that are listen to. For each event a config object with the
-             * following arguments should be provided:<br/> fn: {Function} scope: {Object} [optional] object on wich
-             * the callback will be called - mandatory<br/> args: {Object} [optional] argument object that will be
-             * passed to the callback as 2nd argument (1st argument is the event object)<br/> <br/> Note: as a
-             * shortcut, the function only can be provided (in this case, the scope property has to be used - as in the
-             * example below for the 'error' event Note2: if a scope property is defined in the map, it will be used as
-             * default for all events. A '*' event name can also be used to listen to all events. Sample call:
-             * o.$addListeners({ 'start':{fn:this.onStart}, 'end':{ fn:this.onEnd, args:{description:"Sample Callback
-             * Argument"} }, 'error':this.onError, scope:this })
+             * following arguments should be provided:<br/>
+             *
+             * <pre>
+             *
+             * fn: {Function} [mandatory] callback function
+             * scope: {Object} [mandatory] object on wich the callback will be called
+             * args: {Object} [optional] argument object that will be passed to the callback as 2nd argument (1st argument is the event object)
+             *      Note: as a shortcut, the function only can be provided (in this case, the scope property has to be used - as in the example below for the 'error' event
+             *      Note: if a scope property is defined in the map, it will be used as default for all events. A '*' event name can also be used to listen to all events.
+             * </pre>
+             *
+             * @example
+             * Sample call:
+             * <pre>
+             * <code>
+             * o.$addListeners({
+             *     'start' : {
+             *         fn : this.onStart
+             *     },
+             *     'end' : {
+             *         fn : this.onEnd,
+             *         args : {
+             *             description : &quot;Sample Callback Argument&quot;
+             *         }
+             *     },
+             *     'error' : this.onError,
+             *     scope : this
+             * })
+             * </code>
+             * </pre>
              */
             $addListeners : function (lstCfg, itfWrap) {
 
