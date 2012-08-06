@@ -151,7 +151,7 @@ Aria.classDefinition({
     $prototype : {
 
         /**
-         * Execute the callback
+         * Execute the callback. It is equivalent to Callback.apply
          * @param {Object} event
          */
         call : function (evt) {
@@ -171,6 +171,14 @@ Aria.classDefinition({
          */
         _warnDisposed : function () {
             this.$logError(this.INVALID_CALLBACK);
+        },
+
+        /**
+         * Execute the callback. It is equivalent to Callback.call
+         * @param {Object} event
+         */
+        apply : function (evt) {
+            this.call(evt);
         }
     }
 });
