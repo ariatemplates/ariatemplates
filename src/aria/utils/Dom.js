@@ -419,27 +419,70 @@ Aria.classDefinition({
         },
 
         /**
-         * Gets the dimensions of the viewport. Extracted from Closure's documentation Gecko Standards mode:
-         * docEl.clientWidth Width of viewport excluding scrollbar. win.innerWidth Width of viewport including
-         * scrollbar. body.clientWidth Width of body element. docEl.clientHeight Height of viewport excluding scrollbar.
-         * win.innerHeight Height of viewport including scrollbar. body.clientHeight Height of document. Gecko Backwards
-         * compatible mode: docEl.clientWidth Width of viewport excluding scrollbar. win.innerWidth Width of viewport
-         * including scrollbar. body.clientWidth Width of viewport excluding scrollbar. docEl.clientHeight Height of
-         * document. win.innerHeight Height of viewport including scrollbar. body.clientHeight Height of viewport
-         * excluding scrollbar. IE6/7 Standards mode: docEl.clientWidth Width of viewport excluding scrollbar.
-         * win.innerWidth Undefined. body.clientWidth Width of body element. docEl.clientHeight Height of viewport
-         * excluding scrollbar. win.innerHeight Undefined. body.clientHeight Height of document element. IE5 + IE6/7
-         * Backwards compatible mode: docEl.clientWidth 0. win.innerWidth Undefined. body.clientWidth Width of viewport
-         * excluding scrollbar. docEl.clientHeight 0. win.innerHeight Undefined. body.clientHeight Height of viewport
-         * excluding scrollbar. Opera 9 Standards and backwards compatible mode: docEl.clientWidth Width of viewport
-         * excluding scrollbar. win.innerWidth Width of viewport including scrollbar. body.clientWidth Width of viewport
-         * excluding scrollbar. docEl.clientHeight Height of document. win.innerHeight Height of viewport including
-         * scrollbar. body.clientHeight Height of viewport excluding scrollbar. WebKit: Safari 2 docEl.clientHeight Same
-         * as scrollHeight. docEl.clientWidth Same as innerWidth. win.innerWidth Width of viewport excluding scrollbar.
-         * win.innerHeight Height of the viewport including scrollbar. frame.innerHeight Height of the viewport exluding
-         * scrollbar. Safari 3 (tested in 522) docEl.clientWidth Width of viewport excluding scrollbar.
-         * docEl.clientHeight Height of viewport excluding scrollbar in strict mode. body.clientHeight Height of
-         * viewport excluding scrollbar in quirks mode.
+         * Gets the dimensions of the viewport. Extracted from Closure's documentation.
+         *
+         * <pre>
+         * Gecko
+         * Standards mode:
+         * docEl.clientWidth  Width of viewport excluding scrollbar.
+         * win.innerWidth     Width of viewport including scrollbar.
+         * body.clientWidth   Width of body element.
+         *
+         * docEl.clientHeight Height of viewport excluding scrollbar.
+         * win.innerHeight    Height of viewport including scrollbar.
+         * body.clientHeight  Height of document.
+         *
+         * Gecko Backwards compatible mode:
+         * docEl.clientWidth  Width of viewport excluding scrollbar.
+         * win.innerWidth     Width of viewport including scrollbar.
+         * body.clientWidth   Width of viewport excluding scrollbar.
+         *
+         * docEl.clientHeight Height of document.
+         * win.innerHeight    Height of viewport including scrollbar.
+         * body.clientHeight  Height of viewport excluding scrollbar.
+         *
+         * IE6/7 Standards mode:
+         * docEl.clientWidth  Width of viewport excluding scrollbar.
+         * win.innerWidth     Undefined.
+         * body.clientWidth   Width of body element.
+         *
+         * docEl.clientHeight Height of viewport excluding scrollbar.
+         * win.innerHeight    Undefined.
+         * body.clientHeight  Height of document element.
+         *
+         * IE5 + IE6/7 Backwards compatible mode:
+         * docEl.clientWidth  0.
+         * win.innerWidth     Undefined.
+         * body.clientWidth   Width of viewport excluding scrollbar.
+         *
+         * docEl.clientHeight 0.
+         * win.innerHeight    Undefined.
+         * body.clientHeight  Height of viewport excluding scrollbar.
+         *
+         * Opera 9 Standards and backwards compatible mode:
+         * docEl.clientWidth  Width of viewport excluding scrollbar.
+         * win.innerWidth     Width of viewport including scrollbar.
+         * body.clientWidth   Width of viewport excluding scrollbar.
+         *
+         * docEl.clientHeight Height of document.
+         * win.innerHeight    Height of viewport including scrollbar.
+         * body.clientHeight  Height of viewport excluding scrollbar.
+         *
+         * WebKit:
+         * Safari 2
+         * docEl.clientHeight Same as scrollHeight.
+         * docEl.clientWidth  Same as innerWidth.
+         * win.innerWidth     Width of viewport excluding scrollbar.
+         * win.innerHeight    Height of the viewport including scrollbar.
+         * frame.innerHeight  Height of the viewport exluding scrollbar.
+         *
+         * Safari 3 (tested in 522)
+         *
+         * docEl.clientWidth  Width of viewport excluding scrollbar.
+         * docEl.clientHeight Height of viewport excluding scrollbar in strict mode.
+         * body.clientHeight  Height of viewport excluding scrollbar in quirks mode.
+         * </pre>
+         *
          * @return {aria.utils.DomBeans.Size} Size object width 'width' and 'height' properties
          * @private
          */
