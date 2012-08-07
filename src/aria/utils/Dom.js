@@ -973,12 +973,6 @@ Aria.classDefinition({
          * not specified, does "minimal job".
          */
         scrollIntoView : function (element, alignTop) {
-            var hasVerticalScrollbar = element.scrollHeight > element.clientHeight;
-            var hasHorizontalScrollbar = element.scrollWidth > element.clientWidth;
-            if (!hasVerticalScrollbar && !hasHorizontalScrollbar) {
-                return;
-            }
-
             var document = element.ownerDocument;
             var origin = element, originRect = origin.getBoundingClientRect();
             var parent, hasScroll = false, docElementOk = false;
@@ -993,6 +987,10 @@ Aria.classDefinition({
                 }
 
                 if (element) {
+                    var hasScrollbar = (!element.clientHeight) ? false : element.scrollHeight > element.clientHeight;
+                    if (!hasScrollbar) {
+                        continue;
+                    }
 
                     var rects;
                     if (element == documentScroll) {
