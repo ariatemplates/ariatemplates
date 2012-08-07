@@ -705,7 +705,6 @@ Aria.classDefinition({
              * Remaining cases : classic interpret we will insert separators, then cut the entry on separators and
              * interpret it
              */
-            this.$assert("234", entrylen > 3);
             dateBeforeMonth = ("isDateBeforeMonth" in dateOptions)
                     ? dateOptions.isDateBeforeMonth
                     : this._environment.getDateFormats().dateBeforeMonth;
@@ -740,6 +739,13 @@ Aria.classDefinition({
             if (jsdate.getDate() !== date) {
                 return null;
             }
+
+            // is date in the past ?
+            var currentDate = new Date();
+            if (jsdate.getDate() < currentDate.getDate()) {
+                jsdate.setFullYear(jsdate.getFullYear() + 1);
+            }
+
             return jsdate;
         },
 
