@@ -254,14 +254,14 @@ Aria.classDefinition({
          * @private
          * @type {RegExp}
          */
-        this._interpret_time_remove_unwantedCharacters = /[^\\h;m,.\-:/\d]+/gi;
+        this._interpret_time_remove_unwantedCharacters = /[^\\h;m,.\-:\/\d]+/gi;
 
         /**
          * check string for any separators and pattern letters.
          * @private
          * @type {RegExp}
          */
-        this._interpret_time_remove_separatorCharacters = /[\\h;m,.\-:/\s]/;
+        this._interpret_time_remove_separatorCharacters = /[\\h;m,.\-:\/\s]/;
 
         /**
          * when formatting, pattern U change output to uppercase
