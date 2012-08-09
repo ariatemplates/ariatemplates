@@ -740,12 +740,6 @@ Aria.classDefinition({
                 return null;
             }
 
-            // is date in the past ?
-            var currentDate = new Date();
-            if (jsdate.getDate() < currentDate.getDate()) {
-                jsdate.setFullYear(jsdate.getFullYear() + 1);
-            }
-
             return jsdate;
         },
 
