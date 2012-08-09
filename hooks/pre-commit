@@ -12,5 +12,6 @@ for FILE in `exec git diff-index --check --cached $against -- | sed '/^[+-]/d' |
 	 sed -i 's/[[:space:]]*$//' "$FILE"
 	 # sed replaces CRLF to LF, as we are on Windows, we want CRLF back
 	 dos2unix -D "$FILE" # remove if you're not on Windows
+	 git add "$FILE" # add the change to the current commit
 done
 exit
