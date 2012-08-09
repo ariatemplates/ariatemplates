@@ -736,7 +736,14 @@ Aria.beanDefinitions({
                 "attributes" : {
                     $type : "HtmlAttribute",
                     $description : "Parameters to apply to the DOM element of the section."
+                },
+                "on" : {
+                    $type : "json:Object",
+                    $description : "List of registered browser events and their callbacks. Values should match bean aria.widgetLibs.CommonBeans.Callback",
+                    $default : {},
+                    $restricted : false
                 }
+                
             }
         },
         "RepeaterCfg" : {

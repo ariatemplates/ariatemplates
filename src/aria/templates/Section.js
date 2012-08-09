@@ -118,11 +118,17 @@
              * Id for event delegation (used for keyboard navigation)
              * @type String
              */
-            this.delegateId = aria.utils.Delegate.add({
-                fn : this._onDomEvent,
-                scope : this
-            });
 
+            this.delegateId = null;
+
+            /**
+             * The widget configuration, as declared in the template.
+             * @protected
+             * @type Object
+             */
+            this._cfg = cfg;
+
+            this._normalizeCallbacks();
             // stop here for root context
             if (this.isRoot) {
                 return;
@@ -275,6 +281,7 @@
             this._refreshMgrInfo = null;
             this._domElt = null;
             this.tplCtxt = null;
+            this._cfg = null;
         },
         $events : {
             "beforeRemoveContent" : "Raised just before the section content is disposed.",
@@ -519,7 +526,7 @@
              * RegisterBinding is used to add bindings to Templates and sections.
              * @public
              * @param {Object} bind
-             *
+             * 
              * <pre>
              *  {
              *      inside : ...
@@ -563,14 +570,14 @@
              * Check if the binding given is valid for a processing indicator. "to" is mandatory and must be a boolean
              * value
              * @param {Object} bind
-             *
+             * 
              * <pre>
              *  {
              *      inside : ...
              *      to : ...
              *  }
              * </pre>
-             *
+             * 
              * @return Boolean true is the binding is valid
              */
             __isValidProcessingBind : function (bind) {
@@ -594,7 +601,7 @@
              * Add bindings to loading overlay and sections.
              * @public
              * @param {Object} bind
-             *
+             * 
              * <pre>
              *  {
              *      inside : ...
@@ -695,7 +702,7 @@
              * defined in the binding
              * @protected
              * @param {Object} res Object containing information about the data that changed
-             *
+             * 
              * <pre>
              * {
              *   dataHolder : {Object},
@@ -962,7 +969,48 @@
                 if (this.macro) {
                     out.callMacro(this.macro);
                 }
+            },
+            /**
+             * Since event's callback can have several signatures as specified in aria.widgetLibs.CommonBeans.Callback
+             * this function normalizes the callbacks for later use. It will also ask Delegate to generate a delegateId
+             * if needed.
+             * @protected
+             */
+            _normalizeCallbacks : function () {
+                var delegateManager = aria.utils.Delegate, eventListeners = this._cfg ? this._cfg.on : null;
+                if (eventListeners) {
+                    for (var listener in eventListeners) {
+                        if (eventListeners.hasOwnProperty(listener)) {
+                            eventListeners[listener] = this.$normCallback.call(this, eventListeners[listener]);
+                        }
+                    }
+                }
+                this.delegateId = delegateManager.add({
+                    fn : this._delegate,
+                    scope : this
+                });
+            },
+            /**
+             * Callback for delegated events, If 'on' or 'keyMap' or 'tableNav' callbacks are registered.
+             * @param {aria.DomEvent} event Wrapped event
+             * @protected
+             */
+            _delegate : function (event) {
+                // for keyboard and table navigation
+                this._onDomEvent(event);
+
+                // for mouse events
+                if (this._cfg && this._cfg.on) {
+                    var callback = this._cfg.on[event.type];
+                    if (callback) {
+                        var wrapped = new aria.templates.DomEventWrapper(event);
+                        var returnValue = callback.fn.call(callback.scope, wrapped, callback.args);
+                        wrapped.$dispose();
+                        return returnValue;
+                    }
+                }
             }
+
         }
     });
 })();
