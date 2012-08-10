@@ -80,7 +80,7 @@ Aria.beanDefinitions({
                 },
                 "numberOfRows" : {
                     $type : "numberOfRows",
-                    $description : "How many Columns the multi-select should contain"
+                    $description : "How many rows are to be used in the display of the list, if the number of items isn't divisible (without remainder) by the number of rows then the next number of rows value that is divisible (without remainder) will be taken into account"
                 },
                 /*
                  * TODO remove? "numItemsLastCol" : { $type : "numberOfRows", $description : "How many Columns the
