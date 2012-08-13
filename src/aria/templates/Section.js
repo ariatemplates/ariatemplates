@@ -26,7 +26,7 @@
         $classpath : 'aria.templates.Section',
         $dependencies : ['aria.utils.Array', 'aria.utils.Json', 'aria.utils.Delegate',
                 'aria.templates.NavigationManager', 'aria.templates.CfgBeans', 'aria.utils.Dom', 'aria.utils.String',
-                'aria.templates.DomElementWrapper', 'aria.utils.Html'],
+                'aria.templates.DomElementWrapper', 'aria.utils.Html', 'aria.templates.DomEventWrapper'],
         /**
          * Constructor
          * @param {aria.templates.TemplateCtxt} tplCtxt
@@ -115,13 +115,6 @@
             this.idMap = (options && options.ownIdMap) ? {} : null;
 
             /**
-             * Id for event delegation (used for keyboard navigation)
-             * @type String
-             */
-
-            this.delegateId = null;
-
-            /**
              * The widget configuration, as declared in the template.
              * @protected
              * @type Object
@@ -129,6 +122,16 @@
             this._cfg = cfg;
 
             this._normalizeCallbacks();
+
+            /**
+             * Id for event delegation (used for keyboard navigation and events specified in section configuration)
+             * @type String
+             */
+            this.delegateId = aria.utils.Delegate.add({
+                fn : this._onDomEvent,
+                scope : this
+            });
+
             // stop here for root context
             if (this.isRoot) {
                 return;
@@ -296,7 +299,9 @@
             SECTION_ALREADY_EXISTS : "Error in template '%1': section uses already used id '%2'.",
             SECTION_BINDING_ERROR : "Section binding failed. Inside: %1, to: %2. Section id: %3, template: %4.",
             INVALID_CONFIGURATION : "Error in template '%1': invalid configuration for section id '%2'.",
-            WIDGET_ID_NOT_UNIQUE : "The %1 widget with id %2 does not have a unique id"
+            WIDGET_ID_NOT_UNIQUE : "The %1 widget with id %2 does not have a unique id",
+            SECTION_CALLBACK_ERROR : "Error in template '%1': invalid callback function '%2'."
+
         },
         $prototype : {
 
@@ -773,6 +778,36 @@
             _onDomEvent : function (evt) {
                 // forward event and configuration to a dedicated handler
                 this.__navigationManager.handleNavigation(this.keyMap, this.tableNav, evt);
+
+                if (this._cfg && this._cfg.on) {
+                    var callback = this._cfg.on[evt.type];
+                    if (callback) {
+                        var wrapped = new aria.templates.DomEventWrapper(evt);
+                        try {
+                            var returnValue = callback.fn.call(callback.scope, wrapped, callback.args);
+                        } catch (e) {
+                            this.$logError(this.SECTION_CALLBACK_ERROR, [this.tplCtxt.tplClasspath], e);
+                        }
+                        wrapped.$dispose();
+                        return returnValue;
+                    }
+                }
+            },
+            /**
+             * Since event's callback can have several signatures as specified in aria.widgetLibs.CommonBeans.Callback
+             * this function normalizes the callbacks for later use. It will also ask Delegate to generate a delegateId
+             * if needed.
+             * @protected
+             */
+            _normalizeCallbacks : function () {
+                var eventListeners = this._cfg ? this._cfg.on : null;
+                if (eventListeners) {
+                    for (var listener in eventListeners) {
+                        if (eventListeners.hasOwnProperty(listener)) {
+                            eventListeners[listener] = this.$normCallback(eventListeners[listener]);
+                        }
+                    }
+                }
             },
 
             /**
@@ -968,46 +1003,6 @@
                 // if a macro is defined in the section, call it
                 if (this.macro) {
                     out.callMacro(this.macro);
-                }
-            },
-            /**
-             * Since event's callback can have several signatures as specified in aria.widgetLibs.CommonBeans.Callback
-             * this function normalizes the callbacks for later use. It will also ask Delegate to generate a delegateId
-             * if needed.
-             * @protected
-             */
-            _normalizeCallbacks : function () {
-                var delegateManager = aria.utils.Delegate, eventListeners = this._cfg ? this._cfg.on : null;
-                if (eventListeners) {
-                    for (var listener in eventListeners) {
-                        if (eventListeners.hasOwnProperty(listener)) {
-                            eventListeners[listener] = this.$normCallback.call(this, eventListeners[listener]);
-                        }
-                    }
-                }
-                this.delegateId = delegateManager.add({
-                    fn : this._delegate,
-                    scope : this
-                });
-            },
-            /**
-             * Callback for delegated events, If 'on' or 'keyMap' or 'tableNav' callbacks are registered.
-             * @param {aria.DomEvent} event Wrapped event
-             * @protected
-             */
-            _delegate : function (event) {
-                // for keyboard and table navigation
-                this._onDomEvent(event);
-
-                // for mouse events
-                if (this._cfg && this._cfg.on) {
-                    var callback = this._cfg.on[event.type];
-                    if (callback) {
-                        var wrapped = new aria.templates.DomEventWrapper(event);
-                        var returnValue = callback.fn.call(callback.scope, wrapped, callback.args);
-                        wrapped.$dispose();
-                        return returnValue;
-                    }
                 }
             }
 
