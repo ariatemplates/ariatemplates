@@ -1032,6 +1032,9 @@ Aria.classDefinition({
                 if (element) {
                     var hasScrollbar = (!element.clientHeight) ? false : element.scrollHeight > element.clientHeight;
                     if (!hasScrollbar) {
+                        if (element == documentScroll) {
+                            element = null;
+                        }
                         continue;
                     }
 
