@@ -34,7 +34,6 @@ Aria.classDefinition({
         }
     },
     $constructor : function () {
-        this.$EnvironmentBase.constructor.call(this);
         /**
          * True if a customization has been configured (see setEnvironment() )
          * @protected
@@ -62,6 +61,7 @@ Aria.classDefinition({
             templates : {},
             modules : {}
         };
+        this.$EnvironmentBase.constructor.call(this);
     },
     $prototype : {
         /**
