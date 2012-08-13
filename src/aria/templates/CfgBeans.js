@@ -21,8 +21,7 @@ Aria.beanDefinitions({
     $description : "Definition of JSON beans used in aria templates",
     $namespaces : {
         "json" : "aria.core.JsonTypes",
-        "coreBeans" : "aria.core.CfgBeans",
-        "commonBeans" : "aria.widgetLibs.CommonBeans"
+        "coreBeans" : "aria.core.CfgBeans"
     },
     $beans : {
         "BaseTemplateCfg" : {
@@ -739,12 +738,10 @@ Aria.beanDefinitions({
                     $description : "Parameters to apply to the DOM element of the section."
                 },
                 "on" : {
-                    $type : "json:Map",
-                    $description : "List of registered browser events and their callbacks",
-                    $contentType : {
-                        $type : "commonBeans:Callback",
-                        $description : "Structure describing the function to call-back."
-                    }
+                    $type : "json:Object",
+                    $description : "List of registered browser events and their callbacks. Values should match bean aria.widgetLibs.CommonBeans.Callback",
+                    $default : {},
+                    $restricted : false
                 }
 
             }

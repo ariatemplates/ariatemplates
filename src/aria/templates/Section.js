@@ -300,7 +300,7 @@
             SECTION_BINDING_ERROR : "Section binding failed. Inside: %1, to: %2. Section id: %3, template: %4.",
             INVALID_CONFIGURATION : "Error in template '%1': invalid configuration for section id '%2'.",
             WIDGET_ID_NOT_UNIQUE : "The %1 widget with id %2 does not have a unique id",
-            SECTION_CALLBACK_ERROR : "Error in template '%1': invalid callback function '%2'."
+            SECTION_CALLBACK_ERROR : "The callback function raised an exception. Template: '%1'\nSection: '%2'\nEvent: '%3' "
 
         },
         $prototype : {
@@ -786,7 +786,8 @@
                         try {
                             var returnValue = callback.fn.call(callback.scope, wrapped, callback.args);
                         } catch (e) {
-                            this.$logError(this.SECTION_CALLBACK_ERROR, [this.tplCtxt.tplClasspath], e);
+                            this.$logError(this.SECTION_CALLBACK_ERROR, [this.tplCtxt.tplClasspath, this._cfg.id,
+                                    evt.type], e);
                         }
                         wrapped.$dispose();
                         return returnValue;
