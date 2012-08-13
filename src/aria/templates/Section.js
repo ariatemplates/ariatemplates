@@ -26,7 +26,7 @@
         $classpath : 'aria.templates.Section',
         $dependencies : ['aria.utils.Array', 'aria.utils.Json', 'aria.utils.Delegate',
                 'aria.templates.NavigationManager', 'aria.templates.CfgBeans', 'aria.utils.Dom', 'aria.utils.String',
-                'aria.templates.DomElementWrapper', 'aria.utils.Html'],
+                'aria.templates.DomElementWrapper', 'aria.utils.Html', 'aria.templates.DomEventWrapper'],
         /**
          * Constructor
          * @param {aria.templates.TemplateCtxt} tplCtxt
@@ -115,7 +115,16 @@
             this.idMap = (options && options.ownIdMap) ? {} : null;
 
             /**
-             * Id for event delegation (used for keyboard navigation)
+             * The widget configuration, as declared in the template.
+             * @protected
+             * @type Object
+             */
+            this._cfg = cfg;
+
+            this._normalizeCallbacks();
+
+            /**
+             * Id for event delegation (used for keyboard navigation and events specified in section configuration)
              * @type String
              */
             this.delegateId = aria.utils.Delegate.add({
@@ -275,6 +284,7 @@
             this._refreshMgrInfo = null;
             this._domElt = null;
             this.tplCtxt = null;
+            this._cfg = null;
         },
         $events : {
             "beforeRemoveContent" : "Raised just before the section content is disposed.",
@@ -289,7 +299,9 @@
             SECTION_ALREADY_EXISTS : "Error in template '%1': section uses already used id '%2'.",
             SECTION_BINDING_ERROR : "Section binding failed. Inside: %1, to: %2. Section id: %3, template: %4.",
             INVALID_CONFIGURATION : "Error in template '%1': invalid configuration for section id '%2'.",
-            WIDGET_ID_NOT_UNIQUE : "The %1 widget with id %2 does not have a unique id"
+            WIDGET_ID_NOT_UNIQUE : "The %1 widget with id %2 does not have a unique id",
+            SECTION_CALLBACK_ERROR : "The callback function raised an exception. Template: '%1'\nSection: '%2'\nEvent: '%3' "
+
         },
         $prototype : {
 
@@ -519,7 +531,7 @@
              * RegisterBinding is used to add bindings to Templates and sections.
              * @public
              * @param {Object} bind
-             *
+             * 
              * <pre>
              *  {
              *      inside : ...
@@ -563,14 +575,14 @@
              * Check if the binding given is valid for a processing indicator. "to" is mandatory and must be a boolean
              * value
              * @param {Object} bind
-             *
+             * 
              * <pre>
              *  {
              *      inside : ...
              *      to : ...
              *  }
              * </pre>
-             *
+             * 
              * @return Boolean true is the binding is valid
              */
             __isValidProcessingBind : function (bind) {
@@ -594,7 +606,7 @@
              * Add bindings to loading overlay and sections.
              * @public
              * @param {Object} bind
-             *
+             * 
              * <pre>
              *  {
              *      inside : ...
@@ -695,7 +707,7 @@
              * defined in the binding
              * @protected
              * @param {Object} res Object containing information about the data that changed
-             *
+             * 
              * <pre>
              * {
              *   dataHolder : {Object},
@@ -766,6 +778,37 @@
             _onDomEvent : function (evt) {
                 // forward event and configuration to a dedicated handler
                 this.__navigationManager.handleNavigation(this.keyMap, this.tableNav, evt);
+
+                if (this._cfg && this._cfg.on) {
+                    var callback = this._cfg.on[evt.type];
+                    if (callback) {
+                        var wrapped = new aria.templates.DomEventWrapper(evt);
+                        try {
+                            var returnValue = callback.fn.call(callback.scope, wrapped, callback.args);
+                        } catch (e) {
+                            this.$logError(this.SECTION_CALLBACK_ERROR, [this.tplCtxt.tplClasspath, this._cfg.id,
+                                    evt.type], e);
+                        }
+                        wrapped.$dispose();
+                        return returnValue;
+                    }
+                }
+            },
+            /**
+             * Since event's callback can have several signatures as specified in aria.widgetLibs.CommonBeans.Callback
+             * this function normalizes the callbacks for later use. It will also ask Delegate to generate a delegateId
+             * if needed.
+             * @protected
+             */
+            _normalizeCallbacks : function () {
+                var eventListeners = this._cfg ? this._cfg.on : null;
+                if (eventListeners) {
+                    for (var listener in eventListeners) {
+                        if (eventListeners.hasOwnProperty(listener)) {
+                            eventListeners[listener] = this.$normCallback(eventListeners[listener]);
+                        }
+                    }
+                }
             },
 
             /**
@@ -963,6 +1006,7 @@
                     out.callMacro(this.macro);
                 }
             }
+
         }
     });
 })();
