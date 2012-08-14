@@ -228,7 +228,7 @@
             classes.push("aria.templates.ModuleCtrlFactory", moduleCtrl.classpath);
         }
 
-        var cssToReload = ['aria.widgets.GlobalStyle'];
+        var cssToReload = ['aria.templates.GlobalStyle','aria.widgets.GlobalStyle'];
         if (cfg.reload) {
             aria.templates.TemplateManager.unloadTemplate(cfg.classpath, cfg.reloadByPassCache);
             if (aria.templates.CSSMgr) {
@@ -488,7 +488,8 @@
         $prototype : {
             /**
              * Load the class definition file.
-             * @param {String} classDef File content, can be either the generated class definition or the source template itself
+             * @param {String} classDef File content, can be either the generated class definition or the source
+             * template itself
              * @param {String} logicalPath template's logical classpath
              * @override
              */

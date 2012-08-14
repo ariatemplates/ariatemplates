@@ -60,11 +60,10 @@
     Aria.classDefinition({
         $classpath : 'aria.templates.TemplateCtxt',
         $dependencies : ['aria.templates.Layout', 'aria.templates.CfgBeans', 'aria.utils.Array', 'aria.utils.Function',
-                'aria.utils.Type', 'aria.templates.TemplateCtxtManager',
-                'aria.templates.RefreshManager', 'aria.templates.CSSMgr', 'aria.utils.Path', 'aria.utils.Delegate',
-                'aria.templates.NavigationManager', 'aria.templates.SectionWrapper',
-                'aria.core.environment.Customizations', 'aria.templates.DomElementWrapper',
-                'aria.templates.MarkupWriter'],
+                'aria.utils.Type', 'aria.templates.TemplateCtxtManager', 'aria.templates.RefreshManager',
+                'aria.templates.CSSMgr', 'aria.utils.Path', 'aria.utils.Delegate', 'aria.templates.NavigationManager',
+                'aria.templates.SectionWrapper', 'aria.core.environment.Customizations',
+                'aria.templates.DomElementWrapper', 'aria.templates.MarkupWriter'],
         $implements : ['aria.templates.ITemplate', 'aria.templates.ITemplateCtxt'],
         $extends : "aria.templates.BaseCtxt",
         $onload : function () {
@@ -170,8 +169,9 @@
                 // Warn the CSS Manager that we are removing a template (it won't change the style)
                 aria.templates.CSSMgr.unloadDependencies(this);
                 if (this._globalCssDepsLoaded) {
-                    // PTR 05086835: only unload the global widgets CSS if it was loaded by this instance
-                    aria.templates.CSSMgr.unloadWidgetDependencies('aria.templates.Template', ['aria.widgets.GlobalStyle']);
+                    // PTR 05086835: only unload the global CSS if it was loaded by this instance
+                    aria.templates.CSSMgr.unloadWidgetDependencies('aria.templates.Template', [
+                            'aria.templates.GlobalStyle', /* BACKWARD-COMPATIBILITY-BEGIN */'aria.widgets.GlobalStyle' /* BACKWARD-COMPATIBILITY-END */]);
                     this._globalCssDepsLoaded = false;
                 }
                 this._cssClasses = null;
@@ -949,12 +949,13 @@
                 if (moduleCtrl) {
                     // When a moduleCtrl is used, the ModuleCtrlFactory should be loaded.
                     // However, the ModuleCtrlFactory is not a static dependency cause sometimes we don't need it.
-                    // TODO: today, we just fail if it's not here, replace this with a silent dynamic loading (Aria.load)
-                    if(!aria.templates.ModuleCtrlFactory) {
+                    // TODO: today, we just fail if it's not here, replace this with a silent dynamic loading
+                    // (Aria.load)
+                    if (!aria.templates.ModuleCtrlFactory) {
                         this.$logError(this.MISSING_MODULE_CTRL_FACTORY, [cfg.classpath]);
                     } else {
 
-                        if(!__getModulePrivateInfo) {
+                        if (!__getModulePrivateInfo) {
                             __getModulePrivateInfo = aria.templates.ModuleCtrlFactory.__getModulePrivateInfoMethod();
                         }
                         privateInfo = __getModulePrivateInfo.call(this, moduleCtrl);
@@ -980,10 +981,8 @@
                                     privateInfo = __getModulePrivateInfo.call(this, moduleCtrl);
                                     if (!privateInfo) {
                                         // if privateInfo is null, it means either the module controller was not created
-                                        // through
-                                        // aria.templates.ModuleCtrlFactory or it was already disposed (error was already
-                                        // logged in
-                                        // __getModulePrivateInfo)
+                                        // through aria.templates.ModuleCtrlFactory or it was already disposed (error
+                                        // was already logged in __getModulePrivateInfo)
                                         return false;
                                     }
                                     moduleCtrlPrivate = privateInfo.moduleCtrlPrivate;
@@ -1601,8 +1600,10 @@
                 var classes = this._cssClasses;
                 if (!classes) {
                     if (this._cfg.isRootTemplate) {
-                        // PTR 05086835: load the global widgets CSS here, and remember that it was loaded
-                        aria.templates.CSSMgr.loadWidgetDependencies('aria.templates.Template', ['aria.widgets.GlobalStyle']);
+                        // PTR 05086835: load the global CSS here, and remember that it was loaded
+                        aria.templates.CSSMgr.loadWidgetDependencies('aria.templates.Template', [
+                                'aria.templates.GlobalStyle', /* BACKWARD-COMPATIBILITY-BEGIN */
+                                'aria.widgets.GlobalStyle' /* BACKWARD-COMPATIBILITY-END */]);
                         this._globalCssDepsLoaded = true;
                     }
                     // Load the CSS dependencies, the style should be added before the html
