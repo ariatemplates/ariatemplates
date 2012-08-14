@@ -43,6 +43,10 @@ Aria.beanDefinitions({
                     $description : "If true, a mask is shown behind the popup so that mouse and keyboard interraction with elements behind the popup is not possible.",
                     $default : false
                 },
+                "maskCssClass" : {
+                    $type : "json:String",
+                    $description : "CSS classes to be applied on the mask. Only used if modal is true. If not specified, a default style is applied."
+                },
                 "domReference" : {
                     $type : "json:ObjectRef",
                     $description : "{HTMLElement} The DOM reference which will be used as the reference position for the tooltip",

@@ -404,6 +404,7 @@ Aria.classDefinition({
                 },
                 center : cfg.center,
                 modal : cfg.modal,
+                maskCssClass : "xDialogMask",
                 closeOnMouseClick : false,
                 closeOnMouseScroll : false,
                 parentDialog : this
@@ -630,7 +631,7 @@ Aria.classDefinition({
          * @protected
          */
         _onDragEnd : function () {
-            //this.updatePosition();
+            // this.updatePosition();
             if (this._popup) {
                 this._popup.refreshProcessingIndicators();
             }
