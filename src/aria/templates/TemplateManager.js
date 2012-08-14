@@ -23,7 +23,7 @@ Aria.classDefinition({
     },
     $prototype : {
         /**
-         * Unload a template (cache/files/urls/scripts/CSS associated)
+         * Unload a template (cache/files/urls/scripts/CSS/resources associated)
          * @param {String} classpath the classpath of the class to be removed
          * @param {Boolean} timestampNextTime if true, the next time the class is loaded, browser and server cache will
          * be bypassed by adding a timestamp to the url.
@@ -36,10 +36,17 @@ Aria.classDefinition({
                 classMgr.unloadClass(scriptClasspath, timestampNextTime);
             }
             var itm = Aria.$classDefinitions[classpath];
-            if (!Aria.nspace(classpath, false) && itm) {// when there is an error in the script, the class reference for
+            if (!Aria.nspace(classpath, false) && itm && itm.$css) {// when there is an error in the script, the class reference for
                 // the template is not created, so the css would not be
                 // unregistered in the unloadClass method
                 aria.templates.CSSMgr.unregisterDependencies(classpath, itm.$css, true, timestampNextTime);
+            }
+            if (itm.$resources != null) {
+                var resources = itm.$resources;
+                for (var res in resources)
+                    if (resources.hasOwnProperty(res)) {
+                        classMgr.unloadClass(resources[res], timestampNextTime);
+                    }
             }
             classMgr.unloadClass(classpath, timestampNextTime);
             // every thing is done : CSS are unhandled at classMgr level directly
