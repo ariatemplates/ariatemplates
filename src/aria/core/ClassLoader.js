@@ -94,7 +94,9 @@ Aria.classDefinition({
         this._mdp = null;
 
         /**
-         * Is true if there were errors while retrieving missing dependencies.
+         * Is true if there were errors while retrieving missing dependencies. It becomes true when you call
+         * <code>addDependecies</code> with wrong parameters or when one of the missing dependencies raises a class
+         * error event
          * @protected
          * @type Boolean
          */
@@ -205,9 +207,10 @@ Aria.classDefinition({
         },
 
         /**
-         * Add classpaths as dependencies associated to the main class After calling this method (maybe several times),
-         * you should immediately call the loadDependencies method to effectively load the added dependencies. This
-         * supposes that the reference class definition has already been loaded
+         * Add classpaths as dependencies associated to the main class. <br />
+         * After calling this method (maybe several times), you should immediately call the
+         * <code>loadDependencies</code> method to effectively load the added dependencies. This supposes that the
+         * reference class definition has already been loaded
          * @param {Array} mdp list of missing dependency classpaths, or false to specify that some dependencies cannot
          * be loaded
          * @param {String} depType type of dependency
@@ -226,9 +229,8 @@ Aria.classDefinition({
                     // forward error policy
                     loader.handleError = this.handleError;
 
-                    // class not already loaded:
-                    // create an entry in _mdp
-                    if (this._mdp == null) {
+                    // class not already loaded: create an entry in _mdp
+                    if (!this._mdp) {
                         this._mdp = [];
                     }
                     this._mdp.push({
@@ -241,13 +243,13 @@ Aria.classDefinition({
                     // if we do it only in the loadDependencies method, some dependencies may be loaded
                     // before we register on this event and we loose the info)
                     loader.$on({
-                        'classReady' : this._onMdpClassReady,
-                        'classError' : this._onMdpClassError,
+                        "classReady" : this._onMdpLoad,
+                        "classError" : this._onMdpLoad,
                         scope : this
                     });
                 }
             }
-            sz = loader = cp = cm = null;
+            loader = cm = null;
         },
 
         /**
@@ -255,27 +257,29 @@ Aria.classDefinition({
          * after the addDependencies method.
          */
         loadDependencies : function () {
-            if (this._mdpErrors) {
-                this._onMdpClassError();
-            } else {
-                this.$assert(221, this._mdp != null);
-                var sz = this._mdp.length, loader;
-                for (var i = 0; sz > i; i++) {
-                    var itm = this._mdp[i];
-                    if (!itm.isReady) {
-                        itm.loader.loadClassDefinition();
+            var dependencies = this._mdp;
+            if (dependencies) {
+                var length = dependencies.length;
+                for (var i = 0; i < length; i += 1) {
+                    var waiting = dependencies[i];
+                    if (!waiting.isReady) {
+                        waiting.loader.loadClassDefinition();
                     }
+
                     // if everything is in cache, previous call may load everything, instanciate classes and nullify
                     // this._mdp
                     if (!this._mdp) {
                         break;
                     }
                 }
+            } else if (this._mdpErrors) {
+                this._handleError();
             }
+            // else simply there's nothing to do, no dependencies
         },
 
         /**
-         * Check if given classpath is a dependency.
+         * Check if given classpath is already a dependency.
          * @param {String} classpath Circular classpath to check, or nothing if initial call
          * @return {String|Boolean} classpath of circular dependency found, or true if one is found but is himself
          */
@@ -288,7 +292,7 @@ Aria.classDefinition({
                 }
             }
             var circular;
-            // check dependencies
+
             if (this._mdp) {
                 for (var index = 0, l = this._mdp.length; index < l; index++) {
                     circular = this._mdp[index].loader.getCircular(classpath);
@@ -305,11 +309,15 @@ Aria.classDefinition({
         },
 
         /**
-         * Callback called when a missing dependency class is ready
-         * @param {Object} evt
+         * Callback called when a missing dependency class is loaded, either correctly or in error
+         * @param {Object} evt classReady or classError event
          * @private
          */
-        _onMdpClassReady : function (evt) {
+        _onMdpLoad : function (evt) {
+            if (evt.name === "classError") {
+                this._mdpErrors = true;
+            }
+
             var cp = evt.refClasspath;
             this.$assert(283, cp != '');
             this.$assert(284, this._mdp != null); // check that this was not disposed already
@@ -336,36 +344,26 @@ Aria.classDefinition({
                 return; // current loader not ready yet
             } else {
                 // all dependencies are now ready
-                // we can ask for the class load
-                if (this._refClasspath != null) {
-                    this.$assert(286, this.callback != null);
-                    this.callback.fn.call(this.callback.scope, this.callback.args);
+                if (this._mdpErrors) {
+                    this._handleError();
                 } else {
-                    this._mdp = null;
-                    // class loader is used to load dependencies
-                    this.notifyLoadComplete();
+                    if (this._refClasspath != null) {
+                        this.$assert(286, this.callback != null);
+                        this.callback.fn.call(this.callback.scope, this.callback.args);
+                    } else {
+                        this._mdp = null;
+                        // class loader is used to load dependencies
+                        this.notifyLoadComplete();
+                    }
                 }
             }
         },
 
         /**
-         * Callback called when a missing dependency class could not be loaded
-         * @param {Object} evt
-         * @private
+         * Notify the class loader error
+         * @protected
          */
-        _onMdpClassError : function (evt) {
-            if (evt != null) {
-                var cp = evt.refClasspath;
-                this.$assert(304, cp != '');
-                var sz = this._mdp.length, itm;
-                for (var i = 0; sz > i; i++) {
-                    itm = this._mdp[i];
-                    if (!itm.isReady) {
-                        // if the item is not ready, remove listeners on this loader
-                        itm.loader.$unregisterListeners(this);
-                    }
-                }
-            }
+        _handleError : function () {
             if (this._refClasspath != null) {
                 aria.core.ClassMgr.notifyClassLoadError(this._refClasspath);
             } else {
