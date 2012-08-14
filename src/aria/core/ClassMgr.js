@@ -275,14 +275,46 @@ Aria.classDefinition({
          * be bypassed by adding a timestamp to the url
          */
         unloadClass : function (classpath, timestampNextTime) {
+            this._unloadClass(classpath, timestampNextTime, false, function() { return true; });
+        },
+
+        /**
+         * Unload a class (cache/files/urls associated)
+         * @param {String} classpath the classpath of the class to be removed
+         * @param {Boolean} timestampNextTime if true, the next time the class is loaded, browser and server cache will
+         * be bypassed by adding a timestamp to the url
+         * @param {Function} a closure that is called with the resource classpath to be unloaded and informs if it
+         * should actually be unloaded, must return <code>true</code> only for classpaths owned by the caller.
+         */
+        unloadClassRecursive : function (classpath, timestampNextTime, tester) {
+            this._unloadClass(classpath, timestampNextTime, true, tester);
+        },
+
+        /**
+         * Unload a class and its parents
+         * @private
+         * @param {String} classpath the classpath of the class to be removed
+         * @param {Boolean} timestampNextTime if true, the next time the class is loaded, browser and server cache will
+         * be bypassed by adding a timestamp to the url.
+         * @param {Boolean} recursive if true, the parent is investigated for unloading.
+         * @param {Function} a closure that is called with the resource classpath to be unloaded and informs if it
+         * should actually be unloaded, must return <code>true</code> only for classpaths owned by the caller.
+         */
+        _unloadClass : function (classpath, timestampNextTime, recursive, tester) {
 
             // handle css dependency invalidation
             var classRef = Aria.getClassRef(classpath);
+            var parent;
             // no class ref for beans
             if (classRef) {
                 var classDef = Aria.getClassRef(classpath).classDefinition;
-                if (classDef && classDef.$css) {
-                    aria.templates.CSSMgr.unregisterDependencies(classpath, classDef.$css, true, timestampNextTime);
+                if (classDef) {
+                    if (classDef.$css) {
+                        aria.templates.CSSMgr.unregisterDependencies(classpath, classDef.$css, true, timestampNextTime);
+                    }
+                    if (recursive && classDef.$extends && tester(classDef.$extends)) {
+                      parent = classDef.$extends;
+                    }
                 }
             }
 
@@ -295,6 +327,10 @@ Aria.classDefinition({
             }
             var classesInCache = this._cache.content.classes;
             delete classesInCache[classpath];
+            
+            if (parent) {
+                this._unloadClass(parent, timestampNextTime, recursive, tester);
+            }
         },
 
         /**
