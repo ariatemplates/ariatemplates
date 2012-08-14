@@ -129,7 +129,7 @@
      * @param {Object} args loadModuleCtrl state information (see createModuleCtrl for more information)
      * @private
      */
-    createInstanceAndCheckFlow = function (args) {
+    var createInstanceAndCheckFlow = function (args) {
         try {
             var moduleClasspath = args.desc.classpath;
             var moduleCtrlConstr = args.moduleCtrlConstr;
@@ -193,7 +193,7 @@
      * @param {Object} args loadModuleCtrl state information (see createModuleCtrl for more information)
      * @private
      */
-    createFlowCtrlAndCustomModules = function (args) {
+    var createFlowCtrlAndCustomModules = function (args) {
         try {
 
             var moduleCtrlPrivate = args.moduleCtrlPrivate;
@@ -271,7 +271,7 @@
      * @param {Object} args loadModuleCtrl state information (see createModuleCtrl for more information)
      * @private
      */
-    attachListenersAndInit = function (unused, args) {
+    var attachListenersAndInit = function (unused, args) {
         try {
             var registerListeners = args.registerListeners;
             if (registerListeners) {
@@ -304,7 +304,7 @@
      * @param {Object} args loadModuleCtrl state information (see createModuleCtrl for more information)
      * @private
      */
-    callFinalCallback = function (unused, args) {
+    var callFinalCallback = function (unused, args) {
         this.$callback(args.cb, args.res);
     };
 
@@ -492,7 +492,7 @@
      * one of these classpaths, loading this sub-module will fail.
      * @private
      */
-    loadSubModules = function (parentModuleInfo, subModulesDescArray, cb, customModules, recursionCheck) {
+    var loadSubModules = function (parentModuleInfo, subModulesDescArray, cb, customModules, recursionCheck) {
         var subModulesDescArrayLength = subModulesDescArray.length;
         if (subModulesDescArrayLength == 0) {
             this.$callback(cb, {
