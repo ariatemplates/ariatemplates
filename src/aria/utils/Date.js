@@ -14,7 +14,7 @@
  */
 
 /**
- * This class contains utilities to manipulate the Dates.
+ * This class contains utilities to manipulate Dates.
  */
 Aria.classDefinition({
     $classpath : "aria.utils.Date",
@@ -29,11 +29,13 @@ Aria.classDefinition({
         /**
          * Dynamic cut date, 90 years in the past
          * @type Number
+         * @private
          */
         this._cutYear = ((new Date()).getFullYear() + 10) % 100;
 
         /**
-         * @private Application environment shortcut
+         * Application environment shortcut
+         * @private
          * @type aria.utils.environment.Date
          */
         this._environment = aria.utils.environment.Date;
@@ -61,13 +63,11 @@ Aria.classDefinition({
         var iataMonths = this._interpret_monthTexts;
 
         /**
-         * Date formatter letter patterns
+         * Date formatter letter patterns.
+         * @see http://java.sun.com/j2se/1.4.2/docs/api/java/text/SimpleDateFormat.html
          * @type Object
          */
         this.formatPatterns = {
-
-            // see
-            // http://java.sun.com/j2se/1.4.2/docs/api/java/text/SimpleDateFormat.html
 
             "d" : function (value, number) {
                 return utilString.pad(value.getDate(), number, "0", true);
@@ -116,7 +116,7 @@ Aria.classDefinition({
                 }
             },
 
-            /**
+            /*
              * Time patterns
              */
 
@@ -196,12 +196,14 @@ Aria.classDefinition({
          * @type {RegExp}
          */
         this._interpret_specialCase2 = /^[+\-]\d{1,3}$/;
+
         /**
          * special case 3 RegExp : 10DEC/+-5 -> 10DEC +-5 days
          * @private
          * @type {RegExp}
          */
         this._interpret_specialCase3 = /^(\d{1,2}[a-z]{3}\d{0,4})\/([+\-]\d{1,3})$/i;
+
         /**
          * 3 char possibility, something like 1/3 (1st of march)
          * @private
@@ -229,7 +231,8 @@ Aria.classDefinition({
          * @type {RegExp}
          */
         this._separators = /[^\w]/;
-        /**
+
+        /*
          * Time RegExp
          */
 
@@ -298,13 +301,30 @@ Aria.classDefinition({
     },
     $prototype : {
 
-        /**
+        /*
          * Time functions
          */
 
         /**
-         * interpret a String entry as a JS date if possible
-         * @param {String} entryStr
+         * Interpret a String as a JS date if possible. <br />
+         * This function only interprets time and returns a JS Date object where the date is today and the time (H/m/s)
+         * is the one interpreted. <br />
+         * Possible separators are '\', ';', ',', '.', '-', ':' or a whitespace.<br />
+         * Hours and minutes can be followed by the letters 'h' and 'm'
+         * @example
+         * Given the following extry string, the result in the hh:mm:ss format is
+         * <pre>
+         * string     format (24h)
+         *
+         * 1            01:00:00
+         * 1 10         01:10:00
+         * 1,20         01:20:00
+         * 1h 30m       01:30:00
+         * 1;40pm       13:40:00
+         * 2-10-30am    02:10:30
+         * </pre>
+         *
+         * @param {String} entryStr String to be interpreted
          * @return {Date}
          */
         interpretTime : function (entryStr) {
@@ -317,8 +337,7 @@ Aria.classDefinition({
 
             entry = entryStr;
 
-            // need to check for at least one digit at the beginning of the
-            // string
+            // need to check for at least one digit at the beginning of the string
             if (!this._isValidTime(entry)) {
                 return null;
             }
@@ -535,7 +554,6 @@ Aria.classDefinition({
             var hours = [];
             var characterCheck1 = time.charAt(0);
             var characterCheck2 = time.charAt(1);
-            var characterCheck3 = time.charAt(2);
 
             // where the first two digits are 24 need to set the hour to 00
             if (characterCheck1 === '2' && characterCheck2 === '4') {
@@ -633,9 +651,35 @@ Aria.classDefinition({
          */
 
         /**
-         * interpret an String entry as a Date if possible
-         * @param {String} entryStr
+         * Interpret a String as a JS Date if possible<br />
+         * This function only interprets dates and returns a JS Date object where the date is the one interpreted and
+         * the time is set to 00:00:00 <br />
+         * It can interpret dates in the format d/M/Y and M/d/Y plus some other special cases. Any non alphanumeric
+         * character can be used as separator<br />
+         * @example
+         * Given the following extry string, the result in the format d:MMM:Y is
+         * <pre>
+         * string       format
+         *
+         * 1             (first day of current month)
+         * 1 12          1 Dec (current year)
+         * 10/3/2012     10 Mar 2012
+         * 2APR2012      2 Apr 2012
+         *
+         * +5            (five days from now)
+         * -2            (two days ago)
+         * 10JUN2012/+3  13 Jun 2012
+         * </pre>
+         *
+         * @param {String} entryStr String to be interpreted
          * @param {Object} options for the date interpreter - optional
+         *
+         * <pre>
+         * referenceDate : {Date} reference date used in case entry string is (+/- Number) defaults to today
+         * isDateBeforeMonth : {Boolean} Whether the date is written before or after the month
+         * isMonthYear : {Boolean} Whether the date contains only the month and year, without day
+         * </pre>
+         *
          * @return {Date}
          */
         interpret : function (entryStr, options) {
@@ -721,6 +765,7 @@ Aria.classDefinition({
             return null;
 
         },
+
         /**
          * Interprets as Date 10: for 10th of current month
          * @param {String} dateStr
@@ -787,6 +832,7 @@ Aria.classDefinition({
             return jsdate;
 
         },
+
         /**
          * To interpret the date for entered month string
          * @param {String} dateStr for month string
@@ -808,6 +854,7 @@ Aria.classDefinition({
             return null;
 
         },
+
         /**
          * To interpret the date having month, date, optional year.
          * @param {String} dateStr string need to be parsed.
@@ -871,6 +918,7 @@ Aria.classDefinition({
             return this._checkParsedDate(interpretdDate, interpretdMonth, interpretdYear);
 
         },
+
         /**
          * Interpret date if the string has only month and year
          * @param {String} dateStr
@@ -937,6 +985,7 @@ Aria.classDefinition({
             return this._checkParsedDate(interpretdDate, interpretdMonth, interpretdYear, ismonthYear);
 
         },
+
         /**
          * parses the entered string into array of date, month and year
          * @param {String} entry the date string
@@ -959,6 +1008,7 @@ Aria.classDefinition({
             }
             return dateArray;
         },
+
         /**
          * checks for the parsed date, month and year string and returns the date object.
          * @param {String} interpretdDate date string
@@ -1015,7 +1065,7 @@ Aria.classDefinition({
                 var todaydate = new Date();
                 interpretdYear = todaydate.getFullYear();
                 var todayTime = new Date(todaydate.getFullYear(), todaydate.getMonth(), todaydate.getDate()).getTime();
-                // get the interpretted date
+                // get the interpreted date
                 todaydate = new Date(todaydate.getFullYear(), interpretdMonth, interpretdDate);
                 if (todaydate.getTime() < todayTime) {
                     interpretdYear += 1;

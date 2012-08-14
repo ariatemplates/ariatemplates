@@ -267,35 +267,42 @@ Aria.classDefinition({
     },
     $prototype : {
         /**
-         * Perform an asynchronous request to the server Note: callback is always called in an asynchronous way (even in
-         * case of errors)
+         * Perform an asynchronous request to the server <br />
+         * Note: callback is always called in an asynchronous way (even in case of errors)
          * @param {aria.core.CfgBeans.IOAsyncRequestCfg} req the request description
          *
          * <pre>
          * [req] {
-         *    url:&quot;myfile.txt&quot;, // absolute or relative URL
-         *    method: &quot;POST&quot;,   // POST or GET (default)
-         *    postData: &quot;&quot;,   // {String} null by default
-         *    timeout: 1000,    // {Integer} timeout in ms - default: defaultTimeout
+         *    url: 'myfile.txt', // absolute or relative URL
+         *    method: 'POST',    // POST or GET (default)
+         *    postData: '',      // {String} null by default
+         *    timeout: 1000,     // {Integer} timeout in ms - default: defaultTimeout
          *    callback: {
-         *      fn:obj.method,      // mandatory
-         *      scope:obj,        // mandatory
-         *      onerror:obj2.method2  // callback error handler - optional - default: Timer error log
-         *      onerrorScope:obj2   // optional - default: Timer or scope if onError is provided
-         *      args:{x:123}      // optional - default: null
+         *      fn: obj.method,        // mandatory
+         *      scope: obj,            // mandatory
+         *      onerror: obj2.method2  // callback error handler - optional
+         *      onerrorScope: obj2     // optional
+         *      args: {x:123}          // optional - default: null
          *    }
          * }
+         *
          * When a response is received, the callback function is called with the following arguments:
-         * cb(asyncRes,cbArgs)
+         *
+         * <code>
+         * cb(asyncRes, cbArgs)
+         * </code>
+         *
          * where:
-         * [asyncRes] { // the structure of asyncRes is described in aria.core.CfgBeans.IOAsyncRequestResponseCfg
-         *    url: &quot;&quot;,
-         *    status: &quot;&quot;,
-         *    responseText: &quot;&quot;,
+         * the structure of asyncRes is described in aria.core.CfgBeans.IOAsyncRequestResponseCfg
+         * [asyncRes] {
+         *    url: '',
+         *    status: '',
+         *    responseText: '',
          *    responseXML: xmlObj,
          *    responseJSON: JSON Object,
-         *    error: &quot;&quot; // error description
+         *    error: ''
          * }
+         *
          * and cbArgs == args object in the req object
          * </pre>
          *
