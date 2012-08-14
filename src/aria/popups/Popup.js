@@ -213,7 +213,7 @@ Aria.classDefinition({
                 this.modalMaskDomElement = null;
             }
             if (conf.modal) {
-                this.modalMaskDomElement = this._createMaskDomElement();
+                this.modalMaskDomElement = this._createMaskDomElement(conf.maskCssClass);
             }
             if (this.domElement != null) {
                 aria.utils.Dom.removeElement(this.domElement);
@@ -281,12 +281,13 @@ Aria.classDefinition({
         /**
          * Create the DOM element of the mask, for modal popups.
          * @protected
+         * @param {String} className CSS classes for the dialog mask.
          * @return {HTMLElement}
          */
-        _createMaskDomElement : function () {
+        _createMaskDomElement : function (className) {
             var document = this._document;
             var div = document.createElement("div");
-            div.className = "xDialogMask";
+            div.className = className || "xModalMask-default";
             div.style.cssText = "position:absolute;top:-15000px;left:-15000px;visibility:hidden;display:block;";
             return document.body.appendChild(div);
         },
@@ -746,7 +747,7 @@ Aria.classDefinition({
          * popup and blurs the dom reference.
          * @param {Object} event scroll event that triggered the handler.
          */
-        _isScrolling : function() {
+        _isScrolling : function () {
             var domReference = this.reference;
             if (domReference) {
                 var geometry = aria.utils.Dom.getGeometry(domReference);

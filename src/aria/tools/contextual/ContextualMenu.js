@@ -349,6 +349,7 @@
                         left : xpos
                     },
                     modal : true,
+                    maskCssClass : "xDialogMask" /* uses the css class from the AriaSkin */,
                     preferredPositions : [{
                                 reference : "bottom left",
                                 popup : "top left"

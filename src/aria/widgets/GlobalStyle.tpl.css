@@ -21,47 +21,27 @@
 
 {macro main()}
     {var general = aria.widgets.AriaSkinInterface.getGeneral()/}
-/* Skin: ${skin.name} */
 /* Note: all private classes start with 'x' - these classes must not be used in application pages as they can change when new features are implemented */
+
+/* BACKWARD-COMPATIBILITY-BEGIN */
+/* CSS rules added by Aria Templates itself should not impact the whole page */
 
 /* Global classes */
 body, textarea, select, input, button, table {
 {if general.font.size}
-  font-size: ${general.font.size}px;
+    font-size: ${general.font.size}px;
 {/if}
 {if general.font.family}
-  font-family: ${general.font.family};
+    font-family: ${general.font.family};
 {/if}
 }
 body {
-  padding: 0;
-  margin: 0;
-  cursor:default;
+    padding: 0;
+    margin: 0;
+    cursor:default;
 {if general.colors.bkg}
-  background-color: ${general.colors.bkg};
+    background-color: ${general.colors.bkg};
 {/if}
-}
-
-.xLDI-text {
-  position: relative;
-  top: 50%;
-  display:block;
-  text-align:center;
-  padding-top:
-  20px;
-}
-
-.xLDI {
-  {call background(general.loadingOverlay.backgroundColor, general.loadingOverlay.spriteURL,"no-repeat center center")/}
-  {call opacity(general.loadingOverlay.opacity)/}
-}
-
-.xOverlay {
-  background-color: ${general.overlay.backgroundColor};
-  {if general.overlay.opacity}
-      {call opacity(general.overlay.opacity)/}
-  {/if}
-  border: ${general.overlay.border};
 }
 
 a {
@@ -71,20 +51,20 @@ a:link {
 {call writeAnchorState(general.anchor.states.link)/}
 }
 a:visited {
-{call writeAnchorState(general.anchor.states.visited)/}    
+{call writeAnchorState(general.anchor.states.visited)/}
 }
 a:hover {
 {call writeAnchorState(general.anchor.states.hover)/}
 }
 
 {if ! general.disable.ul.list.style}
-  ul, li {list-style-type:none;}
+ul, li {list-style-type:none;}
 {/if}
 
 /* Hide input focus on safari*/
 {if aria.core.Browser.isSafari || aria.core.Browser.isChrome}
 *:focus {
-  outline: 0;
+    outline: 0;
 }
 {/if}
 
@@ -92,53 +72,38 @@ a:focus {
 {call writeAnchorState(general.anchor.states.focus)/}
 }
 
+/* BACKWARD-COMPATIBILITY-END */
+
+.xLDI {
+    {call background(general.loadingOverlay.backgroundColor, general.loadingOverlay.spriteURL,"no-repeat center center")/}
+    {call opacity(general.loadingOverlay.opacity)/}
+}
+
+.xOverlay {
+    background-color: ${general.overlay.backgroundColor};
+    {call opacity(general.overlay.opacity)/}
+    border: ${general.overlay.border};
+}
+
 /*AT Widget wrapper DOMElm */
 {var widgetSettings = aria.widgets.environment.WidgetSettings.getWidgetSettings() /}
 .xWidget {
-  position: relative;
-  display: inline-block;
-  {if widgetSettings.middleAlignment}vertical-align: middle;{/if}
+    position: relative;
+    display: inline-block;
+    {if widgetSettings.middleAlignment}vertical-align: middle;{/if}
 }
 
 .xWidget.xBlock, .xBlock {
-  display: block;
-}
-
-.xOverflowAuto {
-  overflow: auto;
-}
-
-.xOverflowHidden {
-  overflow: hidden;
-}
-
-.xOverflowXAuto {
-  overflow-x: auto;
-}
-
-.xOverflowYAuto {
-  overflow-y: auto;
-}
-
-.xOverflowXHidden {
-  overflow-x: hidden;
-}
-
-.xOverflowYHidden {
-  overflow-y: hidden;
-}
-
-/* template div container style */
-.xTplContent {
+    display: block;
 }
 
 /* Mask for modal dialogs */
 .xDialogMask {
-  /* width and height are required for IE6 to work correctly */
-  width:100%;
-  height:100%;
-  background-color: ${general.dialogMask.backgroundColor};
-  {call opacity(general.dialogMask.opacity || 40) /}
+    /* width and height are required for IE6 to work correctly */
+    width:100%;
+    height:100%;
+    background-color: ${general.dialogMask.backgroundColor};
+    {call opacity(general.dialogMask.opacity || 40) /}
 }
 
 .xFrameContent {
@@ -155,8 +120,8 @@ a:focus {
     vertical-align: {if widgetSettings.middleAlignment}middle{else/}top{/if};
 }
 .xFixedHeightFrame_bme {
-    display: inline-block; 
-    vertical-align: {if widgetSettings.middleAlignment}middle{else/}top{/if}; 
+    display: inline-block;
+    vertical-align: {if widgetSettings.middleAlignment}middle{else/}top{/if};
 }
 .xSimpleFrame {
     display: inline-block;
@@ -165,36 +130,36 @@ a:focus {
 
 {if aria.core.Browser.isIE7 }
 .xFixedHeightFrame_w {
-  vertical-align:top;
+    vertical-align:top;
 }
-{/if}
 
-{if aria.core.Browser.isIE7 }
 .xFixedHeightFrame_bme {
-  vertical-align:top;
+    vertical-align:top;
 }
 {/if}
 
 {if aria.core.Browser.isIE10 }
 .xTextInputInput::-ms-clear {
-	display: none;
+    display: none;
 }
 .xTextInputInput::-ms-reveal {
-	display: none;
+    display: none;
 }
 {/if}
 {/macro}
 
+/* BACKWARD-COMPATIBILITY-BEGIN */
 {macro writeAnchorState(state)}
 {if state.color}
-  color: ${state.color};
+    color: ${state.color};
 {/if}
 {if state.text.decoration}
-  text-decoration: ${state.text.decoration};
+    text-decoration: ${state.text.decoration};
 {/if}
 {if state.outline}
-  outline: ${state.outline};
+    outline: ${state.outline};
 {/if}
 {/macro}
+/* BACKWARD-COMPATIBILITY-END */
 
 {/CSSTemplate}

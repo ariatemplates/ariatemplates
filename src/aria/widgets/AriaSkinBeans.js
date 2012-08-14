@@ -57,11 +57,11 @@ Aria.beanDefinitions({
                     $properties : {
                         "size" : {
                             $type : "Pixels",
-                            $description : "General font size for the application (in pixels)."
+                            $description : "[Deprecated, please use a CSS file directly] General font size for the application (in pixels)."
                         },
                         "family" : {
                             $type : "json:String",
-                            $description : "General font family for the application."
+                            $description : "[Deprecated, please use a CSS file directly] General font family for the application."
                         }
                     }
                 },
@@ -71,7 +71,7 @@ Aria.beanDefinitions({
                     $properties : {
                         "bkg" : {
                             $type : "Color",
-                            $description : "General background color of the application."
+                            $description : "[Deprecated, please use a CSS file directly] General background color of the application."
                         },
                         "disabled" : {
                             $type : "Color",
@@ -107,7 +107,8 @@ Aria.beanDefinitions({
                         },
                         "opacity" : {
                             $type : "Opacity",
-                            $description : ""
+                            $description : "",
+                            $default : 100
                         },
                         "border" : {
                             $type : "json:String",
@@ -133,7 +134,7 @@ Aria.beanDefinitions({
                 },
                 "anchor" : {
                     $type : "Object",
-                    $description : "General settings for anchors.",
+                    $description : "[Deprecated, please use a CSS file directly] General settings for anchors.",
                     $properties : {
                         "states" : {
                             $type : "StatesSet",
@@ -172,7 +173,7 @@ Aria.beanDefinitions({
                                     $properties : {
                                         "style" : {
                                             $type : "json:Boolean",
-                                            $description : ""
+                                            $description : "[Deprecated, please use a CSS file directly]"
                                         }
                                     }
                                 }
@@ -184,23 +185,24 @@ Aria.beanDefinitions({
         },
         "AnchorState" : {
             $type : "Object",
-            $description : "Settings for anchors.",
+            $description : "[Deprecated, please use a CSS file directly] Settings for anchors.",
             $properties : {
                 "color" : {
-                    $type : "Color"
+                    $type : "Color",
+                    $description : "[Deprecated, please use a CSS file directly]"
                 },
                 "text" : {
                     $type : "Object",
                     $properties : {
                         "decoration" : {
                             $type : "json:String",
-                            $description : ""
+                            $description : "[Deprecated, please use a CSS file directly]"
                         }
                     }
                 },
                 "outline" : {
                     $type : "json:String",
-                    $description : ""
+                    $description : "[Deprecated, please use a CSS file directly]"
                 }
             }
         },
