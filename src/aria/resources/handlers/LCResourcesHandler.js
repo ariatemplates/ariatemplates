@@ -12,13 +12,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 (function () {
 
     // shortcuts
-    var jsonValidator;
-    var stringUtil;
-    var typesUtil;
+    var jsonValidator, stringUtil, typesUtil;
 
     /**
      * Resources handler for LABEL-CODE suggestions. This handler is to be fed and used with user defined entries.<br />
@@ -33,10 +30,15 @@
              * Suggestion bean that validates a given suggestion
              * @type String
              */
-            SUGGESTION_BEAN : "aria.resources.handlers.LCResourcesHandlerBean.Suggestion"
+            SUGGESTION_BEAN : "aria.resources.handlers.LCResourcesHandlerBean.Suggestion",
+            CONFIGURATION_BEAN : "aria.resources.handlers.LCResourcesHandlerBean.Configuration",
+            INVALID_CONFIG : "Invalid handler configuration in : %1.",
+            INVALD_SUGGESTION_TYPE : "Suggestions must be an array.",
+            INVALID_SUGGESTIONS : "Suggestions does not match suggestion bean aria.resources.handlers.LCResourcesHandleBean.Suggestions",
+            INVALID_KEYCODE : "Suggestions does not match labelKey or codeKey"
         },
 
-        $constructor : function () {
+        $constructor : function (cfg) {
 
             /**
              * Minimum number of letter to return suggestions
@@ -49,13 +51,41 @@
              * @type Boolean
              */
             this.codeExactMatch = true;
-
+            /**
+             * Specifies if Label Code combination has been set in Suggestions.
+             * @type Boolean
+             */
+            this.__islabelCode = false;
             /**
              * List of available suggestions.
              * @protected
              * @type {Array}
              */
             this._suggestions = [];
+            /**
+             * Specifies the default options for labelKey and codeKey.
+             * @type {Object}
+             */
+            this._options = {
+                labelKey : "label",
+                codeKey : "code"
+            };
+
+            if (cfg) {
+                if (!jsonValidator.check(cfg, this.CONFIGURATION_BEAN)) {
+                    this.$logError(this.INVALID_CONFIG, [this.$classpath]);
+                    return;
+                } else {
+
+                    this.codeExactMatch = cfg.codeExactMatch ? true : cfg.codeExactMatch;
+                    this.threshold = cfg.threshold || 1;
+                    this._options.labelKey = cfg.labelKey || "label";
+                    this._options.codeKey = cfg.codeKey || "code";
+                    this._options.sortingMethod = cfg.sortingMethod;
+                    this.__islabelCode = (this._options.labelKey === "label" && this._options.codeKey === "code");
+                }
+
+            }
 
         },
         $destructor : function () {
@@ -83,6 +113,7 @@
 
                 if (typesUtil.isString(textEntry) && textEntry.length >= this.threshold) {
                     textEntry = stringUtil.stripAccents(textEntry).toLowerCase();
+
                     var codeSuggestions = [], labelSuggestions = [], nbSuggestions = this._suggestions.length, textEntryLength = textEntry.length;
                     var returnedSuggestion, index, suggestion;
                     for (index = 0; index < nbSuggestions; index++) {
@@ -128,30 +159,40 @@
             setSuggestions : function (suggestions) {
 
                 if (typesUtil.isArray(suggestions)) {
-                    var newSuggestions = [];
-                    for (var index = 0, l = suggestions.length; index < l; index++) {
-                        var suggestion = suggestions[index];
-                        if (!jsonValidator.check(suggestion, 'aria.resources.handlers.LCResourcesHandlerBean.Suggestion')) {
-                            return this.$logError('Suggestions does not match suggestion bean aria.resources.handlers.LCResourcesHandleBean.Suggestions', null, suggestions);
-                        }
-                        newSuggestions.push({
-                            label : stringUtil.stripAccents(suggestion.label).toLowerCase(),
-                            code : stringUtil.stripAccents(suggestion.code).toLowerCase(),
-                            original : suggestion
+                    var newSuggestions = [], suggestionsLabel = this._options.labelKey, suggestionsCode = this._options.codeKey;
+                    if (this._options.sortingMethod && typesUtil.isFunction(this._options.sortingMethod)) {
+                        suggestions.sort(this._options.sortingMethod);
+                    } else {
+                        suggestions.sort(function (a, b) {
+                            return (a[suggestionsLabel] > b[suggestionsLabel])
+                                    ? 1
+                                    : (a[suggestionsLabel] < b[suggestionsLabel]) ? -1 : 0;
                         });
                     }
-                    // sort suggestions
-                    newSuggestions.sort(function (a, b) {
-                        return (a.label < b.label) ? 1 : (a.label > b.label) ? -1 : 0;
-                    });
 
+                    for (var index = 0, l = suggestions.length; index < l; index++) {
+                        var suggestion = suggestions[index], eachSuggestion = {};
+                        if (this.__islabelCode && !jsonValidator.check(suggestion, this.SUGGESTION_BEAN)) {
+                            return this.$logError(this.INVALID_SUGGESTIONS, null, suggestions);
+
+                        } else if (!(suggestion.hasOwnProperty(suggestionsLabel) && suggestion.hasOwnProperty(suggestionsCode))) {
+                            return this.$logError(this.INVALID_KEYCODE, null, suggestions);
+                        }
+                        eachSuggestion.label = suggestion[suggestionsLabel];
+                        eachSuggestion.code = suggestion[suggestionsCode];
+                        newSuggestions.push({
+                            label : stringUtil.stripAccents(eachSuggestion.label).toLowerCase(),
+                            code : stringUtil.stripAccents(eachSuggestion.code).toLowerCase(),
+                            original : eachSuggestion
+                        });
+                    }
                     this._suggestions = newSuggestions;
+
                 } else {
-                    return this.$logError('Suggestions must be an array.', null, suggestions);
+                    return this.$logError(this.INVALD_SUGGESTION_TYPE, null, suggestions);
                 }
 
             },
-
             /**
              * Set the minimum number of letter required to have suggestions proposed
              * @param {Integer} nbOfLetters

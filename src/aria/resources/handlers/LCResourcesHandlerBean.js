@@ -12,7 +12,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 /**
  * Definition of the suggestions used in the LC resource handler
  * @class aria.resources.handlers.LCResourcesHandlerBean
@@ -40,6 +39,39 @@ Aria.beanDefinitions({
                     $type : "json:String",
                     $description : "A code matching this suggestion",
                     $sample : "PAR"
+                }
+            }
+        },
+        "Configuration" : {
+            $type : "json:Object",
+            $description : "Configuration Object for Suggestions",
+            $restricted : false,
+            $properties : {
+                "labelKey" : {
+                    $type : "json:String",
+                    $description : "Any label key for suggetions",
+                    $sample : "myLabel",
+                    $default : "label"
+                },
+                "codeKey" : {
+                    $type : "json:String",
+                    $description : "Any code key for suggetions",
+                    $sample : "myCode",
+                    $default : "code"
+                },
+                "sortingMethod" : {
+                    $type : "json:FunctionRef",
+                    $description : "An anonymous function for sorting the suggestions list"
+                },
+                "codeExactMatch" : {
+                    $type : "json:Boolean",
+                    $description : "code has to be matched exactly to return the suggestion",
+                    $default : false
+                },
+                "threshold" : {
+                    $type : "json:Integer",
+                    $description : "Minimum number of letter to return suggestions",
+                    $default : 1
                 }
             }
         }
