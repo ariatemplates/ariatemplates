@@ -36,17 +36,19 @@ Aria.classDefinition({
                 classMgr.unloadClass(scriptClasspath, timestampNextTime);
             }
             var itm = Aria.$classDefinitions[classpath];
-            if (!Aria.nspace(classpath, false) && itm && itm.$css) {// when there is an error in the script, the class reference for
-                // the template is not created, so the css would not be
-                // unregistered in the unloadClass method
-                aria.templates.CSSMgr.unregisterDependencies(classpath, itm.$css, true, timestampNextTime);
-            }
-            if (itm.$resources != null) {
-                var resources = itm.$resources;
-                for (var res in resources)
-                    if (resources.hasOwnProperty(res)) {
-                        classMgr.unloadClass(resources[res], timestampNextTime);
-                    }
+            if (itm) {
+                if (!Aria.nspace(classpath, false) && itm.$css) {
+                    // when there is an error in the script, the class reference for the template is not created, so the
+                    // css would not be unregistered in the unloadClass method
+                    aria.templates.CSSMgr.unregisterDependencies(classpath, itm.$css, true, timestampNextTime);
+                }
+                if (itm.$resources != null) {
+                    var resources = itm.$resources;
+                    for (var res in resources)
+                        if (resources.hasOwnProperty(res)) {
+                            classMgr.unloadClass(resources[res], timestampNextTime);
+                        }
+                }
             }
             classMgr.unloadClass(classpath, timestampNextTime);
             // every thing is done : CSS are unhandled at classMgr level directly
