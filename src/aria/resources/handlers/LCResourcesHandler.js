@@ -37,7 +37,9 @@
             INVALID_SUGGESTIONS : "Suggestions does not match suggestion bean aria.resources.handlers.LCResourcesHandleBean.Suggestions",
             INVALID_KEYCODE : "Suggestions does not match labelKey or codeKey"
         },
-
+        /**
+         * @param {aria.resources.handlers.LCResourcesHandlerBean.Configuration} cfg
+         */
         $constructor : function (cfg) {
 
             /**
@@ -164,9 +166,9 @@
                         suggestions.sort(this._options.sortingMethod);
                     } else {
                         suggestions.sort(function (a, b) {
-                            return (a[suggestionsLabel] > b[suggestionsLabel])
+                            return (a[suggestionsLabel] < b[suggestionsLabel])
                                     ? 1
-                                    : (a[suggestionsLabel] < b[suggestionsLabel]) ? -1 : 0;
+                                    : (a[suggestionsLabel] > b[suggestionsLabel]) ? -1 : 0;
                         });
                     }
 
