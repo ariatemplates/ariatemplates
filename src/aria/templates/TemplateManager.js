@@ -49,6 +49,13 @@ Aria.classDefinition({
                             classMgr.unloadClass(resources[res], timestampNextTime);
                         }
                 }
+                if (itm.$extends != null) {
+                    var ext = itm.$extends;
+
+                    if (ext != "aria.templates.Template") {
+                        this.unloadTemplate(ext, timestampNextTime)
+                    }
+                }
             }
             classMgr.unloadClass(classpath, timestampNextTime);
             // every thing is done : CSS are unhandled at classMgr level directly
