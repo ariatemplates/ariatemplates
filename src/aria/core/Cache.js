@@ -71,8 +71,8 @@ Aria.classDefinition({
         STATUS_ERROR : 4,
 
         /**
-         * Get (and optinally create) a cache entry
-         * @param {String} cat item categeory (first key used in content Map to create a sub-map)
+         * Get (and optionally create) a cache entry
+         * @param {String} cat item category (first key used in content Map to create a sub-map)
          * @param {String} key item key in the category Map
          * @param {Boolean} createIfNull [default:false] create an item if none is already defined
          * @return {Object} a cache item structure: [CacheItem] { status: "{Enum} indicates the item status: " value:
