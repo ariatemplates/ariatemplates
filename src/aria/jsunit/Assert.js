@@ -111,7 +111,7 @@
                 this.$Test._endTest.call(this);
                 this.checkExpectedEventListEnd();
                 this.resetClassOverrides();
-                this.assertLogsEmpty(false);
+                this.assertLogsEmpty(false, false);
                 this._assertCount = 0;
                 this._currentTestName = '';
 
@@ -212,10 +212,14 @@
              * called, log list is emptied (and non-error messages will be discarded)
              * @param {Boolean} raiseException if true (default) an exception will be raised to stop the current test
              * execution
+             * @param {Boolean} countAsAssert (default: true) if false, calling this method will not increment the
+             * asserts counter (which it would do by default)
              */
-            assertLogsEmpty : function (raiseException) {
-                this._assertCount++;
-                this._totalAssertCount++;
+            assertLogsEmpty : function (raiseException, countAsAssert) {
+                if (countAsAssert !== false) {
+                    this._assertCount++;
+                    this._totalAssertCount++;
+                }
                 var logAppender = aria.core.Log.getAppenders()[0];
 
                 if (!logAppender.isEmpty()) {
