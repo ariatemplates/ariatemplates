@@ -27,7 +27,7 @@ Aria.classDefinition({
         "campaignEnd" : "campaignEnd",
         "campaignChange" : "campaignChange"
     },
-    $dependencies : ['aria.jsunit.TestEngine', 'aria.jsunit.TestReport', 'aria.core.Log'],
+    $dependencies : ['aria.jsunit.TestEngine', 'aria.jsunit.TestReport', 'aria.core.Log', 'aria.jsunit.TestWrapper'],
     $constructor : function () {
         /**
          * @private
@@ -50,6 +50,13 @@ Aria.classDefinition({
          * @type String
          */
         this._rootClasspath = "";
+
+        /**
+         * If true, all test cases will be run in isolated mode (inside an iframe), so that they don't have any impact
+         * on one another.
+         * @type Boolean
+         */
+        this.runIsolated = false;
     },
     $destructor : function () {
         if (this._testEngine) {
@@ -76,9 +83,10 @@ Aria.classDefinition({
          */
         preload : function () {
             this.$raiseEvent("preloadBegin");
-            // Instanciate the test object
-            this._rootTest = Aria.getClassInstance(this._rootClasspath);
-            if (this._rootTest.$TestSuite) {
+            var classCstr = Aria.getClassRef(this._rootClasspath);
+            if (classCstr.prototype.$TestSuite) {
+                // Instanciate the test suite object
+                this._rootTest = new classCstr();
                 this._rootTest.$on({
                     "preloadEnd" : {
                         fn : this._onPreloadEnd,
@@ -87,6 +95,12 @@ Aria.classDefinition({
                 });
                 this._rootTest.preload();
             } else {
+                if (this.runIsolated) {
+                    this._rootTest = new aria.jsunit.TestWrapper(this._rootClasspath);
+                } else {
+                    // Instanciate the test object
+                    this._rootTest = new classCstr();
+                }
                 // root test is a test case, no further preload is required
                 this.$raiseEvent("preloadEnd");
             }
@@ -287,6 +301,7 @@ Aria.classDefinition({
         getEngine : function () {
             if (this._testEngine == null) {
                 this._testEngine = new aria.jsunit.TestEngine();
+                this._testEngine.runIsolated = this.runIsolated;
 
                 this._testEngine.$on({
                     'change' : this._onChange,

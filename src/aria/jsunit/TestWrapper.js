@@ -122,6 +122,8 @@ Aria.classDefinition({
             } else if (evt.name == "start") {
                 // nothing to do
             } else if (evt.name == "end") {
+                this._totalAssertCount = evt.nbrOfAsserts;
+                this._testsCount = this._testInstance._testsCount;
                 aria.core.Timer.addCallback({
                     fn : this._end,
                     scope : this,

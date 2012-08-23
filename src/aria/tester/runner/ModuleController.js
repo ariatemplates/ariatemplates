@@ -116,6 +116,10 @@ Aria.classDefinition({
                 // if Testacular is detected, then automatically run the test suite
                 json.setValue(campaignData, "autorun", true);
             }
+
+            if (__hash.getParameter("runIsolated") == "true") {
+                json.setValue(campaignData, "runIsolated", true);
+            }
         },
 
         /**
@@ -148,6 +152,7 @@ Aria.classDefinition({
             var campaignData = this.getData().campaign;
             var rootClasspath = campaignData.rootClasspath;
             this._testRunner = new aria.jsunit.NewTestRunner();
+            this._testRunner.runIsolated = campaignData.runIsolated;
             this._testRunner.setRootClasspath(rootClasspath);
 
             // Add a listener to the preloadEnd and propagate the callback cb
