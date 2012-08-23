@@ -104,6 +104,12 @@ Aria.classDefinition({
         this.isSafari = false;
 
         /**
+         * True if the browser is any version of Chrome or Safari.
+         * @type Boolean
+         */
+        this.isWebkit = false;
+
+        /**
          * True if the browser uses the Gecko engine.
          * @type Boolean
          */
