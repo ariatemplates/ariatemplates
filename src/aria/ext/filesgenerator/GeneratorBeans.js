@@ -165,6 +165,22 @@ Aria.beanDefinitions({
                 }
             }
         },
+        "cssLibrarySkeletonTemplate" : {
+            $type : "json:Object",
+            $description : "Input parameter to generate a template script skeleton from a text template",
+            $properties : {
+                "$classpath" : {
+                    $type : "json:String",
+                    $description : "classpath of the template script",
+                    $default : "company.package.MyTemplateScript"
+                },
+                "$hasScript" : {
+                    $type : "json:Boolean",
+                    $description : "whether the CSS lib has an associated script or not",
+                    $default : false
+                }
+            }
+        },
         "flowControllerSkeletonTemplate" : {
             $type : "json:Object",
             $description : "Input parameter to generate a flow controller skeleton from a text template",

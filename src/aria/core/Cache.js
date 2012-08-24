@@ -35,6 +35,7 @@ Aria.classDefinition({
             "TPL" : ".tpl",
             "CSS" : ".tpl.css",
             "TML" : ".tml",
+            "CML" : ".cml",
             "TXT" : ".tpl.txt",
             "RES" : ".js"
         }

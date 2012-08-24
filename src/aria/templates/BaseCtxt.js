@@ -48,20 +48,22 @@ Aria.classDefinition({
          */
         this._macrolibs = [];
 
+        /**
+         * Stores references to the CSS macro libraries accessed by the template or library
+         */
+        this._csslibs = [];
+
     },
     $destructor : function () {
-        // call destructor foreach in this._macrolibs
-        if (!this._macrolibs) {
+        // call destructor foreach in this._macrolibs, this._csslibs
+        if (!this._macrolibs && !this._csslibs) {
             return;
         }
-        // dispose macro libraries
-        for (var i = 0; i < this._macrolibs.length; i++) {
-            var macrolib = this._macrolibs[i];
-            aria.templates.ITemplate.prototype.$destructor.call(macrolib._tpl);
-            macrolib.$dispose();
-        }
-        this._macrolibs = null;
+        this.__disposeLibs(this._macrolibs);
+        this.__disposeLibs(this._csslibs);
 
+        this._macrolibs = null;
+        this._csslibs = null;
     },
     $statics : {
         // ERROR MESSAGES:
@@ -122,31 +124,41 @@ Aria.classDefinition({
         },
 
         /**
-         * Private function, creates links to the macro libraries declared in the template. Sets handle names as
-         * properties of the template pointing to the appropriate library.
-         * @param {Array} macrolibsMap A map of all libraries declared by the template or Library in the form { handle :
-         * "class.path", handle2 : "class.path2" }
+         * Private function, creates links to the macro libraries / CSS macro libraries declared in the template. Sets
+         * handle names as properties of the template pointing to the appropriate library.
+         * @param {Array} libsMap A map of all libraries declared by the template, Library, CSS template or CSS library
+         * in the form { handle : "class.path", handle2 : "class.path2" }
+         * @param {String} libsType Indicates whether macro libs or CSS libs are loaded.
          */
-        __loadMacrolibs : function (macrolibsMap) {
-            // macrolibsMap ~= {myLib : "path.to.lib1", otherLib : "path.to.otherLib"}
+        __loadLibs : function (libsMap, libsType) {
+            this.$assert(134, (libsType == "macrolibs" || libsType == "csslibs"));
+            if (libsType == "macrolibs") {
+                var libsArray = this._macrolibs;
+                var ctxtLibsContainerName = "__$macrolibs";
+            } else if (libsType == "csslibs") {
+                var libsArray = this._csslibs;
+                var ctxtLibsContainerName = "__$csslibs";
+            }
+
+            // libsMap ~= {myLib : "path.to.lib1", otherLib : "path.to.otherLib"}
             var allClasspaths = {}; // simply stores all classpaths which need to be loaded, to avoid repetitions
             var allCPlength = 0; // number of classpaths to be loaded
 
-            for (var handle in macrolibsMap) {
-                if (macrolibsMap.hasOwnProperty(handle)) {
+            for (var handle in libsMap) {
+                if (libsMap.hasOwnProperty(handle)) {
                     if (this._tpl[handle] !== undefined) {
                         // a variable, macro or other library with the same name has already been declared
                         // ignore the library declaration
-                        delete macrolibsMap[handle];
+                        delete libsMap[handle];
                         this.$logError(this.LIBRARY_HANDLE_CONFLICT, [handle]);
                         continue;
-                    } else if (allClasspaths[macrolibsMap[handle]]) {
+                    } else if (allClasspaths[libsMap[handle]]) {
                         // // we've already loaded a library with the same classpath: throw an error
                         this.$logError(this.LIBRARY_ALREADY_LOADED, [handle]);
                         continue;
                     }
 
-                    allClasspaths[macrolibsMap[handle]] = true;
+                    allClasspaths[libsMap[handle]] = true;
                     allCPlength++;
                 }
             }
@@ -156,10 +168,10 @@ Aria.classDefinition({
                 return;
             }
 
-            for (var handle in macrolibsMap) {
-                if (macrolibsMap.hasOwnProperty(handle)) {
+            for (var handle in libsMap) {
+                if (libsMap.hasOwnProperty(handle)) {
                     // bind handle to template scope
-                    this._tpl[handle] = Aria.getClassInstance(macrolibsMap[handle]);
+                    this._tpl[handle] = Aria.getClassInstance(libsMap[handle]);
                     // TODO: clean this code which uses a template context without initializing it the
                     // usual way (there is no call to the initTemplate method, because a library has less things to do,
                     // but there should be a common initialization method for things which are common)
@@ -168,13 +180,40 @@ Aria.classDefinition({
                     this._tpl[handle].__$write = this._tpl.__$write;
                     var libCtxt = new aria.templates.TemplateCtxt();
                     libCtxt._tpl = this._tpl[handle];
-                    this._macrolibs.push(libCtxt);
+                    libsArray.push(libCtxt);
                     aria.templates.ITemplate.call(this._tpl[handle], libCtxt);
                     libCtxt._tpl.__$initTemplate();
-                    libCtxt.__loadMacrolibs(libCtxt._tpl.__$macrolibs);
+                    libCtxt.__loadLibs(libCtxt._tpl[ctxtLibsContainerName], libsType);
                 }
             }
+        },
 
+        /**
+         * Private function, a shortcut for __loadLibs for loading template macro libraries.
+         * @param {Array} libsMap See __loadLibs
+         */
+        __loadMacrolibs : function (libsMap) {
+            this.__loadLibs(libsMap, "macrolibs");
+        },
+
+        /**
+         * Private function, a shortcut for __loadLibs for loading CSS macro libraries.
+         * @param {Array} libsMap See __loadLibs
+         */
+        __loadCsslibs : function (libsMap) {
+            this.__loadLibs(libsMap, "csslibs");
+        },
+
+        /**
+         * Private function, disposes macro libraries / CSS macro libraries.
+         * @param {Array} libs contains libraries to dispose
+         */
+        __disposeLibs : function (libs) {
+            for (var i = 0; i < libs.length; i++) {
+                var lib = libs[i];
+                aria.templates.ITemplate.prototype.$destructor.call(lib._tpl);
+                lib.$dispose();
+            }
         }
     }
 });

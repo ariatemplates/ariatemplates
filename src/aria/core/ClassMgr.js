@@ -57,6 +57,7 @@ Aria.classDefinition({
             "RES" : "aria.core.ResClassLoader",
             "CSS" : "aria.core.CSSClassLoader",
             "TML" : "aria.core.TmlClassLoader",
+            "CML" : "aria.core.CmlClassLoader",
             "TXT" : "aria.core.TxtClassLoader"
         };
 
