@@ -37,12 +37,17 @@
         return this;
     })();
 
-    /**
-     * Window object where the framework is loaded. It is defined only when Aria Templates is run in a browser (as
-     * opposed to Aria.$global).
-     * @type Object
-     */
-    Aria.$frameworkWindow = Aria.$frameworkWindow || Aria.$global.window;
+    if (!Aria.$frameworkWindow && Aria.$global.window) {
+
+        /**
+         * Window object where the framework is loaded. It is defined only when Aria Templates is run in a browser (as
+         * opposed to Aria.$global). It has to be equal to window and not to window.window because the two objects are
+         * not equal in IE
+         * @type Object
+         */
+
+        Aria.$frameworkWindow = Aria.$global;
+    }
 
     /**
      * Window object where templates should be displayed and user interaction should be done. This variable can be set
