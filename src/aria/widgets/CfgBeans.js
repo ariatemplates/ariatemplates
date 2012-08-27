@@ -1445,6 +1445,11 @@ Aria.beanDefinitions({
                     $description : "Whether the dialog has a close button in its title bar.",
                     $default : true
                 },
+                "closeOnMouseClick" : {
+                    $type : "json:Boolean",
+                    $description : "Close the dialog when the user clicks outside of it",
+                    $default : false
+                },
                 "center" : {
                     $type : "json:Boolean",
                     $description : "If true, the dialog is always centered in the browser window. Takes priority over xpos and ypos. However, if the dialog box is movable and the user manually moves it, the centered behavior will be switched off.",
