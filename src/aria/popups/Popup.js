@@ -36,6 +36,12 @@ Aria.classDefinition({
                 cancelClose : "{Boolean} Cancel the closing of the popup"
             }
         },
+        onMouseClickClose : {
+            description : "Event triggered when the popup is close with a mouse click outside the popup",
+            properties : {
+                domEvent : "{aria.DomEvent} The event that triggered the closing of the popup"
+            }
+        },
         onAfterClose : "",
         onBeforeOpen : "",
         onAfterOpen : "",
@@ -701,6 +707,12 @@ Aria.classDefinition({
          */
         closeOnMouseClick : function (domEvent) {
             if (this.conf.closeOnMouseClick) {
+                var event = {
+                    name : "onMouseClickClose",
+                    cancelClose : false,
+                    domEvent : domEvent
+                };
+                this.$raiseEvent(event);
                 this.close(domEvent);
                 return true;
             }

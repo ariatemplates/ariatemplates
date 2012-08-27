@@ -379,6 +379,12 @@ Aria.classDefinition({
                 "onAfterOpen" : this._onAfterPopupOpen,
                 scope : this
             });
+            if (cfg.closeOnMouseClick) {
+                popup.$on({
+                    "onMouseClickClose" : this._onMouseClickClose,
+                    scope : this
+                });
+            }
 
             // global navigation is disable is the case of a modal dialog
             if (this._cfg.modal) {
@@ -405,7 +411,7 @@ Aria.classDefinition({
                 center : cfg.center,
                 modal : cfg.modal,
                 maskCssClass : "xDialogMask",
-                closeOnMouseClick : false,
+                closeOnMouseClick : cfg.closeOnMouseClick,
                 closeOnMouseScroll : false,
                 parentDialog : this
             });
@@ -451,6 +457,13 @@ Aria.classDefinition({
                     }
                 });
             }
+        },
+
+        /**
+         * Is called right after the popup is close.
+         */
+        _onMouseClickClose : function () {
+            this.actionClose();
         },
 
         /**
