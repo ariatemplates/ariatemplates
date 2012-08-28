@@ -63,7 +63,7 @@
                 'aria.utils.Type', 'aria.templates.TemplateCtxtManager', 'aria.templates.RefreshManager',
                 'aria.templates.CSSMgr', 'aria.utils.Path', 'aria.utils.Delegate', 'aria.templates.NavigationManager',
                 'aria.templates.SectionWrapper', 'aria.core.environment.Customizations',
-                'aria.templates.DomElementWrapper', 'aria.templates.MarkupWriter'],
+                'aria.templates.DomElementWrapper', 'aria.templates.MarkupWriter', 'aria.utils.DomOverlay'],
         $implements : ['aria.templates.ITemplate', 'aria.templates.ITemplateCtxt'],
         $extends : "aria.templates.BaseCtxt",
         $onload : function () {
