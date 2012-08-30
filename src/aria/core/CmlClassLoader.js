@@ -14,7 +14,7 @@
  */
 
 /**
- * ClassLoader for css files.
+ * ClassLoader for css macro lib files.
  * @class aria.core.CmlClassLoader
  * @extends aria.core.ClassLoader
  */
@@ -24,6 +24,7 @@ Aria.classDefinition({
     $constructor : function () {
         this.$ClassLoader.constructor.apply(this, arguments);
         this._refLogicalPath += ".cml";
+        this._classGeneratorClassName = 'CmlClassGenerator';
     },
     $statics : {
         // ERROR MESSAGES:
@@ -34,101 +35,11 @@ Aria.classDefinition({
         /**
          * Called when the .cml file is received.
          * @param {String} classDef Content of the .cml file
-         * @param {String} logicalpath Logical path of the .cml file
+         * @param {String} logicalPath Logical path of the .cml file
          * @protected
          */
         _loadClass : function (classDef, logicalPath) {
-            var __alreadyGeneratedRegExp = /^\s*Aria\.classDefinition\(/;
-
-            if (__alreadyGeneratedRegExp.test(classDef)) {
-                this.__evalGeneratedCml.call(this, {
-                    classDef : classDef,
-                    scope : this
-                }, {
-                    logicalPath : logicalPath
-                });
-            } else {
-                Aria.load({
-                    classes : ['aria.templates.CmlClassGenerator'],
-                    oncomplete : {
-                        fn : this.__generateCml,
-                        scope : this,
-                        args : {
-                            classDef : classDef,
-                            logicalPath : logicalPath,
-                            classpath : this._refClasspath
-                        }
-                    }
-                });
-            }
-        },
-
-        /**
-         * Parse the library and generate the Tree
-         * @param {Object} args Library configuration, given from _loadClass
-         * @private
-         */
-        __generateCml : function (args) {
-            try {
-                aria.templates.CmlClassGenerator.parseTemplate(args.classDef, false, {
-                    fn : this.__evalGeneratedCml,
-                    scope : this,
-                    args : {
-                        logicalPath : args.logicalPath
-                    }
-                }, {
-                    "library_classpath" : args.logicalPath
-                });
-            } catch (ex) {
-                this.$logError(this.CLASS_LOAD_ERROR, [this._refClasspath], ex);
-            }
-        },
-
-        /**
-         * Wrap the Cml generation in a try catch block. This generation is not done in debug mode
-         * @param {Object} args Library configuration, given from _loadClass
-         * @param {Object} tree Generated tree
-         * @private
-         */
-        __fallbackGenerateCml : function (args, tree) {
-            this.$logWarn(this.TEMPLATE_DEBUG_EVAL_ERROR, [this._refClasspath]);
-            aria.templates.CmlClassGenerator.parseTemplateFromTree(tree, false, {
-                fn : this.__evalGeneratedCml,
-                scope : this,
-                args : {
-                    logicalPath : args.logicalPath
-                }
-            }, {
-                "library_classpath" : args.logicalPath
-            }, true);
-        },
-
-        /**
-         * Evaluate the class definition built by __generateCml If the eval fails regenerate the class with some extra
-         * debug capabilities
-         * @param {String} generatedClass Generated class
-         * @param {Object} args Library configuration, given from _loadClass
-         * @private
-         */
-        __evalGeneratedCml : function (generatedClass, args) {
-            var classDef = generatedClass.classDef;
-            try {
-                Aria["eval"](classDef, args.logicalPath);
-                if (!this._classDefinitionCalled) {
-                    this.$logError(this.MISSING_CLASS_DEFINITION, [this.getRefLogicalPath(), this._refClasspath]);
-                    aria.core.ClassMgr.notifyClassLoadError(this._refClasspath);
-                }
-            } catch (ex) {
-                if (!generatedClass.debug && Aria.debug) {
-                    try {
-                        this.__fallbackGenerateCml(args, generatedClass.tree);
-                    } catch (exc) {
-                        this.$logError(this.TEMPLATE_DEBUG_EVAL_ERROR, [this._refClasspath], exc);
-                    }
-                } else {
-                    this.$logError(this.TEMPLATE_EVAL_ERROR, [this._refClasspath], ex);
-                }
-            }
+            this._loadClassAndGenerate.call(this, classDef, logicalPath);
         }
     }
 });
