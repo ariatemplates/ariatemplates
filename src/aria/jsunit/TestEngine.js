@@ -14,21 +14,18 @@
  */
 
 /**
- * @class aria.jsunit.TestEngine This class drives the test execution by looping on all Tests it is associated to It
- * also acts as test listener and maintain global informations on the test executions (e.g. what test have been run, how
- * many failures found, etc...). Some UI listeners can be associated to it to display real-time information to the user.
+ * This class drives the test execution by looping on all Tests it is associated to.<br />
+ * It also acts as test listener and maintains global informations on the test executions (e.g. what test have been run,
+ * how many failures found, etc...). Some UI listeners can be associated to it to display real-time information to the
+ * user.<br />
  * Note: Tests are run in an asynchronous way in order to give HTML UIs the possibility to refresh information
- * (otherwise the refresh would only occur at the end of the Thread execution) Note2: This class doesn't display any
- * information - see TestRunner to get a runner with an HTML UI
- * @extends aria.core.JsObject
+ * (otherwise the refresh would only occur at the end of the Thread execution) <br />
+ * Note: This class doesn't display any information - see TestRunner to get a runner with an HTML UI
  */
 Aria.classDefinition({
-    $classpath : 'aria.jsunit.TestEngine',
-    $dependencies : ['aria.utils.Type'],
+    $classpath : "aria.jsunit.TestEngine",
+    $dependencies : ["aria.utils.Type"],
     $events : {
-        /**
-         * @event change
-         */
         "change" : {
             description : "raised when some data have changed in the test report",
             properties : {
@@ -40,23 +37,42 @@ Aria.classDefinition({
     $constructor : function () {
         /**
          * Data model representing the test report in real time This data model is a tree where each node as the
-         * following structure: [Test]: { testClass:{String) test classpath totalNbrOfFailures: {Integer}: total number
-         * of failures (including sub tests) totalNbrOfErrors: {Integer}: total number of errors (including sub tests)
-         * totalNbrOfAsserts: {Integer}: total number of assertions (including sub tests) state: {String} "loaded",
-         * "processing" or "done" processingState: {String} description of the internal state when processing
-         * subTests:[{Test}] Array of sub-tests - null if none failures: [{TestFailure}] Array of failures discovered in
-         * this test (doesn't include sub-tests) [TestFailure] : { testState: {String} name of the test method in which
-         * the failure was found, description: {String} Failure description } errors:[{TestError}] Array of the errors
-         * caught in this test [TestError] : { testState: {String} name of the test method in which the error was
-         * caught, description: {String} Error description, exception: {Error} The error object caught in the catch
-         * statement } }
+         * following structure:
+         *
+         * <pre>
+         * [Test]
+         * : {
+         *      testClass : {String) test classpath
+         *      totalNbrOfFailures : {Integer} total number of failures (including sub tests)
+         *      totalNbrOfErrors : {Integer} total number of errors (including sub tests)
+         *      totalNbrOfAsserts : {Integer} total number of assertions (including sub tests)
+         *      state : {String} &quot;loaded&quot;, &quot;processing&quot; or &quot;done&quot;
+         *      processingState : {String} description of the internal state when processing
+         *      subTests : [{Test}] Array of sub-tests - null if none
+         *      failures: [{TestFailure}] Array of failures discovered in this test (doesn't include sub-tests)
+         *      errors:[{TestError}] Array of the errors caught in this test
+         * }
+         *
+         * [TestFailure] : {
+         *      testState: {String} name of the test method in which the failure was found,
+         *      description: {String} Failure description
+         * }
+         *
+         * [TestError] : {
+         *      testState: {String} name of the test method in which the error was caught,
+         *      description: {String} Error description,
+         *      exception: {Error} The error object caught in the catchstatement
+         * }
+         * </pre>
          */
         this.testReport = null;
+
         /**
          * Internal stack used to retrieve a test parent
          * @private
          */
         this._testStack = [];
+
         /**
          * Last test in the test stack
          * @private
@@ -139,12 +155,20 @@ Aria.classDefinition({
          * @private
          */
         _onTestLoad : function (evt) {
-            var testObject = evt.testObject;
+            var testObject = evt.testObject, classpath = testObject.$classpath;
 
             // verify if the test is supposed to be skipped and store the value
             if (this.skipTests != null && aria.utils.Array.contains(this.skipTests, testObject.$classpath)) {
                 testObject.skipTest = true;
             }
+            // verify also that it doesn't extend from a skipped test
+            do {
+                var definition = Aria.nspace(classpath).classDefinition;
+                if (aria.utils.Array.contains(this.skipTests, definition.$extends)) {
+                    testObject.skipTest = true;
+                }
+                classpath = definition.$extends;
+            } while (classpath)
             this._registerAsListener(testObject);
         },
 
@@ -192,7 +216,6 @@ Aria.classDefinition({
          * @private
          */
         _onTestEnd : function (evt) {
-
             // unregister from the test object
             evt.testObject.$unregisterListeners(this);
 
