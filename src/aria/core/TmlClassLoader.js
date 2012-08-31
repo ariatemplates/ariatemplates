@@ -15,8 +15,6 @@
 
 /**
  * ClassLoader for template macro lib files.
- * @class aria.core.TmlClassLoader
- * @extends aria.core.ClassLoader
  */
 Aria.classDefinition({
     $classpath : 'aria.core.TmlClassLoader',
@@ -39,7 +37,7 @@ Aria.classDefinition({
          * @protected
          */
         _loadClass : function (classDef, logicalPath) {
-            this._loadClassAndGenerate.call(this, classDef, logicalPath);
+            this._loadClassAndGenerate(classDef, logicalPath);
         }
     }
 });

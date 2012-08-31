@@ -417,7 +417,7 @@
              * @override
              */
             _loadClass : function (classDef, logicalPath) {
-            	this._loadClassAndGenerate.call(this, classDef, logicalPath);
+                this._loadClassAndGenerate(classDef, logicalPath);
             }
         }
     });

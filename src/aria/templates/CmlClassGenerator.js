@@ -46,11 +46,7 @@ Aria.classDefinition({
          * @protected
          */
         _writeClassInit : function (out) {
-            var tplParam = out.templateParam;
-            out.enterBlock("classInit");
-            this._writeMapInheritance(out, "__$csslibs", out.templateParam.$csslibs, "{}");
-            out.leaveBlock();
-            this.$ClassGenerator._writeClassInit.call(this, out);
+            aria.templates.CSSClassGenerator._writeClassInit.call(this, out);
         }
     }
 });

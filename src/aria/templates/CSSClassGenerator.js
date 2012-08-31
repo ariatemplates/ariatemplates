@@ -27,7 +27,7 @@ Aria.classDefinition({
         this.$ClassGenerator.constructor.call(this);
 
         // Load the Template specific statements
-        this.$ClassGenerator._loadStatements.call(this, ["CSSTemplate"]);
+        this._loadStatements(["CSSTemplate"]);
 
         // Redefine the protected parser
         this._parser = aria.templates.CSSParser;

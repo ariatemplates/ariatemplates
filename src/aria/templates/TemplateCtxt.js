@@ -1060,7 +1060,7 @@
                 this.$setSizeCfg(tpl.__$width, tpl.__$height);
                 this.__addDebugInfo(cfg.tplDiv);
                 var res = tpl.__$initTemplate();
-                this.__loadMacrolibs(tpl.__$macrolibs);
+                this.__loadLibs(tpl.__$macrolibs, "macrolibs");
                 return res;
             },
 

@@ -45,11 +45,15 @@ Aria.classDefinition({
 
         /**
          * Stores references to the macro libraries accessed by the template or library
+         * @protected
+         * @type Array
          */
         this._macrolibs = [];
 
         /**
-         * Stores references to the CSS macro libraries accessed by the template or library
+         * Stores references to the CSS macro libraries accessed by the CSS template or CSS library
+         * @protected
+         * @type Array
          */
         this._csslibs = [];
 
@@ -126,7 +130,7 @@ Aria.classDefinition({
         /**
          * Private function, creates links to the macro libraries / CSS macro libraries declared in the template. Sets
          * handle names as properties of the template pointing to the appropriate library.
-         * @param {Array} libsMap A map of all libraries declared by the template, Library, CSS template or CSS library
+         * @param {Object} libsMap A map of all libraries declared by the template, Library, CSS template or CSS library
          * in the form { handle : "class.path", handle2 : "class.path2" }
          * @param {String} libsType Indicates whether macro libs or CSS libs are loaded.
          */
@@ -135,9 +139,13 @@ Aria.classDefinition({
             if (libsType == "macrolibs") {
                 var libsArray = this._macrolibs;
                 var ctxtLibsContainerName = "__$macrolibs";
+                var libCtxtClass = aria.templates.TemplateCtxt;
+                var itf = aria.templates.ITemplate;
             } else if (libsType == "csslibs") {
                 var libsArray = this._csslibs;
                 var ctxtLibsContainerName = "__$csslibs";
+                var libCtxtClass = aria.templates.CSSCtxt;
+                var itf = aria.templates.ICSS;
             }
 
             // libsMap ~= {myLib : "path.to.lib1", otherLib : "path.to.otherLib"}
@@ -153,7 +161,7 @@ Aria.classDefinition({
                         this.$logError(this.LIBRARY_HANDLE_CONFLICT, [handle]);
                         continue;
                     } else if (allClasspaths[libsMap[handle]]) {
-                        // // we've already loaded a library with the same classpath: throw an error
+                        // we've already loaded a library with the same classpath: throw an error
                         this.$logError(this.LIBRARY_ALREADY_LOADED, [handle]);
                         continue;
                     }
@@ -178,30 +186,14 @@ Aria.classDefinition({
 
                     // Create a shortcut for the __$write method which is often used:
                     this._tpl[handle].__$write = this._tpl.__$write;
-                    var libCtxt = new aria.templates.TemplateCtxt();
+                    var libCtxt = new libCtxtClass();
                     libCtxt._tpl = this._tpl[handle];
                     libsArray.push(libCtxt);
-                    aria.templates.ITemplate.call(this._tpl[handle], libCtxt);
+                    itf.call(this._tpl[handle], libCtxt);
                     libCtxt._tpl.__$initTemplate();
                     libCtxt.__loadLibs(libCtxt._tpl[ctxtLibsContainerName], libsType);
                 }
             }
-        },
-
-        /**
-         * Private function, a shortcut for __loadLibs for loading template macro libraries.
-         * @param {Array} libsMap See __loadLibs
-         */
-        __loadMacrolibs : function (libsMap) {
-            this.__loadLibs(libsMap, "macrolibs");
-        },
-
-        /**
-         * Private function, a shortcut for __loadLibs for loading CSS macro libraries.
-         * @param {Array} libsMap See __loadLibs
-         */
-        __loadCsslibs : function (libsMap) {
-            this.__loadLibs(libsMap, "csslibs");
         },
 
         /**

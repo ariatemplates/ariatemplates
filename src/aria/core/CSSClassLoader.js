@@ -14,9 +14,7 @@
  */
 
 /**
- * ClassLoader for css files.
- * @class aria.core.CSSClassLoader
- * @extends aria.core.ClassLoader
+ * ClassLoader for CSS files.
  */
 Aria.classDefinition({
     $classpath : 'aria.core.CSSClassLoader',
@@ -40,7 +38,7 @@ Aria.classDefinition({
          */
         _loadClass : function (classDef, logicalPath) {
             var additionalDependency = 'aria.templates.CSSMgr';
-            this._loadClassAndGenerate.call(this, classDef, logicalPath, additionalDependency);
+            this._loadClassAndGenerate(classDef, logicalPath, additionalDependency);
         }
     }
 });

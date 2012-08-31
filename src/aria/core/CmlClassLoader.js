@@ -15,8 +15,6 @@
 
 /**
  * ClassLoader for css macro lib files.
- * @class aria.core.CmlClassLoader
- * @extends aria.core.ClassLoader
  */
 Aria.classDefinition({
     $classpath : 'aria.core.CmlClassLoader',
@@ -39,7 +37,7 @@ Aria.classDefinition({
          * @protected
          */
         _loadClass : function (classDef, logicalPath) {
-            this._loadClassAndGenerate.call(this, classDef, logicalPath);
+            this._loadClassAndGenerate(classDef, logicalPath);
         }
     }
 });

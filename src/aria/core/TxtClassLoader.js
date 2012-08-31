@@ -15,8 +15,6 @@
 
 /**
  * ClassLoader for text templates.
- * @class aria.core.TxtClassLoader
- * @extends aria.core.ClassLoader
  */
 Aria.classDefinition({
     $classpath : 'aria.core.TxtClassLoader',
@@ -39,7 +37,7 @@ Aria.classDefinition({
          * @protected
          */
         _loadClass : function (classDef, logicalPath) {
-            this._loadClassAndGenerate.call(this, classDef, logicalPath);
+            this._loadClassAndGenerate(classDef, logicalPath);
         }
     }
 });
