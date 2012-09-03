@@ -22,12 +22,14 @@ Aria.classDefinition({
     $classpath : "aria.utils.validators.MinMaxLength",
     $extends : "aria.utils.validators.Validator",
     $constructor : function (min, max, message) {
-        this.$Validator.constructor.call(this, message);
         this.minLength = min;
         this.maxLength = max;
         if (isNaN(parseInt(this.minLength, 10)) || isNaN(parseInt(this.maxLength, 10))) {
             this.$logError(this.MISSING_MIN_MAX_VALUES);
         }
+        var params = [this.minLength, this.maxLength];
+        message = (!message) ? aria.utils.String.substitute(this.DEFAULT_LOCALIZED_MESSAGE, params) : message;
+        this.$Validator.constructor.call(this, message);
     },
     $destructor : function () {
         this.minLength = null;
@@ -35,7 +37,7 @@ Aria.classDefinition({
         this.$Validator.$destructor.call(this);
     },
     $statics : {
-        DEFAULT_LOCALIZED_MESSAGE : "The value must be more than the minimum length and less than the maximum length of characters long.",
+        DEFAULT_LOCALIZED_MESSAGE : "The value must be more than %1 and less than %2 characters long.",
 
         // ERROR MESSAGES:
         MISSING_MIN_MAX_VALUES : "There was a problem loading the MinMaxLength validator, MIN and MAX values must be passed into the validators constructor."
