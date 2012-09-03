@@ -15,7 +15,7 @@
 
 /**
  * Class to be extended to create a template test case using the Robot applet. The applet allows to execute user actions
- * (click, type, move, drag, ...) as if they were done by the user instead of simultating browser events.<br />
+ * (click, type, move, drag, ...) as if they were done by the user instead of simulating browser events.<br />
  * This test makes sure that the robot is loaded and initialized before starting the template test case
  */
 Aria.classDefinition({

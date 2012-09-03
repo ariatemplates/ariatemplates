@@ -108,7 +108,7 @@ Aria.classDefinition({
                 }
             }
             this._sequencer.$on({
-                "end" : this._onSequenceEnd,
+                "end" : this._onSequencerEnd,
                 scope : this
             });
             this._sequencer.start();
@@ -307,7 +307,7 @@ Aria.classDefinition({
          * @param {Object} evt the event sent by the sequencer
          * @private
          */
-        _onSequenceEnd : function (evt) {
+        _onSequencerEnd : function (evt) {
             if (this._sequencer) {
                 this._sequencer.$dispose(); // will also remove listeners
                 this._sequencer = null;
