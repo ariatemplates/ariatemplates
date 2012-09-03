@@ -61,6 +61,12 @@ Aria.classDefinition({
         }
 
         /**
+         * Name of the generator class (in aria.templates package). To be defined by subclasses.
+         * @type String
+         */
+        this._classGeneratorClassName = null;
+
+        /**
          * Full logical classpath. It's the complete logical path. It might differ from the reference logical path for
          * the presence of additional information like locale/language in resources
          * @type String
@@ -409,6 +415,121 @@ Aria.classDefinition({
          */
         notifyClassDefinitionCalled : function () {
             this._classDefinitionCalled = true;
+        },
+
+        _loadClassAndGenerate : function (classDef, logicalPath, additionalDependencyClassPath) {
+            var __alreadyGeneratedRegExp = /^\s*Aria\.classDefinition\(/;
+
+            if (__alreadyGeneratedRegExp.test(classDef)) {
+                this._evalGeneratedFile({
+                    classDef : classDef,
+                    scope : this
+                }, {
+                    logicalPath : logicalPath
+                });
+            } else {
+                var generatorClassPath = "aria.templates." + this._classGeneratorClassName;
+                var classesToLoad = [generatorClassPath];
+                if (additionalDependencyClassPath) {
+                    classesToLoad.push(additionalDependencyClassPath);
+                }
+                Aria.load({
+                    classes : classesToLoad,
+                    oncomplete : {
+                        fn : this.__generateClass,
+                        scope : this,
+                        args : {
+                            classDef : classDef,
+                            logicalPath : logicalPath,
+                            classpath : this._refClasspath
+                        }
+                    }
+                });
+            }
+        },
+
+        /**
+         * Parse the class and generate the Tree
+         * @param {Object} args Class configuration, given from _loadClass
+         * @private
+         */
+        __generateClass : function (args) {
+            var classGenerator = aria.templates[this._classGeneratorClassName];
+            try {
+                classGenerator.parseTemplate(args.classDef, false, {
+                    fn : this.__evalGeneratedClass,
+                    scope : this,
+                    args : {
+                        logicalPath : args.logicalPath,
+                        classGenerator : classGenerator
+                    }
+                }, {
+                    "file_classpath" : args.logicalPath
+                });
+            } catch (ex) {
+                this.$logError(this.CLASS_LOAD_ERROR, [this._refClasspath], ex);
+            }
+        },
+
+        /**
+         * Wrap the class generation in a try catch block. This generation is not done in debug mode
+         * @param {Object} args Class configuration, given from _loadClass
+         * @param {Object} tree Generated tree
+         * @private
+         */
+        __fallbackGenerateClass : function (args, tree) {
+            this.$logWarn(this.TEMPLATE_DEBUG_EVAL_ERROR, [this._refClasspath]);
+            var classGenerator = args.classGenerator;
+            classGenerator.parseTemplateFromTree(tree, false, {
+                fn : this.__evalGeneratedClass,
+                scope : this,
+                args : {
+                    logicalPath : args.logicalPath,
+                    classGenerator : classGenerator
+                }
+            }, {
+                "file_classpath" : args.logicalPath
+            }, true);
+        },
+
+        /**
+         * Evaluate the class definition built by __generateClass. <br />
+         * The class definition might be null in case of error, in this case it has already been reported.<br />
+         * In debug mode if the eval throws an error, we try to parse the template again in order to log more
+         * information on the syntax error. <br />
+         * The generated class is an object containing
+         *
+         * <pre>
+         * {
+         *     classDef : {String} the class definition,
+         *     tree : {Object} syntax tree,
+         *     debug : {Boolean} whether the class was generated in debug mode or not
+         * }
+         * </pre>
+         *
+         * @param {String} generatedClass Generated class
+         * @param {Object} args Class configuration, given from _loadClass
+         * @private
+         */
+        __evalGeneratedClass : function (generatedClass, args) {
+            var classDef = generatedClass.classDef;
+            try {
+                Aria["eval"](classDef, args.logicalPath);
+                if (!this._classDefinitionCalled) {
+                    this.$logError(this.MISSING_CLASS_DEFINITION, [this.getRefLogicalPath(), this._refClasspath]);
+                    aria.core.ClassMgr.notifyClassLoadError(this._refClasspath);
+                }
+            } catch (ex) {
+                if (!generatedClass.debug && Aria.debug) {
+                    try {
+                        this.__fallbackGenerateClass(args, generatedClass.tree);
+                    } catch (exc) {
+                        this.$logError(this.TEMPLATE_DEBUG_EVAL_ERROR, [this._refClasspath], exc);
+                    }
+                } else {
+                    this.$logError(this.TEMPLATE_EVAL_ERROR, [this._refClasspath], ex);
+                }
+            }
         }
     }
 });

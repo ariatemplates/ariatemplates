@@ -58,13 +58,14 @@ Aria.classDefinition({
             // and json injection
             var mdpCSS = cm.filterMissingDependencies(this._loadDesc.css);
             var mdpTML = cm.filterMissingDependencies(this._loadDesc.tml);
+            var mdpCML = cm.filterMissingDependencies(this._loadDesc.cml);
             var mdpTXT = cm.filterMissingDependencies(this._loadDesc.txt);
 
             if (mdpTPL == false || mdpJS == false || mdpRES == false || mdpCSS == false || mdpTML == false
-                    | mdpTXT == false) {
+                    || mdpCML == false || mdpTXT == false) {
                 this._execCallback(true, true);
             } else if (mdpJS != null || mdpTPL != null || mdpRES != null || mdpCSS != null || mdpTML != null
-                    | mdpTXT != null) {
+                    || mdpCML != null || mdpTXT != null) {
 
                 // Some classes are missing - let's use a ClassLoader
                 var loader = new aria.core.ClassLoader();
@@ -97,6 +98,9 @@ Aria.classDefinition({
                 }
                 if (mdpTML != null) {
                     loader.addDependencies(mdpTML, "TML");
+                }
+                if (mdpCML != null) {
+                    loader.addDependencies(mdpTML, "CML");
                 }
                 if (mdpTXT != null) {
                     loader.addDependencies(mdpTXT, "TXT");
