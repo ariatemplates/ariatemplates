@@ -59,6 +59,7 @@ Aria.classDefinition({
             "Template" : rootStatement,
             "Library" : rootStatement,
             "CSSTemplate" : rootStatement,
+            "CSSLibrary" : rootStatement,
             "TextTemplate" : rootStatement,
             "#TEXT#" : {
                 container : false,

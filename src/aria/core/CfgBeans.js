@@ -103,6 +103,15 @@ Aria.beanDefinitions({
                         $mandatory : true
                     }
                 },
+                "$csslibs" : {
+                    $type : "json:Array",
+                    $description : "Static CSS macro libraries",
+                    $contentType : {
+                        $type : "json:PackageName",
+                        $description : "Classpath of the CSS macro library to load as a dependency of the class.",
+                        $mandatory : true
+                    }
+                },
                 "$texts" : {
                     $type : "json:Map",
                     $description : "Text templates used inside the class.",

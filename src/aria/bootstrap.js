@@ -104,12 +104,12 @@
             // loaders
             'aria/core/Cache.js', 'aria/core/ClassLoader.js', 'aria/core/JsClassLoader.js',
             'aria/core/ResClassLoader.js', 'aria/core/TplClassLoader.js', 'aria/core/CSSClassLoader.js',
-            'aria/core/TmlClassLoader.js', 'aria/core/TxtClassLoader.js', 'aria/core/ClassMgr.js',
-            'aria/core/DownloadMgr.js', 'aria/core/FileLoader.js', 'aria/core/Timer.js', 'aria/core/Interfaces.js',
-            'aria/core/transport/ITransports.js', 'aria/core/transport/BaseXHR.js', 'aria/core/transport/XHR.js',
-            'aria/core/transport/XDR.js', 'aria/core/transport/Local.js', 'aria/core/transport/JsonP.js',
-            'aria/core/transport/IFrame.js', 'aria/core/IOFiltersMgr.js', 'aria/core/IO.js',
-            'aria/core/Sequencer.js',
+            'aria/core/TmlClassLoader.js', 'aria/core/CmlClassLoader.js', 'aria/core/TxtClassLoader.js',
+            'aria/core/ClassMgr.js', 'aria/core/DownloadMgr.js', 'aria/core/FileLoader.js', 'aria/core/Timer.js',
+            'aria/core/Interfaces.js', 'aria/core/transport/ITransports.js', 'aria/core/transport/BaseXHR.js',
+            'aria/core/transport/XHR.js', 'aria/core/transport/XDR.js', 'aria/core/transport/Local.js',
+            'aria/core/transport/JsonP.js', 'aria/core/transport/IFrame.js', 'aria/core/IOFiltersMgr.js',
+            'aria/core/IO.js', 'aria/core/Sequencer.js',
             'aria/core/MultiLoader.js',
 
             // JSON validation

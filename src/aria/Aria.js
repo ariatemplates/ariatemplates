@@ -847,7 +847,8 @@
             var dpMap = {
                 'TPL' : def.$templates,
                 'CSS' : def.$css,
-                'TML' : def.$macrolibs
+                'TML' : def.$macrolibs,
+                'CML' : def.$csslibs
             };
             var rs = [];
             var dp = def.$dependencies || [];
@@ -882,7 +883,7 @@
             if (defExtends != 'aria.core.JsObject') {
                 var extendsType = def.$extendsType || "JS";
                 if (extendsType !== "JS" && extendsType !== "TPL" && extendsType !== "TML" && extendsType !== "CSS"
-                        && extendsType !== "TXT") {
+                        && extendsType !== "CML" && extendsType !== "TXT") {
                     return Aria.$logError(Aria.INVALID_EXTENDSTYPE, [clsName]);
                 }
                 if (dpMap[extendsType]) {

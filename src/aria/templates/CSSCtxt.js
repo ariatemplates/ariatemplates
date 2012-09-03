@@ -131,6 +131,7 @@ Aria.classDefinition({
             if (!tpl.__$initTemplate()) {
                 return false;
             }
+            this.__loadLibs(tpl.__$csslibs, "csslibs");
             return true;
         },
 

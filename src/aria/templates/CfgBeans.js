@@ -178,7 +178,43 @@ Aria.beanDefinitions({
         "CSSTemplateCfg" : {
             $type : "BaseTemplateCfg",
             $description : "Configuration of a CSS Template.",
-            $properties : {}
+            $properties : {
+                "$csslibs" : {
+                    $type : "json:Map",
+                    $description : "Static CSS macro libraries",
+                    $contentType : {
+                        $type : "json:PackageName",
+                        $description : "Classpath of the CSS macro library.",
+                        $mandatory : true
+                    }
+                }
+            }
+        },
+        "CSSLibraryCfg" : {
+            $type : "BaseTemplateCfg",
+            $description : "Configuration of a CSS library.",
+            $mandatory : true,
+            $properties : {
+                "$csslibs" : {
+                    $type : "json:Map",
+                    $description : "Static CSS macro libraries",
+                    $contentType : {
+                        $type : "json:PackageName",
+                        $description : "Classpath of the CSS macro library.",
+                        $mandatory : true
+                    }
+                },
+                "$res" : {
+                    $type : "json:Map",
+                    $description : "Resource class to be accessible through the res variable in the library.",
+                    $contentType : {
+                        $type : "json:PackageName",
+                        $description : "Any resource class that the library is dependent of",
+                        $sample : "aria.widgets.WidgetsRes"
+                    }
+                }
+
+            }
         },
         "TextTemplateCfg" : {
             $type : "BaseTemplateCfg",

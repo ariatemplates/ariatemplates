@@ -432,6 +432,12 @@ Aria.classDefinition({
                     out.writeln("$macrolibs: ", json.convertToJsonString(macrolibsArray), ",");
                 }
             }
+            if (tplParam.$csslibs) {
+                var csslibsArray = aria.utils.Array.extractValuesFromMap(tplParam.$csslibs);
+                if (csslibsArray.length > 0) {
+                    out.writeln("$csslibs: ", json.convertToJsonString(csslibsArray), ",");
+                }
+            }
             if (tplParam.$texts) {
                 out.writeln("$texts: ", json.convertToJsonString(tplParam.$texts), ",");
             }
