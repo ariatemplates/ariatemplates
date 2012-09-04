@@ -34,6 +34,7 @@ packages:
         - "aria/core/TplClassLoader.js"
         - "aria/core/CSSClassLoader.js"
         - "aria/core/TmlClassLoader.js"
+        - "aria/core/CmlClassLoader.js"
         - "aria/core/TxtClassLoader.js"
         - "aria/core/ClassMgr.js"
         - "aria/core/DownloadMgr.js"
