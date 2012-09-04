@@ -17,8 +17,8 @@
  * Utility to build a function.
  */
 Aria.classDefinition({
-    $classpath : 'aria.utils.FunctionWriter',
-    $dependencies : ['aria.utils.String'],
+    $classpath : "aria.utils.FunctionWriter",
+    $dependencies : ["aria.utils.String"],
     /**
      * Create a function writer.
      * @param {Array} functionArguments Array of argument names for the function being built.
@@ -69,7 +69,9 @@ Aria.classDefinition({
     },
     $statics : {
         INVALID_RELEASE_TEMP_VAR : "releaseTempVariable was called with parameter %1, but this is not the name of a currently used variable created with createTempVariable.",
-        INVALID_RELEASE_SHORTCUT : "releaseShortcut was called with parameter %1, but there was no previous call of createShortcut which returned that value."
+        INVALID_RELEASE_SHORTCUT : "releaseShortcut was called with parameter %1, but there was no previous call of createShortcut which returned that value.",
+
+        REGULARNAME_REGEXP : /^[A-Za-z_][A-Za-z_0-9]*$/
     },
     $prototype : {
         $init : function (proto) {
@@ -129,7 +131,7 @@ Aria.classDefinition({
          * @return {Boolean}
          */
         isRegularVarName : function (expression) {
-            return /^[A-Za-z_][A-Za-z_0-9]*$/.test(expression) && !Aria.isJsReservedWord(expression);
+            return this.REGULARNAME_REGEXP.test(expression) && !Aria.isJsReservedWord(expression);
         },
 
         /**

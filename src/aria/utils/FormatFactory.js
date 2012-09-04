@@ -15,12 +15,13 @@
 
 /**
  * This class contains utilities to build format functions (ex: the formatters used in aria.utils.Date)
- * @class aria.utils.FormatFactory
+ * @deprecated
  */
 Aria.classDefinition({
-    $classpath : 'aria.utils.FormatFactory',
-    $dependencies : ['aria.utils.Type'],
+    $classpath : "aria.utils.FormatFactory",
+    $dependencies : ["aria.utils.Type"],
     $constructor : function () {
+        this.$logError("This class is deprecated. Please stop using it!");
 
         /**
          * @private Object containing the statements associated with formatting It contains functions that take an
@@ -33,7 +34,7 @@ Aria.classDefinition({
          * @private Regular expression to recognize statements
          * @type {RegExp}
          */
-        this._statementsRegExp = /^\${[^}]*}/;
+        this._statementsRegExp = /^\$\{[^\}]*\}/;
 
         /**
          * @private Map of already defined format functions
