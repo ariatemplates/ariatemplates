@@ -250,7 +250,7 @@
                     var item = map[i];
                     var key = item.key;
                     if (map == this._objectKeys) {
-                        key[this._metaDataName] = null
+                        key[this._metaDataName] = null;
                         delete item.key[this._metaDataName];
                     }
                     while (item) {
