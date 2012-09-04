@@ -145,6 +145,7 @@ Aria.classDefinition({
                 for (var key in urlMap) {
                     var value = urlMap[key];
                     if (typeof(value) == 'string') {
+                        value = "/" + value;
                         // Check if something match
                         for (var i = 0, ii = urls.length; i < ii; i++) {
                             var file = urls[i];
