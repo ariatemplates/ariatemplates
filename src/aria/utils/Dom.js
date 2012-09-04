@@ -814,7 +814,7 @@ Aria.classDefinition({
                                 val = element.filters('alpha').opacity;
                             } catch (er) {}
                         }
-                        return val / 100;
+                        return (val / 100).toString(10); // to be consistent with getComputedStyle
                     } else if (property == 'float') { // fix reserved word
                         property = 'styleFloat'; // fall through
                     }
