@@ -149,7 +149,7 @@ Aria.classDefinition({
                     delete iLog.timestamp;
                 }
 
-                if (!"msg" in iLog) {
+                if (!("msg" in iLog)) {
                     iLog.msg = 'NO MESSAGE';
                 }
 
