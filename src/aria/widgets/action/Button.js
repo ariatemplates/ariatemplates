@@ -148,6 +148,8 @@ Aria.classDefinition({
                 if (this._simpleHTML) {
                     if (state == "disabled") {
                         this._focusElt.setAttribute("disabled", "disabled");
+                    } else {
+                        this._focusElt.removeAttribute("disabled");
                     }
                 } else {
                     this._frame.changeState(this._state);
