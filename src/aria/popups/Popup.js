@@ -628,8 +628,7 @@ Aria.classDefinition({
                 this.computedStyle = this._getComputedStyle();
             }
 
-            this.domElement.style.cssText = ['height:', this.computedStyle.height, 'px;', 'width:',
-                    this.computedStyle.width, 'px;', 'top:', this.computedStyle.top, 'px;', 'left:',
+            this.domElement.style.cssText = ['top:', this.computedStyle.top, 'px;', 'left:',
                     this.computedStyle.left, 'px;', 'z-index:', this.computedStyle.zIndex, ';',
                     'position:absolute;display:inline-block;'].join('');
             if (aria.core.Browser.isIE7 && !this.isOpen) {
