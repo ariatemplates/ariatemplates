@@ -1519,7 +1519,7 @@ Aria.beanDefinitions({
             }
         },
         "TabCfg" : {
-            $type : "DivCfg",
+            $type : "ContainerCfg",
             $description : "The base configuration for the Tab widget",
             $properties : {
                 "bind" : {
