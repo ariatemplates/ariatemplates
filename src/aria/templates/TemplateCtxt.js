@@ -633,7 +633,7 @@
              */
             _setOut : function (out) {
                 this._out = out;
-                var macrolibs = this._macrolibs;
+                var macrolibs = this._macrolibs || [];
                 for (var i = 0, l = macrolibs.length; i < l; i++) {
                     macrolibs[i]._setOut(out);
                 }
