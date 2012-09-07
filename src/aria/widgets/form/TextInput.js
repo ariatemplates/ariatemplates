@@ -1042,7 +1042,7 @@ Aria.classDefinition({
             var helpText = cfg.helptext, helpTextConfig = this._skinObj.helpText;
             // stops if no helptext, or trying to disable an helptext that as
             // not been set
-            if (!helpText || !this._helpTextSet && !enable) {
+            if (!helpText || !this._helpTextSet && !enable || (this._hasFocus || this._keepFocus) && enable) {
                 return;
             }
 
