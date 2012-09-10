@@ -35,7 +35,8 @@
              */
             getReport : function () {
                 var errors = this.testRunner.getErrors();
-                var report = ['Aria templates test campaign completed<br>', '<h2>Error report</h2>',
+                var date = new Date().toLocaleString();
+                var report = ['Aria templates test campaign completed (', date, ')<br>', '<h2>Error report</h2>',
                         this.getErrorSummary(), '<ul>'].join("<br>");
                 for (var i = 0, l = errors.length; i < l; i++) {
                     var error = errors[i];
