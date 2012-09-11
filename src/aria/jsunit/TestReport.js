@@ -36,7 +36,7 @@
             getReport : function () {
                 var errors = this.testRunner.getErrors();
                 var date = new Date().toLocaleString();
-                var report = ['Aria templates test campaign completed (', date, ')<br>', '<h2>Error report</h2>',
+                var report = ['Aria templates test campaign completed<br>', date, '<br>', '<h2>Error report</h2>',
                         this.getErrorSummary(), '<ul>'].join("<br>");
                 for (var i = 0, l = errors.length; i < l; i++) {
                     var error = errors[i];
@@ -106,11 +106,7 @@
              * @return {String}
              */
             getMailFooter : function () {
-                var footer = [
-                        '<br><img src="http://aria/demo/3.2/aria/3.2/skins/ariabaseskin/img/aria_logo_small.gif"/>',
-                        '<b>Aria team</b>'].join("<br>")
-                        + '</body>' + '</html>';
-                return footer;
+                return '<br><img src="http://ariatemplates.com/images/logo-page.png"/><br><b>Aria team</b></body></html>';
             }
         }
     };
