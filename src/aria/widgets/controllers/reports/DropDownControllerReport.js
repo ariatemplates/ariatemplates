@@ -27,12 +27,17 @@ Aria.classDefinition({
         this.$ControllerReport.constructor.call(this);
 
         /**
-         * Report notifies that dropdown has to be opened or closed
-         * null value is for the case where nothing has to be done.
+         * Report notifies that dropdown has to be opened or closed null value is for the case where nothing has to be
+         * done.
          * @type {Boolean}
          */
         this.displayDropDown = null;
 
+        /**
+         * If true, the position of the dropdown should be recomputed.
+         * @type {Boolean}
+         */
+        this.repositionDropDown = false;
     },
     $destructor : function () {
         this.displayDropDown = null;

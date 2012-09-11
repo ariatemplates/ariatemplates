@@ -291,10 +291,12 @@
 
                 var suggestions = null;
                 var error = null;
+                var repositionDropDown = false;
                 if (res != null) {
                     if ("suggestions" in res) {
                         suggestions = res.suggestions;
                         error = res.error;
+                        repositionDropDown = res.repositionDropDown;
                     } else {
                         suggestions = res;
                     }
@@ -312,15 +314,15 @@
                     // empty array : no suggestions for this entry
                     var suggestionsAvailable = (suggestions !== null);
 
-					if (suggestionsAvailable) {
-						if (args.keepSelectedValue && dataModel.value) {
-							var code = dataModel.value.code;
-							for (var i = 0; i < suggestions.length; i += 1) {
-								suggestions[i].exactMatch = (suggestions[i].code === code);
-							}
-						} 
-						// reformat the suggestions to be compatible with the list widget
-						matchValueIndex = this._prepareSuggestionsAndMatch(suggestions, nextValue);
+                    if (suggestionsAvailable) {
+                        if (args.keepSelectedValue && dataModel.value) {
+                            var code = dataModel.value.code;
+                            for (var i = 0; i < suggestions.length; i += 1) {
+                                suggestions[i].exactMatch = (suggestions[i].code === code);
+                            }
+                        }
+                        // reformat the suggestions to be compatible with the list widget
+                        matchValueIndex = this._prepareSuggestionsAndMatch(suggestions, nextValue);
 
                     } else {
                         suggestions = [];
@@ -368,6 +370,7 @@
                         dataModel.value = nextValue;
                     }
                     report.displayDropDown = hasSuggestions && triggerDropDown;
+                    report.repositionDropDown = repositionDropDown;
                     var arg = {};
                     arg.stopValueProp = true;
                     this._raiseReport(report, arg);

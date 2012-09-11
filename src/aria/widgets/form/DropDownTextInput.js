@@ -149,6 +149,7 @@ Aria.classDefinition({
             // PROFILING // var profilingId = this.$startMeasure("react to controller report (DropDownTextInput)");
             if (report) {
                 var openDropdown = report.displayDropDown;
+                var repositionDropDown = report.repositionDropDown;
                 this.$TextInput._reactToControllerReport.call(this, report, arg);
                 // check that widget has not been disposed
                 if (this._cfg) {
@@ -156,6 +157,9 @@ Aria.classDefinition({
                         this._openDropdown();
                     } else if (openDropdown == false && this._dropdownPopup) {
                         this._closeDropdown();
+                    } else if (repositionDropDown && this._dropdownPopup) {
+                        this._closeDropdown();
+                        this._openDropdown();
                     }
                 }
             }
