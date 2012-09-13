@@ -117,6 +117,12 @@ Aria.classDefinition({
                     json : cfg,
                     beanName : "aria.html.beans.TemplateCfg.Properties"
                 }, true);
+                if (this._needCreatingModuleCtrl) {
+                    this._cfgOk = this._cfgOk && aria.core.JsonValidator.normalize({
+                        json : cfg.moduleCtrl,
+                        beanName : "aria.templates.CfgBeans.InitModuleCtrl"
+                    });
+                }
             } catch (e) {
                 var logs = aria.core.Log;
                 if (logs) {

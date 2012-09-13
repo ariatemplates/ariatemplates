@@ -450,12 +450,8 @@
                     aria.templates.CSSMgr.resume();
 
                     if (section != null) {
-                        this.__insertSection(section);
+                        this.insertSection(section);
                     }
-
-                    // Redundant, but makes sure that __insertSection doesn't dispose the template
-                    this.$assert(271, this._cfg.tplDiv && this._tpl);
-                    aria.utils.Dom.refreshDomElt(this._cfg.tplDiv);
 
                     this._refreshing = false;
 
@@ -516,7 +512,7 @@
                 params.tplDiv = tplDiv;
                 params.div = (tplDiv.parentNode) ? tplDiv.parentNode : null;
                 this.__addDebugInfo(tplDiv);
-                this.__insertSection(this._mainSection, true);
+                this.insertSection(this._mainSection, true);
                 // getMarkup + linkToPreviousMarkup is in fact doing the first refresh
                 // so we call $afterRefresh here as well
                 this.afterRefresh();
@@ -714,9 +710,8 @@
 
             /**
              * Insert the sction's markup in the DOM
-             * @private
              */
-            __insertSection : function (section, skipInsertHTML) {
+            insertSection : function (section, skipInsertHTML) {
                 // PROFILING // var profilingId = this.$startMeasure("Inserting section in DOM from " +
                 // PROFILING // this.tplClasspath);
                 var differed;
@@ -741,6 +736,11 @@
                     this.__processDifferedItems(differed);
                 } else {
                     // TODO: LOG ERROR
+                }
+                if (!skipInsertHTML) {
+                    // Redundant, but makes sure that insertSection doesn't dispose the template
+                    this.$assert(743, params.tplDiv && tpl);
+                    aria.utils.Dom.refreshDomElt(params.tplDiv);
                 }
                 // PROFILING // this.$stopMeasure(profilingId);
             },
