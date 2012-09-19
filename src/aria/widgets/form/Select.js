@@ -423,6 +423,28 @@ Aria.classDefinition({
                 var tabIndex = disabledOrReadonly ? -1 : this._calculateTabIndex();
                 selectField.tabIndex = tabIndex;
                 this._updateState();
+            } else if (propertyName === 'options') {
+                if (this.controller) {
+                    this.controller.setListOptions(newValue);
+                    var report = this.controller.checkValue(null);
+                    this._reactToControllerReport(report, {
+                        stopValueProp : true
+                    });
+                } else {
+                    // markup for the options
+                    var optionsMarkup = [];
+                    var stringUtils = aria.utils.String;
+                    for (var i = 0, l = newValue.length; i < l; i++) {
+                        // string cast, otherwise encoding will fail
+                        var optValue = '' + newValue[i].value;
+                        optionsMarkup.push('<option value="', stringUtils.encodeForQuotedHTMLAttribute(optValue), '"', optValue == '', '>', stringUtils.escapeHTML(newValue[i].label), '</option>');
+                    }
+
+                    var selectField = this.getSelectField();
+                    // update the options list
+                    selectField.innerHTML = optionsMarkup.join('');
+                }
+
             } else if (propertyName === 'formatError' || propertyName === 'formatErrorMessages'
                     || propertyName === 'error' || propertyName === 'errorMessages') {
                 this._cfg[propertyName] = newValue;

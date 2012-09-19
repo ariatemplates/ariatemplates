@@ -74,6 +74,27 @@ Aria.classDefinition({
                 this.$logError(this.DUPLICATE_VALUE, [dupValues]);
             }
 
+        },
+        /**
+         * Internal method called when one of the model property that the widget is bound to has changed Must be
+         * @param {String} propertyName the property name
+         * @param {Object} newValue the new value
+         * @param {Object} oldValue the old property value
+         * @protected
+         */
+
+        _onBoundPropertyChange : function (propertyName, newValue, oldValue) {
+
+            if (propertyName === "options") {
+                this.controller.setListOptions(newValue);
+                var report = this.controller.checkValue(null);
+                this._reactToControllerReport(report, {
+                    stopValueProp : true
+                });
+
+            } else {
+                aria.widgets.form.SelectBox.superclass._onBoundPropertyChange.call(this, propertyName, newValue, oldValue);
+            }
         }
     }
 });
