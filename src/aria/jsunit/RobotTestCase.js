@@ -40,10 +40,17 @@ Aria.classDefinition({
             if (this.skipTest) {
                 this.$TemplateTestCase.run.call(this);
             } else {
-                aria.jsunit.Robot.initRobot({
-                    fn : this.$TemplateTestCase.run,
-                    scope : this
-                });
+                var navigator = Aria.$window.navigator;
+                if (navigator && navigator.javaEnabled && navigator.javaEnabled()) {
+                    aria.jsunit.Robot.initRobot({
+                        fn : this.$TemplateTestCase.run,
+                        scope : this
+                    });
+                } else {
+                    this._startTest();
+                    this.raiseFailure('Robot test cases require Java to be enabled');
+                    this._endTest();
+                }
             }
         }
     }
