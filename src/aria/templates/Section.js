@@ -161,7 +161,7 @@
             bindings = cfg.bindRefreshTo;
             id = cfg.id;
 
-            if (!/^[_\w]+$/.test(id)) {
+            if (!/^[\w\-:\.]+$/.test(id)) {
                 this.$logError(this.INVALID_SECTION_ID, [this.tplCtxt.tplClasspath, id]);
                 this.cfgOk = false;
                 return;
