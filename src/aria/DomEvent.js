@@ -241,7 +241,7 @@
              * instead of $dispose when this object is no longer necessary.
              */
             disposeWrapper : function () {
-                if (this._wrapperNumber == 0) {
+                if (this._wrapperNumber === 0) {
                     this.$dispose();
                 } else {
                     this._wrapperNumber--;

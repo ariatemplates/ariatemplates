@@ -16,10 +16,9 @@
 /**
  * A context object is a wrapper around a Template. It provides the basic methods needed to call a macro on a template.
  * This class is extended by aria.templates.TemplateCtxt and aria.templates.CSSCtxt
- * @class aria.templates.BaseCtxt
  */
 Aria.classDefinition({
-    $classpath : 'aria.templates.BaseCtxt',
+    $classpath : "aria.templates.BaseCtxt",
     $singleton : false,
     $constructor : function () {
         /**
@@ -171,7 +170,7 @@ Aria.classDefinition({
                 }
             }
 
-            if (allCPlength == 0) {
+            if (allCPlength === 0) {
                 // no deps - sync cb
                 return;
             }

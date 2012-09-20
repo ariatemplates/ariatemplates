@@ -17,12 +17,12 @@
  * ClassLoader for CSS files.
  */
 Aria.classDefinition({
-    $classpath : 'aria.core.CSSClassLoader',
-    $extends : 'aria.core.ClassLoader',
+    $classpath : "aria.core.CSSClassLoader",
+    $extends : "aria.core.ClassLoader",
     $constructor : function () {
         this.$ClassLoader.constructor.apply(this, arguments);
         this._refLogicalPath += ".tpl.css";
-        this._classGeneratorClassName = 'CSSClassGenerator';
+        this._classGeneratorClassName = "CSSClassGenerator";
     },
     $statics : {
         // ERROR MESSAGES:
@@ -37,8 +37,7 @@ Aria.classDefinition({
          * @protected
          */
         _loadClass : function (classDef, logicalPath) {
-            var additionalDependency = 'aria.templates.CSSMgr';
-            this._loadClassAndGenerate(classDef, logicalPath, additionalDependency);
+            this._loadClassAndGenerate(classDef, logicalPath, "aria.templates.CSSMgr");
         }
     }
 });

@@ -62,7 +62,7 @@
     var __checkListeners = function () {
         if (__autoresizes == null && layout._listeners && layout._listeners['viewportResized']) {
             __init();
-        } else if (__autoresizes != null && __autoresizes.length == 0
+        } else if (__autoresizes != null && __autoresizes.length === 0
                 && (layout._listeners == null || layout._listeners['viewportResized'] == null)) {
             __reset();
         }
@@ -150,19 +150,16 @@
     };
 
     /**
-     * @class aria.templates.Layout This class listens to changes in viewport size and raises an event for templates to
+     * This class listens to changes in viewport size and raises an event for templates to
      * refresh.
      * @singleton
      */
     Aria.classDefinition({
-        $classpath : 'aria.templates.Layout',
-        $dependencies : ['aria.templates.CfgBeans', 'aria.templates.TemplateCtxtManager', 'aria.utils.Event',
-                'aria.core.Browser', 'aria.utils.Dom', 'aria.utils.AriaWindow'],
+        $classpath : "aria.templates.Layout",
+        $dependencies : ["aria.templates.CfgBeans", "aria.templates.TemplateCtxtManager", "aria.utils.Event",
+                "aria.core.Browser", "aria.utils.Dom", "aria.utils.AriaWindow"],
         $singleton : true,
         $events : {
-            /**
-             * @event viewportResized
-             */
             "viewportResized" : {
                 description : "Raised when the size of the viewport has changed.",
                 properties : {
@@ -239,7 +236,7 @@
                     }
                 }
                 __autoresizes = newList;
-                if (newList.length == 0) {
+                if (newList.length === 0) {
                     __checkListeners();
                 }
             },

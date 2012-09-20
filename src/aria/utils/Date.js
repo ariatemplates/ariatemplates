@@ -1332,7 +1332,7 @@ Aria.classDefinition({
             if (date == null) {
                 return null;
             }
-            if (date.getHours() != 0 || date.getMinutes() != 0 || date.getSeconds() != 0 || date.getMilliseconds() != 0) {
+            if (date.getHours() !== 0 || date.getMinutes() !== 0 || date.getSeconds() !== 0 || date.getMilliseconds() !== 0) {
                 return new Date(date.getFullYear(), date.getMonth(), date.getDate());
             } else {
                 return date;

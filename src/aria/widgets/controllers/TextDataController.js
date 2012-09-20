@@ -15,16 +15,11 @@
 
 /**
  * Base class for any data controller associated to Text Input objects
- * @class aria.widgets.controllers.TextDataController
- * @extends aria.core.JsObject
  */
 Aria.classDefinition({
-    $classpath : 'aria.widgets.controllers.TextDataController',
-    $dependencies : ['aria.widgets.controllers.reports.ControllerReport'],
+    $classpath : "aria.widgets.controllers.TextDataController",
+    $dependencies : ["aria.widgets.controllers.reports.ControllerReport"],
     $events : {
-        /**
-         * @event onCheck
-         */
         "onCheck" : {
             description : "Notifies that controller has finished am asynchronouse check (internal, of the value or of a keystroke)",
             properties : {
@@ -107,7 +102,7 @@ Aria.classDefinition({
          */
         _getTypedValue : function (charCode, curVal, caretPosStart, caretPosEnd) {
             var returnedObject;
-            if (charCode == 0) {
+            if (charCode === 0) {
                 returnedObject = {
                     nextValue : curVal,
                     caretPosStart : caretPosStart,
@@ -116,7 +111,7 @@ Aria.classDefinition({
                 return returnedObject;
             }
             var str = String.fromCharCode(charCode);
-            if (str == '') {
+            if (str === '') {
                 returnedObject = {
                     nextValue : curVal,
                     caretPosStart : caretPosStart,
@@ -124,7 +119,7 @@ Aria.classDefinition({
                 }
                 return returnedObject;
             }
-            if (curVal == null || curVal == '') {
+            if (curVal == null || curVal === '') {
                 returnedObject = {
                     nextValue : str,
                     caretPosStart : str.length,
@@ -163,7 +158,7 @@ Aria.classDefinition({
          */
         _getTypedValueOnDelete : function (keyCode, curVal, caretPosStart, caretPosEnd) {
             var returnedObject = {};
-            if (curVal == null || curVal == '') {
+            if (curVal == null || curVal === '') {
                 returnedObject = {
                     nextValue : '',
                     caretPosStart : 0,

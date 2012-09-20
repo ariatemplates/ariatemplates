@@ -18,12 +18,11 @@
      * @class aria.tester.runner.utils.Hash
      */
     var classDefinition = {
-        $classpath : 'aria.tester.runner.utils.Hash',
+        $classpath : "aria.tester.runner.utils.Hash",
         $singleton : true,
         $constructor : function () {
             this._hashParameters = {};
         },
-        $destructor : function () {},
         $prototype : {
             /**
              * @private
@@ -81,7 +80,7 @@
                 }
 
                 if (!found) {
-                    if (keyvalues[keyvalues.length - 1] == "") {
+                    if (keyvalues[keyvalues.length - 1] === "") {
                         keyvalues[keyvalues.length - 1] = hashParam;
                     } else {
                         keyvalues.push(hashParam);

@@ -228,7 +228,7 @@
              * @return True if there were no error, false otherwise.
              */
             __logAllErrors : function (errors, throwsErrors) {
-                if (errors.length == 0) {
+                if (errors.length === 0) {
                     return true;
                 }
                 if (!throwsErrors) {
@@ -351,7 +351,7 @@
                 var typeRef = this._typeRefError;
 
                 // check if this is valid declared type
-                if (typeof(typeName) != 'string' || typeName == '') {
+                if (typeof(typeName) != "string" || !typeName) {
                     this._logError(this.INVALID_TYPE_NAME, [beanDef[this._MD_TYPENAME], typeName]);
                     return this._typeError;
                 } else {
@@ -387,7 +387,7 @@
                 if (!beanDef.$description && !typeRef[this._MD_BUILTIN]) {
                     beanDef.$description = typeRef.$description;
                 }
-                if (!beanDef.$description && beanDef.$description != "") {
+                if (!beanDef.$description && beanDef.$description !== "") {
                     this._logError(this.MISSING_DESCRIPTION, beanDef[this._MD_TYPENAME]);
                     return this._typeError;
                 }
@@ -436,7 +436,7 @@
                 if ("$default" in beanDef) {
 
                     // there cannot be default and mandatory at the same time
-                    if (beanDef.$mandatory == true) {
+                    if (beanDef.$mandatory === true) {
                         this._logError(this.BOTH_MANDATORY_DEFAULT, beanDef[this._MD_TYPENAME]);
                         return this._typeError;
                     }

@@ -15,12 +15,11 @@
 
 /**
  * Validation Class for all Input widgets.
- * @class aria.widgets.form.InputValidationHandler
  */
 Aria.classDefinition({
-    $classpath : 'aria.widgets.form.InputValidationHandler',
-    $dependencies : ['aria.DomEvent', 'aria.utils.Dom', 'aria.popups.Popup', 'aria.widgets.container.Div',
-            'aria.templates.Layout'],
+    $classpath : "aria.widgets.form.InputValidationHandler",
+    $dependencies : ["aria.DomEvent", "aria.utils.Dom", "aria.popups.Popup", "aria.widgets.container.Div",
+            "aria.templates.Layout"],
     $constructor : function (widget) {
         this._context = widget._context;
         this._lineNumber = widget._lineNumber;
@@ -56,7 +55,7 @@ Aria.classDefinition({
             var msg = null;
 
             for (var i = 0; i < errorMessage.length; i++) {
-                if (msg === null && errorMessage[i] != undefined) {
+                if (msg === null && errorMessage[i]) {
                     msg = errorMessage[i];
                 }
             }

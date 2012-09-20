@@ -16,7 +16,6 @@
 /**
  * A frame with icons on the left and right. To create an object of this class, use the createFrame static method (not
  * the constructor).
- * @class aria.widgets.frames.FrameWithIcons
  */
 Aria.classDefinition({
     $classpath : 'aria.widgets.frames.FrameWithIcons',
@@ -125,12 +124,12 @@ Aria.classDefinition({
             var skinObject = cfg.skinObject;
 
             // normalize the skin:
-            if (skinObject.iconsLeft == null || skinObject.iconsLeft == "") {
+            if (skinObject.iconsLeft == null || skinObject.iconsLeft === "") {
                 skinObject.iconsLeft = [];
             } else if (aria.utils.Type.isString(skinObject.iconsLeft)) {
                 skinObject.iconsLeft = skinObject.iconsLeft.split(',');
             }
-            if (skinObject.iconsRight == null || skinObject.iconsRight == "") {
+            if (skinObject.iconsRight == null || skinObject.iconsRight === "") {
                 skinObject.iconsRight = [];
             } else if (aria.utils.Type.isString(skinObject.iconsRight)) {
                 skinObject.iconsRight = skinObject.iconsRight.split(',');
@@ -140,7 +139,7 @@ Aria.classDefinition({
             var iconsRight = this._filterIcons(skinObject.iconsRight, cfg.hideIconNames);
             cfg.iconsLeft = iconsLeft;
             cfg.iconsRight = iconsRight;
-            if (iconsLeft.length == 0 && iconsRight.length == 0) {
+            if (iconsLeft.length === 0 && iconsRight.length === 0) {
                 // do not use the icon frame if there is no icon (useless overhead)
                 return aria.widgets.frames.FrameFactory.createFrame(cfg);
             } else {

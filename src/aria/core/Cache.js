@@ -15,16 +15,11 @@
 
 /**
  * Cache object used to synchronize data retrieved from the server and avoid reloading the same resource several times
- * @class aria.core.Cache
- * @extends aria.core.JsObject
  * @singleton
  */
 Aria.classDefinition({
     $classpath : "aria.core.Cache",
     $singleton : true,
-    $destructor : function () {
-        // TODO delete content etc...
-    },
     $statics : {
         /**
          * Map the content type to the file name extension.
@@ -76,12 +71,18 @@ Aria.classDefinition({
          * @param {String} cat item category (first key used in content Map to create a sub-map)
          * @param {String} key item key in the category Map
          * @param {Boolean} createIfNull [default:false] create an item if none is already defined
-         * @return {Object} a cache item structure: [CacheItem] { status: "{Enum} indicates the item status: " value:
-         * "{Object} value associated to the item" loader: "{Object} loader object associated to this item when
-         * status=DOWNLOADING" }
+         * @return {Object} a cache item structure:
+         *
+         * <pre>
+         * {
+         *      status: {Integer} indicates the item status [STATUS_NEW | STATUS_LOADING | STATUS_AVAILABLE | STATUS_ERROR]
+         *      value: {Object} value associated to the item
+         *      loader: {Object} loader object associated to this item when status = STATUS_LOADING
+         * }
+         * </pre>
          */
         getItem : function (cat, key, createIfNull) {
-            if (createIfNull != true) {
+            if (createIfNull !== true) {
                 createIfNull = false;
             }
             var res = null;
@@ -107,8 +108,7 @@ Aria.classDefinition({
         },
 
         /**
-         * Get the logical filename from the classpath.
-         * Returns null if the classpath is not inside the cache.
+         * Get the logical filename from the classpath. Returns null if the classpath is not inside the cache.
          * @param {String} classpath e.g x.y.MyClass
          * @return {String} logical path e.g x/y/MyClass.tpl
          */

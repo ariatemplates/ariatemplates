@@ -19,8 +19,6 @@
 
     /**
      * The Select controller is the controller used in the Select widget.
-     * @class aria.widgets.controllers.SelectController
-     * @extends aria.widgets.controllers.TextDataController
      */
     Aria.classDefinition({
         $classpath : "aria.widgets.controllers.SelectController",
@@ -112,7 +110,7 @@
             _setDisplayIdx : function (displayIdx) {
                 var dataModel = this._dataModel;
                 var options = dataModel.listContent;
-                if (options.length == 0) {
+                if (options.length === 0) {
                     displayIdx = -1;
                 } else if (displayIdx >= options.length) {
                     displayIdx = options.length - 1;

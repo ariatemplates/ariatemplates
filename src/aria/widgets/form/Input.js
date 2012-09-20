@@ -14,9 +14,8 @@
  */
 
 /**
- * @class aria.widgets.form.Input Base class for all input widgets. Manage input data structure and properties, as well
+ * Base class for all input widgets. Manage input data structure and properties, as well
  * as the label support
- * @extends aria.widgets.Widget
  */
 Aria.classDefinition({
     $classpath : "aria.widgets.form.Input",
@@ -202,7 +201,7 @@ Aria.classDefinition({
             if (showLabel) {
                 var elems = aria.utils.Dom.getDomElementsChildByTagName(this.getDom(), 'label');
                 if (elems) {
-                    if (elems.length == 0) {
+                    if (elems.length === 0) {
                         this.$logError(this.WIDGET_INPUT_NO_LABEL, []);
                     } else if (elems.length == 1) {
                         return elems[0];
