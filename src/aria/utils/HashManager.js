@@ -14,16 +14,14 @@
  */
 
 /**
- * TODO: when the framework will implement a History utility, this class has to be moved in the right place, probably in
- * a different package because the hash management will be only one of the possibilities for handling browser history.
- * It could be used as a fallback for those browsers which are not compliant with HTML5 specifications for history
- * management
- * @class aria.utils.HashManager Utils for location hash management
- * @extends aria.core.JsObject
+ * Utils for location hash management TODO: when the framework will implement a History utility, this class has to be
+ * moved in the right place, probably in a different package because the hash management will be only one of the
+ * possibilities for handling browser history. It could be used as a fallback for those browsers which are not compliant
+ * with HTML5 specifications for history management
  * @singleton
  */
 Aria.classDefinition({
-    $classpath : 'aria.utils.HashManager',
+    $classpath : "aria.utils.HashManager",
     $singleton : true,
     $dependencies : ["aria.core.Browser", "aria.utils.Type", "aria.utils.Event", "aria.utils.Object",
             "aria.utils.AriaWindow"],
@@ -183,7 +181,7 @@ Aria.classDefinition({
                 }
                 if (i < len) {
                     hcC.splice(i, 1);
-                    if (hcC.length == 0) {
+                    if (hcC.length === 0) {
                         this._hashChangeCallbacks = null;
                         this._removeHashChangeInternalCallback();
                         aria.utils.AriaWindow.detachWindow();
@@ -429,7 +427,7 @@ Aria.classDefinition({
             for (var i = 0, len = arg.length; i < len; i++) {
                 regexpStringArray.push(arg[i].replace(specialCharRegExp, "\\$1"));
             }
-            if (regexpStringArray.length == 0) {
+            if (regexpStringArray.length === 0) {
                 return null;
             } else {
                 return new RegExp(regexpStringArray.join("|"));

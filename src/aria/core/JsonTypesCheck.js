@@ -139,14 +139,14 @@
      */
     var __numberPreprocess = function (beanDef) {
         var parent = beanDef[jv._MD_PARENTDEF];
-        if (parent.$minValue != undefined) {
+        if (typeof(parent.$minValue) != "undefined") {
             if (typeof(beanDef.$minValue) == "undefined") {
                 beanDef.$minValue = parent.$minValue;
             } else if (beanDef.$minValue < parent.$minValue) {
                 jv._logError(jv.NUMBER_INVALID_INHERITANCE, ["$minValue", beanDef[jv._MD_TYPENAME]]);
             }
         }
-        if (parent.$maxValue != undefined) {
+        if (typeof(parent.$maxValue) != "undefined") {
             if (typeof(beanDef.$maxValue) == "undefined") {
                 beanDef.$maxValue = parent.$maxValue;
             } else if (beanDef.$maxValue > parent.$maxValue) {
@@ -281,7 +281,7 @@
                             beanDef[jv._MD_ENUMVALUESMAP] = pmap;
                             return;
                         }
-                    } else if (ev == null || ev.length == 0) {
+                    } else if (ev == null || ev.length === 0) {
                         ev = [];
                         jv._logError(jv.MISSING_ENUMVALUES, [beanDef[jv._MD_TYPENAME]]);
                     }
@@ -551,7 +551,7 @@
                             beanDef : beanDef,
                             path : args.path
                         });
-                        if (jv._errors.length == 0) {
+                        if (jv._errors.length === 0) {
                             // no error for this type, we forget about any error for other types
                             jv._errors = saveErrors;
                             return;

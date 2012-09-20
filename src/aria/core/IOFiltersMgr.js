@@ -104,10 +104,9 @@
 
     /**
      * Manages filters for IO.
-     * @class aria.core.IOFiltersMgr
      */
     Aria.classDefinition({
-        $classpath : 'aria.core.IOFiltersMgr',
+        $classpath : "aria.core.IOFiltersMgr",
         $singleton : true,
         $constructor : function () {
             /**
@@ -260,7 +259,7 @@
                     }
                     filterToRemove.filterClasspath = null;
                     filterToRemove.initArgs = null;
-                    if (newFiltersArray.length == 0) {
+                    if (newFiltersArray.length === 0) {
                         this._filters = null;
                     } else {
                         this._filters = newFiltersArray;

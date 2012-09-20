@@ -15,14 +15,12 @@
 
 /**
  * Widget used to load sub-templates.
- * @class aria.widgets.Template
- * @extends aria.widgets.Widget
  */
 Aria.classDefinition({
-    $classpath : 'aria.widgets.Template',
-    $extends : 'aria.widgets.container.Container',
-    $dependencies : ['aria.templates.TemplateTrait', 'aria.templates.TemplateCtxt', 'aria.utils.Dom',
-            'aria.templates.CfgBeans', 'aria.templates.ModuleCtrlFactory', 'aria.core.environment.Customizations'],
+    $classpath : "aria.widgets.Template",
+    $extends : "aria.widgets.container.Container",
+    $dependencies : ["aria.templates.TemplateTrait", "aria.templates.TemplateCtxt", "aria.utils.Dom",
+            "aria.templates.CfgBeans", "aria.templates.ModuleCtrlFactory", "aria.core.environment.Customizations"],
     $events : {
         "ElementReady" : {
             description : "Raised when the template content is fully displayed."
@@ -170,7 +168,8 @@ Aria.classDefinition({
         },
 
         /**
-         * FIXME: doc
+         * Verify that the configuration is valid. This will set this._cfgOk to either true or false
+         * @protected
          */
         _checkCfgConsistency : function () {
             var tplcfg = this._tplcfg;
@@ -374,7 +373,7 @@ Aria.classDefinition({
                 this.$onOnce({
                     'ElementReady' : function () {
                         var focusSuccess = this.subTplCtxt.$focusFromParent();
-                        if (focusSuccess == false && cb) {
+                        if (focusSuccess === false && cb) {
                             this.$callback(cb);
                         }
                     },

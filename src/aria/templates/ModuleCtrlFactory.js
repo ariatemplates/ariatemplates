@@ -494,7 +494,7 @@
      */
     var loadSubModules = function (parentModuleInfo, subModulesDescArray, cb, customModules, recursionCheck) {
         var subModulesDescArrayLength = subModulesDescArray.length;
-        if (subModulesDescArrayLength == 0) {
+        if (subModulesDescArrayLength === 0) {
             this.$callback(cb, {
                 subModules : [],
                 errors : 0
@@ -618,12 +618,11 @@
     /**
      * This singleton class manages the initialization and destruction of module controllers and their associated flow
      * controller. Every module controller creation or destruction should pass through this class.
-     * @class aria.templates.ModuleCtrlFactory
      */
     Aria.classDefinition({
-        $classpath : 'aria.templates.ModuleCtrlFactory',
-        $dependencies : ['aria.templates.CfgBeans', 'aria.templates.ObjectLoading',
-                'aria.core.environment.Customizations'],
+        $classpath : "aria.templates.ModuleCtrlFactory",
+        $dependencies : ["aria.templates.CfgBeans", "aria.templates.ObjectLoading",
+                "aria.core.environment.Customizations"],
         $singleton : true,
         $constructor : function () {
             typeUtils = aria.utils.Type;

@@ -22,14 +22,12 @@
 
     /**
      * Singleton dedicated to popup management
-     * @class aria.utils.PopupManager
-     * @extends aria.core.JsObject
      * @singleton
      */
     Aria.classDefinition({
-        $classpath : 'aria.popups.PopupManager',
-        $dependencies : ['aria.DomEvent', 'aria.utils.Event', 'aria.utils.Array', 'aria.utils.Dom', 'aria.utils.Math',
-                'aria.templates.NavigationManager', 'aria.utils.AriaWindow'],
+        $classpath : "aria.popups.PopupManager",
+        $dependencies : ["aria.DomEvent", "aria.utils.Event", "aria.utils.Array", "aria.utils.Dom", "aria.utils.Math",
+                "aria.templates.NavigationManager", "aria.utils.AriaWindow"],
         $events : {
             "modalPopupPresent" : {
                 description : "Notifies that a modal popup has been opened when no other modal popup was already opened."
@@ -317,7 +315,7 @@
                 new aria.DomEvent(event), target = /** @type HTMLElement */
                 domEvent.target;
 
-                if (this.openedPopups.length == 0) {
+                if (this.openedPopups.length === 0) {
                     domEvent.$dispose();
                     return;
                 }
@@ -400,7 +398,7 @@
                     this.connectEvents();
                 }
                 if (popup.modalMaskDomElement) {
-                    if (this.modalPopups == 0) {
+                    if (this.modalPopups === 0) {
                         this.connectModalEvents();
                         this.$raiseEvent("modalPopupPresent");
                     }
@@ -422,7 +420,7 @@
                 utilsArray.remove(this.openedPopups, popup);
                 if (popup.modalMaskDomElement) {
                     this.modalPopups -= 1;
-                    if (this.modalPopups == 0) {
+                    if (this.modalPopups === 0) {
                         this.disconnectModalEvents();
                         this.$raiseEvent("modalPopupAbsent");
                     }

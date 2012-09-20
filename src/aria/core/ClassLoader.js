@@ -222,7 +222,7 @@ Aria.classDefinition({
          * @param {String} depType type of dependency
          */
         addDependencies : function (mdp, depType) {
-            if (mdp == false) {
+            if (mdp === false) {
                 // some dependencies could not be loaded
                 this._mdpErrors = true;
                 return;
@@ -325,7 +325,7 @@ Aria.classDefinition({
             }
 
             var cp = evt.refClasspath;
-            this.$assert(283, cp != '');
+            this.$assert(283, !!cp);
             this.$assert(284, this._mdp != null); // check that this was not disposed already
             var sz = this._mdp.length, itm, isReady = true, found = false;
             for (var i = 0; sz > i; i++) {
@@ -417,6 +417,12 @@ Aria.classDefinition({
             this._classDefinitionCalled = true;
         },
 
+        /**
+         * Load the class definition file after generating the class if needed.
+         * @param {String} classDef File content, can be either the generated class definition or the source file itself
+         * @param {String} logicalPath class' logical classpath
+         * @param {String} additionalDependencyClassPath additional class to be added to $dependencies when generating the class
+         */
         _loadClassAndGenerate : function (classDef, logicalPath, additionalDependencyClassPath) {
             var __alreadyGeneratedRegExp = /^\s*Aria\.classDefinition\(/;
 

@@ -15,16 +15,12 @@
 
 /**
  * Store for application variables.
- * @class aria.core.AppEnvironment
- * @extends aria.core.JsObject
  * @singleton
  */
 Aria.classDefinition({
-    $classpath : 'aria.core.AppEnvironment',
+    $classpath : "aria.core.AppEnvironment",
+    $dependencies : ["aria.utils.Object"],
     $singleton : true,
-    $constructor : function () {
-        this.applicationSettings = {};
-    },
     $events : {
         "changingEnvironment" : {
             description : "Notifies that the environment has changed and should be normalized (immediately) and applied (perhaps asynchronously) by listeners.",
@@ -46,6 +42,12 @@ Aria.classDefinition({
     },
     $prototype : {
         /**
+         * Stores the application settings.
+         * @type Object
+         */
+        applicationSettings : {},
+
+        /**
          * Stores the application variables. Please refer to documentation for parameter types.
          * @public
          * @param {Object} cfg Configuration object
@@ -59,7 +61,7 @@ Aria.classDefinition({
             if (update) {
                 aria.utils.Json.inject(cfg, this.applicationSettings, true);
             } else {
-                if (keys.length == 0) {
+                if (keys.length === 0) {
                     // reset stored application settings
                     this.applicationSettings = {};
                     keys = null;

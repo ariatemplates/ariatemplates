@@ -14,11 +14,10 @@
  */
 
 /**
- * @class aria.utils.TemplateTrait Class has common methods used in aria.widget.Templates and aria.html.Template
+ * Class with common methods used in aria.widget.Templates and aria.html.Template
  */
 Aria.classDefinition({
     $classpath : "aria.templates.TemplateTrait",
-    $constructor : function () {},
     $prototype : {
 
         /**
@@ -50,6 +49,7 @@ Aria.classDefinition({
                 });
             }
         },
+
         /**
          * Called when inner template raises its first "Ready Event" event to raise an event to the the parent widget
          * @private
@@ -76,7 +76,7 @@ Aria.classDefinition({
                 this.$onOnce({
                     'ElementReady' : function () {
                         var focusSuccess = this.subTplCtxt.$focusFromParent();
-                        if (focusSuccess == false && cb) {
+                        if (focusSuccess === false && cb) {
                             this.$callback(cb);
                         }
                     },

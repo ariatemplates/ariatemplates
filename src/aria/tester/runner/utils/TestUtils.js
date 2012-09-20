@@ -16,17 +16,10 @@
 (function (){
 /**
  * Mutualize most of the test formatting and information extraction logic
- * @class aria.tester.runner.Utils.TestUtils
- * @extends extends
  */
 var classDefinition = {
-    $classpath : 'aria.tester.runner.utils.TestUtils',
+    $classpath : "aria.tester.runner.utils.TestUtils",
     $singleton : true,
-    $dependencies : [],
-    $constructor : function () {
-    },
-    $destructor : function () {
-    },
     $prototype : {
         /**
          *
@@ -131,7 +124,7 @@ var classDefinition = {
                         var suiteSubTests = this.getSubTestsAsArray(instance);
                         if (
                             instance.getSubTests().length != instance.getSubTestSuites().length &&
-                            suiteSubTests.length != 0
+                            suiteSubTests.length !== 0
                         ) {
                             tests.push(test);
                         }
@@ -156,7 +149,7 @@ var classDefinition = {
                 var subsuite = subsuites[i].instance;
                 if (subsuite.isSelected() == -1) {
                     unselectedSuites.push(subsuite.$classpath);
-                } else if (subsuite.isSelected() == 0) {
+                } else if (subsuite.isSelected() === 0) {
                     unselectedSuites = unselectedSuites.concat(this.getUnselectedSubSuites(subsuite));
                 }
             }

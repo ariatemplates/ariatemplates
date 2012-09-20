@@ -15,10 +15,9 @@
 
 /**
  * Script associated with template dedicated to object display in tree
- * @class aria.tools.common.ObjectTreeDisplayScript
  */
 Aria.tplScriptDefinition({
-    $classpath : 'aria.tools.common.ObjectTreeDisplayScript',
+    $classpath : "aria.tools.common.ObjectTreeDisplayScript",
     $prototype : {
 
         /**
@@ -92,7 +91,7 @@ Aria.tplScriptDefinition({
             }, typeUtils = aria.utils.Type;
 
             for (var key in element) {
-                if (element.hasOwnProperty(key) && !this.$json.isMetadata(key) && key.indexOf("view:ariaDebug:showOpen") != 0) {
+                if (element.hasOwnProperty(key) && !this.$json.isMetadata(key) && key.indexOf("view:ariaDebug:showOpen") !== 0) {
                     var subElement = element[key], target;
 
                     // filter meta / non meta

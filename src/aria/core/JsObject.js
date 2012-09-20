@@ -66,7 +66,7 @@
                     }
                 }
             }
-            if (arr.length == 0) {
+            if (arr.length === 0) {
                 // no listener anymore for this event/interface
                 callbacksMap[name] = null;
                 delete callbacksMap[name];
@@ -160,11 +160,9 @@
      * @class aria.core.JsObject Base class from which derive all Js classes defined through Aria.classDefinition()
      */
     Aria.classDefinition({
-        $classpath : 'aria.core.JsObject',
-        // JsObject is an exception regarding $constructor and
-        // $destructor:
-        // it is not necessary to call these methods when extending
-        // JsObject
+        $classpath : "aria.core.JsObject",
+        // JsObject is an exception regarding $constructor and $destructor:
+        // it is not necessary to call these methods when extending JsObject
         $constructor : function () {},
         $destructor : function () {
             // tag this instance as disposed.
@@ -178,26 +176,6 @@
             ASSERT_FAILURE : "Assert #%1 failed in %2",
             CALLBACK_ERROR : "An error occured while processing a callback function: \ncalling class: %1\ncalled class: %2"
         },
-        $beans : {
-            "Callback" : {
-                $type : "json:Object",
-                $description : "Structure describing the function to call-back",
-                $properties : {
-                    "fn" : {
-                        $type : "json:FunctionRef",
-                        $description : "Function to call back - note: will also be called in case of error or failure"
-                    },
-                    "scope" : {
-                        $type : "json:ObjectRef",
-                        $description : "Reference to the object that should be referred as 'this' in the callback function"
-                    },
-                    "args" : {
-                        $type : "json:Object",
-                        $description : "Optional object passed as argument of the callback function - allows to pass some contextual state information"
-                    }
-                }
-            }
-        },
         $prototype : {
             /**
              * Prototype init method called at prototype creation time Allows to store class-level objects that are
@@ -209,6 +187,7 @@
             $init : function (p, def, sdef) {
                 p.$on = p.$addListeners // shortcut
             },
+
             /**
              * Check that a statement is true - if not an error is raised sample: this.@assert(12,myvar=='XYZ')
              * @param id {Integer} unique id that must be created and passed by the developer to easily track the assert
@@ -249,21 +228,21 @@
              * Aria.profilingData array. The classpath of this class will also be included in the record.
              * @param {String} message associated to the timestamp
              */
-            $logTimestamp : function () {},
+            $logTimestamp : Aria.empty,
 
             /**
              * Starts a time measure. Returns the id used to stop the measure.
              * @param {String} msg
              * @return {Number} profilingId
              */
-            $startMeasure : function () {},
+            $startMeasure : Aria.empty,
 
             /**
              * Stops a time measure. If the id is not specified, stop the last measure with this classpath.
              * @param {String} classpath
              * @param {String} id
              */
-            $stopMeasure : function () {},
+            $stopMeasure : Aria.empty,
 
             /**
              * Log a debug message to the logger
@@ -588,9 +567,7 @@
                             // we keep track of listeners which are meant to
                             // be called just once
                         };
-                        // lsn is an object as in 'start' or 'end'
-                        // samples
-                        // set default scope
+                        // lsn is an object as in 'start' or 'end' samples set default scope
                         if (!lsn.scope) {
                             lsn.scope = defaultScope;
                         }
@@ -609,8 +586,7 @@
                             this._listeners[evt] = [];
                         }
                     }
-                    // keep the interface under which the listener was
-                    // registered:
+                    // keep the interface under which the listener was registered:
                     lsn.src = src;
                     this._listeners[evt].push(lsn);
                 }
@@ -668,10 +644,8 @@
                 if (this._listeners == null) {
                     return;
                 }
-                // We must check itfWrap == null, so that it is not
-                // possible to unregister all the events
-                // of an object from its interface, if they have not
-                // been registered through that interface
+                // We must check itfWrap == null, so that it is not possible to unregister all the events of an object
+                // from its interface, if they have not been registered through that interface
                 if (scope == null && itfWrap == null) {
                     // remove all events
                     for (var evt in this._listeners) {
@@ -679,13 +653,10 @@
                             continue;
                         }
                         this._listeners[evt] = null; // remove array
-                        delete this._listeners[evt]; // remove ref in
-                        // this._listeners
+                        delete this._listeners[evt];
                     }
                 } else {
-                    // note that here, scope can be null (if itfWrap !=
-                    // null)
-                    // we need to filter all events in this case
+                    // note that here, scope can be null (if itfWrap != null) we need to filter all events in this case
                     for (var evt in this._listeners) {
                         if (!this._listeners.hasOwnProperty(evt)) {
                             continue;
@@ -714,7 +685,10 @@
              * be passed to the listener function will have the following structure:
              *
              * <pre>
-             *   { name: evtName, src: observableObject[someArg1:&quot;xx&quot;, ...] }
+             * {
+             *      name: evtName,
+             *      src: observableObject[someArg1:'xx', ...]
+             * }
              * </pre>
              *
              * NOTE: All properties except name and src are specific to the event.
@@ -730,16 +704,16 @@
              * Sample calls:
              *
              * <pre>
-             * this.$raiseEvent(&quot;load&quot;)
+             * this.$raiseEvent('load');
              * this.$raiseEvent({
-             *     name : &quot;load&quot;,
+             *     name : 'load',
              *     someProperty : 123
-             * })
+             * });
              * </pre>
              */
             $raiseEvent : function (evtDesc) {
                 if (this._listeners == null) {
-                    return; // nobody listening!
+                    return;
                 }
                 var nm = '', hasArgs = false;
                 if (typeof(evtDesc) == 'string') {
@@ -748,43 +722,28 @@
                     nm = evtDesc.name;
                     hasArgs = true;
                 }
-                // The comparison with null below is important, as an
-                // empty string is a valid event description.
+                // The comparison with null below is important, as an empty string is a valid event description.
                 if (nm == null || this.$events[nm] == null) {
-                    // invalid event
                     this.$logError(this.UNDECLARED_EVENT, [nm, this.$classpath]);
                 } else {
                     // loop on evtName + '*'
                     var evtNames = [nm, '*'], evt = null;
                     var listeners = this._listeners;
                     for (var idx = 0; idx < 2; idx++) {
-                        // warning this can be disposed during this call
-                        // as some events (like 'complete') may be
-                        // caught for this purpose
-                        // also make a copy because a callback could
-                        // modify this list
+                        // warning this can be disposed during this call as some events (like 'complete') may be caught
+                        // for this purpose also make a copy because a callback could modify this list
                         var lsnList = listeners[evtNames[idx]];
                         if (lsnList) {
                             if (!evt) {
-                                // create the event object
-                                // if we have an event description
-                                // object, we use it directly to be able
-                                // to pass back
-                                // parameters to the function which
-                                // called $raiseEvent
+                                // create the event object if we have an event description object, we use it directly to
+                                // be able to pass back parameters to the function which called $raiseEvent
                                 evt = (hasArgs ? evtDesc : {});
                                 evt.name = nm;
-                                // the src property of the event is now
-                                // set differently for each listener,
-                                // because when
-                                // interfaces have events, we do not
-                                // want the event object to be used to
-                                // access the
-                                // whole object instead of only the
-                                // interface
+                                // the src property of the event is now set differently for each listener, because when
+                                // interfaces have events, we do not want the event object to be used to access the
+                                // whole object instead of only the interface
                             }
-                            // also make a copy because a callback could
-                            // modify this list
+                            // also make a copy because a callback could modify this list
                             lsnList = lsnList.slice(0);
 
                             var sz = lsnList.length, lsn, src;
@@ -792,55 +751,33 @@
                                 // call listener
                                 lsn = lsnList[i];
                                 src = lsn.src;
-                                // Check lsn.removed because it is
-                                // possible that the listener is removed
-                                // while
-                                // $raiseEvent is running. In this case,
-                                // lsnList still contains the listener,
-                                // but
-                                // __removeListeners sets lsn.src to
-                                // null
-                                // Also check that the event is in
-                                // src.$events in case idx == 1 because
-                                // when
-                                // registering a listener on '*' from an
-                                // interface wrapper, the listener must
-                                // only be
-                                // called for events of the interface
-                                // (not for all the events of the
-                                // object).
-                                // The comparison with null below is
-                                // important, as an empty string is a
-                                // valid event
+                                // Check lsn.removed because it is possible that the listener is removed while
+                                // $raiseEvent is running.
+                                // In this case, lsnList still contains the listener, but __removeListeners sets lsn.src
+                                // to null
+                                // Also check that the event is in src.$events in case idx == 1 because when registering
+                                // a listener on '*' from an interface wrapper, the listener must only be called for
+                                // events of the interface (not for all the events of the object).
+                                // The comparison with null below is important, as an empty string is a valid event
                                 // description.
-                                if (!lsn.removed && (idx == 0 || src.$events[nm] != null)) {
-                                    evt.src = src; // update the source
-                                    // of the event
-                                    // (useful if
-                                    // registering an
-                                    // event from an interface)
+                                if (!lsn.removed && (idx === 0 || src.$events[nm] != null)) {
+                                    // update the source of the event (useful if registering an event from an interface)
+                                    evt.src = src;
 
                                     if (lsn.once) {
-                                        // this listener was meant to be
-                                        // called just once
                                         delete lsn.once;
                                         var rmvCfg = {};
                                         rmvCfg[evt.name] = lsn;
 
-                                        // we must remove the listener
-                                        // before calling it
-                                        // (otherwise there can be
-                                        // infinite loops in the
-                                        // framework...)
+                                        // we must remove the listener before calling it (otherwise there can be
+                                        // infinite loops in the framework...)
                                         this.$removeListeners(rmvCfg);
                                     }
                                     this.$callback(lsn, evt);
                                 }
                             }
-                            evt.src = null; // set src to null so that
-                            // storing the evt object
-                            // does not grant
-                            // access to the whole object
+                            // set src to null so that storing the evt object does not grant access to the whole object
+                            evt.src = null;
                         }
                     }
                     listeners = lsnList = sz = null;

@@ -15,14 +15,11 @@
 
 /**
  * Utils for general Objects/Map
- * @class aria.utils.Object
- * @extends aria.core.JsObject
  * @singleton
  */
 Aria.classDefinition({
     $classpath : "aria.utils.Object",
     $singleton : true,
-    $constructor : function () {},
     $prototype : {
         /**
          * Returns an array of all own enumerable properties found upon a given object, in the same order as that provided by a for-in loop.
@@ -57,7 +54,7 @@ Aria.classDefinition({
          */
         isEmpty : function (object) {
             var keys = this.keys(object);
-            return (keys.length == 0) ? true : false;
+            return keys.length === 0;
         }
     }
 });

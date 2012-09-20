@@ -14,11 +14,11 @@
  */
 
 /**
- * @class aria.core.log.SilentArrayAppender This appender is simply stacking all messages in a in-memory array. It is
- * used by the jsUnit test framework to assert the existence of logs during the execution of a test.
+ * This appender is simply stacking all messages in a in-memory array. It is used by the jsUnit test framework to assert
+ * the existence of logs during the execution of a test.
  */
 Aria.classDefinition({
-    $classpath : 'aria.core.log.SilentArrayAppender',
+    $classpath : "aria.core.log.SilentArrayAppender",
     $constructor : function () {
         /**
          * The stack of logs
@@ -30,29 +30,59 @@ Aria.classDefinition({
         this.logs = [];
     },
     $prototype : {
+        /**
+         * Wheter the list of logs is empty or not
+         * @return {Boolean} true if the list is empty
+         */
         isEmpty : function () {
-            return this.logs.length == 0;
+            return this.logs.length === 0;
         },
 
+        /**
+         * Empty the list of logs
+         */
         empty : function () {
             this.logs = [];
         },
 
+        /**
+         * Get the list of logs
+         * @return {Array}
+         */
         getLogs : function () {
             return this.logs;
         },
 
-        setLogs : function (l) {
-            this.logs = l;
-        },
-
-        _saveLog : function (l) {
-            this.logs.push(l);
+        /**
+         * Set the list of logs to the given array
+         * @param {Array} logs
+         */
+        setLogs : function (logs) {
+            this.logs = logs;
         },
 
         /**
-         * Debug
-         * @param {String} className
+         * Store a log in the list
+         * @param {Object} log
+         *
+         * <pre>
+         * {
+         *      level : {String} log level [e.g. 'error', 'debug', 'warn', ...],
+         *      msg : {String} log message,
+         *      className : {String} class logging the message,
+         *      msgId : {String} message text (before arguments are replaced),
+         *      objOrErr : {Object} optional object to be inspected
+         * }
+         * </pre>
+         * @private
+         */
+        _saveLog : function (log) {
+            this.logs.push(log);
+        },
+
+        /**
+         * Log a Debug message
+         * @param {String} className class logging the message
          * @param {String} msg The message text (including arguments)
          * @param {String} msgText The message text (before arguments were replaced)
          * @param {Object} o An optional object to be inspected
@@ -68,8 +98,8 @@ Aria.classDefinition({
         },
 
         /**
-         * Info
-         * @param {String} className
+         * Log an Info message
+         * @param {String} className class logging the message
          * @param {String} msg The message text (including arguments)
          * @param {String} msgText The message text (before arguments were replaced)
          * @param {Object} o An optional object to be inspected
@@ -85,8 +115,8 @@ Aria.classDefinition({
         },
 
         /**
-         * Warn
-         * @param {String} className
+         * Log a Warn message
+         * @param {String} className class logging the message
          * @param {String} msg The message text (including arguments)
          * @param {String} msgText The message text (before arguments were replaced)
          * @param {Object} o An optional object to be inspected
@@ -102,8 +132,8 @@ Aria.classDefinition({
         },
 
         /**
-         * Error
-         * @param {String} className
+         * Log a Error message
+         * @param {String} className class logging the message
          * @param {String} msg The message text (including arguments)
          * @param {String} msgText The message text (before arguments were replaced)
          * @param {Object} e The exception to format

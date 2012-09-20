@@ -17,17 +17,12 @@
  * Parser for CSS Template. A CSS template should be interpreted by the template engine to build a CSS Template class.
  * The difference with the HTML Template parser is that in this case it's necessary to escape any curly brackets that
  * does not belong to a dictionary of allowed Template statements.
- * @class aria.templates.CSSParser
- * @extends aria.templates.Parser
  */
 Aria.classDefinition({
-    $classpath : 'aria.templates.CSSParser',
-    $extends : 'aria.templates.Parser',
-    $dependencies : ['aria.utils.String'],
+    $classpath : "aria.templates.CSSParser",
+    $extends : "aria.templates.Parser",
+    $dependencies : ["aria.utils.String"],
     $singleton : true,
-    $constructor : function () {
-        this.$Parser.constructor.apply(this, arguments);
-    },
     $statics : {
         // ERROR MESSAGES:
         MISSING_OPENINGBRACES : "line %1: Template parsing error: could not find corresponding '{'."
@@ -79,7 +74,7 @@ Aria.classDefinition({
 
                 if (nextOpening > -1 && (nextClosing > nextOpening || nextClosing == -1)) {
                     // found a '{'
-                    if (currentLevel == 0) {
+                    if (currentLevel === 0) {
                         lastOpenedLevel0 = nextOpening;
                     }
                     currentLevel++;
@@ -106,7 +101,7 @@ Aria.classDefinition({
                     currentPosition = nextOpening + 1;
                 } else if (nextClosing > -1) {
                     // found '}'
-                    if (currentLevel == 0) {
+                    if (currentLevel === 0) {
                         // missing opening '{' corresponding to '}'
                         this._computeLineNumbers();
                         this.$logError(this.MISSING_OPENINGBRACES, [this.positionToLineNumber(nextClosing)], this.context);
