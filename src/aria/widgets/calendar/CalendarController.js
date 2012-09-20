@@ -15,25 +15,21 @@
 
 (function () {
     var dateUtils;
-    var arrayUtils;
 
     /**
      * Calendar controller which manages calendar data.
-     * @class aria.widgets.calendar.CalendarController
      */
     Aria.classDefinition({
-        $classpath : 'aria.widgets.calendar.CalendarController',
-        $extends : 'aria.templates.ModuleCtrl',
-        $implements : ['aria.widgets.calendar.ICalendarController'],
-        $dependencies : ['aria.widgets.Template', 'aria.utils.Date', 'aria.widgets.calendar.CfgBeans',
-                'aria.utils.environment.Date'],
+        $classpath : "aria.widgets.calendar.CalendarController",
+        $extends : "aria.templates.ModuleCtrl",
+        $implements : ["aria.widgets.calendar.ICalendarController"],
+        $dependencies : ["aria.widgets.Template", "aria.utils.Date", "aria.widgets.calendar.CfgBeans",
+                "aria.utils.environment.Date", "aria.utils.Array"],
         $onload : function () {
             dateUtils = aria.utils.Date;
-            arrayUtils = aria.utils.Array;
         },
         $onunload : function () {
             dateUtils = null;
-            arrayUtils = null;
         },
         $constructor : function () {
             this.$ModuleCtrl.constructor.call(this);
@@ -221,7 +217,7 @@
                         date : newValue
                     });
                 }
-                return (evt.cancelDefault == true);
+                return (evt.cancelDefault === true);
             },
             /**
              * Return information about the position of the given JavaScript date in the calendar data model.
@@ -230,6 +226,7 @@
              * null if the date cannot be found in the current calendar data model.
              */
             getDatePosition : function (jsDate) {
+                var arrayUtils = aria.utils.Array;
                 var calendar = this._calendarData;
                 var diff = dateUtils.dayDifference(this._realStartDate, jsDate);
                 var weekIndex = Math.floor(diff / 7);
@@ -332,7 +329,7 @@
              *
              */
             update : function () {
-                if (this._changedSettingsNbr == 0) {
+                if (this._changedSettingsNbr === 0) {
                     // no need to update if no property changed
                     return;
                 }
@@ -527,7 +524,7 @@
                     days.push(day);
                     if (!monthKey) {
                         monthKey = day.monthKey;
-                    } else if (overlappingDays == 0 && monthKey != day.monthKey) {
+                    } else if (overlappingDays === 0 && monthKey != day.monthKey) {
                         overlappingDays = i;
                     }
                     if (currentDate.getDate() == 1) {
@@ -542,7 +539,7 @@
                     }
                 }
                 res.overlappingDays = overlappingDays;
-                if (overlappingDays == 0) {
+                if (overlappingDays === 0) {
                     res.month = monthKey;
                 }
                 return res;
@@ -585,7 +582,7 @@
                     label : dateUtils.format(date, settings.dateLabelFormat),
                     monthKey : this._getMonthKey(jsDate)
                 };
-                if (day == 0 || day == 6) {
+                if (day === 0 || day === 6) {
                     res.isWeekend = true;
                 }
                 if (dateUtils.isSameDay(date, this._calendarData.today)) {

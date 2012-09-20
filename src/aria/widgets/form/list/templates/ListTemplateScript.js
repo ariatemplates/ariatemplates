@@ -15,10 +15,9 @@
 
 /**
  * Script for the default list template
- * @class aria.widgets.form.list.ListTemplateScript
  */
 Aria.tplScriptDefinition({
-    $classpath : 'aria.widgets.form.list.templates.ListTemplateScript',
+    $classpath : "aria.widgets.form.list.templates.ListTemplateScript",
     $constructor : function () {
         /**
          * Name of the element containing the displayed list items
@@ -105,7 +104,7 @@ Aria.tplScriptDefinition({
                             var idx = evt.selectedIndexes[i];
                             var wrapper = this.$getChild(this._refContainer, idx + this._itemShift);
                             wrapper.classList.setClassName(this._getClassForItem(items[idx], false));
-                            if (i == 0) {
+                            if (i === 0) {
                                 wrapper.scrollIntoView();
                             }
                             wrapper.$dispose();

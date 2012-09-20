@@ -17,23 +17,12 @@
  * This class allows to sequence several tasks in an asynchronous way. This is particularly useful for long-running
  * processes that need to notify HTML-based UIs of process progression (HTML UIs are only refreshed when the main thread
  * pauses)
- * @class aria.core.Sequencer
- * @extends aria.core.JsObject
  */
 Aria.classDefinition({
-    $classpath : 'aria.core.Sequencer',
+    $classpath : "aria.core.Sequencer",
     $events : {
-        /**
-         * @event start
-         */
         "start" : "raised when the sequencer starts",
-        /**
-         * @event end
-         */
         "end" : "raised when all taks have been completed",
-        /**
-         * @event taskStart
-         */
         "taskStart" : {
             description : "raised when a task starts: note task processors will automatically receive such events but will not be registered as listeners, so that they only receive the event for their own task",
             properties : {
@@ -42,9 +31,6 @@ Aria.classDefinition({
                 taskArgs : "{Object} arguments associated to the task"
             }
         },
-        /**
-         * @event taskError
-         */
         "taskError" : {
             description : "raised when an exception is caught during a task execution",
             properties : {
@@ -57,7 +43,18 @@ Aria.classDefinition({
         }
     },
     $constructor : function () {
+        /**
+         * State of the Sequencer, either STATE_IDLE or STATE_PROCESSING
+         * @type Integer
+         * @protected
+         */
         this._state = this.STATE_IDLE;
+
+        /**
+         * List of task to be performed
+         * @type Array
+         * @protected
+         */
         this._tasks = [];
     },
     $destructor : function () {
@@ -66,61 +63,75 @@ Aria.classDefinition({
     },
     $statics : {
         /**
-         * Enum to qualify the sequencer state
+         * Enum to qualify the sequencer state. No tasks running
          * @type Number
          */
         STATE_IDLE : 0,
+
+        /**
+         * Enum to qualify the sequencer state. Pending task completion
+         * @type Number
+         */
         STATE_PROCESSING : 1,
 
         // ERROR MESSAGE:
-        INVALID_TASKDESC : "invalid task description"
+        INVALID_TASKDESC : "Invalid task description",
+        ALREADY_PROCESSING : "Sequencer is in state PROCESSING, cannot start() again"
     },
     $prototype : {
-
         /**
          * Append a task to the task list. Tasks will be triggered through events - as such task processors are
-         * considered as special listeners for the Sequencer object Note: asynchronous tasks should call the
-         * notifyTaskEnd() method of the sequencer
+         * considered as special listeners for the Sequencer object <br />
+         * Note: asynchronous tasks should call the notifyTaskEnd() method of the sequencer
+         * @example
          *
          * <pre>
-         *     o.addTask({
-         *         name: &quot;task name&quot;, // mandatory
-         *         fn: obj.doTask, // mandatory
-         *         scope: obj, // mandatory
-         *         args: {x:&quot;Sample Argument&quot;,y:123} // optional - default: null
-         *         asynchronous: false // optional - default: false
-         *     })
+         * addTask({
+         *      name: 'task name'
+         *      fn: obj.doTask,
+         *      scope: obj,
+         *      args: {x:'Sample Argument&quot;,y:123}
+         *      asynchronous: true
+         * });
          * </pre>
          *
          * @param {Object} taskDesc the task description object
+         *
+         * <pre>
+         * {
+         *      name: {String} task name - mandatory,
+         *      fn: {Function} function to be executed - mandatory,
+         *      scope: {Object} scope for the task object - mandatory,
+         *      args: {Object} arguments passed to the task function - optional,
+         *      asynchronous: {Boolean} Whether or not the task is asynchronous
+         * });
+         * </pre>
          */
         addTask : function (taskDesc) {
-            if (taskDesc == null || typeof(taskDesc.name) != 'string' || taskDesc.name == ''
-                    || typeof(taskDesc.fn) != 'function' || typeof(taskDesc.scope) != 'object') {
+            if (!taskDesc || typeof(taskDesc.name) != 'string' || !taskDesc.name || typeof(taskDesc.fn) != 'function'
+                    || typeof(taskDesc.scope) != 'object') {
                 return this.$logError(this.INVALID_TASKDESC);
             }
-            // register task
+
             this._tasks.push(taskDesc);
         },
+
         /**
          * Start the task sequence
          */
         start : function () {
-            var sz = this._tasks.length;
-            // check if no task or already processing - TODO log
             if (this._state == this.STATE_PROCESSING) {
-                return;
+                return this.$logWarn(this.ALREADY_PROCESSING);
             }
 
             this._state = this.STATE_PROCESSING;
             this.$raiseEvent("start");
 
-            if (sz >= 1) {
-                // run first task
+            if (this._tasks.length > 0) {
                 aria.core.Timer.addCallback({
                     fn : this._execTask,
                     scope : this,
-                    delay : 1,
+                    delay : 12,
                     args : {
                         taskId : 0
                     }
@@ -138,16 +149,17 @@ Aria.classDefinition({
                  */
             }
         },
+
         /**
          * Internal method called through the Time callback to execute a specific task
          * @param {Integer} taskId
-         * @private
+         * @protected
          */
         _execTask : function (args) {
             var taskId = args.taskId;
             var sz = this._tasks.length;
             if (taskId == null || taskId > sz - 1) {
-                return; // invalid call
+                return;
             }
             var task = this._tasks[taskId];
             var continueProcessing = true;
@@ -179,7 +191,7 @@ Aria.classDefinition({
                 }
             }
 
-            if (task.asynchronous != true) {
+            if (task.asynchronous !== true) {
                 this.notifyTaskEnd(taskId, !continueProcessing);
             }
         },
@@ -199,7 +211,7 @@ Aria.classDefinition({
             }
 
             var sz = this._tasks.length;
-            if (terminate != true) {
+            if (terminate !== true) {
                 if (taskId < sz - 1) {
                     // this is not the last task
                     aria.core.Timer.addCallback({
@@ -215,13 +227,14 @@ Aria.classDefinition({
                     terminate = true;
                 }
             }
-            if (terminate == true) {
+            if (terminate === true) {
                 this._end();
             }
         },
+
         /**
          * Internal function called to notify of the end of the process
-         * @private
+         * @protected
          */
         _end : function () {
             // end task processing

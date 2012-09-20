@@ -153,9 +153,9 @@ Aria.classDefinition({
                 this.$TextInput._reactToControllerReport.call(this, report, arg);
                 // check that widget has not been disposed
                 if (this._cfg) {
-                    if (openDropdown == true && !this._dropdownPopup) {
+                    if (openDropdown === true && !this._dropdownPopup) {
                         this._openDropdown();
-                    } else if (openDropdown == false && this._dropdownPopup) {
+                    } else if (openDropdown === false && this._dropdownPopup) {
                         this._closeDropdown();
                     } else if (repositionDropDown && this._dropdownPopup) {
                         this._closeDropdown();

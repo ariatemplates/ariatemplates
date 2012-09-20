@@ -16,7 +16,6 @@
 /**
  * Pseudo random number generator.
  * Generates random numbers from a seed using a linear congruential generator.
- * @class aria.utils.Rand
  */
 Aria.classDefinition({
     $classpath : "aria.utils.Rand",
@@ -44,7 +43,7 @@ Aria.classDefinition({
          * Last random number generated
          * @type Number
          */
-        this.last = (seed == undefined) ? 12483 : seed;
+        this.last = (seed == null) ? 12483 : seed;
     },
     $prototype : {
         /**

@@ -21,7 +21,7 @@ Aria.classDefinition({
     $extends : "aria.widgets.form.InputWithFrame",
     $dependencies : ["aria.utils.Function", "aria.utils.Data", "aria.utils.String",
             "aria.widgets.environment.WidgetSettings"],
-    $css : ['aria.widgets.form.TextInputStyle'],
+    $css : ["aria.widgets.form.TextInputStyle"],
     /**
      * TextInput constructor
      * @param {aria.widgets.CfgBeans.TextInputCfg} cfg the widget configuration
@@ -427,8 +427,7 @@ Aria.classDefinition({
                 var stopValueProp = false;
                 var delayedValidation = false;
                 if (arg) {
-                    resetErrorIfOK = (arg.resetErrorIfOK != false); // true by
-                    // default
+                    resetErrorIfOK = (arg.resetErrorIfOK !== false); // true by default
                     if (arg.hasFocus != null) {
                         // replace default hasFocus property
                         hasFocus = arg.hasFocus;
@@ -642,7 +641,7 @@ Aria.classDefinition({
             } else if (propertyName == "prefillError") {
                 if (newValue) {
                     this.setPrefillText(true, "", true);
-                } else if (newValue == false) {
+                } else if (newValue === false) {
                     this.setPrefillText(true, this._cfg.prefill, true);
                 }
             } else {
@@ -1000,7 +999,7 @@ Aria.classDefinition({
                     // callback will set proper state
                     if (rep.report) {
                         this.changeProperty("error", false);
-                        if (rep.report.text == null || rep.report.text == "") {
+                        if (rep.report.text == null || rep.report.text === "") {
                             if (cfg.prefill && cfg.prefill + "") {
                                 this._isPrefilled = true;
                             } else {

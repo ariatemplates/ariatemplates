@@ -14,9 +14,8 @@
  */
 
 /**
- * Select widget allows the use of a simple HTML select element or an AT skin version.
- * @class aria.widgets.form.Select Class for both versions of Select - simpleHtml and AT skin.
- * @extends aria.widgets.form.DropDownInput
+ * Select widget allows the use of a simple HTML select element or an AT skin version. Class for both versions of Select -
+ * simpleHtml and AT skin.
  */
 Aria.classDefinition({
     $classpath : "aria.widgets.form.Select",
@@ -118,9 +117,9 @@ Aria.classDefinition({
                     this._updateValue(true);
                 }
                 if (this._cfg) {
-                    if (openDropdown == true && !this._dropdownPopup) {
+                    if (openDropdown === true && !this._dropdownPopup) {
                         this._openDropdown();
-                    } else if (openDropdown == false && this._dropdownPopup) {
+                    } else if (openDropdown === false && this._dropdownPopup) {
                         this._closeDropdown();
                     }
                 }
@@ -437,7 +436,7 @@ Aria.classDefinition({
                     for (var i = 0, l = newValue.length; i < l; i++) {
                         // string cast, otherwise encoding will fail
                         var optValue = '' + newValue[i].value;
-                        optionsMarkup.push('<option value="', stringUtils.encodeForQuotedHTMLAttribute(optValue), '"', optValue == '', '>', stringUtils.escapeHTML(newValue[i].label), '</option>');
+                        optionsMarkup.push('<option value="', stringUtils.encodeForQuotedHTMLAttribute(optValue), '">', stringUtils.escapeHTML(newValue[i].label), '</option>');
                     }
 
                     var selectField = this.getSelectField();

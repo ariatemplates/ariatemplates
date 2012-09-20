@@ -80,7 +80,7 @@ Aria.classDefinition({
                 }
             }
 
-            if (contents.length == 0) {
+            if (contents.length === 0) {
                 this.$logWarn(this.PLACEHOLDER_PATH_NOT_FOUND, [placeholderPath]);
             }
 

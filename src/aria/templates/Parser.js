@@ -325,7 +325,7 @@ Aria.classDefinition({
                         // check that the lastly opened statement has the same name
                         curStatement = stack.pop();
                         var closingStatement = tpl.substring(begin, end);
-                        if (stack.length == 0) { // the stack should always contain at least #ROOT#
+                        if (stack.length === 0) { // the stack should always contain at least #ROOT#
                             this.__logError(begin, this.STATEMENT_CLOSED_NOT_OPEN, [closingStatement]);
                             return null;
                         } else if (curStatement.name != closingStatement) {

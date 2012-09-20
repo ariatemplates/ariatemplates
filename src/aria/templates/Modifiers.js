@@ -96,7 +96,7 @@
                 str = '' + str; // force cast to string
                 var lgth = str.length;
                 if (lgth < sz) {
-                    var beg = (begin == true);
+                    var beg = (begin === true);
                     var a = [], diff = sz - lgth, sp = '&nbsp;'
                     if (!beg) {
                         a.push(str);
@@ -217,7 +217,7 @@
                     });
                     aria.utils.Array.forEach(toBeMatched, function (value, index, array) {
                         for (var i = 0, len = toBeHighlighted.length; value && i <= len; i += 1) {
-                            if (toBeHighlighted[i] == undefined || toBeHighlighted[i] == "") {
+                            if (toBeHighlighted[i] == null || toBeHighlighted[i] === "") {
                                 continue;
                             }
                             var frmtdHighlightStr = toBeHighlighted[i].replace(regExSpecials, "\\$1");
@@ -244,8 +244,12 @@
     };
 
     /**
-     * @class aria.templates.Modifiers Template modifiers
-     * @extends aria.core.JsObject
+     * Template modifiers. Modifiers can be used inside the template syntax
+     *
+     * <pre>
+     * ${'some text' | modifier}
+     * </pre>
+     *
      * @singleton
      */
     Aria.classDefinition({

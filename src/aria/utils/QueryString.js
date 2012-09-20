@@ -14,14 +14,17 @@
  */
 
 /**
- * @class aria.utils.QueryString Utils for javascript query strings
- * @extends aria.core.JsObject
+ * Utils for javascript query strings
  * @singleton
  */
 Aria.classDefinition({
-    $classpath : 'aria.utils.QueryString',
+    $classpath : "aria.utils.QueryString",
     $singleton : true,
     $constructor : function () {
+        /**
+         * Map query string key to their corresponding value
+         * @type Object
+         */
         this.keyValues = null;
     },
     $prototype : {
@@ -44,7 +47,7 @@ Aria.classDefinition({
          */
         parseQueryString : function (queryString) {
             var res = {};
-            if (queryString == null || queryString.length == 0) {
+            if (queryString == null || queryString.length === 0) {
                 return res;
             }
             queryString = queryString.substr(1, queryString.length); // remove "?" sign

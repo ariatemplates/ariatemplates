@@ -17,12 +17,11 @@
  * A table frame is a frame which is based on the table tag. The width, as well as the height, can either be defined by
  * the frame configuration, or left undefined so that they are adapted to the content. The expansion in width and height
  * are done by repeating images horizontally and vertically.
- * @class aria.widgets.frames.TableFrame
  */
 Aria.classDefinition({
-    $classpath : 'aria.widgets.frames.TableFrame',
-    $extends : 'aria.widgets.frames.Frame',
-    $dependencies : ['aria.utils.Dom'],
+    $classpath : "aria.widgets.frames.TableFrame",
+    $extends : "aria.widgets.frames.Frame",
+    $dependencies : ["aria.utils.Dom"],
     $constructor : function (cfg) {
         this.$Frame.constructor.call(this, cfg);
 
@@ -93,7 +92,7 @@ Aria.classDefinition({
          */
         writeMarkupBegin : function (out) {
             var cfg = this._cfg, cssPrefix = this._cssPrefix, state = cfg.stateObject;
-            var frameContainerClass = (cfg.block != true) ? ' ' : 'class="xBlock"';
+            var frameContainerClass = (cfg.block !== true) ? ' ' : 'class="xBlock"';
             var sizeInfo = {
                 style : '',
                 /*

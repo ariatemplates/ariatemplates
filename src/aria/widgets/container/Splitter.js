@@ -15,8 +15,6 @@
 
 /**
  * Splitter Widget
- * @class aria.widgets.container.Splitter Class definition for the splitter widget.
- * @extends aria.widgets.container.Container
  */
 Aria.classDefinition({
     $classpath : "aria.widgets.container.Splitter",
@@ -253,7 +251,7 @@ Aria.classDefinition({
                     }
                     size.size2 = this._height - size.size1;
                 } else {
-                    if (totalHeight != 0) {
+                    if (totalHeight !== 0) {
                         size.size1 = Math.floor((this._height * cfg.size1) / totalHeight);
                         size.size2 = this._height - size.size1;
                     } else {
