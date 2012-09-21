@@ -133,7 +133,7 @@
             try {
                 this._cfgOk = aria.core.JsonValidator.normalize({
                     json : cfg,
-                    beanName : this._cfgPackage + "." + this.$class + "Cfg"
+                    beanName : this._cfgBean || this._cfgPackage + "." + this.$class + "Cfg"
                 }, true);
             } catch (e) {
                 // PTR 05038013: aria.core.Log may not be available
@@ -234,6 +234,12 @@
              * @type String
              */
             _cfgPackage : "aria.widgets.CfgBeans",
+
+            /**
+             * Widget Cfg Bean Classpath to use when validating the configuration for the widget.
+             * @type String
+             */
+            _cfgBean : null,
 
             /**
              * Flag for widget that get initialized right after being displayed (typically, templates)

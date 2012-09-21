@@ -28,6 +28,7 @@ Aria.classDefinition({
         if (!this._skinnableClass) {
             this._skinnableClass = "MultiSelect";
         }
+        this._cfgBean = this._cfgBean || "aria.widgets.CfgBeans.MultiSelectCfg";
         var controller = new aria.widgets.controllers.MultiSelectController();
 
         // The following line was added for PTR 04557432: if the value in cfg is not set to [] as a default, then the

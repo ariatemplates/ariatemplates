@@ -27,6 +27,7 @@ Aria.classDefinition({
      * @param {aria.templates.TemplateCtxt} ctxt template context
      */
     $constructor : function (cfg, ctxt) {
+        this._cfgBean = this._cfgBean || "aria.widgets.CfgBeans.ButtonCfg";
         this.$ActionWidget.constructor.apply(this, arguments);
 
         /**

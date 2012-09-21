@@ -33,6 +33,7 @@ Aria.classDefinition({
         });
     },
     $constructor : function (cfg, ctxt) {
+        this._cfgBean = this._cfgBean || "aria.widgets.CfgBeans.ErrorListCfg";
         this.$TemplateBasedWidget.constructor.apply(this, arguments);
         var skinObj = aria.widgets.AriaSkinInterface.getSkinObject("ErrorList", this._cfg.sclass);
         var divCfg = aria.utils.Json.copy(cfg, true, ['width', 'minWidth', 'maxWidth', 'height', 'minHeight', 'block',

@@ -14,14 +14,13 @@
  */
 
 /**
- * Base class for all input widgets. Manage input data structure and properties, as well
- * as the label support
+ * Base class for all input widgets. Manage input data structure and properties, as well as the label support
  */
 Aria.classDefinition({
     $classpath : "aria.widgets.form.Input",
     $extends : "aria.widgets.Widget",
     $dependencies : ["aria.utils.Dom", "aria.widgets.form.InputValidationHandler", "aria.utils.Data",
-            "aria.utils.String", "aria.widgets.environment.WidgetSettings","aria.core.Browser"],
+            "aria.utils.String", "aria.widgets.environment.WidgetSettings", "aria.core.Browser"],
     /**
      * Input constructor
      * @param {aria.widgets.CfgBeans.InputCfg} cfg the widget configuration
@@ -29,6 +28,7 @@ Aria.classDefinition({
      */
     $constructor : function (cfg, ctxt) {
         this._setAutomaticBindings(cfg);
+        this._cfgBean = this._cfgBean || "aria.widgets.CfgBeans.InputCfg";
         this.$Widget.constructor.apply(this, arguments);
         /**
          * 1 Minimum width in px that must be kept for the input markup To be overridden by sub-classes
@@ -245,12 +245,12 @@ Aria.classDefinition({
             // PTR04951216 skinnable labels
             var cssClass = 'class="x' + this._skinnableClass + '_' + cfg.sclass + '_' + this._state + '_label"';
             var IE7Align;
-            (aria.core.Browser.isIE7)?(IE7Align="-25%"):(IE7Align="middle");
+            (aria.core.Browser.isIE7) ? (IE7Align = "-25%") : (IE7Align = "middle");
             out.write('<label ' + cssClass + ' style="');
             if (!aria.widgets.environment.WidgetSettings.getWidgetSettings().middleAlignment) {
                 out.write('vertical-align:-1px;');
             } else {
-                out.write('vertical-align:'+IE7Align+';');
+                out.write('vertical-align:' + IE7Align + ';');
             }
             out.write('display:' + cssDisplay);
             if (margin) {

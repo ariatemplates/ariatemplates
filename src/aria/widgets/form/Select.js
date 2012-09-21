@@ -27,6 +27,7 @@ Aria.classDefinition({
         if (!this._skinnableClass) {
             this._skinnableClass = "Select";
         }
+        this._cfgBean = this._cfgBean || "aria.widgets.CfgBeans.SelectCfg";
         this.$DropDownInput.constructor.call(this, cfg, ctxt, lineNumber);
 
         var skinObj = this._skinObj;

@@ -28,6 +28,7 @@ Aria.classDefinition({
      * @param {aria.templates.TemplateCtxt} ctxt template context
      */
     $constructor : function (cfg, ctxt) {
+        this._cfgBean = this._cfgBean || "aria.widgets.CfgBeans.DivCfg";
         this.$Container.constructor.apply(this, arguments);
         // make a call to the AriaSkinInterface to get access to the skin object applicable here
         if (!this._frame) {

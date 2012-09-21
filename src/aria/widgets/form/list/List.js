@@ -27,6 +27,7 @@ Aria.classDefinition({
         if (!cfg) {
             cfg = {};
         }
+        this._cfgBean = this._cfgBean || "aria.widgets.CfgBeans.ListCfg";
         this.$TemplateBasedWidget.constructor.apply(this, arguments);
         var realSkinObj = aria.widgets.AriaSkinInterface.getSkinObject("List", cfg.sclass);
         var skinObj = aria.utils.Json.copy(realSkinObj, false);

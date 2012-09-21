@@ -27,6 +27,7 @@ Aria.classDefinition({
      * @param {aria.templates.TemplateCtxt} ctxt template context
      */
     $constructor : function (cfg, ctxt, lineNumber) {
+        this._cfgBean = this._cfgBean || "aria.widgets.CfgBeans.DateFieldCfg";
         var controller = new aria.widgets.controllers.DateController();
         this.$TextInput.constructor.call(this, cfg, ctxt, lineNumber, controller);
         controller.setPattern(cfg.pattern);

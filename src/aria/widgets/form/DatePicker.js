@@ -27,6 +27,7 @@ Aria.classDefinition({
         if (!this._skinnableClass) {
             this._skinnableClass = "DatePicker";
         }
+        this._cfgBean = this._cfgBeam || "aria.widgets.CfgBeans.DatePickerCfg";
         var controller = new aria.widgets.controllers.DatePickerController();
         this.$DropDownTextInput.constructor.call(this, cfg, ctxt, lineNumber, controller);
         controller.setPattern(cfg.pattern);

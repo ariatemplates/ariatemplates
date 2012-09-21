@@ -30,7 +30,7 @@ Aria.classDefinition({
         if (!this._skinnableClass) {
             this._skinnableClass = "SelectBox";
         }
-
+        this._cfgBean = this._cfgBean || "aria.widgets.CfgBeans.SelectBoxCfg";
         var controller = new aria.widgets.controllers.SelectBoxController();
         this.$DropDownTextInput.constructor.call(this, cfg, ctxt, lineNumber, controller);
         this.controller.setListOptions(this._cfg.options);

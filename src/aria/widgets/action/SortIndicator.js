@@ -31,6 +31,7 @@ Aria.classDefinition({
      * @param {Number} lineNumber Line number corresponding in the .tpl file where the widget is created
      */
     $constructor : function (cfg, ctxt, lineNumber) {
+        this._cfgBean = this._cfgBean || "aria.widgets.CfgBeans.SortIndicatorCfg";
         this.$ActionWidget.constructor.apply(this, arguments);
 
         this._setSkinObj("SortIndicator");

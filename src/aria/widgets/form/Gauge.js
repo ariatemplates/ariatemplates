@@ -28,6 +28,7 @@ Aria.classDefinition({
      * @param {aria.templates.TemplateCtxt} ctxt template context
      */
     $constructor : function (cfg, ctxt) {
+        this._cfgBean = this._cfgBean || "aria.widgets.CfgBeans.GaugeCfg";
         this.$Widget.constructor.apply(this, arguments);
         this._cfg = cfg;
         this.__setSkinObj("Gauge");

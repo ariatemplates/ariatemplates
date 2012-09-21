@@ -28,6 +28,7 @@ Aria.classDefinition({
      * @param {aria.templates.TemplateCtxt} ctxt template context
      */
     $constructor : function (cfg, ctxt) {
+        this._cfgBean = this._cfgBean || "aria.widgets.CfgBeans.TextCfg";
         this.$Widget.constructor.apply(this, arguments);
 
         if (aria.utils.Type.isString(cfg.ellipsis)) {
