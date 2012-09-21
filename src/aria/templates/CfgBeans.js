@@ -454,6 +454,11 @@ Aria.beanDefinitions({
                     $description : "Id of the template, to be used to generate sub-ids.",
                     $mandatory : false
                 },
+                "originalId" : {
+                    $type : "json:String",
+                    $description : "User defined Id of the template.",
+                    $mandatory : false
+                },
                 "div" : {
                     $type : "Div",
                     $description : "Div in which the template should be loaded. The previous content of this div will be discarded.",
