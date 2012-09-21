@@ -1449,7 +1449,7 @@
     };
 
     if (Aria.$frameworkWindow) {
-        if (Aria.rootFolderPath !== null) { // Aria.rootFolderPath can be an empty string; it is a correct value.
+        if (Aria.rootFolderPath == null) { // Aria.rootFolderPath can be an empty string; it is a correct value.
 
             // Finding Aria.rootFolderPath
             var me, scripts, myUrl;
