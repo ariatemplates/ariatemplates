@@ -27,6 +27,7 @@ Aria.classDefinition({
         }
     },
     $constructor : function (cfg, ctxt) {
+        this._cfgBean = this._cfgBean || "aria.widgets.CfgBeans.TemplateCfg";
         aria.widgets.Template.superclass.constructor.apply(this, arguments);
 
         if (cfg.width != -1) {

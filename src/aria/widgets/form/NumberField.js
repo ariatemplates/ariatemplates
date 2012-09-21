@@ -28,6 +28,7 @@ Aria.classDefinition({
      */
     $constructor : function (cfg, ctxt, lineNumber) {
         var controller = new aria.widgets.controllers.NumberController();
+        this._cfgBean = this._cfgBean || "aria.widgets.CfgBeans.NumberFieldCfg";
         if (cfg.pattern) {
             controller.setPattern(cfg.pattern);
         }

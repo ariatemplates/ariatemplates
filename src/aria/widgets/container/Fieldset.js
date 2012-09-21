@@ -29,6 +29,7 @@ Aria.classDefinition({
      * @param {aria.templates.TemplateCtxt} ctxt template context
      */
     $constructor : function (cfg, ctxt) {
+        this._cfgBean = this._cfgBean || "aria.widgets.CfgBeans.FieldsetCfg";
         this.$Container.constructor.apply(this, arguments);
         if (!this._frame) {
             /* this._frame could be overriden in sub-classes */

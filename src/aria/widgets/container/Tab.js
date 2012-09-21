@@ -29,7 +29,7 @@ Aria.classDefinition({
      * @param {aria.templates.TemplateCtxt} ctxt template context
      */
     $constructor : function (cfg, ctxt) {
-
+        this._cfgBean = this._cfgBean || "aria.widgets.CfgBeans.TabCfg";
         this.$Container.constructor.apply(this, arguments);
         this._setSkinObj("Tab");
         this._mouseOver = false;

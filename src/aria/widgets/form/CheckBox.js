@@ -28,6 +28,7 @@ Aria.classDefinition({
      * @param {Number} lineNumber Line number corresponding in the .tpl file where the widget is created
      */
     $constructor : function (cfg, ctxt, lineNumber) {
+        this._cfgBean = this._cfgBean || "aria.widgets.CfgBeans.CheckBoxCfg";
         this.$Input.constructor.apply(this, arguments);
 
         if (!this._skinnableClass) {

@@ -43,6 +43,7 @@
             timer = null;
         },
         $constructor : function (cfg, ctxt) {
+            this._cfgBean = this._cfgBean || "aria.widgets.CfgBeans.TooltipCfg";
             this.$Container.constructor.apply(this, arguments);
             this._associatedWidget = null;
             this._showTimeout = null;

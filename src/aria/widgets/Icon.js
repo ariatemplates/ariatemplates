@@ -22,7 +22,7 @@ Aria.classDefinition({
     $dependencies : ["aria.utils.Dom"],
     $css : ["aria.widgets.IconStyle"],
     $constructor : function (cfg, ctxt) {
-
+        this._cfgBean = this._cfgBean || "aria.widgets.CfgBeans.IconCfg";
         this.$Widget.constructor.apply(this, arguments);
 
         /**

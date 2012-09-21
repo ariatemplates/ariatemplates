@@ -28,6 +28,7 @@ Aria.classDefinition({
     // TODO: find a better way, to also improve performances for custom templates
     $templates : ["aria.widgets.calendar.CalendarTemplate"],
     $constructor : function (cfg, ctxt) {
+        this._cfgBean = this._cfgBean || "aria.widgets.CfgBeans.CalendarCfg";
         this.$TemplateBasedWidget.constructor.apply(this, arguments);
         var sclass = this._cfg.sclass;
         var skinObj = aria.widgets.AriaSkinInterface.getSkinObject("Calendar", sclass);

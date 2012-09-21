@@ -40,7 +40,7 @@ Aria.classDefinition({
              */
             this._skinnableClass = "TextInput";
         }
-
+        this._cfgBean = this._cfgBean || "aria.widgets.CfgBeans.TextInputCfg";
         this.$InputWithFrame.constructor.apply(this, arguments);
 
         /**
@@ -259,8 +259,8 @@ Aria.classDefinition({
                 out.write(['<textarea', Aria.testMode ? ' id="' + this._domId + '_textarea"' : '',
                         cfg.disabled ? ' disabled="disabled"' : cfg.readOnly ? ' readonly="readonly"' : '', ' type="',
                         type, '" style="', inlineStyle.join(''), 'color:', color,
-                        ';overflow:auto;resize:none;height: ' + this._frame.innerHeight + 'px; width:', inputWidth, 'px;"',
-                        'value=""', (cfg.maxlength > -1 ? 'maxlength="' + cfg.maxlength + '" ' : ' '),
+                        ';overflow:auto;resize:none;height: ' + this._frame.innerHeight + 'px; width:', inputWidth,
+                        'px;"', 'value=""', (cfg.maxlength > -1 ? 'maxlength="' + cfg.maxlength + '" ' : ' '),
                         (cfg.tabIndex != null ? 'tabindex="' + this._calculateTabIndex() + '" ' : ' '), spellCheck,
                         '>', stringUtils.encodeForQuotedHTMLAttribute((this._helpTextSet) ? cfg.helptext : text),
                         '</textarea>'

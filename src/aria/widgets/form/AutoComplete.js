@@ -21,8 +21,7 @@ Aria.classDefinition({
     $extends : "aria.widgets.form.DropDownTextInput",
     $dependencies : ["aria.widgets.form.DropDownListTrait", "aria.widgets.controllers.AutoCompleteController",
             "aria.utils.Event"],
-    $css : ["aria.widgets.form.AutoCompleteStyle",
-            "aria.widgets.form.list.ListStyle",
+    $css : ["aria.widgets.form.AutoCompleteStyle", "aria.widgets.form.list.ListStyle",
             "aria.widgets.container.DivStyle"],
     /**
      * AutoComplete constructor
@@ -40,7 +39,7 @@ Aria.classDefinition({
              */
             this._skinnableClass = "AutoComplete";
         }
-
+        this._cfgBean = this._cfgBean || "aria.widgets.CfgBeans.AutoCompleteCfg";
         var controller = new aria.widgets.controllers.AutoCompleteController();
 
         this.$DropDownTextInput.constructor.call(this, cfg, ctxt, lineNumber, controller);

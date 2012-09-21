@@ -28,7 +28,7 @@ Aria.classDefinition({
      */
     $constructor : function (cfg, ctxt, lineNumber) {
         var controller = new aria.widgets.controllers.TextDataController();
-
+        this._cfgBean = this._cfgBean || "aria.widgets.CfgBeans.TextFieldCfg";
         this.$TextInput.constructor.call(this, cfg, ctxt, lineNumber, controller);
 
         // The following change was creating non regressions and has been removed
@@ -37,8 +37,8 @@ Aria.classDefinition({
     },
     $prototype : {
         /**
-         * Compare newValue with the one stored in _cfg[propertyName]
-         * For a Textfield, undefined, null and an empty string are considered as equal.
+         * Compare newValue with the one stored in _cfg[propertyName] For a Textfield, undefined, null and an empty
+         * string are considered as equal.
          * @param {String} propertyName
          * @param {Multitype} newValue If transformation is used, this should be the widget value and not the data model
          * value
