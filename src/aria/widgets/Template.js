@@ -72,7 +72,8 @@ Aria.classDefinition({
         this._tplcfg = {
             classpath : aria.core.environment.Customizations.getTemplateCP(cfg.defaultTemplate),
             args : cfg.args,
-            id : this._domId
+            id : this._domId,
+            originalId : this.getId()
         };
 
         /**
@@ -356,31 +357,6 @@ Aria.classDefinition({
          */
         getDomElt : function () {
             return this._domElt;
-        },
-
-        /**
-         * It calls the $focusFromParentMethod of the template context associated to the subtemplate. If the subTplCtxt
-         * of the widget has not been set yet, set a listener to the 'ElementReady' event, when the subTplCtxt will have
-         * certainly been defined. In the listener, the callback received as argument is called. The callback is passed
-         * as argument by the focusFirst and _doFocus methods of aria.utils.NavigationManager
-         * @param {Object} cb {aria.core.JsObject.Callback}
-         * @return {Boolean} success/failure of the method
-         */
-        focus : function (cb) {
-            if (this.subTplCtxt) {
-                return this.subTplCtxt.$focusFromParent();
-            } else {
-                this.$onOnce({
-                    'ElementReady' : function () {
-                        var focusSuccess = this.subTplCtxt.$focusFromParent();
-                        if (focusSuccess === false && cb) {
-                            this.$callback(cb);
-                        }
-                    },
-                    scope : this
-                });
-                return true;
-            }
         }
     }
 });
