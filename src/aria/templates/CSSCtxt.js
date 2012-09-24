@@ -142,6 +142,9 @@ Aria.classDefinition({
          */
         doPrefixing : function () {
             // Widget don't need prefixing
+            if (this._tpl.disablePrefix) {
+                return;
+            }
             return !this._cfg.isWidget;
         },
 
@@ -199,11 +202,11 @@ Aria.classDefinition({
          * @param {String} text CSS text to prefix, output of teh template engine
          * @param {String} prefix prefix to be added to each selector for example '.prefix '
          * @return {Object}
-         *
+         * 
          * <pre>
          * {text: prefixed text, selectors: number of selectors}
          * </pre>
-         *
+         * 
          * @private
          */
         __prefixingAlgorithm : function (text, prefix) {
@@ -271,10 +274,10 @@ Aria.classDefinition({
          * @return {String} CSS text
          */
         getText : function () {
-            if (!this._cfg.isWidget) {
-                return this.__prefixedText;
-            } else {
+            if (this._cfg.isWidget || this._tpl.disablePrefix) {
                 return this._getOutput();
+            } else {
+                return this.__prefixedText;
             }
         },
 

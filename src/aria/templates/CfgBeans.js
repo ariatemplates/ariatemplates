@@ -187,6 +187,10 @@ Aria.beanDefinitions({
                         $description : "Classpath of the CSS macro library.",
                         $mandatory : true
                     }
+                },
+                "$prefix" : {
+                    $type : "json:Boolean",
+                    $description : "Turns of the css prefix and expose the css globally."
                 }
             }
         },

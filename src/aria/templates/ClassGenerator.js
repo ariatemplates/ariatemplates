@@ -372,7 +372,10 @@ Aria.classDefinition({
          * @protected
          */
         _writeConstructor : function (out) {
-            out.writeln("$constructor: function() {");
+            out.writeln("$constructor: function() { ");
+            if (out.templateParam.$prefix != undefined && out.templateParam.$prefix == false) {
+                out.writeln("this.disablePrefix = true;");
+            }
             out.increaseIndent();
             var parentClassName = out.parentClassName;
             if (parentClassName) {
