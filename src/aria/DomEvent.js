@@ -34,7 +34,13 @@
         "startX" : "startX",
         "startY" : "startY",
         "endX" : "endX",
-        "endY" : "endY"
+        "endY" : "endY",
+        "detail" : "detail",
+        "wheelDelta" : "wheelDelta",
+        "wheelDeltaX" : "wheelDeltaX",
+        "wheelDeltaY" : "wheelDeltaY",
+        "screenX" : "screenX",
+        "screenY" : "screenY"
     };
 
     // browsers shortcut
@@ -136,11 +142,11 @@
                         // 0 to 9 range
                         this.keyCode = baseKeyCode + 48;
                     } /*
-                         * if (baseKeyCode == 58) { this.keyCode = 59; } // 59 > 59 if (baseKeyCode == 60) {
-                         * this.keyCode = 188; } if (baseKeyCode == 61) { this.keyCode = 107; } if (baseKeyCode == 62) {
-                         * this.keyCode = 190; } if (baseKeyCode == 62) { this.keyCode = 191; } if (baseKeyCode == 64) {
-                         * this.keyCode = 50; }
-                         */
+                     * if (baseKeyCode == 58) { this.keyCode = 59; } // 59 > 59 if (baseKeyCode == 60) {
+                     * this.keyCode = 188; } if (baseKeyCode == 61) { this.keyCode = 107; } if (baseKeyCode == 62) {
+                     * this.keyCode = 190; } if (baseKeyCode == 62) { this.keyCode = 191; } if (baseKeyCode == 64) {
+                     * this.keyCode = 50; }
+                     */
                     // 65 -> 90 A - Z
 
                     if (baseKeyCode > 96 && baseKeyCode < 123) {
@@ -155,6 +161,8 @@
                 this.type = "focus";
             } else if (this.type == "focusout") {
                 this.type = "blur";
+            } else if (this.type == "dommousescroll") {
+                this.type = "mousewheel";
             }
 
             /**
