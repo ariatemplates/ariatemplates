@@ -221,7 +221,7 @@ Aria.classDefinition({
             // case existing widget
             if (target.__widget) {
                 if (target.__widget.focus) {
-                    var focusSuccess = target.__widget.focus(cb);
+                    var focusSuccess = target.__widget.focus(null, cb);
                     // PTR 04634723 - the focus method of the template widget returns a boolean value that represents
                     // the success/failure of the focus.
                     if (focusSuccess == false) {
