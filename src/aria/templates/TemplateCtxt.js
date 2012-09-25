@@ -496,8 +496,7 @@
 
             /**
              * Tries to find the widget id based on an HTML element, if no id can be found then null is returned.
-             * @param {HTMLElement} element which is a part of a widget that the id needs to be retrieved for. return
-             * {Array} contains widgetId, and templateIds of each parent.
+             * @param {HTMLElement} element which is a part of a widget that the id needs to be retrieved for.
              * @return {Array} contains ids for the widget and templates that make the focused widget path.
              */
             _getWidgetPath : function (element) {
@@ -1403,7 +1402,7 @@
             /**
              * Focus a widget with a specified id programmatically. This method can be called from templates and
              * template scripts. If the focus fails, an error is thrown.
-             * @param {MultiTypes} string or an object containing a path of ids of the widget to focus
+             * @param {String|Array} containing a path of ids of the widget to focus
              * @implements aria.templates.ITemplate
              */
             $focus : function (idArray) {
