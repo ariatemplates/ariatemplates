@@ -142,7 +142,7 @@ Aria.classDefinition({
          */
         doPrefixing : function () {
             // Widget don't need prefixing
-            if (this._tpl.disablePrefix) {
+            if (!this._tpl.__$prefix) {
                 return;
             }
             return !this._cfg.isWidget;
@@ -274,10 +274,10 @@ Aria.classDefinition({
          * @return {String} CSS text
          */
         getText : function () {
-            if (this._cfg.isWidget || this._tpl.disablePrefix) {
-                return this._getOutput();
-            } else {
+            if (this.doPrefixing()) {
                 return this.__prefixedText;
+            } else {
+                return this._getOutput();
             }
         },
 

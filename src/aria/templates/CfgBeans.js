@@ -190,7 +190,7 @@ Aria.beanDefinitions({
                 },
                 "$prefix" : {
                     $type : "json:Boolean",
-                    $description : "Turns of the css prefix and expose the css globally."
+                    $description : "Defaulted to true. Use it only when required to use features like ( @font-face and @keyframes), avoid otherwise, to limit  CSS class name collisions."
                 }
             }
         },

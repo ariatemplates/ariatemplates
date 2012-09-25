@@ -373,9 +373,6 @@ Aria.classDefinition({
          */
         _writeConstructor : function (out) {
             out.writeln("$constructor: function() { ");
-            if (out.templateParam.$prefix != undefined && out.templateParam.$prefix == false) {
-                out.writeln("this.disablePrefix = true;");
-            }
             out.increaseIndent();
             var parentClassName = out.parentClassName;
             if (parentClassName) {
@@ -489,11 +486,11 @@ Aria.classDefinition({
         _writeValueInheritance : function (out, name, value, defaultValue) {
             if (out.parentClassType == this._classType) {
                 // override value at class loading time, as there is a parent template:
-                if (value) {
+                if (value != null) {
                     out.writeln("proto.", name, " = ", aria.utils.Json.convertToJsonString(value), ";");
                 }
             } else {
-                var valueStr = value ? aria.utils.Json.convertToJsonString(value) : defaultValue;
+                var valueStr = value != null ? aria.utils.Json.convertToJsonString(value) : defaultValue;
                 out.writeln("proto.", name, " = ", valueStr, ";");
             }
         },
