@@ -249,16 +249,29 @@ Aria.beanDefinitions({
                     $type : "json:Enum",
                     $description : "HTTP method used in the request. Ignored for JSON-P requests. This property can be changed by filters.",
                     $default : "GET",
-                    $enumValues : ["GET", "POST"],
+                    $enumValues : ["GET", "POST", "PUT", "DELETE", "HEAD", "TRACE", "OPTIONS", "CONNECT", "PATCH"],
                     $sample : "POST"
                 },
+                /* Backward Compatibility begins here, use data property instead */
                 "postData" : {
                     $type : "json:String",
                     $description : "Data to be sent in the body of the POST method. Ignored for GET requests. This property can be changed by filters."
                 },
+                /* Backward Compatibility ends here */
+                "data" : {
+                    $type : "json:String",
+                    $description : "Data to be sent in the body of the request methods. Ignored for GET requests. This property can be changed by filters."
+                },
+                /* Backward Compatibility begins here, use contentTypeHeader property instead */
                 "postHeader" : {
                     $type : "json:String",
                     $description : "Header 'Content-type' to be used for POST requests.",
+                    $default : "application/x-www-form-urlencoded; charset=UTF-8"
+                },
+                /* Backward Compatibility ends here */
+                "contentTypeHeader" : {
+                    $type : "json:String",
+                    $description : "Header 'Content-type' to be used for requests.",
                     $default : "application/x-www-form-urlencoded; charset=UTF-8"
                 },
                 "timeout" : {
