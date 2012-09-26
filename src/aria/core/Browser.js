@@ -74,24 +74,6 @@ Aria.classDefinition({
         this.isOpera = false;
 
         /**
-         * True if the browser is Opera 6.
-         * @type Boolean
-         */
-        this.isOpera6 = false;
-
-        /**
-         * True if the browser is Opera 8.
-         * @type Boolean
-         */
-        this.isOpera8 = false;
-
-        /**
-         * True if the browser is Opera 9.
-         * @type Boolean
-         */
-        this.isOpera9 = false;
-
-        /**
          * True if the browser is any version of Chrome.
          * @type Boolean
          */
@@ -120,12 +102,6 @@ Aria.classDefinition({
          * @type Boolean
          */
         this.isFirefox = false;
-
-        /**
-         * True if the browser is any version of Netscape.
-         * @type Boolean
-         */
-        this.isNS = false;
 
         /**
          * Browser version.
@@ -222,13 +198,6 @@ Aria.classDefinition({
             } else if (ua.indexOf('opera') > -1) {
                 this.isOpera = true;
                 this.name = "Opera";
-                if (ua.indexOf('opera 6') > -1) {
-                    this.isOpera6 = true;
-                } else if (ua.indexOf('opera/9') > -1) {
-                    this.isOpera9 = true;
-                } else if ((ua.indexOf('opera/8') > -1) || (ua.indexOf('opera 8') > -1)) {
-                    this.isOpera8 = true;
-                }
             } else if (ua.indexOf('chrome') > -1) {
                 this.isChrome = true;
                 this.name = "Chrome";
@@ -242,10 +211,6 @@ Aria.classDefinition({
                 if (ua.indexOf('firefox') > -1) {
                     this.name = "Firefox";
                     this.isFirefox = true;
-                }
-                if (ua.indexOf('netscape') > -1) {
-                    this.name = "Netscape";
-                    this.isNS = true;
                 }
             }
 
@@ -273,10 +238,6 @@ Aria.classDefinition({
                 }
             } else if (this.isChrome) {
                 if (/chrome[\/\s]((?:\d+\.?)+)/.test(ua)) {
-                    this.version = RegExp.$1;
-                }
-            } else if (this.isNS) {
-                if (/netscape[\/\s]((?:\d+\.?)+)/.test(ua)) {
                     this.version = RegExp.$1;
                 }
             } else if (this.isOpera) {
