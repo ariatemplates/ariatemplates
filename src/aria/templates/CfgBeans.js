@@ -187,6 +187,10 @@ Aria.beanDefinitions({
                         $description : "Classpath of the CSS macro library.",
                         $mandatory : true
                     }
+                },
+                "$prefix" : {
+                    $type : "json:Boolean",
+                    $description : "Defaulted to true. Use it only when required to use features like ( @font-face and @keyframes), avoid otherwise, to limit  CSS class name collisions."
                 }
             }
         },
