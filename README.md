@@ -1,4 +1,5 @@
 # Aria Templates - JavaScript Framework
+[![Build Status](https://secure.travis-ci.org/ariatemplates/ariatemplates.png)](http://travis-ci.org/ariatemplates/ariatemplates)
 
 [Aria Templates](http://ariatemplates.com/) (aka AT) is an application framework written in JavaScript for building rich and large-scaled enterprise web applications. It is being developed since 2009 by [Amadeus](http://www.amadeus.com) for its professional products. It has been designed for web apps that are used 8+ hours a day, and that need to display and process an high amount of data with a minimum of bandwidth comsumption.
 

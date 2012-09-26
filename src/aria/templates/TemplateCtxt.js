@@ -26,7 +26,7 @@
     var methodMapping = ["$refresh", "$getChild", "$getElementById", "$focus", "$hdim", "$vdim", "getContainerScroll",
             "setContainerScroll", "__$writeId", "__$processWidgetMarkup", "__$beginContainerWidget", "$getId",
             "__$endContainerWidget", "__$statementOnEvent", "__$statementRepeater", "__$createView", "__$beginSection",
-            "__$endSection", "__$bindAutoRefresh"];
+            "__$endSection", "__$bindAutoRefresh", "$setFocusedWidget", "$getFocusedWidget"];
 
     // list of parameters to map between the template and the template context
     var paramMapping = ["data", "moduleCtrl", "flowCtrl", "moduleRes"];
@@ -153,6 +153,12 @@
              * @type Object
              */
             this._persistentStorage = null;
+
+            /**
+             * Stores the widget Id and templates/parent template ids, starting from the parent template through to the
+             * widget. Used for focus handling after refresh.
+             */
+            this._focusedWidgetPath = [];
 
             /**
              * Whether this instance of the template context has asked for the load of the global CSS widget
@@ -450,12 +456,8 @@
                     aria.templates.CSSMgr.resume();
 
                     if (section != null) {
-                        this.__insertSection(section);
+                        this.insertSection(section);
                     }
-
-                    // Redundant, but makes sure that __insertSection doesn't dispose the template
-                    this.$assert(271, this._cfg.tplDiv && this._tpl);
-                    aria.utils.Dom.refreshDomElt(this._cfg.tplDiv);
 
                     this._refreshing = false;
 
@@ -473,6 +475,60 @@
                         });
                     }
                 }
+            },
+
+            /**
+             * Returns an array containing the widgetId, and templateIds from child to parent.
+             * @return{Array} Contains the widget and template Ids.
+             */
+            $getFocusedWidget : function () {
+                return this._focusedWidgetPath;
+            },
+
+            /**
+             * Retrieves the currently focused widget, and extracts the widget Id and template Ids which combined form
+             * the widget path. This is then set into a property of the templates context.
+             */
+            $setFocusedWidget : function () {
+                var focusedElement = Aria.$window.document.activeElement;
+                this._focusedWidgetPath = this._getWidgetPath(focusedElement);
+            },
+
+            /**
+             * Tries to find the widget id based on an HTML element, if no id can be found then null is returned.
+             * @param {HTMLElement} element which is a part of a widget that the id needs to be retrieved for.
+             * @return {Array} contains ids for the widget and templates that make the focused widget path.
+             */
+            _getWidgetPath : function (element) {
+                if (element === null || element.tagName === "BODY") {
+                    return [];
+                }
+                var Ids = [];
+                while (!element.__widget) {
+                    element = element.parentElement;
+                }
+                var id = element.__widget.getId();
+                if (!id) {
+                    return [];
+                }
+                Ids.unshift(id);
+                var context = element.__widget._context;
+                while (this !== context && context !== null) {
+                    id = context.getOriginalId();
+                    if (!id) {
+                        return [];
+                    }
+                    Ids.unshift(id);
+                    context = context.parent;
+                }
+                if (context === null) {
+                    return [];
+                }
+                return Ids;
+            },
+
+            getOriginalId : function () {
+                return this._cfg.originalId;
             },
 
             /**
@@ -516,7 +572,7 @@
                 params.tplDiv = tplDiv;
                 params.div = (tplDiv.parentNode) ? tplDiv.parentNode : null;
                 this.__addDebugInfo(tplDiv);
-                this.__insertSection(this._mainSection, true);
+                this.insertSection(this._mainSection, true);
                 // getMarkup + linkToPreviousMarkup is in fact doing the first refresh
                 // so we call $afterRefresh here as well
                 this.afterRefresh();
@@ -714,9 +770,8 @@
 
             /**
              * Insert the sction's markup in the DOM
-             * @private
              */
-            __insertSection : function (section, skipInsertHTML) {
+            insertSection : function (section, skipInsertHTML) {
                 // PROFILING // var profilingId = this.$startMeasure("Inserting section in DOM from " +
                 // PROFILING // this.tplClasspath);
                 var differed;
@@ -741,6 +796,11 @@
                     this.__processDifferedItems(differed);
                 } else {
                     // TODO: LOG ERROR
+                }
+                if (!skipInsertHTML) {
+                    // Redundant, but makes sure that insertSection doesn't dispose the template
+                    this.$assert(743, params.tplDiv && tpl);
+                    aria.utils.Dom.refreshDomElt(params.tplDiv);
                 }
                 // PROFILING // this.$stopMeasure(profilingId);
             },
@@ -1342,19 +1402,30 @@
             /**
              * Focus a widget with a specified id programmatically. This method can be called from templates and
              * template scripts. If the focus fails, an error is thrown.
-             * @param {String} template id of the widget to focus
+             * @param {String|Array} containing a path of ids of the widget to focus
              * @implements aria.templates.ITemplate
              */
-            $focus : function (id) {
+            $focus : function (idArray) {
+                var idToFocus;
+                if (aria.utils.Type.isArray(idArray)) {
+                    idArray = idArray.slice(0);
+                    idToFocus = idArray.shift();
+                } else {
+                    idToFocus = idArray;
+                    idArray = [];
+                }
+                if (!idToFocus) {
+                    return;
+                }
                 var focusSuccess = false; // First look for widget...
-                var widgetToFocus = this.getBehaviorById(id);
+                var widgetToFocus = this.getBehaviorById(idToFocus);
                 if (widgetToFocus && (typeof(widgetToFocus.focus) != "undefined")) {
-                    widgetToFocus.focus();
+                    widgetToFocus.focus(idArray);
                     focusSuccess = true;
                 }
                 // ... then look for arbitrary dom element with id
                 if (!focusSuccess) {
-                    var domElementId = this.$getId(id);
+                    var domElementId = this.$getId(idToFocus);
                     var elementToFocus = aria.utils.Dom.getElementById(domElementId);
                     if (elementToFocus) {
                         elementToFocus.focus();
@@ -1362,7 +1433,7 @@
                     }
                 }
                 if (!focusSuccess) {
-                    this.$logError(this.FOCUS_FAILURE, [id, this.tplClasspath]);
+                    this.$logError(this.FOCUS_FAILURE, [idToFocus, this.tplClasspath]);
                 }
             },
 

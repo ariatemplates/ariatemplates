@@ -242,7 +242,7 @@
 
                     logAppender.empty();
 
-                    if (errFound && raiseException != false) {
+                    if (errFound && raiseException !== false) {
                         throw {
                             name : this.ASSERT_FAILURE,
                             message : msg
@@ -541,7 +541,7 @@
                 }
                 this._expectedEventsList = evtList;
                 this._eventIndexInList = 0;
-                if (this._expectedEventsList.length == 0) {
+                if (this._expectedEventsList.length === 0) {
                     this._expectedEventsList = null;
                 }
             },

@@ -84,6 +84,18 @@ Aria.interfaceDefinition({
         $focus : function (id) {},
 
         /**
+         * Returns an array containing the widgetId, and templateIds from child to parent.
+         * @return{Array} Contains the widget and template Ids.
+         */
+        $getFocusedWidget : function () {},
+
+        /**
+         * Retrieves the currently focused widget, and extracts the widget Id and template Ids which combined form
+         * the widget path. This is then set into a property of the templates context.
+         */
+        $setFocusedWidget : function () {},
+
+        /**
          * Return a computed horizontal size. This method can be called from templates and template scripts.
          * @param {Number} min the size of the element (in pixels) when the template has its minimum size
          * @param {Number} incrementFactor [optional, default: 1] the proportion of the extra space (if available) which

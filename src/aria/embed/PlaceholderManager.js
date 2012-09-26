@@ -14,22 +14,48 @@
  */
 
 /**
- * Placeholder widget
- * @class aria.embed.Placeholder
- * @extends aria.widgetLibs.BaseWidget
+ * Placeholder Manager used by the Placeholder widget
  */
 Aria.classDefinition({
     $classpath : "aria.embed.PlaceholderManager",
-    $dependencies : ['aria.utils.Type'],
+    $dependencies : ["aria.utils.Type", "aria.utils.Array"],
     $singleton : true,
-    $constructor : function (cfg, context, lineNumber) {},
-    $statics : {
-        _providers : [],
+    $constructor : function () {
 
-        // ERROR MESSAGES:
+        /**
+         * Listener to contentChange events raised by content providers
+         * @type {aria.core.CfgBeans.Callback}
+         * @private
+         */
+        this._contentChangeListener = {
+            fn : this._onContentChange,
+            scope : this
+        };
+
+        /**
+         * List of content providers. Each of them implements the interface aria.embed.IContentProvider
+         * @type {Array}
+         * @private
+         */
+        this._providers = [];
+    },
+    $destructor : function () {
+        this.unregisterAll();
+        this._contentChangeListener = null;
+    },
+    $events : {
+        "contentChange" : {
+            description : "Raised when a content provider notifies a change of content.",
+            properties : {
+                placeholderPaths : "{Array} contains the placeholderPaths whose corresponding content has changed."
+            }
+        }
+    },
+    $statics : {
         PLACEHOLDER_PATH_NOT_FOUND : "No content has been found for the placeholder path '%1'"
-   },
+    },
     $prototype : {
+
         /**
          * Return an array of contents, each item is an html string or an html template configuration
          * @param {String} placeholderPath The placeholder path
@@ -54,42 +80,60 @@ Aria.classDefinition({
                 }
             }
 
-            // Warn if no content has been found
-            if (contents.length == 0) {
-	            this.$logWarn(this.PLACEHOLDER_PATH_NOT_FOUND, [placeholderPath]);
+            if (contents.length === 0) {
+                this.$logWarn(this.PLACEHOLDER_PATH_NOT_FOUND, [placeholderPath]);
             }
 
             return contents;
         },
 
         /**
-         * Register a class as a content provider,
-         * if the provider is already registered, it is not added twice.
-         * @param {Class} provider Any class implementing aria.embed.IContentProvider
+         * Register an object as a content provider, if the provider is already registered, it is not added twice.
+         * @param {Object} provider Any class implementing aria.embed.IContentProvider
          */
         register : function (provider) {
-            // Prevent from adding the same provider twice
             var providers = this._providers;
-            for (var i = 0, ii = providers.length; i < ii; i++) {
-                if (providers[i] === provider) {
-                    return; // / already registered, nothing to do
-                }
+            if (!aria.utils.Array.contains(providers, provider)) {
+                provider.$addListeners({
+                    "contentChange" : this._contentChangeListener
+                });
+                providers.push(provider);
             }
-
-            providers.push(provider);
         },
 
         /**
-         * Unregister a procider
-         * @param {Class} provider Any class implementing aria.embed.IContentProvider
+         * Unregister a provider
+         * @param {Object} provider Any object implementing aria.embed.IContentProvider
          */
         unregister : function (provider) {
             var providers = this._providers;
-            for (var i = 0, ii = providers.length; i < ii; i++) {
-                if (providers[i] === provider) {
-                    providers.splice(i, i);
-                }
+            if (aria.utils.Array.remove(providers, provider)) {
+                provider.$removeListeners({
+                    "contentChange" : this._contentChangeListener
+                });
             }
+        },
+
+        /**
+         * Unregister all providers by removing the listeners for content changes
+         */
+        unregisterAll : function () {
+            var providers = this._providers;
+            while (providers.length > 0) {
+                this.unregister(providers[0]);
+            }
+        },
+
+        /**
+         * Method that is called after a content change is notified from one of the providers
+         * @param {Array} placeholderPaths placeholderPaths whose corresponding content has changed
+         * @private
+         */
+        _onContentChange : function (event) {
+            this.$raiseEvent({
+                name : "contentChange",
+                placeholderPaths : event.contentPaths
+            });
         }
 
     }

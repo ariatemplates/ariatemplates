@@ -20,13 +20,12 @@
 
     /**
      * Represents a section in a template.
-     * @class aria.templates.Section
      */
     Aria.classDefinition({
-        $classpath : 'aria.templates.Section',
-        $dependencies : ['aria.utils.Array', 'aria.utils.Json', 'aria.utils.Delegate',
-                'aria.templates.NavigationManager', 'aria.templates.CfgBeans', 'aria.utils.Dom', 'aria.utils.String',
-                'aria.templates.DomElementWrapper', 'aria.utils.Html', 'aria.templates.DomEventWrapper'],
+        $classpath : "aria.templates.Section",
+        $dependencies : ["aria.utils.Array", "aria.utils.Json", "aria.utils.Delegate",
+                "aria.templates.NavigationManager", "aria.templates.CfgBeans", "aria.utils.Dom", "aria.utils.String",
+                "aria.templates.DomElementWrapper", "aria.utils.Html", "aria.templates.DomEventWrapper"],
         /**
          * Constructor
          * @param {aria.templates.TemplateCtxt} tplCtxt
@@ -161,7 +160,7 @@
             bindings = cfg.bindRefreshTo;
             id = cfg.id;
 
-            if (!/^[_\w]+$/.test(id)) {
+            if (!/^[\w\-:\.]+$/.test(id)) {
                 this.$logError(this.INVALID_SECTION_ID, [this.tplCtxt.tplClasspath, id]);
                 this.cfgOk = false;
                 return;
@@ -268,7 +267,7 @@
                 parent.removeSubSection(this);
             }
 
-            if (this._listenersStopped != true) {
+            if (this._listenersStopped !== true) {
                 this.stopListeners();
             }
             this._processing = null;
@@ -531,7 +530,7 @@
              * RegisterBinding is used to add bindings to Templates and sections.
              * @public
              * @param {Object} bind
-             * 
+             *
              * <pre>
              *  {
              *      inside : ...
@@ -575,14 +574,14 @@
              * Check if the binding given is valid for a processing indicator. "to" is mandatory and must be a boolean
              * value
              * @param {Object} bind
-             * 
+             *
              * <pre>
              *  {
              *      inside : ...
              *      to : ...
              *  }
              * </pre>
-             * 
+             *
              * @return Boolean true is the binding is valid
              */
             __isValidProcessingBind : function (bind) {
@@ -606,7 +605,7 @@
              * Add bindings to loading overlay and sections.
              * @public
              * @param {Object} bind
-             * 
+             *
              * <pre>
              *  {
              *      inside : ...
@@ -707,7 +706,7 @@
              * defined in the binding
              * @protected
              * @param {Object} res Object containing information about the data that changed
-             * 
+             *
              * <pre>
              * {
              *   dataHolder : {Object},
@@ -782,9 +781,9 @@
                 if (this._cfg && this._cfg.on) {
                     var callback = this._cfg.on[evt.type];
                     if (callback) {
-                        var wrapped = new aria.templates.DomEventWrapper(evt);
+                        var wrapped = new aria.templates.DomEventWrapper(evt), returnValue;
                         try {
-                            var returnValue = callback.fn.call(callback.scope, wrapped, callback.args);
+                            returnValue = callback.fn.call(callback.scope, wrapped, callback.args);
                         } catch (e) {
                             this.$logError(this.SECTION_CALLBACK_ERROR, [this.tplCtxt.tplClasspath, this._cfg.id,
                                     evt.type], e);
@@ -960,7 +959,7 @@
              * Stop listeners on this section: bindings and processing
              */
             stopListeners : function () {
-                this.$assert(838, this._listenersStopped != true);
+                this.$assert(838, this._listenersStopped !== true);
                 this._listenersStopped = true;
                 var bindings = this._bindings;
                 if (bindings) {
@@ -981,7 +980,7 @@
              * Resume listeners on this section: bindings and processing
              */
             resumeListeners : function () {
-                this.$assert(859, this._listenersStopped == true);
+                this.$assert(859, this._listenersStopped === true);
                 this._listenersStopped = false;
                 var bindings = this._bindings;
                 if (bindings) {

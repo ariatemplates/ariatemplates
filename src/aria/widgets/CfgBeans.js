@@ -734,6 +734,14 @@ Aria.beanDefinitions({
                         $type : "ListItemCfg"
                     },
                     $default : []
+                },
+                "bind" : {
+                    $type : "TextInputCfg.bind",
+                    $properties : {
+                        "options" : {
+                            $type : "common:BindingRef"
+                        }
+                    }
                 }
             }
         },
@@ -761,6 +769,14 @@ Aria.beanDefinitions({
                 "onchange" : {
                     $type : "common:Callback",
                     $description : "Function to be called when the state of the widget changes."
+                },
+                "bind" : {
+                    $type : "InputCfg.bind",
+                    $properties : {
+                        "options" : {
+                            $type : "common:BindingRef"
+                        }
+                    }
                 }
             }
 

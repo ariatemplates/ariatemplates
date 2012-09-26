@@ -187,6 +187,10 @@ Aria.beanDefinitions({
                         $description : "Classpath of the CSS macro library.",
                         $mandatory : true
                     }
+                },
+                "$prefix" : {
+                    $type : "json:Boolean",
+                    $description : "Defaulted to true. Use it only when required to use features like ( @font-face and @keyframes), avoid otherwise, to limit  CSS class name collisions."
                 }
             }
         },
@@ -452,6 +456,11 @@ Aria.beanDefinitions({
                 "id" : {
                     $type : "json:String",
                     $description : "Id of the template, to be used to generate sub-ids.",
+                    $mandatory : false
+                },
+                "originalId" : {
+                    $type : "json:String",
+                    $description : "User defined Id of the template.",
                     $mandatory : false
                 },
                 "div" : {

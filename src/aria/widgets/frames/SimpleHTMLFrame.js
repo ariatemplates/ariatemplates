@@ -15,11 +15,10 @@
 
 /**
  * Frame that does nothing, for the simple HTML skinning mode
- * @class aria.widgets.frames.SimpleHTMLFrame
  */
 Aria.classDefinition({
-    $classpath : 'aria.widgets.frames.SimpleHTMLFrame',
-    $extends : 'aria.widgets.frames.Frame',
+    $classpath : "aria.widgets.frames.SimpleHTMLFrame",
+    $extends : "aria.widgets.frames.Frame",
     $constructor : function (cfg) {
         this.$Frame.constructor.call(this, cfg);
         this._computeSize();
@@ -57,7 +56,7 @@ Aria.classDefinition({
          * @return {HTMLElement} the requested DOM element inside the frame
          */
         getChild : function (idx) {
-            if (idx == 0) {
+            if (idx === 0) {
                 return this._childRootElt;
             } else {
                 return aria.utils.Dom.getDomElementChild(this._childRootElt, idx - 1);

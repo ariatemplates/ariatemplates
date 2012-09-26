@@ -14,13 +14,13 @@
  */
 
 /**
- * @class aria.core.Log Singleton to be used to log messages from any class. This object should probably not be used
+ * Singleton to be used to log messages from any class. This object should probably not be used
  * directly since any class in AriaTemplates inherits from JsObject and as such has the $log() method. Using the $log()
  * method makes it easier because it doesn't require you to pass your current classname.
  *
  * <pre>
- * aria.core.Log.warn(&quot;my.class.Name&quot;, &quot;Warning!!&quot;);
- * aria.core.Log.info(&quot;my.class.Name&quot;, &quot;Something was processed ...&quot;);
+ * aria.core.Log.warn('my.class.Name', 'Warning!!');
+ * aria.core.Log.info('my.class.Name', 'Something was processed ...');
  * </pre>
  *
  * Additionally, this object can be used when debugging, to set the level of log you want to see per package/class. By
@@ -28,8 +28,8 @@
  *
  * <pre>
  * aria.core.Log.resetLoggingLevels();
- * aria.core.Log.setLoggingLevel(&quot;modules.*&quot;, aria.core.Log.LEVEL_DEBUG);
- * aria.core.Log.setLoggingLevel(&quot;my.class.Name&quot;, aria.core.Log.LEVEL_WARN);
+ * aria.core.Log.setLoggingLevel('modules.*', aria.core.Log.LEVEL_DEBUG);
+ * aria.core.Log.setLoggingLevel('my.class.Name', aria.core.Log.LEVEL_WARN);
  * </pre>
  *
  * When logging messages to the logger, appenders are used to actually print out the messages. By default, the only
@@ -41,11 +41,10 @@
  * aria.core.Log.addAppender(new aria.core.log.WindowAppender());
  * </pre>
  *
- * @extends aria.core.JsObject
  * @singleton
  */
 Aria.classDefinition({
-    $classpath : 'aria.core.Log',
+    $classpath : "aria.core.Log",
     $singleton : true,
     $dependencies : ["aria.core.log.DefaultAppender", "aria.utils.String"],
     $statics : {
@@ -197,13 +196,12 @@ Aria.classDefinition({
         /**
          * Get the currently allowed logging level for a particular className
          * @param {String} className
-         * @return {Number} level
+         * @return {Number} level or false if no logging level is defined
          */
         getLoggingLevel : function (className) {
             var loggingLevel = this._loggingLevels[className];
-            if (loggingLevel != undefined) {
-                // If there is a logging level stored for the exact classname
-                // passed in parameter
+            if (!!loggingLevel) {
+                // If there is a logging level stored for the exact classname passed in parameter
                 return loggingLevel;
             } else {
                 // Else, look for package names

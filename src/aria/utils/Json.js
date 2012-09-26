@@ -319,13 +319,11 @@
 
     /**
      * Json utility class
-     * @class aria.utils.Json
-     * @extends aria.core.JsObject
      * @singleton
      */
     Aria.classDefinition({
-        $classpath : 'aria.utils.Json',
-        $dependencies : ['aria.utils.json.JsonSerializer'],
+        $classpath : "aria.utils.Json",
+        $dependencies : ["aria.utils.json.JsonSerializer"],
         $singleton : true,
         $constructor : function () {
             jsonUtils = this;
@@ -468,7 +466,7 @@
                 if (index + howManyRemoved > oldLength) {
                     howManyRemoved = oldLength - index;
                 }
-                if (howManyAdded == 0 && howManyRemoved == 0) {
+                if (howManyAdded === 0 && howManyRemoved === 0) {
                     // no change
                     return [];
                 }

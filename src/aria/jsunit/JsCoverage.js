@@ -93,7 +93,7 @@ Aria.classDefinition({
         addFiltersFromString : function (filterParameter) {
             var filterFunction = function (filterString, jsCoverageObject) {
                 var filename = jsCoverageObject.filename.toLowerCase();
-                var isPositiveFilter = filter.indexOf("-") != 0;
+                var isPositiveFilter = filter.indexOf("-") !== 0;
                 if (filename.indexOf(filterString) != -1) {
                     return isPositiveFilter;
                 }

@@ -15,20 +15,19 @@
 
 /**
  * Todo List module sample
- * @class aria.tester.runner.ModuleController
  */
 Aria.classDefinition({
-    $classpath : 'aria.tester.runner.ModuleController',
-    $extends : 'aria.templates.ModuleCtrl',
+    $classpath : "aria.tester.runner.ModuleController",
+    $extends : "aria.templates.ModuleCtrl",
     $dependencies : ["aria.tester.runner.datamodel.DataDefinitions", "aria.tester.runner.utils.Hash",
-            "aria.jsunit.IOViewer", "aria.jsunit.AppletWorker", "aria.utils.QueryString", 'aria.jsunit.NewTestRunner',
-            'aria.jsunit.JsCoverage', 'aria.jsunit.TestCommunicator', 'aria.utils.Callback',
-            'aria.tester.runner.utils.TestUtils', 'aria.tester.runner.appenders.JsonTextDivAppender',
-            'aria.jsunit.TestacularReport'],
+            "aria.jsunit.IOViewer", "aria.jsunit.AppletWorker", "aria.utils.QueryString", "aria.jsunit.NewTestRunner",
+            "aria.jsunit.JsCoverage", "aria.jsunit.TestCommunicator", "aria.utils.Callback",
+            "aria.tester.runner.utils.TestUtils", "aria.tester.runner.appenders.JsonTextDivAppender",
+            "aria.jsunit.TestacularReport"],
     $statics : {
         DATA_DEFINITION : "aria.tester.runner.datamodel.DataDefinitions"
     },
-    $implements : ['aria.tester.runner.ModuleControllerInterface'],
+    $implements : ["aria.tester.runner.ModuleControllerInterface"],
     $constructor : function () {
         this.$ModuleCtrl.constructor.call(this);
         this._testRunner = null;
@@ -43,12 +42,9 @@ Aria.classDefinition({
 
         this._readConfigurationParameters();
     },
-    $destructor : function () {
-        this.$ModuleCtrl.$destructor.call(this);
-    },
     $prototype : {
         $hasFlowCtrl : true,
-        $publicInterfaceName : 'aria.tester.runner.ModuleControllerInterface',
+        $publicInterfaceName : "aria.tester.runner.ModuleControllerInterface",
 
         /**
          * The init of the Tester module controller will attempt to load the root test suite of the test campaign
@@ -95,10 +91,10 @@ Aria.classDefinition({
         /**
          * This module accepts several configuration parameters to be extracted from the URL :
          * <ul>
-         * <li></li>
-         * <li></li>
-         * <li></li>
-         * <li></li>
+         * <li>mini</li>
+         * <li>testClasspath</li>
+         * <li>autorun</li>
+         * <li>runIsolated</li>
          * </ul>
          */
         _readConfigurationParameters : function () {
@@ -322,7 +318,7 @@ Aria.classDefinition({
             // unload all the classes that don' t belong to the framework
             var loadedClasses = aria.core.Cache.content.classes;
             for (var classpath in loadedClasses) {
-                if (!loadedClasses.hasOwnProperty(classpath) || classpath.indexOf("aria.") == 0) {
+                if (!loadedClasses.hasOwnProperty(classpath) || classpath.indexOf("aria.") === 0) {
                     continue;
                 }
                 aria.core.ClassMgr.unloadClass(classpath, true);

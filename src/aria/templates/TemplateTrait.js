@@ -14,11 +14,10 @@
  */
 
 /**
- * @class aria.utils.TemplateTrait Class has common methods used in aria.widget.Templates and aria.html.Template
+ * Class with common methods used in aria.widget.Templates and aria.html.Template
  */
 Aria.classDefinition({
     $classpath : "aria.templates.TemplateTrait",
-    $constructor : function () {},
     $prototype : {
 
         /**
@@ -50,6 +49,7 @@ Aria.classDefinition({
                 });
             }
         },
+
         /**
          * Called when inner template raises its first "Ready Event" event to raise an event to the the parent widget
          * @private
@@ -61,22 +61,36 @@ Aria.classDefinition({
             this.isDiffered = false;
         },
 
+         /**
+         * @param {Array} id contains the widget and template ids forming the focused widget path.
+         * @return {Boolean}
+         */
+         _focusHelper : function (id) {
+            if (!id || !id.length) {
+                return this.subTplCtxt.$focusFromParent();
+            } else {
+                this.subTplCtxt.$focus(id);
+                return true;
+            }
+        },
+
         /**
-         * It calls the $focusFromParentMethod of the template context associated to the subtemplate. If the subTplCtxt of
-         * the widget has not been set yet, set a listener to the 'ElementReady' event, when the subTplCtxt will have
-         * certainly been defined. In the listener, the callback received as argument is called. The callback is passed as
-         * argument by the focusFirst and _doFocus methods of aria.utils.NavigationManager
+         * It calls the $focusFromParentMethod of the template context associated to the subtemplate. If the subTplCtxt
+         * of the widget has not been set yet, set a listener to the 'ElementReady' event, when the subTplCtxt will have
+         * certainly been defined. In the listener, the callback received as argument is called. The callback is passed
+         * as argument by the focusFirst and _doFocus methods of aria.utils.NavigationManager
          * @param {Object} cb {aria.core.JsObject.Callback}
+         * @param {Object} id contains an array of ids of the path to a focused widget
          * @return {Boolean} success/failure of the method
          */
-        focus : function (cb) {
+        focus : function (id, cb) {
             if (this.subTplCtxt) {
-                return this.subTplCtxt.$focusFromParent();
+                return this._focusHelper(id);
             } else {
                 this.$onOnce({
                     'ElementReady' : function () {
-                        var focusSuccess = this.subTplCtxt.$focusFromParent();
-                        if (focusSuccess == false && cb) {
+                        var focusSuccess = this._focusHelper(id);
+                        if (focusSuccess === false) {
                             this.$callback(cb);
                         }
                     },

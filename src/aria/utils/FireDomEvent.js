@@ -392,7 +392,7 @@
             customEvent.relatedTarget = relatedTarget;
 
             // For PTR 03915410 : Change the state on a checkbox, as using createEventObject do not do the job.
-            if (target.checked != undefined) {
+            if (target.checked != null) {
                 target.checked = !target.checked;
             }
 

@@ -15,10 +15,9 @@
 
 /**
  * Script for the default list template
- * @class aria.widgets.form.templates.TemplateMultiSelectScript
  */
 Aria.tplScriptDefinition({
-    $classpath : 'aria.widgets.form.templates.TemplateMultiSelectScript',
+    $classpath : "aria.widgets.form.templates.TemplateMultiSelectScript",
     $constructor : function () {
         /**
          * Name of the element containing the displayed list items
@@ -61,7 +60,7 @@ Aria.tplScriptDefinition({
 
             } else if (evt.name == "keyevent") {
 
-                if (evt.keyCode == aria.DomEvent.KC_ARROW_UP && evt.focusIndex == 0) {
+                if (evt.keyCode == aria.DomEvent.KC_ARROW_UP && evt.focusIndex === 0) {
                     evt.cancelDefault = true;
                     // var idToFocus = 'listItem'+evt.focusIndex;
                     var viewFocusIndex = this.data.itemsView.items[focusIndex].value.index;

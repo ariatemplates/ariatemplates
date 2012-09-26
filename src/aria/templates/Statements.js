@@ -69,7 +69,7 @@ Aria.classDefinition({
                         out.writeln("this.__$write(", param, ",", statement.lineNumber, ");");
                     } else {
                         // check if text contains something
-                        if (statement.paramBlock.replace(/[ \t\r\n]+/gm, "") != '') {
+                        if (statement.paramBlock.replace(/[ \t\r\n]+/gm, "") !== '') {
                             out.logError(statement, statementsSingleton.SHOULD_BE_IN_MACRO, ["#TEXT# - "
                                     + statement.paramBlock]);
                         }

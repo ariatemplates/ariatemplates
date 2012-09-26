@@ -15,14 +15,12 @@
 
 /**
  * This class contains utilities to show and hide a loading indicator above a DOM Element
- * @class aria.utils.DomOverlay
- * @extends aria.core.JsObject
  * @singleton
  */
 Aria.classDefinition({
-    $classpath : 'aria.utils.DomOverlay',
-    $dependencies : ['aria.utils.overlay.LoadingOverlay', 'aria.utils.Type', 'aria.utils.Event',
-            'aria.utils.AriaWindow'],
+    $classpath : "aria.utils.DomOverlay",
+    $dependencies : ["aria.utils.overlay.LoadingOverlay", "aria.utils.Type", "aria.utils.Event",
+            "aria.utils.AriaWindow"],
     $singleton : true,
     $statics : {
         UNIQUE_ID_GENERATOR : 12
@@ -153,7 +151,7 @@ Aria.classDefinition({
 
             overlayInfo = null;
 
-            if (this._nbOverlays == 0 && this.bodyOverlay == null) {
+            if (this._nbOverlays === 0 && this.bodyOverlay == null) {
                 this._reset();
             }
 
@@ -231,7 +229,7 @@ Aria.classDefinition({
                     this._nbOverlays--;
                 }
             }
-            if (this._nbOverlays == 0 && this.bodyOverlay == null) {
+            if (this._nbOverlays === 0 && this.bodyOverlay == null) {
                 this._reset();
             }
         }

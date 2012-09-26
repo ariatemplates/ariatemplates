@@ -21,12 +21,11 @@
      * A fixed height frame is a frame whose height is defined by the skin class. The height can depend on the state.
      * The width can either be defined by the frame configuration, or left undefined so that it is adapted to the
      * content. The expansion in width is done by repeating an image horizontally.
-     * @class aria.widgets.frames.FixedHeightFrame
      */
     Aria.classDefinition({
-        $classpath : 'aria.widgets.frames.FixedHeightFrame',
-        $extends : 'aria.widgets.frames.Frame',
-        $dependencies : ['aria.utils.Dom'],
+        $classpath : "aria.widgets.frames.FixedHeightFrame",
+        $extends : "aria.widgets.frames.Frame",
+        $dependencies : ["aria.utils.Dom"],
         $onload : function () {
             domUtils = aria.utils.Dom;
         },
@@ -173,9 +172,9 @@
              * @return {Boolean}
              */
             _hasBorder : function (skipBorder, icons) {
-                var hasBorder = (skipBorder == false);
+                var hasBorder = (skipBorder === false);
                 if (skipBorder == "dependsOnIcon") {
-                    hasBorder = (icons.length == 0);
+                    hasBorder = (icons.length === 0);
                 }
                 return hasBorder;
             }

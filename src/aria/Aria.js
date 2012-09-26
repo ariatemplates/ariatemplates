@@ -632,7 +632,7 @@
         createIfNull = createIfNull !== false;
 
         // edge case
-        if (nspace == '') {
+        if (nspace === "") {
             return parent;
         }
 
@@ -1463,13 +1463,13 @@
             myUrl = me.src; // In all the browsers it's an absolute path, in IE6,7 is relative
 
             // rootFolderPath is just the folder above the folder of Aria.js
-            var removeJsFile = myUrl.replace(/aria\/[^\/]*$/, ''); // when it is not packaged
+            var removeJsFile = myUrl.replace(/aria\/[^\/]*$/, ""); // when it is not packaged
             if (removeJsFile == myUrl) {
-                // FIXME: log an error
+                removeJsFile = removeJsFile.substring(0, removeJsFile.lastIndexOf("/")) + "/";
             }
 
             // When the path is relative, this can become empty, take the current location
-            if (removeJsFile == "") {
+            if (!removeJsFile) {
                 var currentLocation = Aria.$frameworkWindow.location;
                 removeJsFile = currentLocation.protocol + "//" + currentLocation.host + "/";
                 var pathname = currentLocation.pathname;

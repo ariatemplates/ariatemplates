@@ -15,14 +15,12 @@
 
 /**
  * Aria Icon Widget
- * @class aria.widgets.Icon
- * @extends aria.widgets.Widget
  */
 Aria.classDefinition({
-    $classpath : 'aria.widgets.Icon',
-    $extends : 'aria.widgets.Widget',
-    $dependencies : ['aria.utils.Dom'],
-    $css : ['aria.widgets.IconStyle'],
+    $classpath : "aria.widgets.Icon",
+    $extends : "aria.widgets.Widget",
+    $dependencies : ["aria.utils.Dom"],
+    $css : ["aria.widgets.IconStyle"],
     $constructor : function (cfg, ctxt) {
 
         this.$Widget.constructor.apply(this, arguments);
@@ -74,7 +72,7 @@ Aria.classDefinition({
 
             if (this._cfgOk) {
 
-                if (tooltip != null && tooltip != '') {
+                if (tooltip != null && tooltip !== '') {
                     tooltip = 'title="' + tooltip + '" ';
                 } else {
                     tooltip = '';
