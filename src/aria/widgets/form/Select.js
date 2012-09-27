@@ -441,7 +441,18 @@ Aria.classDefinition({
 
                     var selectField = this.getSelectField();
                     // update the options list
-                    selectField.innerHTML = optionsMarkup.join('');
+                    var optionsListString = optionsMarkup.join('');
+                    if (aria.core.Browser.isIE9 || aria.core.Browser.isIE8 || aria.core.Browser.isIE7) {
+                        // innerHTML replacing in IE truncates the first element and breaks the whole select...
+                        selectField.innerHTML = '';
+                        var helperDiv = Aria.$window.document.createElement('div');
+                        helperDiv.innerHTML = '<select>' + optionsListString + '</select>';
+                        for (var j = 0, options = helperDiv.children[0].children; j < options.length; j++) {
+                            selectField.appendChild(options[j]);
+                        }
+                    } else {
+                        selectField.innerHTML = optionsListString;
+                    }
                 }
 
             } else if (propertyName === 'formatError' || propertyName === 'formatErrorMessages'
