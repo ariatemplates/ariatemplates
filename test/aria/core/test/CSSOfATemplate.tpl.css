@@ -1,0 +1,14 @@
+{CSSTemplate {
+	$classpath : "test.aria.core.test.CSSOfATemplate",
+	$csslibs : {
+		csslib: "test.aria.core.test.CSSOfATemplateCSSLib"
+	}
+}}
+
+{macro main()}
+.nothing {
+	color: white;
+}
+{call csslib.blackParagraph() /}
+{/macro}
+{/CSSTemplate}

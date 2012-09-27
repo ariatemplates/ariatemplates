@@ -1,0 +1,11 @@
+{CSSLibrary {
+    $classpath: "test.aria.core.test.CSSOfATemplateCSSLib"
+}}
+
+	{macro blackParagraph()}
+		p {
+			color: black;
+		}
+	{/macro}
+
+{/CSSLibrary}

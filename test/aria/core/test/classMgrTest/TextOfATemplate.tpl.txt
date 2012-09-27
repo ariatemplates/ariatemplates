@@ -1,0 +1,9 @@
+{TextTemplate {
+	$classpath: "test.aria.core.test.classMgrTest.TextOfATemplate"
+}}
+
+{macro main()}
+No text
+{/macro}
+
+{/TextTemplate}

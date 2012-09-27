@@ -1,0 +1,8 @@
+{Library {
+    $classpath: "test.aria.core.test.MacroLibrary"
+}}
+
+	{macro doNothing()}
+	{/macro}
+
+{/Library}
