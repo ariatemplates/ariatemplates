@@ -48,7 +48,7 @@ Aria.classDefinition({
         this.addTests("test.aria.core.TimerTest");
         this.addTests("test.aria.core.TplClassLoaderTest");
         this.addTests("test.aria.core.TplClassLoaderErrorTest");
-		this.addTests("test.aria.core.CR06167244.IOTest");
+        this.addTests("test.aria.core.CR06167244.IOTest");
         this.addTests("test.aria.core.CR06167244.IOFilterTest");
     }
 });
