@@ -14,14 +14,13 @@
  */
 
 /**
- * Base class for all input widgets. Manage input data structure and properties, as well
- * as the label support
+ * Base class for all input widgets. Manage input data structure and properties, as well as the label support
  */
 Aria.classDefinition({
     $classpath : "aria.widgets.form.Input",
     $extends : "aria.widgets.Widget",
     $dependencies : ["aria.utils.Dom", "aria.widgets.form.InputValidationHandler", "aria.utils.Data",
-            "aria.utils.String", "aria.widgets.environment.WidgetSettings","aria.core.Browser"],
+            "aria.utils.String", "aria.widgets.environment.WidgetSettings", "aria.core.Browser"],
     /**
      * Input constructor
      * @param {aria.widgets.CfgBeans.InputCfg} cfg the widget configuration
@@ -150,25 +149,30 @@ Aria.classDefinition({
 
             var cfg = this._cfg, showLabel = (!cfg.hideLabel && !!cfg.label);
 
+            var outputOut;
+            if (aria.core.Browser.isIE7) {
+                outputOut = "out.write('<span>');" + "this._inputMarkup(out);" + "out.write('</span>');"
+            } else {
+                outputOut = "this._inputMarkup(out);"
+            }
             if (showLabel) {
                 // process label
                 if (cfg.labelPos === "left") {
                     this._inputLabelMarkup(out, 'inline-block', 'right');
-                    this._inputMarkup(out);
+                    out.write(outputOut);
                 } else if (cfg.labelPos === "top") {
                     this._inputLabelMarkup(out, 'block', false);
-                    this._inputMarkup(out);
+                    out.write(outputOut);
                 } else if (cfg.labelPos === "bottom") {
-                    this._inputMarkup(out);
+                    out.write(outputOut);
                     this._inputLabelMarkup(out, 'block', false);
                 } else { // right
-                    this._inputMarkup(out);
+                    out.write(outputOut);
                     this._inputLabelMarkup(out, 'inline-block', 'left');
                 }
 
             } else {
-                // no label
-                this._inputMarkup(out);
+                out.write(outputOut);
             }
         },
 
@@ -245,12 +249,12 @@ Aria.classDefinition({
             // PTR04951216 skinnable labels
             var cssClass = 'class="x' + this._skinnableClass + '_' + cfg.sclass + '_' + this._state + '_label"';
             var IE7Align;
-            (aria.core.Browser.isIE7)?(IE7Align="-25%"):(IE7Align="middle");
+            (aria.core.Browser.isIE7) ? (IE7Align = "-25%") : (IE7Align = "middle");
             out.write('<label ' + cssClass + ' style="');
             if (!aria.widgets.environment.WidgetSettings.getWidgetSettings().middleAlignment) {
                 out.write('vertical-align:-1px;');
             } else {
-                out.write('vertical-align:'+IE7Align+';');
+                out.write('vertical-align:' + IE7Align + ';');
             }
             out.write('display:' + cssDisplay);
             if (margin) {
