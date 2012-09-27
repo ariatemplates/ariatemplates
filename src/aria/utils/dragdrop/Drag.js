@@ -347,7 +347,7 @@
             start : function (coord) {
                 this.posX = coord.x;
                 this.posY = coord.y;
-                var element = this.getElement(true);
+                var element = this.getElement(true), oParent;
                 // This will prevent text selection on IE on the element
                 element.onselectstart = Aria.returnFalse;
 
@@ -357,8 +357,14 @@
                 if (movable) {
                     // This will prevent text selection on IE on the movable
                     movable.onselectstart = Aria.returnFalse;
+                    if (movable.offsetTop < element.offsetTop) {
+                        movable.style.top = element.offsetTop + "px";
+                    }
                     this._movableInitialGeometry = aria.utils.Dom.getGeometry(movable);
                     this._movableGeometry = aria.utils.Json.copy(this._movableInitialGeometry);
+                    // This is to handle if there is a scroll
+                    oParent = movable.offsetParent;
+                    this._movableGeometry.y += oParent.scrollTop > 0 ? oParent.scrollTop : 0;
                     this._baseMovableOffset = {
                         left : this._movableGeometry.x - movable.offsetLeft,
                         top : this._movableGeometry.y - movable.offsetTop
@@ -403,9 +409,10 @@
              * Handle the drag end. Apply the correct positioning to the draggable element
              */
             end : function () {
-                var element = this.getElement();
+                var element = this.getElement(), oParent = element.offsetParent;
                 element.onselectstart = Aria.returnTrue;
                 if (this.proxy && this.proxy.overlay) {
+                    this._movableInitialGeometry.y += oParent.scrollTop > 0 ? oParent.scrollTop : 0;
                     element.style.top = (this._elementInitialPosition.top + this._movableGeometry.y - this._movableInitialGeometry.y)
                             + "px";
                     element.style.left = (this._elementInitialPosition.left + this._movableGeometry.x - this._movableInitialGeometry.x)
