@@ -364,7 +364,7 @@
                     this._movableGeometry = aria.utils.Json.copy(this._movableInitialGeometry);
                     // This is to handle if there is a scroll
                     oParent = movable.offsetParent;
-                    this._movableGeometry.y += oParent.scrollTop > 0 ? oParent.scrollTop : 0;
+                    this._movableGeometry.y += (oParent.scrollTop > 0) ? oParent.scrollTop : 0;
                     this._baseMovableOffset = {
                         left : this._movableGeometry.x - movable.offsetLeft,
                         top : this._movableGeometry.y - movable.offsetTop
@@ -412,7 +412,7 @@
                 var element = this.getElement(), oParent = element.offsetParent;
                 element.onselectstart = Aria.returnTrue;
                 if (this.proxy && this.proxy.overlay) {
-                    this._movableInitialGeometry.y += oParent.scrollTop > 0 ? oParent.scrollTop : 0;
+                    this._movableInitialGeometry.y += (oParent.scrollTop > 0) ? oParent.scrollTop : 0;
                     element.style.top = (this._elementInitialPosition.top + this._movableGeometry.y - this._movableInitialGeometry.y)
                             + "px";
                     element.style.left = (this._elementInitialPosition.left + this._movableGeometry.x - this._movableInitialGeometry.x)
