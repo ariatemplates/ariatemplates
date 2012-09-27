@@ -47,7 +47,7 @@ Aria.classDefinition({
         });
 
         // override span style
-        this._spanStyle = "z-index:9999;vertical-align:top;";
+        this._spanStyle = "z-index:100;vertical-align:top;";
     },
     /**
      * Tab destructor

@@ -31,7 +31,9 @@
         mousemove : 1,
         touchstart : 1,
         touchend : 1,
-        touchmove : 1
+        touchmove : 1,
+        dommousescroll : 1,
+        mousewheel : 1
     },
 
     // key events supported

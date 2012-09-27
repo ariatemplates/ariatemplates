@@ -48,7 +48,7 @@ Aria.classDefinition({
          * @type Array
          */
         this.delegatedOnBody = ["click", "focus", "blur", "focusin", "focusout", "mousedown", "mouseup", "mousemove",
-                "mouseover", "mouseout", "contextmenu", "touchstart", "touchend", "touchmove"];
+                "mouseover", "mouseout", "contextmenu", "touchstart", "touchend", "touchmove","mousewheel"];
 
         /**
          * Delegated events on window. On modern browser, if focus is not on an element, event are not catched by the
@@ -86,7 +86,8 @@ Aria.classDefinition({
             paste : true,
             cut : true,
             submit : true,
-            error : true
+            error : true,
+            mousewheel : true
         };
 
         // note that the change event does not bubble on all browsers (e.g.: on IE) but is necessary as it is the only
