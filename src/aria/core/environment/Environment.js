@@ -94,7 +94,8 @@ Aria.classDefinition({
          * Sets the current application locale (ex: en_US)
          * @public
          * @param {String} locale New locale
-         * @param {aria.core.JsObject.Callback} cb Method to be called after the locale is changed
+         * @param {aria.core.JsObject.Callback} cb Method to be called after the locale is changed. The callback is called with
+         * a boolean (true: errors, false: no errors)
          */
         setLanguage : function (locale, cb) {
             var err = false;
@@ -117,6 +118,7 @@ Aria.classDefinition({
             }
             if (err) {
                 this.$logError(this.INVALID_LOCALE, [locale]);
+                this.$callback(cb, true);
             }
         },
 

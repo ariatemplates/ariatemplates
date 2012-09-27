@@ -14,13 +14,15 @@
  */
 
 /**
- * Transport class for XHR requests.
- * @class aria.core.transport.XHR
- * @extends aria.core.JsObject
- * @singleton
+ * Test suite regrouping all tests of the core namespace
  */
 Aria.classDefinition({
-    $classpath : "aria.core.transport.XHR",
-    $extends : "aria.core.transport.BaseXHR",
-    $singleton : true
+    $classpath : "test.aria.core.DefaultAppenderTestSuite",
+    $extends : "aria.jsunit.TestSuite",
+    $constructor : function () {
+        this.$TestSuite.constructor.call(this);
+
+        this.addTests("test.aria.core.DefaultAppenderTest");
+        this.addTests("test.aria.core.DefaultAppenderTest2");
+    }
 });

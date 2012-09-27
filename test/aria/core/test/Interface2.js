@@ -14,13 +14,16 @@
  */
 
 /**
- * Transport class for XHR requests.
- * @class aria.core.transport.XHR
- * @extends aria.core.JsObject
- * @singleton
+ * Sample interface definition, extending another interface.
+ * @class test.aria.core.test.Interface2
  */
-Aria.classDefinition({
-    $classpath : "aria.core.transport.XHR",
-    $extends : "aria.core.transport.BaseXHR",
-    $singleton : true
+Aria.interfaceDefinition({
+	$classpath : "test.aria.core.test.Interface2",
+	$extends : "test.aria.core.test.Interface1",
+	$events : {
+		"MyEventFromInterface2" : "This  event belongs to interface 2."
+	},
+	$interface : {
+		myAdditionnalFunction : function () {}
+	}
 });

@@ -14,13 +14,12 @@
  */
 
 /**
- * Transport class for XHR requests.
- * @class aria.core.transport.XHR
- * @extends aria.core.JsObject
- * @singleton
+ * Sample interface definition.
+ * @class test.aria.core.test.TestItf
  */
-Aria.classDefinition({
-    $classpath : "aria.core.transport.XHR",
-    $extends : "aria.core.transport.BaseXHR",
-    $singleton : true
+Aria.interfaceDefinition({
+	$classpath : "test.aria.core.test.TestItf",
+	$interface : {
+
+	}
 });

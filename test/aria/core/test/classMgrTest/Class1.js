@@ -14,13 +14,12 @@
  */
 
 /**
- * Transport class for XHR requests.
- * @class aria.core.transport.XHR
- * @extends aria.core.JsObject
- * @singleton
+ * Used for unloadClass test. This is the original class.
  */
 Aria.classDefinition({
-    $classpath : "aria.core.transport.XHR",
-    $extends : "aria.core.transport.BaseXHR",
-    $singleton : true
+	$classpath : "test.aria.core.test.classMgrTest.Class1",
+	$css : ["test.aria.core.test.CSSOfATemplate"],
+	$constructor : function () {
+		this.a = 1;
+	}
 });

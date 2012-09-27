@@ -14,13 +14,15 @@
  */
 
 /**
- * Transport class for XHR requests.
- * @class aria.core.transport.XHR
- * @extends aria.core.JsObject
- * @singleton
+ * Used for the unloadClass test to redirect test.aria.core.test.classMgrTest.Class1 to
+ * test.aria.core.test.classMgrTest.Class1bis
  */
 Aria.classDefinition({
-    $classpath : "aria.core.transport.XHR",
-    $extends : "aria.core.transport.BaseXHR",
-    $singleton : true
+	$classpath : 'test.aria.core.test.classMgrTest.UnloadFilter',
+	$extends : 'aria.core.IOFilter',
+	$prototype : {
+		onRequest : function (req) {
+			req.url = req.url.replace("Class1", "Class1bis");
+		}
+	}
 });

@@ -1,0 +1,5 @@
+/*
+* Copyright.
+*/
+Some Test Content
+//***MULTI-PART

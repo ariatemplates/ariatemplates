@@ -13,14 +13,12 @@
  * limitations under the License.
  */
 
-/**
- * Transport class for XHR requests.
- * @class aria.core.transport.XHR
- * @extends aria.core.JsObject
- * @singleton
- */
-Aria.classDefinition({
-    $classpath : "aria.core.transport.XHR",
-    $extends : "aria.core.transport.BaseXHR",
-    $singleton : true
-});
+// Template with a classpath which does not match its location.
+// It should generate an error message.
+{Template {
+	$classpath:'test.aria.core.test.wrongclasspath.TPLWrongClasspath'
+}}
+	{macro main()}
+	{/macro}
+
+{/Template}
