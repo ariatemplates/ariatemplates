@@ -14,13 +14,14 @@
  */
 
 /**
- * Transport class for XHR requests.
- * @class aria.core.transport.XHR
- * @extends aria.core.JsObject
- * @singleton
+ * Copyright Amadeus
  */
-Aria.classDefinition({
-    $classpath : "aria.core.transport.XHR",
-    $extends : "aria.core.transport.BaseXHR",
-    $singleton : true
-});
+{Template {
+  $classpath: "test.aria.core.test.classMgrTest.Tpl1"
+}}
+
+  {macro main()}
+    nothing here
+  {/macro}
+
+{/Template}

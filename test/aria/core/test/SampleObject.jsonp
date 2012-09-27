@@ -1,0 +1,3 @@
+aria.core.IO.evalJsonPforTestSampleObject({
+	"something" : "complex"
+});

@@ -14,13 +14,15 @@
  */
 
 /**
- * Transport class for XHR requests.
- * @class aria.core.transport.XHR
- * @extends aria.core.JsObject
- * @singleton
+ * Test class implementing an interface.
+ * @class test.aria.core.test.ImplementInterface1
  */
 Aria.classDefinition({
-    $classpath : "aria.core.transport.XHR",
-    $extends : "aria.core.transport.BaseXHR",
-    $singleton : true
+	$classpath : "test.aria.core.test.ImplementErrorInterface",
+	$implements : ["test.aria.core.test.ErrorInterface", ""],
+	$constructor : function () {
+	},
+	$prototype : {
+
+	}
 });

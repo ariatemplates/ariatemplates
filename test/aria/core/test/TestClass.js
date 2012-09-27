@@ -13,14 +13,12 @@
  * limitations under the License.
  */
 
-/**
- * Transport class for XHR requests.
- * @class aria.core.transport.XHR
- * @extends aria.core.JsObject
- * @singleton
- */
 Aria.classDefinition({
-    $classpath : "aria.core.transport.XHR",
-    $extends : "aria.core.transport.BaseXHR",
-    $singleton : true
+  $classpath : "test.aria.core.test.TestClass",
+  $singleton : true,
+  $constructor : function () {
+    this.classNumber = 2;
+    this.classObj = {empty : "nothing"};
+    this.classFunc = function () {var a = "";};
+  }
 });

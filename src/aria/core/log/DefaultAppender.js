@@ -107,43 +107,6 @@
                 } else {
                     console.error(message);
                 }
-            },
-
-            /**
-             * Format an exception object
-             * @param {Object} e The exception to format
-             * @param {Boolean} html Is the message going to be shown as HTML or not
-             * @return {String} The message ready to be shown
-             * @private
-             */
-            _formatException : function (e, html) {
-                var str = "";
-
-                if (typeof e == 'undefined' || e == null) {
-                    return "";
-                }
-                var cr = html ? "<br />" : "\n";
-
-                str = "Exception";
-                str += cr + '---------------------------------------------------';
-                if (e.fileName) {
-                    str += cr + 'File: ' + e.fileName;
-                }
-                if (e.lineNumber) {
-                    str += cr + 'Line: ' + e.lineNumber;
-                }
-                if (e.message) {
-                    str += cr + 'Message: ' + e.message;
-                }
-                if (e.name) {
-                    str += cr + 'Error: ' + e.name;
-                }
-                if (e.stack) {
-                    str += cr + 'Stack:' + cr + e.stack.substring(0, 200) + " [...] Truncated stacktrace.";
-                }
-                str += cr + '---------------------------------------------------' + cr;
-
-                return str;
             }
         } : {
             debug : function () {},

@@ -1,0 +1,16 @@
+/*
+ * Copyright (C) license This is a free software license version 1.3, and we are compatible with version 3 of the GPL.
+ */
+//***MULTI-PART
+//SEP52254602154840
+//LOGICAL-PATH:/test/sample/number/1.txt
+//SEP52254602154840
+content1
+//SEP52254602154840
+//LOGICAL-PATH:/test/sample/emptyfile.txt
+//SEP52254602154840
+
+//SEP52254602154840
+//LOGICAL-PATH:/test/sample/number/3.txt
+//SEP52254602154840
+content3
