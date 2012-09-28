@@ -128,104 +128,104 @@ Aria.classDefinition({
         },
 
         testAsyncDisposeTemplate : function () {
-          var document = Aria.$window.document;
-          var div = document.createElement('div');
-          div.id = "myTplTest";
-          document.body.appendChild(div);
+            var document = Aria.$window.document;
+            var div = document.createElement('div');
+            div.id = "myTplTest";
+            document.body.appendChild(div);
 
-          Aria.loadTemplate({
-            div : div.id,
-            classpath : "test.aria.core.test.classMgrTest.Tpl1"
-          }, {
-            fn : this._onTemplateLoad,
-            scope : this,
-            args : {}
-          });
+            Aria.loadTemplate({
+                div : div.id,
+                classpath : "test.aria.core.test.classMgrTest.Tpl1"
+            }, {
+                fn : this._onTemplateLoad,
+                scope : this,
+                args : {}
+            });
         },
 
         _onTemplateLoad : function () {
-          var document = Aria.$window.document;
-          var div = document.getElementById('myTplTest');
+            var document = Aria.$window.document;
+            var div = document.getElementById('myTplTest');
 
-          this.assertNotEquals(div.firstChild, null);
-          aria.core.TplClassLoader.disposeTemplate("myTplTest");
-          this.assertEquals(div.firstChild, null);
+            this.assertNotEquals(div.firstChild, null);
+            aria.core.TplClassLoader.disposeTemplate("myTplTest");
+            this.assertEquals(div.firstChild, null);
 
-          document.body.removeChild(div);
-          this.notifyTestEnd('testAsyncDisposeTemplate');
+            document.body.removeChild(div);
+            this.notifyTestEnd('testAsyncDisposeTemplate');
         },
 
         testAsyncLoadTplWithScriptRes : function () {
-          var document = Aria.$window.document;
-          var div = document.createElement('div');
-          div.id = "myTplTestWRes";
-          document.body.appendChild(div);
+            var document = Aria.$window.document;
+            var div = document.createElement('div');
+            div.id = "myTplTestWRes";
+            document.body.appendChild(div);
 
-          Aria.loadTemplate({
-            div : div.id,
-            classpath : "test.aria.core.test.classMgrTest.TplWRes"
-          }, {
-            fn : this._onScriptRes,
-            scope : this
-          });
+            Aria.loadTemplate({
+                div : div.id,
+                classpath : "test.aria.core.test.classMgrTest.TplWRes"
+            }, {
+                fn : this._onScriptRes,
+                scope : this
+            });
         },
 
         _onScriptRes : function () {
-          var document = Aria.$window.document;
-          var div = document.getElementById('myTplTestWRes');
+            var document = Aria.$window.document;
+            var div = document.getElementById('myTplTestWRes');
 
-          this.assertTrue(div.firstChild.innerHTML == "Go to Aria Templates Documentation");
+            this.assertTrue(div.firstChild.innerHTML == "Go to Aria Templates Documentation");
 
-          var txt = test.aria.core.test.classMgrTest.TextOfATemplate.processTextTemplate();
-          this.assertTrue(txt.indexOf("No text")!= -1);
+            var txt = test.aria.core.test.classMgrTest.TextOfATemplate.processTextTemplate();
+            this.assertTrue(txt.indexOf("No text") != -1);
 
-          aria.core.TplClassLoader.disposeTemplate("myTplTestWRes");
-          document.body.removeChild(div);
+            aria.core.TplClassLoader.disposeTemplate("myTplTestWRes");
+            document.body.removeChild(div);
 
-          this.notifyTestEnd('testAsyncLoadTplWithScriptRes');
+            this.notifyTestEnd('testAsyncLoadTplWithScriptRes');
         },
 
         testAsyncLoadTplWithScriptError : function () {
-          var document = Aria.$window.document;
-          var div = document.createElement('div');
-          div.id = "myTplTestWErr";
-          document.body.appendChild(div);
+            var document = Aria.$window.document;
+            var div = document.createElement('div');
+            div.id = "myTplTestWErr";
+            document.body.appendChild(div);
 
-          Aria.loadTemplate({
-            div : div.id,
-            classpath : "test.aria.core.test.classMgrTest.TplWErr"
-          }, {
-            fn : this._onScriptError,
-            scope : this,
-            args : {}
-          });
+            Aria.loadTemplate({
+                div : div.id,
+                classpath : "test.aria.core.test.classMgrTest.TplWErr"
+            }, {
+                fn : this._onScriptError,
+                scope : this,
+                args : {}
+            });
         },
 
         _onScriptError : function () {
-          var document = Aria.$window.document;
-          var div = document.getElementById('myTplTestWErr');
+            var document = Aria.$window.document;
+            var div = document.getElementById('myTplTestWErr');
 
-          this.assertErrorInLogs(aria.core.TplClassLoader.MISSING_TPLSCRIPTDEFINITION);
-          this.assertErrorInLogs(aria.templates.BaseCtxt.TEMPLATE_CONSTR_ERROR);
+            this.assertErrorInLogs(aria.core.TplClassLoader.MISSING_TPLSCRIPTDEFINITION);
+            this.assertErrorInLogs(aria.templates.BaseCtxt.TEMPLATE_CONSTR_ERROR);
 
-          aria.core.TplClassLoader.disposeTemplate("myTplTestWErr");
-          document.body.removeChild(div);
-          this.notifyTestEnd('testAsyncLoadTplWithScriptError');
+            aria.core.TplClassLoader.disposeTemplate("myTplTestWErr");
+            document.body.removeChild(div);
+            this.notifyTestEnd('testAsyncLoadTplWithScriptError');
         },
 
         testAddPrintOptions : function () {
-          var original = "aria.core.TplClassLoader aria.core.environment.Environment";
-          var classes = "aria.core.TplClassLoader aria.core.environment.Environment";
-          classes = aria.core.TplClassLoader.addPrintOptions(classes, "hidden");
-          this.assertTrue(classes == (original+" xPrintHide"));
+            var original = "aria.core.TplClassLoader aria.core.environment.Environment";
+            var classes = "aria.core.TplClassLoader aria.core.environment.Environment";
+            classes = aria.core.TplClassLoader.addPrintOptions(classes, "hidden");
+            this.assertTrue(classes == (original + " xPrintHide"));
 
-          classes = "aria.core.TplClassLoader aria.core.environment.Environment";
-          classes = aria.core.TplClassLoader.addPrintOptions(classes, "adaptX");
-          this.assertTrue(classes == (original+" xPrintAdaptX"));
+            classes = "aria.core.TplClassLoader aria.core.environment.Environment";
+            classes = aria.core.TplClassLoader.addPrintOptions(classes, "adaptX");
+            this.assertTrue(classes == (original + " xPrintAdaptX"));
 
-          classes = "aria.core.TplClassLoader aria.core.environment.Environment";
-          classes = aria.core.TplClassLoader.addPrintOptions(classes, "adaptY");
-          this.assertTrue(classes == (original+" xPrintAdaptY"));
+            classes = "aria.core.TplClassLoader aria.core.environment.Environment";
+            classes = aria.core.TplClassLoader.addPrintOptions(classes, "adaptY");
+            this.assertTrue(classes == (original + " xPrintAdaptY"));
         }
     }
 });

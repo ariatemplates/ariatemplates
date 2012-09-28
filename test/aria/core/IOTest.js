@@ -152,7 +152,6 @@ Aria.classDefinition({
             this.notifyTestEnd("testAsyncUrlError");
         },
 
-
         /**
          * Test the abort function. An abort happens when the callback timeout is shorter than the request's timeout.
          */

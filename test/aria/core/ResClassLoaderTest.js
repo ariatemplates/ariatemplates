@@ -18,232 +18,232 @@
  * @class test.aria.core.ResClassLoaderTest
  */
 Aria.classDefinition({
-	$classpath : 'test.aria.core.ResClassLoaderTest',
-	$extends : 'aria.jsunit.TestCase',
-	$dependencies : ['aria.modules.RequestMgr', 'aria.modules.urlService.environment.UrlService'],
-	$constructor : function () {
-		this.$TestCase.constructor.call(this);
-	},
-	$prototype : {
+    $classpath : 'test.aria.core.ResClassLoaderTest',
+    $extends : 'aria.jsunit.TestCase',
+    $dependencies : ['aria.modules.RequestMgr', 'aria.modules.urlService.environment.UrlService'],
+    $constructor : function () {
+        this.$TestCase.constructor.call(this);
+    },
+    $prototype : {
 
-		/**
-		 * Save parameters of the Request Manager before each test to restore them later.
-		 */
-		setUp : function () {
-			var rm = aria.modules.RequestMgr;
-			this._savedSession = {
-				id : rm.session.id,
-				paramName : rm.session.paramName
-			};
-			this._savedParams = rm._params;
-			rm._params = null;
+        /**
+         * Save parameters of the Request Manager before each test to restore them later.
+         */
+        setUp : function () {
+            var rm = aria.modules.RequestMgr;
+            this._savedSession = {
+                id : rm.session.id,
+                paramName : rm.session.paramName
+            };
+            this._savedParams = rm._params;
+            rm._params = null;
 
-			this._savedCfg = aria.modules.urlService.environment.UrlService.getUrlServiceCfg();
-		},
+            this._savedCfg = aria.modules.urlService.environment.UrlService.getUrlServiceCfg();
+        },
 
-		/**
-		 * Restore saved parameters of the Request Manager after each test.
-		 */
-		tearDown : function () {
-			var rm = aria.modules.RequestMgr;
-			rm.session = this._savedSession;
-			rm._params = this._savedParams;
-			aria.core.AppEnvironment.setEnvironment({
-				urlService : this._savedCfg
-			},null,true);
-		},
+        /**
+         * Restore saved parameters of the Request Manager after each test.
+         */
+        tearDown : function () {
+            var rm = aria.modules.RequestMgr;
+            rm.session = this._savedSession;
+            rm._params = this._savedParams;
+            aria.core.AppEnvironment.setEnvironment({
+                urlService : this._savedCfg
+            }, null, true);
+        },
 
-		testAsyncBuildLogicalPath1 : function () {
-			var instance = Aria.getClassInstance("aria.core.ResClassLoader");
+        testAsyncBuildLogicalPath1 : function () {
+            var instance = Aria.getClassInstance("aria.core.ResClassLoader");
 
-			var callback = {
-				fn : this._testAsyncLP1,
-				scope : this
-			};
+            var callback = {
+                fn : this._testAsyncLP1,
+                scope : this
+            };
 
-			instance.__buildLogicalPath("ABC", "DEF", callback, "IT", true);
-			instance.$dispose();
-		},
+            instance.__buildLogicalPath("ABC", "DEF", callback, "IT", true);
+            instance.$dispose();
+        },
 
-		_testAsyncLP1 : function (evt, args) {
-			try {
-				var expected = {
-					logical : "DEF_IT.js",
-					serverResource : false,
-					full : null
-				};
+        _testAsyncLP1 : function (evt, args) {
+            try {
+                var expected = {
+                    logical : "DEF_IT.js",
+                    serverResource : false,
+                    full : null
+                };
 
-				this.assertTrue(aria.utils.Json.equals(args, expected));
-			} catch (ex) {
-				this.handleAsyncTestError(ex, false);
-			}
+                this.assertTrue(aria.utils.Json.equals(args, expected));
+            } catch (ex) {
+                this.handleAsyncTestError(ex, false);
+            }
 
-			this.notifyTestEnd("testAsyncBuildLogicalPath1");
-		},
+            this.notifyTestEnd("testAsyncBuildLogicalPath1");
+        },
 
-		testAsyncBuildLogicalPath2 : function () {
-			var instance = Aria.getClassInstance("aria.core.ResClassLoader");
+        testAsyncBuildLogicalPath2 : function () {
+            var instance = Aria.getClassInstance("aria.core.ResClassLoader");
 
-			var callback = {
-				fn : this._testAsyncLP2,
-				scope : this
-			};
+            var callback = {
+                fn : this._testAsyncLP2,
+                scope : this
+            };
 
-			instance.__buildLogicalPath("ABC", "DEF", callback, "IT", false);
-			instance.$dispose();
-		},
+            instance.__buildLogicalPath("ABC", "DEF", callback, "IT", false);
+            instance.$dispose();
+        },
 
-		_testAsyncLP2 : function (evt, args) {
-			try {
-				var expected = {
-					logical : "DEF_IT.js",
-					serverResource : false,
-					full : null
-				};
+        _testAsyncLP2 : function (evt, args) {
+            try {
+                var expected = {
+                    logical : "DEF_IT.js",
+                    serverResource : false,
+                    full : null
+                };
 
-				this.assertTrue(aria.utils.Json.equals(args, expected));
-			} catch (ex) {
-				this.handleAsyncTestError(ex, false);
-			}
+                this.assertTrue(aria.utils.Json.equals(args, expected));
+            } catch (ex) {
+                this.handleAsyncTestError(ex, false);
+            }
 
-			this.notifyTestEnd("testAsyncBuildLogicalPath2");
-		},
+            this.notifyTestEnd("testAsyncBuildLogicalPath2");
+        },
 
-		testAsyncBuildLogicalPath3 : function () {
-			var instance = Aria.getClassInstance("aria.core.ResClassLoader");
+        testAsyncBuildLogicalPath3 : function () {
+            var instance = Aria.getClassInstance("aria.core.ResClassLoader");
 
-			var callback = {
-				fn : this._testAsyncLP3,
-				scope : this
-			};
+            var callback = {
+                fn : this._testAsyncLP3,
+                scope : this
+            };
 
-			instance.__buildLogicalPath("ABC.CBA", "DEF/FED", callback, "IT", true);
-			instance.$dispose();
-		},
+            instance.__buildLogicalPath("ABC.CBA", "DEF/FED", callback, "IT", true);
+            instance.$dispose();
+        },
 
-		_testAsyncLP3 : function (evt, args) {
-			try {
-				var expected = {
-					logical : "DEF/FED_IT.js",
-					serverResource : false,
-					full : null
-				};
+        _testAsyncLP3 : function (evt, args) {
+            try {
+                var expected = {
+                    logical : "DEF/FED_IT.js",
+                    serverResource : false,
+                    full : null
+                };
 
-				this.assertTrue(aria.utils.Json.equals(args, expected));
-			} catch (ex) {
-				this.handleAsyncTestError(ex, false);
-			}
+                this.assertTrue(aria.utils.Json.equals(args, expected));
+            } catch (ex) {
+                this.handleAsyncTestError(ex, false);
+            }
 
-			this.notifyTestEnd("testAsyncBuildLogicalPath3");
-		},
+            this.notifyTestEnd("testAsyncBuildLogicalPath3");
+        },
 
-		testAsyncBuildLogicalPath4 : function () {
-			var instance = Aria.getClassInstance("aria.core.ResClassLoader");
+        testAsyncBuildLogicalPath4 : function () {
+            var instance = Aria.getClassInstance("aria.core.ResClassLoader");
 
-			var callback = {
-				fn : this._testAsyncLP4,
-				scope : this
-			};
+            var callback = {
+                fn : this._testAsyncLP4,
+                scope : this
+            };
 
-			instance.__buildLogicalPath("ABC.Res", "DEF", callback, "IT", true);
-			instance.$dispose();
-		},
+            instance.__buildLogicalPath("ABC.Res", "DEF", callback, "IT", true);
+            instance.$dispose();
+        },
 
-		_testAsyncLP4 : function (evt, args) {
-			try {
-				var expected = {
-					logical : "DEF.js",
-					serverResource : false,
-					full : null
-				};
+        _testAsyncLP4 : function (evt, args) {
+            try {
+                var expected = {
+                    logical : "DEF.js",
+                    serverResource : false,
+                    full : null
+                };
 
-				this.assertTrue(aria.utils.Json.equals(args, expected));
-			} catch (ex) {
-				this.handleAsyncTestError(ex, false);
-			}
+                this.assertTrue(aria.utils.Json.equals(args, expected));
+            } catch (ex) {
+                this.handleAsyncTestError(ex, false);
+            }
 
-			this.notifyTestEnd("testAsyncBuildLogicalPath4");
-		},
+            this.notifyTestEnd("testAsyncBuildLogicalPath4");
+        },
 
-		testAsyncBuildLogicalPath5 : function () {
-			var instance = Aria.getClassInstance("aria.core.ResClassLoader");
+        testAsyncBuildLogicalPath5 : function () {
+            var instance = Aria.getClassInstance("aria.core.ResClassLoader");
 
-			var callback = {
-				fn : this._testAsyncLP5,
-				scope : this
-			};
+            var callback = {
+                fn : this._testAsyncLP5,
+                scope : this
+            };
 
-			instance.__buildLogicalPath("ABC.Res", "DEF", callback, "", true);
-			instance.$dispose();
-		},
+            instance.__buildLogicalPath("ABC.Res", "DEF", callback, "", true);
+            instance.$dispose();
+        },
 
-		_testAsyncLP5 : function (evt, args) {
-			try {
-				var expected = {
-					logical : "DEF.js",
-					serverResource : false,
-					full : null
-				};
+        _testAsyncLP5 : function (evt, args) {
+            try {
+                var expected = {
+                    logical : "DEF.js",
+                    serverResource : false,
+                    full : null
+                };
 
-				this.assertTrue(aria.utils.Json.equals(args, expected));
-			} catch (ex) {
-				this.handleAsyncTestError(ex, false);
-			}
+                this.assertTrue(aria.utils.Json.equals(args, expected));
+            } catch (ex) {
+                this.handleAsyncTestError(ex, false);
+            }
 
-			this.notifyTestEnd("testAsyncBuildLogicalPath5");
-		},
+            this.notifyTestEnd("testAsyncBuildLogicalPath5");
+        },
 
-		testAsyncBuildLogicalPath6 : function () {
-			this._savedCfg = aria.modules.urlService.environment.UrlService.getUrlServiceCfg();
-			var rm = aria.modules.RequestMgr;
-			this._savedSession = {
-				id : rm.session.id,
-				paramName : rm.session.paramName
-			};
-			this._savedParams = rm._params;
-			rm._params = null;
+        testAsyncBuildLogicalPath6 : function () {
+            this._savedCfg = aria.modules.urlService.environment.UrlService.getUrlServiceCfg();
+            var rm = aria.modules.RequestMgr;
+            this._savedSession = {
+                id : rm.session.id,
+                paramName : rm.session.paramName
+            };
+            this._savedParams = rm._params;
+            rm._params = null;
 
-			aria.core.AppEnvironment.setEnvironment({
-				urlService : {
-					implementation : "aria.modules.urlService.PatternURLCreationImpl",
-					args : [null,
-							"http://www.amadeus.com:8080/xyz/apf/${moduleName}/sampleResId;jsessionid=${sessionId}?locale=${locale}"]
-				}
-			}, null, true);
+            aria.core.AppEnvironment.setEnvironment({
+                urlService : {
+                    implementation : "aria.modules.urlService.PatternURLCreationImpl",
+                    args : [null,
+                            "http://www.amadeus.com:8080/xyz/apf/${moduleName}/sampleResId;jsessionid=${sessionId}?locale=${locale}"]
+                }
+            }, null, true);
 
-			var instance = Aria.getClassInstance("aria.core.ResClassLoader");
+            var instance = Aria.getClassInstance("aria.core.ResClassLoader");
 
-			var callback = {
-				fn : this._testAsyncLP6,
-				scope : this
-			};
+            var callback = {
+                fn : this._testAsyncLP6,
+                scope : this
+            };
 
-			// This one will call the asynchronous method
-			instance.__buildLogicalPath("ABC.Res", "DEF", callback, "IT", false);
-			instance.$dispose();
-		},
+            // This one will call the asynchronous method
+            instance.__buildLogicalPath("ABC.Res", "DEF", callback, "IT", false);
+            instance.$dispose();
+        },
 
-		_testAsyncLP6 : function (evt, args) {
-			try {
-				var expected = {
-					logical : "DEF_IT.js",
-					serverResource : true,
-					full : "http://www.amadeus.com:8080/xyz/apf/ABC/sampleResId;jsessionid=?locale=IT"
-				};
+        _testAsyncLP6 : function (evt, args) {
+            try {
+                var expected = {
+                    logical : "DEF_IT.js",
+                    serverResource : true,
+                    full : "http://www.amadeus.com:8080/xyz/apf/ABC/sampleResId;jsessionid=?locale=IT"
+                };
 
-				this.assertTrue(aria.utils.Json.equals(args, expected));
-			} catch (ex) {
-				this.handleAsyncTestError(ex, false);
-			}
+                this.assertTrue(aria.utils.Json.equals(args, expected));
+            } catch (ex) {
+                this.handleAsyncTestError(ex, false);
+            }
 
-			var rm = aria.modules.RequestMgr;
-			rm.session = this._savedSession;
-			rm._params = this._savedParams;
-			aria.core.AppEnvironment.setEnvironment({
-				urlService : this._savedCfg
-			}, null, true);
+            var rm = aria.modules.RequestMgr;
+            rm.session = this._savedSession;
+            rm._params = this._savedParams;
+            aria.core.AppEnvironment.setEnvironment({
+                urlService : this._savedCfg
+            }, null, true);
 
-			this.notifyTestEnd("testAsyncBuildLogicalPath6");
-		}
-	}
+            this.notifyTestEnd("testAsyncBuildLogicalPath6");
+        }
+    }
 });

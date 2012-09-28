@@ -54,7 +54,6 @@ Aria.classDefinition({
             this.assertLogsEmpty();
         },
 
-
         /*
          * This set of tests verify that $callback is calling the correct function with the correct scope
          */
@@ -115,8 +114,6 @@ Aria.classDefinition({
             };
         },
 
-
-
         /*
          * This set of tests verify that $callback is passing the correct arguments
          */
@@ -169,10 +166,9 @@ Aria.classDefinition({
                 resIndex : 2
             }, "res");
             this._assertAgainst({
-                   args : ["one","res"]
+                args : ["one", "res"]
             });
         },
-
 
         /*
          * This set of tests verify the behavior of $callback with an array of arguments
@@ -230,7 +226,6 @@ Aria.classDefinition({
             });
         },
 
-
         /*
          * This set of tests combines resIndex and apply
          */
@@ -247,7 +242,6 @@ Aria.classDefinition({
                 args : ["one", "two"]
             });
         },
-
 
         testApplyResIndexZero : function () {
             var args = ["one", "two"];
@@ -277,7 +271,6 @@ Aria.classDefinition({
             });
         },
 
-
         testApplyResIndexPositiveBiggerThanArray : function () {
             var args = ["one", "two"];
 
@@ -297,7 +290,6 @@ Aria.classDefinition({
                 args : Array.prototype.slice.call(arguments)
             };
         },
-
 
         /*
          * Test the presence of errors
