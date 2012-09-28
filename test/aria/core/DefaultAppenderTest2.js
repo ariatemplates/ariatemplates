@@ -28,6 +28,11 @@ Aria.classDefinition({
     },
 
     testAsyncDefaultAppenderLogMessages : function () {
+    	var devMode = (Aria.$window.location.href.indexOf("dev=true") != -1);
+    	if(!devMode){
+   	    this.notifyTestEnd('testAsyncDefaultAppenderLogMessages');
+   	    return;
+    	}
       // unload of DefaultAppender
       aria.core.ClassMgr.unloadClass('aria.core.log.DefaultAppender', false);
 
