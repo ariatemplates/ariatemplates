@@ -18,24 +18,24 @@
  * @class test.aria.core.test.CircularClassC
  */
 Aria.classDefinition({
-	$classpath : 'test.aria.core.test.CircularClassF',
-	$constructor : function () {
-		// TODO: implement constructor
-	},
-	$destructor : function () {
-		// TODO: implement destructor
-	},
-	$prototype : {
+    $classpath : 'test.aria.core.test.CircularClassF',
+    $constructor : function () {
+        // TODO: implement constructor
+    },
+    $destructor : function () {
+        // TODO: implement destructor
+    },
+    $prototype : {
 
-		/**
-		 * TODOC
-		 */
-		myPublicFunction : function () {},
+        /**
+         * TODOC
+         */
+        myPublicFunction : function () {},
 
-		/**
-		 * @private TODOC
-		 */
-		_myPrivateFunction : function () {}
+        /**
+         * @private TODOC
+         */
+        _myPrivateFunction : function () {}
 
-	}
+    }
 });

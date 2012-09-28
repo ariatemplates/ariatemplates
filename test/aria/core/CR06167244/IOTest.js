@@ -1,28 +1,12 @@
-/*
- * Copyright 2012 Amadeus s.a.s.
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 /**
  * Test for the IO class
  */
 Aria.classDefinition({
-    $classpath : 'test.aria.core.IOTest',
+    $classpath : 'test.aria.core.CR06167244.IOTest',
     $extends : 'aria.jsunit.TestCase',
     $dependencies : ["aria.utils.Object", "test.aria.core.test.IOFilterSample", "test.aria.core.test.IOFilterSample"],
     $constructor : function () {
         this.$TestCase.constructor.call(this);
-        this.urlRoot = Aria.rootFolderPath + 'test/';
     },
     $prototype : {
         /**
@@ -31,7 +15,6 @@ Aria.classDefinition({
          * @type Boolean
          */
         needVisibleDocument : true,
-
         setUp : function () {
             aria.core.IO.$on({
                 '*' : this.checkEvent,
@@ -80,7 +63,7 @@ Aria.classDefinition({
          * namespace)
          */
         testAsyncFileDownload : function () {
-            this.url = this.urlRoot + "aria/core/test/TestFile.txt";
+            this.url = "aria/core/test/TestFile.txt";
             var reqId = aria.core.IO.asyncRequest({
                 url : this.url,
                 callback : {
@@ -153,6 +136,92 @@ Aria.classDefinition({
         },
 
         /**
+         * Asynchronous XDR test - to test timeout simply reduce the timeout parameter and trigger the failure handler:
+         * timeout : 100 - to test xdr increase the timeout and trigger the success handler: timeout : 60000
+         */
+        testAsyncXdr : function () {
+            var oScope = this;
+            // Event handler for the success event
+            this.handleSuccess = function (o) {
+                try {
+                    oScope.assertTrue(o.responseText !== null);
+
+                    // There shouln't be pending requests
+                    var pending = aria.utils.Object.keys(aria.core.IO.pendingRequests);
+                    oScope.assertTrue(pending.length === 0, "Pending requests inside aria.core.IO");
+                } catch (ex) {}
+                oScope.notifyTestEnd("testAsyncXdr", true);
+            };
+
+            // Event handler for the failure event
+            this.handleFailure = function (o) {
+                try {
+                    oScope.assertFalse(o === 'undefined');
+                } catch (ex) {}
+                oScope.notifyTestEnd("testAsyncXdr", true);
+            };
+
+            // Set up the callback object used for the transaction.
+            this.callback = {
+                fn : this.handleSuccess,
+                scope : this,
+                onerror : this.handleFailure,
+                onerrorScope : this,
+                timeout : 100
+            };
+
+            // Make request
+            aria.core.IO.asyncRequest({
+                method : 'GET',
+                url : "http://pipes.yahooapis.com/pipes/pipe.run?_id=giWz8Vc33BG6rQEQo_NLYQ&_render=json",
+                callback : this.callback
+            });
+
+            try {
+                this.assertLogsEmpty();
+            } catch (ex) {
+                this.notifyTestEnd("testAsyncXdr");
+            }
+        },
+
+        /**
+         * Asynchronous failing XDR test
+         */
+        testAsyncFailingXdr : function () {
+            // Make request
+            aria.core.IO.asyncRequest({
+                // this request should fail as there is no crossdomain.xml file in http://www.google.com/
+                method : 'GET',
+                url : "http://www.google.com/",
+                callback : {
+                    fn : this._failingXdrHandleSuccess,
+                    scope : this,
+                    onerror : this._failingXdrHandleFailure,
+                    onerrorScope : this
+                }
+            });
+
+            try {
+                this.assertLogsEmpty();
+            } catch (ex) {
+                this.notifyTestEnd("testAsyncFailingXdr");
+            }
+        },
+
+        // Event handler for the success event
+        _failingXdrHandleSuccess : function (o) {
+            try {
+                this.fail("This request should not succeed");
+            } catch (ex) {}
+            this.notifyTestEnd("testAsyncFailingXdr");
+        },
+
+        // Event handler for the success event
+        _failingXdrHandleFailure : function (o) {
+            this.notifyTestEnd("testAsyncFailingXdr");
+        },
+
+        /**
          * Test the abort function. An abort happens when the callback timeout is shorter than the request's timeout.
          */
         testAsyncAbort : function () {
@@ -173,7 +242,7 @@ Aria.classDefinition({
 
             aria.core.IO.asyncRequest({
                 method : "GET",
-                url : this.urlRoot + "aria/core/test/TestFile.txt",
+                url : "aria/core/test/TestFile.txt",
                 callback : {
                     fn : this._onTestAbortSuccess,
                     scope : this,
@@ -209,7 +278,7 @@ Aria.classDefinition({
          */
         testAsyncConfigurePostHeader : function () {
             var request = {
-                url : this.urlRoot + "aria/core/test/TestFile.txt",
+                url : "aria/core/test/TestFile.txt",
                 method : "POST",
                 postData : "my post data",
                 postHeader : "text/plain",
@@ -228,11 +297,11 @@ Aria.classDefinition({
         },
 
         /**
-         * Test no postHeader property in aria.core.CfgBeans.IOAsyncRequestCfg.
+         * Test default postHeader, contentTypeHeader properties in aria.core.CfgBeans.IOAsyncRequestCfg.
          */
         testAsyncNoPostHeader : function () {
             var request = {
-                url : this.urlRoot + "aria/core/test/TestFile.txt",
+                url : "aria/core/test/TestFile.txt",
                 method : "POST",
                 postData : "my post data",
                 callback : {
@@ -246,6 +315,30 @@ Aria.classDefinition({
             }, true);
             this.assertTrue(valid);
             this.assertTrue(request.postHeader === "application/x-www-form-urlencoded; charset=UTF-8");
+            this.assertTrue(request.contentTypeHeader === "application/x-www-form-urlencoded; charset=UTF-8");
+            aria.core.IO.asyncRequest(request);
+        },
+
+        /**
+         * Test contentTypeHeader, data properties in aria.core.CfgBeans.IOAsyncRequestCfg.
+         */
+        testAsyncConfigureContentTypeHeader : function () {
+            var request = {
+                url : "aria/core/test/TestFile.txt",
+                method : "POST",
+                data : "my post",
+                contentTypeHeader : "text/plain",
+                callback : {
+                    fn : this._configureContentTypeHeaderResponse,
+                    scope : this
+                }
+            }
+            var valid = aria.core.JsonValidator.normalize({
+                json : request,
+                beanName : "aria.core.CfgBeans.IOAsyncRequestCfg"
+            }, true);
+            this.assertTrue(valid);
+            this.assertTrue(request.contentTypeHeader === "text/plain");
             aria.core.IO.asyncRequest(request);
         },
 
@@ -264,11 +357,65 @@ Aria.classDefinition({
             this.assertTrue(res.status === 200);
             this.notifyTestEnd("testAsyncNoPostHeader");
         },
+
+        /**
+         * Callback for testAsyncConfigureContentTypeHeader.
+         */
+        _configureContentTypeHeaderResponse : function (res) {
+            this.assertTrue(res.status === 200);
+            this.notifyTestEnd("testAsyncConfigureContentTypeHeader");
+        },
+        /**
+         * Test HEAD Request Method.
+         */
+        testAsyncHead : function () {
+            var request = {
+                url : "aria/core/test/TestFile.txt",
+                method : "HEAD",
+                callback : {
+                    fn : this._asyncHeadResponse,
+                    scope : this
+                }
+            }
+            aria.core.IO.asyncRequest(request);
+        },
+
+        /**
+         * Callback for testAsyncHead.
+         */
+        _asyncHeadResponse : function (res) {
+            this.assertTrue(res.responseText === "");
+            this.assertTrue(res.status === 200);
+            this.notifyTestEnd("testAsyncHead");
+        },
+        /**
+         * Test OPTIONS Request Method.
+         */
+        testAsyncOptionsRequest : function () {
+            var request = {
+                url : "aria/core/test/TestFile.txt",
+                method : "OPTIONS",
+                callback : {
+                    fn : this._asyncOptionsResponse,
+                    scope : this
+                }
+            }
+            aria.core.IO.asyncRequest(request);
+        },
+
+        /**
+         * Callback for testAsyncOptions.
+         */
+        _asyncOptionsResponse : function (res) {
+            this.assertTrue(res.status === 200);
+            this.notifyTestEnd("testAsyncOptionsRequest");
+        },
+
         /**
          * Worker function to test all the position of callback params for Object|Array types
          */
         _testAsyncCallback : function () {
-            var url = this.urlRoot + "aria/core/test/TestFile.txt";
+            var url = "aria/core/test/TestFile.txt";
             var testArr = [{
                         fn : this.__EmptyResultArray,
                         resIndex : -1,

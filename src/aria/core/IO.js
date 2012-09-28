@@ -182,6 +182,7 @@ Aria.classDefinition({
          * Set the header "Content-type" to a default value in case of POST requests (@see defaultPostHeader)
          * @type Boolean
          */
+        /* Backward Compatibility begins here */
         this.useDefaultPostHeader = true;
 
         /**
@@ -189,7 +190,18 @@ Aria.classDefinition({
          * @type String
          */
         this.defaultPostHeader = 'application/x-www-form-urlencoded; charset=UTF-8';
+        /* Backward Compatibility ends here */
+        /**
+         * Set the header "Content-type" to a default value (@see defaultContentTypeHeader)
+         * @type Boolean
+         */
+        this.useDefaultContentTypeHeader = true;
 
+        /**
+         * Default value for header "Content-type".
+         * @type String
+         */
+        this.defaultContentTypeHeader = 'application/x-www-form-urlencoded; charset=UTF-8';
         /**
          * Polling interval for the handle ready state in milliseconds.
          * @type Number
@@ -285,13 +297,11 @@ Aria.classDefinition({
          *      args: {x:123}          // optional - default: null
          *    }
          * }
-         *
          * When a response is received, the callback function is called with the following arguments:
          *
          * <code>
          * cb(asyncRes, cbArgs)
          * </code>
-         *
          * where:
          * the structure of asyncRes is described in aria.core.CfgBeans.IOAsyncRequestResponseCfg
          * [asyncRes] {
@@ -302,7 +312,6 @@ Aria.classDefinition({
          *    responseJSON: JSON Object,
          *    error: ''
          * }
-         *
          * and cbArgs == args object in the req object
          * </pre>
          *
@@ -418,7 +427,14 @@ Aria.classDefinition({
             req.beginDownload = (new Date()).getTime();
             // as postData can possibly be changed by filters, we compute the requestSize only after filters have been
             // called:
-            req.requestSize = (req.method == "POST" && req.postData) ? req.postData.length : 0;
+            /* Backward Compatibility begins here */
+            if (req.method == "POST" && req.postData) {
+                req.requestSize = req.postData.length;
+            }
+            /* Backward Compatibility ends here */
+            else {
+                req.requestSize = ((req.method == "POST" || req.method == "PUT") && req.data) ? req.data.length : 0;
+            }
 
             // PROFILING // req.profilingId = this.$startMeasure(req.url);
 
@@ -463,7 +479,7 @@ Aria.classDefinition({
             this.nbRequests++; // increment before assigning to avoid setting request id 0 (which does not work well
             // with the abort function)
             req.id = this.nbRequests;
-
+            var reqMethods = ["GET", "POST", "PUT", "DELETE", "HEAD", "TRACE", "OPTIONS", "CONNECT", "PATCH"];
             // Assign a request timeout in order of importance:
             // # req.timeout - User specified timeout
             // # req.callback.timeout - Timeout of the callback function (might be set by filters)
@@ -480,13 +496,21 @@ Aria.classDefinition({
                 req.method = req.method.toUpperCase();
             }
 
-            if (req.method !== "POST" && req.method !== "GET") {
-                this.$logWarn("The request method %1 is invalid, will use GET instead.", [req.method]);
-                req.method = "GET";
+            if (aria.utils.Array.indexOf(reqMethods, req.method) === -1) {
+                return this.$logWarn("The request method %1 is invalid", [req.method]);
+            }
+            /* Backward Compatibility begins here */
+            if (req.method == "POST" && req.postHeader) {
+                req.contentTypeHeader = req.postHeader
             }
 
             if (req.method == "POST" && req.postHeader == null && this.useDefaultPostHeader) {
-                req.postHeader = this.defaultPostHeader;
+                req.contentTypeHeader = this.defaultPostHeader;
+            }
+            /* Backward Compatibility ends here */
+            if ((req.method == "PUT" || req.method == "POST") && req.contentTypeHeader == null
+                    && this.useDefaultContentTypeHeader) {
+                req.contentTypeHeader = this.defaultContentTypeHeader;
             }
         },
 
@@ -578,11 +602,11 @@ Aria.classDefinition({
                 }
             }
 
-            if (method == "POST") {
-                this._initHeader('Content-Type', request.postHeader);
+            if (method === "POST" || method === "PUT") {
+                this._initHeader('Content-Type', request.contentTypeHeader);
             }
 
-            transportWrapper.request(reqId, method, arg.uri, callback, request.postData, request.form);
+            transportWrapper.request(reqId, method, arg.uri, callback, request.postData || request.data, request.form);
         },
 
         /**

@@ -65,7 +65,6 @@ Aria.classDefinition({
             this.notifyTestEnd("testAsyncLoadTemplateErrors");
         },
 
-
         /**
          * This test tries to load a template depending on an invalid item having sub dependencies
          */
@@ -102,8 +101,7 @@ Aria.classDefinition({
             this.notifyTestEnd("testAsyncLoadInvalidDependencies");
         },
 
-
-         /**
+        /**
          * This test tries to load a template depending on an invalid item without any sub dependency
          */
         testAsyncLoadInvalidDependenciesNoDependencies : function () {

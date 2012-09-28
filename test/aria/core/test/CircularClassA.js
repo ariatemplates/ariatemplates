@@ -18,25 +18,25 @@
  * @class test.aria.core.test.CircularClassA
  */
 Aria.classDefinition({
-	$classpath : 'test.aria.core.test.CircularClassA',
-	$dependencies : ['test.aria.core.test.CircularClassD', 'test.aria.core.test.CircularClassB'],
-	$constructor : function () {
-		// TODO: implement constructor
-	},
-	$destructor : function () {
-		// TODO: implement destructor
-	},
-	$prototype : {
+    $classpath : 'test.aria.core.test.CircularClassA',
+    $dependencies : ['test.aria.core.test.CircularClassD', 'test.aria.core.test.CircularClassB'],
+    $constructor : function () {
+        // TODO: implement constructor
+    },
+    $destructor : function () {
+        // TODO: implement destructor
+    },
+    $prototype : {
 
-		/**
-		 * TODOC
-		 */
-		myPublicFunction : function () {},
+        /**
+         * TODOC
+         */
+        myPublicFunction : function () {},
 
-		/**
-		 * @private TODOC
-		 */
-		_myPrivateFunction : function () {}
+        /**
+         * @private TODOC
+         */
+        _myPrivateFunction : function () {}
 
-	}
+    }
 });

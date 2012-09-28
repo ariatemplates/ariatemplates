@@ -185,10 +185,10 @@
             INVALID_TYPE_VALUE : "Invalid type: expected type %1 (from %2), found incorrect value '%3' in %4",
             INVALID_MULTITYPES_VALUE : "The value found in %1 is not valid for all the types defined in %2: %3",
             ENUM_UNKNOWN_VALUE : "Value '%1' in %2 is not in the enum definition %3",
-            UNDEFINED_PROPERTY : "Property %1, used in %2, is not defined in %3",
+            UNDEFINED_PROPERTY : "Property '%1', used in %2, is not defined in %3",
             MISSING_MANDATORY : "Missing mandatory attribute in %1 for definition %2",
-            REGEXP_FAILED : "Value %1 in %2 does not comply with RegExp %3 in %4",
-            NUMBER_RANGE : "Number %1 in %2 is not in the accepted range (%3=%4)",
+            REGEXP_FAILED : "Value '%1' in %2 does not comply with RegExp %3 in %4",
+            NUMBER_RANGE : "Number '%1' in %2 is not in the accepted range (%3=%4)",
             NOT_OF_SPECIFIED_CLASSPATH : "Invalid class instance: expected instance of class %1 (from %2), found incorrect value '%3' in %4"
         },
         $prototype : {
