@@ -1406,6 +1406,9 @@
              * @implements aria.templates.ITemplate
              */
             $focus : function (idArray) {
+                if (aria.core.Browser.isIE7 || aria.core.Browser.isIE8) {
+                    Aria.$window.document.body.focus();
+                }
                 var idToFocus;
                 if (aria.utils.Type.isArray(idArray)) {
                     idArray = idArray.slice(0);
