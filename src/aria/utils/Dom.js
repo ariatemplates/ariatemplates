@@ -159,10 +159,13 @@ Aria.classDefinition({
                 this.refreshDomElt = function (domElt) {
                     // Ugly fix for IE, it might fail if domElt is inside an iFrame
                     try {
-                        domElt.parentNode.style.cssText += "";
-                        domElt.parentNode.style.zoom = 1;
-                        domElt.style.cssText += "";
-                        domElt.style.zoom = 1;
+                        // PTR5975877 (IE7) PTR6034278 (IE9 in IE7mode)
+                        var s1 = domElt.parentNode.style, s2 = domElt.style;
+                        var dummyCss = "foo:foo;"; // do not add leading ';' here!
+                        s1.cssText += "";
+                        s1.zoom = 1;
+                        s2.cssText += dummyCss;
+                        s2.cssText = s2.cssText.replace(dummyCss, "");
                     } catch (ex) {}
                 };
             } else if (aria.core.Browser.isIE8) {
