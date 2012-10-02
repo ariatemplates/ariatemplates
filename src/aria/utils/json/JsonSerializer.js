@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2012 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -99,6 +99,7 @@ Aria.classDefinition({
                     return this._serializeFunction(item, options);
                 }
 
+
                 return '"[' + typeof(item) + ']"';
             },
 
@@ -127,7 +128,8 @@ Aria.classDefinition({
                 var isEmpty = true;
 
                 for (var key in item) {
-                    if (item.hasOwnProperty(key) && this.__preserveObjectKey(key, options)) {
+                    if (item.hasOwnProperty(key) && this.__preserveObjectKey(key, options)
+                            && typeof(item[key]) !== "undefined") {
                         isEmpty = false;
                         if (indent) {
                             res.push(subIndent);
@@ -215,7 +217,7 @@ Aria.classDefinition({
                         var newOptions = aria.utils.Json.copy(options, true);
                         newOptions.baseIndent = subIndent;
                         newOptions.maxDepth = options.maxDepth - 1;
-                        output = this._serialize(item[i], newOptions);
+                        output = (typeof(item[i]) === "undefined") ? 'null' : this._serialize(item[i], newOptions);
                         if (output === null) {
                             return null;
                         }

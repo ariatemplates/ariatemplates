@@ -93,7 +93,8 @@ Aria.classDefinition({
             // http://www.quirksmode.org/dom/w3c_core.html#nodeinformation
             if (object) {
                 var nodeName = object.nodeName;
-                return object === Aria.$window || aria.utils.Type.isString(nodeName) || object === Aria.$frameworkWindow;
+                return object === Aria.$window || aria.utils.Type.isString(nodeName)
+                        || object === Aria.$frameworkWindow;
             } else {
                 return false;
             }
@@ -146,6 +147,14 @@ Aria.classDefinition({
          */
         isContainer : function (value) {
             return (this.isObject(value) || this.isArray(value)) && !(value instanceof aria.core.JsObject);
+        },
+        /**
+         * Return true if value is undefined aria.core.JsObject
+         * @param {Object} value
+         * @return {Boolean} isUndefined
+         */
+        isUndefined : function (value) {
+            return typeof(value) === "undefined";
         }
     }
 });
