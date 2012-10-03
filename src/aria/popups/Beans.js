@@ -14,7 +14,7 @@
  */
 
 /**
- * @class aria.popups.Beans Configuration Beans for aria.popups.Popup
+ * Configuration Beans for aria.popups.Popup
  */
 Aria.beanDefinitions({
     $package : "aria.popups.Beans",

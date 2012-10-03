@@ -15,7 +15,6 @@
 
 /**
  * A simple list of selectable items
- * @class aria.widgets.form.list.List
  */
 Aria.classDefinition({
     $classpath : "aria.widgets.form.list.List",
@@ -68,9 +67,6 @@ Aria.classDefinition({
                 }
             }
         });
-    },
-    $destructor : function () {
-        this.$TemplateBasedWidget.$destructor.call(this);
     },
     $prototype : {
         /**
@@ -191,9 +187,9 @@ Aria.classDefinition({
         /**
          * Called when json data that we have properties bound to are externally changed. In general we need to update
          * our internal data model and refresh the sub template if needed.
-         * @param {} key The property changed
-         * @param {} newValue
-         * @param {} oldValue
+         * @param {String} key The property changed
+         * @param {Object} newValue
+         * @param {Object} oldValue
          */
         _onBoundPropertyChange : function (key, newValue, oldValue) {
             // If the template needs a refresh, refreshNeeded has to be set to true
