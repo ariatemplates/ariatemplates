@@ -14,8 +14,7 @@
  */
 
 /**
- * @class aria.widgets.form.DropDownTrait Class whose prototype is intended to be imported for all widgets that use a
- * drop-down popup
+ * Class whose prototype is intended to be imported for all widgets that use a drop-down popup
  */
 Aria.classDefinition({
     $classpath : "aria.widgets.form.DropDownTrait",
