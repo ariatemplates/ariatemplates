@@ -14,14 +14,13 @@
  */
 
 /**
- * Base class for all input widgets. Manage input data structure and properties, as well
- * as the label support
+ * Base class for all input widgets. Manage input data structure and properties, as well as the label support
  */
 Aria.classDefinition({
     $classpath : "aria.widgets.form.Input",
     $extends : "aria.widgets.Widget",
     $dependencies : ["aria.utils.Dom", "aria.widgets.form.InputValidationHandler", "aria.utils.Data",
-            "aria.utils.String", "aria.widgets.environment.WidgetSettings","aria.core.Browser"],
+            "aria.utils.String", "aria.widgets.environment.WidgetSettings", "aria.core.Browser"],
     /**
      * Input constructor
      * @param {aria.widgets.CfgBeans.InputCfg} cfg the widget configuration
@@ -149,7 +148,10 @@ Aria.classDefinition({
         _widgetMarkup : function (out) {
 
             var cfg = this._cfg, showLabel = (!cfg.hideLabel && !!cfg.label);
-
+            var isIE7 = aria.core.Browser.isIE7;
+            if (isIE7) {
+                out.write('<span style="display: inline-block;">');
+            }
             if (showLabel) {
                 // process label
                 if (cfg.labelPos === "left") {
@@ -170,6 +172,9 @@ Aria.classDefinition({
                 // no label
                 this._inputMarkup(out);
             }
+            if (isIE7) {
+                out.write('</span>');
+            }
         },
 
         /**
@@ -188,8 +193,11 @@ Aria.classDefinition({
             } else {
                 idx = 0;
             }
-
-            return aria.utils.Dom.getDomElementChild(this.getDom(), idx);
+            var dom = this.getDom();
+            if (aria.core.Browser.isIE7) {
+                dom = dom ? dom.firstChild : null;
+            }
+            return aria.utils.Dom.getDomElementChild(dom, idx);
         },
         /**
          * Get the DOM elt associated to the Label Markup HTML element
@@ -199,7 +207,11 @@ Aria.classDefinition({
         _getInputLabelMarkupDomElt : function () {
             var cfg = this._cfg, showLabel = (!cfg.hideLabel && !!cfg.label);
             if (showLabel) {
-                var elems = aria.utils.Dom.getDomElementsChildByTagName(this.getDom(), 'label');
+                var dom = this.getDom();
+                if (aria.core.Browser.isIE7) {
+                    dom = dom ? dom.firstChild : null;
+                }
+                var elems = aria.utils.Dom.getDomElementsChildByTagName(dom, 'label');
                 if (elems) {
                     if (elems.length === 0) {
                         this.$logError(this.WIDGET_INPUT_NO_LABEL, []);
@@ -245,12 +257,12 @@ Aria.classDefinition({
             // PTR04951216 skinnable labels
             var cssClass = 'class="x' + this._skinnableClass + '_' + cfg.sclass + '_' + this._state + '_label"';
             var IE7Align;
-            (aria.core.Browser.isIE7)?(IE7Align="-25%"):(IE7Align="middle");
+            (aria.core.Browser.isIE7) ? (IE7Align = "-25%") : (IE7Align = "middle");
             out.write('<label ' + cssClass + ' style="');
             if (!aria.widgets.environment.WidgetSettings.getWidgetSettings().middleAlignment) {
                 out.write('vertical-align:-1px;');
             } else {
-                out.write('vertical-align:'+IE7Align+';');
+                out.write('vertical-align:' + IE7Align + ';');
             }
             out.write('display:' + cssDisplay);
             if (margin) {
