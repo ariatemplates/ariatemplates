@@ -29,6 +29,12 @@ Aria.classDefinition({
     },
     $prototype : {
         /**
+         * Array of skin property names containing image URLs. This is used in the preloadSkinImages method.
+         */
+        skinImageProperties : ['spriteURL', 'handleSpriteURLh', 'proxySpriteURLh', 'spriteUrl', 'frameIcon',
+                'spriteURLv', 'spriteURLh'],
+
+        /**
          * Normalizes the whole current skin, if not already done.
          */
         normalizeSkin : function () {
@@ -151,6 +157,95 @@ Aria.classDefinition({
         },
 
         /**
+         * Extract skin images from an object from the skin and add them to a map.
+         * @param {Object} object Object from the skin. It can be either a skin class, a state, a frame or frame state
+         * object. Any property of this object whose name is inside this.skinImageProperties is supposed to contain the
+         * URL of an image.
+         * @param {Object} images Map to which the image urls will be added. Each key in the map is an object URL.
+         */
+        _extractSkinImages : function (object, images) {
+            if (object) {
+                var skinImageProperties = this.skinImageProperties;
+                for (var i = 0, l = skinImageProperties.length; i < l; i++) {
+                    var propName = skinImageProperties[i];
+                    var value = object[propName];
+                    if (value) {
+                        images[value] = 1;
+                    }
+                }
+            }
+        },
+
+        /**
+         * Preload all skin images. This method adds a div to the document body, which contains all the images specified
+         * in the skin. This is a work-around for a bug with IE 9 which happens in some cases. Call this method when the
+         * application is loading if some skin images are not displayed in IE.
+         * @param {Object} skinObject Optional skin object. If not provided, the current skin is used.
+         * @param {HTMLElement} domElement DOM element inserted in the DOM with all images.
+         */
+        preloadSkinImages : function (skinObject) {
+            // Preloading images as soon as the application is loaded fixes PTRs 06016424 and 05968998.
+            var images = {};
+            if (!skinObject) {
+                skinObject = aria.widgets.AriaSkin.skinObject;
+            }
+            for (var widget in skinObject) {
+                var widgetSkinClasses = skinObject[widget];
+                if (widgetSkinClasses && skinObject.hasOwnProperty(widget) && widget != "general") {
+                    for (var skinClassName in widgetSkinClasses) {
+                        var skinClass = widgetSkinClasses[skinClassName];
+                        if (skinClass && widgetSkinClasses.hasOwnProperty(skinClassName)) {
+                            this._extractSkinImages(skinClass, images);
+                            this._extractSkinImages(skinClass.frame, images);
+                            var statesObject = skinClass.states;
+                            if (statesObject) {
+                                var statesMap = this.getWidgetStates(widget);
+                                for (var stateName in statesObject) {
+                                    if (statesMap.hasOwnProperty(stateName)) {
+                                        var state = statesObject[stateName];
+                                        if (state) {
+                                            this._extractSkinImages(state, images);
+                                            this._extractSkinImages(state.frame, images);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            var markup = [];
+            for (var curImage in images) {
+                if (images.hasOwnProperty(curImage)) {
+                    markup.push('<span style="background-image:url(', this.getSkinImageFullUrl(curImage), ');")>&nbsp;</span>');
+                }
+            }
+            var document = Aria.$window.document;
+            var element = document.createElement('div');
+            document.body.appendChild(element);
+            element.style.display = 'none';
+            element.innerHTML = markup.join('');
+            return element;
+        },
+
+        /**
+         * Returns the full URL of a skin image from the relative URL specified in the skin.
+         * @param {String} imageUrl image URL as it is written in the skin
+         * @return {String} full URL (taking into account Aria.rootFolderPath and the general.imagesRoot skin property)
+         */
+        getSkinImageFullUrl : function (imageUrl) {
+            var baseUrl = Aria.rootFolderPath;
+            if (!baseUrl) {
+                // Relative path, make it looks like an absolute
+                baseUrl = "./";
+            } else if (baseUrl.charAt(baseUrl.length - 1) !== "/") {
+                // Ensure an ending slash
+                baseUrl += "/";
+            }
+            return baseUrl + this.getGeneral().imagesRoot + imageUrl;
+        },
+
+        /**
          * Build the backgroung rule of a CSS selector. It is equivalent to the background macro inside .ftl files. It
          * computes the path to the css image from the baseUrl FIXME This function is needed because the packager
          * modifies any url(
@@ -164,27 +259,17 @@ Aria.classDefinition({
             var gifUrl = "";
 
             if (imageurl) {
-                var baseUrl = Aria.rootFolderPath;
-                if (!baseUrl) {
-                    // Relative path, make it looks like an absolute
-                    baseUrl = "./";
-                } else if (baseUrl.charAt(baseUrl.length - 1) !== "/") {
-                    // Ensure an ending slash
-                    baseUrl += "/";
-                }
-                var skinImagesRoot = baseUrl + this.getGeneral().imagesRoot;
-
-                fullUrl = "url(" + skinImagesRoot + imageurl + ") ";
+                var imageFullUrl = this.getSkinImageFullUrl(imageurl);
+                fullUrl = "url(" + imageFullUrl + ") ";
 
                 if (aria.utils.String.endsWith(imageurl, ".png")) {
-                    gifUrl = skinImagesRoot + imageurl.substring(0, imageurl.length - 4) + ".gif";
+                    gifUrl = imageFullUrl.substring(0, imageFullUrl.length - 4) + ".gif";
                 } else {
-                    gifUrl = skinImagesRoot + imageurl;
+                    gifUrl = imageFullUrl;
                 }
             }
 
             var rule = ["background: ", color, " ", fullUrl, otherparams, ";"];
-
             if (gifUrl) {
                 rule.push("_background-image: url(", gifUrl, ") !important;");
             }
