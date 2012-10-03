@@ -16,7 +16,7 @@
 (function () {
     /**
      * Mock for the resources handler. This is needed because loadResourcesHandler is called synchronously. This handler
-     * has only a getSuggestions method that queues the latest suggestValue in order to replay it when the correct
+     * has only methods to get suggestions. These methods queue the latest suggestValue in order to replay it when the correct
      * resources handler is loaded.
      * @private
      */
@@ -24,6 +24,12 @@
         this.getSuggestions = function (entry, callback) {
             this.pendingSuggestion = {
                 entry : entry,
+                callback : callback
+            };
+        };
+        this.getAllSuggestions = function (callback) {
+            this.pendingSuggestion = {
+                // there's no entry, in case you didn't notice
                 callback : callback
             };
         };
@@ -57,7 +63,11 @@
         scope._autoDisposeHandler = true;
 
         if (pendingSuggestion) {
-            handler.getSuggestions(pendingSuggestion.entry, pendingSuggestion.callback);
+            if (pendingSuggestion.entry) {
+                handler.getSuggestions(pendingSuggestion.entry, pendingSuggestion.callback);
+            } else {
+                handler.getAllSuggestions(pendingSuggestion.callback);
+            }
         }
     }
 
