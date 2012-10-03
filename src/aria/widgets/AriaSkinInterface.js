@@ -217,7 +217,7 @@ Aria.classDefinition({
             var markup = [];
             for (var curImage in images) {
                 if (images.hasOwnProperty(curImage)) {
-                    markup.push('<span style="background-image:url(', this.getSkinImageFullUrl(curImage), ');")>&nbsp;</span>');
+                    markup.push('<span style="background-image:url(', this.getSkinImageFullUrl(curImage), ');">&nbsp;</span>');
                 }
             }
             var document = Aria.$window.document;
