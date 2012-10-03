@@ -14,14 +14,12 @@
  */
 
 /**
- * @class aria.widgets.form.DropDownInput Base class for input widgets that use a drop-down popup without being a text
- * input
- * @extends aria.widgets.form.Input
+ * Base class for input widgets that use a drop-down popup without being a text input
  */
 Aria.classDefinition({
-    $classpath : 'aria.widgets.form.DropDownInput',
-    $extends : 'aria.widgets.form.InputWithFrame',
-    $dependencies : ['aria.widgets.form.DropDownTrait'],
+    $classpath : "aria.widgets.form.DropDownInput",
+    $extends : "aria.widgets.form.InputWithFrame",
+    $dependencies : ["aria.widgets.form.DropDownTrait"],
     /**
      * DropDownInput constructor
      * @param {aria.widgets.CfgBeans.DropDownInputCfg} cfg the widget configuration
@@ -29,8 +27,13 @@ Aria.classDefinition({
      */
     $constructor : function () {
         this.$InputWithFrame.constructor.apply(this, arguments);
-        // controller is a property managed at the level of the DropDownInput (as it is accessed from method in this
-        // class), even if specific controller instances can be created in sub-classes
+
+        /**
+         * Controller is a property managed at the level of the DropDownInput (as it is accessed from method in this
+         * class), even if specific controller instances can be created in sub-classes
+         * @type {Object}
+         * @override
+         */
         this.controller = null;
     },
     $destructor : function () {

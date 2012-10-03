@@ -16,28 +16,35 @@
 /**
  * DropDownListTrait is a class to share code between dropdown widgets containing a list in their popup. The purpose of
  * this class is not to be created directly, but to allow its prototype to be imported.
- * @class aria.widgets.form.DropDownListTrait
  */
 Aria.classDefinition({
-    $classpath : 'aria.widgets.form.DropDownListTrait',
-    $dependencies : ['aria.widgets.form.list.List'],
+    $classpath : "aria.widgets.form.DropDownListTrait",
+    $dependencies : ["aria.widgets.form.list.List"],
     $constructor : function () {
         // The purpose of this class is to provide a prototype to be imported, not to be created directly.
         this.$assert(11, false);
     },
     $statics : {
+        /**
+         * Maximum List widget's height
+         * @type Number
+         */
         MAX_HEIGHT : 210,
+        /**
+         * Minimum List widget's height
+         * @type Number
+         */
         MIN_HEIGHT : 50
     },
     $prototype : {
 
         /**
-         * Callback called when the user clicks on a date in the list.
+         * Callback called when the user clicks on a date in the list. <br />
+         * When clicking on an item in the dropdown list, close the dropdown and save the selected item
          * @param {Object} evt object containing information about the clicked item in the list (value and index).
          * @protected
          */
         _clickOnItem : function (evt) {
-            // when clicking on an item in the dropdown list, close the dropdown and save the selected item
             this._closeDropdown();
             var report = this.controller.checkValue(evt.value);
             this._reactToControllerReport(report);
@@ -89,21 +96,21 @@ Aria.classDefinition({
         },
 
         /**
+         * Callback for the keyevent on List widget. <br />
+         * restore the focus on the right item if it does not have the focus, and propagate the key
          * @param {Object} evt object containing keyboard event information (charCode and keyCode). This is not an
          * aria.DomEvent object.
-         * @return {Boolean}
+         * @return {Boolean} Whether the default action should be stopped or not
          * @protected
          */
         _keyPressed : function (evt) {
-            // restore the focus on the right item if it does not have the focus,
-            // and propagate the key
             if (!this._hasFocus) {
                 this.focus();
                 this._handleKey({
                     charCode : evt.charCode,
                     keyCode : evt.keyCode
                 });
-                return true; // stop default action
+                return true;
             }
             return false;
         },
@@ -133,6 +140,7 @@ Aria.classDefinition({
             maxHeight = (maxHeight < this.MIN_HEIGHT) ? this.MIN_HEIGHT : maxHeight;
             maxHeight = (maxHeight > this.MAX_HEIGHT) ? this.MAX_HEIGHT : maxHeight - 2;
             var list = new aria.widgets.form.list.List({
+                id : cfg.id,
                 defaultTemplate : "defaultTemplate" in options ? options.defaultTemplate : cfg.listTemplate,
                 block : true,
                 sclass : "dropdown",

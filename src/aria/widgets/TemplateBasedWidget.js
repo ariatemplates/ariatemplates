@@ -15,15 +15,11 @@
 
 /**
  * Abstract widget which enables an easy implementation of any template-based widget.
- * @class aria.widgets.TemplateBasedWidget
  */
 Aria.classDefinition({
     $classpath : "aria.widgets.TemplateBasedWidget",
     $extends : "aria.widgets.container.Container",
     $dependencies : ["aria.widgets.Template"],
-    $constructor : function (cfg, ctxt) {
-        aria.widgets.TemplateBasedWidget.superclass.constructor.call(this, cfg, ctxt);
-    },
     $events : {
         "widgetContentReady" : {
             description : "Raised when the template content is displayed."
@@ -44,6 +40,12 @@ Aria.classDefinition({
     },
     $prototype : {
         /**
+         * List of configuration options that are inherited from the Widget's configuration to the sub-template
+         * @type Array
+         */
+        __inherithCfg : ["tooltip", "tooltipId", "tabIndex", "margins", "block", "printOptions"],
+
+        /**
          * Initialize the template associated to this template based widget. It will create a new instance of the
          * Template.
          * @param {aria.templates.CfgBeans.LoadTemplateCfg} tplCfg Template configuration object
@@ -52,31 +54,20 @@ Aria.classDefinition({
         _initTemplate : function (tplCfg) {
             if (this._cfgOk) {
                 var cfg = this._cfg;
-                /*
-                 * if (!tplCfg.hasOwnProperty("width")) { tplCfg.width = cfg.width; } if
-                 * (!tplCfg.hasOwnProperty("height")) { tplCfg.height = cfg.height; }
-                 */
-                if (!tplCfg.hasOwnProperty("tooltip")) {
-                    tplCfg.tooltip = cfg.tooltip;
+
+                for (var i =0, len = this.__inherithCfg; i < len; i += 1) {
+                    var property = this.__inherithCfg[i];
+                    if (!tplCfg.hasOwnProperty(property)) {
+                        tplCfg[property] = cfg[property];
+                    }
                 }
-                if (!tplCfg.hasOwnProperty("tooltipId")) {
-                    tplCfg.tooltipId = cfg.tooltipId;
-                }
-                if (!tplCfg.hasOwnProperty("tabIndex")) {
-                    tplCfg.tabIndex = cfg.tabIndex;
-                }
-                if (!tplCfg.hasOwnProperty("margins")) {
-                    tplCfg.margins = cfg.margins;
-                }
-                if (!tplCfg.hasOwnProperty("block")) {
-                    tplCfg.block = cfg.block;
-                }
-                if (!tplCfg.hasOwnProperty("printOptions")) {
-                    tplCfg.printOptions = cfg.printOptions;
-                }
+
                 if (cfg.defaultTemplate) {
                     // allow the customization of the template:
                     tplCfg.defaultTemplate = cfg.defaultTemplate;
+                }
+                if (cfg.id) {
+                    tplCfg.id = cfg.id + "_t_";
                 }
                 this._tplWidget = new aria.widgets.Template(tplCfg, this._context, this._lineNumber);
                 this._tplWidget.tplLoadCallback = {
@@ -87,7 +78,8 @@ Aria.classDefinition({
         },
 
         /**
-         * FIXME: doc
+         * Abstract. This function is called any time the sub-template's module controller raises an event.<br />
+         * This function must be overridden.
          * @param {Event} evt
          */
         _onModuleEvent : function (evt) {
