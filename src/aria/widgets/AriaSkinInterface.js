@@ -189,23 +189,25 @@ Aria.classDefinition({
             if (!skinObject) {
                 skinObject = aria.widgets.AriaSkin.skinObject;
             }
-            for (var widget in skinObject) {
-                var widgetSkinClasses = skinObject[widget];
-                if (widgetSkinClasses && skinObject.hasOwnProperty(widget) && widget != "general") {
-                    for (var skinClassName in widgetSkinClasses) {
-                        var skinClass = widgetSkinClasses[skinClassName];
-                        if (skinClass && widgetSkinClasses.hasOwnProperty(skinClassName)) {
-                            this._extractSkinImages(skinClass, images);
-                            this._extractSkinImages(skinClass.frame, images);
-                            var statesObject = skinClass.states;
-                            if (statesObject) {
+            if (skinObject) {
+                for (var widget in skinObject) {
+                    var widgetSkinClasses = skinObject[widget];
+                    if (widgetSkinClasses && skinObject.hasOwnProperty(widget) && widget != "general") {
+                        for (var skinClassName in widgetSkinClasses) {
+                            var skinClass = widgetSkinClasses[skinClassName];
+                            if (skinClass && widgetSkinClasses.hasOwnProperty(skinClassName)) {
+                                this._extractSkinImages(skinClass, images);
+                                this._extractSkinImages(skinClass.frame, images);
                                 var statesMap = this.getWidgetStates(widget);
-                                for (var stateName in statesObject) {
-                                    if (statesMap.hasOwnProperty(stateName)) {
-                                        var state = statesObject[stateName];
-                                        if (state) {
-                                            this._extractSkinImages(state, images);
-                                            this._extractSkinImages(state.frame, images);
+                                var statesObject = skinClass.states;
+                                if (statesObject && statesMap) {
+                                    for (var stateName in statesObject) {
+                                        if (statesMap.hasOwnProperty(stateName)) {
+                                            var state = statesObject[stateName];
+                                            if (state) {
+                                                this._extractSkinImages(state, images);
+                                                this._extractSkinImages(state.frame, images);
+                                            }
                                         }
                                     }
                                 }
