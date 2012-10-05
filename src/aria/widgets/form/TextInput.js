@@ -624,7 +624,8 @@ Aria.classDefinition({
 
             } else if (propertyName === 'invalidText') {
                 // no need to handle combinations of newValue and oldValue being: null, undefined, ''
-                if (!newValue === !oldValue) {
+                // this can happen when invalidText is set from the checkValue below, causing an infinite loop
+                if (newValue == oldValue) {
                     return;
                 }
                 var res;
