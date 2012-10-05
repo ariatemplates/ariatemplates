@@ -342,6 +342,15 @@ Aria.classDefinition({
                     out.write("#ERROR IN SUBTEMPLATE#");
                 }
                 out.write('</div>');
+                this.isDiffered = !tplCtxt._ready;
+                if (!tplCtxt._ready) {
+                    tplCtxt.$onOnce({
+                        "Ready" : {
+                            fn : this.__differedComplete,
+                            scope : this
+                        }
+                    });
+                }
             } else if (this._tplcfg) {
                 // the template is not yet loaded, show the loading indicator
                 out.write('<div style="width:100%; height:100%" class="xLDI"></div>');
@@ -357,6 +366,16 @@ Aria.classDefinition({
          */
         getDomElt : function () {
             return this._domElt;
+        },
+
+        /**
+         * This function is called as callback of Ready state event when this widget's instance is differed.<br />
+         * This widget is differed when the context is not ready when markup is generated, this could happen because of
+         * sub templates or other differed content.
+         */
+        __differedComplete : function () {
+            this.isDiffered = false;
+            this.$raiseEvent("ElementReady");
         }
     }
 });
