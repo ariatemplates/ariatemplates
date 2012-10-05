@@ -259,8 +259,8 @@ Aria.classDefinition({
                 out.write(['<textarea', Aria.testMode ? ' id="' + this._domId + '_textarea"' : '',
                         cfg.disabled ? ' disabled="disabled"' : cfg.readOnly ? ' readonly="readonly"' : '', ' type="',
                         type, '" style="', inlineStyle.join(''), 'color:', color,
-                        ';overflow:auto;resize:none;height: ' + this._frame.innerHeight + 'px; width:', inputWidth, 'px;"',
-                        'value=""', (cfg.maxlength > -1 ? 'maxlength="' + cfg.maxlength + '" ' : ' '),
+                        ';overflow:auto;resize:none;height: ' + this._frame.innerHeight + 'px; width:', inputWidth,
+                        'px;"', 'value=""', (cfg.maxlength > -1 ? 'maxlength="' + cfg.maxlength + '" ' : ' '),
                         (cfg.tabIndex != null ? 'tabindex="' + this._calculateTabIndex() + '" ' : ' '), spellCheck,
                         '>', stringUtils.encodeForQuotedHTMLAttribute((this._helpTextSet) ? cfg.helptext : text),
                         '</textarea>'
@@ -352,8 +352,8 @@ Aria.classDefinition({
 
                 if (report) {
                     if (report.errorMessages.length) {
+                        this.changeProperty("invalidText", text);
                         if (this._cfg.directOnBlurValidation && !performCheckOnly) {
-                            this.changeProperty("invalidText", text);
                             this.changeProperty("formatErrorMessages", report.errorMessages);
                         }
                     } else if (this._cfg.formatError === false
@@ -622,6 +622,20 @@ Aria.classDefinition({
                     this.setPrefillText(true, cfg.prefill, true);
                 }
 
+            } else if (propertyName === 'invalidText') {
+                var res = this.checkValue({
+                    performCheckOnly : true,
+                    value : this._cfg.value,
+                    text : newValue == null ? "" : null
+                });
+                if (!res.isValid) { // only update the display value if the old value is not a valid value
+                    this.getTextInputField().value = newValue;
+                }
+                if (newValue === null || newValue === '' || newValue === undefined) {
+                    this.changeProperty("formatError", false);
+                }
+                this.setProperty("invalidText", newValue);
+                this._reactToChange();
             } else if (propertyName === 'readOnly' || propertyName === 'disabled') {
                 if (newValue) {
                     // PTR 04746599: disabling the field or making it read-only
@@ -986,7 +1000,9 @@ Aria.classDefinition({
                     performCheckOnly : true
                 });
                 if (!rep.isValid) {
-                    this.changeProperty("error", true);
+                    if (cfg.directOnBlurValidation) {
+                        this.changeProperty("error", true);
+                    }
                     // Just to set the this._helpTextSet to true in this case,
                     // as the invalid text will be displayed:
                     value = cfg.invalidText;
