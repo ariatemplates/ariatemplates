@@ -15,15 +15,13 @@
 
 /**
  * A HTML Template include simple widget
- * @class aria.html.Template
- * @extends aria.widgetLibs.BaseWidget
  */
 Aria.classDefinition({
-    $classpath : 'aria.html.Template',
+    $classpath : "aria.html.Template",
     $extends : "aria.widgetLibs.BaseWidget",
-    $dependencies : ['aria.html.beans.TemplateCfg', 'aria.templates.TemplateTrait', 'aria.utils.Html',
-            'aria.templates.TemplateCtxt', 'aria.utils.Dom', 'aria.templates.ModuleCtrlFactory',
-            'aria.core.environment.Customizations'],
+    $dependencies : ["aria.html.beans.TemplateCfg", "aria.templates.TemplateTrait", "aria.utils.Html",
+            "aria.templates.TemplateCtxt", "aria.utils.Dom", "aria.templates.ModuleCtrlFactory",
+            "aria.core.environment.Customizations"],
     $events : {
         "ElementReady" : {
             description : "Raised when the template content is fully displayed."
@@ -85,8 +83,24 @@ Aria.classDefinition({
 
         var tplCtxt = new aria.templates.TemplateCtxt();
         this.subTplCtxt = tplCtxt;
+
+        /**
+         * Whether the context was already initialized or not.<br />
+         * Not-initialized context means the the widget is still waiting for some dependencies to load, thus it's a
+         * differed content
+         * @type Boolean
+         * @protected
+         */
         this._initCtxDone = false;
 
+        /**
+         * Whether or not the widget is differed in its main section.<br />
+         * If the context is not initialized when the markup is created this widget should be considered as differed to
+         * avoid triggering $displayReady on the containg template
+         * @type Boolean
+         * @override
+         */
+        this.isDiffered = false;
     },
     $destructor : function () {
         this._subTplDiv = null;
@@ -241,8 +255,6 @@ Aria.classDefinition({
                     }
                 });
                 if (this._tplcfg) {
-                    // the template is not yet loaded, show the loading indicator
-
                     var tagName = this._cfg.type;
                     var markup = ['<', tagName, ' id="', this._domId, '"'];
                     if (this._cfg.attributes) {
@@ -257,6 +269,8 @@ Aria.classDefinition({
                         } else {
                             markup.push(this.ERROR_SUBTEMPLATE);
                         }
+                    } else {
+                        this.isDiffered = true;
                     }
                     markup.push('</' + tagName + '>');
                     out.write(markup.join(''));
@@ -265,11 +279,16 @@ Aria.classDefinition({
                 }
             }
         },
+
+        /**
+         * Return the id of the widget, if it should be referenced from the template scripts or other widgets.<br />
+         * In this case do not return dynamic ids, as they don't need to be checked for unicity and they are not known
+         * outside the widget
+         * @return {String} id of the widget, as specified in the config
+         * @override
+         */
         getId : function () {
-            // do not return dynamic ids, as they don't need to be checked for unicity
-            // and they are not known outside the widget
             return this._cfg.id;
         }
-
     }
 });

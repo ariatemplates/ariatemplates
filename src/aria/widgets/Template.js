@@ -214,15 +214,6 @@ Aria.classDefinition({
                 return;
             }
 
-            /*
-             * PTR: 05228660 moved to initTemplate, for access to the private module controller not to trigger the
-             * interface events ////// context = this._context, data = this._cfg.data, moduleCtrl = res.moduleCtrl;
-             * tplcfg.moduleCtrl = moduleCtrl; if (data == null) { data = (moduleCtrl ? moduleCtrl.getData() :
-             * context.data); if (moduleCtrl == null) { tplcfg.moduleCtrl = context.moduleCtrl; } } else if (moduleCtrl ==
-             * null) { moduleCtrl = context.moduleCtrl; if (moduleCtrl != null) { moduleCtrl =
-             * moduleCtrl.getSubModuleCtrl(data); } tplcfg.moduleCtrl = moduleCtrl; }
-             */
-
             var tplDiv = this._subTplDiv; // may be null at this time
 
             tplcfg.tplDiv = tplDiv;
@@ -310,7 +301,21 @@ Aria.classDefinition({
                     templateCtxt : tplCtxt
                 });
                 tplCtxt.viewReady();
+            }
 
+            // Even if not differed yet, it might still be so if its context is not yet ready
+            if (!this.isDiffered) {
+                // No template context means a template error, let the normal flow handle this case
+                this.isDiffered = tplCtxt && !tplCtxt._ready;
+
+                if (this.isDiffered) {
+                    tplCtxt.$on({
+                        "Ready" : {
+                            fn : this.__differedComplete,
+                            scope : this
+                        }
+                    });
+                }
             }
         },
 
@@ -342,9 +347,12 @@ Aria.classDefinition({
                     out.write("#ERROR IN SUBTEMPLATE#");
                 }
                 out.write('</div>');
+                // In this case we're not quite sure whether this widget is differed or not because it might
+                // contain differed widgets, understanding if this widget is differed or not is done in _init
             } else if (this._tplcfg) {
                 // the template is not yet loaded, show the loading indicator
                 out.write('<div style="width:100%; height:100%" class="xLDI"></div>');
+                // As the context is not available, here I can be sure that this is differed
                 this.isDiffered = true;
             } else {
                 out.write("<div>#ERROR IN SUBTEMPLATE#</div>");
@@ -357,6 +365,16 @@ Aria.classDefinition({
          */
         getDomElt : function () {
             return this._domElt;
+        },
+
+        /**
+         * This function is called as callback of Ready state event when this widget's instance is differed.<br />
+         * This widget is differed when the context is not ready when markup is generated, this could happen because of
+         * sub templates or other differed content.
+         */
+        __differedComplete : function () {
+            this.isDiffered = false;
+            this.$raiseEvent("ElementReady");
         }
     }
 });
