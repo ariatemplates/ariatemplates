@@ -29,6 +29,17 @@ Aria.classDefinition({
 			return "Custom";
 		},
 
+        /**
+         * Generate a service URL.
+         * @param {String} moduleName Name of the module that is making the request
+         * @param {Object} serviceSpec Specification for target service
+         * @param {Number} sessionId Value of the session id
+         * @return {aria.modules.RequestBeans.RequestDetails|String} URL details
+         */
+        createServiceUrl : function (moduleName, serviceSpec, sessionId) {
+        	return "Custom";
+        },
+
 		/**
 		 * Generate an i18n URL.
 		 * @param {moduleName} Name of the module that is making the request
