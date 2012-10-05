@@ -623,17 +623,33 @@ Aria.classDefinition({
                 }
 
             } else if (propertyName === 'invalidText') {
-                var res = this.checkValue({
-                    performCheckOnly : true,
-                    value : this._cfg.value,
-                    text : newValue == null ? "" : null
-                });
-                if (!res.isValid) { // only update the display value if the old value is not a valid value
-                    this.getTextInputField().value = newValue;
+                // no need to handle combinations of newValue and oldValue being: null, undefined, ''
+                if (!newValue === !oldValue) {
+                    return;
                 }
-                if (newValue === null || newValue === '' || newValue === undefined) {
+                var res;
+                // first check the old value to see if it is valid
+                if (this._cfg.value) {
+                    res = this.checkValue({
+                        performCheckOnly : true,
+                        value : this._cfg.value,
+                        text : newValue == null ? "" : null
+                    });
+                }
+                // only update the display value if the old value is not a valid value, or the old value is null
+                if (!res || !res.isValid) {
+                    var textField = this.getTextInputField();
+                    if (textField) {
+                        textField.value = newValue;
+                    }
+                }
+                // resets error state when validation is switched on
+                if (!newValue) {
+                    this.changeProperty("formatErrorMessages", []);
                     this.changeProperty("formatError", false);
+                    this.changeProperty("error", false);
                 }
+                // set the invalidText property and react to the change
                 this.setProperty("invalidText", newValue);
                 this._reactToChange();
             } else if (propertyName === 'readOnly' || propertyName === 'disabled') {
