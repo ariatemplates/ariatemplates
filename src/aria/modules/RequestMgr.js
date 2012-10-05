@@ -22,7 +22,8 @@
 Aria.classDefinition({
     $classpath : "aria.modules.RequestMgr",
     $dependencies : ["aria.modules.queuing.SimpleSessionQueuing", "aria.modules.RequestBeans",
-            "aria.modules.urlService.environment.UrlService", "aria.modules.requestHandler.environment.RequestHandler"],
+            "aria.modules.urlService.environment.UrlService", "aria.modules.requestHandler.environment.RequestHandler",
+            "aria.utils.Type"],
     $singleton : true,
     $events : {
         "error" : {
@@ -152,6 +153,7 @@ Aria.classDefinition({
         INVALID_REQUEST_OBJECT : "Provided request object does not match aria.modules.RequestBeans.RequestObject.",
         FILTER_CREATION_ERROR : "An error occured while creating a Request filter:\nclass: %1",
         INVALID_BASEURL : "The base URL defined in the RequestMgr object is empty or invalid - please check: \nurl: %1",
+        MISSING_SERVICESPEC : "Provided request object must contain an actionName or a serviceSpec element",
         CALLBACK_ERROR : "An error occured in the Request manager while processing the callback function.",
         INVALID_URL : "Url for request is invalid: %1"
     },
@@ -332,11 +334,14 @@ Aria.classDefinition({
 
             var req = args.req;
             // creates url for request
-            var url = this.createRequestUrl(req.requestObject, args.session);
-            if (url === '') {
+            var details = this.createRequestDetails(req.requestObject, args.session);
+            if (!details || details.url === '') {
                 return this.$logError(this.INVALID_URL, ['']);
             }
-            req.url = url;
+            req.url = details.url;
+            if (details.method) {
+                req.method = details.method;
+            }
 
             this._callAsyncRequest(args);
         },
@@ -525,7 +530,8 @@ Aria.classDefinition({
          * @param {Object} session session corresponding to the request (paramName and id)
          * @return {String} the url
          */
-        createRequestUrl : function (requestObject, session) {
+        createRequestDetails : function (requestObject, session) {
+            var typeUtils = aria.utils.Type;
             var urlService = requestObject.urlService;
             if (!urlService) {
                 // If no service is set , it takes from app environment
@@ -538,28 +544,55 @@ Aria.classDefinition({
                 session = this.session;
             }
 
-            /*
-             * The actionName from the request object can contain url parameters, this has to handled separately and not
-             * by the request interface
-             */
-            var actionSplit = this.__extractActionName(requestObject.actionName);
-
             // Replace dots by forward slashes in the moduleName passed to actual URL creator
             var moduleName = requestObject.moduleName.replace(/\./g, '\/');
 
-            // Let the implementation compute the URL
-            var url = urlService.createActionUrl(moduleName, actionSplit.name, session.id);
+            var url;
+            if (typeUtils.isString(requestObject.actionName)) { // We accept also empty strings.
+                // If in 'action name' mode
 
-            if (!url) {
-                this.$logError(this.INVALID_BASEURL, [url]);
-                return '';
+                /* The actionName from the request object can contain url parameters, this has to handled separately and not
+                 * by the request interface. */
+                var actionSplit = this.__extractActionName(requestObject.actionName);
+
+                // Let the implementation compute the URL
+                url = urlService.createActionUrl(moduleName, actionSplit.name, session.id);
+
+            } else if (requestObject.serviceSpec) {
+                /* using the 'service specification' mode. No particular URL parameters handling
+                 * here, all is under UrlService responsibility */
+                url = urlService.createServiceUrl(moduleName, requestObject.serviceSpec, session.id);
+
+            } else {
+                // error : one of serviceSpec or actionName must be present
+                this.$logError(this.MISSING_SERVICESPEC, [url]);
+                return null;
             }
 
-            // Add the action parameters
-            url = this.__appendActionParameters(url, actionSplit.params);
+            if (!url || (typeUtils.isObject(url) && !url.url)) {
+                this.$logError(this.INVALID_BASEURL, [url]);
+                return null;
+            }
+            if (typeUtils.isString(url)) {
+                // if raw string returned, convert it in structured request here
+                url = {
+                    url : url
+                }
+            }
 
+            // if not specified, assume POST method (backward-compatibility)
+            if (!url.method) {
+                url.method = "POST";
+            }
+
+            if (requestObject.actionName) {
+                // If in 'action name' mode, add the action parameters
+                url.url = this.__appendActionParameters(url.url, actionSplit.params);
+            }
             // Add the global parameters
-            return this.__appendGlobalParams(url, this._params);
+            url.url = this.__appendGlobalParams(url.url, this._params);
+
+            return url;
         },
 
         /**
