@@ -410,7 +410,7 @@ Aria.classDefinition({
 
         /**
          * React to a Controller report. The widget's controller generates a report on the internal status of the
-         * widget. This function reads the report and sets some proprierties of the widget. It also reacts to changes in
+         * widget. This function reads the report and sets some properties of the widget. It also reacts to changes in
          * the internal datamodel.
          * @param {aria.widgets.controllers.reports.ControllerReport} report
          * @param {Object} arg Optional parameters

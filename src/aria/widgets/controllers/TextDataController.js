@@ -59,7 +59,7 @@ Aria.classDefinition({
         checkText : function (text) {
             var report = new aria.widgets.controllers.reports.ControllerReport();
             if (aria.utils.Type.isString(text) || aria.utils.Type.isNumber(text)) {
-                // allow values that can be easily displyed in the textfield
+                // allow values that can be easily displayed in the textfield
                 report.value = text;
                 report.ok = true;
             } else {
@@ -74,7 +74,7 @@ Aria.classDefinition({
          * @return {aria.widgets.controllers.reports.ControllerReport}
          */
         checkValue : function (internalValue) {
-            // considere null as empty string
+            // consider null as empty string
             if (internalValue == null) {
                 internalValue = '';
             }

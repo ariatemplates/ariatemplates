@@ -32,7 +32,7 @@ Aria.classDefinition({
 
         // The following line was added for PTR 04557432: if the value in cfg is not set to [] as a default, then the
         // handle specified as the onchange configuration property will be executed also on the first click
-        cfg.value = (cfg.value) ? cfg.value : [];
+        cfg.value = cfg.value || [];
 
         this.$DropDownTextInput.constructor.call(this, cfg, ctxt, lineNumber, controller);
 

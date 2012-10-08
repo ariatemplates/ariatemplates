@@ -201,7 +201,7 @@ Aria.classDefinition({
         },
 
         /**
-         * override DropDownController.checkValue
+         * override DropDownListController.checkValue
          * @param {String} value
          * @return {aria.widgets.controllers.reports.DropDownControllerReport}
          */
