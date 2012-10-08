@@ -44,6 +44,14 @@ Aria.classDefinition({
         controller.checkError();
 
         /**
+         * Whether to update the data model instantly when the user checks/unchecks the checkboxes, or only when the
+         * dropdown list is closed
+         * @protected
+         * @type Boolean
+         */
+        this._instantBind = (cfg.instantBind === true);
+
+        /**
          * Flag whether the drop down is open
          * @protected
          * @type Boolean
@@ -82,17 +90,17 @@ Aria.classDefinition({
     $prototype : {
 
         /**
-         * Callback called when the user clicks on a date in the calendar. FIXME: param
+         * Callback called when the user clicks on a checkbox (or its label) on a dropdown list.
          * @protected
-         * @param {aria.DomEvent} evt Click event
+         * @param {Array} newVals array of values that will be selected after the change
          */
-        _clickOnItem : function (evt) {
+        _clickOnItem : function (newVals) {
             // when clicking on an item in the dropdown list, close the dropdown and save the selected item
             var report = this.controller.checkValue(this.controller.getDataModel().value);
-            var arg = {};
-            arg.stopValueProp = true;
+            var arg = {
+                stopValueProp : !this._instantBind
+            };
             this._reactToControllerReport(report, arg);
-
         },
 
         /**
