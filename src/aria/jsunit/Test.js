@@ -118,19 +118,28 @@ Aria.classDefinition({
          */
         this._errors = [];
 
+        /**
+         * Whether or not this test is already failed when the constructor is called. This might happen when there's an
+         * error downloading the test file
+         * @type Boolean
+         */
+        this._failedOnCreate = false;
+
         this.$JsObject.constructor.call(this);
     },
     $destructor : function () {
         this._parentTest = null;
 
-        // Free some memory
-        var classRef = Aria.getClassRef(this.$classpath);
-        aria.core.ClassMgr.unloadClass(this.$classpath);
-        if (classRef && classRef.classDefinition && classRef.classDefinition.$dependencies) {
-            var dep = classRef.classDefinition.$dependencies;
-            for (var i = 0, len = dep.length; i < len; i += 1) {
-                if (dep[i].substring(0, 5) == "test.") {
-                    aria.core.ClassMgr.unloadClass(dep[i]);
+        // Free some memory, not for failed tests
+        if (!this._failedOnCreate) {
+            var classRef = Aria.getClassRef(this.$classpath);
+            aria.core.ClassMgr.unloadClass(this.$classpath);
+            if (classRef && classRef.classDefinition && classRef.classDefinition.$dependencies) {
+                var dep = classRef.classDefinition.$dependencies;
+                for (var i = 0, len = dep.length; i < len; i += 1) {
+                    if (dep[i].substring(0, 5) == "test.") {
+                        aria.core.ClassMgr.unloadClass(dep[i]);
+                    }
                 }
             }
         }

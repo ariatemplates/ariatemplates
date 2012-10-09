@@ -23,17 +23,43 @@ Aria.classDefinition({
     $constructor : function () {
         this.$Test.constructor.call(this);
 
+        /**
+         * List of test classpaths. This can be overridden to specify the list of tests to run, or otherwise call
+         * <code>addTests</code>
+         * @type Array
+         */
         this._tests = [];
+
+        /**
+         * List of test descriptions. Contains the classpath and the instance
+         * @type Array
+         */
         this._subTests = [];
 
+        /**
+         * Sequencer used to run sub tests
+         * @type aria.core.Sequencer
+         */
         this._sequencer = null;
+
+        /**
+         * Sequencer used to preload tests
+         * @type aria.core.Sequencer
+         */
         this._preloadSequencer = null;
 
-        // a TestSuite doesn't count as a test
+        /**
+         * Number of asserts in the test suite. TestSuite doesn't count as a test
+         * @type Integer
+         */
         this._assertCount = 0;
 
         this._isSelected = 1;
 
+        /**
+         * Whether or not the test suite should be skipped
+         * @type Boolean
+         */
         this.skipTest = false;
 
         /**
@@ -90,7 +116,9 @@ Aria.classDefinition({
         },
 
         /**
-         * @return {Array} Array of test suites contained in this instance of TestSuite
+         * Get the list of test suites contained in this instance of TestSuite. The list of test suites is identified by
+         * naming convention. Test suites must end with 'TestSuite'
+         * @return {Array}
          */
         getSubTestSuites : function () {
             var testSuites = [];
@@ -105,6 +133,11 @@ Aria.classDefinition({
             return testSuites;
         },
 
+        /**
+         * Get the list of tests contained in this instance of TestSuite. This function is recursive and called on any
+         * sub test suite
+         * @return {Array}
+         */
         getAllSubTestCases : function () {
             var testCases = [];
             var subTests = this.getSubTests();
@@ -121,6 +154,11 @@ Aria.classDefinition({
             return testCases;
         },
 
+        /**
+         * Get the list of test suites contained in this instance of TestSuite. This function is recursive and called on
+         * any sub test suite
+         * @return {Array}
+         */
         getAllSubTestSuites : function () {
             var testSuites = [];
             var subTests = this.getSubTests();
@@ -286,6 +324,7 @@ Aria.classDefinition({
         isSkipped : function () {
             return this.skipTest === true;
         },
+
         /**
          * Internal task processor called by the sequencer anytime a new task must be executed. This method downloads
          * the test class and executes it
@@ -339,7 +378,7 @@ Aria.classDefinition({
             });
 
             // replace the test by a fake
-            test.instance = this.__createFailedTest("$fileLoad", errorMessage);
+            test.instance = this.__createFailedTest("$fileLoad", errorMessage, test.classpath);
 
             // go on with the tests
             this._execTestTask(args);
@@ -429,7 +468,7 @@ Aria.classDefinition({
                 if (lastRuntimeError) {
                     errorMessage = lastRuntimeError;
                 }
-                testInstance = this.__createFailedTest("$constructor", errorMessage);
+                testInstance = this.__createFailedTest("$constructor", errorMessage, classpath);
 
             }
             return testInstance;
@@ -449,13 +488,22 @@ Aria.classDefinition({
             return lastRuntimeError;
         },
 
-        __createFailedTest : function (method, message) {
+        /**
+         * Create a test instance that is automatically set in error.
+         * @param {String} method Name of the failing method
+         * @param {String} message Descriptive error message
+         * @param {String} classpath Classpath of the failed test
+         * @return {aria.jsunit.TestCase}
+         */
+        __createFailedTest : function (method, message, classpath) {
             var testInstance = new aria.jsunit.TestCase();
             testInstance._errors = [{
                         type : "failure",
                         testMethod : method,
                         description : message
                     }];
+            testInstance._failedOnCreate = true;
+            testInstance.$classpath = classpath;
             return testInstance;
         },
 
