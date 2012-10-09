@@ -603,6 +603,11 @@ Aria.beanDefinitions({
                     $description : "Whether to display the values in the order they were clicked.",
                     $default : true
                 },
+                "instantBind" : {
+                    $type : "json:Boolean",
+                    $description : "If true, the 'value' property is refreshed (and 'onchange' is triggered) each time user clicks on one of the options of a dropdown. Otherwise, it's refreshed after the dropdown is closed.",
+                    $default : false
+                },
                 "listTemplate" : {
                     $type : "json:PackageName",
                     $description : "Template to use to display the list.",
