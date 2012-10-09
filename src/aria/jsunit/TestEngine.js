@@ -164,6 +164,9 @@ Aria.classDefinition({
             // verify also that it doesn't extend from a skipped test
             do {
                 var definition = Aria.nspace(classpath).classDefinition;
+                if (!definition) {
+                    break;
+                }
                 if (aria.utils.Array.contains(this.skipTests, definition.$extends)) {
                     testObject.skipTest = true;
                 }
@@ -183,7 +186,7 @@ Aria.classDefinition({
             var tst = {
                 testClass : evt.testObject.$classpath,
                 instance : evt.testObject,
-                totalNbrOfFailures : 0,
+                totalNbrOfFailures : evt.testObject._failedOnCreate ? 1 : 0,
                 totalNbrOfErrors : 0,
                 totalNbrOfAsserts : 0,
                 state : "processing",
