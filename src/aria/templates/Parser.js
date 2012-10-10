@@ -15,7 +15,6 @@
 
 /**
  * Template parser: builds a tree of type aria.templates.TreeBeans.Root from a template string.
- * @singleton
  */
 Aria.classDefinition({
     $classpath : "aria.templates.Parser",

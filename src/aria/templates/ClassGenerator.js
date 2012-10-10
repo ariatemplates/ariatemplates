@@ -17,12 +17,11 @@
  * The class generator is used to generate the class corresponding to a template. This class uses the tree from the
  * template parser, and generates a string containing the corresponding class definition. This is an abstract class and
  * is extended by the more specific classes aria.templates.TplClassGenerator and aria.templates.CSSClassGenerator
- * @class aria.templates.ClassGenerator
  */
 Aria.classDefinition({
-    $classpath : 'aria.templates.ClassGenerator',
-    $dependencies : ['aria.templates.ClassWriter', 'aria.templates.TreeBeans', 'aria.templates.CfgBeans',
-            'aria.templates.Statements', 'aria.templates.Modifiers'],
+    $classpath : "aria.templates.ClassGenerator",
+    $dependencies : ["aria.templates.ClassWriter", "aria.templates.TreeBeans", "aria.templates.CfgBeans",
+            "aria.templates.Statements", "aria.templates.Modifiers"],
     $singleton : false,
     $constructor : function () {
         /**
@@ -229,8 +228,8 @@ Aria.classDefinition({
          * This method is called for each statement to produce an output in the class definition. It propagates the call
          * to the correct process function in this.STATEMENTS, or logs errors, if the statement is unknown, or misused.
          * @private
-         * @param {Object} out
-         * @param {Object} statement
+         * @param {aria.templates.ClassWriter} out
+         * @param {aria.templates.TreeBeans.Statement} statement
          */
         __processStatement : function (out, statement) {
             var statname = statement.name;
