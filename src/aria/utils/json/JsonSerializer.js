@@ -19,6 +19,13 @@
 Aria.classDefinition({
     $classpath : "aria.utils.json.JsonSerializer",
     $dependencies : ["aria.utils.Type"],
+    /**
+     * @param {Boolean} optimized If true, an optimized version of the serializer will be used whwnever the options
+     * allow to do so
+     */
+    $constructor : function (optimized) {
+        this._optimized = optimized || false;
+    },
     $prototype : function () {
         var fastSerializer = (function () {
             var JSON = Aria.$global.JSON || {};
@@ -248,8 +255,9 @@ Aria.classDefinition({
             serialize : function (item, options) {
                 options = (options) ? options : {};
                 this._normalizeOptions(options);
-                if (options.indent.length <= 10 && options.escapeKeyNames && !options.encodeParameters
-                        && options.keepMetadata && options.maxDepth >= 100 && !options.reversible) {
+                if (this._optimized && options.indent.length <= 10 && options.escapeKeyNames
+                        && !options.encodeParameters && options.keepMetadata && options.maxDepth >= 100
+                        && !options.reversible) {
                     var dateToJSON = Date.prototype.toJSON;
                     var regexpToJSON = RegExp.prototype.toJSON;
                     var functionToJSON = Function.prototype.toJSON;

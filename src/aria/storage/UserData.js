@@ -27,7 +27,7 @@
      */
     function getAllKeys () {
         if (!privateSerializer) {
-            privateSerializer = new aria.utils.json.JsonSerializer();
+            privateSerializer = new aria.utils.json.JsonSerializer(true);
         }
 
         var storedMap = storage.getAttribute("kMap");

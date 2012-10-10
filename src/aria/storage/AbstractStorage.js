@@ -72,7 +72,7 @@ Aria.classDefinition({
             }
         }
         if (create) {
-            serializer = new aria.utils.json.JsonSerializer();
+            serializer = new aria.utils.json.JsonSerializer(true);
             this._disposeSerializer = true;
         }
 

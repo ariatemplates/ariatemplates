@@ -336,7 +336,7 @@
              * @private
              * @type aria.utils.json.JsonSerializer
              */
-            this.__defaultJsonSerializer = new aria.utils.json.JsonSerializer();
+            this.__defaultJsonSerializer = new aria.utils.json.JsonSerializer(true);
         },
         $destructor : function () {
             jsonUtils = null;
