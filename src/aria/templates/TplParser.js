@@ -14,16 +14,13 @@
  */
 
 /**
- * TODOC
- * @class aria.templates.TplParser
+ * Parser class for templates files. It converts a file written with the template syntax into a tree matching bean
+ * definitions in <code>aria.templates.TreeBeans</code>
  */
 Aria.classDefinition({
-    $classpath : 'aria.templates.TplParser',
-    $extends : 'aria.templates.Parser',
+    $classpath : "aria.templates.TplParser",
+    $extends : "aria.templates.Parser",
     $singleton : true,
-    $constructor : function () {
-        this.$Parser.constructor.apply(this, arguments);
-    },
     $prototype : {
         /**
          * Parse the given template and return a tree representing the template.
