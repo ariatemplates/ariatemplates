@@ -120,36 +120,70 @@ Aria.classDefinition({
                                 // for non-JSON values.
 
                                 length = value.length;
-                                for (i = 0; i < length; i += 1) {
-                                    partial[i] = str(i, value) || 'null';
+                                if (indent) {
+                                    for (i = 0; i < length; i += 1) {
+                                        partial[i] = str(i, value) || 'null';
+                                    }
+
+                                    // Join all of the elements together, separated with commas, and wrap them in
+                                    // brackets.
+
+                                    v = partial.length === 0 ? '[]' : gap ? '[\n' + gap + partial.join(',\n' + gap)
+                                            + '\n' + mind + ']' : '[' + partial.join(',') + ']';
+                                    gap = mind;
+                                } else {
+                                    // optimized code that avoids the + string concatenation operator
+                                    partial.push('[');
+                                    for (i = 0; i < length; i += 1) {
+                                        if (i !== 0) {
+                                            partial.push(',');
+                                        }
+                                        partial.push(str(i, value) || 'null');
+                                    }
+                                    partial.push(']');
+                                    v = partial.join('');
                                 }
-
-                                // Join all of the elements together, separated with commas, and wrap them in
-                                // brackets.
-
-                                v = partial.length === 0 ? '[]' : gap ? '[\n' + gap + partial.join(',\n' + gap) + '\n'
-                                        + mind + ']' : '[' + partial.join(',') + ']';
-                                gap = mind;
                                 return v;
                             }
 
                             // Otherwise, iterate through all of the keys in the object.
 
-                            for (k in value) {
-                                if (Object.prototype.hasOwnProperty.call(value, k)) {
-                                    v = str(k, value);
-                                    if (v) {
-                                        partial.push(quote(k) + (gap ? ': ' : ':') + v);
+                            if (indent) {
+                                for (k in value) {
+                                    if (Object.prototype.hasOwnProperty.call(value, k)) {
+                                        v = str(k, value);
+                                        if (v) {
+                                            partial.push(quote(k) + (gap ? ': ' : ':') + v);
+                                        }
                                     }
                                 }
+
+                                // Join all of the member texts together, separated with commas,
+                                // and wrap them in braces.
+
+                                v = partial.length === 0 ? '{}' : gap ? '{\n' + gap + partial.join(',\n' + gap) + '\n'
+                                        + mind + '}' : '{' + partial.join(',') + '}';
+                                gap = mind;
+                            } else {
+                                // optimized code that avoids the + string concatenation operator and minimizes the
+                                // number of calls to Array.push method
+                                var b = false
+                                partial.push('{');
+                                for (k in value) {
+                                    if (Object.prototype.hasOwnProperty.call(value, k)) {
+                                        v = str(k, value);
+                                        if (v) {
+                                            if (b) {
+                                                partial[partial.length] = ",";
+                                            }
+                                            partial.push(quote(k), ':', v);
+                                            b = true;
+                                        }
+                                    }
+                                }
+                                partial.push('}');
+                                v = partial.join('');
                             }
-
-                            // Join all of the member texts together, separated with commas,
-                            // and wrap them in braces.
-
-                            v = partial.length === 0 ? '{}' : gap ? '{\n' + gap + partial.join(',\n' + gap) + '\n'
-                                    + mind + '}' : '{' + partial.join(',') + '}';
-                            gap = mind;
                             return v;
                     }
                 };
