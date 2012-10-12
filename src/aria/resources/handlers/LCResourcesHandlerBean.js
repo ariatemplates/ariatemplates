@@ -68,6 +68,11 @@ Aria.beanDefinitions({
                     $description : "code has to be matched exactly to return the suggestion",
                     $default : false
                 },
+                "labelMatchAtWordBoundaries" : {
+                    $type : "json:Boolean",
+                    $description : "Whether to try starting the search for the match on all word boundaries in the multi-word label, or only from the beginning of the label",
+                    $default : false
+                },
                 "threshold" : {
                     $type : "json:Integer",
                     $description : "Minimum number of letter to return suggestions",

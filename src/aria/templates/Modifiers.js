@@ -159,6 +159,49 @@
             }
 
         },
+        "highlightfromnewword" : {
+            /**
+             * Initialisation function called when the template is parsed
+             * @param {aria.templates.ClassWriter} out
+             */
+            init : function (out) {
+                out.addDependencies(["aria.utils.String", "aria.utils.Type"]);
+            },
+            /**
+             * Will highlight with &lt:strong&gt; tag the first occurrence of the entry (starting from a new word -
+             * won't highlight in the middle of the word) if it matches the highlight value.
+             * @name aria.templates.Modifiers.highlightfromnewword
+             * @param {String} str the entry
+             * @param {String} highlight the default value
+             * @return {String}
+             */
+            fn : function (str, highlight) {
+                var ariaUtil = aria.utils, highlightLen = highlight.length;
+                if (ariaUtil.Type.isString(str) && highlightLen) {
+                    highlight = highlight.toLowerCase();
+                    var strLowerCased = str.toLowerCase(), firstOccurrenceIdx;
+                    if (strLowerCased.indexOf(highlight) === 0) {
+                        firstOccurrenceIdx = 0;
+                    } else {
+                        var highlightRegexSafe = highlight.replace(regExSpecials, "\\$1");
+                        var regexResult = new RegExp("\\s" + highlightRegexSafe, "i").exec(strLowerCased);
+                        if (!regexResult) {
+                            return str;
+                        } else {
+                            firstOccurrenceIdx = regexResult.index + 1; // +1 for matched whitespace
+                        }
+                    }
+                    var a = firstOccurrenceIdx;
+                    var b = firstOccurrenceIdx + highlightLen;
+                    var middleOriginal = str.substring(a, b);
+                    var middle = ariaUtil.String.stripAccents(middleOriginal).toLowerCase();
+                    if (middle === highlight) {
+                        return str.substring(0, a) + "<strong>" + middleOriginal + "</strong>" + str.substring(b);
+                    }
+                }
+                return str;
+            }
+        },
         "starthighlight" : {
             /**
              * Initialisation function called when the template is parsed

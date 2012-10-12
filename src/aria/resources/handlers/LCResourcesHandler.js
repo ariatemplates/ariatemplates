@@ -54,6 +54,20 @@
              */
             this.codeExactMatch = true;
             /**
+             * Regular expression to look for word boundaries if <code>_labelMatchAtWordBoundaries</code> is set to
+             * <code>true</code>. Will treat the positions after each of the regex matches (RegExp.lastIndex) as
+             * markers of the start of new word.
+             * @type RegExp
+             */
+            this.boundaryRegex = /\s+/g;
+            /**
+             * Whether to try starting the search for the match on all word boundaries in the multi-word label, or only
+             * from the beginning of the label
+             * @protected
+             * @type Boolean
+             */
+            this._labelMatchAtWordBoundaries = false;
+            /**
              * Specifies if Label Code combination has been set in Suggestions.
              * @type Boolean
              */
@@ -78,9 +92,9 @@
                     this.$logError(this.INVALID_CONFIG, [this.$classpath]);
                     return;
                 } else {
-
                     this.codeExactMatch = cfg.codeExactMatch ? true : cfg.codeExactMatch;
                     this.threshold = cfg.threshold || 1;
+                    this._labelMatchAtWordBoundaries = !!cfg.labelMatchAtWordBoundaries;
                     this._options.labelKey = cfg.labelKey || "label";
                     this._options.codeKey = cfg.codeKey || "code";
                     this._options.sortingMethod = cfg.sortingMethod;
@@ -116,8 +130,11 @@
                 if (typesUtil.isString(textEntry) && textEntry.length >= this.threshold) {
                     textEntry = stringUtil.stripAccents(textEntry).toLowerCase();
 
-                    var codeSuggestions = [], labelSuggestions = [], nbSuggestions = this._suggestions.length, textEntryLength = textEntry.length;
+                    var codeSuggestions = [], labelSuggestions = [], labelSuggestionsMultiWord = [];
+                    var nbSuggestions = this._suggestions.length, textEntryLength = textEntry.length;
+                    var multiWord = this._labelMatchAtWordBoundaries;
                     var returnedSuggestion, index, suggestion;
+
                     for (index = 0; index < nbSuggestions; index++) {
                         suggestion = this._suggestions[index];
                         if (suggestion.code === textEntry) {
@@ -127,19 +144,32 @@
                             codeSuggestions.push(suggestion.original);
                             suggestion.original.exactMatch = false;
                         } else {
-                            if (suggestion.label.substring(0, textEntryLength) === textEntry) {
+                            var boundaries = multiWord ? suggestion.wordBoundaries : [0];
+                            for (var j = 0, len = boundaries.length, boundary; boundary = boundaries[j], j < len; j++) {
+                                if (suggestion.label.substring(boundary, boundary + textEntryLength) !== textEntry) {
+                                    continue;
+                                }
+
                                 var exactMatch = suggestion.label === textEntry;
+                                var startsWithMatch = (boundary === 0);
+
+                                // matches starting at the beginning are preferred - will be displayed higher
+                                var suggestionsContainer = startsWithMatch
+                                        ? labelSuggestions
+                                        : labelSuggestionsMultiWord;
+                                suggestion.original.multiWordMatch = !startsWithMatch; // other highlight modifier
                                 suggestion.original.exactMatch = exactMatch;
                                 if (exactMatch) {
-                                    labelSuggestions.unshift(suggestion.original);
+                                    suggestionsContainer.unshift(suggestion.original);
                                 } else {
-                                    labelSuggestions.push(suggestion.original);
+                                    suggestionsContainer.push(suggestion.original);
                                 }
+                                break; // found a match starting from 'boundary', no need to search further
                             }
                         }
                     }
 
-                    var suggestions = codeSuggestions.concat(labelSuggestions);
+                    var suggestions = codeSuggestions.concat(labelSuggestions).concat(labelSuggestionsMultiWord);
                     this.$callback(callback, suggestions);
                 } else {
                     this.$callback(callback, null);
@@ -182,11 +212,15 @@
                         }
                         eachSuggestion.label = suggestion[suggestionsLabel];
                         eachSuggestion.code = suggestion[suggestionsCode];
-                        newSuggestions.push({
+                        var newSuggestion = {
                             label : stringUtil.stripAccents(eachSuggestion.label).toLowerCase(),
                             code : stringUtil.stripAccents(eachSuggestion.code).toLowerCase(),
                             original : eachSuggestion
-                        });
+                        };
+                        if (this._labelMatchAtWordBoundaries) {
+                            newSuggestion.wordBoundaries = this.__getWordBoundaries(newSuggestion.label);
+                        }
+                        newSuggestions.push(newSuggestion);
                     }
                     this._suggestions = newSuggestions;
 
@@ -226,6 +260,20 @@
                     returnedSuggestions.push(suggestion.original);
                 }
                 this.$callback(callback, returnedSuggestions);
+            },
+
+            /**
+             * Calculate word boundaries, i.e. the indices of first letters of all the words in the label (always
+             * including 0 for the beginning of the word).
+             */
+            __getWordBoundaries : function (label) {
+                var boundaryRegex = this.boundaryRegex;
+                var boundaries = [0]; // mandatory 0 to check the start of the label
+                while (boundaryRegex.exec(label) !== null) {
+                    boundaries.push(boundaryRegex.lastIndex);
+                }
+                boundaryRegex.lastIndex = 0;
+                return boundaries;
             }
 
         }
