@@ -49,13 +49,13 @@ Aria.beanDefinitions({
             $properties : {
                 "labelKey" : {
                     $type : "json:String",
-                    $description : "Any label key for suggetions",
+                    $description : "Any label key for suggestions",
                     $sample : "myLabel",
                     $default : "label"
                 },
                 "codeKey" : {
                     $type : "json:String",
-                    $description : "Any code key for suggetions",
+                    $description : "Any code key for suggestions",
                     $sample : "myCode",
                     $default : "code"
                 },
@@ -65,12 +65,12 @@ Aria.beanDefinitions({
                 },
                 "codeExactMatch" : {
                     $type : "json:Boolean",
-                    $description : "code has to be matched exactly to return the suggestion",
+                    $description : "If code has to be matched exactly to return the suggestion",
                     $default : false
                 },
                 "threshold" : {
                     $type : "json:Integer",
-                    $description : "Minimum number of letter to return suggestions",
+                    $description : "Minimum number of letters typed to return suggestions",
                     $default : 1
                 }
             }
