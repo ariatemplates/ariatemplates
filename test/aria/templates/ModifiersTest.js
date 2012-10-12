@@ -154,6 +154,100 @@ Aria.classDefinition({
 				var got = aria.templates.Modifiers.callModifier("highlight", testThese[i]);
 				this.assertEquals(got, expected[i], "Expecting " + expected[i] + " got " + got);
 			}
+		},
+
+		testHighlightFromNewWord : function () {
+			var testThese = [
+				// basic: finds highlights on word boundaries
+				["abc def ghi", "abc d"],
+				["abc def ghi", "def g"],
+				["abc def ghi", "ghi"],
+				// highlights only the first substring (sliding-window) and no more
+				["abc abd", "ab"],
+				["abc abd abc", "abd a"],
+				// doesn't find higlights in the middle of the word
+				["abc defgh ikj", "efg"],
+				// test multiple whitespace
+				["abc    defgh", "def"],
+				// test tabulations
+				["abc				defgh", "def"],
+				// test empty word,
+				["", "aaa"],
+				// test empty highlight
+				["abc", ""],
+				// test whitespace-only word
+				["    ", "aaa"],
+				// test whitespace-only highlight
+				["abc", "   "],
+				// leading space
+				[" abc def", "ab"],
+				// Mixed case
+				["aBcDe", "abcd"],
+				["aBcDe", "AbCd"],
+				["ABCDe", "abcd"],
+				// String with special characters
+				["abcd (123)","123"],
+				["abcd +123","123"],
+				["abcd .123","123"],
+				// regex special chars in highlight
+				["x abc", "a.c"],
+				// Dangerous expression
+				["abcd .efg", ".efg"],
+				["abcd [efg]", "[efg]"],
+				["abcd efg", ".efg"],
+				["abcd @efg", "@ef"],
+				["abcd (1-123)", "(1-"],
+				["abcd (1-123)", "(1-123)"],
+				["abc-defgh", "abc-de"]
+			];
+
+			var expected = [
+				// basic: finds highlights on word boundaries
+				"<strong>abc d</strong>ef ghi",
+				"abc <strong>def g</strong>hi",
+				"abc def <strong>ghi</strong>",
+				// highlights only the first substring (sliding-window) and no more
+				"<strong>ab</strong>c abd",
+				"abc <strong>abd a</strong>bc",
+				// doesn't find higlights in the middle of the word
+				"abc defgh ikj",
+				// test multiple whitespace
+				"abc    <strong>def</strong>gh",
+				// test tabulations
+				"abc				<strong>def</strong>gh",
+				// test empty word,
+				"",
+				// test empty highlight
+				"abc",
+				// test whitespace-only word
+				"    ",
+				// test whitespace-only highlight
+				"abc",
+				// leading space
+				" <strong>ab</strong>c def",
+				// Mixed case
+				"<strong>aBcD</strong>e",
+				"<strong>aBcD</strong>e",
+				"<strong>ABCD</strong>e",
+				// String with special characters
+				"abcd (123)",
+				"abcd +123",
+				"abcd .123",
+				// regex special chars in highlight
+				"x abc",
+				// Dangerous expression
+				"abcd <strong>.efg</strong>",
+				"abcd <strong>[efg]</strong>",
+				"abcd efg",
+				"abcd <strong>@ef</strong>g",
+				"abcd <strong>(1-</strong>123)",
+				"abcd <strong>(1-123)</strong>",
+				"<strong>abc-de</strong>fgh"
+			];
+			for (var i = 0, len = testThese.length; i < len; i += 1) {
+				var got = aria.templates.Modifiers.callModifier("highlightfromnewword", testThese[i]);
+				this.assertEquals(got, expected[i], "Expecting '" + expected[i] + "', got '" + got + "'");
+			}
 		}
 	}
 });
