@@ -43,13 +43,13 @@
         $constructor : function (cfg) {
 
             /**
-             * Minimum number of letter to return suggestions
+             * Minimum number of letters typed to return suggestions
              * @type {Number}
              */
             this.threshold = 1;
 
             /**
-             * Specifies of code has to be matched exactly to return the suggestion or if only the beginning is enough
+             * Specifies if code has to be matched exactly to return the suggestion or if only the beginning is enough
              * @type Boolean
              */
             this.codeExactMatch = true;
