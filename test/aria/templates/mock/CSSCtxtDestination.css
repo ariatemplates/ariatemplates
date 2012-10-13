@@ -1,0 +1,26 @@
+P one {
+
+foo : bar;
+bar : baz;
+}
+P two, P three {
+foo : bar; }
+P four {
+foo : bar;
+}
+P * {
+foo : bar;
+}
+P five:above, P five:below {
+foo : bar;
+}
+P six > seven, P eigth[nine="ten"] {
+foo:bar;}
+P eleven {foo:bar}
+P twelve, P thirteen {
+foo:bar;
+}
+P fourteen, P fifteen, P sixteen {
+foo:bar
+}
+P seventeen { foo: bar}

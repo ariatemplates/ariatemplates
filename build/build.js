@@ -3,6 +3,9 @@
 // Anyway, you should NOT be executing this directly, use `npm install` instead (this will make sure dependencies are available)
 
 var spawn = require('child_process').spawn;
+var fs = require("fs");
+var util = require("util");
+var mkdirp = require("mkdirp");
 
 function runCmd(cmd, args, callback) {
 	var childProcess = spawn(cmd, args);
@@ -29,6 +32,20 @@ var packmanRelease = ['node_modules/packman/packman.js', '-c', 'build/releases/s
 
 runCmd("node", packmanLint, function(code) {
 	runCmd("node", packmanBootstrap, function(code) {
-		runCmd("node", packmanRelease, function(code) {});
+		runCmd("node", packmanRelease, function(code) {
+			// ugly way to copy binary files, they are not handled by packman
+			var src = __dirname + "/../src/aria/resources/handlers/IO.swf";
+			var dstFolder = __dirname + "/releases/standard/target/aria/resources/handlers";
+			var dst = dstFolder + "/IO.swf";
+
+			mkdirp.sync(dstFolder);
+			var inputStream = fs.createReadStream(src);
+			var outputStream = fs.createWriteStream(dst);
+			util.pump(inputStream, outputStream, function (error) {
+				if (error) {
+					process.exit(1);
+				}
+			});
+		});
 	});
 });

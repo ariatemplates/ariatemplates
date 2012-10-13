@@ -1,10 +1,18 @@
 {
     "aria" : {
-        "DomEvent.js" : "aria/pack-utils.js",
+		"DomEvent.js" : "aria/pack-utils.js",
         "core" : {
+			"BaseTypes.js" : "aria/pack-utils.js",
+			"IOFilter.js" : "aria/pack-modules.js",
             "environment" : {
                 "Customizations.js" : "aria/pack-templates1.js",
                 "CustomizationsCfgBeans.js" : "aria/pack-templates1.js"
+            },
+			"log" : {
+				"*" : "aria/pack-utils.js"
+			},
+            "transport" : {
+                "iframeSource.txt" : "aria/core/transport/iframeSource.txt"
             }
         },
         "widgets" : {
@@ -98,36 +106,10 @@
             }
         },
         "utils" : {
-            "AriaWindow.js" : "aria/pack-utils.js",
-            "Callback.js" : "aria/pack-utils.js",
-            "ClassList.js" : "aria/pack-utils.js",
-            "Data.js" : "aria/pack-utils.js",
-            "Date.js" : "aria/pack-utils.js",
-            "Delegate.js" : "aria/pack-utils.js",
-            "Dom.js" : "aria/pack-utils.js",
-            "DomBeans.js" : "aria/pack-utils.js",
-            "DomOverlay.js" : "aria/pack-utils.js",
-            "Event.js" : "aria/pack-utils.js",
-            "FireDomEvent.js" : "aria/pack-utils.js",
-            "FormatFactory.js" : "aria/pack-utils.js",
-            "Function.js" : "aria/pack-utils.js",
-            "HashManager.js" : "aria/pack-utils.js",
-            "Html.js" : "aria/pack-utils.js",
-            "IdManager.js" : "aria/pack-utils.js",
-            "Math.js" : "aria/pack-utils.js",
-            "Mouse.js" : "aria/pack-utils.js",
-            "Number.js" : "aria/pack-utils.js",
-            "Path.js" : "aria/pack-utils.js",
-            "Rand.js" : "aria/pack-utils.js",
-            "ScriptLoader.js" : "aria/pack-utils.js",
-            "Size.js" : "aria/pack-utils.js",
-            "StackHashMap.js" : "aria/pack-utils.js",
-            "Store.js" : "aria/pack-utils.js",
-            "String.js" : "aria/pack-utils.js",
-            "UtilsRes.js" : "aria/pack-utils.js",
-            "Xml.js" : "aria/pack-utils.js",
+            "*" : "aria/pack-utils.js",
+            "FrameATLoaderHTML.html" : "aria/utils/FrameATLoaderHTML.html",
             "dragdrop" : {
-                "*" : "aria/pack-dragdrop.js"
+                "*" : "aria/pack-dragdrop-resize.js"
             },
             "overlay" : {
                 "*" : "aria/pack-utils.js"
@@ -140,11 +122,25 @@
             },
             "environment" : {
                 "VisualFocus.js" : "aria/pack-templates1.js",
-                "VisualFocusCfgBeans.js" : "aria/pack-templates1.js"
-            }
+                "VisualFocusCfgBeans.js" : "aria/pack-templates1.js",
+				"Date.js" : "aria/pack-widgets2.js",
+				"DateCfgBeans.js" : "aria/pack-widgets2.js",
+				"Number.js" : "aria/pack-widgets1.js",
+				"NumberCfgBeans.js" : "aria/pack-widgets1.js"
+            },
+			"filters" : {
+				"*" : "aria/pack-utils.js"
+			},
+			"json" : {
+				"*" : "aria/pack-utils.js"
+			},
+			"resize" : {
+				"*" : "aria/pack-dragdrop-resize.js"
+			}
         },
         "tools" : {
             "contextual" : {
+				"*" : "aria/pack-contextual.js",
                 "environment" : {
                     "ContextualMenu.js" : "aria/pack-templates1.js",
                     "ContextualMenuCfgBeans.js" : "aria/pack-templates1.js"
@@ -163,19 +159,19 @@
         "modules" : {
             "*" : "aria/pack-modules.js",
             "queuing" : {
-                "SimpleSessionQueuing.js" : "aria/pack-modules.js"
+                "*" : "aria/pack-modules.js"
             },
             "environment" : {
                 "*" : "aria/pack-modules.js"
             },
             "urlService" : {
+				"*" : "aria/pack-modules.js",
                 "environment" : {
                     "*" : "aria/pack-modules.js"
                 }
             },
             "requestHandler" : {
-                "IRequestHandler.js" : "aria/pack-modules.js",
-                "RequestHandler.js" : "aria/pack-modules.js",
+                "*" : "aria/pack-modules.js",
                 "environment" : {
                     "*" : "aria/pack-modules.js"
                 }
@@ -183,6 +179,94 @@
         },
         "storage" : {
             "*" : "aria/pack-storage.js"
-        }
+        },
+		"tester" : {
+			"runner" : {
+				"*" : "aria/pack-tester.js",
+				"appenders" : {
+					"*" : "aria/pack-tester.js"
+				},
+				"datamodel" : {
+					"*" : "aria/pack-tester.js"
+				},
+				"utils" : {
+					"*" : "aria/pack-tester.js"
+				},
+				"view" : {
+					"*" : "aria/pack-tester.js",
+					"config" : {
+						"*" : "aria/pack-tester.js"
+					},
+					"filter" : {
+						"*" : "aria/pack-tester.js"
+					},
+					"header" : {
+						"*" : "aria/pack-tester.js"
+					},
+					"links" : {
+						"*" : "aria/pack-tester.js"
+					},
+					"logo" : {
+						"*" : "aria/pack-tester.js"
+					},
+					"main" : {
+						"*" : "aria/pack-tester.js"
+					},
+					"mini" : {
+						"*" : "aria/pack-tester.js"
+					},
+					"monitor" : {
+						"*" : "aria/pack-tester.js"
+					},
+					"nav" : {
+						"*" : "aria/pack-tester.js"
+					},
+					"normal" : {
+						"*" : "aria/pack-tester.js"
+					},
+					"popup" : {
+						"*" : "aria/pack-tester.js",
+						"generic" : {
+							"*" : "aria/pack-tester.js"
+						},
+						"options" : {
+							"*" : "aria/pack-tester.js"
+						},
+						"report" : {
+							"*" : "aria/pack-tester.js"
+						},
+						"warning" : {
+							"*" : "aria/pack-tester.js"
+						}
+					},
+					"report" : {
+						"*" : "aria/pack-tester.js"
+					}
+				}
+			}
+		},
+		"jsunit" : {
+			"*" : "aria/pack-jsunit.js",
+			"helpers" : {
+				"*" : "aria/pack-jsunit.js"
+			}
+		},
+		"resources" : {
+			"*" : "aria/pack-resources.js",
+			"handlers" : {
+				"IResourcesHandler.js" : "aria/pack-resources.js",
+				"LCResourcesHandler.js" : "aria/pack-resources.js",
+				"LCResourcesHandlerBean.js" : "aria/pack-resources.js"
+			},
+			"multiselect" : {
+				"*" : "aria/pack-widgets2.js"
+			}
+		},
+		"ext" : {
+			"*" : "aria/pack-ext.js",
+			"filesgenerator" : {
+				"*" : "aria/pack-ext.js"
+			}
+		}
     }
 }

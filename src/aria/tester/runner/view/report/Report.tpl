@@ -22,7 +22,7 @@
      $css:['aria.tester.runner.view.report.ReportCSS']
 }}
     {macro main()}
-        <div {id "left"/} 
+        <div {id "left"/}
             class="leftContainer"
             style="
                 width : ${$hdim(178,1)}px;
@@ -37,7 +37,7 @@
             </div>
         </div>
     {/macro}
-    
+
     {macro displayReportAsTree()}
         {section {
             id: "reportSection",
@@ -53,32 +53,32 @@
               }],
               type:"div"
           }}
-            
+
             ${this._beforeDisplayReport()}
             {var testsArray = this.getFilteredTestsArray()/}
-            <table 
-                class="reportTable" 
+            <table
+                class="reportTable"
                 cellspacing="1"
                 style="
-                {if aria.core.Browser.isIE} 
+                {if aria.core.Browser.isIE}
                     width:${$hdim(161,1)}px;
                 {/if}
             "
             >
                 <tbody>
-                    {foreach test in testsArray} 
+                    {foreach test in testsArray}
                         {call displayTest(test, 0)/}
                     {/foreach}
                 </tbody>
             </table>
         {/section}
     {/macro}
-    
-    {macro displayTest(test)} 
+
+    {macro displayTest(test)}
         {var isTestSuite = test.instance && test.instance.$TestSuite/}
         {var isFinished = test.instance && test.instance.isFinished()/}
         {var hasError = test.instance && test.instance.hasError && test.instance.hasError()/}
-        
+
         {var classname = isTestSuite ? "suite" : (counter++%2? "odd" : "even")/}
         {if (isFinished && !isTestSuite)}
             {if (hasError)}
@@ -93,15 +93,15 @@
                 {set currentAssigned = true/}
             {/if}
         {/if}
-        <tr 
-            class="${classname}" 
+        <tr
+            class="${classname}"
         >
             <td>
                 {if (isTestSuite)}
                     <b>${getSuiteName(test.instance)}</b>
                 {else/}
                         <div style="float:left;">${getTestName(test)}</div>
-                    {if (hasError)} 
+                    {if (hasError)}
                         <div class="errorCount"
                         {on click {fn:this._onErrorTestClick,scope:this, args:test}/}
                         {if data.flow.currentState == "finished"}
@@ -118,5 +118,10 @@
                 {/if}
             </td>
         </tr>
+        {if !isTestSuite && test.lastInSuite}
+        <tr class="suite separator">
+            <td>&nbsp;</td>
+        </tr>
+        {/if}
     {/macro}
 {/Template}

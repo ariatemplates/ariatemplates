@@ -1,0 +1,39 @@
+
+one {
+
+foo : bar;
+bar : baz;
+}
+
+two, three {
+foo : bar; }
+
+ four {
+foo : bar;
+}
+
+ * {
+foo : bar;
+}
+
+ five:above, five:below{
+ foo : bar;
+}
+
+six > seven, eigth[nine="ten"] {
+foo:bar;}eleven{foo:bar}
+
+
+twelve ,thirteen{
+foo:bar;
+}
+
+
+fourteen,
+fifteen,
+sixteen
+{
+foo:bar
+}
+
+seventeen{ foo: bar}
