@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aria-response>
+  <framework>
+  <![CDATA[
+{"session":{"id":"123","requestedId":"456","hasTimedOut":false,"trackedBy":"Cookie"}}
+  ]]>
+  </framework>
+  <data><![CDATA[
+{"serverMessage": "Hello from the server!"}
+  ]]></data>
+</aria-response>

@@ -18,7 +18,7 @@
  * it can be used for any purpose. It is still experimental for now.
  */
 Aria.classDefinition({
-    $classpath : 'aria.utils.FrameATLoader',
+    $classpath : "aria.utils.FrameATLoader",
     $singleton : true,
     $events : {
         "bootstrapLoaded" : "Raised when the bootstrap is loaded."
@@ -69,7 +69,7 @@ Aria.classDefinition({
         /**
          * Load Aria Templates in the given frame and call the callback. This replaces the content of the frame.
          * @param {DOMElement} frame frame
-         * @param {aria.core.CfgBeans.Callback} cb callback
+         * @param {aria.core.CfgBeans.Callback} cb callback. The first argument is an object containing success information.
          */
         loadAriaTemplatesInFrame : function (frame, cb) {
             this.loadBootstrap({
@@ -84,10 +84,16 @@ Aria.classDefinition({
 
         /**
          * First part of the load of Aria Templates in the iframe: replace the document inside the iframe.
-         * @param {Object} res unused
+         * @param {Boolean|Object} evt True if there was an error or event raised from 'bootstrapLoaded'
          * @param {Object} args object containing the frame and callback
          */
-        _loadATInFrameCb1 : function (res, args) {
+        _loadATInFrameCb1 : function (evt, args) {
+            if (evt === true) {
+                this.$callback(args.cb, {
+                    success : false
+                });
+                return;
+            }
             var callbackId = this._createCallbackId({
                 fn : this._loadATInFrameCb2,
                 scope : this,
@@ -237,6 +243,7 @@ Aria.classDefinition({
             if (this.frameworkHref == null) {
                 this.frameworkHref = this._findScriptPattern(this.frameworkHrefPattern);
                 if (this.frameworkHref == null) {
+                    this.$callback(cb, true);
                     return;
                 }
             }

@@ -34,10 +34,6 @@ Aria.classDefinition({
         this.addTests("test.aria.core.FileLoaderLicenseTest");
         this.addTests("test.aria.core.FileLoaderTest");
         this.addTests("test.aria.core.InterfacesTest");
-        this.addTests("test.aria.core.IOFiltersMgrTest");
-        this.addTests("test.aria.core.IOFilterTest");
-        this.addTests("test.aria.core.IOTest");
-        this.addTests("test.aria.core.IOTransportTest");
         this.addTests("test.aria.core.JsObjectTest");
         this.addTests("test.aria.core.JSONPTest");
         this.addTests("test.aria.core.JsonValidatorTest");
@@ -48,7 +44,6 @@ Aria.classDefinition({
         this.addTests("test.aria.core.TimerTest");
         this.addTests("test.aria.core.TplClassLoaderTest");
         this.addTests("test.aria.core.TplClassLoaderErrorTest");
-        this.addTests("test.aria.core.CR06167244.IOTest");
-        this.addTests("test.aria.core.CR06167244.IOFilterTest");
+        this.addTests("test.aria.core.io.IOTestSuite");
     }
 });

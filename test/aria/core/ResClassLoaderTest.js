@@ -207,7 +207,7 @@ Aria.classDefinition({
                 urlService : {
                     implementation : "aria.modules.urlService.PatternURLCreationImpl",
                     args : [null,
-                            "http://www.amadeus.com:8080/xyz/apf/${moduleName}/sampleResId;jsessionid=${sessionId}?locale=${locale}"]
+                            "http://www.ariatemplates.com:8080/xyz/${moduleName}/sampleResId;jsessionid=${sessionId}?locale=${locale}"]
                 }
             }, null, true);
 
@@ -228,7 +228,7 @@ Aria.classDefinition({
                 var expected = {
                     logical : "DEF_IT.js",
                     serverResource : true,
-                    full : "http://www.amadeus.com:8080/xyz/apf/ABC/sampleResId;jsessionid=?locale=IT"
+                    full : "http://www.ariatemplates.com:8080/xyz/ABC/sampleResId;jsessionid=?locale=IT"
                 };
 
                 this.assertTrue(aria.utils.Json.equals(args, expected));

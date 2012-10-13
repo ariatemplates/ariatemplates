@@ -93,7 +93,8 @@ Aria.classDefinition({
                 var test = tests[i];
                 subTests.push({
                     classpath : test,
-                    instance : null
+                    instance : null,
+                    lastInSuite : i === l - 1
                 });
             }
 
