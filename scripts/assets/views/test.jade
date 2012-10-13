@@ -1,0 +1,64 @@
+!!! 5
+html
+	head
+		meta(charset="utf-8")
+		meta(http-equiv="X-UA-Compatible", content="IE=edge,chrome=1")
+		meta(name="viewport", content="width=device-width, initial-scale=1.0")
+
+		title Aria Tester
+
+		script
+			var Aria = {
+				memCheckMode : false, // checks that constructors and destructors are well called on all objects
+				debug : true
+			};
+		script(src=urls.framework)
+		script(src=urls.skin)
+		style
+			html {
+				overflow : hidden;
+			}
+			body {
+				margin : 0px;
+				background-color : #FAFAFA;
+				font-family: tahoma,arial,helvetica,sans-serif;
+				font-size: 11px;
+			}
+	body
+		div#root
+
+		if dev
+			script
+				Aria.rootFolderPath += "../";
+				aria.core.DownloadMgr.updateRootMap({
+					"aria" : {
+						"*" : Aria.rootFolderPath + "dev/"
+					}
+				});
+
+		script
+
+			aria.core.AppEnvironment.setEnvironment({
+				contextualMenu:{enabled:true} // to get the right-click refresh menu
+			}, null, true);
+
+			var classpath = "aria.tester.runner.view.main.Main";
+
+			var width = {min : 180};
+			var height = {min : 342};
+
+			// set the minimum dimension of this page
+			Aria.setRootDim({
+				width: width,
+				height: height
+			});
+
+			Aria.loadTemplate({
+				classpath:classpath,
+				div:"root",
+				width: width,
+				height: height,
+				moduleCtrl: {
+					classpath: 'aria.tester.runner.ModuleController'
+				}
+			});

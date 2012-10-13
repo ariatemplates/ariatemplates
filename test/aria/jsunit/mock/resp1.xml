@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aria-response>
+	<data><![CDATA[
+{
+	"result": {
+		"command": {
+			"type":"AN",
+			"entry":"ANPARNCE",
+			"date":"",
+			"time":"1158",
+			"description":"AMADEUS AVAILABILITY - AN ** NCE NICE.FR"
+		},
+		"advMsgs":[
+			{
+				msg: "15% OFF IF YOU BOOK IN ADVANCE ** NCE ** HARTNCE",
+				highlight:true
+			},
+			{
+				msg: "NO AVAILABILITY FOR SELECTED PREFERENCE"
+			}
+
+		],
+		"neutralDisplay":true,
+		"results": [
+			{
+				index:1,
+				carrier:{
+					code:"9S",
+					description:"Southern Air"
+				},
+				flightNbr:"1082",
+				duration:"0120",
+				aircraft:"320",
+				fromLocation:{
+					airport: {
+						code:"ORY",
+						description:"Orly",
+						terminal:"W"
+					},
+					time:"1100"
+				},
+				toLocation: {
+					airport: {
+						code:"ORY",
+						description:"Orly",
+						terminal:"W"
+					},
+					time:"1220"
+				},
+				bkgClasses:[{type:"Y9",action:6},{type:"S9",action:6},{type:"B9",action:6},{type:"K9",action:6},{type:"H9",action:6},{type:"L9",action:6},{type:"Q9",action:6},{type:"T9",action:6},{type:"V9",action:6}]
+			},
+			{
+				index:2,
+				carrier:{
+					code:"9S",
+					description:"Southern Air"
+				},
+				flightNbr:"1082",
+				duration:"0120",
+				aircraft:"320",
+				fromLocation:{
+					airport: {
+						code:"ORY",
+						description:"Orly",
+						terminal:"W"
+					},
+					time:"1100"
+				},
+				toLocation: {
+					airport: {
+						code:"ORY",
+						description:"Orly",
+						terminal:"W"
+					},
+					time:"1220"
+				},
+				bkgClasses:[{type:"Y9",action:6},{type:"S9",action:6},{type:"B9",action:6},{type:"K9",action:6},{type:"H9",action:6},{type:"L9",action:6},{type:"Q9",action:6},{type:"T9",action:6},{type:"V9",action:6}]
+			},
+			{
+				index:3,
+				carrier:{
+					code:"9S",
+					description:"Southern Air"
+				},
+				flightNbr:"1082",
+				duration:"0120",
+				aircraft:"320",
+				fromLocation:{
+					airport: {
+						code:"ORY",
+						description:"Orly",
+						terminal:"W"
+					},
+					time:"1100"
+				},
+				toLocation: {
+					airport: {
+						code:"ORY",
+						description:"Orly",
+						terminal:"W"
+					},
+					time:"1220"
+				},
+				bkgClasses:[{type:"Y9",action:6},{type:"S9",action:6},{type:"B9",action:6},{type:"K9",action:6},{type:"H9",action:6},{type:"L9",action:6},{type:"Q9",action:6},{type:"T9",action:6},{type:"V9",action:6}]
+			},
+			{
+				index:4,
+				carrier:{
+					code:"9S",
+					description:"Southern Air"
+				},
+				flightNbr:"1082",
+				duration:"0120",
+				aircraft:"320",
+				fromLocation:{
+					airport: {
+						code:"ORY",
+						description:"Orly",
+						terminal:"W"
+					},
+					time:"1100"
+				},
+				toLocation: {
+					airport: {
+						code:"ORY",
+						description:"Orly",
+						terminal:"W"
+					},
+					time:"1220"
+				},
+				bkgClasses:[{type:"Y9",action:6},{type:"S9",action:6},{type:"B9",action:6},{type:"K9",action:6},{type:"H9",action:6}]
+			},
+			{
+				index:5,
+				carrier:{
+					code:"9S",
+					description:"Southern Air"
+				},
+				flightNbr:"1082",
+				duration:"0120",
+				aircraft:"320",
+				fromLocation:{
+					airport: {
+						code:"ORY",
+						description:"Orly",
+						terminal:"W"
+					},
+					time:"1100"
+				},
+				toLocation: {
+					airport: {
+						code:"ORY",
+						description:"Orly",
+						terminal:"W"
+					},
+					time:"1220"
+				},
+				bkgClasses:[{type:"Y9",action:6},{type:"S9",action:6},{type:"B9",action:6},{type:"K9",action:6},{type:"H9",action:6},{type:"L9",action:6},{type:"Q9",action:6},{type:"T9",action:6},{type:"V9",action:6}]
+			},
+			{
+				index:6,
+				carrier:{
+					code:"9S",
+					description:"Southern Air"
+				},
+				flightNbr:"1082",
+				duration:"0120",
+				aircraft:"320",
+				fromLocation:{
+					airport: {
+						code:"ORY",
+						description:"Orly",
+						terminal:"W"
+					},
+					time:"1100"
+				},
+				toLocation: {
+					airport: {
+						code:"ORY",
+						description:"Orly",
+						terminal:"W"
+					},
+					time:"1220"
+				},
+				bkgClasses:[{type:"Y9",action:6},{type:"S9",action:6},{type:"B9",action:6},{type:"K9",action:6},{type:"H9",action:6},{type:"L9",action:6},{type:"Q9",action:6},{type:"T9",action:6},{type:"V9",action:6}]
+			},
+			{
+				index:7,
+				carrier:{
+					code:"9S",
+					description:"Southern Air"
+				},
+				flightNbr:"1082",
+				duration:"0120",
+				aircraft:"320",
+				fromLocation:{
+					airport: {
+						code:"ORY",
+						description:"Orly",
+						terminal:"W"
+					},
+					time:"1100"
+				},
+				toLocation: {
+					airport: {
+						code:"ORY",
+						description:"Orly",
+						terminal:"W"
+					},
+					time:"1220"
+				},
+				bkgClasses:[{type:"Y9",action:6},{type:"S9",action:6},{type:"B9",action:6},{type:"K9",action:6},{type:"H9",action:6},{type:"L9",action:6},{type:"Q9",action:6},{type:"T9",action:6},{type:"V9",action:6}]
+			},
+			{
+				index:8,
+				carrier:{
+					code:"9S",
+					description:"Southern Air"
+				},
+				flightNbr:"1082",
+				duration:"0120",
+				aircraft:"320",
+				fromLocation:{
+					airport: {
+						code:"ORY",
+						description:"Orly",
+						terminal:"W"
+					},
+					time:"1100"
+				},
+				toLocation: {
+					airport: {
+						code:"ORY",
+						description:"Orly",
+						terminal:"W"
+					},
+					time:"1220"
+				},
+				bkgClasses:[{type:"Y9",action:6},{type:"S9",action:6},{type:"B9",action:6},{type:"K9",action:6},{type:"H9",action:6},{type:"L9",action:6},{type:"Q9",action:6},{type:"T9",action:6},{type:"V9",action:6}]
+			},
+			{
+				index:9,
+				carrier:{
+					code:"9S",
+					description:"Southern Air"
+				},
+				flightNbr:"1082",
+				duration:"0120",
+				aircraft:"320",
+				fromLocation:{
+					airport: {
+						code:"ORY",
+						description:"Orly",
+						terminal:"W"
+					},
+					time:"1100"
+				},
+				toLocation: {
+					airport: {
+						code:"ORY",
+						description:"Orly",
+						terminal:"W"
+					},
+					time:"1220"
+				},
+				bkgClasses:[{type:"Y9",action:6},{type:"S9",action:6},{type:"B9",action:3},{type:"K9",action:6},{type:"H9",action:6},{type:"L9",action:6},{type:"Q9",action:6},{type:"T9",action:6},{type:"V9",action:6}]
+			},
+			{
+				index:10,
+				carrier:{
+					code:"9S",
+					description:"Southern Air"
+				},
+				flightNbr:"1082",
+				duration:"0120",
+				aircraft:"320",
+				fromLocation:{
+					airport: {
+						code:"ORY",
+						description:"Orly",
+						terminal:"W"
+					},
+					time:"1100"
+				},
+				toLocation: {
+					airport: {
+						code:"ORY",
+						description:"Orly",
+						terminal:"W"
+					},
+					time:"1220"
+				},
+				bkgClasses:[{type:"Y9",action:6},{type:"S9",action:6},{type:"B9"},{type:"K9",action:6}]
+			}
+		],
+		"actions":{
+			"1":"SS1X3",
+			"2":"SS2X3",
+			"3":"SS3X3",
+			"4":"SS4X3",
+			"5":"SM7S1402/X/17FEBCDGNCE",
+			"6":["1","2","3","4","5"]
+		}
+
+	}
+}
+	]]></data>
+</aria-response>

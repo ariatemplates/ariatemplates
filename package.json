@@ -1,21 +1,31 @@
 {
-  "author": "ariatemplates <contact@ariatemplates.com> (http://github.com/ariatemplates)",
-  "name": "ariatemplates",
-  "description": "Aria Templates (aka AT) is an application framework written in JavaScript for building rich and large-scaled enterprise web applications.",
-  "version": "1.2.6",
-  "homepage": "http://ariatemplates.com",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/ariatemplates/ariatemplates.git"
-  },
-  "main": "src/aria/node.js",
-  "dependencies": {
-    "wrench": "1.3.x",
-    "packman": "0.2.x",
-    "jshint": "0.7.x"
-  },
-  "scripts": {
-    "install": "node build/build.js",
-    "test": "npm install"
-  }
+    "author" : "ariatemplates <contact@ariatemplates.com> (http://github.com/ariatemplates)",
+    "name" : "ariatemplates",
+    "description" : "Aria Templates (aka AT) is an application framework written in JavaScript for building rich and large-scaled enterprise web applications.",
+    "version" : "1.2.6",
+    "homepage" : "http://ariatemplates.com",
+    "repository" : {
+        "type" : "git",
+        "url" : "git://github.com/ariatemplates/ariatemplates.git"
+    },
+    "main" : "src/aria/node.js",
+    "dependencies" : {
+        "wrench" : "1.3.x",
+        "packman" : "0.2.x",
+        "jshint" : "0.7.x",
+		"mkdirp" : "0.3.x"
+    },
+	"config" : {
+		"port" : "8080"
+	},
+    "scripts" : {
+        "install" : "node build/build.js",
+        "test" : "npm install",
+        "start" : "node scripts/server.js",
+        "prestart" : "npm install"
+    },
+    "devDependencies" : {
+        "express" : "3.0.x",
+		"jade" : "0.x"
+    }
 }

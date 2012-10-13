@@ -85,6 +85,9 @@ Aria.tplScriptDefinition({
             for (var i = 0 ; i < filteredTests.length ; i++) {
                 var filteredTest = filteredTests[i];
                 var nextTest = filteredTests[i+1]
+                if (!nextTest || (nextTest.instance && nextTest.instance.$TestSuite)) {
+                    filteredTest.lastInSuite = false;
+                }
                 if (filteredTest.instance && filteredTest.instance.$TestSuite && (!nextTest || (nextTest.instance && !nextTest.instance.$Assert))) {
                     filteredTests.splice(i,1);
                     i--;

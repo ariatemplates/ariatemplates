@@ -14,13 +14,11 @@
  */
 
 /**
- * Default implementation for the IUrlService. It is meant to be used with APF
- * @class aria.modules.urlService.PatternURLCreationImpl
- * @extends aria.core.JsObject
+ * Default implementation for the IUrlService.
  */
 Aria.classDefinition({
-    $classpath : 'aria.modules.urlService.PatternURLCreationImpl',
-    $implements : ['aria.modules.urlService.IUrlService'],
+    $classpath : "aria.modules.urlService.PatternURLCreationImpl",
+    $implements : ["aria.modules.urlService.IUrlService"],
     $constructor : function (actionUrlPattern, i18nUrlPattern) {
         this.actionUrlPattern = actionUrlPattern || "";
         this.i18nUrlPattern = i18nUrlPattern || "";

@@ -22,7 +22,7 @@
     .leftContainer {
         position : relative;
         background : white;
-        {if aria.core.Browser.isIE7} 
+        {if aria.core.Browser.isIE7}
             overflow-y : scroll;
             overflow-x : hidden;
         {else/}
@@ -53,70 +53,77 @@
         z-index:4000;
         width : 100%;
     }
-    
+
     .reportTable tr{
         color: {call rgb(baseColor.r, baseColor.g, baseColor.b, 0)/};
     }
-    
+
     .reportTable tr.even {
         background-color:{call rgb(240,243,245,0)/};
     }
-    
+
     .reportTable tr.odd {
         background-color:{call rgb(250,250,250, 0)/};
     }
-    
+
     .reportTable tr b{
         text-shadow: 0px 1px 0px white;
     }
-    
+
     .reportTable td {
         padding : 5px;
         padding-left : 10px;
     }
-    
+
     .reportTable tr.suite {
         color : ${lightColor};
         background-color:${mainColor};
         {call gradient(baseColor.r, baseColor.g, baseColor.b, 0, -20)/};
     }
-    
+
     .reportTable tr.suite b{
         text-shadow: none;
     }
-    
+
     .reportTable tr.suite td {
         padding-top : 2px;
         padding-bottom: 2px;
     }
-    
+
     .reportTable tr.success {
-        color:{call rgb(45,180,45,0)/}; 
+        color:{call rgb(45,180,45,0)/};
     }
 
     .reportTable tr.failure{
-        color:{call rgb(failedColor.r,failedColor.g,failedColor.b,0)/}; 
+        color:{call rgb(failedColor.r,failedColor.g,failedColor.b,0)/};
     }
-    
+
     .reportTable tr.current {
-        color:{call rgb(255,165,0,0)/}; 
+        color:{call rgb(255,165,0,0)/};
     }
-    
+
     .reportTable tr.warning {
-        color:${lightColor}; 
+        color:${lightColor};
         background-color:${mainColor};
         text-shadow: none;
     }
-    
+
     .errorCount {
         display : inline-block;
         padding-left : 5px;
     }
-    
+
     .testInfo {
         display : inline-block;
         padding-left : 5px;
-        color:{call rgb(45,180,45,0)/}; 
+        color:{call rgb(45,180,45,0)/};
+    }
+
+    .separator {
+        line-height : 1px;
+    }
+    tr.suite.separator td {
+        padding : 0;
     }
 {/macro}
 {/CSSTemplate}
