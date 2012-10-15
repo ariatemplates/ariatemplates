@@ -1,0 +1,10 @@
+resources:
+ '/':
+  - 'src'
+ '/test':
+  - 'test'
+tests:
+ aria-templates:
+  classpaths:
+   includes:
+    - test.MainTestSuite
