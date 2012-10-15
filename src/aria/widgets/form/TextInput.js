@@ -814,17 +814,7 @@ Aria.classDefinition({
          * @protected
          */
         _dom_onclick : function () {
-            if (this._firstFocus && this._cfg.autoselect) {
-                // this allow to click again and put the cursor at a given
-                // position
-                this._firstFocus = false;
-                var field = this.getTextInputField();
-                var start = 0;
-                var end = (field.value.length) ? field.value.length : 0;
-                if (end) {
-                    this.setCaretPosition(start, end);
-                }
-            }
+            this._autoselect();
         },
 
         /**
@@ -1166,10 +1156,29 @@ Aria.classDefinition({
             }
             var textInputField = this.getTextInputField();
             textInputField.focus();
-            // IE FIX: requires the value to be reset for the cursor to be
-            // positioned
+            // IE FIX: requires the value to be reset for the cursor to be positioned
             // and focused at the end of the textinput.value string
             textInputField.value = textInputField.value;
+
+            this._autoselect();
+        },
+
+        /**
+         * If enabled, autoselect the widget text setting the caret position to the whole input value.
+         * @protected
+         */
+        _autoselect : function () {
+            if (this._firstFocus && this._cfg.autoselect) {
+                // this allow to click again and put the cursor at a given
+                // position
+                this._firstFocus = false;
+                var field = this.getTextInputField();
+                var start = 0;
+                var end = (field.value.length) ? field.value.length : 0;
+                if (end) {
+                    this.setCaretPosition(start, end);
+                }
+            }
         }
 
     }
