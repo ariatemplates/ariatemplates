@@ -17,13 +17,12 @@
  * Calendar widget, which is a template-based widget. Most of the logic of the calendar is implemented in the
  * CalendarController class. This class only does the link between the properties of the calendar widget and the
  * calendar controller.
- * @class aria.widgets.calendar.Calendar
  */
 Aria.classDefinition({
-    $classpath : 'aria.widgets.calendar.Calendar',
-    $extends : 'aria.widgets.TemplateBasedWidget',
-    $dependencies : ['aria.widgets.Template', 'aria.widgets.calendar.CalendarController', 'aria.DomEvent'],
-    $css : ['aria.widgets.calendar.CalendarStyle'],
+    $classpath : "aria.widgets.calendar.Calendar",
+    $extends : "aria.widgets.TemplateBasedWidget",
+    $dependencies : ["aria.widgets.Template", "aria.widgets.calendar.CalendarController", "aria.DomEvent"],
+    $css : ["aria.widgets.calendar.CalendarStyle"],
     // Preload the default template here, to improve performances, especially for the DatePicker
     // TODO: find a better way, to also improve performances for custom templates
     $templates : ["aria.widgets.calendar.CalendarTemplate"],
