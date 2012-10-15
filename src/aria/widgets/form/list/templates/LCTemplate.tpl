@@ -26,8 +26,10 @@
         <a href="#" class="${className}" _itemIdx="${itemIdx}" onclick="return false;">
             {if ! item.label}
                 &nbsp;
+            {elseif item.value.multiWordMatch/}
+                ${item.label|escape|highlightfromnewword:entry}
             {else/}
-                ${item.label|escape|startHighlight:entry}
+                ${item.label|escape|starthighlight:entry}
             {/if}
         </a>
     {/macro}
