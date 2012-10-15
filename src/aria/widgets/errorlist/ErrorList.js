@@ -17,12 +17,11 @@
  * Error list widget, which is a template-based widget. Most of the logic of the error list widget is implemented in the
  * ErrorListController class. This class only does the link between the properties of the error list widget and the
  * error list controller.
- * @class aria.widgets.errorlist.ErrorList
  */
 Aria.classDefinition({
-    $classpath : 'aria.widgets.errorlist.ErrorList',
-    $extends : 'aria.widgets.TemplateBasedWidget',
-    $dependencies : ['aria.widgets.Template', 'aria.widgets.errorlist.ErrorListController', 'aria.DomEvent'],
+    $classpath : "aria.widgets.errorlist.ErrorList",
+    $extends : "aria.widgets.TemplateBasedWidget",
+    $dependencies : ["aria.widgets.Template", "aria.widgets.errorlist.ErrorListController", "aria.DomEvent"],
     $onload : function () {
         /*
          * Preload the default template here, to improve performances TODO: find a better way, to also improve
@@ -39,6 +38,7 @@ Aria.classDefinition({
                 'maxHeight']);
         divCfg.sclass = skinObj.divsclass;
         divCfg.margins = "0 0 0 0";
+        divCfg.id = cfg.id + "_div";
         this._initTemplate({
             defaultTemplate : this._cfg.defaultTemplate,
             moduleCtrl : {
