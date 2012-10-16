@@ -24,34 +24,38 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestCase.constructor.call(this);
         this.__serializer = new test.aria.modules.test.jsonSerializers.FirstJsonSerializer();
+        this._requestHandler = aria.modules.requestHandler.environment.RequestHandler;
     },
     $destructor : function () {
+        this._requestHandler = null;
         this.__serializer.$dispose();
         this.__serializer = null;
         this.$TestCase.$destructor.call(this);
     },
     $prototype : {
         testGetSetRequestHandler : function () {
+            var rhImpl;
+
+            rhImpl = this.__getRequestHandlerImplementation();
+            this.assertEquals(rhImpl, "aria.modules.requestHandler.JSONRequestHandler"); // default bean definition
+
             aria.core.AppEnvironment.setEnvironment({
                 "requestHandler" : {
                     implementation : "MyCustomImplementation"
                 }
             });
 
-            var settings = aria.modules.requestHandler.environment.RequestHandler.getRequestHandlerCfg();
-            this.assertTrue(settings.implementation === "MyCustomImplementation"); // user defined settings
+            rhImpl = this.__getRequestHandlerImplementation();
+            this.assertEquals(rhImpl, "MyCustomImplementation"); // user defined settings
 
             aria.core.AppEnvironment.setEnvironment({});
 
-            settings = aria.modules.requestHandler.environment.RequestHandler.getRequestHandlerCfg();
-            this.assertTrue(settings.implementation === "aria.modules.requestHandler.JSONRequestHandler");// default
-            // bean definition
+            rhImpl = this.__getRequestHandlerImplementation();
+            this.assertEquals(rhImpl, "aria.modules.requestHandler.JSONRequestHandler"); // default bean definition
         },
 
         testGetSetRequestJsonSerializer : function () {
-            var settings = aria.modules.requestHandler.environment.RequestHandler.getRequestJsonSerializerCfg();// user
-            // defined
-            // settings
+            var settings = this.__getJsonSerializeSettings(); // user defined settings
             this.assertTrue(settings.options && settings.options.encodeParameters === true);
             this.assertFalse("instance" in settings);
 
@@ -62,9 +66,7 @@ Aria.classDefinition({
                     }
                 }
             });
-            settings = aria.modules.requestHandler.environment.RequestHandler.getRequestJsonSerializerCfg();// user
-            // defined
-            // settings
+            settings = this.__getJsonSerializeSettings(); // user defined settings
             this.assertTrue(settings.options && settings.options.msg == "msg");
             this.assertFalse("instance" in settings);
 
@@ -77,19 +79,23 @@ Aria.classDefinition({
                 }
             });
 
-            settings = aria.modules.requestHandler.environment.RequestHandler.getRequestJsonSerializerCfg();// user
-            // defined
-            // settings
+            settings = this.__getJsonSerializeSettings(); // user defined settings
             this.assertTrue(settings.options && settings.options.msg == "msg");
             this.assertTrue(settings.instance == this.__serializer);
 
             aria.core.AppEnvironment.setEnvironment({});
 
-            settings = aria.modules.requestHandler.environment.RequestHandler.getRequestJsonSerializerCfg();// user
-            // defined
-            // settings
+            settings = this.__getJsonSerializeSettings(); // user defined settings
             this.assertTrue(settings.options && settings.options.encodeParameters === true);
             this.assertFalse("instance" in settings);
+        },
+
+        __getRequestHandlerImplementation : function () {
+            return this._requestHandler.getRequestHandlerCfg().implementation;
+        },
+
+        __getJsonSerializeSettings : function () {
+            return this._requestHandler.getRequestJsonSerializerCfg();
         }
     }
 });
