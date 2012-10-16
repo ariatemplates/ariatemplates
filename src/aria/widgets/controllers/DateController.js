@@ -48,6 +48,12 @@ Aria.classDefinition({
          * @type {String}
          */
         this._pattern = '';
+                /**
+         * List of pattern used to parse user input
+         * @protected
+         * @type {String}
+         */
+        this._inputPattern = '';
 
         /**
          * Minimum allowed date
@@ -85,6 +91,14 @@ Aria.classDefinition({
                 var pattern = aria.utils.environment.Date.getDateFormats().shortFormat;
             }
             this._pattern = pattern;
+        },
+         /**
+         * Set the date input pattern
+         * @param {aria.widgets.CfgBeans.DatePickerCfg} pattern options
+         */
+        setInputPattern : function (inputPattern) {
+
+            this._inputPattern = inputPattern;
         },
 
         /**
@@ -169,7 +183,11 @@ Aria.classDefinition({
                     report = new aria.widgets.controllers.reports.ControllerReport();
                     report.ok = true;
                 } else {
-                    var date = aria.utils.Date.interpret(text, this._referenceDate);
+                    var options = {
+                     referenceDate : this._referenceDate,
+                     inputPattern : this._inputPattern
+                    };
+                    var date = aria.utils.Date.interpret(text, options);
                     if (date) {
                         report = this.checkValue(date);
                     } else {

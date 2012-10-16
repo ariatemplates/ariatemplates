@@ -30,6 +30,7 @@ Aria.classDefinition({
         var controller = new aria.widgets.controllers.DatePickerController();
         this.$DropDownTextInput.constructor.call(this, cfg, ctxt, lineNumber, controller);
         controller.setPattern(cfg.pattern);
+        controller.setInputPattern(cfg.inputPattern);
         /*
          * Not implemented yet: controller.autoFill = cfg.autoFill; controller.focusOnField = cfg.focusOnfield;
          */
