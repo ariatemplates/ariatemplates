@@ -18,9 +18,9 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TemplateTestCase.constructor.call(this);
         this.setTestEnv({
-            template : "test.templateTests.tests.performance.disableInterceptorTests.MyParentTemplate",
+            template : "test.performance.interceptors.MyParentTemplate",
             moduleCtrl : {
-                classpath : "test.templateTests.tests.performance.disableInterceptorTests.DisableModuleEventsModuleCtrl"
+                classpath : "test.performance.interceptors.DisableModuleEventsModuleCtrl"
             }
         });
     },

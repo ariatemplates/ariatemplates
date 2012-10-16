@@ -15,7 +15,7 @@
 Aria.classDefinition({
     $classpath : "test.performance.interceptors.MyModuleCtrl",
     $extends : "aria.templates.ModuleCtrl",
-    $implements : ["test.templateTests.tests.performance.disableInterceptorTests.IMyModuleCtrl"],
+    $implements : ["test.performance.interceptors.IMyModuleCtrl"],
     $constructor : function () {
         this.$ModuleCtrl.constructor.call(this);
         this.$on({
@@ -28,7 +28,7 @@ Aria.classDefinition({
         });
     },
     $prototype : {
-        $publicInterfaceName : 'test.templateTests.tests.performance.disableInterceptorTests.IMyModuleCtrl',
+        $publicInterfaceName : 'test.performance.interceptors.IMyModuleCtrl',
         init : function (initArgs, cb) {
             this.$callback(cb);
         },
