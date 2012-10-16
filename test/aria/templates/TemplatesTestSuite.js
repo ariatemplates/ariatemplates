@@ -28,8 +28,6 @@ Aria.classDefinition({
         this.addTests("test.aria.templates.CSSMgrTest");
         this.addTests("test.aria.templates.CSSParserTest");
 
-        this.addTests("test.aria.templates.DomCallbackTest");
-
         this.addTests("test.aria.templates.DomElementWrapper");
         this.addTests("test.aria.templates.EnableMethodEventInterceptorTest");
         this.addTests("test.aria.templates.FlowCtrlTest");
