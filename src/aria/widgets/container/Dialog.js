@@ -15,7 +15,6 @@
 
 /**
  * Dialog widget
- * @class aria.widgets.container.Dialog
  */
 Aria.classDefinition({
     $classpath : "aria.widgets.container.Dialog",
@@ -58,12 +57,15 @@ Aria.classDefinition({
          * @type aria.utils.dragdrop.Drag
          */
         this._draggable = null;
+
+        var handles = cfg.handles || "n-resize,s-resize,e-resize,w-resize,ne-resize,nw-resize,se-resize,sw-resize";
         /**
          * The handles used for resizing the Dialog
+         * @type Array
+         * @protected
          */
-        this._handles = cfg.handles || "n-resize,s-resize,e-resize,w-resize,ne-resize,nw-resize,se-resize,sw-resize";
+        this._handlesArr = handles.split(",");
 
-        this._handlesArr = this._handles.split(",");
         /**
          * Created when the dialog is resizable
          * @type aria.utils.Resize
@@ -96,6 +98,7 @@ Aria.classDefinition({
         /**
          * Manage the viewport resize event
          * @param {aria.DomEvent} event
+         * @protected
          */
         _onViewportResized : function (event) {
 
@@ -120,6 +123,7 @@ Aria.classDefinition({
         /**
          * Check that a contentMacro is specified or bound to the dataModel
          * @param {aria.widgets.CfgBeans.DialogCfg} cfg
+         * @protected
          */
         _checkCfgConsistency : function (cfg) {
             if (!("contentMacro" in cfg) && !("bind" in cfg && "contentMacro" in cfg.bind)) {
@@ -250,7 +254,8 @@ Aria.classDefinition({
         },
 
         /**
-         * FIXME: doc
+         * Callback called when the dialog's main section is refreshed
+         * @param {aria.templates.MarkupWriter} out the writer Object to use to output markup
          * @private
          */
         _writerCallback : function (out) {
@@ -262,7 +267,8 @@ Aria.classDefinition({
         },
 
         /**
-         * OVERRIDE initWidget to allow display of dialog on init if visible is true
+         * initWidget to allow display of dialog on init if visible is true
+         * @override
          */
         initWidget : function () {
             this.$Container.initWidget.apply(this, arguments);
@@ -277,7 +283,7 @@ Aria.classDefinition({
          * @protected
          */
         _init : function () {
-            if (this.getProperty("visible")) {
+            if (this.getProperty("visible") && this._cfgOk) {
                 this.open();
             }
         },
@@ -288,6 +294,8 @@ Aria.classDefinition({
          * @param {String} propertyName the property name
          * @param {Object} newValue the new value
          * @param {Object} oldValue the old property value
+         * @protected
+         * @override
          */
         _onBoundPropertyChange : function (propertyName, newValue, oldValue) {
 
