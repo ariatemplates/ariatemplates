@@ -101,6 +101,12 @@
             this.cursor = params.cursor;
 
             /**
+             * Cursor style applied on the element before drag starts
+             * @type String
+             */
+            this.originalCursor = null;
+
+            /**
              * Instance of Overlay acting as Proxy
              * @type aria.utils.overlay.Overlay
              */
@@ -181,7 +187,12 @@
 
         },
         $destructor : function () {
-            removeAttribute(this.getDraggable(), aria.utils.Mouse.DRAGGABLE_ATTRIBUTE);
+            var draggable = this.getDraggable();
+            if (draggable) {
+                removeAttribute(draggable, aria.utils.Mouse.DRAGGABLE_ATTRIBUTE);
+                draggable.style.cursor = this.originalCursor;
+                draggable = null;
+            }
             if (this.proxy && this.proxy.overlay) {
                 this.proxy.$dispose();
             }
@@ -221,6 +232,7 @@
                 }
                 if (element) {
                     if (cursor) {
+                        this.originalCursor = element.style.cursor;
                         element.style.cursor = cursor;
                     }
                     return element;
