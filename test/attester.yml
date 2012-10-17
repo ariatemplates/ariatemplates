@@ -11,3 +11,5 @@ tests:
    excludes:
    #Excluded because PhantomJS does not support flash:
     - test.aria.core.io.IOXDRTest
+    #Disabled until further investigation is done:
+    - test.performance.subTemplateLoop.PerfTestCase
