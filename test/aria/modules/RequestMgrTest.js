@@ -325,7 +325,7 @@ Aria.classDefinition({
                 requestHandler : {
                     implementation : "test.aria.modules.test.MockRequestHandler"
                 }
-            }, null, true);
+            });
 
             var rm = aria.modules.RequestMgr;
             rm.submitJsonRequest({
@@ -341,6 +341,11 @@ Aria.classDefinition({
             try {
                 this.assertTrue(res.error, "Missing error");
                 this.assertTrue(res.errorData.mockErrorData, "Missing mock error data");
+                // Resets the environment so that the requestHandler is properly disposed.
+                aria.core.AppEnvironment.setEnvironment({
+                    urlService : {},
+                    requestHandler : {}
+                });
             } catch (ex) {
                 this.handleAsyncTestError(ex, false);
             }
