@@ -20,7 +20,10 @@ Aria.classDefinition({
     $classpath : 'test.aria.modules.queuing.SimpleSessionQueuingTest',
     $extends : 'aria.jsunit.TestCase',
     $dependencies : ['aria.modules.queuing.SimpleSessionQueuing', 'test.aria.core.mock.IOMock',
-            'aria.modules.urlService.PatternURLCreationImpl', 'aria.modules.RequestMgr'],
+            'aria.modules.urlService.PatternURLCreationImpl', 'aria.modules.RequestMgr',
+            /* The following class must be loaded before this test starts because when using IOMock
+             * no request can be done later. */
+            'aria.modules.requestHandler.JSONRequestHandler'],
 
     $constructor : function () {
         this.$TestCase.constructor.call(this);
@@ -68,8 +71,8 @@ Aria.classDefinition({
                 scope : this
             });
 
-            this.assertTrue(status === aria.modules.RequestMgr.EXECUTE_STATUS, "Wrong status for first request. Expected EXECUTE_STATUS, get "
-                    + status);
+            this.assertTrue(status === aria.modules.RequestMgr.EXECUTE_STATUS, "Wrong status for first request. Expected EXECUTE_STATUS, get " +
+                    status);
 
             // second request on same session id should be delayed
             status = this._simpleActionQueuingInstance.pushRequest({
@@ -81,8 +84,8 @@ Aria.classDefinition({
                 scope : this
             });
 
-            this.assertTrue(status === aria.modules.RequestMgr.QUEUE_STATUS, "Wrong status for second request. Expected QUEUE_STATUS, get "
-                    + status);
+            this.assertTrue(status === aria.modules.RequestMgr.QUEUE_STATUS, "Wrong status for second request. Expected QUEUE_STATUS, get " +
+                    status);
 
             session.id = '3456';
 
@@ -96,8 +99,8 @@ Aria.classDefinition({
                 scope : this
             });
 
-            this.assertTrue(status === aria.modules.RequestMgr.EXECUTE_STATUS, "Wrong status for third request. Expected EXECUTE_STATUS, get "
-                    + status);
+            this.assertTrue(status === aria.modules.RequestMgr.EXECUTE_STATUS, "Wrong status for third request. Expected EXECUTE_STATUS, get " +
+                    status);
 
         },
 

@@ -22,6 +22,7 @@ Aria.classDefinition({
         this.addTests("test.aria.core.io.IOFiltersMgrTest");
         this.addTests("test.aria.core.io.IOFilterTest");
         this.addTests("test.aria.core.io.IOTest");
+        this.addTests("test.aria.core.io.IOXDRTest");
         this.addTests("test.aria.core.io.IOTransportTest");
     }
 });
