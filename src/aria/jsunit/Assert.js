@@ -156,7 +156,7 @@
 
                     this.raiseFailure(msg);
 
-                    if (aria.core.Browser.isFirefox && console && aria.utils.Type.isFunction(console.trace)) {
+                    if (console && aria.utils.Type.isFunction(console.trace)) {
                         console.assert(false, "Stack trace for failed Assert #" + this._assertCount + " in test : ["
                                 + this._currentTestName + "]");
                     }
@@ -231,8 +231,7 @@
                             errFound = true;
                             msg = "Uncaught error detected: [" + logItem.className + "] " + logItem.msg;
 
-                            if (logItem.objOrErr && aria.core.Browser.isFirefox && console
-                                    && aria.utils.Type.isFunction(console.error)) {
+                            if (logItem.objOrErr && console && aria.utils.Type.isFunction(console.error)) {
                                 console.error(this.$classpath + "." + this._currentTestName + ": " + msg, logItem.objOrErr);
                             }
 
