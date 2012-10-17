@@ -8,3 +8,6 @@ tests:
   classpaths:
    includes:
     - test.MainTestSuite
+   excludes:
+   #Excluded because PhantomJS does not support flash:
+    - test.aria.core.io.IOXDRTest
