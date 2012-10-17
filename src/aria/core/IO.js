@@ -16,8 +16,6 @@
 /**
  * Connection manager class. Provides a way to make requests for different URI (file, XHR, XDR) and keeps a list of all
  * pending requests.
- * @class aria.core.IO
- * @extends aria.core.JsObject
  * @singleton
  */
 Aria.classDefinition({
@@ -73,7 +71,6 @@ Aria.classDefinition({
          * @type Number
          */
         ABORT_ERROR : "transaction aborted",
-
         // ERROR MESSAGES:
         MISSING_IO_CALLBACK : "Missing callback in IO call - Please check\nurl: %1",
         IO_CALLBACK_ERROR : "Error in IO callback handling on url: %1",
@@ -258,6 +255,12 @@ Aria.classDefinition({
          */
         this.__iframe = "aria.core.transport.IFrame";
 
+        /**
+         * Default Json serializer used to serialize response texts into json
+         * @type aria.utils.json.JsonSerializer
+         * @private
+         */
+        this.__serializer = new aria.utils.json.JsonSerializer();
     },
 
     $destructor : function () {
@@ -272,6 +275,10 @@ Aria.classDefinition({
             if (this._timeOut.hasOwnProperty(timeout)) {
                 clearInterval(this._timeOut[timeout]);
             }
+        }
+        if (this.__serializer) {
+            this.__serializer.$dispose();
+            this.__serializer = null;
         }
 
         this._poll = null;
@@ -298,6 +305,8 @@ Aria.classDefinition({
          *    }
          * }
          * When a response is received, the callback function is called with the following arguments:
+         *
+         *
          *
          * <code>
          * cb(asyncRes, cbArgs)
@@ -679,17 +688,8 @@ Aria.classDefinition({
             this.$assert(658, !!req);
             delete this.pendingRequests[connection.reqId];
             this._removeTimeOut(connection.reqId);
-
-            var res = {
-                url : req.url,
-                status : connection.status,
-                responseText : connection.responseText || "",
-                responseXML : connection.responseXML,
-                responseJSON : connection.responseJSON,
-                error : null
-                // error description
-            };
-
+            // build the response object
+            var res = this._fillInresponseObject(req.url, connection, req.expectedResponseType);
             req.res = res;
             req.endDownload = (new Date()).getTime();
             // PROFILING // this.$stopMeasure(req.profilingId);
@@ -701,7 +701,6 @@ Aria.classDefinition({
                 name : 'response',
                 req : req
             });
-
             if (aria.core.IOFiltersMgr) {
                 aria.core.IOFiltersMgr.callFiltersOnResponse(req, {
                     fn : this._afterResponseFilters,
@@ -725,12 +724,6 @@ Aria.classDefinition({
                 this.$logError(this.MISSING_IO_CALLBACK, [res.url]);
             } else if (res.error != null) {
                 // an error occured
-
-                // make sure properties are consistent with the error state:
-                res.responseText = "";
-                res.responseXML = null;
-                res.responseJSON = null;
-
                 // call the error callback
                 if (cb.onerror == null) {
                     // Generic IO error mgt
@@ -750,25 +743,8 @@ Aria.classDefinition({
 
                 // check the response type to adapt it to the request
                 if (req.expectedResponseType) {
-                    if (req.expectedResponseType == "text") {
-                        if (!res.responseText && res.responseJSON != null) {
-                            // convert JSON to text
-                            if (aria.utils.Type.isString(res.responseJSON)) {
-                                // this case is important for JSON-P services which return a simple string
-                                // we simply use that string as text
-                                // (could be useful to load templates through JSON-P, for example)
-                                res.responseText = res.responseJSON;
-                            } else {
-                                // really convert the JSON structure to a string
-                                res.responseText = aria.utils.Json.convertToJsonString(res.responseJSON);
-                            }
-                        }
-                    } else if (req.expectedResponseType == "json") {
-                        if (res.responseJSON == null && res.responseText != null) {
-                            // convert text to JSON
-                            res.responseJSON = aria.utils.Json.load(res.responseText, this, this.JSON_PARSING_ERROR);
-                        }
-                    }
+
+                    this._jsonTextConverter(res, req.expectedResponseType);
                 }
 
                 cb.fn.call(cb.scope, res, cb.args);
@@ -786,15 +762,15 @@ Aria.classDefinition({
             this.$assert(539, !!req);
             delete this.pendingRequests[req.id];
             this._removeTimeOut(req.id);
-
-            var res = {
-                url : req.url,
-                status : "",
-                responseText : "",
-                responseXML : null,
-                responseJSON : null,
-                error : "" // error description
-            };
+            var connection = xhrObject.conn;
+            if (!connection) {
+                // connection is undefined on abort, but valid on failures
+                connection = {
+                    responseText : "",
+                    status : 0
+                };
+            }
+            var res = this._fillInresponseObject(req.url, connection, req.expectedResponseType);
             var args = null, cb = null;
             if (xhrObject.isInternalError) {
                 res.error = xhrObject.errDescription;
@@ -814,7 +790,6 @@ Aria.classDefinition({
                 name : 'response',
                 req : req
             });
-
             if (aria.core.IOFiltersMgr) {
                 aria.core.IOFiltersMgr.callFiltersOnResponse(req, {
                     fn : this._afterResponseFilters,
@@ -967,7 +942,6 @@ Aria.classDefinition({
             }
             try {
                 connectionStatus = xhrObject.conn.status;
-
                 if (xdrS || connectionStatus) {
                     // XDR requests will not have HTTP status defined. The
                     // statusText property will define the response status
@@ -1021,6 +995,8 @@ Aria.classDefinition({
                 // response object is already built in the xdr response. */
                 responseObject = this.createExceptionObject(xhrObject.transaction, isAbort, httpStatus);
                 responseObject.reqId = callback.reqId;
+                responseObject.conn = xhrObject.conn;
+
                 if (callback && callback.failure) {
                     if (!callback.scope) {
                         callback.failure(responseObject);
@@ -1230,6 +1206,77 @@ Aria.classDefinition({
                 status : 200,
                 responseJSON : json
             });
+        },
+
+        /**
+         * Convert the response text into Json or response Json into text
+         * @param {Object} connection The connection object
+         * @param {String} expectedResponseType The expected response type
+         * @protected
+         */
+        _jsonTextConverter : function (connection, expectedResponseType) {
+            if (expectedResponseType == "text") {
+                if (!connection.responseText && connection.responseJSON != null) {
+                    // convert JSON to text
+                    if (aria.utils.Type.isString(connection.responseJSON)) {
+                        // this case is important for JSON-P services which return a simple string
+                        // we simply use that string as text
+                        // (could be useful to load templates through JSON-P, for example)
+                        connection.responseText = connection.responseJSON;
+                    } else {
+                        // really convert the JSON structure to a string
+                        connection.responseText = aria.utils.Json.convertToJsonString(connection.responseJSON);
+                    }
+                }
+            } else if (expectedResponseType == "json") {
+                if (connection.responseJSON == null && connection.responseText != null) {
+                    // convert text to JSON
+                    connection.responseJSON = aria.utils.Json.load(connection.responseText, this, this.JSON_PARSING_ERROR);
+                }
+            }
+
+        },
+
+        /**
+         * Fill in response object accordingly to server response and expected response type
+         * @param {String} url Request url
+         * @param {Object} connection The connection object
+         * @param {String} expectedResponseType The expected response type
+         * @protected
+         */
+        _fillInresponseObject : function (url, connection, expectedResponseType) {
+            var statusValue, errorValue, httpStatus = connection.status;
+            if (httpStatus >= 200 && httpStatus < 300) {
+                // on success
+                errorValue = null;
+                statusValue = httpStatus;
+                if (expectedResponseType) {
+                    this._jsonTextConverter(connection, expectedResponseType);
+                }
+            } else {
+                // on failure
+                errorValue = "";
+                statusValue = "";
+                if ((expectedResponseType && expectedResponseType == "json")) {
+                    try {
+                        connection.responseJSON = this.__serializer.parse(connection.responseText);
+                    } catch (ex) {
+                        this.$logWarn(this.JSON_PARSING_ERROR);
+                    }
+
+                }
+            }
+            var res = {
+                url : url,
+                status : statusValue,
+                responseText : connection.responseText || "",
+                responseXML : connection.responseXML,
+                responseJSON : connection.responseJSON,
+                error : errorValue
+            };
+            return res;
+
         }
+
     }
 });
