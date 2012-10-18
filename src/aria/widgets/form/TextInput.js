@@ -644,6 +644,9 @@ Aria.classDefinition({
                         textField.value = newValue;
                     }
                 }
+                if (res && res.report) {
+                    res.report.$dispose();
+                }
                 // resets error state when validation is switched on
                 if (!newValue) {
                     this.changeProperty("formatErrorMessages", []);
