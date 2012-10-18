@@ -640,6 +640,10 @@ Aria.beanDefinitions({
                     $type : "environmentBase:FormatTypes",
                     $description : "Date pattern used to propose a best value for the date entry in the date picker field."
                 },
+                "inputPattern" : {
+                    $type : "environmentBase:inputFormatTypes",
+                    $description : "Date pattern used to match user input and convert it in a Javascript valid date."
+                },
                 "minValue" : {
                     $type : "json:Date",
                     $description : "Minimum date for the value property."

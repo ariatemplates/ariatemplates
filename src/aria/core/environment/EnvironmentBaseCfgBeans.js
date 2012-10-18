@@ -95,6 +95,31 @@ Aria.beanDefinitions({
                         $description : "..."
                     }]
 
+        },
+        "inputFormatTypes" : {
+            $type : "json:MultiTypes",
+            $description : "",
+            $contentTypes : [{
+                $type : "json:String",
+                $description : "A pattern to be used for user input matching. For instance yyyy*MM*dd, * represents the separator, it can be any character except numeric"
+            }, {
+                $type : "json:FunctionRef",
+                $description : "A user-defined function used to parse the input in a JavaScript date."
+            }, {
+                $type : "json:Array",
+                $description : "Contains an array of patterns and/of funtions",
+                $contentType : {
+                    $type : "json:MultiTypes",
+                    $description : "",
+                    $contentTypes : [{
+                                $type : "json:String",
+                                $description : "..."
+                            }, {
+                                $type : "json:FunctionRef",
+                                $description : "..."
+                            }]
+                }
+            }]
         }
 
     }
