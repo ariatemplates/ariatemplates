@@ -285,9 +285,10 @@ Aria.classDefinition({
          *
          * <pre>
          * [req] {
-         *    url: 'myfile.txt', // absolute or relative URL
-         *    method: 'POST',    // POST or GET (default)
-         *    postData: '',      // {String} null by default
+         *    url: 'myfile.txt',     // absolute or relative URL
+         *    method: 'POST',        // POST, PUT, DELETE, OPTIONS, HEAD, TRACE, OPTIONS, CONNECT, PATCH or GET (default)
+         *    data: '',          // {String} null by default, for POST requests postData can also be used instead of data
+         *    contentTypeHeader:'',  //  {String} application/x-www-form-urlencoded; charset=UTF-8 by default
          *    timeout: 1000,     // {Integer} timeout in ms - default: defaultTimeout
          *    callback: {
          *      fn: obj.method,        // mandatory
