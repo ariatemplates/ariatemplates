@@ -20,9 +20,6 @@ Aria.classDefinition({
     $classpath : "test.aria.core.JSONPTest",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["test.aria.core.test.IOFilterSample"],
-    $constructor : function () {
-        this.$TestCase.constructor.call(this);
-    },
     $prototype : {
         tearDown : function () {
             aria.core.IO.$unregisterListeners(this);
@@ -77,6 +74,7 @@ Aria.classDefinition({
         },
         _onTestErrorError : function (request, cbArgs) {
             try {
+				this.assertTrue(!!request.url, "Missing request url");
                 this.assertTrue(request.url.indexOf("jsonp_that_doesnt_exist") === 0, "Wrong URL: " + request.url);
                 this.assertEquals(cbArgs, "Call1", "Arguments different from expected");
             } catch (er) {}
@@ -124,6 +122,7 @@ Aria.classDefinition({
         _onTestLocalStringSuccess : function (response, args) {
             var testName = args.testName;
             try {
+				this.assertTrue(!!response.url, "Missing response url");
                 this.assertTrue(response.url.indexOf(args.url) === 0, "Wrong URL: " + response.url);
                 this.assertEquals(response.responseJSON, "something", "Wrong Response: " + response.responseJSON);
             } catch (er) {}
@@ -161,6 +160,7 @@ Aria.classDefinition({
         _onTestLocalObjectSuccess : function (response, args) {
             var testName = args.testName;
             try {
+				this.assertTrue(!!response.url, "Missing response url");
                 this.assertTrue(response.url.indexOf(args.url) === 0, "Wrong URL: " + response.url);
                 this.assertEquals(response.responseJSON.something, "complex", "Wrong Response: "
                         + response.responseJSON);

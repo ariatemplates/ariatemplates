@@ -174,7 +174,7 @@ Aria.classDefinition({
         /**
          * Interpret a String entry as a number if possible. It takes into account the thousand separator that should
          * not be used as a decimal separator. A number cannot start with a grouping (thousand) separator. If
-         * formatSymbol.strictGrouoing equals true, then the entryStr is validated against a pattern (if no pattern is
+         * formatSymbol.strictGrouping equals true, then the entryStr is validated against a pattern (if no pattern is
          * specified as argument, the default one specified in the AppEnvironment will be taken). The result is a string
          * that can be understood by standard JavaScript methods.
          * @param {String} entryStr The number you want to interpret
