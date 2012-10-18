@@ -807,6 +807,7 @@ Aria.classDefinition({
          */
         interpret : function (entryStr, options) {
             var inputPattern;
+
             if (options) {
                 inputPattern = options.inputPattern;
             }
@@ -819,14 +820,8 @@ Aria.classDefinition({
             }
 
             var dateBeforeMonth, entry, entrylen, dateOptions;
-            /* Code for Reference Date backward compatibiliy */
-            if (aria.utils.Type.isDate(options)) {
-                dateOptions = {
-                    referenceDate : options.referenceDate
-                };
-            } else {
-                dateOptions = options || {};
-            }
+            /* Code for Reference Date backward compatibility */
+            dateOptions = aria.utils.Type.isDate(options) ? {referenceDate : options} : options || {};
             /* Code for Reference Date backward compatibility ends */
 
             if (!entryStr) {
