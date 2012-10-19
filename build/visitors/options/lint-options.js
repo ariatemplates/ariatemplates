@@ -35,7 +35,7 @@ module.exports = {
     "scripturl" : false,
     "shadow" : true,
     "supernew" : false,
-    "undef" : false,
+    "undef" : true,
     "validthis" : false,
     "smarttabs" : true,
     "proto" : true,
