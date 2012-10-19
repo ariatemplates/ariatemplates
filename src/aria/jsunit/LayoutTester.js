@@ -72,7 +72,7 @@ Aria.classDefinition({
             if (arrayToCompare.length != ref.length) {
                 result.push("The items number is not the same");
                 for (var i = 0, ii = ref.length; i < ii; i++) {
-                    if (!arrayToCompare[i] || !json.equals(ref[i], arrayToCompare[i])) {
+                    if (!arrayToCompare[i] || !this.itemCompare(ref[i], arrayToCompare[i])) {
                         result.push("Different from item " + i);
                         break;
                     }
