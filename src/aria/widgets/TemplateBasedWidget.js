@@ -55,7 +55,7 @@ Aria.classDefinition({
             if (this._cfgOk) {
                 var cfg = this._cfg;
 
-                for (var i =0, len = this.__inherithCfg; i < len; i += 1) {
+                for (var i =0, len = this.__inherithCfg.length; i < len; i += 1) {
                     var property = this.__inherithCfg[i];
                     if (!tplCfg.hasOwnProperty(property)) {
                         tplCfg[property] = cfg[property];
