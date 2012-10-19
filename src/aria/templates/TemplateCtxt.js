@@ -505,7 +505,7 @@
                 }
                 var Ids = [];
                 while (!element.__widget) {
-                    element = element.parentElement;
+                    element = element.parentElement || element.parentNode; // Fx < 9 compat
                 }
                 var id = element.__widget.getId();
                 if (!id) {
