@@ -67,7 +67,6 @@ Aria.classDefinition({
                 return ["Array to compare is null"];
             }
 
-            var json = aria.utils.Json;
             var result = [];
             var ref = this.elements;
             if (arrayToCompare.length != ref.length) {
@@ -83,13 +82,29 @@ Aria.classDefinition({
 
             // From here, both length array are equals
             for (var i = 0, ii = ref.length; i < ii; i++) {
-                if (!arrayToCompare[i] || !json.equals(ref[i], arrayToCompare[i])) {
+                if (!arrayToCompare[i] || !this.itemCompare(ref[i], arrayToCompare[i])) {
                     result.push("Item " + i + " is different");
                 }
             }
             return result;
 
         },
+        /**
+         * Convenient method to compare an json element on one single level.
+         * It also prevent to compare the 'element' attribute, which is the html object.
+         * @param {JSON} item1 Object 1 to compare
+         * @param {JSON} item2 Object 2 to compare
+         * @return true if item1 is equals to item2
+         */
+        itemCompare : function (item1, item2) {
+			for(var key in item1) {
+				if (key != "element" && item1[key] !== item2[key]) {
+					return false;
+				}
+			}
+			return true;
+        },
+
         /**
          * Stores the json of a dom element.
          * @param {HtmlElement} el The element to store
@@ -99,6 +114,7 @@ Aria.classDefinition({
             var coords = this._getCoordinates(el);
             var text = this._getDirectTextContent(el);
             this.elements.push({
+                element : el,
                 id : el.id,
                 tagName : el.tagName,
                 top : coords.top,
