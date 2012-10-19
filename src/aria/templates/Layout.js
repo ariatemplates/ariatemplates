@@ -261,13 +261,8 @@
                 }
                 width = __getIntSize(width, "width");
                 height = __getIntSize(height, "height");
-                if (width) {
-                    domElt.style.width = width + 'px';
-                }
-                if (height) {
-                    domElt.style.height = height + 'px';
-                }
-
+                domElt.style.width = (width == null ? '' : width + 'px');
+                domElt.style.height = (height == null ? '' : height + 'px');
                 // We are not separating overflowX and overflowY here because, in Firefox, a vertical
                 // scrollbar sometimes appears when using overflowX=hidden without specifying overflowY
 
