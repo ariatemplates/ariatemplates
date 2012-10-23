@@ -256,8 +256,7 @@ Aria.classDefinition({
 
             // PTR04951216 skinnable labels
             var cssClass = 'class="x' + this._skinnableClass + '_' + cfg.sclass + '_' + this._state + '_label"';
-            var IE7Align;
-            (aria.core.Browser.isIE7) ? (IE7Align = "-25%") : (IE7Align = "middle");
+            var IE7Align = aria.core.Browser.isIE7 ? "-25%" : "middle";
             out.write('<label ' + cssClass + ' style="');
             if (!aria.widgets.environment.WidgetSettings.getWidgetSettings().middleAlignment) {
                 out.write('vertical-align:-1px;');
