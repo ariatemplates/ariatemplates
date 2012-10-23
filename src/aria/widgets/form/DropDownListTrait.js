@@ -137,8 +137,9 @@ Aria.classDefinition({
             var viewPort = aria.utils.Dom._getViewportSize();
             var bottom = viewPort.height - top - geometry.height;
             var maxHeight = (top > bottom) ? top : bottom;
+            var referenceMaxHeight = options.maxHeight || this.MAX_HEIGHT;
             maxHeight = (maxHeight < this.MIN_HEIGHT) ? this.MIN_HEIGHT : maxHeight;
-            maxHeight = (maxHeight > this.MAX_HEIGHT) ? this.MAX_HEIGHT : maxHeight - 2;
+            maxHeight = (maxHeight > referenceMaxHeight) ? referenceMaxHeight : maxHeight - 2;
             var list = new aria.widgets.form.list.List({
                 id : cfg.id,
                 defaultTemplate : "defaultTemplate" in options ? options.defaultTemplate : cfg.listTemplate,

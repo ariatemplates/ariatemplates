@@ -21,8 +21,7 @@ Aria.classDefinition({
     $extends : "aria.widgets.form.DropDownTextInput",
     $dependencies : ["aria.widgets.form.DropDownListTrait", "aria.widgets.controllers.AutoCompleteController",
             "aria.utils.Event"],
-    $css : ["aria.widgets.form.AutoCompleteStyle",
-            "aria.widgets.form.list.ListStyle",
+    $css : ["aria.widgets.form.AutoCompleteStyle", "aria.widgets.form.list.ListStyle",
             "aria.widgets.container.DivStyle"],
     /**
      * AutoComplete constructor
@@ -123,6 +122,7 @@ Aria.classDefinition({
                 inputMarkupWidth = (inputMarkupWidth < 150) ? 150 : inputMarkupWidth;
                 options.minWidth = inputMarkupWidth + 15;
             }
+            options.maxHeight = this._cfg.popupMaxHeight || 210;
             this.$DropDownListTrait._renderDropdownContent.call(this, out, options);
         },
 

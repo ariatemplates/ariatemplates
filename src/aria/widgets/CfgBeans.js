@@ -830,6 +830,10 @@ Aria.beanDefinitions({
                     $type : "json:Boolean",
                     $description : "Specifies if the button to get all the suggestions is displayed. Note that the getAllSuggestions method must be implemented on the resources handler for this feature to work (which is not the case for the default Air and Cities resources handlers).",
                     $default : false
+                },
+                "popupMaxHeight" : {
+                    $type : "json:Integer",
+                    $description : "Maximum height of the dropdown."
                 }
             }
         },
