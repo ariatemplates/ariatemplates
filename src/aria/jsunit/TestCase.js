@@ -26,10 +26,14 @@
 Aria.classDefinition({
     $classpath : "aria.jsunit.TestCase",
     $extends : "aria.jsunit.Assert",
-    $dependencies : ["aria.core.Sequencer", "aria.utils.Json"],
+    $dependencies : ["aria.core.Sequencer", "aria.utils.Json", "aria.utils.Type", "aria.utils.Object",
+            "aria.utils.Array"],
     $statics : {
         // some tests run slower on IE when they are in a suite
-        "defaultTestTimeout" : 60000
+        "defaultTestTimeout" : 60000,
+
+        ERROR_NOTIFY_END : "Synchronous test is calling notifyTestEnd",
+        EXCEPTION_IN_METHOD : "Exception raised while calling '%1' in an asynchrnous test"
     },
     $constructor : function () {
         // constructor
@@ -90,12 +94,20 @@ Aria.classDefinition({
             this._startTest();
             this._sequencer = new aria.core.Sequencer();
 
+            var isFunction = aria.utils.Type.isFunction;
             // do not add tasks to the sequencer if the TestCase is mean to be skipped
             if (!this.skipTest) {
-                for (var key in this) {
-                    if (key.match(/^test/) && typeof(this[key]) == 'function') {
+                var array = aria.utils.Array;
 
-                        var isAsynchronous = (key.match(/^testAsync/) != null);
+                var proto = Aria.nspace(this.$classpath).classDefinition.$prototype;
+                var methods = aria.utils.Object.keys(proto);
+                methods = array.filter(methods, function (method) {
+                    return isFunction(proto[method]);
+                });
+
+                for (var key in this) {
+                    if (key.indexOf("test") === 0 && isFunction(this[key])) {
+                        var isAsynchronous = (key.indexOf("testAsync") === 0);
 
                         this._sequencer.addTask({
                             name : key,
@@ -104,14 +116,61 @@ Aria.classDefinition({
                             asynchronous : isAsynchronous
                         });
                         this._testsCount++;
+                        array.remove(methods, key);
                     }
                 }
+
+                this.__wrapTestMethods(methods);
             }
             this._sequencer.$on({
                 "end" : this._onSequencerEnd,
                 scope : this
             });
             this._sequencer.start();
+        },
+
+        /**
+         * Wrap original test methods inside a try catch that if failed logs an error and ends the test
+         * @param {Array} methods List of functions on the test prototype
+         * @private
+         */
+        __wrapTestMethods : function (methods) {
+            var originals = {};
+            for (var i = 0, len = methods.length; i < len; i += 1) {
+                var method = methods[i];
+                originals[method] = this[method];
+                this[method] = (function (name) {
+                    return function () {
+                        var test = this._currentTestName;
+                        if (test && test.indexOf("testAsyn") === 0) {
+                            try {
+                                return originals[name].apply(this, arguments);
+                            } catch (ex) {
+                                this.__failInTestMethod(ex, name);
+                            }
+                        } else {
+                            // Either this is not a test (callback?) or sync test, let the test handle the error
+                            return originals[name].apply(this, arguments);
+                        }
+                    }
+                })(method);
+            }
+        },
+
+        /**
+         * Executed when an un-handled exception is thrown inside a method defined on the test instance but not a test.
+         * If the test is asynchrnous this will log an error and notify its end
+         * @param {Error} ex Exception
+         * @param {String} methodName Method that threw the exception
+         * @private
+         */
+        __failInTestMethod : function (ex, methodName) {
+            var test = this._currentTestName;
+            if (test.indexOf("testAsyn") === 0) {
+                this.$logError(this.EXCEPTION_IN_METHOD, methodName, ex);
+                // Remove '()'
+                this.notifyTestEnd(test.substring(0, test.length - 2));
+            }
         },
 
         /**
@@ -150,7 +209,7 @@ Aria.classDefinition({
          * @private
          */
         _execTestTask : function (task) {
-            var testName = task.name;
+            var testName = task.name, original;
             this._updateAssertInfo(testName + '()');
             var errorDetected = false;
             try {
@@ -160,11 +219,15 @@ Aria.classDefinition({
                 if (this.setUp) {
                     this.setUp();
                 }
+
                 if (task.asynchronous) {
                     // we set the timeout before running the test, because an asynchronous test
                     // may finally be executed synchronously
                     this.setTestTimeout(this.defaultTestTimeout, testName);
+                } else {
+                    original = this._disableTestEnd();
                 }
+
                 // test run
                 try {
                     this[testName].call(this);
@@ -180,9 +243,39 @@ Aria.classDefinition({
                 errorDetected = true;
             }
 
-            if (task.asynchronous != true || errorDetected) {
-                this.notifyTestEnd(testName, errorDetected, task.asynchronous == true);
+            if (!task.asynchronous || errorDetected) {
+                this._enableTestEnd(original);
+                this.notifyTestEnd(testName, errorDetected, task.asynchronous);
             }
+        },
+
+        /**
+         * Syncronous tests shouldn't call their notify test end manually. This is handled by the framework. Report an
+         * error in this case
+         * @return {Function} Original notify test end function
+         */
+        _disableTestEnd : function () {
+            var original = this.notifyTestEnd;
+            this.notifyTestEnd = this._failOnNotify;
+            return original;
+        },
+
+        /**
+         * Put back the original notifyTestEnd to let the test end properly. Should be called only for sync tests
+         * @param {Function} original Original notify test end function
+         */
+        _enableTestEnd : function (original) {
+            if (original) {
+                this.notifyTestEnd = original;
+            }
+        },
+
+        /**
+         * This function replaces notifyTestEnd in synchronous tests, this prevents a task from being terminated twice,
+         * that might result in un-handled errors.
+         */
+        _failOnNotify : function () {
+            this.$logError(this.ERROR_NOTIFY_END);
         },
 
         /**
@@ -244,7 +337,7 @@ Aria.classDefinition({
             }
             // clean any remaining callbacks
             aria.core.Timer.callbacksRemaining();
-            if (asyncTest != false) {
+            if (asyncTest !== false) {
                 if (this._sequencer) {
                     this._sequencer.notifyTaskEnd(this._currentTaskId);
                 }

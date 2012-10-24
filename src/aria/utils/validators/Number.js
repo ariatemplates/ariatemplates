@@ -15,8 +15,6 @@
 
 /**
  * Validates the entry if it is formatted as a number.
- * @class aria.utils.validators.Number
- * @extends aria.utils.validators.RegExp
  */
 Aria.classDefinition({
     $classpath : "aria.utils.validators.Number",

@@ -17,9 +17,9 @@
  * Run tests in an isolated environment.
  */
 Aria.classDefinition({
-    $classpath : 'aria.jsunit.TestWrapper',
-    $extends : 'aria.jsunit.Assert',
-    $dependencies : ['aria.utils.FrameATLoader'],
+    $classpath : "aria.jsunit.TestWrapper",
+    $extends : "aria.jsunit.Assert",
+    $dependencies : ["aria.utils.FrameATLoader"],
     $constructor : function (testClasspath) {
         this.$Assert.constructor.call(this);
         this.$classpath = testClasspath;
@@ -145,7 +145,7 @@ Aria.classDefinition({
                     if (disposeResult) {
                         if (disposeResult.error) {
                             this.raiseError(disposeResult.error, "An exception occurred while disposing the test or the framework.");
-                        } else if (disposeResult.nbNotDisposed != 0) {
+                        } else if (disposeResult.nbNotDisposed !== 0) {
                             var undisposed = disposeResult.notDisposed;
                             var msg = ["There were ", disposeResult.nbNotDisposed, " undisposed objects ("];
                             var first = true;

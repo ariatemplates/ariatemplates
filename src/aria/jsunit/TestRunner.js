@@ -14,14 +14,13 @@
  */
 
 /**
- * @class aria.jsunit.TestRunner HTML UI Renderer for aria.jsunit.TestEngine
- * @extends aria.core.JsObject
+ * HTML UI Renderer for aria.jsunit.TestEngine
  * @singleton
  */
 Aria.classDefinition({
-    $classpath : 'aria.jsunit.TestRunner',
+    $classpath : "aria.jsunit.TestRunner",
     $singleton : true,
-    $dependencies : ['aria.jsunit.TestEngine', 'aria.jsunit.TestReport', 'aria.jsunit.SonarReport', 'aria.utils.Dom'],
+    $dependencies : ["aria.jsunit.TestEngine", "aria.jsunit.TestReport", "aria.jsunit.SonarReport", "aria.utils.Dom"],
     $constructor : function () {
         /**
          * @private
@@ -155,7 +154,7 @@ Aria.classDefinition({
             var color = '#000000', msg = '';
             var testObject = trTest.instance;
 
-            if (trTest.state == 'done' && trTest.totalNbrOfFailures == 0 && trTest.totalNbrOfErrors == 0) {
+            if (trTest.state == 'done' && trTest.totalNbrOfFailures === 0 && trTest.totalNbrOfErrors === 0) {
                 color = 'green';
                 msg = ' - OK';
             } else if (trTest.totalNbrOfFailures > 0 || trTest.totalNbrOfErrors > 0) {
@@ -224,7 +223,7 @@ Aria.classDefinition({
         getErrors : function () {
             var errors = [];
             var report = this.getEngineReport();
-(function    (report) {
+(function   (report) {
                 var subTests = report.subTests;
                 if (aria.utils.Type.isArray(subTests)) {
                     for (var i = 0, l = subTests.length; i < l; i++) {

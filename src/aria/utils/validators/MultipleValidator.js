@@ -15,13 +15,11 @@
 
 /**
  * Handles a stack of validators.
- * @classpath aria.utils.MultipleValidator
- * @extends aria.utils.validators.Validator
  */
 Aria.classDefinition({
-    $classpath : 'aria.utils.validators.MultipleValidator',
-    $extends : 'aria.utils.validators.Validator',
-    $dependencies : ['aria.utils.Array', 'aria.utils.Data'],
+    $classpath : "aria.utils.validators.MultipleValidator",
+    $extends : "aria.utils.validators.Validator",
+    $dependencies : ["aria.utils.Array", "aria.utils.Data"],
     $constructor : function (message, groups, event) {
         this.$Validator.constructor.call(this, message);
         this.validators = [];
@@ -30,9 +28,6 @@ Aria.classDefinition({
         this.groups = (groups != null) ? groups : [];
         this.eventToValidate = (event != null) ? event : "onsubmit";
         this.dataUtils = aria.utils.Data;
-        /**
-         * type : "ERROR", code : "Code2", localizedMessage : "The last name is incorrect."
-         */
     },
     $destructor : function () {
         this.breakOnError = null;
@@ -43,7 +38,6 @@ Aria.classDefinition({
     $prototype : {
         /**
          * loops through each validator within the multiple validator and calls it's validate method.
-         *
          * @param {String} value to be validated.
          * @param {Array} groups to validate against.
          * @param {String} event that validation occurs on.

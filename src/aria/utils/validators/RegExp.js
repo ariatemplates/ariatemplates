@@ -15,8 +15,6 @@
 
 /**
  * A Base RegExp utility extended by all regex type utilities.
- * @class aria.utils.validators.RegExp
- * @extends aria.utils.validators.Validator
  */
 Aria.classDefinition({
     $classpath : "aria.utils.validators.RegExp",

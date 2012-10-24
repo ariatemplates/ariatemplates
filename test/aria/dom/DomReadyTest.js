@@ -17,39 +17,31 @@
  * Test for the DomReady class
  */
 Aria.classDefinition({
-	$classpath : 'test.aria.dom.DomReadyTest',
-	$extends : 'aria.jsunit.TestCase',
-	$dependencies : ['aria.dom.DomReady', 'aria.utils.Callback'],
-	$constructor : function () {
-		this.$TestCase.constructor.call(this);
-	},
-	$prototype : {
-		testDomReady : function () {
-			var dmReady = aria.dom.DomReady;
-			var callback = new aria.utils.Callback({
-				fn : this._internalCallback,
-				scope : this
-			});
+    $classpath : "test.aria.dom.DomReadyTest",
+    $extends : "aria.jsunit.TestCase",
+    $dependencies : ["aria.dom.DomReady", "aria.utils.Callback"],
+    $prototype : {
+        testDomReady : function () {
+            var dmReady = aria.dom.DomReady;
+            var callback = new aria.utils.Callback({
+                fn : this._internalCallback,
+                scope : this
+            });
 
-			this._cbCalled = 0;
-			dmReady.onReady(callback);
-			this.assertTrue(dmReady.isReady === true, "DOM should be in usable state");
-			this.assertTrue(this._cbCalled == 1, "The callback should have been called once.");
+            this._cbCalled = 0;
+            dmReady.onReady(callback);
+            this.assertTrue(dmReady.isReady === true, "DOM should be in usable state");
+            this.assertTrue(this._cbCalled == 1, "The callback should have been called once.");
 
-			this._cbCalled = 0;
-			Aria.onDomReady(callback);
-			this.assertTrue(dmReady.isReady === true, "DOM should be in usable state");
-			this.assertTrue(this._cbCalled == 1, "The callback should have been called once.");
+            this._cbCalled = 0;
+            Aria.onDomReady(callback);
+            this.assertTrue(dmReady.isReady === true, "DOM should be in usable state");
+            this.assertTrue(this._cbCalled == 1, "The callback should have been called once.");
 
-			callback.$dispose();
-			this._notifyEnd();
-		},
-		_internalCallback : function () {
-			this._cbCalled++;
-		},
-		_notifyEnd : function () {
-			this.notifyTestEnd("testDomReady");
-		}
-
-	}
+            callback.$dispose();
+        },
+        _internalCallback : function () {
+            this._cbCalled++;
+        }
+    }
 });

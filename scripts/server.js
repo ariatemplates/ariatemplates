@@ -65,5 +65,7 @@ app.all(/^\/aria-templates\/test\/(.*)$/, function (req, res, next) {
     res.sendfile(file);
 });
 
-console.log("Server started on http://localhost:" + process.env.npm_package_config_port);
-app.listen(process.env.npm_package_config_port);
+// Default to 8080 if we're not using npm
+var port = process.env.npm_package_config_port || 8080;
+console.log("Server started on http://localhost:" + port);
+app.listen(port);

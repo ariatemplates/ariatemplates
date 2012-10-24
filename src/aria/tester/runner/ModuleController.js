@@ -299,12 +299,19 @@ Aria.classDefinition({
         },
 
         /**
-         * TODO : implement (the flow associated is deactivated for now)
-         * @private
-         * @param {Object} cb
+         * Pause the current test execution. This method is called by the flow controller on state transition
+         * @param {aria.core.CfgBeans.Callback} cb
          */
         pauseCampaign : function (cb) {
-            // The sequencer currently doesn't support pausing mechanisms
+            this._testRunner.getEngine().pause(cb);
+        },
+
+        /**
+         * Pause the current paused execution. This method is called by the flow controller on state transition
+         * @param {aria.core.CfgBeans.Callback} cb
+         */
+        resumeCampaign : function (cb) {
+            this._testRunner.getEngine().resume(cb);
         },
 
         /**

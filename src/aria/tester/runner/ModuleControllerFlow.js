@@ -25,6 +25,7 @@ Aria.classDefinition({
             ONGOING : "ongoing",
             PAUSED : "paused",
             PAUSING : "pausing",
+            RESUMING : "resuming",
             FINISHED : "finished",
             REPORT : "report"
         }
@@ -48,7 +49,8 @@ Aria.classDefinition({
                 [this.STATES.ONGOING, this.STATES.FAILURE],
                 [this.STATES.ONGOING, this.STATES.PAUSING],
                 [this.STATES.PAUSING, this.STATES.PAUSED],
-                [this.STATES.PAUSED, this.STATES.ONGOING],
+                [this.STATES.PAUSED, this.STATES.RESUMING],
+                [this.STATES.RESUMING, this.STATES.ONGOING],
                 [this.STATES.ONGOING, this.STATES.FINISHED, true],
                 [this.STATES.FINISHED, this.STATES.INIT],
                 [this.STATES.FINISHED, this.STATES.REPORT, true],
@@ -126,8 +128,18 @@ Aria.classDefinition({
          * @param {String} state
          */
         onStateChange : function (state) {
-            if (state == this.STATES.READY) {
+            if (state === this.STATES.READY) {
                 this._onReadyState();
+            } else if (state === this.STATES.PAUSING) {
+                this.moduleCtrl.pauseCampaign({
+                    fn : this._onPausingComplete,
+                    scope : this
+                });
+            } else if (state === this.STATES.RESUMING) {
+                this.moduleCtrl.resumeCampaign({
+                    fn : this._onResumingComplete,
+                    scope : this
+                });
             }
         },
 
@@ -138,6 +150,20 @@ Aria.classDefinition({
             if (this.data.campaign.autorun === true) {
                 this.moduleCtrl.startCampaign();
             }
+        },
+
+        /**
+         * Called when the pause is complete
+         */
+        _onPausingComplete : function () {
+            this.navigate(this.STATES.PAUSED);
+        },
+
+        /**
+         * Called when the resume is complete
+         */
+        _onResumingComplete : function () {
+            this.navigate(this.STATES.ONGOING);
         }
     }
 });

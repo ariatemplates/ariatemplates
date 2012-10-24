@@ -50,6 +50,16 @@ Aria.interfaceDefinition({
         "switchView" : {
             $type : "Function",
             $callbackParam : 0
+        },
+
+        "pauseCampaign" : {
+            $type : "Function",
+            $callbackParam : 0
+        },
+
+        "resumeCampaign" : {
+            $type : "Function",
+            $callbackParam : 0
         }
     }
 });

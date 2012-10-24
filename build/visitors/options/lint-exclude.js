@@ -8,8 +8,6 @@ var toBeExcluded = [
     "aria/utils/Mouse.js",
     // https://github.com/ariatemplates/ariatemplates/issues/33
     "aria/utils/SynEvents.js",
-    // I was just bored of fixing all these equality
-    "aria/jsunit/*",
     // Using node.js globals:
     "aria/node.js"
 ];

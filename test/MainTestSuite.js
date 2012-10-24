@@ -25,10 +25,17 @@ Aria.classDefinition({
         this.addTests("test.aria.AriaTest");
         this.addTests("test.aria.core.CoreTestSuite");
         this.addTests("test.aria.dom.DomTestSuite");
-        this.addTests("test.aria.storage.StorageTestSuite");
+        this.addTests("test.aria.embed.EmbedTestSuite");
+        this.addTests("test.aria.ext.ExtTestSuite");
+        this.addTests("test.aria.html.HTMLTestSuite");
         this.addTests("test.aria.jsunit.JsunitTestSuite");
         this.addTests("test.aria.modules.ModulesTestSuite");
+        this.addTests("test.aria.popups.PopupsTestSuite");
+        this.addTests("test.aria.storage.StorageTestSuite");
+        this.addTests("test.aria.templates.TemplatesTestSuite");
+        this.addTests("test.aria.utils.UtilsTestSuite");
         this.addTests("test.aria.widgetLibs.WidgetLibsTestSuite");
+        this.addTests("test.aria.widgets.WidgetsTestSuite");
         this.addTests("test.performance.PerfTestSuite");
     }
 });
