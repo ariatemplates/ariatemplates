@@ -33,8 +33,8 @@ Aria.classDefinition({
                     "+0.5"];
 
             for (var i = 0; i < useCases.length; i++) {
-                test = aria.utils.Number._isValidNumber(useCases[i]);
-                this.assertTrue(aria.utils.Number._isValidNumber(useCases[i]), "testing:" + useCases[i] + ":");
+                test = aria.utils.Number._validDigits.test(useCases[i]);
+                this.assertTrue(aria.utils.Number._validDigits.test(useCases[i]), "testing:" + useCases[i] + ":");
             }
         },
 
@@ -50,8 +50,8 @@ Aria.classDefinition({
                     "1b", "1;2", "++12", "1bb", "0,1", "0,111111111111111111", "1,000", "1,00", "-1,0", "-1,00"];
 
             for (var i = 0; i < useCases.length; i++) {
-                test = aria.utils.Number._isValidNumber(useCases[i]);
-                this.assertFalse(aria.utils.Number._isValidNumber(useCases[i]), "testing:" + useCases[i] + ":");
+                test = aria.utils.Number._validDigits.test(useCases[i]);
+                this.assertFalse(aria.utils.Number._validDigits.test(useCases[i]), "testing:" + useCases[i] + ":");
             }
         },
         /* Backward Compatibility ends here */

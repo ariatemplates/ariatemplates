@@ -1290,14 +1290,6 @@
             },
 
             /**
-             * Deprecated. Please use $getId instead.
-             */
-            createId : function (id) {
-                this.$logWarn("createId is deprecated. Please use $getId instead.");
-                return this.$getId(id);
-            },
-
-            /**
              * Write generated ID to DOM Element. This method is intended to be called only from the generated code of
              * templates (created in aria.templates.ClassGenerator) and never directly from developper code. A call to
              * this method is generated for the {id ...} statement

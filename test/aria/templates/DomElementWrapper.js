@@ -49,7 +49,7 @@ Aria.classDefinition({
 			var child = document.getElementById('child_testGetParentWithName');
 			var wrapper = new aria.templates.DomElementWrapper(child);
 			var parent = wrapper.getParentWithName("div");
-			this.assertTrue(parent.getClassName() == 'troLaClass', "Parent was not retrieved.");
+			this.assertTrue(parent.classList.getClassName() == 'troLaClass', "Parent was not retrieved.");
 			parent.$dispose();
 			wrapper.$dispose();
 		},

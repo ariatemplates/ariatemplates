@@ -35,9 +35,6 @@ Aria.classDefinition({
             properties : {
                 changedProperties : "If null, it means the environment is reset. Otherwise, it contains the list of properties which changed in the environment. This allows listeners to react only when needed."
             }
-        },
-        "customizationsChanged" : {
-            description : "(Deprecated) Notifies that the customizations have changed."
         }
     },
     $prototype : {

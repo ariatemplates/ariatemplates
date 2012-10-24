@@ -28,9 +28,7 @@
                 "Link.js" : "aria/pack-widgets1.js"
             },
             "calendar" : {
-                "*" : "aria/pack-widgets1.js",
-                "CalendarRes.js" : "aria/pack-widgets2.js",
-                "CalendarRes_en_US.js" : "aria/pack-widgets2.js"
+                "*" : "aria/pack-widgets1.js"
             },
             "container" : {
                 "*" : "aria/pack-widgets1.js",
@@ -159,9 +157,6 @@
         "modules" : {
             "*" : "aria/pack-modules.js",
             "queuing" : {
-                "*" : "aria/pack-modules.js"
-            },
-            "environment" : {
                 "*" : "aria/pack-modules.js"
             },
             "urlService" : {

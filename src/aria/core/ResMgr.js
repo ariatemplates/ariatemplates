@@ -155,19 +155,6 @@ Aria.classDefinition({
         __resourceFileLoadError : function (args) {
             //TODO: implement fallback mechanism, log error
             this.$callback(args.cb);
-        },
-
-        /**
-         * Obsolete
-         * @deprecated
-         */
-        __getModuleResourceSetClassPath : function (moduleClassPath) {
-            // build resource file classpath
-            var a = moduleClassPath.split('.');
-            var l = a.length;
-            a[l] = a[l - 1];
-            a[l - 1] = 'resources';
-            return a.join(".") + "Res";
         }
     }
 });
