@@ -56,8 +56,8 @@ Aria.beanDefinitions({
                 },
                 "middleAlignment" : {
                     $type : "json:Boolean",
-                    $description : "Specifies whether the widgets must be aligned vertically. (The default 'false' value is deprecated, it will be true by default)",
-                    $default : false
+                    $description : "Specifies whether the widgets should be middle-aligned vertically.",
+                    $default : true
                 },
                 "dialog" : {
                     $type : "json:Object",
