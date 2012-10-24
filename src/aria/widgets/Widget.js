@@ -223,7 +223,7 @@
             WIDGET_TOOLTIP_NOT_FOUND : "%1Tooltip with id '%2', for widget %3 was not found in template '%4'.",
             WIDGET_BINDING_ERROR : "%1Binding failed in widget: \tInside:%2\tTo:%3",
             INVALID_CONFIGURATION : "%1Configuration for widget is not valid.",
-            WIDGET_PROPERTY_DEPRECIATION : "%1The following property is depreciated and will be removed from the framework in the near future. Refactor your code to avoid any issues. Property:'%2'.",
+            WIDGET_PROPERTY_DEPRECATION : "%1The following property is deprecated and will be removed from the framework in the near future. Refactor your code to avoid any issues. Property:'%2'.",
             INVALID_VERTICAL_ALIGN : "%1Invalid verticalAlign:'%2'.",
 
             verticalAlignTester : /^[%a-z0-9-]*$/

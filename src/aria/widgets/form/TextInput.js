@@ -762,7 +762,7 @@ Aria.classDefinition({
          */
         _onvalidate : function (arg) {
             if (this._cfg.onvalidate) {
-                this.$logWarn(this.WIDGET_PROPERTY_DEPRECIATION, ["onvalidate"]);
+                this.$logWarn(this.WIDGET_PROPERTY_DEPRECATION, ["onvalidate"]);
                 this.evalCallback(this._cfg.onvalidate);
             }
 
