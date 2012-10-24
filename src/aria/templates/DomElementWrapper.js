@@ -326,15 +326,6 @@ Aria.classDefinition({
         getParentWithData : function (dataName) {},
 
         /**
-         * deprecated, use getData instead
-         * @deprecated
-         */
-        getExpando : function (expandoName, checkAncestors) {
-            this.$logWarn("getExpando is deprecated, please use the getData instead.");
-            return this.getData(expandoName, checkAncestors);
-        },
-
-        /**
          * Deprecated, please use the classList.setClassName instead.
          */
         setClassName : function (className) {

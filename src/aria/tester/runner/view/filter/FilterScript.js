@@ -21,7 +21,7 @@ var tplScriptDefinition = {
          * Callback triggered when the user clicks on the header button
          */
         onFilterLinkClick : function (evt, args) {
-            var type = evt.target.getExpando("type");
+            var type = evt.target.getData("type");
             if (type) {
                 this.$json.setValue(this.data.view.filter, "type", type);
             }

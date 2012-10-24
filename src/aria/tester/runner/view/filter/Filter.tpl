@@ -39,20 +39,20 @@
                     style="margin-left:10px"
                     class="filterLink ${data.view.filter.type=='all' ? 'selected' : ''}" 
                     title="display all tests"
-                    _type="all">
+                    data-type="all">
                     All
                 </div> 
                 <div class="divider"></div> 
                 <div 
                     class="filterLink ${data.view.filter.type=='errors' ? 'selected' : ''}" 
                     title="display tests with errors"
-                    _type="errors">
+                    data-type="errors">
                     Errors
                 </div> 
                 <div 
                     class="filterLink ${data.view.filter.type=='warnings' ? 'selected' : ''}" 
                     title="display tests with warnings"
-                    _type="warnings">
+                    data-type="warnings">
                     Warnings
                 </div>
             </div>
