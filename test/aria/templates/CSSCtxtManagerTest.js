@@ -14,22 +14,22 @@
  */
 
 Aria.classDefinition({
-	$classpath : 'test.aria.templates.CSSCtxtManagerTest',
-	$extends : 'aria.jsunit.TestCase',
-	$dependencies : ['aria.templates.CSSCtxtManager'],
-	$constructor : function () {
-		this.$TestCase.constructor.call(this);
-	},
+	$classpath : "test.aria.templates.CSSCtxtManagerTest",
+	$extends : "aria.jsunit.TestCase",
+	$dependencies : ["aria.templates.CSSCtxtManager"],
 	$prototype : {
 
 		setUp : function () {
-			this.debug = aria.core.environment.Environment.isDebug();
 			aria.core.environment.Environment.setDebug(true);
+
+            this._previousContexts = aria.templates.CSSCtxtManager._contexts;
+            aria.templates.CSSCtxtManager._contexts = {};
 		},
 
-		tearDown : function () {
-			aria.core.environment.Environment.setDebug(this.debug);
-		},
+        tearDown : function () {
+            aria.templates.CSSCtxtManager._contexts = this._previousContexts;
+            this._previousContexts = null;
+        },
 
 		/**
 		 * Testing the Context retrieving

@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : 'aria.jsunit.LayoutTester',
+    $classpath : "aria.jsunit.LayoutTester",
     $singleton : true,
     $statics : {
         excludeRegExp : /"^(script|noscript|style|option)$"/gi
@@ -23,7 +23,6 @@ Aria.classDefinition({
         this.elements = [];
     },
     $prototype : {
-
         /**
          * Captures the dom elements information of the root children elements (including the root). These properties
          * are stored for each node : id, tagName, top, left, width, height and text.
@@ -37,6 +36,7 @@ Aria.classDefinition({
             this._captureJsonScreenshot(root);
             return this.elements;
         },
+
         /**
          * Recursive method of captureJsonScreenshot
          * @param {HtmlElement} root The root node.
@@ -55,6 +55,7 @@ Aria.classDefinition({
                 }
             }
         },
+
         /**
          * Convenient method to compare an old json with the last capture
          * @param {Array} arrayToCompare The array to be compared.
@@ -89,6 +90,7 @@ Aria.classDefinition({
             return result;
 
         },
+
         /**
          * Convenient method to compare an json element on one single level.
          * It also prevent to compare the 'element' attribute, which is the html object.
@@ -124,6 +126,7 @@ Aria.classDefinition({
                 text : text
             });
         },
+
         /**
          * Returns true if the element is visible
          * @param {HtmlElement} el The element to test
@@ -141,7 +144,7 @@ Aria.classDefinition({
             }
             // If it's too small to be seen, return false
             var coords = this._getCoordinates(el);
-            if (coords.width == 0 && coords.height == 0) {
+            if (coords.width === 0 && coords.height === 0) {
                 return false;
             }
             // If it contains text as the first child, directly return true
@@ -151,6 +154,7 @@ Aria.classDefinition({
             // Otherwise, check if it has a border or background
             return this._hasStyleThatMakesItVisible(el);
         },
+
         /**
          * Returns true if the element has a text value
          * @param {HtmlElement} el The element to test
@@ -158,8 +162,9 @@ Aria.classDefinition({
          * @private
          */
         _hasDirectChildText : function (el) {
-            return this._getDirectTextContent(el) != "";
+            return this._getDirectTextContent(el) !== "";
         },
+
         /**
          * Returns true if the element is visible, regarding some properties as the border, the background, ...
          * @param {HtmlElement} el The element to test
@@ -171,12 +176,13 @@ Aria.classDefinition({
 
             var computedStyle = el.currentStyle || el.ownerDocument.defaultView.getComputedStyle(el);
 
-            return (computedStyle.border != "" || computedStyle.borderWidth != "" || computedStyle.borderTopWidth != ""
-                    || computedStyle.borderLeftWidth != "" || computedStyle.borderBottomWidth != ""
-                    || computedStyle.borderRightWidth != ""
-                    || (computedStyle.background != "" && computedStyle.background != "none")
-                    || (computedStyle.backgroundImage != "" && computedStyle.backgroundImage != "none") || (computedStyle.backgroundColor != "" && computedStyle.backgroundColor != "transparent"));
+            return (computedStyle.border !== "" || computedStyle.borderWidth !== ""
+                    || computedStyle.borderTopWidth !== "" || computedStyle.borderLeftWidth !== ""
+                    || computedStyle.borderBottomWidth !== "" || computedStyle.borderRightWidth !== ""
+                    || (computedStyle.background !== "" && computedStyle.background !== "none")
+                    || (computedStyle.backgroundImage !== "" && computedStyle.backgroundImage !== "none") || (computedStyle.backgroundColor !== "" && computedStyle.backgroundColor !== "transparent"));
         },
+
         /**
          * Returns the coordinates of the dom element
          * @param {HtmlElement} el Dom element
@@ -196,6 +202,7 @@ Aria.classDefinition({
 
             return coordinates;
         },
+
         /**
          * Returns the text content of a dom element
          * @param {HtmlElement} el Dom element
@@ -214,7 +221,7 @@ Aria.classDefinition({
                     var text = child.textContent || child.innerText || child.nodeValue;
                     if (text) {
                         text = text.replace(/(\r\n|[\r\n])/g, "").replace(new RegExp(String.fromCharCode(160), "g"), " ").replace(/^\s+|\s+$/g, "");
-                        if (text != "") {
+                        if (text !== "") {
                             str += text;
                         }
                     }
@@ -222,6 +229,5 @@ Aria.classDefinition({
             }
             return str;
         }
-
     }
 });

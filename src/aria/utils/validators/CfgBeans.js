@@ -16,7 +16,6 @@
 /**
  * Beans describing the message structure used in validators, in the error list widget, and returned in server side
  * validation.
- * @class aria.utils.validators.CfgBeans
  */
 Aria.beanDefinitions({
     $package : "aria.utils.validators.CfgBeans",

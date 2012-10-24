@@ -19,9 +19,6 @@
 Aria.classDefinition({
     $classpath : "aria.jsunit.Test",
     $events : {
-        /**
-         * @event failure
-         */
         "failure" : {
             description : "raised when a failure occurs (failures are expected and correspond to wrong assertions)",
             properties : {
@@ -30,9 +27,6 @@ Aria.classDefinition({
                 description : "{String} failure description"
             }
         },
-        /**
-         * @event error
-         */
         "error" : {
             description : "raised when an error occurs (error are uncaught exception)",
             properties : {
@@ -42,9 +36,6 @@ Aria.classDefinition({
                 msg : "{String} optional message associated to this error"
             }
         },
-        /**
-         * @event stateChange
-         */
         "stateChange" : {
             description : "raised when the test moves to a new test method",
             properties : {
@@ -52,9 +43,6 @@ Aria.classDefinition({
                 testState : "{String} name of the current state in the test (method name)"
             }
         },
-        /**
-         * @event start
-         */
         "start" : {
             description : "raised when a test starts",
             properties : {
@@ -62,9 +50,6 @@ Aria.classDefinition({
                 testClass : "{String} classpath of the current test"
             }
         },
-        /**
-         * @event end
-         */
         "end" : {
             description : "raised when the test ends",
             properties : {
@@ -73,9 +58,6 @@ Aria.classDefinition({
                 nbrOfAsserts : "{Integer} number of asserts evaluated during the test"
             }
         },
-        /**
-         * @event testLoad
-         */
         "testLoad" : {
             description : "raised when a test loads a sub-test",
             properties : {
@@ -153,10 +135,16 @@ Aria.classDefinition({
          */
         run : function () {},
 
+        /**
+         * Mark the beginning of a test
+         */
         _startTest : function () {
             this._timestampBegin = (new Date()).getTime();
         },
 
+        /**
+         * Mark the end of a test
+         */
         _endTest : function () {
             this._timestampEnd = (new Date()).getTime();
             this._executionTime = this._timestampEnd - this._timestampBegin;

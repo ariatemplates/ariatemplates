@@ -21,5 +21,6 @@ Aria.classDefinition({
 
 		this.addTests("test.aria.jsunit.ModuleCtrlTestCaseTest");
         this.addTests("test.aria.jsunit.AssertTest");
+        this.addTests("test.aria.jsunit.TestCaseTest");
 	}
 });

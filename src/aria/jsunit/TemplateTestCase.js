@@ -237,14 +237,10 @@ Aria.classDefinition({
         notifyTemplateTestEnd : function () {
             aria.core.Timer.addCallback({
                 fn : function () {
-                    // Need to dispose the template since we are always using the same div to do aria.loadTemplate
+                    // Need to dispose the template since we are always using the same div to do Aria.loadTemplate
                     this._disposeTestTemplate();
 
-                    // Reset some singletons
-                    aria.templates.CSSMgr.reset();
-
                     try {
-
                         this.testDiv.style.height = "0";
                         this.notifyTestEnd("testAsyncStartTemplateTest");
                     } catch (ex) {
@@ -253,7 +249,6 @@ Aria.classDefinition({
                 },
                 scope : this,
                 delay : 50
-
             });
         },
 

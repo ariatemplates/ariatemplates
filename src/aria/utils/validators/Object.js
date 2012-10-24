@@ -20,12 +20,6 @@ Aria.classDefinition({
     $classpath : "aria.utils.validators.Object",
     $dependencies : ['aria.utils.Type'],
     $extends : "aria.utils.validators.Validator",
-    $constructor : function (message) {
-        this.$Validator.constructor.call(this, message);
-    },
-    $destructor : function () {
-        this.$Validator.$destructor.call(this);
-    },
     $prototype : {
 
         /**

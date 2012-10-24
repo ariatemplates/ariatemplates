@@ -17,10 +17,6 @@
 
     var MODULECTRL_ID_PROPERTY = "__$moduleCtrlId";
 
-    // Shortcuts to Aria Templates singletons:
-    var typeUtils; // aria.utils.Type
-    var appEnv; // aria.core.environment.Environment
-
     /**
      * Map of all module controller private information. The key in the map is the id of the module controller (stored
      * in the __$moduleCtrlId property of both the whole module controller and its public interface). The value in the
@@ -139,7 +135,7 @@
             }
 
             // Check that the module controller inherits from aria.templates.ModuleCtrl
-            if (!(moduleCtrlConstr && typeUtils.isInstanceOf(moduleCtrlConstr.prototype, "aria.templates.ModuleCtrl"))) {
+            if (!(moduleCtrlConstr && aria.utils.Type.isInstanceOf(moduleCtrlConstr.prototype, "aria.templates.ModuleCtrl"))) {
                 this.$logError(this.INVALID_MODULE_CTRL, [moduleClasspath]);
                 return loadModuleError.call(this, args);
             }
@@ -156,7 +152,7 @@
                     flowCtrlClasspath = moduleClasspath + "Flow";
                 }
                 // get customized classpath
-                flowCtrlClasspath = appEnv.getFlowCP(flowCtrlClasspath);
+                flowCtrlClasspath = aria.core.environment.Customizations.getFlowCP(flowCtrlClasspath);
 
                 args.flowCtrlClasspath = flowCtrlClasspath;
                 flowCtrlConstr = Aria.getClassRef(flowCtrlClasspath);
@@ -206,7 +202,7 @@
                     args.flowCtrlConstr = Aria.getClassRef(args.flowCtrlClasspath);
                 }
                 // Check that the flow controller inherits from aria.templates.FlowCtrl
-                if (!(args.flowCtrlConstr && typeUtils.isInstanceOf(args.flowCtrlConstr.prototype, "aria.templates.FlowCtrl"))) {
+                if (!(args.flowCtrlConstr && aria.utils.Type.isInstanceOf(args.flowCtrlConstr.prototype, "aria.templates.FlowCtrl"))) {
                     this.$logError(this.INVALID_FLOW_CTRL, [args.flowCtrlClasspath]);
                     return loadModuleError.call(this, args);
                 }
@@ -242,7 +238,7 @@
             };
 
             // load custom sub modules attached to this module controller
-            var customModules = appEnv.getCustomModules(args.desc.classpath);
+            var customModules = aria.core.environment.Customizations.getCustomModules(args.desc.classpath);
             if (customModules.length > 0) {
                 var recursionCheck = args.recursionCheck;
                 if (recursionCheck) {
@@ -518,6 +514,7 @@
             customModules : customModules
         };
         var subRecursionCheck = null;
+        var typeUtils = aria.utils.Type;
         for (var i = 0; i < subModulesDescArrayLength; i++) {
             var subModuleDesc = subModulesDescArray[i];
             var error = false;
@@ -624,14 +621,6 @@
         $dependencies : ["aria.templates.CfgBeans", "aria.templates.ObjectLoading",
                 "aria.core.environment.Customizations"],
         $singleton : true,
-        $constructor : function () {
-            typeUtils = aria.utils.Type;
-            appEnv = aria.core.environment.Customizations;
-        },
-        $destructor : function () {
-            typeUtils = null;
-            appEnv = null;
-        },
         $statics : {
             // ERROR MESSAGES:
             INVALID_SM_DEF : "Sub-module load failure: invalid module definition:\nreference: %1,\nclasspath: %2,\nparent class: %3",

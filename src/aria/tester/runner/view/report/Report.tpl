@@ -19,7 +19,7 @@
     $hasScript:true,
     $width : {"min":178},
     $height : {"min":203},
-     $css:['aria.tester.runner.view.report.ReportCSS']
+    $css:['aria.tester.runner.view.report.ReportCSS']
 }}
     {macro main()}
         <div {id "left"/}
@@ -54,7 +54,7 @@
               type:"div"
           }}
 
-            ${this._beforeDisplayReport()}
+            ${this._beforeDisplayReport()|empty:""}
             {var testsArray = this.getFilteredTestsArray()/}
             <table
                 class="reportTable"
@@ -88,7 +88,7 @@
             {/if}
             ${this._setLastFinishedId(counter)}
         {else/}
-            {if !currentAssigned && (!isTestSuite) && data.flow.currentState == "ongoing"}
+            {if !currentAssigned && (!isTestSuite) && (data.flow.currentState == "ongoing" || data.flow.currentState == "pausing")}
                 {set classname += " current"/}
                 {set currentAssigned = true/}
             {/if}

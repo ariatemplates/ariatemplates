@@ -26,9 +26,9 @@ var tplScriptDefinition = {
             if (state == STATES.READY) {
                 this.moduleCtrl.startCampaign();
             } else if (state == STATES.ONGOING) {
-                //this.flowCtrl.navigate(STATES.PAUSING);
+                this.flowCtrl.navigate(STATES.PAUSING);
             } else if (state == STATES.PAUSED) {
-                this.flowCtrl.navigate(STATES.ONGOING);
+                this.flowCtrl.navigate(STATES.RESUMING);
             } else if (state == STATES.FINISHED) {
                 this.reload();
             }
@@ -48,7 +48,7 @@ var tplScriptDefinition = {
                 this.flowCtrl.STATES.INIT,
                 this.flowCtrl.STATES.FAILURE,
                 this.flowCtrl.STATES.PAUSING,
-                this.flowCtrl.STATES.ONGOING,
+                this.flowCtrl.STATES.RESUMING,
                 this.flowCtrl.STATES.OPTIONS
             ];
             if (aria.utils.Array.indexOf(disabledStates, state) != -1) {
@@ -79,7 +79,8 @@ var tplScriptDefinition = {
                 return "Run";
             } else if (
                 state == this.flowCtrl.STATES.INIT ||
-                state == this.flowCtrl.STATES.FAILURE
+                state == this.flowCtrl.STATES.FAILURE ||
+                state == this.flowCtrl.STATES.RESUMING
             ) {
                 return "Loading";
             } else if (
@@ -88,7 +89,11 @@ var tplScriptDefinition = {
             ) {
                 return "Reload";
             } else if (state == this.flowCtrl.STATES.ONGOING) {
-                return "Running"
+                return "Pause";
+            } else if (state == this.flowCtrl.STATES.PAUSING) {
+                return "Pausing";
+            } else if (state == this.flowCtrl.STATES.PAUSED) {
+                return "Resume";
             } else {
                 return "#"+state+"#"
             }

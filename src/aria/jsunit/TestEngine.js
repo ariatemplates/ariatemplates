@@ -113,16 +113,20 @@ Aria.classDefinition({
          */
         _onFailure : function (evt) {
             // TODO check evt.testClass
-            if (this._currentTest.failures == null)
+            if (this._currentTest.failures == null) {
                 this._currentTest.failures = [];
+            }
+
             this._currentTest.failures.push({
                 testState : evt.testState,
                 description : evt.description
             });
+
             // increment nbr of failures in all test stack
             var sz = this._testStack.length;
-            for (var i = 0; sz > i; i++)
+            for (var i = 0; sz > i; i++) {
                 this._testStack[i].totalNbrOfFailures++;
+            }
             this._raiseChange("failure");
         },
 
@@ -197,7 +201,7 @@ Aria.classDefinition({
                 retryURL : this._getRetryTestUrl(evt.testObject.$classpath)
             };
             var sz = this._testStack.length;
-            if (sz == 0) {
+            if (sz === 0) {
                 this._testStack.push(tst);
                 this.testReport = tst;
             } else {
@@ -289,6 +293,8 @@ Aria.classDefinition({
         },
 
         /**
+         * Raise a change event. The event is not raised if the test is paused, but queued
+         * @param {String} changeType Type of change event
          * @private
          */
         _raiseChange : function (changeType) {
@@ -335,6 +341,38 @@ Aria.classDefinition({
          */
         getCurrentTest : function () {
             return this._currentTest;
+        },
+
+        /**
+         * Pause the test execution
+         * @param {aria.core.CfgBeans.Callback} cb Called when the current test is paused
+         */
+        pause : function (cb) {
+            var instance = this._currentTest.instance, suite;
+
+            if (instance.$TestSuite) {
+                suite = instance;
+            } else {
+                suite = this._testStack[this._testStack.length - 2].instance;
+            }
+
+            if (!suite || !suite.$TestSuite) {
+                this.$logError("Pause couldn't find a test suite to pause");
+                this.$callback(cb);
+            } else {
+                suite.pause(cb);
+            }
+        },
+
+        /**
+         * Resume the test execution
+         * @param {aria.core.CfgBeans.Callback} cb Called before the next test starts
+         */
+        resume : function (cb) {
+            var instance = this._currentTest.instance;
+
+            // Since pause waits for the end of a test, _currentTest should always be a test suite
+            instance.resume(cb);
         }
     }
 });

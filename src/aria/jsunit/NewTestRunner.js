@@ -14,12 +14,11 @@
  */
 
 /**
- * @class aria.jsunit.TestRunner HTML UI Renderer for aria.jsunit.TestEngine
- * @extends aria.core.JsObject
+ * HTML UI Renderer for aria.jsunit.TestEngine
  * @singleton
  */
 Aria.classDefinition({
-    $classpath : 'aria.jsunit.NewTestRunner',
+    $classpath : "aria.jsunit.NewTestRunner",
     $events : {
         "preloadBegin" : "preloadBegin",
         "preloadEnd" : "preloadEnd",
@@ -205,7 +204,7 @@ Aria.classDefinition({
                             instance : testSuite
                         }];
             }
-            if (testSuite.isSkipped() || testSuite.isSelected() == -1) {
+            if (testSuite.isSkipped() || testSuite.isSelected() === -1) {
                 return [];
             }
             var subTests = testSuite.getSubTests();

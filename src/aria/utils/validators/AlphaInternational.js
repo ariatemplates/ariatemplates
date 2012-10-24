@@ -15,8 +15,6 @@
 
 /**
  * Validates alphnumeric characters including accents
- * @class aria.utils.validators.AlphaInternational
- * @extends aria.utils.validators.RegExp
  */
 Aria.classDefinition({
     $classpath : "aria.utils.validators.AlphaInternational",
