@@ -17,11 +17,8 @@
  * Test case for the sequencer
  */
 Aria.classDefinition({
-    $classpath : 'test.aria.core.SequencerTest',
-    $extends : 'aria.jsunit.TestCase',
-    $constructor : function () {
-        this.$TestCase.constructor.call(this);
-    },
+    $classpath : "test.aria.core.SequencerTest",
+    $extends : "aria.jsunit.TestCase",
     $destructor : function () {
         if (this.seq != null) {
             this.seq.$dispose();
@@ -72,42 +69,46 @@ Aria.classDefinition({
             }
             this.notifyTestEnd(this.testName);
         },
-        mySimpleTask : function (args) {
-            this.onEvents({
-                name : 'test:mySimpleTask',
-                src : this,
-                args : args
-            })
+
+        tasks : {
+            mySimpleTask : function (args) {
+                this.onEvents({
+                    name : 'test:mySimpleTask',
+                    src : this,
+                    args : args
+                })
+            },
+            myAsyncTask : function (args) {
+                this.onEvents({
+                    name : 'test:myAsyncTask',
+                    src : this,
+                    args : args
+                })
+                aria.core.Timer.addCallback({
+                    fn : this.tasks.myAsyncTaskEnd,
+                    args : args,
+                    scope : this,
+                    delay : 5
+                })
+            },
+            myAsyncTaskEnd : function (args) {
+                this.onEvents({
+                    name : 'test:myAsyncTaskEnd',
+                    src : this,
+                    args : args
+                })
+                this.seq.notifyTaskEnd(args.id, this.stopProcessingOnAsyncTask);
+            },
+            myErrorTask : function (args) {
+                this.onEvents({
+                    name : 'test:myErrorTask',
+                    src : this,
+                    args : args
+                })
+                throw 'ErrorRaised';
+            }
         },
-        myAsyncTask : function (args) {
-            this.onEvents({
-                name : 'test:myAsyncTask',
-                src : this,
-                args : args
-            })
-            aria.core.Timer.addCallback({
-                fn : this.myAsyncTaskEnd,
-                args : args,
-                scope : this,
-                delay : 5
-            })
-        },
-        myAsyncTaskEnd : function (args) {
-            this.onEvents({
-                name : 'test:myAsyncTaskEnd',
-                src : this,
-                args : args
-            })
-            this.seq.notifyTaskEnd(args.id, this.stopProcessingOnAsyncTask);
-        },
-        myErrorTask : function (args) {
-            this.onEvents({
-                name : 'test:myErrorTask',
-                src : this,
-                args : args
-            })
-            throw 'ErrorRaised';
-        },
+
         /**
          * Call the sequencer with an empty task list and check that the begin and end events of the sequencer are
          * correctly raised.
@@ -116,7 +117,7 @@ Aria.classDefinition({
             var seq = this.seq;
             this.stopProcessingOnError = false;
             this.stopProcessingOnAsyncTask = false;
-            this.testName = 'testAsyncSimpleSequencer';
+            this.testName = 'testAsyncEmptyTaskList';
             this.registerExpectedEventsList([{
                         name : 'start',
                         src : this.seq
@@ -230,34 +231,35 @@ Aria.classDefinition({
                         name : 'end',
                         src : this.seq
                     }]);
+
             seq.addTask({
                 name : "MySimpleTask1",
-                fn : this.mySimpleTask,
+                fn : this.tasks.mySimpleTask,
                 scope : this,
                 args : "mySimpleTaskParam1"
             });
             seq.addTask({
                 name : "MyAsyncTask",
-                fn : this.myAsyncTask,
+                fn : this.tasks.myAsyncTask,
                 scope : this,
                 args : "myAsyncTaskParam",
                 asynchronous : true
             });
             seq.addTask({
                 name : "MySimpleTask2",
-                fn : this.mySimpleTask,
+                fn : this.tasks.mySimpleTask,
                 scope : this,
                 args : "mySimpleTaskParam2"
             });
             seq.addTask({
                 name : "MyErrorTask",
-                fn : this.myErrorTask,
+                fn : this.tasks.myErrorTask,
                 scope : this,
                 args : "MyErrorTaskParam"
             });
             seq.addTask({
                 name : "MySimpleTask3",
-                fn : this.mySimpleTask,
+                fn : this.tasks.mySimpleTask,
                 scope : this,
                 args : "mySimpleTaskParam3"
             });
@@ -323,20 +325,20 @@ Aria.classDefinition({
                     }]);
             seq.addTask({
                 name : "MySimpleTask1",
-                fn : this.mySimpleTask,
+                fn : this.tasks.mySimpleTask,
                 scope : this,
                 args : "mySimpleTaskParam1"
             });
             seq.addTask({
                 name : "MyAsyncTask",
-                fn : this.myAsyncTask,
+                fn : this.tasks.myAsyncTask,
                 scope : this,
                 args : "myAsyncTaskParam",
                 asynchronous : true
             });
             seq.addTask({
                 name : "MySimpleTask3",
-                fn : this.mySimpleTask,
+                fn : this.tasks.mySimpleTask,
                 scope : this,
                 args : "mySimpleTaskParam3"
             });
@@ -400,19 +402,19 @@ Aria.classDefinition({
                     }]);
             seq.addTask({
                 name : "MySimpleTask1",
-                fn : this.mySimpleTask,
+                fn : this.tasks.mySimpleTask,
                 scope : this,
                 args : "mySimpleTaskParam1"
             });
             seq.addTask({
                 name : "MyErrorTask",
-                fn : this.myErrorTask,
+                fn : this.tasks.myErrorTask,
                 scope : this,
                 args : "MyErrorTaskParam"
             });
             seq.addTask({
                 name : "MySimpleTask3",
-                fn : this.mySimpleTask,
+                fn : this.tasks.mySimpleTask,
                 scope : this,
                 args : "mySimpleTaskParam3"
             });

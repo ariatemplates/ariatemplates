@@ -81,7 +81,7 @@ Aria.classDefinition({
             if (finished) {
                 var finalReport = this.createFinalReport(evt.testReport);
                 this._testacular.updateResult(finalReport);
-                var success = (finalReport.totalNbrOfErrors == 0 && finalReport.totalNbrOfFailures == 0);
+                var success = (finalReport.totalNbrOfErrors === 0 && finalReport.totalNbrOfFailures === 0);
                 this._testacular.complete(success);
             } else {
                 var statusReport = this.createStatusReport(evt.testReport, currentTest);

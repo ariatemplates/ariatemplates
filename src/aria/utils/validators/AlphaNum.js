@@ -15,8 +15,6 @@
 
 /**
  * Validates Alpha Numeric characters only.
- * @class aria.utils.validators.AlphaNum
- * @extends aria.utils.validators.RegExp
  */
 Aria.classDefinition({
     $classpath : "aria.utils.validators.AlphaNum",

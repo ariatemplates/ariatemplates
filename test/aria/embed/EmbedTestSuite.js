@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.embed.EmbedTestSuite",
+    $classpath : "test.aria.embed.EmbedTestSuite",
     $extends : "aria.jsunit.TestSuite",
     $constructor : function () {
         this.$TestSuite.constructor.call(this);

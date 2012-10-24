@@ -23,12 +23,19 @@ Aria.tplScriptDefinition({
         getTestsWithErrors : function () {
             var __testUtils = aria.tester.runner.utils.TestUtils;
             var rootSuite = this.data.campaign.testsTree[0];
-
-            if (!rootSuite.$TestSuite) {
-                return [];
-            }
+            var testInstance = null;
             var failedTests = [];
-            var subTests = __testUtils.getSubTestsAsArray(rootSuite);
+            var subTests = [];
+
+            if (rootSuite.$TestSuite) {
+                subTests = __testUtils.getSubTestsAsArray(rootSuite);
+            } else if (rootSuite.$TestCase) {
+                subTests = [{
+                    instance : rootSuite,
+                    classpath : rootSuite.$classpath
+                }];
+            }
+
             for (var i = 0, l = subTests.length ; i < l ; i++) {
                 var subTest = subTests[i];
                 var instance = subTest.instance;

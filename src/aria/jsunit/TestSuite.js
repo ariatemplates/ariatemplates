@@ -68,6 +68,32 @@ Aria.classDefinition({
          * @type Boolean
          */
         this.runIsolated = false;
+
+        /**
+         * Whether the test is paused or not
+         * @type Boolean
+         */
+        this._isPaused = false;
+
+        /**
+         * Callback called when the pause function is complete. If a test is processing, pause will wait for it to
+         * complete or go in error before it calls this callback
+         * @type {aria.core.CfgBeans.Callback)
+         */
+        this._pauseCallback = null;
+
+        /**
+         * Task that was paused. Resume notifies this task end
+         * @type Object
+         *
+         * <pre>
+         * {
+         *      taskId : Id of the last executed task, not notified,
+         *      taskMgr : Task manager
+         * }
+         * </pre>
+         */
+        this._pausedTask - null;
     },
     $destructor : function () {
         if (this._sequencer) {
@@ -110,7 +136,7 @@ Aria.classDefinition({
          */
         getSubTests : function () {
             // while no tests are available, try to rebuild the test tree
-            if (this._subTests.length == 0) {
+            if (this._subTests.length === 0) {
                 this.refreshSubTests();
             }
             return this._subTests;
@@ -177,7 +203,7 @@ Aria.classDefinition({
 
         preload : function () {
             var testSuites = this.getSubTestSuites();
-            if (testSuites.length == 0) {
+            if (testSuites.length === 0) {
                 return this.$raiseEvent("preloadEnd");
             }
             this._preloadSequencer = new aria.core.Sequencer();
@@ -329,7 +355,7 @@ Aria.classDefinition({
         /**
          * Internal task processor called by the sequencer anytime a new task must be executed. This method downloads
          * the test class and executes it
-         * @param {Object} evt the sequencer event
+         * @param {Object} task the sequencer task
          * @param {Object} args the task arguments
          * @private
          */
@@ -428,6 +454,7 @@ Aria.classDefinition({
         /**
          * Called by a test when it is done (tests are asynchronous)
          * @param {Object} evt
+         * @param {Object} args
          * @private
          */
         _onTestEnd : function (evt, args) {
@@ -444,7 +471,17 @@ Aria.classDefinition({
             this._disposeRunningTest();
 
             // current task is asynchronous - we need to notify the sequencer
-            args.taskMgr.notifyTaskEnd(args.taskId);
+            if (!this._isPaused) {
+                args.taskMgr.notifyTaskEnd(args.taskId);
+            } else {
+                this._pausedTask = args;
+
+                if (this._pauseCallback) {
+                    var cb = this._pauseCallback;
+                    this._pauseCallback = null;
+                    this.$callback(cb);
+                }
+            }
         },
 
         /**
@@ -636,6 +673,30 @@ Aria.classDefinition({
                 testClass : this.$classpath,
                 nbrOfAsserts : this._assertCount
             });
+        },
+
+        /**
+         * Pause the test execution
+         * @param {aria.core.CfgBeans.Callback} cb Called when the current test is paused
+         */
+        pause : function (cb) {
+            this._isPaused = true;
+            this._pauseCallback = cb;
+        },
+
+        /**
+         * Resume the test execution
+         * @param {aria.core.CfgBeans.Callback} cb Called before the next test starts
+         */
+        resume : function (cb) {
+            this._isPaused = false;
+            this.$callback(cb);
+
+            if (this._pausedTask) {
+                var task = this._pausedTask;
+                this._pausedTask = null;
+                task.taskMgr.notifyTaskEnd(task.taskId);
+            }
         }
     }
 });

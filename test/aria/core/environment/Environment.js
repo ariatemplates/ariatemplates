@@ -17,10 +17,6 @@ Aria.classDefinition({
     $classpath : "test.aria.core.environment.Environment",
     $dependencies : ["aria.core.environment.Environment", "aria.tools.contextual.environment.ContextualMenu"],
     $extends : "aria.jsunit.TestCase",
-    $constructor : function () {
-        this.$TestCase.constructor.call(this);
-        this.defaultTestTimeout = 5000;
-    },
     $prototype : {
 
         testGetSetLanguage : function () {

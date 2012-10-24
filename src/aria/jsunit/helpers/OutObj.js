@@ -15,11 +15,10 @@
 
 /**
  * Helper to simulate a writer used in template context
- * @class aria.jsunit.helpers.OutObj
  */
 Aria.classDefinition({
-    $classpath : 'aria.jsunit.helpers.OutObj',
-    $dependencies : ['aria.utils.Dom'],
+    $classpath : "aria.jsunit.helpers.OutObj",
+    $dependencies : ["aria.utils.Dom"],
     $singleton : true,
     $constructor : function () {
         this.testArea = aria.utils.Dom.getElementById("TESTAREA");
@@ -34,8 +33,8 @@ Aria.classDefinition({
             $getId : function (id) {
                 return ["testOutput", id].join("_");
             },
-            evalCallback : function (callback, arg) {
-                return aria.jsunit.helpers.OutObj.$callback(callback, arg);
+            evalCallback : function () {
+                return aria.jsunit.helpers.OutObj.$callback.apply(this, arguments);
             }
         },
         write : function (str) {

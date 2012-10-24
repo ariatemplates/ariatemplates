@@ -15,7 +15,6 @@
 
 /**
  * Implemented by all validators
- * @class aria.utils.validators.IValidator
  */
 Aria.interfaceDefinition({
     $classpath : "aria.utils.validators.IValidator",

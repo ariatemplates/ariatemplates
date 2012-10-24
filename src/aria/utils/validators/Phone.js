@@ -15,8 +15,6 @@
 
 /**
  * Validates the entry if it is formatted as something like a phone.
- * @class aria.utils.validators.Phone
- * @extends aria.utils.validators.RegExp
  */
 Aria.classDefinition({
     $classpath : "aria.utils.validators.Phone",

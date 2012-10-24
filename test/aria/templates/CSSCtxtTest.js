@@ -14,21 +14,13 @@
  */
 
 Aria.classDefinition({
-    $classpath : 'test.aria.templates.CSSCtxtTest',
-    $extends : 'aria.jsunit.TestCase',
-    $dependencies : ['aria.templates.CSSCtxt'],
-    $constructor : function () {
-        this.$TestCase.constructor.call(this);
-    },
+    $classpath : "test.aria.templates.CSSCtxtTest",
+    $extends : "aria.jsunit.TestCase",
+    $dependencies : ["aria.templates.CSSCtxt"],
     $prototype : {
 
         setUp : function () {
-            this.debug = aria.core.environment.Environment.isDebug();
             aria.core.environment.Environment.setDebug(true);
-        },
-
-        tearDown : function () {
-            aria.core.environment.Environment.setDebug(this.debug);
         },
 
         /**

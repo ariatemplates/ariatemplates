@@ -15,8 +15,6 @@
 
 /**
  * Validator for a mandatory value
- * @class aria.utils.validators.MinMaxLength
- * @extends aria.utils.validators.Validator
  */
 Aria.classDefinition({
     $classpath : "aria.utils.validators.MinMaxLength",
