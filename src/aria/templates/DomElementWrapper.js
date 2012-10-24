@@ -325,22 +325,6 @@ Aria.classDefinition({
 
         getParentWithData : function (dataName) {},
 
-        /**
-         * Deprecated, please use the classList.setClassName instead.
-         */
-        setClassName : function (className) {
-            this.$logWarn("setClassName is deprecated, please use the classList.setClassName instead.");
-            this.classList.setClassName(className);
-        },
-
-        /**
-         * Deprecated, please use the classList.getClassName instead.
-         */
-        getClassName : function () {
-            this.$logWarn("getClassName is deprecated, please use the classList.getClassName instead.");
-            return this.classList.getClassName();
-        },
-
         focus : function () {},
 
         setStyle : function (style) {},
