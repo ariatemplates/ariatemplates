@@ -583,25 +583,7 @@ Aria.classDefinition({
             }
 
             return aria.utils.String.chunk(integer, lengths).join(grouping);
-        },
-
-        /* Backward Compatibility begins here */
-
-        /**
-         * DEPRECATED: This is a private method and shuoldn't be used <br />
-         * Tests string is a valid number (see unit test for criteria).
-         * @protected
-         * @param {String} number
-         * @return {Boolean}
-         */
-        _isValidNumber : function (number) {
-            this.$logWarn(this.DEPRECATED, "_isValidNumber");
-
-            var test = this._validDigits.test(number);
-            return test;
         }
-
-        /* Backward Compatibility ends here */
 
     }
 });
