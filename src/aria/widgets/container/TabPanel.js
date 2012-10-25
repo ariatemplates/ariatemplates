@@ -15,14 +15,12 @@
 
 /**
  * TabPanel widget
- * @class aria.widgets.container.TabPanel
- * @extends aria.widgets.container.Container
  */
 Aria.classDefinition({
-    $classpath : 'aria.widgets.container.TabPanel',
-    $extends : 'aria.widgets.container.Container',
-    $dependencies : ['aria.widgets.frames.FrameFactory', 'aria.utils.Function'],
-    $css : ['aria.widgets.container.TabPanelStyle'],
+    $classpath : "aria.widgets.container.TabPanel",
+    $extends : "aria.widgets.container.Container",
+    $dependencies : ["aria.widgets.frames.FrameFactory", "aria.utils.Function"],
+    $css : ["aria.widgets.container.TabPanelStyle"],
     /**
      * TabPanel constructor
      * @param {aria.widgets.CfgBeans.TabPanelCfg} cfg the widget configuration
@@ -77,6 +75,7 @@ Aria.classDefinition({
             // we add the bindable properties to the Widget prototype
             p.bindableProperties = p.bindableProperties.concat(["selectedTab"]);
         },
+
         /**
          * Called when a new instance is initialized
          * @private
@@ -88,6 +87,7 @@ Aria.classDefinition({
             }
             this.$Container._init.call(this);
         },
+
         /**
          * Internal method called when one of the model properties that the widget is bound to has changed Must be
          * overridden by sub-classes defining bindable properties
@@ -111,6 +111,7 @@ Aria.classDefinition({
                 this.$Container._onBoundPropertyChange.call(this, propertyName, newValue, oldValue);
             }
         },
+
         /**
          * Internal function to generate the internal widget markup
          * @param {aria.templates.MarkupWriter} out
@@ -146,6 +147,7 @@ Aria.classDefinition({
             });
 
         },
+
         /**
          * Internal function to generate the internal widget markup
          * @param {aria.templates.MarkupWriter} out
@@ -163,7 +165,6 @@ Aria.classDefinition({
          */
         _setSkinObj : function (widgetName) {
             this._skinObj = aria.widgets.AriaSkinInterface.getSkinObject(widgetName, this._cfg.sclass);
-
         }
 
     }
