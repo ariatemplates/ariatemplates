@@ -32,7 +32,18 @@ Aria.classDefinition({
          */
         this.isReady = false;
 
+        /**
+         * @type Boolean
+         * @private
+         */
         this._isListening = false;
+
+        /**
+         * List of added listeners that have to be removed
+         * @type Array
+         * @private
+         */
+        this._listenersToRemove = [];
 
     },
     $prototype : {
@@ -69,24 +80,31 @@ Aria.classDefinition({
             if (this.isReady) {
                 return;
             }
-            var docRef = windowObj.document, browser = aria.core.Browser, that = this;
+            var docRef = windowObj.document, browser = aria.core.Browser, that = this, handler;
             if (windowObj.addEventListener) {
                 if (!browser.isOpera) {
-                    docRef.addEventListener("DOMContentLoaded", function () {
+                    handler = function () {
                         that._raiseReadyEvent();
-                    }, false);
+                    };
+                    docRef.addEventListener("DOMContentLoaded", handler, false);
+                    this._listenersToRemove.push([docRef, "removeEventListener", "DOMContentLoaded", handler]);
+
                 }
                 // since for opera the DOMContentLoaded fires before all CSS are loaded check if all CSS are loaded
                 else {
-                    docRef.addEventListener("DOMContentLoaded", function () {
+                    handler = function () {
                         that._checkCSSLoaded();
-                    }, false);
+                    };
+                    docRef.addEventListener("DOMContentLoaded", handler, false);
+                    this._listenersToRemove.push([docRef, "removeEventListener", "DOMContentLoaded", handler]);
                 }
+                var loadHandler = function () {
+                    that._raiseReadyEvent();
+                };
+                this._listenersToRemove.push([windowObj, "removeEventListener", "load", loadHandler]);
 
                 // a fallback to window.load
-                windowObj.addEventListener("load", function () {
-                    that._raiseReadyEvent();
-                }, false);
+                windowObj.addEventListener("load", loadHandler, false);
 
             } else if (windowObj.attachEvent) {
 
@@ -96,10 +114,13 @@ Aria.classDefinition({
                 } else {
                     that._checkReadyState(true);
                 }
-                // a fallback to window.onload
-                windowObj.attachEvent("onload", function () {
+
+                handler = function () {
                     that._raiseReadyEvent();
-                });
+                };
+                this._listenersToRemove.push([windowObj, "detachEvent", "onload", handler]);
+                // a fallback to window.onload
+                windowObj.attachEvent("onload", handler);
             }
 
         },
@@ -167,7 +188,22 @@ Aria.classDefinition({
                 return;
             }
             this.isReady = true;
+            this._removeListeners();
             this.$raiseEvent('ready');
+        },
+
+        /**
+         * Removes listeners added for dom ready detection
+         * @private
+         */
+        _removeListeners : function () {
+            var listeners = this._listenersToRemove, list;
+            for (var i = 0, length = listeners.length; i < length; i++) {
+                list = listeners[i];
+                list[0][list[1]](list[2], list[3]);
+            }
+            this._listenersToRemove = [];
         }
+
     }
 });
