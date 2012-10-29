@@ -188,7 +188,7 @@ Aria.classDefinition({
             if (this._simpleHTML) {
                 return this._skinObj.states[this._state].color;
             }
-            if (aria.core.Browser.isIE7) {
+            if (this._isIE7OrLess) {
                 // As "inherit" does not work in this case in IE7, we are obliged to read the property from
                 // the frame state and apply it to the text field directly
                 var state = this._skinObj.states[this._state];
@@ -234,7 +234,7 @@ Aria.classDefinition({
             }
             if (hts) {
                 // FIXME : re-activate helpText in password field in IE
-                if (aria.core.Browser.isIE && this._isPassword) {
+                if (this._isIE7OrLess && this._isPassword) {
                     this._helpTextSet = hts = false;
                     cfg.helptext = null;
                 } else {
@@ -728,7 +728,7 @@ Aria.classDefinition({
                 inputWidth = 0;
             }
             this.getTextInputField().style.width = inputWidth + "px";
-            if ((aria.core.Browser.isIE7 || this._simpleHTML) && !this._helpTextSet) {
+            if ((this._isIE7OrLess || this._simpleHTML) && !this._helpTextSet) {
                 this.getTextInputField().style.color = this._getTextFieldColor();
             }
             if (!(this._cfg.formatError || this._cfg.error)) {
