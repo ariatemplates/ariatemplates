@@ -8,3 +8,4 @@ build/at-lint
 .settings
 .benchmarks.rb.swp
 .checkstyle
+*.log
