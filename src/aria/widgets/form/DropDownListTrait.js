@@ -207,6 +207,9 @@ Aria.classDefinition({
                 // No width specified, let the widget decide
                 return null;
             }
+            if (aria.core.Browser.isIE6) {
+                return popupWidth;
+            }
 
             return (popupWidth > inputMarkupWidth) ? popupWidth : inputMarkupWidth;
         }
