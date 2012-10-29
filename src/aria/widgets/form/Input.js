@@ -77,6 +77,12 @@ Aria.classDefinition({
          * @protected
          */
         this._inputMarkupHeight = -1;
+
+        /**
+         * @type Boolean
+         * @private
+         */
+        this._isIE7OrLess = aria.core.Browser.isIE && (parseInt(aria.core.Browser.majorVersion, 10) < 8);
     },
     $destructor : function () {
         if (this._onValidatePopup) {
@@ -148,8 +154,8 @@ Aria.classDefinition({
         _widgetMarkup : function (out) {
 
             var cfg = this._cfg, showLabel = (!cfg.hideLabel && !!cfg.label);
-            var isIE7 = aria.core.Browser.isIE7;
-            if (isIE7) {
+
+            if (this._isIE7OrLess) {
                 out.write('<span style="display: inline-block;">');
             }
             if (showLabel) {
@@ -172,7 +178,7 @@ Aria.classDefinition({
                 // no label
                 this._inputMarkup(out);
             }
-            if (isIE7) {
+            if (this._isIE7OrLess) {
                 out.write('</span>');
             }
         },
@@ -194,7 +200,7 @@ Aria.classDefinition({
                 idx = 0;
             }
             var dom = this.getDom();
-            if (aria.core.Browser.isIE7) {
+            if (this._isIE7OrLess) {
                 dom = dom ? dom.firstChild : null;
             }
             return aria.utils.Dom.getDomElementChild(dom, idx);
@@ -208,7 +214,7 @@ Aria.classDefinition({
             var cfg = this._cfg, showLabel = (!cfg.hideLabel && !!cfg.label);
             if (showLabel) {
                 var dom = this.getDom();
-                if (aria.core.Browser.isIE7) {
+                if (this._isIE7OrLess) {
                     dom = dom ? dom.firstChild : null;
                 }
                 var elems = aria.utils.Dom.getDomElementsChildByTagName(dom, 'label');
