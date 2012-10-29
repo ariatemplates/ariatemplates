@@ -4,8 +4,6 @@ var toBeExcluded = [
 	"aria/resources/*",
     // enable when https://github.com/ariatemplates/ariatemplates/issues/23 is fixed
     "aria/templates/NavigationManager.js",
-    // https://github.com/ariatemplates/ariatemplates/issues/23
-    "aria/utils/Mouse.js",
     // https://github.com/ariatemplates/ariatemplates/issues/33
     "aria/utils/SynEvents.js",
     // Using node.js globals:
