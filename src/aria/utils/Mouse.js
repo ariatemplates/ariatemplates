@@ -304,8 +304,11 @@
                 var element = this._activeDrag;
                 if (element) {
                     // IE mouseup check - mouseup happened when mouse was out of window
-                    if (aria.core.Browser.isIE && !(Aria.$window.document.documentMode >= 9) && !evt.button) {
-                        return this._onMouseUp(evt);
+                    if (!evt.button) {
+                        var browser = aria.core.Browser;
+                        if (browser.isIE8 || browser.isIE7 || browser.isIE6) {
+                            return this._onMouseUp(evt);
+                        }
                     }
                     var event = new aria.DomEvent(evt);
                     element.move(event);
