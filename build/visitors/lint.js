@@ -3,21 +3,20 @@ var options = require("./options/lint-options.js");
 var exclude = require("./options/lint-exclude.js");
 
 module.exports.onFileContent = function (callback, config, fileObject) {
-    var result;
+    var valid;
     if (exclude.isExcluded(fileObject.path)) {
-        fileObject.content = "\n\n" + fileObject.path
-                + " excluded from jshint\n--------------------------------------------------------------------\n\n";
+        fileObject.content = "[SKIP] " + fileObject.path + " excluded from jshint\n";
     } else {
-        result = jshint(fileObject.content, options, {});
+        valid = jshint(fileObject.content, options, {});
 
-        fileObject.content = "\n\n" + fileObject.path
-                + " jshint results\n=========================================\n\n";
-
-        if (!result) {
+        if (valid) {
+            fileObject.content = "[OK]   " + fileObject.path + "\n";
+        } else {
+            fileObject.content = "\n[FAIL] " + fileObject.path + "\n=========================================\n";
             jshint.errors.forEach(function (result) {
                 if (result) {
-                    fileObject.content += '[E] line ' + result.line + ', col ' + result.character + ', ' + result.reason
-                            + "\n";
+                    fileObject.content += '  [E] line ' + result.line + ', col ' + result.character + ', '
+                            + result.reason + "\n";
                     if (!config.errors) {
                         config.errors = 1;
                     } else {
@@ -25,6 +24,7 @@ module.exports.onFileContent = function (callback, config, fileObject) {
                     }
                 }
             });
+            fileObject.content += "\n";
         }
     }
 
