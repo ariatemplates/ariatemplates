@@ -427,6 +427,18 @@ Aria.classDefinition({
                 keepMetadata : true
             });
             this.assertJsonStringEquals(output, "{\"a\":\"/aaa/\"}");
+        },
+
+        /**
+         * Test if undefined values are ignored like the default behaviour of JSON.stringify
+         */
+        testUndefined : function () {
+            var testObj = {
+                a : undefined,
+                b : 1
+            };
+            var result = this.jsonSerializer.serialize(testObj);
+            this.assertJsonStringEquals(result, "{\"b\":1}");
         }
     }
 });
