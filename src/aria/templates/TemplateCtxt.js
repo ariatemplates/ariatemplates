@@ -18,8 +18,6 @@
     // shortcuts
     var layout;
     var jsonValidator;
-    var functionUtils;
-    var typeUtils;
     var __getModulePrivateInfo;
 
     // list of methods to map between the template and the template context
@@ -54,29 +52,23 @@
      * different ways: - either you already have a div object, and you want to put a template inside it - or you don't
      * have it yet, but want to include the markup of this template inside another markup and link the template with its
      * markup later
-     * @class aria.templates.TemplateCtxt
-     * @extends aria.core.JsObject
      */
     Aria.classDefinition({
-        $classpath : 'aria.templates.TemplateCtxt',
-        $dependencies : ['aria.templates.Layout', 'aria.templates.CfgBeans', 'aria.utils.Array', 'aria.utils.Function',
-                'aria.utils.Type', 'aria.templates.TemplateCtxtManager', 'aria.templates.RefreshManager',
-                'aria.templates.CSSMgr', 'aria.utils.Path', 'aria.utils.Delegate', 'aria.templates.NavigationManager',
-                'aria.templates.SectionWrapper', 'aria.core.environment.Customizations',
-                'aria.templates.DomElementWrapper', 'aria.templates.MarkupWriter', 'aria.utils.DomOverlay'],
-        $implements : ['aria.templates.ITemplate', 'aria.templates.ITemplateCtxt'],
+        $classpath : "aria.templates.TemplateCtxt",
+        $dependencies : ["aria.templates.Layout", "aria.templates.CfgBeans", "aria.utils.Array", "aria.utils.Function",
+                "aria.utils.Type", "aria.templates.TemplateCtxtManager", "aria.templates.RefreshManager",
+                "aria.templates.CSSMgr", "aria.utils.Path", "aria.utils.Delegate", "aria.templates.NavigationManager",
+                "aria.templates.SectionWrapper", "aria.core.environment.Customizations",
+                "aria.templates.DomElementWrapper", "aria.templates.MarkupWriter", "aria.utils.DomOverlay"],
+        $implements : ["aria.templates.ITemplate", "aria.templates.ITemplateCtxt"],
         $extends : "aria.templates.BaseCtxt",
         $onload : function () {
             layout = aria.templates.Layout;
             jsonValidator = aria.core.JsonValidator;
-            functionUtils = aria.utils.Function;
-            typeUtils = aria.utils.Type;
         },
         $onunload : function () {
             layout = null;
             jsonValidator = null;
-            functionUtils = null;
-            typeUtils = null;
         },
         $events : {
             "Ready" : {
@@ -253,7 +245,8 @@
                     cfg.tplDiv = null;
                 }
                 if (cfg.div) {
-                    if (typeUtils.isObject(cfg.width) || typeUtils.isObject(cfg.height)) {
+                    var isObject = aria.utils.Type.isObject;
+                    if (isObject(cfg.width) || isObject(cfg.height)) {
                         layout.unregisterAutoresize(cfg.div);
                     }
                     aria.utils.Dom.replaceHTML(cfg.div, "");
@@ -398,8 +391,6 @@
                         fn : this.$refresh,
                         args : args,
                         scope : this
-                        // TODO : write explicite TODO ...
-                        // TODO check this
                     }, this);
                 } else {
                     if (!this._cfg.tplDiv) {
@@ -769,7 +760,7 @@
             },
 
             /**
-             * Insert the sction's markup in the DOM
+             * Insert the section's markup in the DOM
              */
             insertSection : function (section, skipInsertHTML) {
                 // PROFILING // var profilingId = this.$startMeasure("Inserting section in DOM from " +
@@ -969,9 +960,7 @@
                     idCount++;
                 }
 
-                // if the template has been customized, get the actual (customized) classpath
-                // this is already done in the widget
-                // this.tplClasspath = aria.core.environment.Customizations.getTemplateCP(cfg.classpath);
+                // if the template has been customized, the widget returns already the actual (customized) classpath
                 this.tplClasspath = cfg.classpath;
 
                 // TODO: check if cfg.classpath corresponds to a template is a template
@@ -1085,6 +1074,7 @@
                     tpl[name] = this[name];
                 }
 
+                var functionUtils = aria.utils.Function;
                 for (index = 0; name = methodMapping[index]; index++) {
                     tpl[name] = functionUtils.bind(this[name], this);
                 }
