@@ -32,71 +32,97 @@ Aria.classDefinition({
         INVALID_HASHPOLLING_TRIGGER : "Enabling hash polling is allowed only in IE7.",
         INVALID_HASHOBJECT_TYPE : "Invalid hash object: value corresponding to key %1 is not a string.",
         INVALID_HASHOBJECT_VALUE : "Invalid hash object: value '%1' corresponding to key '%2' of the hashObject contains one the non encodable separators '%3'",
-        INVALID_HASHOBJECT_KEY : "Invalid hash object: key '%1' of the hashObject contains one the non encodable separators '%2'"
+        INVALID_HASHOBJECT_KEY : "Invalid hash object: key '%1' of the hashObject contains one the non encodable separators '%2'",
+        IFRAME_ID : "at_hash_manager_iframe"
     },
     $constructor : function () {
 
         /**
          * List of separators between two key=value pairs
-         * @type {Array}
+         * @type Array
          * @protected
          */
         this._separators = [",", "&"];
 
         /**
          * Separators regular expression
-         * @type {RegExp}
+         * @type RegExp
          * @protected
          */
         this._separatorRegExp = this.__buildRegExpFromArray(this._separators);
 
         /**
          * List of separators that cannot be encoded and hence cannot be used in the values
-         * @type {Array}
+         * @type Array
          * @protected
          */
         this._nonEncodableSeparators = this.__getNonEncodedSeparators(this._separators);
 
         /**
          * Non encodable separators regular expression
-         * @type {RegExp}
+         * @type RegExp
          * @protected
          */
         this._nonEncodableSepRegExp = this.__buildRegExpFromArray(this._nonEncodableSeparators);
 
         /**
          * List of callbacks for the hashchange event
-         * @type {Array}
+         * @type Array
          * @protected
          */
         this._hashChangeCallbacks = null;
 
         /**
          * Current hash string
-         * @type {String}
+         * @type String
          * @protected
          */
         this._currentHashString = decodeURIComponent(this.getHashString());
 
         /**
-         * Enable the IE7 polling for hashChange
-         * @type {Boolean}
+         * Whether the browser is IE7 or an earlier version of IE
+         * @type Boolean
          * @protected
          */
-        this._enableIE7polling = aria.core.Browser.isIE7;
+        this._isIE7OrLess = aria.core.Browser.isIE && parseInt(aria.core.Browser.majorVersion, 10) < 8;
+
+        /**
+         * Enable polling for hashChange
+         * @type Boolean
+         * @protected
+         */
+        this._enableIEpolling = this._isIE7OrLess;
 
         /**
          * Shortcut to aria.utils.Type
-         * @type {aria.utils.Type}
+         * @type aria.utils.Type
          * @protected
          */
         this._typeUtil = aria.utils.Type;
 
         /**
          * Poll interval for ie7
-         * @type {Number}
+         * @type Number
          */
         this.ie7PollDelay = 75;
+
+        /**
+         * Iframe used to enable back/forward navigation in some browsers
+         * @type HTMLElement
+         * @protected
+         */
+        this._iframe = null;
+
+        /**
+         * Current hash string of the iframe
+         * @type String
+         * @protected
+         */
+        this._currentIframeHashString = null;
+
+        if (this._isIE7OrLess) {
+            this._createIframe();
+        }
 
     },
     $destructor : function () {
@@ -104,6 +130,11 @@ Aria.classDefinition({
          * Remove the default callback for hashchange
          */
         this._removeHashChangeInternalCallback();
+
+        if (this._isIE7OrLess) {
+            this._destroyIframe();
+        }
+
     },
 
     $prototype : {
@@ -115,17 +146,20 @@ Aria.classDefinition({
          * <li> if hash = "#first=myFirst,second=mySecond" it returns {first : "myFirst", second : "mySecond"}</li>
          * <li> if hash = "#myFirst" it returns {param0 : "myFirst"}</li>
          * </ul>
+         * @param {Object} window Window whose hash to return. It defaults to Aria.$window.
          * @return {Object} current hash object
          */
-        getHashObject : function () {
-            return aria.utils.Json.copy(this._extractHashObject(this.getHashString()));
+        getHashObject : function (window) {
+            return aria.utils.Json.copy(this._extractHashObject(this.getHashString(window)));
         },
         /**
          * Return the current hash string excluding the '#' character at the beginning
+         * @param {Object} window Window whose hash to return. It defaults to Aria.$window.
          * @return {String} current hash object
          */
-        getHashString : function () {
-            var href = Aria.$window.location.href;
+        getHashString : function (window) {
+            window = window || Aria.$window;
+            var href = window.location.href;
             var sharpIndex = href.indexOf("#");
             if (sharpIndex != -1) {
                 return href.substring(sharpIndex + 1);
@@ -136,8 +170,10 @@ Aria.classDefinition({
         /**
          * Sets the hash starting from a string or an object. The string can contain the starting "#" or not.
          * @param {String|Object} hashString
+         * @param {Object} window Window whose hash to set. It defaults to Aria.$window.
          */
-        setHash : function (arg) {
+        setHash : function (arg, window) {
+            window = window || Aria.$window;
             var newHashString = "";
             if (this._typeUtil.isObject(arg)) {
                 if (this._validateHashObject(arg)) {
@@ -150,8 +186,8 @@ Aria.classDefinition({
             } else {
                 this.$logError(this.INVALID_SETHASH_ARGUMENT);
             }
-            if (this.getHashString() != newHashString) {
-                Aria.$window.location.hash = newHashString;
+            if (this.getHashString(window) != newHashString) {
+                window.location.hash = newHashString;
             }
         },
 
@@ -252,15 +288,15 @@ Aria.classDefinition({
          * @param {Boolean} enable whether the hash polling should be enabled or not
          */
         setIE7polling : function (enable) {
-            if (enable && !aria.core.Browser.isIE7) {
+            if (enable && !this._isIE7OrLess) {
                 this.$logWarn(this.INVALID_HASHPOLLING_TRIGGER);
             }
-            enable = enable && aria.core.Browser.isIE7;
-            if (enable && !this._enableIE7polling) {
-                this._enableIE7polling = enable;
+            enable = enable && this._isIE7OrLess;
+            if (enable && !this._enableIEpolling) {
+                this._enableIEpolling = enable;
                 this._hashPoll();
             } else {
-                this._enableIE7polling = enable;
+                this._enableIEpolling = enable;
             }
         },
 
@@ -311,7 +347,7 @@ Aria.classDefinition({
          */
         _addHashChangeInternalCallback : function () {
             this._hashPoll();
-            if (!aria.core.Browser.isIE7) {
+            if (!this._isIE7OrLess) {
                 aria.utils.Event.addListener(Aria.$window, 'hashchange', {
                     fn : this._internalCallback,
                     scope : this
@@ -325,14 +361,23 @@ Aria.classDefinition({
          * @protected
          */
         _hashPoll : function () {
-            if (this._enableIE7polling) {
+            if (this._enableIEpolling) {
                 aria.core.Timer.addCallback({
                     fn : this._hashPoll,
                     scope : this,
                     delay : this.ie7PollDelay
                 });
-                var hash = this.getHashString();
-                if (hash != this._currentHashString) {
+                var iframeWindow = this._iframe.contentWindow;
+                var documentHash = this.getHashString();
+                var iframeHash = this.getHashString(iframeWindow);
+                // back or forward
+                if (iframeHash != this._currentIframeHashString) {
+                    this._currentIframeHashString = iframeHash;
+                    this._currentHashString = iframeHash;
+                    this.setHash(iframeHash);
+                    this._internalCallback();
+                } else if (documentHash != this._currentHashString) {// no back or forward
+                    this._addIframeHistoryEntry(documentHash);
                     this._internalCallback();
                 }
             }
@@ -361,7 +406,7 @@ Aria.classDefinition({
          * @protected
          */
         _removeHashChangeInternalCallback : function () {
-            if (!aria.core.Browser.isIE7) {
+            if (!this._isIE7OrLess) {
                 aria.utils.Event.removeListener(Aria.$window, 'hashchange', {
                     fn : this._internalCallback
                 });
@@ -432,7 +477,56 @@ Aria.classDefinition({
             } else {
                 return new RegExp(regexpStringArray.join("|"));
             }
-        }
+        },
 
+        /**
+         * Create an iframe that is used to simulate a history in browsers that do not do that in the main window on
+         * hash change
+         * @protected
+         */
+        _createIframe : function () {
+
+            var iframe, document = Aria.$window.document;
+
+            iframe = document.createElement('iframe');
+
+            iframe.setAttribute('id', this.IFRAME_ID);
+            iframe.style.display = 'none';
+
+            document.body.appendChild(iframe);
+
+            this._iframe = iframe;
+
+            this._addIframeHistoryEntry(this._currentHashString);
+        },
+
+        /**
+         * Add a hash in the iframe history
+         * @param {String} hash
+         * @protected
+         */
+        _addIframeHistoryEntry : function (hash) {
+
+            var iframe = this._iframe;
+            if (!iframe) {
+                return;
+            }
+            hash = hash || "";
+            if (this._currentIframeHashString != hash) {
+                iframe.contentWindow.document.open();
+                iframe.contentWindow.document.close();
+                this._currentIframeHashString = hash;
+                this.setHash(hash, iframe.contentWindow);
+            }
+        },
+
+        /**
+         * Destroy the iframe created to simulate a history
+         * @protected
+         */
+        _destroyIframe : function () {
+            Aria.$window.document.body.removeChild(this._iframe);
+            this._iframe = null;
+        }
     }
 });
