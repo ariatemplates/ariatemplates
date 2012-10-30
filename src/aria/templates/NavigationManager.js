@@ -224,11 +224,11 @@ Aria.classDefinition({
                     var focusSuccess = target.__widget.focus(null, cb);
                     // PTR 04634723 - the focus method of the template widget returns a boolean value that represents
                     // the success/failure of the focus.
-                    if (focusSuccess == false) {
-                        return false;
-                    } else {
-                        return true;
-                    }
+                    // Note 30.10.2012: I refactored from return (focusSuccess==false) ? false:true
+                    // It seems that false is returned from 'focus' method in case of failure, and undefined (*not*
+                    // true, as stated above!) otherwise. So logically, seems there should be === false comparison here,
+                    // but the code seems to be working fine...
+                    return !!focusSuccess;
                 } else {
                     return false;
                 }

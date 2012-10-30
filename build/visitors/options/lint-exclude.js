@@ -1,9 +1,7 @@
 // List of files/folders to be excluded from JSLint
 var toBeExcluded = [
     // Resources can be enabled again when https://github.com/jshint/jshint/issues/494 is fixed
-	"aria/resources/*",
-    // enable when https://github.com/ariatemplates/ariatemplates/issues/23 is fixed
-    "aria/templates/NavigationManager.js",
+    "aria/resources/*",
     // https://github.com/ariatemplates/ariatemplates/issues/33
     "aria/utils/SynEvents.js",
     // Using node.js globals:
