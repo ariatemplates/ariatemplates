@@ -271,7 +271,6 @@ Aria.classDefinition({
         },
 
         __testAddRemoveCallbackCb1 : function () {
-            debugger;
             var hm = this.hm;
             this.assertTrue(this.__callbackCount["__callback1"] == 1);
             this.assertTrue(this.__callbackCount["__callback2"] == 1);
@@ -387,6 +386,73 @@ Aria.classDefinition({
             this.__callbackCount["__callback3"] = (this.__callbackCount["__callback3"])
                     ? this.__callbackCount["__callback3"] + 1
                     : 1;
+        },
+
+        testAsyncBackForward : function () {
+
+            var hm = this.hm;
+
+            this.__cb4 = {
+                fn : this.__callback4,
+                scope : this
+            };
+
+            hm.addCallback(this.__cb4);
+            hm.setHash("aaa");
+            aria.core.Timer.addCallback({
+                fn : this.__testAsyncBackForwardCb1,
+                scope : this,
+                delay : 2 * hm.ie7PollDelay
+            });
+        },
+
+        __testAsyncBackForwardCb1 : function () {
+            this.assertTrue(this.__callbackOrder.length == 1);
+            this.assertTrue(this.__callbackOrder[0] == "aaa");
+            this.hm.setHash("bbb");
+            aria.core.Timer.addCallback({
+                fn : this.__testAsyncBackForwardCb2,
+                scope : this,
+                delay : 2 * this.hm.ie7PollDelay
+            });
+        },
+
+        __testAsyncBackForwardCb2 : function () {
+            this.assertTrue(this.__callbackOrder.length == 2);
+            this.assertTrue(this.__callbackOrder[1] == "bbb");
+            Aria.$window.history.back();
+            aria.core.Timer.addCallback({
+                fn : this.__testAsyncBackForwardCb3,
+                scope : this,
+                delay : 2 * this.hm.ie7PollDelay
+            });
+        },
+
+        __testAsyncBackForwardCb3 : function () {
+            this.assertTrue(this.__callbackOrder.length == 3);
+            this.assertTrue(this.__callbackOrder[2] == "aaa");
+            Aria.$window.history.forward();
+            aria.core.Timer.addCallback({
+                fn : this.__testAsyncBackForwardCb4,
+                scope : this,
+                delay : 2 * this.hm.ie7PollDelay
+            });
+        },
+
+        __testAsyncBackForwardCb4 : function () {
+            this.assertTrue(this.__callbackOrder.length == 4);
+            this.assertTrue(this.__callbackOrder[3] == "bbb");
+            this.hm.removeCallback(this.__cb4);
+            this.__callbackOrder = null;
+            delete this.__cb4;
+            this.myNotifyTestEnd("testAsyncBackForward");
+
+        },
+
+        __callback4 : function (hashObject) {
+            this.assertJsonEquals(hashObject, this.hm.getHashObject());
+            this.__callbackOrder = this.__callbackOrder || [];
+            this.__callbackOrder.push(this.hm.getHashString());
         }
 
     }
