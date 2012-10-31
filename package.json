@@ -11,7 +11,7 @@
   "main": "src/aria/node.js",
   "dependencies": {
     "wrench": "1.3.x",
-    "packman": "0.2.x",
+    "packman": "0.2.7",
     "jshint": "0.7.x",
     "mkdirp": "0.3.x"
   },
