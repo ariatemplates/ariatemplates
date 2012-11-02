@@ -19,7 +19,7 @@
 Aria.classDefinition({
     $classpath : "aria.utils.String",
     $singleton : true,
-    $dependencies : ["aria.utils.Type", "aria.utils.Json"],
+    $dependencies : ["aria.utils.Type"],
     $constructor : function () {},
     $prototype : {
         /**

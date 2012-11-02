@@ -84,15 +84,17 @@
             // file as well, so that the content of the core is also correct when packaged.
             'aria/core/JsObject.js',
 
+            // mandatory utils required by log
+            'aria/utils/Type.js',
+            'aria/utils/String.js',
+
             // errors and logs
             'aria/core/log/DefaultAppender.js',
             'aria/core/Log.js',
 
             // mandatory utils
             'aria/utils/Array.js',
-            'aria/utils/String.js',
             'aria/utils/QueryString.js',
-            'aria/utils/Type.js',
             'aria/utils/json/JsonSerializer.js',
             'aria/utils/Json.js',
             'aria/utils/Object.js',
