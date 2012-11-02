@@ -130,7 +130,7 @@ Aria.classDefinition({
         _afterDropdownOpen : function () {
             // when the popup is clicked, keep the focus on the right element:
             this._keepFocus = true;
-            this.focus();
+            this.focus(null, true);
         },
 
         /**
@@ -141,7 +141,7 @@ Aria.classDefinition({
             this._dropdownPopup.$dispose();
             this._dropdownPopup = null;
             aria.templates.Layout.$unregisterListeners(this);
-            this.focus();
+            this.focus(null, true);
             this._keepFocus = false;
         },
 
