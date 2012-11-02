@@ -257,8 +257,14 @@
                     clearTimeout(this._typeTimout);
                     this._typeTimout = null;
                 }
-                var controller = this;
-                this._typeTimout = setTimeout(function () {
+                var controller = this, domEvent = aria.DomEvent;
+
+				 if (keyCode == domEvent.KC_ARROW_DOWN && !nextValue && controller.expandButton){
+					controller.toggleDropdown("", !!controller._listWidget);
+					return;
+				}
+
+				this._typeTimout = setTimeout(function () {
                     controller._typeTimout = null;
 
                     controller._pendingRequestNb += 1;
