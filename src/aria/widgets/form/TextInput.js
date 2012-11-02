@@ -146,7 +146,9 @@ Aria.classDefinition({
         this._simpleHTML = this._skinObj.simpleHTML;
 
         /**
-         * Flag set to false after first focus, and set back to true after a blur. Used for the autoselect behaviour.
+         * Flag set to false after first focus, and set back to true after a blur. Used for the autoselect behaviour.<br />
+         * This value is true when the field receives focus for the first time (user action) and false when the focus is
+         * giveng programmatically by the controller
          * @type Boolean
          */
         this._firstFocus = true;
@@ -828,7 +830,6 @@ Aria.classDefinition({
          * @protected
          */
         _dom_onfocus : function (event) {
-
             this._hasFocus = true;
             if (!this._keepFocus) {
                 var cfg = this._cfg;
@@ -1151,9 +1152,13 @@ Aria.classDefinition({
 
         /**
          * Focus this field
+         * @param {Array} idArray Path of ids on which we should give focus. Should be empty
+         * @param {Boolean} fromSelf Whether the focus is coming from the widget itself. In this case we don't try to
+         * autoselect
          * @return {Boolean} true if focus was possible
+         * @override
          */
-        focus : function () {
+        focus : function (idArray, fromSelf) {
             if (this._cfg.disabled) {
                 return false;
             }
@@ -1163,7 +1168,9 @@ Aria.classDefinition({
             // and focused at the end of the textinput.value string
             textInputField.value = textInputField.value;
 
-            this._autoselect();
+            if (!fromSelf) {
+                this._autoselect();
+            }
         },
 
         /**
