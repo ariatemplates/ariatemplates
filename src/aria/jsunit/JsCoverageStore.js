@@ -36,7 +36,6 @@ Aria.classDefinition({
          */
         this._urlSuffix = aria.core.Browser.name.toLowerCase() + "/" + this.reportDate + "/";
     },
-    $destructor : function () {},
     $prototype : {
         /**
          * Send all the JsCoverage reports to the jscoverage server

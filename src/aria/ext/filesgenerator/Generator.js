@@ -60,7 +60,6 @@ Aria.classDefinition({
          */
         this.__classNameCounter = 0;
     },
-    $destructor : function () {},
     $prototype : {
         /**
          * Get a file skeleton string for any AT resource: class, interface, module, flow, ... This is the low-level

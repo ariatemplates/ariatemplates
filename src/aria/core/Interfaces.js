@@ -234,7 +234,6 @@
     Aria.classDefinition({
         $classpath : 'aria.core.Interfaces',
         $singleton : true,
-        $destructor : function () {},
         $statics : {
             // ERROR MESSAGES:
             INVALID_INTERFACE_MEMBER : "The '%1' interface has a '%2' member, which does not respect the constraints on interface member names. This member will be ignored.",

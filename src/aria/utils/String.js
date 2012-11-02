@@ -20,7 +20,6 @@ Aria.classDefinition({
     $classpath : "aria.utils.String",
     $singleton : true,
     $dependencies : ["aria.utils.Type"],
-    $constructor : function () {},
     $prototype : {
         /**
          * Substitute %n parameters in a string

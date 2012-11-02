@@ -83,7 +83,6 @@
                 this.init(this._data);
             }
         },
-        $destructor : function () {},
         $prototype : {
             /**
              * Instance initialization

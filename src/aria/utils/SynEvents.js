@@ -2705,7 +2705,6 @@
         $onunload : function () {
 
         },
-        $constructor : function () {},
         $prototype : {
 
             /**

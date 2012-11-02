@@ -15,8 +15,6 @@
 
 Aria.classDefinition({
     $classpath : 'aria.templates.PublicWrapper',
-    $constructor : function () {},
-    $destructor : function () {},
     $prototype : {
         /**
          * Classpath of the interface to be used as the public interface of this public wrapper.

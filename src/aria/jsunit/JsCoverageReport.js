@@ -31,7 +31,6 @@
              */
             this._reportContainer = null;
         },
-        $destructor : function () {},
         $prototype : {
             /**
              * @param {Boolean} toEmail : indicates if the output will be used in an email or not

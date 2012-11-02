@@ -22,7 +22,6 @@
 Aria.classDefinition({
     $classpath : 'aria.templates.BaseTemplate',
     $dependencies : ['aria.templates.Modifiers', 'aria.templates.IBaseTemplate', 'aria.utils.Json'],
-    $constructor : function () {},
     $destructor : function () {
         /* this is important for $destructor not to be overridden by the one of ITemplate interface */
     },

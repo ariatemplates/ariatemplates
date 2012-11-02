@@ -21,7 +21,6 @@
 Aria.classDefinition({
     $classpath : 'aria.utils.Xml',
     $singleton : true,
-    $constructor : function () {},
     $prototype : {
 
         /**

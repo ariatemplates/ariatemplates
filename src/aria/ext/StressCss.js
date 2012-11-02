@@ -570,7 +570,6 @@
      */
     Aria.classDefinition({
         $classpath : "aria.ext.StressCss",
-        $constructor : function () {},
         $singleton : true,
         $dependencies : ["aria.utils.Object", "aria.utils.String"],
         $prototype : {

@@ -22,7 +22,6 @@
      */
     Aria.classDefinition({
         $classpath : 'aria.core.log.DefaultAppender',
-        $constructor : function () {},
         $prototype : console ? {
             /**
              * Output the first part of the string corresponding to the classname in the log
