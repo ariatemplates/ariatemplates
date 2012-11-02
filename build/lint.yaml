@@ -2,6 +2,7 @@ source: src
 destination: build/at-lint
 eraseIfExists: true
 exitOnFailedVisitor: true
+exitOnFileNotFound: true
 visitors:
 - ./build/visitors/lint.js
 packages:

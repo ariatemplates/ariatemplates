@@ -10,6 +10,7 @@ source: build/at-bootstrap
 destination: build/releases/standard/target
 eraseIfExists: true
 exitOnFailedVisitor: true
+exitOnFileNotFound: true
 urlmap: ./build/releases/standard/map.json
 visitors:
 - uglify

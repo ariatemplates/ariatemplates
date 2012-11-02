@@ -2,6 +2,7 @@ source: src
 destination: build/at-bootstrap
 eraseIfExists: true
 exitOnFailedVisitor: true
+exitOnFileNotFound: true
 visitors:
 - ./build/visitors/copysource.js
 - ./build/visitors/license.js
