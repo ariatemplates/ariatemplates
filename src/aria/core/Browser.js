@@ -14,9 +14,10 @@
  */
 
 /**
- * @class aria.core.Browser Global class gathering information about current browser type and version
- * @extends aria.core.JsObject
  * @singleton
+ * Global class gathering information about current browser type and version
+ * A list of user agent string for mobile phones could be find here:
+ * http://www.useragentstring.com/pages/Mobile%20Browserlist/
  */
 Aria.classDefinition({
     $classpath : 'aria.core.Browser',
@@ -135,15 +136,9 @@ Aria.classDefinition({
 
         /**
          * Major version.
-         * @type String
+         * @type Integer
          */
         this.majorVersion = "";
-
-        /**
-         * Browser code : name+majorVersion
-         * @type String
-         */
-        this.code = "";
 
         this._init();
     },
@@ -241,21 +236,15 @@ Aria.classDefinition({
                     this.version = RegExp.$1;
                 }
             } else if (this.isOpera) {
-                if (/opera[\/\s]((?:\d+\.?)+)/.test(ua)) {
+                if (/version[\/\s]((?:\d+\.?)+)/.test(ua)) {
                     this.version = RegExp.$1;
                 }
             }
-
             if (this.version) {
-                if (this.isFirefox) {
-                    this.majorVersion = this.version.substring(0, 3);
-                } else {
-                    this.majorVersion = this.version.substring(0, 1);
+                if (/(\d+)\./.test(this.version)) {
+                    this.majorVersion = parseInt(RegExp.$1, 10);
                 }
             }
-
-            this.code = this.name + this.majorVersion; // browser code :
-            // name+majorVersion
         }
     }
 });
