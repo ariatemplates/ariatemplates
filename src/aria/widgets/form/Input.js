@@ -82,7 +82,7 @@ Aria.classDefinition({
          * @type Boolean
          * @private
          */
-        this._isIE7OrLess = aria.core.Browser.isIE && (parseInt(aria.core.Browser.majorVersion, 10) < 8);
+        this._isIE7OrLess = aria.core.Browser.isIE && aria.core.Browser.majorVersion < 8;
     },
     $destructor : function () {
         if (this._onValidatePopup) {
