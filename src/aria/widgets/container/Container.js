@@ -32,6 +32,9 @@ Aria.classDefinition({
 
         this._cssClassNames = aria.core.TplClassLoader.addPrintOptions(this._cssClassNames, cfg.printOptions);
 
+        //Init this if your class needs a border.
+        this._frame = null;
+
         /**
          * Specifies if size constraints are specified in the config (and so if it is useful to call
          * aria.utils.Size.setContrains for this container).
@@ -78,8 +81,10 @@ Aria.classDefinition({
             // PROFILING // this.$logTimestamp("updateContainerSize");
             var cfg = this._cfg, domElt = this.getDom(), widthConf, heightConf, changed;
 
-            if (domElt && this._sizeConstraints) {
+            if (!domElt)
+                return;
 
+            if (this._sizeConstraints) {//If we are bound to min and max size
                 if (cfg.width == -1) {
                     widthConf = {
                         min : cfg.minWidth,
@@ -94,14 +99,6 @@ Aria.classDefinition({
                     };
                 }
 
-                if (this._changedContainerSize) {
-                    domElt.style.width = cfg.width > -1 ? cfg.width + "px" : "";
-                    domElt.style.height = cfg.height > -1 ? cfg.height + "px" : "";
-                    if (this._frame) {
-                        this._frame.resize(cfg.width, cfg.height);
-                    }
-                }
-
                 changed = aria.utils.Size.setContrains(domElt, widthConf, heightConf);
                 if (changed && this._frame) {
                     this._frame.resize(changed.width, changed.height);
@@ -112,7 +109,14 @@ Aria.classDefinition({
                 }
                 this._changedContainerSize = changed;
 
+            } else if (this._changedContainerSize) { //If we are not bound,resize freely
+                domElt.style.width = cfg.width > -1 ? cfg.width + "px" : "";
+                domElt.style.height = cfg.height > -1 ? cfg.height + "px" : "";
+                if (this._frame) {
+                    this._frame.resize(cfg.width, cfg.height);
+                }
             }
+
         },
 
         /**
@@ -129,7 +133,32 @@ Aria.classDefinition({
          * @param {aria.templates.MarkupWriter} out the writer Object to use to output markup
          * @protected
          */
-        _widgetMarkupEnd : function (out) {}
+        _widgetMarkupEnd : function (out) {},
 
+        /**
+         * Updates the size of the dom object accordingly to the new values of this._cfg.
+         */
+        _updateSize : function () {
+            this._changedContainerSize = true;
+            this._updateContainerSize();
+        },
+
+        /**
+         * Internal method called when one of the model property that the widget is bound to has changed Must be
+         * overridden by sub-classes defining bindable properties
+         * @param {String} propertyName the property name
+         * @param {Object} newValue the new value
+         * @param {Object} oldValue the old property value
+         * @protected
+         * @override
+         */
+        _onBoundPropertyChange : function (propertyName, newValue, oldValue) {
+            if (propertyName === "height" || propertyName === "width") {
+                this._updateSize();
+            } else {
+                // delegate to parent class
+                this.$Widget._onBoundPropertyChange.apply(this, arguments);
+            }
+        }
     }
 });
