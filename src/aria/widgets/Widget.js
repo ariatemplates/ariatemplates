@@ -189,15 +189,18 @@
             }
 
             // check id
-            if (!cfg.id) {
-                // create a dynamic id
-                // for dynamic ids, it is better not to add a template context suffix,
-                // because id unicity is already ensured by construction and because adding a suffix
-                // makes ids less reusable (and IE has leaks when ids are not reused)
-                this._domId = this._createDynamicId();
-            } else {
-                this._domId = this._context.$getId(cfg.id);
+            var id = cfg.id;
+            var domId;
+            if (id && id.indexOf('+') > -1) {
+                if (Aria.testMode) {
+                    domId = this._context.$getAutoId(id);
+                }
+                // From the application's point of view, an id with a '+' inside it is equivalent to no id at all.
+                // We only use the id with a '+' inside it to generate the id used in the DOM
+                delete cfg.id;
+                id = null;
             }
+            this._domId = domId || (id ? this._context.$getId(id) : this._createDynamicId());
         },
         $destructor : function () {
             this.removeDelegation();
