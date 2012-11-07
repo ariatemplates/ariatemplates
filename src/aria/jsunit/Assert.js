@@ -175,10 +175,7 @@
              * @param {String} optMsg optional message to add to the failure description
              */
             assertFalse : function (value, optMsg) {
-                if (!optMsg) {
-                    "Expected false. Got : " + value;
-                }
-                this.assertTrue((value === false), optMsg);
+                this.assertTrue((value === false), optMsg || ("Expected false. Got : " + value));
             },
 
             /**
@@ -188,10 +185,7 @@
              * @param {String} optMsg optional message to add to the failure description
              */
             assertEquals : function (value1, value2, optMsg) {
-                if (!optMsg) {
-                    "Expected : " + value1 + ". Got : " + value2;
-                }
-                this.assertTrue((value1 === value2), optMsg);
+                this.assertTrue((value1 === value2), optMsg || ("Expected : " + value1 + ". Got : " + value2));
             },
 
             /**
@@ -201,10 +195,7 @@
              * @param {String} optMsg optional message to add to the failure description
              */
             assertNotEquals : function (value1, value2, optMsg) {
-                if (!optMsg) {
-                    "Expected : " + value1 + ". Got : " + value2;
-                }
-                this.assertTrue((value1 !== value2), optMsg);
+                this.assertTrue((value1 !== value2), optMsg || ("Expected : " + value1 + ". Got : " + value2));
             },
 
             /**
