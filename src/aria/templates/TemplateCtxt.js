@@ -768,7 +768,8 @@
                 var differed;
                 var params = this._cfg;
                 var tpl = this._tpl;
-                var domElt = !section.id ? params.tplDiv : aria.utils.Dom.getElementById(this.$getId(section.id));
+                var domElt = section.id ? section.getDom() : params.tplDiv;
+
                 if (domElt) {
                     if (!skipInsertHTML) {
                         // replaceHTML may change domElt (especially on IE)
@@ -958,6 +959,10 @@
                 } else {
                     this._id = "tpl" + idCount;
                     idCount++;
+                }
+
+                if (Aria.testMode) {
+                    this._prefixIds = {};
                 }
 
                 // if the template has been customized, the widget returns already the actual (customized) classpath
@@ -1280,6 +1285,20 @@
             },
 
             /**
+             * Generate an automatic id computed from a base id, with an incremental counter
+             * @param {String} baseId specified in the template
+             * @return {String} The global id to be used in the dom
+             */
+            $getAutoId : function (baseId) {
+                baseId = this._id + "_" + baseId.replace(/\+/g, "");
+
+                // Calculate and return the new id
+                var prefixIds = this._prefixIds;
+                var id = prefixIds[baseId] = (prefixIds[baseId] || 0) + 1;
+                return baseId + "_auto_" + id;
+            },
+
+            /**
              * Write generated ID to DOM Element. This method is intended to be called only from the generated code of
              * templates (created in aria.templates.ClassGenerator) and never directly from developper code. A call to
              * this method is generated for the {id ...} statement
@@ -1290,8 +1309,24 @@
             __$writeId : function (id) {
                 // the id must come from the real template context (for a macro lib today, this is not the real
                 // templateCtxt)
-                var genId = this._out.tplCtxt.$getId(id);
-                this._out.write('id="' + genId + '"');
+                var genId = this._out.tplCtxt.getDomId(id);
+                if (genId) {
+                    this._out.write('id="' + genId + '"');
+                }
+            },
+
+            /**
+             * Return the generated domId for specified id.
+             * @return {String}
+             */
+            getDomId : function (id) {
+                if (id && id.indexOf("+") != -1) {
+                    if (Aria.testMode) {
+                        return this.$getAutoId(id);
+                    }
+                    return null;
+                }
+                return this.$getId(id);
             },
 
             /**
