@@ -17,7 +17,7 @@
  * Test for the IO class, limited to the jsonp part
  */
 Aria.classDefinition({
-    $classpath : "test.aria.core.JSONPTest",
+    $classpath : "test.aria.core.io.JSONPTest",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["test.aria.core.test.IOFilterSample"],
     $prototype : {
@@ -116,7 +116,7 @@ Aria.classDefinition({
             });
 
             aria.core.IO.evalJsonPforTestSampleString = function (json) {
-                aria.core.IO["_jsonp" + reqId].call(aria.core.IO, json);
+                aria.core.transport.JsonP["_jsonp" + reqId].call(aria.core.transport.JsonP, json);
             };
         },
         _onTestLocalStringSuccess : function (response, args) {
@@ -154,7 +154,7 @@ Aria.classDefinition({
             });
 
             aria.core.IO.evalJsonPforTestSampleObject = function (json) {
-                aria.core.IO["_jsonp" + reqId].call(aria.core.IO, json);
+                aria.core.transport.JsonP["_jsonp" + reqId].call(aria.core.transport.JsonP, json);
             };
         },
         _onTestLocalObjectSuccess : function (response, args) {
@@ -315,7 +315,7 @@ Aria.classDefinition({
                             req.jsonp = "callback";
                             req.url = aria.core.DownloadMgr.resolveURL("test/aria/core/test/SampleString.jsonp");
                             aria.core.IO.evalJsonPforTestSampleString = function (json) {
-                                aria.core.IO["_jsonp" + req.id].call(aria.core.IO, json);
+                                aria.core.transport.JsonP["_jsonp" + req.id].call(aria.core.transport.JsonP, json);
                             };
                         }
                     } catch (e) {

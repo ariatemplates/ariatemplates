@@ -14,54 +14,41 @@
  */
 
 /**
- * Transport class for Local requests. It extends from aria.core.transport.XHR and redefines some methods to work with
- * file: protocol. Being a singleton the extension is not done through $extends
- * @class aria.core.transport.Local
- * @extends aria.core.JsObject
+ * Transport class for Local requests. It's a XHR transport but redefines some methods to work with file:// protocol.
  * @singleton
  */
 Aria.classDefinition({
     $classpath : "aria.core.transport.Local",
     $singleton : true,
     $extends : "aria.core.transport.BaseXHR",
-    $constructor : function () {
-        this.$BaseXHR.constructor.call(this);
-    },
     $prototype : {
         /**
          * Perform a request.
-         * @param {String} reqId Request identifier
-         * @param {String} method Request method, GET or POST
-         * @param {String} uri Resource URI
-         * @param {Object} callback Internal callback description
-         * @param {String} postData Data to be sent in a POST request
-         * @return {Object} connection object
+         * @param {aria.core.CfgBeans.IOAsyncRequestCfg} request Request object
+         * @param {aria.core.CfgBeans.Callback} callback
          * @throws
-         * @override
          */
-        request : function (reqId, method, uri, callback, postData) {
+        request : function (request, callback) {
             if (aria.core.Browser.isOpera) {
                 // Opera doesn't work with file protocol but the iFrameHack seems to work
-                return this._iFrameHack(reqId);
+                return this._iFrameHack(request, callback);
             }
 
-            this.$BaseXHR.request.call(this, reqId, method, uri, callback, postData);
+            this.$BaseXHR.request.call(this, request, callback);
         },
 
         /**
          * Use an iFrame to load the content of a request. This raises a security error on most of the browsers except
          * Opera (desktop and mobile). It's ugly but it works.
-         * @param {String} reqId Request identifier
+         * @param {aria.core.CfgBeans.IOAsyncRequestCfg} request Request object
+         * @param {aria.core.CfgBeans.Callback} callback Internal callback description
          */
-        _iFrameHack : function (reqId) {
-            var params = this._requestParams[reqId];
-            this.$assert(56, !!params);
-            delete this._requestParams[reqId];
+        _iFrameHack : function (request, callback) {
 
             var document = Aria.$frameworkWindow.document;
             var iFrame = document.createElement("iframe");
-            iFrame.src = params.uri;
-            iFrame.id = "xIFrame" + params.reqId;
+            iFrame.src = request.url;
+            iFrame.id = "xIFrame" + request.id;
             iFrame.style.cssText = "display:none";
 
             // Event handlers
@@ -85,14 +72,11 @@ Aria.classDefinition({
                     iFrame = undefined;
 
                     // Callback if not abort
-                    aria.core.IO._handleTransactionResponse({
-                        conn : {
-                            status : 0,
-                            responseText : text,
-                            getAllResponseHeaders : function () {}
-                        },
-                        transaction : params.reqId
-                    }, params.callback, isAbort);
+                    var response = {
+                        status : isAbort ? 0 : 200,
+                        responseText : text
+                    };
+                    callback.fn.call(callback.scope, isAbort, callback.args, response);
                 }
             };
 

@@ -35,7 +35,6 @@ Aria.classDefinition({
         this.addTests("test.aria.core.FileLoaderTest");
         this.addTests("test.aria.core.InterfacesTest");
         this.addTests("test.aria.core.JsObjectTest");
-        this.addTests("test.aria.core.JSONPTest");
         this.addTests("test.aria.core.JsonValidatorTest");
         this.addTests("test.aria.core.LogTest");
         this.addTests("test.aria.core.ObservableTest");

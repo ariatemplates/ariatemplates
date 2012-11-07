@@ -255,7 +255,7 @@ Aria.beanDefinitions({
                 /* Backward Compatibility begins here, use data property instead */
                 "postData" : {
                     $type : "json:String",
-                    $description : "Data to be sent in the body of the POST method. Ignored for GET requests. This property can be changed by filters."
+                    $description : "[DEPRECATED] Data to be sent in the body of the POST method. Ignored for GET requests. This property can be changed by filters."
                 },
                 /* Backward Compatibility ends here */
                 "data" : {
@@ -265,7 +265,7 @@ Aria.beanDefinitions({
                 /* Backward Compatibility begins here, use contentTypeHeader property instead */
                 "postHeader" : {
                     $type : "json:String",
-                    $description : "Header 'Content-type' to be used for POST requests.",
+                    $description : "[DEPRECATED] Header 'Content-type' to be used for POST requests.",
                     $default : "application/x-www-form-urlencoded; charset=UTF-8"
                 },
                 /* Backward Compatibility ends here */
@@ -273,6 +273,12 @@ Aria.beanDefinitions({
                     $type : "json:String",
                     $description : "Header 'Content-type' to be used for requests.",
                     $default : "application/x-www-form-urlencoded; charset=UTF-8"
+                },
+                "headers" : {
+                    $type : "json:Object",
+                    $description : "HTTP message headers",
+                    $sample : "{'Content-Type' : 'text/plain', 'Connection' : 'keep-alive'}",
+                    $restricted : false
                 },
                 "timeout" : {
                     $type : "json:Integer",

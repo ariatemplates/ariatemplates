@@ -15,12 +15,10 @@
 
 /**
  * Transport class for JSON-P requests.
- * @class aria.core.transport.JsonP
  * @singleton
  */
 Aria.classDefinition({
     $classpath : "aria.core.transport.JsonP",
-    $implements : ["aria.core.transport.ITransports"],
     $singleton : true,
     $constructor : function () {
         /**
@@ -30,19 +28,13 @@ Aria.classDefinition({
         this.isReady = true;
 
         /**
-         * Map of ongoing request parameters
-         * @type Object
-         * @protected
-         */
-        this._requestParams = {};
-
-        /**
-         * Html Head. Script tags will be injected in here
+         * Html Head. Script tags will be injected in here. This variable is initialized on first use rather than in the
+         * constructor so that there is no error in case Aria Templates is loaded in a non-browser environment (Rhino or
+         * Node.js)
          * @type HTMLElement
          * @protected
          */
-        this._head = null; // this variable is initialized on first use rather than in the constructor so that there is
-        // no error in case Aria Templates is loaded in a non-browser environment (Rhino or Node.js)
+        this._head = null;
     },
     $destructor : function () {
         this._head = null;
@@ -62,45 +54,21 @@ Aria.classDefinition({
         /**
          * Inizialization function. Not needed because this transport is ready at creation time
          */
-        init : function () {},
-
-        /**
-         * Set up the parameters for a new connection.
-         * @param {String} reqId Request identifier
-         * @param {String} method Request method, GET or POST
-         * @param {String} uri Resource URI
-         * @param {Object} callback Internal callback description
-         * @param {String} postData Data to be sent in a POST request
-         * @protected
-         */
-        _setUp : function (reqId, method, uri, callback, postData) {
-            // Altough it keeps the same interface as all the other trasnports, we only care about:
-            this._requestParams[reqId] = {
-                reqId : reqId,
-                uri : uri,
-                callback : callback
-            };
-        },
+        init : Aria.empty,
 
         /**
          * Perform a request.
-         * @param {String} reqId Request identifier
-         * @param {String} method Request method, GET or POST
-         * @param {String} uri Resource URI
-         * @param {Object} callback Internal callback description
-         * @param {String} postData Data to be sent in a POST request
+         * @param {aria.core.CfgBeans.IOAsyncRequestCfg} request
+         * @param {aria.core.CfgBeans.Callback} callback
+         * @throws
          */
-        request : function (reqId, method, uri, callback, postData) {
-            this._setUp(reqId, method, uri, callback, postData);
-            var params = this._requestParams[reqId];
-            this.$assert(34, !!params);
-            delete this._requestParams[reqId];
-
+        request : function (request, callback) {
             var head = this._head || this._initHead();
+            var reqId = request.id;
             var insertScript = function () {
                 var script = Aria.$frameworkWindow.document.createElement("script");
-                script.src = params.uri;
-                script.id = "xJsonP" + params.reqId;
+                script.src = request.url;
+                script.id = "xJsonP" + reqId;
                 script.async = "async";
 
                 script.onload = script.onreadystatechange = function (event, isAbort) {
@@ -121,9 +89,46 @@ Aria.classDefinition({
                 head.appendChild(script);
             };
 
+            // Generate a callback in this namespace
+            var serverCallback = "_jsonp" + reqId;
+            this[serverCallback] = function (json) {
+                this._onJsonPLoad(request, callback, json);
+            };
+            request.url += (/\?/.test(request.url) ? "&" : "?") + request.jsonp + "=aria.core.transport.JsonP."
+                    + serverCallback;
+            request.evalCb = serverCallback;
+
+            // handle abort timeout
+            aria.core.IO.setTimeout(reqId, request.timeout, {
+                fn : aria.core.IO.abort,
+                scope : aria.core.IO,
+                args : [reqId, callback]
+            });
+
             // This makes sure the the request is asynchronous also in IE, that in some cases (local requests)
             // will block the normal execution while loading the script synchronously
             setTimeout(insertScript, 10);
+        },
+
+        /**
+         * Callback of the JSON-P request.
+         * @param {aria.core.CfgBeans.IOAsyncRequestCfg} request Request object
+         * @param {aria.core.CfgBeans.Callback} callback
+         * @param {Object} json Json response coming from the server
+         * @protected
+         */
+        _onJsonPLoad : function (request, callback, json) {
+            var reqId = request.id;
+
+            delete this[request.evalCb];
+
+            var response = {
+                status : 200,
+                responseJSON : json,
+                responseText : ""
+            };
+
+            callback.fn.call(callback.scope, false, callback.args, response);
         }
     }
 });
