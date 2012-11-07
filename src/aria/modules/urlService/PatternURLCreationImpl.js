@@ -46,6 +46,20 @@ Aria.classDefinition({
         },
 
         /**
+         * Generate a 'service' URL This implementation understands a serviceSpec in the form {actionName: string}
+         * @param {String} moduleName Name of the module that is making the request
+         * @param {Object} serviceSpec Specification for target service
+         * @param {Number} sessionId Value of the session id
+         * @return {String} full URL
+         */
+        createServiceUrl : function (moduleName, serviceSpec, sessionId) {
+            if (!serviceSpec || !serviceSpec.actionName) {
+                return this.createActionUrl(moduleName, null, sessionId);
+            }
+            return this.createActionUrl(moduleName, serviceSpec.actionName, sessionId);
+        },
+
+        /**
          * Generate an i18n URL. The pattern recognized are
          *
          * <pre>

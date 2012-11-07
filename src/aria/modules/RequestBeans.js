@@ -37,7 +37,12 @@ Aria.beanDefinitions({
                 "actionName" : {
                     $type : "json:String",
                     $description : "The name of the target action, including an optional HTTP Query String",
-                    $mandatory : true
+                    $mandatory : false
+                },
+                "serviceSpec" : {
+                    $type : "json:ObjectRef",
+                    $description : "specification of target service; structure depends on particular UrlService implementation",
+                    $mandatory : false
                 },
                 "session" : {
                     $type : "json:ObjectRef",
@@ -65,6 +70,22 @@ Aria.beanDefinitions({
                 }
             }
         },
+        "RequestDetails" : {
+            $type : "json:Object",
+            $description : "Request details, as returned by URLService implementations",
+            $restricted : false,
+            $properties : {
+                "url" : {
+                    $type : "json:String",
+                    $description : "Final url for the call",
+                    $mandatory : true
+                },
+                "method" : {
+                    $type : "json:String",
+                    $description : "HTTP Method in use for the call"
+                }
+            }
+        },        
         "SuccessResponse" : {
             $type : "json:Object",
             $description : "Describe the response from the server if no communication error happened.",
