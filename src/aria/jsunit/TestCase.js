@@ -102,7 +102,7 @@ Aria.classDefinition({
                 var proto = Aria.nspace(this.$classpath).classDefinition.$prototype;
                 var methods = aria.utils.Object.keys(proto);
                 methods = array.filter(methods, function (method) {
-                    return isFunction(proto[method]);
+                    return isFunction(proto[method]) && !aria.utils.Array.contains(["setUp", "tearDown"], method);
                 });
 
                 for (var key in this) {

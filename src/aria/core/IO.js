@@ -25,13 +25,13 @@ Aria.classDefinition({
         "request" : {
             description : "raised when a request is sent to the server",
             properties : {
-                req : "{Object} the request object. It is the parameter of asyncRequest, completed with the following properties:\nid: {Integer} the id of the request; the first request after Aria is loaded has id 0, and then ids are given sequentially\nrequestSize: {Integer} the size of the message in bytes (currently the size of the POST data, 0 for GET requests)"
+                req : "{aria.core.CfgBeans.IOAsyncRequestCfg} Request object."
             }
         },
         "response" : {
             description : "raised when a request process is done (can be an error)",
             properties : {
-                req : "{Object} the request object. It is the same object as the one received in the request event, completed with the following properties:\nresponseSize:{Integer} the size of the response in bytes\n\nbeginDownload:{Integer} the time at which the download started\nendDownload:{Integer} the time at which the download ended\ndownloadTime:{Integer} the download duration in ms (= endDownload-beginDownload)\nres: {Object} the response object given to the asyncRequest callback method (with url, status, error and responseText properties)"
+                req : "{aria.core.CfgBeans.IOAsyncRequestCfg} Request object."
             }
         },
         "startEvent" : {
@@ -41,9 +41,10 @@ Aria.classDefinition({
             }
         },
         "abortEvent" : {
-            description : "raised when an XDR transaction is aborted (after a timeout)",
+            description : "Raised when an XDR transaction is aborted (after a timeout)",
             properties : {
-                o : "{Object} The connection object"
+                o : "[DEPRECATED]{Object} The connection object",
+                req : "{aria.core.CfgBeans.IOAsyncRequestCfg} Request object that is being aborted."
             }
         }
     },
@@ -55,12 +56,6 @@ Aria.classDefinition({
         COMM_CODE : 0,
 
         /**
-         * Response text for communication errors.
-         * @type String
-         */
-        COMM_ERROR : "communication failure",
-
-        /**
          * Status code for aborted requests.
          * @type Number
          */
@@ -68,14 +63,21 @@ Aria.classDefinition({
 
         /**
          * Response text for aborted requests.
-         * @type Number
+         * @type String
          */
         ABORT_ERROR : "transaction aborted",
+
+        /**
+         * Response text for timed-out requests.
+         * @type String
+         */
+        TIMEOUT_ERROR : "timeout expired",
+
         // ERROR MESSAGES:
         MISSING_IO_CALLBACK : "Missing callback in IO call - Please check\nurl: %1",
         IO_CALLBACK_ERROR : "Error in IO callback handling on url: %1",
         IO_REQUEST_FAILED : "Invalid Request: \nurl: %1\nerror: %2",
-        JSON_PARSING_ERROR : "Response text could not be evaluated as JSON.",
+        JSON_PARSING_ERROR : "Response text could not be evaluated as JSON.\nurl: %1\nresponse: %2",
         MISSING_FORM : "Missing form id or form object in asyncFormSubmit call - Please check the bean: aria.core.CfgBeans.IOAsyncRequestCfg."
     },
     $constructor : function () {
@@ -128,6 +130,7 @@ Aria.classDefinition({
          * @protected
          */
         this._uriScheme = /^([\w\+\.\-]+:)(?:\/\/)?(.*)/;
+
         /**
          * Regular expression to extract the URI scheme that should be handled as a local request
          * @type RegExp
@@ -135,6 +138,7 @@ Aria.classDefinition({
          */
         this._uriLocal = /^(?:file):$/;
 
+        /* Backward Compatibility begins here */
         /**
          * Identify any request as Ajax through the header X-Requested-With.
          * @type Boolean
@@ -146,34 +150,15 @@ Aria.classDefinition({
          * @type String
          */
         this.defaultXHRHeader = "XMLHttpRequest";
+        /* Backward Compatibility ends here */
 
         /**
          * Map of headers sent with evey request.
          * @type Object
-         * @protected
          */
-        this._defaultHeaders = {};
-
-        /**
-         * Tells if there are default headers.
-         * @type Boolean
-         * @protected
-         */
-        this._hasDefaultHeaders = false;
-
-        /**
-         * Map of request specific headers. It is emptied after every request
-         * @type Object
-         * @protected
-         */
-        this._httpHeaders = {};
-
-        /**
-         * Tells if there are request specific headers.
-         * @type Boolean
-         * @protected
-         */
-        this._hasHTTPHeaders = false;
+        this.headers = {
+            "X-Requested-With" : "XMLHttpRequest"
+        };
 
         /**
          * Set the header "Content-type" to a default value in case of POST requests (@see defaultPostHeader)
@@ -187,7 +172,7 @@ Aria.classDefinition({
          * @type String
          */
         this.defaultPostHeader = 'application/x-www-form-urlencoded; charset=UTF-8';
-        /* Backward Compatibility ends here */
+
         /**
          * Set the header "Content-type" to a default value (@see defaultContentTypeHeader)
          * @type Boolean
@@ -199,12 +184,7 @@ Aria.classDefinition({
          * @type String
          */
         this.defaultContentTypeHeader = 'application/x-www-form-urlencoded; charset=UTF-8';
-        /**
-         * Polling interval for the handle ready state in milliseconds.
-         * @type Number
-         * @protected
-         */
-        this._pollingInterval = 50;
+        /* Backward Compatibility ends here */
 
         /**
          * Map each request to the polling timeout added while handling the ready state.
@@ -294,9 +274,9 @@ Aria.classDefinition({
          * [req] {
          *    url: 'myfile.txt',     // absolute or relative URL
          *    method: 'POST',        // POST, PUT, DELETE, OPTIONS, HEAD, TRACE, OPTIONS, CONNECT, PATCH or GET (default)
-         *    data: '',          // {String} null by default, for POST requests postData can also be used instead of data
-         *    contentTypeHeader:'',  //  {String} application/x-www-form-urlencoded; charset=UTF-8 by default
-         *    timeout: 1000,     // {Integer} timeout in ms - default: defaultTimeout
+         *    data: '',              // {String} null by default
+         *    contentTypeHeader:'',  // {String} application/x-www-form-urlencoded; charset=UTF-8 by default
+         *    timeout: 1000,         // {Integer} timeout in ms - default: defaultTimeout
          *    callback: {
          *      fn: obj.method,        // mandatory
          *      scope: obj,            // mandatory
@@ -306,9 +286,6 @@ Aria.classDefinition({
          *    }
          * }
          * When a response is received, the callback function is called with the following arguments:
-         *
-         *
-         *
          * <code>
          * cb(asyncRes, cbArgs)
          * </code>
@@ -322,19 +299,14 @@ Aria.classDefinition({
          *    responseJSON: JSON Object,
          *    error: ''
          * }
-         * and cbArgs == args object in the req object
+         * [cbArgs] == args object in the req object
          * </pre>
          *
          * @return {Integer} a request id
          */
         asyncRequest : function (req) {
             this.__normalizeRequest(req);
-
-            // In non debug mode, the check doesn't do anything anyway, so we want to avoid having
-            // to depend on aria.core.JsonValidator here
-            // if (Aria.debug) {
-            // aria.core.JsonValidator.check(req, "aria.core.CfgBeans.IOAsyncRequestCfg");
-            // }
+            // Don't validate the bean to avoid having a dependency on aria.core.JsonValidator
 
             this.pendingRequests[req.id] = req;
 
@@ -387,21 +359,13 @@ Aria.classDefinition({
          * @return {Integer} Request identifier
          */
         asyncFormSubmit : function (request) {
-            var isFormId = (aria.utils.Type.isString(request.formId)) ? request.formId : false;
-            var isForm = aria.utils.Type.isHTMLElement(request.form);
             var form;
-
-            if (!isFormId && !isForm) {
-                this.$logError(this.MISSING_FORM);
-                return request.callback.onerror.call(request.callback.scope, request);
-            }
-            if (isForm) {
+            if (aria.utils.Type.isHTMLElement(request.form)) {
                 form = request.form;
-            } else {
-                // TODO: find a solution because we cannot use aria.utils.Dom.getElementById because Dom cannot be a
-                // dependency of IO
+            } else if (aria.utils.Type.isString(request.formId)) {
                 form = Aria.$window.document.getElementById(request.formId);
             }
+
             if (!form) {
                 this.$logError(this.MISSING_FORM);
                 return request.callback.onerror.call(request.callback.scope, request);
@@ -430,11 +394,12 @@ Aria.classDefinition({
             var reqId = req.id;
 
             this.$raiseEvent({
-                name : 'request',
+                name : "request",
                 req : req
             });
 
             req.beginDownload = (new Date()).getTime();
+
             // as postData can possibly be changed by filters, we compute the requestSize only after filters have been
             // called:
             /* Backward Compatibility begins here */
@@ -449,24 +414,12 @@ Aria.classDefinition({
             // PROFILING // req.profilingId = this.$startMeasure(req.url);
 
             try {
-                var cb = {
-                    success : this._onsuccess,
-                    failure : this._onfailure,
-                    timeout : req.timeout,
-                    reqId : req.id,
-                    scope : this
-                };
-
-                this._prepareTransport({
-                    req : req,
-                    cb : cb,
-                    uri : req.url
-                });
+                this._prepareTransport(req);
             } catch (ex) {
                 // There was an error in this method - let's create a callback to notify
                 // the caller in the same way as for other errors
                 aria.core.Timer.addCallback({
-                    fn : this._onfailure,
+                    fn : this._handleResponse,
                     scope : this,
                     delay : 10,
                     args : {
@@ -486,9 +439,10 @@ Aria.classDefinition({
          * @private
          */
         __normalizeRequest : function (req) {
-            this.nbRequests++; // increment before assigning to avoid setting request id 0 (which does not work well
-            // with the abort function)
+            // increment before assigning to avoid setting request id 0 (which does not work well with abort)
+            this.nbRequests++;
             req.id = this.nbRequests;
+
             var reqMethods = ["GET", "POST", "PUT", "DELETE", "HEAD", "TRACE", "OPTIONS", "CONNECT", "PATCH"];
             // Assign a request timeout in order of importance:
             // # req.timeout - User specified timeout
@@ -506,117 +460,105 @@ Aria.classDefinition({
                 req.method = req.method.toUpperCase();
             }
 
-            if (aria.utils.Array.indexOf(reqMethods, req.method) === -1) {
+            if (!aria.utils.Array.contains(reqMethods, req.method)) {
                 return this.$logWarn("The request method %1 is invalid", [req.method]);
             }
-            /* Backward Compatibility begins here */
-            if (req.method == "POST" && req.postHeader) {
-                req.contentTypeHeader = req.postHeader
+
+            var headers = {};
+            // First take the default IO headers
+            for (var key in this.headers) {
+                if (this.headers.hasOwnProperty(key)) {
+                    headers[key] = this.headers[key];
+                }
+            }
+            // Then the headers from the request object
+            for (var key in req.headers) {
+                if (req.headers.hasOwnProperty(key)) {
+                    headers[key] = req.headers[key];
+                }
             }
 
-            if (req.method == "POST" && req.postHeader == null && this.useDefaultPostHeader) {
-                req.contentTypeHeader = this.defaultPostHeader;
+            if (req.method === "POST" || req.method === "PUT") {
+
+                /* Backward Compatibility begins here */
+                // Fist the one specified in the request
+                var contentType = headers["Content-Type"] || req.contentTypeHeader || req.postHeader;
+
+                if (!contentType && this.useDefaultPostHeader) {
+                    contentType = this.defaultPostHeader;
+                }
+                if (!contentType && this.useDefaultContentTypeHeader) {
+                    contentType = this.defaultContentTypeHeader;
+                }
+
+                if (contentType) {
+                    headers["Content-Type"] = contentType;
+                }
+                /* Backward Compatibility ends here */
+                // When compatibility is removed, we should only have
+                // if (!headers["Content-Type"] && this.useDefaultContentTypeHeader) {
+                // headers["Content-Type"] = this.defaultContentTypeHeader
+                // }
+            }
+
+            /* Backward Compatibility begins here */
+            if (this.useXHRHeader) {
+                headers["X-Requested-With"] = this.defaultXHRHeader;
+            } else {
+                delete headers["X-Requested-With"];
             }
             /* Backward Compatibility ends here */
-            if ((req.method == "PUT" || req.method == "POST") && req.contentTypeHeader == null
-                    && this.useDefaultContentTypeHeader) {
-                req.contentTypeHeader = this.defaultContentTypeHeader;
+
+            req.headers = headers;
+
+            /* Backward Compatibility begins here */
+            // This one makes sure that we always use data, not post data
+            if (!req.data) {
+                req.data = req.postData;
             }
+            /* Backward Compatibility ends here */
         },
 
         /**
          * Prepare the transport class before going on with the request (make sure it is loaded, through Aria.load).
-         * @param {Object} arg object containing the following properties: req (aria.core.CfgBeans.IOAsyncRequestCfg),
-         * cb (aria.core.JsObject.Callback) and uri (String)
+         * @param {aria.core.CfgBeans.IOAsyncRequestCfg} request Request object
+         * @private
          */
-        _prepareTransport : function (arg) {
-            var request = arg.req;
+        _prepareTransport : function (request) {
             var reqId = request.id;
+
             var transport;
             if (request.jsonp) {
-                arg.transportCP = this.__jsonp;
-
-                // Generate a callback in this namespace
-                request.evalCb = "_jsonp" + reqId;
-                this[request.evalCb] = function (json) {
-                    this._onJsonPLoad(reqId, json);
-                };
-                arg.uri += (/\?/.test(arg.uri) ? "&" : "?") + request.jsonp + "=aria.core.IO." + request.evalCb;
-
-                // handle timeout
-                // TODO: this code could be moved to JsonP.js
-                this._timeOut[reqId] = setTimeout(function () {
-                    // Abort this request
-                    aria.core.IO.abort(reqId, arg.cb, true);
-                }, request.timeout);
-
+                transport = this.__jsonp;
             } else if (aria.utils.Type.isHTMLElement(request.form)) {
-                arg.transportCP = this.__iframe;
-                // handle timeout
-                this._timeOut[reqId] = setTimeout(function () {
-                    // Abort this request
-                    aria.core.IO.abort({
-                        reqId : reqId,
-                        conn : {
-                            status : -1
-                        }
-                    }, arg.cb, true);
-                }, request.timeout);
+                transport = this.__iframe;
             } else {
-                arg.transportCP = this._getTransport(arg.uri, Aria.$frameworkWindow
+                transport = this._getTransport(request.url, Aria.$frameworkWindow
                         ? Aria.$frameworkWindow.location
                         : null);
             }
-            arg.transportInstance = Aria.getClassRef(arg.transportCP);
-            if (arg.transportInstance == null) {
+
+            var instance = Aria.getClassRef(transport);
+            var args = {
+                req : request,
+                transport : {
+                    classpath : transport,
+                    instance : instance
+                }
+            };
+
+            if (!instance) {
                 Aria.load({
-                    classes : [arg.transportCP],
+                    classes : [transport],
                     oncomplete : {
                         fn : this._asyncRequest,
-                        args : arg,
+                        args : args,
                         scope : this
                     }
                 });
             } else {
-                this._asyncRequest(arg);
+                this._asyncRequest(args);
             }
-        },
-
-        /**
-         * Initiates an asynchronous request via the XHR object.
-         * @protected
-         * @param {Object} arg object containing the following properties: req (aria.core.CfgBeans.IOAsyncRequestCfg),
-         * cb (aria.core.JsObject.Callback), uri (String), transportCP (String), transportInstance (Object, may be null)
-         */
-        _asyncRequest : function (arg) {
-            var request = arg.req;
-            var callback = arg.cb;
-            var reqId = request.id;
-            var method = request.method;
-            var transport = arg.transportInstance || Aria.getClassRef(arg.transportCP);
-            var transportWrapper = transport.$interface("aria.core.transport.ITransports");
-
-            if (!transport.isReady) {
-                // Wait for it to be ready
-                return transportWrapper.init(reqId);
-            }
-
-            // Here we're going to make a request
-            this.trafficUp += request.requestSize;
-
-            // Each transaction contains the custom header
-            // "X-Requested-With: XMLHttpRequest" to identify the requests origin.
-            if (this.useXHRHeader) {
-                if (!this._defaultHeaders["X-Requested-With"]) {
-                    this._initHeader("X-Requested-With", this.defaultXHRHeader, true);
-                }
-            }
-
-            if (method === "POST" || method === "PUT") {
-                this._initHeader('Content-Type', request.contentTypeHeader);
-            }
-
-            transportWrapper.request(reqId, method, arg.uri, callback, request.postData || request.data, request.form);
         },
 
         /**
@@ -644,7 +586,6 @@ Aria.classDefinition({
                     return this.__local;
                 } else if (scheme != location.protocol || (authority.indexOf(location.host) !== 0)) {
                     // Having different protocol or host we must use XDR
-                    // TODO can't we use CORS?
                     return this.__crossDomain;
                 }
             }
@@ -654,62 +595,120 @@ Aria.classDefinition({
         },
 
         /**
-         * Reiusse a pending request. A request might need to be reissued because the transport was not ready (it's the
-         * case of XDR).
-         * @param {String} reqId ID of the pending request.
+         * Initiates an asynchronous request via the chosen transport.
+         * @protected
+         * @param {Object} arg Object containing the properties:
+         *
+         * <pre>
+         *      req (aria.core.CfgBeans.IOAsyncRequestCfg) Request object,
+         *      transport {Object} containing 'classpath' and 'instance'
+         * </pre>
          */
-        reissue : function (reqId) {
-            var req = this.pendingRequests[reqId];
+        _asyncRequest : function (arg) {
+            var request = arg.req;
+            var reqId = request.id;
+            var method = request.method;
+            var transport = arg.transport.instance || Aria.getClassRef(arg.transport.classpath);
 
-            if (req) {
-                delete this.pendingRequests[reqId];
-                return this.asyncRequest(req);
+            if (!transport.isReady) {
+                // Wait for it to be ready
+                return transport.init(reqId);
+            }
+
+            // Here we're going to make a request
+            this.trafficUp += request.requestSize;
+
+            transport.request(request, {
+                fn : this._handleResponse,
+                scope : this,
+                args : request
+            });
+        },
+
+        /**
+         * Handle a transport response. This is the callback function passed to a transport request
+         * @param {Boolean|Object} error Whether there was an error or not
+         * @param {aria.core.CfgBeans.IOAsyncRequestCfg} request
+         * @param {aria.core.CfgBeans.IOAsyncRequestResponseCfg} response
+         */
+        _handleResponse : function (error, request, response) {
+            if (!response) {
+                response = {};
+            }
+
+            if (!request && error) {
+                request = this.pendingRequests[error.reqId];
+            }
+
+            this.clearTimeout(request.id);
+            this._normalizeResponse(error, request, response);
+
+            // Extra info for the request object
+            request.res = response;
+            request.endDownload = (new Date()).getTime();
+            request.downloadTime = request.endDownload - request.beginDownload;
+            request.responseSize = response.responseText.length;
+
+            this.trafficDown += request.responseSize;
+
+            this.$raiseEvent({
+                name : "response",
+                req : request
+            });
+
+            delete this.pendingRequests[request.id];
+
+            if (aria.core.IOFiltersMgr) {
+                aria.core.IOFiltersMgr.callFiltersOnResponse(request, {
+                    fn : this._afterResponseFilters,
+                    scope : this,
+                    args : request
+                });
+            } else {
+                this._afterResponseFilters(null, request);
             }
         },
 
         /**
-         * Used to remove any timeouts that remain for a transaction.
-         * @param {Number} tId the request id to remove the timeout for.
-         * @protected
+         * Normalize the Response object adding error messages (if any) and converting the response in the expected
+         * format
+         * @param {Boolean} error Whether there was an error or not
+         * @param {aria.core.CfgBeans.IOAsyncRequestCfg} request
+         * @param {aria.core.CfgBeans.IOAsyncRequestResponseCfg} response
          */
-        _removeTimeOut : function (tId) {
-            clearInterval(this._poll[tId]);
-            clearTimeout(this._timeOut[tId]);
-            delete this._poll[tId];
-            delete this._timeOut[tId];
-        },
+        _normalizeResponse : function (error, request, response) {
+            response.reqId = request.id;
+            response.url = request.url;
 
-        /**
-         * Internal callback called when a response is successfully received
-         * @param {Object} connection The connection object
-         * @protected
-         */
-        _onsuccess : function (connection) {
-            var req = this.pendingRequests[connection.reqId];
-            this.$assert(658, !!req);
-            delete this.pendingRequests[connection.reqId];
-            this._removeTimeOut(connection.reqId);
-            // build the response object
-            var res = this._fillInresponseObject(req.url, connection, req.expectedResponseType);
-            req.res = res;
-            req.endDownload = (new Date()).getTime();
-            // PROFILING // this.$stopMeasure(req.profilingId);
-            req.downloadTime = req.endDownload - req.beginDownload;
-            req.responseSize = res.responseText.length;
-            this.trafficDown += req.responseSize;
-            this.nbOKResponses++;
-            this.$raiseEvent({
-                name : 'response',
-                req : req
-            });
-            if (aria.core.IOFiltersMgr) {
-                aria.core.IOFiltersMgr.callFiltersOnResponse(req, {
-                    fn : this._afterResponseFilters,
-                    scope : this,
-                    args : req
-                });
+            var expectedResponseType = request.expectedResponseType;
+
+            if (error) {
+                this.nbKOResponses++;
+
+                if (!response.responseText) {
+                    response.responseText = "";
+                }
+
+                if (response.responseText && expectedResponseType === "json") {
+                    try {
+                        response.responseJSON = this.__serializer.parse(response.responseText);
+                    } catch (ex) {
+                        this.$logWarn(this.JSON_PARSING_ERROR, [request.url, response.responseText]);
+                    }
+                }
+
+                if (!response.error) {
+                    response.error = error === true ? error.statusText || "error" : error.errDescription;
+                }
+
             } else {
-                this._afterResponseFilters(null, req);
+                this.nbOKResponses++;
+
+                if (expectedResponseType) {
+                    this._jsonTextConverter(response, expectedResponseType);
+                }
+
+                response.error = null;
             }
         },
 
@@ -751,123 +750,6 @@ Aria.classDefinition({
                 cb.fn.call(cb.scope, res, cb.args);
             }
             req = cb = null;
-        },
-
-        /**
-         * Internal callback called in case of errors
-         * @param {Res or timerCallbackArgs} o
-         * @protected
-         */
-        _onfailure : function (xhrObject) {
-            var req = this.pendingRequests[xhrObject.reqId];
-            this.$assert(539, !!req);
-            delete this.pendingRequests[req.id];
-            this._removeTimeOut(req.id);
-            var connection = xhrObject.conn;
-            if (!connection) {
-                // connection is undefined on abort, but valid on failures
-                connection = {
-                    responseText : "",
-                    status : 0
-                };
-            }
-            var res = this._fillInresponseObject(req.url, connection, req.expectedResponseType);
-            var args = null, cb = null;
-            if (xhrObject.isInternalError) {
-                res.error = xhrObject.errDescription;
-            } else {
-                res.status = xhrObject.status;
-                res.error = xhrObject.statusText;
-            }
-            req.res = res;
-            req.endDownload = (new Date()).getTime();
-            // PROFILING // this.$stopMeasure(req.profilingId);
-            req.downloadTime = req.endDownload - req.beginDownload;
-            req.responseSize = (xhrObject.responseText ? xhrObject.responseText.length : 0); // we use the
-            // response text for the size info when it is present
-            this.trafficDown += req.responseSize;
-            this.nbKOResponses++;
-            this.$raiseEvent({
-                name : 'response',
-                req : req
-            });
-            if (aria.core.IOFiltersMgr) {
-                aria.core.IOFiltersMgr.callFiltersOnResponse(req, {
-                    fn : this._afterResponseFilters,
-                    scope : this,
-                    args : req
-                });
-            } else {
-                this._afterResponseFilters(null, req);
-            }
-        },
-
-        /**
-         * Initializes the custom HTTP headers for the each transaction.
-         * @param {string} label The HTTP header label
-         * @param {string} value The HTTP header value
-         * @param {string} isDefault Determines if the specific header is a default header automatically sent with each
-         * transaction.
-         * @protected
-         */
-        _initHeader : function (label, value, isDefault) {
-            var headerObj = (isDefault) ? this._defaultHeaders : this._httpHeaders;
-
-            headerObj[label] = value;
-            if (isDefault) {
-                this._hasDefaultHeaders = true;
-            } else {
-                this._hasHTTPHeaders = true;
-            }
-        },
-
-        /**
-         * Set the HTTP headers for each transaction.
-         * @param {object} xhrObject The connection object for the transaction.
-         */
-        setHeaders : function (xhrObject) {
-            var property;
-            if (this._hasDefaultHeaders) {
-                for (property in this._defaultHeaders) {
-                    if (this._defaultHeaders.hasOwnProperty(property)) {
-                        xhrObject.setRequestHeader(property, this._defaultHeaders[property]);
-                    }
-                }
-            }
-
-            if (this._hasHTTPHeaders) {
-                for (property in this._httpHeaders) {
-                    if (this._httpHeaders.hasOwnProperty(property)) {
-                        xhrObject.setRequestHeader(property, this._httpHeaders[property]);
-                    }
-                }
-
-                this._httpHeaders = {};
-                this._hasHTTPHeaders = false;
-            }
-        },
-
-        /**
-         * If a transaction is lost due to dropped or closed connections, the failure callback will be fired and this
-         * specific condition can be identified by a status property value of 0. If an abort was successful, the status
-         * property will report a value of -1.
-         * @param {number} tId The Transaction Id
-         * @param {boolean} isAbort Determines if the exception case is caused by a transaction abort
-         */
-        createExceptionObject : function (tId, isAbort, httpStatus) {
-            var obj = {
-                tId : tId
-            };
-
-            if (isAbort) {
-                obj.status = this.ABORT_CODE;
-                obj.statusText = this.ABORT_ERROR;
-            } else {
-                obj.status = httpStatus || this.COMM_CODE;
-                obj.statusText = this.COMM_ERROR;
-            }
-
-            return obj;
         },
 
         /**
@@ -926,224 +808,92 @@ Aria.classDefinition({
         },
 
         /**
-         * Attempts to interpret the server response and determine whether the transaction was successful, or if an
-         * error or exception was encountered.
-         * @private
-         * @param {Object} xhrObject The connection object
-         * @param {Object} callback The user-defined callback object
-         * @param {Boolean} isAbort Determines if the transaction was terminated via abort().
+         * Set a timeout for a given request. If not canceled this method calls the abort function and the callback
+         * after 'timeout' milliseconds
+         * @param {Number} id Request id
+         * @param {Number} timeout Timer in milliseconds
+         * @param {aria.core.CfgBeans.Callback} callback Should be already normalized
          */
-        _handleTransactionResponse : function (xhrObject, callback, isAbort) {
-            var httpStatus, responseObject, connectionStatus;
-            var xdrS = xhrObject.response && xhrObject.response.statusText === 'xdr:success';
-            var xdrF = xhrObject.response && xhrObject.response.statusText === 'xdr:failure';
-            if (xhrObject.xdr && isAbort) {
-                xdrF = true; // set the flag for xdr failure
-                isAbort = false; // reset isAbort
-            }
-            try {
-                connectionStatus = xhrObject.conn.status;
-                if (xdrS || connectionStatus) {
-                    // XDR requests will not have HTTP status defined. The
-                    // statusText property will define the response status
-                    // set by the Flash transport.
-                    httpStatus = connectionStatus || 200;
-                } else if (xdrF && !isAbort) {
-                    // Set XDR transaction failure to a status of 0, which
-                    // resolves as an HTTP failure, instead of an exception.
-                    httpStatus = 0;
-                } else if (!connectionStatus && xhrObject.conn.responseText) {
-                    // Local requests done with ActiveX have undefined state
-                    // consider it successfull if it has a response text
-                    httpStatus = 200;
-                } else if (connectionStatus == 1223) {
-                    // Sometimes IE returns 1223 instead of 204
-                    httpStatus = 204;
-                } else {
-                    httpStatus = 13030;
-                }
-            } catch (e) {
-
-                // 13030 is a custom code to indicate the condition -- in Mozilla/FF --
-                // when the XHR object's status and statusText properties are
-                // unavailable, and a query attempt throws an exception.
-                httpStatus = 13030;
-            }
-
-            if (!isAbort && httpStatus >= 200 && httpStatus < 300) {
-                responseObject = xhrObject.xdr
-                        ? xhrObject.response
-                        : this._createResponseObject(xhrObject, callback, httpStatus);
-                if (callback && callback.success) {
-                    if (!callback.scope) {
-                        callback.success(responseObject);
-                    } else {
-                        // If a scope property is defined, the callback will be fired from
-                        // the context of the object.
-                        callback.success.apply(callback.scope, [responseObject]);
+        setTimeout : function (id, timeout, callback) {
+            if (timeout > 0) {
+                this._timeOut[id] = setTimeout(function () {
+                    // You won't believe this, but sometimes IE forgets to remove the timeout even if
+                    // we explicitely called a clearTimeout. Double check that the timeout is valid
+                    if (aria.core.IO._timeOut[id]) {
+                        aria.core.IO.abort({
+                            redId : id,
+                            getStatus : callback
+                        }, null, true);
                     }
-                }
-            } else {
-                // switch (httpStatus) {
-                // The following cases are wininet.dll error codes that may be encountered.
-                // case 12002 : // Server timeout
-                // case 12029 : // 12029 to 12031 correspond to dropped connections.
-                // case 12030 :
-                // case 12031 :
-                // case 12152 : // Connection closed by server.
-                // case 13030 : // See above comments for variable status.
-                // XDR transactions will not resolve to this case, since the
-                // response object is already built in the xdr response. */
-                responseObject = this.createExceptionObject(xhrObject.transaction, isAbort, httpStatus);
-                responseObject.reqId = callback.reqId;
-                responseObject.conn = xhrObject.conn;
-
-                if (callback && callback.failure) {
-                    if (!callback.scope) {
-                        callback.failure(responseObject);
-                    } else {
-                        callback.failure.apply(callback.scope, [responseObject]);
-                    }
-                }
-            }
-
-            this._releaseObject(xhrObject);
-            responseObject = null;
-        },
-
-        /**
-         * Evaluates the server response, creates and returns the results via its properties. Success and failure cases
-         * will differ in the response object's property values.
-         * @protected
-         * @param {object} xhrObject The connection object
-         * @param {callback} callback the callback, that contains the request id
-         * @param {Number} status Connection status normalized
-         * @return {object}
-         */
-        _createResponseObject : function (xhrObject, callback, status) {
-            var obj = {}, headerObj = {}, i, headerStr, header, delimitPos;
-
-            headerStr = xhrObject.conn.getAllResponseHeaders();
-
-            if (headerStr) {
-                header = headerStr.split('\n');
-                for (i = 0; i < header.length; i++) {
-                    delimitPos = header[i].indexOf(':');
-                    if (delimitPos != -1) {
-                        headerObj[header[i].substring(0, delimitPos)] = this._trim(header[i].substring(delimitPos + 2));
-                    }
-                }
-            }
-
-            obj.transaction = xhrObject.transaction;
-            obj.status = status;
-            // Normalize IE's statusText to "No Content" instead of "Unknown".
-            obj.statusText = (xhrObject.conn.status == 1223) ? "No Content" : xhrObject.conn.statusText;
-            obj.getResponseHeader = headerObj;
-            obj.getAllResponseHeaders = headerStr;
-            obj.responseText = xhrObject.conn.responseText;
-            obj.responseXML = xhrObject.conn.responseXML;
-
-            if (callback) {
-                obj.reqId = callback.reqId;
-            }
-
-            return obj;
-        },
-
-        /**
-         * Remove the XHR instance reference and the connection object after the transaction is completed.
-         * @protected
-         * @param {object} xhrObject The connection object
-         */
-        _releaseObject : function (xhrObject) {
-            if (xhrObject && xhrObject.conn) {
-                xhrObject.conn = null;
-                xhrObject = null;
+                }, timeout);
             }
         },
 
         /**
-         * Trim a String (remove trailing and leading white spaces)
-         * @param {String} string
-         * @return {String}
-         * @protected
+         * Clear a request timeout. It removes the poll timeout as well
+         * @param {Number} id Request id
          */
-        _trim : function (string) {
-            return string.replace(/^\s+|\s+$/g, '');
+        clearTimeout : function (id) {
+            clearInterval(this._poll[id]);
+            delete this._poll[id];
+            clearTimeout(this._timeOut[id]);
+            delete this._timeOut[id];
         },
 
         /**
          * Method to terminate a transaction, if it has not reached readyState 4.
-         * @param {Object or String} xhrObject The connection object returned by asyncRequest or the Request identifier.
+         * @param {Object|String} xhrObject The connection object returned by asyncRequest or the Request identifier.
          * @param {Object} callback User-defined callback object.
          * @param {String} isTimeout boolean to indicate if abort resulted from a callback timeout.
          * @return {Boolean}
          */
         abort : function (xhrObject, callback, isTimeout) {
-            var abortStatus = false;
-
             if (!xhrObject) {
-                return abortStatus;
+                return false;
             }
 
-            var transaction;
-            if (xhrObject.conn) {
-                if (xhrObject.xhr) {
-                    abortStatus = true;
+            var transaction = xhrObject.redId || xhrObject;
+            var request = this.pendingRequests[transaction];
 
-                    transaction = xhrObject.transaction;
-                    if (this.__isCallInProgress(xhrObject)) {
-                        // Issue abort request
-                        xhrObject.conn.abort();
-                    } // else the request completed but after the abort timeout (it happens in IE)
+            this.clearTimeout(transaction);
 
-                    clearInterval(this._poll[transaction]);
-                    delete this._poll[transaction];
-                }
-            } else {
+            var abortStatus = false;
+            if (xhrObject.getStatus) {
+                var statusCallback = xhrObject.getStatus;
+                abortStatus = statusCallback.fn.apply(statusCallback.scope, statusCallback.args);
+            }
+
+            if (request) {
                 abortStatus = true;
-                transaction = xhrObject;
-                xhrObject = {
-                    transaction : transaction
-                };
-            }
 
-            if (isTimeout) {
-                clearTimeout(this._timeOut[transaction]);
-                delete this._timeOut[transaction];
+                if (xhrObject === transaction) {
+                    xhrObject = {
+                        transaction : transaction
+                    };
+                } else {
+                    xhrObject.transaction = transaction;
+                }
             }
 
             if (abortStatus === true) {
                 // Fire global custom event -- abortEvent
                 this.$raiseEvent({
-                    name : 'abortEvent',
-                    o : xhrObject
+                    name : "abortEvent",
+                    o : xhrObject,
+                    req : request
                 });
 
-                this._handleTransactionResponse(xhrObject, callback, true);
+                var response = {
+                    transaction : request.id,
+                    req : request,
+                    status : isTimeout ? this.COMM_CODE : this.ABORT_CODE,
+                    statusText : isTimeout ? this.TIMEOUT_ERROR : this.ABORT_ERROR
+                };
+
+                this._handleResponse(true, request, response);
             }
 
             return abortStatus;
-        },
-
-        /**
-         * Determines if the transaction is still being processed.
-         * @param {object} xhrObject The connection object returned by asyncRequest
-         * @return {boolean}
-         * @private
-         */
-        __isCallInProgress : function (xhrObject) {
-            xhrObject = xhrObject || {};
-            // if the XHR object assigned to the transaction has not been dereferenced,
-            // then check its readyState status. Otherwise, return false.
-            if (xhrObject.xhr && xhrObject.conn) {
-                return xhrObject.conn.readyState !== 4 && xhrObject.conn.readyState !== 0;
-            } else if (xhrObject && xhrObject.conn) {
-                return xhrObject.conn.__isCallInProgress(xhrObject.tId);
-            } else {
-                return false;
-            }
         },
 
         /**
@@ -1192,91 +942,47 @@ Aria.classDefinition({
         },
 
         /**
-         * Callback of the JSON-P request. It is wrapped by a function inside {@see jsonp}
-         * @param {String} reqId request identifier
-         * @param {Object} json Json response coming from the server
-         * @protected
-         */
-        _onJsonPLoad : function (reqId, json) {
-            var request = this.pendingRequests[reqId];
-            this.$assert(992, !!request);
-            this._removeTimeOut(reqId);
-            delete this[request.evalCb];
-            this._onsuccess({
-                reqId : reqId,
-                status : 200,
-                responseJSON : json
-            });
-        },
-
-        /**
          * Convert the response text into Json or response Json into text
-         * @param {Object} connection The connection object
+         * @param {aria.core.CfgBeans.IOAsyncRequestResponseCfg} response Response object
          * @param {String} expectedResponseType The expected response type
          * @protected
          */
-        _jsonTextConverter : function (connection, expectedResponseType) {
+        _jsonTextConverter : function (response, expectedResponseType) {
             if (expectedResponseType == "text") {
-                if (!connection.responseText && connection.responseJSON != null) {
+                if (!response.responseText && response.responseJSON != null) {
                     // convert JSON to text
-                    if (aria.utils.Type.isString(connection.responseJSON)) {
+                    if (aria.utils.Type.isString(response.responseJSON)) {
                         // this case is important for JSON-P services which return a simple string
                         // we simply use that string as text
                         // (could be useful to load templates through JSON-P, for example)
-                        connection.responseText = connection.responseJSON;
+                        response.responseText = response.responseJSON;
                     } else {
                         // really convert the JSON structure to a string
-                        connection.responseText = aria.utils.Json.convertToJsonString(connection.responseJSON);
+                        response.responseText = aria.utils.Json.convertToJsonString(response.responseJSON);
                     }
                 }
             } else if (expectedResponseType == "json") {
-                if (connection.responseJSON == null && connection.responseText != null) {
+                if (response.responseJSON == null && response.responseText != null) {
                     // convert text to JSON
-                    connection.responseJSON = aria.utils.Json.load(connection.responseText, this, this.JSON_PARSING_ERROR);
+                    var errorMsg = aria.utils.String.substitute(this.JSON_PARSING_ERROR, [response.url, response.responseText]);
+                    response.responseJSON = aria.utils.Json.load(response.responseText, this, errorMsg);
                 }
             }
 
         },
 
         /**
-         * Fill in response object accordingly to server response and expected response type
-         * @param {String} url Request url
-         * @param {Object} connection The connection object
-         * @param {String} expectedResponseType The expected response type
-         * @protected
+         * Reiusse a pending request. A request might need to be reissued because the transport was not ready (it's the
+         * case of XDR).
+         * @param {String} reqId ID of the pending request.
          */
-        _fillInresponseObject : function (url, connection, expectedResponseType) {
-            var statusValue, errorValue, httpStatus = connection.status;
-            if (httpStatus >= 200 && httpStatus < 300) {
-                // on success
-                errorValue = null;
-                statusValue = httpStatus;
-                if (expectedResponseType) {
-                    this._jsonTextConverter(connection, expectedResponseType);
-                }
-            } else {
-                // on failure
-                errorValue = "";
-                statusValue = "";
-                if ((expectedResponseType && expectedResponseType == "json")) {
-                    try {
-                        connection.responseJSON = this.__serializer.parse(connection.responseText);
-                    } catch (ex) {
-                        this.$logWarn(this.JSON_PARSING_ERROR);
-                    }
+        reissue : function (reqId) {
+            var req = this.pendingRequests[reqId];
 
-                }
+            if (req) {
+                delete this.pendingRequests[reqId];
+                return this.asyncRequest(req);
             }
-            var res = {
-                url : url,
-                status : statusValue,
-                responseText : connection.responseText || "",
-                responseXML : connection.responseXML,
-                responseJSON : connection.responseJSON,
-                error : errorValue
-            };
-            return res;
-
         }
 
     }
