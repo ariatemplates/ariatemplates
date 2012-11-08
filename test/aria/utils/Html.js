@@ -38,20 +38,22 @@ Aria.classDefinition({
                         var classesStr = div.className;
                         for (var i = 0, ii = attribute.length; i < ii; i++) {
                             this.assertTrue(classesStr.indexOf(attribute[i]) > -1, "The class " + attribute[i]
-                                    + "shoud be in the generated markup");
+                                    + " shoud be in the generated markup");
                         }
                     } else if (key === "dataset") {
                         for (var dataKey in attribute) {
                             if (attribute.hasOwnProperty(dataKey) && dataKey.substr(0, 5) != "data-") {
                                 var value = stringUtil.encodeForQuotedHTMLAttribute(attribute[dataKey]);
-                                this.assertTrue(div.getAttribute("data-" + dataKey) === value, "The data data-"
-                                        + dataKey + "should be equals to " + value);
+                                var got = div.getAttribute("data-" + dataKey);
+                                this.assertEquals(got, value, "The data data-" + dataKey + " should be equals to "
+                                        + value);
                             }
                         }
                     } else if (aria.templates.DomElementWrapper.attributesWhiteList.test(key)) {
                         var value = stringUtil.encodeForQuotedHTMLAttribute(attribute);
-                        this.assertTrue(div.getAttribute(key) === value, "The attribute " + key
-                                + "should be equals to " + value);
+                        var got = div.getAttribute(key);
+                        this.assertEquals(got, value, "The attribute " + key + " should be equals to " + value
+                                + " got " + got);
                     }
                 }
             }
@@ -93,7 +95,7 @@ Aria.classDefinition({
                 rowspan : "2",
                 selected : "myValue",
                 size : "100px",
-                style : "border: 1px solid black",
+                style : "border: 1px solid black;",
                 title : "myElement",
                 type : "text",
                 valign : "middle",
