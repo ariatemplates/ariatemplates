@@ -165,7 +165,7 @@ Aria.classDefinition({
 
                         if ((options[j].label.toLowerCase() == key.toLowerCase() || options[j].value.toLowerCase() == key.toLowerCase())) {
                             if ((options[j].label.toLowerCase() == key.toLowerCase() || options[j].value.toLowerCase() == key.toLowerCase())
-                                    && !aria.utils.Array.contains(selectedOptions, options[j].value)) {
+                                    && !aria.utils.Array.contains(selectedOptions, options[j].value) && !options[j].disabled) {
                                 selectedOptions.push(options[j].value);
                             }
                         }
