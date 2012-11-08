@@ -48,5 +48,7 @@ Aria.classDefinition({
         this.addTests("test.aria.templates.TxtTemplateTest");
         this.addTests("test.aria.templates.ViewTest");
 
+        this.addTests("test.aria.templates.generatedId.IncrementalElementIdTestCase");
+
     }
 });

@@ -727,8 +727,7 @@ Aria.beanDefinitions({
             $properties : {
                 "id" : {
                     $type : "json:String",
-                    $description : "Id of the section.",
-                    $mandatory : true
+                    $description : "Id of the section."
                 },
                 "type" : {
                     $type : "json:String",
