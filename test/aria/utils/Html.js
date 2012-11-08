@@ -38,7 +38,7 @@ Aria.classDefinition({
                         var classesStr = div.className;
                         for (var i = 0, ii = attribute.length; i < ii; i++) {
                             this.assertTrue(classesStr.indexOf(attribute[i]) > -1, "The class " + attribute[i]
-                                    + " shoud be in the generated markup");
+                                    + " should be in the generated markup");
                         }
                     } else if (key === "dataset") {
                         for (var dataKey in attribute) {

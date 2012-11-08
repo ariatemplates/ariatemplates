@@ -73,7 +73,7 @@
             tplDiv.style.background = "";
         }
 
-        // Load the CSS dependecies, the style should be added before the html
+        // Load the CSS dependencies, the style should be added before the html
         tplDiv.className = tplCtxt.getCSSClassNames(); // remove the loading indicator
         if (result) {
             args.tplCtxt = tplCtxt;

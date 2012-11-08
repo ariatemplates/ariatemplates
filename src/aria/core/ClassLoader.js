@@ -101,7 +101,7 @@ Aria.classDefinition({
 
         /**
          * Is true if there were errors while retrieving missing dependencies. It becomes true when you call
-         * <code>addDependecies</code> with wrong parameters or when one of the missing dependencies raises a class
+         * <code>addDependencies</code> with wrong parameters or when one of the missing dependencies raises a class
          * error event
          * @protected
          * @type Boolean

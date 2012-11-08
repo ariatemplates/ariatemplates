@@ -153,7 +153,7 @@ Aria.classDefinition({
         /* Backward Compatibility ends here */
 
         /**
-         * Map of headers sent with evey request.
+         * Map of headers sent with every request.
          * @type Object
          */
         this.headers = {

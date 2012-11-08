@@ -51,7 +51,7 @@ Aria.classDefinition({
                 "mouseover", "mouseout", "contextmenu", "touchstart", "touchend", "touchmove", "mousewheel"];
 
         /**
-         * Delegated events on window. On modern browser, if focus is not on an element, event are not catched by the
+         * Delegated events on window. On modern browser, if focus is not on an element, event are not caught by the
          * body but the window.
          * @type Array
          */
@@ -182,7 +182,7 @@ Aria.classDefinition({
         this._delegatedMap = null;
     },
     $statics : {
-        DELEGATE_UTIL_CALLBACK_FAIL : "Error catch in callback for event %1"
+        DELEGATE_UTIL_CALLBACK_FAIL : "Error caught in callback for event %1"
     },
     $prototype : {
 
