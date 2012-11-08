@@ -259,12 +259,12 @@
                 }
                 var controller = this, domEvent = aria.DomEvent;
 
-				 if (keyCode == domEvent.KC_ARROW_DOWN && !nextValue && controller.expandButton){
-					controller.toggleDropdown("", !!controller._listWidget);
-					return;
-				}
+                if (keyCode == domEvent.KC_ARROW_DOWN && !nextValue && controller.expandButton) {
+                    controller.toggleDropdown("", !!controller._listWidget);
+                    return;
+                }
 
-				this._typeTimout = setTimeout(function () {
+                this._typeTimout = setTimeout(function () {
                     controller._typeTimout = null;
 
                     controller._pendingRequestNb += 1;
