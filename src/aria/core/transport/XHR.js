@@ -15,8 +15,6 @@
 
 /**
  * Transport class for XHR requests.
- * @class aria.core.transport.XHR
- * @extends aria.core.JsObject
  * @singleton
  */
 Aria.classDefinition({

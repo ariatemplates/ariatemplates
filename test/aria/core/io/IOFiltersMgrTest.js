@@ -17,9 +17,9 @@
  * Test for the IOFiltersMgr singleton.
  */
 Aria.classDefinition({
-    $classpath : 'test.aria.core.io.IOFiltersMgrTest',
-    $dependencies : ['test.aria.core.test.IOFilterSample'],
-    $extends : 'aria.jsunit.TestCase',
+    $classpath : "test.aria.core.io.IOFiltersMgrTest",
+    $dependencies : ["test.aria.core.test.IOFilterSample"],
+    $extends : "aria.jsunit.TestCase",
     $prototype : {
         testAddRemoveFilter : function () {
             var ioFiltersMgr = aria.core.IOFiltersMgr;

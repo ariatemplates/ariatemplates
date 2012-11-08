@@ -25,24 +25,18 @@ try {
         $singleton : true,
         $prototype : {
             isReady : true,
-            init : function () {},
-            request : function (reqId, method, uri, callback, postData) {
+            init : Aria.empty,
+            request : function (request, callback) {
                 fs.readFile(uri, "utf-8", function (err, data) {
                     if (err) {
-                        console.log("ERROR", err);
+                        callback.fn.call(callback.scope, err, callback.args);
                     } else {
                         var responseObject = {
                             reqId : reqId,
                             status : 200,
                             responseText : data
                         };
-                        if (callback && callback.success) {
-                            if (!callback.scope) {
-                                callback.success(responseObject);
-                            } else {
-                                callback.success.call(callback.scope, responseObject);
-                            }
-                        }
+                        callback.fn.call(callback.scope, false, callback.args, responseObject);
                     }
                 });
             }
