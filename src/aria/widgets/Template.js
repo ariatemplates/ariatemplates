@@ -245,7 +245,7 @@ Aria.classDefinition({
                 tplCtxt.dataReady(); // data successfully loaded: signal to template through TemplateContext
                 // check that tplCtxt was not disposed
                 if (tplDiv && tplCtxt._cfg) {
-                    // Load the CSS dependecies, the style should be added before the html
+                    // Load the CSS dependencies, the style should be added before the html
                     tplDiv.className = tplCtxt.getCSSClassNames();
                     tplCtxt.$onOnce({
                         "Ready" : this.__innerTplReadyCb,

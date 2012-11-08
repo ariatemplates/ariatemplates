@@ -519,7 +519,7 @@ Aria.classDefinition({
 					scope : this
 				});
 				subModule.raiseTestEvent();
-				this.assertTrue(test == 1, "Event was not catched by parent module");
+				this.assertTrue(test == 1, "Event was not caught by parent module");
 
 				// test disposeSubModule:
 				parentModuleCtrl.disposeSubModule(subModule);

@@ -33,7 +33,7 @@ Aria.classDefinition({
         "defaultTestTimeout" : 60000,
 
         ERROR_NOTIFY_END : "Synchronous test is calling notifyTestEnd",
-        EXCEPTION_IN_METHOD : "Exception raised while calling '%1' in an asynchrnous test"
+        EXCEPTION_IN_METHOD : "Exception raised while calling '%1' in an asynchronous test"
     },
     $constructor : function () {
         // constructor
@@ -158,8 +158,8 @@ Aria.classDefinition({
         },
 
         /**
-         * Executed when an un-handled exception is thrown inside a method defined on the test instance but not a test.
-         * If the test is asynchrnous this will log an error and notify its end
+         * Executed when an unhandled exception is thrown inside a method defined on the test instance but not a test.
+         * If the test is asynchronous this will log an error and notify its end
          * @param {Error} ex Exception
          * @param {String} methodName Method that threw the exception
          * @private
@@ -174,7 +174,7 @@ Aria.classDefinition({
         },
 
         /**
-         * Conditionnal wait before calling the callback It takes only one json parameter
+         * Conditional wait before calling the callback It takes only one json parameter
          * @param {args} args json parameter with the following attributes: <br />
          * {integer} delay : Optional. Time interval between two test <br />
          * {Function} condition : function which returns true or false. If true, the callback will be called, if false,
