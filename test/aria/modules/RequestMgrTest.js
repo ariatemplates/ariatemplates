@@ -140,14 +140,14 @@ Aria.classDefinition({
             // Undefined text
             requestMgr.addParam("text");
 
-            url = requestMgr.createRequestUrl({
+            url = requestMgr.createRequestDetails({
                 moduleName : "tpls",
                 actionName : "doTest1"
             }, {
                 id : "x"
             });
 
-            this.assertEquals(url, "http://test/tpls/doTest1;jsessionid=x?number=12", "got " + url);
+            this.assertEquals(url.url, "http://test/tpls/doTest1;jsessionid=x?number=12", "got " + url.url);
 
             // Try overriding a parameter
             requestMgr.addParam("text", "twelve");
@@ -155,38 +155,39 @@ Aria.classDefinition({
 
             requestMgr.addParam("number", null);
 
-            url = requestMgr.createRequestUrl({
+            url = requestMgr.createRequestDetails({
                 moduleName : "tpls",
                 actionName : "doTest2"
             }, {
                 id : "x"
             });
 
-            this.assertEquals(url, "http://test/tpls/doTest2;jsessionid=x?text=twelve", "wrong url. got " + url);
+            this.assertEquals(url.url, "http://test/tpls/doTest2;jsessionid=x?text=twelve", "wrong url. got " + url.url);
 
             // However false should be left as false
             requestMgr.addParam("text", null);
             requestMgr.addParam("number", null);
             requestMgr.addParam("boolean", false);
 
-            url = requestMgr.createRequestUrl({
+            url = requestMgr.createRequestDetails({
                 moduleName : "tpls",
                 actionName : "doTest3"
             }, {
                 id : "x"
             });
-            this.assertEquals(url, "http://test/tpls/doTest3;jsessionid=x?boolean=false", "boolean missing. got " + url);
+            this.assertEquals(url.url, "http://test/tpls/doTest3;jsessionid=x?boolean=false", "boolean missing. got "
+                    + url.url);
 
             // try removing the last param
             requestMgr.removeParam("boolean");
 
-            url = requestMgr.createRequestUrl({
+            url = requestMgr.createRequestDetails({
                 moduleName : "tpls",
                 actionName : "doTest3"
             }, {
                 id : "x"
             });
-            this.assertEquals(url, "http://test/tpls/doTest3;jsessionid=x", "boolean not remove. got " + url);
+            this.assertEquals(url.url, "http://test/tpls/doTest3;jsessionid=x", "boolean not remove. got " + url.url);
         },
 
         /**
@@ -537,6 +538,32 @@ Aria.classDefinition({
                 args : "testAsyncRemoveMetadata",
                 delay : 100
             });
+        },
+
+        /**
+         * Tests that calling createRequestDetails passing in a service give the same result as calling it passing an
+         * action as argument.
+         */
+        testCreateRequestDetailsForService : function () {
+            var requestMgr = aria.modules.RequestMgr, url;
+
+            var urlAction = requestMgr.createRequestDetails({
+                moduleName : "tpls",
+                actionName : "doTest1"
+            }, {
+                id : "x"
+            });
+
+            var urlService = requestMgr.createRequestDetails({
+                moduleName : "tpls",
+                serviceSpec : {
+                    actionName : "doTest1"
+                }
+            }, {
+                id : "x"
+            });
+
+            this.assertEquals(urlAction.url, urlService.url);
         }
 
     }
