@@ -28,7 +28,7 @@ Aria.classDefinition({
          * Pattern used to find the script tag corresponding to the framework js file.
          * @type RegExp
          */
-        this.frameworkHrefPattern = /aria-?templates-([^\/]+)\.js/;
+        this.frameworkHrefPattern = /(aria-?templates-([^\/]+)\.js|aria\/bootstrap\.js)/;
 
         /**
          * Address of the framework JS file.
@@ -218,7 +218,7 @@ Aria.classDefinition({
                 var script = scripts[i];
                 if (script.attributes && script.attributes["src"]) {
                     var src = script.attributes["src"].nodeValue;
-                    if (this.frameworkHrefPattern.exec(src)) {
+                    if (pattern.exec(src)) {
                         return src;
                     }
                 }

@@ -198,7 +198,7 @@ Aria.classDefinition({
         addCallback : function (cb) {
             if (this._hashChangeCallbacks == null) {
                 this._hashChangeCallbacks = [];
-                aria.utils.AriaWindow.attachWindow();
+                //aria.utils.AriaWindow.attachWindow();
                 this._addHashChangeInternalCallback();
             }
             this._hashChangeCallbacks.push(cb);
@@ -220,7 +220,7 @@ Aria.classDefinition({
                     if (hcC.length === 0) {
                         this._hashChangeCallbacks = null;
                         this._removeHashChangeInternalCallback();
-                        aria.utils.AriaWindow.detachWindow();
+                        //aria.utils.AriaWindow.detachWindow();
                     }
                 }
             }

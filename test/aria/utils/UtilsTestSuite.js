@@ -40,6 +40,7 @@ Aria.classDefinition({
         this.addTests("test.aria.utils.Function");
         this.addTests("test.aria.utils.FunctionWriterTest");
         this.addTests("test.aria.utils.HashManager");
+        this.addTests("test.aria.utils.History");
         this.addTests("test.aria.utils.Html");
         this.addTests("test.aria.utils.IdManager");
         this.addTests("test.aria.utils.JsonTest");
