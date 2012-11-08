@@ -58,7 +58,7 @@
         $dependencies : ["aria.templates.Layout", "aria.templates.CfgBeans", "aria.utils.Array", "aria.utils.Function",
                 "aria.utils.Type", "aria.templates.TemplateCtxtManager", "aria.templates.RefreshManager",
                 "aria.templates.CSSMgr", "aria.utils.Path", "aria.utils.Delegate", "aria.templates.NavigationManager",
-                "aria.templates.SectionWrapper", "aria.core.environment.Customizations",
+                "aria.templates.SectionWrapper", "aria.core.environment.Customizations", "aria.utils.Dom",
                 "aria.templates.DomElementWrapper", "aria.templates.MarkupWriter", "aria.utils.DomOverlay"],
         $implements : ["aria.templates.ITemplate", "aria.templates.ITemplateCtxt"],
         $extends : "aria.templates.BaseCtxt",
@@ -491,7 +491,7 @@
              * @return {Array} contains ids for the widget and templates that make the focused widget path.
              */
             _getWidgetPath : function (element) {
-                if (element === null || element.tagName === "BODY") {
+                if (!aria.utils.Dom.isInDom(element)) {
                     return [];
                 }
                 var Ids = [];
