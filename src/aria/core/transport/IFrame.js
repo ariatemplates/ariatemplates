@@ -106,7 +106,11 @@ Aria.classDefinition({
             form.action = request.url;
             form.method = request.method;
             if (request.headers["Content-Type"]) {
-                form.enctype = request.headers["Content-Type"];
+                try {
+                    form.enctype = request.headers["Content-Type"];
+                } catch (ex) {
+                    // This might throw an exception in IE if the content type is invalid.
+                }
             }
             try {
                 form.submit();
