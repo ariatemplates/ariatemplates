@@ -188,12 +188,14 @@ Aria.classDefinition({
         /**
          * Submit a JSON Request
          * @see aria.modules.RequestMgr.
-         * @param {String} action the action path - e.g. 'search' or 'search?x=y'. This path will be automatically
+         * @param {String|Object} targetService, either :
+         * - the action path - e.g. 'search' or 'search?x=y'. This path will be automatically
          * concatenated to the module path determined from the class package
+         * - a 'service specification' structure, understood by the UrlService implementation
          * @param {Object} jsonData - the data to post to the server
          * @param {aria.core.JsObject.Callback} cb the callback
          */
-        submitJsonRequest : function (action, jsonData, cb) {
+        submitJsonRequest : function (targetService, jsonData, cb) {
             var typeUtils = aria.utils.Type;
             // change cb as an object if a string or a function is passed as a
             // callback
@@ -217,13 +219,19 @@ Aria.classDefinition({
             // Request object constructed with all necessary properties
             var requestObject = {
                 moduleName : this.$package,
-                actionName : action,
                 session : this._session,
                 actionQueuing : null,
                 requestHandler : this.$requestHandler,
                 urlService : this.$urlService,
                 requestJsonSerializer : this.$requestJsonSerializer
             };
+            
+            if (typeUtils.isString(targetService)) {
+                requestObject.actionName = targetService;
+            } else {
+                requestObject.serviceSpec = targetService;
+            }
+            
             aria.modules.RequestMgr.submitJsonRequest(requestObject, jsonData, wrapCB);
         },
 
