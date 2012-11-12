@@ -200,7 +200,7 @@ Aria.classDefinition({
             var listeners = this._listenersToRemove, list;
             for (var i = 0, length = listeners.length; i < length; i++) {
                 list = listeners[i];
-                list[0][list[1]](list[2], list[3]);
+                list[0][list[1]](list[2], list[3], false);
             }
             this._listenersToRemove = [];
         }
