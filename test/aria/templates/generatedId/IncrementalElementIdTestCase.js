@@ -4,6 +4,7 @@
 Aria.classDefinition({
     $classpath : "test.aria.templates.generatedId.IncrementalElementIdTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
+    $dependencies : ["aria.utils.DomOverlay"],
     $constructor : function () {
         this.$TemplateTestCase.constructor.call(this);
         Aria.testMode = true;
@@ -12,7 +13,8 @@ Aria.classDefinition({
             template : "test.aria.templates.generatedId.TemplateWithSectionId",
             data : {
                 sectionrefresh : "value1",
-                firstTime:true
+                firstTime : true,
+                processingIndicator: false
             }
         });
 
@@ -114,7 +116,8 @@ Aria.classDefinition({
                 template : "test.aria.templates.generatedId.TemplateWithOutSectionId",
                 data : {
                     sectionrefresh : "value1",
-                    firstTime : true
+                    firstTime : true,
+                    processingIndicator: false
                 }
             }, {
                 fn : this._whenTestModeOnWithOutSectionId,
@@ -163,9 +166,19 @@ Aria.classDefinition({
 
             Aria.testMode = false;
 
-            this._end();
+            this._processingIndicator();
         },
-       _end : function () {
+        _processingIndicator : function () {
+            var utilsOverlay = aria.utils.DomOverlay;
+
+            this.assertEquals(utilsOverlay._nbOverlays, 0, "The page shouldn't contain an overlay");
+            aria.utils.Json.setValue(this.templateCtxt.data, "processingIndicator", true);
+            this.assertEquals(utilsOverlay._nbOverlays, 1, "The page should contain an overlay");
+
+            this._end();
+
+        },
+        _end : function () {
             this.notifyTemplateTestEnd();
         }
 

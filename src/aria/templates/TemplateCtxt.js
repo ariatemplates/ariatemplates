@@ -773,7 +773,8 @@
                 if (domElt) {
                     if (!skipInsertHTML) {
                         // replaceHTML may change domElt (especially on IE)
-                        section.setDom(aria.utils.Dom.replaceHTML(domElt, section.html));
+                        domElt = aria.utils.Dom.replaceHTML(domElt, section.html);
+                        section.setDom(domElt);
                     }
                     if (!section.id) {
                         // the whole template is being refreshed; let's apply the correct size

@@ -9,6 +9,10 @@
                 to : "sectionrefresh",
                 inside : data
             }],
+            bindProcessingTo: {
+                to : "processingIndicator",
+                inside : data
+            },
             attributes : {
                 classList : ["section"]
             },

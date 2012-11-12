@@ -28,7 +28,8 @@
         $classpath : "aria.templates.Section",
         $dependencies : ["aria.utils.Array", "aria.utils.Json", "aria.utils.Delegate",
                 "aria.templates.NavigationManager", "aria.templates.CfgBeans", "aria.utils.Dom", "aria.utils.String",
-                "aria.templates.DomElementWrapper", "aria.utils.Html", "aria.templates.DomEventWrapper", "aria.utils.IdManager"],
+                "aria.templates.DomElementWrapper", "aria.utils.Html", "aria.templates.DomEventWrapper", "aria.utils.IdManager",
+                "aria.templates.SectionWrapper"],
         $onload : function () {
             idMgr = new aria.utils.IdManager("s");
         },
@@ -304,16 +305,9 @@
             }
             this._processing = null;
 
-            // remove the wrapper and the processing indicators
-            var wrapper = this.wrapper;
-            if (wrapper) {
-                wrapper.$dispose();
-                this.wrapper = null;
-            }
-
+            this.setDom(null);
             this.html = null;
             this._refreshMgrInfo = null;
-            this._domElt = null;
             this.tplCtxt = null;
             this._cfg = null;
         },
@@ -705,7 +699,7 @@
 
                 if (isBound && processing.inside[processing.to]) {
                     // Display the loading indicator using a Wrapper to set/unset the loading indicator
-                    this.__getWrapper().setProcessingIndicator(true, this.processingLabel);
+                    this.getWrapper().setProcessingIndicator(true, this.processingLabel);
                 }
             },
 
@@ -755,25 +749,22 @@
                 }
 
                 // Use a Wrapper to set/unset the loading indicator
-                this.__getWrapper().setProcessingIndicator(res.newValue, this.processingLabel);
+                this.getWrapper().setProcessingIndicator(res.newValue, this.processingLabel);
             },
 
             /**
-             * Get the instance of this section wrapper
+             * Get a wrapper on this section
              * @return {aria.templates.SectionWrapper} SectionWrapper
-             * @private
              */
-            __getWrapper : function () {
+            getWrapper : function () {
                 var wrapper = this.wrapper;
                 if (!wrapper) {
-                    wrapper = this.tplCtxt.$getElementById(this.id);
-                    this.$assert(634, wrapper != null);
-
-                    this.wrapper = wrapper;
+                    this.wrapper = wrapper = new aria.templates.SectionWrapper(this.getDom(), this);
                 }
 
                 return wrapper;
             },
+
             /**
              * Write the beginning of the DOM source for the section container
              * @param {aria.templates.MarkupWriter} out
@@ -948,6 +939,11 @@
              */
             setDom : function (dom) {
                 this._domElt = dom;
+                if (this.wrapper) {
+                    // The wrapper may contain a reference to the old DOM element
+                    this.wrapper.$dispose();
+                    this.wrapper = null;
+                }
             },
 
             /**
