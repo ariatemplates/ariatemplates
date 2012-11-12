@@ -491,7 +491,7 @@
              * @return {Array} contains ids for the widget and templates that make the focused widget path.
              */
             _getWidgetPath : function (element) {
-                if (!aria.utils.Dom.isInDom(element)) {
+                if (element.tagName === "BODY" || !aria.utils.Dom.isInDom(element)) {
                     return [];
                 }
                 var Ids = [];
