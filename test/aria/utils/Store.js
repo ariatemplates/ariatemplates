@@ -19,7 +19,7 @@
 Aria.classDefinition({
     $classpath : "test.aria.utils.Store",
     $extends : "aria.jsunit.TestCase",
-    $dependencies : ["aria.utils.Store"],
+    $dependencies : ["aria.utils.Store", "aria.utils.Array"],
     $prototype : {
         testSingleMatch : function () {
             var store = Aria.getClassInstance("aria.utils.Store");
@@ -45,6 +45,7 @@ Aria.classDefinition({
         },
 
         testMultipleMatch : function () {
+            var arrayUtil = aria.utils.Array;
             var store = Aria.getClassInstance('aria.utils.Store');
 
             store._store = ["a", "b", "c", "d", "e", "f"];
@@ -67,8 +68,8 @@ Aria.classDefinition({
 
             // Two should be removed
             this.assertEquals(removed.length, 2);
-            this.assertTrue(removed.indexOf("b") > -1);
-            this.assertTrue(removed.indexOf("c") > -1);
+            this.assertTrue(arrayUtil.indexOf(removed, "b") > -1);
+            this.assertTrue(arrayUtil.indexOf(removed, "c") > -1);
         }
     }
 });
