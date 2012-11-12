@@ -45,6 +45,10 @@ Aria.classDefinition({
          */
         this.storage = Aria.$window[storage];
 
+        /**
+         * Event Callback for storage event happening on different windows
+         * @type aria.core.CfgBeans.Callback
+         */
         this._browserEventCb = {
             fn : this._browserEvent,
             scope : this
@@ -111,6 +115,11 @@ Aria.classDefinition({
          * @param {HTMLEvent} event Event raised by the browser
          */
         _browserEvent : function (event) {
+            // In FF 3.6 this event is raised also inside the same window
+            if (aria.storage.EventBus.stop) {
+                return;
+            }
+
             var isInteresting = this.namespace
                     ? event.key.substring(0, this.namespace.length) === this.namespace
                     : true;

@@ -140,10 +140,13 @@ Aria.classDefinition({
                 keepMetadata : false
             });
 
+            aria.storage.EventBus.stop = true;
             this._set(this.namespace + key, serializedValue);
+            aria.storage.EventBus.stop = false;
 
             // don't notify directly value because the serialization might modify the object (e.g. metadata)
             value = this.serializer.parse(serializedValue);
+
             aria.storage.EventBus.notifyChange(this.type, key, value, oldValue, this.namespace);
         },
 
@@ -156,7 +159,9 @@ Aria.classDefinition({
             var oldValue = this.getItem(key);
 
             if (oldValue !== null) {
+                aria.storage.EventBus.stop = true;
                 this._remove(this.namespace + key);
+                aria.storage.EventBus.stop = false;
 
                 aria.storage.EventBus.notifyChange(this.type, key, null, oldValue, this.namespace);
             }
@@ -167,7 +172,9 @@ Aria.classDefinition({
          * storage location.
          */
         clear : function () {
+            aria.storage.EventBus.stop = true;
             this._clear();
+            aria.storage.EventBus.stop = false;
 
             aria.storage.EventBus.notifyChange(this.type, null, null, null);
         },

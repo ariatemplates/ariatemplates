@@ -26,6 +26,13 @@ Aria.classDefinition({
     },
     $prototype : {
         /**
+         * Since some browsers (FF 3.6) raise a native event when the change happens on the same window, this flag tells
+         * whether the brwoser event should be stopped or not. It is on this singleton as it's shared across instances
+         * @type Boolean
+         */
+        stop : false,
+
+        /**
          * Notify that a change event happened on a specific storage location
          * @param {String} location Storage location where the event is happening, i.e. local/session
          * @param {String} key Id of the value that is changing, null if clear
