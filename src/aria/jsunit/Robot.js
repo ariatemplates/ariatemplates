@@ -237,6 +237,20 @@ Aria.classDefinition({
         VK_Z : 90
     },
     $prototype : {
+
+        /**
+         * Return true if the robot is most likely usable (Java enabled).
+         */
+        isUsable : function () {
+            var navigator = Aria.$window.navigator;
+            try {
+                var res = navigator && navigator.javaEnabled();
+                return !!res;
+            } catch (e) {
+                return false;
+            }
+        },
+
         /**
          * Initialize the robot, if not already done. This must be called before any other method on the robot.
          * @param {aria.core.CfgBeans.Callback} callback callback to be called when the robot is ready to be used.
@@ -340,7 +354,7 @@ Aria.classDefinition({
             if (position.x < 0 || position.y < 0 || position.x > viewport.width || position.y > viewport.height) {
                 // FIXME: log error correctly
                 this.$logWarn("MouseMove position outside of the viewport.");
-                //return;
+                // return;
             }
             this._updateAppletPosition({
                 fn : this._mouseMoveCb,

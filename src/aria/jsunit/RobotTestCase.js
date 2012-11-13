@@ -40,9 +40,9 @@ Aria.classDefinition({
             if (this.skipTest) {
                 this.$TemplateTestCase.run.call(this);
             } else {
-                var navigator = Aria.$window.navigator;
-                if (navigator && navigator.javaEnabled && navigator.javaEnabled()) {
-                    aria.jsunit.Robot.initRobot({
+                var robot = aria.jsunit.Robot;
+                if (robot.isUsable()) {
+                    robot.initRobot({
                         fn : this.$TemplateTestCase.run,
                         scope : this
                     });
