@@ -19,10 +19,12 @@ for FILE in `exec git diff-index --check --cached $against -- | sed '/^[+-]/d' |
 done
 
 for FILE in `exec git diff --cached --name-only $against`; do
-	# echo "$FILE dos2unixed" >> ./pre-commit.log
-	# do not use 'dos2unix -D' as it misbehaves when input contains UTF-8 characters
-	sed -i 's/$/\r/' "$FILE" # better LF -> CRLF; remove if you're not on Windows
-	git add "$FILE"
+    if [ -f "$FILE" ]; then # filter out files that are on "to be deleted" list
+        # echo "$FILE dos2unixed" >> ./pre-commit.log
+        # do not use 'dos2unix -D' as it misbehaves when input contains UTF-8 characters
+        sed -i 's/$/\r/' "$FILE" # better LF -> CRLF; remove if you're not on Windows
+        git add "$FILE"
+    fi
 done
 
 exit
