@@ -14,12 +14,14 @@ for FILE in `exec git diff-index --check --cached $against -- | sed '/^[+-]/d' |
 	 # echo "$FILE whitespace cleaned" >> ./pre-commit.log
 	 # Fix them!
 	 sed -i 's/[[:space:]]*$//' "$FILE"
-	 # sed replaces CRLF to LF, as we are on Windows, we want CRLF back
+	 # sed replaces all CRLF to LF (mixed newlines in the input won't break the file)
+	 # as we are on Windows, we want CRLF back (see the next loop)
 done
 
 for FILE in `exec git diff --cached --name-only $against`; do
 	# echo "$FILE dos2unixed" >> ./pre-commit.log
-	dos2unix -D "$FILE" # remove if you're not on Windows
+	# do not use 'dos2unix -D' as it misbehaves when input contains UTF-8 characters
+	sed -i 's/$/\r/' "$FILE" # better LF -> CRLF; remove if you're not on Windows
 	git add "$FILE"
 done
 
