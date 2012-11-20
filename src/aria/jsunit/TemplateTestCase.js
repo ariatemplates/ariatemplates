@@ -286,21 +286,21 @@ Aria.classDefinition({
          * @param {String} classname The class name to look for
          * @return {Array} Array of Html elements
          */
-       getElementsByClassName : function (dom, classname) {
-           if (dom.getElementsByClassName) {
-               return dom.getElementsByClassName(classname);
-           } else {
-               var els = dom.getElementsByTagName("*");
-               var found = [];
-               var regexp = new RegExp("\\b" + classname + "\\b");
-               for(var i = 0, ii = els.length; i < ii; i++) {
-                   var el = els[i];
-                   if (regexp.test(el.className)) {
-                       found.push(el);
-                   }
-               }
-               return found;
-           }
+        getElementsByClassName : function (dom, classname) {
+            if (dom.getElementsByClassName) {
+                return dom.getElementsByClassName(classname);
+            } else {
+                var els = dom.getElementsByTagName("*");
+                var found = [];
+                var regexp = new RegExp("\\b" + classname + "\\b");
+                for (var i = 0, ii = els.length; i < ii; i++) {
+                    var el = els[i];
+                    if (regexp.test(el.className)) {
+                        found.push(el);
+                    }
+                }
+                return found;
+            }
         },
 
         /**

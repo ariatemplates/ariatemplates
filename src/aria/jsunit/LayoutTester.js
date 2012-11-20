@@ -92,19 +92,19 @@ Aria.classDefinition({
         },
 
         /**
-         * Convenient method to compare an json element on one single level.
-         * It also prevent to compare the 'element' attribute, which is the html object.
+         * Convenient method to compare an json element on one single level. It also prevent to compare the 'element'
+         * attribute, which is the html object.
          * @param {JSON} item1 Object 1 to compare
          * @param {JSON} item2 Object 2 to compare
          * @return true if item1 is equals to item2
          */
         itemCompare : function (item1, item2) {
-			for(var key in item1) {
-				if (key != "element" && item1[key] !== item2[key]) {
-					return false;
-				}
-			}
-			return true;
+            for (var key in item1) {
+                if (key != "element" && item1[key] !== item2[key]) {
+                    return false;
+                }
+            }
+            return true;
         },
 
         /**

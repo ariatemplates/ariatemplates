@@ -15,7 +15,6 @@
 
 /**
  * FIXME: missing doc
- * @class aria.widgets.frames.OldFrame
  */
 Aria.classDefinition({
     $classpath : 'aria.widgets.frames.OldFrame',

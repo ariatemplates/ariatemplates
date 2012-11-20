@@ -14,11 +14,11 @@
  */
 
 Aria.resourcesDefinition({
-    $classpath: 'aria.utils.UtilsRes',
-    $resources: {
-        "timeFormatLabels":{
-            "am":"AM",
-            "pm":"PM"
+    $classpath : 'aria.utils.UtilsRes',
+    $resources : {
+        "timeFormatLabels" : {
+            "am" : "AM",
+            "pm" : "PM"
         }
     }
 });
