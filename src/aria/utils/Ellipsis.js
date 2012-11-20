@@ -60,7 +60,7 @@ Aria.classDefinition({
             var textWidth = tempSizerEl.offsetWidth;
             tempSizerEl.parentNode.removeChild(tempSizerEl);
 
-            tempSizerEl.innerHTML = (ellipsisStr!=null?ellipsisStr:"") + "&nbsp;";
+            tempSizerEl.innerHTML = (ellipsisStr != null ? ellipsisStr : "") + "&nbsp;";
             document.body.appendChild(tempSizerEl);
             var ellipsisWidth = tempSizerEl.offsetWidth;
 

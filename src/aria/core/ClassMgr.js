@@ -248,10 +248,10 @@ Aria.classDefinition({
             var loader = itm.loader;
             if (!loader) {
                 var loaderConstr = (typeName != null ? this._classTypes[typeName] : aria.core.ClassLoader);
-                if(typeof loaderConstr === "string") {
+                if (typeof loaderConstr === "string") {
                     loaderConstr = Aria.getClassRef(loaderConstr);
                 }
-                if(!loaderConstr) {
+                if (!loaderConstr) {
                     this.$logError(this.MISSING_CLASSLOADER, [typeName, classpath]);
                 } else {
                     loader = new loaderConstr(classpath, typeName);

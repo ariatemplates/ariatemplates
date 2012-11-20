@@ -63,11 +63,11 @@ Aria.classDefinition({
                 var XMLSerializer = Aria.$global.XMLSerializer;
                 // Gecko-based browsers, Safari, Opera.
                 return (new XMLSerializer()).serializeToString(xmlNode);
-            } catch (e) {
+            } catch (e1) {
                 try {
                     // Internet Explorer.
                     return xmlNode.xml;
-                } catch (e) {
+                } catch (e2) {
                     // Strange Browser ??
                     this.$logWarn('Xmlserializer not supported');
                 }

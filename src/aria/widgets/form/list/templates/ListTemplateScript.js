@@ -120,7 +120,7 @@ Aria.tplScriptDefinition({
          */
         itemClick : function (evt) {
             if (!this.data.disabled) {
-                var itemIdx = evt.target.getData("itemIdx",true);
+                var itemIdx = evt.target.getData("itemIdx", true);
                 if (itemIdx) {
                     if (aria.core.Browser.isWebkit) {
                         // webkit-based browsers explicitly need this
