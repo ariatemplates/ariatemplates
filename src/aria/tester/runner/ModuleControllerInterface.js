@@ -24,7 +24,7 @@ Aria.interfaceDefinition({
         "initSuccessful" : "initSuccessful",
         "preloadEnd" : "preloadEnd",
         "testEnd" : "testEnd",
-        "testStateChange" :  "testStateChange"
+        "testStateChange" : "testStateChange"
     },
     $interface : {
         "startCampaign" : {

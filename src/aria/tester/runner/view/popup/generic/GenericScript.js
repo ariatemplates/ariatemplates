@@ -22,10 +22,10 @@ Aria.tplScriptDefinition({
     $constructor : function () {
         this.keys = this._getKeys();
         var keys = this.keys;
-        for (var i = 0, l = keys.length ; i < l ; i++) {
+        for (var i = 0, l = keys.length; i < l; i++) {
             aria.templates.NavigationManager.addGlobalKeyMap({
                 key : keys[i][0],
-                callback :{
+                callback : {
                     fn : keys[i][1],
                     scope : this
                 }
@@ -35,10 +35,10 @@ Aria.tplScriptDefinition({
 
     $destructor : function () {
         var keys = this.keys;
-        for (var i = 0, l = keys.length ; i < l ; i++) {
+        for (var i = 0, l = keys.length; i < l; i++) {
             aria.templates.NavigationManager.removeGlobalKeyMap({
                 key : keys[i][0],
-                callback :{
+                callback : {
                     fn : keys[i][1],
                     scope : this
                 }
@@ -47,7 +47,7 @@ Aria.tplScriptDefinition({
     },
     $prototype : {
         getLabelWithShortcut : function (label) {
-            var firstChar = "<u>" + label.substring(0,1).toUpperCase() + "</u>";
+            var firstChar = "<u>" + label.substring(0, 1).toUpperCase() + "</u>";
             var labelWithShortcut = firstChar + label.substring(1);
             return labelWithShortcut;
         }

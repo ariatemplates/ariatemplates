@@ -31,12 +31,12 @@ Aria.tplScriptDefinition({
                 subTests = __testUtils.getSubTestsAsArray(rootSuite);
             } else if (rootSuite.$TestCase) {
                 subTests = [{
-                    instance : rootSuite,
-                    classpath : rootSuite.$classpath
-                }];
+                            instance : rootSuite,
+                            classpath : rootSuite.$classpath
+                        }];
             }
 
-            for (var i = 0, l = subTests.length ; i < l ; i++) {
+            for (var i = 0, l = subTests.length; i < l; i++) {
                 var subTest = subTests[i];
                 var instance = subTest.instance;
                 if (instance.hasError && instance.hasError()) {
@@ -78,9 +78,7 @@ Aria.tplScriptDefinition({
         },
 
         _getKeys : function () {
-            var keys = [
-                ["C", this._onCloseButtonClicked]
-            ];
+            var keys = [["C", this._onCloseButtonClicked]];
             return keys;
         }
     }

@@ -16,10 +16,10 @@
 Aria.classDefinition({
     $classpath : 'aria.tester.runner.BaseFlow',
     $extends : 'aria.templates.FlowCtrl',
-    $constructor:function() {
+    $constructor : function () {
         this.$FlowCtrl.constructor.call(this);
     },
-    $prototype: {
+    $prototype : {
         // Intercepting method called at the end of the module controller initialization:
         oninitCallback : function (param) {
             this.$FlowCtrl.oninitCallback.call(this, param); // call the method of the parent which sets this.data
@@ -28,18 +28,18 @@ Aria.classDefinition({
         },
 
         // navigate is published in the Flow interface
-        navigate:function(targetState) {
+        navigate : function (targetState) {
             var flowData = this.data.flow;
             var currentState = flowData.currentState;
 
             if (!this.isTransitionValid(currentState, targetState)) {
-                return this.$logError("FLOW_INVALID_TRANSITION",[targetState]);
+                return this.$logError("FLOW_INVALID_TRANSITION", [targetState]);
             }
 
             var json = aria.utils.Json;
 
             // change current state to new state
-            json.setValue(flowData,"currentState",targetState);
+            json.setValue(flowData, "currentState", targetState);
 
             // Call the internal callback on valid state transitions
             this.onStateChange(targetState);
@@ -49,29 +49,23 @@ Aria.classDefinition({
         },
 
         /**
-         * Will be called after each valid transition change
-         * To be overrided by children classes
+         * Will be called after each valid transition change To be overrided by children classes
          * @param {String} state
          */
         onStateChange : function (state) {},
 
         /**
-         * Tells if a transition is valid. Note: this information is also
-         * available in the data model
+         * Tells if a transition is valid. Note: this information is also available in the data model
          * @param {String} targetState the state targetted by the transition
          * @return {Boolean} true if the transition is authorized
          */
-        isTransitionValid:function(currentState, targetState) {
+        isTransitionValid : function (currentState, targetState) {
             var transitionMap = this._getTransitionMap();
 
-            return (
-                transitionMap[currentState] &&
-                transitionMap[currentState][targetState]
-            );
+            return (transitionMap[currentState] && transitionMap[currentState][targetState]);
         },
 
         /**
-         *
          * @return {Object}
          */
         _getTransitionMap : function () {
@@ -85,7 +79,7 @@ Aria.classDefinition({
 
             var flowData = this.flowData;
             var validTransitions = flowData.validTransitions;
-            for (var i = 0 ; i < validTransitions.length ; i++) {
+            for (var i = 0; i < validTransitions.length; i++) {
                 var validTransition = validTransitions[i];
                 addValidTransition(validTransition[0], validTransition[1])
 
