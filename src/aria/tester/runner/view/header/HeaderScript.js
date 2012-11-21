@@ -44,8 +44,13 @@
             },
 
             __isButtonDisabledForState : function (state) {
-                var disabledStates = [this.flowCtrl.STATES.INIT, this.flowCtrl.STATES.FAILURE,
-                        this.flowCtrl.STATES.PAUSING, this.flowCtrl.STATES.RESUMING, this.flowCtrl.STATES.OPTIONS];
+                var disabledStates = [];
+                disabledStates.push(this.flowCtrl.STATES.INIT);
+                disabledStates.push(this.flowCtrl.STATES.FAILURE);
+                disabledStates.push(this.flowCtrl.STATES.PAUSING);
+                disabledStates.push(this.flowCtrl.STATES.RESUMING);
+                disabledStates.push(this.flowCtrl.STATES.OPTIONS);
+
                 if (aria.utils.Array.indexOf(disabledStates, state) != -1) {
                     return true;
                 }

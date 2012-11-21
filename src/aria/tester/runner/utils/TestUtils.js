@@ -33,8 +33,10 @@
             },
 
             /**
-             * Format information about a test suite for display purposes, with an abstraction on the testsuite. (0,3) =>
-             * "(3 test cases)" (1,3) => "(1 test suite and 3 test cases)" (2,0) => "(2 test suites)"
+             * Format information about a test suite for display purposes, with an abstraction on the testsuite. <br />
+             * (0,3) => '(3 test cases)' <br />
+             * (1,3) => '(1 test suite and 3 test cases)' <br />
+             * (2,0) => '(2 test suites)' <br />
              * @param {Number} suitesCount The number of suites contained inside a given suite
              * @param {Number} casesCount The number of cases contained inside a given suite
              * @return {String} Formatted information
