@@ -33,18 +33,29 @@ Aria.classDefinition({
     $implements : ['aria.tester.runner.ModuleControllerFlowInterface'],
     $constructor : function () {
         this.$BaseFlow.constructor.call(this);
+        /**
+         * Declare all the valid transitions for this flow <br />
+         * init--> ready--> ongoing--> finished <br />
+         * init--> failure <br />
+         * ongoing--> failure <br />
+         * ongoing--> pausing--> paused--> ongoing <br />
+         */
+        var validTransitions = [];
+        validTransitions.push([this.STATES.INIT, this.STATES.READY]);
+        validTransitions.push([this.STATES.INIT, this.STATES.FAILURE, true]);
+        validTransitions.push([this.STATES.READY, this.STATES.ONGOING]);
+        validTransitions.push([this.STATES.ONGOING, this.STATES.FAILURE]);
+        validTransitions.push([this.STATES.ONGOING, this.STATES.PAUSING]);
+        validTransitions.push([this.STATES.PAUSING, this.STATES.PAUSED]);
+        validTransitions.push([this.STATES.PAUSED, this.STATES.RESUMING]);
+        validTransitions.push([this.STATES.RESUMING, this.STATES.ONGOING]);
+        validTransitions.push([this.STATES.ONGOING, this.STATES.FINISHED, true]);
+        validTransitions.push([this.STATES.FINISHED, this.STATES.INIT]);
+        validTransitions.push([this.STATES.FINISHED, this.STATES.REPORT, true]);
+        validTransitions.push([this.STATES.REPORT, this.STATES.INIT]);
         this.flowData = {
             currentState : this.STATES.INIT,
-            /**
-             * Declare all the valid transitions for this flow init --> ready --> ongoing --> finished init --> failure
-             * ongoing --> failure ongoing --> pausing --> paused --> ongoing
-             */
-            validTransitions : [[this.STATES.INIT, this.STATES.READY], [this.STATES.INIT, this.STATES.FAILURE, true],
-                    [this.STATES.READY, this.STATES.ONGOING], [this.STATES.ONGOING, this.STATES.FAILURE],
-                    [this.STATES.ONGOING, this.STATES.PAUSING], [this.STATES.PAUSING, this.STATES.PAUSED],
-                    [this.STATES.PAUSED, this.STATES.RESUMING], [this.STATES.RESUMING, this.STATES.ONGOING],
-                    [this.STATES.ONGOING, this.STATES.FINISHED, true], [this.STATES.FINISHED, this.STATES.INIT],
-                    [this.STATES.FINISHED, this.STATES.REPORT, true], [this.STATES.REPORT, this.STATES.INIT]]
+            validTransitions : validTransitions
         };
     },
     $prototype : {
