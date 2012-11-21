@@ -73,6 +73,14 @@ Aria.classDefinition({
          * @private
          */
         this.__appEnv = {};
+
+        var proto = Aria.nspace(this.$classpath).classDefinition.$prototype;
+        var methods = aria.utils.Object.keys(proto);
+        var isFunction = aria.utils.Type.isFunction;
+        methods = aria.utils.Array.filter(methods, function (method) {
+            return isFunction(proto[method]) && !aria.utils.Array.contains(["setUp", "tearDown"], method);
+        });
+        this.__wrapTestMethods(methods);
     },
     $destructor : function () {
         // destructor
@@ -97,14 +105,6 @@ Aria.classDefinition({
             var isFunction = aria.utils.Type.isFunction;
             // do not add tasks to the sequencer if the TestCase is mean to be skipped
             if (!this.skipTest) {
-                var array = aria.utils.Array;
-
-                var proto = Aria.nspace(this.$classpath).classDefinition.$prototype;
-                var methods = aria.utils.Object.keys(proto);
-                methods = array.filter(methods, function (method) {
-                    return isFunction(proto[method]) && !aria.utils.Array.contains(["setUp", "tearDown"], method);
-                });
-
                 for (var key in this) {
                     if (key.indexOf("test") === 0 && isFunction(this[key])) {
                         var isAsynchronous = (key.indexOf("testAsync") === 0);
@@ -116,11 +116,8 @@ Aria.classDefinition({
                             asynchronous : isAsynchronous
                         });
                         this._testsCount++;
-                        array.remove(methods, key);
                     }
                 }
-
-                this.__wrapTestMethods(methods);
             }
             this._sequencer.$on({
                 "end" : this._onSequencerEnd,
@@ -138,6 +135,9 @@ Aria.classDefinition({
             var originals = {};
             for (var i = 0, len = methods.length; i < len; i += 1) {
                 var method = methods[i];
+                if (method.indexOf("test") === 0) {
+                    continue;
+                }
                 originals[method] = this[method];
                 this[method] = (function (name) {
                     return function () {
