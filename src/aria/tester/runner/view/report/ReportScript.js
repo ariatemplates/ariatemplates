@@ -31,7 +31,7 @@ Aria.tplScriptDefinition({
             var state = this.data.flow.currentState;
             if (this.lastFinishedId > 10 && state == this.flowCtrl.STATES.ONGOING) {
                 var scrollPositions = divToScroll.getScroll();
-                scrollPositions.scrollTop = 23*(this.lastFinishedId-10);
+                scrollPositions.scrollTop = 23 * (this.lastFinishedId - 10);
                 divToScroll.setScroll(scrollPositions);
             } else {
                 var backupScroll = this.data.view.scrollPositions["ReportScript_left"]
@@ -44,16 +44,12 @@ Aria.tplScriptDefinition({
         _backupScrollPosition : function () {
             var divToScroll = this.$getElementById("left");
             if (divToScroll) {
-                this.$json.setValue(
-                    this.data.view.scrollPositions,
-                    "ReportScript_left",
-                    divToScroll.getScroll()
-                );
+                this.$json.setValue(this.data.view.scrollPositions, "ReportScript_left", divToScroll.getScroll());
             }
         },
 
         _setLastFinishedId : function (index) {
-            this.lastFinishedId = index-1;
+            this.lastFinishedId = index - 1;
         },
 
         getTestsArray : function () {
@@ -64,9 +60,9 @@ Aria.tplScriptDefinition({
                 return [];
             } else if (!rootSuite.$TestSuite) {
                 return [{
-                    classpath:rootSuite.$classpath,
-                    instance : rootSuite
-                }]
+                            classpath : rootSuite.$classpath,
+                            instance : rootSuite
+                        }]
             }
 
             var subTests = __testUtils.getSubTestsAsArray(rootSuite);
@@ -76,20 +72,21 @@ Aria.tplScriptDefinition({
         getFilteredTestsArray : function () {
             var subTests = this.getTestsArray();
             var filteredTests = [];
-            for (var i = 0, l = subTests.length ; i < l ; i++) {
+            for (var i = 0, l = subTests.length; i < l; i++) {
                 var subTest = subTests[i];
                 if (this._isFiltered(subTest)) {
                     filteredTests.push(subTest);
                 }
             }
-            for (var i = 0 ; i < filteredTests.length ; i++) {
+            for (var i = 0; i < filteredTests.length; i++) {
                 var filteredTest = filteredTests[i];
-                var nextTest = filteredTests[i+1]
+                var nextTest = filteredTests[i + 1]
                 if (!nextTest || (nextTest.instance && nextTest.instance.$TestSuite)) {
                     filteredTest.lastInSuite = false;
                 }
-                if (filteredTest.instance && filteredTest.instance.$TestSuite && (!nextTest || (nextTest.instance && !nextTest.instance.$Assert))) {
-                    filteredTests.splice(i,1);
+                if (filteredTest.instance && filteredTest.instance.$TestSuite
+                        && (!nextTest || (nextTest.instance && !nextTest.instance.$Assert))) {
+                    filteredTests.splice(i, 1);
                     i--;
                 }
             }

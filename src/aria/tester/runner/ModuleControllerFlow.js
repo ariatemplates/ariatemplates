@@ -21,7 +21,7 @@ Aria.classDefinition({
             INIT : "init",
             READY : "ready",
             FAILURE : "failure",
-            OPTIONS: "options",
+            OPTIONS : "options",
             ONGOING : "ongoing",
             PAUSED : "paused",
             PAUSING : "pausing",
@@ -30,36 +30,25 @@ Aria.classDefinition({
             REPORT : "report"
         }
     },
-    $implements: ['aria.tester.runner.ModuleControllerFlowInterface'],
-    $constructor:function() {
+    $implements : ['aria.tester.runner.ModuleControllerFlowInterface'],
+    $constructor : function () {
         this.$BaseFlow.constructor.call(this);
-        this.flowData={
-            currentState:this.STATES.INIT,
+        this.flowData = {
+            currentState : this.STATES.INIT,
             /**
-             * Declare all the valid transitions for this flow
-             * init --> ready --> ongoing --> finished
-             * init --> failure
-             * ongoing --> failure
-             * ongoing --> pausing --> paused --> ongoing
+             * Declare all the valid transitions for this flow init --> ready --> ongoing --> finished init --> failure
+             * ongoing --> failure ongoing --> pausing --> paused --> ongoing
              */
-            validTransitions : [
-                [this.STATES.INIT, this.STATES.READY],
-                [this.STATES.INIT, this.STATES.FAILURE, true],
-                [this.STATES.READY, this.STATES.ONGOING],
-                [this.STATES.ONGOING, this.STATES.FAILURE],
-                [this.STATES.ONGOING, this.STATES.PAUSING],
-                [this.STATES.PAUSING, this.STATES.PAUSED],
-                [this.STATES.PAUSED, this.STATES.RESUMING],
-                [this.STATES.RESUMING, this.STATES.ONGOING],
-                [this.STATES.ONGOING, this.STATES.FINISHED, true],
-                [this.STATES.FINISHED, this.STATES.INIT],
-                [this.STATES.FINISHED, this.STATES.REPORT, true],
-                [this.STATES.REPORT, this.STATES.INIT]
-            ]
+            validTransitions : [[this.STATES.INIT, this.STATES.READY], [this.STATES.INIT, this.STATES.FAILURE, true],
+                    [this.STATES.READY, this.STATES.ONGOING], [this.STATES.ONGOING, this.STATES.FAILURE],
+                    [this.STATES.ONGOING, this.STATES.PAUSING], [this.STATES.PAUSING, this.STATES.PAUSED],
+                    [this.STATES.PAUSED, this.STATES.RESUMING], [this.STATES.RESUMING, this.STATES.ONGOING],
+                    [this.STATES.ONGOING, this.STATES.FINISHED, true], [this.STATES.FINISHED, this.STATES.INIT],
+                    [this.STATES.FINISHED, this.STATES.REPORT, true], [this.STATES.REPORT, this.STATES.INIT]]
         };
     },
-    $prototype: {
-        $publicInterfaceName: 'aria.tester.runner.ModuleControllerFlowInterface',
+    $prototype : {
+        $publicInterfaceName : 'aria.tester.runner.ModuleControllerFlowInterface',
 
         // Intercepting method called at the end of the module controller initialization:
         oninitCallback : function (param) {
@@ -74,11 +63,10 @@ Aria.classDefinition({
         },
 
         /**
-         * The flow between init and ready is a bit complex because we have to wait for two
-         * parallel activities to be finished : view has to be ready, tests have to be preloaded
-         * The Main template script will notify the flow when the view is ready.
-         * The Module controller will do the same (through interceptors) for the preload.
-         * We have to synchronize both activities for which we use two booleans : _isDisplayReady and _isPreloadFinished
+         * The flow between init and ready is a bit complex because we have to wait for two parallel activities to be
+         * finished : view has to be ready, tests have to be preloaded The Main template script will notify the flow
+         * when the view is ready. The Module controller will do the same (through interceptors) for the preload. We
+         * have to synchronize both activities for which we use two booleans : _isDisplayReady and _isPreloadFinished
          * Later on we could improve a bit the flow in order to manage this kind of complex transitions
          */
         displayReady : function () {
@@ -101,8 +89,7 @@ Aria.classDefinition({
         },
 
         /**
-         * Triggered when the campaign is launched
-         * The application switches to ongoing mode. Most of the UI is disabled
+         * Triggered when the campaign is launched The application switches to ongoing mode. Most of the UI is disabled
          */
         onstartCampaignCallBegin : function () {
             this.navigate(this.STATES.ONGOING)

@@ -32,7 +32,7 @@ Aria.beanDefinitions({
                     $description : "Current campaign hosted by the runner",
                     $default : {}
                 },
-                "flow" :{
+                "flow" : {
                     $type : "json:Object",
                     $description : "Flow data",
                     $properties : {
@@ -157,17 +157,13 @@ Aria.beanDefinitions({
         "Report" : {
             $type : "json:Object",
             $description : "",
-            $properties : {
-
-            },
+            $properties : {},
             $default : {}
         },
         "Test" : {
             $type : "json:Object",
             $description : "",
-            $properties : {
-
-            },
+            $properties : {},
             $default : {}
         },
         "TestWrapper" : {
@@ -190,9 +186,7 @@ Aria.beanDefinitions({
         "Failure" : {
             $type : "json:Object",
             $description : "",
-            $properties : {
-
-            },
+            $properties : {},
             $default : {}
         }
     }
