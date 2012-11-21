@@ -27,12 +27,11 @@ try {
             isReady : true,
             init : Aria.empty,
             request : function (request, callback) {
-                fs.readFile(uri, "utf-8", function (err, data) {
+                fs.readFile(request.url, "utf-8", function (err, data) {
                     if (err) {
                         callback.fn.call(callback.scope, err, callback.args);
                     } else {
                         var responseObject = {
-                            reqId : reqId,
                             status : 200,
                             responseText : data
                         };
