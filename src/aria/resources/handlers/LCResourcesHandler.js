@@ -145,7 +145,8 @@
                             suggestion.original.exactMatch = false;
                         } else {
                             var boundaries = multiWord ? suggestion.wordBoundaries : [0];
-                            for (var j = 0, len = boundaries.length, boundary; boundary = boundaries[j], j < len; j++) {
+                            for (var j = 0, len = boundaries.length, boundary; j < len; j++) {
+                                boundary = boundaries[j];
                                 if (suggestion.label.substring(boundary, boundary + textEntryLength) !== textEntry) {
                                     continue;
                                 }
