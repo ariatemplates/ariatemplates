@@ -17,7 +17,7 @@ Aria.classDefinition({
     $classpath : 'test.aria.core.JsObjectTest',
     $extends : 'aria.jsunit.TestCase',
     $dependencies : ['test.aria.core.test.ClassA', 'test.aria.core.test.ClassB', 'test.aria.core.test.TestClass',
-            'test.aria.core.test.ImplementInterface1', 'test.aria.core.test.Interface1'],
+            'test.aria.core.test.ImplementInterface1', 'test.aria.core.test.Interface1', 'test.aria.core.test.MyFlow'],
     $constructor : function () {
         this.$TestCase.constructor.call(this);
     },
@@ -27,7 +27,7 @@ Aria.classDefinition({
             this._oldAlert = Aria.$window.alert;
             Aria.$window.alert = function (msg) {
                 that._myMethod.call(that, msg);
-            }
+            };
         },
 
         tearDown : function () {
@@ -42,11 +42,11 @@ Aria.classDefinition({
          * Test event definition on a base class
          */
         testEventsDefinition1 : function () {
-            var ca = new test.aria.core.test.ClassA()
+            var ca = new test.aria.core.test.ClassA();
 
-            this.assertTrue(ca.$events["start"] != null)
-            this.assertTrue(ca.$events["end"].properties.endCount != null)
-            this.assertTrue(ca.$events["begin"] == null)
+            this.assertTrue(ca.$events["start"] != null);
+            this.assertTrue(ca.$events["end"].properties.endCount != null);
+            this.assertTrue(ca.$events["begin"] == null);
 
             ca.$dispose(); // call the destructor (mandatory when discarding an object)
         },
@@ -55,11 +55,11 @@ Aria.classDefinition({
          * Test event defintion on a sub-class
          */
         testEventsDefinition2 : function () {
-            var cb = new test.aria.core.test.ClassB()
+            var cb = new test.aria.core.test.ClassB();
 
-            this.assertTrue(cb.$events["start"] != null)
-            this.assertTrue(cb.$events["end"].properties.endCount != null)
-            this.assertTrue(cb.$events["begin"] != null)
+            this.assertTrue(cb.$events["start"] != null);
+            this.assertTrue(cb.$events["end"].properties.endCount != null);
+            this.assertTrue(cb.$events["begin"] != null);
 
             cb.$dispose(); // call the destructor (mandatory when discarding an object)
         },
@@ -68,13 +68,13 @@ Aria.classDefinition({
          * Test the $assert function
          */
         testAssert : function () {
-            this.assertTrue(this.$assert(1, true))
-            this.assertFalse(this.$assert(2, false))
+            this.assertTrue(this.$assert(1, true));
+            this.assertFalse(this.$assert(2, false));
             this.assertErrorInLogs(this.ASSERT_FAILURE);
-            this.assertTrue(this.$assert(3, {}))
-            this.assertFalse(this.$assert(4, null))
+            this.assertTrue(this.$assert(3, {}));
+            this.assertFalse(this.$assert(4, null));
             this.assertErrorInLogs(this.ASSERT_FAILURE);
-            this.assertFalse(this.$assert())
+            this.assertFalse(this.$assert());
             this.assertErrorInLogs(this.ASSERT_FAILURE);
         },
 
@@ -112,12 +112,112 @@ Aria.classDefinition({
             this.assertTrue(results == "return value intercepted");
 
             obj.$removeInterceptors('');
-            var results = obj.$interface('test.aria.core.test.Interface1').search('a', 'b');
+            results = obj.$interface('test.aria.core.test.Interface1').search('a', 'b');
             this.assertTrue(results == "return value intercepted");
 
             obj.$removeInterceptors('test.aria.core.test.Interface1');
-            var results = obj.search("a", "b");
+            results = obj.$interface('test.aria.core.test.Interface1').search('a', 'b');
             this.assertTrue(results == "searchResult");
+            obj.$dispose();
+        },
+
+        testAddInterceptedMethods : function () {
+            var obj = Aria.getClassInstance('test.aria.core.test.ImplementInterface1');
+            var myInterceptor = Aria.getClassInstance('test.aria.core.test.MyFlow');
+            var interceptedMethodsCount = 0;
+
+            // adding an interceptor from a class object and not a callback object
+            obj.$addInterceptor('test.aria.core.test.Interface1', myInterceptor);
+
+            // test interceptor has been added for the correct method
+            this.assertTrue(obj.__$interceptors['test.aria.core.test.Interface1']['search'][0]['scope']['$classpath'] === myInterceptor.$classpath);
+
+            // test that only specific methods defined in the interceptor have been intercepted and not all the methods
+            // of the interface
+            interceptedMethodsCount = aria.utils.Object.keys(obj.__$interceptors['test.aria.core.test.Interface1']).length;
+            this.assertTrue(interceptedMethodsCount === 2);
+
+            obj.$removeInterceptors('test.aria.core.test.Interface1');
+            myInterceptor.$dispose();
+            obj.$dispose();
+        },
+
+        testRemoveInterceptedMethods : function () {
+            var obj = Aria.getClassInstance('test.aria.core.test.ImplementInterface1');
+            var myInterceptor = Aria.getClassInstance('test.aria.core.test.MyFlow');
+
+            // adding an interceptor from a class object and not a callback object
+            obj.$addInterceptor('test.aria.core.test.Interface1', myInterceptor);
+
+            // test interceptor has been added for the correct method
+            this.assertTrue(obj.__$interceptors['test.aria.core.test.Interface1']['search'][0]['scope']['$classpath'] === myInterceptor.$classpath);
+
+            // test interceptor has been removed
+            obj.$removeInterceptors('test.aria.core.test.Interface1');
+            this.assertTrue(aria.utils.Object.isEmpty(obj.__$interceptors['test.aria.core.test.Interface1']));
+            myInterceptor.$dispose();
+            obj.$dispose();
+        },
+
+        testCallInterceptedMethods : function () {
+            var obj = Aria.getClassInstance('test.aria.core.test.ImplementInterface1');
+            var myInterceptor = Aria.getClassInstance('test.aria.core.test.MyFlow');
+
+            // adding an interceptor from a class object and not a callback object
+            obj.$addInterceptor('test.aria.core.test.Interface1', myInterceptor);
+
+            var results = obj.$interface('test.aria.core.test.Interface1').search();
+            this.assertTrue(results == "intercepted by onSearchCallBegin");
+
+            results = obj.$interface('test.aria.core.test.Interface1').reset();
+            this.assertTrue(results == "intercepted by onResetCallEnd");
+
+            // test interceptor has been removed
+            obj.$removeInterceptors('test.aria.core.test.Interface1');
+            this.assertTrue(aria.utils.Object.isEmpty(obj.__$interceptors['test.aria.core.test.Interface1']));
+            myInterceptor.$dispose();
+            results = obj.$interface('test.aria.core.test.Interface1').reset();
+            this.assertTrue(results == null);
+            obj.$dispose();
+        },
+
+        testMultipleInterceptorsForSameMethod : function () {
+            var obj = Aria.getClassInstance('test.aria.core.test.ImplementInterface1');
+            var myInterceptor1 = function (param) {
+                param.returnValue = (!param.returnValue || typeof param.returnValue === "string") ? [] : param.returnValue;
+                param.returnValue.push("return value intercepted by myInterceptor1");
+            };
+
+            var myInterceptor2 = function (param) {
+                param.returnValue = (!param.returnValue || typeof param.returnValue === "string")
+                        ? []
+                        : param.returnValue;
+                param.returnValue.push("return value intercepted by myInterceptor2");
+            };
+
+            obj.$addInterceptor('test.aria.core.test.Interface1', myInterceptor1);
+            obj.$addInterceptor('test.aria.core.test.Interface1', myInterceptor2);
+            this.assertTrue(obj.__$interceptors['test.aria.core.test.Interface1']['search'].length === 2);
+
+            var results = obj.$interface('test.aria.core.test.Interface1').search();
+
+            /*
+             * The order in which the interceptor methods should be called is as follows:
+             * CallBegin: interceptor callbacks are called in the order in which they are registered with $addInterceptor
+             * CallEnd, Callback: they are called in the reverse order
+             * For this test interceptors are called in the following order:
+             *     myInterceptor1
+             *     myInterceptor2
+             *     original interface method
+             *     myInterceptor2
+             *     myInterceptor1
+             */
+            // Note the original interface method changes the return value so we only detect for the CallEnd return
+            // values
+            this.assertTrue(results[0] == "return value intercepted by myInterceptor2");
+            this.assertTrue(results[1] == "return value intercepted by myInterceptor1");
+
+            obj.$removeInterceptors('test.aria.core.test.Interface1');
             obj.$dispose();
         }
     }

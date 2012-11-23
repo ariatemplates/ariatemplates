@@ -39,22 +39,6 @@ Aria.classDefinition({
         $publicInterfaceName : 'aria.templates.IFlowCtrl',
 
         /**
-         * Interceptor dispatch function.
-         * @param {Object} param interceptor parameters
-         */
-        interceptModuleCtrl : function (param) {
-            var methodName = aria.utils.String.capitalize(param.method);
-            var fctRef = this["on" + methodName + param.step];
-            if (fctRef) {
-                return fctRef.call(this, param);
-            }
-            fctRef = this["on" + param.method + param.step];
-            if (fctRef) {
-                return fctRef.call(this, param);
-            }
-        },
-
-        /**
          * Called when the flow controller is initialized, to set the module controller associated to this flow
          * controller. Note that this is before the module controller init method has been called.
          * @param {Object} moduleCtrl Public interface of the flow controller.
