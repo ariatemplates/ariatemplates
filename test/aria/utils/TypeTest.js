@@ -19,6 +19,7 @@
 Aria.classDefinition({
     $classpath : "test.aria.utils.TypeTest",
     $extends : "aria.jsunit.TestCase",
+    $dependencies : ["aria.utils.Callback"],
     $prototype : {
 
         /**
@@ -125,6 +126,47 @@ Aria.classDefinition({
             this.assertTrue(typeUtils.isHTMLElement(Aria.$window.document.body.firstChild));
 
             // this.assertTrue(typeUtils.isHTMLElement(document.getElementsByTagName("*")));
-        }
+        },
+
+        testIsCallback : function () {
+            var typeUtils = aria.utils.Type;
+
+            // Types of Callbacks:
+            this.assertTrue(typeUtils.isCallback({
+                fn : this._myTestMethod,
+                scope : this
+            }));
+
+            this.assertTrue(typeUtils.isCallback({
+                fn : "_myTestMethod",
+                scope : this
+            }));
+
+            this.assertTrue(typeUtils.isCallback(function () {}));
+
+            var myCallback = new aria.utils.Callback({
+                fn : this._myTestMethod,
+                scope : this
+            })
+
+            this.assertTrue(typeUtils.isCallback(myCallback));
+
+            myCallback.$dispose();
+
+            // NOT callbacks:
+            this.assertFalse(typeUtils.isCallback({
+                $classpath : "test.aria.utils.TypeTest",
+                fn : function () {},
+                scope : this
+            }));
+
+            this.assertFalse(typeUtils.isCallback({
+                $classpath : "test.aria.utils.TypeTest",
+                fn : "_myTestMethod",
+                scope : this
+            }));
+        },
+
+        _myTestMethod : function () {}
     }
 });

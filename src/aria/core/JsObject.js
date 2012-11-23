@@ -18,11 +18,24 @@
     var disposeTag = Aria.FRAMEWORK_PREFIX + 'isDisposed';
 
     /**
-     * Private method used to remove callbacks from a map of callbacks (either listeners or interceptors), associated to
-     * a given scope and function (optional)
-     * @param {Object} callbacksMap map of callbacks, which can be currently: obj._listeners or obj.__$interceptors
-     * @param {String} name [mandatory] name in the map, may be the event name (if callbacksMap == _listeners) or the
-     * interface name (if callbacksMap == __$interceptors)
+     * Private method to remove interceptors.
+     * @param {Object} allInterceptors obj.__$interceptors
+     * @param {String} name [mandatory] name interface name
+     * @param {Object} scope [optional] if specified, only interceptors with that scope will be removed
+     * @param {Function} fn [optional] if specified, only interceptors with that function will be removed
+     */
+    var __removeInterceptorCallback = function (allInterceptors, name, scope, fn) {
+        for (var i in allInterceptors[name]) {
+            if (allInterceptors[name].hasOwnProperty(i)) {
+                __removeCallback(allInterceptors[name], i, scope, fn);
+            }
+        }
+    };
+
+    /**
+     * Private method used to remove callbacks from a map of callbacks associated to a given scope and function
+     * @param {Object} callbacksMap map of callbacks, which can be currently: obj._listeners
+     * @param {String} name [mandatory] name in the map, may be the event name (if callbacksMap == _listeners)
      * @param {Object} scope [optional] if specified, only callbacks with that scope will be removed
      * @param {Function} fn [optional] if specified, only callbacks with that function will be removed
      * @param {Object} src [optional] if the method is called from an interface wrapper, must be the reference of the
@@ -34,7 +47,9 @@
         if (callbacksMap == null) {
             return; // nothing to remove
         }
+
         var arr = callbacksMap[name];
+
         if (arr) {
             var length = arr.length, removeThis = false, newList = null, cb;
             for (var i = 0; i < length; i++) {
@@ -75,13 +90,30 @@
     };
 
     /**
+     * Interceptor dispatch function.
+     * @param {Object} interc interceptor instance
+     * @param {Object} info interceptor parameters
+     */
+    var __callInterceptorMethod = function (info) {
+        var methodName = aria.utils.String.capitalize(info.method);
+        var fctRef = this["on" + methodName + info.step];
+        if (fctRef) {
+            return fctRef.call(this, info);
+        }
+        fctRef = this["on" + info.method + info.step];
+        if (fctRef) {
+            return fctRef.call(this, info);
+        }
+    };
+
+    /**
      * Recursive method to call wrappers. This method should be called with "this" refering to the object whose method
      * is called.
      */
     var __callWrapper = function (args, commonInfo, interceptorIndex) {
         if (interceptorIndex >= commonInfo.nbInterceptors) {
             // end of recursion: call the real method:
-            return this[commonInfo.method].apply(this, args)
+            return this[commonInfo.method].apply(this, args);
         }
         var interc = commonInfo.interceptors[interceptorIndex];
         if (interc.removed) {
@@ -139,8 +171,7 @@
     var __callbackWrapper = function (res, args) {
         var interc = args.interc;
         if (interc.removed) {
-            // the interceptor was removed in the mean time, call the original
-            // callback directly
+            // the interceptor was removed in the mean time, call the original callback directly
             return this.$callback(args.origCb, res);
         }
         var info = args.info;
@@ -154,7 +185,63 @@
             return info.returnValue;
         }
         return this.$callback(args.origCb, info.callbackResult);
-    }
+    };
+
+    /**
+     * Determines if a method has been intercepted: the interceptor contains on[methodName]CallBegin,
+     * on[methodName]Callback, on[methodName]CallEnd.
+     * @param {String} methodName the method name that could be intercepted.
+     * @param {Object} interceptor contains an intercepting method for the methodName.
+     * @return {Boolean} true if method has been intercepted
+     */
+    var __hasBeenIntercepted = function (methodName, interceptor) {
+        var capitalizedMethodName = "on" + aria.utils.String.capitalize(methodName);
+        if ((interceptor[capitalizedMethodName + "CallBegin"] || interceptor[capitalizedMethodName + "Callback"] || interceptor[capitalizedMethodName
+                + "CallEnd"])
+                || (interceptor["on" + methodName + "CallBegin"] || interceptor["on" + methodName + "Callback"] || interceptor["on"
+                        + methodName + "CallEnd"])) {
+            return true;
+        }
+        return false;
+    };
+
+    /**
+     * Adds an interceptor to all methods.
+     * @param {Object} interfaceMethods all methods for the interface
+     * @param {aria.core.JsObject.Callback} interceptor a callback which will receive notifications
+     * @return {Object} interceptedMethods
+     */
+    var __interceptCallback = function (interfaceMethods, interceptor, allInterceptors) {
+        var interceptedMethods = allInterceptors || {};
+        // for a callback, intercept all methods of an interface
+        for (var i in interfaceMethods) {
+            if (interfaceMethods.hasOwnProperty(i)) {
+                (interceptedMethods[i] || (interceptedMethods[i] = [])).push(interceptor);
+            }
+        }
+        return interceptedMethods;
+    };
+
+    /**
+     * Targets specific methods to be intercepted.
+     * @param {Object} interfaceMethods all methods for the interface
+     * @param {Object} interceptor an object/class which will receive notifications
+     * @return {Object} interceptedMethods
+     */
+    var __interceptObject = function (interfaceMethods, interceptor, allInterceptors) {
+        var interceptedMethods = allInterceptors || {};
+        // for a class object, intercept specific methods
+        var interceptorMethodBegin, interceptorMethodCallBack, interceptorMethodEnd;
+        for (var m in interfaceMethods) {
+            if (interfaceMethods.hasOwnProperty(m) && __hasBeenIntercepted(m, interceptor)) {
+                (interceptedMethods[m] || (interceptedMethods[m] = [])).push({
+                    fn : __callInterceptorMethod,
+                    scope : interceptor
+                });
+            }
+        }
+        return interceptedMethods;
+    };
 
     /**
      * @class aria.core.JsObject Base class from which derive all Js classes defined through Aria.classDefinition()
@@ -185,7 +272,7 @@
              * @param {Object} sdef the superclass class definition
              */
             $init : function (p, def, sdef) {
-                p.$on = p.$addListeners // shortcut
+                p.$on = p.$addListeners; // shortcut
             },
 
             /**
@@ -251,8 +338,7 @@
              * @param {Object} obj An optional object to be inspected in the logged message
              */
             $logDebug : function (msg, msgArgs, obj) {
-                // replaced by the true logging function when
-                // aria.core.Log is loaded
+                // replaced by the true logging function when aria.core.Log is loaded
                 return "";
             },
 
@@ -263,8 +349,7 @@
              * @param {Object} obj An optional object to be inspected in the logged message
              */
             $logInfo : function (msg, msgArgs, obj) {
-                // replaced by the true logging function when
-                // aria.core.Log is loaded
+                // replaced by the true logging function when aria.core.Log is loaded
                 return "";
             },
 
@@ -275,8 +360,7 @@
              * @param {Object} obj An optional object to be inspected in the logged message
              */
             $logWarn : function (msg, msgArgs, obj) {
-                // replaced by the true logging function when
-                // aria.core.Log is loaded
+                // replaced by the true logging function when aria.core.Log is loaded
                 return "";
             },
 
@@ -414,41 +498,39 @@
             /**
              * Add an interceptor callback on an interface specified by its classpath.
              * @param {String} itf [mandatory] interface which will be intercepted
-             * @param {aria.core.JsObject.Callback} cb callback which will receive notifications
+             * @param {Object|aria.core.JsObject.Callback} interceptor either a callback or an object/class which will
+             * receive notifications
              */
-            $addInterceptor : function (itf, cb) {
+            $addInterceptor : function (itf, interceptor) {
                 // get the interface constructor:
                 var itfCstr = this.$interfaces[itf];
                 if (!itfCstr) {
                     this.$logError(this.INTERFACE_NOT_SUPPORTED, [itf, this.$classpath]);
                     return;
                 }
-                cb = this.$normCallback(cb);
                 var allInterceptors = this.__$interceptors;
                 if (allInterceptors == null) {
                     allInterceptors = {};
                     this.__$interceptors = allInterceptors;
                 }
+                var interceptMethods = (aria.utils.Type.isCallback(interceptor))
+                        ? __interceptCallback
+                        : __interceptObject;
+
                 var itfs = itfCstr.prototype.$interfaces;
-                // add the interceptor on all base interfaces of the
-                // interface
                 for (var i in itfs) {
                     if (itfs.hasOwnProperty(i)) {
-                        var interceptors = allInterceptors[i];
-                        if (!interceptors) {
-                            allInterceptors[i] = [cb];
-                        } else {
-                            interceptors.push(cb);
-                        }
+                        var interceptedMethods = interceptMethods(itfs[i].interfaceDefinition.$interface, interceptor, allInterceptors[i]);
+                        allInterceptors[i] = interceptedMethods;
                     }
                 }
             },
 
             /**
-             * Remove interceptor callbacks on an interface.
-             * @param {String} interface [mandatory] interface which is intercepted
-             * @param {Object} scope [optional] scope of the callbacks to remove
-             * @param {Function} function [optional] function in the callbacks to remove
+             * Remove interceptor callbacks or interceptor objects on an interface.
+             * @param {String} itf [mandatory] interface which is intercepted
+             * @param {Object} scope [optional] scope of the callbacks/objects to remove
+             * @param {Function} fn [optional] function in the callbacks to remove
              */
             $removeInterceptors : function (itf, scope, fn) {
                 var itfCstr = this.$interfaces[itf];
@@ -457,11 +539,10 @@
                     return;
                 }
                 var itfs = itfCstr.prototype.$interfaces;
-                // also remove the interceptor on all base interfaces of
-                // the interface
+                // also remove the interceptor on all base interfaces of the interface
                 for (var i in itfs) {
                     if (itfs.hasOwnProperty(i)) {
-                        __removeCallback(allInterceptors, i, scope, fn);
+                        __removeInterceptorCallback(allInterceptors, i, scope, fn);
                     }
                 }
             },
@@ -477,9 +558,9 @@
              */
             $call : function (interfaceName, methodName, args, asyncCbParam) {
                 var interceptors;
-                if (this.__$interceptors == null || (interceptors = this.__$interceptors[interfaceName]) == null) {
-                    // no interceptor for that interface: do not waste
-                    // time and call the method directly:
+                if (this.__$interceptors == null || this.__$interceptors[interfaceName] == null
+                        || (interceptors = this.__$interceptors[interfaceName][methodName]) == null) {
+                    // no interceptor for that interface: call the method directly:
                     return this[methodName].apply(this, args);
                 }
                 return __callWrapper.call(this, args, {
@@ -496,7 +577,6 @@
              * following arguments should be provided:<br/>
              *
              * <pre>
-             *
              * fn: {Function} [mandatory] callback function
              * scope: {Object} [mandatory] object on wich the callback will be called
              * args: {Object} [optional] argument object that will be passed to the callback as 2nd argument (1st argument is the event object)
@@ -554,8 +634,7 @@
                             fn : lsn,
                             scope : defaultScope,
                             once : lstCfg[evt].listenOnce
-                            // we keep track of listeners which are meant to
-                            // be called just once
+                            // we keep track of listeners which are meant to be called just once
                         };
                     } else {
                         // make a copy of lsn before changing it
@@ -564,8 +643,7 @@
                             scope : lsn.scope,
                             args : lsn.args,
                             once : lstCfg[evt].listenOnce
-                            // we keep track of listeners which are meant to
-                            // be called just once
+                            // we keep track of listeners which are meant to be called just once
                         };
                         // lsn is an object as in 'start' or 'end' samples set default scope
                         if (!lsn.scope) {
@@ -616,7 +694,7 @@
                         var lsnRm = lstCfg[evt];
                         if (typeof(lsnRm) == 'function') {
                             if (defaultScope == null) {
-                                this.$logError(this.MISSING_SCOPE, evt)
+                                this.$logError(this.MISSING_SCOPE, evt);
                                 continue;
                             }
                             __removeCallback(this._listeners, evt, defaultScope, lsnRm, itfWrap);
@@ -625,7 +703,7 @@
                                 lsnRm.scope = defaultScope;
                             }
                             if (lsnRm.scope == null) {
-                                this.$logError(this.MISSING_SCOPE, evt)
+                                this.$logError(this.MISSING_SCOPE, evt);
                                 continue;
                             }
                             __removeCallback(this._listeners, evt, lsnRm.scope, lsnRm.fn, itfWrap, lsnRm.firstOnly);
