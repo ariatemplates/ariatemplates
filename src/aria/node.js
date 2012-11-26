@@ -8,7 +8,7 @@ Aria = {
 };
 
 /* This is the global load method used by the framework, it's common to Rhino */
-load = function (filePath) {
+global.load = function (filePath) {
     filePath = path.normalize(filePath);
 
     var fileContent = fs.readFileSync(filePath, "utf-8");
@@ -16,7 +16,7 @@ load = function (filePath) {
 };
 
 try {
-    load(__dirname + "/bootstrap.js");
+    global.load(__dirname + "/bootstrap.js");
 
     // For all the other classes we use IO, define our node transport
     Aria.classDefinition({
