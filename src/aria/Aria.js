@@ -25,6 +25,9 @@
         Aria = {};
     }
 
+    // Will be updated at the build time. This is a magic string, keep in sync with build file.
+    Aria.version = 'ARIA-SNAPSHOT';
+
     // start timestamp
     Aria._start = (new Date()).getTime();
 
