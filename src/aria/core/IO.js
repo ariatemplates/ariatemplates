@@ -610,19 +610,21 @@ Aria.classDefinition({
             var method = request.method;
             var transport = arg.transport.instance || Aria.getClassRef(arg.transport.classpath);
 
+            var transportCallback = {
+                fn : this._handleResponse,
+                scope : this,
+                args : request
+            };
+
             if (!transport.isReady) {
                 // Wait for it to be ready
-                return transport.init(reqId);
+                return transport.init(reqId, transportCallback);
             }
 
             // Here we're going to make a request
             this.trafficUp += request.requestSize;
 
-            transport.request(request, {
-                fn : this._handleResponse,
-                scope : this,
-                args : request
-            });
+            transport.request(request, transportCallback);
         },
 
         /**

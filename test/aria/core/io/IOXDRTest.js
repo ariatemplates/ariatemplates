@@ -40,6 +40,9 @@ Aria.classDefinition({
                 scope : this
             });
             this.eventsState = 0;
+
+            // we want the XDR init to fail quickly
+            aria.core.transport.XDR.swfTimeout = 5000;
         },
         tearDown : function () {
 
