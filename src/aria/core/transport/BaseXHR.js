@@ -165,7 +165,9 @@ Aria.classDefinition({
                 responseObject = this._createResponse(connection);
             } else {
                 responseObject = {
-                    error : [httpStatus, connection.statusText, connection.response].join(" ")
+                    error : [httpStatus, connection.statusText].join(" "),
+                    responseText : connection.responseText,
+                    responseXML : connection.responseXML
                 };
 
                 error = true;
