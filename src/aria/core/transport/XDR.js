@@ -42,11 +42,12 @@ Aria.classDefinition({
         this._transportContainer = null;
 
         /**
-         * List of pending requests to be reissued once the transport is ready
-         * @type Array
+         * Map of pending requests to be reissued once the transport is ready. Key is the request id, value is the swf
+         * timeout
+         * @type Object
          * @protected
          */
-        this._pending = [];
+        this._pending = {};
 
         /**
          * Map of ongoing xdr requests. Filled by the XDR transport, not the best design but it's needed by
@@ -60,14 +61,6 @@ Aria.classDefinition({
          * @type Number
          */
         this.nbXdrRequests = 0;
-
-        /**
-         * Timeout identifier for the transport initialization. As the SWF loading might fail, we want to have a timeout
-         * on that
-         * @type String
-         * @protected
-         */
-        this._swfLoading = null;
 
         /**
          * Timeout after which the transport initialization is considered as failed.
@@ -116,10 +109,8 @@ Aria.classDefinition({
                 }
             }
 
-            // We're not ready, listen for the ready event to reissue the request
-            this._pending.push(reqId);
-
-            this._swfLoading = aria.core.Timer.addCallback({
+            // We're not ready, wait for the ready event to reissue the request, but cancel this request on timeout
+            this._pending[reqId] = aria.core.Timer.addCallback({
                 fn : this._swfTimeout,
                 scope : this,
                 args : {
@@ -160,13 +151,13 @@ Aria.classDefinition({
          */
         onXdrReady : function () {
             this.isReady = true;
-            if (this._swfLoading) {
-                aria.core.Timer.cancelCallback(this._swfLoading);
-                this._swfLoading = null;
-            }
 
-            for (var i = this._pending.length; i--;) {
-                aria.core.IO.reissue(this._pending.splice(i, 1)[0]);
+            for (var id in this._pending) {
+                if (this._pending.hasOwnProperty(id)) {
+                    aria.core.Timer.cancelCallback(this._pending[id]);
+                    aria.core.IO.reissue(id);
+                }
+                this._pending = {};
             }
         },
 
@@ -179,7 +170,7 @@ Aria.classDefinition({
             var reqId = args.reqId;
             var callback = args.cb;
 
-            aria.utils.Array.remove(this._pending, reqId);
+            delete this._pending[reqId];
 
             var response = {
                 error : this.LOAD_PLUGIN,
