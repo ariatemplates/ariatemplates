@@ -140,6 +140,166 @@ Aria.classDefinition({
          */
         this.majorVersion = "";
 
+        //For Mobile Browsers
+        /**
+         * True if the device is of type phone
+         * @type Boolean
+         */
+        this.isPhone = false;
+
+        /**
+         * True if the device is of type tablet
+         * @type Boolean
+         */
+        this.isTablet = false;
+
+        /**
+         * True if OS is iOS
+         * @type Boolean
+         */
+        this.isIOS = false;
+
+        /**
+         * True if OS is Android
+         * @type Boolean
+         */
+        this.isAndroid = false;
+
+        /**
+         * True if OS is Windows
+         * @type Boolean
+         */
+        this.isWindowsPhone = false;
+
+        /**
+         * True if OS is BlackBerry
+         * @type Boolean
+         */
+        this.isBlackBerry = false;
+
+        /**
+         * True if OS is Symbian
+         * @type Boolean
+         */
+        this.isSymbian = false;
+
+        /**
+         * True if OS is some mobile OS
+         * @type Boolean
+         */
+        this.isOtherMobile = false;
+
+        // Only for Window Phone with IE+9
+        /**
+         * True if view type if Mobile
+         * @type Boolean
+         */
+        this.isMobileView = false;
+
+        /**
+         * True if view type if Desktop
+         * @type Boolean
+         */
+        this.DesktopView = false;
+
+        // Check for browser Type
+
+        /**
+         * True if browser is of type FF http://hacks.mozilla.org/2010/09/final-user-agent-string-for-firefox-4/
+         * @type Boolean
+         */
+        this.isFF = false;
+
+        /**
+         * True if browser type is blackberry
+         * @type Boolean
+         */
+        this.isBlackBerryBrowser = false;
+
+        /**
+         * True if browser type is Android
+         * @type Boolean
+         */
+        this.isAndroidBrowser = false;
+
+        /**
+         * True if browser type is Safari Mobile
+         * @type Boolean
+         */
+        this.isSafariMobile = false;
+
+        /**
+         * True if browser type is Safari
+         * @type Boolean
+         */
+        this.isSafari = false;
+
+        /**
+         * True if browser type is Chrome
+         * @type Boolean
+         */
+        this.isChrome = false;
+
+        /**
+         * True if browser type is IE Mobile
+         * @type Boolean
+         */
+        this.isIEMobile = false;
+
+        /**
+         * True if browser type is Opera Mobile
+         * @type Boolean
+         */
+        this.isOperaMobile = false;
+
+        /**
+         * True if browser type is Opera Mini
+         * @type Boolean
+         */
+        this.isOperaMini = false;
+
+        /**
+         * True if browser type is S60
+         * @type Boolean
+         */
+        this.isS60 = false;
+
+        /**
+         * True if browser type is S60
+         * @type Boolean
+         */
+        this.isOtherBrowser = false;
+
+        /**
+         * OS running in Device
+         * @type String
+         */
+        this.osName = "";
+
+        /**
+         * OS Version in Device
+         * @type String
+         */
+        this.osVersion = "";
+
+        /**
+         * Browser Name
+         * @type String
+         */
+        this.browserType = "";
+
+        /**
+         * Browser Version
+         * @type String
+         */
+        this.browserVersion = "";
+
+        /**
+         * Device Name
+         * @type String
+         */
+        this.deviceName = "";
+
         this._init();
     },
     $prototype : {
@@ -245,6 +405,273 @@ Aria.classDefinition({
                     this.majorVersion = parseInt(RegExp.$1, 10);
                 }
             }
+
+            //for Mobile browsers check
+            if (this.ua) {
+
+                // To Match OS and its Version
+                var osPattern = [{
+                            pattern : /(android)[\/\s-]?([\w\.]+)*/i
+                        }, {
+                            pattern : /(ip[honead]+).*os\s*([\w]+)*\slike\smac/i
+                        }, {
+                            pattern : /(blackberry).+version\/([\w\.]+)/i
+                        }, {
+                            pattern : /(rim\stablet+).*os\s*([\w\.]+)*/i
+                        }, {
+                            pattern : /(windows\sphone\sos|windows\s?[mobile]*)[\s\/\;]?([ntwce\d\.\s]+\w)/i
+                        }, {
+                            pattern : /(symbian\s?os|symbos|s60(?=;))[\/\s-]?([\w\.]+)*/i
+                        }, {
+                            pattern : /(webos|palm\sos|bada|rim\sos|meego)[\/\s-]?([\w\.]+)*/i
+                        }];
+                // To Match Browser and its Version
+                var browserPattern = [{
+                            pattern : /(chrome|crios)\/((\d+)?[\w\.]+)/i
+                        }, {
+                            pattern : /(mobile\ssafari)\/((\d+)?[\w\.]+)/i
+                        }, {
+                            pattern : /(mobile)\/\w+\s(safari)\/([\w\.]+)/i
+                        }, {
+                            pattern : /(iemobile)[\/\s]?((\d+)?[\w\.]*)/i
+                        }, {
+                            pattern : /(safari)\/((\d+)?[\w\.]+)/i
+                        }, {
+                            pattern : /(series60.+(browserng))\/((\d+)?[\w\.]+)/i
+                        }, {
+                            pattern : /(firefox)\/([\w\.]+).+(fennec)\/\d+/i
+                        }, {
+                            pattern : /(opera\smobi)\/((\d+)?[\w\.-]+)/i
+                        }, {
+                            pattern : /(opera\smini)\/((\d+)?[\w\.-]+)/i
+                        }, {
+                            pattern : /(dolfin|Blazer|S40OviBrowser)\/((\d+)?[\w\.]+)/i
+                        }];
+                // To Match Device Name
+                var devicerPattern = [{
+                            pattern : /\(((ipad|playbook));/i
+                        }, {
+                            pattern : /\(((ip[honed]+));/i
+                        }, {
+                            pattern : /(blackberry[\s-]?\w+)/i
+                        }, {
+                            pattern : /(hp)\s([\w\s]+\w)/i
+                        }, {
+                            pattern : /(htc)[;_\s-]+([\w\s]+(?=\))|\w+)*/i
+                        }, {
+                            pattern : /(sam[sung]*)[\s-]*(\w+-?[\w-]*)*/i
+                        }, {
+                            pattern : /((s[cgp]h-\w+|gt-\w+|galaxy\snexus))/i
+                        }, {
+                            pattern : /sec-((sgh\w+))/i
+                        }, {
+                            pattern : /(maemo|nokia).*(\w|n900|lumia\s\d+)/i
+                        }, {
+                            pattern : /(lg)[e;\s-\/]+(\w+)*/i
+                        }, {
+                            pattern : /(blackberry|benq|palm(?=\-)|sonyericsson|acer|asus|dell|huawei|meizu|motorola)[\s_-]?([\w-]+)*/i
+                        }];
+
+                // for getting OS and Version
+                this.__testUaMatch(osPattern, "OS");
+                // for getting Browser and Version
+                this.__testUaMatch(browserPattern, "BROWSER");
+                // for getting the device
+                this.__testUaMatch(devicerPattern, "DEVICE");
+            }
+        },
+        /**
+         * private function - To take the User Agents and match the patterns
+         * @param {Array} pattern Array of User Agents
+         * @param {String} type to match from user agents
+         * @private
+         */
+        __testUaMatch : function (pattern, type) {
+            var patternMatch;
+            for (var i = 0, len = pattern.length; i < len; i++) {
+                if (type === "OS") {
+                    patternMatch = this.__checkNavigator(pattern[i].pattern, this.ua);
+                    if (patternMatch) {
+                        this.__setOs(patternMatch, i);
+                        break;
+                    }
+                }
+                if (type === "BROWSER") {
+                    patternMatch = this.__checkNavigator(pattern[i].pattern, this.ua);
+                    if (patternMatch) {
+                        this.__setBrowser(patternMatch, i);
+                        break;
+                    }
+                }
+
+                if (type === "DEVICE") {
+                    patternMatch = this.__checkNavigator(pattern[i].pattern, this.ua);
+                    if (patternMatch) {
+                        this.__setDevice(patternMatch);
+                        break;
+                    }
+                }
+            }
+
+        },
+        /**
+         * private function - Returns the matched user agent
+         * @param {String} pattern string
+         * @param {String} userAgent user agent string
+         * @return {Array} array of matched string for given pattern
+         * @private
+         */
+        __checkNavigator : function (pattern, userAgent) {
+            return pattern.exec(userAgent);
+        },
+        /**
+         * private function - To set the Device Name
+         * @param {Array} Array of matched string for given pattern
+         * @private
+         */
+        __setDevice : function (patternMatch) {
+
+            this.deviceName = patternMatch[1] || "";
+        },
+        /**
+         * private function - To set the Browser Name and Version
+         * @param {Array} Array of matched string for given pattern
+         * @param {Integer} index of the matched pattern
+         * @private
+         */
+        __setBrowser : function (patternMatch, index) {
+            var browserName = ["Mobile Safari", "Chrome", "Other"]
+            switch (index) {
+                case 0 :
+                    this.browserType = browserName[1];
+                    this.browserVersion = patternMatch[2] || "";
+                    this.isChrome = true;
+                    break;
+                case 1 :
+                    this.browserType = patternMatch[1] || "";
+                    this.browserVersion = patternMatch[2] || "";
+                    if (this.isAndroid) {
+                        this.isAndroidBrowser = true;
+                    }
+                    if (this.isBlackBerry) {
+                        this.isBlackBerryBrowser = true;
+                    }
+                    break;
+                case 2 :
+                    this.browserType = browserName[0];
+                    this.browserVersion = patternMatch[3] || "";
+                    this.isSafariMobile = true;
+                    break;
+                case 3 :
+                    this.browserType = patternMatch[1] || "";
+                    this.browserVersion = patternMatch[2] || "";
+                    if (patternMatch[0]
+                            && (patternMatch[0].indexOf('XBLWP7') > -1 || patternMatch[0].indexOf('ZuneWP7') > -1)) {
+                        this.DesktopView = true;
+
+                    } else {
+                        this.isMobileView = true;
+                    }
+                    this.isIEMobile = true;
+                    break;
+                case 4 :
+                    this.browserType = patternMatch[1] || "";
+                    this.browserVersion = patternMatch[2] || "";
+                    this.isSafari = true;
+                    break;
+                case 5 :
+                    this.browserType = patternMatch[2] || "";
+                    this.browserVersion = patternMatch[3] || "";
+                    this.isS60 = true;
+                    break;
+                case 6 :
+                    this.browserType = patternMatch[1] || "";
+                    this.browserVersion = patternMatch[2] || "";
+                    this.isFF = true;
+                    break;
+                case 7 :
+                    this.browserType = patternMatch[1] || "";
+                    this.browserVersion = patternMatch[2] || "";
+                    this.isFF = true;
+                    break;
+                case 8 :
+                    this.browserType = patternMatch[1] || "";
+                    this.browserVersion = patternMatch[2] || "";
+                    this.isFF = true;
+                    break;
+                case 9 :
+                    this.browserType = browserName[2];
+                    this.browserVersion = patternMatch[2] || "";
+                    this.isOtherBrowser = true;
+                    break;
+
+            }
+
+        },
+        /**
+         * private function - To set the Device OS Name and Version
+         * @param {Array} Array of matched string for given pattern
+         * @param {Integer} index of the matched pattern
+         * @private
+         */
+        __setOs : function (patternMatch, index) {
+            var osName = ["Android", "IOS", "BlackBerry", "BlackBerry Tablet OS", "Windows", "Symbian", "Other"];
+            switch (index) {
+                case 0 :
+                    this.isAndroid = true;
+                    this.osName = osName[0];
+                    this.osVersion = patternMatch[2] || "";
+                    // since android version 3 specifically for tablet checking screen resolution make no sense
+                    if (patternMatch[2] && patternMatch[2].match(/\d/) + "" == "3") {
+                        this.isTablet = true;
+                    } else {
+                        this.isPhone = true;
+                    }
+                    break;
+                case 1 :
+                    this.isIOS = true;
+                    this.osName = osName[1];
+                    var osVer = patternMatch[2] || "";
+                    this.osVersion = osVer.replace(/\_/g, ".");
+                    if (patternMatch[1] == "iPad") {
+                        this.isTablet = true;
+                    } else {
+                        this.isPhone = true;
+                    }
+                    break;
+                case 2 :
+                    this.isBlackBerry = true;
+                    this.osName = osName[2];
+                    this.osVersion = patternMatch[2] || "";
+                    this.isPhone = true;
+                    break;
+                case 3 :
+                    this.isBlackBerry = true;
+                    this.osName = osName[3];
+                    this.osVersion = patternMatch[2] || "";
+                    this.isTablet = true;
+                    break;
+                case 4 :
+                    this.isWindowsPhone = true;
+                    this.osName = osName[4];
+                    this.osVersion = patternMatch[2] || "";
+                    this.isPhone = true;
+                    break;
+                case 5 :
+                    this.isSymbian = true;
+                    this.osName = osName[5];
+                    this.osVersion = patternMatch[2] || "";
+                    this.isPhone = true;
+                    break;
+                case 6 :
+                    this.isOtherMobile = true;
+                    this.osName = osName[6];
+                    this.osVersion = patternMatch[2] || "";
+                    this.isPhone = true;
+                    break;
+
+            }
+            this.osVersion = this.osVersion.replace(/\s*/g, "");
         }
     }
 });
