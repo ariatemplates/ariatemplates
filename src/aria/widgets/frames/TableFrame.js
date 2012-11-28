@@ -103,10 +103,15 @@ Aria.classDefinition({
             };
             this._appendInnerWidthInfo(sizeInfo);
             this._appendInnerHeightInfo(sizeInfo);
-            var displayInline = (this._inlineBlock) ? "display:inline-block;vertical-align: middle;" : "";
+            var displayRow = (aria.core.Browser.isIE9) ? "line-height:31px;" : ""
+            if (aria.core.Browser.isIE7) {
+                var displayInline = (this._inlineBlock) ? "display:inline;vertical-align: middle;" : "";
+            } else {
+                var displayInline = (this._inlineBlock) ? "display:inline-block;vertical-align: middle;" : "";
+            }
             out.write(['<table cellspacing="0" cellpadding="0" style="position: relative;' + displayInline + '"',
-                    frameContainerClass, '><tbody isFrame="1">', '<tr>', '<td class="', cssPrefix, 'tlc ', cssPrefix,
-                    'bkgA">&nbsp;</td>', '<td class="', cssPrefix, 'ts ', cssPrefix,
+                    frameContainerClass, '><tbody isFrame="1"><tr style=', '"', displayRow, '"', '><td class="',
+                    cssPrefix, 'tlc ', cssPrefix, 'bkgA">&nbsp;</td>', '<td class="', cssPrefix, 'ts ', cssPrefix,
                     'bkgB">' + this.__addFrameIcon(cfg, cssPrefix, 'top') + '</td>', '<td class="', cssPrefix, 'trc ',
                     cssPrefix, 'bkgA">&nbsp;</td>', '</tr>', '<tr>', '<td class="', cssPrefix, 'ls ', cssPrefix,
                     'bkgC">&nbsp;</td>', '<td class="', cssPrefix, 'm">', '<span ',
