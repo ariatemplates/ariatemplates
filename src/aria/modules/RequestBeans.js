@@ -85,7 +85,7 @@ Aria.beanDefinitions({
                     $description : "HTTP Method in use for the call"
                 }
             }
-        },        
+        },
         "SuccessResponse" : {
             $type : "json:Object",
             $description : "Describe the response from the server if no communication error happened.",
