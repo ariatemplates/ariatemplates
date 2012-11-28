@@ -184,20 +184,20 @@ Aria.classDefinition({
          * @param {String} logicalPath file logical path e.g. aria/core/Sequencer.js
          * @param {aria.core.JsObject.Callback} cb callback description - warning callback may be called synchronously
          * if the file is already available
-         * 
+         *
          * <pre>
-         * 
+         *
          *     {
          *         fn: // {Function} callback function
          *         scope: // {Object} object context associated to the callback function (i.e. 'this' object)
          *         args: // {Object} optional argument object passed to the callback function when called
          *     }
          * </pre>
-         * 
+         *
          * When called the callback will be called with the following arguments: fn(evt,args) where evt corresponds to
          * aria.core.FileLoader.$events.fileReady
          * @param {Object} args Additional arguments for the file loader
-         * 
+         *
          * <pre>
          *     {
          *         fullLogicalPath: // {String} Full logical path of the file to be loaded.

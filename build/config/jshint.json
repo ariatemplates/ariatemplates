@@ -17,7 +17,7 @@
     "undef" : true,
     "unused" : false,
     "strict" : false,
-    "trailing" : false,
+    "trailing" : true,
     "maxparams" : 0,
     "maxdepth" : 0,
     "maxstatements" : 0,
