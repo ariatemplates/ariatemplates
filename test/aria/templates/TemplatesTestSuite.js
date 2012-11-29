@@ -37,7 +37,6 @@ Aria.classDefinition({
         this.addTests("test.aria.templates.ParserTest");
         this.addTests("test.aria.templates.SectionOnTypeTest");
         this.addTests("test.aria.templates.SectionTest");
-        this.addTests("test.aria.templates.StmtParserTest");
         this.addTests("test.aria.templates.TemplateContextTest");
         this.addTests("test.aria.templates.TemplateManagerTest");
 
@@ -49,6 +48,8 @@ Aria.classDefinition({
         this.addTests("test.aria.templates.ViewTest");
 
         this.addTests("test.aria.templates.generatedId.IncrementalElementIdTestCase");
+
+        this.addTests("test.aria.templates.statements.StatementsTestSuite");
 
     }
 });

@@ -64,6 +64,44 @@ Aria.classDefinition({
             this.assertTrue(aria.utils.String.escapeHTML("<div> a & b </div>", "a") === "&lt;div&gt; a &amp; b &lt;/div&gt;", "Escape failed.");
         },
 
+        testEscapeHTMLAttr : function () {
+            this.assertTrue(aria.utils.String.escapeHTMLAttr("'") === "&#x27;", "Attribute escape failed.");
+            this.assertTrue(aria.utils.String.escapeHTMLAttr('"') === "&quot;", "Attribute escape failed.");
+            this.assertTrue(aria.utils.String.escapeHTMLAttr("'\"") === "&#x27;&quot;", "Attribute escape failed.");
+        },
+
+        testEscapeForHTML : function () {
+            var originalString = "<div id='id' class=\"class\">/</div>";
+            var escapedForAttrString = "<div id=&#x27;id&#x27; class=&quot;class&quot;>/</div>";
+            var escapedForHTMLString = "&lt;div id='id' class=\"class\"&gt;&#x2F;&lt;&#x2F;div&gt;";
+            var escapedForAllString = "&lt;div id=&#x27;id&#x27; class=&quot;class&quot;&gt;&#x2F;&lt;&#x2F;div&gt;";
+
+            this.assertTrue(aria.utils.String.escapeForHTML(originalString) === escapedForAllString, "Full HTML escape failed.");
+            this.assertTrue(aria.utils.String.escapeForHTML(originalString, null) === escapedForAllString, "Full HTML escape failed.");
+            this.assertTrue(aria.utils.String.escapeForHTML(originalString, 5) === escapedForAllString, "Full HTML escape failed.");
+            this.assertTrue(aria.utils.String.escapeForHTML(originalString, '5') === escapedForAllString, "Full HTML escape failed.");
+            this.assertTrue(aria.utils.String.escapeForHTML(originalString, true) === escapedForAllString, "Full HTML escape failed.");
+            this.assertTrue(aria.utils.String.escapeForHTML(originalString, {
+                text : true,
+                attr : true
+            }) === escapedForAllString, "Full HTML escape failed.");
+
+            this.assertTrue(aria.utils.String.escapeForHTML(originalString, false) === originalString, "Full HTML escape failed.");
+            this.assertTrue(aria.utils.String.escapeForHTML(originalString, {
+                text : false,
+                attr : false
+            }) === originalString, "Full HTML escape failed.");
+
+            this.assertTrue(aria.utils.String.escapeForHTML(originalString, {
+                text : false,
+                attr : true
+            }) === escapedForAttrString, "Full HTML escape failed.");
+            this.assertTrue(aria.utils.String.escapeForHTML(originalString, {
+                text : true,
+                attr : false
+            }) === escapedForHTMLString, "Full HTML escape failed.");
+        },
+
         /**
          * Test stripAccents method
          */

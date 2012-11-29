@@ -87,7 +87,7 @@ Aria.classDefinition({
             "#EXPRESSION#" : {
                 inMacro : true,
                 container : false,
-                process : function (out, statement) {
+                process : function (out, statement, classGenerator) {
                     var param = statement.paramBlock, nextPipe = utilString.indexOfNotEscaped(param, "|"), parts = [];
                     // split param against unescaped |
                     while (nextPipe != -1) {
@@ -96,6 +96,35 @@ Aria.classDefinition({
                         nextPipe = utilString.indexOfNotEscaped(param, "|");
                     }
                     parts.push(param);
+
+                    // Check if the secure must be done automatically or not:
+                    // - either the modifier is present in the list and thus we leave the default behavior of modifiers
+                    // - either we are in the context of a CSS Template and we decide not to escape automatically
+                    var automaticSecure = true;
+
+                    var escapeModifier = classGenerator.escapeModifier;
+                    if (!escapeModifier) {
+                        automaticSecure = false;
+                    } else {
+                        for (var i = parts.length - 1; i >= 1; i--) {
+                            var part = parts[i];
+                            if (part.indexOf(escapeModifier) === 0) {
+                                automaticSecure = false;
+                                break;
+                            }
+                        }
+                    }
+
+                    /* Begin non backward compatible change */
+                    var automaticSecure = false;
+                    /* End non backward compatible change */
+
+                    // If the secure must be done automatically, we add the modifier at the end of the list, to rely on
+                    // this available mechanism
+                    if (automaticSecure) {
+                        parts.splice(1, 0, escapeModifier);
+                    }
+
                     var beginexpr = [], endexpr = [];
                     var expr;
                     var regExp = /^(\w+)(?::([\s\S]*))?$/;
@@ -111,9 +140,11 @@ Aria.classDefinition({
                         beginexpr.push("this.$modifier('" + modifierName + "',[");
                         expr = match[2]; // parameters of the modifier
                         if (expr) {
-                            endexpr[i] = "," + expr + "])";
-                            // check the expression
-                            expr = "[" + expr + "]";
+                            endexpr[i] = ", " + expr;
+                            if (automaticSecure) {
+                                endexpr[i] += ", '" + escapeModifier + "'";
+                            }
+                            endexpr[i] += "])";
                         } else {
                             endexpr[i] = "])";
                         }

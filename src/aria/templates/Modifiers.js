@@ -31,7 +31,7 @@
         },
         "escape" : {
             /**
-             * Initialisation function called when the template is parsed
+             * Initialization function called when the template is parsed
              * @param {aria.templates.ClassWriter} out
              */
             init : function (out) {
@@ -45,6 +45,29 @@
              */
             fn : function (s) {
                 return aria.utils.String.escapeHTML(String(s));
+            }
+        },
+        "escapeforhtml" : {
+            /**
+             * Initialization function called when the template is parsed
+             * @param {aria.templates.ClassWriter} out
+             */
+            init : function (out) {
+                out.addDependencies(["aria.utils.String"]);
+            },
+            /**
+             * Use the aria.utils.String.escapeForHTML utility to process the given input. If the input is null or
+             * undefined, it is returned as is.
+             * @name aria.templates.Modifiers.escapeForHTML
+             * @param {String} str the input string
+             * @return {String} the processed string
+             * @see aria.utils.String.escapeForHTML
+             */
+            fn : function (s, arg) {
+                if (s == null) {
+                    return s;
+                }
+                return aria.utils.String.escapeForHTML(s + '', arg);
             }
         },
         "capitalize" : {
@@ -64,10 +87,14 @@
              * @name aria.templates.Modifiers.default
              * @param {String} str the entry
              * @param {String} defaultValue the default value
+             * @param {String} escape the name of the escaping modifier function to use to process the given default
+             * value. When empty, this value is left as is.
              * @return {String}
              */
-            fn : function (str, defaultValue) {
-                return str != null ? str : defaultValue;
+            fn : function (str, defaultValue, escape) {
+                return str != null ? str : escape
+                        ? aria.templates.Modifiers.callModifier(escape, [defaultValue])
+                        : defaultValue;
             }
         },
         "empty" : {
@@ -76,10 +103,14 @@
              * @name aria.templates.Modifiers.empty
              * @param {String} str the entry
              * @param {String} defaultValue the default value
+             * @param {String} escape the name of the escaping modifier function to use to process the given default
+             * value. When empty, this value is left as is.
              * @return {String}
              */
-            fn : function (str, defaultValue) {
-                return !!str && !/^\s*$/.test(str) ? str : defaultValue;
+            fn : function (str, defaultValue, escape) {
+                return !!str && !/^\s*$/.test(str) ? str : escape
+                        ? aria.templates.Modifiers.callModifier(escape, [defaultValue])
+                        : defaultValue;
             }
         },
         "pad" : {
@@ -290,7 +321,7 @@
      * Template modifiers. Modifiers can be used inside the template syntax
      *
      * <pre>
-     * ${'some text' | modifier}
+     * ${'some text'|modifier}
      * </pre>
      *
      * @singleton
@@ -319,7 +350,6 @@
                 var modifier = __modifiers[modifierName.toLowerCase()];
                 if (modifier) {
                     // call the modifier with this, so that this.$log is available
-
                     return modifier.fn.apply(this, params);
                 } else {
                     this.$logError(aria.templates.Modifiers.UNKNOWN_MODIFIER, [modifierName]);

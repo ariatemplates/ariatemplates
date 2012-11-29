@@ -37,6 +37,12 @@ Aria.classDefinition({
         this._classType = "TML";
         this._rootStatement = "Library";
         this._templateParamBean = "aria.templates.CfgBeans.LibraryCfg";
+
+        /**
+         * Name of the modifier to be used to escape the output for safety
+         * @type String
+         */
+        this.escapeModifier = "escapeForHTML";
     },
     $prototype : {
         $init : function (p) {

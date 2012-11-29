@@ -265,7 +265,7 @@ Aria.classDefinition({
                     if (this._isDebug) {
                         out.trackLine(statement.lineNumber);
                     }
-                    handler.process(out, statement);
+                    handler.process(out, statement, this);
                 }
             }
         },
