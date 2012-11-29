@@ -87,12 +87,63 @@ Aria.classDefinition({
         },
 
         /**
-         * Escape < and > and & in given string
+         * Escape < and > and & in the given string
          * @param {String} str
          * @return {String}
          */
         escapeHTML : function (str) {
             return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        },
+
+        /**
+         * Escape " and ' the given string.
+         * @param {String} str
+         * @return {String} the escaped string
+         */
+        escapeHTMLAttr : function (str) {
+            return str.replace(/'/g, "&#x27;").replace(/"/g, "&quot;");
+        },
+
+        /**
+         * Escape the given string depending on the options. The string can be escaped for different contexts: - safe
+         * insertion inside an HTML text node - safe insertion inside an attribute value
+         * @param {String} str input string
+         * @param {Object|Boolean} options when it is a boolean, if it is true the input string is escaped for all the
+         * contexts, otherwise it is left unmodified. When it is an object, the string is escaped only for the specified
+         * contexts. Here is the format of the object:
+         *
+         * <pre>
+         * {
+         *   attr: true, // will escape the string for safe insertion inside the value of an attribute
+         *   text: false // will NOT escape the string for safe insertion inside an HTML text node
+         * }
+         * </pre>
+         *
+         * When the value is nor a boolean neither an object (null, undefined, number...) the string is escaped for all
+         * the contexts (equivalent to passing true).
+         * @return {String} processed string
+         */
+        escapeForHTML : function (str, options) {
+            var escapeForHTMLText = false;
+            var escapeForHTMLAttr = false;
+
+            if (aria.utils.Type.isObject(options)) {
+                escapeForHTMLText = options.text === true;
+                escapeForHTMLAttr = options.attr === true;
+            } else if (!aria.utils.Type.isBoolean(options) || options) {
+                escapeForHTMLText = true;
+                escapeForHTMLAttr = true;
+            }
+
+            if (escapeForHTMLText) {
+                str = this.escapeHTML(str).replace(/\//g, "&#x2F;");
+            }
+
+            if (escapeForHTMLAttr) {
+                str = this.escapeHTMLAttr(str);
+            }
+
+            return str;
         },
 
         /**

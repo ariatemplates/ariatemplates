@@ -14,240 +14,239 @@
  */
 
 Aria.classDefinition({
-	$classpath : "test.aria.templates.ModifiersTest",
-	$extends : "aria.jsunit.TestCase",
-	$dependencies : ["aria.templates.Modifiers", "aria.utils.String", "aria.utils.Type"],
-	$constructor : function () {
-		this.$TestCase.constructor.call(this);
-	},
-	$prototype : {
-		/**
-		 * Call modifiers that don't exists, this should log an error
-		 */
-		testError : function () {
-			aria.templates.Modifiers.callModifier("");
-			this.assertErrorInLogs(aria.templates.Modifiers.UNKNOWN_MODIFIER);
-			aria.templates.Modifiers.callModifier(12);
-			this.assertErrorInLogs(aria.templates.Modifiers.UNKNOWN_MODIFIER);
-			aria.templates.Modifiers.callModifier();
-			this.assertErrorInLogs(aria.templates.Modifiers.UNKNOWN_MODIFIER);
-		},
+    $classpath : "test.aria.templates.ModifiersTest",
+    $extends : "aria.jsunit.TestCase",
+    $dependencies : ["aria.templates.Modifiers", "aria.utils.String", "aria.utils.Type"],
+    $constructor : function () {
+        this.$TestCase.constructor.call(this);
+    },
+    $prototype : {
+        /**
+         * Call modifiers that don't exists, this should log an error
+         */
+        testError : function () {
+            aria.templates.Modifiers.callModifier("");
+            this.assertErrorInLogs(aria.templates.Modifiers.UNKNOWN_MODIFIER);
+            aria.templates.Modifiers.callModifier(12);
+            this.assertErrorInLogs(aria.templates.Modifiers.UNKNOWN_MODIFIER);
+            aria.templates.Modifiers.callModifier();
+            this.assertErrorInLogs(aria.templates.Modifiers.UNKNOWN_MODIFIER);
+        },
 
-		/**
-		 * Unit test the highlight modifiers.
-		 * Highlight puts &lt;strong&gt; tags around the initial part of the words
-		 */
-		testHighlight : function () {
-			var testThese = [
-				// One word str, one word highlight
-				["abcd", "def"],
-				["abcd", "ab"],
-				["abcd", "abcd"],
-				["abcd", "abcdef"],
-				// One word str, more highlight
-				["abcd", "def ghjk"],
-				["abcd", "def ab"],
-				["abcd", "def ab abc"],
-				["abcd", "abcdef a"],
-				// More words str, one highlight
-				["abcd xyz", "ax"],
-				["abcd xyz", "ab"],
-				["abcd xyz", "xy"],
-				["abcd asd", "a"],
-				["abcd xyz asd", "a"],
-				["abcd xyz abcd", "abc"],
-				// More words str, more highlight
-				["abcd xyz", "ax def"],
-				["abcd xyz", "ab ab"],
-				["abcd xyz", "ab xy"],
-				["abcd xyz asd", "a abc"],
-				["abcd xyz abcd", "qwe a x"],
-				// Mixed case
-				["aBcD", "abcd"],
-				["aBcD", "AbCd"],
-				["ABCD", "abcd"],
-				// Extra spaces
-				["abcd   jklm", "fcv"],
-				["abcd   jklm", "ab"],
-				["abcd   jklm", "   jk"],
-				["    abcd   jklm", "   abc   "],
-				// Longest running highlight
-				["abcdefghj", "a ab abcde"],
-				["abcdefghj", "abcde a ab"],
-				["abcdefghj", "ab abcde a"],
-				// String with special characters
-				["abcd (123)","123"],
-				["abcd +123","123"],
-				["abcd .123","123"],
-				// Selection in the middle
-				["abcd", "bc"],
-				["ab.cd", "cd"],
-				["abcd.efg", "  efg "],
-				["abcd@efg", "d@ef"],
-				// Dangerous expression
-				["abcd.efg", ".efg"],
-				["abcd[efg]", "[efg]"],
-				["abcdefg", ".efg"],
-				["abcd@efg", "@ef"],
-				["abcd (1-123)", "(1-"],
-				["abcd (1-123)", "(1-123)"]
-			];
+        testEscapeForHTML : function () {
+            var identity = null;
+            this.assertTrue(aria.templates.Modifiers.callModifier("escapeforhtml", [identity]) === identity, "Full escape modifier failed.");
+            identity = undefined;
+            this.assertTrue(aria.templates.Modifiers.callModifier("escapeforhtml", [identity]) === identity, "Full escape modifier failed.");
 
-			var expected = [
-				// One word str, one word highlight
-				"abcd",
-				"<strong>ab</strong>cd",
-				"<strong>abcd</strong>",
-				"abcd",
-				// One word str, more highlight
-				"abcd",
-				"<strong>ab</strong>cd",
-				"<strong>abc</strong>d",
-				"<strong>a</strong>bcd",
-				// More words str, one highlight
-				"abcd xyz",
-				"<strong>ab</strong>cd xyz",
-				"abcd <strong>xy</strong>z",
-				"<strong>a</strong>bcd <strong>a</strong>sd",
-				"<strong>a</strong>bcd xyz <strong>a</strong>sd",
-				"<strong>abc</strong>d xyz <strong>abc</strong>d",
-				// More words str, more highlight
-				"abcd xyz",
-				"<strong>ab</strong>cd xyz",
-				"<strong>ab</strong>cd <strong>xy</strong>z",
-				"<strong>abc</strong>d xyz <strong>a</strong>sd",
-				"<strong>a</strong>bcd <strong>x</strong>yz <strong>a</strong>bcd",
-				// Mixed case
-				"<strong>aBcD</strong>",
-				"<strong>aBcD</strong>",
-				"<strong>ABCD</strong>",
-				// Extra spaces
-				"abcd   jklm",
-				"<strong>ab</strong>cd   jklm",
-				"abcd   <strong>jk</strong>lm",
-				"    <strong>abc</strong>d   jklm",
-				// Longest running highlight
-				"<strong>abcde</strong>fghj",
-				"<strong>abcde</strong>fghj",
-				"<strong>abcde</strong>fghj",
-				// String with special characters
-				"abcd (<strong>123</strong>)",
-				"abcd +<strong>123</strong>",
-				"abcd .<strong>123</strong>",
-				// Selection in the middle
-				"abcd",
-				"ab.<strong>cd</strong>",
-				"abcd.<strong>efg</strong>",
-				"abcd@efg",
-				// Dangerous expression
-				"abcd<strong>.efg</strong>",
-				"abcd<strong>[efg]</strong>",
-				"abcdefg",
-				"abcd<strong>@ef</strong>g",
-				"abcd <strong>(1-</strong>123)",
-				"abcd <strong>(1-123)</strong>"
-			];
+            var originalString = "<div id='id' class=\"class\">/</div>";
+            // The following should be computed directly with the proper utility function if the latter is fully tested
+            // and working
+            // Indeed, having the same results with this modifier as with the utility function is a sort of requirement
+            var escapedForAttrString = "<div id=&#x27;id&#x27; class=&quot;class&quot;>/</div>";
+            var escapedForHTMLString = "&lt;div id='id' class=\"class\"&gt;&#x2F;&lt;&#x2F;div&gt;";
+            var escapedForAllString = "&lt;div id=&#x27;id&#x27; class=&quot;class&quot;&gt;&#x2F;&lt;&#x2F;div&gt;";
 
-			// If an assert fails, please note that assert are counted from 1, this cycle from 0
-			// so assert #13 fails -> i = 12
-			for (var i = 0, len = testThese.length; i < len; i += 1) {
-				var got = aria.templates.Modifiers.callModifier("highlight", testThese[i]);
-				this.assertEquals(got, expected[i], "Expecting " + expected[i] + " got " + got);
-			}
-		},
+            this.assertTrue(aria.templates.Modifiers.callModifier("escapeforhtml", [originalString]) === escapedForAllString, "Full escape modifier failed.");
+            this.assertTrue(aria.templates.Modifiers.callModifier("escapeforhtml", [originalString, true]) === escapedForAllString, "Full escape modifier failed.");
+            this.assertTrue(aria.templates.Modifiers.callModifier("escapeforhtml", [originalString, {
+                        text : true,
+                        attr : true
+                    }]) === escapedForAllString, "Full escape modifier failed.");
 
-		testHighlightFromNewWord : function () {
-			var testThese = [
-				// basic: finds highlights on word boundaries
-				["abc def ghi", "abc d"],
-				["abc def ghi", "def g"],
-				["abc def ghi", "ghi"],
-				// highlights only the first substring (sliding-window) and no more
-				["abc abd", "ab"],
-				["abc abd abc", "abd a"],
-				// doesn't find higlights in the middle of the word
-				["abc defgh ikj", "efg"],
-				// test multiple whitespace
-				["abc    defgh", "def"],
-				// test tabulations
-				["abc				defgh", "def"],
-				// test empty word,
-				["", "aaa"],
-				// test empty highlight
-				["abc", ""],
-				// test whitespace-only word
-				["    ", "aaa"],
-				// test whitespace-only highlight
-				["abc", "   "],
-				// leading space
-				[" abc def", "ab"],
-				// Mixed case
-				["aBcDe", "abcd"],
-				["aBcDe", "AbCd"],
-				["ABCDe", "abcd"],
-				// String with special characters
-				["abcd (123)","123"],
-				["abcd +123","123"],
-				["abcd .123","123"],
-				// regex special chars in highlight
-				["x abc", "a.c"],
-				// Dangerous expression
-				["abcd .efg", ".efg"],
-				["abcd [efg]", "[efg]"],
-				["abcd efg", ".efg"],
-				["abcd @efg", "@ef"],
-				["abcd (1-123)", "(1-"],
-				["abcd (1-123)", "(1-123)"],
-				["abc-defgh", "abc-de"]
-			];
+            this.assertTrue(aria.templates.Modifiers.callModifier("escapeforhtml", [originalString, false]) === originalString, "Full escape modifier failed.");
+            this.assertTrue(aria.templates.Modifiers.callModifier("escapeforhtml", [originalString, {
+                        text : false,
+                        attr : false
+                    }]) === originalString, "Full escape modifier failed.");
 
-			var expected = [
-				// basic: finds highlights on word boundaries
-				"<strong>abc d</strong>ef ghi",
-				"abc <strong>def g</strong>hi",
-				"abc def <strong>ghi</strong>",
-				// highlights only the first substring (sliding-window) and no more
-				"<strong>ab</strong>c abd",
-				"abc <strong>abd a</strong>bc",
-				// doesn't find higlights in the middle of the word
-				"abc defgh ikj",
-				// test multiple whitespace
-				"abc    <strong>def</strong>gh",
-				// test tabulations
-				"abc				<strong>def</strong>gh",
-				// test empty word,
-				"",
-				// test empty highlight
-				"abc",
-				// test whitespace-only word
-				"    ",
-				// test whitespace-only highlight
-				"abc",
-				// leading space
-				" <strong>ab</strong>c def",
-				// Mixed case
-				"<strong>aBcD</strong>e",
-				"<strong>aBcD</strong>e",
-				"<strong>ABCD</strong>e",
-				// String with special characters
-				"abcd (123)",
-				"abcd +123",
-				"abcd .123",
-				// regex special chars in highlight
-				"x abc",
-				// Dangerous expression
-				"abcd <strong>.efg</strong>",
-				"abcd <strong>[efg]</strong>",
-				"abcd efg",
-				"abcd <strong>@ef</strong>g",
-				"abcd <strong>(1-</strong>123)",
-				"abcd <strong>(1-123)</strong>",
-				"<strong>abc-de</strong>fgh"
-			];
-			for (var i = 0, len = testThese.length; i < len; i += 1) {
-				var got = aria.templates.Modifiers.callModifier("highlightfromnewword", testThese[i]);
-				this.assertEquals(got, expected[i], "Expecting '" + expected[i] + "', got '" + got + "'");
-			}
-		}
-	}
+            this.assertTrue(aria.templates.Modifiers.callModifier("escapeforhtml", [originalString, {
+                        text : false,
+                        attr : true
+                    }]) === escapedForAttrString, "Full escape modifier failed.");
+            this.assertTrue(aria.templates.Modifiers.callModifier("escapeforhtml", [originalString, {
+                        text : true,
+                        attr : false
+                    }]) === escapedForHTMLString, "Full escape modifier failed.");
+        },
+
+        testDefaultEscape : function () {
+            this.assertTrue(aria.templates.Modifiers.callModifier("default", [null,
+                    "<div id='id' class=\"class\">/</div>"]) === "<div id='id' class=\"class\">/</div>", "Default with escape failed.");
+            this.assertTrue(aria.templates.Modifiers.callModifier("default", [null,
+                    "<div id='id' class=\"class\">/</div>", '']) === "<div id='id' class=\"class\">/</div>", "Default with escape failed.");
+            this.assertTrue(aria.templates.Modifiers.callModifier("default", [null,
+                    "<div id='id' class=\"class\">/</div>", "escapeForHTML"]) === "&lt;div id=&#x27;id&#x27; class=&quot;class&quot;&gt;&#x2F;&lt;&#x2F;div&gt;", "Default with escape failed.");
+        },
+
+        testEmptyEscape : function () {
+            this.assertTrue(aria.templates.Modifiers.callModifier("empty", ['', "<div id='id' class=\"class\">/</div>"]) === "<div id='id' class=\"class\">/</div>", "Default with escape failed.");
+            this.assertTrue(aria.templates.Modifiers.callModifier("empty", ['', "<div id='id' class=\"class\">/</div>",
+                    '']) === "<div id='id' class=\"class\">/</div>", "Default with escape failed.");
+            this.assertTrue(aria.templates.Modifiers.callModifier("empty", ['', "<div id='id' class=\"class\">/</div>",
+                    "escapeForHTML"]) === "&lt;div id=&#x27;id&#x27; class=&quot;class&quot;&gt;&#x2F;&lt;&#x2F;div&gt;", "Default with escape failed.");
+        },
+
+        /**
+         * Unit test the highlight modifiers. Highlight puts &lt;strong&gt; tags around the initial part of the words
+         */
+        testHighlight : function () {
+            var testThese = [
+                    // One word str, one word highlight
+                    ["abcd", "def"],
+                    ["abcd", "ab"],
+                    ["abcd", "abcd"],
+                    ["abcd", "abcdef"],
+                    // One word str, more highlight
+                    ["abcd", "def ghjk"],
+                    ["abcd", "def ab"],
+                    ["abcd", "def ab abc"],
+                    ["abcd", "abcdef a"],
+                    // More words str, one highlight
+                    ["abcd xyz", "ax"], ["abcd xyz", "ab"], ["abcd xyz", "xy"],
+                    ["abcd asd", "a"],
+                    ["abcd xyz asd", "a"],
+                    ["abcd xyz abcd", "abc"],
+                    // More words str, more highlight
+                    ["abcd xyz", "ax def"], ["abcd xyz", "ab ab"], ["abcd xyz", "ab xy"],
+                    ["abcd xyz asd", "a abc"],
+                    ["abcd xyz abcd", "qwe a x"],
+                    // Mixed case
+                    ["aBcD", "abcd"], ["aBcD", "AbCd"],
+                    ["ABCD", "abcd"],
+                    // Extra spaces
+                    ["abcd   jklm", "fcv"], ["abcd   jklm", "ab"], ["abcd   jklm", "   jk"],
+                    ["    abcd   jklm", "   abc   "],
+                    // Longest running highlight
+                    ["abcdefghj", "a ab abcde"], ["abcdefghj", "abcde a ab"], ["abcdefghj", "ab abcde a"],
+                    // String with special characters
+                    ["abcd (123)", "123"], ["abcd +123", "123"], ["abcd .123", "123"],
+                    // Selection in the middle
+                    ["abcd", "bc"], ["ab.cd", "cd"], ["abcd.efg", "  efg "], ["abcd@efg", "d@ef"],
+                    // Dangerous expression
+                    ["abcd.efg", ".efg"], ["abcd[efg]", "[efg]"], ["abcdefg", ".efg"], ["abcd@efg", "@ef"],
+                    ["abcd (1-123)", "(1-"], ["abcd (1-123)", "(1-123)"]];
+
+            var expected = [
+                    // One word str, one word highlight
+                    "abcd",
+                    "<strong>ab</strong>cd",
+                    "<strong>abcd</strong>",
+                    "abcd",
+                    // One word str, more highlight
+                    "abcd",
+                    "<strong>ab</strong>cd",
+                    "<strong>abc</strong>d",
+                    "<strong>a</strong>bcd",
+                    // More words str, one highlight
+                    "abcd xyz",
+                    "<strong>ab</strong>cd xyz",
+                    "abcd <strong>xy</strong>z",
+                    "<strong>a</strong>bcd <strong>a</strong>sd",
+                    "<strong>a</strong>bcd xyz <strong>a</strong>sd",
+                    "<strong>abc</strong>d xyz <strong>abc</strong>d",
+                    // More words str, more highlight
+                    "abcd xyz", "<strong>ab</strong>cd xyz",
+                    "<strong>ab</strong>cd <strong>xy</strong>z",
+                    "<strong>abc</strong>d xyz <strong>a</strong>sd",
+                    "<strong>a</strong>bcd <strong>x</strong>yz <strong>a</strong>bcd",
+                    // Mixed case
+                    "<strong>aBcD</strong>", "<strong>aBcD</strong>",
+                    "<strong>ABCD</strong>",
+                    // Extra spaces
+                    "abcd   jklm", "<strong>ab</strong>cd   jklm", "abcd   <strong>jk</strong>lm",
+                    "    <strong>abc</strong>d   jklm",
+                    // Longest running highlight
+                    "<strong>abcde</strong>fghj", "<strong>abcde</strong>fghj", "<strong>abcde</strong>fghj",
+                    // String with special characters
+                    "abcd (<strong>123</strong>)", "abcd +<strong>123</strong>", "abcd .<strong>123</strong>",
+                    // Selection in the middle
+                    "abcd", "ab.<strong>cd</strong>", "abcd.<strong>efg</strong>", "abcd@efg",
+                    // Dangerous expression
+                    "abcd<strong>.efg</strong>", "abcd<strong>[efg]</strong>", "abcdefg", "abcd<strong>@ef</strong>g",
+                    "abcd <strong>(1-</strong>123)", "abcd <strong>(1-123)</strong>"];
+
+            // If an assert fails, please note that assert are counted from 1, this cycle from 0
+            // so assert #13 fails -> i = 12
+            for (var i = 0, len = testThese.length; i < len; i += 1) {
+                var got = aria.templates.Modifiers.callModifier("highlight", testThese[i]);
+                this.assertEquals(got, expected[i], "Expecting " + expected[i] + " got " + got);
+            }
+        },
+
+        testHighlightFromNewWord : function () {
+            var testThese = [
+                    // basic: finds highlights on word boundaries
+                    ["abc def ghi", "abc d"], ["abc def ghi", "def g"], ["abc def ghi", "ghi"],
+                    // highlights only the first substring (sliding-window) and no more
+                    ["abc abd", "ab"], ["abc abd abc", "abd a"],
+                    // doesn't find higlights in the middle of the word
+                    ["abc defgh ikj", "efg"],
+                    // test multiple whitespace
+                    ["abc    defgh", "def"],
+                    // test tabulations
+                    ["abc				defgh", "def"],
+                    // test empty word,
+                    ["", "aaa"],
+                    // test empty highlight
+                    ["abc", ""],
+                    // test whitespace-only word
+                    ["    ", "aaa"],
+                    // test whitespace-only highlight
+                    ["abc", "   "],
+                    // leading space
+                    [" abc def", "ab"],
+                    // Mixed case
+                    ["aBcDe", "abcd"], ["aBcDe", "AbCd"], ["ABCDe", "abcd"],
+                    // String with special characters
+                    ["abcd (123)", "123"], ["abcd +123", "123"], ["abcd .123", "123"],
+                    // regex special chars in highlight
+                    ["x abc", "a.c"],
+                    // Dangerous expression
+                    ["abcd .efg", ".efg"], ["abcd [efg]", "[efg]"], ["abcd efg", ".efg"], ["abcd @efg", "@ef"],
+                    ["abcd (1-123)", "(1-"], ["abcd (1-123)", "(1-123)"], ["abc-defgh", "abc-de"]];
+
+            var expected = [
+                    // basic: finds highlights on word boundaries
+                    "<strong>abc d</strong>ef ghi",
+                    "abc <strong>def g</strong>hi",
+                    "abc def <strong>ghi</strong>",
+                    // highlights only the first substring (sliding-window) and no more
+                    "<strong>ab</strong>c abd",
+                    "abc <strong>abd a</strong>bc",
+                    // doesn't find higlights in the middle of the word
+                    "abc defgh ikj",
+                    // test multiple whitespace
+                    "abc    <strong>def</strong>gh",
+                    // test tabulations
+                    "abc				<strong>def</strong>gh",
+                    // test empty word,
+                    "",
+                    // test empty highlight
+                    "abc",
+                    // test whitespace-only word
+                    "    ",
+                    // test whitespace-only highlight
+                    "abc",
+                    // leading space
+                    " <strong>ab</strong>c def",
+                    // Mixed case
+                    "<strong>aBcD</strong>e", "<strong>aBcD</strong>e",
+                    "<strong>ABCD</strong>e",
+                    // String with special characters
+                    "abcd (123)",
+                    "abcd +123",
+                    "abcd .123",
+                    // regex special chars in highlight
+                    "x abc",
+                    // Dangerous expression
+                    "abcd <strong>.efg</strong>", "abcd <strong>[efg]</strong>", "abcd efg",
+                    "abcd <strong>@ef</strong>g", "abcd <strong>(1-</strong>123)", "abcd <strong>(1-123)</strong>",
+                    "<strong>abc-de</strong>fgh"];
+            for (var i = 0, len = testThese.length; i < len; i += 1) {
+                var got = aria.templates.Modifiers.callModifier("highlightfromnewword", testThese[i]);
+                this.assertEquals(got, expected[i], "Expecting '" + expected[i] + "', got '" + got + "'");
+            }
+        }
+    }
 });
