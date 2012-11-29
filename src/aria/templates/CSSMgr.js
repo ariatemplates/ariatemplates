@@ -16,8 +16,6 @@
 /**
  * CSS Manager manages the insertion of CSS Template output in the page. It is responsible for prefixing the CSS
  * selectors according to the containing Template, adding the style tags in the page.
- * @class aria.templates.CSSMgr
- * @extends aria.core.JsObject
  */
 Aria.classDefinition({
     $classpath : "aria.templates.CSSMgr",
@@ -139,7 +137,7 @@ Aria.classDefinition({
         this.__textLoaded = {};
 
         /**
-         * Since we are using a pool of style tags, keep track of where is loaded each css classpath
+         * Since we are using a pool of style tags, keep track of where each css classpath is loaded
          * @type Object
          *
          * <pre>
@@ -318,9 +316,8 @@ Aria.classDefinition({
             var classes = [];
             for (var i = 0, len = dependencies.length; i < len; i += 1) {
                 var cssClasspath = dependencies[i];
-                // this object will be used for configuration and changed, as this is a loop on dependencies, make a
-                // copy
-                // Cf PTR 04543463
+                // this object will be used for configuration and changed,
+                // as this is a loop on dependencies, make a copy - PTR 04543463
                 var localContextArgs = {};
                 for (var key in contextArgs) {
                     if (contextArgs.hasOwnProperty(key)) {
@@ -515,6 +512,7 @@ Aria.classDefinition({
                     // No other templates depend on this class
                     delete this.__cssUsage[cssClasspath];
                     delete this.__textLoaded[cssClasspath];
+                    delete this.__styleTagAssociation[cssClasspath];
                     // keep the prefix in case the css comes back
                 }
             } // else should never be reached
@@ -666,8 +664,6 @@ Aria.classDefinition({
                 this.__styleTagPool[tagName] = tag;
             }
 
-            head = null;
-
             return tag;
         },
 
@@ -748,7 +744,8 @@ Aria.classDefinition({
          * @param {Array} cssTemplates css classpaths
          */
         registerDependencies : function (classpath, cssTemplates) {
-            for (var i = 0, cssClasspath; cssClasspath = cssTemplates[i]; i++) {
+            for (var i = 0, length = cssTemplates.length; i < length; i++) {
+                var cssClasspath = cssTemplates[i];
                 if (!this.__globalUsage[cssClasspath]) {
                     this.__globalUsage[cssClasspath] = [];
                 }
@@ -766,7 +763,8 @@ Aria.classDefinition({
          */
         unregisterDependencies : function (classpath, cssTemplates, unload, timestampNextTime) {
             var array = aria.utils.Array, classMgr = aria.core.ClassMgr;
-            for (var i = 0, cssClasspath; cssClasspath = cssTemplates[i]; i++) {
+            for (var i = 0, length = cssTemplates.length; i < length; i++) {
+                var cssClasspath = cssTemplates[i];
                 var usage = this.__globalUsage[cssClasspath];
                 array.remove(usage, classpath);
                 if (unload) {
