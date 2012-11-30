@@ -18,8 +18,10 @@
     "port": "8080"
   },
   "scripts": {
-    "install": "node node_modules/grunt/bin/grunt",
-    "test": "node node_modules/attester/bin/attester.js test/attester.yml --phantomjs-instances 2",
+    "grunt": "node node_modules/grunt/bin/grunt",
+    "attester" : "node node_modules/attester/bin/attester.js test/attester.yml --phantomjs-instances 2",
+    "lint": "node node_modules/grunt/bin/grunt atlint",
+    "test": "npm run-script lint && npm run-script attester && npm run-script grunt",
     "start": "node scripts/server.js",
     "prestart": "npm install"
   },

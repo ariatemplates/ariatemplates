@@ -96,7 +96,10 @@ module.exports = function(grunt) {
     grunt.registerTask('releaseOsProd',      'atlint:source forkgrunt:osprod');
 
     // tasks for real build
-    grunt.registerTask('release', 'atlint:source forkgrunt:osbootstrap forkgrunt:osprod');
+    // Note that 'atlint' is not present in 'release'.
+    // It's run separately in Travis build, at the very beginning.
+    // Use 'grunt atlint' to run it manually if you want.
+    grunt.registerTask('release', 'forkgrunt:osbootstrap forkgrunt:osprod');
 
     // include time measurements
     grunt.registerTask('default', 'gruntTimeHookStart release gruntTimeHookEnd');
