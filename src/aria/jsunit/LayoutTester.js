@@ -172,9 +172,8 @@ Aria.classDefinition({
          * @private
          */
         _hasStyleThatMakesItVisible : function (el) {
-            // var getComputedStyle = document.defaultView.getComputedStyle;
-
-            var computedStyle = el.currentStyle || el.ownerDocument.defaultView.getComputedStyle(el);
+            // getComputedStyle takes two parameters in FF<4
+            var computedStyle = el.currentStyle || el.ownerDocument.defaultView.getComputedStyle(el, null);
 
             return (computedStyle.border !== "" || computedStyle.borderWidth !== ""
                     || computedStyle.borderTopWidth !== "" || computedStyle.borderLeftWidth !== ""
