@@ -17,10 +17,6 @@ Aria.classDefinition({
     $classpath : 'test.aria.templates.statements.ExpressionEscapeTest',
     $extends : 'aria.jsunit.TemplateTestCase',
     $dependencies : ['aria.utils.Dom'],
-    $constructor : function () {
-        this.$TemplateTestCase.constructor.call(this);
-        this.testDiv = document.createElement('div');
-    },
     $prototype : {
         runTemplateTest : function () {
             var nonBackwardCompatibleCases = {
