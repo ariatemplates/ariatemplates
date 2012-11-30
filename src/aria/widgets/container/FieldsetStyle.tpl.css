@@ -22,7 +22,7 @@
     
     {macro writeState(info)}
         {var state=info.state/}
-        .{call cssPrefix(info)/}label {
+        .${cssPrefix(info)}label {
             left: ${state.label.left}px;
             top: ${state.label.top}px;
             padding-top: ${state.label.paddingTop}px;

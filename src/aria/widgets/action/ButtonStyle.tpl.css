@@ -19,7 +19,7 @@
 }}
     {var skinnableClassName="Button"/}
     {var useFrame=true/}
-    
+
     {macro main()}
         .xButton {
             background:none repeat scroll 0 0 transparent;
@@ -30,25 +30,25 @@
             vertical-align:top;
             tabindex:10;
         }
-        
+
         .xButtonDisabled {
             cursor:default;
         }
 
         {call startLooping()/}
     {/macro}
-    
+
     {macro writeSkinClass(info)}
         .xBTNbkg_${info.skinClassName} {
             /* old type of button (to remove) */
             {call background("transparent",info.spriteURL,"no-repeat")/}
         }
     {/macro}
-    
+
     {macro writeState(info)}
-        .{call cssPrefix(info)/}c {
+        .${cssPrefix(info)}c {
             font-weight: ${info.skinClass.label.fontWeight}
         }
     {/macro}
-    
+
 {/CSSTemplate}

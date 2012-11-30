@@ -19,11 +19,11 @@
 }}
     {var skinnableClassName="TextInput"/}
     {var useFrame=true/}
-    
+
     {macro writeState(info)}
-        .{call cssPrefix(info)/}label {
+        .${cssPrefix(info)}label {
             font-weight: ${info.skinClass.label.fontWeight}
         }
     {/macro}
-    
+
 {/CSSTemplate}

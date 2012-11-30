@@ -77,10 +77,8 @@
         opacity: ${percent/100};
     {/macro}
 
-    {macro cssPrefix(info)}x${skinnableClassName}_${info.skinClassName}_${info.stateName}_{/macro}
-
     // Macros for frames:
-    
+
     /*{macro writeStateOfFrame(info)}
         {var sprType=info.skinClass.sprType/}
         {if sprType==}
@@ -101,34 +99,35 @@
         {var refTop=(sprHeight+sprSpacing)*sprIndex/}
         {var spcLeft=state.spcLeft/}
         {var spcRight=sprWidth-spcLeft/}
+        {var prefix=cssPrefix(info)/}
 
-        .{call cssPrefix(info)/}bkgA {
+        .${prefix}bkgA {
             {call background("transparent",state.spriteURL,"no-repeat scroll 0 0")/}
             font-size:1px;
         }
-        .{call cssPrefix(info)/}bkgB {
+        .${prefix}bkgB {
             {call background("transparent",state.spriteURLv,"repeat-x 0 0")/}
         }
-        .{call cssPrefix(info)/}w {
+        .${prefix}w {
             height:${sprHeight}px;
         }
-        .{call cssPrefix(info)/}c {
+        .${prefix}c {
             margin: ${state.marginTop}px ${state.marginRight}px ${state.marginBottom}px ${state.marginLeft}px;
             color: ${state.color};
         }
         {if state.skipLeftBorder!=true}
-        .{call cssPrefix(info)/}b {width:${spcLeft}px; height:${sprHeight}px; background-position:0 ${-refTop}px;}
+        .${prefix}b {width:${spcLeft}px; height:${sprHeight}px; background-position:0 ${-refTop}px;}
         {/if}
-        .{call cssPrefix(info)/}m {height:${sprHeight}px; background-position:0 ${-refTop}px;}
+        .${prefix}m {height:${sprHeight}px; background-position:0 ${-refTop}px;}
         {if state.skipRightBorder!=true}
-        .{call cssPrefix(info)/}e {width:${spcRight}px; height:${sprHeight}px; background-position: ${-spcLeft}px ${-refTop}px;}
+        .${prefix}e {width:${spcRight}px; height:${sprHeight}px; background-position: ${-spcLeft}px ${-refTop}px;}
         {/if}
     {/macro}
 
     {macro writeStateOfSimpleFrame(info)}
         {var state=info.state.frame/}
         {var padTop=state.paddingTop/}
-        .{call cssPrefix(info)/}frame  {
+        .${cssPrefix(info)}frame  {
             border: ${state.borderSize}px ${state.border} ${state.borderColor};
             padding: ${state.paddingTop}px ${state.paddingRight}px ${state.paddingBottom}px ${state.paddingLeft}px;
             {if (padTop>1)}
@@ -152,34 +151,36 @@
         {var spcTop=state.spcTop/}
         {var spcRight=sprWidth-spcLeft/}
         {var spcBottom=sprHeight-spcTop/}
-        .{call cssPrefix(info)/}bkgA {
+        {var prefix=cssPrefix(info)/}
+
+        .${prefix}bkgA {
             {call background("transparent",state.spriteURL,"no-repeat scroll 0 0")/}
             font-size:1px;
         }
-        .{call cssPrefix(info)/}bkgB {
+        .${prefix}bkgB {
             {call background("transparent",state.spriteURLv,"repeat-x 0 0")/}
             font-size:1px;
         }
-        .{call cssPrefix(info)/}bkgC {
+        .${prefix}bkgC {
             {call background("transparent",state.spriteURLh,"repeat-y 0 0")/}
             font-size:1px;
         }
-        .{call cssPrefix(info)/}c {
+        .${prefix}c {
             margin: ${state.marginTop}px ${state.marginRight}px ${state.marginBottom}px ${state.marginLeft}px;
             color: ${state.color};
         }
-        .{call cssPrefix(info)/}m {
+        .${prefix}m {
             background-color: ${state.backgroundColor};
         }
-        .{call cssPrefix(info)/}tlc {width:${spcLeft}px; height:${spcTop}px; background-position:0 ${-refTop}px;}
-        .{call cssPrefix(info)/}ts {height:${spcTop}px; background-position:0 ${-refTop}px; }
-        .{call cssPrefix(info)/}trc {width:${spcRight}px; height:${spcTop}px; background-position: ${-spcLeft}px ${-refTop}px;}
-        .{call cssPrefix(info)/}rs {width:${spcRight}px; background-position:${-refLeft-spcLeft}px 0;}
-        .{call cssPrefix(info)/}brc {width:${spcRight}px; height:${spcBottom}px; background-position: ${-spcLeft}px ${-refTop-spcTop}px;}
-        .{call cssPrefix(info)/}bs {height: ${spcBottom}px; background-position:0 ${-refTop-spcTop}px;}
-        .{call cssPrefix(info)/}blc {width:${spcLeft}px; height:${spcBottom}px; background-position: 0 ${-refTop-spcTop}px;}
-        .{call cssPrefix(info)/}ls {width: ${spcLeft}px; background-position:${-refLeft}px 0;}
-        .{call cssPrefix(info)/}frameIcon {
+        .${prefix}tlc {width:${spcLeft}px; height:${spcTop}px; background-position:0 ${-refTop}px;}
+        .${prefix}ts {height:${spcTop}px; background-position:0 ${-refTop}px; }
+        .${prefix}trc {width:${spcRight}px; height:${spcTop}px; background-position: ${-spcLeft}px ${-refTop}px;}
+        .${prefix}rs {width:${spcRight}px; background-position:${-refLeft-spcLeft}px 0;}
+        .${prefix}brc {width:${spcRight}px; height:${spcBottom}px; background-position: ${-spcLeft}px ${-refTop-spcTop}px;}
+        .${prefix}bs {height: ${spcBottom}px; background-position:0 ${-refTop-spcTop}px;}
+        .${prefix}blc {width:${spcLeft}px; height:${spcBottom}px; background-position: 0 ${-refTop-spcTop}px;}
+        .${prefix}ls {width: ${spcLeft}px; background-position:${-refLeft}px 0;}
+        .${prefix}frameIcon {
                 display: block;
                 height:${state.frameHeight}px;
                 {call background("",state.frameIcon,"no-repeat "+state.frameIconHPos)/}
