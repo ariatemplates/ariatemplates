@@ -25,6 +25,11 @@ Aria.beanDefinitions({
             $type : "base:Properties",
             $description : "Properties of a Text Input widget.",
             $properties : {
+                "tagName" : {
+                    $type : "base:Properties.$properties.tagName",
+                    $description : "Automatically set to input by the framework. It cannot be overridden in the configuration.",
+                    $mandatory : true
+                },
                 "bind" : {
                     $type : "base:Properties.$properties.bind",
                     $properties : {
