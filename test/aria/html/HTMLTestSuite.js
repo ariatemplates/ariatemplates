@@ -25,6 +25,7 @@ Aria.classDefinition({
         this.addTests("test.aria.html.ElementEventsTest");
         this.addTests("test.aria.html.TextInputBindTest");
         this.addTests("test.aria.html.TextInputOnTypeTest");
+        this.addTests("test.aria.html.TextInputPasswordTest");
         this.addTests("test.aria.html.controllers.suggestions.ResourcesHandlerTest");
 
     }
