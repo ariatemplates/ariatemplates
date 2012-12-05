@@ -90,7 +90,7 @@
 
             cfg.tagName = "input";
             cfg.attributes = cfg.attributes || {};
-            cfg.attributes.type = "text";
+            cfg.attributes.type = (cfg.password) ? "password" : "text";
             cfg.on = cfg.on || {};
 
             /**

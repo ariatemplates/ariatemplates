@@ -17,6 +17,7 @@ Aria.beanDefinitions({
     $package : "aria.html.beans.TextInputCfg",
     $description : "Configuration for Text Input widget.",
     $namespaces : {
+        "json" : "aria.core.JsonTypes",
         "base" : "aria.html.beans.ElementCfg",
         "common" : "aria.widgetLibs.CommonBeans"
     },
@@ -47,6 +48,11 @@ Aria.beanDefinitions({
                             $description : "Callback called when the user types inside the input. It corresponds to a keydown."
                         }
                     }
+                },
+                "password" : {
+                    $type : "json:Boolean",
+                    $description : "Whether the input field should be of type password.",
+                    $default : false
                 }
             }
         }
