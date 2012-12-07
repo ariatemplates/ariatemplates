@@ -139,6 +139,21 @@ Aria.classDefinition({
         },
 
         /**
+         * Internal method to handle the keyup event. It is needed because in some cases the keypress event is not
+         * raised
+         * @protected
+         * @param {aria.DomEvent} event
+         */
+        _dom_onkeyup : function (event) {
+            var browser = aria.core.Browser;
+            if (browser.isAndroid && browser.isChrome && !event.isSpecialKey && event.keyCode == 229) {
+                event.charCode = 0;
+                this._handleKey(event);
+            }
+            this.$TextInput._dom_onkeydown.call(this, event);
+        },
+
+        /**
          * Override $TextInput._reactToControllerReport
          * @protected
          * @param {aria.widgets.controllers.reports.DropDownControllerReport} report
