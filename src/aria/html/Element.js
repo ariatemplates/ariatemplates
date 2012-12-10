@@ -61,16 +61,14 @@
                 return makeUseless(this);
             }
 
+            var id = cfg.id;
+
             /**
              * Id of the DOM element of this widget.
              * @type String
              * @protected
              */
-            this._id = this._createDynamicId();
-
-            if (cfg.id) {
-                this._id = this._id + "_" + cfg.id;
-            }
+            this._id = id ? this._context.$getId(id) : this._createDynamicId();
 
             /**
              * Reference of the DOM element with id this._id.

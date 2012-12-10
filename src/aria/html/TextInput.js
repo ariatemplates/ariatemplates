@@ -102,20 +102,12 @@
 
             this._registerBlur(cfg.on, context);
 
-            /**
-             * Element containing input field
-             * @protected
-             * @type HTMLElement
-             */
-            this._inputText = null;
-
             this.$Element.constructor.call(this, cfg, context, line);
         },
         $destructor : function () {
             if (this._typeCallback) {
                 aria.core.Timer.cancelCallback(this._typeCallback);
             }
-            this._inputText = null;
             this.$Element.$destructor.call(this);
         },
         $prototype : {
@@ -147,7 +139,6 @@
                         this._domElt.value = newValue;
                     }
                 }
-                this._inputText = aria.utils.Dom.getElementById(this._id);
             },
 
             /**
@@ -174,7 +165,7 @@
              * Function to assign the focus to input field.
              */
             focus : function () {
-                this._inputText.focus();
+                this._domElt.focus();
             },
 
             /**
