@@ -96,11 +96,18 @@
             /**
              * Wheter or not this widget has a 'on type' callback
              * @protected
-             * @param {Boolean}
+             * @type Boolean
              */
             this._reactOnType = this._registerType(cfg.on, context);
 
             this._registerBlur(cfg.on, context);
+
+            /**
+             * Element containing input field
+             * @protected
+             * @type HTMLElement
+             */
+            this._inputText = null;
 
             this.$Element.constructor.call(this, cfg, context, line);
         },
@@ -108,7 +115,7 @@
             if (this._typeCallback) {
                 aria.core.Timer.cancelCallback(this._typeCallback);
             }
-
+            this._inputText = null;
             this.$Element.$destructor.call(this);
         },
         $prototype : {
@@ -140,6 +147,7 @@
                         this._domElt.value = newValue;
                     }
                 }
+                this._inputText = aria.utils.Dom.getElementById(this._id);
             },
 
             /**
@@ -152,6 +160,21 @@
                 if (name === "value") {
                     this._domElt.value = value;
                 }
+            },
+
+            /**
+             * Function to return the id
+             * @return {String} Element id.
+             */
+            getId : function () {
+                return this._cfg.id;
+            },
+
+            /**
+             * Function to assign the focus to input field.
+             */
+            focus : function () {
+                this._inputText.focus();
             },
 
             /**
