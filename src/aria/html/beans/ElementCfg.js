@@ -25,6 +25,10 @@ Aria.beanDefinitions({
             $type : "json:Object",
             $description : "All properties that can be used in Element widget.",
             $properties : {
+                "id" : {
+                    $type : "json:String",
+                    $description : "Element id"
+                },
                 "tagName" : {
                     $type : "json:String",
                     $description : "Qualified name of the Element node",

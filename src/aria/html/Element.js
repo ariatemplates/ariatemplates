@@ -68,6 +68,10 @@
              */
             this._id = this._createDynamicId();
 
+            if (cfg.id) {
+                this._id = this._id + "_" + cfg.id;
+            }
+
             /**
              * Reference of the DOM element with id this._id.
              * @type HTMLElement

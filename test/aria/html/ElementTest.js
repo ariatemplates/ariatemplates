@@ -68,6 +68,25 @@ Aria.classDefinition({
             var widget = new aria.html.Element(cfg, {
                 tplClasspath : "Element"
             });
+
+            this.assertEquals(widget._id, "w0", "The id is not the id expected");
+            widget.$dispose();
+
+            cfg.id = 'x';
+
+            widget = new aria.html.Element(cfg, {
+                tplClasspath : "Element"
+            });
+
+            this.assertEquals(widget._id, "w0_x", "The id is not the id expected");
+            widget.$dispose();
+
+            delete cfg.id;
+
+            widget = new aria.html.Element(cfg, {
+                tplClasspath : "Element"
+            });
+
             widget._id = "x";
 
             // These two functions are called if the widget is used as a container
