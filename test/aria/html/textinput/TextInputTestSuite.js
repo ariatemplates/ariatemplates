@@ -14,15 +14,15 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.html.HTMLTestSuite",
+    $classpath : "test.aria.html.textinput.TextInputTestSuite",
     $extends : "aria.jsunit.TestSuite",
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
-        this.addTests("test.aria.html.ElementTest");
-        this.addTests("test.aria.html.ElementBindingsTest");
-        this.addTests("test.aria.html.ElementEventsTest");
-        this.addTests("test.aria.html.controllers.suggestions.ResourcesHandlerTest");
-        this.addTests("test.aria.html.textinput.TextInputTestSuite");
+        this.addTests("test.aria.html.textinput.TextInputTest");
+        this.addTests("test.aria.html.textinput.TextInputBindTest");
+        this.addTests("test.aria.html.textinput.TextInputOnTypeTest");
+        this.addTests("test.aria.html.textinput.TextInputPasswordTest");
+        this.addTests("test.aria.html.textinput.focus.FocusTestCase");
     }
 });
