@@ -44,6 +44,13 @@ Aria.classDefinition({
         this._dataModel.selectedValues = [];
 
         /**
+         * Maximum no. of options to be selected from multiselect
+         * @protected
+         * @type Integer
+         */
+        this._maxOptions = null;
+
+        /**
          * Map between values and text display. The goal is too return the same object for the same text in the input,
          * for the case where the user check and uncheck an element in the multiselect dropdown
          * @protected
@@ -68,6 +75,14 @@ Aria.classDefinition({
          */
         setSeparator : function (separator) {
             this._separator = separator;
+        },
+
+        /**
+         * Set the configured maxOptions
+         * @param {Integer} maxOptions Used to select max no. of options from Multiselect
+         */
+        setMaxOptions : function (maxOptions) {
+            this._maxOptions = maxOptions;
         },
 
         /**
@@ -156,7 +171,7 @@ Aria.classDefinition({
 
             var inSplit = textFieldValue.split(this._separator);
             if (inSplit) {
-                for (var i = 0, inSplitLen = inSplit.length; i < inSplitLen; i++) {
+                for (var i = 0, inSplitLen = aria.utils.Math.min(inSplit.length, this._maxOptions); i < inSplitLen; i++) {
                     for (var j = 0, optionsLen = options.length; j < optionsLen; j++) {
                         var key = aria.utils.String.trim(inSplit[i]);
                         options[j].label = options[j].label + "";
@@ -165,7 +180,8 @@ Aria.classDefinition({
 
                         if ((options[j].label.toLowerCase() == key.toLowerCase() || options[j].value.toLowerCase() == key.toLowerCase())) {
                             if ((options[j].label.toLowerCase() == key.toLowerCase() || options[j].value.toLowerCase() == key.toLowerCase())
-                                    && !aria.utils.Array.contains(selectedOptions, options[j].value) && !options[j].disabled) {
+                                    && !aria.utils.Array.contains(selectedOptions, options[j].value)
+                                    && !options[j].disabled) {
                                 selectedOptions.push(options[j].value);
                             }
                         }

@@ -39,6 +39,7 @@ Aria.classDefinition({
         // set control options
         controller.setListOptions(cfg.items);
         controller.setSeparator(cfg.fieldSeparator);
+        controller.setMaxOptions(cfg.maxOptions);
         controller.setFieldDisplay(cfg.fieldDisplay);
         controller.setValueDisplay(cfg.valueDisplay);
         controller.checkError();
