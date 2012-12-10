@@ -14,15 +14,26 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.html.HTMLTestSuite",
-    $extends : "aria.jsunit.TestSuite",
-    $constructor : function () {
-        this.$TestSuite.constructor.call(this);
+	$classpath : "test.aria.html.textinput.focus.FocusTestCase",
+	$extends : "aria.jsunit.TemplateTestCase",
+	$dependencies : ["aria.utils.Dom"],
+	$prototype : {
+		runTemplateTest : function () {
+			this.templateCtxt.$focus("focusable");
+			aria.core.Timer.addCallback({
+				fn : this._afterFocus,
+				scope : this,
+				delay : 100
+			});
+		},
 
-        this.addTests("test.aria.html.ElementTest");
-        this.addTests("test.aria.html.ElementBindingsTest");
-        this.addTests("test.aria.html.ElementEventsTest");
-        this.addTests("test.aria.html.controllers.suggestions.ResourcesHandlerTest");
-        this.addTests("test.aria.html.textinput.TextInputTestSuite");
-    }
-});
+		_afterFocus : function (_, element) {
+			var element = Aria.$window.document.getElementsByTagName("input")[0];
+
+			var active = Aria.$window.document.activeElement;
+			this.assertTrue(element.id == active.id, "$focus method failed.");
+
+			this.end();
+		}
+	}
+})

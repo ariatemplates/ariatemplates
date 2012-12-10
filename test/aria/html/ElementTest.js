@@ -75,10 +75,13 @@ Aria.classDefinition({
             cfg.id = 'x';
 
             widget = new aria.html.Element(cfg, {
-                tplClasspath : "Element"
+                tplClasspath : "Element",
+                $getId : function (id) {
+                    return "tpl0_" + id;
+                }
             });
 
-            this.assertEquals(widget._id, "w0_x", "The id is not the id expected");
+            this.assertEquals(widget._id, "tpl0_x", "The id is not the id expected");
             widget.$dispose();
 
             delete cfg.id;

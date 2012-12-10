@@ -13,16 +13,23 @@
  * limitations under the License.
  */
 
-Aria.classDefinition({
-    $classpath : "test.aria.html.HTMLTestSuite",
-    $extends : "aria.jsunit.TestSuite",
-    $constructor : function () {
-        this.$TestSuite.constructor.call(this);
+{Template {
+	$classpath : "test.aria.html.textinput.focus.FocusTestCaseTpl",
+	$wlibs : {
+		html : "aria.html.HtmlLibrary"
+	}
+}}
 
-        this.addTests("test.aria.html.ElementTest");
-        this.addTests("test.aria.html.ElementBindingsTest");
-        this.addTests("test.aria.html.ElementEventsTest");
-        this.addTests("test.aria.html.controllers.suggestions.ResourcesHandlerTest");
-        this.addTests("test.aria.html.textinput.TextInputTestSuite");
-    }
-});
+  {macro main()}
+
+    <div>
+
+      {@html:TextInput {
+        id: "focusable"
+      }/}
+
+    </div>
+
+  {/macro}
+
+{/Template}

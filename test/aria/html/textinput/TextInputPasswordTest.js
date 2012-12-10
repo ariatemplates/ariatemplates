@@ -14,33 +14,10 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.html.TextInputTest",
+    $classpath : "test.aria.html.textinput.TextInputPasswordTest",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.html.TextInput"],
     $prototype : {
-        /**
-         * Make sure that errors are logged and using the widget doesn't break anything
-         */
-        testValidationError : function () {
-            var cfg = {
-                something : "here"
-            };
-
-            var widget = new aria.html.TextInput(cfg, {
-                tplClasspath : "TextInput"
-            });
-
-            // the mandatory is always set, so no errors should be displayed
-
-            var out = this.createMockMarkupWriter();
-            widget.writeMarkupBegin(out);
-            this.assertErrorInLogs(aria.html.TextInput.INVALID_USAGE);
-
-            widget.writeMarkupEnd(out);
-            widget.writeMarkup(out);
-
-            widget.$dispose();
-        },
 
         createMockMarkupWriter : function () {
             var buffer = [];
@@ -56,15 +33,16 @@ Aria.classDefinition({
         },
 
         /**
-         * Verify that a correctly defined widget works fine
+         * Verify that a correctly defined widget with password set to true works fine
          */
-        testMarkup : function () {
+        testPasswordMarkup : function () {
             // tag name should be ignored
             var cfg = {
-                tagName : "div",
+                password : true,
                 attributes : {
                     name : "division",
-                    classList : ["a", "b"]
+                    classList : ["a", "b"],
+                    type : "text"
                 }
             };
 
@@ -75,10 +53,6 @@ Aria.classDefinition({
             widget.__originalDelegateId = widget.__delegateId;
             widget.__delegateId = "y";
 
-            // These two functions are called if the widget is used as a container
-            this.checkMarkupBegin(widget);
-            this.checkMarkupEnd(widget);
-
             // This one when we use it a closing tag
             this.checkMarkup(widget);
 
@@ -88,34 +62,7 @@ Aria.classDefinition({
         },
 
         /**
-         * Markup begin
-         */
-        checkMarkupBegin : function (widget) {
-            var out = this.createMockMarkupWriter();
-
-            widget.writeMarkupBegin(out);
-
-            var markup = out.getMarkup();
-
-            this.assertErrorInLogs(aria.html.TextInput.INVALID_USAGE);
-        },
-
-        /**
-         * Markup end
-         */
-        checkMarkupEnd : function (widget) {
-            var out = this.createMockMarkupWriter();
-
-            widget.writeMarkupEnd(out);
-
-            var markup = out.getMarkup();
-
-            // The logging is done by the markup begin
-            this.assertLogsEmpty();
-        },
-
-        /**
-         * Markup (self closing widget)
+         * Markup
          */
         checkMarkup : function (widget) {
             var out = this.createMockMarkupWriter();
@@ -123,7 +70,7 @@ Aria.classDefinition({
             widget.writeMarkup(out);
 
             var markup = out.getMarkup();
-            this.assertEquals("<input id='x'  name=\"division\" class=\"a b\" type=\"text\" atdelegate='y' />", markup, "Markup: <xmp>"
+            this.assertEquals("<input id='x'  name=\"division\" class=\"a b\" type=\"password\" atdelegate='y' />", markup, "Markup: <xmp>"
                     + markup + "</xmp>");
         }
     }

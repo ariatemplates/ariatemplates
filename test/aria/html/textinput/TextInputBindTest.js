@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.html.TextInputBindTest",
+    $classpath : "test.aria.html.textinput.TextInputBindTest",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.html.TextInput", "aria.utils.json"],
     $prototype : {
