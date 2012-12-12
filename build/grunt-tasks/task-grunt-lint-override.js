@@ -50,7 +50,7 @@ module.exports = function(grunt) {
     if (this.errorCount) { return false; }
 
     // Otherwise, print a success message.
-    grunt.log.writeln('Lint free.');
+    grunt.log.ok();
   });
 
   // ==========================================================================
