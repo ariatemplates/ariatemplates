@@ -11,5 +11,8 @@ module.exports = function(grunt) {
         // to be able to use the natively handled per-task JSHint config
         grunt.config.set(['lint', this.target, 'src'], toBeLinted);
         grunt.task.run('lint:' + this.target);
+
+        // Fail task if errors were logged.
+        if (this.errorCount) { return false; }
     });
 };
