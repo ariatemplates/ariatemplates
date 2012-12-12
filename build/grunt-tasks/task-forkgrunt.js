@@ -4,7 +4,8 @@ module.exports = function(grunt) {
 
     grunt.registerMultiTask('forkgrunt', 'Runs grunt from grunt', function() {
         var options = {
-            script: this.data,
+            script: this.data.script || this.data,
+            task : this.data.task,
             debug: grunt.option('debug'),
             verbose: grunt.option('verbose'),
             force: grunt.option('force')
@@ -57,6 +58,10 @@ module.exports = function(grunt) {
 
         if (options.debug) {
           args.push('--debug');
+        }
+
+        if (options.task) {
+            args.push(options.task);
         }
         return args;
     }

@@ -85,18 +85,37 @@ module.exports = function(grunt) {
          */
         forkgrunt : {
             osbootstrap : './build/build-os-bootstrap.js',
-            osprod      : './build/build-os-prod.js'
+            osprod      : './build/build-os-prod.js',
+            localpackage: {
+                script : './build/build-os-prod.js',
+                task : 'releaseAndCleanNoVersion'
+            }
+        },
+
+        /**
+         * Verifies that all the files in the input directory have lowercase extensions.
+         */
+        verifylowercase : {
+            sourceFiles : {
+                files: ['src/**']
+            }
         }
     });
 
+    grunt.loadNpmTasks('grunt-verifylowercase');
+
     // tasks for debugging
-    grunt.registerTask('osBootstrapOnly',    'forkgrunt:osbootstrap');
-    grunt.registerTask('osProdOnly',         'forkgrunt:osprod');
-    grunt.registerTask('releaseOsBootstrap', 'atlint:source forkgrunt:osbootstrap');
-    grunt.registerTask('releaseOsProd',      'atlint:source forkgrunt:osprod');
+    grunt.registerTask('releaseOsBootstrap', 'checkStyle bootstrap');
+    grunt.registerTask('releaseOsProd',      'checkStyle production');
 
     // tasks for real build
-    grunt.registerTask('release', 'atlint:source forkgrunt:osbootstrap forkgrunt:osprod');
+    grunt.registerTask('release',    'bootstrap production');
+    grunt.registerTask('checkStyle', 'atlint:source verifylowercase:sourceFiles');
+    grunt.registerTask('bootstrap',  'forkgrunt:osbootstrap');
+    grunt.registerTask('production', 'forkgrunt:osprod');
+
+    // Just package files without complaining much
+    grunt.registerTask('package',    'bootstrap forkgrunt:localpackage');
 
     // include time measurements
     grunt.registerTask('default', 'gruntTimeHookStart release gruntTimeHookEnd');

@@ -53,15 +53,6 @@ module.exports = function(grunt) {
         //                             REAL TASKS
         // ===============================================================
 
-        /**
-         * Verifies that all the files in the input directory have lowercase extensions.
-         */
-        verifylowercase : {
-            sourceFiles : {
-                src: taskDirs.src
-            }
-        },
-
         normalizeskin : {
             atskin : {
                 src: 'aria/css/atskin.js',
@@ -116,7 +107,7 @@ module.exports = function(grunt) {
         }
     });
 
-    grunt.registerTask('doBuild', 'verifylowercase:sourceFiles normalizeskin simplepackager copy:binaryFiles copy:remaining');
+    grunt.registerTask('doBuild', 'normalizeskin simplepackager copy:binaryFiles copy:remaining');
     grunt.registerTask('release', 'removedirs doBuild');
 
     grunt.registerTask('default', 'release');

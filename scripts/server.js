@@ -15,6 +15,7 @@
 
 var path = require("path");
 var express = require("express");
+var watch = require('node-watch');
 var app = express();
 
 // Render views with Jade
@@ -31,23 +32,23 @@ app.get("/test/options", function (req, res) {
 });
 // Aria Tester - minified
 app.get("/test", function (req, res) {
-	res.render('test', {
-		urls : {
-			framework : "/aria-templates/aria/ariatemplates-" + process.env.npm_package_version + ".js",
-			skin : "/aria-templates/aria/css/atskin-" + process.env.npm_package_version + ".js"
-		},
-		dev : false
-	});
+    res.render('test', {
+        urls : {
+            framework : "/aria-templates/aria/ariatemplates-" + process.env.npm_package_version + ".js",
+            skin : "/aria-templates/aria/css/atskin-" + process.env.npm_package_version + ".js"
+        },
+        dev : false
+    });
 });
 // Aria Tester - non minified
 app.get("/test/dev", function (req, res) {
-	res.render('test', {
-		urls : {
-			framework : "/aria-templates/dev/aria/ariatemplates-bootstrap.js",
-			skin : "/aria-templates/dev/aria/css/atskin.js"
-		},
-		dev : true
-	});
+    res.render('test', {
+        urls : {
+            framework : "/aria-templates/dev/aria/ariatemplates-bootstrap.js",
+            skin : "/aria-templates/dev/aria/css/atskin.js"
+        },
+        dev : true
+    });
 });
 // Rename bootstrap prefixing with ariatemplates- this fixes runIsolated in dev mode
 app.get("/aria-templates/dev/aria/ariatemplates-bootstrap.js", function (req, res) {
@@ -58,7 +59,7 @@ app.use("/css", express.static(__dirname + "/assets/css"));
 // Non minified version points to src folder
 app.use("/aria-templates/dev", express.static(__dirname + "/../src"));
 // Minified version points to standard build (npm install)
-app.use("/aria-templates", express.static(__dirname + "/../build/releases/standard/target"));
+app.use("/aria-templates", express.static(__dirname + "/../build/target/os-production"));
 // Test classpath redirects to test folder
 app.all(/^\/aria-templates\/test\/(.*)$/, function (req, res, next) {
     var file = path.normalize(__dirname + "/../test/" + req.params[0]);
@@ -67,5 +68,26 @@ app.all(/^\/aria-templates\/test\/(.*)$/, function (req, res, next) {
 
 // Default to 8080 if we're not using npm
 var port = process.env.npm_package_config_port || 8080;
-console.log("Server started on http://localhost:" + port);
-app.listen(port);
+var server = app.listen(port);
+
+server.on("listening", serverStarted);
+server.on("error", function () {
+    // Retry on a random port
+    console.error("Configured port is not available, using a random address");
+    server = app.listen(0);
+    server.on("listening", serverStarted);
+});
+
+function serverStarted () {
+    console.log("Server started on http://localhost:" + server.address().port);
+
+    watch(path.normalize(__dirname + "/../src/"), function (filename) {
+        console.log(filename, 'changed, starting a new package');
+
+        var spawn = require('child_process').spawn;
+        var grunt = spawn('node', ['node_modules/grunt/bin/grunt', 'package']);
+        grunt.on('exit', function (code) {
+            console.log('Framework re-packaged task ended with code ' + code);
+        });
+    });
+}

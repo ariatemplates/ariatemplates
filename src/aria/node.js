@@ -47,5 +47,5 @@ try {
     });
 } catch (ex) {
     console.error('\n[Error] Aria Templates framework not loaded.', ex);
-    process.exit(0);
+    process.exit(1);
 }
