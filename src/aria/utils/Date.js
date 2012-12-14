@@ -245,8 +245,8 @@ Aria.classDefinition({
          */
         this._dayOrIATAMonth_format = "(d{1,2}|I|[a-z|A-Z]{3})";
         /**
-         * Checks if the pattern is yyyy*MM*dd, * can be any character except alphanumeric the order of year, month and day
-         * can be reversed
+         * Checks if the pattern is yyyy*MM*dd, * can be any character except alphanumeric the order of year, month and
+         * day can be reversed
          * @private
          * @type {RegExp}
          */
@@ -821,7 +821,9 @@ Aria.classDefinition({
 
             var dateBeforeMonth, entry, entrylen, dateOptions;
             /* Code for Reference Date backward compatibility */
-            dateOptions = aria.utils.Type.isDate(options) ? {referenceDate : options} : options || {};
+            dateOptions = aria.utils.Type.isDate(options) ? {
+                referenceDate : options
+            } : options || {};
             /* Code for Reference Date backward compatibility ends */
 
             if (!entryStr) {
@@ -1757,6 +1759,20 @@ Aria.classDefinition({
             var january1 = new Date(refDate.getFullYear(), 0, 1);
 
             return Math.floor(Math.round((refTime - january1) / this.MS_IN_A_DAY) / 7) + 1;
+        },
+
+        /**
+         * Compare two dates
+         * @param {Date} firstDate
+         * @param {Date} secondDate
+         * @param {Boolean} time whether time should be taken into account for the comparison. It defaults to false
+         * @return {Number} -1 if firstDate < secondDate, 0 if firstDate == secondDate, 1 if firstDate > secondDate
+         */
+        compare : function (firstDate, secondDate, time) {
+            var firstTime = time ? firstDate.getTime() : this.removeTime(firstDate).getTime();
+            var secondTime = time ? secondDate.getTime() : this.removeTime(secondDate).getTime();
+            var difference = firstTime - secondTime;
+            return (difference === 0) ? 0 : difference / Math.abs(difference);
         }
     }
 });

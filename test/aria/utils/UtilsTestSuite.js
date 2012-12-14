@@ -32,6 +32,7 @@ Aria.classDefinition({
         this.addTests("test.aria.utils.Date");
         this.addTests("test.aria.utils.DateInterpret");
         this.addTests("test.aria.utils.DatePatternInterpret");
+        this.addTests("test.aria.utils.DateCompare");
         this.addTests("test.aria.utils.Delegate");
         this.addTests("test.aria.utils.Dom");
         this.addTests("test.aria.utils.Ellipsis");
