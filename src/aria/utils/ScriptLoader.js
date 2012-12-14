@@ -14,7 +14,9 @@
  */
 
 /**
- * Utility to load external scripts
+ * Utility to load external scripts. Please do NOT use it for loading Aria Templates classes (the ones that use
+ * <code>Aria.classDefinition()</code>) and templates. Use <code>Aria.load()</code> instead, which is capable of
+ * caching, resolving dependencies and reading multipart files containing templates.
  */
 Aria.classDefinition({
     $classpath : "aria.utils.ScriptLoader",
@@ -23,11 +25,11 @@ Aria.classDefinition({
     $constructor : function () {
         this._queueIndex = 0;
         this._queueCount = {};
-        this._loadedSripts = [];
+        this._loadedScripts = [];
     },
     $destructor : function () {
         this._queueCount = null;
-        this.loadedScripts = null;
+        this._loadedScripts = null;
     },
     $prototype : {
 
@@ -37,7 +39,7 @@ Aria.classDefinition({
          * @param {Function} callback - A function to call once the whole set of scripts are loaded
          */
         load : function (scripts, callback) {
-            var i, ii, url, scriptNode, scriptCount, loadedScripts = this._loadedSripts,
+            var i, ii, url, scriptNode, scriptCount, loadedScripts = this._loadedScripts,
 
             queueIndex = this._queueIndex, document = Aria.$frameworkWindow.document,
 
@@ -63,7 +65,7 @@ Aria.classDefinition({
                     scriptCount++;
                     loadedScripts[url] = true;
                     scriptNode = document.createElement('script');
-                    scriptNode.setAttribute("language", "javascript");
+                    scriptNode.setAttribute("type", "text/javascript");
                     if (callback) {
                         this._addScriptLoadedCallback(scriptNode, onReadyStateChangeCallback, [queueIndex, scriptNode]);
                     }
