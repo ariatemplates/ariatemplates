@@ -263,13 +263,9 @@
                 var domStyle = domElt.style;
                 if (width) {
                     domStyle.width = width + 'px';
-                } else if (domStyle.width == '100%') {
-                    domStyle.width = '';
                 }
                 if (height) {
                     domStyle.height = height + 'px';
-                } else if (domStyle.height == '100%') {
-                    domStyle.height = '';
                 }
                 // We are not separating overflowX and overflowY here because, in Firefox, a vertical
                 // scrollbar sometimes appears when using overflowX=hidden without specifying overflowY

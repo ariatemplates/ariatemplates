@@ -75,7 +75,9 @@
 
         // Load the CSS dependecies, the style should be added before the html
         tplDiv.className = tplCtxt.getCSSClassNames(); // remove the loading indicator
-
+        //Once the loading indicator is removed resetting width and height to blank("")
+        tplDiv.style.width = "";
+        tplDiv.style.height = "";
         if (result) {
             args.tplCtxt = tplCtxt;
             tplCtxt.$onOnce({
