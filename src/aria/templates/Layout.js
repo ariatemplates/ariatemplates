@@ -150,7 +150,8 @@
     };
 
     /**
-     * This class listens to changes in viewport size and raises an event for templates to refresh.
+     * This class listens to changes in viewport size and raises an event for templates to
+     * refresh.
      * @singleton
      */
     Aria.classDefinition({
@@ -260,13 +261,8 @@
                 }
                 width = __getIntSize(width, "width");
                 height = __getIntSize(height, "height");
-                var domStyle = domElt.style;
-                if (width) {
-                    domStyle.width = width + 'px';
-                }
-                if (height) {
-                    domStyle.height = height + 'px';
-                }
+                domElt.style.width = (width == null ? '' : width + 'px');
+                domElt.style.height = (height == null ? '' : height + 'px');
                 // We are not separating overflowX and overflowY here because, in Firefox, a vertical
                 // scrollbar sometimes appears when using overflowX=hidden without specifying overflowY
 
