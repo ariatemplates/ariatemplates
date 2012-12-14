@@ -53,6 +53,11 @@ Aria.beanDefinitions({
                     $type : "json:Boolean",
                     $description : "Whether the input field should be of type password.",
                     $default : false
+                },
+                "autoselect" : {
+                    $type : "json:Boolean",
+                    $description : "Autoselect for the input field. If true, the whole text inside the field is automatically selected when the user clicks on it.",
+                    $default : false
                 }
             }
         }
