@@ -25,7 +25,11 @@
             background:none repeat scroll 0 0 transparent;
             border:0 none;
             cursor:pointer;
-            margin: -1px -3px -1px -3px;
+            {if aria.core.Browser.isFirefox}
+              margin: 0 -3px 0 -3px;
+            {else/}
+              margin: 0 0;
+            {/if}
             padding:0;
             vertical-align:top;
             tabindex:10;
