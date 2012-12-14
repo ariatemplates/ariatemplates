@@ -20,7 +20,7 @@ Aria.classDefinition({
     $classpath : "aria.widgets.form.TextInput",
     $extends : "aria.widgets.form.InputWithFrame",
     $dependencies : ["aria.utils.Function", "aria.utils.Data", "aria.utils.String",
-            "aria.widgets.environment.WidgetSettings"],
+            "aria.widgets.environment.WidgetSettings", "aria.utils.Caret"],
     $css : ["aria.widgets.form.TextInputStyle"],
     /**
      * TextInput constructor
@@ -507,29 +507,7 @@ Aria.classDefinition({
                 return null;
             }
             var ctrl = this.getTextInputField();
-            var pos = {
-                start : 0,
-                end : 0
-            };
-
-            if ("selectionStart" in ctrl) {
-                // w3c standard, available in all but IE<9
-                pos.start = ctrl.selectionStart;
-                pos.end = ctrl.selectionEnd;
-            } else {
-                // old IE support
-                var document = Aria.$window.document;
-                if (document.selection) {
-                    var sel = document.selection.createRange();
-                    var initialLength = sel.text.length;
-                    sel.moveStart('character', -ctrl.value.length);
-                    var x = sel.text.length;
-                    pos.start = x - initialLength;
-                    pos.end = x;
-                }
-            }
-
-            return pos;
+            return aria.utils.Caret.getCaretPosition(ctrl);
         },
 
         /**
@@ -543,19 +521,7 @@ Aria.classDefinition({
             }
 
             var ctrl = this.getTextInputField();
-
-            if ("selectionStart" in ctrl) {
-                ctrl.selectionStart = start;
-                ctrl.selectionEnd = end;
-            } else {
-                var document = Aria.$window.document;
-                if (document.selection) {
-                    var range = ctrl.createTextRange();
-                    range.moveStart('character', start);
-                    range.moveEnd('character', -ctrl.value.length + end);
-                    range.select();
-                }
-            }
+            aria.utils.Caret.setCaretPosition(ctrl, start, end);
         },
 
         /**

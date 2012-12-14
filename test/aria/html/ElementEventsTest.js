@@ -67,7 +67,7 @@ Aria.classDefinition({
 
                 oneEvent = events[1];
                 this.assertEquals(oneEvent.type, "keydown", "Second event should be a keydown, got " + oneEvent.type);
-                this.assertEquals(oneEvent.context, "Element", "Second event should have context Element, got "
+                this.assertEquals(oneEvent.context, "TplContext", "Second event should have context Element, got "
                         + oneEvent.context);
                 this.assertEquals(oneEvent.tagName, "DIV", "Second event should happen on a DIV, got "
                         + oneEvent.tagName);
@@ -79,7 +79,7 @@ Aria.classDefinition({
 
                 oneEvent = events[2];
                 this.assertEquals(oneEvent.type, "mousedown", "Third event should be a mousedown, got " + oneEvent.type);
-                this.assertEquals(oneEvent.context, "Element", "Third event should have context Element, got "
+                this.assertEquals(oneEvent.context, "TplContext", "Third event should have context Element, got "
                         + oneEvent.context);
                 this.assertEquals(oneEvent.tagName, "SPAN", "Third event should happen on a SPAN, got "
                         + oneEvent.tagName);
@@ -145,7 +145,7 @@ Aria.classDefinition({
                     keydown : function (evt) {
                         events.push({
                             type : evt.type,
-                            context : this.tplClasspath,
+                            context : this.context,
                             tagName : evt.target.tagName,
                             key : "tokyo-keydown",
                             param : "missing",
@@ -157,7 +157,10 @@ Aria.classDefinition({
             };
 
             return new aria.html.Element(first, {
-                tplClasspath : "Element"
+                tplClasspath : "Element",
+                _tpl : {
+                    context : "TplContext"
+                }
             });
         },
 
@@ -198,16 +201,19 @@ Aria.classDefinition({
 
             return new aria.html.Element(second, {
                 tplClasspath : "Element",
-                functionOnTemplateContext : function (evt) {
-                    events.push({
-                        type : evt.type,
-                        context : this.tplClasspath,
-                        tagName : evt.target.tagName,
-                        key : "osaka-mousedown",
-                        param : "missing",
-                        isTargetWrapped : !!evt.target.$DomElementWrapper,
-                        name : evt.target.getAttribute("name")
-                    });
+                _tpl : {
+                    functionOnTemplateContext : function (evt) {
+                        events.push({
+                            type : evt.type,
+                            context : this.context,
+                            tagName : evt.target.tagName,
+                            key : "osaka-mousedown",
+                            param : "missing",
+                            isTargetWrapped : !!evt.target.$DomElementWrapper,
+                            name : evt.target.getAttribute("name")
+                        });
+                    },
+                    context : "TplContext"
                 }
             });
         },

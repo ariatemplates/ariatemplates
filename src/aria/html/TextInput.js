@@ -70,8 +70,26 @@
         var newValue = this._transform(bind.transform, event.target.getValue(), "fromWidget");
         aria.utils.Json.setValue(bind.inside, bind.to, newValue, bind.cb);
 
+        this._firstFocus = true;
+
         if (blurCallback) {
             blurCallback.fn.call(blurCallback.scope, event, blurCallback.args);
+        }
+    }
+
+    /**
+     * This is to implement the autoselect.
+     * @param {aria.DomEvent} event focus event
+     * @param {aria.core.CfgBeans.Callback} clickCallback On click callback
+     * @private
+     */
+    function clickBinding (event, clickCallback) {
+        if (this._cfg.autoselect) {
+            this._autoselect();
+        }
+
+        if (clickCallback) {
+            clickCallback.fn.call(clickCallback.scope, event, clickCallback.args);
         }
     }
 
@@ -81,7 +99,7 @@
     Aria.classDefinition({
         $classpath : "aria.html.TextInput",
         $extends : "aria.html.Element",
-        $dependencies : ["aria.html.beans.TextInputCfg"],
+        $dependencies : ["aria.html.beans.TextInputCfg", "aria.utils.Caret"],
         $statics : {
             INVALID_USAGE : "Widget %1 can only be used as a %2."
         },
@@ -100,7 +118,15 @@
              */
             this._reactOnType = this._registerType(cfg.on, context);
 
-            this._registerBlur(cfg.on, context);
+            this._registerListeners(cfg, context);
+
+            /**
+             * Flag set to false after first focus, and set back to true after a blur. Used for the autoselect
+             * behaviour. This value is true when the field receives focus for the first time (user action) and false
+             * when the focus is given programmatically by the controller
+             * @type Boolean
+             */
+            this._firstFocus = true;
 
             this.$Element.constructor.call(this, cfg, context, line);
         },
@@ -200,13 +226,31 @@
             },
 
             /**
-             * Convert the special event type into a keydown event listener.
-             * @param {Object} listeners On listeners taken from the widget configuration.
-             * @param {aria.templates.TemplateCtxt} context Reference of the template context.
-             * @return {Boolean} Whether the keydown events should be converted back to type events.
+             * If enabled, autoselect the widget text setting the caret position to the whole input value.
              * @protected
              */
-            _registerBlur : function (listeners, context) {
+            _autoselect : function () {
+                if (this._firstFocus) {
+                    // this allow to click again and put the cursor at a given
+                    // position
+                    this._firstFocus = false;
+                    var field = this._domElt;
+                    var start = 0;
+                    var end = (field.value.length) ? field.value.length : 0;
+                    if (end) {
+                        aria.utils.Caret.setCaretPosition(field, start, end);
+                    }
+                }
+            },
+
+            /**
+             * Add special listeners on top of the ones specified in configuration.
+             * @param {aria.html.beans.TextInputCfg.Properties} cfg Widget configuration.
+             * @param {aria.templates.TemplateCtxt} context Reference of the template context.
+             * @protected
+             */
+            _registerListeners : function (cfg, context) {
+                var listeners = cfg.on;
                 var normalized;
 
                 if (listeners.blur) {
@@ -218,6 +262,18 @@
                     scope : this,
                     args : normalized
                 };
+
+                if (cfg.autoselect) {
+                    if (listeners.click) {
+                        normalized = this.$normCallback.call(context._tpl, listeners.click);
+                    }
+
+                    listeners.click = {
+                        fn : clickBinding,
+                        scope : this,
+                        args : normalized
+                    };
+                }
             }
 
         }
