@@ -82,8 +82,8 @@ Aria.classDefinition({
         };
 
         /**
-         * Get a data value. An expando called "myExpando" can be declared in the HTML code this way: <div
-         * data-myExpando = "myExpandoValue" >
+         * Get a data value. An expando called "myExpando" can be declared in the HTML code this way: &lt;div
+         * data-myExpando = "myExpandoValue"&gt;
          * @param {String} expandoName name of the expando.
          * @param {Boolean} checkAncestors if the expando is not found on the element, look on its ancestors
          */
