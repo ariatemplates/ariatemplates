@@ -86,7 +86,7 @@
             INVALID_USAGE : "Widget %1 can only be used as a %2."
         },
         $constructor : function (cfg, context, line) {
-            this.$cfgBean = "aria.html.beans.TextInputCfg.Properties";
+            this.$cfgBean = this.$cfgBean || "aria.html.beans.TextInputCfg.Properties";
 
             cfg.tagName = "input";
             cfg.attributes = cfg.attributes || {};
