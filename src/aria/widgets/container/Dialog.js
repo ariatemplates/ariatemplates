@@ -207,7 +207,7 @@ Aria.classDefinition({
                 // for resize handle markup
                 if (cfg.resizable && this._handlesArr) {
                     var handles = this._handlesArr;
-                    for (var i in handles) {
+                    for (var i = 0, ii = handles.length; i < ii; i++) {
                         out.write(['<span class="xDialog_resizable xDialog_' + handles[i] + '">', '</span>'].join(''));
                     }
                 }
@@ -595,7 +595,7 @@ Aria.classDefinition({
 
             if (this._handlesArr) {
                 var handleArr = this._handlesArr, index = 0, parent = this._domElt, getDomElementChild = aria.utils.Dom.getDomElementChild;
-                for (var i in handleArr) {
+                for (var i = 0, ii = handleArr.length; i < ii; i++) {
                     var handleElement = getDomElementChild(parent, ++index, false), axis = null, cursor;
                     cursor = handleArr[i];
                     if (cursor == "n-resize" || cursor == "s-resize") {
@@ -726,7 +726,7 @@ Aria.classDefinition({
          */
         _destroyResizable : function () {
             var handleArr = this._handlesArr
-            for (var i in handleArr) {
+            for (var i = 0, ii = handleArr.length; i < ii; i++) {
                 var cursor = handleArr[i];
                 this._resizable[cursor].$dispose();
                 this._resizable[cursor] = null;
