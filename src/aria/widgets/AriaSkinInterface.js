@@ -14,15 +14,13 @@
  */
 
 /**
- * @class aria.widgets.AriaSkinInterface A class that provides an interface to the AriaSkin object that comes from the
- * skinning system.
- * @extends aria.core.JsObject
- * @singleton
+ * A class that provides an interface to the AriaSkin object that comes from the skinning system.
  */
 Aria.classDefinition({
     $classpath : 'aria.widgets.AriaSkinInterface',
     $singleton : true,
-    $dependencies : ['aria.core.JsonValidator', 'aria.widgets.AriaSkinBeans', 'aria.widgets.AriaSkinNormalization'],
+    $dependencies : ['aria.core.JsonValidator', 'aria.widgets.AriaSkinBeans', 'aria.widgets.AriaSkinNormalization',
+            'aria.core.DownloadMgr'],
     $statics : {
         // ERROR MESSAGES:
         WIDGET_SKIN_CLASS_OBJECT_NOT_FOUND : "There is no skin configuration for skin class %1 of widget %2. Skin class std will be used instead. The widget will probably not be displayed correctly."
@@ -236,15 +234,7 @@ Aria.classDefinition({
          * @return {String} full URL (taking into account Aria.rootFolderPath and the general.imagesRoot skin property)
          */
         getSkinImageFullUrl : function (imageUrl) {
-            var baseUrl = Aria.rootFolderPath;
-            if (!baseUrl) {
-                // Relative path, make it looks like an absolute
-                baseUrl = "./";
-            } else if (baseUrl.charAt(baseUrl.length - 1) !== "/") {
-                // Ensure an ending slash
-                baseUrl += "/";
-            }
-            return baseUrl + this.getGeneral().imagesRoot + imageUrl;
+            return aria.core.DownloadMgr.resolveURL(this.getGeneral().imagesRoot + imageUrl, true);
         },
 
         /**
