@@ -31,6 +31,8 @@
 	/* These default values can be overridden in the skin */
     background-color: #fff;
     {call opacity(80)/}
+    width: 100%;
+    height: 100%;
 }
 
 .xOverlay {

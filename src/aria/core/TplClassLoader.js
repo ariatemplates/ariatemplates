@@ -75,9 +75,6 @@
 
         // Load the CSS dependecies, the style should be added before the html
         tplDiv.className = tplCtxt.getCSSClassNames(); // remove the loading indicator
-        //Once the loading indicator is removed resetting width and height to blank("")
-        tplDiv.style.width = "";
-        tplDiv.style.height = "";
         if (result) {
             args.tplCtxt = tplCtxt;
             tplCtxt.$onOnce({
@@ -198,8 +195,6 @@
         // Creates the div for the template content and show the loading indicator
         var tplDiv = Aria.$window.document.createElement('div');
         tplDiv.className = "xLDI";
-        tplDiv.style.width = "100%";
-        tplDiv.style.height = "100%";
         div.appendChild(tplDiv);
         cfg.tplDiv = tplDiv;
         Aria.load({
