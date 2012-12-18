@@ -26,7 +26,7 @@ Aria.classDefinition({
          * @param {HTMLElement} element The html element
          * @return {Object} The caret position (start and end)
          */
-        getCaretPosition : function (element) {
+        getPosition : function (element) {
             var pos = {
                 start : 0,
                 end : 0
@@ -58,7 +58,7 @@ Aria.classDefinition({
          * @param {Number} start The starting caret position
          * @param {Number} end The ending caret position
          */
-        setCaretPosition : function (element, start, end) {
+        setPosition : function (element, start, end) {
             if ("selectionStart" in element) {
                 element.selectionStart = start;
                 element.selectionEnd = end;
@@ -70,6 +70,18 @@ Aria.classDefinition({
                     range.moveEnd('character', -element.value.length + end);
                     range.select();
                 }
+            }
+        },
+
+        /**
+         * Select the element text setting the caret position to the whole input value.
+         * @type {HTMLElement} element The html elment
+         */
+        select : function (element) {
+            var start = 0;
+            var end = (element.value.length) ? element.value.length : 0;
+            if (end) {
+                this.setPosition(element, start, end);
             }
         }
     }

@@ -23,6 +23,7 @@ Aria.classDefinition({
     },
     $destructor : function () {
         this.element = null;
+        this.$TemplateTestCase.$destructor.call(this);
     },
     $prototype : {
         runTemplateTest : function () {
@@ -38,7 +39,7 @@ Aria.classDefinition({
         },
 
         afterFirstClick : function () {
-            var caretPos = aria.utils.Caret.getCaretPosition(this.element);
+            var caretPos = aria.utils.Caret.getPosition(this.element);
 
             this.assertEquals(caretPos.start, 0, "The start pos of caret is not zero");
             this.assertEquals(caretPos.end, 0, "The end pos of caret is not zero");
@@ -50,7 +51,7 @@ Aria.classDefinition({
         },
 
         afterType : function () {
-            var caretPos = aria.utils.Caret.getCaretPosition(this.element);
+            var caretPos = aria.utils.Caret.getPosition(this.element);
 
             this.assertEquals(caretPos.start, this.element.value.length, "The start pos of caret is not at the end of the word typed");
             this.assertEquals(caretPos.end, this.element.value.length, "The end pos of caret is not at the end of the word typed");
@@ -75,7 +76,7 @@ Aria.classDefinition({
         afterThirdClick : function () {
             this.assertEquals(this.templateCtxt._tpl.data.click, 2, "Click callback set in the widget configuration has not been called");
 
-            var caretPos = aria.utils.Caret.getCaretPosition(this.element);
+            var caretPos = aria.utils.Caret.getPosition(this.element);
             this.assertEquals(caretPos.start, 0, "The start pos of caret is not zero");
             this.assertEquals(caretPos.end, this.element.value.length, "The end pos of caret is not at the end of the word typed");
             this.assertEquals(this.element.value, "brazil", "The value of input text is not brazil");
@@ -87,7 +88,7 @@ Aria.classDefinition({
         },
 
         afterFirstClickTwo : function () {
-            var caretPos = aria.utils.Caret.getCaretPosition(this.secondElement);
+            var caretPos = aria.utils.Caret.getPosition(this.secondElement);
 
             this.assertEquals(caretPos.start, 0, "The start pos of caret is not zero");
             this.assertEquals(caretPos.end, 0, "The end pos of caret is not zero");
@@ -99,7 +100,7 @@ Aria.classDefinition({
         },
 
         afterTypeTwo : function () {
-            var caretPos = aria.utils.Caret.getCaretPosition(this.secondElement);
+            var caretPos = aria.utils.Caret.getPosition(this.secondElement);
 
             this.assertEquals(caretPos.start, this.secondElement.value.length, "The start pos of caret is not at the end of the word typed");
             this.assertEquals(caretPos.end, this.secondElement.value.length, "The end pos of caret is not at the end of the word typed");
@@ -125,7 +126,7 @@ Aria.classDefinition({
             // check that click callback declared in the widget configuration is called
             this.assertEquals(this.templateCtxt._tpl.data.clickNoAutoselect, 2, "Click callback set in the widget configuration has not been called");
 
-            var caretPos = aria.utils.Caret.getCaretPosition(this.secondElement);
+            var caretPos = aria.utils.Caret.getPosition(this.secondElement);
             this.assertEquals(caretPos.start - caretPos.end, 0, "Autoselect false has not been taken into account");
             this.assertEquals(this.secondElement.value, "argentina", "The value of input text is not argentina");
 

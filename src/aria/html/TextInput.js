@@ -31,8 +31,18 @@
      */
     function typeCallback (callback) {
         this._typeCallback = null;
-
         callNormalizedCallback(callback, this._domElt.value);
+    }
+
+    /**
+     * Callback for handling placeholder after type.
+     * @private
+     */
+    function setPlaceholderOnType () {
+        // This is to display the placeholder when the text input value is empty
+        if (!_placeholderSupported && this._cfg.placeholder) {
+            this._setPlaceholder();
+        }
     }
 
     /**
@@ -58,40 +68,103 @@
     }
 
     /**
-     * Being a BindableWidget we already have one direction binding of value (from the datamodel to teh widget). This
+     * Internal callback for placeholder handling on keydown.
+     * @param {aria.DomEvent} event keydown event
+     * @private
+     */
+    function keyDownCallback (event) {
+        // This is to remove the placeholder when the text input receives the first input char
+        if (!_placeholderSupported && this._cfg.placeholder) {
+            if (this._hasPlaceholder) {
+                var domevent = aria.DomEvent;
+                var specialKeys = [domevent.KC_END, domevent.KC_RIGHT, domevent.KC_ARROW_RIGHT, domevent.KC_DOWN,
+                        domevent.KC_ARROW_DOWN, domevent.KC_DELETE, domevent.KC_BACKSPACE];
+                if (!aria.utils.Array.contains(specialKeys, event.keyCode)) {
+                    var cssClass = new aria.utils.ClassList(this._domElt);
+                    this._domElt.value = "";
+                    this._hasPlaceholder = false;
+                    cssClass.remove('placeholder');
+                    cssClass.$dispose();
+                } else {
+                    event.preventDefault();
+                }
+            }
+        }
+    }
+
+    /**
+     * Being a BindableWidget we already have one direction binding of value (from the datamodel to the widget). This
      * function is the callback for implementing the other bind, from the widget to the datamodel. The value is set in
      * the datamodel on blur. It also takes care of calling the 'on blur' callback if it was defined.
      * @param {aria.DomEvent} event blur event
-     * @param {aria.core.CfgBeans.Callback} blurCallback On blur callback
      * @private
      */
-    function bidirectionalBlurBinding (event, blurCallback) {
+    function bidirectionalBlurBinding (event) {
         var bind = this._bindingListeners.value;
         var newValue = this._transform(bind.transform, event.target.getValue(), "fromWidget");
-        aria.utils.Json.setValue(bind.inside, bind.to, newValue, bind.cb);
+
+        this._hasFocus = false;
+
+        if (this._cfg.placeholder) {
+            if (!this._hasPlaceholder) {
+                aria.utils.Json.setValue(bind.inside, bind.to, newValue, bind.cb);
+            } else {
+                aria.utils.Json.setValue(bind.inside, bind.to, "", bind.cb);
+            }
+        }
+
+        if (!_placeholderSupported && this._cfg.placeholder) {
+            this._setPlaceholder();
+        }
 
         this._firstFocus = true;
 
-        if (blurCallback) {
-            blurCallback.fn.call(blurCallback.scope, event, blurCallback.args);
+    }
+
+    /**
+     * This is to put the caret at position (0, 0) in browsers that do not support the placeholder attribute.
+     * @param {aria.DomEvent} event focus event
+     * @private
+     */
+    function focusBinding (event) {
+        this._hasFocus = true;
+
+        if (this._cfg.placeholder) {
+            var cssClass = new aria.utils.ClassList(this._domElt);
+            if (cssClass.contains('placeholder')) {
+                aria.utils.Caret.setPosition(this._domElt, 0, 0);
+            }
+            cssClass.$dispose();
         }
     }
 
     /**
      * This is to implement the autoselect.
      * @param {aria.DomEvent} event focus event
-     * @param {aria.core.CfgBeans.Callback} clickCallback On click callback
      * @private
      */
-    function clickBinding (event, clickCallback) {
+    function clickBinding (event) {
         if (this._cfg.autoselect) {
-            this._autoselect();
-        }
-
-        if (clickCallback) {
-            clickCallback.fn.call(clickCallback.scope, event, clickCallback.args);
+            if (!_placeholderSupported && this._cfg.placeholder) {
+                var cssClass = new aria.utils.ClassList(this._domElt);
+                if (cssClass.contains('placeholder')) {
+                    aria.utils.Caret.setPosition(this._domElt, 0, 0);
+                } else {
+                    aria.utils.Caret.select(this._domElt);
+                }
+                cssClass.$dispose();
+            } else {
+                aria.utils.Caret.select(this._domElt);
+            }
         }
     }
+
+    /**
+     * This is to check if the browser supports placeholder attribute.
+     * @private
+     * @type Boolean
+     */
+    var _placeholderSupported = null;
 
     /**
      * TextInput widget. Bindable widget providing bi-directional bind of 'value' and on 'type' event callback.
@@ -111,6 +184,14 @@
             cfg.attributes.type = (cfg.password) ? "password" : "text";
             cfg.on = cfg.on || {};
 
+
+            _placeholderSupported = ("placeholder" in Aria.$window.document.createElement("input"));
+            if (cfg.placeholder && _placeholderSupported) {
+                cfg.attributes.placeholder = cfg.placeholder;
+            }
+
+            this._registerListeners(cfg, context);
+
             /**
              * Wheter or not this widget has a 'on type' callback
              * @protected
@@ -118,15 +199,28 @@
              */
             this._reactOnType = this._registerType(cfg.on, context);
 
-            this._registerListeners(cfg, context);
-
             /**
              * Flag set to false after first focus, and set back to true after a blur. Used for the autoselect
              * behaviour. This value is true when the field receives focus for the first time (user action) and false
              * when the focus is given programmatically by the controller
+             * @protected
              * @type Boolean
              */
             this._firstFocus = true;
+
+            /**
+             * Flag used to indicate if the element has focus
+             * @protected
+             * @type Boolean
+             */
+            this._hasFocus = false;
+
+            /**
+             * Flag used to indicate if the element has the placeholder
+             * @protected
+             * @type Boolean
+             */
+            this._hasPlaceholder = false;
 
             this.$Element.constructor.call(this, cfg, context, line);
         },
@@ -164,6 +258,11 @@
                     if (newValue != null) {
                         this._domElt.value = newValue;
                     }
+                }
+
+                var placeholder = this._cfg.placeholder;
+                if (!_placeholderSupported && placeholder) {
+                    this._setPlaceholder();
                 }
             },
 
@@ -231,48 +330,63 @@
              */
             _autoselect : function () {
                 if (this._firstFocus) {
-                    // this allow to click again and put the cursor at a given
-                    // position
                     this._firstFocus = false;
-                    var field = this._domElt;
-                    var start = 0;
-                    var end = (field.value.length) ? field.value.length : 0;
-                    if (end) {
-                        aria.utils.Caret.setCaretPosition(field, start, end);
+                    aria.utils.Caret.select(this._domElt);
+                }
+            },
+
+            /**
+             * Set the css class and value for placeholder. Used only in IE 6/7/8/9 and FF 3.6.
+             * @protected
+             */
+            _setPlaceholder : function () {
+                var element = this._domElt;
+                if (element.value === "") {
+                    element.value = this._cfg.placeholder;
+                    var cssClass = new aria.utils.ClassList(element);
+                    cssClass.add('placeholder');
+                    cssClass.$dispose();
+                    if (this._hasFocus) {
+                        aria.utils.Caret.setPosition(element, 0, 0);
                     }
+                    this._hasPlaceholder = true;
                 }
             },
 
             /**
              * Add special listeners on top of the ones specified in configuration.
              * @param {aria.html.beans.TextInputCfg.Properties} cfg Widget configuration.
-             * @param {aria.templates.TemplateCtxt} context Reference of the template context.
+             * @param {aria.templates.TemplateCtxt} context Template context.
              * @protected
              */
             _registerListeners : function (cfg, context) {
                 var listeners = cfg.on;
-                var normalized;
 
-                if (listeners.blur) {
-                    normalized = this.$normCallback.call(context._tpl, listeners.blur);
-                }
-
-                listeners.blur = {
+                this._chainListener(listeners, context, "blur", {
                     fn : bidirectionalBlurBinding,
-                    scope : this,
-                    args : normalized
-                };
+                    scope : this
+                });
 
-                if (cfg.autoselect) {
-                    if (listeners.click) {
-                        normalized = this.$normCallback.call(context._tpl, listeners.click);
-                    }
+                if ((!_placeholderSupported && cfg.placeholder) || cfg.autoselect) {
+                    this._chainListener(listeners, context, "focus", {
+                        fn : focusBinding,
+                        scope : this
+                    });
 
-                    listeners.click = {
+                    this._chainListener(listeners, context, "click", {
                         fn : clickBinding,
-                        scope : this,
-                        args : normalized
-                    };
+                        scope : this
+                    });
+
+                    this._chainListener(listeners, context, "keydown", {
+                        fn : keyDownCallback,
+                        scope : this
+                    });
+
+                    this._chainListener(listeners, context, "type", {
+                        fn : setPlaceholderOnType,
+                        scope : this
+                    });
                 }
             }
 
