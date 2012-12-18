@@ -69,7 +69,7 @@ Aria.classDefinition({
                 tplClasspath : "Element"
             });
 
-            this.assertEquals(widget._id, "w0", "The id is not the id expected");
+            this.assertTrue(widget._id.match(/w\d+/) !== null, "The id is not the id expected");
             widget.$dispose();
 
             cfg.id = 'x';
