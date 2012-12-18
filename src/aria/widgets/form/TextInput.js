@@ -507,7 +507,7 @@ Aria.classDefinition({
                 return null;
             }
             var ctrl = this.getTextInputField();
-            return aria.utils.Caret.getCaretPosition(ctrl);
+            return aria.utils.Caret.getPosition(ctrl);
         },
 
         /**
@@ -521,7 +521,7 @@ Aria.classDefinition({
             }
 
             var ctrl = this.getTextInputField();
-            aria.utils.Caret.setCaretPosition(ctrl, start, end);
+            aria.utils.Caret.setPosition(ctrl, start, end);
         },
 
         /**

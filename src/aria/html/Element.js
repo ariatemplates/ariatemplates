@@ -216,6 +216,31 @@
              */
             _notifyDataChange : function (args, propertyName) {
                 this.onbind(propertyName, this._transform(this._cfg.bind[propertyName].transform, args.newValue, "toWidget"), args.oldValue);
+            },
+
+            /**
+             * Add a listener for an event. It will be called before an already registered event, if any.
+             * @protected
+             * @param {aria.html.beans.ElementCfg.Properties.$properties.on} listeners Map of listeners
+             * @param {aria.templates.TemplateCtxt} context Template context
+             * @param {String} eventType Type of the event
+             * @param {aria.core.CfgBeans.Callback} callback listener to chain
+             */
+            _chainListener : function (listeners, context, eventType, callback) {
+                var normalized = null;
+                if (listeners[eventType]) {
+                    normalized = this.$normCallback.call(context._tpl, listeners[eventType]);
+                }
+
+                listeners[eventType] = {
+                    fn : function (event) {
+                        this.$callback(callback, event);
+                        if (normalized) {
+                            normalized.fn.call(normalized.scope, event, normalized.args);
+                        }
+                    },
+                    scope : this
+                };
             }
         }
     });
