@@ -54,6 +54,7 @@ Aria.classDefinition({
                             }
                         }
                     } else if (whiteList.test(key)) {
+                        attribute = (attribute != null) ? attribute + "" : "";
                         result.push(" ", key, "=\"");
                         result.push(stringUtil.encodeForQuotedHTMLAttribute(attribute));
                         result.push("\"");
