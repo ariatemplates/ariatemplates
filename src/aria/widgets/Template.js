@@ -351,7 +351,7 @@ Aria.classDefinition({
                 // contain differed widgets, understanding if this widget is differed or not is done in _init
             } else if (this._tplcfg) {
                 // the template is not yet loaded, show the loading indicator
-                out.write('<div style="width:100%; height:100%" class="xLDI"></div>');
+                out.write('<div class="xLDI"></div>');
                 // As the context is not available, here I can be sure that this is differed
                 this.isDiffered = true;
             } else {
