@@ -69,11 +69,7 @@
                 var specialKeys = [domevent.KC_END, domevent.KC_RIGHT, domevent.KC_ARROW_RIGHT, domevent.KC_DOWN,
                         domevent.KC_ARROW_DOWN, domevent.KC_DELETE, domevent.KC_BACKSPACE];
                 if (!aria.utils.Array.contains(specialKeys, event.keyCode)) {
-                    var cssClass = new aria.utils.ClassList(this._domElt);
-                    this._domElt.value = "";
-                    this._hasPlaceholder = false;
-                    cssClass.remove('placeholder');
-                    cssClass.$dispose();
+                    this._removePlaceholder();
                 } else {
                     event.preventDefault();
                 }
@@ -255,7 +251,11 @@
              */
             onbind : function (name, value, oldValue) {
                 if (name === "value") {
-                    this._domElt.value = (value != null) ? value : "";
+                    value = (value != null) ? value + "" : "";
+                    if (value) {
+                        this._removePlaceholder()
+                    }
+                    this._domElt.value = value;
                     this._setPlaceholder();
                 }
             },
@@ -335,6 +335,21 @@
                         }
                         this._hasPlaceholder = true;
                     }
+                }
+            },
+
+            /**
+             * Remove the css class and value for placeholder if needed by browsers that don't support it natively.
+             * @protected
+             */
+            _removePlaceholder : function () {
+                if (this._hasPlaceholder) {
+                    var element = this._domElt;
+                    var cssClass = new aria.utils.ClassList(element);
+                    element.value = "";
+                    this._hasPlaceholder = false;
+                    cssClass.remove('placeholder');
+                    cssClass.$dispose();
                 }
             },
 
