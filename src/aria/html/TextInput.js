@@ -35,17 +35,6 @@
     }
 
     /**
-     * Callback for handling placeholder after type.
-     * @private
-     */
-    function setPlaceholderOnType () {
-        // This is to display the placeholder when the text input value is empty
-        if (!_placeholderSupported && this._cfg.placeholder) {
-            this._setPlaceholder();
-        }
-    }
-
-    /**
      * Convert a keydown event into a type event. This is achieved adding a very short callback on keydown. The reason
      * being the fact that on keydown the input has still the previous value. In the callback we'll see the correct text
      * input value. This function should have the same scope as the widget instance.
@@ -105,16 +94,12 @@
 
         this._hasFocus = false;
 
-        if (this._cfg.placeholder) {
-            if (!this._hasPlaceholder) {
-                aria.utils.Json.setValue(bind.inside, bind.to, newValue, bind.cb);
-            } else {
-                aria.utils.Json.setValue(bind.inside, bind.to, "", bind.cb);
-            }
-        }
-
-        if (!_placeholderSupported && this._cfg.placeholder) {
-            this._setPlaceholder();
+        if (this._hasPlaceholder) {
+            // We're handling the placeholder. Set an empty string in the datamodel instead of the placeholder value
+            // Note that the placeholder is set by the type function, so we know the field must be empty
+            aria.utils.Json.setValue(bind.inside, bind.to, "", bind.cb);
+        } else {
+            aria.utils.Json.setValue(bind.inside, bind.to, newValue, bind.cb);
         }
 
         this._firstFocus = true;
@@ -183,7 +168,6 @@
             cfg.attributes = cfg.attributes || {};
             cfg.attributes.type = (cfg.password) ? "password" : "text";
             cfg.on = cfg.on || {};
-
 
             _placeholderSupported = ("placeholder" in Aria.$window.document.createElement("input"));
             if (cfg.placeholder && _placeholderSupported) {
@@ -260,10 +244,7 @@
                     }
                 }
 
-                var placeholder = this._cfg.placeholder;
-                if (!_placeholderSupported && placeholder) {
-                    this._setPlaceholder();
-                }
+                this._setPlaceholder();
             },
 
             /**
@@ -274,7 +255,8 @@
              */
             onbind : function (name, value, oldValue) {
                 if (name === "value") {
-                    this._domElt.value = value;
+                    this._domElt.value = (value != null) ? value : "";
+                    this._setPlaceholder();
                 }
             },
 
@@ -336,20 +318,23 @@
             },
 
             /**
-             * Set the css class and value for placeholder. Used only in IE 6/7/8/9 and FF 3.6.
+             * Set the css class and value for placeholder if needed by browsers that don't support it natively. Used
+             * only in IE 6/7/8/9 and FF 3.6.
              * @protected
              */
             _setPlaceholder : function () {
-                var element = this._domElt;
-                if (element.value === "") {
-                    element.value = this._cfg.placeholder;
-                    var cssClass = new aria.utils.ClassList(element);
-                    cssClass.add('placeholder');
-                    cssClass.$dispose();
-                    if (this._hasFocus) {
-                        aria.utils.Caret.setPosition(element, 0, 0);
+                if (!_placeholderSupported && this._cfg.placeholder) {
+                    var element = this._domElt;
+                    if (element.value === "") {
+                        element.value = this._cfg.placeholder;
+                        var cssClass = new aria.utils.ClassList(element);
+                        cssClass.add('placeholder');
+                        cssClass.$dispose();
+                        if (this._hasFocus) {
+                            aria.utils.Caret.setPosition(element, 0, 0);
+                        }
+                        this._hasPlaceholder = true;
                     }
-                    this._hasPlaceholder = true;
                 }
             },
 
@@ -384,7 +369,7 @@
                     });
 
                     this._chainListener(listeners, context, "type", {
-                        fn : setPlaceholderOnType,
+                        fn : this._setPlaceholder,
                         scope : this
                     });
                 }

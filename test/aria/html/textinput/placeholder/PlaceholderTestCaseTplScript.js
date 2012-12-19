@@ -16,14 +16,6 @@
 Aria.tplScriptDefinition({
     $classpath : "test.aria.html.textinput.placeholder.PlaceholderTestCaseTplScript",
     $prototype : {
-        $dataReady : function () {
-            this.data = {
-                location : '',
-                departure : '',
-                click : 0,
-                clickNoAutoselect : 0
-            };
-        },
 
         textType : function (value) {
             return;

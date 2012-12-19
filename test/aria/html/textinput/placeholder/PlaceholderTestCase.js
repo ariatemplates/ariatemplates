@@ -21,16 +21,32 @@ Aria.classDefinition({
         this.$TemplateTestCase.constructor.call(this);
         this.element = null;
         this.secondElement = null;
+        this.thirdElement = null;
         this.cssClass = null;
         this.cssClass2 = null;
+        this.cssClass3 = null;
         this._placeholderSupported = null;
         this._placeholderSupported = ("placeholder" in Aria.$window.document.createElement("input"));
+        this.data = {
+            location : '',
+            departure : '',
+            arrival : 'whatever',
+            click : 0,
+            clickNoAutoselect : 0
+        };
+
+        this.setTestEnv({
+            template : "test.aria.html.textinput.placeholder.PlaceholderTestCaseTpl",
+            data : this.data
+        });
     },
     $destructor : function () {
         this.element = null;
         this.secondElement = null;
+        this.thirdElement = null;
         this.cssClass.$dispose();
         this.cssClass2.$dispose();
+        this.cssClass3.$dispose();
         this._placeholderSupported = null;
         this.$TemplateTestCase.$destructor.call(this);
     },
@@ -40,8 +56,10 @@ Aria.classDefinition({
             var inputs = document.getElementsByTagName("input");
             this.element = inputs[0];
             this.secondElement = inputs[1];
+            this.thirdElement = inputs[2];
             this.cssClass = new aria.utils.ClassList(this.element);
             this.cssClass2 = new aria.utils.ClassList(this.secondElement);
+            this.cssClass3 = new aria.utils.ClassList(this.thirdElement);
 
             // Check that in IE6/7/8/9 and FF 3.6 there is the css class 'placeholder' and the value inside the text
             // input and for the other browser check the attributes placeholder
@@ -185,7 +203,19 @@ Aria.classDefinition({
             this.assertEquals(this.secondElement.value, "Support placeholder", "The placeholder is not displayed");
             this.assertTrue(this.cssClass2.contains("placeholder"), "Css class placeholder is not there");
             this.assertEquals(this.templateCtxt._tpl.data.departure, "", "The value inside the data model is not empty");
+
+            this._testWhenDataChangeToNull();
+
+        },
+
+        _testWhenDataChangeToNull : function () {
+            aria.utils.Json.setValue(this.data, "arrival", "");
+            this.assertEquals(this.thirdElement.value, "Set arrival", "The placeholder is not displayed after nullifying the datamodel to which the widget is bound");
+            this.assertTrue(this.cssClass3.contains("placeholder"), "Css class placeholder is not there");
+
             this.end();
+
         }
+
     }
 })

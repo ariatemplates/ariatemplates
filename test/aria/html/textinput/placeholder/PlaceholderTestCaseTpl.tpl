@@ -57,6 +57,17 @@
     }
   }/}
 
+  {@html:TextInput {
+    id: "texttestTwo",
+    placeholder : "Set arrival",
+    bind : {
+        value: {
+            inside: data,
+            to: "arrival"
+        }
+    }
+  }/}
+
 </div>
 
 <div id="outsideDiv">&nbsp;</div>
