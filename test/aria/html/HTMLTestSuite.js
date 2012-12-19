@@ -24,5 +24,6 @@ Aria.classDefinition({
         this.addTests("test.aria.html.ElementEventsTest");
         this.addTests("test.aria.html.controllers.suggestions.ResourcesHandlerTest");
         this.addTests("test.aria.html.textinput.TextInputTestSuite");
+        this.addTests("test.aria.html.checkbox.CheckBoxTest");
     }
 });
