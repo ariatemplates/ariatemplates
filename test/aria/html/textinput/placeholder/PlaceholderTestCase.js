@@ -209,9 +209,13 @@ Aria.classDefinition({
         },
 
         _testWhenDataChangeToNull : function () {
-            aria.utils.Json.setValue(this.data, "arrival", "");
+            aria.utils.Json.setValue(this.data, "arrival", null);
             this.assertEquals(this.thirdElement.value, "Set arrival", "The placeholder is not displayed after nullifying the datamodel to which the widget is bound");
             this.assertTrue(this.cssClass3.contains("placeholder"), "Css class placeholder is not there");
+
+            aria.utils.Json.setValue(this.data, "arrival", "fake");
+            this.assertEquals(this.thirdElement.value, "fake", "The placeholder has not been removed");
+            this.assertFalse(this.cssClass3.contains("placeholder"), "Css class placeholder is not removed properly after bound data changes");
 
             this.end();
 
