@@ -27,6 +27,7 @@ Aria.classDefinition({
             button2Position = domUtil.calculatePosition(button2DomStyle);
 
             space = button2Position.left - button1Position.left - button1DomStyle.offsetWidth;
+            this.assertTrue(button1Position.top == button2Position.top, "Buttons are not aligned on the same line");
             this.assertTrue(space >= 1, "Button spacing between button is less than 1 px, actual:" + space);
             this.assertTrue(space < 3, "Button spacing between button is more than 3 px, actual:" + space);
         },
