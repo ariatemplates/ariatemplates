@@ -200,20 +200,19 @@ Aria.classDefinition({
 				}
 			}
 		},
+    /**
+     * asserts whether the section constructed contains the attributes provided and follows the correct HTML markup
+     * @private
+     */
+    __assertSection : function (out, element) {
+      var htmlStr = out._out.join("");
 
-		/**
-		 * asserts whether the section constructed contains the attributes provided and follows the correct HTML markup
-		 * @private
-		 */
-		__assertSection : function (out, element) {
-			var htmlStr = out._out.join("");
-
-			if (element.indexOf("length") == -1) {
-				this.assertTrue(htmlStr.indexOf(element) != -1, "Assert failed for " + htmlStr);
-			} else {
-				this.assertErrorInLogs(aria.templates.Section.INVALID_CONFIGURATION);
-			}
-			return;
-		}
+      if (element.indexOf("length") == -1) {
+        this.assertTrue(htmlStr.indexOf(element) != -1, "Assert failed for " + htmlStr);
+      } else {
+        this.assertErrorInLogs(aria.templates.Section.INVALID_CONFIGURATION);
+      }
+      return;
+    }
 	}
 });

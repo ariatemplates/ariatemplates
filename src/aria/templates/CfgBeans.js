@@ -21,7 +21,8 @@ Aria.beanDefinitions({
     $description : "Definition of JSON beans used in aria templates",
     $namespaces : {
         "json" : "aria.core.JsonTypes",
-        "coreBeans" : "aria.core.CfgBeans"
+        "coreBeans" : "aria.core.CfgBeans",
+        "common" : "aria.widgetLibs.CommonBeans"
     },
     $beans : {
         "BaseTemplateCfg" : {
@@ -725,6 +726,15 @@ Aria.beanDefinitions({
             $type : "json:Object",
             $description : "Contains configuration description for a section statement.",
             $properties : {
+                "bind" : {
+                    $type : "json:Object",
+                    $description : "List of properties that we want to bind for the section - the property name being used as Map item key",
+                    $properties : {
+                        "attributes" : {
+                            $type : "common:BindingRef"
+                        }
+                    }
+                },
                 "id" : {
                     $type : "json:String",
                     $description : "Id of the section."
