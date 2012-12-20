@@ -2,7 +2,7 @@
   "author": "ariatemplates <contact@ariatemplates.com> (http://github.com/ariatemplates)",
   "name": "ariatemplates",
   "description": "Aria Templates (aka AT) is an application framework written in JavaScript for building rich and large-scaled enterprise web applications.",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "homepage": "http://ariatemplates.com",
   "repository": {
     "type": "git",
@@ -13,7 +13,7 @@
     "jshint": "0.9.0",
     "uglify-js": "1.3.4",
     "gzip-js": "0.3.1",
-    "grunt-verifylowercase" : "*"
+    "grunt-verifylowercase": "*"
   },
   "config": {
     "port": "8080"
@@ -22,7 +22,7 @@
     "start": "node scripts/server.js",
     "prestart": "npm install && node node_modules/grunt/bin/grunt package",
     "grunt": "node node_modules/grunt/bin/grunt",
-    "attester" : "node node_modules/attester/bin/attester.js test/attester.yml --phantomjs-instances 2",
+    "attester": "node node_modules/attester/bin/attester.js test/attester.yml --phantomjs-instances 2",
     "lint": "node node_modules/grunt/bin/grunt checkStyle",
     "test": "npm run-script lint && npm run-script attester && npm run-script grunt"
   },
@@ -31,6 +31,6 @@
     "attester": "1.0.1",
     "express": "3.0.3",
     "jade": "0.27.7",
-    "node-watch" : "~0.2.4"
+    "node-watch": "~0.2.4"
   }
 }
