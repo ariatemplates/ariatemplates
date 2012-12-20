@@ -106,10 +106,7 @@ Aria.classDefinition({
          * @param {Object} sdef the superclass class definition
          */
         $init : function (p, def, sdef) {
-            // prototype initialization function
             // we add the bindable properties to the Widget prototype
-            p.bindableProperties = p.bindableProperties.concat(["label", "value", "mandatory", "readOnly", "disabled",
-                    "error"]);
             p.automaticallyBindedProperties = ["formatError", "formatErrorMessages", "error", "errorMessages",
                     "requireFocus"];
         },

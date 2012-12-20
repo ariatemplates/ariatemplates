@@ -176,9 +176,6 @@ Aria.classDefinition({
          * @param {Object} sdef the superclass class definition
          */
         $init : function (p, def, sdef) {
-            // we add the "prefill" and "prefillError" properties to the
-            // bindable properties
-            p.bindableProperties = p.bindableProperties.concat("prefill");
             p.automaticallyBindedProperties = p.automaticallyBindedProperties.concat("prefillError");
         },
 

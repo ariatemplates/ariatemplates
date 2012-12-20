@@ -23,8 +23,6 @@ Aria.classDefinition({
     $extends : "aria.widgets.TemplateBasedWidget",
     $dependencies : ["aria.widgets.Template", "aria.widgets.calendar.CalendarController", "aria.DomEvent"],
     $css : ["aria.widgets.calendar.CalendarStyle"],
-    // Preload the default template here, to improve performances, especially for the DatePicker
-    // TODO: find a better way, to also improve performances for custom templates
     $templates : ["aria.widgets.calendar.CalendarTemplate"],
     $constructor : function (cfg, ctxt) {
         this.$TemplateBasedWidget.constructor.apply(this, arguments);
@@ -65,18 +63,6 @@ Aria.classDefinition({
     },
 
     $prototype : {
-        /**
-         * Prototype init method called at prototype creation time Allows to store class-level objects that are shared
-         * by all instances
-         * @param {Object} p the prototype object being built
-         * @param {Object} def the class definition
-         * @param {Object} sdef the superclass class definition
-         */
-        $init : function (p, def, sdef) {
-            // prototype initialization function
-            // we add the bindable properties to the Widget prototype
-            p.bindableProperties = p.bindableProperties.concat(["value", "startDate"]);
-        },
 
         /**
          * React to the events coming from the module controller.

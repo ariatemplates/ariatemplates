@@ -63,18 +63,6 @@ Aria.classDefinition({
         TABPANEL_INVALID_CONFIG_ID : "%1Invalid tab panel configuration, you must pass an ID if your panel is a container"
     },
     $prototype : {
-        /**
-         * Prototype init method called at prototype creation time Allows to store class-level objects that are shared
-         * by all instances
-         * @param {Object} p the prototype object being built
-         * @param {Object} def the class definition
-         * @param {Object} sdef the superclass class definition
-         */
-        $init : function (p, def, sdef) {
-            // prototype initialization function
-            // we add the bindable properties to the Widget prototype
-            p.bindableProperties = p.bindableProperties.concat(["selectedTab"]);
-        },
 
         /**
          * Called when a new instance is initialized
