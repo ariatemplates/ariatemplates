@@ -1711,8 +1711,8 @@ Aria.beanDefinitions({
                 },
                 "orientation" : {
                     $type : "json:Enum",
-                    $enumValues : ["horizontal"],
-                    $description : "Defines the position horizontal or vertical for the splitter (vertical is not supported yet)",
+                    $enumValues : ["horizontal", "vertical"],
+                    $description : "Defines the position horizontal or vertical for the splitter ",
                     $default : "horizontal"
                 },
                 "border" : {

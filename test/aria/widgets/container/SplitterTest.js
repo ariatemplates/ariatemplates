@@ -30,9 +30,13 @@ Aria.classDefinition({
 
             // Test panels
             // var h = this._calcHeight(localCfg, o);
-
-            this.assertTrue(o._splitPanel1.style.height === h.s1);
-            this.assertTrue(o._splitPanel2.style.height === h.s2);
+            if (this._orientation) {
+                this.assertTrue(o._splitPanel1.style.width === h.s1);
+                this.assertTrue(o._splitPanel2.style.width === h.s2);
+            } else {
+                this.assertTrue(o._splitPanel1.style.height === h.s1);
+                this.assertTrue(o._splitPanel2.style.height === h.s2);
+            }
 
             this.outObj.clearAll();
             o.$dispose();
@@ -63,6 +67,7 @@ Aria.classDefinition({
         },
         testBaseSplitter : function () {
             // Cleanup
+            this._orientation = null;
             this.outObj.clearAll();
             this.assertTrue(this.outObj.testArea.innerHTML === "" && this.outObj.store === "");
             // create a new splitter object
@@ -81,10 +86,25 @@ Aria.classDefinition({
             };
 
             this._testBaseNormalMarkup(cfg);
+            this._orientation = true;
+            cfg = {
+                id : "sampleSplitter",
+                sclass : "std",
+                orientation : "vertical",
+                size1 : 150,
+                size2 : 250,
+                height : 400,
+                border : false,
+                width : 396,
+                macro1 : 'PanelOne',
+                macro2 : 'PanelTwo'
+            };
+
+            this._testBaseNormalMarkup(cfg);
 
         },
         _testBaseNormalMarkup : function (cfg) {
-            var localCfg = aria.utils.Json.copy(cfg);
+            // var localCfg = aria.utils.Json.copy(cfg);
 
             var tf = this._createSplitter(cfg);
             this.assertFalse(tf.o === null);
@@ -97,8 +117,14 @@ Aria.classDefinition({
             this.assertTrue(dom.style.width === cfg.width + "px");
 
             // Test panels
-            this.assertTrue(o._splitPanel1.style.height === "147px");
-            this.assertTrue(o._splitPanel2.style.height === "247px");
+            if (this._orientation) {
+                this.assertTrue(o._splitPanel1.style.width === "146px");
+                this.assertTrue(o._splitPanel2.style.width === "244px");
+
+            } else {
+                this.assertTrue(o._splitPanel1.style.height === "147px");
+                this.assertTrue(o._splitPanel2.style.height === "247px");
+            }
 
             this.outObj.clearAll();
             o.$dispose();
@@ -106,7 +132,7 @@ Aria.classDefinition({
             // this.notifyTestEnd("testAsyncSplitter");
         },
         testSplitterDifferentHeights : function () {
-
+            this._orientation = null;
             var basicProperties = {
                 id : "sampleSplitter",
                 sclass : "std",
@@ -287,7 +313,190 @@ Aria.classDefinition({
                 this._genericSplitter(this._inject(basicProperties, this.cfgArr[i]), this.outputArr[i]);
             }
 
-            // this.notifyTestEnd("testSplitterDifferentHeights");
+        },
+
+        testSplitterDifferentWidths : function () {
+            this._orientation = true;
+            var basicProperties = {
+                id : "sampleSplitter",
+                sclass : "std",
+                macro1 : 'PanelOne',
+                macro2 : 'PanelTwo',
+                height : 300,
+                orientation : "vertical",
+                border : true
+            };
+            this.cfgArr = [{
+                        size1 : 200,
+                        width : 700
+                    }, {
+                        size2 : 200,
+                        width : 700
+                    }, {
+                        width : 700
+                    }, {
+                        size1 : 200,
+                        size2 : 300,
+                        width : 700
+                    }, {
+                        size1 : 350,
+                        size2 : 350,
+                        width : 700
+                    }, {
+                        size1 : 400,
+                        size2 : 400,
+                        width : 700
+                    }, {
+                        size1 : 200,
+                        size2 : 300,
+                        width : 700,
+                        adapt : "size1"
+                    }, {
+                        size1 : 200,
+                        size2 : 300,
+                        width : 700,
+                        adapt : "size2"
+                    }, {
+                        size1 : 350,
+                        size2 : 350,
+                        width : 700,
+                        adapt : "size1"
+                    }, {
+                        size1 : 350,
+                        size2 : 350,
+                        width : 700,
+                        adapt : "size2"
+                    }, {
+                        size1 : 400,
+                        size2 : 400,
+                        width : 700,
+                        adapt : "size1"
+                    }, {
+                        size1 : 400,
+                        size2 : 400,
+                        width : 700,
+                        adapt : "size2"
+                    }, {
+                        size1 : 200,
+                        size2 : 300,
+                        width : 700,
+                        border : false
+                    }, {
+                        size1 : 350,
+                        size2 : 350,
+                        width : 700,
+                        border : false
+                    }, {
+                        size1 : 400,
+                        size2 : 400,
+                        width : 700,
+                        border : false
+                    }, {
+                        size1 : 200,
+                        size2 : 300,
+                        width : 700,
+                        border : false,
+                        adapt : "size1"
+                    }, {
+                        size1 : 350,
+                        size2 : 350,
+                        width : 700,
+                        border : false,
+                        adapt : "size1"
+                    }, {
+                        size1 : 400,
+                        size2 : 400,
+                        width : 700,
+                        border : false,
+                        adapt : "size1"
+                    }, {
+                        size1 : 200,
+                        size2 : 300,
+                        width : 700,
+                        border : false,
+                        adapt : "size2"
+                    }, {
+                        size1 : 350,
+                        size2 : 350,
+                        width : 700,
+                        border : false,
+                        adapt : "size2"
+                    }, {
+                        size1 : 400,
+                        size2 : 400,
+                        width : 700,
+                        border : false,
+                        adapt : "size2"
+                    }];
+            this.outputArr = [{
+                        s1 : "200px",
+                        s2 : "492px"
+                    }, {
+                        s1 : "492px",
+                        s2 : "200px"
+                    }, {
+                        s1 : "346px",
+                        s2 : "346px"
+                    }, {
+                        s1 : "276px",
+                        s2 : "416px"
+                    }, {
+                        s1 : "346px",
+                        s2 : "346px"
+                    }, {
+                        s1 : "346px",
+                        s2 : "346px"
+                    }, {
+                        s1 : "392px",
+                        s2 : "300px"
+                    }, {
+                        s1 : "200px",
+                        s2 : "492px"
+                    }, {
+                        s1 : "342px",
+                        s2 : "350px"
+                    }, {
+                        s1 : "350px",
+                        s2 : "342px"
+                    }, {
+                        s1 : "292px",
+                        s2 : "400px"
+                    }, {
+                        s1 : "400px",
+                        s2 : "292px"
+                    }, {
+                        s1 : "277px",
+                        s2 : "417px"
+                    }, {
+                        s1 : "347px",
+                        s2 : "347px"
+                    }, {
+                        s1 : "347px",
+                        s2 : "347px"
+                    }, {
+                        s1 : "394px",
+                        s2 : "300px"
+                    }, {
+                        s1 : "344px",
+                        s2 : "350px"
+                    }, {
+                        s1 : "294px",
+                        s2 : "400px"
+                    }, {
+                        s1 : "200px",
+                        s2 : "494px"
+                    }, {
+                        s1 : "350px",
+                        s2 : "344px"
+                    }, {
+                        s1 : "400px",
+                        s2 : "294px"
+                    }];
+
+            for (var i = 0, len = this.cfgArr.length; i < len; i++) {
+                this._genericSplitter(this._inject(basicProperties, this.cfgArr[i]), this.outputArr[i]);
+            }
+
         }
     }
 });
