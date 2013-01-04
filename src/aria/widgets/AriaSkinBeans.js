@@ -909,6 +909,9 @@ Aria.beanDefinitions({
                 separatorHeight : {
                     $type : "Pixels"
                 },
+                separatorWidth : {
+                    $type : "Pixels"
+                },
                 handleBackgroundColor : {
                     $type : "Color",
                     $default : "transparent"
@@ -917,11 +920,19 @@ Aria.beanDefinitions({
                     $type : "json:String",
                     $description : ""
                 },
+                handleSpriteURLv : {
+                    $type : "json:String",
+                    $description : ""
+                },
                 proxyBackgroundColor : {
                     $type : "Color",
                     $default : "transparent"
                 },
                 proxySpriteURLh : {
+                    $type : "json:String",
+                    $description : ""
+                },
+                proxySpriteURLv : {
                     $type : "json:String",
                     $description : ""
                 },
