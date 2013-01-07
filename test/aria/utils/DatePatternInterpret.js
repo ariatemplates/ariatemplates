@@ -22,14 +22,16 @@ Aria.classDefinition({
     $dependencies : ["aria.utils.Date"],
     $prototype : {
         testInputPattern : function () {
-
+            var today = new Date();
             var expectedDate = new Date(2012, 2, 10);
+            var expectedDateCurrentYear = new Date(today.getFullYear(), 2, 10);
+
             // one string pattern
             var inputPattern1 = "yyyy-MM-dd";
             var date1options = {
                 inputPattern : inputPattern1
             };
-            this.interpretInpuPatternAndAssert("2012-03-10", date1options, expectedDate);
+            this.interpretInputPatternAndAssert("2012-03-10", date1options, expectedDate);
             // function pattern
             var userDefinedParser = function (dateStr) {
                 if (dateStr === "today") {
@@ -41,8 +43,8 @@ Aria.classDefinition({
             var date2options = {
                 inputPattern : userDefinedParser
             };
-            var today = new Date();
-            this.interpretInpuPatternAndAssert("today", date2options, today);
+
+            this.interpretInputPatternAndAssert("today", date2options, today);
             // array of patterns
             var inputPattern3 = ["yyyy-I-dd", "yyyy:dd MMM", userDefinedParser, "yyyy*dd;MM", "yy-I", "d/yy.M", "I-dd",
                     "MMM.yyyy", "dKMM"];
@@ -50,17 +52,18 @@ Aria.classDefinition({
                 inputPattern : inputPattern3
 
             };
-            this.interpretInpuPatternAndAssert("2012-MAR-10", date3options, expectedDate);
-            this.interpretInpuPatternAndAssert("2012:10 Mar", date3options, expectedDate);
-            this.interpretInpuPatternAndAssert("today", date3options, today);
-            this.interpretInpuPatternAndAssert("2012*10;03", date3options, expectedDate);
-            this.interpretInpuPatternAndAssert("12-juL", date3options, new Date(2012, 6, 1));
-            this.interpretInpuPatternAndAssert("9/12.7", date3options, new Date(2012, 6, 9));
-            this.interpretInpuPatternAndAssert("mar-10", date3options, expectedDate);
-            this.interpretInpuPatternAndAssert("jul.2012", date3options, new Date(2012, 6, 1));
-            this.interpretInpuPatternAndAssert("9K07", date3options, new Date(2012, 6, 9));
+            this.interpretInputPatternAndAssert("2012-MAR-10", date3options, expectedDate);
+            this.interpretInputPatternAndAssert("2012:10 Mar", date3options, expectedDate);
+            this.interpretInputPatternAndAssert("today", date3options, today);
+            this.interpretInputPatternAndAssert("2012*10;03", date3options, expectedDate);
+            this.interpretInputPatternAndAssert("12-juL", date3options, new Date(2012, 6, 1));
+            this.interpretInputPatternAndAssert("9/12.7", date3options, new Date(2012, 6, 9));
+            this.interpretInputPatternAndAssert("mar-10", date3options, expectedDateCurrentYear);
+            this.interpretInputPatternAndAssert("jul.2012", date3options, new Date(2012, 6, 1));
+            this.interpretInputPatternAndAssert("9K07", date3options, new Date(today.getFullYear(), 6, 9));
         },
-        interpretInpuPatternAndAssert : function (dateStr, dateOptions, expectedDate) {
+
+        interpretInputPatternAndAssert : function (dateStr, dateOptions, expectedDate) {
             var interpretedDate = aria.utils.Date.interpret(dateStr, dateOptions);
             this.assertEquals(interpretedDate.getDate(), expectedDate.getDate());
             this.assertEquals(interpretedDate.getMonth(), expectedDate.getMonth());
