@@ -19,8 +19,8 @@
 Aria.resourcesDefinition({
     $classpath : 'aria.resources.multiselect.FooterRes',
     $resources : {
-        selectAll : "\u0054\u00fc\u006d\u00fc\u006e\u00fc\u0020\u0053\u0065\u00e7",
-        deselectAll : "\u0054\u00fc\u006d\u0020\u0073\u0065\u00e7\u0069\u006d\u0069\u0020\u006b\u0061\u006c\u0064\u0131\u0072",
+        selectAll : "T\u00FCm\u00FCn\u00FC Se\u00E7",
+        deselectAll : "T\u00FCm se\u00E7imi kald\u0131r",
         close : "Kapat"
     }
 });

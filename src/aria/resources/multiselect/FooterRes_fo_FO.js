@@ -20,7 +20,7 @@ Aria.resourcesDefinition({
     $classpath : 'aria.resources.multiselect.FooterRes',
     $resources : {
         selectAll : "Vel \u00f8ll",
-        deselectAll : "\u0046\u0072\u00e1\u0076\u0065\u006c\u0020\u00f8\u006c\u006c",
+        deselectAll : "Fr\u00E1vel \u00F8ll",
         close : "Lat aftur"
     }
 });
