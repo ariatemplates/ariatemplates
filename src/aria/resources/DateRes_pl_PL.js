@@ -23,26 +23,26 @@ Aria.resourcesDefinition({
         firstDayOfWeek : 0 /* Sunday */,
         day : [
             "Niedziela",
-            "Poniedzialek",
+            "Poniedzia\u0142ek",
             "Wtorek",
-            "Sroda",
+            "\u015Aroda",
             "Czwartek",
-            "Piatek",
+            "Pi\u0105tek",
             "Sobota"
         ],
         month : [
-            "Styczen",
+            "Stycze\u0144",
             "Luty",
             "Marzec",
-            "Kwiecien",
+            "Kwiecie\u0144",
             "Maj",
             "Czerwiec",
             "Lipiec",
-            "Sierpien",
-            "Wrzesien",
-            "Pazdziernik",
+            "Sierpie\u0144",
+            "Wrzesie\u0144",
+            "Pa\u017Adziernik",
             "Listopad",
-            "Grudzien"
+            "Grudzie\u0144"
         ]
     }
 });
