@@ -22,7 +22,7 @@ Aria.classDefinition({
     $dependencies : ["aria.modules.urlService.PatternURLCreationImpl", "aria.modules.RequestMgr",
             "test.aria.modules.test.MockRequestHandler", "aria.templates.ModuleCtrl",
             "aria.modules.requestHandler.RequestHandler", "aria.modules.urlService.environment.UrlService",
-            "aria.modules.requestHandler.XMLRequestHandler"],
+            "aria.modules.requestHandler.XMLRequestHandler", "aria.modules.requestHandler.JSONRequestHandler"],
     $constructor : function () {
         this.$TestCase.constructor.call(this);
         this.defaultTestTimeout = 5000;
@@ -564,6 +564,62 @@ Aria.classDefinition({
             });
 
             this.assertEquals(urlAction.url, urlService.url);
+        },
+
+        testAsyncFailure : function () {
+            aria.modules.RequestMgr.submitJsonRequest({
+                moduleName : "test",
+                actionName : "testFailure"
+            }, null, {
+                fn : this.afterFailureRequest,
+                scope : this
+            });
+        },
+
+        afterFailureRequest : function (response, originalIORequest) {
+            aria.modules.RequestMgr._requestHandler.$dispose();
+            this.assertTrue(response.error, "There should be an error");
+            this.assertTrue(!!response.response, "There should be a server response");
+            this.assertTrue(!!response.response.responseText, "The response should contain a responseText");
+
+            this.notifyTestEnd("testAsyncFailure");
+        },
+
+        testAsyncFailureJSON : function () {
+            var handler = new aria.modules.requestHandler.JSONRequestHandler();
+
+            // mock IO
+            var originalHandleResponse = aria.core.IO._handleResponse;
+            aria.core.IO._handleResponse = function (error, request, response) {
+                if (request.url.indexOf("testFailure") > -1) {
+                    response.responseText = '{"json":"object"}';
+
+                    aria.core.IO._handleResponse = originalHandleResponse;
+                }
+                originalHandleResponse.apply(aria.core.IO, arguments);
+            };
+
+            aria.modules.RequestMgr.submitJsonRequest({
+                moduleName : "test",
+                actionName : "testFailure",
+                requestHandler : handler
+            }, null, {
+                fn : this.afterFailureRequestJSON,
+                scope : this,
+                args : handler
+            });
+        },
+
+        afterFailureRequestJSON : function (response, handler) {
+            handler.$dispose();
+
+            this.assertTrue(response.error, "There should be an error");
+            this.assertTrue(!!response.response, "There should be a server response");
+            this.assertTrue(!!response.response.responseText, "The response should contain a responseText");
+            this.assertTrue(!!response.response.responseJSON, "The response should contain a responseJSON");
+            this.assertEquals(response.response.responseJSON.json, "object", "responseJSON should be a JSON");
+
+            this.notifyTestEnd("testAsyncFailureJSON");
         }
 
     }
