@@ -192,7 +192,6 @@ Aria.classDefinition({
                 block : true,
                 startDate : dm.jsDate,
                 tabIndex : -1,
-                sclass : cfg.calendarSclass,
                 label : cfg.calendarLabel,
                 defaultTemplate : cfg.calendarTemplate,
                 minValue : cfg.minValue,
@@ -212,7 +211,7 @@ Aria.classDefinition({
             // maps property from datepicker configuration
             var propMapped = ['displayUnit', 'numberOfUnits', 'firstDayOfWeek', 'monthLabelFormat',
                     'dayOfWeekLabelFormat', 'dateLabelFormat', 'completeDateLabelFormat', 'showWeekNumbers',
-                    'showShortcuts', 'restrainedNavigation'];
+                    'showShortcuts', 'restrainedNavigation', 'sclass'];
             for (var i = 0, property; property = propMapped[i]; i++) {
                 this._applyCalendarCfg(property, calendarConf);
             }

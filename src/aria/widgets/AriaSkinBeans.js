@@ -713,6 +713,11 @@ Aria.beanDefinitions({
                             $type : "json:Integer",
                             $description : "",
                             $default : 3
+                        },
+                        sclass : {
+                            $type : "json:String",
+                            $description : "sclass of the calendar to use inside the DatePicker. It must be defined in the skin.",
+                            $default : "dropdown"
                         }
                     }
                 }
@@ -720,7 +725,14 @@ Aria.beanDefinitions({
         },
         "SelectBoxCfg" : {
             $type : "DropDownTextInputCfg",
-            $description : ""
+            $description : "",
+            $properties: {
+                "listSclass" : {
+                    $type : "json:String",
+                    $description : "sclass of the List to use inside the widget. It must be defined in the skin.",
+                    $default : "dropdown"
+                }
+            }
         },
         "TextareaCfg" : {
             $type : "TextInputCfg",
@@ -804,7 +816,14 @@ Aria.beanDefinitions({
         },
         "MultiSelectCfg" : {
             $type : "DropDownTextInputCfg",
-            $description : ""
+            $description : "",
+            $properties : {
+                "listSclass" : {
+                    $type : "json:String",
+                    $description : "sclass of the List to use inside the widget. It must be defined in the skin.",
+                    $default : "dropdown"
+                }
+            }
         },
         "SelectCfg" : {
             $type : "Object",
@@ -861,6 +880,11 @@ Aria.beanDefinitions({
                 },
                 "offsetTop" : {
                     $type : "Pixels"
+                },
+                "listSclass" : {
+                    $type : "json:String",
+                    $description : "sclass of the List to use inside the widget. It must be defined in the skin.",
+                    $default : "dropdown"
                 }
             }
         },
@@ -1124,7 +1148,14 @@ Aria.beanDefinitions({
         },
         "AutoCompleteCfg" : {
             $type : "DropDownTextInputCfg",
-            $description : ""
+            $description : "",
+            $properties: {
+                "listSclass" : {
+                    $type : "json:String",
+                    $description : "sclass of the List to use inside the widget. It must be defined in the skin.",
+                    $default : "dropdown"
+                }
+            }
         },
         "TabPanelCfg" : {
             $type : "Object",

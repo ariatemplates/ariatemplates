@@ -144,7 +144,7 @@ Aria.classDefinition({
                 id : cfg.id,
                 defaultTemplate : "defaultTemplate" in options ? options.defaultTemplate : cfg.listTemplate,
                 block : true,
-                sclass : "dropdown",
+                sclass : cfg.listSclass || this._skinObj.listSclass,
                 onclick : {
                     fn : this._clickOnItem,
                     scope : this
