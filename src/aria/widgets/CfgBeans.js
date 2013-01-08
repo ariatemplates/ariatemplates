@@ -613,6 +613,10 @@ Aria.beanDefinitions({
                     $description : "Template to use to display the list.",
                     $default : "aria.widgets.form.templates.TemplateMultiSelect"
                 },
+                "listSclass" : {
+                    $type : "json:String",
+                    $description : "sclass of the list used in the dropdown. The default value for this property is taken from the skin."
+                },
                 "items" : {
                     $type : "ListCfg.items",
                     $description : "List of options on a MultiSelect"
@@ -709,8 +713,7 @@ Aria.beanDefinitions({
                 },
                 "calendarSclass" : {
                     $type : "json:String",
-                    $description : "sclass to be used for the calendar the calendar.",
-                    $default : "dropdown"
+                    $description : "sclass of the calendar used in the dropdown. The default value for this property is taken from the skin."
                 },
                 "iconTooltip" : {
                     $type : "json:String",
@@ -735,6 +738,10 @@ Aria.beanDefinitions({
                 "listTemplate" : {
                     $type : "json:PackageName",
                     $description : "Template to use to display the list."
+                },
+                "listSclass" : {
+                    $type : "json:String",
+                    $description : "sclass of the list used in the dropdown. The default value for this property is taken from the skin."
                 },
                 "options" : {
                     $type : "json:Array",
@@ -766,6 +773,10 @@ Aria.beanDefinitions({
                 "listTemplate" : {
                     $type : "json:PackageName",
                     $description : "Template used for displaying the list."
+                },
+                "listSclass" : {
+                    $type : "json:String",
+                    $description : "sclass of the list used in the dropdown. The default value for this property is taken from the skin."
                 },
                 "options" : {
                     $type : "json:Array",
@@ -834,6 +845,10 @@ Aria.beanDefinitions({
                 "popupMaxHeight" : {
                     $type : "json:Integer",
                     $description : "Maximum height of the dropdown."
+                },
+                "listSclass" : {
+                    $type : "json:String",
+                    $description : "sclass of the list used in the dropdown. The default value for this property is taken from the skin."
                 }
             }
         },

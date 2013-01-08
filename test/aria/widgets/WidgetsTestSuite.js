@@ -41,6 +41,7 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.form.TextareaTest");
         this.addTests("test.aria.widgets.form.TextInputTest");
         this.addTests("test.aria.widgets.form.multiselect.issue223.MultiSelect");
+        this.addTests("test.aria.widgets.form.multiselect.issue312.Issue312TestSuite");
         this.addTests("test.aria.widgets.form.datepicker.DatePickerTestSuite");
     }
 });

@@ -157,7 +157,7 @@ Aria.classDefinition({
             var list = new aria.widgets.form.list.List({
                 defaultTemplate : cfg.listTemplate,
                 block : true,
-                sclass : "dropdown",
+                sclass : cfg.listSclass || this._skinObj.listSclass,
                 onchange : {
                     fn : this._clickOnItem,
                     scope : this
