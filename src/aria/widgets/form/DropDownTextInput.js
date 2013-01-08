@@ -62,7 +62,7 @@ Aria.classDefinition({
          */
         _toggleDropdown : function () {
             if (!this._hasFocus) {
-                this.focus();
+                this.focus(null, true);
             }
 
             var report = this.controller.toggleDropdown(this.getTextInputField().value, this._dropdownPopup != null);
@@ -70,7 +70,7 @@ Aria.classDefinition({
                 hasFocus : true
             });
 
-            this.focus();
+            this.focus(null, true);
         },
 
         /**
