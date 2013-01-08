@@ -197,12 +197,86 @@ Aria.classDefinition({
         },
 
         /**
+         * Get the text value of the input field. If available it tries to use the internal valid value, otherwise uses
+         * the invalid text. If none of them is a non empty string it return the prefilled value. This method doesn't
+         * handle helptext, as this value is not just text but also style.
+         * @return {String}
+         */
+        _getText : function () {
+            var cfg = this._cfg;
+
+            // invalid text and value shouldn't be set at the same time
+            var text = cfg.invalidText || "";
+
+            if (text && cfg.value) {
+                // There's both a value and an invalid text, prefer the value
+                this.setProperty("invalidText", null);
+                text = "";
+            }
+
+            // Validate the value in the configuration
+            var res = this.checkValue({
+                text : text,
+                value : cfg.value,
+                performCheckOnly : true
+            });
+
+            if (res.report) {
+                var report = res.report;
+                if (!text && report.text != null) {
+                    text = '' + report.text; // String cast of valid value
+                }
+                report.$dispose();
+            }
+            if (!text) {
+                text = this._getPrefilledText(cfg.prefill);
+            }
+
+            return text;
+        },
+
+        /**
+         * Set a given text as value for the text input. This method handles helptext for non password fields.
+         * @param {String} value Text to be set, if empty uses the value from <code>this._getText</code> or the
+         * helptext
+         */
+        _setText : function (value) {
+            if (value == null) {
+                value = this._getText();
+            }
+
+            // _getText only handles valid / invalid values and prefills, not the helptext
+            if (!value && !this._isPassword) {
+                // We don't want to handle helptext in password fields, first remove any text
+                this.getTextInputField().value = "";
+                this.setHelpText(true);
+            } else if (value) {
+                this.getTextInputField().value = value;
+            }
+        },
+
+        /**
+         * Get the text value that should be prefilled in the widget. It takes a default value that could be anything
+         * (like dates). For non string objects it delegates the string resolution to the controller.
+         * @param {Object} value
+         * @return {String}
+         * @protected
+         */
+        _getPrefilledText : function (value) {
+            if (value && this.controller && this.controller.getDisplayTextFromValue) {
+                return this.controller.getDisplayTextFromValue(this._cfg.prefill);
+            } else {
+                return value;
+            }
+        },
+
+        /**
          * Internal method to process the input block markup inside the frame
          * @param {aria.templates.MarkupWriter} out the writer Object to use to output markup
          * @protected
          */
         _inputWithFrameMarkup : function (out) {
-            var cfg = this._cfg, skinObj = this._skinObj, hts = this._helpTextSet, htc = this._skinObj.helpText, color = this._getTextFieldColor(), report;
+            var cfg = this._cfg, skinObj = this._skinObj, hts = this._helpTextSet, htc = this._skinObj.helpText, color = this._getTextFieldColor();
             var stringUtils = aria.utils.String;
 
             var inlineStyle = ['padding:', skinObj.innerPaddingTop, 'px ', skinObj.innerPaddingRight, 'px ',
@@ -212,25 +286,8 @@ Aria.classDefinition({
             }
 
             // check value to set appropriate state and text
-            var text = cfg.invalidText || "";
-            var res = this.checkValue({
-                text : text,
-                value : cfg.value,
-                performCheckOnly : true
-            });
-            if (res.report) {
-                report = res.report;
-                if (!text && report.text != null) {
-                    text = '' + report.text; // String cast
-                }
-                report.$dispose();
-            }
-            if (!text) {
-                var prefillText = (cfg.prefill && this.controller && this.controller.getDisplayTextFromValue)
-                        ? this.controller.getDisplayTextFromValue(cfg.prefill)
-                        : cfg.prefill;
-                text = prefillText;
-            }
+            var text = this._getText();
+
             if (hts) {
                 // FIXME : re-activate helpText in password field in IE
                 if (this._isIE7OrLess && this._isPassword) {
@@ -309,8 +366,9 @@ Aria.classDefinition({
         },
 
         /**
-         * Check that the value displayed in the field is correct If not, set the field in error
-         * @param {JSON cfg} arg - optional arguments to control the check behavior
+         * Check that the value displayed in the field is correct. If not, set the field in error and store its invalid
+         * text
+         * @param {Object} arg - optional arguments to control the behavior
          *
          * <pre>
          * {
@@ -318,7 +376,17 @@ Aria.classDefinition({
          *     value: {Object} - internal widget value,
          *     performCheckOnly: {Boolean} - perfom only value/text check do not update th widget display,
          *     resetErrorIfOK: {Boolean} (default:true) - tells if error display must be removed if check is OK
-         *         (usefull when check is done on 'strange' events like mouseover }
+         *         (usefull when check is done on 'strange' events like mouseover)
+         * }
+         * </pre>
+         *
+         * @return {Object}
+         *
+         * <pre>
+         * {
+         *     isValid : {Boolean} Whether the value is valid or not
+         *     report : {Object} Controller's report, if any
+         * }
          * </pre>
          */
         checkValue : function (arg) {
@@ -338,60 +406,55 @@ Aria.classDefinition({
                 this.changeProperty("formatError", false);
             }
 
-            if (this.controller) {
-
-                var hasErrors = (this._cfg.formatErrorMessages.length ? true : false);
-                var report;
-                // if (value != null || performCheckOnly) {
-                if (value != null) {
-                    report = this.controller.checkValue(value);
-                } else {
-                    report = this.controller.checkText(text, hasErrors);
-                }
-
-                if (report) {
-                    if (report.errorMessages.length) {
-                        this.changeProperty("invalidText", text);
-                        if (this._cfg.directOnBlurValidation && !performCheckOnly) {
-                            this.changeProperty("formatErrorMessages", report.errorMessages);
-                        }
-                    } else if (this._cfg.formatError === false
-                            && (aria.utils.Type.isArray(this._cfg.formatErrorMessages) && this._cfg.formatErrorMessages.length)) {
-                        this.changeProperty("invalidText", null);
-                        this.changeProperty("formatErrorMessages", []);
-                    } else {
-                        if (report.ok) {
-                            this.changeProperty("invalidText", null);
-                        }
-                    }
-                    if (performCheckOnly) {
-                        return {
-                            isValid : report.ok,
-                            report : report
-                        };
-                    } else {
-                        this._reactToControllerReport(report, arg);
-                        return;
-                    }
-                } else {
-                    return {
-                        isValid : true,
-                        report : null
-                    };
-                }
-
-            } else {
-                return {
-                    isValid : true,
-                    report : null
-                };
-            }
-
-            return {
+            var result = {
                 isValid : true,
                 report : null
             };
 
+            if (!this.controller) {
+                // There's no controller so we assume the value to be valid
+                return result;
+            }
+
+            var hasErrors = (this._cfg.formatErrorMessages.length ? true : false);
+            var report;
+
+            if (value != null) {
+                report = this.controller.checkValue(value);
+            } else {
+                report = this.controller.checkText(text, hasErrors);
+            }
+
+            if (!report) {
+                // No report means that the controller is handling the value asynchronously, consider it as valid
+                return result;
+            }
+
+            if (report.errorMessages.length) {
+                if (!performCheckOnly) {
+                    this.changeProperty("value", null);
+                    this.changeProperty("invalidText", text);
+                    if (this._cfg.directOnBlurValidation) {
+                        this.changeProperty("formatErrorMessages", report.errorMessages);
+                    }
+                }
+            } else if (this._cfg.formatError === false && aria.utils.Type.isArray(this._cfg.formatErrorMessages)
+                    && this._cfg.formatErrorMessages.length) {
+                this.changeProperty("invalidText", null);
+                this.changeProperty("formatErrorMessages", []);
+            } else if (report.ok && !performCheckOnly) {
+                this.changeProperty("invalidText", null);
+            }
+
+            if (performCheckOnly) {
+                return {
+                    isValid : report.ok,
+                    report : report
+                };
+            } else {
+                this._reactToControllerReport(report, arg);
+                return;
+            }
         },
 
         /**
@@ -580,7 +643,7 @@ Aria.classDefinition({
                     return;
                 }
 
-                // in case things have change the field, try to set an helptext
+                // in case things have changed the field, try to set an helptext
                 this.setHelpText(true);
                 if (((aria.utils.Type.isArray(cfg.value) && aria.utils.Array.isEmpty(cfg.value)) || !cfg.value)
                         && cfg.prefill && cfg.prefill + "") {
@@ -606,7 +669,7 @@ Aria.classDefinition({
                 if (!res || !res.isValid) {
                     var textField = this.getTextInputField();
                     if (textField) {
-                        textField.value = newValue;
+                        this._setText(newValue);
                     }
                 }
                 if (res && res.report) {
@@ -732,9 +795,9 @@ Aria.classDefinition({
             }
 
             if (arg.popup && (this._cfg.error)) {
-                this._validationPopupShow(this);
+                this._validationPopupShow();
             } else {
-                this._validationPopupHide(this);
+                this._validationPopupHide();
             }
         },
 
@@ -817,7 +880,7 @@ Aria.classDefinition({
                     cfg = this._cfg
                     if (cfg.validationEvent === 'onFocus'
                             && ((cfg.formatError && cfg.formatErrorMessages.length) || (cfg.error && cfg.errorMessages.length))) {
-                        this._validationPopupShow(this);
+                        this._validationPopupShow();
                     }
                 }
                 this._updateState();
@@ -871,10 +934,10 @@ Aria.classDefinition({
 
                 if (cfg.formatError && cfg.validationEvent === 'onBlur') {
                     // show errortip on blur used for debug purposes
-                    this._validationPopupShow(this);
+                    this._validationPopupShow();
                 } else {
                     // dispose of error tip
-                    this._validationPopupHide(this);
+                    this._validationPopupHide();
                     if (cfg.directOnBlurValidation) {
                         if (cfg.bind) {
                             var bind = cfg.bind.value;
@@ -914,18 +977,12 @@ Aria.classDefinition({
         _setAutomaticBindings : function (cfg) {
             this.$InputWithFrame._setAutomaticBindings.call(this, cfg);
             var value = null, prefill = null, metaDataObject;
-            if (cfg) {
-                if (cfg.bind) {
-                    value = cfg.bind.value; // get any binding on the value
-                    // property
-                    prefill = cfg.bind.prefill; // get any binding on the
-                    // prefill property
-                }
+            if (cfg && cfg.bind) {
+                value = cfg.bind.value;
+                prefill = cfg.bind.prefill;
             }
 
-            if (value && value.inside) { // only add the meta data convention
-                // if a value property has been
-                // bound
+            if (value && value.inside) {
                 metaDataObject = aria.utils.Data._getMeta(value.inside, value.to, false);
                 if (!cfg.bind.invalidText) {
                     cfg.bind.invalidText = {
@@ -934,10 +991,7 @@ Aria.classDefinition({
                     };
                 }
             }
-            if (prefill && prefill.inside) { // only add the meta data
-                // convention if a prefill
-                // property has been
-                // bound
+            if (prefill && prefill.inside) {
                 metaDataObject = aria.utils.Data._getMeta(prefill.inside, prefill.to, false);
                 if (!cfg.bind.prefillError) {
                     cfg.bind.prefillError = {
@@ -1085,9 +1139,7 @@ Aria.classDefinition({
                 if (value == null) {
                     prefillText = "";
                 } else {
-                    prefillText = (this.controller && this.controller.getDisplayTextFromValue)
-                            ? this.controller.getDisplayTextFromValue(value)
-                            : value;
+                    prefillText = this._getPrefilledText(value);
                 }
                 if (cfg.prefillError) {
                     prefillText = "";

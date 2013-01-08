@@ -188,9 +188,9 @@ Aria.classDefinition({
             this._updateState();
             if (this._cfg.formatError && this._cfg.validationEvent === 'onBlur') {// show
                 // errortip on blur used for debug purposes
-                this._validationPopupShow(this);
+                this._validationPopupShow();
             } else { // dispose of error tip
-                this._validationPopupHide(this);
+                this._validationPopupHide();
                 if (this._cfg.directOnBlurValidation) {
                     if (this._cfg.bind) {
                         var bind = this._cfg.bind.value;
@@ -219,7 +219,7 @@ Aria.classDefinition({
             if (this._cfg) {
                 if (this._cfg.validationEvent === 'onFocus'
                         && ((this._cfg.formatError && this._cfg.formatErrorMessages.length) || (this._cfg.error && this._cfg.errorMessages.length))) {
-                    this._validationPopupShow(this);
+                    this._validationPopupShow();
                 }
             }
             this._updateState();
@@ -231,9 +231,9 @@ Aria.classDefinition({
             }
             this.evalCallback(this._cfg.onvalidate);
             if (arg.popup && (this._cfg.error)) {// show errortip onfocus
-                this._validationPopupShow(this);
+                this._validationPopupShow();
             } else { // dispose of error tip
-                this._validationPopupHide(this);
+                this._validationPopupHide();
 
             }
         },
@@ -318,7 +318,7 @@ Aria.classDefinition({
                     this.changeProperty("error", false);
                     if (!(this._cfg.formatError && this._cfg.formatErrorMessages.length)
                             || (this._cfg.error && this._cfg.errorMessages.length)) {
-                        this._validationPopupHide(this);
+                        this._validationPopupHide();
                     }
                     if (this._cfg.onchange) {
                         this.evalCallback(this._cfg.onchange);
