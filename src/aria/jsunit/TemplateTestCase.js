@@ -350,13 +350,13 @@ Aria.classDefinition({
         },
 
         /**
-         * Get the icon of a Multi-Select Widget
+         * Get the expand button of a Multi-Select, Autocomplete or any other dropdown-based widget
          * @param {String} templateWidgetID
          * @return {HTMLElement} Returns directly the input element from the DOM, or null if the ID was not found or
          * didn't correspond to an input field
          */
-        getMultiSelectIcon : function (msWidgetID) {
-            var widget = this.getWidgetInstance(msWidgetID);
+        getExpandButton : function (templateWidgetID) {
+            var widget = this.getWidgetInstance(templateWidgetID);
 
             // force widget initialization
             widget.getDom();
@@ -366,6 +366,16 @@ Aria.classDefinition({
             } else {
                 return null;
             }
+        },
+
+        /**
+         * Get the icon of a Multi-Select Widget (alias to getExpandButton for backward compat)
+         * @param {String} templateWidgetID
+         * @return {HTMLElement} Returns directly the input element from the DOM, or null if the ID was not found or
+         * didn't correspond to an input field
+         */
+        getMultiSelectIcon : function (msWidgetID) {
+            return this.getExpandButton(msWidgetID);
         },
 
         /**

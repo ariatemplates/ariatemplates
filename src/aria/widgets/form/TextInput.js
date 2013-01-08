@@ -1189,13 +1189,14 @@ Aria.classDefinition({
         },
 
         /**
-         * If enabled, autoselect the widget text setting the caret position to the whole input value.
+         * If enabled, autoselect the widget text, setting the caret position to the whole input value.
          * @protected
          */
         _autoselect : function () {
-            if (this._firstFocus && this._cfg.autoselect) {
-                // this allow to click again and put the cursor at a given
-                // position
+            // this._cfg can be null due to the following execution chain: native focus -> native blur -> AutoComplete
+            // bound value update in the data model -> bindRefreshTo section refresh
+            if (this._firstFocus && this._cfg && this._cfg.autoselect) {
+                // this allow to click again and put the cursor at a given position
                 this._firstFocus = false;
                 var field = this.getTextInputField();
                 var start = 0;

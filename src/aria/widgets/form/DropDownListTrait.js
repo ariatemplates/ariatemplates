@@ -105,7 +105,7 @@ Aria.classDefinition({
          */
         _keyPressed : function (evt) {
             if (!this._hasFocus) {
-                this.focus();
+                this.focus(null, true);
                 this._handleKey({
                     charCode : evt.charCode,
                     keyCode : evt.keyCode
