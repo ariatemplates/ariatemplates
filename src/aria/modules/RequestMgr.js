@@ -353,11 +353,13 @@ Aria.classDefinition({
          */
         _callAsyncRequest : function (args) {
             var req = args.req;
-            if (args.requestHandler == null) {
-                args.requestHandler = this.__getRequestHandler();
+            var handler = args.requestHandler;
+            if (handler == null) {
+                handler = this.__getRequestHandler();
             }
+
             req.data = (req.data == null && req.method == "POST")
-                    ? args.requestHandler.prepareRequestBody(req.jsonData, req.requestObject)
+                    ? handler.prepareRequestBody(req.jsonData, req.requestObject)
                     : req.data;
 
             // call the server
@@ -388,12 +390,15 @@ Aria.classDefinition({
                         id : args.id,
                         session : args.session,
                         actionQueuing : args.actionQueuing,
-                        requestHandler : args.requestHandler
+                        requestHandler : handler
                     }
                 }
             };
             if (req.postHeader) {
                 requestObject.postHeader = req.postHeader;
+            }
+            if (handler.expectedResponseType) {
+                requestObject.expectedResponseType = handler.expectedResponseType;
             }
             aria.core.IO.asyncRequest(requestObject);
         },
@@ -420,7 +425,7 @@ Aria.classDefinition({
                 requestObject : requestObject,
                 responseXML : res.responseXML,
                 responseText : res.responseText,
-                responseJSON : res.responseJson,
+                responseJSON : res.responseJSON,
                 status : res.status, // http status (e.g.: 404)
                 error : res.error, // contains error message
 
@@ -451,7 +456,10 @@ Aria.classDefinition({
             if (res.error) {
                 handler.processFailure({
                     error : res.error,
-                    status : res.status
+                    status : res.status,
+                    responseXML : res.responseXML,
+                    responseText : res.responseText,
+                    responseJSON : res.responseJSON
                 }, {
                     url : args.res.url,
                     session : args.session,
@@ -465,7 +473,7 @@ Aria.classDefinition({
                 handler.processSuccess({
                     responseXML : res.responseXML,
                     responseText : res.responseText,
-                    responseJSON : res.responseJson
+                    responseJSON : res.responseJSON
                 }, {
                     url : res.url,
                     session : args.session,

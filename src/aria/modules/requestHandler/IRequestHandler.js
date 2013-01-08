@@ -16,10 +16,9 @@
 /**
  * Interface exposed from the Request Manager to the application. It is used by the request manager handler the response
  * of the request
- * @class aria.modules.requestHandler.IRequestHandler
  */
 Aria.interfaceDefinition({
-    $classpath : 'aria.modules.requestHandler.IRequestHandler',
+    $classpath : "aria.modules.requestHandler.IRequestHandler",
     $interface : {
         /**
          * Handles the response from the server, and call the associated callback
@@ -52,6 +51,14 @@ Aria.interfaceDefinition({
          * @param {aria.modules.RequestBeans.RequestObject} requestObject
          * @return {String} Stringified representation of the input data
          */
-        serializeRequestData : function (jsonData, requestObject) {}
+        serializeRequestData : function (jsonData, requestObject) {},
+
+        /**
+         * Expected response type. This parameter, if specified, is added on every request handled by this handler
+         * @type String
+         */
+        expectedResponseType : {
+            $type : "Object"
+        }
     }
 });

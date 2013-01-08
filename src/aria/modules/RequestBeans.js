@@ -116,6 +116,18 @@ Aria.beanDefinitions({
                 "error" : {
                     $type : "json:String",
                     $description : "Error message from the framework"
+                },
+                "responseText" : {
+                    $type : "json:String",
+                    $description : "Response from the server as a string."
+                },
+                "responseXML" : {
+                    $type : "json:ObjectRef",
+                    $description : "If available, response as an XML tree."
+                },
+                "responseJSON" : {
+                    $type : "json:ObjectRef",
+                    $description : "If available, response as a javascript object."
                 }
             }
         },

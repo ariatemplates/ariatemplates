@@ -15,7 +15,6 @@
 
 /**
  * Json handler, that handles JSON as weel as a javascript object retrieved in responseJSON
- * @class aria.modules.test.JSONRequestHandler
  */
 Aria.classDefinition({
     $classpath : "aria.modules.requestHandler.JSONRequestHandler",
@@ -25,6 +24,12 @@ Aria.classDefinition({
         PARSING_ERROR : "Response text could not be evaluated as JSON."
     },
     $prototype : {
+        /**
+         * Expect JSON as response type
+         * @type String
+         */
+        expectedResponseType : "json",
+
         /**
          * Handles the response from the server, and call the associated callback
          * @param {aria.modules.RequestBeans.SuccessResponse} successResponse

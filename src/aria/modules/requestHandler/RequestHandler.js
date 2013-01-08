@@ -15,7 +15,6 @@
 
 /**
  * Base class for request handler, that handles HTTP errors
- * @class aria.modules.test.RequestHandler
  */
 Aria.classDefinition({
     $classpath : "aria.modules.requestHandler.RequestHandler",
@@ -75,7 +74,11 @@ Aria.classDefinition({
 
             // resource forwarded to the callback
             var res = {
-                response : null,
+                response : {
+                    responseText : failureResponse.responseText,
+                    responseJSON : failureResponse.responseJSON,
+                    responseXML :  failureResponse.responseXML
+                },
                 error : true
             };
 
