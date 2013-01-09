@@ -14,14 +14,15 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.html.HTMLTestSuite",
+    $classpath : "test.aria.html.element.ElementTestSuite",
     $extends : "aria.jsunit.TestSuite",
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
-        this.addTests("test.aria.html.element.ElementTestSuite");
-        this.addTests("test.aria.html.controllers.suggestions.ResourcesHandlerTest");
-        this.addTests("test.aria.html.textinput.TextInputTestSuite");
-        this.addTests("test.aria.html.checkbox.CheckBoxTest");
+        this.addTests("test.aria.html.element.ElementTest");
+        this.addTests("test.aria.html.element.ElementBindingsTest");
+        this.addTests("test.aria.html.element.ElementEventsTest");
+        this.addTests("test.aria.html.element.EventsArrayTest");
+        this.addTests("test.aria.html.element.ChainListenerTest");
     }
 });

@@ -45,7 +45,7 @@
             cfg.attributes.type = "checkbox";
             cfg.on = cfg.on || {};
 
-            this._chainListener(cfg.on, context, 'click', {
+            this._chainListener(cfg.on, 'click', {
                 fn : bidirectionalClickBinding,
                 scope : this
             });

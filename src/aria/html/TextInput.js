@@ -27,11 +27,16 @@
     /**
      * Callback for the type event timer.
      * @private
-     * @param {aria.core.CfgBeans.Callback} callback User defined type callback
+     * @param {Array} callbackArray Array whose entries are of type aria.core.CfgBeans.Callback. They are the handlers
+     * for the type event.
      */
-    function typeCallback (callback) {
+    function typeCallback (callbackArray) {
         this._typeCallback = null;
-        callNormalizedCallback(callback, this._domElt.value);
+        var callback;
+        for (var i = 0, count = callbackArray.length; i < count; i++) {
+            callback = this.$normCallback.call(this._context._tpl, callbackArray[i]);
+            callNormalizedCallback(callback, this._domElt.value);
+        }
     }
 
     /**
@@ -39,21 +44,16 @@
      * being the fact that on keydown the input has still the previous value. In the callback we'll see the correct text
      * input value. This function should have the same scope as the widget instance.
      * @param {aria.DomEvent} event keydown event
-     * @param {Object} callbacks Original, normalized callbacks for type and keydown events
+     * @param {Array} callbackArray Array of callbacks for the type event
      * @private
      */
-    function keyDownToType (event, callbacks) {
+    function keyDownToType (event, callbackArray) {
         this._typeCallback = aria.core.Timer.addCallback({
             fn : typeCallback,
             scope : this,
             delay : 12,
-            args : callbacks.type
+            args : callbackArray
         });
-
-        // callbacks.keydown should be called last because it might trigger refreshes/disposal
-        if (callbacks.keydown) {
-            return callNormalizedCallback(callbacks.keydown, event);
-        }
     }
 
     /**
@@ -170,7 +170,7 @@
                 cfg.attributes.placeholder = cfg.placeholder;
             }
 
-            this._registerListeners(cfg, context);
+            this._registerListeners(cfg);
 
             /**
              * Wheter or not this widget has a 'on type' callback
@@ -284,26 +284,13 @@
              */
             _registerType : function (listeners, context) {
                 if (listeners.type) {
-                    if (listeners.keydown) {
-                        var normalizedKeydown = this.$normCallback.call(context._tpl, listeners.keydown);
-                    }
-
-                    var normalizedType = this.$normCallback.call(context._tpl, listeners.type);
-                    listeners.keydown = {
+                    this._chainListener(listeners, "keydown", {
                         fn : keyDownToType,
                         scope : this,
-                        args : {
-                            type : normalizedType,
-                            keydown : normalizedKeydown
-                        }
-                    };
-
+                        args : aria.utils.Type.isArray(listeners.type) ? listeners.type : [listeners.type]
+                    });
                     delete listeners.type;
-
-                    return true;
                 }
-
-                return false;
             },
 
             /**
@@ -356,34 +343,33 @@
             /**
              * Add special listeners on top of the ones specified in configuration.
              * @param {aria.html.beans.TextInputCfg.Properties} cfg Widget configuration.
-             * @param {aria.templates.TemplateCtxt} context Template context.
              * @protected
              */
-            _registerListeners : function (cfg, context) {
+            _registerListeners : function (cfg) {
                 var listeners = cfg.on;
 
-                this._chainListener(listeners, context, "blur", {
+                this._chainListener(listeners, "blur", {
                     fn : bidirectionalBlurBinding,
                     scope : this
                 });
 
                 if ((!_placeholderSupported && cfg.placeholder) || cfg.autoselect) {
-                    this._chainListener(listeners, context, "focus", {
+                    this._chainListener(listeners, "focus", {
                         fn : focusBinding,
                         scope : this
                     });
 
-                    this._chainListener(listeners, context, "click", {
+                    this._chainListener(listeners, "click", {
                         fn : clickBinding,
                         scope : this
                     });
 
-                    this._chainListener(listeners, context, "keydown", {
+                    this._chainListener(listeners, "keydown", {
                         fn : keyDownCallback,
                         scope : this
                     });
 
-                    this._chainListener(listeners, context, "type", {
+                    this._chainListener(listeners, "type", {
                         fn : this._setPlaceholder,
                         scope : this
                     });
