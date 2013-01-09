@@ -36,7 +36,7 @@
         $classpath : "aria.html.Element",
         $extends : "aria.widgetLibs.BindableWidget",
         $dependencies : ["aria.html.beans.ElementCfg", "aria.core.JsonValidator", "aria.utils.Html", "aria.utils.Json",
-                "aria.utils.Delegate", "aria.templates.DomEventWrapper", "aria.utils.Dom"],
+                "aria.utils.Delegate", "aria.templates.DomEventWrapper", "aria.utils.Dom", "aria.utils.Type"],
         $statics : {
             INVALID_BEAN : "Invalid propety '%1' in widget's '%2' configuration."
         },
@@ -105,13 +105,19 @@
              * @protected
              */
             _normalizeCallbacks : function () {
-                var eventListeners = this._cfg.on, hasListeners = false;
+                var eventListeners = this._cfg.on, hasListeners = false, listArray;
 
                 for (var listener in eventListeners) {
                     if (eventListeners.hasOwnProperty(listener)) {
                         hasListeners = true;
-
-                        eventListeners[listener] = this.$normCallback.call(this._context._tpl, eventListeners[listener]);
+                        listArray = eventListeners[listener];
+                        if (!aria.utils.Type.isArray(listArray)) {
+                            listArray = [listArray];
+                        }
+                        for (var i = 0, listCount = listArray.length; i < listCount; i++) {
+                            listArray[i] = this.$normCallback.call(this._context._tpl, listArray[i]);
+                        }
+                        eventListeners[listener] = listArray;
                     }
                 }
 
@@ -131,13 +137,17 @@
              * @protected
              */
             _delegate : function (event) {
-                var type = event.type, callback = this._cfg.on[type];
-
-                if (callback) {
+                var type = event.type, callbackArray = this._cfg.on[type], callback, returnValue;
+                if (callbackArray) {
                     var wrapped = new aria.templates.DomEventWrapper(event);
-                    var returnValue = callback.fn.call(callback.scope, wrapped, callback.args);
+                    for (var i = 0, listCount = callbackArray.length; i < listCount; i++) {
+                        callback = callbackArray[i];
+                        returnValue = callback.fn.call(callback.scope, wrapped, callback.args);
+                        if (returnValue === false) {
+                            break;
+                        }
+                    }
                     wrapped.$dispose();
-
                     return returnValue;
                 }
             },
@@ -222,25 +232,23 @@
              * Add a listener for an event. It will be called before an already registered event, if any.
              * @protected
              * @param {aria.html.beans.ElementCfg.Properties.$properties.on} listeners Map of listeners
-             * @param {aria.templates.TemplateCtxt} context Template context
              * @param {String} eventType Type of the event
              * @param {aria.core.CfgBeans.Callback} callback listener to chain
+             * @param {Boolean} after True if the listener has to be executed after all the other listeners. Otherwise,
+             * it will be executed before
              */
-            _chainListener : function (listeners, context, eventType, callback) {
-                var normalized = null;
-                if (listeners[eventType]) {
-                    normalized = this.$normCallback.call(context._tpl, listeners[eventType]);
+            _chainListener : function (listeners, eventType, callback, after) {
+                var listArray = listeners[eventType] || [];
+                if (!aria.utils.Type.isArray(listArray)) {
+                    listArray = [listArray];
                 }
 
-                listeners[eventType] = {
-                    fn : function (event) {
-                        this.$callback(callback, event);
-                        if (normalized) {
-                            normalized.fn.call(normalized.scope, event, normalized.args);
-                        }
-                    },
-                    scope : this
-                };
+                if (after) {
+                    listArray.push(callback);
+                } else {
+                    listArray.splice(0, 0, callback);
+                }
+                listeners[eventType] = listArray;
             }
         }
     });

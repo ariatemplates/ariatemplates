@@ -48,7 +48,7 @@ Aria.beanDefinitions({
                 },
                 "on" : {
                     $type : "json:Object",
-                    $description : "List of registered events and their callbacks. Values should match bean aria.widgetLibs.CommonBeans.Callback",
+                    $description : "List of registered events and their callbacks. Values can be single objects that match the bean aria.widgetLibs.CommonBeans.Callback or an array of them.",
                     $default : {},
                     $restricted : false
                 }
