@@ -52,8 +52,16 @@ Aria.classDefinition({
                     } else if (aria.templates.DomElementWrapper.attributesWhiteList.test(key)) {
                         var value = stringUtil.encodeForQuotedHTMLAttribute(attribute);
                         var got = div.getAttribute(key);
-                        this.assertEquals(got, value, "The attribute " + key + " should be equals to " + value
-                                + " got " + got);
+
+                        if (key === "style") {
+                            // IE messes up pretty badly with style tags
+                            got = got.toLowerCase();
+                            // just add a semicolon if missing
+                            if (got.charAt(got.length - 1) !== ";") {
+                                got += ";"
+                            }
+                        }
+                        this.assertEquals(got, value, "The attribute " + key + " should be " + value + " got " + got);
                     }
                 }
             }
@@ -83,7 +91,7 @@ Aria.classDefinition({
                     data3 : "data3-value"
                 },
                 dir : "ltr",
-                disabled : "false",
+                disabled : "disabled",
                 height : "100px",
                 lang : "en-US",
                 maxlength : "10",
@@ -95,7 +103,7 @@ Aria.classDefinition({
                 rowspan : "2",
                 selected : "myValue",
                 size : "100px",
-                style : "border: 1px solid black;",
+                style : "color: black;",
                 title : "myElement",
                 type : "text",
                 valign : "middle",
