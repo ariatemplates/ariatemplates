@@ -57,6 +57,7 @@ Aria.classDefinition({
             // robot actions:
             "initRobot" : 0,
             "mouseMove" : 1,
+            "smoothMouseMove" : 3,
             "absoluteMouseMove" : 1,
             "mousePress" : 1,
             "mouseRelease" : 1,
@@ -215,7 +216,7 @@ Aria.classDefinition({
         },
 
         move : function (options, from, cb) {
-            var duration = options.duration || 1000;
+            var duration = options.duration || 2000;
             var to = options.to;
             to = this._resolvePosition(to);
             from = from ? this._resolvePosition(from) : to;
@@ -223,17 +224,7 @@ Aria.classDefinition({
                 // error is already logged
                 return;
             }
-            var seq = [];
-            for (var i = 0, l = duration / 40; i < l; i++) {
-                // note that duration is approximative
-                var fraction = i / l;
-                seq.push(["mouseMove", {
-                            x : (1 - fraction) * from.x + fraction * to.x,
-                            y : (1 - fraction) * from.y + fraction * to.y
-                        }]);
-            }
-            seq.push(["mouseMove", to]);
-            this.execute(seq, cb);
+            this._robot.smoothMouseMove(from, to, duration, cb);
         },
 
         drag : function (options, from, cb) {
@@ -296,8 +287,8 @@ Aria.classDefinition({
             if (aria.utils.Type.isHTMLElement(geometry)) {
                 res = domUtils.getGeometry(geometry);
                 // TODO: check if the item is really visible
-            } else if (geometry.hasOwnProperty("x") && geometry.hasOwnProperty("y") && geometry.hasOwnProperty("width")
-                    && geometry.hasOwnProperty("height")) {
+            } else if (geometry.hasOwnProperty("x") && geometry.hasOwnProperty("y") &&
+                    geometry.hasOwnProperty("width") && geometry.hasOwnProperty("height")) {
                 res = geometry;
             } else {
                 // FIXME: log error correctly
