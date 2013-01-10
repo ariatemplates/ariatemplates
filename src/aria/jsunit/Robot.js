@@ -22,10 +22,11 @@
  */
 Aria.classDefinition({
     $classpath : 'aria.jsunit.Robot',
-    $dependencies : ['aria.utils.Dom', 'aria.utils.AriaWindow'],
+    $dependencies : ['aria.utils.Dom', 'aria.utils.AriaWindow', 'aria.utils.StringCallback'],
     $singleton : true,
     $constructor : function () {
         this._robotInitialized = false;
+        this._initStringCb = null;
         aria.utils.AriaWindow.$on({
             'unloadWindow' : this._reset,
             scope : this
@@ -39,8 +40,6 @@ Aria.classDefinition({
         "appletInitialized" : "Raised when the applet is initialized."
     },
     $statics : {
-        INIT_CALLBACK_NAME : "AriaRobotInitCallback",
-
         // Button keys:
         BUTTON1_MASK : 16,
         BUTTON2_MASK : 8,
@@ -268,8 +267,15 @@ Aria.classDefinition({
 
                 var initCallbackParam = document.createElement("param");
                 initCallbackParam.setAttribute("name", "initCallback");
-                initCallbackParam.setAttribute("value", this.INIT_CALLBACK_NAME + "();");
-                Aria.$window[this.INIT_CALLBACK_NAME] = this._robotInitCallback;
+                if (!this._initStringCb) {
+                    this._initStringCb = aria.utils.StringCallback.createStringCallback({
+                        scope : this,
+                        fn : this._callCallback,
+                        args : this._raiseInitEvent,
+                        resIndex : -1
+                    });
+                }
+                initCallbackParam.setAttribute("value", this._initStringCb);
                 applet.appendChild(initCallbackParam);
 
                 // insert the applet at a specific position (for correct coordinates computation)
@@ -299,19 +305,9 @@ Aria.classDefinition({
             }
         },
 
-        _robotInitCallback : function () {
-            // note that this method will not be called with the aria.jsunit.Robot scope
-            var robot = aria.jsunit.Robot;
-            aria.core.Timer.addCallback({
-                scope : robot,
-                fn : robot._raiseInitEvent,
-                delay : 1
-            });
-        },
-
         _raiseInitEvent : function () {
             this._robotInitialized = true;
-            Aria.$window[this.INIT_CALLBACK_NAME] = null; // note that using delete on the window object fails in IE
+            this._initStringCb = null;
             this.$raiseEvent("appletInitialized");
         },
 
@@ -321,7 +317,6 @@ Aria.classDefinition({
                 var window = Aria.$window;
                 window.document.body.removeChild(applet);
                 if (!this._robotInitialized) {
-                    window[this.INIT_CALLBACK_NAME] = null; // note that using delete on the window object fails in IE
                     this.$unregisterListeners();
                 } else {
                     this._robotInitialized = false;
@@ -371,6 +366,36 @@ Aria.classDefinition({
             this._callCallback(args.cb);
         },
 
+        smoothMouseMove : function (from, to, duration, cb) {
+            var viewport = aria.utils.Dom._getViewportSize();
+            if (from.x < 0 || from.y < 0 || from.x > viewport.width || from.y > viewport.height || to.x < 0 ||
+                    to.y < 0 || to.x > viewport.width || to.y > viewport.height) {
+                // FIXME: log error correctly
+                this.$logWarn("smoothMouseMove from or to position outside of the viewport.");
+                // return;
+            }
+            this._updateAppletPosition({
+                fn : this._smoothMouseMoveCb,
+                args : {
+                    from : from,
+                    to : to,
+                    duration : duration,
+                    cb : cb
+                }
+            });
+        },
+
+        _smoothMouseMoveCb : function (unused, args) {
+            var from = args.from;
+            var to = args.to;
+            this.applet.smoothMouseMove(from.x, from.y, to.x, to.y, args.duration, aria.utils.StringCallback.createStringCallback({
+                fn : this._callCallback,
+                scope : this,
+                args : args.cb,
+                resIndex : -1
+            }));
+        },
+
         mousePress : function (buttons, cb) {
             this.applet.mousePress(buttons);
             this._callCallback(cb);
@@ -398,8 +423,8 @@ Aria.classDefinition({
 
         screenCapture : function (geometry, imageName, cb) {
             var viewport = aria.utils.Dom._getViewportSize();
-            if (geometry.x < 0 || geometry.y < 0 || geometry.width < 0 || geometry.height < 0
-                    || geometry.x + geometry.width > viewport.width || geometry.y + geometry.height > viewport.height) {
+            if (geometry.x < 0 || geometry.y < 0 || geometry.width < 0 || geometry.height < 0 ||
+                    geometry.x + geometry.width > viewport.width || geometry.y + geometry.height > viewport.height) {
                 // FIXME: log error correctly
                 this.$logError("Screen capture area outside of the viewport.");
                 return;
@@ -437,7 +462,7 @@ Aria.classDefinition({
                 fn : this.$callback,
                 scope : this,
                 args : cb,
-                delay : 10
+                delay : 50
             });
         },
 
