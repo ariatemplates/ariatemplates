@@ -180,6 +180,10 @@ Aria.classDefinition({
             this.setProperty("size2", size2);
             this._splitPanel1.style[dimType] = size1 + "px";
             this._splitPanel2.style[dimType] = size2 + "px";
+            if (dimType == "width") { // IE9 sometimes shows full-width scrollbars even on 0px-width containers!
+                this._splitPanel1.style.overflowY = (size1 <= 16) ? "hidden" : "";
+                this._splitPanel2.style.overflowY = (size2 <= 16) ? "hidden" : "";
+            }
             this._splitBar.style[dimMode] = size1 + "px";
             this._splitBarProxy.style[dimMode] = size1 + "px";
             this._context.$refresh({
