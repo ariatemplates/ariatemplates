@@ -34,7 +34,8 @@ Aria.classDefinition({
          * @protected
          */
         this._icon = new aria.widgets.Icon({
-            icon : cfg.icon
+            icon : cfg.icon,
+            sourceImage : cfg.sourceImage
         }, ctxt, lineNumber);
     },
     $destructor : function () {

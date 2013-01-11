@@ -63,8 +63,16 @@ Aria.classDefinition({
          * @param {aria.templates.MarkupWriter} out the html output writer
          */
         writeMarkup : function (out) {
-            var cfg = this._cfg, id = this._domId, tooltip = cfg.tooltip, iconInfo;
-            iconInfo = this._getIconInfo(cfg.icon);
+            var cfg = this._cfg;
+            var id = this._domId;
+            var tooltip = cfg.tooltip;
+            var sourceImage = cfg.sourceImage;
+            var iconInfo = sourceImage ? {
+                "imageURL" : sourceImage.path,
+                "width" : sourceImage.width,
+                "height" : sourceImage.height
+            } : this._getIconInfo(cfg.icon);
+
             if (!iconInfo) {
                 tooltip = this.ERROR_ICON_TITLE.replace('%', cfg.icon);
                 iconInfo = this._getErrIcon();
@@ -156,10 +164,13 @@ Aria.classDefinition({
             } else if (iconInfo.margins != null) {
                 margins = iconInfo.margins;
             }
-
-            return [margins, ';padding:0;background-position:-', iconInfo.iconLeft, 'px -', iconInfo.iconTop,
-                    'px;width:', iconInfo.width, 'px;height:', iconInfo.height, 'px;', vAlign].join('');
-
+            if (cfg.sourceImage) {
+                return [margins, ';padding:0;background:url(', iconInfo.imageURL, ') no-repeat; width:',
+                        iconInfo.width, 'px;height:', iconInfo.height, 'px;', vAlign].join('');
+            } else {
+                return [margins, ';padding:0;background-position:-', iconInfo.iconLeft, 'px -', iconInfo.iconTop,
+                        'px;width:', iconInfo.width, 'px;height:', iconInfo.height, 'px;', vAlign].join('');
+            }
         },
 
         /**
