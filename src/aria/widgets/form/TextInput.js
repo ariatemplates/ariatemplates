@@ -251,6 +251,7 @@ Aria.classDefinition({
                 this.getTextInputField().value = "";
                 this.setHelpText(true);
             } else if (value) {
+                this.setHelpText(false);
                 this.getTextInputField().value = value;
             }
         },
@@ -442,8 +443,12 @@ Aria.classDefinition({
                     && this._cfg.formatErrorMessages.length) {
                 this.changeProperty("invalidText", null);
                 this.changeProperty("formatErrorMessages", []);
+                // setting invalid text to null means we might add helptext, this prevents any value to be applied
+                this.setHelpText(false);
             } else if (report.ok && !performCheckOnly) {
                 this.changeProperty("invalidText", null);
+                // If I get there there are no errors raised by this check, and there were no errors before, meaning the
+                // value is correct, no need to remove the helptext because it won't be set
             }
 
             if (performCheckOnly) {

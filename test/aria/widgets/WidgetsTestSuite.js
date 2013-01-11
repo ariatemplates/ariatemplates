@@ -31,18 +31,6 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.controllers.SelectControllerTest");
         this.addTests("test.aria.widgets.environment.WidgetSettings");
         this.addTests("test.aria.widgets.errorlist.ErrorListControllerTest");
-        this.addTests("test.aria.widgets.form.CheckBoxTest");
-        this.addTests("test.aria.widgets.form.GaugeTest");
-        this.addTests("test.aria.widgets.form.InputTest");
-        this.addTests("test.aria.widgets.form.InputValidationHandlerTest");
-        this.addTests("test.aria.widgets.form.ListControllerTest");
-        this.addTests("test.aria.widgets.form.NumberFieldTest");
-        this.addTests("test.aria.widgets.form.SelectTest");
-        this.addTests("test.aria.widgets.form.TextareaTest");
-        this.addTests("test.aria.widgets.form.TextInputTest");
-        this.addTests("test.aria.widgets.form.multiselect.issue223.MultiSelect");
-        this.addTests("test.aria.widgets.form.multiselect.issue312.Issue312TestSuite");
-        this.addTests("test.aria.widgets.form.autocomplete.issue315.OpenDropDownFromButtonTest");
-        this.addTests("test.aria.widgets.form.datepicker.DatePickerTestSuite");
+        this.addTests("test.aria.widgets.form.FormTestSuite");
     }
 });
