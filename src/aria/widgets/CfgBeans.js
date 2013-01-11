@@ -104,6 +104,17 @@ Aria.beanDefinitions({
             $type : "WidgetCfg",
             $description : "Base config for any widget that can be resized in width and height (by default widgets only support width)",
             $properties : {
+                "bind" : {
+                    $type : "WidgetCfg.bind",
+                    $properties : {
+                        "width" : {
+                            $type : "common:BindingRef"
+                        },
+                        "height" : {
+                            $type : "common:BindingRef"
+                        }
+                    }
+                },
                 "height" : {
                     $type : "json:Integer",
                     $description : "Widget height in pixel - note: some widgets may ignore this property. If negative, the height will be considered as unset and the widget will use the most appropriate height when possible",
@@ -1139,7 +1150,7 @@ Aria.beanDefinitions({
             $description : "Configuration for the ErrorList widget",
             $properties : {
                 "bind" : {
-                    $type : "WidgetCfg.bind",
+                    $type : "ResizableWidgetCfg.bind",
                     $properties : {
                         "messages" : {
                             $type : "common:BindingRef"
@@ -1188,7 +1199,7 @@ Aria.beanDefinitions({
             $description : "Configuration for the Calendar widget",
             $properties : {
                 "bind" : {
-                    $type : "WidgetCfg.bind",
+                    $type : "ResizableWidgetCfg.bind",
                     $properties : {
                         "value" : {
                             $type : "common:BindingRef"
@@ -1393,7 +1404,7 @@ Aria.beanDefinitions({
                     $description : "Function to be called when the user moves the mouse over an item in the list."
                 },
                 "bind" : {
-                    $type : "WidgetCfg.bind",
+                    $type : "ResizableWidgetCfg.bind",
                     $properties : {
                         "selectedValues" : {
                             $type : "common:BindingRef"
@@ -1439,7 +1450,7 @@ Aria.beanDefinitions({
             $description : "The base configuration for the Dialog widget",
             $properties : {
                 "bind" : {
-                    $type : "WidgetCfg.bind",
+                    $type : "DivCfg.bind",
                     $properties : {
                         "visible" : {
                             $type : "common:BindingRef"
@@ -1567,7 +1578,7 @@ Aria.beanDefinitions({
             $description : "The base configuration for the Tab widget",
             $properties : {
                 "bind" : {
-                    $type : "WidgetCfg.bind",
+                    $type : "ResizableWidgetCfg.bind",
                     $properties : {
                         "selectedTab" : {
                             $type : "common:BindingRef"
@@ -1595,7 +1606,7 @@ Aria.beanDefinitions({
             $description : "The base configuration for the Tab widget",
             $properties : {
                 "bind" : {
-                    $type : "WidgetCfg.bind",
+                    $type : "ResizableWidgetCfg.bind",
                     $properties : {
                         "selectedTab" : {
                             $type : "common:BindingRef"
@@ -1721,7 +1732,7 @@ Aria.beanDefinitions({
                     $default : true
                 },
                 "bind" : {
-                    $type : "WidgetCfg.bind",
+                    $type : "ResizableWidgetCfg.bind",
                     $properties : {
                         "size1" : {
                             $type : "common:BindingRef"

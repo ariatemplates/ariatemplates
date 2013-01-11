@@ -319,6 +319,14 @@ Aria.classDefinition({
             } else if (propertyName === "center") {
                 this._cfg.center = newValue;
                 this.updatePosition();
+            } else if (propertyName === "height") {
+                // Resize ourself and then the contained div
+                this.$Container._onBoundPropertyChange.apply(this, arguments);
+                this._div.updateSize(this._cfg);
+            } else if (propertyName === "width") {
+                // Resize ourself and then the contained div
+                this.$Container._onBoundPropertyChange.apply(this, arguments);
+                this._div.updateSize(this._cfg);
             } else {
                 // delegate to parent class
                 this.$Container._onBoundPropertyChange.apply(this, arguments);
