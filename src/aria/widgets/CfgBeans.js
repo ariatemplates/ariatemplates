@@ -946,6 +946,27 @@ Aria.beanDefinitions({
                     $type : "json:String",
                     $description : "The name of the sprite and the icon that is to be used in the form sprite:icon",
                     $default : null
+                },
+                "sourceImage" : {
+                    $type : "json:Object",
+                    $description : "Configuration for custom image",
+                    $properties : {
+                        "path" : {
+                            $type : "json:String",
+                            $description : "Path of the image",
+                            $default : null
+                        },
+                        "width" : {
+                            $type : "json:Integer",
+                            $description : "Width of the image",
+                            $default : 16
+                        },
+                        "height" : {
+                            $type : "json:Integer",
+                            $description : "Height of the image",
+                            $default : 16
+                        }
+                    }
                 }
             }
         },
@@ -1031,6 +1052,27 @@ Aria.beanDefinitions({
                     $type : "json:String",
                     $description : "The name of the sprite and the icon that is to be used in the form sprite:icon",
                     $default : null
+                },
+                "sourceImage" : {
+                    $type : "json:Object",
+                    $description : "Configuration for custom image",
+                    $properties : {
+                        "path" : {
+                            $type : "json:String",
+                            $description : "Path of the image",
+                            $default : null
+                        },
+                        "width" : {
+                            $type : "json:Integer",
+                            $description : "Width of the image",
+                            $default : 16
+                        },
+                        "height" : {
+                            $type : "json:Integer",
+                            $description : "Height of the image",
+                            $default : 16
+                        }
+                    }
                 }
             }
         },

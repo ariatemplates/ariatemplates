@@ -28,7 +28,8 @@
                 "Link.js" : "aria/pack-widgets1.js",
                 "LinkStyle.tpl.css" : "aria/pack-widgets1.js",
                 "SortIndicator.js" : "aria/pack-widgets2.js",
-                "SortIndicatorStyle.tpl.css" : "aria/pack-widgets2.js"
+                "SortIndicatorStyle.tpl.css" : "aria/pack-widgets2.js",
+                "IconButton.js" : "aria/pack-widgets2.js"
             },
             "calendar" : {
                 "*" : "aria/pack-widgets1.js"

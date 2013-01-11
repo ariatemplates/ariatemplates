@@ -34,5 +34,6 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.environment.WidgetSettings");
         this.addTests("test.aria.widgets.errorlist.ErrorListControllerTest");
         this.addTests("test.aria.widgets.form.FormTestSuite");
+        this.addTests("test.aria.widgets.action.iconbutton.issue276.IconButtonTestCase");
     }
 });
