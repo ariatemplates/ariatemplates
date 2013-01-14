@@ -69,42 +69,42 @@ Aria.classDefinition({
 
             // Change a value with listener
             aria.utils.Json.setValue(basket, "apples", 3);
-            this.assertEquals(name, "apple", "Expecting name apple, got " + name);
-            this.assertEquals(value, 3, "Expecting value 3, got " + value);
+            this.assertEquals(name, "apple", "Expecting name %2, got %1");
+            this.assertEquals(value, 3, "Expecting value %2, got %1");
             this.assertTrue(old == null, "Expecting old value null, got " + old);
 
             // Change it again
             aria.utils.Json.setValue(basket, "apples", 0);
-            this.assertEquals(name, "apple", "Expecting name apple, got " + name);
-            this.assertEquals(value, 0, "Expecting value 0, got " + value);
-            this.assertEquals(old, 3, "Expecting old value 3, got " + old);
+            this.assertEquals(name, "apple", "Expecting name %2, got %1");
+            this.assertEquals(value, 0, "Expecting value %2, got %1");
+            this.assertEquals(old, 3, "Expecting old value %2, got %1");
 
             // Change a different value
             aria.utils.Json.setValue(basket, "pears", ["abate"]);
-            this.assertEquals(name, "pear", "Expecting name pear, got " + name);
-            this.assertEquals(value.length, 1, "Expecting value length 1, got " + value.length);
-            this.assertEquals(value[0], "abate", "Expecting value abate, got " + value[0]);
+            this.assertEquals(name, "pear", "Expecting name %2, got %1");
+            this.assertEquals(value.length, 1, "Expecting value length %2, got %1");
+            this.assertEquals(value[0], "abate", "Expecting value %2, got %1");
             this.assertTrue(old == null, "Expecting old value null, got " + old);
 
             // And cahnge again the previous one
             aria.utils.Json.setValue(basket, "apples", {
                 type : "golden"
             });
-            this.assertEquals(name, "apple", "Expecting name apple, got " + name);
-            this.assertEquals(value.type, "golden", "Expecting value golden, got " + value.type);
-            this.assertEquals(old, 0, "Expecting old value 0, got " + old);
+            this.assertEquals(name, "apple", "Expecting name %2, got %1");
+            this.assertEquals(value.type, "golden", "Expecting value %2, got %1");
+            this.assertEquals(old, 0, "Expecting old value %2, got %1");
 
             // Change a value with no listeners
             aria.utils.Json.setValue(shopping.bags[0], "hand", "middle");
-            this.assertEquals(name, "apple", "Expecting name apple, got " + name);
-            this.assertEquals(value.type, "golden", "Expecting value golden, got " + value.type);
-            this.assertEquals(old, 0, "Expecting old value 0, got " + old);
+            this.assertEquals(name, "apple", "Expecting name %2, got %1");
+            this.assertEquals(value.type, "golden", "Expecting value %2, got %1");
+            this.assertEquals(old, 0, "Expecting old value %2, got %1");
 
             // And now one with a listener
             aria.utils.Json.setValue(shopping.bags[1], "content", false);
-            this.assertEquals(name, "sugar", "Expecting name sugar, got " + name);
-            this.assertEquals(value, false, "Expecting value false, got " + value);
-            this.assertEquals(old, null, "Expecting old value null, got " + old);
+            this.assertEquals(name, "sugar", "Expecting name %2, got %1");
+            this.assertEquals(value, false, "Expecting value false, got %1");
+            this.assertEquals(old, null, "Expecting old value null, got %1");
 
             widget.$dispose();
         },

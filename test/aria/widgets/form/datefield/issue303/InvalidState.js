@@ -80,7 +80,7 @@ Aria.classDefinition({
             input.value = "invalid";
             widget._dom_onblur();
 
-            this.assertEquals(input.value, "invalid", "Input should be 'invalid' got '" + input.value + "'");
+            this.assertEquals(input.value, "invalid", "Input value should be %2, got %1.");
 
             // Now try to have a valid value
             var today = new Date();
@@ -90,7 +90,7 @@ Aria.classDefinition({
             input.value = formatted.replace(/\//g, "-");
             widget._dom_onblur();
 
-            this.assertEquals(input.value, formatted, "Input should be '" + formatted + "' got '" + input.value + "'");
+            this.assertEquals(input.value, formatted, "Input value should be %2, got %1.");
 
             widget.$dispose();
         },
@@ -122,7 +122,7 @@ Aria.classDefinition({
             input.value = formatted;
             widget._dom_onblur();
 
-            this.assertEquals(input.value, formatted, "Input should be '" + formatted + "' got '" + input.value + "'");
+            this.assertEquals(input.value, formatted, "Input value should be %2, got %1.");
 
             // Now set another valid date
             var tomorrow = aria.utils.Date.interpret("+1");
@@ -132,7 +132,7 @@ Aria.classDefinition({
             input.value = formatted.replace(/\//g, "-");
             widget._dom_onblur();
 
-            this.assertEquals(input.value, formatted, "Input should be '" + formatted + "' got '" + input.value + "'");
+            this.assertEquals(input.value, formatted, "Input value should be %2, got %1.");
 
             widget.$dispose();
         },
@@ -164,18 +164,18 @@ Aria.classDefinition({
             input.value = formatted;
             widget._dom_onblur();
 
-            this.assertEquals(input.value, formatted, "Input should be '" + formatted + "' got '" + input.value + "'");
+            this.assertEquals(input.value, formatted, "Input value should be %2, got %1.");
 
             // Now set it invalid
             widget._dom_onfocus();
             input.value = "invalid";
             widget._dom_onblur();
 
-            this.assertEquals(input.value, "invalid", "Input should be 'invalid' got '" + input.value + "'");
+            this.assertEquals(input.value, "invalid", "Input value should be %2, got %1.");
             // but we should also check it's style
             var color = aria.utils.Dom.getStyle(input, "color");
             var isBlack = color === "black" || color === "inherit";
-            this.assertTrue(isBlack,"Input should be black got color '" + input.value + "'");
+            this.assertTrue(isBlack, "Input should be black got color '" + input.value + "'");
 
             widget.$dispose();
         }

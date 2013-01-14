@@ -448,7 +448,7 @@ Aria.classDefinition({
                 if (holders.hasOwnProperty(key)) {
                     got = aria.utils.String.substitute(holders[key], "thisString");
 
-                    this.assertEquals(got, holders[key], "Expecting " + holders[key] + ", got " + got);
+                    this.assertEquals(got, holders[key], "Expecting %2, got %1");
                 }
             }
         },
@@ -471,7 +471,7 @@ Aria.classDefinition({
                 if (holders.hasOwnProperty(key)) {
                     got = aria.utils.String.substitute(holders[key], ["thisString", "another"]);
 
-                    this.assertEquals(got, holders[key], "Expecting " + holders[key] + ", got " + got);
+                    this.assertEquals(got, holders[key], "Expecting %2, got %1");
                 }
             }
         },
@@ -493,7 +493,7 @@ Aria.classDefinition({
                 if (holders.hasOwnProperty(key)) {
                     got = aria.utils.String.substitute(holders[key], ["one", "two"]);
 
-                    this.assertEquals(got, holders[key], "Expecting " + holders[key] + ", got " + got);
+                    this.assertEquals(got, holders[key], "Expecting %2, got %1");
                 }
             }
         }

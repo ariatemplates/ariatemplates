@@ -347,8 +347,7 @@ Aria.classDefinition({
                 if (tests.hasOwnProperty(check)) {
                     var got = aria.utils.Number.interpretNumber(check);
 
-                    this.assertEquals(got, tests[check], "Comparing " + check + " expected " + tests[check] + " got "
-                            + got);
+                    this.assertEquals(got, tests[check], "Comparing " + check + " expected %2, got %1");
                 }
             }
         },
@@ -372,8 +371,7 @@ Aria.classDefinition({
                 if (tests.hasOwnProperty(check)) {
                     var got = aria.utils.Number.interpretNumber(check);
 
-                    this.assertEquals(got, tests[check], "Comparing " + check + " expected " + tests[check] + " got "
-                            + got);
+                    this.assertEquals(got, tests[check], "Comparing " + check + " expected %2, got %1");
                 }
             }
         },
@@ -397,8 +395,7 @@ Aria.classDefinition({
                 if (tests.hasOwnProperty(check)) {
                     var got = aria.utils.Number.interpretNumber(check);
 
-                    this.assertEquals(got, tests[check], "Comparing " + check + " expected " + tests[check] + " got "
-                            + got);
+                    this.assertEquals(got, tests[check], "Comparing " + check + " expected %2, got %1");
                 }
             }
         },
@@ -422,8 +419,7 @@ Aria.classDefinition({
                 if (tests.hasOwnProperty(check)) {
                     var got = aria.utils.Number.interpretNumber(check);
 
-                    this.assertEquals(got, tests[check], "Comparing " + check + " expected " + tests[check] + " got "
-                            + got);
+                    this.assertEquals(got, tests[check], "Comparing " + check + " expected %2, got %1");
                 }
             }
         },
@@ -452,8 +448,7 @@ Aria.classDefinition({
                         groupingSeparator : "\\"
                     });
 
-                    this.assertEquals(got, tests[check], "Comparing " + check + " expected " + tests[check] + " got "
-                            + got);
+                    this.assertEquals(got, tests[check], "Comparing " + check + " expected %2, got %1");
                 }
             }
         },
@@ -481,8 +476,7 @@ Aria.classDefinition({
                         groupingSeparator : " "
                     });
 
-                    this.assertEquals(got, tests[check], "Comparing " + check + " expected " + tests[check] + " got "
-                            + got);
+                    this.assertEquals(got, tests[check], "Comparing " + check + " expected %2, got %1");
                 }
             }
         },
@@ -507,8 +501,7 @@ Aria.classDefinition({
                 if (tests.hasOwnProperty(check)) {
                     var got = aria.utils.Number.interpretNumber(check);
 
-                    this.assertEquals(got, tests[check], "Comparing " + check + " expected " + tests[check] + " got "
-                            + got);
+                    this.assertEquals(got, tests[check], "Comparing " + check + " expected %2, got %1");
                 }
             }
         },
@@ -537,8 +530,7 @@ Aria.classDefinition({
                         strictGrouping : false
                     });
 
-                    this.assertEquals(got, tests[check], "Comparing " + check + " expected " + tests[check] + " got "
-                            + got);
+                    this.assertEquals(got, tests[check], "Comparing " + check + " expected %2, got %1");
                 }
             }
         },
