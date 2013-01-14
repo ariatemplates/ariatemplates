@@ -80,7 +80,7 @@ Aria.classDefinition({
             var input = widget.getTextInputField();
 
             var formatted = aria.utils.Date.format(today, widget.controller._pattern);
-            this.assertEquals(input.value, formatted, "Input value should be " + formatted + " got " + input.value);
+            this.assertEquals(input.value, formatted, "Input value should be %2, got %1");
 
             // Now simulate a type
             try {
@@ -130,18 +130,15 @@ Aria.classDefinition({
             var inputTwo = other.getTextInputField();
 
             var formatted = aria.utils.Date.format(today, widget.controller._pattern);
-            this.assertEquals(inputOne.value, formatted, "Input value 1 should be " + formatted + " got '"
-                    + inputOne.value + "'");
-            this.assertEquals(inputTwo.value, formatted, "Input value 2 should be " + formatted + " got '"
-                    + inputTwo.value + "'");
+            this.assertEquals(inputOne.value, formatted, "Input value 1 should be %2, got %1");
+            this.assertEquals(inputTwo.value, formatted, "Input value 2 should be %2, got %1");
 
             // Now simulate a type
             widget._dom_onfocus();
             inputOne.value = "invalid text";
             widget._dom_onblur();
 
-            this.assertEquals(inputTwo.value, "invalid text", "Input value 3 should be 'invalid text' got '"
-                    + inputTwo.value + "'");
+            this.assertEquals(inputTwo.value, "invalid text", "Input value 2 should be %2, got %1");
 
             var tomorrow = aria.utils.Date.interpret("+1");
             var formattedTomorrow = aria.utils.Date.format(tomorrow, widget.controller._pattern);
@@ -151,10 +148,8 @@ Aria.classDefinition({
             widget._dom_onblur();
 
             // Input two should just be the same
-            this.assertEquals(inputOne.value, formattedTomorrow, "Input value 4 should be " + formattedTomorrow
-                    + " got '" + inputOne.value + "'");
-            this.assertEquals(inputTwo.value, formattedTomorrow, "Input value 5 should be " + formattedTomorrow
-                    + " got '" + inputTwo.value + "'");
+            this.assertEquals(inputOne.value, formattedTomorrow, "Input value 1 should be %2, got %1");
+            this.assertEquals(inputTwo.value, formattedTomorrow, "Input value 2 should be %2, got %1");
             // Date might differ on the time
             this.assertTrue(aria.utils.Date.isSameDay(datamodel.value, tomorrow), "Value in data model is not tomorrow");
 
@@ -198,18 +193,16 @@ Aria.classDefinition({
             var formatted = aria.utils.Date.format(tomorrow, widget.controller._pattern);
 
             // I expect to see the invalidText
-            this.assertEquals(inputOne.value, "wrong", "Input value should be 'wrong' got '" + inputOne.value + "'");
-            this.assertEquals(inputTwo.value, "wrong", "Input value should be 'wrong' got '" + inputTwo.value + "'");
+            this.assertEquals(inputOne.value, "wrong", "Input value 1 should be %2, got %1");
+            this.assertEquals(inputTwo.value, "wrong", "Input value 2 should be %2, got %1");
 
             // Now simulate canceling everything
             widget._dom_onfocus();
             inputOne.value = "";
             widget._dom_onblur();
 
-            this.assertEquals(inputOne.value, formatted, "Input value should be '" + formatted + "' got '"
-                    + inputOne.value + "'");
-            this.assertEquals(inputTwo.value, formatted, "Input value 2 should be '" + formatted + "' got '"
-                    + inputTwo.value + "'");
+            this.assertEquals(inputOne.value, formatted, "Input value 1 should be %2, got %1");
+            this.assertEquals(inputTwo.value, formatted, "Input value 2 should be %2, got %1");
 
             widget.$dispose();
             other.$dispose();
@@ -244,18 +237,16 @@ Aria.classDefinition({
             var inputTwo = other.getTextInputField();
 
             // I expect to see the invalidText
-            this.assertEquals(inputOne.value, "wrong", "Input value should be 'wrong' got '" + inputOne.value + "'");
-            this.assertEquals(inputTwo.value, "wrong", "Input value should be 'wrong' got '" + inputTwo.value + "'");
+            this.assertEquals(inputOne.value, "wrong", "Input value 1 should be %2, got %1");
+            this.assertEquals(inputTwo.value, "wrong", "Input value 2 should be %2, got %1");
 
             // Now simulate canceling everything
             widget._dom_onfocus();
             inputOne.value = "";
             widget._dom_onblur();
 
-            this.assertEquals(inputOne.value, "help me!", "Input value 1 should be 'help me!' got '" + inputOne.value
-                    + "'");
-            this.assertEquals(inputTwo.value, "help me!", "Input value 2 should be 'help me!' got '" + inputTwo.value
-                    + "'");
+            this.assertEquals(inputOne.value, "help me!", "Input value 1 should be %2, got %1");
+            this.assertEquals(inputTwo.value, "help me!", "Input value 2 should be %2, got %1");
 
             widget.$dispose();
             other.$dispose();

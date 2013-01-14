@@ -175,17 +175,26 @@
              * @param {String} optMsg optional message to add to the failure description
              */
             assertFalse : function (value, optMsg) {
-                this.assertTrue((value === false), optMsg || ("Expected false. Got : " + value));
+                this.assertTrue((value === false), optMsg || ("Expected false. Got: " + value));
             },
 
             /**
              * AssertEquals: Check that value1 is equal to value2
              * @param {object} value1 the value to compare
              * @param {object} value2 the value to compare
-             * @param {String} optMsg optional message to add to the failure description
+             * @param {String} optMsg optional message to add to the failure description. It can contain placeholders %1
+             * and %2 which will be replaced accordingly with: %1 - value1, %2 - value2.
              */
             assertEquals : function (value1, value2, optMsg) {
-                this.assertTrue((value1 === value2), optMsg || ("Expected : " + value1 + ". Got : " + value2));
+                var msg;
+
+                if (optMsg) {
+                    msg = aria.utils.String.substitute(optMsg, ['"' + value1 + '"', '"' + value2 + '"']);
+                } else {
+                    msg = 'First value: "' + value1 + '" differs from the second: "' + value2 + '".';
+                }
+
+                this.assertTrue((value1 === value2), msg);
             },
 
             /**
@@ -193,9 +202,13 @@
              * @param {object} value1 the value to compare
              * @param {object} value2 the value to compare
              * @param {String} optMsg optional message to add to the failure description
+             * @param {String} optAssertId optional ID to quickly locate the failed assertion (in case of many
+             * assertions with the same, or default, message). Could be e.g. a line where the assertion is put at
+             * creation time.
              */
-            assertNotEquals : function (value1, value2, optMsg) {
-                this.assertTrue((value1 !== value2), optMsg || ("Expected : " + value1 + ". Got : " + value2));
+            assertNotEquals : function (value1, value2, optMsg, optAssertId) {
+                var msg = optMsg || ("First and second value shouldn't be equal but they are both equal to: " + value1);
+                this.assertTrue((value1 !== value2), msg);
             },
 
             /**
@@ -302,6 +315,12 @@
              * @param {String} optMsg optional message to add to the failure description
              */
             assertJsonEquals : function (obj1, obj2, optMsg) {
+                if (!optMsg) {
+                    var s1 = aria.utils.Json.convertToJsonString(obj1);
+                    var s2 = aria.utils.Json.convertToJsonString(obj2);
+                    optMsg = "JSON comparison failed. First object: <code>" + s1
+                            + "</code> differs from the second: <code>" + s2 + "</code>.";
+                }
                 this.assertTrue(aria.utils.Json.equals(obj1, obj2), optMsg);
             },
 

@@ -51,10 +51,8 @@ Aria.classDefinition({
 
                 var suggestions = controller.data.suggestions;
                 this.assertEquals(suggestions.length, 2, "ByInstance should have two suggestions");
-                this.assertEquals(suggestions[0], "ByInstance-", "Suggestion 0 expecting ByInstance- got "
-                        + suggestions[0]);
-                this.assertEquals(suggestions[1], "ByInstance-suggestion", "Suggestion 1 expecting ByInstance-suggestion got "
-                        + suggestions[1]);
+                this.assertEquals(suggestions[0], "ByInstance-", "Suggestion 0 expecting %2, got %1");
+                this.assertEquals(suggestions[1], "ByInstance-suggestion", "Suggestion 1 expecting %2, got %1");
 
                 controller.$dispose();
 
@@ -93,10 +91,8 @@ Aria.classDefinition({
 
                 var suggestions = controller.data.suggestions;
                 this.assertEquals(suggestions.length, 2, "ByClasspath should have two suggestions");
-                this.assertEquals(suggestions[0], "ByClasspath-", "Suggestion 0 expecting ByClasspath- got "
-                        + suggestions[0]);
-                this.assertEquals(suggestions[1], "ByClasspath-suggestion", "Suggestion 1 expecting ByClasspath-suggestion got "
-                        + suggestions[1]);
+                this.assertEquals(suggestions[0], "ByClasspath-", "Suggestion 0 expecting %2, got %1");
+                this.assertEquals(suggestions[1], "ByClasspath-suggestion", "Suggestion 1 expecting %2, got %1");
 
                 controller.$dispose();
 
@@ -134,9 +130,8 @@ Aria.classDefinition({
 
                 var suggestions = controller.data.suggestions;
                 this.assertEquals(suggestions.length, 2, "Dynamic should have two suggestions");
-                this.assertEquals(suggestions[0], "Dynamic-", "Suggestion 0 expecting Dynamic- got " + suggestions[0]);
-                this.assertEquals(suggestions[1], "Dynamic-suggestion", "Suggestion 1 expecting Dynamic-suggestion got "
-                        + suggestions[1]);
+                this.assertEquals(suggestions[0], "Dynamic-", "Suggestion 0 expecting expecting %2, got %1");
+                this.assertEquals(suggestions[1], "Dynamic-suggestion", "Suggestion 1 expecting expecting %2, got %1");
 
                 // Do another getSuggestion just in case, we do have some function rewrite in the class
                 controller.suggestValue("+");
@@ -156,9 +151,8 @@ Aria.classDefinition({
 
                 var suggestions = controller.data.suggestions;
                 this.assertEquals(suggestions.length, 2, "Dynamic should have two suggestions");
-                this.assertEquals(suggestions[0], "Dynamic+", "Suggestion 0 expecting Dynamic+ got " + suggestions[0]);
-                this.assertEquals(suggestions[1], "Dynamic+suggestion", "Suggestion 1 expecting Dynamic+suggestion got "
-                        + suggestions[1]);
+                this.assertEquals(suggestions[0], "Dynamic+", "Suggestion 0 expecting %2, got %1");
+                this.assertEquals(suggestions[1], "Dynamic+suggestion", "Suggestion 1 expecting expecting %2, got %1");
 
                 controller.$dispose();
 
