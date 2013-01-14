@@ -237,10 +237,10 @@ module.exports = function(grunt) {
     grunt.registerTask('buildProdFromTmp', 'removedirs:prod copyProd atmapreader packager verifypackager md5 atmapwriter');
     grunt.registerTask('buildProdFromTmpNoVersion', 'removedirs:prod copyProd atmapreader packager verifypackager atmapwriter');
     grunt.registerTask('release', 'buildTmp buildProdFromTmp');
-    grunt.registerTask('releaseAndStats', 'release gzipStats');
+    grunt.registerTask('releaseAndStats', 'release removedCodeStats gzipStats');
     grunt.registerTask('releaseAndClean', 'release postCleanup');
     grunt.registerTask('releaseAndCleanNoVersion', 'buildTmp buildProdFromTmpNoVersion postCleanup');
-    grunt.registerTask('releaseAndStatsAndClean', 'release gzipStats postCleanup');
+    grunt.registerTask('releaseAndStatsAndClean', 'release removedCodeStats gzipStats postCleanup');
 
     //grunt.registerTask('default', 'buildProdFromTmp'); // for debugging
     //grunt.registerTask('default', 'gzipStats');        // for debugging
