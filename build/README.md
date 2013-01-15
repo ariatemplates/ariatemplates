@@ -8,7 +8,7 @@ folder of our repo.
 
 ## Build the standard release
 
-Just `cd` to the root of AT's repository and type `npm install`.
+Just `cd` to the root of AT's repository and type `npm run-script grunt`.
 
 The releases are then available in subfolders of `build/target`.
 
@@ -19,10 +19,20 @@ The production-ready release is placed in `build/os-production`.
 
 ## Running unit tests
 
-Simply `npm test`. This launches our test suite using `attester`, which runs PhantomJS (headless
+Execute `npm run-script attester`. This launches our test suite using `attester`, which runs PhantomJS (headless
 Webkit) under the hood to perform JavaScript tests.
 
 See more: [https://github.com/ariatemplates/attester](attester).
+
+## JSHint
+
+Execute `npm run-script lint`.
+
+To have lint, then unit tests, then build executed all-at-once, you can use the shortcut `npm test`
+(this is due to constraints of [Travis CI](http://about.travis-ci.org/docs/user/languages/javascript-with-nodejs/),
+which we use for continuous integration builds, which makes only `npm install` and `npm test`
+commands available for execution, and we didn't want to perform build for people using
+Aria Templates via `npm install ariatemplates`).
 
 ## Bump AT's version
 
