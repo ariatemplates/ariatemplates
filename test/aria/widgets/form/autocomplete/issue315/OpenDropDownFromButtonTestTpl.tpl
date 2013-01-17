@@ -1,5 +1,6 @@
 {Template {
-   $classpath : "test.aria.widgets.form.autocomplete.issue315.OpenDropDownFromButtonTestTpl"
+   $classpath : "test.aria.widgets.form.autocomplete.issue315.OpenDropDownFromButtonTestTpl",
+   $dependencies : ["test.aria.widgets.form.autocomplete.issue315.Handler"]
 }}
 
   {macro main()}

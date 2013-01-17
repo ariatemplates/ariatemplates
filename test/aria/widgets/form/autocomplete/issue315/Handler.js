@@ -19,6 +19,8 @@ Aria.classDefinition({
 
         getAllSuggestions : function (cb) {
             this.$callback(cb, []); // the point of this test: handler returns empty suggestion list
+            // logging a message to make sure the method has actually been called
+            this.$logInfo("OpenDropDownFromButtonTest handler message");
         }
     }
 });

@@ -12,10 +12,6 @@ Aria.classDefinition({
         });
     },
     $prototype : {
-        tearDown : function () {
-            aria.core.IO.$unregisterListeners(this);
-        },
-
         runTemplateTest : function () {
             aria.core.Log.getAppenders()[0].setLogs([]);
             var expandButton = this.getExpandButton("ac1");
@@ -26,7 +22,9 @@ Aria.classDefinition({
         },
 
         _openAc : function (evt, args) {
-            this.assertLogsEmpty();
+            var logs = aria.core.Log.getAppenders()[0].getLogs();
+            this.assertEquals(logs.length, 1);
+            this.assertEquals(logs[0].msg, "OpenDropDownFromButtonTest handler message");
             this.notifyTemplateTestEnd();
         }
     }
