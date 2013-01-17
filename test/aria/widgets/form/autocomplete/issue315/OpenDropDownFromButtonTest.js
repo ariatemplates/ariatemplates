@@ -26,7 +26,9 @@ Aria.classDefinition({
         },
 
         _openAc : function (evt, args) {
-            this.assertLogsEmpty();
+            var logs = aria.core.Log.getAppenders()[0].getLogs();
+            this.assertEquals(logs.length, 1);
+            this.assertEquals(logs[0].msg, "OpenDropDownFromButtonTest handler message");
             this.notifyTemplateTestEnd();
         }
     }
