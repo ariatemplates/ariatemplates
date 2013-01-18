@@ -28,8 +28,8 @@
         $classpath : "aria.templates.Section",
         $dependencies : ["aria.utils.Array", "aria.utils.Json", "aria.utils.Delegate",
                 "aria.templates.NavigationManager", "aria.templates.CfgBeans", "aria.utils.Dom", "aria.utils.String",
-                "aria.templates.DomElementWrapper", "aria.utils.Html", "aria.templates.DomEventWrapper", "aria.utils.IdManager",
-                "aria.templates.SectionWrapper"],
+                "aria.templates.DomElementWrapper", "aria.utils.Html", "aria.templates.DomEventWrapper",
+                "aria.utils.IdManager", "aria.templates.SectionWrapper", "aria.utils.Json"],
         $onload : function () {
             idMgr = new aria.utils.IdManager("s");
         },
@@ -37,7 +37,7 @@
             idMgr.$dispose();
             idMgr = null;
         },
-       /**
+        /**
          * Constructor
          * @param {aria.templates.TemplateCtxt} tplCtxt
          * @param {aria.templates.CfgBeans.SectionCfg} configuration of this section (id, type, ...).
@@ -190,6 +190,13 @@
                 }
 
             }
+            var jsonUtils = aria.utils.Json;
+
+            // register bindings for attributes
+            var attributeBindings = (cfg.bind && cfg.bind.attributes) ? cfg.bind.attributes : null;
+            if (attributeBindings) {
+                this.registerBinding(attributeBindings);
+            }
 
             /**
              * DOM type for this section
@@ -203,12 +210,11 @@
              */
             this._domId = domId || (id ? this.tplCtxt.$getId(id) : this._createDynamicId());
 
-             /**
+            /**
              * Id of the section
              * @type String
              */
             this.id = id || "_gen_" + this._domId;
-
 
             /**
              * CSS class for the section
@@ -565,8 +571,7 @@
              * </pre>
              */
             registerBinding : function (bind) {
-
-                // register as listener for the bindings defined for this control:
+                // register as listener for the bindings defined for this section:
                 if (bind) {
                     var jsonChangeCallback = {
                         fn : this._notifyDataChange,
@@ -712,6 +717,28 @@
              * @see initWidget()
              */
             _notifyDataChange : function (res, args) {
+                var attribute, domElt = this.getDom();
+                // determine if multiple attributes have changed
+                if (this._cfg.bind && res.dataName === this._cfg.bind.attributes.to) {
+                    // remove old members
+                    for (attribute in res.oldValue) {
+                        if (!res.newValue[attribute]) {
+                            domElt.removeAttribute(attribute);
+                        }
+                    }
+                    // add new members
+                    for (attribute in res.newValue) {
+                        if (attribute.substr(0, 5) !== "aria:"
+                                && aria.templates.DomElementWrapper.attributesWhiteList.test(attribute)
+                                && res.newValue[attribute] !== res.oldValue[attribute]) {
+                            domElt.setAttribute(attribute, res.newValue[attribute]);
+                        }
+                    }
+                    // check if an individual attribute has changed
+                } else if (aria.templates.DomElementWrapper.attributesWhiteList.test(res.dataName)
+                        && res.newValue !== res.oldValue) {
+                    domElt.setAttribute(res.dataName, res.newValue);
+                }
                 if (!this._initWidgetsDone || !args.tplCtxt._cfg || !args.tplCtxt._cfg.tplDiv) {
                     return;
                 }
