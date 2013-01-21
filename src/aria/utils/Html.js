@@ -19,7 +19,7 @@
 Aria.classDefinition({
     $classpath : "aria.utils.Html",
     $extends : "aria.core.JsObject",
-    $dependencies : ["aria.templates.DomElementWrapper", "aria.utils.String"],
+    $dependencies : ["aria.templates.DomElementWrapper", "aria.utils.String", "aria.utils.Json"],
     $singleton : true,
     $statics : {
         INVALID_CONFIGURATION : "Invalid attribute %1."
@@ -32,6 +32,7 @@ Aria.classDefinition({
          */
         buildAttributeList : function (attributes) {
             var result = [], whiteList = aria.templates.DomElementWrapper.attributesWhiteList;
+            var jsonUtils = aria.utils.Json;
 
             /*
              * This assumes that white list is performed by config validation, but this is only available in debug mode :
@@ -39,7 +40,7 @@ Aria.classDefinition({
              */
             var stringUtil = aria.utils.String;
             for (var key in attributes) {
-                if (attributes.hasOwnProperty(key)) {
+                if (attributes.hasOwnProperty(key) && !jsonUtils.isMetadata(key)) {
                     var attribute = attributes[key];
                     if (key === "classList") {
                         result.push(" class=\"");
@@ -47,7 +48,7 @@ Aria.classDefinition({
                         result.push("\"");
                     } else if (key === "dataset") {
                         for (var dataKey in attribute) {
-                            if (attribute.hasOwnProperty(dataKey) && dataKey.substr(0, 5) != "data-") {
+                            if (attribute.hasOwnProperty(dataKey) && !jsonUtils.isMetadata(dataKey)) {
                                 result.push(" data-", dataKey, "=\"");
                                 result.push(stringUtil.encodeForQuotedHTMLAttribute(attribute[dataKey]));
                                 result.push("\"");
