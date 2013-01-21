@@ -21,7 +21,7 @@ Aria.classDefinition({
     $extends : "aria.jsunit.TestSuite",
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
-
+        this.addTests("test.aria.templates.sectionTest.RefreshSection");
         this.addTests("test.aria.templates.ClassGeneratorTest");
         this.addTests("test.aria.templates.CSSCtxtManagerTest");
         this.addTests("test.aria.templates.CSSCtxtTest");

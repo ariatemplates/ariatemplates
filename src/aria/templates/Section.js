@@ -28,8 +28,8 @@
         $classpath : "aria.templates.Section",
         $dependencies : ["aria.utils.Array", "aria.utils.Json", "aria.utils.Delegate",
                 "aria.templates.NavigationManager", "aria.templates.CfgBeans", "aria.utils.Dom", "aria.utils.String",
-                "aria.templates.DomElementWrapper", "aria.utils.Html", "aria.templates.DomEventWrapper", "aria.utils.IdManager",
-                "aria.templates.SectionWrapper"],
+                "aria.utils.Json", "aria.templates.DomElementWrapper", "aria.utils.Html",
+                "aria.templates.DomEventWrapper", "aria.utils.IdManager", "aria.templates.SectionWrapper"],
         $onload : function () {
             idMgr = new aria.utils.IdManager("s");
         },
@@ -37,7 +37,7 @@
             idMgr.$dispose();
             idMgr = null;
         },
-       /**
+        /**
          * Constructor
          * @param {aria.templates.TemplateCtxt} tplCtxt
          * @param {aria.templates.CfgBeans.SectionCfg} configuration of this section (id, type, ...).
@@ -203,12 +203,11 @@
              */
             this._domId = domId || (id ? this.tplCtxt.$getId(id) : this._createDynamicId());
 
-             /**
+            /**
              * Id of the section
              * @type String
              */
             this.id = id || "_gen_" + this._domId;
-
 
             /**
              * CSS class for the section
@@ -255,7 +254,7 @@
 
             // register binding on this section
             for (var i = 0; binding = bindings[i]; i++) {
-                this.registerBinding(binding);
+                this.registerBinding(binding, this._notifyDataChange);
             }
 
             // register binding to the processing indicator
@@ -273,6 +272,13 @@
              * @type aria.templates.CfgBeans.HtmlAttribute
              */
             this.attributes = cfg.attributes;
+
+            // register binding for attributes
+            var attributeBind = (cfg.bind && cfg.bind.attributes) ? cfg.bind.attributes : null;
+            if (attributeBind) {
+                this.attributes = attributeBind.inside[attributeBind.to];
+                this.registerBinding(attributeBind, this._notifyAttributeChange);
+            }
         },
         $destructor : function () {
 
@@ -556,6 +562,7 @@
              * RegisterBinding is used to add bindings to Templates and sections.
              * @public
              * @param {Object} bind
+             * @param {Object} callback
              *
              * <pre>
              *  {
@@ -564,12 +571,12 @@
              *  }
              * </pre>
              */
-            registerBinding : function (bind) {
+            registerBinding : function (bind, callback) {
 
                 // register as listener for the bindings defined for this control:
                 if (bind) {
                     var jsonChangeCallback = {
-                        fn : this._notifyDataChange,
+                        fn : callback || this._notifyDataChange,
                         scope : this,
                         args : {
                             tplCtxt : this.tplCtxt
@@ -644,17 +651,11 @@
                     return;
                 }
 
-                var processingCallback = {
-                    fn : this._notifyProcessingChange,
-                    scope : this
-                };
-
-                this.__json.addListener(bind.inside, bind.to, processingCallback);
+                this.registerBinding(bind, this._notifyProcessingChange);
 
                 // save for later use and disposal
                 this._processing = {
                     inside : bind.inside,
-                    callback : processingCallback,
                     to : bind.to
                 };
             },
@@ -724,6 +725,44 @@
                     args.tplCtxt.$refresh({
                         filterSection : this.id
                     });
+                }
+            },
+
+            /**
+             * JSON listener callback: called anytime a bindable attribute property has changed on a holder object
+             * defined in one of the bindings
+             * @protected
+             * @param {Object} res Object containing information about the attribute that changed
+             * @see initWidget()
+             */
+            _notifyAttributeChange : function (res) {
+                var attribute, domElt = this.getDom(), deleteAttribute;
+                // determine if multiple attributes have changed
+                if (this._cfg.bind && res.dataName === this._cfg.bind.attributes.to) {
+                    // remove old members
+                    for (attribute in res.oldValue) {
+                        if (res.oldValue.hasOwnProperty(attribute) && !res.newValue[attribute]) {
+                            domElt.removeAttribute(attribute);
+                        }
+                    }
+                    // add new members
+                    for (attribute in res.newValue) {
+                        if (res.newValue.hasOwnProperty(attribute) && !aria.utils.Json.isMetadata(attribute)
+                                && aria.templates.DomElementWrapper.attributesWhiteList.test(attribute)
+                                && res.newValue[attribute] !== res.oldValue[attribute]
+                                && res.newValue[attribute] != null) {
+                            domElt.setAttribute(attribute, res.newValue[attribute]);
+                        }
+                    }
+                    // check if an individual attribute has changed
+                } else if (aria.templates.DomElementWrapper.attributesWhiteList.test(res.dataName)
+                        && res.newValue !== res.oldValue) {
+                    deleteAttribute = (!res.newValue) ? true : false;
+                    if (deleteAttribute) {
+                        domElt.removeAttribute(res.dataName, res.newValue);
+                    } else {
+                        domElt.setAttribute(res.dataName, res.newValue);
+                    }
                 }
             },
 
@@ -1032,11 +1071,6 @@
                         this.__json.removeListener(bind.inside, bind.to, bind.callback, bind.recursive);
                     }
                 }
-
-                var processing = this._processing;
-                if (processing) {
-                    this.__json.removeListener(processing.inside, processing.to, processing.callback);
-                }
             },
 
             /**
@@ -1050,11 +1084,6 @@
                     for (var index = 0, bind; bind = bindings[index]; index++) {
                         this.__json.addListener(bind.inside, bind.to, bind.callback, true, bind.recursive);
                     }
-                }
-
-                var processing = this._processing;
-                if (processing) {
-                    this.__json.addListener(processing.inside, processing.to, processing.callback);
                 }
             },
 
