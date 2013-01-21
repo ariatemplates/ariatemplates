@@ -39,7 +39,7 @@ Aria.classDefinition({
              */
             var stringUtil = aria.utils.String;
             for (var key in attributes) {
-                if (attributes.hasOwnProperty(key)) {
+                if (attributes.hasOwnProperty(key) && key.substr(0, 5) !== "aria:") {
                     var attribute = attributes[key];
                     if (key === "classList") {
                         result.push(" class=\"");
