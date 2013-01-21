@@ -28,7 +28,7 @@
   },
   "devDependencies": {
     "grunt": "0.3.17",
-    "attester": "1.0.1",
+    "attester": "1.0.2",
     "express": "3.0.3",
     "jade": "0.27.7",
     "node-watch": "~0.2.4"
