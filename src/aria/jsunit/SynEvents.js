@@ -64,7 +64,6 @@ Aria.classDefinition({
             "mouseWheel" : 1,
             "keyPress" : 1,
             "keyRelease" : 1,
-            "screenCapture" : 2,
 
             // higher-level actions:
             "ensureVisible" : 1,
@@ -77,7 +76,6 @@ Aria.classDefinition({
             "move" : 2,
             "drag" : 2,
 
-            "elementCapture" : 2,
             "execute" : 1
         },
 
@@ -118,7 +116,7 @@ Aria.classDefinition({
                     scope : this,
                     args : args
                 };
-                var scope = this[methodName] ? this : this._robot;
+                var scope = this[methodName] ? this : (this._robot[methodName] ? this._robot : this._robot.robot);
                 scope[methodName].apply(scope, callParams);
             }
         },
@@ -194,13 +192,13 @@ Aria.classDefinition({
                 if (replaceKey != null) {
                     key = replaceKey;
                 }
-                key = this._robot["VK_" + key];
+                key = this._robot.robot.KEYS["VK_" + key];
                 if (key == null) {
                     this.$logError("Unknown key: %1", [parts[i]]);
                     continue;
                 }
                 if (shift) {
-                    seq.push(["keyPress", this._robot.VK_SHIFT]);
+                    seq.push(["keyPress", this._robot.robot.KEYS.VK_SHIFT]);
                 }
                 if (keyPress) {
                     seq.push(["keyPress", key]);
@@ -209,7 +207,7 @@ Aria.classDefinition({
                     seq.push(["keyRelease", key]);
                 }
                 if (shift) {
-                    seq.push(["keyRelease", this._robot.VK_SHIFT]);
+                    seq.push(["keyRelease", this._robot.robot.KEYS.VK_SHIFT]);
                 }
             }
             this.execute(seq, cb);
@@ -224,7 +222,7 @@ Aria.classDefinition({
                 // error is already logged
                 return;
             }
-            this._robot.smoothMouseMove(from, to, duration, cb);
+            this._robot.robot.smoothMouseMove(from, to, duration, cb);
         },
 
         drag : function (options, from, cb) {
@@ -264,17 +262,6 @@ Aria.classDefinition({
                 return null;
             }
             return res;
-        },
-
-        elementCapture : function (domElt, imageName, cb) {
-            domElt = this._resolveHTMLElement(domElt);
-            if (domElt == null) {
-                // error is already logged
-                return;
-            }
-            // aria.utils.Dom.scrollIntoViewIfNeeded(domElt);
-            var geometry = this._resolveGeometry(domElt);
-            this._robot.screenCapture(geometry, imageName, cb);
         },
 
         _resolveGeometry : function (geometry) {
