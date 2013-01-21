@@ -273,6 +273,12 @@
              * @type aria.templates.CfgBeans.HtmlAttribute
              */
             this.attributes = cfg.attributes;
+
+            // register bindings for attributes
+            var attributeBindings = (cfg.bind && cfg.bind.attributes) ? cfg.bind.attributes : null;
+            if (attributeBindings) {
+                this.registerBinding(attributeBindings);
+            }
         },
         $destructor : function () {
 
@@ -712,6 +718,25 @@
              * @see initWidget()
              */
             _notifyDataChange : function (res, args) {
+              var attribute, domElt = this.getDom();
+              // determine if multiple attributes have changed
+              if (this._cfg.bind && res.dataName === this._cfg.bind.attributes.to) {
+                // remove old members
+                for (attribute in res.oldValue) {
+                  if (!res.newValue[attribute]) {
+                    domElt.removeAttribute(attribute);
+                  }
+                }
+                // add new members
+                for (attribute in res.newValue) {
+                  if (attribute.substr(0, 5) !== "aria:" && aria.templates.DomElementWrapper.attributesWhiteList.test(attribute) && res.newValue[attribute] !== res.oldValue[attribute]) {
+                    domElt.setAttribute(attribute, res.newValue[attribute]);
+                  }
+                }
+                // check if an individual attribute has changed
+                } else if (aria.templates.DomElementWrapper.attributesWhiteList.test(res.dataName) && res.newValue !== res.oldValue) {
+                  domElt.setAttribute(res.dataName, res.newValue);
+                }
                 if (!this._initWidgetsDone || !args.tplCtxt._cfg || !args.tplCtxt._cfg.tplDiv) {
                     return;
                 }
