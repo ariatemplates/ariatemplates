@@ -11,3 +11,5 @@ tests:
    excludes:
    #Excluded because PhantomJS does not support flash:
     - test.aria.core.io.IOXDRTest
+   #Excluded because PhantomJS does not support java robot tests:
+    - test.aria.templates.sectionTest.RefreshSection
