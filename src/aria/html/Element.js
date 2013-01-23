@@ -37,9 +37,6 @@
         $extends : "aria.widgetLibs.BindableWidget",
         $dependencies : ["aria.html.beans.ElementCfg", "aria.core.JsonValidator", "aria.utils.Html", "aria.utils.Json",
                 "aria.utils.Delegate", "aria.templates.DomEventWrapper", "aria.utils.Dom", "aria.utils.Type"],
-        $statics : {
-            INVALID_BEAN : "Invalid propety '%1' in widget's '%2' configuration."
-        },
         $constructor : function (cfg, ctxt, lineNumber) {
             /**
              * Classpath of the configuration bean for this widget. Widgets extending this class can optionally provide

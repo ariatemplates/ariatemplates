@@ -48,10 +48,6 @@ Aria.classDefinition({
         aria.core.AppEnvironment.$unregisterListeners(this);
         this._localDefCfg = null;
     },
-    $statics : {
-        // ERROR MESSAGES:
-        INVALID_LOCALE : "Error: the locale '%1' is not in correct format"
-    },
     $events : {
         "environmentChanged" : {
             description : "Notifies that the application environment has changed."
