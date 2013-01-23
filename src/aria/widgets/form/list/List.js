@@ -166,9 +166,6 @@ Aria.classDefinition({
                     var returns = this.sendKey(event.charCode, event.keyCode);
                 }
             }
-            if (event.keyCode != event.KC_TAB) {
-                event.preventDefault(); // Removing due to PTR:05164409
-            }
             return false;
         },
 
