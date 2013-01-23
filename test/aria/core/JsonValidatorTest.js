@@ -243,13 +243,6 @@ Aria.classDefinition({
                             }
                         }
                     }, {
-                        errorMsgs : [jv.MISSING_DESCRIPTION],
-                        beans : {
-                            TestBean : {
-                                $type : "json:String"
-                            }
-                        }
-                    }, {
                         errorMsgs : [jv.MISSING_ENUMVALUES],
                         beans : {
                             TestBean : {
