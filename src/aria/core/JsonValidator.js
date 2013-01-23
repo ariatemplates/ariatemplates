@@ -175,7 +175,6 @@
             INVALID_DEFAULTVALUE : "Default value %1 in %2 is invalid: %3",
             BEANCHECK_FAILED : "Checking bean definition %1 with beans schema failed: %2",
             MISSING_ENUMVALUES : "$enumValues must be defined and non-empty in the Enum definition in %1",
-            MISSING_DESCRIPTION : "Missing $description in %1",
             INVALID_NAME : "Invalid name for a bean: %1 in %2",
             NUMBER_INVALID_INHERITANCE : "Invalid inheritance: %1 in %2 should respect its parent range",
             NUMBER_INVALID_RANGE : "Invalid range in %1: %2-%3",
@@ -386,10 +385,6 @@
                 // description inheritance
                 if (!beanDef.$description && !typeRef[this._MD_BUILTIN]) {
                     beanDef.$description = typeRef.$description;
-                }
-                if (!beanDef.$description && beanDef.$description !== "") {
-                    this._logError(this.MISSING_DESCRIPTION, beanDef[this._MD_TYPENAME]);
-                    return this._typeError;
                 }
 
                 var hasNoDefault = !("$default" in beanDef), hasNoMandatory = !("$mandatory" in beanDef);
