@@ -24,6 +24,10 @@ Aria.classDefinition({
     $singleton : true,
     $dependencies : ["aria.core.environment.EnvironmentBaseCfgBeans", "aria.core.AppEnvironment"],
     $extends : "aria.core.environment.EnvironmentBase",
+    $statics : {
+        // ERROR MESSAGES:
+        INVALID_LOCALE : "Error: the locale '%1' is not in correct format"
+    },
     $constructor : function () {
         this.$EnvironmentBase.constructor.call(this);
         // hook for JsonValidator and logs, which were loaded before
