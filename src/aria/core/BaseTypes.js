@@ -35,8 +35,7 @@ Aria.beanDefinitions({
                 },
                 '$description' : {
                     $type : "json:String",
-                    $description : "A literal description of the package and its purpose.",
-                    $mandatory : true
+                    $description : "A literal description of the package and its purpose."
                 },
 
                 '$dependencies' : {
