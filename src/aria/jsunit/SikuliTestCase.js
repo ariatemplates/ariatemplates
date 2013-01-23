@@ -21,7 +21,7 @@
 Aria.classDefinition({
     $classpath : 'aria.jsunit.SikuliTestCase',
     $extends : 'aria.jsunit.TestCase',
-    $dependencies : ['aria.jsunit.Robot'],
+    $dependencies : ['aria.jsunit.RobotJavaApplet'],
     $statics : {
         /**
          * Settings to run test cases.
@@ -47,7 +47,7 @@ Aria.classDefinition({
         this.imagesRoot = aria.core.DownloadMgr.resolveURL(this.$package.replace(/\./g, "/", true)) + "/";
 
         /**
-         * Reference to the RobotApplet object.
+         * Reference to the RobotJavaApplet object.
          */
         this.robot = null;
 
@@ -82,7 +82,7 @@ Aria.classDefinition({
          * Entry point for the Sikuli test.
          */
         testAsyncRunSikuliTest : function () {
-            aria.jsunit.Robot.initRobot({
+            aria.jsunit.RobotJavaApplet.initRobot({
                 fn : this._robotStarted,
                 scope : this
             });
@@ -93,7 +93,7 @@ Aria.classDefinition({
          * automatically from testAsyncRunSikuli once the robot applet is initialized.
          */
         _robotStarted : function () {
-            this.robot = aria.jsunit.Robot.applet;
+            this.robot = aria.jsunit.RobotJavaApplet.applet;
             this.screen = this.robot.createSikuliScreen();
             this.KeyModifier = this.robot.Packages.org.sikuli.script.KeyModifier;
             this.Key = this.robot.Packages.org.sikuli.script.Key;
