@@ -16,13 +16,14 @@
     "grunt-verifylowercase": "*"
   },
   "config": {
-    "port": "8080"
+    "port": "8080",
+    "phantomjsInstances": 2
   },
   "scripts": {
     "start": "node scripts/server.js",
     "prestart": "npm install && node node_modules/grunt/bin/grunt package",
     "grunt": "node node_modules/grunt/bin/grunt",
-    "attester": "node node_modules/attester/bin/attester.js test/attester.yml --phantomjs-instances 2",
+    "attester": "node node_modules/attester/bin/attester.js test/attester.yml",
     "lint": "node node_modules/grunt/bin/grunt checkStyle",
     "test": "npm run-script lint && npm run-script attester && npm run-script grunt"
   },
