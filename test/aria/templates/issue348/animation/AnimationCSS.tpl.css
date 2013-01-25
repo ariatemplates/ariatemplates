@@ -1,0 +1,126 @@
+/*
+ * Copyright 2012 Amadeus s.a.s.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+{CSSTemplate {
+	$classpath : 'test.aria.templates.issue348.animation.AnimationCSS',
+	$prefix:false
+}}
+
+	/** Colors **/
+	{var blue = "#7aa1c9" /}
+	{var green = "#bacd81" /} 
+
+	/** Font properties **/
+	{var font = {
+		size : "14pt",
+		weight : "bold",
+		family : "helvetica"
+	} /}
+	
+	
+	{macro main()}
+	.largeText {
+      font-size: 14pt;
+      font-weight: bold;
+      color: #4776A7;
+    }
+	.evenRow {
+		background-color : ${blue};
+		{call printStandardRowProperties() /}
+	}
+	
+	.oddRow {
+		background-color : ${green};
+		{call printStandardRowProperties() /}
+	}
+	
+	.animation{
+		background-color:yellow;
+		width:100px;
+		height:50px;
+		
+		animation:myfirst 2s;
+		-moz-animation:myfirst 2s; /* Firefox */
+		-webkit-animation:myfirst 2s; /* Safari and Chrome */
+		-o-animation:myfirst 2s; /* Opera */
+		-ms-animation:myfirst 2s; /* IE */
+		position:relative;
+		top:0px;
+		left:0px;
+		 animation-iteration-count: 3;
+		 -webkit-animation-iteration-count: 3;
+		  -moz-animation-iteration-count: 3;
+		  -ms-animation-iteration-count: 3;
+		  -o-animation-iteration-count: 3;
+	}
+
+@-webkit-keyframes myfirst /* Safari and Chrome */
+	{
+	from {
+	    left: 0;
+	    top: 0;
+	  }
+	  to {
+	    left: 50px;
+	    top: 50px;
+	  }
+	}
+	
+@-moz-keyframes myfirst /* Safari and Chrome */
+	{
+	from {
+	    left: 0;
+	    top: 0;
+	  }
+	  to {
+	    left: 50px;
+	    top: 50px;
+	  }
+	}
+	
+	
+	@-o-keyframes myfirst /* Safari and Chrome */
+	{
+	from {
+	    left: 0;
+	    top: 0;
+	  }
+	  to {
+	    left: 50px;
+	    top: 50px;
+	  }
+	}
+	
+	@-ms-keyframes myfirst /* Safari and Chrome */
+	{
+	from {
+	    left: 0;
+	    top: 0;
+	  }
+	  to {
+	    left: 50px;
+	    top: 50px;
+	  }
+	}
+
+	{/macro}
+
+	{macro printStandardRowProperties()}
+		padding : 10px;
+		width: 300px;
+		color: white;
+		font-size: 20px;
+	{/macro}
+
+{/CSSTemplate}
