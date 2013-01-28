@@ -118,14 +118,8 @@ Aria.classDefinition({
                 hasChanged = true;
             }
             if (hasChanged) {
-                /*
-                 * // Change width and height if it's too large compared to the viewport var viewport =
-                 * aria.utils.Dom._getViewportSize(); if (viewport.width < this._cfg.width) { this._cfg.width =
-                 * viewport.width; } if (viewport.height < this._cfg.height) { this._cfg.height = viewport.height; }
-                 */
-                this.$Container._updateContainerSize.call(this);
+                this.$Container._updateSize.call(this);
             }
-
         }
     }
 });

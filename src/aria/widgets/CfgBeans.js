@@ -106,24 +106,24 @@ Aria.beanDefinitions({
             $properties : {
                 "height" : {
                     $type : "json:Integer",
-                    $description : "Widget height in pixel - note: some widgets may ignore this property. If negative, the height will be considered as unset and the widget will use the most appropriate height when possible",
+                    $description : "Widget height in pixels - note: some widgets may ignore this property. If negative, the height will be considered as unset and the widget will use the most appropriate height when possible",
                     $default : -1
                 },
                 "minWidth" : {
                     $type : "json:Integer",
-                    $description : "Minimum widget width in pixel - note: some widgets may ignore this property. This requires width unset/equals to -1."
+                    $description : "Minimum widget width in pixels - note: some widgets may ignore this property. This requires width unset/equals to -1. Note that this might be constrained further for some widgets to fit into viewport if the viewport is not big enough."
                 },
                 "maxWidth" : {
                     $type : "json:Integer",
-                    $description : "Maximum widget width in pixel - note: some widgets may ignore this property. This requires width unset/equals to -1."
+                    $description : "Maximum widget width in pixels - note: some widgets may ignore this property. This requires width unset/equals to -1."
                 },
                 "minHeight" : {
                     $type : "json:Integer",
-                    $description : "Minimum widget height in pixel - note: some widgets may ignore this property. This requires height unset/equals to -1."
+                    $description : "Minimum widget height in pixels - note: some widgets may ignore this property. This requires height unset/equals to -1. Note that this might be constrained further for some widgets to fit into viewport if the viewport is not big enough."
                 },
                 "maxHeight" : {
                     $type : "json:Integer",
-                    $description : "Maximum widget height in pixel - note: some widgets may ignore this property. This requires height unset/equals to -1."
+                    $description : "Maximum widget height in pixels - note: some widgets may ignore this property. This requires height unset/equals to -1."
                 },
                 "scrollBarX" : {
                     $type : "json:Boolean",
@@ -1038,10 +1038,37 @@ Aria.beanDefinitions({
             $type : "ResizableWidgetCfg",
             $description : "The base configuration for the div widget",
             $properties : {
+                "bind" : {
+                    $type : "ResizableWidgetCfg.bind",
+                    $properties : {
+                        "width" : {
+                            $type : "common:BindingRef"
+                        },
+                        "height" : {
+                            $type : "common:BindingRef"
+                        }
+                    }
+                },
                 "cssClass" : {
                     $type : "json:String",
                     $description : "A string to be used to inject a Class into the main content area",
                     $default : ""
+                },
+                "minWidth" : {
+                    $type : "ResizableWidgetCfg.$properties.minWidth",
+                    $description : "Minimum widget width in pixels. Works also when width is defined and > 0 (to allow constraints on bindable width). Note that this might be constrained further for some widgets to fit into viewport if the viewport is not big enough."
+                },
+                "maxWidth" : {
+                    $type : "ResizableWidgetCfg.$properties.maxWidth",
+                    $description : "Maximum widget width in pixels. Works also when width is defined and > 0 (to allow constraints on bindable width)."
+                },
+                "minHeight" : {
+                    $type : "ResizableWidgetCfg.$properties.minHeight",
+                    $description : "Minimum widget height in pixels. Works also when height is defined and > 0 (to allow constraints on bindable height). Note that this might be constrained further for some widgets to fit into viewport if the viewport is not big enough."
+                },
+                "maxHeight" : {
+                    $type : "ResizableWidgetCfg.$properties.maxHeight",
+                    $description : "Maximum widget height in pixels. Works also when height is defined and > 0 (to allow constraints on bindable height)."
                 }
             }
         },
@@ -1434,12 +1461,11 @@ Aria.beanDefinitions({
             }
         },
         "DialogCfg" : {
-            $type : "DivCfg", // It would be cleaner to put here
-            // ResizableWidgetCfg instead
+            $type : "DivCfg", // It would be cleaner to put here ResizableWidgetCfg instead
             $description : "The base configuration for the Dialog widget",
             $properties : {
                 "bind" : {
-                    $type : "WidgetCfg.bind",
+                    $type : "DivCfg.bind",
                     $properties : {
                         "visible" : {
                             $type : "common:BindingRef"
@@ -1552,6 +1578,17 @@ Aria.beanDefinitions({
             $type : "ResizableWidgetCfg",
             $description : "The base configuration for the Fieldset widget",
             $properties : {
+                "bind" : {
+                    $type : "WidgetCfg.bind",
+                    $properties : {
+                        "width" : {
+                            $type : "common:BindingRef"
+                        },
+                        "height" : {
+                            $type : "common:BindingRef"
+                        }
+                    }
+                },
                 "onSubmit" : {
                     $type : "common:Callback",
                     $description : "Callback function called when the user presses ENTER in a field inside the fieldset."
@@ -1559,6 +1596,22 @@ Aria.beanDefinitions({
                 "label" : {
                     $type : "json:String",
                     $description : "Text to put on the fieldset to describe its content."
+                },
+                "minWidth" : {
+                    $type : "ResizableWidgetCfg.$properties.minWidth",
+                    $description : "Minimum widget width in pixels. Works also when width is defined and > 0 (to allow constraints on bindable width)."
+                },
+                "maxWidth" : {
+                    $type : "ResizableWidgetCfg.$properties.maxWidth",
+                    $description : "Maximum widget width in pixels. Works also when width is defined and > 0 (to allow constraints on bindable width)."
+                },
+                "minHeight" : {
+                    $type : "ResizableWidgetCfg.$properties.minHeight",
+                    $description : "Minimum widget height in pixels. Works also when height is defined and > 0 (to allow constraints on bindable height)."
+                },
+                "maxHeight" : {
+                    $type : "ResizableWidgetCfg.$properties.maxHeight",
+                    $description : "Maximum widget height in pixels. Works also when height is defined and > 0 (to allow constraints on bindable height)."
                 }
             }
         },
@@ -1592,11 +1645,17 @@ Aria.beanDefinitions({
         },
         "TabPanelCfg" : {
             $type : "ContainerCfg",
-            $description : "The base configuration for the Tab widget",
+            $description : "The base configuration for the TabPanel widget",
             $properties : {
                 "bind" : {
                     $type : "WidgetCfg.bind",
                     $properties : {
+                        "width" : {
+                            $type : "common:BindingRef"
+                        },
+                        "height" : {
+                            $type : "common:BindingRef"
+                        },
                         "selectedTab" : {
                             $type : "common:BindingRef"
                         }
@@ -1614,6 +1673,22 @@ Aria.beanDefinitions({
                 "block" : {
                     $type : "WidgetCfg.block",
                     $default : true
+                },
+                "minWidth" : {
+                    $type : "ResizableWidgetCfg.$properties.minWidth",
+                    $description : "Minimum widget width in pixels. Works also when width is defined and > 0 (to allow constraints on bindable width)."
+                },
+                "maxWidth" : {
+                    $type : "ResizableWidgetCfg.$properties.maxWidth",
+                    $description : "Maximum widget width in pixels. Works also when width is defined and > 0 (to allow constraints on bindable width)."
+                },
+                "minHeight" : {
+                    $type : "ResizableWidgetCfg.$properties.minHeight",
+                    $description : "Minimum widget height in pixels. Works also when height is defined and > 0 (to allow constraints on bindable height)."
+                },
+                "maxHeight" : {
+                    $type : "ResizableWidgetCfg.$properties.maxHeight",
+                    $description : "Maximum widget height in pixels. Works also when height is defined and > 0 (to allow constraints on bindable height)."
                 }
             }
         },
