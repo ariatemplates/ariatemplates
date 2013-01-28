@@ -276,7 +276,7 @@ Aria.classDefinition({
         },
 
         /**
-         * Internal method called when one of the model property that the widget is bound to has changed Must be
+         * Internal method called when one of the model property that the widget is bound to has changed. Must be
          * overridden by sub-classes defining bindable properties
          * @param {String} propertyName the property name
          * @param {Object} newValue the new value
@@ -319,6 +319,15 @@ Aria.classDefinition({
             } else if (propertyName === "center") {
                 this._cfg.center = newValue;
                 this.updatePosition();
+            } else if (propertyName === "width" || propertyName === "height") {
+                if (this._domElt) { // if bound property changed before making the Dialog visible for the first time
+                    // resize ourself and then the contained div
+                    this.$Container._onBoundPropertyChange.apply(this, arguments);
+                    this._div.updateSize(this._cfg);
+                    if (this._cfg.center) {
+                        this.updatePosition();
+                    }
+                }
             } else {
                 // delegate to parent class
                 this.$Container._onBoundPropertyChange.apply(this, arguments);

@@ -21,7 +21,7 @@
 Aria.classDefinition({
     $classpath : "aria.widgets.container.Container",
     $extends : "aria.widgets.Widget",
-    $dependencies : ["aria.utils.Size"],
+    $dependencies : ["aria.utils.Size", "aria.utils.Math"],
     /**
      * Container constructor
      * @param {aria.widgets.CfgBeans.ActionWidgetCfg} cfg the widget configuration
@@ -32,14 +32,16 @@ Aria.classDefinition({
 
         this._cssClassNames = aria.core.TplClassLoader.addPrintOptions(this._cssClassNames, cfg.printOptions);
 
+        // might be set by subclasses
+        this._frame = null;
+
         /**
          * Specifies if size constraints are specified in the config (and so if it is useful to call
          * aria.utils.Size.setContrains for this container).
          * @type Boolean
          * @protected
          */
-        this._sizeConstraints = (cfg.width == -1 && (!!cfg.minWidth || !!cfg.maxWidth))
-                || (cfg.height == -1 && (!!cfg.minHeight || !!cfg.maxHeight));
+        this._sizeConstraints = (!!cfg.minWidth || !!cfg.maxWidth || !!cfg.minHeight || !!cfg.maxHeight);
 
         // if size contrains -> adjust size after init. Do not set directInit to false if already to true.
         this._directInit = this._directInit || this._sizeConstraints;
@@ -70,39 +72,61 @@ Aria.classDefinition({
         },
 
         /**
+         * Internal method called when one of the model property that the widget is bound to has changed Must be
+         * overridden by sub-classes defining bindable properties
+         * @param {String} propertyName the property name
+         * @param {Object} newValue the new value
+         * @param {Object} oldValue the old property value
+         * @protected
+         * @override
+         */
+        _onBoundPropertyChange : function (propertyName, newValue, oldValue) {
+            if (propertyName === "height" || propertyName === "width") {
+                this._updateSize();
+            } else {
+                // delegate to parent class
+                this.$Widget._onBoundPropertyChange.apply(this, arguments);
+            }
+        },
+
+        /**
+         * Update the size of the DOM object accordingly to the new values of this._cfg.
+         */
+        _updateSize : function () {
+            this._changedContainerSize = true;
+            this._updateContainerSize();
+        },
+
+        /**
          * Update the size of the container according to its width, height, minWidth, maxWidth, minHeight, maxHeight
          * properties.
          * @param {Boolean} propagate propagate change to parent
          */
         _updateContainerSize : function (propagate) {
             // PROFILING // this.$logTimestamp("updateContainerSize");
-            var cfg = this._cfg, domElt = this.getDom(), widthConf, heightConf, changed;
+            var cfg = this._cfg, domElt = this.getDom();
 
-            if (domElt && this._sizeConstraints) {
+            if (!domElt)
+                return;
 
-                if (cfg.width == -1) {
-                    widthConf = {
-                        min : cfg.minWidth,
-                        max : cfg.maxWidth
-                    };
-                }
+            var widthConf = this._getWidthConf();
+            var heightConf = this._getHeightConf();
 
-                if (cfg.height == -1) {
-                    heightConf = {
-                        min : cfg.minHeight,
-                        max : cfg.maxHeight
-                    };
-                }
-
+            if (this._changedContainerSize || this._sizeConstraints) { // if we are bound to min and max size
                 if (this._changedContainerSize) {
-                    domElt.style.width = cfg.width > -1 ? cfg.width + "px" : "";
-                    domElt.style.height = cfg.height > -1 ? cfg.height + "px" : "";
-                    if (this._frame) {
-                        this._frame.resize(cfg.width, cfg.height);
+                    var constrainedWidth = aria.utils.Math.normalize(cfg.width, widthConf.min, widthConf.max);
+                    var constrainedHeight = aria.utils.Math.normalize(cfg.height, heightConf.min, heightConf.max);
+
+                    domElt.style.width = cfg.width > -1 ? constrainedWidth + "px" : "";
+                    domElt.style.height = cfg.height > -1 ? constrainedHeight + "px" : "";
+                    if (this._frame) { // this is required if the frame is being shrinked
+                        var frameWidth = cfg.width > -1 ? constrainedWidth : -1;
+                        var frameHeight = cfg.height > -1 ? constrainedHeight : -1;
+                        this._frame.resize(frameWidth, frameHeight);
                     }
                 }
 
-                changed = aria.utils.Size.setContrains(domElt, widthConf, heightConf);
+                var changed = aria.utils.Size.setContrains(domElt, widthConf, heightConf);
                 if (changed && this._frame) {
                     this._frame.resize(changed.width, changed.height);
                     // throws a onchange event on parent
@@ -111,8 +135,33 @@ Aria.classDefinition({
                     }
                 }
                 this._changedContainerSize = changed;
-
             }
+        },
+
+        /**
+         * Obtain width constraints configuration object of the current container, compatible with
+         * aria.utils.Math.normalize().
+         * @return {Object} {min: {Number}, max: {Number}}
+         * @protected
+         */
+        _getWidthConf : function () {
+            return {
+                min : this._cfg.minWidth || 0,
+                max : this._cfg.maxWidth || Infinity
+            };
+        },
+
+        /**
+         * Obtain height constraints configuration object of the current container, compatible with
+         * aria.utils.Math.normalize().
+         * @return {Object} {min: {Number}, max: {Number}}
+         * @protected
+         */
+        _getHeightConf : function () {
+            return {
+                min : this._cfg.minHeight || 0,
+                max : this._cfg.maxHeight || Infinity
+            };
         },
 
         /**
