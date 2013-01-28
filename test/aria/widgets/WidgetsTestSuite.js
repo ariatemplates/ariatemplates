@@ -27,6 +27,8 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.container.DivTest");
         this.addTests("test.aria.widgets.container.FieldsetTest");
         this.addTests("test.aria.widgets.container.SplitterTest");
+        this.addTests("test.aria.widgets.container.dialog.HeightConstraintsTest");
+        this.addTests("test.aria.widgets.container.issue80.BindableSizeTestSuite");
         this.addTests("test.aria.widgets.controllers.SelectBoxControllerTest");
         this.addTests("test.aria.widgets.controllers.SelectControllerTest");
         this.addTests("test.aria.widgets.environment.WidgetSettings");
