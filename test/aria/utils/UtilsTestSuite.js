@@ -59,5 +59,7 @@ Aria.classDefinition({
         this.addTests("test.aria.utils.Time");
         this.addTests("test.aria.utils.TypeTest");
         this.addTests("test.aria.utils.Xml");
+        this.addTests("test.aria.utils.DeviceTest");
+        
     }
 });
