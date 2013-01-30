@@ -18,7 +18,7 @@
     $extends : "aria.widgets.WidgetStyle"
 }}
     {var skinnableClassName="Dialog"/}
-    
+
     {macro main()}
         .xDialog_titleBar {
             position:absolute;
@@ -31,9 +31,13 @@
         }
         .xDialog_close {
             float:right;
-            cursor:pointer;    
+            cursor:pointer;
         }
-        
+        .xDialog_maximize {
+            float:right;
+            cursor:pointer;
+        }
+
     .xDialog_resizable {
             position: absolute;
         z-index: 100;
@@ -91,10 +95,10 @@
         top: 0;
         width: 8px;
     }
-        
+
         {call startLooping()/}
     {/macro}
-    
+
     {macro writeSkinClass(info)}
         {var skinClassName=info.skinClassName/}
         {var skinClass=info.skinClass/}
@@ -116,9 +120,13 @@
             padding-top: 6px;
         }
         .xDialog_${skinClassName}_close {
-            padding-right: 6px;
+            padding-right: 9px;
+            padding-top: 6px;
+        }
+        .xDialog_${skinClassName}_maximize {
+            padding-right: 2px;
             padding-top: 6px;
         }
     {/macro}
-    
+
 {/CSSTemplate}

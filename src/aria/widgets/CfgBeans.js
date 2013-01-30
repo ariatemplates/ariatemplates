@@ -1524,6 +1524,10 @@ Aria.beanDefinitions({
                         "ypos" : {
                             $type : "common:BindingRef"
                         },
+                        "maximized" : {
+                            $type : "common:BindingRef",
+                            $description : "Whether the Dialog is occupying the whole viewport. Set to true takes precedence over center, xpos, ypos, width, height. Unmaximize the Dialog first to change those settings."
+                        },
                         "center" : {
                             $type : "common:BindingRef"
                         }
@@ -1556,6 +1560,11 @@ Aria.beanDefinitions({
                     $type : "json:Boolean",
                     $description : "Whether the dialog has a close button in its title bar.",
                     $default : true
+                },
+                "maximizable" : {
+                    $type : "json:Boolean",
+                    $description : "Whether the dialog has a maximize button in its title bar.",
+                    $default : false
                 },
                 "closeOnMouseClick" : {
                     $type : "json:Boolean",

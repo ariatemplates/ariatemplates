@@ -351,10 +351,15 @@ Aria.classDefinition({
                     titleBarLeft : 0,
                     titleBarTop : 0,
                     closeIcon : "std:close",
+                    maximizeIcon : "std:maximize",
                     titleBarHeight : 32,
                     titleColor : "#615E55",
                     divsclass : "dlg",
-                    titleBarRight : 10
+                    titleBarRight : 10,
+                    shadowLeft : 0,
+                    shadowTop : 0,
+                    shadowRight : 14,
+                    shadowBottom : 8
                 }
             },
             Calendar : {
@@ -995,6 +1000,7 @@ Aria.classDefinition({
                         info : 17,
                         amn_res : 10,
                         close : 24,
+                        maximize : 42,
                         amn_lau : 5,
                         rm_line : 20,
                         missing : 38,

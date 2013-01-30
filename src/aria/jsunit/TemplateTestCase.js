@@ -230,6 +230,46 @@ Aria.classDefinition({
         runTemplateTest : function () {},
 
         /**
+         * Wait for an iframe and some widget in it to be loaded, and then call the callback. Relies on
+         * "Aria.$window.iframeLoaded" being set by the iframe, and presence of the framework and the widget inside that
+         * iframe.
+         * @param {String} iframeId HTML id of the iframe element
+         * @param {String} widgetId id of the Aria Templates widget inside the iframe for which we want to wait
+         * @param {Function} continueWith Callback to be executed when iframe is ready (within "this" scope)
+         */
+        waitForIframe : function (iframeId, widgetId, continueWith) {
+            var iframe = aria.utils.Dom.getElementById(iframeId);
+            this.waitFor({
+                condition : function () {
+                    return Aria.$window.iframeLoaded && iframe.contentWindow.aria != null
+                            && iframe.contentWindow.aria.templates != null
+                            // Mandatory check, otherwise getWidgetInstanceInIframe raises a JS error in the test suite
+                            && iframe.contentWindow.aria.templates.RefreshManager != null
+                            && this.getWidgetInstanceInIframe(iframe, widgetId) != null;
+                },
+                callback : {
+                    fn : continueWith,
+                    scope : this
+                }
+            });
+        },
+
+        /**
+         * Reads the name of the next test function (from this._testsToExecute) to execute and proceeds, or finishes
+         * when no more tests left. To be used in async tests when you prefer simply to call this.nextTest() instead of
+         * passing the concrete name of the test to continue with. Note that in template test cases, test functions
+         * names should not start with "test".
+         */
+        nextTest : function () {
+            var nextTestName = this._testsToExecute.shift();
+            if (nextTestName) {
+                this[nextTestName]();
+            } else {
+                this.notifyTemplateTestEnd();
+            }
+        },
+
+        /**
          * Call this method from your template test case when the test is finished. Since template tests are
          * asynchronous (template load, user event simulation, ...), calling this method will instruct the system that
          * the test is ended.
