@@ -62,6 +62,11 @@ Aria.beanDefinitions({
                     $description : "If true, the popup will be in the center of the browser window. This takes priority over absolutePosition and domReference.",
                     $default : false
                 },
+                "maximized" : {
+                    $type : "json:Boolean",
+                    $description : "If true, the popup will be moved towards top left of the browser window and occupy the whole viewport. This takes priority over center. Implemented only by Dialog.",
+                    $default : false
+                },
                 "closeOnMouseClick" : {
                     $type : "json:Boolean",
                     $description : "Close the popup when the user clicks outside of the popup",

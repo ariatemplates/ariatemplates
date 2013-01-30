@@ -726,7 +726,7 @@ Aria.beanDefinitions({
         "SelectBoxCfg" : {
             $type : "DropDownTextInputCfg",
             $description : "",
-            $properties: {
+            $properties : {
                 "listSclass" : {
                     $type : "json:String",
                     $description : "sclass of the List to use inside the widget. It must be defined in the skin.",
@@ -1037,6 +1037,22 @@ Aria.beanDefinitions({
                 "closeIcon" : {
                     $type : "json:String",
                     $description : ""
+                },
+                "maximizeIcon" : {
+                    $type : "json:String",
+                    $description : ""
+                },
+                "shadowLeft" : {
+                    $type : "Pixels"
+                },
+                "shadowTop" : {
+                    $type : "Pixels"
+                },
+                "shadowRight" : {
+                    $type : "Pixels"
+                },
+                "shadowBottom" : {
+                    $type : "Pixels"
                 }
             }
         },
@@ -1160,7 +1176,7 @@ Aria.beanDefinitions({
         "AutoCompleteCfg" : {
             $type : "DropDownTextInputCfg",
             $description : "",
-            $properties: {
+            $properties : {
                 "listSclass" : {
                     $type : "json:String",
                     $description : "sclass of the List to use inside the widget. It must be defined in the skin.",

@@ -165,7 +165,7 @@ Aria.classDefinition({
          */
         isDevMode : function () {
             var settings = this.checkApplicationSettings("appSettings");
-            if (settings.devMode) {
+            if (settings && settings.devMode) {
                 return true;
             }
             return false;
@@ -178,7 +178,7 @@ Aria.classDefinition({
          */
         isDebug : function () {
             var settings = this.checkApplicationSettings("appSettings");
-            if (settings.debug) {
+            if (settings && settings.debug) {
                 return true;
             }
             return false;

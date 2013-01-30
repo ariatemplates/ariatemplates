@@ -53,6 +53,12 @@ Aria.classDefinition({
         this._closeDelegateId = null;
 
         /**
+         * Id for event delegation on maximize icon
+         * @type String
+         */
+        this._maximizeDelegateId = null;
+
+        /**
          * Created when the dialog is movable
          * @type aria.utils.dragdrop.Drag
          */
@@ -72,6 +78,31 @@ Aria.classDefinition({
          */
         this._resizable = {};
 
+        /**
+         * Used when enabling maximized mode, to revert the settings when unmaximized.
+         * @type Object
+         */
+        this._optionsBeforeMaximize = null;
+
+        /**
+         * Shadow values are used in maximized mode to position the Dialog properly without shadow being visible.
+         */
+        this._shadows = {
+            left : this._skinObj.shadowLeft || 0,
+            top : this._skinObj.shadowTop || 0,
+            right : this._skinObj.shadowRight || 0,
+            bottom : this._skinObj.shadowBottom || 0
+        };
+
+        /**
+         * Offsets used by the Popup when maximized mode is off.
+         */
+        this._shadowsZero = {
+            left : 0,
+            top : 0,
+            right : 0,
+            bottom : 0
+        };
     },
     $destructor : function () {
         this.close();
@@ -89,22 +120,29 @@ Aria.classDefinition({
          */
         _onViewportResized : function (event) {
 
-            // Remove width and height, they will be recalculated later,
-            // to have the content size wel calculated
             var domElt = this._domElt;
-            domElt.style.width = "";
-            domElt.style.height = "";
+            if (domElt) {
+                // Remove width and height, they will be recalculated later, to have the content size well calculated
+                domElt.style.width = "";
+                domElt.style.height = "";
 
-            // constraint dialog to viewport
-            var viewport = aria.utils.Dom._getViewportSize();
-            var math = aria.utils.Math;
-            this._div.updateSize({
-                height : this._cfg.height,
-                maxHeight : math.min(this._cfg.maxHeight, viewport.height),
-                width : this._cfg.width,
-                maxWidth : math.min(this._cfg.maxWidth, viewport.width)
-            });
-            this._updateContainerSize();
+                // constrain dialog to viewport
+                var viewport = aria.utils.Dom._getViewportSize();
+                var math = aria.utils.Math;
+
+                this._div.updateSize({
+                    height : this._cfg.height,
+                    maxHeight : math.min(this._cfg.maxHeight, viewport.height + this._shadows.top
+                            + this._shadows.bottom),
+                    width : this._cfg.width,
+                    maxWidth : math.min(this._cfg.maxWidth, viewport.width + this._shadows.left + this._shadows.right)
+                });
+                this._updateContainerSize();
+            }
+
+            if (this._cfg.maximized) {
+                this._setMaximizedHeightAndWidth(viewport);
+            }
         },
 
         /**
@@ -144,10 +182,10 @@ Aria.classDefinition({
 
             var viewport = aria.utils.Dom._getViewportSize();
 
-            // constraint dialog to viewport
+            // constrain dialog to viewport
             var math = aria.utils.Math;
-            var maxHeight = math.min(this._cfg.maxHeight, viewport.height);
-            var maxWidth = math.min(this._cfg.maxWidth, viewport.width);
+            var maxHeight = math.min(this._cfg.maxHeight, viewport.height + this._shadows.top + this._shadows.bottom);
+            var maxWidth = math.min(this._cfg.maxWidth, viewport.width + this._shadows.left + this._shadows.right);
             this._div = new aria.widgets.container.Div({
                 sclass : this._skinObj.divsclass,
                 margins : "0 0 0 0",
@@ -211,24 +249,44 @@ Aria.classDefinition({
                 }
                 out.write(['<span class="xDialog_title xDialog_', cfg.sclass, '_title">',
                         aria.utils.String.escapeHTML(cfg.title), '</span>'].join(''));
+
+                // buttons are floated to the right, so close should be first in the markup
                 if (cfg.closable) {
-                    var utilsDelegate = aria.utils.Delegate;
-                    this._closeDelegateId = utilsDelegate.add({
+                    this._closeDelegateId = aria.utils.Delegate.add({
                         fn : this._onCloseBtnEvent,
                         scope : this
                     });
-                    out.write(['<span class="xDialog_close xDialog_', cfg.sclass,
-                            '_close" ' + utilsDelegate.getMarkup(this._closeDelegateId) + '>'].join(''));
-                    var closeButton = new aria.widgets.Icon({
-                        icon : this._skinObj.closeIcon
-                    }, this._context, this._lineNumber);
-                    out.registerBehavior(closeButton);
-                    closeButton.writeMarkup(out);
-                    out.write('</span>');
+                    this.__writeTitlebarButton(out, this._closeDelegateId, "close", "closeIcon");
+                }
+                if (cfg.maximizable) {
+                    this._maximizeDelegateId = aria.utils.Delegate.add({
+                        fn : this._onMaximizeBtnEvent,
+                        scope : this
+                    });
+                    this.__writeTitlebarButton(out, this._maximizeDelegateId, "maximize", "maximizeIcon");
                 }
                 out.write("</div>");
             }
             out.endSection();
+        },
+
+        /**
+         * Used to flush close / maximize buttons into the markup.
+         * @param {aria.templates.MarkupWriter} out the writer Object to use to output markup
+         * @param {String} delegateId
+         * @param {String} cssClassPostfix
+         * @param {String} skinIcon
+         */
+        __writeTitlebarButton : function (out, delegateId, cssClassPostfix, skinIcon) {
+            var cfg = this._cfg;
+            out.write(['<span class="xDialog_', cssClassPostfix, ' xDialog_', cfg.sclass, '_', cssClassPostfix, '" ',
+                    aria.utils.Delegate.getMarkup(delegateId), '>'].join(''));
+            var button = new aria.widgets.Icon({
+                icon : this._skinObj[skinIcon]
+            }, this._context, this._lineNumber);
+            out.registerBehavior(button);
+            button.writeMarkup(out);
+            out.write('</span>');
         },
 
         /**
@@ -315,10 +373,11 @@ Aria.classDefinition({
                 this._cfg[propertyName] = newValue;
                 this.setProperty("center", false);
                 this.updatePosition();
-
             } else if (propertyName === "center") {
                 this._cfg.center = newValue;
                 this.updatePosition();
+            } else if (propertyName === "maximized") {
+                this._toggleMaximize(newValue);
             } else if (propertyName === "width" || propertyName === "height") {
                 if (this._domElt) { // if bound property changed before making the Dialog visible for the first time
                     // resize ourself and then the contained div
@@ -346,10 +405,38 @@ Aria.classDefinition({
         },
 
         /**
+         * Event handler for maximize button
+         * @protected
+         * @param {aria.DomEvent} event
+         */
+        _onMaximizeBtnEvent : function (event) {
+            if (event.type == "click") {
+                this.actionToggleMaximize();
+            }
+        },
+
+        /**
          * Action to close this popup, setting the appropriate value
          */
         actionClose : function () {
-            var cb = this._cfg.onCloseClick;
+            this._actionFromTitlebarButton("onCloseClick", "visible", false);
+        },
+
+        /**
+         * Action to maximize/unmaximize this popup, setting the appropriate value
+         */
+        actionToggleMaximize : function () {
+            this._actionFromTitlebarButton("onMaximizeClick", "maximized", !this._cfg.maximized);
+        },
+
+        /**
+         * Shared code for close / maximize buttons. Execute the callback and set appropriate config value.
+         * @param {String} cbName Callback name to execute, if exists
+         * @param {String} propName Name of the property to change
+         * @param {Boolean} propNewVal New value of the changed property
+         */
+        _actionFromTitlebarButton : function (cbName, propName, propNewVal) {
+            var cb = this._cfg[cbName];
             var cancelDefault = false;
             if (cb) {
                 var params = {
@@ -359,7 +446,7 @@ Aria.classDefinition({
                 cancelDefault = params.cancelDefault;
             }
             if (!cancelDefault) {
-                this.changeProperty("visible", false);
+                this.changeProperty(propName, propNewVal);
             }
         },
 
@@ -413,6 +500,8 @@ Aria.classDefinition({
                     top : cfg.ypos
                 },
                 center : cfg.center,
+                maximized : cfg.maximized,
+                offset : cfg.maximized ? this._shadows : this._shadowsZero,
                 modal : cfg.modal,
                 maskCssClass : "xDialogMask",
                 closeOnMouseClick : cfg.closeOnMouseClick,
@@ -420,10 +509,17 @@ Aria.classDefinition({
                 parentDialog : this
             });
 
+            // must be registered before we check for _cfg.maximized, to fire the event correctly after overflow change
             aria.templates.Layout.$on({
                 "viewportResized" : this._onViewportResized,
                 scope : this
             });
+
+            // in case when bound "maximized" was toggled while Dialog was not visible
+            if (this._cfg.maximized) {
+                var viewportSize = this._setBodyOverflow("hidden");
+                this._setMaximizedHeightAndWidth(viewportSize);
+            }
         },
 
         /**
@@ -442,7 +538,26 @@ Aria.classDefinition({
 
             this.evalCallback(cfg.onOpen);
 
+            if (cfg.maximized) {
+                return; // don't create movable nor resizable
+            }
+
             if (cfg.movable) {
+                this._loadAndCreateDraggable();
+            }
+
+            if (cfg.resizable) {
+                this._loadAndCreateResizable();
+            }
+        },
+
+        /**
+         * Create the Drag element; load the dependency before if not loaded yet.
+         */
+        _loadAndCreateDraggable : function () {
+            if (aria.utils.dragdrop && aria.utils.dragdrop.Drag) {
+                this._createDraggable();
+            } else
                 Aria.load({
                     classes : ["aria.utils.dragdrop.Drag"],
                     oncomplete : {
@@ -450,9 +565,15 @@ Aria.classDefinition({
                         scope : this
                     }
                 });
-            }
+        },
 
-            if (cfg.resizable) {
+        /**
+         * Create the Resize element; load the dependency before if not loaded yet.
+         */
+        _loadAndCreateResizable : function () {
+            if (aria.utils.resize && aria.utils.resize.Resize) {
+                this._createResize();
+            } else
                 Aria.load({
                     classes : ["aria.utils.resize.Resize"],
                     oncomplete : {
@@ -460,7 +581,6 @@ Aria.classDefinition({
                         scope : this
                     }
                 });
-            }
         },
 
         /**
@@ -477,12 +597,11 @@ Aria.classDefinition({
             var cfg = this._cfg;
             if (this._popup) {
 
-                if (cfg.movable) {
-                    this._destroyDraggable();
-                }
+                this._destroyDraggable();
+                this._destroyResizable();
 
-                if (cfg.resizable) {
-                    this._destroyResizable();
+                if (cfg.maximized) {
+                    this._setBodyOverflow(this._optionsBeforeMaximize.bodyOverflow);
                 }
 
                 this._domElt = null;
@@ -490,6 +609,9 @@ Aria.classDefinition({
                 this._titleDomElt = null;
                 if (this._closeDelegateId) {
                     aria.utils.Delegate.remove(this._closeDelegateId);
+                }
+                if (this._maximizeDelegateId) {
+                    aria.utils.Delegate.remove(this._maximizeDelegateId);
                 }
                 this._popup.close();
                 this._popup.$dispose();
@@ -556,6 +678,116 @@ Aria.classDefinition({
             var position = aria.utils.Dom.getGeometry(this._domElt);
             this.setProperty("height", position.height);
             this.setProperty("width", position.width);
+        },
+
+        /**
+         * Turn maximize feature on or off.
+         * @param {Boolean} newValue true to toggle on
+         */
+        _toggleMaximize : function (newValue) {
+            this._cfg.maximized = newValue;
+            if (newValue === true) {
+                this._toggleMaximizeOn();
+            } else {
+                this._toggleMaximizeOff();
+            }
+        },
+
+        /**
+         * Maximize the Dialog if visible. Destroy the features that are not meant to work in maximized mode
+         * (movability, resizability). Store all prior configuration options to restore later when unmaximized.
+         */
+        _toggleMaximizeOn : function () {
+            var cfg = this._cfg;
+
+            // store current options to reapply them when unmaximized
+            this._optionsBeforeMaximize = {
+                center : cfg.center,
+                width : cfg.width,
+                height : cfg.height,
+                xpos : cfg.xpos,
+                ypos : cfg.ypos,
+                bodyOverflow : Aria.$window.document.documentElement.style.overflow
+            };
+
+            this.setProperty("center", false);
+            if (this._popup && this._popup.isOpen) {
+                // proceed with maximization
+                this._popup.conf.maximized = true;
+                this._popup.conf.offset = this._shadows;
+                var viewportSize = this._setBodyOverflow("hidden");
+
+                this.setProperty("ypos", 0); // the positioning will be actually handled by the Popup later on
+                this.setProperty("xpos", 0); // and will include also shifting if the Dialog has shadows
+                this._setMaximizedHeightAndWidth(viewportSize);
+
+                this._destroyResizable();
+                this._destroyDraggable();
+            }
+        },
+
+        /**
+         * Unmaximize the Dialog. Reapply all the original options stored before maximizing.
+         */
+        _toggleMaximizeOff : function () {
+            var cfg = this._cfg;
+            var opts = this._optionsBeforeMaximize;
+            if (!opts)
+                return;
+
+            // reapply the old options
+            if (this._popup) {
+                this._popup.conf.maximized = false;
+                this._popup.conf.offset = this._shadowsZero;
+            }
+            this._setBodyOverflow(opts.bodyOverflow);
+
+            this.changeProperty("width", opts.width);
+            this.changeProperty("height", opts.height);
+            if (opts.center) {
+                this.changeProperty("center", true);
+            } else {
+                this.changeProperty("xpos", opts.xpos);
+                this.changeProperty("ypos", opts.ypos);
+            }
+
+            if (this._popup && this._popup.isOpen) {
+                if (cfg.resizable) {
+                    this._loadAndCreateResizable();
+                }
+                if (cfg.movable) {
+                    this._loadAndCreateDraggable();
+                }
+            }
+
+            this._optionsBeforeMaximize = null;
+        },
+
+        /**
+         * Set overflow on the body element, refresh the viewport and return the new dimensions of the viewport.
+         * @param {String} newValue Any value accepted by CSS "overflow" property
+         * @return {aria.utils.DomBeans.Size} Size object width 'width' and 'height' properties
+         */
+        _setBodyOverflow : function (newValue) {
+            Aria.$window.document.documentElement.style.overflow = newValue;
+            // need to explicitly raise viewportResized so that maxwidth/maxheight constraints are recalculated
+            this._onViewportResized();
+            var viewportSize = aria.utils.Dom._getViewportSize();
+            return viewportSize;
+        },
+
+        /**
+         * Special function to resize the widget in the maximized mode, to fill the whole viewport and include shadows
+         * (thus resize to more than the real size of the viewport; the shadows will be off the viewport and therefore
+         * invisible)
+         * @param {aria.utils.DomBeans.Size} viewportSize
+         */
+        _setMaximizedHeightAndWidth : function (viewportSize) {
+            var newHeight = viewportSize.height + this._shadows.top + this._shadows.bottom;
+            var newWidth = viewportSize.width + this._shadows.left + this._shadows.right;
+
+            this.changeProperty("height", newHeight);
+            this.changeProperty("width", newWidth);
         },
 
         /**
@@ -699,6 +931,10 @@ Aria.classDefinition({
          * @protected
          */
         _destroyDraggable : function () {
+            if (!this._cfg.movable || !this._draggable) {
+                return;
+            }
+
             this._draggable.$removeListeners({
                 "dragstart" : {
                     fn : this._onDragStart,
@@ -721,11 +957,17 @@ Aria.classDefinition({
          * @protected
          */
         _destroyResizable : function () {
+            if (!this._cfg.resizable || !this._resizable) {
+                return;
+            }
+
             var handleArr = this._handlesArr
             for (var i = 0, ii = handleArr.length; i < ii; i++) {
                 var cursor = handleArr[i];
-                this._resizable[cursor].$dispose();
-                this._resizable[cursor] = null;
+                if (this._resizable[cursor]) {
+                    this._resizable[cursor].$dispose();
+                    this._resizable[cursor] = null;
+                }
             }
 
         }

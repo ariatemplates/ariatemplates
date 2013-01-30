@@ -416,9 +416,14 @@ Aria.classDefinition({
          */
         _getPosition : function (size) {
             var position, isInViewSet;
-            if (this.conf.center) {
-                // apply the offset (both left and right, and also top and
-                // bottom)
+            if (this.conf.maximized) {
+                var offset = this.conf.offset;
+                position = {
+                    top : -offset.top,
+                    left : -offset.left
+                };
+            } else if (this.conf.center) {
+                // apply the offset (both left and right, and also top and bottom)
                 // before centering the whole thing in the viewport
                 var offset = this.conf.offset;
                 var newSize = {
@@ -628,9 +633,8 @@ Aria.classDefinition({
                 this.computedStyle = this._getComputedStyle();
             }
 
-            this.domElement.style.cssText = ['top:', this.computedStyle.top, 'px;', 'left:',
-                    this.computedStyle.left, 'px;', 'z-index:', this.computedStyle.zIndex, ';',
-                    'position:absolute;display:inline-block;'].join('');
+            this.domElement.style.cssText = ['top:', this.computedStyle.top, 'px;', 'left:', this.computedStyle.left,
+                    'px;', 'z-index:', this.computedStyle.zIndex, ';', 'position:absolute;display:inline-block;'].join('');
             if (aria.core.Browser.isIE7 && !this.isOpen) {
                 // Without the following line, the autocomplete does not
                 // initially display its content on IE7:
