@@ -48,13 +48,14 @@ Aria.classDefinition({
          * @return {String} CSS prefix
          */
         this.checkCSSPrefix = function () {
-            var div = Aria.$window.document.createElement("div");
-            var p, ext, pre = ["ms", "O", "Webkit", "Moz", ""];
-            for (p in pre) {
-                if (pre.hasOwnProperty(p)) {
-                    if (div.style[pre[p] + "Transition"] !== undefined) {
-                        ext = pre[p];
-                        return ext;
+            // In non-browser environment document might be null
+            if (Aria.$window && Aria.$window.document) {
+                var div = Aria.$window.document.createElement("div");
+                var prefixes = ["ms", "O", "Webkit", "Moz", ""];
+                for (var i = 0; i < prefixes.length; i += 1) {
+                    var prefix = prefixes[i];
+                    if (div.style[prefix + "Transition"] !== undefined) {
+                        return prefix;
                     }
                 }
             }
