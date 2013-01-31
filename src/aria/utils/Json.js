@@ -182,7 +182,7 @@
             if (!existingListeners) {
                 existingListeners = [];
             }
-            return existingListeners.concat(newListeners);
+            existingListeners.push.apply(existingListeners, newListeners);
         }
         return existingListeners;
     };
@@ -194,29 +194,21 @@
      * @param {String} property (may be null, for changes which are not related to a specific property, e.g. splice on
      * an array)
      * @param {Boolean} retrieve recursive listeners only, default is false
+     * @param {Array} listeners
      */
-    var __retrieveListeners = function (node, property, recursive) {
+    var __retrieveListeners = function (node, property, recursive, listeners) {
+        if (property != null) {
+            // add property specific listeners
+            listeners = __retrievePropertySpecificListeners(node, property, recursive, listeners);
+        }
 
         // recursive check
         if (node[jsonUtils.TEMP_REC_MARKER]) {
-            return null;
+            return listeners;
         }
 
-        // retrieve "recursives general listeners" on this node (not associated with a specific property)
-        var listeners = __appendListeners(node[__getListenerMetaName(null, true)]);
-        // add property specific recursive listeners
-        if (property != null) {
-            listeners = __appendListeners(node[__getListenerMetaName(property, true)], listeners);
-        }
-
-        if (!recursive) {
-            // add "general listeners" on this node (not associated with a specific property)
-            listeners = __appendListeners(node[__getListenerMetaName()], listeners);
-            // add property specific listeners
-            if (property != null) {
-                listeners = __appendListeners(node[__getListenerMetaName(property)], listeners);
-            }
-        }
+        // add general listeners
+        listeners = __retrievePropertySpecificListeners(node, null, recursive, listeners);
 
         // case parent property is defined: look for "recursive" listener in parent nodes
         var parents = node[jsonUtils.OBJECT_PARENT_PROPERTY];
@@ -225,7 +217,7 @@
             node[jsonUtils.TEMP_REC_MARKER] = true;
 
             for (var index = 0, parentDesc, parentListener; parentDesc = parents[index]; index++) {
-                listeners = __appendListeners(__retrieveListeners(parentDesc.parent, parentDesc.property, true), listeners);
+                listeners = __retrieveListeners(parentDesc.parent, parentDesc.property, true, listeners);
             }
             // at the end, clean recursive markup (only first call will have recursive set to null)
             if (!recursive) {
@@ -241,12 +233,16 @@
      * @private
      * @param {Object} node
      * @param {String} property
+     * @param {Boolean} recursive
+     * @param {Array} listeners
      */
-    var __retrievePropertySpecificListeners = function (node, property) {
+    var __retrievePropertySpecificListeners = function (node, property, recursive, listeners) {
         // add property specific recursive listeners
-        var listeners = __appendListeners(node[__getListenerMetaName(property, true)]);
-        // add property specific non-recursive listeners
-        listeners = __appendListeners(node[__getListenerMetaName(property)], listeners);
+        listeners = __appendListeners(node[__getListenerMetaName(property, true)], listeners);
+        if (!recursive) {
+            // add property specific non-recursive listeners
+            listeners = __appendListeners(node[__getListenerMetaName(property)], listeners);
+        }
         return listeners;
     };
 
@@ -596,7 +592,6 @@
              * @return the new value
              */
             setValue : function (container, property, val, listenerToExclude, throwError) {
-
                 // check for interface
                 if (!__isValidContainer(container)) {
                     if (throwError) {
