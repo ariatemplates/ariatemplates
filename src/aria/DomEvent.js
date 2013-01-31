@@ -43,6 +43,33 @@
         "screenY" : "screenY"
     };
 
+    // Map of special event types
+    var specialTypes = {
+        focusin : "focus",
+        focusout : "blur",
+        dommousescroll : "mousewheel",
+        webkitanimationstart : "animationstart",
+        oanimationstart : "animationstart",
+        msanimationstart : "animationstart",
+        webkitanimationiteration : "animationiteration",
+        oanimationiteration : "animationiteration",
+        msanimationiteration : "animationiteration",
+        webkitanimationend : "animationend",
+        oanimationend : "animationend",
+        msanimationend : "animationend",
+        webkittransitionend : "transitionend",
+        otransitionend : "transitionend",
+        mstransitionend : "transitionend"
+    };
+
+    // Checks to see if the type requested is a special type (as defined by the specialTypes hash), and (if so) returns
+    // @param {String} type The type to look up
+
+    var getType = function (type) {
+        type = type.toLowerCase();
+        return specialTypes[type] || type;
+    };
+
     // browsers shortcut
     var isIE8orLess, isGecko;
 
@@ -93,8 +120,7 @@
                 }
             }
 
-            this.type = this.type.toLowerCase(); // just to be sure
-
+            this.type = getType(evt.type);
             // TODO keyCode / charCode should be homogenized between IE and other browsers
             // What must be implemented: (cf. http://www.quirksmode.org/js/keys.html)
             // keyCode=keyboard key code (e.g. 'A' and 'a' have the same key code: 65)
@@ -142,11 +168,11 @@
                         // 0 to 9 range
                         this.keyCode = baseKeyCode + 48;
                     } /*
-                     * if (baseKeyCode == 58) { this.keyCode = 59; } // 59 > 59 if (baseKeyCode == 60) {
-                     * this.keyCode = 188; } if (baseKeyCode == 61) { this.keyCode = 107; } if (baseKeyCode == 62) {
-                     * this.keyCode = 190; } if (baseKeyCode == 62) { this.keyCode = 191; } if (baseKeyCode == 64) {
-                     * this.keyCode = 50; }
-                     */
+                    * if (baseKeyCode == 58) { this.keyCode = 59; } // 59 > 59 if (baseKeyCode == 60) {
+                    * this.keyCode = 188; } if (baseKeyCode == 61) { this.keyCode = 107; } if (baseKeyCode == 62) {
+                    * this.keyCode = 190; } if (baseKeyCode == 62) { this.keyCode = 191; } if (baseKeyCode == 64) {
+                    * this.keyCode = 50; }
+                    */
                     // 65 -> 90 A - Z
 
                     if (baseKeyCode > 96 && baseKeyCode < 123) {
@@ -157,12 +183,6 @@
                 this.charCode = baseKeyCode;
 
                 this.isSpecialKey = this.isSpecialKey(this.keyCode, evt);
-            } else if (this.type == "focusin") {
-                this.type = "focus";
-            } else if (this.type == "focusout") {
-                this.type = "blur";
-            } else if (this.type == "dommousescroll") {
-                this.type = "mousewheel";
             }
 
             /**
@@ -269,21 +289,16 @@
              * Return a wrapper on the event passed as a parameter. The parameter can either be already a wrapper, in
              * which case the parameter is returned without other object creation, or an event from the dom, in which
              * case a wrapper is created.
-             *
              * <pre>
-             *
              * Instead of using the following code:
-             *
              *     _dom_onmouseover : function (evt) {
              *              this.$Widget._dom_onmouseover.call(this,evt);
              *              var domEvt = new aria.DomEvent(evt);
              *              ...
              *              domEvt.$dispose();
              *     }
-             *
              * The following code should be used, so that only one DomEvt object is created per event,
              * event when calling the parent method:
-             *
              *     _dom_onmouseover : function (evt) {
              *                 var domEvt = aria.DomEvent.getWrapper(evt);
              *                 this.$Widget._dom_onmouseover.call(this,domEvt);
@@ -291,7 +306,6 @@
              *                 domEvt.disposeWrapper();
              *     }
              * </pre>
-             *
              * @param {DOMEvent or aria.DomEvent} evt The event from the dom or a wrapper on it.
              * @return {aria.DomEvent} domEvt An aria.domEvent object representing the event.
              */

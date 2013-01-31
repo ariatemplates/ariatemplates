@@ -44,11 +44,53 @@ Aria.classDefinition({
         this.depth = -1;
 
         /**
+         * Checks for the CSS Prefixes for compliant browsers
+         * @return {String} CSS prefix
+         */
+
+        this.checkCSSPrefix = function () {
+            var div = Aria.$window.document.createElement("div");
+            var p, ext, pre = ["ms", "O", "Webkit", "Moz", ""];
+            for (p in pre) {
+                if (pre.hasOwnProperty(p)) {
+                    if (div.style[pre[p] + "Transition"] !== undefined) {
+                        ext = pre[p];
+                        return ext;
+                    }
+                }
+            }
+            return null;
+        };
+
+        /**
          * Delegated events on body.
          * @type Array
          */
         this.delegatedOnBody = ["click", "focus", "blur", "focusin", "focusout", "mousedown", "mouseup", "mousemove",
                 "mouseover", "mouseout", "contextmenu", "touchstart", "touchend", "touchmove", "mousewheel"];
+
+        /**
+         * Current CSS Prefix for Browser Engine
+         * @type String
+         */
+        this.vendorPrefix = this.checkCSSPrefix();
+
+        // Adding Event Handlers for Moz and Standard compliant browsers
+        if (this.vendorPrefix !== null) {
+            this.delegatedOnBody.push("transitionend", "animationstart", "animationiteration", "animationend");
+        }
+
+        // Mappings for Browser Compliancy
+        if (this.vendorPrefix === "O") {
+            this.delegatedOnBody.push("oanimationstart", "oanimationiteration", "oanimationend", "otransitionEnd");
+        }
+        if (this.vendorPrefix === "ms") {
+            this.delegatedOnBody.push("MSAnimationStart", "MSAnimationIteration", "MSAnimationEnd", "MSTransitionEnd");
+        }
+
+        if (this.vendorPrefix === "Webkit") {
+            this.delegatedOnBody.push("webkitAnimationIteration", "webkitAnimationEnd", "webkitAnimationStart", "webkitTransitionEnd");
+        }
 
         /**
          * Delegated events on window. On modern browser, if focus is not on an element, event are not caught by the
@@ -398,7 +440,6 @@ Aria.classDefinition({
          * @param {Object} evt
          */
         delegate : function (evt) {
-
             if (!this.__stackCache) {
                 this.__stackCache = {};
             }
