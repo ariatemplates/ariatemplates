@@ -141,7 +141,18 @@ Aria.classDefinition({
                     }
                 } else {
                     this._frame.changeState(this._state);
-                    this._focusElt.className = (state == "disabled" ? "xButton xButtonDisabled" : "xButton");
+                    var ie8plus = aria.core.Browser.isIE && parseInt(aria.core.Browser.version, 10) >= 8;
+                    if (state == "disabled") {
+                        this._focusElt.className = "xButton xButtonDisabled";
+                        if (ie8plus) {
+                            this._focusElt.onfocusin = function(){ this.blur(); };
+                        }
+                    } else {
+                        this._focusElt.className = "xButton";
+                        if (ie8plus) {
+                            this._focusElt.onfocusin = null;
+                        }
+                    }
                 }
             }
         },
@@ -206,7 +217,7 @@ Aria.classDefinition({
                 } else {
                     // PTR 05613372: prevent 'clickability' of greyed out button. Adding "disabled" makes adjusting the
                     // text color impossible in IE, thus onfocusin used (more suitable for this use case than onfocus)
-                    var onFocusInString = aria.core.Browser.isIE ? " onfocusin='this.blur()' " : "";
+                    var onFocusInString = (aria.core.Browser.isIE && cfg.disabled) ? " onfocusin='this.blur()' " : "";
                     out.write(['<button type="button" class="' + buttonClass + '"', onFocusInString, tabIndexString,
                             ariaTestMode, '>'].join(''));
                 }
