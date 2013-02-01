@@ -190,6 +190,7 @@
             var draggable = this.getDraggable();
             if (draggable) {
                 removeAttribute(draggable, aria.utils.Mouse.DRAGGABLE_ATTRIBUTE);
+
                 draggable.style.cursor = this.originalCursor;
                 draggable = null;
             }
@@ -232,7 +233,9 @@
                 }
                 if (element) {
                     if (cursor) {
-                        this.originalCursor = element.style.cursor;
+                        if (this.originalCursor == null) {
+                            this.originalCursor = element.style.cursor;
+                        }
                         element.style.cursor = cursor;
                     }
                     return element;
