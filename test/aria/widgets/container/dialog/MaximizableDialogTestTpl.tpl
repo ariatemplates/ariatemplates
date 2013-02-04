@@ -30,6 +30,7 @@
         movable : true,
         resizable : true,
         maximizable : true,
+        maxHeight: data.dialog.maxHeight, // this is to check that maximized takes precedence over maxHeight
         bind : {
             width : {
                 inside : data.dialog,

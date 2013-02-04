@@ -121,6 +121,7 @@ Aria.classDefinition({
         _onViewportResized : function (event) {
 
             var domElt = this._domElt;
+            var maximized = this._cfg.maximized;
             if (domElt) {
                 // Remove width and height, they will be recalculated later, to have the content size well calculated
                 domElt.style.width = "";
@@ -130,17 +131,24 @@ Aria.classDefinition({
                 var viewport = aria.utils.Dom._getViewportSize();
                 var math = aria.utils.Math;
 
+                var maxHeight, maxWidth;
+                if (maximized) {
+                    maxHeight = viewport.height + this._shadows.top + this._shadows.bottom
+                    maxWidth = viewport.width + this._shadows.left + this._shadows.right;
+                } else {
+                    maxHeight = math.min(this._cfg.maxHeight, viewport.height);
+                    maxWidth = math.min(this._cfg.maxWidth, viewport.width);
+                }
                 this._div.updateSize({
                     height : this._cfg.height,
-                    maxHeight : math.min(this._cfg.maxHeight, viewport.height + this._shadows.top
-                            + this._shadows.bottom),
+                    maxHeight : maxHeight,
                     width : this._cfg.width,
-                    maxWidth : math.min(this._cfg.maxWidth, viewport.width + this._shadows.left + this._shadows.right)
+                    maxWidth : maxWidth
                 });
                 this._updateContainerSize();
             }
 
-            if (this._cfg.maximized) {
+            if (maximized) {
                 this._setMaximizedHeightAndWidth(viewport);
             }
         },
@@ -184,8 +192,14 @@ Aria.classDefinition({
 
             // constrain dialog to viewport
             var math = aria.utils.Math;
-            var maxHeight = math.min(this._cfg.maxHeight, viewport.height + this._shadows.top + this._shadows.bottom);
-            var maxWidth = math.min(this._cfg.maxWidth, viewport.width + this._shadows.left + this._shadows.right);
+            var maxHeight, maxWidth;
+            if (this._cfg.maximized) {
+                maxHeight = viewport.height + this._shadows.top + this._shadows.bottom
+                maxWidth = viewport.width + this._shadows.left + this._shadows.right;
+            } else {
+                maxHeight = math.min(this._cfg.maxHeight, viewport.height);
+                maxWidth = math.min(this._cfg.maxWidth, viewport.width);
+            }
             this._div = new aria.widgets.container.Div({
                 sclass : this._skinObj.divsclass,
                 margins : "0 0 0 0",
@@ -705,12 +719,16 @@ Aria.classDefinition({
                 center : cfg.center,
                 width : cfg.width,
                 height : cfg.height,
+                maxWidth : cfg.maxWidth,
+                maxHeight : cfg.maxHeight,
                 xpos : cfg.xpos,
                 ypos : cfg.ypos,
                 bodyOverflow : Aria.$window.document.documentElement.style.overflow
             };
 
             this.setProperty("center", false);
+            this.setProperty("maxWidth", undefined);
+            this.setProperty("maxHeight", undefined);
             if (this._popup && this._popup.isOpen) {
                 // proceed with maximization
                 this._popup.conf.maximized = true;
@@ -742,6 +760,8 @@ Aria.classDefinition({
             }
             this._setBodyOverflow(opts.bodyOverflow);
 
+            this.setProperty("maxWidth", opts.maxWidth);
+            this.setProperty("maxHeight", opts.maxHeight);
             this.changeProperty("width", opts.width);
             this.changeProperty("height", opts.height);
             if (opts.center) {
