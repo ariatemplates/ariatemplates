@@ -1526,7 +1526,7 @@ Aria.beanDefinitions({
                         },
                         "maximized" : {
                             $type : "common:BindingRef",
-                            $description : "Whether the Dialog is occupying the whole viewport. Set to true takes precedence over center, xpos, ypos, width, height. Unmaximize the Dialog first to change those settings."
+                            $description : "Whether the Dialog is occupying the whole viewport. Set to true takes precedence over center, xpos, ypos, width, height and also ignores maxWidth and maxHeight. Unmaximize the Dialog first to change those settings."
                         },
                         "center" : {
                             $type : "common:BindingRef"

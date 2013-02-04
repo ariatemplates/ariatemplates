@@ -27,11 +27,13 @@ Aria.classDefinition({
         this.INITIAL_HEIGHT = 300;
         this.INITIAL_XPOS = 111;
         this.INITIAL_YPOS = 111;
+        this.INITIAL_MAXHEIGHT = 500; // must be smaller than iframe height
 
         Aria.$window.testData = this.data = {
             dialog : {
                 width : this.INITIAL_WIDTH,
                 height : this.INITIAL_HEIGHT,
+                maxheight : this.INITIAL_MAXHEIGHT,
                 xpos : this.INITIAL_XPOS,
                 ypos : this.INITIAL_YPOS,
                 visible : false,
@@ -92,6 +94,10 @@ Aria.classDefinition({
 
             Aria.$window.document.documentElement.style.backgroundColor = "aliceblue";
             // Aria.$window.document.getElementById('TESTAREA').style.height = '';
+
+            // This is an implicit test whether Dialog maxheight is ignored in the maximized mode.
+            // If below is true and all other tests pass, then maxheight is correctly ignored.
+            this.assertTrue(this.data.dialog.maxheight + 50 < this.data.iframeWrapper.height, "Invalid test config, iframe should be bigger than Dialog maxheight for this test.");
 
             this.iframe = aria.utils.Dom.getElementById(this.iframeUnderTestId);
             this.waitForIframe(this.iframeUnderTestId, this.widgetUnderTestId, this._iframeReady);
