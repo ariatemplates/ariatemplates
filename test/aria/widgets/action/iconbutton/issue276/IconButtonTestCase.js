@@ -12,20 +12,15 @@ Aria.classDefinition({
 
     $prototype : {
         runTemplateTest : function () {
-            var iconBtnId = this.getWidgetInstance("myid")._domId;
-            var domUtil = aria.utils.Dom;
-            // for getting iconbutton image style
-            var iconBtnElement = domUtil.getDomElementsChildByTagName(domUtil.getElementById(iconBtnId), 'span')[4];
-            var width = domUtil.getStyle(iconBtnElement, "width");
-            var height = domUtil.getStyle(iconBtnElement, "height");
+            var iconInfo = this.getWidgetInstance("myid")._icon._iconInfo;
+            var width = iconInfo.width;
+            var height = iconInfo.height;
+            var imageURL = iconInfo.imageURL;
             // Background url is different for different browsers, so just checking image name
-            var imageURL = domUtil.getStyle(iconBtnElement, "background").split(' ')[0].replace(/("|')/g, "");
-            var imagename = imageURL.substring(imageURL.lastIndexOf('/') + 1, imageURL.lastIndexOf(')'));;
-
-            this.assertEquals(width, "42px", "Width is not proper");
-            this.assertEquals(height, "16px", "Height is not proper");
+            var imagename = imageURL.substring(imageURL.lastIndexOf('/') + 1);
+            this.assertEquals(width, 42, "Width is not proper");
+            this.assertEquals(height, 16, "Height is not proper");
             this.assertEquals(imagename, "icon-check.png", "Image is not proper");
-
             this.end();
         }
     }
