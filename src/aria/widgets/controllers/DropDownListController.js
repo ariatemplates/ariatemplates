@@ -159,6 +159,10 @@ Aria.classDefinition({
                         dataModel.selectedIdx = 0;
                         dataModel.text = this._getLabelFromListValue(dataModel.listContent[dataModel.selectedIdx]);
                         dataModel.value = dataModel.listContent[dataModel.selectedIdx].value;
+                        // freeText will take precedence if there is not an exact match
+                        if (this.freeText && !dataModel.listContent[dataModel.selectedIdx].value.exactMatch) {
+                            dataModel.value = dataModel.initialInput;
+                        }
                     }
                     report = this.checkValue(dataModel.value);
                     report.displayDropDown = false; // close the dropdown
