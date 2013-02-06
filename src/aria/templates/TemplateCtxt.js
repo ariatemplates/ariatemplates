@@ -1087,7 +1087,7 @@
 
                 // do not use bind for __$write as this method is called intensively (Perf improvment)
                 tpl.__$write = function (s, line) {
-                    return oSelf.__$write(s, line);
+                    return oSelf.__$write(s, line, this.$classpath);
                 };
 
                 if (this.moduleCtrl) {
@@ -1172,9 +1172,9 @@
              * @private
              * @implements aria.templates.ITemplate
              */
-            __$write : function (a, lineNumber) {
+            __$write : function (a, lineNumber, classpath) {
                 if (a === undefined || a === null) {
-                    this.$logWarn(this.VAR_NULL_OR_UNDEFINED, [lineNumber, this.tplClasspath]);
+                    this.$logWarn(this.VAR_NULL_OR_UNDEFINED, [lineNumber, classpath]);
                 }
                 return this._out.write(a);
             },
