@@ -87,7 +87,7 @@ module.exports = function(grunt) {
             if(typeof map[k] === 'object') {
                 prepareDownloadMgrMap(map[k]);
             } else if(k.indexOf('.') !== -1) {
-                map[k.substring(0, k.indexOf('.'))] = map[k];
+                map[k.substring(0, k.lastIndexOf('.'))] = map[k];
                 delete map[k];
             }
         }
