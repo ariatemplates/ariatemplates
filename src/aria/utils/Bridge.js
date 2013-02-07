@@ -161,9 +161,14 @@ Aria.classDefinition({
                     root + devPart + "aria/" + atJsName, // AT script
                     "'></script>", // AT script
 
-                    "<script language='JavaScript' src='", // AT Skin script
-                    root + "aria/css/" + atSkinName, // AT Skin script
-                    "'></script>", // AT Skin script
+                    (aria.widgets && aria.widgets.AriaSkin) ? ["<script type='text/javascript'>",
+                            "Aria['classDefinition']({$classpath : 'aria.widgets.AriaSkin',", "$singleton : true,",
+                            "$prototype : window.aria.utils.Json.copy(",
+                            aria.utils.Json.convertToJsonString(aria.widgets.AriaSkin.classDefinition.$prototype), ")",
+                            "});</script>"].join("") : ["<script language='JavaScript' src='", // AT Skin script
+                            root + "aria/css/" + atSkinName, // AT Skin script
+                            "'></script>" // AT Skin script
+                    ].join(""),
 
                     "</head>", // END HEAD
                     "<body onUnload='window.__atBridge&&__atBridge.close()' style='overflow:hidden;'>", // used to
