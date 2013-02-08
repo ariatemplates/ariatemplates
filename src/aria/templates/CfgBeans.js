@@ -719,6 +719,26 @@ Aria.beanDefinitions({
                 "placeholder" : {
                     $type : "json:String",
                     $description : "short hint intended to aid the user with data entry"
+                },
+                "autocomplete" : {
+                    $type : "json:String",
+                    $description : "control whether autocompletion is enabled in input fields"
+                },
+                "autofocus" : {
+                    $type : "json:String",
+                    $description : "control whether the input should receive focus automatically after displaying the page. Possible values are \"autofocus\" or an empty string"
+                },
+                "autocorrect" : {
+                    $type : "json:String",
+                    $description : "whether autocorrection is activated in an editable field. Useful for mobiles"
+                },
+                "autocapitalize" : {
+                    $type : "json:String",
+                    $description : "whether the typed text should be automatically capitalized"
+                },
+                "spellcheck" : {
+                    $type : "json:String",
+                    $description : "whether or not to check the spelling/grammar of the text in an editable element"
                 }
             }
         },

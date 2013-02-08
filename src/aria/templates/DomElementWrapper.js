@@ -304,7 +304,7 @@ Aria.classDefinition({
     },
     $statics : {
 
-        attributesWhiteList : /^(name|title|style|dir|lang|abbr|height|width|size|cols|rows|rowspan|colspan|nowrap|valign|align|border|cellpadding|cellspacing|disabled|readonly|checked|selected|multiple|value|alt|maxlength|type|accesskey|tabindex|placeholder)$/,
+        attributesWhiteList : /^(name|title|style|dir|lang|abbr|height|width|size|cols|rows|rowspan|colspan|nowrap|valign|align|border|cellpadding|cellspacing|disabled|readonly|checked|selected|multiple|value|alt|maxlength|type|accesskey|tabindex|placeholder|autocomplete|autofocus|autocorrect|autocapitalize|spellcheck)$/,
 
         // ERROR MESSAGE:
         INVALID_EXPANDO_NAME : "Invalid expando name: '%1'.",
