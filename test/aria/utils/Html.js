@@ -108,7 +108,12 @@ Aria.classDefinition({
                 type : "text",
                 valign : "middle",
                 value : "my value",
-                width : "100px"
+                width : "100px",
+                autocomplete : "off",
+                autofocus : "autofocus",
+                autocorrect : "on",
+                autocapitalize : "off",
+                spellcheck : "true"
 
             };
 
