@@ -22,6 +22,26 @@ To get started, copy the `aria` folder to the root of your web server and includ
 
     <script type="text/javascript" src="/aria/bootstrap.js"></script>
 
+### Using AT from NodeJS
+
+Issue `npm install ariatemplates` to grab the latest stable version from npm.
+Then use `require('ariatemplates')` to load the framework. This will create two global variables,
+`aria` and `Aria`. Some core functionalities will be preloaded, to use the others, you have to load them
+using `Aria.load`. That function expects a JSON object with `classes` node (`Array`), and optionally
+`oncomplete` and `onerror` callbacks.
+
+Below is a simple REPL excerpt to get started with:
+
+    $ npm install ariatemplates
+    ...
+    $ node
+    > require('ariatemplates')
+    > aria.utils.String.substitute('Hello %1', ['John'])
+    'Hello John'
+    > Aria.load({ classes : ["aria.utils.Math"] })
+    > aria.utils.Math.normalize(711, 0, 500)
+    500
+
 ### Learn more
 
 Head over to our [Hello World guide](http://ariatemplates.com/guides/hello/) to learn more.
