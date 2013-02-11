@@ -57,22 +57,23 @@
     }
 
     /**
+     * Contains the codes for keys that do not correspond to a change of the value of the input field
+     * @type Array
+     * @private
+     */
+    var specialKeys = null;
+
+    /**
      * Internal callback for placeholder handling on keydown.
      * @param {aria.DomEvent} event keydown event
      * @private
      */
     function keyDownCallback (event) {
-        // This is to remove the placeholder when the text input receives the first input char
-        if (!_placeholderSupported && this._cfg.placeholder) {
-            if (this._hasPlaceholder) {
-                var domevent = aria.DomEvent;
-                var specialKeys = [domevent.KC_END, domevent.KC_RIGHT, domevent.KC_ARROW_RIGHT, domevent.KC_DOWN,
-                        domevent.KC_ARROW_DOWN, domevent.KC_DELETE, domevent.KC_BACKSPACE];
-                if (!aria.utils.Array.contains(specialKeys, event.keyCode)) {
-                    this._removePlaceholder();
-                } else {
-                    event.preventDefault();
-                }
+        if (this._hasPlaceholder) {
+            if (!aria.utils.Array.contains(specialKeys, event.keyCode)) {
+                this._removePlaceholder();
+            } else {
+                event.preventDefault();
             }
         }
     }
@@ -97,7 +98,6 @@
         } else {
             aria.utils.Json.setValue(bind.inside, bind.to, newValue, bind.cb);
         }
-
         this._firstFocus = true;
 
     }
@@ -109,13 +109,12 @@
      */
     function focusBinding (event) {
         this._hasFocus = true;
-
-        if (this._cfg.placeholder) {
-            var cssClass = new aria.utils.ClassList(this._domElt);
-            if (cssClass.contains('placeholder')) {
-                aria.utils.Caret.setPosition(this._domElt, 0, 0);
-            }
-            cssClass.$dispose();
+        if (this._hasPlaceholder) {
+            aria.core.Timer.addCallback({
+                fn : this._setCaretForPlaceholder,
+                scope : this,
+                delay : 4
+            });
         }
     }
 
@@ -125,18 +124,10 @@
      * @private
      */
     function clickBinding (event) {
-        if (this._cfg.autoselect) {
-            if (!_placeholderSupported && this._cfg.placeholder) {
-                var cssClass = new aria.utils.ClassList(this._domElt);
-                if (cssClass.contains('placeholder')) {
-                    aria.utils.Caret.setPosition(this._domElt, 0, 0);
-                } else {
-                    aria.utils.Caret.select(this._domElt);
-                }
-                cssClass.$dispose();
-            } else {
-                aria.utils.Caret.select(this._domElt);
-            }
+        if (this._hasPlaceholder) {
+            aria.utils.Caret.setPosition(this._domElt, 0, 0);
+        } else if (this._cfg.autoselect) {
+            this._autoselect();
         }
     }
 
@@ -153,9 +144,14 @@
     Aria.classDefinition({
         $classpath : "aria.html.TextInput",
         $extends : "aria.html.Element",
-        $dependencies : ["aria.html.beans.TextInputCfg", "aria.utils.Caret"],
+        $dependencies : ["aria.html.beans.TextInputCfg", "aria.utils.Caret", "aria.DomEvent"],
         $statics : {
             INVALID_USAGE : "Widget %1 can only be used as a %2."
+        },
+        $onload : function () {
+            var domevent = aria.DomEvent;
+            specialKeys = [domevent.KC_END, domevent.KC_RIGHT, domevent.KC_ARROW_RIGHT, domevent.KC_DOWN,
+                    domevent.KC_ARROW_DOWN, domevent.KC_DELETE, domevent.KC_BACKSPACE];
         },
         $constructor : function (cfg, context, line) {
             this.$cfgBean = this.$cfgBean || "aria.html.beans.TextInputCfg.Properties";
@@ -321,6 +317,7 @@
                             aria.utils.Caret.setPosition(element, 0, 0);
                         }
                         this._hasPlaceholder = true;
+                        this._domElt.unselectable = "on";
                     }
                 }
             },
@@ -337,6 +334,7 @@
                     this._hasPlaceholder = false;
                     cssClass.remove('placeholder');
                     cssClass.$dispose();
+                    this._domElt.unselectable = "off";
                 }
             },
 
@@ -373,6 +371,16 @@
                         fn : this._setPlaceholder,
                         scope : this
                     });
+                }
+            },
+
+            /**
+             * Set the carrect at the beginning of the input field
+             * @protected
+             */
+            _setCaretForPlaceholder : function () {
+                if (this._hasPlaceholder) {
+                    aria.utils.Caret.setPosition(this._domElt, 0, 0);
                 }
             }
 
