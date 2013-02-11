@@ -17,9 +17,9 @@
  * Test for the IOFilter class.
  */
 Aria.classDefinition({
-    $classpath : 'test.aria.core.io.IOFilterTest',
-    $extends : 'aria.jsunit.TestCase',
-    $dependencies : ['aria.core.IOFilter'],
+    $classpath : "test.aria.core.io.IOFilterTest",
+    $extends : "aria.jsunit.TestCase",
+    $dependencies : ["aria.core.IOFilter"],
     $prototype : {
         testSetJsonPostData : function () {
             var filter = new aria.core.IOFilter();
@@ -29,7 +29,7 @@ Aria.classDefinition({
                 postData : "notChanged"
             };
             filter.setJsonPostData(req, {});
-            this.assertTrue(req.postData == "data={}");
+            this.assertTrue(req.data == "data={}");
             filter.$dispose();
 
             // Test for PTR 05168918: keys must be enclosed in ""
@@ -44,9 +44,46 @@ Aria.classDefinition({
                     b : "c"
                 }
             });
-            this.assertTrue(req.postData.indexOf("\"a\"") != -1);
-            this.assertTrue(req.postData.indexOf("\"b\"") != -1);
+            this.assertTrue(req.data.indexOf("\"a\"") != -1);
+            this.assertTrue(req.data.indexOf("\"b\"") != -1);
             filter.$dispose();
+        },
+
+        testAsyncEndToEndJsonPostData : function () {
+            var filter = new aria.core.IOFilter();
+            filter.onRequest = function (req) {
+                this.setJsonPostData(req, "better");
+            };
+            aria.core.IOFiltersMgr.addFilter(filter);
+
+            var req = {
+                url : aria.core.DownloadMgr.resolveURL("test/aria/core/test/TestFile.txt", true),
+                method : "GET",
+                postData : "notChanged",
+                callback : {
+                    fn : function () {
+                        this.notifyTestEnd("testAsyncEndToEndJsonPostData");
+                    },
+                    scope : this
+                }
+            };
+
+            // mock the actual send function
+            var originalSend = aria.core.IO._asyncRequest;
+            var counter = 0;
+            var postData;
+            aria.core.IO._asyncRequest = function (requestObject) {
+                counter += 1;
+                postData = requestObject.req.data;
+                return originalSend.apply(this, arguments);
+            };
+            aria.core.IO.asyncRequest(req);
+            aria.core.IO._asyncRequest = originalSend;
+
+            aria.core.IOFiltersMgr.removeFilter(filter);
+            filter.$dispose();
+            this.assertEquals(counter, 1, "Expecting the async request to be called once, got %2");
+            this.assertEquals(postData, 'data="better"');
         },
 
         testAsyncCheckErrorInFilter : function () {

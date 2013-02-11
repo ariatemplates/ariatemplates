@@ -16,10 +16,9 @@
 /**
  * Base class for any filter that needs to be plugged on IO.
  * @see aria.core.IOFiltersMgr.addFilter()
- * @class aria.core.IOFilter
  */
 Aria.classDefinition({
-    $classpath : 'aria.core.IOFilter',
+    $classpath : "aria.core.IOFilter",
     $constructor : function (args) {
         /**
          * Delay (in milliseconds) to be added to all requests, before the request is made.
@@ -69,7 +68,7 @@ Aria.classDefinition({
          */
         setJsonPostData : function (req, jsonData) {
             // cf aria.modules.RequestMgr._callAsyncRequest:
-            req.postData = 'data=' + aria.utils.Json.convertToJsonString(jsonData, {
+            req.data = 'data=' + aria.utils.Json.convertToJsonString(jsonData, {
                 encodeParameters : true
             });
         },
