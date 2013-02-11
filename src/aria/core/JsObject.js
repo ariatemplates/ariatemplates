@@ -395,7 +395,6 @@
              * @return the value returned by the callback, or undefined if the callback could not be called.
              */
             $callback : function (cb, res, errorId) {
-
                 if (!cb) {
                     return; // callback is sometimes not used
                 }
@@ -427,7 +426,7 @@
                 }
 
                 try {
-                    return callback.apply(scope, args);
+                    return Function.prototype.apply.call(callback, scope, args);
                 } catch (ex) {
                     this.$logError(errorId || this.CALLBACK_ERROR, [this.$classpath, scope.$classpath], ex);
                 }
@@ -624,8 +623,14 @@
                         this.$logError(this.UNDECLARED_EVENT, evt, src.$classpath);
                         continue;
                     }
-                    if (!lsn.fn) {
-                        // shortcut as in 'error' sample
+                    if (lsn.$Callback) {
+                        lsn = {
+                            fn : function (evt, cb) {cb.call(evt)},
+                            scope : this,
+                            args : lsn
+                        };
+                    } else if (!lsn.fn) {
+                         // shortcut as in 'error' sample
                         if (!defaultScope) {
                             this.$logError(this.MISSING_SCOPE, evt);
                             continue;
