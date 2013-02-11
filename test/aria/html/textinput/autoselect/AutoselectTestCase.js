@@ -15,15 +15,11 @@
 
 Aria.classDefinition({
     $classpath : "test.aria.html.textinput.autoselect.AutoselectTestCase",
-    $extends : "aria.jsunit.TemplateTestCase",
+    $extends : "aria.jsunit.RobotTestCase",
     $dependencies : ["aria.html.TextInput", "aria.utils.SynEvents", "aria.utils.Dom"],
-    $constructor : function () {
-        this.$TemplateTestCase.constructor.call(this);
-        this.element = null;
-    },
     $destructor : function () {
         this.element = null;
-        this.$TemplateTestCase.$destructor.call(this);
+        this.$RobotTestCase.$destructor.call(this);
     },
     $prototype : {
         runTemplateTest : function () {
@@ -80,6 +76,19 @@ Aria.classDefinition({
             this.assertEquals(caretPos.start, 0, "The start pos of caret is not zero");
             this.assertEquals(caretPos.end, this.element.value.length, "The end pos of caret is not at the end of the word typed");
             this.assertEquals(this.element.value, "brazil", "The value of input text is not brazil");
+
+            this.synEvent.click(this.element, {
+                fn : this.afterFourthClick,
+                scope : this
+            });
+        },
+
+        afterFourthClick : function () {
+
+            this.assertEquals(this.templateCtxt._tpl.data.click, 3, "Click callback set in the widget configuration has not been called");
+
+            var caretPos = aria.utils.Caret.getPosition(this.element);
+            this.assertEquals(caretPos.start - caretPos.end, 0, " After the second click the field is still completely selected");
 
             aria.utils.SynEvents.click(this.secondElement, {
                 fn : this.afterFirstClickTwo,
