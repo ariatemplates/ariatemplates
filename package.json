@@ -2,7 +2,7 @@
   "author": "ariatemplates <contact@ariatemplates.com> (http://github.com/ariatemplates)",
   "name": "ariatemplates",
   "description": "Aria Templates (aka AT) is an application framework written in JavaScript for building rich and large-scaled enterprise web applications.",
-  "version": "1.2.7C",
+  "version": "1.2.7D",
   "homepage": "http://ariatemplates.com",
   "repository": {
     "type": "git",
