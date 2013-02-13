@@ -111,7 +111,10 @@ Aria.classDefinition({
                     proxyBackgroundColor : "#BBBBBB",
                     handleBackgroundColor : "#FFFBF1",
                     handleSpriteURLh : "atskin/sprites/splitter.gif",
-                    separatorHeight : 6
+                    separatorHeight : 6,
+                    separatorWidth : 6,
+                    handleSpriteURLv : "atskin/sprites/splitter_v.gif",
+                    proxySpriteURLv : "atskin/sprites/splitter_v.gif"
                 }
             },
             DatePicker : {
