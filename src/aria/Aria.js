@@ -1079,6 +1079,10 @@
             }
             for (var k in defPrototype) {
                 if (defPrototype.hasOwnProperty(k) && k != '$init') {
+                    if (typeof defPrototype[k] === "function") {
+                        // enable naming of anonymous functions in the stack trace in Firebug and Safari
+                        defPrototype[k].displayName = "#" + k;
+                    }
                     // TODO: check method names?
                     p[k] = defPrototype[k];
                 }
