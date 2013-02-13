@@ -1318,9 +1318,11 @@
 
             /**
              * Return the generated domId for specified id.
+             * @param {String|Number} id specified in the template
              * @return {String}
              */
             getDomId : function (id) {
+                var id = id + "";
                 if (id && id.indexOf("+") != -1) {
                     if (Aria.testMode) {
                         return this.$getAutoId(id);
