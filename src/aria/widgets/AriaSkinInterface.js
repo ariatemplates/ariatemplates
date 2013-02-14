@@ -223,7 +223,9 @@ Aria.classDefinition({
             var document = Aria.$window.document;
             var element = document.createElement('div');
             document.body.appendChild(element);
-            element.style.display = 'none';
+            element.style.position = "absolute";
+            element.style.left = "-1000000px";
+            element.style.top = "-1000000px";
             element.innerHTML = markup.join('');
             return element;
         },
