@@ -197,25 +197,30 @@
      */
     var __retrieveListeners = function (node, property, recursive) {
 
-        // recursive check
-        if (node[jsonUtils.TEMP_REC_MARKER]) {
-            return null;
-        }
-
-        // retrieve "recursives general listeners" on this node (not associated with a specific property)
-        var listeners = __appendListeners(node[__getListenerMetaName(null, true)]);
+        var listeners = [];
         // add property specific recursive listeners
         if (property != null) {
             listeners = __appendListeners(node[__getListenerMetaName(property, true)], listeners);
         }
 
         if (!recursive) {
-            // add "general listeners" on this node (not associated with a specific property)
-            listeners = __appendListeners(node[__getListenerMetaName()], listeners);
             // add property specific listeners
             if (property != null) {
                 listeners = __appendListeners(node[__getListenerMetaName(property)], listeners);
             }
+        }
+
+        // recursive check
+        if (node[jsonUtils.TEMP_REC_MARKER]) {
+            return listeners;
+        }
+
+        // retrieve "recursives general listeners" on this node (not associated with a specific property)
+        listeners = __appendListeners(node[__getListenerMetaName(null, true)], listeners);
+
+        if (!recursive) {
+            // add "general listeners" on this node (not associated with a specific property)
+            listeners = __appendListeners(node[__getListenerMetaName()], listeners);
         }
 
         // case parent property is defined: look for "recursive" listener in parent nodes
@@ -596,7 +601,6 @@
              * @return the new value
              */
             setValue : function (container, property, val, listenerToExclude, throwError) {
-
                 // check for interface
                 if (!__isValidContainer(container)) {
                     if (throwError) {
