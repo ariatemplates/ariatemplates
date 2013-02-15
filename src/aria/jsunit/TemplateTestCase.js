@@ -263,7 +263,14 @@ Aria.classDefinition({
         nextTest : function () {
             var nextTestName = this._testsToExecute.shift();
             if (nextTestName) {
-                this[nextTestName]();
+                aria.core.Timer.addCallback({
+                    fn : function () {
+                        this._currentTestName = nextTestName; // for logging purposes
+                        this[nextTestName]();
+                    },
+                    scope : this,
+                    delay : 10
+                });
             } else {
                 this.notifyTemplateTestEnd();
             }
