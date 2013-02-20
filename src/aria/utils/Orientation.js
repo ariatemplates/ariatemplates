@@ -59,7 +59,7 @@ Aria.classDefinition({
          * @protected
          */
         _onOrientationChange : function () {
-            this.screenOrientation = Aria.$window.orientation
+            this.screenOrientation = Aria.$window.orientation;
             this.isPortrait = this.__isPortrait();
             // raise event "change" to notify about orientation change along with properties for current orientation
             this.$raiseEvent({

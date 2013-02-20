@@ -86,7 +86,7 @@
                 } else if (state == this.flowCtrl.STATES.PAUSED) {
                     return "Resume";
                 } else {
-                    return "#" + state + "#"
+                    return "#" + state + "#";
                 }
             },
 

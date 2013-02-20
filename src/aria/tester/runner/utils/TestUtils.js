@@ -51,7 +51,7 @@
                 } else if (casesCount || suitesCount) {
                     return [testSuitesText, testCasesText].join("");
                 } else {
-                    return "no test available in this suite !"
+                    return "no test available in this suite !";
                 }
             },
 

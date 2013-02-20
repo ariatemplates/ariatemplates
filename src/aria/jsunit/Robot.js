@@ -49,7 +49,7 @@ Aria.classDefinition({
             try {
                 var res = navigator && navigator.javaEnabled();
                 if (res) {
-                    return "aria.jsunit.RobotJavaApplet"
+                    return "aria.jsunit.RobotJavaApplet";
                 }
             } catch (e) {
                 return null;

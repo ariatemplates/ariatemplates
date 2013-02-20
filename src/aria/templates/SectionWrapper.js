@@ -97,7 +97,7 @@ Aria.classDefinition({
         this.classList.setClassName = function (className) {
             parentClassListSetClassName.call(this, className);
             sectionObject.cssClass = className;
-        }
+        };
 
         var parentSetClassName = this.setClassName;
         this.setClassName = function (className) {

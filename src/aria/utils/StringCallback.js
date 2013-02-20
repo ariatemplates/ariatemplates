@@ -44,7 +44,7 @@ Aria.classDefinition({
             var entry = {
                 cb : cb,
                 moreThanOnce : moreThanOnce
-            }
+            };
             this._callbacks["c" + index] = entry;
             return "aria.utils.StringCallback.call(" + index + ");";
         },

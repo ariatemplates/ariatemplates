@@ -57,7 +57,7 @@
                 } else {
                     markupArray.push("<tr>", "<td><strong>" + coverageLink + "</strong> (on " + filesCount
                             + " files and " + linesCount + " lines)</td>", '<td><strong>', coverage, '%</td>', '<td style="float: right;margin-right: 5px;">', '<div style="background-color: #E00000;border: 1px solid #000000;float: right;height: 10px;margin-top: 4px;overflow: hidden;width: 100px;">', '<div style="background-color: #00F000;height: 10px;width: '
-                            + coverage + 'px;"></div>', '</div>', '</td>', "</tr>")
+                            + coverage + 'px;"></div>', '</div>', '</td>', "</tr>");
                 }
 
                 markupArray.push("</tbody>", "</table>");

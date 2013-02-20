@@ -51,7 +51,7 @@ Aria.classDefinition({
                             "localizedMessage" : this.PARSING_ERROR,
                             "type" : "PARSINGERROR"
                         }
-                    }
+                    };
                 }
             } else {
                 // no data : no error

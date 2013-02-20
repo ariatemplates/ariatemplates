@@ -34,7 +34,7 @@ Aria.tplScriptDefinition({
                 scrollPositions.scrollTop = 23 * (this.lastFinishedId - 10);
                 divToScroll.setScroll(scrollPositions);
             } else {
-                var backupScroll = this.data.view.scrollPositions["ReportScript_left"]
+                var backupScroll = this.data.view.scrollPositions["ReportScript_left"];
                 if (backupScroll) {
                     divToScroll.setScroll(backupScroll);
                 }
@@ -62,7 +62,7 @@ Aria.tplScriptDefinition({
                 return [{
                             classpath : rootSuite.$classpath,
                             instance : rootSuite
-                        }]
+                        }];
             }
 
             var subTests = __testUtils.getSubTestsAsArray(rootSuite);
@@ -80,7 +80,7 @@ Aria.tplScriptDefinition({
             }
             for (var i = 0; i < filteredTests.length; i++) {
                 var filteredTest = filteredTests[i];
-                var nextTest = filteredTests[i + 1]
+                var nextTest = filteredTests[i + 1];
                 if (!nextTest || (nextTest.instance && nextTest.instance.$TestSuite)) {
                     filteredTest.lastInSuite = false;
                 }

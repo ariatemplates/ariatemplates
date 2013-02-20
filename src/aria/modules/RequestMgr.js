@@ -585,7 +585,7 @@ Aria.classDefinition({
                 // if raw string returned, convert it in structured request here
                 url = {
                     url : url
-                }
+                };
             }
 
             // if not specified, assume POST method (backward-compatibility)

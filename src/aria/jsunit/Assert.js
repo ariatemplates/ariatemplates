@@ -67,7 +67,7 @@
             // Events
             this._expectedEventsList = null;
             this._eventIndexInList = 0;
-            this.evtLogs = []
+            this.evtLogs = [];
 
             aria.core.Log.clearAppenders();
             aria.core.Log.addAppender(new aria.core.log.SilentArrayAppender());
@@ -527,7 +527,7 @@
              * @return {Boolean} true if an event corresponding to evtName is found in the logs, false otherwise
              */
             __hasEvent : function (evtName) {
-                return this.getEvent(evtName) !== null
+                return this.getEvent(evtName) !== null;
             },
 
             /**

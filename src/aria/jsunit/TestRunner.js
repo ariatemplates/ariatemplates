@@ -179,7 +179,7 @@ Aria.classDefinition({
 
             if (trTest.state == 'skipped') {
                 color = 'green';
-                msg = ' - NOT TESTED'
+                msg = ' - NOT TESTED';
             }
 
             var buffer = ['<div style="color:', color, '">', '<b>', trTest.testClass, '</b> ', msg, ' - ', '<i>',
@@ -261,7 +261,7 @@ Aria.classDefinition({
                     return 0;
                 }
                 return -1;
-            })
+            });
             return errors;
         },
 

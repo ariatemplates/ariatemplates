@@ -75,7 +75,7 @@ Aria.classDefinition({
          */
         generateFile : function (type, cfg) {
             if (type) {
-                type = this.__isAllowedType("TYPE_" + type.toUpperCase())
+                type = this.__isAllowedType("TYPE_" + type.toUpperCase());
                 if (type) {
                     var skeletonData = this.__getSkeleton(this[type + "TxtTplHandle"], "aria.ext.filesgenerator.GeneratorBeans."
                             + type + "SkeletonTemplate", cfg);

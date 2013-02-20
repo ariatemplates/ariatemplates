@@ -51,7 +51,7 @@
                 for (var i = 0, l = keyvalues.length; i < l; i++) {
                     var keyvalue = keyvalues[i];
                     if (keyvalue.indexOf("=") != -1) {
-                        var split = keyvalue.split("=")
+                        var split = keyvalue.split("=");
                         if (key == split[0]) {
                             return split[1];
                         }
@@ -71,7 +71,7 @@
                 for (var i = 0, l = keyvalues.length; i < l; i++) {
                     var keyvalue = keyvalues[i];
                     if (keyvalue.indexOf("=") != -1) {
-                        var split = keyvalue.split("=")
+                        var split = keyvalue.split("=");
                         if (key == split[0]) {
                             found = true;
                             keyvalues[i] = hashParam;
@@ -87,7 +87,7 @@
                     }
                 }
 
-                hash = "#" + keyvalues.join("&")
+                hash = "#" + keyvalues.join("&");
                 this._setHash(hash);
             }
         }

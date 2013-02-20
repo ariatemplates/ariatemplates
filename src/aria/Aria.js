@@ -145,7 +145,7 @@
     Aria.INCOHERENT_CLASSPATH = "$class or $package is incoherent with $classpath";
     Aria.INVALID_INTERFACES = "Invalid interface definition in Class %1";
     // for constructors or destructors
-    Aria.PARENT_NOTCALLED = "Error: the %1 of %2 was not called in %3."
+    Aria.PARENT_NOTCALLED = "Error: the %1 of %2 was not called in %3.";
     // for constructors or destructors
     Aria.WRONGPARENT_CALLED = "Error: the %1 of %2 was called instead of %3 in %4.";
     Aria.REDECLARED_EVENT = "Redeclared event name: %1 in %2";
@@ -1118,7 +1118,7 @@
                             p[k].getData = (function (original) {
                                 return function () { // ok if providers are not singletons
                                     return original.__getData(clsName);
-                                }
+                                };
                             })(p[k]);
 
                             p[k].__refName = k;
