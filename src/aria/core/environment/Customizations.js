@@ -84,7 +84,7 @@ Aria.classDefinition({
                 this._customizationDescriptor = customization.descriptor;
                 this.reloadCustomizationDescriptor();
             }
-            this.$callback(callback)
+            this.$callback(callback);
         },
 
         /**

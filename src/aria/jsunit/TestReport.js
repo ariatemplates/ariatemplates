@@ -41,7 +41,7 @@ Aria.classDefinition({
                 var errorReport = this.getErrorReport(error);
                 report += errorReport;
             }
-            report += "</ul><br>"
+            report += "</ul><br>";
             return report;
         },
 
@@ -55,9 +55,9 @@ Aria.classDefinition({
             if (errors.length === 0) {
                 errorSummary = '<b><font color="green">No test failed !</font></b>';
             } else if (errors.length === 1) {
-                errorSummary = '<b>1 test failed :</b>'
+                errorSummary = '<b>1 test failed :</b>';
             } else {
-                errorSummary = '<b>' + errors.length + ' tests failed :</b>'
+                errorSummary = '<b>' + errors.length + ' tests failed :</b>';
             }
             return errorSummary;
         },

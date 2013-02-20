@@ -253,7 +253,7 @@ Aria.classDefinition({
                 res = {
                     x : geometry.x + geometry.width / 2,
                     y : geometry.y + geometry.height / 2
-                }
+                };
             } else if (position.hasOwnProperty("x") && position.hasOwnProperty("y")) {
                 res = position;
             } else {

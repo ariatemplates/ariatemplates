@@ -65,7 +65,7 @@ Aria.classDefinition({
                     var domId = this._domElt;
                     this._subTplModuleCtrl.setMessages(newValue, domId);
                 }
-                this._cfg[propertyName] = newValue
+                this._cfg[propertyName] = newValue;
             } finally {
                 this._inOnBoundPropertyChange = false;
             }

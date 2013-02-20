@@ -67,7 +67,7 @@ Aria.tplScriptDefinition({
 
                     var idToFocus = 'listItem' + viewFocusIndex;
 
-                    this.$focus(idToFocus)
+                    this.$focus(idToFocus);
 
                 }
 

@@ -51,4 +51,4 @@ Aria.classDefinition({
         beginSection : function () {},
         endSection : function () {}
     }
-})
+});

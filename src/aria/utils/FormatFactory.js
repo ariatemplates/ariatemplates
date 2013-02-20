@@ -132,7 +132,7 @@ Aria.classDefinition({
                     result = aria.utils.FormatFactory.FORMAT_ERROR_MESSAGE;
                 }
                 return result;
-            }
+            };
 
             // cache it
             this._formatFnCache[pattern] = formatFunction;

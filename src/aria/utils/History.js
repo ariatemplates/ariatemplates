@@ -1785,7 +1785,7 @@
 				aria.utils.History.$raiseEvent({
 					name : "onpopstate",
 					state : History.getState()
-				})
+				});
 			});
 		},
 		$destructor : function () {

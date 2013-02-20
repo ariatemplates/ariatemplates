@@ -152,7 +152,7 @@ Aria.classDefinition({
                             // Either this is not a test (callback?) or sync test, let the test handle the error
                             return originals[name].apply(this, arguments);
                         }
-                    }
+                    };
                 })(method);
             }
         },
@@ -195,7 +195,7 @@ Aria.classDefinition({
                         delay : delay
                     });
                 }
-            }
+            };
             aria.core.Timer.addCallback({
                 fn : timeoutFn,
                 scope : this,

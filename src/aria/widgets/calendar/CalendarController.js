@@ -47,7 +47,7 @@
                 "dayOfWeekLabelFormat" : {},
                 "dateLabelFormat" : {},
                 "completeDateLabelFormat" : {}
-            }
+            };
             this._changedSettingsNbr = 11;
         },
         $destructor : function () {

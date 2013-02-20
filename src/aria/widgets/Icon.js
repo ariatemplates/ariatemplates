@@ -182,10 +182,10 @@ Aria.classDefinition({
             var cfg = this._cfg;
             var cssClasses = aria.core.TplClassLoader.addPrintOptions(this._cssClassNames, cfg.printOptions);
             if (iconInfo.cssClass) {
-                cssClasses += " " + iconInfo.cssClass
+                cssClasses += " " + iconInfo.cssClass;
             }
             if (cfg.block) {
-                cssClasses += " xBlock"
+                cssClasses += " xBlock";
             }
             return cssClasses;
         },

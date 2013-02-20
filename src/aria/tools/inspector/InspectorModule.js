@@ -304,7 +304,7 @@ Aria.classDefinition({
                 if (widgetsContainer && widget) {
                     var widgetDescription = {
                         widget : widget
-                    }
+                    };
                     widgetsContainer.push(widgetDescription);
                     if (node.content) {
                         var content = [];

@@ -107,7 +107,7 @@ Aria.classDefinition({
                     nextValue : curVal,
                     caretPosStart : caretPosStart,
                     caretPosEnd : caretPosEnd
-                }
+                };
                 return returnedObject;
             }
             var str = String.fromCharCode(charCode);
@@ -116,7 +116,7 @@ Aria.classDefinition({
                     nextValue : curVal,
                     caretPosStart : caretPosStart,
                     caretPosEnd : caretPosEnd
-                }
+                };
                 return returnedObject;
             }
             if (curVal == null || curVal === '') {
@@ -124,7 +124,7 @@ Aria.classDefinition({
                     nextValue : str,
                     caretPosStart : str.length,
                     caretPosEnd : str.length
-                }
+                };
                 return returnedObject;
             }
 
@@ -134,7 +134,7 @@ Aria.classDefinition({
                     nextValue : curVal + str,
                     caretPosStart : caretPosStart + str.length,
                     caretPosEnd : caretPosStart + str.length
-                }
+                };
                 return returnedObject;
             } else {
                 var s1 = curVal.slice(0, caretPosStart);
@@ -143,7 +143,7 @@ Aria.classDefinition({
                     nextValue : s1 + str + s2,
                     caretPosStart : caretPosStart + str.length,
                     caretPosEnd : caretPosStart + str.length
-                }
+                };
                 return returnedObject;
             }
         },
@@ -163,7 +163,7 @@ Aria.classDefinition({
                     nextValue : '',
                     caretPosStart : 0,
                     caretPosEnd : 0
-                }
+                };
                 return returnedObject;
             }
             var sz = curVal.length;

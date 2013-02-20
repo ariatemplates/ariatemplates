@@ -538,7 +538,7 @@ Aria.classDefinition({
          * @private
          */
         __setBrowser : function (patternMatch, index) {
-            var browserName = ["Mobile Safari", "Chrome", "Other"]
+            var browserName = ["Mobile Safari", "Chrome", "Other"];
             switch (index) {
                 case 0 :
                     this.browserType = browserName[1];

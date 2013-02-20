@@ -128,7 +128,7 @@
                 var lgth = str.length;
                 if (lgth < sz) {
                     var beg = (begin === true);
-                    var a = [], diff = sz - lgth, sp = '&nbsp;'
+                    var a = [], diff = sz - lgth, sp = '&nbsp;';
                     if (!beg) {
                         a.push(str);
                     }

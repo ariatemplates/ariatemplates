@@ -18,7 +18,7 @@ Aria.tplScriptDefinition({
     $prototype : {
         navigate : function (transition) {
             // TODO: offer the possibility to support callbacks without res arg
-            this.flowCtrl.navigate(transition)
+            this.flowCtrl.navigate(transition);
         },
 
         $displayReady : function () {

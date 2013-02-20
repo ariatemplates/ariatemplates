@@ -19,7 +19,7 @@
 Aria.classDefinition({
     $classpath : "aria.jsunit.ConnectionSession",
     $constructor : function (conf) {
-        this.requestUrl = ""
+        this.requestUrl = "";
         /**
          * Request
          * @type {aria.core.CfgBeans.IOAsyncRequestCfg}
