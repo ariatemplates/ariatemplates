@@ -20,9 +20,6 @@ Aria.classDefinition({
         this.$TestSuite.constructor.call(this);
 
         this.addTests("test.aria.html.ElementTest");
-        this.addTests("test.aria.html.ElementBindingsTest");
-        this.addTests("test.aria.html.ElementEventsTest");
-        this.addTests("test.aria.html.controllers.suggestions.ResourcesHandlerTest");
         this.addTests("test.aria.html.textinput.TextInputTestSuite");
     }
 });

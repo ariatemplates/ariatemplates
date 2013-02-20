@@ -22,7 +22,6 @@ Aria.classDefinition({
         this.addTests("test.aria.html.textinput.TextInputTest");
         this.addTests("test.aria.html.textinput.TextInputBindTest");
         this.addTests("test.aria.html.textinput.TextInputOnTypeTest");
-        this.addTests("test.aria.html.textinput.TextInputPasswordTest");
         this.addTests("test.aria.html.textinput.focus.FocusTestCase");
     }
 });
