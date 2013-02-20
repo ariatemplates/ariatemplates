@@ -31,7 +31,7 @@ Aria.classDefinition({
          * @type Object
          * @private
          */
-        this._styleCache = {}
+        this._styleCache = {};
     },
     $prototype : {
         /**

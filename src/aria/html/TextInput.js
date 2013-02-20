@@ -249,7 +249,7 @@
                 if (name === "value") {
                     value = (value != null) ? value + "" : "";
                     if (value) {
-                        this._removePlaceholder()
+                        this._removePlaceholder();
                     }
                     this._domElt.value = value;
                     this._setPlaceholder();

@@ -104,7 +104,7 @@ Aria.classDefinition({
 
             for (var i = 0, l = filters.length; i < l; i++) {
                 var filter = filters[i];
-                var boundFilter = aria.utils.Function.bind(filterFunction, this, filter)
+                var boundFilter = aria.utils.Function.bind(filterFunction, this, filter);
                 this.addFilter(boundFilter);
             }
         },

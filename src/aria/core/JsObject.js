@@ -625,12 +625,14 @@
                     }
                     if (lsn.$Callback) {
                         lsn = {
-                            fn : function (evt, cb) {cb.call(evt)},
+                            fn : function (evt, cb) {
+                                cb.call(evt);
+                            },
                             scope : this,
                             args : lsn
                         };
                     } else if (!lsn.fn) {
-                         // shortcut as in 'error' sample
+                        // shortcut as in 'error' sample
                         if (!defaultScope) {
                             this.$logError(this.MISSING_SCOPE, evt);
                             continue;

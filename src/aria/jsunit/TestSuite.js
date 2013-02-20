@@ -192,7 +192,7 @@ Aria.classDefinition({
             for (var i = 0, l = subTests.length; i < l; i++) {
                 var test = subTests[i];
                 if (test.classpath.indexOf("TestSuite") != -1) {
-                    testSuites.push(test)
+                    testSuites.push(test);
                     var subSuites = test.instance.getAllSubTestSuites();
                     testSuites = testSuites.concat(subSuites);
                 }
@@ -256,7 +256,7 @@ Aria.classDefinition({
                         test : suite
                     }
                 }
-            })
+            });
         },
 
         __onLoadSubSuiteCompleted : function (args) {

@@ -882,7 +882,7 @@ Aria.classDefinition({
                 });
 
                 if (this._cfg) {
-                    cfg = this._cfg
+                    cfg = this._cfg;
                     if (cfg.validationEvent === 'onFocus'
                             && ((cfg.formatError && cfg.formatErrorMessages.length) || (cfg.error && cfg.errorMessages.length))) {
                         this._validationPopupShow();

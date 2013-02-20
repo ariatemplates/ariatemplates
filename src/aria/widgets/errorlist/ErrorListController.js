@@ -41,7 +41,7 @@ Aria.classDefinition({
                 divCfg : args.divCfg,
                 filterTypes : args.filterTypes,
                 displayCodes : args.displayCodes
-            }
+            };
             this.setMessages(args.messages);
             this.$callback(cb);
         },
@@ -125,7 +125,7 @@ Aria.classDefinition({
                         needNewRes = !includeMsg;
                     }
                 } else {
-                    needNewRes = !includeMsg
+                    needNewRes = !includeMsg;
                 }
                 if (!res && needNewRes) {
                     res = messagesList.slice(0, i);

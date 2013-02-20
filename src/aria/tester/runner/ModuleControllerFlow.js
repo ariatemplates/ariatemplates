@@ -103,7 +103,7 @@ Aria.classDefinition({
          * Triggered when the campaign is launched The application switches to ongoing mode. Most of the UI is disabled
          */
         onstartCampaignCallBegin : function () {
-            this.navigate(this.STATES.ONGOING)
+            this.navigate(this.STATES.ONGOING);
         },
 
         /**

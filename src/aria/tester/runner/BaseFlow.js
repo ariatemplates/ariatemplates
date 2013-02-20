@@ -74,14 +74,14 @@ Aria.classDefinition({
                 if (!transitionMap[startState]) {
                     transitionMap[startState] = {};
                 }
-                transitionMap[startState][endState] = true
+                transitionMap[startState][endState] = true;
             };
 
             var flowData = this.flowData;
             var validTransitions = flowData.validTransitions;
             for (var i = 0; i < validTransitions.length; i++) {
                 var validTransition = validTransitions[i];
-                addValidTransition(validTransition[0], validTransition[1])
+                addValidTransition(validTransition[0], validTransition[1]);
 
                 // reverse transition
                 if (validTransition[2]) {

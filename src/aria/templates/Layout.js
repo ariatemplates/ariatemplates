@@ -275,7 +275,7 @@
                     if (style == 'auto') {
                         overflowClass = ' xOverflowAuto';
                     } else if (style == 'hidden') {
-                        overflowClass = ' xOverflowHidden'
+                        overflowClass = ' xOverflowHidden';
                     }
                 }
                 var clsName = domElt.className;

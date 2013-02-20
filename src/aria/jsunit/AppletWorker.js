@@ -25,7 +25,7 @@
             currAppletCbScope = null;
             currAppletCbArgs = null;
         }
-    }
+    };
 
     /**
      * @class AppletWorker The AppletWorker class is the API that allows to use the applet as a communication bridge
@@ -79,7 +79,7 @@
              */
             _addApplet : function (divId) {
                 var d = Aria.$frameworkWindow.document.getElementById(divId);
-                var s = "<APPLET name='myTestApplet' code='ScreenCaptureApplet.class' archive='ScreenCapture.jar' width='1000' height='100' MAYSCRIPT></APPLET>"
+                var s = "<APPLET name='myTestApplet' code='ScreenCaptureApplet.class' archive='ScreenCapture.jar' width='1000' height='100' MAYSCRIPT></APPLET>";
                 d.innerHTML = s;
                 return this._getApplet();
             },

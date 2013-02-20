@@ -57,7 +57,7 @@ Aria.classDefinition({
          * @return {String}
          */
         __getTestCaseReport : function (testCase) {
-            var report = this.__formatTestCaseReport(testCase)
+            var report = this.__formatTestCaseReport(testCase);
             return report;
         },
 
@@ -136,9 +136,9 @@ Aria.classDefinition({
                     var error = errors[i];
                     report += this.LINE_SEPARATOR + this.TAB_SEPARATOR + this.TAB_SEPARATOR;
                     if (error.state == "failure") {
-                        report += "<failure>" + error.description + "</failure>"
+                        report += "<failure>" + error.description + "</failure>";
                     } else {
-                        report += "<error>" + error.description + "</error>"
+                        report += "<error>" + error.description + "</error>";
                     }
                 }
                 report += this.LINE_SEPARATOR + this.TAB_SEPARATOR + "</testcase>";

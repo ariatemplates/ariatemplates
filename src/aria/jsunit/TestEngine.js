@@ -175,7 +175,7 @@ Aria.classDefinition({
                     testObject.skipTest = true;
                 }
                 classpath = definition.$extends;
-            } while (classpath)
+            } while (classpath);
             this._registerAsListener(testObject);
         },
 

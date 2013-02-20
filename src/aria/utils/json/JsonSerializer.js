@@ -174,7 +174,7 @@ Aria.classDefinition({
                             } else {
                                 // optimized code that avoids the + string concatenation operator and minimizes the
                                 // number of calls to Array.push method
-                                var b = false
+                                var b = false;
                                 partial.push('{');
                                 for (k in value) {
                                     if (Object.prototype.hasOwnProperty.call(value, k)) {
@@ -609,6 +609,6 @@ Aria.classDefinition({
                     throw new Error('aria.utils.json.JsonSerializer.parse');
                 }
             }
-        }
+        };
     }
 });

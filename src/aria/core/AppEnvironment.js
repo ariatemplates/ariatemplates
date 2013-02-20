@@ -73,7 +73,7 @@ Aria.classDefinition({
                 name : "changingEnvironment",
                 changedProperties : keys,
                 asyncCalls : 1
-            }
+            };
             evt.callback = {
                 fn : function () {
                     evt.asyncCalls--;

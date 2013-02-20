@@ -112,7 +112,7 @@
              * @return {String}
              */
             toString : function () {
-                return (this.classname || this.filename) + " : " + this.getCoverage() + "%"
+                return (this.classname || this.filename) + " : " + this.getCoverage() + "%";
             },
 
             /**

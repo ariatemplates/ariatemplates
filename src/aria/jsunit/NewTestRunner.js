@@ -149,7 +149,7 @@ Aria.classDefinition({
             // override $logError
             aria.core.JsObject.prototype.$logError = function (id, args, error) {
                 var msg = aria.core.Log.prepareLoggedMessage(id, args);
-                var errorMessage = (error ? ". Error : " + error.message : "")
+                var errorMessage = (error ? ". Error : " + error.message : "");
                 if (!Aria.__runtimeErrors)
                     Aria.__runtimeErrors = [];
                 Aria.__runtimeErrors.push(msg + errorMessage);
