@@ -235,17 +235,35 @@ Aria.classDefinition({
          * iframe.
          * @param {String} iframeId HTML id of the iframe element
          * @param {String} widgetId id of the Aria Templates widget inside the iframe for which we want to wait
+         * @param {Array} widgetProps names of properties to check for being non-null in widget with id `widgetId`. Pass
+         * null if not needed.
          * @param {Function} continueWith Callback to be executed when iframe is ready (within "this" scope)
          */
-        waitForIframe : function (iframeId, widgetId, continueWith) {
+        waitForIframe : function (iframeId, widgetId, widgetProps, continueWith) {
             var iframe = aria.utils.Dom.getElementById(iframeId);
             this.waitFor({
                 condition : function () {
-                    return Aria.$window.iframeLoaded && iframe.contentWindow.aria != null
+                    var widgetLoaded = Aria.$window.iframeLoaded && iframe.contentWindow.aria != null
                             && iframe.contentWindow.aria.templates != null
                             // Mandatory check, otherwise getWidgetInstanceInIframe raises a JS error in the test suite
                             && iframe.contentWindow.aria.templates.RefreshManager != null
                             && this.getWidgetInstanceInIframe(iframe, widgetId) != null;
+
+                    if (!widgetLoaded) {
+                        return false;
+                    }
+
+                    if (widgetProps) {
+                        var widget = this.getWidgetInstanceInIframe(iframe, widgetId);
+                        for (var i = 0, len = widgetProps.length; i < len; i++) {
+                            var propName = widgetProps[i];
+                            if (widget[propName] == null) {
+                                return false;
+                            }
+                        }
+                    }
+
+                    return true;
                 },
                 callback : {
                     fn : continueWith,

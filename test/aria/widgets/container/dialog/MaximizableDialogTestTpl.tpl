@@ -22,8 +22,24 @@
 
     {call makeOverflows() /}
 
+    // wrapping Dialogs in a section to simulate liquid-layout full section refresh in a test
+    {section {
+        macro : "macroWithDialogs",
+        bindRefreshTo : [{
+            inside : data,
+            to : "sectionRefreshTimeStamp"
+        }]
+    } /}
+{/macro}
+
+{macro macroWithDialogs()}
+        {call dialogMaxi() /}
+        {call dialogMaxiFromStart() /}
+{/macro}
+
+{macro dialogMaxi()}
     {@aria:Dialog {
-        id : "maxiDialog",
+        id : "dialogMaxi",
         title: "Maximizable Dialog",
         contentMacro : "dialogContent",
         center : true,
@@ -64,8 +80,49 @@
     }/}
 {/macro}
 
+{macro dialogMaxiFromStart()}
+    {@aria:Dialog {
+        id : "dialogMaxiFromStart",
+        contentMacro : "dialogContent",
+        center : false, // true is the default, we want to override it
+        movable : true,
+        resizable : true,
+        maximizable : true,
+        bind : {
+            width : {
+                inside : data.dialogMaxiFromStart,
+                to : "width"
+            },
+            height : {
+                inside : data.dialogMaxiFromStart,
+                to : "height"
+            },
+            xpos : {
+                inside : data.dialogMaxiFromStart,
+                to : "xpos"
+            },
+            ypos : {
+                inside : data.dialogMaxiFromStart,
+                to : "ypos"
+            },
+            visible : {
+                inside : data.dialogMaxiFromStart,
+                to : "visible"
+            },
+            maximized : {
+                inside : data.dialogMaxiFromStart,
+                to : "maximized"
+            }
+        }
+    }/}
+{/macro}
+
 {macro dialogContent()}
-    {for var i = 0; i < 15; i++}
+    <p>
+        {for var j=0; j<14; j++}Lorem ipsum dolor sit amet {/for}
+    </p>
+
+    {for var i = 0; i < 45; i++}
         line ${i} <br/>
     {/for}
 {/macro}

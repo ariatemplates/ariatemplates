@@ -40,6 +40,14 @@ Aria.classDefinition({
                 center : false,
                 maximized : false
             },
+            dialogMaxiFromStart : {
+                width : this.INITIAL_WIDTH,
+                height : this.INITIAL_HEIGHT,
+                xpos : this.INITIAL_XPOS,
+                ypos : this.INITIAL_YPOS,
+                visible : true,
+                maximized : true
+            },
             page : {
                 overflowX : true,
                 overflowY : true
@@ -47,10 +55,11 @@ Aria.classDefinition({
             iframeWrapper : {
                 width : 600,
                 height : 600
-            }
+            },
+            sectionRefreshTimeStamp : new Date().getTime()
         };
 
-        Aria.$window.onBeforeTemplateLoadInIframe = function (aria) {
+        Aria.$window.onBeforeTemplateLoadInIframe = function (aria, Aria) {
             // override skin's shadows with some non-zero values to check if the shadow handling in the maximized mode
             // works as supposed (defaults are 0 so it won't be really checked)
             var skin = aria.widgets.AriaSkin.skinObject.Dialog.std;
@@ -65,7 +74,7 @@ Aria.classDefinition({
         });
 
         this.iframeUnderTestId = "iframeWithDialog";
-        this.widgetUnderTestId = "maxiDialog";
+        this.widgetUnderTestId = "dialogMaxiFromStart"; // only for the first test
         this.isPhantomJs = Aria.$window.navigator.userAgent.indexOf('PhantomJS') != -1;
         this.json = aria.utils.Json;
     },
@@ -74,18 +83,19 @@ Aria.classDefinition({
 
             // the assumption is that after any test below, the situation will be like the initial one
             this._testsToExecute = [];
+            this._testsToExecute.push("_testVisibleAndMaximizedFromStart");
+
             this._testsToExecute.push("_testVisibleMaximizeUnmaximizeMaximize");
             this._testsToExecute.push("_testHiddenMaximize");
             this._testsToExecute.push("_testHiddenUnmaximize");
+            this._testsToExecute.push("_testAutoDimensionsMaximize");
+            this._testsToExecute.push("_testCenteredMaximizeUnmaximize");
 
-            // this._testsToExecute.push("_testCenteredMaximizeUnmaximize"); // NEEDS TEST; should remain centered
-
-            // this._testsToExecute.push("_testVisibleAndMaximizedFromStart"); // NEEDS TEST
-
-            this._testsToExecute.push("_testMoveWhileMaximized");
-            // this._testsToExecute.push("_testResizeWhileMaximized"); // FEATURE NOT IMPLEMENTED YET
+            this._testsToExecute.push("_testMoveWhileMaximizedGetsIgnored");
+            this._testsToExecute.push("_testResizeWhileMaximizedGetsIgnored");
 
             this._testsToExecute.push("_testStaysMaximizedOnViewportResize");
+            this._testsToExecute.push("_testCanUnmaximizeAfterSectionRefresh");
 
             this._beforeFirstTest();
         },
@@ -100,10 +110,40 @@ Aria.classDefinition({
             this.assertTrue(this.data.dialog.maxheight + 50 < this.data.iframeWrapper.height, "Invalid test config, iframe should be bigger than Dialog maxheight for this test.");
 
             this.iframe = aria.utils.Dom.getElementById(this.iframeUnderTestId);
-            this.waitForIframe(this.iframeUnderTestId, this.widgetUnderTestId, this._iframeReady);
+            this.waitForIframe(this.iframeUnderTestId, this.widgetUnderTestId, null, this._iframeReady);
         },
 
         _iframeReady : function () {
+            this.nextTest();
+        },
+
+        _testVisibleAndMaximizedFromStart : function () {
+            // in this test we use another instance of widget
+            this.widgetUnderTestId = "dialogMaxiFromStart";
+            this.__doMaximizedAssertions();
+
+            this.json.setValue(this.data.dialogMaxiFromStart, "maximized", false);
+
+            // After unmaximizing this Dialog, the instances od Draggable and Resizable are created asynchronously for
+            // the first time. We need to wait for the dependencies to be loaded before continuing with the tests.
+            this.waitFor({
+                condition : function () {
+                    var dialog = this.__getDialog();
+                    return (dialog._draggable && dialog._resizable);
+                },
+                callback : {
+                    fn : this.__checkVisMaxFromStart_AfterUnmax,
+                    scope : this
+                }
+            });
+        },
+        __checkVisMaxFromStart_AfterUnmax : function () {
+            this.__doUnmaximizedAssertions();
+
+            // reset for another tests
+            this.json.setValue(this.data.dialogMaxiFromStart, "visible", false);
+            this.widgetUnderTestId = "dialogMaxi";
+
             this.nextTest();
         },
 
@@ -113,6 +153,7 @@ Aria.classDefinition({
             this.json.setValue(dialogData, "visible", true);
             var dialog = this.__getDialog();
 
+            // Very basic test to check if max/unmax work properly in "normal" circumstances.
             this.__waitForDialog(dialog, this.__checkMaxUnmaxMax);
         },
 
@@ -162,7 +203,70 @@ Aria.classDefinition({
             this.nextTest();
         },
 
-        _testMoveWhileMaximized : function () {
+        _testAutoDimensionsMaximize : function () {
+            var dialogData = this.data.dialog;
+
+            // this is to test that maximized works also when width/height is set to -1 (auto) in the config
+            this.json.setValue(dialogData, "height", -1);
+            this.json.setValue(dialogData, "maximized", true);
+            this.__doMaximizedAssertions();
+
+            // when setting height to -1, the Dialog expands and it can be moved upwards, hence need to reset ypos
+            this.json.setValue(dialogData, "maximized", false);
+            this.json.setValue(dialogData, "height", this.INITIAL_HEIGHT);
+            this.json.setValue(dialogData, "ypos", this.INITIAL_YPOS);
+            this.__doUnmaximizedAssertions();
+
+            this.json.setValue(dialogData, "width", -1);
+            this.json.setValue(dialogData, "maximized", true);
+            this.__doMaximizedAssertions();
+
+            this.json.setValue(dialogData, "maximized", false);
+            this.json.setValue(dialogData, "width", this.INITIAL_WIDTH);
+            this.json.setValue(dialogData, "xpos", this.INITIAL_XPOS);
+            this.__doUnmaximizedAssertions();
+
+            this.nextTest();
+        },
+
+        _testCenteredMaximizeUnmaximize : function () {
+            // after centering, maximizing, unmaximizing, it should remain centered
+
+            var dialogData = this.data.dialog;
+            var dialogGeo; // {x,y,width,height}
+            var val1, val2;
+            var iframeViewport = this.__getViewportSizeInIframe();
+
+            this.json.setValue(dialogData, "visible", true);
+            this.json.setValue(dialogData, "xpos", 0);
+            dialogGeo = this.__getDialogGeometry();
+            this.assertEquals(dialogGeo.x, 0);
+
+            this.json.setValue(dialogData, "center", true);
+            dialogGeo = this.__getDialogGeometry();
+            // when centered, 2 * xpos === leftmargin + rightmargin, with 1px margin error in IE9+
+            val1 = Math.abs(2 * dialogGeo.x + dialogGeo.width - iframeViewport.width);
+            val2 = Math.abs(2 * dialogGeo.y + dialogGeo.height - iframeViewport.height);
+            this.assertTrue(val1 <= 1, "Not centered properly on X axis. The error is " + val1 + "px.");
+            this.assertTrue(val2 <= 1, "Not centered properly on Y axis. The error is " + val2 + "px.");
+
+            this.json.setValue(dialogData, "maximized", true);
+            this.__doMaximizedAssertions();
+
+            this.json.setValue(dialogData, "maximized", false);
+            dialogGeo = this.__getDialogGeometry();
+            val1 = Math.abs(2 * dialogGeo.x + dialogGeo.width - iframeViewport.width);
+            val2 = Math.abs(2 * dialogGeo.y + dialogGeo.height - iframeViewport.height);
+            this.assertTrue(val1 <= 1, "Not centered properly on X axis. The error is " + val1 + "px.");
+            this.assertTrue(val2 <= 1, "Not centered properly on Y axis. The error is " + val2 + "px.");
+
+            // reset
+            this.json.setValue(dialogData, "xpos", this.INITIAL_XPOS);
+            this.json.setValue(dialogData, "ypos", this.INITIAL_YPOS);
+            this.nextTest();
+        },
+
+        _testMoveWhileMaximizedGetsIgnored : function () {
             var dialogData = this.data.dialog;
             var wherever = 42;
 
@@ -172,41 +276,78 @@ Aria.classDefinition({
             this.json.setValue(dialogData, "ypos", wherever);
             this.__doMaximizedAssertions();
 
+            this.json.setValue(dialogData, "maximized", false);
+            this.__doUnmaximizedAssertions();
             this.nextTest();
         },
 
-        _testResizeWhileMaximized : function () {
+        _testResizeWhileMaximizedGetsIgnored : function () {
             var dialogData = this.data.dialog;
             var delta = 20;
 
-            // nothing should happen
+            // nothing should happen after changing width and height -- the Dialog should remain maximized
             this.json.setValue(dialogData, "maximized", true);
             this.json.setValue(dialogData, "width", dialogData.width - delta);
             this.json.setValue(dialogData, "height", dialogData.height - delta);
             this.__doMaximizedAssertions();
 
+            this.json.setValue(dialogData, "maximized", false);
+            this.__doUnmaximizedAssertions();
             this.nextTest();
         },
 
         _testStaysMaximizedOnViewportResize : function () {
             var dialogData = this.data.dialog;
+
+            aria.templates.RefreshManager.stop();
+            this.json.setValue(dialogData, "xpos", this.INITIAL_XPOS);
+            this.json.setValue(dialogData, "ypos", this.INITIAL_YPOS);
+            this.json.setValue(dialogData, "width", this.INITIAL_WIDTH);
+            this.json.setValue(dialogData, "height", this.INITIAL_HEIGHT);
+            aria.templates.RefreshManager.resume();
+
             this.json.setValue(dialogData, "maximized", true);
 
-            var delta = 20;
+            this.__resizeIframe(20, this.__resizeOnceAgain);
+        },
+        __resizeIframe : function (delta, continueWith) {
             var initialDimensions = this.data.iframeWrapper;
             this.iframe.style.width = (initialDimensions.width + delta) + "px";
             this.iframe.style.height = (initialDimensions.height + delta) + "px";
-
-            aria.core.Timer.addCallback({
-                fn : this.__staysMaximizedCheck,
-                scope : this,
-                delay : 100
+            this.waitFor({
+                condition : function () {
+                    return this.__checkMaximizedWidthAssertion();
+                },
+                callback : {
+                    fn : continueWith,
+                    scope : this
+                }
             });
         },
-
+        __resizeOnceAgain : function () {
+            this.__resizeIframe(40, this.__staysMaximizedCheck);
+        },
         __staysMaximizedCheck : function () {
             this.__doMaximizedAssertions();
 
+            // now let's check if we can unmaximize
+            this.json.setValue(this.data.dialog, "maximized", false);
+            this.__doUnmaximizedAssertions();
+
+            this.nextTest();
+        },
+
+        _testCanUnmaximizeAfterSectionRefresh : function () {
+            this.json.setValue(this.data.dialog, "maximized", true);
+            this.json.setValue(this.data, "sectionRefreshTimeStamp", new Date().getTime());
+            this.json.setValue(this.data.dialog, "maximized", false);
+            this.__doUnmaximizedAssertions();
+
+            this.json.setValue(this.data.dialog, "maximized", true);
+            this.__doMaximizedAssertions();
+
+            // reset
+            this.json.setValue(this.data.dialog, "maximized", false);
             this.nextTest();
         },
 
@@ -219,7 +360,8 @@ Aria.classDefinition({
         },
 
         __doMaximizedAssertions : function () {
-            var skin = this.__getDialog()._skinObj; // {shadowLeft|Right|Top|Bottom}
+            var dialog = this.__getDialog();
+            var skin = dialog._skinObj; // {shadowLeft|Right|Top|Bottom}
             var dialogGeo = this.__getDialogGeometry(); // {x,y,width,height}
             var viewport = this.__getViewportSizeInIframe(); // {width, height}
 
@@ -235,14 +377,38 @@ Aria.classDefinition({
             this.assertEquals(viewport.height, dialogHeightNoShadow, "Viewport height is %1 while dialog height %2");
             this.assertEquals(dialogGeo.x, -skin.shadowLeft, "Dialog x is %1 while should be %2");
             this.assertEquals(dialogGeo.y, -skin.shadowTop, "Dialog y is %1 while should be %2");
+
+            this.assertEquals(dialog._draggable, null);
+            this.assertEquals(dialog._resizable, null);
         },
 
         __doUnmaximizedAssertions : function () {
+            var dialog = this.__getDialog();
             var dialogGeo = this.__getDialogGeometry(); // {x,y,width,height}
             this.assertEquals(dialogGeo.x, this.INITIAL_XPOS, "Dialog x is %1 while the initial was %2");
             this.assertEquals(dialogGeo.y, this.INITIAL_YPOS, "Dialog y is %1 while the initial was %2");
             this.assertEquals(dialogGeo.width, this.INITIAL_WIDTH, "Dialog width is %1 while the initial was %2");
             this.assertEquals(dialogGeo.height, this.INITIAL_HEIGHT, "Dialog height is %1 while the initial was %2");
+
+            this.assertNotEquals(dialog._draggable, null);
+            this.assertNotEquals(dialog._resizable, null);
+        },
+
+        /**
+         * A function to check that Dialog width got changed after viewport resize -- to enable polling in waitFor
+         * instead of having to define a callback delay.
+         * @return {Boolean}
+         */
+        __checkMaximizedWidthAssertion : function () {
+            var skin = this.__getDialog()._skinObj; // {shadowLeft|Right|Top|Bottom}
+            var dialogGeo = this.__getDialogGeometry(); // {x,y,width,height}
+            var viewport = this.__getViewportSizeInIframe(); // {width, height}
+
+            var dialogWidthNoShadow = dialogGeo.width - skin.shadowLeft;
+            if (!this.isPhantomJs) {
+                dialogWidthNoShadow -= skin.shadowRight;
+            }
+            return viewport.width === dialogWidthNoShadow;
         },
 
         /**

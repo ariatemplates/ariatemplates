@@ -106,22 +106,26 @@ Aria.classDefinition({
             // PROFILING // this.$logTimestamp("updateContainerSize");
             var cfg = this._cfg, domElt = this.getDom();
 
-            if (!domElt)
+            if (!domElt) {
                 return;
+            }
 
             var widthConf = this._getWidthConf();
             var heightConf = this._getHeightConf();
 
             if (this._changedContainerSize || this._sizeConstraints) { // if we are bound to min and max size
                 if (this._changedContainerSize) {
-                    var constrainedWidth = aria.utils.Math.normalize(cfg.width, widthConf.min, widthConf.max);
-                    var constrainedHeight = aria.utils.Math.normalize(cfg.height, heightConf.min, heightConf.max);
+                    // when maximized from start, widthMaximized will be empty initially, but it'll be adjusted later
+                    var width = cfg.widthMaximized || cfg.width;
+                    var height = cfg.heightMaximized || cfg.height;
+                    var constrainedWidth = aria.utils.Math.normalize(width, widthConf.min, widthConf.max);
+                    var constrainedHeight = aria.utils.Math.normalize(height, heightConf.min, heightConf.max);
 
-                    domElt.style.width = cfg.width > -1 ? constrainedWidth + "px" : "";
-                    domElt.style.height = cfg.height > -1 ? constrainedHeight + "px" : "";
+                    domElt.style.width = width > -1 ? constrainedWidth + "px" : "";
+                    domElt.style.height = height > -1 ? constrainedHeight + "px" : "";
                     if (this._frame) { // this is required if the frame is being shrinked
-                        var frameWidth = cfg.width > -1 ? constrainedWidth : -1;
-                        var frameHeight = cfg.height > -1 ? constrainedHeight : -1;
+                        var frameWidth = width > -1 ? constrainedWidth : -1;
+                        var frameHeight = height > -1 ? constrainedHeight : -1;
                         this._frame.resize(frameWidth, frameHeight);
                     }
                 }
