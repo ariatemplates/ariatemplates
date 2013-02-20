@@ -73,7 +73,7 @@
                         if (tpl) {
                             // if there's some callback passed from the parent frame for execution
                             if (Aria.$window.parent.onBeforeTemplateLoadInIframe) {
-                                Aria.$window.parent.onBeforeTemplateLoadInIframe(aria);
+                                Aria.$window.parent.onBeforeTemplateLoadInIframe(aria, Aria);
                             }
 
                             Aria.loadTemplate({

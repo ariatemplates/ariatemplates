@@ -1563,7 +1563,7 @@ Aria.beanDefinitions({
                 },
                 "maximizable" : {
                     $type : "json:Boolean",
-                    $description : "Whether the dialog has a maximize button in its title bar.",
+                    $description : "Whether the dialog has a maximize button in its title bar. Note that you can set this to false and programatically maximize the Dialog to achieve a fullscreen-only Dialog solution.",
                     $default : false
                 },
                 "closeOnMouseClick" : {

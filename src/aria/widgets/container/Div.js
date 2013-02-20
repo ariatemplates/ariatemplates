@@ -92,31 +92,35 @@ Aria.classDefinition({
         /**
          * Change the width, height, max width and max height of the configuration, then update the container size
          * @param {aria.widgets.CfgBeans.ActionWidgetCfg} cfg the widget configuration (only width, height, maxWidth,
-         * maxHeight will be used)
+         * maxHeight, maximized will be used)
          */
         updateSize : function (cfg) {
-            var hasChanged = false;
-            var value;
-            value = cfg.maxWidth;
-            if (value && value != this._cfg.maxWidth) {
-                this._cfg.maxWidth = value;
+            var hasChanged = false, prefName, newVal;
+            var prefs = ['maxWidth', 'maxHeight', 'width', 'height'];
+
+            for (var i = 0, len = prefs.length; i < len; i++) {
+                prefName = prefs[i];
+                newVal = cfg[prefName];
+                if (newVal && newVal != this._cfg[prefName]) {
+                    this._cfg[prefName] = newVal;
+                    hasChanged = true;
+                }
+            }
+
+            if (cfg.maximized !== this._cfg.maximized) {
+                this._cfg.maximized = cfg.maximized;
                 hasChanged = true;
             }
-            value = cfg.width;
-            if (value && value != this._cfg.width) {
-                this._cfg.width = value;
+
+            if (cfg.maximized) {
+                this._cfg.widthMaximized = cfg.widthMaximized;
+                this._cfg.heightMaximized = cfg.heightMaximized;
                 hasChanged = true;
+            } else {
+                this._cfg.widthMaximized = null;
+                this._cfg.heightMaximized = null;
             }
-            value = cfg.maxHeight;
-            if (value && value != this._cfg.maxHeight) {
-                this._cfg.maxHeight = value;
-                hasChanged = true;
-            }
-            value = cfg.height;
-            if (value && value != this._cfg.height) {
-                this._cfg.height = value;
-                hasChanged = true;
-            }
+
             if (hasChanged) {
                 this.$Container._updateSize.call(this);
             }
