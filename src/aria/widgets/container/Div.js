@@ -40,7 +40,6 @@ Aria.classDefinition({
                 height : cfg.height,
                 printOptions : cfg.printOptions,
                 cssClass : cfg.cssClass,
-                "oldStuff:cssRoot" : "DIV",
                 block : cfg.block,
                 scrollBarX : cfg.scrollBarX,
                 scrollBarY : cfg.scrollBarY

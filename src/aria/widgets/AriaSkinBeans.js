@@ -237,12 +237,6 @@ Aria.beanDefinitions({
                                 $type : "TableFrameStateCfg"
                             }, {
                                 $type : "SimpleHTMLFrameStateCfg"
-                            }, {
-                                $type : "Old0FrameStateCfg"
-                            }, {
-                                $type : "Old1FrameStateCfg"
-                            }, {
-                                $type : "Old2FrameStateCfg"
                             }]
                 }
             },
@@ -279,12 +273,6 @@ Aria.beanDefinitions({
                         $type : "TableFrameCfg"
                     }, {
                         $type : "SimpleHTMLFrameCfg"
-                    }, {
-                        $type : "Old0FrameCfg"
-                    }, {
-                        $type : "Old1FrameCfg"
-                    }, {
-                        $type : "Old2FrameCfg"
                     }]
         },
         "ButtonCfg" : {
@@ -1478,108 +1466,6 @@ Aria.beanDefinitions({
                     $default : "bottom"
                 }
             }
-        },
-        "OldFrame" : {
-            $type : "Object",
-            $description : "",
-            $properties : {
-                spriteURL : {
-                    $type : "json:String",
-                    $description : ""
-                },
-                spcLeft : {
-                    $type : "Pixels"
-                },
-                spcRight : {
-                    $type : "Pixels"
-                },
-                spcTop : {
-                    $type : "Pixels"
-                },
-                spcBottom : {
-                    $type : "Pixels"
-                },
-                sprWidth : {
-                    $type : "Pixels"
-                },
-                sprHeight : {
-                    $type : "Pixels"
-                },
-                offsetLeft : {
-                    $type : "Pixels"
-                }
-            }
-        },
-        "Old0FrameCfg" : {
-            $type : "OldFrame",
-            $description : "Deprecated, please use farmes of types \"FixedHeight\", \"Simple\", \"Table\", \"SimpleHTML\" instead. Frame properties have to be specified state-wise.",
-            $properties : {
-                "sprType" : {
-                    $type : "json:Integer",
-                    $description : "Deprecated, please use frameType instead. The value corresponding to this type of frame is 0."
-                },
-                "frameType" : {
-                    $type : "json:Enum",
-                    $enumValues : ["Old0"],
-                    $description : "The value that indicates that no frame is desired is \"Old0\"."
-                }
-            }
-        },
-        "Old1FrameCfg" : {
-            $type : "OldFrame",
-            $description : "Deprecated, please use farmes of types \"FixedHeight\", \"Simple\", \"Table\", \"SimpleHTML\" instead. Frame properties have to be specified state-wise.",
-            $properties : {
-                "sprType" : {
-                    $type : "json:Integer",
-                    $description : "Deprecated, please use frameType instead. The value corresponding to this type of frame is 1."
-                },
-                "frameType" : {
-                    $type : "json:Enum",
-                    $enumValues : ["Old1"],
-                    $description : "The value that indicates that no frame is desired is \"Old1\"."
-                }
-            }
-        },
-        "Old2FrameCfg" : {
-            $type : "OldFrame",
-            $description : "Deprecated, please use farmes of types \"FixedHeight\", \"Simple\", \"Table\", \"SimpleHTML\" instead. Frame properties have to be specified state-wise.",
-            $properties : {
-                "sprType" : {
-                    $type : "json:Integer",
-                    $description : "Deprecated, please use frameType instead. The value corresponding to this type of frame is 2."
-                },
-                "frameType" : {
-                    $type : "json:Enum",
-                    $enumValues : ["Old2"],
-                    $description : "The value that indicates that no frame is desired is \"Old2\"."
-                }
-            }
-        },
-        "OldFrameState" : {
-            $type : "Object",
-            $description : "Deprecated properties of a frames of old types for this state.",
-            $properties : {
-                "sprIdx" : {
-                    $type : "json:Integer",
-                    $description : ""
-                },
-                "textAlign" : {
-                    $type : "json:String",
-                    $description : ""
-                },
-                "color" : {
-                    $type : "Color"
-                }
-            }
-        },
-        "Old0FrameStateCfg" : {
-            $type : "OldFrameState"
-        },
-        "Old1FrameStateCfg" : {
-            $type : "OldFrameState"
-        },
-        "Old2FrameStateCfg" : {
-            $type : "OldFrameState"
         },
         "SimpleHTMLFrameCfg" : {
             $type : "Object",

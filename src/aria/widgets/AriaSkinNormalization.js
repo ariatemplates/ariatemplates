@@ -61,9 +61,7 @@ Aria.classDefinition({
         FRAME_NORMALIZATION_ERROR : "Error while normalizing the frame part of widget %1, skin class %2:\n %3",
         FRAME_STATE_NORMALIZATION_ERROR : "Error while normalizing the frame part of widget %1, skin class %2, state %3:\n %4",
         WIDGET_NORMALIZATION_ERROR : "Error while normalizing widget %1:\n %2",
-        GENERAL_NORMALIZATION_ERROR : "Error while normalizing general skin properties:\n %1",
-
-        DEPRECATED_FRAME_TYPE : "The frame type %1, used in widget %2, skin class %3, is deprecated. Please use either Table, FixedHeight, SimpleHTML or Simple."
+        GENERAL_NORMALIZATION_ERROR : "Error while normalizing general skin properties:\n %1"
     },
     $prototype : {
         /**
@@ -71,10 +69,10 @@ Aria.classDefinition({
          * corresponding string.
          * @type Array
          */
-        _frameTypes : [
-                /* 0 */"Old0",
-                /* 1 */"Old1",
-                /* 2 */"Old2",
+        _frameTypes : [ // 0,1,2 corresponded to old frames which were removed as of AT 1.4.1
+                /* 0 */"",
+                /* 1 */"",
+                /* 2 */"",
                 /* 3 */"Table",
                 /* 4 */"FixedHeight",
                 /* 5 */"SimpleHTML",
@@ -155,9 +153,6 @@ Aria.classDefinition({
             skinFrame.frameType = frameType;
             frameNormalizers.normFrameSkinClass(skin, std);
             if (Aria.debug) {
-                if (/^Old/.test(frameType)) {
-                    this.$logWarn(this.DEPRECATED_FRAME_TYPE, [frameType, widgetName, skinClassName]);
-                }
                 var res = this._check(skinFrame, 'aria.widgets.AriaSkinBeans.' + frameType + 'FrameCfg');
                 if (!res.result) {
                     this.$logWarn(this.FRAME_NORMALIZATION_ERROR, [widgetName, skinClassName,

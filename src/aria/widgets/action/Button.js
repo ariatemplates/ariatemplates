@@ -95,7 +95,6 @@ Aria.classDefinition({
                 state : this._state,
                 sclass : cfg.sclass,
                 skinnableClass : this._skinnableClass,
-                "oldStuff:cssRoot" : "BTN",
                 // added in PTR 05170822 to avoid the internal scrollbard for content
                 scrollBarX : false,
                 scrollBarY : false
