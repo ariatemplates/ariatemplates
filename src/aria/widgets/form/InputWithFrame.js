@@ -72,7 +72,6 @@ Aria.classDefinition({
                 skinnableClass : this._skinnableClass,
                 width : this._inputMarkupWidth,
                 state : this._state,
-                "oldStuff:cssRoot" : "TIN",
                 scrollBarX : false,
                 scrollBarY : false,
                 tooltipLabels : [cfg.iconTooltip],

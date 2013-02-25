@@ -20,15 +20,12 @@
 Aria.classDefinition({
     $classpath : 'aria.widgets.frames.FrameFactory',
     $singleton : true,
-    $dependencies : ["aria.widgets.AriaSkinInterface", "aria.widgets.frames.CfgBeans", "aria.widgets.frames.OldFrame",
+    $dependencies : ["aria.widgets.AriaSkinInterface", "aria.widgets.frames.CfgBeans",
             "aria.widgets.frames.SimpleFrame", "aria.widgets.frames.TableFrame",
             "aria.widgets.frames.FixedHeightFrame", "aria.widgets.frames.SimpleHTMLFrame"],
     $constructor : function () {
         /* The keys in the following map are associated with the STATIC sprite types */
         this._frameTypeBuilders = {
-            "Old0" : aria.widgets.frames.OldFrame,
-            "Old1" : aria.widgets.frames.OldFrame,
-            "Old2" : aria.widgets.frames.OldFrame,
             "Table" : aria.widgets.frames.TableFrame,
             "FixedHeight" : aria.widgets.frames.FixedHeightFrame,
             "SimpleHTML" : aria.widgets.frames.SimpleHTMLFrame,
@@ -79,8 +76,8 @@ Aria.classDefinition({
         },
 
         /**
-         * Create a new frame according to the given configuration object. The type of frame returned (either OldFrame,
-         * TableFrame or FixedHeightFrame) depends on the frame.frameType property of the skin class.
+         * Create a new frame according to the given configuration object. The type of frame returned (either TableFrame
+         * or FixedHeightFrame) depends on the frame.frameType property of the skin class.
          * @param {aria.widgets.frames.CfgBeans.FrameCfg} cfg Frame configuration
          * @return {aria.widgets.frames.Frame} A frame object, or null if an error occured (in this case, the error is
          * logged).

@@ -110,10 +110,10 @@ Aria.classDefinition({
     },
     $statics : {
         /**
-         * Create a new frame according to the given configuration object. The type of frame used (either OldFrame,
-         * TableFrame or FixedHeightFrame) depends on the frame.frameType property of the skin class. If the skin defines icons
-         * around the frame, the frame returned is wrapped in a FrameWithIcons object, otherwise there is no
-         * FrameWithIcons object.
+         * Create a new frame according to the given configuration object. The type of frame used (either TableFrame or
+         * FixedHeightFrame) depends on the frame.frameType property of the skin class. If the skin defines icons around
+         * the frame, the frame returned is wrapped in a FrameWithIcons object, otherwise there is no FrameWithIcons
+         * object.
          * @param {aria.widgets.frames.CfgBeans.FrameCfg} cfg Frame configuration
          * @return {aria.widgets.frames.Frame} A frame object, or null if an error occured (in this case, the error is
          * logged).
