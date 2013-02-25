@@ -1,0 +1,20 @@
+newFeatures=
+<% commits.forEach(function (commit) { %>
+	<% if (commit.type === "feat") { %>
+		{{AriaTemplatesReleaseNoteItemIssue |
+			issue=<%= commit.issue %>|
+			title=<%= commit.title %>|
+			description=<%= commit.messageLines.join(" ") %>}}
+	<% } %>
+<% }) %>
+|
+correctedBugs=
+<% commits.forEach(function (commit) { %>
+	<% if (commit.type === "fix") { %>
+		{{AriaTemplatesReleaseNoteItemIssue |
+			issue=<%= commit.issue %>|
+			title=<%= commit.title %>|
+			description=<%= commit.messageLines.join(" ") %>}}
+	<% } %>
+<% }) %>
+|
