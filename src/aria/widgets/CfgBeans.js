@@ -1033,13 +1033,7 @@ Aria.beanDefinitions({
 
         "LinkCfg" : {
             $type : "ActionWidgetCfg",
-            $description : "The base configuration for the link widget",
-            $properties : {
-                color : {
-                    $type : "json:String",
-                    $description : "The color of the text for the link"
-                }
-            }
+            $description : "The base configuration for the link widget"
         },
 
         "SpriteCfg" : {
