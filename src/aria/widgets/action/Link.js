@@ -49,10 +49,6 @@ Aria.classDefinition({
          */
         _widgetMarkup : function (out) {
             var cfg = this._cfg;
-            if (cfg.color) {
-                // Todo: remove this temporary backward compatible fix:
-                this.$logWarn(this.WIDGET_PROPERTY_DEPRECATION, ['color']);
-            }
             out.write(['<a', Aria.testMode ? ' id="' + this._domId + '_link"' : '', ' class="xLink_', cfg.sclass,
                     '" href="javascript:(function(){})()"',
                     (cfg.tabIndex != null ? ' tabindex=' + this._calculateTabIndex() + '"' : ''), '>',
