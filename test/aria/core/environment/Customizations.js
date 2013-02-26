@@ -69,7 +69,7 @@ Aria.classDefinition({
         },
 
         testGetFlowCP : function () {
-            aria.core.environment.Customizations.setEnvironment({
+            aria.core.AppEnvironment.setEnvironment({
                 customization : {
                     descriptor : {
                         flows : {
@@ -84,7 +84,7 @@ Aria.classDefinition({
         },
 
         testGetTemplateCP : function () {
-            aria.core.environment.Customizations.setEnvironment({
+            aria.core.AppEnvironment.setEnvironment({
                 customization : {
                     descriptor : {
                         templates : {
@@ -114,7 +114,7 @@ Aria.classDefinition({
         },
 
         testSetCustomizations : function () {
-            aria.core.environment.Customizations.setEnvironment({
+            aria.core.AppEnvironment.setEnvironment({
                 customization : {
                     descriptor : {
                         flows : {
