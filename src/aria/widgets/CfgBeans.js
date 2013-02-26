@@ -254,10 +254,6 @@ Aria.beanDefinitions({
                         $description : "Contains the groups to validate."
                     }
                 },
-                "onvalidate" : {
-                    $type : "common:Callback",
-                    $description : "Function to be called for custom validation."
-                },
                 "validationEvent" : {
                     $type : "json:Enum",
                     $enumValues : ["onFocus", "onBlur", "none"],
