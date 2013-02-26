@@ -20,7 +20,6 @@
 Aria.resourcesDefinition({
     $classpath : 'aria.resources.DateRes',
     $resources : {
-        firstDayOfWeek : 1 /* Monday */,
         day : [
             "Dimanche",
             "Lundi",
