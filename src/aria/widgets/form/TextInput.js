@@ -789,24 +789,6 @@ Aria.classDefinition({
         },
 
         /**
-         * The method called when calling custom validation
-         * @param {Object} arg is Popup needed
-         * @private
-         */
-        _onvalidate : function (arg) {
-            if (this._cfg.onvalidate) {
-                this.$logWarn(this.WIDGET_PROPERTY_DEPRECATION, ["onvalidate"]);
-                this.evalCallback(this._cfg.onvalidate);
-            }
-
-            if (arg.popup && (this._cfg.error)) {
-                this._validationPopupShow();
-            } else {
-                this._validationPopupHide();
-            }
-        },
-
-        /**
          * Internal method to handle the onkeydown event.
          * @param {DOMEvent or aria.DomEvent} e event object (on W3C browsers) or wrapper on it
          * @protected
@@ -958,9 +940,6 @@ Aria.classDefinition({
                                 }
                             }
                         }
-                        this._onvalidate({
-                            popup : false
-                        });
                     }
                 }
 

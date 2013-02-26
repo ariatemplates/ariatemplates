@@ -201,9 +201,6 @@ Aria.classDefinition({
                             aria.utils.Data.validateValue(dataholder, name, null, groups, 'onblur');
                         }
                     }
-                    this._onvalidate({
-                        popup : false
-                    });
                 }
             }
             this._updateValue(true);
@@ -223,19 +220,6 @@ Aria.classDefinition({
                 }
             }
             this._updateState();
-        },
-
-        _onvalidate : function (arg) {
-            if (this._cfg.onvalidate) {
-                this.$logWarn(this.WIDGET_PROPERTY_DEPRECATION, ["onvalidate"]);
-            }
-            this.evalCallback(this._cfg.onvalidate);
-            if (arg.popup && (this._cfg.error)) {// show errortip onfocus
-                this._validationPopupShow();
-            } else { // dispose of error tip
-                this._validationPopupHide();
-
-            }
         },
 
         /**
