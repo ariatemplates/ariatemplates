@@ -123,21 +123,6 @@ Aria.classDefinition({
          */
         checkApplicationSettings : function (name) {
             return aria.core.AppEnvironment.applicationSettings[name];
-        },
-
-        /**
-         * This method is deprecated. Please use aria.core.AppEnvironment.setEnvironment instead.<br />
-         * Stores the application variables. Please refer to documentation for parameter types.
-         * @public
-         * @param {Object} cfg Configuration object
-         * @param {aria.core.JsObject.Callback} cb Method to be called after the setting is done
-         * @param {Boolean} update flag to update existing application settings, when false will overwrite existing with
-         * new settings.
-         * @deprecated
-         */
-        setEnvironment : function (cfg, callback, merge) {
-            this.$logWarn("The setEnvironment method on this object is deprecated. Please use aria.core.AppEnvironment.setEnvironment instead.");
-            aria.core.AppEnvironment.setEnvironment(cfg, callback, merge);
         }
 
     }
