@@ -42,17 +42,6 @@ Aria.classDefinition({
 
         var res = this.dateRes, env = this._environment, utilString = aria.utils.String, utilRes = this.res;
 
-        // Backward compatibility code to be removed, PTR#05579605 - start.
-        /**
-         * Deprecated. Please use aria.core.AppEnvironment.setEnvironment or
-         * aria.utils.environment.Date.getFirstDayOfWeek to set or retrieve this value. <br />
-         * First day of the week in the current regional settings (0 = Sunday, ... , 6 = Saturday)
-         * @type Number
-         */
-        // Take the value which may have already been set in the environment
-        this.firstDayOfWeek = this._environment.getFirstDayOfWeek();
-        // Backward compatibility code to be removed, PTR#05579605 - end.
-
         /**
          * IATA Months for interpretation
          * @protected
