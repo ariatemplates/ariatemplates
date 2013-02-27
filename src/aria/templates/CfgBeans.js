@@ -989,13 +989,6 @@ Aria.beanDefinitions({
                     $type : "json:ObjectRef",
                     $description : "Argument object that should be passed to the sub-module init method - if null an empty object will be used",
                     $mandatory : false
-                },
-                "display" : {
-                    // TODO: change aria.tools.ToolsModule (used for debug tools) so that this item (which should not be
-                    // present in this bean) can be removed from here
-                    $type : "json:String",
-                    $description : "[DEPRECATED] should not be used",
-                    $mandatory : false
                 }
             }
         },
