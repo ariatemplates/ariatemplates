@@ -59,8 +59,6 @@ Aria.classDefinition({
          * @param {Object} requestObject
          * @param {Object} jsonData
          * @param {aria.core.JsObject.Callback} callback for this request
-         * @param {Object} session This param is DEPRECATED, use requestObject instead.
-         * @param {Object} requestHandler This param is DEPRECATED, use requestObject instead.
          */
         pushRequest : function (requestObject, jsonData, cb) {
             var queue, sessionId = requestObject.session.id;
