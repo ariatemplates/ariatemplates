@@ -19,6 +19,7 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
+        this.addTests("test.aria.utils.cssLoader.CSSLoader");
         this.addTests("test.aria.utils.dragdrop.DragDropBean");
         this.addTests("test.aria.utils.environment.EnvironmentTestSuite");
         this.addTests("test.aria.utils.json.JsonTestSuite");
