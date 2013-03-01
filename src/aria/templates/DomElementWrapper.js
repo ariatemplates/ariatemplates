@@ -93,20 +93,12 @@ Aria.classDefinition({
                 this.$logError(this.INVALID_EXPANDO_NAME, [dataName]);
                 return null;
             }
-            // expandoKey is deprecated. To be removed.
-            var expandoKey = '_' + dataName;
             var dataKey = 'data-' + dataName;
-            var attribute = domElt.attributes[expandoKey] || domElt.attributes[dataKey];
-            if (domElt.attributes[expandoKey] != null) {
-                this.$logWarn("The '_' usage is deprecated for the expando %1, please use the dataset html attribute instead.", [expandoKey]);
-            }
+            var attribute = domElt.attributes[dataKey];
             if (!attribute && checkAncestors) {
                 var parent = domElt.parentNode;
                 while (!attribute && parent != null && parent.attributes != null) {
-                    attribute = parent.attributes[expandoKey] || parent.attributes[dataKey];
-                    if (domElt.attributes[expandoKey] != null) {
-                        this.$logWarn("The '_' usage is deprecated for the expando %1, please use the dataset html attribute instead.", [expandoKey]);
-                    }
+                    attribute = parent.attributes[dataKey];
                     parent = parent.parentNode;
                 }
             }
