@@ -62,16 +62,6 @@
     };
 
     /**
-     * Contains the definition for an object defined in the interface by: {}. This way of defining an object in an
-     * interface is deprecated and will be removed in a future release of Aria Templates.
-     * @type {Object}
-     * @private
-     */
-    var __simpleObjectDefinition = {
-        $type : "Object"
-    };
-
-    /**
      * Contains the definition for an array defined in the interface by: []
      * @type {Object}
      * @private
@@ -98,13 +88,7 @@
         } else if (typeUtils.isArray(def)) {
             return __simpleArrayDefinition;
         } else if (typeUtils.isObject(def)) {
-            if (def.$type == null) {
-                this.$logWarn("Member '%2' in interface '%1' uses a deprecated way of declaring an object in an interface. Please use {$type:'Object'} instead of {}.", [
-                        classpath, member]);
-                res = __simpleObjectDefinition;
-            } else {
-                res = def;
-            }
+            res = def;
         } else {
             return null;
         }
