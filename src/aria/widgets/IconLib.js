@@ -13,6 +13,9 @@
  * limitations under the License.
  */
 
+/* BACKWARD-COMPATIBILITY-BEGIN */
+// This whole file should be removed in AT 1.5.1.
+// Please also remove reference to it from urlmap.json and pom.xml
 /**
  * Aria Icon Library Definition. A store of sprites and an API to retrieve needed information. Also here is a cataloging
  * mechanism that allows the contents of the library in the template. To include this, declare {@aria:IconLib()} inside
@@ -24,6 +27,7 @@ Aria.classDefinition({
     $dependencies : ['aria.widgets.AriaLib'],
     $singleton : true,
     $constructor : function () {
+        this.$logError(this.CLASS_DEPRECATED);
 
         // Internal library map where the sprites are stored.
         this._sprites = {
@@ -141,6 +145,9 @@ Aria.classDefinition({
             }
         };
     },
+    $statics : {
+        CLASS_DEPRECATED : "The aria.widgets.IconLib class is deprecated and will be removed in Aria Templates 1.5-1. Please remove any dependency on it."
+    },
     $prototype : {
         /**
          * A method to register a user-defined custom sprite in the icon library.
@@ -148,6 +155,8 @@ Aria.classDefinition({
          * @return {Boolean} returns whether the sprite was correctly registered.
          */
         registerSprite : function (sprite) {
+            this.$logWarn(this.CLASS_DEPRECATED);
+
             var icon;
             // Verify that the sprite passed follows the schema
             if (!sprite)
@@ -188,6 +197,8 @@ Aria.classDefinition({
          * @return {Boolean} returns whether the sprite was found and correctly deleted.
          */
         _deleteSprite : function (name) {
+            this.$logWarn(this.CLASS_DEPRECATED);
+
             if (this._sprites[name]) {
                 delete(this._sprites[name]);
                 return true;
@@ -202,6 +213,8 @@ Aria.classDefinition({
          * @return {Object|Boolean}
          */
         getIcon : function (sprite, icon) {
+            this.$logWarn(this.CLASS_DEPRECATED);
+
             var curSprite = this._sprites[sprite], iconContent, iconLeft = 0, iconTop = 0;
             if (curSprite && (iconContent = curSprite.content[icon]) !== undefined) {
                 if (curSprite.biDimensional) {
@@ -233,6 +246,8 @@ Aria.classDefinition({
          * @param {Object} out - the output stream where we can write to
          */
         writeMarkup : function (out) {
+            this.$logWarn(this.CLASS_DEPRECATED);
+
             var curSprite, iconLeft = 0, iconTop = 0, iconContent;
             for (var sprite in this._sprites) {
                 curSprite = this._sprites[sprite];
@@ -265,3 +280,4 @@ Aria.classDefinition({
         }
     }
 });
+/* BACKWARD-COMPATIBILITY-END */
