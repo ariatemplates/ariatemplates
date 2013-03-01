@@ -108,17 +108,6 @@ Aria.classDefinition({
          */
         this._cache = {};
 
-        /* Backward Compatibility begins here */
-        /**
-         * Cache of formatting strings for currency formatting. The pattern string is extracted from a function in case
-         * it's not already defined as string
-         * @see aria.core.environment.EnvironmentBaseCfgBeans.FormatTypes
-         * @type Object
-         * @private
-         */
-        this._formatCache = {};
-        /* Backward Compatibility ends here */
-
         aria.core.AppEnvironment.$on({
             "changingEnvironment" : {
                 fn : this._appEnvChanged,
@@ -128,16 +117,7 @@ Aria.classDefinition({
         // This function should be called now to build the regular expressions that depend on the appEnv
         this._appEnvChanged.call(this);
     },
-    $destructor : function () {
-        /* Backward Compatibility begins here */
-        this._formatCache = null;
-        /* Backward Compatibility ends here */
-    },
     $statics : {
-        /* Backward Compatibility begins here */
-        INVALID_FORMAT_TYPE : "Application config format can only be a string or a function",
-        DEPRECATED : "The method '%1' is deprecated. Please check the API docs for alternatives",
-        /* Backward Compatibility ends here */
 
         /**
          * Error message logged when the format pattern is invalid
