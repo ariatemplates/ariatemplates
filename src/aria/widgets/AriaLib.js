@@ -54,29 +54,10 @@ Aria.classDefinition({
             "SelectBox" : "aria.widgets.form.SelectBox",
             "Select" : "aria.widgets.form.Select",
             "SortIndicator" : "aria.widgets.action.SortIndicator",
-            // "IconLib":"aria.widgets.IconLib",
             "Template" : "aria.widgets.Template",
             "List" : "aria.widgets.form.list.List",
             "Gauge" : "aria.widgets.form.Gauge",
             "ErrorList" : "aria.widgets.errorlist.ErrorList"
-        },
-
-        /**
-         * This method is deprecated. It no longer does anything.
-         * @deprecated
-         */
-        /* BACKWARD-COMPATIBILITY-BEGIN */registerWidget : function () {
-            this.$logWarn("The registerWidget method is deprecated and does nothing. You should remove any call to this method.");
-        },/* BACKWARD-COMPATIBILITY-END */
-
-        /**
-         * This method is deprecated. It returns "aria.widgets.CfgBeans" for backward-compatibility.
-         * @return {Object}
-         * @deprecated
-         */
-        /* BACKWARD-COMPATIBILITY-BEGIN */getBeanConfig : function () {
-            this.$logWarn("The getBeanConfig method is deprecated. You should remove any call to this method.");
-            return "aria.widgets.CfgBeans";
-        }/* BACKWARD-COMPATIBILITY-END */
+        }
     }
 });
