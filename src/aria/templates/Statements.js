@@ -209,6 +209,7 @@ Aria.classDefinition({
                     out.writeln("this.__$statementOnEvent(", out.stringify(eventName), ",this.$normCallback(", callback, "),", statement.lineNumber, ');');
                 }
             },
+            /* BACKWARD-COMPATIBILITY-BEGIN */
             "bindRefreshTo" : {
                 inMacro : true,
                 container : false,
@@ -226,7 +227,7 @@ Aria.classDefinition({
                     }
                     out.writeln("this.__$bindAutoRefresh(", container, ", ", param, ", ", statement.lineNumber, ");");
                 }
-            },
+            },/* BACKWARD-COMPATIBILITY-END */
             "if" : {
                 inMacro : true,
                 container : true,

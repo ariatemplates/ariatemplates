@@ -24,7 +24,8 @@
     var methodMapping = ["$refresh", "$getChild", "$getElementById", "$focus", "$hdim", "$vdim", "getContainerScroll",
             "setContainerScroll", "__$writeId", "__$processWidgetMarkup", "__$beginContainerWidget", "$getId",
             "__$endContainerWidget", "__$statementOnEvent", "__$statementRepeater", "__$createView", "__$beginSection",
-            "__$endSection", "__$bindAutoRefresh", "$setFocusedWidget", "$getFocusedWidget"];
+            "__$endSection", /* BACKWARD-COMPATIBILITY-BEGIN */"__$bindAutoRefresh",/* BACKWARD-COMPATIBILITY-END */
+            "$setFocusedWidget", "$getFocusedWidget"];
 
     // list of parameters to map between the template and the template context
     var paramMapping = ["data", "moduleCtrl", "flowCtrl", "moduleRes"];
@@ -280,7 +281,10 @@
             INVALID_STATE_FOR_REFRESH : "Error in template '%1': calling $refresh while the template is being refreshed is not allowed.",
             SECTION_OUTPUT_NOT_FOUND : "Error while refreshing template '%1': output section '%2' was not found.",
             VAR_NULL_OR_UNDEFINED : "Template %2 \nLine %1: expression is null or undefined.",
+            /* BACKWARD-COMPATIBILITY-BEGIN */
             SECTION_BINDING_ERROR_SINGLE_VAR : "line %1: Cannot bind section to single variable except data. Binding must be something like container.parameter",
+            BINDREFRESHTO_STATEMENT_DEPRECATED : "Template '%1', line %2:\nThe {bindRefreshTo} statement is deprecated. It will be removed in Aria Templates 1.5.1. Please use 'bindRefreshTo' property of a {section} statement instead.",
+            /* BACKWARD-COMPATIBILITY-END */
             SECTION_MACRO_MISUSED : "Template %1 \nline %2: section statement must either be a container or have a non-null macro property.",
             TEMPLATE_EXCEPTION_REMOVING_LISTENERS : "Error in template '%1' while removing module or flow listeners.",
             TEMPLATE_NOT_READY_FOR_REFRESH : "Error in template '%1': the $refresh method was called, but the template is not yet ready to be refreshed.",
@@ -1638,8 +1642,9 @@
                 }
             },
 
+            /* BACKWARD-COMPATIBILITY-BEGIN */
             /**
-             * Bind an automatic refresh to the template or section
+             * [DEPRECATED] Bind an automatic refresh to the template or section
              * @private
              * @implements aria.templates.ITemplate
              * @param {Object} container object containing the parameter a section or template is bound to, or data
@@ -1647,6 +1652,8 @@
              * @param {Number} linNumber
              */
             __$bindAutoRefresh : function (container, param, lineNumber) {
+
+                this.$logWarn(this.BINDREFRESHTO_STATEMENT_DEPRECATED, [this.tplClasspath, lineNumber]);
 
                 // de not register for partial refresh if section is not in the refresh
                 if (this._out._currentSection) {
@@ -1667,6 +1674,7 @@
                     this._out._currentSection.registerBinding(boundCfg);
                 }
             },
+            /* BACKWARD-COMPATIBILITY-END */
 
             /**
              * Get the list of CSS classpath on which the template depends on
