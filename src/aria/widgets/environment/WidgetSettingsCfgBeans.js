@@ -33,10 +33,6 @@ Aria.beanDefinitions({
                     $type : "WidgetSettingsCfg",
                     $description : "Default widget settings for the application",
                     $default : {}
-                },
-                "defaultWidgetLib" : {
-                    $type : "json:String",
-                    $description : "Deprecated. There is no longer a single default library. Please use defaultWidgetLibs instead (defined in aria.widgetLibs.environment.WidgetLibsSettingsCfgBeans.AppCfg)."
                 }
             }
         },

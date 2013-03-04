@@ -18,20 +18,6 @@ Aria.classDefinition({
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.widgets.environment.WidgetSettings"],
     $prototype : {
-        testGetSetWidgetLibClassName : function () {
-            aria.core.AppEnvironment.setEnvironment({
-                defaultWidgetLib : "aria.widgets.NewAriaLib"
-            });
-
-            var settings = aria.widgets.environment.WidgetSettings.getWidgetLibClassName();
-            this.assertTrue(settings === "aria.widgets.NewAriaLib");
-
-            aria.core.AppEnvironment.setEnvironment({});
-
-            settings = aria.widgets.environment.WidgetSettings.getWidgetLibClassName();
-            this.assertTrue(settings === "aria.widgets.AriaLib");
-        },
-
         testGetSetWidgetSettings : function () {
             aria.core.AppEnvironment.setEnvironment({
                 widgetSettings : {

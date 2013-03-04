@@ -37,15 +37,6 @@ Aria.classDefinition({
         getWidgetLibs : function () {
             var res = this.checkApplicationSettings("defaultWidgetLibs");
 
-            /* BACKWARD-COMPATIBILITY-BEGIN */
-            var ariaLib = this.checkApplicationSettings("defaultWidgetLib");
-            if (ariaLib) {
-                // make a copy before changing the value:
-                res = aria.utils.Json.copy(res, false);
-                res.aria = ariaLib;
-            }
-            /* BACKWARD-COMPATIBILITY-END */
-
             return res;
         }
     }
