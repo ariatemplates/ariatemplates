@@ -177,7 +177,7 @@
                 }
 
                 if (this.typesUtil.isString(element)) {
-                    var oElement = this.getElement(element);
+                    var oElement = Aria.$window.document.getElementById(element);
                     if (!oElement) {
                         this.$logError(this.INVALID_TARGET, [element, event]);
                         element = oElement;
@@ -379,7 +379,7 @@
 
                 // The element argument can be a string
                 if (this.typesUtil.isString(element)) {
-                    element = this.getElement(element);
+                    element = Aria.$window.document.getElementById(element);
                     if (!element) {
                         return false;
                     }
@@ -467,16 +467,6 @@
             },
 
             /**
-             * We cache elements bound by id because when the unload event fires, we can no longer use
-             * document.getElementById
-             * @protected
-             * @deprecated Elements are not cached any longer
-             */
-            getElement : function (id) {
-                return (typeof id === "string") ? Aria.$window.document.getElementById(id) : id;
-            },
-
-            /**
              * Locating the saved event handler data by function ref
              * @protected
              */
@@ -528,7 +518,9 @@
              * @param {String} event optional type of listener to purge. If left out, all listeners will be removed
              */
             purgeElement : function (element, recurse, event) {
-                var oElement = (this.typesUtil.isString(element)) ? this.getElement(element) : element;
+                var oElement = (this.typesUtil.isString(element))
+                        ? Aria.$window.document.getElementById(element)
+                        : element;
                 var elementListeners = this.getListeners(oElement, event), i, len;
                 if (elementListeners) {
                     for (i = elementListeners.length - 1; i > -1; i--) {
@@ -572,7 +564,9 @@
                     searchLists = [listeners];
                 }
 
-                var oElement = (this.typesUtil.isString(element)) ? this.getElement(element) : element;
+                var oElement = (this.typesUtil.isString(element))
+                        ? Aria.$window.document.getElementById(element)
+                        : element;
 
                 for (var j = 0; j < searchLists.length; j = j + 1) {
                     var searchList = searchLists[j];
