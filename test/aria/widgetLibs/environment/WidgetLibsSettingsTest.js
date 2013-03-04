@@ -18,11 +18,7 @@
  */
 Aria.classDefinition({
 	$classpath : 'test.aria.widgetLibs.environment.WidgetLibsSettingsTest',
-	$dependencies : ['aria.widgetLibs.environment.WidgetLibsSettings'
-			/* BACKWARD-COMPATIBILITY-BEGIN */
-			, "aria.widgets.environment.WidgetSettings"
-	/* BACKWARD-COMPATIBILITY-END */
-	],
+	$dependencies : ['aria.widgetLibs.environment.WidgetLibsSettings'],
 	$extends : 'aria.jsunit.TestCase',
 	$prototype : {
 		testGetWidgetLibs : function () {
@@ -31,17 +27,6 @@ Aria.classDefinition({
 			this.assertJsonEquals(widgetLibs, {
 				aria : "aria.widgets.AriaLib"
 			}, "Invalid default environment value for defaultWidgetLibs");
-
-			/* BACKWARD-COMPATIBILITY-BEGIN */
-			aria.core.AppEnvironment.setEnvironment({
-				defaultWidgetLib : "aria.wlibsTest.OtherWidgetLib"
-			});
-			widgetLibs = aria.widgetLibs.environment.WidgetLibsSettings.getWidgetLibs();
-			this.assertJsonEquals(widgetLibs, {
-				aria : "aria.wlibsTest.OtherWidgetLib"
-			}, "Invalid environment value for defaultWidgetLibs");
-			aria.core.AppEnvironment.setEnvironment({});
-			/* BACKWARD-COMPATIBILITY-END */
 
 			aria.core.AppEnvironment.setEnvironment({
 				defaultWidgetLibs : {
@@ -56,11 +41,6 @@ Aria.classDefinition({
 				a : "aria.a.ALib",
 				b : "aria.b.BLib"
 			}, "Invalid default environment value for defaultWidgetLibs");
-
-			/* BACKWARD-COMPATIBILITY-BEGIN */
-			var ariaLibClassName = aria.widgets.environment.WidgetSettings.getWidgetLibClassName();
-			this.assertTrue(ariaLibClassName == null);
-			/* BACKWARD-COMPATIBILITY-END */
 
 			aria.core.AppEnvironment.setEnvironment({});
 
@@ -79,11 +59,6 @@ Aria.classDefinition({
 				a : "aria.a.ALib",
 				b : "aria.b.BLib"
 			}, "Invalid default environment value for defaultWidgetLibs");
-
-			/* BACKWARD-COMPATIBILITY-BEGIN */
-			ariaLibClassName = aria.widgets.environment.WidgetSettings.getWidgetLibClassName();
-			this.assertTrue(ariaLibClassName === "aria.a.NewAriaLib");
-			/* BACKWARD-COMPATIBILITY-END */
 
 			aria.core.AppEnvironment.setEnvironment({});
 			// test again the default value
