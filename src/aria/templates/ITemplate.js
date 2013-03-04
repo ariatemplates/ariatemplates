@@ -90,8 +90,8 @@ Aria.interfaceDefinition({
         $getFocusedWidget : function () {},
 
         /**
-         * Retrieves the currently focused widget, and extracts the widget Id and template Ids which combined form
-         * the widget path. This is then set into a property of the templates context.
+         * Retrieves the currently focused widget, and extracts the widget Id and template Ids which combined form the
+         * widget path. This is then set into a property of the templates context.
          */
         $setFocusedWidget : function () {},
 
@@ -233,8 +233,9 @@ Aria.interfaceDefinition({
          * developper code. A call to this method is generated for the {/section} closing statement.
          * @private
          */
-        __$endSection : function () {},
+        __$endSection : function () {}
 
+        /* BACKWARD-COMPATIBILITY-BEGIN */,
         /**
          * Bind an automatic refresh to a section or the template. This method is intended to be called only from the
          * generated code of templates (created in aria.templates.ClassGenerator) and never directly from developper
@@ -245,5 +246,6 @@ Aria.interfaceDefinition({
          * @param {Number} linNumber
          */
         __$bindAutoRefresh : function () {}
+        /* BACKWARD-COMPATIBILITY-END */
     }
 });
