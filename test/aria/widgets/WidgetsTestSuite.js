@@ -37,5 +37,6 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.form.FormTestSuite");
         this.addTests("test.aria.widgets.action.iconbutton.issue276.IconButtonTestCase");
         this.addTests("test.aria.widgets.container.issue367.MovableDialogTestCase");
+        this.addTests("test.aria.utils.dragdrop.DragTestSuite");
     }
 });

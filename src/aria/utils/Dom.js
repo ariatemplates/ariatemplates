@@ -703,6 +703,36 @@ Aria.classDefinition({
         },
 
         /**
+         * Get the offset top and left of an element, based either on the style or the offset element.
+         * Usefull to manage some internet explorer offset issues.
+         * @param {HTMLElement} element Element whose offset is requested.
+         * @return {Object} JSON with the top ad left properties.
+         * @public
+         */
+        getOffset : function (element) {
+            var style = element.currentStyle || element.style;
+            var isAbsolute = style.position == "absolute";
+
+            var offsetTop = element.offsetTop;
+            var offsetLeft = element.offsetLeft;
+            var offset = {
+                top : (isAbsolute && style.top) ? parseInt(style.top, 10) : offsetTop,
+                left : (isAbsolute && style.left) ? parseInt(style.left, 10) : offsetLeft
+            }
+
+            if (isNaN(offset.top)) {
+                offset.top = offsetTop;
+            }
+
+            if (isNaN(offset.left)) {
+                offset.left = offsetLeft;
+            }
+
+            return offset;
+
+        },
+
+         /**
          * Get the geometry of an element. It means the coordinates of top/left corner and its width and height. If the
          * element is the body, the geometry corresponds to the whole page, otherwise it's the visible part of the
          * element.
