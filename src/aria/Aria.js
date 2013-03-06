@@ -483,6 +483,16 @@
     Aria.memCheckMode = Aria.memCheckMode === true;
 
     /**
+     * The domain variable has to be set only when you explicitly set the value of document.domain. It is needed by
+     * classes using iframes (like aria.utils.HashManager) in order to overcome the limitations imposed by IE6/7 on the
+     * access of the iframe contents. It is desirable to set it at the very beginning, even before loading the bootstrap
+     * file of the framework.
+     * @type String
+     * @name Aria.domain
+     */
+    Aria.domain = Aria.domain || null;
+
+    /**
      * Prefix used for all parameters added in objects by the framework for internal requirements
      * @type String
      * @name Aria.FRAMEWORK_PREFIX
