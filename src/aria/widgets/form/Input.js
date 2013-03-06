@@ -19,8 +19,8 @@
 Aria.classDefinition({
     $classpath : "aria.widgets.form.Input",
     $extends : "aria.widgets.Widget",
-    $dependencies : ["aria.utils.Dom", "aria.widgets.form.InputValidationHandler", "aria.utils.Data",
-            "aria.utils.String", "aria.widgets.environment.WidgetSettings", "aria.core.Browser"],
+    $dependencies : ["aria.utils.Dom", "aria.utils.Data", "aria.utils.String",
+            "aria.widgets.environment.WidgetSettings", "aria.core.Browser", "aria.widgets.WidgetTrait"],
     /**
      * Input constructor
      * @param {aria.widgets.CfgBeans.InputCfg} cfg the widget configuration
@@ -106,11 +106,18 @@ Aria.classDefinition({
          * @param {Object} sdef the superclass class definition
          */
         $init : function (p, def, sdef) {
+            var src = aria.widgets.WidgetTrait.prototype;
+            for (var key in src) {
+                if (src.hasOwnProperty(key) && !p.hasOwnProperty(key)) {
+                    // copy methods which are not already on this object (this avoids copying $classpath and
+                    // $destructor)
+                    p[key] = src[key];
+                }
+            }
             // we add the bindable properties to the Widget prototype
             p.automaticallyBindedProperties = ["formatError", "formatErrorMessages", "error", "errorMessages",
                     "requireFocus"];
         },
-
         /**
          * Override the Widget _init method
          * @protected
@@ -356,28 +363,6 @@ Aria.classDefinition({
         },
 
         /**
-         * Method used when a validation popup is needed for an input field
-         * @protected
-         */
-        _validationPopupShow : function () {
-            // check validation popup isn't already displayed
-            if (!this._onValidatePopup) {
-                this._onValidatePopup = new aria.widgets.form.InputValidationHandler(this);
-            }
-            this._onValidatePopup.show();
-        },
-
-        /**
-         * Method used to close the validation popup of an input field
-         * @protected
-         */
-        _validationPopupHide : function () {
-            if (this._onValidatePopup) {
-                this._onValidatePopup.hide();
-            }
-        },
-
-        /**
          * Internal method called when one of the model property that the widget is bound to has changed Must be
          * overridden by sub-classes defining bindable properties
          * @param {String} propertyName the property name
@@ -422,7 +407,7 @@ Aria.classDefinition({
 
         /**
          * Apply the automatic bindings
-         * @param {aria.widgets.CfgBeans.InputCfg} cfg
+         * @param {aria.widgets.CfgBeans.InputCfg|aria.widgets.CfgBeans.ActionWidgetCfg} cfg
          * @protected
          */
         _setAutomaticBindings : function (cfg) {

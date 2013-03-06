@@ -180,6 +180,9 @@ Aria.beanDefinitions({
                         },
                         "name" : {
                             $type : "common:BindingRef"
+                        },
+                        "errorTipPosition" : {
+                            $type : "common:BindingRef"
                         }
                     }
                 },
@@ -307,6 +310,11 @@ Aria.beanDefinitions({
                     $type : "json:Boolean",
                     $description : "Indicates if the label must be displayed or not (if true the label is hidden)",
                     $default : false
+                },
+                "errorTipPosition" : {
+                    $type : "json:String",
+                    $description : "Possible values are: 'bottom left', 'bottom right', 'top left', 'top right'.",
+                    $default : "top right"
                 }
             }
         },
@@ -857,6 +865,20 @@ Aria.beanDefinitions({
             $type : "WidgetCfg",
             $description : "The base configuration for the button widget",
             $properties : {
+                "bind" : {
+                    $type : "WidgetCfg.bind",
+                    $properties : {
+                        "error" : {
+                            $type : "common:BindingRef"
+                        },
+                        "errorMessages" : {
+                            $type : "common:BindingRef"
+                        },
+                        "errorTipPosition" : {
+                            $type : "common:BindingRef"
+                        }
+                    }
+                },
                 "label" : {
                     $type : "json:String",
                     $description : "Text to put inside the label in the button",
@@ -865,6 +887,25 @@ Aria.beanDefinitions({
                 "onclick" : {
                     $type : "common:Callback",
                     $description : "Function to be called when the user clicks on the button."
+                },
+                "error" : {
+                    $type : "json:Boolean",
+                    $description : "Highlights the widget to notify an error to the user, defined in a template script.",
+                    $default : false
+                },
+                "errorMessages" : {
+                    $type : "json:Array",
+                    $description : "List of error messages associated to the widget, defined in a template script - these messages will be automatically displayed in a contextual error tooltip. If this array is not empty the error property is automatically set to true",
+                    $contentType : {
+                        $type : "json:String",
+                        $description : "Error message associated to the widget"
+                    },
+                    $default : []
+                },
+                "errorTipPosition" : {
+                    $type : "json:String",
+                    $description : "Possible values are: 'bottom left', 'bottom right', 'top left', 'top right'.",
+                    $default : "top right"
                 }
             }
         },
@@ -874,7 +915,7 @@ Aria.beanDefinitions({
             $description : "The base configuration for the button widget",
             $properties : {
                 "bind" : {
-                    $type : "WidgetCfg.bind",
+                    $type : "ActionWidgetCfg.bind",
                     $properties : {
                         "disabled" : {
                             $type : "common:BindingRef"
