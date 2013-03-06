@@ -19,6 +19,9 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
+        this.addTests("test.aria.widgets.errorTip.ButtonErrorTipsTest");
+        this.addTests("test.aria.widgets.errorTip.IconButtonErrorTipsTest");
+        this.addTests("test.aria.widgets.errorTip.LinkErrorTipsTest");
         this.addTests("test.aria.widgets.AriaSkinInterfaceTest");
         this.addTests("test.aria.widgets.AriaSkinNormalizationTest");
         this.addTests("test.aria.widgets.WidgetTest");
