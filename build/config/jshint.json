@@ -43,7 +43,7 @@
     "onecase" : false,
     "proto" : true,
     "regexdash" : true,
-    "scripturl" : false,
+    "scripturl" : true,
     "smarttabs" : false,
     "shadow" : true,
     "sub" : true,
