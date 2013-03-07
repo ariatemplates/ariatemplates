@@ -71,6 +71,12 @@
 
             aria.core.Log.clearAppenders();
             aria.core.Log.addAppender(new aria.core.log.SilentArrayAppender());
+            if (Aria.verbose) {
+                // Readd the default appender in verbose mode to log things also to the browser console.
+                // The order of appenders matters due to getAppenders()[0] used in assertErrorInLogs|assertLogsEmpty.
+                // Not using Aria.debug not to have a message flood in Attester.
+                aria.core.Log.addAppender(new aria.core.log.DefaultAppender());
+            }
 
             aria.core.Log.resetLoggingLevels();
             aria.core.Log.setLoggingLevel("*", 1);
@@ -198,6 +204,26 @@
             },
 
             /**
+             * AssertEqualsWithTolerance: Check that value1 is equal to value2 within tolerance interval
+             * @param {Number} value1 the value to compare
+             * @param {Number} value2 the value to compare
+             * @param {Number} tolerance maximum allowed difference (inclusive) between value1 and value2
+             * @param {String} optMsg optional message to add to the failure description. It can contain placeholders %1
+             * and %2 which will be replaced accordingly with: %1 - value1, %2 - value2.
+             */
+            assertEqualsWithTolerance : function (value1, value2, tolerance, optMsg) {
+                var msg;
+
+                if (optMsg) {
+                    msg = aria.utils.String.substitute(optMsg, ['"' + value1 + '"', '"' + value2 + '"']);
+                } else {
+                    msg = 'First value: ' + value1 + ', second value: ' + value2 + ', tolerance was: ' + tolerance;
+                }
+
+                this.assertTrue((Math.abs(value1 - value2) <= tolerance), msg);
+            },
+
+            /**
              * AssertNotEquals: Check that value1 is not! equal to value2
              * @param {object} value1 the value to compare
              * @param {object} value2 the value to compare
@@ -316,10 +342,13 @@
              */
             assertJsonEquals : function (obj1, obj2, optMsg) {
                 if (!optMsg) {
-                    var s1 = aria.utils.Json.convertToJsonString(obj1);
-                    var s2 = aria.utils.Json.convertToJsonString(obj2);
-                    optMsg = "JSON comparison failed. First object: <code>" + s1
-                            + "</code> differs from the second: <code>" + s2 + "</code>.";
+                    var jsonOptions = {
+                        indent : "   "
+                    };
+                    var s1 = aria.utils.Json.convertToJsonString(obj1, jsonOptions);
+                    var s2 = aria.utils.Json.convertToJsonString(obj2, jsonOptions);
+                    optMsg = "JSON comparison failed. First object:<br><code><pre>" + s1
+                            + "</pre></code> differs from the second:<br><code><pre>" + s2 + "</pre></code>";
                 }
                 this.assertTrue(aria.utils.Json.equals(obj1, obj2), optMsg);
             },
