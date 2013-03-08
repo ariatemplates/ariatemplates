@@ -421,13 +421,16 @@ Aria.classDefinition({
          * Load the class definition file after generating the class if needed.
          * @param {String} classDef File content, can be either the generated class definition or the source file itself
          * @param {String} logicalPath class' logical classpath
-         * @param {String} additionalDependencyClassPath additional class to be added to $dependencies when generating the class
+         * @param {String} additionalDependencyClassPath additional class to be added to $dependencies when generating
+         * the class
          */
         _loadClassAndGenerate : function (classDef, logicalPath, additionalDependencyClassPath) {
+            var firstComment = /^\s*\/\*[\s\S]*?\*\//;
+            var withoutFirstComment = classDef.replace(firstComment, '');
             var __alreadyGeneratedRegExp = /^\s*Aria\.classDefinition\(/;
 
-            if (__alreadyGeneratedRegExp.test(classDef)) {
-                this._evalGeneratedFile({
+            if (__alreadyGeneratedRegExp.test(withoutFirstComment)) {
+                this.__evalGeneratedClass({
                     classDef : classDef,
                     scope : this
                 }, {

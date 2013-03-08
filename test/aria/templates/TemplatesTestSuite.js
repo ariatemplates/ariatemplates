@@ -56,6 +56,7 @@ Aria.classDefinition({
         this.addTests("test.aria.templates.issue348.animation.AnimationTestcase");
 
         this.addTests("test.aria.templates.statements.StatementsTestSuite");
+        this.addTests("test.aria.templates.issue400.AlreadyCompiledTplTestCase");
 
     }
 });
