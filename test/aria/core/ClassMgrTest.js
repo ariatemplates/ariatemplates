@@ -79,7 +79,7 @@ Aria.classDefinition({
                     testName : testName,
                     errorID : errorID
                 }
-            }
+            };
             Aria.load(param);
         },
 
@@ -124,7 +124,7 @@ Aria.classDefinition({
                     scope : this,
                     args : filter
                 }
-            })
+            });
         },
 
         _afterUnload : function (filter) {
@@ -149,11 +149,11 @@ Aria.classDefinition({
                 classes : ['test.aria.core.test.ClassA', 'test.aria.core.test.ClassA'],
                 oncomplete : {
                     fn : function () {
-                        this.assertTrue(nbCalls == 0, "oncomplete was called several times");
+                        this.assertEquals(nbCalls, 0, "oncomplete was called several times");
                         nbCalls++;
                         aria.core.Timer.addCallback({
                             fn : function () {
-                                this.notifyTestEnd('testAsyncLoadClassDuplicates');
+                                this.notifyTestEnd('testAsyncLoadClassDuplicate');
                             },
                             scope : this,
                             delay : 300

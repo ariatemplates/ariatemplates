@@ -19,10 +19,11 @@
 Aria.classDefinition({
     $classpath : "test.aria.core.DefaultAppenderTest2",
     $extends : "aria.jsunit.TestCase",
-    $constructor : function () {
-        this.$TestCase.constructor.call(this);
-    },
     $prototype : {
+        setUp : function () {
+            this._oldConsole = Aria.$global.console;
+        },
+
         tearDown : function () {
             Aria.$global.console = this._oldConsole;
         },
@@ -47,7 +48,7 @@ Aria.classDefinition({
                 error : function (args) {
                     that._myTestError.call(that, args);
                 }
-            }
+            };
 
             Aria.load({
                 classes : ['aria.core.log.DefaultAppender'],
