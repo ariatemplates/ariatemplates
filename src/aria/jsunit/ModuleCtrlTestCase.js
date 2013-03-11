@@ -18,9 +18,9 @@
  * a log of events.
  */
 Aria.classDefinition({
-    $classpath : 'aria.jsunit.ModuleCtrlTestCase',
-    $extends : 'aria.jsunit.TestCase',
-    $dependencies : ['aria.jsunit.TestMsgHandler', 'aria.modules.RequestMgr'],
+    $classpath : "aria.jsunit.ModuleCtrlTestCase",
+    $extends : "aria.jsunit.TestCase",
+    $dependencies : ["aria.jsunit.TestMsgHandler", "aria.modules.RequestMgr", "aria.templates.ModuleCtrlFactory"],
     $constructor : function () {
         this.$TestCase.constructor.call(this);
 
@@ -34,22 +34,63 @@ Aria.classDefinition({
 
         // we pass a reference to this so the TestMsgHandler can access it during initialization
         aria.core.IOFiltersMgr.addFilter({
-            classpath : 'aria.jsunit.TestMsgHandler',
+            classpath : "aria.jsunit.TestMsgHandler",
             initArgs : this
         });
     },
-
     $destructor : function () {
         aria.core.IOFiltersMgr.removeFilter({
-            classpath : 'aria.jsunit.TestMsgHandler',
+            classpath : "aria.jsunit.TestMsgHandler",
             initArgs : this
         });
         this.cxLogs = null;
         this.evtLogs = null;
+        if (this.$moduleCtrl) {
+            this.unregisterObject(this.$moduleCtrl);
+            this.$moduleCtrl = null;
+        }
+        if (this.$moduleCtrlPrivate) {
+            this.$moduleCtrlPrivate.$dispose();
+            this.$moduleCtrlPrivate = null;
+        }
         this.$TestCase.$destructor.call(this);
     },
-
+    $statics : {
+        FACTORY_ERROR : "Unable to create a module controller instance of %1"
+    },
     $prototype : {
+        /**
+         * Override TestCase run method to load a module controller
+         * @override
+         */
+        run : function () {
+            if (this.$controller) {
+                var description = aria.utils.Type.isString(this.$controller) ? {
+                    classpath : this.$controller
+                } : this.$controller;
+                // We want to automatically load a module controller
+                aria.templates.ModuleCtrlFactory.createModuleCtrl(description, {
+                    fn : this._goOnWithRun,
+                    scope : this,
+                    args : description
+                }, false);
+            } else {
+                this.$TestCase.run.call(this);
+            }
+        },
+
+        _goOnWithRun : function (result, description) {
+            if (result.error) {
+                this.$logError(this.FACTORY_ERROR, [description.classpath]);
+            } else {
+                this.$moduleCtrl = result.moduleCtrl;
+                this.$moduleCtrlPrivate = result.moduleCtrlPrivate;
+                // I obviously expect to listen to this object
+                this.registerObject(this.$moduleCtrl);
+            }
+            this.$TestCase.run.call(this);
+        },
+
         /**
          * Clears both connection logs and call the parent's implementation.
          */
