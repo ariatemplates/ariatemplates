@@ -423,7 +423,12 @@ Aria.classDefinition({
             if (value != null) {
                 report = this.controller.checkValue(value);
             } else {
-                report = this.controller.checkText(text, hasErrors);
+                if (this._cfg.entryPattern) {
+                    report = this.controller.checkTextEntryPattern(text);
+
+                } else {
+                    report = this.controller.checkText(text, hasErrors);
+                }
             }
 
             if (!report) {
@@ -842,6 +847,10 @@ Aria.classDefinition({
                     delay : this._cfg.validationDelay
                 });
             }
+            if (this._cfg.entryPattern) {
+                this.checkValue();
+            }
+
         },
 
         /**

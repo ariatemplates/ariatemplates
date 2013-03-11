@@ -36,10 +36,16 @@ Aria.classDefinition({
         };
 
         /**
-         * NumberField pattern
+         * NumberField formatting pattern
          * @type String
          */
         this._pattern = '';
+
+        /**
+         * NumberField acceptable entry pattern
+         * @type RegExp
+         */
+        this._entryPattern = null;
     },
     $destructor : function () {
         this._dataModel = null;
@@ -59,6 +65,17 @@ Aria.classDefinition({
                 } else {
                     this.$logError(aria.widgets.Widget.INVALID_CONFIGURATION, ["pattern "]);
                 }
+            }
+        },
+
+        /**
+         * Set entryPattern if one has been specified
+         * @param {RegExp} entryPattern
+         */
+        setEntryPattern : function (entryPattern) {
+            if (entryPattern) {
+                this._entryPattern = entryPattern;
+
             }
         },
 
@@ -137,6 +154,25 @@ Aria.classDefinition({
             report.text = this._dataModel.displayText;
             report.value = this._dataModel.number;
 
+            return report;
+        },
+        /**
+         * Checks the entered text against entryPattern
+         * @param {String} text - the displayed text
+         * @return {aria.widgets.controllers.reports.ControllerReport}
+         */
+        checkTextEntryPattern : function (text) {
+            var report = new aria.widgets.controllers.reports.ControllerReport();
+            report.ok = true;
+            var matchFound = text.match(this._entryPattern);
+            if (matchFound !== null) {
+                text = matchFound.join("");
+            } else {
+                text = "";
+            }
+            // this._dataModel.displayText = text;
+            report.text = text;
+            report.value = this._dataModel.number;
             return report;
         }
     }
