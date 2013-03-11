@@ -19,120 +19,77 @@
 Aria.classDefinition({
     $singleton : true,
     $classpath : "aria.touch.Tap",
-    $dependencies : ["aria.utils.Event", "aria.utils.Delegate", "aria.utils.AriaWindow", "aria.touch.Event"],
-    $constructor : function () {
+    $extends : "aria.touch.Gesture",
+    $statics : {
         /**
-         * reference to Aria.$window.document.body
-         * @type HTMLElement
+         * The move tolerance to validate the gesture.
+         * @type Integer
          */
-        this.body = {};
-        /**
-         * event map uses aria.touch.Event for touch event detection
-         */
-        this.touchEventMap = aria.touch.Event.touchEventMap;
-        var ariaWindow = aria.utils.AriaWindow;
-        ariaWindow.$on({
-            "attachWindow" : this._connectTouchEvents,
-            "detachWindow" : this._disconnectTouchEvents,
-            scope : this
-        });
-        if (ariaWindow.isWindowUsed) {
-            this._connectTouchEvents();
-        }
-    },
-    $destructor : function () {
-        aria.utils.AriaWindow.$unregisterListeners(this);
-        this._disconnectTouchEvents();
-        this.body = null;
-        this.touchEventMap = null;
+        MARGIN : 10
     },
     $prototype : {
         /**
-         * This method is called when AriaWindow sends an attachWindow event. It registers a listener on the touchstart,
-         * and touchmove.
+         * Initial listeners for the Tap gesture.
          * @protected
          */
-        _connectTouchEvents : function () {
-            this.body = Aria.$window.document.body;
-            aria.utils.Event.addListener(this.body, this.touchEventMap.touchstart, {
-                fn : this._tapStart,
-                scope : this
-            });
-            aria.utils.Event.addListener(this.body, this.touchEventMap.touchmove, {
-                fn : this._tapCancel,
-                scope : this
-            });
+        _getInitialListenersList: function() {
+            return [{evt: this.touchEventMap.touchstart, cb: {fn : this._tapStart, scope : this}}];
         },
 
         /**
-         * This method is called when AriaWindow sends a detachWindow event. It unregisters the listener on the
-         * touchstart event.
+         * Additional listeners for the Tap gesture.
          * @protected
          */
-        _disconnectTouchEvents : function () {
-            aria.utils.Event.removeListener(this.body, this.touchEventMap.touchstart, {
-                fn : this._tapStart,
-                scope : this
-            });
-            aria.utils.Event.removeListener(this.body, this.touchEventMap.touchmove, {
-                fn : this._tapCancel,
-                scope : this
-            });
-            this._tapCancel();
+        _getAdditionalListenersList: function() {
+            return [{evt: this.touchEventMap.touchmove, cb: {fn : this._tapMove, scope : this}},
+                    {evt: this.touchEventMap.touchend, cb: {fn : this._tapEnd, scope : this}}];
         },
 
         /**
-         * Entry point for the tap handler
+         * The fake events raised during the Tap lifecycle.
          * @protected
          */
-        _tapStart : function () {
-            var args = {
-                start : (new Date()).getTime()
-            };
-            aria.utils.Event.addListener(this.body, this.touchEventMap.touchend, {
-                fn : this._tapEnd,
-                scope : this,
-                args : args
-            });
+        _getFakeEventsMap : function() {
+            return {start: "tapstart", end : "tap", cancel: "tapcancel"};
         },
 
         /**
-         * Handles the tap: firstly determines if the touchstart and touchend events were within 1000ms, secondly uses
-         * Delegate.delegate to accurately delegate the event to the appropriate DOM element
-         * @param {Object} event touchend event
-         * @param {Object} args contains start time
+         * Tap start mgmt: gesture is started if only one touch.
+         * @param {Object} event the original event
          * @protected
          * @return {Boolean} false if preventDefault is true
          */
-        _tapEnd : function (event, args) {
-            this._tapCancel();
-            var diff = (new Date()).getTime() - args.start;
-            if (diff < 1000) {
-                var target = (event.target) ? event.target : event.srcElement;
-                var tapEvent = aria.DomEvent.getFakeEvent("tap", target);
-                tapEvent.pageX = event.pageX;
-                tapEvent.pageY = event.pageY;
-                tapEvent.clientX = event.clientX;
-                tapEvent.clientY = event.clientY;
-                aria.utils.Delegate.delegate(tapEvent);
-                event.cancelBubble = tapEvent.hasStopPropagation;
-                event.returnValue = !tapEvent.hasPreventDefault;
-                return event.returnValue;
+        _tapStart: function(event) {
+            var status = this._gestureStart(event);
+            return (status == null)? ((event.returnValue != null)? event.returnValue: !event.defaultPrevented): status;
+        },
+
+        /**
+         * Tap move mgmt: gesture continues if only one touch and if the move is within margins.
+         * @param {Object} event the original event
+         * @protected
+         * @return {Boolean} false if preventDefault is true
+         */
+        _tapMove : function(event) {
+            var position = aria.touch.Event.getPositions(event);
+            if (this.MARGIN >= this._calculateDistance(this.startData.positions[0].x, this.startData.positions[0].y, position[0].x, position[0].y)) {
+                var status =  this._gestureMove(event);
+                return (status == null)? this._gestureCancel(event): status;
+            }
+            else {
+                return this._gestureCancel(event);
             }
         },
 
         /**
-         * Cancels the tap by removing the listeners added for touchend
+         * Tap end mgmt: gesture ends if only one touch.
+         * @param {Object} event the original event
          * @protected
+         * @return {Boolean} false if preventDefault is true
          */
-        _tapCancel : function () {
-            var b = true;
-            while (b) {
-                b = aria.utils.Event.removeListener(this.body, this.touchEventMap.touchend, {
-                    fn : this._tapEnd,
-                    scope : this
-                });
-            }
+        _tapEnd: function(event) {
+            var status = this._gestureEnd(event);
+            return (status == null)? this._gestureCancel(event): (event.returnValue != null)? event.returnValue: !event.defaultPrevented;
         }
     }
 });

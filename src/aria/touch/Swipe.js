@@ -19,7 +19,14 @@
 Aria.classDefinition({
     $singleton : true,
     $classpath : "aria.touch.Swipe",
-    $dependencies : ["aria.utils.Event", "aria.utils.Delegate", "aria.utils.AriaWindow", "aria.touch.Event"],
+    $extends : "aria.touch.Gesture",
+    $statics : {
+        /**
+         * The move tolerance to validate the gesture.
+         * @type Integer
+         */
+        MARGIN : 20
+    },
     $events : {
         "swipestart" : {
             description : "Raised when a user starts to swipe.",
@@ -47,211 +54,155 @@ Aria.classDefinition({
             description : "Raised when a swipe is cancelled or completed and the listeners for the event need to be removed."
         }
     },
-    $constructor : function () {
-        /**
-         * reference to Aria.$window.document.body
-         * @type HTMLElement
-         */
-        this.body = {};
-        /**
-         * event map uses aria.touch.Event for touch event detection
-         */
-        this.touchEventMap = aria.touch.Event.touchEventMap;
-        var ariaWindow = aria.utils.AriaWindow;
-        ariaWindow.$on({
-            "attachWindow" : this._connectTouchEvents,
-            "detachWindow" : this._disconnectTouchEvents,
-            scope : this
-        });
-        if (ariaWindow.isWindowUsed) {
-            this._connectTouchEvents();
-        }
-    },
-    $destructor : function () {
-        aria.utils.AriaWindow.$unregisterListeners(this);
-        this._disconnectTouchEvents();
-        this.body = null;
-        this.touchEventMap = null;
-    },
-    $statics : {
-        MARGIN : 20
-    },
     $prototype : {
         /**
-         * This method is called when AriaWindow sends an attachWindow event. It registers a listener on the touchstart
+         * Initial listeners for the Swipe gesture.
          * @protected
          */
-        _connectTouchEvents : function () {
-            this.body = Aria.$window.document.body;
-            aria.utils.Event.addListener(this.body, this.touchEventMap.touchstart, {
-                fn : this._swipeStart,
-                scope : this
-            });
+        _getInitialListenersList: function() {
+            return [{evt: this.touchEventMap.touchstart, cb: {fn : this._swipeStart, scope : this}}];
         },
+
         /**
-         * This method is called when AriaWindow sends a detachWindow event. It unregisters the listener on the
-         * touchstart event.
+         * Additional listeners for the Swipe gesture.
          * @protected
          */
-        _disconnectTouchEvents : function () {
-            aria.utils.Event.removeListener(this.body, this.touchEventMap.touchstart, {
-                fn : this._swipeStart,
-                scope : this
-            });
-            this._swipeCancel();
+        _getAdditionalListenersList: function() {
+            return [{evt: this.touchEventMap.touchmove, cb: {fn : this._swipeMove, scope : this}},
+                    {evt: this.touchEventMap.touchend, cb: {fn : this._swipeEnd, scope : this}}];
         },
+
         /**
-         * Entry point for the swipe handler
-         * @param {Object} event touchstart event
+         * The fake events raised during the Swipe lifecycle.
          * @protected
          */
-        _swipeStart : function (event) {
-            var args = {
-                startX : (event.pageX) ? event.pageX : event.clientX,
-                startY : (event.pageY) ? event.pageY : event.clientY,
-                start : (new Date()).getTime()
-            };
-            aria.utils.Event.addListener(this.body, this.touchEventMap.touchmove, {
-                fn : this._swipeMove,
-                scope : this,
-                args : args
-            });
-            aria.utils.Event.addListener(this.body, this.touchEventMap.touchend, {
-                fn : this._swipeEnd,
-                scope : this,
-                args : args
-            });
-            this.$raiseEvent({
-                name : "swipestart",
-                startX : args.startX,
-                startY : args.startY,
-                originalEvent : event
-            });
+        _getFakeEventsMap : function() {
+            return {start: "swipestart", move: "swipemove", end: "swipe", cancel: "swipecancel"};
         },
+
         /**
-         * Handles the swipe: firstly determines if the touchstart and touchend events were within the same axis: for
-         * horizontal swipe: Y axis is the same for vertical swipe: X axis is the same Delegate.delegate to accurately
-         * delegate the event to the appropriate DOM element
-         * @param {Object} event touchend event
-         * @param {Object} args contains touchstart.Page/ClientX and touchstart.Page/ClientY
+         * Swipe start mgmt: gesture is started if only one touch.
+         * @param {Object} event the original event
          * @protected
          * @return {Boolean} false if preventDefault is true
          */
-        _swipeEnd : function (event, args) {
-            var duration = (new Date()).getTime() - args.start;
-            args.eventType = "swipeend";
-            var route = this._getRoute(args);
-            var returnValue = false;
-            if (route) {
-                var target = (event.target) ? event.target : event.srcElement;
-                var swipeEvent = aria.DomEvent.getFakeEvent("swipe", target);
-                returnValue = event.returnValue;
-                swipeEvent.duration = duration;
-                swipeEvent.distance = route.distance;
-                swipeEvent.direction = route.direction;
-                swipeEvent.startX = route.startX;
-                swipeEvent.startY = route.startY;
-                swipeEvent.endX = route.endX;
-                swipeEvent.endY = route.endY;
-                aria.utils.Delegate.delegate(swipeEvent);
-                event.cancelBubble = swipeEvent.hasStopPropagation;
-                event.returnValue = !swipeEvent.hasPreventDefault;
+        _swipeStart : function (event) {
+            var status = this._gestureStart(event);
+            if (status != null) {
                 this.$raiseEvent({
-                    name : "swipeend",
-                    route : route,
+                    name : "swipestart",
+                    startX : this.startData.positions[0].x,
+                    startY : this.startData.positions[0].y,
                     originalEvent : event
                 });
+                return status;
             }
-            this._swipeCancel();
-            return returnValue;
+            else {
+                return (event.returnValue != null)? event.returnValue: !event.defaultPrevented;
+            }
+
         },
+
         /**
-         * Cancels the swipe by removing the listeners added for touchend, and touchmove
+         * Swipe move mgmt: gesture continues if only one touch and if the move is within margins.
+         * @param {Object} event the original event
          * @protected
+         * @return {Boolean} false if preventDefault is true
          */
-        _swipeCancel : function () {
-            var b = true;
-            while (b) {
-                b = aria.utils.Event.removeListener(this.body, this.touchEventMap.touchend, {
-                    fn : this._swipeEnd,
-                    scope : this
-                });
+        _swipeMove : function (event) {
+            var route = this._getRoute(this.startData.positions[0], aria.touch.Event.getPositions(event)[0]);
+            if (route) {
+                var status = this._gestureMove(event, route);
+                if (status != null) {
+                    this.$raiseEvent({
+                        name : "swipemove",
+                        route : route,
+                        originalEvent : event
+                    });
+                    return status;
+                }
+                else {
+                    return this._swipeCancel(event);
+                }
             }
-            b = true;
-            while (b) {
-                b = aria.utils.Event.removeListener(this.body, this.touchEventMap.touchmove, {
-                    fn : this._swipeMove,
-                    scope : this
-                });
+            else {
+                return this._swipeCancel(event);
             }
+        },
+
+        /**
+         * Swipe end mgmt: gesture ends if only one touch and if the end is within margins.
+         * @param {Object} event the original event
+         * @protected
+         * @return {Boolean} false if preventDefault is true
+         */
+        _swipeEnd : function (event) {
+            var route = this._getRoute(this.startData.positions[0], aria.touch.Event.getPositions(event)[0]);
+            if (route) {
+                var status = this._gestureEnd(event, route);
+                if (status != null) {
+                    this.$raiseEvent({
+                        name : "swipeend",
+                        route : route,
+                        originalEvent : event
+                    });
+                    return status;
+                }
+                else {
+                    return this._swipeCancel(event);
+                }
+            }
+            else {
+                return this._swipeCancel(event);
+            }
+        },
+
+        /**
+         * SingleTap cancellation.
+         * @param {Object} event the original event
+         * @protected
+         * @return {Boolean} false if preventDefault is true
+         */
+        _swipeCancel : function (event) {
             this.$raiseEvent({
                 name : "swipecancel"
             });
+            return this._gestureCancel(event);
         },
-        /**
-         * Checks that the swipe is still valid
-         * @param {Object} event touchmove event
-         * @param {Object} args contains touchstart.Page/ClientX and touchstart.Page/ClientY
-         * @protected
-         */
-        _swipeMove : function (event, args) {
-            args.endX = (event.pageX) ? event.pageX : event.clientX;
-            args.endY = (event.pageY) ? event.pageY : event.clientY;
-            args.eventType = "swipemove";
-            var route = this._getRoute(args);
-            if (!route) {
-                this._swipeCancel();
-            } else {
-                this.$raiseEvent({
-                    name : "swipemove",
-                    route : route,
-                    originalEvent : event
-                });
-            }
-        },
+
         /**
          * Returns the direction and the distance of the swipe. Direction: left, right, up, down. Distance: positive
          * integer measured from touchstart and touchend. Will return false if the gesture is not a swipe.
-         * @param {Object} args contains: touchstart.Page/ClientX, touchstart.Page/ClientY, touchend.Page/ClientX,
-         * touchend.Page/ClientY
-         * @protected
+         * @param {Object} startPosition contains the x,y position of the start of the gesture
+         * @param {Object} startPosition contains the current x,y position of the gesture
+         * @public
          * @return {Object} contains the direction and distance
          */
-        _getRoute : function (args) {
-            var directionX = args.endX - args.startX;
-            var directionY = args.endY - args.startY;
+        _getRoute : function (startPosition, endPosition) {
+            var directionX = endPosition.x - startPosition.x;
+            var directionY = endPosition.y - startPosition.y;
             var absDirectionX = Math.abs(directionX);
             var absDirectionY = Math.abs(directionY);
             var vertical = ((absDirectionY > absDirectionX) && (absDirectionX <= this.MARGIN));
             var horizontal = ((absDirectionX > absDirectionY) && (absDirectionY <= this.MARGIN));
-            if (args.eventType === "swipemove") {
-                return {
-                    "direction" : "unknown",
-                    "distance" : "0",
-                    "startX" : args.startX,
-                    "startY" : args.startY,
-                    "endX" : args.endX,
-                    "endY" : args.endY
-                };
-            }
             if (vertical) {
                 return {
                     "direction" : (directionY < 0) ? "up" : "down",
                     "distance" : absDirectionY,
-                    "startX" : args.startX,
-                    "startY" : args.startY,
-                    "endX" : args.endX,
-                    "endY" : args.endY
+                    "startX" : startPosition.x,
+                    "startY" : startPosition.y,
+                    "endX" : endPosition.x,
+                    "endY" : endPosition.y
                 };
             }
             if (horizontal) {
                 return {
                     "direction" : (directionX < 0) ? "left" : "right",
                     "distance" : absDirectionX,
-                    "startX" : args.startX,
-                    "startY" : args.startY,
-                    "endX" : args.endX,
-                    "endY" : args.endY
+                    "startX" : startPosition.x,
+                    "startY" : startPosition.y,
+                    "endX" : endPosition.x,
+                    "endY" : endPosition.y
                 };
             }
             return false;

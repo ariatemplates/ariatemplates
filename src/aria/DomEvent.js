@@ -40,7 +40,11 @@
         "wheelDeltaX" : "wheelDeltaX",
         "wheelDeltaY" : "wheelDeltaY",
         "screenX" : "screenX",
-        "screenY" : "screenY"
+        "screenY" : "screenY",
+        "touches" : "touches",
+        "changedTouches" : "changedTouches",
+        "targetTouches" : "targetTouches",
+        "isPrimary" : "isPrimary"
     };
 
     // Map of special event types
