@@ -42,6 +42,10 @@ Aria.classDefinition({
 
         var controller = new aria.widgets.controllers.AutoCompleteController();
 
+        if (!cfg.expandButton && cfg.bind) {
+            delete cfg.bind.popupOpen;
+        }
+
         this.$DropDownTextInput.constructor.call(this, cfg, ctxt, lineNumber, controller);
 
         if (!cfg.expandButton) {
@@ -231,6 +235,28 @@ Aria.classDefinition({
             if (toBeDisposed) {
                 event.$dispose();
             }
+        },
+        /**
+         * Internal method called when one of the model property that the widget is bound to has changed Must be
+         * overridden by sub-classes defining bindable properties
+         * @param {String} propertyName the property name
+         * @param {Object} newValue the new value
+         * @param {Object} oldValue the old property value
+         * @protected
+         */
+        _onBoundPropertyChange : function (propertyName, newValue, oldValue) {
+            if (propertyName != "popupOpen" || this._cfg.expandButton) {
+                this.$DropDownTextInput._onBoundPropertyChange.apply(this, arguments);
+            }
+        },
+        /**
+         * Initialization method called by the delegate engine when the DOM is loaded
+         */
+        initWidget : function () {
+            if (!this._cfg.expandButton && this._cfg.popupOpen) {
+                this._cfg.popupOpen = false;
+            }
+            this.$DropDownTextInput.initWidget.call(this);
         }
     }
 });

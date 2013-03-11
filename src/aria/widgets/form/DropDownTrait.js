@@ -128,6 +128,7 @@ Aria.classDefinition({
          * @protected
          */
         _afterDropdownOpen : function () {
+            this._setPopupOpenProperty(true);
             // when the popup is clicked, keep the focus on the right element:
             this._keepFocus = true;
             this.focus(null, true);
@@ -138,6 +139,7 @@ Aria.classDefinition({
          * @protected
          */
         _afterDropdownClose : function () {
+            this._setPopupOpenProperty(false);
             this._dropdownPopup.$dispose();
             this._dropdownPopup = null;
             aria.templates.Layout.$unregisterListeners(this);
@@ -154,6 +156,7 @@ Aria.classDefinition({
                 return;
             }
             this._dropdownPopup.close();
+
         },
 
         /**
@@ -211,6 +214,19 @@ Aria.classDefinition({
          */
         _getPopupWidth : function () {
             return this._cfg.popupWidth || -1;
+        },
+        /**
+         * Set the property "popupOpen" in the widget configuration and in the data model to which it is n=bound
+         * @param {Boolean} value
+         * @protected
+         */
+        _setPopupOpenProperty : function (value) {
+            var cfg = this._cfg;
+            cfg.popupOpen = value;
+            if (cfg.bind && cfg.bind.popupOpen) {
+                var binding = cfg.bind.popupOpen;
+                aria.utils.Json.setValue(binding.inside, binding.to, value);
+            }
         }
     }
 });

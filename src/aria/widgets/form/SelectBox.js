@@ -91,7 +91,6 @@ Aria.classDefinition({
                 this._reactToControllerReport(report, {
                     stopValueProp : true
                 });
-
             } else {
                 aria.widgets.form.SelectBox.superclass._onBoundPropertyChange.call(this, propertyName, newValue, oldValue);
             }
