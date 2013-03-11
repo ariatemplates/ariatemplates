@@ -1,0 +1,5 @@
+[{
+    "name" : "aria/resources/pack-lang<%= locale %>.js",
+    "files" : ["aria/resources/DateRes<%= locale %>.js", "aria/resources/CalendarRes<%= locale %>.js",
+            "aria/resources/multiselect/FooterRes<%= locale %>.js"]
+}]

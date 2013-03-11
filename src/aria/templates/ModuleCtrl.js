@@ -110,7 +110,7 @@ Aria.classDefinition({
         });
         // remove the interceptor added in the constructor
         if (this._enableMethodEvents) {
-          this.$removeInterceptors(this.$publicInterfaceName, this, this._interceptPublicInterface);
+            this.$removeInterceptors(this.$publicInterfaceName, this, this._interceptPublicInterface);
         }
         this._smLoads = null;
         this._data = null;
@@ -174,8 +174,8 @@ Aria.classDefinition({
             }
             var evt = {
                 name : "method" + info.step, /*
-                                                 * info.step contains either CallBegin, CallEnd or Callback
-                                                 */
+                * info.step contains either CallBegin, CallEnd or Callback
+                */
                 method : info.method
             };
             this.$raiseEvent(evt);
@@ -189,9 +189,11 @@ Aria.classDefinition({
          * Submit a JSON Request
          * @see aria.modules.RequestMgr.
          * @param {String|Object} targetService, either :
-         * - the action path - e.g. 'search' or 'search?x=y'. This path will be automatically
-         * concatenated to the module path determined from the class package
-         * - a 'service specification' structure, understood by the UrlService implementation
+         * <ul>
+         * <li> the action path - e.g. 'search' or 'search?x=y'. This path will be automatically concatenated to the
+         * module path determined from the class package </li>
+         * <li> a 'service specification' structure, understood by the UrlService implementation</li>
+         * </ul>
          * @param {Object} jsonData - the data to post to the server
          * @param {aria.core.JsObject.Callback} cb the callback
          */
@@ -225,13 +227,13 @@ Aria.classDefinition({
                 urlService : this.$urlService,
                 requestJsonSerializer : this.$requestJsonSerializer
             };
-            
+
             if (typeUtils.isString(targetService)) {
                 requestObject.actionName = targetService;
             } else {
                 requestObject.serviceSpec = targetService;
             }
-            
+
             aria.modules.RequestMgr.submitJsonRequest(requestObject, jsonData, wrapCB);
         },
 

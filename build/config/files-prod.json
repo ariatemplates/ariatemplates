@@ -1,0 +1,186 @@
+[
+    {
+        "name": "aria/pack-utils.js",
+        "files": [
+            "aria/DomEvent.js",
+            "aria/core/log/*",
+            "aria/utils/overlay/*",
+            "aria/utils/sandbox/*",
+            "aria/utils/validators/*",
+            "aria/utils/filters/*",
+            "aria/utils/json/*",
+            "aria/utils/*",
+            "!aria/utils/FrameATLoaderHTML.html"
+        ]
+    },
+    {
+        "name": "aria/pack-modules.js",
+        "files": [
+            "aria/core/IOFilter.js",
+            "aria/modules/**/*"
+        ]
+    },
+    {
+        "name": "aria/pack-templates1.js",
+        "files": [
+            "aria/core/environment/Customizations.js",
+            "aria/core/environment/CustomizationsCfgBeans.js",
+            "aria/templates/*",
+            "!aria/templates/TextTemplate.js",
+            "!aria/templates/TxtClassGenerator.js",
+            "!aria/templates/TxtCtxt.js",
+            "!aria/templates/ViewCfgBeans.js",
+            "aria/widgetLibs/environment/*",
+            "aria/widgetLibs/*",
+            "aria/utils/environment/VisualFocus.js",
+            "aria/utils/environment/VisualFocusCfgBeans.js",
+            "aria/tools/contextual/environment/ContextualMenu.js",
+            "aria/tools/contextual/environment/ContextualMenuCfgBeans.js"
+        ]
+    },
+    {
+        "name": "aria/pack-html.js",
+        "files": [
+            "aria/html/**/*"
+        ]
+    },
+    {
+        "name": "aria/pack-embed.js",
+        "files": [
+            "aria/embed/*",
+            "!aria/embed/Map.js"
+        ]
+    },
+    {
+        "name": "aria/pack-map.js",
+        "files": [
+            "aria/embed/Map.js",
+            "aria/embed/controllers/MapController.js",
+            "aria/map/providers/*",
+            "aria/map/*"
+        ]
+    },
+    {
+        "name": "aria/pack-templates2.js",
+        "files": [
+            "aria/templates/TextTemplate.js",
+            "aria/templates/TxtClassGenerator.js",
+            "aria/templates/TxtCtxt.js",
+            "aria/templates/ViewCfgBeans.js"
+        ]
+    },
+    {
+        "name": "aria/pack-dragdrop-resize.js",
+        "files": [
+            "aria/utils/dragdrop/*",
+            "aria/utils/resize/*"
+        ]
+    },
+    {
+        "name": "aria/pack-widgets1.js",
+        "files": [
+            "aria/widgets/environment/*",
+            "aria/widgets/action/ActionWidget.js",
+            "aria/widgets/action/Button.js",
+            "aria/widgets/action/ButtonStyle.tpl.css",
+            "aria/widgets/action/Link.js",
+            "aria/widgets/action/LinkStyle.tpl.css",
+            "aria/widgets/calendar/*",
+            "aria/widgets/container/*",
+            "!aria/widgets/container/Splitter.js",
+            "!aria/widgets/container/Fieldset.js",
+            "!aria/widgets/container/Tab.js",
+            "!aria/widgets/container/TabPanel.js",
+            "!aria/widgets/container/Tooltip.js",
+            "aria/widgets/controllers/reports/*",
+            "aria/widgets/controllers/*",
+            "!aria/widgets/controllers/MultiSelectController.js",
+            "!aria/widgets/controllers/DateController.js",
+            "!aria/widgets/controllers/TimeController.js",
+            "aria/widgets/errorlist/*",
+            "aria/widgets/form/list/templates/*",
+            "aria/widgets/form/list/*",
+            "aria/widgets/form/*",
+            "!aria/widgets/form/Gauge.js",
+            "!aria/widgets/form/DateField.js",
+            "!aria/widgets/form/MultiSelect.js",
+            "!aria/widgets/form/PasswordField.js",
+            "!aria/widgets/form/TimeField.js",
+            "aria/widgets/frames/*",
+            "aria/widgets/*",
+            "!aria/widgets/AriaSkinBeans.js",
+            "!aria/widgets/IconLib.js",
+            "aria/popups/*",
+            "aria/utils/environment/Number.js",
+            "aria/utils/environment/NumberCfgBeans.js",
+            "aria/resources/handlers/*.js"
+        ]
+    },
+    {
+        "name": "aria/pack-widgets2.js",
+        "files": [
+            "aria/widgets/AriaSkinBeans.js",
+            "aria/widgets/IconLib.js",
+            "aria/widgets/action/SortIndicator.js",
+            "aria/widgets/action/SortIndicatorStyle.tpl.css",
+            "aria/widgets/action/IconButton.js",
+            "aria/widgets/container/Splitter.js",
+            "aria/widgets/container/Fieldset.js",
+            "aria/widgets/container/Tab.js",
+            "aria/widgets/container/TabPanel.js",
+            "aria/widgets/container/Tooltip.js",
+            "aria/widgets/controllers/MultiSelectController.js",
+            "aria/widgets/controllers/DateController.js",
+            "aria/widgets/controllers/TimeController.js",
+            "aria/widgets/form/Gauge.js",
+            "aria/widgets/form/DateField.js",
+            "aria/widgets/form/MultiSelect.js",
+            "aria/widgets/form/PasswordField.js",
+            "aria/widgets/form/TimeField.js",
+            "aria/widgets/form/templates/*",
+            "aria/widgets/transform/*",
+            "aria/utils/environment/Date.js",
+            "aria/utils/environment/DateCfgBeans.js"
+        ]
+    },
+    {
+        "name": "aria/pack-tools.js",
+        "files": [
+            "aria/tools/common/*",
+            "aria/tools/inspector/*",
+            "aria/tools/logger/*",
+            "aria/tools/contextual/*",
+            "aria/tools/*"
+        ]
+    },
+    {
+        "name": "aria/pack-storage.js",
+        "files": [
+            "aria/storage/*"
+        ]
+    },
+    {
+        "name": "aria/pack-touch.js",
+        "files": [
+            "aria/touch/**/*"
+        ]
+    },
+    {
+        "name": "aria/pack-ext.js",
+        "files": [
+            "aria/ext/**/*"
+        ]
+    },
+    {
+        "name": "aria/pack-jsunit.js",
+        "files": [
+            "aria/jsunit/**/*.js"
+        ]
+    },
+    {
+        "name": "aria/pack-tester.js",
+        "files": [
+            "aria/tester/runner/**/*"
+        ]
+    }
+]
