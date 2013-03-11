@@ -120,6 +120,12 @@ Aria.classDefinition({
          */
         this._currentIframeHashString = null;
 
+        /**
+         * Polled hash string retrieved from the iframe
+         * @type String
+         */
+        this.polledIframeHashString = null;
+
         if (this._isIE7OrLess) {
             this._createIframe();
         }
@@ -173,6 +179,7 @@ Aria.classDefinition({
          * @param {Object} window Window whose hash to set. It defaults to Aria.$window.
          */
         setHash : function (arg, window) {
+            arg = arg || "";
             window = window || Aria.$window;
             var newHashString = "";
             if (this._typeUtil.isObject(arg)) {
@@ -198,7 +205,7 @@ Aria.classDefinition({
         addCallback : function (cb) {
             if (this._hashChangeCallbacks == null) {
                 this._hashChangeCallbacks = [];
-                //aria.utils.AriaWindow.attachWindow();
+                // aria.utils.AriaWindow.attachWindow();
                 this._addHashChangeInternalCallback();
             }
             this._hashChangeCallbacks.push(cb);
@@ -220,7 +227,7 @@ Aria.classDefinition({
                     if (hcC.length === 0) {
                         this._hashChangeCallbacks = null;
                         this._removeHashChangeInternalCallback();
-                        //aria.utils.AriaWindow.detachWindow();
+                        // aria.utils.AriaWindow.detachWindow();
                     }
                 }
             }
@@ -367,9 +374,11 @@ Aria.classDefinition({
                     scope : this,
                     delay : this.ie7PollDelay
                 });
-                var iframeWindow = this._iframe.contentWindow;
+
                 var documentHash = this.getHashString();
-                var iframeHash = this.getHashString(iframeWindow);
+
+                var iframeHash = this.polledIframeHashString;
+
                 // back or forward
                 if (iframeHash != this._currentIframeHashString) {
                     this._currentIframeHashString = iframeHash;
@@ -506,17 +515,23 @@ Aria.classDefinition({
          * @protected
          */
         _addIframeHistoryEntry : function (hash) {
-
             var iframe = this._iframe;
             if (!iframe) {
                 return;
             }
             hash = hash || "";
             if (this._currentIframeHashString != hash) {
-                iframe.contentWindow.document.open();
-                iframe.contentWindow.document.close();
+                var src = ['javascript:document.open();'];
+                src.push('document.write(\"<script type=\\\"text/javascript\\\">');
+                if (Aria.domain) {
+                    src.push('document.domain=\\\"' + Aria.domain + '\\\";');
+                }
+                src.push('if (parent.' + this.$classpath + '){parent.' + this.$classpath
+                        + '.polledIframeHashString=\\\"' + hash + '\\\";}');
+                src.push("</script>\");");
+                src.push('document.close();');
+                iframe.src = src.join("");
                 this._currentIframeHashString = hash;
-                this.setHash(hash, iframe.contentWindow);
             }
         },
 

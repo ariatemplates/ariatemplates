@@ -154,6 +154,7 @@
     Aria.RESOURCES_HANDLE_CONFLICT = "Template error: can't load resources '%1' defined in '%2'. A macro, a library, a text template, a variable or another resource has already been declared with the same name.";
     Aria.CANNOT_EXTEND_SINGLETON = "Class %1 cannot extend singleton class %2";
     Aria.FUNCTION_PROTOTYPE_RETURN_NULL = "Prototype function of %1 cannot returns null";
+    Aria.TPLSCRIPT_INSTANTIATED_DIRECTLY = "Template scripts can not be instantiated directly";
 
     Aria.$classpath = "Aria";
     /**
@@ -483,6 +484,16 @@
     Aria.memCheckMode = Aria.memCheckMode === true;
 
     /**
+     * The domain variable has to be set only when you explicitly set the value of document.domain. It is needed by
+     * classes using iframes (like aria.utils.HashManager) in order to overcome the limitations imposed by IE6/7 on the
+     * access of the iframe contents. It is desirable to set it at the very beginning, even before loading the bootstrap
+     * file of the framework.
+     * @type String
+     * @name Aria.domain
+     */
+    Aria.domain = Aria.domain || null;
+
+    /**
      * Prefix used for all parameters added in objects by the framework for internal requirements
      * @type String
      * @name Aria.FRAMEWORK_PREFIX
@@ -748,17 +759,12 @@
             $onload : function (constructor) {
                 constructor.tplScriptDefinition = def;
             },
-            $extends : "aria.templates.Template",
             $constructor : function () {
-                this.$Template.constructor.call(this);
-                if (def.$constructor) {
-                    def.$constructor.call(this);
-                }
-            },
-            $destructor : def.$destructor ? function () {
-                def.$destructor.call(this);
-                this.$Template.$destructor.call(this);
-            } : null
+                // This is to prevent direct instantiation of template scripts.
+                // Yet it is still possible do define $constructor and $destructor on template scripts, as they will be
+                // imported later on in TplClassLoader._importScriptPrototype()
+                this.$logError(Aria.TPLSCRIPT_INSTANTIATED_DIRECTLY);
+            }
         });
     };
 
