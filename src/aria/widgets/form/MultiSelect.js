@@ -218,7 +218,7 @@ Aria.classDefinition({
          * @protected
          */
         _afterDropdownClose : function () {
-
+            this._setPopupOpenProperty(false);
             this.controller.setListWidget(null);
             // Check _toggleDropdown already triggered
             if (!this._hasFocus) {
@@ -255,7 +255,7 @@ Aria.classDefinition({
          * @protected
          */
         _afterDropdownOpen : function () {
-
+            this._setPopupOpenProperty(true);
             // when the popup is clicked, don't give it focus, allow focus to be passed to the List in _refreshPopup
             this._keepFocus = true;
             var list = this.controller.getListWidget();
@@ -300,6 +300,5 @@ Aria.classDefinition({
             this._refreshPopup(args);
             this._dropDownList.focus();
         }
-
     }
 });

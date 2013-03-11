@@ -540,6 +540,18 @@ Aria.beanDefinitions({
                     $type : "json:Integer",
                     $description : "Width of the dropdown popup in px - if negative, the width is computed dynamically.",
                     $default : -1
+                },
+                "popupOpen" : {
+                    $type : "json:Boolean",
+                    $description : "When this value is true, popup is automatically opened"
+                },
+                "bind" : {
+                    $type : "TextInputCfg.bind",
+                    $properties : {
+                        "popupOpen" : {
+                            $type : "common:BindingRef"
+                        }
+                    }
                 }
             }
         },
@@ -551,6 +563,18 @@ Aria.beanDefinitions({
                     $type : "json:Integer",
                     $description : "Width of the dropdown popup in px - if negative, the width is computed dynamically.",
                     $default : -1
+                },
+                "popupOpen" : {
+                    $type : "json:Boolean",
+                    $description : "When this value is true, popup is automatically opened"
+                },
+                "bind" : {
+                    $type : "InputCfg.bind",
+                    $properties : {
+                        "popupOpen" : {
+                            $type : "common:BindingRef"
+                        }
+                    }
                 }
             }
         },
@@ -721,7 +745,7 @@ Aria.beanDefinitions({
                     $default : "Open the Calendar"
                 },
                 "bind" : {
-                    $type : "TextInputCfg.bind",
+                    $type : "DropDownTextInputCfg.bind",
                     $properties : {
                         "referenceDate" : {
                             $type : "common:BindingRef"
@@ -752,7 +776,7 @@ Aria.beanDefinitions({
                     $default : []
                 },
                 "bind" : {
-                    $type : "TextInputCfg.bind",
+                    $type : "DropDownTextInputCfg.bind",
                     $properties : {
                         "options" : {
                             $type : "common:BindingRef"
@@ -791,7 +815,7 @@ Aria.beanDefinitions({
                     $description : "Function to be called when the state of the widget changes."
                 },
                 "bind" : {
-                    $type : "InputCfg.bind",
+                    $type : "DropDownInputCfg.bind",
                     $properties : {
                         "options" : {
                             $type : "common:BindingRef"
@@ -799,7 +823,6 @@ Aria.beanDefinitions({
                     }
                 }
             }
-
         },
 
         "AutoCompleteCfg" : {
