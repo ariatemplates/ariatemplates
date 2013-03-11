@@ -243,7 +243,7 @@
             cancelable /* :Boolean */, view /* :Window */, detail /* :int */, screenX /* :int */,
             screenY /* :int */, clientX /* :int */, clientY /* :int */, ctrlKey /* :Boolean */,
             altKey /* :Boolean */, shiftKey /* :Boolean */, metaKey /* :Boolean */, button /* :int */,
-            relatedTarget /* :HTMLElement */) /* :Void */
+            relatedTarget /* :HTMLElement */, touches /* :Array */, changedTouches /*: Array */, isPrimary /* :Boolean */) /* :Void */
     {
         var document = Aria.$window.document;
 
@@ -304,6 +304,15 @@
         if (!typeUtils.isNumber(button)) {
             button = 0;
         }
+        if (!typeUtils.isArray(touches)) {
+            touches = undefined;
+        }
+        if (!typeUtils.isArray(changedTouches)) {
+            changedTouches = undefined;
+        }
+        if (!typeUtils.isBoolean(isPrimary)) {
+            isPrimary = true;
+        }
 
         // try to create a event
         var customEvent /* :Event */= null;
@@ -335,6 +344,9 @@
                 customEvent.button = button;
                 customEvent.relatedTarget = relatedTarget;
             }
+            customEvent.touches = touches;
+            customEvent.changedTouches = changedTouches;
+            customEvent.isPrimary = isPrimary;
 
             /*
              * Check to see if relatedTarget has been assigned. Firefox versions less than 2.0 don't allow it to be
@@ -371,6 +383,9 @@
             customEvent.altKey = altKey;
             customEvent.metaKey = metaKey;
             customEvent.shiftKey = shiftKey;
+            customEvent.touches = touches;
+            customEvent.changedTouches = changedTouches;
+            customEvent.isPrimary = isPrimary;
 
             // fix button property for IE's wacky implementation
             switch (button) {
@@ -482,7 +497,7 @@
         options = options || {};
 
         if (events[type]) {
-            simulateEvent(target, type, options.bubbles, options.cancelable, options.view, options.detail, options.screenX, options.screenY, options.clientX, options.clientY, options.ctrlKey, options.altKey, options.shiftKey, options.metaKey, options.button, options.relatedTarget);
+            simulateEvent(target, type, options.bubbles, options.cancelable, options.view, options.detail, options.screenX, options.screenY, options.clientX, options.clientY, options.ctrlKey, options.altKey, options.shiftKey, options.metaKey, options.button, options.relatedTarget, options.touches, options.changedTouches, options.isPrimary);
         } else if (keyEvents[type]) {
             simulateKeyEvent(target, type, options.bubbles, options.cancelable, options.view, options.ctrlKey, options.altKey, options.shiftKey, options.metaKey, options.keyCode, options.charCode);
         } else if (htmlEvents[type]) {

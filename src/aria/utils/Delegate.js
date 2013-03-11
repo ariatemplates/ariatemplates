@@ -105,7 +105,29 @@ Aria.classDefinition({
          */
         this.delegatedGestures = {
             "tap" : "aria.touch.Tap",
-            "swipe" : "aria.touch.Swipe"
+            "tapstart" : "aria.touch.Tap",
+            "tapcancel" : "aria.touch.Tap",
+            "singletap" : "aria.touch.SingleTap",
+            "singletapstart" : "aria.touch.SingleTap",
+            "singletapcancel" : "aria.touch.SingleTap",
+            "doubletap" : "aria.touch.DoubleTap",
+            "doubletapstart" : "aria.touch.DoubleTap",
+            "doubletapcancel" : "aria.touch.DoubleTap",
+            "longpress" : "aria.touch.LongPress",
+            "longpressstart" : "aria.touch.LongPress",
+            "longpresscancel" : "aria.touch.LongPress",
+            "dragstart" : "aria.touch.Drag",
+            "dragmove" : "aria.touch.Drag",
+            "drag" : "aria.touch.Drag",
+            "dragcancel" : "aria.touch.Drag",
+            "swipe" : "aria.touch.Swipe",
+            "swipestart" : "aria.touch.Swipe",
+            "swipemove" : "aria.touch.Swipe",
+            "swipecancel" : "aria.touch.Swipe",
+            "pinch": "aria.touch.Pinch",
+            "pinchstart": "aria.touch.Pinch",
+            "pinchmove": "aria.touch.Pinch",
+            "pinchcancel": "aria.touch.Pinch"
         };
 
         /**
