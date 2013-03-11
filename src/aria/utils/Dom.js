@@ -718,7 +718,7 @@ Aria.classDefinition({
             var offset = {
                 top : (isAbsolute && style.top) ? parseInt(style.top, 10) : offsetTop,
                 left : (isAbsolute && style.left) ? parseInt(style.left, 10) : offsetLeft
-            }
+            };
 
             if (isNaN(offset.top)) {
                 offset.top = offsetTop;
