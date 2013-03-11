@@ -13,15 +13,15 @@
  * limitations under the License.
  */
 
+/**
+ * This mock Msg Handler is used by test cases in test.aria.jsunit
+ */
 Aria.classDefinition({
-	$classpath : "test.aria.jsunit.JsunitTestSuite",
-	$extends : "aria.jsunit.TestSuite",
-	$constructor : function () {
-		this.$TestSuite.constructor.call(this);
-
-		this.addTests("test.aria.jsunit.ModuleCtrlTestCaseTest");
-        this.addTests("test.aria.jsunit.AssertTest");
-        this.addTests("test.aria.jsunit.TestCaseTest");
-        this.addTests("test.aria.jsunit.ModuleControllerTestCase");
-	}
+    $classpath : "test.aria.jsunit.mock.RedirectToFile",
+    $extends : "aria.core.IOFilter",
+    $prototype : {
+        onRequest : function (req) {
+            this.redirectToFile(req, req.url + ".json");
+        }
+    }
 });
