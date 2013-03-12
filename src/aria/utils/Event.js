@@ -27,6 +27,12 @@
     var CB = 5;
     var CLEANCB = 6;
 
+
+    /**
+     * Utilities for handling Dom event listeners
+     */
+    var mousePosition = {x:0, y:0};
+
     /**
      * Utilities for handling Dom event listeners
      */
@@ -210,9 +216,26 @@
                 // wrap the function so we can return the obj object
                 // when
                 // the event fires;
-                var wrappedCallback = function (e) {
-                    return handlerCBInstance.call(aria.utils.Event.getEvent(e, element));
-                };
+                var scope = this;
+                var wrappedCallback = event != "mousemove" ?
+                    function (e) {
+                        return handlerCBInstance.call(aria.utils.Event.getEvent(e, element));
+                    } :
+                    function (e) {
+                        var screenX = e.screenX;
+                        var screenY = e.screenY;
+                        if (mousePosition.x == screenX && mousePosition.y == screenY) {
+                            return;
+                        }
+
+                        mousePosition = {
+                            x : screenX,
+                            y : screenY
+                        }
+
+                        return handlerCBInstance.call(aria.utils.Event.getEvent(e, element));
+                    };
+
                 var cleanCallback = function () {
                     handlerCBInstance = {
                         call : Aria.empty
