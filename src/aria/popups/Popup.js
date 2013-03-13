@@ -46,9 +46,9 @@ Aria.classDefinition({
         onBeforeOpen : "",
         onAfterOpen : "",
         onPositioned : {
-            description : "Triggered when position of the popup is choosen, according to prefered position provided",
+            description : "Triggered when position of the popup is chosen, according to prefered position provided",
             properties : {
-                position : "Position choosed if any. If empty, no position in viewset was found."
+                position : "Position chosen if any. If empty, no position in viewset was found."
             }
         }
     },
@@ -469,7 +469,6 @@ Aria.classDefinition({
          * @protected
          */
         _getPositionForAnchor : function (preferredPosition, size) {
-            var base = this.reference;
             var referenceAnchor = preferredPosition.reference;
             var popupAnchor = preferredPosition.popup;
 
@@ -632,13 +631,17 @@ Aria.classDefinition({
             } else {
                 this.computedStyle = this._getComputedStyle();
             }
-
-            this.domElement.style.cssText = ['top:', this.computedStyle.top, 'px;', 'left:', this.computedStyle.left,
-                    'px;', 'z-index:', this.computedStyle.zIndex, ';', 'position:absolute;display:inline-block;'].join('');
-            if (aria.core.Browser.isIE7 && !this.isOpen) {
-                // Without the following line, the autocomplete does not
-                // initially display its content on IE7:
-                this._document.body.appendChild(this.domElement);
+            // Need to check that the reference point is still completely visible after a scroll
+            var referenceIsInViewSet = aria.utils.Dom.isInViewport(this.referencePosition, this.referenceSize, this.domElement);
+            if (referenceIsInViewSet) {
+                this.domElement.style.cssText = ['top:', this.computedStyle.top, 'px;', 'left:',
+                        this.computedStyle.left, 'px;', 'z-index:', this.computedStyle.zIndex, ';',
+                        'position:absolute;display:inline-block;'].join('');
+                if (aria.core.Browser.isIE7 && !this.isOpen) {
+                    // Without the following line, the autocomplete does not
+                    // initially display its content on IE7:
+                    this._document.body.appendChild(this.domElement);
+                }
             }
         },
 

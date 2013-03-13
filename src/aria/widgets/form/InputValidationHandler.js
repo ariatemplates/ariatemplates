@@ -23,9 +23,39 @@ Aria.classDefinition({
     $constructor : function (widget) {
         this._context = widget._context;
         this._lineNumber = widget._lineNumber;
-        this._textInputField = widget.getTextInputField();
+        this._field = widget.getDom();
         this._WidgetCfg = widget._cfg;
         this._validationPopup = null; // null when the validation is closed
+        this._preferredPositions = {
+            "top right" : {
+                reference : "top right",
+                popup : "bottom left",
+                offset : {
+                    left : -30
+                }
+            },
+            "bottom right" : {
+                reference : "bottom right",
+                popup : "top left",
+                offset : {
+                    left : -30
+                }
+            },
+            "top left" : {
+                reference : "top left",
+                popup : "bottom right",
+                offset : {
+                    right : -30
+                }
+            },
+            "bottom left" : {
+                reference : "bottom left",
+                popup : "top right",
+                offset : {
+                    right : -30
+                }
+            }
+        };
 
         /**
          * Div for the error tooltip skinning. The reference is keep to change its state depending on the positioning of
@@ -38,7 +68,7 @@ Aria.classDefinition({
     $destructor : function () {
         this._closeValidation();
         this._context = null;
-        this._textInputField = null;
+        this._field = null;
         this._WidgetCfg = null;
         this._validationPopup = null;
     },
@@ -116,35 +146,27 @@ Aria.classDefinition({
             });
             this._validationPopup.open({
                 section : section,
-                domReference : this._textInputField,
-                preferredPositions : [{
-                            reference : "top right",
-                            popup : "bottom left",
-                            offset : {
-                                left : -30
-                            }
-                        }, {
-                            reference : "bottom right",
-                            popup : "top left",
-                            offset : {
-                                left : -30
-                            }
-                        }, {
-                            reference : "top left",
-                            popup : "bottom right",
-                            offset : {
-                                right : -30
-                            }
-                        }, {
-                            reference : "bottom left",
-                            popup : "top right",
-                            offset : {
-                                right : -30
-                            }
-                        }],
+                domReference : this._field,
+                preferredPositions : this._getPreferredPositions(),
                 closeOnMouseClick : true,
                 closeOnMouseScroll : false
             });
+        },
+
+        /**
+         * Creates an array of preferred positions, will first get the preferred position specified in the widgets
+         * errorTipPosition property.
+         * @return {Array} Returns an array of preferred positions.
+         */
+        _getPreferredPositions : function () {
+            var errorTipPosition = this._WidgetCfg.errorTipPosition;
+            var preferredPositions = [this._preferredPositions[errorTipPosition]];
+            for (var i in this._preferredPositions) {
+                if (this._preferredPositions.hasOwnProperty(i) && errorTipPosition != i) {
+                    preferredPositions.push(this._preferredPositions[i]);
+                }
+            }
+            return preferredPositions;
         },
 
         /**
@@ -177,10 +199,12 @@ Aria.classDefinition({
          */
         _onTooltipPositioned : function (evt) {
             var position = evt.position;
-            // if top right : no change of state
-            if (position && position.reference != "top right") {
-                // state is named after the position
+            if (position) {
+                // state is named after the position, except for topRight where it is named normal
                 var state = position.reference.replace(" right", "Right").replace(" left", "Left");
+                if (state === 'topRight') {
+                    state = 'normal';
+                }
                 var div = this._div, frame = div._frame;
                 div.initWidgetDom();
                 // this is backward compatibility for skin without errortooltip position states

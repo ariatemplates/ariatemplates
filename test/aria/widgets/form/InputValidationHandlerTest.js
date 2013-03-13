@@ -52,9 +52,10 @@ Aria.classDefinition({
                 _context : new aria.templates.TemplateCtxt(),
                 _cfg : {
                     formatError : true,
-                    formatErrorMessages : ["<div id='error'>this is an error</div>"]
+                    formatErrorMessages : ["<div id='error'>this is an error</div>"],
+                    errorTipPosition : "top right"
                 },
-                getTextInputField : function () {
+                getDom : function () {
                     return anchor;
                 }
             }
