@@ -31,11 +31,6 @@
     /**
      * Utilities for handling Dom event listeners
      */
-    var mousePosition = {x:0, y:0};
-
-    /**
-     * Utilities for handling Dom event listeners
-     */
     Aria.classDefinition({
         $classpath : "aria.utils.Event",
         $dependencies : ["aria.utils.Type", "aria.utils.Callback", "aria.core.Browser"],
@@ -216,6 +211,7 @@
                 // wrap the function so we can return the obj object
                 // when
                 // the event fires;
+                var mousePosition = null;
                 var scope = this;
                 var wrappedCallback = event != "mousemove" ?
                     function (e) {
@@ -224,16 +220,15 @@
                     function (e) {
                         var screenX = e.screenX;
                         var screenY = e.screenY;
-                        if (mousePosition.x == screenX && mousePosition.y == screenY) {
-                            return;
-                        }
+
+                        var cancel = !mousePosition || (mousePosition.x == screenX && mousePosition.y == screenY);
 
                         mousePosition = {
                             x : screenX,
                             y : screenY
-                        }
+                        };
 
-                        return handlerCBInstance.call(aria.utils.Event.getEvent(e, element));
+                        return cancel ? undefined : handlerCBInstance.call(aria.utils.Event.getEvent(e, element));
                     };
 
                 var cleanCallback = function () {
