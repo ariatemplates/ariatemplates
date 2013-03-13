@@ -50,7 +50,8 @@ Aria.classDefinition({
         this.addTests("test.aria.templates.generatedId.IncrementalElementIdTestCase");
         this.addTests("test.aria.templates.issue142.HtmlStyleTemplateTestCase");
         this.addTests("test.aria.templates.issue279.ButtonSpacingTestCase");
-        
+        this.addTests("test.aria.templates.issue389.Issue389TestCase");
+
         this.addTests("test.aria.templates.issue348.transition.TransitionTestcase");
         this.addTests("test.aria.templates.issue348.animation.AnimationTestcase");
 
