@@ -1191,6 +1191,16 @@ Aria.beanDefinitions({
                     $type : "json:Integer",
                     $description : "The base tab index that will be added to all tab indexes in the template",
                     $default : 0
+                },
+                "xForceScrollbar" : {
+                    $type : "json:Boolean",
+                    $description : "Force display horizontal scrollbar. This must be set to true if the list should overflow on the X axis.",
+                    $default : false
+                },
+                "yForceScrollbar" : {
+                    $type : "json:Boolean",
+                    $description : "Force display vertical scrollbar. This must be set to true if the list should overflow on the Y axis.",
+                    $default : false
                 }
 
             }

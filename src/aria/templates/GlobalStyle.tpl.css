@@ -65,6 +65,14 @@
     overflow-y: auto;
 }
 
+.xOverflowXScroll {
+    overflow-x: scroll;
+}
+
+.xOverflowYScroll {
+    overflow-y: scroll;
+}
+
 .xOverflowXHidden {
     overflow-x: hidden;
 }
