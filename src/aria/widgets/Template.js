@@ -31,12 +31,12 @@ Aria.classDefinition({
 
         if (cfg.width != -1) {
             // horizontal scrollbars
-            this._cssClassNames += " xOverflowXAuto";
+            this._cssClassNames += (cfg.xForceScrollbar? " xOverflowXScroll" : " xOverflowXAuto");
         }
 
         if (cfg.height != -1) {
             // vertical scrollbars
-            this._cssClassNames += " xOverflowYAuto";
+            this._cssClassNames += (cfg.yForceScrollbar? " xOverflowYScroll" : " xOverflowYAuto");
         }
 
         this._defaultMargin = 0;

@@ -28,7 +28,7 @@
 }
 
 .xLDI {
-	/* These default values can be overridden in the skin */
+    /* These default values can be overridden in the skin */
     background-color: #fff;
     {call opacity(80)/}
     width: 100%;
@@ -36,7 +36,7 @@
 }
 
 .xOverlay {
-	/* These default values can be overridden in the skin */
+    /* These default values can be overridden in the skin */
     background-color: #ddd;
     border: 1px solid black;
     {call opacity(40)/}
@@ -63,6 +63,14 @@
 
 .xOverflowYAuto {
     overflow-y: auto;
+}
+
+.xOverflowXScroll {
+    overflow-x: scroll;
+}
+
+.xOverflowYScroll {
+    overflow-y: scroll;
 }
 
 .xOverflowXHidden {
