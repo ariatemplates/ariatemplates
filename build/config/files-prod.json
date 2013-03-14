@@ -4,13 +4,11 @@
         "files": [
             "aria/DomEvent.js",
             "aria/core/log/*",
-            "aria/utils/overlay/*",
-            "aria/utils/sandbox/*",
-            "aria/utils/validators/*",
-            "aria/utils/filters/*",
-            "aria/utils/json/*",
-            "aria/utils/*",
-            "!aria/utils/FrameATLoaderHTML.html"
+            "aria/utils/**/*",
+            "!aria/utils/FrameATLoaderHTML.html",
+            "!aria/utils/environment/*",
+            "!aria/utils/dragdrop/*",
+            "!aria/utils/resize/*"
         ]
     },
     {
