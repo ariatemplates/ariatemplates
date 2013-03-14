@@ -20,6 +20,10 @@ Aria.classDefinition({
     $classpath : "test.aria.core.io.JSONPTest",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["test.aria.core.test.IOFilterSample"],
+    $constructor : function () {
+        this.$TestCase.constructor.call(this);
+        this.defaultTestTimeout = 10000;
+    },
     $prototype : {
         tearDown : function () {
             aria.core.IO.$unregisterListeners(this);
@@ -239,6 +243,7 @@ Aria.classDefinition({
                     },
                     scope : this,
                     onerror : function () {
+                        aria.core.IOFiltersMgr.removeFilter(filterParam);
                         this.fail("The request should not have failed.");
                     },
                     onerrorScope : this
@@ -289,6 +294,7 @@ Aria.classDefinition({
                     },
                     scope : this,
                     onerror : function () {
+                        aria.core.IOFiltersMgr.removeFilter(filterParam);
                         this.fail("The request should not have failed.");
                     },
                     onerrorScope : this
