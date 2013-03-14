@@ -1,0 +1,62 @@
+/*
+ * Copyright 2013 Amadeus s.a.s.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+{CSSLibrary {
+  $classpath: "aria.widgets.TextStyle"
+}}
+
+  {macro writeFontStyleInner(font)}
+     {if font.size}
+       font-size: ${font.size}px;
+     {/if}
+     {if font.family}
+       font-family: ${font.family};
+     {/if}
+  {/macro}
+
+  {macro writeAnchorsStyle(states, prefix)}
+    {set prefix = prefix || "" /}
+    ${prefix} a {
+      {call writeAnchorState(states.normal)/}
+    }
+    ${prefix} a:link {
+      {call writeAnchorState(states.link)/}
+    }
+    ${prefix} a:visited {
+      {call writeAnchorState(states.visited)/}
+    }
+    ${prefix} a:hover {
+      {call writeAnchorState(states.hover)/}
+    }
+    ${prefix} a:focus {
+      {call writeAnchorState(states.focus)/}
+    }
+  {/macro}
+
+  {macro writeAnchorState(state)}
+    {if state}
+      {if state.color}
+        color: ${state.color};
+      {/if}
+      {if state.text.decoration}
+        text-decoration: ${state.text.decoration};
+      {/if}
+      {if state.outline}
+        outline: ${state.outline};
+      {/if}
+    {/if}
+  {/macro}
+
+{/CSSLibrary}

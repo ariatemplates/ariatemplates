@@ -373,12 +373,9 @@ Aria.classDefinition({
             delete this.__invalidClasspaths[cssClasspath];
 
             var cssCtxt = aria.templates.CSSCtxtManager.getContext(cssClasspath, contextArgs);
-            if (cssClasspath == "aria.templates.GlobalStyle") {
-                // Give a prefix to the Global file in order to have higher priority
-                this.__getPrefix(cssClasspath);
-            }
-            if (cssClasspath == "aria.widgets.GlobalStyle") {
-                // Give a prefix to the Global file in order to have higher priority
+            // Give a prefix to the Global file in order to have higher priority
+            if (cssClasspath == "aria.templates.GlobalStyle" || cssClasspath == "aria.templates.LegacyGeneralStyle"
+                    || cssClasspath == "aria.widgets.GlobalStyle") {
                 this.__getPrefix(cssClasspath);
             }
             if (cssCtxt.doPrefixing()) {

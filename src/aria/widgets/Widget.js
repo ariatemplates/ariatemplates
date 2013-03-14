@@ -28,11 +28,7 @@
         $dependencies : ["aria.widgets.CfgBeans", "aria.utils.Json", "aria.utils.Dom", "aria.DomEvent",
                 "aria.utils.Delegate", "aria.widgets.AriaSkinInterface", "aria.utils.Type",
                 "aria.templates.RefreshManager"],
-        // BACKWARD-COMPATIBILITY-BEGIN
-        // The following line should be uncommented when removing the automatic load of this CSS from
-        // aria.templates.TemplateCtxt and aria.core.TplClassLoader:
-        // $css : ["aria.widgets.GlobalStyle"],
-        // BACKWARD-COMPATIBILITY-END
+        $css : ["aria.widgets.GlobalStyle"],
         $onload : function () {
             delegateManager = aria.utils.Delegate;
             jsonUtils = aria.utils.Json;

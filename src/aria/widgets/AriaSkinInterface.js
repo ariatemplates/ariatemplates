@@ -105,12 +105,28 @@ Aria.classDefinition({
          * normalization function before returning its result.
          */
         getGeneral : function () {
-            var general = aria.widgets.AriaSkin.skinObject.general;
+            return this._normalizeAndGetGeneral("general", "PageGeneralCfg");
+        },
+
+        /**
+         * Return widget - general skin properties. If those properties are not normalized yet, this function calls the
+         * normalization function before returning its result.
+         */
+        getWidgetGeneral : function () {
+            return this._normalizeAndGetGeneral("widgets", "WidgetGeneralCfg");
+        },
+
+        /**
+         * Helper function to retrieve (and normalize if needed) general or widget-general skin properties.
+         * @param {String} skinObjPropName
+         * @param {String} beanType
+         */
+        _normalizeAndGetGeneral : function (skinObjProp, beanType) {
+            var general = aria.widgets.AriaSkin.skinObject[skinObjProp];
             if (!general || !general['aria:skinNormalized']) {
-                var newValue = aria.widgets.AriaSkinNormalization.normalizeGeneral(general);
+                var newValue = aria.widgets.AriaSkinNormalization.normalizeGeneral(general, beanType);
                 if (general != newValue) {
-                    general = newValue;
-                    aria.widgets.AriaSkin.skinObject.general = newValue;
+                    aria.widgets.AriaSkin.skinObject[skinObjProp] = general = newValue;
                 }
             }
             return general;

@@ -149,7 +149,10 @@
             classes.push("aria.templates.ModuleCtrlFactory", moduleCtrl.classpath);
         }
 
-        var cssToReload = ['aria.templates.GlobalStyle', 'aria.widgets.GlobalStyle'];
+        var cssToReload = ['aria.templates.GlobalStyle'];
+        if (aria.widgets.AriaSkin) {
+            cssToReload.push('aria.templates.LegacyGeneralStyle');
+        }
         if (cfg.reload) {
             aria.templates.TemplateManager.unloadTemplate(cfg.classpath, cfg.reloadByPassCache);
             if (aria.templates.CSSMgr) {
