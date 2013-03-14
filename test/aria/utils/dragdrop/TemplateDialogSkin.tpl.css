@@ -1,0 +1,40 @@
+{CSSTemplate {
+  $classpath : "test.aria.utils.dragdrop.TemplateDialogSkin"
+}}
+
+  {macro main()}
+    #dialog-container {
+      position: absolute;
+      padding: .2em;
+      width: 300px;
+      height: 150px;
+      overflow: hidden;
+      border: 1px solid #DDD;
+      background-color: #eee;
+      top: 350px;
+      left: 350px;
+    }
+
+    #dialog-container #dialog-title {
+      padding: .4em 1em;
+      position: relative;
+      background-color: #F2A828;
+    }
+
+    #dialog-container #dialog-title-dialog-message {
+      color: white;
+    }
+
+    #dialog-message {
+      padding: 10px;
+    }
+  {/macro}
+
+{/CSSTemplate}
+
+
+
+
+
+
+
