@@ -67,6 +67,10 @@
             // Events
             this._expectedEventsList = null;
             this._eventIndexInList = 0;
+            /**
+             * List of events raised by registered object.
+             * @type {Array}
+             */
             this.evtLogs = [];
 
             aria.core.Log.clearAppenders();
@@ -291,7 +295,7 @@
             assertErrorInLogs : function (errorMsg, count) {
                 var logAppender = aria.core.Log.getAppenders()[0];
                 var logs = logAppender.getLogs(), errFound = false, newLogs = [];
-                if (errorMsg == null) {
+                if (!errorMsg) {
                     this.assertTrue(false, "assertErrorInLogs was called with a null error message.");
                 }
                 if (count && count > 0) {
@@ -386,104 +390,6 @@
                     name : this.ASSERT_FAILURE,
                     message : msg
                 };
-            },
-
-            /**
-             * Check if this test has any error
-             * @return {Boolean}
-             */
-            hasError : function () {
-                return this.getErrors().length > 0;
-            },
-
-            /**
-             * Retrieve all errors associated to this test. This will retrieve both execution errors AND failures See
-             * getExecutionErrors and getFailures
-             * @return {Array}
-             */
-            getErrors : function () {
-                return this._errors;
-            },
-
-            hasWarning : function () {
-                return false;
-            },
-
-            /**
-             * @return {Array} The array of errors resulting of a test execution error
-             */
-            getExecutionErrors : function () {
-                var executionErrors = [];
-                var errors = this.getErrors();
-                for (var i = 0, l = errors.length; i < l; i++) {
-                    var error = errors[i];
-                    if (error.type == this.ERROR_TYPES.ERROR) {
-                        executionErrors.push(error);
-                    }
-                }
-                return executionErrors;
-            },
-
-            /**
-             * @return {Array} The array of errors resulting of a test failure
-             */
-            getFailures : function () {
-                var failures = [];
-                var errors = this.getErrors();
-                for (var i = 0, l = errors.length; i < l; i++) {
-                    var error = errors[i];
-                    if (error.type == this.ERROR_TYPES.FAILURE) {
-                        failures.push(error);
-                    }
-                }
-                return failures;
-            },
-
-            /**
-             * Raise an error in the Test Context
-             * @param {Error} err the Error object caught through the catch statement
-             * @param {String} optMsg optional message to add to the error description
-             */
-            raiseError : function (err, optMsg) {
-                var msg = (err.description) ? err.description : err.message;
-                msg = '[' + msg + ']';
-                if (optMsg) {
-                    msg += " " + optMsg;
-                }
-
-                this._errors.push({
-                    type : this.ERROR_TYPES.ERROR,
-                    testMethod : this._currentTestName,
-                    description : msg
-                });
-
-                // note: no exception need to be thrown as we are already in an exception call
-                this.$raiseEvent({
-                    name : "error",
-                    testClass : this.$classpath,
-                    testState : this._currentTestName,
-                    exception : err,
-                    msg : msg
-                });
-            },
-
-            /**
-             * Raise a failure event, mostly triggered after an assert failed
-             * @param {String} msg optional message describing the failed assert
-             */
-            raiseFailure : function (msg) {
-                this._errors.push({
-                    type : this.ERROR_TYPES.FAILURE,
-                    testMethod : this._currentTestName,
-                    description : msg
-                });
-
-                this.$raiseEvent({
-                    name : "failure",
-                    testClass : this.$classpath,
-                    testState : this._currentTestName,
-                    description : msg
-                });
             },
 
             /**
@@ -649,8 +555,9 @@
                 var clsInfos = this._overriddenClasses[initialClass];
                 if (clsInfos == null) { // only save the previous class if it was not already overridden
                     var currentClass = Aria.nspace(initialClass);
-                    if (currentClass == null)
+                    if (currentClass == null) {
                         return; // invalid namespace
+                    }
                     var idx = initialClass.lastIndexOf('.');
                     if (idx > -1) {
                         clsInfos = {
