@@ -31,12 +31,15 @@
         $prototype : {
             setUp : function () {
                 this.userAgent = aria.core.Browser;
-                this.originalUserAgent = this.userAgent.ua;
+                this.originalBrowserProps = aria.utils.Json.copy(aria.core.Browser);
             },
             tearDown : function () {
-                this.userAgent.ua = this.originalUserAgent;
+                var browser = aria.core.Browser;
+                for (var propName in this.originalBrowserProps) {
+                    browser[propName] = this.originalBrowserProps[propName];
+                }
+                this.originalBrowserProps = null;
                 this.userAgent = null;
-                this.originalUserAgent = null;
             },
             testToUAParser : function () {
                 this.userAgents = [
