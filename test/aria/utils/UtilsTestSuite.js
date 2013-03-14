@@ -21,6 +21,7 @@ Aria.classDefinition({
 
         this.addTests("test.aria.utils.cssLoader.CSSLoader");
         this.addTests("test.aria.utils.dragdrop.DragDropBean");
+        this.addTests("test.aria.utils.css.AnimationsTestSuite");
         this.addTests("test.aria.utils.environment.EnvironmentTestSuite");
         this.addTests("test.aria.utils.json.JsonTestSuite");
         this.addTests("test.aria.utils.sandbox.DOMPropertiesTest");
@@ -28,6 +29,7 @@ Aria.classDefinition({
         this.addTests("test.aria.utils.validators.ValidatorsTestSuite");
 
         this.addTests("test.aria.utils.Array");
+        this.addTests("test.aria.utils.ClassList");
         this.addTests("test.aria.utils.Callback");
         this.addTests("test.aria.utils.Data");
         this.addTests("test.aria.utils.Date");
