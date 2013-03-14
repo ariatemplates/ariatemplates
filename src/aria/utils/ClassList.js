@@ -48,26 +48,17 @@ Aria.classDefinition({
 
         /**
          * Add the class name to the class attribute. Does nothing if the classname already exists.
-         * @param {String} className The class name to add
+         * @param {String | Array} className The class name or an array of class names to be added
          */
         add : function (className) {
-            if (!this.contains(className)) {
-                this.setClassName(this.getClassName() + " " + className);
-            }
+            this._replace(false, className);
         },
         /**
          * Remove the class name to the class attribute. Does nothing if the classname doesn't exist.
-         * @param {String} className The class name to remove
+         * @param {String | Array} className The class name or an array of class names to be removed
          */
         remove : function (className) {
-            var classes = this.getClassName().split(" ");
-            for (var i = 0, ii = classes.length; i < ii; i++) {
-                if (classes[i] == className) {
-                    classes.splice(i, 1);
-                    break;
-                }
-            }
-            this.setClassName(classes.join(" "));
+            this._replace(className, false);
         },
         /**
          * Add the classname to the class attribute if it doesn't exist, otherwise remove it.
@@ -95,6 +86,56 @@ Aria.classDefinition({
             return false;
         },
         /**
+         * Replaces a class with another class. If no oldClassName is present, the newClassName is simply added.
+         * @param {String | Array} oldClassName The class name or an array of class names to be replaced
+         * @param {String | Array} newClassName The class name or an array of class names that will be replacing the old
+         * class name
+         */
+        _replace : function (oldClassName, newClassName) {
+            var rem = [], add = [];
+
+            if (!!oldClassName) {
+                rem = (typeof oldClassName == "string") ? oldClassName.split(" ") : oldClassName;
+            }
+
+            if (!!newClassName) {
+                add = (typeof newClassName == "string") ? newClassName.split(" ") : newClassName;
+            }
+
+            var classString = this.getClassName(), found = false;
+            var classes = !!classString ? classString.split(" ") : [];
+
+            // Remove oldClassNames
+            for (var j = classes.length - 1; j >= 0; j -= 1) {
+                if (!classes[j]) {
+                    classes.splice(j, 1);
+                    continue;
+                }
+
+                // Remove duplicates
+                for (var d = add.length - 1; d >= 0; d -= 1) {
+                    if (classes[j] == add[d]) {
+                        // Remove it from classes as I'm going to add it again
+                        classes.splice(j, 1);
+                    }
+                }
+
+                for (var k = rem.length - 1; k >= 0; k -= 1) {
+                    if (classes[j] == rem[k]) {
+                        classes.splice(j, 1);
+                        found = true; // Iterate for multiple classes
+                    }
+                }
+            }
+
+            if (!found && add.length === 0) {
+                return;
+            }
+
+            classes.push.apply(classes, add);
+            this.setClassName(classes.join(" "));
+        },
+        /**
          * Set the class attribute
          * @param {String} className The classname property to set. This string will replace the existing class
          * attribute.
@@ -105,6 +146,5 @@ Aria.classDefinition({
          * @return {String} returns the classname property
          */
         getClassName : function () {}
-
     }
 });

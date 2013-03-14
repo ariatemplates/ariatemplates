@@ -1,0 +1,373 @@
+/*
+ * Copyright 2012 Amadeus s.a.s.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+{CSSTemplate {
+  $classpath : "aria.utils.css.Transitions",
+  $prefix : false
+}}
+
+  {macro main ()}
+    .xanimation-element {
+      display: none;
+      {call generatePrefix("backface-visibility", "hidden") /}
+    }
+
+    .xanimation-element-active {
+      display: block;
+      overflow: visible;
+    }
+
+    .xanimation-element {
+      outline: none;
+    }
+
+    .xviewport-xanimation,
+    .xviewport-xanimation .xanimation-element {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+    }
+
+    .xin, .xinMix, .xin3d {
+      {call generatePrefix("animation-timing-function", "ease-out") /}
+      {call generatePrefix("animation-duration", "350ms") /}
+    }
+    .xout, .xoutMix, .xout3d {
+      {call generatePrefix("animation-timing-function", "ease-in") /}
+      {call generatePrefix("animation-duration", "225ms") /}
+    }
+
+    /* fadein & fadeout */
+    {call generateKeyFrames("fadein", "opacity: 0;", "opacity: 1;") /}
+    {call generateKeyFrames("fadeout", "opacity: 1;", "opacity: 0;") /}
+
+    .xfade.xout, .xfade.xoutMix, .xfade.xout3d {
+      opacity: 0;
+      {call generatePrefix("animation-duration", "125ms") /}
+      {call generatePrefix("animation-name", "fadeout") /}
+    }
+    .xfade.xin, .xfade.xinMix, .xfade.xin3d {
+      opacity: 1;
+      {call generatePrefix("animation-duration", "225ms") /}
+      {call generatePrefix("animation-name", "fadein") /}
+    }
+
+    /* pop in & pop out */
+    .xpop {
+      {call generatePrefix("transform-origin", "50% 50%") /}
+    }
+    .xpop.xin, .xpop.xinMix {
+      {call generatePrefix("transform", "scale(1)") /}
+      opacity: 1;
+      {call generatePrefix("animation-name", "popin") /}
+      {call generatePrefix("animation-duration", "350ms") /}
+    }
+    .xpop.xin3d {
+      {call generatePrefix("transform", "scale3d(1,1,1)") /}
+      opacity: 1;
+      {call generatePrefix("animation-name", "popin3d") /}
+      {call generatePrefix("animation-duration", "350ms") /}
+    }
+    .xpop.xout, .xpop.xoutMix, .xpop.xout3d {
+      {call generatePrefix("animation-name", "fadeout") /}
+      opacity: 0;
+      {call generatePrefix("animation-duration", "100ms") /}
+    }
+    .xpop.xin.xreverse, .xpop.xinMix.xreverse, .xpop.xin3d.xreverse {
+      {call generatePrefix("animation-name", "fadein") /}
+    }
+    .xpop.xout.xreverse, .xpop.xoutMix.xreverse {
+      {call generatePrefix("transform", "scale(.8)") /}
+      {call generatePrefix("animation-name", "popout") /}
+    }
+    .xpop.xout3d.xreverse {
+      {call generatePrefix("transform", "scale3d(.8, .8, .8)") /}
+      {call generatePrefix("animation-name", "popout3d") /}
+    }
+
+    {call generateKeyFrames("popin", "transform: scale(.8);opacity: 0;", "transform: scale(1);opacity: 1;") /}
+    {call generateKeyFrames("popout", "transform: scale(1);opacity: 1;", "transform: scale(.8);opacity: 0;") /}
+
+    {call generateKeyFrames("popin3d", "transform: scale3d(.8, .8, .8);opacity: 0;", "transform: scale3d(1, 1, 1);opacity: 1;") /}
+    {call generateKeyFrames("popout3d", "transform: scale3d(1, 1, 1);opacity: 1;", "transform: scale3d(.8, .8, .8);opacity: 0;") /}
+
+    /* slide in & slide out */
+    {call generateKeyFrames("slideinfromright", "transform: translateX(100%);", "transform: translateX(0);") /}
+    {call generateKeyFrames("slideinfromleft", "transform: translateX(-100%);", "transform: translateX(0);") /}
+    {call generateKeyFrames("slideouttoleft", "transform: translateX(0);", "transform: translateX(-100%);") /}
+    {call generateKeyFrames("slideouttoright", "transform: translateX(0);", "transform: translateX(100%);") /}
+
+    {call generateKeyFrames("slideinfromrightmix", "transform: translateZ(0) translateX(100%);", "transform: translateZ(0) translateX(0);") /}
+    {call generateKeyFrames("slideinfromleftmix", "transform: translateZ(0) translateX(-100%);", "transform: translateZ(0) translateX(0);") /}
+    {call generateKeyFrames("slideouttoleftmix", "transform: translateZ(0) translateX(0);", "transform: translateZ(0) translateX(-100%);") /}
+    {call generateKeyFrames("slideouttorightmix", "transform: translateZ(0) translateX(0);", "transform: translateZ(0) translateX(100%);") /}
+
+    {call generateKeyFrames("slideinfromright3d", "transform: translate3d(100%, 0, 0);", "transform: translate3d(0, 0 , 0);") /}
+    {call generateKeyFrames("slideinfromleft3d", "transform: translate3d(-100%, 0, 0);", "transform: translate3d(0, 0 , 0);") /}
+    {call generateKeyFrames("slideouttoleft3d", "transform: translate3d(0, 0 , 0);", "transform: translate3d(-100%, 0, 0);") /}
+    {call generateKeyFrames("slideouttoright3d", "transform: translate3d(0, 0 , 0);", "transform: translate3d(100%, 0, 0);") /}
+
+    .xslide.xout, .xslide.xin {
+      {call generatePrefix("animation-timing-function", "ease-out") /}
+      {call generatePrefix("animation-duration", "350ms") /}
+    }
+    .xslide.xout {
+      {call generatePrefix("transform", "translateX(-100%)") /}
+      {call generatePrefix("animation-name", "slideouttoleft") /}
+    }
+    .xslide.xoutMix {
+      {call generatePrefix("transform", "translateZ(0) translateX(-100%)") /}
+      {call generatePrefix("animation-name", "slideouttoleftmix") /}
+    }
+    .xslide.xout3d {
+      {call generatePrefix("transform", "translate3d(-100%, 0, 0)") /}
+      {call generatePrefix("animation-name", "slideouttoleft3d") /}
+    }
+    .xslide.xin {
+      {call generatePrefix("transform", "translateX(0)") /}
+      {call generatePrefix("animation-name", "slideinfromright") /}
+    }
+    .xslide.xinMix {
+      {call generatePrefix("transform", "translateZ(0) translateX(0)") /}
+      {call generatePrefix("animation-name", "slideinfromrightmix") /}
+    }
+    .xslide.xin3d {
+      {call generatePrefix("transform", "translate3d(0, 0, 0)") /}
+      {call generatePrefix("animation-name", "slideinfromright3d") /}
+    }
+    .xslide.xout.xreverse {
+      {call generatePrefix("transform", "translateX(100%)") /}
+      {call generatePrefix("animation-name", "slideouttoright") /}
+    }
+    .xslide.xoutMix.xreverse {
+      {call generatePrefix("transform", "translateZ(0) translateX(100%)") /}
+      {call generatePrefix("animation-name", "slideouttorightmix") /}
+    }
+    .xslide.xout3d.xreverse {
+      {call generatePrefix("transform", "translate3d(100%, 0, 0)") /}
+      {call generatePrefix("animation-name", "slideouttoright3d") /}
+    }
+    .xslide.xin.xreverse {
+      {call generatePrefix("transform", "translateX(0)") /}
+      {call generatePrefix("animation-name", "slideinfromleft") /}
+    }
+    .xslide.xinMix.xreverse {
+      {call generatePrefix("transform", "translateZ(0) translateX(0)") /}
+      {call generatePrefix("animation-name", "slideinfromleftmix") /}
+    }
+    .xslide.xin3d.xreverse {
+      {call generatePrefix("transform", "translate3d(0, 0, 0)") /}
+      {call generatePrefix("animation-name", "slideinfromleft3d") /}
+    }
+    /* slide down */
+    .xslidedown.xout, .xslidedown.xoutMix, .xslidedown.xout3d {
+      {call generatePrefix("animation-name", "fadeout") /}
+      {call generatePrefix("animation-duration", "100ms") /}
+    }
+    .xslidedown.xin {
+      {call generatePrefix("transform", "translateY(0)") /}
+      {call generatePrefix("animation-name", "slideinfromtop") /}
+      {call generatePrefix("animation-duration", "250ms") /}
+    }
+    .xslidedown.xinMix {
+      {call generatePrefix("transform", "translateZ(0) translateY(0)") /}
+      {call generatePrefix("animation-name", "slideinfromtopmix") /}
+      {call generatePrefix("animation-duration", "250ms") /}
+    }
+    .xslidedown.xin3d {
+      {call generatePrefix("transform", "translate3d(0, 0, 0)") /}
+      {call generatePrefix("animation-name", "slideinfromtop3d") /}
+      {call generatePrefix("animation-duration", "250ms") /}
+    }
+    .xslidedown.xin.xreverse, .xslidedown.xinMix.xreverse, .xslidedown.xin3d.xreverse {
+      {call generatePrefix("animation-name", "fadein") /}
+      {call generatePrefix("animation-duration", "150ms") /}
+    }
+    .xslidedown.xout.xreverse {
+      {call generatePrefix("transform", "translateY(-100%)") /}
+      {call generatePrefix("animation-name", "slideouttotop") /}
+      {call generatePrefix("animation-duration", "200ms") /}
+    }
+    .xslidedown.xoutMix.xreverse {
+      {call generatePrefix("transform", "translateZ(0) translateY(-100%)") /}
+      {call generatePrefix("animation-name", "slideouttotopmix") /}
+      {call generatePrefix("animation-duration", "200ms") /}
+    }
+    .xslidedown.xout3d.xreverse {
+      {call generatePrefix("transform", "translate3d(0, -100%, 0)") /}
+      {call generatePrefix("animation-name", "slideouttotop3d") /}
+      {call generatePrefix("animation-duration", "200ms") /}
+    }
+
+    {call generateKeyFrames("slideinfromtop", "transform: translateY(-100%);", "transform: translateY(0);") /}
+    {call generateKeyFrames("slideouttotop", "transform: translateY(0);", "transform: translateY(-100%);") /}
+
+    {call generateKeyFrames("slideinfromtopmix", "transform: translateZ(0) translateY(-100%);", "transform: translateZ(0) translateY(0);") /}
+    {call generateKeyFrames("slideouttotopmix", "transform: translateZ(0) translateY(0);", "transform: translateZ(0) translateY(-100%);") /}
+
+    {call generateKeyFrames("slideinfromtop3d", "transform: translate3d(0, -100%, 0);", "transform: translate3d(0, 0, 0);") /}
+    {call generateKeyFrames("slideouttotop3d", "transform: translate3d(0, 0, 0);", "transform: translate3d(0, -100%, 0);") /}
+
+    /* slide up */
+    .xslideup.xout, .xslide.xoutMix, .xslideup.xout3d {
+      {call generatePrefix("animation-name", "fadeout") /}
+      {call generatePrefix("animation-duration", "100ms") /}
+    }
+    .xslideup.xin {
+      {call generatePrefix("transform", "translateY(0)") /}
+      {call generatePrefix("animation-name", "slideinfrombottom") /}
+      {call generatePrefix("animation-duration", "250ms") /}
+    }
+    .xslideup.xinMix {
+      {call generatePrefix("transform", "translateZ(0) translateY(0)") /}
+      {call generatePrefix("animation-name", "slideinfrombottommix") /}
+      {call generatePrefix("animation-duration", "250ms") /}
+    }
+    .xslideup.xin3d {
+      {call generatePrefix("transform", "translate3d(0, 0, 0)") /}
+      {call generatePrefix("animation-name", "slideinfrombottom3d") /}
+      {call generatePrefix("animation-duration", "250ms") /}
+    }
+    .xslideup.xin.xreverse, .xslideup.xinMix.xreverse, .xslideup.xin3d.xreverse {
+      {call generatePrefix("animation-name", "fadein") /}
+      {call generatePrefix("animation-duration", "150ms") /}
+    }
+    .xslideup.xout.xreverse {
+      {call generatePrefix("transform", "translateY(100%)") /}
+      {call generatePrefix("animation-name", "slideouttobottom") /}
+      {call generatePrefix("animation-duration", "250ms") /}
+    }
+    .xslideup.xoutMix.xreverse {
+      {call generatePrefix("transform", "translateZ(0) translateY(100%)") /}
+      {call generatePrefix("animation-name", "slideouttobottommix") /}
+      {call generatePrefix("animation-duration", "250ms") /}
+    }
+    .xslideup.xout3d.xreverse {
+      {call generatePrefix("transform", "translate3d(0, 100%, 0)") /}
+      {call generatePrefix("animation-name", "slideouttobottom3d") /}
+      {call generatePrefix("animation-duration", "250ms") /}
+    }
+
+    {call generateKeyFrames("slideinfrombottom", "transform: translateY(100%);", "transform: translateY(0);") /}
+    {call generateKeyFrames("slideouttobottom", "transform: translateY(0);", "transform: translateY(100%);") /}
+
+    {call generateKeyFrames("slideinfrombottommix", "transform: translateZ(0) translateY(100%);", "transform: translateZ(0) translateY(0);") /}
+    {call generateKeyFrames("slideouttobottommix", "transform: translateZ(0) translateY(0);", "transform: translateZ(0) translateY(100%);") /}
+
+    {call generateKeyFrames("slideinfrombottom3d", "transform: translate3d(0, 100%, 0);", "transform: translate3d(0, 0, 0);") /}
+    {call generateKeyFrames("slideouttobottom3d", "transform: translate3d(0, 0, 0);", "transform: translate3d(0, 100%, 0);") /}
+
+    .xviewport-xflip {
+      {call generatePrefix("perspective", "1000") /}
+      position: absolute;
+    }
+
+    .xflip {
+      {call generatePrefix("backface-visibility", "hidden") /}
+      {call generatePrefix("transform", "translateX(0)") /}
+    }
+    .xflip.xout {
+      {call generatePrefix("transform", "rotateY(-90deg) scale(.9)") /}
+      {call generatePrefix("animation-name", "flipouttoleft") /}
+      {call generatePrefix("animation-duration", "175ms") /}
+    }
+    .xflip.xoutMix {
+      {call generatePrefix("transform", "rotateZ(0) rotateY(-90deg) scale(.9)") /}
+      {call generatePrefix("animation-name", "flipouttoleftmix") /}
+      {call generatePrefix("animation-duration", "175ms") /}
+    }
+    .xflip.xout3d {
+      {call generatePrefix("transform", "rotate3d(0, 1, 0, -90deg) scale3d(.9, .9, .9)") /}
+      {call generatePrefix("animation-name", "flipouttoleft3d") /}
+      {call generatePrefix("animation-duration", "175ms") /}
+    }
+    .xflip.xin {
+      {call generatePrefix("animation-name", "flipintoright") /}
+      {call generatePrefix("animation-duration", "225ms") /}
+    }
+    .xflip.xinMix {
+      {call generatePrefix("animation-name", "flipintorightmix") /}
+      {call generatePrefix("animation-duration", "225ms") /}
+    }
+    .xflip.xin3d {
+      {call generatePrefix("animation-name", "flipintoright3d") /}
+      {call generatePrefix("animation-duration", "225ms") /}
+    }
+    .xflip.xout.xreverse {
+      {call generatePrefix("transform", "rotateY(90deg) scale(.9)") /}
+      {call generatePrefix("animation-name", "flipouttoright") /}
+    }
+    .xflip.xoutMix.xreverse {
+      {call generatePrefix("transform", "rotateZ(0) rotateY(90deg) scale(.9)") /}
+      {call generatePrefix("animation-name", "flipouttorightmix") /}
+    }
+    .xflip.xout3d.xreverse {
+      {call generatePrefix("transform", "rotate3d(0, 1, 0, 90deg) scale3d(.9, .9, .9)") /}
+      {call generatePrefix("animation-name", "flipouttoright3d") /}
+    }
+    .xflip.xin.xreverse {
+      {call generatePrefix("animation-name", "flipintoleft") /}
+    }
+    .xflip.xinMix.xreverse {
+      {call generatePrefix("animation-name", "flipintoleftmix") /}
+    }
+    .xflip.xin3d.xreverse {
+      {call generatePrefix("animation-name", "flipintoleft3d") /}
+    }
+
+    {call generateKeyFrames("flipouttoleft", "transform: rotateY(0);", "transform: rotateY(-90deg) scale(.9);") /}
+    {call generateKeyFrames("flipouttoright", "transform: rotateY(0);", "transform: rotateY(90deg) scale(.9);") /}
+    {call generateKeyFrames("flipintoleft", "transform: rotateY(-90deg) scale(.9);", "transform: rotateY(0);") /}
+    {call generateKeyFrames("flipintoright", "transform: rotateY(90deg) scale(.9);", "transform: rotateY(0);") /}
+
+    {call generateKeyFrames("flipouttoleftmix", "transform: rotateZ(0) rotateY(0);", "transform: rotateZ(0) rotateY(-90deg) scale(.9);") /}
+    {call generateKeyFrames("flipouttorightmix", "transform: rotateZ(0) rotateY(0);", "transform: rotateZ(0) rotateY(90deg) scale(.9);") /}
+    {call generateKeyFrames("flipintoleftmix", "transform: rotateZ(0) rotateY(-90deg) scale(.9);", "transform: rotateZ(0) rotateY(0);") /}
+    {call generateKeyFrames("flipintorightmix", "transform: rotateZ(0) rotateY(90deg) scale(.9);", "transform: rotateZ(0) rotateY(0);") /}
+
+    {call generateKeyFrames("flipouttoleft3d", "transform: rotate3d(0, 0, 0, 0);", "transform: rotate3d(0, 1, 0, -90deg) scale(.9, .9, .9);") /}
+    {call generateKeyFrames("flipouttoright3d", "transform: rotate3d(0, 0, 0, 0);", "transform: rotate3d(0, 1, 0, 90deg) scale(.9, .9, .9);") /}
+    {call generateKeyFrames("flipintoleft3d", "transform: rotate3d(0, 1, 0, -90deg) scale(.9, .9, .9);", "transform: rotate3d(0, 0, 0, 0);") /}
+    {call generateKeyFrames("flipintoright3d", "transform: rotate3d(0, 1, 0, 90deg) scale(.9, .9, .9);", "transform: rotate3d(0, 0, 0, 0);") /}
+  {/macro}
+
+  {macro generatePrefix(property, value)}
+    {var prefixes = ["-webkit-", "-moz-", "-ms-", "-o-"] /}
+
+    {for var i = 0; i < prefixes.length; i += 1}
+      ${prefixes[i]}${property}: ${value};
+    {/for}
+    ${property}: ${value};
+  {/macro}
+
+  {macro generateKeyFrames(name, from, to)}
+    {var prefixes = ["-webkit-", "-moz-", "-ms-", "-o-"] /}
+
+    {for var i = 0; i < prefixes.length; i += 1}
+      @${prefixes[i]}keyframes ${name} \{
+        from \{ ${prefixes[i]}${from} \}
+        to \{ ${prefixes[i]}${to} \}
+      \}
+    {/for}
+    @keyframes ${name} \{
+      from \{ ${from} \}
+      to \{ ${to} \}
+    \}
+  {/macro}
+
+{/CSSTemplate}
