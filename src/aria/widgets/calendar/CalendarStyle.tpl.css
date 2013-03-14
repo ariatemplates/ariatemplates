@@ -25,7 +25,9 @@
         {var skinClass=info.skinClass/} 
         {var general=aria.widgets.AriaSkinInterface.getGeneral()/}
         .xCalendar_${skinClassName}_general {
-            background-color:${skinClass.generalBackgroundColor|default:general.colors.bkg};
+            {if skinClass.generalBackgroundColor}
+                background-color:${skinClass.generalBackgroundColor};
+            {/if}
         }
         .xCalendar_${skinClassName}_label {
             font-weight:bold;
@@ -34,7 +36,7 @@
         .xCalendar_${skinClassName}_general a:hover {
             text-decoration: underline;
         }
-        .xCalendar_${skinClassName}_month {
+        table.xCalendar_${skinClassName}_month {
             font-size: 10px;
             text-align: center;
             border: 0px none;
@@ -53,7 +55,9 @@
             padding-bottom:${skinClass.monthTitlePaddingBottom};
         }
         .xCalendar_${skinClassName}_day {
-            border:1px solid ${skinClass.dayBorderColor|default:general.colors.bkg};
+            {if skinClass.dayBorderColor}
+                border:1px solid ${skinClass.dayBorderColor};
+            {/if}
             width: 13px;
             background-color:${skinClass.dayBackgroundColor};
             color:${skinClass.dayColor};
@@ -69,7 +73,7 @@
             cursor: pointer;
         }
         .xCalendar_${skinClassName}_unselectable {
-            border: 1px solid ${skinClass.unselectableBorderColor|default:skinClass.dayBorderColor|default:general.colors.bkg};
+            border: 1px solid ${skinClass.unselectableBorderColor|default:skinClass.dayBorderColor};
             background-color:${skinClass.unselectableBackgroundColor|default:skinClass.dayBackgroundColor};
             color:${skinClass.unselectableColor|default:general.colors.disabled};
         }

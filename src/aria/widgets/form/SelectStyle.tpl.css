@@ -15,21 +15,13 @@
 
 {CSSTemplate {
     $classpath : "aria.widgets.form.SelectStyle",
-    $extends : "aria.widgets.WidgetStyle",
-    $dependencies: ["aria.widgets.AriaSkinInterface"]
+    $extends : "aria.widgets.WidgetStyle"
 }}
     {var skinnableClassName="Select"/}
     {var useFrame=true/}
     
     {macro main()}
-        {var general=aria.widgets.AriaSkinInterface.getGeneral()/}
         .xSelect {
-        {if general.font.size}
-            font-size: ${general.font.size}px;
-        {/if}
-        {if general.font.family}
-            font-family: ${general.font.family};
-        {/if}
             display:inline-block;
             white-space:nowrap;
             overflow:hidden;

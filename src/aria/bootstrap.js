@@ -123,10 +123,7 @@
             'aria/core/environment/EnvironmentBase.js', 'aria/core/environment/Environment.js',
 
             // resource manager
-            'aria/core/ResMgr.js', 'aria/utils/Profiling.js',
-
-            // Skin
-            'aria/css/atskin.js'];
+            'aria/core/ResMgr.js', 'aria/utils/Profiling.js'];
 
     for (var i = 0; coreScripts.length > i; i++) {
         loadScript(coreScripts[i]);

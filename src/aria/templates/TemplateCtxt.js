@@ -169,8 +169,11 @@
                 aria.templates.CSSMgr.unloadDependencies(this);
                 if (this._globalCssDepsLoaded) {
                     // PTR 05086835: only unload the global CSS if it was loaded by this instance
-                    aria.templates.CSSMgr.unloadWidgetDependencies('aria.templates.Template', [
-                            'aria.templates.GlobalStyle', /* BACKWARD-COMPATIBILITY-BEGIN */'aria.widgets.GlobalStyle' /* BACKWARD-COMPATIBILITY-END */]);
+                    var deps = ['aria.templates.GlobalStyle'];
+                    if (aria.widgets.AriaSkin) {
+                        deps.push('aria.templates.LegacyGeneralStyle');
+                    }
+                    aria.templates.CSSMgr.unloadWidgetDependencies('aria.templates.Template', deps);
                     this._globalCssDepsLoaded = false;
                 }
                 this._cssClasses = null;
@@ -1703,9 +1706,11 @@
                 if (!classes) {
                     if (this._cfg.isRootTemplate) {
                         // PTR 05086835: load the global CSS here, and remember that it was loaded
-                        aria.templates.CSSMgr.loadWidgetDependencies('aria.templates.Template', [
-                                'aria.templates.GlobalStyle', /* BACKWARD-COMPATIBILITY-BEGIN */
-                                'aria.widgets.GlobalStyle' /* BACKWARD-COMPATIBILITY-END */]);
+                        var deps = ['aria.templates.GlobalStyle'];
+                        if (aria.widgets.AriaSkin) {
+                            deps.push('aria.templates.LegacyGeneralStyle');
+                        }
+                        aria.templates.CSSMgr.loadWidgetDependencies('aria.templates.Template', deps);
                         this._globalCssDepsLoaded = true;
                     }
                     // Load the CSS dependencies, the style should be added before the html

@@ -5,6 +5,8 @@ resources:
   - 'test'
 tests:
  aria-templates:
+  extraScripts:
+    - /aria/css/atskin.js
   classpaths:
    includes:
     - test.MainTestSuite

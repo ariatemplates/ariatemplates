@@ -214,11 +214,14 @@ Aria.classDefinition({
                 return;
             }
             for (var widget in skinObject) {
-                if (skinObject.hasOwnProperty(widget) && widget != "general") {
+                if (skinObject.hasOwnProperty(widget) && widget != "general" && widget != "widgets") {
                     skinObject[widget] = this.normalizeWidget(widget, skinObject[widget]);
                 }
             }
-            skinObject.general = this.normalizeGeneral(skinObject.general);
+            skinObject.general = this.normalizeGeneral(skinObject.general, "PageGeneralCfg");
+            if (skinObject.widgets) {
+                skinObject.widgets = this.normalizeGeneral(skinObject.widgets, "WidgetGeneralCfg");
+            }
             skinObject['aria:skinNormalized'] = true;
             return skinObject;
         },
@@ -521,12 +524,16 @@ Aria.classDefinition({
 
         /**
          * Normalizes the given general skin properties and returns it.
-         * @param {aria.widgets.AriaSkinBeans.GeneralCfg} general
+         * @param {aria.widgets.AriaSkinBeans.WidgetsGeneralCfg|PageGeneralCfg} general
+         * @param {String} beanType
          */
-        normalizeGeneral : function (general) {
+        normalizeGeneral : function (general, beanType) {
+            if (!general) {
+                general = {};
+            }
             var param = {
                 json : general,
-                beanName : "aria.widgets.AriaSkinBeans.GeneralCfg"
+                beanName : "aria.widgets.AriaSkinBeans." + beanType
             };
             var normalizationResults = this._normalize(param);
             if (!normalizationResults.result) {

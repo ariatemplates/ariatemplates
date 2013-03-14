@@ -202,7 +202,9 @@ Aria.classDefinition({
         __disposeLibs : function (libs) {
             for (var i = 0; i < libs.length; i++) {
                 var lib = libs[i];
-                aria.templates.ITemplate.prototype.$destructor.call(lib._tpl);
+                if (aria.templates.ITemplate) {
+                    aria.templates.ITemplate.prototype.$destructor.call(lib._tpl);
+                }
                 lib.$dispose();
             }
         }

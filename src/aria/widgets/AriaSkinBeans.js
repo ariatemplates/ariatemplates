@@ -42,8 +42,55 @@ Aria.beanDefinitions({
             $minValue : 0,
             $maxValue : 100
         },
-        "GeneralCfg" : {
+        "WidgetGeneralCfg" : {
             $type : "Object",
+            $description : "",
+            $properties : {
+                "font" : {
+                    $type : "Object",
+                    $description : "",
+                    $properties : {
+                        "size" : {
+                            $type : "Pixels",
+                            $description : "Font size inside the widgets (in pixels)."
+                        },
+                        "family" : {
+                            $type : "json:String",
+                            $description : "Font family inside the widgets."
+                        }
+                    }
+                },
+                "anchor" : {
+                    $type : "Object",
+                    $description : "Settings for anchors inside widgets.",
+                    $properties : {
+                        "states" : {
+                            $type : "StatesSet",
+                            $description : "",
+                            $properties : {
+                                "normal" : {
+                                    $type : "AnchorState"
+                                },
+                                "link" : {
+                                    $type : "AnchorState"
+                                },
+                                "visited" : {
+                                    $type : "AnchorState"
+                                },
+                                "hover" : {
+                                    $type : "AnchorState"
+                                },
+                                "focus" : {
+                                    $type : "AnchorState"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "PageGeneralCfg" : {
+            $type : "WidgetGeneralCfg",
             $description : "",
             $properties : {
                 "imagesRoot" : {
@@ -51,28 +98,10 @@ Aria.beanDefinitions({
                     $description : "Root path for skin images (relative to Aria.rootFolderPath). It is supposed to end with a slash.",
                     $default : "css/"
                 },
-                "font" : {
-                    $type : "Object",
-                    $description : "",
-                    $properties : {
-                        "size" : {
-                            $type : "Pixels",
-                            $description : "[Deprecated, please use a CSS file directly] General font size for the application (in pixels)."
-                        },
-                        "family" : {
-                            $type : "json:String",
-                            $description : "[Deprecated, please use a CSS file directly] General font family for the application."
-                        }
-                    }
-                },
                 "colors" : {
                     $type : "Object",
                     $description : "General color settings for your application",
                     $properties : {
-                        "bkg" : {
-                            $type : "Color",
-                            $description : "[Deprecated, please use a CSS file directly] General background color of the application."
-                        },
                         "disabled" : {
                             $type : "Color",
                             // used in aria.widgets.calendar.CalendarStyle
@@ -129,33 +158,6 @@ Aria.beanDefinitions({
                             $type : "Opacity",
                             $description : "",
                             $default : 40
-                        }
-                    }
-                },
-                "anchor" : {
-                    $type : "Object",
-                    $description : "[Deprecated, please use a CSS file directly] General settings for anchors.",
-                    $properties : {
-                        "states" : {
-                            $type : "StatesSet",
-                            $description : "",
-                            $properties : {
-                                "normal" : {
-                                    $type : "AnchorState"
-                                },
-                                "link" : {
-                                    $type : "AnchorState"
-                                },
-                                "visited" : {
-                                    $type : "AnchorState"
-                                },
-                                "hover" : {
-                                    $type : "AnchorState"
-                                },
-                                "focus" : {
-                                    $type : "AnchorState"
-                                }
-                            }
                         }
                     }
                 },
