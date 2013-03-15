@@ -33,5 +33,6 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.form.autocomplete.issue315.OpenDropDownFromButtonTest");
         this.addTests("test.aria.widgets.form.datepicker.DatePickerTestSuite");
         this.addTests("test.aria.widgets.form.datefield.DateFieldTestSuite");
+        this.addTests("test.aria.widgets.form.numberfield.issue391.Numberfield");
     }
 });

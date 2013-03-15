@@ -31,6 +31,9 @@ Aria.classDefinition({
         if (cfg.pattern) {
             controller.setPattern(cfg.pattern);
         }
+        if (cfg.entryPattern) {
+            controller.setEntryPattern(cfg.entryPattern);
+        }
         this.$TextInput.constructor.call(this, cfg, ctxt, lineNumber, controller);
     }
 });

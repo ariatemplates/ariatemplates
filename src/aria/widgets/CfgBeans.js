@@ -537,7 +537,13 @@ Aria.beanDefinitions({
                     $type : "environmentBase:FormatTypes",
                     $description : "Formatting pattern used to format number fields",
                     $default : ""
+                },
+                "entryPattern" : {
+                    $type : "json:RegExp",
+                    $description : "Acceptable regex entry pattern for this field",
+                    $default : null
                 }
+
             }
         },
         "DropDownTextInputCfg" : {
