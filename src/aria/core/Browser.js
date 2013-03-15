@@ -263,6 +263,12 @@ Aria.classDefinition({
         this.isS60 = false;
 
         /**
+         * True if browser type is Phantomjs
+         * @type Boolean
+         */
+        this.isPhantomJS = false;
+
+        /**
          * True if browser type is S60
          * @type Boolean
          */
@@ -354,6 +360,9 @@ Aria.classDefinition({
             } else if (ua.indexOf('chrome') > -1) {
                 this.isChrome = true;
                 this.name = "Chrome";
+            } else if (ua.indexOf('phantomjs') > -1) {
+                this.isPhantomJS = true;
+                this.name = "PhantomJS";
             } else if (ua.indexOf('webkit') > -1) {
                 this.isSafari = true;
                 this.name = "Safari";
@@ -367,8 +376,9 @@ Aria.classDefinition({
                 }
             }
 
+
             // common group for webkit-based browsers
-            this.isWebkit = this.isSafari || this.isChrome;
+            this.isWebkit = this.isSafari || this.isChrome || this.isPhantomJS;
 
             if (ua.indexOf("windows") != -1 || ua.indexOf("win32") != -1) {
                 this.isWindows = true;
@@ -391,6 +401,10 @@ Aria.classDefinition({
                 }
             } else if (this.isChrome) {
                 if (/chrome[\/\s]((?:\d+\.?)+)/.test(ua)) {
+                    this.version = RegExp.$1;
+                }
+            } else if (this.isPhantomJS) {
+                if (/phantomjs[\/\s]((?:\d+\.?)+)/.test(ua)) {
                     this.version = RegExp.$1;
                 }
             } else if (this.isOpera) {
