@@ -213,7 +213,7 @@
                 // the event fires;
 
                 var wrappedCallback;
-                if (event != "mousemove") {
+                if (event != "mousemove" || !aria.core.Browser.isWebkit) {
                     wrappedCallback = function (e) {
                         return handlerCBInstance.call(aria.utils.Event.getEvent(e, element));
                     };
@@ -227,6 +227,9 @@
 
                     var mousePosition = null;
                     wrappedCallback = function (e) {
+
+                        e = aria.utils.Event.getEvent(e, element);
+
                         var pageX = e.pageX;
                         var pageY = e.pageY;
 
@@ -239,7 +242,7 @@
                             y : pageY
                         };
 
-                        return handlerCBInstance.call(aria.utils.Event.getEvent(e, element));
+                        return handlerCBInstance.call(e);
                     };
                 }
 
