@@ -44,6 +44,8 @@ Aria.classDefinition({
             this._add("test/aria/utils/cssLoader/cssOne.css", {
                 fn : this._afterFirstAdd,
                 scope : this
+            }, null, null, {
+                value : "355px"
             });
         },
 
@@ -89,6 +91,8 @@ Aria.classDefinition({
             this._add(["test/aria/utils/cssLoader/cssOne.css", "test/aria/utils/cssLoader/cssTwo.css"], {
                 fn : this._afterThirdAdd,
                 scope : this
+            }, null, null, {
+                value : "455px"
             });
         },
 
@@ -143,6 +147,8 @@ Aria.classDefinition({
             this._add(["test/aria/utils/cssLoader/cssTwo.css", "test/aria/utils/cssLoader/cssOne.css"], {
                 fn : this._afterSecondMediaAdd,
                 scope : this
+            }, null, null, {
+                value : "355px"
             });
 
         },
@@ -212,19 +218,29 @@ Aria.classDefinition({
             this.notifyTestEnd("testAsyncAdd");
         },
 
-        _add : function (sources, cb, media, delay) {
-            delay = (delay != null) ? delay : 100;
+        _add : function (sources, cb, media, delay, condition) {
+            var that = this;
             if (media) {
                 this._addedTags = this._loader.add(sources, media);
             } else {
                 this._addedTags = this._loader.add(sources);
             }
-            cb.delay = delay;
-            aria.core.Timer.addCallback(cb);
+            if (condition) {
+                this.waitFor({
+                    condition : function () {
+                        return that._checkWidth.call(that, condition);
+                    },
+                    callback : cb
+                });
+
+            } else {
+                delay = (delay != null) ? delay : 100;
+                cb.delay = delay;
+                aria.core.Timer.addCallback(cb);
+            }
         },
 
         _remove : function (sources, cb, media, delay) {
-
             delay = (delay != null) ? delay : 100;
             if (sources) {
                 if (media) {
@@ -250,6 +266,20 @@ Aria.classDefinition({
             } else {
                 this.assertNotEquals(width, value);
             }
+        },
+
+        _checkWidth : function (args) {
+            var equal = (args.equal === false) ? args.equal : true;
+            var value = args.value;
+            var domUtil = aria.utils.Dom;
+            var testDiv = domUtil.getElementById("test-div");
+            var width = domUtil.getStyle(testDiv, "width");
+            var returnValue = (width == value);
+
+            if (!equal) {
+                returnValue = !returnValue;
+            }
+            return returnValue;
         },
 
         _testLinkTag : function (counter, value) {
