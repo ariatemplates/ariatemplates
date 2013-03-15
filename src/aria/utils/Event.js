@@ -27,6 +27,7 @@
     var CB = 5;
     var CLEANCB = 6;
 
+
     /**
      * Utilities for handling Dom event listeners
      */
@@ -210,9 +211,38 @@
                 // wrap the function so we can return the obj object
                 // when
                 // the event fires;
-                var wrappedCallback = function (e) {
-                    return handlerCBInstance.call(aria.utils.Event.getEvent(e, element));
-                };
+
+                var wrappedCallback;
+                if (event != "mousemove") {
+                    wrappedCallback = function (e) {
+                        return handlerCBInstance.call(aria.utils.Event.getEvent(e, element));
+                    };
+                } else {
+
+                    /*
+                     * This case has been created to workaround a webkit issue : a click trigger a click and a mousemove
+                     * So here we keep the last mouse position, and run the registered callbacks only if the position changed
+                     * See http://code.google.com/p/chromium/issues/detail?id=161464
+                     */
+
+                    var mousePosition = null;
+                    wrappedCallback = function (e) {
+                        var pageX = e.pageX;
+                        var pageY = e.pageY;
+
+                        if (mousePosition && mousePosition.x == pageX && mousePosition.y == pageY) {
+                            return;
+                        }
+
+                        mousePosition = {
+                            x : pageX,
+                            y : pageY
+                        };
+
+                        return handlerCBInstance.call(aria.utils.Event.getEvent(e, element));
+                    };
+                }
+
                 var cleanCallback = function () {
                     handlerCBInstance = {
                         call : Aria.empty

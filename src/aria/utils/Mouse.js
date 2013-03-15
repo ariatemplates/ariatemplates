@@ -116,11 +116,11 @@
             }
 
             /**
-             * Whether a drag has been detected
+             * Store the original mouse down position, once the drag is detected
              * @private
-             * @type Boolean
+             * @type Object
              */
-            this.__dragDetected = false;
+            this.__dragStartPosition = null;
 
             /**
              * Whether a drag has started
@@ -265,7 +265,10 @@
                 this.$assert(211, !!candidate);
 
                 this._candidateForDrag = candidate;
-                this.__dragDetected = true;
+                this.__dragStartPosition = {
+                    x : evt.clientX,
+                    y : evt.clientY
+                };
                 this.__dragStarted = false;
 
                 return true;
@@ -293,12 +296,9 @@
              * @private
              */
             _onMouseMove : function (evt) {
-                if (this.__dragDetected && !this.__dragStarted) {
+                if (this.__dragStartPosition && !this.__dragStarted) {
 
-                    this._startDrag({
-                        x : evt.clientX,
-                        y : evt.clientY
-                    });
+                    this._startDrag(this.__dragStartPosition);
 
                 }
                 var element = this._activeDrag;
@@ -322,7 +322,7 @@
              * @private
              */
             _onMouseUp : function (evt) {
-                this.__dragDetected = false;
+                this.__dragStartPosition = null;
                 disconnectMouseEvents(this);
 
                 var element = this._activeDrag;
