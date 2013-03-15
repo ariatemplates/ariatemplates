@@ -271,15 +271,18 @@
              * @param {HTMLElement} element
              */
             _setElementStyle : function (element) {
-                var style = element.style;
+                var offset = aria.utils.Dom.getOffset(element);
                 var position = {
-                    left : element.offsetLeft,
-                    top : element.offsetTop
+                    left : offset.left,
+                    top : offset.top
                 };
                 this._elementInitialPosition = position;
+
+                var style = element.style;
                 style.position = "absolute";
                 style.left = position.left + "px";
                 style.top = position.top + "px";
+
             },
 
             /**
@@ -380,9 +383,10 @@
                     // This is to handle if there is a scroll
                     parentScroll = domUtil._getDocumentScroll().scrollTop;
                     this._movableGeometry.y += (parentScroll > 0) ? parentScroll : 0;
+                    var offset = aria.utils.Dom.getOffset(movable);
                     this._baseMovableOffset = {
-                        left : this._movableGeometry.x - movable.offsetLeft,
-                        top : this._movableGeometry.y - movable.offsetTop
+                        left : this._movableGeometry.x - offset.left,
+                        top : this._movableGeometry.y - offset.top
                     };
                     this.$raiseEvent("dragstart");
                 }
@@ -407,6 +411,7 @@
                         top : geometry.y,
                         left : geometry.x
                     };
+
                     movable.style.top = (pos.top - this._baseMovableOffset.top) + "px";
                     movable.style.left = (pos.left - this._baseMovableOffset.left) + "px";
 

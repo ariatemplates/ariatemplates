@@ -25,7 +25,10 @@ Aria.classDefinition({
         VIEWPORT : "__$viewport",
 
         DIV_NOT_FOUND : "Missing div '%1' in DOM.",
-        INSERT_ADJACENT_INVALID_POSITION : "Invalid position %1. Expected one of: beforeBegin, afterBegin, beforeEnd or afterEnd."
+        INSERT_ADJACENT_INVALID_POSITION : "Invalid position %1. Expected one of: beforeBegin, afterBegin, beforeEnd or afterEnd.",
+
+        pxRegExp : /^[0-9]+px$/
+
     },
     $prototype : {
 
@@ -703,6 +706,37 @@ Aria.classDefinition({
         },
 
         /**
+         * Get the offset top and left of an element, based either on the style or the offset element.
+         * Usefull to manage some internet explorer offset issues.
+         * @param {HTMLElement} element Element whose offset is requested.
+         * @return {Object} JSON with the top ad left properties.
+         * @public
+         */
+        getOffset : function (element) {
+            var style = element.currentStyle || element.style;
+            var isAbsolute = style.position == "absolute";
+            var pxRegExp = this.pxRegExp;
+
+            var offsetTop = element.offsetTop;
+            var offsetLeft = element.offsetLeft;
+            var offset = {
+                top : (isAbsolute && pxRegExp.test(style.top)) ? parseInt(style.top, 10) : offsetTop,
+                left : (isAbsolute && pxRegExp.test(style.left)) ? parseInt(style.left, 10) : offsetLeft
+            };
+
+            if (isNaN(offset.top)) {
+                offset.top = offsetTop;
+            }
+
+            if (isNaN(offset.left)) {
+                offset.left = offsetLeft;
+            }
+
+            return offset;
+
+        },
+
+         /**
          * Get the geometry of an element. It means the coordinates of top/left corner and its width and height. If the
          * element is the body, the geometry corresponds to the whole page, otherwise it's the visible part of the
          * element.
@@ -731,8 +765,8 @@ Aria.classDefinition({
 
                 if (browser.isChrome || browser.isSafari) {
                     var rectTextObject = element.getBoundingClientRect();
-                    width = rectTextObject.width;
-                    height = rectTextObject.height;
+                    width = Math.round(rectTextObject.width);
+                    height = Math.round(rectTextObject.height);
                 } else {
                     width = element.offsetWidth;
                     height = element.offsetHeight;
