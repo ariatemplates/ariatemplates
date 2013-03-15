@@ -653,7 +653,8 @@ Aria.classDefinition({
 
             // inspect parent z-Indexes
             while (element && element != stopper) {
-                var style = element.style, elementZIndex = style.zIndex;
+                var style = (element.style) ? element.style : null;
+                var elementZIndex = (style && style.zIndex) ? style.zIndex : null;
                 if (elementZIndex) {
                     var intZIndex = parseInt(elementZIndex, 10);
                     return intZIndex;
