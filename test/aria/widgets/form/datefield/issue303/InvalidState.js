@@ -174,8 +174,8 @@ Aria.classDefinition({
             this.assertEquals(input.value, "invalid", "Input value should be %2, got %1.");
             // but we should also check it's style
             var color = aria.utils.Dom.getStyle(input, "color");
-            var isBlack = color === "black" || color === "inherit";
-            this.assertTrue(isBlack, "Input should be black got color '" + input.value + "'");
+            var isBlack = color === "black" || color === "inherit" || /\#000(000)?/.test(color);
+            this.assertTrue(isBlack, "Input should be black got color '" + color + "'");
 
             widget.$dispose();
         }

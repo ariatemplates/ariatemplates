@@ -22,7 +22,10 @@ Aria.classDefinition({
                 this.assertEquals(aria.utils.Delegate.vendorPrefix, "Webkit", "The CSS Prefix went wrong for Chrome");
             }
             if (aria.core.Browser.isFirefox) {
-                this.assertEquals(aria.utils.Delegate.vendorPrefix, "Moz", "The CSS Prefix went wrong for FireFox");
+                // FF3 doesn't support animations
+                if (aria.core.Browser.majorVersion !== 3) {
+                    this.assertEquals(aria.utils.Delegate.vendorPrefix, "Moz", "The CSS Prefix went wrong for FireFox");
+                }
             }
             if (aria.core.Browser.isIE10) {
                 this.assertEquals(aria.utils.Delegate.vendorPrefix, "ms", "The CSS Prefix went wrong for IE10");
