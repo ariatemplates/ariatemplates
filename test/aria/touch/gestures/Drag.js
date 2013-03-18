@@ -53,9 +53,9 @@ Aria.classDefinition({
                     "sequence" : ["dragstart","dragcancel"],
                     "callback" : this._testTrueDrag
             };
-            this._raiseFakeEvent(this.touchEventMap.touchstart, {touches: [{clientX: 0, clientY: 0}], changedTouches: [{clientX: 0, clientY: 0}]});
-            this._raiseFakeEvent(this.touchEventMap.touchmove, {touches: [{clientX: 5, clientY: 5}], changedTouches: [{clientX:5, clientY: 5}]});
-            this._raiseFakeEvent(this.touchEventMap.touchmove, {touches: [{clientX: 0, clientY: 0}, {clientX: 5, clientY: 5}], changedTouches: [{clientX: 5, clientY: 5}]});
+            this._raiseFakeEvent(this.touchEventMap.touchstart, {isPrimary: true, touches: [{clientX: 0, clientY: 0}], changedTouches: [{clientX: 0, clientY: 0}]});
+            this._raiseFakeEvent(this.touchEventMap.touchmove, {isPrimary: true, touches: [{clientX: 5, clientY: 5}], changedTouches: [{clientX:5, clientY: 5}]});
+            this._raiseFakeEvent(this.touchEventMap.touchmove, {isPrimary: false, touches: [{clientX: 0, clientY: 0}, {clientX: 5, clientY: 5}], changedTouches: [{clientX: 5, clientY: 5}]});
             this._delay(10, this._testEvents, args);
         },
         /**

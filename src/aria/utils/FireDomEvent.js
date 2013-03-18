@@ -33,7 +33,10 @@
         touchend : 1,
         touchmove : 1,
         dommousescroll : 1,
-        mousewheel : 1
+        mousewheel : 1,
+        MSPointerDown: 1,
+        MSPointerMove: 1,
+        MSPointerUp: 1
     },
 
     // key events supported
@@ -254,7 +257,9 @@
 
         // check event type
         if (typeUtils.isString(type)) {
-            type = type.toLowerCase();
+            if (!(/^MSPointer/.test(type))) {
+                type = type.toLowerCase();
+            }
 
             // make sure it's a supported event
             if (!events[type]) {
@@ -347,6 +352,8 @@
             customEvent.touches = touches;
             customEvent.changedTouches = changedTouches;
             customEvent.isPrimary = isPrimary;
+            customEvent.pageX = clientX;
+            customEvent.pageY = clientY;
 
             /*
              * Check to see if relatedTarget has been assigned. Firefox versions less than 2.0 don't allow it to be

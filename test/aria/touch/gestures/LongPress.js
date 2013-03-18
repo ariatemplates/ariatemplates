@@ -53,8 +53,8 @@ Aria.classDefinition({
                     "sequence" : ["longpressstart","longpresscancel"],
                     "callback" : this._testCancelMoveLongPress
             };
-            this._raiseFakeEvent(this.touchEventMap.touchstart, {touches: [{clientX: 0, clientY: 0}], changedTouches: [{clientX: 0, clientY: 0}]});
-            this._raiseFakeEvent(this.touchEventMap.touchmove, {touches: [{clientX: 0, clientY: 0}, {clientX: 5, clientY: 5}], changedTouches: [{clientX: 5, clientY: 5}]});
+            this._raiseFakeEvent(this.touchEventMap.touchstart, {isPrimary: true, touches: [{clientX: 0, clientY: 0}], changedTouches: [{clientX: 0, clientY: 0}]});
+            this._raiseFakeEvent(this.touchEventMap.touchmove, {isPrimary: false, touches: [{clientX: 0, clientY: 0}, {clientX: 5, clientY: 5}], changedTouches: [{clientX: 5, clientY: 5}]});
             this._delay(10, this._testEvents, args);
         },
         /**
@@ -92,14 +92,13 @@ Aria.classDefinition({
             };
             this._raiseFakeEvent(this.touchEventMap.touchstart, {clientX: 0, clientY: 0});
             this._raiseFakeEvent(this.touchEventMap.touchmove, {clientX: 5, clientY: 5});
-            this._delay(2100, this._testEventsFinal, args);
+            this._delay(1500, this._testEventsFinal, args);
         },
         /**
          * Finalize the long press gesture.
          * @param {Object} args
          */
         _testEventsFinal : function(args) {
-            this._raiseFakeEvent(this.touchEventMap.touchend, {clientX: 5, clientY: 5});
             this._delay(10, this._testEvents, args);
         },
         /**
@@ -142,6 +141,7 @@ Aria.classDefinition({
          * Wrapper to end the tests.
          */
         _endTests : function () {
+            this._raiseFakeEvent(this.touchEventMap.touchend, {clientX: 5, clientY: 5});
             this._delay(1000, this.end, {});
         }
     }
