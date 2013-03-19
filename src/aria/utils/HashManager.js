@@ -126,8 +126,16 @@ Aria.classDefinition({
          */
         this.polledIframeHashString = null;
 
+        /**
+         * Callback id for polling
+         * @type String
+         * @private
+         */
+        this._hashPollCallback = null;
+
         if (this._isIE7OrLess) {
             this._createIframe();
+            this._hashPoll();
         }
 
     },
@@ -136,6 +144,11 @@ Aria.classDefinition({
          * Remove the default callback for hashchange
          */
         this._removeHashChangeInternalCallback();
+
+        if (this._hashPollCallback) {
+            aria.core.Timer.cancelCallback(this._hashPollCallback);
+            this._hashPollCallback = null;
+        }
 
         if (this._isIE7OrLess) {
             this._destroyIframe();
@@ -353,7 +366,6 @@ Aria.classDefinition({
          * @protected
          */
         _addHashChangeInternalCallback : function () {
-            this._hashPoll();
             if (!this._isIE7OrLess) {
                 aria.utils.Event.addListener(Aria.$window, 'hashchange', {
                     fn : this._internalCallback,
@@ -369,7 +381,7 @@ Aria.classDefinition({
          */
         _hashPoll : function () {
             if (this._enableIEpolling) {
-                aria.core.Timer.addCallback({
+                this._hashPollCallback = aria.core.Timer.addCallback({
                     fn : this._hashPoll,
                     scope : this,
                     delay : this.ie7PollDelay
@@ -505,6 +517,7 @@ Aria.classDefinition({
             document.body.appendChild(iframe);
 
             this._iframe = iframe;
+            this.polledIframeHashString = this._currentHashString;
 
             this._addIframeHistoryEntry(this._currentHashString);
         },

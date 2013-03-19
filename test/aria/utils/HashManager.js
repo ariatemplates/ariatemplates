@@ -19,11 +19,9 @@
 Aria.classDefinition({
     $classpath : "test.aria.utils.HashManager",
     $extends : "aria.jsunit.TestCase",
-    $dependencies : ["aria.utils.HashManager"],
     $constructor : function () {
         this.$TestCase.constructor.call(this);
         this.__callbackCount = {};
-        this.hm = aria.utils.HashManager;
     },
     $destructor : function () {
         this.hm = null;
@@ -34,23 +32,69 @@ Aria.classDefinition({
         setUp : function () {
             var window = Aria.$window;
             this.__initialHash = window.location.hash;
-            window.location.hash = "";
-            this.hm._currentHashString = this.hm.getHashString();
+            window.location.hash = "init";
         },
 
         tearDown : function () {
             var window = Aria.$window;
             window.location.hash = this.__initialHash;
-            this.hm._currentHashString = this.hm.getHashString();
         },
 
-        myNotifyTestEnd : function (test) {
-            var window = Aria.$window;
-            window.location.hash = "";
-            this.notifyTestEnd(test);
+        testAsyncInitial : function () {
+            Aria.load({
+                classes : ["aria.utils.HashManager"],
+                oncomplete : {
+                    fn : this._testInitial,
+                    scope : this
+                }
+            });
         },
 
-        testValidateHashObject : function () {
+        _testInitial : function () {
+            this.hm = aria.utils.HashManager;
+            this.hm.setHash("initTwo");
+            aria.core.Timer.addCallback({
+                fn : this._initialBackward,
+                scope : this,
+                delay : 2 * this.hm.ie7PollDelay
+            });
+
+        },
+        _initialBackward : function () {
+
+            Aria.$window.history.back();
+            aria.core.Timer.addCallback({
+                fn : this._afterInitialBackward,
+                scope : this,
+                delay : 2 * this.hm.ie7PollDelay
+            });
+        },
+        _afterInitialBackward : function () {
+            this.assertEquals(this.hm.getHashString(), "init");
+
+            this._cbInit = {
+                fn : Aria.empty,
+                scope : this
+            };
+
+            this.hm.addCallback(this._cbInit);
+            this.assertEquals(this.hm.getHashString(), "init");
+            this.hm.removeCallback(this._cbInit);
+            delete this._cbInit;
+            this.hm.setHash(null);
+
+            // run all synchronous tests
+            this._testValidateHashObject();
+            this._testBuildRegexpFromArray();
+            this._testGetNonEncodedSeparators();
+            this._testSetSeparators();
+            this._testAddSeparators();
+            this._testSetHash();
+            this._testAsyncAddRemoveCallback();
+
+        },
+
+        _testValidateHashObject : function () {
             var hm = this.hm;
 
             this.assertFalse(hm._validateHashObject({
@@ -87,7 +131,7 @@ Aria.classDefinition({
             this.assertErrorInLogs(hm.INVALID_HASHOBJECT_KEY);
         },
 
-        testBuildRegexpFromArray : function () {
+        _testBuildRegexpFromArray : function () {
             var re = this.hm.__buildRegExpFromArray(["ab", "c", "d"]);
             this.assertTrue("a".match(re) == null);
             this.assertTrue("ab".match(re).length > 0);
@@ -133,7 +177,7 @@ Aria.classDefinition({
             this.assertTrue(".[]".match(re).length > 0);
         },
 
-        testGetNonEncodedSeparators : function () {
+        _testGetNonEncodedSeparators : function () {
             var sep = ["-", " g", "-pp", "_", "_dd", ".", ",", "&", "sd.", "!", "sss!", "?a", "~", "s~d", "*", "cd*",
                     "'", "'dd", "(", "ab(", ")", "de)", "--()", "!$$", "  hh"];
             var neSep = this.hm.__getNonEncodedSeparators(sep);
@@ -141,7 +185,7 @@ Aria.classDefinition({
                     "'dd", "(", "ab(", ")", "de)", "--()"]);
         },
 
-        testSetSeparators : function () {
+        _testSetSeparators : function () {
 
             // test for invalid characters
             var sepToTest = ["#", "%", "^", "[", "]", "{", "}", "\\", "\"", "<", ">", "="];
@@ -171,7 +215,7 @@ Aria.classDefinition({
 
         },
 
-        testAddSeparators : function () {
+        _testAddSeparators : function () {
             this.hm.setSeparators("&");
             this.hm.addSeparators("|");
             this.hm.setHash("a=b&c=d|e=f");
@@ -184,9 +228,11 @@ Aria.classDefinition({
             this.hm.addSeparators("|");
             this.assertJsonEquals(this.hm._separators, ["&", "|"]);
             this.hm.setHash("");
+            this.hm.setSeparators([",", "&"]);
+
         },
 
-        testSetHash : function () {
+        _testSetHash : function () {
             var window = Aria.$window;
             var hm = this.hm;
             hm.setHash(1);
@@ -220,7 +266,7 @@ Aria.classDefinition({
          * Since we change the hash in setUp, the browser will raise a change event from whatever there was before to an
          * empty hash when JS yelds. For this reason we might get two events, wait a bit to start this test
          */
-        testAsyncAddRemoveCallback : function () {
+        _testAsyncAddRemoveCallback : function () {
             aria.core.Timer.addCallback({
                 fn : this.__startTestAsyncAddRemoveCallback,
                 scope : this,
@@ -361,7 +407,14 @@ Aria.classDefinition({
             delete this.__cb1;
             delete this.__cb2;
             delete this.__cb3;
-            this.myNotifyTestEnd("testAsyncAddRemoveCallback");
+
+            Aria.$window.location.hash = "";
+            aria.core.Timer.addCallback({
+                fn : this._testAsyncBackForward,
+                scope : this,
+                delay : 2 * hm.ie7PollDelay
+            });
+
         },
 
         __callback1 : function (hashObject, args) {
@@ -388,8 +441,7 @@ Aria.classDefinition({
                     : 1;
         },
 
-        testAsyncBackForward : function () {
-
+        _testAsyncBackForward : function () {
             var hm = this.hm;
 
             this.__cb4 = {
@@ -445,8 +497,9 @@ Aria.classDefinition({
             this.hm.removeCallback(this.__cb4);
             this.__callbackOrder = null;
             delete this.__cb4;
-            this.myNotifyTestEnd("testAsyncBackForward");
 
+            Aria.$window.location.hash = "";
+            this.notifyTestEnd("testAsyncInitial");
         },
 
         __callback4 : function (hashObject) {
