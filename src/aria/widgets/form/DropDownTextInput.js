@@ -179,6 +179,22 @@ Aria.classDefinition({
                 }
             }
             // PROFILING // this.$stopMeasure(profilingId);
+        },
+        _onBoundPropertyChange : function (propertyName, newValue, oldValue) {
+            if (propertyName == "popupOpen") {
+                this._toggleDropdown();
+            } else {
+                this.$TextInput._onBoundPropertyChange.apply(this, arguments);
+            }
+        },
+        /**
+         * Initialization method called by the delegate engine when the DOM is loaded
+         */
+        initWidget : function () {
+            this.$TextInput.initWidget.call(this);
+            if (this._cfg.popupOpen) {
+                this._toggleDropdown();
+            }
         }
     }
 });
