@@ -354,8 +354,50 @@ Aria.classDefinition({
          * @param {Array} content list of statements
          */
         processContent : function (content) {
+            var merge = 0;
+
             for (var i = 0; i < content.length; i++) {
-                this.processStatement(content[i]);
+                if (!Aria.debug) {
+                    merge = this.__computeMergeState(merge, content, i);
+                }
+
+                this.processStatement(content[i], merge);
+            }
+        },
+
+        /**
+         * Computes merge state (0: no merge, 1: merge started, 2: merging, 3: merge ended)
+         * @param {Number} merge status of the merging process for TEXT and EXPRESSION items
+         * @param {Array} content list of statements
+         * @param {Number} index content's index
+         * @return {Number} merge status of the merging process
+         */
+        __computeMergeState : function (merge, content, index) {
+            var numElements = content.length;
+            var item = content[index].name;
+            var nextItem = null;
+            var goodToMerge = (item == "#TEXT#" || item == "#EXPRESSION#");
+
+            if (!goodToMerge) {
+                return 0;
+            }
+
+            if (index == numElements - 1) {
+                return merge ? 3 : 0;
+            } else {
+                nextItem = content[index + 1].name;
+                var isNextGoodToMerge = (nextItem == "#TEXT#" || nextItem == "#EXPRESSION#");
+
+                switch (merge) {
+                    case 0 :
+                        return isNextGoodToMerge ? 1 : 0;
+                    case 1 :
+                        return isNextGoodToMerge ? 2 : 3;
+                    case 2 :
+                        return isNextGoodToMerge ? merge : 3;
+                    case 3 :
+                        return 0;
+                }
             }
         },
 
@@ -363,8 +405,8 @@ Aria.classDefinition({
          * Process a statement calling the callback defined in the constructor
          * @param {aria.templates.TreeBeans.Statement} statement Statement to be processed
          */
-        processStatement : function (statement) {
-            this._processStatement.fn.call(this._processStatement.scope, this, statement);
+        processStatement : function (statement, merge) {
+            this._processStatement.fn.call(this._processStatement.scope, this, statement, merge);
         },
 
         /**
@@ -423,9 +465,7 @@ Aria.classDefinition({
          */
         writeln : function () {
             var out = this._curblock.out;
-            if (this._curindent) {
-                out.push(this._curindent);
-            }
+            this.writeIndent();
             out.push.apply(out, arguments);
             out.push('\n');
         },
@@ -437,6 +477,16 @@ Aria.classDefinition({
         write : function () {
             var out = this._curblock.out;
             out.push.apply(out, arguments);
+        },
+
+        /**
+         * Write the indetation in the current output block.
+         */
+        writeIndent : function () {
+            var out = this._curblock.out;
+            if (this._curindent) {
+                out.push(this._curindent);
+            }
         },
 
         /**
