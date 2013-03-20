@@ -181,6 +181,7 @@
 
             /* Processing errors (errors in the JSON checked) */
             BEAN_NOT_FOUND : "Bean %1 was not found",
+            INVALID_CONFIGURATION : "%1 configuration is not valid.",
             INVALID_TYPE_VALUE : "Invalid type: expected type %1 (from %2), found incorrect value '%3' in %4",
             INVALID_MULTITYPES_VALUE : "The value found in %1 is not valid for all the types defined in %2: %3",
             ENUM_UNKNOWN_VALUE : "Value '%1' in %2 is not in the enum definition %3",
@@ -293,7 +294,7 @@
                     var ns = typeName.substr(0, i);
                     typeName = typeName.substr(i + 1);
                     packageName = (packageDef.$namespaces == null ? null : packageDef.$namespaces[ns]);
-                    if (packageName == null) {
+                    if (!packageName) {
                         this._logError(this.UNDEFINED_PREFIX, [ns, this._currentBeanName]);
                         return this._typeRefError;
                     }
@@ -307,7 +308,7 @@
 
                 if (!otherBP) {
                     otherBP = this.__loadedBeans[packageName];
-                    if (otherBP == null) {
+                    if (!otherBP) {
                         this._logError(this.MISSING_BEANSPACKAGE, [packageName, this._currentBeanName]);
                         return this._typeRefError;
                     }
@@ -337,7 +338,7 @@
                 var baseType = beanDef[this._MD_BASETYPE];
 
                 // check if base type is already defined for this bean definition (already preprocessed)
-                if (baseType != null) {
+                if (baseType) {
                     return baseType;
                 }
 
@@ -589,7 +590,7 @@
              */
             _processJsonValidation : function (args) {
                 var beanDef = (args.beanDef ? args.beanDef : this._getBean(args.beanName));
-                if (beanDef == null) {
+                if (!beanDef) {
                     this._errors = [];
                     this._logError(this.BEAN_NOT_FOUND, args.beanName);
                     return this._errors;
@@ -771,6 +772,43 @@
                     json : json,
                     beanName : beanName
                 }), throwsErrors);
+            },
+
+            /**
+             * Validate a configuration object compared to its definition. All errors are logged.
+             * @param {String} cfgBeanName The configuration classpath;
+             * @param {Object} cfg The configuration bean to validate
+             * @param {Object} errorToLog Optional json. By default, the INVALID_CONFIGURATION message is used with the conrfiguration bean name.
+             * <pre>
+             * {
+             *      msg : {String} log message used with $logError,
+             *      params : {Array} parameters used with $logError,
+             * }
+             * </pre>
+             * @return {Boolean} true if the configuration is valid.
+             */
+            validateCfg : function (cfgBeanName, cfg, errorToLog) {
+                var cfgOk = false;
+                try {
+                    cfgOk = this.normalize({
+                        json : cfg,
+                        beanName : cfgBeanName
+                    }, true);
+                } catch (e) {
+                    // aria.core.Log may not be available
+                    var logs = aria.core.Log;
+                    if (logs) {
+                        var error, errors = e.errors;
+                        for (var index = 0, l = errors.length; index < l; index++) {
+                            error = errors[index];
+                            error.message = logs.prepareLoggedMessage(error.msgId, error.msgArgs);
+                        }
+
+                        errorToLog = errorToLog || {msg: this.INVALID_CONFIGURATION, params : [cfgBeanName]};
+                        this.$logError(errorToLog.msg, errorToLog.params, e);
+                    }
+                }
+                return cfgOk;
             },
 
             /**

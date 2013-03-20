@@ -148,25 +148,14 @@
             }
 
             // normalize configuration
-            try {
-                aria.core.JsonValidator.normalize({
-                    json : cfg,
-                    beanName : "aria.templates.CfgBeans." + this.$class + "Cfg"
-                }, true);
-            } catch (e) {
-                this.cfgOk = false;
-                // PTR 05038013: aria.core.Log may not be available
-                var logs = aria.core.Log;
-                if (logs) {
-                    // enhance errors with message
-                    for (var index = 0, l = e.errors.length, error; index < l; index++) {
-                        error = e.errors[index];
-                        error.message = logs.prepareLoggedMessage(error.msgId, error.msgArgs);
-                    }
-                    this.$logError(this.INVALID_CONFIGURATION, [this.tplCtxt.tplClasspath, cfg.id], e);
-                }
+            this.cfgOk = aria.core.JsonValidator.validateCfg("aria.templates.CfgBeans." + this.$class + "Cfg", cfg, {
+                msg: this.INVALID_CONFIGURATION,
+                params : [this.tplCtxt.tplClasspath, cfg.id]
+            });
+            if (!this.cfgOk) {
                 return;
             }
+
             type = cfg.type;
             bindings = cfg.bindRefreshTo;
             id = cfg.id;

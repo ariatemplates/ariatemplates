@@ -17,14 +17,13 @@
  * Touch Slider Widget.
  */
 Aria.classDefinition({
-    $classpath : 'aria.touch.widgets.Slider',
-    $extends : 'aria.widgetLibs.BaseWidget',
-    $css : ['aria.touch.widgets.SliderCSS'],
+    $classpath : "aria.touch.widgets.Slider",
+    $extends : "aria.widgetLibs.BaseWidget",
+    $css : ["aria.touch.widgets.SliderCSS"],
     $statics : {
-        INVALID_CONFIGURATION : "Invalid configuration for the slider!",
         BUTTON_WIDTH : 14
     },
-    $dependencies : ['aria.touch.widgets.SliderCfgBeans', 'aria.touch.Swipe'],
+    $dependencies : ["aria.touch.widgets.SliderCfgBeans", "aria.touch.Swipe"],
     /**
      * Slider Constructor.
      * @param {aria.touch.widgets.SliderCfgBeans.SliderCfg} cfg slider configuration
@@ -33,16 +32,9 @@ Aria.classDefinition({
      */
     $constructor : function (cfg, context, lineNumber) {
         this.$BaseWidget.constructor.apply(this, arguments);
-        var normalizeArg = {
-            beanName : "aria.touch.widgets.SliderCfgBeans.SliderCfg",
-            json : this._cfg
-        };
-        try {
-            this._cfgOk = aria.core.JsonValidator.normalize(normalizeArg, true);
-        } catch (e) {
-            this.$logError(this.INVALID_CONFIGURATION, null, e);
-        }
-        if (!this._cfgOk) {
+
+       this._cfgOk = aria.core.JsonValidator.validateCfg("aria.touch.widgets.SliderCfgBeans.SliderCfg", cfg);
+       if (!this._cfgOk) {
             return;
         }
         /**

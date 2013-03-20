@@ -23,13 +23,10 @@ Aria.classDefinition({
     $extends : "aria.widgetLibs.BaseWidget",
     $dependencies : ["aria.embed.CfgBeans", "aria.core.JsonValidator", "aria.html.Template",
             "aria.embed.PlaceholderManager", "aria.utils.Array"],
-    $statics : {
-        INVALID_CONFIGURATION : "%1 Configuration for widget is not valid."
-    },
     $constructor : function (cfg, context, lineNumber) {
         this.$BaseWidget.constructor.apply(this, arguments);
 
-        this._validateCfg(cfg);
+        this._cfgOk = aria.core.JsonValidator.validateCfg(this._cfgBeanName, cfg);
 
         /**
          * Path of the placeholder that is recognized by the PlaceholderManager
@@ -143,30 +140,6 @@ Aria.classDefinition({
                     }
                 });
                 this._context.insertSection(newSection);
-            }
-        },
-
-        /**
-         * Validate the configuration
-         * @param {aria.embed.CfgBeans.PlaceholderCfg} cfg
-         * @private
-         */
-        _validateCfg : function (cfg) {
-            try {
-                this._cfgOk = aria.core.JsonValidator.normalize({
-                    json : cfg,
-                    beanName : this._cfgBeanName
-                }, true);
-            } catch (e) {
-                var logs = aria.core.Log;
-                if (logs) {
-                    var error;
-                    for (var index = 0, l = e.errors.length; index < l; index++) {
-                        error = e.errors[index];
-                        error.message = logs.prepareLoggedMessage(error.msgId, error.msgArgs);
-                    }
-                    this.$logError(this.INVALID_CONFIGURATION, null, e);
-                }
             }
         },
 

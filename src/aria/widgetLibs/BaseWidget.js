@@ -39,8 +39,8 @@
      * Base class that all widgets have to extend.
      */
     Aria.classDefinition({
-        $classpath : 'aria.widgetLibs.BaseWidget',
-        $dependencies : ['aria.utils.IdManager', 'aria.templates.CSSMgr'],
+        $classpath : "aria.widgetLibs.BaseWidget",
+        $dependencies : ["aria.utils.IdManager", "aria.templates.CSSMgr"],
         $onload : function () {
             idMgr = new aria.utils.IdManager("w");
             arrayUtils = aria.utils.Array;
