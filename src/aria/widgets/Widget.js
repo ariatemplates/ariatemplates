@@ -130,23 +130,7 @@
              */
             this.__initWhileContentChange = false;
 
-            try {
-                this._cfgOk = aria.core.JsonValidator.normalize({
-                    json : cfg,
-                    beanName : this._cfgBean || this._cfgPackage + "." + this.$class + "Cfg"
-                }, true);
-            } catch (e) {
-                // PTR 05038013: aria.core.Log may not be available
-                var logs = aria.core.Log;
-                if (logs) {
-                    var error;
-                    for (var index = 0, len = e.errors.length; index < len; index += 1) {
-                        error = e.errors[index];
-                        error.message = logs.prepareLoggedMessage(error.msgId, error.msgArgs);
-                    }
-                    this.$logError(this.INVALID_CONFIGURATION, null, e);
-                }
-            }
+            this._cfgOk = aria.core.JsonValidator.validateCfg(this._cfgBean || this._cfgPackage + "." + this.$class + "Cfg", cfg);
 
             var bindings = cfg.bind;
             if (bindings) {
@@ -225,7 +209,6 @@
             WIDGET_NOT_FOUND : "%1Following %3 widget was not found in DOM: %2",
             WIDGET_TOOLTIP_NOT_FOUND : "%1Tooltip with id '%2', for widget %3 was not found in template '%4'.",
             WIDGET_BINDING_ERROR : "%1Binding failed in widget: \tInside:%2\tTo:%3",
-            INVALID_CONFIGURATION : "%1Configuration for widget is not valid.",
             WIDGET_PROPERTY_DEPRECATION : "%1The following property is deprecated and will be removed from the framework in the near future. Refactor your code to avoid any issues. Property:'%2'.",
             INVALID_VERTICAL_ALIGN : "%1Invalid verticalAlign:'%2'.",
 

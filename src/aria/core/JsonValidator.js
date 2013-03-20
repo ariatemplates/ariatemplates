@@ -181,6 +181,7 @@
 
             /* Processing errors (errors in the JSON checked) */
             BEAN_NOT_FOUND : "Bean %1 was not found",
+            INVALID_CONFIGURATION : "%1 configuration is not valid.",
             INVALID_TYPE_VALUE : "Invalid type: expected type %1 (from %2), found incorrect value '%3' in %4",
             INVALID_MULTITYPES_VALUE : "The value found in %1 is not valid for all the types defined in %2: %3",
             ENUM_UNKNOWN_VALUE : "Value '%1' in %2 is not in the enum definition %3",
@@ -755,7 +756,7 @@
                 return this.__logAllErrors(this._processJsonValidation(args), throwsErrors);
             },
 
-            /**
+             /**
              * Check that the json structure complies with the given bean. All errors are logged.
              * @param {Object} json json to check;
              * @param {String} bean bean to use
@@ -771,6 +772,43 @@
                     json : json,
                     beanName : beanName
                 }), throwsErrors);
+            },
+
+            /**
+             * Validate a configuration object compared to its definition. All errors are logged.
+             * @param {String} cfgBeanName The configuration classpath;
+             * @param {Object} cfg The configuration bean to validate
+             * @param {Object} errorToLog Optional json. By default, the INVALID_CONFIGURATION message is used with the conrfiguration bean name.
+             * <pre>
+             * {
+             *      msg : {String} log message used with $logError,
+             *      params : {Array} parameters used with $logError,
+             * }
+             * </pre>
+             * @return {Boolean} true if the configuration is valid.
+             */
+            validateCfg : function (cfgBeanName, cfg, errorToLog) {
+                var cfgOk = false;
+                try {
+                    cfgOk = this.normalize({
+                        json : cfg,
+                        beanName : cfgBeanName
+                    }, true);
+                } catch (e) {
+                    // PTR 05038013: aria.core.Log may not be available
+                    var logs = aria.core.Log;
+                    if (logs) {
+                        var error, errors = e.errors;
+                        for (var index = 0, l = errors.length; index < l; index++) {
+                            error = errors[index];
+                            error.message = logs.prepareLoggedMessage(error.msgId, error.msgArgs);
+                        }
+
+                        errorToLog = errorToLog || {msg: this.INVALID_CONFIGURATION, params : [cfgBeanName]};
+                        this.$logError(errorToLog.msg, errorToLog.params, e);
+                    }
+                }
+                return cfgOk;
             },
 
             /**
