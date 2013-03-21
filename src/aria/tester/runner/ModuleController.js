@@ -116,6 +116,10 @@ Aria.classDefinition({
             if (__hash.getParameter("runIsolated") == "true") {
                 json.setValue(campaignData, "runIsolated", true);
             }
+
+            if (__hash.getParameter("demo") == "true") {
+                json.setValue(campaignData, "demoMode", true);
+            }
         },
 
         /**
@@ -295,6 +299,11 @@ Aria.classDefinition({
 
             // Notify testacular in case it is available:
             aria.jsunit.TestacularReport.attachTestEngine(this._testRunner.getEngine());
+
+            if (this.getData().campaign.demoMode) {
+                this._testRunner.getRootTest().demoMode = true;
+            }
+
             this._testRunner.run(this.testObject, skipTests);
         },
 

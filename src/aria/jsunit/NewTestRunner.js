@@ -189,6 +189,13 @@ Aria.classDefinition({
         },
 
         /**
+         * Return the root test case
+         */
+         getRootTest : function () {
+             return this._rootTest;
+         },
+
+         /**
          * Retrieve all the TestCase objects contained in a given TestSuite instance. This will recursively inspect all
          * the sub test suites as well. TestCases will be returned as an array of test wrappers
          * {instance:{aria.jsunit.TestCase},classpath:{String}}. As usual, only the classpath property might be

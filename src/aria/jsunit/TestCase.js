@@ -286,6 +286,9 @@ Aria.classDefinition({
          * @param {String} testName
          */
         setTestTimeout : function (timeout, testName) {
+            if (this.demoMode) {
+                return;
+            }
             if (this._timeoutTimer) {
                 aria.core.Timer.cancelCallback(this._timeoutTimer);
             }
