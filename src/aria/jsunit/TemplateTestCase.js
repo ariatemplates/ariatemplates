@@ -300,6 +300,9 @@ Aria.classDefinition({
          * the test is ended.
          */
         notifyTemplateTestEnd : function () {
+            if (this.demoMode) {
+                return;
+            }
             aria.core.Timer.addCallback({
                 fn : function () {
                     // Need to dispose the template since we are always using the same div to do Aria.loadTemplate
