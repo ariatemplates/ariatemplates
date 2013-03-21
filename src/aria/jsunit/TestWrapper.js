@@ -100,6 +100,11 @@ Aria.classDefinition({
                 '*' : this._testEvent,
                 scope : this
             });
+
+            if (this.demoMode) {
+                this._testInstance.demoMode = true;
+            }
+
             this._testInstance.run();
         },
 
