@@ -20,5 +20,6 @@ Aria.classDefinition({
         this.$TestSuite.constructor.call(this);
 
         this.addTests("test.aria.widgets.form.datepicker.issue303.InfiniteLoop");
+        this.addTests("test.aria.widgets.form.datepicker.issue429.DateFormatTestCase");
     }
 });

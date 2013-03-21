@@ -13,15 +13,11 @@
  * limitations under the License.
  */
 
-/**
- * @class aria.widgets.controllers.DateController
- * @extends aria.widgets.controllers.TextDataController
- */
 Aria.classDefinition({
-    $classpath : 'aria.widgets.controllers.DateController',
-    $extends : 'aria.widgets.controllers.TextDataController',
-    $dependencies : ['aria.DomEvent', 'aria.widgets.controllers.reports.ControllerReport', 'aria.utils.Date',
-            'aria.utils.Type', 'aria.utils.environment.Date'],
+    $classpath : "aria.widgets.controllers.DateController",
+    $extends : "aria.widgets.controllers.TextDataController",
+    $dependencies : ["aria.DomEvent", "aria.widgets.controllers.reports.ControllerReport", "aria.utils.Date",
+            "aria.utils.Type", "aria.utils.environment.Date"],
     $resources : {
         "res" : "aria.widgets.WidgetsRes"
     },
@@ -48,7 +44,7 @@ Aria.classDefinition({
          * @type {String}
          */
         this._pattern = '';
-                /**
+        /**
          * List of pattern used to parse user input
          * @protected
          * @type {String}
@@ -92,7 +88,7 @@ Aria.classDefinition({
             }
             this._pattern = pattern;
         },
-         /**
+        /**
          * Set the date input pattern
          * @param {aria.widgets.CfgBeans.DatePickerCfg} pattern options
          */
@@ -184,8 +180,9 @@ Aria.classDefinition({
                     report.ok = true;
                 } else {
                     var options = {
-                     referenceDate : this._referenceDate,
-                     inputPattern : this._inputPattern
+                        referenceDate : this._referenceDate,
+                        inputPattern : this._inputPattern,
+                        outputPattern : this._pattern
                     };
                     var date = aria.utils.Date.interpret(text, options);
                     if (date) {

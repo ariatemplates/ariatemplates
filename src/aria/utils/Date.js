@@ -795,14 +795,21 @@ Aria.classDefinition({
          * @return {Date}
          */
         interpret : function (entryStr, options) {
-            var inputPattern;
+            var inputPattern, outputPattern;
 
             if (options) {
                 inputPattern = options.inputPattern;
+                outputPattern = options.outputPattern;
             }
             // is input pattern set?
             if (inputPattern) {
                 var parsedDate = this._interpretAgainstPattern(entryStr, options.inputPattern);
+                if (parsedDate) {
+                    return parsedDate;
+                }
+                // In case inputPattern is not mentioned, pattern will take precedence
+            } else if (outputPattern) {
+                var parsedDate = this._interpretAgainstPattern(entryStr, options.outputPattern);
                 if (parsedDate) {
                     return parsedDate;
                 }
