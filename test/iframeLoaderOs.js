@@ -33,8 +33,7 @@
     window.loader = {
         changeRootFolder : function () {
             // Need to wait for some special classes to be here, before to continue
-            if (window.Aria && window.aria && window.aria.core && window.aria.core.DownloadMgr && aria.core.MultiLoader
-                    && (!isDev || (aria.widgets && aria.widgets.AriaSkin))) {
+            if (window.Aria && window.aria && window.aria.core && window.aria.core.DownloadMgr && aria.core.MultiLoader) {
                 Aria.rootFolderPath = baseUrl + "/";
                 aria.core.DownloadMgr.updateRootMap({
                     "aria" : {
