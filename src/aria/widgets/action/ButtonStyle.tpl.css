@@ -35,6 +35,10 @@
             tabindex:10;
         }
 
+        button.xButton::-moz-focus-inner {
+             border: 0;
+        }
+
         .xButtonDisabled {
             cursor:default;
         }
