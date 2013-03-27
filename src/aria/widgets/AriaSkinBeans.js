@@ -293,7 +293,10 @@ Aria.beanDefinitions({
                         "msover" : {
                             $type : "StateWithFrame"
                         },
-                        "selected" : {
+                        "normalFocused" : {
+                            $type : "StateWithFrame"
+                        },
+                        "msoverFocused" : {
                             $type : "StateWithFrame"
                         },
                         "disabled" : {

@@ -525,6 +525,12 @@ Aria.classDefinition({
                             marginBottom : 3,
                             marginTop : 7,
                             sprIdx : 1
+                        },
+                        normalFocused : {
+                            sprIdx : 3
+                        },
+                        msoverFocused : {
+                            sprIdx : 3
                         }
                     }
                 }
