@@ -379,6 +379,14 @@ Aria.classDefinition({
                 request.method = form.method;
             }
 
+            if (form.enctype && !request.headers) {
+                request.headers = {
+                    "Content-Type" : form.enctype
+                };
+            } else if (form.enctype && request.headers && !request.headers["Content-Type"]) {
+                request.headers["Content-Type"] = form.enctype;
+            }
+
             request.form = form;
             request.formId = form.id;
             return this.asyncRequest(request);
@@ -966,7 +974,8 @@ Aria.classDefinition({
             } else if (expectedResponseType == "json") {
                 if (response.responseJSON == null && response.responseText != null) {
                     // convert text to JSON
-                    var errorMsg = aria.utils.String.substitute(this.JSON_PARSING_ERROR, [response.url, response.responseText]);
+                    var errorMsg = aria.utils.String.substitute(this.JSON_PARSING_ERROR, [response.url,
+                            response.responseText]);
                     response.responseJSON = aria.utils.Json.load(response.responseText, this, errorMsg);
                 }
             }
