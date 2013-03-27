@@ -51,6 +51,12 @@ Aria.classDefinition({
          */
         this._keyPressed = false;
 
+        /**
+         * Tells if the widget is currently focused.
+         * @type Boolean
+         */
+        this._focused = false;
+
         this._updateState(true);
 
         /**
@@ -124,8 +130,14 @@ Aria.classDefinition({
             } else {
                 if ((this._mousePressed && this._mouseOver) || this._keyPressed) {
                     state = "msdown";
-                } else if (this._mouseOver) {
+                } else if (this._mouseOver && !this._focused) {
                     state = "msover";
+                } else if (this._focused) {
+                    if (this._mouseOver) {
+                        state = "msoverFocused";
+                    } else {
+                        state = "normalFocused";
+                    }
                 }
             }
             this._state = state;
@@ -144,7 +156,9 @@ Aria.classDefinition({
                     if (state == "disabled") {
                         this._focusElt.className = "xButton xButtonDisabled";
                         if (ie8plus) {
-                            this._focusElt.onfocusin = function(){ this.blur(); };
+                            this._focusElt.onfocusin = function () {
+                                this.blur();
+                            };
                         }
                     } else {
                         this._focusElt.className = "xButton";
@@ -356,6 +370,24 @@ Aria.classDefinition({
                 return true;
             }
             return true;
+        },
+
+        /**
+         * React to delegated focus events
+         * @param {aria.DomEvent} domEvt Event
+         */
+        _dom_onfocus : function (domEvt) {
+            this._focused = true;
+            this._updateState();
+        },
+
+        /**
+         * React to delegated blur events
+         * @param {aria.DomEvent} domEvt Event
+         */
+        _dom_onblur : function (domEvt) {
+            this._focused = false;
+            this._updateState();
         }
     }
 });

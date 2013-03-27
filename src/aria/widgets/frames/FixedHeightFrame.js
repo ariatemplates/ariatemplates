@@ -97,7 +97,7 @@
                 out.write(['<span class="xFixedHeightFrame_w ', cssPrefix, 'w">'].join(''));
                 var hasBorder = this._hasBorder(this._cfg.stateObject.skipLeftBorder, this._cfg.iconsLeft);
                 out.write(['<span  ', hasBorder ? '' : 'style="display:none;"', ' class="xFixedHeightFrame_bme ',
-                        cssPrefix, 'b ', cssPrefix, 'bkgA">&nbsp;</span>'].join(''));
+                        cssPrefix, 'b ', cssPrefix, 'bkgA"></span>'].join(''));
                 this._writeExtraMarkupBegin(out);
                 out.write(['<span class="xFixedHeightFrame_bme ', cssPrefix, 'm ', cssPrefix, 'bkgB" >',
                         '<span style="', sizeInfo.style, '" class="', sizeInfo.className, '">'].join(''));
@@ -113,7 +113,7 @@
                 this._writeExtraMarkupEnd(out);
                 var hasBorder = this._hasBorder(this._cfg.stateObject.skipRightBorder, this._cfg.iconsRight);
                 out.write(['<span ', hasBorder ? '' : 'style="display:none;"', ' class="xFixedHeightFrame_bme ',
-                        cssPrefix, 'e ', cssPrefix, 'bkgA">&nbsp;</span>'].join(''));
+                        cssPrefix, 'e ', cssPrefix, 'bkgA"></span>'].join(''));
                 out.write('</span>');
             },
 
