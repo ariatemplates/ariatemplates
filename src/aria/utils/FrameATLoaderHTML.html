@@ -20,7 +20,7 @@
 
 			var hash = window.location.hash.substring(1);
 			window.location.hash = "";
-			parent.aria.utils.FrameATLoader.callFromFrame(hash);
+			(opener || parent).aria.utils.FrameATLoader.callFromFrame(hash);
 		})()
 	</script>
 </body>

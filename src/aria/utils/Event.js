@@ -87,7 +87,7 @@
                 // call unload listeners
                 // Keep a local copy of the reference to unloadListeners because it is possible that a listener calls
                 // aria.utils.Event.reset (that's what AriaWindow is doing).
-                var list = unloadListeners;
+                var list = unloadListeners.slice();
                 for (var i = 0, len = list.length; i < len; ++i) {
                     var l = list[i];
                     if (l) {
@@ -96,6 +96,7 @@
                         l = null;
                     }
                 }
+                list = null;
             },
 
             /**
