@@ -14,8 +14,8 @@
  */
 
 /**
- * Utility class used to load Aria Templates in an iframe. This is used by aria.jsunit.TestWrapper to isolate tests, but
- * it can be used for any purpose. It is still experimental for now.
+ * Utility class used to load Aria Templates in an iframe or in a new window. This is used by aria.jsunit.TestWrapper to
+ * isolate tests, but it can be used for any purpose. It is still experimental for now.
  */
 Aria.classDefinition({
     $classpath : "aria.utils.FrameATLoader",
@@ -69,7 +69,8 @@ Aria.classDefinition({
         /**
          * Load Aria Templates in the given frame and call the callback. This replaces the content of the frame.
          * @param {DOMElement} frame frame
-         * @param {aria.core.CfgBeans.Callback} cb callback. The first argument is an object containing success information.
+         * @param {aria.core.CfgBeans.Callback} cb callback. The first argument is an object containing success
+         * information.
          */
         loadAriaTemplatesInFrame : function (frame, cb) {
             this.loadBootstrap({
@@ -101,7 +102,9 @@ Aria.classDefinition({
             });
             var docUrl = [aria.core.DownloadMgr.resolveURL("aria/utils/FrameATLoaderHTML.html"), '?',
                     encodeURIComponent(Aria.$frameworkWindow.location.href.replace(/(\?|\#).*$/, "")), '#', callbackId].join('');
-            var window = args.frame.contentWindow;
+            // args.frame.contentWindow is defined only if the framework is loaded in an iframe. In the case of a new
+            // window, args.frame is already the correct window object
+            var window = args.frame.contentWindow || args.frame;
             window.location = docUrl;
         },
 
@@ -111,14 +114,15 @@ Aria.classDefinition({
          * @param {Object} args object containing the frame and callback
          */
         _loadATInFrameCb2 : function (res, args) {
-            var window = args.frame.contentWindow;
+            var window = args.frame.contentWindow || args.frame;
             var document = window.document;
             var iFrameAria = window.Aria;
             iFrameAria.rootFolderPath = this.bootRootFolderPath;
             iFrameAria.debug = Aria.debug;
             iFrameAria.memCheckMode = Aria.memCheckMode;
             window.Aria["eval"](this.frameworkJS); // note that using window.eval leads to strange errors in FF
-            document.write('<script type="text/javascript">parent.aria.utils.FrameATLoader.callFromFrame('
+            // If the framework is loaded inside a new window, opener has to be used instead of parent
+            document.write('<script type="text/javascript">(opener || parent).aria.utils.FrameATLoader.callFromFrame('
                     + this._createCallbackId({
                         fn : this._loadATInFrameCb3,
                         scope : this,
@@ -132,7 +136,7 @@ Aria.classDefinition({
          * @param {Object} args object containing the frame and callback
          */
         _loadATInFrameCb3 : function (res, args) {
-            var window = args.frame.contentWindow;
+            var window = args.frame.contentWindow || args.frame;
             if (window.aria == null) {
                 this.$callback(args.cb, {
                     success : false
