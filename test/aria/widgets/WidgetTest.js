@@ -23,13 +23,8 @@ Aria.classDefinition({
     $prototype : {
 
         _createTextField : function (cfg, numElements) {
-            var o = new aria.widgets.form.TextField(cfg, this.outObj.tplCtxt);
-            o.writeMarkup(this.outObj);
-            this.outObj.putInDOM();
-            // init widget
-            o.initWidget();
             return {
-                o : o,
+                o : this.createAndInit("aria.widgets.form.TextField", cfg),
                 dom : this.outObj.testArea.childNodes[numElements]
             };
         },

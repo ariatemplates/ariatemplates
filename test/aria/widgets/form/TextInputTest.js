@@ -20,10 +20,6 @@ Aria.classDefinition({
     $classpath : "test.aria.widgets.form.TextInputTest",
     $extends : "aria.jsunit.WidgetTestCase",
     $dependencies : ["aria.widgets.form.TextField"],
-    $constructor : function () {
-        this.$WidgetTestCase.constructor.call(this);
-        this._Browser = aria.core.Browser;
-    },
     $prototype : {
 
         /**
@@ -34,11 +30,7 @@ Aria.classDefinition({
          */
         _createTextInput : function (cfg) {
             // use textfield to have a simple controller
-            var instance = new aria.widgets.form.TextField(cfg, this.outObj.tplCtxt);
-            instance.writeMarkup(this.outObj);
-            this.outObj.putInDOM();
-            // init widget
-            instance.initWidget();
+            var instance = this.createAndInit("aria.widgets.form.TextField", cfg);
             var dom = instance.getDom();
             if (aria.core.Browser.isIE7) {
                 dom = dom.firstChild;
@@ -221,7 +213,7 @@ Aria.classDefinition({
             var instance1 = tf1.instance;
             instance1._hasFocus = true;
             instance1._dom_onclick();
-            if (!this._Browser.isIE) {
+            if (!aria.core.Browser.isIE) {
                 this.assertTrue(instance1._textInputField.selectionStart === 0);
                 this.assertTrue(instance1._textInputField.selectionEnd === instance1._textInputField.value.length);
             }
@@ -230,7 +222,7 @@ Aria.classDefinition({
             instance1._textInputField.selectionEnd = 0;
             instance1._cfg.autoselect = false;
             instance1._dom_onclick();
-            if (!this._Browser.isIE) {
+            if (!aria.core.Browser.isIE) {
                 this.assertTrue(instance1._textInputField.selectionEnd === 0);
             }
             this._destroyTextInput(instance1);

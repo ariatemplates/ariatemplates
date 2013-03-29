@@ -42,7 +42,7 @@ Aria.classDefinition({
         _startValuesTest : function () {
             var values = [50, -0, 0.1234124, 1, -1, 0.0001, 1234621389461782346, -0.127836478923619478612938476];
             for (var i = 0; i < values.length; i++) {
-                if (this._testValueInit(values[i]) != true) {
+                if (this._testValueInit(values[i]) !== true) {
                     this.$logError("_testValueInit failed for val=" + values[i]);
                 }
             }
@@ -73,10 +73,7 @@ Aria.classDefinition({
             };
 
             // widget creation and initialization
-            var instance = new aria.widgets.form.NumberField(cfg, aria.jsunit.helpers.OutObj.tplCtxt);
-            instance.writeMarkup(this.outObj);
-            this.outObj.putInDOM();
-            instance.initWidget();
+            var instance = this.createAndInit("aria.widgets.form.NumberField", cfg);
 
             // res is what we want to assert. it is then returned for more handling by caller method.
             var res = (instance.controller.getDataModel().number == testVal);
@@ -120,10 +117,7 @@ Aria.classDefinition({
             };
 
             // widget creation and initialization
-            var instance = new aria.widgets.form.NumberField(cfg, aria.jsunit.helpers.OutObj.tplCtxt);
-            instance.writeMarkup(this.outObj);
-            this.outObj.putInDOM();
-            instance.initWidget();
+            var instance = this.createAndInit("aria.widgets.form.NumberField", cfg);
 
             var input = instance.getTextInputField();
             this.assertTrue(input.value == helptext, "Helptext not set on input");
