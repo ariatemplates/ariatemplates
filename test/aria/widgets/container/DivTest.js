@@ -19,21 +19,9 @@
 Aria.classDefinition({
     $classpath : "test.aria.widgets.container.DivTest",
     $extends : "aria.jsunit.WidgetTestCase",
+    $dependencies : ["aria.widgets.container.Div"],
     $prototype : {
-        testAsyncDiv : function () {
-            // Need to load the widget class at test execution time because otherwise aria.widgets.AriaSkinInterface is
-            // not defined. The first test hence becomes asynchronous
-            Aria.load({
-                classes : ["aria.widgets.container.Div"],
-                oncomplete : {
-                    fn : this._testDiv,
-                    scope : this
-                }
-            });
-        },
-
-        _testDiv : function () {
-
+        testDiv : function () {
             // create a new div object
             var div = new aria.widgets.container.Div({}, this.outObj.tplCtxt);
             this.assertFalse(div === null);
@@ -50,8 +38,6 @@ Aria.classDefinition({
 
             this.outObj.clearAll();
             div.$dispose();
-
-            this.notifyTestEnd("testAsyncDiv");
         }
     }
 });

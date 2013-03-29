@@ -22,13 +22,8 @@ Aria.classDefinition({
     $extends : "aria.jsunit.WidgetTestCase",
     $prototype : {
         _createGauge : function (cfg) {
-            var o = new aria.widgets.form.Gauge(cfg, this.outObj.tplCtxt);
-            o.writeMarkup(this.outObj);
-            this.outObj.putInDOM();
-            // init widget
-            o.initWidget();
             return {
-                o : o,
+                o : this.createAndInit("aria.widgets.form.Gauge", cfg),
                 dom : this.outObj.testArea.childNodes[0]
             };
         },

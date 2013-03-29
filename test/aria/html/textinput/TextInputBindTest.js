@@ -15,41 +15,9 @@
 
 Aria.classDefinition({
     $classpath : "test.aria.html.textinput.TextInputBindTest",
-    $extends : "aria.jsunit.TestCase",
+    $extends : "aria.jsunit.WidgetTestCase",
     $dependencies : ["aria.html.TextInput", "aria.utils.json"],
     $prototype : {
-        setUp : function () {
-            var document = Aria.$window.document;
-            var testArea = document.createElement("div");
-            testArea.id = "testForTextInputEvents";
-
-            document.body.appendChild(testArea);
-
-            this.playgroundTestArea = testArea;
-        },
-
-        tearDown : function () {
-            this.playgroundTestArea.parentNode.removeChild(this.playgroundTestArea);
-            this.playgroundTestArea = null;
-        },
-
-        createMockMarkupWriter : function () {
-            var buffer = [];
-            return {
-                write : function (markup) {
-                    buffer.push(markup);
-                },
-
-                getMarkup : function () {
-                    return buffer.join("");
-                }
-            };
-        },
-
-        mockEvalCallback : function (transform, retVal) {
-            return transform(retVal);
-        },
-
         testInitialValueEmpty : function () {
             var container = {};
 
@@ -62,15 +30,7 @@ Aria.classDefinition({
                 }
             };
 
-            var out = this.createMockMarkupWriter();
-            var widget = new aria.html.TextInput(cfg, {
-                tplClasspath : "TextInput"
-            });
-            widget.writeMarkup(out);
-
-            this.playgroundTestArea.innerHTML = out.getMarkup();
-
-            widget.initWidget();
+            var widget = this.createAndInit("aria.html.TextInput", cfg);
 
             this.assertEquals(widget._domElt.value, "", "Value : " + widget._domElt.value);
 
@@ -78,6 +38,7 @@ Aria.classDefinition({
             this.assertEquals(widget._domElt.value, "something", "Set value : " + widget._domElt.value);
 
             widget.$dispose();
+            this.outObj.clearAll();
         },
 
         testInitialValueSomething : function () {
@@ -94,15 +55,7 @@ Aria.classDefinition({
                 }
             };
 
-            var out = this.createMockMarkupWriter();
-            var widget = new aria.html.TextInput(cfg, {
-                tplClasspath : "TextInput"
-            });
-            widget.writeMarkup(out);
-
-            this.playgroundTestArea.innerHTML = out.getMarkup();
-
-            widget.initWidget();
+            var widget = this.createAndInit("aria.html.TextInput", cfg);
 
             this.assertEquals(widget._domElt.value, "abc", "Value : " + widget._domElt.value);
 
@@ -110,6 +63,7 @@ Aria.classDefinition({
             this.assertEquals(widget._domElt.value, "12", "Set value : " + widget._domElt.value);
 
             widget.$dispose();
+            this.outObj.clearAll();
         },
 
         testInitialValueNumber : function () {
@@ -126,15 +80,7 @@ Aria.classDefinition({
                 }
             };
 
-            var out = this.createMockMarkupWriter();
-            var widget = new aria.html.TextInput(cfg, {
-                tplClasspath : "TextInput"
-            });
-            widget.writeMarkup(out);
-
-            this.playgroundTestArea.innerHTML = out.getMarkup();
-
-            widget.initWidget();
+            var widget = this.createAndInit("aria.html.TextInput", cfg);
 
             this.assertEquals(widget._domElt.value, "12", "Value : " + widget._domElt.value);
 
@@ -142,6 +88,7 @@ Aria.classDefinition({
             this.assertEquals(widget._domElt.value, "other", "Set value : " + widget._domElt.value);
 
             widget.$dispose();
+            this.outObj.clearAll();
         },
 
         testInitialValueTransformSingle : function () {
@@ -161,16 +108,7 @@ Aria.classDefinition({
                 }
             };
 
-            var out = this.createMockMarkupWriter();
-            var widget = new aria.html.TextInput(cfg, {
-                tplClasspath : "TextInput",
-                evalCallback : this.mockEvalCallback
-            });
-            widget.writeMarkup(out);
-
-            this.playgroundTestArea.innerHTML = out.getMarkup();
-
-            widget.initWidget();
+            var widget = this.createAndInit("aria.html.TextInput", cfg);
 
             this.assertEquals(widget._domElt.value, "big", "Value : " + widget._domElt.value);
 
@@ -178,6 +116,7 @@ Aria.classDefinition({
             this.assertEquals(widget._domElt.value, "huge", "Set value : " + widget._domElt.value);
 
             widget.$dispose();
+            this.outObj.clearAll();
         },
 
         testInitialValueTransformMiltiple : function () {
@@ -202,16 +141,7 @@ Aria.classDefinition({
                 }
             };
 
-            var out = this.createMockMarkupWriter();
-            var widget = new aria.html.TextInput(cfg, {
-                tplClasspath : "TextInput",
-                evalCallback : this.mockEvalCallback
-            });
-            widget.writeMarkup(out);
-
-            this.playgroundTestArea.innerHTML = out.getMarkup();
-
-            widget.initWidget();
+            var widget = this.createAndInit("aria.html.TextInput", cfg);
 
             this.assertEquals(widget._domElt.value, "big", "Value : " + widget._domElt.value);
 
@@ -219,6 +149,7 @@ Aria.classDefinition({
             this.assertEquals(widget._domElt.value, "big", "Set value : " + widget._domElt.value);
 
             widget.$dispose();
+            this.outObj.clearAll();
         }
     }
 });

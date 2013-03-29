@@ -21,14 +21,52 @@ Aria.classDefinition({
     $dependencies : ["aria.utils.Dom"],
     $singleton : true,
     $constructor : function () {
-        this.testArea = aria.utils.Dom.getElementById("TESTAREA");
+        /**
+         * DOM element in which to inject the stored markup
+         * @type {HTMLElement}
+         */
+        this.testArea = null;
+
+        /**
+         * HTML markup to be injected in the test area
+         * @type {String}
+         */
         this.store = "";
     },
     $destructor : function () {
-        this.testArea = null;
-        this.store = null;
+        this.clean();
     },
     $prototype : {
+        /**
+         * Create a playground area for the widget in the DOM
+         * @return {HTMLElement}
+         */
+        createPlayground : function (id) {
+            var document = Aria.$window.document;
+            var testArea = document.createElement("div");
+            testArea.id = "playground_" + (id || "unknown_test");
+
+            document.body.appendChild(testArea);
+
+            this.testArea = testArea;
+        },
+
+        /**
+         * Clean the playground area so that it can be reused
+         * @return {[type]} [description]
+         */
+        clean : function () {
+            if (this.testArea) {
+                this.testArea.parentNode.removeChild(this.testArea);
+                this.testArea = null;
+            }
+            this.store = "";
+        },
+
+        /**
+         * Mock of a template context
+         * @type {Object}
+         */
         tplCtxt : {
             $getId : function (id) {
                 return ["testOutput", id].join("_");
@@ -37,18 +75,33 @@ Aria.classDefinition({
                 return aria.jsunit.helpers.OutObj.$callback.apply(this, arguments);
             }
         },
+
+        /**
+         * Write something in the store. This implements the TemplateCtxt interface
+         * @param  {String} str Markup
+         */
         write : function (str) {
             this.store += str;
         },
+
+        /**
+         * Put the stored markup in the test area
+         */
         putInDOM : function () {
             this.testArea.innerHTML = this.store;
         },
+
+        /**
+         * Clear the test area and the store
+         */
         clearAll : function () {
             this.testArea.innerHTML = "";
             this.store = "";
         },
-        callMacro : function (macro) {},
-        beginSection : function () {},
-        endSection : function () {}
+
+        /* Mock methods */
+        callMacro : Aria.empty,
+        beginSection : Aria.empty,
+        endSection : Aria.empty
     }
 });

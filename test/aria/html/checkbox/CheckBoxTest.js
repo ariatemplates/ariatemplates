@@ -15,41 +15,9 @@
 
 Aria.classDefinition({
     $classpath : "test.aria.html.checkbox.CheckBoxTest",
-    $extends : "aria.jsunit.TestCase",
+    $extends : "aria.jsunit.WidgetTestCase",
     $dependencies : ["aria.html.CheckBox", "aria.utils.json", "aria.utils.FireDomEvent"],
     $prototype : {
-        setUp : function () {
-            var document = Aria.$window.document;
-            var testArea = document.createElement("div");
-            testArea.id = "testForCheckBox";
-
-            document.body.appendChild(testArea);
-
-            this.playgroundTestArea = testArea;
-        },
-
-        tearDown : function () {
-            this.playgroundTestArea.parentNode.removeChild(this.playgroundTestArea);
-            this.playgroundTestArea = null;
-        },
-
-        createMockMarkupWriter : function () {
-            var buffer = [];
-            return {
-                write : function (markup) {
-                    buffer.push(markup);
-                },
-
-                getMarkup : function () {
-                    return buffer.join("");
-                }
-            };
-        },
-
-        mockEvalCallback : function (transform, retVal) {
-            return transform(retVal);
-        },
-
         testInitialValueFalse : function () {
             var container = {};
 
@@ -62,15 +30,7 @@ Aria.classDefinition({
                 }
             };
 
-            var out = this.createMockMarkupWriter();
-            var widget = new aria.html.CheckBox(cfg, {
-                tplClasspath : "CheckBox"
-            });
-            widget.writeMarkup(out);
-
-            this.playgroundTestArea.innerHTML = out.getMarkup();
-
-            widget.initWidget();
+            var widget = this.createAndInit("aria.html.CheckBox", cfg);
 
             this.assertEquals(widget._domElt.checked, false, "Checked bound to initial false: " + widget._domElt.checked);
 
@@ -78,6 +38,7 @@ Aria.classDefinition({
             this.assertEquals(widget._domElt.checked, true, "Set checked to true: " + widget._domElt.checked);
 
             widget.$dispose();
+            this.outObj.clearAll();
         },
 
         testInitialValueTrue : function () {
@@ -94,15 +55,7 @@ Aria.classDefinition({
                 }
             };
 
-            var out = this.createMockMarkupWriter();
-            var widget = new aria.html.CheckBox(cfg, {
-                tplClasspath : "CheckBox"
-            });
-            widget.writeMarkup(out);
-
-            this.playgroundTestArea.innerHTML = out.getMarkup();
-
-            widget.initWidget();
+            var widget = this.createAndInit("aria.html.CheckBox", cfg);
 
             this.assertEquals(widget._domElt.checked, true, "Checked bound to initial true: " + widget._domElt.checked);
 
@@ -110,6 +63,7 @@ Aria.classDefinition({
             this.assertEquals(widget._domElt.checked, false, "Set checked to false: " + widget._domElt.checked);
 
             widget.$dispose();
+            this.outObj.clearAll();
         },
 
         testTransformFromWidget : function () {
@@ -123,23 +77,18 @@ Aria.classDefinition({
                         inside : container,
                         to : "checkstate",
                         transform : {
-                            fromWidget : function(v) {return v ? 'checked' : 'not_checked'},
-                            toWidget : function(v) {return v=='checked'}
+                            fromWidget : function(v) {
+                                return v ? 'checked' : 'not_checked';
+                            },
+                            toWidget : function(v) {
+                                return v === 'checked';
+                            }
                         }
                     }
                 }
             };
 
-            var out = this.createMockMarkupWriter();
-            var widget = new aria.html.CheckBox(cfg, {
-                tplClasspath : "CheckBox",
-                evalCallback : this.mockEvalCallback
-            });
-            widget.writeMarkup(out);
-
-            this.playgroundTestArea.innerHTML = out.getMarkup();
-
-            widget.initWidget();
+            var widget = this.createAndInit("aria.html.CheckBox", cfg);
 
             this.assertEquals(widget._domElt.checked, true, "Transform to widget true: " + widget._domElt.checked);
 
@@ -147,6 +96,7 @@ Aria.classDefinition({
             this.assertEquals(widget._domElt.checked, false, "Transform to widget false: " + widget._domElt.value);
 
             widget.$dispose();
+            this.outObj.clearAll();
         },
 
         testReactOnClick : function () {
@@ -161,15 +111,7 @@ Aria.classDefinition({
                 }
             };
 
-            var out = this.createMockMarkupWriter();
-            var widget = new aria.html.CheckBox(cfg, {
-                tplClasspath : "CheckBox"
-            });
-            widget.writeMarkup(out);
-
-            this.playgroundTestArea.innerHTML = out.getMarkup();
-
-            widget.initWidget();
+            var widget = this.createAndInit("aria.html.CheckBox", cfg);
 
             aria.utils.FireDomEvent.fireEvent("click", widget._domElt);
 
@@ -177,6 +119,7 @@ Aria.classDefinition({
             this.assertEquals(container.checkstate, true, "Check click on data: " + container.checkstate);
 
             widget.$dispose();
+            this.outObj.clearAll();
         }
 
      }

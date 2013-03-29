@@ -31,13 +31,13 @@ Aria.classDefinition({
             var cfg = {
                 label : "Some text",
                 labelPos : labelPos
-            }
+            };
             return cfg;
         },
         _createInput : function (cfg, minWidth) {
-            var o = new aria.widgets.form.Input(cfg, aria.jsunit.helpers.OutObj.tplCtxt)
-            o._minInputMarkupWidth = minWidth
-            return o
+            var o = new aria.widgets.form.Input(cfg, aria.jsunit.helpers.OutObj.tplCtxt);
+            o._minInputMarkupWidth = minWidth;
+            return o;
         },
         /**
          * Test _checkCfgConsistency to make sure widths are well set
@@ -65,61 +65,61 @@ Aria.classDefinition({
             o.$dispose();
 
             // first test: no change expected
-            var pos = ["left", "right"]
+            var pos = ["left", "right"], cfg;
             for (var idx in pos) {
-                var cfg = this._getCfg(pos[idx])
+                cfg = this._getCfg(pos[idx]);
                 o = this._createInput(cfg, 20);
 
-                o._checkCfgConsistency(cfg)
-                this.assertTrue(cfg.width == -1)
-                this.assertTrue(cfg.labelWidth == -1)
-                this.assertTrue(o._inputMarkupWidth == -3)
+                o._checkCfgConsistency(cfg);
+                this.assertEquals(cfg.width, -1);
+                this.assertEquals(cfg.labelWidth, -1);
+                this.assertEquals(o._inputMarkupWidth, -3);
 
-                cfg.width = 15
-                o._checkCfgConsistency(cfg) // too small width >> change width
-                this.assertTrue(cfg.width == 20)
-                this.assertTrue(cfg.labelWidth == -1)
-                this.assertTrue(o._inputMarkupWidth == 18)
+                cfg.width = 15;
+                o._checkCfgConsistency(cfg); // too small width >> change width
+                this.assertEquals(cfg.width, 20);
+                this.assertEquals(cfg.labelWidth, -1);
+                this.assertEquals(o._inputMarkupWidth, 18);
 
-                cfg.width = 50
-                cfg.labelWidth = 25
-                o._checkCfgConsistency(cfg) // valid values
-                this.assertTrue(cfg.width == 50)
-                this.assertTrue(cfg.labelWidth == 25)
-                this.assertTrue(o._inputMarkupWidth == 23)
+                cfg.width = 50;
+                cfg.labelWidth = 25;
+                o._checkCfgConsistency(cfg); // valid values
+                this.assertEquals(cfg.width, 50);
+                this.assertEquals(cfg.labelWidth, 25);
+                this.assertEquals(o._inputMarkupWidth, 23);
 
-                cfg.width = 50
-                cfg.labelWidth = 35
-                o._checkCfgConsistency(cfg) // too big label: 35+20>50 >> change width
-                this.assertTrue(cfg.width == 55)
-                this.assertTrue(cfg.labelWidth == 35)
-                this.assertTrue(o._inputMarkupWidth == 18)
+                cfg.width = 50;
+                cfg.labelWidth = 35;
+                o._checkCfgConsistency(cfg); // too big label: 35+20>50 >> change width
+                this.assertEquals(cfg.width, 55);
+                this.assertEquals(cfg.labelWidth, 35);
+                this.assertEquals(o._inputMarkupWidth, 18);
 
                 o.$dispose();
             }
 
-            cfg = this._getCfg("top")
+            cfg = this._getCfg("top");
             o = this._createInput(cfg, 20);
 
-            cfg.width = 15 // too small width >> change width
-            o._checkCfgConsistency(cfg)
-            this.assertTrue(cfg.width == 20)
-            this.assertTrue(cfg.labelWidth == -1)
-            this.assertTrue(o._inputMarkupWidth == 20)
+            cfg.width = 15; // too small width >> change width
+            o._checkCfgConsistency(cfg);
+            this.assertEquals(cfg.width, 20);
+            this.assertEquals(cfg.labelWidth, -1);
+            this.assertEquals(o._inputMarkupWidth, 20);
 
-            cfg.width = 25
-            cfg.labelWidth = 40 // too big label: 40>25 >> change width
-            o._checkCfgConsistency(cfg)
-            this.assertTrue(cfg.width == 40)
-            this.assertTrue(cfg.labelWidth == 40)
-            this.assertTrue(o._inputMarkupWidth == 40)
+            cfg.width = 25;
+            cfg.labelWidth = 40; // too big label: 40>25 >> change width
+            o._checkCfgConsistency(cfg);
+            this.assertEquals(cfg.width, 40);
+            this.assertEquals(cfg.labelWidth, 40);
+            this.assertEquals(o._inputMarkupWidth, 40);
 
-            cfg.width = 50
-            cfg.labelWidth = 35 // too small label
-            o._checkCfgConsistency(cfg)
-            this.assertTrue(cfg.width == 50)
-            this.assertTrue(cfg.labelWidth == 50)
-            this.assertTrue(o._inputMarkupWidth == 50)
+            cfg.width = 50;
+            cfg.labelWidth = 35; // too small label
+            o._checkCfgConsistency(cfg);
+            this.assertEquals(cfg.width, 50);
+            this.assertEquals(cfg.labelWidth, 50);
+            this.assertEquals(o._inputMarkupWidth, 50);
 
             o.$dispose();
 
