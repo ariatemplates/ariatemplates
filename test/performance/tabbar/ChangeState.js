@@ -45,7 +45,7 @@ Aria.classDefinition({
          * @return {aria.widgets.container.Tab}
          */
         _crateTab : function (name, container) {
-            var instance = new aria.widgets.container.Tab({
+            var cfg = {
                 tabId : name,
                 bind : {
                     selectedTab : {
@@ -53,16 +53,12 @@ Aria.classDefinition({
                         to : "selected"
                     }
                 }
-            }, this.outObj.tplCtxt);
-
-            instance.writeMarkup(this.outObj);
-            this.outObj.putInDOM();
-            // init widget
-            instance.initWidget();
+            };
+            var instance = this.createAndInit("aria.widgets.container.Tab", cfg);
 
             instance._updateState = function () {
                 container.changeState += 1;
-            }
+            };
 
             return instance;
         }

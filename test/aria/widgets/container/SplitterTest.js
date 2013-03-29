@@ -21,57 +21,19 @@ Aria.classDefinition({
     $extends : "aria.jsunit.WidgetTestCase",
     $dependencies : ["aria.widgets.container.Splitter"],
     $prototype : {
-
-        _genericSplitter : function (cfg, h) {
-            var localCfg = aria.utils.Json.copy(cfg);
-            var tf = this._createSplitter(cfg);
-            var dom = tf.dom;
-            var o = tf.o;
-
-            // Test panels
-            // var h = this._calcHeight(localCfg, o);
-            if (this._orientation) {
-                this.assertTrue(o._splitPanel1.style.width === h.s1);
-                this.assertTrue(o._splitPanel2.style.width === h.s2);
-            } else {
-                this.assertTrue(o._splitPanel1.style.height === h.s1);
-                this.assertTrue(o._splitPanel2.style.height === h.s2);
-            }
-
-            this.outObj.clearAll();
-            o.$dispose();
-
-        },
-        _inject : function (src, target) {
-            for (var prop in src) {
-                if (src.hasOwnProperty(prop)) {
-                    if (!(prop in target)) {
-                        target[prop] = src[prop];
-                    }
-                }
-            }
-            return target;
-        },
         _createSplitter : function (cfg) {
-            var o = new aria.widgets.container.Splitter(cfg, this.outObj.tplCtxt);
-            o._widgetMarkupBegin(this.outObj);
+            var instance = new aria.widgets.container.Splitter(cfg, this.outObj.tplCtxt);
+            instance._widgetMarkupBegin(this.outObj);
             this.outObj.putInDOM();
-            o._domElt = this.outObj.testArea;
-            o.initWidget();
-            // init widget
-            // o.initWidget();
+            instance._domElt = this.outObj.testArea;
+            instance.initWidget();
             return {
-                o : o,
+                o : instance,
                 dom : this.outObj.testArea.childNodes[0]
             };
         },
-        testBaseSplitter : function () {
-            // Cleanup
+        testBaseSplitterHorizontal : function () {
             this._orientation = null;
-            this.outObj.clearAll();
-            this.assertTrue(this.outObj.testArea.innerHTML === "" && this.outObj.store === "");
-            // create a new splitter object
-
             var cfg = {
                 id : "sampleSplitter",
                 sclass : "std",
@@ -86,6 +48,9 @@ Aria.classDefinition({
             };
 
             this._testBaseNormalMarkup(cfg);
+        },
+
+        testBaseSplitterVertical : function () {
             this._orientation = true;
             cfg = {
                 id : "sampleSplitter",
@@ -101,36 +66,63 @@ Aria.classDefinition({
             };
 
             this._testBaseNormalMarkup(cfg);
-
         },
+
         _testBaseNormalMarkup : function (cfg) {
-            // var localCfg = aria.utils.Json.copy(cfg);
+            var splitter = this._createSplitter(cfg);
+            this.assertTrue(!!splitter.o);
+            this.assertNotEquals(this.outObj.store, "");
+            this.assertNotEquals(this.outObj.testArea.innerHTML, "");
 
-            var tf = this._createSplitter(cfg);
-            this.assertFalse(tf.o === null);
-            this.assertFalse(this.outObj.store === "");
-            this.assertFalse(this.outObj.testArea.innerHTML === "");
-
-            var o = tf.o;
-            var dom = tf.dom;
-            this.assertTrue(dom.style.height === cfg.height + "px");
-            this.assertTrue(dom.style.width === cfg.width + "px");
+            var instance = splitter.o;
+            var dom = splitter.dom;
+            this.assertEquals(dom.style.height, cfg.height + "px");
+            this.assertEquals(dom.style.width, cfg.width + "px");
 
             // Test panels
             if (this._orientation) {
-                this.assertTrue(o._splitPanel1.style.width === "146px");
-                this.assertTrue(o._splitPanel2.style.width === "244px");
+                this.assertEquals(instance._splitPanel1.style.width, "146px");
+                this.assertEquals(instance._splitPanel2.style.width, "244px");
 
             } else {
-                this.assertTrue(o._splitPanel1.style.height === "147px");
-                this.assertTrue(o._splitPanel2.style.height === "247px");
+                this.assertEquals(instance._splitPanel1.style.height, "147px");
+                this.assertEquals(instance._splitPanel2.style.height, "247px");
+            }
+
+            this.outObj.clearAll();
+            instance.$dispose();
+        },
+
+        _genericSplitter : function (cfg, h) {
+            var localCfg = aria.utils.Json.copy(cfg);
+            var tf = this._createSplitter(cfg);
+            var dom = tf.dom;
+            var o = tf.o;
+
+            // Test panels
+            if (this._orientation) {
+                this.assertTrue(o._splitPanel1.style.width === h.s1);
+                this.assertTrue(o._splitPanel2.style.width === h.s2);
+            } else {
+                this.assertTrue(o._splitPanel1.style.height === h.s1);
+                this.assertTrue(o._splitPanel2.style.height === h.s2);
             }
 
             this.outObj.clearAll();
             o.$dispose();
-
-            // this.notifyTestEnd("testAsyncSplitter");
         },
+
+        _inject : function (src, target) {
+            for (var prop in src) {
+                if (src.hasOwnProperty(prop)) {
+                    if (!(prop in target)) {
+                        target[prop] = src[prop];
+                    }
+                }
+            }
+            return target;
+        },
+
         testSplitterDifferentHeights : function () {
             this._orientation = null;
             var basicProperties = {

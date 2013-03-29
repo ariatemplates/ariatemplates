@@ -19,26 +19,13 @@
 Aria.classDefinition({
     $classpath : "test.aria.widgets.container.FieldsetTest",
     $extends : "aria.jsunit.WidgetTestCase",
-    $dependencies : ["aria.utils.FireDomEvent", "aria.utils.Dom"],
+    $dependencies : ["aria.utils.FireDomEvent", "aria.utils.Dom", "aria.widgets.container.Fieldset"],
     $prototype : {
         /**
          * Test that the onSubmit callback on the fieldset is well called, depending on the _ariaInput attribute and on
          * the return value of nested fieldsets.
          */
-        testAsyncFieldsetSubmit : function () {
-            // Need to load the widget class at test execution time because otherwise aria.widgets.AriaSkinInterface is
-            // not defined. The first test hence becomes asynchronous
-            Aria.load({
-                classes : ["aria.widgets.container.Fieldset"],
-                oncomplete : {
-                    fn : this._testFieldsetSubmit,
-                    scope : this
-                }
-            });
-        },
-
-        _testFieldsetSubmit : function () {
-
+        testFieldsetSubmit : function () {
             var out = aria.jsunit.helpers.OutObj;
 
             // create the fieldsets
@@ -78,39 +65,37 @@ Aria.classDefinition({
 
             this._fieldsetRootSubmitCalled = 0;
             this._sendEnter("fieldsetTest1"); // field 1 does not have _ariaInput="1", onSubmit should not be called
-            this.assertTrue(this._fieldsetRootSubmitCalled == 0);
+            this.assertEquals(this._fieldsetRootSubmitCalled, 0);
 
             this._fieldsetRootSubmitCalled = 0;
             this._sendEnter("fieldsetTest2"); // field 2 has _ariaInput="1", onSubmit should be called
-            this.assertTrue(this._fieldsetRootSubmitCalled == 1);
+            this.assertEquals(this._fieldsetRootSubmitCalled, 1);
 
             this._fieldsetRootSubmitCalled = 0;
             this._sendEnter("fieldsetTest3"); // field 3 : onSubmit should be called even if it is in a nested
             // fieldset
-            this.assertTrue(this._fieldsetRootSubmitCalled == 1);
+            this.assertEquals(this._fieldsetRootSubmitCalled, 1);
 
             this._fieldsetRootSubmitCalled = 0;
             this._fieldsetNestedSubmitCalled = 0;
             this._fieldsetNestedReturnValue = false; // nested onSubmit return false, root onSubmit should not be
             // called
             this._sendEnter("fieldsetTest4");
-            this.assertTrue(this._fieldsetNestedSubmitCalled == 1);
-            this.assertTrue(this._fieldsetRootSubmitCalled == 0);
+            this.assertEquals(this._fieldsetNestedSubmitCalled, 1);
+            this.assertEquals(this._fieldsetRootSubmitCalled, 0);
 
             this._fieldsetRootSubmitCalled = 0;
             this._fieldsetNestedSubmitCalled = 0;
             this._fieldsetNestedReturnValue = true; // nested onSubmit return false, root onSubmit should not be called
             this._sendEnter("fieldsetTest4");
-            this.assertTrue(this._fieldsetNestedSubmitCalled == 1);
-            this.assertTrue(this._fieldsetRootSubmitCalled == 1);
+            this.assertEquals(this._fieldsetNestedSubmitCalled, 1);
+            this.assertEquals(this._fieldsetRootSubmitCalled, 1);
 
             // dispose things
             fieldsetRoot.$dispose();
             fieldsetNested1.$dispose();
             fieldsetNested2.$dispose();
             out.clearAll();
-
-            this.notifyTestEnd("testAsyncFieldsetSubmit");
         },
 
         /**
@@ -136,7 +121,7 @@ Aria.classDefinition({
          */
         _fieldsetRootSubmit : function () {
             try {
-                this.assertTrue(this._fieldsetRootSubmitCalled == 0);
+                this.assertEquals(this._fieldsetRootSubmitCalled, 0);
                 this._fieldsetRootSubmitCalled = 1;
             } catch (ex) {
                 this.handleAsyncTestError(ex, false);
@@ -149,7 +134,7 @@ Aria.classDefinition({
          */
         _fieldsetNestedSubmit : function () {
             try {
-                this.assertTrue(this._fieldsetNestedSubmitCalled == 0);
+                this.assertEquals(this._fieldsetNestedSubmitCalled, 0);
                 this._fieldsetNestedSubmitCalled = 1;
             } catch (ex) {
                 this.handleAsyncTestError(ex, false);

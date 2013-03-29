@@ -15,23 +15,12 @@
 
 Aria.classDefinition({
     $classpath : "test.aria.html.textinput.TextInputOnTypeTest",
-    $extends : "aria.jsunit.TestCase",
+    $extends : "aria.jsunit.WidgetTestCase",
     $dependencies : ["aria.html.TextInput", "aria.utils.FireDomEvent"],
     $prototype : {
         setUp : function () {
             this._didAnyoneCallKeyDown = false;
             this._didAnyoneCallType = false;
-
-            var document = Aria.$window.document;
-            var testArea = document.createElement("div");
-            testArea.id = "testForTextInputEvents";
-
-            document.body.appendChild(testArea);
-            this._typeEventTestArea = testArea;
-        },
-
-        tearDown : function () {
-            this._typeEventTestArea.parentNode.removeChild(this._typeEventTestArea);
         },
 
         _keydown : function () {
@@ -40,19 +29,6 @@ Aria.classDefinition({
 
         _type : function () {
             this._didAnyoneCallType = true;
-        },
-
-        createMockMarkupWriter : function () {
-            var buffer = [];
-            return {
-                write : function (markup) {
-                    buffer.push(markup);
-                },
-
-                getMarkup : function () {
-                    return buffer.join("");
-                }
-            }
         },
 
         testAsyncOnTypeWithKeyDown : function () {
@@ -69,14 +45,7 @@ Aria.classDefinition({
                 }
             };
 
-            var out = this.createMockMarkupWriter();
-            var widget = new aria.html.TextInput(cfg, {
-                tplClasspath : "TextInput"
-            });
-            widget.writeMarkup(out);
-
-            this._typeEventTestArea.innerHTML = out.getMarkup();
-            widget.initWidget();
+            var widget = this.createAndInit("aria.html.TextInput", cfg);
 
             aria.utils.FireDomEvent.fireEvent("keydown", widget._domElt);
 
@@ -89,6 +58,7 @@ Aria.classDefinition({
                         widget.$dispose();
                     } catch (ex) {}
 
+                    this.outObj.clearAll();
                     this.notifyTestEnd("testAsyncOnTypeWithKeyDown");
                 },
                 scope : this,
@@ -98,7 +68,6 @@ Aria.classDefinition({
 
         testAsyncOnTypeWhileRefresh : function () {
             // The difference is that disposed in the keydown callback
-
             var cfg = {
                 on : {
                     keydown : {
@@ -116,14 +85,7 @@ Aria.classDefinition({
                 }
             };
 
-            var out = this.createMockMarkupWriter();
-            var widget = new aria.html.TextInput(cfg, {
-                tplClasspath : "TextInput"
-            });
-            widget.writeMarkup(out);
-
-            this._typeEventTestArea.innerHTML = out.getMarkup();
-            widget.initWidget();
+            var widget = this.createAndInit("aria.html.TextInput", cfg);
 
             aria.utils.FireDomEvent.fireEvent("keydown", widget._domElt);
 
@@ -134,6 +96,7 @@ Aria.classDefinition({
                         this.assertFalse(this._didAnyoneCallType, "_type was called");
                     } catch (ex) {}
 
+                    this.outObj.clearAll();
                     this.notifyTestEnd("testAsyncOnTypeWhileRefresh");
                 },
                 scope : this,

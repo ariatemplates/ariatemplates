@@ -18,37 +18,16 @@
  */
 Aria.classDefinition({
     $classpath : "test.aria.widgets.action.SortIndicatorTest",
-    $dependencies : ["aria.templates.View"],
+    $dependencies : ["aria.templates.View", "aria.widgets.action.SortIndicator"],
     $extends : "aria.jsunit.WidgetTestCase",
     $prototype : {
         _createSortIndicator : function (cfg) {
-
-            var o = new aria.widgets.action.SortIndicator(cfg, this.outObj.tplCtxt);
-
-            o.writeMarkup(this.outObj);
-            this.outObj.putInDOM();
-            // init widget
-            o.initWidget();
             return {
-                o : o,
+                o : this.createAndInit("aria.widgets.action.SortIndicator", cfg),
                 dom : this.outObj.testArea.childNodes[0]
             };
         },
-        testAsyncSetState : function () {
-
-            // Need to load the widget class at test execution time because otherwise aria.widgets.AriaSkinInterface is
-            // not defined. The first test hence becomes asynchronous
-            Aria.load({
-                classes : ["aria.widgets.action.SortIndicator"],
-                oncomplete : {
-                    fn : this._testSetState,
-                    scope : this
-                }
-            });
-        },
-
-        _testSetState : function () {
-
+        testSetState : function () {
             var myArray = [0, 1, 2, 3, 4];
             var myView = new aria.templates.View(myArray);
 
@@ -57,32 +36,30 @@ Aria.classDefinition({
                 label : "Airport",
                 view : myView,
                 sortKeyGetter : function (o) {
-                    return "equipment"
+                    return "equipment";
                 },
                 refreshArgs : [{
                             filterSection : "bound1"
                         }]
             });
 
-            var o = tf.o;
-            o._state = o._setState(o._cfg);
-            this.assertTrue(o._state == 'normal');
+            var widget = tf.o;
+            widget._state = widget._setState(widget._cfg);
+            this.assertTrue(widget._state == 'normal');
 
-            o._cfg.view.sortName = 'SortByAirport';
-            o._cfg.view.sortOrder = 'A';
-            o._state = o._setState(o._cfg);
+            widget._cfg.view.sortName = 'SortByAirport';
+            widget._cfg.view.sortOrder = 'A';
+            widget._state = widget._setState(widget._cfg);
 
-            this.assertTrue(o._state == 'ascending');
+            this.assertTrue(widget._state == 'ascending');
 
-            o._cfg.view.sortName = 'SortByAirport';
-            o._cfg.view.sortOrder = 'D';
-            o._state = o._setState(o._cfg);
+            widget._cfg.view.sortName = 'SortByAirport';
+            widget._cfg.view.sortOrder = 'D';
+            widget._state = widget._setState(widget._cfg);
 
-            this.assertTrue(o._state == 'descending');
-            o.$dispose();
+            this.assertTrue(widget._state == 'descending');
+            widget.$dispose();
             myView.$dispose();
-            this.outObj.clearAll();
-            this.notifyTestEnd("testAsyncSetState");
         }
 
     }

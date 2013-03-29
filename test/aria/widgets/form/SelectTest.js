@@ -22,11 +22,7 @@ Aria.classDefinition({
          * Create an instance of a select widget.
          */
         _createSelect : function (cfg) {
-            var widget = new aria.widgets.form.Select(cfg, this.outObj.tplCtxt);
-            widget.writeMarkup(this.outObj);
-            this.outObj.putInDOM();
-            // init widget
-            widget.initWidget();
+            var widget = this.createAndInit("aria.widgets.form.Select", cfg);
             var dom = widget.getDom();
             if (aria.core.Browser.isIE7) {
                 dom = dom.firstChild;
