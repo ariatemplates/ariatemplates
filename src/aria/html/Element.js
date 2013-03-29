@@ -111,7 +111,7 @@
                     if (eventListeners.hasOwnProperty(listener)) {
                         hasListeners = true;
 
-                        eventListeners[listener] = this.$normCallback.call(this._context, eventListeners[listener]);
+                        eventListeners[listener] = this.$normCallback.call(this._context._tpl, eventListeners[listener]);
                     }
                 }
 
