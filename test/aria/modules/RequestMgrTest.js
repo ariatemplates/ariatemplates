@@ -175,8 +175,7 @@ Aria.classDefinition({
             }, {
                 id : "x"
             });
-            this.assertEquals(url.url, "http://test/tpls/doTest3;jsessionid=x?boolean=false", "boolean missing. got "
-                    + url.url);
+            this.assertEquals(url.url, "http://test/tpls/doTest3;jsessionid=x?boolean=false", "boolean missing. got %1");
 
             // try removing the last param
             requestMgr.removeParam("boolean");
@@ -242,7 +241,7 @@ Aria.classDefinition({
                 });
 
                 // test all events were called
-                this.assertTrue(this.errorEvent == 0, "There should be no error");
+                this.assertTrue(this.errorEvent === 0, "There should be no error");
 
                 // test final data
                 this.assertTrue(res.response && res.response.mockData, "Missing mock data");
@@ -393,7 +392,7 @@ Aria.classDefinition({
             var currentPath = Aria.$frameworkWindow.location.pathname.split('/');
             // Remove protocol and host name:
             var match = /^https?:\/\/[^/]+(\/.*)$/.exec(destination);
-            if (match == null) {
+            if (!match) {
                 // destination is already relative
                 return destination;
             }

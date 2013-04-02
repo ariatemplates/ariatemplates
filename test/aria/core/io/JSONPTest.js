@@ -307,7 +307,7 @@ Aria.classDefinition({
          * Test redirecting a FileLoader request to JSON-P.
          */
         testAsyncRedirectFileLoaderToJSONP : function () {
-            var fileToBeRequested = "test/aria/core/test/fileRedirectedToJsonP.txt"
+            var fileToBeRequested = "test/aria/core/test/fileRedirectedToJsonP.txt";
             var oSelf = this;
             var filterCalled = false;
             var filter = new test.aria.core.test.IOFilterSample({

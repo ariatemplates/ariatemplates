@@ -17,13 +17,13 @@
  * Test case for aria.touch.gestures.SingleTap
  */
 Aria.classDefinition({
-    $classpath : 'test.aria.touch.gestures.SingleTap',
-    $extends : 'aria.jsunit.TemplateTestCase',
+    $classpath : "test.aria.touch.gestures.SingleTap",
+    $extends : "aria.jsunit.TemplateTestCase",
     $dependencies : ["aria.utils.Dom", "aria.utils.FireDomEvent", "aria.core.Browser", "aria.touch.Event"],
     $constructor : function () {
         this.$TemplateTestCase.constructor.call(this);
         this.setTestEnv({
-            template : 'test.aria.touch.gestures.SingleTapTpl'
+            template : "test.aria.touch.gestures.SingleTapTpl"
         });
         this.domUtil = aria.utils.Dom;
         this.fireEvent = aria.utils.FireDomEvent;
@@ -50,11 +50,34 @@ Aria.classDefinition({
          */
         _testCancelMultiSingleTap : function () {
             var args = {
-                    "sequence" : ["singletapstart","singletapcancel"],
-                    "callback" : this._testCancelMoveSingleTap
+                "sequence" : ["singletapstart", "singletapcancel"],
+                "callback" : this._testCancelMoveSingleTap
             };
-            this._raiseFakeEvent(this.touchEventMap.touchstart, {isPrimary: true,touches: [{clientX: 0, clientY: 0}], changedTouches: [{clientX: 0, clientY: 0}]});
-            this._raiseFakeEvent(this.touchEventMap.touchmove, {isPrimary: false,touches: [{clientX: 0, clientY: 0}, {clientX: 5, clientY: 5}], changedTouches: [{clientX: 5, clientY: 5}]});
+            this._raiseFakeEvent(this.touchEventMap.touchstart, {
+                isPrimary : true,
+                touches : [{
+                            clientX : 0,
+                            clientY : 0
+                        }],
+                changedTouches : [{
+                            clientX : 0,
+                            clientY : 0
+                        }]
+            });
+            this._raiseFakeEvent(this.touchEventMap.touchmove, {
+                isPrimary : false,
+                touches : [{
+                            clientX : 0,
+                            clientY : 0
+                        }, {
+                            clientX : 5,
+                            clientY : 5
+                        }],
+                changedTouches : [{
+                            clientX : 5,
+                            clientY : 5
+                        }]
+            });
             this._delay(10, this._testEvents, args);
         },
         /**
@@ -62,11 +85,17 @@ Aria.classDefinition({
          */
         _testCancelMoveSingleTap : function () {
             var args = {
-                    "sequence" : ["singletapstart","singletapcancel"],
-                    "callback" : this._testNotCompletedSingleTap
+                "sequence" : ["singletapstart", "singletapcancel"],
+                "callback" : this._testNotCompletedSingleTap
             };
-            this._raiseFakeEvent(this.touchEventMap.touchstart, {clientX: 0, clientY: 0});
-            this._raiseFakeEvent(this.touchEventMap.touchmove, {clientX: 100, clientY: 100});
+            this._raiseFakeEvent(this.touchEventMap.touchstart, {
+                clientX : 0,
+                clientY : 0
+            });
+            this._raiseFakeEvent(this.touchEventMap.touchmove, {
+                clientX : 100,
+                clientY : 100
+            });
             this._delay(10, this._testEvents, args);
         },
         /**
@@ -74,28 +103,50 @@ Aria.classDefinition({
          */
         _testNotCompletedSingleTap : function () {
             var args = {
-                    "sequence" : ["singletapstart"],
-                    "callback" : this._testCancelDoubleTapSingleTap,
-                    "addDelay" : 250
+                "sequence" : ["singletapstart"],
+                "callback" : this._testCancelDoubleTapSingleTap,
+                "addDelay" : 250
             };
-            this._raiseFakeEvent(this.touchEventMap.touchstart, {clientX: 0, clientY: 0});
-            this._raiseFakeEvent(this.touchEventMap.touchmove, {clientX: 5, clientY: 5});
-            this._raiseFakeEvent(this.touchEventMap.touchend, {clientX: 5, clientY: 5});
+            this._raiseFakeEvent(this.touchEventMap.touchstart, {
+                clientX : 0,
+                clientY : 0
+            });
+            this._raiseFakeEvent(this.touchEventMap.touchmove, {
+                clientX : 5,
+                clientY : 5
+            });
+            this._raiseFakeEvent(this.touchEventMap.touchend, {
+                clientX : 5,
+                clientY : 5
+            });
             this._delay(100, this._testEvents, args);
         },
         /**
-         * Test a cancelled single tap because of doubletap: touchstart, touchmove with distance <= 10, touchend, touchstart.
+         * Test a cancelled single tap because of doubletap: touchstart, touchmove with distance <= 10, touchend,
+         * touchstart.
          */
         _testCancelDoubleTapSingleTap : function () {
             var args = {
-                    "sequence" : ["singletapstart", "singletapcancel"],
-                    "callback" : this._testTrueSingleTap,
-                    "addDelay" : 250
+                "sequence" : ["singletapstart", "singletapcancel"],
+                "callback" : this._testTrueSingleTap,
+                "addDelay" : 250
             };
-            this._raiseFakeEvent(this.touchEventMap.touchstart, {clientX: 0, clientY: 0});
-            this._raiseFakeEvent(this.touchEventMap.touchmove, {clientX: 5, clientY: 5});
-            this._raiseFakeEvent(this.touchEventMap.touchend, {clientX: 5, clientY: 5});
-            this._raiseFakeEvent(this.touchEventMap.touchstart, {clientX: 5, clientY: 5});
+            this._raiseFakeEvent(this.touchEventMap.touchstart, {
+                clientX : 0,
+                clientY : 0
+            });
+            this._raiseFakeEvent(this.touchEventMap.touchmove, {
+                clientX : 5,
+                clientY : 5
+            });
+            this._raiseFakeEvent(this.touchEventMap.touchend, {
+                clientX : 5,
+                clientY : 5
+            });
+            this._raiseFakeEvent(this.touchEventMap.touchstart, {
+                clientX : 5,
+                clientY : 5
+            });
             this._delay(10, this._testEvents, args);
         },
         /**
@@ -103,12 +154,21 @@ Aria.classDefinition({
          */
         _testTrueSingleTap : function () {
             var args = {
-                    "sequence" : ["singletapstart","singletap"],
-                    "callback" : this._endTests
+                "sequence" : ["singletapstart", "singletap"],
+                "callback" : this._endTests
             };
-            this._raiseFakeEvent(this.touchEventMap.touchstart, {clientX: 0, clientY: 0});
-            this._raiseFakeEvent(this.touchEventMap.touchmove, {clientX: 5, clientY: 5});
-            this._raiseFakeEvent(this.touchEventMap.touchend, {clientX: 5, clientY: 5});
+            this._raiseFakeEvent(this.touchEventMap.touchstart, {
+                clientX : 0,
+                clientY : 0
+            });
+            this._raiseFakeEvent(this.touchEventMap.touchmove, {
+                clientX : 5,
+                clientY : 5
+            });
+            this._raiseFakeEvent(this.touchEventMap.touchend, {
+                clientX : 5,
+                clientY : 5
+            });
             this._delay(260, this._testEvents, args);
         },
         /**

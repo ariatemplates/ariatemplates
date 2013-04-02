@@ -14,20 +14,20 @@
  */
 
 Aria.tplScriptDefinition({
-	$classpath : "test.aria.touch.gestures.TapTplScript",
-	$constructor : function () {
+    $classpath : "test.aria.touch.gestures.TapTplScript",
+    $constructor : function () {
         this.data = {};
     },
     $destructor : function () {
         this.data = null;
     },
-	$prototype : {
-		tapHandler : function (event) {
-		    var eType = event.type;
-		    if (eType === "tapstart") {
-		        this.data.events = [];
-		    }
-		    this.data.events.push(eType);
-		}
-	}
+    $prototype : {
+        tapHandler : function (event) {
+            var eType = event.type;
+            if (eType === "tapstart") {
+                this.data.events = [];
+            }
+            this.data.events.push(eType);
+        }
+    }
 });

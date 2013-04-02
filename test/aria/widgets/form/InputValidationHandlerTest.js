@@ -58,7 +58,7 @@ Aria.classDefinition({
                 getDom : function () {
                     return anchor;
                 }
-            }
+            };
 
             var validationHandler = new aria.widgets.form.InputValidationHandler(fakeInput);
 

@@ -96,12 +96,6 @@ Aria.classDefinition({
                 isDesktop : false,
                 isTablet : false
             },
-            "HTC_Touch_3G Mozilla/4.0 (compatible; MSIE 6.0; Windows CE; IEMobile 7.11)" : {
-                isDevice : true,
-                isMobile : true,
-                isDesktop : false,
-                isTablet : false
-            },
             "Mozilla/4.0 (compatible; MSIE 7.0; Windows Phone OS 7.0; Trident/3.1; IEMobile/7.0; Nokia;N70)" : {
                 isDevice : true,
                 isMobile : true,
@@ -109,12 +103,6 @@ Aria.classDefinition({
                 isTablet : false
             },
             "Mozilla/5.0 (SymbianOS/9.4; Series60/5.0 NokiaN97-1/12.0.024; Profile/MIDP-2.1 Configuration/CLDC-1.1; en-us) AppleWebKit/525 (KHTML, like Gecko) BrowserNG/7.1.12344" : {
-                isDevice : true,
-                isMobile : true,
-                isDesktop : false,
-                isTablet : false
-            },
-            "Mozilla/5.0 (Android; Linux armv7l; rv:2.0.1) Gecko/20100101 Firefox/4.0.1 Fennec/2.0.1" : {
                 isDevice : true,
                 isMobile : true,
                 isDesktop : false,

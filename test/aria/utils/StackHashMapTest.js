@@ -33,7 +33,7 @@ Aria.classDefinition({
             var myKeyB = {};
             var myValueB = {};
             var myKeyC = "string1";
-            var myValueC1 = {}
+            var myValueC1 = {};
             var myValueC2 = {};
             var myKeyD = "string2";
             var myValueD = {};
@@ -58,26 +58,26 @@ Aria.classDefinition({
             myMap.push(myKeyF, myValueF2);
             myMap.push(myKeyG, myValueG1);
             myMap.push(myKeyG, myValueG2);
-            this.assertTrue(myMap.pop(myKeyB) === myValueB);
-            this.assertTrue(myMap.pop(myKeyB) === undefined);
-            this.assertTrue(myMap.pop(myKeyA) === myValueA2);
-            this.assertTrue(myMap.pop(myKeyA) === myValueA1);
-            this.assertTrue(myMap.pop(myKeyA) === undefined);
-            this.assertTrue(myMap.pop(myKeyC) === myValueC2);
-            this.assertTrue(myMap.pop(myKeyC) === myValueC1);
-            this.assertTrue(myMap.pop(myKeyC) === undefined);
-            this.assertTrue(myMap.pop(myKeyF) === myValueF2);
-            this.assertTrue(myMap.pop(myKeyF) === myValueF1);
-            this.assertTrue(myMap.pop(myKeyF) === undefined);
-            this.assertTrue(myMap.pop(myKeyG) === myValueG2);
-            this.assertTrue(myMap.pop(myKeyG) === myValueG1);
-            this.assertTrue(myMap.pop(myKeyG) === undefined);
-            this.assertTrue(myMap.pop(myKeyD) === myValueD);
-            this.assertTrue(myMap.pop(myKeyD) === undefined);
-            this.assertTrue(myMap.pop(myKeyE) === myValueE2);
-            this.assertTrue(myMap.pop(myKeyE) === myValueE1);
-            this.assertTrue(myMap.pop(myKeyE) === undefined);
-            this.assertTrue(myMap.removeAll().length == 0);
+            this.assertEquals(myMap.pop(myKeyB), myValueB);
+            this.assertEquals(myMap.pop(myKeyB), undefined);
+            this.assertEquals(myMap.pop(myKeyA), myValueA2);
+            this.assertEquals(myMap.pop(myKeyA), myValueA1);
+            this.assertEquals(myMap.pop(myKeyA), undefined);
+            this.assertEquals(myMap.pop(myKeyC), myValueC2);
+            this.assertEquals(myMap.pop(myKeyC), myValueC1);
+            this.assertEquals(myMap.pop(myKeyC), undefined);
+            this.assertEquals(myMap.pop(myKeyF), myValueF2);
+            this.assertEquals(myMap.pop(myKeyF), myValueF1);
+            this.assertEquals(myMap.pop(myKeyF), undefined);
+            this.assertEquals(myMap.pop(myKeyG), myValueG2);
+            this.assertEquals(myMap.pop(myKeyG), myValueG1);
+            this.assertEquals(myMap.pop(myKeyG), undefined);
+            this.assertEquals(myMap.pop(myKeyD), myValueD);
+            this.assertEquals(myMap.pop(myKeyD), undefined);
+            this.assertEquals(myMap.pop(myKeyE), myValueE2);
+            this.assertEquals(myMap.pop(myKeyE), myValueE1);
+            this.assertEquals(myMap.pop(myKeyE), undefined);
+            this.assertEquals(myMap.removeAll().length, 0);
             myMap.$dispose();
         },
 
@@ -94,7 +94,7 @@ Aria.classDefinition({
             var myKeyB = {};
             var myValueB = {};
             var myKeyC = "string1";
-            var myValueC1 = {}
+            var myValueC1 = {};
             var myValueC2 = {};
             var myKeyD = "string2";
             var myValueD = {};
@@ -120,7 +120,7 @@ Aria.classDefinition({
             myMap.push(myKeyG, myValueG1);
             myMap.push(myKeyG, myValueG2);
             var removeAll = myMap.removeAll();
-            this.assertTrue(removeAll.length === 12);
+            this.assertEquals(removeAll.length, 12);
             this.assertTrue(arrayUtils.remove(removeAll, myValueA1));
             this.assertTrue(arrayUtils.remove(removeAll, myValueA2));
             this.assertTrue(arrayUtils.remove(removeAll, myValueB));
@@ -133,14 +133,14 @@ Aria.classDefinition({
             this.assertTrue(arrayUtils.remove(removeAll, myValueF2));
             this.assertTrue(arrayUtils.remove(removeAll, myValueG1));
             this.assertTrue(arrayUtils.remove(removeAll, myValueG2));
-            this.assertTrue(removeAll.length === 0);
-            this.assertTrue(myMap.pop(myKeyA) === undefined);
-            this.assertTrue(myMap.pop(myKeyB) === undefined);
-            this.assertTrue(myMap.pop(myKeyC) === undefined);
-            this.assertTrue(myMap.pop(myKeyD) === undefined);
-            this.assertTrue(myMap.pop(myKeyE) === undefined);
-            this.assertTrue(myMap.pop(myKeyF) === undefined);
-            this.assertTrue(myMap.pop(myKeyG) === undefined);
+            this.assertEquals(removeAll.length, 0);
+            this.assertEquals(myMap.pop(myKeyA), undefined);
+            this.assertEquals(myMap.pop(myKeyB), undefined);
+            this.assertEquals(myMap.pop(myKeyC), undefined);
+            this.assertEquals(myMap.pop(myKeyD), undefined);
+            this.assertEquals(myMap.pop(myKeyE), undefined);
+            this.assertEquals(myMap.pop(myKeyF), undefined);
+            this.assertEquals(myMap.pop(myKeyG), undefined);
             myMap.$dispose();
         }
     }

@@ -164,6 +164,7 @@ Aria.classDefinition({
          * Test pad method
          */
         testPad : function () {
+            var initial, size, expected, got;
             var toTest = {
                 "" : {
                     "-1" : "",
@@ -188,22 +189,21 @@ Aria.classDefinition({
                 }
             };
 
-            for (var initial in toTest) {
+            for (initial in toTest) {
                 if (toTest.hasOwnProperty(initial)) {
                     for (size in toTest[initial]) {
                         if (toTest[initial].hasOwnProperty(size)) {
-                            var expected = toTest[initial][size];
-                            var got = aria.utils.String.pad(initial, size, "a", true);
+                            expected = toTest[initial][size];
+                            got = aria.utils.String.pad(initial, size, "a", true);
 
-                            this.assertEquals(got, expected, "Padding " + initial + " size " + size + " got " + got
-                                    + " expected " + expected);
+                            this.assertEquals(got, expected, "Padding " + initial + " size " + size + " got %1 expected %2");
                         }
                     }
                 }
             }
 
             // reverse
-            var toTest = {
+            toTest = {
                 "" : {
                     0 : "",
                     1 : "a",
@@ -224,15 +224,14 @@ Aria.classDefinition({
                 }
             };
 
-            for (var initial in toTest) {
+            for (initial in toTest) {
                 if (toTest.hasOwnProperty(initial)) {
-                    for (var size in toTest[initial]) {
+                    for (size in toTest[initial]) {
                         if (toTest[initial].hasOwnProperty(size)) {
-                            var expected = toTest[initial][size];
-                            var got = aria.utils.String.pad(initial, size, "a", false);
+                            expected = toTest[initial][size];
+                            got = aria.utils.String.pad(initial, size, "a", false);
 
-                            this.assertEquals(got, expected, "Padding " + initial + " size " + size + " got " + got
-                                    + " expected " + expected);
+                            this.assertEquals(got, expected, "Padding " + initial + " size " + size + " got %1 expected %2");
                         }
                     }
                 }
@@ -290,8 +289,7 @@ Aria.classDefinition({
                             var expected = toTest[initial][size];
                             var got = aria.utils.String.crop(initial, size, "a", true);
 
-                            this.assertEquals(got, expected, "Cropping " + initial + " size " + size + " got " + got
-                                    + " expected " + expected);
+                            this.assertEquals(got, expected, "Cropping " + initial + " size " + size + " got %1 expected %2");
                         }
                     }
                 }
@@ -350,8 +348,7 @@ Aria.classDefinition({
                             var expected = toTest[initial][size];
                             var got = aria.utils.String.crop(initial, size, "a", false);
 
-                            this.assertEquals(got, expected, "Cropping " + initial + " size " + size + " got " + got
-                                    + " expected " + expected);
+                            this.assertEquals(got, expected, "Cropping " + initial + " size " + size + " got %1 expected %2");
                         }
                     }
                 }
@@ -382,8 +379,7 @@ Aria.classDefinition({
 
                         var got = aria.utils.Json.convertToJsonString(aria.utils.String.chunk(testing, size, true));
 
-                        this.assertEquals(expected, got, "Testing -" + testing + "- size " + size + " expected "
-                                + expected + " got " + got);
+                        this.assertEquals(expected, got, "Testing -" + testing + "- size " + size + " expected %1 got %2");
                     }
                 }
             }
@@ -412,8 +408,7 @@ Aria.classDefinition({
 
                         var got = aria.utils.Json.convertToJsonString(aria.utils.String.chunk(testing, size, false));
 
-                        this.assertEquals(expected, got, "Testing -" + testing + "- size " + size + " expected "
-                                + expected + " got " + got);
+                        this.assertEquals(expected, got, "Testing -" + testing + "- size " + size + " expected %1 got %2");
                     }
                 }
             }
@@ -443,7 +438,7 @@ Aria.classDefinition({
                 "%1111" : "thisString1111"
             }, got;
 
-            var epxected = []
+            var epxected = [];
             for (var key in holders) {
                 if (holders.hasOwnProperty(key)) {
                     got = aria.utils.String.substitute(holders[key], "thisString");
@@ -466,7 +461,7 @@ Aria.classDefinition({
                 "%1111" : "thisString1111"
             }, got;
 
-            var epxected = []
+            var epxected = [];
             for (var key in holders) {
                 if (holders.hasOwnProperty(key)) {
                     got = aria.utils.String.substitute(holders[key], ["thisString", "another"]);
@@ -488,7 +483,7 @@ Aria.classDefinition({
                 "%%12" : "%one2"
             }, got;
 
-            var epxected = []
+            var epxected = [];
             for (var key in holders) {
                 if (holders.hasOwnProperty(key)) {
                     got = aria.utils.String.substitute(holders[key], ["one", "two"]);

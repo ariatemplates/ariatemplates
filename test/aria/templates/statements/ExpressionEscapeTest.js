@@ -14,9 +14,9 @@
  */
 
 Aria.classDefinition({
-    $classpath : 'test.aria.templates.statements.ExpressionEscapeTest',
-    $extends : 'aria.jsunit.TemplateTestCase',
-    $dependencies : ['aria.utils.Dom'],
+    $classpath : "test.aria.templates.statements.ExpressionEscapeTest",
+    $extends : "aria.jsunit.TemplateTestCase",
+    $dependencies : ["aria.utils.Dom"],
     $prototype : {
         runTemplateTest : function () {
             var nonBackwardCompatibleCases = {
@@ -225,11 +225,10 @@ Aria.classDefinition({
                     }
 
                     // Assertions
-                    this.assertTrue(textContent === expectedText, "Expression escape failed: \n\tId = " + id
-                            + "\n\tText content = " + textContent + "\n\tExpected text = " + expectedText);
-                    this.assertTrue(numberOfChildren === expectedNumberOfNodes, "Expression escape failed: \n\tId = "
-                            + id + "\n\Number of children = " + numberOfChildren + "\n\tExpected number of children = "
-                            + expectedNumberOfNodes);
+                    this.assertEquals(textContent, expectedText, "Expression escape failed: \n\tId = " + id
+                            + "\n\tText content = %1\n\tExpected text = %1");
+                    this.assertEquals(numberOfChildren, expectedNumberOfNodes, "Expression escape failed: \n\tId = "
+                            + id + "\n\tNumber of children = %1\n\tExpected number of children = %2");
 
                     // Additional assertions in case of attributes specifications
                     var attributes = useCase.attributes;
@@ -240,9 +239,9 @@ Aria.classDefinition({
                                 var expectedAttrValue = attributes[attrName];
                                 var attrValue = child.getAttribute(attrName);
 
-                                this.assertTrue(attrValue === expectedAttrValue, "Expression escape failed: \n\tId = "
-                                        + id + "\n\Attribute name = " + attrName + "\n\tAttribute value = " + attrValue
-                                        + "\n\tExpected attribute value = " + expectedAttrValue);
+                                this.assertEquals(attrValue, expectedAttrValue, "Expression escape failed: \n\tId = "
+                                        + id + "\n\tAttribute name = " + attrName + "\n\tAttribute value = %1"
+                                        + "\n\tExpected attribute value = %2");
                             }
                         }
                     }

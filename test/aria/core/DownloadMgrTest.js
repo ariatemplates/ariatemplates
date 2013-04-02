@@ -18,12 +18,9 @@
  * @class test.aria.core.DownloadMgrTest
  */
 Aria.classDefinition({
-    $classpath : 'test.aria.core.DownloadMgrTest',
-    $extends : 'aria.jsunit.TestCase',
-    $dependencies : ['aria.utils.Callback'],
-    $constructor : function () {
-        this.$TestCase.constructor.call(this);
-    },
+    $classpath : "test.aria.core.DownloadMgrTest",
+    $extends : "aria.jsunit.TestCase",
+    $dependencies : ["aria.utils.Callback"],
     $prototype : {
 
         /**

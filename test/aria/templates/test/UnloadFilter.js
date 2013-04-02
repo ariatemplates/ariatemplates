@@ -18,15 +18,15 @@
  * test.aria.templates.test.UnloadTplBis
  */
 Aria.classDefinition({
-	$classpath : 'test.aria.templates.test.UnloadFilter',
-	$extends : 'aria.core.IOFilter',
-	$prototype : {
-		onRequest : function (req) {
-			if (this.goError) {
-				req.url = req.url.replace("Origin", "Error");
-			} else {
-				req.url = req.url.replace("Origin", "Changed");
-			}
-		}
-	}
+    $classpath : "test.aria.templates.test.UnloadFilter",
+    $extends : "aria.core.IOFilter",
+    $prototype : {
+        onRequest : function (req) {
+            if (this.goError) {
+                req.url = req.url.replace("Origin", "Error");
+            } else {
+                req.url = req.url.replace("Origin", "Changed");
+            }
+        }
+    }
 });

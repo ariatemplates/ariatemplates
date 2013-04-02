@@ -35,4 +35,4 @@ Aria.classDefinition({
 
         this.addTests("test.aria.modules.requestHandler.RequestHandlersTestSuite");
     }
-})
+});

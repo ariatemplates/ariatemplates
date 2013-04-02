@@ -17,41 +17,41 @@
  * Public interface for the sample module controller used for tests.
  */
 Aria.interfaceDefinition({
-	$classpath : 'test.aria.templates.test.ISampleModuleCtrl',
-	$extends : 'aria.templates.IModuleCtrl',
-	$events : {
-		"testEvent" : {
-			description : "This is a test event."
-		}
-	},
-	$interface : {
-		/**
-		 * Sample method.
-		 */
-		incrementCount : {
-			$type : "Function",
-			$callbackParam : 1
-		},
+    $classpath : "test.aria.templates.test.ISampleModuleCtrl",
+    $extends : "aria.templates.IModuleCtrl",
+    $events : {
+        "testEvent" : {
+            description : "This is a test event."
+        }
+    },
+    $interface : {
+        /**
+         * Sample method.
+         */
+        incrementCount : {
+            $type : "Function",
+            $callbackParam : 1
+        },
 
-		/**
-		 * Returns module session informations
-		 */
-		getSession : function () {},
+        /**
+         * Returns module session informations
+         */
+        getSession : function () {},
 
-		/**
-		 * Raises a 'testEvent' event
-		 */
-		raiseTestEvent : function () {},
-		/**
-		 * Sample to test initial word capitalize.
-		 */
-		submit : {
-			$type : "Function",
-			$callbackParam : 1
-		},
-		eventCallBack:{
-			 $type : "Function",
-			 $callbackParam : 1
-		}
-	}
+        /**
+         * Raises a 'testEvent' event
+         */
+        raiseTestEvent : function () {},
+        /**
+         * Sample to test initial word capitalize.
+         */
+        submit : {
+            $type : "Function",
+            $callbackParam : 1
+        },
+        eventCallBack : {
+            $type : "Function",
+            $callbackParam : 1
+        }
+    }
 });

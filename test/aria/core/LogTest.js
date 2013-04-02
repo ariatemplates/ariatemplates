@@ -20,9 +20,6 @@ Aria.classDefinition({
     $classpath : "test.aria.core.LogTest",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.core.Log"],
-    $constructor : function () {
-        this.$TestCase.constructor.call(this);
-    },
     $prototype : {
         /**
          * Test that valid log levels are indeed known as valid by the logger

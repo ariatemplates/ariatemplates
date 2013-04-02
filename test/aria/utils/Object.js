@@ -60,7 +60,7 @@ Aria.classDefinition({
 
             // Use the prototype
             var Constr = function () {
-                this.a = "b"
+                this.a = "b";
             };
             Constr.prototype.b = "c";
 
@@ -72,13 +72,13 @@ Aria.classDefinition({
         test_isEmpty : function () {
             var objUtil = aria.utils.Object;
             var obj = {};
-            this.assertTrue(objUtil.isEmpty(obj), "Empty object not recognized as such.")
+            this.assertTrue(objUtil.isEmpty(obj), "Empty object not recognized as such.");
             var str = "justAString";
-            this.assertTrue(objUtil.isEmpty(str), "String recognized as a non-empty object.")
+            this.assertTrue(objUtil.isEmpty(str), "String recognized as a non-empty object.");
             obj = {
                 just : "anObject"
             };
-            this.assertFalse(objUtil.isEmpty(obj), "Non-empty object recognized as empty")
+            this.assertFalse(objUtil.isEmpty(obj), "Non-empty object recognized as empty");
         }
     }
 });

@@ -17,15 +17,15 @@
  * Public interface for the sample module controller used for tests.
  */
 Aria.interfaceDefinition({
-	$classpath : 'test.aria.templates.test.IDisableMethodEventsModuleCtrl',
-	$extends : 'aria.templates.IModuleCtrl',
-	$interface : {
-		/**
-		 * Sample method.
-		 */
-		testMethod : {
-			$type : "Function",
-			$callbackParam : 1
-		}
-	}
+    $classpath : "test.aria.templates.test.IDisableMethodEventsModuleCtrl",
+    $extends : "aria.templates.IModuleCtrl",
+    $interface : {
+        /**
+         * Sample method.
+         */
+        testMethod : {
+            $type : "Function",
+            $callbackParam : 1
+        }
+    }
 });

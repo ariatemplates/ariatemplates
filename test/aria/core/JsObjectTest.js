@@ -14,13 +14,10 @@
  */
 
 Aria.classDefinition({
-    $classpath : 'test.aria.core.JsObjectTest',
-    $extends : 'aria.jsunit.TestCase',
-    $dependencies : ['test.aria.core.test.ClassA', 'test.aria.core.test.ClassB', 'test.aria.core.test.TestClass',
-            'test.aria.core.test.ImplementInterface1', 'test.aria.core.test.Interface1', 'test.aria.core.test.MyFlow'],
-    $constructor : function () {
-        this.$TestCase.constructor.call(this);
-    },
+    $classpath : "test.aria.core.JsObjectTest",
+    $extends : "aria.jsunit.TestCase",
+    $dependencies : ["test.aria.core.test.ClassA", "test.aria.core.test.ClassB", "test.aria.core.test.TestClass",
+            "test.aria.core.test.ImplementInterface1", "test.aria.core.test.Interface1", "test.aria.core.test.MyFlow"],
     $prototype : {
         setUp : function () {
             var that = this;
@@ -80,13 +77,13 @@ Aria.classDefinition({
 
         testLogs : function () {
             var msg = aria.core.JsObject.classDefinition.$prototype.$logDebug("debug msg");
-            this.assertTrue(msg == "");
+            this.assertTrue(msg === "");
             msg = aria.core.JsObject.classDefinition.$prototype.$logInfo("debug msg");
-            this.assertTrue(msg == "");
+            this.assertTrue(msg === "");
             msg = aria.core.JsObject.classDefinition.$prototype.$logWarn("debug msg");
-            this.assertTrue(msg == "");
+            this.assertTrue(msg === "");
             msg = aria.core.JsObject.classDefinition.$prototype.$logError("debug msg %1", "error");
-            this.assertTrue(msg == "");
+            this.assertTrue(msg === "");
         },
 
         testAlert : function () {

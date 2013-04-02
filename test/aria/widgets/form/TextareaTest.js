@@ -107,12 +107,12 @@ Aria.classDefinition({
             });
             var instance = tf.instance;
             this.assertTrue(instance._cfg.value == "value");
-            this.assertTrue(tf.dom.getElementsByTagName('textarea')[0].value == "value", "Value not propagated to DOM");
+            this.assertEquals(tf.dom.getElementsByTagName('textarea')[0].value, "value", "Value %1 not propagated to DOM");
 
             // change value through binding
             aria.utils.Json.setValue(array, 0, null);
 
-            this.assertTrue(tf.dom.getElementsByTagName('textarea')[0].value == "", "Value not propagated to DOM");
+            this.assertEquals(tf.dom.getElementsByTagName('textarea')[0].value, "", "Empty value not propagated to DOM");
 
             this._destroyTextarea(instance);
 
@@ -272,7 +272,7 @@ Aria.classDefinition({
             instance = tf.instance;
             instance._cfg.prefillError = true;
             instance.setPrefillText(true, "prefill", true);
-            var field = instance.getTextInputField();
+            field = instance.getTextInputField();
             // test that the widget is not updated when an prefill error occurs
             this.assertFalse(field.value == "prefill");
             this.assertFalse(instance._isPrefilled);
@@ -284,7 +284,7 @@ Aria.classDefinition({
             });
             instance = tf.instance;
             instance.setPrefillText(true, "prefill", true);
-            var field = instance.getTextInputField();
+            field = instance.getTextInputField();
             instance.setPrefillText(true, "");
             // test that the widget exits the prefill state when the prefill
             // value is ""
@@ -296,7 +296,7 @@ Aria.classDefinition({
             });
             instance = tf.instance;
             instance.setPrefillText(true, "prefill", true);
-            var field = instance.getTextInputField();
+            field = instance.getTextInputField();
             instance.setPrefillText(false);
             // test that the widget exits the prefill state when the prefill
             // value is ""
@@ -310,7 +310,7 @@ Aria.classDefinition({
             });
             instance = tf.instance;
             instance.setPrefillText(true, "prefill", true);
-            var field = instance.getTextInputField();
+            field = instance.getTextInputField();
             instance.setPrefillText(false, null, true);
             // test that the widget exits the prefill state when the prefill
             // value is ""

@@ -248,7 +248,7 @@ Aria.classDefinition({
                 "1.000" : "1000",
                 "1.00 0" : "100.0"
             }
-        }
+        };
 
         this._strictTrueCombinations = {
             PATTERNS : ["#,##.##", "#,###.###", "#,##,#.#", "#,#,#.##"],
@@ -272,7 +272,7 @@ Aria.classDefinition({
                 "12\\3!00" : [null, null, 123, null],
                 "2\\3!00" : [null, null, 23, 23]
             }
-        }
+        };
     },
     $prototype : {
         setUp : function () {

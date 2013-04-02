@@ -14,10 +14,10 @@
  */
 
 Aria.classDefinition({
-    $classpath : 'test.aria.AriaTest',
-    $extends : 'aria.jsunit.TestCase',
-    $dependencies : ['test.aria.test.ClassA', 'test.aria.test.ClassAbis', 'test.aria.test.ClassAter',
-            'test.aria.test.ClassB', 'test.aria.test.ClassC', 'test.aria.test.ClassD', 'test.aria.test.ClassS'],
+    $classpath : "test.aria.AriaTest",
+    $extends : "aria.jsunit.TestCase",
+    $dependencies : ["test.aria.test.ClassA", "test.aria.test.ClassAbis", "test.aria.test.ClassAter",
+            "test.aria.test.ClassB", "test.aria.test.ClassC", "test.aria.test.ClassD", "test.aria.test.ClassS"],
     $prototype : {
         /**
          * Test errors that can be triggered when using Aria.classDefinition
@@ -191,19 +191,19 @@ Aria.classDefinition({
             var ca2 = new test.aria.test.ClassA("XYZ");
 
             // $ extensions validation
-            this.assertTrue(ca.$class == 'ClassA');
-            this.assertTrue(ca.$classpath == 'test.aria.test.ClassA');
-            this.assertTrue(ca.$package == 'test.aria.test');
+            this.assertEquals(ca.$class, 'ClassA');
+            this.assertEquals(ca.$classpath, 'test.aria.test.ClassA');
+            this.assertEquals(ca.$package, 'test.aria.test');
 
             // property validation
-            this.assertTrue(ca.propertyA == 'valueA');
-            this.assertTrue(ca2.propertyA == 'XYZ');
-            this.assertTrue(ca.count == 0);
+            this.assertEquals(ca.propertyA, 'valueA');
+            this.assertEquals(ca2.propertyA, 'XYZ');
+            this.assertEquals(ca.count, 0);
 
             // method call validation
             ca.methodA1();
-            this.assertTrue(ca.count == 1);
-            this.assertTrue(ca.methodA2('x') == 'xmA2');
+            this.assertEquals(ca.count, 1);
+            this.assertEquals(ca.methodA2('x'), 'xmA2');
 
             // test destructor
             ca.$dispose();
@@ -220,19 +220,19 @@ Aria.classDefinition({
             ca2 = new test.aria.test.ClassAbis("XYZ");
 
             // $ extensions validation
-            this.assertTrue(ca.$class == 'ClassAbis');
-            this.assertTrue(ca.$classpath == 'test.aria.test.ClassAbis')
-            this.assertTrue(ca.$package == 'test.aria.test');
+            this.assertEquals(ca.$class, 'ClassAbis');
+            this.assertEquals(ca.$classpath, 'test.aria.test.ClassAbis');
+            this.assertEquals(ca.$package, 'test.aria.test');
 
             // property validation
-            this.assertTrue(ca.propertyA == 'valueA');
-            this.assertTrue(ca2.propertyA == 'XYZ');
-            this.assertTrue(ca.count == 0);
+            this.assertEquals(ca.propertyA, 'valueA');
+            this.assertEquals(ca2.propertyA, 'XYZ');
+            this.assertEquals(ca.count, 0);
 
             // method call validation
             ca.methodA1();
-            this.assertTrue(ca.count == 1);
-            this.assertTrue(ca.methodA2('x') == 'xmA2');
+            this.assertEquals(ca.count, 1);
+            this.assertEquals(ca.methodA2('x'), 'xmA2');
 
             // test destructor
             ca.$dispose();
@@ -249,19 +249,19 @@ Aria.classDefinition({
             ca2 = new test.aria.test.ClassAter("XYZ");
 
             // $ extensions validation
-            this.assertTrue(ca.$class == 'ClassAter');
-            this.assertTrue(ca.$classpath == 'test.aria.test.ClassAter');
-            this.assertTrue(ca.$package == 'test.aria.test');
+            this.assertEquals(ca.$class, 'ClassAter');
+            this.assertEquals(ca.$classpath, 'test.aria.test.ClassAter');
+            this.assertEquals(ca.$package, 'test.aria.test');
 
             // property validation
-            this.assertTrue(ca.propertyA == 'valueA');
-            this.assertTrue(ca2.propertyA == 'XYZ');
-            this.assertTrue(ca.count == 0);
+            this.assertEquals(ca.propertyA, 'valueA');
+            this.assertEquals(ca2.propertyA, 'XYZ');
+            this.assertEquals(ca.count, 0);
 
             // method call validation
             ca.methodA1();
-            this.assertTrue(ca.count == 1);
-            this.assertTrue(ca.methodA2('x') == 'xmA2');
+            this.assertEquals(ca.count, 1);
+            this.assertEquals(ca.methodA2('x'), 'xmA2');
 
             // test destructor
             ca.$dispose();
@@ -286,7 +286,7 @@ Aria.classDefinition({
             this.assertTrue(cb.propertyA == 'valueA');
             this.assertTrue(cb2.propertyA == 'XYZ');
             this.assertTrue(cb.propertyB == 'valueB');
-            this.assertTrue(cb.count == 0);
+            this.assertTrue(cb.count === 0);
 
             // method call validation
             cb.methodA1();
@@ -404,9 +404,7 @@ Aria.classDefinition({
          * For this reason, file upload cannot work if you set the domain. In order to let other tests pass, this one is
          * disabled.
          */
-        testDomainChange : function () {
-            return;
-
+        DISABLED_testDomainChange : function () {
             var title = Aria.$frameworkWindow.document.title;
             Aria.$global.document.domain = Aria.$global.document.domain;
             this.assertTrue(Aria.$frameworkWindow.document.title == title);

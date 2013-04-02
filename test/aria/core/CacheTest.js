@@ -16,9 +16,6 @@
 Aria.classDefinition({
     $classpath : "test.aria.core.CacheTest",
     $extends : "aria.jsunit.TestCase",
-    $constructor : function () {
-        this.$TestCase.constructor.call(this);
-    },
     $prototype : {
         testAsyncGetFileName : function () {
             // Load a template

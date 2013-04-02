@@ -17,31 +17,31 @@
  * Test for loading the contextual menu environment dynamically
  */
 Aria.classDefinition({
-  $classpath : "test.aria.templates.TemplateTest",
-  $extends : "aria.jsunit.TestCase",
-  $prototype : {
+    $classpath : "test.aria.templates.TemplateTest",
+    $extends : "aria.jsunit.TestCase",
+    $prototype : {
 
-    testAsyncLocalEnvironmentNotLoaded : function () {
-      var environment = Aria.getClassRef("aria.tools.contextual.environment.ContextualMenu");
-      if (environment !== null) {
-        Aria.dispose("aria.tools.contextual.environment.ContextualMenu");
-        environment = null;
-      }
-      this.assertTrue(environment === null);
-      Aria.load({
-        classes : ["aria.tools.contextual.ContextualMenu"],
-        oncomplete : {
-          fn : this._testAsyncLocalEnvironmentLoaded,
-          scope : this
+        testAsyncLocalEnvironmentNotLoaded : function () {
+            var environment = Aria.getClassRef("aria.tools.contextual.environment.ContextualMenu");
+            if (environment !== null) {
+                Aria.dispose("aria.tools.contextual.environment.ContextualMenu");
+                environment = null;
+            }
+            this.assertTrue(environment === null);
+            Aria.load({
+                classes : ["aria.tools.contextual.ContextualMenu"],
+                oncomplete : {
+                    fn : this._testAsyncLocalEnvironmentLoaded,
+                    scope : this
+                }
+            });
+        },
+
+        _testAsyncLocalEnvironmentLoaded : function () {
+            var contextualMenu = aria.tools.contextual.ContextualMenu;
+            var environment = Aria.getClassRef("aria.tools.contextual.environment.ContextualMenu");
+            this.assertTrue(aria.utils.Type.isInstanceOf(environment, "aria.core.environment.EnvironmentBase"));
+            this.notifyTestEnd("testAsyncLocalEnvironmentNotLoaded");
         }
-      });
-    },
-
-    _testAsyncLocalEnvironmentLoaded : function () {
-      var contextualMenu = aria.tools.contextual.ContextualMenu;
-      var environment = Aria.getClassRef("aria.tools.contextual.environment.ContextualMenu");
-      this.assertTrue(aria.utils.Type.isInstanceOf(environment, "aria.core.environment.EnvironmentBase"));
-      this.notifyTestEnd("testAsyncLocalEnvironmentNotLoaded");
     }
-  }
 });

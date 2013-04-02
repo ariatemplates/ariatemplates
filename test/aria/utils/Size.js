@@ -43,7 +43,8 @@ Aria.classDefinition({
             isValidReturn = aria.core.JsonValidator.check(size, "aria.utils.DomBeans.Size");
             this.assertTrue(isValidReturn);
             // check the returned size is correct 0, 0
-            this.assertTrue((size.height == 0) && (size.width == 0));
+            this.assertEquals(size.height, 0);
+            this.assertEquals(size.width, 0);
         }
     }
 });

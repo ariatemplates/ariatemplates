@@ -14,12 +14,9 @@
  */
 
 Aria.classDefinition({
-    $classpath : 'test.aria.templates.CSSParserTest',
-    $extends : 'aria.jsunit.TestCase',
-    $dependencies : ['aria.templates.CSSClassGenerator', 'aria.templates.CSSParser'],
-    $constructor : function () {
-        this.$TestCase.constructor.call(this);
-    },
+    $classpath : "test.aria.templates.CSSParserTest",
+    $extends : "aria.jsunit.TestCase",
+    $dependencies : ["aria.templates.CSSClassGenerator", "aria.templates.CSSParser"],
     $prototype : {
 
         setUp : function () {

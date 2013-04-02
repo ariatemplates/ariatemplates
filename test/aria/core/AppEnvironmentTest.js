@@ -17,13 +17,9 @@
  * Test case for the application environment
  */
 Aria.classDefinition({
-    $classpath : 'test.aria.core.AppEnvironmentTest',
-    $extends : 'aria.jsunit.TestCase',
+    $classpath : "test.aria.core.AppEnvironmentTest",
+    $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.core.environment.Environment"],
-    $constructor : function () {
-        this.$TestCase.constructor.call(this);
-    },
-
     $prototype : {
 
         setUp : function () {

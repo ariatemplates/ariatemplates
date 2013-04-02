@@ -34,10 +34,10 @@ Aria.classDefinition({
             };
             var testArray = [0, "string", obj];
 
-            this.assertTrue(arrayIndexOf(testArray, "notInTheArray") == -1);
-            this.assertTrue(arrayIndexOf(testArray, 0) == 0);
-            this.assertTrue(arrayIndexOf(testArray, "string") == 1);
-            this.assertTrue(arrayIndexOf(testArray, obj) == 2);
+            this.assertEquals(arrayIndexOf(testArray, "notInTheArray"), -1);
+            this.assertEquals(arrayIndexOf(testArray, 0), 0);
+            this.assertEquals(arrayIndexOf(testArray, "string"), 1);
+            this.assertEquals(arrayIndexOf(testArray, obj), 2);
         },
 
         /**
@@ -96,7 +96,7 @@ Aria.classDefinition({
             this.assertTrue(arrayContains(testArray, "string"));
             this.assertTrue(arrayContains(testArray, obj));
             // Also check the length of the Array
-            this.assertTrue(testArray.length == 3);
+            this.assertEquals(testArray.length, 3);
 
             // Remove First element
             arrayRemoveAt(testArray, 1);
@@ -105,8 +105,8 @@ Aria.classDefinition({
 
             // Check the two remaining elements are in the array
             // and that their position is ok
-            this.assertTrue(arrayIndexOf(testArray, 0) == 0);
-            this.assertTrue(arrayIndexOf(testArray, obj) == 1);
+            this.assertEquals(arrayIndexOf(testArray, 0), 0);
+            this.assertEquals(arrayIndexOf(testArray, obj), 1);
 
             // Remove Second element
             arrayRemoveAt(testArray, 1);
@@ -114,7 +114,7 @@ Aria.classDefinition({
             this.assertFalse(arrayContains(testArray, obj));
 
             // Check the remaining element is in the array
-            this.assertTrue(arrayIndexOf(testArray, 0) == 0);
+            this.assertEquals(arrayIndexOf(testArray, 0), 0);
 
             // Remove Last element
             arrayRemoveAt(testArray, 0);
@@ -149,8 +149,8 @@ Aria.classDefinition({
 
             // Check the two remaining elements are in the array
             // and that their position is ok
-            this.assertTrue(arrayIndexOf(testArray, "string") == 0);
-            this.assertTrue(arrayIndexOf(testArray, obj) == 1);
+            this.assertEquals(arrayIndexOf(testArray, "string"), 0);
+            this.assertEquals(arrayIndexOf(testArray, obj), 1);
 
             // Remove Second element
             arrayRemove(testArray, "string");
@@ -158,7 +158,7 @@ Aria.classDefinition({
             this.assertFalse(arrayContains(testArray, "string"));
 
             // Check the remaining element is in the array
-            this.assertTrue(arrayIndexOf(testArray, obj) == 0);
+            this.assertEquals(arrayIndexOf(testArray, obj), 0);
 
             // Remove Last element
             arrayRemove(testArray, obj);
@@ -226,7 +226,7 @@ Aria.classDefinition({
             var count = 0;
             forEach([], function () {
                 count++;
-            })
+            });
             this.assertTrue(count === 0);
 
             // forEach simple test

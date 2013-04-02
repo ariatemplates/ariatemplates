@@ -24,4 +24,4 @@ Aria.classDefinition({
 
         this.addTests("test.aria.ext.filesgenerator.GeneratorTest");
     }
-})
+});

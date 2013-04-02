@@ -37,7 +37,7 @@ Aria.classDefinition({
         // used to raise an error
         this.myData = {
             myProperty : 0
-        }
+        };
     },
     $prototype : {
         setUp : function () {
@@ -61,9 +61,9 @@ Aria.classDefinition({
              *
              *  STRUCTURE:
              * - div with event delegation (1)
-             * 		- Div with event delegation blocking event propagation (2)
-             * 			- Div with event delegation (3)
-             * 				- input with id delegateTest
+             *     - Div with event delegation blocking event propagation (2)
+             *         - Div with event delegation (3)
+             *             - input with id delegateTest
              * </pre>
              */
 
@@ -88,17 +88,17 @@ Aria.classDefinition({
             var input = aria.utils.Dom.getElementById("test.aria.utils.Delegate.test_delegate");
             input.click();
 
-            this.assertTrue(this._delegateFlag1 == 0);
-            this.assertTrue(this._delegateFlag2 == 1);
-            this.assertTrue(this._delegateFlag3 == 1);
+            this.assertEquals(this._delegateFlag1, 0);
+            this.assertEquals(this._delegateFlag2, 1);
+            this.assertEquals(this._delegateFlag3, 1);
 
             // remove blocking one
             aria.utils.Delegate.remove(delegationId2);
             input.click();
 
-            this.assertTrue(this._delegateFlag1 == 1);
-            this.assertTrue(this._delegateFlag2 == 1);
-            this.assertTrue(this._delegateFlag3 == 2);
+            this.assertEquals(this._delegateFlag1, 1);
+            this.assertEquals(this._delegateFlag2, 1);
+            this.assertEquals(this._delegateFlag3, 2);
 
             aria.utils.Delegate.remove(delegationId1);
 

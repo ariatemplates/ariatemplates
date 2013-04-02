@@ -52,7 +52,7 @@ Aria.classDefinition({
 
         testBaseSplitterVertical : function () {
             this._orientation = true;
-            cfg = {
+            var cfg = {
                 id : "sampleSplitter",
                 sclass : "std",
                 orientation : "vertical",

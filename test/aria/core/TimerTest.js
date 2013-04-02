@@ -14,8 +14,8 @@
  */
 
 Aria.classDefinition({
-    $classpath : 'test.aria.core.TimerTest',
-    $extends : 'aria.jsunit.TestCase',
+    $classpath : "test.aria.core.TimerTest",
+    $extends : "aria.jsunit.TestCase",
 
     $constructor : function () {
         this.$TestCase.constructor.call(this);
@@ -30,7 +30,7 @@ Aria.classDefinition({
          * Asynchronous test used to test timer callbacks
          */
         testAsyncAddCallback : function () {
-            var originalCount = aria.core.Timer._cbCount
+            var originalCount = aria.core.Timer._cbCount;
             aria.core.Timer.addCallback({
                 fn : this._execCb1,
                 scope : this,
@@ -39,9 +39,9 @@ Aria.classDefinition({
                 args : {
                     someArg : "CB1 ARG"
                 }
-            })
+            });
 
-            this.assertTrue(aria.core.Timer._cbCount == originalCount + 1)
+            this.assertTrue(aria.core.Timer._cbCount == originalCount + 1);
         },
 
         /**
@@ -49,8 +49,8 @@ Aria.classDefinition({
          * @param {Object} args the argument object passed to addCallback()
          */
         _execCb1 : function (args) {
-            this.assertTrue(args.someArg == "CB1 ARG")
-            this.notifyTestEnd("testAsyncAddCallback")
+            this.assertTrue(args.someArg == "CB1 ARG");
+            this.notifyTestEnd("testAsyncAddCallback");
         },
 
         /**
@@ -62,8 +62,8 @@ Aria.classDefinition({
                 scope : this,
                 delay : 5,
                 onerror : this.handleAsyncTestError
-            })
-            aria.core.Timer.cancelCallback(this.cbCancelId)
+            });
+            aria.core.Timer.cancelCallback(this.cbCancelId);
 
             // second callback to validate that the previous callback has been correctly cancelled
             aria.core.Timer.addCallback({
@@ -71,7 +71,7 @@ Aria.classDefinition({
                 scope : this,
                 delay : 10, // more than prevous cb
                 onerror : this.handleAsyncTestError
-            })
+            });
         },
 
         /**
@@ -79,25 +79,25 @@ Aria.classDefinition({
          */
         _execCb2 : function () {
             // This callback should not be called
-            this.fail("Cancel callback called")
-            this.notifyTestEnd("testAsyncCancelCallback")
+            this.fail("Cancel callback called");
+            this.notifyTestEnd("testAsyncCancelCallback");
         },
 
         _execCb3 : function () {
             // validate that _execCb2 is properly deleted
             try {
                 // loop on all callbacks to make sure none corresponds to this.cbCancelId
-                var callbacks = aria.core.Timer._callbacks
+                var callbacks = aria.core.Timer._callbacks;
                 for (var k in callbacks) {
                     // null callbacks should not exist as cleanup is done with delete statement
-                    this.assertTrue(callbacks[k] != null)
-                    this.assertTrue(callbacks[k].cancelId != null)
-                    this.assertTrue(callbacks[k].cancelId != this.cbCancelId)
+                    this.assertTrue(callbacks[k] != null);
+                    this.assertTrue(callbacks[k].cancelId != null);
+                    this.assertTrue(callbacks[k].cancelId != this.cbCancelId);
                 }
             } catch (ex) {
-                this.handleAsyncTestError(ex)
+                this.handleAsyncTestError(ex);
             }
-            this.notifyTestEnd("testAsyncCancelCallback")
+            this.notifyTestEnd("testAsyncCancelCallback");
         },
 
         testAsyncCallbacksRemaining : function () {
@@ -105,13 +105,13 @@ Aria.classDefinition({
                 fn : this._execCbTest,
                 scope : this,
                 delay : 1
-            })
+            });
         },
 
         _execCbTest : function (args) {
-            this.assertTrue(aria.core.Timer._numberOfCallbacks == 1);
+            this.assertEquals(aria.core.Timer._numberOfCallbacks, 1);
             aria.core.Timer.callbacksRemaining();
-            this.assertTrue(aria.core.Timer._numberOfCallbacks == 0);
+            this.assertEquals(aria.core.Timer._numberOfCallbacks, 0);
             this.notifyTestEnd("testAsyncCallbacksRemaining");
         }
     }

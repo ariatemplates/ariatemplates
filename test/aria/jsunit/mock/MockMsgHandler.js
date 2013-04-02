@@ -17,23 +17,20 @@
  * This mock Msg Handler is used by test cases in test.aria.jsunit
  */
 Aria.classDefinition({
-	$classpath : 'test.aria.jsunit.mock.MockMsgHandler',
-	$extends : 'aria.core.IOFilter',
-	$constructor : function () {
-		this.$IOFilter.constructor.call(this);
-	},
-	$prototype : {
-		/**
-		 * Method called before a request is sent to get a chance to change its arguments
-		 * @param {aria.modules.RequestMgr.FilterRequest} req
-		 */
-		onRequest : function (req) {
-			var sender = req.sender;
-			if (sender && sender.classpath == "aria.modules.RequestMgr"
-					&& sender.requestObject.moduleName == "test.aria.jsunit.mock") {
-				var address = sender.requestData.address
-				this.redirectToFile(req, 'test/aria/jsunit/mock/' + address);
-			}
-		}
-	}
+    $classpath : "test.aria.jsunit.mock.MockMsgHandler",
+    $extends : "aria.core.IOFilter",
+    $prototype : {
+        /**
+         * Method called before a request is sent to get a chance to change its arguments
+         * @param {aria.modules.RequestMgr.FilterRequest} req
+         */
+        onRequest : function (req) {
+            var sender = req.sender;
+            if (sender && sender.classpath == "aria.modules.RequestMgr"
+                    && sender.requestObject.moduleName == "test.aria.jsunit.mock") {
+                var address = sender.requestData.address;
+                this.redirectToFile(req, 'test/aria/jsunit/mock/' + address);
+            }
+        }
+    }
 });

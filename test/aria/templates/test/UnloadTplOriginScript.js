@@ -14,10 +14,10 @@
  */
 
 Aria.tplScriptDefinition({
-	$classpath : 'test.aria.templates.test.UnloadTplOriginScript',
-	$prototype : {
-		getContent : function () {
-			return 'The cake is a lie';
-		}
-	}
+    $classpath : "test.aria.templates.test.UnloadTplOriginScript",
+    $prototype : {
+        getContent : function () {
+            return "The cake is a lie";
+        }
+    }
 });

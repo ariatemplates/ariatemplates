@@ -34,7 +34,7 @@ Aria.classDefinition({
                     return true;
                 }
                 return false;
-            }
+            };
 
             var removed = store.removeMatch(matchFunction, false);
             store.$dispose();
@@ -58,7 +58,7 @@ Aria.classDefinition({
                     return true;
                 }
                 return false;
-            }
+            };
 
             var removed = store.removeMatch(matchFunction, true);
             store.$dispose();

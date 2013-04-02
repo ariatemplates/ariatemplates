@@ -18,11 +18,8 @@
  * @class test.aria.core.ResMgrTest
  */
 Aria.classDefinition({
-    $classpath : 'test.aria.core.ResMgrTest',
-    $extends : 'aria.jsunit.TestCase',
-    $constructor : function () {
-        this.$TestCase.constructor.call(this);
-    },
+    $classpath : "test.aria.core.ResMgrTest",
+    $extends : "aria.jsunit.TestCase",
     $prototype : {
         setUp : function () {
             aria.core.AppEnvironment.updateEnvironment({

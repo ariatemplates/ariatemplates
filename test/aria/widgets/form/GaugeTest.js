@@ -59,28 +59,28 @@ Aria.classDefinition({
             var dom = tf.dom;
 
             // test top level dom span
-            this.assertTrue(dom.tagName === "SPAN");
-            this.assertTrue(dom.childNodes.length === 1);
+            this.assertEquals(dom.tagName, "SPAN");
+            this.assertEquals(dom.childNodes.length, 1);
             // display:inline-block has been moved from inline style to the CSS file
             // this.assertTrue(dom.style.display === "inline-block");
 
             // test progress bar container
             var progCont = dom.childNodes[0];
-            this.assertTrue(progCont.tagName === "DIV");
+            this.assertEquals(progCont.tagName, "DIV");
 
             var floatVal = progCont.style.cssFloat || progCont.style.styleFloat;
-            this.assertTrue(floatVal === "left");
-            this.assertTrue(progCont.className === "xGAUGE_std");
+            this.assertEquals(floatVal, "left");
+            this.assertEquals(progCont.className, "xGAUGE_std");
 
             // test progress bar
             var progBar = progCont.childNodes[0];
-            this.assertTrue(progBar.tagName === "DIV");
-            this.assertTrue(progBar.className === "xGAUGE_progress_std");
-            this.assertTrue(progBar.style.width === "54%");
+            this.assertEquals(progBar.tagName, "DIV");
+            this.assertEquals(progBar.className, "xGAUGE_progress_std");
+            this.assertEquals(progBar.style.width, "54%");
 
             this._destroyGauge(o);
 
-            this.notifyTestEnd("testAsyncBaseNormalMarkup")
+            this.notifyTestEnd("testAsyncBaseNormalMarkup");
         },
         testBinding : function () {
             var data = {
@@ -157,30 +157,30 @@ Aria.classDefinition({
             var dom = tf.dom;
 
             // test top level dom span
-            this.assertTrue(dom.tagName === "SPAN");
-            this.assertTrue(dom.childNodes.length === 2);
+            this.assertEquals(dom.tagName, "SPAN");
+            this.assertEquals(dom.childNodes.length, 2);
             // display:inline-block has been moved from inline style to the CSS file
             // this.assertTrue(dom.style.display === "inline-block");
 
             // test label
             var label = dom.childNodes[0];
             var floatVal = label.style.cssFloat || label.style.styleFloat;
-            this.assertTrue(label.tagName === "SPAN");
-            this.assertTrue(floatVal === "left");
+            this.assertEquals(label.tagName, "SPAN");
+            this.assertEquals(floatVal, "left");
 
             // test progress bar container
             var progCont = dom.childNodes[1];
-            this.assertTrue(progCont.tagName === "DIV");
+            this.assertEquals(progCont.tagName, "DIV");
 
             floatVal = progCont.style.cssFloat || progCont.style.styleFloat;
-            this.assertTrue(floatVal === "left");
-            this.assertTrue(progCont.className === "xGAUGE_std");
+            this.assertEquals(floatVal, "left");
+            this.assertEquals(progCont.className, "xGAUGE_std");
 
             // test progress bar
             var progBar = progCont.childNodes[0];
-            this.assertTrue(progBar.tagName === "DIV");
-            this.assertTrue(progBar.className === "xGAUGE_progress_std");
-            this.assertTrue(progBar.style.width === "54%");
+            this.assertEquals(progBar.tagName, "DIV");
+            this.assertEquals(progBar.className, "xGAUGE_progress_std");
+            this.assertEquals(progBar.style.width, "54%");
 
             this._destroyGauge(o);
 

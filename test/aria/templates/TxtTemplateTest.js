@@ -28,8 +28,8 @@ Aria.classDefinition({
 	},
 	$prototype : {
 		/**
-		 * Test keep white space and proper escaping
-		 */
+         * Test keep white space and proper escaping
+         */
 		test_KeepWhiteSpace : function () {
 			var output = this.myTestText.processTextTemplate({
 				a : 1

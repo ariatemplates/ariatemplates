@@ -47,7 +47,7 @@ Aria.classDefinition({
 
         _testSimpleHTMLVersion : function () {
 
-            var listData = new test.aria.widgets.form.ListData();
+            var listData = Aria.getClassInstance('test.aria.widgets.form.ListData');
 
             var data = {
                 prop : "value"

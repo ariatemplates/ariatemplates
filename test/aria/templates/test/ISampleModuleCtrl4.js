@@ -17,9 +17,9 @@
  * Public interface for the sample module controller used for tests.
  */
 Aria.interfaceDefinition({
-	$classpath : 'test.aria.templates.test.ISampleModuleCtrl4',
-	$extends : 'aria.templates.IModuleCtrl',
-	$interface : {
-		myMethod1 : function () {}
-	}
+    $classpath : "test.aria.templates.test.ISampleModuleCtrl4",
+    $extends : "aria.templates.IModuleCtrl",
+    $interface : {
+        myMethod1 : function () {}
+    }
 });

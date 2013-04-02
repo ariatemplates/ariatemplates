@@ -17,13 +17,13 @@
  * Test case for aria.touch.gestures.DoubleTap
  */
 Aria.classDefinition({
-    $classpath : 'test.aria.touch.gestures.DoubleTap',
-    $extends : 'aria.jsunit.TemplateTestCase',
+    $classpath : "test.aria.touch.gestures.DoubleTap",
+    $extends : "aria.jsunit.TemplateTestCase",
     $dependencies : ["aria.utils.Dom", "aria.utils.FireDomEvent", "aria.core.Browser", "aria.touch.Event"],
     $constructor : function () {
         this.$TemplateTestCase.constructor.call(this);
         this.setTestEnv({
-            template : 'test.aria.touch.gestures.DoubleTapTpl'
+            template : "test.aria.touch.gestures.DoubleTapTpl"
         });
         this.domUtil = aria.utils.Dom;
         this.fireEvent = aria.utils.FireDomEvent;
@@ -50,11 +50,34 @@ Aria.classDefinition({
          */
         _testCancelMultiDoubleTap : function () {
             var args = {
-                    "sequence" : ["doubletapstart","doubletapcancel"],
-                    "callback" : this._testCancelMoveSingleTap
+                "sequence" : ["doubletapstart", "doubletapcancel"],
+                "callback" : this._testCancelMoveSingleTap
             };
-            this._raiseFakeEvent(this.touchEventMap.touchstart, {isPrimary: true, touches: [{clientX: 0, clientY: 0}], changedTouches: [{clientX: 0, clientY: 0}]});
-            this._raiseFakeEvent(this.touchEventMap.touchmove, {isPrimary: false, touches: [{clientX: 0, clientY: 0}, {clientX: 5, clientY: 5}], changedTouches: [{clientX: 5, clientY: 5}]});
+            this._raiseFakeEvent(this.touchEventMap.touchstart, {
+                isPrimary : true,
+                touches : [{
+                            clientX : 0,
+                            clientY : 0
+                        }],
+                changedTouches : [{
+                            clientX : 0,
+                            clientY : 0
+                        }]
+            });
+            this._raiseFakeEvent(this.touchEventMap.touchmove, {
+                isPrimary : false,
+                touches : [{
+                            clientX : 0,
+                            clientY : 0
+                        }, {
+                            clientX : 5,
+                            clientY : 5
+                        }],
+                changedTouches : [{
+                            clientX : 5,
+                            clientY : 5
+                        }]
+            });
             this._delay(10, this._testEvents, args);
         },
         /**
@@ -62,11 +85,17 @@ Aria.classDefinition({
          */
         _testCancelMoveSingleTap : function () {
             var args = {
-                    "sequence" : ["doubletapstart","doubletapcancel"],
-                    "callback" : this._testNotCompletedDoubleTap
+                "sequence" : ["doubletapstart", "doubletapcancel"],
+                "callback" : this._testNotCompletedDoubleTap
             };
-            this._raiseFakeEvent(this.touchEventMap.touchstart, {clientX: 0, clientY: 0});
-            this._raiseFakeEvent(this.touchEventMap.touchmove, {clientX: 100, clientY: 100});
+            this._raiseFakeEvent(this.touchEventMap.touchstart, {
+                clientX : 0,
+                clientY : 0
+            });
+            this._raiseFakeEvent(this.touchEventMap.touchmove, {
+                clientX : 100,
+                clientY : 100
+            });
             this._delay(10, this._testEvents, args);
         },
         /**
@@ -74,29 +103,57 @@ Aria.classDefinition({
          */
         _testNotCompletedDoubleTap : function () {
             var args = {
-                    "sequence" : ["doubletapstart","doubletapcancel"],
-                    "callback" : this._testTrueDoubleTap,
-                    "addDelay" : 250
+                "sequence" : ["doubletapstart", "doubletapcancel"],
+                "callback" : this._testTrueDoubleTap,
+                "addDelay" : 250
             };
-            this._raiseFakeEvent(this.touchEventMap.touchstart, {clientX: 0, clientY: 0});
-            this._raiseFakeEvent(this.touchEventMap.touchmove, {clientX: 5, clientY: 5});
-            this._raiseFakeEvent(this.touchEventMap.touchend, {clientX: 5, clientY: 5});
+            this._raiseFakeEvent(this.touchEventMap.touchstart, {
+                clientX : 0,
+                clientY : 0
+            });
+            this._raiseFakeEvent(this.touchEventMap.touchmove, {
+                clientX : 5,
+                clientY : 5
+            });
+            this._raiseFakeEvent(this.touchEventMap.touchend, {
+                clientX : 5,
+                clientY : 5
+            });
             this._delay(300, this._testEvents, args);
         },
         /**
-         * Test a valid double tap: touchstart, touchmove with distance <= 10, touchend, touchstart, touchmove with distance <= 10, touchend.
+         * Test a valid double tap: touchstart, touchmove with distance <= 10, touchend, touchstart, touchmove with
+         * distance <= 10, touchend.
          */
         _testTrueDoubleTap : function () {
             var args = {
-                    "sequence" : ["doubletapstart","doubletap"],
-                    "callback" : this._endTests
+                "sequence" : ["doubletapstart", "doubletap"],
+                "callback" : this._endTests
             };
-            this._raiseFakeEvent(this.touchEventMap.touchstart, {clientX: 0, clientY: 0});
-            this._raiseFakeEvent(this.touchEventMap.touchmove, {clientX: 5, clientY: 5});
-            this._raiseFakeEvent(this.touchEventMap.touchend, {clientX: 5, clientY: 5});
-            this._raiseFakeEvent(this.touchEventMap.touchstart, {clientX: 0, clientY: 0});
-            this._raiseFakeEvent(this.touchEventMap.touchmove, {clientX: 5, clientY: 5});
-            this._raiseFakeEvent(this.touchEventMap.touchend, {clientX: 5, clientY: 5});
+            this._raiseFakeEvent(this.touchEventMap.touchstart, {
+                clientX : 0,
+                clientY : 0
+            });
+            this._raiseFakeEvent(this.touchEventMap.touchmove, {
+                clientX : 5,
+                clientY : 5
+            });
+            this._raiseFakeEvent(this.touchEventMap.touchend, {
+                clientX : 5,
+                clientY : 5
+            });
+            this._raiseFakeEvent(this.touchEventMap.touchstart, {
+                clientX : 0,
+                clientY : 0
+            });
+            this._raiseFakeEvent(this.touchEventMap.touchmove, {
+                clientX : 5,
+                clientY : 5
+            });
+            this._raiseFakeEvent(this.touchEventMap.touchend, {
+                clientX : 5,
+                clientY : 5
+            });
             this._delay(10, this._testEvents, args);
         },
         /**

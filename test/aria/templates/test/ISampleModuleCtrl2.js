@@ -17,23 +17,23 @@
  * Public interface for the sample module controller used for tests.
  */
 Aria.interfaceDefinition({
-	$classpath : 'test.aria.templates.test.ISampleModuleCtrl2',
-	$extends : 'aria.templates.IModuleCtrl',
-	$interface : {
-		/**
-		 * Sub controller
-		 */
-		subcontroller : {
-			$type : "Interface",
-			$classpath : "test.aria.templates.test.ISampleModuleSubClass"
-		},
+    $classpath : "test.aria.templates.test.ISampleModuleCtrl2",
+    $extends : "aria.templates.IModuleCtrl",
+    $interface : {
+        /**
+         * Sub controller
+         */
+        subcontroller : {
+            $type : "Interface",
+            $classpath : "test.aria.templates.test.ISampleModuleSubClass"
+        },
 
-		/**
-		 * Sample method.
-		 */
-		incrementCount2 : {
-			$type : "Function",
-			$callbackParam : 1
-		}
-	}
+        /**
+         * Sample method.
+         */
+        incrementCount2 : {
+            $type : "Function",
+            $callbackParam : 1
+        }
+    }
 });

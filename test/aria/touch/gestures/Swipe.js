@@ -17,13 +17,13 @@
  * Test case for aria.touch.gestures.Swipe
  */
 Aria.classDefinition({
-    $classpath : 'test.aria.touch.gestures.Swipe',
-    $extends : 'aria.jsunit.TemplateTestCase',
+    $classpath : "test.aria.touch.gestures.Swipe",
+    $extends : "aria.jsunit.TemplateTestCase",
     $dependencies : ["aria.utils.Dom", "aria.utils.FireDomEvent", "aria.core.Browser", "aria.touch.Event"],
     $constructor : function () {
         this.$TemplateTestCase.constructor.call(this);
         this.setTestEnv({
-            template : 'test.aria.touch.gestures.SwipeTpl'
+            template : "test.aria.touch.gestures.SwipeTpl"
         });
         this.domUtil = aria.utils.Dom;
         this.fireEvent = aria.utils.FireDomEvent;
@@ -50,11 +50,32 @@ Aria.classDefinition({
          */
         _testCancelMultiSwipe : function () {
             var args = {
-                    "sequence" : ["swipestart","swipecancel"],
-                    "callback" : this._testCancelDiagonalSwipe
+                "sequence" : ["swipestart", "swipecancel"],
+                "callback" : this._testCancelDiagonalSwipe
             };
-            this._raiseFakeEvent(this.touchEventMap.touchstart, {touches: [{clientX: 0, clientY: 0}], changedTouches: [{clientX: 0, clientY: 0}]});
-            this._raiseFakeEvent(this.touchEventMap.touchmove, {touches: [{clientX: 0, clientY: 0}, {clientX: 5, clientY: 5}], changedTouches: [{clientX: 5, clientY: 5}]});
+            this._raiseFakeEvent(this.touchEventMap.touchstart, {
+                touches : [{
+                            clientX : 0,
+                            clientY : 0
+                        }],
+                changedTouches : [{
+                            clientX : 0,
+                            clientY : 0
+                        }]
+            });
+            this._raiseFakeEvent(this.touchEventMap.touchmove, {
+                touches : [{
+                            clientX : 0,
+                            clientY : 0
+                        }, {
+                            clientX : 5,
+                            clientY : 5
+                        }],
+                changedTouches : [{
+                            clientX : 5,
+                            clientY : 5
+                        }]
+            });
             this._delay(10, this._testEvents, args);
         },
         /**
@@ -62,15 +83,33 @@ Aria.classDefinition({
          */
         _testCancelDiagonalSwipe : function () {
             var args = {
-                    "sequence" : ["swipestart","swipemove","swipemove","swipemove","swipecancel"],
-                    "callback" : this._testTrueSwipe
+                "sequence" : ["swipestart", "swipemove", "swipemove", "swipemove", "swipecancel"],
+                "callback" : this._testTrueSwipe
             };
-            this._raiseFakeEvent(this.touchEventMap.touchstart, {clientX: 0, clientY: 0});
-            this._raiseFakeEvent(this.touchEventMap.touchmove, {clientX: 10, clientY: 5});
-            this._raiseFakeEvent(this.touchEventMap.touchmove, {clientX: 20, clientY: 10});
-            this._raiseFakeEvent(this.touchEventMap.touchmove, {clientX: 30, clientY: 15});
-            this._raiseFakeEvent(this.touchEventMap.touchmove, {clientX: 40, clientY: 21});
-            this._raiseFakeEvent(this.touchEventMap.touchend, {clientX: 40, clientY: 21});
+            this._raiseFakeEvent(this.touchEventMap.touchstart, {
+                clientX : 0,
+                clientY : 0
+            });
+            this._raiseFakeEvent(this.touchEventMap.touchmove, {
+                clientX : 10,
+                clientY : 5
+            });
+            this._raiseFakeEvent(this.touchEventMap.touchmove, {
+                clientX : 20,
+                clientY : 10
+            });
+            this._raiseFakeEvent(this.touchEventMap.touchmove, {
+                clientX : 30,
+                clientY : 15
+            });
+            this._raiseFakeEvent(this.touchEventMap.touchmove, {
+                clientX : 40,
+                clientY : 21
+            });
+            this._raiseFakeEvent(this.touchEventMap.touchend, {
+                clientX : 40,
+                clientY : 21
+            });
             this._delay(10, this._testEvents, args);
         },
         /**
@@ -78,14 +117,29 @@ Aria.classDefinition({
          */
         _testTrueSwipe : function () {
             var args = {
-                    "sequence" : ["swipestart","swipemove","swipemove","swipemove","swipe"],
-                    "callback" : this._endTests
+                "sequence" : ["swipestart", "swipemove", "swipemove", "swipemove", "swipe"],
+                "callback" : this._endTests
             };
-            this._raiseFakeEvent(this.touchEventMap.touchstart, {clientX: 0, clientY: 0});
-            this._raiseFakeEvent(this.touchEventMap.touchmove, {clientX: 5, clientY: 0});
-            this._raiseFakeEvent(this.touchEventMap.touchmove, {clientX: 10, clientY: 0});
-            this._raiseFakeEvent(this.touchEventMap.touchmove, {clientX: 15, clientY: 0});
-            this._raiseFakeEvent(this.touchEventMap.touchend, {clientX: 15, clientY: 0});
+            this._raiseFakeEvent(this.touchEventMap.touchstart, {
+                clientX : 0,
+                clientY : 0
+            });
+            this._raiseFakeEvent(this.touchEventMap.touchmove, {
+                clientX : 5,
+                clientY : 0
+            });
+            this._raiseFakeEvent(this.touchEventMap.touchmove, {
+                clientX : 10,
+                clientY : 0
+            });
+            this._raiseFakeEvent(this.touchEventMap.touchmove, {
+                clientX : 15,
+                clientY : 0
+            });
+            this._raiseFakeEvent(this.touchEventMap.touchend, {
+                clientX : 15,
+                clientY : 0
+            });
             this._delay(10, this._testEvents, args);
         },
         /**

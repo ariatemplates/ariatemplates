@@ -17,12 +17,12 @@
  * Public interface for the sample module sub class used for tests.
  */
 Aria.interfaceDefinition({
-	$classpath : 'test.aria.templates.test.ISampleModuleSubClass',
-	$interface : {
-		/**
-		 * Sample method added to the public interface
-		 * @return {Object} the contstructor argument (test purpose)
-		 */
-		samplePublicMethod : function () {}
-	}
+    $classpath : "test.aria.templates.test.ISampleModuleSubClass",
+    $interface : {
+        /**
+         * Sample method added to the public interface
+         * @return {Object} the contstructor argument (test purpose)
+         */
+        samplePublicMethod : function () {}
+    }
 });

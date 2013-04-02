@@ -28,7 +28,7 @@ Aria.classDefinition({
 		},
 
 		_afterFocus : function (_, element) {
-			var element = Aria.$window.document.getElementsByTagName("input")[0];
+			element = Aria.$window.document.getElementsByTagName("input")[0];
 
 			var active = Aria.$window.document.activeElement;
 			this.assertTrue(element.id == active.id, "$focus method failed.");
@@ -36,4 +36,4 @@ Aria.classDefinition({
 			this.end();
 		}
 	}
-})
+});

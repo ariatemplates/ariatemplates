@@ -18,13 +18,10 @@
  * @class test.aria.core.InterfacesTest
  */
 Aria.classDefinition({
-    $classpath : 'test.aria.core.InterfacesTest',
-    $extends : 'aria.jsunit.TestCase',
-    $dependencies : ['test.aria.core.test.ImplementInterface1', 'test.aria.core.test.ImplementInterface2',
-            'test.aria.core.test.InheritAndImplementInterface'],
-    $constructor : function () {
-        this.$TestCase.constructor.call(this);
-    },
+    $classpath : "test.aria.core.InterfacesTest",
+    $extends : "aria.jsunit.TestCase",
+    $dependencies : ["test.aria.core.test.ImplementInterface1", "test.aria.core.test.ImplementInterface2",
+            "test.aria.core.test.InheritAndImplementInterface"],
     $prototype : {
 
         /**

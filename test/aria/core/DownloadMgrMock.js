@@ -17,7 +17,7 @@
  * Mock for the DownloadMgr class
  */
 Aria.classDefinition({
-    $classpath : 'test.aria.core.DownloadMgrMock',
+    $classpath : "test.aria.core.DownloadMgrMock",
     $singleton : true,
     $events : {
         'loadFileContent' : {
@@ -34,7 +34,7 @@ Aria.classDefinition({
         // To be completed with other functions when needed
         loadFileContent : function (logicalPath, content, hasErrors) {
             if (content) {
-                content = content.replace(/\r\n|\r/g, '\n')
+                content = content.replace(/\r\n|\r/g, '\n');
             }
             this.$raiseEvent({
                 name : 'loadFileContent',

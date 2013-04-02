@@ -217,7 +217,7 @@ Aria.classDefinition({
                     fn : this._configurePostHeaderResponse,
                     scope : this
                 }
-            }
+            };
             var valid = aria.core.JsonValidator.normalize({
                 json : request,
                 beanName : "aria.core.CfgBeans.IOAsyncRequestCfg"
@@ -239,7 +239,7 @@ Aria.classDefinition({
                     fn : this._noPostHeaderResponse,
                     scope : this
                 }
-            }
+            };
             var valid = aria.core.JsonValidator.normalize({
                 json : request,
                 beanName : "aria.core.CfgBeans.IOAsyncRequestCfg"
@@ -263,7 +263,7 @@ Aria.classDefinition({
                     fn : this._configureContentTypeHeaderResponse,
                     scope : this
                 }
-            }
+            };
             var valid = aria.core.JsonValidator.normalize({
                 json : request,
                 beanName : "aria.core.CfgBeans.IOAsyncRequestCfg"
@@ -307,7 +307,7 @@ Aria.classDefinition({
                     fn : this._asyncHeadResponse,
                     scope : this
                 }
-            }
+            };
             aria.core.IO.asyncRequest(request);
         },
 
@@ -330,7 +330,7 @@ Aria.classDefinition({
                     fn : this._asyncOptionsResponse,
                     scope : this
                 }
-            }
+            };
             aria.core.IO.asyncRequest(request);
         },
 

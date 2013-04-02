@@ -45,8 +45,7 @@ Aria.classDefinition({
                             if (attribute.hasOwnProperty(dataKey) && dataKey.substr(0, 5) != "data-") {
                                 var value = stringUtil.encodeForQuotedHTMLAttribute(attribute[dataKey]);
                                 var got = div.getAttribute("data-" + dataKey);
-                                this.assertEquals(got, value, "The data data-" + dataKey + " should be equals to "
-                                        + value);
+                                this.assertEquals(got, value, "data-" + dataKey + " should be %2, got %1");
                             }
                         }
                     } else if (aria.templates.DomElementWrapper.attributesWhiteList.test(key)) {
@@ -58,7 +57,7 @@ Aria.classDefinition({
                             got = got.toLowerCase();
                             // just add a semicolon if missing
                             if (got.charAt(got.length - 1) !== ";") {
-                                got += ";"
+                                got += ";";
                             }
                         }
                         this.assertEquals(got, value, "The attribute " + key + " should be " + value + " got " + got);

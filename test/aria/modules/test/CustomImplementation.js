@@ -14,20 +14,20 @@
  */
 
 Aria.classDefinition({
-	$classpath:  'test.aria.modules.test.CustomImplementation',
-	$extends: 'aria.core.JsObject',
-	$implements : ['aria.modules.urlService.IUrlService'],
-	$prototype: {
-		/**
-		 * Generate an action URL.
-		 * @param {moduleName} Name of the module that is making the request
-		 * @param {actionName} Action to be called on the server
-		 * @param {sessionId} Value of the session id
-		 * @return String Full URL
-		 */
-		createActionUrl : function (moduleName, actionName, sessionId) {
-			return "Custom";
-		},
+    $classpath : "test.aria.modules.test.CustomImplementation",
+    $extends : "aria.core.JsObject",
+    $implements : ["aria.modules.urlService.IUrlService"],
+    $prototype : {
+        /**
+         * Generate an action URL.
+         * @param {moduleName} Name of the module that is making the request
+         * @param {actionName} Action to be called on the server
+         * @param {sessionId} Value of the session id
+         * @return String Full URL
+         */
+        createActionUrl : function (moduleName, actionName, sessionId) {
+            return "Custom";
+        },
 
         /**
          * Generate a service URL.
@@ -37,17 +37,17 @@ Aria.classDefinition({
          * @return {aria.modules.RequestBeans.RequestDetails|String} URL details
          */
         createServiceUrl : function (moduleName, serviceSpec, sessionId) {
-        	return "Custom";
+            return "Custom";
         },
 
-		/**
-		 * Generate an i18n URL.
-		 * @param {moduleName} Name of the module that is making the request
-		 * @param {sessionId} Value of the session id
-		 * @return String Full URL
-		 */
-		createI18nUrl : function (moduleName, sessionId) {
-			return "Custom";
-		}
-	}
+        /**
+         * Generate an i18n URL.
+         * @param {moduleName} Name of the module that is making the request
+         * @param {sessionId} Value of the session id
+         * @return String Full URL
+         */
+        createI18nUrl : function (moduleName, sessionId) {
+            return "Custom";
+        }
+    }
 });

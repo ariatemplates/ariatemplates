@@ -63,4 +63,4 @@ Aria.classDefinition({
             return instance;
         }
     }
-})
+});

@@ -106,27 +106,22 @@
                                 report = selectController.checkValue(item.value);
                             }
                             if (item.action == "value" || item.valueInReport) {
-                                this.assertTrue(report.value == item.checkValue, "Bad value in report in step "
-                                        + params.curIdx + " (expected: " + item.checkValue + ", got: " + report.value
-                                        + ")");
+                                this.assertEquals(report.value, item.checkValue, "Bad value in report in step "
+                                        + params.curIdx + " (expected: %2, got: %1)");
                             } else {
                                 this.assertTrue(typeof report.value == "undefined", "Value should not be present in the report.");
                             }
-                            this.assertTrue(report.text == item.checkText, "Bad text in report in step "
-                                    + params.curIdx + " (expected: " + item.checkText + ", got: " + report.text + ")");
+                            this.assertEquals(report.text, item.checkText, "Bad text in report in step "
+                                    + params.curIdx + " (expected: %2, got: %1)");
                             var dataModel = selectController.getDataModel();
-                            this.assertTrue(dataModel.value == item.checkValue, "Bad value in data model in step "
-                                    + params.curIdx + " (expected: " + item.checkValue + ", got: " + dataModel.value
-                                    + ")");
-                            this.assertTrue(dataModel.displayText == item.checkText, [
-                                    "Bad displayText in data model in step ", " (expected: ", item.checkText,
-                                    ", got: ", dataModel.displayText + ")"].join(''));
-                            this.assertTrue(dataModel.displayIdx == item.checkIdx, [
-                                    "Bad displayIdx in data model in step ", params.curIdx, " (expected: ",
-                                    item.checkIdx, ", got: ", dataModel.displayIdx, ")"].join(''));
-                            this.assertTrue(dataModel.selectedIdx == item.checkIdx, [
-                                    "Bad selectedIdx in data model in step ", params.curIdx, " (expected: ",
-                                    item.checkIdx, ", got: ", dataModel.selectedIdx, ")"].join(''));
+                            this.assertEquals(dataModel.value, item.checkValue, [
+                                "Bad value in data model in step ", params.curIdx, " (expected: %2, got: %1)"].join(''));
+                            this.assertEquals(dataModel.displayText, item.checkText, [
+                                    "Bad displayText in data model in step ", params.curIdx, " (expected: %2, got: %1)"].join(''));
+                            this.assertEquals(dataModel.displayIdx, item.checkIdx, [
+                                    "Bad displayIdx in data model in step ", params.curIdx, " (expected: %2, got: %1)"].join(''));
+                            this.assertEquals(dataModel.selectedIdx, item.checkIdx, [
+                                    "Bad selectedIdx in data model in step ", params.curIdx, " (expected: %2, got: %1)"].join(''));
                             report.$dispose();
                         } else if (item.action == "pause") {
                             nextItemDelay = item.duration;
@@ -388,16 +383,16 @@
                 // change the highlighted item (similar to a mouse move over the item):
                 aria.utils.Json.setValue(controller.getDataModel(), "selectedIdx", 2);
                 var report = controller.checkKeyStroke(0, aria.DomEvent.KC_ENTER);
-                this.assertTrue(report.displayDropDown === false);
-                this.assertTrue(report.cancelKeyStroke === true);
-                this.assertTrue(report.value == "value-ab"); // corresponds to index 2
+                this.assertFalse(report.displayDropDown);
+                this.assertTrue(report.cancelKeyStroke);
+                this.assertEquals(report.value, "value-ab"); // corresponds to index 2
                 report.$dispose();
 
                 // if pressing enter when the popup is closed, should not and should cancel default:
                 controller.setListWidget(null);
                 report = controller.checkKeyStroke(0, aria.DomEvent.KC_ENTER);
-                this.assertTrue(report.cancelKeyStroke == false);
-                this.assertTrue(report.value == "value-ab");
+                this.assertFalse(report.cancelKeyStroke);
+                this.assertEquals(report.value, "value-ab");
                 report.$dispose();
             },
 
@@ -419,8 +414,8 @@
                 this.assertTrue(report.cancelKeyStroke === true);
                 this.assertTrue(typeof report.value == "undefined"); // pressing escape must not update the data
                 // model
-                this.assertTrue(dataModel.selectedIdx == dataModel.displayIdx);
-                this.assertTrue(dataModel.displayIdx == 0);
+                this.assertEquals(dataModel.selectedIdx, dataModel.displayIdx);
+                this.assertEquals(dataModel.displayIdx, 0);
                 report.$dispose();
 
                 // pressing escape when the popup is closed (should have no effect: report is null)
@@ -443,16 +438,16 @@
                 // change the highlighted item (similar to a mouse move over the item). This change is ignored because
                 // pressing tab does not validate it.
                 var report = controller.checkKeyStroke(0, aria.DomEvent.KC_TAB);
-                this.assertTrue(report.displayDropDown === false);
-                this.assertTrue(report.cancelKeyStroke === false);
-                this.assertTrue(report.value == "value-aa");
+                this.assertFalse(report.displayDropDown);
+                this.assertFalse(report.cancelKeyStroke);
+                this.assertEquals(report.value, "value-aa");
                 report.$dispose();
 
                 // pressing tab when the popup is closed:
                 controller.setListWidget(null);
                 report = controller.checkKeyStroke(0, aria.DomEvent.KC_TAB);
-                this.assertTrue(report.cancelKeyStroke == false);
-                this.assertTrue(report.value == "value-aa");
+                this.assertFalse(report.cancelKeyStroke);
+                this.assertEquals(report.value, "value-aa");
                 report.$dispose();
             },
 

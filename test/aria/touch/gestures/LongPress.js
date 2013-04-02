@@ -17,13 +17,13 @@
  * Test case for aria.touch.gestures.LongPress
  */
 Aria.classDefinition({
-    $classpath : 'test.aria.touch.gestures.LongPress',
-    $extends : 'aria.jsunit.TemplateTestCase',
+    $classpath : "test.aria.touch.gestures.LongPress",
+    $extends : "aria.jsunit.TemplateTestCase",
     $dependencies : ["aria.utils.Dom", "aria.utils.FireDomEvent", "aria.core.Browser", "aria.touch.Event"],
     $constructor : function () {
         this.$TemplateTestCase.constructor.call(this);
         this.setTestEnv({
-            template : 'test.aria.touch.gestures.LongPressTpl'
+            template : "test.aria.touch.gestures.LongPressTpl"
         });
         this.domUtil = aria.utils.Dom;
         this.fireEvent = aria.utils.FireDomEvent;
@@ -50,11 +50,34 @@ Aria.classDefinition({
          */
         _testCancelMultiLongPress : function () {
             var args = {
-                    "sequence" : ["longpressstart","longpresscancel"],
-                    "callback" : this._testCancelMoveLongPress
+                "sequence" : ["longpressstart", "longpresscancel"],
+                "callback" : this._testCancelMoveLongPress
             };
-            this._raiseFakeEvent(this.touchEventMap.touchstart, {isPrimary: true, touches: [{clientX: 0, clientY: 0}], changedTouches: [{clientX: 0, clientY: 0}]});
-            this._raiseFakeEvent(this.touchEventMap.touchmove, {isPrimary: false, touches: [{clientX: 0, clientY: 0}, {clientX: 5, clientY: 5}], changedTouches: [{clientX: 5, clientY: 5}]});
+            this._raiseFakeEvent(this.touchEventMap.touchstart, {
+                isPrimary : true,
+                touches : [{
+                            clientX : 0,
+                            clientY : 0
+                        }],
+                changedTouches : [{
+                            clientX : 0,
+                            clientY : 0
+                        }]
+            });
+            this._raiseFakeEvent(this.touchEventMap.touchmove, {
+                isPrimary : false,
+                touches : [{
+                            clientX : 0,
+                            clientY : 0
+                        }, {
+                            clientX : 5,
+                            clientY : 5
+                        }],
+                changedTouches : [{
+                            clientX : 5,
+                            clientY : 5
+                        }]
+            });
             this._delay(10, this._testEvents, args);
         },
         /**
@@ -62,11 +85,17 @@ Aria.classDefinition({
          */
         _testCancelMoveLongPress : function () {
             var args = {
-                    "sequence" : ["longpressstart","longpresscancel"],
-                    "callback" : this._testCancelTapLongPress
+                "sequence" : ["longpressstart", "longpresscancel"],
+                "callback" : this._testCancelTapLongPress
             };
-            this._raiseFakeEvent(this.touchEventMap.touchstart, {clientX: 0, clientY: 0});
-            this._raiseFakeEvent(this.touchEventMap.touchmove, {clientX: 100, clientY: 100});
+            this._raiseFakeEvent(this.touchEventMap.touchstart, {
+                clientX : 0,
+                clientY : 0
+            });
+            this._raiseFakeEvent(this.touchEventMap.touchmove, {
+                clientX : 100,
+                clientY : 100
+            });
             this._delay(10, this._testEvents, args);
         },
         /**
@@ -74,12 +103,21 @@ Aria.classDefinition({
          */
         _testCancelTapLongPress : function () {
             var args = {
-                    "sequence" : ["longpressstart","longpresscancel"],
-                    "callback" : this._testTrueLongPress
+                "sequence" : ["longpressstart", "longpresscancel"],
+                "callback" : this._testTrueLongPress
             };
-            this._raiseFakeEvent(this.touchEventMap.touchstart, {clientX: 0, clientY: 0});
-            this._raiseFakeEvent(this.touchEventMap.touchmove, {clientX: 5, clientY: 5});
-            this._raiseFakeEvent(this.touchEventMap.touchend, {clientX: 5, clientY: 5});
+            this._raiseFakeEvent(this.touchEventMap.touchstart, {
+                clientX : 0,
+                clientY : 0
+            });
+            this._raiseFakeEvent(this.touchEventMap.touchmove, {
+                clientX : 5,
+                clientY : 5
+            });
+            this._raiseFakeEvent(this.touchEventMap.touchend, {
+                clientX : 5,
+                clientY : 5
+            });
             this._delay(10, this._testEvents, args);
         },
         /**
@@ -87,18 +125,24 @@ Aria.classDefinition({
          */
         _testTrueLongPress : function () {
             var args = {
-                    "sequence" : ["longpressstart","longpress"],
-                    "callback" : this._endTests
+                "sequence" : ["longpressstart", "longpress"],
+                "callback" : this._endTests
             };
-            this._raiseFakeEvent(this.touchEventMap.touchstart, {clientX: 0, clientY: 0});
-            this._raiseFakeEvent(this.touchEventMap.touchmove, {clientX: 5, clientY: 5});
+            this._raiseFakeEvent(this.touchEventMap.touchstart, {
+                clientX : 0,
+                clientY : 0
+            });
+            this._raiseFakeEvent(this.touchEventMap.touchmove, {
+                clientX : 5,
+                clientY : 5
+            });
             this._delay(1500, this._testEventsFinal, args);
         },
         /**
          * Finalize the long press gesture.
          * @param {Object} args
          */
-        _testEventsFinal : function(args) {
+        _testEventsFinal : function (args) {
             this._delay(10, this._testEvents, args);
         },
         /**
@@ -141,7 +185,10 @@ Aria.classDefinition({
          * Wrapper to end the tests.
          */
         _endTests : function () {
-            this._raiseFakeEvent(this.touchEventMap.touchend, {clientX: 5, clientY: 5});
+            this._raiseFakeEvent(this.touchEventMap.touchend, {
+                clientX : 5,
+                clientY : 5
+            });
             this._delay(1000, this.end, {});
         }
     }

@@ -17,9 +17,9 @@
  * Sample class used to validate the support of sub-classes in Module Controllers
  */
 Aria.classDefinition({
-	$classpath : 'test.aria.templates.test.SampleModuleSubClass',
-	$extends : 'aria.templates.PublicWrapper',
-	$implements : ['test.aria.templates.test.ISampleModuleSubClass'],
+	$classpath : "test.aria.templates.test.SampleModuleSubClass",
+	$extends : "aria.templates.PublicWrapper",
+	$implements : ["test.aria.templates.test.ISampleModuleSubClass"],
 	$constructor : function (initArgs) {
 		this.$PublicWrapper.constructor.call(this);
 		this._initArgs = initArgs;
@@ -42,4 +42,4 @@ Aria.classDefinition({
 			return 123;
 		}
 	}
-})
+});

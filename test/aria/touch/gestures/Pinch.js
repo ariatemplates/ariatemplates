@@ -17,13 +17,13 @@
  * Test case for aria.touch.gestures.Tap
  */
 Aria.classDefinition({
-    $classpath : 'test.aria.touch.gestures.Pinch',
-    $extends : 'aria.jsunit.TemplateTestCase',
+    $classpath : "test.aria.touch.gestures.Pinch",
+    $extends : "aria.jsunit.TemplateTestCase",
     $dependencies : ["aria.utils.Dom", "aria.utils.FireDomEvent", "aria.core.Browser", "aria.touch.Event"],
     $constructor : function () {
         this.$TemplateTestCase.constructor.call(this);
         this.setTestEnv({
-            template : 'test.aria.touch.gestures.PinchTpl'
+            template : "test.aria.touch.gestures.PinchTpl"
         });
         this.domUtil = aria.utils.Dom;
         this.fireEvent = aria.utils.FireDomEvent;
@@ -50,13 +50,61 @@ Aria.classDefinition({
          */
         _testTruePinch : function () {
             var args = {
-                    "sequence" : ["pinchstart","pinchmove","pinchmove","pinch"],
-                    "callback" : this._testTrue2Pinch
+                "sequence" : ["pinchstart", "pinchmove", "pinchmove", "pinch"],
+                "callback" : this._testTrue2Pinch
             };
-            this._raiseFakeEvent(this.touchEventMap.touchstart, {touches: [{clientX: 0, clientY: 0},{clientX: 5, clientY: 5}], changedTouches: [{clientX: 0, clientY: 0},{clientX: 5, clientY: 5}]});
-            this._raiseFakeEvent(this.touchEventMap.touchmove, {touches: [{clientX: 0, clientY: 0},{clientX: 10, clientY: 10}], changedTouches: [{clientX: 10, clientY: 10}]});
-            this._raiseFakeEvent(this.touchEventMap.touchmove, {touches: [{clientX: 0, clientY: 0},{clientX: 15, clientY: 15}], changedTouches: [{clientX: 15, clientY: 15}]});
-            this._raiseFakeEvent(this.touchEventMap.touchend, {touches : [{clientX: 0, clientY: 0}], changedTouches: [{clientX: 15, clientY: 15}]});
+            this._raiseFakeEvent(this.touchEventMap.touchstart, {
+                touches : [{
+                            clientX : 0,
+                            clientY : 0
+                        }, {
+                            clientX : 5,
+                            clientY : 5
+                        }],
+                changedTouches : [{
+                            clientX : 0,
+                            clientY : 0
+                        }, {
+                            clientX : 5,
+                            clientY : 5
+                        }]
+            });
+            this._raiseFakeEvent(this.touchEventMap.touchmove, {
+                touches : [{
+                            clientX : 0,
+                            clientY : 0
+                        }, {
+                            clientX : 10,
+                            clientY : 10
+                        }],
+                changedTouches : [{
+                            clientX : 10,
+                            clientY : 10
+                        }]
+            });
+            this._raiseFakeEvent(this.touchEventMap.touchmove, {
+                touches : [{
+                            clientX : 0,
+                            clientY : 0
+                        }, {
+                            clientX : 15,
+                            clientY : 15
+                        }],
+                changedTouches : [{
+                            clientX : 15,
+                            clientY : 15
+                        }]
+            });
+            this._raiseFakeEvent(this.touchEventMap.touchend, {
+                touches : [{
+                            clientX : 0,
+                            clientY : 0
+                        }],
+                changedTouches : [{
+                            clientX : 15,
+                            clientY : 15
+                        }]
+            });
             this._delay(10, this._testEvents, args);
         },
         /**
@@ -64,13 +112,61 @@ Aria.classDefinition({
          */
         _testTrue2Pinch : function () {
             var args = {
-                    "sequence" : ["pinchstart","pinchmove","pinchmove","pinch"],
-                    "callback" : this._testTrueIE10Pinch
+                "sequence" : ["pinchstart", "pinchmove", "pinchmove", "pinch"],
+                "callback" : this._testTrueIE10Pinch
             };
-            this._raiseFakeEvent(this.touchEventMap.touchstart, {touches: [{clientX: 0, clientY: 0},{clientX: 5, clientY: 5}], changedTouches: [{clientX: 0, clientY: 0},{clientX: 5, clientY: 5}]});
-            this._raiseFakeEvent(this.touchEventMap.touchmove, {touches: [{clientX: 0, clientY: 0},{clientX: 10, clientY: 10}], changedTouches: [{clientX: 10, clientY: 10}]});
-            this._raiseFakeEvent(this.touchEventMap.touchmove, {touches: [{clientX: 0, clientY: 0},{clientX: 15, clientY: 15}], changedTouches: [{clientX: 15, clientY: 15}]});
-            this._raiseFakeEvent(this.touchEventMap.touchend, {touches : [], changedTouches: [{clientX: 0, clientY: 0},{clientX: 15, clientY: 15}]});
+            this._raiseFakeEvent(this.touchEventMap.touchstart, {
+                touches : [{
+                            clientX : 0,
+                            clientY : 0
+                        }, {
+                            clientX : 5,
+                            clientY : 5
+                        }],
+                changedTouches : [{
+                            clientX : 0,
+                            clientY : 0
+                        }, {
+                            clientX : 5,
+                            clientY : 5
+                        }]
+            });
+            this._raiseFakeEvent(this.touchEventMap.touchmove, {
+                touches : [{
+                            clientX : 0,
+                            clientY : 0
+                        }, {
+                            clientX : 10,
+                            clientY : 10
+                        }],
+                changedTouches : [{
+                            clientX : 10,
+                            clientY : 10
+                        }]
+            });
+            this._raiseFakeEvent(this.touchEventMap.touchmove, {
+                touches : [{
+                            clientX : 0,
+                            clientY : 0
+                        }, {
+                            clientX : 15,
+                            clientY : 15
+                        }],
+                changedTouches : [{
+                            clientX : 15,
+                            clientY : 15
+                        }]
+            });
+            this._raiseFakeEvent(this.touchEventMap.touchend, {
+                touches : [],
+                changedTouches : [{
+                            clientX : 0,
+                            clientY : 0
+                        }, {
+                            clientX : 15,
+                            clientY : 15
+                        }]
+            });
             this._delay(10, this._testEvents, args);
         },
         /**
@@ -78,16 +174,44 @@ Aria.classDefinition({
          */
         _testTrueIE10Pinch : function () {
             var args = {
-                    "sequence" : ["pinchstart","pinchmove","pinchmove","pinchmove","pinchmove","pinch"],
-                    "callback" : this._endTests
+                "sequence" : ["pinchstart", "pinchmove", "pinchmove", "pinchmove", "pinchmove", "pinch"],
+                "callback" : this._endTests
             };
-            this._raiseFakeEvent(this.touchEventMap.touchstart, {clientX: 0, clientY: 0, isPrimary: true});
-            this._raiseFakeEvent(this.touchEventMap.touchstart, {clientX: 20, clientY: 20, isPrimary: false});
-            this._raiseFakeEvent(this.touchEventMap.touchmove, {clientX: 10, clientY: 5, isPrimary: true});
-            this._raiseFakeEvent(this.touchEventMap.touchmove, {clientX: 20, clientY: 10, isPrimary: false});
-            this._raiseFakeEvent(this.touchEventMap.touchmove, {clientX: 30, clientY: 15, isPrimary: true});
-            this._raiseFakeEvent(this.touchEventMap.touchmove, {clientX: 40, clientY: 21, isPrimary: false});
-            this._raiseFakeEvent(this.touchEventMap.touchend, {clientX: 40, clientY: 21, isPrimary: false});
+            this._raiseFakeEvent(this.touchEventMap.touchstart, {
+                clientX : 0,
+                clientY : 0,
+                isPrimary : true
+            });
+            this._raiseFakeEvent(this.touchEventMap.touchstart, {
+                clientX : 20,
+                clientY : 20,
+                isPrimary : false
+            });
+            this._raiseFakeEvent(this.touchEventMap.touchmove, {
+                clientX : 10,
+                clientY : 5,
+                isPrimary : true
+            });
+            this._raiseFakeEvent(this.touchEventMap.touchmove, {
+                clientX : 20,
+                clientY : 10,
+                isPrimary : false
+            });
+            this._raiseFakeEvent(this.touchEventMap.touchmove, {
+                clientX : 30,
+                clientY : 15,
+                isPrimary : true
+            });
+            this._raiseFakeEvent(this.touchEventMap.touchmove, {
+                clientX : 40,
+                clientY : 21,
+                isPrimary : false
+            });
+            this._raiseFakeEvent(this.touchEventMap.touchend, {
+                clientX : 40,
+                clientY : 21,
+                isPrimary : false
+            });
             this._delay(10, this._testEvents, args);
         },
         /**

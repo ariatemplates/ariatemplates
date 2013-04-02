@@ -17,16 +17,16 @@
  * Test suite for Touch Gestures
  */
 Aria.classDefinition({
-	$classpath : 'test.aria.touch.gestures.GesturesTestSuite',
-	$extends : 'aria.jsunit.TestSuite',
-	$constructor : function () {
-		this.$TestSuite.constructor.call(this);
-		this._tests = ["test.aria.touch.gestures.Tap",
-		               "test.aria.touch.gestures.SingleTap",
-		               "test.aria.touch.gestures.DoubleTap",
-		               "test.aria.touch.gestures.LongPress",
-		               "test.aria.touch.gestures.Drag",
-		               "test.aria.touch.gestures.Swipe",
-		               "test.aria.touch.gestures.Pinch"];
-	}
+    $classpath : "test.aria.touch.gestures.GesturesTestSuite",
+    $extends : "aria.jsunit.TestSuite",
+    $constructor : function () {
+        this.$TestSuite.constructor.call(this);
+        this.addTests("test.aria.touch.gestures.Tap");
+        this.addTests("test.aria.touch.gestures.SingleTap");
+        this.addTests("test.aria.touch.gestures.DoubleTap");
+        this.addTests("test.aria.touch.gestures.LongPress");
+        this.addTests("test.aria.touch.gestures.Drag");
+        this.addTests("test.aria.touch.gestures.Swipe");
+        this.addTests("test.aria.touch.gestures.Pinch");
+    }
 });

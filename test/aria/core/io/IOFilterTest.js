@@ -126,7 +126,7 @@ Aria.classDefinition({
                     onResponse : function (req) {
                         oSelf.assertTrue(onRequestCalled);
                         oSelf.assertFalse(onResponseCalled);
-                        oSelf.assertTrue(req == myRequest)
+                        oSelf.assertTrue(req == myRequest);
                         // check that the exception raised by onRequest was reported in the logs:
                         oSelf.assertErrorInLogs(this.FILTER_REQ_ERROR);
                         oSelf.assertLogsEmpty(); // the previous error should be the only error in the logs
@@ -174,7 +174,7 @@ Aria.classDefinition({
                     onResponse : function (req) {
                         oSelf.assertTrue(onRequestCalled);
                         oSelf.assertFalse(onResponseCalled);
-                        oSelf.assertTrue(req == myRequest)
+                        oSelf.assertTrue(req == myRequest);
                         oSelf.assertTrue(req.res.responseText == "[Some Test Content]");
                         req.res.responseText = "[Changed Content]";
                         onResponseCalled = true;

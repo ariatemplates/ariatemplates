@@ -213,8 +213,8 @@ Aria.classDefinition({
                 callback : {
                     fn : function () {
                         try {
-                            this.assertTrue(req.sender.requestStep == 3);
-                            this.assertTrue(req.sender.responseStep == 0);
+                            this.assertTrue(req.sender.requestStep === 3);
+                            this.assertTrue(req.sender.responseStep === 0);
                         } catch (e) {
                             this.handleAsyncTestError(e, false);
                         }

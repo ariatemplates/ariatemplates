@@ -423,15 +423,15 @@ Aria.classDefinition({
                         initiallyDisabled : true,
                         currentlyDisabled : true,
                         selected : false
-                    }]
+                    }];
             this.assertTrue(json.contains(items, checkItems));
-            this.assertTrue(data.selectedCount == 4);
+            this.assertEquals(data.selectedCount, 4);
             this.assertTrue(data.selectedIndex == null);
             json.setValue(items[0], 'selected', false);
             checkItems[0].selected = false;
             checkItems[2].currentlyDisabled = false;
             checkItems[5].currentlyDisabled = false;
-            this.assertTrue(data.selectedCount == 3);
+            this.assertEquals(data.selectedCount, 3);
             this.assertTrue(data.selectedIndex == null);
             this.assertTrue(json.contains(items, checkItems));
             json.setValue(items[1], 'initiallyDisabled', false);
@@ -441,7 +441,7 @@ Aria.classDefinition({
             // try to select more values than possible:
             lc.setSelectedValues(['h', 'g', 'a', 'b', 'd']);
             // check that only 4 are actually selected:
-            this.assertTrue(data.selectedCount == 4);
+            this.assertEquals(data.selectedCount, 4);
             this.assertTrue(data.selectedIndex == null);
             this.assertTrue(lc.getSelectedValues().length == 4);
 
@@ -450,18 +450,18 @@ Aria.classDefinition({
             // try to select another value:
             json.setValue(items[2], 'selected', true); // selecting 'b'
             // check that only 4 values are still selected:
-            this.assertTrue(data.selectedCount == 4);
+            this.assertEquals(data.selectedCount, 4);
             this.assertTrue(data.selectedIndex == null);
-            this.assertTrue(lc.getSelectedValues().length == 4);
+            this.assertEquals(lc.getSelectedValues().length, 4);
             // and that 'b' is among them:
             this.assertTrue(aria.utils.Array.contains(lc.getSelectedValues(), 'b'));
-            this.assertTrue(items[2].selected == true);
+            this.assertTrue(items[2].selected);
 
             // check that changing the maximum number of selected values changes the selected values:
             lc.setMaxSelectedCount(2);
-            this.assertTrue(data.selectedCount == 2);
+            this.assertEquals(data.selectedCount, 2);
             this.assertTrue(data.selectedIndex == null);
-            this.assertTrue(lc.getSelectedValues().length == 2);
+            this.assertEquals(lc.getSelectedValues().length, 2);
         },
 
         testCalcMoveFocus : function () {

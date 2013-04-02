@@ -675,7 +675,7 @@ Aria.classDefinition({
                     }
                 }
             };
-        }
+        };
     },
     $prototype : {
         setUp : function () {
@@ -689,48 +689,48 @@ Aria.classDefinition({
         },
 
         _helperFormaNumber : function (expected, testing, pattern, symbols) {
+            var got;
             // No currency
-            var got = aria.utils.Number.formatNumber(testing, pattern, symbols);
-            this.assertEquals(expected, got, "Format " + testing + " with pattern " + pattern + " expecting "
-                    + expected + " got " + got);
+            got = aria.utils.Number.formatNumber(testing, pattern, symbols);
+            this.assertEquals(expected, got, "Format " + testing + " with pattern " + pattern + " expecting %1 got %2");
 
             // Left currency
-            var got = aria.utils.Number.formatNumber(testing, "\u00A4" + pattern, symbols);
+            got = aria.utils.Number.formatNumber(testing, "\u00A4" + pattern, symbols);
             this.assertEquals(expected, got, "Format " + testing + " with pattern " + "\u00A4" + pattern
-                    + " expecting " + expected + " got " + got);
+                    + " expecting %1 got %2");
 
             // Right currency
-            var got = aria.utils.Number.formatNumber(testing, pattern + "\u00A4", symbols);
+            got = aria.utils.Number.formatNumber(testing, pattern + "\u00A4", symbols);
             this.assertEquals(expected, got, "Format " + testing + " with pattern " + pattern + "\u00A4"
-                    + " expecting " + expected + " got " + got);
+                    + " expecting %1 got %2");
 
             // Both currenct
-            var got = aria.utils.Number.formatNumber(testing, "\u00A4" + pattern + "\u00A4", symbols);
+            got = aria.utils.Number.formatNumber(testing, "\u00A4" + pattern + "\u00A4", symbols);
             this.assertEquals(expected, got, "Format " + testing + " with pattern " + "\u00A4" + pattern + "\u00A4"
-                    + " expecting " + expected + " got " + got);
+                    + " expecting %1 got %2");
 
             // ////////////////////////////////
             // Now do the same with currencies
             // ////////////////////////////////
             // No currency
-            var got = aria.utils.Number.formatCurrency(testing, pattern, symbols);
-            this.assertEquals(expected, got, "Currency " + testing + " with pattern " + pattern + " expecting "
-                    + expected + " got " + got);
+            got = aria.utils.Number.formatCurrency(testing, pattern, symbols);
+            this.assertEquals(expected, got, "Currency " + testing + " with pattern " + pattern
+                    + " expecting %1 got %2");
 
             // Left currency
-            var got = aria.utils.Number.formatCurrency(testing, "\u00A4" + pattern, symbols);
+            got = aria.utils.Number.formatCurrency(testing, "\u00A4" + pattern, symbols);
             this.assertEquals("USD" + expected, got, "Currency " + testing + " with pattern " + "\u00A4" + pattern
-                    + " expecting " + expected + " got " + got);
+                    + " expecting %1 got %2");
 
             // Right currency
-            var got = aria.utils.Number.formatCurrency(testing, pattern + "\u00A4", symbols);
+            got = aria.utils.Number.formatCurrency(testing, pattern + "\u00A4", symbols);
             this.assertEquals(expected + "USD", got, "Currency " + testing + " with pattern " + pattern + "\u00A4"
-                    + " expecting " + expected + " got " + got);
+                    + " expecting %1 got %2");
 
             // Both currenct
-            var got = aria.utils.Number.formatCurrency(testing, "\u00A4" + pattern + "\u00A4", symbols);
+            got = aria.utils.Number.formatCurrency(testing, "\u00A4" + pattern + "\u00A4", symbols);
             this.assertEquals("USD" + expected, got, "Currency " + testing + " with pattern " + "\u00A4" + pattern
-                    + "\u00A4" + " expecting " + expected + " got " + got);
+                    + "\u00A4" + " expecting %1 got %2");
         },
 
         /**
@@ -1009,26 +1009,26 @@ Aria.classDefinition({
             });
 
             var got = aria.utils.Number.formatNumber(12.3);
-            this.assertEquals("12(30", got, "Formatting 12.3 format ##,##0.00 expected 12(30 got " + got);
+            this.assertEquals("12(30", got, "Formatting 12.3 format ##,##0.00 expected %1 got %2");
 
-            var got = aria.utils.Number.formatNumber(12.3, function () {
-                return "#,#.0"
+            got = aria.utils.Number.formatNumber(12.3, function () {
+                return "#,#.0";
             });
-            this.assertEquals("1)2(3", got, "Formatting 12.3 format #,#.0 expected 1)2(3 got " + got);
+            this.assertEquals("1)2(3", got, "Formatting 12.3 format #,#.0 expected %1 got %2");
 
-            var got = aria.utils.Number.formatNumber(-12.3, function () {
-                return "#,#.0"
+            got = aria.utils.Number.formatNumber(-12.3, function () {
+                return "#,#.0";
             }, {
                 strictGrouping : false
             });
-            this.assertEquals("-1)2(3", got, "Formatting -12.3 format #,#.0 expected -1)2(3 got " + got);
+            this.assertEquals("-1)2(3", got, "Formatting -12.3 format #,#.0 expected %1 got %2");
 
             this.assertLogsEmpty();
         },
 
         test_errors : function () {
             aria.utils.Number.formatNumber(12.3, function () {
-                return "# #.0"
+                return "# #.0";
             });
             aria.utils.Number.formatNumber(12.3, "# #.0");
             aria.utils.Number.formatNumber(12.3, []);
@@ -1036,7 +1036,7 @@ Aria.classDefinition({
             aria.utils.Number.formatNumber(12.3, function () {
                 return function () {
                     return "#";
-                }
+                };
             });
             this.assertErrorInLogs(aria.utils.Number.INVALID_FORMAT, 5);
         }

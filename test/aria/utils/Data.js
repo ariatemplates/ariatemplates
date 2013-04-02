@@ -227,7 +227,7 @@ Aria.classDefinition({
 
             // test complete definition
             var subMessages = [];
-            var test = aria.utils.Data.createMessage("msg2", "locMsg2", aria.utils.Data.TYPE_WARNING, "code", subMessages);
+            test = aria.utils.Data.createMessage("msg2", "locMsg2", aria.utils.Data.TYPE_WARNING, "code", subMessages);
             this.assertTrue(test.code == "code");
             this.assertTrue(test.subMessages == subMessages);
             this.assertTrue(test.type == aria.utils.Data.TYPE_WARNING);
@@ -330,7 +330,7 @@ Aria.classDefinition({
 
         test_checkEventToValidate : function () {
             var event = "onsubmit";
-            var multipleValidator = new aria.utils.validators.MultipleValidator(null, null, "onsubmit")
+            var multipleValidator = new aria.utils.validators.MultipleValidator(null, null, "onsubmit");
             var mandatoryValidator = new aria.utils.validators.Mandatory("test_checkEventToValidate");
             multipleValidator.add({
                 validator : mandatoryValidator,

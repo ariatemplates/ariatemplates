@@ -39,7 +39,7 @@ Aria.classDefinition({
                     screenOrientation : Aria.$window.orientation,
                     isPortrait : this.isPortrait,
                     scope : thisObj
-                })
+                });
             };
             // capture the change event raised by Orientation object
             this.emitter.$on({
@@ -58,8 +58,7 @@ Aria.classDefinition({
             this.__mockOrientation(0);
             // Call the mock method to add orientation change. Mock for landscape by passing 90
             this.__mockOrientation(90);
-            this.assertTrue(this.counter == 2, " The event was expected to get raised two times, but actually it got raised  "
-                    + this.counter + " times");
+            this.assertEquals(this.counter, 2, " The event was expected to get raised twice, but it got raised %1 times");
         },
 
         /**
@@ -69,10 +68,10 @@ Aria.classDefinition({
          */
         __assertValues : function (evt) {
             if (evt.screenOrientation % 180 === 0) {
-                this.assertTrue(evt.isPortrait == true, "Expected isPortrait true got  " + evt.isPortrait
+                this.assertTrue(evt.isPortrait, "Expected isPortrait true got  " + evt.isPortrait
                         + " for screenOrientation :" + evt.screenOrientation);
             } else {
-                this.assertTrue(evt.isPortrait == false, "Expected isPortrait false got  " + evt.isPortrait
+                this.assertFalse(evt.isPortrait, "Expected isPortrait false got  " + evt.isPortrait
                         + " for screenOrientation :" + evt.screenOrientation);
             }
             this.counter++;

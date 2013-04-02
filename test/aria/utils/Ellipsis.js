@@ -46,10 +46,11 @@ Aria.classDefinition({
 
             // ellipsedText.parentNode.removeChild(ellipsedText);
 
-            if (aria.core.Browser.isIE6)
-                this.assertTrue(parseInt(testElement.offsetWidth) == 96);
-            else
-                this.assertTrue(parseInt(testElement.offsetWidth) == 100);
+            if (aria.core.Browser.isIE6) {
+                this.assertEquals(parseInt(testElement.offsetWidthm, 10), 96);
+            } else {
+                this.assertEquals(parseInt(testElement.offsetWidth, 10), 100);
+            }
             ellipsisInstance.$dispose();
 
             testElement.parentNode.removeChild(testElement);
@@ -85,7 +86,7 @@ Aria.classDefinition({
 
             var ellipsisInstance = new aria.utils.Ellipsis(testElement, width, position, ellipsisStr, '', '', testText);
 
-            this.assertTrue(parseInt(testElement.offsetWidth) <= parseInt(parentWidth));
+            this.assertTrue(parseInt(testElement.offsetWidth, 10) <= parseInt(parentWidth, 10));
             ellipsisInstance.$dispose();
 
             testElement.parentNode.removeChild(testElement);

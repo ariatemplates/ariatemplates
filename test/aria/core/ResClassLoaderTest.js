@@ -18,12 +18,9 @@
  * @class test.aria.core.ResClassLoaderTest
  */
 Aria.classDefinition({
-    $classpath : 'test.aria.core.ResClassLoaderTest',
-    $extends : 'aria.jsunit.TestCase',
-    $dependencies : ['aria.modules.RequestMgr', 'aria.modules.urlService.environment.UrlService'],
-    $constructor : function () {
-        this.$TestCase.constructor.call(this);
-    },
+    $classpath : "test.aria.core.ResClassLoaderTest",
+    $extends : "aria.jsunit.TestCase",
+    $dependencies : ["aria.modules.RequestMgr", "aria.modules.urlService.environment.UrlService"],
     $prototype : {
 
         /**

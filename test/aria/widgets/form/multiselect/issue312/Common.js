@@ -43,7 +43,7 @@ Aria.classDefinition({
                     aria.core.Timer.addCallback(callback);
                 }
                 return new OriginalInnerWidget(cfg, context, lineNbr);
-            }
+            };
             this.overrideClass(this.innerWidgetClasspath, MockInnerWidget);
             this.$TemplateTestCase.testAsyncStartTemplateTest.call(this);
         },

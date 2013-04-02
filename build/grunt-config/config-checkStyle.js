@@ -31,11 +31,36 @@ module.exports = function (grunt) {
                     '!src/aria/utils/SynEvents.js',
                     // Using node.js globals
                     '!src/aria/node.js']
+        },
+        test : {
+            files : {
+                src : ['test/**/*.js',
+                        // Using some window globals
+                        '!test/iframeLoaderOs.js',
+                        // Bad escaping
+                        '!test/aria/utils/validators/String.js',
+                        '!test/aria/utils/String.js',
+                        // Syntax errors, used for testing
+                        '!test/aria/templates/test/error/*.js']
+            },
+            options : {
+                "predef" : ["aria", "Aria", "setTimeout", "setInterval", "clearTimeout", "clearInterval", "test", "Syn"],
+                // Object literal notation
+                "-W010" : true,
+                // Array literal notation
+                "-W009" : true,
+                // It's not necessary to initialize to 'undefined'
+                "-W080" : true,
+                // Duplicate key
+                "-W075" : true,
+                // Do not use String as a contructor
+                "-W053" : true
+            }
         }
     });
 
     grunt.config.set('verifylowercase.sourceFiles', {
-        src : ['src/**']
+        src : ['src/**', 'test/**']
     });
 
     grunt.registerTask('checkStyle', ['jshint', 'verifylowercase:sourceFiles']);

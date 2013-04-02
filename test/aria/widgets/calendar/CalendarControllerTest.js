@@ -185,7 +185,7 @@ Aria.classDefinition({
             }
             this.assertEquals(week.days.length, 7);
             this.assertTrue(week.overlappingDays < 7);
-            this.assertTrue(week.overlappingDays == 0 || (week.monthStart != null && week.monthEnd != null));
+            this.assertTrue(week.overlappingDays === 0 || (week.monthStart != null && week.monthEnd != null));
         }
 
     }

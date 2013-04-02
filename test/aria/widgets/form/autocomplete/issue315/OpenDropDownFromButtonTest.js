@@ -28,4 +28,4 @@ Aria.classDefinition({
             this.notifyTemplateTestEnd();
         }
     }
-})
+});

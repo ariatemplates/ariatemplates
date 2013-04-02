@@ -73,14 +73,14 @@ Aria.classDefinition({
             // Test valid serializers
             var validSerializer = new test.aria.utils.json.FirstValidJsonSerializer();
             output = aria.utils.Json.convertToJsonString(testObj, {}, validSerializer);
-            this.assertTrue(output == "FirstValidJsonSerializer", "valid serializer given as instance was not called");
+            this.assertEquals(output, "FirstValidJsonSerializer", "valid serializer given as instance was not called");
             validSerializer.$dispose();
 
             validSerializer = new test.aria.utils.json.SecondValidJsonSerializer();
             output = aria.utils.Json.convertToJsonString(testObj, {
                 message : "testMsg"
             }, validSerializer);
-            this.assertTrue(output == "SecondValidJsonSerializer message testMsg", "valid serializer given as instance was not called");
+            this.assertEquals(output, "SecondValidJsonSerializer message testMsg", "valid serializer given as instance was not called");
             validSerializer.$dispose();
 
         },
@@ -265,22 +265,22 @@ Aria.classDefinition({
 
             // TEST CALLBACK REMOVAL AND TARGETING
             aria.utils.Json.setValue(objTest, "a", 2);
-            this.assertTrue(aCall === 1, "a callback was not called, because it was removed");
-            this.assertTrue(bCall === 0, "obj.b was not changed, bCallback should not have been called");
-            this.assertTrue(genCall === 1, "General callback was not called");
-            this.assertTrue(genRecCall === 1, "General Rec callback was not called");
+            this.assertEquals(aCall, 1, "a callback was not called, because it was removed");
+            this.assertEquals(bCall, 0, "obj.b was not changed, bCallback should not have been called");
+            this.assertEquals(genCall, 1, "General callback was not called");
+            this.assertEquals(genRecCall, 1, "General Rec callback was not called");
 
             // TEST SETTING THE SAME VALUE
             aria.utils.Json.setValue(objTest, "a", 2);
-            this.assertTrue(aCall === 1, "Listener was called twice, but value was never changed");
+            this.assertEquals(aCall, 1, "Listener was called twice, but value was never changed");
 
             // TEST BUBBLING
             aria.utils.Json.setValue(objTest.c.ca[0], "ca0a", 2);
-            this.assertTrue(ca0aCall === 1, "ca0aa callback was not called");
-            this.assertTrue(cRecCall === 1, "cRec callback was not called -> bubbling");
-            this.assertTrue(genCall === 1, "General callback was called for a change in its child");
-            this.assertTrue(genRecCall === 2, "General Rec callback was not called");
-            this.assertTrue(cCall === 0, "A none recursive callback was called for a change in its child");
+            this.assertEquals(ca0aCall, 1, "ca0aa callback was not called");
+            this.assertEquals(cRecCall, 1, "cRec callback was not called -> bubbling");
+            this.assertEquals(genCall, 1, "General callback was called for a change in its child");
+            this.assertEquals(genRecCall, 2, "General Rec callback was not called");
+            this.assertEquals(cCall, 0, "A none recursive callback was called for a change in its child");
 
             // this should not recursively loop : creates a loop
             aria.utils.Json.setValue(objTest.d[0].d0a, "d0aa", objTest);
@@ -318,7 +318,7 @@ Aria.classDefinition({
             var copyNoRec = aria.utils.Json.copy(json, false);
             // change json :
             json.foo.bar.number = 10;
-            this.assertTrue(copyNoRec.foo.bar.number == 10);
+            this.assertEquals(copyNoRec.foo.bar.number, 10);
             // restaure
             json.foo.bar.number = 8;
 
@@ -331,10 +331,10 @@ Aria.classDefinition({
             this.assertFalse("bar" in copyFilter);
 
             // but copy everything else
-            this.assertTrue(copyFilter.foo.string === "string");
-            this.assertTrue(copyFilter.foo.bar.number === 8);
-            this.assertTrue(copyFilter.foo.bar.bool === false);
-            this.assertTrue(copyFilter.foo.bar.date.getTime() === json.foo.bar.date.getTime());
+            this.assertEquals(copyFilter.foo.string, "string");
+            this.assertEquals(copyFilter.foo.bar.number, 8);
+            this.assertEquals(copyFilter.foo.bar.bool, false);
+            this.assertEquals(copyFilter.foo.bar.date.getTime(), json.foo.bar.date.getTime());
 
             // copy the date into new object
             this.assertFalse(copyFilter.foo.bar.date === json.foo.bar.date);
@@ -560,11 +560,11 @@ Aria.classDefinition({
             var listener1 = function () {
                 callCount.listener1++;
                 var arg = arguments[0];
-                this.assertTrue(arg.dataHolder == testData.myArray);
-                this.assertTrue(arg.dataName == 0);
-                this.assertTrue(arg.newValue == "f");
-                this.assertTrue(arg.oldValue == "a");
-                this.assertTrue(arg.change == myJson.VALUE_CHANGED);
+                this.assertEquals(arg.dataHolder, testData.myArray);
+                this.assertEquals(arg.dataName, 0);
+                this.assertEquals(arg.newValue, "f");
+                this.assertEquals(arg.oldValue, "a");
+                this.assertEquals(arg.change, myJson.VALUE_CHANGED);
             };
             var listener2 = function () {
                 callCount.listener2++;
@@ -574,18 +574,18 @@ Aria.classDefinition({
                 var arg = arguments[0];
                 switch (callCount.listener3) {
                     case (1) :
-                        this.assertTrue(arg.dataHolder == testData.myArray);
-                        this.assertTrue(arg.dataName == 0);
-                        this.assertTrue(arg.newValue == "f");
-                        this.assertTrue(arg.oldValue == "a");
-                        this.assertTrue(arg.change == myJson.VALUE_CHANGED);
+                        this.assertEquals(arg.dataHolder, testData.myArray);
+                        this.assertEquals(arg.dataName, 0);
+                        this.assertEquals(arg.newValue, "f");
+                        this.assertEquals(arg.oldValue, "a");
+                        this.assertEquals(arg.change, myJson.VALUE_CHANGED);
                         break;
                     case (2) :
-                        this.assertTrue(arg.dataHolder == testData.myArray);
-                        this.assertTrue(arg.dataName == 4);
-                        this.assertTrue(arg.newValue == "g");
-                        this.assertTrue(arg.oldValue == undefined);
-                        this.assertTrue(arg.change == myJson.KEY_ADDED);
+                        this.assertEquals(arg.dataHolder, testData.myArray);
+                        this.assertEquals(arg.dataName, 4);
+                        this.assertEquals(arg.newValue, "g");
+                        this.assertEquals(arg.oldValue, undefined);
+                        this.assertEquals(arg.change, myJson.KEY_ADDED);
                         break;
                 }
             };
@@ -594,18 +594,18 @@ Aria.classDefinition({
                 var arg = arguments[0];
                 switch (callCount.listener4) {
                     case (1) :
-                        this.assertTrue(arg.dataHolder == testData.myArray);
-                        this.assertTrue(arg.dataName == 0);
-                        this.assertTrue(arg.newValue == "f");
-                        this.assertTrue(arg.oldValue == "a");
-                        this.assertTrue(arg.change == myJson.VALUE_CHANGED);
+                        this.assertEquals(arg.dataHolder, testData.myArray);
+                        this.assertEquals(arg.dataName, 0);
+                        this.assertEquals(arg.newValue, "f");
+                        this.assertEquals(arg.oldValue, "a");
+                        this.assertEquals(arg.change, myJson.VALUE_CHANGED);
                         break;
                     case (2) :
-                        this.assertTrue(arg.dataHolder == testData.myArray);
-                        this.assertTrue(arg.dataName == 4);
-                        this.assertTrue(arg.newValue == "g");
-                        this.assertTrue(arg.oldValue == undefined);
-                        this.assertTrue(arg.change == myJson.KEY_ADDED);
+                        this.assertEquals(arg.dataHolder, testData.myArray);
+                        this.assertEquals(arg.dataName, 4);
+                        this.assertEquals(arg.newValue, "g");
+                        this.assertEquals(arg.oldValue, undefined);
+                        this.assertEquals(arg.change, myJson.KEY_ADDED);
                         break;
                 }
             };
@@ -614,18 +614,18 @@ Aria.classDefinition({
                 var arg = arguments[0];
                 switch (callCount.listener5) {
                     case (1) :
-                        this.assertTrue(arg.dataHolder == testData.myMap);
-                        this.assertTrue(arg.dataName == "orange");
-                        this.assertTrue(arg.newValue == 4);
-                        this.assertTrue(arg.oldValue == 1);
-                        this.assertTrue(arg.change == myJson.VALUE_CHANGED);
+                        this.assertEquals(arg.dataHolder, testData.myMap);
+                        this.assertEquals(arg.dataName, "orange");
+                        this.assertEquals(arg.newValue, 4);
+                        this.assertEquals(arg.oldValue, 1);
+                        this.assertEquals(arg.change, myJson.VALUE_CHANGED);
                         break;
                     case (2) :
-                        this.assertTrue(arg.dataHolder == testData.myMap);
-                        this.assertTrue(arg.dataName == "magenta");
-                        this.assertTrue(arg.newValue == 7);
-                        this.assertTrue(arg.oldValue == undefined);
-                        this.assertTrue(arg.change == myJson.KEY_ADDED);
+                        this.assertEquals(arg.dataHolder, testData.myMap);
+                        this.assertEquals(arg.dataName, "magenta");
+                        this.assertEquals(arg.newValue, 7);
+                        this.assertEquals(arg.oldValue, undefined);
+                        this.assertEquals(arg.change, myJson.KEY_ADDED);
                         break;
                 }
             };
@@ -654,11 +654,11 @@ Aria.classDefinition({
             myJson.setValue(testData.myArray, 4, "g");
             myJson.setValue(testData.myMap, "orange", 4);
             myJson.setValue(testData.myMap, "magenta", 7);
-            this.assertTrue(callCount.listener1 == 1);
-            this.assertTrue(callCount.listener2 == 0);
-            this.assertTrue(callCount.listener3 == 2);
-            this.assertTrue(callCount.listener4 == 2);
-            this.assertTrue(callCount.listener5 == 2);
+            this.assertEquals(callCount.listener1, 1);
+            this.assertEquals(callCount.listener2, 0);
+            this.assertEquals(callCount.listener3, 2);
+            this.assertEquals(callCount.listener4, 2);
+            this.assertEquals(callCount.listener5, 2);
         },
 
         /**
@@ -685,49 +685,49 @@ Aria.classDefinition({
             var listener1 = function () {
                 callCount.listener1++;
                 var arg = arguments[0];
-                this.assertTrue(arg.dataHolder == testData.myArray);
-                this.assertTrue(arg.dataName == 0);
-                this.assertTrue(arg.newValue == "f");
-                this.assertTrue(arg.oldValue == "a");
-                this.assertTrue(arg.change == myJson.VALUE_CHANGED);
+                this.assertEquals(arg.dataHolder, testData.myArray);
+                this.assertEquals(arg.dataName, 0);
+                this.assertEquals(arg.newValue, "f");
+                this.assertEquals(arg.oldValue, "a");
+                this.assertEquals(arg.change, myJson.VALUE_CHANGED);
             };
             var listener2 = function () {
                 callCount.listener2++;
                 var arg = arguments[0];
-                this.assertTrue(arg.dataHolder == testData.myArray);
-                this.assertTrue(arg.dataName == 4);
-                this.assertTrue(arg.newValue == "d");
-                this.assertTrue(arg.oldValue == undefined);
-                this.assertTrue(arg.change == myJson.VALUE_CHANGED);
+                this.assertEquals(arg.dataHolder, testData.myArray);
+                this.assertEquals(arg.dataName, 4);
+                this.assertEquals(arg.newValue, "d");
+                this.assertEquals(arg.oldValue, undefined);
+                this.assertEquals(arg.change, myJson.VALUE_CHANGED);
             };
             var listener3 = function () {
                 callCount.listener3++;
                 var arg = arguments[0];
-                this.assertTrue(arg.dataHolder == testData.myArray);
-                this.assertTrue(arg.dataName == 5);
-                this.assertTrue(arg.newValue == "g");
-                this.assertTrue(arg.oldValue == undefined);
-                this.assertTrue(arg.change == myJson.VALUE_CHANGED);
+                this.assertEquals(arg.dataHolder, testData.myArray);
+                this.assertEquals(arg.dataName, 5);
+                this.assertEquals(arg.newValue, "g");
+                this.assertEquals(arg.oldValue, undefined);
+                this.assertEquals(arg.change, myJson.VALUE_CHANGED);
             };
             var listener4 = function () {
                 callCount.listener4++;
                 var arg = arguments[0];
                 switch (callCount.listener4) {
                     case (1) :
-                        this.assertTrue(arg.dataHolder == testData.myArray);
-                        this.assertTrue(arg.index == 0);
-                        this.assertTrue(arg.removed.length == 0);
-                        this.assertTrue(arg.added.length == 1);
-                        this.assertTrue(arg.added[0] == "f");
-                        this.assertTrue(arg.change == myJson.SPLICE);
+                        this.assertEquals(arg.dataHolder, testData.myArray);
+                        this.assertEquals(arg.index, 0);
+                        this.assertEquals(arg.removed.length, 0);
+                        this.assertEquals(arg.added.length, 1);
+                        this.assertEquals(arg.added[0], "f");
+                        this.assertEquals(arg.change, myJson.SPLICE);
                         break;
                     case (2) :
-                        this.assertTrue(arg.dataHolder == testData.myArray);
-                        this.assertTrue(arg.index == 5);
-                        this.assertTrue(arg.removed.length == 0);
-                        this.assertTrue(arg.added.length == 1);
-                        this.assertTrue(arg.added[0] == "g");
-                        this.assertTrue(arg.change == myJson.SPLICE);
+                        this.assertEquals(arg.dataHolder, testData.myArray);
+                        this.assertEquals(arg.index, 5);
+                        this.assertEquals(arg.removed.length, 0);
+                        this.assertEquals(arg.added.length, 1);
+                        this.assertEquals(arg.added[0], "g");
+                        this.assertEquals(arg.change, myJson.SPLICE);
                         break;
                 }
             };
@@ -736,20 +736,20 @@ Aria.classDefinition({
                 var arg = arguments[0];
                 switch (callCount.listener5) {
                     case (1) :
-                        this.assertTrue(arg.dataHolder == testData.myArray);
-                        this.assertTrue(arg.index == 0);
-                        this.assertTrue(arg.removed.length == 0);
-                        this.assertTrue(arg.added.length == 1);
-                        this.assertTrue(arg.added[0] == "f");
-                        this.assertTrue(arg.change == myJson.SPLICE);
+                        this.assertEquals(arg.dataHolder, testData.myArray);
+                        this.assertEquals(arg.index, 0);
+                        this.assertEquals(arg.removed.length, 0);
+                        this.assertEquals(arg.added.length, 1);
+                        this.assertEquals(arg.added[0], "f");
+                        this.assertEquals(arg.change, myJson.SPLICE);
                         break;
                     case (2) :
-                        this.assertTrue(arg.dataHolder == testData.myArray);
-                        this.assertTrue(arg.index == 5);
-                        this.assertTrue(arg.removed.length == 0);
-                        this.assertTrue(arg.added.length == 1);
-                        this.assertTrue(arg.added[0] == "g");
-                        this.assertTrue(arg.change == myJson.SPLICE);
+                        this.assertEquals(arg.dataHolder, testData.myArray);
+                        this.assertEquals(arg.index, 5);
+                        this.assertEquals(arg.removed.length, 0);
+                        this.assertEquals(arg.added.length, 1);
+                        this.assertEquals(arg.added[0], "g");
+                        this.assertEquals(arg.change, myJson.SPLICE);
                         break;
                 }
             };
@@ -758,20 +758,20 @@ Aria.classDefinition({
                 var arg = arguments[0];
                 switch (callCount.listener6) {
                     case (1) :
-                        this.assertTrue(arg.dataHolder == testData.myArray);
-                        this.assertTrue(arg.index == 0);
-                        this.assertTrue(arg.removed.length == 0);
-                        this.assertTrue(arg.added.length == 1);
-                        this.assertTrue(arg.added[0] == "f");
-                        this.assertTrue(arg.change == myJson.SPLICE);
+                        this.assertEquals(arg.dataHolder, testData.myArray);
+                        this.assertEquals(arg.index, 0);
+                        this.assertEquals(arg.removed.length, 0);
+                        this.assertEquals(arg.added.length, 1);
+                        this.assertEquals(arg.added[0], "f");
+                        this.assertEquals(arg.change, myJson.SPLICE);
                         break;
                     case (2) :
-                        this.assertTrue(arg.dataHolder == testData.myArray);
-                        this.assertTrue(arg.index == 5);
-                        this.assertTrue(arg.removed.length == 0);
-                        this.assertTrue(arg.added.length == 1);
-                        this.assertTrue(arg.added[0] == "g");
-                        this.assertTrue(arg.change == myJson.SPLICE);
+                        this.assertEquals(arg.dataHolder, testData.myArray);
+                        this.assertEquals(arg.index, 5);
+                        this.assertEquals(arg.removed.length, 0);
+                        this.assertEquals(arg.added.length, 1);
+                        this.assertEquals(arg.added[0], "g");
+                        this.assertEquals(arg.change, myJson.SPLICE);
                         break;
                 }
             };
@@ -812,13 +812,13 @@ Aria.classDefinition({
             myJson.add(testData.myArray, "f", 0);
             myJson.add(testData.myArray, "g");
 
-            this.assertTrue(callCount.listener1 == 1);
-            this.assertTrue(callCount.listener2 == 1);
-            this.assertTrue(callCount.listener3 == 1);
-            this.assertTrue(callCount.listener4 == 2);
-            this.assertTrue(callCount.listener5 == 2);
-            this.assertTrue(callCount.listener6 == 2);
-            this.assertTrue(callCount.listener7 == 0);
+            this.assertEquals(callCount.listener1, 1);
+            this.assertEquals(callCount.listener2, 1);
+            this.assertEquals(callCount.listener3, 1);
+            this.assertEquals(callCount.listener4, 2);
+            this.assertEquals(callCount.listener5, 2);
+            this.assertEquals(callCount.listener6, 2);
+            this.assertEquals(callCount.listener7, 0);
 
             myJson.add(testData.myMap, 0, 0);
             this.assertErrorInLogs(myJson.INVALID_SPLICE_PARAMETERS);
@@ -845,38 +845,38 @@ Aria.classDefinition({
             var listener1 = function () {
                 callCount.listener1++;
                 var arg = arguments[0];
-                this.assertTrue(arg.dataHolder == testData.myArray);
-                this.assertTrue(arg.dataName == 0);
-                this.assertTrue(arg.newValue == "b");
-                this.assertTrue(arg.oldValue == "a");
-                this.assertTrue(arg.change == myJson.VALUE_CHANGED);
+                this.assertEquals(arg.dataHolder, testData.myArray);
+                this.assertEquals(arg.dataName, 0);
+                this.assertEquals(arg.newValue, "b");
+                this.assertEquals(arg.oldValue, "a");
+                this.assertEquals(arg.change, myJson.VALUE_CHANGED);
             };
             var listener2 = function () {
                 callCount.listener2++;
                 var arg = arguments[0];
-                this.assertTrue(arg.dataHolder == testData.myArray);
-                this.assertTrue(arg.dataName == 3);
+                this.assertEquals(arg.dataHolder, testData.myArray);
+                this.assertEquals(arg.dataName, 3);
                 this.assertTrue(!arg.newValue);
-                this.assertTrue(arg.oldValue == "d");
-                this.assertTrue(arg.change == myJson.KEY_REMOVED);
+                this.assertEquals(arg.oldValue, "d");
+                this.assertEquals(arg.change, myJson.KEY_REMOVED);
             };
             var listener3 = function () {
                 callCount.listener3++;
                 var arg = arguments[0];
                 switch (callCount.listener3) {
                     case (1) :
-                        this.assertTrue(arg.dataHolder == testData.myArray);
-                        this.assertTrue(arg.dataName == 1);
-                        this.assertTrue(arg.newValue == "c");
-                        this.assertTrue(arg.oldValue == "b");
-                        this.assertTrue(arg.change == myJson.VALUE_CHANGED);
+                        this.assertEquals(arg.dataHolder, testData.myArray);
+                        this.assertEquals(arg.dataName, 1);
+                        this.assertEquals(arg.newValue, "c");
+                        this.assertEquals(arg.oldValue, "b");
+                        this.assertEquals(arg.change, myJson.VALUE_CHANGED);
                         break;
                     case (2) :
-                        this.assertTrue(arg.dataHolder == testData.myArray);
-                        this.assertTrue(arg.dataName == 1);
-                        this.assertTrue(arg.newValue == "d");
-                        this.assertTrue(arg.oldValue == "c");
-                        this.assertTrue(arg.change == myJson.VALUE_CHANGED);
+                        this.assertEquals(arg.dataHolder, testData.myArray);
+                        this.assertEquals(arg.dataName, 1);
+                        this.assertEquals(arg.newValue, "d");
+                        this.assertEquals(arg.oldValue, "c");
+                        this.assertEquals(arg.change, myJson.VALUE_CHANGED);
                         break;
                 }
             };
@@ -885,20 +885,20 @@ Aria.classDefinition({
                 var arg = arguments[0];
                 switch (callCount.listener4) {
                     case (1) :
-                        this.assertTrue(arg.dataHolder == testData.myArray);
-                        this.assertTrue(arg.index == 0);
-                        this.assertTrue(arg.removed.length == 1);
-                        this.assertTrue(arg.removed[0] == "a");
-                        this.assertTrue(arg.added.length == 0);
-                        this.assertTrue(arg.change == myJson.SPLICE);
+                        this.assertEquals(arg.dataHolder, testData.myArray);
+                        this.assertEquals(arg.index, 0);
+                        this.assertEquals(arg.removed.length, 1);
+                        this.assertEquals(arg.removed[0], "a");
+                        this.assertEquals(arg.added.length, 0);
+                        this.assertEquals(arg.change, myJson.SPLICE);
                         break;
                     case (2) :
-                        this.assertTrue(arg.dataHolder == testData.myArray);
-                        this.assertTrue(arg.index == 1);
-                        this.assertTrue(arg.removed.length == 1);
-                        this.assertTrue(arg.removed[0] == "c");
-                        this.assertTrue(arg.added.length == 0);
-                        this.assertTrue(arg.change == myJson.SPLICE);
+                        this.assertEquals(arg.dataHolder, testData.myArray);
+                        this.assertEquals(arg.index, 1);
+                        this.assertEquals(arg.removed.length, 1);
+                        this.assertEquals(arg.removed[0], "c");
+                        this.assertEquals(arg.added.length, 0);
+                        this.assertEquals(arg.change, myJson.SPLICE);
                         break;
                 }
             };
@@ -907,20 +907,20 @@ Aria.classDefinition({
                 var arg = arguments[0];
                 switch (callCount.listener5) {
                     case (1) :
-                        this.assertTrue(arg.dataHolder == testData.myArray);
-                        this.assertTrue(arg.index == 0);
-                        this.assertTrue(arg.removed.length == 1);
-                        this.assertTrue(arg.removed[0] == "a");
-                        this.assertTrue(arg.added.length == 0);
-                        this.assertTrue(arg.change == myJson.SPLICE);
+                        this.assertEquals(arg.dataHolder, testData.myArray);
+                        this.assertEquals(arg.index, 0);
+                        this.assertEquals(arg.removed.length, 1);
+                        this.assertEquals(arg.removed[0], "a");
+                        this.assertEquals(arg.added.length, 0);
+                        this.assertEquals(arg.change, myJson.SPLICE);
                         break;
                     case (2) :
-                        this.assertTrue(arg.dataHolder == testData.myArray);
-                        this.assertTrue(arg.index == 1);
-                        this.assertTrue(arg.removed.length == 1);
-                        this.assertTrue(arg.removed[0] == "c");
-                        this.assertTrue(arg.added.length == 0);
-                        this.assertTrue(arg.change == myJson.SPLICE);
+                        this.assertEquals(arg.dataHolder, testData.myArray);
+                        this.assertEquals(arg.index, 1);
+                        this.assertEquals(arg.removed.length, 1);
+                        this.assertEquals(arg.removed[0], "c");
+                        this.assertEquals(arg.added.length, 0);
+                        this.assertEquals(arg.change, myJson.SPLICE);
                         break;
                 }
             };
@@ -929,20 +929,20 @@ Aria.classDefinition({
                 var arg = arguments[0];
                 switch (callCount.listener6) {
                     case (1) :
-                        this.assertTrue(arg.dataHolder == testData.myArray);
-                        this.assertTrue(arg.index == 0);
-                        this.assertTrue(arg.removed.length == 1);
-                        this.assertTrue(arg.removed[0] == "a");
-                        this.assertTrue(arg.added.length == 0);
-                        this.assertTrue(arg.change == myJson.SPLICE);
+                        this.assertEquals(arg.dataHolder, testData.myArray);
+                        this.assertEquals(arg.index, 0);
+                        this.assertEquals(arg.removed.length, 1);
+                        this.assertEquals(arg.removed[0], "a");
+                        this.assertEquals(arg.added.length, 0);
+                        this.assertEquals(arg.change, myJson.SPLICE);
                         break;
                     case (2) :
-                        this.assertTrue(arg.dataHolder == testData.myArray);
-                        this.assertTrue(arg.index == 1);
-                        this.assertTrue(arg.removed.length == 1);
-                        this.assertTrue(arg.removed[0] == "c");
-                        this.assertTrue(arg.added.length == 0);
-                        this.assertTrue(arg.change == myJson.SPLICE);
+                        this.assertEquals(arg.dataHolder, testData.myArray);
+                        this.assertEquals(arg.index, 1);
+                        this.assertEquals(arg.removed.length, 1);
+                        this.assertEquals(arg.removed[0], "c");
+                        this.assertEquals(arg.added.length, 0);
+                        this.assertEquals(arg.change, myJson.SPLICE);
                         break;
                 }
             };
@@ -983,13 +983,13 @@ Aria.classDefinition({
             myJson.removeAt(testData.myArray, 0);
             myJson.removeAt(testData.myArray, 1);
 
-            this.assertTrue(callCount.listener1 == 1);
-            this.assertTrue(callCount.listener2 == 1);
-            this.assertTrue(callCount.listener3 == 2);
-            this.assertTrue(callCount.listener4 == 2);
-            this.assertTrue(callCount.listener5 == 2);
-            this.assertTrue(callCount.listener6 == 2);
-            this.assertTrue(callCount.listener7 == 0);
+            this.assertEquals(callCount.listener1, 1);
+            this.assertEquals(callCount.listener2, 1);
+            this.assertEquals(callCount.listener3, 2);
+            this.assertEquals(callCount.listener4, 2);
+            this.assertEquals(callCount.listener5, 2);
+            this.assertEquals(callCount.listener6, 2);
+            this.assertEquals(callCount.listener7, 0);
 
             myJson.removeAt(testData.myMap, 0);
             this.assertErrorInLogs(myJson.INVALID_SPLICE_PARAMETERS);
@@ -1023,11 +1023,11 @@ Aria.classDefinition({
             var listener1 = function () {
                 callCount.listener1++;
                 var arg = arguments[0];
-                this.assertTrue(arg.dataHolder == testData.myArray);
-                this.assertTrue(arg.dataName == 0);
+                this.assertEquals(arg.dataHolder, testData.myArray);
+                this.assertEquals(arg.dataName, 0);
                 this.assertTrue(!arg.newValue);
-                this.assertTrue(arg.oldValue == "a");
-                this.assertTrue(arg.change == myJson.KEY_REMOVED);
+                this.assertEquals(arg.oldValue, "a");
+                this.assertEquals(arg.change, myJson.KEY_REMOVED);
             };
             var listener2 = function () {
                 callCount.listener2++;
@@ -1035,11 +1035,11 @@ Aria.classDefinition({
             var listener3 = function () {
                 callCount.listener3++;
                 var arg = arguments[0];
-                this.assertTrue(arg.dataHolder == testData.myMap);
-                this.assertTrue(arg.dataName == "orange");
+                this.assertEquals(arg.dataHolder, testData.myMap);
+                this.assertEquals(arg.dataName, "orange");
                 this.assertTrue(!arg.newValue);
-                this.assertTrue(arg.oldValue == 1);
-                this.assertTrue(arg.change == myJson.KEY_REMOVED);
+                this.assertEquals(arg.oldValue, 1);
+                this.assertEquals(arg.change, myJson.KEY_REMOVED);
             };
             var listener4 = function () {
                 callCount.listener4++;
@@ -1048,47 +1048,47 @@ Aria.classDefinition({
             var listener5 = function () {
                 callCount.listener5++;
                 var arg = arguments[0];
-                this.assertTrue(arg.dataHolder == testData.myMap);
-                this.assertTrue(arg.dataName == "orange");
+                this.assertEquals(arg.dataHolder, testData.myMap);
+                this.assertEquals(arg.dataName, "orange");
                 this.assertTrue(!arg.newValue);
-                this.assertTrue(arg.oldValue == 1);
-                this.assertTrue(arg.change == myJson.KEY_REMOVED);
+                this.assertEquals(arg.oldValue, 1);
+                this.assertEquals(arg.change, myJson.KEY_REMOVED);
             };
             var listener6 = function () {
                 callCount.listener6++;
                 var arg = arguments[0];
-                this.assertTrue(arg.dataHolder == testData.myArray);
-                this.assertTrue(arg.dataName == 0);
+                this.assertEquals(arg.dataHolder, testData.myArray);
+                this.assertEquals(arg.dataName, 0);
                 this.assertTrue(!arg.newValue);
-                this.assertTrue(arg.oldValue == "a");
-                this.assertTrue(arg.change == myJson.KEY_REMOVED);
+                this.assertEquals(arg.oldValue, "a");
+                this.assertEquals(arg.change, myJson.KEY_REMOVED);
             };
             var listener7 = function () {
                 callCount.listener7++;
                 var arg = arguments[0];
-                this.assertTrue(arg.dataHolder == testData.myArray);
-                this.assertTrue(arg.dataName == 0);
+                this.assertEquals(arg.dataHolder, testData.myArray);
+                this.assertEquals(arg.dataName, 0);
                 this.assertTrue(!arg.newValue);
-                this.assertTrue(arg.oldValue == "a");
-                this.assertTrue(arg.change == myJson.KEY_REMOVED);
+                this.assertEquals(arg.oldValue, "a");
+                this.assertEquals(arg.change, myJson.KEY_REMOVED);
             };
             var listener8 = function () {
                 callCount.listener8++;
                 var arg = arguments[0];
                 switch (callCount.listener8) {
                     case (1) :
-                        this.assertTrue(arg.dataHolder == testData.myArray);
-                        this.assertTrue(arg.dataName == 0);
+                        this.assertEquals(arg.dataHolder, testData.myArray);
+                        this.assertEquals(arg.dataName, 0);
                         this.assertTrue(!arg.newValue);
-                        this.assertTrue(arg.oldValue == "a");
-                        this.assertTrue(arg.change == myJson.KEY_REMOVED);
+                        this.assertEquals(arg.oldValue, "a");
+                        this.assertEquals(arg.change, myJson.KEY_REMOVED);
                         break;
                     case (2) :
-                        this.assertTrue(arg.dataHolder == testData.myMap);
-                        this.assertTrue(arg.dataName == "orange");
+                        this.assertEquals(arg.dataHolder, testData.myMap);
+                        this.assertEquals(arg.dataName, "orange");
                         this.assertTrue(!arg.newValue);
-                        this.assertTrue(arg.oldValue == 1);
-                        this.assertTrue(arg.change == myJson.KEY_REMOVED);
+                        this.assertEquals(arg.oldValue, 1);
+                        this.assertEquals(arg.change, myJson.KEY_REMOVED);
                         break;
                 }
             };
@@ -1140,15 +1140,15 @@ Aria.classDefinition({
             myJson.deleteKey(testData.myArray, 0);
             myJson.deleteKey(testData.myMap, "orange");
 
-            this.assertTrue(callCount.listener1 == 1);
-            this.assertTrue(callCount.listener2 == 0);
-            this.assertTrue(callCount.listener3 == 1);
-            this.assertTrue(callCount.listener4 == 0);
-            this.assertTrue(callCount.listener5 == 1);
-            this.assertTrue(callCount.listener6 == 1);
-            this.assertTrue(callCount.listener7 == 1);
-            this.assertTrue(callCount.listener8 == 2);
-            this.assertTrue(callCount.listener9 == 0);
+            this.assertEquals(callCount.listener1, 1);
+            this.assertEquals(callCount.listener2, 0);
+            this.assertEquals(callCount.listener3, 1);
+            this.assertEquals(callCount.listener4, 0);
+            this.assertEquals(callCount.listener5, 1);
+            this.assertEquals(callCount.listener6, 1);
+            this.assertEquals(callCount.listener7, 1);
+            this.assertEquals(callCount.listener8, 2);
+            this.assertEquals(callCount.listener9, 0);
 
             myJson.deleteKey(testData.myMap, "cyan");
 
@@ -1182,11 +1182,11 @@ Aria.classDefinition({
                 var arg = arguments[0];
                 switch (callCount.listener1) {
                     case (1) :
-                        this.assertTrue(arg.dataHolder == testData.myArray);
-                        this.assertTrue(arg.dataName == 0);
-                        this.assertTrue(arg.newValue == "e");
-                        this.assertTrue(arg.oldValue == "a");
-                        this.assertTrue(arg.change == myJson.VALUE_CHANGED);
+                        this.assertEquals(arg.dataHolder, testData.myArray);
+                        this.assertEquals(arg.dataName, 0);
+                        this.assertEquals(arg.newValue, "e");
+                        this.assertEquals(arg.oldValue, "a");
+                        this.assertEquals(arg.change, myJson.VALUE_CHANGED);
                         break;
                 }
             };
@@ -1195,18 +1195,18 @@ Aria.classDefinition({
                 var arg = arguments[0];
                 switch (callCount.listener2) {
                     case (1) :
-                        this.assertTrue(arg.dataHolder == testData.myArray);
-                        this.assertTrue(arg.dataName == 3);
-                        this.assertTrue(arg.newValue == "c");
-                        this.assertTrue(arg.oldValue == "d");
-                        this.assertTrue(arg.change == myJson.VALUE_CHANGED);
+                        this.assertEquals(arg.dataHolder, testData.myArray);
+                        this.assertEquals(arg.dataName, 3);
+                        this.assertEquals(arg.newValue, "c");
+                        this.assertEquals(arg.oldValue, "d");
+                        this.assertEquals(arg.change, myJson.VALUE_CHANGED);
                         break;
                     case (2) :
-                        this.assertTrue(arg.dataHolder == testData.myArray);
-                        this.assertTrue(arg.dataName == 3);
-                        this.assertTrue(arg.newValue == "h");
-                        this.assertTrue(arg.oldValue == "c");
-                        this.assertTrue(arg.change == myJson.VALUE_CHANGED);
+                        this.assertEquals(arg.dataHolder, testData.myArray);
+                        this.assertEquals(arg.dataName, 3);
+                        this.assertEquals(arg.newValue, "h");
+                        this.assertEquals(arg.oldValue, "c");
+                        this.assertEquals(arg.change, myJson.VALUE_CHANGED);
                         break;
                 }
             };
@@ -1216,18 +1216,18 @@ Aria.classDefinition({
                 var arg = arguments[0];
                 switch (callCount.listener3) {
                     case (1) :
-                        this.assertTrue(arg.dataHolder == testData.myArray);
-                        this.assertTrue(arg.dataName == 4);
-                        this.assertTrue(arg.newValue == "d");
-                        this.assertTrue(arg.oldValue == undefined);
-                        this.assertTrue(arg.change == myJson.VALUE_CHANGED);
+                        this.assertEquals(arg.dataHolder, testData.myArray);
+                        this.assertEquals(arg.dataName, 4);
+                        this.assertEquals(arg.newValue, "d");
+                        this.assertEquals(arg.oldValue, undefined);
+                        this.assertEquals(arg.change, myJson.VALUE_CHANGED);
                         break;
                     case (2) :
-                        this.assertTrue(arg.dataHolder == testData.myArray);
-                        this.assertTrue(arg.dataName == 4);
+                        this.assertEquals(arg.dataHolder, testData.myArray);
+                        this.assertEquals(arg.dataName, 4);
                         this.assertTrue(!arg.newValue);
-                        this.assertTrue(arg.oldValue == "d");
-                        this.assertTrue(arg.change == myJson.KEY_REMOVED);
+                        this.assertEquals(arg.oldValue, "d");
+                        this.assertEquals(arg.change, myJson.KEY_REMOVED);
                         break;
                 }
             };
@@ -1236,31 +1236,31 @@ Aria.classDefinition({
                 var arg = arguments[0];
                 switch (callCount.listener4) {
                     case (1) :
-                        this.assertTrue(arg.dataHolder == testData.myArray);
-                        this.assertTrue(arg.index == 0);
-                        this.assertTrue(arg.removed.length == 1);
-                        this.assertTrue(arg.removed[0] == "a");
-                        this.assertTrue(arg.added.length == 2);
-                        this.assertTrue(arg.added[0] == "e");
-                        this.assertTrue(arg.added[1][0] == "f");
-                        this.assertTrue(arg.change == myJson.SPLICE);
+                        this.assertEquals(arg.dataHolder, testData.myArray);
+                        this.assertEquals(arg.index, 0);
+                        this.assertEquals(arg.removed.length, 1);
+                        this.assertEquals(arg.removed[0], "a");
+                        this.assertEquals(arg.added.length, 2);
+                        this.assertEquals(arg.added[0], "e");
+                        this.assertEquals(arg.added[1][0], "f");
+                        this.assertEquals(arg.change, myJson.SPLICE);
                         break;
                     case (2) :
-                        this.assertTrue(arg.dataHolder == testData.myArray);
-                        this.assertTrue(arg.index == 3);
-                        this.assertTrue(arg.removed.length == 1);
-                        this.assertTrue(arg.removed[0] == "c");
-                        this.assertTrue(arg.added.length == 1);
-                        this.assertTrue(arg.added[0] == "h");
-                        this.assertTrue(arg.change == myJson.SPLICE);
+                        this.assertEquals(arg.dataHolder, testData.myArray);
+                        this.assertEquals(arg.index, 3);
+                        this.assertEquals(arg.removed.length, 1);
+                        this.assertEquals(arg.removed[0], "c");
+                        this.assertEquals(arg.added.length, 1);
+                        this.assertEquals(arg.added[0], "h");
+                        this.assertEquals(arg.change, myJson.SPLICE);
                         break;
                     case (3) :
-                        this.assertTrue(arg.dataHolder == testData.myArray);
-                        this.assertTrue(arg.index == 4);
-                        this.assertTrue(arg.removed.length == 1);
-                        this.assertTrue(arg.removed[0] == "d");
-                        this.assertTrue(arg.added.length == 0);
-                        this.assertTrue(arg.change == myJson.SPLICE);
+                        this.assertEquals(arg.dataHolder, testData.myArray);
+                        this.assertEquals(arg.index, 4);
+                        this.assertEquals(arg.removed.length, 1);
+                        this.assertEquals(arg.removed[0], "d");
+                        this.assertEquals(arg.added.length, 0);
+                        this.assertEquals(arg.change, myJson.SPLICE);
                         break;
                 }
             };
@@ -1269,31 +1269,31 @@ Aria.classDefinition({
                 var arg = arguments[0];
                 switch (callCount.listener5) {
                     case (1) :
-                        this.assertTrue(arg.dataHolder == testData.myArray);
-                        this.assertTrue(arg.index == 0);
-                        this.assertTrue(arg.removed.length == 1);
-                        this.assertTrue(arg.removed[0] == "a");
-                        this.assertTrue(arg.added.length == 2);
-                        this.assertTrue(arg.added[0] == "e");
-                        this.assertTrue(arg.added[1][0] == "f");
-                        this.assertTrue(arg.change == myJson.SPLICE);
+                        this.assertEquals(arg.dataHolder, testData.myArray);
+                        this.assertEquals(arg.index, 0);
+                        this.assertEquals(arg.removed.length, 1);
+                        this.assertEquals(arg.removed[0], "a");
+                        this.assertEquals(arg.added.length, 2);
+                        this.assertEquals(arg.added[0], "e");
+                        this.assertEquals(arg.added[1][0], "f");
+                        this.assertEquals(arg.change, myJson.SPLICE);
                         break;
                     case (2) :
-                        this.assertTrue(arg.dataHolder == testData.myArray);
-                        this.assertTrue(arg.index == 3);
-                        this.assertTrue(arg.removed.length == 1);
-                        this.assertTrue(arg.removed[0] == "c");
-                        this.assertTrue(arg.added.length == 1);
-                        this.assertTrue(arg.added[0] == "h");
-                        this.assertTrue(arg.change == myJson.SPLICE);
+                        this.assertEquals(arg.dataHolder, testData.myArray);
+                        this.assertEquals(arg.index, 3);
+                        this.assertEquals(arg.removed.length, 1);
+                        this.assertEquals(arg.removed[0], "c");
+                        this.assertEquals(arg.added.length, 1);
+                        this.assertEquals(arg.added[0], "h");
+                        this.assertEquals(arg.change, myJson.SPLICE);
                         break;
                     case (3) :
-                        this.assertTrue(arg.dataHolder == testData.myArray);
-                        this.assertTrue(arg.index == 4);
-                        this.assertTrue(arg.removed.length == 1);
-                        this.assertTrue(arg.removed[0] == "d");
-                        this.assertTrue(arg.added.length == 0);
-                        this.assertTrue(arg.change == myJson.SPLICE);
+                        this.assertEquals(arg.dataHolder, testData.myArray);
+                        this.assertEquals(arg.index, 4);
+                        this.assertEquals(arg.removed.length, 1);
+                        this.assertEquals(arg.removed[0], "d");
+                        this.assertEquals(arg.added.length, 0);
+                        this.assertEquals(arg.change, myJson.SPLICE);
                         break;
                 }
             };
@@ -1302,31 +1302,31 @@ Aria.classDefinition({
                 var arg = arguments[0];
                 switch (callCount.listener6) {
                     case (1) :
-                        this.assertTrue(arg.dataHolder == testData.myArray);
-                        this.assertTrue(arg.index == 0);
-                        this.assertTrue(arg.removed.length == 1);
-                        this.assertTrue(arg.removed[0] == "a");
-                        this.assertTrue(arg.added.length == 2);
-                        this.assertTrue(arg.added[0] == "e");
-                        this.assertTrue(arg.added[1][0] == "f");
-                        this.assertTrue(arg.change == myJson.SPLICE);
+                        this.assertEquals(arg.dataHolder, testData.myArray);
+                        this.assertEquals(arg.index, 0);
+                        this.assertEquals(arg.removed.length, 1);
+                        this.assertEquals(arg.removed[0], "a");
+                        this.assertEquals(arg.added.length, 2);
+                        this.assertEquals(arg.added[0], "e");
+                        this.assertEquals(arg.added[1][0], "f");
+                        this.assertEquals(arg.change, myJson.SPLICE);
                         break;
                     case (2) :
-                        this.assertTrue(arg.dataHolder == testData.myArray);
-                        this.assertTrue(arg.index == 3);
-                        this.assertTrue(arg.removed.length == 1);
-                        this.assertTrue(arg.removed[0] == "c");
-                        this.assertTrue(arg.added.length == 1);
-                        this.assertTrue(arg.added[0] == "h");
-                        this.assertTrue(arg.change == myJson.SPLICE);
+                        this.assertEquals(arg.dataHolder, testData.myArray);
+                        this.assertEquals(arg.index, 3);
+                        this.assertEquals(arg.removed.length, 1);
+                        this.assertEquals(arg.removed[0], "c");
+                        this.assertEquals(arg.added.length, 1);
+                        this.assertEquals(arg.added[0], "h");
+                        this.assertEquals(arg.change, myJson.SPLICE);
                         break;
                     case (3) :
-                        this.assertTrue(arg.dataHolder == testData.myArray);
-                        this.assertTrue(arg.index == 4);
-                        this.assertTrue(arg.removed.length == 1);
-                        this.assertTrue(arg.removed[0] == "d");
-                        this.assertTrue(arg.added.length == 0);
-                        this.assertTrue(arg.change == myJson.SPLICE);
+                        this.assertEquals(arg.dataHolder, testData.myArray);
+                        this.assertEquals(arg.index, 4);
+                        this.assertEquals(arg.removed.length, 1);
+                        this.assertEquals(arg.removed[0], "d");
+                        this.assertEquals(arg.added.length, 0);
+                        this.assertEquals(arg.change, myJson.SPLICE);
                         break;
                 }
             };
@@ -1375,14 +1375,14 @@ Aria.classDefinition({
             myJson.splice(testData.myArray, -2, 1, "h");
             myJson.splice(testData.myArray, 4, 5);
 
-            this.assertTrue(callCount.listener1 == 1);
-            this.assertTrue(callCount.listener2 == 2);
-            this.assertTrue(callCount.listener3 == 2);
-            this.assertTrue(callCount.listener4 == 3);
-            this.assertTrue(callCount.listener5 == 3);
-            this.assertTrue(callCount.listener6 == 3);
-            this.assertTrue(callCount.listener7 == 0);
-            this.assertTrue(callCount.listener8 == 0);
+            this.assertEquals(callCount.listener1, 1);
+            this.assertEquals(callCount.listener2, 2);
+            this.assertEquals(callCount.listener3, 2);
+            this.assertEquals(callCount.listener4, 3);
+            this.assertEquals(callCount.listener5, 3);
+            this.assertEquals(callCount.listener6, 3);
+            this.assertEquals(callCount.listener7, 0);
+            this.assertEquals(callCount.listener8, 0);
 
             myJson.splice(testData.myMap, 0, 0);
             this.assertErrorInLogs(myJson.INVALID_SPLICE_PARAMETERS);

@@ -222,4 +222,4 @@ Aria.classDefinition({
         }
 
     }
-})
+});

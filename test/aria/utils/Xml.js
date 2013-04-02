@@ -25,7 +25,7 @@ Aria.classDefinition({
          * TestCase1 Tests valid use cases.
          */
         testAsyncXmlToJson : function () {
-            var url = Aria.rootFolderPath + "test/aria/utils/AmadeusRSSFeed.xml"
+            var url = Aria.rootFolderPath + "test/aria/utils/AmadeusRSSFeed.xml";
             aria.core.IO.asyncRequest({
                 url : url,
                 callback : {
@@ -33,12 +33,12 @@ Aria.classDefinition({
                     scope : this,
                     onerror : this._onResponseError
                 }
-            })
+            });
         },
 
         _onResponseError : function (res) {
             try {
-                this.fail("RSS feed not found")
+                this.fail("RSS feed not found");
                 this.notifyTestEnd("testAsyncXmlToJson");
             } catch (e) {
                 this.handleAsyncTestError(e);

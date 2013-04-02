@@ -17,9 +17,6 @@ Aria.classDefinition({
     $classpath : "test.aria.templates.ModifiersTest",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.templates.Modifiers", "aria.utils.String", "aria.utils.Type"],
-    $constructor : function () {
-        this.$TestCase.constructor.call(this);
-    },
     $prototype : {
         /**
          * Call modifiers that don't exists, this should log an error

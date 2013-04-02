@@ -20,12 +20,6 @@ Aria.classDefinition({
     $classpath : "test.aria.core.TplClassLoaderTest",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.utils.Dom", "aria.core.ClassLoader"],
-    $constructor : function () {
-        this.$TestCase.constructor.call(this);
-    },
-    $destructor : function () {
-        this.$TestCase.$destructor.call(this);
-    },
     $prototype : {
         setUp : function () {
             var document = Aria.$window.document;

@@ -17,9 +17,9 @@
  * Test case for flow controllers.
  */
 Aria.classDefinition({
-    $classpath : 'test.aria.templates.FlowCtrlTest',
-    $extends : 'aria.jsunit.TestCase',
-    $dependencies : ['aria.templates.ModuleCtrlFactory'],
+    $classpath : "test.aria.templates.FlowCtrlTest",
+    $extends : "aria.jsunit.TestCase",
+    $dependencies : ["aria.templates.ModuleCtrlFactory"],
     $constructor : function () {
         this.$TestCase.constructor.call(this);
 

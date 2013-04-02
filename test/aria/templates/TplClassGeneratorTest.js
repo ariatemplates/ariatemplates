@@ -58,7 +58,7 @@ Aria.classDefinition({
 				"CSS" : aria.templates.CSSClassGenerator,
 				"TXT" : aria.templates.TxtClassGenerator,
 				"TML" : aria.templates.TmlClassGenerator
-			}
+			};
 
 			return generators[category];
 		},
@@ -111,7 +111,7 @@ Aria.classDefinition({
 				this.assertEquals(text.name, "#TEXT#");
 				this.assertTrue(text.paramBlock.indexOf("Hello") != -1);
 
-				Aria.eval(def.classDef);
+				Aria["eval"](def.classDef);
 
 			} catch (ex) {
 				this.$logError("Error in template definition: " + args, ex);

@@ -70,7 +70,7 @@ Aria.classDefinition({
 					return counter[key];
 				},
 				$dispose : function () {
-					counter.disposed = true
+					counter.disposed = true;
 				}
 			};
 
@@ -89,7 +89,7 @@ Aria.classDefinition({
 			value = storage.getItem("a b");
 			this.assertEquals(expected, value, "Mismatch " + expected + " got " + value);
 
-			var expected = false;
+			expected = false;
 			storage.setItem("a b", expected);
 			value = storage.getItem("a b");
 			this.assertEquals(expected, value, "Mismatch " + expected + " got " + value);

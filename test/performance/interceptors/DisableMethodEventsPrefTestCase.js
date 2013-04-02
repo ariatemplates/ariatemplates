@@ -36,9 +36,9 @@ Aria.classDefinition({
         },
         _onBtnClicked : function () {
             var data = this.templateCtxt.moduleCtrl.getData("calls");
-            this.assertTrue(data.callBegin == 0);
-            this.assertTrue(data.calls == 502);
-            this.assertTrue(data.callEnd == 0);
+            this.assertEquals(data.callBegin, 0);
+            this.assertEquals(data.calls, 502);
+            this.assertEquals(data.callEnd, 0);
             this.notifyTemplateTestEnd();
         }
     }

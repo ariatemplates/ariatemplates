@@ -17,22 +17,22 @@
  * Public interface of test.aria.jsunit.mock.MockModule.
  */
 Aria.interfaceDefinition({
-	$classpath : 'test.aria.jsunit.mock.IMockModule',
-	$extends : 'aria.templates.IModuleCtrl',
-	$events : {
-		"myEvent" : {
-			description : "dummy event, used for testing"
-		},
-		"responseReceived" : {
-			description : "raised when a successful response is received"
-		}
-	},
-	$interface : {
-		/**
-		 * Processes the command contained in the data model, sending the request to an appropriate address
-		 * @param {String} url the address to which the request must be sent
-		 * @param {aria.core.JsObject.Callback} cb callback
-		 */
-		processCommand : function (url, cb) {}
-	}
+    $classpath : "test.aria.jsunit.mock.IMockModule",
+    $extends : "aria.templates.IModuleCtrl",
+    $events : {
+        "myEvent" : {
+            description : "dummy event, used for testing"
+        },
+        "responseReceived" : {
+            description : "raised when a successful response is received"
+        }
+    },
+    $interface : {
+        /**
+         * Processes the command contained in the data model, sending the request to an appropriate address
+         * @param {String} url the address to which the request must be sent
+         * @param {aria.core.JsObject.Callback} cb callback
+         */
+        processCommand : function (url, cb) {}
+    }
 });

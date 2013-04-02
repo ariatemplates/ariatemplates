@@ -17,23 +17,23 @@
  * IO filter sample class used by RequestMgrJsonSerializerTest.
  */
 Aria.classDefinition({
-	$classpath : 'test.aria.modules.test.JsonSerializerTestFilter',
-	$extends : 'aria.core.IOFilter',
-	$constructor : function () {
-		this.$IOFilter.constructor.call(this);
-	},
-	$prototype : {
-		onRequest : function (req) {
-			if (req.sender.requestObject && req.sender.requestObject.actionName == "serializerTestAction") {
-				this.__postData = req.postData;
-				this.redirectToFile(req, "test/aria/modules/test/TestFile.txt", false);
-			}
-		},
-		onResponse : function (req) {
-			if (req.sender.requestObject && req.sender.requestObject.actionName == "serializerTestAction") {
-				req.res.responseText = this.__postData;
-				this.__postData = null;
-			}
-		}
-	}
+    $classpath : 'test.aria.modules.test.JsonSerializerTestFilter',
+    $extends : 'aria.core.IOFilter',
+    $constructor : function () {
+        this.$IOFilter.constructor.call(this);
+    },
+    $prototype : {
+        onRequest : function (req) {
+            if (req.sender.requestObject && req.sender.requestObject.actionName == "serializerTestAction") {
+                this.__postData = req.postData;
+                this.redirectToFile(req, "test/aria/modules/test/TestFile.txt", false);
+            }
+        },
+        onResponse : function (req) {
+            if (req.sender.requestObject && req.sender.requestObject.actionName == "serializerTestAction") {
+                req.res.responseText = this.__postData;
+                this.__postData = null;
+            }
+        }
+    }
 });

@@ -17,110 +17,110 @@
  * EnableMethodEventInterceptorTest Controller test class
  */
 Aria.classDefinition({
-	$classpath : 'test.aria.templates.EnableMethodEventInterceptorTest',
-	$extends : 'aria.jsunit.TestCase',
-	$dependencies : ['aria.templates.ModuleCtrlFactory'],
-	$constructor : function () {
-		this.$TestCase.constructor.call(this);
-		this.defaultTestTimeout = 2000;
-	},
-	$prototype : {
+    $classpath : 'test.aria.templates.EnableMethodEventInterceptorTest',
+    $extends : 'aria.jsunit.TestCase',
+    $dependencies : ['aria.templates.ModuleCtrlFactory'],
+    $constructor : function () {
+        this.$TestCase.constructor.call(this);
+        this.defaultTestTimeout = 2000;
+    },
+    $prototype : {
 
-		testAsyncDefaultInterceptor : function () {
-			aria.templates.ModuleCtrlFactory.createModuleCtrl({
-				classpath : "test.aria.templates.test.SampleModuleCtrl"
-			}, {
-				fn : this._testAsyncDefaultInterceptorCb,
-				scope : this
-			});
-		},
+        testAsyncDefaultInterceptor : function () {
+            aria.templates.ModuleCtrlFactory.createModuleCtrl({
+                classpath : "test.aria.templates.test.SampleModuleCtrl"
+            }, {
+                fn : this._testAsyncDefaultInterceptorCb,
+                scope : this
+            });
+        },
 
-		_testAsyncDefaultInterceptorCb : function (res) {
-			try {
-				var mc = res.moduleCtrlPrivate;
-				this.assertTrue(mc.__$interceptors != null);
-				this.assertErrorInLogs(mc.DEPRECATED_METHOD_EVENTS);
-				mc.incrementCount();
-				aria.core.Timer.addCallback({
-					fn : this._endTestAsyncEnableInterceptor,
-					scope : this,
-					args : {
-						"mc" : mc,
-						"testName" : "testAsyncDefaultInterceptor"
-					},
-					delay : 16
-				});
-			} catch (ex) {
-				this.handleAsyncTestError(ex);
-			}
-		},
+        _testAsyncDefaultInterceptorCb : function (res) {
+            try {
+                var mc = res.moduleCtrlPrivate;
+                this.assertTrue(mc.__$interceptors != null);
+                this.assertErrorInLogs(mc.DEPRECATED_METHOD_EVENTS);
+                mc.incrementCount();
+                aria.core.Timer.addCallback({
+                    fn : this._endTestAsyncEnableInterceptor,
+                    scope : this,
+                    args : {
+                        "mc" : mc,
+                        "testName" : "testAsyncDefaultInterceptor"
+                    },
+                    delay : 16
+                });
+            } catch (ex) {
+                this.handleAsyncTestError(ex);
+            }
+        },
 
-		testAsyncDisableInterceptor : function () {
-			aria.templates.ModuleCtrlFactory.createModuleCtrl({
-				classpath : "test.aria.templates.test.DisableMethodEventsModuleCtrl"
-			}, {
-				fn : this._testAsyncDisableInterceptorCb,
-				scope : this
-			});
-		},
+        testAsyncDisableInterceptor : function () {
+            aria.templates.ModuleCtrlFactory.createModuleCtrl({
+                classpath : "test.aria.templates.test.DisableMethodEventsModuleCtrl"
+            }, {
+                fn : this._testAsyncDisableInterceptorCb,
+                scope : this
+            });
+        },
 
-		_testAsyncDisableInterceptorCb : function (res) {
-			try {
-				var mc = res.moduleCtrlPrivate;
-				this.assertTrue(!mc.__$interceptors);
-				mc.testMethod();
-				aria.core.Timer.addCallback({
-					fn : this._endTestAsyncDisableInterceptor,
-					scope : this,
-					args : {
-						"mc" : mc
-					},
-					delay : 16
-				});
-			} catch (ex) {
-				this.handleAsyncTestError(ex);
-			}
-		},
-		_endTestAsyncDisableInterceptor : function (args) {
-			this.assertFalse(args.mc.unexpectedMethodCallBegin);
-			this.assertFalse(args.mc.unexpectedMethodCallEnd);
-			args.mc.$dispose();
-			this.notifyTestEnd("testAsyncDisableInterceptor");
-		},
+        _testAsyncDisableInterceptorCb : function (res) {
+            try {
+                var mc = res.moduleCtrlPrivate;
+                this.assertTrue(!mc.__$interceptors);
+                mc.testMethod();
+                aria.core.Timer.addCallback({
+                    fn : this._endTestAsyncDisableInterceptor,
+                    scope : this,
+                    args : {
+                        "mc" : mc
+                    },
+                    delay : 16
+                });
+            } catch (ex) {
+                this.handleAsyncTestError(ex);
+            }
+        },
+        _endTestAsyncDisableInterceptor : function (args) {
+            this.assertFalse(args.mc.unexpectedMethodCallBegin);
+            this.assertFalse(args.mc.unexpectedMethodCallEnd);
+            args.mc.$dispose();
+            this.notifyTestEnd("testAsyncDisableInterceptor");
+        },
 
-		testAsyncEnableInterceptor : function () {
-			aria.templates.ModuleCtrlFactory.createModuleCtrl({
-				classpath : "test.aria.templates.test.EnableMethodEventsModuleCtrl"
-			}, {
-				fn : this._testAsyncEnableInterceptorCb,
-				scope : this
-			});
-		},
+        testAsyncEnableInterceptor : function () {
+            aria.templates.ModuleCtrlFactory.createModuleCtrl({
+                classpath : "test.aria.templates.test.EnableMethodEventsModuleCtrl"
+            }, {
+                fn : this._testAsyncEnableInterceptorCb,
+                scope : this
+            });
+        },
 
-		_testAsyncEnableInterceptorCb : function (res) {
-			try {
-				var mc = res.moduleCtrlPrivate;
-				this.assertTrue(mc.__$interceptors != null);
-				mc.testMethod();
-				aria.core.Timer.addCallback({
-					fn : this._endTestAsyncEnableInterceptor,
-					scope : this,
-					args : {
-						"mc" : mc,
-						"testName" : "testAsyncEnableInterceptor"
-					},
-					delay : 16
-				});
-			} catch (ex) {
-				this.handleAsyncTestError(ex);
-			}
-		},
-		_endTestAsyncEnableInterceptor : function (args) {
-			this.assertTrue(args.mc.eventCallBeginRaised);
-			this.assertTrue(args.mc.eventCallEndRaised);
-			args.mc.$dispose();
-			this.notifyTestEnd(args.testName);
-		}
+        _testAsyncEnableInterceptorCb : function (res) {
+            try {
+                var mc = res.moduleCtrlPrivate;
+                this.assertTrue(mc.__$interceptors != null);
+                mc.testMethod();
+                aria.core.Timer.addCallback({
+                    fn : this._endTestAsyncEnableInterceptor,
+                    scope : this,
+                    args : {
+                        "mc" : mc,
+                        "testName" : "testAsyncEnableInterceptor"
+                    },
+                    delay : 16
+                });
+            } catch (ex) {
+                this.handleAsyncTestError(ex);
+            }
+        },
+        _endTestAsyncEnableInterceptor : function (args) {
+            this.assertTrue(args.mc.eventCallBeginRaised);
+            this.assertTrue(args.mc.eventCallEndRaised);
+            args.mc.$dispose();
+            this.notifyTestEnd(args.testName);
+        }
 
-	}
+    }
 });

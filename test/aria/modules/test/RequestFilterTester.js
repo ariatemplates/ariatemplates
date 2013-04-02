@@ -17,24 +17,24 @@
  * Helper to test RequestFilter
  */
 Aria.classDefinition({
-	$classpath : "test.aria.modules.test.RequestFilterTester",
-	$extends : "aria.core.IOFilter",
-	$constructor : function (targetPkg) {
-		this.$IOFilter.constructor.call(this);
-		this._targetPkg = targetPkg;
-		this.requestCalls = [];
-	},
-	$destructor : function () {
-		this.requestCalls = null;
-		this.$IOFilter.$destructor.call(this);
-	},
-	$prototype : {
-		/**
-		 * Called when a request is sent to the filter. Simply store the request in this.requestCalls.
-		 * @param {aria.modules.RequestMgr.FilterRequest} req
-		 */
-		onRequest : function (req) {
-			this.requestCalls.push(req);
-		}
-	}
+    $classpath : "test.aria.modules.test.RequestFilterTester",
+    $extends : "aria.core.IOFilter",
+    $constructor : function (targetPkg) {
+        this.$IOFilter.constructor.call(this);
+        this._targetPkg = targetPkg;
+        this.requestCalls = [];
+    },
+    $destructor : function () {
+        this.requestCalls = null;
+        this.$IOFilter.$destructor.call(this);
+    },
+    $prototype : {
+        /**
+         * Called when a request is sent to the filter. Simply store the request in this.requestCalls.
+         * @param {aria.modules.RequestMgr.FilterRequest} req
+         */
+        onRequest : function (req) {
+            this.requestCalls.push(req);
+        }
+    }
 });

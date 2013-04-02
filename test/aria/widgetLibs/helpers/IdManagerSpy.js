@@ -59,7 +59,7 @@ Aria.classDefinition({
 			originalGetId = null;
 			originalReleaseId = null;
 			delete this._dispose;
-		}
+		};
 
 	},
 	$destructor : function () {
@@ -114,7 +114,7 @@ Aria.classDefinition({
 		 * @param {String} description description of the error (displayed in case the assert fails)
 		 */
 		assertEmptyIdsCreated : function (description) {
-			this.testCase.assertTrue(this.idsCreated.length == 0, description);
+			this.testCase.assertEquals(this.idsCreated.length, 0, description);
 		},
 
 		/**
@@ -122,7 +122,7 @@ Aria.classDefinition({
 		 * @param {String} description description of the error (displayed in case the assert fails)
 		 */
 		assertEmptyIdsReleased : function (description) {
-			this.testCase.assertTrue(this.idsReleased.length == 0, description);
+			this.testCase.assertEquals(this.idsReleased.length, 0, description);
 		},
 
 		/**

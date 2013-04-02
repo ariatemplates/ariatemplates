@@ -17,7 +17,7 @@
  * Sample class defining some events
  */
 Aria.classDefinition({
-    $classpath : 'test.aria.core.test.ClassA',
+    $classpath : "test.aria.core.test.ClassA",
     $events : {
         "start" : "sample event raised when start() begins",
         "end" : {
@@ -56,7 +56,7 @@ Aria.classDefinition({
          * @param {Integer} incr increment value (can be negative)
          */
         incrementCount : function (incr) {
-            if (incr != 0) {
+            if (incr !== 0) {
                 var prevCount = this.count;
                 this.count += incr;
                 this.$raiseEvent({

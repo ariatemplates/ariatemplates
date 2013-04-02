@@ -46,9 +46,8 @@ Aria.classDefinition({
         },
 
         checkInstance : function (args) {
+            var controller = args.controller, resources = args.resources, testName = args.testName;
             try {
-                var controller = args.controller, resources = args.resources, testName = args.testName;
-
                 var suggestions = controller.data.suggestions;
                 this.assertEquals(suggestions.length, 2, "ByInstance should have two suggestions");
                 this.assertEquals(suggestions[0], "ByInstance-", "Suggestion 0 expecting %2, got %1");
@@ -86,9 +85,8 @@ Aria.classDefinition({
         },
 
         checkClasspath : function (args) {
+            var controller = args.controller, resources = controller._resourcesHandler, testName = args.testName;
             try {
-                var controller = args.controller, resources = controller._resourcesHandler, testName = args.testName;
-
                 var suggestions = controller.data.suggestions;
                 this.assertEquals(suggestions.length, 2, "ByClasspath should have two suggestions");
                 this.assertEquals(suggestions[0], "ByClasspath-", "Suggestion 0 expecting %2, got %1");
@@ -146,9 +144,8 @@ Aria.classDefinition({
         },
 
         checkSecondDynamic : function (args) {
+            var controller = args.controller, resources = controller._resourcesHandler, testName = args.testName;
             try {
-                var controller = args.controller, resources = controller._resourcesHandler, testName = args.testName;
-
                 var suggestions = controller.data.suggestions;
                 this.assertEquals(suggestions.length, 2, "Dynamic should have two suggestions");
                 this.assertEquals(suggestions[0], "Dynamic+", "Suggestion 0 expecting %2, got %1");
@@ -182,9 +179,8 @@ Aria.classDefinition({
         },
 
         checkErrors : function (args) {
+            var controller = args.controller, testName = args.testName;
             try {
-                var controller = args.controller, testName = args.testName;
-
                 var suggestions = controller.data.suggestions;
                 this.assertEquals(suggestions.length, 0, "I shouldn't have suggestions in error");
 
@@ -197,4 +193,4 @@ Aria.classDefinition({
             this.notifyTestEnd(testName);
         }
     }
-})
+});

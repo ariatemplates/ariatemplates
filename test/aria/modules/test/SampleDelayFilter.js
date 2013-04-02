@@ -17,12 +17,12 @@
  * Sample filter used to test filter delays for a request and a response.
  */
 Aria.classDefinition({
-	$classpath : "test.aria.modules.test.SampleDelayFilter",
-	$extends : "aria.core.IOFilter",
-	$constructor : function (args) {
-		this.$IOFilter.constructor.call(this, args);
-		this.requestDelay = 5000;
-		this.responseDelay = 6000;
-	},
-	$prototype : {}
+    $classpath : "test.aria.modules.test.SampleDelayFilter",
+    $extends : "aria.core.IOFilter",
+    $constructor : function (args) {
+        this.$IOFilter.constructor.call(this, args);
+        this.requestDelay = 5000;
+        this.responseDelay = 6000;
+    },
+    $prototype : {}
 });

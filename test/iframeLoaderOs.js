@@ -91,9 +91,9 @@
                 }
             });
         }
-    }
+    };
 
-    if (version == '') {
+    if (!version) {
         // error
         // alert('Aria Templates version number not found in loader.js script arguments\nPlease check');
         return;

@@ -14,27 +14,27 @@
  */
 
 Aria.classDefinition({
-	$classpath : 'test.aria.templates.TemplateContextTest',
-	$extends : 'aria.jsunit.TestCase',
-	$dependencies : ['aria.utils.Dom', 'aria.templates.TemplateCtxt', 'aria.templates.Layout',
-			'aria.templates.CfgBeans', 'aria.templates.DomElementWrapper'],
-	$prototype : {
+    $classpath : "test.aria.templates.TemplateContextTest",
+    $extends : "aria.jsunit.TestCase",
+    $dependencies : ["aria.utils.Dom", "aria.templates.TemplateCtxt", "aria.templates.Layout",
+            "aria.templates.CfgBeans", "aria.templates.DomElementWrapper"],
+    $prototype : {
 
-		testGetChild : function () {
-			var document = Aria.$window.document;
-			var parent = document.createElement("div"), child = document.createElement("p"), join = parent.appendChild(child);
-			parent.setAttribute('id', 'test');
-			document.body.appendChild(parent);
+        testGetChild : function () {
+            var document = Aria.$window.document;
+            var parent = document.createElement("div"), child = document.createElement("p"), join = parent.appendChild(child);
+            parent.setAttribute('id', 'test');
+            document.body.appendChild(parent);
 
-			var tc = new aria.templates.TemplateCtxt();
-			var f1 = tc.$getChild("test"), f2 = tc.$getChild("test", 0), f3 = tc.$getChild("test", 1), f4 = tc.$getChild("te_st", 1);
-			this.assertTrue(f1 == null);
-			this.assertTrue(typeof f2 == "object");
-			this.assertTrue(f3 == null);
-			this.assertTrue(f4 == null);
-			tc.$dispose();
+            var tc = new aria.templates.TemplateCtxt();
+            var f1 = tc.$getChild("test"), f2 = tc.$getChild("test", 0), f3 = tc.$getChild("test", 1), f4 = tc.$getChild("te_st", 1);
+            this.assertTrue(f1 == null);
+            this.assertTrue(typeof f2 == "object");
+            this.assertTrue(f3 == null);
+            this.assertTrue(f4 == null);
+            tc.$dispose();
 
-			document.body.removeChild(parent);
-		}
-	}
-})
+            document.body.removeChild(parent);
+        }
+    }
+});

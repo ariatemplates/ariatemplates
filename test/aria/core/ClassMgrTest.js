@@ -15,19 +15,12 @@
 
 /**
  * Test case for the class manager.
- * @class test.aria.core.ClassMgrTest
  */
 Aria.classDefinition({
-    $classpath : 'test.aria.core.ClassMgrTest',
-    $extends : 'aria.jsunit.TestCase',
-    $dependencies : ['aria.templates.Template', 'test.aria.core.test.classMgrTest.Class1',
-            'test.aria.core.test.classMgrTest.UnloadFilter'],
-    $constructor : function () {
-        this.$TestCase.constructor.call(this);
-    },
-    $destructor : function () {
-        this.$TestCase.$destructor.call(this);
-    },
+    $classpath : "test.aria.core.ClassMgrTest",
+    $extends : "aria.jsunit.TestCase",
+    $dependencies : ["aria.templates.Template", "test.aria.core.test.classMgrTest.Class1",
+            "test.aria.core.test.classMgrTest.UnloadFilter"],
     $prototype : {
 
         testAsyncMissingJS : function () {

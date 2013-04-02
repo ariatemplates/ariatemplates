@@ -201,7 +201,7 @@ Aria.classDefinition({
             isValidReturn = aria.core.JsonValidator.check(position, "aria.utils.DomBeans.Position");
             this.assertTrue(isValidReturn);
 
-            this.assertTrue((position.left == 0) && (position.top == 0));
+            this.assertTrue((position.left === 0) && (position.top === 0));
 
             document.body.appendChild(element);
             this.domCreated.push(element);

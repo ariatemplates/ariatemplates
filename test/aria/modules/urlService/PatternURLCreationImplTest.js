@@ -17,9 +17,9 @@
  * Test case for the default url pattern creation implementation
  */
 Aria.classDefinition({
-    $classpath : 'test.aria.modules.urlService.PatternURLCreationImplTest',
-    $dependencies : ["aria.modules.urlService.PatternURLCreationImpl", 'aria.modules.RequestMgr'],
-    $extends : 'aria.jsunit.TestCase',
+    $classpath : "test.aria.modules.urlService.PatternURLCreationImplTest",
+    $dependencies : ["aria.modules.urlService.PatternURLCreationImpl", "aria.modules.RequestMgr"],
+    $extends : "aria.jsunit.TestCase",
     $prototype : {
         /**
          * Test creation of url with wrong parameters
@@ -126,7 +126,7 @@ Aria.classDefinition({
             this.__originalCreationImp(function (moduleName, actionName, sessionId) {
                 return instance.createServiceUrl(moduleName, {
                     actionName : actionName
-                }, sessionId)
+                }, sessionId);
             }, instance);
 
         },

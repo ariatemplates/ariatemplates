@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 Aria.tplScriptDefinition({
-    $classpath : 'test.aria.templates.sectionTest.SectionXTplScript',
+    $classpath : "test.aria.templates.sectionTest.SectionXTplScript",
     $prototype : {
 
         $dataReady : function () {
@@ -28,12 +28,12 @@ Aria.tplScriptDefinition({
                 name : 'change section name',
                 dir : 'new dir',
                 simon : true
-            }
+            };
             this.$json.setValue(this.data, "mySectionAttributes", myAttributes);
         },
 
         changeIndividualSectionAttribute : function () {
-            this.$json.setValue(this.data.mySectionAttributes, 'title', 'my new title');
+            this.$json.setValue(this.data.mySectionAttributes, "title", "my new title");
         }
     }
 });

@@ -17,9 +17,9 @@
  * Test case for the event properties of JsObject
  */
 Aria.classDefinition({
-    $classpath : 'test.aria.core.ObservableTest',
-    $extends : 'aria.jsunit.TestCase',
-    $dependencies : ['test.aria.core.test.ClassA'],
+    $classpath : "test.aria.core.ObservableTest",
+    $extends : "aria.jsunit.TestCase",
+    $dependencies : ["test.aria.core.test.ClassA"],
 
     $constructor : function () {
         this.$TestCase.constructor.call(this);
@@ -38,7 +38,7 @@ Aria.classDefinition({
         tearDown : function () {
             if (this.oo) {
                 this.oo.$dispose();
-                delete this.oo
+                delete this.oo;
             }
         },
         /**
@@ -46,7 +46,7 @@ Aria.classDefinition({
          */
         testListener1 : function () {
             // register as listener
-            var o = this.oo
+            var o = this.oo;
             o.$on({
                 'start' : {
                     fn : this.onStart,
@@ -60,7 +60,7 @@ Aria.classDefinition({
                 },
                 'countChange' : this.onCountChange,
                 scope : this
-            })
+            });
 
             // internal map validation
             this.assertTrue(o._listeners["start"][0].fn == this.onStart);
@@ -68,32 +68,32 @@ Aria.classDefinition({
 
             // test start and end events
             o.start();
-            this.assertTrue(this.startCount == 1);
-            this.assertTrue(this.endCount == 1);
-            this.assertTrue(this.countChangeCount == 0);
+            this.assertTrue(this.startCount === 1);
+            this.assertTrue(this.endCount === 1);
+            this.assertTrue(this.countChangeCount === 0);
 
             o.incrementCount(10);
-            this.assertTrue(this.countChangeCount == 1);
+            this.assertTrue(this.countChangeCount === 1);
         },
         /**
          * Test '*' listenere synatax and multiple listeners
          */
         testListener2 : function () {
             // register as listener: note we are registered twice
-            var o = this.oo
+            var o = this.oo;
             o.$on({
                 '*' : this.onEvent,
                 'start' : this.onStart,
                 scope : this
-            })
+            });
 
             o.start();
-            this.assertTrue(this.startCount == 2); // because we registered twice
-            this.assertTrue(this.endCount == 0); // because onEvent is called instead of onStart
-            this.assertTrue(this.countChangeCount == 0);
+            this.assertTrue(this.startCount === 2); // because we registered twice
+            this.assertTrue(this.endCount === 0); // because onEvent is called instead of onStart
+            this.assertTrue(this.countChangeCount === 0);
 
             o.incrementCount(5);
-            this.assertTrue(this.countChangeCount == 1);
+            this.assertTrue(this.countChangeCount === 1);
 
         },
 
@@ -130,7 +130,7 @@ Aria.classDefinition({
          * Test removeListener with arg list
          */
         testRemoveListener1 : function () {
-            var o = this.oo
+            var o = this.oo;
             o.$on({
                 'start' : {
                     fn : this.onStart,
@@ -146,11 +146,11 @@ Aria.classDefinition({
                     fn : this.onCountChange
                 },
                 scope : this
-            })
+            });
             o.$on({
                 'start' : this.onStart2,
                 scope : this
-            })
+            });
 
             this.assertTrue(o._listeners["start"][0].fn == this.onStart);
             this.assertTrue(o._listeners["countChange"][0].scope == this);
@@ -158,7 +158,7 @@ Aria.classDefinition({
             o.$removeListeners({
                 'start' : this.onStart2,
                 scope : this
-            })
+            });
 
             this.assertTrue(o._listeners["start"] != null);
             this.assertTrue(o._listeners["end"][0].scope == this);
@@ -168,7 +168,7 @@ Aria.classDefinition({
                 'start' : {
                     scope : this
                 }
-            })
+            });
             this.assertTrue(o._listeners["start"] == null);
 
             o.$removeListeners({
@@ -176,7 +176,7 @@ Aria.classDefinition({
                     fn : this.onEnd
                 },
                 scope : this
-            })
+            });
             this.assertTrue(o._listeners["end"] == null);
             this.assertTrue(o._listeners["countChange"][0].scope == this);
 
@@ -184,7 +184,7 @@ Aria.classDefinition({
                 '*' : {
                     scope : this
                 }
-            })
+            });
             this.assertTrue(o._listeners["start"] == null);
             this.assertTrue(o._listeners["end"] == null);
             this.assertTrue(o._listeners["countChange"][0].scope == this);
@@ -200,7 +200,7 @@ Aria.classDefinition({
          * Test removeListener with '*' syntax
          */
         testRemoveListener2 : function () {
-            var o = this.oo
+            var o = this.oo;
             o.$on({
                 '*' : this.onEvent,
                 'start' : this.onStart,
@@ -209,7 +209,7 @@ Aria.classDefinition({
                     scope : o
                 }, // for test purpose !
                 scope : this
-            })
+            });
 
             this.assertTrue(o._listeners["*"][0].scope == this);
             this.assertTrue(o._listeners["start"] != null);
@@ -222,9 +222,9 @@ Aria.classDefinition({
          * Listener methods used to track test events
          */
         onStart : function (evt, cbArgs) {
-            this.startCount++
+            this.startCount++;
 
-            this.assertTrue(evt.src == this.oo)
+            this.assertTrue(evt.src == this.oo);
             this.assertTrue(evt.name == 'start');
             this.assertTrue(cbArgs == null);
         },
@@ -232,29 +232,29 @@ Aria.classDefinition({
             // not called in this test
         },
         onEnd : function (evt, cbArgs) {
-            this.endCount++
+            this.endCount++;
 
             this.assertTrue(evt.name == 'end');
             // object arg
             this.assertTrue(cbArgs.description == "Sample Callback Argument", "onEnd arg validation");
         },
         onCountChange : function (evt, cbArgs) {
-            this.countChangeCount++
+            this.countChangeCount++;
             this.assertTrue(evt.name == 'countChange');
             // test event args
-            this.assertTrue(evt.oldCountValue == 0, "event args test 1");
-            this.assertTrue(evt.newCountValue == 10, "event args test 2");
+            this.assertTrue(evt.oldCountValue === 0, "event args test 1");
+            this.assertTrue(evt.newCountValue === 10, "event args test 2");
         },
         onEvent : function (evt, cbArgs) {
-            this.assertTrue(evt.src == this.oo)
-            if (evt.name == 'start')
-                this.startCount++
-            else if (evt.name == 'countChange') {
-                this.countChangeCount++
-                this.assertTrue(evt.oldCountValue == 0, "event args test 3");
-                this.assertTrue(evt.newCountValue == 5, "event args test 4");
+            this.assertTrue(evt.src == this.oo);
+            if (evt.name == 'start') {
+                this.startCount++;
+            } else if (evt.name == 'countChange') {
+                this.countChangeCount++;
+                this.assertTrue(evt.oldCountValue === 0, "event args test 3");
+                this.assertTrue(evt.newCountValue === 5, "event args test 4");
             } else {
-                this.assertTrue(evt.name != 'nonexistent')
+                this.assertTrue(evt.name != 'nonexistent');
             }
         },
 

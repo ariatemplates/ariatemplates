@@ -17,13 +17,13 @@
  * Test case for the RequestFilter class.
  */
 Aria.classDefinition({
-	$classpath : 'test.aria.modules.RequestFilterTest',
-	$extends : 'aria.jsunit.TestCase',
-	$dependencies : ['test.aria.modules.test.RequestFilterTester', 'aria.modules.RequestMgr', "aria.core.IOFiltersMgr"],
+	$classpath : "test.aria.modules.RequestFilterTest",
+	$extends : "aria.jsunit.TestCase",
+	$dependencies : ["test.aria.modules.test.RequestFilterTester", "aria.modules.RequestMgr", "aria.core.IOFiltersMgr"],
 	$constructor : function () {
 		this.$TestCase.constructor.call(this);
 
-		// The test testAsyncFilterDelays is going to take some time, change the default test timeout
+        // The test testAsyncFilterDelays is going to take some time, change the default test timeout
 		// the test uses two delay filters around an invalid requests of ~20.000 ms
 		this.defaultTestTimeout = 30000;
 	},

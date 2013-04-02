@@ -21,9 +21,6 @@ Aria.classDefinition({
     $classpath : "test.aria.core.JsonValidatorTest",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.core.BaseTypes", "aria.widgets.CfgBeans", "test.aria.core.test.Beans"],
-    $constructor : function () {
-        this.$TestCase.constructor.call(this);
-    },
     $prototype : {
 
         setUp : function () {
@@ -320,7 +317,7 @@ Aria.classDefinition({
 
             for (var i = 0; i < beansToTest.length; i++) {
                 var btt = beansToTest[i];
-                if (btt.skip == true) {
+                if (btt.skip === true) {
                     continue;
                 }
                 var beanPackage = {
@@ -330,9 +327,9 @@ Aria.classDefinition({
                         "json" : "aria.core.JsonTypes"
                     }),
                     $beans : btt.beans
-                }
+                };
                 Aria.beanDefinitions(beanPackage);
-                this.assertTrue(jv.__loadedBeans[beanPackage.$package] == undefined);
+                this.assertTrue(jv.__loadedBeans[beanPackage.$package] === undefined);
                 for (var j = 0; j < btt.errorMsgs.length; j++) {
                     this.assertErrorInLogs(btt.errorMsgs[j]);
                 }

@@ -39,13 +39,13 @@ Aria.classDefinition({
                 'taskError' : this.onEvents,
                 'end' : this.onEvents,
                 scope : this
-            })
+            });
         },
         onEvents : function (evt) {
             try {
                 this.checkExpectedEvent(evt);
-                if (evt.name == 'taskError' && this.stopProcessingOnError == true) {
-                    evt.continueProcessing = false
+                if (evt.name == 'taskError' && this.stopProcessingOnError === true) {
+                    evt.continueProcessing = false;
                 } else if (evt.name == 'end') {
                     // check it is still processing in the last event (end)
                     this.assertTrue(this.seq._state == this.seq.STATE_PROCESSING);
@@ -54,10 +54,10 @@ Aria.classDefinition({
                         fn : this.endTheTest,
                         scope : this,
                         delay : 1
-                    })
+                    });
                 }
             } catch (ex) {
-                this.handleAsyncTestError(ex)
+                this.handleAsyncTestError(ex);
             }
         },
         endTheTest : function () {
@@ -65,7 +65,7 @@ Aria.classDefinition({
                 var seq = this.seq;
                 this.assertTrue(seq._state == seq.STATE_IDLE);
             } catch (ex) {
-                this.handleAsyncTestError(ex)
+                this.handleAsyncTestError(ex);
             }
             this.notifyTestEnd(this.testName);
         },
@@ -76,27 +76,27 @@ Aria.classDefinition({
                     name : 'test:mySimpleTask',
                     src : this,
                     args : args
-                })
+                });
             },
             myAsyncTask : function (args) {
                 this.onEvents({
                     name : 'test:myAsyncTask',
                     src : this,
                     args : args
-                })
+                });
                 aria.core.Timer.addCallback({
                     fn : this.tasks.myAsyncTaskEnd,
                     args : args,
                     scope : this,
                     delay : 5
-                })
+                });
             },
             myAsyncTaskEnd : function (args) {
                 this.onEvents({
                     name : 'test:myAsyncTaskEnd',
                     src : this,
                     args : args
-                })
+                });
                 this.seq.notifyTaskEnd(args.id, this.stopProcessingOnAsyncTask);
             },
             myErrorTask : function (args) {
@@ -104,7 +104,7 @@ Aria.classDefinition({
                     name : 'test:myErrorTask',
                     src : this,
                     args : args
-                })
+                });
                 throw 'ErrorRaised';
             }
         },
@@ -125,7 +125,7 @@ Aria.classDefinition({
                         name : 'end',
                         src : this.seq
                     }]);
-            this.assertTrue(seq._tasks.length == 0);
+            this.assertTrue(seq._tasks.length === 0);
             this.assertTrue(seq._state == seq.STATE_IDLE);
             seq.start();
         },
@@ -431,9 +431,9 @@ Aria.classDefinition({
             var seq = this.seq;
 
             // Errors:
-            seq.addTask()
+            seq.addTask();
             this.assertErrorInLogs(seq.INVALID_TASKDESC);
-            seq.addTask({})
+            seq.addTask({});
             this.assertErrorInLogs(seq.INVALID_TASKDESC);
             seq.addTask({
                 name : '',
@@ -462,4 +462,4 @@ Aria.classDefinition({
             });
         }
     }
-})
+});

@@ -17,11 +17,11 @@
  * Test case for the default module creation implementation
  */
 Aria.classDefinition({
-	$classpath : 'test.aria.modules.urlService.URLCreationServiceTest',
-	$dependencies : ['aria.modules.RequestMgr', 'test.aria.modules.urlService.ModuleURLCreationImpl',
-			'test.aria.modules.test.MockRequestHandler', 'test.aria.modules.urlService.SearchURLCreationImpl',
-			'aria.templates.ModuleCtrl'],
-	$extends : 'aria.jsunit.TestCase',
+	$classpath : "test.aria.modules.urlService.URLCreationServiceTest",
+	$dependencies : ["aria.modules.RequestMgr", "test.aria.modules.urlService.ModuleURLCreationImpl",
+			"test.aria.modules.test.MockRequestHandler", "test.aria.modules.urlService.SearchURLCreationImpl",
+			"aria.templates.ModuleCtrl"],
+	$extends : "aria.jsunit.TestCase",
 	$constructor : function () {
 		this.$TestCase.constructor.call(this);
 		this.defaultTestTimeout = 2000;

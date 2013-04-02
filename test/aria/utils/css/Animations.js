@@ -30,9 +30,9 @@ Aria.classDefinition({
                             break;
                         }
                     }
-                    delete div;
+                    div = null;
                     return ext;
-                };
+                }
                 return {
                     "cssTransitions" : cssTransitions
                 };
@@ -115,13 +115,14 @@ Aria.classDefinition({
         },
 
         animationComplete : function (evt) {
+            var cfg;
             /* test animation complete*/
             switch (evt.animation) {
-                case "slide" : {
+                case "slide" :
                     this.assertEquals(this.from.className, 'page not-visible', 'The starting div is not hidden');
                     this.assertEquals(this.to.className, 'page', 'The ending div is not displayed');
 
-                    var cfg = {
+                    cfg = {
                         from : this.to,
                         to : this.from,
                         type : 3,
@@ -130,48 +131,48 @@ Aria.classDefinition({
                     };
                     this.animate.start('slide', cfg);
                     break;
-                }
-                case "slide reverse" : {
+
+                case "slide reverse" :
                     this.assertEquals(this.to.className, 'page not-visible', 'The starting div is not hidden');
                     this.assertEquals(this.from.className, 'page', 'The ending div is not displayed');
 
-                    var cfg = {
+                    cfg = {
                         from : this.from,
                         to : this.to,
                         hiddenClass : 'not-visible'
                     };
                     this.animate.start('slideup', cfg);
                     break;
-                }
-                case "slideup" : {
+
+                case "slideup" :
                     this.assertEquals(this.from.className, 'page not-visible', 'The starting div is not hidden');
                     this.assertEquals(this.to.className, 'page', 'The ending div is not displayed');
 
-                    var cfg = {
+                    cfg = {
                         from : this.to,
                         to : this.from,
                         hiddenClass : 'not-visible'
                     };
                     this.animate.start('slidedown', cfg);
                     break;
-                }
-                case "slidedown" : {
+
+                case "slidedown" :
                     this.assertEquals(this.to.className, 'page not-visible', 'The starting div is not hidden');
                     this.assertEquals(this.from.className, 'page', 'The ending div is not displayed');
 
-                    var cfg = {
+                    cfg = {
                         from : this.from,
                         to : this.to,
                         hiddenClass : 'not-visible'
                     };
                     this.animate.start('fade', cfg);
                     break;
-                }
-                case "fade" : {
+
+                case "fade" :
                     this.assertEquals(this.from.className, 'page not-visible', 'The starting div is not hidden');
                     this.assertEquals(this.to.className, 'page', 'The ending div is not displayed');
 
-                    var cfg = {
+                    cfg = {
                         from : this.to,
                         to : this.from,
                         reverse : true,
@@ -179,24 +180,24 @@ Aria.classDefinition({
                     };
                     this.animate.start('fade', cfg);
                     break;
-                }
-                case "fade reverse" : {
+
+                case "fade reverse" :
                     this.assertEquals(this.to.className, 'page not-visible', 'The starting div is not hidden');
                     this.assertEquals(this.from.className, 'page', 'The ending div is not displayed');
 
-                    var cfg = {
+                    cfg = {
                         from : this.from,
                         to : this.to,
                         hiddenClass : 'not-visible'
                     };
                     this.animate.start('pop', cfg);
                     break;
-                }
-                case "pop" : {
+
+                case "pop" :
                     this.assertEquals(this.from.className, 'page not-visible', 'The starting div is not hidden');
                     this.assertEquals(this.to.className, 'page', 'The ending div is not displayed');
 
-                    var cfg = {
+                    cfg = {
                         from : this.to,
                         to : this.from,
                         reverse : true,
@@ -204,12 +205,12 @@ Aria.classDefinition({
                     };
                     this.animate.start('pop', cfg);
                     break;
-                }
-                case "pop reverse" : {
+
+                case "pop reverse" :
                     this.assertEquals(this.to.className, 'page not-visible', 'The starting div is not hidden');
                     this.assertEquals(this.from.className, 'page', 'The ending div is not displayed');
 
-                    var cfg = {
+                    cfg = {
                         from : this.from,
                         to : this.to,
                         reverse : false,
@@ -217,12 +218,12 @@ Aria.classDefinition({
                     };
                     this.animate.start('flip', cfg);
                     break;
-                }
-                case "flip" : {
+
+                case "flip" :
                     this.assertEquals(this.from.className, 'page not-visible', 'The starting div is not hidden');
                     this.assertEquals(this.to.className, 'page', 'The ending div is not displayed');
 
-                    var cfg = {
+                    cfg = {
                         from : this.to,
                         to : this.from,
                         reverse : true,
@@ -230,13 +231,13 @@ Aria.classDefinition({
                     };
                     this.animate.start('flip', cfg);
                     break;
-                }
-                case "flip reverse" : {
+
+                case "flip reverse" :
                     this.assertEquals(this.to.className, 'page not-visible', 'The starting div is not hidden');
                     this.assertEquals(this.from.className, 'page', 'The ending div is not displayed');
                     this.AnimationCombined();
                     break;
-                }
+
             }
         },
 

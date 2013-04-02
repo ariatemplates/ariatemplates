@@ -147,7 +147,7 @@ Aria.classDefinition({
             var myCallback = new aria.utils.Callback({
                 fn : this._myTestMethod,
                 scope : this
-            })
+            });
 
             this.assertTrue(typeUtils.isCallback(myCallback));
 

@@ -202,7 +202,7 @@ Aria.classDefinition({
                 content : "{macro main()}my content{/macro}"
             });
             // content should be available in result template
-            this.assertTrue(/\{macro main\(\)\}my content\{\/macro\}/.test(finalTemplate.content), "Content is not available in generated template")
+            this.assertTrue(/\{macro main\(\)\}my content\{\/macro\}/.test(finalTemplate.content), "Content is not available in generated template");
             // there should be only one main macro
             this.assertTrue(finalTemplate.content.match(/\{macro main\(/).length == 1, "There can be only one ... macro main");
         }

@@ -14,22 +14,22 @@
  */
 
 Aria.tplScriptDefinition({
-	$classpath : "test.aria.touch.gestures.LongPressTplScript",
-	$constructor : function () {
+    $classpath : "test.aria.touch.gestures.LongPressTplScript",
+    $constructor : function () {
         this.data = {};
     },
     $destructor : function () {
         this.data = null;
     },
-	$prototype : {
-		tapHandler : function (event) {
-		    var eType = event.type;
-		    if (eType === "longpressstart") {
-		        this.data.events = [];
-		    }
-		    if (this.data.events) {
-		        this.data.events.push(eType);
-		    }
-		}
-	}
+    $prototype : {
+        tapHandler : function (event) {
+            var eType = event.type;
+            if (eType === "longpressstart") {
+                this.data.events = [];
+            }
+            if (this.data.events) {
+                this.data.events.push(eType);
+            }
+        }
+    }
 });
