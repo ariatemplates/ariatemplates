@@ -111,7 +111,7 @@ Aria.classDefinition({
             var controller = this.controller;
             var cp = this.getCaretPosition();
             if (cp) {
-                var report = controller.checkKeyStroke(event.charCode, event.keyCode, this.getTextInputField().value, cp.start, cp.end);
+                var report = controller.checkKeyStroke(event.charCode, event.keyCode, this.getTextInputField().value, cp.start, cp.end, event);
                 // event may not always be a DomEvent object, that's why we check for the existence of
                 // preventDefault on it
                 if (report && report.cancelKeyStroke && event.preventDefault) {

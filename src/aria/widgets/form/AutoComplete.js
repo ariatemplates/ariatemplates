@@ -58,14 +58,15 @@ Aria.classDefinition({
         }
 
         try {
-            controller.setResourcesHandler(this._cfg.resourcesHandler);
+            controller.setResourcesHandler(cfg.resourcesHandler);
         } catch (e) {
-            this.$logError(this.WIDGET_AUTOCOMPLETE_INVALID_HANDLER, [this._cfg.resourcesHandler], e);
+            this.$logError(this.WIDGET_AUTOCOMPLETE_INVALID_HANDLER, [cfg.resourcesHandler], e);
         }
-        controller.autoFill = this._cfg.autoFill;
-        controller.freeText = this._cfg.freeText;
-        controller.maxlength = this._cfg.maxlength;
-        controller.expandButton = this._cfg.expandButton;
+        controller.autoFill = cfg.autoFill;
+        controller.freeText = cfg.freeText;
+        controller.maxlength = cfg.maxlength;
+        controller.expandButton = cfg.expandButton;
+        controller.selectionKeys = cfg.selectionKeys;
     },
     $destructor : function () {
         // The dropdown might still be open when we destroy the widget, destroy it now

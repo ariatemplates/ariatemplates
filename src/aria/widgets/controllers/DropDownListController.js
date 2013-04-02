@@ -102,18 +102,31 @@ Aria.classDefinition({
         },
 
         /**
+         * Checking against special key combinations that trigger a selection of the item in the dropdown
+         * @param {aria.DomEvent} event
+         * @return {Boolean} Whether the event corresponds to a selection key
+         * @protected
+         */
+        _checkSelectionKeys : function (event) {
+            return event.keyCode == event.KC_ENTER;
+        },
+
+        /**
          * OVERRIDE TextDataController.checkKeyStroke
          * @param {Integer} charCode
          * @param {Integer} keyCode
          * @param {String} currentText
          * @param {Integer} caretPos
+         * @parm {aria.DomEvent} event
          * @return {aria.widgets.controllers.reports.ControllerReport}
          */
-        checkKeyStroke : function (charCode, keyCode, currentText, caretPosStart, caretPosEnd) {
-            var dataModel = this._dataModel, domEvent = aria.DomEvent, report;
+        checkKeyStroke : function (charCode, keyCode, currentText, caretPosStart, caretPosEnd, event) {
+            var dataModel = this._dataModel, domEvent = aria.DomEvent, report, selectionKey;
 
-            if (!domEvent.isNavigationKey(keyCode)) {
-
+            if (this._listWidget) {
+                selectionKey = this._checkSelectionKeys(event);
+            }
+            if (!domEvent.isNavigationKey(keyCode) && !selectionKey) {
                 // value that should be in the input after this keystroke and also the caret positions
                 var nextValueObject;
                 var isDelKey = (keyCode == domEvent.KC_DELETE || keyCode == domEvent.KC_BACKSPACE);
@@ -130,7 +143,7 @@ Aria.classDefinition({
 
             // Handling for navigation. First if dropdown list is opened
             if (this._listWidget) {
-                if (keyCode == domEvent.KC_ESCAPE) {
+                if (!selectionKey && keyCode == domEvent.KC_ESCAPE) {
                     report = this.checkText(dataModel.initialInput);
                     if (!report) {
                         report = new aria.widgets.controllers.reports.DropDownControllerReport();
@@ -141,7 +154,8 @@ Aria.classDefinition({
                     report.value = report.text;
                     dataModel.value = null;
                     return report;
-                } else if (keyCode == domEvent.KC_ENTER) {
+
+                } else if (selectionKey) {
                     if (dataModel.listContent.length === 1) {
                         dataModel.selectedIdx = 0;
                         dataModel.text = this._getLabelFromListValue(dataModel.listContent[dataModel.selectedIdx]);
