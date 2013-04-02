@@ -28,7 +28,6 @@ Aria.classDefinition({
         }
     },
     $statics : {
-        INVALID_CONFIGURATION : "%1Configuration for widget is not valid.",
         ERROR_SUBTEMPLATE : "#ERROR IN SUBTEMPLATE#"
     },
     $constructor : function (cfg, ctxt) {
@@ -126,29 +125,13 @@ Aria.classDefinition({
          * Internal function called before markup generation to check the widget configuration consistency
          */
         _checkCfgConsistency : function (cfg) {
-            try {
-                this._cfgOk = aria.core.JsonValidator.normalize({
-                    json : cfg,
-                    beanName : "aria.html.beans.TemplateCfg.Properties"
-                }, true);
-                if (this._needCreatingModuleCtrl) {
-                    this._cfgOk = this._cfgOk && aria.core.JsonValidator.normalize({
-                        json : cfg.moduleCtrl,
-                        beanName : "aria.templates.CfgBeans.InitModuleCtrl"
-                    });
-                }
-            } catch (e) {
-                var logs = aria.core.Log;
-                if (logs) {
-                    var error;
-                    for (var index = 0, l = e.errors.length; index < l; index++) {
-                        error = e.errors[index];
-                        error.message = logs.prepareLoggedMessage(error.msgId, error.msgArgs);
-                    }
-                    this.$logError(this.INVALID_CONFIGURATION, null, e);
-                }
+
+            var jsonValidator = aria.core.JsonValidator;
+            this._cfgOk = jsonValidator.validateCfg("aria.html.beans.TemplateCfg.Properties", cfg);
+            if (this._needCreatingModuleCtrl) {
+                this._cfgOk = this._cfgOk && jsonValidator.validateCfg("aria.templates.CfgBeans.InitModuleCtrl", cfg.moduleCtrl);
             }
-        },
+       },
 
         /**
          * Callback for the template load. It is called after the module controller initialization. This method creates

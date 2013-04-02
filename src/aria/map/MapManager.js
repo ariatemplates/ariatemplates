@@ -113,8 +113,6 @@
             }
         },
         $statics : {
-
-            INVALID_CONFIGURATION : "Invalid configuration for creating a map\n%1",
             INEXISTENT_PROVIDER : "Provider %1 cannot be found",
             INVALID_PROVIDER : "Provider %1 is not valid",
             DUPLICATED_PROVIDER : "Provider %1 exists already",
@@ -129,9 +127,10 @@
              * @param {aria.map.CfgBeans.CreateMapCfg} cfg
              */
             createMap : function (cfg) {
-                if (!this._checkCfg(cfg)) {
+                if (!aria.core.JsonValidator.validateCfg("aria.map.CfgBeans.CreateMapCfg", cfg)) {
                     return;
                 }
+
                 if (mapStatus[cfg.id]) {
                     this.$logError(this.DUPLICATED_MAP_ID, cfg.id);
                     return;
@@ -258,34 +257,6 @@
              */
             hasProvider : function (providerName) {
                 return (providerName in providers);
-            },
-
-            /**
-             * Checks the configuration for creating a map
-             * @param {aria.map.CfgBeans.CreateMapCfg} cfg
-             * @return {Boolean} configuration consistency against the bean
-             * @private
-             */
-            _checkCfg : function (cfg) {
-                try {
-                    aria.core.JsonValidator.normalize({
-                        json : cfg,
-                        beanName : "aria.map.CfgBeans.CreateMapCfg"
-                    }, true);
-                } catch (e) {
-                    var logs = aria.core.Log;
-                    var message = [""];
-                    if (logs) {
-                        var error;
-                        for (var index = 0, len = e.errors.length; index < len; index += 1) {
-                            error = e.errors[index];
-                            message.push(logs.prepareLoggedMessage(error.msgId, error.msgArgs));
-                        }
-                    }
-                    this.$logError(this.INVALID_CONFIGURATION, message.join("\n"));
-                    return false;
-                }
-                return true;
             },
 
             /**

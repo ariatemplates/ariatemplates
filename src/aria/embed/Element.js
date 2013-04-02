@@ -23,30 +23,13 @@ Aria.classDefinition({
     $extends : "aria.widgetLibs.BaseWidget",
     $dependencies : ['aria.embed.CfgBeans', 'aria.utils.Html', 'aria.core.JsonValidator', 'aria.core.Log',
             'aria.utils.Dom'],
-    $statics : {
-        INVALID_CONFIGURATION : "%1Configuration for widget is not valid."
-    },
     $constructor : function (cfg, context, lineNumber) {
         // The parent constructor takes care of storing the config in this._cfg, the template context in this._context
         // and the line number in this._lineNumber
         this.$BaseWidget.constructor.apply(this, arguments);
 
-        try {
-            this._cfgOk = aria.core.JsonValidator.normalize({
-                json : cfg,
-                beanName : this._cfgBeanName
-            }, true);
-        } catch (e) {
-            var logs = aria.core.Log;
-            if (logs) {
-                var error;
-                for (var index = 0, l = e.errors.length; index < l; index++) {
-                    error = e.errors[index];
-                    error.message = logs.prepareLoggedMessage(error.msgId, error.msgArgs);
-                }
-                this.$logError(this.INVALID_CONFIGURATION, null, e);
-            }
-        }
+
+        this._cfgOk = aria.core.JsonValidator.validateCfg(this._cfgBeanName, cfg);
 
     },
     $destructor : function () {
