@@ -185,6 +185,7 @@ Aria.classDefinition({
 
                     // Create a shortcut for the __$write method which is often used:
                     this._tpl[handle].__$write = this._tpl.__$write;
+                    this._tpl[handle].__$writeArray = this._tpl.__$writeArray;
                     var libCtxt = new libCtxtClass();
                     libCtxt._tpl = this._tpl[handle];
                     libsArray.push(libCtxt);

@@ -128,6 +128,10 @@ Aria.classDefinition({
                 return oSelf.__$write.apply(oSelf, arguments);
             };
 
+            tpl.__$writeArray = function () {
+                return oSelf.__$writeArray.apply(oSelf, arguments);
+            };
+
             if (!tpl.__$initTemplate()) {
                 return false;
             }
