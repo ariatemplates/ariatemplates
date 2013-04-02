@@ -876,6 +876,46 @@ Aria.beanDefinitions({
                 "listSclass" : {
                     $type : "json:String",
                     $description : "sclass of the list used in the dropdown. The default value for this property is taken from the skin."
+                },
+                "selectionKeys" : {
+                    $type : "json:Array",
+                    $description : "Keys defined for submitting a selected item from autocomplete dropdown, key codes and strings can be taken from aria.DomEven",
+                    $contentType : {
+                        $type : "json:Object",
+                        $properties : {
+                            "key" : {
+                                $type : "json:MultiTypes",
+                                $description : "description of the key",
+                                $mandatory : true,
+                                $contentTypes : [{
+                                            $type : "json:Integer",
+                                            $description : "key code"
+                                        }, {
+                                            $type : "json:String",
+                                            $description : "String representing the key",
+                                            $sample : "F4"
+                                        }]
+                            },
+                            "ctrl" : {
+                                $type : "json:Boolean",
+                                $description : "Whether or not the ctrl key has to pressed",
+                                $default : false
+                            },
+                            "shift" : {
+                                $type : "json:Boolean",
+                                $description : "Whether or not the shift key has to pressed",
+                                $default : false
+                            },
+                            "alt" : {
+                                $type : "json:Boolean",
+                                $description : "Whether or not the alt key has to pressed",
+                                $default : false
+                            }
+                        }
+                    },
+                    $default : [{
+                                key : "ENTER"
+                            }]
                 }
             }
         },
