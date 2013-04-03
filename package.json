@@ -19,17 +19,18 @@
     "grunt": "node build/grunt-cli.js",
     "attester": "node node_modules/attester/bin/attester.js test/attester.yml",
     "lint": "node build/grunt-cli.js checkStyle",
-    "test": "npm run-script lint && npm run-script attester && npm run-script grunt"
+    "mocha": "mocha --recursive test/node",
+    "test": "npm run-script lint && npm run-script grunt && npm run-script mocha && npm run-script attester"
   },
   "devDependencies": {
     "gzip-js": "0.3.1",
     "grunt-verifylowercase": "0.2.0",
     "grunt": "git+https://github.com/divdavem/grunt.git#776b38f39a9d3bcc4cf083d8cb54345dfef63301",
     "grunt-contrib-jshint": "0.2.0",
-    "attester": "1.0.2",
+    "attester": "1.1.0",
     "express": "3.0.3",
     "jade": "0.27.7",
-    "node-watch": "~0.2.4",
-    "atpackager": "0.1.0"
+    "atpackager": "0.1.0",
+    "mocha" : "1.8.2"
   }
 }
