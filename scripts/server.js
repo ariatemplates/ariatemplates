@@ -15,7 +15,6 @@
 
 var path = require("path");
 var express = require("express");
-var watch = require('node-watch');
 var app = express();
 
 // Render views with Jade
@@ -59,7 +58,7 @@ app.use("/css", express.static(__dirname + "/assets/css"));
 // Non minified version points to src folder
 app.use("/aria-templates/dev", express.static(__dirname + "/../src"));
 // Minified version points to standard build (npm install)
-app.use("/aria-templates", express.static(__dirname + "/../build/target/os-production"));
+app.use("/aria-templates", express.static(__dirname + "/../build/target/production"));
 // Test classpath redirects to test folder
 app.all(/^\/aria-templates\/test\/(.*)$/, function (req, res, next) {
     var file = path.normalize(__dirname + "/../test/" + req.params[0]);
@@ -80,14 +79,4 @@ server.on("error", function () {
 
 function serverStarted () {
     console.log("Server started on http://localhost:" + server.address().port);
-
-    watch(path.normalize(__dirname + "/../src/"), function (filename) {
-        console.log(filename, 'changed, starting a new package');
-
-        var spawn = require('child_process').spawn;
-        var grunt = spawn('node', ['node_modules/grunt/bin/grunt', 'package']);
-        grunt.on('exit', function (code) {
-            console.log('Framework re-packaged task ended with code ' + code);
-        });
-    });
 }

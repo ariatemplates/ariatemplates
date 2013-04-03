@@ -34,7 +34,7 @@ module.exports = function (grunt) {
         },
         test : {
             files : {
-                src : ['test/**/*.js',
+                src : ['test/**/*.js', '!test/node/**/*.js',
                         // Using some window globals
                         '!test/iframeLoaderOs.js',
                         // Bad escaping
@@ -55,6 +55,12 @@ module.exports = function (grunt) {
                 "-W075" : true,
                 // Do not use String as a contructor
                 "-W053" : true
+            }
+        },
+        node : {
+            files : 'test/node/**/*.js',
+            options : {
+                "predef" : ["aria", "Aria", "require", "describe", "it", "before", "beforeEach", "after", "afterEach"]
             }
         }
     });
