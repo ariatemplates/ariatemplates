@@ -14,10 +14,12 @@
  */
 
 /**
- * Utilities for CSS3 animations Add CSS animations. To add a new animation you need to create a new
+ * Utilities for CSS3 animations Add CSS animations. To add a new animation you need to create a new instance of
  * aria.utils.css.Animations and call the method start passing:
- * - the animation name, that can be slide, slideup, slidedown, fade, pop, flip
- * - a configuration object that describe the animation:
+ *
+ * <pre>
+ * - the animation name (that can be slide, slideup, slidedown, fade, pop, flip)
+ * - a configuration object that describes the animation:
  *      cfg {
  *          from : {HTMLElement} that will animate out [optional],
  *          to : {HTMLElement} that will animate in [optional],
@@ -25,12 +27,14 @@
  *          type : {Number} 1 for normal transitions, 2 to activate hardware acceleration, 3 for 3D transitions, default is 1 [optional],
  *          hiddenClass : {String} className for to the element that will animate out and to remove from the element animate in [optional]
  *      }
+ * </pre>
  */
 Aria.classDefinition({
     $classpath : "aria.utils.css.Animations",
-    $dependencies : ["aria.utils.ClassList", "aria.utils.Delegate"],
+    $dependencies : ["aria.utils.ClassList", "aria.utils.Delegate", "aria.templates.CSSMgr"],
     $css : ["aria.utils.css.Transitions"],
     $constructor : function () {
+
         /**
          * Name of the animation (slide, slideup, slidedown, fade, pop, flip)
          * @type String
