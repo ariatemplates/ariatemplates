@@ -389,7 +389,7 @@
                     // endDate
                     if (settings.displayUnit == "W") {
                         startDate = dateUtils.getStartOfWeek(startDate, settings.firstDayOfWeek);
-                        realStartDate = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
+                        realStartDate = new Date(startDate.getFullYear(), startDate.getMonth(), 1, 12);
                         realStartDate = dateUtils.getStartOfWeek(realStartDate, settings.firstDayOfWeek);
                         endDate = new Date(startDate.getTime());
                         endDate.setDate(endDate.getDate() + 7 * settings.numberOfUnits - 1);
@@ -397,7 +397,7 @@
                         realEndDate.setDate(32);
                         realEndDate.setDate(1);
                     } else /* if (settings.displayUnit == "M") */{
-                        startDate = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
+                        startDate = new Date(startDate.getFullYear(), startDate.getMonth(), 1, 12);
                         realStartDate = dateUtils.getStartOfWeek(startDate, settings.firstDayOfWeek);
                         endDate = new Date(startDate.getTime());
                         endDate.setMonth(endDate.getMonth() + settings.numberOfUnits);
@@ -574,7 +574,7 @@
             },
             _createDay : function (jsDate) {
                 var settings = this._calendarSettings;
-                var date = new Date(jsDate.getFullYear(), jsDate.getMonth(), jsDate.getDate()); // copying the date
+                var date = new Date(jsDate.getFullYear(), jsDate.getMonth(), jsDate.getDate(), 12); // copying the date
                 // object
                 var day = jsDate.getDay();
                 var res = {
