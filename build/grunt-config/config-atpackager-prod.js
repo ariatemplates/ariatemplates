@@ -73,6 +73,7 @@ module.exports = function (grunt) {
                         cfg : {
                             mapFile : mainATFile,
                             sourceFiles : ['**/*', '!aria/css/**/*'],
+                            starCompress : ['**/*', '!aria'],
                             starStarCompress : ['**/*', '!aria/resources']
                         }
                     }, {
