@@ -55,28 +55,6 @@ Aria.classDefinition({
             }
         };
 
-        var __printOut = function (out, merge, param, lineNumber) {
-            switch (merge) {
-                case 0: {
-                    out.writeln("this.__$write(", param, ",", lineNumber, ");");
-                }
-                break;
-                case 1: {
-                    out.writeIndent();
-                    out.write("this.__$writeArray([", param, ",");
-                }
-                break;
-                case 2: {
-                    out.write(param, ",");
-                }
-                break;
-                case 3: {
-                    out.write(param, "],", lineNumber, ");\n");
-                }
-                break;
-            }
-        };
-
         this.ALLSTATEMENTS = {
             "Template" : rootStatement,
             "Library" : rootStatement,
@@ -85,10 +63,10 @@ Aria.classDefinition({
             "TextTemplate" : rootStatement,
             "#TEXT#" : {
                 container : false,
-                process : function (out, statement, classGenerator, merge) {
+                process : function (out, statement) {
                     if (out.isOutputReady()) {
                         var param = out.stringify(statement.paramBlock);
-                        __printOut(out, merge, param, statement.lineNumber);
+                        out.writeln("this.__$write(", param, ",", statement.lineNumber, ");");
                     } else {
                         // check if text contains something
                         if (statement.paramBlock.replace(/[ \t\r\n]+/gm, "") !== '') {
@@ -109,7 +87,7 @@ Aria.classDefinition({
             "#EXPRESSION#" : {
                 inMacro : true,
                 container : false,
-                process : function (out, statement, classGenerator, merge) {
+                process : function (out, statement, classGenerator) {
                     var param = statement.paramBlock, nextPipe = utilString.indexOfNotEscaped(param, "|"), parts = [];
                     // split param against unescaped |
                     while (nextPipe != -1) {
@@ -180,8 +158,7 @@ Aria.classDefinition({
                     if (out.debug) {
                         expr = out.wrapExpression(expr, statement, "this.EXCEPTION_IN_EXPRESSION");
                     }
-
-                    __printOut(out, merge, expr, statement.lineNumber);
+                    out.writeln("this.__$write(", expr, ",", statement.lineNumber, ");");
                 }
             },
             "separator" : {
@@ -254,7 +231,7 @@ Aria.classDefinition({
             "if" : {
                 inMacro : true,
                 container : true,
-                process : function (out, statement, classGenerator) {
+                process : function (out, statement) {
                     var param = statement.paramBlock;
                     out.writeln("if (", param, ") {");
                     out.increaseIndent();
@@ -348,7 +325,7 @@ Aria.classDefinition({
             "for" : {
                 inMacro : true,
                 container : true,
-                process : function (out, statement, classGenerator) {
+                process : function (out, statement) {
                     // TODO: check parameter to avoid code injection and make debugging easier?
                     out.writeln("for (", statement.paramBlock, ") {");
                     out.increaseIndent();
@@ -539,7 +516,7 @@ Aria.classDefinition({
             "section" : {
                 inMacro : true,
                 container : null, /* may be used either as a container or not */
-                process : function (out, statement, classGenerator) {
+                process : function (out, statement) {
                     var sectionParam = statement.paramBlock;
                     var container = (statement.content ? "true" : "false");
                     out.writeln("this.__$beginSection(", statement.lineNumber, ",", container, ",", sectionParam, ");");
@@ -621,7 +598,7 @@ Aria.classDefinition({
             "@" : {
                 inMacro : true,
                 container : null, /* may be a container or not depending on the control */
-                process : function (out, statement, classGenerator) {
+                process : function (out, statement) {
                     var parsename = /^@(\w+):(\w+)$/.exec(statement.name);
                     if (!parsename || parsename.length != 3) {
                         return out.logError(statement, statementsSingleton.INVALID_WIDGET_SYNTAX);

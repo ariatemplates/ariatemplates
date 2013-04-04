@@ -30,15 +30,6 @@ Aria.interfaceDefinition({
          * @param {String} markup Markup to write.
          * @private
          */
-        __$write : function (markup) {},
-
-        /**
-         * Write some markup. This method is intended to be called only from the generated code of templates (created in
-         * aria.templates.ClassGenerator) and never directly from developer code. A call to this method is generated for
-         * simple text in templates and for ${...} statements.
-         * @param {String} markup Markup to write.
-         * @private
-         */
-        __$writeArray : function (markup) {}
+        __$write : function (markup) {}
     }
 });

@@ -224,8 +224,6 @@
 
                 // remove manually set methods
                 tpl.__$write = null;
-                tpl.__$writeArray = null;
-
                 for (var index = 0, name; name = paramMapping[index]; index++) {
                     delete tpl[name];
                 }
@@ -1098,10 +1096,6 @@
                 tpl.__$write = function (s, line) {
                     return oSelf.__$write(s, line, this.$classpath);
                 };
-                // do not use bind for __$write as this method is called intensively (Perf improvment)
-                tpl.__$writeArray = function (s, line) {
-                    return oSelf.__$writeArray(s, line);
-                };
 
                 if (this.moduleCtrl) {
                     this.moduleCtrl.$on({
@@ -1190,22 +1184,6 @@
                     this.$logWarn(this.VAR_NULL_OR_UNDEFINED, [lineNumber, classpath]);
                 }
                 return this._out.write(a);
-            },
-
-            /**
-             * Write some markup using the join function. This method is intended to be called only from the generated code of templates
-             * (created in aria.templates.ClassGenerator) and never directly from developper code. A call to this method
-             * is generated for simple text in templates and for ${...} statements.
-             * @param {String} a Markup to write.
-             * @param {Number} lineNumber Number of the line in the Template that is writing some markup
-             * @private
-             * @implements aria.templates.ITemplate
-             */
-            __$writeArray : function (a, lineNumber) {
-                if (a === undefined || a === null) {
-                    this.$logWarn(this.VAR_NULL_OR_UNDEFINED, [lineNumber, this.tplClasspath]);
-                }
-                return this._out.write(a.join(""));
             },
 
             /**

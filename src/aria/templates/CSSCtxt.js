@@ -128,10 +128,6 @@ Aria.classDefinition({
                 return oSelf.__$write.apply(oSelf, arguments);
             };
 
-            tpl.__$writeArray = function () {
-                return oSelf.__$writeArray.apply(oSelf, arguments);
-            };
-
             if (!tpl.__$initTemplate()) {
                 return false;
             }
@@ -302,19 +298,6 @@ Aria.classDefinition({
          * @implements aria.templates.ICSS
          */
         __$write : function (text) {
-            this._out = this._out.concat(text);
-        },
-
-        /**
-         * Write some text. This method is intended to be called only from the generated code of templates (created in
-         * aria.templates.ClassGenerator) and never directly from developer code. A call to this method is generated for
-         * simple text in templates and for ${...} statements.
-         * @param {Array} text Text to write.
-         * @private
-         * @implements aria.templates.ICSS
-         */
-
-        __$writeArray : function (text) {
             this._out = this._out.concat(text);
         }
     }
