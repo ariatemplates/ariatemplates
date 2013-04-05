@@ -19,7 +19,8 @@
 Aria.classDefinition({
     $classpath : "aria.widgets.controllers.NumberController",
     $extends : "aria.widgets.controllers.TextDataController",
-    $dependencies : ["aria.DomEvent", "aria.widgets.controllers.reports.ControllerReport", "aria.utils.Number"],
+    $dependencies : ["aria.DomEvent", "aria.widgets.controllers.reports.ControllerReport", "aria.utils.Number",
+                     "aria.core.JsonValidator"],
     $resources : {
         "res" : "aria.widgets.WidgetsRes"
     },
@@ -57,7 +58,7 @@ Aria.classDefinition({
                 if (aria.utils.Number.isValidPattern(pattern)) {
                     this._pattern = pattern;
                 } else {
-                    this.$logError(aria.widgets.Widget.INVALID_CONFIGURATION, ["pattern "]);
+                    this.$logError(aria.core.JsonValidator.INVALID_CONFIGURATION, ["pattern "]);
                 }
             }
         },
