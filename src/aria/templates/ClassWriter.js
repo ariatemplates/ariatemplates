@@ -357,9 +357,9 @@ Aria.classDefinition({
             var merge = 0;
 
             for (var i = 0; i < content.length; i++) {
-                if (!Aria.debug) {
+                /*if (!Aria.debug) {
                     merge = this.__computeMergeState(merge, content, i);
-                }
+                }*/
 
                 this.processStatement(content[i], merge);
             }
