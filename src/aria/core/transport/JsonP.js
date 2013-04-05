@@ -102,6 +102,7 @@ Aria.classDefinition({
                 script.src = params.uri;
                 script.id = "xJsonP" + params.reqId;
                 script.async = "async";
+                script.type = "text/javascript";
 
                 script.onload = script.onreadystatechange = function (event, isAbort) {
                     if (isAbort || !script.readyState || /loaded|complete/.test(script.readyState)) {
