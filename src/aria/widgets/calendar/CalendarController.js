@@ -548,7 +548,8 @@
                 var settings = this._calendarSettings;
                 var minValue = settings.minValue;
                 var maxValue = settings.maxValue;
-                return (!minValue || jsDate >= minValue) && (!maxValue || jsDate <= maxValue);
+                return (!minValue || jsDate >= minValue)
+                        && (!maxValue || jsDate <= maxValue || dateUtils.isSameDay(jsDate, maxValue));
             },
             _checkValue : function () {
                 var settings = this._calendarSettings;

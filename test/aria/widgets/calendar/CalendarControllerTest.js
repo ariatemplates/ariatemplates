@@ -186,6 +186,34 @@ Aria.classDefinition({
             this.assertEquals(week.days.length, 7);
             this.assertTrue(week.overlappingDays < 7);
             this.assertTrue(week.overlappingDays === 0 || (week.monthStart != null && week.monthEnd != null));
+        },
+
+        testAsyncBoundaryValues : function () {
+            this._initCalendarCtrl({
+                settings : {
+                    startDate : new Date(2010, 1, 25),
+                    value : new Date(2010, 1, 5),
+                    minValue : new Date(2008, 8, 8),
+                    maxValue : new Date(2013, 3, 3),
+                    numberOfUnits : 2,
+                    displayUnit : "M",
+                    firstDayOfWeek : 0
+                }
+            }, {
+                fn : this._checkBoundaryValues,
+                scope : this
+            });
+        },
+        _checkBoundaryValues : function () {
+            try {
+                this.assertTrue(this._calendarCtrlPrivate._isSelectable(new Date(2008, 8, 8, 0, 0, 0, 0)));
+                this.assertTrue(this._calendarCtrlPrivate._isSelectable(new Date(2013, 3, 3, 23, 59, 59, 999)));
+            } catch (ex) {
+                this.handleAsyncTestError(ex, false);
+            } finally {
+                this._disposeCalendar();
+                this.notifyTestEnd("testAsyncBoundaryValues");
+            }
         }
 
     }
