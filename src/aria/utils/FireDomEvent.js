@@ -525,8 +525,47 @@
         $constructor : function () {
             typeUtils = aria.utils.Type;
             fireDomEvent = this;
+
+            // Workaround for the bug in Firefox 3.6 where customEvent.pageX is unsettable
+            var browser = aria.core.Browser;
+            if (browser.isFirefox && browser.majorVersion == 3) {
+                var mouseEventProto = Aria.$window.MouseEvent.prototype;
+
+                this.originalPageXsetter = mouseEventProto.__lookupSetter__('pageX');
+                this.originalPageXgetter = mouseEventProto.__lookupGetter__('pageX');
+                this.originalPageYsetter = mouseEventProto.__lookupSetter__('pageY');
+                this.originalPageYgetter = mouseEventProto.__lookupGetter__('pageY');
+
+                mouseEventProto.__defineSetter__('pageX', function (val) {
+                    this.__pageX = val;
+                });
+                mouseEventProto.__defineGetter__('pageX', function () {
+                    return this.__pageX;
+                });
+                mouseEventProto.__defineSetter__('pageY', function (val) {
+                    this.__pageY = val;
+                });
+                mouseEventProto.__defineGetter__('pageY', function () {
+                    return this.__pageY;
+                });
+            }
         },
         $destructor : function () {
+            var browser = aria.core.Browser;
+            if (browser.isFirefox && browser.majorVersion == 3) {
+                var mouseEventProto = Aria.$window.MouseEvent.prototype;
+
+                mouseEventProto.__defineSetter__('pageX', this.originalPageXsetter);
+                mouseEventProto.__defineGetter__('pageX', this.originalPageXgetter);
+                mouseEventProto.__defineSetter__('pageY', this.originalPageYsetter);
+                mouseEventProto.__defineGetter__('pageY', this.originalPageYgetter);
+
+                this.originalPageXsetter = null;
+                this.originalPageXgetter = null;
+                this.originalPageYsetter = null;
+                this.originalPageYgetter = null;
+            }
+
             typeUtils = null;
             fireDomEvent = null;
         },
