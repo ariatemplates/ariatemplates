@@ -1,0 +1,34 @@
+{CSSTemplate {
+  $classpath: 'test.aria.widgets.verticalAlign.VerticalAlignCss'
+}}
+
+  {macro main()}
+
+  	label {
+  		color: blue;
+  		font-weight: bold;
+  	}
+
+	.line {
+		position: relative;
+		display: inline-block;
+		width: 800px;
+		white-space: nowrap;
+		border:1px solid blue;
+		padding: 0px;
+		margin: 5px 30px;
+		white-space: nowrap;
+	}
+
+	.rule {
+		position: absolute;
+		top: 11px;
+		width: 100%;
+		height: 1px;
+		background-color: red;
+		z-index: 1000;
+		display: none;
+	}
+  {/macro}
+
+{/CSSTemplate}

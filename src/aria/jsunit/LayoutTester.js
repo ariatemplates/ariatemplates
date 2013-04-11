@@ -49,7 +49,7 @@ Aria.classDefinition({
                 var child = children[i];
                 if (child.tagName && !excludeRegExp.test(child.tagName)) {
                     if (this._isHumanVisible(child)) {
-                        this._saveElement(child);
+                        this._saveElement(child, root);
                     }
                     this._captureJsonScreenshot(child);
                 }
@@ -59,10 +59,13 @@ Aria.classDefinition({
         /**
          * Convenient method to compare an old json with the last capture
          * @param {Array} arrayToCompare The array to be compared.
+         * @param {int} errorMargin The error margin for the numeric values comparison. 0 by default.
          * @return An array with messages about differences found. If no difference is found, an empty array is
          * returned.
          */
-        compare : function (arrayToCompare) {
+        compare : function (arrayToCompare, errorMargin) {
+
+            errorMargin = errorMargin || 0;
 
             if (!arrayToCompare) {
                 return ["Array to compare is null"];
@@ -73,7 +76,7 @@ Aria.classDefinition({
             if (arrayToCompare.length != ref.length) {
                 result.push("The items number is not the same");
                 for (var i = 0, ii = ref.length; i < ii; i++) {
-                    if (!arrayToCompare[i] || !this.itemCompare(ref[i], arrayToCompare[i])) {
+                    if (!arrayToCompare[i] || !this.itemCompare(ref[i], arrayToCompare[i], errorMargin)) {
                         result.push("Different from item " + i);
                         break;
                     }
@@ -83,7 +86,7 @@ Aria.classDefinition({
 
             // From here, both length array are equals
             for (var i = 0, ii = ref.length; i < ii; i++) {
-                if (!arrayToCompare[i] || !this.itemCompare(ref[i], arrayToCompare[i])) {
+                if (!arrayToCompare[i] || !this.itemCompare(ref[i], arrayToCompare[i], errorMargin)) {
                     result.push("Item " + i + " is different");
                 }
             }
@@ -96,11 +99,15 @@ Aria.classDefinition({
          * attribute, which is the html object.
          * @param {JSON} item1 Object 1 to compare
          * @param {JSON} item2 Object 2 to compare
+         * @param {int} errorMargin The error margin for the numeric values comparison. 0 by default.
          * @return true if item1 is equals to item2
          */
-        itemCompare : function (item1, item2) {
+        itemCompare : function (item1, item2, errorMargin) {
+            errorMargin = errorMargin || 0;
             for (var key in item1) {
-                if (key != "element" && item1[key] !== item2[key]) {
+                if (key != "element" && item1[key] !== item2[key] &&
+                    (isNaN(item1[key]) || Math.abs(item1[key] - item2[key]) > errorMargin)
+                ) {
                     return false;
                 }
             }
@@ -112,15 +119,17 @@ Aria.classDefinition({
          * @param {HtmlElement} el The element to store
          * @private
          */
-        _saveElement : function (el) {
+        _saveElement : function (el, root) {
+
             var coords = this._getCoordinates(el);
+            var coordsRoot = this._getCoordinates(root || Aria.$window.document.body);
             var text = this._getDirectTextContent(el);
             this.elements.push({
                 element : el,
                 id : el.id,
                 tagName : el.tagName,
-                top : coords.top,
-                left : coords.left,
+                top : coords.top - coordsRoot.top,
+                left : coords.left - coordsRoot.left,
                 width : coords.width,
                 height : coords.height,
                 text : text
