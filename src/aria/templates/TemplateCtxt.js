@@ -170,7 +170,7 @@
                 if (this._globalCssDepsLoaded) {
                     // PTR 05086835: only unload the global CSS if it was loaded by this instance
                     var deps = ['aria.templates.GlobalStyle'];
-                    if (aria.widgets.AriaSkin) {
+                    if (aria.widgets && aria.widgets.AriaSkin) {
                         deps.push('aria.templates.LegacyGeneralStyle');
                     }
                     aria.templates.CSSMgr.unloadWidgetDependencies('aria.templates.Template', deps);
