@@ -150,7 +150,7 @@
         }
 
         var cssToReload = ['aria.templates.GlobalStyle'];
-        if (aria.widgets.AriaSkin) {
+        if (aria.widgets && aria.widgets.AriaSkin) {
             cssToReload.push('aria.templates.LegacyGeneralStyle');
         }
         if (cfg.reload) {
