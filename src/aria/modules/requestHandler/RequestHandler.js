@@ -53,6 +53,14 @@ Aria.classDefinition({
     },
     $prototype : {
         /**
+         * Request Headers to be used
+         * @type Object
+         */
+        headers : {
+            "Content-Type" : "application/x-www-form-urlencoded; charset=UTF-8"
+        },
+
+        /**
          * Handles the response from the server, and call the associated callback
          * @param {aria.modules.RequestBeans.SuccessResponse} successResponse
          * @param {aria.modules.RequestBeans.Request} request
@@ -77,7 +85,7 @@ Aria.classDefinition({
                 response : {
                     responseText : failureResponse.responseText,
                     responseJSON : failureResponse.responseJSON,
-                    responseXML :  failureResponse.responseXML
+                    responseXML : failureResponse.responseXML
                 },
                 error : true
             };
@@ -132,6 +140,14 @@ Aria.classDefinition({
 
                 return aria.utils.Json.convertToJsonString(jsonData, aria.utils.Json.copy(options, true), instance);
             }
+        },
+
+        /**
+         * Returns request headers to be sent along with request
+         * @return {Object} Request Headers
+         */
+        getRequestHeaders : function () {
+            return this.headers;
         },
 
         /**

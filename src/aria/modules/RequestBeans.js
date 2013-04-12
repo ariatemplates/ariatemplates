@@ -64,9 +64,15 @@ Aria.beanDefinitions({
                     $type : "env:RequestJsonSerializerCfg",
                     $description : "JSON serializer settings that have to be used for this request"
                 },
+                /* Backward Compatibility begins here */
                 "postHeader" : {
                     $type : "json:String",
-                    $description : "Header 'Content-type' to be used for POST requests."
+                    $description : "[DEPRECATED] Header 'Content-type' to be used for POST requests, please use headers"
+                },
+                /* Backward Compatibility ends here */
+                "headers" : {
+                    $type : "json:Object",
+                    $description : "Request Headers to be used."
                 }
             }
         },

@@ -361,6 +361,7 @@ Aria.classDefinition({
             req.data = (req.data == null && req.method == "POST")
                     ? handler.prepareRequestBody(req.jsonData, req.requestObject)
                     : req.data;
+            req.headers = handler.getRequestHeaders();
 
             // call the server
             var senderObject = {
@@ -379,6 +380,7 @@ Aria.classDefinition({
                 url : req.url,
                 method : req.method,
                 postData : req.data,
+                headers : req.headers,
                 callback : {
                     fn : this._onresponse,
                     onerror : this._onresponse,
@@ -394,9 +396,11 @@ Aria.classDefinition({
                     }
                 }
             };
+            /* Backward Compatibility begins here */
             if (req.postHeader) {
                 requestObject.postHeader = req.postHeader;
             }
+            /* Backward Compatibility ends here */
             if (handler.expectedResponseType) {
                 requestObject.expectedResponseType = handler.expectedResponseType;
             }

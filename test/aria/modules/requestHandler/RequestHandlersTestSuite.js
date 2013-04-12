@@ -26,5 +26,6 @@ Aria.classDefinition({
         this.addTests("test.aria.modules.requestHandler.RequestHandlerTest");
         this.addTests("test.aria.modules.requestHandler.XMLRequestHandlerTest");
         this.addTests("test.aria.modules.requestHandler.JSONRequestHandlerTest");
+        this.addTests("test.aria.modules.requestHandler.issue459.RequestHandlerHeadersTest");
     }
 });
