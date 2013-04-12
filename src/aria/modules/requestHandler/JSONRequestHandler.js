@@ -14,7 +14,7 @@
  */
 
 /**
- * Json handler, that handles JSON as weel as a javascript object retrieved in responseJSON
+ * JSON handler, that handles JSON as well as a JavaScript object retrieved in responseJSON
  */
 Aria.classDefinition({
     $classpath : "aria.modules.requestHandler.JSONRequestHandler",
@@ -29,6 +29,14 @@ Aria.classDefinition({
          * @type String
          */
         expectedResponseType : "json",
+
+        /**
+         * Request Headers to be used
+         * @type Object
+         */
+        headers : {
+            "Content-Type" : "application/json"
+        },
 
         /**
          * Handles the response from the server, and call the associated callback
