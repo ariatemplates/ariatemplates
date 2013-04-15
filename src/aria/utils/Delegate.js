@@ -124,10 +124,10 @@ Aria.classDefinition({
             "swipestart" : "aria.touch.Swipe",
             "swipemove" : "aria.touch.Swipe",
             "swipecancel" : "aria.touch.Swipe",
-            "pinch": "aria.touch.Pinch",
-            "pinchstart": "aria.touch.Pinch",
-            "pinchmove": "aria.touch.Pinch",
-            "pinchcancel": "aria.touch.Pinch"
+            "pinch" : "aria.touch.Pinch",
+            "pinchstart" : "aria.touch.Pinch",
+            "pinchmove" : "aria.touch.Pinch",
+            "pinchcancel" : "aria.touch.Pinch"
         };
 
         /**
@@ -151,7 +151,8 @@ Aria.classDefinition({
             cut : true,
             submit : true,
             error : true,
-            mousewheel : true
+            mousewheel : true,
+            scroll : true
         };
 
         // note that the change event does not bubble on all browsers (e.g.: on IE) but is necessary as it is the only
@@ -458,6 +459,7 @@ Aria.classDefinition({
          * @param {Object} evt
          */
         delegate : function (evt) {
+
             if (!this.__stackCache) {
                 this.__stackCache = {};
             }
