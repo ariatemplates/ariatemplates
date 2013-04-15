@@ -33,7 +33,7 @@
         </div>
         <div class="rightContainer">
             <div id="tplContainer">
-                <div id="TESTAREA"></div>
+                <div id="TESTAREA" style="width:500px; height:500px"></div>
             </div>
         </div>
     {/macro}
