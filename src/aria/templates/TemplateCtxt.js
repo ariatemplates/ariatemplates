@@ -1707,7 +1707,7 @@
                     if (this._cfg.isRootTemplate) {
                         // PTR 05086835: load the global CSS here, and remember that it was loaded
                         var deps = ['aria.templates.GlobalStyle'];
-                        if (aria.widgets.AriaSkin) {
+                        if (aria.widgets && aria.widgets.AriaSkin) {
                             deps.push('aria.templates.LegacyGeneralStyle');
                         }
                         aria.templates.CSSMgr.loadWidgetDependencies('aria.templates.Template', deps);
