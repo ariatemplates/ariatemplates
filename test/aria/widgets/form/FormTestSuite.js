@@ -25,6 +25,7 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.form.InputValidationHandlerTest");
         this.addTests("test.aria.widgets.form.ListControllerTest");
         this.addTests("test.aria.widgets.form.NumberFieldTest");
+        this.addTests("test.aria.widgets.form.PasswordFieldTest");
         this.addTests("test.aria.widgets.form.SelectTest");
         this.addTests("test.aria.widgets.form.TextareaTest");
         this.addTests("test.aria.widgets.form.TextInputTest");
