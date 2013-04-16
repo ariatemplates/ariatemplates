@@ -138,7 +138,7 @@
                     // (required as it uses widgets)
                     // TODO: investigate to plug with event delegation
                     // when ready
-                    if (aria.widgets.AriaSkin) {
+                    if (aria.widgets && aria.widgets.AriaSkin) {
                         this._enabled = true;
                         eventUtils.addListener(document, "contextmenu", {
                             fn : this._onContextMenu,
