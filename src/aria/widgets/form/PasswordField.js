@@ -20,6 +20,7 @@
 Aria.classDefinition({
     $classpath : 'aria.widgets.form.PasswordField',
     $extends : 'aria.widgets.form.TextInput',
+    $dependencies : ['aria.widgets.controllers.TextDataController'],
     /**
      * PasswordField constructor
      * @param {aria.widgets.CfgBeans.TextFieldCfg} cfg the widget configuration
