@@ -444,7 +444,13 @@ Aria.classDefinition({
                 aria.templates.NavigationManager.focusFirst(this._domElt);
             }
 
-            this.evalCallback(cfg.onOpen);
+            aria.core.Timer.addCallback({
+                fn : function () {
+                    this.evalCallback(cfg.onOpen);
+                },
+                scope : this,
+                delay : 4
+            });
 
             if (cfg.movable) {
                 Aria.load({
