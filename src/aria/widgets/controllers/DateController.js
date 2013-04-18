@@ -48,7 +48,7 @@ Aria.classDefinition({
          * @type {String}
          */
         this._pattern = '';
-                /**
+        /**
          * List of pattern used to parse user input
          * @protected
          * @type {String}
@@ -92,7 +92,7 @@ Aria.classDefinition({
             }
             this._pattern = pattern;
         },
-         /**
+        /**
          * Set the date input pattern
          * @param {aria.widgets.CfgBeans.DatePickerCfg} pattern options
          */
@@ -184,8 +184,9 @@ Aria.classDefinition({
                     report.ok = true;
                 } else {
                     var options = {
-                     referenceDate : this._referenceDate,
-                     inputPattern : this._inputPattern
+                        referenceDate : this._referenceDate,
+                        inputPattern : this._inputPattern,
+                        outputPattern : this._pattern
                     };
                     var date = aria.utils.Date.interpret(text, options);
                     if (date) {

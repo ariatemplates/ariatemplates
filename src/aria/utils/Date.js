@@ -428,7 +428,7 @@ Aria.classDefinition({
          * Given the following extry string, the result in the hh:mm:ss format is
          * <pre>
          * string     format (24h)
-         *
+         * 
          * 1            01:00:00
          * 1 10         01:10:00
          * 1,20         01:20:00
@@ -436,7 +436,7 @@ Aria.classDefinition({
          * 1;40pm       13:40:00
          * 2-10-30am    02:10:30
          * </pre>
-         *
+         * 
          * @param {String} entryStr String to be interpreted
          * @return {Date}
          */
@@ -772,37 +772,44 @@ Aria.classDefinition({
          * Given the following extry string, the result in the format d:MMM:Y is
          * <pre>
          * string       format
-         *
+         * 
          * 1             (first day of current month)
          * 1 12          1 Dec (current year)
          * 10/3/2012     10 Mar 2012
          * 2APR2012      2 Apr 2012
-         *
+         * 
          * +5            (five days from now)
          * -2            (two days ago)
          * 10JUN2012/+3  13 Jun 2012
          * </pre>
-         *
+         * 
          * @param {String} entryStr String to be interpreted
          * @param {aria.utils.Beans.options} options for the date interpreter - optional
-         *
+         * 
          * <pre>
          * referenceDate : {Date} reference date used in case entry string is (+/- Number) defaults to today
          * isDateBeforeMonth : {Boolean} Whether the date is written before or after the month
          * isMonthYear : {Boolean} Whether the date contains only the month and year, without day
          * </pre>
-         *
+         * 
          * @return {Date}
          */
         interpret : function (entryStr, options) {
-            var inputPattern;
+            var inputPattern, outputPattern;
 
             if (options) {
                 inputPattern = options.inputPattern;
+                outputPattern = options.outputPattern;
             }
             // is input pattern set?
             if (inputPattern) {
                 var parsedDate = this._interpretAgainstPattern(entryStr, options.inputPattern);
+                if (parsedDate) {
+                    return parsedDate;
+                }
+                // In case inputPattern is not mentioned, pattern will take precedence
+            } else if (outputPattern) {
+                var parsedDate = this._interpretAgainstPattern(entryStr, options.outputPattern);
                 if (parsedDate) {
                     return parsedDate;
                 }
