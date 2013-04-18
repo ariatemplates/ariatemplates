@@ -85,7 +85,7 @@ module.exports = function (grunt) {
                                 header : '<%= packaging.license %>'
                             }
                         },
-                        files : require('../config/files-bootstrap.json')
+                        files : '<%= packaging.bootstrap.files %>'
                     }, {
                         name : 'aria/css/atskin-<%= pkg.version %>.js',
                         files : ['aria/css/atskin.js']

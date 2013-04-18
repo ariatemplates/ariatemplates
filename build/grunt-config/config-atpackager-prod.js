@@ -37,7 +37,7 @@ module.exports = function (grunt) {
         options : {
             ATBootstrapFile : mainATFile,
             sourceDirectories : ['<%= packaging.bootstrap.outputdir %>'],
-            sourceFiles : ['**/*'],
+            sourceFiles : '<%= packaging.prod.source_files %>',
             defaultBuilder : {
                 type : 'ATMultipart',
                 cfg : {
