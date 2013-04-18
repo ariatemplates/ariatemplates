@@ -19,6 +19,7 @@ module.exports = function (grunt) {
     grunt.config.set('packaging.bootstrap.files', require('../config/files-bootstrap.json'));
     grunt.config.set('packaging.prod.outputdir', 'build/target/production');
     grunt.config.set('packaging.prod.files', require('../config/files-prod.json'));
+    grunt.config.set('packaging.prod.source_files', ['**/*']);
     grunt.config.set('packaging.prod.allow_unpackaged_files', []);
     grunt.config.set('packaging.prod.localization_files', require('../config/files-prod-localization.json'));
     grunt.config.set('packaging.prod.hash_include_files', []);
