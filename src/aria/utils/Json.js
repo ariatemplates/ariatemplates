@@ -639,7 +639,7 @@
              * @return the value
              */
             getValue : function (container, property, defaultValue) {
-                if (!container || !container[property]) {
+                if (!container || !property || !(property in container)) {
                     return defaultValue;
                 }
                 return container[property];
