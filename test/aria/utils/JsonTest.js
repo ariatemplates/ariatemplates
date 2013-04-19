@@ -539,6 +539,42 @@ Aria.classDefinition({
         },
 
         /**
+         * Test getValue method
+         */
+        testGetValue : function () {
+            var myJson = aria.utils.Json;
+            var testData = {};
+
+            var bar = myJson.getValue(testData, 'foo');
+            this.assertTrue(bar === undefined);
+
+            bar = myJson.getValue(testData, 'foo', 'default');
+            this.assertTrue(bar === 'default');
+
+            bar = myJson.getValue(testData);
+            this.assertTrue(bar === undefined);
+
+            bar = myJson.getValue();
+            this.assertTrue(bar === undefined);
+
+            testData.foo = 0;
+            bar = myJson.getValue(testData, 'foo');
+            this.assertTrue(bar === 0);
+
+            testData.foo = 1;
+            bar = myJson.getValue(testData, 'foo');
+            this.assertTrue(bar === 1);
+
+            testData.foo = "";
+            bar = myJson.getValue(testData, 'foo');
+            this.assertTrue(bar === "");
+
+            testData.foo = false;
+            bar = myJson.getValue(testData, 'foo');
+            this.assertTrue(bar === false);
+        },
+
+        /**
          * Test setValue method
          */
         testSetValue : function () {
