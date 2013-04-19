@@ -30,7 +30,9 @@ module.exports = function (grunt) {
                     // SynEvents : dependent on https://github.com/ariatemplates/ariatemplates/issues/33
                     '!src/aria/utils/SynEvents.js',
                     // Using node.js globals
-                    '!src/aria/node.js']
+                    '!src/aria/node.js',
+                    // Showdown.js direct include inside a classDefinition. We do not want to touch it
+                    '!src/aria/pageEngine/contentProcessors/MarkdownProcessor.js']
         },
         test : {
             files : {
