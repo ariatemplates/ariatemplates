@@ -14,17 +14,26 @@
  */
 
 /**
- * Test suite regrouping all unit tests of the aria.pageEngine package
+ * Content processor
  */
 Aria.classDefinition({
-    $classpath : 'test.aria.pageEngine.PageEngineTestSuite',
-    $extends : 'aria.jsunit.TestSuite',
+    $classpath : "test.aria.pageEngine.pageEngine.site.contentProcessors.ContentProcessorTwo",
     $constructor : function () {
-        this.$TestSuite.constructor.call(this);
-        this.addTests("test.aria.pageEngine.contentProcessors.MarkdownProcessorTest");
-        this.addTests("test.aria.pageEngine.siteRootModule.SiteRootModuleTestSuite");
-        this.addTests("test.aria.pageEngine.utils.UtilsTestSuite");
-        this.addTests("test.aria.pageEngine.pageProviders.BaseProviderTestSuite");
-        this.addTests("test.aria.pageEngine.pageEngine.PageEngineTemplateTestSuite");
+        this.count = 0;
+    },
+    $prototype : {
+        processContent : function (content) {
+            this.count++;
+            if (this.count % 2 === 0) {
+                return {
+                    value : content.value.replace(/<\/div>/, "CP2<\/div>"),
+                    contentType : "does not exist"
+                };
+            } else {
+                return {
+                    value : content.value.replace(/<\/div>/, "CP2<\/div>")
+                };
+            }
+        }
     }
 });
