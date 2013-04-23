@@ -459,6 +459,7 @@ Aria.classDefinition({
          * @param {Object} evt
          */
         delegate : function (evt) {
+
             if (!this.__stackCache) {
                 this.__stackCache = {};
             }
