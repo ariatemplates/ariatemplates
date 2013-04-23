@@ -59,6 +59,12 @@ Aria.interfaceDefinition({
          */
         expectedResponseType : {
             $type : "Object"
-        }
+        },
+
+        /**
+         * Get request headers to be sent along with request.
+         * @return {Object} Request Headers
+         */
+        getRequestHeaders : function () {}
     }
 });
