@@ -13,18 +13,14 @@
  * limitations under the License.
  */
 
-/**
- * Test suite regrouping all unit tests of the aria.pageEngine package
- */
 Aria.classDefinition({
-    $classpath : 'test.aria.pageEngine.PageEngineTestSuite',
-    $extends : 'aria.jsunit.TestSuite',
+    $classpath : "test.aria.pageEngine.pageEngine.PageEngineTestFive",
+    $extends : "test.aria.pageEngine.pageEngine.PageEngineTestFour",
     $constructor : function () {
-        this.$TestSuite.constructor.call(this);
-        this.addTests("test.aria.pageEngine.contentProcessors.MarkdownProcessorTest");
-        this.addTests("test.aria.pageEngine.siteRootModule.SiteRootModuleTestSuite");
-        this.addTests("test.aria.pageEngine.utils.UtilsTestSuite");
-        this.addTests("test.aria.pageEngine.pageProviders.BaseProviderTestSuite");
-        this.addTests("test.aria.pageEngine.pageEngine.PageEngineTemplateTestSuite");
-    }
+        this.$PageEngineTestFour.constructor.call(this);
+        this._navigation = "hash";
+    },
+    $prototype : {
+
+}
 });
