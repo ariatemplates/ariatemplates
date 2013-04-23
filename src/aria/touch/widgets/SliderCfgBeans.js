@@ -46,6 +46,17 @@ Aria.beanDefinitions({
                     }
                 }
             }
+        },
+        "DoubleSliderCfg" : {
+            $type : "SliderCfg",
+            $description : "Configuration of the slider widget.",
+            $properties : {
+                dualSlide : {
+                    $type : "json:Boolean",
+                    $description : "used for the Double Slider.",
+                    $default : true
+                }
+            }
         }
     }
 });

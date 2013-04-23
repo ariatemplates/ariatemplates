@@ -127,7 +127,11 @@ Aria.classDefinition({
             "pinch" : "aria.touch.Pinch",
             "pinchstart" : "aria.touch.Pinch",
             "pinchmove" : "aria.touch.Pinch",
-            "pinchcancel" : "aria.touch.Pinch"
+            "pinchcancel" : "aria.touch.Pinch",
+            "doubleswipe" : "aria.touch.DoubleSwipe",
+            "doubleswipestart" : "aria.touch.DoubleSwipe",
+            "doubleswipemove" : "aria.touch.DoubleSwipe",
+            "doubleswipecancel" : "aria.touch.DoubleSwipe"
         };
 
         /**

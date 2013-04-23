@@ -12,18 +12,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/**
- * Test suite regrouping all tests on aria.touch
- * @class test.templateTests.tests.touch.TouchTestSuite
- * @extends aria.jsunit.TestSuite
- */
-Aria.classDefinition({
-    $classpath : "test.aria.touch.TouchTestSuite",
-    $extends : "aria.jsunit.TestSuite",
-    $constructor : function () {
-        this.$TestSuite.constructor.call(this);
-        this.addTests("test.aria.touch.gestures.GesturesTestSuite");
-        this.addTests("test.aria.touch.EventTest");
-        this.addTests("test.aria.touch.widgets.DoubleSlider");
-    }
-});
+{Template {
+  $classpath : 'test.aria.touch.widgets.DoubleSliderTpl',
+  $wlibs : {
+    'touch' : 'aria.touch.widgets.TouchWidgetLib'
+  }
+}}
+
+  {macro main()}
+
+
+    <br><br>
+    <div id="Slider">
+    {@touch:DoubleSlider {
+      bindValue: {
+        to: "slider",
+        inside: data
+      },
+      width: 300
+
+    }/}
+    </div>
+	<br>
+
+
+
+  {/macro}
+
+{/Template}
