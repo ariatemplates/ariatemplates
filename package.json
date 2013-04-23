@@ -15,7 +15,7 @@
   },
   "scripts": {
     "start": "node scripts/server.js",
-    "prestart": "npm install && node build/grunt-cli.js package",
+    "prestart": "npm install && npm run-script grunt",
     "grunt": "node build/grunt-cli.js",
     "attester": "node node_modules/attester/bin/attester.js test/attester.yml",
     "lint": "node build/grunt-cli.js checkStyle",

@@ -49,6 +49,30 @@ app.get("/test/dev", function (req, res) {
         dev : true
     });
 });
+// Playground area
+app.get("/playground/options", function (req, res) {
+    res.sendfile(path.normalize(__dirname + "/assets/playground.html"));
+});
+app.get("/playground", function (req, res) {
+    res.render('playground', {
+        urls : {
+            framework : "/aria-templates/aria/ariatemplates-" + process.env.npm_package_version + ".js",
+            skin : "/aria-templates/aria/css/atskin-" + process.env.npm_package_version + ".js"
+        },
+        dev : false,
+        path : req.query.path
+    });
+});
+app.get("/playground/dev", function (req, res) {
+    res.render('playground', {
+        urls : {
+            framework : "/aria-templates/dev/aria/ariatemplates-bootstrap.js",
+            skin : "/aria-templates/dev/aria/css/atskin.js"
+        },
+        dev : true,
+        path : req.query.path
+    });
+});
 // Rename bootstrap prefixing with ariatemplates- this fixes runIsolated in dev mode
 app.get("/aria-templates/dev/aria/ariatemplates-bootstrap.js", function (req, res) {
     res.sendfile(path.normalize(__dirname + "/../src/aria/bootstrap.js"));
