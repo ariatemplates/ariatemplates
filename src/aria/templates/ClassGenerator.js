@@ -231,7 +231,7 @@ Aria.classDefinition({
          * @param {aria.templates.ClassWriter} out
          * @param {aria.templates.TreeBeans.Statement} statement
          */
-        __processStatement : function (out, statement) {
+        __processStatement : function (out, statement, merge) {
             var statname = statement.name;
             if (statname.charAt(0) == '@') {
                 statname = '@';
@@ -259,13 +259,13 @@ Aria.classDefinition({
                         if (this._isDebug) {
                             out.trackLine(statement.lineNumber);
                         }
-                        handler.process(out, statement, res);
+                        handler.process(out, statement, res, merge);
                     }
                 } else {
                     if (this._isDebug) {
                         out.trackLine(statement.lineNumber);
                     }
-                    handler.process(out, statement, this);
+                    handler.process(out, statement, this, merge);
                 }
             }
         },

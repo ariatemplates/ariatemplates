@@ -92,6 +92,10 @@ Aria.classDefinition({
                 return oSelf.__$write.call(oSelf, text);
             };
 
+            tpl.__$writeArray = function (text) {
+                return oSelf.__$writeArray.call(oSelf, text);
+            };
+
             if (!tpl.__$initTemplate()) {
                 return false;
             }
@@ -123,6 +127,18 @@ Aria.classDefinition({
          */
         __$write : function (text) {
             this._out.push(text);
+        },
+
+        /**
+         * Write some text. This method is intended to be called only from the generated code of templates (created in
+         * aria.templates.ClassGenerator) and never directly from developer code. A call to this method is generated for
+         * simple text in templates and for ${...} statements.
+         * @param {Array} text Text to write.
+         * @private
+         * @implements aria.templates.IBaseTemplate
+         */
+        __$writeArray : function (text) {
+            this._out = this._out.concat(text);
         }
     }
 });
