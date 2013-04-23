@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" type="text/css" href="/css/kube.min.css" />
+  <link rel="stylesheet" type="text/css" href="/css/master.css" />
+
+  <title>Aria Templates - Tests</title>
+</head>
+<body>
+
+<div id="content">
+    <div class="wrapper">
+        <div class="row">
+            <h3>Options</h3>
+
+            <form method="post" action="" class="forms">
+              <ul>
+                 <li>
+                    <h5>Template classpath</h5>
+                    <label for="path">Display the following template</label><br>
+                    <input type="text" id="path" name="path" size="60" onchange="buildUrl();">
+                 </li>
+                 <li>
+                    <h5>Dev Mode</h5>
+                    <label>
+                        <input type="checkbox" id="dev" onchange="buildUrl();">
+                        Use non-minified code
+                    </label>
+                 </li>
+              </ul>
+
+              <br><br>
+              <button class="btn-flat-red-border" onclick="play();return false;">Start playing</button>
+              <br>
+              <p>Or visit this URL <a href="#" id="testLink" onclick="play();return false;"></a>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+var targetUrl = "";
+
+play = function () {
+	buildUrl();
+	window.open(targetUrl, "_play");
+};
+
+buildUrl = function () {
+	var path = document.getElementById("path").value;
+	var devMode = document.getElementById("dev").checked;
+
+	var rootFolder = "/playground/" + (devMode ? "dev/" : "");
+	var parts = [rootFolder + "?path=" + encodeURIComponent(path)];
+	targetUrl = parts.join("&");
+
+	document.getElementById("testLink").innerText = targetUrl;
+};
+
+buildUrl();
+</script>
+
+</body>
+</html>
