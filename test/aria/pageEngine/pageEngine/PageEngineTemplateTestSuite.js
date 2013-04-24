@@ -27,5 +27,7 @@ Aria.classDefinition({
         this.addTests("test.aria.pageEngine.pageEngine.PageEngineTestFour");
         this.addTests("test.aria.pageEngine.pageEngine.PageEngineTestFive");
         this.addTests("test.aria.pageEngine.pageEngine.PageDefinitionChangeTest");
+        this.addTests("test.aria.pageEngine.pageEngine.PageEngineTemplateDisposalTest");
+        this.addTests("test.aria.pageEngine.pageEngine.PageEngineTemplateDisposalTestWithAnimations");
     }
 });
