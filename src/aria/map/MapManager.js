@@ -40,7 +40,8 @@
      * @type Object
      */
     var providers = {
-        "microsoft7" : "aria.map.providers.Microsoft7MapProvider"
+        "microsoft7" : "aria.map.providers.Microsoft7MapProvider",
+        "google3" : "aria.map.providers.Google3MapProvider"
     };
 
     /**
