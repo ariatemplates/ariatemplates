@@ -34,5 +34,6 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.form.datefield.DateFieldTestSuite");
         this.addTests("test.aria.widgets.form.issue411.DropdownTestSuite");
         this.addTests("test.aria.widgets.form.autocomplete.AutoCompleteTestSuite");
+        this.addTests("test.aria.widgets.form.selectbox.SelectboxTestCase");
     }
 });
