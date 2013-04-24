@@ -244,7 +244,7 @@ Aria.classDefinition({
          * Returns the right event due to the vendor prefix. Needed it because the browser event is case sensitive.
          */
         _animationEndEvent : function () {
-            var vendorPrefix = aria.utils.Delegate.vendorPrefix.toLowerCase();
+            var vendorPrefix = (aria.utils.Delegate.vendorPrefix || "").toLowerCase();
 
             switch (vendorPrefix) {
                 case "webkit" :

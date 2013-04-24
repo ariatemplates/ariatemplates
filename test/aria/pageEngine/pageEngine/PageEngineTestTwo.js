@@ -24,7 +24,6 @@ Aria.classDefinition({
             scope : this
         };
         this._visited = {};
-        // this.defaultTestTimeout = 10000;
         this._cssBasePath = "test/templateTests/tests/pageEngine/site/css/";
 
     },
