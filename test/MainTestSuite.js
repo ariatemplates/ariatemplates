@@ -39,5 +39,6 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.WidgetsTestSuite");
         this.addTests("test.performance.PerfTestSuite");
         this.addTests("test.aria.touch.TouchTestSuite");
+        this.addTests("test.aria.map.MapTestSuite");
     }
 });

@@ -20,6 +20,7 @@ Aria.classDefinition({
     $classpath : "aria.map.providers.Microsoft7MapProvider",
     $singleton : true,
     $dependencies : ["aria.utils.ScriptLoader"],
+    $implements : ["aria.map.providers.IMapProvider"],
     $constructor : function () {
 
         /**
@@ -98,10 +99,16 @@ Aria.classDefinition({
         },
 
         /**
-         * @param {Object} map previously created throught the getMap method
+         * @param {Object} map previously created through the getMap method
          */
         disposeMap : function (map) {
+
+            var node = map.getRootElement().parentNode;
             map.dispose();
+
+            if (node && node.parentNode) {
+                node.parentNode.removeChild(node);
+            }
         }
     }
 });
