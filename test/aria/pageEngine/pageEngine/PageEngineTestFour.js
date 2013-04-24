@@ -25,7 +25,6 @@ Aria.classDefinition({
         };
         this._visited = {};
         this._navigation = "history";
-        // this.defaultTestTimeout = 10000;
     },
     $prototype : {
 

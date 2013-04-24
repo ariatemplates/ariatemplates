@@ -22,7 +22,7 @@ Aria.classDefinition({
     $dependencies : ["aria.pageEngine.CfgBeans", "aria.pageEngine.SiteRootModule", "aria.templates.ModuleCtrlFactory",
             "aria.core.JsonValidator", "aria.pageEngine.utils.SiteConfigHelper",
             "aria.pageEngine.utils.PageConfigHelper", "aria.embed.PlaceholderManager", "aria.utils.Type",
-            "aria.pageEngine.utils.PageEngineUtils", "aria.utils.CSSLoader", "aria.utils.Json"],
+            "aria.pageEngine.utils.PageEngineUtils", "aria.utils.CSSLoader", "aria.utils.Json", "aria.core.Browser"],
     $constructor : function () {
         /**
          * Start configuration
@@ -44,6 +44,15 @@ Aria.classDefinition({
          * @protected
          */
         this._navigationManager = null;
+
+        var browser = aria.core.Browser;
+
+        /**
+         * Whether animations are compatible with the browser
+         * @type Boolean
+         * @protected
+         */
+        this._animationsDisabled = browser.isIE && browser.majorVersion < 10;
 
         /**
          * Manages animations in page transitions
@@ -157,7 +166,6 @@ Aria.classDefinition({
          *     appData : {Object} application data,
          *     pageData : {Object} data specific to the current page,
          *     pageInfo : {aria.pageEngine.CfgBeans.PageNavigationInformation} information on the current page
-         *
          * }
          * </pre>
          *
@@ -188,21 +196,26 @@ Aria.classDefinition({
         if (this._navigationManager) {
             this._navigationManager.$dispose();
         }
+        if (this._isTemplateLoaded) {
+            // To be done before disposing the animations manager
+            Aria.disposeTemplate(this._getContainer());
+        }
         if (this._animationsManager) {
             this._animationsManager.$dispose();
         }
         this._firstDiv = null;
-        this._secondDiv = null;
+        if (this._secondDiv) {
+            this._secondDiv.parentNode.removeChild(this._secondDiv);
+            this._secondDiv = null;
+        }
         var siteConfigHelper = this._siteConfigHelper, cssLoader = aria.utils.CSSLoader;
         if (siteConfigHelper) {
             cssLoader.remove(siteConfigHelper.getSiteCss());
+            siteConfigHelper.$dispose();
+
         }
         cssLoader.remove(this._previousPageCSS);
         cssLoader.remove(this._currentPageCSS);
-        if (this._isTemplateLoaded) {
-            Aria.disposeTemplate(siteConfigHelper.getRootDiv());
-            siteConfigHelper.$dispose();
-        }
         this._modulesInPage = null;
         if (this._rootModule) {
             this._rootModule.$dispose();
@@ -346,8 +359,10 @@ Aria.classDefinition({
         _onSiteReady : function () {
             var helper = this._siteConfigHelper;
             this.contentProcessors = this._siteConfigHelper.getContentProcessorInstances();
-            if (this._siteConfigHelper.siteConfig.animations) {
+            this._firstDiv = this._siteConfigHelper.getRootDiv();
+            if (!this._animationsDisabled && this._siteConfigHelper.siteConfig.animations) {
                 this._animationsManager = new aria.pageEngine.utils.AnimationsManager();
+                this._secondDiv = this._animationsManager.createHiddenDiv(this._firstDiv);
             }
             this._navigationManager = this._siteConfigHelper.getNavigationManager({
                 fn : "navigate",
@@ -523,23 +538,20 @@ Aria.classDefinition({
             pageRequest.pageId = pageConfig.pageId;
             pageRequest.title = pageConfig.title;
 
-            this._firstDiv = this._siteConfigHelper.getRootDiv();
-
             var json = aria.utils.Json;
             json.setValue(this._data, "pageData", cfg.pageData);
             json.setValue(this._data, "pageInfo", pageRequest);
 
-            if (this._animationsManager && pageConfig.animation && this._secondDiv === null) {
-                this._secondDiv = this._animationsManager.createHiddenDiv(this._firstDiv);
-            }
-
             var cfgTemplate = {
                 classpath : cfg.template,
-                div : this._activeDiv === 1 ? this._firstDiv : this._secondDiv,
+                div : this._getContainer(false),
                 moduleCtrl : this._rootModule
             };
 
             this._modulesInPage = [];
+            if (!this._animationsManager && this._isTemplateLoaded) {
+                Aria.disposeTemplate(this._getContainer());
+            }
             Aria.loadTemplate(cfgTemplate, {
                 fn : this._afterTemplateLoaded,
                 scope : this,
@@ -586,9 +598,7 @@ Aria.classDefinition({
                     },
                     scope : this
                 });
-                var activeDiv = this._activeDiv === 1 ? this._firstDiv : this._secondDiv;
-                var inactiveDiv = this._activeDiv === 1 ? this._secondDiv : this._firstDiv;
-                this._animationsManager.startPageTransition(activeDiv, inactiveDiv, args.pageConfig.animation);
+                this._animationsManager.startPageTransition(this._getContainer(false), this._getContainer(), args.pageConfig.animation);
             } else {
                 this._finishDisplay(args);
             }
@@ -605,9 +615,8 @@ Aria.classDefinition({
                 "animationend" : this._pageTransitionComplete,
                 scope : this
             });
-            var divToDispose = this._activeDiv === 0 ? this._firstDiv : this._secondDiv;
-            Aria.disposeTemplate(divToDispose);
-            this._activeDiv = this._activeDiv === 0 ? 1 : 0;
+            this._activeDiv = (this._activeDiv + 1) % 2;
+            Aria.disposeTemplate(this._getContainer(false));
             this._finishDisplay(params);
         },
 
@@ -633,6 +642,25 @@ Aria.classDefinition({
                     scope : this
                 }
             });
+        },
+
+        /**
+         * Return the element in which the page is shown right now or the other one, according to the argument
+         * @param {Boolean} active Whether the active HEMLElement should be returned, namely the element in which the
+         * page is loaded. It defaults to true
+         * @return {HTMLElement} Container of a page
+         * @protected
+         */
+        _getContainer : function (active) {
+            if (!this._animationsManager) {
+                return this._firstDiv;
+            }
+            active = !(active === false);
+            if (active) {
+                return this._activeDiv === 0 ? this._firstDiv : this._secondDiv;
+            } else {
+                return this._activeDiv === 1 ? this._firstDiv : this._secondDiv;
+            }
         },
 
         /**
@@ -792,7 +820,6 @@ Aria.classDefinition({
          *     appData : {Object} application data,
          *     pageData : {Object} data specific to the current page,
          *     pageInfo : {aria.pageEngine.CfgBeans.PageNavigationInformation} information on the current page
-         *
          * }
          * </pre>
          */

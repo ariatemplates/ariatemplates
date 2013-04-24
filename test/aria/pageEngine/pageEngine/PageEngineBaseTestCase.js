@@ -23,7 +23,6 @@ Aria.classDefinition({
         this.setTestEnv({
             template : "test.aria.pageEngine.pageEngine.MainTemplate"
         });
-        this.defaultTestTimeout = 10000;
         this._dependencies = ["aria.pageEngine.PageEngine"];
     },
     $prototype : {
