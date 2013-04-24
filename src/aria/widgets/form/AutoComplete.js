@@ -66,6 +66,7 @@ Aria.classDefinition({
         controller.freeText = this._cfg.freeText;
         controller.maxlength = this._cfg.maxlength;
         controller.expandButton = this._cfg.expandButton;
+        controller.selectionKeys = this._cfg.selectionKeys;
     },
     $destructor : function () {
         // The dropdown might still be open when we destroy the widget, destroy it now

@@ -82,6 +82,13 @@
 
             // Inherited from aria.html.controllers.Suggestions
             this._init();
+
+            /**
+             * Keys defined for submitting a selected item from autocomplete dropdown
+             * @type {aria.widgets.CfgBeans.AutoCompleteCfg.$properties.selectionKeys}
+             */
+            this.selectionKeys = null;
+
         },
         $destructor : function () {
             this.dispose();
@@ -462,6 +469,48 @@
                         keepSelectedValue : true
                     }
                 });
+            },
+
+            /**
+             * Validates an event against a configuration
+             * @param {Object} config
+             * @param {aria.DomEvent} event
+             * @protected
+             */
+            _validateModifiers : function (config, event) {
+                return (event.altKey == !!config.alt) && (event.shiftKey == !!config.shift)
+                        && (event.ctrlKey == !!config.ctrl);
+            },
+
+            /**
+             * Checking against special key combinations that trigger a selection of the item in the dropdown
+             * @param {aria.DomEvent} event
+             * @return {Boolean} Whether the event corresponds to a selection key
+             * @protected
+             */
+            _checkSelectionKeys : function (event) {
+                var specialKey = false, keyCode = event.keyCode;
+                for (var index = 0, keyMap; index < this.selectionKeys.length; index++) {
+                    keyMap = this.selectionKeys[index];
+                    if (this._validateModifiers(keyMap, event)) {
+                        // case real key defined. For eg: 65 for a
+                        if (aria.utils.Type.isNumber(keyMap.key)) {
+                            if (keyMap.key === keyCode) {
+                                specialKey = true;
+                                break;
+                            }
+                        } else if (typeof(keyMap.key) !== "undefined"
+                                && event["KC_" + keyMap.key.toUpperCase()] == keyCode) {
+                            specialKey = true;
+                            break;
+                        } else if (typeof(keyMap.key) !== "undefined"
+                                && String.fromCharCode(event.charCode) == keyMap.key) {
+                            specialKey = true;
+                            break;
+                        }
+                    }
+                }
+                return specialKey;
             }
 
         }
