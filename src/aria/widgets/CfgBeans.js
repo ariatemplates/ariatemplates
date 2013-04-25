@@ -569,9 +569,16 @@ Aria.beanDefinitions({
             $restricted : false,
             $properties : {
                 "value" : {
-                    $type : "json:String",
+                    $type : "json:MultiTypes",
                     $description : "Internal value associated to the option - usually a language-independent code",
-                    $mandatory : true
+                    $mandatory : true,
+                    $contentTypes : [{
+                        $type : "json:Integer",
+                        $description : ""
+                    }, {
+                        $type : "json:String",
+                        $description : ""
+                    }]
                 },
                 "label" : {
                     $type : "json:String",

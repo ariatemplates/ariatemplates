@@ -1063,7 +1063,7 @@ Aria.classDefinition({
                 // if the value is not set (namely it is null, undefined, an
                 // empty string or an empty array) and the
                 // prefill is defined
-                if ((aria.utils.Type.isArray(value) && aria.utils.Array.isEmpty(value)) || !value) {
+                if ((aria.utils.Type.isArray(value) && aria.utils.Array.isEmpty(value)) || (!value && value !== 0)) {
                     if (cfg.prefill && cfg.prefill + "") {
                         this._isPrefilled = true;
                     } else {
