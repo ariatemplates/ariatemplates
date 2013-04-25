@@ -13,5 +13,8 @@ tests:
    excludes:
    #Excluded because PhantomJS does not support flash:
     - test.aria.core.io.IOXDRTest
-   #Excluded because vertical align  is not revelant in PhantomJS
+   #Excluded because vertical align is not revelant in PhantomJS:
     - test.aria.widgets.verticalAlign.VerticalAlignTestCase
+   #Excluded because PhantomJS has random issues with history management:
+   # (to be investigated)
+    - test.aria.utils.History
