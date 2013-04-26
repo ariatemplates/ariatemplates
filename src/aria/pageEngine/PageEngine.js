@@ -52,7 +52,8 @@ Aria.classDefinition({
          * @type Boolean
          * @protected
          */
-        this._animationsDisabled = browser.isIE && browser.majorVersion < 10;
+        this._animationsDisabled = (browser.isIE && browser.majorVersion < 10)
+                || (browser.isFirefox && browser.majorVersion < 4);
 
         /**
          * Manages animations in page transitions
