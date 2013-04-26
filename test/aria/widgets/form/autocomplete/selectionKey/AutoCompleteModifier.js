@@ -48,7 +48,7 @@ Aria.classDefinition({
             });
         },
         _checkSelected : function () {
-            this.synEvent.type(this.getInputField("acDest1"), "[down][down][down][ctrl][a]", {
+            this.synEvent.type(this.getInputField("acDest1"), "[down][down][down][shift][a]", {
                 fn : this._finishTest,
                 scope : this
             });
@@ -59,8 +59,8 @@ Aria.classDefinition({
         _finishTest : function () {
             var test1 = this.getInputField("acDest1");
             var test2 = this.getInputField("acDest2");
-            this.assertTrue(test1.value === test2.value);
-            this.assertTrue(this.templateCtxt.data.ac_air_value.label === "Air Canada");
+            this.assertEquals(test1.value, test2.value);
+            this.assertEquals(this.templateCtxt.data.ac_air_value.label, "Air Canada");
             this.notifyTemplateTestEnd();
         }
     }
