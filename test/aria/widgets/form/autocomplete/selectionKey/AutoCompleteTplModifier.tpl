@@ -39,7 +39,7 @@
 			},
 			selectionKeys : [{
 						key : "a",
-						ctrl : true
+						shift : true
 					}]
 		}/}
 
