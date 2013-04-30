@@ -217,7 +217,7 @@
              */
             getUrl : html5History ? function () {
                 var state = window.history.state;
-                if (state) {
+                if (state && state.__info) {
                     return state.__info.url;
                 }
                 return window.location.href;
