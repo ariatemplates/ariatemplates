@@ -106,10 +106,10 @@ Aria.classDefinition({
             var displayInline = (this._inlineBlock) ? "display:inline-block;vertical-align: middle;" : "";
             out.write(['<table cellspacing="0" cellpadding="0" style="position: relative;' + displayInline + '"',
                     frameContainerClass, '><tbody isFrame="1">', '<tr>', '<td class="', cssPrefix, 'tlc ', cssPrefix,
-                    'bkgA">&nbsp;</td>', '<td class="', cssPrefix, 'ts ', cssPrefix,
+                    'bkgA"></td>', '<td class="', cssPrefix, 'ts ', cssPrefix,
                     'bkgB">' + this.__addFrameIcon(cfg, cssPrefix, 'top') + '</td>', '<td class="', cssPrefix, 'trc ',
-                    cssPrefix, 'bkgA">&nbsp;</td>', '</tr>', '<tr>', '<td class="', cssPrefix, 'ls ', cssPrefix,
-                    'bkgC">&nbsp;</td>', '<td class="', cssPrefix, 'm">', '<span ',
+                    cssPrefix, 'bkgA"></td>', '</tr>', '<tr>', '<td class="', cssPrefix, 'ls ', cssPrefix,
+                    'bkgC"></td>', '<td class="', cssPrefix, 'm">', '<span ',
                     Aria.testMode && this._baseId ? ' id="' + this._baseId + '"' : '',
                     (sizeInfo.style ? 'style="' + sizeInfo.style + '"' : ''), ' class="', sizeInfo.className, '">'].join(''));
         },
@@ -120,10 +120,10 @@ Aria.classDefinition({
          */
         writeMarkupEnd : function (out) {
             var cfg = this._cfg, sclass = cfg.sclass, cssPrefix = this._cssPrefix;
-            out.write(['</span></td>', '<td class="', cssPrefix, 'rs ', cssPrefix, 'bkgC">&nbsp;</td>', '</tr>',
-                    '<tr>', '<td class="', cssPrefix, 'blc ', cssPrefix, 'bkgA">&nbsp;</td>', '<td class="', cssPrefix,
-                    'bs ', cssPrefix, 'bkgB">', this.__addFrameIcon(cfg, cssPrefix, 'bottom'), '</td>', '<td class="',
-                    cssPrefix, 'brc ', cssPrefix, 'bkgA">&nbsp;</td>', '</tr>', '</tbody></table>'].join(''));
+            out.write(['</span></td>', '<td class="', cssPrefix, 'rs ', cssPrefix, 'bkgC"></td>', '</tr>', '<tr>',
+                    '<td class="', cssPrefix, 'blc ', cssPrefix, 'bkgA"></td>', '<td class="', cssPrefix, 'bs ',
+                    cssPrefix, 'bkgB">', this.__addFrameIcon(cfg, cssPrefix, 'bottom'), '</td>', '<td class="',
+                    cssPrefix, 'brc ', cssPrefix, 'bkgA"></td>', '</tr>', '</tbody></table>'].join(''));
 
         },
 
@@ -151,9 +151,9 @@ Aria.classDefinition({
             var stateObject = cfg.stateObject;
             var frameIconVPos = stateObject.frameIconVPos;
             if (stateObject.frameIcon && frameIconVPos == position) {
-                return '<span class="' + cssPrefix + 'frameIcon">&nbsp;</span>';
+                return '<span class="' + cssPrefix + 'frameIcon"></span>';
             }
-            return "&nbsp";
+            return "";
         },
         /**
          * Change the state of the frame. Must not be called before linkToDom has been called.

@@ -27,6 +27,7 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.WidgetTest");
         this.addTests("test.aria.widgets.action.SortIndicatorTest");
         this.addTests("test.aria.widgets.calendar.CalendarControllerTest");
+        this.addTests("test.aria.widgets.calendar.lineHeight.CalendarLineHeightTest");
         this.addTests("test.aria.widgets.container.DivTest");
         this.addTests("test.aria.widgets.container.FieldsetTest");
         this.addTests("test.aria.widgets.container.SplitterTest");
