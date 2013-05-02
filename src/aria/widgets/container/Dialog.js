@@ -468,9 +468,11 @@ Aria.classDefinition({
         },
 
         /**
-         * Is called right after the popup is close.
+         * Is called right after the popup is closed.
          */
         _onMouseClickClose : function () {
+            // forces the blur on the active input to store its value in the data model
+            aria.utils.Delegate.delegate(aria.DomEvent.getFakeEvent('blur', Aria.$window.document.activeElement));
             this.actionClose();
         },
 
