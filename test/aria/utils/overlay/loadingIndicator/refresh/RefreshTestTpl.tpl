@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Amadeus s.a.s.
+ * Copyright 2013 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,14 +13,26 @@
  * limitations under the License.
  */
 
-Aria.classDefinition({
-    $classpath : "test.aria.embed.EmbedTestSuite",
-    $extends : "aria.jsunit.TestSuite",
-    $constructor : function () {
-        this.$TestSuite.constructor.call(this);
+{Template {
+   $classpath: "test.aria.utils.overlay.loadingIndicator.refresh.RefreshTestTpl"
+}}
+	{macro main()}
+		{if data.myBoolean}
+			{section {
+				id: "mySection",
+				bindProcessingTo: {
+					to: "processing",
+					inside: data
+				},
+				macro: "myContent"
+			}/}
+		{/if}
+ 	{/macro}
 
-        this.addTests("test.aria.embed.PlaceholderManagerTest");
-        this.addTests("test.aria.embed.placeholder.PlaceHolderTest");
-        this.addTests("test.aria.embed.map.MapWidgetTestSuite");
-    }
-});
+ 	{macro myContent()}
+ 		<div style="width:200px;height:200px;border:1px solid black;">
+ 			This is a section which is displayed only when a special condition is set.
+ 		</div>
+ 	{/macro}
+
+{/Template}
