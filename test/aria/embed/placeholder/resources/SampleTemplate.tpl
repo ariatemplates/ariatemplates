@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Amadeus s.a.s.
+ * Copyright 2013 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,14 +13,12 @@
  * limitations under the License.
  */
 
-Aria.classDefinition({
-    $classpath : "test.aria.embed.EmbedTestSuite",
-    $extends : "aria.jsunit.TestSuite",
-    $constructor : function () {
-        this.$TestSuite.constructor.call(this);
+{Template {
+  $classpath : "test.aria.embed.placeholder.resources.SampleTemplate"
+}}
 
-        this.addTests("test.aria.embed.PlaceholderManagerTest");
-        this.addTests("test.aria.embed.placeholder.PlaceHolderTest");
-        this.addTests("test.aria.embed.map.MapWidgetTestSuite");
-    }
-});
+  {macro main()}
+    ${data.message}
+  {/macro}
+
+{/Template}

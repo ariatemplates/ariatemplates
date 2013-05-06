@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Amadeus s.a.s.
+ * Copyright 2013 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,14 +13,24 @@
  * limitations under the License.
  */
 
-Aria.classDefinition({
-    $classpath : "test.aria.embed.EmbedTestSuite",
-    $extends : "aria.jsunit.TestSuite",
-    $constructor : function () {
-        this.$TestSuite.constructor.call(this);
+{Template {
+    $classpath: "test.aria.utils.overlay.loadingIndicator.automatic.SubTemplateBinding"
+}}
 
-        this.addTests("test.aria.embed.PlaceholderManagerTest");
-        this.addTests("test.aria.embed.placeholder.PlaceHolderTest");
-        this.addTests("test.aria.embed.map.MapWidgetTestSuite");
-    }
-});
+    {macro main()}
+
+        The sub template simply has another section, but it's in a marco
+        {call subSection() /}
+
+    {/macro}
+
+    {macro subSection()}
+        {section {
+            id : "subSection",
+            bindProcessingTo : {inside: data, to: "subSection"}
+        }}
+            <div style="height: 80px; border: 1px dashed black">&nbsp;</div>
+        {/section}
+    {/macro}
+
+{/Template}

@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Amadeus s.a.s.
+ * Copyright 2013 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,13 +14,17 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.embed.EmbedTestSuite",
-    $extends : "aria.jsunit.TestSuite",
-    $constructor : function () {
-        this.$TestSuite.constructor.call(this);
+	$classpath : "test.aria.templates.beforeRefresh.BeforeRefreshTestCase",
+	$extends : "aria.jsunit.TemplateTestCase",
+	$prototype : {
+		runTemplateTest : function () {
+			this.templateCtxt.$refresh();
+			aria.utils.Json.setValue(this.templateCtxt._tpl.myData, "flag", 1);
 
-        this.addTests("test.aria.embed.PlaceholderManagerTest");
-        this.addTests("test.aria.embed.placeholder.PlaceHolderTest");
-        this.addTests("test.aria.embed.map.MapWidgetTestSuite");
-    }
+			this.assertTrue(test.aria.templates.beforeRefresh.BeforeRefreshTestCaseTpl.testVar1 === 3);
+			this.assertTrue(test.aria.templates.beforeRefresh.BeforeRefreshTestCaseTpl.testVar2 === 3);
+
+			this.notifyTemplateTestEnd();
+		}
+	}
 });
