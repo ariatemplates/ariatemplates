@@ -24,6 +24,7 @@ Aria.classDefinition({
         this.addTests("test.aria.utils.css.AnimationsTestSuite");
         this.addTests("test.aria.utils.environment.EnvironmentTestSuite");
         this.addTests("test.aria.utils.json.JsonTestSuite");
+        this.addTests("test.aria.utils.overlay.OverlayTestSuite");
         this.addTests("test.aria.utils.sandbox.DOMPropertiesTest");
         this.addTests("test.aria.utils.scriptloader.ScriptLoader");
         this.addTests("test.aria.utils.validators.ValidatorsTestSuite");

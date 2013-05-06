@@ -19,6 +19,8 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
+        this.addTests("test.aria.widgets.autoselect.AutoSelect");
+        this.addTests("test.aria.widgets.autoselect.programmatic.AutoSelect");
         this.addTests("test.aria.widgets.errorTip.ButtonErrorTipsTest");
         this.addTests("test.aria.widgets.errorTip.IconButtonErrorTipsTest");
         this.addTests("test.aria.widgets.errorTip.LinkErrorTipsTest");

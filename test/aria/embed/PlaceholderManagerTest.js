@@ -17,8 +17,8 @@
  * Test case for aria.embed.PlaceholderManager
  */
 Aria.classDefinition({
-    $classpath : 'test.aria.embed.PlaceholderManagerTest',
-    $extends : 'aria.jsunit.TestCase',
+    $classpath : "test.aria.embed.PlaceholderManagerTest",
+    $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.embed.PlaceholderManager", "test.aria.embed.contentProviders.ContentProviderOne",
             "test.aria.embed.contentProviders.ContentProviderTwo"],
     $constructor : function () {

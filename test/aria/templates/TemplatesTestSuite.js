@@ -13,14 +13,15 @@
  * limitations under the License.
  */
 
-/**
- * Test suite regrouping all tests of the core namespace
- */
 Aria.classDefinition({
     $classpath : "test.aria.templates.TemplatesTestSuite",
     $extends : "aria.jsunit.TestSuite",
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
+
+        this.addTests("test.aria.templates.autorefresh.AutorefreshTestSuite");
+        this.addTests("test.aria.templates.beforeRefresh.BeforeRefreshTestCase");
+
         this.addTests("test.aria.templates.sectionTest.RefreshSection");
         this.addTests("test.aria.templates.ClassGeneratorTest");
         this.addTests("test.aria.templates.CSSCtxtManagerTest");
