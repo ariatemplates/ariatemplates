@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+	<!-- The following meta tag is necessary for IE9 not to automatically switch to IE7 document mode when the page
+		is used in the intranet zone (it's just another strange behavior of IE) -->
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<title>Aria Tests...</title>
+</head>
+<body>
+	<div id="myDivItemInIframe"></div>
+	<script type="text/javascript">
+		(function () {
+			var cb = parent.iframeLoadedCallback;
+			cb.fn.call(cb.scope, null, cb.args);
+			cb = null;
+		})();
+	</script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+/*
+ * Copyright 2013 Amadeus s.a.s.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+{CSSLibrary {
+  $classpath : "test.aria.templates.csslibs.csslibsenv.libs.MyChildLib",
+  $extends : "test.aria.templates.csslibs.csslibsenv.libs.MyBaseLib",
+  $csslibs : {
+    myextlib : "test.aria.templates.csslibs.csslibsenv.libs.ExternalCSSLib"
+  },
+  $dependencies : [
+  	"test.aria.templates.csslibs.csslibsenv.libs.ExternalJsFile"
+  ],
+  $hasScript: true
+}}
+
+  {var myRed = "rgb(221,0,0)" /}
+  {macro semiTransparentPara_callsExtCml(displayStyle)}
+    p.para { /*unescaped CSS*/
+      display: ${displayStyle};       /*making sure variable passing works*/
+      color: ${greenColor()};         /*calling script*/
+      {call myextlib.opacity(0.5) /}  /*calling other lib*/
+    }
+  {/macro}
+
+  {macro putDefaultLinksStyle_invokesParent(cssClass)}
+    /* curly braces inside var/set statement should not be escaped */
+    {var linkStyles = {normal: myRed, visited: "cyan", hover: "navy", focus: "navy"} /}
+    {call putLinkStyle_macroFromParent(cssClass, linkStyles) /} /*calling macro from parent*/
+  {/macro}
+
+  {macro overriddenStyle()} /* overriding the parent */
+    {call $MyBaseLib.overriddenStyle() /}
+    color: rgb(85,85,85);
+  {/macro}
+
+  {macro colorFromDependency()}
+  	{var myextjs = test.aria.templates.csslibs.csslibsenv.libs.ExternalJsFile /}
+  	background-color: ${myextjs.getTestColor()};
+  {/macro}
+
+  {macro bgImage_usingCssPath()}
+  	background-image: url(${cssPath}/noSuchImage.jpg);
+  {/macro}
+
+{/CSSLibrary}

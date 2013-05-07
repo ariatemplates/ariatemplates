@@ -1,0 +1,57 @@
+/*
+ * Copyright 2013 Amadeus s.a.s.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+{CSSLibrary {
+  $classpath : "test.aria.templates.csslibs.csslibsenv.libs.MyBaseLib"
+}}
+  {macro overriddenStyle()}
+  	display: block;
+    border:2px solid rgb(255,0,0);
+    padding:10px;
+    background-color:linen;
+    color: linen; /*will be overridden in child*/
+  {/macro}
+
+  {macro putLinkStyle_macroFromParent(cssClass, aColors)}
+    a.${cssClass} {
+      display: block;
+      font-weight: bold;
+      text-decoration: none;
+    }
+    a.${cssClass}:link {
+      color: ${aColors.normal};
+    }
+    a.${cssClass}:visited {
+      color: ${aColors.visited};
+    }
+    a.${cssClass}:hover {
+      outline: 2px solid ${aColors.hover};
+      color: ${aColors.hover};
+    }
+    {if aColors.focus}
+      a.${cssClass}:focus {
+        outline: 2px solid ${aColors.focus};
+        color: ${aColors.focus};
+      }
+    {/if}
+    {if aColors.active}
+      a.${cssClass}:active {
+        outline: 2px solid ${aColors.active};
+        color: ${aColors.active};
+      }
+    {/if}
+  {/macro}
+
+{/CSSLibrary}

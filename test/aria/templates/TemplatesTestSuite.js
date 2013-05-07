@@ -24,10 +24,10 @@ Aria.classDefinition({
 
         this.addTests("test.aria.templates.sectionTest.RefreshSection");
         this.addTests("test.aria.templates.ClassGeneratorTest");
-        this.addTests("test.aria.templates.CSSCtxtManagerTest");
-        this.addTests("test.aria.templates.CSSCtxtTest");
-        this.addTests("test.aria.templates.CSSMgrTest");
-        this.addTests("test.aria.templates.CSSParserTest");
+        this.addTests("test.aria.templates.css.CSSTestSuite");
+        this.addTests("test.aria.templates.csslibs.CSSLibsTestCase");
+        this.addTests("test.aria.templates.customization.CustomizationTestSuite");
+        this.addTests("test.aria.templates.keyboardNavigation.NavigationTestSuite");
 
         this.addTests("test.aria.templates.DomElementWrapper");
         this.addTests("test.aria.templates.EnableMethodEventInterceptorTest");
@@ -48,6 +48,9 @@ Aria.classDefinition({
         this.addTests("test.aria.templates.TxtTemplateTest");
         this.addTests("test.aria.templates.ViewTest");
 
+        this.addTests("test.aria.templates.dynamicSection.DynSectionTestCase");
+        this.addTests("test.aria.templates.focusHandling.FocusHandlingTestCase");
+        this.addTests("test.aria.templates.inheritance.TemplateInheritanceTestCase");
         this.addTests("test.aria.templates.generatedId.IncrementalElementIdTestCase");
         this.addTests("test.aria.templates.issue142.HtmlStyleTemplateTestCase");
         this.addTests("test.aria.templates.issue279.ButtonSpacingTestCase");
@@ -58,6 +61,5 @@ Aria.classDefinition({
 
         this.addTests("test.aria.templates.statements.StatementsTestSuite");
         this.addTests("test.aria.templates.issue400.AlreadyCompiledTplTestCase");
-
     }
 });
