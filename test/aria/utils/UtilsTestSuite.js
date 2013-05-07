@@ -20,6 +20,7 @@ Aria.classDefinition({
         this.$TestSuite.constructor.call(this);
 
         this.addTests("test.aria.utils.cssLoader.CSSLoader");
+        this.addTests("test.aria.utils.cfgframe.AriaWindowTest");
         this.addTests("test.aria.utils.dragdrop.DragDropBean");
         this.addTests("test.aria.utils.css.AnimationsTestSuite");
         this.addTests("test.aria.utils.environment.EnvironmentTestSuite");

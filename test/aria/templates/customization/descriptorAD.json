@@ -1,0 +1,5 @@
+{
+	"templates" : {
+		"test.aria.templates.customization.CustomTemplateA" : "test.aria.templates.customization.CustomTemplateD"
+	}
+}
