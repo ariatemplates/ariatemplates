@@ -12,18 +12,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/**
- * Test suite regrouping all tests on aria.touch
- * @class test.templateTests.tests.touch.TouchTestSuite
- * @extends aria.jsunit.TestSuite
- */
-Aria.classDefinition({
-    $classpath : "test.aria.touch.TouchTestSuite",
-    $extends : "aria.jsunit.TestSuite",
-    $constructor : function () {
-        this.$TestSuite.constructor.call(this);
-        this.addTests("test.aria.touch.gestures.GesturesTestSuite");
-        this.addTests("test.aria.touch.EventTest");
-        this.addTests("test.aria.touch.widgets.DoubleSlider");
-    }
-});
+
+ {Template {
+  $classpath : "test.aria.touch.gestures.DoubleSwipeTpl",
+  $css : ["test.aria.touch.gestures.TouchEventsCSS"],
+  $hasScript : true
+} }
+
+  {macro main ( )}
+    <div id="tapboard"
+      {on doubleswipe {fn : this.tapHandler, scope : this}/}
+      {on doubleswipestart {fn : this.tapHandler, scope : this}/}
+      {on doubleswipemove {fn : this.tapHandler, scope : this}/}
+      {on doubleswipecancel {fn : this.tapHandler, scope : this}/}
+    ></div>
+{/macro}
+
+{/Template}

@@ -28,5 +28,6 @@ Aria.classDefinition({
         this.addTests("test.aria.touch.gestures.Drag");
         this.addTests("test.aria.touch.gestures.Swipe");
         this.addTests("test.aria.touch.gestures.Pinch");
+        this.addTests("test.aria.touch.gestures.DoubleSwipe");
     }
 });
