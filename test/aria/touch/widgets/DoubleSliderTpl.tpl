@@ -12,23 +12,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+{Template {
+  $classpath : 'test.aria.touch.widgets.DoubleSliderTpl',
+  $wlibs : {
+    'touch' : 'aria.touch.widgets.TouchWidgetLib'
+  }
+}}
 
-/**
- * Touch widget library.
- */
-Aria.classDefinition({
-    $classpath : 'aria.touch.widgets.TouchWidgetLib',
-    $extends : 'aria.widgetLibs.WidgetLib',
-    $singleton : true,
-    $prototype : {
-        /**
-         * Map of all the widgets in the library. Keys in the map are widget names as they can be used in templates.
-         * Values are the corresponding classpaths.
-         * @type {Object}
-         */
-        widgets : {
-            "Slider" : "aria.touch.widgets.Slider",
-            "DoubleSlider" : "aria.touch.widgets.DoubleSlider"
-        }
-    }
-});
+  {macro main()}
+
+
+    <br><br>
+    <div id="Slider">
+    {@touch:DoubleSlider {
+      bindValue: {
+        to: "slider",
+        inside: data
+      },
+      width: 300
+
+    }/}
+    </div>
+	<br>
+
+
+
+  {/macro}
+
+{/Template}
