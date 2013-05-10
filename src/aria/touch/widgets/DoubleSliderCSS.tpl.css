@@ -1,0 +1,70 @@
+/*
+ * Copyright 2012 Amadeus s.a.s.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+{CSSTemplate {
+    $classpath : "aria.touch.widgets.DoubleSliderCSS"
+}}
+
+{macro main()}
+
+div.touchLibSlider {
+    background: none repeat scroll 0 0 #EFF9FF;
+    border: 2px solid #999999;
+    border-radius: 1.5em;
+    height: 17px;
+}
+div.touchLibSlider span {
+    position: absolute;
+}
+div.touchLibSlider span.sliderButton {
+    background: none repeat scroll 0 0 #ffffff;
+    border: 2px solid #4776A7;
+    border-radius: 32px 32px 32px 32px;
+    width: 14px;
+}
+div.touchLibSlider span.firstPoint {
+    border: 2px solid #4776A7;
+    background-color:#4776A7;
+    border-radius: 1.5em 2px 2px 1.5em;
+    width: 15px;
+    height: 24px;
+    z-index: 3;
+    margin: 0;
+}
+div.touchLibSlider span.secondPoint {
+    border: 2px solid #4776A7;
+    background-color: #4776A7;
+    border-radius: 2px 1.5em 1.5em 2px;
+    width: 15px;
+    height: 24px;
+    z-index: 3;
+    margin: 0;
+}
+div.touchLibSlider span.touchContainer {
+    z-index: 2;
+    height: 28px;
+    margin: -6px 0 0 0;
+}
+div.touchLibSlider span.sliderHighLight {
+    z-index: 1;
+    height: 17px;
+    width: 0px;
+    background-color: #E3E3E3;
+    margin: 6px 0 0;
+}
+
+{/macro}
+
+{/CSSTemplate}

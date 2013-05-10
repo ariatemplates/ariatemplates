@@ -14,18 +14,19 @@
  */
 
 /**
- * Test suite regrouping all tests on aria.touch
+ * Create and invalid widget and check that errors are reported correctly
  */
 Aria.classDefinition({
-    $classpath : "test.aria.touch.TouchTestSuite",
-    $extends : "aria.jsunit.TestSuite",
-    $constructor : function () {
-        this.$TestSuite.constructor.call(this);
-        this.addTests("test.aria.touch.gestures.GesturesTestSuite");
-        this.addTests("test.aria.touch.EventTest");
-        this.addTests("test.aria.touch.widgets.DoubleSlider");
-        this.addTests("test.aria.touch.widgets.DoubleSliderError");
-        this.addTests("test.aria.touch.widgets.DoubleSliderSetValue");
-        this.addTests("test.aria.touch.widgets.DoubleSliderChange");
-    }
+	$classpath: "test.aria.touch.widgets.DoubleSliderError",
+	$extends: "aria.jsunit.WidgetTestCase",
+	$dependencies : ["aria.touch.widgets.DoubleSlider", "aria.core.JsonValidator"],
+	$prototype: {
+		testErrors: function () {
+			var widget = this.createAndInit("aria.touch.widgets.DoubleSlider", {
+				iDontExist : true
+			});
+			this.assertErrorInLogs(aria.core.JsonValidator.INVALID_CONFIGURATION);
+			widget.$dispose();
+		}
+	}
 });

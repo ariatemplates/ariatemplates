@@ -855,9 +855,19 @@ Aria.classDefinition({
                     } else if (property == 'float') { // fix reserved word
                         property = 'styleFloat'; // fall through
                     }
+                    var value;
                     // test currentStyle before touching
-                    var value = element.currentStyle ? element.currentStyle[property] : null;
-                    return (element.style[property] || value);
+                    if (element.currentStyle) {
+                        value = element.currentStyle[property];
+                        if (!value) {
+                            // Try the camel case
+                            var camel = property.replace(/-([a-z])/ig, function (match, letter) {
+                                return letter.toUpperCase();
+                            });
+                            value = element.currentStyle[camel];
+                        }
+                    }
+                    return (value || element.style[property]);
                 };
             } else {
                 this.getStyle = function (element, property) {

@@ -27,7 +27,8 @@ Aria.classDefinition({
          * @type {Object}
          */
         widgets : {
-            "Slider" : "aria.touch.widgets.Slider"
+            "Slider" : "aria.touch.widgets.Slider",
+            "DoubleSlider" : "aria.touch.widgets.DoubleSlider"
         }
     }
 });
