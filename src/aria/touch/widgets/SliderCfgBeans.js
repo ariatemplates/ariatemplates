@@ -17,13 +17,18 @@ Aria.beanDefinitions({
     $package : "aria.touch.widgets.SliderCfgBeans",
     $description : "Slider config beans",
     $namespaces : {
-        "json" : "aria.core.JsonTypes"
+        "json" : "aria.core.JsonTypes",
+        "common" : "aria.widgetLibs.CommonBeans"
     },
     $beans : {
         "SliderCfg" : {
             $type : "json:Object",
             $description : "Configuration of the slider widget.",
             $properties : {
+                id : {
+                    $type : "json:String",
+                    $description : "Id of the widget"
+                },
                 width : {
                     $type : "json:Integer",
                     $description : "Width to use for the widget.",
@@ -44,6 +49,47 @@ Aria.beanDefinitions({
                             $mandatory : true
                         }
                     }
+                }
+            }
+        },
+        "DoubleSliderCfg" : {
+            $type : "json:Object",
+            $description : "Configuration of the slider widget with two thumbs.",
+            $properties : {
+                id : {
+                    $type : "json:String",
+                    $description : "Id of the widget"
+                },
+                width : {
+                    $type : "json:Integer",
+                    $description : "Width to use for the widget.",
+                    $default : 100
+                },
+                bind : {
+                    $type : "json:Object",
+                    $description : "Automatic bindings for the widget properties",
+                    $properties : {
+                        value : {
+                            $type : "json:Object",
+                            $description : "Binding for the widget's value",
+                            $properties : {
+                                inside : {
+                                    $type : "json:ObjectRef",
+                                    $description : "Reference to the object that holds the property to bind to.",
+                                    $mandatory : true
+                                },
+                                to : {
+                                    $type : "json:String",
+                                    $description : "Name of the property to bind to.",
+                                    $mandatory : true
+                                }
+                            }
+                        }
+                    }
+                },
+                onchange : {
+                    $type : "common:Callback",
+                    $description : "Function to be called when at least on the values of the widget changes due to user action (drag)."
                 }
             }
         }

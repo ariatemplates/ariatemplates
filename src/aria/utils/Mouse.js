@@ -40,6 +40,14 @@
             fn : scope._onMouseUp,
             scope : scope
         });
+        eventUtil.addListener(body, "touchmove", {
+            fn : scope._onMouseMove,
+            scope : scope
+        });
+        eventUtil.addListener(body, "touchend", {
+            fn : scope._onMouseUp,
+            scope : scope
+        });
     }
 
     /**
@@ -53,6 +61,14 @@
             scope : scope
         });
         eventUtil.removeListener(body, "mouseup", {
+            fn : scope._onMouseUp,
+            scope : scope
+        });
+        eventUtil.removeListener(body, "touchmove", {
+            fn : scope._onMouseMove,
+            scope : scope
+        });
+        eventUtil.removeListener(body, "touchend", {
             fn : scope._onMouseUp,
             scope : scope
         });
@@ -82,13 +98,13 @@
     }
 
     /**
-     * Handle mosue interaction globally. This class determines whether global actions like drag or gestures happen on
+     * Handle mouse interaction globally. This class determines whether global actions like drag or gestures happen on
      * the page and notifies the listeners of such events.
      */
     Aria.classDefinition({
         $classpath : "aria.utils.Mouse",
         $singleton : true,
-        $dependencies : ["aria.utils.Event", "aria.utils.AriaWindow"],
+        $dependencies : ["aria.utils.Event", "aria.utils.AriaWindow", "aria.touch.Event"],
         $statics : {
             /**
              * Expando used to mark an element as draggable
@@ -117,17 +133,17 @@
 
             /**
              * Store the original mouse down position, once the drag is detected
-             * @private
+             * @protected
              * @type Object
              */
-            this.__dragStartPosition = null;
+            this._dragStartPosition = null;
 
             /**
              * Whether a drag has started
-             * @private
+             * @protected
              * @type Boolean
              */
-            this.__dragStarted = false;
+            this._dragStarted = false;
 
         },
         $prototype : {
@@ -140,6 +156,10 @@
                     fn : this._onMouseDown,
                     scope : this
                 });
+                eventUtil.addListener(Aria.$window.document.body, "touchstart", {
+                    fn : this._onMouseDown,
+                    scope : this
+                });
             },
 
             /**
@@ -148,6 +168,10 @@
              */
             _disconnectMouseDownEvent : function () {
                 eventUtil.removeListener(Aria.$window.document.body, "mousedown", {
+                    fn : this._onMouseDown,
+                    scope : this
+                });
+                eventUtil.removeListener(Aria.$window.document.body, "touchstart", {
                     fn : this._onMouseDown,
                     scope : this
                 });
@@ -241,6 +265,13 @@
 
                 connectMouseEvents(this);
 
+                if (evt.type === "touchstart") {
+                    // The position of touch events is not determined correctly by clientX/Y
+                    var elementPosition = aria.touch.Event.getPositions(event);
+                    event.clientX = elementPosition[0].x;
+                    event.clientY = elementPosition[0].y;
+                }
+
                 if (this._detectDrag(event)) {
                     event.preventDefault(true);
                 }
@@ -265,11 +296,11 @@
                 this.$assert(211, !!candidate);
 
                 this._candidateForDrag = candidate;
-                this.__dragStartPosition = {
+                this._dragStartPosition = {
                     x : evt.clientX,
                     y : evt.clientY
                 };
-                this.__dragStarted = false;
+                this._dragStarted = false;
 
                 return true;
             },
@@ -286,7 +317,7 @@
                 }
 
                 this._activeDrag = element;
-                this.__dragStarted = true;
+                this._dragStarted = true;
                 element.start(coordinates);
             },
 
@@ -296,21 +327,31 @@
              * @private
              */
             _onMouseMove : function (evt) {
-                if (this.__dragStartPosition && !this.__dragStarted) {
+                var event = new aria.DomEvent(evt);
 
-                    this._startDrag(this.__dragStartPosition);
-
+                if (event.type === "touchmove") {
+                    var elementPosition = aria.touch.Event.getPositions(evt);
+                    if (elementPosition.length === 1) {
+                        event.clientX = elementPosition[0].x;
+                        event.clientY = elementPosition[0].y;
+                    }
                 }
+
+                if (this._dragStartPosition && !this._dragStarted) {
+                    this._startDrag(this._dragStartPosition);
+                }
+
                 var element = this._activeDrag;
                 if (element) {
                     // IE mouseup check - mouseup happened when mouse was out of window
-                    if (!evt.button) {
+                    if (evt.type !== "touchmove" && !evt.button) {
                         var browser = aria.core.Browser;
                         if (browser.isIE8 || browser.isIE7 || browser.isIE6) {
+                            event.$dispose();
                             return this._onMouseUp(evt);
                         }
                     }
-                    var event = new aria.DomEvent(evt);
+
                     element.move(event);
                     event.$dispose();
                 }
@@ -322,10 +363,10 @@
              * @private
              */
             _onMouseUp : function (evt) {
-                this.__dragStartPosition = null;
+                this._dragStartPosition = null;
                 disconnectMouseEvents(this);
 
-                var element = this._activeDrag;
+                var element = this._activeDrag, event;
                 if (element) {
                     element.end();
                 }
@@ -333,7 +374,6 @@
                 this._candidateForDrag = null;
                 this._activeDrag = null;
             }
-
         }
     });
 })();
