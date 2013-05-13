@@ -65,7 +65,7 @@ Aria.classDefinition({
 
             // try to get the id property
             element.id = "myTestId";
-            this.assertTrue(wrapper.getProperty("id") == "myTestId");
+            this.assertEquals(wrapper.getProperty("id"), "myTestId");
             this.assertLogsEmpty();
 
             // try to get the parentNode property
@@ -116,7 +116,7 @@ Aria.classDefinition({
          */
         testGetParentWithData : function () {
             var document = Aria.$window.document;
-            this.container.innerHTML = '<div data-test1="test1" data-test3="false"><div data-test2="second" data-test3="" id="parent_getParentWithData"><div><div data-test1="itself" id="child_getParentWithData"></div></div></div></div>';
+            this.container.innerHTML = '<div data-test1="test1" data-test3="false"><div data-test2="second" data-test3="" data-test4-with-dashes="test4value" id="parent_getParentWithData"><div><div data-test1="itself" id="child_getParentWithData"></div></div></div></div>';
             var child = document.getElementById("child_getParentWithData");
             var wrapperOnChild = new aria.templates.DomElementWrapper(child);
 
@@ -124,21 +124,58 @@ Aria.classDefinition({
 
             // the expando on the element itself should be used
             var parentTest1 = wrapperOnChild.getParentWithData("test1");
-            this.assertTrue(parentTest1.getData("test1", false) == "itself");
-            this.assertTrue(parentTest1.getProperty("id") == "child_getParentWithData");
+            this.assertEquals(parentTest1.getData("test1", false), "itself");
+            this.assertEquals(parentTest1.getProperty("id"), "child_getParentWithData");
             parentTest1.$dispose();
 
             var parentTest2 = wrapperOnChild.getParentWithData("test2");
-            this.assertTrue(parentTest2.getData("test2", false) == "second");
-            this.assertTrue(parentTest2.getProperty("id") == "parent_getParentWithData");
+            this.assertEquals(parentTest2.getData("test2", false), "second");
+            this.assertEquals(parentTest2.getAttribute("data-test2"), "second");
+            this.assertEquals(parentTest2.getProperty("id"), "parent_getParentWithData");
             parentTest2.$dispose();
 
             var parentTest3 = wrapperOnChild.getParentWithData("test3");
-            this.assertTrue(parentTest3.getData("test3", false) === "");
-            this.assertTrue(parentTest3.getProperty("id") == "parent_getParentWithData");
+            this.assertEquals(parentTest3.getData("test3", false), "");
+            this.assertEquals(parentTest3.getProperty("id"), "parent_getParentWithData");
             parentTest3.$dispose();
 
+            var parentTest4 = wrapperOnChild.getParentWithData("test4-with-dashes");
+            this.assertEquals(parentTest4.getData("test4-with-dashes", false), "test4value");
+            this.assertEquals(parentTest4.getAttribute("data-test4-with-dashes"), "test4value");
+            this.assertEquals(parentTest4.getProperty("id"), "parent_getParentWithData");
+            parentTest4.$dispose();
+
             wrapperOnChild.$dispose();
+        },
+
+        testSetAttribute : function () {
+            var document = Aria.$window.document;
+            this.container.innerHTML = '<a id="div1"></a><input id="input2" type="text">';
+
+            // test positive setting
+            var aWrapper = new aria.templates.DomElementWrapper(document.getElementById("div1"));
+
+            aWrapper.setAttribute("type", "test1");
+            this.assertEquals(aWrapper.getAttribute("type"), "test1");
+
+            aWrapper.setAttribute("aria-selected", "true");
+            this.assertEquals(aWrapper.getAttribute("aria-selected"), "true");
+
+            aWrapper.setAttribute("data-my-custom-attribute", "foobar");
+            this.assertEquals(aWrapper.getAttribute("data-my-custom-attribute"), "foobar");
+
+            aWrapper.$dispose();
+
+            // test forbidden edge cases
+            var inputWrapper = new aria.templates.DomElementWrapper(document.getElementById("input2"));
+
+            inputWrapper.setAttribute("type", "test2"); // input + type = denied
+            this.assertErrorInLogs(aria.templates.DomElementWrapper.ATTRIBUTE_WRITE_DENIED);
+
+            inputWrapper.setAttribute("id", "newId"); // id = always denied
+            this.assertErrorInLogs(aria.templates.DomElementWrapper.ATTRIBUTE_WRITE_DENIED);
+
+            inputWrapper.$dispose();
         }
     }
 });

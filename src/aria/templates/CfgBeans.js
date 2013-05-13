@@ -582,7 +582,7 @@ Aria.beanDefinitions({
         },
         "HtmlAttribute" : {
             $type : "json:Object",
-            $description : "HTML attributes that can safely be used in a template",
+            $description : "HTML attributes that can safely be used in a template. Additionally, all aria-* (WAI-ARIA) and custom data-* attributes can be used.",
             $properties : {
                 "name" : {
                     $type : "json:String",

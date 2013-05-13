@@ -42,7 +42,7 @@ Aria.classDefinition({
                         }
                     } else if (key === "dataset") {
                         for (var dataKey in attribute) {
-                            if (attribute.hasOwnProperty(dataKey) && dataKey.substr(0, 5) != "data-") {
+                            if (attribute.hasOwnProperty(dataKey)) {
                                 var value = stringUtil.encodeForQuotedHTMLAttribute(attribute[dataKey]);
                                 var got = div.getAttribute("data-" + dataKey);
                                 this.assertEquals(got, value, "data-" + dataKey + " should be %2, got %1");
@@ -84,9 +84,11 @@ Aria.classDefinition({
                 classList : ["class1", "class2", "class3"],
                 cols : "2",
                 colspan : "2",
-                dataset : {
+                dataset : { /* in the dataset, keys are camelCased, and do not have "data-" prefix */
                     data1 : "data1-value",
                     data2 : "data2-value",
+                    "foo" : "data-foo-value",
+                    "fooBar" : "data-foo-bar-value",
                     data3 : "data3-value"
                 },
                 dir : "ltr",
@@ -108,6 +110,9 @@ Aria.classDefinition({
                 valign : "middle",
                 value : "my value",
                 width : "100px",
+                "aria-label" : "label",
+                "data-testExpando" : "testExpando",
+                "data-attrib-with-dashes" : "test", /* on the "root" attributes level, keys are "data-"-prefixed and dashed */
                 autocomplete : "off",
                 autofocus : "autofocus",
                 autocorrect : "on",
