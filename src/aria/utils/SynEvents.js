@@ -2696,15 +2696,9 @@
      * @class aria.utils.SynEvents
      */
     Aria.classDefinition({
-        $classpath : 'aria.utils.SynEvents',
+        $classpath : "aria.utils.SynEvents",
         $singleton : true,
         $dependencies : ["aria.utils.Function", "aria.utils.Dom"],
-        $onload : function () {
-
-        },
-        $onunload : function () {
-
-        },
         $prototype : {
 
             /**

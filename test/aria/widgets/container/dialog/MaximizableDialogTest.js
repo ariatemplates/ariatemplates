@@ -29,7 +29,7 @@ Aria.classDefinition({
         this.INITIAL_YPOS = 111;
         this.INITIAL_MAXHEIGHT = 500; // must be smaller than iframe height
 
-        Aria.$window.testData = this.data = {
+        this.data = {
             dialog : {
                 width : this.INITIAL_WIDTH,
                 height : this.INITIAL_HEIGHT,
@@ -59,27 +59,41 @@ Aria.classDefinition({
             sectionRefreshTimeStamp : new Date().getTime()
         };
 
-        Aria.$window.onBeforeTemplateLoadInIframe = function (aria, Aria) {
-            // override skin's shadows with some non-zero values to check if the shadow handling in the maximized mode
-            // works as supposed (defaults are 0 so it won't be really checked)
-            var skin = aria.widgets.AriaSkin.skinObject.Dialog.std;
-            skin.shadowLeft = 2;
-            skin.shadowTop = 2;
-        };
-
-        this.setTestEnv({
-            // template : "test.aria.widgets.container.dialog.MaximizableDialogTestTpl",
-            template : "test.aria.widgets.container.dialog.MaximizableDialogTestIframe",
-            data : this.data.iframeWrapper
+        this.$on({
+            "beforeLoadTplInIframe" : {
+                fn : this.onBeforeTemplateLoadInIframe
+            },
+            scope : this
         });
 
-        this.iframeUnderTestId = "iframeWithDialog";
+        this.setTestEnv({
+            template : "test.aria.widgets.container.dialog.MaximizableDialogTestTpl",
+            data : this.data,
+            cssText : [
+                "width:" + this.data.iframeWrapper.width + "px",
+                "height:" + this.data.iframeWrapper.height + "px",
+                "border:1px solid blue;"
+            ].join(";"),
+            iframe : true
+        });
+
         this.widgetUnderTestId = "dialogMaxiFromStart"; // only for the first test
-        this.isPhantomJs = Aria.$window.navigator.userAgent.indexOf('PhantomJS') != -1;
+        this.isPhantomJs = Aria.$window.navigator.userAgent.indexOf("PhantomJS") != -1;
         this.json = aria.utils.Json;
     },
     $prototype : {
+        onBeforeTemplateLoadInIframe : function (event) {
+            // override skin's shadows with some non-zero values to check if the shadow handling in the maximized mode
+            // works as supposed (defaults are 0 so it won't be really checked)
+            var skin = event.window.aria.widgets.AriaSkin.skinObject.Dialog.std;
+            skin.shadowLeft = 2;
+            skin.shadowTop = 2;
+        },
+
         runTemplateTest : function () {
+            // This is an implicit test whether Dialog maxheight is ignored in the maximized mode.
+            // If below is true and all other tests pass, then maxheight is correctly ignored.
+            this.assertTrue(this.data.dialog.maxheight + 50 < this.data.iframeWrapper.height, "Invalid test config, iframe should be bigger than Dialog maxheight for this test.");
 
             // the assumption is that after any test below, the situation will be like the initial one
             this._testsToExecute = [];
@@ -97,20 +111,7 @@ Aria.classDefinition({
             this._testsToExecute.push("_testStaysMaximizedOnViewportResize");
             this._testsToExecute.push("_testCanUnmaximizeAfterSectionRefresh");
 
-            this._beforeFirstTest();
-        },
-
-        _beforeFirstTest : function () {
-
-            Aria.$window.document.documentElement.style.backgroundColor = "aliceblue";
-            // Aria.$window.document.getElementById('TESTAREA').style.height = '';
-
-            // This is an implicit test whether Dialog maxheight is ignored in the maximized mode.
-            // If below is true and all other tests pass, then maxheight is correctly ignored.
-            this.assertTrue(this.data.dialog.maxheight + 50 < this.data.iframeWrapper.height, "Invalid test config, iframe should be bigger than Dialog maxheight for this test.");
-
-            this.iframe = aria.utils.Dom.getElementById(this.iframeUnderTestId);
-            this.waitForIframe(this.iframeUnderTestId, this.widgetUnderTestId, null, this._iframeReady);
+            this.waitForIframe(this.testIframe, this.widgetUnderTestId, null, this._iframeReady);
         },
 
         _iframeReady : function () {
@@ -312,8 +313,8 @@ Aria.classDefinition({
         },
         __resizeIframe : function (delta, continueWith) {
             var initialDimensions = this.data.iframeWrapper;
-            this.iframe.style.width = (initialDimensions.width + delta) + "px";
-            this.iframe.style.height = (initialDimensions.height + delta) + "px";
+            this.testIframe.style.width = (initialDimensions.width + delta) + "px";
+            this.testIframe.style.height = (initialDimensions.height + delta) + "px";
             this.waitFor({
                 condition : function () {
                     return this.__checkMaximizedWidthAssertion();
@@ -428,20 +429,17 @@ Aria.classDefinition({
         },
 
         __getDialog : function () {
-            // var container = this.getWidgetInstance(this.widgetUnderTestId);
-            var container = this.getWidgetInstanceInIframe(this.iframe, this.widgetUnderTestId);
-            return container;
+            return this.getWidgetInstance(this.widgetUnderTestId);
         },
 
         __getDialogGeometry : function () {
-            // var container = this.getWidgetInstance(this.widgetUnderTestId);
-            var container = this.getWidgetInstanceInIframe(this.iframe, this.widgetUnderTestId);
+            var container = this.getWidgetInstance(this.widgetUnderTestId);
             var geometry = aria.utils.Dom.getGeometry(container.getDom());
             return geometry;
         },
 
         __getViewportSizeInIframe : function () {
-            return this.iframe.contentWindow.aria.utils.Dom._getViewportSize();
+            return this.testWindow.aria.utils.Dom._getViewportSize();
         }
     }
 });

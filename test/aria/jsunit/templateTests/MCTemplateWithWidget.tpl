@@ -12,13 +12,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 {Template {
-    $classpath : 'test.aria.widgets.container.dialog.MaximizableDialogTestIframe'
+    $classpath: "test.aria.jsunit.templateTests.MCTemplateWithWidget",
+    $hasScript: false
 }}
-
-	{macro main()}
-			{var url = aria.core.DownloadMgr.resolveURL("test/iframeIndexOs.html?tpl=test.aria.widgets.container.dialog.MaximizableDialogTestTpl") /}
-			<iframe id="iframeWithDialog" src="${url}" style="width:${data.width}px; height:${data.height}px; border:1px solid blue;" />
-	{/macro}
-
+{macro main()}
+    {@aria:TextField {
+        id : "writeInMe",
+        bind : {
+            value : {
+                inside : data.values,
+                to : "text"
+            }
+        },
+        onchange : {
+            fn : moduleCtrl.somethingChanged,
+            scope : moduleCtrl
+        }
+    }/}
+{/macro}
 {/Template}
