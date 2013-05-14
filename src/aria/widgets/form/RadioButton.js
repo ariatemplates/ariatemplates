@@ -135,12 +135,16 @@
                     event.preventDefault(true);
                 } else if (event.keyCode == aria.DomEvent.KC_LEFT) {
                     this._navigate(-1);
+                    event.preventDefault(true);
                 } else if (event.keyCode == aria.DomEvent.KC_RIGHT) {
                     this._navigate(+1);
+                    event.preventDefault(true);
                 } else if (event.keyCode == aria.DomEvent.KC_DOWN) {
                     this._navigate(+1);
+                    event.preventDefault(true);
                 } else if (event.keyCode == aria.DomEvent.KC_UP) {
                     this._navigate(-1);
+                    event.preventDefault(true);
                 }
             },
 
