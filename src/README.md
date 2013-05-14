@@ -42,6 +42,14 @@ Below is a simple REPL excerpt to get started with:
     > aria.utils.Math.normalize(711, 0, 500)
     500
 
+Alternatively, if you've cloned our GH repo and want to experiment with the code as you change it:
+
+    $ git clone https://github.com/ariatemplates/ariatemplates.git
+    ...
+    $ node
+    > require('./ariatemplates/src/aria/node.js')
+    ...
+
 ### Learn more
 
 Head over to our [Hello World guide](http://ariatemplates.com/guides/hello/) to learn more.
