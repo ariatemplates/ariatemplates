@@ -19,17 +19,29 @@
 Aria.classDefinition({
     $classpath : "aria.jsunit.TemplateTestCase",
     $extends : "aria.jsunit.TestCase",
+    $events : {
+        "beforeLoadTplInIframe" : {
+            description : "Raised before calling Aria.loadTemplate inside an iframe",
+            properties : {
+                window : "The iframe's window object",
+                document : "The iframe's document object"
+            }
+        }
+    },
     $constructor : function () {
         this.$TestCase.constructor.call(this);
 
         /**
-         * Test environment. Defines the template to be loaded, its module controller and datamodel
+         * Test environment. Defines the template to be loaded, its module controller and datamodel. If iframe is set to
+         * true, the template is loaded inside an iframe
          * @type Object
          */
         this.env = {
             template : this.$classpath + "Tpl",
             moduleCtrl : null,
-            data : {}
+            data : {},
+            iframe : false,
+            cssText : "position:fixed;top:20px;left:20px;z-index:10000;width:1000px;height:700px;border:1px solid blue;background:aliceblue"
         };
 
         /**
@@ -39,36 +51,69 @@ Aria.classDefinition({
         this.templateCtxt = null;
 
         /**
+         * ID of the container for the template output
+         * @type HTMLElement
+         */
+        this.testDivId = "testArea_" + this.$class;
+
+        /**
+         * Reference to the window containing the template under test
+         * @type {HTMLElement}
+         */
+        this.testWindow = null;
+
+        /**
+         * Reference to the document object containing the template under test
+         * @type {HTMLElement}
+         */
+        this.testDocument = null;
+
+        /**
          * Container for the template output
          * @type HTMLElement
          */
-        this.testDiv = aria.utils.Dom.getElementById(this.TEMPLATE_DIV);
+        this.testDiv = null;
 
         /**
-         * Wheter the test has started or not
+         * Reference to iframe added by the test case
+         * @type {HTMLElement}
+         */
+        this.testIframe = null;
+
+        /**
+         * Whether the test has started or not
+         * @protected
          * @type Boolean
          */
         this._started = false;
-    },
-    $statics : {
-        "TEMPLATE_DIV" : "TESTAREA"
+
+        /**
+         * Shortcut to the synthetic event library. This kept in sync when the test window changes
+         * @type {aria.utils.SynEvents}
+         */
+        this.synEvent = aria.utils.SynEvents;
     },
     $destructor : function () {
-        this.testDiv.style.height = "0";
-        this.testDiv = null;
-        this.templateCtxt = null;
-
         // Free also some memory cleaning the environment
         this.__cleanEnv(true);
+        if (this.testDiv) {
+            this.testDiv.parentNode.removeChild(this.testDiv);
+            this.testDiv = null;
+        }
+        if (this.testIframe) {
+            this.testIframe.parentNode.removeChild(this.testIframe);
+            this.testIframe = null;
+        }
+        this.templateCtxt = null;
+        this.testDocument = null;
+        this.testWindow = null;
 
         this.$TestCase.$destructor.call(this);
     },
-    $dependencies : ['aria.utils.SynEvents', 'aria.templates.RefreshManager'],
-    $onload : function () {
-        this.synEvent = aria.utils.SynEvents;
-    },
-    $onunload : function () {
-        this.synEvent = null;
+    $dependencies : ["aria.utils.SynEvents", "aria.templates.RefreshManager", "aria.utils.Type"],
+    $statics : {
+        IFRAME_LOAD_TEMPLATE : "Error loading template '%1' in iframe",
+        IFRAME_LOADER : "Unable to load Aria Templates in iframe"
     },
     $prototype : {
         /**
@@ -78,7 +123,7 @@ Aria.classDefinition({
         needVisibleDocument : true,
 
         /**
-         * By default, a templatetest case with classpath a.b.c will automatically load the test template a/b/cTpl.tpl.
+         * By default, a template test case with classpath a.b.c will automatically load the test template a/b/cTpl.tpl.
          * However, if needed, this method can be called to configure which template classpath to be loaded.
          * Additionally, it can also be used to pass some data and/or module controller. To be called in the constructor
          * of a template test case: this.setTestEnv({template: "...", moduleCtrl: "...", data: {...}});
@@ -99,33 +144,43 @@ Aria.classDefinition({
          * implemented in this class. The real entry point for the test case is the runTemplateTest method
          */
         testAsyncStartTemplateTest : function () {
-
-            this.testDiv.style.height = "1000px";
-            Aria.$window.scroll(0, 0);
-            this._loadTestTemplate({
-                fn : this._startTests,
-                scope : this
-            });
-        },
-
-        /**
-         * Private helper function, starts the tests once the template has been succesfully loaded and rendered
-         */
-        _startTests : function () {
-            this._started = true; // we set this flag to avoid this function to call itself through e.g a template
-            // refresh
-            this.runTemplateTest();
+            if (this.env.iframe) {
+                this.loadTemplateInIframe(this.env, {
+                    fn : this._iframeSetUpComplete,
+                    scope : this
+                }, {
+                    fn : this._iframeSetUpFailed,
+                    scope : this
+                });
+            } else {
+                this._loadTestTemplate({
+                    fn : this._startTests,
+                    scope : this
+                });
+            }
         },
 
         /**
          * Helper function, loads the template into the div. Executes the parameter callback once the template has been
          * successfully rendered.
+         * @protected
          * @param {aria.core.JsObject.Callback} cb Callback
          */
         _loadTestTemplate : function (cb) {
+            this.testWindow = Aria.$window;
+            this.testDocument = Aria.$window.document;
+            if (!this.testDiv) {
+                var div = this.testDocument.createElement("div");
+                div.id = this.testDivId;
+                div.style.cssText = this.env.cssText;
+                this.testDocument.body.appendChild(div);
+                this.testDiv = div;
+            }
+
+            this.testWindow.scroll(0, 0);
             Aria.loadTemplate({
                 classpath : this.env.template,
-                div : this.TEMPLATE_DIV,
+                div : this.testDiv,
                 data : this.env.data,
                 moduleCtrl : this.env.moduleCtrl,
                 provideContext : true
@@ -139,46 +194,8 @@ Aria.classDefinition({
         },
 
         /**
-         * Disposes the template
-         */
-        _disposeTestTemplate : function () {
-            Aria.disposeTemplate(this.TEMPLATE_DIV);
-            // templateCtxt is disposed by Aria.disposeTemplate, but we still set the variable
-            // to null here
-            this.templateCtxt = null;
-            this._started = false;
-        },
-
-        /**
-         * Disposes the current template, sets the test environment with the template passed as parameter. The template
-         * with the nwe environment is loaded, and once it's succesfully rendered, the parameter callback is called.
-         * @param {Object} env The new test environment.
-         * @param {Callback} callback Called when the new template has been succesfully rendered.
-         */
-        _replaceTestTemplate : function (env, cb) {
-            // async call allows the template to finish init
-            aria.core.Timer.addCallback({
-                fn : function () {
-                    this._disposeTestTemplate();
-                    this.__cleanEnv();
-                    this.setTestEnv(env);
-                    this._loadTestTemplate(cb);
-                },
-                scope : this
-            });
-
-        },
-
-        /**
-         * This method issues a refresh on the template
-         */
-        _refreshTestTemplate : function () {
-            this.templateCtxt.$refresh();
-        },
-
-        /**
          * Callback executed when the template/data/moduleCtrl is loaded
-         * @private
+         * @protected
          */
         _templateLoadCB : function (res, args) {
             this.templateCtxt = res.tplCtxt;
@@ -186,8 +203,7 @@ Aria.classDefinition({
 
             if (!res.success) {
                 // in case there is an error while loading the template,
-                // go on with the test (as the test may check that the error is correctly
-                // raised)
+                // go on with the test (as the test may check that the error is correctly raised)
                 this.$callback(cb);
                 return;
             }
@@ -224,53 +240,97 @@ Aria.classDefinition({
         },
 
         /**
-         * Implement this method in your template test case. This is the real entry point of your template test. It is
-         * called when the template is loaded,and can be interacted with.
+         * Callback executed when the iframe is loaded correctly
+         * @param {Object} info iframe informations
+         * @protected
          */
-        runTemplateTest : function () {},
-
-        /**
-         * Wait for an iframe and some widget in it to be loaded, and then call the callback. Relies on
-         * "Aria.$window.iframeLoaded" being set by the iframe, and presence of the framework and the widget inside that
-         * iframe.
-         * @param {String} iframeId HTML id of the iframe element
-         * @param {String} widgetId id of the Aria Templates widget inside the iframe for which we want to wait
-         * @param {Array} widgetProps names of properties to check for being non-null in widget with id `widgetId`. Pass
-         * null if not needed.
-         * @param {Function} continueWith Callback to be executed when iframe is ready (within "this" scope)
-         */
-        waitForIframe : function (iframeId, widgetId, widgetProps, continueWith) {
-            var iframe = aria.utils.Dom.getElementById(iframeId);
-            this.waitFor({
-                condition : function () {
-                    var widgetLoaded = Aria.$window.iframeLoaded && iframe.contentWindow.aria != null
-                            && iframe.contentWindow.aria.templates != null
-                            // Mandatory check, otherwise getWidgetInstanceInIframe raises a JS error in the test suite
-                            && iframe.contentWindow.aria.templates.RefreshManager != null
-                            && this.getWidgetInstanceInIframe(iframe, widgetId) != null;
-
-                    if (!widgetLoaded) {
-                        return false;
-                    }
-
-                    if (widgetProps) {
-                        var widget = this.getWidgetInstanceInIframe(iframe, widgetId);
-                        for (var i = 0, len = widgetProps.length; i < len; i++) {
-                            var propName = widgetProps[i];
-                            if (widget[propName] == null) {
-                                return false;
-                            }
-                        }
-                    }
-
-                    return true;
-                },
-                callback : {
-                    fn : continueWith,
+        _iframeSetUpComplete : function (info) {
+            this.testDiv = info.div;
+            this.testIframe = info.iframe;
+            this.testWindow = info.iframe.contentWindow;
+            this.testDocument = info.document;
+            this.synEvent = this.testWindow.aria.utils.SynEvents;
+            this._templateLoadCB({
+                success : true,
+                tplCtxt : info.templateCtxt
+            }, {
+                cb : {
+                    fn : this._startTests,
                     scope : this
                 }
             });
         },
+
+        /**
+         * Callback executed when the iframe cannot be loaded due to errors
+         * @protected
+         */
+        _iframeSetUpFailed : function (args) {
+            // Save the references anyway because they are cleaned after
+            this.testDiv = args.div;
+            if (args.iframe) {
+                this.testIframe = args.iframe;
+                this.testWindow = args.iframe.contentWindow;
+            }
+            // errors are already logged
+            this._startTests();
+        },
+
+        /**
+         * Private helper function, starts the tests once the template has been successfully loaded and rendered
+         * @protected
+         */
+        _startTests : function () {
+            this._started = true; // we set this flag to avoid this function to call itself through e.g a template
+            // refresh
+            this.runTemplateTest();
+        },
+
+        /**
+         * Disposes the template
+         * @protected
+         */
+        _disposeTestTemplate : function () {
+            this.testWindow.Aria.disposeTemplate(this.testDiv);
+            // templateCtxt is disposed by Aria.disposeTemplate, but we still set the variable to null here
+            this.templateCtxt = null;
+            this._started = false;
+        },
+
+        /**
+         * Disposes the current template, sets the test environment with the template passed as parameter. The template
+         * with the new environment is loaded, and once it's successfully rendered, the parameter callback is called.
+         * @protected
+         * @param {Object} env The new test environment.
+         * @param {Callback} callback Called when the new template has been successfully rendered.
+         */
+        _replaceTestTemplate : function (env, cb) {
+            // async call allows the template to finish init
+            aria.core.Timer.addCallback({
+                fn : function () {
+                    this._disposeTestTemplate();
+                    this.__cleanEnv();
+                    this.setTestEnv(env);
+                    this._loadTestTemplate(cb);
+                },
+                scope : this
+            });
+
+        },
+
+        /**
+         * This method issues a refresh on the template
+         * @protected
+         */
+        _refreshTestTemplate : function () {
+            this.templateCtxt.$refresh();
+        },
+
+        /**
+         * Implement this method in your template test case. This is the real entry point of your template test. It is
+         * called when the template is loaded, and can be interacted with.
+         */
+        runTemplateTest : function () {},
 
         /**
          * Reads the name of the next test function (from this._testsToExecute) to execute and proceeds, or finishes
@@ -309,7 +369,13 @@ Aria.classDefinition({
                     this._disposeTestTemplate();
 
                     try {
-                        this.testDiv.style.height = "0";
+                        if (this.testDiv) {
+                            // null for iframe tests with errors
+                            this.testDiv.style.display = "none";
+                        }
+                        if (this.testIframe) {
+                            this.testIframe.style.display = "none";
+                        }
                         this.notifyTestEnd("testAsyncStartTemplateTest");
                     } catch (ex) {
                         this.handleAsyncTestError(ex);
@@ -331,7 +397,7 @@ Aria.classDefinition({
          * @return {HTMLElement}
          */
         getElementById : function (id, recursive, context, domUtil) {
-            var domUtility = domUtil || aria.utils.Dom;
+            var domUtility = domUtil || this.testWindow.aria.utils.Dom;
             var tplCtxt = context || this.templateCtxt;
             var genId = tplCtxt.$getId(id), oElm = domUtility.getElementById(genId);
             if (recursive && !oElm) {
@@ -372,7 +438,7 @@ Aria.classDefinition({
         },
 
         /**
-         * @param {aria.templates.TemplateCtxt||aria.templates.Section} obj
+         * @param {aria.templates.TemplateCtxt|aria.templates.Section} obj
          * @param {Array} output contains the sub-template contexts
          */
         __retrieveDirectSubTemplates : function (obj, output) {
@@ -484,7 +550,7 @@ Aria.classDefinition({
          * @return {aria.widgets.Widget} The widget object
          */
         getWidgetInstance : function (templateWidgetID) {
-            var rmgr = aria.templates.RefreshManager;
+            var rmgr = this.testWindow.aria.templates.RefreshManager;
             return this.getWidgetInstanceInRefreshMgr(rmgr, templateWidgetID);
         },
 
@@ -562,8 +628,8 @@ Aria.classDefinition({
 
         /**
          * In case of template testing, all tests are asynchronous, because of this, all calls to assertTrue need to be
-         * wrapped in a try/catch. In order to make that easier, the assertTrue method is overriden in this class to do
-         * the try/catch so that it is unnecesary to do it in test cases classes
+         * wrapped in a try/catch. In order to make that easier, the assertTrue method is overridden in this class to do
+         * the try/catch so that it is unnecessary to do it in test cases classes
          * @param {Boolean} condition A condition evaluating to true or false
          * @param {String} message Optional message to be displayed when the assert fails
          */
@@ -623,7 +689,7 @@ Aria.classDefinition({
             } else {
                 var input = this.getInputField(id);
                 input.blur();
-                this.synEvent.click(Aria.$window.document.body, callback);
+                this.synEvent.click(this.testDocument.body, callback);
             }
         },
 
@@ -633,15 +699,16 @@ Aria.classDefinition({
          * @private
          */
         __cleanEnv : function (mctrl) {
-            var classRef = Aria.getClassRef(this.env.template);
+            var classRef = this.testWindow.Aria.getClassRef(this.env.template);
+            var classMgr = this.testWindow.aria.core.ClassMgr;
             if (classRef && classRef.classDefinition.$hasScript) {
-                aria.core.ClassMgr.unloadClass(this.env.template + "Script");
+                classMgr.unloadClass(this.env.template + "Script");
             }
-            aria.core.ClassMgr.unloadClass(this.env.template);
+            classMgr.unloadClass(this.env.template);
 
             if (mctrl && this.env.moduleCtrl) {
                 if (this.env.moduleCtrl.classpath) {
-                    aria.core.ClassMgr.unloadClass(this.env.moduleCtrl.classpath);
+                    classMgr.unloadClass(this.env.moduleCtrl.classpath);
                 }
             }
         },
@@ -652,7 +719,7 @@ Aria.classDefinition({
          * @return {Integer} z-index null if unable to compute it
          */
         computeZIndex : function (element) {
-            var stopper = Aria.$window.document.body;
+            var stopper = this.testDocument.body;
 
             // inspect parent z-Indexes
             while (element && element != stopper) {
@@ -666,8 +733,161 @@ Aria.classDefinition({
             }
 
             return null;
+        },
 
+        /**
+         * Load a template inside an iframe. This is needed when the test wants to modify the frame window or other
+         * properties that are not accessible on the main window<br>
+         * A template is specified by
+         * <ul>
+         * <li>template Template classpath</li>
+         * <li>cssText Any inline style to be added on the iframe</li>
+         * <li>data Data model</li>
+         * <li>moduleCtrl Module controller definition</li>
+         * </ul>
+         * <br>
+         * The callback receive an object containing
+         * <ul>
+         * <li>iframe the iframe element</li>
+         * <li>div the div element on which the template has been loaded</li>
+         * <li>document the iframe's document element</li>
+         * </ul>
+         * The errback is called in case of error while loading Aria Template or the template inside the iframe
+         * @param {Object} definition
+         * @param {aria.core.CfgBeans.Callback} callback
+         * @param {aria.core.CfgBeans.Callback} errback
+         */
+        loadTemplateInIframe : function (definition, callback, errback) {
+            var args = {
+                def : definition,
+                cb : callback,
+                err : errback || {
+                    fn : this.end,
+                    scope : this
+                }
+            };
+
+            Aria.load({
+                classes : ["aria.utils.FrameATLoader"],
+                template : [definition.template],
+                oncomplete : {
+                    fn : this._iframeDepLoad,
+                    args : args,
+                    scope : this
+                },
+                // In case of error I assume the loader is logging something
+                onerror : args.err
+            });
+        },
+
+        /**
+         * Called when the iframe dependencies are loaded
+         * @param {Object} args
+         * @protected
+         */
+        _iframeDepLoad : function (args) {
+            var document = Aria.$window.document;
+            var iframe = document.createElement("iframe");
+            iframe.id = "testIframe_" + this.$class;
+            iframe.style.cssText = args.def.cssText;
+            document.body.appendChild(iframe);
+            args.iframe = iframe;
+
+            aria.utils.FrameATLoader.loadAriaTemplatesInFrame(iframe, {
+                fn : this._iframeInnerDepLoad,
+                scope : this,
+                args : args
+            });
+        },
+
+        /**
+         * Load the inner dependencies of the iframe
+         * @param {Object} result
+         * @param {Object} args
+         * @protected
+         */
+        _iframeInnerDepLoad : function (result, args) {
+            if (!result.success) {
+                return this._iframeLoadError(args);
+            }
+            var window = args.iframe.contentWindow;
+            var appenders = aria.core.Log.getAppenders();
+            for (var i = 0, len = appenders.length; i < len; i += 1) {
+                window.aria.core.Log.addAppender(appenders[i]);
+            }
+            window.Aria.load({
+                classes : ["aria.jsunit.TemplateTestCase"],
+                oncomplete : {
+                    fn : this._iframeLoad,
+                    scope : this,
+                    args : args
+                },
+                onerror : {
+                    fn : this._iframeLoadError,
+                    scope : this,
+                    args : args
+                }
+            });
+        },
+
+        /**
+         * Called when the iframe and its dependencies are loaded
+         * @param {Object} result
+         * @param {Object} args
+         * @protected
+         */
+        _iframeLoad : function (args) {
+            var window = args.iframe.contentWindow;
+            var document = args.iframe.contentDocument || window.document;
+            var div = document.createElement("div");
+            document.body.appendChild(div);
+            args.div = div;
+            var definition = args.def;
+            this.$raiseEvent({
+                name : "beforeLoadTplInIframe",
+                window : window,
+                document : document
+            });
+            window.Aria.loadTemplate({
+                classpath : definition.template,
+                div : div,
+                data : definition.data,
+                moduleCtrl : definition.moduleCtrl,
+                provideContext : true
+            }, {
+                fn : this._iframeDone,
+                scope : this,
+                args : args
+            });
+        },
+
+        /**
+         * Called in case of errors while loading the iframe with its inner dependencies
+         * @param {Object} args
+         * @protected
+         */
+        _iframeLoadError : function (args) {
+            this.$logError(this.IFRAME_LOADER);
+            return this.$callback(args.err, args);
+        },
+
+        /**
+         * Called when the template is loaded in the div
+         * @param {Object} result
+         * @param {Object} args
+         * @protected
+         */
+        _iframeDone : function (result, args) {
+            if (!result.success) {
+                this.$logError(this.IFRAME_LOAD_TEMPLATE, args.def.template);
+                return this.$callback(args.err, args);
+            }
+            this.$callback(args.cb, {
+                iframe : args.iframe,
+                div : args.div,
+                document : args.iframe.contentDocument || args.iframe.contentWindow.document,
+                templateCtxt : result.tplCtxt
+            });
         }
-
     }
 });

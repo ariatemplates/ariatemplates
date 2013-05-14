@@ -38,7 +38,7 @@ Aria.classDefinition({
                 failed : false
             };
 
-               // Override the default implementation for async failures
+            // Override the default implementation for async failures
             this.__failInTestMethod = function () {
                 scope.failed = true;
             };
