@@ -23,7 +23,7 @@
         {var className = _getClassForItem(item)/}
         {var entry = item.object.entry/}
     
-        <a href="#" class="${className}" data-itemIdx="${itemIdx}" onclick="return false;">
+        <a href="javascript:void(0)" class="${className}" data-itemIdx="${itemIdx}" onclick="return false;">
             {if ! item.label}
                 &nbsp;
             {elseif item.value.multiWordMatch/}
