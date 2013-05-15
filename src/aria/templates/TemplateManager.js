@@ -50,7 +50,7 @@ Aria.classDefinition({
                 if (itm.$resources != null) {
                     var resources = itm.$resources;
                     for (var res in resources)
-                        if (resources.hasOwnProperty(res)) {
+                        if (resources.hasOwnProperty(res) && !resources[res].hasOwnProperty("provider")) {
                             classMgr.unloadClass(resources[res], timestampNextTime);
                         }
                 }
