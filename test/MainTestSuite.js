@@ -32,6 +32,7 @@ Aria.classDefinition({
         this.addTests("test.aria.modules.ModulesTestSuite");
         this.addTests("test.aria.pageEngine.PageEngineTestSuite");
         this.addTests("test.aria.popups.PopupsTestSuite");
+        this.addTests("test.aria.resources.ResourcesTestSuite");
         this.addTests("test.aria.storage.StorageTestSuite");
         this.addTests("test.aria.templates.TemplatesTestSuite");
         this.addTests("test.aria.tools.ToolsTestSuite");
