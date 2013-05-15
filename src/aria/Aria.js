@@ -592,6 +592,17 @@
                 if (def.$onunload) {
                     def.$onunload.call(def.$noargConstructor.prototype, classRef);
                 }
+                // Remove resources providers instances
+                var defResources = def.$resources;
+                var p = def.$singleton ? classRef : classRef.prototype;
+                if (defResources) {
+                    for (var k in defResources) {
+                        if (defResources.hasOwnProperty(k) && (defResources[k].provider != null)) {
+                            p[k].$dispose();
+                            p[k] = null;
+                        }
+                    }
+                }
 
                 delete parent[child];
 
