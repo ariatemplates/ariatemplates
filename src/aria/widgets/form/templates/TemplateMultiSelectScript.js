@@ -82,8 +82,9 @@ Aria.tplScriptDefinition({
          * (number).
          */
         itemTableClick : function (evt, item) {
-
-            this.itemClick(evt, item, false);
+            if (!item.item.currentlyDisabled) {
+                this.itemClick(evt, item, false);
+            }
 
         },
 

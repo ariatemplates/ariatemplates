@@ -58,6 +58,7 @@ Aria.classDefinition({
 
         this.addTests("test.aria.templates.issue348.transition.TransitionTestcase");
         this.addTests("test.aria.templates.issue348.animation.AnimationTestcase");
+        this.addTests("test.aria.templates.issue460.OnscrollTest");
 
         this.addTests("test.aria.templates.statements.StatementsTestSuite");
         this.addTests("test.aria.templates.issue400.AlreadyCompiledTplTestCase");
