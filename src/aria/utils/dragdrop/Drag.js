@@ -49,7 +49,7 @@
      */
     Aria.classDefinition({
         $classpath : "aria.utils.dragdrop.Drag",
-        $dependencies : ["aria.utils.Dom", "aria.utils.Mouse", "aria.utils.Type"],
+        $dependencies : ["aria.utils.Dom", "aria.utils.Mouse", "aria.utils.Type", "aria.utils.Touch"],
         $implements : ["aria.utils.dragdrop.IDrag"],
         $statics : {
             INVALID_ATTRIBUTE : "Invalid attribute '%1' in '%2'"

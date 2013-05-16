@@ -88,6 +88,9 @@
     Aria.classDefinition({
         $classpath : "aria.utils.Mouse",
         $singleton : true,
+        $events : {
+            "eventUp" : "Raised on the mouse up."
+        },
         $dependencies : ["aria.utils.Event", "aria.utils.AriaWindow"],
         $statics : {
             /**
@@ -117,17 +120,17 @@
 
             /**
              * Store the original mouse down position, once the drag is detected
-             * @private
+             * @protected
              * @type Object
              */
-            this.__dragStartPosition = null;
+            this._dragStartPosition = null;
 
             /**
              * Whether a drag has started
-             * @private
+             * @protected
              * @type Boolean
              */
-            this.__dragStarted = false;
+            this._dragStarted = false;
 
         },
         $prototype : {
@@ -265,11 +268,11 @@
                 this.$assert(211, !!candidate);
 
                 this._candidateForDrag = candidate;
-                this.__dragStartPosition = {
+                this._dragStartPosition = {
                     x : evt.clientX,
                     y : evt.clientY
                 };
-                this.__dragStarted = false;
+                this._dragStarted = false;
 
                 return true;
             },
@@ -286,7 +289,7 @@
                 }
 
                 this._activeDrag = element;
-                this.__dragStarted = true;
+                this._dragStarted = true;
                 element.start(coordinates);
             },
 
@@ -296,9 +299,9 @@
              * @private
              */
             _onMouseMove : function (evt) {
-                if (this.__dragStartPosition && !this.__dragStarted) {
+                if (this._dragStartPosition && !this._dragStarted) {
 
-                    this._startDrag(this.__dragStartPosition);
+                    this._startDrag(this._dragStartPosition);
 
                 }
                 var element = this._activeDrag;
@@ -322,16 +325,24 @@
              * @private
              */
             _onMouseUp : function (evt) {
-                this.__dragStartPosition = null;
+                this._dragStartPosition = null;
                 disconnectMouseEvents(this);
 
-                var element = this._activeDrag;
+                var element = this._activeDrag, event;
                 if (element) {
                     element.end();
                 }
 
                 this._candidateForDrag = null;
                 this._activeDrag = null;
+                event = new aria.DomEvent(evt);
+                this.$raiseEvent({
+                    name : "eventUp",
+                    originalEvent : evt,
+                    posX : event.clientX,
+                    posY : event.clientY
+                });
+                event.$dispose();
             }
 
         }
