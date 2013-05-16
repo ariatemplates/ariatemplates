@@ -72,7 +72,6 @@ Aria.classDefinition({
              * This must be solved .
              */
             if (!this.attributesWhiteList.test(attributeName)) {
-                // don't allow access to incorrect expando names
                 this.$logError(this.INVALID_ATTRIBUTE_NAME, [attributeName]);
                 return null;
             }
@@ -82,13 +81,29 @@ Aria.classDefinition({
         };
 
         /**
+         * Set the html attribute of the dom element
+         * @param {String} attributeName Attribute name to be set
+         * @return {String} value Value to be set
+         */
+        this.setAttribute = function (attributeName, value) {
+            // can't change <input>'s type in IE8- (fixed in IE9)
+            var blackListed = !this.attributesWhiteList.test(attributeName)
+                    || (attributeName == "type" && domElt.tagName == "INPUT");
+            if (blackListed) {
+                this.$logError(this.ATTRIBUTE_WRITE_DENIED, [attributeName]);
+            } else {
+                domElt.setAttribute(attributeName, value);
+            }
+        },
+
+        /**
          * Get a data value. An expando called "myExpando" can be declared in the HTML code this way: &lt;div
          * data-myExpando = "myExpandoValue"&gt;
          * @param {String} expandoName name of the expando.
          * @param {Boolean} checkAncestors if the expando is not found on the element, look on its ancestors
          */
         this.getData = function (dataName, checkAncestors) {
-            if (!/^\w+$/.test(dataName) || dataName.charAt(0) == '_') {
+            if (!this.expandoNameRegex.test(dataName) || dataName.charAt(0) == '_') {
                 // don't allow access to incorrect expando names
                 this.$logError(this.INVALID_EXPANDO_NAME, [dataName]);
                 return null;
@@ -114,7 +129,7 @@ Aria.classDefinition({
          * @return {DomElementWrapper}
          */
         this.getParentWithData = function (dataName) {
-            if (!/^\w+$/.test(dataName) || dataName.charAt(0) == '_') {
+            if (!this.expandoNameRegex.test(dataName) || dataName.charAt(0) == '_') {
                 // don't allow access to incorrect expando names
                 this.$logError(this.INVALID_EXPANDO_NAME, [dataName]);
                 return null;
@@ -296,11 +311,13 @@ Aria.classDefinition({
     },
     $statics : {
 
-        attributesWhiteList : /^(name|title|style|dir|lang|abbr|height|width|size|cols|rows|rowspan|colspan|nowrap|valign|align|border|cellpadding|cellspacing|disabled|readonly|checked|selected|multiple|value|alt|maxlength|type|accesskey|tabindex|placeholder|autocomplete|autofocus|autocorrect|autocapitalize|spellcheck)$/,
+        attributesWhiteList : /^(data\-\w+(?:\-\w+)*|aria\-[a-z]+|name|title|style|dir|lang|abbr|height|width|size|cols|rows|rowspan|colspan|nowrap|valign|align|border|cellpadding|cellspacing|disabled|readonly|checked|selected|multiple|value|alt|maxlength|type|accesskey|tabindex|placeholder|autocomplete|autofocus|autocorrect|autocapitalize|spellcheck)$/,
+        expandoNameRegex : /^\w+(?:\-\w+)*$/,
 
         // ERROR MESSAGE:
         INVALID_EXPANDO_NAME : "Invalid expando name: '%1'.",
         INVALID_ATTRIBUTE_NAME : "Invalid attribute name: '%1'.",
+        ATTRIBUTE_WRITE_DENIED : "Write access to attribute '%1' is not allowed.",
         FOCUS_FAILURE : "Could not focus element",
         READ_ACCESS_DENIED : "Access to property %1 of tag %2 is not allowed.",
         WRITE_ACCESS_DENIED : "Write access to property %1 of tag %2 is not allowed."
@@ -312,6 +329,8 @@ Aria.classDefinition({
         getChild : function (childIndex) {},
 
         getAttribute : function (attributeName) {},
+
+        setAttribute : function (attributeName, value) {},
 
         getData : function (dataName, checkAncestors) {},
 
