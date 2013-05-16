@@ -13,41 +13,23 @@
  * limitations under the License.
  */
 
-/**
- * Test case for aria.widgets.form.NumberField
- */
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.NumberFieldTest",
+    $classpath : "test.aria.widgets.form.numberfield.NumberFieldTest",
     $extends : "aria.jsunit.WidgetTestCase",
-    $dependencies : ["aria.widgets.form.TextInput"],
+    $dependencies : ["aria.widgets.form.NumberField"],
     $prototype : {
 
         /**
          * main test method, checks if the Data Model is consistent with the initialization value a small number of
          * significant values are used for the test outputs an error message if a value did not pass the test
          */
-        testAsyncValuesSuite : function () {
-
-            // Need to load the widget class at test execution time because otherwise aria.widgets.AriaSkinInterface is
-            // not defined. The first test hence becomes asynchronous
-            Aria.load({
-                classes : ["aria.widgets.form.NumberField"],
-                oncomplete : {
-                    fn : this._startValuesTest,
-                    scope : this
-                }
-            });
-        },
-
-        _startValuesTest : function () {
+        testValuesSuite : function () {
             var values = [50, -0, 0.1234124, 1, -1, 0.0001, 1234621389461782346, -0.127836478923619478612938476];
             for (var i = 0; i < values.length; i++) {
                 if (this._testValueInit(values[i]) !== true) {
                     this.$logError("_testValueInit failed for val=" + values[i]);
                 }
             }
-
-            this.notifyTestEnd("testAsyncValuesSuite");
         },
 
         /**
@@ -87,21 +69,7 @@ Aria.classDefinition({
         /**
          * Test bindings
          */
-        testAsyncBindings : function () {
-
-            // Need to load the widget class at test execution time because otherwise aria.widgets.AriaSkinInterface is
-            // not defined. The last test hence becomes asynchronous (because it will be the first one to be executed in
-            // IE)
-            Aria.load({
-                classes : ["aria.widgets.form.NumberField"],
-                oncomplete : {
-                    fn : this._testBindings,
-                    scope : this
-                }
-            });
-        },
-
-        _testBindings : function () {
+        testBindings : function () {
             var data = {}, helptext = "Enter a number";
 
             // configuration data for the widget, uses the input parameter as value
@@ -136,8 +104,6 @@ Aria.classDefinition({
 
             instance.$dispose();
             this.outObj.clearAll();
-
-            this.notifyTestEnd("testAsyncBindings");
         }
 
     }

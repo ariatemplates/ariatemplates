@@ -131,18 +131,41 @@ Aria.classDefinition({
         },
 
         /**
-         * Third part of the load of Aria Templates in the iframe: copy the skin, rootmap and cache.
+         * Third part of the load of Aria Templates in the iframe: wait for aria to be loaded.
          * @param {Object} res unused
          * @param {Object} args object containing the frame and callback
          */
         _loadATInFrameCb3 : function (res, args) {
+            // In IE7 the callback might get called before Aria is available in the frame, poll
             var window = args.frame.contentWindow || args.frame;
-            if (window.aria == null) {
-                this.$callback(args.cb, {
-                    success : false
-                });
-                return;
-            }
+            var maxTimes = 3;
+
+            var self = this;
+            var waitFunction = function () {
+                maxTimes -= 1;
+                if (maxTimes >= 0) {
+                    if (window.aria == null) {
+                        setTimeout(waitFunction, 20);
+                    } else {
+                        self._loadATInFrameCb4(res, args);
+                    }
+                } else {
+                    return self.$callback(args.cb, {
+                        success : false
+                    });
+                }
+            };
+
+            setTimeout(waitFunction, 20);
+        },
+
+        /**
+         * Fourth part of the load of Aria Templates in the iframe: copy the skin, rootmap and cache.
+         * @param {Object} res unused
+         * @param {Object} args object containing the frame and callback
+         */
+        _loadATInFrameCb4 : function (res, args) {
+            var window = args.frame.contentWindow || args.frame;
             var document = window.document;
             window.Aria.rootFolderPath = Aria.rootFolderPath;
             var rootMap = window.aria.utils.Json.copy(aria.core.DownloadMgr._rootMap);
