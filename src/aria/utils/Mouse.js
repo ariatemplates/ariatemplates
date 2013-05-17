@@ -104,7 +104,7 @@
     Aria.classDefinition({
         $classpath : "aria.utils.Mouse",
         $singleton : true,
-        $dependencies : ["aria.utils.Event", "aria.utils.AriaWindow", "aria.touch.Event"],
+        $dependencies : ["aria.utils.Event", "aria.utils.AriaWindow", "aria.touch.Event", "aria.DomEvent"],
         $statics : {
             /**
              * Expando used to mark an element as draggable
