@@ -377,6 +377,11 @@ Aria.beanDefinitions({
                     $description : "Classpath of the template.",
                     $mandatory : true
                 },
+                "id" : {
+                    $type : "json:String",
+                    $description : "Id of the template, to be used to generate sub-ids.",
+                    $mandatory : false
+                },
                 "origClasspath" : {
                     $type : "json:PackageName",
                     $description : "Original classpath of the template. Differs from classpath if a customization has been defined.",
@@ -454,11 +459,6 @@ Aria.beanDefinitions({
             $type : "BaseLoadTemplateCfg",
             $description : "Description of the parameter of aria.templates.TemplateCtxt.initTemplate, with the description of which template to load, with which data and parameters. It is different from LoadTemplateCfg, as it does not accept a description of how to create a module controller (only an already created instance), but it accepts a macro parameter.",
             $properties : {
-                "id" : {
-                    $type : "json:String",
-                    $description : "Id of the template, to be used to generate sub-ids.",
-                    $mandatory : false
-                },
                 "originalId" : {
                     $type : "json:String",
                     $description : "User defined Id of the template.",
