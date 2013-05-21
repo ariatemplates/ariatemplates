@@ -18,7 +18,7 @@
  */
 Aria.classDefinition({
     $classpath : "aria.utils.Dom",
-    $dependencies : ["aria.core.JsonValidator", "aria.core.Browser"],
+    $dependencies : ["aria.core.JsonValidator", "aria.core.Browser", "aria.utils.String"],
     $singleton : true,
     $statics : {
 
@@ -708,8 +708,8 @@ Aria.classDefinition({
         },
 
         /**
-         * Get the offset top and left of an element, based either on the style or the offset element.
-         * Usefull to manage some internet explorer offset issues.
+         * Get the offset top and left of an element, based either on the style or the offset element. Useful to manage
+         * some internet explorer offset issues.
          * @param {HTMLElement} element Element whose offset is requested.
          * @return {Object} JSON with the top ad left properties.
          * @public
@@ -738,7 +738,7 @@ Aria.classDefinition({
 
         },
 
-         /**
+        /**
          * Get the geometry of an element. It means the coordinates of top/left corner and its width and height. If the
          * element is the body, the geometry corresponds to the whole page, otherwise it's the visible part of the
          * element.
@@ -863,9 +863,7 @@ Aria.classDefinition({
                         value = element.currentStyle[property];
                         if (!value) {
                             // Try the camel case
-                            var camel = property.replace(/-([a-z])/ig, function (match, letter) {
-                                return letter.toUpperCase();
-                            });
+                            var camel = aria.utils.String.dashedToCamel(property);
                             value = element.currentStyle[camel];
                         }
                     }

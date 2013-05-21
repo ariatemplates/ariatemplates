@@ -404,6 +404,28 @@ Aria.classDefinition({
 
                 return result.reverse();
             }
+        },
+
+        /**
+         * Convert from camel case to hyphenated version.
+         * @param {String} str camel cased string e.g. "fooBarABC"
+         * @return {String} hyphenated string e.g. "foo-bar-a-b-c"
+         */
+        camelToDashed : function (str) {
+            return str.replace(/[A-Z]/g, function (letter) {
+                return "-" + letter.toLowerCase();
+            }).replace(/^-/, ""); // strip leading dash if first char was uppercase
+        },
+
+        /**
+         * Convert from hyphenated string to camel case.
+         * @param {String} str hyphenated string e.g. "foo-bar-a-b-c"
+         * @return {String} camel cased equivalent e.g. "fooBarABC"
+         */
+        dashedToCamel : function (str) {
+            return str.replace(/-([a-z])/ig, function (match, letter) {
+                return letter.toUpperCase();
+            });
         }
     }
 });

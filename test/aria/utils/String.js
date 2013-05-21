@@ -197,7 +197,8 @@ Aria.classDefinition({
                             expected = toTest[initial][size];
                             got = aria.utils.String.pad(initial, size, "a", true);
 
-                            this.assertEquals(got, expected, "Padding " + initial + " size " + size + " got %1 expected %2");
+                            this.assertEquals(got, expected, "Padding " + initial + " size " + size
+                                    + " got %1 expected %2");
                         }
                     }
                 }
@@ -232,7 +233,8 @@ Aria.classDefinition({
                             expected = toTest[initial][size];
                             got = aria.utils.String.pad(initial, size, "a", false);
 
-                            this.assertEquals(got, expected, "Padding " + initial + " size " + size + " got %1 expected %2");
+                            this.assertEquals(got, expected, "Padding " + initial + " size " + size
+                                    + " got %1 expected %2");
                         }
                     }
                 }
@@ -290,7 +292,8 @@ Aria.classDefinition({
                             var expected = toTest[initial][size];
                             var got = aria.utils.String.crop(initial, size, "a", true);
 
-                            this.assertEquals(got, expected, "Cropping " + initial + " size " + size + " got %1 expected %2");
+                            this.assertEquals(got, expected, "Cropping " + initial + " size " + size
+                                    + " got %1 expected %2");
                         }
                     }
                 }
@@ -349,7 +352,8 @@ Aria.classDefinition({
                             var expected = toTest[initial][size];
                             var got = aria.utils.String.crop(initial, size, "a", false);
 
-                            this.assertEquals(got, expected, "Cropping " + initial + " size " + size + " got %1 expected %2");
+                            this.assertEquals(got, expected, "Cropping " + initial + " size " + size
+                                    + " got %1 expected %2");
                         }
                     }
                 }
@@ -380,7 +384,8 @@ Aria.classDefinition({
 
                         var got = aria.utils.Json.convertToJsonString(aria.utils.String.chunk(testing, size, true));
 
-                        this.assertEquals(expected, got, "Testing -" + testing + "- size " + size + " expected %1 got %2");
+                        this.assertEquals(expected, got, "Testing -" + testing + "- size " + size
+                                + " expected %1 got %2");
                     }
                 }
             }
@@ -409,7 +414,8 @@ Aria.classDefinition({
 
                         var got = aria.utils.Json.convertToJsonString(aria.utils.String.chunk(testing, size, false));
 
-                        this.assertEquals(expected, got, "Testing -" + testing + "- size " + size + " expected %1 got %2");
+                        this.assertEquals(expected, got, "Testing -" + testing + "- size " + size
+                                + " expected %1 got %2");
                     }
                 }
             }
@@ -492,6 +498,30 @@ Aria.classDefinition({
                     this.assertEquals(got, holders[key], "Expecting %2, got %1");
                 }
             }
+        },
+
+        testCamelToDashed : function () {
+            var cc2d = aria.utils.String.camelToDashed;
+
+            // standard
+            this.assertEquals(cc2d("fooBarBaz"), "foo-bar-baz");
+            // trailing uppercase
+            this.assertEquals(cc2d("fooBarBazN"), "foo-bar-baz-n");
+            // leading uppercase
+            this.assertEquals(cc2d("FooBaz"), "foo-baz");
+            // consecutive uppercase
+            this.assertEquals(cc2d("fooABarACBaz"), "foo-a-bar-a-c-baz");
+            // all in one
+            this.assertEquals(cc2d("ABC"), "a-b-c");
+        },
+
+        testDashedToCamel : function () {
+            var d2cc = aria.utils.String.dashedToCamel;
+
+            this.assertEquals(d2cc("foo-bar-baz"), "fooBarBaz");
+            this.assertEquals(d2cc("foo-bar-baz-n"), "fooBarBazN");
+            this.assertEquals(d2cc("foo-a-bar-a-c-baz"), "fooABarACBaz");
+            this.assertEquals(d2cc("a-b-c"), "aBC");
         }
     }
 });
