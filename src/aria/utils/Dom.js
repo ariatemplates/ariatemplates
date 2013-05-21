@@ -166,6 +166,8 @@ Aria.classDefinition({
                         s1.zoom = 1;
                         s2.cssText += dummyCss;
                         s2.cssText = s2.cssText.replace(dummyCss, "");
+                        // PTR06973328 (IE7)
+                        s2.zoom = 1;
                     } catch (ex) {}
                 };
             } else if (aria.core.Browser.isIE8) {
