@@ -122,8 +122,27 @@ Aria.classDefinition({
             };
 
             var str = html.buildAttributeList(json);
-
             this.checkString(str, json);
+        },
+
+        testBuildAttributeListDataSetInvalid : function () {
+            var html = aria.utils.Html;
+
+            // in dataset, keys are camelCased: https://developer.mozilla.org/en-US/docs/DOM/element.dataset
+            // (however they're converted into hyphenated keys when injected into HTML)
+            var str = this._testDatasetKey("foo-bar");
+            this.assertErrorInLogs(html.INVALID_DATASET_KEY);
+
+            var str = this._testDatasetKey("weird$characters^");
+            this.assertErrorInLogs(html.INVALID_DATASET_KEY);
+        },
+
+        _testDatasetKey : function (key) {
+            var json = {
+                dataset : {}
+            };
+            json.dataset[key] = "test";
+            return aria.utils.Html.buildAttributeList(json);
         }
     }
 });

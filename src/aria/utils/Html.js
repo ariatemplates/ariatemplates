@@ -22,7 +22,9 @@ Aria.classDefinition({
     $dependencies : ["aria.templates.DomElementWrapper", "aria.utils.String", "aria.utils.Json"],
     $singleton : true,
     $statics : {
-        INVALID_CONFIGURATION : "Invalid attribute %1."
+        datasetRegex : /^\w+$/, /* This is to mainly to forbid dashes. Actually uppercase chars are not allowed by the spec, but they're transparently lowercased by the browser */
+        INVALID_CONFIGURATION : "Invalid attribute %1.",
+        INVALID_DATASET_KEY : "Invalid dataset key %1. Dataset keys can contain only [a-zA-Z0-9_]"
     },
     $prototype : {
         /**
@@ -48,11 +50,22 @@ Aria.classDefinition({
                         result.push("\"");
                     } else if (key === "dataset") {
                         for (var dataKey in attribute) {
-                            if (attribute.hasOwnProperty(dataKey) && dataKey.substr(0, 5) != "data-"
-                                    && !jsonUtils.isMetadata(dataKey)) {
-                                result.push(" data-", dataKey, "=\"");
-                                result.push(stringUtil.encodeForQuotedHTMLAttribute(attribute[dataKey]));
-                                result.push("\"");
+                            if (attribute.hasOwnProperty(dataKey) && !jsonUtils.isMetadata(dataKey)) {
+                                if (this.datasetRegex.test(dataKey)) {
+                                    /* BACKWARD-COMPATIBILITY-BEGIN (GH-499): hyphenate it in the new version */
+                                    // result.push(" data-", stringUtil.camelToDashed(dataKey), "=\"");
+                                    result.push(" data-", dataKey, "=\"");
+                                    /* BACKWARD-COMPATIBILITY-END */
+                                    result.push(stringUtil.encodeForQuotedHTMLAttribute(attribute[dataKey]));
+                                    result.push("\"");
+                                } else {
+                                    /* BACKWARD-COMPATIBILITY-BEGIN (GH-499): change to $logError and don't output */
+                                    this.$logWarn(this.INVALID_DATASET_KEY, dataKey);
+                                    result.push(" data-", dataKey, "=\"");
+                                    result.push(stringUtil.encodeForQuotedHTMLAttribute(attribute[dataKey]));
+                                    result.push("\"");
+                                    /* BACKWARD-COMPATIBILITY-END */
+                                }
                             }
                         }
                     } else if (whiteList.test(key)) {
