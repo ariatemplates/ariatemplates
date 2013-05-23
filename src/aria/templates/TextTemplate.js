@@ -15,20 +15,11 @@
 
 /**
  * Base class from which all text templates inherit.
- * @class aria.templates.TextTemplate
- * @extends aria.core.BaseTemplate
  */
 Aria.classDefinition({
-    $classpath : 'aria.templates.TextTemplate',
+    $classpath : "aria.templates.TextTemplate",
     $extends : "aria.templates.BaseTemplate",
     $dependencies : ["aria.templates.TxtCtxt"],
-    $constructor : function () {
-        this.$BaseTemplate.constructor.call(this);
-    },
-    $destructor : function () {
-        this.$BaseTemplate.$destructor.call(this);
-    },
-
     $prototype : {
         /**
          * Data model available to the text template. It can be overridden by the text template context.
@@ -42,7 +33,7 @@ Aria.classDefinition({
          * @param {Object} def the class definition
          */
         $init : function (p, def) {
-            // The prototype should be an instance of Template, that inheriths from BaseTemplate
+            // The prototype should be an instance of Template, that inherits from BaseTemplate
             p.$BaseTemplate.constructor.classDefinition.$prototype.$init(p, def);
 
             /**

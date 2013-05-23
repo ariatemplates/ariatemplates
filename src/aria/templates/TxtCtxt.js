@@ -16,14 +16,12 @@
 /**
  * A TxtCtxt object is the interface toward an Aria text template. TxtCtxt is used to generate and initialize a text
  * template
- * @class aria.templates.TxtCtxt
- * @extends aria.templates.BaseCtxt
- * @implements aria.templates.IBaseTemplate
  */
 Aria.classDefinition({
-    $classpath : 'aria.templates.TxtCtxt',
+    $classpath : "aria.templates.TxtCtxt",
     $extends : "aria.templates.BaseCtxt",
-    $implements : ['aria.templates.IBaseTemplate'],
+    $implements : ["aria.templates.IBaseTemplate"],
+    $dependencies : ["aria.templates.CfgBeans"],
     $constructor : function (classPath) {
         this.$BaseCtxt.constructor.apply(this, arguments);
 
@@ -32,9 +30,7 @@ Aria.classDefinition({
          * @type String
          */
         this.tplClasspath = null;
-
     },
-
     $destructor : function () {
         if (this._tpl) {
             try {
