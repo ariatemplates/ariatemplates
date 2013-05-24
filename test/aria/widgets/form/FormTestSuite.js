@@ -34,5 +34,6 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.form.datepicker.DatePickerTestSuite");
         this.addTests("test.aria.widgets.form.datefield.DateFieldTestSuite");
         this.addTests("test.aria.widgets.form.selectbox.SelectboxTestCase");
+        this.addTests("test.aria.widgets.form.textarea.maxlength.MaxLengthTestCase");
     }
 });
