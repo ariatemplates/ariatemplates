@@ -36,5 +36,6 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.form.autocomplete.AutoCompleteTestSuite");
         this.addTests("test.aria.widgets.form.selectbox.SelectboxTestCase");
         this.addTests("test.aria.widgets.form.multiselect.issue470.MultiSelect");
+        this.addTests("test.aria.widgets.form.textarea.maxlength.MaxLengthTestCase");
     }
 });

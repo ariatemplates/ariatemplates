@@ -43,8 +43,39 @@ Aria.classDefinition({
         this.$TextInput.constructor.call(this, cfg, ctxt, lineNumber, controller);
         this._isTextarea = true;
         cfg.labelHeight = (cfg.labelHeight > -1) ? cfg.labelHeight : this.LABEL_HEIGHT;
-    },
-    $prototype : {
 
-}
+        this.cfg = cfg;
+    },
+
+    $prototype : {
+        _dom_onkeydown : function (event) {
+
+            var maxlength = this.cfg.maxlength;
+            if (maxlength > -1) {
+
+                // The maxlength is managed by a setTimeout in order to manage each situation
+                // For example, the cut and paste (the clipboard is not accessible in javascript)
+
+                var textarea = this.getTextInputField();
+                var caretPosition = this.getCaretPosition();
+                var oldVal = textarea.value;
+                var that = this;
+
+                setTimeout(function () {
+                    var newVal = textarea.value;
+                    if (newVal.length > maxlength) {
+                        // The selected part of the current value is not considered
+                        var start = caretPosition.start;
+                        var end = caretPosition.end;
+
+                        var newPart = newVal.substr(start, maxlength - oldVal.length + end - start);
+
+                        textarea.value = oldVal.substr(0, start) + newPart + oldVal.substr(end);
+                        var index = start + newPart.length;
+                        that.setCaretPosition(index, index);
+                    }
+                }, 25);
+            }
+        }
+    }
 });

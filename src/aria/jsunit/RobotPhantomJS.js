@@ -75,6 +75,7 @@ Aria.classDefinition({
                 }
             }
         }
+        keys.VK_CTRL = robotKeys.Control;
     },
     $statics : {
         MOUSEWHEEL_NOT_IMPLEMENTED : "mouseWheel is not implemented",
@@ -282,10 +283,16 @@ Aria.classDefinition({
             if (keyCode == this.KEYS.VK_SHIFT) {
                 this._keyShift = true;
             }
+            if (keyCode == this.KEYS.VK_CTRL) {
+                this._keyCtrl = true;
+            }
             if (typeof keyCode == "string" && this._keyShift) {
                 keyCode = keyCode.toUpperCase();
             }
-            this._sendEvent('keydown', keyCode);
+            if (keyCode == this.KEYS.VK_ALT) {
+                this._keyAlt = true;
+            }
+            this._sendEvent('keydown', keyCode, null, null, this._getModifier());
             this._callCallback(cb);
         },
 
@@ -302,8 +309,36 @@ Aria.classDefinition({
             if (keyCode == this.KEYS.VK_SHIFT) {
                 this._keyShift = false;
             }
-            this._sendEvent('keyup', keyCode);
+            if (keyCode == this.KEYS.VK_CTRL) {
+                this._keyCtrl = false;
+            }
+            if (keyCode == this.KEYS.VK_ALT) {
+                this._keyAlt = false;
+            }
+            this._sendEvent('keyup', keyCode, null, null, this._getModifier());
             this._callCallback(cb);
+        },
+
+        /**
+         * Return the modifier for phantomjs See
+         * https://github.com/ariya/phantomjs/wiki/API-Reference-WebPage#wiki-webpage-sendEvent for more information
+         */
+        _getModifier : function () {
+            var modifier = 0;
+
+            if (this._keyCtrl) {
+                modifier |= 0x04000000;
+            }
+
+            if (this._keyShift) {
+                modifier |= 0x02000000;
+            }
+
+            if (this._keyAlt) {
+                modifier |= 0x08000000;
+            }
+
+            return modifier;
         },
 
         /**
