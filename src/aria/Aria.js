@@ -1221,7 +1221,7 @@
         if (superclass) {
             cnstrctr.superclass = superclass.prototype;
         }
-        p.constructor = cnstrctr;
+        p.$constructor = p.constructor = cnstrctr;
         def.$noargConstructor.prototype = p;
 
         // expose class constructor through public ns
