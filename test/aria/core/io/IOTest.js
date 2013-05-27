@@ -300,8 +300,10 @@ Aria.classDefinition({
          * Test HEAD Request Method.
          */
         testAsyncHead : function () {
+            // Firefox 3.6 mistakenly reuses cached previous POST responses for this HEAD request, hence making the test
+            // fail. As a workaround, we append a query string here.
             var request = {
-                url : this.urlRoot + "aria/core/test/TestFile.txt",
+                url : this.urlRoot + "aria/core/test/TestFile.txt?ts=" + (+new Date()),
                 method : "HEAD",
                 callback : {
                     fn : this._asyncHeadResponse,
