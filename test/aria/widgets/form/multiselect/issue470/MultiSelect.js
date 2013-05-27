@@ -17,7 +17,7 @@ Aria.classDefinition({
         },
         _afterDisableJump : function () {
             var lastCheckBox = this.getCheckBox("ms1", 5).getDom();
-            var nextItem = lastCheckBox.parentElement.nextElementSibling;
+            var nextItem = lastCheckBox.parentNode.nextElementSibling;
             this._MSClick(nextItem, this._testOnChange, this);
         },
         _testOnChange : function () {
