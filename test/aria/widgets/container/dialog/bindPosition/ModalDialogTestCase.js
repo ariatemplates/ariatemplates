@@ -13,15 +13,22 @@
  * limitations under the License.
  */
 
+/**
+ * Test the binding of xpos, ypos and center for dialog widgets
+ */
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.container.dialog.DialogTestSuite",
-    $extends : "aria.jsunit.TestSuite",
+    $classpath : "test.aria.widgets.container.dialog.bindPosition.ModalDialogTestCase",
+    $extends : "test.aria.widgets.container.dialog.bindPosition.DialogTestCase",
     $constructor : function () {
-        this.$TestSuite.constructor.call(this);
+        this.$DialogTestCase.constructor.call(this);
 
-        this.addTests("test.aria.widgets.container.dialog.HeightConstraintsTest");
-        this.addTests("test.aria.widgets.container.dialog.MaximizableDialogTest");
-        this.addTests("test.aria.widgets.container.dialog.closeOutside.Issue389TestCase");
-        this.addTests("test.aria.widgets.container.dialog.MovableDialogTestSuite");
-    }
+        this.setTestEnv({
+            template : "test.aria.widgets.container.dialog.bindPosition.ModalDialogTemplate",
+            data : this.data
+        });
+
+    },
+    $prototype : {
+
+}
 });
