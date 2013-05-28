@@ -19,6 +19,7 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
         this.addTests("test.aria.widgets.form.CheckBoxTest");
+        this.addTests("test.aria.widgets.form.checkbox.SetDisabledTest");
         this.addTests("test.aria.widgets.form.GaugeTest");
         this.addTests("test.aria.widgets.form.InputTest");
         this.addTests("test.aria.widgets.form.InputValidationHandlerTest");
