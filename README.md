@@ -3,26 +3,22 @@
 ![Aria Templates logo](http://ariatemplates.com/images/logo-forum.png)
 
 
-[Aria Templates](http://ariatemplates.com/) (aka AT) is an application framework written in JavaScript
-for building rich and **large-scaled enterprise web applications**. It is being developed since 2009 by
-[Amadeus](http://www.amadeus.com) for its professional products. It has been designed for web apps
-that are used 8+ hours a day, and that need to display and process a **high amount of data** with a **minimum
-of bandwidth consumption**.
+[Aria Templates](http://ariatemplates.com/) (aka AT) is an application framework written in JavaScript for building rich and **large-scaled enterprise web applications**. Developed since 2009 by [Amadeus](http://www.amadeus.com) for its professional products, it has been designed to build web apps used intensively that need to display and process a **high amount of data** with a **minimum of bandwidth consumption**.
 
 ### Travis build status
 
 [![Build Status](https://secure.travis-ci.org/ariatemplates/ariatemplates.png?branch=master)](http://travis-ci.org/ariatemplates/ariatemplates)
 
-More concretes
+Some details
 ==============
 
-Aria Templates is:
+Aria Templates in a nutshell:
 
- - an MVC framework,
- - with its own templating engine,
- - with data binding,
- - widgets library,
- - and rich utilities library.
+ - MVC based framework
+ - powerful templating engine
+ - data binding and automatic refresh
+ - widgets libraries
+ - lots of utilities libraries
 
 The MVC's terminology in AT:
 
@@ -30,9 +26,9 @@ The MVC's terminology in AT:
  - view -> **template (`.tpl` file)**
  - controller -> **module controllers** and **template scripts** (`.js` files)
 
-Templates are evaluated client-side, but can be also precompiled at build time of your application.
+Templates can either be evaluated client-side or precompiled at build time.
 
-See [TodoMVC example done in Aria Templates](http://addyosmani.github.io/todomvc/labs/architecture-examples/ariatemplates/) and a [step-by-step guide](http://ariatemplates.com/guides/todo/) to it.
+See [TodoMVC example done in Aria Templates](http://addyosmani.github.io/todomvc/labs/architecture-examples/ariatemplates/) and a [step-by-step guide](http://ariatemplates.com/guides/todo/) for it.
 
 Want to see some code of the templates? Have a look at [list of samples](http://ariatemplates.com/samples).
 
@@ -43,12 +39,9 @@ Getting started
 
 To get started with Aria Templates, you have several options:
 
-- you can clone our Git repository / download a ZIP from GitHub and then include `bootstrap.js` file
-in your HTML page, to run the original, development source code,
-- after obtaining our source code, you may run Grunt build and then include a packaged, minified
-(much faster) version of the framework in your page,
-- or to use the framework in your NodeJS application, issue `npm install ariatemplates` in the command line,
-then call `require('ariatemplates')` from your code to load the framework.
+- you can clone our Git repository / download a ZIP from GitHub and then include `bootstrap.js` file in your HTML page, to run the original, development source code,
+- after obtaining our source code, you may run Grunt build and then include a packaged, minified (much faster) version of the framework in your page,
+- or to use the framework in your NodeJS application, issue `npm install ariatemplates` in the command line, then call `require('ariatemplates')` from your code to load the framework.
 
 Head to README.md files in [src](src) and [build](build) folders to read more.
 
