@@ -22,5 +22,5 @@ Aria.classDefinition({
     },
     $prototype : {
 
-}
+    }
 });

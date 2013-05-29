@@ -15,7 +15,6 @@
 
 /**
  * Test cases for generic aria.utils.validators.Validator
- * @class test.aria.utils.validators.Validator
  */
 Aria.classDefinition({
     $classpath : "test.aria.utils.validators.Validator",

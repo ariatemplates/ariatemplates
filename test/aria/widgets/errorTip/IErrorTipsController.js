@@ -15,11 +15,10 @@
 
 /**
  * Interface for the error tips module controller.
- * @class test.templateTests.tests.features.errorTips.IErrorTipsController
  */
 Aria.interfaceDefinition({
-    $classpath : 'test.aria.widgets.errorTip.IErrorTipsController',
-    $extends : 'aria.templates.IModuleCtrl',
+    $classpath : "test.aria.widgets.errorTip.IErrorTipsController",
+    $extends : "aria.templates.IModuleCtrl",
     $interface : {
         submit : function () {}
     }

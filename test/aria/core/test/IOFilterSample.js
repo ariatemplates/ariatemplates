@@ -15,11 +15,10 @@
 
 /**
  * IO filter sample class used to test the IOFilter class.
- * @class test.aria.core.test.IOFilterSample
  */
 Aria.classDefinition({
-    $classpath : 'test.aria.core.test.IOFilterSample',
-    $extends : 'aria.core.IOFilter',
+    $classpath : "test.aria.core.test.IOFilterSample",
+    $extends : "aria.core.IOFilter",
     $constructor : function (args) {
         this.$IOFilter.constructor.call(this);
         if (args == null) {

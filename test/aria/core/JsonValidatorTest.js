@@ -15,7 +15,6 @@
 
 /**
  * Test case for the JSON validator
- * @class test.aria.core.JsonValidatorTest
  */
 Aria.classDefinition({
     $classpath : "test.aria.core.JsonValidatorTest",

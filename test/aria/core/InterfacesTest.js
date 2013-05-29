@@ -15,7 +15,6 @@
 
 /**
  * Test case for the interfaces class.
- * @class test.aria.core.InterfacesTest
  */
 Aria.classDefinition({
     $classpath : "test.aria.core.InterfacesTest",

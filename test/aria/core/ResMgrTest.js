@@ -15,7 +15,6 @@
 
 /**
  * Test for the ResMgr class
- * @class test.aria.core.ResMgrTest
  */
 Aria.classDefinition({
     $classpath : "test.aria.core.ResMgrTest",

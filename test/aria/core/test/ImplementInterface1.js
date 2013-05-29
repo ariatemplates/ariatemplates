@@ -15,7 +15,6 @@
 
 /**
  * Test class implementing an interface.
- * @class test.aria.core.test.ImplementInterface1
  */
 Aria.classDefinition({
     $classpath : "test.aria.core.test.ImplementInterface1",

@@ -15,7 +15,6 @@
 
 /**
  * Test case for the Json class.
- * @class test.aria.utils.JsonTest
  */
 Aria.classDefinition({
     $classpath : "test.aria.utils.JsonTest",

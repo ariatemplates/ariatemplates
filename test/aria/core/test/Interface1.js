@@ -15,7 +15,6 @@
 
 /**
  * Sample interface definition.
- * @class test.aria.core.test.Interface1
  */
 Aria.interfaceDefinition({
     $classpath : "test.aria.core.test.Interface1",

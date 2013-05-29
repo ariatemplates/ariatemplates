@@ -15,8 +15,6 @@
 
 /**
  * Test suite regrouping all tests on aria.dom
- * @class test.aria.dom.DomTestSuite
- * @extends aria.jsunit.TestSuite
  */
 Aria.classDefinition({
 	$classpath : "test.aria.dom.DomTestSuite",

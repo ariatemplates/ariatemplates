@@ -21,5 +21,6 @@ Aria.classDefinition({
 
         this.addTests("test.aria.widgetLibs.environment.WidgetLibsSettingsTest");
         this.addTests("test.aria.widgetLibs.BaseWidgetTest");
+        this.addTests("test.aria.widgetLibs.sampleWidget.WidgetLibsTestCase");
     }
 });

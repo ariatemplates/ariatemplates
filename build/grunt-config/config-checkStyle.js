@@ -43,7 +43,9 @@ module.exports = function (grunt) {
                         '!test/aria/utils/validators/String.js',
                         '!test/aria/utils/String.js',
                         // Syntax errors, used for testing
-                        '!test/aria/templates/test/error/*.js']
+                        '!test/aria/templates/test/error/*.js',
+                        // Syntax errors, used for testing
+                        '!test/aria/templates/reloadResources/ExternalResourceErr.js']
             },
             options : {
                 "predef" : ["aria", "Aria", "setTimeout", "setInterval", "clearTimeout", "clearInterval", "test", "Syn"],

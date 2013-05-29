@@ -15,7 +15,6 @@
 
 /**
  * Test for the ResClassLoader class
- * @class test.aria.core.ResClassLoaderTest
  */
 Aria.classDefinition({
     $classpath : "test.aria.core.ResClassLoaderTest",

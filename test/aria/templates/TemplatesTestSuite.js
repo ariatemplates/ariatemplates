@@ -62,5 +62,17 @@ Aria.classDefinition({
 
         this.addTests("test.aria.templates.statements.StatementsTestSuite");
         this.addTests("test.aria.templates.issue400.AlreadyCompiledTplTestCase");
+
+        this.addTests("test.aria.templates.macrolibs.MacrolibsTestCase");
+        this.addTests("test.aria.templates.textTemplates.TextTemplatesTestCase");
+        this.addTests("test.aria.templates.section.SectionTestCase");
+        this.addTests("test.aria.templates.section.sectionAttributes.SectionAttributes");
+        this.addTests("test.aria.templates.repeater.RepeaterTestCase");
+        this.addTests("test.aria.templates.visualFocus.VisualFocusTestCase");
+        this.addTests("test.aria.templates.testmode.TestIdsTestCase");
+        this.addTests("test.aria.templates.memoization.MemoTestCase");
+        this.addTests("test.aria.templates.scrollControl.ScrollControlTestCase");
+        this.addTests("test.aria.templates.reloadResources.ReloadResourcesTestCase");
+        this.addTests("test.aria.templates.reloadParentTemplate.ParentReloadTestSuite");
     }
 });

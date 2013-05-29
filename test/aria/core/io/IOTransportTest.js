@@ -57,7 +57,6 @@ Aria.classDefinition({
         _customTransports : function () {
             /**
              * Base Custom Transport class.
-             * @class myApplication.transports.BaseXHR
              */
             Aria.classDefinition({
                 $classpath : "myApplication.transports.BaseXHR",
@@ -67,9 +66,6 @@ Aria.classDefinition({
 
             /**
              * Custom Transport class for same origin requests.
-             * @class myApplication.transports.SameDomainCustomTransport
-             * @extends aria.core.transport.BaseXHR
-             * @singleton
              */
             Aria.classDefinition({
                 $classpath : "myApplication.transports.SameDomainCustomTransport",
@@ -83,9 +79,6 @@ Aria.classDefinition({
 
             /**
              * Custom Transport class for different origin requests.
-             * @class myApplication.transports.CrossDomainCustomTransport
-             * @extends aria.core.transport.BaseXHR
-             * @singleton
              */
             Aria.classDefinition({
                 $classpath : "myApplication.transports.CrossDomainCustomTransport",
@@ -99,9 +92,6 @@ Aria.classDefinition({
 
             /**
              * Custom Transport class for JsonP requests.
-             * @class myApplication.transports.JsonPCustomTransport
-             * @extends aria.core.transport.BaseXHR
-             * @singleton
              */
             Aria.classDefinition({
                 $classpath : "myApplication.transports.JsonPCustomTransport",
@@ -115,9 +105,6 @@ Aria.classDefinition({
 
             /**
              * Custom Transport class for local requests.
-             * @class myApplication.transports.LocalCustomTransport
-             * @extends aria.core.transport.BaseXHR
-             * @singleton
              */
             Aria.classDefinition({
                 $classpath : "myApplication.transports.LocalCustomTransport",
@@ -131,9 +118,6 @@ Aria.classDefinition({
 
             /**
              * Custom Transport class for IFrame requests.
-             * @class myApplication.transports.IFrameCustomTransport
-             * @extends aria.core.transport.BaseXHR
-             * @singleton
              */
             Aria.classDefinition({
                 $classpath : "myApplication.transports.IFrameCustomTransport",

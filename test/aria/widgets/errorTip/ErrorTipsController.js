@@ -15,13 +15,12 @@
 
 /**
  * Controller for error tips samples.
- * @class AppModule
  */
 Aria.classDefinition({
-    $classpath : 'test.aria.widgets.errorTip.ErrorTipsController',
-    $extends : 'aria.templates.ModuleCtrl',
-    $implements : ['test.aria.widgets.errorTip.IErrorTipsController'],
-    $dependencies : ['aria.utils.validators.Mandatory', 'aria.utils.Data'],
+    $classpath : "test.aria.widgets.errorTip.ErrorTipsController",
+    $extends : "aria.templates.ModuleCtrl",
+    $implements : ["test.aria.widgets.errorTip.IErrorTipsController"],
+    $dependencies : ["aria.utils.validators.Mandatory", "aria.utils.Data"],
     $constructor : function () {
         this.$ModuleCtrl.constructor.call(this);
         this._data = {

@@ -15,7 +15,6 @@
 
 /**
  * Test for the DownloadMgr class
- * @class test.aria.core.DownloadMgrTest
  */
 Aria.classDefinition({
     $classpath : "test.aria.core.DownloadMgrTest",
