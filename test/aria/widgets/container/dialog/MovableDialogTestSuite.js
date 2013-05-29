@@ -14,14 +14,17 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.container.dialog.DialogTestSuite",
+    $classpath : "test.aria.widgets.container.dialog.MovableDialogTestSuite",
     $extends : "aria.jsunit.TestSuite",
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
-        this.addTests("test.aria.widgets.container.dialog.HeightConstraintsTest");
-        this.addTests("test.aria.widgets.container.dialog.MaximizableDialogTest");
-        this.addTests("test.aria.widgets.container.dialog.closeOutside.Issue389TestCase");
-        this.addTests("test.aria.widgets.container.dialog.MovableDialogTestSuite");
+        this._tests = ["test.aria.widgets.container.dialog.bindPosition.DialogTestCase",
+                "test.aria.widgets.container.dialog.bindPosition.ModalDialogTestCase",
+                "test.aria.widgets.container.dialog.bindPosition.DialogOnResizeTestCase",
+                "test.aria.widgets.container.dialog.bindPosition.PopupMoveToTestCase",
+                "test.aria.widgets.container.dialog.bindPosition.DialogInViewportTestCase",
+                "test.aria.widgets.container.dialog.movable.MovableDialogTestCase",
+                "test.aria.widgets.container.dialog.movable.MovableDialogTestCaseTwo"];
     }
 });
