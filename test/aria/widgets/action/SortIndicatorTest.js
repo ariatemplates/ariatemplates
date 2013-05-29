@@ -60,6 +60,43 @@ Aria.classDefinition({
             this.assertTrue(widget._state == 'descending');
             widget.$dispose();
             myView.$dispose();
+            this.clearAll();
+        },
+
+        testBlockState : function () {
+            var myArray = [0, 1, 2, 3, 4];
+            var myView = new aria.templates.View(myArray);
+
+            this.checkBlockValue(myView, true);
+            this.checkBlockValue(myView, false);
+
+            myView.$dispose();
+        },
+
+        checkBlockValue : function (view, isBlock) {
+
+            var sortIndicator = this._createSortIndicator({
+                sortName : "SortByAirport",
+                label : "testDisplayBlock",
+                view : view,
+                block : isBlock,
+                sortKeyGetter : function (o) {
+                    return o.value[0];
+                }
+
+            });
+
+            var widget = sortIndicator.o;
+            var domElt = widget.getDom();
+
+            if (isBlock) {
+                this.assertTrue(aria.utils.Dom.getStyle(domElt, "display") == 'block', "display should be 'block'");
+            } else {
+                this.assertTrue(aria.utils.Dom.getStyle(domElt, "display") == 'inline-block', "display should be 'inline-block'");
+            }
+
+            widget.$dispose();
+            this.clearAll();
         }
 
     }

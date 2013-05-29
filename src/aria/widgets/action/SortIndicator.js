@@ -79,7 +79,7 @@ Aria.classDefinition({
          * @protected
          * @type String
          */
-        this._spanStyle = [(width > 0) ? "width:" + width + "px;" : "", "display:inline-block;", "white-space:nowrap;"].join("");
+        this._spanStyle = [(width > 0) ? "width:" + width + "px;" : "", "white-space:nowrap;"].join("");
 
         /**
          * Moment in which the widget gets initialized
