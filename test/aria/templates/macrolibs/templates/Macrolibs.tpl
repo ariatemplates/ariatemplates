@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Amadeus s.a.s.
+ * Copyright 2013 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,14 +13,19 @@
  * limitations under the License.
  */
 
-Aria.classDefinition({
-    $classpath : "test.aria.widgetLibs.WidgetLibsTestSuite",
-    $extends : "aria.jsunit.TestSuite",
-    $constructor : function () {
-        this.$TestSuite.constructor.call(this);
-
-        this.addTests("test.aria.widgetLibs.environment.WidgetLibsSettingsTest");
-        this.addTests("test.aria.widgetLibs.BaseWidgetTest");
-        this.addTests("test.aria.widgetLibs.sampleWidget.WidgetLibsTestCase");
+{Template {
+    $classpath: "test.aria.templates.macrolibs.templates.Macrolibs",
+    $macrolibs : {
+      libOne : "test.aria.templates.macrolibs.templates.Lib1"
     }
-});
+}}
+
+    {macro main()}
+       {@aria:Template {
+            defaultTemplate: "test.aria.templates.macrolibs.templates.Tpl1",
+            data : data.subdata1
+       }/}
+       <div>{call libOne.helloWorld() /}</div>
+    {/macro}
+
+{/Template}

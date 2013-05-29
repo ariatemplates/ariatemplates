@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Amadeus s.a.s.
+ * Copyright 2013 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,14 +13,20 @@
  * limitations under the License.
  */
 
-Aria.classDefinition({
-    $classpath : "test.aria.widgetLibs.WidgetLibsTestSuite",
-    $extends : "aria.jsunit.TestSuite",
-    $constructor : function () {
-        this.$TestSuite.constructor.call(this);
+/** This id the parent of another text template. it also uses the {macro} statement
+ * It is mainly used to text the fact that text templates can have scripts.
+ */
 
-        this.addTests("test.aria.widgetLibs.environment.WidgetLibsSettingsTest");
-        this.addTests("test.aria.widgetLibs.BaseWidgetTest");
-        this.addTests("test.aria.widgetLibs.sampleWidget.WidgetLibsTestCase");
-    }
-});
+{TextTemplate {
+    $classpath : "test.aria.templates.textTemplates.complete.MainTextParent",
+    $hasScript : true
+}}
+
+    {macro main()}
+        {call mainTextParentMacro()/}
+        ${myTextScriptFunction()}
+    {/macro}
+
+    {macro mainTextParentMacro()}mainTextParentMacro{/macro}
+
+{/TextTemplate}
