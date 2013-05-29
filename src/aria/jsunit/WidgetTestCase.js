@@ -49,6 +49,10 @@ Aria.classDefinition({
             this.outObj.putInDOM();
             instance.initWidget();
             return instance;
+        },
+
+        clearAll : function () {
+            this.outObj.clearAll();
         }
     }
 });
