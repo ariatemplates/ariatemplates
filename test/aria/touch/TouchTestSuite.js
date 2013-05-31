@@ -27,5 +27,7 @@ Aria.classDefinition({
         this.addTests("test.aria.touch.widgets.DoubleSliderError");
         this.addTests("test.aria.touch.widgets.DoubleSliderSetValue");
         this.addTests("test.aria.touch.widgets.DoubleSliderChange");
+        this.addTests("test.aria.touch.widgets.SingleSliderValue");
+        this.addTests("test.aria.touch.widgets.SingleSliderDrag");
     }
 });
