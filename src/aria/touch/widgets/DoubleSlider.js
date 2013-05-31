@@ -14,10 +14,10 @@
  */
 
 /**
- * Double Slider widget.<br/>
- * This widget has two movable thumbs over a region defined by the width of the widget.<br/>
- * The first thumb is aligned on its right border, while the second thumb on its left, this allows them to have the same value.
- * The length of the rail (where the thumbs can move) is thus the difference between the widget's width and its thumbs width.
+ * Double Slider widget.<br/> This widget has two movable thumbs over a region defined by the width of the widget.<br/>
+ * The first thumb is aligned on its right border, while the second thumb on its left, this allows them to have the same
+ * value. The length of the rail (where the thumbs can move) is thus the difference between the widget's width and its
+ * thumbs width.
  */
 Aria.classDefinition({
     $classpath : "aria.touch.widgets.DoubleSlider",
@@ -55,8 +55,8 @@ Aria.classDefinition({
         this._firstWidth = 0;
 
         /**
-         * Computed width of the second thumb. The actual value is compute on initialization.
-         * Being aligned differently it should account for the borders.
+         * Computed width of the second thumb. The actual value is compute on initialization. Being aligned differently
+         * it should account for the borders.
          * @type {Number}
          * @protected
          */
@@ -77,8 +77,8 @@ Aria.classDefinition({
         this.value = [0, 0];
 
         /**
-         * Value before the start of a move, this is kept to raised the change event only
-         * if after a move the new value changes
+         * Value before the start of a move, this is kept to raised the change event only if after a move the new value
+         * changes
          * @type {Array}
          * @protected
          */
@@ -239,17 +239,15 @@ Aria.classDefinition({
                 return out.write(this.INVALID_CONFIGURATION);
             }
             out.write([
-                // Div containing the widget
-                '<div class="touchLibSlider" style="width:', this._cfg.width, 'px;">',
-                // Rail, thumbs move over here
-                '<span class="touchContainer" style="width:', this._cfg.width, 'px;" id="', this._domId, '">',
-                // Two thumbs
-                '<span id="', this._secondDomId, '" class="sliderButton secondPoint" style="left:0px;"></span>',
-                '<span id="', this._firstDomId, '" class="sliderButton firstPoint" style="left:0px;"></span>',
-                // Highlight the part between two thumbs
-                '<span class="sliderHighLight" id="', this._domId + "_hightlight", '"></span>',
-                '</span></div>'].join("")
-            );
+                    // Div containing the widget
+                    '<div class="touchLibSlider" style="width:', this._cfg.width, 'px;">',
+                    // Rail, thumbs move over here
+                    '<span class="touchContainer" style="width:', this._cfg.width, 'px;" id="', this._domId, '">',
+                    // Two thumbs
+                    '<span id="', this._secondDomId, '" class="sliderButton secondPoint" style="left:0px;"></span>',
+                    '<span id="', this._firstDomId, '" class="sliderButton firstPoint" style="left:0px;"></span>',
+                    // Highlight the part between two thumbs
+                    '<span class="sliderHighLight" id="', this._domId + "_hightlight", '"></span>', '</span></div>'].join(""));
         },
 
         /**
@@ -267,8 +265,8 @@ Aria.classDefinition({
 
             this._firstWidth = parseInt(aria.utils.Dom.getStyle(this._firstSlider, "width"), 10);
             this._secondWidth = parseInt(aria.utils.Dom.getStyle(this._secondSlider, "width"), 10);
-            this._secondWidth += parseInt(aria.utils.Dom.getStyle(this._secondSlider, "border-left-width"), 10) || 0;
-            this._secondWidth += parseInt(aria.utils.Dom.getStyle(this._secondSlider, "border-right-width"), 10) || 0;
+            this._secondWidth += parseInt(aria.utils.Dom.getStyle(this._secondSlider, "borderLeftWidth"), 10) || 0;
+            this._secondWidth += parseInt(aria.utils.Dom.getStyle(this._secondSlider, "borderRightWidth"), 10) || 0;
             this._railWidth = this._cfg.width - this._firstWidth - this._secondWidth;
 
             this._geometry = aria.utils.Dom.getGeometry(this._domElt);
@@ -278,8 +276,7 @@ Aria.classDefinition({
         },
 
         /**
-         * Read the bound value in the data model, ensure it is defined, between 0 and 1, and assign the value
-         * property.
+         * Read the bound value in the data model, ensure it is defined, between 0 and 1, and assign the value property.
          * @protected
          */
         _readValue : function () {
@@ -297,8 +294,8 @@ Aria.classDefinition({
         },
 
         /**
-         * Set the left position of the two thumbs without knowing if they are correct.
-         * The first thumb is aligned on the left, while the second on the right.
+         * Set the left position of the two thumbs without knowing if they are correct. The first thumb is aligned on
+         * the left, while the second on the right.
          */
         _setLeft : function () {
             var first = Math.max(0, Math.min(this.value[0], this.value[1], 1));
@@ -308,8 +305,8 @@ Aria.classDefinition({
         },
 
         /**
-         * Update the position of the thumbs of the slider depending on the index.
-         * It also updates the width and position of the highlight.
+         * Update the position of the thumbs of the slider depending on the index. It also updates the width and
+         * position of the highlight.
          * @protected
          */
         _updateDisplay : function () {
@@ -377,7 +374,7 @@ Aria.classDefinition({
                 });
                 this._draggable[i].$on({
                     "dragstart" : {
-                        fn: this._onDragStart,
+                        fn : this._onDragStart,
                         scope : this
                     },
                     "move" : {
