@@ -267,8 +267,8 @@ Aria.classDefinition({
 
             this._firstWidth = parseInt(aria.utils.Dom.getStyle(this._firstSlider, "width"), 10);
             this._secondWidth = parseInt(aria.utils.Dom.getStyle(this._secondSlider, "width"), 10);
-            this._secondWidth += parseInt(aria.utils.Dom.getStyle(this._secondSlider, "border-left-width"), 10) || 0;
-            this._secondWidth += parseInt(aria.utils.Dom.getStyle(this._secondSlider, "border-right-width"), 10) || 0;
+            this._secondWidth += parseInt(aria.utils.Dom.getStyle(this._secondSlider, "borderLeftWidth"), 10) || 0;
+            this._secondWidth += parseInt(aria.utils.Dom.getStyle(this._secondSlider, "borderRightWidth"), 10) || 0;
             this._railWidth = this._cfg.width - this._firstWidth - this._secondWidth;
 
             this._geometry = aria.utils.Dom.getGeometry(this._domElt);
@@ -377,7 +377,7 @@ Aria.classDefinition({
                 });
                 this._draggable[i].$on({
                     "dragstart" : {
-                        fn: this._onDragStart,
+                        fn : this._onDragStart,
                         scope : this
                     },
                     "move" : {
