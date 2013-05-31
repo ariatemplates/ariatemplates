@@ -32,7 +32,7 @@
 
 		div.touchLibSlider span.touchContainer {
             position: absolute;
-			height: 17px;
+			height: 18px;
         }
 
         div.touchLibSlider span.sliderButton {
@@ -40,6 +40,7 @@
           border: 2px solid #4776A7;
           border-radius: 32px 32px 32px 32px;
           width: 14px;
+          height: 14px;
         }
 
     {/macro}

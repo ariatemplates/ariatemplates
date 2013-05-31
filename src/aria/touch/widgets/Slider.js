@@ -158,13 +158,13 @@ Aria.classDefinition({
                 return out.write(this.INVALID_CONFIGURATION);
             }
             out.write([
-                // Div containing the widget
-                '<div class="touchLibSlider" style="width:', this._cfg.width, 'px;">',
-                // Rail, thumbs move over here
-                '<span class="touchContainer" style="width:', this._cfg.width, 'px;" id="', this._parentDomId, '">',
-                // slider thumb
-                '<span id="', this._domId, '" class="sliderButton" style="left:0px;"></span>',
-                '</span></div>'].join(""));
+                    // Div containing the widget
+                    '<div class="touchLibSlider" style="width:', this._cfg.width, 'px;">',
+                    // Rail, thumbs move over here
+                    '<span class="touchContainer" style="width:', this._cfg.width, 'px;" id="', this._parentDomId,
+                    '">',
+                    // slider thumb
+                    '<span id="', this._domId, '" class="sliderButton" style="left:0px;"></span>', '</span></div>'].join(""));
         },
 
         /**
