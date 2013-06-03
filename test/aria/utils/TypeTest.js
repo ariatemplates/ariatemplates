@@ -154,6 +154,10 @@ Aria.classDefinition({
             myCallback.$dispose();
 
             // NOT callbacks:
+            this.assertFalse(typeUtils.isCallback(null));
+
+            this.assertFalse(typeUtils.isCallback(undefined));
+
             this.assertFalse(typeUtils.isCallback({
                 $classpath : "test.aria.utils.TypeTest",
                 fn : function () {},
