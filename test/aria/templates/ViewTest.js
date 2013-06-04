@@ -29,6 +29,14 @@ Aria.classDefinition({
             return res;
         },
 
+        _buildDummyArray : function () {
+
+            // the extra comma creates a 3rd null element in IE
+            var stringifiedArray = '[["a", true], ["c", true],]';
+            return aria.utils.Json.load(stringifiedArray);
+
+        },
+
         _randomIndex : function (array) {
             return Math.floor(Math.random() * array.length);
         },
@@ -130,6 +138,7 @@ Aria.classDefinition({
             myView.$dispose();
 
         },
+
         /**
          * Creates a map data model for views.
          * @protected
@@ -360,6 +369,19 @@ Aria.classDefinition({
 
             myView.$dispose();
 
+        },
+
+        testMyViewOnArrayWithNullElement : function () {
+            var View = aria.templates.View;
+            var dummyArray = this._buildDummyArray();
+
+            var myDummyView = new View(dummyArray);
+
+            // only happens with IE when creating views with a null element in an array
+            if (myDummyView.initialArray.length === 3) {
+                this.assertErrorInLogs(myDummyView.UNDEFINED_ARRAY_ELEMENT, 1);
+            }
+            myDummyView.$dispose();
         }
     }
 });
