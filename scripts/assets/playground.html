@@ -13,52 +13,61 @@
 <body>
 
 <div id="content">
-    <div class="wrapper">
-        <div class="row">
-            <h3>Options</h3>
+  <div class="wrapper">
+    <div class="row">
+      <h3>Options</h3>
 
-            <form method="post" action="" class="forms">
-              <ul>
-                 <li>
-                    <h5>Template classpath</h5>
-                    <label for="path">Display the following template</label><br>
-                    <input type="text" id="path" name="path" size="60" onchange="buildUrl();">
-                 </li>
-                 <li>
-                    <h5>Dev Mode</h5>
-                    <label>
-                        <input type="checkbox" id="dev" onchange="buildUrl();">
-                        Use non-minified code
-                    </label>
-                 </li>
-              </ul>
+      <form method="post" action="" class="forms">
+        <ul>
+          <li>
+              <h5>Template classpath</h5>
+              <label for="path">Display the following template</label><br>
+              <input type="text" id="path" name="path" size="60" onchange="buildUrl();">
+          </li>
+          <li>
+              <h5>Dev Mode</h5>
+              <label>
+                  <input type="checkbox" id="dev" onchange="buildUrl();" checked>
+                  Use non-minified code
+              </label>
+          </li>
+          <li>
+              <h5>Data Model</h5>
+              <label>
+                  Object used as template's data model<br>
+                  <textarea id="model" onchange="buildUrl();" cols="60" rows=4>{}</textarea>
+              </label>
+          </li>
+        </ul>
 
-              <br><br>
-              <button class="btn-flat-red-border" onclick="play();return false;">Start playing</button>
-              <br>
-              <p>Or visit this URL <a href="#" id="testLink" onclick="play();return false;"></a>
-            </form>
-        </div>
+        <br><br>
+        <button class="btn-flat-red-border" onclick="play();return false;">Start playing</button>
+        <br>
+        <p>Or visit this URL <a href="#" id="testLink" onclick="play();return false;"></a>
+      </form>
     </div>
+  </div>
 </div>
 
 <script>
 var targetUrl = "";
 
 play = function () {
-	buildUrl();
-	window.open(targetUrl, "_play");
+  buildUrl();
+  window.open(targetUrl, "_play");
 };
 
 buildUrl = function () {
-	var path = document.getElementById("path").value;
-	var devMode = document.getElementById("dev").checked;
+  var path = document.getElementById("path").value;
+  var devMode = document.getElementById("dev").checked;
+  var model = document.getElementById("model").value;
 
-	var rootFolder = "/playground/" + (devMode ? "dev/" : "");
-	var parts = [rootFolder + "?path=" + encodeURIComponent(path)];
-	targetUrl = parts.join("&");
+  var rootFolder = "/playground/" + (devMode ? "dev/" : "");
+  var parts = [rootFolder + "?path=" + encodeURIComponent(path)];
+  parts.push("model=" + encodeURIComponent(model));
+  targetUrl = parts.join("&");
 
-	document.getElementById("testLink").innerText = targetUrl;
+  document.getElementById("testLink").innerText = targetUrl;
 };
 
 buildUrl();

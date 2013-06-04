@@ -60,7 +60,8 @@ app.get("/playground", function (req, res) {
             skin : "/aria-templates/aria/css/atskin-" + process.env.npm_package_version + ".js"
         },
         dev : false,
-        path : req.query.path
+        path : req.query.path,
+        model : req.query.model
     });
 });
 app.get("/playground/dev", function (req, res) {
@@ -70,7 +71,8 @@ app.get("/playground/dev", function (req, res) {
             skin : "/aria-templates/dev/aria/css/atskin.js"
         },
         dev : true,
-        path : req.query.path
+        path : req.query.path,
+        model : req.query.model
     });
 });
 // Rename bootstrap prefixing with ariatemplates- this fixes runIsolated in dev mode
