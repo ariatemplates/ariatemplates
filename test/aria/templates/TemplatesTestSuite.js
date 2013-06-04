@@ -47,6 +47,7 @@ Aria.classDefinition({
         this.addTests("test.aria.templates.TxtClassGeneratorTest");
         this.addTests("test.aria.templates.TxtTemplateTest");
         this.addTests("test.aria.templates.ViewTest");
+        this.addTests("test.aria.templates.view.ViewTest");
 
         this.addTests("test.aria.templates.dynamicSection.DynSectionTestCase");
         this.addTests("test.aria.templates.focusHandling.FocusHandlingTestCase");

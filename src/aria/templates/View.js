@@ -114,15 +114,15 @@
             this.sortName = null;
             /**
              * Function which returns the sort key, for each element. The first parameter of the callback is of type
-             * aria.templates.ViewCfgBeans.Item. Ignored (and will be set to null) if this.sortOrder == this.SORT_INITIAL. If
-             * you modify this property, it is not taken into account until the next refresh.
+             * aria.templates.ViewCfgBeans.Item. Ignored (and will be set to null) if this.sortOrder ==
+             * this.SORT_INITIAL. If you modify this property, it is not taken into account until the next refresh.
              * @type {aria.core.JsObject.Callback}
              */
             this.sortKeyGetter = null;
 
             /**
-             * Array of items (of type aria.templates.ViewCfgBeans.Item) in the correct sort order. This array must not be
-             * modified outside this class, except for the filteredIn property of each element, which can be set
+             * Array of items (of type aria.templates.ViewCfgBeans.Item) in the correct sort order. This array must not
+             * be modified outside this class, except for the filteredIn property of each element, which can be set
              * (through aria.utils.Json.setValue) to filter in or filter out an element directly.
              * @type {Array}
              */
@@ -224,6 +224,7 @@
                     }],
 
             INVALID_TYPE_OF_ARGUMENT : "Invalid type: a View can be created on Arrays or Objects",
+            UNDEFINED_ARRAY_ELEMENT : "Invalid Array element: creating a View with an undefined element",
 
             /**
              * Utility function whose result can be used for the sortKeyGetter property.
@@ -406,20 +407,29 @@
                         itemsElt = oldValues.pop(iaElt);
                     }
                     if (itemsElt == null) {
-                        itemsElt = {
-                            value : iaElt,
-                            initIndex : i,
-                            filteredIn : true,
-                            sortKey : null,
-                            pageIndex : 0
-                        };
-                        json.addListener(itemsElt, "filteredIn", this._jsonChangeCallback, true);
+                        if (iaElt != null) {
+                            itemsElt = {
+                                value : iaElt,
+                                initIndex : i,
+                                filteredIn : true,
+                                sortKey : null,
+                                pageIndex : 0
+                            };
+
+                            json.addListener(itemsElt, "filteredIn", this._jsonChangeCallback, true);
+                        } else {
+                            // log an error if iaElt is undefined
+                            this.$logError(this.UNDEFINED_ARRAY_ELEMENT);
+                        }
+
                     } else {
                         itemsElt.pageIndex = 0;
                     }
-                    items[i] = itemsElt;
-                    if (!itemsElt.filteredIn) {
-                        filteredOutElements++;
+                    if (itemsElt) {
+                        items[i] = itemsElt;
+                        if (!itemsElt.filteredIn) {
+                            filteredOutElements++;
+                        }
                     }
                 }
                 return {
