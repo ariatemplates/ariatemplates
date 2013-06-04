@@ -48,3 +48,11 @@ body {
 #content h3 {
 	margin-top : 30px;
 }
+
+input[type="text"], textarea {
+	width : 450px;
+}
+
+textarea {
+	height : 100px;
+}

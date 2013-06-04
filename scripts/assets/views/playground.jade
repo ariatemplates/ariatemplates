@@ -23,8 +23,85 @@ html
 				font-family: tahoma,arial,helvetica,sans-serif;
 				font-size: 11px;
 			}
-	body(data-path=path)
+			#logs {
+				z-index: 5;
+				position: fixed;
+				bottom: 0;
+				right: 0;
+				background-color: #F4F4F4;
+				border-left: 1px solid #999;
+				border-top: 1px solid #999;
+				box-shadow: 0 0 4px #777;
+				overflow: auto;
+			}
+			#logs h2 {
+				margin: 0em;
+				margin-bottom: 1.3em;
+				margin-left: 0.3em;
+				cursor: pointer;
+			}
+			#logs h2:hover::after {
+				content: "<- Click to minimize";
+				margin-left: 10px;
+				font-size: 0.7em;
+				font-weight: normal;
+			}
+			#logs p {
+				margin: 0;
+			}
+			#logs hr {
+				margin: 0;
+				border: 0;
+				margin-top: 1em;
+				margin-bottom: 2px;
+				border-top: 1px solid #999;
+				font-size: 0;
+			}
+			#logs em {
+				font-style: normal;
+				color: #999;
+				margin-left: 0.3em;
+			}
+			#logs em::after {
+				content: ": ";
+			}
+			.hidden {
+				width: 0;
+				height: 0;
+				font-size: 0;
+				visibility: hidden;
+			}
+			.minimized {
+				z-index: 4;
+				position: fixed;
+				bottom: 0;
+				right: 0;
+				width: auto;
+				height: auto;
+				background-color: #F4F4F4;
+				border-left: 1px solid #999;
+				border-top: 1px solid #999;
+				box-shadow: 0 0 4px #777;
+				overflow: none;
+				padding: 0 10px;
+				cursor: pointer;
+			}
+			.maximized {
+				width: 50%;
+				height: 250px;
+			}
+			#logs {
+				transition-property: width, height, visibility;
+				transition-duration: 0.3s;
+			}
+			#maximize {
+				transition: width 0.4s ease-in, height 0.4s ease-in;
+			}
+	body(data-path=path, data-model=model)
 		div#root
+		div#logs.hidden
+		div#maximize.minimized
+			p Display logs
 
 		if dev
 			script
@@ -52,11 +129,51 @@ html
 
 				var classpath = document.body.getAttribute("data-path");
 
-				Aria.loadTemplate({
-					classpath:classpath,
-					div:"root",
-					width: width,
-					height: height,
-					data:{}
+				Aria.load({
+					classes : ["aria.utils.Json", "aria.core.log.DivAppender", "aria.utils.Event"],
+					oncomplete : {
+						fn : function () {
+							var div = document.getElementById("logs");
+							var appender = new aria.core.log.DivAppender(div);
+							appender._showSeparator = function () {
+								this._write("<hr/>");
+							};
+							appender._scrollDown = function () {
+								this.div.className = "maximized";
+								this.div.lastChild.scrollIntoView(false);
+							};
+							aria.core.Log.addAppender(appender);
+
+							var logs = document.getElementById("logs");
+							var maximize = document.getElementById("maximize");
+
+							aria.utils.Event.addListener(logs, "click", {
+								fn : function (evt) {
+									var target = evt.target || window.event.srcElement;
+									if (target.tagName.toUpperCase() === "H2") {
+										this.className = "hidden";
+										maximize.className = "minimized";
+									}
+								}
+							});
+							aria.utils.Event.addListener(maximize, "click", {
+								fn : function (evt) {
+									this.className = "hidden";
+									logs.className = "maximized";
+								}
+							});
+
+							var model = aria.utils.Json.load(document.body.getAttribute("data-model")) || {};
+
+							Aria.loadTemplate({
+								classpath: classpath,
+								div: "root",
+								width: width,
+								height: height,
+								data: model
+							});
+						},
+						scope : {}
+					}
 				});
 			})()
