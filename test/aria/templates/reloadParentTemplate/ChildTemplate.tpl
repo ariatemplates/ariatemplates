@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Amadeus s.a.s.
+ * Copyright 2013 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,14 +13,17 @@
  * limitations under the License.
  */
 
-Aria.classDefinition({
-    $classpath : "test.aria.widgetLibs.WidgetLibsTestSuite",
-    $extends : "aria.jsunit.TestSuite",
-    $constructor : function () {
-        this.$TestSuite.constructor.call(this);
+// Sample template for reload of parent template
+{Template {
+    $classpath: "test.aria.templates.reloadParentTemplate.ChildTemplate",
+    $extends: "test.aria.templates.reloadParentTemplate.ParentTemplate"
+}}
 
-        this.addTests("test.aria.widgetLibs.environment.WidgetLibsSettingsTest");
-        this.addTests("test.aria.widgetLibs.BaseWidgetTest");
-        this.addTests("test.aria.widgetLibs.sampleWidget.WidgetLibsTestCase");
-    }
-});
+    {macro overriddenMacro()}
+        This is the child overriddenMacro. It calls the parent overriddenMacro.<br/>
+        <ul>
+            <li style="list-style: circle;">{call $ParentTemplate.overriddenMacro()/}</li>
+        </ul>
+    {/macro}
+
+{/Template}

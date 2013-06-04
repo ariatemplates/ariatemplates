@@ -34,5 +34,8 @@ Aria.classDefinition({
         this.addTests("test.aria.modules.urlService.environment.UrlService");
 
         this.addTests("test.aria.modules.requestHandler.RequestHandlersTestSuite");
+
+        this.addTests("test.aria.modules.moduleReload.ModuleReloadTestCase1");
+        this.addTests("test.aria.modules.moduleReload.ModuleReloadTestCase2");
     }
 });
