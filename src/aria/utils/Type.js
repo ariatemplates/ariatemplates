@@ -154,7 +154,7 @@ Aria.classDefinition({
          * @return {Boolean}
          */
         isCallback : function (value) {
-            if (value === null || value === undefined) {
+            if (value == null) {
                 return false;
             }
             if (value.$Callback) {
