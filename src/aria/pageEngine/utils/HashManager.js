@@ -22,10 +22,11 @@ Aria.classDefinition({
     $dependencies : ["aria.utils.HashManager", "aria.utils.Type"],
     /**
      * @param {aria.core.CfgBeans.Callback} cb Callback called on hash change. It corresponds to a navigate method
+     * @param {aria.core.CfgBeans.Site.$properties.storage} options Options for local storage
      */
-    $constructor : function (cb) {
+    $constructor : function (cb, options) {
 
-        this.$BaseNavigationManager.constructor.call(this, cb);
+        this.$BaseNavigationManager.constructor.apply(this, arguments);
 
         /**
          * Shortcut to the hash manager

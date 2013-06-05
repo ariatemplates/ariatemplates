@@ -110,8 +110,8 @@ Aria.classDefinition({
         },
 
         _createPageEngine : function (args) {
-            this.pageProvider = new this._iframeWindow.test.aria.pageEngine.pageEngine.site.PageProviderFour(this._animations);
-            this.pageEngine = new this._iframeWindow.aria.pageEngine.PageEngine();
+            this.pageProvider = new this._testWindow.test.aria.pageEngine.pageEngine.site.PageProviderFour(this._animations);
+            this.pageEngine = new this._testWindow.aria.pageEngine.PageEngine();
             this.pageEngine.start({
                 pageProvider : this.pageProvider,
                 oncomplete : {
@@ -142,7 +142,7 @@ Aria.classDefinition({
         },
 
         _testInstanceCount : function (tpl, constr, destr) {
-            var instanceCounter = this._iframeWindow.test.aria.pageEngine.pageEngine.site.utils.InstanceCounter;
+            var instanceCounter = this._testWindow.test.aria.pageEngine.pageEngine.site.utils.InstanceCounter;
             instanceCounter.counters[tpl] = instanceCounter.counters[tpl] || {
                 constr : 0,
                 destr : 0

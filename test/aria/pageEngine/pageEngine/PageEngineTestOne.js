@@ -105,8 +105,8 @@ Aria.classDefinition({
 
         _createPageEngine : function (args) {
 
-            this.pageProvider = new this._iframeWindow.test.aria.pageEngine.pageEngine.fakeSite.PageProvider(args.providerArgs);
-            this.pageEngine = new this._iframeWindow.aria.pageEngine.PageEngine();
+            this.pageProvider = new this._testWindow.test.aria.pageEngine.pageEngine.fakeSite.PageProvider(args.providerArgs);
+            this.pageEngine = new this._testWindow.aria.pageEngine.PageEngine();
             this.pageEngine.start({
                 pageProvider : this.pageProvider,
                 onerror : {

@@ -13,18 +13,18 @@
  * limitations under the License.
  */
 
-/**
- * Test suite regrouping all tests for aria.pageEngine.utils package
- */
 Aria.classDefinition({
-    $classpath : "test.aria.pageEngine.utils.UtilsTestSuite",
-    $extends : "aria.jsunit.TestSuite",
+    $classpath : "test.aria.pageEngine.utils.HistoryManagerTest",
+    $extends : "test.aria.pageEngine.utils.BaseNavigationManagerTest",
     $constructor : function () {
-        this.$TestSuite.constructor.call(this);
-        this.addTests("test.aria.pageEngine.utils.SiteConfigHelperTest");
-        this.addTests("test.aria.pageEngine.utils.PageEngineUtilsTest");
-        this.addTests("test.aria.pageEngine.utils.PageConfigHelperTest");
-        this.addTests("test.aria.pageEngine.utils.HashManagerTest");
-        this.addTests("test.aria.pageEngine.utils.HistoryManagerTest");
+        this.$BaseNavigationManagerTest.constructor.call(this);
+        this._dependencies = ["aria.pageEngine.utils.HistoryManager"];
+    },
+    $prototype : {
+
+        _getNavManagerInstance : function (cb, options) {
+            return new this._testWindow.aria.pageEngine.utils.HistoryManager(cb, options);
+        }
+
     }
 });
