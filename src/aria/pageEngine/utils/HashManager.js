@@ -19,7 +19,7 @@
 Aria.classDefinition({
     $classpath : "aria.pageEngine.utils.HashManager",
     $extends : "aria.pageEngine.utils.BaseNavigationManager",
-    $dependencies : ["aria.utils.HashManager"],
+    $dependencies : ["aria.utils.HashManager", "aria.utils.Type"],
     /**
      * @param {aria.core.CfgBeans.Callback} cb Callback called on hash change. It corresponds to a navigate method
      */
@@ -75,13 +75,17 @@ Aria.classDefinition({
          * @param {aria.pageEngine.CfgBeans.PageRequest} pageRequest
          */
         update : function (pageRequest) {
-            var url = pageRequest.url;
+            var url = pageRequest.url, title = pageRequest.title;
             if (url) {
                 this._addInCache(url, pageRequest.pageId);
                 if (this.getUrl() != url) {
                     this._hashManager.setHash(url);
                 }
             }
+            if (aria.utils.Type.isString(title)) {
+                Aria.$window.document.title = title;
+            }
+
         },
 
         /**

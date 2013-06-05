@@ -52,6 +52,7 @@ Aria.classDefinition({
 
             this._checkPageAAA();
             this._checkUrl(/\/pageEngine\/aaa/);
+            this._checkTitle("page_aaa");
 
             this.pageEngine.navigate({
                 pageId : "bbb"
@@ -80,6 +81,7 @@ Aria.classDefinition({
             this._checkModuleInPage("aaa", "common:m1.m2", true);
             this._checkModuleInPage("aaa", "m3", false);
             this._checkModuleInPage("bbb", "m3", true);
+            this._checkTitle("page_bbb");
 
             var that = this;
             this.pageEngine.navigate({
@@ -117,6 +119,7 @@ Aria.classDefinition({
             var that = this;
             this._checkPageBBB();
             this._checkUrl(/\/pageEngine\/bbb/);
+            this._checkTitle("page_bbb");
 
             this.pageEngine.navigate({
                 pageId : "ccc"
@@ -151,6 +154,7 @@ Aria.classDefinition({
 
             this._checkPageCCC();
             this._checkUrl(/\/pageEngine\/ccc/);
+            this._checkTitle("page_ccc");
 
             if (aria.core.Browser.isIE) {
                 aria.core.Timer.addCallback({
@@ -191,6 +195,7 @@ Aria.classDefinition({
             this._checkModuleInPage("bbb", "m3", true);
 
             this._checkUrl(/\/pageEngine\/bbb/);
+            this._checkTitle("page_bbb");
             this._iframeWindow.history.forward();
 
             aria.core.Timer.addCallback({
@@ -203,6 +208,7 @@ Aria.classDefinition({
         _afterFirstForward : function () {
             this._checkPageCCC();
             this._checkUrl(/\/pageEngine\/ccc/);
+            this._checkTitle("page_ccc");
             this._checkVisited();
 
         },
@@ -283,6 +289,13 @@ Aria.classDefinition({
             var module = this.pageEngine._rootModule.getPageModule(pageId, refpath);
             this.assertEquals(module.isInPage(), inPage, "Module " + refpath + " should " + (inPage ? "not " : "")
                     + "be in the current page.");
+        },
+
+        _checkTitle : function (title) {
+            var document = this._iframeWindow.document;
+            var titleTagContent = document.getElementsByTagName('title')[0].innerHTML;
+            this.assertEquals(title, titleTagContent, "Title tag has not been set correctly");
+            this.assertEquals(title, document.title, "document.title has not been set correctly");
         }
 
     }

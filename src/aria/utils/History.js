@@ -368,24 +368,8 @@
              * @private
              */
             _setTitle : function (title) {
-                var document = window.document, titleTag;
-                var titleTags = document.getElementsByTagName('title');
-                if (titleTags.length === 0) {
-                    titleTag = document.createElement("title");
-                    try {
-                        document.head.appendChild(titleTag);
-                    } catch (ex) {}
-                } else {
-                    titleTag = titleTags[0];
-                }
-
+                var document = window.document;
                 if (aria.utils.Type.isString(title)) {
-                    try {
-                        titleTag.innerHTML = aria.utils.String.escapeForHTML(title, {
-                            attr : false,
-                            text : true
-                        });
-                    } catch (ex) {}
                     document.title = title;
                 } else {
                     title = document.title;

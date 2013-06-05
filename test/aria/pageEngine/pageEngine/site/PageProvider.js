@@ -68,6 +68,7 @@ Aria.classDefinition({
                 this.$callback(callback.onsuccess, {
                     pageId : "aaa",
                     url : "/pageEngine/aaa",
+                    title : "page_aaa",
                     contents : {
                         menus : {
                             mymenu : []
@@ -134,6 +135,7 @@ Aria.classDefinition({
                 this.$callback(callback.onsuccess, {
                     pageId : "bbb",
                     url : "/pageEngine/bbb",
+                    title : "page_bbb",
                     contents : {
                         menus : {
                             mymenu : []
@@ -194,6 +196,7 @@ Aria.classDefinition({
                 this.$callback(callback.onsuccess, {
                     pageId : "ccc",
                     url : "/pageEngine/ccc",
+                    title : "page_ccc",
                     contents : {
                         menus : {
                             mymenu : []
