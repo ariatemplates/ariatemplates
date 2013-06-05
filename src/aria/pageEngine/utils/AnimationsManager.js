@@ -83,12 +83,15 @@ Aria.classDefinition({
          * @param {aria.pageEngine.CfgBeans.PageAnimation} pageAnimationCfg page animation configuration object
          */
         startPageTransition : function (activeDiv, inactiveDiv, pageAnimationCfg) {
-            if (pageAnimationCfg.animateOut && pageAnimationCfg.animateIn &&
-                    pageAnimationCfg.animateIn == pageAnimationCfg.animateOut) {
+            if (pageAnimationCfg.animateOut && pageAnimationCfg.animateIn
+                    && pageAnimationCfg.animateIn == pageAnimationCfg.animateOut) {
                 var animationCfg = {
                     from : inactiveDiv,
                     to : activeDiv
                 };
+                if (pageAnimationCfg.type) {
+                    animationCfg.type = pageAnimationCfg.type;
+                }
                 this._syncCfg.waiting += 1;
                 this._start(animationCfg, this._mappingAnimations(pageAnimationCfg.animateOut));
             } else {
@@ -96,6 +99,9 @@ Aria.classDefinition({
                     var animationCfg = {
                         from : inactiveDiv
                     };
+                    if (pageAnimationCfg.type) {
+                        animationCfg.type = pageAnimationCfg.type;
+                    }
                     this._syncCfg.waiting += 1;
                     this._start(animationCfg, this._mappingAnimations(pageAnimationCfg.animateOut));
                 } else {
@@ -107,13 +113,15 @@ Aria.classDefinition({
                     var animationCfg = {
                         to : activeDiv
                     };
+                    if (pageAnimationCfg.type) {
+                        animationCfg.type = pageAnimationCfg.type;
+                    }
                     this._syncCfg.waiting += 1;
                     this._start(animationCfg, this._mappingAnimations(pageAnimationCfg.animateIn));
                 }
             }
 
         },
-
         /**
          * Map the Page Engine page transitions to the aria.utils.css.Animations
          * @param {String} pageTransitionName Page Engine page transition name
