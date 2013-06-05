@@ -286,6 +286,10 @@ Aria.beanDefinitions({
                     $enumValues : ["slide left", "slide right", "slide up", "slide down", "fade", "fade reverse",
                             "pop", "pop reverse", "flip", "flip reverse"],
                     $mandatory : true
+                },
+                "type" : {
+                    $type : "json:Integer",
+                    $description : "type of animation to activate (1: normal/2: with hardware acceleration/3: 3D)"
                 }
             }
         },

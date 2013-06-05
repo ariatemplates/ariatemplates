@@ -55,7 +55,8 @@ Aria.classDefinition({
                     url : "/pageEngine/aaa",
                     animation : {
                         animateIn : "slide left",
-                        animateOut : "slide left"
+                        animateOut : "slide left",
+                        type : 1
                     },
                     contents : {
                         menus : {
@@ -85,7 +86,8 @@ Aria.classDefinition({
                     pageId : "bbb",
                     url : "/pageEngine/bbb",
                     animation : {
-                        animateIn : "fade"
+                        animateIn : "fade",
+                        type : 2
                     },
                     contents : {
                         menus : {
@@ -116,7 +118,8 @@ Aria.classDefinition({
                     url : "/pageEngine/ccc",
                     animation : {
                         animateIn : "flip",
-                        animateOut : "pop"
+                        animateOut : "pop",
+                        type : 3
                     },
                     contents : {
                         menus : {
