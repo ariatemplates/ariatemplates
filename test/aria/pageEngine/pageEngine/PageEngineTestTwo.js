@@ -24,12 +24,12 @@ Aria.classDefinition({
             scope : this
         };
         this._visited = {};
-        this._cssBasePath = "test/templateTests/tests/pageEngine/site/css/";
+        this._cssBasePath = "test/aria/pageEngine/pageEngine/site/css/";
 
     },
     $prototype : {
 
-        runTemplateTestInIframe : function () {
+        runTestInIframe : function () {
 
             this._createPageEngine({
                 oncomplete : "_onPageEngineStarted"

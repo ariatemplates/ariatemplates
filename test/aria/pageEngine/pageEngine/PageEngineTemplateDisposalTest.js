@@ -27,7 +27,7 @@ Aria.classDefinition({
 
         _animations : false,
 
-        runTemplateTestInIframe : function () {
+        runTestInIframe : function () {
             this._createPageEngine({
                 oncomplete : "_onPageEngineStarted"
             });
