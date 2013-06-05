@@ -99,6 +99,32 @@ Aria.beanDefinitions({
                     $description : "Type of navigation from page to page",
                     $enumValues : ["history", "hash"]
                 },
+                "storage" : {
+                    $type : "json:Object",
+                    $description : "Settings for the local storage that is used for saving url-to-pageId maps that and allow page reloads and external navigation.",
+                    $properties : {
+                        "active" : {
+                            $type : "json:Boolean",
+                            $description : "Whether to activate it or not.",
+                            $default : true
+                        },
+                        "suffix" : {
+                            $type : "json:String",
+                            $description : "Suffix that is appended to the default string that is used as key for local storage.",
+                            $default : ""
+                        },
+                        "expiresAfter" : {
+                            $type : "json:Integer",
+                            $description : "Number of seconds after which the items in the cache retrieved from the local storage are considered expired.",
+                            $default : 86400
+                        }
+                    },
+                    $default : {
+                        "active" : true,
+                        "suffix" : "",
+                        "expiresAfter" : 86400
+                    }
+                },
                 "animations" : {
                     $type : "json:Boolean",
                     $description : "If true actives the animations during a page transition",

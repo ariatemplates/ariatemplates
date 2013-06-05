@@ -37,7 +37,7 @@ Aria.classDefinition({
         },
 
         _onPageEngineStarted : function (args) {
-            var text = this._iframeWindow.aria.utils.Dom.getElementById("at-main").innerHTML;
+            var text = this._testWindow.aria.utils.Dom.getElementById("at-main").innerHTML;
             this._testCSSLinkTag(this._cssBasePath + "cssOne.css");
             this._testCSSLinkTag(this._cssBasePath + "cssTwo.css");
             this._testCSSLinkTag(this._cssBasePath + "cssThree.css");
@@ -80,7 +80,7 @@ Aria.classDefinition({
         },
 
         _afterSecondPageReadyAgain : function () {
-            var text = this._iframeWindow.aria.utils.Dom.getElementById("at-main").innerHTML;
+            var text = this._testWindow.aria.utils.Dom.getElementById("at-main").innerHTML;
             this.assertTrue(text.match(/Header/) !== null);
             this.assertTrue(text.match(/BBBB/) !== null);
             this.assertTrue(text.match(/first Module/) !== null);
@@ -113,8 +113,8 @@ Aria.classDefinition({
         },
 
         _createPageEngine : function (args) {
-            this.pageProvider = new this._iframeWindow.test.aria.pageEngine.pageEngine.site.PageProvider();
-            this.pageEngine = new this._iframeWindow.aria.pageEngine.PageEngine();
+            this.pageProvider = new this._testWindow.test.aria.pageEngine.pageEngine.site.PageProvider();
+            this.pageEngine = new this._testWindow.aria.pageEngine.PageEngine();
             this.pageEngine.$addListeners({
                 "pageReady" : this._pageReadyListener
             });

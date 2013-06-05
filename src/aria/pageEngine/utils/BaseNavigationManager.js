@@ -19,19 +19,18 @@
  */
 Aria.classDefinition({
     $classpath : "aria.pageEngine.utils.BaseNavigationManager",
-    $dependencies : ["aria.storage.LocalStorage", "aria.utils.Event"],
+    $dependencies : ["aria.storage.LocalStorage", "aria.utils.Event", "aria.utils.Type"],
     $statics : {
 
         /**
-         * Key that is used in order to save cached information in the local storage
+         * Key prefix that is used in order to save cached information in the local storage
          * @type String
-         * @protected
          */
-        _STORAGE_KEY : "at_pe_navigation_cache",
+        STORAGE_KEY_PREFIX : "at_pe_navigation_cache",
 
         /**
-         * Represents the number of seconds after which the items in the cache retrieved from the local storage are
-         * considered expired. It can be set from the outside.
+         * Represents the default number of seconds after which the items in the cache retrieved from the local storage
+         * are considered expired. It is used if nothing else is specified in the options of the constructor.
          * @type Number
          */
         EXPIRATION_TIME : 86400
@@ -39,8 +38,11 @@ Aria.classDefinition({
 
     /**
      * @param {aria.core.CfgBeans.Callback} cb Callback called on pop state. It corresponds to a navigate method
+     * @param {aria.core.CfgBeans.Site.$properties.storage} options Options for local storage
      */
-    $constructor : function (cb) {
+    $constructor : function (cb, options) {
+
+        options = options || {};
 
         /**
          * Callback called on url change. It corresponds to a navigate method
@@ -49,31 +51,58 @@ Aria.classDefinition({
          */
         this._navigate = cb || null;
 
-        /**
-         * Used to store state information for page refresh and external navigation
-         * @type aria.storage.LocalStorage
-         * @private
-         */
-        this._storage = new aria.storage.LocalStorage();
+        if (options.active) {
 
-        /**
-         * Called on window unload.
-         * @type aria.core.CfgBeans.Callback
-         * @private
-         */
-        this._saveCacheCB = {
-            fn : this._saveCache,
-            scope : this
-        };
+            /**
+             * Key that is used in order to save cached information in the local storage
+             * @type String
+             * @protected
+             */
+            this._storageKey = this.STORAGE_KEY_PREFIX + options.suffix;
 
-        aria.utils.Event.addListener(Aria.$window, "unload", this._saveCacheCB);
+            /**
+             * Number of seconds after which the items in the cache retrieved from the local storage are considered
+             * expired
+             * @type Integer
+             * @protected
+             */
+            this._expiresAfter = aria.utils.Type.isNumber(options.expiresAfter)
+                    ? options.expiresAfter
+                    : this.EXPIRATION_TIME;
 
-        /**
-         * Contains the association between hashes and pageIds for already visited pages
-         * @type Object
-         * @private
-         */
-        this._cache = this._storage.getItem(this._STORAGE_KEY) || {};
+            /**
+             * Used to store state information for page refresh and external navigation
+             * @type aria.storage.LocalStorage
+             * @private
+             */
+            this._storage = new aria.storage.LocalStorage();
+
+            /**
+             * Called on window unload.
+             * @type aria.core.CfgBeans.Callback
+             * @private
+             */
+            this._saveCacheCB = {
+                fn : this._saveCache,
+                scope : this
+            };
+
+            aria.utils.Event.addListener(Aria.$window, "unload", this._saveCacheCB);
+
+            /**
+             * Contains the association between hashes and pageIds for already visited pages
+             * @type Object
+             * @private
+             */
+            this._cache = this._storage.getItem(this._storageKey) || {};
+
+            this._removeOldCache();
+
+        } else {
+
+            this._storage = null;
+            this._cache = {};
+        }
 
     },
     $destructor : function () {
@@ -101,7 +130,7 @@ Aria.classDefinition({
         _saveCache : function () {
             if (this._storage) {
                 this._removeOldCache();
-                this._storage.setItem(this._STORAGE_KEY, this._cache);
+                this._storage.setItem(this._storageKey, this._cache);
                 this._storage.$dispose();
                 this._storage = null;
             }
@@ -114,7 +143,7 @@ Aria.classDefinition({
          */
         _removeOldCache : function () {
             var cache = this._cache;
-            var expirationTime = ((new Date()).getTime() - this.EXPIRATION_TIME * 1000);
+            var expirationTime = ((new Date()).getTime() - this._expiresAfter * 1000);
 
             for (var url in cache) {
                 if (cache.hasOwnProperty(url) && cache[url].age < expirationTime) {
@@ -134,6 +163,14 @@ Aria.classDefinition({
                 id : pageId,
                 age : (new Date()).getTime()
             };
+        },
+
+        /**
+         * Return the cache object
+         * @return {Object}
+         */
+        getCache : function () {
+            return this._cache;
         }
     }
 });

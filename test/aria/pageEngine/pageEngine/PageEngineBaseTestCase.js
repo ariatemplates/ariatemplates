@@ -15,63 +15,13 @@
 
 Aria.classDefinition({
     $classpath : "test.aria.pageEngine.pageEngine.PageEngineBaseTestCase",
-    $extends : "aria.jsunit.TestCase",
-    $dependencies : ["aria.utils.FrameATLoader", "aria.core.log.SilentArrayAppender", "aria.utils.CSSLoader",
-            "aria.utils.String"],
+    $extends : "test.aria.pageEngine.IframeTestCase",
+    $dependencies : ["aria.utils.CSSLoader", "aria.utils.String", "aria.storage.LocalStorage"],
     $constructor : function () {
-        this.$TestCase.constructor.call(this);
+        this.$IframeTestCase.constructor.call(this);
         this._dependencies = ["aria.pageEngine.PageEngine"];
     },
     $prototype : {
-
-        testAsyncInIframe : function () {
-            var document = Aria.$window.document;
-            var iframe = document.createElement("iframe");
-            iframe.id = "test-iframe";
-            iframe.style.cssText = "position:fixed;top:20px;left:20px;z-index:10000;width:612px;height:612px;border:1px solid blue;background:aliceblue";
-            document.body.appendChild(iframe);
-
-            this._iframe = iframe;
-            aria.utils.FrameATLoader.loadAriaTemplatesInFrame(iframe, {
-                fn : this._onIframeReady,
-                scope : this
-            });
-        },
-
-        _onIframeReady : function () {
-            this._iframeWindow = this._iframe.contentWindow;
-            var iDocument = this._iframeWindow.document;
-            var newDiv = iDocument.createElement('div');
-            newDiv.id = "at-main";
-            iDocument.body.appendChild(newDiv);
-            newDiv = null;
-
-            this.waitFor({
-                condition : function () {
-                    try {
-                        return !!this._iframeWindow.Aria.load;
-                    } catch (ex) {
-                        return false;
-                    }
-                },
-                callback : {
-                    fn : this._waitForAriaLoad,
-                    scope : this
-                }
-            });
-        },
-
-        _waitForAriaLoad : function () {
-            this._iframeWindow.aria.core.Log.addAppender(aria.core.Log.getAppenders()[0]);
-            this._iframeWindow.Aria.load({
-                classes : this._dependencies,
-                oncomplete : {
-                    fn : this.runTestInIframe,
-                    scope : this
-                }
-            });
-
-        },
 
         _testCSSLinkTag : function (href, value, limit) {
             value = (value === false) ? false : true;
@@ -80,7 +30,7 @@ Aria.classDefinition({
             var id, element, counter = 0;
             for (var i = 0; i < limit; i++) {
                 id = prefix + i;
-                element = this._iframeWindow.aria.utils.Dom.getElementById(id);
+                element = this._testWindow.aria.utils.Dom.getElementById(id);
                 if (element && aria.utils.String.endsWith(element.href, href)) {
                     counter++;
                 }
@@ -92,13 +42,11 @@ Aria.classDefinition({
             }
         },
 
-        runTestInIframe : Aria.empty,
-
         end : function () {
-            this._iframe.parentNode.removeChild(this._iframe);
-            this._iframeWindow = null;
-            this._iframe = null;
-            this.notifyTestEnd("testAsyncInIframe");
+            var storage = new aria.storage.LocalStorage();
+            storage.clear();
+            storage.$dispose();
+            this.$IframeTestCase.end.call(this);
         }
 
     }

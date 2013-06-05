@@ -40,6 +40,9 @@ Aria.classDefinition({
                 },
                 css : ["test/aria/pageEngine/pageEngine/site/css/cssOne.css"],
                 containerId : "at-main",
+                storage : {
+                    active : false
+                },
                 commonModules : {
                     "m1.m2" : {
                         classpath : "test.aria.pageEngine.pageEngine.site.modules.SimpleModule1",
@@ -134,7 +137,7 @@ Aria.classDefinition({
             if (pageId == "bbb") {
                 this.$callback(callback.onsuccess, {
                     pageId : "bbb",
-                    url : "/pageEngine/bbb",
+                    url : "",
                     title : "page_bbb",
                     contents : {
                         menus : {

@@ -182,16 +182,17 @@ Aria.classDefinition({
 
         /**
          * @param {aria.core.CfgBeans.Callback} cb Callback to be called on page change
+         * @param {aria.core.CfgBeans.Site.$properties.storage} options Options for local storage
          * @return {Object} Instance of the class that manages page navigation
          */
-        getNavigationManager : function (cb) {
+        getNavigationManager : function (cb, options) {
             var navigationType = this.siteConfig.navigation;
             if (navigationType) {
                 if (navigationType == "history") {
-                    return new aria.pageEngine.utils.HistoryManager(cb);
+                    return new aria.pageEngine.utils.HistoryManager(cb, options);
                 }
                 if (navigationType == "hash") {
-                    return new aria.pageEngine.utils.HashManager(cb);
+                    return new aria.pageEngine.utils.HashManager(cb, options);
                 }
             }
             return null;

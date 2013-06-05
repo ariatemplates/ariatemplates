@@ -47,8 +47,8 @@ Aria.classDefinition({
         },
 
         _createPageEngine : function (args) {
-            this.pageProvider = new this._iframeWindow.test.aria.pageEngine.pageEngine.site.PageProviderThree();
-            this.pageEngine = new this._iframeWindow.aria.pageEngine.PageEngine();
+            this.pageProvider = new this._testWindow.test.aria.pageEngine.pageEngine.site.PageProviderThree();
+            this.pageEngine = new this._testWindow.aria.pageEngine.PageEngine();
             this.pageEngine.$addListeners({
                 "pageReady" : this._pageReadyListener
             });
@@ -96,7 +96,7 @@ Aria.classDefinition({
         },
 
         _checkPageAAA : function () {
-            var text = this._iframeWindow.aria.utils.Dom.getElementById("at-main").innerHTML;
+            var text = this._testWindow.aria.utils.Dom.getElementById("at-main").innerHTML;
             this.assertTrue(text.match(/AAAA/) !== null);
             this.assertTrue(text.match(/first Module/) !== null);
             this.assertTrue(text.match(/second Module/) !== null);
@@ -104,7 +104,7 @@ Aria.classDefinition({
         },
 
         _checkPageBBB : function () {
-            var text = this._iframeWindow.aria.utils.Dom.getElementById("at-main").innerHTML;
+            var text = this._testWindow.aria.utils.Dom.getElementById("at-main").innerHTML;
             this.assertTrue(text.match(/Header/) !== null);
             this.assertTrue(text.match(/BBBB/) !== null);
             this.assertTrue(text.match(/first Module/) !== null);

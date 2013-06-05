@@ -32,7 +32,7 @@ Aria.classDefinition({
         },
 
         _onPageEngineStarted : function (args) {
-            var text = this._iframeWindow.aria.utils.Dom.getElementById("at-main").innerHTML;
+            var text = this._testWindow.aria.utils.Dom.getElementById("at-main").innerHTML;
             this.assertTrue(text.match(/Header for page AAAACP1CP2/) !== null);
             this.assertTrue(text.match(/Footer One for page AAAACP1CP2/) !== null);
             this.assertTrue(text.match(/Footer Two for page AAAACP/) === null);
@@ -48,7 +48,7 @@ Aria.classDefinition({
         },
 
         _afterSecondPageReady : function () {
-            var text = this._iframeWindow.aria.utils.Dom.getElementById("at-main").innerHTML;
+            var text = this._testWindow.aria.utils.Dom.getElementById("at-main").innerHTML;
             this.assertTrue(text.match(/Footer One for page BBBBCP2/) !== null);
             this.assertTrue(text.match(/Footer Two for page BBBBCP1CP2/) !== null);
             this.assertTrue(text.match(/The page engine works like a charmCP/) === null);
@@ -60,8 +60,8 @@ Aria.classDefinition({
         },
 
         _createPageEngine : function (args) {
-            this.pageProvider = new this._iframeWindow.test.aria.pageEngine.pageEngine.site.PageProviderTwo();
-            this.pageEngine = new this._iframeWindow.aria.pageEngine.PageEngine();
+            this.pageProvider = new this._testWindow.test.aria.pageEngine.pageEngine.site.PageProviderTwo();
+            this.pageEngine = new this._testWindow.aria.pageEngine.PageEngine();
             this.pageEngine.start({
                 pageProvider : this.pageProvider,
                 oncomplete : {

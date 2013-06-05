@@ -52,8 +52,8 @@ Aria.classDefinition({
          * @type Boolean
          * @protected
          */
-        this._animationsDisabled = (browser.isIE && browser.majorVersion < 10) ||
-                (browser.isFirefox && browser.majorVersion < 4);
+        this._animationsDisabled = (browser.isIE && browser.majorVersion < 10)
+                || (browser.isFirefox && browser.majorVersion < 4);
 
         /**
          * Manages animations in page transitions
@@ -359,16 +359,16 @@ Aria.classDefinition({
          */
         _onSiteReady : function () {
             var helper = this._siteConfigHelper;
-            this.contentProcessors = this._siteConfigHelper.getContentProcessorInstances();
-            this._firstDiv = this._siteConfigHelper.getRootDiv();
-            if (!this._animationsDisabled && this._siteConfigHelper.siteConfig.animations) {
+            this.contentProcessors = helper.getContentProcessorInstances();
+            this._firstDiv = helper.getRootDiv();
+            if (!this._animationsDisabled && helper.siteConfig.animations) {
                 this._animationsManager = new aria.pageEngine.utils.AnimationsManager();
                 this._secondDiv = this._animationsManager.createHiddenDiv(this._firstDiv);
             }
-            this._navigationManager = this._siteConfigHelper.getNavigationManager({
+            this._navigationManager = helper.getNavigationManager({
                 fn : "navigate",
                 scope : this
-            });
+            }, helper.siteConfig.storage);
             this.navigate({
                 url : this._navigationManager ? this._navigationManager.getUrl() : null,
                 pageId : this._navigationManager ? this._navigationManager.getPageId() : null,

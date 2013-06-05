@@ -118,7 +118,6 @@ Aria.classDefinition({
 
             var that = this;
             this._checkPageBBB();
-            this._checkUrl(/\/pageEngine\/bbb/);
             this._checkTitle("page_bbb");
 
             this.pageEngine.navigate({
@@ -163,7 +162,7 @@ Aria.classDefinition({
                     delay : 20
                 });
             } else {
-                this._iframeWindow.history.back();
+                this._testWindow.history.back();
 
                 aria.core.Timer.addCallback({
                     fn : this._afterFirstBack,
@@ -194,9 +193,8 @@ Aria.classDefinition({
             this._checkModuleInPage("ccc", "m3", false);
             this._checkModuleInPage("bbb", "m3", true);
 
-            this._checkUrl(/\/pageEngine\/bbb/);
             this._checkTitle("page_bbb");
-            this._iframeWindow.history.forward();
+            this._testWindow.history.forward();
 
             aria.core.Timer.addCallback({
                 fn : this._afterFirstForward,
@@ -214,8 +212,8 @@ Aria.classDefinition({
         },
 
         _createPageEngine : function (args) {
-            this.pageProvider = new this._iframeWindow.test.aria.pageEngine.pageEngine.site.PageProvider(this._navigation);
-            this.pageEngine = new this._iframeWindow.aria.pageEngine.PageEngine();
+            this.pageProvider = new this._testWindow.test.aria.pageEngine.pageEngine.site.PageProvider(this._navigation);
+            this.pageEngine = new this._testWindow.aria.pageEngine.PageEngine();
             this.pageEngine.$addListeners({
                 "pageReady" : this._pageReadyListener
             });
@@ -256,7 +254,7 @@ Aria.classDefinition({
         },
 
         _checkPageAAA : function () {
-            var text = this._iframeWindow.aria.utils.Dom.getElementById("at-main").innerHTML;
+            var text = this._testWindow.aria.utils.Dom.getElementById("at-main").innerHTML;
             this.assertTrue(text.match(/AAAA/) !== null);
             this.assertTrue(text.match(/first Module/) !== null);
             this.assertTrue(text.match(/second Module/) !== null);
@@ -264,7 +262,7 @@ Aria.classDefinition({
         },
 
         _checkPageBBB : function () {
-            var text = this._iframeWindow.aria.utils.Dom.getElementById("at-main").innerHTML;
+            var text = this._testWindow.aria.utils.Dom.getElementById("at-main").innerHTML;
             this.assertTrue(text.match(/Header/) !== null);
             this.assertTrue(text.match(/BBBB/) !== null);
             this.assertTrue(text.match(/first Module/) !== null);
@@ -273,7 +271,7 @@ Aria.classDefinition({
         },
 
         _checkPageCCC : function () {
-            var text = this._iframeWindow.aria.utils.Dom.getElementById("at-main").innerHTML;
+            var text = this._testWindow.aria.utils.Dom.getElementById("at-main").innerHTML;
             this.assertTrue(text.match(/Header/) !== null);
             this.assertTrue(text.match(/CCCC/) !== null);
             this.assertTrue(text.match(/first Module/) !== null);
@@ -282,7 +280,7 @@ Aria.classDefinition({
         },
 
         _checkUrl : function (url) {
-            this.assertTrue(this._iframeWindow.location.href.match(url) !== null);
+            this.assertTrue(this._testWindow.location.href.match(url) !== null);
         },
 
         _checkModuleInPage : function (pageId, refpath, inPage) {
@@ -292,7 +290,7 @@ Aria.classDefinition({
         },
 
         _checkTitle : function (title) {
-            var document = this._iframeWindow.document;
+            var document = this._testWindow.document;
             var titleTagContent = document.getElementsByTagName('title')[0].innerHTML;
             this.assertEquals(title, titleTagContent, "Title tag has not been set correctly");
             this.assertEquals(title, document.title, "document.title has not been set correctly");
