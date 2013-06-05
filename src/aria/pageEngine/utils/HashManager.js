@@ -75,14 +75,14 @@ Aria.classDefinition({
          * @param {aria.pageEngine.CfgBeans.PageRequest} pageRequest
          */
         update : function (pageRequest) {
-            var url = pageRequest.url, title = pageRequest.title;
-            if (url) {
+            var url = pageRequest.url, title = pageRequest.title, typeUtil = aria.utils.Type;
+            if (typeUtil.isString(url)) {
                 this._addInCache(url, pageRequest.pageId);
                 if (this.getUrl() != url) {
                     this._hashManager.setHash(url);
                 }
             }
-            if (aria.utils.Type.isString(title)) {
+            if (typeUtil.isString(title)) {
                 Aria.$window.document.title = title;
             }
 

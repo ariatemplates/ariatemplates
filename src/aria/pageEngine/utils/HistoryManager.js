@@ -19,7 +19,7 @@
 Aria.classDefinition({
     $classpath : "aria.pageEngine.utils.HistoryManager",
     $extends : "aria.pageEngine.utils.BaseNavigationManager",
-    $dependencies : ["aria.utils.History"],
+    $dependencies : ["aria.utils.History", "aria.utils.Type"],
     /**
      * @param {aria.core.CfgBeans.Callback} cb Callback called on pop state. It corresponds to a navigate method
      */
@@ -85,7 +85,7 @@ Aria.classDefinition({
          */
         update : function (pageRequest) {
             var url = pageRequest.url;
-            if (url) {
+            if (aria.utils.Type.isString(url)) {
                 this._addInCache(url, pageRequest.pageId);
                 if (this.getUrl() != url) {
                     if (pageRequest.replace) {
