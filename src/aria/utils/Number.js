@@ -286,11 +286,20 @@ Aria.classDefinition({
                 return this.$logError(this.INVALID_FORMAT, ["formatCurrency", this.CURRENCY_BEAN]);
             }
 
-            var nString = Math.abs(number).toString().split(".");
-            var nFixed = Math.abs(number).toFixed(patternDescription.maxDecLen).split(".");
             var sign = number < 0 ? "-" : "";
+            var nString = Math.abs(number).toString().split(".");
+            var integer = "", decimalS = nString[1] || "", decimalF = "";
 
-            var integer = nFixed[0], decimalS = nString[1] || "", decimalF = nFixed[1] || "";
+            // When toFixed() expands the decimal part, weird results may ensue (see PTR 06956134 & http://floating-point-gui.de/basic/)
+            // The if block prevents this by manipulating only the string representation when necessary
+            if (patternDescription.maxDecLen > decimalS.length) {
+                integer = nString[0];
+                decimalF = aria.utils.String.pad(decimalS, patternDescription.maxDecLen, "0");
+            } else {
+                var nFixed = Math.abs(number).toFixed(patternDescription.maxDecLen).split(".");
+                integer = nFixed[0];
+                decimalF = nFixed[1] || "";
+            }
 
             // The integer part should be modified only if it shorter than the minimum length
             if (integer.length < patternDescription.minIntLen) {
@@ -527,7 +536,8 @@ Aria.classDefinition({
 
                 // do the same for the decimal part
                 res.minDecLen = res.decimal.lastIndexOf("0") + 1;
-                res.maxDecLen = res.decimal.length;
+                // maxDecLen is limited to 20 to prevent rangeError when using toFixed (precision is lost before that anyway)
+                res.maxDecLen = res.decimal.length > 20 ? 20 : res.decimal.length;
             }
 
             this._cache[pattern] = res;
