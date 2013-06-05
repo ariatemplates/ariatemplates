@@ -294,6 +294,12 @@ Aria.classDefinition({
             formattedCurrency = aria.utils.Number.formatNumber('1000000.0333');
             this.assertTrue(formattedCurrency == '1,000,000.0333');
 
+            formattedCurrency = aria.utils.Number.formatNumber('0.1', "0.0###################");
+            this.assertTrue(formattedCurrency == '0.1');
+
+            formattedCurrency = aria.utils.Number.formatNumber('0.1', "0.000000000000000000000"); // 21 decimals
+            this.assertTrue(formattedCurrency == '0.10000000000000000000'); // 20 decimals
+
         }
     }
 });
