@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Amadeus s.a.s.
+ * Copyright 2013 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,14 +13,23 @@
  * limitations under the License.
  */
 
-Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.datefield.DateFieldTestSuite",
-    $extends : "aria.jsunit.TestSuite",
-    $constructor : function () {
-        this.$TestSuite.constructor.call(this);
+{Template {
+	$classpath : "test.aria.widgets.errorlist.ListErrorTestCaseTpl"
+}}
 
-        this.addTests("test.aria.widgets.form.datefield.issue303.InvalidState");
-        this.addTests("test.aria.widgets.form.datefield.checkValue.DateField");
-        this.addTests("test.aria.widgets.form.datefield.checkDate.DateField");
-    }
-});
+	{macro main()}
+		{@aria:ErrorList {
+			width: 650,
+			margins: "10 1 10 1",
+			title: "Success",
+			filterTypes: ['O'],
+			bind: {
+				messages: {
+					to: "errorMessages",
+					inside: data
+				}
+			}
+		}/}
+	{/macro}
+
+{/Template}

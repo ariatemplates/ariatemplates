@@ -27,23 +27,22 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.AriaSkinInterfaceTest");
         this.addTests("test.aria.widgets.AriaSkinNormalizationTest");
         this.addTests("test.aria.widgets.WidgetTest");
-        this.addTests("test.aria.widgets.action.SortIndicatorTest");
-        this.addTests("test.aria.widgets.action.SortIndicatorBlockTest");
+        this.addTests("test.aria.widgets.action.link.LinkClick");
+        this.addTests("test.aria.widgets.action.sortindicator.SortIndicatorTest");
+        this.addTests("test.aria.widgets.action.sortindicator.onclick.OnclickCallback");
+        this.addTests("test.aria.widgets.action.sortindicator.block.SortIndicatorBlockTest");
         this.addTests("test.aria.widgets.calendar.CalendarControllerTest");
         this.addTests("test.aria.widgets.calendar.lineHeight.CalendarLineHeightTest");
-        this.addTests("test.aria.widgets.container.DivTest");
-        this.addTests("test.aria.widgets.container.FieldsetTest");
-        this.addTests("test.aria.widgets.container.SplitterTest");
-        this.addTests("test.aria.widgets.container.dialog.DialogTestSuite");
-        this.addTests("test.aria.widgets.container.issue80.BindableSizeTestSuite");
+        this.addTests("test.aria.widgets.container.ContainerTestSuite");
         this.addTests("test.aria.widgets.controllers.SelectBoxControllerTest");
         this.addTests("test.aria.widgets.controllers.SelectControllerTest");
+        this.addTests("test.aria.widgets.dropdown.DropDownTestSuite");
         this.addTests("test.aria.widgets.environment.WidgetSettings");
         this.addTests("test.aria.widgets.errorlist.ErrorListControllerTest");
+        this.addTests("test.aria.widgets.errorlist.ListErrorTestCase");
         this.addTests("test.aria.widgets.form.FormTestSuite");
         this.addTests("test.aria.widgets.action.iconbutton.issue276.IconButtonTestCase");
         this.addTests("test.aria.widgets.container.issue367.MovableDialogTestCase");
         this.addTests("test.aria.widgets.verticalAlign.VerticalAlignTestCase");
-
     }
 });

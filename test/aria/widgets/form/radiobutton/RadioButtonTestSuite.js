@@ -14,16 +14,12 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.datepicker.DatePickerTestSuite",
+    $classpath : "test.aria.widgets.form.radiobutton.RadioButtonTestSuite",
     $extends : "aria.jsunit.TestSuite",
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
-        this.addTests("test.aria.widgets.form.datepicker.issue303.InfiniteLoop");
-        this.addTests("test.aria.widgets.form.datepicker.issue429.DateFormatTestCase");
-        this.addTests("test.aria.widgets.form.datepicker.errorstate.DatePicker");
-        this.addTests("test.aria.widgets.form.datepicker.checkValue.DatePicker");
-        this.addTests("test.aria.widgets.form.datepicker.checkFormat.DatePicker");
-        this.addTests("test.aria.widgets.form.datepicker.checkBind.DatePicker");
+        this.addTests("test.aria.widgets.form.radiobutton.checkBind.test1.RadioButtonTest");
+        this.addTests("test.aria.widgets.form.radiobutton.checkBind.test2.RadioButtonTest");
     }
 });

@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Amadeus s.a.s.
+ * Copyright 2013 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,16 +14,16 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.datepicker.DatePickerTestSuite",
+    $classpath : "test.aria.widgets.dropdown.DropDownTestSuite",
     $extends : "aria.jsunit.TestSuite",
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
-        this.addTests("test.aria.widgets.form.datepicker.issue303.InfiniteLoop");
-        this.addTests("test.aria.widgets.form.datepicker.issue429.DateFormatTestCase");
-        this.addTests("test.aria.widgets.form.datepicker.errorstate.DatePicker");
-        this.addTests("test.aria.widgets.form.datepicker.checkValue.DatePicker");
-        this.addTests("test.aria.widgets.form.datepicker.checkFormat.DatePicker");
-        this.addTests("test.aria.widgets.form.datepicker.checkBind.DatePicker");
+        this.addTests("test.aria.widgets.dropdown.fixedWidth.AutocompleteTestCase");
+        this.addTests("test.aria.widgets.dropdown.fixedWidth.MultiSelectTestCase");
+        this.addTests("test.aria.widgets.dropdown.fixedWidth.SelectBoxTestCase");
+        this.addTests("test.aria.widgets.dropdown.predictableId.AutoCompleteTest");
+        this.addTests("test.aria.widgets.dropdown.predictableId.SelectBoxTest");
+        this.addTests("test.aria.widgets.dropdown.predictableId.SelectTest");
     }
 });
