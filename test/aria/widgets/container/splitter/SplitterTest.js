@@ -17,7 +17,7 @@
  * Test case for aria.widgets.container.SplitterTest
  */
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.container.SplitterTest",
+    $classpath : "test.aria.widgets.container.splitter.SplitterTest",
     $extends : "aria.jsunit.WidgetTestCase",
     $dependencies : ["aria.widgets.container.Splitter"],
     $prototype : {

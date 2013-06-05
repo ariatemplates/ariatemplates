@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Amadeus s.a.s.
+ * Copyright 2013 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,14 +13,26 @@
  * limitations under the License.
  */
 
-Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.datefield.DateFieldTestSuite",
-    $extends : "aria.jsunit.TestSuite",
-    $constructor : function () {
-        this.$TestSuite.constructor.call(this);
-
-        this.addTests("test.aria.widgets.form.datefield.issue303.InvalidState");
-        this.addTests("test.aria.widgets.form.datefield.checkValue.DateField");
-        this.addTests("test.aria.widgets.form.datefield.checkDate.DateField");
+{Template {
+    $classpath : "test.aria.widgets.form.autocomplete.paste.PasteTestCaseTpl",
+    $hasScript : true
+}}
+{macro main()}
+<h1>This test needs focus!!</h1>
+<div id="clickCollector">&nbsp;</div>
+{@aria:AutoComplete {
+    resourcesHandler : getHandler(),
+    onchange : {
+        fn : onchange,
+        scope : this
+    },
+    id : "ac",
+    bind : {
+        value : {
+            inside : data,
+            to : "value"
+        }
     }
-});
+}/}
+{/macro}
+{/Template}
