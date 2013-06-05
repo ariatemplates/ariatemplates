@@ -84,15 +84,33 @@ Aria.classDefinition({
             this._updateUrlMap(pageRequest);
             var pageDefinition = this._config.cache ? this._retrieveFromCache(pageRequest) : null;
             if (pageDefinition) {
-                this.$callback(callback.onsuccess, pageDefinition);
+                this.$callback(callback.onsuccess, this.processPageDefinition(pageDefinition));
                 return;
             }
-            this._basePageUrl = this._basePageUrl ||
-                    aria.core.DownloadMgr.resolveURL(this._config.pageBaseLocation + "fake.json").replace(/fake\.json$/, "");
+            this._basePageUrl = this._basePageUrl
+                    || aria.core.DownloadMgr.resolveURL(this._config.pageBaseLocation + "fake.json").replace(/fake\.json$/, "");
             this._sendRequest(this._basePageUrl + pageId + ".json", {
                 pageRequest : pageRequest,
                 callback : callback
             }, "page");
+        },
+
+        /**
+         * Process the site configuration before sending it back to the page engine
+         * @param {Object} siteConf Site configuration retrieved from .json file
+         * @return {aria.pageEngine.CfgBeans.Site}
+         */
+        processSiteConfig : function (siteConf) {
+            return siteConf;
+        },
+
+        /**
+         * Process the page definition before sending it back to the page engine
+         * @param {Object} pageDef Page definition retrieved from .json file
+         * @return {aria.pageEngine.CfgBeans.PageDefinition}
+         */
+        processPageDefinition : function (pageDef) {
+            return pageDef;
         },
 
         /**
@@ -138,7 +156,8 @@ Aria.classDefinition({
          * @private
          */
         _onSiteSuccess : function (res, args) {
-            this.$callback(args.callback.onsuccess, res.responseJSON);
+            var siteConfig = this.processSiteConfig(res.responseJSON);
+            this.$callback(args.callback.onsuccess, siteConfig);
         },
 
         /**
@@ -170,7 +189,7 @@ Aria.classDefinition({
             }
             pageDefinition.url = url;
             this._updateUrlMap(pageDefinition);
-            this.$callback(callback.onsuccess, pageDefinition);
+            this.$callback(callback.onsuccess, this.processPageDefinition(pageDefinition));
         },
 
         /**
