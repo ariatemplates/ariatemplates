@@ -17,7 +17,7 @@
  * Test case for aria.widgets.container.Dialog
  */
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.container.dialog.HeightConstraintsTest",
+    $classpath : "test.aria.widgets.container.dialog.sizes.HeightConstraintsTest",
     $extends : "aria.jsunit.TemplateTestCase",
     $constructor : function () {
         this.$TemplateTestCase.constructor.call(this);
@@ -31,7 +31,7 @@ Aria.classDefinition({
             dialogNoOfLines : this.INITIAL_NUMBER_OF_LINES
         };
         this.setTestEnv({
-            template : "test.aria.widgets.container.dialog.HeightConstraintsTestTpl",
+            template : "test.aria.widgets.container.dialog.sizes.HeightConstraintsTestTpl",
             data : this.data
         });
 
