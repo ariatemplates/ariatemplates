@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Amadeus s.a.s.
+ * Copyright 2013 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,14 +13,22 @@
  * limitations under the License.
  */
 
-Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.datefield.DateFieldTestSuite",
-    $extends : "aria.jsunit.TestSuite",
-    $constructor : function () {
-        this.$TestSuite.constructor.call(this);
+{Template {
+  $classpath : "test.aria.widgets.form.selectbox.checkValue.MainTemplate"
+}}
+  {var count = 1 /}
+  {macro main()}
+      {@aria:SelectBox {
+        id : "selectbox",
+        label : "Choose one option: ",
+        options : data.countries,
+        bind : {
+          options : {
+            inside : data,
+            to : "countries"
+            }
+        }
+    }/}
 
-        this.addTests("test.aria.widgets.form.datefield.issue303.InvalidState");
-        this.addTests("test.aria.widgets.form.datefield.checkValue.DateField");
-        this.addTests("test.aria.widgets.form.datefield.checkDate.DateField");
-    }
-});
+    {/macro}
+{/Template}
