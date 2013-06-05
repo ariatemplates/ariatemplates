@@ -24,6 +24,13 @@ Aria.interfaceDefinition({
             properties : {
                 "pageId" : "Identifier of the page."
             }
+        },
+        "beforePageTransition" : {
+            description : "Raised before displaying a new page, after its dependencies have already been loaded",
+            properties : {
+                "from" : "Id of the page that the pageEngine is navigating away from.",
+                "to" : "Id of the page that the pageEngine is navigating to."
+            }
         }
     },
     $interface : {
@@ -47,7 +54,6 @@ Aria.interfaceDefinition({
          *     appData : {Object} application data,
          *     pageData : {Object} data specific to the current page,
          *     pageInfo : {aria.pageEngine.CfgBeans.PageNavigationInformation} information on the current page
-         *
          * }
          * </pre>
          */
