@@ -23,7 +23,13 @@ Aria.classDefinition({
             fn : this._onPageReady,
             scope : this
         };
+        this._pageTransitionListener = {
+            fn : this._onPageTransition,
+            scope : this
+        };
+
         this._visited = {};
+        this._transitionsTracker = [];
         this._navigation = "history";
     },
     $prototype : {
@@ -49,6 +55,9 @@ Aria.classDefinition({
             // Check present modules
             this._checkModuleInPage("aaa", "common:m1.m2", true);
             this._checkModuleInPage("aaa", "m3", true);
+
+            // Check events
+            this._testTransition(1, 0, null, "aaa");
 
             this._checkPageAAA();
             this._checkUrl(/\/pageEngine\/aaa/);
@@ -83,6 +92,9 @@ Aria.classDefinition({
             this._checkModuleInPage("bbb", "m3", true);
             this._checkTitle("page_bbb");
 
+            // Check events
+            this._testTransition(2, 1, "aaa", "bbb");
+
             var that = this;
             this.pageEngine.navigate({
                 pageId : "bbb"
@@ -115,6 +127,9 @@ Aria.classDefinition({
             this._checkModuleInPage("aaa", "common:m1.m2", true);
             this._checkModuleInPage("aaa", "m3", false);
             this._checkModuleInPage("bbb", "m3", true);
+
+            // Check events
+            this._testTransition(2, 1, "aaa", "bbb");
 
             var that = this;
             this._checkPageBBB();
@@ -150,6 +165,9 @@ Aria.classDefinition({
             this._checkModuleInPage("aaa", "m3", false);
             this._checkModuleInPage("bbb", "m3", false);
             this._checkModuleInPage("ccc", "m3", true);
+
+            // Check events
+            this._testTransition(3, 2, "bbb", "ccc");
 
             this._checkPageCCC();
             this._checkUrl(/\/pageEngine\/ccc/);
@@ -193,6 +211,9 @@ Aria.classDefinition({
             this._checkModuleInPage("ccc", "m3", false);
             this._checkModuleInPage("bbb", "m3", true);
 
+            // Check events
+            this._testTransition(4, 3, "ccc", "bbb");
+
             this._checkTitle("page_bbb");
             this._testWindow.history.forward();
 
@@ -204,6 +225,10 @@ Aria.classDefinition({
         },
 
         _afterFirstForward : function () {
+
+            // Check events
+            this._testTransition(5, 4, "bbb", "ccc");
+
             this._checkPageCCC();
             this._checkUrl(/\/pageEngine\/ccc/);
             this._checkTitle("page_ccc");
@@ -215,7 +240,8 @@ Aria.classDefinition({
             this.pageProvider = new this._testWindow.test.aria.pageEngine.pageEngine.site.PageProvider(this._navigation);
             this.pageEngine = new this._testWindow.aria.pageEngine.PageEngine();
             this.pageEngine.$addListeners({
-                "pageReady" : this._pageReadyListener
+                "pageReady" : this._pageReadyListener,
+                "beforePageTransition" : this._pageTransitionListener
             });
             this.pageEngine.start({
                 pageProvider : this.pageProvider,
@@ -240,7 +266,8 @@ Aria.classDefinition({
 
         _disposePageEngine : function () {
             this.pageEngine.$removeListeners({
-                "pageReady" : this._pageReadyListener
+                "pageReady" : this._pageReadyListener,
+                "beforePageTransition" : this._pageTransitionListener
             });
             this.pageEngine.$dispose();
             this.pageProvider.$dispose();
@@ -251,6 +278,33 @@ Aria.classDefinition({
                 this._visited[args.pageId] = 0;
             }
             this._visited[args.pageId] = this._visited[args.pageId] + 1;
+        },
+
+        _onPageTransition : function (args) {
+            this._transitionsTracker.push(args);
+            if (args.from) {
+                // Test that the data model is not changed before the event is raised
+                this.assertEquals(this.pageEngine.getData().pageInfo.pageId, args.from);
+            }
+
+        },
+
+        _testTransition : function (size, index, from, to) {
+            var transitions = this._transitionsTracker;
+            if (aria.utils.Type.isNumber(size)) {
+                this.assertEquals(transitions.length, size, "The beforePageTransition event has been called the wrong number of times.");
+            }
+            if (aria.utils.Type.isNumber(index)) {
+                var expected = {
+                    from : from,
+                    to : to
+                };
+                var actual = {
+                    from : transitions[index].from,
+                    to : transitions[index].to
+                };
+                this.assertJsonEquals(expected, actual, "The beforePageTransition event has been called the wrong properties.");
+            }
         },
 
         _checkPageAAA : function () {

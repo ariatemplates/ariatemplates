@@ -532,6 +532,11 @@ Aria.classDefinition({
          */
         _displayPage : function (args) {
             var pageConfig = args.pageConfig, cfg = pageConfig.pageComposition, pageId = pageConfig.pageId;
+            this.$raiseEvent({
+                name : "beforePageTransition",
+                from : this.currentPageId,
+                to : pageId
+            });
             this.currentPageId = pageId;
             this._pageConfigs[pageId] = pageConfig;
             var pageRequest = args.pageRequest;
