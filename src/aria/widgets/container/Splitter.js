@@ -204,8 +204,8 @@ Aria.classDefinition({
             this.setProperty("size1", size.size1);
             this.setProperty("size2", size.size2);
             var borderClass = "", splitterBarSize = orientation ? cfg.width : cfg.height;
-            var height = this._height + Number(this._skinObj.separatorHeight), width = this._width
-                    + Number(this._skinObj.separatorWidth);
+            var height = this._height + this._skinObj.separatorHeight, width = this._width
+                    + this._skinObj.separatorWidth;
             if (cfg.border) {
                 borderClass = "xSplitter_" + cfg.sclass + "_sBdr";
             }
