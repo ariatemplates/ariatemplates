@@ -28,7 +28,7 @@ Aria.classDefinition({
     },
     $prototype : {
 
-        runTemplateTestInIframe : function () {
+        runTestInIframe : function () {
             this._createPageEngine({
                 oncomplete : "_onPageEngineStarted"
             });

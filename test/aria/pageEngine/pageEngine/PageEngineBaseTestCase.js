@@ -15,21 +15,24 @@
 
 Aria.classDefinition({
     $classpath : "test.aria.pageEngine.pageEngine.PageEngineBaseTestCase",
-    $extends : "aria.jsunit.TemplateTestCase",
+    $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.utils.FrameATLoader", "aria.core.log.SilentArrayAppender", "aria.utils.CSSLoader",
             "aria.utils.String"],
     $constructor : function () {
-        this.$TemplateTestCase.constructor.call(this);
-        this.setTestEnv({
-            template : "test.aria.pageEngine.pageEngine.MainTemplate"
-        });
+        this.$TestCase.constructor.call(this);
         this._dependencies = ["aria.pageEngine.PageEngine"];
     },
     $prototype : {
 
-        runTemplateTest : function () {
-            this._iframe = aria.utils.Dom.getElementById("test-iframe");
-            aria.utils.FrameATLoader.loadAriaTemplatesInFrame(this._iframe, {
+        testAsyncInIframe : function () {
+            var document = Aria.$window.document;
+            var iframe = document.createElement("iframe");
+            iframe.id = "test-iframe";
+            iframe.style.cssText = "position:fixed;top:20px;left:20px;z-index:10000;width:612px;height:612px;border:1px solid blue;background:aliceblue";
+            document.body.appendChild(iframe);
+
+            this._iframe = iframe;
+            aria.utils.FrameATLoader.loadAriaTemplatesInFrame(iframe, {
                 fn : this._onIframeReady,
                 scope : this
             });
@@ -63,7 +66,7 @@ Aria.classDefinition({
             this._iframeWindow.Aria.load({
                 classes : this._dependencies,
                 oncomplete : {
-                    fn : this.runTemplateTestInIframe,
+                    fn : this.runTestInIframe,
                     scope : this
                 }
             });
@@ -89,12 +92,13 @@ Aria.classDefinition({
             }
         },
 
-        runTemplateTestInIframe : function () {},
+        runTestInIframe : Aria.empty,
 
         end : function () {
+            this._iframe.parentNode.removeChild(this._iframe);
             this._iframeWindow = null;
             this._iframe = null;
-            this.$TemplateTestCase.end.call(this);
+            this.notifyTestEnd("testAsyncInIframe");
         }
 
     }

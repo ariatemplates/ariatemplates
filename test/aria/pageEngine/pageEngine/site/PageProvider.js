@@ -38,7 +38,7 @@ Aria.classDefinition({
                         third : "third"
                     }
                 },
-                css : ["test/templateTests/tests/pageEngine/site/css/cssOne.css"],
+                css : ["test/aria/pageEngine/pageEngine/site/css/cssOne.css"],
                 containerId : "at-main",
                 commonModules : {
                     "m1.m2" : {
@@ -62,7 +62,7 @@ Aria.classDefinition({
          * @param {aria.pageEngine.CfgBeans.ExtendedCallback} callback
          */
         loadPageDefinition : function (pageRequest, callback) {
-            var cssBasePath = "test/templateTests/tests/pageEngine/site/css/";
+            var cssBasePath = "test/aria/pageEngine/pageEngine/site/css/";
             var pageId = pageRequest.pageId;
             if ((!pageId) || (pageId == "aaa")) {
                 this.$callback(callback.onsuccess, {
