@@ -24,5 +24,6 @@ Aria.classDefinition({
         this.addTests("test.aria.pageEngine.pageProviders.BaseProviderSiteTest");
         this.addTests("test.aria.pageEngine.pageProviders.BaseProviderPageCacheTest");
         this.addTests("test.aria.pageEngine.pageProviders.BaseProviderPageNoCacheTest");
+        this.addTests("test.aria.pageEngine.pageProviders.BaseProviderOverrideTest");
     }
 });
