@@ -21,9 +21,9 @@ Aria.classDefinition({
     $extends : "aria.widgetLibs.BaseWidget",
     $css : ["aria.touch.widgets.SliderCSS"],
     $statics : {
-        BUTTON_WIDTH : 14
+        INVALID_CONFIGURATION : "Invalid configuration for the slider!"
     },
-    $dependencies : ["aria.touch.widgets.SliderCfgBeans", "aria.touch.Swipe"],
+    $dependencies : ["aria.touch.widgets.SliderCfgBeans", "aria.utils.Dom", "aria.utils.Mouse"],
     /**
      * Slider Constructor.
      * @param {aria.touch.widgets.SliderCfgBeans.SliderCfg} cfg slider configuration
@@ -33,60 +33,56 @@ Aria.classDefinition({
     $constructor : function (cfg, context, lineNumber) {
         this.$BaseWidget.constructor.apply(this, arguments);
 
-       this._cfgOk = aria.core.JsonValidator.validateCfg("aria.touch.widgets.SliderCfgBeans.SliderCfg", cfg);
-       if (!this._cfgOk) {
+        this._cfgOk = aria.core.JsonValidator.validateCfg("aria.touch.widgets.SliderCfgBeans.SliderCfg", cfg);
+        if (!this._cfgOk) {
             return;
         }
-        /**
-         * Maximum value for this._leftPosition, in pixels.
-         * @type Number
-         * @protected
-         */
-        this._maxLeftPosition = this._cfg.width - this.BUTTON_WIDTH;
-        if (this._maxLeftPosition < 10) {
-            this._maxLeftPosition = 10;
-        }
-        var binding = this._cfg.bindValue;
-        if (binding) {
-            this._bindingCallback = {
-                fn : this._notifyDataChange,
-                scope : this
-            };
-            aria.utils.Json.addListener(binding.inside, binding.to, this._bindingCallback, false);
-        }
+
         /**
          * Value of the widget (must be between 0 and 1)
          * @type Number
          * @protected
          */
-        this._value = null;
+        this._value = 0;
+
         this._readValue();
-        /**
-         * Distance in pixels between the left side of the slider and the left side of its button.
-         * @type Number
-         * @protected
-         */
-        this._leftPosition = null;
-        this._setLeftPosition(this._value * this._maxLeftPosition);
         /**
          * Id generated for the button DOM element of the slider.
          * @type String
          * @protected
          */
-        this._domId = this._createDynamicId();
+        this._domId = cfg.id ? context.$getId(cfg.id) : this._createDynamicId();
         /**
          * Id generated for the slider container element.
          * @type String
          * @protected
          */
-        this._parentDomId = this._createDynamicId();
+        this._parentDomId = this._domId + "_parent";
         /**
-         * Reference to the button DOM element of the slider. It is only defined after the value of the slider is
-         * changed through bindings or if the user interacts with the slider (see the _updateDisplay method).
-         * @type String
+         * Reference to the button DOM element of the slider.
+         * @type HTMLElement
          * @protected
          */
-        this._domElt = null;
+        this._slider = null;
+        /**
+         * Reference to the Container DOM element of the slider.
+         * @type HTMLElement
+         * @protected
+         */
+        this._sliderContainer = null;
+        /**
+         * Reference to the Width of the Thumb.
+         * @type HTMLElement
+         * @protected
+         */
+        this._sliderWidth = null;
+
+        /**
+         * Width of the rail in which thumb travels.
+         * @type {Number}
+         * @protected
+         */
+        this._railWidth = null;
 
         /**
          * Value of the page/clientX property of the touch event when the user started moving the slider. It is then
@@ -96,44 +92,50 @@ Aria.classDefinition({
          * @protected
          */
         this._savedX = null;
-
         /**
-         * True if the value has changed between the time the widget is created and the time its markup is inserted in
-         * the DOM.
-         * @type Boolean
+         * Initial position of the element being dragged
+         * @type {Number}
          * @protected
          */
-        this._needUpdate = false;
+        this._initialDrag = null;
 
-        var ariaWindow = aria.utils.AriaWindow;
-        ariaWindow.$on({
-            "attachWindow" : this._attachBodyEvents,
-            "detachWindow" : this._detachBodyEvents,
-            scope : this
-        });
-        if (ariaWindow.isWindowUsed) {
-            this._attachBodyEvents();
+        var binding = this._cfg.bindValue ? this._cfg.bindValue : null;
+        this._binding = binding;
+        if (binding) {
+            this._bindingCallback = {
+                fn : this._notifyDataChange,
+                scope : this
+            };
+            aria.utils.Json.addListener(binding.inside, binding.to, this._bindingCallback, false);
         }
+        /**
+         * Drag instances associated to the thumb
+         * @type {String} of aria.utils.dragdrop.Drag
+         */
+        this._draggable = null;
     },
     $destructor : function () {
-        this._detachBodyEvents();
         if (this._bindingCallback) {
             var binding = this._cfg.bindValue;
             aria.utils.Json.removeListener(binding.inside, binding.to, this._bindingCallback, false);
             this._bindingCallback = null;
         }
-        this._domElt = null;
-        this._cfgOk = null;
-        this._maxLeftPosition = null;
-        this._cfg = null;
-        this._value = null;
-        this._leftPosition = null;
-        this._domId = null;
-        this._savedX = null;
-        this._needUpdate = null;
+
+        this._draggable.$dispose();
+        this._draggable = null;
+        this._slider = null;
+        this._sliderContainer = null;
         this.$BaseWidget.$destructor.call(this);
     },
     $prototype : {
+
+        /**
+         * Return the configured id of the widget, this is used by the section to register the widget's behavior
+         * @return {String}
+         */
+        getId : function () {
+            return this._cfg.id;
+        },
         /**
          * Main widget entry-point, called by the widget library. Write the markup of the slider.
          * @param {aria.templates.MarkupWriter} out
@@ -142,112 +144,39 @@ Aria.classDefinition({
         writeMarkup : function (out) {
             if (!this._cfgOk) {
                 // configuration was incorrect, do not generate any markup in this case
-                return;
+                this.initWidget = Aria.empty;
+                return out.write(this.INVALID_CONFIGURATION);
             }
-            var html = ['<div class="touchLibSlider" style="width:', this._maxLeftPosition + this.BUTTON_WIDTH,
-                    'px;" id="', this._parentDomId, '"><span id="', this._domId, '" class="sliderButton" style="left:',
-                    this._leftPosition, 'px;">&nbsp;</span></div>'];
-            out.write(html.join(''));
+            out.write([
+                    // Div containing the widget
+                    '<div class="touchLibSlider" style="width:', this._cfg.width,
+                    'px;">',
+                    // Rail, thumbs move over here
+                    '<span class="touchContainer" style="width:', this._cfg.width, 'px;" id="', this._parentDomId,
+                    '">',
+                    // slider thumb
+                    '<span id="', this._domId, '" class="sliderButton" style="left:0px;">&nbsp;</span>',
+                    '</span></div>'].join(""));
         },
 
         /**
-         * Listen for swipestart and swipecancel.
-         * @protected
+         * Initialization method called after the markup of the widget has been inserted in the DOM. This method calls
+         * _updateDisplay if the value has changed between the time the widget is created and the time its markup is
+         * inserted in the DOM.
          */
-        _attachBodyEvents : function () {
-            aria.touch.Swipe.$on({
-                swipestart : {
-                    fn : this._dom_onswipestart,
-                    scope : this
-                },
-                swipecancel : {
-                    fn : this._dom_onswipecancel,
-                    scope : this
-                }
-            });
-        },
+        initWidget : function () {
+            this._readValue();
+            var domUtils = aria.utils.Dom;
 
-        /**
-         * Unregister all listeners for the swipe gesture.
-         * @protected
-         */
-        _detachBodyEvents : function () {
-            aria.touch.Swipe.$unregisterListeners(this);
-        },
-
-        /**
-         * Used when the user first touches the slider button.
-         * @param {Object} evt swipestart event
-         * @protected
-         */
-        _dom_onswipestart : function (evt) {
-            var domElt = this.getButtonDom();
-            var target = (evt.originalEvent.target) ? evt.originalEvent.target : evt.originalEvent.srcElement;
-            if (target.id === domElt.id) {
-                (evt.originalEvent.preventDefault)
-                        ? evt.originalEvent.preventDefault()
-                        : evt.originalEvent.returnValue = false;
-                this._savedX = evt.startX;
-                this._updateDisplay();
-                aria.touch.Swipe.$on({
-                    swipemove : {
-                        fn : this._dom_onswipemove,
-                        scope : this
-                    },
-                    swipeend : {
-                        fn : this._dom_onswipeend,
-                        scope : this
-                    }
-                });
-            }
-        },
-
-        /**
-         * Used when the user moves their finger along the slider.
-         * @param {Object} evt swipemove event
-         * @protected
-         */
-        _dom_onswipemove : function (evt) {
-            var domElt = this.getButtonDom();
-            var target = (evt.originalEvent.target) ? evt.originalEvent.target : evt.originalEvent.srcElement;
-            if (target.id === domElt.id || (domElt.parentNode.id && target.id === domElt.parentNode.id)) {
-                (evt.originalEvent.preventDefault)
-                        ? evt.originalEvent.preventDefault()
-                        : evt.originalEvent.returnValue = false;
-                var diff = evt.route.endX - this._savedX;
-                var oldLeftPosition = this._leftPosition;
-                this._setLeftPosition(this._leftPosition + diff);
-                this._savedX += this._leftPosition - oldLeftPosition;
-                this._updateDisplay();
-                this._setValue(this._leftPosition / this._maxLeftPosition);
-            }
-        },
-
-        /**
-         * Used when the user stops touching the slider.
-         * @param {Object} evt swipeend event
-         * @protected
-         */
-        _dom_onswipeend : function (evt) {
-            this._dom_onswipecancel();
-            var domElt = this.getButtonDom();
-            var target = (evt.originalEvent.target) ? evt.originalEvent.target : evt.originalEvent.srcElement;
-            if (target.id === domElt.id) {
-                (evt.originalEvent.preventDefault)
-                        ? evt.originalEvent.preventDefault()
-                        : evt.originalEvent.returnValue = false;
-                this._updateDisplay();
-                this._setValue(this._leftPosition / this._maxLeftPosition);
-            }
-        },
-
-        /**
-         * Used when the swipe was invalid.
-         * @protected
-         */
-        _dom_onswipecancel : function () {
-            this._detachBodyEvents();
-            this._attachBodyEvents();
+            this._slider = domUtils.getElementById(this._domId);
+            this._sliderContainer = domUtils.getElementById(this._parentDomId);
+            this._sliderWidth = parseInt(domUtils.getStyle(this._slider, "width"), 10);
+            this._sliderWidth += parseInt(aria.utils.Dom.getStyle(this._slider, "borderLeftWidth"), 10) || 0;
+            this._sliderWidth += parseInt(aria.utils.Dom.getStyle(this._slider, "borderRightWidth"), 10) || 0;
+            this._railWidth = this._cfg.width - this._sliderWidth;
+            this._setLeftPosition();
+            this._updateDisplay();
+            this._loadAndCreateDraggable();
         },
 
         /**
@@ -255,13 +184,99 @@ Aria.classDefinition({
          * @param {Number} newLeftPosition new position
          * @protected
          */
-        _setLeftPosition : function (newLeftPosition) {
-            if (newLeftPosition > this._maxLeftPosition) {
-                newLeftPosition = this._maxLeftPosition;
-            } else if (newLeftPosition < 0) {
-                newLeftPosition = 0;
+        _setLeftPosition : function () {
+            var value = this._value;
+            this._savedX = Math.floor(value * this._railWidth);
+        },
+
+        /**
+         * Load the dependency for Drag before if not loaded yet.
+         * @protected
+         */
+        _loadAndCreateDraggable : function () {
+            if (aria.utils.dragdrop && aria.utils.dragdrop.Drag) {
+                this._createSliderDrag();
+            } else {
+                Aria.load({
+                    classes : ["aria.utils.dragdrop.Drag"],
+                    oncomplete : {
+                        fn : this._createSliderDrag,
+                        scope : this
+                    }
+                });
             }
-            this._leftPosition = newLeftPosition;
+        },
+
+        /**
+         * Create the Draggable element.
+         * @protected
+         */
+        _createSliderDrag : function () {
+            if (!this._cfg) {
+                // In case the widget gets disposed while loading the dependencies
+                return;
+            }
+            var thumbs = [this._firstSlider, this._secondSlider];
+
+            this._draggable = new aria.utils.dragdrop.Drag(this._slider, {
+                handle : this._slider,
+                proxy : null,
+                axis : "x",
+                constrainTo : this._sliderContainer
+            });
+            this._draggable.$on({
+                "dragstart" : {
+                    fn : this._onDragStart,
+                    scope : this
+                },
+                "move" : {
+                    fn : this._onDragMove,
+                    scope : this
+                },
+                "dragend" : {
+                    fn : this._onDragEnd,
+                    scope : this
+                }
+            });
+
+        },
+        /**
+         * Handle the beginning of a drag
+         * @protected
+         * @param {aria.DomEvent} evt
+         */
+        _onDragStart : function (evt) {
+            this._initialDrag = evt.src.posX;
+        },
+
+        /**
+         * Handle the move during a drag by setting the correct position of the thumb element
+         * @protected
+         * @param {aria.DomEvent} evt
+         */
+        _onDragMove : function (evt) {
+            this._move(evt.src);
+        },
+
+        /**
+         * Handle the mouse up or touch end during drag end by setting the correct position of the thumb element
+         * @protected
+         * @param {aria.DomEvent} evt
+         */
+        _onDragEnd : function (evt) {
+            this._move(evt.src);
+            this._initialDrag = null;
+        },
+
+        /**
+         * Move a source element
+         * @param {Object} src Source of the drag gesture
+         */
+        _move : function (src) {
+            var diff = src.posX - this._initialDrag;
+            this._savedX += diff;
+            this._initialDrag = src.posX;
+            this._setValue();
         },
 
         /**
@@ -269,14 +284,18 @@ Aria.classDefinition({
          * @param {Number} newValue new value
          * @protected
          */
-        _setValue : function (newValue) {
+        _setValue : function () {
+            var pos = this._savedX, newValue = Math.max(pos / this._railWidth, 0);
             if (newValue !== this._value) {
                 this._value = newValue;
-                var binding = this._cfg.bindValue;
+                var binding = this._binding;
                 if (binding) {
                     aria.utils.Json.setValue(binding.inside, binding.to, newValue);
                 }
+            } else {
+                this._notifyDataChange();
             }
+            return;
         },
 
         /**
@@ -285,12 +304,14 @@ Aria.classDefinition({
          * @protected
          */
         _readValue : function () {
-            var value = this._value;
-            var binding = this._cfg.bindValue;
-            if (binding) {
-                value = binding.inside[binding.to];
+            var value;
+            var binding = this._binding;
+            if (!binding) {
+                return;
             }
-            if (value === null) {
+
+            value = binding.inside[binding.to];
+            if (value == null) {
                 value = 0;
             }
             if (value < 0) {
@@ -300,6 +321,8 @@ Aria.classDefinition({
                 value = 1;
             }
             this._value = value;
+            aria.utils.Json.setValue(binding.inside, binding.to, this._value, this._bindingCallback);
+
         },
 
         /**
@@ -309,7 +332,7 @@ Aria.classDefinition({
          */
         _notifyDataChange : function () {
             this._readValue();
-            this._setLeftPosition(this._value * this._maxLeftPosition);
+            this._setLeftPosition();
             this._updateDisplay();
         },
 
@@ -318,59 +341,10 @@ Aria.classDefinition({
          * @protected
          */
         _updateDisplay : function () {
-            var domElt = this.getButtonDom();
-            if (!domElt) {
-                // This case may happen if the bound value changed between the time the widget is created and the time
-                // its markup is inserted in the DOM
-                this._needUpdate = true; // mark that it needs update (it will be updated when the widget is inserted
-                // in the DOM, see the initWidget method)
-                return;
+            if (this._slider) {
+                this._slider.style.left = this._savedX + "px";
             }
-            var className = "sliderButton";
-            className += " down";
-            if (domElt.className != className) {
-                domElt.className = className;
-            }
-            var leftStyle = this._leftPosition + "px";
-            if (domElt.style.left != leftStyle) {
-                domElt.style.left = leftStyle;
-            }
-        },
-
-        /**
-         * Initialization method called after the markup of the widget has been inserted in the DOM. This method calls
-         * _updateDisplay if the value has changed between the time the widget is created and the time its markup is
-         * inserted in the DOM.
-         * @public
-         */
-        initWidget : function () {
-            if (this._needUpdate) {
-                this._updateDisplay();
-            }
-        },
-
-        /**
-         * Return the DOM element corresponding to the button of the slider.
-         * @return {HTMLElement}
-         * @public
-         */
-        getButtonDom : function () {
-            var domElt = this._domElt;
-            if (domElt === null) {
-                domElt = aria.utils.Dom.getElementById(this._domId);
-                this._domElt = domElt;
-            }
-            return domElt;
-        },
-
-        /**
-         * Return the DOM element corresponding to the whole slider.
-         * @return {HTMLElement}
-         * @public
-         */
-        getDom : function () {
-            var domElt = this.getButtonDom();
-            return domElt.parentNode;
         }
+
     }
 });
