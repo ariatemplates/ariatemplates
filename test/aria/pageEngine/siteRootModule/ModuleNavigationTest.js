@@ -22,6 +22,7 @@ Aria.classDefinition({
     $constructor : function () {
         this.$SiteRootModuleBaseTestCase.constructor.call(this);
         this._navigateCalls = [];
+        this._moduleNavigateCallbackCalled = false;
     },
     $destructor : function () {
         this.$SiteRootModuleBaseTestCase.$destructor.call(this);
@@ -44,17 +45,22 @@ Aria.classDefinition({
             });
         },
 
-        _navigate : function (page) {
+        _navigate : function (page, cb) {
             this._navigateCalls.push(page);
+            this.$callback(cb);
         },
 
         _testAsyncLoadPageEngineModulesOneCB : function () {
 
             this.rm.navigate({
                 pageId : "BBBB"
+            }, {
+                fn : this._navigateCallback,
+                scope : this
             });
 
             this.assertTrue(this._navigateCalls.length == 1);
+            this.assertTrue(this._moduleNavigateCallbackCalled, "The navigation callback provided to the root module navigate method was not correctly called.");
             this.assertJsonEquals(this._navigateCalls[0], {
                 pageId : "BBBB"
             }, "navigate method is not working correctly");
@@ -83,7 +89,10 @@ Aria.classDefinition({
 
             this.rm.$dispose();
             this.notifyTestEnd("testLoadPageEngineModulesOne");
+        },
 
+        _navigateCallback : function () {
+            this._moduleNavigateCallbackCalled = true;
         }
 
     }
