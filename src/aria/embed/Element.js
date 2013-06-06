@@ -15,8 +15,6 @@
 
 /**
  * Element widget for the Embed Lib
- * @class aria.embed.Element
- * @extends aria.widgetLibs.BaseWidget
  */
 Aria.classDefinition({
     $classpath : "aria.embed.Element",
@@ -34,7 +32,18 @@ Aria.classDefinition({
     },
     $destructor : function () {
         if (this._domId) {
-            this._cfg.controller.onEmbededElementDispose(aria.utils.Dom.getElementById(this._domId), this._cfg.args);
+            /* BACKWARD COMATIBILITY BEGIN */
+            // typo on onEmbeddedElementDispose
+            if (this._cfg.controller.onEmbededElementDispose) {
+                this.$logError("onEmbededElementDispose has been deprecated, please use onEmbeddedElementDispose");
+                this._cfg.controller.onEmbededElementDispose(aria.utils.Dom.getElementById(this._domId), this._cfg.args);
+            } else {
+            /* BACKWARD COMATIBILITY END */
+                this._cfg.controller.onEmbeddedElementDispose(aria.utils.Dom.getElementById(this._domId), this._cfg.args);
+            /* BACKWARD COMATIBILITY BEGIN */
+            }
+            /* BACKWARD COMATIBILITY END */
+            // When the backward compatibility is removed, only the else should remain
         }
         this.$BaseWidget.$destructor.apply(this, arguments);
     },
@@ -64,7 +73,18 @@ Aria.classDefinition({
          */
         initWidget : function () {
             if (this._cfgOk) {
-                this._cfg.controller.onEmbededElementCreate(aria.utils.Dom.getElementById(this._domId), this._cfg.args);
+                /* BACKWARD COMATIBILITY BEGIN */
+                // typo on onEmbeddedElementDispose
+                if (this._cfg.controller.onEmbededElementCreate) {
+                    this.$logError("onEmbededElementCreate has been deprecated, please use onEmbeddedElementCreate");
+                    this._cfg.controller.onEmbededElementCreate(aria.utils.Dom.getElementById(this._domId), this._cfg.args);
+                } else {
+                /* BACKWARD COMATIBILITY END */
+                    this._cfg.controller.onEmbeddedElementCreate(aria.utils.Dom.getElementById(this._domId), this._cfg.args);
+                /* BACKWARD COMATIBILITY BEGIN */
+                }
+                /* BACKWARD COMATIBILITY END */
+                // When the backward compatibility is removed, only the else should remain
             }
         }
     }

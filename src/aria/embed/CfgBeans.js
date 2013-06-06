@@ -43,7 +43,7 @@ Aria.beanDefinitions({
                 },
                 "args" : {
                     $type : "json:MultiTypes",
-                    $description : "Argument given to the onEmbededElementCreate and onEmbededElementDispose functions of the provided embed controller"
+                    $description : "Argument given to the onEmbeddedElementCreate and onEmbeddedElementDispose functions of the provided embed controller"
                 }
             }
         },
