@@ -69,7 +69,7 @@
              * @param {HTMLElement} container
              * @param {Object} cfg
              */
-            onEmbededElementCreate : function (container, cfg) {
+            onEmbeddedElementCreate : function (container, cfg) {
                 var localMapStatus = this.mapManager.getMapStatus(cfg.id);
                 var mapDom = mapDoms[cfg.id];
                 if (localMapStatus === null) {
@@ -149,7 +149,7 @@
              * @param {HTMLElement} container
              * @param {Object} cfg
              */
-            onEmbededElementDispose : function (container, cfg) {
+            onEmbeddedElementDispose : function (container, cfg) {
                 var id = cfg.id;
                 if (cfg.loadingIndicator) {
                     this._triggerLoadingIndicator(container, false);
