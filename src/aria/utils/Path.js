@@ -148,7 +148,7 @@ Aria.classDefinition({
                     }
                 }
             } else if (first == ".") {
-                part = /^[_A-z]\w*/.exec(path.substring(1));
+                part = /^[_A-z\$]\w*/.exec(path.substring(1));
                 if (part.length) {
                     part = part[0];
                     next = path.substring(part.length + 1);

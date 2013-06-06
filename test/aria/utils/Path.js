@@ -27,7 +27,7 @@ Aria.classDefinition({
          */
         test_parse : function () {
 
-            var path = "data.test.elem[0][\"par'a:m\\\"1\"].param2['0']";
+            var path = "data.test.elem[0][\"par'a:m\\\"1\"].param2['0'].$properties";
             var parsedPath = aria.utils.Path.parse(path);
 
             this.assertTrue(parsedPath[0] == "data");
@@ -37,6 +37,7 @@ Aria.classDefinition({
             this.assertTrue(parsedPath[4] == "par'a:m\"1");
             this.assertTrue(parsedPath[5] == "param2");
             this.assertTrue(parsedPath[6] == "0");
+            this.assertTrue(parsedPath[7] == "$properties");
         },
 
         /**
@@ -47,14 +48,20 @@ Aria.classDefinition({
             // method has two signature, with string and array
             var pathStr = "param1[0]['param3']";
             var pathArray = ["param1", 0, "param4"];
+
+            // test that properties starting with the dollar sign are correctly resolved
+            var pathWithDollar = "param1[0].$var";
+
             var obj = {
                 param1 : [{
                             param3 : 13,
-                            param4 : false
+                            param4 : false,
+                            $var : "testString"
                         }]
             };
             this.assertTrue(aria.utils.Path.resolve(pathStr, obj) == 13);
             this.assertTrue(aria.utils.Path.resolve(pathArray, obj) === false);
+            this.assertTrue(aria.utils.Path.resolve(pathWithDollar, obj) === "testString");
         },
 
         /**
