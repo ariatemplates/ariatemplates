@@ -283,7 +283,13 @@ Aria.classDefinition({
             }
 
             if (this._label != null) {
-                this._label.style.color = this._skinObj.states[newState].color;
+                try {
+                    // This call throws an exception when the color is 'inherit'
+                    // and the browser or the browser mode is IE7
+                    this._label.style.color = this._skinObj.states[newState].color;
+                } catch (ex) {
+                    this._label.style.color = "";
+                }
             }
 
         },
