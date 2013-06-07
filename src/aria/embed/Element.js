@@ -35,7 +35,7 @@ Aria.classDefinition({
             /* BACKWARD COMATIBILITY BEGIN */
             // typo on onEmbeddedElementDispose
             if (this._cfg.controller.onEmbededElementDispose) {
-                this.$logError("onEmbededElementDispose has been deprecated, please use onEmbeddedElementDispose");
+                this.$logWarn("onEmbededElementDispose has been deprecated, please use onEmbeddedElementDispose");
                 this._cfg.controller.onEmbededElementDispose(aria.utils.Dom.getElementById(this._domId), this._cfg.args);
             } else {
             /* BACKWARD COMATIBILITY END */
@@ -76,7 +76,7 @@ Aria.classDefinition({
                 /* BACKWARD COMATIBILITY BEGIN */
                 // typo on onEmbeddedElementDispose
                 if (this._cfg.controller.onEmbededElementCreate) {
-                    this.$logError("onEmbededElementCreate has been deprecated, please use onEmbeddedElementCreate");
+                    this.$logWarn("onEmbededElementCreate has been deprecated, please use onEmbeddedElementCreate");
                     this._cfg.controller.onEmbededElementCreate(aria.utils.Dom.getElementById(this._domId), this._cfg.args);
                 } else {
                 /* BACKWARD COMATIBILITY END */
