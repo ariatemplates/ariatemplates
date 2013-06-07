@@ -33,13 +33,6 @@ Aria.classDefinition({
          */
         this._config = config;
 
-        /**
-         * Base location of pages
-         * @type String
-         * @protected
-         */
-        this._basePageUrl = null;
-
         if (!("cache" in config)) {
             config.cache = true;
         }
@@ -87,9 +80,8 @@ Aria.classDefinition({
                 this.$callback(callback.onsuccess, this.processPageDefinition(pageDefinition));
                 return;
             }
-            this._basePageUrl = this._basePageUrl
-                    || aria.core.DownloadMgr.resolveURL(this._config.pageBaseLocation + "fake.json").replace(/fake\.json$/, "");
-            this._sendRequest(this._basePageUrl + pageId + ".json", {
+            var pageUrl = aria.core.DownloadMgr.resolveURL(this._config.pageBaseLocation + pageId + ".json");
+            this._sendRequest(pageUrl, {
                 pageRequest : pageRequest,
                 callback : callback
             }, "page");
