@@ -262,6 +262,11 @@ Aria.classDefinition({
                 jnlpHrefParam.setAttribute("value", jnlp);
                 applet.appendChild(jnlpHrefParam);
 
+                var separateJvmParam = document.createElement("param");
+                separateJvmParam.setAttribute("name", "separate_jvm");
+                separateJvmParam.setAttribute("value", "true");
+                applet.appendChild(separateJvmParam);
+
                 var initCallbackParam = document.createElement("param");
                 initCallbackParam.setAttribute("name", "initCallback");
                 if (!this._initStringCb) {
@@ -365,8 +370,8 @@ Aria.classDefinition({
 
         smoothMouseMove : function (from, to, duration, cb) {
             var viewport = aria.utils.Dom._getViewportSize();
-            if (from.x < 0 || from.y < 0 || from.x > viewport.width || from.y > viewport.height || to.x < 0 ||
-                    to.y < 0 || to.x > viewport.width || to.y > viewport.height) {
+            if (from.x < 0 || from.y < 0 || from.x > viewport.width || from.y > viewport.height || to.x < 0 || to.y < 0
+                    || to.x > viewport.width || to.y > viewport.height) {
                 // FIXME: log error correctly
                 this.$logWarn("smoothMouseMove from or to position outside of the viewport.");
                 // return;
@@ -420,8 +425,8 @@ Aria.classDefinition({
 
         screenCapture : function (geometry, imageName, cb) {
             var viewport = aria.utils.Dom._getViewportSize();
-            if (geometry.x < 0 || geometry.y < 0 || geometry.width < 0 || geometry.height < 0 ||
-                    geometry.x + geometry.width > viewport.width || geometry.y + geometry.height > viewport.height) {
+            if (geometry.x < 0 || geometry.y < 0 || geometry.width < 0 || geometry.height < 0
+                    || geometry.x + geometry.width > viewport.width || geometry.y + geometry.height > viewport.height) {
                 // FIXME: log error correctly
                 this.$logError("Screen capture area outside of the viewport.");
                 return;
