@@ -367,6 +367,9 @@ Aria.classDefinition({
                 // In case the widget gets disposed while loading the dependencies
                 return;
             }
+            if (aria.core.Browser.isIE) {
+                this.getDom().onselectstart = Aria.returnFalse;
+            }
             var thumbs = [this._firstSlider, this._secondSlider];
             for (var i = 0, len = thumbs.length; i < len; i++) {
                 this._draggable[i] = new aria.utils.dragdrop.Drag(thumbs[i], {
@@ -420,6 +423,7 @@ Aria.classDefinition({
         _onDragEnd : function (evt) {
             this._move(evt.src);
             this._initialDrag = null;
+            this.getDom().onselectstart = Aria.returnTrue;
             if (this._oldValue[0] !== this.value[0] || this._oldValue[1] !== this.value[1]) {
                 if (this._cfg.onchange) {
                     this._context.evalCallback(this._cfg.onchange);

@@ -22,7 +22,7 @@ Aria.classDefinition({
 
             var from = this.fromThumb("second");
             var to = this.toSlider("second", 0.5);
-
+            this.testDiv.onselectstart = Aria.returnFalse;
             this.drag(from, to, this.dragSecondToMiddle);
         },
 
@@ -68,6 +68,7 @@ Aria.classDefinition({
 
         dragSecondBeforeFirst : function () {
             this.expectAround([0.2, 0.2]);
+            this.testDiv.onselectstart = Aria.returnTrue;
             this.end();
         }
     }
