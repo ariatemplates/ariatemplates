@@ -349,8 +349,8 @@
                 customEvent.button = button;
                 customEvent.relatedTarget = relatedTarget;
             }
-            customEvent.touches = touches;
-            customEvent.changedTouches = changedTouches;
+            customEvent.touches = generateTouchList(touches);
+            customEvent.changedTouches = generateTouchList(changedTouches);
             customEvent.isPrimary = isPrimary;
             customEvent.pageX = clientX;
             customEvent.pageY = clientY;
@@ -512,6 +512,39 @@
         } else {
             fireDomEvent.$logError("simulate(): Event '" + type + "' can't be simulated.");
         }
+    };
+
+    /**
+     * Generate an object that looks like a [TouchList](https://developer.mozilla.org/en-US/docs/Web/API/TouchList)
+     * The [Touch](https://developer.mozilla.org/en-US/docs/Web/API/Touch) objects inside the list have at least
+     * pageX and pageY that if not specified are set equal to clintX and clientY
+     * @param {Array} list An array of touch descriptions
+     * @return {Array} that looks like a TouchList
+     * @private
+     * @method generateTouchList
+     */
+    var generateTouchList = function (list) {
+        if (!list || list.length === 0) {
+            return list;
+        }
+        var  touchList = [];
+        for (var i = 0; i < list.length; i += 1) {
+            var touch = list[i];
+            if (!("pageX" in touch)) {
+                touch.pageX = touch.clientX;
+            }
+            if (!("pageY" in touch)) {
+                touch.pageY = touch.clientY;
+            }
+            touchList.push(touch);
+        }
+        touchList.identifiedTouch = function () {
+            return this[0];
+        };
+        touchList.item = function (i) {
+            return this[i];
+        };
+        return touchList;
     };
 
     /**

@@ -233,14 +233,26 @@
 
                         var pageX = e.pageX;
                         var pageY = e.pageY;
+                        var touchPositions = "";
+                        if (e.touches) {
+                            for (var i = 0; i < e.touches.length; i += 1) {
+                                touchPositions += e.touches[i].pageX + "." + e.touches[i].pageY + "|";
+                            }
+                        }
 
-                        if (mousePosition && mousePosition.x == pageX && mousePosition.y == pageY) {
-                            return;
+                        if (mousePosition && mousePosition.x === pageX && mousePosition.y === pageY) {
+                            // Apparently the mouse didn't move
+                            if (!touchPositions || touchPositions === mousePosition.touches) {
+                                // not a touch or a touch in which none of the position changed
+                                return;
+                            }
+                            // else one of the touches has a different position, go on
                         }
 
                         mousePosition = {
                             x : pageX,
-                            y : pageY
+                            y : pageY,
+                            touches : touchPositions
                         };
 
                         return handlerCBInstance.call(e);
