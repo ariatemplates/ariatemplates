@@ -274,6 +274,9 @@ Aria.classDefinition({
             this._geometry = aria.utils.Dom.getGeometry(this._domElt);
             this._setLeft();
             this._updateDisplay();
+            if (aria.core.Browser.isIE) {
+                this.getDom().onselectstart = Aria.returnFalse;
+            }
             this._loadAndCreateDraggable();
         },
 
