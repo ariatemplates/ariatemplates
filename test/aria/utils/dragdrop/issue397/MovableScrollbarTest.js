@@ -17,7 +17,7 @@
  * Test case for aria.widgets.container.Dialog movable dialog with scroll bars
  */
 Aria.classDefinition({
-    $classpath : "test.aria.utils.dragdrop.issue397.MovableScrollbarTestCase",
+    $classpath : "test.aria.utils.dragdrop.issue397.MovableScrollbarTest",
     $extends : "aria.jsunit.RobotTestCase",
     $dependencies : ["aria.utils.dragdrop.Drag", "aria.utils.Dom"],
     $constructor : function () {

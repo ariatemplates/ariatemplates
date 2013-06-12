@@ -17,14 +17,15 @@
  * Template Test case for the behaviour of drag when the mouse is outside of the boundary
  */
 Aria.classDefinition({
-    $classpath : "test.aria.utils.dragdrop.OutOfBoundaryTestCase",
+    $classpath : "test.aria.utils.dragdrop.OutOfBoundaryTest",
     $extends : "aria.jsunit.RobotTestCase",
     $dependencies : ["aria.utils.dragdrop.Drag", "aria.utils.Dom", "aria.tools.contextual.ContextualMenu"],
     $constructor : function () {
         this.$RobotTestCase.constructor.call(this);
 
         this.setTestEnv({
-            template : "test.aria.utils.dragdrop.DragTestTemplate"
+            template : "test.aria.utils.dragdrop.DragTestTemplate",
+            cssText : "position:relative;top:20px;left:20px;z-index:66666;width:1000px;height:700px;border:15px solid blue;background:aliceblue"
         });
     },
     $prototype : {
@@ -71,8 +72,8 @@ Aria.classDefinition({
         _testOutOfBoundaryCbOne : function () {
             var dom = aria.utils.Dom;
             var geometry = dom.getGeometry(this.element);
-            this.assertTrue(Math.abs(geometry.x - this.geometry.x - 100) < 5);
-            this.assertTrue(Math.abs(geometry.y - this.geometry.y - 100) < 5);
+            this.assertEquals(geometry.x, this.geometry.x + 100);
+            this.assertEquals(geometry.y, this.geometry.y + 100);
             this.geometry = geometry;
 
             this.from = aria.utils.Json.copy(this.options.to);
@@ -90,8 +91,8 @@ Aria.classDefinition({
             testGeo.x += 200;
             var pos = dom.fitInside(testGeo, dom.getGeometry(dom.getElementById("first-boundary")));
 
-            this.assertTrue(Math.abs(geometry.x - pos.left) < 5);
-            this.assertTrue(Math.abs(geometry.y - this.geometry.y) < 5);
+            this.assertEquals(geometry.x, pos.left);
+            this.assertEquals(geometry.y, this.geometry.y);
             this.geometry = geometry;
 
             this.from = aria.utils.Json.copy(this.options.to);
@@ -106,8 +107,8 @@ Aria.classDefinition({
             var dom = aria.utils.Dom;
             var geometry = dom.getGeometry(this.element);
 
-            this.assertTrue(Math.abs(geometry.x - this.geometry.x) < 1);
-            this.assertTrue(Math.abs(geometry.y - this.geometry.y - 110) < 5);
+            this.assertEquals(geometry.x, this.geometry.x);
+            this.assertEquals(geometry.y, this.geometry.y + 110);
             this.geometry = geometry;
 
             this.from = aria.utils.Json.copy(this.options.to);
@@ -121,8 +122,8 @@ Aria.classDefinition({
         _testOutOfBoundaryCbFour : function () {
             var dom = aria.utils.Dom;
             var geometry = dom.getGeometry(this.element);
-            this.assertTrue(Math.abs(geometry.x - this.geometry.x) < 5);
-            this.assertTrue(Math.abs(geometry.y - this.geometry.y) < 5);
+            this.assertEquals(geometry.x, this.geometry.x);
+            this.assertEquals(geometry.y, this.geometry.y);
             this.geometry = geometry;
 
             this.from = aria.utils.Json.copy(this.options.to);
@@ -137,8 +138,8 @@ Aria.classDefinition({
         _testOutOfBoundaryCbFive : function () {
             var dom = aria.utils.Dom;
             var geometry = dom.getGeometry(this.element);
-            this.assertTrue(Math.abs(geometry.x - this.geometry.x + 50) < 5);
-            this.assertTrue(Math.abs(geometry.y - this.geometry.y + 50) < 5);
+            this.assertEquals(geometry.x, this.geometry.x - 50);
+            this.assertEquals(geometry.y, this.geometry.y - 50);
             this.geometry = geometry;
 
             this.synEvent.execute([["mouseRelease", aria.jsunit.Robot.BUTTON1_MASK]], {

@@ -17,11 +17,14 @@
  * Template Test case for aria.utils.dragdrop.Drag in case the movement is constrained
  */
 Aria.classDefinition({
-    $classpath : "test.aria.utils.dragdrop.DragConstraintTestCase",
-    $extends : "test.aria.utils.dragdrop.DragTestCase",
+    $classpath : "test.aria.utils.dragdrop.DragConstraintTest",
+    $extends : "test.aria.utils.dragdrop.AbstractDragTestCase",
     $prototype : {
 
-        _startTesting : function () {
+        /**
+        * @override
+         */
+        startDragTest : function () {
             this._testAxisConstrainedMovement();
         },
 
@@ -49,8 +52,8 @@ Aria.classDefinition({
         _testAxisConstrainedMovementCbOne : function () {
             var dom = aria.utils.Dom;
             var geometry = dom.getGeometry(dom.getElementById("vertical-draggable"));
-            this.assertTrue(this.initialGeometry.x - geometry.x === 0, "axis option did not work correctly");
-            this.assertTrue(geometry.y - this.initialGeometry.y - 50 < 2);
+            this.assertEquals(this.initialGeometry.x, geometry.x, "constraint to axis did not work correctly");
+            this.assertEquals(geometry.y - this.initialGeometry.y, 50);
 
             geometry = dom.getGeometry(dom.getElementById("horizontal-draggable"));
 
@@ -76,8 +79,8 @@ Aria.classDefinition({
         _testAxisConstrainedMovementCbTwo : function () {
             var dom = aria.utils.Dom;
             var geometry = dom.getGeometry(dom.getElementById("horizontal-draggable"));
-            this.assertTrue(geometry.x - this.initialGeometry.x - 50 < 2, "axis option did not work correctly");
-            this.assertTrue(geometry.y - this.initialGeometry.y === 0);
+            this.assertEquals(geometry.x, this.initialGeometry.x + 50);
+            this.assertEquals(geometry.y, this.initialGeometry.y, "constraint to axis did not work correctly");
 
             this._testBoundaryConstrainedMovement();
         },
@@ -111,8 +114,8 @@ Aria.classDefinition({
             var geometry = dom.getGeometry(dom.getElementById("constrained-draggable"));
             var boundary = dom.getGeometry(dom.getElementById("first-boundary"));
             this.assertTrue(dom.isInside(geometry, boundary));
-            this.assertTrue(geometry.x + geometry.width == boundary.x + boundary.width);
-            this.assertTrue(geometry.y + geometry.height == boundary.y + boundary.height);
+            this.assertEquals(geometry.x + geometry.width, boundary.x + boundary.width);
+            this.assertEquals(geometry.y + geometry.height, boundary.y + boundary.height);
 
             geometry = dom.getGeometry(dom.getElementById("vertical-draggable"));
             this.initialGeometry = geometry;
@@ -139,8 +142,8 @@ Aria.classDefinition({
             var geometry = dom.getGeometry(dom.getElementById("vertical-draggable"));
             var boundary = dom.getGeometry(dom.getElementById("second-boundary"));
             this.assertTrue(dom.isInside(geometry, boundary));
-            this.assertTrue(this.initialGeometry.x - geometry.x === 0, "axis option did not work correctly");
-            this.assertTrue(geometry.y + geometry.height == boundary.y + boundary.height);
+            this.assertEquals(this.initialGeometry.x, geometry.x, "constraint to axis did not work correctly");
+            this.assertEquals(geometry.y + geometry.height, boundary.y + boundary.height);
 
             geometry = dom.getGeometry(dom.getElementById("horizontal-draggable"));
             this.initialGeometry = geometry;
@@ -167,8 +170,8 @@ Aria.classDefinition({
             var geometry = dom.getGeometry(dom.getElementById("horizontal-draggable"));
             var boundary = dom.getGeometry(dom.getElementById("third-boundary"));
             this.assertTrue(dom.isInside(geometry, boundary));
-            this.assertTrue(this.initialGeometry.y - geometry.y === 0, "axis option did not work correctly");
-            this.assertTrue(geometry.x + geometry.width == boundary.x + boundary.width);
+            this.assertEquals(this.initialGeometry.y, geometry.y, "constraint to axis did not work correctly");
+            this.assertEquals(geometry.x + geometry.width, boundary.x + boundary.width);
 
             this._testViewportConstrained();
         },

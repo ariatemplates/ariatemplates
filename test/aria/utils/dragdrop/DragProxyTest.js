@@ -17,11 +17,14 @@
  * Template Test case for different types of proxies available for dragging
  */
 Aria.classDefinition({
-	$classpath : "test.aria.utils.dragdrop.DragProxyTestCase",
-	$extends : "test.aria.utils.dragdrop.DragTestCase",
+	$classpath : "test.aria.utils.dragdrop.DragProxyTest",
+	$extends : "test.aria.utils.dragdrop.AbstractDragTestCase",
 	$prototype : {
 
-		_startTesting : function () {
+		/**
+		 * @override
+		 */
+		startDragTest : function () {
 			this._testGetMovable();
 		},
 
@@ -52,7 +55,7 @@ Aria.classDefinition({
 		},
 
 		_testGetMovableOne : function () {
-			this.assertTrue(this._dragFour.getMovable() == this.element);
+			this.assertEquals(this._dragFour.getMovable(), this.element);
 			this.synEvent.execute([["mouseRelease", aria.jsunit.Robot.BUTTON1_MASK]], {
 				fn : this._testGetMovableTwo,
 				scope : this
@@ -88,10 +91,10 @@ Aria.classDefinition({
 			var dom = aria.utils.Dom;
 			this.assertTrue(this._dragThree.getMovable() != this.element);
 			var movableGeometry = dom.getGeometry(this._dragThree.getMovable());
-			this.assertTrue(movableGeometry.width === this.geometry.width);
-			this.assertTrue(movableGeometry.height === this.geometry.height);
-			this.assertTrue(movableGeometry.y === this.geometry.y);
-			this.assertTrue(Math.abs(movableGeometry.x - this.geometry.x - 100) < 10);
+			this.assertEquals(movableGeometry.width, this.geometry.width);
+			this.assertEquals(movableGeometry.height, this.geometry.height);
+			this.assertEquals(movableGeometry.y, this.geometry.y);
+			this.assertEquals(movableGeometry.x, this.geometry.x + 100);
 
 			this.synEvent.execute([["mouseRelease", aria.jsunit.Robot.BUTTON1_MASK]], {
 				fn : this._testGetMovableFour,
@@ -130,12 +133,12 @@ Aria.classDefinition({
 			var movable = this._dialog.getMovable();
 			this.assertTrue(movable != this.element);
 			var movableGeometry = dom.getGeometry(movable);
-			this.assertTrue(Math.abs(movableGeometry.width - this.geometry.width) < 0.001);
-			this.assertTrue(Math.abs(movableGeometry.height - this.geometry.height) < 0.001);
-			this.assertTrue(Math.abs(movableGeometry.y - this.geometry.y - 21) < 10);
-			this.assertTrue(Math.abs(movableGeometry.x - this.geometry.x - 100) < 10);
-			this.assertTrue(movable.innerHTML == this.element.innerHTML);
-			this.assertTrue(dom.getStyle(movable, "opacity") == 0.4);
+			this.assertEquals(movableGeometry.width, this.geometry.width);
+			this.assertEquals(movableGeometry.height, this.geometry.height);
+			this.assertEquals(movableGeometry.y - this.geometry.y, 21);
+			this.assertEquals(movableGeometry.x - this.geometry.x, 100);
+			this.assertEquals(movable.innerHTML, this.element.innerHTML);
+			this.assertEquals(dom.getStyle(movable, "opacity"), "0.4");
 
 			this.synEvent.execute([["mouseRelease", aria.jsunit.Robot.BUTTON1_MASK]], {
 				fn : this.end,

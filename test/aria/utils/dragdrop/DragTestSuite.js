@@ -22,13 +22,13 @@ Aria.classDefinition({
 	$constructor : function () {
         this.$TestSuite.constructor.call(this);
 
-        this.addTests("test.aria.utils.dragdrop.DragErrorTestCase");
-        this.addTests("test.aria.utils.dragdrop.DragTestCase");
-        this.addTests("test.aria.utils.dragdrop.DragConstraintTestCase");
-        this.addTests("test.aria.utils.dragdrop.OutOfBoundaryTestCase");
-        this.addTests("test.aria.utils.dragdrop.DragProxyTestCase");
+        this.addTests("test.aria.utils.dragdrop.DragErrorTest");
+        this.addTests("test.aria.utils.dragdrop.DragBasicTest");
+        this.addTests("test.aria.utils.dragdrop.DragConstraintTest");
+        this.addTests("test.aria.utils.dragdrop.OutOfBoundaryTest");
+        this.addTests("test.aria.utils.dragdrop.DragProxyTest");
         this.addTests("test.aria.utils.dragdrop.DragDropBean");
-        this.addTests("test.aria.utils.dragdrop.issue397.MovableScrollbarTestCase");
+        this.addTests("test.aria.utils.dragdrop.issue397.MovableScrollbarTest");
 
 	}
 });
