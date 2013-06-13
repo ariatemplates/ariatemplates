@@ -18,6 +18,8 @@ Aria.classDefinition({
     $extends : "aria.jsunit.TestSuite",
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
+        this.addTests("test.aria.widgets.form.datepicker.DatePickerTestSuite");
+        this.addTests("test.aria.widgets.form.datefield.DateFieldTestSuite");
         this.addTests("test.aria.widgets.form.CheckBoxTest");
         this.addTests("test.aria.widgets.form.checkbox.SetDisabledTest");
         this.addTests("test.aria.widgets.form.GaugeTest");
@@ -30,8 +32,6 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.form.SelectTest");
         this.addTests("test.aria.widgets.form.TextInputTest");
         this.addTests("test.aria.widgets.form.textinput.TextInputTestSuite");
-        this.addTests("test.aria.widgets.form.datepicker.DatePickerTestSuite");
-        this.addTests("test.aria.widgets.form.datefield.DateFieldTestSuite");
         this.addTests("test.aria.widgets.form.issue411.DropdownTestSuite");
         this.addTests("test.aria.widgets.form.autocomplete.AutoCompleteTestSuite");
         this.addTests("test.aria.widgets.form.selectbox.SelectboxTestSuite");
