@@ -19,6 +19,8 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
+        this.addTests("test.aria.widgets.form.FormTestSuite");
+        this.addTests("test.aria.widgets.container.ContainerTestSuite");
         this.addTests("test.aria.widgets.autoselect.AutoSelect");
         this.addTests("test.aria.widgets.autoselect.programmatic.AutoSelect");
         this.addTests("test.aria.widgets.errorTip.ButtonErrorTipsTest");
@@ -33,16 +35,13 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.action.sortindicator.block.SortIndicatorBlockTest");
         this.addTests("test.aria.widgets.calendar.CalendarControllerTest");
         this.addTests("test.aria.widgets.calendar.lineHeight.CalendarLineHeightTest");
-        this.addTests("test.aria.widgets.container.ContainerTestSuite");
         this.addTests("test.aria.widgets.controllers.SelectBoxControllerTest");
         this.addTests("test.aria.widgets.controllers.SelectControllerTest");
         this.addTests("test.aria.widgets.dropdown.DropDownTestSuite");
         this.addTests("test.aria.widgets.environment.WidgetSettings");
         this.addTests("test.aria.widgets.errorlist.ErrorListControllerTest");
         this.addTests("test.aria.widgets.errorlist.ListErrorTestCase");
-        this.addTests("test.aria.widgets.form.FormTestSuite");
         this.addTests("test.aria.widgets.action.iconbutton.issue276.IconButtonTestCase");
-        this.addTests("test.aria.widgets.container.issue367.MovableDialogTestCase");
         this.addTests("test.aria.widgets.verticalAlign.VerticalAlignTestCase");
     }
 });
