@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Amadeus s.a.s.
+ * Copyright 2013 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,14 +13,24 @@
  * limitations under the License.
  */
 
-Aria.classDefinition({
-    $classpath : "test.aria.widgets.container.dialog.resize.DialogResizeTestSuite",
-    $extends : "aria.jsunit.TestSuite",
-    $constructor : function () {
-        this.$TestSuite.constructor.call(this);
+{Template {
+  $classpath: "test.aria.widgets.container.dialog.indicators.DialogTestSubTemplate"
+}}
 
-        this._tests = ["test.aria.widgets.container.dialog.resize.test1.DialogOnResizeTestCase",
-                "test.aria.widgets.container.dialog.resize.test2.ResizableDialogTestCase",
-                "test.aria.widgets.container.dialog.resize.test3.DialogOnResizeTestCase"];
-    }
-});
+    {macro main()}
+        {section {
+          id : "testSubSection",
+          bindProcessingTo: {
+            to : "processing",
+            inside : data
+          },
+          macro : "testSectionMacro"
+        }/}
+    {/macro}
+
+    {macro testSectionMacro()}
+        <div style="width: 300px; height: 300px;">The content of the sub macro is not important</div>
+    {/macro}
+
+
+{/Template}

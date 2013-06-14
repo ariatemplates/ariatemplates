@@ -20,11 +20,12 @@ Aria.classDefinition({
         this.$TestSuite.constructor.call(this);
 
         this.addTests("test.aria.html.textinput.TextInputTest");
-        this.addTests("test.aria.html.textinput.TextInputBindTest");
         this.addTests("test.aria.html.textinput.TextInputOnTypeTest");
         this.addTests("test.aria.html.textinput.TextInputPasswordTest");
         this.addTests("test.aria.html.textinput.focus.FocusTestCase");
         this.addTests("test.aria.html.textinput.autoselect.AutoselectTestCase");
         this.addTests("test.aria.html.textinput.placeholder.PlaceholderTestCase");
+        this.addTests("test.aria.html.textinput.bind.BindableTestCase");
+        this.addTests("test.aria.html.textinput.bind.TextInputBindTest");
     }
 });
