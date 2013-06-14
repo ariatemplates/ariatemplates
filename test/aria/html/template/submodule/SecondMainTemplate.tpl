@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Amadeus s.a.s.
+ * Copyright 2013 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,14 +13,17 @@
  * limitations under the License.
  */
 
-Aria.classDefinition({
-    $classpath : "test.aria.widgets.container.dialog.resize.DialogResizeTestSuite",
-    $extends : "aria.jsunit.TestSuite",
-    $constructor : function () {
-        this.$TestSuite.constructor.call(this);
+{Template{
+  $classpath : "test.aria.html.template.submodule.SecondMainTemplate",
+  $templates : ["test.aria.html.template.submodule.SecondOtherTemplate"],
+  $wlibs : {
+    html : "aria.html.HtmlLibrary"
+  }
 
-        this._tests = ["test.aria.widgets.container.dialog.resize.test1.DialogOnResizeTestCase",
-                "test.aria.widgets.container.dialog.resize.test2.ResizableDialogTestCase",
-                "test.aria.widgets.container.dialog.resize.test3.DialogOnResizeTestCase"];
-    }
-});
+}}
+  {macro main()}
+    {@html:Template {
+      classpath : "test.aria.html.template.submodule.SecondOtherTemplate"
+    }/}
+  {/macro}
+{/Template}
