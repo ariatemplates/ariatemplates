@@ -24,5 +24,6 @@ Aria.classDefinition({
         this.addTests("test.aria.html.textinput.TextInputTestSuite");
         this.addTests("test.aria.html.checkbox.CheckBoxTest");
         this.addTests("test.aria.html.template.submodule.SubModuleTestCase");
+        this.addTests("test.aria.html.radioButton.RadioButtonTest");
     }
 });

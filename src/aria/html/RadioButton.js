@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-(function() {
+(function () {
     /**
      * Being a BindableWidget we already have one direction binding of checked (from the datamodel to the widget). This
      * function is the callback for implementing the other bind, from the widget to the datamodel. The checked property
@@ -21,28 +21,29 @@
      * @param {aria.DomEvent} event click event
      * @private
      */
-    function bidirectionalClickBinding(event) {
-        var bind = this._bindingListeners.checked;
-        var newValue = this._transform(bind.transform, event.target.getProperty('checked'), "fromWidget");
+    function bidirectionalClickBinding (event) {
+        var bind = this._bindingListeners.selectedValue;
+        var newValue = this._transform(bind.transform, this._cfg.value, "fromWidget");
         aria.utils.Json.setValue(bind.inside, bind.to, newValue, bind.cb);
     }
 
     /**
-     * CheckBox widget. Bindable widget providing bi-directional bind of 'checked'.
+     * RadioButton widget. Bindable widget providing bi-directional bind of 'selectedValue'.
      */
     Aria.classDefinition({
-        $classpath : "aria.html.CheckBox",
+        $classpath : "aria.html.RadioButton",
         $extends : "aria.html.Element",
-        $dependencies : ["aria.html.beans.CheckBoxCfg"],
+        $dependencies : ["aria.html.beans.RadioButtonCfg"],
         $statics : {
-            INVALID_USAGE : "Widget %1 can only be used as a %2."
+            INVALID_USAGE : "Widget %1 can only be used as a %2.",
+            BINDING_NEEDED : "the property 'selectedValue' from Widget %1 should be bound to a data model"
         },
-        $constructor : function(cfg, context, line) {
-            this.$cfgBean = this.$cfgBean || "aria.html.beans.CheckBoxCfg.Properties";
+        $constructor : function (cfg, context, line) {
+            this.$cfgBean = this.$cfgBean || "aria.html.beans.RadioButtonCfg.Properties";
 
             cfg.tagName = "input";
             cfg.attributes = cfg.attributes || {};
-            cfg.attributes.type = "checkbox";
+            cfg.attributes.type = "radio";
             cfg.on = cfg.on || {};
 
             this._chainListener(cfg.on, 'click', {
@@ -57,13 +58,13 @@
              * TextInput can only be used as self closing tags. Calling this function raises an error.
              * @param {aria.templates.MarkupWriter} out
              */
-            writeMarkupBegin : function(out) {
+            writeMarkupBegin : function (out) {
                 this.$logError(this.INVALID_USAGE, [this.$class, "container"]);
             },
 
             /**
-             * TextInput can only be used as self closing tags. Calling this function does not rais an error
-             * though because it was already logged by writeMarkupBegin.
+             * TextInput can only be used as self closing tags. Calling this function does not rais an error though
+             * because it was already logged by writeMarkupBegin.
              * @param {aria.templates.MarkupWriter} out
              */
             writeMarkupEnd : Aria.empty,
@@ -71,16 +72,16 @@
             /**
              * Initialization method called after the markup of the widget has been inserted in the DOM.
              */
-            initWidget : function() {
+            initWidget : function () {
                 this.$Element.initWidget.call(this);
 
                 var bindings = this._cfg.bind;
-                if (bindings.checked) {
-                    var newValue = this._transform(bindings.checked.transform,
-                        bindings.checked.inside[bindings.checked.to], "toWidget");
-                    if (newValue != null) {
-                        this._domElt.checked = newValue;
-                    }
+                var binding = bindings.selectedValue;
+                if (binding) {
+                    var newValue = this._transform(binding.transform, binding.inside[binding.to], "toWidget");
+                    this._domElt.checked = (newValue === this._cfg.value);
+                } else {
+                    this.$logWarn(this.BINDING_NEEDED, [this.$class]);
                 }
             },
 
@@ -90,12 +91,11 @@
              * @param {Object} value Value of the changed property
              * @param {Object} oldValue Value of the property before the change happened
              */
-            onbind : function(name, value, oldValue) {
-                if (name === "checked") {
-                    this._domElt.checked = value;
+            onbind : function (name, value, oldValue) {
+                if (name === "selectedValue") {
+                    this._domElt.checked = (value === this._cfg.value);
                 }
             }
-
         }
     });
 })();
