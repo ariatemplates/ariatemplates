@@ -14,17 +14,16 @@
  */
 
 /**
- * General class for gestures.
- * Actual gesture implementations should extend this class.
+ * General class for gestures. Actual gesture implementations should extend this class.
  */
 Aria.classDefinition({
     $classpath : "aria.touch.Gesture",
     $dependencies : ["aria.utils.Event", "aria.utils.Delegate", "aria.utils.AriaWindow", "aria.touch.Event"],
-    $statics: {
+    $statics : {
         /**
          * Defines the number of touch for the gesture.
          */
-        NB_TOUCHES: 1
+        NB_TOUCHES : 1
     },
     $constructor : function () {
         /**
@@ -75,15 +74,15 @@ Aria.classDefinition({
     $prototype : {
 
         /**
-         * This method is called when AriaWindow sends an attachWindow event.
-         * It registers the initial listeners for the gesture.
+         * This method is called when AriaWindow sends an attachWindow event. It registers the initial listeners for the
+         * gesture.
          * @private
          */
         _connectTouchEvents : function () {
             if (!this.eventsAlreadyAttached) {
                 this.body = Aria.$window.document.body;
                 var map = this._getInitialListenersList();
-                for (var i = 0; i< map.length; i++) {
+                for (var i = 0; i < map.length; i++) {
                     this._addListener(map[i].evt, map[i].cb);
                 }
                 this.eventsAlreadyAttached = true;
@@ -91,49 +90,52 @@ Aria.classDefinition({
         },
 
         /**
-         * This method is called when AriaWindow sends a detachWindow event.
-         * It unregisters the listeners added in _connectTouchEvents.
+         * This method is called when AriaWindow sends a detachWindow event. It unregisters the listeners added in
+         * _connectTouchEvents.
          * @private
          */
         _disconnectTouchEvents : function () {
             var map = this._getInitialListenersList();
-            for (var i = 0; i< map.length; i++) {
+            for (var i = 0; i < map.length; i++) {
                 this._removeListener(map[i].evt, map[i].cb);
             }
             this.eventsAlreadyAttached = false;
         },
 
         /**
-         * Returns the list of listeners to be attached when AriaWindow sends an attachWindow event, and detached when AriaWindow sends a detachWindow event.
-         * These listeners are also detached during the gesture, and reattached when it ends or when it is cancelled.
+         * Returns the list of listeners to be attached when AriaWindow sends an attachWindow event, and detached when
+         * AriaWindow sends a detachWindow event. These listeners are also detached during the gesture, and reattached
+         * when it ends or when it is cancelled.
          * @protected
          * @return {Object} the list of listeners.
          */
-        _getInitialListenersList: function() {
+        _getInitialListenersList : function () {
             return [];
         },
 
         /**
-         * Returns the list of listeners to be attached when the gesture is started, and detached when the gesture is finished.
+         * Returns the list of listeners to be attached when the gesture is started, and detached when the gesture is
+         * finished.
          * @protected
          * @return {Object} the list of listeners.
          */
-        _getAdditionalListenersList: function() {
+        _getAdditionalListenersList : function () {
             return [];
         },
 
         /**
-         * Returns the map of fake events to be raised during the gesture lifecycle.
-         * Format: {start: "start_event_name", move: "move_event_name", end : "end_event_name", cancel: "cancel_event_name"}
+         * Returns the map of fake events to be raised during the gesture lifecycle. Format: {start: "start_event_name",
+         * move: "move_event_name", end : "end_event_name", cancel: "cancel_event_name"}
          * @protected
          * @return {Object} the map of listeners.
          */
-        _getFakeEventsMap : function() {
+        _getFakeEventsMap : function () {
             return {};
         },
 
         /**
-         * Generic start point for a gesture: unregisters initial listeners, registers additional listeners, set initial data, optional fake event raised
+         * Generic start point for a gesture: unregisters initial listeners, registers additional listeners, set initial
+         * data, optional fake event raised
          * @param {Object} event the original event
          * @protected
          * @return {Boolean} false if preventDefault is true
@@ -143,16 +145,16 @@ Aria.classDefinition({
                 return null;
             }
             this._disconnectTouchEvents();
-            this.startData = { positions : aria.touch.Event.getPositions(event),
-                    time : (new Date()).getTime()
+            this.startData = {
+                positions : aria.touch.Event.getPositions(event),
+                time : (new Date()).getTime()
             };
             this.currentData = null;
             this._connectAdditionalTouchEvents();
             if (this._getFakeEventsMap().start) {
                 return this._raiseFakeEvent(event, this._getFakeEventsMap().start, extraData);
-            }
-            else {
-                return (event.returnValue != null)? event.returnValue: !event.defaultPrevented;
+            } else {
+                return (event.returnValue != null) ? event.returnValue : !event.defaultPrevented;
             }
         },
 
@@ -166,19 +168,20 @@ Aria.classDefinition({
             if (!this.__validateNbTouches(event)) {
                 return null;
             }
-            this.currentData = { positions : aria.touch.Event.getPositions(event),
-                    time : (new Date()).getTime()
+            this.currentData = {
+                positions : aria.touch.Event.getPositions(event),
+                time : (new Date()).getTime()
             };
             if (this._getFakeEventsMap().move) {
                 return this._raiseFakeEvent(event, this._getFakeEventsMap().move, extraData);
-            }
-            else {
-                return (event.returnValue != null)? event.returnValue: !event.defaultPrevented;
+            } else {
+                return (event.returnValue != null) ? event.returnValue : !event.defaultPrevented;
             }
         },
 
         /**
-         * Generic success end point for the gesture: final fake event raised, additional listeners unregistered, initial listeners attached again.
+         * Generic success end point for the gesture: final fake event raised, additional listeners unregistered,
+         * initial listeners attached again.
          * @param {Object} event the original event
          * @protected
          * @return {Boolean} false if preventDefault is true
@@ -189,19 +192,20 @@ Aria.classDefinition({
             }
             this._disconnectAdditionalTouchEvents();
             this._connectTouchEvents();
-            this.currentData = { positions : aria.touch.Event.getPositions(event),
-                    time : (new Date()).getTime()
+            this.currentData = {
+                positions : aria.touch.Event.getPositions(event),
+                time : (new Date()).getTime()
             };
             if (this._getFakeEventsMap().end) {
                 return this._raiseFakeEvent(event, this._getFakeEventsMap().end, extraData);
-            }
-            else {
-                return (event.returnValue != null)? event.returnValue: !event.defaultPrevented;
+            } else {
+                return (event.returnValue != null) ? event.returnValue : !event.defaultPrevented;
             }
         },
 
         /**
-         * Generic failure end point for the gesture: optional fake event raised, additional listeners unregistered, initial listeners attached again.
+         * Generic failure end point for the gesture: optional fake event raised, additional listeners unregistered,
+         * initial listeners attached again.
          * @param {Object} event the original event
          * @protected
          * @return {Boolean} false if preventDefault is true
@@ -209,14 +213,14 @@ Aria.classDefinition({
         _gestureCancel : function (event, extraData) {
             this._disconnectAdditionalTouchEvents();
             this._connectTouchEvents();
-            this.currentData = { positions : aria.touch.Event.getPositions(event),
-                    time : (new Date()).getTime()
+            this.currentData = {
+                positions : aria.touch.Event.getPositions(event),
+                time : (new Date()).getTime()
             };
             if (this._getFakeEventsMap().cancel) {
                 return this._raiseFakeEvent(event, this._getFakeEventsMap().cancel, extraData);
-            }
-            else {
-                return (event.returnValue != null)? event.returnValue: !event.defaultPrevented;
+            } else {
+                return (event.returnValue != null) ? event.returnValue : !event.defaultPrevented;
             }
         },
 
@@ -224,9 +228,9 @@ Aria.classDefinition({
          * Registers the listeners added during the gesture lifecycle, once the gesture is started.
          * @private
          */
-        _connectAdditionalTouchEvents: function() {
+        _connectAdditionalTouchEvents : function () {
             var map = this._getAdditionalListenersList();
-            for (var i = 0; i< map.length; i++) {
+            for (var i = 0; i < map.length; i++) {
                 this._addListener(map[i].evt, map[i].cb);
             }
         },
@@ -235,9 +239,9 @@ Aria.classDefinition({
          * Unregisters the listeners added during the gesture lifecycle.
          * @private
          */
-        _disconnectAdditionalTouchEvents: function() {
+        _disconnectAdditionalTouchEvents : function () {
             var map = this._getAdditionalListenersList();
-            for (var i = 0; i< map.length; i++) {
+            for (var i = 0; i < map.length; i++) {
                 this._removeListener(map[i].evt, map[i].cb);
             }
         },
@@ -248,7 +252,7 @@ Aria.classDefinition({
          * @param {Object} cb the callback for the event
          * @protected
          */
-        _addListener: function (eventName, cb) {
+        _addListener : function (eventName, cb) {
             aria.utils.Event.addListener(this.body, eventName, cb);
         },
 
@@ -258,7 +262,7 @@ Aria.classDefinition({
          * @param {Object} cb the callback for the event
          * @protected
          */
-        _removeListener: function (eventName, cb) {
+        _removeListener : function (eventName, cb) {
             aria.utils.Event.removeListener(this.body, eventName, cb);
         },
 
@@ -269,7 +273,7 @@ Aria.classDefinition({
          * @protected
          * @return {Boolean} false if preventDefault is true
          */
-        _raiseFakeEvent: function(event, name, extraData) {
+        _raiseFakeEvent : function (event, name, extraData) {
             var target = (event.target) ? event.target : event.srcElement;
             var fakeEvent = aria.DomEvent.getFakeEvent(name, target);
             if (!event.returnValue) {
@@ -314,20 +318,19 @@ Aria.classDefinition({
          * @protected
          * @return {Float} the distance
          */
-        _calculateDistance: function (x1, y1, x2, y2) {
+        _calculateDistance : function (x1, y1, x2, y2) {
             return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
         },
 
         /**
-         * Validates the event against the number of touches required for the gesture.
-         * Rules:
-         * - single touch gestures are canceled as soon as multi touch is started.
-         * - multi touch gestures need all touch events (IE 10 constraint).
+         * Validates the event against the number of touches required for the gesture. Rules: - single touch gestures
+         * are canceled as soon as multi touch is started. - multi touch gestures need all touch events (IE 10
+         * constraint).
          * @param {Object} event the event
          * @private
          * @return {Boolean} true if the event's touches are validated for the current gesture.
          */
-        __validateNbTouches: function(event) {
+        __validateNbTouches : function (event) {
             var fingerIndex = aria.touch.Event.getFingerIndex(event);
             return this.NB_TOUCHES == 1 && fingerIndex === 0 || this.NB_TOUCHES == 2 && fingerIndex >= 0;
         }

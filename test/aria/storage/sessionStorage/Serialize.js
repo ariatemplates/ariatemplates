@@ -14,31 +14,31 @@
  */
 
 Aria.classDefinition({
-	$classpath : "test.aria.storage.sessionStorage.Serialize",
-	$dependencies : ["aria.storage.SessionStorage"],
-	$extends : "test.aria.storage.base.GeneralSerialize",
-	$constructor : function () {
-		this.storageLocation = "sessionStorage";
+    $classpath : "test.aria.storage.sessionStorage.Serialize",
+    $dependencies : ["aria.storage.SessionStorage"],
+    $extends : "test.aria.storage.base.GeneralSerialize",
+    $constructor : function () {
+        this.storageLocation = "sessionStorage";
 
-		this.$GeneralSerialize.constructor.call(this);
-	},
-	$prototype : {
-		testDefaultCorrectSerialization : function () {
-			if (this.canRunHTML5Tests()) {
-				this.$GeneralSerialize.testDefaultCorrectSerialization.call(this);
-			}
-		},
+        this.$GeneralSerialize.constructor.call(this);
+    },
+    $prototype : {
+        testDefaultCorrectSerialization : function () {
+            if (this.canRunHTML5Tests()) {
+                this.$GeneralSerialize.testDefaultCorrectSerialization.call(this);
+            }
+        },
 
-		testCustomSerializer : function () {
-			if (this.canRunHTML5Tests()) {
-				this.$GeneralSerialize.testCustomSerializer.call(this);
-			}
-		},
+        testCustomSerializer : function () {
+            if (this.canRunHTML5Tests()) {
+                this.$GeneralSerialize.testCustomSerializer.call(this);
+            }
+        },
 
-		testErrorCondition : function () {
-			if (this.canRunHTML5Tests()) {
-				this.$GeneralSerialize.testErrorCondition.call(this);
-			}
-		}
-	}
+        testErrorCondition : function () {
+            if (this.canRunHTML5Tests()) {
+                this.$GeneralSerialize.testErrorCondition.call(this);
+            }
+        }
+    }
 });

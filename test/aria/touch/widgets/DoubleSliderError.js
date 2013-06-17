@@ -17,16 +17,16 @@
  * Create and invalid widget and check that errors are reported correctly
  */
 Aria.classDefinition({
-	$classpath: "test.aria.touch.widgets.DoubleSliderError",
-	$extends: "aria.jsunit.WidgetTestCase",
-	$dependencies : ["aria.touch.widgets.DoubleSlider", "aria.core.JsonValidator"],
-	$prototype: {
-		testErrors: function () {
-			var widget = this.createAndInit("aria.touch.widgets.DoubleSlider", {
-				iDontExist : true
-			});
-			this.assertErrorInLogs(aria.core.JsonValidator.INVALID_CONFIGURATION);
-			widget.$dispose();
-		}
-	}
+    $classpath : "test.aria.touch.widgets.DoubleSliderError",
+    $extends : "aria.jsunit.WidgetTestCase",
+    $dependencies : ["aria.touch.widgets.DoubleSlider", "aria.core.JsonValidator"],
+    $prototype : {
+        testErrors : function () {
+            var widget = this.createAndInit("aria.touch.widgets.DoubleSlider", {
+                iDontExist : true
+            });
+            this.assertErrorInLogs(aria.core.JsonValidator.INVALID_CONFIGURATION);
+            widget.$dispose();
+        }
+    }
 });

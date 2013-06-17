@@ -14,29 +14,29 @@
  */
 
 Aria.classDefinition({
-	$classpath : "test.aria.storage.userData.Serialize",
-	$dependencies : ["aria.storage.UserData"],
-	$extends : "test.aria.storage.base.GeneralSerialize",
-	$constructor : function () {
-		this.$GeneralSerialize.constructor.call(this);
-	},
-	$prototype : {
-		testDefaultCorrectSerialization : function () {
-			if (this.canRunUserDataTests()) {
-				this.$GeneralSerialize.testDefaultCorrectSerialization.call(this);
-			}
-		},
+    $classpath : "test.aria.storage.userData.Serialize",
+    $dependencies : ["aria.storage.UserData"],
+    $extends : "test.aria.storage.base.GeneralSerialize",
+    $constructor : function () {
+        this.$GeneralSerialize.constructor.call(this);
+    },
+    $prototype : {
+        testDefaultCorrectSerialization : function () {
+            if (this.canRunUserDataTests()) {
+                this.$GeneralSerialize.testDefaultCorrectSerialization.call(this);
+            }
+        },
 
-		testCustomSerializer : function () {
-			if (this.canRunUserDataTests()) {
-				this.$GeneralSerialize.testCustomSerializer.call(this);
-			}
-		},
+        testCustomSerializer : function () {
+            if (this.canRunUserDataTests()) {
+                this.$GeneralSerialize.testCustomSerializer.call(this);
+            }
+        },
 
-		testErrorCondition : function () {
-			if (this.canRunUserDataTests()) {
-				this.$GeneralSerialize.testErrorCondition.call(this);
-			}
-		}
-	}
+        testErrorCondition : function () {
+            if (this.canRunUserDataTests()) {
+                this.$GeneralSerialize.testErrorCondition.call(this);
+            }
+        }
+    }
 });

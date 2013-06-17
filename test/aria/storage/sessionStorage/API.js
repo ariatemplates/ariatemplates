@@ -14,31 +14,31 @@
  */
 
 Aria.classDefinition({
-	$classpath : "test.aria.storage.sessionStorage.API",
-	$dependencies : ["aria.storage.SessionStorage"],
-	$extends : "test.aria.storage.base.GeneralAPI",
-	$constructor : function () {
-		this.storageLocation = "sessionStorage";
+    $classpath : "test.aria.storage.sessionStorage.API",
+    $dependencies : ["aria.storage.SessionStorage"],
+    $extends : "test.aria.storage.base.GeneralAPI",
+    $constructor : function () {
+        this.storageLocation = "sessionStorage";
 
-		this.$GeneralAPI.constructor.call(this);
-	},
-	$prototype : {
-		/**
-		 * Test how the API work on a single instance
-		 */
-		testOneInstanceStrings : function () {
-			if (this.canRunHTML5Tests()) {
-				this.$GeneralAPI.testOneInstanceStrings.call(this);
-			}
-		},
+        this.$GeneralAPI.constructor.call(this);
+    },
+    $prototype : {
+        /**
+         * Test how the API work on a single instance
+         */
+        testOneInstanceStrings : function () {
+            if (this.canRunHTML5Tests()) {
+                this.$GeneralAPI.testOneInstanceStrings.call(this);
+            }
+        },
 
-		/**
-		 * Test the API when using two different storage instances
-		 */
-		testTwoInstancesStrings : function () {
-			if (this.canRunHTML5Tests()) {
-				this.$GeneralAPI.testTwoInstancesStrings.call(this);
-			}
-		}
-	}
+        /**
+         * Test the API when using two different storage instances
+         */
+        testTwoInstancesStrings : function () {
+            if (this.canRunHTML5Tests()) {
+                this.$GeneralAPI.testTwoInstancesStrings.call(this);
+            }
+        }
+    }
 });

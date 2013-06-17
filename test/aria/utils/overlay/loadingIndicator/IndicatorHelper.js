@@ -14,76 +14,76 @@
  */
 
 Aria.classDefinition({
-	$classpath : "test.aria.utils.overlay.loadingIndicator.IndicatorHelper",
-	$singleton : true,
-	$constructor : function () {},
-	$prototype : {
-		__getOverlay : function () {
-			var document = Aria.$window.document;
-			var divs = document.getElementsByTagName("div");
+    $classpath : "test.aria.utils.overlay.loadingIndicator.IndicatorHelper",
+    $singleton : true,
+    $constructor : function () {},
+    $prototype : {
+        __getOverlay : function () {
+            var document = Aria.$window.document;
+            var divs = document.getElementsByTagName("div");
 
-			// Start from the end, should be faster
-			for (var i = divs.length - 1; i >= 0; i -= 1) {
-				var id = divs[i].id;
-				if (id && id.indexOf("xOverlay") === 0) {
-					return divs[i];
-				}
-			}
+            // Start from the end, should be faster
+            for (var i = divs.length - 1; i >= 0; i -= 1) {
+                var id = divs[i].id;
+                if (id && id.indexOf("xOverlay") === 0) {
+                    return divs[i];
+                }
+            }
 
-			return false;
-		},
-		isInDom : function () {
-			return !!this.__getOverlay();
-		},
+            return false;
+        },
+        isInDom : function () {
+            return !!this.__getOverlay();
+        },
 
-		getText : function () {
-			var overlay = this.__getOverlay();
+        getText : function () {
+            var overlay = this.__getOverlay();
 
-			if (!overlay || !overlay.firstChild) {
-				return false;
-			} else {
-				return overlay.firstChild.innerHTML;
-			}
-		},
+            if (!overlay || !overlay.firstChild) {
+                return false;
+            } else {
+                return overlay.firstChild.innerHTML;
+            }
+        },
 
-		totalOverlays : function () {
-			var overlays = aria.utils.DomOverlay.overlays, count = 0;
-			for (var num in overlays) {
-				if (overlays.hasOwnProperty(num)) {
-					count += 1;
-				}
-			}
+        totalOverlays : function () {
+            var overlays = aria.utils.DomOverlay.overlays, count = 0;
+            for (var num in overlays) {
+                if (overlays.hasOwnProperty(num)) {
+                    count += 1;
+                }
+            }
 
-			if (aria.utils.DomOverlay.bodyOverlay) {
-				count += 1;
-			}
+            if (aria.utils.DomOverlay.bodyOverlay) {
+                count += 1;
+            }
 
-			return count;
-		},
+            return count;
+        },
 
-		countInDom : function () {
-			var document = Aria.$window.document;
-			var divs = document.getElementsByTagName("div");
-			var count = 0;
+        countInDom : function () {
+            var document = Aria.$window.document;
+            var divs = document.getElementsByTagName("div");
+            var count = 0;
 
-			// Start from the end, should be faster
-			for (var i = divs.length - 1; i >= 0; i -= 1) {
-				var id = divs[i].id;
-				if (id && id.indexOf("xOverlay") === 0) {
-					count += 1;
-				}
-			}
+            // Start from the end, should be faster
+            for (var i = divs.length - 1; i >= 0; i -= 1) {
+                var id = divs[i].id;
+                if (id && id.indexOf("xOverlay") === 0) {
+                    count += 1;
+                }
+            }
 
-			return count;
-		},
+            return count;
+        },
 
-		/**
-		 * Return the overlay associated to that element
-		 * @param {HTMLElement} element
-		 * @return {Object} object with overlay and id properties
-		 */
-		getOverlay : function (element) {
-			return aria.utils.DomOverlay.__getOverlay(element);
-		}
-	}
+        /**
+         * Return the overlay associated to that element
+         * @param {HTMLElement} element
+         * @return {Object} object with overlay and id properties
+         */
+        getOverlay : function (element) {
+            return aria.utils.DomOverlay.__getOverlay(element);
+        }
+    }
 });

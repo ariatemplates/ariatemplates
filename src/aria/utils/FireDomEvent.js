@@ -34,9 +34,9 @@
         touchmove : 1,
         dommousescroll : 1,
         mousewheel : 1,
-        MSPointerDown: 1,
-        MSPointerMove: 1,
-        MSPointerUp: 1
+        MSPointerDown : 1,
+        MSPointerMove : 1,
+        MSPointerUp : 1
     },
 
     // key events supported

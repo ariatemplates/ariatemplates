@@ -17,29 +17,29 @@
  * Sample class used to validate the support of sub-classes in Module Controllers
  */
 Aria.classDefinition({
-	$classpath : "test.aria.templates.test.SampleModuleSubClass",
-	$extends : "aria.templates.PublicWrapper",
-	$implements : ["test.aria.templates.test.ISampleModuleSubClass"],
-	$constructor : function (initArgs) {
-		this.$PublicWrapper.constructor.call(this);
-		this._initArgs = initArgs;
-	},
-	$prototype : {
-		$publicInterfaceName : "test.aria.templates.test.ISampleModuleSubClass",
+    $classpath : "test.aria.templates.test.SampleModuleSubClass",
+    $extends : "aria.templates.PublicWrapper",
+    $implements : ["test.aria.templates.test.ISampleModuleSubClass"],
+    $constructor : function (initArgs) {
+        this.$PublicWrapper.constructor.call(this);
+        this._initArgs = initArgs;
+    },
+    $prototype : {
+        $publicInterfaceName : "test.aria.templates.test.ISampleModuleSubClass",
 
-		/**
-		 * Sample method added to the public interface
-		 * @return {Object} the contstructor argument (test purpose)
-		 */
-		samplePublicMethod : function () {
-			return this._initArgs;
-		},
-		/**
-		 * Sample method that should not be visible in the public interface
-		 * @return {Number} 123
-		 */
-		__samplePrivateMethod : function () {
-			return 123;
-		}
-	}
+        /**
+         * Sample method added to the public interface
+         * @return {Object} the contstructor argument (test purpose)
+         */
+        samplePublicMethod : function () {
+            return this._initArgs;
+        },
+        /**
+         * Sample method that should not be visible in the public interface
+         * @return {Number} 123
+         */
+        __samplePrivateMethod : function () {
+            return 123;
+        }
+    }
 });

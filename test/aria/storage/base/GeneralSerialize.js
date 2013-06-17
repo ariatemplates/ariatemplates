@@ -14,99 +14,104 @@
  */
 
 Aria.classDefinition({
-	$classpath : "test.aria.storage.base.GeneralSerialize",
-	$dependencies : ["aria.utils.Type"],
-	$extends : "test.aria.storage.base.BaseTests",
-	$prototype : {
-		testDefaultCorrectSerialization : function () {
-			var storage = new this.storageClass();
+    $classpath : "test.aria.storage.base.GeneralSerialize",
+    $dependencies : ["aria.utils.Type"],
+    $extends : "test.aria.storage.base.BaseTests",
+    $prototype : {
+        testDefaultCorrectSerialization : function () {
+            var storage = new this.storageClass();
 
-			// a number
-			storage.setItem("obj", -1);
-			var value = storage.getItem("obj");
-			this.assertTrue(aria.utils.Type.isNumber(value), "-1 should be a number");
-			this.assertEquals(value, -1, "-1 is incorrectly serialized, got " + value);
+            // a number
+            storage.setItem("obj", -1);
+            var value = storage.getItem("obj");
+            this.assertTrue(aria.utils.Type.isNumber(value), "-1 should be a number");
+            this.assertEquals(value, -1, "-1 is incorrectly serialized, got " + value);
 
-			// a boolean
-			storage.setItem("obj", true);
-			value = storage.getItem("obj");
-			this.assertTrue(aria.utils.Type.isBoolean(value), "true should be a boolean");
-			this.assertEquals(value, true, "true is incorrectly serialized, got " + value);
-			storage.setItem("obj", false);
-			value = storage.getItem("obj");
-			this.assertTrue(aria.utils.Type.isBoolean(value), "false should be a boolean");
-			this.assertEquals(value, false, "false is incorrectly serialized, got " + value);
+            // a boolean
+            storage.setItem("obj", true);
+            value = storage.getItem("obj");
+            this.assertTrue(aria.utils.Type.isBoolean(value), "true should be a boolean");
+            this.assertEquals(value, true, "true is incorrectly serialized, got " + value);
+            storage.setItem("obj", false);
+            value = storage.getItem("obj");
+            this.assertTrue(aria.utils.Type.isBoolean(value), "false should be a boolean");
+            this.assertEquals(value, false, "false is incorrectly serialized, got " + value);
 
-			// an object
-			storage.setItem("obj", {a : 1});
-			value = storage.getItem("obj");
-			this.assertTrue(aria.utils.Type.isObject(value), "{a:1} should be an object");
-			this.assertEquals(value.a, 1, "{a:1} should contain 'a' with value 1");
+            // an object
+            storage.setItem("obj", {
+                a : 1
+            });
+            value = storage.getItem("obj");
+            this.assertTrue(aria.utils.Type.isObject(value), "{a:1} should be an object");
+            this.assertEquals(value.a, 1, "{a:1} should contain 'a' with value 1");
 
-			// an object with metadata
-			var meta = {a : 2};
-			meta[Aria.FRAMEWORK_PREFIX + "metadata"] = 2;
-			storage.setItem("obj", meta);
-			value = storage.getItem("obj");
-			this.assertTrue(aria.utils.Type.isObject(value), "{a:2} should be an object");
-			this.assertEquals(value.a, 2, "{a:2} should contain 'a' with value 2");
-			this.assertEquals(aria.utils.Object.keys(value).length, 1, "{a:2} shouldn't contain metadata");
+            // an object with metadata
+            var meta = {
+                a : 2
+            };
+            meta[Aria.FRAMEWORK_PREFIX + "metadata"] = 2;
+            storage.setItem("obj", meta);
+            value = storage.getItem("obj");
+            this.assertTrue(aria.utils.Type.isObject(value), "{a:2} should be an object");
+            this.assertEquals(value.a, 2, "{a:2} should contain 'a' with value 2");
+            this.assertEquals(aria.utils.Object.keys(value).length, 1, "{a:2} shouldn't contain metadata");
 
-			storage.$dispose();
-		},
+            storage.$dispose();
+        },
 
-		testCustomSerializer : function () {
-			var counter = {
-				num : 0,
-				disposed : false
-			};
-			var serializer = {
-				serialize : function (object) {
-					var index = ++counter.num;
-					counter[index] = object;
-					return index;
-				},
-				parse : function (key) {
-					return counter[key];
-				},
-				$dispose : function () {
-					counter.disposed = true;
-				}
-			};
+        testCustomSerializer : function () {
+            var counter = {
+                num : 0,
+                disposed : false
+            };
+            var serializer = {
+                serialize : function (object) {
+                    var index = ++counter.num;
+                    counter[index] = object;
+                    return index;
+                },
+                parse : function (key) {
+                    return counter[key];
+                },
+                $dispose : function () {
+                    counter.disposed = true;
+                }
+            };
 
-			var storage = new this.storageClass({
-				serializer : serializer
-			}), value;
+            var storage = new this.storageClass({
+                serializer : serializer
+            }), value;
 
+            var expected = 12;
+            storage.setItem("a b", expected);
+            value = storage.getItem("a b");
+            this.assertEquals(expected, value, "Mismatch " + expected + " got " + value);
 
-			var expected = 12;
-			storage.setItem("a b", expected);
-			value = storage.getItem("a b");
-			this.assertEquals(expected, value, "Mismatch " + expected + " got " + value);
+            expected = {
+                a : 4
+            };
+            storage.setItem("a b", expected);
+            value = storage.getItem("a b");
+            this.assertEquals(expected, value, "Mismatch " + expected + " got " + value);
 
-			expected = {a : 4};
-			storage.setItem("a b", expected);
-			value = storage.getItem("a b");
-			this.assertEquals(expected, value, "Mismatch " + expected + " got " + value);
+            expected = false;
+            storage.setItem("a b", expected);
+            value = storage.getItem("a b");
+            this.assertEquals(expected, value, "Mismatch " + expected + " got " + value);
 
-			expected = false;
-			storage.setItem("a b", expected);
-			value = storage.getItem("a b");
-			this.assertEquals(expected, value, "Mismatch " + expected + " got " + value);
+            storage.$dispose();
 
-			storage.$dispose();
+            this.assertFalse(counter.disposed, "Custom instances shouldn't be disposed");
+        },
 
-			this.assertFalse(counter.disposed, "Custom instances shouldn't be disposed");
-		},
+        testErrorCondition : function () {
+            var storage = new this.storageClass({
+                serializer : this
+            });
 
-		testErrorCondition : function () {
-			var storage = new this.storageClass({
-				serializer : this
-			});
+            this.assertErrorInLogs(aria.storage.AbstractStorage.INVALID_SERIALIZER);
 
-			this.assertErrorInLogs(aria.storage.AbstractStorage.INVALID_SERIALIZER);
-
-			storage.$dispose();
-		}
-	}
+            storage.$dispose();
+        }
+    }
 });

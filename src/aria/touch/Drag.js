@@ -25,25 +25,47 @@ Aria.classDefinition({
          * Initial listeners for the Drag gesture.
          * @protected
          */
-        _getInitialListenersList: function() {
-            return [{evt: this.touchEventMap.touchstart, cb: {fn : this._dragStart, scope : this}}];
+        _getInitialListenersList : function () {
+            return [{
+                        evt : this.touchEventMap.touchstart,
+                        cb : {
+                            fn : this._dragStart,
+                            scope : this
+                        }
+                    }];
         },
 
         /**
          * Additional listeners for the Drag gesture.
          * @protected
          */
-        _getAdditionalListenersList: function() {
-            return [{evt: this.touchEventMap.touchmove, cb: {fn : this._dragMove, scope : this}},
-                    {evt: this.touchEventMap.touchend, cb: {fn : this._dragEnd, scope : this}}];
+        _getAdditionalListenersList : function () {
+            return [{
+                        evt : this.touchEventMap.touchmove,
+                        cb : {
+                            fn : this._dragMove,
+                            scope : this
+                        }
+                    }, {
+                        evt : this.touchEventMap.touchend,
+                        cb : {
+                            fn : this._dragEnd,
+                            scope : this
+                        }
+                    }];
         },
 
         /**
          * The fake events raised during the Drag lifecycle.
          * @protected
          */
-        _getFakeEventsMap : function() {
-            return {dragstart: "dragstart", dragmove: "dragmove", dragend: "drag", cancel: "dragcancel"};
+        _getFakeEventsMap : function () {
+            return {
+                dragstart : "dragstart",
+                dragmove : "dragmove",
+                dragend : "drag",
+                cancel : "dragcancel"
+            };
         },
 
         /**
@@ -52,18 +74,20 @@ Aria.classDefinition({
          * @protected
          * @return {Boolean} false if preventDefault is true
          */
-        _dragStart: function(event) {
+        _dragStart : function (event) {
             var alreadyStarted = this.currentData != null;
             var status = this._gestureStart(event);
             if (status == null && alreadyStarted) {
-                //if the gesture has already started, it has to be cancelled
-                this.currentData = { positions : aria.touch.Event.getPositions(event),
-                        time : (new Date()).getTime()
+                // if the gesture has already started, it has to be cancelled
+                this.currentData = {
+                    positions : aria.touch.Event.getPositions(event),
+                    time : (new Date()).getTime()
                 };
                 return this._raiseFakeEvent(event, this._getFakeEventsMap().cancel);
-            }
-            else {
-                return status == null? ((event.returnValue != null)? event.returnValue: !event.defaultPrevented): status;
+            } else {
+                return status == null
+                        ? ((event.returnValue != null) ? event.returnValue : !event.defaultPrevented)
+                        : status;
             }
         },
 
@@ -77,17 +101,18 @@ Aria.classDefinition({
             var alreadyStarted = this.currentData != null;
             var status = this._gestureMove(event);
             if (status != null) {
-                //Gesture starts
+                // Gesture starts
                 var eventName = this._getFakeEventsMap().dragstart;
                 if (alreadyStarted) {
-                    //Gesture moves
+                    // Gesture moves
                     eventName = this._getFakeEventsMap().dragmove;
                 }
                 return this._raiseFakeEvent(event, eventName);
-            }
-            else {
+            } else {
                 this.currentData = null;
-                return (alreadyStarted)? this._gestureCancel(event): (event.returnValue != null)? event.returnValue: !event.defaultPrevented;
+                return (alreadyStarted) ? this._gestureCancel(event) : (event.returnValue != null)
+                        ? event.returnValue
+                        : !event.defaultPrevented;
             }
         },
 
@@ -101,10 +126,11 @@ Aria.classDefinition({
             var alreadyStarted = this.currentData != null;
             var status = this._gestureEnd(event);
             if (alreadyStarted) {
-                return (status == null)? ((event.returnValue != null)? event.returnValue: !event.defaultPrevented): this._raiseFakeEvent(event, this._getFakeEventsMap().dragend);
-            }
-            else {
-                return (event.returnValue != null)? event.returnValue: !event.defaultPrevented;
+                return (status == null)
+                        ? ((event.returnValue != null) ? event.returnValue : !event.defaultPrevented)
+                        : this._raiseFakeEvent(event, this._getFakeEventsMap().dragend);
+            } else {
+                return (event.returnValue != null) ? event.returnValue : !event.defaultPrevented;
             }
 
         }

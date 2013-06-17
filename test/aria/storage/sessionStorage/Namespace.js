@@ -14,31 +14,31 @@
  */
 
 Aria.classDefinition({
-	$classpath : "test.aria.storage.sessionStorage.Namespace",
-	$dependencies : ["aria.storage.SessionStorage"],
-	$extends : "test.aria.storage.base.GeneralNamespace",
-	$constructor : function () {
-		this.storageLocation = "sessionStorage";
+    $classpath : "test.aria.storage.sessionStorage.Namespace",
+    $dependencies : ["aria.storage.SessionStorage"],
+    $extends : "test.aria.storage.base.GeneralNamespace",
+    $constructor : function () {
+        this.storageLocation = "sessionStorage";
 
-		this.$GeneralNamespace.constructor.call(this);
-	},
-	$prototype : {
-		/**
-		 * Check what happens when you use namespaces, one namespaced shouldn't affect the others
-		 */
-		testNamespaceAPI : function () {
-			if (this.canRunHTML5Tests()) {
-				this.$GeneralNamespace.testNamespaceAPI.call(this);
-			}
-		},
+        this.$GeneralNamespace.constructor.call(this);
+    },
+    $prototype : {
+        /**
+         * Check what happens when you use namespaces, one namespaced shouldn't affect the others
+         */
+        testNamespaceAPI : function () {
+            if (this.canRunHTML5Tests()) {
+                this.$GeneralNamespace.testNamespaceAPI.call(this);
+            }
+        },
 
-		/**
-		 * Verify if the events are raised correctly
-		 */
-		testNamespaceEvents : function () {
-			if (this.canRunHTML5Tests()) {
-				this.$GeneralNamespace.testNamespaceEvents.call(this);
-			}
-		}
-	}
+        /**
+         * Verify if the events are raised correctly
+         */
+        testNamespaceEvents : function () {
+            if (this.canRunHTML5Tests()) {
+                this.$GeneralNamespace.testNamespaceEvents.call(this);
+            }
+        }
+    }
 });

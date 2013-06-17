@@ -17,27 +17,27 @@
  * Simple class used to test singleton class definition
  */
 Aria.classDefinition({
-	$classpath : 'test.aria.test.ClassS',
-	$extends : 'test.aria.test.ClassC',
-	$singleton : true,
+    $classpath : 'test.aria.test.ClassS',
+    $extends : 'test.aria.test.ClassC',
+    $singleton : true,
 
-	$constructor : function () {
-		// singleton constructor cannot accept any argument
-		this.$ClassC.constructor.call(this);
-		this.propertyS = 'valueS';
-	},
+    $constructor : function () {
+        // singleton constructor cannot accept any argument
+        this.$ClassC.constructor.call(this);
+        this.propertyS = 'valueS';
+    },
 
-	$destructor : function () {
-		this.$ClassC.$destructor.call(this);
-		this.propertyS = null;
-	},
+    $destructor : function () {
+        this.$ClassC.$destructor.call(this);
+        this.propertyS = null;
+    },
 
-	$prototype : {
-		/**
-		 * Increment count by 10
-		 */
-		methodS1 : function () {
-			this.count += 10;
-		}
-	}
+    $prototype : {
+        /**
+         * Increment count by 10
+         */
+        methodS1 : function () {
+            this.count += 10;
+        }
+    }
 });

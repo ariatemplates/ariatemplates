@@ -14,15 +14,15 @@
  */
 
 Aria.classDefinition({
-	$classpath : 'test.aria.templates.test.SampleModuleCtrl4',
-	$extends : "aria.templates.ModuleCtrl",
-	$implements : ['test.aria.templates.test.ISampleModuleCtrl4'],
-	$constructor : function () {
-		this.$ModuleCtrl.constructor.call(this);
-		this._publicInterfaceName = 'test.aria.templates.test.ISampleModuleCtrl4';
-	},
-	$prototype : {
-		myMethod1 : function () {},
-		myMethod2 : function () {}
-	}
+    $classpath : 'test.aria.templates.test.SampleModuleCtrl4',
+    $extends : "aria.templates.ModuleCtrl",
+    $implements : ['test.aria.templates.test.ISampleModuleCtrl4'],
+    $constructor : function () {
+        this.$ModuleCtrl.constructor.call(this);
+        this._publicInterfaceName = 'test.aria.templates.test.ISampleModuleCtrl4';
+    },
+    $prototype : {
+        myMethod1 : function () {},
+        myMethod2 : function () {}
+    }
 });

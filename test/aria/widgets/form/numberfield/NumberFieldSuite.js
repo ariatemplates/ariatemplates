@@ -14,13 +14,13 @@
  */
 
 Aria.classDefinition({
-	$classpath: "test.aria.widgets.form.numberfield.NumberFieldSuite",
-	$extends: "aria.jsunit.TestSuite",
-	$constructor: function () {
-		this.$TestSuite.constructor.call(this);
+    $classpath : "test.aria.widgets.form.numberfield.NumberFieldSuite",
+    $extends : "aria.jsunit.TestSuite",
+    $constructor : function () {
+        this.$TestSuite.constructor.call(this);
 
-		this.addTests("test.aria.widgets.form.numberfield.NumberFieldTest");
-		this.addTests("test.aria.widgets.form.numberfield.inputPattern.InputPattern");
-		this.addTests("test.aria.widgets.form.numberfield.inputPattern.SeparatedInputPattern");
-	}
+        this.addTests("test.aria.widgets.form.numberfield.NumberFieldTest");
+        this.addTests("test.aria.widgets.form.numberfield.inputPattern.InputPattern");
+        this.addTests("test.aria.widgets.form.numberfield.inputPattern.SeparatedInputPattern");
+    }
 });

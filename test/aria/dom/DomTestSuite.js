@@ -17,11 +17,11 @@
  * Test suite regrouping all tests on aria.dom
  */
 Aria.classDefinition({
-	$classpath : "test.aria.dom.DomTestSuite",
-	$extends : "aria.jsunit.TestSuite",
-	$constructor : function () {
-		this.$TestSuite.constructor.call(this);
+    $classpath : "test.aria.dom.DomTestSuite",
+    $extends : "aria.jsunit.TestSuite",
+    $constructor : function () {
+        this.$TestSuite.constructor.call(this);
 
-		this.addTests("test.aria.dom.DomReadyTest");
-	}
+        this.addTests("test.aria.dom.DomReadyTest");
+    }
 });

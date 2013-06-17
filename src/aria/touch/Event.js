@@ -53,12 +53,12 @@ Aria.classDefinition({
                 };
             }
 
-            //IE10 special events
+            // IE10 special events
             if (Aria.$window.navigator.msPointerEnabled) {
                 this.touchEventMap = {
-                        "touchstart" : "MSPointerDown",
-                        "touchend" : "MSPointerUp",
-                        "touchmove" : "MSPointerMove"
+                    "touchstart" : "MSPointerDown",
+                    "touchend" : "MSPointerUp",
+                    "touchmove" : "MSPointerMove"
                 };
             }
         },
@@ -69,23 +69,32 @@ Aria.classDefinition({
          * @public
          * @return {Object} an array of coordinates
          */
-        getPositions: function(event) {
+        getPositions : function (event) {
             var result = [];
             if (event.touches && event.touches[0] || event.changedTouches && event.changedTouches[0]) {
                 for (var i = 0; i < event.touches.length; i++) {
-                    result.push({x : (event.touches[i].pageX) ? event.touches[i].pageX : event.touches[i].clientX,
-                            y : (event.touches[i].pageY) ? event.touches[i].pageY : event.touches[i].clientY});
+                    result.push({
+                        x : (event.touches[i].pageX) ? event.touches[i].pageX : event.touches[i].clientX,
+                        y : (event.touches[i].pageY) ? event.touches[i].pageY : event.touches[i].clientY
+                    });
                 }
                 if (event.type == this.touchEventMap.touchend) {
                     for (var i = 0; i < event.changedTouches.length; i++) {
-                        result.push({x : (event.changedTouches[i].pageX) ? event.changedTouches[i].pageX : event.changedTouches[i].clientX,
-                                y : (event.changedTouches[i].pageY) ? event.changedTouches[i].pageY : event.changedTouches[i].clientY});
+                        result.push({
+                            x : (event.changedTouches[i].pageX)
+                                    ? event.changedTouches[i].pageX
+                                    : event.changedTouches[i].clientX,
+                            y : (event.changedTouches[i].pageY)
+                                    ? event.changedTouches[i].pageY
+                                    : event.changedTouches[i].clientY
+                        });
                     }
                 }
-            }
-            else {
-                result.push({x : (event.pageX) ? event.pageX : event.clientX,
-                    y : (event.pageY) ? event.pageY : event.clientY});
+            } else {
+                result.push({
+                    x : (event.pageX) ? event.pageX : event.clientX,
+                    y : (event.pageY) ? event.pageY : event.clientY
+                });
             }
             return result;
         },
@@ -94,29 +103,36 @@ Aria.classDefinition({
          * Utility method to get the index of the finger triggering the event.
          * @param {Object} the event
          * @public
-         * @return {Object} the index, starting from 0. Special case: 10n means that n fingers were used at the same time.
+         * @return {Object} the index, starting from 0. Special case: 10n means that n fingers were used at the same
+         * time.
          */
-        getFingerIndex: function(event) {
+        getFingerIndex : function (event) {
             var result = 0;
-            //IE10 case
+            // IE10 case
             if (Aria.$window.navigator.msPointerEnabled) {
-                result = event.isPrimary? 0: 1;
+                result = event.isPrimary ? 0 : 1;
             }
-            //General case (webkit, firefox, opera, ...)
+            // General case (webkit, firefox, opera, ...)
             else {
                 if (event.touches || event.changedTouches) {
                     if (event.changedTouches.length > 1) {
                         result = 100 + event.changedTouches.length;
-                    }
-                    else if (event.type == this.touchEventMap.touchend) {
+                    } else if (event.type == this.touchEventMap.touchend) {
                         result = event.touches.length + event.changedTouches.length - 1;
-                    }
-                    else {
-                        var changedX = (event.changedTouches[0].pageX) ? event.changedTouches[0].pageX : event.changedTouches[0].clientX;
-                        var changedY = (event.changedTouches[0].pageY) ? event.changedTouches[0].pageY : event.changedTouches[0].clientY;
+                    } else {
+                        var changedX = (event.changedTouches[0].pageX)
+                                ? event.changedTouches[0].pageX
+                                : event.changedTouches[0].clientX;
+                        var changedY = (event.changedTouches[0].pageY)
+                                ? event.changedTouches[0].pageY
+                                : event.changedTouches[0].clientY;
                         for (var i = 0; i < event.touches.length; i++) {
-                            if (changedX == ((event.touches[i].pageX) ? event.touches[i].pageX : event.touches[i].clientX) &&
-                                changedY == ((event.touches[i].pageY) ? event.touches[i].pageY : event.touches[i].clientY)) {
+                            if (changedX == ((event.touches[i].pageX)
+                                    ? event.touches[i].pageX
+                                    : event.touches[i].clientX)
+                                    && changedY == ((event.touches[i].pageY)
+                                            ? event.touches[i].pageY
+                                            : event.touches[i].clientY)) {
                                 result = i;
                                 break;
                             }

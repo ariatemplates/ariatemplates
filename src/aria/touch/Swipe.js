@@ -59,25 +59,47 @@ Aria.classDefinition({
          * Initial listeners for the Swipe gesture.
          * @protected
          */
-        _getInitialListenersList: function() {
-            return [{evt: this.touchEventMap.touchstart, cb: {fn : this._swipeStart, scope : this}}];
+        _getInitialListenersList : function () {
+            return [{
+                        evt : this.touchEventMap.touchstart,
+                        cb : {
+                            fn : this._swipeStart,
+                            scope : this
+                        }
+                    }];
         },
 
         /**
          * Additional listeners for the Swipe gesture.
          * @protected
          */
-        _getAdditionalListenersList: function() {
-            return [{evt: this.touchEventMap.touchmove, cb: {fn : this._swipeMove, scope : this}},
-                    {evt: this.touchEventMap.touchend, cb: {fn : this._swipeEnd, scope : this}}];
+        _getAdditionalListenersList : function () {
+            return [{
+                        evt : this.touchEventMap.touchmove,
+                        cb : {
+                            fn : this._swipeMove,
+                            scope : this
+                        }
+                    }, {
+                        evt : this.touchEventMap.touchend,
+                        cb : {
+                            fn : this._swipeEnd,
+                            scope : this
+                        }
+                    }];
         },
 
         /**
          * The fake events raised during the Swipe lifecycle.
          * @protected
          */
-        _getFakeEventsMap : function() {
-            return {start: "swipestart", move: "swipemove", end: "swipe", cancel: "swipecancel"};
+        _getFakeEventsMap : function () {
+            return {
+                start : "swipestart",
+                move : "swipemove",
+                end : "swipe",
+                cancel : "swipecancel"
+            };
         },
 
         /**
@@ -96,9 +118,8 @@ Aria.classDefinition({
                     originalEvent : event
                 });
                 return status;
-            }
-            else {
-                return (event.returnValue != null)? event.returnValue: !event.defaultPrevented;
+            } else {
+                return (event.returnValue != null) ? event.returnValue : !event.defaultPrevented;
             }
 
         },
@@ -120,12 +141,10 @@ Aria.classDefinition({
                         originalEvent : event
                     });
                     return status;
-                }
-                else {
+                } else {
                     return this._swipeCancel(event);
                 }
-            }
-            else {
+            } else {
                 return this._swipeCancel(event);
             }
         },
@@ -147,12 +166,10 @@ Aria.classDefinition({
                         originalEvent : event
                     });
                     return status;
-                }
-                else {
+                } else {
                     return this._swipeCancel(event);
                 }
-            }
-            else {
+            } else {
                 return this._swipeCancel(event);
             }
         },

@@ -14,24 +14,24 @@
  */
 
 Aria.classDefinition({
-	$classpath : "test.aria.storage.StorageTestSuite",
-	$extends : "aria.jsunit.TestSuite",
-	$constructor : function () {
-		this.$TestSuite.constructor.call(this);
+    $classpath : "test.aria.storage.StorageTestSuite",
+    $extends : "aria.jsunit.TestSuite",
+    $constructor : function () {
+        this.$TestSuite.constructor.call(this);
 
-		this.addTests("test.aria.storage.localStorage.API");
-		this.addTests("test.aria.storage.localStorage.Events");
-		this.addTests("test.aria.storage.localStorage.Serialize");
-		this.addTests("test.aria.storage.localStorage.Namespace");
+        this.addTests("test.aria.storage.localStorage.API");
+        this.addTests("test.aria.storage.localStorage.Events");
+        this.addTests("test.aria.storage.localStorage.Serialize");
+        this.addTests("test.aria.storage.localStorage.Namespace");
 
-		this.addTests("test.aria.storage.sessionStorage.API");
-		this.addTests("test.aria.storage.sessionStorage.Events");
-		this.addTests("test.aria.storage.sessionStorage.Serialize");
-		this.addTests("test.aria.storage.sessionStorage.Namespace");
+        this.addTests("test.aria.storage.sessionStorage.API");
+        this.addTests("test.aria.storage.sessionStorage.Events");
+        this.addTests("test.aria.storage.sessionStorage.Serialize");
+        this.addTests("test.aria.storage.sessionStorage.Namespace");
 
-		this.addTests("test.aria.storage.userData.API");
-		this.addTests("test.aria.storage.userData.Events");
-		this.addTests("test.aria.storage.userData.Serialize");
-		this.addTests("test.aria.storage.userData.Namespace");
-	}
+        this.addTests("test.aria.storage.userData.API");
+        this.addTests("test.aria.storage.userData.Events");
+        this.addTests("test.aria.storage.userData.Serialize");
+        this.addTests("test.aria.storage.userData.Namespace");
+    }
 });

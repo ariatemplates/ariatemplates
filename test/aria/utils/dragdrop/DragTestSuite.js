@@ -17,9 +17,9 @@
  * Test suite regrouping all tests on the Drag utility
  */
 Aria.classDefinition({
-	$classpath : 'test.aria.utils.dragdrop.DragTestSuite',
-	$extends : 'aria.jsunit.TestSuite',
-	$constructor : function () {
+    $classpath : 'test.aria.utils.dragdrop.DragTestSuite',
+    $extends : 'aria.jsunit.TestSuite',
+    $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
         this.addTests("test.aria.utils.dragdrop.DragErrorTest");
@@ -30,5 +30,5 @@ Aria.classDefinition({
         this.addTests("test.aria.utils.dragdrop.DragDropBean");
         this.addTests("test.aria.utils.dragdrop.issue397.MovableScrollbarTest");
 
-	}
+    }
 });

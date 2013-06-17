@@ -14,22 +14,22 @@
  */
 
 Aria.tplScriptDefinition({
-	$classpath : "test.aria.templates.beforeRefresh.BeforeRefreshTestCaseTplScript",
-	$prototype : {
-		$beforeRefresh : function () {
-			if (!test.aria.templates.beforeRefresh.BeforeRefreshTestCaseTpl.testVar1) {
-				test.aria.templates.beforeRefresh.BeforeRefreshTestCaseTpl.testVar1 = 1;
-			} else {
-				test.aria.templates.beforeRefresh.BeforeRefreshTestCaseTpl.testVar1++;
-			}
-		},
-		$afterRefresh : function () {
-			if (!test.aria.templates.beforeRefresh.BeforeRefreshTestCaseTpl.testVar2) {
-				test.aria.templates.beforeRefresh.BeforeRefreshTestCaseTpl.testVar2 = 1;
-			} else {
-				test.aria.templates.beforeRefresh.BeforeRefreshTestCaseTpl.testVar2++;
-			}
-		}
+    $classpath : "test.aria.templates.beforeRefresh.BeforeRefreshTestCaseTplScript",
+    $prototype : {
+        $beforeRefresh : function () {
+            if (!test.aria.templates.beforeRefresh.BeforeRefreshTestCaseTpl.testVar1) {
+                test.aria.templates.beforeRefresh.BeforeRefreshTestCaseTpl.testVar1 = 1;
+            } else {
+                test.aria.templates.beforeRefresh.BeforeRefreshTestCaseTpl.testVar1++;
+            }
+        },
+        $afterRefresh : function () {
+            if (!test.aria.templates.beforeRefresh.BeforeRefreshTestCaseTpl.testVar2) {
+                test.aria.templates.beforeRefresh.BeforeRefreshTestCaseTpl.testVar2 = 1;
+            } else {
+                test.aria.templates.beforeRefresh.BeforeRefreshTestCaseTpl.testVar2++;
+            }
+        }
 
-	}
+    }
 });

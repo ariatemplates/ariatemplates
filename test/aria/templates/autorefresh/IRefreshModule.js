@@ -14,16 +14,16 @@
  */
 
 Aria.interfaceDefinition({
-	$classpath : "test.aria.templates.autorefresh.IRefreshModule",
-	$extends : "aria.templates.IModuleCtrl",
-	$interface : {
-		// The $interface section contains empty functions, objects or arrays
-		syncRefreshes : {
-			$type : "Function"
-		},
-		asyncRefreshes : {
-			$type : "Function",
-			$callbackParam : 0
-		}
-	}
+    $classpath : "test.aria.templates.autorefresh.IRefreshModule",
+    $extends : "aria.templates.IModuleCtrl",
+    $interface : {
+        // The $interface section contains empty functions, objects or arrays
+        syncRefreshes : {
+            $type : "Function"
+        },
+        asyncRefreshes : {
+            $type : "Function",
+            $callbackParam : 0
+        }
+    }
 });

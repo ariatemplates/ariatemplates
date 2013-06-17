@@ -14,31 +14,31 @@
  */
 
 Aria.classDefinition({
-	$classpath : "test.aria.storage.localStorage.Serialize",
-	$dependencies : ["aria.storage.LocalStorage"],
-	$extends : "test.aria.storage.base.GeneralSerialize",
-	$constructor : function () {
-		this.storageLocation = "localStorage";
+    $classpath : "test.aria.storage.localStorage.Serialize",
+    $dependencies : ["aria.storage.LocalStorage"],
+    $extends : "test.aria.storage.base.GeneralSerialize",
+    $constructor : function () {
+        this.storageLocation = "localStorage";
 
-		this.$GeneralSerialize.constructor.call(this);
-	},
-	$prototype : {
-		testDefaultCorrectSerialization : function () {
-			if (this.canRunHTML5Tests(false) || this.canRunUserDataTests()) {
-				this.$GeneralSerialize.testDefaultCorrectSerialization.call(this);
-			}
-		},
+        this.$GeneralSerialize.constructor.call(this);
+    },
+    $prototype : {
+        testDefaultCorrectSerialization : function () {
+            if (this.canRunHTML5Tests(false) || this.canRunUserDataTests()) {
+                this.$GeneralSerialize.testDefaultCorrectSerialization.call(this);
+            }
+        },
 
-		testCustomSerializer : function () {
-			if (this.canRunHTML5Tests(false) || this.canRunUserDataTests()) {
-				this.$GeneralSerialize.testCustomSerializer.call(this);
-			}
-		},
+        testCustomSerializer : function () {
+            if (this.canRunHTML5Tests(false) || this.canRunUserDataTests()) {
+                this.$GeneralSerialize.testCustomSerializer.call(this);
+            }
+        },
 
-		testErrorCondition : function () {
-			if (this.canRunHTML5Tests(false) || this.canRunUserDataTests()) {
-				this.$GeneralSerialize.testErrorCondition.call(this);
-			}
-		}
-	}
+        testErrorCondition : function () {
+            if (this.canRunHTML5Tests(false) || this.canRunUserDataTests()) {
+                this.$GeneralSerialize.testErrorCondition.call(this);
+            }
+        }
+    }
 });

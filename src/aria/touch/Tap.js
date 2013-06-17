@@ -32,25 +32,46 @@ Aria.classDefinition({
          * Initial listeners for the Tap gesture.
          * @protected
          */
-        _getInitialListenersList: function() {
-            return [{evt: this.touchEventMap.touchstart, cb: {fn : this._tapStart, scope : this}}];
+        _getInitialListenersList : function () {
+            return [{
+                        evt : this.touchEventMap.touchstart,
+                        cb : {
+                            fn : this._tapStart,
+                            scope : this
+                        }
+                    }];
         },
 
         /**
          * Additional listeners for the Tap gesture.
          * @protected
          */
-        _getAdditionalListenersList: function() {
-            return [{evt: this.touchEventMap.touchmove, cb: {fn : this._tapMove, scope : this}},
-                    {evt: this.touchEventMap.touchend, cb: {fn : this._tapEnd, scope : this}}];
+        _getAdditionalListenersList : function () {
+            return [{
+                        evt : this.touchEventMap.touchmove,
+                        cb : {
+                            fn : this._tapMove,
+                            scope : this
+                        }
+                    }, {
+                        evt : this.touchEventMap.touchend,
+                        cb : {
+                            fn : this._tapEnd,
+                            scope : this
+                        }
+                    }];
         },
 
         /**
          * The fake events raised during the Tap lifecycle.
          * @protected
          */
-        _getFakeEventsMap : function() {
-            return {start: "tapstart", end : "tap", cancel: "tapcancel"};
+        _getFakeEventsMap : function () {
+            return {
+                start : "tapstart",
+                end : "tap",
+                cancel : "tapcancel"
+            };
         },
 
         /**
@@ -59,9 +80,11 @@ Aria.classDefinition({
          * @protected
          * @return {Boolean} false if preventDefault is true
          */
-        _tapStart: function(event) {
+        _tapStart : function (event) {
             var status = this._gestureStart(event);
-            return (status == null)? ((event.returnValue != null)? event.returnValue: !event.defaultPrevented): status;
+            return (status == null)
+                    ? ((event.returnValue != null) ? event.returnValue : !event.defaultPrevented)
+                    : status;
         },
 
         /**
@@ -70,13 +93,12 @@ Aria.classDefinition({
          * @protected
          * @return {Boolean} false if preventDefault is true
          */
-        _tapMove : function(event) {
+        _tapMove : function (event) {
             var position = aria.touch.Event.getPositions(event);
             if (this.MARGIN >= this._calculateDistance(this.startData.positions[0].x, this.startData.positions[0].y, position[0].x, position[0].y)) {
-                var status =  this._gestureMove(event);
-                return (status == null)? this._gestureCancel(event): status;
-            }
-            else {
+                var status = this._gestureMove(event);
+                return (status == null) ? this._gestureCancel(event) : status;
+            } else {
                 return this._gestureCancel(event);
             }
         },
@@ -87,9 +109,11 @@ Aria.classDefinition({
          * @protected
          * @return {Boolean} false if preventDefault is true
          */
-        _tapEnd: function(event) {
+        _tapEnd : function (event) {
             var status = this._gestureEnd(event);
-            return (status == null)? this._gestureCancel(event): (event.returnValue != null)? event.returnValue: !event.defaultPrevented;
+            return (status == null) ? this._gestureCancel(event) : (event.returnValue != null)
+                    ? event.returnValue
+                    : !event.defaultPrevented;
         }
     }
 });

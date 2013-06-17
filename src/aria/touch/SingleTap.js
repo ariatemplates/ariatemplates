@@ -14,8 +14,8 @@
  */
 
 /**
- * Contains delegated handler for a single tap event.
- * It has to be used on elements which are also listening to doubletap, since listening to tap is non sense in that case.
+ * Contains delegated handler for a single tap event. It has to be used on elements which are also listening to
+ * doubletap, since listening to tap is non sense in that case.
  */
 Aria.classDefinition({
     $singleton : true,
@@ -31,32 +31,53 @@ Aria.classDefinition({
          * The delay before validating the gesture, after the end event.
          * @type Integer
          */
-        FINAL_DELAY: 250
+        FINAL_DELAY : 250
     },
     $prototype : {
         /**
          * Initial listeners for the SingleTap gesture.
          * @protected
          */
-        _getInitialListenersList: function() {
-            return [{evt: this.touchEventMap.touchstart, cb: {fn : this._singleTapStart, scope : this}}];
+        _getInitialListenersList : function () {
+            return [{
+                        evt : this.touchEventMap.touchstart,
+                        cb : {
+                            fn : this._singleTapStart,
+                            scope : this
+                        }
+                    }];
         },
 
         /**
          * Additional listeners for the SingleTap gesture.
          * @protected
          */
-        _getAdditionalListenersList: function() {
-            return [{evt: this.touchEventMap.touchmove, cb: {fn : this._singleTapMove, scope : this}},
-                    {evt: this.touchEventMap.touchend, cb: {fn : this._singleTapEnd, scope : this}}];
+        _getAdditionalListenersList : function () {
+            return [{
+                        evt : this.touchEventMap.touchmove,
+                        cb : {
+                            fn : this._singleTapMove,
+                            scope : this
+                        }
+                    }, {
+                        evt : this.touchEventMap.touchend,
+                        cb : {
+                            fn : this._singleTapEnd,
+                            scope : this
+                        }
+                    }];
         },
 
         /**
          * The fake events raised during the SingleTap lifecycle.
          * @protected
          */
-        _getFakeEventsMap : function() {
-            return {start: "singletapstart", cancel: "singletapcancel", finalize: "singletap"};
+        _getFakeEventsMap : function () {
+            return {
+                start : "singletapstart",
+                cancel : "singletapcancel",
+                finalize : "singletap"
+            };
         },
 
         /**
@@ -67,12 +88,13 @@ Aria.classDefinition({
          */
         _singleTapStart : function (event) {
             if (this.timerId) {
-                //Cancels the current gesture if a start event occurs during the FINAL_DELAY ms period.
+                // Cancels the current gesture if a start event occurs during the FINAL_DELAY ms period.
                 return this._singleTapFinalCancel(event);
-            }
-            else {
+            } else {
                 var status = this._gestureStart(event);
-                return (status == null)? (event.returnValue != null)? event.returnValue: !event.defaultPrevented: status;
+                return (status == null)
+                        ? (event.returnValue != null) ? event.returnValue : !event.defaultPrevented
+                        : status;
             }
         },
 
@@ -82,19 +104,19 @@ Aria.classDefinition({
          * @protected
          * @return {Boolean} false if preventDefault is true
          */
-        _singleTapMove : function(event) {
+        _singleTapMove : function (event) {
             var position = aria.touch.Event.getPositions(event);
             if (this.MARGIN >= this._calculateDistance(this.startData.positions[0].x, this.startData.positions[0].y, position[0].x, position[0].y)) {
                 var status = this._gestureMove(event);
-                return (status == null)? this._singleTapCancel(event): status;
-            }
-            else {
+                return (status == null) ? this._singleTapCancel(event) : status;
+            } else {
                 return this._singleTapCancel(event);
             }
         },
 
         /**
-         * SingleTap end mgmt: if only one touch, the gesture will be finalized FINAL_DELAY ms later, if no start event in between.
+         * SingleTap end mgmt: if only one touch, the gesture will be finalized FINAL_DELAY ms later, if no start event
+         * in between.
          * @param {Object} event the original event
          * @protected
          * @return {Boolean} false if preventDefault is true
@@ -109,8 +131,7 @@ Aria.classDefinition({
                     args : event
                 });
                 return status;
-            }
-            else {
+            } else {
                 return this._singleTapCancel(event);
             }
         },
@@ -134,7 +155,7 @@ Aria.classDefinition({
          * @param {Object} event the original event
          * @protected
          */
-        _singleTapFinalize: function (event) {
+        _singleTapFinalize : function (event) {
             if (this.timerId) {
                 aria.core.Timer.cancelCallback(this.timerId);
                 this.timerId = null;
@@ -148,7 +169,7 @@ Aria.classDefinition({
          * @protected
          * @return {Boolean} false if preventDefault is true
          */
-        _singleTapFinalCancel: function(event) {
+        _singleTapFinalCancel : function (event) {
             if (this.timerId) {
                 aria.core.Timer.cancelCallback(this.timerId);
                 this.timerId = null;

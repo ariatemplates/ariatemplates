@@ -14,23 +14,23 @@
  */
 
 Aria.classDefinition({
-	$classpath : "test.aria.storage.userData.Events",
-	$dependencies : ["aria.storage.UserData"],
-	$extends : "test.aria.storage.base.GeneralEvents",
-	$constructor : function () {
-		this.$GeneralEvents.constructor.call(this);
-	},
-	$prototype : {
-		testEvents : function () {
-			if (this.canRunUserDataTests()) {
-				this.$GeneralEvents.testEvents.call(this);
-			}
-		},
+    $classpath : "test.aria.storage.userData.Events",
+    $dependencies : ["aria.storage.UserData"],
+    $extends : "test.aria.storage.base.GeneralEvents",
+    $constructor : function () {
+        this.$GeneralEvents.constructor.call(this);
+    },
+    $prototype : {
+        testEvents : function () {
+            if (this.canRunUserDataTests()) {
+                this.$GeneralEvents.testEvents.call(this);
+            }
+        },
 
-		testSerializedEvent : function () {
-			if (this.canRunUserDataTests()) {
-				this.$GeneralEvents.testSerializedEvent.call(this);
-			}
-		}
-	}
+        testSerializedEvent : function () {
+            if (this.canRunUserDataTests()) {
+                this.$GeneralEvents.testSerializedEvent.call(this);
+            }
+        }
+    }
 });

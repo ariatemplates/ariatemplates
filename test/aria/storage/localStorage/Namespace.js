@@ -14,31 +14,31 @@
  */
 
 Aria.classDefinition({
-	$classpath : "test.aria.storage.localStorage.Namespace",
-	$dependencies : ["aria.storage.LocalStorage"],
-	$extends : "test.aria.storage.base.GeneralNamespace",
-	$constructor : function () {
-		this.storageLocation = "localStorage";
+    $classpath : "test.aria.storage.localStorage.Namespace",
+    $dependencies : ["aria.storage.LocalStorage"],
+    $extends : "test.aria.storage.base.GeneralNamespace",
+    $constructor : function () {
+        this.storageLocation = "localStorage";
 
-		this.$GeneralNamespace.constructor.call(this);
-	},
-	$prototype : {
-		/**
-		 * Check what happens when you use namespaces, one namespaced shouldn't affect the others
-		 */
-		testNamespaceAPI : function () {
-			if (this.canRunHTML5Tests(false) || this.canRunUserDataTests()) {
-				this.$GeneralNamespace.testNamespaceAPI.call(this);
-			}
-		},
+        this.$GeneralNamespace.constructor.call(this);
+    },
+    $prototype : {
+        /**
+         * Check what happens when you use namespaces, one namespaced shouldn't affect the others
+         */
+        testNamespaceAPI : function () {
+            if (this.canRunHTML5Tests(false) || this.canRunUserDataTests()) {
+                this.$GeneralNamespace.testNamespaceAPI.call(this);
+            }
+        },
 
-		/**
-		 * Verify if the events are raised correctly
-		 */
-		testNamespaceEvents : function () {
-			if (this.canRunHTML5Tests(false) || this.canRunUserDataTests()) {
-				this.$GeneralNamespace.testNamespaceEvents.call(this);
-			}
-		}
-	}
+        /**
+         * Verify if the events are raised correctly
+         */
+        testNamespaceEvents : function () {
+            if (this.canRunHTML5Tests(false) || this.canRunUserDataTests()) {
+                this.$GeneralNamespace.testNamespaceEvents.call(this);
+            }
+        }
+    }
 });

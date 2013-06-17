@@ -17,7 +17,7 @@
  * Interface for test.aria.modules.test.jsonSerializers.TestModule
  */
 Aria.interfaceDefinition({
-	$classpath : "test.aria.modules.test.jsonSerializers.ITestModule",
-	$extends : "aria.templates.IModuleCtrl",
-	$interface : {}
+    $classpath : "test.aria.modules.test.jsonSerializers.ITestModule",
+    $extends : "aria.templates.IModuleCtrl",
+    $interface : {}
 });
