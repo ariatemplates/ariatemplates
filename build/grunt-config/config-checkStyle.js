@@ -73,5 +73,10 @@ module.exports = function (grunt) {
         src : ['src/**', 'test/**']
     });
 
-    grunt.registerTask('checkStyle', ['jshint', 'verifylowercase:sourceFiles']);
+    grunt.config.set('leadingIndent.indentation', 'spaces');
+    grunt.config.set('leadingIndent.jsFiles', {
+        src : ['src/**/*.js', 'test/**/*.js', '!src/aria/pageEngine/contentProcessors/MarkdownProcessor.js']
+    });
+
+    grunt.registerTask('checkStyle', ['jshint', 'verifylowercase:sourceFiles', 'leadingIndent:jsFiles']);
 };
