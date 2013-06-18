@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-(function() {
+(function () {
     /**
      * Being a BindableWidget we already have one direction binding of checked (from the datamodel to the widget). This
      * function is the callback for implementing the other bind, from the widget to the datamodel. The checked property
@@ -21,7 +21,7 @@
      * @param {aria.DomEvent} event click event
      * @private
      */
-    function bidirectionalClickBinding(event) {
+    function bidirectionalClickBinding (event) {
         var bind = this._bindingListeners.checked;
         var newValue = this._transform(bind.transform, event.target.getProperty('checked'), "fromWidget");
         aria.utils.Json.setValue(bind.inside, bind.to, newValue, bind.cb);
@@ -32,55 +32,35 @@
      */
     Aria.classDefinition({
         $classpath : "aria.html.CheckBox",
-        $extends : "aria.html.Element",
+        $extends : "aria.html.InputElement",
         $dependencies : ["aria.html.beans.CheckBoxCfg"],
-        $statics : {
-            INVALID_USAGE : "Widget %1 can only be used as a %2."
-        },
-        $constructor : function(cfg, context, line) {
+        $constructor : function (cfg, context, line) {
             this.$cfgBean = this.$cfgBean || "aria.html.beans.CheckBoxCfg.Properties";
 
-            cfg.tagName = "input";
-            cfg.attributes = cfg.attributes || {};
-            cfg.attributes.type = "checkbox";
             cfg.on = cfg.on || {};
-
             this._chainListener(cfg.on, 'click', {
                 fn : bidirectionalClickBinding,
                 scope : this
             });
 
-            this.$Element.constructor.call(this, cfg, context, line);
+            this.$InputElement.constructor.call(this, cfg, context, line, "checkbox");
         },
         $prototype : {
-            /**
-             * TextInput can only be used as self closing tags. Calling this function raises an error.
-             * @param {aria.templates.MarkupWriter} out
-             */
-            writeMarkupBegin : function(out) {
-                this.$logError(this.INVALID_USAGE, [this.$class, "container"]);
-            },
-
-            /**
-             * TextInput can only be used as self closing tags. Calling this function does not rais an error
-             * though because it was already logged by writeMarkupBegin.
-             * @param {aria.templates.MarkupWriter} out
-             */
-            writeMarkupEnd : Aria.empty,
 
             /**
              * Initialization method called after the markup of the widget has been inserted in the DOM.
              */
-            initWidget : function() {
+            initWidget : function () {
                 this.$Element.initWidget.call(this);
 
                 var bindings = this._cfg.bind;
                 if (bindings.checked) {
-                    var newValue = this._transform(bindings.checked.transform,
-                        bindings.checked.inside[bindings.checked.to], "toWidget");
+                    var newValue = this._transform(bindings.checked.transform, bindings.checked.inside[bindings.checked.to], "toWidget");
                     if (newValue != null) {
                         this._domElt.checked = newValue;
                     }
+                } else {
+                    this.$logWarn(this.BINDING_NEEDED, [this.$class, "value"]);
                 }
             },
 
@@ -90,7 +70,7 @@
              * @param {Object} value Value of the changed property
              * @param {Object} oldValue Value of the property before the change happened
              */
-            onbind : function(name, value, oldValue) {
+            onbind : function (name, value, oldValue) {
                 if (name === "checked") {
                     this._domElt.checked = value;
                 }
