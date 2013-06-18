@@ -175,7 +175,7 @@ Aria.classDefinition({
 
             var widget = this.createAndInit("aria.html.RadioButton", cfg);
 
-            this.assertErrorInLogs(aria.html.RadioButton.BINDING_NEEDED);
+            this.assertErrorInLogs(aria.html.InputElement.BINDING_NEEDED);
 
             widget.$dispose();
             this.outObj.clearAll();

@@ -143,11 +143,8 @@
      */
     Aria.classDefinition({
         $classpath : "aria.html.TextInput",
-        $extends : "aria.html.Element",
+        $extends : "aria.html.InputElement",
         $dependencies : ["aria.html.beans.TextInputCfg", "aria.utils.Caret", "aria.DomEvent"],
-        $statics : {
-            INVALID_USAGE : "Widget %1 can only be used as a %2."
-        },
         $onload : function () {
             var domevent = aria.DomEvent;
             specialKeys = [domevent.KC_END, domevent.KC_RIGHT, domevent.KC_ARROW_RIGHT, domevent.KC_DOWN,
@@ -156,9 +153,10 @@
         $constructor : function (cfg, context, line) {
             this.$cfgBean = this.$cfgBean || "aria.html.beans.TextInputCfg.Properties";
 
+            var type = (cfg.password) ? "password" : "text";
             cfg.tagName = "input";
             cfg.attributes = cfg.attributes || {};
-            cfg.attributes.type = (cfg.password) ? "password" : "text";
+            cfg.attributes.type = type;
             cfg.on = cfg.on || {};
 
             _placeholderSupported = ("placeholder" in Aria.$window.document.createElement("input"));
@@ -198,29 +196,15 @@
              */
             this._hasPlaceholder = false;
 
-            this.$Element.constructor.call(this, cfg, context, line);
+            this.$InputElement.constructor.call(this, cfg, context, line, type);
         },
         $destructor : function () {
             if (this._typeCallback) {
                 aria.core.Timer.cancelCallback(this._typeCallback);
             }
-            this.$Element.$destructor.call(this);
+            this.$InputElement.$destructor.call(this);
         },
         $prototype : {
-            /**
-             * TextInput can only be used as self closing tags. Calling this function raises an error.
-             * @param {aria.templates.MarkupWriter} out
-             */
-            writeMarkupBegin : function (out) {
-                this.$logError(this.INVALID_USAGE, [this.$class, "container"]);
-            },
-
-            /**
-             * TextInput can only be used as self closing tags. Calling this function does not rais an error though
-             * because it was already logged by writeMarkupBegin.
-             * @param {aria.templates.MarkupWriter} out
-             */
-            writeMarkupEnd : Aria.empty,
 
             /**
              * Initialization method called after the markup of the widget has been inserted in the DOM.
@@ -234,6 +218,8 @@
                     if (newValue != null) {
                         this._domElt.value = newValue;
                     }
+                } else {
+                    this.$logWarn(this.BINDING_NEEDED, [this.$class, "value"]);
                 }
 
                 this._setPlaceholder();

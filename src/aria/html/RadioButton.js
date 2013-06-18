@@ -32,42 +32,20 @@
      */
     Aria.classDefinition({
         $classpath : "aria.html.RadioButton",
-        $extends : "aria.html.Element",
+        $extends : "aria.html.InputElement",
         $dependencies : ["aria.html.beans.RadioButtonCfg"],
-        $statics : {
-            INVALID_USAGE : "Widget %1 can only be used as a %2.",
-            BINDING_NEEDED : "the property 'selectedValue' from Widget %1 should be bound to a data model"
-        },
         $constructor : function (cfg, context, line) {
             this.$cfgBean = this.$cfgBean || "aria.html.beans.RadioButtonCfg.Properties";
 
-            cfg.tagName = "input";
-            cfg.attributes = cfg.attributes || {};
-            cfg.attributes.type = "radio";
             cfg.on = cfg.on || {};
-
             this._chainListener(cfg.on, 'click', {
                 fn : bidirectionalClickBinding,
                 scope : this
             });
 
-            this.$Element.constructor.call(this, cfg, context, line);
+            this.$InputElement.constructor.call(this, cfg, context, line, "radio");
         },
         $prototype : {
-            /**
-             * TextInput can only be used as self closing tags. Calling this function raises an error.
-             * @param {aria.templates.MarkupWriter} out
-             */
-            writeMarkupBegin : function (out) {
-                this.$logError(this.INVALID_USAGE, [this.$class, "container"]);
-            },
-
-            /**
-             * TextInput can only be used as self closing tags. Calling this function does not rais an error though
-             * because it was already logged by writeMarkupBegin.
-             * @param {aria.templates.MarkupWriter} out
-             */
-            writeMarkupEnd : Aria.empty,
 
             /**
              * Initialization method called after the markup of the widget has been inserted in the DOM.
@@ -81,7 +59,7 @@
                     var newValue = this._transform(binding.transform, binding.inside[binding.to], "toWidget");
                     this._domElt.checked = (newValue === this._cfg.value);
                 } else {
-                    this.$logWarn(this.BINDING_NEEDED, [this.$class]);
+                    this.$logWarn(this.BINDING_NEEDED, [this.$class, "selectedValue"]);
                 }
             },
 
