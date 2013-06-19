@@ -22,20 +22,20 @@
      * @private
      */
     function bidirectionalClickBinding (event) {
-        var bind = this._bindingListeners.checked;
-        var newValue = this._transform(bind.transform, event.target.getProperty('checked'), "fromWidget");
+        var bind = this._bindingListeners.selectedValue;
+        var newValue = this._transform(bind.transform, this._cfg.value, "fromWidget");
         aria.utils.Json.setValue(bind.inside, bind.to, newValue, bind.cb);
     }
 
     /**
-     * CheckBox widget. Bindable widget providing bi-directional bind of 'checked'.
+     * RadioButton widget. Bindable widget providing bi-directional bind of 'selectedValue'.
      */
     Aria.classDefinition({
-        $classpath : "aria.html.CheckBox",
+        $classpath : "aria.html.RadioButton",
         $extends : "aria.html.InputElement",
-        $dependencies : ["aria.html.beans.CheckBoxCfg"],
+        $dependencies : ["aria.html.beans.RadioButtonCfg"],
         $constructor : function (cfg, context, line) {
-            this.$cfgBean = this.$cfgBean || "aria.html.beans.CheckBoxCfg.Properties";
+            this.$cfgBean = this.$cfgBean || "aria.html.beans.RadioButtonCfg.Properties";
 
             cfg.on = cfg.on || {};
             this._chainListener(cfg.on, 'click', {
@@ -43,7 +43,7 @@
                 scope : this
             });
 
-            this.$InputElement.constructor.call(this, cfg, context, line, "checkbox");
+            this.$InputElement.constructor.call(this, cfg, context, line, "radio");
         },
         $prototype : {
 
@@ -54,13 +54,12 @@
                 this.$Element.initWidget.call(this);
 
                 var bindings = this._cfg.bind;
-                if (bindings.checked) {
-                    var newValue = this._transform(bindings.checked.transform, bindings.checked.inside[bindings.checked.to], "toWidget");
-                    if (newValue != null) {
-                        this._domElt.checked = newValue;
-                    }
+                var binding = bindings.selectedValue;
+                if (binding) {
+                    var newValue = this._transform(binding.transform, binding.inside[binding.to], "toWidget");
+                    this._domElt.checked = (newValue === this._cfg.value);
                 } else {
-                    this.$logWarn(this.BINDING_NEEDED, [this.$class, "value"]);
+                    this.$logWarn(this.BINDING_NEEDED, [this.$class, "selectedValue"]);
                 }
             },
 
@@ -71,11 +70,10 @@
              * @param {Object} oldValue Value of the property before the change happened
              */
             onbind : function (name, value, oldValue) {
-                if (name === "checked") {
-                    this._domElt.checked = value;
+                if (name === "selectedValue") {
+                    this._domElt.checked = (value === this._cfg.value);
                 }
             }
-
         }
     });
 })();

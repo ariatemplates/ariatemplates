@@ -34,7 +34,7 @@ Aria.classDefinition({
 
             var out = this.createMockMarkupWriter();
             widget.writeMarkupBegin(out);
-            this.assertErrorInLogs(aria.html.TextInput.INVALID_USAGE);
+            this.assertErrorInLogs(aria.html.InputElement.INVALID_USAGE);
 
             widget.writeMarkupEnd(out);
             widget.writeMarkup(out);
@@ -97,7 +97,7 @@ Aria.classDefinition({
 
             var markup = out.getMarkup();
 
-            this.assertErrorInLogs(aria.html.TextInput.INVALID_USAGE);
+            this.assertErrorInLogs(aria.html.InputElement.INVALID_USAGE);
         },
 
         /**

@@ -51,7 +51,7 @@ Aria.beanDefinitions({
                 },
                 "password" : {
                     $type : "json:Boolean",
-                    $description : "Whether the input field should be of type password.",
+                    $description : "Whether the input field should be of type password. Deprecated: please pass {attributes: { type : \"password\" }} in the widget's config instead.",
                     $default : false
                 },
                 "autoselect" : {

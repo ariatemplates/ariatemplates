@@ -21,7 +21,8 @@ Aria.classDefinition({
         widgets : {
             "TextInput" : "aria.html.TextInput",
             "Template" : "aria.html.Template",
-            "CheckBox" : "aria.html.CheckBox"
+            "CheckBox" : "aria.html.CheckBox",
+            "RadioButton" : "aria.html.RadioButton"
         }
     }
 });
