@@ -122,7 +122,7 @@
     {call generateKeyFrames("slideouttoleft3d", "transform: translate3d(0, 0 , 0);", "transform: translate3d(-100%, 0, 0);") /}
     {call generateKeyFrames("slideouttoright3d", "transform: translate3d(0, 0 , 0);", "transform: translate3d(100%, 0, 0);") /}
 
-    .xslide.xout, .xslide.xin {
+    .xslide.xout, .xslide.xin, .xslide.xoutMix, .xslide.xinMix, .xslide.xin3d, .xslide.xout3d {
       {call generatePrefix("animation-timing-function", "ease-out") /}
       {call generatePrefix("animation-duration", "350ms") /}
     }
