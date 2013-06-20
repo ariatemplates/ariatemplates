@@ -14,6 +14,29 @@
  */
 (function () {
     "use strict";
+
+    var isHtml5HistoryAvailable = function () {
+        var history = Aria.$window.history;
+        if (history && history.pushState) {
+            try {
+                return history.state !== undefined;
+            } catch (e) {
+                // reading history.state on IE 10 can raise an "Unspecified error" exception
+                return true;
+            }
+        }
+        return false;
+    };
+
+    var readHtml5HistoryState = function () {
+        try {
+            return Aria.$window.history.state;
+        } catch (e) {
+            // reading history.state on IE 10 can raise an "Unspecified error" exception
+            return null;
+        }
+    };
+
     var window = Aria.$window;
 
     /**
@@ -21,7 +44,7 @@
      * @type Boolean
      * @private
      */
-    var html5History = !!(window.history && window.history.pushState && (window.history.state !== undefined));
+    var html5History = isHtml5HistoryAvailable();
 
     /**
      * Contains a set of states that have to be stored. If the browser supports native HTML5 history API, it only
@@ -179,7 +202,7 @@
              * the state. Compliant with the standard window.history.state
              */
             getState : html5History ? function () {
-                var state = aria.utils.Json.copy(window.history.state);
+                var state = aria.utils.Json.copy(readHtml5HistoryState());
                 if (state) {
                     /* BACKWARD-COMPATIBILITY-BEGIN-#441 */
                     state = this._addExtraInfo(state);
@@ -216,7 +239,7 @@
              * @return {String} url
              */
             getUrl : html5History ? function () {
-                var state = window.history.state;
+                var state = readHtml5HistoryState();
                 if (state && state.__info) {
                     return state.__info.url;
                 }
@@ -315,7 +338,7 @@
                 window.onpopstate = function (evt) {
                     self._raiseOnPopStateEvent.call(self, evt);
                 };
-                var state = window.history.state, title;
+                var state = readHtml5HistoryState(), title;
                 if (state && state.__info) {
                     title = state.__info.title;
                     if (title) {
@@ -390,7 +413,7 @@
              * Retrieve the state from the store.
              * @param {String} id Id of the state
              * @return {Object}
-             *
+             * 
              * <pre>
              * {
              *     position : {Number} position in the store,
@@ -402,7 +425,7 @@
              *     }
              * }
              * </pre>
-             *
+             * 
              * @private
              */
             _retrieveFromMemory : function (id) {
@@ -570,7 +593,7 @@
             /**
              * Apply a state by also checking whether it is discarded or not
              * @param {Objet} stateInfo
-             *
+             * 
              * <pre>
              * {
              *     position : {Number} position in the store,
@@ -582,7 +605,7 @@
              *     }
              * }
              * </pre>
-             *
+             * 
              * @return {Boolean} true if the state has been applied, false if the state is discarded
              * @private
              */
