@@ -459,6 +459,14 @@ Aria.classDefinition({
          * @param {Object} evt
          */
         delegate : function (evt) {
+            if (!this.__delegateMapping) {
+                // there is no event listener
+                if (evt.$DomEvent) {
+                    evt.$dispose();
+                }
+                return;
+            }
+
             if (!this.__stackCache) {
                 this.__stackCache = {};
             }
