@@ -207,6 +207,11 @@ Aria.classDefinition({
          * @return {String} Encoded string
          */
         encodeForQuotedHTMLAttribute : function (str) {
+            var IE7AttributesArr = ["nowrap", "disabled"];
+            var utilsArray = aria.utils.Array;
+            if (aria.core.Browser.isIE7 && utilsArray.indexOf(IE7AttributesArr, str) !== -1) {
+                return true;
+            }
             return (str) ? str.replace(/"/g, "&quot;") : "";
         },
 

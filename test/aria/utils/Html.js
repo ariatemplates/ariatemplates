@@ -54,6 +54,9 @@ Aria.classDefinition({
 
                         if (key === "style") {
                             // IE messes up pretty badly with style tags
+                            if (aria.core.Browser.isIE7) {
+                                got = got.cssText;
+                            }
                             got = got.toLowerCase();
                             // just add a semicolon if missing
                             if (got.charAt(got.length - 1) !== ";") {
@@ -112,7 +115,7 @@ Aria.classDefinition({
                 width : "100px",
                 "aria-label" : "label",
                 "data-testExpando" : "testExpando",
-                "data-attrib-with-dashes" : "test", /* on the "root" attributes level, keys are "data-"-prefixed and dashed */
+                "data-attrib-with-dashes" : "test", /*on the "root" attributes level, keys are "data-"-prefixed and dashed */
                 autocomplete : "off",
                 autofocus : "autofocus",
                 autocorrect : "on",
@@ -122,7 +125,6 @@ Aria.classDefinition({
             };
 
             var str = html.buildAttributeList(json);
-
             this.checkString(str, json);
         }
     }
