@@ -107,7 +107,9 @@ Aria.classDefinition({
             form.method = request.method;
             if (request.headers["Content-Type"]) {
                 try {
-                    form.enctype = request.headers["Content-Type"];
+                    // in IE 8, setting form.enctype directly does not work
+                    // form.setAttribute works better (check PTR 07049566)
+                    form.setAttribute("enctype", request.headers["Content-Type"]);
                 } catch (ex) {
                     // This might throw an exception in IE if the content type is invalid.
                 }
