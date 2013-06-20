@@ -100,6 +100,13 @@ Aria.classDefinition({
          * @override
          */
         this.isDiffered = false;
+
+        /**
+         * CSS classes coming from the CSS templates associated to the template
+         * @protected
+         * @type String
+         */
+        this._cssClassNames = "";
     },
     $destructor : function () {
         this._subTplDiv = null;
@@ -214,7 +221,7 @@ Aria.classDefinition({
 
             if (this._initCtxDone) {
                 var tplCtxt = this.subTplCtxt;
-                tplDiv.className = tplDiv.className + " " + tplCtxt.getCSSClassNames(true);
+                tplDiv.className = tplDiv.className + " " + this._cssClassNames;
                 tplCtxt.linkToPreviousMarkup(tplDiv);
                 tplCtxt.viewReady();
             }
@@ -247,6 +254,7 @@ Aria.classDefinition({
                     markup.push('>');
                     if (this._initCtxDone) {
                         var tplCtxt = this.subTplCtxt;
+                        this._cssClassNames = tplCtxt.getCSSClassNames(true);
                         var prevMarkup = tplCtxt.getMarkup();
                         if (prevMarkup != null) {
                             markup.push(prevMarkup);
