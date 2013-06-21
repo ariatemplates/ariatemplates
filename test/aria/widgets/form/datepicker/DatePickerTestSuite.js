@@ -19,9 +19,9 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
+        this.addTests("test.aria.widgets.form.datepicker.errorstate.DatePicker");
         this.addTests("test.aria.widgets.form.datepicker.issue303.InfiniteLoop");
         this.addTests("test.aria.widgets.form.datepicker.issue429.DateFormatTestCase");
-        this.addTests("test.aria.widgets.form.datepicker.errorstate.DatePicker");
         this.addTests("test.aria.widgets.form.datepicker.checkValue.DatePicker");
         this.addTests("test.aria.widgets.form.datepicker.checkFormat.DatePicker");
         this.addTests("test.aria.widgets.form.datepicker.checkBind.DatePicker");
