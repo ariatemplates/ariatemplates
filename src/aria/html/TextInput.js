@@ -146,7 +146,14 @@
         $extends : "aria.html.Element",
         $dependencies : ["aria.html.beans.TextInputCfg", "aria.utils.Caret", "aria.DomEvent"],
         $statics : {
-            INVALID_USAGE : "Widget %1 can only be used as a %2."
+            INVALID_USAGE : "Widget %1 can only be used as a %2.",
+            /* BACKWARD-COMPATIBILITY-BEGIN US 1984*/
+            /**
+             * Deprecation warning
+             * @type String
+             */
+            DEPRECATED_PASSWORD : "The Password property is deprecated. Add the input type as an attribute"
+            /* BACKWARD-COMPATIBILITY-END US 1984*/
         },
         $onload : function () {
             var domevent = aria.DomEvent;
@@ -158,7 +165,19 @@
 
             cfg.tagName = "input";
             cfg.attributes = cfg.attributes || {};
-            cfg.attributes.type = (cfg.password) ? "password" : "text";
+
+            /* BACKWARD-COMPATIBILITY-BEGIN US 1984*/
+
+            // leave that check for backward compatibility
+            if (cfg.password) {
+                cfg.attributes.type = "password";
+                this.$logWarn(this.DEPRECATED_PASSWORD, [this.tplClasspath, line]);
+            } else {
+                cfg.attributes.type = "text";
+            }
+
+            /* BACKWARD-COMPATIBILITY-END US 1984*/
+
             cfg.on = cfg.on || {};
 
             _placeholderSupported = ("placeholder" in Aria.$window.document.createElement("input"));
