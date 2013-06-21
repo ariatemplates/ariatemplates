@@ -208,7 +208,7 @@
     /**
      * Adds an interceptor to all methods.
      * @param {Object} interfaceMethods all methods for the interface
-     * @param {aria.core.JsObject.Callback} interceptor a callback which will receive notifications
+     * @param {aria.core.CfgBeans:Callback} interceptor a callback which will receive notifications
      * @return {Object} interceptedMethods
      */
     var __interceptCallback = function (interfaceMethods, interceptor, allInterceptors) {
@@ -277,9 +277,9 @@
 
             /**
              * Check that a statement is true - if not an error is raised sample: this.@assert(12,myvar=='XYZ')
-             * @param id {Integer} unique id that must be created and passed by the developer to easily track the assert
+             * @param {Integer} id unique id that must be created and passed by the developer to easily track the assert
              * in case of failure
-             * @param value {Boolean} value to assert - if not true an error is raised note: doesn't need to be a
+             * @param {Boolean} value value to assert - if not true an error is raised note: doesn't need to be a
              * boolean - as for an if() statement: e.g. this.$assert(1,{}) will return true
              * @return {Boolean} true if assert is OK
              */
@@ -389,10 +389,10 @@
 
             /**
              * Generic method allowing to call-back a caller in asynchronous processes
-             * @param {aria.core.CfgBeans.Callback} cb callback description
+             * @param {aria.core.CfgBeans:Callback} cb callback description
              * @param {MultiTypes} res first result argument to pass to cb.fn (second argument will be cb.args)
              * @param {String} errorId error raised if an exception occurs in the callback
-             * @return the value returned by the callback, or undefined if the callback could not be called.
+             * @return {MultiTypes} the value returned by the callback, or undefined if the callback could not be called.
              */
             $callback : function (cb, res, errorId) {
                 if (!cb) {
@@ -497,7 +497,7 @@
             /**
              * Add an interceptor callback on an interface specified by its classpath.
              * @param {String} itf [mandatory] interface which will be intercepted
-             * @param {Object|aria.core.JsObject.Callback} interceptor either a callback or an object/class which will
+             * @param {Object|aria.core.CfgBeans:Callback} interceptor either a callback or an object/class which will
              * receive notifications
              */
             $addInterceptor : function (itf, interceptor) {

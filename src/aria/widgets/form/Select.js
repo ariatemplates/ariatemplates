@@ -23,6 +23,11 @@ Aria.classDefinition({
     $dependencies : ["aria.widgets.form.DropDownListTrait", "aria.utils.String",
             "aria.widgets.controllers.SelectController", "aria.utils.Dom"],
     $css : ["aria.widgets.form.SelectStyle", "aria.widgets.form.list.ListStyle", "aria.widgets.container.DivStyle"],
+    /**
+     * @param {aria.widgets.CfgBeans:SelectCfg} cfg the widget configuration
+     * @param {aria.templates.TemplateCtxt} ctxt template context
+     * @param {Number} lineNumber Line number corresponding in the .tpl file where the widget is created
+     */
     $constructor : function (cfg, ctxt, lineNumber) {
         if (!this._skinnableClass) {
             this._skinnableClass = "Select";
@@ -46,7 +51,7 @@ Aria.classDefinition({
         /**
          * DOM reference of the select field.
          * @private
-         * @type {HTMLElement}
+         * @type HTMLElement
          */
         this._selectField = null;
     },
@@ -450,7 +455,7 @@ Aria.classDefinition({
 
         /**
          * Returns the select element.
-         * @return {DOMElement}
+         * @return {HTMLElement}
          */
         getSelectField : function () {
             if (!this._selectField && !this._initDone) {

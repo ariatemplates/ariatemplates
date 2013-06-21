@@ -43,7 +43,7 @@ Aria.classDefinition({
 
         /**
          * Set the list content
-         * @param {aria.widgets.CfgBeans.SelectBoxCfg.options} options
+         * @param {aria.widgets.CfgBeans:SelectBoxCfg.options} options
          */
         setListOptions : function (options) {
             this._options = options;

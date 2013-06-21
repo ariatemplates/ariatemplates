@@ -24,49 +24,49 @@ Aria.classDefinition({
     $constructor : function () {
         /**
          * Specifies if the value given to the controller was correct
-         * @type {Boolean}
+         * @type Boolean
          */
         this.ok = null;
 
         /**
          * Controller specifies if the keystroke has to be canceled
-         * @type {}
+         * @type Boolean
          */
         this.cancelKeyStroke = false;
 
         /**
          * true if the displayed value matches the begining of a correct value
-         * @type {Boolean}
+         * @type Boolean
          */
         this.matchCorrectValueStart = false;
 
         /**
          * Propose a best value for the input
-         * @type {String}
+         * @type String
          */
         this.text = null;
 
         /**
          * Internal value associated to the display
-         * @type {Object}
+         * @type Object
          */
         this.value;
 
         /**
          * used to return any error messages associated to an internal validation
-         * @type {Array}
+         * @type Array
          */
         this.errorMessages = [];
 
         /**
          * Position of caret start
-         * @type {Number}
+         * @type Integer
          */
         this.caretPosStart = null;
 
         /**
          * Position of caret end
-         * @type {Number}
+         * @type Number
          */
         this.caretPosEnd = null;
 

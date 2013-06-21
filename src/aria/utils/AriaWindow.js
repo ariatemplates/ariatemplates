@@ -23,7 +23,8 @@ Aria.classDefinition({
     $constructor : function () {
         /**
          * Counter of Aria.$window usages. This is incremented by attachWindow and decremented by detachWindow.
-         * @type {Number}
+         * @type Number
+         * @private
          */
         this._windowUsages = 0;
     },
@@ -73,6 +74,7 @@ Aria.classDefinition({
 
         /**
          * Raises the detachWindow event and unregisters the unload event from Aria.$window.
+         * @private
          */
         _raiseDetachWindow : function () {
             this.$assert(42, this._windowUsages === 0);
@@ -87,6 +89,7 @@ Aria.classDefinition({
         /**
          * Raises the unloadWindow event, makes sure the usage counter is reset to 0, then raises the detachWindow
          * event.
+         * @private
          */
         _unloadWindow : function () {
             if (this._isUnloadingWindow) {

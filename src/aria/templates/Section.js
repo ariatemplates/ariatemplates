@@ -40,7 +40,7 @@
         /**
          * Constructor
          * @param {aria.templates.TemplateCtxt} tplCtxt
-         * @param {aria.templates.CfgBeans.SectionCfg} configuration of this section (id, type, ...).
+         * @param {aria.templates.CfgBeans:SectionCfg} configuration of this section (id, type, ...).
          */
         $constructor : function (tplCtxt, cfg, options) {
             var binding, bindings, id, type, processing;
@@ -149,7 +149,7 @@
 
             // normalize configuration
             this.cfgOk = aria.core.JsonValidator.validateCfg("aria.templates.CfgBeans." + this.$class + "Cfg", cfg, {
-                msg: this.INVALID_CONFIGURATION,
+                msg : this.INVALID_CONFIGURATION,
                 params : [this.tplCtxt.tplClasspath, cfg.id]
             });
             if (!this.cfgOk) {
@@ -231,7 +231,7 @@
 
             /**
              * Macro to use when refreshing the section.
-             * @type aria.templates.CfgBeans.MacroCfg
+             * @type aria.templates.CfgBeans:MacroCfg
              */
             this.macro = cfg.macro ? tplCtxt.checkMacro(cfg.macro) : null;
 
@@ -258,7 +258,7 @@
 
             /**
              * Html attributes of the section
-             * @type aria.templates.CfgBeans.HtmlAttribute
+             * @type aria.templates.CfgBeans:HtmlAttribute
              */
             this.attributes = cfg.attributes;
 
@@ -604,7 +604,8 @@
              *  }
              * </pre>
              *
-             * @return Boolean true is the binding is valid
+             * @return {Boolean} true is the binding is valid
+             * @private
              */
             __isValidProcessingBind : function (bind) {
                 if (!bind || bind.to == null) {
@@ -925,7 +926,7 @@
 
             /**
              * Method called when this section is about to be refreshed.
-             * @param {aria.templates.CfgBeans.GetRefreshedSectionCfg} args arguments given to the getRefreshedSection
+             * @param {aria.templates.CfgBeans:GetRefreshedSectionCfg} args arguments given to the getRefreshedSection
              * method. The arguments are modified to add default parameters (macro) if not specified.
              */
             beforeRefresh : function (args) {

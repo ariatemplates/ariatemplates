@@ -42,7 +42,7 @@
 
     /**
      * Map of accepted types for interface members.
-     * @type {Object}
+     * @type Object
      * @private
      */
     var __acceptedMemberTypes = {
@@ -54,7 +54,7 @@
 
     /**
      * Contains the definition for a function defined in the interface by: function(){}
-     * @type {Object}
+     * @type Object
      * @private
      */
     var __simpleFunctionDefinition = {
@@ -63,7 +63,7 @@
 
     /**
      * Contains the definition for an array defined in the interface by: []
-     * @type {Object}
+     * @type Object
      * @private
      */
     var __simpleArrayDefinition = {

@@ -345,7 +345,7 @@ Aria.classDefinition({
 
         /**
          * Pause the test execution
-         * @param {aria.core.CfgBeans.Callback} cb Called when the current test is paused
+         * @param {aria.core.CfgBeans:Callback} cb Called when the current test is paused
          */
         pause : function (cb) {
             var instance = this._currentTest.instance, suite;
@@ -366,7 +366,7 @@ Aria.classDefinition({
 
         /**
          * Resume the test execution
-         * @param {aria.core.CfgBeans.Callback} cb Called before the next test starts
+         * @param {aria.core.CfgBeans:Callback} cb Called before the next test starts
          */
         resume : function (cb) {
             var instance = this._currentTest.instance;

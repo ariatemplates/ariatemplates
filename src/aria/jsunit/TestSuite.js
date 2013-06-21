@@ -78,7 +78,7 @@ Aria.classDefinition({
         /**
          * Callback called when the pause function is complete. If a test is processing, pause will wait for it to
          * complete or go in error before it calls this callback
-         * @type {aria.core.CfgBeans.Callback)
+         * @type aria.core.CfgBeans:Callback
          */
         this._pauseCallback = null;
 
@@ -278,7 +278,7 @@ Aria.classDefinition({
 
         /**
          * Add test classpaths to the test suite Pass as many arguments as needed
-         * @param : String
+         * @param {String}
          */
         addTests : function () {
             var args = arguments;
@@ -488,7 +488,7 @@ Aria.classDefinition({
          * Try to create a new instance of a given test case classpath.
          * @protected
          * @param {String} classpath
-         * @return {TestCase}
+         * @return {aria.jsunit.TestCase}
          */
         _createTest : function (classpath) {
             var testInstance;
@@ -677,7 +677,7 @@ Aria.classDefinition({
 
         /**
          * Pause the test execution
-         * @param {aria.core.CfgBeans.Callback} cb Called when the current test is paused
+         * @param {aria.core.CfgBeans:Callback} cb Called when the current test is paused
          */
         pause : function (cb) {
             this._isPaused = true;
@@ -686,7 +686,7 @@ Aria.classDefinition({
 
         /**
          * Resume the test execution
-         * @param {aria.core.CfgBeans.Callback} cb Called before the next test starts
+         * @param {aria.core.CfgBeans:Callback} cb Called before the next test starts
          */
         resume : function (cb) {
             this._isPaused = false;

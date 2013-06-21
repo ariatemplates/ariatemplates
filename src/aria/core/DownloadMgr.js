@@ -56,10 +56,16 @@ Aria.classDefinition({
          */
         this._jsonUtils = aria.utils.Json;
 
+        /**
+         * Type utils shortcut
+         * @protected
+         * @type aria.utils.Type
+         */
         this._typeUtils = aria.utils.Type;
 
         /**
          * Map of URLs for which it is desired to bypass the browser cache.
+         * @protected
          * @type Object
          */
         this._timestampURL = {};
@@ -179,11 +185,10 @@ Aria.classDefinition({
         /**
          * Get a file from its logical path
          * @param {String} logicalPath file logical path e.g. aria/core/Sequencer.js
-         * @param {aria.core.JsObject.Callback} cb callback description - warning callback may be called synchronously
+         * @param {aria.core.CfgBeans:Callback} cb callback description - warning callback may be called synchronously
          * if the file is already available
          *
          * <pre>
-         *
          *     {
          *         fn: // {Function} callback function
          *         scope: // {Object} object context associated to the callback function (i.e. 'this' object)
@@ -366,7 +371,7 @@ Aria.classDefinition({
 
         /**
          * Internal method called when a file loader can be disposed
-         * @param {aria.core.FileLoader.$events.complete} evt
+         * @param {aria.core.FileLoader:complete:event} evt
          * @private
          */
         _onFileLoaderComplete : function (evt) {
@@ -429,7 +434,7 @@ Aria.classDefinition({
         /**
          * Gets tpl file content based on its classpath or retrieves it from the cache if it has been already loaded
          * @param {String} classpath Classpath of the template
-         * @param {aria.core.JsObject.Callback} cb Callback to be called after tpl content is downloaded
+         * @param {aria.core.CfgBeans:Callback} cb Callback to be called after tpl content is downloaded
          */
         loadTplFileContent : function (classpath, cb) {
             var logicalPath = aria.core.ClassMgr.getBaseLogicalPath(classpath) + ".tpl";
@@ -444,7 +449,7 @@ Aria.classDefinition({
 
         /**
          * Internal method called when tpl content is loaded
-         * @param {aria.core.FileLoader.$events.complete} evt
+         * @param {aria.core.FileLoader:complete:event} evt
          * @param {Object} args Additonal arguments for the callback {origCb: {JSON callback} orignal callback to be
          * called after file load is complete}
          * @protected

@@ -25,7 +25,7 @@ Aria.classDefinition({
 
     /**
      * Fieldset constructor
-     * @param {aria.widgets.CfgBeans.FieldsetCfg} cfg the widget configuration
+     * @param {aria.widgets.CfgBeans:FieldsetCfg} cfg the widget configuration
      * @param {aria.templates.TemplateCtxt} ctxt template context
      */
     $constructor : function (cfg, ctxt) {

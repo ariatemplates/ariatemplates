@@ -32,7 +32,7 @@
      * properties: parentModule (reference to the parent information inside modulesPrivateInfo), customModule (boolean)
      * and subModuleDesc (refpath, initArgs)</li>
      * </ul>
-     * @type {Object}
+     * @type Object
      * @private
      */
     var modulesPrivateInfo = {};
@@ -81,7 +81,7 @@
      * contain:
      * <ul>
      * <li>desc (aria.templates.CfgBeans.InitModuleCtrl) description</li>
-     * <li>cb (aria.core.JsObject.Callback) callback called when module controller creation is finished</li>
+     * <li>cb (aria.core.CfgBeans:Callback) callback called when module controller creation is finished</li>
      * <li>skipInit (Boolean) whether the init method of the module controller will be called</li>
      * <li>registerListeners (Object) listeners to register on the module controller public interface before calling
      * its init method</li>
@@ -387,7 +387,7 @@
     /**
      * Put a sub-module at the correct place in the parent, using the refpath and arrayIndex properties.
      * @param {Object} parentModule parent module private information (modulePrivateInfo)
-     * @param {aria.templates.CfgBeans.SubModuleDefinition} subModuleDesc description of the sub-module
+     * @param {aria.templates.CfgBeans:SubModuleDefinition} subModuleDesc description of the sub-module
      * @param {Object} subModuleCtrl public interface of the sub-module, or null if the module should be removed from
      * refPath
      * @param {Boolean} customModule whether the sub-module is a custom module
@@ -479,7 +479,7 @@
      * Method used to load sub-modules.
      * @param {Object} parentModuleInfo parent module private information
      * @param {Array} subModulesDescArray array of sub-modules to be loaded
-     * @param {aria.core.JsObject.Callback} cb callback to call when sub-modules are all loaded
+     * @param {aria.core.CfgBeans:Callback} cb callback to call when sub-modules are all loaded
      * @param {Boolean} whether sub-modules are custom modules (or standard ones)
      * @param {Object} recursionCheck object in which keys are classpaths. If it is requested to load as a sub-module
      * one of these classpaths, loading this sub-module will fail.
@@ -640,8 +640,8 @@
              * Create a module controller and its corresponding flow controller according to its description object and
              * send in the callback an object. The callback may be called synchronously if the initialization can be
              * done synchronously.
-             * @param {aria.templates.CfgBeans.InitModuleCtrl} desc Module controller description
-             * @param {aria.core.JsObject.Callback} cb Callback, which will be called with a json object containing the
+             * @param {aria.templates.CfgBeans:InitModuleCtrl} desc Module controller description
+             * @param {aria.core.CfgBeans:Callback} cb Callback, which will be called with a json object containing the
              * following properties
              * <ul>
              * <li><code>error</code>: (Boolean) if true, there was an error during module controller creation and
@@ -693,7 +693,7 @@
              * should be attached
              * @param {Array} array of type aria.templates.CfgBeans.SubModuleDefinition, giving information about which
              * modules are to be loaded and how.
-             * @param {aria.core.JsObject.Callback} cb callback to be called when the load is complete (may have failed,
+             * @param {aria.core.CfgBeans:Callback} cb callback to be called when the load is complete (may have failed,
              * though)
              * @private
              */
@@ -746,7 +746,7 @@
              * Reload a module controller. A module can be dynamically reloaded only if it is a sub-module. To check if
              * a module controller is reloadable, you can use isModuleReloadable.
              * @param {aria.templates.ModuleCtrl} moduleCtrlPrivate module controller instance which is to be reloaded
-             * @param {aria.core.JsObject.Callback} cb callback
+             * @param {aria.core.CfgBeans:Callback} cb callback
              */
             reloadModuleCtrl : function (moduleCtrlPrivate, cb) {
                 var res = getModulePrivateInfoWithCheck(moduleCtrlPrivate, "reloadModuleCtrl");

@@ -71,6 +71,7 @@ Aria.classDefinition({
          * @param {HTMLElement} domElt reference DOM element
          * @param {Number} count [optional, default: 1], number of the following DOM element (1 for the immediately
          * following DOM element)
+         * @return {HTMLElement}
          */
         getNextSiblingElement : function (domElt, count) {
             if (count == null) {
@@ -133,7 +134,6 @@ Aria.classDefinition({
          * @param {HTMLElement} parentNode The HTML node which descendants should be searched
          * @param {String} tagName Name of the tag, i.e. 'label'
          * @return {HTMLElement} An array of elements with specific tag name
-         * @public
          */
         getDomElementsChildByTagName : function (parentNode, tagName) {
             if (!parentNode) {
@@ -205,7 +205,7 @@ Aria.classDefinition({
 
         /**
          * Replace the HTML contained in an element by another piece of HTML.
-         * @param {aria.templates.CfgBeans.Div} idOrElt div whose content have to be replaced
+         * @param {aria.templates.CfgBeans:Div} idOrElt div whose content have to be replaced
          * @param {String} newHTML html to set
          * @return {Object} Reference to the html element, or null if the element was not found in the DOM. If the
          * element was not found in the DOM, the DIV_NOT_FOUND error is also logged. Note that in IE, in tables, the
@@ -491,7 +491,7 @@ Aria.classDefinition({
          * body.clientHeight  Height of viewport excluding scrollbar in quirks mode.
          * </pre>
          *
-         * @return {aria.utils.DomBeans.Size} Size object width 'width' and 'height' properties
+         * @return {aria.utils.DomBeans:Size} Size object width 'width' and 'height' properties
          * @private
          */
         _getViewportSize : function () {
@@ -505,7 +505,7 @@ Aria.classDefinition({
         },
 
         /**
-         * @return {aria.utils.DomBeans.Size} Size object width 'width' and 'height' properties
+         * @return {aria.utils.DomBeans:Size} Size object width 'width' and 'height' properties
          */
         getViewportSize : function () {
             return this._getViewportSize();
@@ -560,7 +560,7 @@ Aria.classDefinition({
         /**
          * Get the full size of the page. It is bigger than the viewport size if there are scrollbars, otherwise it's
          * the viewport size
-         * @return {aria.utils.DomBeans.Size} Size object
+         * @return {aria.utils.DomBeans:Size} Size object
          */
         getFullPageSize : function () {
             // https://developer.mozilla.org/en/DOM/window.scrollMaxY suggests not to use scrollMaxY
@@ -587,7 +587,7 @@ Aria.classDefinition({
          * @param {HTMLElement} element
          * @param {Boolean} stopAbsolute <i>[optional, default=false]</i> if true, it will stop calculating the
          * position when it encounters the first ancestor of the element with absolute positioning
-         * @return {aria.utils.DomBeans.Position}
+         * @return {aria.utils.DomBeans:Position}
          */
         calculatePosition : function (element, stopAbsolute) {
             if (!element) {
@@ -695,7 +695,7 @@ Aria.classDefinition({
          * Get the client geometry of an element. It means the coordinates of the top/left corner and the width and
          * height of the area inside the element which can be used by its child elements.
          * @param {HTMLElement} element Element whose client geometry is requested.
-         * @return {aria.utils.DomBeans.Geometry} Geometry object
+         * @return {aria.utils.DomBeans:Geometry} Geometry object
          */
         getClientGeometry : function (element) {
             var position = this.calculatePosition(element);
@@ -743,7 +743,7 @@ Aria.classDefinition({
          * element is the body, the geometry corresponds to the whole page, otherwise it's the visible part of the
          * element.
          * @param {HTMLElement} element Element whose geometry is requested.
-         * @return {aria.utils.DomBeans.Geometry} Geometry object
+         * @return {aria.utils.DomBeans:Geometry} Geometry object
          * @public
          */
         getGeometry : function (element) {
@@ -895,9 +895,9 @@ Aria.classDefinition({
 
         /**
          * Center the given size in the viewport.
-         * @param {aria.utils.Dom.Size} size size of the element to center in the viewport
+         * @param {aria.utils.DomBeans:Size} size size of the element to center in the viewport
          * @param {Object} base The base element used to account for scrolling offsets
-         * @return {aria.utils.Dom.Position} position of the element when centered in the viewport
+         * @return {aria.utils.DomBeans:Position} position of the element when centered in the viewport
          */
         centerInViewport : function (size, base) {
             var viewportSize = this._getViewportSize();
@@ -910,8 +910,8 @@ Aria.classDefinition({
 
         /**
          * Check if a given position + size couple can fit in the current viewport
-         * @param {aria.utils.Dom.Position} position
-         * @param {aria.utils.Dom.Size} size
+         * @param {aria.utils.DomBeans:Position} position
+         * @param {aria.utils.DomBeans:Size} size
          * @param {Object} base The base element used to account for scrolling offsets
          * @return {Boolean} True if the given position+size couple can fit in the current viewport
          */
@@ -930,8 +930,8 @@ Aria.classDefinition({
 
         /**
          * Compares two geometries to ascertain whether an element is inside another one
-         * @param {aria.utils.DomBeans.Geometry} needle
-         * @param {aria.utils.DomBeans.Geometry|aria.utils.Dom.VIEWPORT} haystack
+         * @param {aria.utils.DomBeans:Geometry} needle
+         * @param {aria.utils.DomBeans:Geometry|aria.utils.Dom:VIEWPORT:property} haystack
          * @return {Boolean}
          */
         isInside : function (needle, haystack) {
@@ -959,10 +959,10 @@ Aria.classDefinition({
          * Given a position + size couple, return a corrected position that should fit in the viewport. If the size is
          * bigger than the vieport it returns a position such that the top left corner of the element to be fit is in
          * the viewport.
-         * @param {aria.utils.DomBeans.Position} position
-         * @param {aria.utils.DomBeans.Size} size
+         * @param {aria.utils.DomBeans:Position} position
+         * @param {aria.utils.DomBeans:Size} size
          * @param {Object} base The base element used to account for scrolling offsets
-         * @return {aria.utils.DomBeans.Position}
+         * @return {aria.utils.DomBeans:Position}
          */
         fitInViewport : function (position, size, base) {
             var viewportSize = this._getViewportSize();
@@ -984,9 +984,9 @@ Aria.classDefinition({
 
         /**
          * Fits a geometry into another geometry
-         * @param {aria.utils.DomBeans.Geometry} geometry
-         * @param {aria.utils.DomBeans.Geometry|aria.utils.Dom.VIEWPORT} container
-         * @return {aria.utils.DomBeans.Position} top and left values of the fitted geometry
+         * @param {aria.utils.DomBeans:Geometry} geometry
+         * @param {aria.utils.DomBeans:Geometry|aria.utils.Dom:VIEWPORT:property} container
+         * @return {aria.utils.DomBeans:Position} top and left values of the fitted geometry
          */
         fitInside : function (geometry, container) {
             geometry.width = geometry.width || 0;

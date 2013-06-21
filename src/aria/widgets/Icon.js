@@ -37,7 +37,7 @@ Aria.classDefinition({
         /**
          * Skin information for this icon
          * @protected
-         * @type {Object}
+         * @type Object
          */
         this._iconInfo = iconInfo;
 
@@ -53,7 +53,6 @@ Aria.classDefinition({
         this._cssClassNames = "xWidget";
     },
     $statics : {
-
         // ERROR MESSAGES:
         ICON_BADLY_FORMATTED : "%1Icon name is not valid: %2",
         ICON_NOT_FOUND : "%1Icon was not found: %2"

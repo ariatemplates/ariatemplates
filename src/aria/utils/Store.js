@@ -87,10 +87,10 @@ Aria.classDefinition({
 
         /**
          * Get an element matching the match function
-         * @param {aria.core.JsObject.Callback} matchFunction takes the element as first argument and return true if
+         * @param {aria.core.CfgBeans:Callback} matchFunction takes the element as first argument and return true if
          * element matches.
          * @param {Boolean} multiple false if returns first instance, true if returns all instances in array
-         * @return {object} / {Array}
+         * @return {Object|Array}
          */
         getMatch : function (matchFunction, multiple) {
             multiple = multiple === true;
@@ -109,11 +109,11 @@ Aria.classDefinition({
 
         /**
          * Remove from store element matching the match function, return the elements removed
-         * @param {aria.core.JsObject.Callback} matchFunction takes the element as first argument and return true if
+         * @param {aria.core.CfgBeans:Callback} matchFunction takes the element as first argument and return true if
          * element matches.
          * @param {Boolean} multiple false will stop at first instance. if true, function will return number of element
          * removed
-         * @return {Object} / {Array}
+         * @return {Object|Array}
          */
         removeMatch : function (matchFunction, multiple) {
             matchFunction = new aria.utils.Callback(matchFunction);
@@ -138,8 +138,8 @@ Aria.classDefinition({
 
         /**
          * Apply a function on each element of the store, or elements matching the match function
-         * @param {aria.core.JsObject.Callback} actionFunction takes the element as first argument
-         * @param {aria.core.JsObject.Callback} matchFunction OPTIONAL takes the element as first argument and return
+         * @param {aria.core.CfgBeans:Callback} actionFunction takes the element as first argument
+         * @param {aria.core.CfgBeans:Callback} matchFunction OPTIONAL takes the element as first argument and return
          * true if element matches.
          */
         foreach : function (actionFunction, matchFunction) {

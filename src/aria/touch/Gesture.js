@@ -316,7 +316,7 @@ Aria.classDefinition({
          * @param {Integer} x2 x of the second point
          * @param {Integer} y2 y of the second point
          * @protected
-         * @return {Float} the distance
+         * @return {Number} the distance
          */
         _calculateDistance : function (x1, y1, x2, y2) {
             return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));

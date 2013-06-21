@@ -17,7 +17,7 @@
 
     /**
      * @type Object
-     *
+     * @private
      * <pre>
      *     {
      *         key : // @type String id of the tooltip
@@ -150,7 +150,7 @@
             },
             /**
              * Called when the associated widget receives a mouseover event.
-             * @param {aria.widgets.widget} widget associated widget
+             * @param {aria.widgets.Widget} widget associated widget
              * @param {aria.DomEvent} domEvt
              */
             associatedWidgetMouseOver : function (widget, domEvt) {
@@ -202,7 +202,7 @@
             },
             /**
              * Called when the associated widget receives a mouseout event.
-             * @param {aria.widgets.widget} widget associated widget
+             * @param {aria.widgets.Widget} widget associated widget
              * @param {aria.DomEvent} domEvt
              */
             associatedWidgetMouseOut : function (widget, domEvt) {

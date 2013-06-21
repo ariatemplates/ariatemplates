@@ -43,7 +43,7 @@ Aria.classDefinition({
 
         /**
          * Configuration parameters for animation
-         * @type aria.utils.css.AnimationsBean.AnimationCfg
+         * @type aria.utils.css.AnimationsBean:AnimationCfg
          */
         this._cfg = {};
 
@@ -67,7 +67,7 @@ Aria.classDefinition({
         /**
          * Starts the animation
          * @param {String} animation name
-         * @param {aria.utils.css.AnimationsBean.AnimationCfg} cfg animation configuration
+         * @param {aria.utils.css.AnimationsBean:AnimationCfg} cfg animation configuration
          */
         start : function (animation, cfg) {
             this._name = "x" + animation;

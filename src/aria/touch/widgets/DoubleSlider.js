@@ -29,7 +29,7 @@ Aria.classDefinition({
     $dependencies : ["aria.touch.widgets.SliderCfgBeans", "aria.utils.Dom", "aria.utils.Type", "aria.utils.Mouse"],
     /**
      * Slider Constructor.
-     * @param {aria.touch.widgets.SliderCfgBeans.DoubleSliderCfg} cfg slider configuration
+     * @param {aria.touch.widgets.SliderCfgBeans:DoubleSliderCfg} cfg slider configuration
      * @param {aria.templates.TemplateCtxt} context template context
      * @param {Number} lineNumber line number in the template
      */
@@ -38,7 +38,7 @@ Aria.classDefinition({
 
         /**
          * Whether the widget configuration is valid
-         * @type {Boolean}
+         * @type Boolean
          * @protected
          */
         this._cfgOk = aria.core.JsonValidator.validateCfg("aria.touch.widgets.SliderCfgBeans.DoubleSliderCfg", cfg);
@@ -49,7 +49,7 @@ Aria.classDefinition({
 
         /**
          * Computed width of the first thumb. The actual value is compute on initialization.
-         * @type {Number}
+         * @type Number
          * @protected
          */
         this._firstWidth = 0;
@@ -57,14 +57,14 @@ Aria.classDefinition({
         /**
          * Computed width of the second thumb. The actual value is compute on initialization.
          * Being aligned differently it should account for the borders.
-         * @type {Number}
+         * @type Number
          * @protected
          */
         this._secondWidth = 0;
 
         /**
          * Width of the rail between the two thumbs.
-         * @type {Number}
+         * @type Number
          * @protected
          */
         this._railWidth = 0;
@@ -79,7 +79,7 @@ Aria.classDefinition({
         /**
          * Value before the start of a move, this is kept to raised the change event only
          * if after a move the new value changes
-         * @type {Array}
+         * @type Array
          * @protected
          */
         this._oldValue = [0, 0];
@@ -122,7 +122,7 @@ Aria.classDefinition({
 
         /**
          * Initial position of the element being dragged
-         * @type {Number}
+         * @type Number
          * @protected
          */
         this._initialDrag = 0;
@@ -130,7 +130,7 @@ Aria.classDefinition({
         var binding = this._cfg.bind ? this._cfg.bind.value : null;
         /**
          * Description of the bind value
-         * @type {Object}
+         * @type Object
          * @protected
          */
         this._binding = binding;
@@ -138,7 +138,7 @@ Aria.classDefinition({
             /**
              * Callback for the data change
              * @protected
-             * @type {aria.core.CfgBeans.Callback}
+             * @type aria.core.CfgBeans:Callback
              */
             this._bindingCallback = {
                 fn : this._notifyDataChange,
@@ -188,7 +188,7 @@ Aria.classDefinition({
 
         /**
          * List of Drag instances associated to the two thumbs
-         * @type {Array} of aria.utils.dragdrop.Drag
+         * @type Array of aria.utils.dragdrop.Drag
          */
         this._draggable = [];
 

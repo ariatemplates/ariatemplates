@@ -26,19 +26,21 @@ Aria.classDefinition({
 
         /**
          * Skin configutation
-         * @type {Object}
+         * @type Object
+         * @protected
          */
         this._skinObj = aria.widgets.AriaSkinInterface.getSkinObject(this._skinnableClass, cfg.sclass);
 
         /**
          * Frame border for the input
-         * @type {aria.widgets.frames.Frame}
+         * @type aria.widgets.frames.Frame
+         * @protected
          */
         this._frame = null; // created in _inputMarkup
 
         /**
          * Array of icon names which need to be hidden.
-         * @type {Array}
+         * @type Array
          */
         this._hideIconNames = null;
         this._setState();

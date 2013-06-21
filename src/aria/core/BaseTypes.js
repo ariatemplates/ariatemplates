@@ -27,17 +27,17 @@ Aria.beanDefinitions({
             $type : "json:Object",
             $description : "Definition of a bean package, which is the root element of a JSON schema. A bean package groups together a set of bean definitions with a common purpose.",
             $properties : {
-                '$package' : {
+                "$package" : {
                     $type : "json:PackageName",
                     $description : "Complete path of the bean package which is being defined.",
                     $mandatory : true
                 },
-                '$description' : {
+                "$description" : {
                     $type : "json:String",
                     $description : "A literal description of the package and its purpose."
                 },
 
-                '$dependencies' : {
+                "$dependencies" : {
                     $type : "json:Array",
                     $description : "Contains an array of dependencies to be loaded for the bean package.",
                     $contentType : {
@@ -46,7 +46,7 @@ Aria.beanDefinitions({
                     }
                 },
 
-                '$namespaces' : {
+                "$namespaces" : {
                     $type : "json:Map",
                     $description : "A map containing all the external bean packages referenced in this package. The key in the map is the prefix used in this package to refer to the imported package. The value is the complete path of the imported package.",
                     $contentType : {
@@ -55,7 +55,7 @@ Aria.beanDefinitions({
                         $description : "Complete path of the bean package to be imported."
                     }
                 },
-                '$beans' : {
+                "$beans" : {
                     $type : "json:Map",
                     $description : "Map of beans. The key in the map is the name of the bean, which must be a valid variable name in the JavaScript language.",
                     $mandatory : true,

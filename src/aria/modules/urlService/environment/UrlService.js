@@ -29,7 +29,7 @@ Aria.classDefinition({
          * Get the urlService classpath configuration. It is a copy of the current configuration and not a reference to
          * the object itself.
          * @public
-         * @return {aria.core.environment.Environment.EnvironmentBaseCfgBeans.AppCfg} The classpath configuration
+         * @return {aria.core.environment.environment.EnvironmentBaseCfgBeans:AppCfg} The classpath configuration
          */
         getUrlServiceCfg : function () {
             return aria.utils.Json.copy(this.checkApplicationSettings("urlService"));

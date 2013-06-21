@@ -144,8 +144,8 @@ Aria.classDefinition({
 
         /**
          * Do a click somewhere on the screen.
-         * @param {} where
-         * @param {} cb
+         * @param {Object|HTMLElement|String} where
+         * @param {aria.core.CfgBeans:Callback} cb
          */
         click : function (where, cb) {
             where = this._resolvePosition(where);

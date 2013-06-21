@@ -24,18 +24,21 @@ Aria.classDefinition({
     $constructor : function () {
         /**
          * Widget normalizers. Keys in this object are widget names.
+         * @private
          * @type Object
          */
         this._widgetNormalizers = {};
 
         /**
          * Frame normalizers. Keys in this object are frame types.
+         * @private
          * @type Object
          */
         this._frameNormalizers = {};
 
         /**
          * Constructor for normalizers (both widget and frame normalizers).
+         * @private
          * @type Function
          */
         this._createNormalizerObject = function () {};

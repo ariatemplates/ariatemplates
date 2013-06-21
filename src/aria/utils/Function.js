@@ -64,7 +64,7 @@ Aria.classDefinition({
 
         /**
          * Create a function from a callback object. When the function is called, the callback is called. The first parameter in the callback is the argument array given to the function.
-         * @param {aria.core.JsObject.Callback} cb
+         * @param {aria.core.CfgBeans:Callback} cb
          * @return {Function}
          */
         bindCallback : function (cb) {

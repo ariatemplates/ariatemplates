@@ -1226,19 +1226,19 @@ Aria.beanDefinitions({
                     $default : ""
                 },
                 "minWidth" : {
-                    $type : "ResizableWidgetCfg.$properties.minWidth",
+                    $type : "ResizableWidgetCfg.minWidth",
                     $description : "Minimum widget width in pixels. Works also when width is defined and > 0 (to allow constraints on bindable width). Note that this might be constrained further for some widgets to fit into viewport if the viewport is not big enough."
                 },
                 "maxWidth" : {
-                    $type : "ResizableWidgetCfg.$properties.maxWidth",
+                    $type : "ResizableWidgetCfg.maxWidth",
                     $description : "Maximum widget width in pixels. Works also when width is defined and > 0 (to allow constraints on bindable width)."
                 },
                 "minHeight" : {
-                    $type : "ResizableWidgetCfg.$properties.minHeight",
+                    $type : "ResizableWidgetCfg.minHeight",
                     $description : "Minimum widget height in pixels. Works also when height is defined and > 0 (to allow constraints on bindable height). Note that this might be constrained further for some widgets to fit into viewport if the viewport is not big enough."
                 },
                 "maxHeight" : {
-                    $type : "ResizableWidgetCfg.$properties.maxHeight",
+                    $type : "ResizableWidgetCfg.maxHeight",
                     $description : "Maximum widget height in pixels. Works also when height is defined and > 0 (to allow constraints on bindable height)."
                 }
             }
@@ -1788,19 +1788,19 @@ Aria.beanDefinitions({
                     $description : "Text to put on the fieldset to describe its content."
                 },
                 "minWidth" : {
-                    $type : "ResizableWidgetCfg.$properties.minWidth",
+                    $type : "ResizableWidgetCfg.minWidth",
                     $description : "Minimum widget width in pixels. Works also when width is defined and > 0 (to allow constraints on bindable width)."
                 },
                 "maxWidth" : {
-                    $type : "ResizableWidgetCfg.$properties.maxWidth",
+                    $type : "ResizableWidgetCfg.maxWidth",
                     $description : "Maximum widget width in pixels. Works also when width is defined and > 0 (to allow constraints on bindable width)."
                 },
                 "minHeight" : {
-                    $type : "ResizableWidgetCfg.$properties.minHeight",
+                    $type : "ResizableWidgetCfg.minHeight",
                     $description : "Minimum widget height in pixels. Works also when height is defined and > 0 (to allow constraints on bindable height)."
                 },
                 "maxHeight" : {
-                    $type : "ResizableWidgetCfg.$properties.maxHeight",
+                    $type : "ResizableWidgetCfg.maxHeight",
                     $description : "Maximum widget height in pixels. Works also when height is defined and > 0 (to allow constraints on bindable height)."
                 }
             }
@@ -1865,19 +1865,19 @@ Aria.beanDefinitions({
                     $default : true
                 },
                 "minWidth" : {
-                    $type : "ResizableWidgetCfg.$properties.minWidth",
+                    $type : "ResizableWidgetCfg.minWidth",
                     $description : "Minimum widget width in pixels. Works also when width is defined and > 0 (to allow constraints on bindable width)."
                 },
                 "maxWidth" : {
-                    $type : "ResizableWidgetCfg.$properties.maxWidth",
+                    $type : "ResizableWidgetCfg.maxWidth",
                     $description : "Maximum widget width in pixels. Works also when width is defined and > 0 (to allow constraints on bindable width)."
                 },
                 "minHeight" : {
-                    $type : "ResizableWidgetCfg.$properties.minHeight",
+                    $type : "ResizableWidgetCfg.minHeight",
                     $description : "Minimum widget height in pixels. Works also when height is defined and > 0 (to allow constraints on bindable height)."
                 },
                 "maxHeight" : {
-                    $type : "ResizableWidgetCfg.$properties.maxHeight",
+                    $type : "ResizableWidgetCfg.maxHeight",
                     $description : "Maximum widget height in pixels. Works also when height is defined and > 0 (to allow constraints on bindable height)."
                 }
             }

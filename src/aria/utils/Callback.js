@@ -92,7 +92,7 @@ Aria.classDefinition({
     },
     /**
      * Creates a callback instance
-     * @param {aria.core.CfgBeans.Callback|Function} callbackDefinition, an object or directly a function reference.
+     * @param {aria.core.CfgBeans:Callback|Function} callbackDefinition, an object or directly a function reference.
      *
      * <pre>
      * {
@@ -138,6 +138,7 @@ Aria.classDefinition({
         /**
          * Whether we should use Function.call or Function.apply for args. Used only if args is an array
          * @type Boolean
+         * @protected
          */
         this._apply = callbackDefinition.apply;
 

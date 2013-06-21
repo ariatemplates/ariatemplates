@@ -155,7 +155,7 @@ Aria.classDefinition({
 
         /**
          * Internal callback called when the class dependencies are ready
-         * @param {aria.core.ClassLoader.$events.classReady} evt
+         * @param {aria.core.ClassLoader:classReady:event} evt
          * @private
          */
         _onClassesReady : function (evt) {
@@ -164,7 +164,7 @@ Aria.classDefinition({
 
         /**
          * Internal callback called if there is an error while loading classes
-         * @param {aria.core.ClassLoader.$events.classError} evt
+         * @param {aria.core.ClassLoader:classError:event} evt
          * @private
          */
         _onClassesError : function (evt) {
@@ -173,7 +173,7 @@ Aria.classDefinition({
 
         /**
          * Internal method called when the class loader can be disposed
-         * @param {aria.core.ClassLoader.$events.complete} evt
+         * @param {aria.core.ClassLoader:complete:event} evt
          * @private
          */
         _onClassLoaderComplete : function (evt) {

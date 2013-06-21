@@ -30,7 +30,7 @@ Aria.classDefinition({
 
         /**
          * Return currency formats
-         * @return {aria.utils.environment.Number.CurrencyFormatsCfg}
+         * @return {aria.utils.environment.NumberCfgBeans:CurrencyFormatsCfg}
          */
         getCurrencyFormats : function () {
             return this.checkApplicationSettings("currencyFormats");
@@ -38,7 +38,7 @@ Aria.classDefinition({
 
         /**
          * Return decimal format symbols
-         * @return {aria.utils.environment.NumberCfgBeans.DecimalFormatSymbols}
+         * @return {aria.utils.environment.NumberCfgBeans:DecimalFormatSymbols}
          */
         getDecimalFormatSymbols : function () {
             return this.checkApplicationSettings("decimalFormatSymbols");

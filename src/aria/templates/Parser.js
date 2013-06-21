@@ -215,7 +215,7 @@ Aria.classDefinition({
          * @param {String} tpl template
          * @param {Integer} start
          * @param {Integer} end
-         * @return tpl.substring(start,end) with escaped characters replaced by their value. Also remove new lines at
+         * @return {String} tpl.substring(start,end) with escaped characters replaced by their value. Also remove new lines at
          * the begining and the end of the param
          * @private
          */
@@ -232,7 +232,7 @@ Aria.classDefinition({
          * @param {String} tpl template
          * @param {Integer} start
          * @param {Integer} end
-         * @return tpl.substring(start,end) with escaped characters replaced by their value or "" if this string
+         * @return {String} tpl.substring(start,end) with escaped characters replaced by their value or "" if this string
          * contains only new lines
          * @private
          */
@@ -266,7 +266,7 @@ Aria.classDefinition({
         /**
          * Use this.template to build a tree At this step no external information is used (list of accepted
          * statements,...)
-         * @return the tree built
+         * @return {Object} the tree built
          * @protected
          */
         _buildTree : function () {

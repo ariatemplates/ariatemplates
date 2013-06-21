@@ -25,46 +25,55 @@ Aria.classDefinition({
         /**
          * Date used to compare with time stamps
          * @type Date
+         * @private
          */
         this._startTime = null;
 
         /**
          * Array of profiling logs
          * @type Array
+         * @private
          */
         this._logs = null;
 
         /**
          * Maps of logs per classpath
+         * @type Object
+         * @private
          */
         this._logsPerClasspath = null;
 
         /**
          * Number of logs
-         * @type Number
+         * @type Integer
+         * @private
          */
         this._nbLogs = 0;
 
         /**
          * Ids used to match measures
          * @type Number
+         * @private
          */
         this._ids = 1;
 
         /**
          * Profiling display DIV
          * @type HTMLElement
+         * @private
          */
         this._displayDiv = null;
 
         /**
          * Map of counters
          * @type Object
+         * @private
          */
         this._counters = {};
 
         /**
          * Map of counter splits
+         * @private
          * @type Object
          */
         this._counterSplits = {};

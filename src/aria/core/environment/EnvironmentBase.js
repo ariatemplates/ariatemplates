@@ -89,7 +89,7 @@ Aria.classDefinition({
          * Normalize the part of the environment managed by this class, then calls _applyEnvironment to apply it if the
          * environment is valid. Normalization is immediate. Applying the environment can be asynchronous. The callback
          * is called either synchronously or asynchronously.
-         * @param {aria.core.JsObject.Callback} callback Will be called when the environment is applied.
+         * @param {aria.core.CfgBeans:Callback} callback Will be called when the environment is applied.
          */
         _normAndApplyEnv : function (callback) {
             var validConfig = aria.core.JsonValidator.normalize({
@@ -106,7 +106,7 @@ Aria.classDefinition({
 
         /**
          * Apply the current environment.
-         * @param {aria.core.JsObject.Callback} callback Will be called after the environment is applied.
+         * @param {aria.core.CfgBeans:Callback} callback Will be called after the environment is applied.
          * @protected
          */
         _applyEnvironment : function (callback) {

@@ -79,7 +79,7 @@ Aria.classDefinition({
 
         /**
          * Sets the message if there is one otherwise set the message.
-         * @param {String|Object}msg
+         * @param {String|Object} msg
          */
         setMessage : function (msg) {
             if (this.utilsType.isObject(msg)) {

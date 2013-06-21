@@ -22,7 +22,7 @@ Aria.classDefinition({
     $dependencies : ["aria.widgets.Icon"],
     /**
      * ActionWidget constructor
-     * @param {aria.widgets.CfgBeans.ActionWidgetCfg} cfg the widget configuration
+     * @param {aria.widgets.CfgBeans:ActionWidgetCfg} cfg the widget configuration
      * @param {aria.templates.TemplateCtxt} ctxt template context
      */
     $constructor : function (cfg, ctxt, lineNumber) {

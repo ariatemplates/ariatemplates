@@ -42,8 +42,8 @@ Aria.classDefinition({
 
         /**
          * Perform a request.
-         * @param {aria.core.CfgBeans.IOAsyncRequestCfg} request Request object
-         * @param {aria.core.CfgBeans.Callback} callback Internal callback description
+         * @param {aria.core.CfgBeans:IOAsyncRequestCfg} request Request object
+         * @param {aria.core.CfgBeans:Callback} callback Internal callback description
          */
         request : function (request, callback) {
             this._requests[request.id] = {
@@ -64,7 +64,7 @@ Aria.classDefinition({
 
         /**
          * Creates an iFrame to load the response of the request.
-         * @param {aria.core.CfgBeans.IOAsyncRequestCfg} request
+         * @param {aria.core.CfgBeans:IOAsyncRequestCfg} request
          * @protected
          */
         _createIFrame : function (request) {
@@ -96,7 +96,7 @@ Aria.classDefinition({
 
         /**
          * Updates the form to target the iframe then calls the forms submit method.
-         * @param {aria.core.CfgBeans.IOAsyncRequestCfg} request
+         * @param {aria.core.CfgBeans:IOAsyncRequestCfg} request
          * @param {Object} callback Internal callback description
          * @protected
          */
@@ -198,7 +198,7 @@ Aria.classDefinition({
 
         /**
          * Delete a request freing up memory
-         * @param {aria.core.CfgBeans.IOAsyncRequestCfg} request
+         * @param {aria.core.CfgBeans:IOAsyncRequestCfg} request
          */
         _deleteRequest : function (request) {
             var iFrame = request.iFrame;
@@ -216,8 +216,8 @@ Aria.classDefinition({
 
         /**
          * Abort method. Called after the request timeout
-         * @param {aria.core.CfgBeans.IOAsyncRequestCfg} request
-         * @return Boolean Whether the connection was aborted or not
+         * @param {aria.core.CfgBeans:IOAsyncRequestCfg} request
+         * @return {Boolean} Whether the connection was aborted or not
          */
         onAbort : function (request) {
             this._deleteRequest(request);

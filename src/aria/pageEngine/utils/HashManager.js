@@ -21,8 +21,8 @@ Aria.classDefinition({
     $extends : "aria.pageEngine.utils.BaseNavigationManager",
     $dependencies : ["aria.utils.HashManager", "aria.utils.Type"],
     /**
-     * @param {aria.core.CfgBeans.Callback} cb Callback called on hash change. It corresponds to a navigate method
-     * @param {aria.core.CfgBeans.Site.$properties.storage} options Options for local storage
+     * @param {aria.core.CfgBeans:Callback} cb Callback called on hash change. It corresponds to a navigate method
+     * @param {aria.core.CfgBeans:Site.storage} options Options for local storage
      */
     $constructor : function (cb, options) {
 
@@ -37,7 +37,7 @@ Aria.classDefinition({
 
         /**
          * Listener of the hashchange
-         * @type aria.core.CfgBeans.Callback
+         * @type aria.core.CfgBeans:Callback
          * @private
          */
         this._onHashChangeCallback = {
@@ -73,7 +73,7 @@ Aria.classDefinition({
 
         /**
          * Updates the history according to the specified page parameters
-         * @param {aria.pageEngine.CfgBeans.PageRequest} pageRequest
+         * @param {aria.pageEngine.CfgBeans:PageRequest} pageRequest
          */
         update : function (pageRequest) {
             var url = pageRequest.url, title = pageRequest.title, typeUtil = aria.utils.Type;

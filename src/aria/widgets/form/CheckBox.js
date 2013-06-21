@@ -23,7 +23,7 @@ Aria.classDefinition({
     $css : ["aria.widgets.form.CheckBoxStyle"],
     /**
      * CheckBox constructor
-     * @param {aria.widgets.CfgBeans.CheckBoxCfg} cfg the widget configuration
+     * @param {aria.widgets.CfgBeans:CheckBoxCfg} cfg the widget configuration
      * @param {aria.templates.TemplateCtxt} ctxt template context
      * @param {Number} lineNumber Line number corresponding in the .tpl file where the widget is created
      */
@@ -33,7 +33,7 @@ Aria.classDefinition({
         if (!this._skinnableClass) {
             /**
              * Skinnable class to use for this widget.
-             * @type {String}
+             * @type String
              * @protected
              */
             this._skinnableClass = "CheckBox";

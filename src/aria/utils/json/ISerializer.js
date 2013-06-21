@@ -23,7 +23,7 @@ Aria.interfaceDefinition({
         /**
          * Convert a value to its string representation.
          * @param {Object|Array|String|Number|Boolean|Date|RegExp|Function} item Item to serialize
-         * @param {aria.utils.json.JsonSerializerBeans.JsonSerializeOptions} options Options for the serialization
+         * @param {aria.utils.json.JsonSerializerBeans:JsonSerializeOptions} options Options for the serialization
          * @return {String} the serialized item. It is set to null if there is an error during the serialization
          * @throws SyntaxError
          */

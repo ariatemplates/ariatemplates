@@ -27,7 +27,7 @@ Aria.classDefinition({
     $prototype : {
         /**
          * Build the HTML markup regarding the attributes provided.
-         * @param {HtmlAttribute} attributes Attributes to be parsed
+         * @param {aria.templates.CfgBeans:HtmlAttribute} attributes Attributes to be parsed
          * @return {String} String which can be used directly in a html tag
          */
         buildAttributeList : function (attributes) {

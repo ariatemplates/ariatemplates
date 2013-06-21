@@ -55,8 +55,8 @@ Aria.classDefinition({
         /**
          * Set the caret position of the HTML element
          * @param {HTMLElement} element The html element
-         * @param {Number} start The starting caret position
-         * @param {Number} end The ending caret position
+         * @param {Integer} start The starting caret position
+         * @param {Integer} end The ending caret position
          */
         setPosition : function (element, start, end) {
             if ("selectionStart" in element) {

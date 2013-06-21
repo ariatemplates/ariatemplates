@@ -45,7 +45,7 @@
             __objCount++;
             /**
              * Counter to be used as an index in each map. Is incremented each time a new entry is added to the object.
-             * @private
+             * @protected
              * @type Number
              */
             this._nextIndex = 0;
@@ -53,20 +53,20 @@
              * Map to store entries whose keys are of type object or function. Note that, even if null is of type
              * object, it cannot store properties, and for this reason, an entry whose key is null is not stored here,
              * but in this._otherKeys.
-             * @private
-             * @type Entry
+             * @protected
+             * @type Object
              */
             this._objectKeys = null;
             /**
              * Map to store entries whose keys are of type string.
-             * @private
-             * @type Entry
+             * @protected
+             * @type Object
              */
             this._stringKeys = null;
             /**
              * Map to store entries whose keys are of type number.
-             * @private
-             * @type Entry
+             * @protected
+             * @type Object
              */
             this._numberKeys = null;
             /**
@@ -74,13 +74,13 @@
              * strings, nor numbers. Sample values for keys here: null and undefined (and maybe some other strange
              * type). For keys in that category, performances are very bad (must iterate over the whole _otherKeys stuff
              * to find a key).
-             * @private
-             * @type Entry
+             * @protected
+             * @type Object
              */
             this._otherKeys = null;
             /**
              * Name of the metadata to use when storing information in object keys. It must be unique.
-             * @private
+             * @protected
              * @type String
              */
             this._metaDataName = Aria.FRAMEWORK_PREFIX + "hash::" + __objCount;

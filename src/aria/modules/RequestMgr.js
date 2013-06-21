@@ -226,12 +226,12 @@ Aria.classDefinition({
          * Note: The requestObject will be called with parameters as specified in RequestBeans, The callback function
          * will be called with 2 arguments:
          * <ol>
-         * <li> (aria.modules.RequestBeans.ProcessedResponse) the request result </li>
+         * <li> (aria.modules.RequestBeans:ProcessedResponse) the request result </li>
          * <li> (optional) - the args property of the cb argument</li>
          * </ol>
-         * @param {aria.modules.RequestBeans.RequestObject} requestObject Information about the request
+         * @param {aria.modules.RequestBeans:RequestObject} requestObject Information about the request
          * @param {Object} jsonData JSON object to be sent in POST request inside data value
-         * @param {aria.utils.Callback} cb description of the callback function
+         * @param {aria.core.CfgBeans:Callback} cb description of the callback function
          * @return {Number} Request status
          */
         submitJsonRequest : function (requestObject, jsonData, cb) {
@@ -287,12 +287,12 @@ Aria.classDefinition({
          * Note: The requestObject will be called with parameters as specified in RequestBeans, The callback function
          * will be called with 2 arguments:
          * <ol>
-         * <li> (aria.modules.RequestBeans.ProcessedResponse) the request result </li>
+         * <li> (aria.modules.RequestBeans:ProcessedResponse) the request result </li>
          * <li> (optional) - the args property of the cb argument</li>
          * </ol>
-         * @param {aria.modules.RequestBeans.RequestObject} requestObject Information about the request
+         * @param {aria.modules.RequestBeans:RequestObject} requestObject Information about the request
          * @param {Object} jsonData JSON object to be sent in POST request inside data value
-         * @param {aria.utils.Callback} cb description of the callback function
+         * @param {aria.core.CfgBeans:Callback} cb description of the callback function
          * @return {Number} requestId, -1 if it fails
          */
         sendJsonRequest : function (requestObject, jsonData, cb) {
@@ -493,7 +493,7 @@ Aria.classDefinition({
         /**
          * After handler processing, raise error event if needed and call the callback given when the request was issued
          * @protected
-         * @param {aria.modules.RequestBeans.ProcessedResponse} res final resource for the user
+         * @param {aria.modules.RequestBeans:ProcessedResponse} res final resource for the user
          * @param {Object} args
          */
         _callRequestCallback : function (res, args) {
@@ -620,7 +620,7 @@ Aria.classDefinition({
          *
          * @param {String} moduleName - the name of the calling module
          * @param {String} the locale to be used
-         * @param {aria.core.JsObject.Callback} callback Callback called when the full path is ready
+         * @param {aria.core.CfgBeans:Callback} callback Callback called when the full path is ready
          * @return {String} the url
          */
         createI18nUrl : function (moduleName, locale, callback) {

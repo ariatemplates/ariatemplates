@@ -22,13 +22,13 @@ Aria.classDefinition({
     $constructor : function (args) {
         /**
          * Delay (in milliseconds) to be added to all requests, before the request is made.
-         * @type {Integer}
+         * @type Integer
          */
         this.requestDelay = args ? args.requestDelay : null;
 
         /**
          * Delay (in milliseconds) to be added to all requests, after the response has come back.
-         * @type {Integer}
+         * @type Integer
          */
         this.responseDelay = args ? args.responseDelay : null;
     },
@@ -41,7 +41,7 @@ Aria.classDefinition({
         /**
          * Method that should be overridden by sub-classes to access and perhaps change the request arguments before
          * submit.
-         * @param {aria.core.CfgBeans.IOAsyncRequestCfg} req request object
+         * @param {aria.core.CfgBeans:IOAsyncRequestCfg} req request object
          */
         onRequest : function (req) {
             if (this.requestDelay != null) {
@@ -52,7 +52,7 @@ Aria.classDefinition({
         /**
          * Method that should be overridden by sub-classes to access and perhaps change the request and response
          * arguments before the callback is called.
-         * @param {aria.core.CfgBeans.IOAsyncRequestCfg} req request object (contains a res property containing the
+         * @param {aria.core.CfgBeans:IOAsyncRequestCfg} req request object (contains a res property containing the
          * response)
          */
         onResponse : function (req) {
@@ -63,7 +63,7 @@ Aria.classDefinition({
 
         /**
          * Helper method to set a json object as the POST data in a request.
-         * @param {aria.core.CfgBeans.IOAsyncRequestCfg} req
+         * @param {aria.core.CfgBeans:IOAsyncRequestCfg} req
          * @param {Object} jsonData
          */
         setJsonPostData : function (req, jsonData) {
@@ -75,7 +75,7 @@ Aria.classDefinition({
 
         /**
          * Helper method to help redirecting a request to a file
-         * @param {aria.core.CfgBeans.IOAsyncRequestCfg} req the filter request object
+         * @param {aria.core.CfgBeans:IOAsyncRequestCfg} req the filter request object
          * @param {String} filePath the file logical path - e.g. 'test/MyFile.xml'. It can be null or empty and in this
          * case the request is not redirected. It is passed to aria.core.DownloadMgr.resolveURL(filePath,true), to builf
          * the url, taking root maps into account.
@@ -97,7 +97,7 @@ Aria.classDefinition({
         /**
          * First entry point of the filter when sending a request. It is marked private because it should neither be
          * overridden nor called from another class than the IOFilterMgr. This internal method simply calls onRequest.
-         * @param {aria.core.CfgBeans.IOAsyncRequestCfg} req
+         * @param {aria.core.CfgBeans:IOAsyncRequestCfg} req
          * @private
          */
         __onRequest : function (req) {
@@ -111,7 +111,7 @@ Aria.classDefinition({
         /**
          * First entry point of the filter when receiving a response. It is marked private because it should neither be
          * overridden nor called from another class than the IOFilterMgr. This internal method simply calls onResponse.
-         * @param {aria.core.CfgBeans.IOAsyncRequestCfg} req
+         * @param {aria.core.CfgBeans:IOAsyncRequestCfg} req
          * @private
          */
         __onResponse : function (req) {

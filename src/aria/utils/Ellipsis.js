@@ -279,7 +279,7 @@ Aria.classDefinition({
 
         /**
          * Displays the full text of the ellipsised element
-         * @param {offset} offset This gives an offset to the popup
+         * @param {Object} offset This gives an offset to the popup
          * @private
          */
         _showPopup : function (passedOffset) {
@@ -325,7 +325,7 @@ Aria.classDefinition({
 
         /**
          * This hides the Full version of the ellipsised element
-         * @param {event} domEvt The click DOM event
+         * @param {Object} domEvt The click DOM event
          * @protected
          */
         _hideFullText : function (relatedTarget) {

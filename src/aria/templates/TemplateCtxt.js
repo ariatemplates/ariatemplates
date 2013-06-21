@@ -377,7 +377,7 @@
             /**
              * Do a partial or whole refresh of the template, using the specified macro and section. This method can be
              * called from templates and template scripts.
-             * @param {aria.templates.CfgBeans.RefreshCfg} args macro and section for the refresh. If not specified, do
+             * @param {aria.templates.CfgBeans:RefreshCfg} args macro and section for the refresh. If not specified, do
              * a complete refresh.
              * @implements aria.templates.ITemplate
              */
@@ -477,7 +477,7 @@
 
             /**
              * Returns an array containing the widgetId, and templateIds from child to parent.
-             * @return{Array} Contains the widget and template Ids.
+             * @return {Array} Contains the widget and template Ids.
              */
             $getFocusedWidget : function () {
                 return this._focusedWidgetPath;
@@ -534,7 +534,7 @@
              * once per template context instance, and only if the tplDiv property of the parameter of InitTemplate was
              * undefined. When this function returns a non-null argument, you must call linkToPreviousMarkup after
              * inserting the returned html in the DOM, so that widgets are properly initialized.
-             * @param {aria.templates.CfgBeans.MacroCfg} macro macro to call to generate the markup
+             * @param {aria.templates.CfgBeans:MacroCfg} macro macro to call to generate the markup
              * @param {String} filterSection section to filter
              * @return {String} html markup for the template
              */
@@ -582,7 +582,7 @@
 
             /**
              * Add debug information as expandos on the tplDiv element.
-             * @param {aria.templates.CfgBeans.Div} tplDiv Reference to the div where to store debug information. Do
+             * @param {aria.templates.CfgBeans:Div} tplDiv Reference to the div where to store debug information. Do
              * nothing if tplDiv is either null or does not have the setAttribute method.
              */
             __addDebugInfo : function (tplDiv) {
@@ -608,7 +608,7 @@
 
             /**
              * Generate the markup for a specific section and return the section object.
-             * @param {aria.templates.CfgBeans.GetRefreshedSectionCfg} args
+             * @param {aria.templates.CfgBeans:GetRefreshedSectionCfg} args
              */
             getRefreshedSection : function (args) {
                 // PROFILING // var profilingId = this.$startMeasure("Generate markup for " + this.tplClasspath);
@@ -733,7 +733,7 @@
             /**
              * Write dynamic sections.
              * @param {aria.templates.MarkupWriter} out markup writer.
-             * @param {aria.templates.CfgBeans.InsertAdjacentSectionsCfg} args Adjacent sections configuration.
+             * @param {aria.templates.CfgBeans:InsertAdjacentSectionsCfg} args Adjacent sections configuration.
              * @private
              */
             __dynamicSectionWriter : function (out, args) {
@@ -746,7 +746,7 @@
 
             /**
              * Create a section. The section is not inserted in the sections tree of the template.
-             * @param {aria.core.JsObject.Callback} callback callback which creates the content of the section. The
+             * @param {aria.core.CfgBeans:Callback} callback callback which creates the content of the section. The
              * parameter given to this callback is the markup writer out object.
              * @param {Object} options optional object containing options for the markup writer
              */
@@ -926,7 +926,7 @@
              * templates (created in aria.templates.ClassGenerator) and never directly from developper code. A call to
              * this method is generated for {on .../} statements.
              * @param {String} eventName name of the event
-             * @param {aria.core.JsObject.Callback} callback callback to be called when the event is raised
+             * @param {aria.core.CfgBeans:Callback} callback callback to be called when the event is raised
              * @param {String} lineNumber
              * @private
              * @implements aria.templates.ITemplate
@@ -941,7 +941,7 @@
              * is generated for {repeater .../} statements.
              * @private
              * @param {Number} lineNumber
-             * @param {aria.templates.CfgBeans.RepeaterCfg} param
+             * @param {aria.templates.CfgBeans:RepeaterCfg} param
              * @implements aria.templates.ITemplate
              */
             __$statementRepeater : function (lineNumber, repeaterStatement) {
@@ -950,7 +950,7 @@
 
             /**
              * Init the template with the given configuration.
-             * @param {aria.templates.CfgBeans.InitTemplateCfg} cfg Template context configuration
+             * @param {aria.templates.CfgBeans:InitTemplateCfg} cfg Template context configuration
              * @return {Boolean} true if there was no error
              */
             initTemplate : function (cfg) {
@@ -1133,7 +1133,7 @@
              * generated for the {section ...} opening statement.
              * @param {Number} lineNumber line number at which the section begins, used for error reporting
              * @param {Boolean} container true if the section statement is used as a container, false otherwise
-             * @param {Object/String} sectionParam section id, or configuration object
+             * @param {Object|String} sectionParam section id, or configuration object
              * @param {String} Dom element wrapper type to be created.
              * @private
              * @implements aria.templates.ITemplate
@@ -1256,8 +1256,8 @@
             /**
              * Set the size config. This method is intended to be called only from the generated code of templates
              * (created in aria.templates.ClassGenerator) and never directly from developer code.
-             * @param {aria.templates.CfgBeans.TemplateSizeCfg} width constraints for the width of the template
-             * @param {aria.templates.CfgBeans.TemplateSizeCfg} height constraints for the height of the template
+             * @param {aria.templates.CfgBeans:TemplateSizeCfg} width constraints for the width of the template
+             * @param {aria.templates.CfgBeans:TemplateSizeCfg} height constraints for the height of the template
              * @private
              * @implements aria.templates.ITemplate
              */
@@ -1274,9 +1274,10 @@
 
             /**
              * Call a function declared as a callback in a template
-             * @param callback JSON structure used in template to declare the callback
-             * @param arg object to declare the event (which will be accessible in the callback as first parameter)
+             * @param {Object} callback JSON structure used in template to declare the callback
+             * @param {Object} arg object to declare the event (which will be accessible in the callback as first parameter)
              * property)
+             * @param {String} errorId
              */
             evalCallback : function (callback, arg, errorId) {
                 return this._tpl.$callback(callback, arg, errorId);
@@ -1344,7 +1345,7 @@
              * template scripts.
              * @param {String} id Id specified in the templates
              * @implements aria.templates.ITemplate
-             * @return aria.templates.DomElementWrapper
+             * @return {aria.templates.DomElementWrapper}
              */
             $getElementById : function (id) {
                 var genId = this.$getId(id);
@@ -1376,7 +1377,7 @@
              * @param {String} id Id specified in the templates
              * @param {String} index Index of child element to return
              * @implements aria.templates.ITemplate
-             * @return aria.templates.DomElementWrapper
+             * @return {aria.templates.DomElementWrapper}
              */
             $getChild : function (id, index) {
                 var Dom = aria.utils.Dom, genId = this.$getId(id), parent = Dom.getElementById(genId);
@@ -1552,7 +1553,7 @@
             /**
              * Return the configuration object to use with Aria.loadTemplate to reload this template. With the result of
              * this method, it is possible to call this._callLoadTemplate.
-             * @return {aria.templates.CfgBeans.LoadTemplateCfg}
+             * @return {aria.templates.CfgBeans:LoadTemplateCfg}
              * @protected
              */
             _getReloadCfg : function () {
@@ -1577,8 +1578,8 @@
 
             /**
              * Call Aria.loadTemplate to reload this template.
-             * @param {aria.templates.CfgBeans.LoadTemplateCfg} tmpCfg configuration for Aria.loadTemplate
-             * @param {aria.core.JsObject.Callback} callback callback to be called when the reload is finished
+             * @param {aria.templates.CfgBeans:LoadTemplateCfg} tmpCfg configuration for Aria.loadTemplate
+             * @param {aria.core.CfgBeans:Callback} callback callback to be called when the reload is finished
              * @protected
              */
             _callLoadTemplate : function (tmpCfg, callback) {
@@ -1615,7 +1616,7 @@
             /**
              * Reload this template context. Note: this will destroy it.
              * @param {String} tplSource new source for template
-             * @param {aria.core.JsObject.Callback} callback [optional] function called when reload is complete
+             * @param {aria.core.CfgBeans:Callback} callback [optional] function called when reload is complete
              */
             $reload : function (tplSource, callback) {
 
@@ -1681,7 +1682,7 @@
 
             /**
              * Get the list of CSS classpath on which the template depends on
-             * @return Array
+             * @return {Array}
              */
             getCSSDependencies : function () {
                 var res;
@@ -1699,7 +1700,7 @@
              * Get the list of CSS classnames that should be added to the Template container DOM element
              * @param {Boolean} onlyCSSDep if true, only include CSS class names corresponding to CSS template
              * dependencies.
-             * @return String
+             * @return {String}
              */
             getCSSClassNames : function (onlyCSSDep) {
                 var classes = this._cssClasses;

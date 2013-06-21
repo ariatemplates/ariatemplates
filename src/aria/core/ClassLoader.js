@@ -77,7 +77,7 @@ Aria.classDefinition({
          * Callback to be executed when tha class is loaded. At this time, we don't know which function to call back to
          * load the class, after all its dependencies are loaded (it can be loadClass or loadBean..., depending on the
          * content of the js file). This should be set by extending classes
-         * @type aria.core.CfgBeans.Callback
+         * @type aria.core.CfgBeans:Callback
          */
         this.callback = null;
 
@@ -173,7 +173,7 @@ Aria.classDefinition({
 
         /**
          * Internal callback called when the class definition file has been downloaded
-         * @param {aria.core.FileLoader.$events.fileReady} evt
+         * @param {aria.core.FileLoader:fileReady:event} evt
          * @return {Boolean} Whether there was an error or not
          * @protected
          */

@@ -26,43 +26,48 @@ Aria.classDefinition({
     $constructor : function () {
         /**
          * Parser. It convert the text to a tree representation.
-         * @type {aria.templates.Parser}
+         * @type aria.templates.Parser
+         * @protected
          */
         this._parser = null;
 
         /**
          * Super class to be used for templates with no parent.
-         * @type {String}
+         * @type String
+         * @protected
          */
         this._superClass = null;
 
         /**
          * Class loader type to load templates of the same type (used for parent templates).
-         * @type {String}
+         * @type String
+         * @protected
          */
         this._classType = null;
 
         /**
          * Expected root statement name.
-         * @type {String}
+         * @type String
+         * @protected
          */
         this._rootStatement = null;
 
         /**
          * Template parameter bean.
-         * @type {String}
+         * @type String
+         * @protected
          */
         this._templateParamBean = null;
 
         /**
          * Map of statements. It is loaded by one of the descendant class
-         * @type {Object}
+         * @type Object
          */
         this.STATEMENTS = {};
 
         /**
          * Map of all statements allowed
-         * @type {Object}
+         * @type Object
          */
         this.ALLSTATEMENTS = aria.templates.Statements.ALLSTATEMENTS;
 
@@ -102,8 +107,8 @@ Aria.classDefinition({
          * @param {String} template the template
          * @param {Boolean} allDeps If true, all dependencies should be included in the generated class. Otherwise only
          * put classes which are not currently loaded in the $dependencies section.
-         * @param {aria.core.JsObject.Callback} callback the callback description
-         * @param {Object}context - passes template context information to improve debugging
+         * @param {aria.core.CfgBeans:Callback} callback the callback description
+         * @param {Object} context - passes template context information to improve debugging
          * @param {Boolean} debug debug mode
          */
         parseTemplate : function (template, allDeps, callback, context, debug) {
@@ -119,10 +124,10 @@ Aria.classDefinition({
 
         /**
          * Parse a debug template from the tree
-         * @param {aria.templates.TreeBeans.Root} tree tree returned by the parser.
+         * @param {aria.templates.TreeBeans:Root} tree tree returned by the parser.
          * @param {Boolean} allDeps If true, all dependencies should be included in the generated class. Otherwise only
          * put classes which are not currently loaded in the $dependencies section.
-         * @param {aria.core.JsObject.Callback} callback callback the callback description
+         * @param {aria.core.CfgBeans:Callback} callback callback the callback description
          * @param {Object} context - passes template context information to improve debugging
          * @param {Boolean} debug debug mode
          */
@@ -154,10 +159,10 @@ Aria.classDefinition({
         /**
          * Build the template class from the tree given by the parser.
          * @private
-         * @param {aria.templates.TreeBeans.Root} tree tree returned by the parser.
+         * @param {aria.templates.TreeBeans:Root} tree tree returned by the parser.
          * @param {Boolean} allDeps If true, all dependencies should be included in the generated class. Otherwise only
          * put classes which are not currently loaded in the $dependencies section.
-         * @param {aria.core.JsObject.Callback} callback the callback description
+         * @param {aria.core.CfgBeans:Callback} callback the callback description
          * @param {Object} errorContext
          * @param {Boolean} debug generate debug template (expression wrap in try-catch)
          * @return {String} the generated class definition or null it there were errors.
@@ -189,7 +194,7 @@ Aria.classDefinition({
         /**
          * Process the root statement of the template.
          * @param {aria.templates.ClassWriter} out
-         * @param {aria.templates.TreeBeans.Statement} tree
+         * @param {aria.templates.TreeBeans:Statement} tree
          * @protected
          */
         _processRootStatement : function (out, tree) {
@@ -229,7 +234,7 @@ Aria.classDefinition({
          * to the correct process function in this.STATEMENTS, or logs errors, if the statement is unknown, or misused.
          * @private
          * @param {aria.templates.ClassWriter} out
-         * @param {aria.templates.TreeBeans.Statement} statement
+         * @param {aria.templates.TreeBeans:Statement} statement
          */
         __processStatement : function (out, statement) {
             var statname = statement.name;
@@ -273,7 +278,7 @@ Aria.classDefinition({
         /**
          * Log the given error.
          * @private
-         * @param {aria.templates.TreeBeans.Statement} statement Statement in the template tree from which the error is
+         * @param {aria.templates.TreeBeans:Statement} statement Statement in the template tree from which the error is
          * being raised. It will be transformed into the corresponding line number in the source template and added at
          * the end of otherParams.
          * @param {String} msgId error id, used to find the error message

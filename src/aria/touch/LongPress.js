@@ -35,6 +35,7 @@ Aria.classDefinition({
     $prototype : {
         /**
          * Initial listeners for the LongPress gesture.
+         * @return {Array}
          * @protected
          */
         _getInitialListenersList : function () {
@@ -49,6 +50,7 @@ Aria.classDefinition({
 
         /**
          * Additional listeners for the LongPress gesture.
+         * @return {Array}
          * @protected
          */
         _getAdditionalListenersList : function () {
@@ -69,6 +71,7 @@ Aria.classDefinition({
 
         /**
          * The fake events raised during the LongPress lifecycle.
+         * @return {Object}
          * @protected
          */
         _getFakeEventsMap : function () {

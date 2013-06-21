@@ -24,7 +24,7 @@ Aria.classDefinition({
     $dependencies : ["aria.utils.Ellipsis", "aria.DomEvent", "aria.utils.Dom", "aria.utils.String"],
     /**
      * Text constructor
-     * @param {aria.widgets.CfgBeans.Text} cfg the widget configuration
+     * @param {aria.widgets.CfgBeans:Text} cfg the widget configuration
      * @param {aria.templates.TemplateCtxt} ctxt template context
      */
     $constructor : function (cfg, ctxt) {
@@ -53,21 +53,21 @@ Aria.classDefinition({
     },
     $prototype : {
         /**
-         * @private
+         * @protected
          * @type Boolean
          */
         _activateEllipsis : false,
 
         /**
          * Status flag to check if the widget currently has mouseover
-         * @private
+         * @protected
          * @type Boolean
          */
         _hasMouseOver : false,
 
         /**
          * Status flag to check if the widget currently has the focus
-         * @private
+         * @protected
          * @type Boolean
          */
         _hasFocus : false,
@@ -103,7 +103,7 @@ Aria.classDefinition({
 
         /**
          * Check if the width of text is too long and if so, ellipse it
-         * @param textContent the text to be ellipsed
+         * @param {String} textContent the text to be ellipsed
          * @private
          */
         __ellipseText : function (textContent) {

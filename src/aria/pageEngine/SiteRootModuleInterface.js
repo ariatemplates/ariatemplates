@@ -44,7 +44,7 @@ Aria.interfaceDefinition({
          * <li> page: List of page-specific modules described by aria.templates.CfgBeans.SubModuleDefinition</li>
          * <li> common: List of common modules described by aria.templates.CfgBeans.SubModuleDefinition</li>
          * </ul>
-         * @param {aria.core.CfgBeans.Callback} callback Called after the submodules are initialized
+         * @param {aria.core.CfgBeans:Callback} callback Called after the submodules are initialized
          */
         loadModules : {
             $type : "Function",
@@ -75,7 +75,7 @@ Aria.interfaceDefinition({
 
         /**
          * Navigate to a specific page
-         * @param {aria.pageEngine.CfgBeans.PageNavigationInformation} pageRequest id and url of the page
+         * @param {aria.pageEngine.CfgBeans:PageNavigationInformation} pageRequest id and url of the page
          */
         navigate : {
             $type : "Function"

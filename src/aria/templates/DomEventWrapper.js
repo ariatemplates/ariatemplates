@@ -31,16 +31,16 @@ Aria.classDefinition({
         var DomWrapper = aria.templates.DomElementWrapper;
         this.$DomEvent.constructor.call(this, domEvt);
 
-    /**
-     * Wrapper on the HTML element on which the event happened.
-     * @type aria.DomWrapper
-     */
+        /**
+         * Wrapper on the HTML element on which the event happened.
+         * @type aria.templates.DomElementWrapper
+         */
         this.target = (this.target ? new DomWrapper(this.target) : null);
 
-    /**
-     * Wrapper on the HTML element from/to which the event is directed. (relatedTarget/fromElement/toElement)
-     * @type aria.DomWrapper
-     */
+        /**
+         * Wrapper on the HTML element from/to which the event is directed. (relatedTarget/fromElement/toElement)
+         * @type aria.templates.DomElementWrapper
+         */
         this.relatedTarget = (this.relatedTarget ? new DomWrapper(this.relatedTarget) : null);
         // bind function to original scope so that "this" is preserved
         // Not needed as $DomEvent constructor creates these functions

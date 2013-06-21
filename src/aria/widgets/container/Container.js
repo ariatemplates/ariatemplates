@@ -24,7 +24,7 @@ Aria.classDefinition({
     $dependencies : ["aria.utils.Size", "aria.utils.Math"],
     /**
      * Container constructor
-     * @param {aria.widgets.CfgBeans.ActionWidgetCfg} cfg the widget configuration
+     * @param {aria.widgets.CfgBeans:ContainerCfg} cfg the widget configuration
      * @param {aria.templates.TemplateCtxt} ctxt template context
      */
     $constructor : function (cfg, ctxt) {

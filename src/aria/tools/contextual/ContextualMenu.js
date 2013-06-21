@@ -58,14 +58,14 @@
 
             /**
              * Targeted template context
-             * @type {aria.templates.TemplateCtxt}
+             * @type aria.templates.TemplateCtxt
              */
             this.targetTemplateCtxt = null;
 
             /**
              * Configuration for contextual menu from the App Environment.
              * @protected
-             * @type {aria.core.environment.EnvironmentBaseCfgBeans.AppCfg.ContextualMenu}
+             * @type aria.core.environment.EnvironmentBaseCfgBeans:AppCfg.ContextualMenu
              */
             this._appEnvCfg = null; // is set in _environmentChanged
 

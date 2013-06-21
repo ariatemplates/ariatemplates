@@ -25,7 +25,7 @@ Aria.classDefinition({
             "aria.widgets.container.DivStyle"],
     /**
      * AutoComplete constructor
-     * @param {aria.widgets.CfgBeans.AutoCompleteCfg} cfg the widget configuration
+     * @param {aria.widgets.CfgBeans:AutoCompleteCfg} cfg the widget configuration
      * @param {aria.templates.TemplateCtxt} ctxt template context
      * @param {Number} lineNumber Line number corresponding in the .tpl file where the widget is created
      * @param {Number} controller the data controller object
@@ -51,7 +51,8 @@ Aria.classDefinition({
         if (!cfg.expandButton) {
             /**
              * Array of icon names which need to be hidden.
-             * @type {Array}
+             * @type Array
+             * @protected
              * @override
              */
             this._hideIconNames = ["dropdown"];

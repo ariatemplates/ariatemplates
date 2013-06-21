@@ -27,7 +27,7 @@ Aria.classDefinition({
     },
     /**
      * Create a generic instance of HTML5Storage
-     * @param {aria.storage.Beans.ConstructorArgs} options Constructor options
+     * @param {aria.storage.Beans:ConstructorArgs} options Constructor options
      * @param {String} storage Type of storage: either localStorage or sessionStorage
      */
     $constructor : function (options, storage, throwIfMissing) {
@@ -47,7 +47,7 @@ Aria.classDefinition({
 
         /**
          * Event Callback for storage event happening on different windows
-         * @type aria.core.CfgBeans.Callback
+         * @type aria.core.CfgBeans:Callback
          */
         this._browserEventCb = {
             fn : this._browserEvent,

@@ -101,25 +101,25 @@ Aria.classDefinition({
 
         /**
          * Configuration for relative positioning
-         * @type aria.popups.Beans.PositionCfg
+         * @type aria.popups.Beans:PositionCfg
          */
         this.referencePosition = null;
 
         /**
          * Size of the reference element
-         * @type aria.popups.Beans.SizeCfg
+         * @type aria.popups.Beans:SizeCfg
          */
         this.referenceSize = null;
 
         /**
          * Section associated with the popup content.
-         * @type aria.templates.section
+         * @type aria.templates.Section
          */
         this.section = null;
 
         /**
          * Size of the section
-         * @type aria.popups.Beans.SizeCfg
+         * @type aria.popups.Beans:SizeCfg
          */
         this.sectionSize = null;
 
@@ -205,7 +205,7 @@ Aria.classDefinition({
 
         /**
          * Save the configuration information for this popup.
-         * @param {aria.popups.Beans.PopupCfg} conf
+         * @param {aria.popups.Beans:PopupCfg} conf
          * @protected
          */
         _applyConfig : function (conf) {
@@ -410,8 +410,8 @@ Aria.classDefinition({
         /**
          * Retrieve the absolute position of the popup on the page The position is calculated from the popup's size and
          * configuration
-         * @param {aria.popups.Beans.Size} size The computed size of the popup
-         * @return {aria.popups.Beans.Position} The absolute position where the popup should be displayed
+         * @param {aria.popups.Beans:Size} size The computed size of the popup
+         * @return {aria.popups.Beans:Position} The absolute position where the popup should be displayed
          * @protected
          */
         _getPosition : function (size) {
@@ -462,9 +462,9 @@ Aria.classDefinition({
         },
 
         /**
-         * @param {aria.popups.Beans.PreferredPosition} preferredPosition An anchor binding
-         * @param {aria.popups.Beans.Size} size The computed size of the popup
-         * @return {aria.popups.Beans.Position} The absolute position where the popup should be displayed for this
+         * @param {aria.popups.Beans:PreferredPosition} preferredPosition An anchor binding
+         * @param {aria.popups.Beans:Size} size The computed size of the popup
+         * @return {aria.popups.Beans:Position} The absolute position where the popup should be displayed for this
          * anchor binding
          * @protected
          */
@@ -575,7 +575,7 @@ Aria.classDefinition({
         },
 
         /**
-         * @param {aria.popups.Beans.PreferredPosition} preferredPosition
+         * @param {aria.popups.Beans:PreferredPosition} preferredPosition
          * @return {Boolean}
          * @protected
          */
@@ -659,7 +659,7 @@ Aria.classDefinition({
         /**
          * Set absolute position of the popup and refresh it. Refresh also processing indicators that might be displayed
          * on top of it
-         * @param {aria.utils.DomBeans.Position} absolutePosition
+         * @param {aria.utils.DomBeans:Position} absolutePosition
          */
         moveTo : function (conf) {
             if (conf) {
@@ -798,7 +798,7 @@ Aria.classDefinition({
 
         /**
          * Open/Show the tooltip with the given configuration
-         * @param {aria.popups.Beans.PopupConf} conf Configuration object. See aria.popups.Beans.PopupCfg bean
+         * @param {aria.popups.Beans:PopupConf} conf Configuration object. See aria.popups.Beans.PopupCfg bean
          * documentation
          */
         open : function (conf) {

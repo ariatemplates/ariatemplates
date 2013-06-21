@@ -27,7 +27,7 @@ Aria.classDefinition({
 
         /**
          * @protected
-         * @type {Array} list of active root templates
+         * @type Array list of active root templates
          */
         this._rootTemplateContexts = [];
 
@@ -49,6 +49,7 @@ Aria.classDefinition({
          * Called when it is needed to unload all (root) templates as the document is unloaded (or we are switching to
          * another window).
          * @param {Object} evt
+         * @private
          */
         _unloadWindow : function (evt) {
             var rootTemplates = Aria.rootTemplates;

@@ -24,6 +24,7 @@ Aria.classDefinition({
         /**
          * Number of times the RefreshManager has been stopped
          * @type Number
+         * @private
          */
         this._stops = 0;
 
@@ -39,6 +40,7 @@ Aria.classDefinition({
          * </pre>
          *
          * @type Array
+         * @private
          */
         this._queue = [];
 
@@ -58,6 +60,7 @@ Aria.classDefinition({
          * }
          * </pre>
          *
+         * @private
          * @type Array
          */
         this._hierarchies = [];
@@ -65,6 +68,7 @@ Aria.classDefinition({
         /**
          * Array of elements which correspond to all widgets, templates and sections which need to be refreshed when
          * resume() is called. The set is complete but not minimal (elements can contain other elements)
+         * @private
          * @type Array
          */
         this._updatedNodes = [];
@@ -72,6 +76,7 @@ Aria.classDefinition({
         /**
          * Array of elements which correspond to a minimal refresh set computed with _computeMinimal() Array elements
          * are of the same format as in this._hierarchies
+         * @private
          * @type Array
          */
         this._nodesToRefresh = [];
@@ -79,6 +84,7 @@ Aria.classDefinition({
         /**
          * Internal flag, is true if the Refresh Manager is in the process of executing refresh functions which had been
          * queued
+         * @private
          * @type Boolean
          */
         this._isResuming = false;
@@ -100,7 +106,7 @@ Aria.classDefinition({
 
         /**
          * Queue a refresh. It'll be execute on resume.
-         * @param {aria.utils.Callback} cb A callback to aria.templates.TemplateCtxt.$refresh (in the case of a template
+         * @param {aria.core.CfgBeans:Callback} cb A callback to aria.templates.TemplateCtxt.$refresh (in the case of a template
          * or section refresh) or to aria.widgets.Widget._notifyDataChangeCB in the case of a Widget refresh
          * @param {Object} element A TemplateContext, in the case of a Template or Section refresh, or a Widget in the
          * case of a widget refresh
@@ -127,7 +133,7 @@ Aria.classDefinition({
         /**
          * Internal function to execute callbacks in the queue. It is different from JsObject.$callback
          * because the order of parameters is different if the scope is a Widget
-         * @param {aria.utils.Callback} cb Callback to be executed
+         * @param {aria.core.CfgBeans:Callback} cb Callback to be executed
          * @private
          */
         _triggerCB : function (cb) {

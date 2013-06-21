@@ -66,7 +66,7 @@ Aria.interfaceDefinition({
         /**
          * Reload this template context. Note: this will destroy it.
          * @param {String} tplSource new source for template
-         * @param {aria.core.JsObject.Callback} callback [optional] function called when reload is complete
+         * @param {aria.core.CfgBeans:Callback} callback [optional] function called when reload is complete
          */
         $reload : "Function"
     }

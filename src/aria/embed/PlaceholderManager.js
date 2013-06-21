@@ -24,7 +24,7 @@ Aria.classDefinition({
 
         /**
          * Listener to contentChange events raised by content providers
-         * @type {aria.core.CfgBeans.Callback}
+         * @type {aria.core.CfgBeans:Callback}
          * @private
          */
         this._contentChangeListener = {

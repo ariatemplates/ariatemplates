@@ -58,13 +58,13 @@ Aria.classDefinition({
 
         /**
          * Reference to the window containing the template under test
-         * @type {HTMLElement}
+         * @type HTMLElement
          */
         this.testWindow = null;
 
         /**
          * Reference to the document object containing the template under test
-         * @type {HTMLElement}
+         * @type HTMLElement
          */
         this.testDocument = null;
 
@@ -76,7 +76,7 @@ Aria.classDefinition({
 
         /**
          * Reference to iframe added by the test case
-         * @type {HTMLElement}
+         * @type HTMLElement
          */
         this.testIframe = null;
 
@@ -89,7 +89,7 @@ Aria.classDefinition({
 
         /**
          * Shortcut to the synthetic event library. This kept in sync when the test window changes
-         * @type {aria.utils.SynEvents}
+         * @type aria.utils.SynEvents
          */
         this.synEvent = aria.utils.SynEvents;
     },
@@ -164,7 +164,7 @@ Aria.classDefinition({
          * Helper function, loads the template into the div. Executes the parameter callback once the template has been
          * successfully rendered.
          * @protected
-         * @param {aria.core.JsObject.Callback} cb Callback
+         * @param {aria.core.CfgBeans:Callback} cb Callback
          */
         _loadTestTemplate : function (cb) {
             this.testWindow = Aria.$window;
@@ -302,7 +302,7 @@ Aria.classDefinition({
          * with the new environment is loaded, and once it's successfully rendered, the parameter callback is called.
          * @protected
          * @param {Object} env The new test environment.
-         * @param {Callback} callback Called when the new template has been successfully rendered.
+         * @param {aria.core.CfgBeans:Callback} callback Called when the new template has been successfully rendered.
          */
         _replaceTestTemplate : function (env, cb) {
             // async call allows the template to finish init
@@ -652,7 +652,7 @@ Aria.classDefinition({
          * Shortcut for the very common task of clicking a widget, typing and (optionally) blur.
          * @param {String} id Widget id
          * @param {String} text Text to type in the widget
-         * @param {aria.utils.Callback} callback Function to be execute when the cycle is complete
+         * @param {aria.core.CfgBeans:Callback} callback Function to be execute when the cycle is complete
          * @param {Boolean} blur Blur the widget after typing. Default true
          */
         clickAndType : function (id, text, callback, blur) {
@@ -754,8 +754,8 @@ Aria.classDefinition({
          * </ul>
          * The errback is called in case of error while loading Aria Template or the template inside the iframe
          * @param {Object} definition
-         * @param {aria.core.CfgBeans.Callback} callback
-         * @param {aria.core.CfgBeans.Callback} errback
+         * @param {aria.core.CfgBeans:Callback} callback
+         * @param {aria.core.CfgBeans:Callback} errback
          */
         loadTemplateInIframe : function (definition, callback, errback) {
             var args = {

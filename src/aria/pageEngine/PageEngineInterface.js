@@ -37,8 +37,8 @@ Aria.interfaceDefinition({
 
         /**
          * Navigate to a specific page
-         * @param {aria.pageEngine.CfgBeans.PageNavigationInformation} pageRequest id and url of the page
-         * @param {aria.core.CfgBeans.Callback} cb To be called when the navigation is complete
+         * @param {aria.pageEngine.CfgBeans:PageNavigationInformation} pageRequest id and url of the page
+         * @param {aria.core.CfgBeans:Callback} cb To be called when the navigation is complete
          */
         navigate : {
             $type : "Function",
@@ -63,7 +63,7 @@ Aria.interfaceDefinition({
 
         /**
          * Return instance of the pageProvider
-         * @return {aria.pageEngine.CfgBeans.Start.$properties.pageProvider}
+         * @return {aria.pageEngine.CfgBeans:Start.pageProvider}
          */
         getPageProvider : {
             $type : "Function"

@@ -55,9 +55,9 @@
     /**
      * Preprocess the content type of the given bean definition
      * @private
-     * @param {aria.core.BaseTypes.Bean} beanDef bean to be preprocessed
+     * @param {aria.core.BaseTypes:Bean} beanDef bean to be preprocessed
      * @param {String} beanName fully qualified name for this bean
-     * @param {aria.core.BaseTypes.Package} packageDef reference package
+     * @param {aria.core.BaseTypes:Package} packageDef reference package
      */
     var __checkContentType = function (beanDef, beanName, packageDef) {
         var contentType = beanDef.$contentType;
@@ -83,9 +83,9 @@
     /**
      * Preprocess the key type of the given bean definition
      * @private
-     * @param {aria.core.BaseTypes.Bean} beanDef bean to be preprocessed
+     * @param {aria.core.BaseTypes:Bean} beanDef bean to be preprocessed
      * @param {String} beanName fully qualified name for this bean
-     * @param {aria.core.BaseTypes.Package} packageDef reference package
+     * @param {aria.core.BaseTypes:Package} packageDef reference package
      */
     var __checkKeyType = function (beanDef, beanName, packageDef) {
         var keyType = beanDef.$keyType;
@@ -135,7 +135,7 @@
     /**
      * Common preprocessing function for floats and integers.
      * @private
-     * @param {aria.core.BaseTypes.Bean} beanDef
+     * @param {aria.core.BaseTypes:Bean} beanDef
      */
     var __numberPreprocess = function (beanDef) {
         var parent = beanDef[jv._MD_PARENTDEF];
@@ -569,7 +569,7 @@
     /**
      * List of fast normalizers functions used by makeFastNorm functions. These are the common functions for simple
      * beans. Having them once here reduces the memory needed to create a new Function for every bean property
-     * @type {Object}
+     * @type Object
      * @private
      */
     var fastNormalizers = {

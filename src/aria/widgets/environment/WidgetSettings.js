@@ -28,13 +28,14 @@ Aria.classDefinition({
         /**
          * Classpath of the bean which allows to validate the part of the environment managed by this class.
          * @type String
+         * @protected
          */
         _cfgPackage : "aria.widgets.environment.WidgetSettingsCfgBeans.AppCfg",
 
         /**
          * Returns the widget settings
          * @public
-         * @return {aria.widgets.environment.WidgetSettingsCfgBeans.AppCfg.WidgetSettingsCfg}
+         * @return {aria.widgets.environment.WidgetSettingsCfgBeans:AppCfg.WidgetSettingsCfg}
          */
         getWidgetSettings : function () {
             return this.checkApplicationSettings("widgetSettings");

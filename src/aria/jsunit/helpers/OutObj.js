@@ -23,13 +23,13 @@ Aria.classDefinition({
     $constructor : function () {
         /**
          * DOM element in which to inject the stored markup
-         * @type {HTMLElement}
+         * @type HTMLElement
          */
         this.testArea = null;
 
         /**
          * HTML markup to be injected in the test area
-         * @type {String}
+         * @type String
          */
         this.store = "";
     },
@@ -53,7 +53,6 @@ Aria.classDefinition({
 
         /**
          * Clean the playground area so that it can be reused
-         * @return {[type]} [description]
          */
         clean : function () {
             if (this.testArea) {
@@ -65,7 +64,7 @@ Aria.classDefinition({
 
         /**
          * Mock of a template context
-         * @type {Object}
+         * @type Object
          */
         tplCtxt : {
             $getId : function (id) {

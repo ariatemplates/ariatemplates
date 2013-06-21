@@ -84,7 +84,7 @@
 
             /**
              * Configuration parameters
-             * @type aria.utils.dragdrop.DragDropBean.DragCfg
+             * @type aria.utils.dragdrop.DragDropBean:DragCfg
              */
             this.params = params;
 
@@ -127,7 +127,7 @@
             /**
              * Geometry to which the draggable element is constrained
              * @protected
-             * @type aria.utils.DomBeans.Geometry
+             * @type aria.utils.DomBeans:Geometry
              */
             this._boundary = null;
 
@@ -148,21 +148,21 @@
             /**
              * Position of the element to drag at drag start
              * @protected
-             * @type aria.utils.DomBeans.Position
+             * @type aria.utils.DomBeans:Position
              */
             this._elementInitialPosition = null;
 
             /**
              * Geometry of the movable element at drag start
              * @protected
-             * @type aria.utils.DomBeans.Geometry
+             * @type aria.utils.DomBeans:Geometry
              */
             this._movableInitialGeometry = null;
 
             /**
              * Geometry of the movable element while it is being moved
              * @protected
-             * @type aria.utils.DomBeans.Geometry
+             * @type aria.utils.DomBeans:Geometry
              */
             this._movableGeometry = null;
 
@@ -170,7 +170,7 @@
              * Base offset to subtract to the movable geometry in order to set the correct left and top properties on
              * the element
              * @protected
-             * @type aria.utils.DomBeans.Position
+             * @type aria.utils.DomBeans:Position
              */
             this._baseMovableOffset = null;
 

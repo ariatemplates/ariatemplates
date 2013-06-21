@@ -83,7 +83,7 @@ Aria.classDefinition({
 
         /**
          * Load the scripts then call a callback function
-         * @param {Node} scriptNode The script node to manage
+         * @param {HTMLElement} scriptNode The script node to manage
          * @param {Function} callback The callback to call once the script is loaded
          * @param {Array} callbackArgs an array of arguments to be given to the callback
          * @private

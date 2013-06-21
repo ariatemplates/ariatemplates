@@ -26,7 +26,7 @@ Aria.classDefinition({
     $dependencies : ["aria.touch.widgets.SliderCfgBeans", "aria.utils.Dom", "aria.utils.Mouse"],
     /**
      * Slider Constructor.
-     * @param {aria.touch.widgets.SliderCfgBeans.SliderCfg} cfg slider configuration
+     * @param {aria.touch.widgets.SliderCfgBeans:SliderCfg} cfg slider configuration
      * @param {aria.templates.TemplateCtxt} context template context
      * @param {Number} lineNumber line number in the template
      */
@@ -79,7 +79,7 @@ Aria.classDefinition({
 
         /**
          * Width of the rail in which thumb travels.
-         * @type {Number}
+         * @type {Number
          * @protected
          */
         this._railWidth = null;

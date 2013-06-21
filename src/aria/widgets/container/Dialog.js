@@ -26,7 +26,7 @@ Aria.classDefinition({
 
     /**
      * Dialog constructor
-     * @param {aria.widgets.CfgBeans.DialogCfg} cfg the widget configuration
+     * @param {aria.widgets.CfgBeans:DialogCfg} cfg the widget configuration
      * @param {aria.templates.TemplateCtxt} ctxt template context
      */
     $constructor : function (cfg, ctxt) {
@@ -48,18 +48,21 @@ Aria.classDefinition({
 
         /**
          * Id for event delegation on close icon
+         * @protected
          * @type String
          */
         this._closeDelegateId = null;
 
         /**
          * Id for event delegation on maximize icon
+         * @protected
          * @type String
          */
         this._maximizeDelegateId = null;
 
         /**
          * Created when the dialog is movable
+         * @protected
          * @type aria.utils.dragdrop.Drag
          */
         this._draggable = null;
@@ -74,6 +77,7 @@ Aria.classDefinition({
 
         /**
          * Created when the dialog is resizable
+         * @protected
          * @type aria.utils.Resize
          */
         this._resizable = null;
@@ -82,6 +86,7 @@ Aria.classDefinition({
          * Used when enabling maximized mode, to revert the settings when unmaximized. Initiated also at construction
          * time in case if the Dialog is maximized from the start.
          * @type Object
+         * @protected
          */
         this._optionsBeforeMaximize = this._createOptionsBeforeMaximize(cfg);
 
@@ -153,7 +158,7 @@ Aria.classDefinition({
 
         /**
          * Check that a contentMacro is specified or bound to the dataModel
-         * @param {aria.widgets.CfgBeans.DialogCfg} cfg
+         * @param {aria.widgets.CfgBeans:DialogCfg} cfg
          * @protected
          */
         _checkCfgConsistency : function (cfg) {
@@ -459,6 +464,7 @@ Aria.classDefinition({
          * @param {String} cbName Callback name to execute, if exists
          * @param {String} propName Name of the property to change
          * @param {Boolean} propNewVal New value of the changed property
+         * @protected
          */
         _actionFromTitlebarButton : function (cbName, propName, propNewVal) {
             var cb = this._cfg[cbName];
@@ -683,7 +689,8 @@ Aria.classDefinition({
         /**
          * Calculate proper maxWidth/maxHeight depending if in maximized mode or not, and call the Div in which the
          * current Dialog is embedded to update its size accordingly.
-         * @param {aria.utils.DomBeans.Size} viewport
+         * @param {aria.utils.DomBeans:Size} viewport
+         * @protected
          */
         _updateDivSize : function (viewport) {
             var math = aria.utils.Math;
@@ -829,7 +836,7 @@ Aria.classDefinition({
 
         /**
          * Returns the subset of config options which might be useful to restore the Dialog from maximized state.
-         * @param {aria.widgets.CfgBeans.DialogCfg} cfg the widget configuration
+         * @param {aria.widgets.CfgBeans:DialogCfg} cfg the widget configuration
          * @return {Object}
          */
         _createOptionsBeforeMaximize : function (cfg) {
@@ -848,7 +855,7 @@ Aria.classDefinition({
         /**
          * Set overflow on the body element, refresh the viewport and return the new dimensions of the viewport.
          * @param {String} newValue Any value accepted by CSS "overflow" property
-         * @return {aria.utils.DomBeans.Size} Size object width 'width' and 'height' properties
+         * @return {aria.utils.DomBeans:Size} Size object width 'width' and 'height' properties
          */
         _setBodyOverflow : function (newValue) {
             Aria.$window.document.documentElement.style.overflow = newValue;
@@ -862,7 +869,7 @@ Aria.classDefinition({
          * Special function to resize the widget in the maximized mode, to fill the whole viewport and include shadows
          * (thus resize to more than the real size of the viewport; the shadows will be off the viewport and therefore
          * invisible)
-         * @param {aria.utils.DomBeans.Size} viewportSize
+         * @param {aria.utils.DomBeans:Size} viewportSize
          */
         _setMaximizedHeightAndWidth : function (viewportSize) {
             var newHeight = viewportSize.height + this._shadows.top + this._shadows.bottom;
@@ -901,6 +908,7 @@ Aria.classDefinition({
         },
         /**
          * Creates the Resize element with all the resize handle element.
+         * @protected
          */
         _createResize : function () {
             if (this._handlesArr) {

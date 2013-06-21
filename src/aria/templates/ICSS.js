@@ -24,7 +24,7 @@ Aria.interfaceDefinition({
     $interface : {
         /**
          * Prefix used by the CSS template
-         * @type {String}
+         * @type String
          */
         prefix : "Object"
     }

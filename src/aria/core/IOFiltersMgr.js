@@ -20,13 +20,13 @@
     // Mechanism to find filters.
     /**
      * Filter found. Is an item of the _filters array.
-     * @type {MultiTypes}
+     * @type MultiTypes
      * @private
      */
     var findFilterRes;
     /**
      * Filter to be found. Can be of any type accepted for the parameter of isFilterPresent.
-     * @type {Object}
+     * @type Object
      * @private
      */
     var findFilterSearch;
@@ -111,14 +111,14 @@
         $constructor : function () {
             /**
              * Array of filter descriptors, each containing three properties: filterClasspath, initArgs and obj.
-             * @type {Array}
+             * @type Array
              * @private
              */
             this._filters = null;
 
             /**
              * Number of filters which were specified by their classpath and were not yet loaded.
-             * @type {Number}
+             * @type Number
              * @private
              */
             this._filtersToBeLoaded = 0;
@@ -272,8 +272,8 @@
             /**
              * Call the onRequest method on all the registered filters (and load the ones which are not yet loaded if
              * necessary, and the sender is not the FileLoader).
-             * @param {aria.core.CfgBeans.IOAsyncRequestCfg} req request object
-             * @param {aria.core.JsObject.Callback} cb callback
+             * @param {aria.core.CfgBeans:IOAsyncRequestCfg} req request object
+             * @param {aria.core.CfgBeans:Callback} cb callback
              */
             callFiltersOnRequest : function (req, cb) {
                 this._callFilters(false, req, cb);
@@ -282,8 +282,8 @@
             /**
              * Call the onResponse method on all the registered filters (and load the ones which are not yet loaded if
              * necessary, and the sender is not the FileLoader).
-             * @param {aria.core.CfgBeans.IOAsyncRequestCfg} req request object
-             * @param {aria.core.JsObject.Callback} cb callback
+             * @param {aria.core.CfgBeans:IOAsyncRequestCfg} req request object
+             * @param {aria.core.CfgBeans:Callback} cb callback
              */
             callFiltersOnResponse : function (req, cb) {
                 this._callFilters(true, req, cb);
@@ -292,8 +292,8 @@
             /**
              * If there are filters to be loaded, load them, then call all the filters.
              * @param {Boolean} isResponse
-             * @param {aria.core.CfgBeans.IOAsyncRequestCfg} req request object
-             * @param {aria.core.JsObject.Callback} cb callback
+             * @param {aria.core.CfgBeans:IOAsyncRequestCfg} req request object
+             * @param {aria.core.CfgBeans:Callback} cb callback
              * @private
              */
             _callFilters : function (isResponse, request, cb) {
@@ -377,7 +377,7 @@
 
             /**
              * Load the filters which were added but not yet loaded.
-             * @param {aria.core.JsObject.Callback} cb callback to be called when the load of filters is finished
+             * @param {aria.core.CfgBeans:Callback} cb callback to be called when the load of filters is finished
              * @private
              */
             _loadMissingFilters : function (cb) {

@@ -69,7 +69,7 @@ Aria.classDefinition({
 
         /**
          * Apply the current environment.
-         * @param {aria.core.JsObject.Callback} callback Will be called after the environment variables are applied
+         * @param {aria.core.CfgBeans:Callback} callback Will be called after the environment variables are applied
          * @protected
          */
         _applyEnvironment : function (callback) {
@@ -112,7 +112,7 @@ Aria.classDefinition({
         /**
          * Internal method to set the customization descriptor after it has been loaded (or passed as a json object)
          * @protected
-         * @param {aria.core.environment.CustomizationsCfgBeans.DescriptorCfg} descrObj Json object containg descriptor
+         * @param {aria.core.environment.CustomizationsCfgBeans:DescriptorCfg} descrObj Json object containg descriptor
          */
         _setCustomizationDescriptor : function (descrObj) {
             var validJson = aria.core.JsonValidator.normalize({
@@ -208,7 +208,7 @@ Aria.classDefinition({
         /**
          * Returns the customizations currently defined.
          * @public
-         * @return {aria.core.environment.CustomizationsCfgBeans.DescriptorCfg}
+         * @return {aria.core.environment.CustomizationsCfgBeans:DescriptorCfg}
          */
         getCustomizations : function () {
             return aria.utils.Json.copy(this._customizations);
@@ -234,7 +234,7 @@ Aria.classDefinition({
         /**
          * Set a new customization descriptor, replacing completely the old one.
          * @public
-         * @param {String|aria.core.environment.CustomizationsCfgBeans.DescriptorCfg} customizations either a string
+         * @param {String|aria.core.environment.CustomizationsCfgBeans:DescriptorCfg} customizations either a string
          * containing the URL of the customization descriptor, or a json object with the content of the descriptor.
          */
         setCustomizations : function (customizations) {

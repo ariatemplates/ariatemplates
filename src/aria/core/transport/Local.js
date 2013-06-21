@@ -24,8 +24,8 @@ Aria.classDefinition({
     $prototype : {
         /**
          * Perform a request.
-         * @param {aria.core.CfgBeans.IOAsyncRequestCfg} request Request object
-         * @param {aria.core.CfgBeans.Callback} callback
+         * @param {aria.core.CfgBeans:IOAsyncRequestCfg} request Request object
+         * @param {aria.core.CfgBeans:Callback} callback
          * @throws
          */
         request : function (request, callback) {
@@ -40,8 +40,8 @@ Aria.classDefinition({
         /**
          * Use an iFrame to load the content of a request. This raises a security error on most of the browsers except
          * Opera (desktop and mobile). It's ugly but it works.
-         * @param {aria.core.CfgBeans.IOAsyncRequestCfg} request Request object
-         * @param {aria.core.CfgBeans.Callback} callback Internal callback description
+         * @param {aria.core.CfgBeans:IOAsyncRequestCfg} request Request object
+         * @param {aria.core.CfgBeans:Callback} callback Internal callback description
          */
         _iFrameHack : function (request, callback) {
 

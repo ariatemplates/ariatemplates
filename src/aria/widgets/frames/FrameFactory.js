@@ -52,8 +52,8 @@ Aria.classDefinition({
 
         /**
          * Normalize a frame configuration (also filling the skinObject property, if not already done).
-         * @param {aria.widgets.frames.CfgBeans.FrameCfg} cfg Frame configuration
-         * @return {aria.widgets.frames.CfgBeans.FrameCfg} The normalized frame configuration, or null if an error
+         * @param {aria.widgets.frames.CfgBeans:FrameCfg} cfg Frame configuration
+         * @return {aria.widgets.frames.CfgBeans:FrameCfg} The normalized frame configuration, or null if an error
          * occured (in this case, the error is already logged)
          */
         normalizeFrameCfg : function (cfg) {
@@ -78,7 +78,7 @@ Aria.classDefinition({
         /**
          * Create a new frame according to the given configuration object. The type of frame returned (either TableFrame
          * or FixedHeightFrame) depends on the frame.frameType property of the skin class.
-         * @param {aria.widgets.frames.CfgBeans.FrameCfg} cfg Frame configuration
+         * @param {aria.widgets.frames.CfgBeans:FrameCfg} cfg Frame configuration
          * @return {aria.widgets.frames.Frame} A frame object, or null if an error occured (in this case, the error is
          * logged).
          */

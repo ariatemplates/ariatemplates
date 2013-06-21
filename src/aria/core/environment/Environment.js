@@ -55,7 +55,7 @@ Aria.classDefinition({
         /**
          * Apply the current environment.
          * @protected
-         * @param {aria.core.JsObject.Callback} callback Will be called after the environment variables are applied
+         * @param {aria.core.CfgBeans:Callback} callback Will be called after the environment variables are applied
          */
         _applyEnvironment : function (callback) {
             var debug = this.isDebug();
@@ -95,7 +95,7 @@ Aria.classDefinition({
          * Sets the current application locale (ex: en_US)
          * @public
          * @param {String} locale New locale
-         * @param {aria.core.JsObject.Callback} cb Method to be called after the locale is changed. The callback is called with
+         * @param {aria.core.CfgBeans:Callback} cb Method to be called after the locale is changed. The callback is called with
          * a boolean (true: errors, false: no errors)
          */
         setLanguage : function (locale, cb) {

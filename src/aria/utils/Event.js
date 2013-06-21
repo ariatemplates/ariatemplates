@@ -81,7 +81,7 @@
 
             /**
              * Handler for the unload event.
-             * @param {Object} e dom event
+             * @param {Object} e DOM event
              */
             _unloadEvent : function (e) {
                 // call unload listeners
@@ -107,7 +107,7 @@
              * @param {aria.utils.Callback|Object} callback The method the event invokes, if callback is of type Object
              * fn property is mandatory
              * @param {Boolean} useCapture capture or bubble phase
-             * @return {Boolean} True if the action was successful or defered, false if one or more of the elements
+             * @return {Boolean} True if the action was successful or deferred, false if one or more of the elements
              * could not have the listener attached, or if the operation throws an exception.
              */
             addListener : function (element, event, callback, scope, args, useCapture) {

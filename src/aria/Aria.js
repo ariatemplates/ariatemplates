@@ -757,7 +757,7 @@
 
     /**
      * Base methods used to declare template scripts
-     * @param {aria.templates.CfgBeans.TplScriptDefinitionCfg} def The definition object describing the class.
+     * @param {aria.templates.CfgBeans:TplScriptDefinitionCfg} def The definition object describing the class.
      * Definition is the same as for classDefinition, excluding 'extends'
      */
     Aria.tplScriptDefinition = function (def) {
@@ -783,7 +783,7 @@
 
     /**
      * Base methods used to declare classes
-     * @param {aria.core.CfgBeans.ClassDefinitionCfg} def def The definition object describing the class - must have the
+     * @param {aria.core.CfgBeans:ClassDefinitionCfg} def def The definition object describing the class - must have the
      * following properties: All objects create through this method will automatically have the following properties:
      *
      * <pre>
@@ -1359,7 +1359,7 @@
 
     /**
      * Base method used to declare beans.
-     * @param {aria.core.BaseTypes.BeansDefinition} beans Beans to declare
+     * @param {aria.core.BaseTypes:BeansDefinition} beans Beans to declare
      */
     Aria.beanDefinitions = function (beans) {
         aria.core.JsonValidator.beanDefinitions(beans);
@@ -1367,7 +1367,7 @@
 
     /**
      * Set root dimensions.
-     * @param {aria.core.Beans.RootDimCfg} rootDim
+     * @param {aria.core.Beans:RootDimCfg} rootDim
      */
     Aria.setRootDim = function (rootDim) {
         Aria.load({
@@ -1382,8 +1382,8 @@
     /**
      * Load a template in a div. If a customized template has been defined for the given classpath, the substitute will
      * be loaded instead.
-     * @param {aria.templates.CfgBeans.LoadTemplateCfg} cfg configuration object
-     * @param {aria.core.JsObject.Callback} callback which will be called when the template is loaded or if there is an
+     * @param {aria.templates.CfgBeans:LoadTemplateCfg} cfg configuration object
+     * @param {aria.core.CfgBeans:Callback} callback which will be called when the template is loaded or if there is an
      * error. The first parameter of the callback is a JSON object with the following properties: { success : {Boolean}
      * true if the template was displayed, false otherwise } Note that the callback is called when the template is
      * loaded, but sub-templates may still be waiting to be loaded (showing a loading indicator). Note that
@@ -1396,7 +1396,7 @@
 
     /**
      * Unload a template loaded with Aria.loadTemplate.
-     * @param {aria.templates.CfgBeans.Div} div The div given to Aria.loadTemplate.
+     * @param {aria.templates.CfgBeans:Div} div The div given to Aria.loadTemplate.
      */
     Aria.disposeTemplate = function (div) {
         return aria.core.TplClassLoader.disposeTemplate(div);
@@ -1439,8 +1439,7 @@
 
     /**
      * Copy globals corresponding to all loaded classes.
-     * @param object Object on which all globals corresponding to loaded classes will be copied.
-     * @type Object
+     * @param {Object} object on which all globals corresponding to loaded classes will be copied.
      */
     Aria.copyGlobals = function (object) {
         object.Aria = Aria;
@@ -1468,7 +1467,7 @@
 
     /**
      * This method executes the callback once the DOM is in ready state.
-     * @param {aria.utils.Callback} a callback function
+     * @param {aria.core.CfgBeans:Callback} cb a callback function
      */
     Aria.onDomReady = function (cb) {
         aria.dom.DomReady.onReady(cb);

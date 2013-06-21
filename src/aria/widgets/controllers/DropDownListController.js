@@ -31,25 +31,25 @@ Aria.classDefinition({
         /**
          * List widget if the dropdown is open
          * @protected
-         * @type {aria.widgets.form.list.List}
+         * @type aria.widgets.form.list.List
          */
         this._listWidget = null;
 
         /**
          * Datamodel associated to this input
          * @protected
-         * @type {Object}
+         * @type Object
          */
         this._dataModel = {
             /**
              * Current internal value
-             * @type {Object}
+             * @type Object
              */
             value : null,
 
             /**
              * display value corresponding to the value in the controller
-             * @type {String}
+             * @type String
              */
             text : '',
 
@@ -57,19 +57,19 @@ Aria.classDefinition({
 
             /**
              * Initial input in the textfield
-             * @type {String}
+             * @type String
              */
             initialInput : '',
 
             /**
              * Index of the selected item in the list
-             * @type {Number}
+             * @type Number
              */
             selectedIdx : -1,
 
             /**
              * Content given to the list
-             * @type {Array}
+             * @type Array
              */
             listContent : []
         };

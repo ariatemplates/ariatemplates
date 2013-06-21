@@ -74,7 +74,7 @@
 
             /**
              * List of events raised by registered object.
-             * @type {Array}
+             * @type Array
              */
             this.evtLogs = [];
 

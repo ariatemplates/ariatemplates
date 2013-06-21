@@ -72,7 +72,7 @@
         $prototype : {
             /**
              * Set the list content
-             * @param {aria.widgets.CfgBeans.SelectCfg.options} options
+             * @param {aria.widgets.CfgBeans:SelectCfg.options} options
              */
             setListOptions : function (options) {
                 var dataModel = this._dataModel;
