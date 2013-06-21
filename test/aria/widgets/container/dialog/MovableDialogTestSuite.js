@@ -24,7 +24,8 @@ Aria.classDefinition({
                 "test.aria.widgets.container.dialog.bindPosition.DialogOnResizeTestCase",
                 "test.aria.widgets.container.dialog.bindPosition.PopupMoveToTestCase",
                 "test.aria.widgets.container.dialog.bindPosition.DialogInViewportTestCase",
-                "test.aria.widgets.container.dialog.movable.MovableDialogTestCase",
-                "test.aria.widgets.container.dialog.movable.MovableDialogTestCaseTwo"];
+                "test.aria.widgets.container.dialog.movable.test1.MovableDialogTestCase",
+                "test.aria.widgets.container.dialog.movable.test2.MovableDialogTestCaseTwo",
+                "test.aria.widgets.container.dialog.movable.test3.MovableDialogTestCaseThree"];
     }
 });

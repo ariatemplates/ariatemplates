@@ -22,10 +22,19 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.container.dialog.MaximizableDialogTest");
         this.addTests("test.aria.widgets.container.dialog.closeOutside.Issue389TestCase");
         this.addTests("test.aria.widgets.container.dialog.MovableDialogTestSuite");
+
         this.addTests("test.aria.widgets.container.dialog.resize.DialogResizeTestSuite");
         this.addTests("test.aria.widgets.container.dialog.closeOnClick.CloseDialogOnClickTestCase");
         this.addTests("test.aria.widgets.container.dialog.sizes.DialogSizesTestSuite");
         this.addTests("test.aria.widgets.container.dialog.scroll.SetScrollTestCase");
+        this.addTests("test.aria.widgets.container.dialog.scroll.OnScrollTestCase");
         this.addTests("test.aria.widgets.container.dialog.focus.FocusInsideModalDialog");
+
+        this.addTests("test.aria.widgets.container.dialog.checkStyle.DialogTestCase");
+        this.addTests("test.aria.widgets.container.dialog.escKey.DialogTemplateTestCase");
+        this.addTests("test.aria.widgets.container.dialog.indicators.DialogTestCase");
+        this.addTests("test.aria.widgets.container.dialog.keymap.DialogTestCase");
+        this.addTests("test.aria.widgets.container.dialog.missingMacro.DialogTestCase");
+        this.addTests("test.aria.widgets.container.dialog.wrongCfg.ValidationTest");
     }
 });

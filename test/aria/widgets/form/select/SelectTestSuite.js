@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Amadeus s.a.s.
+ * Copyright 2013 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,13 +14,17 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.container.dialog.resize.DialogResizeTestSuite",
+    $classpath : "test.aria.widgets.form.select.SelectTestSuite",
     $extends : "aria.jsunit.TestSuite",
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
-        this._tests = ["test.aria.widgets.container.dialog.resize.test1.DialogOnResizeTestCase",
-                "test.aria.widgets.container.dialog.resize.test2.ResizableDialogTestCase",
-                "test.aria.widgets.container.dialog.resize.test3.DialogOnResizeTestCase"];
+        this._tests = ["test.aria.widgets.form.select.sharedSelect.MainTemplateTestCase",
+                "test.aria.widgets.form.select.sharedSelect.SimpleHtmlTestCase",
+                "test.aria.widgets.form.select.checkBinding.SelectTemplateTestCase",
+                "test.aria.widgets.form.select.checkFeatures.SelectTemplateTestCase",
+                "test.aria.widgets.form.select.dispose.DisposeTestCase",
+                "test.aria.widgets.form.select.downArrowKey.SelectTestCase",
+                "test.aria.widgets.form.select.popupWidth.SelectTestCase"];
     }
 });

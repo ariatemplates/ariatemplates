@@ -18,3 +18,6 @@ tests:
    #Excluded because PhantomJS has random issues with history management:
    # (to be investigated)
     - test.aria.utils.History
+   #Excluded because PhantomJS has random issues with the viewport
+    - test.aria.widgets.container.dialog.scroll.OnScrollTestCase
+    - test.aria.widgets.container.dialog.resize.test3.DialogOnResizeTestCase

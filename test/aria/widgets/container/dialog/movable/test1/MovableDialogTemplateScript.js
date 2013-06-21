@@ -13,14 +13,18 @@
  * limitations under the License.
  */
 
-Aria.classDefinition({
-    $classpath : "test.aria.widgets.container.dialog.resize.DialogResizeTestSuite",
-    $extends : "aria.jsunit.TestSuite",
-    $constructor : function () {
-        this.$TestSuite.constructor.call(this);
+Aria.tplScriptDefinition({
+    $classpath : "test.aria.widgets.container.dialog.movable.test1.MovableDialogTemplateScript",
+    $prototype : {
 
-        this._tests = ["test.aria.widgets.container.dialog.resize.test1.DialogOnResizeTestCase",
-                "test.aria.widgets.container.dialog.resize.test2.ResizableDialogTestCase",
-                "test.aria.widgets.container.dialog.resize.test3.DialogOnResizeTestCase"];
+        onDragStart : function (evt, dataName) {
+            var container = this.data[dataName];
+            container.dragStart = (container.dragStart != null) ? container.dragStart + 1 : 1;
+
+        },
+        onDragEnd : function (evt, dataName) {
+            var container = this.data[dataName];
+            container.dragEnd = (container.dragEnd != null) ? container.dragEnd + 1 : 1;
+        }
     }
 });
