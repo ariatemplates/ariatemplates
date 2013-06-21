@@ -63,7 +63,7 @@ Aria.classDefinition({
             var width = element.offsetWidth;
             var height = element.offsetHeight;
 
-            var size = /** @type aria.utils.Dom.Size */
+            var size = /** @type aria.utils.DomBeans:Size */
             {
                 'width' : width,
                 'height' : height

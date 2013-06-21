@@ -191,7 +191,7 @@ Aria.classDefinition({
 
         /**
          * Name of the expando used for event delegation
-         * @type {String}
+         * @type String
          */
         this.delegateExpando = "atdelegate";
 
@@ -297,7 +297,7 @@ Aria.classDefinition({
 
         /**
          * Plug event listener to be able to listen to delegated events
-         * @param {aria.core.JsObject.Callback} handler
+         * @param {aria.core.CfgBeans:Callback} handler
          * @return {String} id for delegation.
          */
         add : function (handler) {

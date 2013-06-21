@@ -56,7 +56,7 @@ Aria.classDefinition({
 
         /**
          * Add a key map at window level
-         * @param {aria.templates.CfgBeans.GlobalKeyMapCfg}
+         * @param {aria.templates.CfgBeans:GlobalKeyMapCfg}
          */
         addGlobalKeyMap : function (configuration) {
             var normalizeCfg = {
@@ -210,7 +210,7 @@ Aria.classDefinition({
          * Check if element can be focused and focus it if possible
          * @protected
          * @param {HTMLElement} target
-         * @param {Object} cb {aria.core.JsObject.Callback} callback to pass over to the focus method of widgets
+         * @param {aria.core.CfgBeans:Callback} cb callback to pass over to the focus method of widgets
          * @return {Boolean} true if focus can be made
          */
         _doFocus : function (target, cb) {

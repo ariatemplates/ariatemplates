@@ -28,7 +28,7 @@ Aria.classDefinition({
         /**
          * Skin information for this icon
          * @protected
-         * @type {Object}
+         * @type Object
          */
         this._iconInfo = null;
 
@@ -42,13 +42,13 @@ Aria.classDefinition({
     $statics : {
         /**
          * Icon used when the resquest icon is missing
-         * @type {Object}
+         * @type Object
          */
         ERROR_ICON : null,
 
         /**
          * Title for the missing icon. % will be replaced with the icon name
-         * @type {String}
+         * @type String
          */
         ERROR_ICON_TITLE : 'Icon % not found',
 

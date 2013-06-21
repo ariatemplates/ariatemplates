@@ -160,7 +160,7 @@ Aria.classDefinition({
          * @param {String} entryStr The number you want to interpret
          * @param {String} patternString the pattern to be used. If strictGrouping is true entryStr should match this
          * pattern
-         * @param {aria.utils.environment.NumberCfgBeans.DecimalFormatSymbols} formatSymbols Optional custom formatting
+         * @param {aria.utils.environment.NumberCfgBeans:DecimalFormatSymbols} formatSymbols Optional custom formatting
          * symbols
          * @return {String} The number stripped from thousand separator and with . (dot) as decimal separator.
          */
@@ -269,7 +269,7 @@ Aria.classDefinition({
          * AppEnvironment)
          * @param {Number} number The number you want to format
          * @param {String} patternString the pattern to be used
-         * @param {aria.utils.environment.NumberCfgBeans.DecimalFormatSymbols} formatSymbols Optional custom formatting
+         * @param {aria.utils.environment.NumberCfgBeans:DecimalFormatSymbols} formatSymbols Optional custom formatting
          * symbols
          * @return {String}
          */
@@ -325,7 +325,7 @@ Aria.classDefinition({
          * symbol
          * @param {Number} number The number you want to format
          * @param {String} patternString the pattern to be used
-         * @param {aria.utils.environment.NumberCfgBeans.DecimalFormatSymbols} formatSymbols Optional custom formatting
+         * @param {aria.utils.environment.NumberCfgBeans:DecimalFormatSymbols} formatSymbols Optional custom formatting
          * symbols
          * @return {String}
          */
@@ -439,7 +439,7 @@ Aria.classDefinition({
          * Normalize the object describing decimal/grouping symbols. Default values are taken from the AppEnvironment,
          * not from the Bean
          * @private
-         * @param {aria.utils.environment.NumberCfgBeans.DecimalFormatSymbols} formatSymbols formatting symbols
+         * @param {aria.utils.environment.NumberCfgBeans:DecimalFormatSymbols} formatSymbols formatting symbols
          * @return {Object} Normalized symbols
          */
         _normalizeSymbols : function (formatSymbols) {

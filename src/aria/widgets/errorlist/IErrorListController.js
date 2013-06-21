@@ -26,11 +26,12 @@ Aria.interfaceDefinition({
     $interface : {
         /**
          * Method to be called when changing the messages data structure.
+         * @param {Array} messages
          */
         setMessages : function (messages) {},
         /**
          * Set the focus on the field which corresponds to the specified message.
-         * @param {Object} message aria.utils.validators.CfgBeans.Message
+         * @param {Object} message aria.utils.validators:CfgBeans.Message
          */
         focusField : function (message) {}
     }

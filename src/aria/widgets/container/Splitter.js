@@ -23,7 +23,7 @@ Aria.classDefinition({
     $css : ["aria.widgets.container.SplitterStyle"],
     /**
      * Splitter constructor
-     * @param {aria.widgets.CfgBeans.SplitterCfg} cfg the widget configuration
+     * @param {aria.widgets.CfgBeans:SplitterCfg} cfg the widget configuration
      * @param {aria.templates.TemplateCtxt} ctxt template context
      */
     $constructor : function (cfg, ctxt) {
@@ -34,17 +34,17 @@ Aria.classDefinition({
         /**
          * Contains the dom element of first splitter panel
          * @protected
-         * @type {DOMElement}
+         * @type HTMLElement
          */
         this._splitPanel1 = null;
         /**
          * Contains the dom element of second splitter panel
          * @protected
-         * @type {DOMElement}
+         * @type HTMLElement
          */
         this._splitPanel2 = null;
         /**
-         * Splitter height .
+         * Splitter height.
          * @protected
          * @type Number
          */
@@ -66,15 +66,14 @@ Aria.classDefinition({
         /**
          * Reference to the dom element
          * @protected
-         * @type {DOMElement}
+         * @type HTMLElement
          */
         this._splitBar = null;
 
         /**
          * Reference to the dom element
          * @protected
-         * @type {DOMElement}
-         */
+         * @type HTMLElement
         this._splitBarProxy = null;
 
         /**
@@ -251,7 +250,7 @@ Aria.classDefinition({
 
         /**
          * calculate the width/height of panels from the splitter configuration
-         * @param {aria.widgets.CfgBeans.SplitterCfg}
+         * @param {aria.widgets.CfgBeans:SplitterCfg}
          */
         _calculateSize : function (cfg) {
             var border = cfg.border ? this.SPLITTER_BORDER_SIZE : 0, size = {}, totalHeight, initDimension;

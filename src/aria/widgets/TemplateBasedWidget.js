@@ -42,13 +42,14 @@ Aria.classDefinition({
         /**
          * List of configuration options that are inherited from the Widget's configuration to the sub-template
          * @type Array
+         * @private
          */
         __inherithCfg : ["tooltip", "tooltipId", "tabIndex", "margins", "block", "printOptions"],
 
         /**
          * Initialize the template associated to this template based widget. It will create a new instance of the
          * Template.
-         * @param {aria.templates.CfgBeans.LoadTemplateCfg} tplCfg Template configuration object
+         * @param {aria.templates.CfgBeans:LoadTemplateCfg} tplCfg Template configuration object
          * @protected
          */
         _initTemplate : function (tplCfg) {
@@ -80,7 +81,7 @@ Aria.classDefinition({
         /**
          * Abstract. This function is called any time the sub-template's module controller raises an event.<br />
          * This function must be overridden.
-         * @param {Event} evt
+         * @param {Object} evt
          */
         _onModuleEvent : function (evt) {
             // Override me!

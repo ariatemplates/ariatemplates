@@ -225,7 +225,7 @@
              * Log all errors.
              * @param {Array} array of errors
              * @param {Boolean} throwsErrors (default false)
-             * @return True if there were no error, false otherwise.
+             * @return {Boolean} True if there were no error, false otherwise.
              */
             __logAllErrors : function (errors, throwsErrors) {
                 if (errors.length === 0) {
@@ -245,10 +245,10 @@
 
             /**
              * Find the given type in the given bean package.
-             * @param {aria.core.BaseTypes.Package} packageDef bean package
+             * @param {aria.core.BaseTypes:Package} packageDef bean package
              * @param {String} typeName type name. May not contain ':'. Contains the path to the bean inside the package
              * bp.
-             * @return {aria.core.BaseTypes.Bean} definition of the requested bean, or this._typeRefError if it could
+             * @return {aria.core.BaseTypes:Bean} definition of the requested bean, or this._typeRefError if it could
              * not be found
              */
             __findTypeInBP : function (packageDef, typeName) {
@@ -279,8 +279,8 @@
              * Find a bean definition by its type name. It relies on the bean package currently being processed.
              * @param {String} typeName A string composed of two parts: 'namespace:value' where the namespace is
              * optional if the value refers a type defined in the package currently being processed.
-             * @param {aria.core.BaseTypes.Package} packageDef reference package
-             * @return {aria.core.BaseTypes.Bean} definition of the requested bean, or this._typeRefError if it could
+             * @param {aria.core.BaseTypes:Package} packageDef reference package
+             * @return {aria.core.BaseTypes:Bean} definition of the requested bean, or this._typeRefError if it could
              * not be found
              */
             __getTypeRef : function (typeName, packageDef) {
@@ -326,9 +326,9 @@
 
             /**
              * Preprocess the given bean definition (if not already done) and return its base type.
-             * @param {aria.core.BaseTypes.Bean} beanDef bean to be preprocessed
+             * @param {aria.core.BaseTypes:Bean} beanDef bean to be preprocessed
              * @param {String} beanName fully qualified name for this bean
-             * @param {aria.core.BaseTypes.Package} packageDef reference package
+             * @param {aria.core.BaseTypes:Package} packageDef reference package
              */
             _preprocessBean : function (beanDef, beanName, packageDef) {
 
@@ -489,7 +489,7 @@
 
             /**
              * Main function to preprocess a bean package definition. All dependencies should have already bean loaded.
-             * @param {aria.core.BaseTypes.Package} def
+             * @param {aria.core.BaseTypes:Package} def
              */
             __preprocessBP : function (def) {
 
@@ -513,7 +513,7 @@
 
             /**
              * Preprocessing function for base types of package aria.core.JsonTypes
-             * @param {aria.core.BaseTypes.Bean} *
+             * @param {aria.core.BaseTypes:Bean} beanDef
              */
             _getBuiltInBaseType : function (beanDef) {
                 var typeDef = this.__baseTypes[beanDef.$type];
@@ -577,7 +577,7 @@
             /**
              * Get a bean from its string reference.
              * @param {String} The fully qualified bean name, ex: aria.widgets.calendar.CfgBeans.CalendarSettings
-             * @return The bean definition if strType is valid, or null otherwise.
+             * @return {aria.core.BaseTypes:Bean} The bean definition if strType is valid, or null otherwise.
              */
             _getBean : function (strType) {
                 return this.__processedBeans[strType] || null;
@@ -621,7 +621,7 @@
              * Called when preprocessing, just after having determined the type of bean. If beans check is enabled and
              * multitypes check is disabled, it checks that the bean is valid according to the corresponding schema in
              * aria.core.BaseTypes
-             * @param {aria.core.BaseTypes.Bean} bean to check
+             * @param {aria.core.BaseTypes:Bean} bean to check
              */
             __checkBean : function (beanDef) {
                 if (this._options.checkBeans && (!this._options.checkMultiTypes)
@@ -688,7 +688,7 @@
 
             /**
              * Base method used to declare beans. You should use Aria. beanDefinitions instead of this method.
-             * @param {aria.core.BaseTypes.Package} beans beans package to declare
+             * @param {aria.core.BaseTypes:Package} beans beans package to declare
              */
             beanDefinitions : function (def) {
                 var bp = def.$package; // beans package
@@ -814,7 +814,7 @@
             /**
              * Get a bean from its string reference.
              * @param {String} The fully qualified bean name, ex: aria.widgets.calendar.CfgBeans.CalendarSettings
-             * @return The bean definition if it exists and is loaded, or null otherwise.
+             * @return {MultiTypes} The bean definition if it exists and is loaded, or null otherwise.
              */
             getBean : function (beanName) {
                 return this._getBean(beanName);

@@ -45,6 +45,8 @@ Aria.classDefinition({
 
         /**
          * Counter used to create variable names.
+         * @type Integer
+         * @protected
          */
         this._varIndex = 0;
 
@@ -52,18 +54,21 @@ Aria.classDefinition({
          * Array of currently unused variable names, created with createTempVariable then released with
          * releaseTempVariable.
          * @type Array
+         * @protected
          */
         this._unusedTempVariables = [];
 
         /**
          * Map of currently used variable names, created with createTempVariable.
          * @type Object
+         * @protected
          */
         this._usedTempVariables = {};
 
         /**
          * Map of shortcuts created with createShortcut.
          * @type Object
+         * @protected
          */
         this._shortcuts = {};
     },

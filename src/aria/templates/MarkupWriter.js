@@ -63,7 +63,7 @@
              * Root section. This section is automatically created for the case of a global refresh. This section does
              * not have an id on purpose (this is used to recognize it as the main section).
              * @protected
-             * @type {aria.templates.Section}
+             * @type aria.templates.Section
              */
             this._topSection = !filterSection ? new aria.templates.Section(this.tplCtxt, null, {
                 isRoot : true,
@@ -73,7 +73,7 @@
             /**
              * Current containing section.
              * @protected
-             * @type {aria.templates.Section}
+             * @type aria.templates.Section
              */
             this._currentSection = this._topSection;
 
@@ -114,7 +114,7 @@
 
             /**
              * Begin a new standard section, or a repeater section (depending on the second parameter).
-             * @param {aria.templates.CfgBeans.SectionCfg|aria.templates.CfgBeans.RepeaterCfg} sectionParam section
+             * @param {aria.templates.CfgBeans:SectionCfg|aria.templates.CfgBeans:RepeaterCfg} sectionParam section
              * @param {Function} sectionConstructor may be either aria.templates.Section or aria.templates.Repeater
              */
             _beginSectionOrRepeater : function (sectionParam, sectionConstructor) {
@@ -157,7 +157,7 @@
             /**
              * Process a repeater statement. Note that before calling this method, the Repeater class must already be
              * loaded (templates which use the repeater automatically have a dependency on the Repeater, anyway).
-             * @param {aria.templates.CfgBeans.RepeaterCfg} sectionParam section configuration object
+             * @param {aria.templates.CfgBeans:RepeaterCfg} sectionParam section configuration object
              */
             repeater : function (repeaterParam) {
                 this._beginSectionOrRepeater(repeaterParam, aria.templates.Repeater);
@@ -166,7 +166,7 @@
 
             /**
              * Begin a new typed section
-             * @param {aria.templates.CfgBeans.SectionCfg} sectionParam section configuration object
+             * @param {aria.templates.CfgBeans:SectionCfg} sectionParam section configuration object
              */
             beginSection : function (sectionParam) {
                 this._beginSectionOrRepeater(sectionParam, aria.templates.Section);
@@ -260,7 +260,7 @@
             /**
              * Add a delegate function on current markup
              * @param {String} eventName
-             * @param {aria.core.JsObject.Callback} callback
+             * @param {aria.core.CfgBeans:Callback} callback
              */
             pushDelegate : function (eventName, callback) {
 

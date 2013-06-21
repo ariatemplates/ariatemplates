@@ -55,7 +55,7 @@ Aria.classDefinition({
     $prototype : {
         /**
          * Set the time pattern
-         * @param {aria.widgets.CfgBeans.TimeFieldCfg} pattern options
+         * @param {aria.widgets.CfgBeans:TimeFieldCfg} pattern options
          */
         setPattern : function (pattern) {
             if (!pattern) {

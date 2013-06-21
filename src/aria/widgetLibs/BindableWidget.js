@@ -26,6 +26,12 @@ Aria.classDefinition({
         INVALID_BEAN : "Invalid propety '%1' in widget's '%2' configuration."
     },
     $dependencies : ["aria.utils.Json", "aria.utils.Type"],
+    /**
+     * Create an instance of the widget.
+     * @param {Object} cfg widget configuration, which is the parameter given in the template
+     * @param {aria.templates.TemplateCtxt} context template context
+     * @param {Number} lineNumber line number in the template
+     */
     $constructor : function (cfg, context, lineNumber) {
         this.$BaseWidget.constructor.call(this, cfg, context, lineNumber);
 
@@ -122,7 +128,7 @@ Aria.classDefinition({
         /**
          * Transforms a value from the widget value to the corresponding datamodel value using the specified transform.
          * @protected
-         * @param {aria.widgetLibs.CommonBeans.TransformRef} transform Transformation function. Can be undefined if no
+         * @param {aria.widgetLibs.CommonBeans:TransformRef} transform Transformation function. Can be undefined if no
          * transformation is to be used or a classpath.
          * @param {Object|Boolean|String|Number} value The widget value to be transformed.
          * @param {String} direction Whether the transform is 'fromWidget' or 'toWidget
@@ -156,7 +162,7 @@ Aria.classDefinition({
         /**
          * Call a callback function of the widget on the template context. First parameter to callback function will be
          * the arg parameter and the second parameter will be the callback.args if specified.
-         * @param {aria.widgetLibs.CommonBeans.Callback} callback Function to be called
+         * @param {aria.widgetLibs.CommonBeans:Callback} callback Function to be called
          * @param {Object} arg Any parameter which will be passed as first parameter to callback function.
          */
         evalCallback : function (callback, args) {

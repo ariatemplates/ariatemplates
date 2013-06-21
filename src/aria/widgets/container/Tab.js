@@ -23,7 +23,7 @@ Aria.classDefinition({
     $css : ["aria.widgets.container.TabStyle"],
     /**
      * Tab constructor
-     * @param {aria.widgets.CfgBeans.TabCfg} cfg the widget configuration
+     * @param {aria.widgets.CfgBeans:TabCfg} cfg the widget configuration
      * @param {aria.templates.TemplateCtxt} ctxt template context
      */
     $constructor : function (cfg, ctxt) {

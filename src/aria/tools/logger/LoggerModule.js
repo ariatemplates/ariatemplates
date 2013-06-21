@@ -30,7 +30,7 @@ Aria.classDefinition({
 
         /**
          * Bridge used to communicate with main window.
-         * @type {aria.tools.Bridge}
+         * @type aria.tools.Bridge
          */
         this.bridge = null;
 
@@ -60,7 +60,7 @@ Aria.classDefinition({
         /**
          * Override default init of moduleCtrl
          * @param {Object} initArgs init argument - actual type is defined by the sub-class
-         * @param {aria.core.JsObject.Callback} callback the callback description
+         * @param {aria.core.CfgBeans:Callback} callback the callback description
          */
         init : function (args, cb) {
 

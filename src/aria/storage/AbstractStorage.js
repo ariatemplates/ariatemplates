@@ -37,7 +37,7 @@ Aria.classDefinition({
     },
     /**
      * Create an abstract instance of storage
-     * @param {aria.storage.Beans.ConstructorArgs} options Constructor options
+     * @param {aria.storage.Beans:ConstructorArgs} options Constructor options
      */
     $constructor : function (options) {
         /**
@@ -49,7 +49,7 @@ Aria.classDefinition({
 
         /**
          * Callback for storage events
-         * @type aria.core.CfgBeans.Callback
+         * @type aria.core.CfgBeans:Callback
          */
         this._eventCallback = {
             fn : this._onStorageEvent,

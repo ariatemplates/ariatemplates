@@ -313,7 +313,7 @@
              * Convert print options into a set of CSS classes and add them to the provided set of classes.
              * @param {String} classes Set of classes separated by a space (e.g. className property). If print options
              * CSS classes are already present in this string, they will be removed.
-             * @param {aria.templates.CfgBeans.PrintOptions} printOptions print options
+             * @param {aria.templates.CfgBeans:PrintOptions} printOptions print options
              * @return {String} the updated set of classes.
              */
             addPrintOptions : function (classes, printOptions) {
@@ -332,8 +332,8 @@
 
             /**
              * Load a template in a div. You should call Aria.loadTemplate, instead of this method.
-             * @param {aria.templates.LoadTemplateCfg} cfg configuration object
-             * @param {aria.core.JsObject.Callback} callback which will be called when the template is loaded or if
+             * @param {aria.templates.CfgBeans:LoadTemplateCfg} cfg configuration object
+             * @param {aria.core.CfgBeans:Callback} callback which will be called when the template is loaded or if
              * there is an error. The first parameter of the callback is a JSON object with the following properties: {
              * success : {Boolean} true if the template was displayed, false otherwise } Note that the callback is
              * called when the template is loaded, but sub-templates may still be waiting to be loaded (showing a
@@ -396,7 +396,7 @@
             /**
              * Unload a template loaded with Aria.loadTemplate. You should call Aria.disposeTemplate, instead of this
              * method.
-             * @param {aria.templates.CfgBeans.Div} div The div given to Aria.loadTemplate.
+             * @param {aria.templates.CfgBeans:Div} div The div given to Aria.loadTemplate.
              */
             disposeTemplate : function (div) {
                 var templateCtxt;

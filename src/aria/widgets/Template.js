@@ -67,7 +67,7 @@ Aria.classDefinition({
          * initialized, or if an error prevents the template from being loaded. So, if it is not null, we are still
          * waiting for the template to be loaded.
          * @protected
-         * @type aria.templates.CfgBeans.InitTemplateCfg
+         * @type aria.templates.CfgBeans:InitTemplateCfg
          */
         this._tplcfg = {
             classpath : aria.core.environment.Customizations.getTemplateCP(cfg.defaultTemplate),
@@ -90,7 +90,7 @@ Aria.classDefinition({
          *           }
          * </pre>
          *
-         * @type aria.core.JsObject.Callback
+         * @type aria.core.CfgBeans:Callback
          * @public
          */
         this.tplLoadCallback = null;

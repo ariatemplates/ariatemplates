@@ -26,7 +26,7 @@ Aria.classDefinition({
     $css : ["aria.widgets.action.SortIndicatorStyle"],
     /**
      * SortIndicator constructor
-     * @param {aria.widgets.CfgBeans.SortIndicatorCfg} cfg the widget configuration
+     * @param {aria.widgets.CfgBeans:SortIndicatorCfg} cfg the widget configuration
      * @param {aria.templates.TemplateCtxt} ctxt template context
      * @param {Number} lineNumber Line number corresponding in the .tpl file where the widget is created
      */
@@ -106,7 +106,7 @@ Aria.classDefinition({
     $statics : {
         /**
          * Ascending and descending are used to refer to the icon image sprite
-         * @type {String}
+         * @type String
          */
         ASCENDING_STATE : 'ascending',
         DESCENDING_STATE : 'descending',
@@ -115,28 +115,28 @@ Aria.classDefinition({
     $prototype : {
         /**
          * Activate ellipsis ot not
-         * @private
+         * @protected
          * @type Boolean
          */
         _activateEllipsis : false,
 
         /**
          * Status flag to check if the widget currently has mouseover
-         * @private
+         * @protected
          * @type Boolean
          */
         _hasMouseOver : false,
 
         /**
          * Status flag to check if the widget currently has the focus
-         * @private
+         * @protected
          * @type Boolean
          */
         _hasFocus : false,
 
         /**
          * Tells if the widgets is using a tabindex (for tab navigation).
-         * @private
+         * @protected
          * @type Boolean
          */
         _customTabIndexProvided : true,

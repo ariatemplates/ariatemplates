@@ -175,7 +175,7 @@ Aria.classDefinition({
 
         /**
          * Internal listener called when a change occurs during the test execution
-         * @param {aria.jsunit.TestEngine.$events.change} evt the event
+         * @param {aria.jsunit.TestEngine:change:event} evt the event
          * @private
          */
         _onChange : function (evt) {

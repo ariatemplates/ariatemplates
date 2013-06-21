@@ -42,19 +42,19 @@
 
             /**
              * Autofill behaviour enabled
-             * @type {Boolean}
+             * @type Boolean
              */
             this.autoFill = false;
 
             /**
              * Freetext allowed
-             * @type {Boolean}
+             * @type Boolean
              */
             this.freeText = true;
 
             /**
              * Specifies if the Expand button is set
-             * @type {Boolean}
+             * @type Boolean
              */
             this.expandButton = false;
 
@@ -79,7 +79,7 @@
 
             /**
              * Keys defined for submitting a selected item from autocomplete dropdown
-             * @type {aria.widgets.CfgBeans.AutoCompleteCfg.$properties.selectionKeys}
+             * @type aria.widgets.CfgBeans:AutoCompleteCfg.selectionKeys
              */
             this.selectionKeys = null;
 

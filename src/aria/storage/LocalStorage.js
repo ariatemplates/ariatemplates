@@ -45,7 +45,7 @@
         $dependencies : ["aria.core.Browser", "aria.storage.UserData"],
         /**
          * Create an instance of LocalStorage. Try ot use userData if missing
-         * @param {aria.storage.Beans.ConstructorArgs} options Constructor options
+         * @param {aria.storage.Beans:ConstructorArgs} options Constructor options
          */
         $constructor : function (options) {
             var isIE7 = aria.core.Browser.isIE7;

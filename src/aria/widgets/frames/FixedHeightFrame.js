@@ -167,6 +167,7 @@
             },
             /**
              * Checks for any border in left or right.
+             * @protected
              * @param {String} border
              * @param {Array} Icons
              * @return {Boolean}

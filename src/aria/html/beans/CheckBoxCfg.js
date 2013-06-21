@@ -22,7 +22,7 @@ Aria.beanDefinitions({
             $description : "Properties of a CheckBox widget.",
             $properties : {
                 "bind" : {
-                    $type : "base:Properties.$properties.bind",
+                    $type : "base:Properties.bind",
                     $properties : {
                         "checked" : {
                             $type : "common:BindingRef",

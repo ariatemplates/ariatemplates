@@ -1092,8 +1092,8 @@
 		$prototype : {
 			/**
 			 * Convert the content from markdown to html
-			 * @param {aria.pageEngine.CfgBeans.Content} content
-			 * @return {aria.pageEngine.CfgBeans.Content} converted content
+			 * @param {aria.pageEngine.CfgBeans:Content} content
+			 * @return {aria.pageEngine.CfgBeans:Content} converted content
 			 */
 			processContent : function (content) {
 				var output = {

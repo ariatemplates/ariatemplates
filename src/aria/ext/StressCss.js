@@ -31,13 +31,13 @@
 
     /**
      * HTML Element displayng the test results
-     * @type HTMLObject
+     * @type HTMLElement
      */
     var reportHolder = null;
 
     /**
      * HTML Element displayng log information on a given test
-     * @type HTMLObject
+     * @type HTMLElement
      */
     var logHolder = null;
 

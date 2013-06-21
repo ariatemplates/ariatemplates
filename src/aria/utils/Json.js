@@ -589,7 +589,7 @@
              * @param {String} listenerToExclude (optional) potential listener callback belonging to the object that
              * raised the change and which doesn't want to be notified
              * @param {Boolean} throwError, default is false
-             * @return the new value
+             * @return {MultiTypes} the new value
              */
             setValue : function (container, property, val, listenerToExclude, throwError) {
                 // check for interface
@@ -636,7 +636,7 @@
              * @param {Array} container reference to the data holder object - e.g. data.search.preferedCity
              * @param {String} property name of the property to set - e.g. '$value'
              * @param {String} defaultValue the default value to set dh property if not found
-             * @return the value
+             * @return {MultiTypes} the value
              */
             getValue : function (container, property, defaultValue) {
                 if (!container || !property || !(property in container)) {
@@ -651,7 +651,7 @@
              * @param {Object} container reference to the data holder object - e.g. data.search.preferedCity
              * @param {String} property name of a given property in the targeted container. If specified, the callback
              * will be called only if this property is changed.
-             * @param {aria.core.CfgBeans.Callback} callback listener callback to add. Note that JsObject.$callback is
+             * @param {aria.core.CfgBeans:Callback} callback listener callback to add. Note that JsObject.$callback is
              * not used for performance reasons, so that only the form { fn : {Function}, scope: {Object}, args :
              * {MultiTypes}} is supported for this callback.
              * @param {Boolean} throwError if true, throws errors instead of logging it.
@@ -698,7 +698,7 @@
              * @param {Object} container reference to the data holder object - e.g. data.search.preferedCity
              * @param {String} property name of a given property in the targeted container. If specified, the callback
              * will be called only if this property is changed.
-             * @param {aria.core.JsObject.Callback} callback listener callback to remove (must be exactly the same
+             * @param {aria.core.CfgBeans:Callback} callback listener callback to remove (must be exactly the same
              * object as the one used in addListener)
              * @param {Boolean} recursive must has the same value as the one used for recursive in addListener
              */
@@ -825,7 +825,7 @@
              * @param {Object|Array} src the source JSON structure
              * @param {Object|Array} target the target JSON structure
              * @param {Boolean} merge tells if the injection must be recursive - default: false
-             * @return true if the injection was handled correctly
+             * @return {Boolean} true if the injection was handled correctly
              */
             inject : function (src, target, merge) {
 

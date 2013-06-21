@@ -15,8 +15,8 @@
 
 /**
  * @class aria.core.Timer This class handles asynchronous callbacks and gives the possibility to associate an object
- * (scope) to the callback function - which is not possible with setTimeout(...) It also creates a unique id that
- * can be used to cancel the callback
+ * (scope) to the callback function - which is not possible with setTimeout(...) It also creates a unique id that can be
+ * used to cancel the callback
  * @extends aria.core.JsObject
  * @singleton
  */
@@ -50,17 +50,21 @@ Aria.classDefinition({
          * : '456' // key=timeout id, value=internal callback id
          * </pre>
          *
+         * @type Map
          * @private
          */
         this._cancelIds = {};
+
         /**
          * Callback counter - automatically reset to 0 when reaches _MAX_COUNT
+         * @type Integer
          * @private
          */
         this._cbCount = 0;
 
         /**
          * Running total of callbacks as they are added and removed.
+         * @type Integer
          * @private
          */
         this._numberOfCallbacks = 0;
@@ -97,8 +101,7 @@ Aria.classDefinition({
 
         /**
          * Create a new callback and return a callback id note: callbacks are automatically removed from the list once
-         * executed.
-         * <code>
+         * executed. <code>
          * aria.core.Timer.addCallback({
          *     fn : obj.method, // mandatory
          *     scope : obj, // mandatory

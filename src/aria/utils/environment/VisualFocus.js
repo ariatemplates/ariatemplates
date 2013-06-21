@@ -42,7 +42,7 @@ Aria.classDefinition({
 
         /**
          * Apply the current environment.
-         * @param {aria.core.JsObject.Callback} callback Will be called after the environment is applied.
+         * @param {aria.core.CfgBeans:Callback} callback Will be called after the environment is applied.
          * @protected
          */
         _applyEnvironment : function (callback) {

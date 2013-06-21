@@ -30,7 +30,7 @@ Aria.classDefinition({
 
         /**
          * Bridge used to communicate with main window.
-         * @type {aria.tools.Bridge}
+         * @type aria.tools.Bridge
          */
         this.bridge = null;
 

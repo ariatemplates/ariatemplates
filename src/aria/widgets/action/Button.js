@@ -23,7 +23,7 @@ Aria.classDefinition({
     $css : ["aria.widgets.action.ButtonStyle"],
     /**
      * ActionWidget constructor
-     * @param {aria.widgets.CfgBeans.ActionWidgetCfg} cfg the widget configuration
+     * @param {aria.widgets.CfgBeans:ActionWidgetCfg} cfg the widget configuration
      * @param {aria.templates.TemplateCtxt} ctxt template context
      */
     $constructor : function (cfg, ctxt) {
@@ -76,7 +76,7 @@ Aria.classDefinition({
         if (!this._skinnableClass) {
             /**
              * Skinnable class to use for this widget.
-             * @type {String}
+             * @type String
              * @protected
              */
             this._skinnableClass = "Button";
@@ -84,7 +84,7 @@ Aria.classDefinition({
 
         /**
          * Skin configutation for simpleHTML
-         * @type {Object}
+         * @type Object
          * @protected
          */
         this._simpleHTML = aria.widgets.AriaSkinInterface.getSkinObject(this._skinnableClass, cfg.sclass).simpleHTML;

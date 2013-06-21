@@ -135,7 +135,7 @@ Aria.classDefinition({
         /**
          * Initializes the robot. Do not call any other method of the robot (except isUsable) before calling this method
          * and waiting for it to call its callback.
-         * @param {aria.core.CfgBeans.Callback} callback called when the robot is ready to be used.
+         * @param {aria.core.CfgBeans:Callback} callback called when the robot is ready to be used.
          */
         initRobot : function (cb) {
             if (this.isUsable()) {
@@ -159,7 +159,7 @@ Aria.classDefinition({
          * Sets the mouse position, with coordinates relative to the viewport.
          * @param {Object} position position where to set the mouse (given as an object with x and y properties, in
          * viewport coordinates)
-         * @param {aria.core.CfgBeans.Callback} callback
+         * @param {aria.core.CfgBeans:Callback} callback
          */
         mouseMove : function (position, callback) {
             var translatedPosition = this._translateCoordinates(position);
@@ -170,7 +170,7 @@ Aria.classDefinition({
          * Sets the mouse position, with PhantomJS screen coordinates.
          * @param {Object} position position where to set the mouse (given as an object with x and y properties, in
          * PhantomJS screen coordinates)
-         * @param {aria.core.CfgBeans.Callback} callback
+         * @param {aria.core.CfgBeans:Callback} callback
          */
         absoluteMouseMove : function (position, callback) {
             var lastPosition = this._lastMousePosition;
@@ -187,7 +187,7 @@ Aria.classDefinition({
          * @param {Object} toPosition final position of mouse (given as an object with x and y properties, in viewport
          * coordinates)
          * @param {Number} duration Time in ms for the mouse move.
-         * @param {aria.core.CfgBeans.Callback} callback
+         * @param {aria.core.CfgBeans:Callback} callback
          */
         smoothMouseMove : function (from, to, duration, cb) {
             var translatedFromPosition = this._translateCoordinates(from);
@@ -202,7 +202,7 @@ Aria.classDefinition({
          * @param {Object} toPosition final position of mouse (given as an object with x and y properties, in PhantomJS
          * screen coordinates)
          * @param {Number} duration Time in ms for the mouse move.
-         * @param {aria.core.CfgBeans.Callback} callback
+         * @param {aria.core.CfgBeans:Callback} callback
          */
         smoothAbsoluteMouseMove : function (from, to, duration, cb) {
             this.absoluteMouseMove(from, {
@@ -246,7 +246,7 @@ Aria.classDefinition({
          * Simulates a mouse button press.
          * @param {Number} button Button to be pressed (should be the value of aria.jsunit.Robot.BUTTONx_MASK, with x
          * replaced by 1, 2 or 3).
-         * @param {aria.core.CfgBeans.Callback} callback
+         * @param {aria.core.CfgBeans:Callback} callback
          */
         mousePress : function (button, cb) {
             var lastPosition = this._lastMousePosition;
@@ -258,7 +258,7 @@ Aria.classDefinition({
          * Simulates a mouse button released.
          * @param {Number} button Button to be released (should be the value of aria.jsunit.Robot.BUTTONx_MASK, with x
          * replaced by 1, 2 or 3).
-         * @param {aria.core.CfgBeans.Callback} callback
+         * @param {aria.core.CfgBeans:Callback} callback
          */
         mouseRelease : function (button, cb) {
             var lastPosition = this._lastMousePosition;
@@ -277,7 +277,7 @@ Aria.classDefinition({
          * Simulates a keyboard key press.
          * @param {MultiTypes} key specifies which key should be pressed. It can be any value among the ones in the KEYS
          * property.
-         * @param {aria.core.CfgBeans.Callback} callback
+         * @param {aria.core.CfgBeans:Callback} callback
          */
         keyPress : function (keyCode, cb) {
             if (keyCode == this.KEYS.VK_SHIFT) {
@@ -300,7 +300,7 @@ Aria.classDefinition({
          * Simulates a keyboard key release.
          * @param {MultiTypes} key specifies which key should be released. It can be any value among the ones in the
          * KEYS property.
-         * @param {aria.core.CfgBeans.Callback} callback
+         * @param {aria.core.CfgBeans:Callback} callback
          */
         keyRelease : function (keyCode, cb) {
             if (typeof keyCode == "string" && this._keyShift) {

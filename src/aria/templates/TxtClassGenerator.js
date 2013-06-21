@@ -35,28 +35,28 @@ Aria.classDefinition({
 
         /**
          * Redefine the class used as the parent for templates which do not inherit from any other template
-         * @type {String}
+         * @type String
          * @protected
          */
         this._superClass = "aria.templates.TextTemplate";
 
         /**
          * Set the classtype
-         * @type {String}
+         * @type String
          * @protected
          */
         this._classType = "TXT";
 
         /**
          * Set the root statement
-         * @type {String}
+         * @type String
          * @protected
          */
         this._rootStatement = "TextTemplate";
 
         /**
          * Set the configuration bean of a text template
-         * @type {String}
+         * @type String
          * @protected
          */
         this._templateParamBean = "aria.templates.CfgBeans.TextTemplateCfg";

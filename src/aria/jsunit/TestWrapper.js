@@ -48,7 +48,7 @@ Aria.classDefinition({
 
         /**
          * Called when Aria Templates is loaded in the iframe.
-         * @param {} res
+         * @param {Object} res
          */
         _atLoadedInFrame : function (res) {
             if (!res.success) {

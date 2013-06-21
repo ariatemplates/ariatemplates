@@ -241,7 +241,7 @@
              * @param {Object} options
              * @param {Object} element
              * @param {Object} callback
-             * @return Syn
+             * @return {Object} Syn
              */
             Syn = function (type, options, element, callback) {
                 return (new Syn.init(type, options, element, callback));

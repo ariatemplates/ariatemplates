@@ -48,14 +48,14 @@ Aria.classDefinition({
 
         /**
          * Add the class name to the class attribute. Does nothing if the classname already exists.
-         * @param {String | Array} className The class name or an array of class names to be added
+         * @param {String|Array} className The class name or an array of class names to be added
          */
         add : function (className) {
             this._replace(false, className);
         },
         /**
          * Remove the class name to the class attribute. Does nothing if the classname doesn't exist.
-         * @param {String | Array} className The class name or an array of class names to be removed
+         * @param {String|Array} className The class name or an array of class names to be removed
          */
         remove : function (className) {
             this._replace(className, false);
@@ -87,8 +87,8 @@ Aria.classDefinition({
         },
         /**
          * Replaces a class with another class. If no oldClassName is present, the newClassName is simply added.
-         * @param {String | Array} oldClassName The class name or an array of class names to be replaced
-         * @param {String | Array} newClassName The class name or an array of class names that will be replacing the old
+         * @param {String|Array} oldClassName The class name or an array of class names to be replaced
+         * @param {String|Array} newClassName The class name or an array of class names that will be replacing the old
          * class name
          */
         _replace : function (oldClassName, newClassName) {

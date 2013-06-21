@@ -56,32 +56,32 @@
 
             /**
              * Array of the displayed items.
-             * @type {Array}
+             * @type Array
              */
             this.items = [];
 
             /**
              * Map of displayed items. Only used in case loopType is map.
-             * @type {Object}
+             * @type Object
              */
             this.itemsMap = null;
 
             /**
              * Id counter for children, start with zero, incremented each time a new one is needed and never
              * decremented.
-             * @type {Number}
+             * @type Number
              * @protected
              */
             this._childIdSuffix = 0;
 
             /**
-             * @type {String}
+             * @type String
              * @protected
              */
             this._loopType = cfg.loopType;
 
             /**
-             * @type {Array|Object|aria.templates.View}
+             * @type Array|Object|aria.templates.View
              */
             this.iteratedSet = cfg.content;
             if (!this._updateLoopType()) {
@@ -123,7 +123,7 @@
         $prototype : {
             /**
              * Method called when this repeater is about to be refreshed.
-             * @param {aria.templates.CfgBeans.GetRefreshedSectionCfg} args arguments given to the getRefreshedSection
+             * @param {aria.templates.CfgBeans:GetRefreshedSectionCfg} args arguments given to the getRefreshedSection
              * method. The arguments are modified to add default parameters (macro) if not specified.
              */
             beforeRefresh : function (args) {

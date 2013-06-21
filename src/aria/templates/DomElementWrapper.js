@@ -52,7 +52,7 @@ Aria.classDefinition({
          * Get a wrapper on a child element of this node. When the wrapper is not needed anymore, it must be disposed
          * with its $dispose method.
          * @param {Number} childIndex
-         * @return A wrapper on the child element, if the child element exists, or null if it does not exist.
+         * @return {aria.templates.DomElementWrapper} A wrapper on the child element, if the child element exists, or null if it does not exist.
          */
         this.getChild = function (childIndex) {
             var oElm = aria.utils.Dom.getDomElementChild(domElt, childIndex);
@@ -126,7 +126,7 @@ Aria.classDefinition({
          * element in the hierarchy contains the expando, null is returned. An expando called "myExpando" can be
          * declared in the HTML code this way: <div data-myExpando = "myExpandoValue" >
          * @param {String} expandoName name of the expando.
-         * @return {DomElementWrapper}
+         * @return {aria.templates.DomElementWrapper}
          */
         this.getParentWithData = function (dataName) {
             if (!this.expandoNameRegex.test(dataName) || dataName.charAt(0) == '_') {

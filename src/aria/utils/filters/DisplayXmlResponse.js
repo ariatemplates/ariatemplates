@@ -39,7 +39,7 @@ Aria.classDefinition({
         /**
          * Called like any other filter when a response is received. This filter will serialize the XML object received
          * and show it in the logs.
-         * @param {aria.core.CfgBeans.IOAsyncRequestCfg} res
+         * @param {aria.core.CfgBeans:IOAsyncRequestCfg} res
          */
         onResponse : function (req) {
             var res = req.res;

@@ -73,7 +73,7 @@ Aria.classDefinition({
          * Object containing the instance and the options for the JSON serializer used in the requests issued by the
          * module
          * @public
-         * @type aria.modules.requestHandler.environment.RequestHandlerCfgBeans.RequestJsonSerializerCfg
+         * @type aria.modules.requestHandler.environment.RequestHandlerCfgBeans:RequestJsonSerializerCfg
          */
         this.$requestJsonSerializer = null;
 
@@ -156,7 +156,7 @@ Aria.classDefinition({
          * Module initialization method - shall be overridden by sub-classes Note: this method is asynchronous (cf.
          * callback argument)
          * @param {Object} initArgs init argument - actual type is defined by the sub-class
-         * @param {aria.core.JsObject.Callback} callback the callback description
+         * @param {aria.core.CfgBeans:Callback} callback the callback description
          */
         init : function (args, cb) {
             // default implementation
@@ -195,7 +195,7 @@ Aria.classDefinition({
          * <li> a 'service specification' structure, understood by the UrlService implementation</li>
          * </ul>
          * @param {Object} jsonData - the data to post to the server
-         * @param {aria.core.JsObject.Callback} cb the callback
+         * @param {aria.core.CfgBeans:Callback} cb the callback
          */
         submitJsonRequest : function (targetService, jsonData, cb) {
             var typeUtils = aria.utils.Type;
@@ -301,7 +301,7 @@ Aria.classDefinition({
         /**
          * Asynchrously load, create, initialize and reference sub-modules in the module controller and its data model
          * @param {Array} smList Array of module definition (of type aria.templates.CfgBeans.SubModuleDefinition)
-         * @param {aria.core.JsObject.Callback} cb
+         * @param {aria.core.CfgBeans:Callback} cb
          */
         loadSubModules : function (smList, cb) {
             // sub-module creation is now entirely managed in ModuleCtrlFactory
@@ -316,7 +316,7 @@ Aria.classDefinition({
         /**
          * Internal callback method called when all sub-modules requested in loadSubModules have been loaded.
          * @param {Array} res array of the sub-module public interfaces
-         * @param {aria.core.JsObject.Callback} cb callback to be called at the end of this method
+         * @param {aria.core.CfgBeans:Callback} cb callback to be called at the end of this method
          * @private
          */
         __onLoadSubModulesComplete : function (res, cb) {

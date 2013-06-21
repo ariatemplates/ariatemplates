@@ -26,7 +26,7 @@ Aria.classDefinition({
     $extends : "aria.storage.HTML5Storage",
     /**
      * Create an instance of SessionStorage
-     * @param {aria.storage.Beans.ConstructorArgs} options Constructor options
+     * @param {aria.storage.Beans:ConstructorArgs} options Constructor options
      */
     $constructor : function (options) {
         this.$HTML5Storage.constructor.call(this, options, "sessionStorage");

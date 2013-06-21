@@ -282,7 +282,6 @@ Aria.classDefinition({
          * @param {String} validatorEvent
          * @param {String} event
          * @return {Boolean}
-         * @Public
          */
         checkEventToValidate : function (validatorEvent, event) {
             return (!event || validatorEvent === event);

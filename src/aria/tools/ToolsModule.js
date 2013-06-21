@@ -54,7 +54,7 @@ Aria.classDefinition({
          * Module initialization method
          * @param {Object} initArgs init argument expected to contain a single property "bridge" giving a reference to
          * the main window Bridge object.
-         * @param {aria.core.JsObject.Callback} cb callback called when the initialization is finished
+         * @param {aria.core.CfgBeans:Callback} cb callback called when the initialization is finished
          */
         init : function (args, cb) {
 

@@ -25,7 +25,7 @@ Aria.classDefinition({
         /**
          * Regular expression used to validate values.
          * @private
-         * @type {RegExp}
+         * @type RegExp
          */
         this._regexp = regexp;
     },

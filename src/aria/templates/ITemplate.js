@@ -56,7 +56,7 @@ Aria.interfaceDefinition({
         /**
          * Do a partial or whole refresh of the template, using the specified macro and section. This method can be
          * called from templates and template scripts.
-         * @param {aria.templates.CfgBeans.RefreshCfg} args macro and section for the refresh. If not specified, do a
+         * @param {aria.templates.CfgBeans:RefreshCfg} args macro and section for the refresh. If not specified, do a
          * complete refresh.
          */
         $refresh : function (args) {},
@@ -85,7 +85,7 @@ Aria.interfaceDefinition({
 
         /**
          * Returns an array containing the widgetId, and templateIds from child to parent.
-         * @return{Array} Contains the widget and template Ids.
+         * @return {Array} Contains the widget and template Ids.
          */
         $getFocusedWidget : function () {},
 
@@ -189,7 +189,7 @@ Aria.interfaceDefinition({
          * method is generated for {on .../} statements.
          * @private
          * @param {String} eventName name of the event
-         * @param {aria.core.JsObject.Callback} callback callback to be called when the event is raised
+         * @param {aria.core.CfgBeans:Callback} callback callback to be called when the event is raised
          * @param {String} lineNumber
          */
         __$statementOnEvent : function (eventName, callback, lineNumber) {},
@@ -200,7 +200,7 @@ Aria.interfaceDefinition({
          * for {repeater .../} statements.
          * @private
          * @param {Number} lineNumber
-         * @param {aria.templates.CfgBeans.RepeaterCfg} param
+         * @param {aria.templates.CfgBeans:RepeaterCfg} param
          */
         __$statementRepeater : function (lineNumber, param) {},
 
@@ -221,7 +221,7 @@ Aria.interfaceDefinition({
          * for the {section ...} opening statement.
          * @param {Number} lineNumber line number at which the section begins, used for error reporting
          * @param {Boolean} container true if the section statement is used as a container, false otherwise
-         * @param {Object/String} sectionParam section id, or configuration object
+         * @param {Object|String} sectionParam section id, or configuration object
          * @param {String} Dom element wrapper type to be created.
          * @private
          */

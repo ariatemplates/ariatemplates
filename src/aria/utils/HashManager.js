@@ -213,7 +213,7 @@ Aria.classDefinition({
 
         /**
          * Add a callback to hashchange event. The callback will receive the hash object as first parameter
-         * @param {aria.core.JsObject.Callback} cb
+         * @param {aria.core.CfgBeans:Callback} cb
          */
         addCallback : function (cb) {
             if (this._hashChangeCallbacks == null) {
@@ -226,7 +226,7 @@ Aria.classDefinition({
 
         /**
          * Remove a callback to hashchange event
-         * @param {aria.core.JsObject.Callback} cb
+         * @param {aria.core.CfgBeans:Callback} cb
          */
         removeCallback : function (cb) {
             var hcC = this._hashChangeCallbacks;

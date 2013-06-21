@@ -79,8 +79,8 @@ Aria.classDefinition({
          * of the widget has not been set yet, set a listener to the 'ElementReady' event, when the subTplCtxt will have
          * certainly been defined. In the listener, the callback received as argument is called. The callback is passed
          * as argument by the focusFirst and _doFocus methods of aria.utils.NavigationManager
-         * @param {Object} cb {aria.core.JsObject.Callback}
          * @param {Object} id contains an array of ids of the path to a focused widget
+         * @param {aria.core.CfgBeans:Callback} cb
          * @return {Boolean} success/failure of the method
          */
         focus : function (id, cb) {

@@ -16,7 +16,7 @@
 (function () {
     /**
      * Call a normalized callback with the correct arguments.
-     * @param {aria.core.CfgBeans.Callback} callback Function to be called
+     * @param {aria.core.CfgBeans:Callback} callback Function to be called
      * @param {Object} arg first argument of the callback
      * @private
      */
@@ -27,7 +27,7 @@
     /**
      * Callback for the type event timer.
      * @private
-     * @param {Array} callbackArray Array whose entries are of type aria.core.CfgBeans.Callback. They are the handlers
+     * @param {Array} callbackArray Array whose entries are of type aria.core.CfgBeans:Callback. They are the handlers
      * for the type event.
      */
     function typeCallback (callbackArray) {
@@ -158,7 +158,15 @@
             var domevent = aria.DomEvent;
             specialKeys = [domevent.KC_END, domevent.KC_RIGHT, domevent.KC_ARROW_RIGHT, domevent.KC_DOWN,
                     domevent.KC_ARROW_DOWN, domevent.KC_DELETE, domevent.KC_BACKSPACE];
+
         },
+        /**
+         * Create an instance of the widget.
+         * @param {aria.html.beans.TextInputCfg:Properties} cfg widget configuration, which is the parameter given in the
+         * template
+         * @param {aria.templates.TemplateCtxt} context template context
+         * @param {Number} lineNumber line number in the template
+         */
         $constructor : function (cfg, context, line) {
             this.$cfgBean = this.$cfgBean || "aria.html.beans.TextInputCfg.Properties";
 
@@ -347,7 +355,7 @@
 
             /**
              * Add special listeners on top of the ones specified in configuration.
-             * @param {aria.html.beans.TextInputCfg.Properties} cfg Widget configuration.
+             * @param {aria.html.beans.TextInputCfg:Properties} cfg Widget configuration.
              * @protected
              */
             _registerListeners : function (cfg) {

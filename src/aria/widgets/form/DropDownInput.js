@@ -22,7 +22,7 @@ Aria.classDefinition({
     $dependencies : ["aria.widgets.form.DropDownTrait"],
     /**
      * DropDownInput constructor
-     * @param {aria.widgets.CfgBeans.DropDownInputCfg} cfg the widget configuration
+     * @param {aria.widgets.CfgBeans:DropDownInputCfg} cfg the widget configuration
      * @param {aria.templates.TemplateCtxt} ctxt template context
      */
     $constructor : function () {

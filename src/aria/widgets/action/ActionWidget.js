@@ -25,9 +25,11 @@ Aria.classDefinition({
             "aria.widgets.WidgetTrait"],
     /**
      * ActionWidget constructor
-     * @param {aria.widgets.CfgBeans.ActionWidgetCfg} cfg the widget configuration
+     * @param {aria.widgets.CfgBeans:ActionWidgetCfg} cfg the widget configuration
+     * @param {aria.templates.TemplateCtxt} ctxt template context
+     * @param {Number} lineNumber line number in current template
      */
-    $constructor : function () {
+    $constructor : function (cfg, context, lineNumber) {
         this.$Widget.constructor.apply(this, arguments);
 
         /**
@@ -88,7 +90,7 @@ Aria.classDefinition({
 
         /**
          * The method called when the markup is clicked
-         * @param {aria.DomEvent} evt
+         * @param {aria.DomEvent} domEvent
          * @method
          * @private
          */

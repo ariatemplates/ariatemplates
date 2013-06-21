@@ -49,7 +49,7 @@ Aria.classDefinition({
     $prototype : {
         /**
          * This method executes the callback once the DOM is in ready state.
-         * @param {aria.utils.Callback} a callback function
+         * @param {aria.core.CfgBeans:Callback} a callback function
          */
         onReady : function (callback) {
             if (this.isReady) {

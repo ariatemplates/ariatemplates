@@ -37,6 +37,13 @@
         $extends : "aria.widgetLibs.BindableWidget",
         $dependencies : ["aria.html.beans.ElementCfg", "aria.core.JsonValidator", "aria.utils.Html", "aria.utils.Json",
                 "aria.utils.Delegate", "aria.templates.DomEventWrapper", "aria.utils.Dom", "aria.utils.Type"],
+        /**
+         * Create an instance of the widget.
+         * @param {aria.html.beans.ElementCfg:Properties} cfg widget configuration, which is the parameter given in the
+         * template
+         * @param {aria.templates.TemplateCtxt} context template context
+         * @param {Number} lineNumber line number in the template
+         */
         $constructor : function (cfg, ctxt, lineNumber) {
             /**
              * Classpath of the configuration bean for this widget. Widgets extending this class can optionally provide
@@ -228,9 +235,9 @@
             /**
              * Add a listener for an event. It will be called before an already registered event, if any.
              * @protected
-             * @param {aria.html.beans.ElementCfg.Properties.$properties.on} listeners Map of listeners
+             * @param {aria.html.beans.ElementCfg:Properties.on} listeners Map of listeners
              * @param {String} eventType Type of the event
-             * @param {aria.core.CfgBeans.Callback} callback listener to chain
+             * @param {aria.core.CfgBeans:Callback} callback listener to chain
              * @param {Boolean} after True if the listener has to be executed after all the other listeners. Otherwise,
              * it will be executed before
              */

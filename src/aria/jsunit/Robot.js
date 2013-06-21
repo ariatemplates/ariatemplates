@@ -66,7 +66,7 @@ Aria.classDefinition({
 
         /**
          * Initializes the robot.
-         * @param {aria.core.CfgBeans.Callback} callback callback to be called when the robot is ready to be used.
+         * @param {aria.core.CfgBeans:Callback} callback callback to be called when the robot is ready to be used.
          */
         initRobot : function (cb) {
             if (this.robot) {

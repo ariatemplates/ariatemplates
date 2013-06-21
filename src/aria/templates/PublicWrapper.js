@@ -18,13 +18,13 @@ Aria.classDefinition({
     $prototype : {
         /**
          * Classpath of the interface to be used as the public interface of this public wrapper.
-         * @type {String}
+         * @type String
          */
         $publicInterfaceName : null,
 
         /**
-         * Returns the public interface wrapper associated to an object.
-         * @return the public interface object
+         * Return the public interface wrapper associated to an object.
+         * @return {Object} the public interface object
          */
         $publicInterface : function () {
             return this.$interface(this.$publicInterfaceName);

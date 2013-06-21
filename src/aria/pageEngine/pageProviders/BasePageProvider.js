@@ -22,13 +22,13 @@ Aria.classDefinition({
     $dependencies : ["aria.core.DownloadMgr"],
 
     /**
-     * @param {aria.pageEngine.pageProviders.BasePageProviderBeans.Config} config
+     * @param {aria.pageEngine.pageProviders.BasePageProviderBeans:Config} config
      */
     $constructor : function (config) {
 
         /**
          * Configuration for the base provider
-         * @type aria.pageEngine.pageProviders.BasePageProviderBeans.Config
+         * @type aria.pageEngine.pageProviders.BasePageProviderBeans:Config
          * @private
          */
         this._config = config;
@@ -65,7 +65,7 @@ Aria.classDefinition({
     $prototype : {
 
         /**
-         * @param {aria.pageEngine.CfgBeans.ExtendedCallback} callback
+         * @param {aria.pageEngine.CfgBeans:ExtendedCallback} callback
          */
         loadSiteConfig : function (callback) {
             this._sendRequest(aria.core.DownloadMgr.resolveURL(this._config.siteConfigLocation), {
@@ -74,8 +74,8 @@ Aria.classDefinition({
         },
 
         /**
-         * @param {aria.pageEngine.CfgBeans.PageRequest} pageRequest
-         * @param {aria.pageEngine.CfgBeans.ExtendedCallback} callback
+         * @param {aria.pageEngine.CfgBeans:PageRequest} pageRequest
+         * @param {aria.pageEngine.CfgBeans:ExtendedCallback} callback
          */
         loadPageDefinition : function (pageRequest, callback) {
             pageRequest = pageRequest || {};
@@ -98,7 +98,7 @@ Aria.classDefinition({
         /**
          * Process the site configuration before sending it back to the page engine
          * @param {Object} siteConf Site configuration retrieved from .json file
-         * @return {aria.pageEngine.CfgBeans.Site}
+         * @return {aria.pageEngine.CfgBeans:Site}
          */
         processSiteConfig : function (siteConf) {
             return siteConf;
@@ -107,7 +107,7 @@ Aria.classDefinition({
         /**
          * Process the page definition before sending it back to the page engine
          * @param {Object} pageDef Page definition retrieved from .json file
-         * @return {aria.pageEngine.CfgBeans.PageDefinition}
+         * @return {aria.pageEngine.CfgBeans:PageDefinition}
          */
         processPageDefinition : function (pageDef) {
             return pageDef;
@@ -120,8 +120,8 @@ Aria.classDefinition({
          *
          * <pre>
          * {
-         *     callback : object of type aria.pageEngine.CfgBeans.ExtendedCallback,
-         *     pageRequest : object of type aria.pageEngine.CfgBeans.PageRequest
+         *     callback : object of type aria.pageEngine.CfgBeans:ExtendedCallback,
+         *     pageRequest : object of type aria.pageEngine.CfgBeans:PageRequest
          * }
          * </pre>
          *
@@ -148,8 +148,8 @@ Aria.classDefinition({
          *
          * <pre>
          * {
-         *     callback : object of type aria.pageEngine.CfgBeans.ExtendedCallback,
-         *     pageRequest : object of type aria.pageEngine.CfgBeans.PageRequest
+         *     callback : object of type aria.pageEngine.CfgBeans:ExtendedCallback,
+         *     pageRequest : object of type aria.pageEngine.CfgBeans:PageRequest
          * }
          * </pre>
          *
@@ -212,7 +212,7 @@ Aria.classDefinition({
 
         /**
          * Update the pageId <-> url associations
-         * @param {aria.pageEngine.CfgBeans.PageRequest} pageRequest
+         * @param {aria.pageEngine.CfgBeans:PageRequest} pageRequest
          * @private
          */
         _updateUrlMap : function (pageRequest) {
@@ -227,8 +227,8 @@ Aria.classDefinition({
 
         /**
          * Get a page definition from the cache by updating also its url
-         * @param {aria.pageEngine.CfgBeans.PageRequest} pageRequest
-         * @return {aria.pageEngine.CfgBeans.PageDefinition}
+         * @param {aria.pageEngine.CfgBeans:PageRequest} pageRequest
+         * @return {aria.pageEngine.CfgBeans:PageDefinition}
          * @private
          */
         _retrieveFromCache : function (pageRequest) {
@@ -244,7 +244,7 @@ Aria.classDefinition({
         /**
          * Retrieve the pageId based on the pageRequest information, as well as the url map. As a default, the
          * homePageId is returned
-         * @param {aria.pageEngine.CfgBeans.PageRequest} pageRequest
+         * @param {aria.pageEngine.CfgBeans:PageRequest} pageRequest
          * @return {String} the pageId
          */
         _getPageId : function (pageRequest) {
@@ -264,7 +264,7 @@ Aria.classDefinition({
         /**
          * Retrieve the url based on the pageRequest information, as well as the url map. As a default, the "/[pageId]"
          * is returned
-         * @param {aria.pageEngine.CfgBeans.PageRequest} pageRequest
+         * @param {aria.pageEngine.CfgBeans:PageRequest} pageRequest
          * @return {String} the pageId
          * @private
          */
@@ -281,8 +281,8 @@ Aria.classDefinition({
 
         /**
          * Update the cache
-         * @param {aria.pageEngine.CfgBeans.PageDefinition} pageDef
-         * @param {aria.pageEngine.CfgBeans.PageRequest} pageRequest
+         * @param {aria.pageEngine.CfgBeans:PageDefinition} pageDef
+         * @param {aria.pageEngine.CfgBeans:PageRequest} pageRequest
          * @private
          */
         _updateCache : function (pageDef, pageRequest) {

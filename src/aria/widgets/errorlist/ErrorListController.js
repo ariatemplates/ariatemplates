@@ -31,9 +31,9 @@ Aria.classDefinition({
 
         /**
          * Module initialization method
-         * @param {aria.widgets.errorlist.CfgBeans.Model} initArgs init argument. Note that only the following
+         * @param {aria.widgets.errorlist.CfgBeans:Model} initArgs init argument. Note that only the following
          * properties are taken into account: messages, title, divCfg, filterTypes and displayCodes.
-         * @param {aria.core.JsObject.Callback} callback the callback description
+         * @param {aria.core.CfgBeans:Callback} callback the callback description
          */
         init : function (args, cb) {
             this._data = {
@@ -48,7 +48,7 @@ Aria.classDefinition({
 
         /**
          * Method to be called when changing the messages data structure.
-         * @param {aria.utils.validators.CfgBeans.MessagesList} messages list of messages
+         * @param {aria.utils.validators.CfgBeans:MessagesList} messages list of messages
          * @param {HTMLElement} element to which is to be made visible
          */
         setMessages : function (messages, element) {
@@ -68,7 +68,7 @@ Aria.classDefinition({
 
         /**
          * Set the focus on the field which corresponds to the specified message.
-         * @param {aria.utils.validators.CfgBeans.Message} message message linked to the field to focus
+         * @param {aria.utils.validators.CfgBeans:Message} message message linked to the field to focus
          */
         focusField : function (message) {
             if (!message.metaDataRef) {
@@ -85,10 +85,10 @@ Aria.classDefinition({
         /**
          * Recursive helper method to filter the messages according to the message types given as a parameter and
          * compute the resulting number of messages of each type.
-         * @param {aria.utils.validators.CfgBeans.MessagesList} messagesList original list of messages to filter
-         * @param {aria.widgets.errorlist.CfgBeans.Model.messageTypes} map object which will be filled to contain the
+         * @param {aria.utils.validators.CfgBeans:MessagesList} messagesList original list of messages to filter
+         * @param {aria.widgets.errorlist.CfgBeans:Model.messageTypes} map object which will be filled to contain the
          * resulting number of messages for each type
-         * @return {aria.widgets.errorlist.CfgBeans.Model.filterTypes} filterTypes types of the messages to filter
+         * @return {aria.widgets.errorlist.CfgBeans:Model.filterTypes} filterTypes types of the messages to filter
          * @protected
          */
         _processMessages : function (messagesList, map, filterTypes) {

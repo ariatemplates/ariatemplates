@@ -25,6 +25,7 @@ Aria.classDefinition({
      * TextField constructor
      * @param {aria.widgets.CfgBeans.TextFieldCfg} cfg the widget configuration
      * @param {aria.templates.TemplateCtxt} ctxt template context
+     * @param {Number} lineNumber Line number corresponding in the .tpl file where the widget is created
      */
     $constructor : function (cfg, ctxt, lineNumber) {
         var controller = new aria.widgets.controllers.TextDataController();
@@ -37,13 +38,13 @@ Aria.classDefinition({
     },
     $prototype : {
         /**
-         * Compare newValue with the one stored in _cfg[propertyName]
-         * For a Textfield, undefined, null and an empty string are considered as equal.
+         * Compare newValue with the one stored in _cfg[propertyName] For a Textfield, undefined, null and an empty
+         * string are considered as equal.
          * @param {String} propertyName
-         * @param {Multitype} newValue If transformation is used, this should be the widget value and not the data model
+         * @param {MultiTypes} newValue If transformation is used, this should be the widget value and not the data model
          * value
-         * @private
-         * @return true if it is considered as equals.
+         * @protected
+         * @return {Boolean} true if it is considered as equals.
          */
         _isPropertyEquals : function (propertyName, newValue) {
             var oldValue = this.getProperty(propertyName) || "";

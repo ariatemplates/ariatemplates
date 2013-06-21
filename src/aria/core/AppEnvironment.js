@@ -48,7 +48,7 @@ Aria.classDefinition({
          * Stores the application variables. Please refer to documentation for parameter types.
          * @public
          * @param {Object} cfg Configuration object
-         * @param {aria.core.JsObject.Callback} cb Method to be called after the setting is done
+         * @param {aria.core.CfgBeans:Callback} cb Method to be called after the setting is done
          * @param {Boolean} update flag to update existing application settings, when false will overwrite existing with
          * new settings.
          */

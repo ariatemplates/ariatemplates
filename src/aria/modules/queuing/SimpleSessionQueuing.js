@@ -58,7 +58,7 @@ Aria.classDefinition({
          * Execute the request if possible, otherwise push it in the queue
          * @param {Object} requestObject
          * @param {Object} jsonData
-         * @param {aria.core.JsObject.Callback} callback for this request
+         * @param {aria.core.CfgBeans:Callback} callback for this request
          */
         pushRequest : function (requestObject, jsonData, cb) {
             var queue, sessionId = requestObject.session.id;
@@ -130,7 +130,7 @@ Aria.classDefinition({
          * @protected
          * @param {Object} requestObject
          * @param {Object} jsonData
-         * @param {aria.core.JsObject.Callback} callback for this request
+         * @param {aria.core.CfgBeans:Callback} callback for this request
          * @return {Integer} request id
          */
         _sendRequest : function (requestObject, jsonData, cb) {
