@@ -564,8 +564,6 @@
      * Stress test the CSS added to the CSS Manager. This class executes and measures a given action removing all CSS in
      * the page one by one. It'll report the slowest running selectors. Default test action is a refresh of all root
      * templates. This action can be modified from the arguments of 'stressTest' method
-     * @class aria.ext.StressCss
-     * @singleton
      * @since 1.1-13
      */
     Aria.classDefinition({

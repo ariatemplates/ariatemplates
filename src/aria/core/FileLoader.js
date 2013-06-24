@@ -13,12 +13,8 @@
  * limitations under the License.
  */
 
-/**
- * @class aria.core.FileLoader File loader
- * @extends aria.core.JsObject
- */
 Aria.classDefinition({
-    $classpath : 'aria.core.FileLoader',
+    $classpath : "aria.core.FileLoader",
 
     $events : {
         /**

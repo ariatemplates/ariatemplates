@@ -16,13 +16,12 @@
 /**
  * Layer on top of aria.jsunit.Robot to allow higher-level input (involving DOM elements). (This class is still
  * experimental currently, and is marked private for that reason)
- * @class aria.jsunit.SynEvents
  * @private
  */
 Aria.classDefinition({
-    $classpath : 'aria.jsunit.SynEvents',
+    $classpath : "aria.jsunit.SynEvents",
     $singleton : true,
-    $dependencies : ['aria.jsunit.Robot'],
+    $dependencies : ["aria.jsunit.Robot"],
     $constructor : function () {
         this._robot = aria.jsunit.Robot;
     },

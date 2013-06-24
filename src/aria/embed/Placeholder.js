@@ -15,8 +15,6 @@
 
 /**
  * Placeholder widget
- * @class aria.embed.Placeholder
- * @extends aria.widgetLibs.BaseWidget
  */
 Aria.classDefinition({
     $classpath : "aria.embed.Placeholder",

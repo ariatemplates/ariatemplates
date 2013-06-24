@@ -173,7 +173,7 @@ Aria.classDefinition({
         /*
          * This set of tests verify the behavior of $callback with an array of arguments
          */
-        testDefaultArgs : function () {
+        testDefaultArgsArray : function () {
             var args = ["one", "two"];
 
             this.workingObject.$callback({

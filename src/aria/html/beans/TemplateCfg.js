@@ -14,7 +14,7 @@
  */
 
 /**
- * @class aria.html.beans.TemplateCfg Configuration Beans associated to the HTML include simple widget
+ * Configuration Beans associated to the HTML include simple widget
  */
 Aria.beanDefinitions({
     $package : "aria.html.beans.TemplateCfg",

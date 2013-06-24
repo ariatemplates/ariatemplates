@@ -3,8 +3,10 @@
     "camelcase" : false,
     "curly" : false,
     "eqeqeq" : false,
+    "es3" : false,
     "forin" : false,
     "immed" : false,
+    "indent" : false,
     "latedef" : false,
     "newcap" : false,
     "noarg" : false,
@@ -17,8 +19,8 @@
     "unused" : false,
     "strict" : false,
     "trailing" : true,
-    "maxparams" : 0,
-    "maxdepth" : 0,
+    "maxparams" : 6,
+    "maxdepth" : 6,
     "maxstatements" : 0,
     "maxcomplexity" : 0,
     "maxlen" : 0,
@@ -61,13 +63,21 @@
     "rhino" : false,
     "worker" : false,
     "wsh" : false,
+    "yui" : false,
 
     "nomen" : false,
     "onevar" : false,
     "passfail" : false,
     "white" : false,
 
-    "predef" : ["aria", "Aria", "setTimeout", "setInterval", "clearTimeout", "clearInterval"],
+    "globals" : {
+        "aria" : false,
+        "Aria" : false,
+        "setTimeout" : false,
+        "setInterval" : false,
+        "clearTimeout" : false,
+        "clearInterval" : false
+    },
     "maxerr" : 150,
 
     "-W018" : true

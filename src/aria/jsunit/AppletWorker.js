@@ -28,14 +28,13 @@
     };
 
     /**
-     * @class AppletWorker The AppletWorker class is the API that allows to use the applet as a communication bridge
+     * The AppletWorker class is the API that allows to use the applet as a communication bridge
      * between the javascript and external applications For the bridge to work you need to add an applet tag to your
      * HTML page in the following way:
-     * @constructor
      * @param {String} appletName The name of the applet that was added the page
      */
     Aria.classDefinition({
-        $classpath : 'aria.jsunit.AppletWorker',
+        $classpath : "aria.jsunit.AppletWorker",
         $singleton : true,
         $constructor : function () {
             this._applet = null;

@@ -203,7 +203,6 @@ Aria.classDefinition({
             var o = this.oo;
             o.$on({
                 '*' : this.onEvent,
-                'start' : this.onStart,
                 'start' : {
                     fn : this.onStart,
                     scope : o

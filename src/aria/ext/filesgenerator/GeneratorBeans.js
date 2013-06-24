@@ -13,9 +13,6 @@
  * limitations under the License.
  */
 
-/**
- * @class aria.ext.filesgenerator.GeneratorBeans
- */
 Aria.beanDefinitions({
     $package : "aria.ext.filesgenerator.GeneratorBeans",
     $description : "Definition of the JSON beans used as input of the file skeleton generator",

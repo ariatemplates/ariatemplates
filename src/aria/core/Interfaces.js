@@ -211,12 +211,11 @@
 
     /**
      * Singleton in charge of interface-related operations. It contains internal methods of the framework which should
-     * not be called directly by the application developper.
-     * @class aria.core.Interfaces
+     * not be called directly by the application developer.
      * @private
      */
     Aria.classDefinition({
-        $classpath : 'aria.core.Interfaces',
+        $classpath : "aria.core.Interfaces",
         $singleton : true,
         $statics : {
             // ERROR MESSAGES:

@@ -14,8 +14,7 @@
  */
 
 /**
- * @class aria.core.JsClassLoader ClassLoader for js files.
- * @extends aria.core.ClassLoader
+ * ClassLoader for js files.
  */
 Aria.classDefinition({
     $classpath : 'aria.core.JsClassLoader',

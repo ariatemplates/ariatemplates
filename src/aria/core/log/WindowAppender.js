@@ -14,10 +14,10 @@
  */
 
 /**
- * @class aria.core.log.WindowAppender This appender output logs to an external browser window in simple HTML format.
+ * This appender output logs to an external browser window in simple HTML format.
  */
 Aria.classDefinition({
-    $classpath : 'aria.core.log.WindowAppender',
+    $classpath : "aria.core.log.WindowAppender",
     $constructor : function () {
         /**
          * The popup window object into which the logs are going

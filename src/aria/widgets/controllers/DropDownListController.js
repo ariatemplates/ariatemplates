@@ -15,8 +15,6 @@
 
 /**
  * Controller for the a widget with a dropdown that contains a list.
- * @class aria.widgets.controllers.DropDownListController
- * @extends aria.widgets.controllers.TextDataController
  */
 Aria.classDefinition({
     $classpath : "aria.widgets.controllers.DropDownListController",
@@ -218,7 +216,7 @@ Aria.classDefinition({
         },
 
         /**
-         * Check for the case when the displayedValue will change This has to be overriden to handle list update on key
+         * Check for the case when the displayedValue will change This has to be overridden to handle list update on key
          * stroke
          * @param {Integer} charCode
          * @param {Integer} keyCode

@@ -15,10 +15,9 @@
 
 /**
  * Default interface for a content provider
- * @class aria.embed.IContentProvider
  */
 Aria.interfaceDefinition({
-    $classpath : 'aria.embed.IContentProvider',
+    $classpath : "aria.embed.IContentProvider",
     $events : {
         "contentChange" : {
             description : "Raised when the content associated to one or more placeholder paths changes.",

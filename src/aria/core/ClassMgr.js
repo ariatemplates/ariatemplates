@@ -14,12 +14,10 @@
  */
 
 /**
- * @class aria.core.ClassMgr Manage the class dependency load thanks to ClassLoaders. Classes can be of different types
+ * Manage the class dependency load thanks to ClassLoaders. Classes can be of different types
  * (currently six: "JS", "TPL", "RES", "CSS", "TML" and "TXT"). Before loading a class, it is necessary to know its type
  * (there is no naming convention). This class uses the Cache object to store class definitions (through the
  * DownloadMgr) and indicators telling that a class is being downloaded.
- * @extends aria.core.JsObject
- * @singleton
  */
 Aria.classDefinition({
     $classpath : "aria.core.ClassMgr",

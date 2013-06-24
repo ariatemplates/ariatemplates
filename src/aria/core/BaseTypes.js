@@ -15,7 +15,6 @@
 
 /**
  * Definition of all base beans used in all JSON schemas
- * @class aria.core.BaseTypes
  */
 Aria.beanDefinitions({
     $package : "aria.core.BaseTypes",

@@ -15,7 +15,6 @@
 
 /**
  * Base class containing shared methods for all environment classes.
- * @class aria.core.environment.EnvironmentBase
  */
 Aria.classDefinition({
     $classpath : "aria.core.environment.EnvironmentBase",

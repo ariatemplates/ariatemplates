@@ -1,3 +1,4 @@
+/* global Aria:true, aria:true */
 var vm = require("vm"), fs = require("fs"), path = require("path");
 
 /* aria and Aria are going to be global */
