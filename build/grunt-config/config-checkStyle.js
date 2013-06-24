@@ -37,32 +37,38 @@ module.exports = function (grunt) {
                 src : ['test/**/*.js', '!test/node/**/*.js',
                         // Using some window globals
                         '!test/iframeLoaderOs.js',
-                        // Bad escaping
-                        '!test/aria/utils/validators/String.js',
-                        '!test/aria/utils/String.js',
                         // Syntax errors, used for testing
                         '!test/aria/templates/test/error/*.js',
                         // Syntax errors, used for testing
                         '!test/aria/templates/reloadResources/ExternalResourceErr.js']
             },
             options : {
-                "predef" : ["aria", "Aria", "setTimeout", "setInterval", "clearTimeout", "clearInterval", "test", "Syn"],
-                // Object literal notation
-                "-W010" : true,
-                // Array literal notation
-                "-W009" : true,
-                // It's not necessary to initialize to 'undefined'
-                "-W080" : true,
-                // Duplicate key
-                "-W075" : true,
-                // Do not use String as a contructor
-                "-W053" : true
+                "globals" : {
+                    "aria": false,
+                    "Aria": false,
+                    "setTimeout": false,
+                    "setInterval": false,
+                    "clearTimeout": false,
+                    "clearInterval": false,
+                    "test": false,
+                    "Syn": false
+                }
             }
         },
         node : {
-            files : 'test/node/**/*.js',
+            src : ['test/node/**/*.js'],
             options : {
-                "predef" : ["aria", "Aria", "require", "describe", "it", "before", "beforeEach", "after", "afterEach"]
+                "node" : true,
+                "globals" : {
+                    "aria" : false,
+                    "Aria" : false,
+                    "describe" : false,
+                    "it" : false,
+                    "before" : false,
+                    "beforeEach" : false,
+                    "after" : false,
+                    "afterEach" : false
+                }
             }
         }
     });

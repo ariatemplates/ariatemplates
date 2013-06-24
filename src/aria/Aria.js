@@ -1,3 +1,4 @@
+/* global Aria:true */
 /*
  * Copyright 2012 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,8 +16,6 @@
 
 /**
  * Global Aria object defining the base methods to manage objects, logs and file dependencies.
- * @class Aria
- * @singleton
  */
 (function () {
 

@@ -14,7 +14,7 @@
  */
 
 /**
- * @class aria.core.log.AjaxAppender This type of appender gathers all the logs sent to it and sends them in a JSON POST
+ * This type of appender gathers all the logs sent to it and sends them in a JSON POST
  * message to the configured server URL. This is experimental for now. Never tested.
  * @param {String} url The URL to send the logs to (the server logic running at this url should be prepared to handle
  * JSON POST messages in the following form: {logs: [{time: <ms timestamp>, level: <debug|info|warn|error>, msg: <the
@@ -25,7 +25,7 @@
  * logs (logs are sent as a batch)
  */
 Aria.classDefinition({
-    $classpath : 'aria.core.log.AjaxAppender',
+    $classpath : "aria.core.log.AjaxAppender",
     $dependencies : ["aria.core.IO", "aria.utils.Json"],
     $constructor : function (url, minInterval, minLogNb) {
         this._logStack = [];

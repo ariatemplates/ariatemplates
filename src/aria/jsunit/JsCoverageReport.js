@@ -16,13 +16,10 @@
 (function () {
     /**
      * Generate an HTML report from the data contained in an instance of aria.jsunit.JsCoverage
-     * @class aria.jsunit.JsCoverageReport
-     * @extends aria.jsunit.Report
      */
     var classDefinition = {
-        $classpath : 'aria.jsunit.JsCoverageReport',
+        $classpath : "aria.jsunit.JsCoverageReport",
         $singleton : false,
-        $dependencies : [],
         $constructor : function (conf) {
             this.jsCoverage = conf.jsCoverage || {};
             /**

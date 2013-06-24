@@ -14,7 +14,6 @@
  */
 
 /**
- * @class aria.core.JsonTypes
  * Definition of all base types used in JSON schemas
  */
 Aria.beanDefinitions({
@@ -52,7 +51,7 @@ Aria.beanDefinitions({
         },
         "RegExp" : {
             $type : "RegExp",
-            $description : "Correspond to a JavaScript regular expresssion",
+            $description : "Correspond to a JavaScript regular expression",
             $sample : /^\w([\w\.]*\w)?$/
         },
         "ObjectRef" : {

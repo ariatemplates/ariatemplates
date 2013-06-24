@@ -141,39 +141,40 @@ Aria.classDefinition({
          * Dispose the framework in the iframe if possible and remove then the iframe.
          */
         _removeFrame : function () {
-            if (this._frame) {
-                // Here, we are using Aria["eval"] in the sub window because otherwise, any exception raised by the test
-                // $dispose method or Aria.dispose cannot be caught on IE7
-                if (this._subWindow.Aria && this._subWindow.Aria["eval"]) {
-                    var disposeResult = this._subWindow.Aria["eval"]("(function () { try { if (this._testInstance) {this._testInstance.$dispose();} return Aria.dispose(); } catch (e) { return { error: e }; }}).call(arguments[2])", null, this);
-                    this._testInstance = null;
-                    if (disposeResult) {
-                        if (disposeResult.error) {
-                            this.raiseError(disposeResult.error, "An exception occurred while disposing the test or the framework.");
-                        } else if (disposeResult.nbNotDisposed !== 0) {
-                            var undisposed = disposeResult.notDisposed;
-                            var msg = ["There were ", disposeResult.nbNotDisposed, " undisposed objects ("];
-                            var first = true;
-                            for (var i in undisposed) {
-                                if (undisposed.hasOwnProperty(i)) {
-                                    if (first) {
-                                        first = false;
-                                    } else {
-                                        msg.push(", ");
-                                    }
-                                    msg.push(undisposed[i].$classpath);
+            if (!this._frame) {
+                return;
+            }
+            // Here, we are using Aria["eval"] in the sub window because otherwise, any exception raised by the test
+            // $dispose method or Aria.dispose cannot be caught on IE7
+            if (this._subWindow.Aria && this._subWindow.Aria["eval"]) {
+                var disposeResult = this._subWindow.Aria["eval"]("(function () { try { if (this._testInstance) {this._testInstance.$dispose();} return Aria.dispose(); } catch (e) { return { error: e }; }}).call(arguments[2])", null, this);
+                this._testInstance = null;
+                if (disposeResult) {
+                    if (disposeResult.error) {
+                        this.raiseError(disposeResult.error, "An exception occurred while disposing the test or the framework.");
+                    } else if (disposeResult.nbNotDisposed !== 0) {
+                        var undisposed = disposeResult.notDisposed;
+                        var msg = ["There were ", disposeResult.nbNotDisposed, " undisposed objects ("];
+                        var first = true;
+                        for (var i in undisposed) {
+                            if (undisposed.hasOwnProperty(i)) {
+                                if (first) {
+                                    first = false;
+                                } else {
+                                    msg.push(", ");
                                 }
+                                msg.push(undisposed[i].$classpath);
                             }
-                            msg.push(")");
-                            this.raiseFailure(msg.join(''));
                         }
+                        msg.push(")");
+                        this.raiseFailure(msg.join(''));
                     }
                 }
-                var body = Aria.$window.document.body;
-                body.removeChild(this._frame);
-                this._subWindow = null;
-                this._frame = null;
             }
+            var body = Aria.$window.document.body;
+            body.removeChild(this._frame);
+            this._subWindow = null;
+            this._frame = null;
         },
 
         /**

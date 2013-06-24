@@ -15,7 +15,6 @@
 
 /**
  * Template script for the default ErrorListTemplate
- * @class aria.widgets.errorlist.ErrorListTemplateScript
  */
 Aria.tplScriptDefinition({
     $classpath : "aria.widgets.errorlist.ErrorListTemplateScript",

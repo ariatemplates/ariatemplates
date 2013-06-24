@@ -14,7 +14,7 @@
  */
 
 /**
- * @class aria.embed.CfgBeans Configuration Beans associated to the Aria Templates Widgets
+ * Configuration Beans associated to the Aria Templates Widgets
  */
 Aria.beanDefinitions({
     $package : "aria.embed.CfgBeans",

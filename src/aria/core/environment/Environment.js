@@ -15,9 +15,6 @@
 
 /**
  * Public API for retrieving, applying application variables.
- * @class aria.core.environment.Environment
- * @extends aria.core.environment.EnvironmentBase
- * @singleton
  */
 Aria.classDefinition({
     $classpath : "aria.core.environment.Environment",

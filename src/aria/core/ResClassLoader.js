@@ -14,12 +14,11 @@
  */
 
 /**
- * @class aria.core.ResClassLoader ClassLoader for resource files.
- * @extends aria.core.ClassLoader
+ * ClassLoader for resource files.
  */
 Aria.classDefinition({
-    $classpath : 'aria.core.ResClassLoader',
-    $extends : 'aria.core.ClassLoader',
+    $classpath : "aria.core.ResClassLoader",
+    $extends : "aria.core.ClassLoader",
     $constructor : function (classpath, classtype) {
         this.$ClassLoader.constructor.apply(this, arguments);
         this.serverResource = false;

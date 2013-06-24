@@ -1,3 +1,4 @@
+/* jshint maxdepth:9 */
 /*
  * Copyright 2012 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,10 +18,10 @@
  * A class that provides an interface to the AriaSkin object that comes from the skinning system.
  */
 Aria.classDefinition({
-    $classpath : 'aria.widgets.AriaSkinInterface',
+    $classpath : "aria.widgets.AriaSkinInterface",
     $singleton : true,
-    $dependencies : ['aria.core.JsonValidator', 'aria.widgets.AriaSkinBeans', 'aria.widgets.AriaSkinNormalization',
-            'aria.core.DownloadMgr'],
+    $dependencies : ["aria.core.JsonValidator", "aria.widgets.AriaSkinBeans", "aria.widgets.AriaSkinNormalization",
+            "aria.core.DownloadMgr"],
     $statics : {
         // ERROR MESSAGES:
         WIDGET_SKIN_CLASS_OBJECT_NOT_FOUND : "There is no skin configuration for skin class %1 of widget %2. Skin class std will be used instead. The widget will probably not be displayed correctly."
