@@ -28,6 +28,7 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.container.dialog.DialogTestSuite");
         this.addTests("test.aria.widgets.container.issue80.BindableSizeTestSuite");
         this.addTests("test.aria.widgets.container.issue367.MovableDialogTestCase");
+        this.addTests("test.aria.widgets.container.checkContent.DivTest");
     }
 });
 
