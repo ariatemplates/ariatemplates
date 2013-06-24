@@ -16,12 +16,12 @@
 (function () {
     var console = Aria.$global.console;
     /**
-     * @class aria.core.log.DefaultAppender Default appender used by the logger to output log lines. The default
+     * Default appender used by the logger to output log lines. The default
      * appender is using Firebug/Firebug lite to log (or in fact, any console that defines the window.console object).
      * Other appenders can be written by extending this default class in order to output elsewhere.
      */
     Aria.classDefinition({
-        $classpath : 'aria.core.log.DefaultAppender',
+        $classpath : "aria.core.log.DefaultAppender",
         $prototype : console ? {
             /**
              * Output the first part of the string corresponding to the classname in the log

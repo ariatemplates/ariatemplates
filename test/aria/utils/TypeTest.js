@@ -1,3 +1,4 @@
+/* jshint -W009 : true, -W010 : true, -W053 : true */
 /*
  * Copyright 2012 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");

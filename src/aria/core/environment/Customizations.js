@@ -15,9 +15,6 @@
 
 /**
  * Contains getters for the Number environment.
- * @class aria.core.environment.Customizations
- * @extends aria.core.environment.EnvironmentBase
- * @singleton
  */
 Aria.classDefinition({
     $classpath : "aria.core.environment.Customizations",

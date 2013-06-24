@@ -18,14 +18,11 @@
  * associated to the same physical URL, makes sure listeneres are associated to the same loader Manage logical path /
  * physical URL mapping (the same physical URL can be used for multiple logical paths in case of multipart (packaged)
  * files) thanks to the Url Map.
- * @class aria.core.DownloadMgr
- * @extends aria.core.JsObject
- * @singleton
  */
 Aria.classDefinition({
-    $classpath : 'aria.core.DownloadMgr',
+    $classpath : "aria.core.DownloadMgr",
     $singleton : true,
-    $dependencies : ['aria.utils.Type', 'aria.utils.Json'],
+    $dependencies : ["aria.utils.Type", "aria.utils.Json"],
     $constructor : function () {
 
         /**

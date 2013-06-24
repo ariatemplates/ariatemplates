@@ -14,12 +14,10 @@
  */
 
 /**
- * @class aria.dom.DomReady Global class it checks DOM is in Ready state and executes the callback function
- * @extends aria.core.JsObject
- * @singleton
+ * Global class it checks DOM is in Ready state and executes the callback function
  */
 Aria.classDefinition({
-    $classpath : 'aria.dom.DomReady',
+    $classpath : "aria.dom.DomReady",
     $singleton : true,
     $events : {
         "ready" : "Raised when the DOM is in ready state."

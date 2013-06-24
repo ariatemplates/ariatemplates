@@ -244,7 +244,7 @@
     };
 
     /**
-     * @class aria.core.JsObject Base class from which derive all Js classes defined through Aria.classDefinition()
+     * Base class from which derive all JS classes defined through Aria.classDefinition()
      */
     Aria.classDefinition({
         $classpath : "aria.core.JsObject",
@@ -261,7 +261,7 @@
             MISSING_SCOPE : "scope property is mandatory when adding or removing a listener (event: %1)",
             INTERFACE_NOT_SUPPORTED : "The '%1' interface is not supported on this object (of type '%2').",
             ASSERT_FAILURE : "Assert #%1 failed in %2",
-            CALLBACK_ERROR : "An error occured while processing a callback function: \ncalling class: %1\ncalled class: %2"
+            CALLBACK_ERROR : "An error occurred while processing a callback function: \ncalling class: %1\ncalled class: %2"
         },
         $prototype : {
             /**

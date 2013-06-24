@@ -15,17 +15,16 @@
 
 /**
  * This appender output logs to a div in simple HTML format.
- * @class aria.core.log.DivAppender
  */
 Aria.classDefinition({
-    $classpath : 'aria.core.log.DivAppender',
+    $classpath : "aria.core.log.DivAppender",
     /**
      * Takes the div used for logs as argument
      * @param {HTMLElement} div
      */
     $constructor : function (div) {
         this.div = div;
-        div.innerHTML = '<h2>Logs</h2>';
+        div.innerHTML = "<h2>Logs</h2>";
         this.groupSpacer = "";
     },
     $destructor : function () {

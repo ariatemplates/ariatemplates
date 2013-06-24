@@ -14,14 +14,12 @@
  */
 
 /**
- * @class aria.core.Timer This class handles asynchronous callbacks and gives the possibility to associate an object
+ * This class handles asynchronous callbacks and gives the possibility to associate an object
  * (scope) to the callback function - which is not possible with setTimeout(...) It also creates a unique id that
  * can be used to cancel the callback
- * @extends aria.core.JsObject
- * @singleton
  */
 Aria.classDefinition({
-    $classpath : 'aria.core.Timer',
+    $classpath : "aria.core.Timer",
     $singleton : true,
     $constructor : function () {
         /**

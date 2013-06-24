@@ -16,15 +16,10 @@
 /**
  * Class to be extended to create a template test case that tests the multiselect widget. Provides utility methods
  * related to multiselect.
- * @class aria.jsunit.MultiSelectTemplateTestCase
- * @extends aria.jsunit.TemplateTestCase
  */
 Aria.classDefinition({
-    $classpath : 'aria.jsunit.MultiSelectTemplateTestCase',
-    $extends : 'aria.jsunit.TemplateTestCase',
-    $constructor : function () {
-        this.$TemplateTestCase.constructor.call(this);
-    },
+    $classpath : "aria.jsunit.MultiSelectTemplateTestCase",
+    $extends : "aria.jsunit.TemplateTestCase",
     $prototype : {
 
         /**

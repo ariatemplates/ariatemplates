@@ -14,12 +14,10 @@
  */
 
 /**
- * @class aria.jsunit.IOViewer HTML UI Renderer for aria.core.IO
- * @extends aria.core.JsObject
- * @singleton
+ * HTML UI Renderer for aria.core.IO
  */
 Aria.classDefinition({
-    $classpath : 'aria.jsunit.IOViewer',
+    $classpath : "aria.jsunit.IOViewer",
     $singleton : true,
     $constructor : function () {
         this._outputDiv = null; // reference to the DOM output div
@@ -35,7 +33,7 @@ Aria.classDefinition({
          * Id of the DIV element to use as output container Can be changed by the user before run() is called
          * @type String
          */
-        outputDivId : '_IOViewerOutput_',
+        outputDivId : "_IOViewerOutput_",
 
         /**
          * Main function to display the IO report. If no div corresponding to outputDivId is found in the DOM, a new DIV

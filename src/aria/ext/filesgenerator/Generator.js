@@ -16,12 +16,10 @@
 /**
  * File skeleton generator utility class to be used to get the text content of any type of Aria Templates file. A class,
  * a module controller, a template, a template script, a CSS template, a flow, an interface, ...
- * @class aria.ext.filesgenerator.Generator
- * @extends aria.core.JsObject
  */
 Aria.classDefinition({
-    $classpath : 'aria.ext.filesgenerator.Generator',
-    $extends : 'aria.core.JsObject',
+    $classpath : "aria.ext.filesgenerator.Generator",
+    $extends : "aria.core.JsObject",
     $singleton : true,
     $dependencies : ["aria.core.JsonValidator", "aria.ext.filesgenerator.GeneratorBeans"],
     $texts : {
