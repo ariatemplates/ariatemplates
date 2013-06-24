@@ -105,6 +105,8 @@ Aria.classDefinition({
         setContrains : function (element, widthConf, heightConf) {
             // PROFILING // var profilingId = this.$startMeasure("setContrains");
             var measured, newValue, result = {}, changedWidth = false, changedHeight = false;
+            var changedOverflowY = false;
+            var savedScrollBarY = element.style.overflowY;
 
             // for width
             if (widthConf) {
@@ -124,6 +126,19 @@ Aria.classDefinition({
                 if (newValue != measured) {
                     element.style.height = newValue + "px";
                     changedHeight = true;
+                    changedOverflowY = (newValue < measured);
+                    if (changedOverflowY) {
+                        element.style.overflowY = "scroll";
+                        if (aria.core.Browser.isIE && aria.core.Browser.majorVersion < 8) {
+                            var scrollbarSize = aria.templates.Layout.getScrollbarsWidth();
+                            element.style['paddingRight'] = element.style['paddingRight'] === '' ? scrollbarSize + 'px' : (parseInt(element.style['paddingRight'], 10) + scrollbarSize) + "px";
+                        }
+                        // recalculate the width
+                        var newWidth = aria.utils.Math.normalize(element.offsetWidth, widthConf.min, widthConf.max);
+                        element.style.width = newWidth + "px";
+                        changedWidth = true;
+                        result.width = newWidth;
+                    }
                 }
                 result.height = newValue;
             }
@@ -135,6 +150,14 @@ Aria.classDefinition({
                 }
                 if (!heightConf) {
                     result.height = element.offsetHeight;
+                }
+
+                if (changedOverflowY) {
+                    element.style.overflowY = savedScrollBarY;
+                    if (aria.core.Browser.isIE && aria.core.Browser.majorVersion < 8) {
+                        var scrollbarSize = aria.templates.Layout.getScrollbarsWidth();
+                        element.style['paddingRight'] = (parseInt(element.style['paddingRight'], 10) - scrollbarSize) + "px";
+                    }
                 }
                 // PROFILING // this.$stopMeasure(profilingId);
                 return result;
