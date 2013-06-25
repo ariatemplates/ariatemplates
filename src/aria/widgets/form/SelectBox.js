@@ -15,8 +15,6 @@
 
 /**
  * SelectBox widget allows to select a value in an array of predefined values
- * @extends aria.widgets.form.DropDownTextInput
- * @class aria.widgets.form.SelectBox
  */
 Aria.classDefinition({
     $classpath : "aria.widgets.form.SelectBox",
@@ -34,10 +32,6 @@ Aria.classDefinition({
         var controller = new aria.widgets.controllers.SelectBoxController();
         this.$DropDownTextInput.constructor.call(this, cfg, ctxt, lineNumber, controller);
         this.controller.setListOptions(this._cfg.options);
-    },
-
-    $destructor : function () {
-        this.$DropDownTextInput.$destructor.call(this);
     },
     $prototype : {
         $init : function (p) {

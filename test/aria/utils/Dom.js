@@ -243,9 +243,14 @@ Aria.classDefinition({
             var document = Aria.$window.document;
             var test = document.createElement("div");
             this.domCreated.push(test);
+            var height = document.createElement("div");
+            this.domCreated.push(height);
 
             document.body.appendChild(test);
+            document.body.appendChild(height);
             test.style.cssText = 'display:block;position:absolute;top:150px;left:50px;';
+            // Put some content in the body to make sure that on every test environment the body has height > 0
+            height.style.cssText = 'display:block;position:relative;width:200px;height:200px;';
             var innerHTML = ["<div id='cont' style='width:300px;height:300px;background:#EFE4BD;border:"
                     + "20px solid #333;overflow:auto;margin:10px;padding:10px;'><div style='width:1000px;'>"];
             for (var i = 0; i < 100; i++) {
