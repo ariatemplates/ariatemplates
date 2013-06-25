@@ -224,7 +224,7 @@
     {call generateKeyFrames("slideouttotop3d", "transform: translate3d(0, 0, 0);", "transform: translate3d(0, -100%, 0);") /}
 
     /* slide up */
-    .xslideup.xout, .xslide.xoutMix, .xslideup.xout3d {
+    .xslideup.xout, .xslideup.xoutMix, .xslideup.xout3d {
       {call generatePrefix("animation-name", "fadeout") /}
       {call generatePrefix("animation-duration", "100ms") /}
     }
