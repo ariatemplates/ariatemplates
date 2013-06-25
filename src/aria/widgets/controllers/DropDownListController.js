@@ -15,8 +15,6 @@
 
 /**
  * Controller for the a widget with a dropdown that contains a list.
- * @class aria.widgets.controllers.DropDownListController
- * @extends aria.widgets.controllers.TextDataController
  */
 Aria.classDefinition({
     $classpath : "aria.widgets.controllers.DropDownListController",
