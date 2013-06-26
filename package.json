@@ -28,7 +28,7 @@
     "grunt-leading-indent": "0.1.0",
     "grunt": "git+https://github.com/divdavem/grunt.git#9952016e64f18404d459a39fd9273c7939693900",
     "grunt-contrib-jshint": "0.2.0",
-    "attester": "1.1.0",
+    "attester": "1.2.0",
     "express": "3.0.3",
     "jade": "0.27.7",
     "atpackager": "0.1.0",
