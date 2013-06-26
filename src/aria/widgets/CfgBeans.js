@@ -533,6 +533,14 @@ Aria.beanDefinitions({
                     $type : "environmentBase:FormatTypes",
                     $description : "Formatting pattern used to format number fields",
                     $default : ""
+                },
+                "value" : {
+                    $type : "TextInputCfg.value",
+                    $description : "Number currently displayed.",
+                    $contentTypes : [{
+                        $type : "json:Float",
+                        $description : ""
+                    }]
                 }
             }
         },
@@ -762,6 +770,14 @@ Aria.beanDefinitions({
                             $type : "common:BindingRef"
                         }
                     }
+                },
+                "value" : {
+                    $type : "InputCfg.value",
+                    $description : "Date currently selected in the date picker.",
+                    $contentTypes : [{
+                        $type : "json:Date",
+                        $description : ""
+                    }]
                 }
             }
         },
