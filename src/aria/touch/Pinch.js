@@ -20,11 +20,11 @@ Aria.classDefinition({
     $singleton : true,
     $classpath : "aria.touch.Pinch",
     $extends : "aria.touch.Gesture",
-    $statics: {
+    $statics : {
         /**
          * Defines the number of touch for the gesture.
          */
-        NB_TOUCHES: 2
+        NB_TOUCHES : 2
     },
     $events : {
         "pinchstart" : {
@@ -38,7 +38,7 @@ Aria.classDefinition({
             properties : {
                 distance : "The current distance.",
                 dVariation : "The distance variation from the start.",
-                angle: "The current angle.",
+                angle : "The current angle.",
                 originalEvent : "The originating touchmove event."
             }
         },
@@ -47,7 +47,7 @@ Aria.classDefinition({
             properties : {
                 distance : "The current distance.",
                 dVariation : "The distance variation from the start.",
-                angle: "The current angle.",
+                angle : "The current angle.",
                 originalEvent : "The originating touchend event."
             }
         },
@@ -55,7 +55,7 @@ Aria.classDefinition({
             description : "Raised when a pinch is cancelled."
         }
     },
-    $constructor: function() {
+    $constructor : function () {
         this.$Gesture.constructor.call(this);
         /**
          * The last known angle.
@@ -87,25 +87,47 @@ Aria.classDefinition({
          * Initial listeners for the Pinch gesture.
          * @protected
          */
-        _getInitialListenersList: function() {
-            return [{evt: this.touchEventMap.touchstart, cb: {fn : this._pinchStart, scope : this}}];
+        _getInitialListenersList : function () {
+            return [{
+                        evt : this.touchEventMap.touchstart,
+                        cb : {
+                            fn : this._pinchStart,
+                            scope : this
+                        }
+                    }];
         },
 
         /**
          * Additional listeners for the Pinch gesture.
          * @protected
          */
-        _getAdditionalListenersList: function() {
-            return [{evt: this.touchEventMap.touchmove, cb: {fn : this._pinchMove, scope : this}},
-                    {evt: this.touchEventMap.touchend, cb: {fn : this._pinchEnd, scope : this}}];
+        _getAdditionalListenersList : function () {
+            return [{
+                        evt : this.touchEventMap.touchmove,
+                        cb : {
+                            fn : this._pinchMove,
+                            scope : this
+                        }
+                    }, {
+                        evt : this.touchEventMap.touchend,
+                        cb : {
+                            fn : this._pinchEnd,
+                            scope : this
+                        }
+                    }];
         },
 
         /**
          * The fake events raised during the Pinch lifecycle.
          * @protected
          */
-        _getFakeEventsMap : function() {
-            return {start: "pinchstart", move: "pinchmove", end: "pinch", cancel: "pinchcancel"};
+        _getFakeEventsMap : function () {
+            return {
+                start : "pinchstart",
+                move : "pinchmove",
+                end : "pinch",
+                cancel : "pinchcancel"
+            };
         },
 
         /**
@@ -115,42 +137,40 @@ Aria.classDefinition({
          * @return {Boolean} false if preventDefault is true
          */
         _pinchStart : function (event) {
-            //Standard touch
+            // Standard touch
             if (event.touches && event.touches.length >= 2) {
                 var positions = aria.touch.Event.getPositions(event);
                 this.primaryPoint = positions[0];
                 this.secondaryPoint = positions[1];
             }
-            //IE10 primary touch
+            // IE10 primary touch
             else if (event.isPrimary) {
                 this.primaryPoint = aria.touch.Event.getPositions(event)[0];
             }
-            //IE10 secondary touch
+            // IE10 secondary touch
             else if (typeof event.isPrimary != 'undefined' && event.isPrimary === false) {
                 this.secondaryPoint = aria.touch.Event.getPositions(event)[0];
             }
-            if (event.touches && event.touches.length >= 2 || typeof event.isPrimary != 'undefined' && event.isPrimary === false) {
-                var dist = this._calculateDistance(this.primaryPoint.x, this.primaryPoint.y,
-                        this.secondaryPoint.x, this.secondaryPoint.y);
-                var angle = this.__calculateAngle(this.primaryPoint.x, this.primaryPoint.y,
-                        this.secondaryPoint.x, this.secondaryPoint.y);
+            if (event.touches && event.touches.length >= 2 || typeof event.isPrimary != 'undefined'
+                    && event.isPrimary === false) {
+                var dist = this._calculateDistance(this.primaryPoint.x, this.primaryPoint.y, this.secondaryPoint.x, this.secondaryPoint.y);
+                var angle = this.__calculateAngle(this.primaryPoint.x, this.primaryPoint.y, this.secondaryPoint.x, this.secondaryPoint.y);
                 this.initialPinchData = {
                     distance : dist,
-                    dVariation: 0,
-                    angle: angle
+                    dVariation : 0,
+                    angle : angle
                 };
                 this.lastKnownAngle = angle;
                 this.$raiseEvent({
                     name : "pinchstart",
                     distance : dist,
-                    dVariation: 0,
-                    angle: angle,
+                    dVariation : 0,
+                    angle : angle,
                     originalEvent : event
                 });
                 return this._gestureStart(event, this.initialPinchData);
-            }
-            else {
-                return (event.returnValue != null)? event.returnValue: !event.defaultPrevented;
+            } else {
+                return (event.returnValue != null) ? event.returnValue : !event.defaultPrevented;
             }
         },
 
@@ -161,42 +181,38 @@ Aria.classDefinition({
          * @return {Boolean} false if preventDefault is true
          */
         _pinchMove : function (event) {
-            //Standard touch
+            // Standard touch
             if (event.touches && event.touches.length >= 2) {
                 var positions = aria.touch.Event.getPositions(event);
                 this.primaryPoint = positions[0];
                 this.secondaryPoint = positions[1];
             }
-            //IE 10 touch
+            // IE 10 touch
             else if (typeof event.isPrimary != 'undefined') {
                 if (event.isPrimary) {
                     this.primaryPoint = aria.touch.Event.getPositions(event);
-                }
-                else {
+                } else {
                     this.secondaryPoint = aria.touch.Event.getPositions(event);
                 }
-            }
-            else {
+            } else {
                 this.$raiseEvent({
                     name : "pinchcancel"
                 });
                 return this._gestureCancel(event);
             }
-            var currentDist = this._calculateDistance(this.primaryPoint.x, this.primaryPoint.y,
-                    this.secondaryPoint.x, this.secondaryPoint.y);
-            var currentAngle = this.__calculateAngle(this.primaryPoint.x, this.primaryPoint.y,
-                    this.secondaryPoint.x, this.secondaryPoint.y);
+            var currentDist = this._calculateDistance(this.primaryPoint.x, this.primaryPoint.y, this.secondaryPoint.x, this.secondaryPoint.y);
+            var currentAngle = this.__calculateAngle(this.primaryPoint.x, this.primaryPoint.y, this.secondaryPoint.x, this.secondaryPoint.y);
             this.lastKnownAngle = currentAngle;
             var currentData = {
-                    distance : currentDist,
-                    dVariation: (currentDist - this.initialPinchData.distance),
-                    angle: currentAngle
+                distance : currentDist,
+                dVariation : (currentDist - this.initialPinchData.distance),
+                angle : currentAngle
             };
             this.$raiseEvent({
                 name : "pinchmove",
                 distance : currentDist,
-                dVariation: (currentDist - this.initialPinchData.distance),
-                angle: currentAngle,
+                dVariation : (currentDist - this.initialPinchData.distance),
+                angle : currentAngle,
                 originalEvent : event
             });
             return this._gestureMove(event, currentData);
@@ -210,44 +226,43 @@ Aria.classDefinition({
          * @return {Boolean} false if preventDefault is true
          */
         _pinchEnd : function (event) {
-            //Standard touch
-            if (event.touches && event.changedTouches && (event.changedTouches.length || 0) + (event.touches.length || 0) >= 2) {
+            // Standard touch
+            if (event.touches && event.changedTouches
+                    && (event.changedTouches.length || 0) + (event.touches.length || 0) >= 2) {
                 var positions = aria.touch.Event.getPositions(event);
                 this.primaryPoint = positions[0];
                 this.secondaryPoint = positions[1];
             }
-            //IE10 touch
+            // IE10 touch
             if (typeof event.isPrimary != 'undefined') {
                 if (event.isPrimary) {
                     this.primaryPoint = aria.touch.Event.getPositions(event);
-                }
-                else {
+                } else {
                     this.secondaryPoint = aria.touch.Event.getPositions(event);
                 }
             }
-            if (event.touches && event.changedTouches && (event.changedTouches.length || 0) + (event.touches.length || 0) >= 2 || typeof event.isPrimary != 'undefined') {
-                var finalDist = this._calculateDistance(this.primaryPoint.x, this.primaryPoint.y,
-                        this.secondaryPoint.x, this.secondaryPoint.y);
-                var finalAngle = this.__calculateAngle(this.primaryPoint.x, this.primaryPoint.y,
-                        this.secondaryPoint.x, this.secondaryPoint.y);
+            if (event.touches && event.changedTouches
+                    && (event.changedTouches.length || 0) + (event.touches.length || 0) >= 2
+                    || typeof event.isPrimary != 'undefined') {
+                var finalDist = this._calculateDistance(this.primaryPoint.x, this.primaryPoint.y, this.secondaryPoint.x, this.secondaryPoint.y);
+                var finalAngle = this.__calculateAngle(this.primaryPoint.x, this.primaryPoint.y, this.secondaryPoint.x, this.secondaryPoint.y);
                 if (Math.abs(finalAngle - this.lastKnownAngle) > 150) {
                     finalAngle = this.__calculateAngle(this.secondaryPoint.x, this.secondaryPoint.y, this.primaryPoint.x, this.primaryPoint.y);
                 }
                 var finalData = {
-                        distance : finalDist,
-                        dVariation: (finalDist - this.initialPinchData.distance),
-                        angle: finalAngle
+                    distance : finalDist,
+                    dVariation : (finalDist - this.initialPinchData.distance),
+                    angle : finalAngle
                 };
                 this.$raiseEvent({
                     name : "pinchend",
                     distance : finalDist,
-                    dVariation: (finalDist - this.initialPinchData.distance),
-                    angle: finalAngle,
+                    dVariation : (finalDist - this.initialPinchData.distance),
+                    angle : finalAngle,
                     originalEvent : event
                 });
                 return this._gestureEnd(event, finalData);
-            }
-            else {
+            } else {
                 this.$raiseEvent({
                     name : "pinchcancel"
                 });
@@ -264,8 +279,8 @@ Aria.classDefinition({
          * @private
          * @return {Float} the angle in degrees ]-180; 180]
          */
-        __calculateAngle: function (x1, y1, x2, y2) {
-            return  Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
+        __calculateAngle : function (x1, y1, x2, y2) {
+            return Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
         }
     }
 });

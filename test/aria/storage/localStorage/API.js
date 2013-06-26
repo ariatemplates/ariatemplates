@@ -14,31 +14,31 @@
  */
 
 Aria.classDefinition({
-	$classpath : "test.aria.storage.localStorage.API",
-	$dependencies : ["aria.storage.LocalStorage"],
-	$extends : "test.aria.storage.base.GeneralAPI",
-	$constructor : function () {
-		this.storageLocation = "localStorage";
+    $classpath : "test.aria.storage.localStorage.API",
+    $dependencies : ["aria.storage.LocalStorage"],
+    $extends : "test.aria.storage.base.GeneralAPI",
+    $constructor : function () {
+        this.storageLocation = "localStorage";
 
-		this.$GeneralAPI.constructor.call(this);
-	},
-	$prototype : {
-		/**
-		 * Test how the API work on a single instance
-		 */
-		testOneInstanceStrings : function () {
-			if (this.canRunHTML5Tests(false) || this.canRunUserDataTests()) {
-				this.$GeneralAPI.testOneInstanceStrings.call(this);
-			}
-		},
+        this.$GeneralAPI.constructor.call(this);
+    },
+    $prototype : {
+        /**
+         * Test how the API work on a single instance
+         */
+        testOneInstanceStrings : function () {
+            if (this.canRunHTML5Tests(false) || this.canRunUserDataTests()) {
+                this.$GeneralAPI.testOneInstanceStrings.call(this);
+            }
+        },
 
-		/**
-		 * Test the API when using two different storage instances
-		 */
-		testTwoInstancesStrings : function () {
-			if (this.canRunHTML5Tests(false) || this.canRunUserDataTests()) {
-				this.$GeneralAPI.testTwoInstancesStrings.call(this);
-			}
-		}
-	}
+        /**
+         * Test the API when using two different storage instances
+         */
+        testTwoInstancesStrings : function () {
+            if (this.canRunHTML5Tests(false) || this.canRunUserDataTests()) {
+                this.$GeneralAPI.testTwoInstancesStrings.call(this);
+            }
+        }
+    }
 });

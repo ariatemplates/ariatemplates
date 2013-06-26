@@ -17,90 +17,90 @@
  * Test for the JSONRequestHandler
  */
 Aria.classDefinition({
-	$classpath : 'test.aria.modules.requestHandler.JSONRequestHandlerTest',
-	$extends : 'aria.jsunit.TestCase',
-	$dependencies : ["aria.modules.requestHandler.JSONRequestHandler"],
-	$prototype : {
+    $classpath : 'test.aria.modules.requestHandler.JSONRequestHandlerTest',
+    $extends : 'aria.jsunit.TestCase',
+    $dependencies : ["aria.modules.requestHandler.JSONRequestHandler"],
+    $prototype : {
 
-		/**
-		 * Test a valid responseText
-		 */
-		testAsyncJsonResponse : function () {
-			var handler = new aria.modules.requestHandler.JSONRequestHandler();
-			handler.processSuccess({
-				responseText : "{mockTxtData:true}"
-			}, {}, {
-				fn : this._onJsonResponseProcessSuccess,
-				scope : this,
-				args : handler
-			});
-		},
+        /**
+         * Test a valid responseText
+         */
+        testAsyncJsonResponse : function () {
+            var handler = new aria.modules.requestHandler.JSONRequestHandler();
+            handler.processSuccess({
+                responseText : "{mockTxtData:true}"
+            }, {}, {
+                fn : this._onJsonResponseProcessSuccess,
+                scope : this,
+                args : handler
+            });
+        },
 
-		_onJsonResponseProcessSuccess : function (res, handler) {
+        _onJsonResponseProcessSuccess : function (res, handler) {
 
-			// check mime type error
-			this.assertTrue(!res.error, "There should be no error");
-			this.assertTrue(res.response.mockTxtData, "Missing mock data");
+            // check mime type error
+            this.assertTrue(!res.error, "There should be no error");
+            this.assertTrue(res.response.mockTxtData, "Missing mock data");
 
-			handler.$dispose();
+            handler.$dispose();
 
-			this.notifyTestEnd("testAsyncJsonResponse");
-		},
+            this.notifyTestEnd("testAsyncJsonResponse");
+        },
 
-		/**
-		 * Test a responseText with error
-		 */
-		testAsyncJsonResponseError : function () {
-			var handler = new aria.modules.requestHandler.JSONRequestHandler();
-			handler.processSuccess({
-				responseText : "{mockTxtData:true"
-			}, {}, {
-				fn : this._onJsonResponseProcessSuccessError,
-				scope : this,
-				args : handler
-			});
-		},
+        /**
+         * Test a responseText with error
+         */
+        testAsyncJsonResponseError : function () {
+            var handler = new aria.modules.requestHandler.JSONRequestHandler();
+            handler.processSuccess({
+                responseText : "{mockTxtData:true"
+            }, {}, {
+                fn : this._onJsonResponseProcessSuccessError,
+                scope : this,
+                args : handler
+            });
+        },
 
-		_onJsonResponseProcessSuccessError : function (res, handler) {
+        _onJsonResponseProcessSuccessError : function (res, handler) {
 
-			// check mime type error
-			this.assertTrue(res.error, "Missing error");
-			this.assertTrue(res.errorData.messageBean.localizedMessage == aria.modules.requestHandler.JSONRequestHandler.PARSING_ERROR, "Wrong error message");
-			this.assertTrue(res.errorData.messageBean.type == "PARSINGERROR", "Wrong error type");
-			this.assertErrorInLogs(aria.modules.requestHandler.JSONRequestHandler.PARSING_ERROR, "Missing parsing error in logs");
+            // check mime type error
+            this.assertTrue(res.error, "Missing error");
+            this.assertTrue(res.errorData.messageBean.localizedMessage == aria.modules.requestHandler.JSONRequestHandler.PARSING_ERROR, "Wrong error message");
+            this.assertTrue(res.errorData.messageBean.type == "PARSINGERROR", "Wrong error type");
+            this.assertErrorInLogs(aria.modules.requestHandler.JSONRequestHandler.PARSING_ERROR, "Missing parsing error in logs");
 
-			handler.$dispose();
+            handler.$dispose();
 
-			this.notifyTestEnd("testAsyncJsonResponseError");
-		},
+            this.notifyTestEnd("testAsyncJsonResponseError");
+        },
 
-		/**
-		 * Test with parsed JSON
-		 */
-		testAsyncJsonResponseJSON : function () {
-			var handler = new aria.modules.requestHandler.JSONRequestHandler();
-			handler.processSuccess({
-				responseText : "{mockTxtData:true}",
-				responseJSON : {
-					mockJsonData : true
-				}
-			}, {}, {
-				fn : this._onJsonResponseProcessSuccessJSON,
-				scope : this,
-				args : handler
-			});
-		},
+        /**
+         * Test with parsed JSON
+         */
+        testAsyncJsonResponseJSON : function () {
+            var handler = new aria.modules.requestHandler.JSONRequestHandler();
+            handler.processSuccess({
+                responseText : "{mockTxtData:true}",
+                responseJSON : {
+                    mockJsonData : true
+                }
+            }, {}, {
+                fn : this._onJsonResponseProcessSuccessJSON,
+                scope : this,
+                args : handler
+            });
+        },
 
-		_onJsonResponseProcessSuccessJSON : function (res, handler) {
+        _onJsonResponseProcessSuccessJSON : function (res, handler) {
 
-			// check mime type error
-			this.assertTrue(!res.error, "There should be no error");
-			this.assertTrue(!!res.response.mockJsonData, "Missing mock data");
-			this.assertTrue(!res.response.mockTxtData, "Text should not have been used");
+            // check mime type error
+            this.assertTrue(!res.error, "There should be no error");
+            this.assertTrue(!!res.response.mockJsonData, "Missing mock data");
+            this.assertTrue(!res.response.mockTxtData, "Text should not have been used");
 
-			handler.$dispose();
+            handler.$dispose();
 
-			this.notifyTestEnd("testAsyncJsonResponseJSON");
-		}
-	}
+            this.notifyTestEnd("testAsyncJsonResponseJSON");
+        }
+    }
 });

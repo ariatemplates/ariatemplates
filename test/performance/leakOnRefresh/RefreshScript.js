@@ -13,10 +13,10 @@
  * limitations under the License.
  */
 Aria.tplScriptDefinition({
-	$classpath : "test.performance.leakOnRefresh.RefreshScript",
-	$prototype : {
-		doNothing : function () {
+    $classpath : "test.performance.leakOnRefresh.RefreshScript",
+    $prototype : {
+        doNothing : function () {
 
-		}
-	}
+        }
+    }
 });

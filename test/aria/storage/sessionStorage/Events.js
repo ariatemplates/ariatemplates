@@ -14,25 +14,25 @@
  */
 
 Aria.classDefinition({
-	$classpath : "test.aria.storage.sessionStorage.Events",
-	$dependencies : ["aria.storage.SessionStorage"],
-	$extends : "test.aria.storage.base.GeneralEvents",
-	$constructor : function () {
-		this.storageLocation = "sessionStorage";
+    $classpath : "test.aria.storage.sessionStorage.Events",
+    $dependencies : ["aria.storage.SessionStorage"],
+    $extends : "test.aria.storage.base.GeneralEvents",
+    $constructor : function () {
+        this.storageLocation = "sessionStorage";
 
-		this.$GeneralEvents.constructor.call(this);
-	},
-	$prototype : {
-		testEvents : function () {
-			if (this.canRunHTML5Tests()) {
-				this.$GeneralEvents.testEvents.call(this);
-			}
-		},
+        this.$GeneralEvents.constructor.call(this);
+    },
+    $prototype : {
+        testEvents : function () {
+            if (this.canRunHTML5Tests()) {
+                this.$GeneralEvents.testEvents.call(this);
+            }
+        },
 
-		testSerializedEvent : function () {
-			if (this.canRunHTML5Tests()) {
-				this.$GeneralEvents.testSerializedEvent.call(this);
-			}
-		}
-	}
+        testSerializedEvent : function () {
+            if (this.canRunHTML5Tests()) {
+                this.$GeneralEvents.testSerializedEvent.call(this);
+            }
+        }
+    }
 });

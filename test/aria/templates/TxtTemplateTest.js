@@ -17,24 +17,24 @@
  * Test basic text templates
  */
 Aria.classDefinition({
-	$classpath : 'test.aria.templates.TxtTemplateTest',
-	$extends : 'aria.jsunit.TestCase',
-	$dependencies : ['aria.utils.String'],
-	$texts : {
-		myTestText : 'test.aria.templates.test.TxtTemplate'
-	},
-	$constructor : function () {
-		this.$TestCase.constructor.call(this);
-	},
-	$prototype : {
-		/**
+    $classpath : 'test.aria.templates.TxtTemplateTest',
+    $extends : 'aria.jsunit.TestCase',
+    $dependencies : ['aria.utils.String'],
+    $texts : {
+        myTestText : 'test.aria.templates.test.TxtTemplate'
+    },
+    $constructor : function () {
+        this.$TestCase.constructor.call(this);
+    },
+    $prototype : {
+        /**
          * Test keep white space and proper escaping
          */
-		test_KeepWhiteSpace : function () {
-			var output = this.myTestText.processTextTemplate({
-				a : 1
-			});
-			this.assertTrue(output == '/**\n\t* test1\n\t*/\n', "Ouput from processTextTemplate is wrong.");
-		}
-	}
+        test_KeepWhiteSpace : function () {
+            var output = this.myTestText.processTextTemplate({
+                a : 1
+            });
+            this.assertTrue(output == '/**\n\t* test1\n\t*/\n', "Ouput from processTextTemplate is wrong.");
+        }
+    }
 });

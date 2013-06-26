@@ -14,17 +14,17 @@
  */
 
 Aria.classDefinition({
-	$classpath : "test.aria.templates.beforeRefresh.BeforeRefreshTestCase",
-	$extends : "aria.jsunit.TemplateTestCase",
-	$prototype : {
-		runTemplateTest : function () {
-			this.templateCtxt.$refresh();
-			aria.utils.Json.setValue(this.templateCtxt._tpl.myData, "flag", 1);
+    $classpath : "test.aria.templates.beforeRefresh.BeforeRefreshTestCase",
+    $extends : "aria.jsunit.TemplateTestCase",
+    $prototype : {
+        runTemplateTest : function () {
+            this.templateCtxt.$refresh();
+            aria.utils.Json.setValue(this.templateCtxt._tpl.myData, "flag", 1);
 
-			this.assertTrue(test.aria.templates.beforeRefresh.BeforeRefreshTestCaseTpl.testVar1 === 3);
-			this.assertTrue(test.aria.templates.beforeRefresh.BeforeRefreshTestCaseTpl.testVar2 === 3);
+            this.assertTrue(test.aria.templates.beforeRefresh.BeforeRefreshTestCaseTpl.testVar1 === 3);
+            this.assertTrue(test.aria.templates.beforeRefresh.BeforeRefreshTestCaseTpl.testVar2 === 3);
 
-			this.notifyTemplateTestEnd();
-		}
-	}
+            this.notifyTemplateTestEnd();
+        }
+    }
 });

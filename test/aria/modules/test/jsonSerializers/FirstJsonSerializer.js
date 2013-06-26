@@ -17,11 +17,11 @@
  * Test class used in test.aria.modules.RequestMgrJsonSerializerTest test
  */
 Aria.classDefinition({
-	$classpath : "test.aria.modules.test.jsonSerializers.FirstJsonSerializer",
-	$prototype : {
-		serialize : function (item, options) {
-			var str = (options) ? options.msg : "";
-			return "FirstJsonSerializer" + str;
-		}
-	}
+    $classpath : "test.aria.modules.test.jsonSerializers.FirstJsonSerializer",
+    $prototype : {
+        serialize : function (item, options) {
+            var str = (options) ? options.msg : "";
+            return "FirstJsonSerializer" + str;
+        }
+    }
 });

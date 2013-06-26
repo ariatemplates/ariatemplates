@@ -301,7 +301,7 @@ Aria.classDefinition({
                     beanName : "aria.modules.RequestBeans.ProcessedResponse"
                 }, true); // test all events were called
                 this.assertTrue(this.errorEvent == 1, "Missing error event"); // test final data
-                this.assertTrue(res.response == null, "Wrong data are returned from	mock handler");
+                this.assertTrue(res.response == null, "Wrong data are returned from mock handler");
                 this.assertTrue(res.error, "Missing error flag in datas");
                 this.assertTrue(res.errorData.mockErrorData, "Missing error data"); // remove listener so that other
                 // tests are not impacted

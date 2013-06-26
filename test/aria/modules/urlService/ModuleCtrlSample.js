@@ -14,19 +14,19 @@
  */
 
 Aria.classDefinition({
-	$classpath : 'test.aria.modules.urlService.ModuleCtrlSample',
-	$extends : "aria.templates.ModuleCtrl",
-	$dependencies : ['test.aria.modules.test.MockRequestHandler', 'test.aria.modules.urlService.ModuleURLCreationImpl'],
-	$constructor : function () {
-		var moduleUrlPattern = Aria.rootFolderPath + "test/aria/modules/urlService/${actionName}.xml";
-		this.$ModuleCtrl.constructor.call(this);
-		this.$requestHandler = new test.aria.modules.test.MockRequestHandler();
-		this.$urlService = new test.aria.modules.urlService.ModuleURLCreationImpl(moduleUrlPattern, null);
-	},
-	$destructor : function () {
-		this.$requestHandler.$dispose();
-		this.$urlService.$dispose();
-		this.$ModuleCtrl.$destructor.call(this);
-	},
-	$prototype : {}
+    $classpath : 'test.aria.modules.urlService.ModuleCtrlSample',
+    $extends : "aria.templates.ModuleCtrl",
+    $dependencies : ['test.aria.modules.test.MockRequestHandler', 'test.aria.modules.urlService.ModuleURLCreationImpl'],
+    $constructor : function () {
+        var moduleUrlPattern = Aria.rootFolderPath + "test/aria/modules/urlService/${actionName}.xml";
+        this.$ModuleCtrl.constructor.call(this);
+        this.$requestHandler = new test.aria.modules.test.MockRequestHandler();
+        this.$urlService = new test.aria.modules.urlService.ModuleURLCreationImpl(moduleUrlPattern, null);
+    },
+    $destructor : function () {
+        this.$requestHandler.$dispose();
+        this.$urlService.$dispose();
+        this.$ModuleCtrl.$destructor.call(this);
+    },
+    $prototype : {}
 });

@@ -13,39 +13,39 @@
  * limitations under the License.
  */
 Aria.classDefinition({
-	$classpath : "test.performance.leakOnRefresh.TemplateRefreshTestCase",
-	$extends : "aria.jsunit.TemplateTestCase",
-	$constructor : function () {
-		this.$TemplateTestCase.constructor.call(this);
+    $classpath : "test.performance.leakOnRefresh.TemplateRefreshTestCase",
+    $extends : "aria.jsunit.TemplateTestCase",
+    $constructor : function () {
+        this.$TemplateTestCase.constructor.call(this);
 
-		this.setTestEnv({
-			template : "test.performance.leakOnRefresh.Refresh"
-		});
-	},
-	$prototype : {
+        this.setTestEnv({
+            template : "test.performance.leakOnRefresh.Refresh"
+        });
+    },
+    $prototype : {
 
-		runTemplateTest : function () {
-			// For the test it's enough two iteration, for the leak do a lot of them
-			this.doRefresh(1);
-		},
+        runTemplateTest : function () {
+            // For the test it's enough two iteration, for the leak do a lot of them
+            this.doRefresh(1);
+        },
 
-		doRefresh : function (iteration) {
-			var wrapper = this.templateCtxt.$getElementById("container");
-			this.templateCtxt.$refresh();
+        doRefresh : function (iteration) {
+            var wrapper = this.templateCtxt.$getElementById("container");
+            this.templateCtxt.$refresh();
 
-			// after a refresh the variables containing DOM references should be empty
-			this.assertEquals(this.templateCtxt.__wrappers.length, 0);
+            // after a refresh the variables containing DOM references should be empty
+            this.assertEquals(this.templateCtxt.__wrappers.length, 0);
 
-			if (iteration > 0) {
-				aria.core.Timer.addCallback({
-					fn : this.doRefresh,
-					scope : this,
-					args : --iteration,
-					delay : 500
-				});
-			} else {
-				this.notifyTemplateTestEnd();
-			}
-		}
-	}
+            if (iteration > 0) {
+                aria.core.Timer.addCallback({
+                    fn : this.doRefresh,
+                    scope : this,
+                    args : --iteration,
+                    delay : 500
+                });
+            } else {
+                this.notifyTemplateTestEnd();
+            }
+        }
+    }
 });

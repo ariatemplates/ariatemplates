@@ -17,39 +17,39 @@
  * Simple class used to test class definition
  */
 Aria.classDefinition({
-	$classpath : 'test.aria.test.ClassC',
-	$extends : 'test.aria.test.ClassB',
+    $classpath : 'test.aria.test.ClassC',
+    $extends : 'test.aria.test.ClassB',
 
-	$constructor : function () {
-		this.$ClassB.constructor.call(this, "CLASS_C");
-		this.propertyC = 'valueC';
-		this.count = 1; // override default value
-	},
+    $constructor : function () {
+        this.$ClassB.constructor.call(this, "CLASS_C");
+        this.propertyC = 'valueC';
+        this.count = 1; // override default value
+    },
 
-	$destructor : function () {
-		this.$ClassB.$destructor.call(this);
-		this.propertyC = null; // for test purpose: only object properties should be handled in $destructor
-	},
+    $destructor : function () {
+        this.$ClassB.$destructor.call(this);
+        this.propertyC = null; // for test purpose: only object properties should be handled in $destructor
+    },
 
-	$prototype : {
-		/**
-		 * Override ClassA implementation
-		 */
-		methodA1 : function () {
-			// will increment count by 2
-			this.count++;
-			this.$ClassB.methodA1.call(this);
-		},
+    $prototype : {
+        /**
+         * Override ClassA implementation
+         */
+        methodA1 : function () {
+            // will increment count by 2
+            this.count++;
+            this.$ClassB.methodA1.call(this);
+        },
 
-		/**
-		 * Override ClassB implementation
-		 * @return {String}
-		 */
-		methodB2 : function () {
-			var res = "mC2-";
-			res += this.$ClassB.methodB2.call(this);
-			res += "-mC2";
-			return res;
-		}
-	}
+        /**
+         * Override ClassB implementation
+         * @return {String}
+         */
+        methodB2 : function () {
+            var res = "mC2-";
+            res += this.$ClassB.methodB2.call(this);
+            res += "-mC2";
+            return res;
+        }
+    }
 });

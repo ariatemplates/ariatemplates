@@ -14,29 +14,29 @@
  */
 
 Aria.classDefinition({
-	$classpath : "test.aria.storage.userData.Namespace",
-	$dependencies : ["aria.storage.UserData"],
-	$extends : "test.aria.storage.base.GeneralNamespace",
-	$constructor : function () {
-		this.$GeneralNamespace.constructor.call(this);
-	},
-	$prototype : {
-		/**
-		 * Check what happens when you use namespaces, one namespaced shouldn't affect the others
-		 */
-		testNamespaceAPI : function () {
-			if (this.canRunUserDataTests()) {
-				this.$GeneralNamespace.testNamespaceAPI.call(this);
-			}
-		},
+    $classpath : "test.aria.storage.userData.Namespace",
+    $dependencies : ["aria.storage.UserData"],
+    $extends : "test.aria.storage.base.GeneralNamespace",
+    $constructor : function () {
+        this.$GeneralNamespace.constructor.call(this);
+    },
+    $prototype : {
+        /**
+         * Check what happens when you use namespaces, one namespaced shouldn't affect the others
+         */
+        testNamespaceAPI : function () {
+            if (this.canRunUserDataTests()) {
+                this.$GeneralNamespace.testNamespaceAPI.call(this);
+            }
+        },
 
-		/**
-		 * Verify if the events are raised correctly
-		 */
-		testNamespaceEvents : function () {
-			if (this.canRunUserDataTests()) {
-				this.$GeneralNamespace.testNamespaceEvents.call(this);
-			}
-		}
-	}
+        /**
+         * Verify if the events are raised correctly
+         */
+        testNamespaceEvents : function () {
+            if (this.canRunUserDataTests()) {
+                this.$GeneralNamespace.testNamespaceEvents.call(this);
+            }
+        }
+    }
 });

@@ -17,30 +17,30 @@
  * Test case for aria.modules.environment.IUrlService
  */
 Aria.classDefinition({
-	$classpath : 'test.aria.modules.urlService.environment.UrlService',
-	$extends : 'aria.jsunit.TestCase',
-	$dependencies : ["aria.modules.urlService.environment.UrlService"],
-	$constructor : function () {
-		this.$TestCase.constructor.call(this);
-	},
-	$prototype : {
-		testGetSetUrlService : function () {
-			aria.core.AppEnvironment.setEnvironment({
-				"urlService" : {
-					implementation : "MyCustomImplementation",
-					args : []
-				}
-			});
+    $classpath : 'test.aria.modules.urlService.environment.UrlService',
+    $extends : 'aria.jsunit.TestCase',
+    $dependencies : ["aria.modules.urlService.environment.UrlService"],
+    $constructor : function () {
+        this.$TestCase.constructor.call(this);
+    },
+    $prototype : {
+        testGetSetUrlService : function () {
+            aria.core.AppEnvironment.setEnvironment({
+                "urlService" : {
+                    implementation : "MyCustomImplementation",
+                    args : []
+                }
+            });
 
-			var settings = aria.modules.urlService.environment.UrlService.getUrlServiceCfg();// user defined settings
-			this.assertTrue(settings.implementation === "MyCustomImplementation");
-			this.assertTrue(settings.args.length === 0);
+            var settings = aria.modules.urlService.environment.UrlService.getUrlServiceCfg();// user defined settings
+            this.assertTrue(settings.implementation === "MyCustomImplementation");
+            this.assertTrue(settings.args.length === 0);
 
-			aria.core.AppEnvironment.setEnvironment({});
+            aria.core.AppEnvironment.setEnvironment({});
 
-			settings = aria.modules.urlService.environment.UrlService.getUrlServiceCfg();// default bean definition
-			this.assertTrue(settings.implementation === "aria.modules.urlService.PatternURLCreationImpl");
-			this.assertTrue(settings.args.length === 2);
-		}
-	}
+            settings = aria.modules.urlService.environment.UrlService.getUrlServiceCfg();// default bean definition
+            this.assertTrue(settings.implementation === "aria.modules.urlService.PatternURLCreationImpl");
+            this.assertTrue(settings.args.length === 2);
+        }
+    }
 });

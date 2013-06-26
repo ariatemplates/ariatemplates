@@ -17,56 +17,56 @@
  * Test the environment settings related to widget libraries.
  */
 Aria.classDefinition({
-	$classpath : 'test.aria.widgetLibs.environment.WidgetLibsSettingsTest',
-	$dependencies : ['aria.widgetLibs.environment.WidgetLibsSettings'],
-	$extends : 'aria.jsunit.TestCase',
-	$prototype : {
-		testGetWidgetLibs : function () {
-			aria.core.AppEnvironment.setEnvironment({});
-			var widgetLibs = aria.widgetLibs.environment.WidgetLibsSettings.getWidgetLibs();
-			this.assertJsonEquals(widgetLibs, {
-				aria : "aria.widgets.AriaLib"
-			}, "Invalid default environment value for defaultWidgetLibs");
+    $classpath : 'test.aria.widgetLibs.environment.WidgetLibsSettingsTest',
+    $dependencies : ['aria.widgetLibs.environment.WidgetLibsSettings'],
+    $extends : 'aria.jsunit.TestCase',
+    $prototype : {
+        testGetWidgetLibs : function () {
+            aria.core.AppEnvironment.setEnvironment({});
+            var widgetLibs = aria.widgetLibs.environment.WidgetLibsSettings.getWidgetLibs();
+            this.assertJsonEquals(widgetLibs, {
+                aria : "aria.widgets.AriaLib"
+            }, "Invalid default environment value for defaultWidgetLibs");
 
-			aria.core.AppEnvironment.setEnvironment({
-				defaultWidgetLibs : {
-					a : "aria.a.ALib",
-					b : "aria.b.BLib"
-				}
-			});
+            aria.core.AppEnvironment.setEnvironment({
+                defaultWidgetLibs : {
+                    a : "aria.a.ALib",
+                    b : "aria.b.BLib"
+                }
+            });
 
-			widgetLibs = aria.widgetLibs.environment.WidgetLibsSettings.getWidgetLibs();
+            widgetLibs = aria.widgetLibs.environment.WidgetLibsSettings.getWidgetLibs();
 
-			this.assertJsonEquals(widgetLibs, {
-				a : "aria.a.ALib",
-				b : "aria.b.BLib"
-			}, "Invalid default environment value for defaultWidgetLibs");
+            this.assertJsonEquals(widgetLibs, {
+                a : "aria.a.ALib",
+                b : "aria.b.BLib"
+            }, "Invalid default environment value for defaultWidgetLibs");
 
-			aria.core.AppEnvironment.setEnvironment({});
+            aria.core.AppEnvironment.setEnvironment({});
 
-			aria.core.AppEnvironment.setEnvironment({
-				defaultWidgetLibs : {
-					aria : "aria.a.NewAriaLib",
-					a : "aria.a.ALib",
-					b : "aria.b.BLib"
-				}
-			});
+            aria.core.AppEnvironment.setEnvironment({
+                defaultWidgetLibs : {
+                    aria : "aria.a.NewAriaLib",
+                    a : "aria.a.ALib",
+                    b : "aria.b.BLib"
+                }
+            });
 
-			widgetLibs = aria.widgetLibs.environment.WidgetLibsSettings.getWidgetLibs();
+            widgetLibs = aria.widgetLibs.environment.WidgetLibsSettings.getWidgetLibs();
 
-			this.assertJsonEquals(widgetLibs, {
-				aria : "aria.a.NewAriaLib",
-				a : "aria.a.ALib",
-				b : "aria.b.BLib"
-			}, "Invalid default environment value for defaultWidgetLibs");
+            this.assertJsonEquals(widgetLibs, {
+                aria : "aria.a.NewAriaLib",
+                a : "aria.a.ALib",
+                b : "aria.b.BLib"
+            }, "Invalid default environment value for defaultWidgetLibs");
 
-			aria.core.AppEnvironment.setEnvironment({});
-			// test again the default value
-			widgetLibs = aria.widgetLibs.environment.WidgetLibsSettings.getWidgetLibs();
-			this.assertJsonEquals(widgetLibs, {
-				aria : "aria.widgets.AriaLib"
-			}, "Invalid default environment value for defaultWidgetLibs");
+            aria.core.AppEnvironment.setEnvironment({});
+            // test again the default value
+            widgetLibs = aria.widgetLibs.environment.WidgetLibsSettings.getWidgetLibs();
+            this.assertJsonEquals(widgetLibs, {
+                aria : "aria.widgets.AriaLib"
+            }, "Invalid default environment value for defaultWidgetLibs");
 
-		}
-	}
+        }
+    }
 });

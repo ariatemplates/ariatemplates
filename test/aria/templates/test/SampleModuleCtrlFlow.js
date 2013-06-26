@@ -17,71 +17,71 @@
  * Simple flow controller for test.
  */
 Aria.classDefinition({
-	$classpath : 'test.aria.templates.test.SampleModuleCtrlFlow',
-	$extends : 'aria.templates.FlowCtrl',
-	$constructor : function () {
-		this.$FlowCtrl.constructor.call(this);
-	},
-	$destructor : function () {
-		this._testCb = null;
-		this.$FlowCtrl.$destructor.call(this);
-	},
-	$prototype : {
-		oninitCallBegin : function (param) {
-			var initArgs = param.args[0];
-			if (initArgs) {
-				this._testCb = initArgs["flow:testCallback"];
-			}
-			this.$callback(this._testCb, {
-				method : "oninitCallBegin",
-				param : param
-			});
-		},
+    $classpath : 'test.aria.templates.test.SampleModuleCtrlFlow',
+    $extends : 'aria.templates.FlowCtrl',
+    $constructor : function () {
+        this.$FlowCtrl.constructor.call(this);
+    },
+    $destructor : function () {
+        this._testCb = null;
+        this.$FlowCtrl.$destructor.call(this);
+    },
+    $prototype : {
+        oninitCallBegin : function (param) {
+            var initArgs = param.args[0];
+            if (initArgs) {
+                this._testCb = initArgs["flow:testCallback"];
+            }
+            this.$callback(this._testCb, {
+                method : "oninitCallBegin",
+                param : param
+            });
+        },
 
-		oninitCallback : function (param) {
-			this.$FlowCtrl.oninitCallback.call(this, param); // call the parent
-			this.$callback(this._testCb, {
-				method : "oninitCallback",
-				param : param
-			});
-		},
+        oninitCallback : function (param) {
+            this.$FlowCtrl.oninitCallback.call(this, param); // call the parent
+            this.$callback(this._testCb, {
+                method : "oninitCallback",
+                param : param
+            });
+        },
 
-		oninitCallEnd : function (param) {
-			this.$callback(this._testCb, {
-				method : "oninitCallEnd",
-				param : param
-			});
-		},
+        oninitCallEnd : function (param) {
+            this.$callback(this._testCb, {
+                method : "oninitCallEnd",
+                param : param
+            });
+        },
 
-		onincrementCountCallBegin : function (param) {
-			this.$callback(this._testCb, {
-				method : "onincrementCountCallBegin",
-				param : param
-			});
-		},
+        onincrementCountCallBegin : function (param) {
+            this.$callback(this._testCb, {
+                method : "onincrementCountCallBegin",
+                param : param
+            });
+        },
 
-		onincrementCountCallEnd : function (param) {
-			this.$callback(this._testCb, {
-				method : "onincrementCountCallEnd",
-				param : param
-			});
-		},
+        onincrementCountCallEnd : function (param) {
+            this.$callback(this._testCb, {
+                method : "onincrementCountCallEnd",
+                param : param
+            });
+        },
 
-		onincrementCountCallback : function (param) {
-			this.$callback(this._testCb, {
-				method : "onincrementCountCallback",
-				param : param
-			});
-		},
-		onSubmitCallback : function (param) {
-			var initArgs = param.args[0];
-			if (initArgs) {
-				this._testCb = initArgs["flow:testCallback"];
-			}
-			this.$callback(this._testCb, {
-				method : "onSubmitCallback",
-				param : param
-			});
-		}
-	}
+        onincrementCountCallback : function (param) {
+            this.$callback(this._testCb, {
+                method : "onincrementCountCallback",
+                param : param
+            });
+        },
+        onSubmitCallback : function (param) {
+            var initArgs = param.args[0];
+            if (initArgs) {
+                this._testCb = initArgs["flow:testCallback"];
+            }
+            this.$callback(this._testCb, {
+                method : "onSubmitCallback",
+                param : param
+            });
+        }
+    }
 });

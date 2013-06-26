@@ -14,11 +14,11 @@
  */
 
 Aria.classDefinition({
-	$classpath: "test.aria.utils.events.EventsTestSuite",
-	$extends: "aria.jsunit.TestSuite",
-	$constructor: function () {
-		this.$TestSuite.constructor.call(this);
+    $classpath : "test.aria.utils.events.EventsTestSuite",
+    $extends : "aria.jsunit.TestSuite",
+    $constructor : function () {
+        this.$TestSuite.constructor.call(this);
 
-		this.addTests("test.aria.utils.events.scroll.OnscrollTest");
-	}
+        this.addTests("test.aria.utils.events.scroll.OnscrollTest");
+    }
 });

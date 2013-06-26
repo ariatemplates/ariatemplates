@@ -17,6 +17,6 @@
  * Simple class used to test class definition
  */
 Aria.classDefinition({
-	$classpath : 'test.aria.test.ClassD',
-	$extends : 'test.aria.test.ClassC'
+    $classpath : 'test.aria.test.ClassD',
+    $extends : 'test.aria.test.ClassC'
 });

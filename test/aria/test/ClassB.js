@@ -17,34 +17,34 @@
  * Simple class used to test class definition
  */
 Aria.classDefinition({
-	$classpath : 'test.aria.test.ClassB',
-	$extends : 'test.aria.test.ClassA',
+    $classpath : 'test.aria.test.ClassB',
+    $extends : 'test.aria.test.ClassA',
 
-	$constructor : function (optValueA) {
-		this.$ClassA.constructor.call(this, optValueA);
-		this.propertyB = 'valueB';
-	},
+    $constructor : function (optValueA) {
+        this.$ClassA.constructor.call(this, optValueA);
+        this.propertyB = 'valueB';
+    },
 
-	$destructor : function () {
-		this.$ClassA.$destructor.call(this);
-		this.propertyB = null; // for test purpose: only object properties should be handled in $destructor
-	},
+    $destructor : function () {
+        this.$ClassA.$destructor.call(this);
+        this.propertyB = null; // for test purpose: only object properties should be handled in $destructor
+    },
 
-	$prototype : {
-		/**
-		 * Increment count by 5
-		 */
-		methodB1 : function () {
-			this.count += 4;
-			this.$ClassA.methodA1.call(this);
-		},
+    $prototype : {
+        /**
+         * Increment count by 5
+         */
+        methodB1 : function () {
+            this.count += 4;
+            this.$ClassA.methodA1.call(this);
+        },
 
-		/**
-		 * Use a method defined in parent
-		 * @return {String}
-		 */
-		methodB2 : function () {
-			return this.methodA2("mB2-");
-		}
-	}
+        /**
+         * Use a method defined in parent
+         * @return {String}
+         */
+        methodB2 : function () {
+            return this.methodA2("mB2-");
+        }
+    }
 });

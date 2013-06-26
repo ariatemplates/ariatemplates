@@ -30,32 +30,53 @@ Aria.classDefinition({
          * The duration for the press.
          * @type Integer
          */
-        PRESS_DURATION: 1000
+        PRESS_DURATION : 1000
     },
     $prototype : {
         /**
          * Initial listeners for the LongPress gesture.
          * @protected
          */
-        _getInitialListenersList: function() {
-            return [{evt: this.touchEventMap.touchstart, cb: {fn : this._longPressStart, scope : this}}];
+        _getInitialListenersList : function () {
+            return [{
+                        evt : this.touchEventMap.touchstart,
+                        cb : {
+                            fn : this._longPressStart,
+                            scope : this
+                        }
+                    }];
         },
 
         /**
          * Additional listeners for the LongPress gesture.
          * @protected
          */
-        _getAdditionalListenersList: function() {
-            return [{evt: this.touchEventMap.touchmove, cb: {fn : this._longPressMove, scope : this}},
-                    {evt: this.touchEventMap.touchend, cb: {fn : this._longPressCancel, scope : this}}];
+        _getAdditionalListenersList : function () {
+            return [{
+                        evt : this.touchEventMap.touchmove,
+                        cb : {
+                            fn : this._longPressMove,
+                            scope : this
+                        }
+                    }, {
+                        evt : this.touchEventMap.touchend,
+                        cb : {
+                            fn : this._longPressCancel,
+                            scope : this
+                        }
+                    }];
         },
 
         /**
          * The fake events raised during the LongPress lifecycle.
          * @protected
          */
-        _getFakeEventsMap : function() {
-            return {start: "longpressstart", cancel: "longpresscancel", finalize: "longpress"};
+        _getFakeEventsMap : function () {
+            return {
+                start : "longpressstart",
+                cancel : "longpresscancel",
+                finalize : "longpress"
+            };
         },
 
         /**
@@ -74,13 +95,11 @@ Aria.classDefinition({
                     args : event
                 });
                 return status;
-            }
-            else {
+            } else {
                 if (this.timerId) {
                     return this._longPressCancel(event);
-                }
-                else {
-                    return (event.returnValue != null)? event.returnValue: !event.defaultPrevented;
+                } else {
+                    return (event.returnValue != null) ? event.returnValue : !event.defaultPrevented;
                 }
             }
         },
@@ -91,19 +110,19 @@ Aria.classDefinition({
          * @protected
          * @return {Boolean} false if preventDefault is true
          */
-        _longPressMove : function(event) {
+        _longPressMove : function (event) {
             var position = aria.touch.Event.getPositions(event);
             if (this.MARGIN >= this._calculateDistance(this.startData.positions[0].x, this.startData.positions[0].y, position[0].x, position[0].y)) {
                 var status = this._gestureMove(event);
-                return (status == null)? this._longPressCancel(event): status;
-            }
-            else {
+                return (status == null) ? this._longPressCancel(event) : status;
+            } else {
                 return this._longPressCancel(event);
             }
         },
 
         /**
-         * LongPress cancellation, occurs if wrong start or move (see above), or if an end event occurs before the end of the timer.
+         * LongPress cancellation, occurs if wrong start or move (see above), or if an end event occurs before the end
+         * of the timer.
          * @param {Object} event the original event
          * @protected
          * @return {Boolean} false if preventDefault is true
@@ -121,7 +140,7 @@ Aria.classDefinition({
          * @param {Object} event the original event
          * @protected
          */
-        _longPressFinalize: function (event) {
+        _longPressFinalize : function (event) {
             if (this.timerId) {
                 aria.core.Timer.cancelCallback(this.timerId);
                 this.timerId = null;

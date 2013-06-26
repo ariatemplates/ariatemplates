@@ -17,12 +17,12 @@
  * Test class used in test.aria.modules.RequestMgrJsonSerializerTest test
  */
 Aria.classDefinition({
-	$classpath : "test.aria.modules.test.jsonSerializers.ThirdJsonSerializer",
-	$extends : "aria.utils.json.JsonSerializer",
-	$prototype : {
-		_serializeDate : function (item, options) {
-			var str = (options.msg) ? options.msg : "";
-			return "ThirdJsonSerializerDate" + str;
-		}
-	}
+    $classpath : "test.aria.modules.test.jsonSerializers.ThirdJsonSerializer",
+    $extends : "aria.utils.json.JsonSerializer",
+    $prototype : {
+        _serializeDate : function (item, options) {
+            var str = (options.msg) ? options.msg : "";
+            return "ThirdJsonSerializerDate" + str;
+        }
+    }
 });
