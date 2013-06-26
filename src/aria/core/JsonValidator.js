@@ -236,9 +236,9 @@
                         this.$logError(errors[i].msgId, errors[i].msgArgs);
                     }
                 } else {
-                    throw {
-                        errors : errors
-                    };
+                    var error = new Error();
+                    error.errors = errors;
+                    throw error;
                 }
                 return false;
             },
