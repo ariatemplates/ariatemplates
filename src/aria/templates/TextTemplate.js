@@ -23,7 +23,7 @@ Aria.classDefinition({
     $prototype : {
         /**
          * Data model available to the text template. It can be overridden by the text template context.
-         * @type {Object}
+         * @type Object
          */
         data : {},
         /**

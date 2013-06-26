@@ -37,7 +37,7 @@ Aria.interfaceDefinition({
         /**
          * Initializes the robot. Do not call any other method of the robot (except isUsable) before calling this method
          * and waiting for it to call its callback.
-         * @param {aria.core.CfgBeans.Callback} callback called when the robot is ready to be used.
+         * @param {aria.core.CfgBeans:Callback} callback called when the robot is ready to be used.
          */
         initRobot : {
             $type : "Function",
@@ -48,7 +48,7 @@ Aria.interfaceDefinition({
          * Sets the mouse position, with screen coordinates.
          * @param {Object} position position where to set the mouse (given as an object with x and y properties, in
          * screen coordinates)
-         * @param {aria.core.CfgBeans.Callback} callback
+         * @param {aria.core.CfgBeans:Callback} callback
          */
         absoluteMouseMove : {
             $type : "Function",
@@ -59,7 +59,7 @@ Aria.interfaceDefinition({
          * Sets the mouse position, with coordinates relative to the viewport.
          * @param {Object} position position where to set the mouse (given as an object with x and y properties, in
          * viewport coordinates)
-         * @param {aria.core.CfgBeans.Callback} callback
+         * @param {aria.core.CfgBeans:Callback} callback
          */
         mouseMove : {
             $type : "Function",
@@ -73,7 +73,7 @@ Aria.interfaceDefinition({
          * @param {Object} toPosition final position of mouse (given as an object with x and y properties, in viewport
          * coordinates)
          * @param {Number} duration Time in ms for the mouse move.
-         * @param {aria.core.CfgBeans.Callback} callback
+         * @param {aria.core.CfgBeans:Callback} callback
          */
         smoothMouseMove : {
             $type : "Function",
@@ -84,7 +84,7 @@ Aria.interfaceDefinition({
          * Simulates a mouse button press.
          * @param {Number} button Button to be pressed (should be the value of aria.jsunit.Robot.BUTTONx_MASK, with x
          * replaced by 1, 2 or 3).
-         * @param {aria.core.CfgBeans.Callback} callback
+         * @param {aria.core.CfgBeans:Callback} callback
          */
         mousePress : {
             $type : "Function",
@@ -95,7 +95,7 @@ Aria.interfaceDefinition({
          * Simulates a mouse button released.
          * @param {Number} button Button to be released (should be the value of aria.jsunit.Robot.BUTTONx_MASK, with x
          * replaced by 1, 2 or 3).
-         * @param {aria.core.CfgBeans.Callback} callback
+         * @param {aria.core.CfgBeans:Callback} callback
          */
         mouseRelease : {
             $type : "Function",
@@ -105,7 +105,7 @@ Aria.interfaceDefinition({
         /**
          * Simulates a rotation of the mouse wheel.
          * @param {Number} amount Specifies the amount by which the mouse wheel was rotated.
-         * @param {aria.core.CfgBeans.Callback} callback
+         * @param {aria.core.CfgBeans:Callback} callback
          */
         mouseWheel : {
             $type : "Function",
@@ -116,7 +116,7 @@ Aria.interfaceDefinition({
          * Simulates a keyboard key press.
          * @param {MultiTypes} key specifies which key should be pressed. It can be any value among the ones in the KEYS
          * property.
-         * @param {aria.core.CfgBeans.Callback} callback
+         * @param {aria.core.CfgBeans:Callback} callback
          */
         keyPress : {
             $type : "Function",
@@ -127,7 +127,7 @@ Aria.interfaceDefinition({
          * Simulates a keyboard key release.
          * @param {MultiTypes} key specifies which key should be released. It can be any value among the ones in the
          * KEYS property.
-         * @param {aria.core.CfgBeans.Callback} callback
+         * @param {aria.core.CfgBeans:Callback} callback
          */
         keyRelease : {
             $type : "Function",

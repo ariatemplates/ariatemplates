@@ -34,7 +34,7 @@ Aria.classDefinition({
 
         /**
          * Stores a reference to the given callback and returns a string which, when evaluated, calls that callback.
-         * @param {aria.core.CfgBeans.Callback} cb callback to register.
+         * @param {aria.core.CfgBeans:Callback} cb callback to register.
          * @param {Boolean} moreThanOnce If true, the callback can be called several times. Otherwise, it is removed at
          * the first call.
          */

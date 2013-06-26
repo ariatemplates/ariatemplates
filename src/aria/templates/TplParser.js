@@ -27,7 +27,7 @@ Aria.classDefinition({
          * @param {String} template template to parse
          * @param {object} context template context data, passes additional information the to error log)
          * @param {Object} statements list of statements allowed by the class generator
-         * @return {aria.templates.TreeBeans.Root} The tree built from the template, or null if an error occured. After
+         * @return {aria.templates.TreeBeans:Root} The tree built from the template, or null if an error occured. After
          * the execution of this method, this.template contains the template with comments and some spaces and removed,
          * and this.positionToLineNumber can be used to transform positions in this.template into line numbers.
          */

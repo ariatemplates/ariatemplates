@@ -27,7 +27,7 @@ Aria.classDefinition({
 
         /**
          * Data model associated to a date input
-         * @type {Object}
+         * @type Object
          * @protected
          */
         this._dataModel = {
@@ -41,34 +41,34 @@ Aria.classDefinition({
         /**
          * Pattern used to display the date entry
          * @protected
-         * @type {String}
+         * @type String
          */
         this._pattern = '';
         /**
          * List of pattern used to parse user input
          * @protected
-         * @type {String}
+         * @type String
          */
         this._inputPattern = '';
 
         /**
          * Minimum allowed date
          * @protected
-         * @type {Date}
+         * @type Date
          */
         this._minValue = null;
 
         /**
          * Maximum allowed date
          * @protected
-         * @type {Date}
+         * @type Date
          */
         this._maxValue = null;
 
         /**
          * Reference date
          * @protected
-         * @type {Date}
+         * @type Date
          */
         this._referenceDate = null;
     },
@@ -80,7 +80,7 @@ Aria.classDefinition({
 
         /**
          * Set the date pattern
-         * @param {aria.widgets.CfgBeans.DateFieldCfg} pattern options
+         * @param {aria.widgets.CfgBeans:DateFieldCfg} pattern options
          */
         setPattern : function (pattern) {
             if (!pattern) {
@@ -90,7 +90,7 @@ Aria.classDefinition({
         },
         /**
          * Set the date input pattern
-         * @param {aria.widgets.CfgBeans.DatePickerCfg} pattern options
+         * @param {aria.widgets.CfgBeans:DatePickerCfg} pattern options
          */
         setInputPattern : function (inputPattern) {
 

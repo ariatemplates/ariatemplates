@@ -268,7 +268,7 @@ Aria.classDefinition({
         /**
          * Perform an asynchronous request to the server <br />
          * Note: callback is always called in an asynchronous way (even in case of errors)
-         * @param {aria.core.CfgBeans.IOAsyncRequestCfg} req the request description
+         * @param {aria.core.CfgBeans:IOAsyncRequestCfg} req the request description
          *
          * <pre>
          * [req] {
@@ -326,7 +326,7 @@ Aria.classDefinition({
 
         /**
          * Make a pseudo asynchronous form submission.
-         * @param {aria.core.CfgBeans.IOAsyncRequestCfg} request Request description
+         * @param {aria.core.CfgBeans:IOAsyncRequestCfg} request Request description
          *
          * <pre>
          * [request] {
@@ -395,7 +395,7 @@ Aria.classDefinition({
         /**
          * Continue the request started in asyncRequest, after request filters have been called.
          * @param {Object} unused Unused parameter
-         * @param {aria.core.CfgBeans.IOAsyncRequestCfg} req request (may have been modified by filters)
+         * @param {aria.core.CfgBeans:IOAsyncRequestCfg} req request (may have been modified by filters)
          * @private
          */
         _afterRequestFilters : function (unused, req) {
@@ -443,7 +443,7 @@ Aria.classDefinition({
 
         /**
          * Normalize the Request object adding default values and additional parameters like a unique ID
-         * @param {aria.core.CfgBeans.IOAsyncRequestCfg} req Request object as the input parameter of asyncRequest
+         * @param {aria.core.CfgBeans:IOAsyncRequestCfg} req Request object as the input parameter of asyncRequest
          * @private
          */
         __normalizeRequest : function (req) {
@@ -529,7 +529,7 @@ Aria.classDefinition({
 
         /**
          * Prepare the transport class before going on with the request (make sure it is loaded, through Aria.load).
-         * @param {aria.core.CfgBeans.IOAsyncRequestCfg} request Request object
+         * @param {aria.core.CfgBeans:IOAsyncRequestCfg} request Request object
          * @private
          */
         _prepareTransport : function (request) {
@@ -608,7 +608,7 @@ Aria.classDefinition({
          * @param {Object} arg Object containing the properties:
          *
          * <pre>
-         *      req (aria.core.CfgBeans.IOAsyncRequestCfg) Request object,
+         *      req (aria.core.CfgBeans:IOAsyncRequestCfg) Request object,
          *      transport {Object} containing 'classpath' and 'instance'
          * </pre>
          */
@@ -638,8 +638,8 @@ Aria.classDefinition({
         /**
          * Handle a transport response. This is the callback function passed to a transport request
          * @param {Boolean|Object} error Whether there was an error or not
-         * @param {aria.core.CfgBeans.IOAsyncRequestCfg} request
-         * @param {aria.core.CfgBeans.IOAsyncRequestResponseCfg} response
+         * @param {aria.core.CfgBeans:IOAsyncRequestCfg} request
+         * @param {aria.core.CfgBeans:IOAsyncRequestResponseCfg} response
          */
         _handleResponse : function (error, request, response) {
             if (!response) {
@@ -683,8 +683,8 @@ Aria.classDefinition({
          * Normalize the Response object adding error messages (if any) and converting the response in the expected
          * format
          * @param {Boolean} error Whether there was an error or not
-         * @param {aria.core.CfgBeans.IOAsyncRequestCfg} request
-         * @param {aria.core.CfgBeans.IOAsyncRequestResponseCfg} response
+         * @param {aria.core.CfgBeans:IOAsyncRequestCfg} request
+         * @param {aria.core.CfgBeans:IOAsyncRequestResponseCfg} response
          */
         _normalizeResponse : function (error, request, response) {
             response.reqId = request.id;
@@ -725,7 +725,7 @@ Aria.classDefinition({
         /**
          * Continue to process a response, after response filters have been called.
          * @param {Object} unused Unused parameter
-         * @param {aria.core.CfgBeans.IOAsyncRequestCfg} req request (may have been modified by filters)
+         * @param {aria.core.CfgBeans:IOAsyncRequestCfg} req request (may have been modified by filters)
          * @private
          */
         _afterResponseFilters : function (unused, req) {
@@ -822,7 +822,7 @@ Aria.classDefinition({
          * after 'timeout' milliseconds
          * @param {Number} id Request id
          * @param {Number} timeout Timer in milliseconds
-         * @param {aria.core.CfgBeans.Callback} callback Should be already normalized
+         * @param {aria.core.CfgBeans:Callback} callback Should be already normalized
          */
         setTimeout : function (id, timeout, callback) {
             if (timeout > 0) {
@@ -908,7 +908,7 @@ Aria.classDefinition({
 
         /**
          * Make a JSON-P request.
-         * @param {aria.core.CfgBeans.IOAsyncRequestCfg} request Request description
+         * @param {aria.core.CfgBeans:IOAsyncRequestCfg} request Request description
          *
          * <pre>
          * [request] {
@@ -953,7 +953,7 @@ Aria.classDefinition({
 
         /**
          * Convert the response text into Json or response Json into text
-         * @param {aria.core.CfgBeans.IOAsyncRequestResponseCfg} response Response object
+         * @param {aria.core.CfgBeans:IOAsyncRequestResponseCfg} response Response object
          * @param {String} expectedResponseType The expected response type
          * @protected
          */

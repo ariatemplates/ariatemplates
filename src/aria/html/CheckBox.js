@@ -34,6 +34,13 @@
         $classpath : "aria.html.CheckBox",
         $extends : "aria.html.InputElement",
         $dependencies : ["aria.html.beans.CheckBoxCfg"],
+        /**
+         * Create an instance of the widget.
+         * @param {aria.html.beans.CheckBoxCfg:Properties} cfg widget configuration, which is the parameter given in the
+         * template
+         * @param {aria.templates.TemplateCtxt} context template context
+         * @param {Number} lineNumber line number in the template
+         */
         $constructor : function (cfg, context, line) {
             this.$cfgBean = this.$cfgBean || "aria.html.beans.CheckBoxCfg.Properties";
 

@@ -310,7 +310,7 @@
              *                 domEvt.disposeWrapper();
              *     }
              * </pre>
-             * @param {DOMEvent or aria.DomEvent} evt The event from the dom or a wrapper on it.
+             * @param {DOMEvent|aria.DomEvent} evt The event from the dom or a wrapper on it.
              * @return {aria.DomEvent} domEvt An aria.domEvent object representing the event.
              */
             getWrapper : function (evt) {

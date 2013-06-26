@@ -104,7 +104,7 @@
 
             /**
              * Called on window unload.
-             * @type aria.core.CfgBeans.Callback
+             * @type aria.core.CfgBeans:Callback
              * @private
              */
             this._saveStateCB = {
@@ -131,7 +131,7 @@
 
             /**
              * Called on hash changeOnly used in browsers that do not support HTML5 history API.
-             * @type aria.core.CfgBeans.Callback
+             * @type aria.core.CfgBeans:Callback
              * @private
              */
             this._hashChangeCB = {
@@ -167,7 +167,7 @@
             /**
              * State object containing the data that were associated to it when pushing or replacing the state.
              * Compliant with the standard window.history.state
-             * @type Object}
+             * @type Object
              */
             this.state = this.getState();
 

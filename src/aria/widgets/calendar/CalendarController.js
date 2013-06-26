@@ -222,7 +222,7 @@
             /**
              * Return information about the position of the given JavaScript date in the calendar data model.
              * @param {Date} JavaScript date
-             * @return {aria.widgets.calendar.CfgBeans.DatePosition} position of the date in the calendar data model, or
+             * @return {aria.widgets.calendar.CfgBeans:DatePosition} position of the date in the calendar data model, or
              * null if the date cannot be found in the current calendar data model.
              */
             getDatePosition : function (jsDate) {

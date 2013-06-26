@@ -448,7 +448,7 @@
             /**
              * Show a popup with the given configuration. Returns the aria.popups.Popup instance create to handle the
              * popup.
-             * @param {aria.popups.Beans.PopupConf} The configuration object describing the popup
+             * @param {aria.popups.Beans:PopupConf} The configuration object describing the popup
              * @return {aria.popups.Popup} The aria.popups.Popup object created to handle the popup
              */
             show : function (popupConf) {

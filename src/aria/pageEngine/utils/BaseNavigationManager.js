@@ -37,8 +37,8 @@ Aria.classDefinition({
     },
 
     /**
-     * @param {aria.core.CfgBeans.Callback} cb Callback called on pop state. It corresponds to a navigate method
-     * @param {aria.core.CfgBeans.Site.$properties.storage} options Options for local storage
+     * @param {aria.core.CfgBeans:Callback} cb Callback called on pop state. It corresponds to a navigate method
+     * @param {aria.core.CfgBeans:Site.storage} options Options for local storage
      */
     $constructor : function (cb, options) {
 
@@ -46,7 +46,7 @@ Aria.classDefinition({
 
         /**
          * Callback called on url change. It corresponds to a navigate method
-         * @type aria.core.CfgBeans.Callback
+         * @type aria.core.CfgBeans:Callback
          * @private
          */
         this._navigate = cb || null;
@@ -79,7 +79,7 @@ Aria.classDefinition({
 
             /**
              * Called on window unload.
-             * @type aria.core.CfgBeans.Callback
+             * @type aria.core.CfgBeans:Callback
              * @private
              */
             this._saveCacheCB = {

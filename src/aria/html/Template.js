@@ -30,6 +30,12 @@ Aria.classDefinition({
     $statics : {
         ERROR_SUBTEMPLATE : "#ERROR IN SUBTEMPLATE#"
     },
+    /**
+     * Create an instance of the widget.
+     * @param {aria.html.beans.TemplateCfg:Properties} cfg widget configuration, which is the parameter given in the
+     * template
+     * @param {aria.templates.TemplateCtxt} context template context
+     */
     $constructor : function (cfg, ctxt) {
         this.$BaseWidget.constructor.apply(this, arguments);
 
@@ -69,7 +75,7 @@ Aria.classDefinition({
          * initialized, or if an error prevents the template from being loaded. So, if it is not null, we are still
          * waiting for the template to be loaded.
          * @protected
-         * @type aria.templates.CfgBeans.InitTemplateCfg
+         * @type aria.templates.CfgBeans:InitTemplateCfg
          */
         this._tplcfg = {
             classpath : aria.core.environment.Customizations.getTemplateCP(cfg.classpath),

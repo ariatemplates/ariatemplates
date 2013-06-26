@@ -64,7 +64,7 @@ Aria.classDefinition({
         /**
          * Initialise the module controller
          * @param {Object} args
-         * @param {Object} cb callback
+         * @param {aria.core.CfgBeans:Callback} cb callback
          */
         init : function (args, cb) {
 
@@ -122,7 +122,7 @@ Aria.classDefinition({
         /**
          * Sort key getter by label, used when activateSort is used.
          * @protected
-         * @param {aria.templates.ViewCfgBeans.Item} obj view item object whose sort key should be returned
+         * @param {aria.templates.ViewCfgBeans:Item} obj view item object whose sort key should be returned
          */
         _sortByLabel : function (obj) {
             // BE CAREFUL:

@@ -249,7 +249,7 @@ Aria.classDefinition({
              * _serialize
              * @public
              * @param {Object|Array|String|Number|Boolean|Date|RegExp|Function} item item to serialize
-             * @param {aria.utils.json.JsonSerializerBeans.JsonSerializeOptions} options options for the serialization
+             * @param {aria.utils.json.JsonSerializerBeans:JsonSerializeOptions} options options for the serialization
              * @return {String} the serialized item. It is set to null if there is an error during the serialization
              */
             serialize : function (item, options) {
@@ -287,7 +287,7 @@ Aria.classDefinition({
             /**
              * Normalize the options given to serialize
              * @protected
-             * @param {aria.utils.json.JsonSerializerBeans.JsonSerializeOptions} options
+             * @param {aria.utils.json.JsonSerializerBeans:JsonSerializeOptions} options
              */
             _normalizeOptions : function (options) {
                 for (var key in defaults) {
@@ -302,7 +302,7 @@ Aria.classDefinition({
              * normalization
              * @protected
              * @param {Object|Array|String|Number|Boolean|Date|RegExp} item item to serialize
-             * @param {aria.utils.json.JsonSerializerBeans.JsonSerializeAdvancedOptions} options options for the
+             * @param {aria.utils.json.JsonSerializerBeans:JsonSerializeAdvancedOptions} options options for the
              * serialization
              * @return {String} the serialized item. It is set to null if there is an error during the serialization
              */
@@ -343,7 +343,7 @@ Aria.classDefinition({
              * Protected method that is called whenever an object has to be serialized
              * @protected
              * @param {Object} item object to serialize
-             * @param {aria.utils.json.JsonSerializerBeans.JsonSerializeAdvancedOptions} options options for the
+             * @param {aria.utils.json.JsonSerializerBeans:JsonSerializeAdvancedOptions} options options for the
              * serialization
              * @return {String} the serialized item. It is set to null if there is an error during the serialization
              */
@@ -411,7 +411,7 @@ Aria.classDefinition({
              * Wheter a key should be serialized in the result object or not. Metadata might be excluded depending on
              * the options.
              * @param {String} key Key name
-             * @param {aria.utils.json.JsonSerializerBeans.JsonSerializeAdvancedOptions} options options for the
+             * @param {aria.utils.json.JsonSerializerBeans:JsonSerializeAdvancedOptions} options options for the
              * serialization
              * @return {Boolean}
              * @private
@@ -427,7 +427,7 @@ Aria.classDefinition({
              * Protected method that is called whenever an array has to be serialized
              * @protected
              * @param {Array} item array to serialize
-             * @param {aria.utils.json.JsonSerializerBeans.JsonSerializeAdvancedOptions} options options for the
+             * @param {aria.utils.json.JsonSerializerBeans:JsonSerializeAdvancedOptions} options options for the
              * serialization
              * @return {String} the serialized item. It is set to null if there is an error during the serialization
              */
@@ -482,7 +482,7 @@ Aria.classDefinition({
              * Protected method that is called whenever a string has to be serialized
              * @protected
              * @param {String} item string to serialize
-             * @param {aria.utils.json.JsonSerializerBeans.JsonSerializeAdvancedOptions} options options for the
+             * @param {aria.utils.json.JsonSerializerBeans:JsonSerializeAdvancedOptions} options options for the
              * serialization
              * @return {String} the serialized item. It is set to null if there is an error during the serialization
              */
@@ -502,7 +502,7 @@ Aria.classDefinition({
              * Protected method that is called whenever a number has to be serialized
              * @protected
              * @param {Number} item number to serialize
-             * @param {aria.utils.json.JsonSerializerBeans.JsonSerializeAdvancedOptions} options options for the
+             * @param {aria.utils.json.JsonSerializerBeans:JsonSerializeAdvancedOptions} options options for the
              * serialization
              * @return {String} the serialized item. It is set to null if there is an error during the serialization
              */
@@ -514,7 +514,7 @@ Aria.classDefinition({
              * Protected method that is called whenever a boolean has to be serialized
              * @protected
              * @param {Boolean} item boolean to serialize
-             * @param {aria.utils.json.JsonSerializerBeans.JsonSerializeAdvancedOptions} options options for the
+             * @param {aria.utils.json.JsonSerializerBeans:JsonSerializeAdvancedOptions} options options for the
              * serialization
              * @return {String} the serialized item. It is set to null if there is an error during the serialization
              */
@@ -526,7 +526,7 @@ Aria.classDefinition({
              * Protected method that is called whenever a date has to be serialized
              * @protected
              * @param {Date} item date to serialize
-             * @param {aria.utils.json.JsonSerializerBeans.JsonSerializeAdvancedOptions} options options for the
+             * @param {aria.utils.json.JsonSerializerBeans:JsonSerializeAdvancedOptions} options options for the
              * serialization
              * @return {String} the serialized item. It is set to null if there is an error during the serialization
              */
@@ -542,7 +542,7 @@ Aria.classDefinition({
              * Protected method that is called whenever a regexp has to be serialized
              * @protected
              * @param {RegExp} item regexp to serialize
-             * @param {aria.utils.json.JsonSerializerBeans.JsonSerializeAdvancedOptions} options options for the
+             * @param {aria.utils.json.JsonSerializerBeans:JsonSerializeAdvancedOptions} options options for the
              * serialization
              * @return {String} the serialized item. It is set to null if there is an error during the serialization
              */
@@ -558,7 +558,7 @@ Aria.classDefinition({
              * Protected method that is called whenever a function has to be serialized
              * @protected
              * @param {Function} item function to serialize
-             * @param {aria.utils.json.JsonSerializerBeans.JsonSerializeAdvancedOptions} options options for the
+             * @param {aria.utils.json.JsonSerializerBeans:JsonSerializeAdvancedOptions} options options for the
              * serialization
              * @return {String} the serialized item. It is set to null if there is an error during the serialization
              */
@@ -569,7 +569,7 @@ Aria.classDefinition({
             /**
              * Protected method that is called whenever null has to be serialized
              * @protected
-             * @param {aria.utils.json.JsonSerializerBeans.JsonSerializeAdvancedOptions} options options for the
+             * @param {aria.utils.json.JsonSerializerBeans:JsonSerializeAdvancedOptions} options options for the
              * serialization
              * @return {String} the serialized item. It is set to null if there is an error during the serialization
              */

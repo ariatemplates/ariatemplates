@@ -40,9 +40,9 @@ Aria.classDefinition({
 
         /**
          * Handles the response from the server, and call the associated callback
-         * @param {aria.modules.RequestBeans.SuccessResponse} successResponse
-         * @param {aria.modules.RequestBeans.Request} request
-         * @param {aria.core.JsObject.Callback} callback to call with the response
+         * @param {aria.modules.RequestBeans:SuccessResponse} successResponse
+         * @param {aria.modules.RequestBeans:Request} request
+         * @param {aria.core.CfgBeans:Callback} callback to call with the response
          */
         processSuccess : function (successResponse, request, callback) {
             var res = {};

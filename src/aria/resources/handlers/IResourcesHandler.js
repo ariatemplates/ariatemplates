@@ -23,7 +23,7 @@ Aria.interfaceDefinition({
         /**
          * Call the callback with an array of suggestions in its arguments.
          * @param {String} textEntry Search string
-         * @param {aria.core.CfgBeans.Callback} callback Called when suggestions are ready
+         * @param {aria.core.CfgBeans:Callback} callback Called when suggestions are ready
          */
         getSuggestions : {
             $type : "Function"
@@ -49,7 +49,7 @@ Aria.interfaceDefinition({
 
         /**
          * Call the callback with all possible suggestions.
-         * @param {aria.core.CfgBeans.Callback} callback
+         * @param {aria.core.CfgBeans:Callback} callback
          */
         getAllSuggestions : {
             $type : "Function"

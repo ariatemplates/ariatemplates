@@ -219,8 +219,8 @@ Aria.classDefinition({
         },
         /**
          * fits the top and left position of the element within viewport
-         * @param {aria.utils.DomBeans.Geometry} geometry
-         * @return {aria.utils.DomBeans.Position} top and left values of the fitted geometry
+         * @param {aria.utils.DomBeans:Geometry} geometry
+         * @return {aria.utils.DomBeans:Position} top and left values of the fitted geometry
          */
 
         _fitResizeBoundary : function (geometry) {

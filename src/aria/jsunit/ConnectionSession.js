@@ -22,12 +22,12 @@ Aria.classDefinition({
         this.requestUrl = "";
         /**
          * Request
-         * @type {aria.core.CfgBeans.IOAsyncRequestCfg}
+         * @type aria.core.CfgBeans:IOAsyncRequestCfg
          */
         this.ioRequest = null;
         /**
          * Response
-         * @type {aria.core.CfgBeans.IOAsyncRequestResponseCfg}
+         * @type aria.core.CfgBeans:IOAsyncRequestResponseCfg
          */
         this.ioResponse = null;
 
@@ -42,7 +42,7 @@ Aria.classDefinition({
     $prototype : {
         /**
          * Set the ioRequest property of this connection session object.
-         * @param {aria.core.CfgBeans.IOAsyncRequestCfg} request
+         * @param {aria.core.CfgBeans:IOAsyncRequestCfg} request
          */
         setIORequest : function (request) {
             this.ioRequest = request;

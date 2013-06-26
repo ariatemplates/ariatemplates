@@ -26,7 +26,7 @@ Aria.classDefinition({
         /**
          * Captures the dom elements information of the root children elements (including the root). These properties
          * are stored for each node : id, tagName, top, left, width, height and text.
-         * @param {HtmlElement} root The root node.
+         * @param {HTMLElement} root The root node.
          */
         captureJsonScreenshot : function (root) {
             this.elements = [];
@@ -39,7 +39,7 @@ Aria.classDefinition({
 
         /**
          * Recursive method of captureJsonScreenshot
-         * @param {HtmlElement} root The root node.
+         * @param {HTMLElement} root The root node.
          * @private
          */
         _captureJsonScreenshot : function (root) {
@@ -59,8 +59,8 @@ Aria.classDefinition({
         /**
          * Convenient method to compare an old json with the last capture
          * @param {Array} arrayToCompare The array to be compared.
-         * @param {int} errorMargin The error margin for the numeric values comparison. 0 by default.
-         * @return An array with messages about differences found. If no difference is found, an empty array is
+         * @param {Integer} errorMargin The error margin for the numeric values comparison. 0 by default.
+         * @return {Array} An array with messages about differences found. If no difference is found, an empty array is
          * returned.
          */
         compare : function (arrayToCompare, errorMargin) {
@@ -97,10 +97,10 @@ Aria.classDefinition({
         /**
          * Convenient method to compare an json element on one single level. It also prevent to compare the 'element'
          * attribute, which is the html object.
-         * @param {JSON} item1 Object 1 to compare
-         * @param {JSON} item2 Object 2 to compare
-         * @param {int} errorMargin The error margin for the numeric values comparison. 0 by default.
-         * @return true if item1 is equals to item2
+         * @param {Object} item1 Object 1 to compare
+         * @param {Object} item2 Object 2 to compare
+         * @param {Integer} errorMargin The error margin for the numeric values comparison. 0 by default.
+         * @return {Boolean} true if item1 is equals to item2
          */
         itemCompare : function (item1, item2, errorMargin) {
             errorMargin = errorMargin || 0;
@@ -116,7 +116,7 @@ Aria.classDefinition({
 
         /**
          * Stores the json of a dom element.
-         * @param {HtmlElement} el The element to store
+         * @param {HTMLElement} el The element to store
          * @private
          */
         _saveElement : function (el, root) {
@@ -138,8 +138,8 @@ Aria.classDefinition({
 
         /**
          * Returns true if the element is visible
-         * @param {HtmlElement} el The element to test
-         * @return true if the element is visible
+         * @param {HTMLElement} el The element to test
+         * @return {Boolean} true if the element is visible
          * @private
          */
         _isHumanVisible : function (el) {
@@ -166,8 +166,8 @@ Aria.classDefinition({
 
         /**
          * Returns true if the element has a text value
-         * @param {HtmlElement} el The element to test
-         * @return true if the element has a text value
+         * @param {HTMLElement} el The element to test
+         * @return {Boolean} true if the element has a text value
          * @private
          */
         _hasDirectChildText : function (el) {
@@ -176,8 +176,8 @@ Aria.classDefinition({
 
         /**
          * Returns true if the element is visible, regarding some properties as the border, the background, ...
-         * @param {HtmlElement} el The element to test
-         * @return true if the element is visible.
+         * @param {HTMLElement} el The element to test
+         * @return {Boolean} true if the element is visible.
          * @private
          */
         _hasStyleThatMakesItVisible : function (el) {
@@ -193,8 +193,8 @@ Aria.classDefinition({
 
         /**
          * Returns the coordinates of the dom element
-         * @param {HtmlElement} el Dom element
-         * @return coordinates object
+         * @param {HTMLElement} el Dom element
+         * @return {Object} coordinates object
          * @private
          */
         _getCoordinates : function (el) {
@@ -213,8 +213,8 @@ Aria.classDefinition({
 
         /**
          * Returns the text content of a dom element
-         * @param {HtmlElement} el Dom element
-         * @return The text content
+         * @param {HTMLElement} el Dom element
+         * @return {String} The text content
          * @private
          */
         _getDirectTextContent : function (el) {

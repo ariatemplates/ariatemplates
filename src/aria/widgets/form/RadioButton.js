@@ -28,13 +28,14 @@
         $css : ['aria.widgets.form.RadioButtonStyle'],
         /**
          * RadioButton constructor
-         * @param {aria.widgets.CfgBeans.RadioButtonCfg} cfg the widget configuration
+         * @param {aria.widgets.CfgBeans:RadioButtonCfg} cfg the widget configuration
          * @param {aria.templates.TemplateCtxt} ctxt template context
+         * @param {Number} lineNumber Line number corresponding in the .tpl file where the widget is created
          */
         $constructor : function (cfg, ctxt) {
             /**
              * Skinnable class to use for this widget.
-             * @type {String}
+             * @type String
              */
             if (!this._skinnableClass) {
                 // allow the skinnable class to be defined in the child class, before calling this constructor

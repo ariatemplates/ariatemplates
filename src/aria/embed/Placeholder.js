@@ -44,7 +44,7 @@ Aria.classDefinition({
 
         /**
          * Listener for the contentChange event raised by the Placeholdermanager
-         * @type aria.core.CfgBeans.Callback
+         * @type aria.core.CfgBeans:Callback
          * @private
          */
         this._onContentChangeListener = {

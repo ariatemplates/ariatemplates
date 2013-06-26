@@ -34,7 +34,7 @@ Aria.classDefinition({
         /**
          * Returns the contextual menu settings
          * @public
-         * @return {aria.core.environment.Environment.EnvironmentBaseCfgBeans.AppCfg}
+         * @return {aria.core.environment.environment.EnvironmentBaseCfgBeans:AppCfg}
          */
         getContextualMenu : function () {
             return this.checkApplicationSettings("contextualMenu");

@@ -23,7 +23,7 @@ Aria.classDefinition({
     $dependencies : ['aria.widgets.controllers.NumberController'],
     /**
      * NumberField constructor
-     * @param{aria.widgets.CfgBeans.TextFieldCfg} cfg the widget configuration
+     * @param{aria.widgets.CfgBeans:NumberFieldCfg} cfg the widget configuration
      * @param{aria.templates.TemplateCtxt} ctxt template context
      */
     $constructor : function (cfg, ctxt, lineNumber) {

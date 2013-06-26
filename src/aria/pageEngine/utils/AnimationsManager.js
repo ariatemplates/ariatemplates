@@ -57,7 +57,7 @@ Aria.classDefinition({
 
         /**
          * Start the animation
-         * @param {aria.utils.css.AnimationsBean.AnimationCfg} animationCfg animation configuration object
+         * @param {aria.utils.css.AnimationsBean:AnimationCfg} animationCfg animation configuration object
          * @param {Object} animationInfo animation name and version
          * @protected
          */
@@ -80,7 +80,7 @@ Aria.classDefinition({
          * Start the page transition
          * @param {HTMLElement} activeDiv Active div
          * @param {HTMLElement} inactiveDiv Inactive div
-         * @param {aria.pageEngine.CfgBeans.PageAnimation} pageAnimationCfg page animation configuration object
+         * @param {aria.pageEngine.CfgBeans:PageAnimation} pageAnimationCfg page animation configuration object
          */
         startPageTransition : function (activeDiv, inactiveDiv, pageAnimationCfg) {
             if (pageAnimationCfg.animateOut && pageAnimationCfg.animateIn

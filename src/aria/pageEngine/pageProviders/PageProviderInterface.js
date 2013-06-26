@@ -29,13 +29,13 @@ Aria.interfaceDefinition({
     $interface : {
 
         /**
-         * @param {aria.pageEngine.CfgBeans.ExtendedCallback} callback
+         * @param {aria.pageEngine.CfgBeans:ExtendedCallback} callback
          */
         loadSiteConfig : function (callback) {},
 
         /**
-         * @param {aria.pageEngine.CfgBeans.PageNavigationInformation} pageRequest
-         * @param {aria.pageEngine.CfgBeans.ExtendedCallback} callback
+         * @param {aria.pageEngine.CfgBeans:PageNavigationInformation} pageRequest
+         * @param {aria.pageEngine.CfgBeans:ExtendedCallback} callback
          */
         loadPageDefinition : function (pageRequest, callback) {}
 

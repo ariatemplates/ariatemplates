@@ -48,7 +48,7 @@ Aria.classDefinition({
     $prototype : {
         /**
          * Init the text template with the given configuration.
-         * @param {aria.templates.CfgBeans.InitTxtTemplateCfg} cfg Template context configuration
+         * @param {aria.templates.CfgBeans:InitTxtTemplateCfg} cfg Template context configuration
          * @return {Boolean} true if there was no error
          */
         initTemplate : function (cfg) {

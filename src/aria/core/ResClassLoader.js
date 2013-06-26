@@ -60,7 +60,7 @@ Aria.classDefinition({
         },
         /**
          * Internal callback called when the class definition file has been downloaded
-         * @param {aria.core.FileLoader.$events.fileReady} evt
+         * @param {aria.core.FileLoader:fileReady:event} evt
          * @protected
          */
         _onClassDefinitionReceive : function (evt) {
@@ -147,7 +147,7 @@ Aria.classDefinition({
          *
          * @param {String} refClasspath Reference classpath
          * @param {String} logicalPath Logical file path
-         * @param {aria.core.JsObject.Callback} callback Callback called when the full path is ready
+         * @param {aria.core.CfgBeans:Callback} callback Callback called when the full path is ready
          * @param {Boolean} devMode Development mode
          * @param {String} resLocale Current locale
          * @private

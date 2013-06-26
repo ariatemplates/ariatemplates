@@ -18,9 +18,9 @@
     /**
      * Sorting function by ascending sortKey. Function given as a parameter to the Array.sort JavaScript function for
      * sorting. It compares two elements and return a value telling which one should be put before the other.
-     * @param {aria.templates.ViewCfgBeans.Item} elt1
-     * @param {aria.templates.ViewCfgBeans.Item} elt2
-     * @return -1 if elt1.sortKey &lt; elt2.sortKey, 0 if elt1.sortKey == elt2.sortKey, 1 if elt1.sortKey &gt;
+     * @param {aria.templates.ViewCfgBeans:Item} elt1
+     * @param {aria.templates.ViewCfgBeans:Item} elt2
+     * @return {Integer} -1 if elt1.sortKey &lt; elt2.sortKey, 0 if elt1.sortKey == elt2.sortKey, 1 if elt1.sortKey &gt;
      * elt2.sortKey
      * @private
      */
@@ -34,9 +34,9 @@
     /**
      * Sorting function by descending sortKey. Function given as a parameter to the Array.sort JavaScript function for
      * sorting. It compares two elements and return a value telling which one should be put before the other.
-     * @param {aria.templates.ViewCfgBeans.Item} elt1
-     * @param {aria.templates.ViewCfgBeans.Item} elt2
-     * @return -1 if elt2.sortKey &lt; elt1.sortKey, 0 if elt2.sortKey == elt1.sortKey, 1 if elt2.sortKey &gt;
+     * @param {aria.templates.ViewCfgBeans:Item} elt1
+     * @param {aria.templates.ViewCfgBeans:Item} elt2
+     * @return {Integer} -1 if elt2.sortKey &lt; elt1.sortKey, 0 if elt2.sortKey == elt1.sortKey, 1 if elt2.sortKey &gt;
      * elt1.sortKey
      * @private
      */
@@ -50,9 +50,9 @@
     /**
      * Function to be used as a sortKeyGetter callback, which returns the value of the property whose name is specified
      * in args.propertyName. See propertySorter for details.
-     * @param {aria.templates.ViewCfgBeans.Item} element whose sortKey has to be retrieved
+     * @param {aria.templates.ViewCfgBeans:Item} element whose sortKey has to be retrieved
      * @param {Object} args
-     * @return the sortKey of the element
+     * @return {MultiTypes} the sortKey of the element
      * @private
      */
     var __propertySorterSortFct = function (item, args) {
@@ -96,27 +96,28 @@
              * is automatically detected). If the property of an element inside the array or map is changed you do not
              * need to call notifyChange, unless this property has an incidence on the sort order, in which case you
              * should use CHANGED_SORT_CRITERIA. The initial array or map is never changed by the view itself.
-             * @type {Array|Object}
+             * @type Array|Object
              */
             this.initialArray = obj;
 
             /**
              * Sort order, which can be SORT_INITIAL, SORT_ASCENDING, or SORT_DESCENDING. If you modify this property,
              * it is not taken into account until the next refresh.
+             * @type String
              */
             this.sortOrder = this.SORT_INITIAL;
             /**
              * An id to use to define the type of sort (e.g. "sortByName"). Allows to detect different consecutive sort
              * types. Ignored (and will be set to null) if this.sortOrder == this.SORT_INITIAL. If you modify this
              * property, it is not taken into account until the next refresh.
-             * @type {String}
+             * @type String
              */
             this.sortName = null;
             /**
              * Function which returns the sort key, for each element. The first parameter of the callback is of type
              * aria.templates.ViewCfgBeans.Item. Ignored (and will be set to null) if this.sortOrder ==
              * this.SORT_INITIAL. If you modify this property, it is not taken into account until the next refresh.
-             * @type {aria.core.JsObject.Callback}
+             * @type aria.core.CfgBeans:Callback
              */
             this.sortKeyGetter = null;
 
@@ -124,27 +125,27 @@
              * Array of items (of type aria.templates.ViewCfgBeans.Item) in the correct sort order. This array must not
              * be modified outside this class, except for the filteredIn property of each element, which can be set
              * (through aria.utils.Json.setValue) to filter in or filter out an element directly.
-             * @type {Array}
+             * @type Array
              */
             this.items = [];
 
             /**
              * Number of filtered in elements. This property is updated in a refresh if needed.
-             * @type {Integer}
+             * @type Integer
              */
             this.filteredInCount = 0;
 
             /**
              * Number of elements per page. &gt; 0 if in pageMode, -1 otherwise. If you modify this property, it is not
              * taken into account until the next refresh.
-             * @type {Integer}
+             * @type Integer
              */
             this.pageSize = -1;
 
             /**
              * True if page-view is activated, false otherwise. This property must not be modified outside this class.
              * It is updated in a refresh.
-             * @type {Boolean}
+             * @type Boolean
              */
             this.pageMode = false;
 
@@ -181,7 +182,7 @@
 
             /**
              * Callback structure used when listening to json objects.
-             * @type {aria.core.JsObject.Callback}
+             * @type aria.core.CfgBeans:Callback
              * @protected
              */
             this._jsonChangeCallback = {
@@ -230,7 +231,7 @@
              * Utility function whose result can be used for the sortKeyGetter property.
              * @param {String} propertyName name of the property of an element of the initial array to be used as the
              * sortKey.
-             * @return {aria.core.JsObject.Callback} callback to be used for the sortKeyGetter property.
+             * @return {aria.core.CfgBeans:Callback} callback to be used for the sortKeyGetter property.
              */
             propertySorter : function (propertyName) {
                 return {
@@ -246,7 +247,7 @@
             /**
              * Notify the view that something has changed, and has to be taken into account for next refresh. Does not
              * do the refresh itself.
-             * @param changeType Can be either CHANGED_INITIAL_ARRAY or CHANGED_SORT_CRITERIA or a bitwise OR of both.
+             * @param {Integer} changeType Can be either CHANGED_INITIAL_ARRAY or CHANGED_SORT_CRITERIA or a bitwise OR of both.
              */
             notifyChange : function (changeType) {
                 this._changes = this._changes | changeType;
@@ -254,7 +255,7 @@
 
             /**
              * Refresh the view data after something has changed. Do nothing if nothing has changed.
-             * @param changeType If specified, call notifyChange with that parameter before doing the refresh. This
+             * @param {Integer} changeType If specified, call notifyChange with that parameter before doing the refresh. This
              * parameter can be either CHANGED_INITIAL_ARRAY or CHANGED_SORT_CRITERIA or a bitwise OR of both.
              */
             refresh : function (changeType) {
@@ -645,7 +646,7 @@
              * Descending > etc... For an explanation of the parameters, see the corresponding properties of the view.
              * @param {String} sortName An id to use to define the type of sort (e.g. "sortByName"). Allows to detect
              * different consecutive sort types.
-             * @param {aria.core.JsObject.Callback} sortKeyGetter Function which returns the sort key, for each element.
+             * @param {aria.core.CfgBeans:Callback} sortKeyGetter Function which returns the sort key, for each element.
              * The first parameter of the callback is of type aria.templates.ViewCfgBeans.Item.
              */
             toggleSortOrder : function (sortName, sortKeyGetter) {
@@ -687,9 +688,9 @@
             /**
              * Shortcut function which sets the sort properties (sortOrder, sortName and sortKeyGetter) and refreshes
              * the view. For an explanation of the parameters, see the corresponding properties of the view.
-             * @param sortOrder
-             * @param sortName
-             * @param sortKeyGetter
+             * @param {String} sortOrder
+             * @param {String} sortName
+             * @param {aria.core.CfgBeans:Callback} sortKeyGetter
              */
             setSort : function (sortOrder, sortName, sortKeyGetter) {
                 this.sortOrder = sortOrder;
@@ -700,11 +701,11 @@
 
             /**
              * Filters the items with a callback function called on each element. Does not refresh the view.
-             * @param filterType Can be either FILTER_SET (in this case, filterCallback will be called on all elements
+             * @param {Integer} filterType Can be either FILTER_SET (in this case, filterCallback will be called on all elements
              * whether they are filtered in or not), FILTER_ADD (filterCallback will only be called on filtered out
              * elements, so that it can only add elements to the current display) or FILTER_REMOVE (filterCallback will
              * only be called on filtered in elements, so that it can only remove elements from the current display).
-             * @param {aria.core.JsObject.Callback} filterCallback Callback which will be called on each item. The
+             * @param {aria.core.CfgBeans:Callback} filterCallback Callback which will be called on each item. The
              * callback must return either true or false, which will be the new value of the filteredIn property of the
              * element.
              */

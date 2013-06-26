@@ -59,7 +59,7 @@ Aria.classDefinition({
         },
         /**
          * Internal listener called when a new request is created.
-         * @param {aria.core.IO.$events.request} evt the event
+         * @param {aria.core.IO:request:event} evt the event
          * @private
          */
         _onRequest : function (evt) {
@@ -68,7 +68,7 @@ Aria.classDefinition({
         },
         /**
          * Internal listener called when a pending request is completed.
-         * @param {aria.core.IO.$events.response} evt the event
+         * @param {aria.core.IO:response:event} evt the event
          * @private
          */
         _onResponse : function (evt) {

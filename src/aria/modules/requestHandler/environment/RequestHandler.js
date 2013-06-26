@@ -35,7 +35,7 @@ Aria.classDefinition({
          * Get the urlService classpath configuration. It is a copy of the current configuration and not a reference to
          * the object itself.
          * @public
-         * @return {aria.modules.requestHandler.environment.RequestHandlerCfgBeans.AppCfg} The classpath configuration
+         * @return {aria.modules.requestHandler.environment.RequestHandlerCfgBeans:AppCfg} The classpath configuration
          */
         getRequestHandlerCfg : function () {
             return aria.utils.Json.copy(this.checkApplicationSettings("requestHandler"));
@@ -44,7 +44,7 @@ Aria.classDefinition({
         /**
          * Get the requestJsonSerializer configuration. It is the current configuration
          * @public
-         * @return {aria.modules.requestHandler.environment.RequestHandlerCfgBeans.RequestJsonSerializerCfg} The JSON
+         * @return {aria.modules.requestHandler.environment.RequestHandlerCfgBeans:RequestJsonSerializerCfg} The JSON
          * serializer configuration
          */
         getRequestJsonSerializerCfg : function () {

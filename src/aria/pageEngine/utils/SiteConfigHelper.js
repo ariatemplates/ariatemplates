@@ -23,7 +23,7 @@ Aria.classDefinition({
 
         /**
          * Site configuration object
-         * @type aria.pageEngine.CfgBeans.Site
+         * @type aria.pageEngine.CfgBeans:Site
          */
         this.siteConfig = siteConfig;
 
@@ -181,8 +181,8 @@ Aria.classDefinition({
         },
 
         /**
-         * @param {aria.core.CfgBeans.Callback} cb Callback to be called on page change
-         * @param {aria.core.CfgBeans.Site.$properties.storage} options Options for local storage
+         * @param {aria.core.CfgBeans:Callback} cb Callback to be called on page change
+         * @param {aria.core.CfgBeans:Site.storage} options Options for local storage
          * @return {Object} Instance of the class that manages page navigation
          */
         getNavigationManager : function (cb, options) {

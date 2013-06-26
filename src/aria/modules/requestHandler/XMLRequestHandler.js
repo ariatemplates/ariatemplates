@@ -27,9 +27,9 @@ Aria.classDefinition({
     $prototype : {
         /**
          * Handles the response from the server, and call the associated callback
-         * @param {aria.modules.RequestBeans.SuccessResponse} successResponse
-         * @param {aria.modules.RequestBeans.Request} request
-         * @param {aria.core.JsObject.Callback} callback to call with the response
+         * @param {aria.modules.RequestBeans:SuccessResponse} successResponse
+         * @param {aria.modules.RequestBeans:Request} request
+         * @param {aria.core.CfgBeans:Callback} callback to call with the response
          */
         processSuccess : function (successResponse, request, callback) {
             var res;
@@ -54,7 +54,7 @@ Aria.classDefinition({
         /**
          * Process the XML document for this response
          * @param {Object} xmlDocument document element from response
-         * @param {aria.modules.RequestBeans.Request} request
+         * @param {aria.modules.RequestBeans:Request} request
          * @return {Object} processed data
          */
         processXMLDocument : function (xmlDocument, request) {

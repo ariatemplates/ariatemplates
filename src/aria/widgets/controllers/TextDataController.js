@@ -30,7 +30,7 @@ Aria.classDefinition({
     $constructor : function () {
         /**
          * Data model associated to this controller
-         * @type {Object}
+         * @type Object
          */
         this._dataModel = {
             value : null,

@@ -262,7 +262,7 @@ Aria.classDefinition({
          * @param {Integer} x2 x of the second point
          * @param {Integer} y2 y of the second point
          * @private
-         * @return {Float} the angle in degrees ]-180; 180]
+         * @return {Number} the angle in degrees ]-180; 180]
          */
         __calculateAngle: function (x1, y1, x2, y2) {
             return  Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;

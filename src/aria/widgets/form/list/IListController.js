@@ -74,7 +74,7 @@ Aria.interfaceDefinition({
         /**
          * Toggles the selection of a specific item
          * @param {Number} itemIndex Index of the item to toggle in the items array in the data model
-         * @return true if item is selected after this call, false if not selected
+         * @return {Boolean} true if item is selected after this call, false if not selected
          */
         toggleSelection : function (itemIndex) {},
 
@@ -131,7 +131,7 @@ Aria.interfaceDefinition({
 
         /**
          * Set the items property.
-         * @param {aria.widgets.form.list.CfgBeans.Items} items
+         * @param {aria.widgets.form.list.CfgBeans:Items} items
          */
         setItems : function (items) {},
 

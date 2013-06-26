@@ -32,7 +32,7 @@ Aria.classDefinition({
         /**
          * Return default widget libraries.
          * @public
-         * @return {aria.widgetLibs.environment.WidgetLibsSettingsCfgBeans.AppCfg.defaultWidgetLibs}
+         * @return {aria.widgetLibs.environment.WidgetLibsSettingsCfgBeans:AppCfg.defaultWidgetLibs}
          */
         getWidgetLibs : function () {
             var res = this.checkApplicationSettings("defaultWidgetLibs");

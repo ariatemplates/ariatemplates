@@ -45,7 +45,7 @@
 
         /**
          * Widget constructor
-         * @param {aria.widgets.CfgBeans.WidgetCfg} cfg the widget configuration
+         * @param {aria.widgets.CfgBeans:WidgetCfg} cfg the widget configuration
          * @param {aria.templates.TemplateCtxt} ctxt template context
          * @param {Number} lineNumber line number in current template
          */
@@ -60,21 +60,21 @@
             /**
              * Reference to the dom element
              * @protected
-             * @type {DOMElement}
+             * @type HTMLElement
              */
             this._domElt = null;
 
             /**
              * Default margin for widget
              * @protected
-             * @type {Number}
+             * @type Number
              */
             this._defaultMargin = 1;
 
             /**
              * Does this widget needs the default markup
              * @protected
-             * @Boolean
+             * @type Boolean
              */
             this._hasMarkup = true;
 
@@ -417,7 +417,7 @@
              * already been normalized from its bean definition Note: this method must be overridden if extra-checks
              * have to be made in sub-widgets
              * @protected
-             * @param {aria.widgets.CfgBeans.WidgetCfg} cfg
+             * @param {aria.widgets.CfgBeans:WidgetCfg} cfg
              */
             _checkCfgConsistency : function () {},
 
@@ -512,7 +512,7 @@
              * Set and propagate bindable property changes in JSON data if applicable. This method must be called
              * internally by widgets when one of their property changes (e.g. field value for a TextField)
              * @param {String} propertyName
-             * @param {Multitype} newValue If transformation is used, this should be the widget value and not the data
+             * @param {MultiTypes} newValue If transformation is used, this should be the widget value and not the data
              * model value
              * @return {Object} null if the property did not change or if no binding is defined (there is no way to get
              * the previous value) or an {oldValue:'',newValue:''} object if property changed
@@ -691,7 +691,7 @@
             /**
              * Delegate an incoming event
              * @param {aria.DomEvent} evt
-             * @param {DOMElement} target that raised the event delegation (not the original target)
+             * @param {HTMLElement} target that raised the event delegation (not the original target)
              * @return {Boolean} event bubbles ?
              */
             delegate : function (evt) {

@@ -39,7 +39,7 @@ Aria.classDefinition({
         /**
          * Dynamically insert an adjacent section, without refreshing any other section.
          * @param {String} where May be one of: beforeBegin, afterBegin, beforeEnd, afterEnd
-         * @param {String|aria.templates.CfgBeans.SectionCfg} sectionParam A string containing the new section id, or an
+         * @param {String|aria.templates.CfgBeans:SectionCfg} sectionParam A string containing the new section id, or an
          * object containing the new section configuration.
          */
         this.insertAdjacentSection = function (where, sectionParam) {

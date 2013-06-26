@@ -26,14 +26,14 @@ Aria.classDefinition({
     $constructor : function () {
         /**
          * Start configuration
-         * @type aria.pageEngine.CfgBeans.Start
+         * @type aria.pageEngine.CfgBeans:Start
          * @protected
          */
         this._config = null;
 
         /**
          * Instance of class that implements aria.pageEngine.pageProviders.PageProviderInterface
-         * @type aria.pageEngine.CfgBeans.Start.$properties.pageProvider
+         * @type aria.pageEngine.CfgBeans:Start.pageProvider
          * @protected
          */
         this._pageProvider = null;
@@ -103,13 +103,6 @@ Aria.classDefinition({
          * @type Object
          */
         this.contentProcessors = {};
-
-        /**
-         * Helper class to load page dependencies specified in the site config
-         * @type aria.pageEngine.utils.SiteDependencies
-         * @protected
-         */
-        this._dependenciesLoader = null;
 
         /**
          * Identifier of the current page
@@ -184,7 +177,7 @@ Aria.classDefinition({
 
         /**
          * Listener called when the page provider raises a pageChange event
-         * @type aria.core.CfgBeans.Callback
+         * @type aria.core.CfgBeans:Callback
          * @protected
          */
         this._onPageDefinitionChangeListener = {
@@ -239,7 +232,7 @@ Aria.classDefinition({
 
         /**
          * Start the page engine by loading the site configuration
-         * @param {aria.pageEngine.CfgBeans.Start} config json configuration
+         * @param {aria.pageEngine.CfgBeans:Start} config json configuration
          */
         start : function (config) {
 
@@ -268,7 +261,7 @@ Aria.classDefinition({
         /**
          * Callback for the site configuration module controller. Initialize whatever is needed by the root module
          * controller, like the data model and the router
-         * @param {aria.pageEngine.CfgBeans.Site} siteConfig Site configuration
+         * @param {aria.pageEngine.CfgBeans:Site} siteConfig Site configuration
          */
         _loadRootModule : function (siteConfig) {
             var valid = this.isConfigValid(siteConfig, "aria.pageEngine.CfgBeans.Site", this.INVALID_SITE_CONFIGURATION);
@@ -378,8 +371,8 @@ Aria.classDefinition({
 
         /**
          * Navigate to a specific page
-         * @param {aria.pageEngine.CfgBeans.PageNavigationInformation} pageRequest
-         * @param {aria.core.CfgBeans.Callback} cb To be called when the navigation is complete
+         * @param {aria.pageEngine.CfgBeans:PageNavigationInformation} pageRequest
+         * @param {aria.core.CfgBeans:Callback} cb To be called when the navigation is complete
          */
         navigate : function (pageRequest, cb) {
             var pageId = pageRequest.pageId;
@@ -414,7 +407,7 @@ Aria.classDefinition({
 
         /**
          * Callback for loading the page dependencies after loading the page description while doing navigation.
-         * @param {aria.pageEngine.CfgBeans.PageDefinition} cfg Page configuration
+         * @param {aria.pageEngine.CfgBeans:PageDefinition} cfg Page configuration
          * @param {Object} args Contains the pageId and the callback
          */
         _getPageDependencies : function (cfg, args) {
@@ -452,7 +445,7 @@ Aria.classDefinition({
          * {
          *      lazy : {Boolean} true if lazy page dependencies have to be loaded,
          *      pageId : {String} id of the page,
-         *      cb : {aria.core.CfgBeans.Callback} to be called after dependencies are loaded
+         *      cb : {aria.core.CfgBeans:Callback} to be called after dependencies are loaded
          * }
          * </pre>
          *
@@ -728,9 +721,9 @@ Aria.classDefinition({
 
         /**
          * Extract the template configuration to be given to the Placeholder widget
-         * @param {aria.pageEngine.CfgBeans.Placeholder} item
-         * @param {aria.pageEngine.CfgBeans.PageDefinition} pageConfig
-         * @return {aria.html.beans.TemplateCfg.Properties}
+         * @param {aria.pageEngine.CfgBeans:Placeholder} item
+         * @param {aria.pageEngine.CfgBeans:PageDefinition} pageConfig
+         * @return {aria.html.beans.TemplateCfg:Properties}
          * @protected
          */
         _getTemplateCfg : function (item, pageConfig) {
@@ -755,7 +748,7 @@ Aria.classDefinition({
 
         /**
          * Retrieve the contents corresponding to a certain contentId from the page definition
-         * @param {aria.pageEngine.CfgBeans.PageDefinition} pageConfig
+         * @param {aria.pageEngine.CfgBeans:PageDefinition} pageConfig
          * @param {String} contentId
          * @return {Array} Array of strings corresponding to processed content
          * @protected
@@ -777,7 +770,7 @@ Aria.classDefinition({
 
         /**
          * Process according to the content type
-         * @param {aria.pageEngine.CfgBeans.Content} content
+         * @param {aria.pageEngine.CfgBeans:Content} content
          * @return {String} processed content
          */
         processContent : function (content) {
@@ -835,7 +828,7 @@ Aria.classDefinition({
 
         /**
          * Return instance of the pageProvider
-         * @return {aria.pageEngine.CfgBeans.Start.$properties.pageProvider}
+         * @return {aria.pageEngine.CfgBeans:Start.pageProvider}
          */
         getPageProvider : function () {
             return this._pageProvider;

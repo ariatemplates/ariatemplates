@@ -50,7 +50,7 @@ Aria.interfaceDefinition({
          * Module initialization method - shall be overridden by sub-classes Note: this method is asynchronous (cf.
          * callback argument)
          * @param {Object} initArgs init argument - actual type is defined by the sub-class
-         * @param {aria.core.JsObject.Callback} callback the callback description
+         * @param {aria.core.CfgBeans:Callback} callback the callback description
          */
         init : {
             $type : "Function",
@@ -72,7 +72,7 @@ Aria.interfaceDefinition({
 
         /**
          * Retrieve the module resource set.
-         * @return {JSON object} The module resource set
+         * @return {Object} The module resource set
          */
         getResourceSet : function () {},
 
@@ -86,7 +86,7 @@ Aria.interfaceDefinition({
 
         /**
          * Register a listener to receive events from this module controller.
-         * @param {aria.core.JsObject.Callback} lsn listener to register. Note that JsObject.$callback is not used for
+         * @param {aria.core.CfgBeans:Callback} lsn listener to register. Note that JsObject.$callback is not used for
          * performance and error reporting reasons, so that only the form { fn : {Function}, scope: {Object}, args :
          * {MultiTypes}} is supported for this callback.
          */

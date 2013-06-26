@@ -45,7 +45,7 @@ Aria.classDefinition({
         /**
          * IATA Months for interpretation
          * @protected
-         * @type {Array}
+         * @type Array
          */
         this._interpret_monthTexts = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV",
                 "DEC"];
@@ -168,76 +168,76 @@ Aria.classDefinition({
         /**
          * simple format valid check : 0 or 1 month + digits + separators
          * @private
-         * @type {RegExp}
+         * @type RegExp
          */
         this._interpret_isValid = /^[\d\W]*([a-z]{3})?[\d\W]*$/i;
 
         /**
          * special case 1 RegExp : 5 -> the 5th of today's month
          * @private
-         * @type {RegExp}
+         * @type RegExp
          */
         this._interpret_specialCase1 = /^\d{1,2}$/;
 
         /**
          * special case 2 RegExp : +-5 -> today +-5 days
          * @private
-         * @type {RegExp}
+         * @type RegExp
          */
         this._interpret_specialCase2 = /^[+\-]\d{1,3}$/;
 
         /**
          * special case 3 RegExp : 10DEC/+-5 -> 10DEC +-5 days
          * @private
-         * @type {RegExp}
+         * @type RegExp
          */
         this._interpret_specialCase3 = /^(\d{1,2}[a-z]{3}\d{0,4})\/([+\-]\d{1,3})$/i;
         /**
          * @private
-         * @type {String}
+         * @type String
          */
         this._allowedSeparator = "(?:\\s+|[^dMyI]{1})";
         /**
          * corresponding strings yy, yyyy,M,MM,d,dd
          * @private
-         * @type {String}
+         * @type String
          */
         this._yearOrMonthOrDay_format = "(y{2}|y{4}|M{1,2}|d{1,2})";
         /**
          * corresponding strings yy, yyyy,MMM,I,d,dd
          * @private
-         * @type {String}
+         * @type String
          */
         this._yearOrIATAMonthOrDay_format = "(y{2}|y{4}|I|[a-z|A-Z]{3}|d{1,2})";
         /**
          * corresponding strings yy, yyyy,M,MM
          * @private
-         * @type {String}
+         * @type String
          */
         this._yearOrMonth_format = "(y{2}|y{4}|M{1,2})";
         /**
          * corresponding strings yy, yyyy,MMM,I
          * @private
-         * @type {String}
+         * @type String
          */
         this._yearOrIATAMonth_format = "(y{2}|y{4}|I|[a-z|A-Z]{3})";
         /**
          * corresponding strings M,MM,d,dd
          * @private
-         * @type {RegExp}
+         * @type RegExp
          */
         this._dayOrMonth_format = "(d{1,2}|M{1,2})";
         /**
          * corresponding strings MMM,I,d,dd
          * @private
-         * @type {RegExp}
+         * @type RegExp
          */
         this._dayOrIATAMonth_format = "(d{1,2}|I|[a-z|A-Z]{3})";
         /**
          * Checks if the pattern is yyyy*MM*dd, * can be any character except alphanumeric the order of year, month and
          * day can be reversed
          * @private
-         * @type {RegExp}
+         * @type RegExp
          */
 
         this._fullDatePattern = new RegExp("^" + this._yearOrMonthOrDay_format + this._allowedSeparator
@@ -246,7 +246,7 @@ Aria.classDefinition({
          * Checks if the pattern is MM*dd, * can be any character except alphanumeric, the order of month and day can be
          * reversed
          * @private
-         * @type {RegExp}
+         * @type RegExp
          */
         this._dayAndMonthDatePattern = new RegExp("^" + this._dayOrMonth_format + this._allowedSeparator
                 + this._dayOrMonth_format + "$");
@@ -255,7 +255,7 @@ Aria.classDefinition({
          * Checks if the pattern isMMM*dd, * can be any character except alphanumeric, the order of month and day can be
          * reversed
          * @private
-         * @type {RegExp}
+         * @type RegExp
          */
         this._dayAndIATAMonthDatePattern = new RegExp("^" + this._dayOrIATAMonth_format + this._allowedSeparator
                 + this._dayOrIATAMonth_format + "$");
@@ -263,7 +263,7 @@ Aria.classDefinition({
          * Checks if the pattern is yyyy*MM, * can be any character except alphanumeric, the order of year and month can
          * be reversed
          * @private
-         * @type {RegExp}
+         * @type RegExp
          */
         this._yearAndMonthDatePattern = new RegExp("^" + this._yearOrMonth_format + this._allowedSeparator
                 + this._yearOrMonth_format + "$");
@@ -271,7 +271,7 @@ Aria.classDefinition({
          * Checks if the pattern is yyyy*MMM, * can be any character except alphanumeric, the order of year and month
          * can be reversed
          * @private
-         * @type {RegExp}
+         * @type RegExp
          */
         this._yearAndIATAMonthDatePattern = new RegExp("^" + this._yearOrIATAMonth_format + this._allowedSeparator
                 + this._yearOrIATAMonth_format + "$");
@@ -279,14 +279,14 @@ Aria.classDefinition({
          * Checks if the pattern is yyyy*MMM*dd, * can be any character except alphanumeric, the order of year month and
          * day can be reversed
          * @private
-         * @type {RegExp}
+         * @type RegExp
          */
         this._fullIATADatePattern = new RegExp("^" + this._yearOrIATAMonthOrDay_format + this._allowedSeparator
                 + this._yearOrIATAMonthOrDay_format + this._allowedSeparator + this._yearOrIATAMonthOrDay_format + "$");
         /**
          * An array containing all date patterns allowed as inputPattern
          * @private
-         * @type {RegExp}
+         * @type RegExp
          */
         this._allDateInputPatterns = [this._fullDatePattern, this._fullIATADatePattern, this._dayAndMonthDatePattern,
                 this._dayAndIATAMonthDatePattern, this._yearAndMonthDatePattern, this._yearAndIATAMonthDatePattern];
@@ -294,52 +294,52 @@ Aria.classDefinition({
         /**
          * 3 char possibility, something like 1/3 (1st of march)
          * @private
-         * @type {RegExp}
+         * @type RegExp
          */
         this._interpret_littleDate = /^\d\W\d$/;
         /**
          * year recognition RegExp, used in inputPattern definition
          * @private
-         * @type {RegExp}
+         * @type RegExp
          */
         this._interpret_isYear = /yyyy/g;
         /**
          * year on 2 digits recognition RegExp,used in inputPattern definition
          * @private
-         * @type {RegExp}
+         * @type RegExp
          */
         this._interpret_isYearOn2Digit = /yy/g;
         /**
          * month recognition RegExp, used in inputPattern definition
          * @private
-         * @type {RegExp}
+         * @type RegExp
          */
         this._interpret_isAnymonth = /MMM|I|MM/g;
 
         /**
          * month recognition RegExp Parenthesis are used in this regexp to capture a backreference for replacement
          * @private
-         * @type {RegExp}
+         * @type RegExp
          */
         this._interpret_isMonth = /([a-z]{3})/i;
         /**
          * day recognition RegExp, used in inputPattern definition
          * @private
-         * @type {RegExp}
+         * @type RegExp
          */
         this._interpret_isDay = /dd/g;
 
         /**
          * recognize something like 01022008 RegExp
          * @private
-         * @type {RegExp}
+         * @type RegExp
          */
         this._interpret_digitOnly = /^\d+$/;
 
         /**
          * separators RegExp : recognize any being not a number or a letter
          * @private
-         * @type {RegExp}
+         * @type RegExp
          */
         this._separators = /[^\w]/;
 
@@ -358,7 +358,7 @@ Aria.classDefinition({
         /**
          * simple format valid check : at least one digit at the beginning of the string
          * @private
-         * @type {RegExp}
+         * @type RegExp
          */
 
         this._interpret_time_isValid = /^\d/;
@@ -366,14 +366,14 @@ Aria.classDefinition({
         /**
          * check string for any unwanted characters except separators and pattern letters.
          * @private
-         * @type {RegExp}
+         * @type RegExp
          */
         this._interpret_time_remove_unwantedCharacters = /[^\\h;m,.\-:\/\d]+/gi;
 
         /**
          * check string for any separators and pattern letters.
          * @private
-         * @type {RegExp}
+         * @type RegExp
          */
         this._interpret_time_remove_separatorCharacters = /[\\h;m,.\-:\/\s]/;
 
@@ -784,7 +784,7 @@ Aria.classDefinition({
          * </pre>
          *
          * @param {String} entryStr String to be interpreted
-         * @param {aria.utils.Beans.options} options for the date interpreter - optional
+         * @param {aria.utils.Beans:options} options for the date interpreter - optional
          *
          * <pre>
          * referenceDate : {Date} reference date used in case entry string is (+/- Number) defaults to today
@@ -1030,9 +1030,9 @@ Aria.classDefinition({
 
         },
         /**
-         * @param {} format
-         * @param {} patternComposition
-         * @return {}
+         * @param {RegExp} format
+         * @param {String} patternComposition
+         * @return {Object}
          */
 
         _generateIndexes : function (format, patternComposition) {

@@ -24,7 +24,7 @@ Aria.classDefinition({
     $dependencies : ["aria.utils.String"],
     /**
      * Gauge constructor
-     * @param {aria.widgets.CfgBeans.GaugeCfg} cfg the widget configuration
+     * @param {aria.widgets.CfgBeans:GaugeCfg} cfg the widget configuration
      * @param {aria.templates.TemplateCtxt} ctxt template context
      */
     $constructor : function (cfg, ctxt) {

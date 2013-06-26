@@ -38,7 +38,7 @@ Aria.classDefinition({
 
         /**
          * Load the Google map V3 scripts
-         * @param {aria.core.CgfBeans.Callback} cb
+         * @param {aria.core.CgfBeans:Callback} cb
          */
         load : function (cb) {
             if (this.isLoaded()) {
@@ -66,7 +66,7 @@ Aria.classDefinition({
         },
 
         /**
-         * @param {aria.map.CfgBeans.MapCfg} cfg
+         * @param {aria.map.CfgBeans:MapCfg} cfg
          * @return {Object} Map instance. null if the dependencies are not loaded
          */
         getMap : function (cfg) {

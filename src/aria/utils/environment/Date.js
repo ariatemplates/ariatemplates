@@ -33,7 +33,7 @@ Aria.classDefinition({
 
         /**
          * Get Date configuration
-         * @return {aria.utils.environmentDateCfgBeans.DateFormatsCfg}
+         * @return {aria.utils.environmentDateCfgBeans:DateFormatsCfg}
          */
         getDateFormats : function () {
             return this.checkApplicationSettings("dateFormats");
@@ -41,7 +41,7 @@ Aria.classDefinition({
 
         /**
          * Get Time configuration
-         * @return {aria.utils.environment.DateCfgBeans.TimeFormatsCfg}
+         * @return {aria.utils.environment.DateCfgBeans:TimeFormatsCfg}
          */
         getTimeFormats : function () {
             return this.checkApplicationSettings("timeFormats");

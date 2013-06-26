@@ -42,14 +42,14 @@ Aria.classDefinition({
         /**
          * Internal reference to aria.core.Cache singleton
          * @private
-         * @type {aria.core.Cache}
+         * @type aria.core.Cache
          */
         this._cache = null;
 
         /**
          * Map between extension and handler
          * @private
-         * @type {Object}
+         * @type Object
          */
         this._classTypes = {
             "JS" : "aria.core.JsClassLoader",
@@ -321,7 +321,7 @@ Aria.classDefinition({
 
         /**
          * Internal method called when a class loader can be disposed
-         * @param {aria.core.ClassLoader.$events.complete} evt
+         * @param {aria.core.ClassLoader:complete:event} evt
          * @private
          */
         _onClassLoaderComplete : function (evt) {

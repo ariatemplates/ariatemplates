@@ -108,7 +108,7 @@ Aria.classDefinition({
 
         /**
          * Internal listener called when a change occurs during the test execution
-         * @param {aria.jsunit.TestEngine.$events.change} evt the event
+         * @param {aria.jsunit.TestEngine:change:event} evt the event
          * @private
          */
         _onChange : function (evt) {
@@ -146,7 +146,7 @@ Aria.classDefinition({
         /**
          * Internal method used to process the HTML report for a given test This method is called recursively for each
          * sub-test
-         * @param {aria.jsunit.TestEngine.testReport} trTest a test element of the test report
+         * @param {aria.jsunit.TestEngine:testReport:property} trTest a test element of the test report
          * @param {Array} h the HTML output buffer
          * @private
          */
@@ -282,7 +282,7 @@ Aria.classDefinition({
 
         /**
          * Internal method used to process the HTML report of failures and errors (similar type of output)
-         * @param {aria.jsunit.TestEngine.testReport} trTest a test element of the test report
+         * @param {aria.jsunit.TestEngine:testReport:property} trTest a test element of the test report
          * @param {Enum} type the target of the call: 'failures' or 'errors'
          * @param {Array} h the HTML output buffer
          * @private

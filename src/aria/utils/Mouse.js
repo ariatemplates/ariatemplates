@@ -76,10 +76,10 @@
 
     /**
      * Find the first parent of 'start' element with the attribute specified by 'attribute'
-     * @param {DOMElement} start Node element from which we start searching
+     * @param {HTMLElement} start Node element from which we start searching
      * @param {String} attribute Attribute name
      * @param {Number} maxDepth Maximum number of elements to traverse, -1 for infinite
-     * @param {DOMElement} stopper Stop the search when reaching this element
+     * @param {HTMLElement} stopper Stop the search when reaching this element
      * @return {String} attribute value
      */
     function findByAttribute (start, attribute, maxDepth, stopper) {

@@ -111,7 +111,7 @@ Aria.classDefinition({
 
         /**
          * Set the list content
-         * @param {aria.widgets.CfgBeans.MultiSelectCfg.items} options
+         * @param {aria.widgets.CfgBeans:MultiSelectCfg.items} options
          */
         setListOptions : function (options) {
             // clean cache on each toggle

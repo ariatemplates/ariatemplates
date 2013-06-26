@@ -68,8 +68,8 @@ Aria.classDefinition({
 
         /**
          * Load Aria Templates in the given frame and call the callback. This replaces the content of the frame.
-         * @param {DOMElement} frame frame
-         * @param {aria.core.CfgBeans.Callback} cb callback. The first argument is an object containing success
+         * @param {HTMLElement} frame frame
+         * @param {aria.core.CfgBeans:Callback} cb callback. The first argument is an object containing success
          * information.
          */
         loadAriaTemplatesInFrame : function (frame, cb) {
@@ -215,7 +215,7 @@ Aria.classDefinition({
 
         /**
          * Return a javascript id which can be used from the iframe to call the corresponding callback.
-         * @param {aria.core.CfgBeans.Callback} cb callback
+         * @param {aria.core.CfgBeans:Callback} cb callback
          * @return {String}
          */
         _createCallbackId : function (cb) {
@@ -256,7 +256,7 @@ Aria.classDefinition({
 
         /**
          * Set the following property if they are not defined already: bootRootFolderPath, frameworkHref, frameworkJS
-         * @param {aria.core.CfgBeans.Callback} cb callback called when the properties are set.
+         * @param {aria.core.CfgBeans:Callback} cb callback called when the properties are set.
          */
         loadBootstrap : function (cb) {
             if (this.bootRootFolderPath == null) {
@@ -292,7 +292,7 @@ Aria.classDefinition({
 
         /**
          * Called when the framework bootstrap js file is loaded.
-         * @param {aria.core.CfgBeans.IOAsyncRequestResponseCfg} res
+         * @param {aria.core.CfgBeans:IOAsyncRequestResponseCfg} res
          */
         _frameworkLoaded : function (res) {
             this._loadingFrameworkJs = false;

@@ -26,7 +26,7 @@ Aria.interfaceDefinition({
          * @param {String} moduleName Name of the module that is making the request
          * @param {String} actionName Action to be called on the server
          * @param {Number} sessionId Value of the session id
-         * @return {aria.modules.RequestBeans.RequestDetails|String} URL details
+         * @return {aria.modules.RequestBeans:RequestDetails|String} URL details
          */
         createActionUrl : function (moduleName, actionName, sessionId) {},
 
@@ -35,7 +35,7 @@ Aria.interfaceDefinition({
          * @param {String} moduleName Name of the module that is making the request
          * @param {Object} serviceSpec Specification for target service
          * @param {Number} sessionId Value of the session id
-         * @return {aria.modules.RequestBeans.RequestDetails|String} URL details
+         * @return {aria.modules.RequestBeans:RequestDetails|String} URL details
          */
         createServiceUrl : function (moduleName, serviceSpec, sessionId) {},
 

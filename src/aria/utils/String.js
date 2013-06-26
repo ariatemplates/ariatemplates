@@ -54,7 +54,7 @@ Aria.classDefinition({
          * Return true if the character at index in str is escaped with backslashes.
          * @param {String} str
          * @param {Integer} index
-         * @return true if the character is escaped, false otherwise
+         * @return {Boolean} true if the character is escaped, false otherwise
          */
         isEscaped : function (str, index) {
             var res = false;

@@ -38,13 +38,13 @@
             INVALID_KEYCODE : "Suggestions does not match labelKey or codeKey"
         },
         /**
-         * @param {aria.resources.handlers.LCResourcesHandlerBean.Configuration} cfg
+         * @param {aria.resources.handlers.LCResourcesHandlerBean:Configuration} cfg
          */
         $constructor : function (cfg) {
 
             /**
              * Minimum number of letters typed to return suggestions
-             * @type {Number}
+             * @type Number
              */
             this.threshold = 1;
 
@@ -75,12 +75,12 @@
             /**
              * List of available suggestions.
              * @protected
-             * @type {Array}
+             * @type Array
              */
             this._suggestions = [];
             /**
              * Specifies the default options for labelKey and codeKey.
-             * @type {Object}
+             * @type Object
              */
             this._options = {
                 labelKey : "label",
@@ -123,7 +123,7 @@
              * Call the callback with an array of suggestions in its arguments. Suggestions that are exact match are
              * marked with parameter exactMatch set to true.
              * @param {String} textEntry Search string
-             * @param {aria.core.CfgBeans.Callback} callback Called when suggestions are ready
+             * @param {aria.core.CfgBeans:Callback} callback Called when suggestions are ready
              */
             getSuggestions : function (textEntry, callback) {
 
@@ -249,7 +249,7 @@
 
             /**
              * Call the callback with all possible suggestions.
-             * @param {aria.core.CfgBeans.Callback} callback
+             * @param {aria.core.CfgBeans:Callback} callback
              */
             getAllSuggestions : function (callback) {
                 var originalSuggestions = this._suggestions;

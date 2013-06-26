@@ -87,7 +87,7 @@ Aria.classDefinition({
     $prototype : {
         /**
          * Init the CSS template with the given configuration.
-         * @param {aria.templates.CfgBeans.InitCSSTemplateCfg} cfg Template context configuration
+         * @param {aria.templates.CfgBeans:InitCSSTemplateCfg} cfg Template context configuration
          * @return {Boolean} true if there was no error
          */
         initTemplate : function (cfg) {
@@ -138,7 +138,7 @@ Aria.classDefinition({
         /**
          * Is this Template context linked to a CSS template that requires selector prefixing ? TODO configurabule
          * through initArgs ?
-         * @return Boolean
+         * @return {Boolean}
          */
         doPrefixing : function () {
             // Widget don't need prefixing
@@ -150,6 +150,7 @@ Aria.classDefinition({
 
         /**
          * Is this Template context linked to a Widget CSS template?
+         * @return {Boolean}
          */
         isWidget : function () {
             return this._cfg.isWidget;
@@ -157,6 +158,7 @@ Aria.classDefinition({
 
         /**
          * Is this Template context linked to a Widget CSS template?
+         * @return {Boolean}
          */
         isTemplate : function () {
             return this._cfg.isTemplate;
@@ -165,6 +167,7 @@ Aria.classDefinition({
         /**
          * Returns the output of the main macro. It only actually calls the main macro the first time, and then only
          * returns a cached version.
+         * @return {String}
          */
         _getOutput : function () {
             if (this.__cachedOutput) {
@@ -283,7 +286,7 @@ Aria.classDefinition({
 
         /**
          * Get the number of CSS selectors
-         * @return Number number of selectors
+         * @return {Number} Number number of selectors
          */
         getNumLines : function () {
             return this.__numSelectors;

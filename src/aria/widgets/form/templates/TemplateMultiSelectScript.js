@@ -22,14 +22,14 @@ Aria.tplScriptDefinition({
         /**
          * Name of the element containing the displayed list items
          * @protected
-         * @type {String}
+         * @type String
          */
         this._refContainer = "myList";
 
         /**
          * If necessary, shift between the item index and the child index in the dom
          * @protected
-         * @type {Number}
+         * @type Number
          */
         this._itemShift = 1;
     },
@@ -107,7 +107,7 @@ Aria.tplScriptDefinition({
 
         /**
          * Gets the class name of an item depending on the data in the item (selected etc)
-         * @param {aria.widgets.form.list.CfgBeans.Item} item The list item object to decide the class name for
+         * @param {aria.widgets.form.list.CfgBeans:Item} item The list item object to decide the class name for
          * @return {String} The class name. May consist of multiple classes.
          */
         _getClassForItem : function (item) {

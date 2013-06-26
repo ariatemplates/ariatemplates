@@ -26,7 +26,13 @@ Aria.classDefinition({
     $statics : {
         DUPLICATE_VALUE : "%1 - Duplicate values %2 found in options"
     },
-    $constructor : function (cfg, ctxt, lineNumber) {
+       /**
+         * RadioButton constructor
+         * @param {aria.widgets.CfgBeans:SelectBoxCfg} cfg the widget configuration
+         * @param {aria.templates.TemplateCtxt} ctxt template context
+         * @param {Number} lineNumber Line number corresponding in the .tpl file where the widget is created
+         */
+     $constructor : function (cfg, ctxt, lineNumber) {
         if (!this._skinnableClass) {
             this._skinnableClass = "SelectBox";
         }

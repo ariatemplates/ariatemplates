@@ -25,7 +25,7 @@ Aria.classDefinition({
     $css : ["aria.widgets.action.LinkStyle"],
     /**
      * ActionWidget constructor
-     * @param {aria.widgets.CfgBeans.ActionWidgetCfg} cfg the widget configuration
+     * @param {aria.widgets.CfgBeans:ActionWidgetCfg} cfg the widget configuration
      * @param {aria.templates.TemplateCtxt} ctxt template context
      */
     $constructor : function (cfg, ctxt) {

@@ -69,7 +69,7 @@
 
             /**
              * Stores dom element wrappers in order to properly destroy them
-             * @type {Array}
+             * @type Array
              * @private
              */
             this._createdDomWrappers = {};
@@ -125,7 +125,7 @@
         $prototype : {
 
             /**
-             * @param {aria.map.CfgBeans.CreateMapCfg} cfg
+             * @param {aria.map.CfgBeans:CreateMapCfg} cfg
              */
             createMap : function (cfg) {
                 if (!aria.core.JsonValidator.validateCfg("aria.map.CfgBeans.CreateMapCfg", cfg)) {
@@ -262,7 +262,7 @@
 
             /**
              * @param {String} provider
-             * @param {aria.core.CfgBeans.Callback} cb
+             * @param {aria.core.CfgBeans:Callback} cb
              * @private
              */
             _getProviderInstance : function (providerName, cb) {
@@ -352,7 +352,7 @@
             /**
              * Load the provider dependencies. Called after loading the provider class
              * @param {Object} res
-             * @param {aria.map.CfgBeans.CreateMapCfg} cfg
+             * @param {aria.map.CfgBeans:CreateMapCfg} cfg
              * @private
              */
             _loadProviderDependencies : function (res, cfg) {
@@ -365,7 +365,7 @@
             },
 
             /**
-             * @param {aria.map.CfgBeans.CreateMapCfg} cfg
+             * @param {aria.map.CfgBeans:CreateMapCfg} cfg
              * @private
              */
             _retrieveMapInstance : function (firstArg, secondArg) {
@@ -393,8 +393,8 @@
 
             /**
              * @param {String} mapId Identifier of the map
-             * @retun {aria.map.MapManager.LOADING|aria.map.MapManager.READY} null if the mapId does not correspond to a
-             * map whose creation has already been requested
+             * @retun {aria.map.MapManager:LOADING:property|aria.map.MapManager:READY:property} null if the mapId does
+             * not correspond to a map whose creation has already been requested
              */
             getMapStatus : function (mapId) {
                 return mapStatus[mapId] || null;

@@ -40,7 +40,7 @@ Aria.classDefinition({
         /**
          * Private method for loading multiple resource files
          * @param {Object} resources The list of resource sets to be loaded
-         * @param {aria.core.JsObject.Callback} callback the callback description
+         * @param {aria.core.CfgBeans:Callback} callback the callback description
          * @private
          */
         __loadResourceFiles : function (resources, cb) {
@@ -78,7 +78,7 @@ Aria.classDefinition({
          * Internal method for switching the resource sets locale (should be only called from Environment)
          * To switch the language call the aria.core.environment.Environment.setLanguage method
          * @param {String} newLocale The new locale i.e. "en-US"
-         * @param {aria.core.JsObject.Callback} callback Callback to be called when resource files are loaded and locale changed
+         * @param {aria.core.CfgBeans:Callback} callback Callback to be called when resource files are loaded and locale changed
          */
         changeLocale : function (newLocale, cb) {
             this.currentLocale = newLocale;
@@ -136,7 +136,7 @@ Aria.classDefinition({
          * Callback method called after resource files had been reloaded on locale change
          * @param {Object} args Arguments passed to the callback
          * [args] {
-         *         cb: {aria.core.JsObject.Callback} The callback method to be called  // optional
+         *         cb: {aria.core.CfgBeans:Callback} The callback method to be called  // optional
          * }
          * @private
          */
@@ -148,7 +148,7 @@ Aria.classDefinition({
          * Callback method called when an error in the process of reloading resource files occurres
          * @param {Object} args Arguments passed to the callback
          * [args] {
-         *         cb: {aria.core.JsObject.Callback} The callback method to be called after the error is processed  // optional
+         *         cb: {aria.core.CfgBeans:Callback} The callback method to be called after the error is processed  // optional
          * }
          * @private
          */

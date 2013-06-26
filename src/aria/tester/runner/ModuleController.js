@@ -49,7 +49,7 @@ Aria.classDefinition({
         /**
          * The init of the Tester module controller will attempt to load the root test suite of the test campaign
          * @param {Array} args This module controller is not expecting any argument here
-         * @param {aria.utils.Callback} cb Callback defined by contract for this asynchronous method
+         * @param {aria.core.CfgBeans:Callback} cb Callback defined by contract for this asynchronous method
          */
         init : function (args, cb) {
             var campaignData = this.getData().campaign;
@@ -79,7 +79,7 @@ Aria.classDefinition({
          * <li>- mini=true : the 'Monitor' template will take the whole screen estate. The test suite explorer (see
          * 'Config' template) is hidden. All margins around the monitor have been removed</li>
          * </ul>
-         * @param {aria.utils.Callback} cb Callback defined by contract for this asynchronous method
+         * @param {aria.core.CfgBeans:Callback} cb Callback defined by contract for this asynchronous method
          */
         switchView : function (cb) {
             var __hash = aria.tester.runner.utils.Hash;
@@ -123,7 +123,7 @@ Aria.classDefinition({
         },
 
         /**
-         * @param {Object} cb
+         * @param {aria.core.CfgBeans:Callback} cb
          */
         _onInitLoadCompleted : function (cb) {
             this.getData().campaign.loadSuccessful = true;
@@ -134,7 +134,7 @@ Aria.classDefinition({
         },
 
         /**
-         * @param {Object} cb
+         * @param {aria.core.CfgBeans:Callback} cb
          */
         _onInitLoadError : function (cb) {
             this.$logError("Unable to load test object for classpath : " + this.getData().campaign.rootClasspath);
@@ -146,7 +146,7 @@ Aria.classDefinition({
         /**
          * Preload all the test suites available for the campaign to gather information such as the total number of
          * tests
-         * @param {Object} cb
+         * @param {aria.core.CfgBeans:Callback} cb
          */
         preloadSuites : function (cb) {
             var campaignData = this.getData().campaign;
@@ -170,7 +170,7 @@ Aria.classDefinition({
 
         /**
          * @param {Object} event
-         * @param {Object} cb
+         * @param {aria.core.CfgBeans:Callback} cb
          */
         _onPreloadEnd : function (event, cb) {
             // add new event listeners on the test object
@@ -309,7 +309,7 @@ Aria.classDefinition({
 
         /**
          * Pause the current test execution. This method is called by the flow controller on state transition
-         * @param {aria.core.CfgBeans.Callback} cb
+         * @param {aria.core.CfgBeans:Callback} cb
          */
         pauseCampaign : function (cb) {
             this._testRunner.getEngine().pause(cb);
@@ -317,7 +317,7 @@ Aria.classDefinition({
 
         /**
          * Pause the current paused execution. This method is called by the flow controller on state transition
-         * @param {aria.core.CfgBeans.Callback} cb
+         * @param {aria.core.CfgBeans:Callback} cb
          */
         resumeCampaign : function (cb) {
             this._testRunner.getEngine().resume(cb);

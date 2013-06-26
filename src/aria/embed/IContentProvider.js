@@ -32,7 +32,7 @@ Aria.interfaceDefinition({
          * Called by the placeholder manager to get the content configuration, which will be used by the placehoder to
          * build its content
          * @param {String} contentPath The content path which will be used to retrieve the configuration
-         * @return {String|json|Array} the content configuration
+         * @return {String|Object|Array} the content configuration
          */
         getContent : function (contentPath) {}
     }

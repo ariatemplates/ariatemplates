@@ -29,13 +29,13 @@ Aria.classDefinition({
         /**
          * Report notifies that dropdown has to be opened or closed null value is for the case where nothing has to be
          * done.
-         * @type {Boolean}
+         * @type Boolean
          */
         this.displayDropDown = null;
 
         /**
          * If true, the position of the dropdown should be recomputed.
-         * @type {Boolean}
+         * @type Boolean
          */
         this.repositionDropDown = false;
     },

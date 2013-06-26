@@ -23,7 +23,7 @@ Aria.classDefinition({
             "aria.widgets.environment.WidgetSettings", "aria.core.Browser", "aria.widgets.WidgetTrait"],
     /**
      * Input constructor
-     * @param {aria.widgets.CfgBeans.InputCfg} cfg the widget configuration
+     * @param {aria.widgets.CfgBeans:InputCfg} cfg the widget configuration
      * @param {aria.templates.TemplateCtxt} ctxt template context
      */
     $constructor : function (cfg, ctxt) {
@@ -257,7 +257,7 @@ Aria.classDefinition({
         /**
          * Internal method used to process the label markup
          * @param {aria.templates.MarkupWriter} out the writer Object to use to output markup
-         * @param {aria.widgets.CfgBeans.InputCfg} cfg Widget configuration object
+         * @param {aria.widgets.CfgBeans:InputCfg} cfg Widget configuration object
          * @param {String} cssDisplay type of CSS display: 'block' or 'inline-block'
          * @protected
          */
@@ -294,7 +294,7 @@ Aria.classDefinition({
          * sure that the label width is less than the widget width, etc..) When called the cfg structure has already
          * been normalized from its bean definition Note: this method must be overridden if extra-checks have to be made
          * in sub-widgets
-         * @param {aria.widgets.CfgBeans.InputCfg} cfg
+         * @param {aria.widgets.CfgBeans:InputCfg} cfg
          * @protected
          */
         _checkCfgConsistency : function () {
@@ -407,7 +407,7 @@ Aria.classDefinition({
 
         /**
          * Apply the automatic bindings
-         * @param {aria.widgets.CfgBeans.InputCfg|aria.widgets.CfgBeans.ActionWidgetCfg} cfg
+         * @param {aria.widgets.CfgBeans:InputCfg|aria.widgets.CfgBeans:ActionWidgetCfg} cfg
          * @protected
          */
         _setAutomaticBindings : function (cfg) {

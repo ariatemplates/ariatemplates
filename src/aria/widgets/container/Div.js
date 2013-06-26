@@ -24,7 +24,7 @@ Aria.classDefinition({
     $css : ["aria.widgets.container.DivStyle"],
     /**
      * Div constructor
-     * @param {aria.widgets.CfgBeans.ActionWidgetCfg} cfg the widget configuration
+     * @param {aria.widgets.CfgBeans:DivCfg} cfg the widget configuration
      * @param {aria.templates.TemplateCtxt} ctxt template context
      */
     $constructor : function (cfg, ctxt) {
@@ -90,7 +90,7 @@ Aria.classDefinition({
 
         /**
          * Change the width, height, max width and max height of the configuration, then update the container size
-         * @param {aria.widgets.CfgBeans.ActionWidgetCfg} cfg the widget configuration (only width, height, maxWidth,
+         * @param {aria.widgets.CfgBeans:DivCfg} cfg the widget configuration (only width, height, maxWidth,
          * maxHeight, maximized will be used)
          */
         updateSize : function (cfg) {

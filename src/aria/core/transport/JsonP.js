@@ -58,8 +58,8 @@ Aria.classDefinition({
 
         /**
          * Perform a request.
-         * @param {aria.core.CfgBeans.IOAsyncRequestCfg} request
-         * @param {aria.core.CfgBeans.Callback} callback
+         * @param {aria.core.CfgBeans:IOAsyncRequestCfg} request
+         * @param {aria.core.CfgBeans:Callback} callback
          * @throws
          */
         request : function (request, callback) {
@@ -113,8 +113,8 @@ Aria.classDefinition({
 
         /**
          * Callback of the JSON-P request.
-         * @param {aria.core.CfgBeans.IOAsyncRequestCfg} request Request object
-         * @param {aria.core.CfgBeans.Callback} callback
+         * @param {aria.core.CfgBeans:IOAsyncRequestCfg} request Request object
+         * @param {aria.core.CfgBeans:Callback} callback
          * @param {Object} json Json response coming from the server
          * @protected
          */

@@ -28,7 +28,7 @@ Aria.classDefinition({
 
         /**
          * Copy the menus into the application data
-         * @return {aria.pageEngine.CfgBeans.PageContents.$properties.menus}
+         * @return {aria.pageEngine.CfgBeans:PageContents.menus}
          * @private
          */
         getMenus : function () {
@@ -84,7 +84,7 @@ Aria.classDefinition({
 
         /**
          * Extract the dependencies from a placeholder definition and add them to dependencies argument
-         * @param {aria.pageEngine.CfgBeans.Placeholder} placeholder
+         * @param {aria.pageEngine.CfgBeans:Placeholder} placeholder
          * @param {Object} dependencies
          * @private
          */
