@@ -23,6 +23,12 @@ Aria.classDefinition({
     $events : {
         "bootstrapLoaded" : "Raised when the bootstrap is loaded."
     },
+    $statics : {
+        // Loading failed because the bootstrap couldn't be loaded
+        BOOTSTRAP : -1,
+        // Loading failed because the iframe didn't load the framework quick enough
+        WAIT : -2
+    },
     $constructor : function () {
         /**
          * Pattern used to find the script tag corresponding to the framework js file.
@@ -91,7 +97,8 @@ Aria.classDefinition({
         _loadATInFrameCb1 : function (evt, args) {
             if (evt === true) {
                 this.$callback(args.cb, {
-                    success : false
+                    success : false,
+                    reason : this.BOOTSTRAP
                 });
                 return;
             }
@@ -145,25 +152,26 @@ Aria.classDefinition({
         _loadATInFrameCb3 : function (res, args) {
             // In IE7 the callback might get called before Aria is available in the frame, poll
             var window = args.frame.contentWindow || args.frame;
-            var maxTimes = 3;
+            var maxTimes = 5;
 
             var self = this;
             var waitFunction = function () {
                 maxTimes -= 1;
                 if (maxTimes >= 0) {
                     if (window.aria == null) {
-                        setTimeout(waitFunction, 20);
+                        setTimeout(waitFunction, 30);
                     } else {
                         self._loadATInFrameCb4(res, args);
                     }
                 } else {
                     return self.$callback(args.cb, {
-                        success : false
+                        success : false,
+                        reason : this.WAIT
                     });
                 }
             };
 
-            setTimeout(waitFunction, 20);
+            setTimeout(waitFunction, 30);
         },
 
         /**
