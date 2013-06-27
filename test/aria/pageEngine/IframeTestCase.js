@@ -35,7 +35,7 @@ Aria.classDefinition({
             var document = Aria.$window.document;
             var iframe = document.createElement("iframe");
             iframe.id = "test-iframe";
-            iframe.style.cssText = "position:fixed;top:20px;left:20px;z-index:10000;width:612px;height:612px;border:1px solid blue;background:aliceblue";
+            iframe.style.cssText = "position:fixed;top:20px;left:20px;z-index:10000;width:612px;height:612px;border:1px solid blue;background:aliceblue;opacity:0.8;-ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=80)';filter: alpha(opacity=80);";
             document.body.appendChild(iframe);
             this._iframe = iframe;
             testEnv = iframe;
