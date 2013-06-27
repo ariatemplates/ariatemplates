@@ -16,12 +16,11 @@
 Aria.classDefinition({
     $classpath : "test.aria.widgets.form.selectbox.checkValue.MainTemplateTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
-    $dependencies : ["aria.utils.Dom", "aria.utils.Json"],
+    $dependencies : ["aria.utils.Json"],
     $constructor : function () {
 
         this.$TemplateTestCase.constructor.call(this);
         this.data = {
-
             countries : [{
                         value : "FR",
                         label : "France"
@@ -47,14 +46,13 @@ Aria.classDefinition({
                         value : "USA",
                         label : "United States of America"
                     }]
-        }, this.setTestEnv({
-            template : 'test.aria.widgets.form.selectbox.checkValue.MainTemplate',
+        };
+
+        this.setTestEnv({
+            template : "test.aria.widgets.form.selectbox.checkValue.MainTemplate",
             data : this.data
         });
         this.defaultTestTimeout = 10000;
-    },
-    $destructor : function () {
-        this.$TemplateTestCase.$destructor.call(this);
     },
     $prototype : {
         /**
@@ -94,7 +92,7 @@ Aria.classDefinition({
             });
         },
         /**
-         * This method searchs for a country in options list. The goal is to interact with the widget and check that it
+         * This method searches for a country in options list. The goal is to interact with the widget and check that it
          * still working fine
          */
         searchForCountry : function () {
