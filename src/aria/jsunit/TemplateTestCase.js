@@ -41,7 +41,7 @@ Aria.classDefinition({
             moduleCtrl : null,
             data : {},
             iframe : false,
-            cssText : "position:fixed;top:20px;left:20px;z-index:10000;width:1000px;height:700px;border:1px solid blue;background:aliceblue"
+            cssText : "position:fixed;top:20px;left:20px;z-index:10000;width:1000px;height:700px;border:1px solid blue;background:aliceblue;opacity:0.8;-ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=80)';filter: alpha(opacity=80);"
         };
 
         /**
