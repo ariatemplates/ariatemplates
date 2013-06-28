@@ -73,13 +73,14 @@
              */
             this.evtLogs = [];
 
-            aria.core.Log.clearAppenders();
-            aria.core.Log.addAppender(new aria.core.log.SilentArrayAppender());
             if (Aria.verbose) {
-                // Readd the default appender in verbose mode to log things also to the browser console.
+                // Keep the appenders already added to have more information on errors.
                 // The order of appenders matters due to getAppenders()[0] used in assertErrorInLogs|assertLogsEmpty.
                 // Not using Aria.debug not to have a message flood in Attester.
-                aria.core.Log.addAppender(new aria.core.log.DefaultAppender());
+                aria.core.Log.addAppender(new aria.core.log.SilentArrayAppender(), 0);
+            } else {
+                aria.core.Log.clearAppenders();
+                aria.core.Log.addAppender(new aria.core.log.SilentArrayAppender());
             }
 
             aria.core.Log.resetLoggingLevels();
