@@ -30,7 +30,7 @@ Aria.classDefinition({
     $prototype : {
 
         runTemplateTest : function () {
-            this.synEvent.click(this.getInputField("rb1"), {
+            this.synEvent.click(this.getWidgetInstance("rb1").getDom(), {
                 fn : this._afterFirstClick,
                 scope : this
             });
@@ -38,7 +38,7 @@ Aria.classDefinition({
 
         _afterFirstClick : function () {
             this.assertTrue(this.data.value === "v1", "Value should be v1");
-            this.synEvent.type(this.getInputField("rb1").previousSibling, "[right]", {
+            this.synEvent.type(this.getWidgetInstance("rb1").getDom(), "[right]", {
                 fn : this._afterFirstKey,
                 scope : this
             });
@@ -46,7 +46,7 @@ Aria.classDefinition({
 
         _afterFirstKey : function () {
             this.assertTrue(this.data.value === "v2", "Value should be v2");
-            this.synEvent.type(this.getInputField("rb2").previousSibling, "[right]", {
+            this.synEvent.type(this.getWidgetInstance("rb2").getDom(), "[right]", {
                 fn : this._afterSecondKey,
                 scope : this
             });
@@ -55,7 +55,7 @@ Aria.classDefinition({
         _afterSecondKey : function () {
             // v3 should be skipped, as it's bind to a different value
             this.assertTrue(this.data.value === "v4", "Value should be v4");
-            this.synEvent.type(this.getInputField("rb4").previousSibling, "[left]", {
+            this.synEvent.type(this.getWidgetInstance("rb4").getDom(), "[left]", {
                 fn : this._afterThirdKey,
                 scope : this
             });
