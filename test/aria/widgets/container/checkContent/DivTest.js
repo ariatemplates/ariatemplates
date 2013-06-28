@@ -29,6 +29,14 @@ Aria.classDefinition({
             if (aria.core.Browser.isIE && aria.core.Browser.majorVersion < 8) {
                 var expectedWidthIE7 = 888; // 871 from the h3 element width + 17px added for the scrollbar
                 this.assertEqualsWithTolerance(spanWidth, expectedWidthIE7, 2, "The div width is %1, insted of %2");
+            } else if (aria.core.Browser.isMac) {
+                if (aria.core.Browser.isWebkit) {
+                    var expectedWidthMac = 634;
+                    this.assertEqualsWithTolerance(spanWidth, expectedWidthMac, 2, "The div width is %1, insted of %2");
+                } else {
+                    var expectedWidthMac = 647;
+                    this.assertEqualsWithTolerance(spanWidth, expectedWidthMac, 2, "The div width is %1, insted of %2");
+                }
             } else {
                 this.assertEqualsWithTolerance(spanWidth, expectedWidth, 2, "The div width is %1, insted of %2");
             }

@@ -129,7 +129,7 @@ Aria.classDefinition({
                     changedOverflowY = (newValue < measured);
                     if (changedOverflowY) {
                         element.style.overflowY = "scroll";
-                        if (aria.core.Browser.isIE && aria.core.Browser.majorVersion < 8) {
+                        if ((aria.core.Browser.isIE && aria.core.Browser.majorVersion < 8) || (aria.core.Browser.isMac)) {
                             var scrollbarSize = aria.templates.Layout.getScrollbarsWidth();
                             element.style['paddingRight'] = element.style['paddingRight'] === '' ? scrollbarSize + 'px' : (parseInt(element.style['paddingRight'], 10) + scrollbarSize) + "px";
                         }
@@ -154,7 +154,7 @@ Aria.classDefinition({
 
                 if (changedOverflowY) {
                     element.style.overflowY = savedScrollBarY;
-                    if (aria.core.Browser.isIE && aria.core.Browser.majorVersion < 8) {
+                    if ((aria.core.Browser.isIE && aria.core.Browser.majorVersion < 8)  || (aria.core.Browser.isMac)) {
                         var scrollbarSize = aria.templates.Layout.getScrollbarsWidth();
                         element.style['paddingRight'] = (parseInt(element.style['paddingRight'], 10) - scrollbarSize) + "px";
                     }
@@ -164,8 +164,6 @@ Aria.classDefinition({
             }
             // PROFILING // this.$stopMeasure(profilingId);
             return null;
-
         }
-
     }
 });
