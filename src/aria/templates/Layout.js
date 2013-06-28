@@ -333,30 +333,34 @@
                 if (__scrollBarsWidth != null) {
                     return __scrollBarsWidth;
                 }
-                var document = Aria.$window.document;
-                var o = document.createElement("div"); // outer div
-                var i = document.createElement("div"); // inner div
-                o.style.overflow = "";
-                o.style.position = "absolute";
-                o.style.left = "-10000px";
-                o.style.top = "-10000px";
-                o.style.width = "500px";
-                o.style.height = "500px";
-                // Old solution with width 100% seems to behave correctly
-                // for all browsers except IE7. Some research gives that
-                // just for IE7 this method does not work when setting width 100%,
-                // but works correctly setting no width
-                if (!aria.core.Browser.isIE7) {
-                    i.style.width = "100%";
+                if (aria.core.Browser.isMac && aria.core.Browser.isWebkit) {
+                    return 17;  // 17px is the size of scrollbar width on Safari and Chrome on Mac
+                } else {
+                    var document = Aria.$window.document;
+                    var o = document.createElement("div"); // outer div
+                    var i = document.createElement("div"); // inner div
+                    o.style.overflow = "";
+                    o.style.position = "absolute";
+                    o.style.left = "-10000px";
+                    o.style.top = "-10000px";
+                    o.style.width = "500px";
+                    o.style.height = "500px";
+                    // Old solution with width 100% seems to behave correctly
+                    // for all browsers except IE7. Some research gives that
+                    // just for IE7 this method does not work when setting width 100%,
+                    // but works correctly setting no width
+                    if (!aria.core.Browser.isIE7) {
+                        i.style.width = "100%";
+                    }
+                    i.style.height = "100%";
+                    document.body.appendChild(o);
+                    o.appendChild(i);
+                    __scrollBarsWidth = i.offsetWidth;
+                    o.style.overflow = "scroll";
+                    __scrollBarsWidth -= i.offsetWidth;
+                    document.body.removeChild(o);
+                    return __scrollBarsWidth;
                 }
-                i.style.height = "100%";
-                document.body.appendChild(o);
-                o.appendChild(i);
-                __scrollBarsWidth = i.offsetWidth;
-                o.style.overflow = "scroll";
-                __scrollBarsWidth -= i.offsetWidth;
-                document.body.removeChild(o);
-                return __scrollBarsWidth;
             }
         }
     });
