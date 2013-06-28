@@ -24,7 +24,8 @@ Aria.classDefinition({
          * @type Object
          */
         this.w = Aria.$frameworkWindow.open("about:blank", "logger");
-        this.w.document.body.innerHTML += "<em>WindowAppender</em><hr/>";
+        // Document write seems to work better in IE7
+        this.w.document.write("<em>WindowAppender</em><hr/>");
         this.groupSpacer = "";
     },
     $destructor : function () {

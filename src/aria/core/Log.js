@@ -245,9 +245,14 @@ Aria.classDefinition({
          * Add a new appender to the logging system
          * @param {aria.core.log.DefaultAppender} appender An instance of appender (must implement the same methods as
          * aria.core.log.DefaultAppender)
+         * @param {Integer} position Optional position in which the appender should be added
          */
-        addAppender : function (appender) {
-            this._appenders.push(appender);
+        addAppender : function (appender, position) {
+            if (position == null || position >= this._appenders.length) {
+                this._appenders.push(appender);
+            } else {
+                this._appenders.splice(position, 0, appender);
+            }
         },
 
         /**
