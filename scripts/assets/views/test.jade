@@ -7,14 +7,14 @@ html
 
 		title Aria Tester
 
-		script
+		script.
 			var Aria = {
 				memCheckMode : true, // checks that constructors and destructors are well called on all objects
 				debug : true
 			};
 		script(src=urls.framework)
 		script(src=urls.skin)
-		style
+		style.
 			html {
 				overflow : hidden;
 			}
@@ -28,7 +28,7 @@ html
 		div#root
 
 		if dev
-			script
+			script.
 				Aria.rootFolderPath += "../";
 				aria.core.DownloadMgr.updateRootMap({
 					"aria" : {
@@ -36,7 +36,7 @@ html
 					}
 				});
 
-		script
+		script.
 
 			aria.core.AppEnvironment.setEnvironment({
 				contextualMenu:{enabled:true} // to get the right-click refresh menu

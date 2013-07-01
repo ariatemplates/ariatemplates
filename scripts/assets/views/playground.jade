@@ -7,13 +7,13 @@ html
 
 		title Playground - Aria Templates
 
-		script
+		script.
 			var Aria = {
 				debug : true
 			};
 		script(src=urls.framework)
 		script(src=urls.skin)
-		style
+		style.
 			html {
 				overflow : hidden;
 			}
@@ -104,7 +104,7 @@ html
 			p Display logs
 
 		if dev
-			script
+			script.
 				Aria.rootFolderPath += "../";
 				aria.core.DownloadMgr.updateRootMap({
 					"aria" : {
@@ -112,7 +112,7 @@ html
 					}
 				});
 
-		script
+		script.
 			(function () {
 				aria.core.AppEnvironment.setEnvironment({
 					contextualMenu:{enabled:true} // to get the right-click refresh menu
