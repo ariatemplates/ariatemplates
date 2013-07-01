@@ -14,8 +14,8 @@
  */
 
 /**
- * This test checks that the checkbox label color is inherited correctly.
- * In IE7 or IE+ in IE7 mode changing state throws an exception if the skin color is 'inherit'
+ * This test checks that the checkbox label color is inherited correctly. In IE7 or IE+ in IE7 mode changing state
+ * throws an exception if the skin color is 'inherit'
  */
 Aria.classDefinition({
     $classpath : "test.aria.widgets.form.checkbox.SetDisabledTest",
@@ -33,8 +33,8 @@ Aria.classDefinition({
             // Try to get the color
             var color;
             if (Aria.$window.getComputedStyle) {
-                // Modern browsers
-                var rgb = Aria.$window.getComputedStyle(widget._label).getPropertyValue("color");
+                // Modern browsers. getComputedStyle() takes two parameters in <FF4
+                var rgb = Aria.$window.getComputedStyle(widget._label, null).getPropertyValue("color");
                 var matches = rgb.match(/rgb\((\d+)\s?,\s?(\d+)\s?,\s?(\d+)\)/);
                 color = "#";
                 for (var i = 1; i <= 3; i += 1) {
