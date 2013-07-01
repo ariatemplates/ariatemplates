@@ -33,7 +33,8 @@ Aria.classDefinition({
         "defaultTestTimeout" : 60000,
 
         ERROR_NOTIFY_END : "Synchronous test is calling notifyTestEnd",
-        EXCEPTION_IN_METHOD : "Exception raised while calling '%1' in an asynchronous test"
+        EXCEPTION_IN_METHOD : "Exception raised while calling '%1' in an asynchronous test",
+        ASYNC_IN_SYNC_TEST : "Doing asynchronous actions inside a synchronous test, please check '%1'"
     },
     $constructor : function () {
         // constructor
@@ -48,7 +49,7 @@ Aria.classDefinition({
         this._currentTaskId = -1;
 
         /**
-         * Wheter or not to skip this test
+         * Whether or not to skip this test
          * @type Boolean
          */
         this.skipTest = false;
@@ -81,15 +82,29 @@ Aria.classDefinition({
             return isFunction(proto[method]) && !aria.utils.Array.contains(["setUp", "tearDown"], method);
         });
         this.__wrapTestMethods(methods);
+        this.__wrapAriaLoad();
+
+        /**
+         * Number of Aria.load pending to be completed before we can notify a test end
+         * @type {Number}
+         */
+        this.__pendingAriaLoad = 0;
+
+        /**
+         * Actions that should be executed once __pendingAriaLoad reaches 0
+         * @type {Array} of functions called with the test scope
+         */
+        this.__pendingActions = [];
     },
     $destructor : function () {
+        this.__restoreAriaLoad();
         // destructor
         if (this._sequencer) {
             this._sequencer.$dispose();
         }
         this.$Assert.$destructor.call(this);
         this._currentTaskId = null;
-
+        this.__pendingActions = null;
     },
     $prototype : {
         /**
@@ -173,13 +188,69 @@ Aria.classDefinition({
             }
         },
 
+        __wrapAriaLoad : function () {
+            var originalLoad = Aria.load;
+            var testCase = this;
+            Aria.load = function (description) {
+                testCase.__pendingAriaLoad += 1;
+
+                var userSuccess = description.oncomplete;
+                var userError = description.onerror;
+
+                description.oncomplete = {
+                    fn : testCase.__AriaLoadCallback,
+                    scope : testCase,
+                    args : userSuccess
+                };
+                description.onerror = {
+                    fn : testCase.__AriaLoadCallback,
+                    scope : testCase,
+                    args : userError,
+                    override : userError && userError.override
+                };
+
+                originalLoad.call(Aria, description);
+            };
+            Aria.load.originalLoad = originalLoad;
+        },
+
+        __AriaLoadCallback : function (userCallback) {
+            this.__pendingAriaLoad -= 1;
+            // FIXME it would be nice to use this.$callback but Aria.load has a different signature
+            // see http://ariatemplates.com/forum/showthread.php?tid=23
+            if (userCallback) {
+                if (typeof(userCallback) == 'function') {
+                    userCallback = {
+                        fn : userCallback
+                    };
+                }
+                var scope = (userCallback.scope) ? userCallback.scope : Aria;
+                // Didn't copy paste the try catch because we are already inside that try block
+                userCallback.fn.call(scope, userCallback.args);
+            }
+
+            if (this.__pendingAriaLoad < 1 && this.__pendingActions.length > 0) {
+                while (this.__pendingActions.length > 0) {
+                    var action = this.__pendingActions.shift();
+                    action.fn.apply(this, action.args);
+                }
+            }
+        },
+
+        __restoreAriaLoad : function () {
+            var originalLoad = Aria.load.originalLoad;
+            if (originalLoad) {
+                Aria.load = originalLoad;
+            }
+        },
+
         /**
          * Conditional wait before calling the callback It takes only one json parameter
          * @param {args} args json parameter with the following attributes: <br />
          * {integer} delay : Optional. Time interval between two test <br />
          * {Function} condition : function which returns true or false. If true, the callback will be called, if false,
          * this method will will call again after a delay. <br />
-         * {Function} callback : callback wich be called when the condition function returns true
+         * {Function} callback : callback which will be called when the condition function returns true
          */
         waitFor : function (args) {
             var delay = args.delay || 250;
@@ -204,7 +275,7 @@ Aria.classDefinition({
         },
 
         /**
-         * Internal method called for each test metod
+         * Internal method called for each test method
          * @param {Object} evt the event sent by the sequencer
          * @private
          */
@@ -244,13 +315,19 @@ Aria.classDefinition({
             }
 
             if (!task.asynchronous || errorDetected) {
+                // it might have started synchronously, but now it should behave asynchronously
+                if (!task.asynchronous && this.__pendingAriaLoad > 0) {
+                    task.asynchronous = true;
+                    this.$logError(this.ASYNC_IN_SYNC_TEST, this._currentTestName);
+                }
+
                 this._enableTestEnd(original);
                 this.notifyTestEnd(testName, errorDetected, task.asynchronous);
             }
         },
 
         /**
-         * Syncronous tests shouldn't call their notify test end manually. This is handled by the framework. Report an
+         * Synchronous tests shouldn't call their notify test end manually. This is handled by the framework. Report an
          * error in this case
          * @return {Function} Original notify test end function
          */
@@ -310,12 +387,23 @@ Aria.classDefinition({
          * @param {Boolean} asyncTest tells if test was asynchronous [optional - default: true]
          */
         notifyTestEnd : function (testName, terminate, asyncTest) {
+            if (this.__pendingAriaLoad > 0) {
+                this.__pendingActions.push({
+                    fn : this.notifyTestEnd,
+                    args : [testName, terminate, asyncTest]
+                });
+
+                // Stop here, the load callback will notify the test end again
+                return this.$logInfo("notifyTestEnd called when Aria.load is still pending, waiting");
+            }
+
             if (this._timeoutTimer) {
                 aria.core.Timer.cancelCallback(this._timeoutTimer);
                 this._timeoutTimer = null;
             }
-            // check that all expected events have occured
+            // check that all expected events have occurred
             this.checkExpectedEventListEnd();
+            this.checkExpectedErrorListEnd();
             // show any unexpected error which appeared in logs
             this.assertLogsEmpty(false, false);
 
@@ -415,7 +503,7 @@ Aria.classDefinition({
         },
 
         /**
-         * Error handler to use for asynchronous test callbacks. Sould be called in the catch statement - or associated
+         * Error handler to use for asynchronous test callbacks. Should be called in the catch statement - or associated
          * to the callback handler
          * @param {Error} ex the error caught in the catch statement
          * @param {Boolean} endTest [optional, default:true] ends the current test
@@ -431,7 +519,7 @@ Aria.classDefinition({
         },
 
         /**
-         * Save the Application Environment configuration. This prevents some other tests to run in an unexcpected
+         * Save the Application Environment configuration. This prevents some other tests to run in an unexpected
          * configuration.
          * @protected
          */
@@ -440,7 +528,7 @@ Aria.classDefinition({
         },
 
         /**
-         * Restore the Application Environment configuration. This prevents some other tests to run in an unexcpected
+         * Restore the Application Environment configuration. This prevents some other tests to run in an unexpected
          * configuration.
          * @protected
          */

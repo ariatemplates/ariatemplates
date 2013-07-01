@@ -64,14 +64,28 @@
 
             this._overriddenClasses = null;
 
-            // Events
+            /**
+             * Defines a list of events that are expected to be raised by the test.
+             * Events must be declared at the beginning of the test and event listeners should have
+             * __ as event callback.
+             * At the end of the tests, events that were not raised will cause a failure
+             * @type {Array} of events
+             */
             this._expectedEventsList = null;
             this._eventIndexInList = 0;
+
             /**
              * List of events raised by registered object.
              * @type {Array}
              */
             this.evtLogs = [];
+
+            /**
+             * Defines a list of errors that must be logged when the test ends.
+             * This is especially useful to check that certain errors are logged after the test ends
+             * @type {Array} of errors as in assertErrorInLogs
+             */
+            this._expectedErrorList = null;
 
             aria.core.Log.clearAppenders();
             aria.core.Log.addAppender(new aria.core.log.SilentArrayAppender());
@@ -89,7 +103,7 @@
             this._expectedEventsList = null;
             this.$Test.$destructor.call(this);
 
-            // appenders are cleared after the destroy so we can check for error in $dipose
+            // appenders are cleared after the destroy so we can check for error in $dispose
         },
         $prototype : {
             /**
@@ -136,7 +150,7 @@
             },
 
             /**
-             * Update the current info used by the Assert method when loggin a failure or an error
+             * Update the current info used by the Assert method when logging a failure or an error
              * @param {String} testName
              * @private
              */
@@ -404,7 +418,7 @@
             },
 
             /**
-             * Use only if you explicitely need to stop listening to events from an object If the object can be
+             * Use only if you explicitly need to stop listening to events from an object If the object can be
              * disposed, the $dispose will take care of removing the listeners, so use unregisterObject only when really
              * needed
              * @param {Object} jsObject : aria templates object (has to extend aria.core.JsObject)
@@ -525,7 +539,7 @@
             },
 
             /**
-             * Check that all events in the list registered with registerExpectedEventsList have occured.
+             * Check that all events in the list registered with registerExpectedEventsList have occurred.
              */
             checkExpectedEventListEnd : function () {
                 if (this._expectedEventsList != null) {
@@ -542,10 +556,21 @@
             },
 
             /**
+             * Check that all expected errors in the list registered are logged.
+             */
+            checkExpectedErrorListEnd : function () {
+                if (this._expectedErrorList) {
+                    while (this._expectedErrorList.length) {
+                        this.assertErrorInLogs(this._expectedErrorList.shift());
+                    }
+                }
+            },
+
+            /**
              * Overrides a class with another.
-             * @param {String} Classpath of the class to be overriden (e.g. 'aria.core.DownloadMgr')
+             * @param {String} Classpath of the class to be overridden (e.g. 'aria.core.DownloadMgr')
              * @param {Object} Overriding class (e.g. test.aria.core.DownloadMgrMock) If the class was already
-             * overriden, the current class with namespace initialClass is not saved. It is not specific to classes
+             * overridden, the current class with namespace initialClass is not saved. It is not specific to classes
              * which use the Aria.classDefinition mechanism (does not use $class and $package)
              */
             overrideClass : function (initialClass, mockClass) {
@@ -579,7 +604,7 @@
             },
 
             /**
-             * Reset overriden classes.
+             * Reset overridden classes.
              */
             resetClassOverrides : function () {
                 if (this._overriddenClasses != null) {
