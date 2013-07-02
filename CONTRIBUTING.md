@@ -102,20 +102,20 @@ __DON'T__:
 
 __BETTER__:
 
-> Dialog not centered in IE
+> fix #123 Dialog not centered in IE
 >
-> When a Dialog is opened with `center:true` and `block:true`, its position is set to 0:0, should be centered in the viewport.
+> When a Dialog is opened with \`center:true\` and \`block:true\`, its position is set to 0:0, should be centered in the viewport.
 >
-> This commit fixes #12
+> Close #456.
 
 Remember:
 
-- The first line is a short description
-- The next paragraphs provide more explanation if necessary
-- Put the link to the issue you are fixing. Not needed if you're adding a new feature
+- The first line is a short description. It should start with "fix #123" for a bugfix, "feat #123" for a new feature, or "refactor" (#123 is the GitHub issue ID).
+- The next paragraphs provide more explanation if necessary.
+- In the last line, add "Close #456" as many times as necessary, to [close the related issues / a pull request once the commits lands in master](https://github.com/blog/1386-closing-issues-via-commit-messages). If the first starts with "feat #123", you should duplicate that ID here.
 
 For brand new features, make sure to write some documentation.
-You'll se how in the [next chapter](#improve-documentation).
+You'll see how in the [next chapter](#improve-documentation).
 
 When new code is submitted, someone from the team will review it and eventually integrate it.
 
