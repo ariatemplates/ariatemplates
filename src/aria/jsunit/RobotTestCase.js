@@ -37,21 +37,30 @@ Aria.classDefinition({
     },
     $prototype : {
         run : function () {
-            if (this.skipTest) {
-                this.$TemplateTestCase.run.call(this);
+            var robot = aria.jsunit.Robot;
+            if (!this.skipTest && !robot.isUsable()) {
+                this._startTest();
+                this.raiseFailure('The robot is not usable');
+                this._endTest();
             } else {
-                var robot = aria.jsunit.Robot;
-                if (robot.isUsable()) {
-                    robot.initRobot({
-                        fn : this.$TemplateTestCase.run,
-                        scope : this
-                    });
-                } else {
-                    this._startTest();
-                    this.raiseFailure('Robot test cases require Java to be enabled');
-                    this._endTest();
-                }
+                this.$TemplateTestCase.run.call(this);
             }
+        },
+        _startTests : function () {
+            this.testWindow.Aria.load({
+                classes : ["aria.jsunit.SynEvents", "aria.jsunit.Robot"],
+                oncomplete : {
+                    scope: this,
+                    fn: function() {
+                        this.synEvent = this.testWindow.aria.jsunit.SynEvents;
+                        var robot = this.testWindow.aria.jsunit.Robot;
+                        robot.initRobot({
+                            fn : this.$TemplateTestCase._startTests,
+                            scope : this
+                        });
+                    }
+                }
+            });
         }
     }
 });

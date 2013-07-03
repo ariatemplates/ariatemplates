@@ -230,7 +230,8 @@ Aria.classDefinition({
             VK_X : 88,
             VK_Y : 89,
             VK_Z : 90
-        }
+        },
+        absoluteUrlRegExp : /^https?:\/\//
     },
     $prototype : {
 
@@ -255,6 +256,14 @@ Aria.classDefinition({
             if (this.applet == null) {
                 var document = Aria.$window.document;
                 var jnlp = aria.core.DownloadMgr.resolveURL('aria/jsunit/robot-applet.jnlp');
+
+                // Resolve the url depending on the base tag
+                var baseTags = document.head.getElementsByTagName("base");
+                if (baseTags && baseTags[0] && !this.absoluteUrlRegExp.test(jnlp)) {
+                    var baseUrl = baseTags[0].getAttribute("href").replace(/[^\/.]+\.[^\/.]+$/, "").replace(/\/$/, "") + "/";
+                    jnlp = baseUrl + jnlp;
+                }
+
                 var applet = document.createElement("applet");
 
                 var jnlpHrefParam = document.createElement("param");

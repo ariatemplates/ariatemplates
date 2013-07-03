@@ -100,10 +100,17 @@ Aria.classDefinition({
                 scope : this,
                 args : args
             });
+
+
+            var href = Aria.$frameworkWindow.location.href.replace(/(\?|\#).*$/, "").
+                replace(/[^\/.]+\.[^\/.]+$/, "").
+                replace(/\/$/, "") +
+                "/";
             var docUrl = [aria.core.DownloadMgr.resolveURL("aria/utils/FrameATLoaderHTML.html"), '?',
-                    encodeURIComponent(Aria.$frameworkWindow.location.href.replace(/(\?|\#).*$/, "")), '#', callbackId].join('');
+                    encodeURIComponent(href), '#', callbackId].join('');
             // args.frame.contentWindow is defined only if the framework is loaded in an iframe. In the case of a new
             // window, args.frame is already the correct window object
+
             var window = args.frame.contentWindow || args.frame;
             window.location = docUrl;
         },
