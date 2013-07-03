@@ -15,16 +15,8 @@
 
 Aria.tplScriptDefinition({
     $classpath : "test.aria.widgets.container.tooltip.InnerTemplateScript",
-    $dependencies : ["aria.jsunit.SynEvents", "aria.jsunit.Robot"],
     $prototype : {
         $viewReady : function () {
-            aria.jsunit.Robot.initRobot({
-                fn : function () {
-                    this.__IFRAME_READY__ = true;
-                },
-                scope : Aria.$window
-            });
-
             Aria.$window.scrollTo(0, 1000);
         }
     }

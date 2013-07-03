@@ -787,10 +787,13 @@ Aria.classDefinition({
          */
         _iframeDepLoad : function (args) {
             var document = Aria.$window.document;
+            var containerDiv = document.createElement("div");
+            containerDiv.style.cssText = "background-color:#F7F6F1;position:absolute;";
             var iframe = document.createElement("iframe");
             iframe.id = "testIframe_" + this.$class;
             iframe.style.cssText = args.def.cssText;
-            document.body.appendChild(iframe);
+            containerDiv.appendChild(iframe);
+            document.body.appendChild(containerDiv);
             args.iframe = iframe;
 
             aria.utils.FrameATLoader.loadAriaTemplatesInFrame(iframe, {
