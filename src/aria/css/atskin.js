@@ -62,7 +62,7 @@ Aria.classDefinition({
                             sprWidth : 7,
                             marginTop : 3,
                             color : "#000000",
-                            sprIdx : 6,
+                            sprIdx : 0,
                             spcLeft : 3,
                             icons : {
                                 dropdown : "dropdown:multiselect_normal"
@@ -74,15 +74,53 @@ Aria.classDefinition({
                             color : "gray"
                         },
                         normalFocused : {
-                            sprIdx : 6,
+                            sprIdx : 2,
                             icons : {
-                                dropdown : "dropdown:multiselect_normal"
+                                dropdown : "dropdown:multiselect_focused"
                             }
                         },
                         normalError : {
-                            sprIdx : 6,
+                            sprIdx : 4,
                             icons : {
-                                dropdown : "dropdown:multiselect_normal"
+                                dropdown : "dropdown:multiselect_error"
+                            }
+                        },
+                        mandatoryFocused : {
+                            sprIdx : 3,
+                            icons : {
+                                dropdown : "dropdown:multiselect_focused"
+                            }
+                        },
+                        mandatoryError : {
+                            sprIdx : 5,
+                            icons : {
+                                dropdown : "dropdown:multiselect_error"
+                            }
+                        },
+                        readOnly : {
+                            color : "#AB9B85",
+                            sprIdx : 7
+                        },
+                        mandatoryErrorFocused : {
+                            sprIdx : 5,
+                            icons : {
+                                dropdown : "dropdown:multiselect_error"
+                            }
+                        },
+                        normalErrorFocused : {
+                            sprIdx : 4,
+                            icons : {
+                                dropdown : "dropdown::multiselect_error"
+                            }
+                        },
+                        mandatory : {
+                            sprIdx : 1
+                        },
+                        disabled : {
+                            color : "#E6D9C6",
+                            sprIdx : 6,
+                            label : {
+                                color : "#E6D9C6"
                             }
                         }
                     },
@@ -199,7 +237,10 @@ Aria.classDefinition({
                             skipRightBorder : true
                         },
                         mandatoryFocused : {
-                            sprIdx : 3
+                            sprIdx : 3,
+                            icons : {
+                                dropdown : "dropdown:datepicker_focused"
+                            }
                         },
                         prefill : {
                             color : "gray"
@@ -218,7 +259,10 @@ Aria.classDefinition({
                         },
                         disabled : {
                             color : "#E6D9C6",
-                            sprIdx : 6
+                            sprIdx : 6,
+                            label : {
+                                color : "#E6D9C6"
+                            }
                         },
                         normalError : {
                             sprIdx : 4,
@@ -317,7 +361,10 @@ Aria.classDefinition({
                         disabled : {
                             color : "#E6D9C6",
                             backgroundColor : "#FFFFFF",
-                            sprIdx : 2
+                            sprIdx : 2,
+                            label : {
+                                color : "#E6D9C6"
+                            }
                         }
                     },
                     helpText : {
@@ -481,7 +528,10 @@ Aria.classDefinition({
                         },
                         disabled : {
                             color : "#E6D9C6",
-                            sprIdx : 6
+                            sprIdx : 6,
+                            label : {
+                                color : "#E6D9C6"
+                            }
                         },
                         normalError : {
                             sprIdx : 4,
@@ -586,7 +636,10 @@ Aria.classDefinition({
                             }
                         },
                         disabled : {
-                            color : "#E6D9C6"
+                            color : "#E6D9C6",
+                            label : {
+                                color : "#E6D9C6"
+                            }
                         },
                         normalError : {
                             icons : {
@@ -665,7 +718,10 @@ Aria.classDefinition({
                         },
                         disabled : {
                             color : "#E6D9C6",
-                            sprIdx : 6
+                            sprIdx : 6,
+                            label : {
+                                color : "#E6D9C6"
+                            }
                         },
                         normalError : {
                             sprIdx : 4,
@@ -752,7 +808,10 @@ Aria.classDefinition({
                         },
                         disabled : {
                             color : "#E6D9C6",
-                            sprIdx : 6
+                            sprIdx : 6,
+                            label : {
+                                color : "#E6D9C6"
+                            }
                         },
                         normalError : {
                             sprIdx : 4
@@ -1126,7 +1185,10 @@ Aria.classDefinition({
                         },
                         disabled : {
                             color : "#E6D9C6",
-                            sprIdx : 6
+                            sprIdx : 6,
+                            label : {
+                                color : "#E6D9C6"
+                            }
                         },
                         normalError : {
                             sprIdx : 8
@@ -1192,7 +1254,10 @@ Aria.classDefinition({
                         },
                         disabled : {
                             color : "#E6D9C6",
-                            sprIdx : 6
+                            sprIdx : 6,
+                            label : {
+                                color : "#E6D9C6"
+                            }
                         },
                         normalError : {
                             sprIdx : 4,

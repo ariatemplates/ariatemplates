@@ -122,6 +122,7 @@ Aria.classDefinition({
             if (!this._selectField && !this._initDone) {
                 this.getDom();
             }
+            this._updateLabelState();
             this._frame.changeState(this._state);
         }
     }
