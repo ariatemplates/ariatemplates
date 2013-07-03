@@ -290,6 +290,16 @@ Aria.classDefinition({
         },
 
         /**
+         * Updates the CSS class of the label to match the current state of the widget.
+         */
+        _updateLabelState : function () {
+            var label = this.getLabel();
+            if (label) {
+                label.className = 'x' + this._skinnableClass + '_' + this._cfg.sclass + '_' + this._state + '_label';
+            }
+        },
+
+        /**
          * Internal function called before markup generation to check the widget configuration consistency (e.g. make
          * sure that the label width is less than the widget width, etc..) When called the cfg structure has already
          * been normalized from its bean definition Note: this method must be overridden if extra-checks have to be made
