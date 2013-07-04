@@ -249,7 +249,7 @@ Aria.beanDefinitions({
                     $type : "json:Enum",
                     $description : "HTTP method used in the request. Ignored for JSON-P requests. This property can be changed by filters.",
                     $default : "GET",
-                    $enumValues : ["GET", "POST", "PUT", "DELETE", "HEAD", "TRACE", "OPTIONS", "CONNECT", "PATCH"],
+                    $enumValues : ["GET", "POST", "PUT", "DELETE", "HEAD", "TRACE", "OPTIONS", "CONNECT", "PATCH", "COPY", "PROPFIND", "MKCOL", "PROPPATCH", "MOVE", "LOCK", "UNLOCK", "BIND", "UNBIND", "REBIND"],
                     $sample : "POST"
                 },
                 /* Backward Compatibility begins here, use data property instead */
