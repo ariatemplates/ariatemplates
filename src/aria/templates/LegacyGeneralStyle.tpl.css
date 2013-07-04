@@ -38,7 +38,7 @@
     {/if}
 
 
-    {if ! general.disable.ul.list.style}
+    {if !general.disable || !general.disable.ul.list.style}
         ul, li {list-style-type:none;}
     {/if}
 
