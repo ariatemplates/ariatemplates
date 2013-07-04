@@ -451,7 +451,7 @@ Aria.classDefinition({
             this.nbRequests++;
             req.id = this.nbRequests;
 
-            var reqMethods = ["GET", "POST", "PUT", "DELETE", "HEAD", "TRACE", "OPTIONS", "CONNECT", "PATCH"];
+            var reqMethods = ["GET", "POST", "PUT", "DELETE", "HEAD", "TRACE", "OPTIONS", "CONNECT", "PATCH", "COPY", "PROPFIND", "MKCOL", "PROPPATCH", "MOVE", "LOCK", "UNLOCK"];
             // Assign a request timeout in order of importance:
             // # req.timeout - User specified timeout
             // # req.callback.timeout - Timeout of the callback function (might be set by filters)
