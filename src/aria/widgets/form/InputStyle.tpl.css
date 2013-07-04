@@ -14,17 +14,17 @@
  */
 
 {CSSTemplate {
-    $classpath : "aria.widgets.form.TextInputStyle",
-    $extends : "aria.widgets.form.InputStyle"
+    $classpath : "aria.widgets.form.InputStyle",
+    $extends : "aria.widgets.WidgetStyle"
 }}
-    {var skinnableClassName="TextInput"/}
-    {var useFrame=true/}
 
     {macro writeState(info)}
-        {call $InputStyle.writeState(info) /}
-        .${cssPrefix(info)}label {
-            font-weight: ${info.skinClass.label.fontWeight}
-        }
+        {var label = info.state.label || {} /}
+        {if label.color}
+            .${cssPrefix(info)}label {
+                color: ${label.color};
+            }
+        {/if}
     {/macro}
 
 {/CSSTemplate}

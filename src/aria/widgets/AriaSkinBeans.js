@@ -244,7 +244,7 @@ Aria.beanDefinitions({
             },
             $default : {}
         },
-        "StateWithFrameWithIcons" : {
+        "StateWithFrameWithIconsAndLabel" : {
             $type : "StateWithFrame",
             $description : "Description of the properties to applied in a certain state of a widget which has a frame with icons.",
             $properties : {
@@ -261,6 +261,9 @@ Aria.beanDefinitions({
                                     $type : "Icons"
                                 }]
                     }
+                },
+                "label" : {
+                    $type : "LabelState"
                 }
             }
         },
@@ -276,6 +279,15 @@ Aria.beanDefinitions({
                     }, {
                         $type : "SimpleHTMLFrameCfg"
                     }]
+        },
+        "LabelState" : {
+            $type : "Object",
+            $description : "Settings to display the label part of the widget.",
+            $properties : {
+                "color" : {
+                    $type : "Color"
+                }
+            }
         },
         "ButtonCfg" : {
             $type : "Object",
@@ -826,34 +838,34 @@ Aria.beanDefinitions({
                     $type : "StatesSet",
                     $properties : {
                         "normal" : {
-                            $type : "StateWithFrameWithIcons"
+                            $type : "StateWithFrameWithIconsAndLabel"
                         },
                         "normalFocused" : {
-                            $type : "StateWithFrameWithIcons"
+                            $type : "StateWithFrameWithIconsAndLabel"
                         },
                         "mandatory" : {
-                            $type : "StateWithFrameWithIcons"
+                            $type : "StateWithFrameWithIconsAndLabel"
                         },
                         "mandatoryFocused" : {
-                            $type : "StateWithFrameWithIcons"
+                            $type : "StateWithFrameWithIconsAndLabel"
                         },
                         "disabled" : {
-                            $type : "StateWithFrameWithIcons"
+                            $type : "StateWithFrameWithIconsAndLabel"
                         },
                         "readOnly" : {
-                            $type : "StateWithFrameWithIcons"
+                            $type : "StateWithFrameWithIconsAndLabel"
                         },
                         "normalError" : {
-                            $type : "StateWithFrameWithIcons"
+                            $type : "StateWithFrameWithIconsAndLabel"
                         },
                         "normalErrorFocused" : {
-                            $type : "StateWithFrameWithIcons"
+                            $type : "StateWithFrameWithIconsAndLabel"
                         },
                         "mandatoryError" : {
-                            $type : "StateWithFrameWithIcons"
+                            $type : "StateWithFrameWithIconsAndLabel"
                         },
                         "mandatoryErrorFocused" : {
-                            $type : "StateWithFrameWithIcons"
+                            $type : "StateWithFrameWithIconsAndLabel"
                         }
                     }
                 },
@@ -1148,7 +1160,7 @@ Aria.beanDefinitions({
             }
         },
         "TextInputStateCfg" : {
-            $type : "StateWithFrameWithIcons",
+            $type : "StateWithFrameWithIconsAndLabel",
             $description : "",
             $properties : {
                 "color" : {

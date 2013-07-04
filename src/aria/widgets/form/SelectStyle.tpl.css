@@ -15,7 +15,7 @@
 
 {CSSTemplate {
     $classpath : "aria.widgets.form.SelectStyle",
-    $extends : "aria.widgets.WidgetStyle"
+    $extends : "aria.widgets.form.InputStyle"
 }}
     {var skinnableClassName="Select"/}
     {var useFrame=true/}
