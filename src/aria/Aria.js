@@ -14,8 +14,11 @@
  * limitations under the License.
  */
 
+// Do not remove @class and @singleton annotations, they're required for Aria singleton to appear in API docs.
 /**
  * Global Aria object defining the base methods to manage objects, logs and file dependencies.
+ * @class Aria
+ * @singleton
  */
 (function () {
 
