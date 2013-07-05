@@ -13,17 +13,13 @@
  * limitations under the License.
  */
 
-Aria.classDefinition({
-    $classpath : "aria.html.HtmlLibrary",
-    $extends : "aria.widgetLibs.WidgetLib",
-    $singleton : true,
+Aria.tplScriptDefinition({
+    $classpath : "test.aria.html.select.bodycontent.BodyContentTestCaseTplScript",
     $prototype : {
-        widgets : {
-            "TextInput" : "aria.html.TextInput",
-            "Template" : "aria.html.Template",
-            "CheckBox" : "aria.html.CheckBox",
-            "RadioButton" : "aria.html.RadioButton",
-            "Select" : "aria.html.Select"
+        $dataReady : function () {
+            this.container = {
+                item : 'EURO'
+            };
         }
     }
 });
