@@ -25,12 +25,25 @@ Aria.classDefinition({
 
         this.$Widget.constructor.apply(this, arguments);
 
+        this._hasMarkup = false;
+
+        var sourceImage = cfg.sourceImage;
+        var iconInfo = sourceImage ? {
+            "imageURL" : sourceImage.path,
+            "width" : sourceImage.width,
+            "height" : sourceImage.height
+        } : this._getIconInfo(cfg.icon);
+
         /**
          * Skin information for this icon
          * @protected
          * @type {Object}
          */
-        this._iconInfo = null;
+        this._iconInfo = iconInfo;
+
+        if (!iconInfo) {
+            this._cfgOk = false;
+        }
 
         /**
          * CSS classes which should be applied to this widget when it is created.
@@ -40,17 +53,6 @@ Aria.classDefinition({
         this._cssClassNames = "xWidget";
     },
     $statics : {
-        /**
-         * Icon used when the resquest icon is missing
-         * @type {Object}
-         */
-        ERROR_ICON : null,
-
-        /**
-         * Title for the missing icon. % will be replaced with the icon name
-         * @type {String}
-         */
-        ERROR_ICON_TITLE : 'Icon % not found',
 
         // ERROR MESSAGES:
         ICON_BADLY_FORMATTED : "%1Icon name is not valid: %2",
@@ -59,41 +61,35 @@ Aria.classDefinition({
     $prototype : {
 
         /**
-         * Override widget writeMarkup method.
+         * Override widget _widgetMarkup method.
          * @param {aria.templates.MarkupWriter} out the html output writer
          */
-        writeMarkup : function (out) {
+        _widgetMarkup : function (out) {
             var cfg = this._cfg;
             var id = this._domId;
             var tooltip = cfg.tooltip;
-            var sourceImage = cfg.sourceImage;
-            var iconInfo = sourceImage ? {
-                "imageURL" : sourceImage.path,
-                "width" : sourceImage.width,
-                "height" : sourceImage.height
-            } : this._getIconInfo(cfg.icon);
+            var iconInfo = this._iconInfo;
 
-            if (!iconInfo) {
-                tooltip = this.ERROR_ICON_TITLE.replace('%', cfg.icon);
-                iconInfo = this._getErrIcon();
+            if (tooltip != null && tooltip !== '') {
+                tooltip = 'title="' + tooltip + '" ';
+            } else {
+                tooltip = '';
             }
 
-            if (this._cfgOk) {
-
-                if (tooltip != null && tooltip !== '') {
-                    tooltip = 'title="' + tooltip + '" ';
-                } else {
-                    tooltip = '';
+            var delegationMarkup = "";
+            if (cfg.tooltipId) {
+                var delegateManager = aria.utils.Delegate;
+                if (!this._delegateId) {
+                    this._delegateId = delegateManager.add({
+                        fn : this.delegate,
+                        scope : this
+                    });
                 }
-
-                out.write(['<span id="', id, '" class="', this._getIconClasses(iconInfo), '" ', tooltip, 'style="',
-                        this._getIconStyle(iconInfo), '"></span>'].join(''));
-
-                this._iconInfo = iconInfo;
-
+                delegationMarkup = delegateManager.getMarkup(this._delegateId) + " ";
             }
 
-            this._domReady = true;
+            out.write(['<span id="', id, '" class="', this._getIconClasses(iconInfo), '" ', tooltip, delegationMarkup,
+                    'style="', this._getIconStyle(iconInfo), '"></span>'].join(''));
 
         },
 
@@ -188,17 +184,6 @@ Aria.classDefinition({
                 cssClasses += " xBlock";
             }
             return cssClasses;
-        },
-
-        /**
-         * Get the error icon when an icon is missing / wrongly spelled
-         * @return {Object} error icon description
-         */
-        _getErrIcon : function () {
-            if (!this.ERROR_ICON) {
-                aria.widgets.Icon.prototype.ERROR_ICON = aria.widgets.AriaSkinInterface.getIcon('std', 'missing');
-            }
-            return this.ERROR_ICON;
         }
     }
 });
