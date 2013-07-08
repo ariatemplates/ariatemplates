@@ -475,6 +475,12 @@ Aria.beanDefinitions({
                     $enumValues : ["left", "right"],
                     $description : "Which side will the ellipsis be, left or right",
                     $default : "right"
+                },
+                "ellipsisEndStyle" : {
+                    $type : "json:Enum",
+                    $enumValues : ["clipped", "fullCharacter"],
+                    $description : "How the truncated text should end. Default to 'clipped'",
+                    $default : "clipped"
                 }
             }
         },
@@ -601,12 +607,12 @@ Aria.beanDefinitions({
                     $description : "Internal value associated to the option - usually a language-independent code",
                     $mandatory : true,
                     $contentTypes : [{
-                        $type : "json:Integer",
-                        $description : ""
-                    }, {
-                        $type : "json:String",
-                        $description : ""
-                    }]
+                                $type : "json:Integer",
+                                $description : ""
+                            }, {
+                                $type : "json:String",
+                                $description : ""
+                            }]
                 },
                 "label" : {
                     $type : "json:String",
@@ -1057,6 +1063,12 @@ Aria.beanDefinitions({
                     $enumValues : ["left", "right"],
                     $description : "Which side will the ellipsis be, left or right",
                     $default : "right"
+                },
+                "ellipsisEndStyle" : {
+                    $type : "json:Enum",
+                    $enumValues : ["clipped", "fullCharacter"],
+                    $description : "How the truncated text should end. Default to 'clipped'",
+                    $default : "clipped"
                 }
             }
         },

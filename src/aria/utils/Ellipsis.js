@@ -20,7 +20,8 @@
  */
 Aria.classDefinition({
     $classpath : 'aria.utils.Ellipsis',
-    $dependencies : ['aria.utils.Function', 'aria.utils.FireDomEvent', 'aria.utils.Dom', 'aria.popups.Popup'],
+    $dependencies : ['aria.utils.Function', 'aria.utils.FireDomEvent', 'aria.utils.Dom', 'aria.popups.Popup',
+            'aria.utils.String'],
 
     /**
      * Create ellipsis
@@ -31,13 +32,16 @@ Aria.classDefinition({
      * cut, or the opposite
      * @param {String} ellipsisStr The actual string to use for the ellipsis (defaults to "...")
      * @param {String} context Used for the popup (defaults to "...")
+     * @param {String} ellipsisEndStyle Used to know whether the character at the given width will be clipped or not
+     * displayed at all. (defaults to "clipped")
      */
-    $constructor : function (el, width, position, ellipsisStr, context) {
+    $constructor : function (el, width, position, ellipsisStr, context, ellipsisEndStyle) {
         var document = Aria.$window.document;
         this.textContent = el.innerHTML;
         this.context = context;
         this.ellipsisElement = el;
         this.ellipsesNeeded = false;
+        this.position = position;
 
         if (el.childNodes.length == 1 && el.childNodes[0].nodeType == 3) {
 
@@ -78,23 +82,85 @@ Aria.classDefinition({
                 textSpan.style.display = "inline-block";
                 textSpan.style.verticalAlign = "bottom";
 
-                // ie 6 isn't calculating the with properly. As such it can cut off a bit of the sort indicator icon
+                // ie 6 isn't calculating the width properly. As such it can cut off a bit of the sort indicator icon
                 if (aria.core.Browser.isIE6) {
                     width = width - 4;
                 }
+
                 width -= ellipsisWidth;
 
-                if (width < 0) {
-                    // this check is important, otherwise IE can raise an
-                    // exception when setting the width
-                    width = 0;
+                if (ellipsisEndStyle == "fullCharacter") {
+                    // we want to make sure a character doesn't get truncated
+
+                    // Save the expected width
+                    var expectedWidth = width;
+
+                    // create a tmp element to calculate the width of the computed string
+                    var tmpContainerElement = this._createSizerEl(el);
+
+                    var minChar = 0;
+                    var minLength = 0;
+                    var maxChar = this.textContent.length;
+                    var maxLength = textWidth;
+
+                    this._getCharacters = position === "left" ? this._getCharactersLeft : this._getCharactersRight;
+                    /**
+                     * The full text excluding the ellipsis text
+                     * @type String
+                     */
+                    this.fullText = el.textContent || el.innerText || ""; // in IE : innerText
+
+                    while (maxChar - minChar > 1) {
+
+                        var charsInMiddle = maxChar - minChar;
+                        var lengthInMiddle = maxLength - minLength;
+                        var avgLengthInMiddle = lengthInMiddle / charsInMiddle;
+                        var numberOfCharToBeDisplayed = minChar
+                                + Math.round((expectedWidth - minLength) / avgLengthInMiddle);
+
+                        if (numberOfCharToBeDisplayed === maxChar) {
+                            numberOfCharToBeDisplayed--;
+                        } else if (numberOfCharToBeDisplayed === minChar) {
+                            numberOfCharToBeDisplayed++;
+                        }
+
+                        tmpContainerElement.innerHTML = aria.utils.String.escapeForHTML(this._getCharacters(numberOfCharToBeDisplayed));
+
+                        width = tmpContainerElement.offsetWidth;
+
+                        if (width > expectedWidth) {
+                            maxChar = numberOfCharToBeDisplayed;
+                            maxLength = width;
+                        } else {
+                            minChar = numberOfCharToBeDisplayed;
+                            minLength = width;
+                        }
+
+                    }
+                    /**
+                     * The truncated text excluding the ellipsis text
+                     * @type String
+                     */
+                    this.truncatedText = this._getCharacters(minChar);
+
+                    // delete tmp element
+                    tmpContainerElement.parentNode.removeChild(tmpContainerElement);
+                    tmpContainerElement = null;
+
+                    textSpan.innerHTML = aria.utils.String.escapeForHTML(this.truncatedText);
+                } else {
+                    if (width < 0) {
+                        // this check is important, otherwise IE can raise an
+                        // exception when setting the width
+                        width = 0;
+                    }
+                    textSpan.style.width = width + "px";
+                    textSpan.innerHTML = el.innerHTML;
                 }
 
-                textSpan.style.width = width + "px";
                 if (position == "left") {
                     textSpan.style.direction = "rtl";
                 }
-                textSpan.innerHTML = el.innerHTML;
 
                 el.innerHTML = "";
 
@@ -115,6 +181,7 @@ Aria.classDefinition({
         }
 
     },
+
     $destructor : function () {
 
         if (this._popup && this._popup !== null) {
@@ -139,12 +206,29 @@ Aria.classDefinition({
     $prototype : {
 
         /**
+         * @param {Number} numberOfCharacters
+         * @return {String}
+         */
+        _getCharactersLeft : function (numberOfCharacters) {
+            return this.fullText.substring(this.fullText.length - numberOfCharacters);
+        },
+
+        /**
+         * @param {Number} numberOfCharacters
+         * @return {String}
+         */
+        _getCharactersRight : function (numberOfCharacters) {
+            return this.fullText.substring(0, numberOfCharacters);
+        },
+
+        /**
          * Create the temporary sizer element to be used internally to measure text
          * @param {HTMLElement} el The element that will be measured thanks to this sizer
          * @return {HTMLElement} The sizer element
          * @private
          */
         _createSizerEl : function (el) {
+
             var document = Aria.$window.document;
             // Need to make sure the new element has the same exact styling applied as the original element so we use
             // the same tag, class, style and append it to the same parent
@@ -270,6 +354,5 @@ Aria.classDefinition({
             this._popup.$dispose();
             this._popup = null;
         }
-
     }
 });

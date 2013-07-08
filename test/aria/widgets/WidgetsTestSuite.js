@@ -33,6 +33,8 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.action.sortindicator.SortIndicatorTest");
         this.addTests("test.aria.widgets.action.sortindicator.onclick.OnclickCallback");
         this.addTests("test.aria.widgets.action.sortindicator.block.SortIndicatorBlockTest");
+        this.addTests("test.aria.widgets.form.text.Text");
+        this.addTests("test.aria.widgets.form.text.EllipsisTest");
         this.addTests("test.aria.widgets.calendar.CalendarControllerTest");
         this.addTests("test.aria.widgets.calendar.lineHeight.CalendarLineHeightTest");
         this.addTests("test.aria.widgets.controllers.SelectBoxControllerTest");

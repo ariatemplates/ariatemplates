@@ -133,7 +133,7 @@ Aria.classDefinition({
                     textWidth = this._cfg.width;
                     dom.style.width = this._cfg.width + "px";
 
-                    this._ellipsis = new aria.utils.Ellipsis(ellipsisElement, textWidth, this._cfg.ellipsisLocation, this._cfg.ellipsis, this._context);
+                    this._ellipsis = new aria.utils.Ellipsis(ellipsisElement, textWidth, this._cfg.ellipsisLocation, this._cfg.ellipsis, this._context, this._cfg.ellipsisEndStyle);
 
                     if (!this._ellipsis.ellipsesNeeded) {
                         // No ellipsis was done so remove the <span> and put the full text into the text widget itself
