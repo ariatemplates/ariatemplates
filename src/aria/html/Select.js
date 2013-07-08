@@ -146,7 +146,7 @@ Aria.classDefinition({
             if (bindings.value) {
                 var newValue = this._transform(bindings.value.transform, bindings.value.inside[bindings.value.to], "toWidget");
                 if (newValue != null) {
-                    return newValue;
+                    return this.getIndex(newValue);
                 }
                 isBound = true;
             }

@@ -40,7 +40,12 @@ Aria.classDefinition({
         afterFirstClick : function () {
             this.assertEquals(this.selectWidget.selectedIndex, 1, "The selected Index should be %2  but was %1 ");
 
+            // now refresh the template and check that the selectedValue is still the one from the model
+            this.templateCtxt.$refresh();
             this.selectWidget = null;
+            var selectWidgetAfterRefresh = this.testDiv.getElementsByTagName("select")[0];
+            this.assertEquals(selectWidgetAfterRefresh.selectedIndex, 1, "The selected Index should be %2  but was %1 ");
+
             this.end();
         }
 
