@@ -21,3 +21,5 @@ tests:
    #Excluded because PhantomJS has random issues with the viewport
     - test.aria.widgets.container.dialog.scroll.OnScrollTestCase
     - test.aria.widgets.container.dialog.resize.test3.DialogOnResizeTestCase
+   # excluded because of timing issue (to be investigated)
+    - test.aria.widgets.form.text.Text

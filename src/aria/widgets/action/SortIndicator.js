@@ -181,7 +181,7 @@ Aria.classDefinition({
 
             var labelWidth = cfg.labelWidth;
             if (labelWidth > 0) {
-                this._ellipsis = new aria.utils.Ellipsis(ellipseElement, labelWidth, cfg.ellipsisLocation, cfg.ellipsis, this._context);
+                this._ellipsis = new aria.utils.Ellipsis(ellipseElement, labelWidth, cfg.ellipsisLocation, cfg.ellipsis, this._context, cfg.ellipsisEndStyle);
             }
 
             if (ellipseElement.innerHTML) {
