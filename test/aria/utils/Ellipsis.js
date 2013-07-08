@@ -41,16 +41,10 @@ Aria.classDefinition({
             var ellipsisStr = "...";
             var testText = "test text that needs to be made shorter";
 
-            // var ellipsedText = aria.utils.Ellipsis.applyTo(testElement, width, position, ellipsisStr);
             var ellipsisInstance = new aria.utils.Ellipsis(testElement, width, position, ellipsisStr, '', '', testText);
 
-            // ellipsedText.parentNode.removeChild(ellipsedText);
+            this.assertEquals(parseInt(testElement.offsetWidth, 10), 100);
 
-            if (aria.core.Browser.isIE6) {
-                this.assertEquals(parseInt(testElement.offsetWidthm, 10), 96);
-            } else {
-                this.assertEquals(parseInt(testElement.offsetWidth, 10), 100);
-            }
             ellipsisInstance.$dispose();
 
             testElement.parentNode.removeChild(testElement);

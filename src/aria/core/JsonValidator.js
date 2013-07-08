@@ -778,16 +778,20 @@
              * Validate a configuration object compared to its definition. All errors are logged.
              * @param {String} cfgBeanName The configuration classpath;
              * @param {Object} cfg The configuration bean to validate
-             * @param {Object} errorToLog Optional json. By default, the INVALID_CONFIGURATION message is used with the conrfiguration bean name.
+             * @param {Object} errorToLog Optional json. By default, the INVALID_CONFIGURATION message is used with the
+             * conrfiguration bean name.
+             *
              * <pre>
              * {
              *      msg : {String} log message used with $logError,
              *      params : {Array} parameters used with $logError,
              * }
              * </pre>
+             *
              * @return {Boolean} true if the configuration is valid.
              */
             validateCfg : function (cfgBeanName, cfg, errorToLog) {
+
                 var cfgOk = false;
                 try {
                     cfgOk = this.normalize({
@@ -804,7 +808,10 @@
                             error.message = logs.prepareLoggedMessage(error.msgId, error.msgArgs);
                         }
 
-                        errorToLog = errorToLog || {msg: this.INVALID_CONFIGURATION, params : [cfgBeanName]};
+                        errorToLog = errorToLog || {
+                            msg : this.INVALID_CONFIGURATION,
+                            params : [cfgBeanName]
+                        };
                         this.$logError(errorToLog.msg, errorToLog.params, e);
                     }
                 }
