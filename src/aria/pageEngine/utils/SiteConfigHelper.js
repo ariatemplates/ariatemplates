@@ -41,6 +41,7 @@ Aria.classDefinition({
     },
 
     $statics : {
+        CONTAINER_ID_CANT_BE_BODY_ID : "The 'containerId' page engine config entry must not be the id of BODY element",
         MISSING_PROCESS_METHOD : "The processContent method is not implemented"
     },
     $prototype : {
@@ -52,7 +53,9 @@ Aria.classDefinition({
         getRootDiv : function () {
             var rootDivId = this.getRootDivId();
             var domElt = aria.utils.Dom.getElementById(rootDivId);
-            if (!domElt) {
+            if (domElt === Aria.$window.document.body) {
+                this.$logError(this.CONTAINER_ID_CANT_BE_BODY_ID);
+            } else if (!domElt) {
                 domElt = Aria.$window.document.createElement("DIV");
                 domElt.id = rootDivId;
                 Aria.$window.document.body.appendChild(domElt);

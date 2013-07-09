@@ -102,6 +102,18 @@ Aria.classDefinition({
             this.assertTrue(aria.utils.Array.isEmpty(aria.utils.Object.keys(this.siteConfigHelper.getContentProcessorInstances())), "method getContentProcessorInstances failed");
             this.siteConfigHelper.$dispose();
 
+            this._testBodyAsPageEngineContainer();
+        },
+
+        _testBodyAsPageEngineContainer : function () {
+            // BODY is not allowed as page engine container, because we store AT event listeners on BODY.
+            // For animations to work, we need to clone the container; there can't be two <BODY> elements in the HTML.
+            var oldBodyId = Aria.$window.document.body.id;
+            Aria.$window.document.body.id = this.siteConfigHelper.getRootDivId();
+            this.siteConfigHelper.getRootDiv();
+            this.assertErrorInLogs(aria.pageEngine.utils.SiteConfigHelper.CONTAINER_ID_CANT_BE_BODY_ID);
+            Aria.$window.document.body.id = oldBodyId;
+
             this._testGetCommonModulesDescription();
         },
 

@@ -42,7 +42,7 @@ Aria.beanDefinitions({
             $type : "json:Object",
             $description : "Configuration object for the Page Engine's start method.",
             $properties : {
-                "pageProvder" : {
+                "pageProvider" : {
                     $type : "json:Object",
                     $description : "Instance of class that implements aria.pageEngine.pageProviders.PageProviderInterface.",
                     $mandatory : true
@@ -64,7 +64,7 @@ Aria.beanDefinitions({
             $properties : {
                 "containerId" : {
                     $type : "json:String",
-                    $description : "Id of the HTML element inside which the application will be loaded.",
+                    $description : "Id of the HTML element inside which the application will be loaded. It must point to some descendant of BODY, never to the BODY element itself.",
                     $mandatory : true
                 },
                 "commonModules" : {
