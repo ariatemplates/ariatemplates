@@ -204,7 +204,7 @@ Aria.classDefinition({
          */
         _dom_onclick : function (domEvt) {
             this._selectTab();
-            if (!this._hasFocus) {
+            if (this._cfg && !this._hasFocus) {
                 this._focus();
             }
         },
