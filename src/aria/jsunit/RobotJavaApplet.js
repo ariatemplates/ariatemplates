@@ -258,7 +258,7 @@ Aria.classDefinition({
                 var jnlp = aria.core.DownloadMgr.resolveURL('aria/jsunit/robot-applet.jnlp');
 
                 // Resolve the url depending on the base tag
-                var baseTags = document.head.getElementsByTagName("base");
+                var baseTags = document.getElementsByTagName('head')[0].getElementsByTagName("base");
                 if (baseTags && baseTags[0] && !this.absoluteUrlRegExp.test(jnlp)) {
                     var baseUrl = baseTags[0].getAttribute("href").replace(/[^\/.]+\.[^\/.]+$/, "").replace(/\/$/, "") + "/";
                     jnlp = baseUrl + jnlp;
