@@ -26,7 +26,7 @@
     "gzip-js": "0.3.2",
     "grunt-verifylowercase": "0.2.0",
     "grunt-leading-indent": "0.1.0",
-    "grunt": "git+https://github.com/divdavem/grunt.git#9952016e64f18404d459a39fd9273c7939693900",
+    "grunt": "git+https://github.com/divdavem/grunt.git#13da751bdfd291c25a47ca7669ae0778eb289b28",
     "grunt-contrib-jshint": "0.6.0",
     "attester": "1.2.0",
     "express": "3.3.1",
