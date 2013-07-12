@@ -206,7 +206,10 @@ Aria.classDefinition({
                     state = 'normal';
                 }
                 var div = this._div, frame = div._frame;
-                div.initWidgetDom();
+
+                // Make sure that the div is initialised (only once),
+                // as _onTooltipPositioned can be called several times for the same popup
+                div.getDom();
                 // this is backward compatibility for skin without errortooltip position states
                 if (frame.checkState(state)) {
                     frame.changeState(state);
