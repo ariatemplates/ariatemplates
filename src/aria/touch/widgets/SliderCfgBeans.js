@@ -34,6 +34,25 @@ Aria.beanDefinitions({
                     $description : "Width to use for the widget.",
                     $default : 100
                 },
+                toggleSwitch : {
+                    $type : "json:Boolean",
+                    $description : "to enable the Toggle switch.",
+                    $default : false
+                },
+                tapToMove : {
+                    $type : "json:Boolean",
+                    $description : "Tap on the Slider Rail should moves the thumb to the tap position. If the slider is a switch, it moves the thumb to the closest border (either 0 or 1)",
+                    $default : false
+                },
+                tapToToggle : {
+                    $type : "json:Boolean",
+                    $description : "Tap on the Slider should toggle the value between 0 or 1, regardless of where the tap happened. Only used if the widget is a switch"
+                },
+                switchThreshold : {
+                    $type : "json:Float",
+                    $description : "When using the widget as switch, this is the value above which all value are converted to 1",
+                    $default : 0.5
+                },
                 bindValue : {
                     $type : "json:Object",
                     $description : "Binding for the value of the slider.",

@@ -71,6 +71,12 @@ Aria.classDefinition({
                 fn : callback,
                 scope : this
             });
+        },
+        click : function (position, callback) {
+            this.synEvent.execute([["click", position]], {
+                fn : callback,
+                scope : this
+            });
         }
     }
 });

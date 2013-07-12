@@ -30,6 +30,31 @@
             position: absolute;
         }
 
+        div.touchLibSlider .touchLibSwitchOn, div.touchLibSlider .touchLibSwitchOff{
+            position: absolute;
+            border-radius: 32px 32px 32px 32px;
+            z-index: 1;
+            height: 17px;
+            font: normal 700 16px/17px arial,helvetica;
+            overflow: hidden;
+            text-align: center;
+            cursor: default;
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        div.touchLibSlider .touchLibSwitchOn{
+          background-color: #61A0CD;
+          color: #fff;
+        }
+
+        div.touchLibSlider .touchLibSwitchOff{
+          background-color: #DADADA;
+          color: #000;
+        }
+
+
         div.touchLibSlider span.touchContainer {
             position: absolute;
             height: 18px;
@@ -41,6 +66,7 @@
             border-radius: 32px 32px 32px 32px;
             width: 14px;
             height: 14px;
+            z-index: 2;
         }
 
     {/macro}
