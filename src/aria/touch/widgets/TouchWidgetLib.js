@@ -28,7 +28,8 @@ Aria.classDefinition({
          */
         widgets : {
             "Slider" : "aria.touch.widgets.Slider",
-            "DoubleSlider" : "aria.touch.widgets.DoubleSlider"
+            "DoubleSlider" : "aria.touch.widgets.DoubleSlider",
+            "Button" : "aria.touch.widgets.Button"
         }
     }
 });

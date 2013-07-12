@@ -104,6 +104,9 @@
     Aria.classDefinition({
         $classpath : "aria.utils.Mouse",
         $singleton : true,
+        $events : {
+            "eventUp" : "Raised on the mouseup or tap."
+        },
         $dependencies : ["aria.utils.Event", "aria.utils.AriaWindow", "aria.touch.Event", "aria.DomEvent"],
         $statics : {
             /**
@@ -373,6 +376,21 @@
 
                 this._candidateForDrag = null;
                 this._activeDrag = null;
+                var event = new aria.DomEvent(evt);
+                if (evt.type === "touchend") {
+                    // The position of touch events is not determined correctly by clientX/Y
+                    var elementPosition = aria.touch.Event.getPositions(event);
+                    event.clientX = elementPosition[0].x;
+                    event.clientY = elementPosition[0].y;
+                }
+                this.$raiseEvent({
+                    name : "eventUp",
+                    originalEvent : evt,
+                    posX : event.clientX,
+                    posY : event.clientY
+                });
+                event.$dispose();
+
             }
         }
     });
