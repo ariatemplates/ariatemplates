@@ -356,7 +356,7 @@
   {/macro}
 
   {macro generateKeyFrames(name, from, to)}
-    {var prefixes = ["-webkit-", "-moz-", "-ms-", "-o-"] /}
+    {var prefixes = ["-webkit-", "-moz-", "-o-"] /}
 
     {for var i = 0; i < prefixes.length; i += 1}
       @${prefixes[i]}keyframes ${name} \{
