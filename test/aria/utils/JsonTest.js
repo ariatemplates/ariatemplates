@@ -407,7 +407,70 @@ Aria.classDefinition({
             var withMergeResult = aria.utils.Json.copy(target);
             aria.utils.Json.inject(aria.utils.Json.copy(source), withMergeResult, true);
             this.assertJsonEquals(withMerge, withMergeResult);
+        },
 
+        testInjectWithoutMeta : function () {
+            var source = {
+                a : "a",
+                sub : {
+                    "aria:meta2" : "meta",
+                    subsub : {
+                        c : "c",
+                        "aria:meta3" : "meta"
+                    }
+                },
+                "aria:meta1" : "meta"
+            };
+
+            var outputDefaultValueTest = {};
+            var outputKeepMeta = {};
+            var outputNoMeta = {};
+            var outputNoMetaWithMerge = {
+                sub : {
+                    "aria:meta2" : "old"
+                }
+            };
+
+            // when stripMetadata = false, JSON is copied intact
+            aria.utils.Json.inject(source, outputKeepMeta, true, false);
+            this.assertJsonEquals(source, outputKeepMeta);
+
+            // when stripMetadata = true, meta is stripped, also in subobjects
+            aria.utils.Json.inject(source, outputNoMeta, true, true);
+            this.assertEquals(outputNoMeta.a, "a");
+            this.assertFalse("aria:meta1" in outputNoMeta);
+            this.assertTrue("sub" in outputNoMeta);
+            this.assertFalse("aria:meta2" in outputNoMeta.sub);
+            this.assertTrue("subsub" in outputNoMeta.sub);
+            this.assertTrue("c" in outputNoMeta.sub.subsub);
+            this.assertFalse("aria:meta3" in outputNoMeta.sub.subsub);
+
+            // when corresponding meta is already present, it should not be overridden when strip=true
+            aria.utils.Json.inject(source, outputNoMetaWithMerge, true, true);
+            this.assertEquals(outputNoMetaWithMerge.sub["aria:meta2"], "old");
+
+            // also when copying an array, meta in objects in the array shouldn't be copied
+            var sourceArr = [{
+                        "aria:meta4" : "meta",
+                        sub : {
+                            "aria:meta5" : "meta",
+                            d : "d"
+                        }
+                    }];
+            var outputArr = [];
+            aria.utils.Json.inject(sourceArr, outputArr, true, true);
+            this.assertJsonEquals(outputArr, [{
+                        sub : {
+                            d : "d"
+                        }
+                    }]);
+
+            // test the default value of stripMetadata
+            aria.utils.Json.inject(source, outputDefaultValueTest, true);
+            /* BACKWARD-COMPATIBILITY-BEGIN - the default value will change in AT 1.5.1 */
+            this.assertTrue("aria:meta1" in outputDefaultValueTest);
+            // this.assertFalse("aria:meta1" in outputDefaultValueTest);
+            /* BACKWARD-COMPATIBILITY-END */
         },
 
         /**

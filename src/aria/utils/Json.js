@@ -825,11 +825,21 @@
              * @param {Object|Array} src the source JSON structure
              * @param {Object|Array} target the target JSON structure
              * @param {Boolean} merge tells if the injection must be recursive - default: false
+             * @param {Boolean} stripMetadata whether to copy or not the internal fwk metadata (aria:propname) from src.
+             * Note that if corresponding properties are already present in target, they will stay untouched. Default:
+             * false
              * @return true if the injection was handled correctly
              */
-            inject : function (src, target, merge) {
+            inject : function (src, target, merge, stripMetadata) {
 
                 merge = merge === true;
+                /* BACKWARD-COMPATIBILITY-BEGIN - change the default value of stripMetadata in AT 1.5.1 */
+                if (typeof stripMetadata === "undefined") {
+                    this.$logWarn("aria.utils.Json.inject() will not copy metadata by default as of AT 1.5.1. If you rely on the old behavior, please pass additional parameter in your code.");
+                }
+                stripMetadata = (stripMetadata === true);
+                // stripMetadata = (stripMetadata === false ? false : true);
+                /* BACKWARD-COMPATIBILITY-END */
 
                 var allArray = (typeUtils.isArray(src) && typeUtils.isArray(target));
                 var allObject = (typeUtils.isObject(src) && typeUtils.isObject(target));
@@ -848,13 +858,13 @@
                         for (var i = 0, l = src.length; i < l; i++) {
                             elem = src[i];
                             if (!target[i]) {
-                                target[i] = elem;
+                                target[i] = stripMetadata ? this.removeMetadata(elem) : elem;
                             } else {
                                 if (typeUtils.isContainer(elem)) {
                                     // recursive merge
-                                    if (!this.inject(elem, target[i], true)) {
+                                    if (!this.inject(elem, target[i], true, stripMetadata)) {
                                         // recursive injection is not possible
-                                        target[i] = elem;
+                                        target[i] = stripMetadata ? this.removeMetadata(elem) : elem;
                                     }
                                 } else if (typeUtils.isDate(elem)) {
                                     target[i] = new Date(elem.getTime());
@@ -868,15 +878,19 @@
                 } else if (allObject) {
                     for (var key in src) {
                         if (src.hasOwnProperty(key)) {
+                            if (this.isMetadata(key) && stripMetadata) {
+                                continue;
+                            }
+
                             elem = src[key];
                             if (!target[key] || !merge) {
-                                this.setValue(target, key, elem);
+                                this.setValue(target, key, stripMetadata ? this.removeMetadata(elem) : elem);
                             } else {
                                 if (typeUtils.isContainer(elem)) {
                                     // recursive merge
-                                    if (!this.inject(elem, target[key], true)) {
+                                    if (!this.inject(elem, target[key], true, stripMetadata)) {
                                         // recursive injection is not possible
-                                        this.setValue(target, key, elem);
+                                        this.setValue(target, key, stripMetadata ? this.removeMetadata(elem) : elem);
                                     }
                                 } else if (typeUtils.isDate(elem)) {
                                     this.setValue(target, key, new Date(elem.getTime()));
