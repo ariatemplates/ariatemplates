@@ -113,7 +113,7 @@ Aria.classDefinition({
     $dependencies : ["aria.utils.SynEvents", "aria.templates.RefreshManager", "aria.utils.Type"],
     $statics : {
         IFRAME_LOAD_TEMPLATE : "Error loading template '%1' in iframe",
-        IFRAME_LOADER : "Unable to load Aria Templates in iframe"
+        IFRAME_LOADER : "Unable to load Aria Templates in iframe because: %1"
     },
     $prototype : {
         /**
@@ -811,7 +811,7 @@ Aria.classDefinition({
          */
         _iframeInnerDepLoad : function (result, args) {
             if (!result.success) {
-                return this._iframeLoadError(args);
+                return this._iframeLoadError(args, result.reason);
             }
             var window = args.iframe.contentWindow;
             var appenders = aria.core.Log.getAppenders();
@@ -826,7 +826,10 @@ Aria.classDefinition({
                     args : args
                 },
                 onerror : {
-                    fn : this._iframeLoadError,
+                    fn : function (args) {
+                        // FIXME Doing this because onerror is not an aria.core.CfgBean.Callback so I can't use apply:true
+                        this._iframeLoadError(args, "onerror callback of Aria.load(aria.jsunit.TemplateTestCase)");
+                    },
                     scope : this,
                     args : args
                 }
@@ -869,8 +872,13 @@ Aria.classDefinition({
          * @param {Object} args
          * @protected
          */
-        _iframeLoadError : function (args) {
-            this.$logError(this.IFRAME_LOADER);
+        _iframeLoadError : function (args, reason) {
+            if (reason === aria.utils.FrameATLoader.BOOTSTRAP) {
+                reason = "unable to load the bootstrap in the iframe";
+            } else if (reason === aria.utils.FrameATLoader.WAIT) {
+                reason = "the iframe didn't load the framework quick enough";
+            }
+            this.$logError(this.IFRAME_LOADER, reason);
             return this.$callback(args.err, args);
         },
 
@@ -891,6 +899,19 @@ Aria.classDefinition({
                 document : args.iframe.contentDocument || args.iframe.contentWindow.document,
                 templateCtxt : result.tplCtxt
             });
+        },
+
+        /**
+         * Executed when an unhandled exception is thrown inside a method.
+         * @param {Error} ex Exception
+         * @param {String} methodName Method that threw the exception
+         * @private
+         * @override
+         */
+        __failInTestMethod : function (ex, methodName) {
+            // Template tests are always asynchronous, but we need to call notifyTemplateTestEnd
+            this.$logError(this.EXCEPTION_IN_METHOD, methodName, ex);
+            this.notifyTemplateTestEnd();
         }
     }
 });
