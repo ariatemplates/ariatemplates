@@ -15,9 +15,12 @@
 
 Aria.classDefinition({
     $classpath : "test.aria.html.checkbox.CheckBoxTest",
-    $extends : "aria.jsunit.WidgetTestCase",
-    $dependencies : ["aria.html.CheckBox", "aria.utils.json", "aria.utils.FireDomEvent"],
+    $extends : "test.aria.html.inputElement.InputElementBaseTest",
+    $dependencies : ["aria.html.CheckBox", "aria.utils.Json", "aria.utils.FireDomEvent"],
     $prototype : {
+
+        _widgetClass : "aria.html.CheckBox",
+
         testInitialValueFalse : function () {
             var container = {};
 
@@ -32,7 +35,8 @@ Aria.classDefinition({
 
             var widget = this.createAndInit("aria.html.CheckBox", cfg);
 
-            this.assertEquals(widget._domElt.checked, false, "Checked bound to initial false: " + widget._domElt.checked);
+            this.assertEquals(widget._domElt.checked, false, "Checked bound to initial false: "
+                    + widget._domElt.checked);
 
             aria.utils.Json.setValue(container, "checkstate", true);
             this.assertEquals(widget._domElt.checked, true, "Set checked to true: " + widget._domElt.checked);
@@ -77,10 +81,10 @@ Aria.classDefinition({
                         inside : container,
                         to : "checkstate",
                         transform : {
-                            fromWidget : function(v) {
+                            fromWidget : function (v) {
                                 return v ? 'checked' : 'not_checked';
                             },
-                            toWidget : function(v) {
+                            toWidget : function (v) {
                                 return v === 'checked';
                             }
                         }
@@ -121,6 +125,5 @@ Aria.classDefinition({
             widget.$dispose();
             this.outObj.clearAll();
         }
-
-     }
+    }
 });

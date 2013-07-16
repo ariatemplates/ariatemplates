@@ -10,32 +10,23 @@
  */
 
 Aria.beanDefinitions({
-    $package : "aria.html.beans.RadioButtonCfg",
-    $description : "Configuration for RadioButton widget.",
+    $package : "aria.html.beans.InputElementCfg",
+    $description : "Configuration for the generic InputElement.",
     $namespaces : {
-        "json" : "aria.core.JsonTypes",
-        "base" : "aria.html.beans.InputElementCfg",
+        "base" : "aria.html.beans.ElementCfg",
         "common" : "aria.widgetLibs.CommonBeans"
     },
     $beans : {
         "Properties" : {
             $type : "base:Properties",
-            $description : "Properties of a RadioButton widget.",
+            $description : "Properties of an InputElement.",
             $properties : {
-                "name" : {
-                    $type : "json:String",
-                    $description : "The radio button name. Radio buttons with the same name will form a radio button group."
-                },
-                "value" : {
-                    $type : "json:String",
-                    $description : "The value associated with the radio button."
-                },
                 "bind" : {
-                    $type : "base:Properties.$properties.bind",
+                    $type : "base:Properties.bind",
                     $properties : {
-                        "selectedValue" : {
+                        "disabled" : {
                             $type : "common:BindingRef",
-                            $description : "Bi-directional binding."
+                            $description : "Binding for the disabled attribute of the input element."
                         }
                     }
                 }

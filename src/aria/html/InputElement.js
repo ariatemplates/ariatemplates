@@ -21,6 +21,7 @@
     Aria.classDefinition({
         $classpath : "aria.html.InputElement",
         $extends : "aria.html.Element",
+        $dependencies : ["aria.html.DisabledTrait"],
         $statics : {
             INVALID_USAGE : "Widget %1 can only be used as a %2.",
             BINDING_NEEDED : "The property '%2' from Widget %1 should be bound to a data model"
@@ -33,6 +34,21 @@
             this.$Element.constructor.call(this, cfg, context, line);
         },
         $prototype : {
+
+            /**
+             * Prototype init method called at prototype creation. It copies all methods from the prototype of
+             * aria.html.DisabledTrait
+             * @param {Object} p the prototype object being built
+             */
+            $init : function (p) {
+                var src = aria.html.DisabledTrait.prototype;
+                for (var key in src) {
+                    if (src.hasOwnProperty(key) && !p.hasOwnProperty(key)) {
+                        p[key] = src[key];
+                    }
+                }
+            },
+
             /**
              * Input elements can only be used as self closing tags. Calling this function raises an error.
              * @param {aria.templates.MarkupWriter} out
@@ -46,7 +62,26 @@
              * because it was already logged by writeMarkupBegin.
              * @param {aria.templates.MarkupWriter} out
              */
-            writeMarkupEnd : Aria.empty
+            writeMarkupEnd : Aria.empty,
+
+            /**
+             * Initialization method called after the markup of the widget has been inserted in the DOM.
+             */
+            initWidget : function () {
+                this.$Element.initWidget.call(this);
+                this.initDisabledWidgetAttribute();
+            },
+
+            /**
+             * Function called when a value inside 'bind' has changed.
+             * @param {String} name Name of the property
+             * @param {Object} value Value of the changed property
+             * @param {Object} oldValue Value of the property before the change happened
+             */
+            onbind : function (name, value, oldValue) {
+                this.$Element.onbind.apply(this, arguments);
+                this.onDisabledBind(name, value, oldValue);
+            }
 
         }
     });

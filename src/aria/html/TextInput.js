@@ -239,7 +239,7 @@
              * Initialization method called after the markup of the widget has been inserted in the DOM.
              */
             initWidget : function () {
-                this.$Element.initWidget.call(this);
+                this.$InputElement.initWidget.call(this);
 
                 var bindings = this._cfg.bind;
                 if (bindings.value) {
@@ -250,7 +250,6 @@
                 } else {
                     this.$logWarn(this.BINDING_NEEDED, [this.$class, "value"]);
                 }
-
                 this._setPlaceholder();
             },
 
@@ -261,6 +260,7 @@
              * @param {Object} oldValue Value of the property before the change happened
              */
             onbind : function (name, value, oldValue) {
+                this.$InputElement.onbind.apply(this, arguments);
                 if (name === "value") {
                     value = (value != null) ? value + "" : "";
                     if (value) {

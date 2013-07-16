@@ -15,9 +15,11 @@
 
 Aria.classDefinition({
     $classpath : "test.aria.html.select.SelectTest",
-    $extends : "aria.jsunit.WidgetTestCase",
-    $dependencies : ["aria.html.Select", "aria.utils.json", "aria.utils.FireDomEvent", "aria.utils.SynEvents"],
+    $extends : "test.aria.html.inputElement.InputElementBaseTest",
+    $dependencies : ["aria.html.Select", "aria.utils.Json", "aria.utils.FireDomEvent", "aria.utils.SynEvents"],
     $prototype : {
+
+        _widgetClass : "aria.html.Select",
 
         testWithoutInitialIndex : function () {
             var container = {};
@@ -430,10 +432,10 @@ Aria.classDefinition({
             this.outObj.clearAll();
         },
 
-         testWithBothValueAndIndexBound : function () {
+        testWithBothValueAndIndexBound : function () {
             var container = {
                 "item" : "FR",
-                index: 0
+                index : 0
             };
 
             var bindingConfig = {
@@ -471,7 +473,7 @@ Aria.classDefinition({
 
             this.assertEquals(selectWidget._domElt.selectedIndex, 1, "The selected Index should be %2  but was %1 ");
 
-            //the model should have been updated as well
+            // the model should have been updated as well
             this.assertEquals(container.index, 1, "The Index in the data model should be %2  but was %1 ");
 
             selectWidget.$dispose();
