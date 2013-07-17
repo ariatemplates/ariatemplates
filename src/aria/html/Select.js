@@ -22,7 +22,7 @@ Aria.classDefinition({
         BINDING_NEEDED : "The property '%2' from Widget %1 should be bound to a data model",
         WRONG_OPTIONS : "Can't use the options property if an html body content is defined for %1"
     },
-    $dependencies : ["aria.html.beans.SelectCfg"],
+    $dependencies : ["aria.html.beans.SelectCfg", "aria.utils.Type", "aria.html.DisabledTrait"],
     $constructor : function (cfg, context, line) {
         this.$cfgBean = this.$cfgBean || "aria.html.beans.SelectCfg.Properties";
 
@@ -38,6 +38,21 @@ Aria.classDefinition({
         this.$Element.constructor.call(this, cfg, context, line);
     },
     $prototype : {
+
+        /**
+         * Prototype init method called at prototype creation time Allows to store class-level objects that are shared
+         * by all instances
+         * @param {Object} p the prototype object being built
+         */
+        $init : function (p) {
+            var src = aria.html.DisabledTrait.prototype;
+            for (var key in src) {
+                if (src.hasOwnProperty(key) && !p.hasOwnProperty(key)) {
+                    p[key] = src[key];
+                }
+            }
+        },
+
         /**
          * @param {aria.templates.MarkupWriter} out
          */
@@ -124,6 +139,7 @@ Aria.classDefinition({
             if (newIndex != null) {
                 this._domElt.selectedIndex = newIndex;
             }
+            this.initDisabledWidgetAttribute();
         },
 
         /**
@@ -186,10 +202,12 @@ Aria.classDefinition({
             if (name === "selectedIndex") {
                 this._domElt.selectedIndex = value;
                 this.setValueInDataModel();
-            } else if (name === "value") {
+            }
+            if (name === "value") {
                 this._domElt.selectedIndex = this.getIndex(value);
                 this.setIndexInDataModel();
             }
+            this.onDisabledBind(name, value, oldValue);
         },
 
         /**

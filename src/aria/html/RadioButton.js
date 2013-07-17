@@ -51,7 +51,7 @@
              * Initialization method called after the markup of the widget has been inserted in the DOM.
              */
             initWidget : function () {
-                this.$Element.initWidget.call(this);
+                this.$InputElement.initWidget.call(this);
 
                 var bindings = this._cfg.bind;
                 var binding = bindings.selectedValue;
@@ -70,6 +70,7 @@
              * @param {Object} oldValue Value of the property before the change happened
              */
             onbind : function (name, value, oldValue) {
+                this.$InputElement.onbind.apply(this, arguments);
                 if (name === "selectedValue") {
                     this._domElt.checked = (value === this._cfg.value);
                 }

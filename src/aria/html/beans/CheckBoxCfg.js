@@ -13,7 +13,7 @@ Aria.beanDefinitions({
     $package : "aria.html.beans.CheckBoxCfg",
     $description : "Configuration for CheckBox widget.",
     $namespaces : {
-        "base" : "aria.html.beans.ElementCfg",
+        "base" : "aria.html.beans.InputElementCfg",
         "common" : "aria.widgetLibs.CommonBeans"
     },
     $beans : {

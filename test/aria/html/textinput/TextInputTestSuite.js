@@ -27,5 +27,6 @@ Aria.classDefinition({
         this.addTests("test.aria.html.textinput.placeholder.PlaceholderTestCase");
         this.addTests("test.aria.html.textinput.bind.BindableTestCase");
         this.addTests("test.aria.html.textinput.bind.TextInputBindTest");
+        this.addTests("test.aria.html.textinput.DisabledTextInputTest");
     }
 });

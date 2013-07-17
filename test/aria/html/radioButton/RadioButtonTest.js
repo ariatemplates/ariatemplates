@@ -15,9 +15,11 @@
 
 Aria.classDefinition({
     $classpath : "test.aria.html.radioButton.RadioButtonTest",
-    $extends : "aria.jsunit.WidgetTestCase",
-    $dependencies : ["aria.html.RadioButton", "aria.utils.json", "aria.utils.FireDomEvent"],
+    $extends : "test.aria.html.inputElement.InputElementBaseTest",
+    $dependencies : ["aria.html.RadioButton", "aria.utils.Json", "aria.utils.FireDomEvent"],
     $prototype : {
+
+        _widgetClass : "aria.html.RadioButton",
 
         testWithoutInitialValue : function () {
             var container = {};

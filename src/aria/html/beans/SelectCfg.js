@@ -44,7 +44,7 @@ Aria.beanDefinitions({
                     $default : []
                 },
                 "bind" : {
-                    $type : "base:Properties.$properties.bind",
+                    $type : "base:Properties.bind",
                     $properties : {
                         "selectedIndex" : {
                             $type : "common:BindingRef",
@@ -53,6 +53,10 @@ Aria.beanDefinitions({
                         "value" : {
                             $type : "common:BindingRef",
                             $description : "Bi-directional binding on the selected value"
+                        },
+                        "disabled" : {
+                            $type : "common:BindingRef",
+                            $description : "Binding for the disabled attribute of the select element."
                         }
                     }
                 }
@@ -82,7 +86,7 @@ Aria.beanDefinitions({
                     $mandatory : true
                 },
                 "attributes" : {
-                    $type: "html:HtmlAttribute",
+                    $type : "html:HtmlAttribute",
                     $description : "a list of attributes for the option tags"
                 }
             }

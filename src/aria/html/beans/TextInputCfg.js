@@ -19,6 +19,7 @@ Aria.beanDefinitions({
     $namespaces : {
         "json" : "aria.core.JsonTypes",
         "base" : "aria.html.beans.ElementCfg",
+        "baseInput" : "aria.html.beans.InputElementCfg",
         "common" : "aria.widgetLibs.CommonBeans"
     },
     $beans : {
@@ -32,7 +33,7 @@ Aria.beanDefinitions({
                     $mandatory : true
                 },
                 "bind" : {
-                    $type : "base:Properties.bind",
+                    $type : "baseInput:Properties.bind",
                     $properties : {
                         "value" : {
                             $type : "common:BindingRef",
