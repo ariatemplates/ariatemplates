@@ -353,8 +353,8 @@
                     }
 
                     element.move(event);
-                    event.$dispose();
                 }
+                event.$dispose();
             },
 
             /**
