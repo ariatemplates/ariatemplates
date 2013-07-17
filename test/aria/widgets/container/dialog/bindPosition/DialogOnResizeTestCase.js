@@ -31,8 +31,7 @@ Aria.classDefinition({
         this.setTestEnv({
             template : "test.aria.widgets.container.dialog.bindPosition.IframeTemplate",
             data : this.testData,
-            iframe : true,
-            cssText : "position:fixed;top:20px;left:20px;z-index:10000;width:612px;height:612px;border:1px solid blue;background:aliceblue"
+            iframe : true
         });
 
     },

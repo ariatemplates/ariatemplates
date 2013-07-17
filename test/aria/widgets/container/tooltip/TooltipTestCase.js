@@ -23,7 +23,7 @@ Aria.classDefinition({
         this.setTestEnv({
             template : "test.aria.widgets.container.tooltip.InnerTemplate",
             iframe : true,
-            cssText : "width:200px;height:200px;border:1px solid blue;"
+            css : "top:0;left:0;width:200px;height:200px;"
         });
     },
     $prototype : {
