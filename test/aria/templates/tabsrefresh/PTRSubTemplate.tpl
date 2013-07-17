@@ -13,20 +13,19 @@
  * limitations under the License.
  */
 
-/**
- * Test suite regrouping all tests on aria.dom
- */
-Aria.classDefinition({
-    $classpath : "test.aria.dom.DomTestSuite",
-    $extends : "aria.jsunit.TestSuite",
-    $constructor : function () {
-        this.$TestSuite.constructor.call(this);
+{Template {
+    $classpath : 'test.aria.templates.tabsRefresh.PTRSubTemplate' } }
 
-        this.addTests("test.aria.dom.basic.DomTestCase");
-        this.addTests("test.aria.dom.DomReadyTest");
-        this.addTests("test.aria.dom.domcheck.PTRTemplateTestCase");
-        this.addTests("test.aria.dom.logscheck.LogsCheckTestCase");
-        this.addTests("test.aria.dom.getid.GetIdTestCase");
+    {macro main ( )}
+        <p> Test sub - template </p>
+        <div id = "checkDiv" >
+            {@aria:Tab { tabId : "tab1" }}Tab 1{/@aria:Tab}
+            {@aria:Tab { tabId : "tab2" }}Tab 2{/@aria:Tab}
+            {@aria:Tab { tabId : "tab3" }}Tab 3{/@aria:Tab}
+            {@aria:Tab { tabId : "tab4" }}Tab 4{/@aria:Tab}
+            {@aria:Tab { tabId : "tab5" }}Tab 5{/@aria:Tab}
+            {@aria:Tab { tabId : "tab6" }}Tab 6{/@aria:Tab}
+        </div>
+    {/macro}
 
-    }
-});
+{/Template}

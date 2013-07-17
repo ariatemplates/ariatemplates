@@ -13,20 +13,22 @@
  * limitations under the License.
  */
 
-/**
- * Test suite regrouping all tests on aria.dom
- */
 Aria.classDefinition({
-    $classpath : "test.aria.dom.DomTestSuite",
-    $extends : "aria.jsunit.TestSuite",
+    $classpath : 'test.aria.templates.binding.missingbinding.MissingBindingTestCase',
+    $extends : 'aria.jsunit.TemplateTestCase',
     $constructor : function () {
-        this.$TestSuite.constructor.call(this);
+        this.$TemplateTestCase.constructor.call(this);
+        this.setTestEnv({
+            template : "test.aria.templates.binding.missingbinding.MissingBinding"
+        });
+        this.defaultTestTimeout = 10000;
+    },
+    $prototype : {
 
-        this.addTests("test.aria.dom.basic.DomTestCase");
-        this.addTests("test.aria.dom.DomReadyTest");
-        this.addTests("test.aria.dom.domcheck.PTRTemplateTestCase");
-        this.addTests("test.aria.dom.logscheck.LogsCheckTestCase");
-        this.addTests("test.aria.dom.getid.GetIdTestCase");
-
+        runTemplateTest : function () {
+            this.assertErrorInLogs(aria.templates.Section.MISSING_TO_BINDING, 1);
+            this.assertLogsEmpty(true);
+            this.notifyTemplateTestEnd();
+        }
     }
 });

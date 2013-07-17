@@ -13,20 +13,20 @@
  * limitations under the License.
  */
 
-/**
- * Test suite regrouping all tests on aria.dom
- */
-Aria.classDefinition({
-    $classpath : "test.aria.dom.DomTestSuite",
-    $extends : "aria.jsunit.TestSuite",
-    $constructor : function () {
-        this.$TestSuite.constructor.call(this);
+{Template {
+    $classpath : "test.aria.templates.events.basic.BasicEventsTestCaseTpl" } }
 
-        this.addTests("test.aria.dom.basic.DomTestCase");
-        this.addTests("test.aria.dom.DomReadyTest");
-        this.addTests("test.aria.dom.domcheck.PTRTemplateTestCase");
-        this.addTests("test.aria.dom.logscheck.LogsCheckTestCase");
-        this.addTests("test.aria.dom.getid.GetIdTestCase");
+    {macro main ( )}
+        <div id = 'mydiv1' > </div>
+        <div id = 'mydiv2' > </div>
+        <div id = 'mydiv3' > </div>
+        <div id = 'mydiv4' > </div>
+        <div id = 'mydiv5' > </div>
+        <div id = 'mydiv6' > </div>
+        <div id = 'mydiv7' > </div>
+        <div id = 'mydiv8' > </div>
+        <div id = 'mydiv9' > </div>
+        <div id = 'mydiv10' > </div>
+    {/macro}
 
-    }
-});
+{/Template}

@@ -33,6 +33,7 @@ Aria.classDefinition({
         this.addTests("test.aria.templates.css.Widget.DependencyTest");
         this.addTests("test.aria.templates.css.WidgetContext.ContextTest");
         this.addTests("test.aria.templates.css.events.EventsTestCase");
+        this.addTests("test.aria.templates.css.global.GlobalCssTemplateTestCase");
         this.addTests("test.aria.templates.css.inheritance.InheritTestCase");
         this.addTests("test.aria.templates.css.numberReload.OneLevelTemplate");
     }
