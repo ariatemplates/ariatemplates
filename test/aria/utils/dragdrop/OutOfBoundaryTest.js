@@ -23,9 +23,10 @@ Aria.classDefinition({
     $constructor : function () {
         this.$RobotTestCase.constructor.call(this);
 
+        // special env settings to reproduce GH-545
         this.setTestEnv({
             template : "test.aria.utils.dragdrop.DragTestTemplate",
-            cssText : "position:relative;top:20px;left:20px;z-index:66666;width:1000px;height:700px;border:15px solid blue;background:aliceblue"
+            css : "position:relative;border:15px solid blue;"
         });
     },
     $prototype : {

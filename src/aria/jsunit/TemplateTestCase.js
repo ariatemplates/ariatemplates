@@ -41,7 +41,7 @@ Aria.classDefinition({
             moduleCtrl : null,
             data : {},
             iframe : false,
-            cssText : "position:fixed;top:20px;left:20px;z-index:10000;width:1000px;height:700px;border:1px solid blue;background:aliceblue;opacity:0.8;-ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=80)';filter: alpha(opacity=80);"
+            baseCss : this.IFRAME_BASE_CSS_TEXT
         };
 
         /**
@@ -172,7 +172,7 @@ Aria.classDefinition({
             if (!this.testDiv) {
                 var div = this.testDocument.createElement("div");
                 div.id = this.testDivId;
-                div.style.cssText = this.env.cssText;
+                div.style.cssText = this._getCssTextForTestFrame(this.env);
                 this.testDocument.body.appendChild(div);
                 this.testDiv = div;
             }
@@ -791,7 +791,7 @@ Aria.classDefinition({
             containerDiv.style.cssText = "background-color:#F7F6F1;position:absolute;";
             var iframe = document.createElement("iframe");
             iframe.id = "testIframe_" + this.$class;
-            iframe.style.cssText = args.def.cssText;
+            iframe.style.cssText = this._getCssTextForTestFrame(args.def);
             containerDiv.appendChild(iframe);
             document.body.appendChild(containerDiv);
             args.iframe = iframe;
@@ -899,6 +899,16 @@ Aria.classDefinition({
                 document : args.iframe.contentDocument || args.iframe.contentWindow.document,
                 templateCtxt : result.tplCtxt
             });
+        },
+
+        /**
+         * Merges and outputs base and additional CSS text for the iframe found in env setting of a template test.
+         * @param {Object} env
+         * @return {String}
+         * @protected
+         */
+        _getCssTextForTestFrame : function (env) {
+            return env.baseCss + (env.css ? ";" + env.css : "");
         },
 
         /**

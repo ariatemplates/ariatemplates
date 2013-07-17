@@ -32,6 +32,8 @@ Aria.classDefinition({
         // some tests run slower on IE when they are in a suite
         "defaultTestTimeout" : 60000,
 
+        IFRAME_BASE_CSS_TEXT : "position:fixed;top:20px;left:20px;z-index:10000;width:1000px;height:700px;border:1px solid blue;background:aliceblue;opacity:0.8;-ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=80)';filter: alpha(opacity=80);",
+
         ERROR_NOTIFY_END : "Synchronous test is calling notifyTestEnd",
         EXCEPTION_IN_METHOD : "Exception raised while calling '%1' in an asynchronous test",
         ASYNC_IN_SYNC_TEST : "Doing asynchronous actions inside a synchronous test, please check '%1'"
