@@ -26,8 +26,7 @@ Aria.classDefinition({
         this.setTestEnv({
             template : "test.aria.widgets.container.dialog.resize.test1.DialogOnResize",
             data : this.data,
-            iframe : true,
-            cssText : "position:fixed;top:20px;left:20px;z-index:10000;width:1000px;height:700px;border:1px solid blue;background:aliceblue"
+            iframe : true
         });
     },
     $prototype : {
