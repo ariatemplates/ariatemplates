@@ -92,10 +92,11 @@ Aria.classDefinition({
          * Simple shortcut method that creates an HTML templates only given a classpath.
          * @param {Boolean} hasScript Will also generate a template script if set to true
          * @param {Boolean} hasCss Will also generate a CSS template if set to true
+         * @param {String} content Will add an optional content to the template
          * @return {Array} An array of objects of the following format: {type: <typeString>, classpath:
          * <classpathString>, content: <contentString>} Even if only one file is generated, an array will be produced.
          */
-        generateHtmlTemplate : function (classpath, hasScript, hasCss) {
+        generateHtmlTemplate : function (classpath, hasScript, hasCss, content) {
             var skeletonArray = [];
 
             var tplCfg = {
@@ -117,6 +118,9 @@ Aria.classDefinition({
                 skeletonArray.push(this.generateFile(this.TYPE_CSSTEMPLATE, {
                     $classpath : cssClasspath
                 }));
+            }
+            if (content) {
+                tplCfg.content = content;
             }
 
             skeletonArray.push(this.generateFile(this.TYPE_HTMLTEMPLATE, tplCfg));
