@@ -188,6 +188,28 @@ Aria.classDefinition({
         },
 
         /**
+         * Test content feature for generateHtmlTemplate method
+         */
+        testHtmlTemplateGeneratedWithContent : function () {
+            var generator = aria.ext.filesgenerator.Generator;
+            var myClasspath = generator.getUniqueClasspathIn("my.package");
+            var strPackage = myClasspath.substr(0, 10);
+            var className = myClasspath.substr(11);
+            var content = "{macro main()}my content{/macro}";
+
+            this.assertTrue(strPackage === "my.package", "Generated classpath is in wrong package");
+            this.assertTrue(/^[A-Z]\w*$/.test(className) === true, "Generated class name is not a class name.");
+            var fileInfo = generator.generateHtmlTemplate(myClasspath, false, false, content);
+
+            this.assertEquals(fileInfo.length, 1, "The incorrect number of files were generated. There should be only the template");
+
+            // content should be available in result template
+            this.assertTrue(/\{macro main\(\)\}my content\{\/macro\}/.test(fileInfo[0].content), "Content is not available in generated template");
+            // there should be only one main macro
+            this.assertTrue(fileInfo[0].content.match(/\{macro main\(/).length == 1, "There can be only one ... macro main");
+        },
+
+        /**
          * Test content feature
          */
         testHmlTemplateWithContent : function () {
