@@ -13,20 +13,28 @@
  * limitations under the License.
  */
 
-/**
- * Test suite regrouping all tests on aria.dom
- */
-Aria.classDefinition({
-    $classpath : "test.aria.dom.DomTestSuite",
-    $extends : "aria.jsunit.TestSuite",
-    $constructor : function () {
-        this.$TestSuite.constructor.call(this);
+{Template {
+    $classpath : "test.aria.templates.section.autorefresh.SectionAutorefresh"
+}}
 
-        this.addTests("test.aria.dom.basic.DomTestCase");
-        this.addTests("test.aria.dom.DomReadyTest");
-        this.addTests("test.aria.dom.domcheck.PTRTemplateTestCase");
-        this.addTests("test.aria.dom.logscheck.LogsCheckTestCase");
-        this.addTests("test.aria.dom.getid.GetIdTestCase");
+    {macro main()}
+        {section {
+            id : "selectedLinks",
+            bindRefreshTo : [{
+                to : "selected",
+                inside : data
+            }],
+            macro : "selectedLinks",
+            type : "div"
+        }/}
+    {/macro}
 
-    }
-});
+    {macro selectedLinks()}
+        <span id="container">
+            {foreach link inArray data.selected}
+                ${link}
+            {/foreach}
+        </span>
+    {/macro}
+
+{/Template}

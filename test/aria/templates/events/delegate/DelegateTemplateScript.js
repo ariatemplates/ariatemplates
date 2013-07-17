@@ -13,20 +13,13 @@
  * limitations under the License.
  */
 
-/**
- * Test suite regrouping all tests on aria.dom
- */
-Aria.classDefinition({
-    $classpath : "test.aria.dom.DomTestSuite",
-    $extends : "aria.jsunit.TestSuite",
-    $constructor : function () {
-        this.$TestSuite.constructor.call(this);
+Aria.tplScriptDefinition({
+    $classpath : "test.aria.templates.events.delegate.DelegateTemplateScript",
+    $prototype : {
+        logEvent : function (evt) {
+            var type = evt.type, target = evt.target.getData("name");
 
-        this.addTests("test.aria.dom.basic.DomTestCase");
-        this.addTests("test.aria.dom.DomReadyTest");
-        this.addTests("test.aria.dom.domcheck.PTRTemplateTestCase");
-        this.addTests("test.aria.dom.logscheck.LogsCheckTestCase");
-        this.addTests("test.aria.dom.getid.GetIdTestCase");
-
+            this.data.events.push(type + " on " + target);
+        }
     }
 });

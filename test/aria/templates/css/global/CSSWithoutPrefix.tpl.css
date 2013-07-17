@@ -1,0 +1,92 @@
+/*
+ * Copyright 2013 Amadeus s.a.s.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * Copyright Amadeus
+ */
+{CSSTemplate {
+    $classpath : "test.aria.templates.css.global.CSSWithoutPrefix",
+    $prefix:false
+}}
+
+/** Colors **/
+{var blue = "#FFF" /}
+{var grey = "#ddd" /}
+{var white = "#fff" /}
+
+/** Font properties **/
+{var font = {
+    size : "14pt",
+    weight : "bold",
+    style : "normal"
+} /}
+
+
+{macro main()}
+
+@font-face {
+    font-family: "GraublauWeb";
+    src: url("tutorials/csstemplate/step5/GraublauWeb.otf") format("opentype");
+}
+
+.font-sample {
+    color: #336666;
+    font-family: "GraublauWeb",Verdana,sans-serif;
+}
+
+
+div.keyframe-sample{
+    width:100px;
+    height:100px;
+    background:#1A61A9;
+    position:relative;
+    animation:boxmove 5s infinite;
+    -moz-animation:boxmove 5s infinite; /* Firefox */
+    -webkit-animation:boxmove 5s infinite; /* Safari and Chrome */
+}
+
+@keyframes boxmove{
+    from {top:0px;}
+    to {top:200px;}
+}
+@-moz-keyframes boxmove{
+    from {top:0px;}
+    to {top:200px;}
+}
+
+@-webkit-keyframes boxmove {
+    from {top:0px;}
+    to {top:200px;}
+}
+
+@media screen {
+   .container {
+        background-color : ${blue};
+        padding : 2em;
+    }
+}
+
+
+
+h1 {
+    color : ${white};
+    {for property in font}
+        font-${property} : ${font[property]};
+    {/for}
+}
+
+{/macro}
+
+{/CSSTemplate}

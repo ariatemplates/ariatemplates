@@ -13,20 +13,19 @@
  * limitations under the License.
  */
 
-/**
- * Test suite regrouping all tests on aria.dom
- */
-Aria.classDefinition({
-    $classpath : "test.aria.dom.DomTestSuite",
-    $extends : "aria.jsunit.TestSuite",
-    $constructor : function () {
-        this.$TestSuite.constructor.call(this);
+{Template {
+    $classpath : 'test.aria.dom.logscheck.LogsCheck',
+    $hasScript : true
+}}
 
-        this.addTests("test.aria.dom.basic.DomTestCase");
-        this.addTests("test.aria.dom.DomReadyTest");
-        this.addTests("test.aria.dom.domcheck.PTRTemplateTestCase");
-        this.addTests("test.aria.dom.logscheck.LogsCheckTestCase");
-        this.addTests("test.aria.dom.getid.GetIdTestCase");
+    {macro main()}
 
-    }
-});
+        <p>Test template error sandboxing</p>
+
+        <div style='display:none'>
+            <a href="#" {id 'target'/}>Cannot be focused on IE</a>
+        </div>
+
+    {/macro}
+
+{/Template}
