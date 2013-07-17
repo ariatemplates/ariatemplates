@@ -89,9 +89,8 @@
              * Key that is used in order to append the id of the state in the url. It is needed for hash-based
              * navigation fallback
              * @type String
-             * @private
              */
-            _ID_KEY : "&_hid=",
+            ID_KEY : "&_hid=",
 
             /**
              * Represents the number of seconds after which the states retrieved from the local storage are considered
@@ -247,7 +246,7 @@
             } : function () {
                 var hash = hashManager.getHashString();
                 if (hash) {
-                    return hash.split(this._ID_KEY)[0];
+                    return hash.split(this.ID_KEY)[0];
                 }
                 return window.location.href;
             },
@@ -533,7 +532,7 @@
              * @private
              */
             _getIdFromHash : function () {
-                var id = hashManager.getHashString().split(this._ID_KEY);
+                var id = hashManager.getHashString().split(this.ID_KEY);
                 if (id.length > 1) {
                     return id[1];
                 }
@@ -570,7 +569,7 @@
                 }
                 var id = this._generateId();
                 var hash = url || "";
-                hash += this._ID_KEY + id;
+                hash += this.ID_KEY + id;
                 title = this._setTitle(title);
                 this._currentId = id;
                 var stateEntry = {
