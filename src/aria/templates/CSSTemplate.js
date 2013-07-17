@@ -30,7 +30,6 @@ Aria.classDefinition({
         /**
          * Path of the CSS Template. It corresponds to the classpath and starts with "/". Exposed to the {CSSTemplate}
          * @type String
-         * @name aria.templates.CSSTemplate.cssPath
          */
         this.cssPath = "/" + this.$classpath.replace(/\./g, "/");
 
@@ -38,7 +37,6 @@ Aria.classDefinition({
          * Path of the folder containing the CSS Template. It is relative to the Aria.rootFolderPath and takes into
          * account the Root Map (not the Url map). Exposed to the {CSSTemplate}
          * @type String
-         * @name aria.templates.CSSTemplate.cssFolderPath
          */
         this.cssFolderPath = url.substring(0, url.lastIndexOf("/"));
     },
