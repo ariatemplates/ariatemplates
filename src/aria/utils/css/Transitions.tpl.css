@@ -20,7 +20,7 @@
 
   {macro main ()}
     .xanimation-element {
-      display: none;
+      visibility: hidden;
       {call generatePrefix("backface-visibility", "hidden") /}
     }
 
