@@ -204,7 +204,6 @@
              * Cancel any default action associated with the event
              * @param {Boolean} stopPropagation tells if event propagation must also be stopped - default: false
              * @method
-             * @name aria.DomEvent.preventDefault
              */
             this.preventDefault = !evt.preventDefault ? function (stopPropagation) {
                 this.hasPreventDefault = true;
@@ -222,7 +221,6 @@
 
             /**
              * Prevent the event from bubbling
-             * @name aria.DomEvent.stopPropagation
              * @method
              */
             this.stopPropagation = !evt.stopPropagation ? function () {
