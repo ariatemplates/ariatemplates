@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Amadeus s.a.s.
+ * Copyright 2013 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,20 +13,14 @@
  * limitations under the License.
  */
 
-/**
- * Test suite regrouping all tests on aria.dom
- */
 Aria.classDefinition({
-    $classpath : "test.aria.dom.DomTestSuite",
-    $extends : "aria.jsunit.TestSuite",
-    $constructor : function () {
-        this.$TestSuite.constructor.call(this);
+    $classpath : "test.aria.templates.lifecycle.htmlDisplayReady.Bus",
+    $singleton : true,
+    $prototype : {
+        messages : [],
 
-        this.addTests("test.aria.dom.basic.DomTestCase");
-        this.addTests("test.aria.dom.DomReadyTest");
-        this.addTests("test.aria.dom.domcheck.PTRTemplateTestCase");
-        this.addTests("test.aria.dom.logscheck.LogsCheckTestCase");
-        this.addTests("test.aria.dom.getid.GetIdTestCase");
-
+        send : function (message) {
+            this.messages.push(message);
+        }
     }
 });
