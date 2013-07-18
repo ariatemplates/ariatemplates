@@ -121,7 +121,8 @@ Aria.classDefinition({
             });
 
             if (!this._transport) {
-                var swfUri = Aria.rootFolderPath + 'aria/resources/handlers/IO.swf?t=' + new Date().getTime();
+                var swfUri = aria.core.DownloadMgr.resolveURL('aria/resources/handlers/IO.swf') + '?t='
+                        + new Date().getTime();
                 // note that the flash transport does not work with Safari if the following line is present in
                 // parameters:
                 // '<param name="wmode" value="transparent"/>'
@@ -157,8 +158,8 @@ Aria.classDefinition({
                     aria.core.Timer.cancelCallback(this._pending[id]);
                     aria.core.IO.reissue(id);
                 }
-                this._pending = {};
             }
+            this._pending = {};
         },
 
         /**
