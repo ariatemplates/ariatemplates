@@ -140,6 +140,16 @@ Aria.classDefinition({
                 this._domElt.selectedIndex = newIndex;
             }
             this.initDisabledWidgetAttribute();
+
+            this.__updateDataModel();
+        },
+
+        /**
+         * return true if the index is a number within the valid boudaries
+         * @param {MultiTypes} index
+         */
+        isIndexValid : function (index) {
+            return aria.utils.Type.isNumber(index) && index >= 0 && index <= this.options.length - 1;
         },
 
         /**
@@ -155,6 +165,9 @@ Aria.classDefinition({
             if (bindings.selectedIndex) {
                 var index = this._transform(bindings.selectedIndex.transform, bindings.selectedIndex.inside[bindings.selectedIndex.to], "toWidget");
                 if (index != null) {
+                    if (!this.isIndexValid(index)) {
+                        index = -1;
+                    }
                     return index;
                 }
                 isBound = true;
@@ -199,13 +212,20 @@ Aria.classDefinition({
         onbind : function (name, value, oldValue) {
             // it doesn't make sense to bind both index and value,
             // so we just state that the index takes precedence on the value
+
             if (name === "selectedIndex") {
                 this._domElt.selectedIndex = value;
                 this.setValueInDataModel();
-            }
-            if (name === "value") {
+                if (!this.isIndexValid(value)) {
+                    this.setIndexInDataModel();
+                }
+            } else if (name === "value") {
                 this._domElt.selectedIndex = this.getIndex(value);
                 this.setIndexInDataModel();
+                // if selectedIndex is set to -1 and value is bound we modify the data model to change the value to ''
+                if (this._domElt.selectedIndex === -1) {
+                    this.setValueInDataModel();
+                }
             }
             this.onDisabledBind(name, value, oldValue);
         },
@@ -233,8 +253,9 @@ Aria.classDefinition({
          * @private
          */
         __updateDataModel : function (event) {
-            this.setValueInDataModel();
+
             this.setIndexInDataModel();
+            this.setValueInDataModel();
         },
 
         /**
@@ -243,9 +264,17 @@ Aria.classDefinition({
         setValueInDataModel : function () {
             var bind = this._bindingListeners.value;
             if (bind) {
-                var newValue = this._transform(bind.transform, this.options[this._domElt.selectedIndex].value, "fromWidget");
+
+                var selectedIndex = this._domElt.selectedIndex;
+                var value = "";
+                if (selectedIndex != -1) {
+                    value = this.options[this._domElt.selectedIndex].value;
+                }
+                var newValue = this._transform(bind.transform, value, "fromWidget");
                 aria.utils.Json.setValue(bind.inside, bind.to, newValue, bind.cb);
+
             }
+
         },
 
         /**
