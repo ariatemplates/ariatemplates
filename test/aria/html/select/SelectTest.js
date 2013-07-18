@@ -126,8 +126,8 @@ Aria.classDefinition({
 
             this.assertEquals(selectWidget._domElt.selectedIndex, 0, "The selected Index should be %2  but was %1 ");
 
-            aria.utils.Json.setValue(container, "index", 'WrongValue');
-            this.assertEquals(selectWidget._domElt.selectedIndex, 0, "The selected Index should be %2  but was %1 ");
+            aria.utils.Json.setValue(container, "index", '999');
+            this.assertEquals(selectWidget._domElt.selectedIndex, -1, "The selected Index should be %2  but was %1 ");
 
             aria.utils.Json.setValue(container, "index", '2');
             this.assertEquals(selectWidget._domElt.selectedIndex, 1, "The selected Index should be %2  but was %1 ");
@@ -476,9 +476,234 @@ Aria.classDefinition({
             // the model should have been updated as well
             this.assertEquals(container.index, 1, "The Index in the data model should be %2  but was %1 ");
 
+            // now set a wrong value in the data model, if we set a wrong index or a wrong value
+            // then we should have respectively -1 and '' in the data model
+            aria.utils.Json.setValue(container, "item", 'WrongValue');
+            this.assertEquals(selectWidget._domElt.selectedIndex, -1, "The selected Index should be %2  but was %1 ");
+
+            this.assertEquals(container.index, -1, "The Index in the data model should be %2  but was %1 ");
+            this.assertEquals(container.item, "", "The Item in the data model should be %2  but was %1 ");
+
+            // back to a real value
+            aria.utils.Json.setValue(container, "item", 'UK');
+            this.assertEquals(selectWidget._domElt.selectedIndex, 2, "The selected Index should be %2  but was %1 ");
+            this.assertEquals(container.index, 2, "The Index in the data model should be %2  but was %1 ");
+
+            // now test with a non-existing index
+            aria.utils.Json.setValue(container, "index", '999');
+            this.assertEquals(selectWidget._domElt.selectedIndex, -1, "The selected Index should be %2  but was %1 ");
+            this.assertEquals(container.index, -1, "The Index in the data model should be %2  but was %1 ");
+            this.assertEquals(container.item, "", "The Item in the data model should be %2  but was %1 ");
+
+            selectWidget.$dispose();
+            this.outObj.clearAll();
+        },
+
+        testWithBothValueAndIndexBound_wrongInitialisation1 : function () {
+            var container = {
+                "item" : "FR",
+                index : null
+            };
+
+            var bindingConfig = {
+                value : {
+                    inside : container,
+                    to : "item"
+                },
+                selectedIndex : {
+                    inside : container,
+                    to : "index"
+                }
+            };
+
+            var myOptions = [{
+                        value : "FR",
+                        label : "France"
+                    }, {
+                        value : "CH",
+                        label : "Switzerland"
+                    }, {
+                        value : "UK",
+                        label : "United Kingdom"
+                    }];
+
+            var selectWidgetCfg = {
+                options : myOptions,
+                bind : bindingConfig
+            };
+
+            var selectWidget = this.createAndInit("aria.html.Select", selectWidgetCfg);
+
+            // as if index wasn't bound
+            this.assertEquals(selectWidget._domElt.selectedIndex, 0, "The selected Index should be %2  but was %1 ");
+
+            selectWidget.$dispose();
+            this.outObj.clearAll();
+        },
+
+        testWithBothValueAndIndexBound_wrongInitialisation2 : function () {
+            var container = {
+                "item" : "FR",
+                index : -1
+            };
+
+            var bindingConfig = {
+                value : {
+                    inside : container,
+                    to : "item"
+                },
+                selectedIndex : {
+                    inside : container,
+                    to : "index"
+                }
+            };
+
+            var myOptions = [{
+                        value : "FR",
+                        label : "France"
+                    }, {
+                        value : "CH",
+                        label : "Switzerland"
+                    }, {
+                        value : "UK",
+                        label : "United Kingdom"
+                    }];
+
+            var selectWidgetCfg = {
+                options : myOptions,
+                bind : bindingConfig
+            };
+
+            var selectWidget = this.createAndInit("aria.html.Select", selectWidgetCfg);
+
+            this.assertEquals(container.item, "", "The Item in the data model should be %2  but was %1 ");
+
+            selectWidget.$dispose();
+            this.outObj.clearAll();
+        },
+
+        testWithBothValueAndIndexBound_wrongInitialisation3 : function () {
+            var container = {
+                "item" : "WRONGITEM",
+                index : 2
+            };
+
+            var bindingConfig = {
+                value : {
+                    inside : container,
+                    to : "item"
+                },
+                selectedIndex : {
+                    inside : container,
+                    to : "index"
+                }
+            };
+
+            var myOptions = [{
+                        value : "FR",
+                        label : "France"
+                    }, {
+                        value : "CH",
+                        label : "Switzerland"
+                    }, {
+                        value : "UK",
+                        label : "United Kingdom"
+                    }];
+
+            var selectWidgetCfg = {
+                options : myOptions,
+                bind : bindingConfig
+            };
+
+            var selectWidget = this.createAndInit("aria.html.Select", selectWidgetCfg);
+
+            this.assertEquals(container.item, "UK", "The Item in the data model should be %2  but was %1 ");
+
+            selectWidget.$dispose();
+            this.outObj.clearAll();
+        },
+
+        testWithBothValueAndIndexBound_wrongInitialisation4 : function () {
+            var container = {
+                "item" : "FR",
+                index : "notANumber"
+            };
+
+            var bindingConfig = {
+                value : {
+                    inside : container,
+                    to : "item"
+                },
+                selectedIndex : {
+                    inside : container,
+                    to : "index"
+                }
+            };
+
+            var myOptions = [{
+                        value : "FR",
+                        label : "France"
+                    }, {
+                        value : "CH",
+                        label : "Switzerland"
+                    }, {
+                        value : "UK",
+                        label : "United Kingdom"
+                    }];
+
+            var selectWidgetCfg = {
+                options : myOptions,
+                bind : bindingConfig
+            };
+
+            var selectWidget = this.createAndInit("aria.html.Select", selectWidgetCfg);
+
+            this.assertEquals(container.item, "", "The Item in the data model should be %2  but was %1 ");
+
+            selectWidget.$dispose();
+            this.outObj.clearAll();
+        },
+
+        testWithBothValueAndIndexBound_wrongInitialisation5 : function () {
+            var container = {
+                "item" : "FR",
+                index : 999
+                // not within the boundaries
+            };
+
+            var bindingConfig = {
+                value : {
+                    inside : container,
+                    to : "item"
+                },
+                selectedIndex : {
+                    inside : container,
+                    to : "index"
+                }
+            };
+
+            var myOptions = [{
+                        value : "FR",
+                        label : "France"
+                    }, {
+                        value : "CH",
+                        label : "Switzerland"
+                    }, {
+                        value : "UK",
+                        label : "United Kingdom"
+                    }];
+
+            var selectWidgetCfg = {
+                options : myOptions,
+                bind : bindingConfig
+            };
+
+            var selectWidget = this.createAndInit("aria.html.Select", selectWidgetCfg);
+
+            this.assertEquals(container.item, "", "The Item in the data model should be %2  but was %1 ");
+
             selectWidget.$dispose();
             this.outObj.clearAll();
         }
-
     }
 });
