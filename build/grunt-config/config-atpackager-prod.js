@@ -32,6 +32,8 @@ module.exports = function (grunt) {
         return '!' + value;
     });
     var mainATFile = 'aria/<%= pkg.name %>-<%= pkg.version %>.js';
+    var hashFiles = atExtensions.concat(['aria/core/transport/iframeSource*', 'aria/utils/FrameATLoaderHTML*',
+            '**/*.swf', '**/*.jnlp', '!aria/css/**', '!' + mainATFile, '<%= packaging.prod.hash_include_files %>']);
 
     grunt.config.set('atpackager.prod', {
         options : {
@@ -64,15 +66,14 @@ module.exports = function (grunt) {
                     }, {
                         type : 'Hash',
                         cfg : {
-                            files : atExtensions.concat(['aria/core/transport/iframeSource*',
-                                    'aria/utils/FrameATLoaderHTML*', '**/*.jnlp', '!aria/css/**', '!' + mainATFile,
-                                    '<%= packaging.prod.hash_include_files %>'])
+                            files : hashFiles
                         }
                     }, {
                         type : 'ATUrlMap',
                         cfg : {
                             mapFile : mainATFile,
-                            sourceFiles : ['**/*', '!aria/css/**/*'],
+                            onlyATMultipart : false,
+                            sourceFiles : hashFiles,
                             starCompress : ['**/*', '!aria', '!aria/resources/**'],
                             starStarCompress : ['**/*']
                         }
