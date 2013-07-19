@@ -392,7 +392,8 @@
              * @param {aria.core.CfgBeans:Callback} cb callback description
              * @param {MultiTypes} res first result argument to pass to cb.fn (second argument will be cb.args)
              * @param {String} errorId error raised if an exception occurs in the callback
-             * @return {MultiTypes} the value returned by the callback, or undefined if the callback could not be called.
+             * @return {MultiTypes} the value returned by the callback, or undefined if the callback could not be
+             * called.
              */
             $callback : function (cb, res, errorId) {
                 if (!cb) {
@@ -649,7 +650,9 @@
                             fn : lsn.fn,
                             scope : lsn.scope,
                             args : lsn.args,
-                            once : lstCfg[evt].listenOnce
+                            once : lstCfg[evt].listenOnce,
+                            apply : lsn.apply,
+                            resIndex : lsn.resIndex
                             // we keep track of listeners which are meant to be called just once
                         };
                         // lsn is an object as in 'start' or 'end' samples set default scope
