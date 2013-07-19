@@ -116,10 +116,19 @@ Aria.classDefinition({
             // getGeometry returns the visible part of s1, which is limited by its parent element
             this.assertTrue(geo.x < 30, "s1: Expected x < 30, got " + geo.x);
             this.assertTrue(geo.y >= 100, "s1: Expected y >= 100, got " + geo.y);
-            this.assertTrue(geo.width == (100 - scrollbarsWidth), "s1: Expected width == 100 - scollbarsWidth, got "
+
+            // On mac, webkit scrollbars are not visualized without scrolling
+            if (aria.core.Browser.isMac && aria.core.Browser.isWebkit) {
+                this.assertTrue(geo.width == 100, "s1: Expected width == 100, got "
                     + geo.width);
-            this.assertTrue(geo.height == (100 - scrollbarsWidth), "s1: Expected height == 100 - scollbarsWidth, got "
+                this.assertTrue(geo.height == 100, "s1: Expected height == 100, got "
                     + geo.height);
+            } else {
+                this.assertTrue(geo.width == (100 - scrollbarsWidth), "s1: Expected width == 100 - scollbarsWidth, got "
+                    + geo.width);
+                this.assertTrue(geo.height == (100 - scrollbarsWidth), "s1: Expected height == 100 - scollbarsWidth, got "
+                    + geo.height);
+            }
 
             // End of test
             this.notifyTemplateTestEnd();

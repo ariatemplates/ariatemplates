@@ -62,7 +62,12 @@ Aria.classDefinition({
 
             // set the processing indicator on the child div
             myScrolledDiv.setProcessingIndicator(true);
-            this._checkOverlay(realScrolledDiv, 190 - scrollBarWidth, 90 - scrollBarWidth);
+            // On mac, webkit scrollbars are not visualized without scrolling
+            if (aria.core.Browser.isMac && aria.core.Browser.isWebkit) {
+                this._checkOverlay(realScrolledDiv, 190, 90);
+            } else {
+                this._checkOverlay(realScrolledDiv, 190 - scrollBarWidth, 90 - scrollBarWidth);
+            }
             myScrolledDiv.setProcessingIndicator(false);
 
             myParentDiv.setScroll({
@@ -71,7 +76,11 @@ Aria.classDefinition({
             });
 
             myScrolledDiv.setProcessingIndicator(true);
-            this._checkOverlay(realScrolledDiv, 188 - scrollBarWidth, 38 - scrollBarWidth);
+            if (aria.core.Browser.isMac && aria.core.Browser.isWebkit) {
+                this._checkOverlay(realScrolledDiv, 188, 38);
+            } else {
+                this._checkOverlay(realScrolledDiv, 188 - scrollBarWidth, 38 - scrollBarWidth);
+            }
             myScrolledDiv.setProcessingIndicator(false);
 
             myParentDiv.setScroll({
@@ -85,7 +94,11 @@ Aria.classDefinition({
             });
 
             myScrolledDiv.setProcessingIndicator(true);
-            this._checkOverlay(realScrolledDiv, 104 - scrollBarWidth, 112);
+            if (aria.core.Browser.isMac && aria.core.Browser.isWebkit) {
+                this._checkOverlay(realScrolledDiv, 104, 112);
+            } else {
+                this._checkOverlay(realScrolledDiv, 104 - scrollBarWidth, 112);
+            }
             myScrolledDiv.setProcessingIndicator(false);
 
             myParentDiv.$dispose();
