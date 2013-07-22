@@ -24,7 +24,7 @@
     function bidirectionalClickBinding (event) {
         var bind = this._bindingListeners.selectedValue;
         var newValue = this._transform(bind.transform, this._cfg.value, "fromWidget");
-        aria.utils.Json.setValue(bind.inside, bind.to, newValue, bind.cb);
+        aria.utils.Json.setValue(bind.inside, bind.to, newValue);
     }
 
     /**
@@ -70,6 +70,7 @@
              * @param {Object} oldValue Value of the property before the change happened
              */
             onbind : function (name, value, oldValue) {
+
                 this.$InputElement.onbind.apply(this, arguments);
                 if (name === "selectedValue") {
                     this._domElt.checked = (value === this._cfg.value);

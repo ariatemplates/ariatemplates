@@ -32,12 +32,10 @@ Aria.classDefinition({
             };
 
             var cfg1 = {
-                name : "group1",
                 value : "a",
                 bind : bindingConfig
             };
             var cfg2 = {
-                name : "group1",
                 value : "b",
                 bind : bindingConfig
             };
@@ -76,12 +74,10 @@ Aria.classDefinition({
             };
 
             var cfg1 = {
-                name : "group1",
                 value : "a",
                 bind : bindingConfig
             };
             var cfg2 = {
-                name : "group1",
                 value : "b",
                 bind : bindingConfig
             };
@@ -108,7 +104,6 @@ Aria.classDefinition({
             };
 
             var cfg = {
-                name : "group1",
                 value : "a",
                 bind : {
                     selectedValue : {
@@ -144,7 +139,6 @@ Aria.classDefinition({
             var container = {};
 
             var cfg = {
-                name : "group1",
                 value : "a",
                 bind : {
                     selectedValue : {
@@ -171,7 +165,6 @@ Aria.classDefinition({
             var container = {};
 
             var cfg = {
-                name : "group1",
                 value : "a"
             };
 
