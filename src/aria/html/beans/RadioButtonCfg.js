@@ -22,10 +22,6 @@ Aria.beanDefinitions({
             $type : "base:Properties",
             $description : "Properties of a RadioButton widget.",
             $properties : {
-                "name" : {
-                    $type : "json:String",
-                    $description : "The radio button name. Radio buttons with the same name will form a radio button group."
-                },
                 "value" : {
                     $type : "json:String",
                     $description : "The value associated with the radio button."
