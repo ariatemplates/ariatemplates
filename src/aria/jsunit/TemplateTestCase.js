@@ -387,6 +387,47 @@ Aria.classDefinition({
         },
 
         /**
+         * Function to provide a widget context containing all
+         * information of the widget (DOM element, properties,
+         * bindings...) recursively by the widget's type (e.g.
+         * 'RadioButton')
+         *
+         * @param {String}
+         *            widgetType
+         * @param {aria.templates.TemplateCtxt}
+         *            ctxt Context in which the element has to be found.
+         *            Shall be the context of the direct parent template
+         * @param {Integer}
+         *            index Because the type is no unique identifier,
+         *            with the index the nth child can be returned
+         *            (count from 0)
+         * @return {Object}
+         *            context Behavior attr of a widget
+         */
+        getBehaviorByType : function(widgetType, ctxt, index) {
+            this.widgetCount = this.widgetCount || 0;
+            var ctxt = ctxt._mainSection || ctxt;
+            var elementList = ctxt._content;
+            var context = null;
+            for (var i = 0; i < elementList.length; i++) {
+                if (elementList[i]._content) {
+                    context = this.getBehaviorByType(widgetType, elementList[i], index);
+                } else if (elementList[i].behavior && elementList[i].behavior.$class == widgetType) {
+                    if (this.widgetCount == index) {
+                        this.widgetCount = 0;
+                        context = elementList[i];
+                    } else {
+                        this.widgetCount++;
+                    }
+                }
+                if (context) {
+                    return context;
+                }
+            }
+            return context;
+        },
+
+        /**
          * Return the DOM element in the current template with the specified id (the id should have been given with the
          * {id .../} statement).
          * @param {String} id
@@ -402,7 +443,7 @@ Aria.classDefinition({
             var genId = tplCtxt.$getId(id), oElm = domUtility.getElementById(genId);
             if (recursive && !oElm) {
                 var subTplCtxts = [];
-                this.__retrieveDirectSubTemplates(tplCtxt, subTplCtxts);
+                this.retrieveDirectSubTemplates(tplCtxt, subTplCtxts);
                 var content = tplCtxt._mainSection._content;
                 for (var i = 0, sz = subTplCtxts.length; i < sz; i++) {
                     oElm = this.getElementById(id, true, subTplCtxts[i], domUtility);
@@ -441,14 +482,14 @@ Aria.classDefinition({
          * @param {aria.templates.TemplateCtxt|aria.templates.Section} obj
          * @param {Array} output contains the sub-template contexts
          */
-        __retrieveDirectSubTemplates : function (obj, output) {
+        retrieveDirectSubTemplates : function (obj, output) {
             var section = (obj.$TemplateCtxt) ? obj._mainSection : obj;
             var content = section._content;
             for (var i = 0, sz = content.length; i < sz; i++) {
                 if (content[i].behavior && content[i].behavior.subTplCtxt) {
                     output.push(content[i].behavior.subTplCtxt);
                 } else if (content[i]._content) {
-                    this.__retrieveDirectSubTemplates(content[i], output);
+                    this.retrieveDirectSubTemplates(content[i], output);
                 }
             }
         },
