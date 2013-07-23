@@ -2,20 +2,20 @@
 
 #echo "Pre-commit hook" >> ./pre-commit.log
 if git-rev-parse --verify HEAD >/dev/null 2>&1 ; then
-	 against=HEAD
+against=HEAD
 else
-	 # Initial commit: diff against an empty tree object
-	 against=4b825dc642cb6eb9a060e54bf8d69288fbee4904
+# Initial commit: diff against an empty tree object
+against=4b825dc642cb6eb9a060e54bf8d69288fbee4904
 fi
 
 
 # 1. Find files with trailing whitespace and strip it.
 for FILE in `exec git diff-index --check --cached $against -- | sed '/^[+-]/d' | sed -r 's/:[0-9]+:.*//' | uniq` ; do
-	 # echo "$FILE whitespace cleaned" >> ./pre-commit.log
-	 # Fix them!
-	 sed -i 's/[[:space:]]*$//' "$FILE"
-	 # sed replaces all CRLF to LF (mixed newlines in the input won't break the file)
-	 # as we are on Windows, we want CRLF back (see the next loop)
+# echo "$FILE whitespace cleaned" >> ./pre-commit.log
+# Fix them!
+sed -i 's/[[:space:]]*$//' "$FILE"
+# sed replaces all CRLF to LF (mixed newlines in the input won't break the file)
+# as we are on Windows, we want CRLF back (see the next loop)
 done
 
 # 2. For non-binary modified files, add trailing newline if not there, and convert LF to CRLF
@@ -36,8 +36,8 @@ for FILE in `exec git diff --cached --name-only $against`; do
         # but then, for mixed input (some LF, some CRLF) it acts not as expected!
 
         # echo -e "\nLF to CRLF conversion with SED on $FILE\n"
-        sed -i -e '$a\' "$FILE"      # add trailing newline if not present
-        sed -i -e 's/$/\r/' "$FILE"  # match end of line, and append CR; LF is added automatically by sed.
+        sed -i -e '$a\' "$FILE" # add trailing newline if not present
+        sed -i -e 's/$/\r/' "$FILE" # match end of line, and append CR; LF is added automatically by sed.
         git add "$FILE"
     fi
 done
