@@ -136,7 +136,9 @@ Aria.classDefinition({
         },
 
         testReactOnClick : function () {
-            var container = {};
+            var container = {
+                selectedRadioButton : 'a'
+            };
 
             var cfg = {
                 value : "a",
@@ -148,16 +150,29 @@ Aria.classDefinition({
                 }
             };
 
-            var widget = this.createAndInit("aria.html.RadioButton", cfg);
+            var cfg2 = {
+                value : "b",
+                bind : {
+                    selectedValue : {
+                        inside : container,
+                        to : "selectedRadioButton"
+                    }
+                }
+            };
 
-            this.assertEquals(widget._domElt.checked, false, "Radio button should not have been checked before click");
+            var widget1 = this.createAndInit("aria.html.RadioButton", cfg);
+            var widget2 = this.createAndInit("aria.html.RadioButton", cfg2);
 
-            aria.utils.FireDomEvent.fireEvent("click", widget._domElt);
+            this.assertEquals(widget1._domElt.checked, true, "Radio button should not have been checked before click");
 
-            this.assertEquals(widget._domElt.checked, true, "Check click on dom: " + widget._domElt.checked);
-            this.assertEquals(container.selectedRadioButton, "a", "Check click on data: expected value was %2 but got %1.");
+            aria.utils.FireDomEvent.fireEvent("click", widget2._domElt);
+            this.assertEquals(widget1._domElt.checked, false, "Check click on widget 1: " + widget1._domElt.checked);
+            this.assertEquals(widget2._domElt.checked, true, "Check click on widget 2: " + widget2._domElt.checked);
 
-            widget.$dispose();
+            this.assertEquals(container.selectedRadioButton, "b", "Check click on data: expected value was %2 but got %1.");
+
+            widget1.$dispose();
+            widget2.$dispose();
             this.outObj.clearAll();
         },
 
