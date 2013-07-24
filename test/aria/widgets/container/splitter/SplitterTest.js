@@ -32,6 +32,8 @@ Aria.classDefinition({
                 dom : this.outObj.testArea.childNodes[0]
             };
         },
+
+
         testBaseSplitterHorizontal : function () {
             this._orientation = null;
             var cfg = {
@@ -71,7 +73,6 @@ Aria.classDefinition({
         _testBaseNormalMarkup : function (cfg) {
             var splitter = this._createSplitter(cfg);
             this.assertTrue(!!splitter.o);
-            this.assertNotEquals(this.outObj.store, "");
             this.assertNotEquals(this.outObj.testArea.innerHTML, "");
 
             var instance = splitter.o;
