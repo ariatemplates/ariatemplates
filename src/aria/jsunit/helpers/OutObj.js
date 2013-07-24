@@ -77,7 +77,7 @@ Aria.classDefinition({
 
         /**
          * Write something in the store. This implements the TemplateCtxt interface
-         * @param  {String} str Markup
+         * @param {String} str Markup
          */
         write : function (str) {
             this.store += str;
@@ -87,7 +87,8 @@ Aria.classDefinition({
          * Put the stored markup in the test area
          */
         putInDOM : function () {
-            this.testArea.innerHTML = this.store;
+            aria.utils.Dom.insertAdjacentHTML(this.testArea, "beforeEnd", this.store);
+            this.store = "";
         },
 
         /**
