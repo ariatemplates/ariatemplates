@@ -406,23 +406,29 @@ Aria.classDefinition({
          */
         getBehaviorByType : function(widgetType, ctxt, index) {
             this.widgetCount = this.widgetCount || 0;
+            this.recLevelCount = this.recLevelCount || 0;
             var ctxt = ctxt._mainSection || ctxt;
             var elementList = ctxt._content;
             var context = null;
             for (var i = 0; i < elementList.length; i++) {
                 if (elementList[i]._content) {
+                    this.recLevelCount++:
                     context = this.getBehaviorByType(widgetType, elementList[i], index);
+                    this.recLevelCount--;
                 } else if (elementList[i].behavior && elementList[i].behavior.$class == widgetType) {
                     if (this.widgetCount == index) {
-                        this.widgetCount = 0;
-                        context = elementList[i];
+                        context = elementList[i].behavior;
                     } else {
                         this.widgetCount++;
                     }
                 }
                 if (context) {
+                    this.widgetCount = 0;
                     return context;
                 }
+            }
+            if(this.recLevelCount == 0){
+                this.widgetCount = 0;
             }
             return context;
         },
