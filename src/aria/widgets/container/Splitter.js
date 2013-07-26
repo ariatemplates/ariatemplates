@@ -97,6 +97,14 @@ Aria.classDefinition({
          */
         this._width = null;
 
+        /**
+         * Override default widget's span style
+         * @protected
+         * @override
+         * @type String
+         */
+        this._spanStyle = "overflow: hidden;";
+
     },
     $destructor : function () {
         this._skinObj = null;
@@ -107,10 +115,6 @@ Aria.classDefinition({
         this._splitBarProxyClass.$dispose();
         this._destroyDraggable();
         this.$Container.$destructor.call(this);
-    },
-    $statics : {
-        SPLITTER_BORDER_SIZE : 2
-        // Default 2px;
     },
     $prototype : {
         /**
@@ -205,15 +209,18 @@ Aria.classDefinition({
             var borderClass = "", splitterBarSize = orientation ? cfg.width : cfg.height;
             var height = this._height + this._skinObj.separatorHeight, width = this._width
                     + this._skinObj.separatorWidth;
+            var bordersWidth = 0;
+
             if (cfg.border) {
                 borderClass = "xSplitter_" + cfg.sclass + "_sBdr";
+                bordersWidth = this._skinObj.borderWidth * 2;
             }
             this._handleBarClass = "xSplitter_" + cfg.sclass + (orientation ? "_sHandleH" : "_sHandleV");
 
             if (orientation) {
-                cfgH = height, cfgW = cfg.width, cfgHclass = size.size1, cfgWclass = cfg.width;
+                cfgH = height, cfgW = cfgWclass = cfg.width - bordersWidth, cfgHclass = size.size1;
             } else {
-                cfgH = cfg.height, cfgW = width, cfgHclass = cfg.height, cfgWclass = size.size1;
+                cfgH = cfgHclass = cfg.height - bordersWidth, cfgW = width, cfgWclass = size.size1;
             }
 
             out.write(['<span class="xSplitter_', cfg.sclass, '_sContainer ', borderClass, '" style="height:', cfgH,
@@ -229,10 +236,11 @@ Aria.classDefinition({
 
             var sDimension, sPosition, sEndPosition;
             if (orientation) {
-                cfgHclass = size.size2, cfgWclass = cfg.width, sDimension = "width", sPosition = "top", sEndPosition = "bottom";
+                cfgHclass = size.size2, cfgWclass = cfg.width - bordersWidth, sDimension = "width", sPosition = "top", sEndPosition = "bottom";
             } else {
-                cfgHclass = cfg.height, cfgWclass = size.size2, sDimension = "height", sPosition = "left", sEndPosition = "right";
+                cfgHclass = cfg.height - bordersWidth, cfgWclass = size.size2, sDimension = "height", sPosition = "left", sEndPosition = "right";
             }
+
             out.write(['<span class="', this._handleBarClass, '" style="' + sDimension + ':', splitterBarSize,
                     'px;' + sPosition + ':', size.size1, 'px; "> </span><span id="splitBarProxy_', this._domId,
                     '" class="', this._handleBarClass, ' " style="' + sPosition + ':', size.size1,
@@ -253,7 +261,7 @@ Aria.classDefinition({
          * @param {aria.widgets.CfgBeans:SplitterCfg}
          */
         _calculateSize : function (cfg) {
-            var border = cfg.border ? this.SPLITTER_BORDER_SIZE : 0, size = {}, totalHeight, initDimension;
+            var border = cfg.border ? this._skinObj.borderWidth * 2 : 0, size = {}, totalHeight, initDimension;
             this._height = cfg.height - this._skinObj.separatorHeight - border;
             this._width = cfg.width - this._skinObj.separatorWidth - border;
             if (this._height < 0) {
