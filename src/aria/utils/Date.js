@@ -1434,7 +1434,7 @@ Aria.classDefinition({
         /**
          * Format a date from a given pattern
          * @param {Date} date
-         * @param {String} pattern. See http://www.ariatemplates.com/usermanual/Localization_and_Resources#Date_and_Time
+         * @param {String} pattern. See http://www.ariatemplates.com/usermanual/latest/localization_and_resources#Date_and_Time
          * @param {Boolean} utcTime if true, display UTC date/time instead of local
          * @return {String}
          */
