@@ -76,8 +76,8 @@
 .xFrameContent {
     display: inline-block;
     position:relative;
-    padding: 0 0 0 0 !important;
-    border: 0 0 0 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
 }
 
 .xFixedHeightFrame_w {
