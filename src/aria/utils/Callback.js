@@ -156,7 +156,7 @@ Aria.classDefinition({
          * @param {Object} event
          */
         call : function (evt) {
-            var args = (this._apply === true && aria.utils.Type.isArray(this._args)) ? this._args : [this._args];
+            var args = (this._apply === true && aria.utils.Type.isArray(this._args)) ? this._args.slice() : [this._args];
             var resIndex = (this._resIndex === undefined) ? 0 : this._resIndex;
 
             if (resIndex > -1) {

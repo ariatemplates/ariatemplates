@@ -285,6 +285,32 @@ Aria.classDefinition({
             });
         },
 
+        /*
+         * PTR 07267955 (callback using apply modifies args)
+         */
+        testApplyUsedTwice : function () {
+            var args = ["one", "two"];
+
+            this.workingObject.$callback({
+                fn : this._rememberArgs,
+                args : args,
+                apply : true
+            }, "res");
+            this._assertAgainst({
+                args : ["res", "one", "two"]
+            });
+
+            this.workingObject.$callback({
+                fn : this._rememberArgs,
+                args : args,
+                apply : true
+            }, "res");
+            this._assertAgainst({
+                args : ["res", "one", "two"]
+            });
+
+        },
+
         _rememberArgs : function () {
             test.aria.core.CallbackTest._lastCallback = {
                 args : Array.prototype.slice.call(arguments)
