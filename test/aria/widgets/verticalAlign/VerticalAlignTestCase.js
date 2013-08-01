@@ -38,40 +38,7 @@ Aria.classDefinition({
         },
 
         runTemplateTest : function () {
-            // Determine the file reference to load:
-            var refName = "FF";
-            var browser = aria.core.Browser;
-            if (browser.isIE7) {
-                refName = "IE7";
-            } else if (browser.isIE8) {
-                refName = "IE8";
-            } else if (browser.isIE9) {
-                refName = "IE9";
-            } else if (browser.isIE10) {
-                refName = "IE10";
-            } else if (browser.isChrome) {
-                refName = "Chrome";
-            } else if (browser.isSafari) {
-                refName = "Safari";
-            } else {
-                if (browser.isFirefox && browser.majorVersion == "3.6") {
-                    // The layout tester doesn't work with FF 3.6
-                    // To be done
-                    this.notifyTemplateTestEnd();
-                }
-                // Take FF as the default
-                refName = "FF";
-            }
-
-            Aria.load({
-                classes : ['test.aria.widgets.verticalAlign.ExpectedFor' + refName],
-                oncomplete : {
-                    fn : function () {
-                        this.compare(test.aria.widgets.verticalAlign['ExpectedFor' + refName].results);
-                    },
-                    scope : this
-                }
-            });
+            this.compare();
         },
 
         compare : function (expectedResult) {
@@ -85,29 +52,31 @@ Aria.classDefinition({
                 }
             }
 
-            var layoutTester = aria.jsunit.LayoutTester;
-            var results = [];
             for (var i = 0, ii = divs.length; i < ii; i++) {
-                results.push(layoutTester.captureJsonScreenshot(divs[i]));
-                var comparison = layoutTester.compare(expectedResult[i], 1); // Diff of 1px is accepted
-                this.assertTrue(comparison.length === 0, "Layout comparison failed on div " + i);
+                var div = divs[i];
+                //var left = div.offsetLeft;
+                var top = div.offsetTop;
+                //var width = div.offsetWidth;
+                var height = div.offsetHeight;
+                var middlePosition = height / 2;
 
-                //if (comparison.length !== 0) { debugger; }
-            }
+                var widgets = this.getElementsByClassName(div, "xWidget");
 
-            // To store the result
-            for(var i = 0, ii = results.length; i < ii; i++) {
-                var resultItem = results[i];
-                for(var j = 0, jj = resultItem.length; j < jj; j++) {
-                    // Revome the HTML element from the result, before the serialization
-                    delete resultItem[j].element;
+                // Check that every widget are centered
+                for(var j = 0, jj = widgets.length; j < jj; j++) {
+                    var widget = widgets[j];
+                    // Check only the direct children of a line
+                    if (widget.parentNode === div) {
+                        if (widget.style.verticalAlign == "bottom") {
+                            var offsetBottom = Math.abs(height - (widget.offsetTop + widget.offsetHeight));
+                            this.assertTrue(offsetBottom < 4, "Widget " + j + " in line " + i + " is not bottom aligned");
+                        } else {
+                            var offsetMiddle = Math.abs(middlePosition - (widget.offsetTop + widget.offsetHeight / 2));
+                            this.assertTrue(offsetMiddle < 2, "Widget " + j + " in line " + i + " is not vertical aligned");
+                        }
+                    }
                 }
-            }
-            if (!aria.core.Browser.isPhantomJS) {
-                Aria.$window.document.getElementById("snapshotId").innerHTML = aria.utils.Json.convertToJsonString(results);
-            } else {
-                //Aria.$window.console.log(aria.utils.Json.convertToJsonString(results));
-            }
+           }
 
             this.notifyTemplateTestEnd();
         }
