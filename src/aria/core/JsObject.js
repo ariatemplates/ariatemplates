@@ -418,7 +418,7 @@
                 }
 
                 var args = (cb.apply === true && cb.args && Object.prototype.toString.apply(cb.args) === "[object Array]")
-                        ? cb.args
+                        ? cb.args.slice()
                         : [cb.args];
                 var resIndex = (cb.resIndex === undefined) ? 0 : cb.resIndex;
 
