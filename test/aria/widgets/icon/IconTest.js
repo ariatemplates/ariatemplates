@@ -19,6 +19,14 @@
 Aria.classDefinition({
     $classpath : "test.aria.widgets.icon.IconTest",
     $extends : "aria.jsunit.TemplateTestCase",
+    $constructor : function () {
+        this.$TemplateTestCase.constructor.call(this);
+        this.setTestEnv({
+            data : {
+                value : 0
+            }
+        });
+    },
     $prototype : {
 
         runTemplateTest : function () {
@@ -32,6 +40,23 @@ Aria.classDefinition({
                 fn : this._afterFirstMove,
                 scope : this
             });
+
+        },
+
+        checkClickOnIcon : function () {
+
+            var icon = this.getWidgetInstance("testIcon").getDom();
+            this.assertEquals(this.templateCtxt.data.value, 0);
+            this.synEvent.click(icon, {
+                scope : this,
+                fn : this.checkCounter
+            });
+
+        },
+
+        checkCounter : function () {
+            this.assertEquals(this.templateCtxt.data.value, 1);
+            this.end();
         },
 
         _afterFirstMove : function () {
@@ -66,7 +91,8 @@ Aria.classDefinition({
         },
         _afterSecondMoveWait : function () {
             this.assertEquals(this.getWidgetInstance("testTooltip")._popup, null, "The tooltip was not closed");
-            this.end();
+
+            this.checkClickOnIcon();
         }
 
     }

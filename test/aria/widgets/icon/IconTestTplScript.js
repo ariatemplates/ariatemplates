@@ -13,33 +13,13 @@
  * limitations under the License.
  */
 
- {Template {
-	$classpath : "test.aria.widgets.icon.IconTestTpl",
-	$hasScript : true
-}}
+Aria.tplScriptDefinition({
+    $classpath : "test.aria.widgets.icon.IconTestTplScript",
+    $dependencies : ["aria.utils.Json"],
+    $prototype : {
 
-	{macro main()}
-		<div>
-			{@aria:Icon {
-				id : "testIcon",
-				icon : "std:info",
-				tooltipId : "testTooltip",
-				onclick : "updateCounter"
-			}/}
-		</div>
-		{@aria:Tooltip {
-			id : "testTooltip",
-			macro : "tooltipContent"
-		}/}
-
-		<div>
-			<span id="testSpan" style="margin: 10px;">testSpan</span>
-		<div>
-
-	{/macro}
-
-	{macro tooltipContent()}
-		Some text for test purposes
-	{/macro}
-
-{/Template}
+        updateCounter : function(){
+            aria.utils.Json.setValue(this.data, "value", 1);
+        }
+    }
+});

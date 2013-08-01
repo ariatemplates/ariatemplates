@@ -1175,12 +1175,16 @@ Aria.beanDefinitions({
 
         "IconCfg" : {
             $type : "WidgetCfg",
-            $description : "Configuaration needed to use an icon in a template",
+            $description : "Configuration needed to use an icon in a template",
             $properties : {
                 "icon" : {
                     $type : "json:String",
                     $description : "The name of the sprite and the icon that is to be used in the form sprite:icon",
                     $default : null
+                },
+                "onclick" : {
+                    $type : "common:Callback",
+                    $description : "Function to be called when the user clicks on the icon."
                 },
                 "sourceImage" : {
                     $type : "json:Object",
