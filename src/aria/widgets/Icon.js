@@ -61,6 +61,8 @@ Aria.classDefinition({
 
         /**
          * Override widget _widgetMarkup method.
+         * @protected
+         * @override
          * @param {aria.templates.MarkupWriter} out the html output writer
          */
         _widgetMarkup : function (out) {
@@ -125,6 +127,7 @@ Aria.classDefinition({
         /**
          * Gets the icon info
          * @param {String} icon, something like myLib:myIcon
+         * @protected
          * @return {Object}
          */
         _getIconInfo : function (icon) {
@@ -145,6 +148,7 @@ Aria.classDefinition({
         /**
          * Return the icon style for a given icon skin
          * @param {Object} iconInfo
+         * @protected
          * @return {String}
          */
         _getIconStyle : function (iconInfo) {
@@ -171,6 +175,7 @@ Aria.classDefinition({
         /**
          * Return the icon classes for a given icon
          * @param {Object} iconInfo
+         * @protected
          * @return {String}
          */
         _getIconClasses : function (iconInfo) {
@@ -183,6 +188,27 @@ Aria.classDefinition({
                 cssClasses += " xBlock";
             }
             return cssClasses;
+        },
+
+        /**
+         * The method called when the markup is clicked
+         * @param {aria.DomEvent} evt Event
+         * @protected
+         */
+        _dom_onclick : function (domEvent) {
+            var cfg = this._cfg;
+            if (cfg) {
+                var domEvtWrapper;
+                if (domEvent) {
+                    domEvtWrapper = new aria.templates.DomEventWrapper(domEvent);
+                }
+                var returnValue = this.evalCallback(cfg.onclick, domEvtWrapper);
+                if (domEvtWrapper) {
+                    domEvtWrapper.$dispose();
+                }
+                return returnValue;
+            }
+            return true;
         }
     }
 });
