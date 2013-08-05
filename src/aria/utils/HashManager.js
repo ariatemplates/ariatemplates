@@ -133,10 +133,22 @@ Aria.classDefinition({
          */
         this._hashPollCallback = null;
 
+        /**
+         * Whether the listener to the hashchange event has been added
+         * @type Boolean
+         * @private
+         */
+        this._hashChangeCallbackAdded = false;
+
         if (this._isIE7OrLess) {
             this._createIframe();
             this._hashPoll();
         }
+
+        aria.utils.AriaWindow.$on({
+            "unloadWindow" : this._removeHashChangeInternalCallback,
+            scope : this
+        });
 
     },
     $destructor : function () {
@@ -144,7 +156,6 @@ Aria.classDefinition({
          * Remove the default callback for hashchange
          */
         this._removeHashChangeInternalCallback();
-
         if (this._hashPollCallback) {
             aria.core.Timer.cancelCallback(this._hashPollCallback);
             this._hashPollCallback = null;
@@ -218,7 +229,6 @@ Aria.classDefinition({
         addCallback : function (cb) {
             if (this._hashChangeCallbacks == null) {
                 this._hashChangeCallbacks = [];
-                // aria.utils.AriaWindow.attachWindow();
                 this._addHashChangeInternalCallback();
             }
             this._hashChangeCallbacks.push(cb);
@@ -240,7 +250,6 @@ Aria.classDefinition({
                     if (hcC.length === 0) {
                         this._hashChangeCallbacks = null;
                         this._removeHashChangeInternalCallback();
-                        // aria.utils.AriaWindow.detachWindow();
                     }
                 }
             }
@@ -367,6 +376,8 @@ Aria.classDefinition({
          */
         _addHashChangeInternalCallback : function () {
             if (!this._isIE7OrLess) {
+                this._hashChangeCallbackAdded = true;
+                aria.utils.AriaWindow.attachWindow();
                 aria.utils.Event.addListener(Aria.$window, 'hashchange', {
                     fn : this._internalCallback,
                     scope : this
@@ -427,10 +438,12 @@ Aria.classDefinition({
          * @protected
          */
         _removeHashChangeInternalCallback : function () {
-            if (!this._isIE7OrLess) {
+            if (!this._isIE7OrLess && this._hashChangeCallbackAdded) {
+                this._hashChangeCallbackAdded = false;
                 aria.utils.Event.removeListener(Aria.$window, 'hashchange', {
                     fn : this._internalCallback
                 });
+                aria.utils.AriaWindow.detachWindow();
             }
         },
 
