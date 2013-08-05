@@ -906,6 +906,14 @@ Aria.beanDefinitions({
                     $type : "json:String",
                     $description : "sclass of the list used in the dropdown. The default value for this property is taken from the skin."
                 },
+                "onclick" : {
+                    $type : "common:Callback",
+                    $description : "Function to be called when the user  on the autocomplete."
+                },
+                "onfocus" : {
+                    $type : "common:Callback",
+                    $description : "Function to be called when the user focusses the autocomplete"
+                },
                 "selectionKeys" : {
                     $type : "json:Array",
                     $description : "Keys defined for submitting a selected item from autocomplete dropdown, key codes and strings can be taken from aria.DomEven",
