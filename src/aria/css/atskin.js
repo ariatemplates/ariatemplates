@@ -107,6 +107,7 @@ Aria.classDefinition({
             Splitter : {
                 std : {
                     borderColor : "#AB9B85",
+                    borderWidth : 1,
                     proxySpriteURLh : "atskin/sprites/splitter.gif",
                     proxyBackgroundColor : "#BBBBBB",
                     handleBackgroundColor : "#FFFBF1",

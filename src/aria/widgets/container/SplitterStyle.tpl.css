@@ -73,7 +73,7 @@
 }
 
 .xSplitter_${skinClassName}_sBdr{
-   border:1px solid ${skinClass.borderColor} ;
+   border:${skinClass.borderWidth}px solid ${skinClass.borderColor} ;
 }
 
 .xSplitter_${skinClassName}_sMacro {

@@ -938,6 +938,10 @@ Aria.beanDefinitions({
                 },
                 borderColor : {
                     $type : "Color"
+                },
+                borderWidth : {
+                    $type : "Pixels",
+                    $default : 1
                 }
             }
         },
