@@ -393,6 +393,14 @@ Aria.beanDefinitions({
                     $type : "common:Callback",
                     $description : "Function to be called when the user changes the value from this widget"
                 },
+                "onclick" : {
+                    $type : "common:Callback",
+                    $description : "Function to be called when the user clicks on the autocomplete."
+                },
+                "onfocus" : {
+                    $type : "common:Callback",
+                    $description : "Function to be called when the autocomplete receives focus."
+                },
                 "spellCheck" : {
                     $type : "json:Boolean",
                     $description : "Specifies whether native spell check from the browser is enabled or not on this field. If null, uses the default behaviour from the browser. If true or false, tries to enable or disable native spell check from the browser."

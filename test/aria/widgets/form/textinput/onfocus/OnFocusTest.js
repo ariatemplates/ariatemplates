@@ -14,14 +14,22 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.textinput.TextInputTestSuite",
-    $extends : "aria.jsunit.TestSuite",
+    $classpath : "test.aria.widgets.form.textinput.onfocus.OnFocusTest",
+    $extends : "test.aria.widgets.form.textinput.onclick.OnClickTest",
     $constructor : function () {
-        this.$TestSuite.constructor.call(this);
-
-        this._tests = ["test.aria.widgets.form.textinput.onchange.OnChangeTestCase",
-                "test.aria.widgets.form.textinput.quotes.QuotesTestCase",
-                "test.aria.widgets.form.textinput.onclick.OnClickTest",
-                "test.aria.widgets.form.textinput.onfocus.OnFocusTest"];
+        this.$OnClickTest.constructor.call(this);
+        this.setTestEnv({
+            template : "test.aria.widgets.form.textinput.onfocus.OnFocusTemplate",
+            data : {
+                action : 0
+            }
+        });
+        this._delay = 10;
+    },
+    $prototype : {
+        simulateUserAction : function (index) {
+            this.templateCtxt.$focus(this._widgetIds[index]);
+            this.onAfterUserAction();
+        }
     }
 });

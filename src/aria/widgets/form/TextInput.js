@@ -592,8 +592,8 @@ Aria.classDefinition({
         /**
          * Compare newValue with the one stored in _cfg[propertyName] Can be overrided to have a specific comparison
          * @param {String} propertyName
-         * @param {MultiTypes} newValue If transformation is used, this should be the widget value and not the data model
-         * value
+         * @param {MultiTypes} newValue If transformation is used, this should be the widget value and not the data
+         * model value
          * @private
          * @return {Boolean} true if values are considered as equals.
          */
@@ -833,6 +833,9 @@ Aria.classDefinition({
          */
         _dom_onclick : function () {
             this._autoselect();
+            if (!!this._cfg.onclick) {
+                this.evalCallback(this._cfg.onclick);
+            }
         },
 
         /**
@@ -844,6 +847,7 @@ Aria.classDefinition({
          */
         _dom_onfocus : function (event) {
             this._hasFocus = true;
+
             if (!this._keepFocus) {
                 var cfg = this._cfg;
 
@@ -878,6 +882,9 @@ Aria.classDefinition({
                 if (caretPosition) {
                     this.setCaretPosition(caretPosition.start, caretPosition.end);
                 }
+            }
+            if (!!this._cfg.onfocus) {
+                this.evalCallback(this._cfg.onfocus);
             }
         },
 
