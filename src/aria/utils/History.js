@@ -412,7 +412,7 @@
              * Retrieve the state from the store.
              * @param {String} id Id of the state
              * @return {Object}
-             * 
+             *
              * <pre>
              * {
              *     position : {Number} position in the store,
@@ -424,7 +424,7 @@
              *     }
              * }
              * </pre>
-             * 
+             *
              * @private
              */
             _retrieveFromMemory : function (id) {
@@ -592,7 +592,7 @@
             /**
              * Apply a state by also checking whether it is discarded or not
              * @param {Objet} stateInfo
-             * 
+             *
              * <pre>
              * {
              *     position : {Number} position in the store,
@@ -604,7 +604,7 @@
              *     }
              * }
              * </pre>
-             * 
+             *
              * @return {Boolean} true if the state has been applied, false if the state is discarded
              * @private
              */
