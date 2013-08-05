@@ -183,6 +183,27 @@ Aria.classDefinition({
                 cssClasses += " xBlock";
             }
             return cssClasses;
+        },
+        /**
+         * The method called when the markup is clicked
+         * @param {aria.DomEvent} evt Event
+         * @method
+         * @private
+         */
+        _dom_onclick : function (domEvent) {
+            var cfg = this._cfg;
+            if (cfg) {
+                var domEvtWrapper;
+                if (domEvent) {
+                    domEvtWrapper = new aria.templates.DomEventWrapper(domEvent);
+                }
+                var returnValue = this.evalCallback(cfg.onclick, domEvtWrapper);
+                if (domEvtWrapper) {
+                    domEvtWrapper.$dispose();
+                }
+                return returnValue;
+            }
+            return true;
         }
     }
 });
