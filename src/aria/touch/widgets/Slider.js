@@ -59,6 +59,37 @@ Aria.classDefinition({
          */
         this._parentDomId = this._domId + "_parent";
         /**
+         * Id generated for the slider switch on container element.
+         * @type String
+         * @protected
+         */
+        this._onSwitchId = this._domId + "_on";
+        /**
+         * Id generated for the slider switch off container element.
+         * @type String
+         * @protected
+         */
+        this._offSwitchId = this._domId + "_off";
+        /**
+         * Flag used for switching between switch and slider.
+         * @type Boolean
+         * @protected
+         */
+        this._isSwitch = cfg.toggleSwitch;
+        /**
+         * Reference to the on state DOM element of the slider.
+         * @type HTMLElement
+         * @protected
+         */
+        this._onContainer = null;
+        /**
+         * Reference to the off state DOM element of the slider.
+         * @type HTMLElement
+         * @protected
+         */
+        this._offContainer = null;
+
+        /**
          * Reference to the button DOM element of the slider.
          * @type HTMLElement
          * @protected
@@ -76,6 +107,12 @@ Aria.classDefinition({
          * @protected
          */
         this._sliderWidth = null;
+        /**
+         * Reference to the Dimension of the Slider.
+         * @type {aria.utils.DomBeans:Geometry}
+         * @protected
+         */
+        this._sliderDimension = null;
 
         /**
          * Width of the rail in which thumb travels.
@@ -125,8 +162,12 @@ Aria.classDefinition({
             this._draggable.$dispose();
             this._draggable = null;
         }
+        this._dragUtil = null;
         this._slider = null;
         this._sliderContainer = null;
+        this._onContainer = null;
+        this._offContainer = null;
+        this._sliderDimension = null;
         this.$BaseWidget.$destructor.call(this);
     },
     $prototype : {
@@ -158,13 +199,23 @@ Aria.classDefinition({
                 return out.write(this.INVALID_CONFIGURATION);
             }
             out.write([
-                // Div containing the widget
-                '<div class="touchLibSlider" style="width:', this._cfg.width, 'px;">',
-                // Rail, thumbs move over here
-                '<span class="touchContainer" style="width:', this._cfg.width, 'px;" id="', this._parentDomId, '">',
-                // slider thumb
-                '<span id="', this._domId, '" class="sliderButton" style="left:0px;"></span>',
-                '</span></div>'].join(""));
+                    // Div containing the widget
+                    '<div class="touchLibSlider" style="width:', this._cfg.width, 'px;">',
+                    // Rail, thumbs move over here
+                    '<span class="touchContainer" style="width:', this._cfg.width, 'px;" id="', this._parentDomId,
+                    '">',
+                    // slider thumb
+                    '<span id="', this._domId, '" class="sliderButton" style="left:0px;"></span>'].join(""));
+            if (this._isSwitch) {
+                out.write([
+                        // For ON state Markup
+                        '<div style="left:0px;width: ', this._cfg.width, 'px;" class="touchLibSwitchOn" id="',
+                        this._onSwitchId, '">ON</div>',
+                        // For OFF state Markup
+                        '<div style="left:0px;width:0px;" class="touchLibSwitchOff" id="', this._offSwitchId,
+                        '">OFF</div>'].join(""));
+            }
+            out.write('</span></div>');
         },
 
         /**
@@ -178,10 +229,16 @@ Aria.classDefinition({
 
             this._slider = domUtils.getElementById(this._domId);
             this._sliderContainer = domUtils.getElementById(this._parentDomId);
+            this._sliderDimension = aria.utils.Dom.getGeometry(this._sliderContainer);
             this._sliderWidth = parseInt(domUtils.getStyle(this._slider, "width"), 10);
             this._sliderWidth += parseInt(aria.utils.Dom.getStyle(this._slider, "borderLeftWidth"), 10) || 0;
             this._sliderWidth += parseInt(aria.utils.Dom.getStyle(this._slider, "borderRightWidth"), 10) || 0;
             this._railWidth = this._cfg.width - this._sliderWidth;
+            if (this._isSwitch) {
+                this._onContainer = domUtils.getElementById(this._onSwitchId);
+                this._offContainer = domUtils.getElementById(this._offSwitchId);
+                this._updateSwitch();
+            }
             this._setLeftPosition();
             this._updateDisplay();
             this._loadAndCreateDraggable();
@@ -195,6 +252,21 @@ Aria.classDefinition({
         _setLeftPosition : function () {
             var value = this._value;
             this._savedX = Math.floor(value * this._railWidth);
+        },
+
+        _updateSwitch : function () {
+            var val = this._value;
+            if (val >= 0.5) {
+                this._onContainer.style.width = this._cfg.width + "px";
+                this._onContainer.style.left = "0px";
+                this._offContainer.style.width = "0px";
+                this._value = 1;
+            } else {
+                this._offContainer.style.width = this._cfg.width + "px";
+                this._offContainer.style.left = "0px";
+                this._onContainer.style.width = "0px";
+                this._value = 0;
+            }
         },
 
         /**
@@ -224,14 +296,13 @@ Aria.classDefinition({
                 // In case the widget gets disposed while loading the dependencies
                 return;
             }
-            var thumbs = [this._firstSlider, this._secondSlider];
-
             this._draggable = new aria.utils.dragdrop.Drag(this._slider, {
                 handle : this._slider,
                 proxy : null,
                 axis : "x",
                 constrainTo : this._sliderContainer
             });
+            this._dragUtil = aria.utils.Mouse;
             this._draggable.$on({
                 "dragstart" : {
                     fn : this._onDragStart,
@@ -246,6 +317,14 @@ Aria.classDefinition({
                     scope : this
                 }
             });
+
+            // Listen to either mouse or touch
+            if (this._cfg.tapToMove) {
+                this._dragUtil.$on({
+                    "eventUp" : this._handleTapOnSlider,
+                    scope : this
+                });
+            }
 
         },
         /**
@@ -274,6 +353,30 @@ Aria.classDefinition({
         _onDragEnd : function (evt) {
             this._move(evt.src);
             this._initialDrag = null;
+            if (this._isSwitch) {
+                this._changeSwith();
+            }
+        },
+        /**
+         * Handle the switch on and off state after drag ends.
+         * @protected
+         */
+        _changeSwith : function () {
+            this._updateSwitch();
+            this._bindVal();
+            this._setLeftPosition();
+            this._updateDisplay();
+        },
+        /**
+         * Explicitly bind the value incase of swich
+         * @protected
+         */
+        _bindVal : function () {
+            var binding = this._binding;
+            if (!binding) {
+                return;
+            }
+            aria.utils.Json.setValue(binding.inside, binding.to, this._value, this._bindingCallback);
         },
 
         /**
@@ -285,6 +388,19 @@ Aria.classDefinition({
             this._savedX += diff;
             this._initialDrag = src.posX;
             this._setValue();
+            if (this._isSwitch) {
+                this._switchDisplay();
+            }
+        },
+        /**
+         * Move the On and Off state elements
+         * @protected
+         */
+        _switchDisplay : function () {
+            var dragVal = this._slider.offsetLeft;
+            this._onContainer.style.width = (this._sliderWidth + dragVal) + "px";
+            this._offContainer.style.left = dragVal + "px";
+            this._offContainer.style.width = (this._cfg.width - dragVal) + "px";
         },
 
         /**
@@ -342,6 +458,9 @@ Aria.classDefinition({
             this._readValue();
             this._setLeftPosition();
             this._updateDisplay();
+            if (this._isSwitch) {
+                this._switchDisplay();
+            }
         },
 
         /**
@@ -352,6 +471,31 @@ Aria.classDefinition({
             if (this._slider) {
                 this._slider.style.left = this._savedX + "px";
             }
+        },
+        /**
+         * Use to Handle the tap or mouseup event to set the slider's position
+         * @param {Object} evt
+         */
+        _handleTapOnSlider : function (evt) {
+            var target = (evt.originalEvent.target) ? evt.originalEvent.target : evt.originalEvent.srcElement;
+            if (target.id === this._parentDomId || target.id === this._onSwitchId || target.id === this._offSwitchId) {
+                this._setHandlePos(evt.posX);
+            }
+        },
+        /**
+         * To set the position of the slider thumb after tab or mouseup
+         * @param {Integer} xPos the position of the event
+         */
+        _setHandlePos : function (xPos) {
+            this._savedX = xPos - this._sliderDimension.x;
+            this._savedX = (this._savedX > this._railWidth) ? this._railWidth : this._savedX;
+            this._value = Math.max(this._savedX / this._railWidth, 0);
+            if (this._isSwitch) {
+                this._updateSwitch();
+            }
+            this._bindVal();
+            this._setLeftPosition();
+            this._updateDisplay();
         }
 
     }

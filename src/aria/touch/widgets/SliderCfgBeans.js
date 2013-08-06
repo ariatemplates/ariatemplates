@@ -34,6 +34,16 @@ Aria.beanDefinitions({
                     $description : "Width to use for the widget.",
                     $default : 100
                 },
+                toggleSwitch : {
+                    $type : "json:Boolean",
+                    $description : "to enable the Toggle switch.",
+                    $default : false
+                },
+                tapToMove : {
+                    $type : "json:Boolean",
+                    $description : "Tap on the Slider Rail should move the thumb.",
+                    $default : false
+                },
                 bindValue : {
                     $type : "json:Object",
                     $description : "Binding for the value of the slider.",
