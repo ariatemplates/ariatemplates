@@ -37,10 +37,12 @@ Aria.classDefinition({
         };
 
         /**
-         * NumberField pattern
+         * NumberField formatting pattern
          * @type String
          */
         this._pattern = '';
+
+
     },
     $destructor : function () {
         this._dataModel = null;

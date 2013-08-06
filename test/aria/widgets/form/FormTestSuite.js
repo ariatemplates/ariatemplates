@@ -42,5 +42,6 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.form.timefield.TimeFieldTestSuite");
         this.addTests("test.aria.widgets.form.radiobutton.RadioButtonTestSuite");
         this.addTests("test.aria.widgets.form.passwordfield.PasswordFieldTestSuite");
+        this.addTests("test.aria.widgets.form.numberfield.issue391.Numberfield");
     }
 });
