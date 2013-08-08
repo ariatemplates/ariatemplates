@@ -29,5 +29,9 @@ Aria.classDefinition({
         this.addTests("test.aria.touch.widgets.DoubleSliderChange");
         this.addTests("test.aria.touch.widgets.SingleSliderValue");
         this.addTests("test.aria.touch.widgets.SingleSliderDrag");
+        this.addTests("test.aria.touch.widgets.SliderSwitch");
+        this.addTests("test.aria.touch.widgets.SliderSwitchDrag");
+        this.addTests("test.aria.touch.widgets.ButtonTouch");
+
     }
 });

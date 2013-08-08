@@ -1,0 +1,83 @@
+/*
+ * Copyright 2012 Amadeus s.a.s.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+{CSSTemplate {
+    $classpath : "aria.touch.widgets.ButtonCSS"
+}}
+
+{macro main()}
+
+.appLink, .appButton {
+    position: relative;
+    display: block;
+    font:normal 700 15px/17px tahoma,arial,helvetica,sans-serif;
+    padding: 0.6em 1em;
+    border-radius: 16px;
+    text-align: center;
+    cursor: pointer;
+}
+.appLink {
+    background-color:#5393C5;
+    border:solid 1px #6FA0C0;
+    color:#fff;
+}
+
+.appLink.touchLibButtonPressed {
+    outline: 0 none;
+    background-color:#5393C5;
+    background: -webkit-linear-gradient(#5393C5, #6FACD5) repeat scroll 0 0 #5393C5;
+    background: -ms-linear-gradient(#5393C5, #6FACD5) repeat scroll 0 0 #5393C5;
+    background: -moz-linear-gradient(#5393C5, #6FACD5) repeat scroll 0 0 #5393C5;
+    background: -o-linear-gradient(#5393C5, #6FACD5) repeat scroll 0 0 #5393C5;
+    background: linear-gradient(#5393C5, #6FACD5) repeat scroll 0 0 #5393C5;
+    /*http://msdn.microsoft.com/en-us/library/ms532997(VS.85,loband).aspx*/
+    filter: progid:DXImageTransform.Microsoft.Gradient(startColorstr='#5393C5', endColorstr='#6FACD5', GradientType=0)
+}
+
+.appButton {
+    background-color:#F1F1F1;
+    border:solid 1px #BABABA;
+    color:#000;
+}
+
+.appButton.touchLibButtonPressed {
+    outline: 0 none;
+    background-color:#F1F1F1;
+    background: -webkit-linear-gradient(#F1F1F1, #D6D6D6) repeat scroll 0 0 #F1F1F1;
+    background: -ms-linear-gradient(#F1F1F1, #D6D6D6) repeat scroll 0 0 #F1F1F1;
+    background: -moz-linear-gradient(#F1F1F1, #D6D6D6) repeat scroll 0 0 #F1F1F1;
+    background: -o-linear-gradient(#F1F1F1, #D6D6D6) repeat scroll 0 0 #F1F1F1;
+    background: linear-gradient(#F1F1F1, #D6D6D6) repeat scroll 0 0 #F1F1F1;
+    /*http://msdn.microsoft.com/en-us/library/ms532997(VS.85,loband).aspx*/
+    filter: progid:DXImageTransform.Microsoft.Gradient(startColorstr='#F1F1F1', endColorstr='#D6D6D6', GradientType=0)
+}
+
+.appLink[disabled], .appButton[disabled]  {
+    border: solid 1px #E8E8E8;
+    cursor: default;
+    color: #B9BEC0;
+    background: #F1F1F1; /* Old browsers */
+    background: -webkit-linear-gradient(#F1F1F1, #F7F7F7) repeat scroll 0 0 #BABABA;
+    background: -ms-linear-gradient(#F1F1F1, #F7F7F7) repeat scroll 0 0 #BABABA;
+    background: -moz-linear-gradient(#F1F1F1, #F7F7F7) repeat scroll 0 0 #BABABA;
+    background: -o-linear-gradient(#F1F1F1, #F7F7F7) repeat scroll 0 0 #BABABA;
+    background: linear-gradient(#F1F1F1, #F7F7F7) repeat scroll 0 0 #BABABA;
+    /*http://msdn.microsoft.com/en-us/library/ms532997(VS.85,loband).aspx*/
+    filter: progid:DXImageTransform.Microsoft.Gradient(startColorstr='#F1F1F1', endColorstr='#BABABA',GradientType=0) /* IE6-9 */
+}
+
+{/macro}
+
+{/CSSTemplate}

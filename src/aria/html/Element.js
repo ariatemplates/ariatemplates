@@ -200,6 +200,14 @@
             },
 
             /**
+             * Get the widget's DOM element
+             * @return {HTMLElement}
+             */
+            getDom : function () {
+                return this._domElt;
+            },
+
+            /**
              * Write the opening tag without adding the ending '>'. This part is common to both opening and self closing
              * tag.
              * @param {aria.templates.MarkupWriter} out

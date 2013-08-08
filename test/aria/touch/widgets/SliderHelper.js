@@ -16,7 +16,7 @@
 Aria.classDefinition({
     $classpath : "test.aria.touch.widgets.SliderHelper",
     $extends : "aria.jsunit.RobotTestCase",
-    $dependencies : ["aria.utils.Dom"],
+    $dependencies : ["aria.utils.Dom", "aria.utils.Device", "aria.utils.FireDomEvent"],
     $constructor : function () {
         this.$RobotTestCase.constructor.call(this);
         // override the template for this test case
@@ -71,6 +71,35 @@ Aria.classDefinition({
                 fn : callback,
                 scope : this
             });
+        },
+        click : function (position, callback) {
+            if (aria.utils.Device) {
+                // PhantomJS reports itself as a touch device, although it's not
+                var element = Aria.$window.document.elementFromPoint(position.x, position.y);
+                var eventOptions = {
+                    clientX : position.x,
+                    clientY : position.y
+                };
+                aria.utils.FireDomEvent.fireEvent("touchstart", element, eventOptions);
+
+                aria.core.Timer.addCallback({
+                    scope : this,
+                    fn : function () {
+                        aria.utils.FireDomEvent.fireEvent("touchend", element, eventOptions);
+                        aria.core.Timer.addCallback({
+                            fn : callback,
+                            scope : this,
+                            delay : 50
+                        });
+                    },
+                    delay : 100
+                });
+            } else {
+                this.synEvent.execute([["click", position]], {
+                    fn : callback,
+                    scope : this
+                });
+            }
         }
     }
 });

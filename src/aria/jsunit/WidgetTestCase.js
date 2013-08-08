@@ -51,6 +51,26 @@ Aria.classDefinition({
             return instance;
         },
 
+        /**
+         * Create and initialize a widget instance as a container.<br />
+         * It can be used only for simple container widgets, the innerMarkup is inserted
+         * between the writeMarkupBegin and writeMarkupEnd
+         * @param {String} widget Widget classpath
+         * @param {Object} config Widget configuration
+         * @param {String} innerMarkup Markup inside the widget
+         * @return {Object} Widget instance
+         */
+        createContainerAndInit : function (widget, config, innerMarkup) {
+            var ref = Aria.getClassRef(widget);
+            var instance = new ref(config, this.outObj.tplCtxt);
+            instance.writeMarkupBegin(this.outObj);
+            this.outObj.write(innerMarkup || "");
+            instance.writeMarkupEnd(this.outObj);
+            this.outObj.putInDOM();
+            instance.initWidget();
+            return instance;
+        },
+
         clearAll : function () {
             this.outObj.clearAll();
         }

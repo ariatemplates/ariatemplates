@@ -23,7 +23,8 @@ Aria.classDefinition({
     $statics : {
         INVALID_CONFIGURATION : "Invalid configuration for the slider!"
     },
-    $dependencies : ["aria.touch.widgets.SliderCfgBeans", "aria.utils.Dom", "aria.utils.Mouse"],
+    // The dependency on aria.touch.Tap is needed to be able to register on tap events
+    $dependencies : ["aria.touch.widgets.SliderCfgBeans", "aria.utils.Dom", "aria.touch.Tap"],
     /**
      * Slider Constructor.
      * @param {aria.touch.widgets.SliderCfgBeans:SliderCfg} cfg slider configuration
@@ -59,6 +60,45 @@ Aria.classDefinition({
          */
         this._parentDomId = this._domId + "_parent";
         /**
+         * Id generated for the slider switch on container element.
+         * @type String
+         * @protected
+         */
+        this._onSwitchId = this._domId + "_on";
+        /**
+         * Id generated for the slider switch off container element.
+         * @type String
+         * @protected
+         */
+        this._offSwitchId = this._domId + "_off";
+        /**
+         * Flag used for switching between switch and slider.
+         * @type Boolean
+         * @protected
+         */
+        this._isSwitch = cfg.toggleSwitch;
+
+        /**
+         * When using the widget as switch, this is the value above which all value are converted to 1
+         * @type {Float}
+         * @protected
+         */
+        this._switchThreshold = cfg.switchThreshold != null ? Math.min(1, Math.max(0, cfg.switchThreshold)) : 0.5;
+
+        /**
+         * Reference to the on state DOM element of the slider.
+         * @type HTMLElement
+         * @protected
+         */
+        this._onContainer = null;
+        /**
+         * Reference to the off state DOM element of the slider.
+         * @type HTMLElement
+         * @protected
+         */
+        this._offContainer = null;
+
+        /**
          * Reference to the button DOM element of the slider.
          * @type HTMLElement
          * @protected
@@ -76,6 +116,12 @@ Aria.classDefinition({
          * @protected
          */
         this._sliderWidth = null;
+        /**
+         * Reference to the Dimension of the Slider.
+         * @type {aria.utils.DomBeans:Geometry}
+         * @protected
+         */
+        this._sliderDimension = null;
 
         /**
          * Width of the rail in which thumb travels.
@@ -92,6 +138,7 @@ Aria.classDefinition({
          * @protected
          */
         this._savedX = null;
+
         /**
          * Initial position of the element being dragged
          * @type {Number}
@@ -99,12 +146,19 @@ Aria.classDefinition({
          */
         this._initialDrag = null;
 
+        /**
+         * ID used for delegating events
+         * @type {String}
+         */
+        this._delegateId = null;
+
         var binding = this._cfg.bindValue ? this._cfg.bindValue : null;
         this._binding = binding;
         if (binding) {
             this._bindingCallback = {
                 fn : this._notifyDataChange,
-                scope : this
+                scope : this,
+                args: true
             };
             aria.utils.Json.addListener(binding.inside, binding.to, this._bindingCallback, false);
         }
@@ -115,6 +169,11 @@ Aria.classDefinition({
         this._draggable = null;
     },
     $destructor : function () {
+        if (this._delegateId) {
+            aria.utils.Delegate.remove(this._delegateId);
+            this._delegateId = null;
+        }
+
         if (this._bindingCallback) {
             var binding = this._cfg.bindValue;
             aria.utils.Json.removeListener(binding.inside, binding.to, this._bindingCallback, false);
@@ -127,6 +186,9 @@ Aria.classDefinition({
         }
         this._slider = null;
         this._sliderContainer = null;
+        this._onContainer = null;
+        this._offContainer = null;
+        this._sliderDimension = null;
         this.$BaseWidget.$destructor.call(this);
     },
     $prototype : {
@@ -157,14 +219,35 @@ Aria.classDefinition({
                 this.initWidget = Aria.empty;
                 return out.write(this.INVALID_CONFIGURATION);
             }
+
+            // Only interested in gestures when there's a particular configuration
+            var delegateMarkup = "", cfg = this._cfg;
+            if (cfg.tapToMove || (cfg.tapToToggle && cfg.toggleSwitch)) {
+                this._delegateId = aria.utils.Delegate.add({
+                    fn : this.delegate,
+                    scope : this
+                });
+                delegateMarkup = aria.utils.Delegate.getMarkup(this._delegateId);
+            }
+
             out.write([
-                // Div containing the widget
-                '<div class="touchLibSlider" style="width:', this._cfg.width, 'px;">',
-                // Rail, thumbs move over here
-                '<span class="touchContainer" style="width:', this._cfg.width, 'px;" id="', this._parentDomId, '">',
-                // slider thumb
-                '<span id="', this._domId, '" class="sliderButton" style="left:0px;"></span>',
-                '</span></div>'].join(""));
+                    // Div containing the widget
+                    '<div class="touchLibSlider" style="width:', this._cfg.width, 'px;" ', delegateMarkup, '>',
+                    // Rail, thumbs move over here
+                    '<span class="touchContainer" style="width:', this._cfg.width, 'px;" id="', this._parentDomId,
+                    '">',
+                    // slider thumb
+                    '<span id="', this._domId, '" class="sliderButton" style="left:0px;"></span>'].join(""));
+            if (this._isSwitch) {
+                out.write([
+                        // For ON state Markup
+                        '<div style="left:0px;width:', this._cfg.width, 'px;" class="touchLibSwitchOn" id="',
+                        this._onSwitchId, '">ON</div>',
+                        // For OFF state Markup
+                        '<div style="left:0px;width:0px;" class="touchLibSwitchOff" id="', this._offSwitchId,
+                        '">OFF</div>'].join(""));
+            }
+            out.write('</span></div>');
         },
 
         /**
@@ -178,10 +261,16 @@ Aria.classDefinition({
 
             this._slider = domUtils.getElementById(this._domId);
             this._sliderContainer = domUtils.getElementById(this._parentDomId);
+            this._sliderDimension = aria.utils.Dom.getGeometry(this._sliderContainer);
             this._sliderWidth = parseInt(domUtils.getStyle(this._slider, "width"), 10);
             this._sliderWidth += parseInt(aria.utils.Dom.getStyle(this._slider, "borderLeftWidth"), 10) || 0;
             this._sliderWidth += parseInt(aria.utils.Dom.getStyle(this._slider, "borderRightWidth"), 10) || 0;
             this._railWidth = this._cfg.width - this._sliderWidth;
+            if (this._isSwitch) {
+                this._onContainer = domUtils.getElementById(this._onSwitchId);
+                this._offContainer = domUtils.getElementById(this._offSwitchId);
+                this._updateSwitch();
+            }
             this._setLeftPosition();
             this._updateDisplay();
             this._loadAndCreateDraggable();
@@ -195,6 +284,28 @@ Aria.classDefinition({
         _setLeftPosition : function () {
             var value = this._value;
             this._savedX = Math.floor(value * this._railWidth);
+        },
+
+        /**
+         * Update the position of the on and off labels
+         * @protected
+         */
+        _updateSwitch : function () {
+            var val = this._value;
+            if (val >= this._switchThreshold) {
+                this._onContainer.style.width = this._cfg.width + "px";
+                this._onContainer.style.left = "0px";
+                this._offContainer.style.width = "0px";
+                this._value = 1;
+            } else {
+                this._offContainer.style.width = this._cfg.width + "px";
+                this._offContainer.style.left = "0px";
+                this._onContainer.style.width = "0px";
+                this._value = 0;
+            }
+            if (val !== this._value) {
+                this._storeValue();
+            }
         },
 
         /**
@@ -224,8 +335,6 @@ Aria.classDefinition({
                 // In case the widget gets disposed while loading the dependencies
                 return;
             }
-            var thumbs = [this._firstSlider, this._secondSlider];
-
             this._draggable = new aria.utils.dragdrop.Drag(this._slider, {
                 handle : this._slider,
                 proxy : null,
@@ -246,8 +355,8 @@ Aria.classDefinition({
                     scope : this
                 }
             });
-
         },
+
         /**
          * Handle the beginning of a drag
          * @protected
@@ -274,6 +383,34 @@ Aria.classDefinition({
         _onDragEnd : function (evt) {
             this._move(evt.src);
             this._initialDrag = null;
+            if (this._isSwitch) {
+                this._changeSwith();
+            }
+        },
+
+        /**
+         * Handle the switch on and off state after drag ends.
+         * This is needed because the end might be somewhere in the middle of the slider, in case
+         * of a switch however the value can be either 0 or 1
+         * @protected
+         */
+        _changeSwith : function () {
+            this._updateSwitch();
+            this._setLeftPosition();
+            this._updateDisplay();
+            this._storeValue(this._value);
+        },
+
+        /**
+         * Store the current widget value in the bound location
+         * @param {Integer} value Value of the slider
+         * @protected
+         */
+        _storeValue : function () {
+            var binding = this._binding;
+            if (binding) {
+                aria.utils.Json.setValue(binding.inside, binding.to, this._value, this._bindingCallback);
+            }
         },
 
         /**
@@ -285,6 +422,20 @@ Aria.classDefinition({
             this._savedX += diff;
             this._initialDrag = src.posX;
             this._setValue();
+            if (this._isSwitch) {
+                this._switchDisplay();
+            }
+        },
+
+        /**
+         * Move the On and Off state elements
+         * @protected
+         */
+        _switchDisplay : function () {
+            var dragVal = this._slider.offsetLeft;
+            this._onContainer.style.width = (this._sliderWidth + dragVal) + "px";
+            this._offContainer.style.left = dragVal + "px";
+            this._offContainer.style.width = (this._cfg.width - dragVal) + "px";
         },
 
         /**
@@ -296,10 +447,7 @@ Aria.classDefinition({
             var pos = this._savedX, newValue = Math.max(pos / this._railWidth, 0);
             if (newValue !== this._value) {
                 this._value = newValue;
-                var binding = this._binding;
-                if (binding) {
-                    aria.utils.Json.setValue(binding.inside, binding.to, newValue);
-                }
+                this._storeValue();
             } else {
                 this._notifyDataChange();
             }
@@ -309,9 +457,11 @@ Aria.classDefinition({
         /**
          * Read the bound value in the data model, ensure it is defined, between 0 and 1, and assign the _value
          * property.
+         * @param {Boolean} applySwitchMargins Whether or not the value should be set to either 0 or 1 when the
+         * widget is used as a switch
          * @protected
          */
-        _readValue : function () {
+        _readValue : function (applySwitchMargins) {
             var value;
             var binding = this._binding;
             if (!binding) {
@@ -328,31 +478,67 @@ Aria.classDefinition({
             if (value > 1) {
                 value = 1;
             }
+            if (this._isSwitch && applySwitchMargins) {
+                if (value >= this._switchThreshold) {
+                    value = 1;
+                } else {
+                    value = 0;
+                }
+            }
             this._value = value;
-            aria.utils.Json.setValue(binding.inside, binding.to, this._value, this._bindingCallback);
-
+            this._storeValue();
         },
 
         /**
          * Internal method called when the value in the data model changed (this method was registered with addListener
          * in the constructor of the slider).
+         * @param {Object} change Description of the changed value
+         * @param {Boolean} fromDataModel Whether or not the change is coming from the datamodel
          * @protected
          */
-        _notifyDataChange : function () {
-            this._readValue();
+        _notifyDataChange : function (change, fromDataModel) {
+            this._readValue(fromDataModel);
             this._setLeftPosition();
             this._updateDisplay();
         },
 
         /**
-         * Uses this._leftPosition to update the actual display of the slider.
+         * Update the display of the thumb
          * @protected
          */
         _updateDisplay : function () {
             if (this._slider) {
                 this._slider.style.left = this._savedX + "px";
+                if (this._isSwitch) {
+                    this._switchDisplay();
+                }
+            }
+        },
+
+        /**
+         * Handle delegated events
+         * @param {HTMLEvent} evt Browser event
+         */
+        delegate : function (evt) {
+            if (evt.type === "tap") {
+                var cfg = this._cfg;
+                if (!cfg) {
+                    // Widget already disposed
+                    return true;
+                }
+
+                if (cfg.tapToToggle && cfg.toggleSwitch) {
+                    // With this configuration, on tap we want to toggle the value
+                    this._value = this._value >= this._switchThreshold ? 0 : 1;
+                } else if (cfg.tapToMove) {
+                    this._savedX = evt.detail.currentX - this._sliderDimension.x;
+                    this._savedX = (this._savedX > this._railWidth) ? this._railWidth : this._savedX;
+                    this._value = Math.max(this._savedX / this._railWidth, 0) >= this._switchThreshold ? 1 : 0;
+                }
+                this._storeValue();
+                this._setLeftPosition();
+                this._updateDisplay();
             }
         }
-
     }
 });
