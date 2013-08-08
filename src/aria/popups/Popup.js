@@ -20,7 +20,7 @@
 Aria.classDefinition({
     $classpath : "aria.popups.Popup",
     $dependencies : ["aria.popups.PopupManager", "aria.popups.Beans", "aria.DomEvent", "aria.utils.Math",
-            "aria.utils.Dom", "aria.utils.Size", "aria.utils.Event", "aria.utils.Delegate"],
+            "aria.utils.Dom", "aria.utils.Size", "aria.utils.Event", "aria.utils.Delegate", "aria.utils.css.Animations"],
     $events : {
         onBeforeClose : {
             description : "Event triggered before closing the event",
@@ -150,6 +150,19 @@ Aria.classDefinition({
          * @type HTMLElement
          */
         this._rootElement = aria.utils.Dom.getDocumentScrollElement();
+
+        /**
+         * used to display the popup
+         * @type aria.utils.css.Animations
+         */
+        this._animator = new aria.utils.css.Animations();
+
+        /**
+         * for modal popups using animations fade in/out the background
+         * @type aria.utils.css.Animations
+         */
+        this._maskAnimator = new aria.utils.css.Animations();
+
         // PTR 04893174 was rolled back for release 1.1-13 because it introduces
         // a regression on Airrail.
         // TO BE FIXED LATER
@@ -170,6 +183,7 @@ Aria.classDefinition({
     },
 
     $destructor : function () {
+
         this.close();
         this.reference = null;
         if (this._delegateId) {
@@ -197,6 +211,10 @@ Aria.classDefinition({
         this._ignoreClicksOn = null;
         this._document = null;
         this.$unregisterListeners();
+        this._animator.$dispose();
+        this._animator = null;
+        this._maskAnimator.$dispose();
+        this._maskAnimator = null;
         // The popup manager is responsible for destroying the DOM of the popup
         aria.popups.PopupManager.unregisterPopup(this);
     },
@@ -209,6 +227,9 @@ Aria.classDefinition({
          * @protected
          */
         _applyConfig : function (conf) {
+
+            this.conf = conf;
+
             aria.core.JsonValidator.normalize({
                 json : conf,
                 beanName : "aria.popups.Beans.PopupConf"
@@ -229,17 +250,20 @@ Aria.classDefinition({
             this.setPreferredPositions(conf.preferredPositions);
             this.setSection(conf.section);
 
-            if (conf.absolutePosition === null) {
-                this.setReference(conf.domReference);
+            if (!conf.center) {
+                if (conf.absolutePosition === null) {
+                    this.setReference(conf.domReference);
+                } else {
+                    this.setPositionAsReference(conf.absolutePosition);
+                }
             } else {
-                this.setPositionAsReference(conf.absolutePosition);
+                this.setPositionAsReference(this._getPosition(this._getFreeSize()));
             }
 
             this._ignoreClicksOn = conf.ignoreClicksOn;
 
             this._parentDialog = conf.parentDialog;
 
-            this.conf = conf;
         },
 
         /**
@@ -534,9 +558,28 @@ Aria.classDefinition({
             if (!this.domElement) {
                 return;
             }
-            this.domElement.style.cssText = "position:absolute;display:none;overflow:auto;";
+
+            if (this.conf.animateOut) {
+                this._startAnimation(this.conf.animateOut, {
+                    from : this.domElement,
+                    type : 1
+                });
+            } else {
+                this.domElement.style.cssText = "position:absolute;display:none;overflow:auto;";
+            }
+
             if (this.modalMaskDomElement) {
-                this.modalMaskDomElement.style.cssText = "position:absolute;display:none";
+
+                // if there was was an animation defined we need to fade out the background for model popups
+                if (this.conf.animateIn) {
+                    this._maskAnimator.start("fade reverse", {
+                        from : this.modalMaskDomElement,
+                        type : 1
+                    });
+                } else {
+                    this.modalMaskDomElement.style.cssText = "position:absolute;display:none";
+                }
+
                 if (this._rootElementOverflow != -1) {
                     if (aria.core.Browser.isFirefox) {
                         var docScroll = aria.utils.Dom._getDocumentScroll();
@@ -628,20 +671,38 @@ Aria.classDefinition({
 
                 this.modalMaskDomElement.style.cssText = ['left:0px;top:0px;', 'width:', width, 'px;', 'height:',
                         height, 'px;', 'z-index:', this.computedStyle.zIndex, ';', 'position:absolute;display:block;'].join('');
+
+                if (this.conf.animateIn) {
+                    this._maskAnimator.start("fade", {
+                        to : this.modalMaskDomElement,
+                        type : 1
+                    });
+                }
+
             } else {
                 this.computedStyle = this._getComputedStyle();
             }
             // Need to check that the reference point is still completely visible after a scroll
             var referenceIsInViewSet = aria.utils.Dom.isInViewport(this.referencePosition, this.referenceSize, this.domElement);
             if (referenceIsInViewSet) {
+
                 this.domElement.style.cssText = ['top:', this.computedStyle.top, 'px;', 'left:',
                         this.computedStyle.left, 'px;', 'z-index:', this.computedStyle.zIndex, ';',
                         'position:absolute;display:inline-block;'].join('');
+
+                if (this.conf.animateIn) {
+                    this._startAnimation(this.conf.animateIn, {
+                        to : this.domElement,
+                        type : 1
+                    });
+                }
+
                 if (aria.core.Browser.isIE7 && !this.isOpen) {
                     // Without the following line, the autocomplete does not
                     // initially display its content on IE7:
                     this._document.body.appendChild(this.domElement);
                 }
+
             }
         },
 
@@ -690,6 +751,10 @@ Aria.classDefinition({
          */
         close : function (domEvent) {
             if (this.isOpen) {
+                this._animator.$onOnce({
+                    "animationend" : this._onAfterClose,
+                    scope : this
+                });
                 var event = {
                     name : "onBeforeClose",
                     cancelClose : false,
@@ -701,9 +766,26 @@ Aria.classDefinition({
                     this.isOpen = false;
                     // Notify the popup manager this popup was closed
                     aria.popups.PopupManager.onPopupClose(this);
-                    this.$raiseEvent("onAfterClose");
+                    if (!this.conf.animateOut) {
+                        this.$raiseEvent("onAfterClose");
+                    }
                 }
             }
+        },
+        /**
+         * delayed events thrower: open
+         * @param {} args
+         */
+        _onAfterOpen : function () {
+            this.$raiseEvent("onAfterOpen");
+        },
+
+        /**
+         * delayed events thrower : close
+         * @param {} args
+         */
+        _onAfterClose : function () {
+            this.$raiseEvent("onAfterClose");
         },
 
         /**
@@ -803,13 +885,19 @@ Aria.classDefinition({
          */
         open : function (conf) {
             if (!this.isOpen) {
-                this.$raiseEvent("onBeforeOpen");
+                this._animator.$onOnce({
+                    "animationend" : this._onAfterOpen,
+                    scope : this
+                });
                 this._applyConfig(conf);
+                this.$raiseEvent("onBeforeOpen");
                 this._show();
                 this.isOpen = true;
                 aria.popups.PopupManager.onPopupOpen(this);
                 this.refreshProcessingIndicators();
-                this.$raiseEvent("onAfterOpen");
+                if (!this.conf.animateIn) {
+                    this.$raiseEvent("onAfterOpen");
+                }
             }
         },
 
@@ -890,6 +978,26 @@ Aria.classDefinition({
                 this.section.refreshProcessingIndicator(true);
             }
 
+        },
+
+        /**
+         * internal function to parse the animation name and give a correct one to the animator options are ["slide
+         * left", "slide right", "slide up", "slide down", "fade in", "fade out", "pop", "pop reverse", "flip", "flip
+         * reverse"]
+         * @param {} animationName
+         * @param {} animationcfg
+         */
+        _startAnimation : function (animationName, animationCfg) {
+
+            var partsArray = animationName.split(' ');
+
+            if (partsArray[1] === "right" || partsArray[1] === "out" || partsArray[1] === "reverse") {
+                animationCfg.reverse = true;
+            } else if (partsArray[1] === "up" || partsArray[1] === "down") {
+                animationName = partsArray[0].concat(partsArray[1]);
+            }
+
+            this._animator.start(partsArray[0], animationCfg);
         }
     }
 });
