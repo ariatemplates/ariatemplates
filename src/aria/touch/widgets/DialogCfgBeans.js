@@ -13,25 +13,28 @@
  * limitations under the License.
  */
 
-/**
- * Configuration Beans for aria.popups.Popup
- */
 Aria.beanDefinitions({
-    $package : "aria.popups.Beans",
-    $description : "Definition of the JSON beans used to set application variables",
+    $package : "aria.touch.widgets.DialogCfgBeans",
+    $description : "Dialog config beans",
     $namespaces : {
         "json" : "aria.core.JsonTypes",
-        "dom" : "aria.utils.DomBeans"
+        "common" : "aria.widgetLibs.CommonBeans",
+        "base" : "aria.html.beans.ElementCfg",
+        "dom" : "aria.utils.DomBeans",
+        "templates" : "aria.templates.CfgBeans"
     },
     $beans : {
-        "PopupConf" : {
+        "DialogCfg" : {
             $type : "json:Object",
             $description : "Configuration object for the aria.popups.Popup",
             $properties : {
-                "section" : {
-                    $type : "json:ObjectRef",
-                    $description : "{aria.templates.Section} The section used to create the content of the popup",
-                    $mandatory : true
+                "id" : {
+                    $type : "json:String",
+                    $description : "Id of the widget"
+                },
+                "contentMacro" : {
+                    $type : "templates:MacroCfg",
+                    $description : "The macro that will be used as dialog content, Browser will freeze if it does not find this property  as part of widget or bindable property"
                 },
                 "keepSection" : {
                     $type : "json:Boolean",
@@ -49,7 +52,7 @@ Aria.beanDefinitions({
                 },
                 "domReference" : {
                     $type : "json:ObjectRef",
-                    $description : "{HTMLElement} The DOM reference which will be used as the reference position for the popup",
+                    $description : "{HTMLElement} The DOM reference which will be used as the reference position for the tooltip",
                     $default : null
                 },
                 "absolutePosition" : {
@@ -131,9 +134,22 @@ Aria.beanDefinitions({
                 "animateIn" : {
                     $type : "json:Enum",
                     $description : "Animation to apply to the closing popup",
-                    $sample : "slide right",
+                    $sample : "slide left",
                     $enumValues : ["slide left", "slide right", "slide up", "slide down", "fade in", "fade out", "pop",
                             "pop reverse", "flip", "flip reverse"]
+                },
+                "htmlContent" : {
+                    $type : "json:String",
+                    $description : "The dialog's HTML content"
+                },
+                "bind" : {
+                    $type : "base:Properties.$properties.bind",
+                    $properties : {
+                        "isVisible" : {
+                            $type : "common:BindingRef",
+                            $description : "Bi-directional binding. shows/hides the dialog window"
+                        }
+                    }
                 }
             }
         },

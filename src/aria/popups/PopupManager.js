@@ -174,6 +174,11 @@
                     fn : this.onDocumentClick,
                     scope : this
                 }, true);
+                utilsEvent.addListener(this._document, "touchend", {
+                    fn : this.onDocumentClick,
+                    scope : this
+                }, true);
+
                 utilsEvent.addListener(this._document, "mouseout", {
                     fn : this.onDocumentMouseOut,
                     scope : this
@@ -182,6 +187,7 @@
                     fn : this.onDocumentMouseScroll,
                     scope : this
                 }, true);
+
                 if (aria.core.Browser.isIE) {
                     // IE does not support scroll event on the document until IE9
                     aria.utils.Event.addListener(Aria.$window, "mousewheel", {
@@ -204,6 +210,9 @@
             disconnectEvents : function () {
                 if (this._document) {
                     utilsEvent.removeListener(this._document, "mousedown", {
+                        fn : this.onDocumentClick
+                    });
+                    utilsEvent.removeListener(this._document, "touchend", {
                         fn : this.onDocumentClick
                     });
                     utilsEvent.removeListener(this._document, "mouseout", {

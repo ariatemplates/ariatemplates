@@ -13,24 +13,13 @@
  * limitations under the License.
  */
 
-/**
- * Touch widget library.
- */
-Aria.classDefinition({
-    $classpath : "aria.touch.widgets.TouchWidgetLib",
-    $extends : "aria.widgetLibs.WidgetLib",
-    $singleton : true,
+Aria.tplScriptDefinition({
+    $classpath : "test.aria.touch.widgets.dialog.closeOnClick.DialogTestCaseTplScript",
     $prototype : {
-        /**
-         * Map of all the widgets in the library. Keys in the map are widget names as they can be used in templates.
-         * Values are the corresponding classpaths.
-         * @type Object
-         */
-        widgets : {
-            "Slider" : "aria.touch.widgets.Slider",
-            "DoubleSlider" : "aria.touch.widgets.DoubleSlider",
-            "Button" : "aria.touch.widgets.Button",
-            "Dialog" : "aria.touch.widgets.Dialog"
+
+        displayDialog : function () {
+            aria.utils.Json.setValue(this.data, "dialogVisible", !this.data.dialogVisible);
         }
+
     }
 });
