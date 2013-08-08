@@ -17,8 +17,8 @@
  * Touch widget library.
  */
 Aria.classDefinition({
-    $classpath : 'aria.touch.widgets.TouchWidgetLib',
-    $extends : 'aria.widgetLibs.WidgetLib',
+    $classpath : "aria.touch.widgets.TouchWidgetLib",
+    $extends : "aria.widgetLibs.WidgetLib",
     $singleton : true,
     $prototype : {
         /**
@@ -28,7 +28,8 @@ Aria.classDefinition({
          */
         widgets : {
             "Slider" : "aria.touch.widgets.Slider",
-            "DoubleSlider" : "aria.touch.widgets.DoubleSlider"
+            "DoubleSlider" : "aria.touch.widgets.DoubleSlider",
+            "Button" : "aria.touch.widgets.Button"
         }
     }
 });
