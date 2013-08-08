@@ -543,7 +543,7 @@ Aria.classDefinition({
 
             var cfgTemplate = {
                 classpath : cfg.template,
-                div : this._getContainer(false),
+                div : pageConfig.animation === null ? (this._activeDiv === 0 ? this._firstDiv : this._secondDiv) : this._getContainer(false),
                 moduleCtrl : this._rootModule
             };
 
