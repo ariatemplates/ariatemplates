@@ -36,41 +36,46 @@ Aria.classDefinition({
          * Make sure the right events are thrown
          */
         testAsync_checkEvents : function () {
-            this.eventsFired = [];
-            var conf = {
-                // Content
-                section : this.mockSection,
-                modal : true,
-                absolutePosition : {
-                    top : 200,
-                    left : 500
-                },
-                animateIn : "slide right",
-                animateOut : "slide left"
-            };
+            var olderThanIe10 = aria.core.Browser.isIE && parseInt(aria.core.Browser.version, 10) < 10;
+            if (!olderThanIe10) {
+                this.eventsFired = [];
+                var conf = {
+                    // Content
+                    section : this.mockSection,
+                    modal : true,
+                    absolutePosition : {
+                        top : 200,
+                        left : 500
+                    },
+                    animateIn : "slide right",
+                    animateOut : "slide left"
+                };
 
-            this.popup = new aria.popups.Popup();
-            var popup = this.popup;
-            popup.$on({
-                "*" : function (evt) {
-                    this.eventsFired.push(evt.name);
-                },
-                scope : this
-            });
+                this.popup = new aria.popups.Popup();
+                var popup = this.popup;
+                popup.$on({
+                    "*" : function (evt) {
+                        this.eventsFired.push(evt.name);
+                    },
+                    scope : this
+                });
 
-            this.assertEquals(this.eventsFired.length, 0);
+                this.assertEquals(this.eventsFired.length, 0);
 
-            popup.open(conf);
+                popup.open(conf);
 
-            this.assertJsonEquals(["onBeforeOpen", "onPositioned"], this.eventsFired);
-            // reset
-            this.eventsFired = [];
+                this.assertJsonEquals(["onBeforeOpen", "onPositioned"], this.eventsFired);
+                // reset
+                this.eventsFired = [];
 
-            aria.core.Timer.addCallback({
-                fn : this.checkEventsArrayAfterOpen,
-                scope : this,
-                delay : 2000
-            });
+                aria.core.Timer.addCallback({
+                    fn : this.checkEventsArrayAfterOpen,
+                    scope : this,
+                    delay : 2000
+                });
+            } else {
+                this.notifyTestEnd("testAsync_checkEvents");
+            }
         },
 
         checkEventsArrayAfterOpen : function () {
