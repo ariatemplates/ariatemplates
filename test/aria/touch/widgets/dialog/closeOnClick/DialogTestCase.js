@@ -16,27 +16,32 @@
 Aria.classDefinition({
     $classpath : "test.aria.touch.widgets.dialog.closeOnClick.DialogTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
-    $dependencies : ["aria.utils.Json"],
+    $dependencies : ["aria.utils.Json", "aria.core.Browser"],
     $constructor : function () {
         this.$TemplateTestCase.constructor.call(this);
 
         this.data = {
             dialogVisible : true
         };
-
-        this.setTestEnv({
-            template : "test.aria.touch.widgets.dialog.closeOnClick.DialogTestCaseTpl",
-            data : this.data
-        });
+        var olderThanIe10 = aria.core.Browser.isIE && parseInt(aria.core.Browser.version, 10) < 10;
+        if (!olderThanIe10) {
+            this.setTestEnv({
+                template : "test.aria.touch.widgets.dialog.closeOnClick.DialogTestCaseTpl",
+                data : this.data
+            });
+        }
     },
     $prototype : {
         runTemplateTest : function () {
-
-            this.synEvent.click(Aria.$window.document.body, {
-                fn : this.delayedCheckBindings,
-                scope : this
-            });
-
+            var olderThanIe10 = aria.core.Browser.isIE && parseInt(aria.core.Browser.version, 10) < 10;
+            if (olderThanIe10) {
+                this.end();
+            } else {
+                this.synEvent.click(Aria.$window.document.body, {
+                    fn : this.delayedCheckBindings,
+                    scope : this
+                });
+            }
         },
 
         checkBindings : function () {
