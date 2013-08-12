@@ -23,8 +23,12 @@ Aria.classDefinition({
         this.data = {
             dialogVisible : true
         };
-        var olderThanIe10 = aria.core.Browser.isIE && parseInt(aria.core.Browser.version, 10) < 10;
-        if (!olderThanIe10) {
+
+        var browserVersion = parseInt(aria.core.Browser.version, 10);
+        this.cssAnimationsNotSupported = (aria.core.Browser.isIE && browserVersion < 10)
+                || (aria.core.Browser.isFirefox && browserVersion < 4);
+
+        if (!this.cssAnimationsNotSupported) {
             this.setTestEnv({
                 template : "test.aria.touch.widgets.dialog.closeOnClick.DialogTestCaseTpl",
                 data : this.data
@@ -33,8 +37,7 @@ Aria.classDefinition({
     },
     $prototype : {
         runTemplateTest : function () {
-            var olderThanIe10 = aria.core.Browser.isIE && parseInt(aria.core.Browser.version, 10) < 10;
-            if (olderThanIe10) {
+            if (this.cssAnimationsNotSupported) {
                 this.end();
             } else {
                 this.synEvent.click(Aria.$window.document.body, {
@@ -45,7 +48,7 @@ Aria.classDefinition({
         },
 
         checkBindings : function () {
-            this.assertFalse(this.templateCtxt.data.dialogVisible, "The 'visible' binded data should be false");
+            this.assertFalse(this.templateCtxt.data.dialogVisible, "The 'visible' bound data should be false");
 
             this.notifyTemplateTestEnd();
         },
@@ -54,7 +57,7 @@ Aria.classDefinition({
             aria.core.Timer.addCallback({
                 fn : this.checkBindings,
                 scope : this,
-                delay : 5000
+                delay : 1000
             });
         }
 
