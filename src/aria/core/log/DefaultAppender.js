@@ -16,9 +16,9 @@
 (function () {
     var console = Aria.$global.console;
     /**
-     * Default appender used by the logger to output log lines. The default
-     * appender is using Firebug/Firebug lite to log (or in fact, any console that defines the window.console object).
-     * Other appenders can be written by extending this default class in order to output elsewhere.
+     * Default appender used by the logger to output log lines. The default appender is using Firebug/Firebug lite to
+     * log (or in fact, any console that defines the window.console object). Other appenders can be written by extending
+     * this default class in order to output elsewhere.
      */
     Aria.classDefinition({
         $classpath : "aria.core.log.DefaultAppender",
@@ -101,11 +101,21 @@
              */
             error : function (className, msg, msgText, e) {
                 var message = this._formatClassName(className) + msg;
+                var extraInfo = "";
                 if (e) {
-                    console.error(message + "\n", e);
-                } else {
-                    console.error(message);
+                    var extraInfo = (e.name && e.message) ? (e.name + ": " + e.message) : e.toString();
+                    var stack = e.stack;
+                    if (stack) {
+                        // sometimes the stack starts with the name and message, sometimes not
+                        if (extraInfo === stack.substring(0, extraInfo.length)) {
+                            extraInfo = stack;
+                        } else {
+                            extraInfo += "\n" + stack;
+                        }
+                    }
+                    extraInfo = "\n" + extraInfo;
                 }
+                console.error(message + extraInfo);
             }
         } : {
             debug : function () {},

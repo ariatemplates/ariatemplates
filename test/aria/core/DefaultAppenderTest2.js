@@ -71,21 +71,23 @@ Aria.classDefinition({
             var className = 'aria.core.Log';
             var msg = 'Default message';
             var msgText = 'Default text message';
+            var expectedMsg = '[' + className + '] ' + msg;
 
             aria.core.log.DefaultAppender.prototype.debug(className, msg, msgText, {});
-            this.assertTrue(this._storedLogMessage == '[' + className + '] ' + msg);
+            this.assertEquals(this._storedLogMessage, expectedMsg);
 
             aria.core.log.DefaultAppender.prototype.info(className, msg, msgText, {});
-            this.assertTrue(this._storedLogMessage == '[' + className + '] ' + msg);
+            this.assertEquals(this._storedLogMessage, expectedMsg);
 
             aria.core.log.DefaultAppender.prototype.warn(className, msg, msgText, {});
-            this.assertTrue(this._storedLogMessage == '[' + className + '] ' + msg);
+            this.assertEquals(this._storedLogMessage, expectedMsg);
 
             aria.core.log.DefaultAppender.prototype.error(className, msg, msgText);
-            this.assertTrue(this._storedErrorMessage == '[' + className + '] ' + msg);
+            this.assertEquals(this._storedErrorMessage, expectedMsg);
 
-            aria.core.log.DefaultAppender.prototype.error(className, msg, msgText, true);
-            this.assertTrue(this._storedErrorMessage == '[' + className + '] ' + msg + '\n');
+            aria.core.log.DefaultAppender.prototype.error(className, msg, msgText, new Error("MyError"));
+            var expectedMsgWithError = expectedMsg + "\nError: MyError";
+            this.assertEquals(this._storedErrorMessage.substring(0, expectedMsgWithError.length), expectedMsgWithError);
 
             this.notifyTestEnd('testAsyncDefaultAppenderLogMessages');
         }

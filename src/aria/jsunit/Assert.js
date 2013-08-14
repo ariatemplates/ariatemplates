@@ -277,8 +277,15 @@
                             errFound = true;
                             msg = "Uncaught error detected: [" + logItem.className + "] " + logItem.msg;
 
-                            if (logItem.objOrErr && console && aria.utils.Type.isFunction(console.error)) {
-                                console.error(this.$classpath + "." + this._currentTestName + ": " + msg, logItem.objOrErr);
+                            var err = logItem.objOrErr;
+                            if (err) {
+                                msg += "\n";
+                                msg += (err.name && err.message) ? (err.name + ": " + err.message) : err;
+
+                                if (console && aria.utils.Type.isFunction(console.error)) {
+                                    console.error(this.$classpath + "." + this._currentTestName + ": " + msg + "\n"
+                                            + err.stack);
+                                }
                             }
 
                             this.raiseFailure(msg);
