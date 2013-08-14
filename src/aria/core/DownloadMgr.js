@@ -50,13 +50,6 @@ Aria.classDefinition({
         this._rootMap = {};
 
         /**
-         * Json utils shortcut
-         * @protected
-         * @type aria.utils.Json
-         */
-        this._jsonUtils = aria.utils.Json;
-
-        /**
          * Type utils shortcut
          * @protected
          * @type aria.utils.Type
@@ -74,7 +67,6 @@ Aria.classDefinition({
         this._cache = null;
         this._urlMap = null;
         this._rootMap = null;
-        this._jsonUtils = null;
         this._timestampURL = null;
     },
     $prototype : {
@@ -84,7 +76,7 @@ Aria.classDefinition({
          * @param {Object} map
          */
         updateUrlMap : function (map) {
-            this._jsonUtils.inject(map, this._urlMap, true);
+            aria.utils.Json.inject(map, this._urlMap, true);
         },
 
         /**
@@ -92,7 +84,7 @@ Aria.classDefinition({
          * @param {Object} map
          */
         updateRootMap : function (map) {
-            this._jsonUtils.inject(map, this._rootMap, true);
+            aria.utils.Json.inject(map, this._rootMap, true);
         },
 
         /**
@@ -255,6 +247,9 @@ Aria.classDefinition({
                         url : url,
                         downloadFailed : true
                     };
+                    if (!args || !args.tolerateErrors) {
+                        this.$logError(aria.core.FileLoader.LPNOTFOUND_MULTIPART, [logicalPath, url]);
+                    }
                     return this.$callback(cb, evt);
                 }
 

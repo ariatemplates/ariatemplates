@@ -20,7 +20,7 @@
 Aria.classDefinition({
     $classpath : "test.aria.core.JsonValidatorTest",
     $extends : "aria.jsunit.TestCase",
-    $dependencies : ["aria.core.BaseTypes", "aria.widgets.CfgBeans", "test.aria.core.test.Beans"],
+    $dependencies : ["aria.core.BaseTypes", "aria.widgets.CfgBeans", "test.aria.core.test.Beans", "aria.core.FileLoader"],
     $prototype : {
 
         setUp : function () {
@@ -75,6 +75,8 @@ Aria.classDefinition({
                 eval(schema);
                 this.$assert(24, typeof(bean) == "object");
                 jv.check(bean, "aria.core.BaseTypes.Package");
+            } else {
+                this.assertErrorInLogs(aria.core.FileLoader.LPNOTFOUND_MULTIPART);
             }
             jv._options.checkMultiTypes = checkMT;
             this.notifyTestEnd("testAsyncCheckSchema");

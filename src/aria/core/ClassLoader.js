@@ -129,6 +129,16 @@ Aria.classDefinition({
          * @type Boolean
          */
         this.handleError = true;
+
+        /**
+         * Whether or not errors while loading the class from a multipart should be tolerated (no logging).
+         * A class might belong to a package that is completely included in a multipart. However if the
+         * class is missing from the multipart by default an error should be logged. This variable allows
+         * to suppress this message when we're sure that the error is handled somehow.
+         * @type Boolean
+         * @protected
+         */
+        this._tolerateErrors = false;
     },
     $statics : {
         // ERROR MESSAGES:
@@ -159,7 +169,8 @@ Aria.classDefinition({
                 fn : this._onClassDefinitionReceive,
                 scope : this
             }, {
-                fullLogicalPath : this._fullLogicalPath
+                fullLogicalPath : this._fullLogicalPath,
+                tolerateErrors : this._tolerateErrors
             });
         },
 

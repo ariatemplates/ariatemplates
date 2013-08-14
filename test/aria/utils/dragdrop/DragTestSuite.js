@@ -17,8 +17,8 @@
  * Test suite regrouping all tests on the Drag utility
  */
 Aria.classDefinition({
-    $classpath : 'test.aria.utils.dragdrop.DragTestSuite',
-    $extends : 'aria.jsunit.TestSuite',
+    $classpath : "test.aria.utils.dragdrop.DragTestSuite",
+    $extends : "aria.jsunit.TestSuite",
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 

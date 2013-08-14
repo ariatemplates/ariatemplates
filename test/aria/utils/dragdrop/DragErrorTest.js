@@ -17,9 +17,9 @@
  * Template Test case for aria.utils.dragdrop.Drag error logging
  */
 Aria.classDefinition({
-    $classpath : 'test.aria.utils.dragdrop.DragErrorTest',
-    $extends : 'aria.jsunit.TemplateTestCase',
-    $dependencies : ["aria.utils.dragdrop.Drag", "aria.utils.Dom", "aria.tools.contextual.ContextualMenu"],
+    $classpath : "test.aria.utils.dragdrop.DragErrorTest",
+    $extends : "aria.jsunit.TemplateTestCase",
+    $dependencies : ["aria.utils.dragdrop.Drag", "aria.utils.Dom", "aria.tools.contextual.ContextualMenu", "aria.core.FileLoader"],
     $constructor : function () {
         this.$TemplateTestCase.constructor.call(this);
         this.dragUtil = aria.utils.dragdrop.Drag;
@@ -27,7 +27,7 @@ Aria.classDefinition({
 
         this.defaultTestTimeout = 5000;
         this.setTestEnv({
-            template : 'test.aria.utils.dragdrop.DragTestTemplate'
+            template : "test.aria.utils.dragdrop.DragTestTemplate"
         });
     },
     $destructor : function () {
@@ -92,6 +92,7 @@ Aria.classDefinition({
             this._drag.end();
 
             this.assertErrorInLogs(this.dragUtil.INVALID_ATTRIBUTE);
+            this.assertErrorInLogs(aria.core.FileLoader.LPNOTFOUND_MULTIPART);
 
             this._drag.$dispose();
             this._drag = null;
