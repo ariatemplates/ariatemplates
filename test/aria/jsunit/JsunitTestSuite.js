@@ -27,5 +27,6 @@ Aria.classDefinition({
         this.addTests("test.aria.jsunit.templateTests.TemplateInIframe");
         this.addTests("test.aria.jsunit.templateTests.TemplateInIframeWithError");
         this.addTests("test.aria.jsunit.templateTests.TestCaseModuleController");
+        this.addTests("test.aria.jsunit.SinonTestSuite");
     }
 });

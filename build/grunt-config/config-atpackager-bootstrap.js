@@ -97,6 +97,16 @@ module.exports = function (grunt) {
         folders : ['<%= packaging.bootstrap.outputdir %>']
     });
 
-    grunt.registerTask('bootstrap', 'atpackager:bootstrap');
+    grunt.config.set('at_class.bootstrap', {
+        src: ['node_modules/sinon/pkg/sinon.js'],
+        dest: '<%= packaging.bootstrap.outputdir %>/aria/jsunit/Sinon.js',
+        options: {
+            classpath: 'aria.jsunit.Sinon',
+            singleton: true,
+            exports: 'sinon'
+        }
+    });
+
+    grunt.registerTask('bootstrap', ['at_class:bootstrap', 'atpackager:bootstrap']);
 
 };

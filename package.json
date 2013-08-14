@@ -29,9 +29,11 @@
     "grunt": "git+https://github.com/divdavem/grunt.git#13da751bdfd291c25a47ca7669ae0778eb289b28",
     "grunt-contrib-jshint": "0.6.0",
     "attester": "1.2.1",
-    "express": "3.3.1",
-    "jade": "0.32.0",
+    "express": "3.3.5",
+    "grunt-at-class": "0.2.0",
+    "jade": "0.34.1",
     "atpackager": "0.1.0",
-    "mocha": "1.11.0"
+    "mocha": "1.12.0",
+    "sinon": "1.7.3"
   }
 }
