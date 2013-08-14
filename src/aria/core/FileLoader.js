@@ -15,11 +15,7 @@
 
 Aria.classDefinition({
     $classpath : "aria.core.FileLoader",
-
     $events : {
-        /**
-         * @event fileReady
-         */
         "fileReady" : {
             description : "notifies that the file associated to the loader is ready for use or that an error occured",
             properties : {
@@ -28,9 +24,6 @@ Aria.classDefinition({
                 downloadFailed : "{boolean} if true, no path in logicalPaths could be retrieved successfully (maybe other logical paths)"
             }
         },
-        /**
-         * @event complete
-         */
         "complete" : {
             description : "notifies that the file loader process is done and that it can be disposed (i.e. fileReady listeners have already been called when this event is raised)"
         }
@@ -49,7 +42,16 @@ Aria.classDefinition({
          */
         this._urlItm = aria.core.Cache.getItem("urls", fileURL, true);
 
+        /**
+         * List of associated to this loader. Multiple files can be packaged into the same file, so this array holds the list of those paths.
+         * @type {Array}
+         */
         this._logicalPaths = [];
+
+        /**
+         * Whether the class is in the process of downloading a file and extract the assets in it
+         * @type {Boolean}
+         */
         this._isProcessing = false;
 
         /**
@@ -71,7 +73,7 @@ Aria.classDefinition({
         _logicalPathHeader : /^\/\/LOGICAL-PATH:([^\s]+)$/,
 
         /**
-         * Start the dowload of the file associated to the loader url
+         * Start the download of the file associated to the loader URL
          */
         loadFile : function () {
             if (this._isProcessing) {
@@ -128,7 +130,7 @@ Aria.classDefinition({
         },
 
         /**
-         * Internal callback called by the IO object when the file has been succesfully received
+         * Internal callback called by the IO object when the file has been successfully received
          * @param {Object} ioRes IO result object
          * @private
          */
@@ -190,7 +192,7 @@ Aria.classDefinition({
             }
 
             if (downloadFailed && multipart == null) {
-                // if an error occured, and we have not yet done it,
+                // if an error occurred, and we have not yet done it,
                 // we put the error in the cache for every expected logical path
                 for (var i = 0; i < this._logicalPaths.length; i++) {
                     aria.core.DownloadMgr.loadFileContent(this._logicalPaths[i], ioRes.responseText, true);
