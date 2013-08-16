@@ -44,7 +44,7 @@ Good code is
 - documented
 
 We put lot of effort into write good code, so should you!
-Be sure to follow our [guidelines](http://ariatemplates.com/usermanual/Code_Standards).
+Be sure to follow our [guidelines](http://ariatemplates.com/usermanual/latest/code_standards.html).
 
 __We won't accept code without a proper test__. You were warned!
 If you want to know more about testing Aria Templates code, please have a look at the [README](test/README.md) file in _test_ folder.
