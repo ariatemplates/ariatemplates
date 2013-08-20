@@ -631,18 +631,16 @@ Aria.classDefinition({
             } else {
                 this.computedStyle = this._getComputedStyle();
             }
-            // Need to check that the reference point is still completely visible after a scroll
-            var referenceIsInViewSet = aria.utils.Dom.isInViewport(this.referencePosition, this.referenceSize, this.domElement);
-            if (referenceIsInViewSet) {
-                this.domElement.style.cssText = ['top:', this.computedStyle.top, 'px;', 'left:',
-                        this.computedStyle.left, 'px;', 'z-index:', this.computedStyle.zIndex, ';',
-                        'position:absolute;display:inline-block;'].join('');
-                if (aria.core.Browser.isIE7 && !this.isOpen) {
-                    // Without the following line, the autocomplete does not
-                    // initially display its content on IE7:
-                    this._document.body.appendChild(this.domElement);
-                }
+
+            this.domElement.style.cssText = ['top:', this.computedStyle.top, 'px;', 'left:', this.computedStyle.left,
+                    'px;', 'z-index:', this.computedStyle.zIndex, ';', 'position:absolute;display:inline-block;'].join('');
+
+
+            if (aria.core.Browser.isIE7 && !this.isOpen) {
+                // Without the following line, the autocomplete does not initially display its content on IE7:
+                this._document.body.appendChild(this.domElement);
             }
+
         },
 
         /**
@@ -768,8 +766,14 @@ Aria.classDefinition({
         _isScrolling : function () {
             var domReference = this.reference;
             if (domReference) {
+
                 var geometry = aria.utils.Dom.getGeometry(domReference);
-                if (geometry) {
+                var referenceIsInViewport = geometry && (aria.utils.Dom.isInViewport({
+                    left : geometry.x,
+                    top : geometry.y
+                }, geometry, this.domElement));
+
+                if (referenceIsInViewport) {
                     this.referencePosition = {
                         left : geometry.x,
                         top : geometry.y
