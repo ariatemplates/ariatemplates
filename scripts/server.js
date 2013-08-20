@@ -81,8 +81,9 @@ app.get("/aria-templates/dev/aria/ariatemplates-bootstrap.js", function (req, re
 });
 // Static CSS files for views and tools
 app.use("/css", express.static(__dirname + "/assets/css"));
-// Non minified version points to src folder
+// Non minified version points to src folder and the bootstrapped version for file generated in the build
 app.use("/aria-templates/dev", express.static(__dirname + "/../src"));
+app.use("/aria-templates/dev", express.static(__dirname + "/../build/target/bootstrap"));
 // Minified version points to standard build (npm install)
 app.use("/aria-templates", express.static(__dirname + "/../build/target/production"));
 // Test classpath redirects to test folder

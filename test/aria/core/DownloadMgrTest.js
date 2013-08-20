@@ -19,7 +19,7 @@
 Aria.classDefinition({
     $classpath : "test.aria.core.DownloadMgrTest",
     $extends : "aria.jsunit.TestCase",
-    $dependencies : ["aria.utils.Callback"],
+    $dependencies : ["aria.utils.Callback", "aria.core.FileLoader"],
     $prototype : {
 
         /**
@@ -241,10 +241,65 @@ Aria.classDefinition({
         _onNotExistingFileCb : function (evt) {
             try {
                 this.assertTrue(evt.downloadFailed, "The file should be available");
+                this.assertErrorInLogs(aria.core.FileLoader.LPNOTFOUND_MULTIPART);
 
                 this.getPackages();
             } catch (ex) {}
             this.notifyTestEnd("testAsyncMultiPartMissingFile");
+        },
+
+        /**
+         * Test this scenario and tolerate a loading error:
+         *
+         * <pre>
+         * // 1 - load logical classpath in a file with multipart content
+         * // 2- load a logical classpath targeting the same multipart content, but without being contained inside
+         * </pre>
+         */
+        testAsyncMultiPartMissingFileAndTolerate : function () {
+            var downloadMgr = aria.core.DownloadMgr;
+            downloadMgr.updateUrlMap({
+                'testPath' : {
+                    '*' : "test/aria/core/test/MultipartMissingFileAgain.txt"
+                }
+            });
+            downloadMgr.loadFile("testPath/File3.txt", {
+                fn : this._onExistingFileCbAndTolerate,
+                scope : this
+            }, {
+                tolerateErrors : true
+            });
+        },
+
+        /**
+         * First existing file callback : next call is for the non-existing one
+         */
+        _onExistingFileCbAndTolerate : function (evt) {
+            try {
+                this.assertFalse(evt.downloadFailed, "The file should be available");
+
+                aria.core.DownloadMgr.loadFile("testPath/File4.txt", {
+                    fn : this._onNotExistingFileCbAndTolerate,
+                    scope : this
+                }, {
+                    tolerateErrors : true
+                });
+            } catch (ex) {
+                this.notifyTestEnd("testAsyncMultiPartMissingFile");
+            }
+
+        },
+
+        /**
+         * First existing file callback : call for the non existing one
+         */
+        _onNotExistingFileCbAndTolerate : function (evt) {
+            try {
+                this.assertTrue(evt.downloadFailed, "The file should be available");
+
+                this.getPackages();
+            } catch (ex) {}
+            this.notifyTestEnd("testAsyncMultiPartMissingFileAndTolerate");
         },
 
         /**

@@ -27,6 +27,12 @@ Aria.classDefinition({
         if (this._refClasspath) {
             aria.core.ResMgr.addResFile(this._refClasspath);
         }
+
+        /**
+         * Due to the two code language (en-US) it's likely that resources might throw load errors.
+         * Tolerate them
+         */
+        this._tolerateErrors = true;
     },
     $statics : {
         REGEXP : /Aria\.resourcesDefinition\(/,

@@ -115,7 +115,7 @@ Aria.classDefinition({
          * @param {Integer} keyCode
          * @param {String} currentText
          * @param {Integer} caretPos
-         * @parm {aria.DomEvent} event
+         * @param {aria.DomEvent} event
          * @return {aria.widgets.controllers.reports.ControllerReport}
          */
         checkKeyStroke : function (charCode, keyCode, currentText, caretPosStart, caretPosEnd, event) {
