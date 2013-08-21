@@ -275,7 +275,6 @@ Aria.classDefinition({
             test.scrollLeft = 20;
             var target = document.getElementById("block_50");
 
-
             aria.utils.Dom.scrollIntoView(target, false);
 
             // measuring pos is more reliable
@@ -451,6 +450,25 @@ Aria.classDefinition({
                 left : x,
                 top : y
             });
+        },
+
+        /**
+         * Checks that, after calling refreshScrollbars, the unnecessary scrollbar has disappeared.
+         */
+        testRefreshScrollbars : function () {
+            var document = Aria.$window.document;
+            var testElt = document.createElement("div");
+            testElt.style.cssText = "overflow:auto;width:100px;height:100px;left:-1000px;top:-1000px;";
+            testElt.innerHTML = '<div style="width:150px;height:100px;"></div>';
+            document.body.appendChild(testElt);
+            this.assertTrue(testElt.scrollWidth > testElt.clientWidth); // there must be a scrollbar (normal)
+            aria.utils.Dom.refreshScrollbars(testElt.firstChild); // this makes sure scrollbars are up to date
+            this.assertTrue(testElt.scrollWidth > testElt.clientWidth); // there still must be a scrollbar
+            // Now resizes the content to fit the container:
+            testElt.firstChild.style.width = "100px";
+            aria.utils.Dom.refreshScrollbars(testElt.firstChild); // this makes sure scrollbars are up to date
+            this.assertFalse(testElt.scrollWidth > testElt.clientWidth); // there should not be any scrollbar anymore
+            document.body.removeChild(testElt);
         }
 
     }
