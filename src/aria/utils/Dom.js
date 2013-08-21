@@ -694,8 +694,8 @@ Aria.classDefinition({
             }
 
             var position = {
-                top : offsetTop,
-                left : offsetLeft,
+                top : Math.round(offsetTop),
+                left : Math.round(offsetLeft),
                 scrollTop : scrollTop,
                 scrollLeft : scrollLeft
             };

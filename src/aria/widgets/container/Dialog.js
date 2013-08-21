@@ -140,7 +140,7 @@ Aria.classDefinition({
 
             var domElt = this._domElt;
             var maximized = this._cfg.maximized;
-            var viewport = aria.utils.Dom._getViewportSize();
+            var viewport = event.viewportNewSize;
             if (domElt) {
                 // Remove width and height, they will be recalculated later, to have the content size well calculated
                 domElt.style.width = "";
@@ -860,8 +860,10 @@ Aria.classDefinition({
         _setBodyOverflow : function (newValue) {
             Aria.$window.document.documentElement.style.overflow = newValue;
             // need to explicitly raise viewportResized so that maxwidth/maxheight constraints are recalculated
-            this._onViewportResized();
             var viewportSize = aria.utils.Dom._getViewportSize();
+            this._onViewportResized({
+                viewportNewSize : viewportSize
+            });
             return viewportSize;
         },
 
