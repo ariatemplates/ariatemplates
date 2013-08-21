@@ -133,6 +133,7 @@
                         tpl.$refresh();
                     }
                 }
+                aria.utils.Dom.refreshScrollbars(ar.domElt);
             }
             __applyNewSize();
             layout.$raiseEvent({
@@ -334,7 +335,7 @@
                     return __scrollBarsWidth;
                 }
                 if (aria.core.Browser.isMac && aria.core.Browser.isWebkit) {
-                    return 17;  // 17px is the size of scrollbar width on Safari and Chrome on Mac
+                    return 17; // 17px is the size of scrollbar width on Safari and Chrome on Mac
                 } else {
                     var document = Aria.$window.document;
                     var o = document.createElement("div"); // outer div

@@ -1193,6 +1193,66 @@ Aria.classDefinition({
          */
         _setOpacityW3C : function (element, opacity) {
             element.style.opacity = opacity;
+        },
+
+        /**
+         * Refreshes scrollbars for the specified DOM element and all its parents.
+         * @see refreshScrollbars
+         * @param {HTMLElement} domElt
+         */
+        _refreshScrollbarsFix : function (domElt) {
+            // work-around for http://crbug.com/240772
+            var values = [];
+            var parent = domElt;
+            while (parent && parent.style) {
+                values.push(parent.style.cssText);
+                parent.style.overflow = "hidden";
+                parent = parent.parentNode;
+            }
+            domElt.getBoundingClientRect(); // making sure Chrome updates the display
+            parent = domElt;
+            while (parent && parent.style) {
+                parent.style.cssText = values.shift();
+                parent = parent.parentNode;
+            }
+        },
+
+        /**
+         * Checks whether <a href="http://crbug.com/240772">this Chrome scrollbars bug</a> (also appearing on other
+         * webkit-based browsers) is still there.
+         * @see refreshScrollbars
+         * @return {Boolean} true if Webkit is used and the bug is still there. false otherwise.
+         */
+        _checkRefreshScrollbarsNeeded : function () {
+            if (!aria.core.Browser.isWebkit) {
+                // we only do this check on Webkit
+                return false;
+            }
+            var document = Aria.$window.document;
+            var testElt = document.createElement("div");
+            testElt.style.cssText = "overflow:auto;width:100px;height:100px;left:-1000px;top:-1000px;";
+            testElt.innerHTML = '<div style="width:150px;height:100px;"></div>';
+            document.body.appendChild(testElt);
+            // firstCheck below is always true, computing it is necessary so that Chrome knows a scrollbar is
+            // needed at this stage
+            var firstCheck = testElt.scrollWidth > testElt.clientWidth;
+            testElt.firstChild.style.width = "100px";
+            var secondCheck = testElt.scrollWidth > testElt.clientWidth; // should be false, but is true on Chrome
+            document.body.removeChild(testElt);
+            return firstCheck && secondCheck;
+        },
+
+        /**
+         * Refreshes scrollbars for the specified DOM element and all its parents. It is needed for some webkit-based
+         * browsers as a work-around for <a href="http://crbug.com/240772">this bug</a>, otherwise scrollbars are not
+         * removed when they are no longer necessary if the content has nearly the same size as the container.<br>
+         * This method does nothing on other browsers. On Webkit, the first time it is called, it checks whether the
+         * work-around is still needed and does nothing if the bug was fixed.
+         * @param {HTMLElement} element
+         */
+        refreshScrollbars : function (domElt) {
+            this.refreshScrollbars = this._checkRefreshScrollbarsNeeded() ? this._refreshScrollbarsFix : Aria.empty;
+            this.refreshScrollbars(domElt);
         }
     }
 });
