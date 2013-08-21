@@ -133,6 +133,7 @@
                         tpl.$refresh();
                     }
                 }
+                aria.utils.Dom.refreshScrollbars(ar.domElt);
             }
             __applyNewSize();
             layout.$raiseEvent({
