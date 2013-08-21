@@ -495,23 +495,11 @@ Aria.classDefinition({
         _getViewportSize : function () {
             var document = Aria.$window.document;
             var docEl = document.documentElement;
-
-            // In IE8, documentElement's client width/height are always 4px-20px less than they should be (it's not the
-            // case in IE7). At the same time, IE8's documentElement's offsetW/H are what clientW/H should be, i.e.
-            // viewport dimensions instead of the page dimensions. See:
-            // http://www.quirksmode.org/mobile/viewports.html
-            // http://www.quirksmode.org/mobile/tableViewport_desktop.html
-            if (aria.core.Browser.isIE8) {
-                return {
-                    'width' : docEl.offsetWidth,
-                    'height' : docEl.offsetHeight
-                };
-            } else {
-                return {
-                    'width' : docEl.clientWidth,
-                    'height' : docEl.clientHeight
-                };
-            }
+            var size = {
+                'width' : docEl.clientWidth,
+                'height' : docEl.clientHeight
+            };
+            return size;
         },
 
         /**
