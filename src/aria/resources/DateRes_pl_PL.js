@@ -29,6 +29,10 @@ Aria.resourcesDefinition({
             "Pi\u0105tek",
             "Sobota"
         ],
+        // a false value for the following items mean: use substring
+        // to generate the short versions of days or months
+        dayShort : false,
+        monthShort : false,
         month : [
             "Stycze\u0144",
             "Luty",

@@ -70,6 +70,10 @@ Aria.classDefinition({
                     case 2 :
                         return utilString.pad(value.getMonth() + 1, number, "0", true);
                     case 3 :
+                        var monthShort = res.monthShort;
+                        if (monthShort) {
+                            return monthShort[value.getMonth()];
+                        }
                         return res.month[value.getMonth()].substring(0, number);
                     default :
                         return res.month[value.getMonth()];
@@ -99,6 +103,10 @@ Aria.classDefinition({
                     case 1 :
                     case 2 :
                     case 3 :
+                        var dayShort = res.dayShort;
+                        if (dayShort) {
+                            return dayShort[value.getDay()];
+                        }
                         return res.day[value.getDay()].substring(0, number);
                     default :
                         return res.day[value.getDay()];
