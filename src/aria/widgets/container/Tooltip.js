@@ -18,6 +18,7 @@
     /**
      * @type Object
      * @private
+     *
      * <pre>
      *     {
      *         key : // @type String id of the tooltip
@@ -62,7 +63,8 @@
         },
         $statics : {
             // ERROR MESSAGES:
-            WIDGET_TOOLTIP_MACRO : "%1Tooltip with id '%2' must either be a container or have the 'macro' property specified."
+            CONTAINER_USAGE_DEPRECATED : "%1The usage as a container {@aria:Tooltip}{/@aria:Tooltip} is deprecated; use the {@aria:Tooltip /} syntax instead.",
+            WIDGET_TOOLTIP_MACRO : "%1Tooltip with id '%2' must either have the 'macro' property specified (recommended) or be a container ({@aria:Tooltip}{/@aria:Tooltip}; deprecated)."
         },
         $prototype : {
             /**
@@ -138,7 +140,10 @@
                 }
             },
             writeMarkupBegin : function (out) {
-
+                // When Tooltip is used as a container, every time it's shown, the whole macro is recalculated,
+                // and even the calling macros up the hierarchy. This reduces performance and, at first,
+                // can lead to unexepected behavior.
+                this.$logWarn(this.CONTAINER_USAGE_DEPRECATED);
                 this._container = true;
                 this._checkCfgConsistency();
                 if (this._cfgOk) {
