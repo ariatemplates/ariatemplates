@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 Aria.tplScriptDefinition({
-    $classpath : 'test.aria.widgets.container.issue80.shared.BindableSizeTestTplScript',
+    $classpath : 'test.aria.widgets.container.bindableSize.shared.BindableSizeTestTplScript',
     $prototype : {
         buttonClickPlus : function () {
             this.$json.setValue(this.data, "width", this.data.width + 40);

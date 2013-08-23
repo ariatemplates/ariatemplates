@@ -26,8 +26,8 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.container.splitter.move.SplitterTestMoveLeftRight");
         this.addTests("test.aria.widgets.container.tooltip.TooltipTestCase");
         this.addTests("test.aria.widgets.container.dialog.DialogTestSuite");
-        this.addTests("test.aria.widgets.container.issue80.BindableSizeTestSuite");
-        this.addTests("test.aria.widgets.container.issue367.MovableDialogTestCase");
+        this.addTests("test.aria.widgets.container.bindableSize.BindableSizeTestSuite");
+        this.addTests("test.aria.widgets.container.dialog.movable.issue367.MovableDialogTestCase");
         this.addTests("test.aria.widgets.container.checkContent.DivTest");
     }
 });

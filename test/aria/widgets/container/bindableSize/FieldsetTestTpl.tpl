@@ -13,15 +13,14 @@
  * limitations under the License.
  */
 {Template {
-    $classpath : 'test.aria.widgets.container.issue80.DialogTestTpl',
-    $extends : 'test.aria.widgets.container.issue80.shared.BindableSizeTestTpl'
+    $classpath : 'test.aria.widgets.container.bindableSize.FieldsetTestTpl',
+    $extends : 'test.aria.widgets.container.bindableSize.shared.BindableSizeTestTpl'
 }}
 
 {macro noConstraints()}
-    {@aria:Dialog {
-        id : "dialogNoConstraints",
-        title: "Test1",
-        contentMacro : "contentMacroLong",
+    {@aria:Fieldset {
+        id : "fsNoConstraints",
+        label : "fsNoConstraints",
         bind : {
             width : {
               to : "width",
@@ -30,19 +29,16 @@
             height : {
               to : "height",
               inside : data
-            },
-            visible : {
-              to : "dialogNoConstraints",
-              inside: data.visible
             }
         }
-    }/}
+    }}
+        {call contentMacroLong() /}
+    {/@aria:Fieldset}
 {/macro}
 {macro withConstraints()}
-    {@aria:Dialog {
-        id : "dialogWithConstraints",
-        title: "Test2",
-        contentMacro : "contentMacroLong",
+    {@aria:Fieldset {
+        id : "fsWithConstraints",
+        label : "fsWithConstraints",
         maxWidth: 333,
         maxHeight: 333,
         minWidth: 111,
@@ -55,13 +51,11 @@
             height : {
               to : "height",
               inside : data
-            },
-            visible : {
-              to : "dialogWithConstraints",
-              inside: data.visible
             }
         }
-    }/}
+    }}
+        {call contentMacroLong() /}
+    {/@aria:Fieldset}
 {/macro}
 
 {/Template}

@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 Aria.tplScriptDefinition({
-    $classpath : "test.aria.widgets.container.dialog.MaximizableDialogTestTplScript",
+    $classpath : "test.aria.widgets.container.dialog.maximizable.MaximizableDialogTestTplScript",
     $prototype : {
         buttonClickToggleVisibility : function () {
             var holder = this.data.dialog;
