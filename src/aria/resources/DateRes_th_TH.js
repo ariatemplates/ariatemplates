@@ -29,6 +29,10 @@ Aria.resourcesDefinition({
             "วันศุกร์",
             "วันเสาร์"
         ],
+        // a false value for the following items mean: use substring
+        // to generate the short versions of days or months
+        dayShort : false,
+        monthShort : false,
         month : [
             "มกราคม",
             "กุมภาพันธ์",
