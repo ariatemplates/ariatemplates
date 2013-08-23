@@ -1315,7 +1315,7 @@ Aria.beanDefinitions({
                 },
                 "macro" : {
                     $type : "templates:MacroCfg",
-                    $description : "Macro to call to get the tooltip content. The Tooltip widget can either be used as a container, in which case this property must not be specified and the content of the tooltip is the content of the widget, or be used as a simple widget with no content, in which case this property must specify which macro to call to get the content of the tooltip.",
+                    $description : "Macro to call to get the tooltip content. It is recommended to use macro for generating tooltip, and it will be mandatory in the future. For backward compatibility, the Tooltip widget can be used as a container (in which case this property must not be specified, and content has to be defined inline), but this is deprecated and will be removed soon.",
                     $mandatory : false
                 },
                 "sclass" : {
