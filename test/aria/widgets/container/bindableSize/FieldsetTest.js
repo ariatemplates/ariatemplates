@@ -17,10 +17,10 @@
  * Test case for aria.widgets.container.Fieldset
  */
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.container.issue80.FieldsetTest",
-    $extends : "test.aria.widgets.container.issue80.shared.BindableSizeTestCase",
+    $classpath : "test.aria.widgets.container.bindableSize.FieldsetTest",
+    $extends : "test.aria.widgets.container.bindableSize.shared.BindableSizeTestCase",
     $constructor : function () {
-        this._tplClasspath = "test.aria.widgets.container.issue80.FieldsetTestTpl";
+        this._tplClasspath = "test.aria.widgets.container.bindableSize.FieldsetTestTpl";
         this.$BindableSizeTestCase.constructor.call(this);
     },
     $prototype : {

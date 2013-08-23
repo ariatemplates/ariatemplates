@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.container.issue80.BindableSizeTestSuite",
+    $classpath : "test.aria.widgets.container.bindableSize.BindableSizeTestSuite",
     $extends : "aria.jsunit.TestSuite",
     $constructor : function () {
         this.$TestSuite.constructor.call(this);

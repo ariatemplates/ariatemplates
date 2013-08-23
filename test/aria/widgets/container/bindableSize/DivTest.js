@@ -17,10 +17,10 @@
  * Test case for aria.widgets.container.Div
  */
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.container.issue80.DivTest",
-    $extends : "test.aria.widgets.container.issue80.shared.BindableSizeTestCase",
+    $classpath : "test.aria.widgets.container.bindableSize.DivTest",
+    $extends : "test.aria.widgets.container.bindableSize.shared.BindableSizeTestCase",
     $constructor : function () {
-        this._tplClasspath = "test.aria.widgets.container.issue80.DivTestTpl";
+        this._tplClasspath = "test.aria.widgets.container.bindableSize.DivTestTpl";
         this.$BindableSizeTestCase.constructor.call(this);
     },
     $prototype : {
