@@ -32,6 +32,16 @@ Aria.classDefinition({
     $statics : {
         REGEXP : /Aria\.resourcesDefinition\(/,
 
+        /* BACKWARD-COMPATIBILITY-BEGIN GH-669 */
+        DEPRECATED_LOCALES : {
+            "sp_AR" : "ar_SA",
+            "ko_KO" : "ko_KR",
+            "cn_CN" : "zh_CN",
+            "tw_TW" : "zh_TW"
+        },
+        DEPRECATED_LOCALES_WARNING : "The locale %1 is deprecated and will be removed soon, please use %2 locale instead.",
+        /* BACKWARD-COMPATIBILITY-END GH-669 */
+
         // ERROR MESSAGES:
         RESOURCE_NOT_FOUND : "Error: the resource file '%1' for '%2' locale was not found",
         RESOURCE_NOT_RESOLVED : "Error: No resource file for '%1' could be found"
@@ -120,6 +130,13 @@ Aria.classDefinition({
             var devMode = aria.core.environment.Environment.isDevMode();
             // Get the locale
             var resLocale = aria.core.ResMgr.currentLocale;
+
+            /* BACKWARD-COMPATIBILITY-BEGIN GH-669 */
+            if (resLocale in this.DEPRECATED_LOCALES) {
+                var newLocale = this.DEPRECATED_LOCALES[resLocale];
+                this.$logWarn(this.DEPRECATED_LOCALES_WARNING, [resLocale, newLocale]);
+            }
+            /* BACKWARD-COMPATIBILITY-END GH-669 */
 
             // Build the callback for the asynchronous method
             var callback = {
