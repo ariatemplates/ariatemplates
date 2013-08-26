@@ -28,7 +28,7 @@ Aria.classDefinition({
             $dispose : function () {},
             refreshProcessingIndicator : function () {}
         };
-
+        this.defaultTestTimeout = 5000;
     },
     $prototype : {
 
@@ -74,12 +74,7 @@ Aria.classDefinition({
             this.assertJsonEquals(["onBeforeOpen", "onPositioned"], this.eventsFired);
             // reset
             this.eventsFired = [];
-
-            aria.core.Timer.addCallback({
-                fn : this.checkEventsArrayAfterOpen,
-                scope : this,
-                delay : 400
-            });
+            this.__waitForEvent(this.checkEventsArrayAfterOpen);
         },
 
         checkEventsArrayAfterOpen : function () {
@@ -88,12 +83,7 @@ Aria.classDefinition({
             this.popup.close();
             this.assertJsonEquals(["onBeforeClose"], this.eventsFired);
             this.eventsFired = [];
-            aria.core.Timer.addCallback({
-                fn : this.checkEventsArrayAfterClose,
-                scope : this,
-                delay : 400
-            });
-
+            this.__waitForEvent(this.checkEventsArrayAfterClose);
         },
 
         checkEventsArrayAfterClose : function () {
@@ -102,6 +92,18 @@ Aria.classDefinition({
             this.popup.$dispose();
             this.eventsFired = null;
             this.notifyTestEnd("testAsync_checkEvents");
+        },
+
+        __waitForEvent : function (cb) {
+            this.waitFor({
+                condition : function () {
+                    return this.eventsFired.length > 0;
+                },
+                callback : {
+                    fn : cb,
+                    scope : this
+                }
+            });
         }
 
     }
