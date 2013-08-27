@@ -53,6 +53,14 @@ Aria.classDefinition({
             "onpopstate" : this._onPopStateCallback
         });
 
+        /**
+         * Whether a popstate event has just been raised. Useful in order to know if the update of the history
+         * information has to be done
+         * @type Boolean
+         * @protected
+         */
+        this._poppedState = false;
+
     },
     $destructor : function () {
         this._history.$removeListeners({
@@ -72,6 +80,7 @@ Aria.classDefinition({
             var url = this.getUrl();
             var pageId = this._cache[url] ? this._cache[url].id : null;
             if (pageId && this._navigate) {
+                this._poppedState = true;
                 this.$callback(this._navigate, {
                     pageId : pageId,
                     url : url,
@@ -88,13 +97,14 @@ Aria.classDefinition({
             var url = pageRequest.url;
             if (aria.utils.Type.isString(url)) {
                 this._addInCache(url, pageRequest.pageId);
-                if (this.getUrl() != url) {
+                if (!this._poppedState) {
                     if (pageRequest.replace) {
                         this._history.replaceState(pageRequest.data, pageRequest.title, url);
                     } else {
                         this._history.pushState(pageRequest.data, pageRequest.title, url);
                     }
                 }
+                this._poppedState = false;
             }
         },
 
