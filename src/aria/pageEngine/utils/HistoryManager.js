@@ -88,12 +88,10 @@ Aria.classDefinition({
             var url = pageRequest.url;
             if (aria.utils.Type.isString(url)) {
                 this._addInCache(url, pageRequest.pageId);
-                if (this.getUrl() != url) {
-                    if (pageRequest.replace) {
-                        this._history.replaceState(pageRequest.data, pageRequest.title, url);
-                    } else {
-                        this._history.pushState(pageRequest.data, pageRequest.title, url);
-                    }
+                if (pageRequest.replace) {
+                    this._history.replaceState(pageRequest.data, pageRequest.title, url);
+                } else {
+                    this._history.pushState(pageRequest.data, pageRequest.title, url);
                 }
             }
         },

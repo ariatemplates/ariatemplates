@@ -24,6 +24,24 @@ Aria.classDefinition({
 
         _getNavManagerInstance : function (cb, options) {
             return new this._testWindow.aria.pageEngine.utils.HistoryManager(cb, options);
+        },
+
+        _firstTestAfterUpdateWithOnlyData : function () {
+            this._update({
+                pageId : "bbb",
+                title : "bbb_title",
+                url : "",
+                data : { test : "test"},
+                replace : true
+            });
+
+            this.assertEquals(this._navManager._history.state.test, "test", "History' state has not been updated");
+
+            aria.core.Timer.addCallback({
+                fn : this._firstTestAfterSecondUpdate,
+                scope : this,
+                delay : 100
+            });
         }
 
     }

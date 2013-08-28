@@ -77,10 +77,14 @@ Aria.classDefinition({
             this._testCacheEntry("", "bbb");
 
             aria.core.Timer.addCallback({
-                fn : this._firstTestAfterSecondUpdate,
+                fn : this._firstTestAfterUpdateWithOnlyData,
                 scope : this,
                 delay : 100
             });
+        },
+
+        _firstTestAfterUpdateWithOnlyData : function () {
+            this._firstTestAfterSecondUpdate();
         },
 
         _firstTestAfterSecondUpdate : function () {
