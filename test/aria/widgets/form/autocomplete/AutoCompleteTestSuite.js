@@ -28,6 +28,7 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.form.autocomplete.expandbutton.test1.ExpandButtonCheck");
         this.addTests("test.aria.widgets.form.autocomplete.expandbutton.test2.ExpandButtonCheck");
         this.addTests("test.aria.widgets.form.autocomplete.expandbutton.test3.ExpandButtonCheck");
+        this.addTests("test.aria.widgets.form.autocomplete.expandbutton.test4.ExpandButtonCheck");
         this.addTests("test.aria.widgets.form.autocomplete.handler.test1.LCHandlerTestCase");
         this.addTests("test.aria.widgets.form.autocomplete.promised.Promised");
         this.addTests("test.aria.widgets.form.autocomplete.onchangeRefresh.OnchangeRefreshTestCase");
