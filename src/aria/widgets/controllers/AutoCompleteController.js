@@ -324,8 +324,8 @@
                     var suggestionsAvailable = (suggestions !== null);
 
                     if (suggestionsAvailable) {
-                        if (args.keepSelectedValue && dataModel.value) {
-                            var code = dataModel.value.code;
+                        if (args.keepSelectedValue) {
+                            var code = dataModel.value ? dataModel.value.code : null;
                             for (var i = 0; i < suggestions.length; i += 1) {
                                 suggestions[i].exactMatch = (suggestions[i].code === code);
                             }
