@@ -21,7 +21,8 @@ Aria.beanDefinitions({
         "common" : "aria.widgetLibs.CommonBeans",
         "base" : "aria.html.beans.ElementCfg",
         "dom" : "aria.utils.DomBeans",
-        "templates" : "aria.templates.CfgBeans"
+        "templates" : "aria.templates.CfgBeans",
+        "animation" : "aria.utils.css.AnimationsBean"
     },
     $beans : {
         "DialogCfg" : {
@@ -125,18 +126,14 @@ Aria.beanDefinitions({
                     $default : -1
                 },
                 "animateOut" : {
-                    $type : "json:Enum",
+                    $type : "animation:AnimationName",
                     $description : "Animation to apply to the opening popup",
-                    $sample : "slide left",
-                    $enumValues : ["slide left", "slide right", "slide up", "slide down", "fade in", "fade out", "pop",
-                            "pop reverse", "flip", "flip reverse"]
+                    $sample : "slide left"
                 },
                 "animateIn" : {
-                    $type : "json:Enum",
+                    $type : "animation:AnimationName",
                     $description : "Animation to apply to the closing popup",
-                    $sample : "slide left",
-                    $enumValues : ["slide left", "slide right", "slide up", "slide down", "fade in", "fade out", "pop",
-                            "pop reverse", "flip", "flip reverse"]
+                    $sample : "slide left"
                 },
                 "htmlContent" : {
                     $type : "json:String",

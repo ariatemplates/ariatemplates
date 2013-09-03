@@ -45,6 +45,20 @@ Aria.beanDefinitions({
                     $description : "className to apply to the element animate out and to remove from the element animate in"
                 }
             }
+        },
+        "AnimationName" : {
+            $type : "json:MultiTypes",
+            $description : "The name of the animation",
+            $sample : "slide left",
+            $contentTypes : [{
+                $type : "json:Enum",
+                $description : "Predefined framework animation",
+                $enumValues : ["slide left", "slide right", "slide up", "slide down", "fade", "fade reverse",
+                    "pop", "pop reverse", "flip", "flip reverse"]
+            }, {
+                $type : "json:String",
+                $description : "Custom animation"
+            }]
         }
     }
 });
