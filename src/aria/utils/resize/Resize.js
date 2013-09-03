@@ -126,8 +126,9 @@ Aria.classDefinition({
          * Handle the resize end. Apply the correct positioning to the height and width to the resizable element
          */
         end : function () {
-            var element = this.getElement();
+            var element = this.getElement(), document = Aria.$window.document;
             element.onselectstart = Aria.returnTrue;
+            document.onselectstart = Aria.returnTrue;
 
             if (this.proxy && this.proxy.overlay) {
                 element.style.top = (this._elementInitialPosition.top + this._movableGeometry.y - this._movableInitialGeometry.y)

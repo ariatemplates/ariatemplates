@@ -13,15 +13,18 @@
  * limitations under the License.
  */
 
-Aria.classDefinition({
-    $classpath : "test.aria.widgets.container.dialog.resize.DialogResizeTestSuite",
-    $extends : "aria.jsunit.TestSuite",
-    $constructor : function () {
-        this.$TestSuite.constructor.call(this);
-
-        this._tests = ["test.aria.widgets.container.dialog.resize.test1.DialogOnResizeTestCase",
-                "test.aria.widgets.container.dialog.resize.test2.ResizableDialogTestCase",
-                "test.aria.widgets.container.dialog.resize.test3.DialogOnResizeTestCase",
-                "test.aria.widgets.container.dialog.resize.test4.DialogOnResizeTestCase"];
+Aria.tplScriptDefinition({
+    $classpath : 'test.aria.widgets.container.dialog.resize.test4.DialogOnResizeTemplateScript',
+    $destructor : function () {
+        this.$json.removeListener(this.data, "view:Dialog", this._changeHandler);
+        this._changeHandler = null;
+    },
+    $prototype : {
+        onResizeStart : function () {
+            this.$json.setValue(this.data["firstDialog"], "resizetext", "resize started");
+        },
+        onResizeEnd : function () {
+            this.$json.setValue(this.data["firstDialog"], "resizetext", "resize ended");
+        }
     }
 });
