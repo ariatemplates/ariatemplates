@@ -49,7 +49,8 @@ Aria.classDefinition({
             properties : {
                 position : "Position chosen if any. If empty, no position in viewset was found."
             }
-        }
+        },
+        onEscape : "Raised when the ESCAPE key is pressed when the popup is modal and it is the last one opened."
     },
     $statics : {
         ANCHOR_BOTTOM : "bottom",

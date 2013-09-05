@@ -32,6 +32,8 @@ Aria.classDefinition({
 
         this.addTests("test.aria.widgets.container.dialog.checkStyle.DialogTestCase");
         this.addTests("test.aria.widgets.container.dialog.escKey.DialogTemplateTestCase");
+        this.addTests("test.aria.widgets.container.dialog.escKey.multipleDialogs.EscapeOnModalTest");
+        this.addTests("test.aria.widgets.container.dialog.escKey.multipleDialogs.EscapeOnModalAndNonModalTest");
         this.addTests("test.aria.widgets.container.dialog.indicators.DialogTestCase");
         this.addTests("test.aria.widgets.container.dialog.keymap.DialogTestCase");
         this.addTests("test.aria.widgets.container.dialog.missingMacro.DialogTestCase");
