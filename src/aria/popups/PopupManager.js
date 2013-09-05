@@ -239,6 +239,18 @@
              * Connect events specific to modal popups.
              */
             connectModalEvents : function () {
+                var navManager = aria.templates.NavigationManager;
+                navManager.addGlobalKeyMap({
+                    key : "ESCAPE",
+                    modal : true,
+                    callback : {
+                        fn : this._raiseOnEscapeEvent,
+                        scope : this
+                    }
+                });
+                // global navigation is disabled in case of a modal popup
+                navManager.setModalBehaviour(true);
+
                 utilsEvent.addListener(this._document.body, "focusin", {
                     fn : this.onDocumentFocusIn,
                     scope : this
@@ -249,6 +261,18 @@
              * Disconnect events specific to modal popups.
              */
             disconnectModalEvents : function () {
+                var navManager = aria.templates.NavigationManager;
+                navManager.removeGlobalKeyMap({
+                    key : "ESCAPE",
+                    modal : true,
+                    callback : {
+                        fn : this._raiseOnEscapeEvent,
+                        scope : this
+                    }
+                });
+                // restore globalKeyMap
+                navManager.setModalBehaviour(false);
+
                 utilsEvent.removeListener(this._document.body, "focusin", {
                     fn : this.onDocumentFocusIn
                 });
@@ -419,6 +443,7 @@
                     name : "popupOpen",
                     popup : popup
                 });
+
             },
 
             /**
@@ -426,7 +451,8 @@
              * @param {aria.popups.Popup} popup
              */
             onPopupClose : function (popup) {
-                utilsArray.remove(this.openedPopups, popup);
+                var openedPopups = this.openedPopups;
+                utilsArray.remove(openedPopups, popup);
                 if (popup.modalMaskDomElement) {
                     this.modalPopups -= 1;
                     if (this.modalPopups === 0) {
@@ -434,7 +460,7 @@
                         this.$raiseEvent("modalPopupAbsent");
                     }
                 }
-                if (utilsArray.isEmpty(this.openedPopups)) {
+                if (utilsArray.isEmpty(openedPopups)) {
                     this.disconnectEvents();
                 }
 
@@ -442,6 +468,11 @@
                     name : "popupClose",
                     popup : popup
                 });
+
+                var topPopup = openedPopups.length > 0 ? openedPopups[openedPopups.length - 1] : null;
+                if (topPopup) {
+                    aria.templates.NavigationManager.focusFirst(topPopup.domElement);
+                }
             },
 
             /**
@@ -496,6 +527,18 @@
                     }
                 }
                 return null;
+            },
+
+            /**
+             * Raise the "onEscape" event on the last popup that has been opened, if that popup is modal
+             * @protected
+             */
+            _raiseOnEscapeEvent : function () {
+                var openedPopups = this.openedPopups;
+                var topPopup = openedPopups.length > 0 ? openedPopups[openedPopups.length - 1] : null;
+                if (topPopup && topPopup.modalMaskDomElement) {
+                    topPopup.$raiseEvent("onEscape");
+                }
             }
         }
     });
