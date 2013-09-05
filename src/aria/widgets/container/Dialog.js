@@ -501,26 +501,15 @@ Aria.classDefinition({
                 "onAfterOpen" : this._onAfterPopupOpen,
                 scope : this
             });
+            popup.$on({
+                "onEscape" : this.actionClose,
+                scope : this
+            });
             if (cfg.closeOnMouseClick) {
                 popup.$on({
                     "onMouseClickClose" : this._onMouseClickClose,
                     scope : this
                 });
-            }
-
-            // global navigation is disable is the case of a modal dialog
-            if (this._cfg.modal) {
-                var navManager = aria.templates.NavigationManager;
-                navManager.addGlobalKeyMap({
-                    key : "ESCAPE",
-                    modal : true,
-                    callback : {
-                        fn : this.actionClose,
-                        scope : this
-                    }
-                });
-
-                navManager.setModalBehaviour(true);
             }
 
             popup.open({
@@ -658,19 +647,6 @@ Aria.classDefinition({
                 this._popup.$dispose();
                 this._popup = null;
 
-                // restore globalKeyMap
-                if (cfg.modal) {
-                    var navManager = aria.templates.NavigationManager;
-                    navManager.removeGlobalKeyMap({
-                        key : "ESCAPE",
-                        modal : true,
-                        callback : {
-                            fn : this.actionClose,
-                            scope : this
-                        }
-                    });
-                    navManager.setModalBehaviour(false);
-                }
                 aria.templates.Layout.$removeListeners({
                     "viewportResized" : this._onViewportResized,
                     scope : this
