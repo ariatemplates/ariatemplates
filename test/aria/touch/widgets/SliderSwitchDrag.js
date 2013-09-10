@@ -74,7 +74,7 @@ Aria.classDefinition({
         },
 
         checkNearClick : function () {
-            // When clicking the thumb, if tapToMove is true I don't expect the value to change
+            // When clicking the thumb, if tapToMove is true I expect the value to change
             var switchwid = this.widget.getDom();
             var pos = aria.utils.Dom.getGeometry(switchwid);
             pos.x = pos.x + pos.width * 0.01;
@@ -82,9 +82,9 @@ Aria.classDefinition({
         },
 
         _afterThumbClickOne : function () {
-            this._assertValue(0);
+            this._assertValue(1);
 
-            // Instead when clicking on tapToToggle I expect the value to change
+            // Also when clicking on tapToToggle I expect the value to change
             this.widget = this.getWidgetInstance("switchToggle");
             this.dataKey = "switchVal2";
             var switchwid = this.widget.getDom();
