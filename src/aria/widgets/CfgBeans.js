@@ -1663,6 +1663,9 @@ Aria.beanDefinitions({
                         "visible" : {
                             $type : "common:BindingRef"
                         },
+                        "movable" : {
+                            $type : "common:BindingRef"
+                        },
                         "contentMacro" : {
                             $type : "common:BindingRef"
                         },
