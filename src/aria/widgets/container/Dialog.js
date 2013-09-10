@@ -368,6 +368,15 @@ Aria.classDefinition({
                 } else {
                     this.close();
                 }
+            } else if (propertyName === "movable") {
+                this._cfg.movable = newValue;
+                if (this._popup && this._popup.isOpen) {
+                    if (newValue) {
+                        this._loadAndCreateDraggable();
+                    } else {
+                        this._destroyDraggable();
+                    }
+                }
             } else if (propertyName === "title") {
                 this._cfg.title = newValue;
                 if (this._titleDomElt) {
@@ -1022,7 +1031,7 @@ Aria.classDefinition({
          * @protected
          */
         _destroyDraggable : function () {
-            if (!this._cfg.movable || !this._draggable) {
+            if (!this._draggable) {
                 return;
             }
 
