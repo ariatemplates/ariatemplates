@@ -21,7 +21,8 @@ Aria.beanDefinitions({
     $description : "Definition of the JSON beans used to set application variables",
     $namespaces : {
         "json" : "aria.core.JsonTypes",
-        "dom" : "aria.utils.DomBeans"
+        "dom" : "aria.utils.DomBeans",
+        "animation" : "aria.utils.css.AnimationsBean"
     },
     $beans : {
         "PopupConf" : {
@@ -122,18 +123,14 @@ Aria.beanDefinitions({
                     $default : -1
                 },
                 "animateOut" : {
-                    $type : "json:Enum",
+                    $type : "animation:AnimationName",
                     $description : "Animation to apply to the opening popup",
-                    $sample : "slide left",
-                    $enumValues : ["slide left", "slide right", "slide up", "slide down", "fade in", "fade out", "pop",
-                            "pop reverse", "flip", "flip reverse"]
+                    $sample : "slide left"
                 },
                 "animateIn" : {
-                    $type : "json:Enum",
+                    $type : "animation:AnimationName",
                     $description : "Animation to apply to the closing popup",
-                    $sample : "slide right",
-                    $enumValues : ["slide left", "slide right", "slide up", "slide down", "fade in", "fade out", "pop",
-                            "pop reverse", "flip", "flip reverse"]
+                    $sample : "slide left"
                 }
             }
         },

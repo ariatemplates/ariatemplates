@@ -181,6 +181,10 @@ Aria.classDefinition({
                     reverse = true;
                 }
                     break;
+                default : {
+                    name = pageTransitionName;
+                    reverse = false;
+                }
             }
             return {
                 name : name,

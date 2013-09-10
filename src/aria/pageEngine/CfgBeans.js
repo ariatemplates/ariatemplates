@@ -21,7 +21,8 @@ Aria.beanDefinitions({
     $description : "Definition of the beans used in aria.pageEngine",
     $namespaces : {
         "json" : "aria.core.JsonTypes",
-        "core" : "aria.core.CfgBeans"
+        "core" : "aria.core.CfgBeans",
+        "animation" : "aria.utils.css.AnimationsBean"
     },
     $beans : {
         "ExtendedCallback" : {
@@ -299,18 +300,14 @@ Aria.beanDefinitions({
             $description : "Animation applied to the coming page and/or to the leaving page",
             $properties : {
                 "animateOut" : {
-                    $type : "json:Enum",
+                    $type : "animation:AnimationName",
                     $description : "Animation to apply to the leaving page",
-                    $sample : "slide left",
-                    $enumValues : ["slide left", "slide right", "slide up", "slide down", "fade", "fade reverse",
-                            "pop", "pop reverse", "flip", "flip reverse"]
+                    $sample : "slide left"
                 },
                 "animateIn" : {
-                    $type : "json:Enum",
+                    $type : "animation:AnimationName",
                     $description : "Animation to apply to the coming page",
                     $sample : "slide left",
-                    $enumValues : ["slide left", "slide right", "slide up", "slide down", "fade", "fade reverse",
-                            "pop", "pop reverse", "flip", "flip reverse"],
                     $mandatory : true
                 },
                 "type" : {
