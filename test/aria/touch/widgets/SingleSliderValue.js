@@ -42,9 +42,11 @@ Aria.classDefinition({
             }
             var cfg = {
                 width : 200,
-                bindValue : {
-                    inside : model,
-                    to : "value"
+                 bind: {
+                    value: {
+                        inside : model,
+                        to : "value"
+                    }
                 }
             };
             var widget = this.createAndInit("aria.touch.widgets.Slider", cfg);

@@ -26,9 +26,11 @@
     <br><br>
 
     {@touch:Slider {
-      bindValue: {
-        to: "slider",
-        inside: data
+      bind: {
+        value: {
+          to: "slider",
+          inside: data
+        }
       },
       width: 200,
       id : "slider"
@@ -36,9 +38,11 @@
 
     <br>
     {@touch:Slider {
-      bindValue: {
-        to: "slider1",
-        inside: data
+       bind: {
+        value: {
+          to: "slider1",
+          inside: data
+        }
       },
       width: 200,
       id : "slider1",
@@ -51,9 +55,11 @@
       id: "switch",
       toggleSwitch : true,
       tapToMove : true,
-      bindValue: {
-        to: "switchVal",
-        inside: data
+       bind: {
+        value: {
+          to: "switchVal",
+          inside: data
+        }
       }
     }/}
     <br>
@@ -63,9 +69,11 @@
       id: "switchToggle",
       toggleSwitch : true,
       tapToToggle : true,
-      bindValue: {
-        to: "switchVal2",
-        inside: data
+       bind: {
+        value: {
+          to: "switchVal2",
+          inside: data
+        }
       }
     }/}
 

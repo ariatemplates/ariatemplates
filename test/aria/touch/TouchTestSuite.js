@@ -22,18 +22,8 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
         this.addTests("test.aria.touch.gestures.GesturesTestSuite");
+        this.addTests("test.aria.touch.widgets.WidgetsTestSuite");
         this.addTests("test.aria.touch.EventTest");
-        this.addTests("test.aria.touch.widgets.DoubleSlider");
-        this.addTests("test.aria.touch.widgets.DoubleSliderError");
-        this.addTests("test.aria.touch.widgets.DoubleSliderSetValue");
-        this.addTests("test.aria.touch.widgets.DoubleSliderChange");
-        this.addTests("test.aria.touch.widgets.SingleSliderValue");
-        this.addTests("test.aria.touch.widgets.SingleSliderDrag");
-        this.addTests("test.aria.touch.widgets.SliderSwitch");
-        this.addTests("test.aria.touch.widgets.SliderSwitchDrag");
-        this.addTests("test.aria.touch.widgets.ButtonTouch");
-        this.addTests("test.aria.touch.widgets.dialog.closeOnClick.DialogTestCase");
-        this.addTests("test.aria.touch.widgets.dialog.events.DialogEventsTestCase");
-        this.addTests("test.aria.touch.widgets.dialog.events.DialogAnimationsTestCase");
+        
     }
 });

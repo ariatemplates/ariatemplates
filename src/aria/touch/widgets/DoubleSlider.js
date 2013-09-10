@@ -26,7 +26,7 @@ Aria.classDefinition({
     $statics : {
         INVALID_CONFIGURATION : "Invalid configuration for the slider!"
     },
-    $dependencies : ["aria.touch.widgets.SliderCfgBeans", "aria.utils.Dom", "aria.utils.Type", "aria.utils.Mouse"],
+    $dependencies : ["aria.touch.widgets.SliderCfgBeans", "aria.utils.Dom", "aria.utils.Type", "aria.utils.Mouse", "aria.utils.Html"],
     /**
      * Slider Constructor.
      * @param {aria.touch.widgets.SliderCfgBeans:DoubleSliderCfg} cfg slider configuration
@@ -238,11 +238,21 @@ Aria.classDefinition({
                 this.initWidget = Aria.empty;
                 return out.write(this.INVALID_CONFIGURATION);
             }
+            
+            var cfg = this._cfg;
+            if (typeof cfg.attributes == 'undefined') {
+              cfg.attributes = {};
+            }
+            if (typeof cfg.attributes.classList == 'undefined') {
+              cfg.attributes.classList = [];
+            }
+            cfg.attributes.classList.push("touchLibDoubleSlider");
+            
             out.write([
                 // Div containing the widget
-                '<div class="touchLibSlider" style="width:', this._cfg.width, 'px;">',
+                '<div ', aria.utils.Html.buildAttributeList(cfg.attributes), '" style="width:', this._cfg.width, 'px;">',
                 // Rail, thumbs move over here
-                '<span class="touchContainer" style="width:', this._cfg.width, 'px;" id="', this._domId, '">',
+                '<span class="touchContainer" style="width:', cfg.width, 'px;" id="', this._domId, '">',
                 // Two thumbs
                 '<span id="', this._secondDomId, '" class="sliderButton secondPoint" style="left:0px;"></span>',
                 '<span id="', this._firstDomId, '" class="sliderButton firstPoint" style="left:0px;"></span>',
@@ -326,8 +336,8 @@ Aria.classDefinition({
          * @protected
          */
         _updateHighlight : function () {
-            var left = this._savedX1 + this._firstWidth;
-            var widthHighlight = this._savedX2 - left;
+            var left = this._savedX1 + this._firstWidth / 2;
+            var widthHighlight = this._savedX2 + (this._secondWidth / 2) - left;
             this._hightlight.style.left = left + "px";
             this._hightlight.style.width = widthHighlight + "px";
         },

@@ -68,6 +68,14 @@
             height: 14px;
             z-index: 2;
         }
+        
+        div.touchLibSlider span.sliderHighLight {
+            z-index: 1;
+            height: 17px;
+            width: 0px;
+            background-color: #E3E3E3;
+            border-radius: 32px 0 0 32px;
+        }
 
     {/macro}
 

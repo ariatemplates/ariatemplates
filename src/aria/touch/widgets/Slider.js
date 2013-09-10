@@ -24,7 +24,7 @@ Aria.classDefinition({
         INVALID_CONFIGURATION : "Invalid configuration for the slider!"
     },
     // The dependency on aria.touch.Tap is needed to be able to register on tap events
-    $dependencies : ["aria.touch.widgets.SliderCfgBeans", "aria.utils.Dom", "aria.touch.Tap"],
+    $dependencies : ["aria.touch.widgets.SliderCfgBeans", "aria.utils.Dom", "aria.touch.Tap", "aria.utils.Html"],
     /**
      * Slider Constructor.
      * @param {aria.touch.widgets.SliderCfgBeans:SliderCfg} cfg slider configuration
@@ -53,6 +53,12 @@ Aria.classDefinition({
          * @protected
          */
         this._domId = cfg.id ? context.$getId(cfg.id) : this._createDynamicId();
+        /**
+         * Id generated for the highlight element.
+         * @type String
+         * @protected
+         */
+        this._highlightDomId = this._domId + "_highlight";
         /**
          * Id generated for the slider container element.
          * @type String
@@ -86,6 +92,20 @@ Aria.classDefinition({
         this._switchThreshold = cfg.switchThreshold != null ? Math.min(1, Math.max(0, cfg.switchThreshold)) : 0.5;
 
         /**
+         * Label for the on side of the switch.
+         * @type String
+         * @protected
+         */
+        this._onLabel = cfg.onLabel || "ON";
+        
+        /**
+         * Label for the off side of the switch.
+         * @type String
+         * @protected
+         */
+        this._offLabel = cfg.offLabel || "OFF";
+        
+        /**
          * Reference to the on state DOM element of the slider.
          * @type HTMLElement
          * @protected
@@ -104,6 +124,12 @@ Aria.classDefinition({
          * @protected
          */
         this._slider = null;
+        /**
+         * Reference to the highlight DOM element of the slider.
+         * @type HTMLElement
+         * @protected
+         */
+        this._hightlight = null;
         /**
          * Reference to the Container DOM element of the slider.
          * @type HTMLElement
@@ -152,7 +178,7 @@ Aria.classDefinition({
          */
         this._delegateId = null;
 
-        var binding = this._cfg.bindValue ? this._cfg.bindValue : null;
+        var binding = this._cfg.bind ? this._cfg.bind.value : null;
         this._binding = binding;
         if (binding) {
             this._bindingCallback = {
@@ -175,7 +201,7 @@ Aria.classDefinition({
         }
 
         if (this._bindingCallback) {
-            var binding = this._cfg.bindValue;
+            var binding = this._binding;
             aria.utils.Json.removeListener(binding.inside, binding.to, this._bindingCallback, false);
             this._bindingCallback = null;
         }
@@ -185,6 +211,7 @@ Aria.classDefinition({
             this._draggable = null;
         }
         this._slider = null;
+        this._hightlight = null;
         this._sliderContainer = null;
         this._onContainer = null;
         this._offContainer = null;
@@ -229,10 +256,18 @@ Aria.classDefinition({
                 });
                 delegateMarkup = aria.utils.Delegate.getMarkup(this._delegateId);
             }
-
+            
+            if (typeof cfg.attributes == 'undefined') {
+              cfg.attributes = {};
+            }
+            if (typeof cfg.attributes.classList == 'undefined') {
+              cfg.attributes.classList = [];
+            }
+            cfg.attributes.classList.push("touchLibSlider");
+            
             out.write([
                     // Div containing the widget
-                    '<div class="touchLibSlider" style="width:', this._cfg.width, 'px;" ', delegateMarkup, '>',
+                    '<div ', aria.utils.Html.buildAttributeList(cfg.attributes), '" style="width:', this._cfg.width, 'px;" ', delegateMarkup, '>',
                     // Rail, thumbs move over here
                     '<span class="touchContainer" style="width:', this._cfg.width, 'px;" id="', this._parentDomId,
                     '">',
@@ -242,10 +277,15 @@ Aria.classDefinition({
                 out.write([
                         // For ON state Markup
                         '<div style="left:0px;width:', this._cfg.width, 'px;" class="touchLibSwitchOn" id="',
-                        this._onSwitchId, '">ON</div>',
+                        this._onSwitchId, '">', this._onLabel, '</div>',
                         // For OFF state Markup
                         '<div style="left:0px;width:0px;" class="touchLibSwitchOff" id="', this._offSwitchId,
-                        '">OFF</div>'].join(""));
+                        '">', this._offLabel,'</div>'].join(""));
+            }
+            else {
+              out.write([
+                '<span class="sliderHighLight" id="', this._highlightDomId, '"></span>'
+              ].join(""));
             }
             out.write('</span></div>');
         },
@@ -260,6 +300,7 @@ Aria.classDefinition({
             var domUtils = aria.utils.Dom;
 
             this._slider = domUtils.getElementById(this._domId);
+            this._highlight = domUtils.getElementById(this._highlightDomId);
             this._sliderContainer = domUtils.getElementById(this._parentDomId);
             this._sliderDimension = aria.utils.Dom.getGeometry(this._sliderContainer);
             this._sliderWidth = parseInt(domUtils.getStyle(this._slider, "width"), 10);
@@ -425,6 +466,10 @@ Aria.classDefinition({
             if (this._isSwitch) {
                 this._switchDisplay();
             }
+            else {
+              this._updateHighlight();
+            }
+            
         },
 
         /**
@@ -512,7 +557,18 @@ Aria.classDefinition({
                 if (this._isSwitch) {
                     this._switchDisplay();
                 }
+                else {
+                  this._updateHighlight();
+                }
             }
+        },
+        
+        /**
+         * Update the width of the highlight between the left side and the thumb.
+         * @protected
+         */
+        _updateHighlight : function() {
+          this._highlight.style.width = (this._savedX + this._sliderWidth / 2) + "px";
         },
 
         /**
@@ -527,13 +583,13 @@ Aria.classDefinition({
                     return true;
                 }
 
-                if (cfg.tapToToggle && cfg.toggleSwitch) {
+                if ((cfg.tapToToggle || cfg.tapToMove) && cfg.toggleSwitch) {
                     // With this configuration, on tap we want to toggle the value
                     this._value = this._value >= this._switchThreshold ? 0 : 1;
                 } else if (cfg.tapToMove) {
-                    this._savedX = evt.detail.currentX - this._sliderDimension.x;
+                    this._savedX = evt.detail.currentX - this._sliderDimension.x - this._sliderWidth / 2;
                     this._savedX = (this._savedX > this._railWidth) ? this._railWidth : this._savedX;
-                    this._value = Math.max(this._savedX / this._railWidth, 0) >= this._switchThreshold ? 1 : 0;
+                    this._value = Math.max(this._savedX / this._railWidth, 0);
                 }
                 this._storeValue();
                 this._setLeftPosition();

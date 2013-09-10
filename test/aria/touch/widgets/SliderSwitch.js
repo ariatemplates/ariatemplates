@@ -38,9 +38,11 @@ Aria.classDefinition({
             var cfg = {
                 width : 100,
                 toggleSwitch : true,
-                bindValue : {
-                    inside : model,
-                    to : "value"
+                 bind: {
+                    value: {
+                        inside : model,
+                        to : "value"
+                    }
                 }
             };
             var widget = this.createAndInit("aria.touch.widgets.Slider", cfg);
@@ -70,9 +72,11 @@ Aria.classDefinition({
             var cfg = {
                 width : 100,
                 toggleSwitch : true,
-                bindValue : {
-                    inside : model,
-                    to : "value"
+                 bind: {
+                    value: {
+                        inside : model,
+                        to : "value"
+                    }
                 }
             };
             var widget = this.createAndInit("aria.touch.widgets.Slider", cfg);
@@ -102,9 +106,11 @@ Aria.classDefinition({
                 width : 100,
                 toggleSwitch : true,
                 switchThreshold : 0.7,
-                bindValue : {
-                    inside : model,
-                    to : "value"
+                 bind: {
+                    value: {
+                        inside : model,
+                        to : "value"
+                    }
                 }
             };
             var widget = this.createAndInit("aria.touch.widgets.Slider", cfg);

@@ -19,22 +19,22 @@
 
 {macro main()}
 
-div.touchLibSlider {
+div.touchLibDoubleSlider {
     background: none repeat scroll 0 0 #EFF9FF;
     border: 2px solid #999999;
     border-radius: 1.5em;
     height: 17px;
 }
-div.touchLibSlider span {
+div.touchLibDoubleSlider span {
     position: absolute;
 }
-div.touchLibSlider span.sliderButton {
+div.touchLibDoubleSlider span.sliderButton {
     background: none repeat scroll 0 0 #ffffff;
     border: 2px solid #4776A7;
     border-radius: 32px 32px 32px 32px;
     width: 14px;
 }
-div.touchLibSlider span.firstPoint {
+div.touchLibDoubleSlider span.firstPoint {
     border: 2px solid #4776A7;
     background-color:#4776A7;
     border-radius: 1.5em 2px 2px 1.5em;
@@ -43,7 +43,7 @@ div.touchLibSlider span.firstPoint {
     z-index: 3;
     margin: 0;
 }
-div.touchLibSlider span.secondPoint {
+div.touchLibDoubleSlider span.secondPoint {
     border: 2px solid #4776A7;
     background-color: #4776A7;
     border-radius: 2px 1.5em 1.5em 2px;
@@ -52,12 +52,12 @@ div.touchLibSlider span.secondPoint {
     z-index: 3;
     margin: 0;
 }
-div.touchLibSlider span.touchContainer {
+div.touchLibDoubleSlider span.touchContainer {
     z-index: 2;
     height: 28px;
     margin: -6px 0 0 0;
 }
-div.touchLibSlider span.sliderHighLight {
+div.touchLibDoubleSlider span.sliderHighLight {
     z-index: 1;
     height: 17px;
     width: 0px;
