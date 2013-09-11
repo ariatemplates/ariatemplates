@@ -60,7 +60,8 @@ Aria.classDefinition({
     $statics : {
         // ERROR MESSAGES:
         TABPANEL_INVALID_CONFIG_MACRO : "%1Invalid tab panel configuration, you must pass a macro if your panel is not a container.",
-        TABPANEL_INVALID_CONFIG_ID : "%1Invalid tab panel configuration, you must pass an ID if your panel is a container"
+        TABPANEL_INVALID_CONFIG_ID : "%1Invalid tab panel configuration, you must pass an ID if your panel is a container",
+        CONTAINER_USAGE_DEPRECATED : "%1The usage as a container {@aria:TabPanel}{/@aria:TabPanel} is deprecated; use the {@aria:TabPanel /} syntax instead."
     },
     $prototype : {
 
@@ -91,7 +92,7 @@ Aria.classDefinition({
                     });
                 } else {
                     this._context.$refresh({
-                        outputSection : "__tabPanel_" + this._domId,
+                        section : "__tabPanel_" + this._domId,
                         macro : this._cfg.macro
                     });
                 }
@@ -124,10 +125,10 @@ Aria.classDefinition({
          */
         _widgetMarkupBegin : function (out) {
             if (this._container) {
+                this.$logWarn(this.CONTAINER_USAGE_DEPRECATED);
                 if (!this._cfg.id) {
                     this.$logError(this.TABPANEL_INVALID_CONFIG_ID);
                 }
-
             }
             this._frame.writeMarkupBegin(out);
             out.beginSection({

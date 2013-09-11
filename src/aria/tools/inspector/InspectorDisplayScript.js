@@ -142,11 +142,7 @@ Aria.tplScriptDefinition({
          */
         _refreshModulesDisplay : function () {
             this.$refresh({
-                filterSection : "modules",
-                macro : {
-                    name : "displayModules",
-                    args : [this.data.modules]
-                }
+                section : "modules"
             });
         },
 
@@ -155,11 +151,7 @@ Aria.tplScriptDefinition({
          */
         _refreshTemplatesDisplay : function () {
             this.$refresh({
-                filterSection : "templates",
-                macro : {
-                    name : "displayTemplates",
-                    args : [this.data.templates]
-                }
+                section : "templates"
             });
         }
     }

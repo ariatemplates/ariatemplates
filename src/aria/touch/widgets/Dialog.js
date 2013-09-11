@@ -73,15 +73,40 @@ Aria.classDefinition({
         },
 
         /**
+         * Method called when the dialog is not used as a container
+         * @param {aria.templates.MarkupWriter} out the writer Object to use to output markup
+         */
+        _widgetMarkup : function (out) {
+            this._widgetMarkupBegin(out);
+            this._widgetMarkupEnd(out);
+        },
+
+        /**
+         * Widget markup starts here
+         * @param {aria.templates.MarkupWriter} out the writer Object to use to output markup
+         * @protected
+         */
+        _widgetMarkupBegin : function (out) {
+            out.beginSection({
+                id : "__dialog_" + this._domId
+            });
+        },
+
+        /**
+         * Widget markup ends here
+         * @param {aria.templates.MarkupWriter} out the writer Object to use to output markup
+         * @protected
+         */
+        _widgetMarkupEnd : function (out) {
+            out.endSection();
+        },
+
+        /**
          * Callback called when the dialog's main section is refreshed
          * @param {aria.templates.MarkupWriter} out the writer Object to use to output markup
          * @private
          */
         _writerCallback : function (out) {
-
-            out.beginSection({
-                id : "__dialog_" + this._domId
-            });
 
             out.write("<div class=\"touchLibDialog\">");
 
@@ -90,7 +115,6 @@ Aria.classDefinition({
             }
 
             out.write("</div>");
-            out.endSection();
         },
 
         /**
@@ -130,7 +154,7 @@ Aria.classDefinition({
         show : function () {
             var cfg = this._cfg;
             var refreshParams = {
-                filterSection : "__dialog_" + this._domId,
+                section : "__dialog_" + this._domId,
                 writerCallback : {
                     fn : this._writerCallback,
                     scope : this

@@ -29,7 +29,21 @@
                 height : ${$vdim(203,1)}px;
             "
         >
-            {call displayReportAsTree()/}
+            {section {
+                id: "reportSection",
+                macro: "displayReportAsTree",
+                bindRefreshTo : [{
+                   inside : data.campaign,
+                   to : "testsTree"
+                },{
+                   inside : data.view.filter,
+                   to : "type"
+                },{
+                   inside : data.flow,
+                   to : "currentState"
+                }],
+                type:"div"
+            }/}
         </div>
         <div class="rightContainer">
             <div id="tplContainer">
@@ -39,39 +53,23 @@
     {/macro}
 
     {macro displayReportAsTree()}
-        {section {
-            id: "reportSection",
-              bindRefreshTo : [{
-               inside : data.campaign,
-               to : "testsTree"
-              },{
-               inside : data.view.filter,
-               to : "type"
-              },{
-               inside : data.flow,
-               to : "currentState"
-              }],
-              type:"div"
-          }}
-
-            ${this._beforeDisplayReport()|empty:""}
-            {var testsArray = this.getFilteredTestsArray()/}
-            <table
-                class="reportTable"
-                cellspacing="1"
-                style="
-                {if aria.core.Browser.isIE}
-                    width:${$hdim(161,1)}px;
-                {/if}
-            "
-            >
-                <tbody>
-                    {foreach test in testsArray}
-                        {call displayTest(test, 0)/}
-                    {/foreach}
-                </tbody>
-            </table>
-        {/section}
+        ${this._beforeDisplayReport()|empty:""}
+        {var testsArray = this.getFilteredTestsArray()/}
+        <table
+            class="reportTable"
+            cellspacing="1"
+            style="
+            {if aria.core.Browser.isIE}
+                width:${$hdim(161,1)}px;
+            {/if}
+        "
+        >
+            <tbody>
+                {foreach test in testsArray}
+                    {call displayTest(test, 0)/}
+                {/foreach}
+            </tbody>
+        </table>
     {/macro}
 
     {macro displayTest(test)}

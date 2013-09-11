@@ -708,7 +708,7 @@
                 }
                 if (this.macro) {
                     args.tplCtxt.$refresh({
-                        outputSection : this.id,
+                        section : this.id,
                         macro : this.macro
                     });
                 } else {

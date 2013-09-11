@@ -393,7 +393,11 @@ Aria.classDefinition({
          * @param {Array} msgArgs List of error parameters as in jsObject.$logError
          */
         logWarn : function (statement, msgId, msgArgs) {
-            this._processErrors.fn.call(this._processErrors.scope, statement, msgId, msgArgs, this.errorContext);
+            if (msgArgs == null) {
+                msgArgs = [];
+            }
+            msgArgs.push(statement.lineNumber);
+            this.$logWarn(msgId, msgArgs, this.errorContext);
         },
 
         /**

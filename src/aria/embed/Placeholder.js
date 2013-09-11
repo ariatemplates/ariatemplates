@@ -131,7 +131,7 @@ Aria.classDefinition({
             var paths = event.placeholderPaths;
             if (aria.utils.Array.contains(paths, this._placeholderPath)) {
                 var newSection = this._context.getRefreshedSection({
-                    outputSection : this._sectionId,
+                    section : this._sectionId,
                     writerCallback : {
                         fn : this._writePlaceholderContent,
                         scope : this

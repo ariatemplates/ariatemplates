@@ -98,7 +98,7 @@ Aria.tplScriptDefinition({
                     return;
                 }
                 this.$refresh({
-                    outputSection : "verticalBars"
+                    section : "verticalBars"
                 });
             } else {
                 return;
