@@ -22,15 +22,15 @@
 }}
 
     {macro main()}
-    
+
         {var localModuleCtrl = data.moduleCtrl/}
-        
+
         <h3>${localModuleCtrl.$classpath}</h3>
-        
+
         <div>
-            {call displayControls()/}
+            {section {id: "controls", macro: "displayControls"} /}
         </div>
-        
+
         <h4>General Information</h4>
         <ul>
             <li>Classpath: ${localModuleCtrl.$classpath}</li>
@@ -51,15 +51,13 @@
             width: $hdim(100,1)
         }/}
     {/macro}
-    
+
     {macro displayControls()}
-        {section "controls"}
-            {if data.isReloadable}
-                <div style="text-align:center; padding:5px; background:#F3F3F3; border:solid 1px #DDDDDD;">    
-                    {@aria:Button { label:"Reload", onclick : {fn:reloadModule}}/}
-                </div>
-            {/if}
-        {/section}
+        {if data.isReloadable}
+        <div style="text-align:center; padding:5px; background:#F3F3F3; border:solid 1px #DDDDDD;">
+            {@aria:Button { label:"Reload", onclick : {fn:reloadModule}}/}
+        </div>
+        {/if}
     {/macro}
 
 {/Template}

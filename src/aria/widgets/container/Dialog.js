@@ -183,8 +183,7 @@ Aria.classDefinition({
         },
 
         /**
-         * The main entry point into the Div begin markup. Here we check whether it is a Div, defined in the AriaSkin
-         * object, that has an image that is repeated as a background.
+         * Widget markup starts here
          * @param {aria.templates.MarkupWriter} out the writer Object to use to output markup
          * @protected
          */
@@ -195,17 +194,56 @@ Aria.classDefinition({
                 // {@aria:Dialog}{/@aria:Dialog}, it will be flushed to the HTML.
                 this.$logWarn(this.CONTAINER_USAGE_DEPRECATED);
             }
-
-            var cfg = this._cfg;
-            this._skipContent = (out.sectionState == out.SECTION_KEEP) || !cfg.visible;
             out.beginSection({
                 id : "__dialog_" + this._domId
             });
+        },
 
-            if (this._skipContent) {
-                return;
-            }
+        /**
+         * Widget markup ends here
+         * @param {aria.templates.MarkupWriter} out the writer Object to use to output markup
+         * @protected
+         */
+        _widgetMarkupEnd : function (out) {
+            out.endSection();
+        },
 
+        /**
+         * Used to flush close / maximize buttons into the markup.
+         * @param {aria.templates.MarkupWriter} out the writer Object to use to output markup
+         * @param {String} delegateId
+         * @param {String} cssClassPostfix
+         * @param {String} skinIcon
+         */
+        __writeTitlebarButton : function (out, delegateId, cssClassPostfix, skinIcon) {
+            var cfg = this._cfg;
+            out.write(['<span class="xDialog_', cssClassPostfix, ' xDialog_', cfg.sclass, '_', cssClassPostfix, '" ',
+                    aria.utils.Delegate.getMarkup(delegateId), '>'].join(''));
+            var button = new aria.widgets.Icon({
+                icon : this._skinObj[skinIcon]
+            }, this._context, this._lineNumber);
+            out.registerBehavior(button);
+            button.writeMarkup(out);
+            out.write('</span>');
+        },
+
+        /**
+         * Method called when the dialog is not used as a container
+         * @param {aria.templates.MarkupWriter} out the writer Object to use to output markup
+         */
+        _widgetMarkup : function (out) {
+            this._container = false;
+            this._widgetMarkupBegin(out);
+            this._widgetMarkupEnd(out);
+        },
+
+        /**
+         * Callback called when the dialog's main section is refreshed
+         * @param {aria.templates.MarkupWriter} out the writer Object to use to output markup
+         * @private
+         */
+        _writerCallback : function (out) {
+            var cfg = this._cfg;
             var viewport = aria.utils.Dom._getViewportSize();
 
             // constrain dialog to viewport
@@ -247,101 +285,51 @@ Aria.classDefinition({
                         }]
             });
 
-        },
-
-        /**
-         * The main entry point into the Div end markup. Here we check whether it is a Div, defined in the AriaSkin
-         * object, that has an image that is repeated as a background.
-         * @param {aria.templates.MarkupWriter} out the writer Object to use to output markup
-         * @protected
-         */
-        _widgetMarkupEnd : function (out) {
-            var cfg = this._cfg;
-
-            if (!this._skipContent) {
-                out.endSection();
-                this._div.writeMarkupEnd(out);
-                // for resize handle markup
-                if (cfg.resizable && this._handlesArr) {
-                    var handles = this._handlesArr;
-                    for (var i = 0, ii = handles.length; i < ii; i++) {
-                        out.write(['<span class="xDialog_resizable xDialog_' + handles[i] + '">', '</span>'].join(''));
-                    }
-                }
-
-                out.write(['<div class="xDialog_titleBar xDialog_', cfg.sclass, '_titleBar">'].join(''));
-                if (cfg.icon) {
-                    out.write(['<span class="xDialog_icon xDialog_', cfg.sclass, '_icon">'].join(''));
-                    var icon = new aria.widgets.Icon({
-                        icon : cfg.icon
-                    }, this._context, this._lineNumber);
-                    out.registerBehavior(icon);
-                    icon.writeMarkup(out);
-                    out.write('</span>');
-                }
-                out.write(['<span class="xDialog_title xDialog_', cfg.sclass, '_title">',
-                        aria.utils.String.escapeHTML(cfg.title), '</span>'].join(''));
-
-                // buttons are floated to the right, so close should be first in the markup
-                if (cfg.closable) {
-                    this._closeDelegateId = aria.utils.Delegate.add({
-                        fn : this._onCloseBtnEvent,
-                        scope : this
-                    });
-                    this.__writeTitlebarButton(out, this._closeDelegateId, "close", "closeIcon");
-                }
-                if (cfg.maximizable) {
-                    this._maximizeDelegateId = aria.utils.Delegate.add({
-                        fn : this._onMaximizeBtnEvent,
-                        scope : this
-                    });
-                    this.__writeTitlebarButton(out, this._maximizeDelegateId, "maximize", "maximizeIcon");
-                }
-                out.write("</div>");
-            }
-            out.endSection();
-        },
-
-        /**
-         * Used to flush close / maximize buttons into the markup.
-         * @param {aria.templates.MarkupWriter} out the writer Object to use to output markup
-         * @param {String} delegateId
-         * @param {String} cssClassPostfix
-         * @param {String} skinIcon
-         */
-        __writeTitlebarButton : function (out, delegateId, cssClassPostfix, skinIcon) {
-            var cfg = this._cfg;
-            out.write(['<span class="xDialog_', cssClassPostfix, ' xDialog_', cfg.sclass, '_', cssClassPostfix, '" ',
-                    aria.utils.Delegate.getMarkup(delegateId), '>'].join(''));
-            var button = new aria.widgets.Icon({
-                icon : this._skinObj[skinIcon]
-            }, this._context, this._lineNumber);
-            out.registerBehavior(button);
-            button.writeMarkup(out);
-            out.write('</span>');
-        },
-
-        /**
-         * Method called when the dialog is not used as a container
-         * @param {aria.templates.MarkupWriter} out the writer Object to use to output markup
-         */
-        _widgetMarkup : function (out) {
-            this._container = false;
-            this._widgetMarkupBegin(out);
-            this._widgetMarkupEnd(out);
-        },
-
-        /**
-         * Callback called when the dialog's main section is refreshed
-         * @param {aria.templates.MarkupWriter} out the writer Object to use to output markup
-         * @private
-         */
-        _writerCallback : function (out) {
-            this._widgetMarkupBegin(out);
             if (this._cfg.contentMacro) {
                 out.callMacro(this._cfg.contentMacro);
             }
-            this._widgetMarkupEnd(out);
+
+            out.endSection();
+
+            this._div.writeMarkupEnd(out);
+            // for resize handle markup
+            if (cfg.resizable && this._handlesArr) {
+                var handles = this._handlesArr;
+                for (var i = 0, ii = handles.length; i < ii; i++) {
+                    out.write(['<span class="xDialog_resizable xDialog_' + handles[i] + '">', '</span>'].join(''));
+                }
+            }
+
+            out.write(['<div class="xDialog_titleBar xDialog_', cfg.sclass, '_titleBar">'].join(''));
+            if (cfg.icon) {
+                out.write(['<span class="xDialog_icon xDialog_', cfg.sclass, '_icon">'].join(''));
+                var icon = new aria.widgets.Icon({
+                    icon : cfg.icon
+                }, this._context, this._lineNumber);
+                out.registerBehavior(icon);
+                icon.writeMarkup(out);
+                out.write('</span>');
+            }
+            out.write(['<span class="xDialog_title xDialog_', cfg.sclass, '_title">',
+                    aria.utils.String.escapeHTML(cfg.title), '</span>'].join(''));
+
+            // buttons are floated to the right, so close should be first in the markup
+            if (cfg.closable) {
+                this._closeDelegateId = aria.utils.Delegate.add({
+                    fn : this._onCloseBtnEvent,
+                    scope : this
+                });
+                this.__writeTitlebarButton(out, this._closeDelegateId, "close", "closeIcon");
+            }
+            if (cfg.maximizable) {
+                this._maximizeDelegateId = aria.utils.Delegate.add({
+                    fn : this._onMaximizeBtnEvent,
+                    scope : this
+                });
+                this.__writeTitlebarButton(out, this._maximizeDelegateId, "maximize", "maximizeIcon");
+            }
+            out.write("</div>");
+
         },
 
         /**
@@ -405,7 +393,7 @@ Aria.classDefinition({
                         this.open();
                     } else {
                         var args = {
-                            outputSection : "__dialogContent_" + this._domId,
+                            section : "__dialogContent_" + this._domId,
                             macro : newValue
                         };
                         this._context.$refresh(args);
@@ -512,7 +500,7 @@ Aria.classDefinition({
         open : function () {
             var cfg = this._cfg;
             var refreshParams = {
-                filterSection : "__dialog_" + this._domId,
+                section : "__dialog_" + this._domId,
                 writerCallback : {
                     fn : this._writerCallback,
                     scope : this

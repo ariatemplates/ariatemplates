@@ -748,7 +748,7 @@ Aria.beanDefinitions({
             $properties : {
                 "id" : {
                     $type : "json:String",
-                    $description : "Id of the section."
+                    $description : "Id of the section. Mandatory if the section is used as a container."
                 },
                 "type" : {
                     $type : "json:String",
@@ -893,14 +893,19 @@ Aria.beanDefinitions({
                     $type : "MacroCfg",
                     $mandatory : false
                 },
+                "section" : {
+                    $type : "json:String",
+                    $description : "Id of the section to refresh.",
+                    $mandatory : false
+                },
                 "filterSection" : {
                     $type : "json:String",
-                    $description : "Id of the section to filter. If specified, the section with this id must exist in the macro called for the refresh, and any output outside the specified section is ignored.",
+                    $description : "Deprecated. Use 'section' instead. Id of the section to filter. If specified, the section with this id must exist in the macro called for the refresh, and any output outside the specified section is ignored.",
                     $mandatory : false
                 },
                 "outputSection" : {
                     $type : "json:String",
-                    $description : "Id of the section to replace. By default, its value is the one of filterSection. If null, the whole template is replaced.",
+                    $description : "Deprecated. Use 'section' instead. Id of the section to replace. By default, its value is the one of filterSection. If null, the whole template is replaced.",
                     $mandatory : false
                 }
             }

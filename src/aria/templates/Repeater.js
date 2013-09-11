@@ -325,7 +325,7 @@
             _notifyIteratedSetReplaced : function (change) {
                 this._unregisterIteratedSetListener();
                 this.tplCtxt.$refresh({
-                    outputSection : this.id
+                    section : this.id
                 });
             },
 
@@ -386,7 +386,7 @@
                         jsonUtils.setValue(items[index], "item", arg.newValue);
                         // refresh the corresponding section
                         this.tplCtxt.$refresh({
-                            outputSection : items[index].sectionId
+                            section : items[index].sectionId
                         });
                     } else {
                         // the index is such that it is needed to add a number of sections at the end
@@ -532,7 +532,7 @@
                         // update the item and refresh the corresponding section
                         jsonUtils.setValue(item, "item", iteratedSet[index]);
                         this.tplCtxt.$refresh({
-                            outputSection : item.sectionId
+                            section : item.sectionId
                         });
                     }
                 } else if (change != jsonUtils.VALUE_CHANGED) {

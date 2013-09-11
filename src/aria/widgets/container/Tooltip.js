@@ -99,6 +99,11 @@
                 if (this._skipContent) {
                     return;
                 }
+                this._widgetMarkupBeginCommon(out);
+            },
+
+            _widgetMarkupBeginCommon : function (out) {
+                var cfg = this._cfg;
                 // We loose the reference to this div, as it will be destroyed by the section
                 var div = new aria.widgets.container.Div({
                     sclass : cfg.sclass,
@@ -116,20 +121,24 @@
              */
             _widgetMarkupEnd : function (out) {
                 if (!this._skipContent) {
-                    var div = this._tooltipDiv;
-                    this._tooltipDiv = null;
-                    div.writeMarkupEnd(out);
-                    this.$assert(52, div);
+                    this._widgetMarkupEndCommon(out);
                 }
                 out.endSection();
+            },
+
+            _widgetMarkupEndCommon : function (out) {
+                var div = this._tooltipDiv;
+                this._tooltipDiv = null;
+                div.writeMarkupEnd(out);
+                this.$assert(52, div);
             },
             /**
              * @private
              */
             _writerCallback : function (out) {
-                this._widgetMarkupBegin(out);
+                this._widgetMarkupBeginCommon(out);
                 out.callMacro(this._cfg.macro);
-                this._widgetMarkupEnd(out);
+                this._widgetMarkupEndCommon(out);
             },
             writeMarkup : function (out) {
                 this._container = false;
@@ -241,16 +250,14 @@
                 if (this._popup) {
                     return;
                 }
-                var refreshParams = {
+                var refreshParams = this._container ? {
                     filterSection : this._sectionId
-                };
-                if (!this._container) {
-                    refreshParams.writerCallback = {
+                }: { writerCallback : {
                         fn : this._writerCallback,
                         scope : this
-                    };
-                    refreshParams.outputSection = this._sectionId;
-                }
+                    },
+                    section : this._sectionId
+                };
                 __tooltipsDisplayed[this._domId] = true;
                 var section = this._context.getRefreshedSection(refreshParams);
                 var cfg = this._cfg;

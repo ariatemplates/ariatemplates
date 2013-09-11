@@ -21,7 +21,7 @@
     $height : {min:125},
     $css : ['aria.tester.runner.view.config.ConfigCSS']
 }}
-    {macro main()}    
+    {macro main()}
         <h1>Select Suites</h1>
         <div {id "left"/} style="
             overflow-y : scroll;
@@ -29,60 +29,58 @@
             width : 200px;
             height : ${$vdim(95,1)}px;
         ">
-            {call displaySuitesAsTree()/}
+            {section {
+                id: "suitesTree",
+                macro: "displaySuitesAsTree",
+                bindRefreshTo : [{
+                   inside : data.campaign,
+                   to : "testsTree"
+                }],
+                type:"div",
+              } /}
         </div>
     {/macro}
     {macro displaySuitesAsTree()}
-        {section {
-            id: "suitesTree",
-              bindRefreshTo : [{
-               inside : data.campaign,
-               to : "testsTree"
-              }],
-              type:"div"
-          }}
-              
-            {var test = data.campaign.testsTree[0]/}
-            {if (test && test.$TestSuite)}
-                <table class="reportTable" style="
-                    {if aria.core.Browser.isIE} 
-                        width:${$hdim(186,1)}px;
-                    {else/}
-                        width : 100%;
-                    {/if}
-                "
-                >
-                <tbody>
-                    {var testWrapper = {classpath:test.$classpath,instance:test}/}
-                    <tr 
-                    {on mouseup {
-                        fn : this.onSuiteClick,
-                        scope : this,
-                        args : {testSuite : test}
-                    }/}
-                    title="${this.getSuiteInfo(testWrapper)}">
-                    <td style="padding-left:5px">
-                        {var suiteName = this.getSuiteName(testWrapper)/}
-                        {var isSelected =  test.isSelected()/}
-                        {call displaySelect(isSelected)/}
-                        <b>${suiteName}</b>
-                            {call displaySuite(test, 1)/}
-                        </td>
-                    </tr>
-                </tbody>
-                </table>
-            {/if}
-        {/section}
+        {var test = data.campaign.testsTree[0]/}
+        {if (test && test.$TestSuite)}
+            <table class="reportTable" style="
+                {if aria.core.Browser.isIE}
+                    width:${$hdim(186,1)}px;
+                {else/}
+                    width : 100%;
+                {/if}
+            "
+            >
+            <tbody>
+                {var testWrapper = {classpath:test.$classpath,instance:test}/}
+                <tr
+                {on mouseup {
+                    fn : this.onSuiteClick,
+                    scope : this,
+                    args : {testSuite : test}
+                }/}
+                title="${this.getSuiteInfo(testWrapper)}">
+                <td style="padding-left:5px">
+                    {var suiteName = this.getSuiteName(testWrapper)/}
+                    {var isSelected =  test.isSelected()/}
+                    {call displaySelect(isSelected)/}
+                    <b>${suiteName}</b>
+                        {call displaySuite(test, 1)/}
+                    </td>
+                </tr>
+            </tbody>
+            </table>
+        {/if}
     {/macro}
-    
-    {macro displaySuite(testSuite, nesting)} 
+
+    {macro displaySuite(testSuite, nesting)}
         {var tests=testSuite.getSubTests()/}
-        {foreach test in tests} 
+        {foreach test in tests}
             {var instance = test.instance/}
             {var suiteName = this.getSuiteName(test)/}
             {var isTestSuite = !!(instance && instance.$TestSuite)/}
             {if (isTestSuite===true)}
-                <tr 
+                <tr
                     {on mouseup {
                         fn : this.onSuiteClick,
                         scope : this,
@@ -99,7 +97,7 @@
             {/if}
         {/foreach}
     {/macro}
-    
+
     {macro displaySelect(isSelected)}
         {if isSelected === 1}
             {var classname = "filled"/}

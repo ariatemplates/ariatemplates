@@ -62,8 +62,8 @@ Aria.tplScriptDefinition({
          * @param {aria.templates.CfgBeans.RefreshCfg} args arguments given for the refresh
          */
         $afterRefresh : function (args) {
-            var outputSection = args ? args.outputSection : null;
-            if (outputSection == null || outputSection == "Items") {
+            var sectionId = args ? (args.section || args.outputSection) : null;
+            if (sectionId == null || sectionId == "Items") {
                 // automatically scroll to display selected item
                 var idx = this.data.selectedIndex;
                 if (idx != null && idx > -1 && this._scrollToSelectedItemCb == null) {
@@ -86,7 +86,7 @@ Aria.tplScriptDefinition({
                     // No info about changed items.
                     // Only solution is to refresh the whole items section
                     this.$refresh({
-                        filterSection : 'Items'
+                        section : 'Items'
                     });
                 } else {
                     var items = this.data.items;
