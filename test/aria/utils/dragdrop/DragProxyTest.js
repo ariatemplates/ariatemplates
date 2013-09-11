@@ -138,7 +138,7 @@ Aria.classDefinition({
             this.assertEquals(movableGeometry.y - this.geometry.y, 21);
             this.assertEquals(movableGeometry.x - this.geometry.x, 100);
             this.assertEquals(movable.innerHTML, this.element.innerHTML);
-            this.assertEquals(dom.getStyle(movable, "opacity"), "0.4");
+            this.assertEqualsWithTolerance(parseFloat(dom.getStyle(movable, "opacity")), 0.4, 0.0000001);
 
             this.synEvent.execute([["mouseRelease", aria.jsunit.Robot.BUTTON1_MASK]], {
                 fn : this.end,

@@ -23,6 +23,7 @@ Aria.classDefinition({
         this.addTests("test.aria.utils.cfgframe.AriaWindowTest");
         this.addTests("test.aria.utils.dragdrop.DragDropBean");
         this.addTests("test.aria.utils.css.AnimationsTestSuite");
+        this.addTests("test.aria.utils.css.Effects");
         this.addTests("test.aria.utils.environment.EnvironmentTestSuite");
         this.addTests("test.aria.utils.hashManager.HashManagerTestSuite");
         this.addTests("test.aria.utils.json.JsonTestSuite");
