@@ -559,14 +559,14 @@ Aria.classDefinition({
                     states : {
                         normal : {
                             marginBottom : 5,
-                            spriteURLv : "atskin/sprites/buttonCentre.gif",
+                            spriteURLv : "atskin/sprites/buttonCentre_1-4-2.gif",
                             sprHeight : 25,
                             sprWidth : 17,
                             marginTop : 5,
                             color : "#000000",
                             sprIdx : 0,
                             spcLeft : 8,
-                            spriteURL : "atskin/sprites/buttonEdges.gif"
+                            spriteURL : "atskin/sprites/buttonEdges_1-4-2.gif"
                         },
                         disabled : {
                             color : "#B0B0B0",
