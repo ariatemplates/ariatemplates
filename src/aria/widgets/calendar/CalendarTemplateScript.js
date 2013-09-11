@@ -28,7 +28,7 @@ Aria.tplScriptDefinition({
                     this.updateClass(valueInfos.newValuePosition);
                     if (evt.propertyshowShortcuts) {
                         this.$refresh({
-                            outputSection : "selectedDay"
+                            section : "selectedDay"
                         });
                     }
                 } else {

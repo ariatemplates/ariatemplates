@@ -289,6 +289,7 @@
             BINDREFRESHTO_STATEMENT_DEPRECATED : "Template '%1', line %2:\nThe {bindRefreshTo} statement is deprecated. It will be removed in Aria Templates 1.5.1. Please use 'bindRefreshTo' property of a {section} statement instead.",
             /* BACKWARD-COMPATIBILITY-END */
             SECTION_MACRO_MISUSED : "Template %1 \nline %2: section statement must either be a container or have a non-null macro property.",
+            SECTION_MISSING_ID : "Template %1 \nline %2: A section used as a container must have an id.",
             TEMPLATE_EXCEPTION_REMOVING_LISTENERS : "Error in template '%1' while removing module or flow listeners.",
             TEMPLATE_NOT_READY_FOR_REFRESH : "Error in template '%1': the $refresh method was called, but the template is not yet ready to be refreshed.",
             FOCUS_FAILURE : "Focus failure: widget/element with id '%1' in '%2' does not exist or it is not yet ready for focus.",
@@ -298,7 +299,8 @@
             BEFORE_REFRESH_EXCEPTION : "Error in template %1: an exception happened in $beforeRefresh.",
             AFTER_REFRESH_EXCEPTION : "Error in template %1: an exception happened in $afterRefresh.",
             ALREADY_REFRESHING : "$refresh was called while another refresh is happening on the same template (%1). This is not allowed. Please check bindings.",
-            MISSING_MODULE_CTRL_FACTORY : "Template %1 cannot be initialized without aria.templates.ModuleCtrlFactory, make sure it is loaded"
+            MISSING_MODULE_CTRL_FACTORY : "Template %1 cannot be initialized without aria.templates.ModuleCtrlFactory, make sure it is loaded",
+            DEPRECATED_FILTER_SECTION : "Template %1 : '%2' is deprecated. Please use 'section' with the section id"
         },
         $prototype : {
 
@@ -385,7 +387,7 @@
                 if (aria.templates.RefreshManager.isStopped()) {
                     // look for the section to be refreshed, and notify it:
                     if (args) {
-                        var sectionToRefresh = args.outputSection || args.filterSection;
+                        var sectionToRefresh = args.section || args.outputSection || args.filterSection;
                         if (sectionToRefresh && this._mainSection) {
                             var section = this._mainSection.getSectionById(sectionToRefresh);
                             if (section) {
@@ -439,6 +441,7 @@
                     var section = this.getRefreshedSection({
                         filterSection : args.filterSection,
                         outputSection : args.outputSection,
+                        section : args.section,
                         macro : args.macro
                     });
 
@@ -618,17 +621,23 @@
                 };
                 jsonValidator.normalize(validatorParam);
                 args = validatorParam.json;
-                var outputSectionId = args.outputSection;
-                var filterSectionId = args.filterSection;
-                if (outputSectionId === undefined) {
-                    outputSectionId = filterSectionId;
+
+                if (args.filterSection) {
+                    this.$logWarn(this.DEPRECATED_FILTER_SECTION, [this.tplClasspath, 'filterSection']);
                 }
+                if (args.outputSection) {
+                    this.$logWarn(this.DEPRECATED_FILTER_SECTION, [this.tplClasspath, 'outputSection']);
+                }
+
+                var filterSectionId = args.filterSection;
+                var sectionId = args.section || args.outputSection || filterSectionId;
+
                 var sectionToReplace = null;
-                if (outputSectionId != null) {
-                    sectionToReplace = (this._mainSection ? this._mainSection.getSectionById(outputSectionId) : null);
+                if (sectionId != null) {
+                    sectionToReplace = (this._mainSection ? this._mainSection.getSectionById(sectionId) : null);
                     if (sectionToReplace == null) {
                         // PROFILING // this.$stopMeasure(profilingId);
-                        this.$logError(this.SECTION_OUTPUT_NOT_FOUND, [this.tplClasspath, outputSectionId]);
+                        this.$logError(this.SECTION_OUTPUT_NOT_FOUND, [this.tplClasspath, sectionId]);
                         return null;
                     }
 
@@ -1149,7 +1158,11 @@
                     }
                 }
 
-                if (container === (sectionParam != null && sectionParam.macro != null)) {
+                if (container && !sectionParam.id) {
+                    this.$logError(this.SECTION_MISSING_ID, [this.tplClasspath, lineNumber]);
+                }
+
+                if (container === (sectionParam.macro != null)) {
                     // the section statement must either be a container or have a macro property
                     this.$logError(this.SECTION_MACRO_MISUSED, [this.tplClasspath, lineNumber]);
                     if (container) {

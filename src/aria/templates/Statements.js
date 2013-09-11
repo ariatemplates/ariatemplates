@@ -37,7 +37,8 @@ Aria.classDefinition({
         INCORRECT_VARIABLE_NAME : "line %2: Template error: incorrect variable name '%1'.",
         INVALID_FOREACH_INKEYWORD : "line %2: Template error: invalid foreach syntax, expected one of 'in', 'inView', 'inFilteredView', 'inSortedView', 'inPagedView' but found: '%1'.",
         INVALID_WIDGET_LIBRARY : "line %3: Template error: %1 (%2) is not a valid widget library. A widget library must extend aria.widgetLibs.WidgetLib.",
-        INVALID_EVENT_TYPE : "The event type: '%1' is an invalid event type."
+        INVALID_EVENT_TYPE : "The event type: '%1' is an invalid event type.",
+        DEPRECATED_SECTION_CONTENT : "%1, line %2:, the section content has been deprecated, please use the macro attribute."
     },
     $constructor : function () {
         var utilString = aria.utils.String;
@@ -521,6 +522,8 @@ Aria.classDefinition({
                     var container = (statement.content ? "true" : "false");
                     out.writeln("this.__$beginSection(", statement.lineNumber, ",", container, ",", sectionParam, ");");
                     if (statement.content) {
+                        out.logWarn(statement, statementsSingleton.DEPRECATED_SECTION_CONTENT, [out.templateParam.$classpath, statement.lineNumber]);
+
                         // in case it is used as a container
                         out.processContent(statement.content);
                     }

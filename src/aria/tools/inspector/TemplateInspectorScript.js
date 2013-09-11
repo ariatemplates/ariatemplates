@@ -69,7 +69,7 @@ Aria.tplScriptDefinition({
         displayWidgetDetails : function (event, widgetDesc) {
             this.data.selectedWidget = widgetDesc;
             this.$refresh({
-                filterSection : "widgets"
+                section : "widgets"
             });
         },
 
@@ -140,7 +140,7 @@ Aria.tplScriptDefinition({
          */
         _refreshWidgetsDisplay : function () {
             this.$refresh({
-                filterSection : "widgets"
+                section : "widgets"
             });
         }
     }

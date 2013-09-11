@@ -19,16 +19,15 @@
     $hasScript:true,
     $css:['aria.tester.runner.view.popup.PopupCSS']
 }}
-    {macro main()}    
+    {macro main()}
         {section {
             id:"mainSection",
+            macro:"displayReport",
             bindRefreshTo:[{
                 inside : data.flow,
                 to : "currentState"
             }]
-        }}
-            {call displayReport()/}
-        {/section}
+        }/}
     {/macro}
     {macro displayReport()}
         {if data.flow.currentState == "report"}

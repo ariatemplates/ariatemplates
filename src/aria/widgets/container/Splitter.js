@@ -190,10 +190,10 @@ Aria.classDefinition({
             this._splitBar.style[dimMode] = size1 + "px";
             this._splitBarProxy.style[dimMode] = size1 + "px";
             this._context.$refresh({
-                outputSection : "_splitterContent1_" + this._domId
+                section : "_splitterContent1_" + this._domId
             });
             this._context.$refresh({
-                outputSection : "_splitterContent2_" + this._domId
+                section : "_splitterContent2_" + this._domId
             });
         },
 
@@ -356,10 +356,10 @@ Aria.classDefinition({
                     this.setProperty("size1", otherSize);
                 }
                 this._context.$refresh({
-                    outputSection : "_splitterContent1_" + this._domId
+                    section : "_splitterContent1_" + this._domId
                 });
                 this._context.$refresh({
-                    outputSection : "_splitterContent2_" + this._domId
+                    section : "_splitterContent2_" + this._domId
                 });
             } else {
                 this.$Container._onBoundPropertyChange.apply(this, arguments);

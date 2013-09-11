@@ -45,7 +45,7 @@ Aria.tplScriptDefinition({
                     // No info about changed items.
                     // Only solution is to refresh the whole items section
                     this.$refresh({
-                        filterSection : 'Items'
+                        section : 'Items'
                     });
                 }
             } else if (evt.name == "focusList") {
