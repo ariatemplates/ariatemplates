@@ -200,11 +200,13 @@ Aria.classDefinition({
             this._syncCfg.waiting -= 1;
 
             if (this._syncCfg.waiting === 0) {
+                var listToDispose = this._syncCfg.toDispose;
                 var toDispose;
-                for (var i = 0; i < this._syncCfg.toDispose.length; i++) {
-                    toDispose = this._syncCfg.toDispose[i];
+                for (var i = listToDispose.length - 1; i >= 0; i--) {
+                    toDispose = listToDispose[i];
                     toDispose.$unregisterListeners();
                     toDispose.$dispose();
+                    listToDispose.splice(listToDispose.length - 1, 1);
                 }
 
                 this.$raiseEvent("animationend");

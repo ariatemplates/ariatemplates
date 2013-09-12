@@ -509,7 +509,6 @@ Aria.classDefinition({
                     // No other templates depend on this class
                     delete this.__cssUsage[cssClasspath];
                     delete this.__textLoaded[cssClasspath];
-                    delete this.__styleTagAssociation[cssClasspath];
                     // keep the prefix in case the css comes back
                 }
             } // else should never be reached
@@ -619,17 +618,22 @@ Aria.classDefinition({
 
                 if (tag.styleSheet) {
                     // IE wants to use the text
-                    tag.styleSheet.cssText = text;
+                    if (tag.styleSheet.cssText != text) {
+                        tag.styleSheet.cssText = text;
+                    }
                 } else {
                     // All the other should add a text node
-                    var definition = Aria.$window.document.createTextNode(text);
+                    var definition;
                     if (tag.firstChild) {
-                        tag.replaceChild(definition, tag.firstChild);
+                        if (tag.firstChild.nodeValue != text) {
+                            definition = Aria.$window.document.createTextNode(text);
+                            tag.replaceChild(definition, tag.firstChild);
+                        }
                     } else {
+                        definition = Aria.$window.document.createTextNode(text);
                         tag.appendChild(definition);
                     }
                 }
-
                 tag = null;
             }
             // PROFILING // this.$stopMeasure(profilingId);
