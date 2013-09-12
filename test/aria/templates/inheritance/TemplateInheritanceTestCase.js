@@ -60,67 +60,57 @@ Aria.classDefinition({
             this.myTestSimple();
         },
 
+        _checkDivContent : function (divNumber, expectedValue) {
+            var content = aria.utils.String.trim(this.testDiv.children[0].children[divNumber].innerHTML);
+            this.assertEquals(content.toLowerCase(), expectedValue.toLowerCase());
+        },
+
         myTestSimple : function () {
             // simple test to verify the inheritance of the main() macro
-            var test1 = aria.utils.String.trim(this.testDiv.children[0].children[0].innerHTML);
-            this.assertTrue(test1.toLowerCase() == "a = 1".toLowerCase());
+            this._checkDivContent(0, "a = 1");
 
             // test the inheritance of the template vars of the father
-            var test2 = aria.utils.String.trim(this.testDiv.children[0].children[1].innerHTML);
-            this.assertTrue(test2.toLowerCase() == "b = 3".toLowerCase());
+            this._checkDivContent(1, "b = 3");
 
             // test the usability of parent macros through the reference to the parent template
-            var test3 = aria.utils.String.trim(this.testDiv.children[0].children[2].innerHTML);
-            this.assertTrue(test3.toLowerCase() == "parent mymacro2".toLowerCase());
+            this._checkDivContent(2, "parent mymacro2");
 
             // test parent macros inheritance without overriding
-            var test4 = aria.utils.String.trim(this.testDiv.children[0].children[3].innerHTML);
-            this.assertTrue(test4.toLowerCase() == "parent mymacro3".toLowerCase());
+            this._checkDivContent(3, "parent mymacro3");
 
             // test usability of functions in the script prototype
-            var test5 = aria.utils.String.trim(this.testDiv.children[0].children[4].innerHTML);
-            this.assertTrue(test5.toLowerCase() == "script works".toLowerCase());
+            this._checkDivContent(4, "script works");
 
             // test usability of the statics of the script
-            var test6 = aria.utils.String.trim(this.testDiv.children[0].children[5].innerHTML);
-            this.assertTrue(test6.toLowerCase() == "script static 5".toLowerCase());
+            this._checkDivContent(5, "script static 5");
 
             // test usability of the resources of the script
-            var test7 = aria.utils.String.trim(this.testDiv.children[0].children[6].innerHTML);
-            this.assertTrue(test7.toLowerCase() == "script resources red".toLowerCase());
+            this._checkDivContent(6, "script resources red");
 
             // test usability of the functions in the parent script prototype
-            var test8 = aria.utils.String.trim(this.testDiv.children[0].children[7].innerHTML);
-            this.assertTrue(test8.toLowerCase() == "myParentMethod called".toLowerCase());
+            this._checkDivContent(7, "myParentMethod called");
 
             // test the correct overriding of script functions of the parent
-            var test9 = aria.utils.String.trim(this.testDiv.children[0].children[8].innerHTML);
-            this.assertTrue(test9.toLowerCase() == "childscript mymethod1".toLowerCase());
+            this._checkDivContent(8, "childscript mymethod1");
 
             // test the possibility of using the parent script functions through the reference to the parent template
-            var test10 = aria.utils.String.trim(this.testDiv.children[0].children[9].innerHTML);
-            this.assertTrue(test10.toLowerCase() == "parentscript mymethod1".toLowerCase());
+            this._checkDivContent(9, "parentscript mymethod1");
 
             // test usability of the statics of the parent script
-            var test11 = aria.utils.String.trim(this.testDiv.children[0].children[10].innerHTML);
-            this.assertTrue(test11.toLowerCase() == "parentscript static 10".toLowerCase());
+            this._checkDivContent(10, "parentscript static 10");
 
             // test usability of the resources of the parent script
-            var test12 = aria.utils.String.trim(this.testDiv.children[0].children[11].innerHTML);
-            this.assertTrue(test12.toLowerCase() == "parentscript resources austen".toLowerCase());
+            this._checkDivContent(11, "parentscript resources austen");
 
             // test usability of the resources of the parent template
-            var test13 = aria.utils.String.trim(this.testDiv.children[0].children[12].innerHTML);
-            this.assertTrue(test13.toLowerCase() == "parent res peter".toLowerCase());
+            this._checkDivContent(12, "parent res peter");
 
             // test usability of the resources of the parent template throughthrough the reference to the parent
             // template
-            var test14 = aria.utils.String.trim(this.testDiv.children[0].children[13].innerHTML);
-            this.assertTrue(test14.toLowerCase() == "parent res tim".toLowerCase());
+            this._checkDivContent(13, "parent res tim");
 
             // test that the parent resources can be overridden
-            var test15 = aria.utils.String.trim(this.testDiv.children[0].children[14].innerHTML);
-            this.assertTrue(test15.toLowerCase() == "overridden res james".toLowerCase());
+            this._checkDivContent(14, "overridden res james");
 
             this._replaceTestTemplate(this._macrolibsEnv, {
                 fn : this.myTestMacrolibs,
@@ -130,20 +120,16 @@ Aria.classDefinition({
         },
         myTestMacrolibs : function () {
             // verify the inheritance of the vars defined in the parent libraries
-            var test1 = aria.utils.String.trim(this.testDiv.children[0].children[0].innerHTML);
-            this.assertTrue(test1.toLowerCase() == "parentLibVar".toLowerCase());
+            this._checkDivContent(0, "parentLibVar");
 
             // verify the inheritance of the macros defined in the parent libraries
-            var test2 = aria.utils.String.trim(this.testDiv.children[0].children[1].innerHTML);
-            this.assertTrue(test2.toLowerCase() == "libParent output".toLowerCase());
+            this._checkDivContent(1, "libParent output");
 
             // verify the inheritance of the scripts in the parent libraries scripts
-            var test3 = aria.utils.String.trim(this.testDiv.children[0].children[2].innerHTML);
-            this.assertTrue(test3.toLowerCase() == "macroscript output".toLowerCase());
+            this._checkDivContent(2, "macroscript output");
 
             // verify the overriding of parent libraries (which are ignored)
-            var test4 = aria.utils.String.trim(this.testDiv.children[0].children[3].innerHTML);
-            this.assertTrue(test4.toLowerCase() == "LibChild2 output".toLowerCase());
+            this._checkDivContent(3, "LibChild2 output");
 
             this._replaceTestTemplate(this._css1Env, {
                 fn : this.myTestCss1,
@@ -155,12 +141,12 @@ Aria.classDefinition({
             // test that the child template css are applied correctly
             var test1 = this.getElementById("titleoneid");
             var style1 = aria.utils.Dom.getStyle(test1, "fontSize");
-            this.assertTrue(style1.toLowerCase() == "2px".toLowerCase());
+            this.assertEquals(style1, "2px");
 
             // test that the parent template css are completely ignored
             var test2 = this.getElementById("titletwoid");
             var style2 = aria.utils.Dom.getStyle(test2, "fontSize");
-            this.assertFalse(style2.toLowerCase() == "200px".toLowerCase());
+            this.assertNotEquals(style2, "200px");
 
             this._replaceTestTemplate(this._css2Env, {
                 fn : this.myTestCss2,
@@ -174,11 +160,11 @@ Aria.classDefinition({
             // has no css template associated to it
             var test1 = this.getElementById("titleoneid");
             var style1 = aria.utils.Dom.getStyle(test1, "fontSize");
-            this.assertTrue(style1.toLowerCase() == "1px".toLowerCase());
+            this.assertEquals(style1, "1px");
 
             var test2 = this.getElementById("titletwoid");
             var style2 = aria.utils.Dom.getStyle(test2, "fontSize");
-            this.assertTrue(style2.toLowerCase() == "200px".toLowerCase());
+            this.assertEquals(style2, "200px");
 
             this._replaceTestTemplate(this._familyEnv, {
                 fn : this.myTestFamily,
@@ -188,53 +174,36 @@ Aria.classDefinition({
 
         myTestFamily : function () {
             // test vars inheritance and overriding
-            var test1 = aria.utils.String.trim(this.testDiv.children[0].children[0].innerHTML);
-            this.assertTrue(test1.toLowerCase() == "varGP = 3".toLowerCase());
-            var test2 = aria.utils.String.trim(this.testDiv.children[0].children[1].innerHTML);
-            this.assertTrue(test2.toLowerCase() == "b = 3".toLowerCase());
+            this._checkDivContent(0, "varGP = 3");
+            this._checkDivContent(1, "b = 3");
 
             // test macros inheritance and overriding
-            var test3 = aria.utils.String.trim(this.testDiv.children[0].children[2].innerHTML);
-            this.assertTrue(test3.toLowerCase() == "mymacrograndparent".toLowerCase());
-            var test4 = aria.utils.String.trim(this.testDiv.children[0].children[3].innerHTML);
-            this.assertTrue(test4.toLowerCase() == "parent mymacro3".toLowerCase());
-            var test5 = aria.utils.String.trim(this.testDiv.children[0].children[4].innerHTML);
-            this.assertTrue(test5.toLowerCase() == "parent mymacro2".toLowerCase());
-            var test6 = aria.utils.String.trim(this.testDiv.children[0].children[5].innerHTML);
-            this.assertTrue(test6.toLowerCase() == "child mymacro2".toLowerCase());
+            this._checkDivContent(2, "mymacrograndparent");
+            this._checkDivContent(3, "parent mymacro3");
+            this._checkDivContent(4, "parent mymacro2");
+            this._checkDivContent(5, "child mymacro2");
 
             // test resources
-            var test7 = aria.utils.String.trim(this.testDiv.children[0].children[6].innerHTML);
-            this.assertTrue(test7.toLowerCase() == "peter".toLowerCase());
-            var test8 = aria.utils.String.trim(this.testDiv.children[0].children[7].innerHTML);
-            this.assertTrue(test8.toLowerCase() == "james".toLowerCase());
-            var test9 = aria.utils.String.trim(this.testDiv.children[0].children[8].innerHTML);
-            this.assertTrue(test9.toLowerCase() == "tim".toLowerCase());
-            var test10 = aria.utils.String.trim(this.testDiv.children[0].children[9].innerHTML);
-            this.assertTrue(test10.toLowerCase() == "tim".toLowerCase());
+            this._checkDivContent(6, "peter");
+            this._checkDivContent(7, "james");
+            this._checkDivContent(8, "tim");
+            this._checkDivContent(9, "tim");
 
             // test script methods
-            var test11 = aria.utils.String.trim(this.testDiv.children[0].children[10].innerHTML);
-            this.assertTrue(test11.toLowerCase() == "myGrandParentMethod called".toLowerCase());
-            var test12 = aria.utils.String.trim(this.testDiv.children[0].children[11].innerHTML);
-            this.assertTrue(test12.toLowerCase() == "childscript mymethod1".toLowerCase());
-            var test13 = aria.utils.String.trim(this.testDiv.children[0].children[12].innerHTML);
-            this.assertTrue(test13.toLowerCase() == "grandparentscript mymethod1".toLowerCase());
-            var test14 = aria.utils.String.trim(this.testDiv.children[0].children[13].innerHTML);
-            this.assertTrue(test14.toLowerCase() == "resources gide".toLowerCase());
+            this._checkDivContent(10, "myGrandParentMethod called");
+            this._checkDivContent(11, "childscript mymethod1");
+            this._checkDivContent(12, "grandparentscript mymethod1");
+            this._checkDivContent(13, "resources gide");
 
             // test library inheritance
-            var test15 = aria.utils.String.trim(this.testDiv.children[0].children[14].innerHTML);
-            this.assertTrue(test15.toLowerCase() == "libGrandParent output".toLowerCase());
-            var test16 = aria.utils.String.trim(this.testDiv.children[0].children[15].innerHTML);
-            this.assertTrue(test16.toLowerCase() == "libChild output".toLowerCase());
-            var test17 = aria.utils.String.trim(this.testDiv.children[0].children[16].innerHTML);
-            this.assertTrue(test17.toLowerCase() == "macroscript output".toLowerCase());
+            this._checkDivContent(14, "libGrandParent output");
+            this._checkDivContent(15, "libChild output");
+            this._checkDivContent(16, "macroscript output");
 
             // test CSS inheritance
             var test18 = this.getElementById("titleoneid");
             var style18 = aria.utils.Dom.getStyle(test18, "fontSize");
-            this.assertTrue(style18.toLowerCase() == "40px".toLowerCase());
+            this.assertEquals(style18, "40px");
 
             this._replaceTestTemplate(this._errorsEnv, {
                 fn : this.myTestErrors,
@@ -253,18 +222,18 @@ Aria.classDefinition({
         },
 
         myTestDimensions : function () {
-            var test1 = aria.utils.String.trim(this.testDiv.children[0].children[0].children[0].children[0].innerHTML);
-            this.assertTrue(test1.toLowerCase() == "first child width 140".toLowerCase());
-            var test2 = aria.utils.String.trim(this.testDiv.children[0].children[0].children[0].children[1].innerHTML);
-            this.assertTrue(test2.toLowerCase() == "first child height 85".toLowerCase());
-            var test3 = aria.utils.String.trim(this.testDiv.children[0].children[2].children[0].children[0].innerHTML);
-            this.assertTrue(test3.toLowerCase() == "second child width 240".toLowerCase());
-            var test4 = aria.utils.String.trim(this.testDiv.children[0].children[2].children[0].children[1].innerHTML);
-            this.assertTrue(test4.toLowerCase() == "second child height 105".toLowerCase());
-            var test5 = aria.utils.String.trim(this.testDiv.children[0].children[4].children[0].children[0].innerHTML);
-            this.assertTrue(test5.toLowerCase() == "third child width 240".toLowerCase());
-            var test6 = aria.utils.String.trim(this.testDiv.children[0].children[4].children[0].children[1].innerHTML);
-            this.assertTrue(test6.toLowerCase() == "third child height 85".toLowerCase());
+            var test1 = this.testDiv.children[0].children[0].children[0].children[0].innerHTML;
+            this.assertEquals(test1, "first child width 140");
+            var test2 = this.testDiv.children[0].children[0].children[0].children[1].innerHTML;
+            this.assertEquals(test2, "first child height 85");
+            var test3 = this.testDiv.children[0].children[2].children[0].children[0].innerHTML;
+            this.assertEquals(test3, "second child width 240");
+            var test4 = this.testDiv.children[0].children[2].children[0].children[1].innerHTML;
+            this.assertEquals(test4, "second child height 105");
+            var test5 = this.testDiv.children[0].children[4].children[0].children[0].innerHTML;
+            this.assertEquals(test5, "third child width 240");
+            var test6 = this.testDiv.children[0].children[4].children[0].children[1].innerHTML;
+            this.assertEquals(test6, "third child height 85");
 
             this._replaceTestTemplate(this._tmlInheritanceEnv, {
                 fn : this.myTestTmlInheritance,
@@ -274,12 +243,9 @@ Aria.classDefinition({
         },
 
         myTestTmlInheritance : function () {
-            var test1 = aria.utils.String.trim(this.testDiv.children[0].children[0].innerHTML);
-            this.assertTrue(test1.toLowerCase() == "parentMacro from LibParent called".toLowerCase());
-            var test2 = aria.utils.String.trim(this.testDiv.children[0].children[1].innerHTML);
-            this.assertTrue(test2.toLowerCase() == "overriddenMacro from LibParent called".toLowerCase());
-            var test3 = aria.utils.String.trim(this.testDiv.children[0].children[2].innerHTML);
-            this.assertTrue(test3.toLowerCase() == "overriddenMacro from LibChild called".toLowerCase());
+            this._checkDivContent(0, "parentMacro from LibParent called");
+            this._checkDivContent(1, "overriddenMacro from LibParent called");
+            this._checkDivContent(2, "overriddenMacro from LibChild called");
 
             this._replaceTestTemplate(this._cssTemplateInheritanceEnv, {
                 fn : this.myTestCssTemplateInheritance,
@@ -290,9 +256,9 @@ Aria.classDefinition({
         myTestCssTemplateInheritance : function () {
             var test1 = this.getElementById("cssinheritance");
             var style1 = aria.utils.Dom.getStyle(test1, "fontSize");
-            this.assertTrue(style1.toLowerCase() == "80px".toLowerCase());
+            this.assertEquals(style1, "80px");
             var style2 = aria.utils.Dom.getStyle(test1, "fontWeight");
-            this.assertTrue(parseInt(style2, 10) == 800);
+            this.assertEquals(parseInt(style2, 10), 800);
 
             this._replaceTestTemplate(this._inheritanceOfTextEnv, {
                 fn : this.myTestInheritanceOfText,
@@ -301,10 +267,8 @@ Aria.classDefinition({
         },
 
         myTestInheritanceOfText : function () {
-            var test1 = aria.utils.String.trim(this.testDiv.children[0].children[0].innerHTML);
-            this.assertTrue(test1.toLowerCase() == "parent text".toLowerCase());
-            var test2 = aria.utils.String.trim(this.testDiv.children[0].children[1].innerHTML);
-            this.assertTrue(test2.toLowerCase() == "child overridden text".toLowerCase());
+            this._checkDivContent(0, "parent text");
+            this._checkDivContent(1, "child overridden text");
 
             this.end();
         }
