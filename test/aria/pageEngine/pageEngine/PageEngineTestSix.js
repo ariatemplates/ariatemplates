@@ -20,6 +20,7 @@ Aria.classDefinition({
         this.$PageEngineBaseTestCase.constructor.call(this);
         this._dependencies.push("test.aria.pageEngine.pageEngine.site.PageProviderSix");
         this._animations = true;
+        this._headChildCount = -1;
     },
     $prototype : {
 
@@ -92,6 +93,9 @@ Aria.classDefinition({
 
             this.assertTrue(firstDiv.match(/Page Name: aaa/) !== null);
             this.assertTrue(secondDiv === "");
+
+            //Issue722
+            this._headChildCount = this._testWindow.document.getElementsByTagName("head")[0].childElementCount;
         },
 
         _checkPageBBB : function () {
@@ -100,6 +104,9 @@ Aria.classDefinition({
             var secondDiv = elt.nextSibling.innerHTML;
             this.assertTrue(firstDiv.match(/Page Name: bbb/) !== null);
             this.assertTrue(secondDiv === "");
+
+            //Issue722
+            this.assertEquals(this._testWindow.document.getElementsByTagName("head")[0].childElementCount, this._headChildCount);
         },
 
         _checkPageCCC : function () {
@@ -108,6 +115,9 @@ Aria.classDefinition({
             var secondDiv = elt.nextSibling.innerHTML;
             this.assertTrue(firstDiv === "");
             this.assertTrue(secondDiv.match(/Page Name: ccc/) !== null);
+
+            //Issue722
+            this.assertEquals(this._testWindow.document.getElementsByTagName("head")[0].childElementCount, this._headChildCount);
         }
     }
 });

@@ -22,6 +22,7 @@ Aria.classDefinition({
     $constructor : function () {
         this.$PageEngineBaseTestCase.constructor.call(this);
         this._dependencies.push("test.aria.pageEngine.pageEngine.site.PageProviderFour");
+        this._headChildCount = -1;
     },
     $prototype : {
 
@@ -63,13 +64,15 @@ Aria.classDefinition({
             this._testInstanceCount("Template5", 0, 0);
             this._testInstanceCount("Template6", 0, 0);
 
+            //Issue722
+            this._headChildCount = this._testWindow.document.getElementsByTagName("head")[0].childElementCount;
+
             this.pageEngine.navigate({
                 pageId : "ccc"
             }, {
                 fn : this._afterThirdPageReady,
                 scope : this
             });
-
         },
 
         _afterThirdPageReady : function () {
@@ -82,13 +85,15 @@ Aria.classDefinition({
             this._testInstanceCount("Template5", 1, 0);
             this._testInstanceCount("Template6", 1, 0);
 
+            //Issue722
+            this.assertEquals(this._testWindow.document.getElementsByTagName("head")[0].childElementCount, this._headChildCount);
+
             this.pageEngine.navigate({
                 pageId : "bbb"
             }, {
                 fn : this._afterFourthPageReady,
                 scope : this
             });
-
         },
 
         _afterFourthPageReady : function () {
@@ -101,12 +106,14 @@ Aria.classDefinition({
             this._testInstanceCount("Template5", 1, 1);
             this._testInstanceCount("Template6", 1, 1);
 
+            //Issue722
+            this.assertEquals(this._testWindow.document.getElementsByTagName("head")[0].childElementCount, this._headChildCount);
+
             aria.core.Timer.addCallback({
                 fn : this.end,
                 scope : this,
                 delay : 100
             });
-
         },
 
         _createPageEngine : function (args) {
