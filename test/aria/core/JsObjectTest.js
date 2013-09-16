@@ -17,7 +17,8 @@ Aria.classDefinition({
     $classpath : "test.aria.core.JsObjectTest",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["test.aria.core.test.ClassA", "test.aria.core.test.ClassB", "test.aria.core.test.TestClass",
-            "test.aria.core.test.ImplementInterface1", "test.aria.core.test.Interface1", "test.aria.core.test.MyFlow"],
+            "test.aria.core.test.ImplementInterface1", "test.aria.core.test.Interface1", "test.aria.core.test.MyFlow",
+            "aria.utils.Callback"],
     $prototype : {
         setUp : function () {
             var that = this;
@@ -92,6 +93,20 @@ Aria.classDefinition({
             this.assertNotEquals(this._storedMessage.indexOf("classNumber:2"), -1);
             this.assertNotEquals(this._storedMessage.indexOf("classObj:[object]"), -1);
             this.assertNotEquals(this._storedMessage.indexOf("classFunc:[function]"), -1);
+        },
+
+        testCallback : function () {
+            var myJsObject = new aria.core.JsObject();
+            var myCallback = new aria.utils.Callback({
+                fn : function () {
+                    var test = {};
+                    return test.forceError[0]; // deliberate error to break the callback
+                }
+            });
+            myJsObject.$callback(myCallback);
+            this.assertErrorInLogs(myJsObject.CALLBACK_ERROR);
+            myJsObject.$dispose();
+            myCallback.$dispose();
         },
 
         testInterceptors : function () {
