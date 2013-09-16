@@ -101,6 +101,23 @@ Aria.classDefinition({
             handler.$dispose();
 
             this.notifyTestEnd("testAsyncJsonResponseJSON");
+        },
+
+        /**
+         * Test that each instance gets independant headers
+         */
+        testEachInstanceGetsIndependantHeaders : function () {
+            var i1 = new aria.modules.requestHandler.JSONRequestHandler();
+            i1.getRequestHeaders()['foo'] = 'bar1';
+
+            var i2 = new aria.modules.requestHandler.JSONRequestHandler();
+            i2.getRequestHeaders()['foo'] = 'bar2';
+
+            this.assertEquals(i1.getRequestHeaders()['foo'], 'bar1');
+            this.assertEquals(i2.getRequestHeaders()['foo'], 'bar2');
+
+            i1.$dispose();
+            i2.$dispose();
         }
     }
 });

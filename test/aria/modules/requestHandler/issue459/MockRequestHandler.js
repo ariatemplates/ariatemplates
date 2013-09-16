@@ -17,9 +17,12 @@ Aria.classDefinition({
     $classpath : "test.aria.modules.requestHandler.issue459.MockRequestHandler",
     $implements : ["aria.modules.requestHandler.IRequestHandler"],
     $extends : "aria.modules.requestHandler.RequestHandler",
-    $prototype : {
-        headers : {
+    $constructor : function () {
+        this.$RequestHandler.constructor.call(this);
+        this.headers = {
             "Content-Type" : "mockHeaders"
-        }
+        };
+    },
+    $prototype : {
     }
 });
