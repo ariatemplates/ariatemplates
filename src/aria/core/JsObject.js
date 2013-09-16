@@ -396,40 +396,40 @@
              * called.
              */
             $callback : function (cb, res, errorId) {
-                if (!cb) {
-                    return; // callback is sometimes not used
-                }
-
-                if (cb.$Callback) {
-                    return cb.call(res);
-                }
-
-                // perf optimisation : duplicated code on purpose
-                var scope = cb.scope, callback;
-                scope = scope ? scope : this;
-                if (!cb.fn) {
-                    callback = cb;
-                } else {
-                    callback = cb.fn;
-                }
-
-                if (typeof(callback) == 'string') {
-                    callback = scope[callback];
-                }
-
-                var args = (cb.apply === true && cb.args && Object.prototype.toString.apply(cb.args) === "[object Array]")
-                        ? cb.args.slice()
-                        : [cb.args];
-                var resIndex = (cb.resIndex === undefined) ? 0 : cb.resIndex;
-
-                if (resIndex > -1) {
-                    args.splice(resIndex, 0, res);
-                }
-
                 try {
+                    if (!cb) {
+                        return; // callback is sometimes not used
+                    }
+
+                    if (cb.$Callback) {
+                        return cb.call(res);
+                    }
+
+                    // perf optimisation : duplicated code on purpose
+                    var scope = cb.scope, callback;
+                    scope = scope ? scope : this;
+                    if (!cb.fn) {
+                        callback = cb;
+                    } else {
+                        callback = cb.fn;
+                    }
+
+                    if (typeof(callback) == 'string') {
+                        callback = scope[callback];
+                    }
+
+                    var args = (cb.apply === true && cb.args && Object.prototype.toString.apply(cb.args) === "[object Array]")
+                            ? cb.args.slice()
+                            : [cb.args];
+                    var resIndex = (cb.resIndex === undefined) ? 0 : cb.resIndex;
+
+                    if (resIndex > -1) {
+                        args.splice(resIndex, 0, res);
+                    }
+
                     return Function.prototype.apply.call(callback, scope, args);
                 } catch (ex) {
-                    this.$logError(errorId || this.CALLBACK_ERROR, [this.$classpath, scope.$classpath], ex);
+                    this.$logError(errorId || this.CALLBACK_ERROR, [this.$classpath, (scope) ? scope.$classpath : ""], ex);
                 }
             },
 

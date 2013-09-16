@@ -17,7 +17,8 @@ Aria.classDefinition({
     $classpath : "test.aria.core.JsObjectTest",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["test.aria.core.test.ClassA", "test.aria.core.test.ClassB", "test.aria.core.test.TestClass",
-            "test.aria.core.test.ImplementInterface1", "test.aria.core.test.Interface1", "test.aria.core.test.MyFlow"],
+            "test.aria.core.test.ImplementInterface1", "test.aria.core.test.Interface1", "test.aria.core.test.MyFlow",
+            "aria.utils.Callback"],
     $prototype : {
         setUp : function () {
             var that = this;
@@ -92,6 +93,18 @@ Aria.classDefinition({
             this.assertNotEquals(this._storedMessage.indexOf("classNumber:2"), -1);
             this.assertNotEquals(this._storedMessage.indexOf("classObj:[object]"), -1);
             this.assertNotEquals(this._storedMessage.indexOf("classFunc:[function]"), -1);
+        },
+
+        testCallback : function () {
+            var myJsObject = new aria.core.JsObject();
+            this.myCallback = new aria.utils.Callback({
+                fn : test.aria.core.test.TestClass.testCallbackFailure
+            });
+            myJsObject.CALLBACK_ERROR = "Test Callback Error: testCallbackFailure()";
+            myJsObject.$callback(this.myCallback);
+            this.assertErrorInLogs(myJsObject.CALLBACK_ERROR);
+            myJsObject.$dispose();
+            this.myCallback.$dispose();
         },
 
         testInterceptors : function () {
@@ -181,7 +194,9 @@ Aria.classDefinition({
         testMultipleInterceptorsForSameMethod : function () {
             var obj = Aria.getClassInstance('test.aria.core.test.ImplementInterface1');
             var myInterceptor1 = function (param) {
-                param.returnValue = (!param.returnValue || typeof param.returnValue === "string") ? [] : param.returnValue;
+                param.returnValue = (!param.returnValue || typeof param.returnValue === "string")
+                        ? []
+                        : param.returnValue;
                 param.returnValue.push("return value intercepted by myInterceptor1");
             };
 
