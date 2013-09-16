@@ -113,6 +113,23 @@ Aria.classDefinition({
             this.assertTrue(valid);
             this.assertTrue(request.postHeader === "text/plain");
             handler.$dispose();
+        },
+
+        /**
+         * Test that each instance gets independant headers
+         */
+        testEachInstanceGetsIndependantHeaders : function () {
+            var i1 = new aria.modules.requestHandler.RequestHandler();
+            i1.getRequestHeaders()['foo'] = 'bar1';
+
+            var i2 = new aria.modules.requestHandler.RequestHandler();
+            i2.getRequestHeaders()['foo'] = 'bar2';
+
+            this.assertEquals(i1.getRequestHeaders()['foo'], 'bar1');
+            this.assertEquals(i2.getRequestHeaders()['foo'], 'bar2');
+			
+            i1.$dispose();
+            i2.$dispose();
         }
     }
 });

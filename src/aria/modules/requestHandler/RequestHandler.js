@@ -47,19 +47,19 @@ Aria.classDefinition({
                 scope : this
             }
         });
+
+        /**
+         * Request Headers to be used
+         * @type Object
+         */
+        this.headers = {
+            "Content-Type" : "application/x-www-form-urlencoded; charset=UTF-8"
+        };
     },
     $destructor : function () {
         this._requestJsonSerializer = null;
     },
     $prototype : {
-        /**
-         * Request Headers to be used
-         * @type Object
-         */
-        headers : {
-            "Content-Type" : "application/x-www-form-urlencoded; charset=UTF-8"
-        },
-
         /**
          * Handles the response from the server, and call the associated callback
          * @param {aria.modules.RequestBeans:SuccessResponse} successResponse
