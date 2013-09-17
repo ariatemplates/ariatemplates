@@ -363,7 +363,7 @@ Aria.classDefinition({
          * Compute the size, position and zIndex of the popup dom element, based on its content and configuration and
          * return it in the form of a JSON object
          * @return {Object} Object of the form
-         *
+         * 
          * <pre>
          *  {
          *      top: // {Number}
@@ -373,7 +373,7 @@ Aria.classDefinition({
          *      zIndex: // {Number}
          *  }
          * </pre>
-         *
+         * 
          * @protected
          */
         _getComputedStyle : function () {
@@ -403,6 +403,8 @@ Aria.classDefinition({
 
             var computedStyle = {
                 'top' : position.top,
+                'bottom' : position.bottom,
+                'right' : position.right,
                 'left' : position.left,
                 'height' : size.height,
                 'width' : size.width,
@@ -499,16 +501,18 @@ Aria.classDefinition({
             // Origin has the same position as the reference in the beginning
             var top = this.referencePosition.top;
             var left = this.referencePosition.left;
+            var bottom = this.referencePosition.bottom;
+            var right = this.referencePosition.right;
 
             // Depending on the reference's anchor configuration
             // the origin has to be modified
             // Anchor at the bottom of the reference, add its height to the top
-            if (referenceAnchor.indexOf(this.ANCHOR_BOTTOM) != -1) {
+            if (top != null && referenceAnchor.indexOf(this.ANCHOR_BOTTOM) != -1) {
                 top = top + this.referenceSize.height;
             }
 
             // Anchor at the right of the reference, add its width to the left
-            if (referenceAnchor.indexOf(this.ANCHOR_RIGHT) != -1) {
+            if (left != null && referenceAnchor.indexOf(this.ANCHOR_RIGHT) != -1) {
                 left = left + this.referenceSize.width;
             }
 
@@ -517,34 +521,40 @@ Aria.classDefinition({
             // modified as well
             // Anchor at the bottom of the popup, substract the height of the
             // popup to the top
-            if (popupAnchor.indexOf(this.ANCHOR_BOTTOM) != -1) {
+            if (top != null && popupAnchor.indexOf(this.ANCHOR_BOTTOM) != -1) {
                 top = top - size.height;
                 // apply the bottom offset
                 top = top - offset.bottom;
-            } else if (popupAnchor.indexOf(this.ANCHOR_TOP) != -1) {
+            } else if (top != null && popupAnchor.indexOf(this.ANCHOR_TOP) != -1) {
                 // apply the top offset
                 top = top + offset.top;
             }
 
             // Anchor at the right of the popup, substract the width of the
-            // popup to the top
-            if (popupAnchor.indexOf(this.ANCHOR_RIGHT) != -1) {
+            // popup to the left
+            if (left != null && popupAnchor.indexOf(this.ANCHOR_RIGHT) != -1) {
                 left = left - size.width;
                 // apply the right offset
                 left = left - offset.right;
-            } else if (popupAnchor.indexOf(this.ANCHOR_LEFT) != -1) {
+            } else if (left != null && popupAnchor.indexOf(this.ANCHOR_LEFT) != -1) {
                 // apply the left offset
                 left = left + offset.left;
             }
 
             // add scroll of document from absolute positioning
             var documentScroll = aria.utils.Dom._getDocumentScroll();
-            left += documentScroll.scrollLeft;
-            top += documentScroll.scrollTop;
+            if (left != null) {
+                left += documentScroll.scrollLeft;
+            }
+            if (top != null) {
+                top += documentScroll.scrollTop;
+            }
 
             var position = {
                 'top' : top,
-                'left' : left
+                'left' : left,
+                'bottom' : bottom,
+                'right' : right
             };
 
             return position;
@@ -563,7 +573,7 @@ Aria.classDefinition({
                 this._startAnimation(this.conf.animateOut, {
                     from : this.domElement,
                     type : 1
-                });
+                }, true);
             } else {
                 this.domElement.style.cssText = "position:absolute;display:none;overflow:auto;";
             }
@@ -683,14 +693,27 @@ Aria.classDefinition({
                 this.computedStyle = this._getComputedStyle();
             }
 
-            this.domElement.style.cssText = ['top:', this.computedStyle.top, 'px;', 'left:', this.computedStyle.left,
-                    'px;', 'z-index:', this.computedStyle.zIndex, ';', 'position:absolute;display:inline-block;'].join('');
+            var popupPosition = [];
+            if (this.computedStyle.left != null) {
+                popupPosition = popupPosition.concat('left:', this.computedStyle.left, 'px;');
+            }
+            if (this.computedStyle.right != null) {
+                popupPosition = popupPosition.concat('right:', this.computedStyle.right, 'px;');
+            }
+            if (this.computedStyle.top != null) {
+                popupPosition = popupPosition.concat('top:', this.computedStyle.top, 'px;');
+            }
+            if (this.computedStyle.bottom != null) {
+                popupPosition = popupPosition.concat('bottom:', this.computedStyle.bottom, 'px;');
+            }
+            this.domElement.style.cssText = popupPosition.concat(['z-index:', this.computedStyle.zIndex, ';',
+                    'position:absolute;display:inline-block;']).join('');
 
             if (this.conf.animateIn) {
                 this._startAnimation(this.conf.animateIn, {
                     to : this.domElement,
                     type : 1
-                });
+                }, false);
             }
 
             if (aria.core.Browser.isIE7 && !this.isOpen) {
@@ -931,7 +954,9 @@ Aria.classDefinition({
 
             position = {
                 'top' : position.top,
-                'left' : position.left
+                'bottom' : position.bottom,
+                'left' : position.left,
+                'right' : position.right
             };
 
             this.reference = null;
@@ -989,16 +1014,22 @@ Aria.classDefinition({
          * reverse"]
          * @param {String} animationName
          * @param {Object} animationCfg
+         * @param {Boolean} isOut
          */
-        _startAnimation : function (animationName, animationCfg) {
+        _startAnimation : function (animationName, animationCfg, isOut) {
 
             var partsArray = animationName.split(' ');
             var animationName = partsArray[0];
+            animationCfg.reverse = false;
 
             if (partsArray[1] === "right" || partsArray[1] === "out" || partsArray[1] === "reverse") {
                 animationCfg.reverse = true;
             } else if (partsArray[1] === "up" || partsArray[1] === "down") {
                 animationName += partsArray[1];
+            }
+
+            if (isOut) {
+                animationCfg.reverse = !animationCfg.reverse;
             }
 
             this._animator.start(animationName, animationCfg);

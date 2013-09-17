@@ -20,7 +20,7 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestCase.constructor.call(this);
         this.mockSection = {
-            html : "<span id='myId'>test</span>",
+            html : "<span id='myId' style=\"display:block; width:100px; height: 20px;\">test</span>",
             initWidgets : function () {},
             $unregisterListeners : function () {},
             removeContent : function () {},
@@ -48,6 +48,43 @@ Aria.classDefinition({
             };
 
             popup.open(conf);
+
+            var document = Aria.$window.document;
+            var popupContent = document.getElementById("myId");
+            var top = parseInt(popupContent.parentNode.style.top, 10);
+            var left = parseInt(popupContent.parentNode.style.left, 10);
+            this.assertEqualsWithTolerance(top, 200, 2, "Expected 200, found " + top);
+            this.assertEqualsWithTolerance(left, 500, 2, "Expected 500, found " + left);
+
+            popup.close();
+            popup.$dispose();
+        },
+
+        testCreateAbsolutePopup2 : function () {
+            var popup = new aria.popups.Popup();
+            this.assertTrue(popup !== null);
+
+            var conf = {
+                // Content
+                section : this.mockSection,
+                absolutePosition : {
+                    bottom : 100,
+                    right : 300,
+                    left : 0
+                }
+            };
+
+            popup.open(conf);
+
+            var document = Aria.$window.document;
+            var popupContent = document.getElementById("myId");
+            var bottom = parseInt(popupContent.parentNode.style.bottom, 10);
+            var right = parseInt(popupContent.parentNode.style.right, 10);
+            var left = parseInt(popupContent.parentNode.style.left, 10);
+            this.assertEqualsWithTolerance(bottom, 100, 2, "Expected 100, found " + bottom);
+            this.assertEqualsWithTolerance(right, 300, 2, "Expected 300, found " + right);
+            this.assertEqualsWithTolerance(left, 0, 2, "Expected 0, found " + left);
+
             popup.close();
             popup.$dispose();
         },
@@ -77,6 +114,14 @@ Aria.classDefinition({
             };
 
             popup.open(conf);
+
+            var popupContent = document.getElementById("myId");
+            var top = parseInt(popupContent.parentNode.style.top, 10);
+            var left = parseInt(popupContent.parentNode.style.left, 10);
+
+            this.assertEqualsWithTolerance(top, 10, 2, "Expected 10, found " + top);
+            this.assertEqualsWithTolerance(left, 260, 2, "Expected 260, found " + left);
+
             popup.close();
             popup.$dispose();
 
@@ -119,7 +164,7 @@ Aria.classDefinition({
             var popupContent = document.getElementById("myId");
 
             var top = parseInt(popupContent.parentNode.style.top, 10);
-            this.assertTrue(top > 228, "Expected 230, found " + top);
+            this.assertEqualsWithTolerance(top, 230, 2, "Expected 230, found " + top);
 
             popup.close();
             popup.$dispose();

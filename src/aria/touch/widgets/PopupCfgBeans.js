@@ -13,26 +13,30 @@
  * limitations under the License.
  */
 
-/**
- * Configuration Beans for aria.popups.Popup
- */
 Aria.beanDefinitions({
-    $package : "aria.popups.Beans",
-    $description : "Definition of the JSON beans used to set application variables",
+    $package : "aria.touch.widgets.PopupCfgBeans",
+    $description : "Popup config beans",
     $namespaces : {
         "json" : "aria.core.JsonTypes",
+        "common" : "aria.widgetLibs.CommonBeans",
+        "base" : "aria.html.beans.ElementCfg",
         "dom" : "aria.utils.DomBeans",
-        "animation" : "aria.utils.css.AnimationsBean"
+        "templates" : "aria.templates.CfgBeans",
+        "animation" : "aria.utils.css.AnimationsBean",
+        "popup" : "aria.popups.Beans"
     },
     $beans : {
-        "PopupConf" : {
+        "PopupCfg" : {
             $type : "json:Object",
-            $description : "Configuration object for the aria.popups.Popup",
+            $description : "Configuration object for the aria.touch.widgets.Popup",
             $properties : {
-                "section" : {
-                    $type : "json:ObjectRef",
-                    $description : "{aria.templates.Section} The section used to create the content of the popup",
-                    $mandatory : true
+                "id" : {
+                    $type : "json:String",
+                    $description : "Id of the widget"
+                },
+                "contentMacro" : {
+                    $type : "templates:MacroCfg",
+                    $description : "The macro that will be used as popup content, Browser will freeze if it does not find this property  as part of widget or bindable property"
                 },
                 "keepSection" : {
                     $type : "json:Boolean",
@@ -50,11 +54,16 @@ Aria.beanDefinitions({
                 },
                 "domReference" : {
                     $type : "json:ObjectRef",
-                    $description : "{HTMLElement} The DOM reference which will be used as the reference position for the popup",
+                    $description : "{HTMLElement} The DOM reference which will be used as the reference position for the tooltip",
+                    $default : null
+                },
+                "referenceId" : {
+                    $type : "json:String",
+                    $description : "The id of the reference which will be used for position of the tooltip the tooltip.",
                     $default : null
                 },
                 "absolutePosition" : {
-                    $type : "AbsolutePositionConfig",
+                    $type : "popup:AbsolutePositionConfig",
                     $description : "Takes priority over domReference if defined. The exact coordinates where the popup should be displayed. Anchors and offsets will still be applied",
                     $default : null
                 },
@@ -65,7 +74,7 @@ Aria.beanDefinitions({
                 },
                 "maximized" : {
                     $type : "json:Boolean",
-                    $description : "If true, the popup will be moved towards top left of the browser window and occupy the whole viewport. This takes priority over center. Implemented only by Dialog.",
+                    $description : "If true, the popup will be moved towards top left of the browser window and occupy the whole viewport. This takes priority over center. Implemented only by Popup.",
                     $default : false
                 },
                 "closeOnMouseClick" : {
@@ -92,14 +101,14 @@ Aria.beanDefinitions({
                     $type : "json:Array",
                     $description : "Array of positions such as 'bottom right' to describe the relative position of the popup with its reference.",
                     $contentType : {
-                        $type : "PreferredPosition",
+                        $type : "popup:PreferredPosition",
                         $mandatory : true,
                         $description : "A preferred position. The order indicates the order of preference."
                     },
                     $default : [{}]
                 },
                 "offset" : {
-                    $type : "OffsetConfig",
+                    $type : "popup:OffsetConfig",
                     $description : "Offset for displaying the popup",
                     $default : {}
                 },
@@ -131,78 +140,19 @@ Aria.beanDefinitions({
                     $type : "animation:AnimationName",
                     $description : "When the popup is being opened, the animation is applied",
                     $sample : "slide left"
-                }
-            }
-        },
-        "PreferredPosition" : {
-            $type : "json:Object",
-            $description : "Couple of anchors describing the positionning between the popup and the reference.",
-            $properties : {
-                "reference" : {
+                },
+                "htmlContent" : {
                     $type : "json:String",
-                    $description : "Anchor of the reference to use for this position setting",
-                    $default : "bottom right"
+                    $description : "The popup's HTML content"
                 },
-                "popup" : {
-                    $type : "json:String",
-                    $description : "Anchor of the reference to use for this position setting",
-                    $default : "top left"
-                },
-                "offset" : {
-                    $type : "OffsetConfig",
-                    $description : "Offset to apply for this position"
-                }
-            }
-        },
-        "OffsetConfig" : {
-            $type : "json:Object",
-            $description : "Configuration object to describe the display offsets to adjust the position the popup",
-            $properties : {
-                "top" : {
-                    $type : "json:Integer",
-                    $description : "Offset to be applied between the top of the popup and the reference, when the popup anchor contains 'top'",
-                    $default : 0
-                },
-                "bottom" : {
-                    $type : "json:Integer",
-                    $description : "Offset to be applied between the bottom of the popup and the reference, when the popup anchor contains 'bottom'",
-                    $default : 0
-                },
-                "right" : {
-                    $type : "json:Integer",
-                    $description : "Offset to be applied between the right of the popup and the reference, when the popup anchor contains 'right'",
-                    $default : 0
-                },
-                "left" : {
-                    $type : "json:Integer",
-                    $description : "Offset to be applied between the left of the popup and the reference, when the popup anchor contains 'left'",
-                    $default : 0
-                }
-            }
-        },
-        "AbsolutePositionConfig" : {
-            $type : "json:Object",
-            $description : "Configuration object to describe the absolute positionning of the popup",
-            $properties : {
-                "top" : {
-                    $type : "json:Integer",
-                    $description : "Top value of the AbsolutePosition object",
-                    $default : null
-                },
-                "bottom" : {
-                    $type : "json:Integer",
-                    $description : "Bottom value of the AbsolutePosition object",
-                    $default : null
-                },
-                "right" : {
-                    $type : "json:Integer",
-                    $description : "Right value of the AbsolutePosition object",
-                    $default : null
-                },
-                "left" : {
-                    $type : "json:Integer",
-                    $description : "Left value of the AbsolutePosition object",
-                    $default : null
+                "bind" : {
+                    $type : "base:Properties.$properties.bind",
+                    $properties : {
+                        "visible" : {
+                            $type : "common:BindingRef",
+                            $description : "Bi-directional binding. shows/hides the dialog window"
+                        }
+                    }
                 }
             }
         }

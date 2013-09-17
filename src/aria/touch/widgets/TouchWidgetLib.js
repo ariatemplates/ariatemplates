@@ -30,7 +30,10 @@ Aria.classDefinition({
             "Slider" : "aria.touch.widgets.Slider",
             "DoubleSlider" : "aria.touch.widgets.DoubleSlider",
             "Button" : "aria.touch.widgets.Button",
-            "Dialog" : "aria.touch.widgets.Dialog"
+            /* Backward Compatibility begins here, use aria.touch.widgets.Popup instead */
+            "Dialog" : "aria.touch.widgets.Dialog",
+            /* Backward Compatibility ends here */
+            "Popup" : "aria.touch.widgets.Popup"
         }
     }
 });
