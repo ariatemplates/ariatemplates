@@ -23,20 +23,23 @@ Aria.classDefinition({
     $statics : {
         PARSING_ERROR : "Response text could not be evaluated as JSON."
     },
+    $constructor : function () {
+        this.$RequestHandler.constructor.call(this);
+
+        /**
+         * Request Headers to be used
+         * @type Object
+         */
+        this.headers = {
+            "Content-Type" : "application/json"
+        };
+    },
     $prototype : {
         /**
          * Expect JSON as response type
          * @type String
          */
         expectedResponseType : "json",
-
-        /**
-         * Request Headers to be used
-         * @type Object
-         */
-        headers : {
-            "Content-Type" : "application/json"
-        },
 
         /**
          * Handles the response from the server, and call the associated callback
