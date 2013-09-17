@@ -24,5 +24,11 @@ Aria.classDefinition({
         this.classFunc = function () {
             var a = "";
         };
+    },
+    $prototype : {
+        testCallbackFailure : function () {
+            var test = {};
+            return test.forceError[0]; // deliberate error to break the callback
+        }
     }
 });
