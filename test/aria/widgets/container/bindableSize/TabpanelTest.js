@@ -17,10 +17,10 @@
  * Test case for aria.widgets.container.TabPanel
  */
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.container.issue80.TabpanelTest",
-    $extends : "test.aria.widgets.container.issue80.shared.BindableSizeTestCase",
+    $classpath : "test.aria.widgets.container.bindableSize.TabpanelTest",
+    $extends : "test.aria.widgets.container.bindableSize.shared.BindableSizeTestCase",
     $constructor : function () {
-        this._tplClasspath = "test.aria.widgets.container.issue80.TabpanelTestTpl";
+        this._tplClasspath = "test.aria.widgets.container.bindableSize.TabpanelTestTpl";
         this.$BindableSizeTestCase.constructor.call(this);
     },
     $prototype : {

@@ -17,7 +17,7 @@
  * Test case for aria.widgets.container.Dialog movable dialog with scroll bars
  */
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.container.issue367.MovableDialogTestCase",
+    $classpath : "test.aria.widgets.container.dialog.movable.issue367.MovableDialogTestCase",
     $extends : "aria.jsunit.RobotTestCase",
     $dependencies : ["aria.utils.Json", "aria.utils.Dom"],
     $constructor : function () {
@@ -32,7 +32,7 @@ Aria.classDefinition({
         };
 
         this.setTestEnv({
-            template : "test.aria.widgets.container.issue367.MovableDialogTemplate",
+            template : "test.aria.widgets.container.dialog.movable.issue367.MovableDialogTemplate",
             data : this.data
         });
     },

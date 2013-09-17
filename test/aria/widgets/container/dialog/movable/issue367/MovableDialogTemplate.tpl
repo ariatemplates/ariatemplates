@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 {Template {
-    $classpath : "test.aria.widgets.container.issue367.MovableDialogTemplate"
+    $classpath : "test.aria.widgets.container.dialog.movable.issue367.MovableDialogTemplate"
 
 }}
 
