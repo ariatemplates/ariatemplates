@@ -14,10 +14,9 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.touch.widgets.dialog.events.DialogAnimationsTestCase",
+    $classpath : "test.aria.popups.PopupEventsTestCase",
     $extends : "aria.jsunit.TestCase",
-    $dependencies : ["aria.popups.Popup", "aria.templates.Section", "aria.popups.PopupManager",
-            "aria.touch.widgets.Dialog"],
+    $dependencies : ["aria.popups.Popup", "aria.templates.Section", "aria.popups.PopupManager"],
     $constructor : function () {
         this.$TestCase.constructor.call(this);
         this.mockSection = {
@@ -28,15 +27,14 @@ Aria.classDefinition({
             $dispose : function () {},
             refreshProcessingIndicator : function () {}
         };
-
+        this.defaultTestTimeout = 5000;
     },
     $prototype : {
 
         /**
-         * Make sure the right events are thrown, even if there is only one animation set
+         * Make sure the right events are thrown
          */
         testAsync_checkEvents : function () {
-
             var browserVersion = parseInt(aria.core.Browser.version, 10);
             var cssAnimationsNotSupported = (aria.core.Browser.isIE && browserVersion < 10)
                     || (aria.core.Browser.isFirefox && browserVersion < 4);
@@ -56,7 +54,7 @@ Aria.classDefinition({
                     left : 500
                 },
                 animateIn : "slide right",
-                animateOut : null
+                animateOut : "slide left"
             };
 
             this.popup = new aria.popups.Popup();
@@ -75,32 +73,36 @@ Aria.classDefinition({
             this.assertJsonEquals(["onBeforeOpen", "onPositioned"], this.eventsFired);
             // reset
             this.eventsFired = [];
-
-            this.waitFor({
-                condition : {
-                    fn : this.checkEventFired,
-                    scope : this
-                },
-                callback : {
-                    fn : this.checkEventsArrayAfterOpen,
-                    scope : this
-                }
-            });
-        },
-
-        checkEventFired : function () {
-            return this.eventsFired.length > 0;
+            this.__waitForEvent(this.checkEventsArrayAfterOpen);
         },
 
         checkEventsArrayAfterOpen : function () {
             this.assertJsonEquals(["onAfterOpen"], this.eventsFired);
             this.eventsFired = [];
             this.popup.close();
-            this.assertJsonEquals(["onBeforeClose", "onAfterClose"], this.eventsFired);
+            this.assertJsonEquals(["onBeforeClose"], this.eventsFired);
+            this.eventsFired = [];
+            this.__waitForEvent(this.checkEventsArrayAfterClose);
+        },
+
+        checkEventsArrayAfterClose : function () {
+
+            this.assertJsonEquals(["onAfterClose"], this.eventsFired);
             this.popup.$dispose();
             this.eventsFired = null;
             this.notifyTestEnd("testAsync_checkEvents");
+        },
 
+        __waitForEvent : function (cb) {
+            this.waitFor({
+                condition : function () {
+                    return this.eventsFired.length > 0;
+                },
+                callback : {
+                    fn : cb,
+                    scope : this
+                }
+            });
         }
 
     }

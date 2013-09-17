@@ -13,14 +13,19 @@
  * limitations under the License.
  */
 
-Aria.classDefinition({
-    $classpath : "test.aria.popups.PopupsTestSuite",
-    $extends : "aria.jsunit.TestSuite",
-    $constructor : function () {
-        this.$TestSuite.constructor.call(this);
+{CSSTemplate {
+    $classpath : "aria.touch.widgets.PopupCSS"
+}}
 
-        this.addTests("test.aria.popups.Popup");
-        this.addTests("test.aria.popups.PopupEventsTestCase");
-        this.addTests("test.aria.popups.PopupAnimationsTestCase");
-    }
-});
+    {macro main()}
+
+        div.touchLibPopup {
+            background: none repeat scroll 0 0 #EFF9FF;
+            border: 2px solid #999999;
+            border-radius: 32px 32px 32px 32px;
+        }
+
+
+    {/macro}
+
+{/CSSTemplate}

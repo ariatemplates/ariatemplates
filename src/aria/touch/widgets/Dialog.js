@@ -16,14 +16,16 @@
 /**
  * Dialog Widget.
  */
+/* Backward Compatibility starts here*/
 Aria.classDefinition({
     $classpath : "aria.touch.widgets.Dialog",
-    $extends : "aria.widgetLibs.BindableWidget",
+    $extends : "aria.touch.widgets.Popup",
     $css : ["aria.touch.widgets.DialogCSS"],
     $statics : {
-        BINDING_NEEDED : "The property '%2' from Widget %1 should be bound to a data model"
+        CSS_CLASS : "touchLibDialog",
+        WIDGET_CFG : "aria.touch.widgets.DialogCfgBeans.DialogCfg"
     },
-    $dependencies : ["aria.touch.widgets.DialogCfgBeans", "aria.utils.Dom", "aria.utils.Mouse", "aria.utils.Json"],
+    $dependencies : ["aria.touch.widgets.DialogCfgBeans"],
     /**
      * Dialog Constructor.
      * @param {aria.touch.widgets.DialogCfgBeans.DialogCfg} cfg dialog configuration
@@ -31,92 +33,10 @@ Aria.classDefinition({
      * @param {Number} lineNumber line number in the template
      */
     $constructor : function (cfg, context, lineNumber) {
-        this.$BindableWidget.constructor.apply(this, arguments);
-
-        this._cfgOk = aria.core.JsonValidator.validateCfg("aria.touch.widgets.DialogCfgBeans.DialogCfg", cfg);
-
-        if (!this._cfgOk) {
-            return;
-        }
-
-        this._registerBindings();
-
-        /**
-         * Id generated for the button DOM element of the slider.
-         * @type String
-         * @protected
-         */
-        this._domId = cfg.id ? context.$getId(cfg.id) : this._createDynamicId();
-
+        this.$Popup.constructor.apply(this, arguments);
+        this.$logWarn("aria.touch.widgets.Dialog has been deprecated, please use aria.touch.widgets.Popup");
     },
     $prototype : {
-        /**
-         * Return the configured id of the widget, this is used by the section to register the widget's behavior
-         * @return {String}
-         */
-        getId : function () {
-            return this._cfg.id;
-        },
-
-        /**
-         * Write the widget markup
-         * @param {aria.templates.MarkupWriter} out Markup writer
-         * @override
-         */
-        writeMarkup : function (out) {
-            // just create an empty section to start with
-            out.beginSection({
-                id : "__dialog_" + this._domId
-            });
-
-            out.endSection();
-        },
-
-        /**
-         * Method called when the dialog is not used as a container
-         * @param {aria.templates.MarkupWriter} out the writer Object to use to output markup
-         */
-        _widgetMarkup : function (out) {
-            this._widgetMarkupBegin(out);
-            this._widgetMarkupEnd(out);
-        },
-
-        /**
-         * Widget markup starts here
-         * @param {aria.templates.MarkupWriter} out the writer Object to use to output markup
-         * @protected
-         */
-        _widgetMarkupBegin : function (out) {
-            out.beginSection({
-                id : "__dialog_" + this._domId
-            });
-        },
-
-        /**
-         * Widget markup ends here
-         * @param {aria.templates.MarkupWriter} out the writer Object to use to output markup
-         * @protected
-         */
-        _widgetMarkupEnd : function (out) {
-            out.endSection();
-        },
-
-        /**
-         * Callback called when the dialog's main section is refreshed
-         * @param {aria.templates.MarkupWriter} out the writer Object to use to output markup
-         * @private
-         */
-        _writerCallback : function (out) {
-
-            out.write("<div class=\"touchLibDialog\">");
-
-            if (this._cfg.contentMacro) {
-                out.callMacro(this._cfg.contentMacro);
-            }
-
-            out.write("</div>");
-        },
-
         /**
          * Initialization method called after the markup of the widget has been inserted in the DOM.
          */
@@ -129,12 +49,21 @@ Aria.classDefinition({
             if (bindings.isVisible) {
                 var isVisible = this._transform(bindings.isVisible.transform, bindings.isVisible.inside[bindings.isVisible.to], "toWidget");
                 if (isVisible === true) {
+                    this.$logWarn("isVisible has been deprecated, please use visible instead");
+                    this.show();
+                }
+                isBound = true;
+            }
+
+            if (bindings.visible) {
+                var visible = this._transform(bindings.visible.transform, bindings.visible.inside[bindings.visible.to], "toWidget");
+                if (visible === true) {
                     this.show();
                 }
                 isBound = true;
             }
             if (!isBound) {
-                this.$logWarn(this.BINDING_NEEDED, [this.$class, "isVisible"]);
+                this.$logWarn(this.BINDING_NEEDED, [this.$class, "visible"]);
             }
         },
 
@@ -143,93 +72,27 @@ Aria.classDefinition({
          * @protected
          */
         _notifyDataChange : function (bind, property) {
-            if (property === "isVisible") {
+            if (property === "visible" || property === "isVisible") {
                 bind.newValue ? this.show() : this._popup.close();
             }
-        },
-
-        /**
-         * Shows the popup
-         */
-        show : function () {
-            var cfg = this._cfg;
-            var refreshParams = {
-                section : "__dialog_" + this._domId,
-                writerCallback : {
-                    fn : this._writerCallback,
-                    scope : this
-                }
-            };
-
-            var section = this._context.getRefreshedSection(refreshParams);
-
-            var popup = new aria.popups.Popup();
-            this._popup = popup;
-            popup.$on({
-                "onAfterClose" : this.disposePopup,
-                scope : this
-            });
-
-            // default the position to 0,0 if nothing is defined
-            if (cfg.domReference === null && cfg.referenceId === null && cfg.absolutePosition === null
-                    && cfg.center === false) {
-                cfg.absolutePosition = {
-                    top : 0,
-                    left : 0
-                };
-            }
-
-            var domReference = null;
-            if (cfg.domReference) {
-                domReference = cfg.domReference;
-            } else if (cfg.referenceId) {
-                domReference = aria.utils.Dom.getElementById(this._context.$getId(cfg.referenceId));
-            }
-
-            popup.open({
-                section : section,
-                keepSection : true,
-                modal : cfg.modal,
-                maskCssClass : cfg.maskCssClass,
-                domReference : domReference,
-                absolutePosition : cfg.absolutePosition,
-                center : cfg.center,
-                maximized : cfg.maximized,
-                closeOnMouseClick : cfg.closeOnMouseClick,
-                closeOnMouseScroll : cfg.closeOnMouseScroll,
-                closeOnMouseOut : cfg.closeOnMouseOut,
-                closeOnMouseOutDelay : cfg.closeOnMouseOutDelay,
-                preferredPositions : cfg.preferredPositions,
-                offset : cfg.offset,
-                ignoreClicksOn : cfg.ignoreClicksOn,
-                parentDialog : cfg.parentDialog,
-                preferredWidth : cfg.preferredWidth,
-                animateOut : cfg.animateOut,
-                animateIn : cfg.animateIn
-            });
-        },
-
-        /**
-         * Dispose the dialog popup after the close
-         */
-        disposePopup : function () {
-            if (this._popup) {
-                this._popup.$dispose();
-                this._popup = null;
-            }
-            this._resetVisible();
         },
 
         /**
          * Bidirectional binding: reset the visible property when we close the popup
          */
         _resetVisible : function () {
-            var bind = this._bindingListeners.isVisible;
+            var bind = this._bindingListeners.visible;
             if (bind) {
                 var newValue = this._transform(bind.transform, false, "fromWidget");
                 aria.utils.Json.setValue(bind.inside, bind.to, newValue, bind.cb);
             }
-        }
 
+            var bindDeprecated = this._bindingListeners.isVisible;
+            if (bindDeprecated) {
+                var newValue = this._transform(bindDeprecated.transform, false, "fromWidget");
+                aria.utils.Json.setValue(bindDeprecated.inside, bindDeprecated.to, newValue, bindDeprecated.cb);
+            }
+        }
     }
 });
+/* Backward Compatibility ends here*/
