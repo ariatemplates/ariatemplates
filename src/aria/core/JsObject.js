@@ -318,6 +318,7 @@
              * @return the value returned by the callback, or undefined if the callback could not be called.
              */
             $callback : function (cb, res, errorId) {
+                var scope, callback;
                 try {
                     if (!cb) {
                         return; // callback is sometimes not used
@@ -328,7 +329,7 @@
                     }
 
                     // perf optimisation : duplicated code on purpose
-                    var scope = cb.scope, callback;
+                    scope = cb.scope;
                     scope = scope ? scope : this;
                     if (!cb.fn) {
                         callback = cb;
@@ -552,7 +553,9 @@
                     }
                     if (lsn.$Callback) {
                         lsn = {
-                            fn : function (evt, cb) {cb.call(evt)},
+                            fn : function (evt, cb) {
+                                cb.call(evt)
+                            },
                             scope : this,
                             args : lsn
                         };
