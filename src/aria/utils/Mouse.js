@@ -366,7 +366,7 @@
                 this._dragStartPosition = null;
                 disconnectMouseEvents(this);
 
-                var element = this._activeDrag, event;
+                var element = this._activeDrag;
                 if (element) {
                     element.end();
                 }

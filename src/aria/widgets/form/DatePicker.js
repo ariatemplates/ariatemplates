@@ -180,7 +180,7 @@ Aria.classDefinition({
          * @protected
          */
         _renderDropdownContent : function (out) {
-            var cfg = this._cfg, skinObj = this._skinObj;
+            var cfg = this._cfg;
             var wrapperDiv = cfg.popupWidth && cfg.popupWidth > -1 && aria.core.Browser.isIE6;
             if (wrapperDiv) {
                 out.write('<div style="width: ' + cfg.popupWidth + 'px;">');

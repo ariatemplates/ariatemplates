@@ -399,8 +399,6 @@ Aria.classDefinition({
          * @private
          */
         _afterRequestFilters : function (unused, req) {
-            var reqId = req.id;
-
             this.$raiseEvent({
                 name : "request",
                 req : req
@@ -451,7 +449,8 @@ Aria.classDefinition({
             this.nbRequests++;
             req.id = this.nbRequests;
 
-            var reqMethods = ["GET", "POST", "PUT", "DELETE", "HEAD", "TRACE", "OPTIONS", "CONNECT", "PATCH", "COPY", "PROPFIND", "MKCOL", "PROPPATCH", "MOVE", "LOCK", "UNLOCK", "BIND", "UNBIND", "REBIND"];
+            var reqMethods = ["GET", "POST", "PUT", "DELETE", "HEAD", "TRACE", "OPTIONS", "CONNECT", "PATCH", "COPY",
+                    "PROPFIND", "MKCOL", "PROPPATCH", "MOVE", "LOCK", "UNLOCK", "BIND", "UNBIND", "REBIND"];
             // Assign a request timeout in order of importance:
             // # req.timeout - User specified timeout
             // # req.callback.timeout - Timeout of the callback function (might be set by filters)
@@ -533,8 +532,6 @@ Aria.classDefinition({
          * @private
          */
         _prepareTransport : function (request) {
-            var reqId = request.id;
-
             var transport;
             if (request.jsonp) {
                 transport = this.__jsonp;
@@ -615,7 +612,7 @@ Aria.classDefinition({
         _asyncRequest : function (arg) {
             var request = arg.req;
             var reqId = request.id;
-            var method = request.method;
+            // var method = request.method;
             var transport = arg.transport.instance || Aria.getClassRef(arg.transport.classpath);
 
             var transportCallback = {

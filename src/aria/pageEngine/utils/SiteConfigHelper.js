@@ -117,7 +117,7 @@ Aria.classDefinition({
         },
 
         disposeContentProcessorsInstances : function () {
-            var processors = {}, typeUtils = aria.utils.Type;
+            var typeUtils = aria.utils.Type;
             var instances = this._contentProcessorsInstances;
             for (var cp in instances) {
                 if (instances.hasOwnProperty(cp)) {

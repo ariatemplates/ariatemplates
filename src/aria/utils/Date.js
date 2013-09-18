@@ -40,7 +40,7 @@ Aria.classDefinition({
          */
         this._environment = aria.utils.environment.Date;
 
-        var res = this.dateRes, env = this._environment, utilString = aria.utils.String, utilRes = this.res;
+        var res = this.dateRes, utilString = aria.utils.String, utilRes = this.res;
 
         /**
          * IATA Months for interpretation
@@ -1442,7 +1442,8 @@ Aria.classDefinition({
         /**
          * Format a date from a given pattern
          * @param {Date} date
-         * @param {String} pattern. See http://www.ariatemplates.com/usermanual/latest/localization_and_resources#Date_and_Time
+         * @param {String} pattern. See
+         * http://www.ariatemplates.com/usermanual/latest/localization_and_resources#Date_and_Time
          * @param {Boolean} utcTime if true, display UTC date/time instead of local
          * @return {String}
          */
@@ -1472,7 +1473,7 @@ Aria.classDefinition({
          */
         _getFormatFunction : function (pattern) {
 
-            var workPattern = pattern, currentChar, previousChar, inLitteral, litteral = [], quoteJustInserted = false, patternOccurency = 0, fnParts = [], patternFn, utilType = aria.utils.Type, formatFunction;
+            var workPattern = pattern, currentChar, previousChar, inLitteral, litteral = [], quoteJustInserted = false, patternOccurency = 0, fnParts = [], formatFunction;
 
             // retrieve from cache
             if (this._formatCache[pattern]) {

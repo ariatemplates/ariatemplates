@@ -249,7 +249,7 @@ Aria.classDefinition({
                 var moduleCtrlFactory = this.bridge.getAriaPackage().templates.ModuleCtrlFactory;
                 this.$assert(190, !!templateCtxt);
                 this.$assert(191, !!moduleCtrlFactory);
-                var data = templateCtxt.data;
+                // var data = templateCtxt.data;
                 var moduleCtrl = templateCtxt.moduleCtrl;
 
                 if (moduleCtrl) {
@@ -375,7 +375,7 @@ Aria.classDefinition({
             // replace in this scope Aria and aria
             var oSelf = this;
             var doIt = function () {
-                var Aria = oSelf.bridge.getAria(), aria = oSelf.bridge.getAriaPackage();
+                // var Aria = oSelf.bridge.getAria(), aria = oSelf.bridge.getAriaPackage();
 
                 // ... and call for reload
                 templateCtxt.$reload(tplSource, {

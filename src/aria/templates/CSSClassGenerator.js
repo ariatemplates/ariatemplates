@@ -47,7 +47,7 @@ Aria.classDefinition({
          * @protected
          */
         _writeClassInit : function (out) {
-            var tplParam = out.templateParam;
+            // var tplParam = out.templateParam;
             out.enterBlock("classInit");
             this._writeMapInheritance(out, "__$csslibs", out.templateParam.$csslibs, "{}");
             this._writeValueInheritance(out, "__$prefix", out.templateParam.$prefix, "true");

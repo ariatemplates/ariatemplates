@@ -43,7 +43,7 @@
          * @param {aria.templates.CfgBeans:SectionCfg} configuration of this section (id, type, ...).
          */
         $constructor : function (tplCtxt, cfg, options) {
-            var binding, bindings, id, type, processing;
+            var binding, bindings, id, type;
 
             /**
              * Array of objects which are either a section (recognizable through its _type property = TYPE_SECTION) or

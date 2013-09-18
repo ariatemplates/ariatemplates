@@ -211,7 +211,7 @@
             Aria.$logError(Aria.NULL_CLASSPATH);
             return false;
         }
-        var classpathParts = path.split('.'), nbParts = classpathParts.length, part;
+        var classpathParts = path.split('.'), nbParts = classpathParts.length;
         for (var index = 0; index < nbParts - 1; index++) {
             if (!__checkPackageName(classpathParts[index], context)) {
                 return false;
@@ -1445,7 +1445,6 @@
         object.Aria = Aria;
         var global = Aria.$global;
         var classes = Aria.$classes;
-        var copiedClasses = {};
         for (var i = 0, l = classes.length; i < l; i++) {
             var classRef = classes[i];
             if (classRef) {

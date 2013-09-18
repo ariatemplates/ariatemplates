@@ -53,9 +53,6 @@ Aria.classDefinition({
          * @override
          */
         _createOverlay : function (params) {
-
-            var overlay = this.$Overlay._createOverlay(params);
-
             var clone = this.__clone;
             var opacity = ("opacity" in params) ? params.opacity : 0.5;
             aria.utils.Dom.setOpacity(clone, opacity);

@@ -964,7 +964,7 @@ Aria.classDefinition({
             // section in DOM");
             aria.utils.Dom.replaceHTML(this.domElement, section.html);
 
-            var sectionDomElement = this.domElement.firstChild;
+            // var sectionDomElement = this.domElement.firstChild;
 
             // Maybe the initWidget should be done after displaying the popup ?
             section.initWidgets();

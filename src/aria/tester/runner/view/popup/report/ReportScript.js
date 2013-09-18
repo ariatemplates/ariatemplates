@@ -23,7 +23,6 @@ Aria.tplScriptDefinition({
         getTestsWithErrors : function () {
             var __testUtils = aria.tester.runner.utils.TestUtils;
             var rootSuite = this.data.campaign.testsTree[0];
-            var testInstance = null;
             var failedTests = [];
             var subTests = [];
 

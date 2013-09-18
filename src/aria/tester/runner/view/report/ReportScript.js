@@ -142,7 +142,6 @@ Aria.tplScriptDefinition({
         },
 
         formatTestInfo : function (testCase) {
-            var __testUtils = aria.tester.runner.utils.TestUtils;
             var assertCount = testCase.instance._totalAssertCount;
             var assertReport = assertCount + " asserts";
 

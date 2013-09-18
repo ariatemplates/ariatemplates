@@ -216,7 +216,7 @@
             // mark this node has being visited
             node[jsonUtils.TEMP_REC_MARKER] = true;
 
-            for (var index = 0, parentDesc, parentListener; parentDesc = parents[index]; index++) {
+            for (var index = 0, parentDesc; parentDesc = parents[index]; index++) {
                 listeners = __retrieveListeners(parentDesc.parent, parentDesc.property, true, listeners);
             }
             // at the end, clean recursive markup (only first call will have recursive set to null)
@@ -286,30 +286,6 @@
             change.dataHolder = container;
             change.dataName = property;
             __callListeners(listeners, change, listenerToExclude);
-        }
-    };
-
-    /**
-     * Copy for an element in the object / array
-     * @private
-     * @param {Object} elem
-     * @param {Object} target
-     * @param {String} key
-     * @param {Boolean} rec
-     * @param {Boolean} keepValidators
-     */
-    var __elemCopy = function (elem, target, key, rec, keepValidators) {
-        if (typeUtils.isObject(elem) || typeUtils.isArray(elem)) {
-            if (rec) {
-                target[key] = aria.utils.Json.copy(elem, true, null, keepValidators);
-            } else {
-                target[key] = elem;
-            }
-        } else if (typeUtils.isDate(elem)) {
-            target[key] = new Date(elem.getTime());
-        } else {
-            // may be a string, number, boolean, or something else: function ...
-            target[key] = elem;
         }
     };
 
@@ -746,7 +722,7 @@
              */
             copy : function (obj, rec, filters, keepMeta) {
                 rec = (rec !== false);
-                var container = false, res, elem;
+                var container = false, res;
                 if (typeUtils.isArray(obj)) {
                     res = [];
                     container = true;
@@ -797,7 +773,6 @@
              */
             load : function (str, ctxt, errMsg) {
                 // TODO setup complete sandbox variables - e.g. through closure
-                var window = null, document = null, frames = null;
                 var res = null;
                 try {
                     str = ('' + str).replace(/^\s/, ''); // remove first spaces
@@ -807,7 +782,6 @@
                     if (!errMsg) {
                         errMsg = this.INVALID_JSON_CONTENT;
                     }
-                    var cp = 'unspecified';
                     if (ctxt && ctxt.$classpath) {
                         ctxt = ctxt.$classpath;
                     }

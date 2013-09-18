@@ -510,7 +510,6 @@
             toBeLoaded : subModulesDescArrayLength,
             customModules : customModules
         };
-        var subRecursionCheck = null;
         var typeUtils = aria.utils.Type;
         for (var i = 0; i < subModulesDescArrayLength; i++) {
             var subModuleDesc = subModulesDescArray[i];

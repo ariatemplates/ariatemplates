@@ -59,7 +59,7 @@ Aria.classDefinition({
         _onChange : function (evt) {
             var changeType = evt.changeType;
             var testEngine = this._testEngine;
-            var testacular = this._testacular;
+            // var testacular = this._testacular;
             var currentTest = testEngine.getCurrentTest();
 
             // immediately report any failures or errors

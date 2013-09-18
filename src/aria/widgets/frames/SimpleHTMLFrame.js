@@ -30,7 +30,7 @@ Aria.classDefinition({
          * @protected
          */
         _computeSize : function () {
-            var cfg = this._cfg, state = cfg.stateObject;
+            var cfg = this._cfg; // , state = cfg.stateObject;
             // The following line was removed (set as a comment) because the borderSize property was not passed by the
             // skinning system, and as a consequence the hard-coded default was always used.
             // var border = (state.borderSize > 0) ? (state.borderSize) * 2 : 4;

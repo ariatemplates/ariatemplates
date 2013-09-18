@@ -75,7 +75,7 @@ Aria.tplScriptDefinition({
 
             if (evt.name == "messagesChanged") {
                 if (evt.domRef) {
-                    var domConfig = aria.utils.Dom.scrollIntoView(evt.domRef);
+                    aria.utils.Dom.scrollIntoView(evt.domRef);
                 }
                 this.$refresh();
             }

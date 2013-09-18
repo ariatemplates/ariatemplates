@@ -147,10 +147,9 @@ Aria.classDefinition({
          * DOM callback function called on key press
          */
         _dom_onkeypress : function (event) {
-            var cfg = this._cfg;
             if (this._subTplModuleCtrl) {
                 if (!event.isSpecialKey && event.charCode != event.KC_SPACE) {
-                    var returns = this.sendKey(event.charCode, event.keyCode);
+                    this.sendKey(event.charCode, event.keyCode);
                 }
             }
         },
@@ -159,11 +158,10 @@ Aria.classDefinition({
          * DOM callback function called on key down
          */
         _dom_onkeydown : function (event) {
-            var cfg = this._cfg;
             // event.cancelBubble = true;
             if (this._subTplModuleCtrl) {
                 if (event.isSpecialKey) {
-                    var returns = this.sendKey(event.charCode, event.keyCode);
+                    this.sendKey(event.charCode, event.keyCode);
                 }
             }
             if (event.keyCode != event.KC_TAB) {
@@ -196,7 +194,7 @@ Aria.classDefinition({
             // by each of the updates below that needs a refresh
             var refreshNeeded = false;
             var moduleCtrl = this._subTplModuleCtrl;
-            var data = this._subTplCtxt.data;
+            // var data = this._subTplCtxt.data;
             if (key == "selectedValues") {
                 moduleCtrl.setSelectedValues(newValue);
             } else if (key == "selectedIndex") {

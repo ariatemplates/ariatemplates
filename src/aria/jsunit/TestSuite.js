@@ -389,7 +389,8 @@ Aria.classDefinition({
          * @param {Object} params
          */
         __onDownloadTaskError : function (args) {
-            var task = args.task, test = args.test, sequencer = args.sequencer;
+            var test = args.test;
+            // var task = args.task, sequencer = args.sequencer;
 
             var errorMessage = "Loading of " + test.classpath + " failed";
 

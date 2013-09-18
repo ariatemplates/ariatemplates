@@ -174,7 +174,6 @@ Aria.classDefinition({
                 serverResource : false,
                 full : null
             };
-            var asynch = false;
 
             // process server resource set
             if (refClasspath.match(/\.Res$/)) {
