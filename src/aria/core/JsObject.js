@@ -12,6 +12,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaUtilsString = require("../utils/String");
+var ariaCoreInterfaces = require("./Interfaces");
 
 (function () {
 
@@ -95,7 +98,7 @@
      * @param {Object} info interceptor parameters
      */
     var __callInterceptorMethod = function (info) {
-        var methodName = aria.utils.String.capitalize(info.method);
+        var methodName = ariaUtilsString.capitalize(info.method);
         var fctRef = this["on" + methodName + info.step];
         if (fctRef) {
             return fctRef.call(this, info);
@@ -202,7 +205,7 @@
      * @return {Boolean} true if method has been intercepted
      */
     var __hasBeenIntercepted = function (methodName, interceptor) {
-        var capitalizedMethodName = "on" + aria.utils.String.capitalize(methodName);
+        var capitalizedMethodName = "on" + ariaUtilsString.capitalize(methodName);
         if ((interceptor[capitalizedMethodName + "CallBegin"] || interceptor[capitalizedMethodName + "Callback"] || interceptor[capitalizedMethodName
                 + "CallEnd"])
                 || (interceptor["on" + methodName + "CallBegin"] || interceptor["on" + methodName + "Callback"] || interceptor["on"
@@ -252,7 +255,7 @@
     /**
      * Base class from which derive all JS classes defined through Aria.classDefinition()
      */
-    Aria.classDefinition({
+    module.exports = Aria.classDefinition({
         $classpath : "aria.core.JsObject",
         // JsObject is an exception regarding $constructor and $destructor:
         // it is not necessary to call these methods when extending JsObject
@@ -312,7 +315,7 @@
                     delete this.__$interceptors;
                 }
                 if (this.__$interfaces) {
-                    aria.core.Interfaces.disposeInterfaces(this);
+                    ariaCoreInterfaces.disposeInterfaces(this);
                 }
             },
 
@@ -498,7 +501,7 @@
              * @param {String|Function} itf Classpath of the interface or reference to the interface constructor.
              */
             $interface : function (itf) {
-                return aria.core.Interfaces.getInterface(this, itf);
+                return ariaCoreInterfaces.getInterface(this, itf);
             },
 
             /**
@@ -519,7 +522,7 @@
                     allInterceptors = {};
                     this.__$interceptors = allInterceptors;
                 }
-                var interceptMethods = (aria.utils.Type.isCallback(interceptor))
+                var interceptMethods = ((require("../utils/Type")).isCallback(interceptor))
                         ? __interceptCallback
                         : __interceptObject;
 

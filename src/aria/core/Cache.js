@@ -12,12 +12,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
 
 /**
  * Cache object used to synchronize data retrieved from the server and avoid reloading the same resource several times
  * @singleton
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.core.Cache",
     $singleton : true,
     $statics : {

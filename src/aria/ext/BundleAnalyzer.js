@@ -1,3 +1,6 @@
+var Aria = require("../Aria");
+var ariaCoreCache = require("../core/Cache");
+
 /**
  * Creates a report on the classes' usage inside bundles.<br />
  * Packaging the framework in multipart files means grouping different classes in a single file (bundle) in order to
@@ -15,7 +18,7 @@
  * });
  * </pre>
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.ext.BundleAnalyzer",
     $singleton : true,
     /**
@@ -52,7 +55,7 @@ Aria.classDefinition({
          * </pre>
          */
         getReport : function () {
-            var cache = aria.core.Cache.content;
+            var cache = ariaCoreCache.content;
 
             var downloadedBundles = [];
             for (var name in cache.urls) {
@@ -64,12 +67,12 @@ Aria.classDefinition({
             var loadedFiles = {}, uselessFiles = [], errorFiles = [];
             for (name in cache.classes) {
                 if (cache.classes.hasOwnProperty(name)) {
-                    loadedFiles[aria.core.Cache.getFilename(name)] = true;
+                    loadedFiles[ariaCoreCache.getFilename(name)] = true;
                 }
             }
             for (name in cache.files) {
                 if (cache.files.hasOwnProperty(name)) {
-                    if (cache.files[name].status !== aria.core.Cache.STATUS_AVAILABLE) {
+                    if (cache.files[name].status !== ariaCoreCache.STATUS_AVAILABLE) {
                         errorFiles.push(name);
                     } else {
                         var description = this._getClassDescription(cache.files[name].value);
