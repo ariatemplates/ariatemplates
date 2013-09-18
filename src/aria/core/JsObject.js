@@ -154,13 +154,20 @@
         this.$callback(interc, info);
         if (!info.cancelDefault) {
             // call next wrapper or real method:
-            info.returnValue = __callWrapper.call(this, info.args, commonInfo, interceptorIndex + 1);
+            try {
+                info.returnValue = __callWrapper.call(this, info.args, commonInfo, interceptorIndex + 1);
+            } catch (e) {
+                info.exception = e;
+            }
             info.step = "CallEnd";
             delete info.cancelDefault; // no longer useful in CallEnd
             // call the interceptor, even if it was removed in the mean time (so
             // that CallEnd is always called when
             // CallBegin has been called):
             this.$callback(interc, info);
+            if ("exception" in info) {
+                throw info.exception;
+            }
         }
         return info.returnValue;
     };
