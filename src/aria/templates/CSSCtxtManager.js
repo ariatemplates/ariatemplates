@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
 
 /**
  * List of active CSS templates loaded by Aria.loadTemplate
@@ -19,9 +20,8 @@
  * @extends aria.core.JsObject
  * @singleton
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.templates.CSSCtxtManager",
-    $dependencies : ["aria.templates.CSSCtxt"],
     $singleton : true,
     $constructor : function () {
         /**
@@ -46,7 +46,7 @@ Aria.classDefinition({
 
             // Create a context if missing
             if (!ctxt) {
-                ctxt = new aria.templates.CSSCtxt();
+                ctxt = new (require("./CSSCtxt"))();
 
                 // Override the classpath
                 if (!initArgs) {
@@ -62,8 +62,8 @@ Aria.classDefinition({
         },
 
         /**
-         * Dispose the Context of a CSS Template. This means that when the CSS Template is loaded again, it's main
-         * macro will be executed again because it might have changed, for instance during a template reload.
+         * Dispose the Context of a CSS Template. This means that when the CSS Template is loaded again, it's main macro
+         * will be executed again because it might have changed, for instance during a template reload.
          * @param {String} classpath CSS Template classpath
          */
         disposeContext : function (classpath) {

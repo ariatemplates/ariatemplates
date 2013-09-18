@@ -12,6 +12,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaCoreCache = require("./Cache");
+var ariaCoreFileLoader = require("./FileLoader");
 
 /**
  * Download Manager manages file download synchronization thanks to the FileLoader and Cache. When multiple files are
@@ -19,10 +22,9 @@
  * physical URL mapping (the same physical URL can be used for multiple logical paths in case of multipart (packaged)
  * files) thanks to the Url Map.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.core.DownloadMgr",
     $singleton : true,
-    $dependencies : ["aria.utils.Type", "aria.utils.Json"],
     $constructor : function () {
 
         /**
@@ -54,14 +56,14 @@ Aria.classDefinition({
          * @protected
          * @type aria.utils.Json
          */
-        this._jsonUtils = aria.utils.Json;
+        this._jsonUtils = (require("../utils/Json"));
 
         /**
          * Type utils shortcut
          * @protected
          * @type aria.utils.Type
          */
-        this._typeUtils = aria.utils.Type;
+        this._typeUtils = (require("../utils/Type"));
 
         /**
          * Map of URLs for which it is desired to bypass the browser cache.
@@ -210,7 +212,7 @@ Aria.classDefinition({
         loadFile : function (logicalPath, cb, args) {
             // get the file item in the cache
             if (!this._cache) {
-                this._cache = aria.core.Cache;
+                this._cache = ariaCoreCache;
             }
             this.$assert(34, this._cache);
             this.$assert(35, cb.scope);
@@ -232,7 +234,7 @@ Aria.classDefinition({
             // file is not loaded: create a file loader if not already done
             var loader = itm.loader;
             if (!loader) {
-                this.$assert(63, aria.core.FileLoader);
+                this.$assert(63, ariaCoreFileLoader);
 
                 var url;
                 if (args && args.fullLogicalPath) {
@@ -262,7 +264,7 @@ Aria.classDefinition({
                     // this loader should be processing as 'files' entry in cache is empty
                     this.$assert(72, urlItm.status == cache.STATUS_LOADING);
                 } else {
-                    urlItm.loader = new aria.core.FileLoader(url);
+                    urlItm.loader = new ariaCoreFileLoader(url);
                     urlItm.status = cache.STATUS_LOADING;
 
                     // register on complete to delete the object when not necessary anymore
@@ -410,7 +412,7 @@ Aria.classDefinition({
          */
         loadFileContent : function (logicalPath, content, hasErrors) {
             if (!this._cache) {
-                this._cache = aria.core.Cache;
+                this._cache = ariaCoreCache;
             }
             var itm = this._cache.getItem("files", logicalPath, true);
             if (hasErrors) {
@@ -441,7 +443,7 @@ Aria.classDefinition({
          * @param {aria.core.CfgBeans:Callback} cb Callback to be called after tpl content is downloaded
          */
         loadTplFileContent : function (classpath, cb) {
-            var logicalPath = aria.core.ClassMgr.getBaseLogicalPath(classpath) + ".tpl";
+            var logicalPath = (require("./ClassMgr")).getBaseLogicalPath(classpath) + ".tpl";
             this.loadFile(logicalPath, {
                 fn : this._onTplFileContentReceive,
                 scope : this,

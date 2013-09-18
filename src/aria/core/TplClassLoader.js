@@ -12,6 +12,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaCoreJsObject = require("./JsObject");
+var ariaCoreBrowser = require("./Browser");
+var ariaCoreJsonValidator = require("./JsonValidator");
 
 (function () {
 
@@ -69,7 +73,7 @@
         var tplDiv = cfg.tplDiv;
 
         // On IE, the CSS engine keeps rendering and calculating the position of the background image
-        if (aria.core.Browser.isOldIE) {
+        if (ariaCoreBrowser.isOldIE) {
             tplDiv.style.background = "";
         }
 
@@ -120,7 +124,7 @@
         var cfg = args.cfg;
         var cb = args.cb;
         // Check cfg:
-        if (!aria.core.JsonValidator.normalize({
+        if (!ariaCoreJsonValidator.normalize({
             json : cfg,
             beanName : "aria.templates.CfgBeans.LoadTemplateCfg"
         })) {
@@ -136,7 +140,7 @@
         if (moduleCtrl && !moduleCtrl.getData) {
             // the module controller is not yet initialized (description of how to create it is present in a json
             // object)
-            if (!aria.core.JsonValidator.normalize({
+            if (!ariaCoreJsonValidator.normalize({
                 json : moduleCtrl,
                 beanName : "aria.templates.CfgBeans.InitModuleCtrl"
             })) {
@@ -188,7 +192,7 @@
 
         // Because of css-related positioning problems, it is safer to set a relative positioning on the div here
         // This is actually an IE6/7 only problem that can cause scrolling problems
-        if (aria.core.Browser.isIE6 || aria.core.Browser.isIE7) {
+        if (ariaCoreBrowser.isIE6 || ariaCoreBrowser.isIE7) {
             var curPosition = div.style.position;
             if (curPosition != "absolute" && curPosition != "relative") {
                 div.style.position = "relative";
@@ -222,9 +226,9 @@
     /**
      * ClassLoader for .tpl files.
      */
-    Aria.classDefinition({
+    module.exports = Aria.classDefinition({
         $classpath : "aria.core.TplClassLoader",
-        $extends : "aria.core.ClassLoader",
+        $extends : (require("./ClassLoader")),
         $constructor : function () {
             this.$ClassLoader.constructor.apply(this, arguments);
             this._refLogicalPath += ".tpl";
@@ -234,9 +238,9 @@
             var cstr = aria.core.TplClassLoader;
             // TODO: think to something more elegant here:
             // To be able to call the $callback function from a static method
-            cstr.$callback = aria.core.JsObject.prototype.$callback;
-            cstr.$logError = aria.core.JsObject.prototype.$logError;
-            cstr.$normCallback = aria.core.JsObject.prototype.$normCallback;
+            cstr.$callback = ariaCoreJsObject.prototype.$callback;
+            cstr.$logError = ariaCoreJsObject.prototype.$logError;
+            cstr.$normCallback = ariaCoreJsObject.prototype.$normCallback;
             cstr.$classpath = 'aria.core.TplClassLoader';// in case of error in the $callback method
         },
         $statics : {
