@@ -12,12 +12,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
 
 (function () {
 
-    var typeUtils = aria.utils.Type;
+    var typeUtils = (require("../utils/Type"));
     var __mergeEvents = Aria.__mergeEvents;
-    var __clsMgr = aria.core.ClassMgr;
+    var __clsMgr = (require("./ClassMgr"));
     var __cpt = -1; // last used number to store the key inside the interface
     var __getNextCpt = function () {
         __cpt++;
@@ -97,7 +98,7 @@
             // the error is logged later
             return null;
         }
-        if (!aria.core.JsonValidator.normalize({
+        if (!(require("./JsonValidator")).normalize({
             json : res,
             beanName : "aria.core.CfgBeans.ItfMember" + memberType + "Cfg"
         })) {
@@ -214,7 +215,7 @@
      * not be called directly by the application developer.
      * @private
      */
-    Aria.classDefinition({
+    module.exports = Aria.classDefinition({
         $classpath : "aria.core.Interfaces",
         $singleton : true,
         $statics : {

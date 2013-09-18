@@ -12,14 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaCoreCache = require("./Cache");
+var ariaCoreDownloadMgr = require("./DownloadMgr");
 
 /**
- * Manage the class dependency load thanks to ClassLoaders. Classes can be of different types
- * (currently six: "JS", "TPL", "RES", "CSS", "TML" and "TXT"). Before loading a class, it is necessary to know its type
- * (there is no naming convention). This class uses the Cache object to store class definitions (through the
- * DownloadMgr) and indicators telling that a class is being downloaded.
+ * Manage the class dependency load thanks to ClassLoaders. Classes can be of different types (currently six: "JS",
+ * "TPL", "RES", "CSS", "TML" and "TXT"). Before loading a class, it is necessary to know its type (there is no naming
+ * convention). This class uses the Cache object to store class definitions (through the DownloadMgr) and indicators
+ * telling that a class is being downloaded.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.core.ClassMgr",
     $singleton : true,
     $events : {
@@ -83,7 +86,7 @@ Aria.classDefinition({
          */
         notifyClassLoad : function (classpath) {
             if (!this._cache) {
-                this._cache = aria.core.Cache;
+                this._cache = ariaCoreCache;
             }
             this.$assert(1, this._cache);
 
@@ -113,7 +116,7 @@ Aria.classDefinition({
          */
         notifyClassLoadError : function (classpath) {
             if (!this._cache) {
-                this._cache = aria.core.Cache;
+                this._cache = ariaCoreCache;
             }
             this.$assert(1, this._cache);
 
@@ -174,7 +177,7 @@ Aria.classDefinition({
          */
         loadClassDependencies : function (classpath, dpMap, callback) {
             if (!this._cache) {
-                this._cache = aria.core.Cache;
+                this._cache = ariaCoreCache;
             }
             this.$assert(2, this._cache);
             this.$assert(72, callback && callback.fn && callback.scope);
@@ -244,7 +247,7 @@ Aria.classDefinition({
 
             var loader = itm.loader;
             if (!loader) {
-                var loaderConstr = (typeName != null ? this._classTypes[typeName] : aria.core.ClassLoader);
+                var loaderConstr = (typeName != null ? this._classTypes[typeName] : (require("./ClassLoader")));
                 if (typeof loaderConstr === "string") {
                     loaderConstr = Aria.getClassRef(loaderConstr);
                 }
@@ -287,9 +290,9 @@ Aria.classDefinition({
             // clean the class
             Aria.dispose(classpath);
             Aria.cleanGetClassRefCache(classpath);
-            var logicalPath = aria.core.Cache.getFilename(classpath);
+            var logicalPath = ariaCoreCache.getFilename(classpath);
             if (logicalPath) {
-                aria.core.DownloadMgr.clearFile(logicalPath, timestampNextTime);
+                ariaCoreDownloadMgr.clearFile(logicalPath, timestampNextTime);
             }
             var classesInCache = this._cache.content.classes;
             delete classesInCache[classpath];
@@ -307,8 +310,8 @@ Aria.classDefinition({
                     if (dispose) {
                         Aria.dispose(itm);
                         Aria.cleanGetClassRefCache(itm);
-                        var logicalPath = aria.core.Cache.getFilename(itm);
-                        aria.core.DownloadMgr.clearFile(logicalPath, true);
+                        var logicalPath = ariaCoreCache.getFilename(itm);
+                        ariaCoreDownloadMgr.clearFile(logicalPath, true);
                     }
 
                     delete classes[itm];
@@ -327,7 +330,7 @@ Aria.classDefinition({
             var loader = evt.src;
 
             loader.$dispose();
-            var itm = aria.core.Cache.getItem("classes", clspath);
+            var itm = ariaCoreCache.getItem("classes", clspath);
             if (itm) {
                 itm.loader = null; // remove ref to class loader
                 delete itm.loader;

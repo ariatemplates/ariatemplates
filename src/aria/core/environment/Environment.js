@@ -12,15 +12,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+require("./EnvironmentBaseCfgBeans");
+var ariaCoreAppEnvironment = require("../AppEnvironment");
+var ariaCoreResMgr = require("../ResMgr");
 
 /**
  * Public API for retrieving, applying application variables.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.core.environment.Environment",
     $singleton : true,
-    $dependencies : ["aria.core.environment.EnvironmentBaseCfgBeans", "aria.core.AppEnvironment"],
-    $extends : "aria.core.environment.EnvironmentBase",
+    $extends : (require("./EnvironmentBase")),
     $statics : {
         // ERROR MESSAGES:
         INVALID_LOCALE : "Error: the locale '%1' is not in correct format"
@@ -30,8 +33,8 @@ Aria.classDefinition({
         // hook for JsonValidator and logs, which were loaded before
         this.$on({
             "debugChanged" : function () {
-                aria.core.JsonValidator._options.checkEnabled = this.isDebug();
-                var logs = aria.core.Log;
+                (require("../JsonValidator"))._options.checkEnabled = this.isDebug();
+                var logs = (require("../Log"));
                 // PTR 05038013: aria.core.Log may not be available
                 if (logs) {
                     logs.setLoggingLevel("*", this.isDebug() ? logs.LEVEL_DEBUG : logs.LEVEL_ERROR);
@@ -64,8 +67,8 @@ Aria.classDefinition({
                 Aria.debug = debug;
                 this.$raiseEvent("debugChanged");
             }
-            if (aria.core.ResMgr) { // the resource manager may not be already loaded
-                aria.core.ResMgr.changeLocale(this.getLanguage(), callback);
+            if (ariaCoreResMgr) { // the resource manager may not be already loaded
+                ariaCoreResMgr.changeLocale(this.getLanguage(), callback);
             } else {
                 this.$callback(callback);
             }
@@ -95,8 +98,8 @@ Aria.classDefinition({
          * Sets the current application locale (ex: en_US)
          * @public
          * @param {String} locale New locale
-         * @param {aria.core.CfgBeans:Callback} cb Method to be called after the locale is changed. The callback is called with
-         * a boolean (true: errors, false: no errors)
+         * @param {aria.core.CfgBeans:Callback} cb Method to be called after the locale is changed. The callback is
+         * called with a boolean (true: errors, false: no errors)
          */
         setLanguage : function (locale, cb) {
             var err = false;
@@ -105,7 +108,7 @@ Aria.classDefinition({
             } else {
                 var s = locale.split("_");
                 if (locale === "" || (locale.length === 5 && s !== null && s.length === 2) || locale.length == 2) {
-                    aria.core.AppEnvironment.setEnvironment({
+                    ariaCoreAppEnvironment.setEnvironment({
                         "language" : {
                             "primaryLanguage" : s[0],
                             "region" : s[1]
@@ -131,7 +134,7 @@ Aria.classDefinition({
         setDebug : function (mode) {
             var debug = this.isDebug();
             if (debug !== mode && (mode === true || mode === false)) {
-                aria.core.AppEnvironment.setEnvironment({
+                ariaCoreAppEnvironment.setEnvironment({
                     "appSettings" : {
                         "debug" : mode
                     }
@@ -147,7 +150,7 @@ Aria.classDefinition({
         setDevMode : function (mode) {
             var dev = this.isDevMode();
             if (dev !== mode && (mode === true || mode === false)) {
-                aria.core.AppEnvironment.setEnvironment({
+                ariaCoreAppEnvironment.setEnvironment({
                     "appSettings" : {
                         "devMode" : mode
                     }

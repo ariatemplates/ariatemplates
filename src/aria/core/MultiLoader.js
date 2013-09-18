@@ -12,12 +12,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
 
 /**
  * This class ensures the asynchronous load of multiple types of resources (e.g. classes, files, templates, etc...) and
  * calls back the user when resources are available
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.core.MultiLoader",
     /**
      * Multi Loader constructor
@@ -72,7 +73,7 @@ Aria.classDefinition({
          * this method call
          */
         load : function () {
-            var cm = aria.core.ClassMgr, descriptor = this._loadDesc, hasError = false, allLoaded = true;
+            var cm = (require("./ClassMgr")), descriptor = this._loadDesc, hasError = false, allLoaded = true;
 
             var dependencies = {
                 "JS" : cm.filterMissingDependencies(descriptor.classes),
@@ -98,7 +99,7 @@ Aria.classDefinition({
             if (hasError || allLoaded) {
                 this._execCallback(true, hasError);
             } else {
-                var loader = new aria.core.ClassLoader();
+                var loader = new (require("./ClassLoader"))();
 
                 // multiloader has a onerror function -> it will handle errors
                 if (this._loadDesc['onerror'] && this._loadDesc['onerror'].override) {
