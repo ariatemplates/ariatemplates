@@ -83,6 +83,8 @@ Aria.classDefinition({
         this.addTests("test.aria.templates.statements.StatementsTestSuite");
         this.addTests("test.aria.templates.issue400.AlreadyCompiledTplTestCase");
 
+        this.addTests("test.aria.templates.issue727.RefreshManagerExceptionTestCase");
+
         this.addTests("test.aria.templates.tabsRefresh.TabsRefreshTestCase");
         this.addTests("test.aria.templates.macrolibs.MacrolibsTestCase");
         this.addTests("test.aria.templates.textTemplates.TextTemplatesTestCase");
