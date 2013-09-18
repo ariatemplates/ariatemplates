@@ -574,7 +574,6 @@
      */
     var fastNormalizers = {
         emptyObject : function (obj) {
-            var beanProperties = this.$properties;
             if (!obj) {
                 return this.$getDefault();
             }

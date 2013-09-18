@@ -217,7 +217,7 @@ Aria.classDefinition({
         moduleStart : function () {
 
             // start working in subwindow
-            var Aria = this._subWindow.Aria, aria = this._subWindow.aria;
+            var Aria = this._subWindow.Aria; // , aria = this._subWindow.aria;
 
             clearInterval(this._bridgeAttachedInterval);
 
@@ -247,7 +247,8 @@ Aria.classDefinition({
         _templatesReady : function () {
 
             // continue working in subwindow
-            var Aria = this._subWindow.Aria, aria = this._subWindow.aria;
+            // var Aria = this._subWindow.Aria;
+            var aria = this._subWindow.aria;
 
             // creates module instance first to be able to dispose it when window close
             aria.templates.ModuleCtrlFactory.createModuleCtrl({
@@ -270,7 +271,7 @@ Aria.classDefinition({
         _moduleLoaded : function (moduleCtrlObject) {
 
             // finish working in subwindow
-            var Aria = this._subWindow.Aria, aria = this._subWindow.aria;
+            var Aria = this._subWindow.Aria; // , aria = this._subWindow.aria;
             var moduleCtrl = moduleCtrlObject.moduleCtrlPrivate;
             Aria.loadTemplate({
                 classpath : this._config.displayClasspath,

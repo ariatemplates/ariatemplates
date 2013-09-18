@@ -471,7 +471,7 @@ Aria.classDefinition({
                 this.__stackCache = {};
             }
 
-            var depth = this.depth, stack = [], cacheStack, expandoValue, target, widget, bubble, callbackDef;
+            var depth = this.depth, stack = [], cacheStack, expandoValue, target;
             var stopper = Aria.$window.document.body;
 
             evt = this.__wrapEvent(evt);
@@ -508,7 +508,7 @@ Aria.classDefinition({
                 depth--;
             }
 
-            var utilsArray = aria.utils.Array, callback, delegateConfig;
+            var callback, delegateConfig;
 
             // will be used to track changes
             var nested = false;

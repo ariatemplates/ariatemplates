@@ -189,7 +189,6 @@ Aria.classDefinition({
          * @param {aria.DomEvent} event
          */
         _dom_onkeydown : function (event) {
-            var cfg = this._cfg;
             if (event.isSpecialKey) {
                 this._handleKey(event);
             }
@@ -201,7 +200,6 @@ Aria.classDefinition({
          * @param {aria.DomEvent} event
          */
         _dom_onkeypress : function (event) {
-            var cfg = this._cfg;
             if (!event.isSpecialKey) {
                 this._handleKey(event);
             }

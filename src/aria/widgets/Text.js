@@ -78,7 +78,6 @@ Aria.classDefinition({
          * @protected
          */
         _widgetMarkup : function (out) {
-            var cfg = this._cfg;
             var textContent = this._cfg.text;
             // String cast
             if (textContent !== null) {

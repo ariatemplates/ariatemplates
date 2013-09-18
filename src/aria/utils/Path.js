@@ -52,7 +52,7 @@ Aria.classDefinition({
                 return;
             }
 
-            var container = inside, param, content, next;
+            var container = inside, param, next;
             for (var i = 0, len = path.length; i < len; i += 1) {
                 param = path[i];
 
@@ -212,7 +212,7 @@ Aria.classDefinition({
                 return;
             }
 
-            var obj = container, param, content;
+            var obj = container, param;
             for (var i = 0, len = path.length; i < len; i += 1) {
                 param = path[i];
 

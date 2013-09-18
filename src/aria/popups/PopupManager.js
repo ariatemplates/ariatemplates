@@ -407,8 +407,6 @@
                 domEvent.target;
 
                 // Close first popup on the stack that can be closed
-                var scrollPrevented = false;
-                var popupsToClose = [];
                 for (var i = this.openedPopups.length - 1; i >= 0; i--) {
                     var popup = /** @type aria.popups.Popup */
                     this.openedPopups[i];

@@ -113,13 +113,13 @@
 
             __px2Em : function (value, elem, property) {
                 var el = (property == "fontSize") ? elem.parentNode : elem;
-                var fontSize = this.__getFontSizeInPixels(elem);
+                var fontSize = this.__getFontSizeInPixels(el);
                 return value / fontSize;
             },
 
             __em2Px : function (value, elem, property) {
                 var el = (property == "fontSize") ? elem.parentNode : elem;
-                var fontSize = this.__getFontSizeInPixels(elem);
+                var fontSize = this.__getFontSizeInPixels(el);
                 return value * fontSize;
             },
 
@@ -263,7 +263,6 @@
                 // in contrary to W3C browsers which normalize that to pixels in getComputedStyle. However,
                 // `offsetWidth` is always unit-less, which means pixels.
 
-                var cs = element.currentStyle;
                 var left = "Left", right = "Right", top = "Top", bottom = "Bottom";
                 if (property == "width") {
                     var padLeft = this.__getPadding(element, left);

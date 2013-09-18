@@ -181,7 +181,6 @@ Aria.classDefinition({
          */
         _loadATInFrameCb4 : function (res, args) {
             var window = args.frame.contentWindow || args.frame;
-            var document = window.document;
             window.Aria.rootFolderPath = Aria.rootFolderPath;
             var rootMap = window.aria.utils.Json.copy(aria.core.DownloadMgr._rootMap);
             window.aria.core.DownloadMgr.updateRootMap(rootMap);

@@ -43,8 +43,8 @@ Aria.classDefinition({
          */
         writeMarkupBegin : function (out) {
             var cfg = this._cfg;
-            var cssPrefix = this._cssPrefix;
-            var state = cfg.stateObject;
+            // var cssPrefix = this._cssPrefix;
+            // var state = cfg.stateObject;
             var sizeInfo = {
                 style : cfg.block ? 'display:block;' : '',
                 className : "xSimpleFrame " + this._cssPrefix + "frame " + cfg.cssClass

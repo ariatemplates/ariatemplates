@@ -57,7 +57,7 @@ Aria.tplScriptDefinition({
         },
 
         isTimeRangeListVisible : function (list) {
-            for (var i = 1, l = list.length; i < list.length; i++) {
+            for (var i = 1, l = list.length; i < l; i++) {
                 if (this.isTimeRangeVisible(list[i].start, list[i].length)) {
                     return true;
                 }

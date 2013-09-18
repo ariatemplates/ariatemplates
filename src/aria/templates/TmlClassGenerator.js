@@ -60,7 +60,7 @@ Aria.classDefinition({
          * @protected
          */
         _writeClassInit : function (out) {
-            var tplParam = out.templateParam;
+            // var tplParam = out.templateParam;
             out.enterBlock("classInit");
             this._writeMapInheritance(out, "__$macrolibs", out.templateParam.$macrolibs, "{}");
             out.leaveBlock();

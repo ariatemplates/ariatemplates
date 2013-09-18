@@ -43,7 +43,7 @@
 
     var __loadTemplate3 = function (res, args) {
         // Step 3: init the template context and show the template
-        var cfg = args.cfg, cb = args.cb;
+        var cfg = args.cfg;
 
         var tplCtxt = new aria.templates.TemplateCtxt();
         if (res.moduleCtrlPrivate && cfg.moduleCtrl.autoDispose) {
@@ -399,7 +399,6 @@
              * @param {aria.templates.CfgBeans:Div} div The div given to Aria.loadTemplate.
              */
             disposeTemplate : function (div) {
-                var templateCtxt;
                 if (typeof(div) == "string") {
                     div = aria.utils.Dom.getElementById(div);
                 }

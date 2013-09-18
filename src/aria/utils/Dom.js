@@ -1063,7 +1063,7 @@ Aria.classDefinition({
         scrollIntoView : function (element, alignTop) {
             var document = element.ownerDocument;
             var origin = element, originRect = origin.getBoundingClientRect();
-            var parent, hasScroll = false, docElementOk = false;
+            var hasScroll = false;
             var documentScroll = this.getDocumentScrollElement(document);
 
             while (element) {
