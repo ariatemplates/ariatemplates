@@ -74,6 +74,7 @@ Aria.classDefinition({
                 subProperties : ["marginLeft", "marginRight", "marginBottom", "marginTop"]
             },
             marginBottom : {
+//              note that the percentage of marginBottom is computed against the WIDTH  (W3C)
                 orientation : HORIZONTAL
             },
             marginLeft : {
@@ -83,7 +84,11 @@ Aria.classDefinition({
                 orientation : HORIZONTAL
             },
             marginTop : {
+//              note that the percentage of marginTop is computed against the WIDTH  (W3C)
                 orientation : HORIZONTAL
+            },
+            opacity : {
+                percentNotAdmitted : true
             },
             outlineWidth : {
                 orientation : COMPOSITE,
@@ -94,6 +99,7 @@ Aria.classDefinition({
                 hProperties : ["paddingLeft", "paddingRight","paddingBottom", "paddingTop"]
             },
             paddingBottom : {
+//              note that the percentage of paddingBottom is computed against the WIDTH  (W3C)
                 orientation : HORIZONTAL
             },
             paddingLeft : {
@@ -103,6 +109,7 @@ Aria.classDefinition({
                 orientation : HORIZONTAL
             },
             paddingTop : {
+//              note that the percentage of marginTop is computed against the WIDTH  (W3C)
                 orientation : HORIZONTAL
             },
             height : {
@@ -153,6 +160,14 @@ Aria.classDefinition({
             },
             textIndent : {
                 orientation : HORIZONTAL
+            },
+            scrollTop : {
+                orientation : VERTICAL,
+                notStyleProperty : true
+            },
+            scrollLeft : {
+                orientation : HORIZONTAL,
+                notStyleProperty : true
             }
         }
 
