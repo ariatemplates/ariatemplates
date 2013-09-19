@@ -1667,6 +1667,10 @@ Aria.beanDefinitions({
                             $type : "common:BindingRef"
                         },
                         "contentMacro" : {
+                            $type : "common:BindingRef",
+                            $description : "Deprecated in favor of 'macro' property."
+                        },
+                        "macro" : {
                             $type : "common:BindingRef"
                         },
                         "title" : {
@@ -1699,7 +1703,11 @@ Aria.beanDefinitions({
                 },
                 "contentMacro" : {
                     $type : "templates:MacroCfg",
-                    $description : "The macro that will be used as dialog content, Browser will freeze if it does not find this property  as part of widget or bindable property"
+                    $description : "[DEPRECATED in favor of 'macro'] The macro that will be used as dialog content. Browser will freeze if it does not find this property as part of widget or bindable property."
+                },
+                "macro" : {
+                    $type : "templates:MacroCfg",
+                    $description : "Required. The macro that will be used as dialog content. Browser will freeze if it does not find this property as part of widget or bindable property."
                 },
                 "icon" : {
                     $type : "json:String",
