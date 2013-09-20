@@ -177,7 +177,8 @@ Aria.classDefinition({
         },
 
         _checkOpacity : function (div, value) {
-            if (aria.core.Browser.isIE) {
+            var browser = aria.core.Browser;
+            if (browser.isIE6 || browser.isIE7 || browser.isIE8) {
                 this.assertEquals("alpha(opacity = " + (value * 100) + ")", div.style["filter"], 'The property has not been set to its final value');
             } else {
                 this.assertEquals(value + "", div.style["opacity"], 'The property has not been set to its final value');

@@ -348,8 +348,9 @@
             },
 
             __setProperty : function (elem, prop, value, unit) {
+                var browser = aria.core.Browser;
                 if (this.cfg.PROPERTIES[prop] && !this.cfg.PROPERTIES[prop].notStyleProperty) {
-                    if (prop == "opacity" && aria.core.Browser.isIE) {
+                    if (prop == "opacity"  && (browser.isIE6 || browser.isIE7 || browser.isIE8)) {
                         elem.style["filter"] = "alpha(opacity = " + value * 100 + ")";
                     } else {
                         elem.style[prop] = value + unit;
