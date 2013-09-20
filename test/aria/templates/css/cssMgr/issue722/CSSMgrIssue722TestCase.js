@@ -20,7 +20,7 @@ Aria.classDefinition({
     $prototype : {
         testCSSLoad : function () {
             var document = Aria.$window.document;
-            this._count = document.getElementsByTagName("head")[0].childElementCount;
+            this._count = document.getElementsByTagName("head")[0].children.length;
 
             for (var i = 0; i < 5; i++) {
                 var helper = new test.aria.templates.css.cssMgr.issue722.HelperIssue722();
@@ -41,7 +41,7 @@ Aria.classDefinition({
 
         _checkHead: function () {
             var document = Aria.$window.document;
-            this.assertEquals(document.getElementsByTagName("head")[0].childElementCount, this._count + 1);
+            this.assertEquals(document.getElementsByTagName("head")[0].children.length, this._count + 1);
         }
     }
 });
