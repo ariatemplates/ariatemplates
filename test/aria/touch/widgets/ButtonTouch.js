@@ -52,7 +52,11 @@ Aria.classDefinition({
             };
 
             var widget3 = this.createContainerAndInit("aria.touch.widgets.Button", cfg3);
-            this.assertEquals(widget3._domElt.attributes["disabled"].value, "disabled", "Wrong state for the Button Widget..");
+            if (!aria.core.Browser.isIE7) {
+                this.assertEquals(widget3._domElt.attributes["disabled"].value, "disabled", "Wrong state for the Button Widget..");
+            } else {
+                this.assertEquals(widget3._domElt.disabled, true, "Wrong state for the Button Widget..");
+            }
             widget3.$dispose();
             this.outObj.clearAll();
         },
@@ -67,7 +71,11 @@ Aria.classDefinition({
             };
 
             var widget4 = this.createContainerAndInit("aria.touch.widgets.Button", cfg4);
-            this.assertEquals(widget4._domElt.attributes["disabled"].value, "disabled", "Wrong state for the Link Widget..");
+            if (!aria.core.Browser.isIE7) {
+                this.assertEquals(widget4._domElt.attributes["disabled"].value, "disabled", "Wrong state for the Link Widget..");
+            } else {
+                this.assertEquals(widget4._domElt.disabled, true, "Wrong state for the Link Widget..");
+            }
             widget4.$dispose();
             this.outObj.clearAll();
         },
