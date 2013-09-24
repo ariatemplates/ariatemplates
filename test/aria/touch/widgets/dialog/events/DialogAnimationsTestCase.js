@@ -76,11 +76,20 @@ Aria.classDefinition({
             // reset
             this.eventsFired = [];
 
-            aria.core.Timer.addCallback({
-                fn : this.checkEventsArrayAfterOpen,
-                scope : this,
-                delay : 400
+            this.waitFor({
+                condition : {
+                    fn : this.checkEventFired,
+                    scope : this
+                },
+                callback : {
+                    fn : this.checkEventsArrayAfterOpen,
+                    scope : this
+                }
             });
+        },
+
+        checkEventFired : function () {
+            return this.eventsFired.length > 0;
         },
 
         checkEventsArrayAfterOpen : function () {

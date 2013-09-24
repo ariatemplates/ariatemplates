@@ -30,26 +30,36 @@ Aria.classDefinition({
         runTemplateTest : function () {
             var tooltipDiv = this.testWindow.aria.utils.Dom.getElementById("mouseOverMe");
 
-            this.testWindow.aria.jsunit.SynEvents.move({
+            this.synEvent.move({
                 to : tooltipDiv,
                 duration : 500
             }, {
                 x : 0,
                 y : 0
             }, {
-                fn : function () {
-                    // Wait for the tooltip to appear
-                    aria.core.Timer.addCallback({
-                        fn : this._afterMove,
-                        scope : this,
-                        delay : 100
-                    });
-                },
+                fn : this._afterMove,
                 scope : this
             });
         },
 
         _afterMove : function () {
+            this.waitFor({
+                condition : {
+                    fn : this._checkTooltip,
+                    scope : this
+                },
+                callback : {
+                    fn : this._afterShowTooltip,
+                    scope : this
+                }
+            });
+        },
+
+        _checkTooltip : function () {
+            return this.testWindow.aria.utils.Dom.getElementById("testMe") != null;
+        },
+
+        _afterShowTooltip : function () {
             var DomUtil = this.testWindow.aria.utils.Dom;
 
             var tooltipAnchor = DomUtil.getElementById("mouseOverMe");
