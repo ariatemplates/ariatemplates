@@ -134,19 +134,13 @@ Aria.classDefinition({
          */
         _getFullUrl : function () {
             var googleUrl = ["/maps/api/js?v=3&sensor=false&callback=__googleMapLoaded"];
-            var httpsPremierCustomer = false;
+            var https = "https:" == Aria.$window.document.location.protocol;
             var key = this.credentials;
             if (key) {
-                if (key.indexOf("gme-") === 0) {
-                    // https is available only for premier clients
-                    httpsPremierCustomer = "https:" == Aria.$window.document.location.protocol;
-                    googleUrl.push("client=" + key);
-                } else {
-                    googleUrl.push("key=" + key);
-                }
+                googleUrl.push((key.indexOf("gme-") === 0 ? "client=" : "key=") + key);
             }
 
-            return (httpsPremierCustomer ? "https://maps-api-ssl.google.com" : "http://maps.googleapis.com") +
+            return (https ? "https://maps-api-ssl.google.com" : "http://maps.googleapis.com") +
                     googleUrl.join("&");
         }
     }
