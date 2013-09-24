@@ -41,41 +41,15 @@
      */
     Aria.classDefinition({
         $classpath : "aria.utils.css.Effects",
-        $dependencies : ["aria.utils.css.EffectsConfig"],
+        $dependencies : ["aria.utils.css.Units", "aria.utils.css.PropertiesConfig"],
         $singleton : true,
         $statics : {
+            // animation interval in ms
+            DEFAULT_INTERVAL : 20,
+            DEFAULT_DURATION : 1000,
+            DEFAULT_EASING : "linear",
+            DEFAULT_QUEUE_KEY : "default",
             NO_PROPERTY_TO_ANIMATE : "No valid property to animate.",
-
-            __convertUnit : {
-                "%" : function (value, elem, property) {
-                    return round(this.__px2Percentage(value, elem, property));
-                },
-                "em" : function (value, elem, property) {
-                    return round(this.__px2Em(value, elem, property));
-                },
-                "ex" : function (value, elem, property) {
-                    return round(2 * this.__px2Em(value, elem, property));
-                },
-                "in" : function (value, elem, property) {
-                    return round(this.__px2Inches(value, property));
-                },
-                "cm" : function (value, elem, property) {
-                    return round(2.54 * this.__px2Inches(value, property));
-                },
-                "mm" : function (value, elem, property) {
-                    return round(25.4 * this.__px2Inches(value, property));
-                },
-                "pt" : function (value, elem, property) {
-                    return round(72 * this.__px2Inches(value, property));
-                },
-                "px" : function (value, elem, property) {
-                    return value;
-                },
-                "pc" : function (value, elem, property) {
-                    // 1pc = 12pt
-                    return round(6 * this.__px2Inches(value, property));
-                }
-            },
 
             __easing : {
                 "linear" : function (startValue, endValue, start, end, current) {
@@ -83,44 +57,12 @@
                     var y = ((ey - sy) / (ex - sx)) * (x - sx) + sy;
                     return round(y);
                 }
-            },
-
-            __px2Inches : function (value, property) {
-                var dpi;
-                switch (this.cfg.PROPERTIES[property].orientation) {
-                    case this.cfg.HORIZONTAL :
-                        dpi = this.dpi.x;
-                        break;
-                    case this.cfg.VERTICAL :
-                        dpi = this.dpi.y;
-                        break;
-                    // if composite, then dpi = average
-                    default :
-                        dpi = (this.dpi.x + this.dpi.y) / 2;
-                        break;
-                }
-                return value / dpi;
-            },
-
-            __px2Em : function (value, elem, property) {
-                var el = (property == "font-size") ? elem.parentNode : elem;
-                var fontSize = parseFloat(aria.utils.Dom.getStyle(el, "fontSize"));
-                return value / fontSize;
-            },
-
-            __px2Percentage : function (value, elem, property) {
-                var el = elem.parentNode, refer;
-                // computes the height or width of the container
-                refer = parseFloat(aria.utils.Dom.getStyle(el, (this.cfg.PROPERTIES[property].orientation == this.cfg.HORIZONTAL)
-                        ? "width"
-                        : "height"));
-                return value / refer * 100;
             }
-
         },
         $constructor : function () {
 
-            this.cfg = aria.utils.css.EffectsConfig;
+            this.cfg = aria.utils.css.PropertiesConfig;
+            this.unitUtil = aria.utils.css.Units;
             this.queues = {};
             this.animations = {};
             this.animCount = 0;
@@ -157,8 +99,8 @@
                     elem = aria.utils.Dom.getElementById(htmlElem);
                 }
 
-                animInfo.duration = cfg.duration ? parseInt(cfg.duration, 10) : this.cfg.DEFAULT_DURATION;
-                animInfo.interval = cfg.interval ? parseInt(cfg.interval, 10) : this.cfg.DEFAULT_INTERVAL;
+                animInfo.duration = cfg.duration ? parseInt(cfg.duration, 10) : this.DEFAULT_DURATION;
+                animInfo.interval = cfg.interval ? parseInt(cfg.interval, 10) : this.DEFAULT_INTERVAL;
                 if (cfg.easing != null) {
                     if (aria.utils.Type.isFunction(cfg.easing)) {
                         animInfo.easing = cfg.easing;
@@ -166,8 +108,8 @@
                         animInfo.easing = this.__easing[cfg.easing];
                     }
                 }
-                animInfo.easing = animInfo.easing || this.__easing[this.cfg.DEFAULT_EASING];
-                animInfo.queue = (cfg.queue === true) ? this.cfg.DEFAULT_QUEUE_KEY : (cfg.queue != null)
+                animInfo.easing = animInfo.easing || this.__easing[this.DEFAULT_EASING];
+                animInfo.queue = (cfg.queue === true) ? this.DEFAULT_QUEUE_KEY : (cfg.queue != null)
                         ? this.__getQueueKey(cfg.queue)
                         : false;
                 animInfo.element = elem;
@@ -261,7 +203,7 @@
                             for (var i = 0, l = explodedProps.length; i < l; i++) {
                                 var curValueNum = explodedProps[i].currentValueNum;
                                 if (explodedProps.currentUnit != unit) {
-                                    curValueNum = this.__convertUnit[unit].call(this, explodedProps[i].currentValueNum, elem, explodedProps[i].prop);
+                                    curValueNum = this.unitUtil.convertFromPixels(unit, explodedProps[i].currentValueNum, elem, explodedProps[i].prop);
                                 }
                                 animInfo.props.push({
                                     prop : explodedProps[i].prop,
@@ -350,7 +292,7 @@
             __setProperty : function (elem, prop, value, unit) {
                 var browser = aria.core.Browser;
                 if (this.cfg.PROPERTIES[prop] && !this.cfg.PROPERTIES[prop].notStyleProperty) {
-                    if (prop == "opacity"  && (browser.isIE6 || browser.isIE7 || browser.isIE8)) {
+                    if (prop == "opacity" && (browser.isIE6 || browser.isIE7 || browser.isIE8)) {
                         elem.style["filter"] = "alpha(opacity = " + value * 100 + ")";
                     } else {
                         elem.style[prop] = value + unit;
