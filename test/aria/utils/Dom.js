@@ -452,6 +452,45 @@ Aria.classDefinition({
             });
         },
 
+        test_getStyle_width : function () {
+            var domUtil = aria.utils.Dom;
+            Aria.$window.scroll(0, 0);
+            var document = Aria.$window.document;
+
+            var element = document.createElement("div");
+            this.domCreated.push(element);
+            document.body.appendChild(element);
+
+            // should return computed style
+            element.style.cssText = 'width:400px; max-width:300px;';
+            this.assertEquals(domUtil.getStyle(element, "width"), "300px");
+
+            // borders nor paddings shouldn't affect width
+            element.style.cssText = 'width:500px; border:2px solid black; padding:3px 4px 5px 6px;';
+            this.assertEquals(domUtil.getStyle(element, "width"), "500px");
+
+            // borders with non-numeric widths shouldn't break the width either
+            element.style.cssText = 'width:555px; border:medium solid black;';
+            this.assertEquals(domUtil.getStyle(element, "width"), "555px");
+
+            // let's see what happens when div has auto width and inherits from parent
+            element.style.cssText = 'width:400px;';
+            element.innerHTML = "<div id='innerdiv' style='width:auto; margin:auto;'></div>";
+            this.assertEquals(domUtil.getStyle(document.getElementById("innerdiv"), "width"), "400px");
+
+            // check values in units different than pixels
+            element.style.cssText = 'width:1in;';
+            this.assertEquals(domUtil.getStyle(element, "width"), "96px"); // assuming 96x96 dpi
+
+            // check values in units different than pixels: inches
+            element.style.cssText = 'width:100px; border:1in; padding:1in;';
+            this.assertEquals(domUtil.getStyle(element, "width"), "100px");
+
+            // check values in units different than pixels: ems
+            element.style.cssText = 'width:100px; border:1em; padding:1em;';
+            this.assertEquals(domUtil.getStyle(element, "width"), "100px");
+        },
+
         /**
          * Checks that, after calling refreshScrollbars, the unnecessary scrollbar has disappeared.
          */

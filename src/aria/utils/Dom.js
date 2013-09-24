@@ -18,7 +18,7 @@
  */
 Aria.classDefinition({
     $classpath : "aria.utils.Dom",
-    $dependencies : ["aria.core.JsonValidator", "aria.core.Browser", "aria.utils.String"],
+    $dependencies : ["aria.core.JsonValidator", "aria.core.Browser", "aria.utils.String", "aria.utils.css.Units"],
     $singleton : true,
     $statics : {
 
@@ -430,7 +430,8 @@ Aria.classDefinition({
          * Gets the dimensions of the viewport. Extracted from Closure's documentation.
          *
          * <pre>
-         * GeckoStandards mode:
+         * *
+         * Gecko standards mode:
          * docEl.clientWidth  Width of viewport excluding scrollbar.
          * win.innerWidth     Width of viewport including scrollbar.
          * body.clientWidth   Width of body element.
@@ -853,10 +854,8 @@ Aria.classDefinition({
                             } catch (er) {}
                         }
                         return (val / 100).toString(10); // to be consistent with getComputedStyle
-                    } else if (property == 'width') { // fix width and height for IE
-                        return element.offsetWidth.toString(10) + "px";
-                    } else if (property == 'height') { // fix width and height for IE
-                        return element.offsetHeight.toString(10) + "px";
+                    } else if (property == 'width' || property == 'height') {
+                        return aria.utils.css.Units.getDomWidthOrHeightForOldIE(element, property);
                     } else if (property == 'float') { // fix reserved word
                         property = 'styleFloat'; // fall through
                     }

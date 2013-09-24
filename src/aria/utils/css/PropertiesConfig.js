@@ -20,14 +20,9 @@
     var COMPOSITE = 3;
 
     Aria.classDefinition({
-        $classpath : "aria.utils.css.EffectsConfig",
+        $classpath : "aria.utils.css.PropertiesConfig",
         $singleton : true,
         $statics : {
-            // animation interval in ms
-            DEFAULT_EASING : "linear",
-            DEFAULT_INTERVAL : 20,
-            DEFAULT_DURATION : 1000,
-            DEFAULT_QUEUE_KEY : "default",
             UNITS : ["em", "%", "px", "ex", "cm", "mm", "in", "pt", "pc"],
             HORIZONTAL : HORIZONTAL,
             VERTICAL : VERTICAL,
