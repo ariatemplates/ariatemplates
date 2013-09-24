@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.templates.css.WidgetContext.ContextTest",
+    $classpath : "test.aria.templates.css.widgetContext.ContextTest",
     $extends : "aria.jsunit.TemplateTestCase",
     $dependencies : ["aria.templates.CSSMgr", "aria.utils.Json"],
     $prototype : {
@@ -26,7 +26,7 @@ Aria.classDefinition({
         runTemplateTest : function () {
             // Try to load a class that has a dependency on a css file (not a template)
             Aria.load({
-                classes : ["test.aria.templates.css.WidgetContext.DependencyLoader"],
+                classes : ["test.aria.templates.css.widgetContext.DependencyLoader"],
                 oncomplete : {
                     fn : this.classLoaded,
                     scope : this
@@ -47,12 +47,12 @@ Aria.classDefinition({
                 closure = arg;
             };
 
-            var instance = test.aria.templates.css.WidgetContext.DependencyLoader;
+            var instance = test.aria.templates.css.widgetContext.DependencyLoader;
             cm.loadWidgetDependencies(instance.$classpath, instance.$css);
 
             var dependencyText = "";
             for (var i = 0; i < closure.wgt.length; i += 1) {
-                if (closure.wgt[i] === "test.aria.templates.css.WidgetContext.DependencyCSS") {
+                if (closure.wgt[i] === "test.aria.templates.css.widgetContext.DependencyCSS") {
                     // the next items are a closing comment **/ and the actual loaded test
                     dependencyText = closure.wgt[i + 2];
                 }

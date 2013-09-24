@@ -13,13 +13,14 @@
  * limitations under the License.
  */
 
-Aria.classDefinition({
-    $classpath : "test.aria.templates.css.WidgetContext.DependencyLoader",
-    $singleton : true,
-    $css : ["test.aria.templates.css.WidgetContext.DependencyCSS"],
-    $prototype : {
-        doNothing : function () {
-            // This class is here just to load a css dependency, it will mock a widget class
-        }
-    }
-});
+{Template {
+    $classpath: "test.aria.templates.css.widgetContext.ContextTestTpl"
+}}
+
+    {macro main()}
+
+        This template is empty
+
+    {/macro}
+
+{/Template}

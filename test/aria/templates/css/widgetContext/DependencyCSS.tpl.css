@@ -14,15 +14,11 @@
  */
 
 {CSSTemplate {
-    $classpath: "test.aria.templates.css.Widget.DependencyCSS"
+    $classpath: "test.aria.templates.css.widgetContext.DependencyCSS"
 }}
 
-    {macro main()}
-
-        .empty {
-            content : "This template is empty"
-        }
-
-    {/macro}
+    {macro main()}main{/macro}
+    {macro writeSkinClass(info)}${info.skinnableClassName},${info.skinClassName}{/macro}
+    {macro writeState(info)}${info.stateName}{/macro}
 
 {/CSSTemplate}

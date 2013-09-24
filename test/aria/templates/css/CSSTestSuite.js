@@ -31,8 +31,8 @@ Aria.classDefinition({
         this.addTests("test.aria.templates.css.ctxtMgr.CtxtMgrTestCase");
         this.addTests("test.aria.templates.css.cssScripts.CSSScriptTestCase");
         this.addTests("test.aria.templates.css.dataReadyRefresh.RefreshTest");
-        this.addTests("test.aria.templates.css.Widget.DependencyTest");
-        this.addTests("test.aria.templates.css.WidgetContext.ContextTest");
+        this.addTests("test.aria.templates.css.widget.DependencyTest");
+        this.addTests("test.aria.templates.css.widgetContext.ContextTest");
         this.addTests("test.aria.templates.css.events.EventsTestCase");
         this.addTests("test.aria.templates.css.global.GlobalCssTemplateTestCase");
         this.addTests("test.aria.templates.css.inheritance.InheritTestCase");

@@ -13,12 +13,13 @@
  * limitations under the License.
  */
 
-{CSSTemplate {
-    $classpath: "test.aria.templates.css.WidgetContext.DependencyCSS"
-}}
-
-    {macro main()}main{/macro}
-    {macro writeSkinClass(info)}${info.skinnableClassName},${info.skinClassName}{/macro}
-    {macro writeState(info)}${info.stateName}{/macro}
-
-{/CSSTemplate}
+Aria.classDefinition({
+    $classpath : "test.aria.templates.css.widget.DependencyLoader",
+    $singleton : true,
+    $css : ["test.aria.templates.css.widget.DependencyCSS"],
+    $prototype : {
+        doNothing : function () {
+            // This class is here just to load a css dependency
+        }
+    }
+});

@@ -14,11 +14,11 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.html.radioButton.IEbug.RadioButtonTestCase",
+    $classpath : "test.aria.html.radioButton.ieBug.RadioButtonTestCase",
     $extends : "aria.jsunit.RobotTestCase",
     $dependencies : ["aria.utils.Dom", "aria.html.RadioButton"],
     $constructor : function () {
-        this.$TemplateTestCase.constructor.call(this);
+        this.$RobotTestCase.constructor.call(this);
         this.setTestEnv({
             data : {
                 selectedValue : ""

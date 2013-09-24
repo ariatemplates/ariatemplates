@@ -13,13 +13,14 @@
  * limitations under the License.
  */
 
-Aria.classDefinition({
-    $classpath : "test.aria.templates.css.Widget.DependencyLoader",
-    $singleton : true,
-    $css : ["test.aria.templates.css.Widget.DependencyCSS"],
-    $prototype : {
-        doNothing : function () {
-            // This class is here just to load a css dependency
-        }
-    }
-});
+{Template {
+    $classpath: "test.aria.templates.css.widget.DependencyTemplate"
+}}
+
+    {macro main()}
+
+        This template is empty
+
+    {/macro}
+
+{/Template}

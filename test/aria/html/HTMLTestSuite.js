@@ -28,6 +28,6 @@ Aria.classDefinition({
         this.addTests("test.aria.html.select.SelectTest");
         this.addTests("test.aria.html.select.bodycontent.BodyContentTestCase");
         this.addTests("test.aria.html.DisabledTraitTest");
-        this.addTests("test.aria.html.radioButton.IEbug.RadioButtonTestCase");
+        this.addTests("test.aria.html.radioButton.ieBug.RadioButtonTestCase");
     }
 });

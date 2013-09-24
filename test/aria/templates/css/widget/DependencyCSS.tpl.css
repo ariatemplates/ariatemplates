@@ -13,14 +13,16 @@
  * limitations under the License.
  */
 
-{Template {
-    $classpath: "test.aria.templates.css.WidgetContext.ContextTestTpl"
+{CSSTemplate {
+    $classpath: "test.aria.templates.css.widget.DependencyCSS"
 }}
 
     {macro main()}
 
-        This template is empty
+        .empty {
+            content : "This template is empty"
+        }
 
     {/macro}
 
-{/Template}
+{/CSSTemplate}

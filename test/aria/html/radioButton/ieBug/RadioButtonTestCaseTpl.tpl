@@ -14,7 +14,7 @@
  */
 
 {Template {
-	$classpath : "test.aria.html.radioButton.IEbug.RadioButtonTestCaseTpl",
+	$classpath : "test.aria.html.radioButton.ieBug.RadioButtonTestCaseTpl",
 	$wlibs : {
 		html : "aria.html.HtmlLibrary"
 	}
