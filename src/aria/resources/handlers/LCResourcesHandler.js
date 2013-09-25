@@ -133,7 +133,7 @@
                     var codeSuggestions = [], labelSuggestions = [], labelSuggestionsMultiWord = [];
                     var nbSuggestions = this._suggestions.length, textEntryLength = textEntry.length;
                     var multiWord = this._labelMatchAtWordBoundaries;
-                    var returnedSuggestion, index, suggestion;
+                    var index, suggestion;
 
                     for (index = 0; index < nbSuggestions; index++) {
                         suggestion = this._suggestions[index];

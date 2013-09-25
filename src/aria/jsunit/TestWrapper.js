@@ -94,7 +94,7 @@ Aria.classDefinition({
          */
         _loadTestComplete : function () {
             var Aria = this._subWindow.Aria;
-            var aria = this._subWindow.aria;
+            // var aria = this._subWindow.aria;
             this._testInstance = Aria.getClassInstance(this.$classpath);
             this._testInstance.$on({
                 '*' : this._testEvent,

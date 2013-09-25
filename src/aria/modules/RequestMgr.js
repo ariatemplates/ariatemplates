@@ -415,8 +415,9 @@ Aria.classDefinition({
          */
         _onresponse : function (res, args) {
             // callback args preparation
-            var cb = args.cb, requestObject = args.requestObject, actionQueuing = args.actionQueuing;
-            var id = args.id, session = args.session, requestHandler = args.requestHandler, senderObject = args.senderObject;
+            var requestObject = args.requestObject, actionQueuing = args.actionQueuing;
+            var id = args.id, senderObject = args.senderObject;
+            // var cb = args.cb, session = args.session, requestHandler = args.requestHandler
 
             // starts right now for next item in action queuing
             if (actionQueuing) {
@@ -450,8 +451,7 @@ Aria.classDefinition({
          * @protected
          */
         _processOnResponse : function (args) {
-
-            var cb = args.cb;
+            // var cb = args.cb;
             var res = args.res;
 
             var handler = args.requestHandler;

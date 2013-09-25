@@ -187,7 +187,7 @@ Aria.classDefinition({
          * @param {Array} bindings List of bindings
          */
         _initBindings : function (bindings) {
-            var bnd, inside, to, bindValue, transform, jsonUtils = aria.utils.Json;
+            var bnd, inside, to, bindValue, transform;
             for (var bindedProperty in bindings) {
                 if (bindings.hasOwnProperty(bindedProperty)) {
                     bnd = bindings[bindedProperty];

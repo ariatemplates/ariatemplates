@@ -106,7 +106,6 @@ Aria.classDefinition({
          * @param {aria.DomEvent} event
          */
         handleNavigation : function (keyMap, tableNav, event, keyMapOnly) {
-            var done;
             if (event.type == "keyup" || event.type == "keydown") {
                 // handle table navigation if not already done
                 if (!event[this._tableNavMarker] && event.type == "keydown") {

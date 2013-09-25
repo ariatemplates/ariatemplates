@@ -900,7 +900,7 @@ Aria.classDefinition({
                 return;
             }
             if (!this._keepFocus) {
-                var cfg = this._cfg, htc = this._skinObj.helpText;
+                var cfg = this._cfg; // , htc = this._skinObj.helpText;
                 this._hasFocus = false;
                 // reinitialize for next time (autoselect feature)
                 this._firstFocus = true;

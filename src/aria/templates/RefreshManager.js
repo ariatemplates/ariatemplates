@@ -106,8 +106,8 @@ Aria.classDefinition({
 
         /**
          * Queue a refresh. It'll be execute on resume.
-         * @param {aria.core.CfgBeans:Callback} cb A callback to aria.templates.TemplateCtxt.$refresh (in the case of a template
-         * or section refresh) or to aria.widgets.Widget._notifyDataChangeCB in the case of a Widget refresh
+         * @param {aria.core.CfgBeans:Callback} cb A callback to aria.templates.TemplateCtxt.$refresh (in the case of a
+         * template or section refresh) or to aria.widgets.Widget._notifyDataChangeCB in the case of a Widget refresh
          * @param {Object} element A TemplateContext, in the case of a Template or Section refresh, or a Widget in the
          * case of a widget refresh
          */
@@ -131,8 +131,8 @@ Aria.classDefinition({
         },
 
         /**
-         * Internal function to execute callbacks in the queue. It is different from JsObject.$callback
-         * because the order of parameters is different if the scope is a Widget
+         * Internal function to execute callbacks in the queue. It is different from JsObject.$callback because the
+         * order of parameters is different if the scope is a Widget
          * @param {aria.core.CfgBeans:Callback} cb Callback to be executed
          * @private
          */
@@ -194,7 +194,7 @@ Aria.classDefinition({
             this.updateHierarchies();
 
             this._updatedNodes.length = 0;
-            var hierarchiesLength = this._hierarchies.length, freeCallbacks = [];
+            var hierarchiesLength = this._hierarchies.length;
 
             // 2-color the tree
             for (var rootIdx = 0; rootIdx < hierarchiesLength; rootIdx++) {
@@ -413,7 +413,6 @@ Aria.classDefinition({
          * @private
          */
         _fillNode : function (node) {
-            var content = [];
             var nodeEntry = {
                 type : null,
                 elem : node,
@@ -475,7 +474,7 @@ Aria.classDefinition({
             } else if (node.idMap != null) {
                 // 3-------it's a section
                 nodeEntry.type = "section";
-                var sectionContent = node._content;
+                // var sectionContent = node._content;
                 this._addContent(nodeEntry, node._content);
             }
 

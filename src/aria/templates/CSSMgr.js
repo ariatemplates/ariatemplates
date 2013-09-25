@@ -356,7 +356,6 @@ Aria.classDefinition({
 
             // Do something only if this CSS class is not yet loaded
             var usage = this.__cssUsage[cssClasspath];
-            var styleTagToUpdate = [];
             if (usage && usage.length) {
                 usage.push(tplClasspath);
                 this.__pathsLoaded.push(cssClasspath);
@@ -528,7 +527,7 @@ Aria.classDefinition({
             }
 
             var sorted = this.__sortPaths();
-            var loaded = this.__textLoaded;
+            // var loaded = this.__textLoaded;
             var totalSelectors = 0;
             var styleBuilders = {};
             var utilsArray = aria.utils.Array;

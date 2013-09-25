@@ -178,7 +178,7 @@ Aria.classDefinition({
          */
         _initInputMarkup : function (elt) {
             this._initializeFocusableElement();
-            var focusElt = this._getFocusableElement();
+            this._getFocusableElement();
             this._label = null;
             var labels = this.getDom().getElementsByTagName("label");
             if (labels.length > 0) {

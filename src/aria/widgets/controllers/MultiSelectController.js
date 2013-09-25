@@ -224,7 +224,6 @@ Aria.classDefinition({
         checkValue : function (value) {
             var report = new aria.widgets.controllers.reports.DropDownControllerReport();
             var dataModel = this._dataModel;
-            var options = this._options;
             if (value === null) {
                 report.ok = true;
                 dataModel.value = null;

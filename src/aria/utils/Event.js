@@ -376,7 +376,7 @@
              * @return {Boolean} true if the unbind was successful, false otherwise.
              */
             removeListener : function (element, event, callback) {
-                var i, len, li;
+                var i, li;
 
                 if ('mousewheel' == event) {
                     if (this.UA.isIE) {

@@ -91,7 +91,7 @@ Aria.classDefinition({
          * @param {aria.templates.MarkupWriter} out
          */
         writeMarkupBegin : function (out) {
-            var cfg = this._cfg, cssPrefix = this._cssPrefix, state = cfg.stateObject;
+            var cfg = this._cfg, cssPrefix = this._cssPrefix; // , state = cfg.stateObject;
             var frameContainerClass = (cfg.block !== true) ? ' ' : 'class="xBlock"';
             var sizeInfo = {
                 style : '',
@@ -119,7 +119,7 @@ Aria.classDefinition({
          * @param {aria.templates.MarkupWriter} out
          */
         writeMarkupEnd : function (out) {
-            var cfg = this._cfg, sclass = cfg.sclass, cssPrefix = this._cssPrefix;
+            var cfg = this._cfg, cssPrefix = this._cssPrefix; // sclass = cfg.sclass
             out.write(['</span></td>', '<td class="', cssPrefix, 'rs ', cssPrefix, 'bkgC"></td>', '</tr>', '<tr>',
                     '<td class="', cssPrefix, 'blc ', cssPrefix, 'bkgA"></td>', '<td class="', cssPrefix, 'bs ',
                     cssPrefix, 'bkgB">', this.__addFrameIcon(cfg, cssPrefix, 'bottom'), '</td>', '<td class="',

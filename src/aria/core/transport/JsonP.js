@@ -119,7 +119,7 @@ Aria.classDefinition({
          * @protected
          */
         _onJsonPLoad : function (request, callback, json) {
-            var reqId = request.id;
+            // var reqId = request.id;
 
             delete this[request.evalCb];
 

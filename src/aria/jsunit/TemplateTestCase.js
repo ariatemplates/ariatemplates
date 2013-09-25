@@ -403,7 +403,7 @@ Aria.classDefinition({
             if (recursive && !oElm) {
                 var subTplCtxts = [];
                 this.__retrieveDirectSubTemplates(tplCtxt, subTplCtxts);
-                var content = tplCtxt._mainSection._content;
+                // var content = tplCtxt._mainSection._content;
                 for (var i = 0, sz = subTplCtxts.length; i < sz; i++) {
                     oElm = this.getElementById(id, true, subTplCtxts[i], domUtility);
                     if (oElm) {
@@ -682,8 +682,8 @@ Aria.classDefinition({
          * @private
          */
         __afterType : function () {
-            var id = arguments[1][0], text = arguments[1][1], callback = arguments[1][2], blur = arguments[1][3];
-
+            var id = arguments[1][0], callback = arguments[1][2], blur = arguments[1][3];
+            // text = arguments[1][1]
             if (blur === false) {
                 this.$callback(callback);
             } else {
@@ -827,7 +827,8 @@ Aria.classDefinition({
                 },
                 onerror : {
                     fn : function (args) {
-                        // FIXME Doing this because onerror is not an aria.core.CfgBean.Callback so I can't use apply:true
+                        // FIXME Doing this because onerror is not an aria.core.CfgBean.Callback so I can't use
+                        // apply:true
                         this._iframeLoadError(args, "onerror callback of Aria.load(aria.jsunit.TemplateTestCase)");
                     },
                     scope : this,

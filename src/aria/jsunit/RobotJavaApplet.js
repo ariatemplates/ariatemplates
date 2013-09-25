@@ -260,7 +260,8 @@ Aria.classDefinition({
                 // Resolve the url depending on the base tag
                 var baseTags = document.getElementsByTagName('head')[0].getElementsByTagName("base");
                 if (baseTags && baseTags[0] && !this.absoluteUrlRegExp.test(jnlp)) {
-                    var baseUrl = baseTags[0].getAttribute("href").replace(/[^\/.]+\.[^\/.]+$/, "").replace(/\/$/, "") + "/";
+                    var baseUrl = baseTags[0].getAttribute("href").replace(/[^\/.]+\.[^\/.]+$/, "").replace(/\/$/, "")
+                            + "/";
                     jnlp = baseUrl + jnlp;
                 }
 
@@ -340,7 +341,7 @@ Aria.classDefinition({
         _updateAppletPosition : function (cb) {
             // keep the applet at position 0,0 (even when the window is scrolled)
             var applet = this.applet;
-            var document = applet.ownerDocument;
+            // var document = applet.ownerDocument;
             var scrollPos = aria.utils.Dom._getDocumentScroll();
             applet.style.left = scrollPos.scrollLeft + "px";
             applet.style.top = scrollPos.scrollTop + "px";

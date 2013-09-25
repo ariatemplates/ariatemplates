@@ -51,7 +51,7 @@
         var arr = callbacksMap[name];
 
         if (arr) {
-            var length = arr.length, removeThis = false, newList = null, cb;
+            var length = arr.length, removeThis = false, cb;
             for (var i = 0; i < length; i++) {
                 cb = arr[i];
 
@@ -238,7 +238,6 @@
     var __interceptObject = function (interfaceMethods, interceptor, allInterceptors) {
         var interceptedMethods = allInterceptors || {};
         // for a class object, intercept specific methods
-        var interceptorMethodBegin, interceptorMethodCallBack, interceptorMethodEnd;
         for (var m in interfaceMethods) {
             if (interfaceMethods.hasOwnProperty(m) && __hasBeenIntercepted(m, interceptor)) {
                 (interceptedMethods[m] || (interceptedMethods[m] = [])).push({

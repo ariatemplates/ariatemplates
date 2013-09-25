@@ -76,7 +76,7 @@ Aria.classDefinition({
 
             var subTests = this.__getTestCaseSubTests(testCase);
 
-            var errors = testCase.getErrors();
+            // var errors = testCase.getErrors();
             reportBuffer.push(["<testsuite", "name='" + this.__getTestSuiteName(testCase) + "'",
                     "errors='" + testCase.getExecutionErrors().length + "'",
                     "failures='" + testCase.getFailures().length + "'", "tests='" + subTests.length + "'",

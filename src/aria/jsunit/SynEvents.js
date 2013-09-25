@@ -93,7 +93,7 @@ Aria.classDefinition({
                 this.$callback(args.cb);
             } else {
                 var callParams = array[curIdx];
-                var cb = args.curIdx++;
+                args.curIdx++;
                 if (!aria.utils.Type.isArray(callParams)) {
                     this.$logError("Not an array");
                     return;

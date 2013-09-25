@@ -80,45 +80,6 @@ Aria.classDefinition({
          */
         getUITestResult : function () {
             return this.screenCapture.getResponse();
-        },
-
-        /**
-         * Captures the header. Obsolete
-         * @private
-         * @deprecated
-         */
-        __captureHeader : function () {
-            this.screenCapture.capture("HomePage_Header", {
-                x : 0,
-                y : 0,
-                width : 1280,
-                height : 65,
-                threshold : 0
-            }, this.responseCallbackMethod, this);
-        },
-
-        /**
-         * Captures the menu. Obsolete
-         * @private
-         * @deprecated
-         */
-        __captureMenu : function () {
-            this.screenCapture.capture("HomePage_Menu", {
-                x : 0,
-                y : 0,
-                width : 320,
-                height : 500,
-                threshold : 0
-            }, this.responseCallbackMethod, this);
-        },
-
-        /**
-         * Obsolete
-         * @deprecated
-         */
-        responseCallbackMethod : function () {
-            var result = this.screenCapture.getResponse(this.responseCallbackMethod, this);
-            // alert('responseCallbackMethod CODE:'+result.code+ " REASON:"+result.reason);
         }
     }
 });

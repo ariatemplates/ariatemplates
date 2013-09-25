@@ -151,7 +151,7 @@ Aria.classDefinition({
 
             if (actingDom) {
                 this._actingDom = actingDom;
-                var domElt = this.getDom();
+                // var domElt = this.getDom();
 
                 this._initializeFocusableElement();
 

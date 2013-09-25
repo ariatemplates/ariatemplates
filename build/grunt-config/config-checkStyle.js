@@ -43,6 +43,7 @@ module.exports = function (grunt) {
                         '!test/aria/templates/reloadResources/ExternalResourceErr.js']
             },
             options : {
+                "unused" : false,
                 "globals" : {
                     "aria": false,
                     "Aria": false,

@@ -71,7 +71,7 @@ Aria.classDefinition({
          * @protected
          */
         _writeClassInit : function (out) {
-            var tplParam = out.templateParam;
+            // var tplParam = out.templateParam;
             out.enterBlock("classInit");
             out.writeln(out.templateParam.$classpath, ".processTextTemplate = aria.templates.TextTemplate.processTextTemplate;");
             out.leaveBlock();

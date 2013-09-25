@@ -239,7 +239,6 @@ Aria.classDefinition({
          * @param {aria.DomEvent} domEvt
          */
         _dom_onfocus : function (domEvt) {
-            var cfg = this._cfg;
             this._hasFocus = true;
             this._updateState();
         },
@@ -250,7 +249,6 @@ Aria.classDefinition({
          * @param {aria.DomEvent} domEvt
          */
         _dom_onblur : function (domEvt) {
-            var cfg = this._cfg;
             this._hasFocus = false;
             this._updateState();
         },

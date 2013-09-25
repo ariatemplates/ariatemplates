@@ -90,7 +90,7 @@
              */
             _createMap : function (container, cfg) {
                 var createMapConfig = aria.utils.Json.copy(cfg);
-                var provider = createMapConfig.provider;
+                // var provider = createMapConfig.provider;
                 delete createMapConfig.loadingIndicator;
                 var domElement = Aria.$window.document.createElement("div");
                 createMapConfig.domElement = domElement;
