@@ -228,12 +228,18 @@
                                 if (explodedProps.currentUnit != unit) {
                                     curValueNum = this.unitUtil.convertFromPixels(unit, explodedProps[i].currentValueNum, elem, explodedProps[i].prop);
                                 }
-                                animInfo.props.push({
+                                var singleProp = {
                                     prop : explodedProps[i].prop,
                                     origin : curValueNum,
                                     dest : valueNum,
                                     unit : unit
-                                });
+                                };
+                                if (prop == "backgroundPositionY") {
+                                    singleProp.complementaryValue = (this.__getProperty(elem, "backgroundPositionX") || "0px");
+                                } else if (prop == "backgroundPositionX") {
+                                    singleProp.complementaryValue = (this.__getProperty(elem, "backgroundPositionY") || "0px");
+                                }
+                                animInfo.props.push(singleProp);
                             }
                         }
                     }
@@ -310,11 +316,15 @@
                 return (value == null) ? "" : value.toString();
             },
 
-            __setProperty : function (elem, prop, value, unit) {
-                var browser = aria.core.Browser;
+            __setProperty : function (animInfo, item, value, unit) {
+                var elem = animInfo.element, prop = item.prop, browser = aria.core.Browser;
                 if (this.cfg.PROPERTIES[prop] && !this.cfg.PROPERTIES[prop].notStyleProperty) {
                     if (prop == "opacity" && (browser.isIE6 || browser.isIE7 || browser.isIE8)) {
                         elem.style["filter"] = "alpha(opacity = " + value * 100 + ")";
+                    } else if (prop == "backgroundPositionX" && browser.isFirefox) {
+                        elem.style["backgroundPosition"] = value + unit + " " + item.complementaryValue;
+                    } else if (prop == "backgroundPositionY" && browser.isFirefox) {
+                        elem.style["backgroundPosition"] = item.complementaryValue + " " + value + unit;
                     } else {
                         elem.style[prop] = value + unit;
                     }
