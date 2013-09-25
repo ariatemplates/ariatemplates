@@ -841,10 +841,10 @@ Aria.classDefinition({
          */
         getStyle : function (element, property) {
             var browser = aria.core.Browser;
-            if (browser.isIE) {
-                var isIE8orLess = browser.isIE8 || browser.isIE7 || browser.isIE6;
+            var isIE8orLess = browser.isIE8 || browser.isIE7 || browser.isIE6;
+            if (isIE8orLess) {
                 this.getStyle = function (element, property) {
-                    if (isIE8orLess && property == 'opacity') {// IE<=8 opacity uses filter
+                    if (property == 'opacity') {// IE<=8 opacity uses filter
                         var val = 100;
                         try { // will error if no DXImageTransform
                             val = element.filters['DXImageTransform.Microsoft.Alpha'].opacity;
