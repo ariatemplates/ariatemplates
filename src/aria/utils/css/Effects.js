@@ -234,6 +234,13 @@
                                     dest : valueNum,
                                     unit : unit
                                 });
+                                if (explodedProps[i].prop == "backgroundPositionY"
+                                        && animInfo.backgroundComplementaryValueX == null) {
+                                    animInfo.backgroundComplementaryValueX = (this.__getProperty(elem, "backgroundPositionX") || "0px");
+                                } else if (explodedProps[i].prop == "backgroundPositionX"
+                                        && animInfo.backgroundComplementaryValueY == null) {
+                                    animInfo.backgroundComplementaryValueY = (this.__getProperty(elem, "backgroundPositionY") || "0px");
+                                }
                             }
                         }
                     }
@@ -256,7 +263,7 @@
             },
 
             _interpolate : function (elem, animInfo) {
-                var now = (new Date()).getTime(), ended = (now >= animInfo.end);
+                var now = (new Date()).getTime(), ended = (now >= animInfo.end), bgPositionAnim = {};
 
                 for (var i = 0, l = animInfo.props.length; i < l; i++) {
                     var interpolation, item = animInfo.props[i];
@@ -265,7 +272,24 @@
                     } else {
                         interpolation = this._computeInterpolation(animInfo.easing, item.origin, item.dest, animInfo.start, animInfo.end, now);
                     }
-                    this.__setProperty(animInfo.element, item.prop, interpolation, item.unit);
+                    if (item.prop == "backgroundPositionX" || item.prop == "backgroundPositionY") {
+                        bgPositionAnim[item.prop] = {
+                            val : interpolation,
+                            unit : item.unit
+                        };
+                    } else {
+                        this.__setProperty(animInfo, item, interpolation);
+                    }
+                }
+                if (bgPositionAnim["backgroundPositionX"] || bgPositionAnim["backgroundPositionY"]) {
+                    var bgPosition = [(bgPositionAnim["backgroundPositionX"]
+                            ? (bgPositionAnim["backgroundPositionX"].val + bgPositionAnim["backgroundPositionX"].unit)
+                            : animInfo.backgroundComplementaryValueX)];
+                    bgPosition.push(" ");
+                    bgPosition.push(bgPositionAnim["backgroundPositionY"]
+                            ? (bgPositionAnim["backgroundPositionY"].val + bgPositionAnim["backgroundPositionY"].unit)
+                            : animInfo.backgroundComplementaryValueY);
+                    animInfo.element.style["backgroundPosition"] = bgPosition.join("");
                 }
 
                 if (ended) {
@@ -310,8 +334,8 @@
                 return (value == null) ? "" : value.toString();
             },
 
-            __setProperty : function (elem, prop, value, unit) {
-                var browser = aria.core.Browser;
+            __setProperty : function (animInfo, item, value) {
+                var elem = animInfo.element, prop = item.prop, browser = aria.core.Browser, unit = item.unit;
                 if (this.cfg.PROPERTIES[prop] && !this.cfg.PROPERTIES[prop].notStyleProperty) {
                     if (prop == "opacity" && (browser.isIE6 || browser.isIE7 || browser.isIE8)) {
                         elem.style["filter"] = "alpha(opacity = " + value * 100 + ")";
