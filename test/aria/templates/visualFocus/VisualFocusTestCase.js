@@ -110,7 +110,7 @@ Aria.classDefinition({
             }
         },
 
-        myVisualFocusTest : (aria.core.Browser.isIE6 || aria.core.Browser.isIE7 || aria.core.Browser.isIE8)
+        myVisualFocusTest : (aria.core.Browser.isIE7)
                 ? function () {
                     this.finishTest();
                 }
