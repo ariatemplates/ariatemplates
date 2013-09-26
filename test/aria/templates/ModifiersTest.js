@@ -84,6 +84,35 @@ Aria.classDefinition({
                     "escapeForHTML"]) === "&lt;div id=&#x27;id&#x27; class=&quot;class&quot;&gt;&#x2F;&lt;&#x2F;div&gt;", "Default with escape failed.");
         },
 
+        testPad : function () {
+            var callModifier = aria.templates.Modifiers.callModifier;
+
+            // basic functionality
+            this.assertEquals(callModifier("pad", ["a", 3]), "a&nbsp;&nbsp;");
+            this.assertEquals(callModifier("pad", ["a", 3, false]), "a&nbsp;&nbsp;");
+            this.assertEquals(callModifier("pad", ["a", 3, true]), "&nbsp;&nbsp;a");
+            this.assertEquals(callModifier("pad", ["abc", 3, true]), "abc");
+
+            // does nothing when the input is too long
+            this.assertEquals(callModifier("pad", ["abcdef", 3, true]), "abcdef");
+
+            // does nothing when the length is negative
+            this.assertEquals(callModifier("pad", ["abcdef", -2]), "abcdef");
+
+            // test alternative padding string
+            this.assertEquals(callModifier("pad", ["a", 2, false, ' ']), "a ");
+            this.assertEquals(callModifier("pad", ["7", 3, true, '0']), "007");
+
+            // when the padding string is empty, default to '&nbsp;' also
+            this.assertEquals(callModifier("pad", ["foo", 6, true, '']), "&nbsp;&nbsp;&nbsp;foo");
+
+            // when the padding string param is longer than one character, it should be used in its entirety
+            // the main use case is to be able to pass HTML entites
+            this.assertEquals(callModifier("pad", ["foo", 5, false, '&mdash;']), "foo&mdash;&mdash;");
+            // the following is not of a much use probably, but let's not overengineer this function too much
+            this.assertEquals(callModifier("pad", ["foo", 5, false, 'abc']), "fooabcabc");
+        },
+
         /**
          * Unit test the highlight modifiers. Highlight puts &lt;strong&gt; tags around the initial part of the words
          */
