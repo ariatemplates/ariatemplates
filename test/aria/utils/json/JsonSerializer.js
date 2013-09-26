@@ -439,6 +439,20 @@ Aria.classDefinition({
             };
             var result = this.jsonSerializer.serialize(testObj);
             this.assertJsonStringEquals(result, "{\"b\":1}");
+        },
+
+        /**
+         * Test some special cases
+         */
+        testSpecialCases : function () {
+            // Special chars in key
+            var testObj = {"/?\\": "test"};
+            var output = this.jsonSerializer.serialize(testObj, {
+                reversible : true,
+                keepMetadata : false
+            });
+            this.assertJsonEquals(testObj, this.jsonSerializer.parse(output));
         }
+
     }
 });
