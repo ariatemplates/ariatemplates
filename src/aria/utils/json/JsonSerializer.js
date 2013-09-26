@@ -27,6 +27,31 @@ Aria.classDefinition({
         this._optimized = optimized || false;
     },
     $prototype : function () {
+        var escapable = /[\\\"\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g, meta = {
+            // table of character substitutions
+            '\b' : '\\b',
+            '\t' : '\\t',
+            '\n' : '\\n',
+            '\f' : '\\f',
+            '\r' : '\\r',
+            '"' : '\\"',
+            '\\' : '\\\\'
+        };
+
+        var quote = function (string) {
+
+            // If the string contains no control characters, no quote characters, and no
+            // backslash characters, then we can safely slap some quotes around it.
+            // Otherwise we must also replace the offending characters with safe escape
+            // sequences.
+
+            escapable.lastIndex = 0;
+            return escapable.test(string) ? '"' + string.replace(escapable, function (a) {
+                var c = meta[a];
+                return typeof c === 'string' ? c : '\\u' + ('0000' + a.charCodeAt(0).toString(16)).slice(-4);
+            }) + '"' : '"' + string + '"';
+        };
+
         var fastSerializer = (function () {
             var JSON = Aria.$global.JSON || {};
             if (JSON.stringify) {
@@ -39,31 +64,7 @@ Aria.classDefinition({
                     return this.valueOf();
                 };
 
-                var escapable = /[\\\"\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g, gap, indent, meta = {
-                    // table of character substitutions
-                    '\b' : '\\b',
-                    '\t' : '\\t',
-                    '\n' : '\\n',
-                    '\f' : '\\f',
-                    '\r' : '\\r',
-                    '"' : '\\"',
-                    '\\' : '\\\\'
-                };
-
-                var quote = function (string) {
-
-                    // If the string contains no control characters, no quote characters, and no
-                    // backslash characters, then we can safely slap some quotes around it.
-                    // Otherwise we must also replace the offending characters with safe escape
-                    // sequences.
-
-                    escapable.lastIndex = 0;
-                    return escapable.test(string) ? '"' + string.replace(escapable, function (a) {
-                        var c = meta[a];
-                        return typeof c === 'string' ? c : '\\u' + ('0000' + a.charCodeAt(0).toString(16)).slice(-4);
-                    }) + '"' : '"' + string + '"';
-                };
-
+                var gap, indent;
                 var str = function (key, holder) {
 
                     // Produce a string from holder[key].
@@ -367,8 +368,8 @@ Aria.classDefinition({
                             res.push(subIndent);
                         }
 
-                        if (options.escapeKeyNames || key.match(/\:/)) {
-                            res.push('"' + key + '":');
+                        if (options.escapeKeyNames || /\W/.test(key) || /^[0-9]/.test(key)) {
+                            res.push(quote(key)+':');
                         } else {
                             res.push(key + ':');
                         }
