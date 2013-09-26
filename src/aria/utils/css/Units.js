@@ -21,7 +21,7 @@
 
     Aria.classDefinition({
         $classpath : "aria.utils.css.Units",
-        $dependencies : ["aria.utils.String", "aria.utils.css.PropertiesConfig"],
+        $dependencies : ["aria.utils.String", "aria.core.Browser", "aria.utils.css.PropertiesConfig"],
         $singleton : true,
         $statics : {
             __convertFromPixels : {
@@ -126,7 +126,7 @@
             __px2Percentage : function (value, elem, property) {
                 var el = elem.parentNode, refer;
                 // computes the height or width of the container
-                refer = parseFloat(this.getDomWidthOrHeightForOldIE(el, (this.cfg.PROPERTIES[property].orientation == this.cfg.HORIZONTAL)
+                refer = parseFloat(this.__getDomWidthOrHeight(el, (this.cfg.PROPERTIES[property].orientation == this.cfg.HORIZONTAL)
                         ? "width"
                         : "height"));
                 return value / refer * 100;
@@ -135,7 +135,7 @@
             __percentage2Px : function (value, elem, property) {
                 var el = elem.parentNode, refer;
                 // computes the height or width of the container
-                refer = parseFloat(this.getDomWidthOrHeightForOldIE(el, (this.cfg.PROPERTIES[property].orientation == this.cfg.HORIZONTAL)
+                refer = parseFloat(this.__getDomWidthOrHeight(el, (this.cfg.PROPERTIES[property].orientation == this.cfg.HORIZONTAL)
                         ? "width"
                         : "height"));
                 return value * refer * 100;
@@ -158,6 +158,8 @@
             Aria.$window.document.body.removeChild(domElement);
             // end detection dpi
 
+            var browser = aria.core.Browser;
+            this.isIE8orLess = browser.isIE8 || browser.isIE7 || browser.isIE6;
         },
         $prototype : {
 
@@ -255,6 +257,21 @@
              * @param {String} property The CSS property to retrieve
              * @see aria.utils.Dom.getStyle
              */
+            __getDomWidthOrHeight : function (element, property) {
+                if (this.isIE8orLess) {
+                    return this.getDomWidthOrHeightForOldIE(element, property);
+                } else {
+                    return this.__getStyleSimplified(element, property);
+                }
+            },
+
+            /**
+             * Retrieve the computed style for a given CSS property ("width" or "height") on a given DOM element. This
+             * part of a aria.utils.Dom.getStyle function was moved here to avoid circular dependencies.
+             * @param {HTMLElement} element The DOM element on which to retrieve a CSS property
+             * @param {String} property The CSS property to retrieve
+             * @see aria.utils.Dom.getStyle
+             */
             getDomWidthOrHeightForOldIE : function (element, property) {
                 // In IE, element.currentStyle.width might be empty; element.offsetWidth is not;
                 // moreover, if maxWidth is present and lower than width, we would get the incorrect value.
@@ -284,9 +301,7 @@
              * properties which do not need any special treatment.
              */
             __getStyleSimplified : function (element, property) {
-                var browser = aria.core.Browser;
-                var isIE8orLess = browser.isIE8 || browser.isIE7 || browser.isIE6;
-                if (isIE8orLess) {
+                if (this.isIE8orLess) {
                     return element.currentStyle[property] || element.style[property];
                 } else {
                     return Aria.$window.getComputedStyle(element, "")[property] || element.style[property];
