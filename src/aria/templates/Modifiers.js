@@ -115,25 +115,29 @@
         },
         "pad" : {
             /**
-             * Pad the string with non-breaking spaces
+             * Pad the string with the provided padding character(s) or non-breaking spaces
              * @name aria.templates.Modifiers.pad
              * @param {String} str the entry
              * @param {Integer} sz the targetted size for the result string
              * @param {Boolean} begin tells if the padding must be added at the beginning (true) or at the end (false)
              * of the string - Default is false
+             * @param {String} padStr the HTML string to be used for padding. Default is '&nbsp;'. Note that if this
+             * string has javascript length > 1, it will still be used in its entirety for padding, the same number of
+             * times as if it was one-character only. This might be useful mainly for passing HTML entities.
              * @return {String}
              */
-            fn : function (str, sz, begin) {
+            fn : function (str, sz, begin, padStr) {
                 str = '' + str; // force cast to string
+                padStr = padStr || '&nbsp;'; // empty padding string doesn't make sense
                 var lgth = str.length;
                 if (lgth < sz) {
                     var beg = (begin === true);
-                    var a = [], diff = sz - lgth, sp = '&nbsp;';
+                    var a = [], diff = sz - lgth;
                     if (!beg) {
                         a.push(str);
                     }
                     for (var i = 0; diff > i; i++) {
-                        a.push(sp);
+                        a.push(padStr);
                     }
                     if (beg) {
                         a.push(str);
