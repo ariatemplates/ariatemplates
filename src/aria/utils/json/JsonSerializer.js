@@ -38,6 +38,9 @@ Aria.classDefinition({
             '\\' : '\\\\'
         };
 
+        var specialCarRegexp = /\W/;
+        var letterFirstRegexp = /^[0-9]/;
+
         var quote = function (string) {
 
             // If the string contains no control characters, no quote characters, and no
@@ -368,7 +371,7 @@ Aria.classDefinition({
                             res.push(subIndent);
                         }
 
-                        if (options.escapeKeyNames || /\W/.test(key) || /^[0-9]/.test(key)) {
+                        if (options.escapeKeyNames || specialCarRegexp.test(key) || letterFirstRegexp.test(key)) {
                             res.push(quote(key) + ':');
                         } else {
                             res.push(key + ':');
