@@ -171,11 +171,19 @@ Aria.classDefinition({
             });
 
             // default the position to 0,0 if nothing is defined
-            if (cfg.domReference === null && cfg.absolutePosition === null && cfg.center === false) {
+            if (cfg.domReference === null && cfg.referenceId === null && cfg.absolutePosition === null && cfg.center === false) {
                 cfg.absolutePosition = {
                     top : 0,
                     left : 0
                 };
+            }
+            
+            var domReference = null;
+            if (cfg.domReference) {
+                domReference = cfg.domReference;
+            }
+            else if (cfg.referenceId) {
+                domReference = aria.utils.Dom.getElementById(this._context.$getId(cfg.referenceId));
             }
 
             popup.open({
@@ -183,7 +191,7 @@ Aria.classDefinition({
                 keepSection : true,
                 modal : cfg.modal,
                 maskCssClass : cfg.maskCssClass,
-                domReference : cfg.domReference,
+                domReference : domReference,
                 absolutePosition : cfg.absolutePosition,
                 center : cfg.center,
                 maximized : cfg.maximized,

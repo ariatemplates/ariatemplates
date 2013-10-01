@@ -53,7 +53,12 @@ Aria.beanDefinitions({
                 },
                 "domReference" : {
                     $type : "json:ObjectRef",
-                    $description : "{HTMLElement} The DOM reference which will be used as the reference position for the tooltip",
+                    $description : "{HTMLElement} The DOM reference which will be used as the reference position for the tooltip. Takes priority over referenceId if defined.",
+                    $default : null
+                },
+                "referenceId" : {
+                    $type : "json:String",
+                    $description : "The id of the reference which will be used for position of the tooltip the tooltip.",
                     $default : null
                 },
                 "absolutePosition" : {
