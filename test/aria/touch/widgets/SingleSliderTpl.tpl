@@ -50,6 +50,19 @@
     }/}
     <br>
 
+     /* BACKWARD-COMPATIBILITY-BEGIN GH-715 */
+    {@touch:Slider {
+       bindValue: {
+        to: "sliderDeprecated",
+        inside: data
+      },
+      width: 200,
+      id : "sliderDeprecated",
+      tapToMove : true
+    }/}
+    <br>
+     /* BACKWARD-COMPATIBILITY-END GH-715 */
+
     {@touch:Slider {
       width: 100,
       id: "switch",

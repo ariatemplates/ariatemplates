@@ -54,37 +54,55 @@ Aria.beanDefinitions({
                     $default : 0.5
                 },
                 onLabel : {
-                  $type : "json:String",
-                  $description : "On label for switch mode",
-                  $default : "ON"
+                    $type : "json:String",
+                    $description : "On label for switch mode",
+                    $default : "ON"
                 },
                 offLabel : {
-                  $type : "json:String",
-                  $description : "Off label for switch mode",
-                  $default : "OFF"
+                    $type : "json:String",
+                    $description : "Off label for switch mode",
+                    $default : "OFF"
                 },
+                /* BACKWARD-COMPATIBILITY-BEGIN GH-715 */
+                bindValue : {
+                    $type : "json:Object",
+                    $description : "Binding for the value of the slider.",
+                    $properties : {
+                        inside : {
+                            $type : "json:ObjectRef",
+                            $description : "Reference to the object that holds the property to bind to.",
+                            $mandatory : true
+                        },
+                        to : {
+                            $type : "json:String",
+                            $description : "Name of the JSON property to bind to.",
+                            $mandatory : true
+                        }
+                    }
+                },
+                /* BACKWARD-COMPATIBILITY-END GH-715 */
                 bind : {
-                  $type : "json:Object",
-                  $description : "Automatic bindings for the widget properties",
-                  $properties : {
-                      value : {
-                          $type : "json:Object",
-                          $description : "Binding for the widget's value",
-                          $properties : {
-                              inside : {
-                                  $type : "json:ObjectRef",
-                                  $description : "Reference to the object that holds the property to bind to.",
-                                  $mandatory : true
-                              },
-                              to : {
-                                  $type : "json:String",
-                                  $description : "Name of the property to bind to.",
-                                  $mandatory : true
-                              }
-                          }
-                      }
-                  }
-              }
+                    $type : "json:Object",
+                    $description : "Automatic bindings for the widget properties",
+                    $properties : {
+                        value : {
+                            $type : "json:Object",
+                            $description : "Binding for the widget's value",
+                            $properties : {
+                                inside : {
+                                    $type : "json:ObjectRef",
+                                    $description : "Reference to the object that holds the property to bind to.",
+                                    $mandatory : true
+                                },
+                                to : {
+                                    $type : "json:String",
+                                    $description : "Name of the property to bind to.",
+                                    $mandatory : true
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "DoubleSliderCfg" : {

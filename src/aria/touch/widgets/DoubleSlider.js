@@ -14,10 +14,10 @@
  */
 
 /**
- * Double Slider widget.<br/>
- * This widget has two movable thumbs over a region defined by the width of the widget.<br/>
- * The first thumb is aligned on its right border, while the second thumb on its left, this allows them to have the same value.
- * The length of the rail (where the thumbs can move) is thus the difference between the widget's width and its thumbs width.
+ * Double Slider widget.<br/> This widget has two movable thumbs over a region defined by the width of the widget.<br/>
+ * The first thumb is aligned on its right border, while the second thumb on its left, this allows them to have the same
+ * value. The length of the rail (where the thumbs can move) is thus the difference between the widget's width and its
+ * thumbs width.
  */
 Aria.classDefinition({
     $classpath : "aria.touch.widgets.DoubleSlider",
@@ -26,7 +26,8 @@ Aria.classDefinition({
     $statics : {
         INVALID_CONFIGURATION : "Invalid configuration for the slider!"
     },
-    $dependencies : ["aria.touch.widgets.SliderCfgBeans", "aria.utils.Dom", "aria.utils.Type", "aria.utils.Mouse", "aria.utils.Html"],
+    $dependencies : ["aria.touch.widgets.SliderCfgBeans", "aria.utils.Dom", "aria.utils.Type", "aria.utils.Mouse",
+            "aria.utils.Html"],
     /**
      * Slider Constructor.
      * @param {aria.touch.widgets.SliderCfgBeans:DoubleSliderCfg} cfg slider configuration
@@ -55,8 +56,8 @@ Aria.classDefinition({
         this._firstWidth = 0;
 
         /**
-         * Computed width of the second thumb. The actual value is compute on initialization.
-         * Being aligned differently it should account for the borders.
+         * Computed width of the second thumb. The actual value is compute on initialization. Being aligned differently
+         * it should account for the borders.
          * @type Number
          * @protected
          */
@@ -77,8 +78,8 @@ Aria.classDefinition({
         this.value = [0, 0];
 
         /**
-         * Value before the start of a move, this is kept to raised the change event only
-         * if after a move the new value changes
+         * Value before the start of a move, this is kept to raised the change event only if after a move the new value
+         * changes
          * @type Array
          * @protected
          */
@@ -238,28 +239,23 @@ Aria.classDefinition({
                 this.initWidget = Aria.empty;
                 return out.write(this.INVALID_CONFIGURATION);
             }
-            
+
             var cfg = this._cfg;
-            if (typeof cfg.attributes == 'undefined') {
-              cfg.attributes = {};
-            }
-            if (typeof cfg.attributes.classList == 'undefined') {
-              cfg.attributes.classList = [];
-            }
+            cfg.attributes = cfg.attributes || {};
+            cfg.attributes.classList = cfg.attributes.classList || [];
             cfg.attributes.classList.push("touchLibDoubleSlider");
-            
+
             out.write([
-                // Div containing the widget
-                '<div ', aria.utils.Html.buildAttributeList(cfg.attributes), '" style="width:', this._cfg.width, 'px;">',
-                // Rail, thumbs move over here
-                '<span class="touchContainer" style="width:', cfg.width, 'px;" id="', this._domId, '">',
-                // Two thumbs
-                '<span id="', this._secondDomId, '" class="sliderButton secondPoint" style="left:0px;"></span>',
-                '<span id="', this._firstDomId, '" class="sliderButton firstPoint" style="left:0px;"></span>',
-                // Highlight the part between two thumbs
-                '<span class="sliderHighLight" id="', this._domId + "_hightlight", '"></span>',
-                '</span></div>'].join("")
-            );
+                    // Div containing the widget
+                    '<div ', aria.utils.Html.buildAttributeList(cfg.attributes), '" style="width:', this._cfg.width,
+                    'px;">',
+                    // Rail, thumbs move over here
+                    '<span class="touchContainer" style="width:', cfg.width, 'px;" id="', this._domId, '">',
+                    // Two thumbs
+                    '<span id="', this._secondDomId, '" class="sliderButton secondPoint" style="left:0px;"></span>',
+                    '<span id="', this._firstDomId, '" class="sliderButton firstPoint" style="left:0px;"></span>',
+                    // Highlight the part between two thumbs
+                    '<span class="sliderHighLight" id="', this._domId + "_hightlight", '"></span>', '</span></div>'].join(""));
         },
 
         /**
@@ -291,8 +287,7 @@ Aria.classDefinition({
         },
 
         /**
-         * Read the bound value in the data model, ensure it is defined, between 0 and 1, and assign the value
-         * property.
+         * Read the bound value in the data model, ensure it is defined, between 0 and 1, and assign the value property.
          * @protected
          */
         _readValue : function () {
@@ -310,8 +305,8 @@ Aria.classDefinition({
         },
 
         /**
-         * Set the left position of the two thumbs without knowing if they are correct.
-         * The first thumb is aligned on the left, while the second on the right.
+         * Set the left position of the two thumbs without knowing if they are correct. The first thumb is aligned on
+         * the left, while the second on the right.
          */
         _setLeft : function () {
             var first = Math.max(0, Math.min(this.value[0], this.value[1], 1));
@@ -321,8 +316,8 @@ Aria.classDefinition({
         },
 
         /**
-         * Update the position of the thumbs of the slider depending on the index.
-         * It also updates the width and position of the highlight.
+         * Update the position of the thumbs of the slider depending on the index. It also updates the width and
+         * position of the highlight.
          * @protected
          */
         _updateDisplay : function () {
