@@ -26,9 +26,11 @@
     <br><br>
 
     {@touch:Slider {
-      bindValue: {
-        to: "slider",
-        inside: data
+      bind: {
+        value: {
+          to: "slider",
+          inside: data
+        }
       },
       width: 200,
       id : "slider"
@@ -36,9 +38,11 @@
 
     <br>
     {@touch:Slider {
-      bindValue: {
-        to: "slider1",
-        inside: data
+       bind: {
+        value: {
+          to: "slider1",
+          inside: data
+        }
       },
       width: 200,
       id : "slider1",
@@ -46,14 +50,29 @@
     }/}
     <br>
 
+     /* BACKWARD-COMPATIBILITY-BEGIN GH-715 */
+    {@touch:Slider {
+       bindValue: {
+        to: "sliderDeprecated",
+        inside: data
+      },
+      width: 200,
+      id : "sliderDeprecated",
+      tapToMove : true
+    }/}
+    <br>
+     /* BACKWARD-COMPATIBILITY-END GH-715 */
+
     {@touch:Slider {
       width: 100,
       id: "switch",
       toggleSwitch : true,
       tapToMove : true,
-      bindValue: {
-        to: "switchVal",
-        inside: data
+       bind: {
+        value: {
+          to: "switchVal",
+          inside: data
+        }
       }
     }/}
     <br>
@@ -63,9 +82,11 @@
       id: "switchToggle",
       toggleSwitch : true,
       tapToToggle : true,
-      bindValue: {
-        to: "switchVal2",
-        inside: data
+       bind: {
+        value: {
+          to: "switchVal2",
+          inside: data
+        }
       }
     }/}
 

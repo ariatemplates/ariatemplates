@@ -19,18 +19,18 @@
 
     {macro main()}
 
-        div.touchLibSlider {
+        .touchLibSlider {
             background: none repeat scroll 0 0 #EFF9FF;
             border: 2px solid #999999;
             border-radius: 32px 32px 32px 32px;
             height: 17px;
         }
 
-        div.touchLibSlider span {
+        .touchLibSlider span {
             position: absolute;
         }
 
-        div.touchLibSlider .touchLibSwitchOn, div.touchLibSlider .touchLibSwitchOff{
+        .touchLibSlider > .touchContainer > .touchLibSwitchOn, .touchLibSlider > .touchContainer > .touchLibSwitchOff{
             position: absolute;
             border-radius: 32px 32px 32px 32px;
             z-index: 1;
@@ -44,29 +44,37 @@
             -ms-user-select: none;
             user-select: none;
         }
-        div.touchLibSlider .touchLibSwitchOn{
+        .touchLibSlider > .touchContainer > .touchLibSwitchOn{
           background-color: #61A0CD;
           color: #fff;
         }
 
-        div.touchLibSlider .touchLibSwitchOff{
+        .touchLibSlider > .touchContainer > .touchLibSwitchOff{
           background-color: #DADADA;
           color: #000;
         }
 
 
-        div.touchLibSlider span.touchContainer {
+        .touchLibSlider > .touchContainer {
             position: absolute;
             height: 18px;
         }
 
-        div.touchLibSlider span.sliderButton {
+        .touchLibSlider > .touchContainer > .sliderButton {
             background: none repeat scroll 0 0 #fff;
             border: 2px solid #4776A7;
             border-radius: 32px 32px 32px 32px;
             width: 14px;
             height: 14px;
             z-index: 2;
+        }
+        
+        .touchLibSlider  > .touchContainer > .sliderHighLight {
+            z-index: 1;
+            height: 17px;
+            width: 0px;
+            background-color: #E3E3E3;
+            border-radius: 32px 0 0 32px;
         }
 
     {/macro}
