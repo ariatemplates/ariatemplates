@@ -52,12 +52,35 @@
             NO_PROPERTY_TO_ANIMATE : "No valid property to animate.",
 
             __easing : {
-                "linear" : function (startValue, endValue, start, end, current) {
-                    var sx = start, ex = end, sy = startValue, ey = endValue, x = current;
-                    var y = ((ey - sy) / (ex - sx)) * (x - sx) + sy;
-                    return round(y);
+                "linear" : function (x) {
+                    return x;
+                },
+                "ease-in-out" : function (x) {
+                    // 0 < curveCutPoint < infinity
+                    var curveCutPoint = 3;
+                    return (Math.atan(2 * curveCutPoint * x - curveCutPoint) + Math.atan(curveCutPoint))
+                            / (2 * Math.atan(curveCutPoint));
+                },
+                "ease-out" : function (x) {
+                    // 0 < curveCutPoint < infinity
+                    var curveCutPoint = 3;
+                    return Math.atan(curveCutPoint * x) / Math.atan(curveCutPoint);
+                },
+                "ease-in" : function (x) {
+                    // 0 < curveCutPoint < PI/2
+                    var curveCutPoint = 1.3;
+                    return Math.tan(curveCutPoint * x) / Math.tan(curveCutPoint);
                 }
+            },
+
+            _computeInterpolation : function (easing, startValue, endValue, start, end, current) {
+                var sx = start, ex = end, sy = startValue, ey = endValue, x = current;
+                var animProgress = (x - sx) / (ex - sx);
+                var range = ey - sy;
+                var y = sy + easing(animProgress) * range;
+                return round(y);
             }
+
         },
         $constructor : function () {
 
@@ -235,16 +258,14 @@
             _interpolate : function (elem, animInfo) {
                 var now = (new Date()).getTime(), ended = (now >= animInfo.end);
 
-                for (var prop in animInfo.props) {
-                    if (animInfo.props.hasOwnProperty(prop)) {
-                        var interpolation, item = animInfo.props[prop];
-                        if (ended) {
-                            interpolation = item.dest;
-                        } else {
-                            interpolation = animInfo.easing(item.origin, item.dest, animInfo.start, animInfo.end, now);
-                        }
-                        this.__setProperty(animInfo.element, item.prop, interpolation, item.unit);
+                for (var i = 0, l = animInfo.props.length; i < l; i++) {
+                    var interpolation, item = animInfo.props[i];
+                    if (ended) {
+                        interpolation = item.dest;
+                    } else {
+                        interpolation = this._computeInterpolation(animInfo.easing, item.origin, item.dest, animInfo.start, animInfo.end, now);
                     }
+                    this.__setProperty(animInfo.element, item.prop, interpolation, item.unit);
                 }
 
                 if (ended) {
