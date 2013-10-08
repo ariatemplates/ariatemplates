@@ -101,8 +101,9 @@
              */
             error : function (className, msg, msgText, e) {
                 var message = this._formatClassName(className) + msg;
-                if (e) {
-                    console.error(message + "\n", e);
+                if (e && e.name && e.message) {
+                    var formattedErrorMessage = e.name + ": " + e.message;
+                    console.error(message + "\n", formattedErrorMessage);
                 } else {
                     console.error(message);
                 }

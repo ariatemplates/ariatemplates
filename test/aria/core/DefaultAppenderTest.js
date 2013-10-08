@@ -14,7 +14,7 @@
  */
 
 /**
- * Test case for the logger
+ * Test case for the default appender when the the global console provides log, dir, warn, debug, info and error methods.
  */
 Aria.classDefinition({
     $classpath : "test.aria.core.DefaultAppenderTest",
@@ -60,8 +60,8 @@ Aria.classDefinition({
                     that._myTestWarn.call(that, args);
                 },
 
-                error : function (args) {
-                    that._myTestError.call(that, args);
+                error : function (message, originalErrorMessage) {
+                    that._myTestError.call(that, message, originalErrorMessage);
                 }
             };
 
@@ -94,8 +94,9 @@ Aria.classDefinition({
             this._storedWarnMessage = args;
         },
 
-        _myTestError : function (args) {
-            this._storedErrorMessage = args;
+        _myTestError : function (message, originalErrorMessage) {
+            this._storedErrorMessage = message;
+            this._storedOriginalErrorMessage = originalErrorMessage || null;
         },
 
         _onDefaultAppenderLoaded : function () {
@@ -117,9 +118,13 @@ Aria.classDefinition({
 
             aria.core.log.DefaultAppender.prototype.error(className, msg, msgText);
             this.assertTrue(this._storedErrorMessage == '[' + className + '] ' + msg);
+            this.assertTrue(this._storedOriginalErrorMessage == null);
 
-            aria.core.log.DefaultAppender.prototype.error(className, msg, msgText, true);
+            var errorMsg = "errorMsg", error = new Error(errorMsg);
+            aria.core.log.DefaultAppender.prototype.error(className, msg, msgText, error);
             this.assertTrue(this._storedErrorMessage == '[' + className + '] ' + msg + '\n');
+            this.assertTrue(this._storedOriginalErrorMessage == error.name + ": " + error.message);
+
 
             this.notifyTestEnd('testAsyncDefaultAppenderLogMessages');
         }
