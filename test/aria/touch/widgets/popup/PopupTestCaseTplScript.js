@@ -13,14 +13,13 @@
  * limitations under the License.
  */
 
-Aria.classDefinition({
-    $classpath : "test.aria.popups.PopupsTestSuite",
-    $extends : "aria.jsunit.TestSuite",
-    $constructor : function () {
-        this.$TestSuite.constructor.call(this);
+Aria.tplScriptDefinition({
+    $classpath : "test.aria.touch.widgets.popup.PopupTestCaseTplScript",
+    $prototype : {
 
-        this.addTests("test.aria.popups.Popup");
-        this.addTests("test.aria.popups.PopupEventsTestCase");
-        this.addTests("test.aria.popups.PopupAnimationsTestCase");
+        displayPopup : function () {
+            aria.utils.Json.setValue(this.data, "popupVisible", !this.data.popupVisible);
+        }
+
     }
 });
