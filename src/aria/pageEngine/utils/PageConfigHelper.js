@@ -20,9 +20,28 @@ Aria.classDefinition({
     $classpath : "aria.pageEngine.utils.PageConfigHelper",
     $dependencies : ["aria.pageEngine.utils.PageEngineUtils", "aria.utils.Type", "aria.utils.Array"],
     $constructor : function (pageConfig) {
+        /**
+         * Page definition
+         * @type aria.pageEngine.CfgBeans:PageDefinition
+         * @protected
+         */
         this._pageConfig = pageConfig;
+
+        /**
+         * Page Engine utilities
+         * @type aria.pageEngine.utils.PageEngineUtils
+         * @protected
+         */
         this._utils = aria.pageEngine.utils.PageEngineUtils;
-        this._utils.addKeyAsProperty(this._pageConfig.pageComposition.modules, "refpath");
+
+        /**
+         * Copy of the list of modules from the page definition
+         * @type aria.pageEngine.CfgBeans:PageComposition.modules
+         * @protected
+         */
+        this._pageModules = aria.utils.Json.copy(this._pageConfig.pageComposition.modules) || {};
+
+        this._utils.addKeyAsProperty(this._pageModules, "refpath");
     },
     $prototype : {
 
@@ -89,7 +108,7 @@ Aria.classDefinition({
          * @private
          */
         _addPlaceholderDependencies : function (placeholder, dependencies, lazy) {
-            var modules = this._pageConfig.pageComposition.modules || {}, refpath, moduleDesc, typeUtils = aria.utils.Type;
+            var modules = this._pageModules, refpath, moduleDesc, typeUtils = aria.utils.Type;
             if (!typeUtils.isObject(placeholder)) {
                 return;
             }
@@ -122,7 +141,7 @@ Aria.classDefinition({
          * @return {Array} Contains objects of type {aria.templates.ModuleCtrl.SubModuleDefinition}
          */
         getPageModulesDescriptions : function (refpaths) {
-            var modules = this._pageConfig.pageComposition.modules || {};
+            var modules = this._pageModules;
             var filteredMods = [], i, len, currentDesc;
             if (refpaths) {
                 for (i = 0, len = refpaths.length; i < len; i++) {

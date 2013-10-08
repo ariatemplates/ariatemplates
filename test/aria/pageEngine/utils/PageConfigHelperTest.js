@@ -70,11 +70,13 @@ Aria.classDefinition({
             var pgh = new aria.pageEngine.utils.PageConfigHelper(this.pageDefOne.pageDef);
             var modules = pgh.getPageModulesDescriptions();
             var refpaths = ["modOne", "modTwo", "mod.modthree", "modFour", "modFive"];
-            var testVar = true;
+            var testVar = true, testRefPathShouldBeMissing = true;
             for (var i = 0, len = refpaths.length; i < len; i++) {
                 testVar = testVar && (this._getModuleWithRefpath(modules, refpaths[i]).refpath == refpaths[i]);
+                testRefPathShouldBeMissing = testRefPathShouldBeMissing && (!this.pageDefOne.pageDef.pageComposition.modules[refpaths[i]].refpath);
             }
             this.assertTrue(testVar, "Module definitions have not been decorated with refpaths");
+            this.assertTrue(testRefPathShouldBeMissing, "Original Module definitions have been decorated with refpaths");
 
             pgh.$dispose();
         },
