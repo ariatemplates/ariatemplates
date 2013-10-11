@@ -23,7 +23,7 @@ Aria.classDefinition({
     $classpath : "aria.widgetLibs.BindableWidget",
     $extends : "aria.widgetLibs.BaseWidget",
     $statics : {
-        INVALID_BEAN : "Invalid propety '%1' in widget's '%2' configuration."
+        INVALID_BEAN : "%1Invalid property '%2' in widget's '%3' configuration."
     },
     $dependencies : ["aria.utils.Json", "aria.utils.Type"],
     /**
