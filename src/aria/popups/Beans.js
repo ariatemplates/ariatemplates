@@ -21,7 +21,6 @@ Aria.beanDefinitions({
     $description : "Definition of the JSON beans used to set application variables",
     $namespaces : {
         "json" : "aria.core.JsonTypes",
-        "dom" : "aria.utils.DomBeans",
         "animation" : "aria.utils.css.AnimationsBean"
     },
     $beans : {
@@ -185,22 +184,22 @@ Aria.beanDefinitions({
             $description : "Configuration object to describe the absolute positionning of the popup",
             $properties : {
                 "top" : {
-                    $type : "json:Integer",
+                    $type : "json:Float",
                     $description : "Top value of the AbsolutePosition object",
                     $default : null
                 },
                 "bottom" : {
-                    $type : "json:Integer",
+                    $type : "json:Float",
                     $description : "Bottom value of the AbsolutePosition object",
                     $default : null
                 },
                 "right" : {
-                    $type : "json:Integer",
+                    $type : "json:Float",
                     $description : "Right value of the AbsolutePosition object",
                     $default : null
                 },
                 "left" : {
-                    $type : "json:Integer",
+                    $type : "json:Float",
                     $description : "Left value of the AbsolutePosition object",
                     $default : null
                 }
