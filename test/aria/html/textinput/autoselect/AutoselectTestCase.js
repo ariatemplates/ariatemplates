@@ -16,7 +16,7 @@
 Aria.classDefinition({
     $classpath : "test.aria.html.textinput.autoselect.AutoselectTestCase",
     $extends : "aria.jsunit.RobotTestCase",
-    $dependencies : ["aria.html.TextInput", "aria.utils.SynEvents", "aria.utils.Dom"],
+    $dependencies : ["aria.html.TextInput", "aria.utils.Dom"],
     $destructor : function () {
         this.element = null;
         this.$RobotTestCase.$destructor.call(this);
@@ -28,7 +28,7 @@ Aria.classDefinition({
             this.element = inputs[0];
             this.secondElement = inputs[1];
 
-            aria.utils.SynEvents.click(this.element, {
+            this.synEvent.click(this.element, {
                 fn : this.afterFirstClick,
                 scope : this
             });
@@ -40,7 +40,7 @@ Aria.classDefinition({
             this.assertEquals(caretPos.start, 0, "The start pos of caret is not zero");
             this.assertEquals(caretPos.end, 0, "The end pos of caret is not zero");
 
-            aria.utils.SynEvents.type(this.element, "brazil", {
+            this.synEvent.type(this.element, "brazil", {
                 fn : this.afterType,
                 scope : this
             });
@@ -56,14 +56,14 @@ Aria.classDefinition({
 
             var outside = aria.utils.Dom.getElementById("outsideDiv");
 
-            aria.utils.SynEvents.click(outside, {
+            this.synEvent.click(outside, {
                 fn : this.afterSecondClick,
                 scope : this
             });
         },
 
         afterSecondClick : function () {
-            aria.utils.SynEvents.click(this.element, {
+            this.synEvent.click(this.element, {
                 fn : this.afterThirdClick,
                 scope : this
             });
@@ -77,10 +77,10 @@ Aria.classDefinition({
             this.assertEquals(caretPos.end, this.element.value.length, "The end pos of caret is not at the end of the word typed");
             this.assertEquals(this.element.value, "brazil", "The value of input text is not brazil");
 
-            this.synEvent.click(this.element, {
+            this.synEvent.execute([["pause", 500],["click", this.element]],{
                 fn : this.afterFourthClick,
                 scope : this
-            });
+            } );
         },
 
         afterFourthClick : function () {
@@ -90,7 +90,7 @@ Aria.classDefinition({
             var caretPos = aria.utils.Caret.getPosition(this.element);
             this.assertEquals(caretPos.start - caretPos.end, 0, " After the second click the field is still completely selected");
 
-            aria.utils.SynEvents.click(this.secondElement, {
+            this.synEvent.click(this.secondElement, {
                 fn : this.afterFirstClickTwo,
                 scope : this
             });
@@ -102,7 +102,7 @@ Aria.classDefinition({
             this.assertEquals(caretPos.start, 0, "The start pos of caret is not zero");
             this.assertEquals(caretPos.end, 0, "The end pos of caret is not zero");
 
-            aria.utils.SynEvents.type(this.secondElement, "argentina", {
+            this.synEvent.type(this.secondElement, "argentina", {
                 fn : this.afterTypeTwo,
                 scope : this
             });
@@ -118,14 +118,14 @@ Aria.classDefinition({
 
             var outside = aria.utils.Dom.getElementById("outsideDiv");
 
-            aria.utils.SynEvents.click(outside, {
+            this.synEvent.click(outside, {
                 fn : this.afterSecondClickTwo,
                 scope : this
             });
         },
 
         afterSecondClickTwo : function () {
-            aria.utils.SynEvents.click(this.secondElement, {
+            this.synEvent.click(this.secondElement, {
                 fn : this.afterThirdClickTwo,
                 scope : this
             });
