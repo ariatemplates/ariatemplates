@@ -22,7 +22,7 @@
 
         {foreach id inArray ids}
             {@aria:Dialog {
-                title : (data.modal[id_index] ? "modal" : "nonmodal"),
+                title : (id + ":" + (data.modal[id_index] ? "modal" : "nonmodal")),
                 contentMacro : {
                     id : id,
                     name : "dialogContent",
