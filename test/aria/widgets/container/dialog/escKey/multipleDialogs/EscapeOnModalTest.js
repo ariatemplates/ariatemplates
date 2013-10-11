@@ -116,8 +116,8 @@ Aria.classDefinition({
 
         _assertFocus : function (id) {
             var field = this.getInputField(id);
-            this.assertEquals(field, aria.utils.Delegate.getFocus(), "Element with id " + id
-                    + " should be focused.");
+            var focused = Aria.$window.document.activeElement;
+            this.assertEquals(field, focused, "Element with id " + id + " should be focused.");
         }
     }
 });
