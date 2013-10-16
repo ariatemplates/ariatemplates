@@ -126,10 +126,7 @@ Aria.tplScriptDefinition({
             if (this.data.initialSource) {
                 aria.utils.Json.setValue(this.data, "initialSource", false);
                 this.$refresh({
-                    filterSection : "controls",
-                    macro : {
-                        name : "displayControls"
-                    }
+                    section : "controls"
                 });
             }
             this.data.tplSrcEdit = event.target.getValue();
