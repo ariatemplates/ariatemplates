@@ -50,10 +50,14 @@ Aria.classDefinition({
         /**
          * Loads the CSSTemplate for the animations
          */
-        aria.templates.CSSMgr.loadClassPathDependencies("aria.utils.css.Animations", ["aria.utils.css.Transitions"]);
+        aria.templates.CSSMgr.loadWidgetDependencies(this.$classpath, this.$css);
+        this.__cssLoaded = true;
     },
     $destructor : function () {
-        aria.templates.CSSMgr.unloadClassPathDependencies("aria.utils.css.Animations", ["aria.utils.css.Transitions"]);
+        if (this.__cssLoaded) {
+            aria.templates.CSSMgr.unloadWidgetDependencies(this.$classpath, this.$css);
+            this.__cssLoaded = false;
+        }
     },
     $events : {
         "animationend" : {

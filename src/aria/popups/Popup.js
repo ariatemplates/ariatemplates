@@ -155,13 +155,13 @@ Aria.classDefinition({
          * Used to display the popup
          * @type aria.utils.css.Animations
          */
-        this._animator = new aria.utils.css.Animations();
+        this._animator = null;
 
         /**
          * For modal popups using animations fade in/out the background
          * @type aria.utils.css.Animations
          */
-        this._maskAnimator = new aria.utils.css.Animations();
+        this._maskAnimator = null;
 
         // PTR 04893174 was rolled back for release 1.1-13 because it introduces
         // a regression on Airrail.
@@ -211,10 +211,14 @@ Aria.classDefinition({
         this._ignoreClicksOn = null;
         this._document = null;
         this.$unregisterListeners();
-        this._animator.$dispose();
-        this._animator = null;
-        this._maskAnimator.$dispose();
-        this._maskAnimator = null;
+        if (this._animator) {
+            this._animator.$dispose();
+            this._animator = null;
+        }
+        if (this._maskAnimator) {
+            this._maskAnimator.$dispose();
+            this._maskAnimator = null;
+        }
         // The popup manager is responsible for destroying the DOM of the popup
         aria.popups.PopupManager.unregisterPopup(this);
     },
@@ -363,7 +367,7 @@ Aria.classDefinition({
          * Compute the size, position and zIndex of the popup dom element, based on its content and configuration and
          * return it in the form of a JSON object
          * @return {Object} Object of the form
-         * 
+         *
          * <pre>
          *  {
          *      top: // {Number}
@@ -373,7 +377,7 @@ Aria.classDefinition({
          *      zIndex: // {Number}
          *  }
          * </pre>
-         * 
+         *
          * @protected
          */
         _getComputedStyle : function () {
@@ -582,7 +586,7 @@ Aria.classDefinition({
 
                 // if there was was an animation defined we need to fade out the background for model popups
                 if (this.conf.animateIn) {
-                    this._maskAnimator.start("fade reverse", {
+                    this._getMaskAnimator().start("fade reverse", {
                         from : this.modalMaskDomElement,
                         type : 1
                     });
@@ -683,7 +687,7 @@ Aria.classDefinition({
                         height, 'px;', 'z-index:', this.computedStyle.zIndex, ';', 'position:absolute;display:block;'].join('');
 
                 if (this.conf.animateIn) {
-                    this._maskAnimator.start("fade", {
+                    this._getMaskAnimator().start("fade", {
                         to : this.modalMaskDomElement,
                         type : 1
                     });
@@ -782,7 +786,7 @@ Aria.classDefinition({
                     if (!this.conf.animateOut) {
                         this._onAfterClose();
                     } else {
-                        this._animator.$onOnce({
+                        this._getAnimator().$onOnce({
                             "animationend" : this._onAfterClose,
                             scope : this
                         });
@@ -919,7 +923,7 @@ Aria.classDefinition({
                 if (!this.conf.animateIn) {
                     this._onAfterOpen();
                 } else {
-                    this._animator.$onOnce({
+                    this._getAnimator().$onOnce({
                         "animationend" : this._onAfterOpen,
                         scope : this
                     });
@@ -1009,6 +1013,28 @@ Aria.classDefinition({
         },
 
         /**
+         * Checks if an Animator already exists, if not will create one.
+         * @return {aria.utils.css.Animations} Object
+         */
+        _getAnimator : function () {
+            if (!this._animator) {
+                this._animator = new aria.utils.css.Animations();
+            }
+            return this._animator;
+        },
+
+         /**
+         * Checks if a MaskAnimator already exists, if not will create one.
+         * @return {aria.utils.css.Animations} Object
+         */
+        _getMaskAnimator : function () {
+            if (!this._maskAnimator) {
+                this._maskAnimator = new aria.utils.css.Animations();
+            }
+            return this._maskAnimator;
+        },
+
+        /**
          * Internal function to parse the animation name and give a correct one to the animator options are ["slide
          * left", "slide right", "slide up", "slide down", "fade in", "fade out", "pop", "pop reverse", "flip", "flip
          * reverse"]
@@ -1032,7 +1058,7 @@ Aria.classDefinition({
                 animationCfg.reverse = !animationCfg.reverse;
             }
 
-            this._animator.start(animationName, animationCfg);
+            this._getAnimator().start(animationName, animationCfg);
         }
     }
 });
