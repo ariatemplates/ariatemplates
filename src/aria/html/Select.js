@@ -86,7 +86,7 @@ Aria.classDefinition({
                             attributes : option.attributes,
                             // value is optional, so we set the default value to label(mandatory) if it's not
                             // defined
-                            value : option.value || option.label
+                            value : option.value == null ? option.label : option.value
                         };
                     }
 
