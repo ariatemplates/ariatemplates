@@ -25,14 +25,13 @@ module.exports = Aria.classDefinition({
     $constructor : function () {
         this.$BaseTemplate.constructor.call(this);
 
-        var filename = (require("../core/Cache")).getFilename(this.$classpath);
-        var url = (require("../core/DownloadMgr")).resolveURL(filename, true);
         /**
          * Path of the CSS Template. It corresponds to the classpath and starts with "/". Exposed to the {CSSTemplate}
          * @type String
          */
         this.cssPath = "/" + this.$classpath.replace(/\./g, "/");
 
+        var url = (require("../core/DownloadMgr")).resolveURL(this.cssPath, true);
         /**
          * Path of the folder containing the CSS Template. It is relative to the Aria.rootFolderPath and takes into
          * account the Root Map (not the Url map). Exposed to the {CSSTemplate}

@@ -372,7 +372,7 @@ Aria.beanDefinitions({
             $description : "Private base configuration for a template load.",
             $properties : {
                 "classpath" : {
-                    $type : "json:PackageName",
+                    $type : "json:MultiTypes",
                     $description : "Classpath of the template.",
                     $mandatory : true
                 },
@@ -382,7 +382,7 @@ Aria.beanDefinitions({
                     $mandatory : false
                 },
                 "origClasspath" : {
-                    $type : "json:PackageName",
+                    $type : "json:MultiTypes",
                     $description : "Original classpath of the template. Differs from classpath if a customization has been defined.",
                     $mandatory : false
                 },

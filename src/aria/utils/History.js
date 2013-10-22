@@ -65,9 +65,9 @@
     Aria.classDefinition({
         $classpath : "aria.utils.History",
         $singleton : true,
+        // FIXME: the HashManager is not needed when html5History is true
         $dependencies : ["aria.utils.String", "aria.utils.Type", "aria.utils.Json", "aria.storage.LocalStorage",
-                "aria.core.Browser"].concat(html5History ? [] : ["aria.utils.HashManager", "aria.utils.Event",
-                "aria.utils.Array"]),
+                "aria.core.Browser", "aria.utils.HashManager", "aria.utils.Event", "aria.utils.Array"],
         $statics : {
 
             /**

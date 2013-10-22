@@ -93,7 +93,7 @@ Aria.classDefinition({
                 desc : {
                     classpath : "does.not.exist"
                 },
-                errorsInLog : [aria.core.ClassLoader.CLASS_LOAD_FAILURE],
+                errorsInLog : [aria.core.MultiLoader.LOAD_ERROR],
                 globalError : true,
                 testName : "testAsyncModuleCtrlLoadFailure"
             });

@@ -46,5 +46,6 @@
     "aria/core/environment/EnvironmentBaseCfgBeans.js",
     "aria/core/environment/EnvironmentBase.js",
     "aria/core/environment/Environment.js",
-    "aria/core/ResMgr.js"
+    "aria/core/ResMgr.js",
+    "aria/core/loaders/OldATLoader.js"
 ]

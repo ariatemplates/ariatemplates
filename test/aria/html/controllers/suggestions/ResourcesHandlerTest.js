@@ -185,7 +185,7 @@ Aria.classDefinition({
                 this.assertEquals(suggestions.length, 0, "I shouldn't have suggestions in error");
 
                 this.assertErrorInLogs(aria.html.controllers.Suggestions.INVALID_RESOURCES_HANDLER);
-                this.assertErrorInLogs(aria.core.ClassLoader.CLASS_LOAD_FAILURE);
+                this.assertErrorInLogs(aria.core.MultiLoader.LOAD_ERROR);
 
                 controller.$dispose();
             } catch (ex) {}

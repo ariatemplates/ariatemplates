@@ -15,7 +15,6 @@
 var Aria = require("../Aria");
 var ariaUtilsType = require("../utils/Type");
 var ariaUtilsJson = require("../utils/Json");
-var ariaCoreIOFiltersMgr = require("./IOFiltersMgr");
 
 /**
  * Connection manager class. Provides a way to make requests for different URI (file, XHR, XDR) and keeps a list of all
@@ -331,8 +330,8 @@ module.exports = Aria.classDefinition({
             this.pendingRequests[req.id] = req;
 
             // IOFiltersMgr is not a mandatory feature, if it's not there, let's just go to the next phase
-            if (ariaCoreIOFiltersMgr) {
-                ariaCoreIOFiltersMgr.callFiltersOnRequest(req, {
+            if (aria.core.IOFiltersMgr) {
+                aria.core.IOFiltersMgr.callFiltersOnRequest(req, {
                     fn : this._afterRequestFilters,
                     scope : this,
                     args : req
@@ -705,8 +704,8 @@ module.exports = Aria.classDefinition({
 
             delete this.pendingRequests[request.id];
 
-            if (ariaCoreIOFiltersMgr) {
-                ariaCoreIOFiltersMgr.callFiltersOnResponse(request, {
+            if (aria.core.IOFiltersMgr) {
+                aria.core.IOFiltersMgr.callFiltersOnResponse(request, {
                     fn : this._afterResponseFilters,
                     scope : this,
                     args : request

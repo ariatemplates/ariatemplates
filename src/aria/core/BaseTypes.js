@@ -41,7 +41,7 @@ Aria.beanDefinitions({
                     $type : "json:Array",
                     $description : "Contains an array of dependencies to be loaded for the bean package.",
                     $contentType : {
-                        $type : "json:String",
+                        $type : "json:PackageName",
                         $description : "The class path for the dependency to be loaded."
                     }
                 },
@@ -50,9 +50,9 @@ Aria.beanDefinitions({
                     $type : "json:Map",
                     $description : "A map containing all the external bean packages referenced in this package. The key in the map is the prefix used in this package to refer to the imported package. The value is the complete path of the imported package.",
                     $contentType : {
-                        $type : "json:PackageName",
+                        $type : "json:ClassRef",
                         $mandatory : true,
-                        $description : "Complete path of the bean package to be imported."
+                        $description : "Bean package to be imported."
                     }
                 },
                 "$beans" : {
@@ -63,6 +63,10 @@ Aria.beanDefinitions({
                         $type : "Bean",
                         $mandatory : true
                     }
+                },
+                "$oldModuleLoader" : {
+                    $type : "json:ObjectRef",
+                    $description : ""
                 }
             }
         },

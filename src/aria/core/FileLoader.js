@@ -14,7 +14,6 @@
  */
 var Aria = require("../Aria");
 var ariaCoreCache = require("./Cache");
-var ariaCoreDownloadMgr = require("./DownloadMgr");
 
 module.exports = Aria.classDefinition({
     $classpath : "aria.core.FileLoader",
@@ -81,7 +80,8 @@ module.exports = Aria.classDefinition({
                     classpath : this.$classpath,
                     logicalPaths : this._logicalPaths
                 },
-                url : ariaCoreDownloadMgr.getURLWithTimestamp(this._url), // add a timestamp to the URL if required
+                url : require("./DownloadMgr").getURLWithTimestamp(this._url), // add a timestamp to the URL if
+                // required
                 callback : {
                     fn : this._onFileReceive,
                     onerror : this._onFileReceive,
@@ -130,6 +130,7 @@ module.exports = Aria.classDefinition({
          * @private
          */
         _onFileReceive : function (ioRes) {
+            var ariaCoreDownloadMgr = require("./DownloadMgr");
             var multipart;
             // store file in cache
             var downloadFailed = (ioRes.status != '200');
