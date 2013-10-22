@@ -36,8 +36,9 @@ Aria.classDefinition({
         unloadTemplate : function (classpath, timestampNextTime, stopAtClasspath) {
             var classMgr = aria.core.ClassMgr;
             var scriptClasspath = classpath + "Script";
+            var scriptLogicalPath = Aria.getLogicalPath(scriptClasspath, ".js");
             // do some cleaning in cache
-            if (Aria.nspace(scriptClasspath, false) || aria.core.Cache.getItem("classes", scriptClasspath)) {
+            if (Aria.nspace(scriptClasspath, false) || aria.core.Cache.getItem("files", scriptLogicalPath)) {
                 classMgr.unloadClass(scriptClasspath, timestampNextTime);
             }
             var itm = Aria.$classDefinitions[classpath];

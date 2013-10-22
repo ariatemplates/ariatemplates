@@ -40,7 +40,8 @@ Aria.classDefinition({
         this.addTests("test.aria.core.LogTest");
         this.addTests("test.aria.core.ObservableTest");
         this.addTests("test.aria.core.prototypefn.PrototypeFnTestCase");
-        this.addTests("test.aria.core.ResClassLoaderTest");
+        this.addTests("test.aria.core.ResMgrTest");
+        this.addTests("test.aria.core.ResMgrTest2");
         this.addTests("test.aria.core.SequencerTest");
         this.addTests("test.aria.core.TimerTest");
         this.addTests("test.aria.core.TplClassLoaderTest");

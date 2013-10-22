@@ -13,6 +13,10 @@
  * limitations under the License.
  */
 
+var getClasspath = function (classpathOrCstr) {
+    return classpathOrCstr.classDefinition ? classpathOrCstr.classDefinition.$classpath : classpathOrCstr;
+};
+
 /**
  * CSS Manager manages the insertion of CSS Template output in the page. It is responsible for prefixing the CSS
  * selectors according to the containing Template, adding the style tags in the page.
@@ -52,7 +56,8 @@ Aria.classDefinition({
         __TAG_PREFX : "xCss",
 
         // ERROR MESSAGE:
-        CSSTEMPLATE_MAX_SELECTORS_REACHED : "More than 4000 CSS selectors are loaded at the same time. Please check your CSS Templates"
+        CSSTEMPLATE_MAX_SELECTORS_REACHED : "More than 4000 CSS selectors are loaded at the same time. Please check your CSS Templates",
+        DEPRECATED_METHOD : "%1 is deprecated."
     },
     $events : {
         "dependenciesLoaded" : {
@@ -265,7 +270,7 @@ Aria.classDefinition({
                 var css = {};
                 if (dependencies) {
                     for (var i = 0, ii = dependencies.length; i < ii; i++) {
-                        css[dependencies[i]] = true;
+                        css[getClasspath(dependencies[i])] = true;
                     }
                 }
 
@@ -274,7 +279,7 @@ Aria.classDefinition({
                     var $css = tpl.$css;
                     if ($css) {
                         for (var i = 0, ii = $css.length; i < ii; i++) {
-                            css[$css[i]] = true;
+                            css[getClasspath($css[i])] = true;
                         }
                     }
                     tpl = tpl.constructor.superclass;
@@ -315,7 +320,7 @@ Aria.classDefinition({
             var changes = [];
             var classes = [];
             for (var i = 0, len = dependencies.length; i < len; i += 1) {
-                var cssClasspath = dependencies[i];
+                var cssClasspath = getClasspath(dependencies[i]);
                 // this object will be used for configuration and changed,
                 // as this is a loop on dependencies, make a copy - PTR 04543463
                 var localContextArgs = {};
@@ -741,11 +746,11 @@ Aria.classDefinition({
          * Register a link between a classpath and a CSSTemplate. This is used during CSS reload to identify if a CSS
          * has to be reloaded.
          * @param {String} classpath classpath that have a dependency on some css
-         * @param {Array} cssTemplates css classpaths
+         * @param {Array} cssTemplates css classpaths or references
          */
         registerDependencies : function (classpath, cssTemplates) {
             for (var i = 0, length = cssTemplates.length; i < length; i++) {
-                var cssClasspath = cssTemplates[i];
+                var cssClasspath = getClasspath(cssTemplates[i]);
                 if (!this.__globalUsage[cssClasspath]) {
                     this.__globalUsage[cssClasspath] = [];
                 }
@@ -757,14 +762,14 @@ Aria.classDefinition({
          * Unregister a link between a classpath and a CSSTemplate. This is used during CSS reload to identify if a CSS
          * has to be reloaded.
          * @param {String} classpath classpath that have a dependency on some css
-         * @param {Array} cssTemplates classpaths
+         * @param {Array} cssTemplates classpaths or references
          * @param {Boolean} unload if true unload cssTemplate class as well and invalidate them
          * @param {Boolean} timestampNextTime if unload is asked, will trigger browser cache bypass for next load
          */
         unregisterDependencies : function (classpath, cssTemplates, unload, timestampNextTime) {
             var array = aria.utils.Array, classMgr = aria.core.ClassMgr;
             for (var i = 0, length = cssTemplates.length; i < length; i++) {
-                var cssClasspath = cssTemplates[i];
+                var cssClasspath = getClasspath(cssTemplates[i]);
                 var usage = this.__globalUsage[cssClasspath];
                 array.remove(usage, classpath);
                 if (unload) {

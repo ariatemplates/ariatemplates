@@ -59,6 +59,36 @@ Aria.classDefinition({
                 "args" : checkMT
             });
         },
+
+        /**
+         * Extract what is inside Aria.beanDefinitions in the schema string, returns it as an object.
+         * @param {String} schema
+         * @return {Object} parameter of Aria.beanDefinitions
+         */
+        evalSchema : function (schema) {
+            var jv = aria.core.JsonValidator;
+            var bean;
+            var fakeAria = {
+                beanDefinitions : function (arg) {
+                    bean = arg;
+                }
+            };
+            schema = "var module = arguments[2], require = module.require;\n" + schema;
+            Aria["eval"](schema, null, {
+                exports : {},
+                require : function (requirement) {
+                    if (/\/Aria(\.js)?$/.test(requirement)) {
+                        return fakeAria;
+                    }
+                    if (/\/JsonTypes(\.js)?$/.test(requirement)) {
+                        return jv.__loadedBeans["aria.core.JsonTypes"];
+                    }
+                    throw new Error("Unexpected require: " + requirement);
+                }
+            });
+            return bean;
+        },
+
         /**
          * testAsyncCheckSchema callback
          * @param {Object} cbArg
@@ -69,10 +99,8 @@ Aria.classDefinition({
             // download fails in packaged mode.
             if (!cbArg.downloadFailed) {
                 var schema = aria.core.DownloadMgr.getFileContent("aria/core/BaseTypes.js");
-                var bean;
                 this.$assert(32, schema != null);
-                schema = schema.replace("Aria.beanDefinitions", "bean=");
-                eval(schema);
+                var bean = this.evalSchema(schema);
                 this.$assert(24, typeof(bean) == "object");
                 jv.check(bean, "aria.core.BaseTypes.Package");
             }
@@ -328,7 +356,14 @@ Aria.classDefinition({
                     }),
                     $beans : btt.beans
                 };
-                Aria.beanDefinitions(beanPackage);
+                var exception = false;
+                try {
+                    // Aria.beanDefinitions is now supposed to raise an exception when it fails.
+                    Aria.beanDefinitions(beanPackage);
+                } catch (e) {
+                    exception = true;
+                }
+                this.assertTrue(exception, "Aria.beanDefinitions should have raised an exception.");
                 this.assertTrue(jv.__loadedBeans[beanPackage.$package] === undefined);
                 for (var j = 0; j < btt.errorMsgs.length; j++) {
                     this.assertErrorInLogs(btt.errorMsgs[j]);

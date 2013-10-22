@@ -31,15 +31,15 @@ module.exports = function (grunt) {
     var notAtExtensions = atExtensions.map(function (value) {
         return '!' + value;
     });
-    var mainATFile = 'aria/<%= pkg.name %>-<%= pkg.version %>.js';
     var hashFiles = atExtensions.concat(['aria/core/transport/iframeSource*', 'aria/utils/FrameATLoaderHTML*',
-            '**/*.swf', '**/*.jnlp', '!aria/css/**', '!' + mainATFile, '<%= packaging.prod.hash_include_files %>']);
+            '**/*.swf', '**/*.jnlp', '!aria/css/**', '!<%= packaging.main_file %>',
+            '<%= packaging.prod.hash_include_files %>']);
 
     grunt.config.set('atpackager.prod', {
         options : {
-            ATBootstrapFile : mainATFile,
+            ATBootstrapFile : '<%= packaging.main_file %>',
             sourceDirectories : ['<%= packaging.bootstrap.outputdir %>'],
-            sourceFiles : '<%= packaging.prod.source_files %>',
+            sourceFiles : ['<%= packaging.prod.source_files %>', '!<%= packaging.main_file %>'],
             defaultBuilder : {
                 type : 'ATMultipart',
                 cfg : {
@@ -48,20 +48,34 @@ module.exports = function (grunt) {
             },
             outputDirectory : '<%= packaging.prod.outputdir %>',
             visitors : [{
-                        type : 'ATDependencies',
+                        type : 'NoderRequiresGenerator',
                         cfg : {
-                            externalDependencies : '<%= packaging.bootstrap.files %>',
-                            files : atExtensions.concat(['!' + mainATFile])
+                            targetLogicalPath : 'aria/bootstrap.js',
+                            requires : '<%= packaging.bootstrap.files %>'
+                        }
+                    }, {
+                        type : 'NoderDependencies',
+                        cfg : {
+                            externalDependencies : ['noder-js/**'],
+                            files : /*atExtensions*/['**/*.js'].concat(['!<%= packaging.main_file %>'])
                         }
                     }, {
                         type : 'CheckDependencies',
                         cfg : {
+                            noCircularDependencies : false,
                             checkPackagesOrder : false
                         }
                     }, 'ATCompileTemplates', 'ATRemoveDoc', {
                         type : 'JSMinify',
                         cfg : {
-                            files : atExtensions
+                            files : atExtensions,
+                            mangle : {
+                                toplevel : true
+                            },
+                            output : {
+                                ascii_only : true,
+                                comments : /@(license|preserve)/
+                            }
                         }
                     }, {
                         type : 'Hash',
@@ -70,18 +84,25 @@ module.exports = function (grunt) {
                             files : hashFiles
                         }
                     }, {
+                        // NoderMap must be before ATUrlMap
+                        type : 'NoderMap',
+                        cfg : {
+                            sourceFiles : "aria/noderError/**",
+                            noderContext : "errorContext"
+                        }
+                    }, {
                         type : 'ATUrlMap',
                         cfg : {
-                            mapFile : mainATFile,
+                            mapFile : '<%= packaging.main_file %>',
                             onlyATMultipart : false,
-                            sourceFiles : hashFiles,
+                            sourceFiles : hashFiles.concat('!aria/noderError/**'),
                             starCompress : ['**/*', '!aria', '!aria/resources/**'],
                             starStarCompress : ['**/*']
                         }
                     }, {
                         type : 'CopyUnpackaged',
                         cfg : {
-                            files : [mainATFile, 'aria/css/*.js'],
+                            files : ['aria/css/*.js'],
                             builder : {
                                 type : 'ATMultipart',
                                 cfg : {
@@ -92,7 +113,7 @@ module.exports = function (grunt) {
                     }, {
                         type : 'CopyUnpackaged',
                         cfg : {
-                            files : ['<%= packaging.prod.allow_unpackaged_files %>'],
+                            files : ['aria/noderError/**', '<%= packaging.prod.allow_unpackaged_files %>'],
                             builder : {
                                 type : 'ATMultipart',
                                 cfg : {
@@ -113,7 +134,38 @@ module.exports = function (grunt) {
                             files : ['**/*'].concat(notAtExtensions)
                         }
                     }, 'CheckPackaged'],
-            packages : ['<%= packaging.prod.files %>', '<%= packaging.prod.expanded_localization_files %>']
+            packages : [{
+                        name : '<%= packaging.main_file %>',
+                        builder : {
+                            type : 'NoderBootstrapPackage',
+                            cfg : {
+                                header : '<%= packaging.license %>',
+                                noderModules : ['src/noder-modules/*'],
+                                noderConfigOptions : {
+                                    main : "aria/bootstrap",
+                                    failFast : false,
+                                    packaging : {
+                                        ariatemplates : true
+                                    },
+                                    resolver : {
+                                        "default" : {
+                                            ariatemplates : "aria"
+                                        }
+                                    }
+                                },
+                                noderConfigErrorOptions : {
+                                    main : "aria/noderError/error.js",
+                                    packaging : {
+                                        baseUrl : "%scriptdir%/../", // because paths all start with aria/
+                                        requestConfig : {
+                                            sync : true
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        files : ['aria/bootstrap.js']
+                    }, '<%= packaging.prod.files %>', '<%= packaging.prod.expanded_localization_files %>']
         }
     });
 

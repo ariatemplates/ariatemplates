@@ -29,8 +29,6 @@ Aria.classDefinition({
     },
     $prototype : {
         tearDown : function () {
-            // Delete the resource loaded
-            delete aria.core.ResMgr.loadedResources["test.aria.templates.reloadResources.ExternalResource"];
             aria.core.IO.$removeListeners(this);
         },
 
@@ -112,7 +110,7 @@ Aria.classDefinition({
 
         _firstReloadComplete : function () {
             // Remove the error prompted when the test loads a resource file with an error inside
-            this.assertErrorInLogs(aria.core.ClassLoader.CLASS_LOAD_ERROR);
+            this.assertErrorInLogs(aria.core.MultiLoader.LOAD_ERROR);
             // Trigger the reload
             aria.templates.TemplateManager.unloadTemplate("test.aria.templates.reloadResources.LocalizedTemplate", true);
 

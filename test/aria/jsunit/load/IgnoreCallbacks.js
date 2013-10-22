@@ -20,7 +20,7 @@ Aria.classDefinition({
     $prototype : {
         testAsyncLoadError: function () {
             // Simply expect 0 undisposed objects
-            this._expectedErrorList = [aria.core.ClassLoader.CLASS_LOAD_FAILURE];
+            this._expectedErrorList = [aria.core.MultiLoader.LOAD_ERROR];
 
             Aria.load({
                 classes : ["test.aria.jsunit.load.dependencies.AnotherFileNotFound"]

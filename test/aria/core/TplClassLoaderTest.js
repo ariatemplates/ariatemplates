@@ -19,7 +19,7 @@
 Aria.classDefinition({
     $classpath : "test.aria.core.TplClassLoaderTest",
     $extends : "aria.jsunit.TestCase",
-    $dependencies : ["aria.utils.Dom", "aria.core.ClassLoader"],
+    $dependencies : ["aria.utils.Dom", "aria.core.MultiLoader"],
     $prototype : {
         setUp : function () {
             var document = Aria.$window.document;
@@ -29,8 +29,6 @@ Aria.classDefinition({
         },
 
         tearDown : function () {
-            // Otherwise the resource is loaded again when we reset the locale at the end of a test
-            delete aria.core.ResMgr.loadedResources["test.aria.templates.test.error.Resource"];
             this.thisDivIsInTheBody.parentNode.removeChild(this.thisDivIsInTheBody);
         },
 
@@ -46,7 +44,7 @@ Aria.classDefinition({
                             classpath : "test.aria.templates.test.error.TemplateOkBadResources",
                             div : "thisDivIsInTheBody"
                         },
-                        errors : [aria.core.ClassLoader.CLASS_LOAD_ERROR]
+                        errors : [aria.core.MultiLoader.LOAD_ERROR]
                     }];
 
             var seq = new aria.core.Sequencer();
