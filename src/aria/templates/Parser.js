@@ -112,7 +112,7 @@ Aria.classDefinition({
                     // to avoid misinterpretation of links.
                     // For quotes, do a positive lookahead to see that we have
                     // an even number of double quotes on the rest of the line
-                    tplFragment = tplFragment.replace(/([^\:])\/\/(?=(?:(?:[^"]*"){2})*[^"]*$).*$/gm, "$1");
+                    tplFragment = tplFragment.replace(/([\s\;\}\>\{\,\(])\/\/(?=(?:(?:[^"]*"){2})*[^"]*$).*$/gm, "$1");
 
                     if (!this._keepWhiteSpace) {
                         tplFragment = tplFragment.replace(/^[ \t]+/gm, ""); // remove spaces at the begining of each
