@@ -103,6 +103,9 @@
                 var message = this._formatClassName(className) + msg;
                 var extraInfo = "";
                 if (e) {
+                    if (e.logDetails) {
+                        e.logDetails();
+                    }
                     var extraInfo = (e.name && e.message) ? (e.name + ": " + e.message) : e.toString();
                     var stack = e.stack;
                     if (stack) {

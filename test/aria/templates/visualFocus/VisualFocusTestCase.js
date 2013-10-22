@@ -35,18 +35,16 @@ Aria.classDefinition({
             aria.core.AppEnvironment.setEnvironment({
                 appOutlineStyle : "2px dashed red"
             }, null, true);
-            if (aria.utils.VisualFocus) {
-                this.executeActions();
-            } else {
-                aria.core.ClassMgr.$on({
-                    "classComplete" : function (evt) {
-                        if (evt.refClasspath && evt.refClasspath == "aria.utils.VisualFocus") {
-                            this.executeActions();
-                        }
-                    },
-                    scope : this
-                });
-            }
+
+            this.waitFor({
+                condition: function () {
+                    return aria.utils.VisualFocus;
+                },
+                callback: {
+                    scope: this,
+                    fn: this.executeActions
+                }
+            });
         },
 
         executeActions : function () {

@@ -21,7 +21,6 @@ module.exports = function (grunt) {
     grunt.config.set('jshint', {
         options : require('../config/jshint.json'),
         build : {
-            options : require('../config/jshint-build.json'),
             src : ['src/aria/node.js', 'Gruntfile.js', 'build/config/*.json', 'build/grunt-tasks/*.js',
                     'build/grunt-config/*.js', 'build/*.js']
         },
@@ -45,21 +44,20 @@ module.exports = function (grunt) {
             options : {
                 "unused" : false,
                 "globals" : {
-                    "aria": false,
-                    "Aria": false,
-                    "setTimeout": false,
-                    "setInterval": false,
-                    "clearTimeout": false,
-                    "clearInterval": false,
-                    "test": false,
-                    "Syn": false
+                    "aria" : false,
+                    "Aria" : true, // allowing to override this global
+                    "setTimeout" : false,
+                    "setInterval" : false,
+                    "clearTimeout" : false,
+                    "clearInterval" : false,
+                    "test" : false,
+                    "Syn" : false
                 }
             }
         },
         node : {
             src : ['test/node/**/*.js'],
             options : {
-                "node" : true,
                 "globals" : {
                     "aria" : false,
                     "Aria" : false,

@@ -229,11 +229,6 @@ var ariaCoreJsonValidator = require("./JsonValidator");
     module.exports = Aria.classDefinition({
         $classpath : "aria.core.TplClassLoader",
         $extends : (require("./ClassLoader")),
-        $constructor : function () {
-            this.$ClassLoader.constructor.apply(this, arguments);
-            this._refLogicalPath += ".tpl";
-            this._classGeneratorClassName = 'TplClassGenerator';
-        },
         $onload : function () {
             var cstr = aria.core.TplClassLoader;
             // TODO: think to something more elegant here:
@@ -409,18 +404,6 @@ var ariaCoreJsonValidator = require("./JsonValidator");
                 if (aria && aria.utils && aria.utils.Dom) {
                     return aria.templates.TemplateCtxtManager.disposeFromDom(div);
                 }
-            }
-        },
-        $prototype : {
-            /**
-             * Load the class definition file.
-             * @param {String} classDef File content, can be either the generated class definition or the source
-             * template itself
-             * @param {String} logicalPath template's logical classpath
-             * @override
-             */
-            _loadClass : function (classDef, logicalPath) {
-                this._loadClassAndGenerate(classDef, logicalPath);
             }
         }
     });

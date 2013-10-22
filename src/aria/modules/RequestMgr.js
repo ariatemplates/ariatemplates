@@ -657,10 +657,12 @@ Aria.classDefinition({
             url = this.__appendGlobalParams(url, this._params);
 
             // Add the url to the callback
+            // Changing the callback arguments is BAD. Keeping this only for backward compatibility.
+            // The right way to pass a result is by using the second parameter of $callback.
             args.callback.args = args.callback.args || {};
             args.callback.args.full = url;
 
-            this.$callback(args.callback);
+            this.$callback(args.callback, url);
         },
 
         /**

@@ -25,65 +25,68 @@ Aria.classDefinition({
         testClassDefinitionErrors : function () {
 
             // No arg provided
-            Aria.classDefinition();
-            this.assertErrorInLogs(Aria.NULL_CLASSPATH);
+            this.callAriaClassDefError();
+            this.assertErrorInLogs(Aria.NULL_PARAMETER);
 
             // No classpath provided
-            Aria.classDefinition({});
+            this.callAriaClassDefError({});
             this.assertErrorInLogs(Aria.NULL_CLASSPATH);
 
-            Aria.classDefinition({
+            this.callAriaClassDefError({
                 $class : 'Myclass'
             });
             this.assertErrorInLogs(Aria.NULL_CLASSPATH);
 
-            Aria.classDefinition({
+            this.callAriaClassDefError({
                 $package : 'mypackage'
             });
             this.assertErrorInLogs(Aria.NULL_CLASSPATH);
 
             // Invalid classpath
-            Aria.classDefinition({
+            this.callAriaClassDefError({
                 $classpath : '.aria.test.ClassZ'
             });
             this.assertErrorInLogs(Aria.INVALID_PACKAGENAME_FORMAT);
 
-            Aria.classDefinition({
+            this.callAriaClassDefError({
                 $classpath : 'test.aria.test.'
             });
             this.assertErrorInLogs(Aria.INVALID_CLASSNAME_FORMAT);
 
+            // The following case only raises a warning:
             Aria.classDefinition({
                 $classpath : 'te st.aria.test.ClassZ'
             });
             this.assertErrorInLogs(Aria.INVALID_PACKAGENAME_FORMAT);
 
             // Invalid classpath, defined through class and package:
-            Aria.classDefinition({
+            this.callAriaClassDefError({
                 $class : 'ClassZ',
                 $package : '.aria.test'
             });
             this.assertErrorInLogs(Aria.INVALID_PACKAGENAME_FORMAT);
 
-            Aria.classDefinition({
+            this.callAriaClassDefError({
                 $class : '',
                 $package : 'test.aria.test.'
             });
             this.assertErrorInLogs(Aria.INVALID_PACKAGENAME_FORMAT);
 
+            // The following case only raises a warning:
             Aria.classDefinition({
                 $class : 'ClassZ',
                 $package : 'te st.aria.test'
             });
             this.assertErrorInLogs(Aria.INVALID_PACKAGENAME_FORMAT);
-            Aria.classDefinition({
+
+            this.callAriaClassDefError({
                 $class : 'class',
                 $package : 'test.aria.test'
             });
             this.assertErrorInLogs(Aria.INVALID_CLASSNAME_FORMAT);
 
             // Incoherent classpath, class and package
-            Aria.classDefinition({
+            this.callAriaClassDefError({
                 $class : 'MyNewClassA',
                 $package : 'test.aria',
                 $classpath : 'test.aria.MyNewClassB'
@@ -92,7 +95,7 @@ Aria.classDefinition({
             // same package, different class names
             this.assertErrorInLogs(Aria.INCOHERENT_CLASSPATH);
 
-            Aria.classDefinition({
+            this.callAriaClassDefError({
                 $class : 'MyNewClass',
                 $package : 'test.aria.a',
                 $classpath : 'test.aria.b.MyNewClass'
@@ -101,7 +104,7 @@ Aria.classDefinition({
             // same class name, different packages
             this.assertErrorInLogs(Aria.INCOHERENT_CLASSPATH);
 
-            Aria.classDefinition({
+            this.callAriaClassDefError({
                 $class : 'aria.MyNewClass',
                 $package : 'test',
                 $classpath : 'test.aria.MyNewClass'
@@ -111,7 +114,7 @@ Aria.classDefinition({
             this.assertErrorInLogs(Aria.INCOHERENT_CLASSPATH);
 
             // Same class name as one of the class parents
-            Aria.classDefinition({
+            this.callAriaClassDefError({
                 $classpath : 'test.aria.test.Assert',
                 $extends : 'aria.jsunit.TestCase',
                 $constructor : function () {}
@@ -119,19 +122,32 @@ Aria.classDefinition({
             this.assertErrorInLogs(Aria.DUPLICATE_CLASSNAME);
 
             // Invalid class names:
-            Aria.classDefinition({
+            this.callAriaClassDefError({
                 $classpath : 'test.aria.test.classZ',
                 $constructor : function () {}
             });
             this.assertErrorInLogs(Aria.INVALID_CLASSNAME_FORMAT);
 
             // Inherit from Singleton
-            Aria.classDefinition({
+            this.callAriaClassDefError({
                 $classpath : 'test.aria.test.ClassSExtended',
                 $extends : 'test.aria.test.ClassS'
             });
             this.assertErrorInLogs(Aria.CANNOT_EXTEND_SINGLETON);
 
+        },
+
+        /**
+         * Call Aria.classDefinitionCheck that the call raises an exception.
+         */
+        callAriaClassDefError : function (def) {
+            var raisedException = false;
+            try {
+                Aria.classDefinition(def);
+            } catch (e) {
+                raisedException = true;
+            }
+            this.assertTrue(raisedException, "Aria.classDefinition should have raised an exception");
         },
 
         /**

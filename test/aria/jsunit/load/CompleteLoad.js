@@ -47,7 +47,7 @@ Aria.classDefinition({
 
         testAsyncLoadError: function () {
             // Expect the complete callback to be called before actually finishing the test
-            this._expectedErrorList = ["onerror called", aria.core.ClassLoader.CLASS_LOAD_FAILURE];
+            this._expectedErrorList = ["onerror called", aria.core.MultiLoader.LOAD_ERROR];
 
             Aria.load({
                 classes : ["test.aria.jsunit.load.dependencies.FileNotFound"],

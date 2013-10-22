@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+if (!global.Aria) {
+    global.Aria = {};
+}
+
+var Aria = module.exports = global.Aria;
+
 // Do not remove @class and @singleton annotations, they're required for Aria singleton to appear in API docs.
 /**
  * Global Aria object defining the base methods to manage objects, logs and file dependencies.
@@ -22,10 +28,7 @@
  */
 (function () {
 
-    // If Aria object does not exist, create it
-    if (typeof Aria == 'undefined') {
-        Aria = {};
-    }
+    var asyncRequire = require('noder-js/asyncRequire').create(module);
 
     // Will be updated at the build time. This is a magic string, keep in sync with build file.
     Aria.version = 'ARIA-SNAPSHOT';
@@ -38,9 +41,7 @@
      * (for example: Node.js or Rhino).
      * @type Object
      */
-    Aria.$global = (function () {
-        return this;
-    })();
+    Aria.$global = global;
 
     if (!Aria.$frameworkWindow && Aria.$global.window) {
 
@@ -133,7 +134,8 @@
     };
 
     // ERROR MESSAGES:
-    Aria.NULL_CLASSPATH = "$classpath argument (or both $class and $package arguments) is mandatory and must be a string.";
+    Aria.NULL_PARAMETER = "Missing parameter in Aria.%1.";
+    Aria.NULL_CLASSPATH = "$classpath argument is mandatory and must be a string.";
     Aria.INVALID_NAMESPACE = "Invalid namespace: %1";
     Aria.INVALID_DEFCLASSPATH = "Invalid definition classpath: %1";
     Aria.INVALID_CLASSNAME_FORMAT = "%2Invalid class name : '%1'. Class name must be a string and start with a capital case.";
@@ -265,13 +267,6 @@
     };
 
     /**
-     * Shortcut to the class manager
-     * @private
-     * @type aria.core.ClassMgr
-     */
-    var __clsMgr = null; // TODO: delete on dispose
-
-    /**
      * Number of object creations (used only when Aria.memCheckMode==true).
      * @private
      * @type Number
@@ -291,19 +286,6 @@
      * @type Object
      */
     var __objects = {};
-
-    /**
-     * Temporary cache of classes which have declared providers which have not have been loaded yet.
-     * @private
-     * @type Object
-     */
-    var __classMemo = {};
-
-    /**
-     * TODOC
-     * @type Array
-     */
-    var syncProviders = [];
 
     /**
      * Wrapper function for constructors or destructors on an object. It is used only when Aria.memCheckMode==true. When
@@ -407,6 +389,16 @@
      * TODOC
      * @private
      */
+    var __createDefaultConstructor = function (superclass) {
+        return function () {
+            superclass.apply(this, arguments);
+        };
+    };
+
+    /**
+     * TODOC
+     * @private
+     */
     var __setRootDim = function (dim) {
         aria.templates.Layout.setRootDim(dim);
     };
@@ -415,12 +407,20 @@
      * TODOC
      * @private
      */
-    var __classLoadError = function (classPath, errorID, errorArgs) {
+    var __classLoadError = function (definition, errorID, errorArgs) {
         if (errorID) {
             Aria.$logError(errorID, errorArgs);
         }
-        if (__clsMgr) {
-            __clsMgr.notifyClassLoadError(classPath);
+        if (!definition) {
+            definition = {};
+        }
+        var error = new Error("Error while loading " + (definition.$classpath || "a class"));
+        var oldModuleLoader = definition.$oldModuleLoader;
+        if (oldModuleLoader) {
+            oldModuleLoader.error(error);
+            return null;
+        } else {
+            throw error;
         }
     };
 
@@ -664,8 +664,9 @@
         }
 
         if (!nspace || typeof(nspace) != 'string') {
-            Aria.$logError(Aria.INVALID_NAMESPACE, [nspace]);
-            return null;
+            return nspace;
+            /*Aria.$logError(Aria.INVALID_NAMESPACE, [nspace]);
+            return null;*/
         }
 
         var parts = nspace.split('.'), nbParts = parts.length, current;
@@ -697,7 +698,11 @@
      * @return {Object}
      */
     Aria.getClassRef = function (className) {
-        return _getClassRefCache[className] || (_getClassRefCache[className] = Aria.nspace(className, false));
+        if (typeof className == "string") {
+            return _getClassRefCache[className] || (_getClassRefCache[className] = Aria.nspace(className, false));
+        } else {
+            return className;
+        }
     };
 
     /**
@@ -762,7 +767,7 @@
      */
     Aria.tplScriptDefinition = function (def) {
         // WRITING WITH BRACKETS ON PURPOSE (for documentation)
-        Aria['classDefinition']({
+        return Aria['classDefinition']({
             $classpath : def.$classpath,
             $dependencies : def.$dependencies,
             $resources : def.$resources,
@@ -781,6 +786,130 @@
         });
     };
 
+    var resolveModulePath = function (modulePath) {
+        try {
+            return require.resolve(modulePath);
+        } catch (e) {}
+    };
+
+    /**
+     * Converts a classpath into the corresponding logical path. It replaces '.' by '/' in the classpath. If an
+     * extension is provided, it is included in the result, otherwise, the returned path has no extension.
+     * @param {String} classpath Classpath to convert.
+     * @param {String} extension Extension to add, it is supposed to start with a dot.
+     * @param {Boolean} resolve whether to resolve the logical path before returning it
+     */
+    Aria.getLogicalPath = function (classpath, extension, resolve) {
+        var parts = classpath.split(".");
+        if (parts[0] == "aria") {
+            parts[0] = "ariatemplates";
+        }
+        var res = parts.join("/") + (extension || "");
+        if (resolve) {
+            var resolved = resolveModulePath(res);
+            res = resolved || res;
+        }
+        return res;
+    };
+
+    var appendMissingDependencies = function (missingDeps, array, extension) {
+        if (array) {
+            for (var i = 0, l = array.length; i < l; i++) {
+                var item = array[i];
+                if (typeof item == "string" && !(Aria.getClassRef(item))) {
+                    // FIXME: typeof
+                    var dependency = Aria.getLogicalPath(item, extension, true);
+                    var cacheItem = require.cache[dependency];
+                    if (!cacheItem || !cacheItem.loaded) {
+                        missingDeps.push(dependency);
+                    }
+                }
+            }
+        }
+    };
+
+    var resProviderLoaderModulePath = resolveModulePath("./core/loaders/ResProviderLoader");
+    var resourcesModulePath = resolveModulePath("./$resources");
+    var appendMissingResDependencies = function (missingDeps, array) {
+        if (array) {
+            for (var i = 0, l = array.length; i < l; i++) {
+                var item = array[i];
+                if (typeof item == "string") {
+                    var serverResource = /([^\.]*)\.Res$/.exec(item);
+                    var dependency = {
+                        module : resourcesModulePath,
+                        method : serverResource ? "module" : "file",
+                        args : [Aria.getLogicalPath(item)]
+                    };
+                    if (serverResource) {
+                        dependency.args.unshift(serverResource[1]);
+                    }
+                    missingDeps.push(dependency);
+                }
+            }
+        }
+    };
+
+    Aria.loadOldDependencies = function (config) {
+        var classpaths = config.classpaths || {};
+        var missingDependencies = config.files ? config.files.slice(0) : [];
+        appendMissingDependencies(missingDependencies, classpaths.JS, '.js');
+        appendMissingDependencies(missingDependencies, classpaths.TPL, '.tpl');
+        appendMissingDependencies(missingDependencies, classpaths.CSS, '.tpl.css');
+        appendMissingDependencies(missingDependencies, classpaths.TML, '.tml');
+        appendMissingDependencies(missingDependencies, classpaths.TXT, '.tpl.txt');
+        appendMissingDependencies(missingDependencies, classpaths.CML, '.cml');
+        appendMissingResDependencies(missingDependencies, classpaths.RES);
+
+        var oldModuleLoader = config.oldModuleLoader;
+        var completeLoading = function () {
+            var complete = config.complete;
+            return complete.fn.apply(complete.scope, complete.args);
+        };
+
+        if (oldModuleLoader) {
+            return oldModuleLoader.continueLoading(missingDependencies, completeLoading);
+        }
+        if (missingDependencies.length > 0) {
+            return asyncRequire.apply(null, missingDependencies).thenSync(completeLoading);
+        } else {
+            return completeLoading();
+        }
+    };
+
+    var __getExtension = function (filename) {
+        var withoutPath = filename.replace(/^(.*\/)?([^/]*)$/, "$2");
+        var dot = withoutPath.indexOf('.');
+        if (dot > -1) {
+            return withoutPath.substr(dot);
+        }
+        return "";
+    };
+
+    var __checkOldModuleLoader = function (def, method, classpathProperty) {
+        if (!def) {
+            return __classLoadError(def, Aria.NULL_PARAMETER, [method]);
+        }
+
+        // $oldModuleLoader cannot be defined by the caller of Aria.xDefinition
+        def.$oldModuleLoader = null;
+
+        var clsPath = def[classpathProperty || "$classpath"];
+        if (!__checkClasspath(clsPath, method + ": ")) {
+            return __classLoadError(def);
+        }
+
+        var oldModuleLoader = Aria.$oldModuleLoader;
+        if (oldModuleLoader) {
+            var extension = __getExtension(oldModuleLoader.logicalPath);
+            var expectedLogicalPath = Aria.getLogicalPath(clsPath, extension, true);
+            if (expectedLogicalPath == oldModuleLoader.logicalPath) {
+                def.$oldModuleLoader = oldModuleLoader;
+                delete Aria.$oldModuleLoader;
+            }
+        }
+    };
+
     /**
      * Base methods used to declare classes
      * @param {aria.core.CfgBeans:ClassDefinitionCfg} def def The definition object describing the class - must have the
@@ -796,18 +925,16 @@
      * </pre>
      */
     Aria.classDefinition = function (def) {
-
         if (!def) {
-            return Aria.$logError(Aria.NULL_CLASSPATH);
+            return __classLoadError(def, Aria.NULL_PARAMETER, ["classDefinition"]);
         }
-
         // There are two ways to define the classpath: either by $classpath
         // or by both $class and $package
         // if both ways are used, check that they define the same classpath
         var defClasspath = def.$classpath, defClassname = def.$class, defPackage = def.$package, defExtends = def.$extends;
         // check if classpath is correct
         if (!defClasspath && !(defClassname != null && defPackage != null)) {
-            return Aria.$logError(Aria.NULL_CLASSPATH);
+            return __classLoadError(def, Aria.NULL_CLASSPATH);
         }
 
         var clsNs;
@@ -824,7 +951,7 @@
                 clsName = clsPath;
             }
             if ((defClassname && defClassname != clsName) || (defPackage && defPackage != clsNs)) {
-                return Aria.$logError(Aria.INCOHERENT_CLASSPATH);
+                return __classLoadError(def, Aria.INCOHERENT_CLASSPATH);
             }
 
             def.$class = clsName;
@@ -835,9 +962,8 @@
             clsPath = clsNs + '.' + clsName;
             def.$classpath = clsPath;
         }
-        if (!__checkClasspath(clsPath, "classDefinition: ")) {
-            return;
-        }
+
+        __checkOldModuleLoader(def, "classDefinition");
 
         // initialize class definition: create $events, $noargConstructor,
         // $destructor... variables
@@ -847,15 +973,10 @@
         def.$noargConstructor = new Function();
 
         // check superclass: if none, we use aria.core.JsObject
-        if (!defExtends || defExtends.match(/^\s*$/)) {
+        if (!defExtends || (typeof defExtends == 'string' && defExtends.match(/^\s*$/))) {
             if (clsPath != 'aria.core.JsObject') {
-                defExtends = def.$extends = 'aria.core.JsObject';
+                defExtends = def.$extends = require('./core/JsObject');
             }
-        }
-
-        if (!def.$constructor) {
-            def.$constructor = new Function(def.$extends + ".prototype.constructor.apply(this, arguments);");
-            // return Aria.$logError("10007_MISSING_CONSTRUCTOR", [clsPath]);
         }
 
         // register definition - note that previous definition will be
@@ -863,71 +984,69 @@
         this.$classDefinitions[clsPath] = def;
 
         // check dependencies
-        var doLoad = true;
-        if (__clsMgr) {
-            // load missing dependencies - js classes and resource files
-            var dpMap = {
-                'TPL' : def.$templates,
-                'CSS' : def.$css,
-                'TML' : def.$macrolibs,
-                'CML' : def.$csslibs
-            };
-            var rs = [];
-            var dp = def.$dependencies || [];
+        var missingDependencies = [];
 
-            // add implemented interfaces to dependencies map
-            if (def.$implements && def.$implements.length > 0) {
-                dp = dp.concat(def.$implements);
-            }
+        appendMissingDependencies(missingDependencies, def.$dependencies, '.js');
+        appendMissingDependencies(missingDependencies, def.$templates, '.tpl');
+        appendMissingDependencies(missingDependencies, def.$css, '.tpl.css');
+        appendMissingDependencies(missingDependencies, def.$macrolibs, '.tml');
+        appendMissingDependencies(missingDependencies, def.$csslibs, '.cml');
 
-            // add resources file to dependencies map
-            if (aria.utils.Type.isObject(def.$resources)) {
-                for (var itm in def.$resources) {
-                    if (def.$resources.hasOwnProperty(itm)) {
-                        if (def.$resources[itm].hasOwnProperty("provider")) {
-                            // it's a resource provider
-                            dp.push(def.$resources[itm].provider);
-                        } else {
-                            // it's a resource
-                            rs.push(def.$resources[itm]);
-                        }
+        // add implemented interfaces to dependencies map
+        appendMissingDependencies(missingDependencies, def.$implements, '.js');
+
+        // add resources file to dependencies map
+        if (def.$resources) {
+            for (var itm in def.$resources) {
+                if (def.$resources.hasOwnProperty(itm)) {
+                    var itmValue = def.$resources[itm];
+                    if (itmValue.hasOwnProperty("provider")) {
+                        var resProviderInfo = itmValue["aria:resProviderInfo"] = {
+                            clsName : clsName,
+                            refName : itm,
+                            resProvider : itmValue
+                        };
+                        missingDependencies.push({
+                            module : resProviderLoaderModulePath,
+                            method : "load",
+                            args : [resProviderInfo]
+                        });
+                    } else {
+                        appendMissingResDependencies(missingDependencies, [itmValue]);
                     }
                 }
             }
-            // add text template files to dependencies map
-            if (aria.utils.Type.isObject(def.$texts)) {
-                dpMap.TXT = aria.utils.Array.extractValuesFromMap(def.$texts);
+        }
+        // add text template files to dependencies map
+        if (def.$texts) {
+            appendMissingDependencies(missingDependencies, require('./utils/Array').extractValuesFromMap(def.$texts), '.tpl.txt');
+        }
+
+        if (typeof defExtends == "string" && defExtends != 'aria.core.JsObject') {
+            var extendsType = def.$extendsType || "JS";
+            var acceptedTypes = {
+                JS : '.js',
+                TPL : '.tpl',
+                TML : '.tml',
+                CSS : '.tpl.css',
+                CML : '.cml',
+                TXT : '.tpl.txt'
+            };
+            if (!acceptedTypes.hasOwnProperty(extendsType)) {
+                return __classLoadError(def, Aria.INVALID_EXTENDSTYPE, [clsName]);
             }
+            appendMissingDependencies(missingDependencies, [defExtends], acceptedTypes[extendsType]);
+        }
 
-            dpMap.RES = rs;
-            dpMap.JS = dp;
-
-            if (defExtends != 'aria.core.JsObject') {
-                var extendsType = def.$extendsType || "JS";
-                if (extendsType !== "JS" && extendsType !== "TPL" && extendsType !== "TML" && extendsType !== "CSS"
-                        && extendsType !== "CML" && extendsType !== "TXT") {
-                    return Aria.$logError(Aria.INVALID_EXTENDSTYPE, [clsName]);
-                }
-                if (dpMap[extendsType]) {
-                    dpMap[extendsType].push(defExtends);
-                } else {
-                    dpMap[extendsType] = [defExtends];
-                }
-            }
-
-            // always use the class manager (even if there is no dependency) to notify the loader that the
-            // classDefinition was called
-            doLoad = __clsMgr.loadClassDependencies(clsPath, dpMap, {
-                fn : Aria.loadClass,
+        return Aria.loadOldDependencies({
+            files : missingDependencies,
+            oldModuleLoader : def.$oldModuleLoader,
+            complete : {
                 scope : Aria,
-                args : clsPath
-            });
-        }
-
-        // load definition
-        if (doLoad) {
-            this.loadClass(clsPath, clsPath);
-        }
+                fn : Aria.loadClass,
+                args : [clsPath, clsPath]
+            }
+        });
     };
 
     /**
@@ -943,30 +1062,25 @@
      * </pre>
      */
     Aria.interfaceDefinition = function (def) {
-        // TODO: add some checks on the parameter
-        var clsPath = def.$classpath;
-        if (!__checkClasspath(clsPath, "interfaceDefinition")) {
-            return;
-        }
+        __checkOldModuleLoader(def, "interfaceDefinition");
+
+        var Interfaces = require('./core/Interfaces');
+
         if (def.$events == null) {
             def.$events = {}; // to make sure it is always defined
         }
-        var doLoad = true;
-        if (__clsMgr) {
-            // always use the class manager (even if there is no dependency) to notify the loader that the
-            // interfaceDefinition was called
-            doLoad = __clsMgr.loadClassDependencies(clsPath, {
+
+        return Aria.loadOldDependencies({
+            classpaths : {
                 "JS" : def.$extends ? [def.$extends] : []
-            }, {
-                fn : aria.core.Interfaces.loadInterface,
-                scope : aria.core.Interfaces,
-                args : def
-            });
-        }
-        // load definition if no dependency is missing
-        if (doLoad) {
-            aria.core.Interfaces.loadInterface(def);
-        }
+            },
+            oldModuleLoader : def.$oldModuleLoader,
+            complete : {
+                scope : Interfaces,
+                fn : Interfaces.loadInterface,
+                args : [def, def]
+            }
+        });
     };
 
     /**
@@ -1003,7 +1117,7 @@
         if (!publicClassPath) {
             publicClassPath = definitionClassPath;
         }
-        if (!__checkClasspath(publicClassPath, "loadClass")) {
+        if (!__checkClasspath(publicClassPath, "loadClass: ")) {
             return;
         }
 
@@ -1031,21 +1145,25 @@
         // manage inheritance
         var superclass = null;
         if (def.$extends) {
-            if (!__checkClasspath(def.$extends, "parentClass")) {
-                return __classLoadError(def.$classpath);
+            if (typeof def.$extends == "string") {
+                if (!__checkClasspath(def.$extends, "parentClass: ")) {
+                    return __classLoadError(def);
+                }
+                superclass = Aria.getClassRef(def.$extends);
+            } else {
+                superclass = def.$extends;
             }
-            superclass = Aria.getClassRef(def.$extends);
 
             if (!superclass) {
-                return __classLoadError(def.$classpath, Aria.BASE_CLASS_UNDEFINED, [def.$classpath, def.$extends]);
+                return __classLoadError(def, Aria.BASE_CLASS_UNDEFINED, [def.$classpath, def.$extends]);
             } else {
                 // check that superclass has been properly loaded
                 if (!superclass.classDefinition) {
-                    return __classLoadError(def.$classpath, Aria.WRONG_BASE_CLASS, [def.$classpath, def.$extends]);
+                    return __classLoadError(def, Aria.WRONG_BASE_CLASS, [def.$classpath, def.$extends]);
                 }
                 // check that superclass is not singleton
                 if (superclass.classDefinition.$singleton) {
-                    return __classLoadError(def.$classpath, Aria.CANNOT_EXTEND_SINGLETON, [def.$classpath, def.$extends]);
+                    return __classLoadError(def, Aria.CANNOT_EXTEND_SINGLETON, [def.$classpath, def.$extends]);
                 }
 
             }
@@ -1119,32 +1237,18 @@
             }
         }
 
-        // store providers in a special variable
-        var defProviders = {};
-
-        // if resources (and/or providers) were defined for a class add them to the prototype
+        // if resources were defined for a class add them to the prototype
         if (defResources) {
             for (var k in defResources) {
                 if (defResources.hasOwnProperty(k)) {
                     if (p[k] && !parentResources[k]) {
                         Aria.$logError(Aria.RESOURCES_HANDLE_CONFLICT, [k, publicClassPath]);
+                    } else if (defResources[k].hasOwnProperty("provider")) {
+                        var resProviderInfo = defResources[k]["aria:resProviderInfo"];
+                        resProviderInfo.clsProto = p;
+                        p[k] = require(resProviderLoaderModulePath).load(resProviderInfo);
                     } else {
-                        if (defResources[k].provider != null) {
-                            // it's a provider
-                            defProviders[k] = defResources[k];
-
-                            p[k] = Aria.getClassInstance(defResources[k].provider);
-                            p[k].getData = (function (original) {
-                                return function () { // ok if providers are not singletons
-                                    return original.__getData(clsName);
-                                };
-                            })(p[k]);
-
-                            p[k].__refName = k;
-                        } else {
-                            // it's a resource
-                            p[k] = Aria.getClassRef(defResources[k]);
-                        }
+                        p[k] = Aria.getClassRef(defResources[k]);
                     }
                 }
             }
@@ -1186,15 +1290,15 @@
             __mergeEvents(p.$events, superclass.prototype.$events, p.$classpath);
         }
         if (defImplements) {
-            if (aria.utils.Type.isArray(defImplements)) {
+            if (require('./utils/Type').isArray(defImplements)) {
                 for (var k = 0, l = defImplements.length; k < l; k++) {
                     if (!aria.core.Interfaces.applyInterface(defImplements[k], p)) {
                         // the error has already been logged from applyInterface
-                        return __clsMgr.notifyClassLoadError(p.$classpath); // notify that class load failed
+                        return __classLoadError(def);
                     }
                 }
             } else {
-                __classLoadError(def.$classpath, Aria.INVALID_INTERFACES, [def.$classpath]);
+                return __classLoadError(def, Aria.INVALID_INTERFACES, [def.$classpath]);
             }
         }
         if (!p.$interfaces) {
@@ -1212,11 +1316,14 @@
         var protoRef = '$' + def.$class;
         // if base class ref already exists, log error
         if (p[protoRef] != null) {
-            return __classLoadError(def.$classpath, Aria.DUPLICATE_CLASSNAME, def.$class);
+            return __classLoadError(def, Aria.DUPLICATE_CLASSNAME, def.$class);
         } else {
             p[protoRef] = p;
         }
 
+        if (!def.$constructor) {
+            def.$constructor = __createDefaultConstructor(superclass);
+        }
         var cnstrctr = __createConstructor(def, superclass);
 
         cnstrctr.prototype = p;
@@ -1242,90 +1349,26 @@
         ns[clsName].classDefinition = def;
         Aria.$classes.push(ns[clsName]);
 
-        // check if we need to initialize providers synchronously
-        for (var k in defProviders) {
-            if (defProviders.hasOwnProperty(k)) {
-                var provider = defProviders[k];
-                // set handlers and resources, if defined.
-
-                if (provider.hasOwnProperty("handler")) {
-                    p[k].setHandler(provider.handler);
-                }
-                if (provider.hasOwnProperty("resources")) {
-                    p[k].setResources(provider.resources);
-                }
-
-                // fetch data
-                if (provider.hasOwnProperty("onLoad")) {
-                    p[k].fetchData({
-                        fn : provider.onLoad,
-                        scope : p
-                    }, clsName); // we pass the name of the "caller class" i.e. the one with the provider declaration
-
-                    // asynchronous load
-                } else {
-                    // synchronous load
-                    syncProviders.push({
-                        ref : k,
-                        prot : p[k]
-                    });
-                }
-            }
+        // if prototype init exist
+        if (defPrototype && defPrototype.$init) {
+            defPrototype.$init(p, def);
         }
 
-        // remember this class so we can initialized when all providers have been loaded
-        __classMemo[clsName] = {
-            def : def,
-            p : p,
-            ns : ns
-        };
+        if (def.$onload) {
+            // call the onload method
+            // TODO: try/catch
+            def.$onload.call(p, ns[clsName]);
+        }
 
-        this.loadSyncProviders(clsName);
+        if (def.$css) {
+            aria.templates.CSSMgr.registerDependencies(def.$classpath, def.$css);
+        }
+
+        return ns[clsName];
     };
 
-    Aria.loadSyncProviders = function (caller) {
-        if (syncProviders.length > 0) {
-            // load next provider
-            var nextProvider = syncProviders.pop();
-            nextProvider.prot.fetchData({
-                fn : this.loadSyncProviders,
-                scope : this,
-                args : {
-                    calledback : true
-                }
-            }, caller);
-        } else {
-            // all providers have been loaded : init class
-
-            // retrieve temporarily stored information
-            var clsName = caller;
-            var def = __classMemo[clsName].def;
-            var p = __classMemo[clsName].p;
-            var ns = __classMemo[clsName].ns;
-
-            var defPrototype = def.$prototype;
-
-            // if prototype init exist
-            if (defPrototype && defPrototype.$init) {
-                defPrototype.$init(p, def);
-            }
-
-            if (def.$onload) {
-                // call the onload method
-                // TODO: try/catch
-                def.$onload.call(p, ns[clsName]);
-            }
-
-            // notify class manager
-            if (__clsMgr) {
-                __clsMgr.notifyClassLoad(def.$classpath);
-            } else if (def.$classpath == 'aria.core.ClassMgr') {
-                // we just loaded the class manager
-                __clsMgr = aria.core.ClassMgr;
-            }
-
-            __classMemo[clsName] = null; // class succesfully loaded: clear the memo
-        }
+    Aria.loadSyncProviders = function () {
+        this.$logError("With the migration to noder-js, Aria.loadSyncProviders is no longer available.");
     };
 
     /**
@@ -1361,7 +1404,8 @@
      * <code>oncomplete: {fn: function () {...}}</code>
      */
     Aria.load = function (desc) {
-        var ml = new aria.core.MultiLoader(desc);
+        var MultiLoader = require('./core/MultiLoader');
+        var ml = new MultiLoader(desc);
         ml.load();
     };
 
@@ -1370,7 +1414,8 @@
      * @param {aria.core.BaseTypes:BeansDefinition} beans Beans to declare
      */
     Aria.beanDefinitions = function (beans) {
-        aria.core.JsonValidator.beanDefinitions(beans);
+        __checkOldModuleLoader(beans, "beanDefinitions", "$package");
+        return require('./core/JsonValidator').beanDefinitions(beans);
     };
 
     /**
@@ -1399,7 +1444,7 @@
      * sub-templates.
      */
     Aria.loadTemplate = function (cfg, cb) {
-        aria.core.TplClassLoader.loadTemplate(cfg, cb);
+        require("./core/TplClassLoader").loadTemplate(cfg, cb);
     };
 
     /**
@@ -1407,42 +1452,14 @@
      * @param {aria.templates.CfgBeans:Div} div The div given to Aria.loadTemplate.
      */
     Aria.disposeTemplate = function (div) {
-        return aria.core.TplClassLoader.disposeTemplate(div);
+        return require("./core/TplClassLoader").disposeTemplate(div);
     };
 
     /**
      * Load a resource definition.
      */
     Aria.resourcesDefinition = function (res) {
-        var resClassRef = Aria.getClassRef(res.$classpath);
-
-        // if resource class has been already instantiated do json injection only
-        if (resClassRef) {
-            // inject resources for new locale
-            var proto = resClassRef.classDefinition.$prototype;
-            aria.utils.Json.inject(res.$resources, proto, true);
-            // injecting in $prototype is not sufficient because simple values
-            // are not updated on the singleton instance. That's why we are doing the
-            // following loop:
-            for (var i in proto) {
-                if (proto.hasOwnProperty(i)) {
-                    resClassRef[i] = proto[i];
-                }
-            }
-            // store info about resource files (per locale) loaded
-            // aria.core.ResMgr.addResFile(resClassRef.$classpath);
-            if (__clsMgr) {
-                __clsMgr.notifyClassLoad(res.$classpath);
-            }
-        } else {
-            // WRITING WITH BRACKETS ON PURPOSE (for documentation)
-            Aria['classDefinition']({
-                $classpath : res.$classpath,
-                $singleton : true,
-                $constructor : function () {},
-                $prototype : res.$resources
-            });
-        }
+        return require("./core/ResMgr").resourcesDefinition(res);
     };
 
     /**
@@ -1477,58 +1494,48 @@
      * @param {aria.core.CfgBeans:Callback} cb a callback function
      */
     Aria.onDomReady = function (cb) {
-        aria.dom.DomReady.onReady(cb);
+        require("./dom/DomReady").onReady(cb);
     };
 
-    if (Aria.$frameworkWindow) {
-        if (Aria.rootFolderPath == null) { // Aria.rootFolderPath can be an empty string; it is a correct value.
+    if (Aria.rootFolderPath == null) { // Aria.rootFolderPath can be an empty string; it is a correct value.
+        // FIXME: NOT SURE IF IT IS THE BEST WAY TO GET Aria.rootFolderPath
 
-            // Finding Aria.rootFolderPath
-            var me, scripts, myUrl;
+        // Finding Aria.rootFolderPath
+        var myUrl = module.filename;
 
-            // First we retrieve the url of Aria.js (me) in the page.
-            // As browsers ensure that all file are executed in the good order, at this stage the script tag that loaded
-            // me can only be the last script tag of this page.
-            scripts = Aria.$frameworkWindow.document.getElementsByTagName("script");
-            me = scripts[scripts.length - 1];
-            scripts = null;
-            myUrl = me.src; // In all the browsers it's an absolute path, in IE6,7 is relative
+        // rootFolderPath is just the folder above the folder of Aria.js
+        var removeJsFile = myUrl.replace(/aria\/[^\/]*$/, ""); // when it is not packaged
+        if (removeJsFile == myUrl) {
+            removeJsFile = removeJsFile.substring(0, removeJsFile.lastIndexOf("/")) + "/";
+        }
 
-            // rootFolderPath is just the folder above the folder of Aria.js
-            var removeJsFile = myUrl.replace(/aria\/[^\/]*$/, ""); // when it is not packaged
-            if (removeJsFile == myUrl) {
-                removeJsFile = removeJsFile.substring(0, removeJsFile.lastIndexOf("/")) + "/";
+        // When the path is relative, this can become empty, take the current location
+        if (!removeJsFile && Aria.$frameworkWindow) {
+            var currentLocation = Aria.$frameworkWindow.location;
+            removeJsFile = currentLocation.protocol + "//" + currentLocation.host;
+            var pathname = currentLocation.pathname;
+            // remove everything after the last / on pathname
+            pathname = pathname.match(/[\/\w\.\-]+\//gi);
+            if (pathname) {
+                pathname = pathname[0];
+            } else {
+                pathname = "/";
             }
-
-            // When the path is relative, this can become empty, take the current location
-            if (!removeJsFile) {
-                var currentLocation = Aria.$frameworkWindow.location;
-                removeJsFile = currentLocation.protocol + "//" + currentLocation.host + "/";
-                var pathname = currentLocation.pathname;
-                // remove everything after the last / on pathname
-                pathname = pathname.match(/[\/\w\.\-]+\//gi);
-                if (pathname) {
-                    pathname = pathname[0];
-                } else {
-                    pathname = "";
-                }
-                removeJsFile += pathname;
-
-            }
-
-            /**
-             * Path from the current page to the Aria.js script Possible values could be "" or "../" or "../xyz"
-             * @name Aria.rootFolderPath
-             * @type String
-             */
-            Aria.rootFolderPath = removeJsFile;
+            removeJsFile += pathname;
 
         }
 
-        if (Aria.rootFolderPath == "/") { // this will happen with IE (04204517)
-            var currentURL = Aria.$frameworkWindow.location;
-            Aria.rootFolderPath = currentURL.protocol + "//" + currentURL.host + "/";
-        }
+        /**
+         * Path from the current page to the Aria.js script Possible values could be "" or "../" or "../xyz"
+         * @name Aria.rootFolderPath
+         * @type String
+         */
+        Aria.rootFolderPath = removeJsFile;
+    }
+
+    if (Aria.$frameworkWindow && Aria.rootFolderPath == "/") { // this will happen with IE (04204517)
+        var currentURL = Aria.$frameworkWindow.location;
+        Aria.rootFolderPath = currentURL.protocol + "//" + currentURL.host + "/";
     }
 
     /**
@@ -1562,22 +1569,15 @@
     };
 
     /**
-     * Private variable to support sourceURL statement. Evaluates to "@" in old Firefoxes and "#" in other browsers.
-     * @type String
+     * Return its first argument. To be used in order to avoid closures
+     * @type Function
      */
-    Aria.__sourceUrlPrefix = (function () {
-        // Versions of Firebug available for Firefox <= 22 support only @ syntax
-        // New versions of Chrome, Safari, and Firebugs for Firefox 23+ support # syntax
-        // Also let's use # in IE though it doesn't do anything as of IE11, but at least it doesn't create issues like
-        // //@ does in old versions of IE
-        var matchesFx = navigator ? navigator.userAgent.match(/Firefox\/(\d+)/) : false;
-        if (matchesFx && +matchesFx[1] <= 22) {
-            return "@";
-        }
-        return "#";
-    })();
+    Aria.returnArg = function (arg) {
+        return arg;
+    };
 
 })();
+var jsEval = require("noder-js/jsEval");
 
 /**
  * Call eval and enable better debugging support with source URL. There is a bug in firebug which prevents the source
@@ -1589,14 +1589,8 @@
  * evalContext.
  */
 Aria["eval"] = function (srcJS, srcURL, evalContext) {
-    // PTR 05051375: this eval method must be put outside of the closure because, in packaged mode, variables in the
-    // closure are renamed and it is possible that loading a file through eval changes the value of those variables
-    // resulting in very strange JS exceptions
-
-    // changed by assignment inside the eval
-    if (srcURL) {
-        // To have better debugging support:
-        srcJS = [srcJS, '\n//', Aria.__sourceUrlPrefix, ' sourceURL=', Aria.rootFolderPath, srcURL, '\n'].join('');
-    }
-    return eval(srcJS);
+    var fct = jsEval(["(function(){\n", srcJS, "\n})"].join(''), srcURL, 1);
+    return fct(srcJS, srcURL, evalContext);
 };
+require("./core/Log");
+require("./core/Browser");

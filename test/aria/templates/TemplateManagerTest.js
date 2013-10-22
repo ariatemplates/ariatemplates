@@ -110,7 +110,7 @@ Aria.classDefinition({
                 this.assertTrue(!marker, "Origin template should have been removed");
 
                 // and there should be some errors in the logs
-                this.assertErrorInLogs(aria.core.ClassLoader.MISSING_CLASS_DEFINITION, "Missing error 1");
+                this.assertErrorInLogs(aria.core.MultiLoader.LOAD_ERROR, "Missing error 1");
                 this.assertErrorInLogs(aria.templates.Parser.MISSING_CLOSINGBRACES, "Missing error 2");
 
                 // ok, this time redirect to the good template

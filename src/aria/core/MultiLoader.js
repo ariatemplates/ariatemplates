@@ -59,9 +59,10 @@ module.exports = Aria.classDefinition({
     $constructor : function (loadDescription, autoDispose) {
         this._autoDispose = (autoDispose !== false);
         this._loadDesc = loadDescription;
-        this._clsLoader = null;
     },
     $statics : {
+        LOAD_ERROR : "Load failed",
+
         // ERROR MESSAGES:
         MULTILOADER_CB1_ERROR : "Error detected while executing synchronous callback on MultiLoader.",
         MULTILOADER_CB2_ERROR : "Error detected while executing callback on MultiLoader."
@@ -73,58 +74,37 @@ module.exports = Aria.classDefinition({
          * this method call
          */
         load : function () {
-            var cm = (require("./ClassMgr")), descriptor = this._loadDesc, hasError = false, allLoaded = true;
-
-            var dependencies = {
-                "JS" : cm.filterMissingDependencies(descriptor.classes),
-                "TPL" : cm.filterMissingDependencies(descriptor.templates),
-                // TODO: remove classType - temp fix for resources reloading and json injection
-                "RES" : cm.filterMissingDependencies(descriptor.resources, "RES"),
-                "CSS" : cm.filterMissingDependencies(descriptor.css),
-                "TML" : cm.filterMissingDependencies(descriptor.tml),
-                "TXT" : cm.filterMissingDependencies(descriptor.txt),
-                "CML" : cm.filterMissingDependencies(descriptor.cml)
-            };
-
-            // This first loop only detects whether there are errors or missing dependencies
-            for (var type in dependencies) {
-                if (dependencies.hasOwnProperty(type)) {
-                    var missing = dependencies[type];
-
-                    hasError = hasError || missing === false;
-                    allLoaded = allLoaded && missing === null;
+            var descriptor = this._loadDesc;
+            var promise = Aria.loadOldDependencies({
+                classpaths : {
+                    "JS" : descriptor.classes,
+                    "TPL" : descriptor.templates,
+                    "RES" : descriptor.resources,
+                    "CSS" : descriptor.css,
+                    "TML" : descriptor.tml,
+                    "TXT" : descriptor.txt,
+                    "CML" : descriptor.cml
+                },
+                complete : {
+                    fn : Aria.returnNull,
+                    scope : this,
+                    args : []
                 }
-            }
+            });
 
-            if (hasError || allLoaded) {
-                this._execCallback(true, hasError);
-            } else {
-                var loader = new (require("./ClassLoader"))();
-
-                // multiloader has a onerror function -> it will handle errors
-                if (this._loadDesc['onerror'] && this._loadDesc['onerror'].override) {
-                    loader.handleError = false;
-                }
-                this._clsLoader = loader; // useful reference for debugging
-
-                loader.$on({
-                    "classReady" : this._onClassesReady,
-                    "classError" : this._onClassesError,
-                    "complete" : this._onClassLoaderComplete,
-                    scope : this
-                });
-
-                // This second loop adds dependencies on the loader
-                for (type in dependencies) {
-                    if (dependencies.hasOwnProperty(type)) {
-                        missing = dependencies[type];
-
-                        if (missing) {
-                            loader.addDependencies(missing, type);
-                        }
+            if (promise) {
+                var self = this;
+                promise.then(function () {
+                    self._execCallback(false);
+                }, function (error) {
+                    if (!descriptor.onerror || !descriptor.onerror.override) {
+                        // multiloader has an onerror function -> it will handle errors
+                        self.$logError(self.LOAD_ERROR, null, error);
                     }
-                }
-                loader.loadDependencies();
+                    self._execCallback(false, true);
+                }).end();
+            } else {
+                this._execCallback(true);
             }
         },
 
@@ -149,40 +129,6 @@ module.exports = Aria.classDefinition({
                     this.$logError(errId, null, ex);
                 }
             }
-            // in case of asynchronous call the dispose is done in the complete event
-            if (syncCall && this._autoDispose) {
-                this.$dispose();
-            }
-        },
-
-        /**
-         * Internal callback called when the class dependencies are ready
-         * @param {aria.core.ClassLoader:classReady:event} evt
-         * @private
-         */
-        _onClassesReady : function (evt) {
-            this._execCallback(false, false);
-        },
-
-        /**
-         * Internal callback called if there is an error while loading classes
-         * @param {aria.core.ClassLoader:classError:event} evt
-         * @private
-         */
-        _onClassesError : function (evt) {
-            this._execCallback(false, true);
-        },
-
-        /**
-         * Internal method called when the class loader can be disposed
-         * @param {aria.core.ClassLoader:complete:event} evt
-         * @private
-         */
-        _onClassLoaderComplete : function (evt) {
-            var loader = evt.src;
-            this.$assert(90, this._clsLoader === loader);
-            this._clsLoader = null;
-            loader.$dispose();
             if (this._autoDispose) {
                 this.$dispose();
             }

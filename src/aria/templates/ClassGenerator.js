@@ -510,6 +510,7 @@ Aria.classDefinition({
             if (scriptClasspath) {
                 // this is the new way of including template scripts
                 out.enterBlock("classInit");
+                out.addDependencies(["aria.core.TplClassLoader"]);
                 out.writeln("aria.core.TplClassLoader._importScriptPrototype(" + scriptClasspath + ",proto)");
                 out.leaveBlock();
             }

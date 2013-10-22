@@ -332,6 +332,7 @@ Aria.classDefinition({
             this._testRunner.$dispose();
 
             // unload all the classes that don' t belong to the framework
+            // TODO change this -- aria.core.Cache.content.classes is not used anymore
             var loadedClasses = aria.core.Cache.content.classes;
             for (var classpath in loadedClasses) {
                 if (!loadedClasses.hasOwnProperty(classpath) || classpath.indexOf("aria.") === 0) {

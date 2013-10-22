@@ -26,6 +26,8 @@ module.exports = function (grunt) {
 
     grunt.loadTasks('./build/grunt-tasks');
     grunt.loadNpmTasks('atpackager');
+    require('atpackager').loadNpmPlugin('noder-js');
+    require('atpackager').loadNpmPlugin('at-noder-converter');
     grunt.loadNpmTasks('grunt-verifylowercase');
     grunt.loadNpmTasks('grunt-leading-indent');
     grunt.loadNpmTasks('grunt-contrib-jshint');
