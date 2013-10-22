@@ -26,7 +26,8 @@ Aria.classDefinition({
             this.assertTrue(aria.templates.TplParser.template == "line 1\nline2\n\nline 4\n\n");
 
             // PTR 05020716: a comment should not remove the character preceeding '//'
-            aria.templates.TplParser._prepare("   line 1   \n line2// with my comment  \n//line 3\n line 4\n\n");
+            // comments need to have a preceeding whitespace
+            aria.templates.TplParser._prepare("   line 1   \n line2 // with my comment  \n//line 3\n line 4\n\n");
             this.assertTrue(aria.templates.TplParser.template == "line 1\nline2\n\nline 4\n\n");
         },
 
