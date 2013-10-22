@@ -13,8 +13,6 @@
  * limitations under the License.
  */
 var Aria = require("../Aria");
-var ariaUtilsString = require("../utils/String");
-var ariaCoreInterfaces = require("./Interfaces");
 
 (function () {
 
@@ -98,7 +96,7 @@ var ariaCoreInterfaces = require("./Interfaces");
      * @param {Object} info interceptor parameters
      */
     var __callInterceptorMethod = function (info) {
-        var methodName = ariaUtilsString.capitalize(info.method);
+        var methodName = require("../utils/String").capitalize(info.method);
         var fctRef = this["on" + methodName + info.step];
         if (fctRef) {
             return fctRef.call(this, info);
@@ -205,7 +203,7 @@ var ariaCoreInterfaces = require("./Interfaces");
      * @return {Boolean} true if method has been intercepted
      */
     var __hasBeenIntercepted = function (methodName, interceptor) {
-        var capitalizedMethodName = "on" + ariaUtilsString.capitalize(methodName);
+        var capitalizedMethodName = "on" + require("../utils/String").capitalize(methodName);
         if ((interceptor[capitalizedMethodName + "CallBegin"] || interceptor[capitalizedMethodName + "Callback"] || interceptor[capitalizedMethodName
                 + "CallEnd"])
                 || (interceptor["on" + methodName + "CallBegin"] || interceptor["on" + methodName + "Callback"] || interceptor["on"
@@ -315,7 +313,7 @@ var ariaCoreInterfaces = require("./Interfaces");
                     delete this.__$interceptors;
                 }
                 if (this.__$interfaces) {
-                    ariaCoreInterfaces.disposeInterfaces(this);
+                    require("./Interfaces").disposeInterfaces(this);
                 }
             },
 
@@ -501,7 +499,7 @@ var ariaCoreInterfaces = require("./Interfaces");
              * @param {String|Function} itf Classpath of the interface or reference to the interface constructor.
              */
             $interface : function (itf) {
-                return ariaCoreInterfaces.getInterface(this, itf);
+                return require("./Interfaces").getInterface(this, itf);
             },
 
             /**

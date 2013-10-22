@@ -16,8 +16,9 @@ var Aria = require("ariatemplates/Aria");
 var testAriaTemplatesTestErrorSlowDown = require("../templates/test/error/SlowDown");
 var ariaJsunitTestCase = require("ariatemplates/jsunit/TestCase");
 var ariaCoreCache = require("ariatemplates/core/Cache");
-var ariaCoreClassLoader = require("ariatemplates/core/ClassLoader");
+var ariaCoreDownloadMgr= require("ariatemplates/core/DownloadMgr");
 var ariaCoreIOFiltersMgr = require("ariatemplates/core/IOFiltersMgr");
+var ariaCoreMultiLoader = require("ariatemplates/core/MultiLoader");
 var ariaCoreResMgr = require("ariatemplates/core/ResMgr");
 
 module.exports = Aria.classDefinition({
@@ -36,13 +37,19 @@ module.exports = Aria.classDefinition({
         },
 
         tearDown : function () {
-            // Otherwise the resource is loaded again when we reset the locale at the end of a test
-            delete ariaCoreResMgr.loadedResources["test.aria.templates.test.error.Resource"];
             this.thisDivIsInTheBody.parentNode.removeChild(this.thisDivIsInTheBody);
 
             ariaCoreIOFiltersMgr.removeFilter(this.filterSlow);
             this.filterSlow.$dispose();
             this.filterSlow = null;
+        },
+
+        cleanLogicalPath : function (logicalPath) {
+            ariaCoreDownloadMgr.clearFile(logicalPath);
+            delete require.cache[logicalPath];
+            var classpath = logicalPath.replace(/\.[^\/]+$/,"").replace(/\//g,".");
+            Aria.dispose(classpath);
+            Aria.cleanGetClassRefCache(classpath);
         },
 
         /**
@@ -62,11 +69,16 @@ module.exports = Aria.classDefinition({
         _loadTemplateErrorsCallback : function (res) {
             try {
                 this.assertFalse(res.success);
-                this.assertErrorInLogs(ariaCoreClassLoader.CLASS_LOAD_ERROR);
+                this.assertErrorInLogs(ariaCoreMultiLoader.LOAD_ERROR);
 
-                var cacheItem = ariaCoreCache.getItem("classes", "test.aria.templates.test.error.BadResourcesScript");
-                this.assertEquals(cacheItem.status, ariaCoreCache.STATUS_AVAILABLE, "Template script should be loaded before calling the callback");
-            } catch (ex) {}
+                var cacheItem = require.cache["test/aria/templates/test/error/BadResourcesScript.js"];
+                this.assertTrue(cacheItem.preloaded, "Template script should be preloaded before calling the callback");
+            } catch (ex) {
+                this.handleAsyncTestError(ex, false);
+            }
+
+            this.cleanLogicalPath("test/aria/templates/test/error/BadResources.tpl");
+            this.cleanLogicalPath("test/aria/templates/test/error/BadResourcesScript.js");
 
             this.notifyTestEnd("testAsyncLoadTemplateErrors");
         },
@@ -76,7 +88,7 @@ module.exports = Aria.classDefinition({
          */
         testAsyncLoadInvalidDependencies : function () {
             // Inject an invalid item in the cache
-            var cacheItem = ariaCoreCache.getItem("classes", "invalidInCache", true);
+            var cacheItem = ariaCoreCache.getItem("files", "invalidInCache.js", true);
             cacheItem.status = ariaCoreCache.STATUS_ERROR;
 
             Aria.loadTemplate({
@@ -91,18 +103,24 @@ module.exports = Aria.classDefinition({
         _loadInvalidDependenciesCallback : function (res) {
             try {
                 this.assertFalse(res.success);
+                this.assertErrorInLogs(ariaCoreMultiLoader.LOAD_ERROR);
 
-                var cacheItem = ariaCoreCache.getItem("classes", "test.aria.templates.test.error.GoodDependency");
-                this.assertFalse(!!cacheItem, "GoodDependency shouldn't be in cache");
+                var cacheItem = require.cache["test/aria/templates/test/error/GoodDependency.js"];
+                this.assertTrue(cacheItem.preloaded, "GoodDependency should be available");
 
-                var cacheItem = ariaCoreCache.getItem("classes", "test.aria.templates.test.error.InvalidCache");
-                this.assertEquals(cacheItem.status, ariaCoreCache.STATUS_ERROR, "Template should be in error");
+                var cacheItem = require.cache["test/aria/templates/test/error/InvalidCache.tpl"];
+                this.assertFalse(cacheItem.preloaded, "Template should not be available");
 
-                var cacheItem = ariaCoreCache.getItem("classes", "test.aria.templates.test.error.GoodTemplate");
-                this.assertEquals(cacheItem.status, ariaCoreCache.STATUS_AVAILABLE, "Good Template should be available");
-            } catch (ex) {}
+                var cacheItem = require.cache["test/aria/templates/test/error/GoodTemplate.tpl"];
+                this.assertTrue(cacheItem.preloaded, "Good Template should be available");
+            } catch (ex) {
+                this.handleAsyncTestError(ex, false);
+            }
 
-            delete ariaCoreCache.content.classes.InvalidInCache;
+            this.cleanLogicalPath("invalidInCache.js");
+            this.cleanLogicalPath("test/aria/templates/test/error/GoodDependency.js");
+            this.cleanLogicalPath("test/aria/templates/test/error/InvalidCache.tpl");
+            this.cleanLogicalPath("test/aria/templates/test/error/GoodTemplate.tpl");
 
             this.notifyTestEnd("testAsyncLoadInvalidDependencies");
         },
@@ -112,7 +130,7 @@ module.exports = Aria.classDefinition({
          */
         testAsyncLoadInvalidDependenciesNoDependencies : function () {
             // Inject an invalid item in the cache
-            var cacheItem = ariaCoreCache.getItem("classes", "invalidInCache", true);
+            var cacheItem = ariaCoreCache.getItem("files", "invalidInCache.js", true);
             cacheItem.status = ariaCoreCache.STATUS_ERROR;
 
             Aria.loadTemplate({
@@ -127,15 +145,20 @@ module.exports = Aria.classDefinition({
         _loadInvalidDependenciesNoDependenciesCallback : function (res) {
             try {
                 this.assertFalse(res.success);
+                this.assertErrorInLogs(ariaCoreMultiLoader.LOAD_ERROR);
 
-                var cacheItem = ariaCoreCache.getItem("classes", "test.aria.templates.test.error.GoodDependency");
-                this.assertFalse(!!cacheItem, "GoodDependency shouldn't be in cache");
+                var cacheItem = require.cache["test/aria/templates/test/error/GoodDependency.js"];
+                this.assertTrue(cacheItem.preloaded, "GoodDependency should be available");
 
-                var cacheItem = ariaCoreCache.getItem("classes", "test.aria.templates.test.error.InvalidCacheNoDep");
-                this.assertEquals(cacheItem.status, ariaCoreCache.STATUS_ERROR, "Template should be in error");
-            } catch (ex) {}
+                var cacheItem = require.cache["test/aria/templates/test/error/InvalidCacheNoDep.tpl"];
+                this.assertFalse(cacheItem.preloaded, "Template should not be available");
+            } catch (ex) {
+                this.handleAsyncTestError(ex, false);
+            }
 
-            delete ariaCoreCache.content.classes.InvalidCacheNoDep;
+            this.cleanLogicalPath("invalidInCache.js");
+            this.cleanLogicalPath("test/aria/templates/test/error/GoodDependency.js");
+            this.cleanLogicalPath("test/aria/templates/test/error/InvalidCacheNoDep.tpl");
 
             this.notifyTestEnd("testAsyncLoadInvalidDependenciesNoDependencies");
         },
@@ -157,11 +180,15 @@ module.exports = Aria.classDefinition({
         _loadTemplateErrorsMultipleCallback : function (res) {
             try {
                 this.assertFalse(res.success);
-                this.assertErrorInLogs(ariaCoreClassLoader.CLASS_LOAD_ERROR);
+                this.assertErrorInLogs(ariaCoreMultiLoader.LOAD_ERROR);
 
-                var cacheItem = ariaCoreCache.getItem("classes", "test.aria.templates.test.error.BadResourcesScript");
-                this.assertEquals(cacheItem.status, ariaCoreCache.STATUS_AVAILABLE, "Template script should be loaded before calling the callback");
-            } catch (ex) {}
+                var cacheItem = require.cache["test/aria/templates/test/error/BadResourcesMultiple.tpl"];
+                this.assertFalse(cacheItem.preloaded, "Template should not be available");
+            } catch (ex) {
+                this.handleAsyncTestError(ex, false);
+            }
+
+            this.cleanLogicalPath("test/aria/templates/test/error/BadResourcesMultiple.tpl");
 
             this.notifyTestEnd("testAsyncLoadTemplateErrorsMultiple");
         }

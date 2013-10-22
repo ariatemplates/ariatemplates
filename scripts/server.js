@@ -16,7 +16,9 @@
 var path = require("path");
 var express = require("express");
 var app = express();
+var pkg = require('../package.json');
 
+app.use(express.compress());
 // Render views with Jade
 app.set('views', __dirname + '/assets/views');
 app.set('view engine', 'jade');
@@ -33,8 +35,8 @@ app.get("/test/options", function (req, res) {
 app.get("/test", function (req, res) {
     res.render('test', {
         urls : {
-            framework : "/aria-templates/aria/ariatemplates-" + process.env.npm_package_version + ".js",
-            skin : "/aria-templates/aria/css/atskin-" + process.env.npm_package_version + ".js"
+            framework : "/aria-templates/aria/ariatemplates-" + pkg.version + ".js",
+            skin : "/aria-templates/aria/css/atskin-" + pkg.version + ".js"
         },
         dev : false
     });
@@ -56,8 +58,8 @@ app.get("/playground/options", function (req, res) {
 app.get("/playground", function (req, res) {
     res.render('playground', {
         urls : {
-            framework : "/aria-templates/aria/ariatemplates-" + process.env.npm_package_version + ".js",
-            skin : "/aria-templates/aria/css/atskin-" + process.env.npm_package_version + ".js"
+            framework : "/aria-templates/aria/ariatemplates-" + pkg.version + ".js",
+            skin : "/aria-templates/aria/css/atskin-" + pkg.version + ".js"
         },
         dev : false,
         path : req.query.path,
@@ -75,14 +77,16 @@ app.get("/playground/dev", function (req, res) {
         model : req.query.model
     });
 });
-// Rename bootstrap prefixing with ariatemplates- this fixes runIsolated in dev mode
 app.get("/aria-templates/dev/aria/ariatemplates-bootstrap.js", function (req, res) {
-    res.sendfile(path.normalize(__dirname + "/../src/aria/bootstrap.js"));
+    res.sendfile(path.normalize(__dirname + "/../build/target/bootstrap/aria/ariatemplates-" + pkg.version + ".js"));
+});
+app.get("/aria-templates/dev/aria/css/atskin.js", function (req, res) {
+    res.sendfile(path.normalize(__dirname + "/../build/target/bootstrap/aria/css/atskin-" + pkg.version + ".js"));
 });
 // Static CSS files for views and tools
 app.use("/css", express.static(__dirname + "/assets/css"));
-// Non minified version points to src folder
-app.use("/aria-templates/dev", express.static(__dirname + "/../src"));
+// Non minified version points to bootstrap folder
+app.use("/aria-templates/dev", express.static(__dirname + "/../build/target/bootstrap"));
 // Minified version points to standard build (npm install)
 app.use("/aria-templates", express.static(__dirname + "/../build/target/production"));
 // Test classpath redirects to test folder

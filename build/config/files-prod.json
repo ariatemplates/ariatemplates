@@ -21,6 +21,10 @@
     {
         "name": "aria/pack-templates1.js",
         "files": [
+            "aria/$resources.js",
+            "aria/core/loaders/ResProviderLoader.js",
+            "aria/core/loaders/*Preprocessor.js",
+            "!aria/core/loaders/TxtPreprocessor.js",
             "aria/core/environment/Customizations.js",
             "aria/core/environment/CustomizationsCfgBeans.js",
             "aria/templates/*",
@@ -61,6 +65,7 @@
     {
         "name": "aria/pack-templates2.js",
         "files": [
+            "aria/core/loaders/TxtPreprocessor.js",
             "aria/templates/TextTemplate.js",
             "aria/templates/TxtClassGenerator.js",
             "aria/templates/TxtCtxt.js",
@@ -185,5 +190,17 @@
         "files": [
             "aria/tester/runner/**/*"
         ]
+    },
+    {
+        "name": "aria/pack-noder-error.js",
+        "files": [
+            "aria/noderError/**"
+        ],
+        "builder": {
+             "type": "NoderPackage",
+             "cfg": {
+                 "header": "<%= packaging.license_min %>"
+             }
+        }
     }
 ]

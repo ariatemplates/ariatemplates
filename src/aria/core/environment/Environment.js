@@ -15,7 +15,6 @@
 var Aria = require("../../Aria");
 require("./EnvironmentBaseCfgBeans");
 var ariaCoreAppEnvironment = require("../AppEnvironment");
-var ariaCoreResMgr = require("../ResMgr");
 
 /**
  * Public API for retrieving, applying application variables.
@@ -67,8 +66,9 @@ module.exports = Aria.classDefinition({
                 Aria.debug = debug;
                 this.$raiseEvent("debugChanged");
             }
-            if (ariaCoreResMgr) { // the resource manager may not be already loaded
-                ariaCoreResMgr.changeLocale(this.getLanguage(), callback);
+            if (aria.core.ResMgr) {
+                // the resource manager may not be already loaded
+                require("../ResMgr").changeLocale(this.getLanguage(), callback);
             } else {
                 this.$callback(callback);
             }

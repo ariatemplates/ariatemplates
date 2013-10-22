@@ -13,8 +13,6 @@
  * limitations under the License.
  */
 var Aria = require("../Aria");
-var ariaCoreCache = require("./Cache");
-var ariaCoreFileLoader = require("./FileLoader");
 
 /**
  * Download Manager manages file download synchronization thanks to the FileLoader and Cache. When multiple files are
@@ -32,8 +30,7 @@ module.exports = Aria.classDefinition({
          * @protected
          * @type aria.core.Cache
          */
-        this._cache = null;
-
+        this._cache = require("./Cache");
         /**
          * Map between path/packages and a given file to load. <br />
          * '*' as a key will allow to match any class of a package <br />
@@ -211,9 +208,6 @@ module.exports = Aria.classDefinition({
          */
         loadFile : function (logicalPath, cb, args) {
             // get the file item in the cache
-            if (!this._cache) {
-                this._cache = ariaCoreCache;
-            }
             this.$assert(34, this._cache);
             this.$assert(35, cb.scope);
             this.$assert(36, cb.fn);
@@ -234,6 +228,7 @@ module.exports = Aria.classDefinition({
             // file is not loaded: create a file loader if not already done
             var loader = itm.loader;
             if (!loader) {
+                var ariaCoreFileLoader = require("aria/core/FileLoader");
                 this.$assert(63, ariaCoreFileLoader);
 
                 var url;
@@ -411,9 +406,6 @@ module.exports = Aria.classDefinition({
          * @param {String} content the file content
          */
         loadFileContent : function (logicalPath, content, hasErrors) {
-            if (!this._cache) {
-                this._cache = ariaCoreCache;
-            }
             var itm = this._cache.getItem("files", logicalPath, true);
             if (hasErrors) {
                 itm.status = this._cache.STATUS_ERROR;
@@ -443,7 +435,7 @@ module.exports = Aria.classDefinition({
          * @param {aria.core.CfgBeans:Callback} cb Callback to be called after tpl content is downloaded
          */
         loadTplFileContent : function (classpath, cb) {
-            var logicalPath = (require("./ClassMgr")).getBaseLogicalPath(classpath) + ".tpl";
+            var logicalPath = Aria.getLogicalPath(classpath, ".tpl", true);
             this.loadFile(logicalPath, {
                 fn : this._onTplFileContentReceive,
                 scope : this,

@@ -13,7 +13,6 @@
  * limitations under the License.
  */
 var Aria = require("../Aria");
-var ariaCoreClassMgr = require("./ClassMgr");
 
 (function () {
 
@@ -295,6 +294,9 @@ var ariaCoreClassMgr = require("./ClassMgr");
                     var ns = typeName.substr(0, i);
                     typeName = typeName.substr(i + 1);
                     packageName = (packageDef.$namespaces == null ? null : packageDef.$namespaces[ns]);
+                    if (typeUtils.isObject(packageName)) {
+                        packageName = packageName.$package;
+                    }
                     if (!packageName) {
                         this._logError(this.UNDEFINED_PREFIX, [ns, this._currentBeanName]);
                         return this._typeRefError;
@@ -679,9 +681,9 @@ var ariaCoreClassMgr = require("./ClassMgr");
                 noerrors = noerrors && this.__logAllErrors(this.__preprocessBP(def));
                 if (noerrors) {
                     this.__loadedBeans[bp] = def;
-                    ariaCoreClassMgr.notifyClassLoad(bp);
+                    return def;
                 } else {
-                    ariaCoreClassMgr.notifyClassLoadError(bp);
+                    throw new Error("Error while loading " + bp);
                 }
             },
 
@@ -700,11 +702,15 @@ var ariaCoreClassMgr = require("./ClassMgr");
                 var dep = [];
 
                 // load missing dependencies
+
+                // FIXME: find a way to restore the following block:
+                /*
                 if (this._options.checkBeans && !this.__loadedBeans[this._BEANS_SCHEMA_PACKAGE]
                         && bp != this._BEANS_SCHEMA_PACKAGE && bp != this._BASE_TYPES_PACKAGE) {
                     // if checking beans is required, add the corresponding schema for that
                     dep.push(this._BEANS_SCHEMA_PACKAGE);
                 }
+                */
 
                 // add $dependencies
                 var dependencies = def.$dependencies || [];
@@ -719,20 +725,17 @@ var ariaCoreClassMgr = require("./ClassMgr");
                     }
                 }
 
-                var dpMap = {
-                    "JS" : dep
-                };
-
-                var doLoad = ariaCoreClassMgr.loadClassDependencies(bp, dpMap, {
-                    fn : this.__loadBeans,
-                    scope : this,
-                    args : bp
+                return Aria.loadOldDependencies({
+                    classpaths : {
+                        "JS" : dep
+                    },
+                    oldModuleLoader : def.$oldModuleLoader,
+                    complete : {
+                        scope : this,
+                        fn : this.__loadBeans,
+                        args : [bp]
+                    }
                 });
-
-                // load definition
-                if (doLoad) {
-                    this.__loadBeans(bp);
-                }
             },
 
             /**
@@ -800,7 +803,7 @@ var ariaCoreClassMgr = require("./ClassMgr");
                     }, true);
                 } catch (e) {
                     // aria.core.Log may not be available
-                    var logs = (require("./Log"));
+                    var logs = aria.core.Log;
                     if (logs) {
                         var error, errors = e.errors;
                         for (var index = 0, l = errors.length; index < l; index++) {
@@ -829,3 +832,4 @@ var ariaCoreClassMgr = require("./ClassMgr");
         }
     });
 })();
+require('./JsonTypesCheck');

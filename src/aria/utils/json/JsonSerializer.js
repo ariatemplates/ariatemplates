@@ -13,7 +13,6 @@
  * limitations under the License.
  */
 var Aria = require("../../Aria");
-var ariaUtilsJson = require("../Json");
 
 /**
  * Utility to convert data to a JSON string
@@ -381,7 +380,7 @@ module.exports = Aria.classDefinition({
                             // to be compatible with JSON.stringify
                             res.push(' ');
                         }
-                        var newOptions = ariaUtilsJson.copy(options, true);
+                        var newOptions = require("../Json").copy(options, true);
                         newOptions.baseIndent = subIndent;
                         newOptions.maxDepth = options.maxDepth - 1;
                         output = this._serialize(item[key], newOptions);
@@ -420,7 +419,7 @@ module.exports = Aria.classDefinition({
              */
             __preserveObjectKey : function (key, options) {
                 if (!options.keepMetadata) {
-                    return !ariaUtilsJson.isMetadata(key);
+                    return !require("../Json").isMetadata(key);
                 }
                 return true;
             },
@@ -455,7 +454,7 @@ module.exports = Aria.classDefinition({
                         if (indent) {
                             res.push(subIndent);
                         }
-                        var newOptions = ariaUtilsJson.copy(options, true);
+                        var newOptions = require("../Json").copy(options, true);
                         newOptions.baseIndent = subIndent;
                         newOptions.maxDepth = options.maxDepth - 1;
                         output = this._serialize(item[i], newOptions);

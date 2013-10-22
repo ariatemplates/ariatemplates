@@ -30,8 +30,7 @@ Aria.classDefinition({
         },
 
         tearDown : function () {
-            // Delete the resource loaded
-            delete aria.core.ResMgr.loadedResources["test.aria.core.test.ExtResource"];
+            Aria.dispose("test.aria.core.test.ExtResource");
         },
 
         testAsyncGetResourceLocale : function () {

@@ -14,6 +14,7 @@
  */
 var Aria = require("../Aria");
 
+var atExtensions = [".js", ".tpl", ".tpl.css", ".tml", ".cml", ".tpl.txt"];
 /**
  * Cache object used to synchronize data retrieved from the server and avoid reloading the same resource several times
  * @singleton
@@ -23,7 +24,8 @@ module.exports = Aria.classDefinition({
     $singleton : true,
     $statics : {
         /**
-         * Map the content type to the file name extension.
+         * [Deprecated, do not use it anymore] Map the content type to the file name extension.
+         * @deprecated
          * @type Object
          */
         EXTENSION_MAP : {
@@ -34,7 +36,9 @@ module.exports = Aria.classDefinition({
             "CML" : ".cml",
             "TXT" : ".tpl.txt",
             "RES" : ".js"
-        }
+        },
+
+        DEPRECATED_METHOD : "%1 is deprecated."
     },
     $prototype : {
         /**
@@ -114,10 +118,24 @@ module.exports = Aria.classDefinition({
          * @return {String} logical path e.g x/y/MyClass.tpl
          */
         getFilename : function (classpath) {
-            var classContent = this.getItem("classes", classpath, false);
-
-            if (classContent) {
-                return classpath.replace(/\./g, "/") + this.EXTENSION_MAP[classContent.content];
+            this.$logWarn(this.DEPRECATED_METHOD, ["getFilename"]);
+            var basePath = Aria.getLogicalPath(classpath);
+            for (var i = 0, l = atExtensions.length; i < l; i++) {
+                try {
+                    var logicalPath = basePath + atExtensions[i];
+                    var cacheItem = require.cache[require.resolve(logicalPath)];
+                    if (cacheItem) {
+                        return logicalPath;
+                    }
+                } catch (e) {
+                    // require.resolve can throw an exception in node.js if the file does not exist
+                    // simply try other extensions in that case
+                }
+            }
+            // it may be the classpath of a resource (which would not appear in the require cache):
+            var resMgr = aria.core.ResMgr;
+            if (resMgr) {
+                return resMgr.getResourceLogicalPath(basePath);
             }
         }
 

@@ -1,12 +1,13 @@
 resources:
  '/':
-  - 'src'
+  - 'build/target/bootstrap'
  '/test':
   - 'test'
 tests:
  aria-templates:
+  bootstrap: '/aria/<%= env.name %>-<%= env.version %>.js'
   extraScripts:
-    - /aria/css/atskin.js
+    - /aria/css/atskin-<%= env.version %>.js
   classpaths:
    includes:
     - test.MainTestSuite
