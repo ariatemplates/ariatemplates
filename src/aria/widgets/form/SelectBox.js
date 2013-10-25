@@ -24,22 +24,25 @@ Aria.classDefinition({
     $statics : {
         DUPLICATE_VALUE : "%1 - Duplicate values %2 found in options"
     },
-       /**
-         * RadioButton constructor
-         * @param {aria.widgets.CfgBeans:SelectBoxCfg} cfg the widget configuration
-         * @param {aria.templates.TemplateCtxt} ctxt template context
-         * @param {Number} lineNumber Line number corresponding in the .tpl file where the widget is created
-         */
-     $constructor : function (cfg, ctxt, lineNumber) {
-        if (!this._skinnableClass) {
-            this._skinnableClass = "SelectBox";
-        }
-
+    /**
+     * RadioButton constructor
+     * @param {aria.widgets.CfgBeans:SelectBoxCfg} cfg the widget configuration
+     * @param {aria.templates.TemplateCtxt} ctxt template context
+     * @param {Number} lineNumber Line number corresponding in the .tpl file where the widget is created
+     */
+    $constructor : function (cfg, ctxt, lineNumber) {
         var controller = new aria.widgets.controllers.SelectBoxController();
         this.$DropDownTextInput.constructor.call(this, cfg, ctxt, lineNumber, controller);
         this.controller.setListOptions(this._cfg.options);
     },
     $prototype : {
+        /**
+         * Skinnable class to use for this widget.
+         * @protected
+         * @type String
+         */
+        _skinnableClass : "SelectBox",
+
         $init : function (p) {
             var src = aria.widgets.form.DropDownListTrait.prototype;
             for (var key in src) {

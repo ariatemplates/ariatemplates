@@ -18,58 +18,58 @@
     $extends : "aria.widgets.WidgetStyle"
 }}
     {var skinnableClassName="List"/}
-    
+
     {macro writeSkinClass(info)}
         {var skinClassName=info.skinClassName/}
         {var skinClass=info.skinClass/}
         /* List Widget classes */
-        
-        a.xLISTItem_${skinClassName},
-        a.xLISTItem_${skinClassName}:link,
-        a.xLISTItem_${skinClassName}:active,
-        a.xLISTItem_${skinClassName}:visited {
+
+        a.x${skinnableClassName}Item_${skinClassName},
+        a.x${skinnableClassName}Item_${skinClassName}:link,
+        a.x${skinnableClassName}Item_${skinClassName}:active,
+        a.x${skinnableClassName}TItem_${skinClassName}:visited {
             color: #000;
             text-decoration:none;
         }
-        
-        a.xLISTItem_${skinClassName} {
+
+        a.x${skinnableClassName}Item_${skinClassName} {
             display: block;
             padding:1px 1px 1px 2px;
             margin: 1px ${skinClass.link.marginRight}px 1px ${skinClass.link.marginLeft}px;
         }
-        
-        
-        .xLISTEnabledItem_${skinClassName} {
+
+
+        .x${skinnableClassName}EnabledItem_${skinClassName} {
             color:${skinClass.enabledColor};
             cursor:pointer;
         }
-        
-        .xLISTMouseOverItem_${skinClassName} {
+
+        .x${skinnableClassName}MouseOverItem_${skinClassName} {
             background-color:${skinClass.mouseOverBackgroundColor};
             color:${skinClass.mouseOverColor};
         }
-        
-        .xLISTEnabledItem_${skinClassName}:hover {
+
+        .x${skinnableClassName}EnabledItem_${skinClassName}:hover {
         {if skinClass.highlightMouseOver}
             background-color:${skinClass.mouseOverBackgroundColor};
             color: ${skinClass.mouseOverColor};
         {/if}
             text-decoration: none;
         }
-        
-        .xLISTSelectedItem_${skinClassName}, .xLISTSelectedItem_${skinClassName}:link, .xLISTSelectedItem_${skinClassName}:visited, .xLISTSelectedItem_${skinClassName}:active  {
+
+        .x${skinnableClassName}SelectedItem_${skinClassName}, .x${skinnableClassName}SelectedItem_${skinClassName}:link, .x${skinnableClassName}SelectedItem_${skinClassName}:visited, .x${skinnableClassName}SelectedItem_${skinClassName}:active  {
             background-color: ${skinClass.selectedItemBackgroundColor};
             color: ${skinClass.selectedItemColor};
         }
-        
-        .xLISTDisabledItem_${skinClassName},
-        a.xLISTDisabledItem_${skinClassName}:visited,
-        a.xLISTDisabledItem_${skinClassName}:hover,
-        a.xLISTDisabledItem_${skinClassName}:link {
+
+        .x${skinnableClassName}DisabledItem_${skinClassName},
+        a.x${skinnableClassName}DisabledItem_${skinClassName}:visited,
+        a.x${skinnableClassName}DisabledItem_${skinClassName}:hover,
+        a.x${skinnableClassName}DisabledItem_${skinClassName}:link {
             color:#888;
         }
-        
-        .xLISTFooter_${skinClassName} {
+
+        .x${skinnableClassName}Footer_${skinClassName} {
             padding:${skinClass.footer.padding}px;
             background-color: ${skinClass.footer.backgroundColor};
             border-color: ${skinClass.footer.borderColor};
@@ -78,5 +78,5 @@
             margin:    ${skinClass.footer.marginTop}px ${skinClass.footer.marginRight}px ${skinClass.footer.marginBottom}px ${skinClass.footer.marginLeft}px;
         }
     {/macro}
-    
+
 {/CSSTemplate}

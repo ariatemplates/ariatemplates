@@ -28,14 +28,14 @@ Aria.classDefinition({
      */
     $constructor : function (cfg, ctxt) {
         this.$Container.constructor.apply(this, arguments);
-        this._setSkinObj("TabPanel");
+        this._setSkinObj(this._skinnableClass);
 
         this._frame = aria.widgets.frames.FrameFactory.createFrame({
             height : cfg.height,
             state : "normal",
             width : cfg.width,
             sclass : cfg.sclass,
-            skinnableClass : "TabPanel",
+            skinnableClass : this._skinnableClass,
             printOptions : cfg.printOptions,
             block : cfg.block
         });
@@ -64,6 +64,12 @@ Aria.classDefinition({
         CONTAINER_USAGE_DEPRECATED : "%1The usage as a container {@aria:TabPanel}{/@aria:TabPanel} is deprecated; use the {@aria:TabPanel /} syntax instead."
     },
     $prototype : {
+        /**
+         * Skinnable class to use for this widget.
+         * @protected
+         * @type String
+         */
+        _skinnableClass : "TabPanel",
 
         /**
          * Called when a new instance is initialized

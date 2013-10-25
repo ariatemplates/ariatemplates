@@ -32,14 +32,6 @@ Aria.classDefinition({
      * @param {Number} lineNumber Line number corresponding in the .tpl file where the widget is created
      */
     $constructor : function (cfg, ctxt, lineNumber) {
-        if (!this._skinnableClass) {
-            /**
-             * Skinnable class to use for this widget.
-             * @protected
-             * @type String
-             */
-            this._skinnableClass = "Textarea";
-        }
         var controller = new aria.widgets.controllers.TextDataController();
         this.$TextInput.constructor.call(this, cfg, ctxt, lineNumber, controller);
         this._isTextarea = true;
@@ -49,6 +41,13 @@ Aria.classDefinition({
     },
 
     $prototype : {
+        /**
+         * Skinnable class to use for this widget.
+         * @protected
+         * @type String
+         */
+        _skinnableClass : "Textarea",
+
         _dom_onkeydown : function (event) {
 
             var maxlength = this.cfg.maxlength;

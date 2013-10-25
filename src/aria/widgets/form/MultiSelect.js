@@ -25,9 +25,6 @@ Aria.classDefinition({
     $css : ["aria.widgets.form.MultiSelectStyle", "aria.widgets.form.list.ListStyle",
             "aria.widgets.container.DivStyle", "aria.widgets.form.CheckBoxStyle"],
     $constructor : function (cfg, ctxt, lineNumber) {
-        if (!this._skinnableClass) {
-            this._skinnableClass = "MultiSelect";
-        }
         var controller = new aria.widgets.controllers.MultiSelectController();
 
         // The following line was added for PTR 04557432: if the value in cfg is not set to [] as a default, then the
@@ -89,6 +86,12 @@ Aria.classDefinition({
         this._dropDownList = null;
     },
     $prototype : {
+        /**
+         * Skinnable class to use for this widget.
+         * @protected
+         * @type String
+         */
+        _skinnableClass : "MultiSelect",
 
         /**
          * Callback called when the user clicks on a checkbox (or its label) on a dropdown list.

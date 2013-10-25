@@ -70,12 +70,12 @@ Aria.classDefinition({
 
             var floatVal = progCont.style.cssFloat || progCont.style.styleFloat;
             this.assertEquals(floatVal, "left");
-            this.assertEquals(progCont.className, "xGAUGE_std");
+            this.assertEquals(progCont.className, "xGauge_std");
 
             // test progress bar
             var progBar = progCont.childNodes[0];
             this.assertEquals(progBar.tagName, "DIV");
-            this.assertEquals(progBar.className, "xGAUGE_progress_std");
+            this.assertEquals(progBar.className, "xGauge_progress_std");
             this.assertEquals(progBar.style.width, "54%");
 
             this._destroyGauge(o);
@@ -174,12 +174,12 @@ Aria.classDefinition({
 
             floatVal = progCont.style.cssFloat || progCont.style.styleFloat;
             this.assertEquals(floatVal, "left");
-            this.assertEquals(progCont.className, "xGAUGE_std");
+            this.assertEquals(progCont.className, "xGauge_std");
 
             // test progress bar
             var progBar = progCont.childNodes[0];
             this.assertEquals(progBar.tagName, "DIV");
-            this.assertEquals(progBar.className, "xGAUGE_progress_std");
+            this.assertEquals(progBar.className, "xGauge_progress_std");
             this.assertEquals(progBar.style.width, "54%");
 
             this._destroyGauge(o);

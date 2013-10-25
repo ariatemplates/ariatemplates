@@ -31,7 +31,7 @@ Aria.classDefinition({
      */
     $constructor : function (cfg, ctxt) {
         this.$Container.constructor.apply(this, arguments);
-        this._skinObj = aria.widgets.AriaSkinInterface.getSkinObject("Dialog", cfg.sclass);
+        this._skinObj = aria.widgets.AriaSkinInterface.getSkinObject(this._skinnableClass, cfg.sclass);
 
         /**
          * Will contain the popup object.
@@ -142,6 +142,12 @@ Aria.classDefinition({
         MISSING_CONTENT_MACRO : "%1Missing 'macro' in Dialog configuration."
     },
     $prototype : {
+        /**
+         * Skinnable class to use for this widget.
+         * @protected
+         * @type String
+         */
+        _skinnableClass : "Dialog",
 
         /**
          * Manage the viewport resize event
@@ -261,8 +267,8 @@ Aria.classDefinition({
          */
         __writeTitlebarButton : function (out, delegateId, cssClassPostfix, skinIcon) {
             var cfg = this._cfg;
-            out.write(['<span class="xDialog_', cssClassPostfix, ' xDialog_', cfg.sclass, '_', cssClassPostfix, '" ',
-                    aria.utils.Delegate.getMarkup(delegateId), '>'].join(''));
+            out.write(['<span class="x', this._skinnableClass, '_', cssClassPostfix, ' x', this._skinnableClass, '_',
+                    cfg.sclass, '_', cssClassPostfix, '" ', aria.utils.Delegate.getMarkup(delegateId), '>'].join(''));
             var button = new aria.widgets.Icon({
                 icon : this._skinObj[skinIcon]
             }, this._context, this._lineNumber);
@@ -340,13 +346,14 @@ Aria.classDefinition({
             if (cfg.resizable && this._handlesArr) {
                 var handles = this._handlesArr;
                 for (var i = 0, ii = handles.length; i < ii; i++) {
-                    out.write(['<span class="xDialog_resizable xDialog_' + handles[i] + '">', '</span>'].join(''));
+                    out.write(['<span class="x', this._skinnableClass, '_resizable xDialog_' + handles[i] + '">',
+                            '</span>'].join(''));
                 }
             }
 
-            out.write(['<div class="xDialog_titleBar xDialog_', cfg.sclass, '_titleBar">'].join(''));
+            out.write(['<div class="xDialog_titleBar x', this._skinnableClass, '_', cfg.sclass, '_titleBar">'].join(''));
             if (cfg.icon) {
-                out.write(['<span class="xDialog_icon xDialog_', cfg.sclass, '_icon">'].join(''));
+                out.write(['<span class="xDialog_icon x', this._skinnableClass, '_', cfg.sclass, '_icon">'].join(''));
                 var icon = new aria.widgets.Icon({
                     icon : cfg.icon
                 }, this._context, this._lineNumber);
@@ -354,8 +361,8 @@ Aria.classDefinition({
                 icon.writeMarkup(out);
                 out.write('</span>');
             }
-            out.write(['<span class="xDialog_title xDialog_', cfg.sclass, '_title">',
-                    aria.utils.String.escapeHTML(cfg.title), '</span>'].join(''));
+            out.write(['<span class="x', this._skinnableClass, '_title x', this._skinnableClass, '_', cfg.sclass,
+                    '_title">', aria.utils.String.escapeHTML(cfg.title), '</span>'].join(''));
 
             // buttons are floated to the right, so close should be first in the markup
             if (cfg.closable) {

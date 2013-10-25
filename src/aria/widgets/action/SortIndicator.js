@@ -33,7 +33,7 @@ Aria.classDefinition({
     $constructor : function (cfg, ctxt, lineNumber) {
         this.$ActionWidget.constructor.apply(this, arguments);
 
-        this._setSkinObj("SortIndicator");
+        this._setSkinObj(this._skinnableClass);
         this._setInputType();
         this._setIconPrefix();
 
@@ -140,6 +140,13 @@ Aria.classDefinition({
          * @type Boolean
          */
         _customTabIndexProvided : true,
+
+        /**
+         * Skinnable class to use for this widget.
+         * @protected
+         * @type String
+         */
+        _skinnableClass : "SortIndicator",
 
         /**
          * Called when a new instance is initialized

@@ -286,6 +286,22 @@ Aria.classDefinition({
             }
 
             return rule.join("");
+        },
+
+        /**
+         * Returns if the given skinClass exists for the given widgetName.
+         * @param {String} widgetName name of the widget (in fact, the skinnable class, which may not correspond exactly
+         * to widgets)
+         * @param {String} skinClass
+         * @return {Boolean} indicator if the skinClass is defined and can be used
+         */
+        checkSkinClassExists : function (widgetName, skinClass) {
+
+            var skinClasses = this.getSkinClasses(widgetName);
+            if (skinClasses) {
+                return !!skinClasses[skinClass];
+            }
+            return false;
         }
     }
 });

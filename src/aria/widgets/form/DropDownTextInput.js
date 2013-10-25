@@ -28,9 +28,6 @@ Aria.classDefinition({
      * @param {aria.widgets.form.Textcontroller} controller the data controller object
      */
     $constructor : function (cfg, ctxt, lineNumber, controller) {
-        if (!this._skinnableClass) {
-            this._skinnableClass = "DropDownInput";
-        }
         this.$TextInput.constructor.call(this, cfg, ctxt, lineNumber, controller);
     },
     $destructor : function () {
@@ -38,6 +35,13 @@ Aria.classDefinition({
         this.$TextInput.$destructor.call(this);
     },
     $prototype : {
+        /**
+         * Skinnable class to use for this widget.
+         * @protected
+         * @type String
+         */
+        _skinnableClass : "DropDownInput",
+
         /**
          * Prototype init method called at prototype creation time Allows to store class-level objects that are shared
          * by all instances

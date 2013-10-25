@@ -68,7 +68,7 @@ Aria.classDefinition({
 
         _afterTimer : function () {
             this.dropdown = this.getWidgetDropDownPopup("myId");
-            this.options = this.getElementsByClassName(this.dropdown, "xLISTEnabledItem_dropdown");
+            this.options = this.getElementsByClassName(this.dropdown, "xListEnabledItem_dropdown");
 
             var opts = {};
             opts.to = this.cont == 1 ? this.options[0] : this.options[1];

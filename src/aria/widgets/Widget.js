@@ -20,8 +20,7 @@ Aria.classDefinition({
     $classpath : "aria.widgets.Widget",
     $extends : "aria.widgetLibs.BindableWidget",
     $dependencies : ["aria.widgets.CfgBeans", "aria.utils.Json", "aria.utils.Dom", "aria.DomEvent",
-            "aria.utils.Delegate", "aria.widgets.AriaSkinInterface", "aria.utils.Type",
-            "aria.templates.RefreshManager"],
+            "aria.utils.Delegate", "aria.widgets.AriaSkinInterface", "aria.utils.Type", "aria.templates.RefreshManager"],
     $css : ["aria.widgets.GlobalStyle"],
     $onload : function () {
         // check for skin existency
@@ -115,6 +114,13 @@ Aria.classDefinition({
 
         this._cfgOk = aria.core.JsonValidator.validateCfg(this._cfgBean || this._cfgPackage + "." + this.$class + "Cfg", cfg);
 
+        // Check if the defined skinClass exists for this widget, if not set it to 'std'
+        if (this._skinnableClass) {
+            if (!aria.widgets.AriaSkinInterface.checkSkinClassExists(this._skinnableClass, cfg.sclass)) {
+                cfg.sclass = 'std';
+            }
+        }
+
         var bindings = cfg.bind;
         if (bindings) {
             this._initBindings(bindings);
@@ -181,6 +187,13 @@ Aria.classDefinition({
          * @type Boolean
          */
         _directInit : false,
+
+        /**
+         * Skinnable class to use for this widget.
+         * @protected
+         * @type String
+         */
+        _skinnableClass : null,
 
         /**
          * Initialize the binding description.
@@ -283,9 +296,9 @@ Aria.classDefinition({
         },
 
         /**
-         * Return the id of the widget, if it should be referenced from the template scripts or other widgets.
-         * Called by the section when registering the widget (out.registerBehavior). This id is checked for unicity
-         * in aria.templates.Section.
+         * Return the id of the widget, if it should be referenced from the template scripts or other widgets. Called by
+         * the section when registering the widget (out.registerBehavior). This id is checked for unicity in
+         * aria.templates.Section.
          * @return {String} id of the widget, as specified in the config
          */
         getId : function () {
@@ -408,10 +421,10 @@ Aria.classDefinition({
         _widgetMarkupEnd : function (out) {},
 
         /**
-         * Internal function called before markup generation to check the widget configuration consistency (e.g.
-         * make sure that the label width is less than the widget width, etc..) When called the cfg structure has
-         * already been normalized from its bean definition Note: this method must be overridden if extra-checks
-         * have to be made in sub-widgets
+         * Internal function called before markup generation to check the widget configuration consistency (e.g. make
+         * sure that the label width is less than the widget width, etc..) When called the cfg structure has already
+         * been normalized from its bean definition Note: this method must be overridden if extra-checks have to be made
+         * in sub-widgets
          * @protected
          * @param {aria.widgets.CfgBeans:WidgetCfg} cfg
          */
@@ -505,13 +518,13 @@ Aria.classDefinition({
         _init : function () {},
 
         /**
-         * Set and propagate bindable property changes in JSON data if applicable. This method must be called
-         * internally by widgets when one of their property changes (e.g. field value for a TextField)
+         * Set and propagate bindable property changes in JSON data if applicable. This method must be called internally
+         * by widgets when one of their property changes (e.g. field value for a TextField)
          * @param {String} propertyName
          * @param {MultiTypes} newValue If transformation is used, this should be the widget value and not the data
          * model value
-         * @return {Object} null if the property did not change or if no binding is defined (there is no way to get
-         * the previous value) or an {oldValue:'',newValue:''} object if property changed
+         * @return {Object} null if the property did not change or if no binding is defined (there is no way to get the
+         * previous value) or an {oldValue:'',newValue:''} object if property changed
          */
         setProperty : function (propertyName, newValue) {
 
@@ -567,11 +580,10 @@ Aria.classDefinition({
         },
 
         /**
-         * Set the property in the JSON model and reflect the change in the widget (setProperty() only changes the
-         * value in the JSON model)
+         * Set the property in the JSON model and reflect the change in the widget (setProperty() only changes the value
+         * in the JSON model)
          * @param {String} propertyName
-         * @param {Object} newValue. Refers to the widget value and not the data model value (transformers may
-         * apply)
+         * @param {Object} newValue. Refers to the widget value and not the data model value (transformers may apply)
          */
         changeProperty : function (propertyName, newValue) {
             if (!this._cfg) {
@@ -657,10 +669,10 @@ Aria.classDefinition({
          * overridden by sub-classes defining bindable properties
          * @protected
          * @param {String} propertyName the property name
-         * @param {Object} newValue the new value. If transformation is used, refers to widget value and not data
-         * model value.
-         * @param {Object} oldValue the old property value. If transformation is used, refers to widget value and
-         * not data model value.
+         * @param {Object} newValue the new value. If transformation is used, refers to widget value and not data model
+         * value.
+         * @param {Object} oldValue the old property value. If transformation is used, refers to widget value and not
+         * data model value.
          */
         _onBoundPropertyChange : function (propertyName, newValue, oldValue) {
             var domElt = this.getDom();

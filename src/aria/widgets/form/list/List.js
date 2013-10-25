@@ -22,19 +22,18 @@ Aria.classDefinition({
     $dependencies : ["aria.utils.Json", "aria.widgets.form.list.ListController"],
     $css : ["aria.widgets.form.list.ListStyle"],
     $constructor : function (cfg, ctxt) {
-
-        if (!cfg) {
-            cfg = {};
-        }
         this.$TemplateBasedWidget.constructor.apply(this, arguments);
-        var realSkinObj = aria.widgets.AriaSkinInterface.getSkinObject("List", cfg.sclass);
+        if (!this._cfg) {
+            this._cfg = {};
+        }
+        var realSkinObj = aria.widgets.AriaSkinInterface.getSkinObject(this._skinnableClass, this._cfg.sclass);
         var skinObj = aria.utils.Json.copy(realSkinObj, false);
-        skinObj.cssClassItem = "xLISTItem_" + cfg.sclass;
-        skinObj.cssClassEnabled = "xLISTEnabledItem_" + cfg.sclass;
-        skinObj.cssClassSelected = "xLISTSelectedItem_" + cfg.sclass;
-        skinObj.cssClassDisabled = "xLISTDisabledItem_" + cfg.sclass;
-        skinObj.cssClassMouseover = "xLISTMouseOverItem_" + cfg.sclass;
-        skinObj.cssClassFooter = "xLISTFooter_" + cfg.sclass;
+        skinObj.cssClassItem = "x" + this._skinnableClass + "Item_" + this._cfg.sclass;
+        skinObj.cssClassEnabled = "x" + this._skinnableClass + "EnabledItem_" + this._cfg.sclass;
+        skinObj.cssClassSelected = "x" + this._skinnableClass + "SelectedItem_" + this._cfg.sclass;
+        skinObj.cssClassDisabled = "x" + this._skinnableClass + "DisabledItem_" + this._cfg.sclass;
+        skinObj.cssClassMouseover = "x" + this._skinnableClass + "MouseOverItem_" + this._cfg.sclass;
+        skinObj.cssClassFooter = "x" + this._skinnableClass + "Footer_" + this._cfg.sclass;
         var divCfg = aria.utils.Json.copy(cfg, true, ["width", "minWidth", "maxWidth", "height", "minHeight",
                 "maxHeight", "scrollBarX", "scrollBarY"]);
         divCfg.sclass = skinObj.divsclass;
@@ -69,6 +68,13 @@ Aria.classDefinition({
         });
     },
     $prototype : {
+        /**
+         * Skinnable class to use for this widget.
+         * @type String
+         * @protected
+         */
+        _skinnableClass : "List",
+
         /**
          * Return true to cancel default action.
          * @param {Number} charCode Character code
