@@ -27,7 +27,7 @@ Aria.classDefinition({
     $constructor : function (cfg, ctxt) {
         this.$TemplateBasedWidget.constructor.apply(this, arguments);
         var sclass = this._cfg.sclass;
-        var skinObj = aria.widgets.AriaSkinInterface.getSkinObject("Calendar", sclass);
+        var skinObj = aria.widgets.AriaSkinInterface.getSkinObject(this._skinnableClass, sclass);
         this._hasFocus = false;
         this._initTemplate({
             defaultTemplate : skinObj.defaultTemplate,
@@ -63,6 +63,12 @@ Aria.classDefinition({
     },
 
     $prototype : {
+        /**
+         * Skinnable class to use for this widget.
+         * @protected
+         * @type String
+         */
+        _skinnableClass : "Calendar",
 
         /**
          * React to the events coming from the module controller.

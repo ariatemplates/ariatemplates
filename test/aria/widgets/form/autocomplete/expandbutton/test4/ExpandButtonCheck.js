@@ -114,7 +114,7 @@ Aria.classDefinition({
 
         _afterSelect2 : function () {
             var dropdownPopup = this.getWidgetInstance("ac1")._dropdownPopup;
-            var selectedElt = this.getElementsByClassName(dropdownPopup.domElement, "xLISTSelectedItem_dropdown")[0];
+            var selectedElt = this.getElementsByClassName(dropdownPopup.domElement, "xListSelectedItem_dropdown")[0];
 
             this.assertTrue(selectedElt.innerHTML.match(/<strong>Finnair<\/strong>/gi).length == 1, "The value of the selected element is " + selectedElt.innerHTML + ", but it should be \n<strong>Finnair</strong>\n");
 

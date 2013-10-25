@@ -29,8 +29,7 @@ Aria.classDefinition({
      */
     $constructor : function (cfg, ctxt) {
         this.$Widget.constructor.apply(this, arguments);
-        this._cfg = cfg;
-        this.__setSkinObj("Gauge");
+        this.__setSkinObj(this._skinnableClass);
         // Show the label either if it has fixed width (for alignment) or if there's something to show
         this.showLabel = this._cfg.labelWidth > -1 || !!this._cfg.label;
     },
@@ -41,6 +40,13 @@ Aria.classDefinition({
         WIDGET_GAUGE_CFG_MIN_EQUAL_GREATER_MAX : "%1Gauge configuration error: minValue must be lower than maxValue."
     },
     $prototype : {
+        /**
+         * Skinnable class to use for this widget.
+         * @protected
+         * @type String
+         */
+        _skinnableClass : "Gauge",
+
         /**
          * Internal function to generate the internal widget markup
          * @param {aria.templates.MarkupWriter} out
@@ -61,7 +67,7 @@ Aria.classDefinition({
 
             var barWidth = this.__calculateBarWidth(this._cfg.currentValue);
 
-            out.write(['<div class="xGAUGE_progress_', this._cfg.sclass, '" style="width:',
+            out.write(['<div class="x', this._skinnableClass, '_progress_', this._cfg.sclass, '" style="width:',
                     (barWidth >= 0 ? barWidth : "0"), '%;height:100%"></div>'].join(""));
 
             this._widgetMarkupEnd(out);
@@ -76,7 +82,7 @@ Aria.classDefinition({
          */
         _widgetMarkupBegin : function (out) {
             var skinObj = this._skinObj, cfg = this._cfg;
-            out.write(['<div class="xGAUGE_', cfg.sclass, '" style="float:left;position:relative',
+            out.write(['<div class="x', this._skinnableClass ,'_' , cfg.sclass, '" style="float:left;position:relative',
                     skinObj.border ? ';border:' + skinObj.border : '',
                     skinObj.borderPadding ? ';padding:' + skinObj.borderPadding + 'px' : '', ';height:',
                     skinObj.sprHeight, 'px;width:', cfg.gaugeWidth, 'px;">'].join(""));

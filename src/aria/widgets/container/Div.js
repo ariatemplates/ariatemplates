@@ -33,7 +33,7 @@ Aria.classDefinition({
         if (!this._frame) {
             /* this._frame could be overriden in sub-classes */
             this._frame = aria.widgets.frames.FrameFactory.createFrame({
-                skinnableClass : "Div",
+                skinnableClass : this._skinnableClass,
                 sclass : cfg.sclass,
                 state : "normal",
                 width : cfg.width,
@@ -58,6 +58,12 @@ Aria.classDefinition({
         this.$Container.$destructor.call(this);
     },
     $prototype : {
+        /**
+         * Skinnable class to use for this widget.
+         * @protected
+         * @type String
+         */
+        _skinnableClass : "Div",
 
         /**
          * A method called when we initialize the object.

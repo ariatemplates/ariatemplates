@@ -43,6 +43,13 @@ Aria.classDefinition({
     },
     $prototype : {
         /**
+         * Skinnable class to use for this widget.
+         * @protected
+         * @type String
+         */
+        _skinnableClass : "Link",
+
+        /**
          * Generate the internal widget markup
          * @param {aria.templates.MarkupWriter} out Markup Writer
          * @protected

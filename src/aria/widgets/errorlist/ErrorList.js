@@ -33,7 +33,7 @@ Aria.classDefinition({
     },
     $constructor : function (cfg, ctxt) {
         this.$TemplateBasedWidget.constructor.apply(this, arguments);
-        var skinObj = aria.widgets.AriaSkinInterface.getSkinObject("ErrorList", this._cfg.sclass);
+        var skinObj = aria.widgets.AriaSkinInterface.getSkinObject(this._skinnableClass, this._cfg.sclass);
         var divCfg = aria.utils.Json.copy(cfg, true, ['width', 'minWidth', 'maxWidth', 'height', 'minHeight', 'block',
                 'maxHeight']);
         divCfg.sclass = skinObj.divsclass;
@@ -58,6 +58,13 @@ Aria.classDefinition({
         this.$TemplateBasedWidget.$destructor.call(this);
     },
     $prototype : {
+        /**
+         * Skinnable class to use for this widget.
+         * @type String
+         * @protected
+         */
+        _skinnableClass : "ErrorList",
+
         _onBoundPropertyChange : function (propertyName, newValue, oldValue) {
             this._inOnBoundPropertyChange = true;
             try {

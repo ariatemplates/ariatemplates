@@ -31,15 +31,6 @@ Aria.classDefinition({
      * @param {Number} controller the data controller object
      */
     $constructor : function (cfg, ctxt, lineNumber, controller) {
-        if (!this._skinnableClass) {
-            /**
-             * Skinnable class to use for this widget.
-             * @protected
-             * @type String
-             */
-            this._skinnableClass = "AutoComplete";
-        }
-
         var controller = new aria.widgets.controllers.AutoCompleteController();
 
         if (!cfg.expandButton && cfg.bind) {
@@ -90,6 +81,13 @@ Aria.classDefinition({
         WIDGET_AUTOCOMPLETE_INVALID_HANDLER : "%1Could not create resources handler %2: dependency on this handler is missing."
     },
     $prototype : {
+        /**
+         * Skinnable class to use for this widget.
+         * @protected
+         * @type String
+         */
+        _skinnableClass : "AutoComplete",
+
         /**
          * Prototype init method called at prototype creation time Allows to store class-level objects that are shared
          * by all instances
