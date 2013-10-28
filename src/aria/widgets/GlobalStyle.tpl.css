@@ -36,6 +36,10 @@
     background-color: ${general.overlay.backgroundColor};
     {call opacity(general.overlay.opacity)/}
     border: ${general.overlay.border};
+    border-top-right-radius: ${general.overlay.borderTopRightRadius}px;
+    border-top-left-radius: ${general.overlay.borderTopLeftRadius}px;
+    border-bottom-right-radius: ${general.overlay.borderBottomRightRadius}px;
+    border-bottom-left-radius: ${general.overlay.borderBottomLeftRadius}px;
 }
 
 /*AT Widget wrapper DOMElm */
