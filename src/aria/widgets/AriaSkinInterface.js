@@ -157,7 +157,9 @@ Aria.classDefinition({
                     "cssClass" : "xICN" + sprite,
                     "spriteURL" : curSprite.spriteURL,
                     "width" : curSprite.iconWidth,
-                    "height" : curSprite.iconHeight
+                    "height" : curSprite.iconHeight,
+                    "borderLeft" : curSprite.borderLeft,
+                    "borderRight" : curSprite.borderRight
                 };
             }
             return false;
@@ -270,7 +272,7 @@ Aria.classDefinition({
             var gifUrl = "";
 
             if (imageurl) {
-                var imageFullUrl = this.getSkinImageFullUrl(imageurl);
+                var imageFullUrl = /^(data|https?):/i.test(imageurl) ? imageurl : this.getSkinImageFullUrl(imageurl);
                 fullUrl = "url(" + imageFullUrl + ") ";
 
                 if (aria.utils.String.endsWith(imageurl, ".png")) {
