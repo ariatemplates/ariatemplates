@@ -24,7 +24,6 @@
         .xSelect {
             display:inline-block;
             white-space:nowrap;
-            overflow:hidden;
         }
         {call startLooping()/}
     {/macro}
