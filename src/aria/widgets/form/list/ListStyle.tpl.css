@@ -49,7 +49,7 @@
             color:${skinClass.mouseOverColor};
         }
         
-        .xLISTEnabledItem_${skinClassName}:hover {
+        .xLISTEnabledItem_${skinClassName}:hover, a.xLISTEnabledItem_${skinClassName}:hover {
         {if skinClass.highlightMouseOver}
             background-color:${skinClass.mouseOverBackgroundColor};
             color: ${skinClass.mouseOverColor};
@@ -57,7 +57,7 @@
             text-decoration: none;
         }
         
-        .xLISTSelectedItem_${skinClassName}, .xLISTSelectedItem_${skinClassName}:link, .xLISTSelectedItem_${skinClassName}:visited, .xLISTSelectedItem_${skinClassName}:active  {
+        .xLISTSelectedItem_${skinClassName}, .xLISTSelectedItem_${skinClassName}:link, .xLISTSelectedItem_${skinClassName}:visited, .xLISTSelectedItem_${skinClassName}:active, a.xLISTSelectedItem_${skinClassName}, a.xLISTSelectedItem_${skinClassName}:link, a.xLISTSelectedItem_${skinClassName}:visited, a.xLISTSelectedItem_${skinClassName}:active  {
             background-color: ${skinClass.selectedItemBackgroundColor};
             color: ${skinClass.selectedItemColor};
         }
