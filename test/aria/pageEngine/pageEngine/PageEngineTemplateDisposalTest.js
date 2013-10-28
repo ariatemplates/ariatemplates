@@ -35,7 +35,6 @@ Aria.classDefinition({
         },
 
         _onPageEngineStarted : function (args) {
-
             this._testInstanceCount("MainLayout", 1, 0);
             this._testInstanceCount("Body", 1, 0);
             this._testInstanceCount("Template1", 1, 0);
@@ -64,7 +63,7 @@ Aria.classDefinition({
             this._testInstanceCount("Template5", 0, 0);
             this._testInstanceCount("Template6", 0, 0);
 
-            //Issue722
+            // Issue722
             this._headChildCount = this._testWindow.document.getElementsByTagName("head")[0].childElementCount;
 
             this.pageEngine.navigate({
@@ -85,7 +84,7 @@ Aria.classDefinition({
             this._testInstanceCount("Template5", 1, 0);
             this._testInstanceCount("Template6", 1, 0);
 
-            //Issue722
+            // Issue722
             this.assertEquals(this._testWindow.document.getElementsByTagName("head")[0].childElementCount, this._headChildCount);
 
             this.pageEngine.navigate({
@@ -106,7 +105,28 @@ Aria.classDefinition({
             this._testInstanceCount("Template5", 1, 1);
             this._testInstanceCount("Template6", 1, 1);
 
-            //Issue722
+            // Issue722
+            this.assertEquals(this._testWindow.document.getElementsByTagName("head")[0].childElementCount, this._headChildCount);
+
+            this.pageEngine.navigate({
+                pageId : "ddd"
+            }, {
+                fn : this._afterFifthPageReady,
+                scope : this
+            });
+        },
+
+        _afterFifthPageReady : function () {
+            this._testInstanceCount("MainLayout", 5, 4);
+            this._testInstanceCount("Body", 5, 4);
+            this._testInstanceCount("Template1", 1, 1);
+            this._testInstanceCount("Template2", 1, 1);
+            this._testInstanceCount("Template3", 2, 2);
+            this._testInstanceCount("Template4", 2, 2);
+            this._testInstanceCount("Template5", 2, 1);
+            this._testInstanceCount("Template6", 2, 1);
+
+            // Issue722
             this.assertEquals(this._testWindow.document.getElementsByTagName("head")[0].childElementCount, this._headChildCount);
 
             aria.core.Timer.addCallback({
@@ -131,14 +151,14 @@ Aria.classDefinition({
 
         end : function () {
             this._disposePageEngine();
-            this._testInstanceCount("MainLayout", 4, 4);
-            this._testInstanceCount("Body", 4, 4);
+            this._testInstanceCount("MainLayout", 5, 5);
+            this._testInstanceCount("Body", 5, 5);
             this._testInstanceCount("Template1", 1, 1);
             this._testInstanceCount("Template2", 1, 1);
             this._testInstanceCount("Template3", 2, 2);
             this._testInstanceCount("Template4", 2, 2);
-            this._testInstanceCount("Template5", 1, 1);
-            this._testInstanceCount("Template6", 1, 1);
+            this._testInstanceCount("Template5", 2, 2);
+            this._testInstanceCount("Template6", 2, 2);
 
             this.$PageEngineBaseTestCase.end.call(this);
         },
