@@ -599,6 +599,9 @@ Aria.beanDefinitions({
             $properties : {
                 "color" : {
                     $type : "Color"
+                },
+                "textDecoration" :  {
+                    $type : "json:String"
                 }
 
             }
