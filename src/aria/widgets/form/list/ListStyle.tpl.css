@@ -49,7 +49,8 @@
             color:${skinClass.mouseOverColor};
         }
 
-        .x${skinnableClassName}EnabledItem_${skinClassName}:hover {
+        .x${skinnableClassName}EnabledItem_${skinClassName}:hover,
+        a.x${skinnableClassName}EnabledItem_${skinClassName}:hover {
         {if skinClass.highlightMouseOver}
             background-color:${skinClass.mouseOverBackgroundColor};
             color: ${skinClass.mouseOverColor};
@@ -57,7 +58,14 @@
             text-decoration: none;
         }
 
-        .x${skinnableClassName}SelectedItem_${skinClassName}, .x${skinnableClassName}SelectedItem_${skinClassName}:link, .x${skinnableClassName}SelectedItem_${skinClassName}:visited, .x${skinnableClassName}SelectedItem_${skinClassName}:active  {
+        .x${skinnableClassName}SelectedItem_${skinClassName},
+        .x${skinnableClassName}SelectedItem_${skinClassName}:link,
+        .x${skinnableClassName}SelectedItem_${skinClassName}:visited,
+        .x${skinnableClassName}SelectedItem_${skinClassName}:active,
+        a.x${skinnableClassName}SelectedItem_${skinClassName},
+        a.x${skinnableClassName}SelectedItem_${skinClassName}:link,
+        a.x${skinnableClassName}SelectedItem_${skinClassName}:visited,
+        a.x${skinnableClassName}SelectedItem_${skinClassName}:active  {
             background-color: ${skinClass.selectedItemBackgroundColor};
             color: ${skinClass.selectedItemColor};
         }
