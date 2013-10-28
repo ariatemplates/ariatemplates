@@ -27,6 +27,9 @@
         
         a${pseudoclass}.xLink_${info.skinClassName} {
             color:${info.state.color};
+            {if info.state.textDecoration}
+                text-decoration:${info.state.textDecoration};
+            {/if}
         }
     {/macro}
     
