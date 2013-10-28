@@ -37,7 +37,7 @@
             text-decoration: underline;
         }
         table.xCalendar_${skinClassName}_month {
-            font-size: 10px;
+            font-size:${skinClass.fontSize}px;
             text-align: center;
             border: 0px none;
             border-collapse:separate;
@@ -53,6 +53,7 @@
             background-color:${skinClass.monthTitleBackgroundColor};
             padding-top:${skinClass.monthTitlePaddingTop};
             padding-bottom:${skinClass.monthTitlePaddingBottom};
+            font-size:${skinClass.monthTitleFontSize}px;
         }
         .xCalendar_${skinClassName}_day {
             {if skinClass.dayBorderColor}
@@ -96,10 +97,29 @@
             width: 13px;
             padding:${skinClass.weekDaysLabelPadding};
         }
-        .xCalendar_${skinClassName}_selected,.xCalendar_${skinClassName}_mouseOver {
+        .xCalendar_${skinClassName}_selected {
             background-color:${skinClass.selectedBackgroundColor};
             border: 1px solid ${skinClass.selectedBorderColor};
             color:${skinClass.selectedColor};
+        }
+        .xCalendar_${skinClassName}_mouseOver {
+            {if skinClass.mouseOverBackgroundColor}
+                background-color:${skinClass.mouseOverBackgroundColor};
+            {else/}
+                background-color:${skinClass.selectedBackgroundColor};
+            {/if}
+
+            {if skinClass.mouseOverBorderColor}
+                border: 1px solid ${skinClass.mouseOverBorderColor};
+            {else/}
+                border: 1px solid ${skinClass.selectedBorderColor};
+            {/if}
+
+            {if skinClass.mouseOverColor}
+                color:${skinClass.mouseOverColor};
+            {else/}
+                color:${skinClass.selectedColor};
+            {/if}
         }
     {/macro}
 {/CSSTemplate}
