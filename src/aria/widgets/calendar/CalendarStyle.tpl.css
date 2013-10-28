@@ -22,7 +22,7 @@
     {macro writeSkinClass(info)}
         /* Calendar classes. Should only be used in the calendar templates. */
         {var skinClassName=info.skinClassName/}
-        {var skinClass=info.skinClass/} 
+        {var skinClass=info.skinClass/}
         {var general=aria.widgets.AriaSkinInterface.getGeneral()/}
         .xCalendar_${skinClassName}_general {
             {if skinClass.generalBackgroundColor}
@@ -37,7 +37,7 @@
             text-decoration: underline;
         }
         table.xCalendar_${skinClassName}_month {
-            font-size: 10px;
+            font-size:${skinClass.fontSize}px;
             text-align: center;
             border: 0px none;
             border-collapse:separate;
@@ -53,6 +53,9 @@
             background-color:${skinClass.monthTitleBackgroundColor};
             padding-top:${skinClass.monthTitlePaddingTop};
             padding-bottom:${skinClass.monthTitlePaddingBottom};
+            {if skinClass.monthTitleFontSize}
+                font-size:${skinClass.monthTitleFontSize}px;
+            {/if}
         }
         .xCalendar_${skinClassName}_day {
             {if skinClass.dayBorderColor}
@@ -96,10 +99,15 @@
             width: 13px;
             padding:${skinClass.weekDaysLabelPadding};
         }
-        .xCalendar_${skinClassName}_selected,.xCalendar_${skinClassName}_mouseOver {
+        .xCalendar_${skinClassName}_selected {
             background-color:${skinClass.selectedBackgroundColor};
             border: 1px solid ${skinClass.selectedBorderColor};
             color:${skinClass.selectedColor};
+        }
+        .xCalendar_${skinClassName}_mouseOver {
+            background-color:${skinClass.mouseOverBackgroundColor ? skinClass.mouseOverBackgroundColor : skinClass.selectedBackgroundColor};
+            border: 1px solid ${skinClass.mouseOverBorderColor ? skinClass.mouseOverBorderColor : skinClass.selectedBorderColor};
+            color:${skinClass.mouseOverColor ? skinClass.mouseOverColor : skinClass.selectedColor};
         }
     {/macro}
 {/CSSTemplate}
