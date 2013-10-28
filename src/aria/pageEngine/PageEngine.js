@@ -543,12 +543,13 @@ Aria.classDefinition({
 
             var cfgTemplate = {
                 classpath : cfg.template,
-                div : pageConfig.animation === null ? (this._activeDiv === 0 ? this._firstDiv : this._secondDiv) : this._getContainer(false),
+                div : this._getContainer(!pageConfig.animation),
                 moduleCtrl : this._rootModule
             };
 
             this._modulesInPage = [];
-            if (!this._animationsManager && this._isTemplateLoaded) {
+            // if the div does not change, let's dispose the previous template first
+            if (cfgTemplate.div == this._getContainer() && this._isTemplateLoaded) {
                 Aria.disposeTemplate(this._getContainer());
             }
             Aria.loadTemplate(cfgTemplate, {
