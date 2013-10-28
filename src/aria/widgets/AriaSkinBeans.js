@@ -619,6 +619,22 @@ Aria.beanDefinitions({
                     $type : "json:String",
                     $description : ""
                 },
+                "borderTopLeftRadius" : {
+                    $type : "json:Integer",
+                    $default : 0
+                },
+                "borderTopRightRadius" : {
+                    $type : "json:Integer",
+                    $default : 0
+                },
+                "borderBottomLeftRadius" : {
+                    $type : "json:Integer",
+                    $default : 0
+                },
+                "borderBottomRightRadius" : {
+                    $type : "json:Integer",
+                    $default : 0
+                },
                 "borderPadding" : {
                     $type : "Pixels"
                 },
@@ -628,6 +644,36 @@ Aria.beanDefinitions({
                 },
                 "labelFontSize" : {
                     $type : "Pixels"
+                },
+                "container" : {
+                    $type : "Object",
+                    $description : "",
+                    $properties : {
+                        "backgroundColor" : {
+                            $type : "Color",
+                            $default : "#F7F7F7"
+                        },
+                        "borderTopLeftRadius" : {
+                            $type : "json:Integer",
+                            $default : 0
+                        },
+                        "borderTopRightRadius" : {
+                            $type : "json:Integer",
+                            $default : 0
+                        },
+                        "borderBottomLeftRadius" : {
+                            $type : "json:Integer",
+                            $default : 0
+                        },
+                        "borderBottomRightRadius" : {
+                            $type : "json:Integer",
+                            $default : 0
+                        },
+                        "boxShadow" : {
+                            $type : "json:String",
+                            $default : ""
+                        }
+                    }
                 }
             }
         },
