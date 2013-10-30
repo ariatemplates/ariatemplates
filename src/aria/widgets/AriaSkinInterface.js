@@ -157,7 +157,9 @@ Aria.classDefinition({
                     "cssClass" : "xICN" + sprite,
                     "spriteURL" : curSprite.spriteURL,
                     "width" : curSprite.iconWidth,
-                    "height" : curSprite.iconHeight
+                    "height" : curSprite.iconHeight,
+                    "borderLeft" : curSprite.borderLeft,
+                    "borderRight" : curSprite.borderRight
                 };
             }
             return false;
