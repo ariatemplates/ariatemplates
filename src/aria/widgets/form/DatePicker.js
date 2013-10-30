@@ -24,9 +24,6 @@ Aria.classDefinition({
     $css : ["aria.widgets.form.DatePickerStyle", "aria.widgets.calendar.CalendarStyle",
             "aria.widgets.container.DivStyle"],
     $constructor : function (cfg, ctxt, lineNumber) {
-        if (!this._skinnableClass) {
-            this._skinnableClass = "DatePicker";
-        }
         var controller = new aria.widgets.controllers.DatePickerController();
         this.$DropDownTextInput.constructor.call(this, cfg, ctxt, lineNumber, controller);
         controller.setPattern(cfg.pattern);
@@ -50,6 +47,12 @@ Aria.classDefinition({
         this.$DropDownTextInput.$destructor.call(this);
     },
     $prototype : {
+        /**
+         * Skinnable class to use for this widget.
+         * @protected
+         * @type String
+         */
+         _skinnableClass : "DatePicker",
 
         /**
          * Handle events raised by the frame

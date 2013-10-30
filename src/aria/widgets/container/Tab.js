@@ -28,7 +28,7 @@ Aria.classDefinition({
      */
     $constructor : function (cfg, ctxt) {
         this.$Container.constructor.apply(this, arguments);
-        this._setSkinObj("Tab");
+        this._setSkinObj(this._skinnableClass);
 
         /**
          * Whether the mouse is over the Tab or not
@@ -56,7 +56,7 @@ Aria.classDefinition({
             state : this._state,
             width : cfg.width,
             sclass : cfg.sclass,
-            skinnableClass : "Tab",
+            skinnableClass : this._skinnableClass,
             printOptions : cfg.printOptions,
             id : Aria.testMode ? this._domId + "_" + cfg.tabId : undefined
         });
@@ -79,6 +79,12 @@ Aria.classDefinition({
         this.$Container.$destructor.call(this);
     },
     $prototype : {
+        /**
+         * Skinnable class to use for this widget.
+         * @protected
+         * @type String
+         */
+        _skinnableClass : "Tab",
 
         /**
          * Called when a new instance is initialized

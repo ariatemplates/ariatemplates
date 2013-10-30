@@ -115,6 +115,13 @@ Aria.classDefinition({
 
         this._cfgOk = aria.core.JsonValidator.validateCfg(this._cfgBean || this._cfgPackage + "." + this.$class + "Cfg", cfg);
 
+        //Check if the defined skinClass exists for this widget, if not set it to 'std'
+        if(this._skinnableClass) {
+            if(!aria.widgets.AriaSkinInterface.checkSkinClassExists(this._skinnableClass, cfg.sclass)) {
+                cfg.sclass = 'std';
+            }
+        }
+
         var bindings = cfg.bind;
         if (bindings) {
             this._initBindings(bindings);
@@ -181,6 +188,13 @@ Aria.classDefinition({
          * @type Boolean
          */
         _directInit : false,
+
+        /**
+         * Skinnable class to use for this widget.
+         * @protected
+         * @type String
+         */
+        _skinnableClass : null,
 
         /**
          * Initialize the binding description.

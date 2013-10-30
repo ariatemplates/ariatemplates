@@ -33,7 +33,7 @@ Aria.classDefinition({
         if (!this._frame) {
             /* this._frame could be overriden in sub-classes */
             this._frame = aria.widgets.frames.FrameFactory.createFrame({
-                skinnableClass : "Fieldset",
+                skinnableClass : this._skinnableClass,
                 sclass : cfg.sclass,
                 state : "normal",
                 width : cfg.width,
@@ -57,6 +57,12 @@ Aria.classDefinition({
         INPUT_ATTRIBUTE : "_ariaInput"
     },
     $prototype : {
+        /**
+         * Skinnable class to use for this widget.
+         * @protected
+         * @type String
+         */
+        _skinnableClass : "Fieldset",
         /**
          * A method called when we initialize the object.
          * @protected

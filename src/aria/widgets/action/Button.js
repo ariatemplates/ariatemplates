@@ -73,15 +73,6 @@ Aria.classDefinition({
          */
         this.currTarget = null;
 
-        if (!this._skinnableClass) {
-            /**
-             * Skinnable class to use for this widget.
-             * @type String
-             * @protected
-             */
-            this._skinnableClass = "Button";
-        }
-
         /**
          * Skin configutation for simpleHTML
          * @type Object
@@ -116,6 +107,12 @@ Aria.classDefinition({
         this.$ActionWidget.$destructor.call(this);
     },
     $prototype : {
+        /**
+         * Skinnable class to use for this widget.
+         * @protected
+         * @type String
+         */
+        _skinnableClass : "Button",
 
         /**
          * Internal method to update the state of the widget

@@ -31,15 +31,18 @@ Aria.classDefinition({
          * @param {Number} lineNumber Line number corresponding in the .tpl file where the widget is created
          */
      $constructor : function (cfg, ctxt, lineNumber) {
-        if (!this._skinnableClass) {
-            this._skinnableClass = "SelectBox";
-        }
-
         var controller = new aria.widgets.controllers.SelectBoxController();
         this.$DropDownTextInput.constructor.call(this, cfg, ctxt, lineNumber, controller);
         this.controller.setListOptions(this._cfg.options);
     },
     $prototype : {
+        /**
+         * Skinnable class to use for this widget.
+         * @protected
+         * @type String
+         */
+        _skinnableClass : "SelectBox",
+
         $init : function (p) {
             var src = aria.widgets.form.DropDownListTrait.prototype;
             for (var key in src) {

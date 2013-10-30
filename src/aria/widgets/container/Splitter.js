@@ -29,7 +29,7 @@ Aria.classDefinition({
     $constructor : function (cfg, ctxt) {
         this.$Container.constructor.apply(this, arguments);
 
-        this._skinObj = aria.widgets.AriaSkinInterface.getSkinObject("Splitter", cfg.sclass);
+        this._skinObj = aria.widgets.AriaSkinInterface.getSkinObject(this._skinnableClass, cfg.sclass);
 
         /**
          * Contains the dom element of first splitter panel
@@ -117,6 +117,13 @@ Aria.classDefinition({
         this.$Container.$destructor.call(this);
     },
     $prototype : {
+        /**
+         * Skinnable class to use for this widget.
+         * @protected
+         * @type String
+         */
+        _skinnableClass : "Splitter",
+
         /**
          * OVERRIDE initWidget
          */

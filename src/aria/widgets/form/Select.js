@@ -29,9 +29,6 @@ Aria.classDefinition({
      * @param {Number} lineNumber Line number corresponding in the .tpl file where the widget is created
      */
     $constructor : function (cfg, ctxt, lineNumber) {
-        if (!this._skinnableClass) {
-            this._skinnableClass = "Select";
-        }
         this.$DropDownInput.constructor.call(this, cfg, ctxt, lineNumber);
 
         var skinObj = this._skinObj;
@@ -58,7 +55,6 @@ Aria.classDefinition({
     $destructor : function () {
         // the controller is disposed in DropDownInput
         this.$DropDownInput.$destructor.call(this);
-        this._skinnableClass = null;
         this._selectField = null;
     },
     $statics : {
@@ -66,6 +62,13 @@ Aria.classDefinition({
         WIDGET_OPTIONS_INVALID_VALUE : "%1Bound value stored in the data model is not a valid option value for the select widget."
     },
     $prototype : {
+        /**
+         * Skinnable class to use for this widget.
+         * @protected
+         * @type String
+         */
+        _skinnableClass : "Select",
+
         /**
          * Prototype init method called at prototype creation time Allows to store class-level objects that are shared
          * by all instances

@@ -29,16 +29,6 @@ Aria.classDefinition({
      */
     $constructor : function (cfg, ctxt, lineNumber) {
         this.$Input.constructor.apply(this, arguments);
-
-        if (!this._skinnableClass) {
-            /**
-             * Skinnable class to use for this widget.
-             * @type String
-             * @protected
-             */
-            this._skinnableClass = "CheckBox";
-        }
-
         this._setSkinObj(this._skinnableClass);
         this._setInputType();
         this._setIconPrefix();
@@ -77,6 +67,13 @@ Aria.classDefinition({
         this.$Input.$destructor.call(this);
     },
     $prototype : {
+        /**
+         * Skinnable class to use for this widget.
+         * @type String
+         * @protected
+         */
+        _skinnableClass : "CheckBox",
+
         /**
          * Give focus to the widget
          */
@@ -155,7 +152,8 @@ Aria.classDefinition({
             if (lineHeight && aria.core.Browser.isIE) {
                 out.write('line-height:' + (lineHeight - 2) + 'px;');
             }
-            out.write('vertical-align:middle;"><label style="display:' + cssDisplay);
+            var cssClass = 'class="x' + this._skinnableClass + '_' + cfg.sclass + '_' + this._state + '_label"';
+            out.write('vertical-align:middle;"><label ' + cssClass + ' style="display:' + cssDisplay);
 
             if (margin) {
                 out.write(';margin-' + margin + ':' + this._labelPadding + 'px');

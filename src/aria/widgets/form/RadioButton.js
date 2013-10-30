@@ -33,14 +33,6 @@
          * @param {Number} lineNumber Line number corresponding in the .tpl file where the widget is created
          */
         $constructor : function (cfg, ctxt) {
-            /**
-             * Skinnable class to use for this widget.
-             * @type String
-             */
-            if (!this._skinnableClass) {
-                // allow the skinnable class to be defined in the child class, before calling this constructor
-                this._skinnableClass = "RadioButton";
-            }
             this.$CheckBox.constructor.apply(this, arguments);
             if (this._skinObj.simpleHTML) {
                 if (!idManager) {
@@ -74,6 +66,12 @@
         },
 
         $prototype : {
+            /**
+             * Skinnable class to use for this widget.
+             * @protected
+             * @type String
+             */
+             _skinnableClass : "RadioButton",
 
             /**
              * List of radio button instances for keyboard nav

@@ -30,17 +30,6 @@ Aria.classDefinition({
      * @param {aria.widgets.controller.TextDataController} controller the data controller object
      */
     $constructor : function (cfg, ctxt, lineNumber, controller) {
-        // allow the skinnable class to be defined in the child class, before
-        // calling this constructor
-        if (!this._skinnableClass) {
-            /**
-             * Skinnable class to use for this widget.
-             * @protected
-             * @type String
-             */
-            this._skinnableClass = "TextInput";
-        }
-
         this.$InputWithFrame.constructor.apply(this, arguments);
 
         /**
@@ -168,6 +157,13 @@ Aria.classDefinition({
         WIDGET_VALUE_IS_WRONG_TYPE : "%1Value %2 is of incorrect type."
     },
     $prototype : {
+        /**
+         * Skinnable class to use for this widget.
+         * @protected
+         * @type String
+         */
+        _skinnableClass : "TextInput",
+
         /**
          * Prototype init method called at prototype creation time Allows to store class-level objects that are shared
          * by all instances
