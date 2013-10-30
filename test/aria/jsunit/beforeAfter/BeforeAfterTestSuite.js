@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Amadeus s.a.s.
+ * Copyright 2013 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,19 +14,14 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.jsunit.JsunitTestSuite",
+    $classpath : "test.aria.jsunit.beforeAfter.BeforeAfterTestSuite",
     $extends : "aria.jsunit.TestSuite",
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
-        this.addTests("test.aria.jsunit.load.LoadTestSuite");
-        this.addTests("test.aria.jsunit.ModuleCtrlTestCaseTest");
-        this.addTests("test.aria.jsunit.AssertTest");
-        this.addTests("test.aria.jsunit.TestCaseTest");
-        this.addTests("test.aria.jsunit.ModuleControllerTestCase");
-        this.addTests("test.aria.jsunit.beforeAfter.BeforeAfterTestSuite");
-        this.addTests("test.aria.jsunit.templateTests.TemplateInIframe");
-        this.addTests("test.aria.jsunit.templateTests.TemplateInIframeWithError");
-        this.addTests("test.aria.jsunit.templateTests.TestCaseModuleController");
+        this.addTests("test.aria.jsunit.beforeAfter.BeforeAfterClassSyncTest");
+        this.addTests("test.aria.jsunit.beforeAfter.BeforeAfterClassAsyncTest");
+        this.addTests("test.aria.jsunit.beforeAfter.TimeoutTestBeforeClass");
+        this.addTests("test.aria.jsunit.beforeAfter.TimeoutTestAfterClass");
     }
 });
