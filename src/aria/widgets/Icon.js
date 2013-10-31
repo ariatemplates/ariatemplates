@@ -168,7 +168,7 @@ Aria.classDefinition({
                         iconInfo.width, 'px;height:', iconInfo.height, 'px;', vAlign].join('');
             } else {
                 return [margins, ';padding:0;background-position:-', iconInfo.iconLeft, 'px -', iconInfo.iconTop,
-                        'px;width:', iconInfo.width, 'px;height:', iconInfo.height, 'px;', vAlign].join('');
+                        'px;', vAlign].join('');
             }
         },
 
