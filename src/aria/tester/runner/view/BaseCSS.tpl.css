@@ -65,7 +65,7 @@
     {macro gradient(r, g, b, from, to)}
         {if aria.core.Browser.isFirefox}
             background-image: -moz-linear-gradient(top, {call rgb(r,g,b,from)/}, {call rgb(r,g,b,to)/});
-        {elseif aria.core.Browser.isIE9/}
+        {elseif aria.core.Browser.isIE && aria.core.Browser.version >=9 /}
             background-image: linear-gradient(top, {call rgb(r,g,b,from)/}, {call rgb(r,g,b,to)/});
         {elseif aria.core.Browser.isChrome/}
             background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from({call rgb(r,g,b,from)/}), to({call rgb(r,g,b,to)/}));
@@ -73,11 +73,11 @@
             background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from({call rgb(r,g,b,from)/}), to({call rgb(r,g,b,to)/}));
         {/if}
     {/macro}
-    
+
     {macro gradientH(r, g, b, from, to)}
         {if aria.core.Browser.isFirefox}
             background-image: -moz-linear-gradient(left, {call rgb(r,g,b,from)/}, {call rgb(r,g,b,to)/});
-        {elseif aria.core.Browser.isIE9/}
+        {elseif aria.core.Browser.isIE && aria.core.Browser.version >=9 /}
             background-image: linear-gradient(left, {call rgb(r,g,b,from)/}, {call rgb(r,g,b,to)/});
         {elseif (aria.core.Browser.isChrome || aria.core.Browser.isSafari)/}
             background-image: -webkit-gradient(linear, 0% 0%, 100% 0%, from({call rgb(r,g,b,from)/}), to({call rgb(r,g,b,to)/}));
@@ -87,7 +87,7 @@
         {if aria.core.Browser.isFirefox}
             box-shadow : ${textContent};
             -moz-box-shadow : ${textContent};
-        {elseif aria.core.Browser.isIE9/}
+        {elseif aria.core.Browser.isIE && aria.core.Browser.version >=9 /}
             box-shadow : ${textContent};
         {elseif aria.core.Browser.isChrome/}
             -webkit-box-shadow : ${textContent};
@@ -95,12 +95,12 @@
             -webkit-box-shadow : ${textContent};
         {/if}
     {/macro}
-    
+
     {macro borderRadius(textContent)}
         {if aria.core.Browser.isFirefox}
             border-radius : ${textContent};
             -moz-border-radius : ${textContent};
-        {elseif aria.core.Browser.isIE9/}
+        {elseif aria.core.Browser.isIE && aria.core.Browser.version >=9 /}
             border-radius : ${textContent};
         {elseif aria.core.Browser.isChrome/}
             -webkit-border-radius : ${textContent};
@@ -108,7 +108,7 @@
             -webkit-border-radius : ${textContent};
         {/if}
     {/macro}
-    
+
     {macro rgb(r,g,b,mod)}rgb(${Math.min(Math.max(r+mod,0),255)}, ${Math.min(Math.max(g+mod,0),255)}, ${Math.min(Math.max(b+mod,0),255)}){/macro}
 
 {/CSSTemplate}

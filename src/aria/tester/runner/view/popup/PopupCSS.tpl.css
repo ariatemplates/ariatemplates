@@ -26,7 +26,7 @@
         position : fixed;
         top:0px;
         left:0px;
-        {if (aria.core.Browser.isIE && !aria.core.Browser.isIE9)}
+        {if (aria.core.Browser.isIE && aria.core.Browser.version < 9)}
             height : 100%;
             width : 100%;
             background:rgb(0,0,0);
@@ -41,16 +41,16 @@
     .popup {
         top:50%;
         left:50%;
-        
+
         background:white;
         border: 1px Solid #ddd;
-        
+
         {call borderRadius("8px")/}
-        {call shadow("0px 0 4px rgba(0,0,0,0.6)")/} 
-        
+        {call shadow("0px 0 4px rgba(0,0,0,0.6)")/}
+
         z-index:12001;
     }
-    
+
     h1 {
         margin-top : 7px;
         margin-bottom : 5px;
@@ -60,7 +60,7 @@
         font-size : 25px;
         font-family : Verdana;
         font-weight : normal;
-        
+
     }
     .separator {
         margin-left : 19px;
@@ -68,21 +68,21 @@
         background: rgb(200,200,200);
         {call gradientH(255, 255, 255, -10, -40)/}
     }
-    
+
     {var failedColor = "rgb(245,70,70)"/}
     .content {
         margin-left : 19px;
         overflow-y : scroll;
         color : ${failedColor};
     }
-    
+
     .buttonContainer {
-        float : right;   
+        float : right;
         margin-bottom: 5px;
         margin-right: 10px;
         margin-top: 5px;
     }
-    
+
     .popupButton {
         float:left;
         padding-top : 2px;
