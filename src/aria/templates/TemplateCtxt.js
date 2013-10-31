@@ -288,6 +288,9 @@
             SECTION_BINDING_ERROR_SINGLE_VAR : "line %1: Cannot bind section to single variable except data. Binding must be something like container.parameter",
             BINDREFRESHTO_STATEMENT_DEPRECATED : "Template '%1', line %2:\nThe {bindRefreshTo} statement is deprecated. It will be removed in Aria Templates 1.5.1. Please use 'bindRefreshTo' property of a {section} statement instead.",
             /* BACKWARD-COMPATIBILITY-END */
+            /* BACKWARD-COMPATIBILITY-BEGIN GH-754*/
+            GET_DOM_ID_DEPRECATED : "The TemplateCtxt.getDomId() method became private. You should probably use $getId() instead.",
+            /* BACKWARD-COMPATIBILITY-END GH-754 */
             SECTION_MACRO_MISUSED : "Template %1 \nline %2: section statement must either be a container or have a non-null macro property.",
             SECTION_MISSING_ID : "Template %1 \nline %2: A section used as a container must have an id.",
             TEMPLATE_EXCEPTION_REMOVING_LISTENERS : "Error in template '%1' while removing module or flow listeners.",
@@ -1288,8 +1291,8 @@
             /**
              * Call a function declared as a callback in a template
              * @param {Object} callback JSON structure used in template to declare the callback
-             * @param {Object} arg object to declare the event (which will be accessible in the callback as first parameter)
-             * property)
+             * @param {Object} arg object to declare the event (which will be accessible in the callback as first
+             * parameter) property)
              * @param {String} errorId
              */
             evalCallback : function (callback, arg, errorId) {
@@ -1331,18 +1334,31 @@
             __$writeId : function (id) {
                 // the id must come from the real template context (for a macro lib today, this is not the real
                 // templateCtxt)
-                var genId = this._out.tplCtxt.getDomId(id);
+                var genId = this._out.tplCtxt._generateDomId(id);
                 if (genId) {
                     this._out.write('id="' + genId + '"');
                 }
             },
 
+            /* BACKWARD-COMPATIBILITY-BEGIN GH-754 */
             /**
              * Return the generated domId for specified id.
              * @param {String|Number} id specified in the template
              * @return {String}
              */
             getDomId : function (id) {
+                this.$logWarn(this.GET_DOM_ID_DEPRECATED);
+                return this._generateDomId(id);
+            },
+            /* BACKWARD-COMPATIBILITY-END GH-754 */
+
+            /**
+             * Return the generated domId for specified id.
+             * @param {String|Number} id specified in the template. If it contains "+", an automatic id will be
+             * generated if in the test mode.
+             * @return {String}
+             */
+            _generateDomId : function (id) {
                 var id = id + "";
                 if (id && id.indexOf("+") != -1) {
                     if (Aria.testMode) {
