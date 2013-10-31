@@ -181,6 +181,7 @@ Aria.classDefinition({
         ICON_NOT_FOUND : "Icon was not found: %1"
     },
     $prototype : {
+
         /**
          * Generate the begining of the markup for the frame.
          * @param {aria.templates.MarkupWriter} out
@@ -324,7 +325,7 @@ Aria.classDefinition({
                 if (active) {
                     this._icons[icon].tooltip = this._tooltipLabels[param.activeIconIndex++];
                 }
-                param.width += iconInfo.width;
+                param.width += iconInfo.width + iconInfo.borderLeft + iconInfo.borderRight;
             } else {
                 this.$logError(this.ICON_NOT_FOUND, icon);
             }
