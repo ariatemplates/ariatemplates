@@ -978,9 +978,29 @@ Aria.beanDefinitions({
                 borderColor : {
                     $type : "Color"
                 },
+                borderTopLeftRadius : {
+                    $type : "Pixels",
+                    $default : 0
+                },
+                borderTopRightRadius : {
+                    $type : "Pixels",
+                    $default : 0
+                },
+                borderBottomLeftRadius : {
+                    $type : "Pixels",
+                    $default : 0
+                },
+                borderBottomRightRadius : {
+                    $type : "Pixels",
+                    $default : 0
+                },
                 borderWidth : {
                     $type : "Pixels",
                     $default : 1
+                },
+                backgroundColor : {
+                    $type : "Color",
+                    $default : "transparent"
                 }
             }
         },

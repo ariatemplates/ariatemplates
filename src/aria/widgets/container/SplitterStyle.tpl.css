@@ -43,6 +43,13 @@
 .xSplitter_${skinClassName}_sContainer{
   position:relative;
   display:inline-block;
+  {if skinClass.borderTopLeftRadius || skinClass.borderTopRightRadius || skinClass.borderBottomLeftRadius || skinClass.borderBottomRightRadius}
+    border-top-right-radius: ${skinClass.borderTopRightRadius}px;
+    border-top-left-radius: ${skinClass.borderTopLeftRadius}px;
+    border-bottom-right-radius: ${skinClass.borderBottomRightRadius}px;
+    border-bottom-left-radius: ${skinClass.borderBottomLeftRadius}px;
+  {/if}
+  background-color: ${skinClass.backgroundColor};
 }
 
 .xSplitter_${skinClassName}_sConstrained{
