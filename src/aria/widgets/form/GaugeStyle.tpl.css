@@ -20,8 +20,22 @@
     {var skinnableClassName="Gauge"/}
 
     {macro writeSkinClass(info)}
+        .x${skinnableClassName}_${info.skinClassName}{
+            border-top-left-radius: ${info.skinClass.container.borderTopLeftRadius}px;
+            border-top-right-radius: ${info.skinClass.container.borderTopRightRadius}px;
+            border-bottom-left-radius: ${info.skinClass.container.borderBottomLeftRadius}px;
+            border-bottom-right-radius: ${info.skinClass.container.borderBottomRightRadius}px;
+            background-color: ${info.skinClass.container.backgroundColor};
+            {if info.skinClass.container.boxShadow}
+               box-shadow: ${info.skinClass.container.boxShadow};
+            {/if}
+        }
         .x${skinnableClassName}_progress_${info.skinClassName}{
-            {call background("transparent",info.skinClass.spriteUrl,"repeat-x")/}
+            {call background(info.skinClass.backgroundColor,info.skinClass.spriteUrl,"repeat-x")/}
+            border-top-left-radius: ${info.skinClass.borderTopLeftRadius}px;
+            border-top-right-radius: ${info.skinClass.borderTopRightRadius}px;
+            border-bottom-left-radius: ${info.skinClass.borderBottomLeftRadius}px;
+            border-bottom-right-radius: ${info.skinClass.borderBottomRightRadius}px;
         }
     {/macro}
 {/CSSTemplate}

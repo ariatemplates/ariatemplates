@@ -646,12 +646,32 @@ Aria.beanDefinitions({
                     $description : "",
                     $default : 'atdefskin/sprites/back.gif'
                 },
+                "backgroundColor" : {
+                    $type : "Color",
+                    $default : "transparent"
+                },
                 "sprHeight" : {
                     $type : "Pixels"
                 },
                 "border" : {
                     $type : "json:String",
                     $description : ""
+                },
+                "borderTopLeftRadius" : {
+                    $type : "Pixels",
+                    $default : 0
+                },
+                "borderTopRightRadius" : {
+                    $type : "Pixels",
+                    $default : 0
+                },
+                "borderBottomLeftRadius" : {
+                    $type : "Pixels",
+                    $default : 0
+                },
+                "borderBottomRightRadius" : {
+                    $type : "Pixels",
+                    $default : 0
                 },
                 "borderPadding" : {
                     $type : "Pixels"
@@ -662,6 +682,36 @@ Aria.beanDefinitions({
                 },
                 "labelFontSize" : {
                     $type : "Pixels"
+                },
+                "container" : {
+                    $type : "Object",
+                    $description : "",
+                    $properties : {
+                        "backgroundColor" : {
+                            $type : "Color",
+                            $default : "transparent"
+                        },
+                        "borderTopLeftRadius" : {
+                            $type : "Pixels",
+                            $default : 0
+                        },
+                        "borderTopRightRadius" : {
+                            $type : "Pixels",
+                            $default : 0
+                        },
+                        "borderBottomLeftRadius" : {
+                            $type : "Pixels",
+                            $default : 0
+                        },
+                        "borderBottomRightRadius" : {
+                            $type : "Pixels",
+                            $default : 0
+                        },
+                        "boxShadow" : {
+                            $type : "json:String",
+                            $default : ""
+                        }
+                    }
                 }
             }
         },
