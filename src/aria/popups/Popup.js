@@ -56,7 +56,9 @@ Aria.classDefinition({
         ANCHOR_BOTTOM : "bottom",
         ANCHOR_TOP : "top",
         ANCHOR_LEFT : "left",
-        ANCHOR_RIGHT : "right"
+        ANCHOR_RIGHT : "right",
+        // DEBUG MESSAGE
+        DEBUG_OVERWRITE_POSITION : "Absolute %1 position %2 is used to overwrite calculated relative position %3!"
     },
     $constructor : function () {
         /**
@@ -255,7 +257,7 @@ Aria.classDefinition({
             this.setSection(conf.section);
 
             if (!conf.center) {
-                if (conf.absolutePosition === null) {
+                if (!conf.absolutePosition || conf.domReference) {
                     this.setReference(conf.domReference);
                 } else {
                     this.setPositionAsReference(conf.absolutePosition);
@@ -552,6 +554,27 @@ Aria.classDefinition({
             }
             if (top != null) {
                 top += documentScroll.scrollTop;
+            }
+
+            // allow mixing of relative and absolute positioning #775
+            var abs = this.conf.absolutePosition;
+            if (this.conf.domReference && abs) {
+                if (abs.top != null) {
+                    this.$logDebug(this.DEBUG_OVERWRITE_POSITION, [this.ANCHOR_TOP, abs.top, top]);
+                    top = abs.top;
+                }
+                if (abs.bottom != null) {
+                    this.$logDebug(this.DEBUG_OVERWRITE_POSITION, [this.ANCHOR_BOTTOM, abs.bottom, bottom]);
+                    bottom = abs.bottom;
+                }
+                if (abs.left != null) {
+                    this.$logDebug(this.DEBUG_OVERWRITE_POSITION, [this.ANCHOR_LEFT, abs.left, left]);
+                    left = abs.left;
+                }
+                if (abs.right != null) {
+                    this.$logDebug(this.DEBUG_OVERWRITE_POSITION, [this.ANCHOR_RIGHT, abs.right, right]);
+                    right = abs.right;
+                }
             }
 
             var position = {
@@ -1023,7 +1046,7 @@ Aria.classDefinition({
             return this._animator;
         },
 
-         /**
+        /**
          * Checks if a MaskAnimator already exists, if not will create one.
          * @return {aria.utils.css.Animations} Object
          */

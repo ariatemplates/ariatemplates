@@ -172,7 +172,96 @@ Aria.classDefinition({
             document.body.removeChild(bigContainer);
 
         },
+        testPopupPositioningMixed1 : function () {
+            var document = Aria.$window.document;
+            var popup = new aria.popups.Popup();
 
+            var myDiv = document.createElement("div");
+            myDiv.id = "myDiv";
+            myDiv.style.cssText = "position:absolute;left:50px;top:50px;";
+            document.body.appendChild(myDiv);
+
+            var conf = {
+                // Content
+                section : this.mockSection,
+                domReference : document.getElementById('myDiv'),
+                preferredPositions : [{
+                            reference : "bottom left",
+                            popup : "top left"
+                        }],
+                absolutePosition : {
+                    left : 0,
+                    right : 0
+                },
+                closeOnMouseOut : true
+            };
+
+            popup.open(conf);
+
+            var popupContent = document.getElementById("myId");
+
+            var top = parseInt(popupContent.parentNode.style.top, 10);
+            this.assertEqualsWithTolerance(top, 50, 2, "Expected 50, found " + top);
+
+            var left = parseInt(popupContent.parentNode.style.left, 10);
+            var right = parseInt(popupContent.parentNode.style.right, 10);
+
+            this.assertEqualsWithTolerance(left, 0, 2, "Expected 0, found " + left);
+            this.assertEqualsWithTolerance(right, 0, 2, "Expected 0, found " + right);
+
+            popup.close();
+            popup.$dispose();
+
+            document.body.removeChild(myDiv);
+
+            this.assertErrorInLogs(aria.popups.Popup.DEBUG_OVERWRITE_POSITION, 2);
+
+        },
+        testPopupPositioningMixed2 : function () {
+            var document = Aria.$window.document;
+            var popup = new aria.popups.Popup();
+
+            var myDiv = document.createElement("div");
+            myDiv.id = "myDiv";
+            document.body.appendChild(myDiv);
+
+            var conf = {
+                // Content
+                section : this.mockSection,
+                domReference : document.getElementById('myDiv'),
+                preferredPositions : [{
+                            reference : "bottom right",
+                            popup : "top left"
+                        }],
+                absolutePosition : {
+                    top : 0,
+                    bottom : 0,
+                    left : 17
+                },
+                closeOnMouseOut : true
+            };
+
+            popup.open(conf);
+
+            var popupContent = document.getElementById("myId");
+
+            var left = parseInt(popupContent.parentNode.style.left, 10);
+            this.assertEqualsWithTolerance(left, 17, 2, "Expected 17, found " + left);
+
+            var top = parseInt(popupContent.parentNode.style.top, 10);
+            var bottom = parseInt(popupContent.parentNode.style.top, 10);
+
+            this.assertEqualsWithTolerance(top, 0, 2, "Expected 0, found " + top);
+            this.assertEqualsWithTolerance(bottom, 0, 2, "Expected 0, found " + bottom);
+
+            popup.close();
+            popup.$dispose();
+
+            document.body.removeChild(myDiv);
+
+            this.assertErrorInLogs(aria.popups.Popup.DEBUG_OVERWRITE_POSITION, 3);
+
+        },
         /**
          * Make sure everything is unchanged for AriaJSP popup bridge
          */
