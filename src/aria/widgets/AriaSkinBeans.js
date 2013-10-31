@@ -382,6 +382,10 @@ Aria.beanDefinitions({
                     $description : "",
                     $default : "0px"
                 },
+                "monthTitleFontSize" : {
+                    $type : "json:Integer",
+                    $default : 10
+                },
                 "dayBorderColor" : {
                     $type : "Color"
                 },
@@ -486,13 +490,28 @@ Aria.beanDefinitions({
                     $type : "json:String",
                     $description : "sclass of the Div to use inside the widget. It must be defined in the skin."
                 },
+                "fontSize" : {
+                    $type : "json:Integer",
+                    $default: 10
+                },
+                "mouseOverBackgroundColor" : {
+                    $type : "Color",
+                    $default : "#FFCC66"
+                },
+                "mouseOverColor" : {
+                    $type : "Color",
+                    $default : "black"
+                },
+                "mouseOverBorderColor" : {
+                    $type : "Color",
+                    $default : "black"
+                },
                 "previousPageIcon" : {
                     $type : "Icons"
                 },
                 "nextPageIcon" : {
                     $type : "Icons"
                 }
-
             }
         },
         "ListCfg" : {
