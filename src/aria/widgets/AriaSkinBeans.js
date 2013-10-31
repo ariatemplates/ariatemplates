@@ -1043,8 +1043,47 @@ Aria.beanDefinitions({
                 "spriteURL" : {
                     $type : "json:String",
                     $description : ""
+                },
+                "backgroundSize" : {
+                    $type : "json:Integer",
+                    $description : ""
+                },
+                "backgroundColor" : {
+                    $type : "Color",
+                    $default : "#FFF"
+                },
+                "borderTopLeftRadius" : {
+                    $type : "Pixels",
+                    $default : 0
+                },
+                "borderTopRightRadius" : {
+                    $type : "Pixels",
+                    $default : 0
+                },
+                "borderBottomLeftRadius" : {
+                    $type : "Pixels",
+                    $default : 0
+                },
+                "borderBottomRightRadius" : {
+                    $type : "Pixels",
+                    $default : 0
+                },
+                "borderTop" : {
+                    $type : "Pixels",
+                    $default : 0
+                },
+                "borderBottom" : {
+                    $type : "Pixels",
+                    $default : 0
+                },
+                "borderRight" : {
+                    $type : "Pixels",
+                    $default : 0
+                },
+                "borderLeft" : {
+                    $type : "Pixels",
+                    $default : 0
                 }
-
             }
         },
         "DivCfg" : {

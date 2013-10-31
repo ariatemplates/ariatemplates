@@ -29,7 +29,18 @@
             font-size:1px;
             width:${info.skinClass.iconWidth}px;
             height:${info.skinClass.iconHeight}px;
-            {call background("",info.skinClass.spriteURL,"no-repeat top left") /}
+            {call background(info.skinClass.backgroundColor,info.skinClass.spriteURL,"no-repeat top left") /}
+            {if info.skinClass.backgroundSize}
+                background-size:${info.skinClass.backgroundSize}%;
+            {/if}
+            border-top: ${info.skinClass.borderTop}px;
+            border-right: ${info.skinClass.borderRight}px;
+            border-bottom: ${info.skinClass.borderBottom}px;
+            border-left: ${info.skinClass.borderLeft}px;
+            border-top-right-radius: ${info.skinClass.borderTopRightRadius}px;
+            border-top-left-radius: ${info.skinClass.borderTopLeftRadius}px;
+            border-bottom-right-radius: ${info.skinClass.borderBottomRightRadius}px;
+            border-bottom-left-radius: ${info.skinClass.borderBottomLeftRadius}px;
         }
         
         {if info.skinClassName == "checkBoxes" && !widgetSettings.middleAlignment}
