@@ -128,7 +128,39 @@
         {var state=info.state.frame/}
         {var padTop=state.paddingTop/}
         .${cssPrefix(info)}frame  {
-            border: ${state.borderSize}px ${state.border} ${state.borderColor};
+            {if state.frameHeight}
+                height: ${state.frameHeight}px;
+            {/if}
+            {if state.border}
+                border: ${state.borderSize}px ${state.border} ${state.borderColor};
+            {/if}
+            {if state.borderTop || state.borderBottom || state.borderLeft || state.borderRight}
+                border-top: ${state.borderTop};
+                border-bottom: ${state.borderBottom};
+                border-left: ${state.borderLeft};
+                border-right: ${state.borderRight};
+            {/if}
+            {if state.marginTop || state.marginBottom || state.marginLeft || state.marginRight}
+                margin-top: ${state.marginTop}px;
+                margin-bottom: ${state.marginBottom}px;
+                margin-left: ${state.marginLeft}px;
+                margin-right: ${state.marginRight}px;
+            {/if}
+            {if state.fontWeight}
+                font-weight: ${state.fontWeight};
+            {/if}
+            {if state.borderRadius}
+                border-radius: ${state.borderRadius}px;
+            {/if}
+            {if state.borderTopLeftRadius || state.borderTopRightRadius || state.borderBottomLeftRadius || state.borderBottomRightRadius}
+                border-top-right-radius: ${state.borderTopRightRadius}px;
+                border-top-left-radius: ${state.borderTopLeftRadius}px;
+                border-bottom-right-radius: ${state.borderBottomRightRadius}px;
+                border-bottom-left-radius: ${state.borderBottomLeftRadius}px;
+            {/if}
+            {if state.boxShadow}
+                box-shadow: ${state.boxShadow};
+            {/if}
             padding: ${state.paddingTop}px ${state.paddingRight}px ${state.paddingBottom}px ${state.paddingLeft}px;
             {if (padTop>1)}
             *padding-top: ${padTop-1}px;

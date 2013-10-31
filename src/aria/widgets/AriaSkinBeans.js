@@ -1373,19 +1373,75 @@ Aria.beanDefinitions({
                     $type : "Pixels",
                     $default : 0
                 },
+                "marginTop" : {
+                    $type : "Pixels",
+                    $default : 0
+                },
+                "marginLeft" : {
+                    $type : "Pixels",
+                    $default : 0
+                },
+                "marginRight" : {
+                    $type : "Pixels",
+                    $default : 0
+                },
+                "marginBottom" : {
+                    $type : "Pixels",
+                    $default : 0
+                },
                 "border" : {
                     $type : "json:String",
                     $description : "Style of the border",
                     $default : "",
                     $sample : "solid"
                 },
+                "borderTop" : {
+                    $type : "json:String",
+                    $description : ""
+                },
+                "borderBottom" : {
+                    $type : "json:String",
+                    $description : ""
+                },
+                "borderRight" : {
+                    $type : "json:String",
+                    $description : ""
+                },
+                "borderLeft" : {
+                    $type : "json:String",
+                    $description : ""
+                },
                 "borderSize" : {
+                    $type : "Pixels",
+                    $default : 0
+                },
+                "borderRadius" : {
                     $type : "Pixels",
                     $default : 0
                 },
                 "borderColor" : {
                     $type : "Color",
                     $default : ""
+                },
+                "borderTopLeftRadius" : {
+                    $type : "Pixels",
+                    $default : 0
+                },
+                "borderTopRightRadius" : {
+                    $type : "Pixels",
+                    $default : 0
+                },
+                "borderBottomLeftRadius" : {
+                    $type : "Pixels",
+                    $default : 0
+                },
+                "borderBottomRightRadius" : {
+                    $type : "Pixels",
+                    $default : 0
+                },
+                "boxShadow" : {
+                    $type : "json:String",
+                    $default : "none"
                 },
                 "backgroundColor" : {
                     $type : "Color",
@@ -1394,6 +1450,22 @@ Aria.beanDefinitions({
                 "color" : {
                     $type : "Color",
                     $default : ""
+                },
+                "skipLeftBorder" : {
+                    $type : "SkipBorderCfg",
+                    $description : ""
+                },
+                "skipRightBorder" : {
+                    $type : "SkipBorderCfg",
+                    $description : ""
+                },
+                "fontWeight" : {
+                    $type : "json:String",
+                    $default : "normal"
+                },
+                "frameHeight" : {
+                    $type : "json:Integer",
+                    $description : "Simple frame height."
                 }
             }
         },
