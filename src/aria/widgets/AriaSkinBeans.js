@@ -143,6 +143,22 @@ Aria.beanDefinitions({
                             $type : "json:String",
                             $description : "",
                             $default : "1px solid black"
+                        },
+                        "borderTopLeftRadius" : {
+                            $type : "json:Integer",
+                            $default : 0
+                        },
+                        "borderTopRightRadius" : {
+                            $type : "json:Integer",
+                            $default : 0
+                        },
+                        "borderBottomLeftRadius" : {
+                            $type : "json:Integer",
+                            $default : 0
+                        },
+                        "borderBottomRightRadius" : {
+                            $type : "json:Integer",
+                            $default : 0
                         }
                     }
                 },
