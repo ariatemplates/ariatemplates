@@ -13,12 +13,10 @@
  * limitations under the License.
  */
 
-/**
- * Test case for aria.widgets.form.GaugeTest
- */
 Aria.classDefinition({
     $classpath : "test.aria.widgets.issue746.SkinClassFallbackTestCase",
     $dependencies : ["aria.jsunit.helpers.OutObj", "aria.templates.View"],
+    $templates : ["aria.widgets.form.list.templates.ListTemplate"],
     $extends : "aria.jsunit.WidgetTestCase",
     $constructor : function () {
         this.$WidgetTestCase.constructor.call(this);
@@ -41,8 +39,7 @@ Aria.classDefinition({
                     cfg : {
                         contentMacro : "dialogMacro"
                     }
-                }, // how to config?
-                {
+                }, {
                     name : "aria.widgets.action.Link"
                 }, {
                     name : "aria.widgets.container.Div",
@@ -61,8 +58,7 @@ Aria.classDefinition({
                         macro1 : 'PanelOne',
                         macro2 : 'PanelTwo'
                     }
-                }, // how to config?
-                {
+                }, {
                     name : "aria.widgets.container.Tab",
                     isContainer : true,
                     cfg : {
@@ -105,17 +101,15 @@ Aria.classDefinition({
                     cfg : {
                         label : "Label"
                     }
-                },
-                // {name : "aria.widgets.Icon", cfg : {icon: "std:collapse"}}, //sclass not used in the widgets markup?
-                {
+                }, {
                     name : "aria.widgets.form.SelectBox"
                 }, {
                     name : "aria.widgets.form.Select"
-                },
-                // {name : "aria.widgets.action.SortIndicator", cfg : {sortName : 'SortByName', label : 'Label', view:
-                // new aria.templates.View([0, 1, 2, 3, 4])}},
-                {
+                }, {
                     name : "aria.widgets.form.list.List",
+                    cfg : {
+                        items : []
+                    },
                     checkInnerHTML : false
                 }, {
                     name : "aria.widgets.errorlist.ErrorList",
@@ -164,7 +158,6 @@ Aria.classDefinition({
                 } else {
                     cfg.sclass = wrongSclass;
                 }
-
                 var tf = this._createWidget(widgetName, cfg, isContainer);
 
                 var instance = tf.instance;
