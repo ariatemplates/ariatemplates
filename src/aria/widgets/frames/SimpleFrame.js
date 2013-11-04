@@ -32,10 +32,30 @@ Aria.classDefinition({
          */
         _computeSize : function () {
             var cfg = this._cfg, state = cfg.stateObject;
-            var border = (state.borderSize > 0) ? (state.borderSize) * 2 : 0;
-            this.innerWidth = (cfg.width > -1) ? cfg.width - state.paddingLeft - state.paddingRight - border : -1;
-            this.innerHeight = (cfg.height > -1) ? cfg.height - state.paddingTop - state.paddingBottom - border : -1;
+            var border = (state.borderSize > 0) ? state.borderSize : 0;
+
+            if (cfg.width > -1) {
+                var w = cfg.width - state.paddingLeft - state.paddingRight;
+                if (this._hasBorder(state.skipLeftBorder, cfg.iconsLeft)) {
+                    w -= state.borderLeft >= 0 ? state.borderLeft : border;
+                }
+                if (this._hasBorder(state.skipRightBorder, cfg.iconsRight)) {
+                    w -= state.borderRight >= 0 ? state.borderRight : border;
+                }
+                this.innerWidth = w > 0 ? w : 0;
+            } else {
+                this.innerWidth = -1;
+            }
+            if (cfg.height > -1) {
+                var h = cfg.height - state.paddingTop - state.paddingBottom;
+                h -= state.borderTop >= 0 ? state.borderTop : border;
+                h -= state.borderBottom >= 0 ? state.borderBottom : border;
+                this.innerHeight = h > 0 ? h : 0;
+            } else {
+                this.innerHeight =  -1;
+            }
         },
+
 
         /**
          * Generate the begining of the markup for this frame.
@@ -43,14 +63,19 @@ Aria.classDefinition({
          */
         writeMarkupBegin : function (out) {
             var cfg = this._cfg;
-            // var cssPrefix = this._cssPrefix;
-            // var state = cfg.stateObject;
+            var state = cfg.stateObject;
             var sizeInfo = {
                 style : cfg.block ? 'display:block;' : '',
                 className : "xSimpleFrame " + this._cssPrefix + "frame " + cfg.cssClass
             };
             this._appendInnerWidthInfo(sizeInfo);
             this._appendInnerHeightInfo(sizeInfo);
+            if (!this._hasBorder(state.skipLeftBorder, cfg.iconsLeft)) {
+                sizeInfo.style = sizeInfo.style + 'border-left:0px;border-top-left-radius:0px;border-bottom-left-radius:0px;';
+            }
+            if (!this._hasBorder(state.skipRightBorder, cfg.iconsRight)) {
+                sizeInfo.style = sizeInfo.style + 'border-right:0px;border-top-right-radius:0px;border-bottom-right-radius:0px;';
+            }
             out.write('<span ' + (sizeInfo.style ? 'style="' + sizeInfo.style + '"' : '') + 'class="'
                     + sizeInfo.className + '">');
         },
@@ -99,6 +124,20 @@ Aria.classDefinition({
         resize : function (width, height) {
             this.$Frame.resize.call(this, width, height);
             this.changeState(this.getStateName());
+        },
+        /**
+         * Checks for any border in left or right.
+         * @protected
+         * @param {String} border
+         * @param {Array} Icons
+         * @return {Boolean}
+         */
+        _hasBorder : function (skipBorder, icons) {
+            var hasBorder = (skipBorder === false);
+            if (skipBorder == "dependsOnIcon") {
+                hasBorder = (icons.length === 0);
+            }
+            return hasBorder;
         }
     }
 });
