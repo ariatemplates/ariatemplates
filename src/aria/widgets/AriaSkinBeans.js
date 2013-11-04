@@ -1133,6 +1133,12 @@ Aria.beanDefinitions({
                 "borderLeft" : {
                     $type : "Pixels",
                     $default : 0
+                },
+                "borderStyle" : {
+                    $type : "json:String"
+                },
+                "borderColor" : {
+                    $type : "Color"
                 }
             }
         },

@@ -22,7 +22,7 @@
 
     {macro writeSkinClass(info)}
         {var widgetSettings = aria.widgets.environment.WidgetSettings.getWidgetSettings() /}
-        
+
         /* Icon class: ${info.skinClassName} */
         .xICN${info.skinClassName} {
             {if !widgetSettings.middleAlignment}vertical-align:top;{/if}
@@ -41,13 +41,19 @@
             border-top-left-radius: ${info.skinClass.borderTopLeftRadius}px;
             border-bottom-right-radius: ${info.skinClass.borderBottomRightRadius}px;
             border-bottom-left-radius: ${info.skinClass.borderBottomLeftRadius}px;
+            {if info.skinClass.borderStyle}
+              border-style: ${info.skinClass.borderStyle};
+            {/if}
+            {if info.skinClass.borderColor}
+              border-color: ${info.skinClass.borderColor};
+            {/if}
         }
-        
+
         {if info.skinClassName == "checkBoxes" && !widgetSettings.middleAlignment}
             .xICN${info.skinClassName} {
-                vertical-align:middle;    
+                vertical-align:middle;
             }
         {/if}
     {/macro}
-    
+
 {/CSSTemplate}
