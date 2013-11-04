@@ -89,6 +89,9 @@ module.exports = function (grunt) {
                     }, {
                         name : 'aria/css/atskin-<%= pkg.version %>.js',
                         files : ['aria/css/atskin.js']
+                    }, {
+                        name : 'aria/css/atflatskin-<%= pkg.version %>.js',
+                        files : ['aria/css/atflatskin.js']
                     }]
         }
     });
