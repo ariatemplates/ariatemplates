@@ -42,6 +42,16 @@ Aria.classDefinition({
             pgh.$dispose();
         },
 
+        testGetMenusEmpty : function () {
+            var pageDef = {
+                pageComposition : {}
+            };
+
+            var pgh = new aria.pageEngine.utils.PageConfigHelper(pageDef);
+            this.assertTrue(pgh.getMenus() === null, "getMenus method should return null when no menu is defined.");
+            pgh.$dispose();
+        },
+
         testGetPageDependencies : function () {
             var pgh = new aria.pageEngine.utils.PageConfigHelper(this.pageDefOne.pageDef);
             var dep = pgh.getPageDependencies();

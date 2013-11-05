@@ -62,8 +62,7 @@ Aria.classDefinition({
                         menus : {
                             mymenu : []
 
-                        },
-                        placeholderContents : {}
+                        }
                     },
                     pageComposition : {
                         template : "test.aria.pageEngine.pageEngine.site.templates.providerFour.MainLayout",
@@ -93,8 +92,7 @@ Aria.classDefinition({
                         menus : {
                             mymenu : []
 
-                        },
-                        placeholderContents : {}
+                        }
                     },
                     pageComposition : {
                         template : "test.aria.pageEngine.pageEngine.site.templates.providerFour.MainLayout",
@@ -125,8 +123,7 @@ Aria.classDefinition({
                         menus : {
                             mymenu : []
 
-                        },
-                        placeholderContents : {}
+                        }
                     },
                     pageComposition : {
                         template : "test.aria.pageEngine.pageEngine.site.templates.providerFour.MainLayout",

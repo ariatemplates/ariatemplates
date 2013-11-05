@@ -71,8 +71,7 @@ Aria.classDefinition({
             }
             if (this._incorrectPage) {
                 this.$callback(callback.onsuccess, {
-                    pageId : "aaa",
-                    contrrrents : {},
+                    pagdsdseId : "aaa",
                     pageComposition : {
                         template : "pagengine.site.tpls.layouts.MainLayout",
                         placeholders : {
@@ -86,10 +85,6 @@ Aria.classDefinition({
             if (this._missingPageDependencies) {
                 this.$callback(callback.onsuccess, {
                     pageId : "aaa",
-                    contents : {
-                        menus : {},
-                        placeholderContents : {}
-                    },
                     pageComposition : {
                         template : "invalid.MainLayout",
                         placeholders : {
