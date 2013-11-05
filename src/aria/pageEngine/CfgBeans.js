@@ -188,7 +188,7 @@ Aria.beanDefinitions({
                 "contents" : {
                     $type : "PageContents",
                     $description : "Contents for the current page",
-                    $mandatory : true
+                    $default : {}
                 },
                 "pageComposition" : {
                     $type : "PageComposition",
@@ -239,7 +239,15 @@ Aria.beanDefinitions({
                         $description : "ContentId's that are present in the pageComposition"
                     },
                     $contentType : {
-                        $type : "Content"
+                        $type : "json:MultiTypes",
+                        $contentTypes : [{
+                                    $type : "Content"
+                                }, {
+                                    $type : "json:Array",
+                                    $contentType : {
+                                        $type : "Content"
+                                    }
+                                }]
                     }
                 }
             }

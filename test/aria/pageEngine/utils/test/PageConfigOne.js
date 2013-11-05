@@ -20,8 +20,7 @@ Aria.resourcesDefinition({
             contents : {
                 menus : {
                     "menuOne" : ["childOne", "childTwo"]
-                },
-                placeholderContents : {}
+                }
             },
             pageComposition : {
                 template : "main.page.template",
@@ -98,8 +97,7 @@ Aria.resourcesDefinition({
             contents : {
                 menus : {
                     "menuOne" : ["childOne", "childTwo"]
-                },
-                placeholderContents : {}
+                }
             },
             pageComposition : {
                 template : "main.page.template",

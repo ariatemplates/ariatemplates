@@ -52,7 +52,6 @@ Aria.classDefinition({
                 pageId : "aaa",
                 url : "/pageEngine/aaa",
                 animation : this._animationCfg,
-                contents : {},
                 pageComposition : {
                     template : "test.aria.pageEngine.pageEngine.site.templates.MainLayout",
                     placeholders : {}

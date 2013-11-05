@@ -51,7 +51,8 @@ Aria.classDefinition({
          * @private
          */
         getMenus : function () {
-            return this._pageConfig.contents.menus;
+            var contents = this._pageConfig.contents;
+            return contents ? contents.menus : null;
         },
 
         /**
