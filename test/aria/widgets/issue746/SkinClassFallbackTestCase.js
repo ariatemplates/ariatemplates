@@ -131,17 +131,17 @@ Aria.classDefinition({
         },
         testAsyncAllWidgets : function () {
             // Load all widgets needed for the test and then test them
+            var testNames = [];
+            for (var i = 0; i < this.__widgets.length; i++) {
+                testNames.push(this.__widgets[i].name);
+            }
             Aria.load({
-                classes : this.__widgets.map(this.__mappingFn),
+                classes : testNames,
                 oncomplete : {
                     fn : this.__performTests,
                     scope : this
                 }
             });
-        },
-        // method used to extract the widgetname from the testconfig
-        __mappingFn : function (value) {
-            return value.name;
         },
         __performTests : function () {
             while (this.__widgets.length > 0) {
