@@ -20,6 +20,7 @@ Aria.classDefinition({
         this.$TestSuite.constructor.call(this);
 
         this._tests = ["test.aria.widgets.form.textinput.onchange.OnChangeTestCase",
+                "test.aria.widgets.form.textinput.blurvalidation.BlurValidationTestCase",
                 "test.aria.widgets.form.textinput.quotes.QuotesTestCase"];
     }
 });

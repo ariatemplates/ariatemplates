@@ -914,9 +914,6 @@ Aria.classDefinition({
                     this.setHelpText(true);
                 }
 
-                if (!cfg.directOnBlurValidation) {
-                    this.changeProperty("error", false);
-                }
                 this._updateState();
 
                 if (cfg.formatError && cfg.validationEvent === 'onBlur') {

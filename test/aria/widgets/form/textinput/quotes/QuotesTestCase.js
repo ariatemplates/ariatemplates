@@ -26,9 +26,6 @@ Aria.classDefinition({
             }
         };
     },
-    $destructor : function () {
-        this.$TemplateTestCase.constructor.call(this);
-    },
     $prototype : {
         runTemplateTest : function () {
             var tf = this.getInputField("tf");
