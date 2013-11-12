@@ -16,9 +16,6 @@
 Aria.classDefinition({
     $classpath : "test.aria.templates.autorefresh.AutorefreshTestCase",
     $events : {
-        /**
-         * @event classReady
-         */
         "Ready" : {
             description : "Raised when the template content is fully displayed."
         }

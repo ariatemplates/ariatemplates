@@ -65,9 +65,15 @@ Aria.classDefinition({
 
         /**
          * Handler to use with this module.
-         * @implement aria.modules.requestHandler.IRequestHandler
+         * @type aria.modules.requestHandler.IRequestHandler
          */
         this.$requestHandler = null;
+
+        /**
+         * UrlService instance to use with this module.
+         * @type aria.modules.urlService.IUrlService
+         */
+        this.$urlService = null;
 
         /**
          * Object containing the instance and the options for the JSON serializer used in the requests issued by the

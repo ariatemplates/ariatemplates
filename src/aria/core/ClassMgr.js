@@ -25,7 +25,6 @@ Aria.classDefinition({
     $events : {
         /**
          * Raised in the listener of the 'complete' event raised by the appropriate classLoader.
-         * @event classComplete
          */
         "classComplete" : {
             description : "notifies that the class loader process is done.",

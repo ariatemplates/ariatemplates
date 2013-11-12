@@ -30,7 +30,7 @@ Aria.classDefinition({
     },
     $constructor : function () {
         /**
-         * JSON serialiazer used to stringify the request jason data before sending the request
+         * JSON serializer used to stringify the request json data before sending the request
          * @protected
          * @type aria.modules.requestHandler.environment.RequestHandler:RequestJsonSerializerCfg
          */
