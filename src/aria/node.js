@@ -4,6 +4,7 @@ var vm = require("vm"), fs = require("fs"), path = require("path");
 /* aria and Aria are going to be global */
 aria = {};
 
+// DownloadMgr is not yet available, set rootFolderPath temporarily to load the framework
 Aria = {
     rootFolderPath : __dirname + "/../"
 };
@@ -46,6 +47,15 @@ try {
     aria.core.IO.updateTransports({
         "sameDomain" : "aria.node.Transport"
     });
+
+    // Update the root map, so `aria.*` is always served from AT npm installation, regardless of `rootFolderPath`
+    // (and so that the user can change `Aria.rootFolderPath` without breaking framework's classes loading).
+    aria.core.DownloadMgr.updateRootMap({
+        aria : {
+            "*" : __dirname + "/../"
+        }
+    });
+
 } catch (ex) {
     console.error('\n[Error] Aria Templates framework not loaded.', ex);
     process.exit(1);
