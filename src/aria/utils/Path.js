@@ -73,9 +73,9 @@ Aria.classDefinition({
 
         /**
          * Resolve a path inside an object, and return result
-         * @param {String|Array} path. If a string, will parse it. If Array, specifies the suite of parameters to
+         * @param {String|Array} path If a string, will parse it. If Array, specifies the suite of parameters to
          * follow.
-         * @param {Object} inside. If not specified, window is used.
+         * @param {Object} inside If not specified, window is used.
          */
         resolve : function (path, inside) {
             if (aria.utils.Type.isString(path)) {
@@ -104,7 +104,7 @@ Aria.classDefinition({
 
         /**
          * Parse a string path and return parameter suite in an array
-         * @param {String} path, like obj.param1[0]["param2"]
+         * @param {String} path like obj.param1[0]["param2"]
          * @return {Array}
          */
         parse : function (path) {
@@ -114,7 +114,7 @@ Aria.classDefinition({
         /**
          * Parse parameters in path
          * @protected
-         * @param {String} path, like .param1[0]["param2"]
+         * @param {String} path like .param1[0]["param2"]
          * @return {Array}
          */
         _paramParse : function (path) {

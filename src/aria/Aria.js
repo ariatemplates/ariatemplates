@@ -1334,23 +1334,24 @@
      * @param {Object} desc the description of the files to load and the callback [loadDesc]
      *
      * <pre>
-     * { classes:[] {Array} list of classpaths to be loaded
-     *         oncomplete:{
-     *             fn: {Function} the callback function - may be called synchronously if
-     * all dependencies are already available
-     *             scope: {Object} [optional] scope object (i.e. 'this') to associate to fn - if not provided, the Aria object will be used args: {Object} [optional] callback arguments (passed back
-     * as argument when the callback is called)
-     *         }
-     *         onerror:{
-     *             fn: ...
-     *             ...,
-     *             override:true // used to disable error warnings
-     *         }
+     * {
+     *   classes : []        // {Array of String} - classpaths to be loaded (dot is a separator)
+     *   oncomplete : {
+     *      fn: {Function}   // the callback function - may be called synchronously if all dependencies are already available
+     *      scope: {Object}  // [optional] scope object (i.e. 'this') to associate to fn - if not provided, the Aria object will be used
+     *      args: {Object}   // [optional] callback arguments (passed back as an argument to the callback function)
+     *   },
+     *   onerror: {
+     *      fn: ...
+     *      ...,
+     *      override:true    // used to disable error warnings
+     *   }
      * }
      * </pre>
      *
-     * Alternatively, if there is no need to specify a scope and args, the callback property can contain directly the
-     * callback function oncomplete: function () {...} instead of: oncomplete: {fn: function () {...}}
+     * If there is no need to specify the <code>scope</code> and <code>args</code>, the callbacks can be passed
+     * directly as functions: e.g. <code>oncomplete: function () {...}</code> instead of
+     * <code>oncomplete: {fn: function () {...}}</code>
      */
     Aria.load = function (desc) {
         var ml = new aria.core.MultiLoader(desc);
