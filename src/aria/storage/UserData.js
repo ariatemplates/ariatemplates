@@ -82,7 +82,7 @@
         $implements : ["aria.storage.IStorage"],
         $extends : "aria.storage.AbstractStorage",
         $onload : function () {
-            if (aria.core.Browser.isIE) {
+            if (aria.core.Browser.isOldIE) {
                 try {
                     var form = Aria.$frameworkWindow.document.createElement("form");
                     form.innerHTML = "<input type='hidden' id='__aria_storage_UserData__' style='behavior:url(#default#userData)'>";
@@ -98,7 +98,7 @@
             }
         },
         $onunload : function () {
-            if (aria.core.Browser.isIE) {
+            if (aria.core.Browser.isOldIE) {
                 if (storage) {
                     storage.parentNode.removeChild(storage);
                 }

@@ -67,6 +67,18 @@ Aria.classDefinition({
         this.isIE10 = false;
 
         /**
+         * True if the browser is Internet Explorer 10 or less.
+         * @type Boolean
+         */
+        this.isOldIE = false;
+
+        /**
+         * True if the browser is Internet Explorer 11.
+         * @type Boolean
+         */
+        this.isModernIE = false;
+
+        /**
          * True if the browser is any version of Opera.
          * @type Boolean
          */
@@ -322,6 +334,7 @@ Aria.classDefinition({
             var ua = this.ua;
             if (ua.indexOf('msie') > -1) {
                 this.isIE = true;
+                this.isOldIE = true;
                 this.name = "IE";
                 if (/msie[\/\s]((?:\d+\.?)+)/.test(ua)) {
                     this.version = RegExp.$1;
@@ -354,6 +367,11 @@ Aria.classDefinition({
                         }
                     }
                 }
+            } else if (ua.indexOf('Trident/7.0')) {
+                this.isIE = true;
+                this.isModernIE = true;
+                this.name = "IE";
+                this.version = "11.0";
             } else if (ua.indexOf('opera') > -1) {
                 this.isOpera = true;
                 this.name = "Opera";
@@ -375,7 +393,6 @@ Aria.classDefinition({
                     this.isFirefox = true;
                 }
             }
-
 
             // common group for webkit-based browsers
             this.isWebkit = this.isSafari || this.isChrome || this.isPhantomJS;

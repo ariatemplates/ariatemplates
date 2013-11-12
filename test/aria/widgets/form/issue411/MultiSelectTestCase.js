@@ -74,7 +74,7 @@ Aria.classDefinition({
             this.assertEquals(widgetInstance._cfg.popupOpen, false, "Current value of popupOpen is true, where as it was expected to be false");
             this.assertEquals(typeof(popup), "undefined", "Dropdown for the MultiSelect is still open where as it was expected to be closed.");
             aria.utils.Json.setValue(this.env.data, "popupopenMS", true);
-            var delayM = aria.core.Browser.isIE ? 1000 : 500;
+            var delayM = aria.core.Browser.isOldIE ? 1000 : 500;
             aria.core.Timer.addCallback({
                 fn : this.assertPopup1,
                 scope : this,

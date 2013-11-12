@@ -69,7 +69,7 @@
         var tplDiv = cfg.tplDiv;
 
         // On IE, the CSS engine keeps rendering and calculating the position of the background image
-        if (aria.core.Browser.isIE) {
+        if (aria.core.Browser.isOldIE) {
             tplDiv.style.background = "";
         }
 

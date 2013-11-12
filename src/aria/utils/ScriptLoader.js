@@ -89,7 +89,7 @@ Aria.classDefinition({
          * @private
          */
         _addScriptLoadedCallback : function (scriptNode, callback, callbackArgs) {
-            if (aria.core.Browser.isIE) {
+            if (aria.core.Browser.isOldIE) {
                 this._addScriptLoadedCallback = function (scriptNode, callback, callbackArgs) {
                     scriptNode.onreadystatechange = function () {
                         if (this.readyState == 'complete' || this.readyState == 'loaded') {

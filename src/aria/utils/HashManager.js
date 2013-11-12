@@ -84,7 +84,7 @@ Aria.classDefinition({
          * @type Boolean
          * @protected
          */
-        this._isIE7OrLess = aria.core.Browser.isIE && aria.core.Browser.majorVersion < 8;
+        this._isIE7OrLess = aria.core.Browser.isOldIE && aria.core.Browser.majorVersion < 8;
 
         /**
          * Enable polling for hashChange

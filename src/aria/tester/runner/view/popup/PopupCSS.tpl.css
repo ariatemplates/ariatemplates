@@ -26,7 +26,7 @@
         position : fixed;
         top:0px;
         left:0px;
-        {if (aria.core.Browser.isIE && aria.core.Browser.version < 9)}
+        {if (aria.core.Browser.isOldIE && aria.core.Browser.version < 9)}
             height : 100%;
             width : 100%;
             background:rgb(0,0,0);

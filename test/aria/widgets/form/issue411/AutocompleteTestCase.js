@@ -81,7 +81,7 @@
 
         openNextPopup : function () {
             aria.utils.Json.setValue(this.env.data, "popupopenAC", true);
-            var delayM = aria.core.Browser.isIE ? 1000 : 500;
+            var delayM = aria.core.Browser.isOldIE ? 1000 : 500;
             aria.core.Timer.addCallback({
                 fn : this.assertPopup1,
                 scope : this,
