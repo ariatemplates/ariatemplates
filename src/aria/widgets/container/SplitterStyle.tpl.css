@@ -29,6 +29,7 @@
   height:${skinClass.separatorHeight}px;
   cursor: n-resize;
   display:block;
+  z-index: 5;
   {call background(skinClass.handleBackgroundColor,skinClass.handleSpriteURLh,"no-repeat center top")/}
 }
 
@@ -37,6 +38,7 @@
   width:${skinClass.separatorHeight}px;
   cursor: e-resize;
   display:block;
+  z-index: 5;
   {call background(skinClass.handleBackgroundColor,skinClass.handleSpriteURLv,"no-repeat right center")/}
 }
 
@@ -50,6 +52,7 @@
     border-bottom-left-radius: ${skinClass.borderBottomLeftRadius}px;
   {/if}
   background-color: ${skinClass.backgroundColor};
+  z-index: 1;
 }
 
 .xSplitter_${skinClassName}_sConstrained{
@@ -87,6 +90,7 @@
   position:absolute;
   overflow: auto;
   display:block;
+  z-index: 1;
 }
 
     {/macro}
