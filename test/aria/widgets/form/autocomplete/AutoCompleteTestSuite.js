@@ -48,5 +48,6 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.form.autocomplete.helptext.test1.AutoCompleteHelptextTestCase");
         this.addTests("test.aria.widgets.form.autocomplete.helptext.test2.AutoCompleteHelptextTestCase");
         this.addTests("test.aria.widgets.form.autocomplete.autoedit.AutoEditInput");
+        this.addTests("test.aria.widgets.form.autocomplete.issue697.EscKeyTestCase");
     }
 });
