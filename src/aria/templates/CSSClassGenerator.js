@@ -51,6 +51,7 @@ Aria.classDefinition({
             out.enterBlock("classInit");
             this._writeMapInheritance(out, "__$csslibs", out.templateParam.$csslibs, "{}");
             this._writeValueInheritance(out, "__$prefix", out.templateParam.$prefix, "true");
+            this._writeValueInheritance(out, "__$less", out.templateParam.$less, "false");
             out.leaveBlock();
             this.$ClassGenerator._writeClassInit.call(this, out);
         }

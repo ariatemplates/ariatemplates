@@ -82,7 +82,8 @@ Aria.classDefinition({
         this.$BaseCtxt.$destructor.call(this);
     },
     $statics : {
-        MEDIA_RULE : /@media\b/
+        MEDIA_RULE : /@media\b/,
+        LESS_INCLUDE_ERROR : "Error while attempting to use less.js API - please check if less.js script has been included"
     },
     $prototype : {
         /**
@@ -180,6 +181,23 @@ Aria.classDefinition({
             this._callMacro(null, "main");
             var text = this._out.join("");
             this._out = null;
+
+            if (this._tpl.__$less) {
+                var less = Aria.$global.less;
+                if (typeof less == 'undefined' || !less.Parser) {
+                    this.$logError(this.LESS_INCLUDE_ERROR);
+                } else {
+                    var parser = new less.Parser();
+                    parser.parse(text, function (err, tree) {
+                        if (err) {
+                            Aria.$logError([err.message].concat(err.extract).join("\n"));
+                        } else {
+                            text = tree.toCSS();
+                        }
+
+                    });
+                }
+            }
 
             this.__cachedOutput = text;
             return text;
