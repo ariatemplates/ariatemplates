@@ -22,6 +22,7 @@ Aria.classDefinition({
     $dependencies : ["aria.utils.Function", "aria.utils.Data", "aria.utils.String",
             "aria.widgets.environment.WidgetSettings", "aria.utils.Caret"],
     $css : ["aria.widgets.form.TextInputStyle"],
+
     /**
      * TextInput constructor
      * @param {aria.widgets.CfgBeans.TextInputCfg} cfg the widget configuration
@@ -144,17 +145,26 @@ Aria.classDefinition({
 
     },
     $destructor : function () {
+
         this._textInputField = null;
 
         if (this.controller) {
             this.controller.$dispose();
             this.controller = null;
         }
+
+        if (aria.core.Browser.isIE) {
+            var field = this.getTextInputField();
+            aria.utils.Event.removeListener(field, "paste");
+        }
+
         this.$InputWithFrame.$destructor.call(this);
     },
     $statics : {
         // ERROR MESSAGE:
-        WIDGET_VALUE_IS_WRONG_TYPE : "%1Value %2 is of incorrect type."
+        WIDGET_VALUE_IS_WRONG_TYPE : "%1Value %2 is of incorrect type.",
+        WRONG_BOUND_VALUE : "%1 contains a non-acceptable character (at least one of %2)."
+
     },
     $prototype : {
         /**
@@ -190,6 +200,23 @@ Aria.classDefinition({
                 return state.color || state.frame.color;
             }
             return "inherit";
+        },
+
+        /**
+         * Override _init function to add event listeners that cannot be delegated on IE
+         * @method
+         * @override
+         */
+        _init : aria.core.Browser.isIE ? function () {
+            this.$InputWithFrame._init.call(this);
+
+            var field = this.getTextInputField();
+            aria.utils.Event.addListener(field, "paste", {
+                fn : this._dom_onpaste,
+                scope : this
+            });
+        } : function () {
+            this.$InputWithFrame._init.call(this);
         },
 
         /**
@@ -237,6 +264,7 @@ Aria.classDefinition({
          * helptext
          */
         _setText : function (value) {
+
             if (value == null) {
                 value = this._getText();
             }
@@ -347,7 +375,6 @@ Aria.classDefinition({
 
             // FIXME: Fix applying initial state in the 'Div', remove the below
             this._reactToChange();
-
         },
 
         /**
@@ -387,6 +414,7 @@ Aria.classDefinition({
          * </pre>
          */
         checkValue : function (arg) {
+
             var inputField = this.getTextInputField();
             var text = inputField ? inputField.value : "";
             var value = null;
@@ -577,6 +605,7 @@ Aria.classDefinition({
          * @param {Number} end The ending caret position
          */
         setCaretPosition : function (start, end) {
+
             if (!this._hasFocus) {
                 return;
             }
@@ -606,6 +635,7 @@ Aria.classDefinition({
          * @protected
          */
         _onBoundPropertyChange : function (propertyName, newValue, oldValue) {
+
             if (propertyName === 'value') {
 
                 this.setHelpText(false);
@@ -613,6 +643,24 @@ Aria.classDefinition({
 
                 var cfg = this._cfg;
                 var displayText = "";
+
+                var acceptableCharacters = this._cfg.acceptableCharacters;
+                if (acceptableCharacters) {
+                    // set the bound value back to the previous one if it doesn't match the set of acceptable characters
+                    var newStringValue = newValue.toString();
+                    for (var i = 0; i < newStringValue.length; i++) {
+                        // stop as soon as we find a not matching char
+                        if (!newStringValue[i].match(acceptableCharacters)) {
+                            this.$logWarn(this.WRONG_BOUND_VALUE, [newValue, acceptableCharacters]);
+                            var bind = this._bindingListeners.value;
+                            if (bind) {
+                                aria.utils.Json.setValue(bind.inside, bind.to, oldValue, bind.cb);
+                                return;
+                            }
+                        }
+                    }
+
+                }
 
                 var res = this.checkValue({
                     performCheckOnly : true,
@@ -773,6 +821,7 @@ Aria.classDefinition({
          * @protected
          */
         _reactToChange : function () {
+
             var inputElm = this.getTextInputField();
             // only react if some DOM is available
             if (inputElm) {
@@ -785,18 +834,65 @@ Aria.classDefinition({
         },
 
         /**
+         * Internal method to handle the paste event.
+         * @param {aria.DomEvent} event Event object
+         * @protected
+         */
+        _dom_onpaste : function (event) {
+            aria.core.Timer.addCallback({
+                fn : this._checkPasteValue,
+                scope : this,
+                args : this.getTextInputField().value,
+                delay : 4
+            });
+        },
+
+        /**
+         * Internal method to check the value in the textField after a paste
+         * @protected
+         */
+        _checkPasteValue : function (valueBeforePaste) {
+            var valueAfterPaste = this.getTextInputField().value;
+
+            var acceptableCharacters = this._cfg.acceptableCharacters;
+            if (acceptableCharacters) {
+                for (var i = 0; i < valueAfterPaste.length; i++) {
+                    // stop as soon as we find a not matching char
+                    if (!valueAfterPaste[i].match(acceptableCharacters)) {
+                        this.getTextInputField().value = valueBeforePaste != null ? valueBeforePaste : "";
+                        return;
+                    }
+                }
+            }
+        },
+
+        /**
          * Internal method to handle the onkeydown event.
          * @param {DOMEvent|aria.DomEvent} e event object (on W3C browsers) or wrapper on it
          * @protected
          */
         _dom_onkeydown : function (event) {
-            var enterPressed = (event.keyCode == event.KC_ENTER);
+            var keyCode = event.keyCode;
+            var enterPressed = (keyCode == event.KC_ENTER);
             if (enterPressed) {
                 // pressing enter in a field triggers checkValue (necessary
                 // especially if doing validation on the
                 // onSubmit event of the fieldset, so that the data model is up
                 // to date)
                 this.checkValue();
+            }
+            if (this._cfg) {
+                var acceptableCharacters = this._cfg.acceptableCharacters;
+                if (acceptableCharacters) {
+                    var evt = event;
+                    if (!event.isSpecialKey && keyCode != aria.DomEvent.KC_SHIFT) {
+                        var keyTyped = String.fromCharCode(keyCode);
+                        var matchFound = keyTyped.match(acceptableCharacters);
+                        if (!matchFound) {
+                            evt.preventDefault();
+                        }
+                    }
+                }
             }
         },
 

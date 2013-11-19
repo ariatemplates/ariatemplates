@@ -420,13 +420,18 @@ Aria.beanDefinitions({
                         }
                     }
                 }
-
             }
         },
         "TextFieldCfg" : {
             $type : "TextInputCfg",
             $description : "The configuration for a text field",
-            $properties : {}
+            $properties : {
+                "acceptableCharacters" : {
+                    $type : "json:RegExp",
+                    $description : "Acceptable regex entry pattern for this field - regex has to be a set of acceptable characters",
+                    $default : null
+                }
+            }
         },
         "TextareaCfg" : {
             $type : "TextInputCfg",
@@ -555,6 +560,11 @@ Aria.beanDefinitions({
                         $type : "json:Float",
                         $description : ""
                     }]
+                },
+                "acceptableCharacters" : {
+                    $type : "json:RegExp",
+                    $description : "Acceptable regex entry pattern for this field - regex has to be a set of acceptable characters",
+                    $default : null
                 }
             }
         },
