@@ -552,9 +552,9 @@ Aria.beanDefinitions({
                     $type : "TextInputCfg.value",
                     $description : "Number currently displayed.",
                     $contentTypes : [{
-                        $type : "json:Float",
-                        $description : ""
-                    }]
+                                $type : "json:Float",
+                                $description : ""
+                            }]
                 }
             }
         },
@@ -782,6 +782,12 @@ Aria.beanDefinitions({
                     $properties : {
                         "referenceDate" : {
                             $type : "common:BindingRef"
+                        },
+                        "minValue" : {
+                            $type : "common:BindingRef"
+                        },
+                        "maxValue" : {
+                            $type : "common:BindingRef"
                         }
                     }
                 },
@@ -789,9 +795,9 @@ Aria.beanDefinitions({
                     $type : "InputCfg.value",
                     $description : "Date currently selected in the date picker.",
                     $contentTypes : [{
-                        $type : "json:Date",
-                        $description : ""
-                    }]
+                                $type : "json:Date",
+                                $description : ""
+                            }]
                 }
             }
         },

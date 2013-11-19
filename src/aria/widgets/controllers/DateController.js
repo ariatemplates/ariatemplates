@@ -175,7 +175,9 @@ Aria.classDefinition({
             if (!text) {
                 report = this.checkValue(null);
             } else {
-                if (text === this._dataModel.displayText) {
+                var modelDate = new Date(this._dataModel.displayText);
+                if (text === this._dataModel.displayText
+                        && !((this._minValue && this._minValue > modelDate) || (this._maxValue && this._maxValue < modelDate))) {
                     report = new aria.widgets.controllers.reports.ControllerReport();
                     report.ok = true;
                 } else {
