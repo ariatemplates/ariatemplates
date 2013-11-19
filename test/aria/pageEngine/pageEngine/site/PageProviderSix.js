@@ -83,8 +83,7 @@ Aria.classDefinition({
                     contents : {
                         menus : {
                             mymenu : []
-                        },
-                        placeholderContents : {}
+                        }
                     },
                     pageComposition : {
                         template : "test.aria.pageEngine.pageEngine.site.templates.providerSix.MainLayout",

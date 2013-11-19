@@ -756,7 +756,7 @@ Aria.classDefinition({
          */
         _getPlaceholderContents : function (pageConfig, contentId) {
             var outputContent = [];
-            var content = pageConfig.contents.placeholderContents[contentId];
+            var content = pageConfig.contents.placeholderContents ? pageConfig.contents.placeholderContents[contentId] : null;
             if (!content) {
                 return outputContent;
             }
