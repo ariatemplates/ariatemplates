@@ -76,16 +76,16 @@ Aria.classDefinition({
         /**
          * Helper method to help redirecting a request to a file
          * @param {aria.core.CfgBeans:IOAsyncRequestCfg} req the filter request object
-         * @param {String} filePath the file logical path - e.g. 'test/MyFile.xml'. It can be null or empty and in this
-         * case the request is not redirected. It is passed to aria.core.DownloadMgr.resolveURL(filePath,true), to builf
-         * the url, taking root maps into account.
+         * @param {String} path the file logical path or full URL. It can be null or empty and in this
+         * case the request is not redirected. It is passed to aria.core.DownloadMgr.resolveURL(path,true), to build
+         * the url, taking root maps into account. If it's a full URL it just returns.
          * @param {Boolean} preventTimestamp By default, a timestamp is added to the url to get this file. If this
          * parameter is true, no timestamp will be added.
          */
-        redirectToFile : function (req, filePath, preventTimestamp) {
-            if (filePath) {
+        redirectToFile : function (req, path, preventTimestamp) {
+            if (path) {
                 // change request url and method to target the requested file:
-                req.url = aria.core.DownloadMgr.resolveURL(filePath, true);
+                req.url = aria.core.DownloadMgr.resolveURL(path, true);
                 if (preventTimestamp !== true) {
                     req.url = aria.core.DownloadMgr.getURLWithTimestamp(req.url, true);
                 }
