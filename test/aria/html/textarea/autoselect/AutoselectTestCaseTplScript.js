@@ -13,18 +13,28 @@
  * limitations under the License.
  */
 
-Aria.classDefinition({
-    $classpath : "aria.html.HtmlLibrary",
-    $extends : "aria.widgetLibs.WidgetLib",
-    $singleton : true,
+Aria.tplScriptDefinition({
+    $classpath : "test.aria.html.textarea.autoselect.AutoselectTestCaseTplScript",
     $prototype : {
-        widgets : {
-            "TextInput" : "aria.html.TextInput",
-            "TextArea" : "aria.html.TextArea",
-            "Template" : "aria.html.Template",
-            "CheckBox" : "aria.html.CheckBox",
-            "RadioButton" : "aria.html.RadioButton",
-            "Select" : "aria.html.Select"
+        $dataReady : function () {
+            this.data = {
+                location : '',
+                departure : '',
+                click : 0,
+                clickNoAutoselect : 0
+            };
+        },
+
+        textType : function (value) {
+            return;
+        },
+
+        textClick : function () {
+            this.data.click++;
+        },
+
+        textClickWithoutAutoselect : function () {
+            this.data.clickNoAutoselect++;
         }
     }
 });

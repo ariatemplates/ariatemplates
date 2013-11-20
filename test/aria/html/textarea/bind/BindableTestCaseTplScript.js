@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Amadeus s.a.s.
+ * Copyright 2013 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,18 +13,19 @@
  * limitations under the License.
  */
 
-Aria.classDefinition({
-    $classpath : "aria.html.HtmlLibrary",
-    $extends : "aria.widgetLibs.WidgetLib",
-    $singleton : true,
+Aria.tplScriptDefinition({
+    $classpath : "test.aria.html.textarea.bind.BindableTestCaseTplScript",
     $prototype : {
-        widgets : {
-            "TextInput" : "aria.html.TextInput",
-            "TextArea" : "aria.html.TextArea",
-            "Template" : "aria.html.Template",
-            "CheckBox" : "aria.html.CheckBox",
-            "RadioButton" : "aria.html.RadioButton",
-            "Select" : "aria.html.Select"
+        typing : function (value) {
+            if (!this.data.keystrokes) {
+                this.data.keystrokes = [];
+            }
+
+            this.data.keystrokes.push(value);
+        },
+
+        somethingOnBlur : function () {
+            this.data.wasBlurred = true;
         }
     }
 });
