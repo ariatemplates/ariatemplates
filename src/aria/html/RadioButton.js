@@ -35,8 +35,6 @@
         $extends : "aria.html.InputElement",
         $dependencies : ["aria.html.beans.RadioButtonCfg"],
         $constructor : function (cfg, context, line) {
-            this.$cfgBean = this.$cfgBean || "aria.html.beans.RadioButtonCfg.Properties";
-
             cfg.on = cfg.on || {};
             this._chainListener(cfg.on, 'click', {
                 fn : bidirectionalClickBinding,
@@ -46,6 +44,10 @@
             this.$InputElement.constructor.call(this, cfg, context, line, "radio");
         },
         $prototype : {
+            /**
+             * Classpath of the configuration bean for this widget.
+             */
+            $cfgBean : "aria.html.beans.RadioButtonCfg.Properties",
 
             /**
              * Initialization method called after the markup of the widget has been inserted in the DOM.

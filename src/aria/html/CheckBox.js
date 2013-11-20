@@ -42,8 +42,6 @@
          * @param {Number} lineNumber line number in the template
          */
         $constructor : function (cfg, context, line) {
-            this.$cfgBean = this.$cfgBean || "aria.html.beans.CheckBoxCfg.Properties";
-
             cfg.on = cfg.on || {};
             this._chainListener(cfg.on, 'click', {
                 fn : bidirectionalClickBinding,
@@ -53,6 +51,10 @@
             this.$InputElement.constructor.call(this, cfg, context, line, "checkbox");
         },
         $prototype : {
+            /**
+             * Classpath of the configuration bean for this widget.
+             */
+            $cfgBean : "aria.html.beans.CheckBoxCfg.Properties",
 
             /**
              * Initialization method called after the markup of the widget has been inserted in the DOM.
