@@ -13,18 +13,23 @@
  * limitations under the License.
  */
 
-Aria.classDefinition({
-    $classpath : "aria.html.HtmlLibrary",
-    $extends : "aria.widgetLibs.WidgetLib",
-    $singleton : true,
-    $prototype : {
-        widgets : {
-            "TextInput" : "aria.html.TextInput",
-            "TextArea" : "aria.html.TextArea",
-            "Template" : "aria.html.Template",
-            "CheckBox" : "aria.html.CheckBox",
-            "RadioButton" : "aria.html.RadioButton",
-            "Select" : "aria.html.Select"
-        }
-    }
-});
+{Template {
+	$classpath : "test.aria.html.textarea.focus.FocusTestCaseTpl",
+	$wlibs : {
+		html : "aria.html.HtmlLibrary"
+	}
+}}
+
+  {macro main()}
+
+    <div>
+
+      {@html:TextArea {
+        id: "focusable"
+      }/}
+
+    </div>
+
+  {/macro}
+
+{/Template}
