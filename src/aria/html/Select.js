@@ -24,9 +24,6 @@ Aria.classDefinition({
     },
     $dependencies : ["aria.html.beans.SelectCfg", "aria.utils.Type", "aria.html.DisabledTrait"],
     $constructor : function (cfg, context, line) {
-        this.$cfgBean = this.$cfgBean || "aria.html.beans.SelectCfg.Properties";
-
-        cfg.tagName = "select";
         cfg.attributes = cfg.attributes || {};
         cfg.on = cfg.on || {};
 
@@ -38,6 +35,15 @@ Aria.classDefinition({
         this.$Element.constructor.call(this, cfg, context, line);
     },
     $prototype : {
+        /**
+         * Tagname to use to generate the markup of the widget
+         */
+        tagName : "select",
+
+        /**
+         * Classpath of the configuration bean for this widget.
+         */
+        $cfgBean : "aria.html.beans.SelectCfg.Properties",
 
         /**
          * Prototype init method called at prototype creation time Allows to store class-level objects that are shared

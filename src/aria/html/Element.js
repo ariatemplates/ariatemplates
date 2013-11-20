@@ -45,13 +45,9 @@
          * @param {Number} lineNumber line number in the template
          */
         $constructor : function (cfg, ctxt, lineNumber) {
-            /**
-             * Classpath of the configuration bean for this widget. Widgets extending this class can optionally provide
-             * a bean for nomalizing widget's properties. If null the widget will be normalized against
-             * aria.html.beans.ElementCfg.Properties.
-             * @type String
-             */
-            this.$cfgBean = this.$cfgBean || "aria.html.beans.ElementCfg.Properties";
+            if (this.tagName) {
+                cfg.tagName = this.tagName;
+            }
 
             var validCfg = aria.core.JsonValidator.normalize({
                 json : cfg,
@@ -102,6 +98,19 @@
             this._domElt = null;
         },
         $prototype : {
+            /**
+             * Tagname to use to generate the markup of the widget
+             */
+            tagName : null,
+
+            /**
+             * Classpath of the configuration bean for this widget. Widgets extending this class can optionally provide
+             * a bean for nomalizing widget's properties. If null the widget will be normalized against
+             * aria.html.beans.ElementCfg.Properties.
+             * @type String
+             */
+            $cfgBean : "aria.html.beans.ElementCfg.Properties",
+
             /**
              * Since event's callbacks can be have several signatures as specified in
              * aria.widgetLibs.CommonBeans.Callback this function normalizes the callbacks for later use. It'll also ask
