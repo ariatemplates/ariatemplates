@@ -27,13 +27,21 @@
             BINDING_NEEDED : "The property '%2' from Widget %1 should be bound to a data model"
         },
         $constructor : function (cfg, context, line, type) {
-            cfg.tagName = "input";
             cfg.attributes = cfg.attributes || {};
             cfg.attributes.type = type;
 
             this.$Element.constructor.call(this, cfg, context, line);
         },
         $prototype : {
+            /**
+             * Tagname to use to generate the markup of the widget
+             */
+            tagName : "input",
+
+            /**
+             * Classpath of the configuration bean for this widget.
+             */
+            $cfgBean : "aria.html.beans.InputElementCfg.Properties",
 
             /**
              * Prototype init method called at prototype creation. It copies all methods from the prototype of

@@ -162,15 +162,12 @@
         },
         /**
          * Create an instance of the widget.
-         * @param {aria.html.beans.TextInputCfg:Properties} cfg widget configuration, which is the parameter given in the
-         * template
+         * @param {aria.html.beans.TextInputCfg:Properties} cfg widget configuration, which is the parameter given in
+         * the template
          * @param {aria.templates.TemplateCtxt} context template context
          * @param {Number} lineNumber line number in the template
          */
         $constructor : function (cfg, context, line) {
-            this.$cfgBean = this.$cfgBean || "aria.html.beans.TextInputCfg.Properties";
-
-            cfg.tagName = "input";
             cfg.attributes = cfg.attributes || {};
             var type = cfg.attributes.type;
 
@@ -234,6 +231,15 @@
             this.$InputElement.$destructor.call(this);
         },
         $prototype : {
+            /**
+             * Tagname to use to generate the markup of the widget
+             */
+            tagName : "input",
+
+            /**
+             * Classpath of the configuration bean for this widget.
+             */
+            $cfgBean : "aria.html.beans.TextInputCfg.Properties",
 
             /**
              * Initialization method called after the markup of the widget has been inserted in the DOM.
