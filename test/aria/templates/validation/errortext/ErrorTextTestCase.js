@@ -19,10 +19,10 @@
  */
 Aria.classDefinition({
     $classpath : "test.aria.templates.validation.errortext.ErrorTextTestCase",
-    $extends : "aria.jsunit.TemplateTestCase",
+    $extends : "aria.jsunit.RobotTestCase",
     $dependencies : ["aria.resources.handlers.LCResourcesHandler"],
     $constructor : function () {
-        this.$TemplateTestCase.constructor.call(this);
+        this.$RobotTestCase.constructor.call(this);
         this.handler = new aria.resources.handlers.LCResourcesHandler();
         this.setTestEnv({
             template : "test.aria.templates.validation.errortext.ErrorText",
@@ -33,7 +33,7 @@ Aria.classDefinition({
     },
     $destructor : function () {
         this.handler.$dispose();
-        this.$TemplateTestCase.$destructor.call(this);
+        this.$RobotTestCase.$destructor.call(this);
     },
     $prototype : {
         runTemplateTest : function () {
