@@ -192,6 +192,10 @@ Aria.beanDefinitions({
                 "$prefix" : {
                     $type : "json:Boolean",
                     $description : "Defaulted to true. Use it only when required to use features like ( @font-face and @keyframes), avoid otherwise, to limit  CSS class name collisions."
+                },
+                "$less" : {
+                    $type : "json:Boolean",
+                    $description : "Defaulted to false. Used to add less.js features to the template CSS."
                 }
             }
         },
