@@ -67,10 +67,11 @@ Aria.classDefinition({
          * @param {Object} jsonData
          */
         setJsonPostData : function (req, jsonData) {
-            // cf aria.modules.RequestMgr._callAsyncRequest:
-            req.data = 'data=' + aria.utils.Json.convertToJsonString(jsonData, {
-                encodeParameters : true
-            });
+            var sender = req.sender;
+            req.data = (sender && sender.classpath=="aria.modules.RequestMgr") ?
+                    sender.requestObject.requestHandler.prepareRequestBody(jsonData, sender.requestObject) :
+                    aria.utils.Json.convertToJsonString(jsonData);
+
         },
 
         /**
