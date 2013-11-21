@@ -454,7 +454,67 @@ Aria.classDefinition({
                 keepMetadata : false
             });
             this.assertJsonEquals(testObj, this.jsonSerializer.parse(output));
-        }
+        },
 
+        /**
+         * Allow dates to be parsed/evaluated
+         */
+        testAllowDates : function () {
+            var testObj = {
+                date : new Date(1383232749707)
+            };
+
+            var str = '{"date":new Date(1383232749707)}';
+
+            var result = this.jsonSerializer.parse(str);
+            this.assertJsonEquals(testObj, result);
+        },
+
+        testAllowDates2 : function () {
+            var testObj = {
+                text : "text",
+                date : new Date(1383232749707),
+                date1 : new Date(1383232749707)
+            };
+
+            var str = '{"text": "text", "date":new Date(1383232749707), "date1":new Date(1383232749707)}';
+
+            var result = this.jsonSerializer.parse(str);
+            this.assertJsonEquals(testObj, result);
+        },
+
+        testAllowDates3 : function () {
+            var testObj = {
+                "date" : new Date(1383232749707),
+                "dateArray" : [new Date(1383232749707), new Date(1383232749707)],
+                "dateNestedObject" : {
+                    "dateInner" : new Date(1383232749707)
+                }
+            };
+
+            var str = '{"date" : new Date(1383232749707), "dateArray": [new Date(1383232749707), new Date(1383232749707)], "dateNestedObject" : {"dateInner" : new Date(1383232749707)}}';
+
+            var result = this.jsonSerializer.parse(str);
+            this.assertJsonEquals(testObj, result);
+        },
+
+        testSerializeAndParseDate : function () {
+            var testObj = {
+                "date" : new Date(1383232749707),
+                "dateArray" : [new Date(1383232749707), new Date(1383232749707)],
+                "dateNestedObject" : {
+                    "dateInner" : new Date(1383232749707)
+                }
+            };
+            var str = '{"date":new Date(1383232749707),"dateArray":[new Date(1383232749707),new Date(1383232749707)],"dateNestedObject":{"dateInner":new Date(1383232749707)}}';
+
+            var serializedValue = this.jsonSerializer.serialize(testObj, {
+                reversible : true
+            });
+            this.assertJsonEquals(str, serializedValue);
+
+            var result = this.jsonSerializer.parse(serializedValue);
+            this.assertJsonEquals(testObj, result);
+        }
     }
 });
