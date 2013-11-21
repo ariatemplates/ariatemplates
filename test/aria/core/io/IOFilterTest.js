@@ -29,7 +29,7 @@ Aria.classDefinition({
                 postData : "notChanged"
             };
             filter.setJsonPostData(req, {});
-            this.assertTrue(req.data == "data={}");
+            this.assertTrue(req.data == "{}");
             filter.$dispose();
 
             // Test for PTR 05168918: keys must be enclosed in ""
@@ -83,7 +83,7 @@ Aria.classDefinition({
             aria.core.IOFiltersMgr.removeFilter(filter);
             filter.$dispose();
             this.assertEquals(counter, 1, "Expecting the async request to be called once, got %2");
-            this.assertEquals(postData, 'data="better"');
+            this.assertEquals(postData, '"better"');
         },
 
         testAsyncCheckErrorInFilter : function () {
