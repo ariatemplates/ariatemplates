@@ -173,6 +173,40 @@ Aria.classDefinition({
 
                 this.assertEquals(lineP, lineC, "Line " + i + " mismatch");
             }
+        },
+
+        testAsyncCommentRemovalIssue721 : function() {
+            aria.core.IO.asyncRequest({
+                //Get the template file
+                url : Aria.rootFolderPath + "test/aria/templates/mock/CSSTemplateIssue721.tpl",
+                callback : {
+                    fn : this._testCommentRemoval,
+                    scope : this
+                }
+            });
+        },
+
+        _testCommentRemoval : function (cb, args) {
+            var parser = aria.templates.CSSParser;
+            this.assertTrue(!!parser.$CSSParser);
+
+            var template = cb.responseText;
+            var pattern = /background-image:url(.*)\;/;
+            //Get the background-image line before parsing
+            var matchedDataUriBefore = template.match(pattern);
+            //Ensure that the background-image statement exists
+            this.assertEquals(2, matchedDataUriBefore.length);
+
+            //prepare the template in order to remove comments
+            parser._prepare(template);
+
+            //Get the background-image line after parsing
+            var matchedDataUriAfter = parser.template.match(pattern);
+            this.assertEquals(2, matchedDataUriAfter.length);
+
+            //check that both background-image urls found are the same
+            this.assertEquals(matchedDataUriBefore[1], matchedDataUriAfter[1], "Mismatch between unmodified and modified template regarding data uri");
+            this.notifyTestEnd("testAsyncCommentRemovalIssue721");
         }
     }
 });
