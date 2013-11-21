@@ -495,11 +495,12 @@ Aria.classDefinition({
          * @private
          */
         _getViewportSize : function () {
-            var document = Aria.$window.document;
-            var docEl = document.documentElement;
+            var doc = Aria.$window.document;
+            var docEl = doc.documentElement;
+            var body = doc.body;
             var size = {
-                'width' : docEl.clientWidth,
-                'height' : docEl.clientHeight
+                'width' : docEl.clientWidth || body.clientWidth,
+                'height' : docEl.clientHeight || body.clientHeight
             };
             return size;
         },

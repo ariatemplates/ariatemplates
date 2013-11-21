@@ -86,7 +86,7 @@
         $dependencies : ["aria.core.Browser"],
         $onload : function () {
             // Browser shortcuts are done in the $onload which is executed only once
-            isIE8orLess = (aria.core.Browser.isIE6 || aria.core.Browser.isIE7 || aria.core.Browser.isIE8);
+            isIE8orLess = (aria.core.Browser.isIE5 || aria.core.Browser.isIE6 || aria.core.Browser.isIE7 || aria.core.Browser.isIE8);
             isGecko = !(aria.core.Browser.isIE || aria.core.Browser.isOpera || aria.core.Browser.isChrome || aria.core.Browser.isSafari);
         },
         /**
