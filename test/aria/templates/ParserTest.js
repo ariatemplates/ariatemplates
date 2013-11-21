@@ -26,8 +26,24 @@ Aria.classDefinition({
             this.assertTrue(aria.templates.TplParser.template == "line 1\nline2\n\nline 4\n\n");
 
             // PTR 05020716: a comment should not remove the character preceeding '//'
-            aria.templates.TplParser._prepare("   line 1   \n line2// with my comment  \n//line 3\n line 4\n\n");
-            this.assertTrue(aria.templates.TplParser.template == "line 1\nline2\n\nline 4\n\n");
+
+            aria.templates.TplParser._prepare("   line 1   \n line2;// with my comment  \n//line 3\n line 4\n\n");
+            this.assertTrue(aria.templates.TplParser.template == "line 1\nline2;\n\nline 4\n\n");
+
+            aria.templates.TplParser._prepare("   line 1   \n line2}// with my comment  \n//line 3\n line 4\n\n");
+            this.assertTrue(aria.templates.TplParser.template == "line 1\nline2}\n\nline 4\n\n");
+
+            aria.templates.TplParser._prepare("   line 1   \n line2>// with my comment  \n//line 3\n line 4\n\n");
+            this.assertTrue(aria.templates.TplParser.template == "line 1\nline2>\n\nline 4\n\n");
+
+            aria.templates.TplParser._prepare("   line 1   \n line2{// with my comment  \n//line 3\n line 4\n\n");
+            this.assertTrue(aria.templates.TplParser.template == "line 1\nline2{\n\nline 4\n\n");
+
+            aria.templates.TplParser._prepare("   line 1   \n line2,// with my comment  \n//line 3\n line 4\n\n");
+            this.assertTrue(aria.templates.TplParser.template == "line 1\nline2,\n\nline 4\n\n");
+
+            aria.templates.TplParser._prepare("   line 1   \n line2(// with my comment  \n//line 3\n line 4\n\n");
+            this.assertTrue(aria.templates.TplParser.template == "line 1\nline2(\n\nline 4\n\n");
         },
 
         testComputeLineNumbers : function () {
@@ -99,9 +115,9 @@ Aria.classDefinition({
             tree = p.parseTemplate(widget);
             aria.core.JsonValidator.check(tree, 'aria.templates.TreeBeans.Root');
             this.assertTrue(tree.content[0].name == "@aria:Button");// widget definition without white space between
-                                                                    // name and configuration
+            // name and configuration
             this.assertTrue(tree.content[1].name == "@aria:Button");// prefered widget definition with white space
-                                                                    // between name and configuration
+            // between name and configuration
         },
 
         testParseTemplateErrors : function () {
