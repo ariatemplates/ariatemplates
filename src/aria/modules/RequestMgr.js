@@ -79,14 +79,14 @@ Aria.classDefinition({
         /**
          * Holds the Url Service Creation implementation instance
          * @protected
-         * @type Object implements aria.modules.urlService.IUrlService
+         * @type aria.modules.urlService.IUrlService
          */
         this._urlService = null;
 
         /**
          * Request handler instance attached to the request manager
          * @protected
-         * @type Object implements aria.modules.requestHandler.IRequestHandler
+         * @type aria.modules.requestHandler.IRequestHandler
          */
         this._requestHandler = null;
 

@@ -66,8 +66,8 @@ Aria.classDefinition({
     },
     $prototype : {
         /**
-         * Start the load of the resources passed to the constructor Warning: this mehod may be synchronous if all
-         * resources are already available As such, the caller should not make any processing but the callback after
+         * Start the load of the resources passed to the constructor. Warning: this method may be synchronous if all
+         * resources are already available. As such, the caller should not make any processing but the callback after
          * this method call
          */
         load : function () {
@@ -84,7 +84,7 @@ Aria.classDefinition({
                 "CML" : cm.filterMissingDependencies(descriptor.cml)
             };
 
-            // This first loop only detects whether there are error or missing dependencies
+            // This first loop only detects whether there are errors or missing dependencies
             for (var type in dependencies) {
                 if (dependencies.hasOwnProperty(type)) {
                     var missing = dependencies[type];
@@ -103,7 +103,7 @@ Aria.classDefinition({
                 if (this._loadDesc['onerror'] && this._loadDesc['onerror'].override) {
                     loader.handleError = false;
                 }
-                this._clsLoader = loader; // usefull reference for debugging
+                this._clsLoader = loader; // useful reference for debugging
 
                 loader.$on({
                     "classReady" : this._onClassesReady,

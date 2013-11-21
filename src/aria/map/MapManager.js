@@ -92,20 +92,12 @@
 
         },
         $events : {
-
-            /**
-             * @event mapReady
-             */
             "mapReady" : {
                 description : "Notifies that a certain map has been loaded",
                 properties : {
                     mapId : "{String} id of the map"
                 }
             },
-
-            /**
-             * @event mapDestroy
-             */
             "mapDestroy" : {
                 description : "Notifies that a certain map has been destroyed",
                 properties : {
