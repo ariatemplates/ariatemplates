@@ -38,7 +38,7 @@
 
             var browser = aria.core.Browser;
             var version = parseInt(browser.majorVersion, 10);
-            this._testInIframe = !(browser.isIE || (browser.isSafari && browser.environment == "Windows"));
+            this._testInIframe = !(browser.isOldIE || (browser.isSafari && browser.environment == "Windows"));
             this._stopTestBeforeNavigation = browser.isIE7 || browser.isPhantomJS;
             this._delayAfterNavigation = 100;
         },

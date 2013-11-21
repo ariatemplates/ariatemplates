@@ -36,8 +36,8 @@ Aria.classDefinition({
          */
         testAsync_checkEvents : function () {
 
-            var browserVersion = parseInt(aria.core.Browser.version, 10);
-            var cssAnimationsNotSupported = (aria.core.Browser.isIE && browserVersion < 10)
+            var browserVersion = aria.core.Browser.majorVersion;
+            var cssAnimationsNotSupported = (aria.core.Browser.isOldIE && browserVersion < 10)
                     || (aria.core.Browser.isFirefox && browserVersion < 4);
 
             if (cssAnimationsNotSupported) {

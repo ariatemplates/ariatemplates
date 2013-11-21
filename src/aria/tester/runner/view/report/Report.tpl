@@ -59,7 +59,7 @@
             class="reportTable"
             cellspacing="1"
             style="
-            {if aria.core.Browser.isIE}
+            {if aria.core.Browser.isOldIE}
                 width:${$hdim(161,1)}px;
             {/if}
         "

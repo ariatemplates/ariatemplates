@@ -173,7 +173,7 @@ Aria.classDefinition({
             this._checkUrl(/\/pageEngine\/ccc/);
             this._checkTitle("page_ccc");
 
-            if (aria.core.Browser.isIE) {
+            if (aria.core.Browser.isOldIE) {
                 aria.core.Timer.addCallback({
                     fn : this.end,
                     scope : this,

@@ -18,7 +18,7 @@
 
 	/** Colors **/
 	{var blue = "#7aa1c9" /}
-	{var green = "#bacd81" /} 
+	{var green = "#bacd81" /}
 
 	/** Font properties **/
 	{var font = {
@@ -26,22 +26,22 @@
 		weight : "bold",
 		family : "helvetica"
 	} /}
-	
-	
+
+
 	{macro main()}
-	
+
 	.evenRow {
 		background-color : ${blue};
 		{call printStandardRowProperties() /}
 	}
-	
+
 	.oddRow {
 		background-color : ${green};
 		{call printStandardRowProperties() /}
 	}
-	
+
 	#title {
-		{if !aria.core.Browser.isIE}
+		{if !aria.core.Browser.isOldIE}
 			color : ${blue};
 		{else /}
 			color : ${green};
@@ -50,7 +50,7 @@
 			font-${property} : ${font[property]};
 		{/for}
 		margin-top : 20px;
-		
+
 		background-color:yellow;
 		width:300px;
 		heiight:100px;
@@ -59,17 +59,17 @@
 		-webkit-transition: width 2s; /* Safari and Chrome */
 		-o-transition: width 2s; /* Opera */
 	}
-	
+
 	.largeText {
       font-size: 14pt;
       font-weight: bold;
       color: #4776A7;
     }
-	
+
 	div#title:hover {
 		width : 700px;
 	}
-	
+
 	.mySectionClass {
 		width : 400px;
 		height : 200px;

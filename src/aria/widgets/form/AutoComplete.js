@@ -166,7 +166,7 @@ Aria.classDefinition({
          * @method
          * @override
          */
-        _init : aria.core.Browser.isIE ? function () {
+        _init : aria.core.Browser.isOldIE ? function () {
             this.$DropDownTextInput._init.call(this);
 
             var field = this.getTextInputField();
@@ -187,7 +187,7 @@ Aria.classDefinition({
          * @method
          * @protected
          */
-        _removeEvents : aria.core.Browser.isIE ? function () {
+        _removeEvents : aria.core.Browser.isOldIE ? function () {
             var field = this.getTextInputField();
             aria.utils.Event.removeListener(field, "paste");
             aria.utils.Event.removeListener(field, "cut");

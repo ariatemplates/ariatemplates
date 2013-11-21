@@ -52,7 +52,7 @@ Aria.classDefinition({
          * @type Boolean
          * @protected
          */
-        this._animationsDisabled = (browser.isIE && browser.majorVersion < 10)
+        this._animationsDisabled = (browser.isOldIE && browser.majorVersion < 10)
                 || (browser.isFirefox && browser.majorVersion < 4);
 
         /**
@@ -576,7 +576,7 @@ Aria.classDefinition({
             }
 
             var browser = aria.core.Browser;
-            if (browser.isIE && parseInt(browser.majorVersion, 10) < 8) {
+            if (browser.isOldIE && browser.majorVersion < 8) {
                 aria.core.Timer.addCallback({
                     fn : function () {
                         args.div.style.zoom = 0;

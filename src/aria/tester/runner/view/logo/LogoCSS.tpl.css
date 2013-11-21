@@ -22,10 +22,10 @@
     {var mainColor = "rgb(" + baseColor.r + ","  + baseColor.g + "," + baseColor.b + ")"/}
     div {
         float : left;
-        {if (aria.core.Browser.isIE && !aria.core.Browser.isIE9)}
-            color : ${mainColor};    
+        {if (aria.core.Browser.isOldIE && !aria.core.Browser.isIE9)}
+            color : ${mainColor};
         {else/}
-            color : white;    
+            color : white;
             text-shadow: 0px 0px 2px ${mainColor};
         {/if}
         font-family: times New Roman;

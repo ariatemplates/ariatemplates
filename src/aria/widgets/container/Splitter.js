@@ -156,7 +156,7 @@ Aria.classDefinition({
 
         },
         _onDragStart : function () {
-            if (aria.core.Browser.isIE) {
+            if (aria.core.Browser.isOldIE) {
                 this.getDom().onselectstart = Aria.returnFalse;
             }
             this._splitBarProxyClass.remove(this._handleBarClass);

@@ -27,7 +27,6 @@
     var CB = 5;
     var CLEANCB = 6;
 
-
     /**
      * Utilities for handling Dom event listeners
      */
@@ -41,7 +40,6 @@
         $constructor : function () {
             this.typesUtil = aria.utils.Type;
             this.UA = aria.core.Browser;
-            this.isIE = this.UA.ie;
             var oSelf = this;
             this._unload = function (e) {
                 oSelf._unloadEvent(e);
@@ -362,8 +360,8 @@
              * @protected
              */
             _specialTypes : {
-                focusin : (aria.core.Browser.isIE ? "focusin" : "focus"),
-                focusout : (aria.core.Browser.isIE ? "focusout" : "blur")
+                focusin : (aria.core.Browser.isOldIE ? "focusin" : "focus"),
+                focusout : (aria.core.Browser.isOldIE ? "focusout" : "blur")
             },
 
             /**
@@ -379,7 +377,7 @@
                 var i, li;
 
                 if ('mousewheel' == event) {
-                    if (this.UA.isIE) {
+                    if (this.UA.isOldIE) {
                         if (element == Aria.$window) {
                             element = element.document;
                         }

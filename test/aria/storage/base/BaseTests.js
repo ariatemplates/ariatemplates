@@ -66,7 +66,7 @@ Aria.classDefinition({
          * @return {Boolean}
          */
         canRunUserDataTests : function () {
-            if (aria.core.Browser.isIE) {
+            if (aria.core.Browser.isOldIE) {
                 this.storageClass = aria.storage.UserData;
 
                 return true;
@@ -79,7 +79,7 @@ Aria.classDefinition({
          * Clean user data storage
          */
         clearUserData : function () {
-            if (aria.core.Browser.isIE && aria.storage && aria.storage.UserData) {
+            if (aria.core.Browser.isOldIE && aria.storage && aria.storage.UserData) {
                 var cleaner = new aria.storage.UserData();
                 cleaner.clear();
                 cleaner.$dispose();

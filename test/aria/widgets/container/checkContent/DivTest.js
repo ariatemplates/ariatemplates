@@ -26,7 +26,7 @@ Aria.classDefinition({
             var expectedHeight = 400;
             var expectedWidth = 634; // 617 from the h3 element width + 17px for the scrollbar
 
-            if (aria.core.Browser.isIE && aria.core.Browser.majorVersion < 8) {
+            if (aria.core.Browser.isOldIE && aria.core.Browser.majorVersion < 8) {
                 var expectedWidthIE7 = 888; // 871 from the h3 element width + 17px added for the scrollbar
                 this.assertEqualsWithTolerance(spanWidth, expectedWidthIE7, 2, "The div width is %1, insted of %2");
             } else if (aria.core.Browser.isMac) {

@@ -291,6 +291,7 @@
              * Return a wrapper on the event passed as a parameter. The parameter can either be already a wrapper, in
              * which case the parameter is returned without other object creation, or an event from the dom, in which
              * case a wrapper is created.
+             *
              * <pre>
              * Instead of using the following code:
              *     _dom_onmouseover : function (evt) {
@@ -308,6 +309,7 @@
              *                 domEvt.disposeWrapper();
              *     }
              * </pre>
+             *
              * @param {DOMEvent|aria.DomEvent} evt The event from the dom or a wrapper on it.
              * @return {aria.DomEvent} domEvt An aria.domEvent object representing the event.
              */

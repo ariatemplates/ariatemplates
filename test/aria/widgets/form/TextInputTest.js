@@ -213,7 +213,7 @@ Aria.classDefinition({
             var instance1 = tf1.instance;
             instance1._hasFocus = true;
             instance1._dom_onclick();
-            if (!aria.core.Browser.isIE) {
+            if (!aria.core.Browser.isOldIE) {
                 this.assertTrue(instance1._textInputField.selectionStart === 0);
                 this.assertTrue(instance1._textInputField.selectionEnd === instance1._textInputField.value.length);
             }
@@ -222,7 +222,7 @@ Aria.classDefinition({
             instance1._textInputField.selectionEnd = 0;
             instance1._cfg.autoselect = false;
             instance1._dom_onclick();
-            if (!aria.core.Browser.isIE) {
+            if (!aria.core.Browser.isOldIE) {
                 this.assertTrue(instance1._textInputField.selectionEnd === 0);
             }
             this._destroyTextInput(instance1);

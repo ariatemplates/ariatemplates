@@ -25,7 +25,7 @@ Aria.classDefinition({
         };
 
         var browserVersion = parseInt(aria.core.Browser.version, 10);
-        this.cssAnimationsNotSupported = (aria.core.Browser.isIE && browserVersion < 10)
+        this.cssAnimationsNotSupported = (aria.core.Browser.isOldIE && browserVersion < 10)
                 || (aria.core.Browser.isFirefox && browserVersion < 4);
 
         if (!this.cssAnimationsNotSupported) {
