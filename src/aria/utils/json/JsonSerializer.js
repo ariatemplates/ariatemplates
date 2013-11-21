@@ -594,6 +594,7 @@ Aria.classDefinition({
                 // for non-JSON patterns. We are especially concerned with '()' and 'new'
                 // because they can cause invocation, and '=' because it can cause mutation.
                 // But just to be safe, we want to reject all unexpected forms.
+                // To create date objects from serialized dates we allow new Date().
 
                 // We split the stage into 4 regexp operations in order to work around
                 // crippling inefficiencies in IE's and Safari's regexp engines. First we
@@ -601,9 +602,8 @@ Aria.classDefinition({
                 // replace all simple value tokens with ']' characters. Third, we delete all
                 // open brackets that follow a colon or comma or that begin the text. Finally,
                 // we look to see that the remaining characters are only whitespace or ']' or
-                // ',' or ':' or '{' or '}'. If that is so, then the text is safe for eval.
-                if (/^[\],:{}\s]*$/.test(text.replace(/\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g, '@').replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
-
+                // ',' or ':' or '{' or '}' or 'new Date(])'. If that is so, then the text is safe for eval.
+                if (/^((new Date\((\])?\))|([\],:{}\s]))*$/.test(text.replace(/\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g, '@').replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
                     // this might throw a SyntaxError
                     return eval('(' + text + ')');
                 } else {
