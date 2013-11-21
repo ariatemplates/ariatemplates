@@ -17,7 +17,7 @@ Aria.tplScriptDefinition({
     $classpath : "test.aria.core.prototypefn.PrototypeFnTestCaseTplScript",
     $prototype : function () {
         var count = 0;
-        if (aria.core.Browser.isIE) {
+        if (aria.core.Browser.isOldIE) {
             count++;
             return {
                 callMe : function () {

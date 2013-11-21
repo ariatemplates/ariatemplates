@@ -22,7 +22,7 @@
             maxHeight : 400
         }}
             {for var i = 0; i < 15; i++}
-                {if (aria.core.Browser.isIE && aria.core.Browser.majorVersion == 7)}
+                {if (aria.core.Browser.isOldIE && aria.core.Browser.majorVersion == 7)}
                     <h3 style="width: 871px;">#DivTestWithAVeryLongStringWithoutAnySpaceToCheckIfTheScrollbarsHideSomeContentOrNot</h3>
                 {else/}
                     <h3 style="width: 617px;">#DivTestWithAVeryLongStringWithoutAnySpaceToCheckIfTheScrollbarsHideSomeContentOrNot</h3>

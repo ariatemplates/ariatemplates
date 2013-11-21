@@ -87,7 +87,7 @@
         $onload : function () {
             // Browser shortcuts are done in the $onload which is executed only once
             isIE8orLess = (aria.core.Browser.isIE6 || aria.core.Browser.isIE7 || aria.core.Browser.isIE8);
-            isGecko = !(aria.core.Browser.isIE || aria.core.Browser.isOpera || aria.core.Browser.isChrome || aria.core.Browser.isSafari);
+            isGecko = !(aria.core.Browser.isOldIE || aria.core.Browser.isOpera || aria.core.Browser.isChrome || aria.core.Browser.isSafari);
         },
         /**
          * DomEvent constructor. It is advised to use the getWrapper static method instead of the constructor,

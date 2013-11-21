@@ -44,7 +44,7 @@
         {var test = data.campaign.testsTree[0]/}
         {if (test && test.$TestSuite)}
             <table class="reportTable" style="
-                {if aria.core.Browser.isIE}
+                {if aria.core.Browser.isOldIE}
                     width:${$hdim(186,1)}px;
                 {else/}
                     width : 100%;

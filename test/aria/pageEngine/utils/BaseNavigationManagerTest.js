@@ -88,7 +88,7 @@ Aria.classDefinition({
         },
 
         _firstTestAfterSecondUpdate : function () {
-            if (aria.core.Browser.isIE) {
+            if (aria.core.Browser.isOldIE) {
                 this._navManager.$dispose();
                 this._secondTest();
             } else {

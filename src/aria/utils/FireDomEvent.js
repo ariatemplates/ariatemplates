@@ -640,7 +640,7 @@
              * @method
              */
             fireKeydownEventAdaptedForKeyNav : function (target, options) {
-                if (aria.core.Browser.isIE || aria.core.Browser.isSafari) {
+                if (aria.core.Browser.isOldIE || aria.core.Browser.isSafari) {
                     this.fireKeydownEventAdaptedForKeyNav = function (target, options) {
                         // For IE and Safari:
                         simulate(target, "keydown", options);

@@ -159,7 +159,7 @@
              * @type Boolean
              * @private
              */
-            this._isIE7OrLess = browser.isIE && browser.majorVersion < 8;
+            this._isIE7OrLess = browser.isOldIE && browser.majorVersion < 8;
 
             this._init();
 

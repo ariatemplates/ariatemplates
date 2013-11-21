@@ -49,7 +49,7 @@ Aria.classDefinition({
 
         _waitAndSee : function () {
             var tf = this.getInputField("tf1");
-            if (!aria.core.Browser.isIE) {
+            if (!aria.core.Browser.isOldIE) {
                 this.assertEquals(tf, aria.utils.Delegate.getFocus());
             }
             // TODO add a test for IE. The problem is that the Delegate has not done any focus tracking yet, so that it

@@ -149,7 +149,7 @@ Aria.classDefinition({
                 out.write("padding-bottom: 7px;display:inline-block;");
             }
 
-            if (lineHeight && aria.core.Browser.isIE) {
+            if (lineHeight && aria.core.Browser.isOldIE) {
                 out.write('line-height:' + (lineHeight - 2) + 'px;');
             }
             var cssClass = 'class="x' + this._skinnableClass + '_' + cfg.sclass + '_' + this._state + '_label"';

@@ -157,7 +157,7 @@ Aria.classDefinition({
 
         // note that the change event does not bubble on all browsers (e.g.: on IE) but is necessary as it is the only
         // event which is raised when clicking on an option in the select in other browsers (Chrome)
-        if (!aria.core.Browser.isIE) {
+        if (!aria.core.Browser.isOldIE) {
             this.delegatedOnBody.push("change", "paste", "cut");
         }
 
@@ -308,7 +308,7 @@ Aria.classDefinition({
                 aria.utils.AriaWindow.attachWindow();
 
                 var body = Aria.$window.document.body;
-                this.rootListener = aria.core.Browser.isIE ? body : Aria.$window;
+                this.rootListener = aria.core.Browser.isOldIE ? body : Aria.$window;
                 this.__delegateMapping = {};
                 var utilEvent = aria.utils.Event, index, l;
                 for (index = 0, l = this.delegatedOnBody.length; index < l; index++) {
@@ -359,7 +359,7 @@ Aria.classDefinition({
          * @return {String}
          */
         getFallbackMarkup : function (eventName, delegateId, wrapTarget) {
-            if (aria.core.Browser.isIE) {
+            if (aria.core.Browser.isOldIE) {
                 this.getFallbackMarkup = function (eventName, delegateId, wrapTarget) {
                     wrapTarget = wrapTarget ? "true" : "false";
                     return " on" + eventName + "=\"aria.utils.Delegate.directCall(event, '" + delegateId + "', "

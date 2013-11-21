@@ -188,7 +188,7 @@
                     scope : this
                 }, true);
 
-                if (aria.core.Browser.isIE) {
+                if (aria.core.Browser.isOldIE) {
                     // IE does not support scroll event on the document until IE9
                     aria.utils.Event.addListener(Aria.$window, "mousewheel", {
                         fn : this._onScroll,
@@ -223,7 +223,7 @@
                     });
                     aria.utils.AriaWindow.detachWindow();
                     this._document = null;
-                    if (aria.core.Browser.isIE) {
+                    if (aria.core.Browser.isOldIE) {
                         aria.utils.Event.removeListener(Aria.$window, "mousewheel", {
                             fn : this._onScroll
                         });

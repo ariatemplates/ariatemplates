@@ -32,7 +32,7 @@ Aria.classDefinition({
         },
 
         _testAS : function () {
-            if (!aria.core.Browser.isIE) {
+            if (!aria.core.Browser.isOldIE) {
                 this.assertTrue(this.inputField.selectionStart === 0);
                 this.assertTrue(this.inputField.selectionEnd === this.inputField.value.length);
             }
