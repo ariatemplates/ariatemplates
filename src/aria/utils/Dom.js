@@ -879,10 +879,21 @@ Aria.classDefinition({
                         property = "cssFloat";
                     }
                     var computed = window.getComputedStyle(element, "");
-                    if (computed) {
-                        value = computed[property];
+                    if (browser.isFirefox && (property == "backgroundPositionX" || property == "backgroundPositionY")) {
+                        if (computed) {
+                            var bgPos = computed["backgroundPosition"];
+                        }
+                        value = (bgPos || element.style["backgroundPosition"]);
+                        if (value) {
+                            var bgPosArr = value.split(" ");
+                            return ((property == "backgroundPositionX") ? bgPosArr[0] : bgPosArr[1]);
+                        }
+                    } else {
+                        if (computed) {
+                            value = computed[property];
+                        }
+                        return (value || element.style[property]);
                     }
-                    return (value || element.style[property]);
                 };
             }
 

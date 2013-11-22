@@ -491,6 +491,22 @@ Aria.classDefinition({
             this.assertEquals(domUtil.getStyle(element, "width"), "100px");
         },
 
+        test_getStyle_backgroundPosition : function () {
+            var domUtil = aria.utils.Dom;
+            Aria.$window.scroll(0, 0);
+            var document = Aria.$window.document;
+
+            var element = document.createElement("div");
+            this.domCreated.push(element);
+            document.body.appendChild(element);
+
+            if (aria.core.Browser.isFirefox) {
+                element.style.cssText = "background: url(data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7) 40px 30px";
+                this.assertEquals(domUtil.getStyle(element, "backgroundPositionX"), "40px");
+                this.assertEquals(domUtil.getStyle(element, "backgroundPositionY"), "30px");
+            }
+        },
+
         /**
          * Checks that, after calling refreshScrollbars, the unnecessary scrollbar has disappeared.
          */
