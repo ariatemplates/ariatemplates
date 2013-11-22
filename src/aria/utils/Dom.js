@@ -877,6 +877,16 @@ Aria.classDefinition({
                     var value = null;
                     if (property == "float") {
                         property = "cssFloat";
+                    } else if (property == "backgroundPositionX" || property == "backgroundPositionY") {
+                        // backgroundPositionX and backgroundPositionY are not standard
+                        var backgroundPosition = this.getStyle(element, "backgroundPosition");
+                        if (backgroundPosition) {
+                            var match = /^([^ ]+) ([^ ]+)$/.exec(backgroundPosition);
+                            if (match) {
+                                value = ((property == "backgroundPositionX") ? match[1] : match[2]);
+                            }
+                        }
+                        return value;
                     }
                     var computed = window.getComputedStyle(element, "");
                     if (computed) {
