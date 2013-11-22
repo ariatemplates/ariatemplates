@@ -66,4 +66,3 @@
     <div id="outsideDiv">&nbsp;</div>
     {/macro}
 {/Template}
-

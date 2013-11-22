@@ -59,8 +59,3 @@
 			</div>
 	{/macro}
 {/Template}
-
-
-
-
-
