@@ -9,7 +9,7 @@
 			memCheckMode : false, // checks that constructors and destructors are well called on all objects
 			debug : true
 		};
-		
+
 	</script>
 	<script type="text/javascript" src="../bootstrap.js"></script>
 	<script type="text/javascript" src="../css/atskin.js"></script>
@@ -33,19 +33,19 @@
 		}, null, true);
 
 		var classpath = "aria.tester.runner.view.main.Main";
-		
+
 		var width = {min : 180};
 		var height = {min : 342};
-		
+
 		// set the minimum dimension of this page
 		Aria.setRootDim({
 			width: width,
 			height: height
 		});
-		
+
 		Aria.loadTemplate({
 			classpath:classpath,
-			div:"root", 
+			div:"root",
 			width: width,
 			height: height,
 			moduleCtrl: {

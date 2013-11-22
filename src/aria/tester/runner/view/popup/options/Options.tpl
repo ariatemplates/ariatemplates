@@ -31,7 +31,7 @@
                     label : "Enable coverage (beta!)",
                     bind:{
                         value:{
-                            inside:this.data.application.configuration, 
+                            inside:this.data.application.configuration,
                             to:"coverage"
                         }
                     }

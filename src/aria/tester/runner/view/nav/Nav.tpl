@@ -21,13 +21,13 @@
     $height : {min:342},
      $css:['aria.tester.runner.view.nav.NavCSS']
 }}
-    {macro main()}    
+    {macro main()}
         <div style="float:left; overflow:hidden;">
             {call displayLogo()/}
             {call displayWidgets()/}
         </div>
     {/macro}
-    
+
     {macro displayLogo()}
         <div style="
             position:relative;
@@ -41,13 +41,13 @@
             } /}
         </div>
     {/macro}
-    
+
     {macro displayWidgets()}
         {call displayWidget("Select Suites", 'aria.tester.runner.view.config.Config')/}
         {call displayWidget("Documentation", 'aria.tester.runner.view.links.Links')/}
     {/macro}
-    
-    {macro displayWidget(title, classpath)} 
+
+    {macro displayWidget(title, classpath)}
         {@aria:Template {
             width:200,
             height:$vdim(125,0.5),
