@@ -23,13 +23,13 @@
         padding-left : 20px;
         margin : 10px;
     }
-    
+
     .item {
         list-style-type : disc;
         margin-top : 10px;
         color : {call rgb(baseColor.r, baseColor.g, baseColor.b, 0)/};
     }
-    
+
     a {
         color : {call rgb(baseColor.r, baseColor.g, baseColor.b, 0)/};
     }

@@ -22,34 +22,34 @@
     .optionsList {
         padding-left : 20px;
     }
-    
+
     .popup, .content {
         height : auto;
         width : auto;
     }
-    
+
     {var popupWidth =400/}
     {var popupHeight = 250/}
-    
+
     .popup {
         width:${popupWidth-2}px;
         height:${popupHeight-2}px;
-        
+
         margin-top:-${popupHeight/2}px;
         margin-left:-${popupWidth/2}px;
-        
+
         z-index:12001;
     }
-    
+
     .content {
         height : ${popupHeight-80}px;
         width : ${popupWidth-30}px;
     }
-    
+
     .separator {
         width : ${popupWidth-30}px;
     }
-    
+
     .optionTitle {
         color : {call rgb(baseColor.r, baseColor.g, baseColor.b, 0)/};
         margin-top : 5px;

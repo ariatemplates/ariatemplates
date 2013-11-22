@@ -28,11 +28,11 @@
         cursor : pointer;
         color : {call rgb(r, g, b, 0)/};
     }
-    
+
     tr:hover {
         color : {call rgb(r, g, b, 50)/};
     }
-    
+
     tr .select {
         width : 9px;
         height : 9px;
@@ -44,8 +44,8 @@
     tr:hover .select {
         border : 1px solid {call rgb(r, g, b, 50)/};
     }
-    
-    
+
+
     .innerSelect {
         width : 7px;
         height : 7px;
@@ -53,18 +53,18 @@
         float : left;
         background: {call rgb(r, g, b, 0)/};
     }
-    
+
     .innerSelect.half{
         width : 3px;
         height : 3px;
         border : 3px solid white;
     }
-    
+
     .innerSelect.empty{
         background:white;
     }
-    
-    
+
+
     tr:hover .innerSelect.filled,  tr:hover .innerSelect.half{
         background:{call rgb(r, g, b, 50)/};
     }

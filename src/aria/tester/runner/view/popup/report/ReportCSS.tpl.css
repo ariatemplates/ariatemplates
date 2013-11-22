@@ -18,35 +18,35 @@
     $extends : "aria.tester.runner.view.BaseCSS"
 }}
 
-{macro main()}    
+{macro main()}
     {var popupWidth =800/}
     {var popupHeight = 500/}
     {var failedColor = "rgb(245,70,70)"/}
-    
+
     .popup, .content {
         height : auto;
         width : auto;
     }
-    
+
     .popup {
         width:${popupWidth-2}px;
         height:${popupHeight-2}px;
-        
+
         margin-top:-${popupHeight/2}px;
         margin-left:-${popupWidth/2}px;
-        
+
         z-index:12001;
     }
-    
+
     .content {
         height : ${popupHeight-80}px;
         width : ${popupWidth-30}px;
     }
-    
+
     .separator {
         width : ${popupWidth-30}px;
     }
-    
+
     .noerrors {
         text-align : center;
         font-size:20px;
@@ -54,7 +54,7 @@
         text-shadow : 0px 1px 0px #eee;
         margin-top : ${(popupHeight-100)/2}px;
     }
-    
+
     .test {
         background : white;
         margin-top : 15px;
