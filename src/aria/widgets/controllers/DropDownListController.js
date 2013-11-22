@@ -208,8 +208,10 @@ Aria.classDefinition({
                 } else {
                     report = new aria.widgets.controllers.reports.DropDownControllerReport();
                 }
+                // domEvent.KC_ESCAPE for issue#697 on FF
                 if (report && keyCode != domEvent.KC_TAB) {
-                    report.cancelKeyStroke = false;
+                    // domEvent.KC_ESCAPE for issue#697 on FF
+                    report.cancelKeyStroke = (keyCode == domEvent.KC_ESCAPE);
                 }
                 return report;
             }
