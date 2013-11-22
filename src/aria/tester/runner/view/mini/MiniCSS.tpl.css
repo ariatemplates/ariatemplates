@@ -24,30 +24,30 @@
         g : 150,
         b : 226
     }/}
-    
+
     span {
         float:left;
     }
-    
+
     .header {
         background: {call rgb(baseColor.r+10, baseColor.g+5, baseColor.b, 140)/};
         background: {call rgb(0,0,0,245)/};
         background: rgb(233, 241, 251);
-        
+
         position : absolute;
         top : 0px;
         left : 0px;
         z-index:0;
         height : 100px;
     }
-    
+
     .monitor {
         margin-left:0px;
         margin-top:0px;
         position:relative;
         float:left;
         z-index:10000;
-        {call borderRadius("5px 5px 0px 0px")/} 
+        {call borderRadius("5px 5px 0px 0px")/}
         overflow : hidden;
     }
 {/macro}

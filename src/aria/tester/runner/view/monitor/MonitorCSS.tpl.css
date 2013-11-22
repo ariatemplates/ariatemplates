@@ -23,7 +23,7 @@
         position:relative;
         float:left;
         border : Solid 1px #ddd;
-        {call borderRadius("5px 5px 0px 0px")/} 
+        {call borderRadius("5px 5px 0px 0px")/}
     }
 {/macro}
 {/CSSTemplate}

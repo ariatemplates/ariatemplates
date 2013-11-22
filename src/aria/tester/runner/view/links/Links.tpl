@@ -21,14 +21,14 @@
     $height : {min:125},
     $css:['aria.tester.runner.view.links.LinksCSS']
 }}
-    {macro main()}    
+    {macro main()}
         <h1>Links</h1>
         <ul class="container">
             {var topspotLinks = this.getTopspotLinks()/}
-            {foreach link in topspotLinks} 
+            {foreach link in topspotLinks}
                 <li class="item">
-                    <a 
-                        href="${link.href}" 
+                    <a
+                        href="${link.href}"
                         target="_blank"
                     >
                         ${link.title}
@@ -36,12 +36,12 @@
                 </li>
             {/foreach}
             {var keyboardShortcuts = getKeyboardShortcuts()/}
-            {foreach link in keyboardShortcuts} 
+            {foreach link in keyboardShortcuts}
                 <li class="item">
-                    <a 
+                    <a
                         {on click {
                             fn : link.callback,
-                            scope : this                        
+                            scope : this
                         }/}
                     >
                         Press <b>${link.key}</b> : ${link.description}

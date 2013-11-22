@@ -23,7 +23,7 @@
 }}
     {macro main()}
         {var width = 180-2/}
-        <div class="monitorContainer" 
+        <div class="monitorContainer"
             style="
                 height : ${$vdim(280)}px;
                 width : ${$hdim(width)}px;

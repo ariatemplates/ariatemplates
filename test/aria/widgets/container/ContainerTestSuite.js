@@ -31,6 +31,3 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.container.checkContent.DivTest");
     }
 });
-
-
-

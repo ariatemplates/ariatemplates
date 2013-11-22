@@ -110,4 +110,3 @@ Here, the configuration file is `build/config/urlmap.json`.
 ## Extracting API doc
 
 *TBD*
-

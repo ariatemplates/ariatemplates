@@ -32,7 +32,7 @@
             </div>
         </div>
     {/macro}
-    
+
     {macro displayButton(label, callback)}
         <div class="popupButton ${label}"
             {on click {

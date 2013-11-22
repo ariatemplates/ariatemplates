@@ -27,26 +27,26 @@
         {call displayButton("reload", this._onReloadButtonClicked)/}
         {call displayButton("close", this._onCloseButtonClicked)/}
     {/macro}
-    
+
     {macro displayPopupContent()}
         {var tests = this.getTestsWithErrors()/}
         {if tests.length == 0}
             <div class="noerrors">
-                No errors to report ! 
+                No errors to report !
             </div>
         {else/}
-            {foreach test in tests} 
+            {foreach test in tests}
                 {var classname = "test"/}
                 {if (test.classpath == this.data.view.highlightedTest)}
                     {set classname+=" highlight"/}
                 {/if}
                 <div class="${classname}">
-                    {call displayTestErrors(test)/}        
+                    {call displayTestErrors(test)/}
                 </div>
             {/foreach}
         {/if}
     {/macro}
-    
+
     {macro displayTestErrors(test)}
         <div class="classpath">
             ${this.formatTestClasspath(test)}
@@ -59,8 +59,8 @@
             No errors to display for this test
         {else/}
             <ul>
-            {foreach error in errors} 
-                {call displayTestError(error, test)/}        
+            {foreach error in errors}
+                {call displayTestError(error, test)/}
             {/foreach}
             </ul>
         {/if}

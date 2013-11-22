@@ -20,7 +20,7 @@
     $width : {"min":390},
     $height : {"min":342}
 }}
-    {macro main()}    
+    {macro main()}
         <div  style="position:absolute;top:0px;left:0px;z-index:12000">
             {@aria:Template {
                 defaultTemplate:"aria.tester.runner.view.popup.Popup"
