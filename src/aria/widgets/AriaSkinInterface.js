@@ -198,7 +198,12 @@ Aria.classDefinition({
         /**
          * Preload all skin images. This method adds a div to the document body, which contains all the images specified
          * in the skin. This is a work-around for a bug with IE 9 which happens in some cases. Call this method when the
-         * application is loading if some skin images are not displayed in IE.
+         * application is loading if some skin images are not displayed in IE. <br>
+         * <br>
+         * Note that since this function writes to <code>&lt;body&;gt;</code>, you should make sure
+         * <code>&lt;body&;gt;</code> is available at the time of the call, i.e. you shouldn't call this function
+         * directly from an inline script in <code>&lt;head&;gt;</code>, but place the inline script in
+         * <code>&lt;body&;gt;</code>, or wait for <code>DOMContentLoaded</code> or equivalent event to be raised.
          * @param {Object} skinObject Optional skin object. If not provided, the current skin is used.
          * @param {HTMLElement} domElement DOM element inserted in the DOM with all images.
          */
