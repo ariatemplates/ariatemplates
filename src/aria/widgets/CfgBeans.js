@@ -552,9 +552,9 @@ Aria.beanDefinitions({
                     $type : "TextInputCfg.value",
                     $description : "Number currently displayed.",
                     $contentTypes : [{
-                        $type : "json:Float",
-                        $description : ""
-                    }]
+                                $type : "json:Float",
+                                $description : ""
+                            }]
                 }
             }
         },
@@ -789,9 +789,9 @@ Aria.beanDefinitions({
                     $type : "InputCfg.value",
                     $description : "Date currently selected in the date picker.",
                     $contentTypes : [{
-                        $type : "json:Date",
-                        $description : ""
-                    }]
+                                $type : "json:Date",
+                                $description : ""
+                            }]
                 }
             }
         },
@@ -953,6 +953,22 @@ Aria.beanDefinitions({
                     $default : [{
                                 key : "ENTER"
                             }]
+                }
+            }
+        },
+
+        "MultiAutoCompleteCfg" : {
+            $type : "AutoCompleteCfg",
+            $description : "The base configuration for the MultiAutoComplete widget",
+            $properties : {
+                "maxOptions" : {
+                    $type : "json:Integer",
+                    $description : "Maximum no of options that can be selected with MultiAutoComplete."
+                },
+                "freeText" : {
+                    $type : "AutoCompleteCfg.freeText",
+                    $description : "Specifies if the user can enter its own text and user can edit the text as well on double click",
+                    $default : true
                 }
             }
         },
