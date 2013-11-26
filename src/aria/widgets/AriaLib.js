@@ -57,7 +57,8 @@ Aria.classDefinition({
             "Template" : "aria.widgets.Template",
             "List" : "aria.widgets.form.list.List",
             "Gauge" : "aria.widgets.form.Gauge",
-            "ErrorList" : "aria.widgets.errorlist.ErrorList"
+            "ErrorList" : "aria.widgets.errorlist.ErrorList",
+            "MultiAutoComplete" : "aria.widgets.form.MultiAutoComplete"
         }
     }
 });

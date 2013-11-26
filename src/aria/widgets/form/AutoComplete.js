@@ -31,13 +31,13 @@ Aria.classDefinition({
      * @param {Number} controller the data controller object
      */
     $constructor : function (cfg, ctxt, lineNumber, controller) {
-        var controller = new aria.widgets.controllers.AutoCompleteController();
+        var controllerInstance = controller || new aria.widgets.controllers.AutoCompleteController();
 
         if (!cfg.expandButton && cfg.bind) {
             delete cfg.bind.popupOpen;
         }
 
-        this.$DropDownTextInput.constructor.call(this, cfg, ctxt, lineNumber, controller);
+        this.$DropDownTextInput.constructor.call(this, cfg, ctxt, lineNumber, controllerInstance);
 
         if (!cfg.expandButton) {
             /**
@@ -50,15 +50,15 @@ Aria.classDefinition({
         }
 
         try {
-            controller.setResourcesHandler(cfg.resourcesHandler);
+            controllerInstance.setResourcesHandler(cfg.resourcesHandler);
         } catch (e) {
             this.$logError(this.WIDGET_AUTOCOMPLETE_INVALID_HANDLER, [cfg.resourcesHandler], e);
         }
-        controller.autoFill = cfg.autoFill;
-        controller.freeText = cfg.freeText;
-        controller.maxlength = cfg.maxlength;
-        controller.expandButton = cfg.expandButton;
-        controller.selectionKeys = cfg.selectionKeys;
+        controllerInstance.autoFill = cfg.autoFill;
+        controllerInstance.freeText = cfg.freeText;
+        controllerInstance.maxlength = cfg.maxlength;
+        controllerInstance.expandButton = cfg.expandButton;
+        controllerInstance.selectionKeys = cfg.selectionKeys;
     },
     $destructor : function () {
         // The dropdown might still be open when we destroy the widget, destroy it now

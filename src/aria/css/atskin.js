@@ -1274,6 +1274,74 @@ Aria.classDefinition({
                     offsetTop : 1
                 }
             },
+
+            MultiAutoComplete : {
+                std : {
+                    sprType : 3,
+                    states : {
+                        readOnly : {
+                            backgroundColor : "#FFFFFF",
+                            sprIdx : 2
+                        },
+                        mandatoryErrorFocused : {
+                            backgroundColor : "#FFE6AB",
+                            sprIdx : 5
+                        },
+                        normalErrorFocused : {
+                            sprIdx : 6
+                        },
+                        normal : {
+                            spriteURLv : "atskin/sprites/textarea_v.gif",
+                            spcTop : 6,
+                            sprWidth : 8,
+                            sprHeight : 12,
+                            backgroundColor : "#FFFFFF",
+                            spriteURLh : "atskin/sprites/textarea_h.gif",
+                            sprIdx : 0,
+                            spcLeft : 4,
+                            spriteURL : "atskin/sprites/textarea.gif"
+                        },
+                        mandatory : {
+                            backgroundColor : "#FFE6AB",
+                            sprIdx : 3
+                        },
+                        mandatoryFocused : {
+                            backgroundColor : "#FFE6AB",
+                            sprIdx : 4
+                        },
+                        mandatoryError : {
+                            backgroundColor : "#FFE6AB",
+                            sprIdx : 5
+                        },
+                        normalFocused : {
+                            sprIdx : 1
+                        },
+                        normalError : {
+                            sprIdx : 6
+                        },
+                        disabled : {
+                            color : "#E6D9C6",
+                            backgroundColor : "#FFFFFF",
+                            sprIdx : 2,
+                            label : {
+                                color : "#E6D9C6"
+                            }
+                        }
+                    },
+                    helpText : {
+                        italics : true,
+                        color : "gray"
+                    },
+                    offsetTop : 1,
+                    optionsBackgroundColor : "#E4E4E4",
+                    optionsColor : "#333",
+                    optionsBorderWidth : 1,
+                    optionsBorderColor : "#AAAAAA",
+                    closeSpriteURL : "atskin/sprites/closemark.gif",
+                    closeSpriteHeight : 10,
+                    closeSpriteWidth : 9
+                }
+            },
             ErrorList : {
                 std : {
                     divsclass : "errorlist"

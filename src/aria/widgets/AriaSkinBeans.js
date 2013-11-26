@@ -1342,6 +1342,38 @@ Aria.beanDefinitions({
                 }
             }
         },
+        "MultiAutoCompleteCfg" : {
+            $type : "DropDownTextInputCfg",
+            $description : "",
+            $properties : {
+                "closeSpriteURL" : {
+                    $type : "json:String",
+                    $description : ""
+                },
+                "closeSpriteHeight" : {
+                    $type : "Pixels"
+                },
+                "closeSpriteWidth" : {
+                    $type : "Pixels"
+                },
+                "optionsColor" : {
+                    $type : "Color",
+                    $default : "#333"
+                },
+                "optionsBackgroundColor" : {
+                    $type : "Color",
+                    $default : "#E4E4E4"
+                },
+                "optionsBorderColor" : {
+                    $type : "Color",
+                    $default : "#AAAAAA"
+                },
+                "optionsBorderWidth" : {
+                    $type : "Pixels",
+                    $default : 1
+                }
+            }
+        },
         "TabPanelCfg" : {
             $type : "Object",
             $description : "",

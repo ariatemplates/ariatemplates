@@ -62,7 +62,6 @@ Aria.classDefinition({
          */
 
         this._isTextarea = false;
-
         /**
          * Internal timer ID used to calidate a keyup event.
          * @see _dom_onkeyup
@@ -296,11 +295,10 @@ Aria.classDefinition({
             }
             var type = this._isPassword && !hts ? "password" : "text";
 
-            var inputWidth = this._frame.innerWidth - skinObj.innerPaddingLeft - skinObj.innerPaddingRight;
+            var inputWidth = this._computeInputWidth();
             if (inputWidth < 0) {
                 inputWidth = 0;
             }
-
             var spellCheck = "";
             if (cfg.spellCheck != null) {
                 // if spellCheck is specified in the config, include the
@@ -334,6 +332,13 @@ Aria.classDefinition({
             }
 
         },
+        /**
+         * @return {Number} width of input
+         */
+        _computeInputWidth : function () {
+            var skinObj = this._skinObj;
+            return this._frame.innerWidth - skinObj.innerPaddingLeft - skinObj.innerPaddingRight;
+        },
 
         /**
          * Internal method to override to initialize a widget (e.g. to listen to DOM events)
@@ -344,8 +349,8 @@ Aria.classDefinition({
         _initInputMarkup : function (elt) {
             this.$InputWithFrame._initInputMarkup.call(this, elt);
             this._textInputField = this._frame.getChild(0);
-
-            // FIXME: Fix applying initial state in the 'Div', remove the below
+            // FIXME: Fix applying initial state in the 'Div', remove
+            // the below
             this._reactToChange();
 
         },
@@ -751,12 +756,13 @@ Aria.classDefinition({
             // PROFILING // var profilingId = this.$startMeasure("update state
             // (TextInput)");
             this.$InputWithFrame._updateState.call(this);
-            var skinObj = this._skinObj;
-            var inputWidth = this._frame.innerWidth - skinObj.innerPaddingLeft - skinObj.innerPaddingRight;
+            var inputWidth = this._computeInputWidth();
             if (inputWidth < 0) {
                 inputWidth = 0;
             }
-            this.getTextInputField().style.width = inputWidth + "px";
+            if (inputWidth) {
+                this.getTextInputField().style.width = inputWidth + "px";
+            }
             if ((this._isIE7OrLess || this._simpleHTML) && !this._helpTextSet) {
                 this.getTextInputField().style.color = this._getTextFieldColor();
             }
@@ -904,7 +910,9 @@ Aria.classDefinition({
                     return;
                 }
 
-                this.checkValue();
+                this.checkValue({
+                    "eventName" : "blur"
+                });
                 // checkvalue might trigger an onchange that disposes the widget, check again this._cfg
                 cfg = this._cfg;
                 if (!cfg) {
@@ -915,6 +923,7 @@ Aria.classDefinition({
                     this.setPrefillText(true, cfg.prefill, false);
                 } else {
                     this.setHelpText(true);
+
                 }
 
                 this._updateState();
