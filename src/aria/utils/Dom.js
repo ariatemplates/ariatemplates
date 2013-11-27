@@ -881,7 +881,7 @@ Aria.classDefinition({
                         // backgroundPositionX and backgroundPositionY are not standard
                         var backgroundPosition = this.getStyle(element, "backgroundPosition");
                         if (backgroundPosition) {
-                            var match = /^([^ ]+) ([^ ]+)$/.exec(backgroundPosition);
+                            var match = /^([-.0-9a-z%]+)\s([-.0-9a-z%]+)($|,)/.exec(backgroundPosition);
                             if (match) {
                                 value = ((property == "backgroundPositionX") ? match[1] : match[2]);
                             }

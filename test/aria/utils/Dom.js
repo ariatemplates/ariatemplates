@@ -504,10 +504,26 @@ Aria.classDefinition({
             this.assertEquals(domUtil.getStyle(element, "backgroundPositionX"), "40px");
             this.assertEquals(domUtil.getStyle(element, "backgroundPositionY"), "30px");
 
+            var browser = aria.core.Browser;
+            var isIE8OrLess = browser.isIE && browser.majorVersion <= 8;
+
             element.style.cssText = "background-image: " + inlineImage + "," + inlineImage
                     + "; background-position: 10px 20px, center;";
-            this.assertEquals(domUtil.getStyle(element, "backgroundPositionX"), null);
-            this.assertEquals(domUtil.getStyle(element, "backgroundPositionY"), null);
+
+            this.assertEquals(domUtil.getStyle(element, "backgroundPositionX"), isIE8OrLess ? "0%" : "10px");
+            this.assertEquals(domUtil.getStyle(element, "backgroundPositionY"), isIE8OrLess ? "0%" : "20px");
+
+            element.style.cssText = "background-image: " + inlineImage + "," + inlineImage
+                    + "; background-position: bottom left, center;";
+            this.assertEquals(domUtil.getStyle(element, "backgroundPositionX"), isIE8OrLess ? "0%" : "0%");
+            this.assertEquals(domUtil.getStyle(element, "backgroundPositionY"), isIE8OrLess ? "0%" : "100%");
+
+            element.style.cssText = "background-image: " + inlineImage + "," + inlineImage
+                    + "; background-position: bottom -5px left 20px, center;";
+            this.assertTrue(domUtil.getStyle(element, "backgroundPositionX") == "0%"
+                    || domUtil.getStyle(element, "backgroundPositionX") === null);
+            this.assertTrue(domUtil.getStyle(element, "backgroundPositionY") == "0%"
+                    || domUtil.getStyle(element, "backgroundPositionY") === null);
         },
 
         /**
