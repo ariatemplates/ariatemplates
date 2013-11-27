@@ -182,7 +182,16 @@ Aria.classDefinition({
             this.assertTrue(!this.cssClass2.contains("placeholder"), "Css class placeholder is there");
 
             aria.utils.SynEvents.type(this.secondElement, "\b\b\b\b\b\b", {
-                fn : this.afterSecondTypeTwo,
+                fn : function() {
+                    this.waitFor({
+                        condition : function () {
+                            return this.secondElement.value == "Support placeholder";
+                        },
+                        callback : function () {
+                            return this.afterSecondTypeTwo();
+                        }
+                    });
+                },
                 scope : this
             });
         },
