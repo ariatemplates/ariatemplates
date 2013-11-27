@@ -161,6 +161,9 @@ Aria.classDefinition({
                     fn : function () {
                         if (prop.name == "opacity") {
                             this._checkOpacity(this.div1, prop.value);
+                        } else if (prop.name == "backgroundPositionX" || prop.name == "backgroundPositionY") {
+                            var val = this.div1.style["backgroundPosition"].split(" ");
+                            this.assertEquals(prop.value, ((prop.name == "backgroundPositionX") ? val[0] : val[1]), 'The property has not been set to its final value');
                         } else {
                             this.assertEquals(prop.value, this.div1.style[prop.name], 'The property has not been set to its final value');
                         }
