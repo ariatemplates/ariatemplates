@@ -40,6 +40,15 @@ Aria.classDefinition({
             var input = this.getInputField("ac1");
             input.focus();
 
+            this.synEvent.click(input, {
+                fn : this.onUserClick,
+                scope : this
+            });
+        },
+
+        onUserClick : function () {
+            var input = this.getInputField("ac1");
+
             this.synEvent.type(input, "blah", {
                 fn : this.onUserTyped,
                 scope : this
@@ -58,7 +67,7 @@ Aria.classDefinition({
         },
 
         afterBlur : function () {
-            this.templateCtxt.$on({
+            this.templateCtxt.$onOnce({
                 "SectionRefreshed" : this.afterRefresh,
                 scope : this
             });
