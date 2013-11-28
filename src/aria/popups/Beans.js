@@ -54,7 +54,7 @@ Aria.beanDefinitions({
                 },
                 "absolutePosition" : {
                     $type : "AbsolutePositionConfig",
-                    $description : "Takes priority over domReference if defined. The exact coordinates where the popup should be displayed. Anchors and offsets will still be applied",
+                    $description : "The exact coordinates where the popup should be displayed. The position of the popup is computed firstly with respect to the domReference, if it is provided in the configuration. The computed positions are then overridden by the properties specified inside absolutePosition.",
                     $default : null
                 },
                 "center" : {

@@ -178,7 +178,7 @@ Aria.classDefinition({
 
             var myDiv = document.createElement("div");
             myDiv.id = "myDiv";
-            myDiv.style.cssText = "position:absolute;left:50px;top:50px;";
+            myDiv.style.cssText = "position:absolute;left:50px;top:50px;height:0px;";
             document.body.appendChild(myDiv);
 
             var conf = {
@@ -306,6 +306,7 @@ Aria.classDefinition({
             this.assertTrue(evtOpenRaised, "Event popupOpen not raised");
             this.assertTrue(evtCloseRaised, "Event popupClose not raised");
 
+            aria.popups.PopupManager.$unregisterListeners(this);
             popup.$dispose();
         }
 
