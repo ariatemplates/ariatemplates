@@ -160,8 +160,8 @@ Aria.classDefinition({
                         this.$logError(this.LIBRARY_HANDLE_CONFLICT, [handle]);
                         continue;
                     } else if (allClasspaths[libsMap[handle]]) {
-                        // we've already loaded a library with the same classpath: throw an error
-                        this.$logError(this.LIBRARY_ALREADY_LOADED, [handle]);
+                        // we've already loaded a library with the same classpath: throw a warning
+                        this.$logWarn(this.LIBRARY_ALREADY_LOADED, [handle]);
                         continue;
                     }
 
