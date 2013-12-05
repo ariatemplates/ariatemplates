@@ -684,37 +684,40 @@ Aria.classDefinition({
          * @return {Array} List of content descriptions accepted by placeholders
          */
         getContent : function (placeholderPath) {
+            var outputContent;
             var typeUtil = aria.utils.Type;
             var pageConfig = this._pageConfigs[this.currentPageId];
-            var placeholders = pageConfig.pageComposition.placeholders;
-            var content = placeholders[placeholderPath] || [];
-            var outputContent = [];
-            var plainContent;
-            if (!typeUtil.isArray(content)) {
-                content = [content];
-            }
+            if (pageConfig) {
+                var placeholders = pageConfig.pageComposition.placeholders;
+                var content = placeholders[placeholderPath] || [];
+                outputContent = [];
+                var plainContent;
+                if (!typeUtil.isArray(content)) {
+                    content = [content];
+                }
 
-            for (var i = 0, ii = content.length; i < ii; i++) {
-                var item = content[i];
-                if (typeUtil.isObject(item)) {
-                    if (this._lazyContent && item.lazy) {
-                        outputContent.push({
-                            loading : true,
-                            width : item.lazy.width || null,
-                            height : item.lazy.height || null,
-                            color : item.lazy.color || null,
-                            innerHTML : item.lazy.innerHTML || null
-                        });
-                    } else {
-                        if (item.template) {
-                            outputContent.push(this._getTemplateCfg(item, pageConfig));
-                        } else if (item.contentId) {
-                            plainContent = this._getPlaceholderContents(pageConfig, item.contentId);
-                            outputContent = outputContent.concat(plainContent);
+                for (var i = 0, ii = content.length; i < ii; i++) {
+                    var item = content[i];
+                    if (typeUtil.isObject(item)) {
+                        if (this._lazyContent && item.lazy) {
+                            outputContent.push({
+                                loading : true,
+                                width : item.lazy.width || null,
+                                height : item.lazy.height || null,
+                                color : item.lazy.color || null,
+                                innerHTML : item.lazy.innerHTML || null
+                            });
+                        } else {
+                            if (item.template) {
+                                outputContent.push(this._getTemplateCfg(item, pageConfig));
+                            } else if (item.contentId) {
+                                plainContent = this._getPlaceholderContents(pageConfig, item.contentId);
+                                outputContent = outputContent.concat(plainContent);
+                            }
                         }
+                    } else {
+                        outputContent.push(item);
                     }
-                } else {
-                    outputContent.push(item);
                 }
             }
             return outputContent;
