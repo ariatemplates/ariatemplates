@@ -100,8 +100,9 @@ Aria.classDefinition({
         /**
          * Sets the group and event properties if there are some.
          * @param {Object} validator
-         * @param {Array} groups an optional parameter that contains the group(s) for the validator being set
-         * @param {String} event that validation occurs on
+         * @param {Array} groups [optional] contains the group(s) for the validator being set.
+         * @param {String} event [optional] event that validation should occur on - either `onsubmit` or `onblur`. If
+         * not specified, the default behavior is to validate `onsubmit`.
          */
         setValidatorProperties : function (validator, groups, event) {
             if (event) {
@@ -121,8 +122,9 @@ Aria.classDefinition({
          * @param {Object} dataHolder object containing the data.
          * @param {String} dataName used to set the validator under.
          * @param {aria.utils.validators.Validator} validator to be set.
-         * @param {Array} groups an optional parameter that contains the group(s) for the validator being set.
-         * @param {Object} event optional parameter that validation should occur on.
+         * @param {Array} groups [optional] contains the group(s) for the validator being set.
+         * @param {String} event [optional] event that validation should occur on - either `onsubmit` or `onblur`. If
+         * not specified, the default behavior is to validate `onsubmit`.
          */
         setValidator : function (dataHolder, dataName, validator, groups, event) {
 
@@ -296,9 +298,10 @@ Aria.classDefinition({
          * @param {Object} dataHolder
          * @param {String} dataName
          * @param {Array} messages
-         * @param {Array} groups an optional parameter that contains the group(s) to be validated, if no group is
-         * specified then validation will occur on the value as normal.
-         * @param {String} event an optional parameter that contains the event validation should occur on.
+         * @param {Array} groups [optional] contains the group(s) to be validated, if no group is specified then
+         * validation will occur on the value as normal.
+         * @param {String} event [optional] either `onsubmit` or `onblur`. If passed, only fires the validators that
+         * were declared for that event. Useful mostly when dealing with MultipleValidator.
          * @return {Array}
          */
         validateValue : function (dataHolder, dataName, messages, groups, event) {
