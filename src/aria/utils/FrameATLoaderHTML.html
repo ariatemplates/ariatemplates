@@ -1,27 +1,27 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 </head>
 <body>
-	<script type="text/javascript">
-		Aria = {
-			eval : function(src) {
-				return eval(src);
-			}
-		};
-		(function() {
-			var href = decodeURIComponent(window.location.search.substring(1));
-			var head = document.getElementsByTagName('head')[0];
-			var base = document.createElement('base');
-			base.setAttribute('href', href);
-			head.appendChild(base);
+<script type="text/javascript">
+Aria = {
+	eval : function(src) {
+		return eval(src);
+	}
+};
+(function() {
+	var href = decodeURIComponent(window.location.search.substring(1));
+	var head = document.getElementsByTagName('head')[0];
+	var base = document.createElement('base');
+	base.setAttribute('href', href);
+	head.appendChild(base);
 
-			var hash = window.location.hash.substring(1);
-			window.location.hash = "";
-			(opener || parent).aria.utils.FrameATLoader.callFromFrame(hash);
-		})()
-	</script>
+	var hash = window.location.hash.substring(1);
+	window.location.hash = "";
+	(opener || parent).aria.utils.FrameATLoader.callFromFrame(hash);
+})()
+</script>
 </body>
 </html>
