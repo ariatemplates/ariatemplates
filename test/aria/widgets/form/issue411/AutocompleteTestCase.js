@@ -13,11 +13,11 @@
  * limitations under the License.
  */
 
- Aria.classDefinition({
+Aria.classDefinition({
     $classpath : "test.aria.widgets.form.issue411.AutocompleteTestCase",
-    $extends : "aria.jsunit.TemplateTestCase",
+    $extends : "aria.jsunit.RobotTestCase",
     $constructor : function () {
-        this.$TemplateTestCase.constructor.call(this);
+        this.$RobotTestCase.constructor.call(this);
         // override the template for this test case
         this.setTestEnv({
             template : "test.aria.widgets.form.issue411.Autocomplete",
@@ -51,6 +51,23 @@
         },
 
         runTemplateTest : function () {
+            var input = this.getInputField("ac");
+            input.focus();
+            this.synEvent.click(input, {
+                fn : this.onUserClick,
+                scope : this
+            });
+        },
+
+        onUserClick : function () {
+            var input = this.getInputField("ac");
+            this.synEvent.type(input, "[down]", {
+                fn : this.waitForPopup,
+                scope : this
+            });
+        },
+
+        waitForPopup : function () {
             aria.core.Timer.addCallback({
                 fn : this.openPopupDropdownWithExpandButton,
                 scope : this,
