@@ -19,6 +19,7 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
         this.addTests("test.aria.widgets.form.selectbox.SelectboxTestCase");
+        this.addTests("test.aria.widgets.form.selectbox.checkInvalidText.MainTemplateTestCase");
         this.addTests("test.aria.widgets.form.selectbox.checkValue.MainTemplateTestCase");
         this.addTests("test.aria.widgets.form.selectbox.checkTypeLetters.SelectBoxTypeAllLetters");
     }

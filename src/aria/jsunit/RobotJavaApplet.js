@@ -67,6 +67,7 @@ Aria.classDefinition({
             VK_BACK_QUOTE : 192,
             VK_BACK_SLASH : 92,
             VK_BACK_SPACE : 8,
+            VK_BACKSPACE : 8,
             VK_BEGIN : 65368,
             VK_BRACELEFT : 161,
             VK_BRACERIGHT : 162,
