@@ -816,6 +816,11 @@ Aria.beanDefinitions({
                     },
                     $default : []
                 },
+                "allowInvalidText" : {
+                    $type : "json:Boolean",
+                    $description : "If true gives to the user the possibility to type inside the input field whatever he wants",
+                    $default : false
+                },
                 "bind" : {
                     $type : "DropDownTextInputCfg.bind",
                     $properties : {
