@@ -34,5 +34,9 @@
                 }
             }
         }/}
+        {@aria:TextField {
+            label: "test2",
+            id: "textid2"
+        }/}
     {/macro}
 {/Template}

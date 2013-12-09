@@ -15,9 +15,9 @@
 
 Aria.classDefinition({
     $classpath : "test.aria.widgets.form.textinput.onchange.OnChangeTestCase",
-    $extends : "aria.jsunit.TemplateUITestCase",
+    $extends : "aria.jsunit.RobotTestCase",
     $constructor : function () {
-        this.$TemplateUITestCase.constructor.call(this);
+        this.$RobotTestCase.constructor.call(this);
 
         /**
          * Has onchange been called ?
@@ -26,32 +26,16 @@ Aria.classDefinition({
         this._onChangeCalled = false;
     },
     $prototype : {
-        /**
-         * This method is always the first entry point to a template test Start the test by focusing the first field
-         */
         runTemplateTest : function () {
-            this.synEvent.click(this.getInputField("textid1"), {
-                fn : this.typeSomeText,
+            var input1 = this.getInputField("textid1");
+            var input2 = this.getInputField("textid2");
+            this.synEvent.execute([["click", input1], ["type", input1, "this is a test"], ["click", input2]], {
+                fn : this.onChange,
                 scope : this
             });
         },
 
-        /**
-         * Then type in some text, in order to change the field value
-         */
-        typeSomeText : function () {
-            this.synEvent.type(this.getInputField("textid1"), "this is a test", {
-                fn : this.blurField,
-                scope : this
-            });
-        },
-
-        /**
-         * Focus out of the first field so that the binding is applied
-         */
-        blurField : function () {
-            // doing so will trigger the onchange
-            this.getInputField("textid1").blur();
+        onChange : function () {
             this.assertTrue(this.env.data.onChange, "onChanged not called");
             this.notifyTemplateTestEnd();
         }
