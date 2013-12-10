@@ -15,9 +15,9 @@
 
 Aria.classDefinition({
     $classpath : "test.aria.widgets.form.autocomplete.selectionKey.AutoCompleteModifier",
-    $extends : "aria.jsunit.TemplateTestCase",
+    $extends : "aria.jsunit.RobotTestCase",
     $constructor : function () {
-        this.$TemplateTestCase.constructor.call(this);
+        this.$RobotTestCase.constructor.call(this);
         this.setTestEnv({
             template : "test.aria.widgets.form.autocomplete.selectionKey.AutoCompleteTplModifier",
             data : {
@@ -30,25 +30,9 @@ Aria.classDefinition({
          * This method is always the first entry point to a template test Start the test by focusing the first field
          */
         runTemplateTest : function () {
-            var field = this.getInputField("acDest1");
-            field.focus();
-            this._downArrow();
-        },
-        _downArrow : function () {
-            this.synEvent.type(this.getInputField("acDest1"), "a", {
-                fn : this._addDelay,
-                scope : this
-            });
-        },
-        _addDelay : function () {
-            aria.core.Timer.addCallback({
-                fn : this._checkSelected,
-                scope : this,
-                delay : 1000
-            });
-        },
-        _checkSelected : function () {
-            this.synEvent.type(this.getInputField("acDest1"), "[down][down][down][shift][a]", {
+            var input = this.getInputField("acDest1");
+            this.synEvent.execute([["click", input], ["type", input, "a"], ["pause", 500],
+                    ["type", input, "[down][down][down][down][<shift>]a[>shift<]"], ["pause", 100]], {
                 fn : this._finishTest,
                 scope : this
             });
