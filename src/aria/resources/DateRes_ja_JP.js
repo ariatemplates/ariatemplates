@@ -29,6 +29,31 @@ Aria.resourcesDefinition({
             "金曜日",
             "土曜日"
         ],
+        // a false value for the following items mean: use substring
+        // to generate the short versions of days or months
+        dayShort : [
+            "月",
+            "火",
+            "水",
+            "木",
+            "金",
+            "土",
+            "日"
+        ],
+        monthShort : [
+            "1月",
+            "2月",
+            "3月",
+            "4月",
+            "5月",
+            "6月",
+            "7月",
+            "8月",
+            "9月",
+            "10月",
+            "11月",
+            "12月"
+        ],
         month : [
             "一月",
             "二月",
