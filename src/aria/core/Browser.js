@@ -14,8 +14,8 @@
  */
 
 /**
- * @singleton Global class gathering information about current browser type and version A list of user agent string for
- * mobile phones could be find here: http://www.useragentstring.com/pages/Mobile%20Browserlist/
+ * Global class gathering information about current browser type and version A list of user agent string for mobile
+ * phones could be find here: http://www.useragentstring.com/pages/Mobile%20Browserlist/
  */
 Aria.classDefinition({
     $classpath : 'aria.core.Browser',
