@@ -42,7 +42,9 @@
                     to : 'value1'
                 }
             }
-        }/}     <br />
+        }/}
+
+        <span {id "myLink"/} >Used to blur the AutoComplete field.</span>
 
         {/macro}
 
