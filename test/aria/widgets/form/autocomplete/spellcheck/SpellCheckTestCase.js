@@ -29,6 +29,13 @@ Aria.classDefinition({
             this.acWidget = this.getWidgetInstance("myAutoComplete");
             this.ac = this.getInputField("myAutoComplete");
             this.acWidget.focus();
+            this.synEvent.click(this.acWidget, {
+                fn : this.onUserClick,
+                scope : this
+            });
+        },
+
+        onUserClick : function () {
             this._assertNormalState();
             this.synEvent.type("pparis", this.ac, {
                 fn : this._step1,
