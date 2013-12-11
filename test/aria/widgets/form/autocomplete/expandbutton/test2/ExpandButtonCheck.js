@@ -15,56 +15,37 @@
 
 Aria.classDefinition({
     $classpath : "test.aria.widgets.form.autocomplete.expandbutton.test2.ExpandButtonCheck",
-    $extends : "aria.jsunit.TemplateTestCase",
+    $extends : "aria.jsunit.RobotTestCase",
     $constructor : function () {
-        this.$TemplateTestCase.constructor.call(this);
+        this.$RobotTestCase.constructor.call(this);
         this.dataModel = {
             value1 : ""
         };
         this.setTestEnv({
             data : this.dataModel
         });
-        // this.defaultTestTimeout = 2000;
     },
     $prototype : {
-
-        /**
-         * This method is always the first entry point to a template test Start the test by focusing the first field
-         */
         runTemplateTest : function () {
-            var field = this.getInputField("ac1");
-            field.focus();
-            this._downArrow();
-        },
-        _downArrow : function () {
-            this.synEvent.type(this.getInputField("ac1"), "[down]", {
-                fn : this._addDelay,
-                scope : this
-            });
-        },
-
-        _addDelay : function () {
-            aria.core.Timer.addCallback({
-                fn : this._checkSelected,
-                scope : this,
-                delay : 1000
-            });
-        },
-
-        _checkSelected : function () {
-            this.synEvent.type(this.getInputField("ac1"), "[down][down][enter]", {
+            var input1 = this.getInputField("ac1");
+            this.synEvent.execute([["click", input1], ["type", input1, "[down]"], ["pause", 500],
+                    ["type", input1, "[down][down]\r"], ["pause", 500]], {
                 fn : this._checkFinalVal,
                 scope : this
             });
         },
 
         _checkFinalVal : function () {
-            this.assertTrue(this.getInputField("ac1").value == "Finnair");
-            this._finishTest();
+            var input = this.getInputField("ac1");
+            var input2 = this.getElementById("myLink");
+            this.assertTrue(input.value == "Finnair");
+            this.synEvent.execute([["click", input2]], {
+                fn : this._finishTest,
+                scope : this
+            });
         },
 
         _finishTest : function () {
-            this.getInputField("ac1").blur();
             var data = aria.utils.Json.getValue(this.dataModel, "value1");
             this.assertTrue(data.label == "Finnair");
             this.notifyTemplateTestEnd();

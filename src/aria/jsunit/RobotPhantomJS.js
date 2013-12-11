@@ -94,7 +94,6 @@ Aria.classDefinition({
             "VK_TAB" : "\t",
             "VK_SPACE" : " ",
             "VK_BACK_SPACE" : "\b",
-            "VK_ENTER" : "\r",
             "VK_MULTIPLY" : "*",
             "VK_PLUS" : "+",
             "VK_MINUS" : "-",
