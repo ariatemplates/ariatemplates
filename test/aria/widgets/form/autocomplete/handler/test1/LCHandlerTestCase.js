@@ -19,89 +19,67 @@
  */
 Aria.classDefinition({
     $classpath : "test.aria.widgets.form.autocomplete.handler.test1.LCHandlerTestCase",
-    $extends : "aria.jsunit.TemplateTestCase",
+    $extends : "aria.jsunit.RobotTestCase",
     $dependencies : ["aria.resources.handlers.LCResourcesHandler"],
     $constructor : function () {
-        this.$TemplateTestCase.constructor.call(this);
-    },
-    $destructor : function () {
-
-        this.$TemplateTestCase.$destructor.call(this);
+        this.$RobotTestCase.constructor.call(this);
     },
     $prototype : {
         runTemplateTest : function () {
-            this.templateCtxt.$focus("ac1");
-            this.acWidget = this.getWidgetInstance("ac1");
-            this.acResourcehandler = this.acWidget._cfg.resourcesHandler;
-            this._assertHandlerConfig();
-            this._assertTotalSuggestions();
-            this.synEvent.type(this.getInputField("ac1"), "AAR", {
-                fn : this._onUserTyped,
+            var input = this.getInputField("ac1");
+            this.synEvent.click(input, {
+                fn : this.onFocus,
                 scope : this
             });
         },
 
-        _onUserTyped : function () {
-            aria.core.Timer.addCallback({
-                fn : this._afterBlur,
-                scope : this,
-                delay : 800
-            });
-
-        },
-
-        _afterBlur : function () {
-            this.synEvent.type(this.getInputField("ac1"), "[enter]", {
+        onFocus : function () {
+            var input = this.getInputField("ac1");
+            this.acWidget = this.getWidgetInstance("ac1");
+            this.acResourcehandler = this.acWidget._cfg.resourcesHandler;
+            this._assertHandlerConfig();
+            this._assertTotalSuggestions();
+            this.synEvent.execute([["type", input, "AAR"], ["pause", 800], ["type", input, "\r"], ["pause", 800]], {
                 fn : this._onAfterEnter,
                 scope : this
             });
         },
 
         _onAfterEnter : function () {
-            var input = this.getInputField("ac1");
-            this.assertTrue(input && input.value == "Aarhus", "Wrong suggestion got selected.");
-            this._secondACtest();
-
-        },
-
-        _secondACtest : function(){
-            this.templateCtxt.$focus("ac2");
-            this.acWidget = this.getWidgetInstance("ac2");
-            this.acResourcehandler = this.acWidget._cfg.resourcesHandler;
-            this._assertACconfig();
-            this.synEvent.type(this.getInputField("ac2"), "a", {
-                fn : this._onDelay,
+            var input1 = this.getInputField("ac1"), input2 = this.getInputField("ac2");
+            this.assertTrue(input1 && input1.value == "Aarhus", "Wrong suggestion got selected.");
+            this.synEvent.execute([["click", input2]], {
+                fn : this._secondACtest,
                 scope : this
             });
         },
 
-        _onDelay : function () {
-            aria.core.Timer.addCallback({
-                fn : this._afterDelay,
-                scope : this,
-                delay : 1000
-            });
-
-        },
-        _afterDelay : function(){
-            this.synEvent.type(this.getInputField("ac2"), "[down][down][down][enter]", {
+        _secondACtest : function () {
+            var input = this.getInputField("ac2");
+            this.acWidget = this.getWidgetInstance("ac2");
+            this.acResourcehandler = this.acWidget._cfg.resourcesHandler;
+            this._assertACconfig();
+            this.synEvent.execute([["type", input, "a"], ["pause", 800], ["type", input, "[down][down][down]\r"],
+                    ["pause", 800]], {
                 fn : this._onAftersecondEntr,
                 scope : this
             });
         },
 
-        _onAftersecondEntr : function(){
+        _onAftersecondEntr : function () {
             var input = this.getInputField("ac2");
             this.assertTrue(input && input.value == "Air Canada", "Wrong suggestion got selected.");
             this.notifyTemplateTestEnd();
 
         },
-        _assertTotalSuggestions : function(){
-        this.assertFalse(this.acResourcehandler._suggestions.length != 6, "Does not match expected number of suggestions, Expected: 6 and returns "
+
+        _assertTotalSuggestions : function () {
+            this.assertFalse(this.acResourcehandler._suggestions.length != 6, "Does not match expected number of suggestions, Expected: 6 and returns "
                     + this.acResourcehandler._suggestions.length);
 
         },
-        _assertHandlerConfig : function(){
+
+        _assertHandlerConfig : function () {
             this.assertTrue(this.acResourcehandler.codeExactMatch === false, "The code exact must be false.");
             this.assertTrue(this.acResourcehandler.threshold === 2, "Wrong threshold in autocomplete resource handler");
             this.assertTrue(this.acResourcehandler._options.codeKey === "mycode", "Wrong code in autocomplete LCResourcesHandler.");
@@ -109,7 +87,8 @@ Aria.classDefinition({
             this.assertTrue((this.acResourcehandler._suggestions[0].label == "scotland" && this.acResourcehandler._suggestions[5].label == "aalborg"), "Sorting in autocomplete LCResourcesHandler should be in descending order");
 
         },
-        _assertACconfig : function(){
+
+        _assertACconfig : function () {
             this.assertTrue(this.acResourcehandler.codeExactMatch === true, "The code exact must be false.");
             this.assertTrue(this.acResourcehandler.threshold === 1, "Wrong threshold in autocomplete resource handler");
             this.assertTrue(this.acResourcehandler._options.codeKey === "code", "Wrong code in autocomplete LCResourcesHandler.");
