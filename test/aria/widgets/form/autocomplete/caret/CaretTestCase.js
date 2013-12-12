@@ -15,46 +15,25 @@
 
 Aria.classDefinition({
     $classpath : "test.aria.widgets.form.autocomplete.caret.CaretTestCase",
-    $extends : "aria.jsunit.TemplateTestCase",
+    $extends : "aria.jsunit.RobotTestCase",
     $constructor : function () {
-        this.$TemplateTestCase.constructor.call(this);
+        this.$RobotTestCase.constructor.call(this);
     },
     $prototype : {
         runTemplateTest : function () {
-            var field = this.getInputField("ac");
-
-            this.templateCtxt.$focus("ac");
-
-            Syn.selectText(field, 1, 3);
-
-            Syn.type(field, "a");
-
-            aria.core.Timer.addCallback({
-                fn : this.onTypeFirstLetter,
-                scope : this,
-                delay : 500
-            });
-        },
-
-        onTypeFirstLetter : function () {
-            var field = this.getInputField("ac");
-
-            Syn.type(field, "p");
-
-            aria.core.Timer.addCallback({
+            var input = this.getInputField("ac");
+            this.synEvent.execute([["click", input], ["type", input, "[home][right][<shift>][right][right][>shift<]"],
+                    ["pause", 1000], ["type", input, "a"], ["pause", 500], ["type", input, "p"], ["pause", 500]], {
                 fn : this.onType,
-                scope : this,
-                delay : 500
+                scope : this
             });
         },
-
         /**
          * After pasting, check that the dropdown is opened. The datamodel is updated on blur
          */
         onType : function () {
             var fieldText = this.getInputField("ac").value;
             this.assertEquals(fieldText, "japan", "Text in the autocomplete should be japan, got: " + fieldText);
-
             this.notifyTemplateTestEnd();
         }
     }
