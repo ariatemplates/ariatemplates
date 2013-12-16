@@ -67,7 +67,7 @@ Aria.classDefinition({
          * @type Array
          */
         this.delegatedOnBody = ["click", "focus", "blur", "focusin", "focusout", "mousedown", "mouseup", "mousemove",
-                "mouseover", "mouseout", "contextmenu", "touchstart", "touchend", "touchmove", "mousewheel"];
+                "mouseover", "mouseout", "contextmenu", "touchstart", "touchend", "touchmove", "mousewheel", "dblclick"];
 
         /**
          * Current CSS Prefix for Browser Engine

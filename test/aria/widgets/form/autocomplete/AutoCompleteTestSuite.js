@@ -49,5 +49,13 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.form.autocomplete.helptext.test2.AutoCompleteHelptextTestCase");
         this.addTests("test.aria.widgets.form.autocomplete.autoedit.AutoEditInput");
         this.addTests("test.aria.widgets.form.autocomplete.issue697.EscKeyTestCase");
+        this.addTests("test.aria.widgets.form.autocomplete.multiautocomplete.test1.MultiAutoAdd");
+        this.addTests("test.aria.widgets.form.autocomplete.multiautocomplete.test2.MultiAutoRemove");
+        this.addTests("test.aria.widgets.form.autocomplete.multiautocomplete.test3.MultiAutoDataCheck");
+        this.addTests("test.aria.widgets.form.autocomplete.multiautocomplete.test4.MultiAutoPrefill");
+        this.addTests("test.aria.widgets.form.autocomplete.multiautocomplete.test5.MultiAutoEdit");
+        this.addTests("test.aria.widgets.form.autocomplete.multiautocomplete.test6.MultiAutoRange");
+        this.addTests("test.aria.widgets.form.autocomplete.multiautocomplete.test7.MultiAutoError");
+        this.addTests("test.aria.widgets.form.autocomplete.multiautocomplete.test8.MultiAutoMaxOptions");
     }
 });
