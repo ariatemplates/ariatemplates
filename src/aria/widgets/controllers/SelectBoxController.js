@@ -30,7 +30,7 @@ Aria.classDefinition({
          * @protected
          */
         this._options = null;
-        this._allowInvalidText = false;
+
     },
     $statics : {
         /**
@@ -242,9 +242,6 @@ Aria.classDefinition({
                 jsonUtils.setValue(dataModel, 'listContent', sgs);
                 jsonUtils.setValue(dataModel, 'selectedIdx', exactMatch);
                 dataModel.initialInput = report.text;
-            } else if (this._allowInvalidText) {
-                report.text = nextValue;
-                report.displayDropDown = false;
             }
             report.cancelKeyStroke = true;
             return report;

@@ -25,7 +25,7 @@ Aria.classDefinition({
         DUPLICATE_VALUE : "%1 - Duplicate values %2 found in options"
     },
     /**
-     * Selectbox constructor
+     * RadioButton constructor
      * @param {aria.widgets.CfgBeans:SelectBoxCfg} cfg the widget configuration
      * @param {aria.templates.TemplateCtxt} ctxt template context
      * @param {Number} lineNumber Line number corresponding in the .tpl file where the widget is created
@@ -34,12 +34,6 @@ Aria.classDefinition({
         var controller = new aria.widgets.controllers.SelectBoxController();
         this.$DropDownTextInput.constructor.call(this, cfg, ctxt, lineNumber, controller);
         this.controller.setListOptions(this._cfg.options);
-        controller._allowInvalidText = cfg.allowInvalidText;
-    },
-    $destructor : function () {
-        var field = this.getTextInputField();
-        aria.utils.Event.removeListener(field, "paste");
-        this.$DropDownTextInput.$destructor.call(this);
     },
     $prototype : {
         /**
@@ -58,17 +52,6 @@ Aria.classDefinition({
                     p[key] = src[key];
                 }
             }
-        },
-        /**
-         * OVERRIDE initWidget
-         */
-        initWidget : function () {
-            this.$DropDownTextInput.initWidget.call(this);
-            var field = this.getTextInputField();
-            aria.utils.Event.addListener(field, "paste", {
-                fn : this._onpaste,
-                scope : this
-            });
         },
         /**
          * This method checks the consistancy of the values provided in the attributes of SelectBox and logs and error
@@ -94,19 +77,6 @@ Aria.classDefinition({
                 this.$logError(this.DUPLICATE_VALUE, [dupValues]);
             }
 
-        },
-        /**
-         * This method prevent to paste something inside the input field if the allowInvalidText property is set to false
-         * if there are any descripancies
-         */
-        _onpaste : function (event) {
-            if (!this._cfg.allowInvalidText) {
-                if (event.preventDefault) {
-                    event.preventDefault(true);
-                } else {
-                    event.returnValue = false;
-                }
-            }
         },
         /**
          * Internal method called when one of the model property that the widget is bound to has changed Must be

@@ -439,7 +439,7 @@
                 }
                 // changed for PTR04462051 as hyphens were included and this was breaking the AutoComplete widget.
                 if (kc == 45 || kc == 46) {
-                    return true; // insert or delete
+                    return false; // insert or delete
                 }
                 /*
                  * not a special key, just / * - + if (kc == 106 || kc == 107 || kc == 109 || kc == 111) { return true; }
