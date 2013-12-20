@@ -101,10 +101,22 @@ Aria.classDefinition({
          */
         _onpaste : function (event) {
             if (!this._cfg.allowInvalidText) {
-                if (event.preventDefault) {
-                    event.preventDefault(true);
-                } else {
-                    event.returnValue = false;
+                if (event && event.clipboardData && event.clipboardData.getData) {
+                    if (/text\/plain/.test(event.clipboardData.types)) {
+                        var clipboardValue = event.clipboardData.getData('text/plain');
+                    }
+                    else {
+                        var clipboardValue = "";
+                    }
+                    var sgsMatch = this.controller._buildSuggestionsList(clipboardValue).exactMatch;
+
+                    if (sgsMatch === -1) {
+                        if (event.preventDefault) {
+                            event.preventDefault(true);
+                        } else {
+                            event.returnValue = false;
+                        }
+                    }
                 }
             }
         },
