@@ -203,7 +203,7 @@ Aria.classDefinition({
         onPasteTwo : function () {
             var value = this.selectbox2.value;
             this.assertTrue(value === "", "The Selectbox value should be empty");
-            this.synEvent.type(this.selectbox2, "Brazil", {
+            this.synEvent.type(this.selectbox2, "Bra", {
                 fn : this.onLastType,
                 scope : this
             });
@@ -213,42 +213,20 @@ Aria.classDefinition({
          */
         onLastType : function () {
             var value = this.selectbox2.value;
-            this.assertTrue(value == "Brazil", "The Selectbox value should be equal to Bra");
-
-            aria.utils.Caret.setPosition(this.selectbox2, 0, 6);
-            this.synEvent.type(this.selectbox2, "[<CTRL>]c[>CTRL<]", {
-                fn : this.onSecondCopy,
-                scope : this
-            });
-        },
-        /**
-         * Check the input value and clean the input field
-         */
-        onSecondCopy : function () {
-            this.synEvent.type(this.selectbox2, "[backspace][backspace][backspace][backspace][backspace][backspace]", {
+            this.assertTrue(value == "Bra", "The Selectbox value should be equal to Bra");
+            this.synEvent.type(this.selectbox2, "[backspace][backspace][backspace]", {
                 fn : this.onLastDelete,
                 scope : this
             });
         },
         /**
-         * Check that the backspace is working and paste a valid text
+         * Check that the backspace is working
          */
          onLastDelete : function () {
             var value = this.selectbox2.value;
             this.assertTrue(value === "", "The Selectbox value should be empty");
-
-            this.synEvent.type(this.selectbox2, "[<CTRL>]v[>CTRL<]", {
-                fn : this.onPasteValid,
-                scope : this
-            });
-        },
-        /**
-         * Check that the paste action of a valid text is working
-         */
-        onPasteValid : function () {
-            var value = this.selectbox2.value;
-            this.assertTrue(value === "Brazil", "The Selectbox value should be Brazil");
             this.notifyTemplateTestEnd();
         }
+
     }
 });
