@@ -68,7 +68,7 @@
                     var index, suggestion, isRangeValue = false;
                     var patt = this.rangePattern;
                     if (this.allowRangeValues && patt.test(textEntry)) {
-                        var firstLetter = textEntry[0];
+                        var firstLetter = textEntry.charAt(0);
                         var rangeV = textEntry.substring(1).split("-");
                         isRangeValue = true;
                     } else {
