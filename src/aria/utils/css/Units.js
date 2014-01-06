@@ -86,29 +86,52 @@
                 }
             },
 
-            __getDpi : function (property) {
-                var dpi;
-                switch (this.cfg.PROPERTIES[property].orientation) {
-                    case this.cfg.HORIZONTAL :
-                        dpi = this.dpi.x;
-                        break;
-                    case this.cfg.VERTICAL :
-                        dpi = this.dpi.y;
-                        break;
-                    // if composite, then dpi = average
-                    default :
-                        dpi = (this.dpi.x + this.dpi.y) / 2;
-                        break;
+            /**
+             * Lazy-getter for the DPI information. Once detected, the value of DPI is stored in this._dpi. Note: this
+             * method writes to &lt;BODY&gt; so make sure not to call it too early (don't call it from a script in
+             * &lt;HEAD&gt;).
+             * @return {Object} {x : Number, y : Number}
+             */
+            getDpi : function () {
+                if (this._dpi) {
+                    return this._dpi;
                 }
+
+                var document = Aria.$window.document;
+                var domElement = document.createElement("div");
+                domElement.style.cssText = "height: 1in; left: -100%; position: absolute; top: -100%; width: 1in;";
+                document.body.appendChild(domElement);
+                var dpi = this._dpi = {
+                    x : domElement.offsetWidth,
+                    y : domElement.offsetHeight
+                };
+                document.body.removeChild(domElement);
                 return dpi;
             },
 
+            /**
+             * Returns the DPI of a given CSS property dependending on it's orientation. See
+             * <code>aria.utils.css.PropertiesConfig</code> for details.
+             * @param {String} property Camel-case name, e.g. "marginLeft"
+             */
+            __getDpiForProp : function (property) {
+                var dpi = this.getDpi();
+                switch (this.cfg.PROPERTIES[property].orientation) {
+                    case this.cfg.HORIZONTAL :
+                        return dpi.x;
+                    case this.cfg.VERTICAL :
+                        return dpi.y;
+                    default : // if composite, then dpi = average
+                        return (dpi.x + dpi.y) / 2;
+                }
+            },
+
             __px2Inches : function (value, property) {
-                return value / this.__getDpi(property);
+                return value / this.__getDpiForProp(property);
             },
 
             __inches2Px : function (value, property) {
-                return value * this.__getDpi(property);
+                return value * this.__getDpiForProp(property);
             },
 
             __px2Em : function (value, elem, property) {
@@ -143,20 +166,13 @@
 
         },
         $constructor : function () {
-
             this.cfg = aria.utils.css.PropertiesConfig;
 
-            // detect dpi
-            var domElement = Aria.$window.document.createElement("div");
-            domElement.style.cssText = "height: 1in; left: -100%; position: absolute; top: -100%; width: 1in;";
-            domElement.id = "dpiDetectionTest";
-            Aria.$window.document.body.appendChild(domElement);
-            this.dpi = {
-                x : Aria.$window.document.getElementById('dpiDetectionTest').offsetWidth,
-                y : Aria.$window.document.getElementById('dpiDetectionTest').offsetHeight
-            };
-            Aria.$window.document.body.removeChild(domElement);
-            // end detection dpi
+            /**
+             * DPI is lazy-evaluated by the call to this.getDpi() when needed, as we don't want to write to &lt;BODY&gt;
+             * too early
+             */
+            this._dpi = null;
 
             var browser = aria.core.Browser;
             this.isIE8orLess = browser.isIE8 || browser.isIE7 || browser.isIE6;
