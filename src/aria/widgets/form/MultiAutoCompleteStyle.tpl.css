@@ -60,6 +60,13 @@
         	display:inline-block;
         	cursor:pointer;
         }
+        .xMultiAutoComplete_${skinClassName}_options span.ellipsisClass{
+        	white-space:nowrap;
+			overflow:hidden;
+			text-overflow:ellipsis;
+			vertical-align:middle;
+			line-height:18px;
+        }
          .xMultiAutoComplete_${skinClassName}_options a:hover{
         	background-position: -5px -5px;
         }

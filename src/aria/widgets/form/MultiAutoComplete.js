@@ -99,7 +99,20 @@ Aria.classDefinition({
             if (element.className === "closeBtn") {
                 this._removeMultiselectValues(element, event);
             }
+            this.__resizeInput();
             this._textInputField.focus();
+        },
+        /**
+         * Private method to increase the textInput width on focus
+         * @private
+         */
+        __resizeInput : function () {
+            var skinObj = this._skinObj, frame = this._frame, obj = this._textInputField;
+            if (obj) {
+                var frameWidth = frame.innerWidth - skinObj.innerPaddingLeft - skinObj.innerPaddingRight, inputWidth = obj.offsetLeft;
+                obj.style.width = (frameWidth - inputWidth - 4) + "px";// tolerance of 1 character
+            }
+
         },
         /**
          * Initialization method called by the delegate engine when the DOM is loaded
@@ -114,6 +127,7 @@ Aria.classDefinition({
         },
         /**
          * Add the selected suggestion(s) to widget
+         * @protected
          * @param {aria.widgets.form.MultiAutoComplete} ref
          * @param {aria.widgets.controllers.reports.DropDownControllerReport} report
          * @param {Object} arg Optional parameters
@@ -121,21 +135,24 @@ Aria.classDefinition({
 
         _addMultiselectValues : function (report, arg) {
             var controller = this.controller, suggestionToBeAdded = controller._suggestionToBeAdded;
-            var typeUtil = aria.utils.Type;
-
             var isValid;
+            var typeUtil = aria.utils.Type;
+            var domUtil = aria.utils.Dom;
             if (controller.editMode) {
                 isValid = typeUtil.isString(suggestionToBeAdded);
             } else {
                 isValid = typeUtil.isArray(suggestionToBeAdded) || typeUtil.isObject(suggestionToBeAdded);
             }
 
-            if (controller.freeText && suggestionToBeAdded && arg && arg.eventName == "blur") {
+            if (controller.freeText && suggestionToBeAdded) {
                 isValid = true;
             }
+            if (controller.maxOptions && controller.selectedSuggestions.length == controller.maxOptions) {
+                this._textInputField.value = "";
+            }
             if (isValid && suggestionToBeAdded && !this._dropdownPopup) {
-                var suggestionsMarkup = "", domUtil = aria.utils.Dom;
-                if (aria.utils.Type.isArray(suggestionToBeAdded)) {
+                var suggestionsMarkup = "";
+                if (typeUtil.isArray(suggestionToBeAdded)) {
                     var maxOptionsLength = (controller.maxOptions)
                             ? aria.utils.Math.min((controller.maxOptions - controller.selectedSuggestions.length), suggestionToBeAdded.length)
                             : suggestionToBeAdded.length;
@@ -145,22 +162,21 @@ Aria.classDefinition({
                 } else {
                     var lessThanMaxOptions = controller.maxOptions
                             ? controller.maxOptions > controller.selectedSuggestions.length
-                            : false;
+                            : true;
                     if (lessThanMaxOptions) {
                         suggestionsMarkup = this._generateSuggestionMarkup(suggestionToBeAdded);
                     }
                 }
                 domUtil.insertAdjacentHTML(this._textInputField, "beforeBegin", suggestionsMarkup);
+                this.__createEllipsis(this._textInputField);
                 controller._suggestionToBeAdded = null;
                 this._textInputField.value = "";
-                if (this._frame.getChild(0).lastChild !== this._textInputField) {
-
-                    domUtil.insertAdjacentHTML(this._frame.getChild(0).lastChild, "afterEnd", "<span></span>");
-                    domUtil.replaceDomElement(this._frame.getChild(0).lastChild, this._textInputField);
-                }
+                this._makeInputFieldLastChild();
                 if (controller.editMode) {
                     controller.editMode = false;
                 }
+                this._textInputField.style.width = "0px";
+                this.__resizeInput();
 
             }
         },
@@ -189,42 +205,125 @@ Aria.classDefinition({
             return suggestionMarkup;
         },
         /**
+         * Method to create ellipsis for an added Suggestion
+         * @param {HTMLElement} input textInputField
+         * @private
+         */
+        __createEllipsis : function (input) {
+            var ellipsisContainer = input.previousSibling, elementoffsetWidth = ellipsisContainer.offsetWidth, frameWidth = this._frame.innerWidth;
+            // 10 is to consider margin and padding
+            if (elementoffsetWidth >= (frameWidth - 10)) {
+                ellipsisContainer.firstChild.className += " ellipsisClass";
+                var elementWidth = frameWidth - ellipsisContainer.offsetLeft
+                        - (ellipsisContainer.firstChild.offsetLeft + ellipsisContainer.lastChild.offsetWidth) * 2;
+                ellipsisContainer.firstChild.style.maxWidth = elementWidth + "px";
+            }
+
+        },
+        /**
          * Handling double click event for editing suggestion
          * @param {aria.utils.Event} event
+         * @protected
          */
         _dom_ondblclick : function (event) {
             if (event.type == "dblclick" && this.controller.freeText) {
                 var element = event.target;
-                if (element.className == "xMultiAutoComplete_Option_Text") {
+                if (element.className.indexOf("xMultiAutoComplete_Option_Text") != -1) {
                     this._editMultiselectValue(element, event);
                 }
             }
         },
         /**
+         * Handling blur event
+         * @param {aria.utils.Event} event
+         * @protected
+         */
+        _dom_onblur : function (event) {
+            var inputField = this.getTextInputField();
+            if (inputField.nextSibling != null && inputField.value === "") {
+                this._makeInputFieldLastChild();
+            }
+            this.$TextInput._dom_onblur.call(this, event);
+        },
+        /**
+         * Make the inputfield as last child of widget
+         * @protected
+         */
+        _makeInputFieldLastChild : function () {
+            var domUtil = aria.utils.Dom;
+            if (this._frame.getChild(0).lastChild !== this._textInputField) {
+                domUtil.insertAdjacentHTML(this._frame.getChild(0).lastChild, "afterEnd", "<span></span>");
+                domUtil.replaceDomElement(this._frame.getChild(0).lastChild, this._textInputField);
+                this._textInputField.style.width = "0px";
+                this.__resizeInput();
+            }
+        },
+        /**
+         * Handling keydow event for enter, backspace
+         * @param {aria.utils.Event} event
+         * @protected
+         */
+        _dom_onkeydown : function (event) {
+            var backspacePressed = (event.keyCode == event.KC_BACKSPACE);
+            var tabPressed = (event.keyCode == event.KC_TAB);
+            var inputField = this.getTextInputField();
+            var inputFieldValue = inputField.value;
+            var domUtil = aria.utils.Dom;
+            if (tabPressed && inputFieldValue !== "") {
+                event.preventDefault();
+                var report = this.controller.checkText(inputFieldValue, false);
+                this._reactToControllerReport(report);
+                this.setHelpText(false);
+            }
+            if (tabPressed && inputFieldValue === "" && inputField.nextSibling != null) {
+                event.preventDefault();
+                this._makeInputFieldLastChild();
+                this.setHelpText(false);
+                inputField.focus();
+                var newSuggestions = aria.utils.Json.copy(this.controller.selectedSuggestions);
+                this.setProperty("value", newSuggestions);
+
+            }
+            if (backspacePressed && inputFieldValue === "") {
+                var previousSiblingElement = domUtil.getPreviousSiblingElement(inputField);
+                if (previousSiblingElement) {
+                    var previousSiblingLabel = previousSiblingElement.firstChild.innerText
+                            || previousSiblingElement.firstChild.textContent;
+                    domUtil.removeElement(previousSiblingElement);
+                    this._removeValues(previousSiblingLabel);
+                }
+
+            }
+            this.$DropDownTextInput._dom_onkeydown.call(this, event);
+        },
+        /**
          * To remove suggestion on click of close
+         * @protected
          * @param {aria.utils.HTML} domElement
          * @param {aria.widgets.form.MultiAutoComplete} ref
          * @param {aria.utils.Event} event
          */
         _removeMultiselectValues : function (domElement, event) {
-            var parent = domElement.parentNode, domUtil = aria.utils.Dom;
-            var controller = this.controller;
+            var parent = domElement.parentNode;
+            var domUtil = aria.utils.Dom;
             var label = parent.firstChild.innerText || parent.firstChild.textContent;
-            this._removeValues(label);
             domUtil.removeElement(parent);
+            this._removeValues(label);
             if (event.type == "click") {
                 this.getTextInputField().focus();
+
             }
-            var newSuggestions = aria.utils.Json.copy(controller.selectedSuggestions);
-            this.setProperty("value", newSuggestions);
+
         },
         /**
          * To edit suggestion on doubleclick
          * @param {aria.utils.HTML} domElement
          * @param {aria.utils.Event} event
+         * @protected
          */
         _editMultiselectValue : function (domElement, event) {
-            var domUtil = aria.utils.Dom, label, arg = {};
+            var label, arg = {};
+            var domUtil = aria.utils.Dom;
             label = domElement.textContent || domElement.innerText;
             domUtil.replaceDomElement(domElement.parentNode, this._textInputField);
             this.controller.editMode = true;
@@ -232,6 +331,7 @@ Aria.classDefinition({
             this._textInputField.focus();
             // to select the edited text.
             this._keepFocus = true;
+            // this._textInputField.style.width = "0px";
             var report = this.controller.checkValue(label);
             report.caretPosStart = 0;
             report.caretPosEnd = label.length;
@@ -243,9 +343,11 @@ Aria.classDefinition({
         /**
          * To remove the label from widget
          * @param {String} label
+         * @protected
          */
         _removeValues : function (label) {
-            var indexToRemove, arrayUtil = aria.utils.Array, controller = this.controller;
+            var indexToRemove, controller = this.controller;
+            var arrayUtil = aria.utils.Array;
             arrayUtil.forEach(controller.selectedSuggestions, function (obj, index) {
                 var suggestionLabel = obj.label || obj;
                 if (suggestionLabel == label) {
@@ -255,6 +357,10 @@ Aria.classDefinition({
             });
             arrayUtil.removeAt(controller.selectedSuggestions, indexToRemove);
             arrayUtil.remove(controller.selectedSuggestionsLabelsArray, label);
+            var newSuggestions = aria.utils.Json.copy(controller.selectedSuggestions);
+            this.setProperty("value", newSuggestions);
+            this._textInputField.style.width = "0px";
+            this.__resizeInput();
         }
     }
 });

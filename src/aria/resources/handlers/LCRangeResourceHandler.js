@@ -59,56 +59,35 @@
              * @param {aria.core.CfgBeans.Callback} callback Called when suggestions are ready
              */
             getSuggestions : function (textEntry, callback) {
-
-                if (typesUtil.isString(textEntry) && textEntry.length >= this.threshold) {
-                    textEntry = stringUtil.stripAccents(textEntry).toLowerCase();
-
-                    var codeSuggestions = [], labelSuggestions = [], nbSuggestions = this._suggestions.length, textEntryLength = textEntry.length;
-                    var results = {};
-                    var index, suggestion, isRangeValue = false;
-                    var patt = this.rangePattern;
-                    if (this.allowRangeValues && patt.test(textEntry)) {
-                        var firstLetter = textEntry.charAt(0);
-                        var rangeV = textEntry.substring(1).split("-");
-                        isRangeValue = true;
-                    } else {
-                        var rangeV = [];
-                        rangeV[0] = 1;
-                        rangeV[1] = 1;
-                    }
+                if (!typesUtil.isString(textEntry) || textEntry.length < this.threshold) {
+                    this.$callback(callback, null);
+                    return;
+                }
+                textEntry = stringUtil.stripAccents(textEntry).toLowerCase();
+                if (this.allowRangeValues && this.rangePattern.test(textEntry)) {
+                    var firstLetter = textEntry.charAt(0);
+                    var rangeV = textEntry.substring(1).split("-");
+                    var results = {
+                        suggestions : [],
+                        multipleValues : true
+                    };
                     for (var k = rangeV[0]; k <= rangeV[1]; k++) {
-                        textEntry = firstLetter ? firstLetter + k : textEntry;
-                        textEntryLength = textEntry.length;
-                        for (index = 0; index < nbSuggestions; index++) {
-                            suggestion = this._suggestions[index];
-                            if (suggestion.code === textEntry) {
-                                suggestion.original.exactMatch = !isRangeValue && true;
-                                codeSuggestions.unshift(suggestion.original);
-                            } else if (suggestion.code.substring(0, textEntryLength) === textEntry
-                                    && !this.codeExactMatch) {
-                                codeSuggestions.push(suggestion.original);
-                                suggestion.original.exactMatch = false;
-                            } else {
-                                if (suggestion.label.substring(0, textEntryLength) === textEntry) {
-                                    var exactMatch = suggestion.label === textEntry;
-                                    exactMatch = !isRangeValue && exactMatch;
-                                    suggestion.original.exactMatch = exactMatch;
-                                    if (exactMatch) {
-                                        labelSuggestions.unshift(suggestion.original);
-                                    } else {
-                                        labelSuggestions.push(suggestion.original);
-                                    }
-                                }
-                            }
-                        }
+                        var textEntry = firstLetter + k;
+                        this.$LCResourcesHandler.getSuggestions.call(this, textEntry, {
+                            fn : this.__appendSuggestions,
+                            scope : this,
+                            args : results
+                        });
                     }
-
-                    var suggestions = codeSuggestions.concat(labelSuggestions);
-                    results.suggestions = suggestions;
-                    results.multipleValues = isRangeValue;
                     this.$callback(callback, results);
                 } else {
-                    this.$callback(callback, null);
+                    this.$LCResourcesHandler.getSuggestions.call(this, textEntry, callback);
+                }
+            },
+
+            __appendSuggestions : function (suggestions, results) {
+                if (suggestions) {
+                    results.suggestions = results.suggestions.concat(suggestions);
                 }
             }
 

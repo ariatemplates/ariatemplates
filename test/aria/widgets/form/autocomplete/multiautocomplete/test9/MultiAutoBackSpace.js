@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.autocomplete.multiautocomplete.test6.MultiAutoRange",
+    $classpath : "test.aria.widgets.form.autocomplete.multiautocomplete.test9.MultiAutoBackSpace",
     $extends : "aria.jsunit.TemplateTestCase",
     $constructor : function () {
         this.$TemplateTestCase.constructor.call(this);
@@ -58,14 +58,20 @@ Aria.classDefinition({
         },
         _selectVal : function () {
             this.synEvent.type(this.getInputField("MultiAutoId"), "[enter]", {
+                fn : this._pressBackSpace,
+                scope : this
+            });
+        },
+        _pressBackSpace : function () {
+            this.synEvent.type(this.getInputField("MultiAutoId"), "[backspace]", {
                 fn : this._checkValues,
                 scope : this
             });
         },
         _checkValues : function () {
             var value = this.data.ac_airline_values;
-            var rangeLabels = ['P1.some', 'P2.kon', 'P3.red', 'P4.redd'];
-            this.assertEquals(value.length, 4, "The Wrong range of elements are prefilled. Expected = 4, Prefilled = "
+            var rangeLabels = ['P1.some', 'P2.kon', 'P3.red'];
+            this.assertEquals(value.length, 3, "The Wrong range of elements are prefilled. Expected = 4, Prefilled = "
                     + value.length);
             for (var k = 0; k < value.length; k++) {
                 this.assertEquals(value[k].label, rangeLabels[k], "The Wrong range of elements are prefilled. Expected = "

@@ -57,5 +57,6 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.form.autocomplete.multiautocomplete.test6.MultiAutoRange");
         this.addTests("test.aria.widgets.form.autocomplete.multiautocomplete.test7.MultiAutoError");
         this.addTests("test.aria.widgets.form.autocomplete.multiautocomplete.test8.MultiAutoMaxOptions");
+        this.addTests("test.aria.widgets.form.autocomplete.multiautocomplete.test9.MultiAutoBackSpace");
     }
 });
