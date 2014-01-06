@@ -79,6 +79,62 @@ Aria.classDefinition({
                 }
             }
             return result.join('');
+        },
+
+        /**
+         * Turn an HTML form element into a string that contains the list of name-value pairs of all relevant elements
+         * of the form. For example, the following form
+         *
+         * <pre>
+         * &lt;form id=&quot;myForm&quot;&gt;
+         *     &lt;input type=&quot;text&quot; name=&quot;firstname&quot; value=&quot;Colin&quot;&gt;
+         *     &lt;input type=&quot;text&quot; name=&quot;lastname&quot; value=&quot;Pitt&quot; disabled&gt;
+         *     &lt;input type=&quot;date&quot; name=&quot;birth&quot; value=&quot;2012-04-04&quot;
+         *     &lt;input type=&quot;text&quot;&gt;
+         *     &lt;input type=&quot;file&quot; name=&quot;picture&quot; /&gt;
+         *     &lt;input type=&quot;submit&quot; name=&quot;submit&quot;/&gt;
+         *     &lt;input type=&quot;checkbox&quot; name=&quot;vehicle&quot; value=&quot;Bike&quot; checked /&gt;
+         * &lt;/form&gt;
+         * </pre>
+         *
+         * yields
+         *
+         * <pre>
+         * firstname
+         * =Colin&amp;birth=2012-04-04&amp;vehicle=Bike
+         * </pre>
+         *
+         * This method can be useful when you want to send the form information as data of an ajax call
+         * @param {HTMLElement} form
+         * @return {String}
+         */
+        serializeForm : function (form) {
+            var elements = form.elements, params = [], element, name, value;
+            for (var i = 0, len = elements.length; i < len; i++) {
+                element = elements[i];
+                if (this._isSerializable(element)) {
+                    name = encodeURIComponent(element.name);
+                    value = encodeURIComponent(element.value.replace(/\r?\n/g, "\r\n"));
+                    params.push(name + "=" + value);
+                }
+            }
+            return params.join("&").replace(/%20/g, "+");
+        },
+
+        /**
+         * Return true if the HTML element is serializable in a form. Serializable elements are input, select, textarea,
+         * keygen, which have a name attribute, a certain type, and are not disabled
+         * @param {HTMLElement} element
+         * @return {Boolean}
+         */
+        _isSerializable : function (element) {
+            var submittable = /^(?:input|select|textarea|keygen)/i;
+            var submitterTypes = /^(?:submit|button|image|reset|file)$/i;
+            var type = element.type;
+            var checkableTypes = /^(?:checkbox|radio)$/i;
+
+            return element.name && !element.disabled && submittable.test(element.nodeName)
+                    && !submitterTypes.test(type) && (element.checked || !checkableTypes.test(type));
         }
     }
 });
