@@ -24,6 +24,7 @@ Aria.classDefinition({
             "aria.core.DownloadMgr"],
     $statics : {
         // ERROR MESSAGES:
+        PRELOAD_FROM_HEAD : "You should place your call to preloadSkinImages() in <BODY> of your HTML file, not in <HEAD>.",
         WIDGET_SKIN_CLASS_OBJECT_NOT_FOUND : "There is no skin configuration for skin class %1 of widget %2. Skin class std will be used instead. The widget will probably not be displayed correctly."
     },
     $prototype : {
@@ -248,11 +249,15 @@ Aria.classDefinition({
             }
             var document = Aria.$window.document;
             var element = document.createElement('div');
-            document.body.appendChild(element);
-            element.style.position = "absolute";
-            element.style.left = "-1000000px";
-            element.style.top = "-1000000px";
-            element.innerHTML = markup.join('');
+            if (document.body) {
+                document.body.appendChild(element);
+                element.style.position = "absolute";
+                element.style.left = "-1000000px";
+                element.style.top = "-1000000px";
+                element.innerHTML = markup.join('');
+            } else {
+                this.$logError(this.PRELOAD_FROM_HEAD);
+            }
             return element;
         },
 
