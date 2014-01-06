@@ -26,7 +26,7 @@
             return null;
         if (typeof(expectedEvt) != typeof(evt))
             return [];
-        if (typeof(expectedEvt) == 'object' || typeof(expectedEvt) == 'array') {
+        if (typeof(expectedEvt) == 'object') {
             for (var i in expectedEvt) {
                 var res = diffObjects(evt[i], expectedEvt[i]);
                 if (res != null) {

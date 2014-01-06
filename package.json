@@ -23,15 +23,15 @@
     "test": "npm run-script lint && npm run-script grunt && npm run-script mocha && npm run-script attester"
   },
   "devDependencies": {
-    "gzip-js": "0.3.2",
-    "grunt-verifylowercase": "0.2.0",
+    "atpackager": "0.2.2",
+    "attester": "1.3.0",
+    "express": "3.4.8",
+    "grunt": "0.4.2",
+    "grunt-contrib-jshint": "0.8.0",
     "grunt-leading-indent": "0.1.0",
-    "grunt": "git+https://github.com/divdavem/grunt.git#13da751bdfd291c25a47ca7669ae0778eb289b28",
-    "grunt-contrib-jshint": "0.6.3",
-    "attester": "1.2.0",
-    "express": "3.3.5",
-    "jade": "0.34.1",
-    "atpackager": "0.1.0",
-    "mocha": "1.11.0"
+    "grunt-verifylowercase": "0.2.0",
+    "gzip-js": "0.3.2",
+    "jade": "1.1.5",
+    "mocha": "1.17.0"
   }
 }
