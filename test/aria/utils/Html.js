@@ -143,6 +143,48 @@ Aria.classDefinition({
             };
             json.dataset[key] = "test";
             return aria.utils.Html.buildAttributeList(json);
+        },
+
+        test_serializeForm : function () {
+
+            var document = Aria.$window.document, testDiv = document.createElement("div"), html = aria.utils.Html;
+            document.body.appendChild(testDiv);
+            testDiv.innerHTML = '<form id="testForm"></form>';
+            var testFormElement = document.getElementById("testForm");
+
+            // simple scenario
+            testFormElement.innerHTML = '<input type="text" name="firstname" value="Colin"/><input type="date" name="birth" value="2012-04-04"/>';
+            this.assertEquals(html.serializeForm(testFormElement), "firstname=Colin&birth=2012-04-04");
+
+            // disabled element
+            testFormElement.innerHTML = '<input type="text" name="firstname" value="Colin"/><input type="date" name="birth" value="2012-04-04" disabled/>';
+            this.assertEquals(html.serializeForm(testFormElement), "firstname=Colin");
+
+            // element without name attribute
+            testFormElement.innerHTML = '<input type="text" name="firstname" value="Colin"/><input type="date" value="2012-04-04" />';
+            this.assertEquals(html.serializeForm(testFormElement), "firstname=Colin");
+
+            // element without value
+            testFormElement.innerHTML = '<input type="text" name="firstname"/><input type="date" value="2012-04-04" />';
+            this.assertEquals(html.serializeForm(testFormElement), "firstname=");
+
+            // element with characters to encode
+            testFormElement.innerHTML = '<input type="text" name="first name" value="Co&in"/><input type="date" value="2012-04-04" />';
+            this.assertEquals(html.serializeForm(testFormElement), "first+name=Co%26in");
+
+            // submittable element
+            testFormElement.innerHTML = '<input type="text" name="first name" value="Co&in"/><input type="file" name="picture" />';
+            this.assertEquals(html.serializeForm(testFormElement), "first+name=Co%26in");
+
+            // select and textarea
+            testFormElement.innerHTML = '<select type="text" name="class" value="A"><option value="A">A</option><option value="B">B</option></select><textarea name="comment">whatever you want</textarea>';
+            this.assertEquals(html.serializeForm(testFormElement), "class=A&comment=whatever+you+want");
+
+            // checkbox
+            testFormElement.innerHTML = '<input type="checkbox" name="vehicle" value="Bike" checked /><input type="checkbox" name="other" value="Car" />';
+            this.assertEquals(html.serializeForm(testFormElement), "vehicle=Bike");
+
+            document.body.removeChild(testDiv);
         }
     }
 });

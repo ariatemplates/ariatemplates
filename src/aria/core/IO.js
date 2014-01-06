@@ -325,7 +325,16 @@ Aria.classDefinition({
         },
 
         /**
-         * Make a pseudo asynchronous form submission.
+         * Make a pseudo asynchronous form submission. The form is submitted through an iframe, that is set as the
+         * target of the form. When calling this method, the form is actually submitted, so that the response is added
+         * in the body of the iframe. This mechanism is a common workaround that avoids the full refresh of the current
+         * page, as everything happens in the iframe. BEWARE: this method may fail in certain browsers depending on the
+         * Content-Type of the response. For example, if the Content-Type of the response is "application/json", some
+         * browsers will not output its content inside the body, or will prompt you to save or open the file. XML
+         * responses are generally accepted. In these specific cases, bear in mind that it is possible to serialize a
+         * form using method aria.utils.Html.serializeForm and use the extracted string as the data of a standard ajax
+         * request (aria.core.IO.asyncRequest). This will not be possible if some of the elements of your form are not
+         * serializable.
          * @param {aria.core.CfgBeans:IOAsyncRequestCfg} request Request description
          *
          * <pre>
