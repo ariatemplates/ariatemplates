@@ -67,6 +67,20 @@ Aria.classDefinition({
         },
         _selectVal2 : function () {
             this.synEvent.type(this.getInputField("MultiAutoId"), "[down][enter]", {
+                fn : this._typeWithWordBoundary,
+                scope : this
+            });
+        },
+        _typeWithWordBoundary : function () {
+            this.synEvent.type(this.getInputField("MultiAutoId"), "sys", {
+                fn : this._wait,
+                scope : this,
+                args : this._selectVal3
+            });
+
+        },
+        _selectVal3 : function () {
+            this.synEvent.type(this.getInputField("MultiAutoId"), "[down][enter]", {
                 fn : this._checkSelected,
                 scope : this
             });
@@ -74,8 +88,8 @@ Aria.classDefinition({
         _checkSelected : function () {
             var parentNode = this.getInputField("MultiAutoId").parentNode;
             this.assertEquals(this.getInputField("MultiAutoId").value, "", "The Input Field should be empty.");
-            this.assertEquals(parentNode.childNodes.length, 3, "The Wrong No. of elements are added.");
-            var expectedVal = ["Air Canada", "Finnair"];
+            this.assertEquals(parentNode.childNodes.length, 4, "The Wrong No. of elements are added.");
+            var expectedVal = ["Air Canada", "Finnair", "Scandinavian Airlines System"];
             for (var i = 0; i < parentNode.childNodes.length - 1; i++) {
                 var element = parentNode.childNodes[i].innerText || parentNode.childNodes[i].textContent;
                 this.assertEquals(element, expectedVal[i], "The Wrong values are added as for Autocomplete.");

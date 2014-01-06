@@ -8,7 +8,8 @@ Aria.tplScriptDefinition({
     $constructor : function () {
 
         this._airLineHandler = new aria.resources.handlers.LCRangeResourceHandler({
-            allowRangeValues : true
+            allowRangeValues : true,
+            labelMatchAtWordBoundaries : true
         });
         this._airLineHandler.setSuggestions([{
                     label : 'Air France',
