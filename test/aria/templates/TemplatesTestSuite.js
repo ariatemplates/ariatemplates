@@ -92,6 +92,7 @@ Aria.classDefinition({
         this.addTests("test.aria.templates.section.SectionTestCase");
         this.addTests("test.aria.templates.section.sectionAttributes.SectionAttributes");
         this.addTests("test.aria.templates.section.autorefresh.SectionAutorefreshTestCase");
+        this.addTests("test.aria.templates.section.processingIndicator.ProcessingIndicatorOnSection");
         this.addTests("test.aria.templates.repeater.RepeaterTestCase");
         this.addTests("test.aria.templates.visualFocus.VisualFocusTestCase");
         this.addTests("test.aria.templates.testmode.TestIdsTestCase");

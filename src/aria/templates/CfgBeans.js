@@ -768,7 +768,11 @@ Aria.beanDefinitions({
                 "bindProcessingTo" : {
                     $type : "BindingConfiguration",
                     $description : "Loading overlay binding configurations for this section. If specified, this section will be hidden by a loading indicator when the value in the datamodel is true.",
-                    $mandatory : false
+                    $default : {
+                        inside : {},
+                        to : "processing",
+                        recursive : false
+                    }
                 },
                 "keyMap" : {
                     $type : "json:Array",

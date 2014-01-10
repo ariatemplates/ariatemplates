@@ -87,10 +87,7 @@ Aria.classDefinition({
                 id : "parentSection"
             });
 
-            var result = section.__isValidProcessingBind();
-            this.assertFalse(result);
-
-            result = section.__isValidProcessingBind({});
+            var result = section.__isValidProcessingBind({});
             this.assertFalse(result);
             this.assertErrorInLogs(section.MISSING_TO_BINDING);
 

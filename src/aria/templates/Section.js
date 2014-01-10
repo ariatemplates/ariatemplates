@@ -608,7 +608,7 @@
              * @private
              */
             __isValidProcessingBind : function (bind) {
-                if (!bind || bind.to == null) {
+                if (bind.to == null) {
                     // bind.to is mandatory
                     this.$logError(this.MISSING_TO_BINDING);
                     return false;
@@ -637,7 +637,7 @@
              * </pre>
              */
             registerProcessing : function (bind) {
-                if (!bind || !this.__isValidProcessingBind(bind)) {
+                if (!this.__isValidProcessingBind(bind)) {
                     return;
                 }
 
