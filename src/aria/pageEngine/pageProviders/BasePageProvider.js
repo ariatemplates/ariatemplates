@@ -31,32 +31,25 @@ Aria.classDefinition({
          * @type aria.pageEngine.pageProviders.BasePageProviderBeans:Config
          * @private
          */
-        this._config = config;
+        this.__config = config;
 
         /**
          * Base location of pages
          * @type String
-         * @protected
+         * @private
          */
-        this._basePageUrl = null;
+        this.__basePageUrl = null;
 
         if (!("cache" in config)) {
             config.cache = true;
         }
 
         /**
-         * Contains the pageDefinitions by url or pageId
-         * @type Object
-         * @private
-         */
-        this._cache = {};
-
-        /**
          * Map pageIds to urls and viceversa
          * @type Object
          * @private
          */
-        this._urlMap = {
+        this.__urlMap = {
             pageIdToUrl : {},
             urlToPageId : {}
         };
@@ -68,7 +61,7 @@ Aria.classDefinition({
          * @param {aria.pageEngine.CfgBeans:ExtendedCallback} callback
          */
         loadSiteConfig : function (callback) {
-            this._sendRequest(aria.core.DownloadMgr.resolveURL(this._config.siteConfigLocation), {
+            this.__sendRequest(this.__config.siteConfigLocation, {
                 callback : callback
             }, "site");
         },
@@ -79,17 +72,19 @@ Aria.classDefinition({
          */
         loadPageDefinition : function (pageRequest, callback) {
             pageRequest = pageRequest || {};
-            var pageId = this._getPageId(pageRequest);
+            var pageId = this.__getPageId(pageRequest);
             pageRequest.pageId = pageId;
-            this._updateUrlMap(pageRequest);
-            var pageDefinition = this._config.cache ? this._retrieveFromCache(pageRequest) : null;
-            if (pageDefinition) {
-                this.$callback(callback.onsuccess, this.processPageDefinition(pageDefinition));
-                return;
+            this.__updateUrlMap(pageRequest);
+
+            this.__basePageUrl = this.__basePageUrl
+                    || (this.__config.pageBaseLocation + "fake.json").replace(/fake\.json$/, "");
+            var pageUrl = this.__basePageUrl + pageId + ".json";
+
+            if (!this.__config.cache) {
+                aria.core.DownloadMgr.clearFile(pageUrl);
             }
-            this._basePageUrl = this._basePageUrl
-                    || aria.core.DownloadMgr.resolveURL(this._config.pageBaseLocation + "fake.json").replace(/fake\.json$/, "");
-            this._sendRequest(this._basePageUrl + pageId + ".json", {
+
+            this.__sendRequest(pageUrl, {
                 pageRequest : pageRequest,
                 callback : callback
             }, "page");
@@ -128,22 +123,40 @@ Aria.classDefinition({
          * @param {String} type either "site" or "page"
          * @private
          */
-        _sendRequest : function (url, args, type) {
-            aria.core.IO.asyncRequest({
-                url : url,
-                expectedResponseType : "json",
-                callback : {
-                    fn : (type == "page") ? this._onPageSuccess : this._onSiteSuccess,
+        __sendRequest : function (url, args, type) {
+            aria.core.DownloadMgr.loadFile(url, {
+                fn : this.__onRawFileReceive,
+                scope : this,
+                args : {
+                    fn : (type == "page") ? this.__onPageSuccess : this.__onSiteSuccess,
                     scope : this,
-                    args : args,
-                    onerror : this._onFailure
+                    args : args
                 }
             });
         },
 
         /**
+         * Retrieve the file content after it has been downloaded and parses it to turn it into a JSON object
+         * @param {Object} res Response received from the loadFile method of aria.core.DownloadManager
+         * @param {aria.core.CfgBeans:Callback} cb Callback to be called after the response has been parsed
+         */
+        __onRawFileReceive : function (res, cb) {
+            if (res.downloadFailed) {
+                this.__onFailure(res, cb.args);
+            } else {
+                var fileContent = aria.core.DownloadMgr.getFileContent(res.logicalPaths[0]);
+                var responseJSON = aria.utils.Json.load(fileContent);
+                if (responseJSON) {
+                    this.$callback(cb, responseJSON);
+                } else {
+                    this.__onFailure(res, cb.args);
+                }
+            }
+        },
+
+        /**
          * Call the success callback by providing the site configuration as argument
-         * @param {Object} res response
+         * @param {Object} res Site configuration retrieved from .json file
          * @param {Object} args
          *
          * <pre>
@@ -155,15 +168,15 @@ Aria.classDefinition({
          *
          * @private
          */
-        _onSiteSuccess : function (res, args) {
-            var siteConfig = this.processSiteConfig(res.responseJSON);
+        __onSiteSuccess : function (res, args) {
+            var siteConfig = this.processSiteConfig(res);
             this.$callback(args.callback.onsuccess, siteConfig);
         },
 
         /**
          * Call the success callback by providing the page definition as argument. If it does not contain a url, the
          * pageId is aused as url. If the cache is enbled, it is filled with the response
-         * @param {Object} res response
+         * @param {Object} pageDefinition Page definition retrieved from .json file
          * @param {Object} args
          *
          * <pre>
@@ -175,20 +188,12 @@ Aria.classDefinition({
          *
          * @private
          */
-        _onPageSuccess : function (res, args) {
+        __onPageSuccess : function (pageDefinition, args) {
             var callback = args.callback, pageRequest = args.pageRequest;
-
-            var pageDefinition = res.responseJSON;
-            this._updateUrlMap(pageDefinition);
-
-            var url = this._getUrl(pageRequest);
-            if (this._config.cache) {
-                this._updateCache(pageDefinition, {
-                    url : url
-                });
-            }
+            this.__updateUrlMap(pageDefinition);
+            var url = this.__getUrl(pageRequest);
             pageDefinition.url = url;
-            this._updateUrlMap(pageDefinition);
+            this.__updateUrlMap(pageDefinition);
             this.$callback(callback.onsuccess, this.processPageDefinition(pageDefinition));
         },
 
@@ -206,7 +211,7 @@ Aria.classDefinition({
          *
          * @private
          */
-        _onFailure : function (res, args) {
+        __onFailure : function (res, args) {
             this.$callback(args.callback.onfailure);
         },
 
@@ -215,8 +220,8 @@ Aria.classDefinition({
          * @param {aria.pageEngine.CfgBeans:PageRequest} pageRequest
          * @private
          */
-        _updateUrlMap : function (pageRequest) {
-            var pageId = pageRequest.pageId, url = pageRequest.url, urlMap = this._urlMap;
+        __updateUrlMap : function (pageRequest) {
+            var pageId = pageRequest.pageId, url = pageRequest.url, urlMap = this.__urlMap;
             if (pageId && url) {
                 urlMap.pageIdToUrl[pageId] = url;
                 urlMap.urlToPageId[url] = pageId;
@@ -226,29 +231,14 @@ Aria.classDefinition({
         },
 
         /**
-         * Get a page definition from the cache by updating also its url
-         * @param {aria.pageEngine.CfgBeans:PageRequest} pageRequest
-         * @return {aria.pageEngine.CfgBeans:PageDefinition}
-         * @private
-         */
-        _retrieveFromCache : function (pageRequest) {
-            var pageId = this._getPageId(pageRequest);
-            if (pageId && this._cache[pageId]) {
-                var pageDef = this._cache[pageId];
-                pageDef.url = this._getUrl(pageRequest);
-                return pageDef;
-            }
-            return null;
-        },
-
-        /**
          * Retrieve the pageId based on the pageRequest information, as well as the url map. As a default, the
          * homePageId is returned
          * @param {aria.pageEngine.CfgBeans:PageRequest} pageRequest
          * @return {String} the pageId
+         * @private
          */
-        _getPageId : function (pageRequest) {
-            var map = this._urlMap.urlToPageId, pageId = pageRequest.pageId, url = pageRequest.url;
+        __getPageId : function (pageRequest) {
+            var map = this.__urlMap.urlToPageId, pageId = pageRequest.pageId, url = pageRequest.url;
             if (pageId) {
                 return pageId;
             }
@@ -258,7 +248,7 @@ Aria.classDefinition({
                     return returnUrl;
                 }
             }
-            return this._config.homePageId;
+            return this.__config.homePageId;
         },
 
         /**
@@ -268,8 +258,8 @@ Aria.classDefinition({
          * @return {String} the pageId
          * @private
          */
-        _getUrl : function (pageRequest) {
-            var map = this._urlMap.pageIdToUrl, pageId = pageRequest.pageId, url = pageRequest.url;
+        __getUrl : function (pageRequest) {
+            var map = this.__urlMap.pageIdToUrl, pageId = pageRequest.pageId, url = pageRequest.url;
             if (url) {
                 return url;
             }
@@ -277,23 +267,6 @@ Aria.classDefinition({
                 return map[pageId];
             }
             return "/" + pageId;
-        },
-
-        /**
-         * Update the cache
-         * @param {aria.pageEngine.CfgBeans:PageDefinition} pageDef
-         * @param {aria.pageEngine.CfgBeans:PageRequest} pageRequest
-         * @private
-         */
-        _updateCache : function (pageDef, pageRequest) {
-            var url = pageRequest.url;
-            var pageDefUrl = pageDef.url;
-            if (pageDefUrl) {
-                this._cache[pageDefUrl] = pageDef;
-            }
-            this._cache[pageDef.pageId] = pageDef;
-            this._cache[url] = pageDef;
         }
-
     }
 });

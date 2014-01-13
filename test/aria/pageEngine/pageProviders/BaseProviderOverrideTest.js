@@ -109,6 +109,13 @@ Aria.classDefinition({
         _testFirstPageAgain : function (pageDef) {
             this.assertEquals(pageDef.extraProperty, "extra_firstPage", "The page definition has not been correctly processed");
 
+            aria.core.Timer.addCallback({
+                fn : this._beforeTestFirstPageAgainAndAgain,
+                scope : this
+            });
+        },
+
+        _beforeTestFirstPageAgainAndAgain : function () {
             this._pageProvider.loadPageDefinition({
                 pageId : "firstPage"
             }, {

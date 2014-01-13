@@ -58,6 +58,14 @@ Aria.classDefinition({
                 url : "/app/first"
             });
             this.assertTrue(this._testData.firstPage == 1);
+            aria.core.Timer.addCallback({
+                fn : this._testAsyncPageWithCacheCbBeforeTwo,
+                scope : this
+            });
+
+        },
+        _testAsyncPageWithCacheCbBeforeTwo : function () {
+
             this._pageProvider.loadPageDefinition({
                 url : "/app/first"
             }, {
@@ -75,6 +83,15 @@ Aria.classDefinition({
                 url : "/app/first"
             });
             this.assertTrue(this._testData.firstPage == 2);
+
+            aria.core.Timer.addCallback({
+                fn : this._testAsyncPageWithCacheCbBeforeThree,
+                scope : this
+            });
+
+        },
+        _testAsyncPageWithCacheCbBeforeThree : function () {
+
             this._pageProvider.loadPageDefinition({
                 pageId : "firstPage",
                 url : "/app/first/new"
@@ -93,6 +110,15 @@ Aria.classDefinition({
                 url : "/app/first/new"
             });
             this.assertTrue(this._testData.firstPage == 3);
+
+            aria.core.Timer.addCallback({
+                fn : this._testAsyncPageWithCacheCbBeforeFour,
+                scope : this
+            });
+
+        },
+        _testAsyncPageWithCacheCbBeforeFour : function () {
+
             this._pageProvider.loadPageDefinition({
                 url : "/app/first/new"
             }, {
@@ -111,6 +137,15 @@ Aria.classDefinition({
             });
             this.assertTrue(this._testData.firstPage == 4);
             this._testData.firstPage = 0;
+
+            aria.core.Timer.addCallback({
+                fn : this._testAsyncPageWithCacheCbBeforeFive,
+                scope : this
+            });
+
+        },
+        _testAsyncPageWithCacheCbBeforeFive : function () {
+
             this._pageProvider.loadPageDefinition({
                 pageId : "secondPage"
             }, {
@@ -128,6 +163,13 @@ Aria.classDefinition({
                 url : "/secondPage"
             });
             this.assertTrue(this._testData.secondPage == 1);
+            aria.core.Timer.addCallback({
+                fn : this._testAsyncPageWithCacheCbBeforeSix,
+                scope : this
+            });
+
+        },
+        _testAsyncPageWithCacheCbBeforeSix : function () {
 
             this._pageProvider.loadPageDefinition({
                 url : "/secondPage"
@@ -147,6 +189,15 @@ Aria.classDefinition({
             });
             this.assertTrue(this._testData.secondPage == 2);
             this._testData.secondPage = 0;
+
+            aria.core.Timer.addCallback({
+                fn : this._testAsyncPageWithCacheCbBeforeSeven,
+                scope : this
+            });
+
+        },
+        _testAsyncPageWithCacheCbBeforeSeven : function () {
+
             this._pageProvider.loadPageDefinition({
                 pageId : "thirdPage",
                 url : "/app/another/page"
@@ -165,6 +216,15 @@ Aria.classDefinition({
                 url : "/app/another/page"
             });
             this.assertTrue(this._testData.thirdPage == 1);
+
+            aria.core.Timer.addCallback({
+                fn : this._testAsyncPageWithCacheCbBeforeEight,
+                scope : this
+            });
+
+        },
+        _testAsyncPageWithCacheCbBeforeEight : function () {
+
             this._pageProvider.loadPageDefinition({
                 url : "/app/third"
             }, {
