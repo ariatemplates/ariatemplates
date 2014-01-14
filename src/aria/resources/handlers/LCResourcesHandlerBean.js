@@ -61,7 +61,7 @@ Aria.beanDefinitions({
                 },
                 "sortingMethod" : {
                     $type : "json:FunctionRef",
-                    $description : "An anonymous function for sorting the suggestions list"
+                    $description : "A function for sorting the suggestions list. If specified, when the array of suggestions is prepared, the native Array sort method is called and the sorting function is provided as a parameter. Hence, the sorting function receives two suggestions as arguments and has to return a negative number, 0 or a positive number if the first suggestion has to be considered respectively \"smaller\", \"equal\" or \"greater\" than the second one"
                 },
                 "codeExactMatch" : {
                     $type : "json:Boolean",
