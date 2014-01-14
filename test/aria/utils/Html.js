@@ -53,6 +53,9 @@ Aria.classDefinition({
                         var got = div.getAttribute(key);
 
                         if (key === "style") {
+                            if (!aria.utils.Type.isString(got)) {
+                                got = got.cssText;
+                            }
                             // IE messes up pretty badly with style tags
                             got = got.toLowerCase();
                             // just add a semicolon if missing
@@ -60,6 +63,11 @@ Aria.classDefinition({
                                 got += ";";
                             }
                         }
+
+                        if (aria.core.Browser.isIE7 && (key == "disabled" || key == "nowrap")) {
+                            value = true;
+                        }
+
                         this.assertEquals(got, value, "The attribute " + key + " should be " + value + " got " + got);
                     }
                 }
