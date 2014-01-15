@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.autocomplete.multiautocomplete.test6.MultiAutoRange",
+    $classpath : "test.aria.widgets.form.autocomplete.multiautocomplete.test6.Common",
     $extends : "aria.jsunit.TemplateTestCase",
     $constructor : function () {
         this.$TemplateTestCase.constructor.call(this);
@@ -31,19 +31,24 @@ Aria.classDefinition({
 
     },
     $prototype : {
+        rangePattern1 : "",
+        rangePattern2 : "",
+        rangeLabels : "",
+        rangeCount : "",
+
         /**
          * This method is always the first entry point to a template test Start the test by focusing the first field
          */
         runTemplateTest : function () {
             this.synEvent.click(this.getInputField("MultiAutoId"), {
-                fn : this.typeSomething,
+                fn : this._typeSomething,
                 scope : this
             });
         },
 
-        typeSomething : function (evt, callback) {
+        _typeSomething : function (evt, callback) {
             // give it the time to open a drop down
-            this.synEvent.type(this.getInputField("MultiAutoId"), "p1-5", {
+            this.synEvent.type(this.getInputField("MultiAutoId"), this.rangePattern1, {
                 fn : this._wait,
                 scope : this,
                 args : this._selectVal
@@ -59,18 +64,53 @@ Aria.classDefinition({
         _selectVal : function () {
             this.synEvent.type(this.getInputField("MultiAutoId"), "[enter]", {
                 fn : this._checkValues,
+                scope : this,
+                args : {
+                    count : this.rangeCount[0],
+                    cb : this._focusBack
+                }
+            });
+        },
+
+        _focusBack : function () {
+            this.synEvent.click(this.getInputField("MultiAutoId"), {
+                fn : this._typeAgain,
                 scope : this
             });
         },
-        _checkValues : function () {
+        _typeAgain : function () {
+            // give it the time to open a drop down
+            this.synEvent.type(this.getInputField("MultiAutoId"), this.rangePattern2, {
+                fn : this._wait,
+                scope : this,
+                args : this._selectVal2
+            });
+        },
+        _selectVal2 : function () {
+            this.synEvent.type(this.getInputField("MultiAutoId"), "[enter]", {
+                fn : this._checkValues,
+                scope : this,
+                args : {
+                    count : this.rangeCount[1],
+                    cb : this._endRangeCheckTest
+                }
+            });
+
+        },
+        _checkValues : function (arg, argValue) {
             var value = this.data.ac_airline_values;
-            var rangeLabels = ['P1.some', 'P2.kon', 'P3.red', 'P4.redd'];
-            this.assertEquals(value.length, 4, "The Wrong range of elements are prefilled. Expected = 4, Prefilled = "
+            var rangeLabels = this.rangeLabels;
+
+            this.assertEquals(value.length, argValue.count, "The Wrong range of elements are prefilled. Prefilled = "
                     + value.length);
             for (var k = 0; k < value.length; k++) {
                 this.assertEquals(value[k].label, rangeLabels[k], "The Wrong range of elements are prefilled. Expected = "
                         + value[k].label + " Prefilled = " + rangeLabels[k]);
             }
+            this.$callback(argValue.cb);
+
+        },
+        _endRangeCheckTest : function () {
             this.notifyTemplateTestEnd();
         }
     }

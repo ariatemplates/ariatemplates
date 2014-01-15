@@ -49,8 +49,10 @@
             typesUtil = null;
         },
         $prototype : {
-
-            rangePattern : /^[a-z]{1}\d+-\d+/,
+            rangePattern : {
+                pattern1 : /^[a-z]{1}\d+-\d+/,
+                pattern2 : /^[a-z]{1}\d+,\d+/
+            },
 
             /**
              * Call the callback with an array of suggestions in its arguments. Suggestions that are exact match are
@@ -63,17 +65,29 @@
                     this.$callback(callback, null);
                     return;
                 }
-                textEntry = stringUtil.stripAccents(textEntry).toLowerCase();
-                if (this.allowRangeValues && this.rangePattern.test(textEntry)) {
-                    var firstLetter = textEntry.charAt(0);
-                    var rangeV = textEntry.substring(1).split("-");
+                var textEntry = stringUtil.stripAccents(textEntry).toLowerCase(), rangePattern = this.rangePattern;
+                if (this.allowRangeValues) {
+                    var rangeV = [], firstLetter = textEntry.substring(0, 1);
+                    if (rangePattern.pattern1.test(textEntry)) {
+                        var valArray = textEntry.substring(1).split("-");
+                        for (var l = valArray[0]; l <= valArray[1]; l++) {
+                            rangeV.push(l);
+                        }
+                    }
+                    if (rangePattern.pattern2.test(textEntry)) {
+                        rangeV = textEntry.substring(1).split(",");
+                    }
+                    if (!rangeV.length > 0) {
+                        this.__getSuggestion(textEntry, callback);
+                        return;
+                    }
                     var results = {
                         suggestions : [],
                         multipleValues : true
                     };
-                    for (var k = rangeV[0]; k <= rangeV[1]; k++) {
-                        var textEntry = firstLetter + k;
-                        this.$LCResourcesHandler.getSuggestions.call(this, textEntry, {
+                    for (var k = 0, len = rangeV.length; k < len; k++) {
+                        var searchEntry = firstLetter + rangeV[k];
+                        this.$LCResourcesHandler.getSuggestions.call(this, searchEntry, {
                             fn : this.__appendSuggestions,
                             scope : this,
                             args : results
@@ -81,10 +95,25 @@
                     }
                     this.$callback(callback, results);
                 } else {
-                    this.$LCResourcesHandler.getSuggestions.call(this, textEntry, callback);
+                    this.__getSuggestion(textEntry, callback);
                 }
-            },
 
+            },
+            /**
+             * Internal method to call LCResourcesHandler
+             * @param {String} textEntry Search string
+             * @param {aria.core.CfgBeans.Callback} callback Called when suggestions are ready
+             * @private
+             */
+            __getSuggestion : function (textEntry, callback) {
+
+                this.$LCResourcesHandler.getSuggestions.call(this, textEntry, callback);
+
+            },
+            /**
+             * Internal method to append the suggestions.
+             * @private
+             */
             __appendSuggestions : function (suggestions, results) {
                 if (suggestions) {
                     results.suggestions = results.suggestions.concat(suggestions);

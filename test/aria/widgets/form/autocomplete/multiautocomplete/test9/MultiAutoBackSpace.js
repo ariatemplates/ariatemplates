@@ -43,7 +43,7 @@ Aria.classDefinition({
 
         typeSomething : function (evt, callback) {
             // give it the time to open a drop down
-            this.synEvent.type(this.getInputField("MultiAutoId"), "p1-5", {
+            this.synEvent.type(this.getInputField("MultiAutoId"), "p1-4", {
                 fn : this._wait,
                 scope : this,
                 args : this._selectVal
