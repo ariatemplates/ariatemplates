@@ -847,8 +847,10 @@ Aria.classDefinition({
                     domEvent : domEvent
                 };
                 this.$raiseEvent(event);
-                this.close(domEvent);
-                return true;
+                if (!event.cancelClose) {
+                    this.close(domEvent);
+                    return true;
+                }
             }
         },
 
