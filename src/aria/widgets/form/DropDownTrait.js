@@ -49,6 +49,7 @@ Aria.classDefinition({
             var onDescription = {
                 "onAfterOpen" : this._afterDropdownOpen,
                 "onAfterClose" : this._afterDropdownClose,
+                "onMouseClickClose" : this._dropDownMouseClickClose,
                 scope : this
             };
 
@@ -143,8 +144,34 @@ Aria.classDefinition({
             this._dropdownPopup.$dispose();
             this._dropdownPopup = null;
             aria.templates.Layout.$unregisterListeners(this);
-            this.focus(null, true);
+            if (!aria.core.Browser.isIE) {
+                this.focus(null, true);
+            }
             this._keepFocus = false;
+        },
+
+        /**
+         * Callback for the event onMouseClickClose raised by the popup. <br>
+         * fix for PTR07002335: method used to fix IE bug (a click in a text input does not trigger the blur event on
+         * the previously selected multiselect input, so that the activeElement does not change properly)
+         * @protected
+         */
+        _dropDownMouseClickClose : function (evt) {
+            if (aria.core.Browser.isIE) {
+                evt.cancelClose = true;
+                var self = this;
+                setTimeout(function () {
+                    var activeElement = Aria.$window.document.activeElement;
+                    self.focus(null, true);
+                    self._keepFocus = false;
+                    setTimeout(function () {
+                        if (activeElement) {
+                            activeElement.focus();
+                        }
+                        self._dropdownPopup.close();
+                    }, 1);
+                }, 1);
+            }
         },
 
         /**
