@@ -300,6 +300,7 @@ Aria.classDefinition({
                 requestObject : requestObject,
                 jsonData : jsonData,
                 data : null,
+                timeout : requestObject.timeout,
                 method : "POST"
             }, id = this._idCounter++;
 
@@ -381,6 +382,7 @@ Aria.classDefinition({
                 method : req.method,
                 postData : req.data,
                 headers : req.headers,
+                timeout : req.timeout,
                 callback : {
                     fn : this._onresponse,
                     onerror : this._onresponse,
