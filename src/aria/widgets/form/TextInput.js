@@ -517,9 +517,16 @@ Aria.classDefinition({
                     if (text != null && !this._helpTextSet) { // if text was
                         // an empty string (helpTextSet is 'true') do not update
                         // the display
+                        var caretPosition = (report.caretPosStart != null && report.caretPosEnd != null) ? {
+                            start : report.caretPosStart,
+                            end : report.caretPosEnd
+                        } : null;
+                        if (aria.core.Browser.isModernIE && !caretPosition) {
+                            caretPosition = this.getCaretPosition();
+                        }
                         this.getTextInputField().value = text;
-                        if (report.caretPosStart != null && report.caretPosEnd != null) {
-                            this.setCaretPosition(report.caretPosStart, report.caretPosEnd);
+                        if (caretPosition) {
+                            this.setCaretPosition(caretPosition.start, caretPosition.end);
                         }
                     }
                     if (typeof value != 'undefined' && !stopValueProp && !this._isPropertyEquals("value", value)) {
