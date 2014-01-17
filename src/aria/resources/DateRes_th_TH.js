@@ -15,7 +15,7 @@
 
 /**
  * DO NOT FORMAT
- * Aria resource object for dates en-US
+ * Aria resource object for dates th-TH
  */
 Aria.resourcesDefinition({
     $classpath : 'aria.resources.DateRes',
@@ -31,7 +31,15 @@ Aria.resourcesDefinition({
         ],
         // a false value for the following items mean: use substring
         // to generate the short versions of days or months
-        dayShort : false,
+        dayShort : [
+            "อา.",
+            "จ.",
+            "อ.",
+            "พ.",
+            "พฤ.",
+            "ศ.",
+            "ส."
+        ],
         monthShort : false,
         month : [
             "มกราคม",
