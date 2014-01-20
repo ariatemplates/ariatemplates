@@ -70,7 +70,7 @@ Aria.classDefinition({
 
         this.addTests("test.aria.templates.dynamicSection.DynSectionTestCase");
         this.addTests("test.aria.templates.focusHandling.FocusHandlingTestCase");
-        this.addTests("test.aria.templates.focusHandling.FocusHandlingTestCase");
+        this.addTests("test.aria.templates.focusHandling.focuscheck.FocusCheckTestCase");
         this.addTests("test.aria.templates.inheritance.TemplateInheritanceTestCase");
         this.addTests("test.aria.templates.generatedId.IncrementalElementIdTestCase");
         this.addTests("test.aria.templates.issue142.HtmlStyleTemplateTestCase");
