@@ -76,7 +76,11 @@ Aria.beanDefinitions({
                 /* Backward Compatibility ends here */
                 "headers" : {
                     $type : "json:Object",
-                    $description : "Request Headers to be used."
+                    $description : "Request Headers to be used.",
+                    $sample : {
+                        "Content-Type" : "text/plain",
+                        "Connection" : "keep-alive"
+                    }
                 }
             }
         },
