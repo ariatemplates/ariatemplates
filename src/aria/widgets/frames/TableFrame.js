@@ -103,7 +103,13 @@ Aria.classDefinition({
             };
             this._appendInnerWidthInfo(sizeInfo);
             this._appendInnerHeightInfo(sizeInfo);
-            var displayInline = (this._inlineBlock) ? "display:inline-block;vertical-align: middle;" : "";
+            var displayInline = "";
+
+            if (this._inlineBlock) {
+                displayInline = "vertical-align: middle;display: inline";
+                displayInline += (aria.core.Browser.isIE7) ? ";zoom:1" : "-block;";
+            }
+
             out.write(['<table cellspacing="0" cellpadding="0" style="position: relative;' + displayInline + '"',
                     frameContainerClass, '><tbody isFrame="1">', '<tr>', '<td class="', cssPrefix, 'tlc ', cssPrefix,
                     'bkgA"></td>', '<td class="', cssPrefix, 'ts ', cssPrefix,
