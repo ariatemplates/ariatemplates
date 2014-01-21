@@ -273,7 +273,11 @@ Aria.classDefinition({
             } else {
                 out.write('vertical-align:' + IE7Align + ';');
             }
-            out.write('display:' + cssDisplay);
+            if (aria.core.Browser.isIE7 && cssDisplay === "inline-block") {
+                out.write('display:inline;zoom:1');
+            } else {
+                out.write('display:' + cssDisplay);
+            }
             if (margin) {
                 out.write(';margin-' + margin + ':' + this._labelPadding + 'px');
             }
