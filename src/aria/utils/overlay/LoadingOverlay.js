@@ -64,14 +64,33 @@ Aria.classDefinition({
          */
         _setInPosition : function (element, overlay) {
             var geometry = aria.utils.Dom.getGeometry(element);
+            var viewportSize = aria.utils.Dom.getViewportSize();
+            var overlayGeometry = null;
+
+            if (geometry) {
+                overlayGeometry = {
+                    x : Math.max(geometry.x, 0),
+                    y : Math.max(geometry.y, 0)
+                };
+
+                overlayGeometry.width = Math.min(geometry.width + Math.min(geometry.x, 0), viewportSize.width
+                        - overlayGeometry.x);
+                overlayGeometry.height = Math.min(geometry.height + Math.min(geometry.y, 0), viewportSize.height
+                        - overlayGeometry.y);
+            }
+
             var style = overlay.style;
             // geometry may be null if the element is not currently visible
-            if (geometry) {
-                style.top = geometry.y + "px";
-                style.left = geometry.x + "px";
-                style.width = geometry.width + "px";
-                style.height = geometry.height + "px";
+            if (overlayGeometry && overlayGeometry.height > 0 && overlayGeometry.width > 0) {
+                style.top = overlayGeometry.y + "px";
+                style.left = overlayGeometry.x + "px";
+                style.width = overlayGeometry.width + "px";
+                style.height = overlayGeometry.height + "px";
                 style.display = "block";
+                var browser = aria.core.Browser;
+                if (browser.isIE && browser.majorVersion < 9 && overlay.firstChild) {
+                    overlay.firstChild.style.top = Math.round(overlayGeometry.height / 2) + "px";
+                }
             } else {
                 style.display = "none";
             }

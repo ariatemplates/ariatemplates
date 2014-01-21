@@ -20,7 +20,7 @@
 Aria.classDefinition({
     $classpath : "aria.utils.DomOverlay",
     $dependencies : ["aria.utils.overlay.LoadingOverlay", "aria.utils.Type", "aria.utils.Event",
-            "aria.utils.AriaWindow"],
+            "aria.utils.AriaWindow", "aria.templates.Layout"],
     $singleton : true,
     $statics : {
         UNIQUE_ID_GENERATOR : 12
@@ -70,9 +70,13 @@ Aria.classDefinition({
                 aria.utils.AriaWindow.attachWindow();
                 // Listen for scroll event to update the position of the overlay
                 aria.utils.Event.addListener(Aria.$window, "scroll", {
-                    fn : this.__onScroll,
+                    fn : this.__refresh,
                     scope : this
                 }, true);
+                aria.templates.Layout.$on({
+                    "viewportResized" : this.__refresh,
+                    scope : this
+                });
             }
         },
 
@@ -83,7 +87,11 @@ Aria.classDefinition({
         _reset : function () {
             if (this.overlays != null) {
                 aria.utils.Event.removeListener(Aria.$window, "scroll", {
-                    fn : this.__onScroll
+                    fn : this.__refresh
+                });
+                aria.templates.Layout.$removeListeners({
+                    "viewportResized" : this.__refresh,
+                    scope : this
                 });
                 aria.utils.AriaWindow.detachWindow();
                 this.overlays = null;
@@ -196,19 +204,21 @@ Aria.classDefinition({
         },
 
         /**
-         * Refresh the position of the overlays after a scroll event
+         * Refresh the position of the overlays
          * @private
          */
-        __onScroll : function () {
+        __refresh : function () {
             // Refresh any open overlay
             this.$assert(184, this.overlays != null);
             var overlays = this.overlays;
             for (var key in overlays) {
                 if (overlays.hasOwnProperty(key)) {
                     var overlay = overlays[key];
-
                     overlay.refreshPosition();
                 }
+            }
+            if (this.bodyOverlay) {
+                this.bodyOverlay.refreshPosition();
             }
         },
 
