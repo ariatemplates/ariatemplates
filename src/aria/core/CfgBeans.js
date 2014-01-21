@@ -277,7 +277,10 @@ Aria.beanDefinitions({
                 "headers" : {
                     $type : "json:Object",
                     $description : "HTTP message headers",
-                    $sample : "{'Content-Type' : 'text/plain', 'Connection' : 'keep-alive'}",
+                    $sample : {
+                        "Content-Type" : "text/plain",
+                        "Connection" : "keep-alive"
+                    },
                     $restricted : false
                 },
                 "timeout" : {
