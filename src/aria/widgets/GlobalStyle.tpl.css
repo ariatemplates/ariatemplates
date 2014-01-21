@@ -109,7 +109,7 @@
 }
 {/if}
 
-{if aria.core.Browser.isIE10 }
+{if aria.core.Browser.isIE10 || aria.core.Browser.isModernIE}
 .xTextInputInput::-ms-clear {
     display: none;
 }
