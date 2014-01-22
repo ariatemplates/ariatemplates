@@ -156,7 +156,7 @@
                  *    value : Selected value, null if none
                  * }
                  * </pre>
-                 * @name aria.html.controllers.Suggestions.data
+                 * @name aria.html.controllers.Suggestions.instance.data
                  */
                 this.data = {
                     suggestions : [],
@@ -168,7 +168,7 @@
                  * Resources handler used by this controller
                  * @protected
                  * @type aria.resources.handlers.IResourcesHandler
-                 * @name aria.html.controllers.Suggestions._resourcesHandler
+                 * @name aria.html.controllers.Suggestions.instance._resourcesHandler
                  */
                 this._resourcesHandler = null;
 
@@ -176,7 +176,7 @@
                  * Specify if the handler was created by the controller, and has to be disposed.
                  * @protected
                  * @type Boolean
-                 * @name aria.html.controllers.Suggestions._autoDisposeHandler
+                 * @name aria.html.controllers.Suggestions.instance._autoDisposeHandler
                  */
                 this._autoDisposeHandler = false;
             },
