@@ -73,37 +73,39 @@ Aria.classDefinition({
          * @protected
          */
         _registerBindings : function () {
-            var bindings = this._cfg.bind, jsonUtils = aria.utils.Json;
+            var bindings = this._cfg.bind;
             if (bindings) {
                 for (var property in bindings) {
-                    if (!bindings.hasOwnProperty(property)) {
-                        continue;
+                    if (bindings.hasOwnProperty(property)) {
+                        this._registerSingleProperty(property);
                     }
+                }
+            }
+        },
 
-                    var bind = bindings[property];
-                    if (bind) {
-                        var callback = {
-                            fn : this._notifyDataChange,
-                            scope : this,
-                            args : property
-                        };
+        _registerSingleProperty : function (property) {
+            var bindings = this._cfg.bind, bind = bindings[property], jsonUtils = aria.utils.Json;
+            if (bind) {
+                var callback = {
+                    fn : this._notifyDataChange,
+                    scope : this,
+                    args : property
+                };
 
-                        try {
-                            jsonUtils.addListener(bind.inside, bind.to, callback, true);
+                try {
+                    jsonUtils.addListener(bind.inside, bind.to, callback, true);
 
-                            this._bindingListeners[property] = {
-                                inside : bind.inside,
-                                to : bind.to,
-                                transform : bind.transform,
-                                cb : callback
-                            };
+                    this._bindingListeners[property] = {
+                        inside : bind.inside,
+                        to : bind.to,
+                        transform : bind.transform,
+                        cb : callback
+                    };
 
-                            var newValue = this._transform(bind.transform, bind.inside[bind.to], "toWidget");
-                            this.setWidgetProperty(property, newValue);
-                        } catch (ex) {
-                            this.$logError(this.INVALID_BEAN, [property, "bind"]);
-                        }
-                    }
+                    var newValue = this._transform(bind.transform, bind.inside[bind.to], "toWidget");
+                    this.setWidgetProperty(property, newValue);
+                } catch (ex) {
+                    this.$logError(this.INVALID_BEAN, [property, "bind"]);
                 }
             }
         },

@@ -221,6 +221,56 @@ Aria.classDefinition({
                 // (but this would not be backward-compatible with current list templates)
                 this._subTplCtxt.$refresh();
             }
+        },
+
+        /**
+         * Register listeners for the bindings associated to this widget
+         * @protected
+         */
+        _registerSingleProperty : function (property) {
+            var bindings = this._cfg.bind, bind = bindings[property];
+
+            if (bindings && bind && bindings.hasOwnProperty(property) && property === "items") {
+                var callback = {
+                    fn : this._notifyDataChange,
+                    scope : this,
+                    args : property
+                };
+                try {
+                    aria.utils.Json.addListener(bind.inside, bind.to, callback, true, true);
+                    this._bindingListeners[property] = {
+                            inside : bind.inside,
+                            to : bind.to,
+                            transform : bind.transform,
+                            cb : callback
+                        };
+
+                    var newValue = this._transform(bind.transform, bind.inside[bind.to], "toWidget");
+                    this._cfg[property] = newValue;
+                } catch (ex) {
+                    this.$logError(this.INVALID_BEAN, [property, "bind"]);
+                }
+            } else {
+                this.$TemplateBasedWidget._registerSingleProperty.apply(this, arguments);
+            }
+        },
+
+        /**
+         * Set property for this widget, and reflect change on itself, but not in the associated datamodel
+         * @param {String} propertyName in the configuration
+         * @param {Object} newValue to set
+         */
+        setWidgetProperty : function (propertyName, newValue) {
+            if (!this._cfg) {
+                return;
+            }
+            if (propertyName === "items" && this._cfg.bind.hasOwnProperty(propertyName)) {
+                var oldValue = this.getProperty(propertyName);
+                this._cfg[propertyName] = newValue;
+                this._onBoundPropertyChange(propertyName, newValue, oldValue);
+            } else {
+                this.$TemplateBasedWidget.setWidgetProperty.apply(this, arguments);
+            }
         }
     }
 });
