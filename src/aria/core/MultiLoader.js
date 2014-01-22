@@ -41,6 +41,7 @@ Aria.classDefinition({
      *          fn : {Function} the callback function called in case of load error
      *          scope : {Object} [optional] scope object
      *          args: {Object} [optional] callback arguments
+     *          override: {Boolean} [optional] used to disable error warnings
      *      }
      * }
      * </pre>
