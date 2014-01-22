@@ -1335,19 +1335,27 @@
      *
      * <pre>
      * {
-     *   classes : []        // {Array of String} - classpaths to be loaded (dot is a separator)
-     *   oncomplete : {
-     *      fn: {Function}   // the callback function - may be called synchronously if all dependencies are already available
-     *      scope: {Object}  // [optional] scope object (i.e. 'this') to associate to fn - if not provided, the Aria object will be used
-     *      args: {Object}   // [optional] callback arguments (passed back as an argument to the callback function)
-     *   },
-     *   onerror: {
-     *      fn: ...
-     *      ...,
-     *      override:true    // used to disable error warnings
-     *   }
+     *      classes : {Array} list of JS classpaths to be loaded
+     *      templates : {Array} list of TPL classpaths to be loaded
+     *      resources : {Array} list of RES classpaths to be loaded
+     *      css : {Array} list of TPL.CSS classpaths to be loaded
+     *      tml : {Array} list of TML classpaths to be loaded
+     *      cml : {Array} list of CML classpaths to be loaded
+     *      txt : {Array} list of TXT classpaths to be loaded
+     *      oncomplete : {
+     *          fn : {Function} the callback function - may be called synchronously if all dependencies are already available
+     *          scope : {Object} [optional] scope object (i.e. 'this') to associate to fn - if not provided, the Aria object will be used
+     *          args: {Object} [optional] callback arguments (passed back as argument when the callback is called)
+     *      },
+     *      onerror : {
+     *          fn : {Function} the callback function called in case of load error
+     *          scope : {Object} [optional] scope object
+     *          args: {Object} [optional] callback arguments
+     *          override: {Boolean} [optional] used to disable error warnings
+     *      }
      * }
      * </pre>
+     *
      *
      * If there is no need to specify the <code>scope</code> and <code>args</code>, the callbacks can be passed
      * directly as functions: e.g. <code>oncomplete: function () {...}</code> instead of
