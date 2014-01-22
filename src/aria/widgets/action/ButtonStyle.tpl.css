@@ -35,6 +35,12 @@
             tabindex:10;
         }
 
+        {if aria.core.Browser.isIE7}
+            .xButton .xFrameContent {
+                text-align: center;
+            }
+        {/if}
+
         button.xButton::-moz-focus-inner {
              border: 0;
         }
