@@ -638,7 +638,7 @@
              */
             registerProcessing : function (bind) {
                 if (!bind || !this.__isValidProcessingBind(bind)) {
-                    return;
+                    bind = { inside: {}, to: 'processing' };
                 }
 
                 this.registerBinding(bind, this._notifyProcessingChange);
