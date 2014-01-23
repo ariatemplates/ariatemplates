@@ -21,8 +21,10 @@
     var regExSpecials, __modifiers = {
         "eat" : {
             /**
+             * <span style="font-weight: bold">MODIFIER</span>
+             * <br/>
              * Returns "" for any entry.
-             * @name aria.templates.Modifiers.eat
+             * @name aria.templates.Modifiers.prototype.eat
              * @return {String}
              */
             fn : function () {
@@ -38,8 +40,10 @@
                 out.addDependencies(["aria.utils.String"]);
             },
             /**
+             * <span style="font-weight: bold">MODIFIER</span>
+             * <br/>
              * Escape < > & in the given entry.
-             * @name aria.templates.Modifiers.escape
+             * @name aria.templates.Modifiers.prototype.escape
              * @param {String} str the entry
              * @return {String}
              */
@@ -56,9 +60,11 @@
                 out.addDependencies(["aria.utils.String"]);
             },
             /**
+             * <span style="font-weight: bold">MODIFIER</span>
+             * <br/>
              * Use the aria.utils.String.escapeForHTML utility to process the given input. If the input is null or
              * undefined, it is returned as is.
-             * @name aria.templates.Modifiers.escapeForHTML
+             * @name aria.templates.Modifiers.prototype.escapeForHTML
              * @param {String} str the input string
              * @return {String} the processed string
              * @see aria.utils.String.escapeForHTML
@@ -72,8 +78,10 @@
         },
         "capitalize" : {
             /**
+             * <span style="font-weight: bold">MODIFIER</span>
+             * <br/>
              * Returns the entry in capital letters
-             * @name aria.templates.Modifiers.capitalize
+             * @name aria.templates.Modifiers.prototype.capitalize
              * @param {String} str the entry
              * @return {String}
              */
@@ -83,8 +91,10 @@
         },
         "default" : {
             /**
+             * <span style="font-weight: bold">MODIFIER</span>
+             * <br/>
              * if str is not defined or empty string "" return the default value
-             * @name aria.templates.Modifiers.default
+             * @name aria.templates.Modifiers.prototype.default
              * @param {String} str the entry
              * @param {String} defaultValue the default value
              * @param {String} escape the name of the escaping modifier function to use to process the given default
@@ -99,8 +109,10 @@
         },
         "empty" : {
             /**
+             * <span style="font-weight: bold">MODIFIER</span>
+             * <br/>
              * if str is not defined or empty string "", or string composed of whitespaces, return the default value
-             * @name aria.templates.Modifiers.empty
+             * @name aria.templates.Modifiers.prototype.empty
              * @param {String} str the entry
              * @param {String} defaultValue the default value
              * @param {String} escape the name of the escaping modifier function to use to process the given default
@@ -115,8 +127,10 @@
         },
         "pad" : {
             /**
+             * <span style="font-weight: bold">MODIFIER</span>
+             * <br/>
              * Pad the string with the provided padding character(s) or non-breaking spaces
-             * @name aria.templates.Modifiers.pad
+             * @name aria.templates.Modifiers.prototype.pad
              * @param {String} str the entry
              * @param {Integer} sz the targetted size for the result string
              * @param {Boolean} begin tells if the padding must be added at the beginning (true) or at the end (false)
@@ -156,8 +170,10 @@
                 out.addDependencies(["aria.utils.Date", "aria.utils.Type"]);
             },
             /**
+             * <span style="font-weight: bold">MODIFIER</span>
+             * <br/>
              * Format a date with a given pattern
-             * @name aria.templates.Modifiers.dateformat
+             * @name aria.templates.Modifiers.prototype.dateformat
              * @param {Date} date the given entry
              * @param {String} pattern the date pattern
              * @return {String} formatted date
@@ -179,8 +195,10 @@
                 out.addDependencies(["aria.utils.Date", "aria.utils.Type"]);
             },
             /**
+             * <span style="font-weight: bold">MODIFIER</span>
+             * <br/>
              * Format a time with a given pattern
-             * @name aria.templates.Modifiers.timeformat
+             * @name aria.templates.Modifiers.prototype.timeformat
              * @param {Date} time for the given entry
              * @param {String} pattern applied to time
              * @return {String} formatted time
@@ -203,9 +221,11 @@
                 out.addDependencies(["aria.utils.String", "aria.utils.Type"]);
             },
             /**
+             * <span style="font-weight: bold">MODIFIER</span>
+             * <br/>
              * Will highlight with &lt:strong&gt; tag the first occurrence of the entry (starting from a new word -
              * won't highlight in the middle of the word) if it matches the highlight value.
-             * @name aria.templates.Modifiers.highlightfromnewword
+             * @name aria.templates.Modifiers.prototype.highlightfromnewword
              * @param {String} str the entry
              * @param {String} highlight the default value
              * @return {String}
@@ -246,8 +266,10 @@
                 out.addDependencies(["aria.utils.String", "aria.utils.Type"]);
             },
             /**
+             * <span style="font-weight: bold">MODIFIER</span>
+             * <br/>
              * Will highlight with &lt:strong&gt; tag the begining of the entry if it match the highligh value
-             * @name aria.templates.Modifiers.starthighlight
+             * @name aria.templates.Modifiers.prototype.starthighlight
              * @param {String} str the entry
              * @param {String} highlight the default value
              * @return {String}
@@ -273,6 +295,8 @@
                 out.addDependencies(["aria.utils.String", "aria.utils.Type"]);
             },
             /**
+             * <span style="font-weight: bold">MODIFIER</span>
+             * <br/>
              * Will highlight with &lt;strong&gt; tag the begining of a word that matches any of the words in the
              * highligh value.
              * @example
@@ -280,7 +304,7 @@
              * and the matching string, highlight: "us hi"
              * The return value is
              * <strong>Us</strong>ing <strong>hi</strong>ghlight
-             * @name aria.templates.Modifiers.highlight
+             * @name aria.templates.Modifiers.prototype.highlight
              * @param {String} str the entry, words are separated by blank space
              * @param {String} highlight words that should be higlighted, separated by blank space
              * @return {String}
@@ -328,6 +352,14 @@
      * ${'some text'|modifier}
      * </pre>
      *
+     * <span style="font-weight: bold">WARNING</span>: below in the <span style="font-style: italic">Public methods</span> section you will see a bunch of methods corresponding to the actual modifier functions. The implementation behind however does not give access to those methods directly. To call them, please use the method <span style="font-style: italic">callModifiers</span> instead, like this:
+     *
+     * <pre>
+     * aria.templates.Mofifiers.callModifier('modifierName', [param1, param2, ...]);
+     * </pre>
+     *
+     * Concerned methods are marked as <span style="font-weight: bold">MODIFIER</span> at the beginning of their descriptions.
+     *
      * @singleton
      */
     Aria.classDefinition({
@@ -342,7 +374,7 @@
         },
         $prototype : {
             /**
-             * call the modifier function of a modifier object
+             * Call the modifier function of a modifier object
              * @param {String} modifierName
              * @param {Array} params
              */
