@@ -25,7 +25,7 @@
     Aria.classDefinition({
         $classpath : "aria.widgets.controllers.MultiAutoCompleteController",
         $extends : "aria.widgets.controllers.AutoCompleteController",
-        $dependencies : ["aria.utils.Delegate", "aria.utils.Array", "aria.utils.Json"],
+        $dependencies : ["aria.utils.Delegate", "aria.utils.Array", "aria.utils.Json", "aria.utils.String"],
         $onload : function () {
             typeUtil = aria.utils.Type;
             arrayUtil = aria.utils.Array;
@@ -85,14 +85,15 @@
              */
             checkText : function (text, init) {
                 var dataModel = this._dataModel, controller = this, addedValue;
+                var trimText = aria.utils.String.trim(text);
 
                 if (text !== '' && text !== dataModel.text) {
-                    dataModel.text = text;
-                    this._resourcesHandler.getSuggestions(text, {
+                    dataModel.text = trimText;
+                    this._resourcesHandler.getSuggestions(trimText, {
                         fn : this._suggestionsCallback,
                         scope : this,
                         args : {
-                            nextValue : text,
+                            nextValue : trimText,
                             triggerDropDown : false
                         }
                     }, controller.selectedSuggestionsLabelsArray);
@@ -100,8 +101,12 @@
                 }
                 var report = new aria.widgets.controllers.reports.DropDownControllerReport();
 
+                if (this.maxOptions && this.selectedSuggestions.length == this.maxOptions) {
+                    trimText = "";
+                }
+
                 // an empty field is usually not considered as an error
-                if (text === '') {
+                if (trimText === '') {
                     dataModel.value = null;
                     dataModel.text = '';
                     report.ok = true;
@@ -109,16 +114,14 @@
                 } else {
                     if (this.freeText) {
                         report.ok = true;
-                        if (this.editMode && text === this.editedSuggestion.label) {
+                        if (this.editMode && trimText === this.editedSuggestion.label) {
                             addedValue = this.editedSuggestion;
                             dataModel.value = addedValue;
                         } else {
-                            addedValue = text;
+                            addedValue = trimText;
                         }
                         this._suggestionToBeAdded = addedValue;
-                        if (this.selectedSuggestions.length > 0 && !init) {
-                            addedValue = this._checkValidSuggestion(addedValue);
-                        }
+                        addedValue = this._checkValidSuggestion(addedValue);
                     } else {
                         if (!dataModel.value) {
                             report.ok = false;
@@ -188,9 +191,7 @@
                 if (this.editMode) {
                     this._suggestionToBeAdded = "";
                 }
-                if (this.selectedSuggestions.length > 0 && !init) {
-                    addedValue = this._checkValidSuggestion(this._suggestionToBeAdded);
-                }
+                addedValue = this._checkValidSuggestion(this._suggestionToBeAdded);
                 report.value = addedValue;
                 report.text = dataModel.text;
                 return report;
@@ -279,17 +280,12 @@
                     report.text = nextValue;
                     report.caretPosStart = args.caretPosStart;
                     report.caretPosEnd = args.caretPosEnd;
-
-                    if (matchValueIndex != -1) {
-                        dataModel.value = dataModel.listContent[matchValueIndex].value;
+                    var freeText = this.freeText || hasSuggestions;
+                    if (freeText && nextValue) {
+                        // return the text from the autocomplete
+                        dataModel.value = nextValue;
                     } else {
-                        var freeText = this.freeText || hasSuggestions;
-                        if (freeText && nextValue) {
-                            // return the text from the autocomplete
-                            dataModel.value = nextValue;
-                        } else {
-                            dataModel.value = null;
-                        }
+                        dataModel.value = null;
                     }
 
                     report.value = dataModel.value;

@@ -108,7 +108,7 @@ Aria.classDefinition({
         },
         _checkValue : function () {
             var parentNode = this.getInputField("MultiAutoId").parentNode;
-            var expectedVal = ["Air Canada", "Air France"];
+            var expectedVal = ["Scandinavian Airlines System", "Air France" ];
             for (var i = 0; i < parentNode.childNodes.length - 1; i++) {
                 var element = parentNode.childNodes[i].innerText || parentNode.childNodes[i].textContent;
                 this.assertEquals(element, expectedVal[i], "The Wrong values are edited for Autocomplete.");
