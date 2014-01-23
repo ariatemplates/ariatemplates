@@ -125,8 +125,8 @@ Aria.classDefinition({
             this._testOverlay(this.spanWithLoader, "block", 250, 200, 10);
             this._testBodyOverlay();
 
-            aria.utils.DomOverlay.detachFrom(this.spanWithLoader);
-            aria.utils.DomOverlay.detachFrom(this.body);
+            this.domOverlay.detachFrom(this.spanWithLoader);
+            this.domOverlay.detachFrom(this.body);
 
             this.end();
         },
