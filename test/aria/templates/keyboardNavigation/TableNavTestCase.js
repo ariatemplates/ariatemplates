@@ -39,6 +39,9 @@ Aria.classDefinition({
         },
         runTemplateTest : function () {
 
+            if (aria.core.Browser.isIE8 || aria.core.Browser.isIE7) {
+                this.notifyTemplateTestEnd(); // FIXME!! PTR 06248406
+            }
             // clean what was before
             this._disposeTestTemplate();
 
