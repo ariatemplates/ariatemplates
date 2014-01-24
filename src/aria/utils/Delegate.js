@@ -38,6 +38,12 @@ Aria.classDefinition({
     $constructor : function () {
 
         /**
+         * This variable is set to true on IE 7 and 8 when the focused element was just removed from the DOM.
+         * @type Boolean
+         */
+        this._focusedElementRemoved = false;
+
+        /**
          * Number of level up to look delegated element. -1 will go to the top.
          * @type Number
          */
@@ -573,6 +579,7 @@ Aria.classDefinition({
 
             // focus tracking
             if (evt.type == "focus") {
+                this._focusedElementRemoved = false;
                 this._focusTracking = evt.target;
                 if (this._focusTracking && ATflag) {
 
@@ -625,6 +632,29 @@ Aria.classDefinition({
          */
         getFocus : function () {
             return this._focusTracking;
+        },
+
+        /**
+         * This method is intended to be called before focusing any DOM element to apply a work-around for an issue on
+         * IE 7 and 8. It gives the focus to document.body if the last focused element was removed from the DOM.<br>
+         * If the work-around is not applied, on IE 7 and 8, after removing from the DOM a focused element, the next
+         * call to the focus method on a DOM element does not work correctly.
+         */
+        ieFocusFix : function () {
+            if (this._focusedElementRemoved) {
+                Aria.$window.document.body.focus();
+                this._focusedElementRemoved = false;
+            }
+        },
+
+        /**
+         * This method is intended to be called only on IE 7 and 8 in order notify this class that a focused element was
+         * removed from the DOM. Then, the next time the ieFocusFix method is called, a work-around is applied (which is
+         * to give the focus to document.body). This method is automatically called from aria.utils.Dom.replaceHTML when
+         * it is needed, so in most cases, there is no need to call it directly.
+         */
+        ieRemovingFocusedElement : function () {
+            this._focusedElementRemoved = true;
         }
     }
 });
