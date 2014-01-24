@@ -309,6 +309,8 @@ Aria.classDefinition({
          *
          *
          *
+         *
+         *
          * <code>
          * cb(asyncRes, cbArgs)
          * </code>
@@ -1246,8 +1248,20 @@ Aria.classDefinition({
          * @protected
          */
         _fillInresponseObject : function (url, connection, expectedResponseType) {
-            var statusValue, errorValue, httpStatus = connection.status;
-            if (httpStatus >= 200 && httpStatus < 300) {
+            var statusValue, errorValue, httpStatus;
+            try {
+                httpStatus = connection.status;
+            } catch (ex) {
+                return {
+                    url : url,
+                    status : "",
+                    responseText : "",
+                    responseXML : null,
+                    responseJSON : null,
+                    error : ""
+                };
+            }
+            if (aria.utils.Type.isNumber(httpStatus) && httpStatus >= 200 && httpStatus < 300) {
                 // on success
                 errorValue = null;
                 statusValue = httpStatus;
