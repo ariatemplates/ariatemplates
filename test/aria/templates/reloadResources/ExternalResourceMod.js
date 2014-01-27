@@ -29,7 +29,7 @@ Aria.resourcesDefinition({
                 "clickOK" : "You clicked on the OK button."
             },
             "link" : {
-                "ariaTemplatesDoc" : "http://topspot/index.php/Aria_Templates"
+                "ariaTemplatesDoc" : "http://ariatemplates.com/documentation"
             }
         }
     }
