@@ -24,8 +24,8 @@
     {macro main()}
         <h1>Links</h1>
         <ul class="container">
-            {var topspotLinks = this.getTopspotLinks()/}
-            {foreach link in topspotLinks}
+            {var docLinks = this.getDocumentationLinks()/}
+            {foreach link in docLinks}
                 <li class="item">
                     <a
                         href="${link.href}"

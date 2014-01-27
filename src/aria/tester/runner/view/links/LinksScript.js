@@ -16,22 +16,22 @@
 Aria.tplScriptDefinition({
     $classpath : 'aria.tester.runner.view.links.LinksScript',
     $prototype : {
-        getTopspotLinks : function () {
+        getDocumentationLinks : function () {
             return ([{
-                        href : "http://topspot/index.php/Aria_Templates_Testing_Documentation",
-                        title : "Topspot : Testing Documentation"
+                        href : "http://ariatemplates.github.io/Test-Driven-Development",
+                        title : "Test Driven Development Guide"
                     }, {
-                        href : "http://topspot/index.php/Category:Aria_Templates_Testing",
-                        title : "Topspot : Testing Category"
+                        href : "http://ariatemplates.com/aria/guide/apps/apidocs",
+                        title : "Aria Templates API Documentation"
                     }, {
-                        href : "http://topspot/index.php/Aria_Templates_Testing_Documentation_:_Assert",
-                        title : "Topspot : List of Assert Methods"
+                        href : "http://ariatemplates.com/usermanual/latest",
+                        title : "Aria Templates User Manual"
                     }, {
-                        href : "http://topspot/index.php/Aria_Templates_Testing_Documentation_:_First_Steps_Tutorial",
-                        title : "Topspot : First Tutorial"
+                        href : "http://ariatemplates.com/samples",
+                        title : "Aria Templates Samples"
                     }, {
-                        href : "http://topspot/index.php/Aria_Templates_Testing_Documentation_:_Test_Runner",
-                        title : "Topspot : Tester User Guide"
+                        href : "http://ariatemplates.com/usermanual/latest/logging_and_debugging",
+                        title : "Aria Templates Logging and Debugging Guide"
                     }]);
         },
         getKeyboardShortcuts : function () {
