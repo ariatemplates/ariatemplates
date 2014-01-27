@@ -33,6 +33,7 @@ Aria.classDefinition({
                 "test.aria.widgets.form.multiselect.onblur.MultiSelect",
                 "test.aria.widgets.form.multiselect.toggleMultiSelect.MultiSelect",
                 "test.aria.widgets.form.multiselect.upArrowKey.test1.MultiSelect",
-                "test.aria.widgets.form.multiselect.upArrowKey.test2.MultiSelect"];
+                "test.aria.widgets.form.multiselect.upArrowKey.test2.MultiSelect",
+                "test.aria.widgets.form.multiselect.labelsToTrim.LabelsToTrim"];
     }
 });

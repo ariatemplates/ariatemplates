@@ -325,7 +325,7 @@ Aria.classDefinition({
                 if (active) {
                     this._icons[icon].tooltip = this._tooltipLabels[param.activeIconIndex++];
                 }
-                param.width += iconInfo.width + iconInfo.borderLeft + iconInfo.borderRight;
+                param.width += iconInfo.width + (iconInfo.borderLeft || 0) + (iconInfo.borderRight || 0);
             } else {
                 this.$logError(this.ICON_NOT_FOUND, icon);
             }
