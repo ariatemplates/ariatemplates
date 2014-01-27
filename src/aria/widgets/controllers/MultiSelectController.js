@@ -168,22 +168,21 @@ Aria.classDefinition({
         _parseInputString : function (options, textFieldValue) {
 
             var selectedOptions = [];
+            var trim = aria.utils.String.trim;
 
             var inSplit = textFieldValue.split(this._separator);
             if (inSplit) {
                 for (var i = 0, inSplitLen = aria.utils.Math.min(inSplit.length, this._maxOptions); i < inSplitLen; i++) {
                     for (var j = 0, optionsLen = options.length; j < optionsLen; j++) {
-                        var key = aria.utils.String.trim(inSplit[i]);
+                        var key = trim(inSplit[i]);
                         options[j].label = options[j].label + "";
                         options[j].value = options[j].value + "";
                         key = key + "";
 
-                        if ((options[j].label.toLowerCase() == key.toLowerCase() || options[j].value.toLowerCase() == key.toLowerCase())) {
-                            if ((options[j].label.toLowerCase() == key.toLowerCase() || options[j].value.toLowerCase() == key.toLowerCase())
-                                    && !aria.utils.Array.contains(selectedOptions, options[j].value)
-                                    && !options[j].disabled) {
-                                selectedOptions.push(options[j].value);
-                            }
+                        if ((trim(options[j].label.toLowerCase()) == key.toLowerCase() || trim(options[j].value.toLowerCase()) == key.toLowerCase())
+                                && !aria.utils.Array.contains(selectedOptions, options[j].value)
+                                && !options[j].disabled) {
+                            selectedOptions.push(options[j].value);
                         }
                     }
                 }
