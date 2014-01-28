@@ -364,7 +364,6 @@ Aria.classDefinition({
                 // environment
                 cfg.directOnBlurValidation = aria.widgets.environment.WidgetSettings.getWidgetSettings().directOnBlurValidation;
             }
-
             if (cfg.height > -1) {
                 this._inputMarkupHeight = cfg.height;
 

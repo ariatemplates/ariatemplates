@@ -436,9 +436,6 @@ Aria.classDefinition({
                 if (!performCheckOnly) {
                     this.changeProperty("value", null);
                     this.changeProperty("invalidText", text);
-                    if (this._cfg.directOnBlurValidation) {
-                        this.changeProperty("formatErrorMessages", report.errorMessages);
-                    }
                 }
             } else if (this._cfg.formatError === false && aria.utils.Type.isArray(this._cfg.formatErrorMessages)
                     && this._cfg.formatErrorMessages.length) {
@@ -507,6 +504,9 @@ Aria.classDefinition({
                         delayedValidation = arg.delayedValidation;
                     }
 
+                }
+                if (report.errorMessages.length && this._cfg.directOnBlurValidation) {
+                    this.changeProperty("formatErrorMessages", report.errorMessages);
                 }
                 // if the validation originated from a validation with delay we
                 // do not want to update the input text or
@@ -711,6 +711,14 @@ Aria.classDefinition({
                     || propertyName === 'errorMessages') {
                 this._cfg[propertyName] = newValue;
                 this._reactToChange();
+                var cfg = this._cfg;
+                if (cfg && cfg.validationEvent === 'onError' && (this._keepFocus || this._hasFocus)) {
+                    if ((cfg.formatError && cfg.formatErrorMessages.length) || (cfg.error && cfg.errorMessages.length)) {
+                        this._validationPopupShow();
+                    } else {
+                        this._validationPopupHide();
+                    }
+                }
             } else if (propertyName == "prefill") {
                 this.setPrefillText(true, newValue, true);
             } else if (propertyName == "prefillError") {
@@ -812,7 +820,6 @@ Aria.classDefinition({
                 this.checkValue();
             }
         },
-
         /**
          * Internal method to handle the onkeyup event. This is called to set the value property in the data model
          * through the setProperty method that also handles all other widgets bound to this value.

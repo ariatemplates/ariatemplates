@@ -18,11 +18,11 @@
     $hasScript:true
 }}
 
-    
+
 
 
 	{macro main()}
-		 
+
 		 <h2>AutoComplete with Multi Options</h2>
 		 <br />
 		{@aria:MultiAutoComplete{
@@ -30,6 +30,7 @@
 			helptext:"city",
 			id:"MultiAutoId",
 			labelPos:"left",
+			validationEvent:'onError',
 			labelAlign:"right",
 			width:400,
 			block:false,
