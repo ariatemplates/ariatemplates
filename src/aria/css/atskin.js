@@ -1339,7 +1339,12 @@ Aria.classDefinition({
                     optionsBorderColor : "#AAAAAA",
                     closeSpriteURL : "atskin/sprites/closemark.gif",
                     closeSpriteHeight : 10,
-                    closeSpriteWidth : 9
+                    closeSpriteWidth : 9,
+                    optionsHighlightBackgroundColor : "#FFCC66",
+                    optionsHighlightColor : "#333",
+                    optionsHighlightBorderWidth : 1,
+                    optionsHighlightBorderColor : "#AAAAAA",
+                    closeHighlightSpriteURL : "atskin/sprites/closemark_highlight.gif"
                 }
             },
             ErrorList : {
