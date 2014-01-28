@@ -130,6 +130,17 @@ Aria.classDefinition({
 
         _getSelectedItemElement : function (index) {
             return this._getContainer().childNodes[index];
+        },
+        _getWidgetInstance : function () {
+            return this.getWidgetInstance("MultiAutoId");
+        },
+        checkHighlightedElementsIndices : function (expectedHighlightedArray) {
+            var widgetInstance = this._getWidgetInstance();
+            var actualHighlightedArray = widgetInstance.getHighlight();
+            this.assertJsonEquals(expectedHighlightedArray, actualHighlightedArray, "Expected higlighted elements indices are ["
+                    + expectedHighlightedArray
+                    + "] but actual highlighted elements indices are ["
+                    + actualHighlightedArray + "]");
         }
 
     }
