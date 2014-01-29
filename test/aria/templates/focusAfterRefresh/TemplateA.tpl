@@ -26,7 +26,8 @@
                     id : "txtf0",
                     label : "TextField ",
                     labelWidth:100,
-                    width:300
+                    width:300,
+                    value:"aaa"
                 } /}
             </li>
             <li>
