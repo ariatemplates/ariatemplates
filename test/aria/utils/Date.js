@@ -263,6 +263,11 @@ Aria.classDefinition({
         testAsyncDateFormatting : function () {
             var ariaDateUtil = aria.utils.Date;
 
+            this.assertEquals(null, ariaDateUtil.format(null, "dd/MM/yyyy"));
+            this.assertEquals(null, ariaDateUtil.format(undefined, "dd/MM/yyyy"));
+            this.assertEquals(null, ariaDateUtil.format("", "dd/MM/yyyy"));
+            this.assertEquals(null, ariaDateUtil.format({}, "dd/MM/yyyy"));
+
             var formattedValue = ariaDateUtil.format(new Date(2010, 3, 1, 0, 0, 0), "d MMM y");
             this.assertTrue(formattedValue === "1 Apr 10", "Wrong output: " + formattedValue);
 

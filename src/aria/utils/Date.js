@@ -1448,6 +1448,9 @@ Aria.classDefinition({
          * @return {String}
          */
         format : function (date, pattern, utcTime) {
+            if (!date || !aria.utils.Type.isDate(date)) {
+                return null;
+            }
 
             if (typeof pattern === 'function') {
                 pattern = pattern();
@@ -1455,14 +1458,23 @@ Aria.classDefinition({
                 this.$logError(this.INVALID_FORMAT_TYPE);
             }
 
-            var formatFn = this._getFormatFunction(pattern), formattedDate;
-            this.$assert(118, aria.utils.Type.isFunction(formatFn));
             if (utcTime) {
                 // create a date object whose local time is the UTC time:
-                date = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds(), date.getUTCMilliseconds());
+                date = new Date(
+                    date.getUTCFullYear(),
+                    date.getUTCMonth(),
+                    date.getUTCDate(),
+                    date.getUTCHours(),
+                    date.getUTCMinutes(),
+                    date.getUTCSeconds(),
+                    date.getUTCMilliseconds()
+                );
             }
-            formattedDate = formatFn(date);
-            return formattedDate;
+
+            var formatFn = this._getFormatFunction(pattern);
+            this.$assert(118, aria.utils.Type.isFunction(formatFn));
+
+            return formatFn(date);
         },
 
         /**
