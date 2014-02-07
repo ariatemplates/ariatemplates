@@ -35,6 +35,7 @@ Aria.classDefinition({
         this.addTests("test.aria.templates.css.widgetContext.ContextTest");
         this.addTests("test.aria.templates.css.events.EventsTestCase");
         this.addTests("test.aria.templates.css.global.GlobalCssTemplateTestCase");
+        this.addTests("test.aria.templates.css.imgprefix.ImgPrefixTemplateTestCase");
         this.addTests("test.aria.templates.css.inheritance.InheritTestCase");
         this.addTests("test.aria.templates.css.numberReload.OneLevelTemplate");
     }
