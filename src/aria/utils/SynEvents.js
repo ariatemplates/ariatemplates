@@ -2477,9 +2477,16 @@
                 if (typeof el.getBoundingClientRect !== "undefined") {
                     box = el.getBoundingClientRect();
                 }
+                var $window = Aria.$window;
+                var $document = $window.document;
                 var o = {
-                    top: box.top + Aria.$window.pageYOffset - docElem.clientTop,
-                    left: box.left + Aria.$window.pageXOffset - docElem.clientLeft
+                    top: box.top +
+                        (($window.pageYOffset !== undefined) ? $window.pageYOffset : ($document.documentElement || $document.body.parentNode || $document.body).scrollTop) -
+                        docElem.clientTop,
+                    left:
+                        box.left +
+                        (($window.pageXOffset !== undefined) ? $window.pageXOffset : ($document.documentElement || $document.body.parentNode || $document.body).scrollLeft) -
+                        docElem.clientLeft
                 };
                 return {
                     pageX: o.left + (el.offsetWidth / 2),
