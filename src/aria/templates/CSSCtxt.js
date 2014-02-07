@@ -21,7 +21,7 @@
  */
 Aria.classDefinition({
     $classpath : 'aria.templates.CSSCtxt',
-    $dependencies : ['aria.templates.CfgBeans', 'aria.utils.String'],
+    $dependencies : ['aria.templates.CfgBeans', 'aria.utils.String', 'aria.utils.Function'],
     $implements : ['aria.templates.ICSS'],
     $extends : "aria.templates.BaseCtxt",
     $constructor : function (classPath) {
@@ -179,6 +179,9 @@ Aria.classDefinition({
             this._out = [];
             this._callMacro(null, "main");
             var text = this._out.join("");
+            if (aria.core.AppEnvironment.applicationSettings.hasOwnProperty("imgUrlMapping") && aria.core.AppEnvironment.applicationSettings.imgUrlMapping !== null) {
+                text = this._prefixCSSImgUrl(text);
+            }
             this._out = null;
 
             this.__cachedOutput = text;
@@ -198,6 +201,41 @@ Aria.classDefinition({
             var prefixed = this.__prefixingAlgorithm(text, prefix);
             this.__prefixedText = prefixed.text;
             this.__numSelectors = prefixed.selectors;
+        },
+
+        /**
+         * Prefix the image URLs calling the method set inside the app environment
+         * @param {String} cssText CSS text
+         * @return {String}
+         */
+        _prefixCSSImgUrl : function (cssText) {
+            cssText = cssText.replace(/\burl\s*\(\s*["']?([^"'\r\n,]+|[^'\r\n,]+|[^"\r\n,]+)["']?\s*\)/gi, aria.utils.Function.bind(function (match, urlpart) {
+                var prefixedUrl = aria.core.AppEnvironment.applicationSettings.imgUrlMapping(urlpart, this.tplClasspath);
+                return this._parseImgUrl(prefixedUrl);
+            }, this));
+
+            return cssText;
+        },
+
+        /**
+         * Return the CSS rule for image urls
+         * @param {String} url URL
+         * @return {String}
+         */
+        _parseImgUrl : function (url) {
+            return "url (\"" + url + "\")";
+        },
+
+        /**
+         * Clean the url removing brackets, quotes, etc.
+         * @param {String} url URL
+         * @return {String}
+         */
+        _cleanUrl : function (url) {
+            var tmp = url.replace(/\burl\s*/gi, "");    // removing url word
+            tmp = tmp[0] === "(" ? tmp.substring(1, tmp.length - 1) : tmp; // removing brackets
+            tmp = tmp[0] === "\'" || tmp[0] === "\"" ? tmp.substring(1, tmp.length - 1) : tmp; // removing quotes
+            return tmp;
         },
 
         /**
