@@ -28,9 +28,15 @@ Aria.classDefinition({
         runTemplateTest : function () {
             this.assertTrue(this.getInputField("ms1").value === "");
             this.getInputField("ms1").focus();
-            this.synEvent.type(this.getInputField("ms1"), "AF,AC,NZ,IB", {
-                fn : this._afterTyping,
-                scope : this
+            aria.core.Timer.addCallback({
+                fn : function() {
+                    this.synEvent.type(this.getInputField("ms1"), "AF,AC,NZ,IB", {
+                        fn : this._afterTyping,
+                        scope : this
+                    });
+                },
+                scope : this,
+                delay : 25
             });
 
         },

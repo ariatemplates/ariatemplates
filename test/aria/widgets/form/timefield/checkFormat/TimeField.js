@@ -46,8 +46,14 @@ Aria.classDefinition({
             var pm = aria.utils.Date.res.timeFormatLabels.pm;
 
             myField.blur();
-            this.assertTrue(myField.value == "12:0:0 " + pm, "'12:0:0 PM' was expected in the timefield 1.");
-            this.notifyTemplateTestEnd();
+            aria.core.Timer.addCallback({
+                fn : function() {
+                    this.assertTrue(myField.value == "12:0:0 " + pm, "'12:0:0 PM' was expected in the timefield 1.");
+                    this.notifyTemplateTestEnd();
+                },
+                scope : this,
+                delay : 25
+            });
         }
     }
 

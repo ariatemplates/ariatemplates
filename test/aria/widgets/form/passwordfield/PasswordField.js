@@ -45,9 +45,15 @@ Aria.classDefinition({
 
         _afterFieldType : function () {
             this.getInputField("pf").blur();
-            this.assertTrue(this.getInputField("tf").value == "abcd");
-            this.assertTrue(this.data.password == "abcd");
-            this.notifyTemplateTestEnd();
+            aria.core.Timer.addCallback({
+                fn : function() {
+                    this.assertTrue(this.getInputField("tf").value == "abcd");
+                    this.assertTrue(this.data.password == "abcd");
+                    this.notifyTemplateTestEnd();
+                },
+                scope : this,
+                delay : 25
+            });
 
         }
     }
