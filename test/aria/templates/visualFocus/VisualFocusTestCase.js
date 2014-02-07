@@ -50,64 +50,105 @@ Aria.classDefinition({
         },
 
         executeActions : function () {
-            try {
-                this.visualFocusTestvar = {};
-                var curOutline;
-                var myDom = aria.utils.Dom;
-                var link = this.getElementById("myLink");
-                var secondLink = this.getElementById("mySecondLink");
-                // on button the outline is added directly on the button element
-                var button = this.getWidgetInstance("myButton").getDom().childNodes[0];
-                // on fields it's added on the span containing the input
-                var field = this.getWidgetInstance("myField").getDom().getElementsByTagName("input")[0].parentNode;
-                var template = this.templateCtxt._tpl;
+            this.visualFocusTestvar = {};
+            var curOutline;
+            var myDom = this.myDom = aria.utils.Dom;
+            var link = this.link = this.getElementById("myLink");
+            var secondLink = this.secondLink = this.getElementById("mySecondLink");
+            // on button the outline is added directly on the button element
+            var button = this.button = this.getWidgetInstance("myButton").getDom().childNodes[0];
+            // on fields it's added on the span containing the input
+            var field = this.field = this.getWidgetInstance("myField").getDom().getElementsByTagName("input")[0].parentNode;
+            var template = this.template = this.templateCtxt._tpl;
 
-                curOutline = [link.style.outlineColor, link.style.outlineStyle, link.style.outlineWidth];
-                this.visualFocusTestvar.var1 = curOutline.join(" ");
-                template.$focus("myLink");
+            curOutline = [link.style.outlineColor, link.style.outlineStyle, link.style.outlineWidth];
+            this.visualFocusTestvar.var1 = curOutline.join(" ");
+            template.$focus("myLink");
 
-                curOutline = [link.style.outlineColor, link.style.outlineStyle, link.style.outlineWidth];
-                this.visualFocusTestvar.var2 = curOutline.join(" ");
-                template.$focus("myButton");
+            var that = this;
+            setTimeout(function() {
+                that.afterMyLinkFocus();
+            }, 25);
 
-                curOutline = [link.style.outlineColor, link.style.outlineStyle, link.style.outlineWidth];
-                this.visualFocusTestvar.var3 = curOutline.join(" ");
+        },
 
-                curOutline = [button.style.outlineColor, button.style.outlineStyle, button.style.outlineWidth];
-                this.visualFocusTestvar.var4 = curOutline.join(" ");
-                template.$focus("myField");
+        afterMyLinkFocus : function () {
+            var link = this.link;
 
-                curOutline = [button.style.outlineColor, button.style.outlineStyle, button.style.outlineWidth];
-                this.visualFocusTestvar.var5 = curOutline.join(" ");
+            var curOutline = [link.style.outlineColor, link.style.outlineStyle, link.style.outlineWidth];
+            this.visualFocusTestvar.var2 = curOutline.join(" ");
+            this.template.$focus("myButton");
 
-                curOutline = [field.style.outlineColor, field.style.outlineStyle, field.style.outlineWidth];
-                this.visualFocusTestvar.var6 = curOutline.join(" ");
+            var that = this;
+            setTimeout(function() {
+                that.afterMyButtonFocus();
+            }, 25);
+        },
 
-                curOutline = [myDom.getStyle(secondLink, "outlineStyle")];
-                this.visualFocusTestvar.var7 = curOutline.join(" ");
-                template.$focus("mySecondLink");
+        afterMyButtonFocus : function () {
+            var link = this.link;
+            var button = this.button;
 
-                curOutline = [field.style.outlineStyle, field.style.outlineWidth];
-                this.visualFocusTestvar.var8 = curOutline.join(" ");
+            var curOutline = [link.style.outlineColor, link.style.outlineStyle, link.style.outlineWidth];
+            this.visualFocusTestvar.var3 = curOutline.join(" ");
 
-                curOutline = [myDom.getStyle(secondLink, "outlineStyle"), myDom.getStyle(secondLink, "outlineWidth")];
-                this.visualFocusTestvar.var9 = curOutline.join(" ");
-                template.$focus("myField");
+            curOutline = [button.style.outlineColor, button.style.outlineStyle, button.style.outlineWidth];
+            this.visualFocusTestvar.var4 = curOutline.join(" ");
+            this.template.$focus("myField");
 
-                curOutline = [myDom.getStyle(secondLink, "outlineStyle")];
-                this.visualFocusTestvar.var10 = curOutline.join(" ");
+            var that = this;
+            setTimeout(function() {
+                that.afterMyFieldFocus();
+            }, 25);
+        },
 
-                aria.core.AppEnvironment.setEnvironment({
-                    appOutlineStyle : null
-                }, null, true);
-                this.myVisualFocusTest();
-            } catch (ex) {
-                try {
-                    this.fail("Exception in executeActions " + ex.message);
-                } catch (expt) {}
+        afterMyFieldFocus : function () {
+            var button = this.button;
+            var field = this.field;
 
-                this.finishTest();
-            }
+            var curOutline = [button.style.outlineColor, button.style.outlineStyle, button.style.outlineWidth];
+            this.visualFocusTestvar.var5 = curOutline.join(" ");
+
+            curOutline = [field.style.outlineColor, field.style.outlineStyle, field.style.outlineWidth];
+            this.visualFocusTestvar.var6 = curOutline.join(" ");
+
+            curOutline = [this.myDom.getStyle(this.secondLink, "outlineStyle")];
+            this.visualFocusTestvar.var7 = curOutline.join(" ");
+            this.template.$focus("mySecondLink");
+
+            var that = this;
+            setTimeout(function() {
+                that.afterMySecondLinkFocus();
+            }, 25);
+        },
+
+        afterMySecondLinkFocus : function () {
+            var field = this.field;
+            var secondLink = this.secondLink;
+            var myDom = this.myDom;
+
+            var curOutline = [field.style.outlineStyle, field.style.outlineWidth];
+            this.visualFocusTestvar.var8 = curOutline.join(" ");
+
+            curOutline = [myDom.getStyle(secondLink, "outlineStyle"), myDom.getStyle(secondLink, "outlineWidth")];
+            this.visualFocusTestvar.var9 = curOutline.join(" ");
+            this.template.$focus("myField");
+
+            var that = this;
+            setTimeout(function() {
+                that.afterMyFieldFocus2();
+            }, 25);
+        },
+
+        afterMyFieldFocus2 : function () {
+            var curOutline = [this.myDom.getStyle(this.secondLink, "outlineStyle")];
+            this.visualFocusTestvar.var10 = curOutline.join(" ");
+
+            aria.core.AppEnvironment.setEnvironment({
+                appOutlineStyle : null
+            }, null, true);
+
+            this.myVisualFocusTest();
         },
 
         myVisualFocusTest : (aria.core.Browser.isIE7)
