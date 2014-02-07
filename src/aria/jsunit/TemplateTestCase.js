@@ -96,10 +96,7 @@ Aria.classDefinition({
     $destructor : function () {
         // Free also some memory cleaning the environment
         this.__cleanEnv(true);
-        if (this.testDiv) {
-            this.testDiv.parentNode.removeChild(this.testDiv);
-            this.testDiv = null;
-        }
+        this.__removeTestDiv();
         if (this.testIframe) {
             this.testIframe.parentNode.removeChild(this.testIframe);
             this.testIframe = null;
@@ -369,10 +366,7 @@ Aria.classDefinition({
                     this._disposeTestTemplate();
 
                     try {
-                        if (this.testDiv) {
-                            // null for iframe tests with errors
-                            this.testDiv.style.display = "none";
-                        }
+                        this.__removeTestDiv();
                         if (this.testIframe) {
                             this.testIframe.style.display = "none";
                         }
@@ -923,6 +917,17 @@ Aria.classDefinition({
             // Template tests are always asynchronous, but we need to call notifyTemplateTestEnd
             this.$logError(this.EXCEPTION_IN_METHOD, methodName, ex);
             this.notifyTemplateTestEnd();
+        },
+
+        /**
+         * Remove the testDiv dom element
+         * @private
+         */
+        __removeTestDiv : function() {
+            if (this.testDiv) {
+                this.testDiv.parentNode.removeChild(this.testDiv);
+                this.testDiv = null;
+            }
         }
     }
 });
