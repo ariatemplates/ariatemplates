@@ -682,13 +682,11 @@ Aria.classDefinition({
          * @private
          */
         __afterType : function () {
-            var id = arguments[1][0], callback = arguments[1][2], blur = arguments[1][3];
+            var callback = arguments[1][2], blur = arguments[1][3];
             // text = arguments[1][1]
             if (blur === false) {
                 this.$callback(callback);
             } else {
-                var input = this.getInputField(id);
-                input.blur();
                 this.synEvent.click(this.testDocument.body, callback);
             }
         },
