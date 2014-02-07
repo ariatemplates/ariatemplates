@@ -1184,7 +1184,14 @@ Aria.classDefinition({
             textInputField.value = textInputField.value;
 
             if (!fromSelf) {
-                this._autoselect();
+                // IE FIX: the focus() can be asynchronous, so let's add a timeout to manage the autoselect
+                aria.core.Timer.addCallback({
+                    fn : function() {
+                        this._autoselect();
+                    },
+                    scope : this,
+                    delay : 25
+                });
             }
         },
 
