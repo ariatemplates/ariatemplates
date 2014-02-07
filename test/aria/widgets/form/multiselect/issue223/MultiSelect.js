@@ -10,11 +10,16 @@ Aria.classDefinition({
         runTemplateTest : function () {
             this.assertTrue(this.getInputField("ms1").value === "");
             this.getInputField("ms1").focus();
-            this.synEvent.type(this.getInputField("ms1"), "AF,AC,DL,AY", {
-                fn : this._afterTyping,
-                scope : this
+            aria.core.Timer.addCallback({
+                fn : function() {
+                    this.synEvent.type(this.getInputField("ms1"), "AF,AC,DL,AY", {
+                        fn : this._afterTyping,
+                        scope : this
+                    });
+                },
+                scope : this,
+                delay : 25
             });
-
         },
 
         _afterTyping : function () {
@@ -29,8 +34,14 @@ Aria.classDefinition({
 
         finishTest : function () {
             this.getInputField("myTextField").focus();
-            this.assertTrue(this.getInputField("ms1").value === "AF,AC,DL");
-            this.end();
+            aria.core.Timer.addCallback({
+                fn : function() {
+                    this.assertTrue(this.getInputField("ms1").value === "AF,AC,DL");
+                    this.end();
+                },
+                scope : this,
+                delay : 25
+            });
         }
     }
 });

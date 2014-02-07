@@ -40,8 +40,14 @@ Aria.classDefinition({
 
         _onMSOpened : function () {
             this.getInputField("ms1").blur();
-            this.assertTrue(this.getInputField("ms1").value == "Air France,Air Canada");
-            this.toggleMultiSelectOn("ms1", this._onIconClicked);
+            aria.core.Timer.addCallback({
+                fn : function() {
+                    this.assertTrue(this.getInputField("ms1").value == "Air France,Air Canada");
+                    this.toggleMultiSelectOn("ms1", this._onIconClicked);
+                },
+                scope : this,
+                delay : 25
+            });
         },
 
         _onIconClicked : function () {
