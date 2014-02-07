@@ -45,8 +45,14 @@ Aria.classDefinition({
             var myField = this.getInputField("tf1");
 
             myField.blur();
-            this.assertTrue(myField.value === "00:00", "'00:00' was expected in the timefield.");
-            this.notifyTemplateTestEnd();
+            aria.core.Timer.addCallback({
+                fn : function() {
+                    this.assertTrue(myField.value === "00:00", "'00:00' was expected in the timefield.");
+                    this.notifyTemplateTestEnd();
+                },
+                scope : this,
+                delay : 25
+            });
         }
     }
 
