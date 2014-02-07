@@ -16,6 +16,7 @@
 Aria.classDefinition({
     $classpath : "test.aria.widgets.form.autocomplete.expandbutton.test3.ExpandButtonCheck",
     $extends : "aria.jsunit.TemplateTestCase",
+    $dependencies : ["aria.core.Timer"],
     $constructor : function () {
         this.$TemplateTestCase.constructor.call(this);
         this.dataModel = {
@@ -34,7 +35,11 @@ Aria.classDefinition({
         runTemplateTest : function () {
             var field = this.getInputField("ac1");
             field.focus();
-            this._downArrow();
+            aria.core.Timer.addCallback({
+                fn : this._downArrow,
+                scope : this,
+                delay : 25
+            });
         },
         _downArrow : function () {
             this.synEvent.type(this.getInputField("ac1"), "[down]", {
