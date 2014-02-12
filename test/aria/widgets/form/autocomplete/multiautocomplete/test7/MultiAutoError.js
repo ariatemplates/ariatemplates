@@ -35,6 +35,7 @@ Aria.classDefinition({
          * This method is always the first entry point to a template test Start the test by focusing the first field
          */
         runTemplateTest : function () {
+
             this.synEvent.click(this.getInputField("MultiAutoId"), {
                 fn : this.typeSomething,
                 scope : this
@@ -43,23 +44,28 @@ Aria.classDefinition({
 
         typeSomething : function (evt, callback) {
             // give it the time to open a drop down
-            this.synEvent.type(this.getInputField("MultiAutoId"), "sdafwerew", {
-                fn : this._wait,
+            this.synEvent.type(this.getInputField("MultiAutoId"), "az", {
+                fn : this._waitForType,
                 scope : this,
                 args : this._assertErrorState
             });
         },
-        _wait : function (evt, callback) {
-            aria.core.Timer.addCallback({
-                fn : callback,
-                scope : this,
-                delay : 500
+        _waitForType : function () {
+            var acWidget = this.getWidgetInstance("MultiAutoId");
+            this.waitFor({
+                condition : function () {
+                    return (acWidget._state == "normalErrorFocused");
+                },
+                callback : {
+                    fn : this._assertErrorState,
+                    scope : this
+                }
             });
         },
         _assertErrorState : function () {
             // test that the field is in error state
             var acWidget = this.getWidgetInstance("MultiAutoId");
-            this.assertTrue(acWidget._state == "normalErrorFocused", "The auto-complete should be in the normalErrorFocused state.");
+            this.assertTrue(!!acWidget._onValidatePopup);
             this.notifyTemplateTestEnd();
         }
     }

@@ -154,7 +154,7 @@
                     dataModel.value = null;
                     report.ok = true;
                     reportVal = null;
-                } else if (value && !typeUtil.isString(value)) {
+                } else if (value && !typeUtil.isString(value) && dataModel.value !== null) {
                     if (this._checkWithSuggestionBean(value, this._resourcesHandler.SUGGESTION_BEAN)) {
                         var text = this._getLabelFromSuggestion(value);
                         dataModel.text = text;
@@ -296,6 +296,7 @@
                     } else {
                         if (!this.freeText && suggestionsAvailable && !hasSuggestions) {
                             report.ok = false;
+                            report.errorMessages.push(this.res.errors["40020_WIDGET_AUTOCOMPLETE_VALIDATION"]);
                         } else {
                             report.ok = true;
                         }

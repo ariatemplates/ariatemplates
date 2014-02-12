@@ -256,7 +256,7 @@ Aria.beanDefinitions({
                 },
                 "validationEvent" : {
                     $type : "json:Enum",
-                    $enumValues : ["onFocus", "onBlur", "none"],
+                    $enumValues : ["onFocus", "onBlur", "onError", "none"],
                     $default : "onFocus",
                     $description : "contains the event used to display the error tip"
                 },
