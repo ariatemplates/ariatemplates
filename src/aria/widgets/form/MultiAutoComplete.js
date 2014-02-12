@@ -34,8 +34,9 @@ Aria.classDefinition({
         var controller = controllerInstance || new aria.widgets.controllers.MultiAutoCompleteController();
 
         this.$AutoComplete.constructor.call(this, cfg, ctxt, lineNumber, controller);
-
-        this._hideIconNames = ["dropdown"];
+        if (!cfg.expandButton) {
+            this._hideIconNames = ["dropdown"];
+        }
         controller.maxOptions = cfg.maxOptions;
     },
 
@@ -96,7 +97,8 @@ Aria.classDefinition({
         _renderDropdownContent : function (out, options) {
             options = options || {};
             var cfg = this._cfg;
-            var dm = this.controller.getDataModel();
+            var controller = this.controller;
+            var dm = controller.getDataModel();
             var element = this._domElt.lastChild;
             var domUtil = aria.utils.Dom;
             var geometry = domUtil.getGeometry(element);
@@ -112,15 +114,11 @@ Aria.classDefinition({
             var referenceMaxHeight = options.maxHeight || this.MAX_HEIGHT;
             maxHeight = (maxHeight < this.MIN_HEIGHT) ? this.MIN_HEIGHT : maxHeight;
             maxHeight = (maxHeight > referenceMaxHeight) ? referenceMaxHeight : maxHeight - 2;
-            var list = new aria.widgets.form.list.List({
+            var listObj = {
                 id : cfg.id,
                 defaultTemplate : "defaultTemplate" in options ? options.defaultTemplate : cfg.listTemplate,
                 block : true,
                 sclass : cfg.listSclass || this._skinObj.listSclass,
-                onclick : {
-                    fn : this._clickOnItem,
-                    scope : this
-                },
                 onmouseover : {
                     fn : this._mouseOverItem,
                     scope : this
@@ -156,7 +154,22 @@ Aria.classDefinition({
                     }
                 },
                 scrollBarX : false
-            }, this._context, this._lineNumber);
+            };
+            if (controller._isExpanded) {
+                listObj.defaultTemplate = controller.getExpandoTemplate();
+                listObj.multipleSelect = true;
+                listObj.maxOptions = (this.controller.maxOptions) ? this.__returnMaxCount() : null;
+                listObj.onchange = {
+                    fn : this._changeOnItem,
+                    scope : this
+                };
+            } else {
+                listObj.onclick = {
+                    fn : this._clickOnItem,
+                    scope : this
+                };
+            }
+            var list = new aria.widgets.form.list.List(listObj, this._context, this._lineNumber);
             list.$on({
                 'widgetContentReady' : this._refreshPopup,
                 scope : this
@@ -381,14 +394,15 @@ Aria.classDefinition({
          * @param {aria.utils.HTML} domElement
          * @param {aria.widgets.form.MultiAutoComplete} ref
          * @param {aria.utils.Event} event
+         * @param {Boolean} if current element is a parent element itself
          */
-        _removeMultiselectValues : function (domElement, event) {
-            var parent = domElement.parentNode;
+        _removeMultiselectValues : function (domElement, event, isParent) {
+            var parent = (!isParent) ? domElement.parentNode : domElement;
             var domUtil = aria.utils.Dom;
             var label = parent.firstChild.innerText || parent.firstChild.textContent;
             domUtil.removeElement(parent);
             this._removeValues(label);
-            if (event.type == "click") {
+            if (event && event.type == "click") {
                 this.getTextInputField().focus();
 
             }
@@ -531,6 +545,156 @@ Aria.classDefinition({
                 suggestionNodeClassList.$dispose();
             }
             return highlightedArray;
+        },
+        /**
+         * Internal method for calculating the maxOptions allowed for setting it in template
+         * @return {Number}
+         */
+        __returnMaxCount : function () {
+            var maxCount = 0, suggestion = this.controller.selectedSuggestions;
+            if (suggestion.length < this.controller.maxOptions) {
+                return this.controller.maxOptions;
+            } else {
+                for (var i = 0, len = suggestion.length; i < len; i++) {
+                    if (aria.utils.Type.isObject(suggestion[i])) {
+                        maxCount++;
+                    }
+                }
+                return maxCount;
+            }
+        },
+        /**
+         * Callback called when the user clicks on a checkbox (or its label) on a dropdown list or
+         * selectAll/deselectAll.
+         * @protected
+         * @param {Array} newVals array of values that will be selected after the change
+         */
+        _changeOnItem : function (values) {
+            this._closeDropdown();
+            var newArrayValue = this._constructSelectedSuggestion();
+            var valueArray = this.__constructLabelArray(values);
+            var checkedValue = this._selectDeselectValues(newArrayValue, valueArray, values);
+            if (checkedValue && aria.utils.Type.isArray(checkedValue)) {
+                var report = this.controller.checkValue(checkedValue);
+                this._reactToControllerReport(report);
+            }
+        },
+        /**
+         * Internal Method for bulding label array from values
+         * @param {Array} values
+         * @return {Array} Array of labels
+         */
+        __constructLabelArray : function (values) {
+            var valueArray = [];
+            for (var m = 0; m < values.length; m++) {
+                valueArray.push(values[m].label);
+            }
+            return valueArray;
+        },
+        /**
+         * To select or deselect the options from widget depending on the action performed on the template
+         * @param {Array} newArray Array containing all the selected suggestions from allSuggestions.
+         * @param {} newlabelArray Array containing the all the labels returned from the list template
+         * @param {} values actual Array of values returned from list Template.
+         * @return {Boolean}
+         */
+        _selectDeselectValues : function (newArray, newlabelArray, values) {
+            var arrayUtil = aria.utils.Array, jsonUtil = aria.utils.Json;
+            // In case of deselectAll
+            if (!values.length > 0) {
+                this._unselectValues(newArray);
+                return false;
+            }
+            // In case of deselecting individually
+            if (values.length < newArray.length) {
+                var labelArray = jsonUtil.copy(newArray);
+                for (var l = 0; l < newArray.length; l++) {
+                    if (arrayUtil.contains(newlabelArray, newArray[l])) {
+                        arrayUtil.removeAt(labelArray, arrayUtil.indexOf(labelArray, newArray[l]));
+                    }
+                }
+                this._unselectValues(labelArray);
+                return false;
+            }
+            // In case of selectAll and each select
+            if (values.length > newArray.length) {
+                var optionsArray = [];
+                for (var m = 0; m < values.length; m++) {
+                    if (!arrayUtil.contains(newArray, values[m].label) && this._checkMaxCount(optionsArray)) {
+                        optionsArray.push(values[m]);
+                    }
+                }
+                return optionsArray;
+            }
+            return false;
+        },
+        /**
+         * for checking the maxoptions is not exceeded while adding options from list
+         * @param {Array} options total number of options to the widget
+         * @return {Boolean} returns true if maxOptions are not exceeded
+         */
+        _checkMaxCount : function (options) {
+            if (!this.controller.maxOptions) {
+                return true;
+            } else {
+                var totalOptions = this.controller.selectedSuggestions.length + options.length;
+                return totalOptions < this.controller.maxOptions;
+            }
+        },
+        /**
+         * To filter the the array of elements to remove
+         * @param {Array} newArray
+         */
+        _unselectValues : function (newArray) {
+            var selectedElements = this._textInputField.parentElement.childNodes, elementArray = [];
+            for (var index = 0, elementLen = newArray.length; index < elementLen; index++) {
+                var elementLabel = newArray[index];
+                for (var eleIndex = 0, len = selectedElements.length - 1; eleIndex < len; eleIndex++) {
+                    var element = selectedElements[eleIndex], label = element.firstChild.innerText
+                            || element.firstChild.textContent;
+                    if (label === elementLabel) {
+                        elementArray.push(element);
+                        break;
+                    }
+
+                }
+            }
+            this._removeElements(elementArray);
+        },
+        /**
+         * Method to remove the selected options after deselecting in list template
+         * @param {Array} of elementsToremove
+         */
+        _removeElements : function (elementsToremove) {
+            if (elementsToremove.length === 0) {
+                // do Nothing
+                return;
+            }
+            for (var k = 0, len = elementsToremove.length; k < len; k++) {
+                this._removeMultiselectValues(elementsToremove[k], null, 1);
+            }
+        },
+        /**
+         * Method to construct the Array after comparing the selected suggestion in widget with allSuggestions
+         * @return {Array} returns the Array of suggestons labels
+         */
+        _constructSelectedSuggestion : function () {
+            var selectedArray = this.controller.selectedSuggestionsLabelsArray, labelArray = aria.utils.Json.copy(selectedArray), arrayUtil = aria.utils.Array;
+            for (var labelIndex = 0; labelIndex < selectedArray.length; labelIndex++) {
+                var eachLabel = selectedArray[labelIndex];
+                var allSuggestions = this.controller._resourcesHandler._suggestions, matchFound = false;
+                for (var suggstion = 0; suggstion < allSuggestions.length; suggstion++) {
+                    var suggestionLabel = allSuggestions[suggstion].label;
+                    if (suggestionLabel === eachLabel.toLowerCase()) {
+                        matchFound = true;
+                        break;
+                    }
+                }
+                if (!matchFound) {
+                    arrayUtil.removeAt(labelArray, arrayUtil.indexOf(labelArray, eachLabel));
+                }
+            }
+            return labelArray;
         }
     }
 });

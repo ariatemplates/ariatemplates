@@ -67,6 +67,11 @@
              * @type Boolean
              */
             this._isRangeValue = false;
+            /**
+             * Check if expando is enabled
+             * @type Boolean
+             */
+            this._isExpanded = false;
 
             // Inherited from aria.html.controllers.Suggestions
             this._init();
@@ -142,6 +147,7 @@
             checkValue : function (value, init) {
                 var report = new aria.widgets.controllers.reports.DropDownControllerReport(), dataModel = this._dataModel, rangeMatch = [], reportVal = [];
                 var addedValue, isRangeValue = this._isRangeValue;
+
                 if (value == null || aria.utils.Array.isEmpty(value)) {
                     // can be null either because it bound to null or because it is bind to value or request is in
                     // progress
@@ -254,7 +260,7 @@
                             }
                         }
                         // reformat the suggestions to be compatible with the list widget
-                        suggestions = this._filterSuggestions(suggestions);
+                        suggestions = !this._isExpanded ? this._filterSuggestions(suggestions) : suggestions;
                         matchValueIndex = this._prepareSuggestionsAndMatch(suggestions, nextValue);
 
                     } else {
@@ -279,6 +285,9 @@
                         }
                         jsonUtils.setValue(dataModel, 'isRangeValue', this._isRangeValue);
                         jsonUtils.setValue(dataModel, 'selectedValues', selectedValues);
+                    } else if (this._isExpanded) {
+                        jsonUtils.setValue(dataModel, 'selectedValues', this.selectedSuggestions);
+                        jsonUtils.setValue(dataModel, 'isRangeValue', true);
                     } else {
                         if (matchValueIndex != -1) {
                             dataModel.value = dataModel.listContent[matchValueIndex].value;
@@ -321,6 +330,9 @@
                     this._raiseReport(report, arg);
                     aria.templates.RefreshManager.resume();
                 }
+                if (this._isExpanded) {
+                    this._isExpanded = false;
+                }
             },
             /**
              * Internal method to filter the suggestion with the added suggestions
@@ -336,7 +348,16 @@
                 }
                 return filteredSuggestions;
             },
-
+            /**
+             * Prepare the drop down list
+             * @param {String} displayValue
+             * @param {Boolean} currentlyOpen
+             * @return {aria.widgets.controllers.reports.DropDownControllerReport}
+             */
+            toggleDropdown : function (displayValue, currentlyOpen) {
+                this._isExpanded = !this._isExpanded;
+                this.$AutoCompleteController.toggleDropdown.call(this, displayValue, currentlyOpen);
+            },
             /**
              * Internal method to validate the value with suggestion bean
              * @param {Object} value
@@ -406,6 +427,13 @@
                 }, 10);
                 return null;
 
+            },
+            /**
+             * Return the template to use in the dropdown
+             * @return {String}
+             */
+            getExpandoTemplate : function () {
+                return this._resourcesHandler.getExpandoTemplate();
             }
         }
     });

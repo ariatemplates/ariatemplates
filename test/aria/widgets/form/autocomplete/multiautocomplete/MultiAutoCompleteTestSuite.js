@@ -32,5 +32,9 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.form.autocomplete.multiautocomplete.test10.MultiAutoRangeHighlighted");
         this.addTests("test.aria.widgets.form.autocomplete.multiautocomplete.testHighlightMethods.MultiAutoHighlightTest");
         this.addTests("test.aria.widgets.form.autocomplete.multiautocomplete.duplicateValuesAfterError.DuplicateValuesAfterError");
+        this.addTests("test.aria.widgets.form.autocomplete.multiautocomplete.test10.MultiAutoExpandoTest1");
+        this.addTests("test.aria.widgets.form.autocomplete.multiautocomplete.test10.MultiAutoExpandoTest2");
+        this.addTests("test.aria.widgets.form.autocomplete.multiautocomplete.test10.MultiAutoExpandoTest3");
+
     }
 });
