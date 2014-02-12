@@ -1284,11 +1284,16 @@ Aria.classDefinition({
                             sprIdx : 2
                         },
                         mandatoryErrorFocused : {
-                            backgroundColor : "#FFE6AB",
-                            sprIdx : 5
+                            sprIdx : 5,
+                            icons : {
+                                dropdown : "dropdown:multiselect_error"
+                            }
                         },
                         normalErrorFocused : {
-                            sprIdx : 6
+                            sprIdx : 6,
+                            icons : {
+                                dropdown : "dropdown:multiselect_error"
+                            }
                         },
                         normal : {
                             spriteURLv : "atskin/sprites/textarea_v.gif",
@@ -1299,7 +1304,10 @@ Aria.classDefinition({
                             spriteURLh : "atskin/sprites/textarea_h.gif",
                             sprIdx : 0,
                             spcLeft : 4,
-                            spriteURL : "atskin/sprites/textarea.gif"
+                            spriteURL : "atskin/sprites/textarea.gif",
+                            icons : {
+                                dropdown : "dropdown:multiselect_normal"
+                            }
                         },
                         mandatory : {
                             backgroundColor : "#FFE6AB",
@@ -1307,17 +1315,29 @@ Aria.classDefinition({
                         },
                         mandatoryFocused : {
                             backgroundColor : "#FFE6AB",
-                            sprIdx : 4
+                            sprIdx : 4,
+                            icons : {
+                                dropdown : "dropdown:multiselect_focused"
+                            }
                         },
                         mandatoryError : {
                             backgroundColor : "#FFE6AB",
-                            sprIdx : 5
+                            sprIdx : 5,
+                            icons : {
+                                dropdown : "dropdown:multiselect_error"
+                            }
                         },
                         normalFocused : {
-                            sprIdx : 1
+                            sprIdx : 1,
+                            icons : {
+                                dropdown : "dropdown:multiselect_focused"
+                            }
                         },
                         normalError : {
-                            sprIdx : 6
+                            sprIdx : 6,
+                            icons : {
+                                dropdown : "dropdown:multiselect_error"
+                            }
                         },
                         disabled : {
                             color : "#E6D9C6",
@@ -1344,7 +1364,9 @@ Aria.classDefinition({
                     optionsHighlightColor : "#333",
                     optionsHighlightBorderWidth : 1,
                     optionsHighlightBorderColor : "#AAAAAA",
-                    closeHighlightSpriteURL : "atskin/sprites/closemark_highlight.gif"
+                    closeHighlightSpriteURL : "atskin/sprites/closemark_highlight.gif",
+                    iconsRight : "dropdown"
+
                 }
             },
             ErrorList : {

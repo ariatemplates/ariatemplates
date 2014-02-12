@@ -123,6 +123,13 @@
                 if (suggestions) {
                     results.suggestions = results.suggestions.concat(suggestions);
                 }
+            },
+            /**
+             * Returns the classpath of the default template for this resourceHandler
+             * @return {String}
+             */
+            getExpandoTemplate : function () {
+                return 'aria.widgets.form.templates.TemplateMultiAuto';
             }
 
         }

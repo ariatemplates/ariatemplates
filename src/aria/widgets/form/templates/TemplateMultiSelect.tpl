@@ -22,6 +22,7 @@
     }
 }}
     {macro main()}
+    	{var checkboxLabel = "Error"/}
         // The Div is used to wrap the items with good looking border.
         {@aria:Div data.cfg}
                 {section {id: 'Items', macro: 'renderList'} /}
@@ -29,6 +30,7 @@
                     {call footer()/}
                 {/if}
         {/@aria:Div}
+
     {/macro}
 
     {macro renderList(item)}
@@ -85,21 +87,8 @@
     {/macro}
 
     {macro renderItem(item)}
-
-        {var checkboxLabel = "Error"/}
-        {if (data.displayOptions.listDisplay == 'code')}
-            {set checkboxLabel = item.value/}
-        {elseif (data.displayOptions.listDisplay == 'label')/}
-            {set checkboxLabel = item.label/}
-        {elseif (data.displayOptions.listDisplay == 'both')/}
-            {set checkboxLabel = item.label + " (" + item.value + ") " /}
-        {/if}
-        {if (data.displayOptions.tableMode == true)}
-            {set checkboxLabel = ""/}
-        {/if}
-
-
-        {@aria:CheckBox {
+		{call renderCheckboxLabel(item)/}
+		{@aria:CheckBox {
             label: checkboxLabel,
             onchange: {
                 fn: "itemClick",
@@ -120,6 +109,19 @@
             value: item.selected
         }/}
 
+    {/macro}
+
+    {macro renderCheckboxLabel(item)}
+    	{if (data.displayOptions.listDisplay == 'code')}
+            {set checkboxLabel = item.value/}
+        {elseif (data.displayOptions.listDisplay == 'label')/}
+            {set checkboxLabel = item.label/}
+        {elseif (data.displayOptions.listDisplay == 'both')/}
+            {set checkboxLabel = item.label + " (" + item.value + ") " /}
+        {/if}
+        {if (data.displayOptions.tableMode == true)}
+            {set checkboxLabel = ""/}
+        {/if}
     {/macro}
 
     {macro footer()}

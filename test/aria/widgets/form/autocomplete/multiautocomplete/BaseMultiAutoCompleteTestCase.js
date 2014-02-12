@@ -150,6 +150,57 @@ Aria.classDefinition({
                     + expectedHighlightedArray
                     + "] but actual highlighted elements indices are ["
                     + actualHighlightedArray + "]");
+        },
+
+        toggleOption : function (id, index, continueWith) {
+            aria.core.Timer.addCallback({
+                fn : function () {
+                    var checkBox = this.getCheckBox(id, index).getDom();
+                    if (checkBox) {
+                        this.synEvent.click(checkBox, {
+                            fn : continueWith,
+                            scope : this
+                        });
+                    }
+                },
+                scope : this,
+                delay : 1000
+            });
+        },
+        getCheckBox : function (msId, index) {
+            var ms = this.getWidgetInstance(msId), list = ms.controller.getListWidget();
+            if (list._tplWidget) {
+                return list._tplWidget.subTplCtxt._mainSection._content[1]._content[0].section._content[index].behavior;
+            }
+            return null;
+        },
+        isMultiAutoCompleteOpen : function (msId) {
+            var listWidget = this.getWidgetInstance(msId).controller.getListWidget();
+            return !!(listWidget && listWidget._tplWidget && listWidget._tplWidget.subTplCtxt);
+        },
+        clickonExpandoButton : function (callback) {
+            var msIcon = this.getExpandButton("MultiAutoId");
+            this.synEvent.click(msIcon, {
+                fn : this.openAutoPopup,
+                scope : this,
+                args : {
+                    cb : callback
+                }
+            });
+
+        },
+         openAutoPopup : function (evt, args) {
+            this.waitFor({
+                condition : function () {
+                    this.isOpen = this.isMultiAutoCompleteOpen("MultiAutoId");
+                    return this.isOpen;
+                },
+                callback : {
+                    fn : args.cb,
+                    scope : this
+
+                }
+            });
         }
 
     }
