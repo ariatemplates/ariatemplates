@@ -233,8 +233,8 @@ Aria.classDefinition({
          */
         _cleanUrl : function (url) {
             var tmp = url.replace(/\burl\s*/gi, "");    // removing url word
-            tmp = tmp[0] === "(" ? tmp.substring(1, tmp.length - 1) : tmp; // removing brackets
-            tmp = tmp[0] === "\'" || tmp[0] === "\"" ? tmp.substring(1, tmp.length - 1) : tmp; // removing quotes
+            tmp = tmp.charAt(0) === "(" ? tmp.substring(1, tmp.length - 1) : tmp; // removing brackets
+            tmp = tmp.charAt(0) === "\'" || tmp.charAt(0) === "\"" ? tmp.substring(1, tmp.length - 1) : tmp; // removing quotes
             return tmp;
         },
 
