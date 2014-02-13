@@ -220,12 +220,19 @@ Aria.classDefinition({
             }
             if (domElt) {
                 if ((aria.core.Browser.isIE7 || aria.core.Browser.isIE8) && aria.utils && aria.utils.Delegate) {
-                    var activeElement = Aria.$window.document.activeElement;
-                    if (activeElement && this.isAncestor(activeElement, domElt)) {
-                        // On IE 7-8, there is an issue after removing from the DOM a focused element.
-                        // We detect it here so that next time there is a need to focus an element, we focus the body
-                        // first (which is the work-around for IE 7-8)
-                        aria.utils.Delegate.ieRemovingFocusedElement();
+                    try {
+                        var activeElement = Aria.$window.document.activeElement;
+                        if (activeElement && this.isAncestor(activeElement, domElt)) {
+                            // On IE 7-8, there is an issue after removing from the DOM a focused element.
+                            // We detect it here so that next time there is a need to focus an element, we focus the
+                            // body first (which is the work-around for IE 7-8)
+                            aria.utils.Delegate.ieRemovingFocusedElement();
+                        }
+                    } catch (e) {
+                        // on (real) IE8, an "Unspecified error" can be raised when trying to read
+                        // Aria.$window.document.activeElement
+                        // It happens when executing the following test: test.aria.utils.cfgframe.AriaWindowTest
+                        // It does not happen with IE 11 in IE8 mode.
                     }
                 }
                 // PROFILING // var msr2 = this.$startMeasure("RemoveHTML");
