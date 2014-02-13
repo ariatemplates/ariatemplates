@@ -79,8 +79,8 @@ Aria.classDefinition({
         },
 
         _cleanUrls : function (url) {
-            url = url[url.length - 1] === ")" ? url.substring(0, url.length - 1) : url;
-            url = url[url.length - 1] === "\"" || url[url.length - 1] === "\'" ? url.substring(0, url.length - 1) : url;
+            url = url.charAt(url.length - 1) === ")" ? url.substring(0, url.length - 1) : url;
+            url = url.charAt(url.length - 1) === "\"" || url.charAt(url.length - 1) === "\'" ? url.substring(0, url.length - 1) : url;
             return url;
         }
     }
