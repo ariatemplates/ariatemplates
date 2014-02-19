@@ -230,6 +230,7 @@
                         this._isRangeValue = res.multipleValues;
                     } else {
                         suggestions = res;
+                        this._isRangeValue = false;
                     }
                 }
 
@@ -253,8 +254,8 @@
                             }
                         }
                         // reformat the suggestions to be compatible with the list widget
-                        matchValueIndex = this._prepareSuggestionsAndMatch(suggestions, nextValue);
                         suggestions = this._filterSuggestions(suggestions);
+                        matchValueIndex = this._prepareSuggestionsAndMatch(suggestions, nextValue);
 
                     } else {
                         suggestions = [];
@@ -275,12 +276,20 @@
                     report.text = nextValue;
                     report.caretPosStart = args.caretPosStart;
                     report.caretPosEnd = args.caretPosEnd;
-                    var freeText = this.freeText || hasSuggestions;
-                    if (freeText && nextValue) {
-                        // return the text from the autocomplete
+
+                    if (this._isRangeValue) {
                         dataModel.value = nextValue;
                     } else {
-                        dataModel.value = null;
+                        if (matchValueIndex != -1) {
+                            dataModel.value = dataModel.listContent[matchValueIndex].value;
+                        } else {
+                            if (this.freeText && nextValue) {
+                                // return the text from the autocomplete
+                                dataModel.value = nextValue;
+                            } else {
+                                dataModel.value = null;
+                            }
+                        }
                     }
 
                     report.value = dataModel.value;
