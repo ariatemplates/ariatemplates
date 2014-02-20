@@ -133,7 +133,7 @@ Aria.classDefinition({
          */
 
         _addMultiselectValues : function (report, arg) {
-            var controller = this.controller, suggestionToBeAdded = controller._suggestionToBeAdded;
+            var controller = this.controller, suggestionToBeAdded = report.suggestionsToAdd;
             var isValid;
             var typeUtil = aria.utils.Type;
             var domUtil = aria.utils.Dom;
@@ -168,7 +168,6 @@ Aria.classDefinition({
                 }
                 domUtil.insertAdjacentHTML(this._textInputField, "beforeBegin", suggestionsMarkup);
                 this.__createEllipsis(this._textInputField);
-                controller._suggestionToBeAdded = null;
                 this._textInputField.value = "";
                 this._makeInputFieldLastChild();
                 if (controller.editMode) {

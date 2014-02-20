@@ -33,8 +33,8 @@
 			width:400,
 			block:false,
 			labelWidth:180,
-			maxOptions: 8,
-			freeText:true,
+			maxOptions: data.maxOptions || 8,
+			freeText: (data.freeText !== false),
 			resourcesHandler: getAirLinesHandler(),
 			bind:{
 			  	"value" : {
@@ -44,6 +44,8 @@
 			},
 			spellCheck: false
 		}/}
+		 <br />
+		 <input {id "justToFocusOut"/}>
 	{/macro}
 
 {/Template}

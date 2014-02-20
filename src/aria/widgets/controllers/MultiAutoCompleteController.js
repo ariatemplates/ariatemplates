@@ -63,11 +63,6 @@
              */
             this.editedSuggestion;
             /**
-             * Suggestion to be added to the widget
-             * @type Object or Array
-             */
-            this._suggestionToBeAdded = null;
-            /**
              * Check if value is range of suggestions
              * @type Boolean
              */
@@ -120,7 +115,7 @@
                         } else {
                             addedValue = trimText;
                         }
-                        this._suggestionToBeAdded = addedValue;
+                        report.suggestionsToAdd = addedValue;
                         addedValue = this._checkValidSuggestion(addedValue);
                     } else {
                         if (!dataModel.value) {
@@ -154,7 +149,7 @@
                     dataModel.value = null;
                     report.ok = true;
                     reportVal = null;
-                } else if (value && !typeUtil.isString(value) && dataModel.value !== null) {
+                } else if (value && !typeUtil.isString(value)) {
                     if (this._checkWithSuggestionBean(value, this._resourcesHandler.SUGGESTION_BEAN)) {
                         var text = this._getLabelFromSuggestion(value);
                         dataModel.text = text;
@@ -186,14 +181,14 @@
 
                     }
                 }
-                // var addedValue = rangeMatch || reportVal;
-                addedValue = this._suggestionToBeAdded = rangeMatch.length > 0 ? rangeMatch : reportVal;
+                var suggestionsToAdd = rangeMatch.length > 0 ? rangeMatch : reportVal;
                 if (this.editMode) {
-                    this._suggestionToBeAdded = "";
+                    suggestionsToAdd = "";
                 }
-                addedValue = this._checkValidSuggestion(this._suggestionToBeAdded);
+                addedValue = this._checkValidSuggestion(suggestionsToAdd);
                 report.value = addedValue;
                 report.text = dataModel.text;
+                report.suggestionsToAdd = suggestionsToAdd;
                 return report;
             },
             /**
