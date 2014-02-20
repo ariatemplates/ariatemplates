@@ -30,5 +30,7 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.form.autocomplete.multiautocomplete.test8.MultiAutoMaxOptions");
         this.addTests("test.aria.widgets.form.autocomplete.multiautocomplete.test9.MultiAutoBackSpace");
         this.addTests("test.aria.widgets.form.autocomplete.multiautocomplete.duplicateValuesAfterError.DuplicateValuesAfterError");
+        this.addTests("test.aria.widgets.form.autocomplete.multiautocomplete.OnChangeHandler.MultiAutoOnChangeTest");
+
     }
 });

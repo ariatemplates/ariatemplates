@@ -142,6 +142,12 @@
             checkValue : function (value, init) {
                 var report = new aria.widgets.controllers.reports.DropDownControllerReport(), dataModel = this._dataModel, rangeMatch = [], reportVal = [];
                 var addedValue, isRangeValue = this._isRangeValue;
+
+                if (init == 'false') {
+                    report.ok = true;
+                    report.value = this.selectedSuggestions;
+                    return report;
+                }
                 if (value == null || aria.utils.Array.isEmpty(value)) {
                     // can be null either because it bound to null or because it is bind to value or request is in
                     // progress
