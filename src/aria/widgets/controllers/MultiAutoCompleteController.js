@@ -128,8 +128,34 @@
                     if (dataModel.value) {
                         report.value = addedValue;
                     }
-
                 }
+                return report;
+            },
+
+            /**
+             * Removal of a suggestion
+             * @param {String} label
+             * @return {aria.widgets.controllers.reports.DropDownControllerReport}
+             * @override
+             */
+            removeValue : function (label) {
+                var newSuggestions = aria.utils.Json.copy(this.selectedSuggestions);
+                var report = new aria.widgets.controllers.reports.DropDownControllerReport();
+                var indexToRemove;
+                var arrayUtil = aria.utils.Array;
+                arrayUtil.forEach(this.selectedSuggestions, function (obj, index) {
+                    var suggestionLabel = obj.label || obj;
+                    if (suggestionLabel == label) {
+                        indexToRemove = index;
+                        this.editedSuggestion = obj;
+                    }
+                });
+
+                arrayUtil.removeAt(newSuggestions, indexToRemove);
+                arrayUtil.remove(this.selectedSuggestionsLabelsArray, label);
+                this.selectedSuggestions = newSuggestions;
+                report.value = this.selectedSuggestions;
+                report.ok = true;
                 return report;
             },
 
@@ -139,9 +165,11 @@
              * @return {aria.widgets.controllers.reports.DropDownControllerReport}
              * @override
              */
+
             checkValue : function (value, init) {
                 var report = new aria.widgets.controllers.reports.DropDownControllerReport(), dataModel = this._dataModel, rangeMatch = [], reportVal = [];
                 var addedValue, isRangeValue = this._isRangeValue;
+
                 if (value == null || aria.utils.Array.isEmpty(value)) {
                     // can be null either because it bound to null or because it is bind to value or request is in
                     // progress

@@ -98,8 +98,8 @@ Aria.classDefinition({
             if (element.className === "closeBtn") {
                 this._removeMultiselectValues(element, event);
             }
-            this.__resizeInput();
             this._textInputField.focus();
+            this.__resizeInput();
         },
         /**
          * Private method to increase the textInput width on focus
@@ -295,6 +295,7 @@ Aria.classDefinition({
             }
             this.$DropDownTextInput._dom_onkeydown.call(this, event);
         },
+
         /**
          * To remove suggestion on click of close
          * @protected
@@ -308,12 +309,8 @@ Aria.classDefinition({
             var label = parent.firstChild.innerText || parent.firstChild.textContent;
             domUtil.removeElement(parent);
             this._removeValues(label);
-            if (event.type == "click") {
-                this.getTextInputField().focus();
-
-            }
-
         },
+
         /**
          * To edit suggestion on doubleclick
          * @param {aria.utils.HTML} domElement
@@ -330,36 +327,24 @@ Aria.classDefinition({
             this._textInputField.focus();
             // to select the edited text.
             this._keepFocus = true;
-            // this._textInputField.style.width = "0px";
             var report = this.controller.checkValue(label);
             report.caretPosStart = 0;
             report.caretPosEnd = label.length;
             this.$TextInput._reactToControllerReport.call(this, report, arg);
             // after setting the value removing focus
             this._keepFocus = false;
-
         },
+
         /**
          * To remove the label from widget
          * @param {String} label
          * @protected
          */
         _removeValues : function (label) {
-            var indexToRemove, controller = this.controller;
-            var arrayUtil = aria.utils.Array;
-            arrayUtil.forEach(controller.selectedSuggestions, function (obj, index) {
-                var suggestionLabel = obj.label || obj;
-                if (suggestionLabel == label) {
-                    indexToRemove = index;
-                    controller.editedSuggestion = obj;
-                }
-            });
-            arrayUtil.removeAt(controller.selectedSuggestions, indexToRemove);
-            arrayUtil.remove(controller.selectedSuggestionsLabelsArray, label);
-            var newSuggestions = aria.utils.Json.copy(controller.selectedSuggestions);
-            this.setProperty("value", newSuggestions);
+            var controller = this.controller;
+            var report = controller.removeValue(label);
+            this._reactToControllerReport(report);
             this._textInputField.style.width = "0px";
-            this.__resizeInput();
         }
     }
 });
