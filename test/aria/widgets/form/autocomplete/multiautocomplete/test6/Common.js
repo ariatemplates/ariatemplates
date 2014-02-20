@@ -15,103 +15,31 @@
 
 Aria.classDefinition({
     $classpath : "test.aria.widgets.form.autocomplete.multiautocomplete.test6.Common",
-    $extends : "aria.jsunit.TemplateTestCase",
-    $constructor : function () {
-        this.$TemplateTestCase.constructor.call(this);
-
-        this.data = {
-            ac_airline_values : []
-        };
-
-        // setTestEnv has to be invoked before runTemplateTest fires
-        this.setTestEnv({
-            template : "test.aria.widgets.form.autocomplete.multiautocomplete.template.MultiAutoTpl",
-            data : this.data
-        });
-
-    },
+    $extends : "test.aria.widgets.form.autocomplete.multiautocomplete.BaseMultiAutoCompleteTestCase",
     $prototype : {
         rangePattern1 : "",
         rangePattern2 : "",
-        rangeLabels : "",
-        rangeCount : "",
+        rangeLabels : [],
+        rangeCount : [],
 
-        /**
-         * This method is always the first entry point to a template test Start the test by focusing the first field
-         */
         runTemplateTest : function () {
-            this.synEvent.click(this.getInputField("MultiAutoId"), {
-                fn : this._typeSomething,
+            this.clickAndType([this.rangePattern1, "[enter]"], {
+                fn : this._afterFirstType,
                 scope : this
-            });
+            }, 800);
         },
 
-        _typeSomething : function (evt, callback) {
-            // give it the time to open a drop down
-            this.synEvent.type(this.getInputField("MultiAutoId"), this.rangePattern1, {
-                fn : this._wait,
-                scope : this,
-                args : this._selectVal
-            });
-        },
-        _wait : function (evt, callback) {
-            aria.core.Timer.addCallback({
-                fn : callback,
-                scope : this,
-                delay : 800
-            });
-        },
-        _selectVal : function () {
-            this.synEvent.type(this.getInputField("MultiAutoId"), "[enter]", {
-                fn : this._checkValues,
-                scope : this,
-                args : {
-                    count : this.rangeCount[0],
-                    cb : this._focusBack
-                }
-            });
-        },
-
-        _focusBack : function () {
-            this.synEvent.click(this.getInputField("MultiAutoId"), {
-                fn : this._typeAgain,
+        _afterFirstType : function () {
+            this.checkSelectedItems(this.rangeCount[0], this.rangeLabels.slice(0, this.rangeCount[0] - 1));
+            this.clickAndType([this.rangePattern2, "[enter]"], {
+                fn : this._afterSecondType,
                 scope : this
-            });
+            }, 800);
         },
-        _typeAgain : function () {
-            // give it the time to open a drop down
-            this.synEvent.type(this.getInputField("MultiAutoId"), this.rangePattern2, {
-                fn : this._wait,
-                scope : this,
-                args : this._selectVal2
-            });
-        },
-        _selectVal2 : function () {
-            this.synEvent.type(this.getInputField("MultiAutoId"), "[enter]", {
-                fn : this._checkValues,
-                scope : this,
-                args : {
-                    count : this.rangeCount[1],
-                    cb : this._endRangeCheckTest
-                }
-            });
 
-        },
-        _checkValues : function (arg, argValue) {
-            var value = this.data.ac_airline_values;
-            var rangeLabels = this.rangeLabels;
-
-            this.assertEquals(value.length, argValue.count, "The Wrong range of elements are prefilled. Prefilled = "
-                    + value.length);
-            for (var k = 0; k < value.length; k++) {
-                this.assertEquals(value[k].label, rangeLabels[k], "The Wrong range of elements are prefilled. Expected = "
-                        + value[k].label + " Prefilled = " + rangeLabels[k]);
-            }
-            this.$callback(argValue.cb);
-
-        },
-        _endRangeCheckTest : function () {
-            this.notifyTemplateTestEnd();
+        _afterSecondType : function () {
+            this.checkSelectedItems(this.rangeCount[1], this.rangeLabels);
+            this.end();
         }
     }
 });
