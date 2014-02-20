@@ -15,35 +15,51 @@
 
 Aria.classDefinition({
     $classpath : "test.aria.widgets.form.autocomplete.multiautocomplete.test4.MultiAutoPrefill",
-    $extends : "aria.jsunit.TemplateTestCase",
+    $extends : "test.aria.widgets.form.autocomplete.multiautocomplete.BaseMultiAutoCompleteTestCase",
     $constructor : function () {
-        this.$TemplateTestCase.constructor.call(this);
 
         this.data = {
-            ac_airline_values : ["Air France", "Air Canada", "Finnair"]
+            ac_airline_values : [],
+            freeText : true
         };
 
-        // setTestEnv has to be invoked before runTemplateTest fires
-        this.setTestEnv({
-            template : "test.aria.widgets.form.autocomplete.multiautocomplete.template.MultiAutoTpl",
-            data : this.data
-        });
+        this.$BaseMultiAutoCompleteTestCase.constructor.call(this);
 
     },
     $prototype : {
-        /**
-         * This method is always the first entry point to a template test Start the test by focusing the first field
-         */
+
         runTemplateTest : function () {
-            var parentNode = this.getInputField("MultiAutoId").parentNode, suggestionNode = parentNode.childNodes;
-            this.assertEquals(suggestionNode.length, 4, "The Wrong No. of elements are prefilled.");
-            var expectedVal = ["Air France", "Air Canada", "Finnair"];
-            for (var j = 0; j < suggestionNode.length - 1; j++) {
-                this.assertEquals(suggestionNode[j].childNodes.length, 2, "The Wrong No. of elements are prefilled.");
-                var element = suggestionNode[j].firstChild.innerText || suggestionNode[j].firstChild.textContent;
-                this.assertEquals(element, expectedVal[j], "The Wrong values are prefilled as for Autocomplete.");
-            }
-            this.notifyTemplateTestEnd();
+            this.checkSelectedItems(0);
+
+            this.data.ac_airline_values = [{
+                        label : 'Air France',
+                        code : 'AF'
+
+                    }, {
+                        label : 'Air Canada',
+                        code : 'AC'
+                    }];
+            this.templateCtxt.$refresh();
+            this.checkSelectedItems(2, ["Air France", "Air Canada"]);
+
+            this.data.freeText = false;
+            this.templateCtxt.$refresh();
+            this.checkSelectedItems(2, ["Air France", "Air Canada"]);
+
+            this.data.freeText = true;
+            this.data.ac_airline_values = [{
+                        label : 'Air France',
+                        code : 'AF'
+
+                    }, "aaa", "bbb"];
+            this.templateCtxt.$refresh();
+            this.checkSelectedItems(3, ["Air France", "aaa", "bbb"]);
+
+            this.data.freeText = false;
+            this.templateCtxt.$refresh();
+            this.checkSelectedItems(3, ["Air France", "aaa", "bbb"]);
+
+            this.end();
         }
     }
 });
