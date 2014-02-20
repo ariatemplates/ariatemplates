@@ -21,6 +21,5 @@ Aria.classDefinition({
         rangePattern2 : "p3-6",
         rangeLabels : ['P1.some', 'P2.kon', 'P3.red', 'P4.redd', 'P5.loreum', 'P6.ipsum'],
         rangeCount : [2, 6]
-
     }
 });

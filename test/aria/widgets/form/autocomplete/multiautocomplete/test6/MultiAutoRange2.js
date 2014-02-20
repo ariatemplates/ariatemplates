@@ -16,7 +16,6 @@
 Aria.classDefinition({
     $classpath : "test.aria.widgets.form.autocomplete.multiautocomplete.test6.MultiAutoRange2",
     $extends : "test.aria.widgets.form.autocomplete.multiautocomplete.test6.Common",
-
     $prototype : {
         rangePattern1 : "p3,7",
         rangePattern2 : "p2,4",
