@@ -57,6 +57,9 @@ Aria.classDefinition({
                 },
                 getDom : function () {
                     return anchor;
+                },
+                getValidationPopupReference : function () {
+                    return this.getDom();
                 }
             };
 
