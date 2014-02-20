@@ -15,100 +15,36 @@
 
 Aria.classDefinition({
     $classpath : "test.aria.widgets.form.autocomplete.multiautocomplete.test2.MultiAutoRemove",
-    $extends : "aria.jsunit.TemplateTestCase",
-    $constructor : function () {
-        this.$TemplateTestCase.constructor.call(this);
-        // setTestEnv has to be invoked before runTemplateTest fires
-        this.setTestEnv({
-            template : "test.aria.widgets.form.autocomplete.multiautocomplete.template.MultiAutoTpl"
-        });
-
-    },
+    $extends : "test.aria.widgets.form.autocomplete.multiautocomplete.BaseMultiAutoCompleteTestCase",
     $prototype : {
-        /**
-         * This method is always the first entry point to a template test Start the test by focusing the first field
-         */
+
         runTemplateTest : function () {
-            this.synEvent.click(this.getInputField("MultiAutoId"), {
-                fn : this.typeSomething,
+            this.clickAndType(["air", "[down][down][enter]", "fi", "[down][enter]", "a", "[down][enter]"], {
+                fn : this._removeFirstItem,
+                scope : this
+            }, 500);
+
+        },
+
+        _removeFirstItem : function () {
+            this.checkSelectedItems(3, ["Air Canada", "Finnair", "American Airlines"]);
+            this.removeByCrossClick(0, {
+                fn : this._checkFirstRemoval,
                 scope : this
             });
         },
 
-        typeSomething : function (evt, callback) {
-            // give it the time to open a drop down
-            this.synEvent.type(this.getInputField("MultiAutoId"), "air", {
-                fn : this._wait,
-                scope : this,
-                args : this._selectVal
-            });
-        },
-        _wait : function (evt, callback) {
-            aria.core.Timer.addCallback({
-                fn : callback,
-                scope : this,
-                delay : 500
-            });
-        },
-        _selectVal : function () {
-            this.synEvent.type(this.getInputField("MultiAutoId"), "[down][down][enter]", {
-                fn : this._typeAgain,
-                scope : this
-            });
-        },
-        _typeAgain : function () {
-            this.synEvent.type(this.getInputField("MultiAutoId"), "fi", {
-                fn : this._wait,
-                scope : this,
-                args : this._selectVal2
-            });
-
-        },
-        _selectVal2 : function () {
-            this.synEvent.type(this.getInputField("MultiAutoId"), "[down][enter]", {
-                fn : this._typeAgain2,
+        _checkFirstRemoval : function () {
+            this.checkSelectedItems(2, ["Finnair", "American Airlines"]);
+            this.removeByCrossClick(0, {
+                fn : this._checkSecondRemoval,
                 scope : this
             });
         },
 
-        _typeAgain2 : function () {
-            this.synEvent.type(this.getInputField("MultiAutoId"), "a", {
-                fn : this._wait,
-                scope : this,
-                args : this._selectVal3
-            });
-
-        },
-        _selectVal3 : function () {
-            this.synEvent.type(this.getInputField("MultiAutoId"), "[down][enter]", {
-                fn : this._checkSelected,
-                scope : this
-            });
-        },
-        _removeSelection : function (callback) {
-            var parentNode = this.getInputField("MultiAutoId").parentNode;
-            this.synEvent.click(parentNode.childNodes[0].lastChild, {
-                fn : callback,
-                scope : this
-            });
-        },
-        _checkSelected : function () {
-            this._removeSelection(this._removeOptions);
-        },
-        _removeOptions : function () {
-            var parentNode = this.getInputField("MultiAutoId").parentNode;
-            var expectedVal = ["Finnair", "American Airlines"];
-            for (var i = 0; i < parentNode.childNodes.length - 1; i++) {
-                var element = parentNode.childNodes[i].innerText || parentNode.childNodes[i].textContent;
-                this.assertEquals(element, expectedVal[i], "The Wrong values are removed as for Autocomplete.");
-            }
-            this._removeSelection(this._checkRemoveAgain);
-        },
-        _checkRemoveAgain : function () {
-            var parentNode = this.getInputField("MultiAutoId").parentNode;
-            var element = parentNode.childNodes[0].innerText || parentNode.childNodes[0].textContent;
-            this.assertEquals(element, "American Airlines", "The Wrong values are removed as for Autocomplete.");
-            this.notifyTemplateTestEnd();
+        _checkSecondRemoval : function () {
+            this.checkSelectedItems(1, ["American Airlines"]);
+            this.end();
         }
 
     }

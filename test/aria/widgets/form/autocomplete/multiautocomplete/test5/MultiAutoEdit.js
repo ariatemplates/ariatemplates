@@ -15,105 +15,43 @@
 
 Aria.classDefinition({
     $classpath : "test.aria.widgets.form.autocomplete.multiautocomplete.test5.MultiAutoEdit",
-    $extends : "aria.jsunit.TemplateTestCase",
+    $extends : "test.aria.widgets.form.autocomplete.multiautocomplete.BaseMultiAutoCompleteTestCase",
     $dependencies : ["aria.utils.FireDomEvent"],
-    $constructor : function () {
-        this.$TemplateTestCase.constructor.call(this);
-
-        this.data = {
-            ac_airline_values : []
-        };
-
-        // setTestEnv has to be invoked before runTemplateTest fires
-        this.setTestEnv({
-            template : "test.aria.widgets.form.autocomplete.multiautocomplete.template.MultiAutoTpl",
-            data : this.data
-        });
-
-    },
     $prototype : {
-        /**
-         * This method is always the first entry point to a template test Start the test by focusing the first field
-         */
+
         runTemplateTest : function () {
-            this.synEvent.click(this.getInputField("MultiAutoId"), {
-                fn : this.typeSomething,
-                scope : this
-            });
-        },
-
-        typeSomething : function (evt, callback) {
-            // give it the time to open a drop down
-            this.synEvent.type(this.getInputField("MultiAutoId"), "air", {
-                fn : this._wait,
-                scope : this,
-                args : this._selectVal
-            });
-        },
-        _wait : function (evt, callback) {
-            aria.core.Timer.addCallback({
-                fn : callback,
-                scope : this,
-                delay : 500
-            });
-        },
-        _selectVal : function () {
-            this.synEvent.type(this.getInputField("MultiAutoId"), "[down][down][enter]", {
-                fn : this._typeAgain,
-                scope : this
-            });
-        },
-        _typeAgain : function () {
-            this.synEvent.type(this.getInputField("MultiAutoId"), "a", {
-                fn : this._wait,
-                scope : this,
-                args : this._selectSecondVal
-            });
-
-        },
-        _selectSecondVal : function () {
-            this.synEvent.type(this.getInputField("MultiAutoId"), "[down][down][enter]", {
+            this.clickAndType(["air", "[down][down][enter]", "a", "[down][down][enter]"], {
                 fn : this._editValues,
                 scope : this
-            });
-
+            }, 500);
         },
+
         _editValues : function () {
-            var mainNode = this.getInputField("MultiAutoId").parentNode;
-            var element = mainNode.childNodes[0].firstChild;
+            var element = this._getSelectedItemElement(0).firstChild;
             // to simulate double click
             aria.utils.FireDomEvent.fireEvent('dblclick', element, {});
-            this.synEvent.click(this.getInputField("MultiAutoId"), {
+            this.synEvent.click(this._getField(), {
                 fn : this._onAfterUserAction,
                 scope : this
             });
         },
+
         _onAfterUserAction : function () {
-
             this.getWidgetInstance("MultiAutoId").setCaretPosition(11, 11);
-            this.synEvent.type(this.getInputField("MultiAutoId"), "[backspace][backspace][backspace][backspace][backspace][backspace][backspace]", {
-                fn : this._wait,
-                scope : this,
-                args : this._checkText
+            this.type({
+                text : ["[backspace][backspace][backspace][backspace][backspace][backspace][backspace]",
+                        "[down][down][enter]"],
+                cb : {
+                    fn : this._checkValue,
+                    scope : this
+                },
+                delay : 500
             });
-
         },
-        _checkText : function () {
-            this.synEvent.type(this.getInputField("MultiAutoId"), "[down][down][enter]", {
-                fn : this._wait,
-                scope : this,
-                args : this._checkValue
-            });
 
-        },
         _checkValue : function () {
-            var parentNode = this.getInputField("MultiAutoId").parentNode;
-            var expectedVal = ["Scandinavian Airlines System", "Air France" ];
-            for (var i = 0; i < parentNode.childNodes.length - 1; i++) {
-                var element = parentNode.childNodes[i].innerText || parentNode.childNodes[i].textContent;
-                this.assertEquals(element, expectedVal[i], "The Wrong values are edited for Autocomplete.");
-            }
-            this.notifyTemplateTestEnd();
+            this.checkSelectedItems(2, ["Scandinavian Airlines System", "Air France"]);
+            this.end();
         }
 
     }
