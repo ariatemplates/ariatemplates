@@ -23,7 +23,7 @@ Aria.classDefinition({
     $constructor : function (widget) {
         this._context = widget._context;
         this._lineNumber = widget._lineNumber;
-        this._field = widget.getDom();
+        this._field = widget.getValidationPopupReference();
         this._WidgetCfg = widget._cfg;
         this._validationPopup = null; // null when the validation is closed
         this._preferredPositions = {

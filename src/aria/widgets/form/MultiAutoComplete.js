@@ -360,6 +360,12 @@ Aria.classDefinition({
             this.setProperty("value", newSuggestions);
             this._textInputField.style.width = "0px";
             this.__resizeInput();
+        },
+        /**
+         * Method used to get a dom reference for positioning the popup
+         */
+        getValidationPopupReference : function () {
+            return this.getTextInputField();
         }
     }
 });

@@ -46,6 +46,13 @@ Aria.classDefinition({
             if (this._onValidatePopup) {
                 this._onValidatePopup.hide();
             }
+        },
+
+        /**
+         * Method used to get a dom reference for positioning the popup
+         */
+        getValidationPopupReference : function () {
+            return this.getDom();
         }
     }
 });
