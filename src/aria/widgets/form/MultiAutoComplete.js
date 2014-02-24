@@ -94,6 +94,7 @@ Aria.classDefinition({
          * @protected
          */
         _dom_onclick : function (event) {
+            this.$AutoComplete._dom_onclick.call(this, event);
             var element = event.target;
             if (element.className === "closeBtn") {
                 this._removeMultiselectValues(element, event);

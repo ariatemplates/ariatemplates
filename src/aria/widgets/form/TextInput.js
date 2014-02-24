@@ -971,7 +971,9 @@ Aria.classDefinition({
                 // this._hasFocus = false must be after the call of this.getCaretPosition()
                 this._hasFocus = false;
             }
-
+            if (this._cfg.onblur) {
+                this.evalCallback(this._cfg.onblur);
+            }
         },
 
         /**

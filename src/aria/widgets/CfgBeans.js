@@ -401,6 +401,10 @@ Aria.beanDefinitions({
                     $type : "common:Callback",
                     $description : "Function to be called when the autocomplete receives focus."
                 },
+                "onblur" : {
+                    $type : "common:Callback",
+                    $description : "Function to be called when the autocomplete loses focus."
+                },
                 "spellCheck" : {
                     $type : "json:Boolean",
                     $description : "Specifies whether native spell check from the browser is enabled or not on this field. If null, uses the default behaviour from the browser. If true or false, tries to enable or disable native spell check from the browser."
