@@ -72,6 +72,12 @@
             onclick:{fn:onaction}
         }/}
 
+        {@aria:MultiAutoComplete {
+            id: "mac",
+            resourcesHandler: this.airlinesHandler,
+            onclick:{fn:onaction}
+        }/}
+
 
 
 
