@@ -1,4 +1,4 @@
-# Aria Templates - JavaScript Framework [![Build Status](https://secure.travis-ci.org/ariatemplates/ariatemplates.png?branch=master)](http://travis-ci.org/ariatemplates/ariatemplates)
+# Aria Templates - JavaScript Framework [![Build Status](https://travis-ci.org/ariatemplates/ariatemplates.png?branch=master)](https://travis-ci.org/ariatemplates/ariatemplates) [![Coverage Status](https://coveralls.io/repos/ariatemplates/ariatemplates/badge.png?branch=master)](https://coveralls.io/r/ariatemplates/ariatemplates?branch=master)
 
 ![Aria Templates logo](http://ariatemplates.com/images/logo-forum.png)
 
