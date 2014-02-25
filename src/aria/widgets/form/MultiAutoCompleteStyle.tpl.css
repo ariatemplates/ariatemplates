@@ -18,57 +18,82 @@
     $extends : "aria.widgets.form.TextInputStyle"
 }}
     {var skinnableClassName="MultiAutoComplete"/}
-     {macro main()}
- 		.xMultiAutoComplete_list{
+
+    {macro main()}
+        .xMultiAutoComplete_list{
             position:relative;
             overflow:hidden;
         }
         .xMultiAutoComplete_list input{
- 			margin-top:2px;
- 			min-width:40px;
- 			vertical-align:middle !important;
- 			width:40px;
+            margin-top:2px;
+            min-width:40px;
+            vertical-align:middle !important;
+            width:40px;
         }
+        {call startLooping()/}
+    {/macro}
 
-	 {call startLooping()/}
- 	{/macro}
     {macro writeSkinClass(info)}
-         {var skinClassName=info.skinClassName/}
-         {var skinClass=info.skinClass/}
+        {var skinClassName=info.skinClassName/}
+        {var skinClass=info.skinClass/}
 
-       .xMultiAutoComplete_${skinClassName}_options{
-        	display:inline-block;
-        	position:relative;
-        	border: ${skinClass.optionsBorderWidth}px solid ${skinClass.optionsBorderColor};
-        	background-color: ${skinClass.optionsBackgroundColor};
-        	color:${skinClass.optionsColor};
-        	border-radius:3px;
-        	margin:2px;
+        .xMultiAutoComplete_${skinClassName}_options{
+            display:inline-block;
+            position:relative;
+            border: ${skinClass.optionsBorderWidth}px solid ${skinClass.optionsBorderColor};
+            background-color: ${skinClass.optionsBackgroundColor};
+            color:${skinClass.optionsColor};
+            border-radius:3px;
+            margin:2px;
         }
-
-
         .xMultiAutoComplete_${skinClassName}_options a{
-        	height:${skinClass.closeSpriteHeight}px;
-        	width:${skinClass.closeSpriteWidth}px;
-        	display:inline-block;
-        	padding-left:2px;
-        	{call background(skinClass.optionsBackgroundColor,skinClass.closeSpriteURL,"no-repeat -5px -25px")/}
+            height:${skinClass.closeSpriteHeight}px;
+            width:${skinClass.closeSpriteWidth}px;
+            display:inline-block;
+            padding-left:2px;
+            {call background(skinClass.optionsBackgroundColor, skinClass.closeSpriteURL, "no-repeat -5px -25px")/}
         }
 
         .xMultiAutoComplete_${skinClassName}_options span{
-        	margin:2px 5px;
-        	display:inline-block;
-        	cursor:pointer;
+            margin:2px 5px;
+            display:inline-block;
+            cursor:pointer;
         }
         .xMultiAutoComplete_${skinClassName}_options span.ellipsisClass{
-        	white-space:nowrap;
-			overflow:hidden;
-			text-overflow:ellipsis;
-			vertical-align:middle;
-			line-height:18px;
+            white-space:nowrap;
+            overflow:hidden;
+            text-overflow:ellipsis;
+            vertical-align:middle;
+            line-height:18px;
         }
-         .xMultiAutoComplete_${skinClassName}_options a:hover{
-        	background-position: -5px -5px;
+        .xMultiAutoComplete_${skinClassName}_options a:hover{
+            background-position: -5px -5px;
         }
+        .xMultiAutoComplete_${skinClassName}_options.highlight{
+            border: ${skinClass.optionsHighlightBorderWidth}px solid ${skinClass.optionsHighlightBorderColor};
+            background-color: ${skinClass.optionsHighlightBackgroundColor};
+            color:${skinClass.optionsHighlightColor};
+        }
+
+        .xMultiAutoComplete_${skinClassName}_options.highlight a{
+            {call background(skinClass.optionsHighlightBackgroundColor, skinClass.closeHighlightSpriteURL, "no-repeat -5px -5px")/}
+        }
+
+        .xMultiAutoComplete_${skinClassName}_options.highlight a:hover{
+            background-position: -5px -25px;
+        }
+        .xMultiAutoComplete_${skinClassName}_options span{
+            margin:2px 5px;
+            display:inline-block;
+            cursor:pointer;
+        }
+        .xMultiAutoComplete_${skinClassName}_options span.ellipsisClass{
+            white-space:nowrap;
+            overflow:hidden;
+            text-overflow:ellipsis;
+            vertical-align:middle;
+            line-height:18px;
+        }
+
      {/macro}
 {/CSSTemplate}

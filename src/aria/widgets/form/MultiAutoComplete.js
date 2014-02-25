@@ -366,6 +366,91 @@ Aria.classDefinition({
          */
         getValidationPopupReference : function () {
             return this.getTextInputField();
+        },
+        /**
+         * To remove the highlight class from the suggestion(s)
+         * @param {Array|Integer} indices It can be an array of indices of suggestions or an index of suggestion. If
+         * nothing is provided it will remove the highlight class from all the highlighted suggestions. Indexing starts
+         * with 1.
+         * @public
+         */
+        removeHighlight : function (indices) {
+            var suggestionContainer = this._textInputField.parentNode;
+            var typeUtil = aria.utils.Type;
+            if (typeof indices === "undefined") {
+                indices = this.getHighlight();
+            }
+            if (typeUtil.isArray(indices)) {
+                for (var k = 0; k < indices.length; k++) {
+                    var suggestionNode = suggestionContainer.children[indices[k] - 1];
+                    if (suggestionNode) {
+                        this._removeClass(suggestionNode, 'highlight');
+                    }
+                }
+            } else {
+                this.removeHighlight([indices]);
+            }
+        },
+        /**
+         * To remove class from DomElement
+         * @param {HTMLElement} suggestionNode
+         * @param {String} className
+         * @protected
+         */
+        _removeClass : function (suggestionNode, className) {
+            var suggestionNodeClassList = new aria.utils.ClassList(suggestionNode);
+            suggestionNodeClassList.remove(className);
+            suggestionNodeClassList.$dispose();
+        },
+
+        /**
+         * To add the highlight class for the suggestion(s)
+         * @param {Array|Integer} indices It can be an array of indices of suggestions or an index of suggestion to be
+         * highlighted. Indexing starts with 1.
+         * @public
+         */
+        addHighlight : function (indices) {
+            var suggestionContainer = this._textInputField.parentNode;
+            var typeUtil = aria.utils.Type;
+            if (typeUtil.isArray(indices)) {
+                for (var k = 0; k < indices.length; k++) {
+                    var suggestionNode = suggestionContainer.children[indices[k] - 1];
+                    if (suggestionNode) {
+                        this._addClass(suggestionNode, 'highlight');
+                    }
+                }
+            } else {
+                this.addHighlight([indices]);
+            }
+        },
+        /**
+         * To add class for DomElement
+         * @param {HTMLElement} suggestionNode
+         * @param {String} className
+         * @protected
+         */
+        _addClass : function (suggestionNode, className) {
+            var suggestionNodeClassList = new aria.utils.ClassList(suggestionNode);
+            suggestionNodeClassList.add(className);
+            suggestionNodeClassList.$dispose();
+        },
+        /**
+         * Returns an array of indices of suggestions which have highlight class.
+         * @public
+         * @return {Array}
+         */
+        getHighlight : function () {
+            var suggestionContainer = this._textInputField.parentNode;
+            var highlightedArray = [];
+            for (var i = 0; i < suggestionContainer.children.length - 1; i++) {
+                var suggestionNode = suggestionContainer.children[i];
+                var suggestionNodeClassList = new aria.utils.ClassList(suggestionNode);
+                if (suggestionNodeClassList.contains("highlight")) {
+                    highlightedArray.push(i + 1);
+                }
+                suggestionNodeClassList.$dispose();
+            }
+            return highlightedArray;
         }
     }
 });
