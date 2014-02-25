@@ -54,7 +54,7 @@
             border-radius:3px;
             margin:2px;
         }
-        .xMultiAutoComplete_${skinClassName}_options a{
+        .xMultiAutoComplete_${skinClassName}_options .closeBtn{
             height:${skinClass.closeSpriteHeight}px;
             width:${skinClass.closeSpriteWidth}px;
             display:inline-block;
@@ -62,7 +62,7 @@
             {call background(skinClass.optionsBackgroundColor, skinClass.closeSpriteURL, "no-repeat -5px -25px")/}
         }
 
-        .xMultiAutoComplete_${skinClassName}_options span{
+        .xMultiAutoComplete_${skinClassName}_options span.xMultiAutoComplete_Option_Text{
             margin:2px 5px;
             display:inline-block;
             cursor:pointer;
@@ -74,23 +74,24 @@
             vertical-align:middle;
             line-height:18px;
         }
-        .xMultiAutoComplete_${skinClassName}_options a:hover{
+        .xMultiAutoComplete_${skinClassName}_options .closeBtn:hover{
             background-position: -5px -5px;
         }
         .xMultiAutoComplete_${skinClassName}_options.highlight{
+            outline: none;
             border: ${skinClass.optionsHighlightBorderWidth}px solid ${skinClass.optionsHighlightBorderColor};
             background-color: ${skinClass.optionsHighlightBackgroundColor};
             color:${skinClass.optionsHighlightColor};
         }
 
-        .xMultiAutoComplete_${skinClassName}_options.highlight a{
+        .xMultiAutoComplete_${skinClassName}_options.highlight .closeBtn{
             {call background(skinClass.optionsHighlightBackgroundColor, skinClass.closeHighlightSpriteURL, "no-repeat -5px -5px")/}
         }
 
-        .xMultiAutoComplete_${skinClassName}_options.highlight a:hover{
+        .xMultiAutoComplete_${skinClassName}_options.highlight .closeBtn:hover{
             background-position: -5px -25px;
         }
-        .xMultiAutoComplete_${skinClassName}_options span{
+        .xMultiAutoComplete_${skinClassName}_options span.xMultiAutoComplete_Option_Text{
             margin:2px 5px;
             display:inline-block;
             cursor:pointer;

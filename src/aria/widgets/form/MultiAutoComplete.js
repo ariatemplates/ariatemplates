@@ -20,7 +20,7 @@ Aria.classDefinition({
     $classpath : "aria.widgets.form.MultiAutoComplete",
     $extends : "aria.widgets.form.AutoComplete",
     $dependencies : ["aria.widgets.controllers.MultiAutoCompleteController", "aria.utils.Event", "aria.utils.Dom",
-            "aria.utils.Type", "aria.utils.Array", "aria.utils.Math", "aria.utils.String"],
+            "aria.utils.Type", "aria.utils.Array", "aria.utils.Math", "aria.utils.String", "aria.utils.Caret"],
     $css : ["aria.widgets.form.MultiAutoCompleteStyle", "aria.widgets.form.list.ListStyle",
             "aria.widgets.container.DivStyle"],
     /**
@@ -42,7 +42,8 @@ Aria.classDefinition({
 
     $statics : {
         // ERROR MESSAGE:
-        WIDGET_MULTIAUTOCOMPLETE_INVALID_HANDLER : "%1Could not create resources handler %2: dependency on this handler is missing."
+        WIDGET_MULTIAUTOCOMPLETE_INVALID_HANDLER : "%1Could not create resources handler %2: dependency on this handler is missing.",
+        INDEX_OUT_OF_BOUNDS : '%1Given index to highlight option is out of bounds [1, %2]: %3'
     },
     $prototype : {
         /**
@@ -60,7 +61,7 @@ Aria.classDefinition({
             this._textInputField = this._frame.getChild(0).lastChild;
         },
         /**
-         * Override internal method not to update the input width incase of multi autocomplete
+         * Override internal method not to update the input width in case of multi autocomplete
          */
         _computeInputWidth : function () {
             return;
@@ -192,24 +193,24 @@ Aria.classDefinition({
             var element = event.target;
             if (element.className === "closeBtn") {
                 this._removeMultiselectValues(element, event);
+                this._textInputField.focus();
             }
             if (element.className.indexOf("xMultiAutoComplete_Option_Text") != -1) {
                 var highlightedSuggestions = this.getHighlight();
                 var index = this._getIndexFromNode(element.parentNode);
                 if (this.controller.freeText && aria.utils.Json.equals(highlightedSuggestions, [index])) {
                     this._editMultiselectValue(element);
+                    this._textInputField.focus();
                 } else {
-                    this.removeHighlight(this.getHighlight());
-                    this.addHighlight(index);
+                    this.highlightOption(index);
                 }
             }
             this.__resizeInput();
-            this._textInputField.focus();
         },
         /**
          * Internal method to get the index of suggestion from suggestions container
          * @protected
-         * @return {Integer} 1-based indexs
+         * @return {Integer} 1-based index
          */
         _getIndexFromNode : function (htmlElement) {
             var i = 1;
@@ -285,7 +286,7 @@ Aria.classDefinition({
             var label = aria.utils.String.escapeHTML(value.label || value);
             return '<div class="xMultiAutoComplete_' + cfg.sclass
                     + '_options"><span class="xMultiAutoComplete_Option_Text">' + label
-                    + '</span><a href="javascript:void(0);" class="closeBtn"></a></div>';
+                    + '</span><span class="closeBtn"></span></div>';
         },
         /**
          * Method to create ellipsis for an added Suggestion
@@ -316,6 +317,7 @@ Aria.classDefinition({
                 }
             }
         },
+
         /**
          * Handling blur event
          * @param {aria.utils.Event} event
@@ -323,9 +325,16 @@ Aria.classDefinition({
          */
         _dom_onblur : function (event) {
             var inputField = this.getTextInputField();
-            if (inputField.nextSibling != null && inputField.value === "") {
-                this._makeInputFieldLastChild();
+            var blurredElement = event.target;
+
+            if (blurredElement === inputField) {
+                if (inputField.nextSibling != null && inputField.value === "") {
+                    this._makeInputFieldLastChild();
+                }
+            } else if (blurredElement.className.indexOf("highlight") != -1) {
+                this.unhighlightOption(blurredElement);
             }
+
             this.$TextInput._dom_onblur.call(this, event);
         },
         /**
@@ -348,65 +357,143 @@ Aria.classDefinition({
          * @protected
          */
         _dom_onkeydown : function (event) {
-            var stringUtil = aria.utils.String;
             var domUtil = aria.utils.Dom;
+
             var inputField = this.getTextInputField();
             var inputFieldValue = inputField.value;
-            var inputFieldIsEmpty = (stringUtil.trim(inputFieldValue) === "");
-            var backspacePressed = (event.keyCode == event.KC_BACKSPACE);
-            var tabPressed = (event.keyCode == event.KC_TAB);
-            var deleteKeyPressed = (event.keyCode == event.KC_DELETE);
+            var inputFieldIsEmpty = (aria.utils.String.trim(inputFieldValue) === "");
 
-            if (tabPressed && !inputFieldIsEmpty && this.controller.freeText) {
-                event.preventDefault();
-                var report = this.controller.checkText(inputFieldValue, false);
-                this._reactToControllerReport(report);
-                this.setHelpText(false);
-                inputField.focus();
-            }
-            if (tabPressed && inputFieldIsEmpty && inputField.nextSibling != null) {
-                event.preventDefault();
-                this._makeInputFieldLastChild();
-                this.setHelpText(false);
-                inputField.focus();
-                var newSuggestions = aria.utils.Json.copy(this.controller.selectedSuggestions);
-                this.setProperty("value", newSuggestions);
+            switch (event.keyCode) {
 
-            }
-            if (backspacePressed && inputFieldIsEmpty) {
-                var highlightedElementIndex = this.getHighlight()[0];
-                var highlightedElement = inputField.parentNode.children[highlightedElementIndex - 1];
-                if (highlightedElement) {
-                    var highlightedElementLabel = highlightedElement.textContent || highlightedElement.innerText;
-                    if (highlightedElement.previousSibling == null) {
-                        this.addHighlight(highlightedElementIndex + 1);
-                    } else {
-                        this.addHighlight(highlightedElementIndex - 1);
+                case event.KC_ARROW_LEFT :
+                    if (this.hasInsertedOptions()) {
+
+                        if (this.isInputFieldFocused()) {
+                            var position = aria.utils.Caret.getPosition(inputField);
+                            if (position.start === 0 && position.end === 0) {
+                                event.preventDefault();
+
+                                // Close the dropdown in order not to mess with focus events and so on
+                                this._closeDropdown();
+
+                                // Highlight last option
+                                this.highlightOption(this.insertedOptionsCount());
+                                break;
+                            }
+                        }
+
+                        if (this.isInHighlightedMode()) {
+                            event.preventDefault();
+
+                            this.__navigateLeftInHighlightedMode();
+                            break;
+                        }
                     }
-                    domUtil.removeElement(highlightedElement);
-                    this._removeValues(highlightedElementLabel);
-                } else {
-                    var previousSiblingElement = domUtil.getPreviousSiblingElement(inputField);
-                    if (previousSiblingElement) {
-                        var previousSiblingLabel = previousSiblingElement.firstChild.textContent
-                                || previousSiblingElement.firstChild.innerText;
-                        domUtil.removeElement(previousSiblingElement);
-                        this._removeValues(previousSiblingLabel);
-                    }
-                }
-            }
-            if (deleteKeyPressed && inputFieldIsEmpty) {
-                var highlightedElementIndex = this.getHighlight()[0];
-                var highlightedElement = inputField.parentNode.children[highlightedElementIndex - 1];
-                if (highlightedElement) {
-                    var highlightedElementLabel = highlightedElement.textContent || highlightedElement.innerText;
-                    domUtil.removeElement(highlightedElement);
-                    this.addHighlight(highlightedElementIndex);
-                    this._removeValues(highlightedElementLabel);
-                }
 
+                    break;
+
+                case event.KC_ARROW_RIGHT :
+                    if (this.isInHighlightedMode()) {
+                        event.preventDefault();
+
+                        this.__navigateRightInHighlightedMode();
+                    }
+
+                    break;
+
+                case event.KC_TAB :
+                    if (this.isInputFieldFocused()) {
+                        if (!inputFieldIsEmpty) {
+                            if (this.controller.freeText) {
+                                event.preventDefault();
+
+                                var report = this.controller.checkText(inputFieldValue, false);
+                                this._reactToControllerReport(report);
+                                this.setHelpText(false);
+                                inputField.focus();
+                            }
+                        } else {
+                            if (inputField.nextSibling != null) {
+                                event.preventDefault();
+
+                                this._makeInputFieldLastChild();
+                                this.setHelpText(false);
+                                inputField.focus();
+                                var newSuggestions = aria.utils.Json.copy(this.controller.selectedSuggestions);
+                                this.setProperty("value", newSuggestions);
+                            }
+                        }
+                    }
+
+                    break;
+
+                case event.KC_BACKSPACE :
+                    if (inputFieldIsEmpty) {
+                        var highlightedElementIndex = this.getHighlightedOptionIndex();
+                        var highlightedElement = this.getHighlightedOption();
+
+                        if (highlightedElement) {
+                            var highlightedElementLabel = highlightedElement.textContent
+                                    || highlightedElement.innerText;
+                            domUtil.removeElement(highlightedElement);
+
+                            var newIndex = highlightedElementIndex - 1;
+                            if (newIndex >= 1) {
+                                this.highlightOption(newIndex);
+                            } else {
+                                if (this.insertedOptionsCount() > 0) {
+                                    this.highlightOption(1);
+                                } else {
+                                    this._enterInputField();
+                                }
+                            }
+
+                            this._removeValues(highlightedElementLabel);
+                        } else {
+                            var previousSiblingElement = domUtil.getPreviousSiblingElement(inputField);
+                            if (previousSiblingElement) {
+                                var previousSiblingLabel = previousSiblingElement.firstChild.textContent
+                                        || previousSiblingElement.firstChild.innerText;
+                                domUtil.removeElement(previousSiblingElement);
+                                this._removeValues(previousSiblingLabel);
+                            }
+                        }
+                        event.preventDefault();
+                    }
+
+                    break;
+
+                case event.KC_DELETE :
+                    if (inputFieldIsEmpty) {
+                        var highlightedElementIndex = this.getHighlightedOptionIndex();
+                        var highlightedElement = this.getHighlightedOption();
+
+                        if (highlightedElement) {
+                            var highlightedElementLabel = highlightedElement.textContent
+                                    || highlightedElement.innerText;
+                            domUtil.removeElement(highlightedElement);
+
+                            if (highlightedElementIndex <= this.insertedOptionsCount()) {
+                                this.highlightOption(highlightedElementIndex);
+                            } else {
+                                this._enterInputField();
+                            }
+
+                            this._removeValues(highlightedElementLabel);
+                        }
+                    }
+
+                    break;
             }
-            this.$DropDownTextInput._dom_onkeydown.call(this, event);
+
+            if (this.isInputFieldFocused()) {
+                this.$AutoComplete._dom_onkeydown.call(this, event);
+            }
+        },
+        _dom_onkeypress : function (event) {
+            if (this.isInputFieldFocused()) {
+                this.$AutoComplete._dom_onkeypress.call(this, event);
+            }
         },
         /**
          * To remove suggestion on click of close
@@ -471,6 +558,9 @@ Aria.classDefinition({
         getValidationPopupReference : function () {
             return this.getTextInputField();
         },
+
+        // Highlighting management ---------------------------------------------
+
         /**
          * To remove the highlight class from the suggestion(s)
          * @param {Array|Integer} indices It can be an array of indices of suggestions or an index of suggestion. If
@@ -479,20 +569,18 @@ Aria.classDefinition({
          * @public
          */
         removeHighlight : function (indices) {
-            var suggestionContainer = this._textInputField.parentNode;
-            var typeUtil = aria.utils.Type;
-            if (typeof indices === "undefined") {
+            if (indices == null) {
                 indices = this.getHighlight();
+            } else if (!aria.utils.Type.isArray(indices)) {
+                indices = [indices];
             }
-            if (typeUtil.isArray(indices)) {
-                for (var k = 0; k < indices.length; k++) {
-                    var suggestionNode = suggestionContainer.children[indices[k] - 1];
-                    if (suggestionNode) {
-                        this._removeClass(suggestionNode, 'highlight');
-                    }
+
+            var suggestionContainer = this._getSuggestionsContainer();
+            for (var k = 0; k < indices.length; k++) {
+                var suggestionNode = suggestionContainer.children[indices[k] - 1];
+                if (suggestionNode) {
+                    this.unhighlightOption(suggestionNode);
                 }
-            } else {
-                this.removeHighlight([indices]);
             }
         },
         /**
@@ -508,25 +596,59 @@ Aria.classDefinition({
         },
 
         /**
+         * Removes the highlighted state from the given option.
+         * @param[in] {HTMLElement} suggestionNode The HTML element corresponding to the highlighted option
+         */
+        unhighlightOption : function (suggestionNode) {
+            if (suggestionNode == null) {
+                suggestionNode = Aria.$window.document.activeElement;
+                if (suggestionNode.className.indexOf("highlight") === -1) {
+                    suggestionNode = this._getSuggestionsContainer().children[this.getHighlightedOptionIndex() - 1];
+                }
+                // TODO Get currently focused element and check this is an highlighted option...
+            }
+
+            if (suggestionNode != null) {
+                this._removeClass(suggestionNode, 'highlight');
+                suggestionNode.removeAttribute('tabindex');
+            }
+        },
+
+        /**
+         * Retrieves the DOM element containing the inserted options
+         * @return {DOMElement} The DOM element containing the inserted options.
+         */
+        _getSuggestionsContainer : function () {
+            return this.getTextInputField().parentNode;
+        },
+
+        /**
          * To add the highlight class for the suggestion(s)
          * @param {Array|Integer} indices It can be an array of indices of suggestions or an index of suggestion to be
          * highlighted. Indexing starts with 1.
          * @public
          */
         addHighlight : function (indices) {
-            var suggestionContainer = this._textInputField.parentNode;
-            var typeUtil = aria.utils.Type;
-            if (typeUtil.isArray(indices)) {
-                for (var k = 0; k < indices.length; k++) {
-                    var suggestionNode = suggestionContainer.children[indices[k] - 1];
-                    if (suggestionNode) {
-                        this._addClass(suggestionNode, 'highlight');
-                    }
+            if (!aria.utils.Type.isArray(indices)) {
+                indices = [indices];
+            }
+
+            var suggestionsContainer = this._getSuggestionsContainer();
+            var latestSuggestionNode;
+            for (var k = 0; k < indices.length; k++) {
+                var suggestionNode = suggestionsContainer.children[indices[k] - 1];
+                if (suggestionNode) {
+                    latestSuggestionNode = suggestionNode;
+                    this._addClass(suggestionNode, 'highlight');
                 }
-            } else {
-                this.addHighlight([indices]);
+            }
+
+            if (latestSuggestionNode != null) {
+                latestSuggestionNode.setAttribute('tabindex', 0);
+                latestSuggestionNode.focus();
             }
         },
+
         /**
          * To add class for DomElement
          * @param {HTMLElement} suggestionNode
@@ -538,6 +660,31 @@ Aria.classDefinition({
             suggestionNodeClassList.add(className);
             suggestionNodeClassList.$dispose();
         },
+
+        /**
+         * Exclusively highlights the inserted option located at the given index. That means that any other highlighted
+         * option will not be highlighted anymore, and this even if the targeted option is already highlighted.
+         * @param[in] {Number} index Index of the option to highlight. 1-based.
+         * @see removeHighlight
+         * @see addHighlight
+         */
+        highlightOption : function (index) {
+            var count = this.insertedOptionsCount();
+
+            if (index < 1 || index > count) {
+                this.$logError(this.INDEX_OUT_OF_BOUNDS, [count, index]);
+                return;
+            }
+
+            this.removeHighlight();
+
+            var suggestionNode = this._getSuggestionsContainer().children[index - 1];
+
+            this._addClass(suggestionNode, 'highlight');
+            suggestionNode.setAttribute('tabindex', 0);
+            suggestionNode.focus();
+        },
+
         /**
          * Returns an array of indices of suggestions which have highlight class. Indexing starts with 1
          * @public
@@ -556,6 +703,28 @@ Aria.classDefinition({
             }
             return highlightedArray;
         },
+
+        /**
+         * @return The currently highlighted option index (considering there is only one), or null otherwise
+         */
+        getHighlightedOptionIndex : function () {
+            return this.getHighlight()[0];
+        },
+
+        getHighlightedOption : function () {
+            return this._getSuggestionsContainer().children[this.getHighlightedOptionIndex() - 1];
+        },
+
+        /**
+         * Tells whether the widget is currently in highlighted mode or not. Being in highlighted mode means that there
+         * is at least one inserted option which is highlighted.
+         * @return {Boolean} <code>true</code> if it is in highlighted mode, <code>false</code> otherwise.
+         * @see getHighlight
+         */
+        isInHighlightedMode : function () {
+            return this.getHighlight().length > 0;
+        },
+
         /**
          * Internal method for calculating the maxOptions allowed for setting it in template
          * @return {Number}
@@ -582,6 +751,87 @@ Aria.classDefinition({
         _changeOnItem : function (values) {
             var report = this.controller.checkExpandedValues(values);
             this._reactToControllerReport(report);
+        },
+
+        // Input field management ----------------------------------------------
+
+        /**
+         * Tells whether the text input field has focus or not.
+         * @return {Boolean} <code>true</code> if input field has focus, <code>false</code> otherwise.
+         */
+        isInputFieldFocused : function () {
+            return Aria.$window.document.activeElement === this.getTextInputField();
+        },
+
+        /**
+         * Enters the text input field by giving it the focus and placing the caret at its beginning.
+         */
+        _enterInputField : function () {
+            var field = this.getTextInputField();
+            field.focus();
+            aria.utils.Caret.setPosition(field, 0, 0);
+        },
+
+        // Inserted options management -----------------------------------------
+
+        /**
+         * Gives the number of currently inserted options.
+         * @return {Number} The number of inserted options.
+         */
+        insertedOptionsCount : function () {
+            var count = this._getSuggestionsContainer().children.length - 1;
+
+            if (count < 0) {
+                count = 0;
+            }
+
+            return count;
+        },
+
+        /**
+         * Tells whether there are some options inserted or not.
+         * @return {Boolean} <code>true</code> if there are some, <code>false</code> otherwise.
+         * @see insertedOptionsCount
+         */
+        hasInsertedOptions : function () {
+            return this.insertedOptionsCount() > 0;
+        },
+
+        // Navigation ----------------------------------------------------------
+
+        /**
+         * Performs left navigation when the widget is in highlighted mode. What it means is that it highlights the
+         * previous inserted option if there is one (otherwise does nothing).
+         */
+        __navigateLeftInHighlightedMode : function () {
+            var indexes = this.getHighlight();
+            var leftMostIndex = indexes[0];
+
+            var index = leftMostIndex - 1;
+
+            if (index >= 1) {
+                this.highlightOption(index);
+            }
+
+        },
+
+        /**
+         * Performs right navigation when the widget is in highlighted mode. What it means is that it highlights the
+         * next inserted option if there is one, otherwise it goes back to the text input field at its beginning.
+         */
+        __navigateRightInHighlightedMode : function () {
+            var indexes = this.getHighlight();
+            var rightMostIndex = indexes[indexes.length - 1];
+            var limit = this.insertedOptionsCount();
+
+            var index = rightMostIndex + 1;
+
+            if (index <= limit) {
+                this.highlightOption(index);
+            } else {
+                this.removeHighlight();
+                this._enterInputField();
+            }
         }
     }
 });

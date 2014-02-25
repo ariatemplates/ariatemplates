@@ -36,11 +36,6 @@ Aria.classDefinition({
         _checkOptions : function () {
             this.toggleOption("MultiAutoId", 1, "_checkValuefirst");
         },
-
-        _toggleCheckboxes : function (id, cb) {
-            this.toggleOption("MultiAutoId", id, cb);
-        },
-
         _checkValuefirst : function () {
             this.checkSelectedItems(1, ["Qantas"]);
             this.toggleOption("MultiAutoId", 4, "_checkValueSecond");
@@ -55,12 +50,24 @@ Aria.classDefinition({
                         code : 'P2'
 
                     }]);
-            this.toggleOption("MultiAutoId", 1, "_checkFinalValue");
+            this.toggleOption("MultiAutoId", 1, "_checkValueThird");
+        },
+        _checkValueThird : function () {
+            this.checkSelectedItems(1, ["P2.kon"]);
+            this.synEvent.click(this._getField(), {
+                scope : this,
+                fn : this._reOpenDropdown
+            });
+        },
+        _reOpenDropdown : function () {
+            this.clickonExpandoButton("_selectOtherOption");
+        },
+        _selectOtherOption : function () {
+            this.toggleOption("MultiAutoId", 2, "_checkFinalValue");
         },
         _checkFinalValue : function () {
-            this.checkSelectedItems(1, ["P2.kon"]);
+            this.checkSelectedItems(2, ["P2.kon", "P4.redd"]);
             this.end();
         }
-
     }
 });

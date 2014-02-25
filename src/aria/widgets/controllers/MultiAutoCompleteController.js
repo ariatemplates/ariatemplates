@@ -58,11 +58,6 @@
              */
             this.editedSuggestion;
             /**
-             * Check if value is range of suggestions
-             * @type Boolean
-             */
-            this._isRangeValue = false;
-            /**
              * Check if expando is enabled
              * @type Boolean
              */
@@ -221,20 +216,12 @@
              * @return {aria.widgets.controllers.reports.ControllerReport}
              */
             checkDropdownValue : function (value) {
-                var isRangeValue = this._isRangeValue;
-                if (!isRangeValue && typeUtil.isString(value)) {
-                    return this.checkText(value);
+                if (typeUtil.isString(value) || value == null) {
+                    // do nothing
                 } else {
                     var report = new aria.widgets.controllers.reports.DropDownControllerReport();
-                    var dataModel = this._dataModel, listContent = dataModel.listContent;
-                    var suggestionsToAdd = [];
-                    if (isRangeValue && listContent) {
-                        for (var k = 0, len = listContent.length; k < len; k++) {
-                            suggestionsToAdd.push(listContent[k].value);
-                        }
-                    } else if (value) {
-                        suggestionsToAdd.push(value);
-                    }
+                    var dataModel = this._dataModel;
+                    var suggestionsToAdd = typeUtil.isArray(value) ? value : [value];
                     report.suggestionsToAdd = this._checkNewSuggestions(suggestionsToAdd);
                     report.value = this.selectedSuggestions;
                     report.text = "";
@@ -279,15 +266,15 @@
                 var suggestions = null;
                 var error = null;
                 var repositionDropDown = false;
+                var rangeValue = false;
                 if (res != null) {
                     if ("suggestions" in res) {
                         suggestions = res.suggestions;
                         error = res.error;
                         repositionDropDown = res.repositionDropDown;
-                        this._isRangeValue = res.multipleValues;
+                        rangeValue = res.multipleValues;
                     } else {
                         suggestions = res;
-                        this._isRangeValue = false;
                     }
                 }
 
@@ -326,24 +313,27 @@
                     var jsonUtils = aria.utils.Json;
                     jsonUtils.setValue(dataModel, 'selectedIdx', -1);
 
-                    // update datamodel through setValue to update the list has well
+                    // update datamodel through setValue to update the list as well
                     jsonUtils.setValue(dataModel, 'listContent', suggestions);
 
-                    if (this._isRangeValue) {
-                        dataModel.value = nextValue;
+                    if (rangeValue) {
                         var selectedValues = [];
                         for (var i = 0; i < dataModel.listContent.length; i++) {
                             selectedValues.push(dataModel.listContent[i].value);
                         }
-                        jsonUtils.setValue(dataModel, 'multipleSelect', this._isRangeValue);
+                        jsonUtils.setValue(dataModel, 'multipleSelect', true);
                         jsonUtils.setValue(dataModel, 'selectedValues', selectedValues);
+                        dataModel.value = selectedValues;
                     } else if (allSuggestions) {
                         jsonUtils.setValue(dataModel, 'selectedValues', this.selectedSuggestions);
                         jsonUtils.setValue(dataModel, 'multipleSelect', true);
+                        dataModel.value = null;
                     } else {
                         if (matchValueIndex != -1) {
                             dataModel.value = dataModel.listContent[matchValueIndex].value;
+                            jsonUtils.setValue(dataModel, 'selectedValues', [dataModel.value]);
                         } else {
+                            jsonUtils.setValue(dataModel, 'selectedValues', []);
                             if (this.freeText && nextValue) {
                                 // return the text from the autocomplete
                                 dataModel.value = nextValue;
@@ -351,6 +341,7 @@
                                 dataModel.value = null;
                             }
                         }
+                        jsonUtils.setValue(dataModel, 'multipleSelect', false);
                         jsonUtils.setValue(dataModel, 'selectedIdx', matchValueIndex);
                     }
 
@@ -371,9 +362,6 @@
                         } else {
                             report.ok = true;
                         }
-                    }
-                    if (report.ok && suggestionsAvailable && !hasSuggestions) {
-                        dataModel.value = nextValue;
                     }
                     report.displayDropDown = hasSuggestions && triggerDropDown;
                     report.repositionDropDown = repositionDropDown || (this._isExpanded !== allSuggestions);

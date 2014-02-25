@@ -16,7 +16,7 @@
 Aria.classDefinition({
     $classpath : "test.aria.widgets.form.autocomplete.multiautocomplete.BaseMultiAutoCompleteTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
-    $dependencies : ["aria.utils.Type", "aria.utils.FireDomEvent"],
+    $dependencies : ["aria.utils.Type", "aria.utils.FireDomEvent", "aria.utils.Math"],
     $constructor : function () {
         this.$TemplateTestCase.constructor.call(this);
 
@@ -32,6 +32,13 @@ Aria.classDefinition({
 
     },
     $prototype : {
+
+        /**
+         * @return The currently focused element in the page.
+         */
+        getFocusedElement : function () {
+            return Aria.$window.document.activeElement;
+        },
 
         clickAndType : function (text, cb, delay) {
             if (aria.utils.Type.isString(text)) {
@@ -50,7 +57,7 @@ Aria.classDefinition({
 
         type : function (evt, args) {
             args = args || evt;
-            this.synEvent.type(this._getField(), args.text.shift(), {
+            this.synEvent.type(this.getFocusedElement(), args.text.shift(), {
                 fn : this.__wait,
                 scope : this,
                 args : args
@@ -91,9 +98,10 @@ Aria.classDefinition({
 
         checkDataModel : function (count, expectedValues) {
             var data = this.data.ac_airline_values, message;
-            this.assertEquals(data.length, count, "The number of items in the data model is not correct.");
+            this.assertEquals(data.length, count, "The number of items in the data model should be " + count
+                    + ". It is " + data.length + " instead.");
             if (expectedValues) {
-                for (var j = 0; j < data.length; j++) {
+                for (var j = 0, length = aria.utils.Math.min(data.length, expectedValues.length); j < length; j++) {
                     var message = "Wrong value in position " + j + " of the data model.";
                     if (aria.utils.Type.isString(data[j])) {
                         this.assertEquals(data[j], expectedValues[j], message);
@@ -147,7 +155,7 @@ Aria.classDefinition({
         checkHighlightedElementsIndices : function (expectedHighlightedArray) {
             var widgetInstance = this._getWidgetInstance();
             var actualHighlightedArray = widgetInstance.getHighlight();
-            this.assertJsonEquals(expectedHighlightedArray, actualHighlightedArray, "Expected higlighted elements indices are ["
+            this.assertJsonEquals(expectedHighlightedArray, actualHighlightedArray, "Expected highlighted elements indices are ["
                     + expectedHighlightedArray
                     + "] but actual highlighted elements indices are ["
                     + actualHighlightedArray + "]");
@@ -190,7 +198,7 @@ Aria.classDefinition({
             });
 
         },
-         openAutoPopup : function (evt, args) {
+        openAutoPopup : function (evt, args) {
             this.waitFor({
                 condition : function () {
                     this.isOpen = this.isMultiAutoCompleteOpen("MultiAutoId");
