@@ -275,7 +275,7 @@
      * @param {String} property name of the property - e.g. '$value'
      * @param {Object} change object describing the change made to the property (containing oldValue/newValue if the
      * change was made with setValue)
-     * @param {Array} listenerToExclude (optional) potential listener callback belonging to the object that raised the
+     * @param {Object} listenerToExclude (optional) potential listener callback belonging to the object that raised the
      * change and which doesn't want to be notified
      */
     var __notifyListeners = function (container, property, change, listenerToExclude) {
@@ -523,9 +523,9 @@
              * listeners are called.
              * @param {Object} container reference to the data holder object - e.g. data.search.preferedCity
              * @param {String} property name of the key to delete - e.g. '$value'
-             * @param {String} listenerToExclude (optional) potential listener callback belonging to the object that
+             * @param {Object} listenerToExclude (optional) potential listener callback belonging to the object that
              * raised the change and which doesn't want to be notified
-             * @param {Boolean} throwError, default is false
+             * @param {Boolean} throwError default is false
              */
             deleteKey : function (container, property, listenerToExclude, throwError) {
                 if (!__isValidContainer(container)) {
@@ -562,9 +562,9 @@
              * @param {Object} container reference to the data holder object - e.g. data.search.preferedCity
              * @param {String} property name of the property to set - e.g. '$value'
              * @param {MultiTypes} val the value to set to the property
-             * @param {String} listenerToExclude (optional) potential listener callback belonging to the object that
+             * @param {Object} listenerToExclude (optional) potential listener callback belonging to the object that
              * raised the change and which doesn't want to be notified
-             * @param {Boolean} throwError, default is false
+             * @param {Boolean} throwError default is false
              * @return {MultiTypes} the new value
              */
             setValue : function (container, property, val, listenerToExclude, throwError) {
