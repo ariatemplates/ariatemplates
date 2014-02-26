@@ -16,7 +16,7 @@
 Aria.classDefinition({
     $classpath : "test.aria.widgets.form.autocomplete.multiautocomplete.BaseMultiAutoCompleteTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
-    $dependencies : ["aria.utils.Type"],
+    $dependencies : ["aria.utils.Type", "aria.utils.FireDomEvent"],
     $constructor : function () {
         this.$TemplateTestCase.constructor.call(this);
 
@@ -82,7 +82,7 @@ Aria.classDefinition({
                 var element, text;
                 for (var i = 0; i < labels.length; i++) {
                     element = container.childNodes[i];
-                    text = element.innerText || element.textContent;
+                    text = element.textContent || element.innerText;
                     this.assertEquals(text, labels[i], "The Wrong values are added as for Autocomplete.");
                 }
             }
@@ -133,6 +133,15 @@ Aria.classDefinition({
         },
         _getWidgetInstance : function () {
             return this.getWidgetInstance("MultiAutoId");
+        },
+        _suggestionToBeHighlighted : function (index) {
+            var suggestionsContainer = this._getContainer();
+            var suggestionToBeHighlighted = suggestionsContainer.children[index].firstChild;
+            return suggestionToBeHighlighted;
+        },
+        _fireClickOnSuggestion : function (index) {
+            var suggestionToBeHighlighted = this._suggestionToBeHighlighted(index);
+            aria.utils.FireDomEvent.fireEvent('click', suggestionToBeHighlighted);
         },
         checkHighlightedElementsIndices : function (expectedHighlightedArray) {
             var widgetInstance = this._getWidgetInstance();
