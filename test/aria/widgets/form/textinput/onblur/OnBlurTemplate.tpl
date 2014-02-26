@@ -14,70 +14,69 @@
  */
 
 {Template {
-    $classpath : "test.aria.widgets.form.textinput.onfocus.OnFocusTemplate",
+    $classpath : "test.aria.widgets.form.textinput.onblur.OnBlurTemplate",
     $extends : "test.aria.widgets.form.textinput.onclick.OnClickTemplate"
 }}
     {macro main()}
 
         {@aria:TextField {
             id: "tf",
-            onfocus:{fn:onaction},
+            onblur:{fn:onaction},
             value : "aaa"
         }/}
 
         {@aria:NumberField {
             id: "nf",
-            onfocus:{fn:onaction},
+            onblur:{fn:onaction},
             value : 5
         }/}
 
         {@aria:PasswordField {
             id: "pf",
-            onfocus:{fn:onaction},
+            onblur:{fn:onaction},
             value : "aaa"
         }/}
 
         {@aria:DateField {
             id: "df",
-            onfocus:{fn:onaction},
+            onblur:{fn:onaction},
             value : new Date()
         }/}
 
         {@aria:TimeField {
             id: "time",
-            onfocus:{fn:onaction}
+            onblur:{fn:onaction}
         }/}
 
         {@aria:DatePicker {
             id: "dp",
-            onfocus:{fn:onaction},
+            onblur:{fn:onaction},
             value : new Date()
         }/}
 
         {@aria:AutoComplete {
             id: "ac",
             resourcesHandler: this.airlinesHandler,
-            onfocus:{fn:onaction}
+            onblur:{fn:onaction}
         }/}
 
         {@aria:MultiSelect {
             id: "ms",
             items: [{value : "a", code : "a"},{value : "b", code : "b"}],
-            onfocus:{fn:onaction}
+            onblur:{fn:onaction}
         }/}
 
         {@aria:SelectBox {
             id: "sb",
             options: [{label : "a", value : "a"},{label : "b", value : "b"}],
-            onfocus:{fn:onaction}
+            onblur:{fn:onaction}
         }/}
 
         {@aria:MultiAutoComplete {
             id: "mac",
             resourcesHandler: this.airlinesHandler,
-            onfocus:{fn:onaction}
+            onblur:{fn:onaction}
         }/}
-
 
 
 
