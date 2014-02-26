@@ -178,8 +178,30 @@ Aria.classDefinition({
             if (element.className === "closeBtn") {
                 this._removeMultiselectValues(element, event);
             }
+            if (element.className.indexOf("xMultiAutoComplete_Option_Text") != -1) {
+                var highlightedSuggestions = this.getHighlight();
+                var index = this._getIndexFromNode(element.parentNode);
+                if (this.controller.freeText && aria.utils.Json.equals(highlightedSuggestions, [index])) {
+                    this._editMultiselectValue(element);
+                } else {
+                    this.removeHighlight(this.getHighlight());
+                    this.addHighlight(index);
+                }
+            }
             this.__resizeInput();
             this._textInputField.focus();
+        },
+        /**
+         * Internal method to get the index of suggestion from suggestions container
+         * @protected
+         * @return {Integer}
+         */
+        _getIndexFromNode : function (htmlElement) {
+            var i = 1;
+            while ((htmlElement = htmlElement.previousSibling) != null) {
+                i++;
+            }
+            return i;
         },
         /**
          * Private method to increase the textInput width on focus
@@ -342,20 +364,23 @@ Aria.classDefinition({
          * @protected
          */
         _dom_onkeydown : function (event) {
-            var backspacePressed = (event.keyCode == event.KC_BACKSPACE);
-            var tabPressed = (event.keyCode == event.KC_TAB);
+            var stringUtil = aria.utils.String;
+            var domUtil = aria.utils.Dom;
             var inputField = this.getTextInputField();
             var inputFieldValue = inputField.value;
-            var domUtil = aria.utils.Dom;
-            var stringUtil = aria.utils.String;
-            if (tabPressed && stringUtil.trim(inputFieldValue) !== "" && this.controller.freeText) {
+            var inputFieldIsEmpty = (stringUtil.trim(inputFieldValue) === "");
+            var backspacePressed = (event.keyCode == event.KC_BACKSPACE);
+            var tabPressed = (event.keyCode == event.KC_TAB);
+            var deleteKeyPressed = (event.keyCode == event.KC_DELETE);
+
+            if (tabPressed && !inputFieldIsEmpty && this.controller.freeText) {
                 event.preventDefault();
                 var report = this.controller.checkText(inputFieldValue, false);
                 this._reactToControllerReport(report);
                 this.setHelpText(false);
                 inputField.focus();
             }
-            if (tabPressed && stringUtil.trim(inputFieldValue) === "" && inputField.nextSibling != null) {
+            if (tabPressed && inputFieldIsEmpty && inputField.nextSibling != null) {
                 event.preventDefault();
                 this._makeInputFieldLastChild();
                 this.setHelpText(false);
@@ -364,14 +389,38 @@ Aria.classDefinition({
                 this.setProperty("value", newSuggestions);
 
             }
-            if (backspacePressed && inputFieldValue === "") {
-                var previousSiblingElement = domUtil.getPreviousSiblingElement(inputField);
-                if (previousSiblingElement) {
-                    var previousSiblingLabel = previousSiblingElement.firstChild.innerText
-                            || previousSiblingElement.firstChild.textContent;
-                    domUtil.removeElement(previousSiblingElement);
-                    this._removeValues(previousSiblingLabel);
+            if (backspacePressed && inputFieldIsEmpty) {
+                var highlightedElementIndex = this.getHighlight()[0];
+                var highlightedElement = inputField.parentNode.children[highlightedElementIndex - 1];
+                if (highlightedElement) {
+                    var highlightedElementLabel = highlightedElement.innerText || highlightedElement.textContent;
+                    if (highlightedElement.previousSibling == null) {
+                        this.addHighlight(highlightedElementIndex + 1);
+                    } else {
+                        this.addHighlight(highlightedElementIndex - 1);
+                    }
+                    domUtil.removeElement(highlightedElement);
+                    this._removeValues(highlightedElementLabel);
+                } else {
+                    var previousSiblingElement = domUtil.getPreviousSiblingElement(inputField);
+                    if (previousSiblingElement) {
+                        var previousSiblingLabel = previousSiblingElement.firstChild.innerText
+                                || previousSiblingElement.firstChild.textContent;
+                        domUtil.removeElement(previousSiblingElement);
+                        this._removeValues(previousSiblingLabel);
+                    }
                 }
+            }
+            if (deleteKeyPressed && inputFieldIsEmpty) {
+                var highlightedElementIndex = this.getHighlight()[0];
+                var highlightedElement = inputField.parentNode.children[highlightedElementIndex - 1];
+                if (highlightedElement) {
+                    var highlightedElementLabel = highlightedElement.textContent || highlightedElement.innerText;
+                    domUtil.removeElement(highlightedElement);
+                    this.addHighlight(highlightedElementIndex);
+                    this._removeValues(highlightedElementLabel);
+                }
+
             }
             this.$DropDownTextInput._dom_onkeydown.call(this, event);
         },
@@ -515,7 +564,7 @@ Aria.classDefinition({
             suggestionNodeClassList.$dispose();
         },
         /**
-         * Returns an array of indices of suggestions which have highlight class.
+         * Returns an array of indices of suggestions which have highlight class. Indexing starts with 1
          * @public
          * @return {Array}
          */

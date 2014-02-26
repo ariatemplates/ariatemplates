@@ -134,6 +134,15 @@ Aria.classDefinition({
         _getWidgetInstance : function () {
             return this.getWidgetInstance("MultiAutoId");
         },
+        _suggestionToBeHighlighted : function (index) {
+            var suggestionsContainer = this._getContainer();
+            var suggestionToBeHighlighted = suggestionsContainer.children[index].firstChild;
+            return suggestionToBeHighlighted;
+        },
+        _fireClickOnSuggestion : function (index) {
+            var suggestionToBeHighlighted = this._suggestionToBeHighlighted(index);
+            aria.utils.FireDomEvent.fireEvent('click', suggestionToBeHighlighted);
+        },
         checkHighlightedElementsIndices : function (expectedHighlightedArray) {
             var widgetInstance = this._getWidgetInstance();
             var actualHighlightedArray = widgetInstance.getHighlight();
