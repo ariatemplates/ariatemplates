@@ -201,6 +201,61 @@
             },
 
             /**
+             * Check that value is null
+             * @param {object} value the value to test
+             * @param {String} optMsg optional message to add to the failure description
+             */
+            assertNull : function (value, optMsg) {
+                this.assertTrue((value === null), optMsg || ("Expected value to be null. Got: " + value));
+            },
+
+            /**
+             * Check that value is not null
+             * @param {object} value the value to test
+             * @param {String} optMsg optional message to add to the failure description
+             */
+            assertNotNull : function (value, optMsg) {
+                this.assertTrue((value !== null), optMsg || ("Expected value to be not null. Got: null"));
+            },
+
+            /**
+             * Check that value is undefined
+             * @param {object} value the value to test
+             * @param {String} optMsg optional message to add to the failure description
+             */
+            assertUndefined : function (value, optMsg) {
+                this.assertTrue((value === undefined), optMsg || ("Expected undefined. Got: " + value));
+            },
+
+            /**
+             * Check that value is not undefined
+             * @param {object} value the value to test
+             * @param {String} optMsg optional message to add to the failure description
+             */
+            assertNotUndefined : function (value, optMsg) {
+                this.assertTrue((value !== undefined), optMsg || ("Expected value to not be undefined. Got: undefined"));
+            },
+
+            /**
+             * Check that value is truthy. Truthy values are true if they differ from: false, 0, "", null, undefined,
+             * NaN.
+             * @param {object} value the value to test
+             * @param {String} optMsg optional message to add to the failure description
+             */
+            assertTruthy : function (value, optMsg) {
+                this.assertTrue((value ? true : false), optMsg || ("Expected a truthy value. Got: " + value));
+            },
+
+            /**
+             * Check that value is falsy. Falsy values are: false, 0, "", null, undefined, NaN
+             * @param {object} value the value to test
+             * @param {String} optMsg optional message to add to the failure description
+             */
+            assertFalsy : function (value, optMsg) {
+                this.assertTrue((value ? false : true), optMsg || ("Expected a falsy value. Got: " + value));
+            },
+
+            /**
              * AssertEquals: Check that value1 is equal to value2
              * @param {object} value1 the value to compare
              * @param {object} value2 the value to compare

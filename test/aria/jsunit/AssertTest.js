@@ -18,7 +18,7 @@ Aria.classDefinition({
     $classpath : 'test.aria.jsunit.AssertTest',
     $extends : 'aria.jsunit.TestCase',
     $singleton : false,
-    $dependencies : ["test.aria.jsunit.assertTest.MyClass"],
+    $dependencies : ["test.aria.jsunit.assertTest.MyClass", "aria.utils.Type"],
     $constructor : function () {
         this.$TestCase.constructor.call(this);
     },
@@ -99,25 +99,8 @@ Aria.classDefinition({
             this.assertNotEquals("k", new String("k"), "assertNotEquals on \"k\" and new String(\"k\") should succeed");
             this.assertNotEquals([], [], "assertNotEquals on [] and [] should succeed");
             this.assertNotEquals({}, {}, "assertNotEquals on [] and [] should succeed");
-
-            // asserting assert failures ! need to bypass the raiseFailure method
-            this.raiseFailure = function () {};
-            var assertFailed = true;
-            try {
-                this.assertEquals(obj1, obj2);
-                assertFailed = false; // We expect the assert to fail so we should not reach this statement
-            } catch (e) {}
-            this.raiseFailure = this.constructor.prototype.raiseFailure;
-            this.assertTrue(assertFailed, "Comparing two copies of the same object should fail an assertEquals. assertEquals should only accept strictly identical objects (====)");
-
-            this.raiseFailure = function () {};
-            assertFailed = true;
-            try {
-                this.assertEquals(0, false);
-                assertFailed = false; // We expect the assert to fail so we should not reach this statement
-            } catch (e) {}
-            this.raiseFailure = this.constructor.prototype.raiseFailure;
-            this.assertTrue(assertFailed, "assertEquals(0, false) should fail. assertEquals should rely on strict equality");
+            this.__assertInverseOfAssert(this.assertEquals, [obj1, obj2], "Comparing two copies of the same object should fail an assertEquals. assertEquals should only accept strictly identical objects (===)");
+            this.__assertInverseOfAssert(this.assertEquals, [0, false], "assertEquals(0, false) should fail. assertEquals should rely on strict equality");
         },
 
         /**
@@ -165,16 +148,93 @@ Aria.classDefinition({
             this.assertJsonNotEquals("", false, "assertJsonNotEquals empty string and false should succeed");
             this.assertJsonNotEquals("k", new String("k"), "assertJsonNotEquals on \"k\" and new String(\"k\") should succeed");
             this.assertJsonNotEquals(obj1, obj3, "assertJsonNotEquals should succeed on two objects with a different set of properties");
+            this.__assertInverseOfAssert(this.assertJsonNotEquals, [obj1, obj2], "Comparing two copies of the same object should fail an assertEquals. assertEquals should only accept strictly identical objects (===)");
+        },
 
+        testAssertNull : function () {
+            this.assertNull(null, "assertNull: null === null");
+            this.__assertInverseOfAssert(this.assertNull, "", "assertNull: empty string not null");
+            this.__assertInverseOfAssert(this.assertNull, undefined, "assertNull: unedfined not null");
+            this.__assertInverseOfAssert(this.assertNull, {}, "assertNull: empty object not null");
+            this.__assertInverseOfAssert(this.assertNull, 0, "assertNull: number not null");
+            this.__assertInverseOfAssert(this.assertNull, 1, "assertNull: number not null");
+        },
+
+        testAssertNotNull : function () {
+            this.assertNotNull("", "assertNotNull: empty string not null");
+            this.assertNotNull("A", "assertNotNull: string not null");
+            this.assertNotNull(undefined, "assertNotNull: undefined not null");
+            this.assertNotNull(0, "assertNotNull: number not null");
+            this.assertNotNull(1, "assertNotNull: number not null");
+            this.assertNotNull({}, "assertNotNull: empty object not null");
+            this.__assertInverseOfAssert(this.assertNotNull, null, "assertNotNull: not null");
+        },
+
+        testAssertUndefined : function () {
+            this.assertUndefined(undefined, "assertUndefined: undefined === undefined");
+            this.__assertInverseOfAssert(this.assertUndefined, "", "assertUndefined: empty string not undefined");
+            this.__assertInverseOfAssert(this.assertUndefined, "A", "assertUndefined: string not undefined");
+            this.__assertInverseOfAssert(this.assertUndefined, 0, "assertUndefined: number not undefined");
+            this.__assertInverseOfAssert(this.assertUndefined, 1, "assertUndefined: number not undefined");
+            this.__assertInverseOfAssert(this.assertUndefined, {}, "assertUndefined: empty object not undefined");
+            this.__assertInverseOfAssert(this.assertUndefined, null, "assertUndefined: null not undefined");
+        },
+
+        testAssertNotUndefined : function () {
+            this.assertNotUndefined("", "assertNotUndefined: empty string failed");
+            this.assertNotUndefined("A", "assertNotUndefined: string failed");
+            this.assertNotUndefined(0, "assertNotUndefined: number failed");
+            this.assertNotUndefined(1, "assertNotUndefined: number failed");
+            this.assertNotUndefined({}, "assertNotUndefined: empty object failed");
+            this.assertNotUndefined(null, "assertNotUndefined: empty object failed");
+            this.__assertInverseOfAssert(this.assertNotUndefined, undefined, "assertNotUndefined: undefined failed");
+        },
+
+        testAssertTruthy : function () {
+            this.assertTruthy(1, "assertTruthy: 1 is truthy");
+            this.assertTruthy("A", "assertTruthy: not empty string is truthy");
+            this.assertTruthy("0", "assertTruthy: not empty string is truthy");
+            this.assertTruthy({}, "assertTruthy: object is truthy");
+            this.assertTruthy([], "assertTruthy: array is truthy");
+            this.assertTruthy(true, "assertTruthy: true is truthy");
+            this.__assertInverseOfAssert(this.assertTruthy, false, "assertTruthy: false is not truthy");
+            this.__assertInverseOfAssert(this.assertTruthy, "", "assertTruthy: empty string is not truthy");
+            this.__assertInverseOfAssert(this.assertTruthy, null, "assertTruthy: null is not truthy");
+            this.__assertInverseOfAssert(this.assertTruthy, undefined, "assertTruthy: undefined is not truthy");
+            this.__assertInverseOfAssert(this.assertTruthy, 0, "assertTruthy: 0 is not truthy");
+            this.__assertInverseOfAssert(this.assertTruthy, NaN, "assertTruthy: NaN is not truthy");
+        },
+
+        testAssertFalsy : function () {
+            this.assertFalsy("", "assertFalsy: empty string is falsy");
+            this.assertFalsy(null, "assertFalsy: null is falsy");
+            this.assertFalsy(undefined, "assertFalsy: undefined is falsy");
+            this.assertFalsy(0, "assertFalsy: 0 is falsy");
+            this.assertFalsy(false, "assertFalsy: false is falsy");
+            this.assertFalsy(NaN, "assertFalsy: NaN is falsy");
+            this.__assertInverseOfAssert(this.assertFalsy, true, "assertFalsy: true is not falsy");
+            this.__assertInverseOfAssert(this.assertFalsy, "A", "assertFalsy: string is not falsy");
+            this.__assertInverseOfAssert(this.assertFalsy, "0", "assertFalsy: string is not falsy");
+            this.__assertInverseOfAssert(this.assertFalsy, {}, "assertFalsy: empty object is not falsy");
+            this.__assertInverseOfAssert(this.assertFalsy, [[]], "assertFalsy: array is not falsy");
+            this.__assertInverseOfAssert(this.assertFalsy, 1, "assertFalsy: number !== 0 is not falsy");
+        },
+
+        __assertInverseOfAssert : function (assertFunction, assertValues, optMsg) {
+            if (!aria.utils.Type.isArray(assertValues)) {
+                assertValues = [assertValues];
+            }
             // asserting assert failures ! need to bypass the raiseFailure method
             this.raiseFailure = function () {};
             var assertFailed = true;
             try {
-                this.assertJsonNotEquals(obj1, obj2);
+                assertFunction.apply(this, assertValues);
                 assertFailed = false; // We expect the assert to fail so we should not reach this statement
             } catch (e) {}
+            // reset raiseFailure method for assertTrue to work as expected
             this.raiseFailure = this.constructor.prototype.raiseFailure;
-            this.assertTrue(assertFailed, "Comparing two copies of the same object should fail an assertEquals. assertEquals should only accept strictly identical objects (====)");
+
+            this.assertTrue(assertFailed, optMsg);
         }
     }
 });
