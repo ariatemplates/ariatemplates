@@ -97,10 +97,12 @@ Aria.classDefinition({
             this.$AutoComplete._dom_onclick.call(this, event);
             var element = event.target;
             if (element.className === "closeBtn") {
+                event.preventDefault();
                 this._removeMultiselectValues(element, event);
+            } else {
+                this.__resizeInput();
+                this._textInputField.focus();
             }
-            this.__resizeInput();
-            this._textInputField.focus();
         },
         /**
          * Private method to increase the textInput width on focus
@@ -309,11 +311,6 @@ Aria.classDefinition({
             var label = parent.firstChild.innerText || parent.firstChild.textContent;
             domUtil.removeElement(parent);
             this._removeValues(label);
-            if (event.type == "click") {
-                this.getTextInputField().focus();
-
-            }
-
         },
         /**
          * To edit suggestion on doubleclick
@@ -331,7 +328,6 @@ Aria.classDefinition({
             this._textInputField.focus();
             // to select the edited text.
             this._keepFocus = true;
-            // this._textInputField.style.width = "0px";
             var report = this.controller.checkValue(label);
             report.caretPosStart = 0;
             report.caretPosEnd = label.length;
@@ -355,10 +351,12 @@ Aria.classDefinition({
                     controller.editedSuggestion = obj;
                 }
             });
+            var newSuggestions = aria.utils.Json.copy(controller.selectedSuggestions);
             arrayUtil.removeAt(controller.selectedSuggestions, indexToRemove);
             arrayUtil.remove(controller.selectedSuggestionsLabelsArray, label);
-            var newSuggestions = aria.utils.Json.copy(controller.selectedSuggestions);
-            this.setProperty("value", newSuggestions);
+            var report = controller.checkValue(newSuggestions, 'false');
+            this._reactToControllerReport(report);
+
             this._textInputField.style.width = "0px";
             this.__resizeInput();
         },
