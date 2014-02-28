@@ -18,6 +18,10 @@ Aria.classDefinition({
     $constructor : function (number) {
         this._originalConstructorParam = number;
     },
+    $statics : {
+        STATIC1 : "original",
+        STATIC2 : "original"
+    },
     $prototype : {
         protoVariable1 : "original",
         method1 : function () {

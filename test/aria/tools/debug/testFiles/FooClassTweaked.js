@@ -18,6 +18,10 @@ Aria.classDefinition({
     $constructor : function (number) {
         this._tweakedConstructorParam = number;
     },
+    $statics : {
+        STATIC1 : "tweaked",
+        STATIC5 : "tweaked"
+    },
     $prototype : {
         protoVariable1 : "tweaked",
         method1 : function () {

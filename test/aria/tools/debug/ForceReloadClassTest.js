@@ -119,11 +119,14 @@ Aria.classDefinition({
                 var originalClassRef = Aria.getClassRef(this.classesUnderTestCP[i]);
                 var originalClassRealProto = originalClassRef.prototype;
 
-                // check that prototype methods were replaced properly
+                // check that prototype methods/vars and statics were replaced properly
                 this.assertEquals(originalClassRealProto.method1(), "original");
                 this.assertEquals(originalClassRealProto.method5, undefined);
                 this.assertEquals(originalClassRealProto.method2(), "original");
                 this.assertEquals(originalClassRealProto.protoVariable1, "original");
+                this.assertEquals(originalClassRealProto.STATIC1, "original");
+                this.assertEquals(originalClassRealProto.STATIC5, undefined);
+                this.assertEquals(originalClassRealProto.STATIC2, "original");
 
                 // check that long-existing instances have their prototypes updated too
                 this.assertEquals(this.oldInstances[i].method1(), "original");
@@ -147,11 +150,14 @@ Aria.classDefinition({
                 var originalClassRef = Aria.getClassRef(this.classesUnderTestCP[i]);
                 var originalClassRealProto = originalClassRef.prototype;
 
-                // check that prototype methods were replaced properly
+                // check that prototype methods/vars and statics were replaced properly
                 this.assertEquals(originalClassRealProto.method1(), "tweaked");
                 this.assertEquals(originalClassRealProto.method5(), "tweaked");
                 this.assertEquals(originalClassRealProto.method2, undefined);
                 this.assertEquals(originalClassRealProto.protoVariable1, "tweaked");
+                this.assertEquals(originalClassRealProto.STATIC1, "tweaked");
+                this.assertEquals(originalClassRealProto.STATIC5, "tweaked");
+                this.assertEquals(originalClassRealProto.STATIC2, undefined);
 
                 // check that long-existing instances have their prototypes updated too
                 this.assertEquals(this.oldInstances[i].method1(), "tweaked");
@@ -286,14 +292,26 @@ Aria.classDefinition({
             // remove old entries in prototype and classdef.$prototype
             for (var key in originalClassClassDef.$prototype) {
                 delete originalClassRealProto[key];
+                delete originalClassClassDef.$prototype[key];
             }
-            originalClassClassDef.$prototype = {};
 
             // inject new entries in prototype and classdef.$prototype
             var reloaded$Proto = reloadedClassClassDef.$prototype;
             for (var key in reloaded$Proto) {
                 originalClassRealProto[key] = reloaded$Proto[key];
                 originalClassClassDef.$prototype[key] = reloaded$Proto[key];
+            }
+
+            // remove old statics
+            for (var key in originalClassClassDef.$statics) {
+                delete originalClassRealProto[key];
+                delete originalClassClassDef.$statics[key];
+            }
+
+            // inject new statics
+            for (var key in reloadedClassClassDef.$statics) {
+                originalClassRealProto[key] = reloadedClassClassDef.$statics[key];
+                originalClassClassDef.$statics[key] = reloadedClassClassDef.$statics[key];
             }
 
             // also override constructors and destructors
