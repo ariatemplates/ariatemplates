@@ -230,6 +230,7 @@
                         this._isRangeValue = res.multipleValues;
                     } else {
                         suggestions = res;
+                        this._isRangeValue = false;
                     }
                 }
 
@@ -253,8 +254,8 @@
                             }
                         }
                         // reformat the suggestions to be compatible with the list widget
-                        matchValueIndex = this._prepareSuggestionsAndMatch(suggestions, nextValue);
                         suggestions = this._filterSuggestions(suggestions);
+                        matchValueIndex = this._prepareSuggestionsAndMatch(suggestions, nextValue);
 
                     } else {
                         suggestions = [];
@@ -269,19 +270,33 @@
 
                     // update datamodel through setValue to update the list has well
                     jsonUtils.setValue(dataModel, 'listContent', suggestions);
-                    jsonUtils.setValue(dataModel, 'selectedIdx', matchValueIndex);
+
+                    if (this._isRangeValue) {
+                        dataModel.value = nextValue;
+                        var selectedValues = [];
+                        for (var i = 0; i < dataModel.listContent.length; i++) {
+                            selectedValues.push(dataModel.listContent[i].value);
+                        }
+                        jsonUtils.setValue(dataModel, 'isRangeValue', this._isRangeValue);
+                        jsonUtils.setValue(dataModel, 'selectedValues', selectedValues);
+                    } else {
+                        if (matchValueIndex != -1) {
+                            dataModel.value = dataModel.listContent[matchValueIndex].value;
+                        } else {
+                            if (this.freeText && nextValue) {
+                                // return the text from the autocomplete
+                                dataModel.value = nextValue;
+                            } else {
+                                dataModel.value = null;
+                            }
+                        }
+                        jsonUtils.setValue(dataModel, 'selectedIdx', matchValueIndex);
+                    }
 
                     var report = new aria.widgets.controllers.reports.DropDownControllerReport();
                     report.text = nextValue;
                     report.caretPosStart = args.caretPosStart;
                     report.caretPosEnd = args.caretPosEnd;
-                    var freeText = this.freeText || hasSuggestions;
-                    if (freeText && nextValue) {
-                        // return the text from the autocomplete
-                        dataModel.value = nextValue;
-                    } else {
-                        dataModel.value = null;
-                    }
 
                     report.value = dataModel.value;
                     report.cancelKeyStroke = true;

@@ -50,8 +50,8 @@
         },
         $prototype : {
             rangePattern : {
-                pattern1 : /^[a-z]{1}\d+-\d+/,
-                pattern2 : /^[a-z]{1}\d+,\d+/
+                pattern1 : /^[a-z]{1}\d+-\d*$/,
+                pattern2 : /^[a-z]{1}\d+,\d*/
             },
 
             /**
@@ -69,9 +69,14 @@
                 if (this.allowRangeValues) {
                     var rangeV = [], firstLetter = textEntry.substring(0, 1);
                     if (rangePattern.pattern1.test(textEntry)) {
-                        var valArray = textEntry.substring(1).split("-");
-                        for (var l = valArray[0]; l <= valArray[1]; l++) {
-                            rangeV.push(l);
+                        if (textEntry.charAt(textEntry.length - 1) === "-") {
+                            var value = textEntry.substring(1, 2);
+                            rangeV = [value];
+                        } else {
+                            var valArray =  textEntry.substring(1).split("-");
+                            for (var l = valArray[0]; l <= valArray[1]; l++) {
+                                rangeV.push(l);
+                            }
                         }
                     }
                     if (rangePattern.pattern2.test(textEntry)) {
@@ -83,7 +88,7 @@
                     }
                     var results = {
                         suggestions : [],
-                        multipleValues : true
+                        multipleValues : rangeV.length > 1
                     };
                     for (var k = 0, len = rangeV.length; k < len; k++) {
                         var searchEntry = firstLetter + rangeV[k];
