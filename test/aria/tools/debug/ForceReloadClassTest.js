@@ -49,9 +49,9 @@ Aria.classDefinition({
         this.$TestCase.constructor.call(this);
     },
     $destructor : function () {
-        for (var i = 0; i < this.oldInstances.length; i++) {
-            for (var j = 0; j < this.oldInstances[i].length; j++) {
-                this.oldInstances[i][j].$dispose();
+        for (var cp in this.oldInstances) {
+            for (var j = 0; j < this.oldInstances[cp].length; j++) {
+                this.oldInstances[cp][j].$dispose();
             }
         }
 
