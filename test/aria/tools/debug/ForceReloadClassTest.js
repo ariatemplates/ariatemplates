@@ -134,19 +134,23 @@ Aria.classDefinition({
                 this.assertEquals(originalClassRealProto.STATIC5, undefined);
                 this.assertEquals(originalClassRealProto.STATIC2, "original");
 
-                // check that long-existing instances have their prototypes updated too
+                // check that constructor was replaced properly
+                var newInstance = new originalClassRef(42);
+                this.assertEquals(newInstance._tweakedConstructorParam, undefined);
+                this.assertEquals(newInstance._originalConstructorParam, 42);
+                this.oldInstances[cp].push(newInstance);
+
+                // check that all the instances created so far have their prototypes updated too
                 for (var j = 0; j < this.oldInstances[cp].length; j++) {
                     this.assertEquals(this.oldInstances[cp][j].method1(), "original");
                     this.assertEquals(this.oldInstances[cp][j].method5, undefined);
                     this.assertEquals(this.oldInstances[cp][j].method2(), "original");
                     this.assertEquals(this.oldInstances[cp][j].protoVariable1, "original");
+                    this.assertEquals(this.oldInstances[cp][j].STATIC1, "original");
+                    this.assertEquals(this.oldInstances[cp][j].STATIC5, undefined);
+                    this.assertEquals(this.oldInstances[cp][j].STATIC2, "original");
                 }
 
-                // check that constructor was replaced properly
-                var newInstance = new originalClassRef(42);
-                this.assertEquals(newInstance._tweakedConstructorParam, undefined);
-                this.assertEquals(newInstance._originalConstructorParam, 42);
-                newInstance.$dispose();
             }
         },
 
@@ -168,19 +172,23 @@ Aria.classDefinition({
                 this.assertEquals(originalClassRealProto.STATIC5, "tweaked");
                 this.assertEquals(originalClassRealProto.STATIC2, undefined);
 
-                // check that long-existing instances have their prototypes updated too
+                // check that constructor was replaced properly
+                var newInstance = new originalClassRef(42);
+                this.assertEquals(newInstance._tweakedConstructorParam, 42);
+                this.assertEquals(newInstance._originalConstructorParam, undefined);
+                this.oldInstances[cp].push(newInstance);
+
+                // check that all the instances created so far have their prototypes updated too
                 for (var j = 0; j < this.oldInstances[cp].length; j++) {
                     this.assertEquals(this.oldInstances[cp][j].method1(), "tweaked");
                     this.assertEquals(this.oldInstances[cp][j].method5(), "tweaked");
                     this.assertEquals(this.oldInstances[cp][j].method2, undefined);
                     this.assertEquals(this.oldInstances[cp][j].protoVariable1, "tweaked");
+                    this.assertEquals(this.oldInstances[cp][j].STATIC1, "tweaked");
+                    this.assertEquals(this.oldInstances[cp][j].STATIC5, "tweaked");
+                    this.assertEquals(this.oldInstances[cp][j].STATIC2, undefined);
                 }
 
-                // check that constructor was replaced properly
-                var newInstance = new originalClassRef(42);
-                this.assertEquals(newInstance._tweakedConstructorParam, 42);
-                this.assertEquals(newInstance._originalConstructorParam, undefined);
-                newInstance.$dispose();
             }
 
         },
