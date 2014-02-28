@@ -41,15 +41,18 @@ Aria.classDefinition({
         this.redirectFilter = new test.aria.tools.debug.testFiles.RedirectToTweakedFilter();
 
         /**
-         * An array which will hold the instances of the classes under tests (we create instances right at the
-         * beginning, reload them, and verify their prototypes were altered)
+         * An array which will hold arrays instances of the classes under tests (we create instances right at the
+         * beginning, reload them, and verify their prototypes were altered). The keys of this array are
+         * String-classpaths.
          */
         this.oldInstances = [];
         this.$TestCase.constructor.call(this);
     },
     $destructor : function () {
         for (var i = 0; i < this.oldInstances.length; i++) {
-            this.oldInstances[i].$dispose();
+            for (var j = 0; j < this.oldInstances[i].length; j++) {
+                this.oldInstances[i][j].$dispose();
+            }
         }
 
         this.redirectFilter.$dispose();
@@ -76,8 +79,10 @@ Aria.classDefinition({
         _afterClassesLoaded : function () {
             // first, create instances of the class for later testing
             for (var i = 0; i < this.classesUnderTestCP.length; i++) {
-                var classRef = Aria.getClassRef(this.classesUnderTestCP[i]);
-                this.oldInstances[i] = new classRef(42);
+                var cp = this.classesUnderTestCP[i];
+                var classRef = Aria.getClassRef(cp);
+                this.oldInstances[cp] = this.oldInstances[cp] || [];
+                this.oldInstances[cp].push(new classRef(42));
             }
 
             this._makeAssertionsOriginal();
@@ -116,7 +121,8 @@ Aria.classDefinition({
          */
         _makeAssertionsOriginal : function () {
             for (var i = 0; i < this.classesUnderTestCP.length; i++) {
-                var originalClassRef = Aria.getClassRef(this.classesUnderTestCP[i]);
+                var cp = this.classesUnderTestCP[i];
+                var originalClassRef = Aria.getClassRef(cp);
                 var originalClassRealProto = originalClassRef.prototype;
 
                 // check that prototype methods/vars and statics were replaced properly
@@ -129,10 +135,12 @@ Aria.classDefinition({
                 this.assertEquals(originalClassRealProto.STATIC2, "original");
 
                 // check that long-existing instances have their prototypes updated too
-                this.assertEquals(this.oldInstances[i].method1(), "original");
-                this.assertEquals(this.oldInstances[i].method5, undefined);
-                this.assertEquals(this.oldInstances[i].method2(), "original");
-                this.assertEquals(this.oldInstances[i].protoVariable1, "original");
+                for (var j = 0; j < this.oldInstances[cp].length; j++) {
+                    this.assertEquals(this.oldInstances[cp][j].method1(), "original");
+                    this.assertEquals(this.oldInstances[cp][j].method5, undefined);
+                    this.assertEquals(this.oldInstances[cp][j].method2(), "original");
+                    this.assertEquals(this.oldInstances[cp][j].protoVariable1, "original");
+                }
 
                 // check that constructor was replaced properly
                 var newInstance = new originalClassRef(42);
@@ -147,7 +155,8 @@ Aria.classDefinition({
          */
         _makeAssertionsTweaked : function () {
             for (var i = 0; i < this.classesUnderTestCP.length; i++) {
-                var originalClassRef = Aria.getClassRef(this.classesUnderTestCP[i]);
+                var cp = this.classesUnderTestCP[i];
+                var originalClassRef = Aria.getClassRef(cp);
                 var originalClassRealProto = originalClassRef.prototype;
 
                 // check that prototype methods/vars and statics were replaced properly
@@ -160,10 +169,12 @@ Aria.classDefinition({
                 this.assertEquals(originalClassRealProto.STATIC2, undefined);
 
                 // check that long-existing instances have their prototypes updated too
-                this.assertEquals(this.oldInstances[i].method1(), "tweaked");
-                this.assertEquals(this.oldInstances[i].method5(), "tweaked");
-                this.assertEquals(this.oldInstances[i].method2, undefined);
-                this.assertEquals(this.oldInstances[i].protoVariable1, "tweaked");
+                for (var j = 0; j < this.oldInstances[cp].length; j++) {
+                    this.assertEquals(this.oldInstances[cp][j].method1(), "tweaked");
+                    this.assertEquals(this.oldInstances[cp][j].method5(), "tweaked");
+                    this.assertEquals(this.oldInstances[cp][j].method2, undefined);
+                    this.assertEquals(this.oldInstances[cp][j].protoVariable1, "tweaked");
+                }
 
                 // check that constructor was replaced properly
                 var newInstance = new originalClassRef(42);
