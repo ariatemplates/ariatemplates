@@ -20,7 +20,7 @@ Aria.classDefinition({
     $prototype : {
 
         runTemplateTest : function () {
-            this.clickAndType(["air", "[down][down][enter]", "a", "[down][down][enter]"], {
+            this.clickAndType(["a", "[down][down][enter]", "air", "[down][down][enter]"], {
                 fn : this._editValues,
                 scope : this
             }, 500);
@@ -50,7 +50,7 @@ Aria.classDefinition({
         },
 
         _checkValue : function () {
-            this.checkSelectedItems(2, ["Scandinavian Airlines System", "Air France"]);
+            this.checkSelectedItems(2, ["Air Canada", "Scandinavian Airlines System"]);
             this.end();
         }
 

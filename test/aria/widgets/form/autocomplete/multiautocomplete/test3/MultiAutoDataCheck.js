@@ -19,7 +19,7 @@ Aria.classDefinition({
     $prototype : {
 
         runTemplateTest : function () {
-            this.clickAndType(["air", "[down][down][enter]", "a", "[down][down][enter]"], {
+            this.clickAndType(["a", "[down][down][enter]", "air", "[down][down][enter]"], {
                 fn : this._afterType,
                 scope : this
             }, 500);
@@ -27,11 +27,11 @@ Aria.classDefinition({
 
         _afterType : function () {
             this.checkDataModel(2, [{
-                        label : 'Air Canada',
-                        code : "AC"
-                    }, {
                         label : 'Air France',
                         code : "AF"
+                    }, {
+                        label : 'Scandinavian Airlines System',
+                        code : "SK"
                     }]);
             this.end();
         }

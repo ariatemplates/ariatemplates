@@ -50,8 +50,8 @@
         },
         $prototype : {
             rangePattern : {
-                pattern1 : /^[a-z]{1}\d+-\d*/,
-                pattern2 : /^[a-z]{1}\d+,\d+/
+                pattern1 : /^[a-z]{1}\d+-\d*$/,
+                pattern2 : /^[a-z]{1}\d+,\d*/
             },
 
             /**
@@ -88,7 +88,7 @@
                     }
                     var results = {
                         suggestions : [],
-                        multipleValues : true
+                        multipleValues : rangeV.length > 1
                     };
                     for (var k = 0, len = rangeV.length; k < len; k++) {
                         var searchEntry = firstLetter + rangeV[k];
