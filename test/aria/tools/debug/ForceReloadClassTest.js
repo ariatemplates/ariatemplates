@@ -126,13 +126,7 @@ Aria.classDefinition({
                 var originalClassRealProto = originalClassRef.prototype;
 
                 // check that prototype methods/vars and statics were replaced properly
-                this.assertEquals(originalClassRealProto.method1(), "original");
-                this.assertEquals(originalClassRealProto.method5, undefined);
-                this.assertEquals(originalClassRealProto.method2(), "original");
-                this.assertEquals(originalClassRealProto.protoVariable1, "original");
-                this.assertEquals(originalClassRealProto.STATIC1, "original");
-                this.assertEquals(originalClassRealProto.STATIC5, undefined);
-                this.assertEquals(originalClassRealProto.STATIC2, "original");
+                this._makeAssertionsOriginalFor(originalClassRealProto);
 
                 // check that constructor was replaced properly
                 var newInstance = new originalClassRef(42);
@@ -142,16 +136,19 @@ Aria.classDefinition({
 
                 // check that all the instances created so far have their prototypes updated too
                 for (var j = 0; j < this.oldInstances[cp].length; j++) {
-                    this.assertEquals(this.oldInstances[cp][j].method1(), "original");
-                    this.assertEquals(this.oldInstances[cp][j].method5, undefined);
-                    this.assertEquals(this.oldInstances[cp][j].method2(), "original");
-                    this.assertEquals(this.oldInstances[cp][j].protoVariable1, "original");
-                    this.assertEquals(this.oldInstances[cp][j].STATIC1, "original");
-                    this.assertEquals(this.oldInstances[cp][j].STATIC5, undefined);
-                    this.assertEquals(this.oldInstances[cp][j].STATIC2, "original");
+                    this._makeAssertionsOriginalFor(this.oldInstances[cp][j]);
                 }
-
             }
+        },
+
+        _makeAssertionsOriginalFor : function (obj) {
+            this.assertEquals(obj.method1(), "original");
+            this.assertEquals(obj.method5, undefined);
+            this.assertEquals(obj.method2(), "original");
+            this.assertEquals(obj.protoVariable1, "original");
+            this.assertEquals(obj.STATIC1, "original");
+            this.assertEquals(obj.STATIC5, undefined);
+            this.assertEquals(obj.STATIC2, "original");
         },
 
         /**
@@ -164,13 +161,7 @@ Aria.classDefinition({
                 var originalClassRealProto = originalClassRef.prototype;
 
                 // check that prototype methods/vars and statics were replaced properly
-                this.assertEquals(originalClassRealProto.method1(), "tweaked");
-                this.assertEquals(originalClassRealProto.method5(), "tweaked");
-                this.assertEquals(originalClassRealProto.method2, undefined);
-                this.assertEquals(originalClassRealProto.protoVariable1, "tweaked");
-                this.assertEquals(originalClassRealProto.STATIC1, "tweaked");
-                this.assertEquals(originalClassRealProto.STATIC5, "tweaked");
-                this.assertEquals(originalClassRealProto.STATIC2, undefined);
+                this._makeAssertionsTweakedFor(originalClassRealProto);
 
                 // check that constructor was replaced properly
                 var newInstance = new originalClassRef(42);
@@ -180,17 +171,19 @@ Aria.classDefinition({
 
                 // check that all the instances created so far have their prototypes updated too
                 for (var j = 0; j < this.oldInstances[cp].length; j++) {
-                    this.assertEquals(this.oldInstances[cp][j].method1(), "tweaked");
-                    this.assertEquals(this.oldInstances[cp][j].method5(), "tweaked");
-                    this.assertEquals(this.oldInstances[cp][j].method2, undefined);
-                    this.assertEquals(this.oldInstances[cp][j].protoVariable1, "tweaked");
-                    this.assertEquals(this.oldInstances[cp][j].STATIC1, "tweaked");
-                    this.assertEquals(this.oldInstances[cp][j].STATIC5, "tweaked");
-                    this.assertEquals(this.oldInstances[cp][j].STATIC2, undefined);
+                    this._makeAssertionsTweakedFor(this.oldInstances[cp][j]);
                 }
-
             }
+        },
 
+        _makeAssertionsTweakedFor : function (obj) {
+            this.assertEquals(obj.method1(), "tweaked");
+            this.assertEquals(obj.method5(), "tweaked");
+            this.assertEquals(obj.method2, undefined);
+            this.assertEquals(obj.protoVariable1, "tweaked");
+            this.assertEquals(obj.STATIC1, "tweaked");
+            this.assertEquals(obj.STATIC5, "tweaked");
+            this.assertEquals(obj.STATIC2, undefined);
         },
 
         // =============================================================================================== //
