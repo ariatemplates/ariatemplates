@@ -897,8 +897,11 @@ Aria.classDefinition({
          * @param {Array} newlyUnselectedIndexes array of newly unselected indexes
          */
         _raiseOnChangeEvent : function (newlySelectedIndexes, newlyUnselectedIndexes) {
-            var preselect = this._checkPreselect();
-            newlySelectedIndexes = (preselect === undefined) ? newlySelectedIndexes : [preselect];
+            if (newlySelectedIndexes.length === 0) {
+                var preselect = this._checkPreselect();
+                newlySelectedIndexes = (preselect === undefined) ? newlySelectedIndexes : [preselect];
+            }
+
             this.$raiseEvent({
                 name : "onChange",
                 selectedIndexes : newlySelectedIndexes,

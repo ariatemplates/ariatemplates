@@ -270,15 +270,15 @@
 
                     // update datamodel through setValue to update the list has well
                     jsonUtils.setValue(dataModel, 'listContent', suggestions);
-                    jsonUtils.setValue(dataModel, 'selectedIdx', matchValueIndex);
-
-                    var report = new aria.widgets.controllers.reports.DropDownControllerReport();
-                    report.text = nextValue;
-                    report.caretPosStart = args.caretPosStart;
-                    report.caretPosEnd = args.caretPosEnd;
 
                     if (this._isRangeValue) {
                         dataModel.value = nextValue;
+                        var selectedValues = [];
+                        for (var i = 0; i < dataModel.listContent.length; i++) {
+                            selectedValues.push(dataModel.listContent[i].value);
+                        }
+                        jsonUtils.setValue(dataModel, 'isRangeValue', this._isRangeValue);
+                        jsonUtils.setValue(dataModel, 'selectedValues', selectedValues);
                     } else {
                         if (matchValueIndex != -1) {
                             dataModel.value = dataModel.listContent[matchValueIndex].value;
@@ -290,7 +290,13 @@
                                 dataModel.value = null;
                             }
                         }
+                        jsonUtils.setValue(dataModel, 'selectedIdx', matchValueIndex);
                     }
+
+                    var report = new aria.widgets.controllers.reports.DropDownControllerReport();
+                    report.text = nextValue;
+                    report.caretPosStart = args.caretPosStart;
+                    report.caretPosEnd = args.caretPosEnd;
 
                     report.value = dataModel.value;
                     report.cancelKeyStroke = true;

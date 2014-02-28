@@ -88,6 +88,85 @@ Aria.classDefinition({
         },
 
         /**
+         * Internal function to render the content of the dropdown div
+         * @protected
+         * @param {aria.templates.MarkupWriter} out Markup writer which should receive the content of the popup.
+         * @param {Object} arg Optional parameters
+         */
+        _renderDropdownContent : function (out, options) {
+            options = options || {};
+            var cfg = this._cfg;
+            var dm = this.controller.getDataModel();
+            var element = this._domElt.lastChild;
+            var domUtil = aria.utils.Dom;
+            var geometry = domUtil.getGeometry(element);
+            if (geometry === null) {
+                return;
+            }
+
+            domUtil.scrollIntoView(element);
+            var top = geometry.y;
+            var viewPort = aria.utils.Dom._getViewportSize();
+            var bottom = viewPort.height - top - geometry.height;
+            var maxHeight = (top > bottom) ? top : bottom;
+            var referenceMaxHeight = options.maxHeight || this.MAX_HEIGHT;
+            maxHeight = (maxHeight < this.MIN_HEIGHT) ? this.MIN_HEIGHT : maxHeight;
+            maxHeight = (maxHeight > referenceMaxHeight) ? referenceMaxHeight : maxHeight - 2;
+            var list = new aria.widgets.form.list.List({
+                id : cfg.id,
+                defaultTemplate : "defaultTemplate" in options ? options.defaultTemplate : cfg.listTemplate,
+                block : true,
+                sclass : cfg.listSclass || this._skinObj.listSclass,
+                onclick : {
+                    fn : this._clickOnItem,
+                    scope : this
+                },
+                onmouseover : {
+                    fn : this._mouseOverItem,
+                    scope : this
+                },
+                onkeyevent : {
+                    fn : this._keyPressed,
+                    scope : this
+                },
+                onclose : {
+                    fn : this._closeDropdown,
+                    scope : this
+                },
+                maxHeight : maxHeight,
+                minWidth : "minWidth" in options ? options.minWidth : this._inputMarkupWidth + 15,
+                width : this.__computeListWidth(cfg.popupWidth, this._inputMarkupWidth + 15),
+                preselect : cfg.preselect,
+                bind : {
+                    items : {
+                        to : "listContent",
+                        inside : dm
+                    },
+                    selectedIndex : {
+                        to : "selectedIdx",
+                        inside : dm
+                    },
+                    selectedValues : {
+                        to : "selectedValues",
+                        inside : dm
+                    },
+                    multipleSelect : {
+                        to : "isRangeValue",
+                        inside : dm
+                    }
+                },
+                scrollBarX : false
+            }, this._context, this._lineNumber);
+            list.$on({
+                'widgetContentReady' : this._refreshPopup,
+                scope : this
+            });
+            out.registerBehavior(list);
+            list.writeMarkup(out);
+            this.controller.setListWidget(list);
+        },
+
+        /**
          * Internal method to handle the click event to remove suggestion. This event is used to set focus on input
          * field
          * @param {aria.DomEvent} event Event object
