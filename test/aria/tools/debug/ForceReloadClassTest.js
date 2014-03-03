@@ -29,7 +29,8 @@ Aria.classDefinition({
     $classpath : "test.aria.tools.debug.ForceReloadClassTest",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.core.IOFiltersMgr", "aria.tools.debug.ReloadClassUtil",
-            "test.aria.tools.debug.testFiles.RedirectToTweakedFilter"],
+            "test.aria.tools.debug.testFiles.RedirectToTweakedFilter",
+            "test.aria.tools.debug.testFiles.RedirectToBrokenFilter"],
     $constructor : function () {
         /**
          * The classes to be used for this test
@@ -42,6 +43,11 @@ Aria.classDefinition({
          * the reload of a file
          */
         this.redirectFilter = new test.aria.tools.debug.testFiles.RedirectToTweakedFilter();
+
+        /**
+         * IOFilter which redirects to a broken file to test error recovery
+         */
+        this.redirectFilterBroken = new test.aria.tools.debug.testFiles.RedirectToBrokenFilter();
 
         /**
          * An array which will hold arrays instances of the classes under tests (we create instances right at the
@@ -62,9 +68,12 @@ Aria.classDefinition({
         this.$TestCase.constructor.call(this);
     },
     $destructor : function () {
-
         this.redirectFilter.$dispose();
         this.redirectFilter = null;
+
+        this.redirectFilterBroken.$dispose();
+        this.redirectFilterBroken = null;
+
         this.$TestCase.$destructor.call(this);
     },
     $prototype : {
@@ -161,6 +170,7 @@ Aria.classDefinition({
                 var newInstance = new originalClassRef(42);
                 this.assertEquals(newInstance._tweakedConstructorParam, undefined);
                 this.assertEquals(newInstance._originalConstructorParam, 42);
+                this.oldInstances[cp] = this.oldInstances[cp] || [];
                 this.oldInstances[cp].push(newInstance);
 
                 // check that all the instances created so far have their prototypes updated too
@@ -236,6 +246,44 @@ Aria.classDefinition({
                 this.assertEquals(obj.methodFromQuux(), "quux");
                 this.assertEquals(obj.STATIC_FROM_QUUX, "quux");
             }
+        },
+
+        // ====================================================================================== //
+
+        /**
+         * Check error recovery. First load the files properly, then try loading broken versions.
+         */
+        testAsyncBrokenOnReload : function () {
+            Aria.load({
+                classes : this.classesUnderTestCP,
+                oncomplete : {
+                    fn : this._doBrokenReload,
+                    scope : this
+                }
+            });
+        },
+
+        _doBrokenReload : function () {
+            this._makeAllAssertionsOriginal();
+
+            aria.core.IOFiltersMgr.addFilter(this.redirectFilterBroken);
+            aria.tools.debug.ReloadClassUtil.forceReload(this.classesUnderTestCP, {
+                fn : this._brokenReloadOkCb,
+                scope : this
+            }, {
+                fn : this._brokenReloadErrorCb,
+                scope : this
+            });
+        },
+
+        _brokenReloadOkCb : function () {
+            this.fail("This callback should not have been called");
+        },
+
+        _brokenReloadErrorCb : function () {
+            // make sure everything is as it was at the beginning
+            this._makeAllAssertionsOriginal();
+            this.notifyTestEnd("testAsyncBrokenOnReload");
         }
 
     }

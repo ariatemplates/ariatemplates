@@ -24,9 +24,14 @@ Aria.classDefinition({
         /**
          * Initiates the force-reload of a given classpaths, and calls the callback once done.
          * @param {Array} classpaths Array of string - classpaths of the classes to be reloaded
-         * @param aria.core.CfgBeans.Callback} callback
+         * @param {aria.core.CfgBeans.Callback} callback called when reload finishes
+         * @param {aria.core.CfgBeans.Callback} errorCallback [optional] called when reload fails
+         * @param {Boolean} verboseErrors Whether to also log original load errors (default: false - they're wrapped
+         * with a nicer error messages provided by this method)
          */
-        forceReload : function (classpaths, callback) {
+        forceReload : function (classpaths, callback, errorCallback, verboseErrors) {
+            var verboseErrors = (verboseErrors === true);
+
             // !! Important development note: getClassRef *writes* to cache (this can be tricky for debugging)
             // Any usage of getClassRef should probably be followed by/preceded by purging the cache
 
@@ -38,6 +43,7 @@ Aria.classDefinition({
                 this.__backupAndNullifyClasspath(cp, "$Original$");
             }, this);
 
+            var that = this;
             Aria.load({
                 classes : classpaths,
                 oncomplete : {
@@ -48,8 +54,22 @@ Aria.classDefinition({
                         callback : callback
                     }
                 },
-                onerror : function () {
-                    this.$logError("Unable to reload the classes " + classpaths.join(", "));
+                onerror : {
+                    fn : function () {
+                        aria.utils.Array.forEach(classpaths, function (cp) {
+                            this.__restoreClasspath(cp, "$Original$");
+                        }, that);
+
+                        var msg = "Unable to reload the classes [%1]. Check for syntax and other errors in your files.";
+                        that.$logWarn(msg, [classpaths.join(", ")]);
+
+                        if (errorCallback) {
+                            that.$callback(errorCallback);
+                        }
+                    },
+                    scope : this,
+                    override : !verboseErrors
+                    // override means let the fwk NOT log the errors
                 }
             });
         },
@@ -85,17 +105,17 @@ Aria.classDefinition({
             Aria.cleanGetClassRefCache(cp);
             delete Aria.$classDefinitions[cp];
 
-            if (cacheContent.classes[cp].loader) {
+            if (cacheContent.classes[cp] && cacheContent.classes[cp].loader) {
                 cacheContent.classes[cp].loader.$dispose();
             }
             delete cacheContent.classes[cp];
 
-            if (cacheContent.files[logicalPath].loader) {
+            if (cacheContent.files[logicalPath] && cacheContent.files[logicalPath].loader) {
                 cacheContent.files[logicalPath].loader.$dispose();
             }
             delete cacheContent.files[logicalPath];
 
-            if (cacheContent.urls[url].loader) {
+            if (cacheContent.urls[url] && cacheContent.urls[url].loader) {
                 cacheContent.urls[url].loader.$dispose;
             }
             delete cacheContent.urls[url];
