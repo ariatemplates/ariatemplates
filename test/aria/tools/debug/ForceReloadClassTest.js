@@ -45,25 +45,45 @@ Aria.classDefinition({
          * beginning, reload them, and verify their prototypes were altered). The keys of this array are
          * String-classpaths.
          */
-        this.oldInstances = [];
+        this.oldInstances = {};
+
+        /**
+         * Used to notify about test end (to simplify things, instead of passing the test name continuously)
+         */
+        this.currentTestName = null;
+
         this.$TestCase.constructor.call(this);
     },
     $destructor : function () {
-        for (var cp in this.oldInstances) {
-            for (var j = 0; j < this.oldInstances[cp].length; j++) {
-                this.oldInstances[cp][j].$dispose();
-            }
-        }
 
         this.redirectFilter.$dispose();
         this.redirectFilter = null;
         this.$TestCase.$destructor.call(this);
     },
     $prototype : {
+        tearDown : function () {
+            for (var cp in this.oldInstances) {
+                for (var j = 0; j < this.oldInstances[cp].length; j++) {
+                    this.oldInstances[cp][j].$dispose();
+                }
+            }
+            this.oldInstances = {};
+        },
+
+        testAsyncForceReloadMemCheckYes : function () {
+            this.currentTestName = "testAsyncForceReloadMemCheckYes";
+            this._startForceReloadTest(true);
+        },
+        testAsyncForceReloadMemCheckNo : function () {
+            this.currentTestName = "testAsyncForceReloadMemCheckNo";
+            this._startForceReloadTest(false);
+        },
+
         /**
          * Load the class and assert it's in the original state
          */
-        testAsyncForceReload : function () {
+        _startForceReloadTest : function (memCheckMode) {
+            Aria.memCheckMode = memCheckMode;
             Aria.load({
                 classes : this.classesUnderTestCP,
                 oncomplete : {
@@ -113,7 +133,7 @@ Aria.classDefinition({
         _verifySecondReload : function () {
             this._makeAssertionsOriginal();
 
-            this.notifyTestEnd("testAsyncForceReload");
+            this.notifyTestEnd(this.currentTestName);
         },
 
         /**
@@ -337,14 +357,26 @@ Aria.classDefinition({
                 originalClassClassDef.$statics[key] = newVal;
             }
 
-            // also override constructors and destructors
+            // also override constructors and destructors for memcheckmode
             originalClassClassDef.$constructor = reloadedClassClassDef.$constructor;
             originalClassClassDef.$destructor = reloadedClassClassDef.$destructor;
+
+            // in !memcheckmode, constructors are called directly, hence the namespace pointed to
+            // by a classpath should expose the *new constructor* (but with the *old prototype*)
+            var newConstructor = reloadedClassRef;
+            newConstructor.prototype = originalClassRef.prototype;
+            this.publishAtProperNamespace(newConstructor); // at "cp" namespace
+            Aria.cleanGetClassRefCache(cp);
 
             // clear cache related to the temporary namespace, so that we can reload more than once
             Aria.cleanGetClassRefCache(reloadedCp);
             delete Aria.$classDefinitions[reloadedCp];
             Aria.nspace(reloadedCp)[reloadedClassName] = null;
+        },
+
+        publishAtProperNamespace : function (cnstrctr) {
+            var cd = cnstrctr.classDefinition;
+            Aria.nspace(cd.$package)[cd.$class] = cnstrctr;
         },
 
         /**
