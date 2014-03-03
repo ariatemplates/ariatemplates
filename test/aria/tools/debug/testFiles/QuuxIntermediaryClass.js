@@ -14,25 +14,13 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.tools.debug.testFiles.BarClass",
-    $extends : "test.aria.tools.debug.testFiles.QuuxIntermediaryClass",
-    $constructor : function (number) {
-        this._tweakedConstructorParam = number;
-        if (this.$QuuxIntermediaryClass) {
-            this.$QuuxIntermediaryClass.constructor.call(this);
-        }
-    },
+    $classpath : "test.aria.tools.debug.testFiles.QuuxIntermediaryClass",
     $statics : {
-        STATIC1 : "tweaked",
-        STATIC5 : "tweaked"
+        STATIC_FROM_QUUX : "quux"
     },
     $prototype : {
-        protoVariable1 : "tweaked",
-        method1 : function () {
-            return "tweaked";
-        },
-        method5 : function () {
-            return "tweaked";
+        methodFromQuux : function () {
+            return "quux";
         }
     }
 });

@@ -15,8 +15,12 @@
 
 Aria.classDefinition({
     $classpath : "test.aria.tools.debug.testFiles.FooClass",
+    $extends : "test.aria.tools.debug.testFiles.QuuxIntermediaryClass",
     $constructor : function (number) {
         this._tweakedConstructorParam = number;
+        if (this.$QuuxIntermediaryClass) {
+            this.$QuuxIntermediaryClass.constructor.call(this);
+        }
     },
     $statics : {
         STATIC1 : "tweaked",

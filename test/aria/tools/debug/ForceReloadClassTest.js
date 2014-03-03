@@ -20,7 +20,10 @@
  * repeat the whole flow etc.<br>
  * <br>
  * The main entry point is the "forceReload" method which gets as an input an Array<String> of the classpaths to be
- * reloaded.
+ * reloaded.<br>
+ * <br>
+ * Note: dynamic change of $extends is impossible in IE < 11, hence the test fails there (to make it work, comment out
+ * the line with $extends in Foo|BarClassTweaked.js)
  */
 Aria.classDefinition({
     $classpath : "test.aria.tools.debug.ForceReloadClassTest",
@@ -52,6 +55,10 @@ Aria.classDefinition({
          */
         this.currentTestName = null;
 
+        /**
+         * Whether the current browser supports __proto__
+         */
+        this.supportsProto = (aria.core.Browser.isModernIE || !aria.core.Browser.isIE);
         this.$TestCase.constructor.call(this);
     },
     $destructor : function () {
@@ -105,7 +112,7 @@ Aria.classDefinition({
                 this.oldInstances[cp].push(new classRef(42));
             }
 
-            this._makeAssertionsOriginal();
+            this._makeAllAssertionsOriginal();
 
             aria.core.IOFiltersMgr.addFilter(this.redirectFilter);
             this.forceReload(this.classesUnderTestCP, {
@@ -118,7 +125,7 @@ Aria.classDefinition({
          * Check the reload was successful. Load once again the original file to assure more than one reload will work
          */
         _testForceReload : function () {
-            this._makeAssertionsTweaked();
+            this._makeAllAssertionsTweaked();
 
             aria.core.IOFiltersMgr.removeFilter(this.redirectFilter);
             this.forceReload(this.classesUnderTestCP, {
@@ -131,7 +138,7 @@ Aria.classDefinition({
          * Check that the second reload was successful too
          */
         _verifySecondReload : function () {
-            this._makeAssertionsOriginal();
+            this._makeAllAssertionsOriginal();
 
             this.notifyTestEnd(this.currentTestName);
         },
@@ -139,15 +146,16 @@ Aria.classDefinition({
         /**
          * Assertions based on FooClass.js
          */
-        _makeAssertionsOriginal : function () {
+        _makeAllAssertionsOriginal : function () {
             for (var i = 0; i < this.classesUnderTestCP.length; i++) {
                 var cp = this.classesUnderTestCP[i];
                 var originalClassRef = Aria.getClassRef(cp);
                 var originalClassRealProto = originalClassRef.prototype;
 
                 // check that prototype methods/vars and statics were replaced properly
-                this._makeAssertionsOriginalFor(originalClassRealProto);
-                this._makeAssertionsOriginalForStatic(originalClassRef);
+                this._makeAssertionsOriginal(originalClassRealProto);
+                this._makeAssertionsOriginalInheritance(originalClassRealProto);
+                this._makeAssertionsOriginalStatic(originalClassRef);
 
                 // check that constructor was replaced properly
                 var newInstance = new originalClassRef(42);
@@ -157,36 +165,45 @@ Aria.classDefinition({
 
                 // check that all the instances created so far have their prototypes updated too
                 for (var j = 0; j < this.oldInstances[cp].length; j++) {
-                    this._makeAssertionsOriginalFor(this.oldInstances[cp][j]);
+                    this._makeAssertionsOriginal(this.oldInstances[cp][j]);
                 }
             }
         },
 
-        _makeAssertionsOriginalFor : function (obj) {
+        _makeAssertionsOriginal : function (obj) {
             this.assertEquals(obj.method1(), "original");
             this.assertEquals(obj.method5, undefined);
             this.assertEquals(obj.method2(), "original");
             this.assertEquals(obj.protoVariable1, "original");
-            this._makeAssertionsOriginalForStatic(obj);
+            this._makeAssertionsOriginalStatic(obj);
         },
-        _makeAssertionsOriginalForStatic : function (obj) {
+        _makeAssertionsOriginalStatic : function (obj) {
             this.assertEquals(obj.STATIC1, "original");
             this.assertEquals(obj.STATIC5, undefined);
             this.assertEquals(obj.STATIC2, "original");
+        },
+        _makeAssertionsOriginalInheritance : function (obj) {
+            if (this.supportsProto) {
+                this.assertEquals(obj.methodFromQuux, undefined);
+                this.assertEquals(obj.STATIC_FROM_QUUX, undefined);
+            }
         },
 
         /**
          * Assertions based on FooClassTweaked.js
          */
-        _makeAssertionsTweaked : function () {
+        _makeAllAssertionsTweaked : function () {
             for (var i = 0; i < this.classesUnderTestCP.length; i++) {
                 var cp = this.classesUnderTestCP[i];
                 var originalClassRef = Aria.getClassRef(cp);
                 var originalClassRealProto = originalClassRef.prototype;
 
                 // check that prototype methods/vars and statics were replaced properly
-                this._makeAssertionsTweakedFor(originalClassRealProto);
-                this._makeAssertionsTweakedForStatic(originalClassRef);
+                this._makeAssertionsTweaked(originalClassRealProto);
+                // check also inheritance on prototype level
+                this._makeAssertionsTweakedInheritance(originalClassRealProto);
+                // the constructor also exposes statics
+                this._makeAssertionsTweakedStatic(originalClassRef);
 
                 // check that constructor was replaced properly
                 var newInstance = new originalClassRef(42);
@@ -196,22 +213,29 @@ Aria.classDefinition({
 
                 // check that all the instances created so far have their prototypes updated too
                 for (var j = 0; j < this.oldInstances[cp].length; j++) {
-                    this._makeAssertionsTweakedFor(this.oldInstances[cp][j]);
+                    this._makeAssertionsTweaked(this.oldInstances[cp][j]);
+                    this._makeAssertionsTweakedInheritance(this.oldInstances[cp][j]);
                 }
             }
         },
 
-        _makeAssertionsTweakedFor : function (obj) {
+        _makeAssertionsTweaked : function (obj) {
             this.assertEquals(obj.method1(), "tweaked");
             this.assertEquals(obj.method5(), "tweaked");
             this.assertEquals(obj.method2, undefined);
             this.assertEquals(obj.protoVariable1, "tweaked");
-            this._makeAssertionsTweakedForStatic(obj);
+            this._makeAssertionsTweakedStatic(obj);
         },
-        _makeAssertionsTweakedForStatic : function (obj) {
+        _makeAssertionsTweakedStatic : function (obj) {
             this.assertEquals(obj.STATIC1, "tweaked");
             this.assertEquals(obj.STATIC5, "tweaked");
             this.assertEquals(obj.STATIC2, undefined);
+        },
+        _makeAssertionsTweakedInheritance : function (obj) {
+            if (this.supportsProto) {
+                this.assertEquals(obj.methodFromQuux(), "quux");
+                this.assertEquals(obj.STATIC_FROM_QUUX, "quux");
+            }
         },
 
         // =============================================================================================== //
@@ -360,6 +384,18 @@ Aria.classDefinition({
             // also override constructors and destructors for memcheckmode
             originalClassClassDef.$constructor = reloadedClassClassDef.$constructor;
             originalClassClassDef.$destructor = reloadedClassClassDef.$destructor;
+
+            // take care of inheritance if possible
+            if (originalClassRef.superclass != reloadedClassRef.superclass) {
+                // superclass has changed, not so nice an edge case
+                if (this.supportsProto) {
+                    originalClassRef.superclass = reloadedClassRef.superclass;
+                    originalClassRef.prototype.constructor.prototype.__proto__ = reloadedClassRef.prototype.constructor.prototype.__proto__;
+                } else {
+                    var msg = "[reload tools] A change of parent class ($extends) detected for a class %1. This feature is not supported in IE < 11.";
+                    this.$logWarn(msg, [cp]);
+                }
+            }
 
             // in !memcheckmode, constructors are called directly, hence the namespace pointed to
             // by a classpath should expose the *new constructor* (but with the *old prototype*)
