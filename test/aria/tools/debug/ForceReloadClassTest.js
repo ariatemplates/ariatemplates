@@ -127,6 +127,7 @@ Aria.classDefinition({
 
                 // check that prototype methods/vars and statics were replaced properly
                 this._makeAssertionsOriginalFor(originalClassRealProto);
+                this._makeAssertionsOriginalForStatic(originalClassRef);
 
                 // check that constructor was replaced properly
                 var newInstance = new originalClassRef(42);
@@ -146,6 +147,9 @@ Aria.classDefinition({
             this.assertEquals(obj.method5, undefined);
             this.assertEquals(obj.method2(), "original");
             this.assertEquals(obj.protoVariable1, "original");
+            this._makeAssertionsOriginalForStatic(obj);
+        },
+        _makeAssertionsOriginalForStatic : function (obj) {
             this.assertEquals(obj.STATIC1, "original");
             this.assertEquals(obj.STATIC5, undefined);
             this.assertEquals(obj.STATIC2, "original");
@@ -162,6 +166,7 @@ Aria.classDefinition({
 
                 // check that prototype methods/vars and statics were replaced properly
                 this._makeAssertionsTweakedFor(originalClassRealProto);
+                this._makeAssertionsTweakedForStatic(originalClassRef);
 
                 // check that constructor was replaced properly
                 var newInstance = new originalClassRef(42);
@@ -181,6 +186,9 @@ Aria.classDefinition({
             this.assertEquals(obj.method5(), "tweaked");
             this.assertEquals(obj.method2, undefined);
             this.assertEquals(obj.protoVariable1, "tweaked");
+            this._makeAssertionsTweakedForStatic(obj);
+        },
+        _makeAssertionsTweakedForStatic : function (obj) {
             this.assertEquals(obj.STATIC1, "tweaked");
             this.assertEquals(obj.STATIC5, "tweaked");
             this.assertEquals(obj.STATIC2, undefined);
@@ -316,14 +324,17 @@ Aria.classDefinition({
 
             // remove old statics
             for (var key in originalClassClassDef.$statics) {
+                delete originalClassRef[key];
                 delete originalClassRealProto[key];
                 delete originalClassClassDef.$statics[key];
             }
 
             // inject new statics
             for (var key in reloadedClassClassDef.$statics) {
-                originalClassRealProto[key] = reloadedClassClassDef.$statics[key];
-                originalClassClassDef.$statics[key] = reloadedClassClassDef.$statics[key];
+                var newVal = reloadedClassClassDef.$statics[key];
+                originalClassRef[key] = newVal;
+                originalClassRealProto[key] = newVal;
+                originalClassClassDef.$statics[key] = newVal;
             }
 
             // also override constructors and destructors
