@@ -1421,7 +1421,19 @@ Aria.classDefinition({
 
             myJson.splice(testData.myMap, 0, 0);
             this.assertErrorInLogs(myJson.INVALID_SPLICE_PARAMETERS);
-        }
+        },
 
+        testKeysSimple : function () {
+            this.assertJsonEquals(['mykey'], aria.utils.Json.keys({ mykey: 'value' }));
+        },
+
+        testKeysWithListeners : function () {
+            var listened = { mykey: 'value' };
+            aria.utils.Json.addListener(listened, 'mykey', {
+                fn: function () {
+                }
+            });
+            this.assertJsonEquals(['mykey'], aria.utils.Json.keys(listened));
+        }
     }
 });

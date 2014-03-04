@@ -938,6 +938,19 @@
             },
 
             /**
+             * Retrieves all non metadata keys of a JSON object
+             * @param {Object} container reference to the data holder object
+             * @return {Array} an array containing all non metadata keys of the object
+             * @see aria.utils.Object.keys
+             */
+            keys : function (container) {
+                var raw = aria.utils.Object.keys(container);
+                return aria.utils.Array.filter(raw, function (key) {
+                    return !aria.utils.Json.isMetadata(key);
+                });
+            },
+
+            /**
              * Checks if a property of a JSON object is used as metadata in the framework
              * @param {String} property The property to check (String, Integer or Object)
              * @returns {Boolean} True if the property is a String and it's used as metadata, false otherwise
