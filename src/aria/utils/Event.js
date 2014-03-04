@@ -103,7 +103,8 @@
              * elements to assign the listener to.
              * @param {String} event The type of event to append
              * @param {aria.utils.Callback|Object} callback The method the event invokes, if callback is of type Object
-             * fn property is mandatory
+             * fn property is mandatory. <strong>Note that callback parameter cannot be a function - the form { fn :
+             * {Function}, scope: {Object}, args : {MultiTypes}} is preferred for this callback</strong>
              * @param {Boolean} useCapture capture or bubble phase
              * @return {Boolean} True if the action was successful or deferred, false if one or more of the elements
              * could not have the listener attached, or if the operation throws an exception.
@@ -160,7 +161,8 @@
              * elements to assign the listener to.
              * @param {String} event The type of event to append
              * @param {aria.utils.Callback|Object} callback The method the event invokes, if callback is of type Object
-             * fn property is mandatory
+             * fn property is mandatory. <strong>Note that callback parameter cannot be a function - the form { fn :
+             * {Function}, scope: {Object}, args : {MultiTypes}} is preferred for this callback</strong>
              * @param {Boolean} useCapture capture or bubble phase
              * @return {Boolean} True if the action was successful, false if one or more of the elements could not have
              * the listener attached, or if the operation throws an exception.
