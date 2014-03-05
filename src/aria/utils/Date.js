@@ -1440,6 +1440,23 @@ Aria.classDefinition({
         },
 
         /**
+         * Utility which return a new date object with the non UTC function replaced by the UTC ones
+         * @param {Date} date
+         * @return {Date} a new date object
+         */
+        _createUTCDate : function (date) {
+            var newDate = new Date(date.getTime());
+            newDate.getFullYear = newDate.getUTCFullYear;
+            newDate.getMonth = newDate.getUTCMonth;
+            newDate.getDate = newDate.getUTCDate;
+            newDate.getHours = newDate.getUTCHours;
+            newDate.getMinutes = newDate.getUTCMinutes;
+            newDate.getSeconds = newDate.getUTCSeconds;
+            newDate.getMilliseconds = newDate.getUTCMilliseconds;
+            return newDate;
+        },
+
+        /**
          * Format a date from a given pattern
          * @param {Date} date
          * @param {String} pattern. See
@@ -1460,7 +1477,7 @@ Aria.classDefinition({
 
             if (utcTime) {
                 // create a date object whose local time is the UTC time:
-                date = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds(), date.getUTCMilliseconds());
+                date = this._createUTCDate(date);
             }
 
             var formatFn = this._getFormatFunction(pattern);
