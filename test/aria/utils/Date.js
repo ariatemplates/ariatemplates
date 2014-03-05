@@ -749,6 +749,13 @@ Aria.classDefinition({
             } catch (ex) {
                 this.fail("Date Null");
             }
+        },
+        /**
+         * Test UTC formatting during DST change.
+         */
+        testUTCFormat : function () {
+            var dt = new Date(Date.UTC(2014, 2, 30, 2, 15, 0, 0)); // 30/03/2014 02:15:00 UTC
+            this.assertEquals(aria.utils.Date.format(dt, 'HH:mm', true), "02:15", "30/03/2014 02:15:00 UTC should be formated to %2, got %1");
         }
     }
 });
