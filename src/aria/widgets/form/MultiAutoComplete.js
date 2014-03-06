@@ -82,6 +82,9 @@ Aria.classDefinition({
          * @param {Object} arg Optional parameters
          */
         _reactToControllerReport : function (report, arg) {
+            if (report && report.ok === false) {
+                report.errorValue =  this.controller.selectedSuggestions;
+            }
             this.$AutoComplete._reactToControllerReport.call(this, report, arg);
             if (report && report.value !== null) {
                 this._addMultiselectValues(report, arg);

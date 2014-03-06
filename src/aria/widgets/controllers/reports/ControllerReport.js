@@ -53,6 +53,12 @@ Aria.classDefinition({
         this.value;
 
         /**
+         * Internal value associated to the display when report is ko
+         * @type Object
+         */
+        this.errorValue;
+
+        /**
          * used to return any error messages associated to an internal validation
          * @type Array
          */
