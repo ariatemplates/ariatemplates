@@ -1,0 +1,64 @@
+#!/usr/bin/env node
+
+// we want to reuse the config from the build cfg instead of having to keep it in sync
+// assuming we're in <PROJECT_DIR>/.git/hooks
+var cfgOrigin = '../../build/grunt-config/config-checkCommitMessage.js';
+
+// //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+var fs = require('fs');
+var checkCommit = require('grunt-commit-message-verify/lib/check-commit-message.js');
+
+var commitMsgFile = process.argv[2];
+var commitMsg = fs.readFileSync(commitMsgFile).toString(); // passing "encoding" : "utf8" throws for some reason
+
+var cfg = gruntReadConfigHack(cfgOrigin);
+
+var report = checkCommit.performChecks(commitMsg, cfg);
+
+var errors = report.errors;
+var hasError = (errors.length > 0);
+if (hasError) {
+    var errMsg = ["\nCommit message verification has failed:"];
+    errors.forEach(function (err, idx) {
+        errMsg.push("\n");
+        errMsg.push((idx + 1) + ". " + err + "\n");
+    });
+    writeError(errMsg.join(""));
+}
+process.exit(hasError ? 1 : 0);
+
+/**
+ * This function reads and executes the Grunt config file from the given path and tries to read commit message config.<br>
+ * It requires that the input file has the following structure:<br>
+ * <code>
+ *   module.exports = function (grunt) { grunt.config.set('grunt-commit-message-verify', {...}) }
+ * </code>
+ * @param {String} cfgOrigin Path to the JS file
+ * @return {Object}
+ */
+function gruntReadConfigHack (cfgOrigin) {
+    var cfg;
+
+    // pass the mock object which will fake being grunt and read the config to a local var
+    require(cfgOrigin)({
+        config : {
+            set : function (sEntryName, cfgObj) {
+                if(sEntryName === "grunt-commit-message-verify") {
+                    cfg = cfgObj;
+                }
+            }
+        }
+    });
+
+    if (!cfg) {
+        writeError("Can't read 'grunt-commit-message-verify' config from " + cfgOrigin);
+        process.exit(1);
+    }
+    return cfg;
+}
+
+function writeError (msg) {
+    process.stdout.write(""); // without this, Git GUI doesn't display the message sometimes, don't ask
+    process.stderr.write(msg);
+}

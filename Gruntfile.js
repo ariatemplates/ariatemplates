@@ -22,11 +22,13 @@ module.exports = function (grunt) {
 
     grunt.registerTask('clean', ['removedirs:bootstrap', 'removedirs:prod']);
     grunt.registerTask('release', ['clean', 'bootstrap', 'prod', 'gzipStats:prod']);
-    grunt.registerTask('default', ['gruntTimeHookStart', 'release', 'gruntTimeHookEnd']);
+    grunt.registerTask('git', ['grunt-commit-message-verify']);
+    grunt.registerTask('default', ['gruntTimeHookStart', 'release', 'git', 'gruntTimeHookEnd']);
 
     grunt.loadTasks('./build/grunt-tasks');
     grunt.loadNpmTasks('atpackager');
     grunt.loadNpmTasks('grunt-verifylowercase');
+    grunt.loadNpmTasks('grunt-commit-message-verify');
     grunt.loadNpmTasks('grunt-leading-indent');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadTasks('./build/grunt-config');
