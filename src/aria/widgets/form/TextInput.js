@@ -553,7 +553,7 @@ Aria.classDefinition({
                         }
                         // if the text is incorrect, the bound property should
                         // be set to 'undefined'
-                        hasChange = this.setProperty("value", undefined);
+                        hasChange = this.setProperty("value", report.errorValue);
                     }
                 }
 
