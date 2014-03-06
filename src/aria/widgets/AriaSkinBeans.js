@@ -1350,6 +1350,10 @@ Aria.beanDefinitions({
                     $type : "json:String",
                     $description : ""
                 },
+                "closeHighlightSpriteURL" : {
+                    $type : "json:String",
+                    $description : ""
+                },
                 "closeSpriteHeight" : {
                     $type : "Pixels"
                 },
@@ -1369,6 +1373,22 @@ Aria.beanDefinitions({
                     $default : "#AAAAAA"
                 },
                 "optionsBorderWidth" : {
+                    $type : "Pixels",
+                    $default : 1
+                },
+                "optionsHighlightColor" : {
+                    $type : "Color",
+                    $default : "#333"
+                },
+                "optionsHighlightBackgroundColor" : {
+                    $type : "Color",
+                    $default : "#FFCC66"
+                },
+                "optionsHighlightBorderColor" : {
+                    $type : "Color",
+                    $default : "#AAAAAA"
+                },
+                "optionsHighlightBorderWidth" : {
                     $type : "Pixels",
                     $default : 1
                 }

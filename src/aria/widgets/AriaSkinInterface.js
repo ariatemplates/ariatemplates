@@ -32,7 +32,8 @@ Aria.classDefinition({
          * Array of skin property names containing image URLs. This is used in the preloadSkinImages method.
          */
         skinImageProperties : ['spriteURL', 'handleSpriteURLh', 'proxySpriteURLh', 'handleSpriteURLv',
-                'proxySpriteURLv', 'spriteUrl', 'frameIcon', 'spriteURLv', 'spriteURLh'],
+                'proxySpriteURLv', 'spriteUrl', 'frameIcon', 'spriteURLv', 'spriteURLh', 'closeSpriteURL',
+                'closeHighlightSpriteURL'],
 
         /**
          * Normalizes the whole current skin, if not already done.
