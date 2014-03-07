@@ -60,7 +60,7 @@ Aria.classDefinition({
             this._textInputField = this._frame.getChild(0).lastChild;
         },
         /**
-         * Override internal method not to update the input width incase of multi autocomplete
+         * Override internal method not to update the input width in case of multi autocomplete
          */
         _computeInputWidth : function () {
             return;
@@ -193,24 +193,24 @@ Aria.classDefinition({
             var element = event.target;
             if (element.className === "closeBtn") {
                 this._removeMultiselectValues(element, event);
+                this._textInputField.focus();
             }
             if (element.className.indexOf("xMultiAutoComplete_Option_Text") != -1) {
                 var highlightedSuggestions = this.getHighlight();
                 var index = this._getIndexFromNode(element.parentNode);
                 if (this.controller.freeText && aria.utils.Json.equals(highlightedSuggestions, [index])) {
                     this._editMultiselectValue(element);
+                    this._textInputField.focus();
                 } else {
-                    this.removeHighlight(this.getHighlight());
-                    this.addHighlight(index);
+                    this.highlightOption(index);
                 }
             }
             this.__resizeInput();
-            this._textInputField.focus();
         },
         /**
          * Internal method to get the index of suggestion from suggestions container
          * @protected
-         * @return {Integer} 1-based indexs
+         * @return {Integer} 1-based index
          */
         _getIndexFromNode : function (htmlElement) {
             var i = 1;
@@ -389,7 +389,7 @@ Aria.classDefinition({
          */
         _dom_onkeydown : function (event) {
             var domUtil = aria.utils.Dom;
-                                
+
             var inputField = this.getTextInputField();
             var inputFieldValue = inputField.value;
             var inputFieldIsEmpty = (aria.utils.String.trim(inputFieldValue) === "");
@@ -719,7 +719,7 @@ Aria.classDefinition({
         isInHighlightedMode : function() {
             return this.getHighlight().length > 0;
         },
-        
+
         /**
          * Internal method for calculating the maxOptions allowed for setting it in template
          * @return {Number}
@@ -868,6 +868,7 @@ Aria.classDefinition({
                 }
             }
             return labelArray;
+        },
 
         // Input field management ----------------------------------------------
 

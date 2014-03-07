@@ -32,6 +32,13 @@ Aria.classDefinition({
     },
     $prototype : {
 
+        /**
+         * @return The currently focused element in the page.
+         */
+        getFocusedElement : function() {
+            return Aria.$window.document.activeElement;
+        },
+
         clickAndType : function (text, cb, delay) {
             if (aria.utils.Type.isString(text)) {
                 text = [text];
@@ -49,7 +56,7 @@ Aria.classDefinition({
 
         type : function (evt, args) {
             args = args || evt;
-            this.synEvent.type(this._getField(), args.text.shift(), {
+            this.synEvent.type(this.getFocusedElement(), args.text.shift(), {
                 fn : this.__wait,
                 scope : this,
                 args : args

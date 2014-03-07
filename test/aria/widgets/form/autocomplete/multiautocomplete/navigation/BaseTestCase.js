@@ -114,7 +114,7 @@ Aria.classDefinition({
          * @param[in] {String} keys Key identifiers
          */
         type : function(task, keys) {
-            this.synEvent.type(this.HELPERS.getFocusedElement(), keys, {
+            this.synEvent.type(this.getFocusedElement(), keys, {
                 fn : task.end,
                 scope : task
             });
@@ -277,7 +277,7 @@ Aria.classDefinition({
 
             var field = this._getField();
             var backup = {
-                focused: this.HELPERS.getFocusedElement(),
+                focused: this.getFocusedElement(),
                 value: field.value,
                 caret: aria.utils.Caret.getPosition(field)
             };

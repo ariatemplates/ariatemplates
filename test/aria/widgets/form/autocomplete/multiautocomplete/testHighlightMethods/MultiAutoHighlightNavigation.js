@@ -40,10 +40,14 @@ Aria.classDefinition({
             this._fireClickOnSuggestion(2);
             this.checkHighlightedElementsIndices([3]);
 
-            this.clickAndType(["[delete]"], {
-                fn : this._afterDelete,
-                scope : this
-            }, 800);
+            this.type({
+                text: ["[delete]"],
+                cb: {
+                    fn : this._afterDelete,
+                    scope : this
+                },
+                delay: 800
+            });
 
         },
         _afterDelete : function () {
@@ -51,10 +55,14 @@ Aria.classDefinition({
             this.checkSelectedItems(3, ["India", "Singapore", "France"]);
             this.checkHighlightedElementsIndices([3]);
 
-            this.clickAndType(["[backspace]"], {
-                fn : this._afterBackspace,
-                scope : this
-            }, 800);
+            this.type({
+                text: ["[backspace]"],
+                cb: {
+                    fn : this._afterBackspace,
+                    scope : this
+                },
+                delay: 800
+            });
 
         },
         _afterBackspace : function () {
@@ -94,20 +102,28 @@ Aria.classDefinition({
                     }]);
             this._fireClickOnSuggestion(3);
             this.checkHighlightedElementsIndices([4]);
-            this.clickAndType(["[delete]"], {
-                fn : this._afterDeleteLastSuggestion,
-                scope : this
-            }, 800);
+            this.type({
+                text: ["[delete]"],
+                cb: {
+                    fn : this._afterDeleteLastSuggestion,
+                    scope : this
+                },
+                delay: 800
+            });
         },
         _afterDeleteLastSuggestion : function () {
             this.checkHighlightedElementsIndices([]);
             this._fireClickOnSuggestion(0);
-            this.clickAndType(["[backspace]"], {
-                fn : this._afterBackspaceFirstSuggestion,
-                scope : this
-            }, 800);
+            this.type({
+                text: ["[backspace]"],
+                cb: {
+                    fn : this._afterBackspaceFirstSuggestion,
+                    scope : this
+                },
+                delay: 800
+            });
         },
-        // backspace on firt highlighted suggestion adds the highlight to following element
+        // backspace on first highlighted suggestion adds the highlight to following element
         _afterBackspaceFirstSuggestion : function () {
             this.checkHighlightedElementsIndices([1]);
             this.end();
