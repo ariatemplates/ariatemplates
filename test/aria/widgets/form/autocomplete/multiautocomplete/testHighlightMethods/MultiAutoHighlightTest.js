@@ -34,27 +34,22 @@ Aria.classDefinition({
             var widgetInstance = this.getWidgetInstance("MultiAutoId");
             this.checkSelectedItems(4);
 
-            widgetInstance.addHighlight([1, 3, 4]);
-            this.checkHighlightedElementsIndices([1, 3, 4]);
-            // remove highlight with index
-            widgetInstance.removeHighlight(3);
+            widgetInstance.highlightOption(1);
+            this.checkHighlightedElementsIndices([1]);
+            widgetInstance.unhighlightOption();
+            this.checkHighlightedElementsIndices([]);
 
-            // nothing should happen here
-            widgetInstance.removeHighlight(0);
-            this.checkHighlightedElementsIndices([1, 4]);
-            // add highlight with index
-            widgetInstance.addHighlight(2);
-            this.checkHighlightedElementsIndices([1, 2, 4]);
+            // Bounds
+            widgetInstance.highlightOption(1);
 
-            // remove highlight with array of indices
-            widgetInstance.removeHighlight([2, 4]);
+            widgetInstance.highlightOption(0);
+            this.assertErrorInLogs(widgetInstance.INDEX_OUT_OF_BOUNDS);
             this.checkHighlightedElementsIndices([1]);
 
-            // add highlight with array of indices
-            widgetInstance.addHighlight([2, 3, 4]);
-            // remove highlight with no argument
-            widgetInstance.removeHighlight();
-            this.checkHighlightedElementsIndices([]);
+            widgetInstance.highlightOption(5);
+            this.assertErrorInLogs(widgetInstance.INDEX_OUT_OF_BOUNDS);
+            this.checkHighlightedElementsIndices([1]);
+
             this.end();
         }
     }

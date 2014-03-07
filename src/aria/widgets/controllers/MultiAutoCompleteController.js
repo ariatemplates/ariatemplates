@@ -274,7 +274,7 @@
                     var jsonUtils = aria.utils.Json;
                     jsonUtils.setValue(dataModel, 'selectedIdx', -1);
 
-                    // update datamodel through setValue to update the list has well
+                    // update datamodel through setValue to update the list as well
                     jsonUtils.setValue(dataModel, 'listContent', suggestions);
 
                     if (this._isRangeValue) {
