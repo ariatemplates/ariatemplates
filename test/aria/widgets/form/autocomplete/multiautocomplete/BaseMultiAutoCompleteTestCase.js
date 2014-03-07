@@ -22,7 +22,8 @@ Aria.classDefinition({
 
         this.data = this.data || {
             ac_airline_values : [],
-            freeText : true
+            freeText : true,
+            onChangeCalls : 0
         };
         this.setTestEnv({
             template : "test.aria.widgets.form.autocomplete.multiautocomplete.template.MultiAutoTpl",

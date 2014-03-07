@@ -53,11 +53,6 @@
              */
             this.selectedSuggestions = [];
             /**
-             * All selected suggestions labels
-             * @type Array
-             */
-            this.selectedSuggestionsLabelsArray = [];
-            /**
              * Keeps the suggestion which is being edited
              * @type Object
              */
@@ -83,8 +78,8 @@
              * @param {String} text
              * @return {aria.widgets.controllers.reports.DropDownControllerReport}
              */
-            checkText : function (text, init) {
-                var dataModel = this._dataModel, controller = this, addedValue;
+            checkText : function (text) {
+                var dataModel = this._dataModel;
                 var trimText = aria.utils.String.trim(text);
 
                 if (text !== '' && text !== dataModel.text) {
@@ -96,7 +91,7 @@
                             nextValue : trimText,
                             triggerDropDown : false
                         }
-                    }, controller.selectedSuggestionsLabelsArray);
+                    });
                     return null;
                 }
                 var report = new aria.widgets.controllers.reports.DropDownControllerReport();
@@ -110,110 +105,167 @@
                     dataModel.value = null;
                     dataModel.text = '';
                     report.ok = true;
-                    report.value = this.selectedSuggestions;
                 } else {
                     if (this.freeText) {
                         report.ok = true;
+                        var valueToAdd;
                         if (this.editMode && trimText === this.editedSuggestion.label) {
-                            addedValue = this.editedSuggestion;
-                            dataModel.value = addedValue;
+                            valueToAdd = this.editedSuggestion;
                         } else {
-                            addedValue = trimText;
+                            valueToAdd = trimText;
                         }
-                        report.suggestionsToAdd = addedValue;
-                        addedValue = this._checkValidSuggestion(addedValue);
-                    } else {
-                        if (!dataModel.value) {
-                            report.ok = false;
-                            report.value = null;
-                            report.errorMessages.push(this.res.errors["40020_WIDGET_AUTOCOMPLETE_VALIDATION"]);
-                        }
-
+                        dataModel.value = null;
+                        dataModel.text = '';
+                        report.text = "";
+                        report.suggestionsToAdd = this._checkNewSuggestions([valueToAdd]);
+                    } else if (!dataModel.value) {
+                        report.ok = false;
+                        report.value = null;
+                        report.errorMessages.push(this.res.errors["40020_WIDGET_AUTOCOMPLETE_VALIDATION"]);
                     }
-                    if (dataModel.value) {
-                        report.value = addedValue;
-                    }
-
                 }
+                report.value = this.selectedSuggestions;
+
                 return report;
             },
 
             /**
-             * OVERRIDE Verify a given value
-             * @param {Object} value
+             * Removal of a suggestion
+             * @param {String} label
              * @return {aria.widgets.controllers.reports.DropDownControllerReport}
              * @override
              */
-            checkValue : function (value, init) {
-                var report = new aria.widgets.controllers.reports.DropDownControllerReport(), dataModel = this._dataModel, rangeMatch = [], reportVal = [];
-                var addedValue, isRangeValue = this._isRangeValue;
+            removeValue : function (label) {
+                var newSuggestions = aria.utils.Json.copy(this.selectedSuggestions, false);
+                var indexToRemove = this._findSuggestion(newSuggestions, {
+                    label : label
+                });
+                this.editedSuggestion = newSuggestions[indexToRemove];
+                aria.utils.Array.removeAt(newSuggestions, indexToRemove);
 
-                if (value == null || aria.utils.Array.isEmpty(value)) {
-                    // can be null either because it bound to null or because it is bind to value or request is in
-                    // progress
+                this.selectedSuggestions = newSuggestions;
+
+                var report = new aria.widgets.controllers.reports.DropDownControllerReport();
+
+                report.value = this.selectedSuggestions;
+                return report;
+            },
+
+            /**
+             * Updates selected values.
+             * @param {Array} values
+             */
+            checkExpandedValues : function (selectedValues) {
+                var selectedValuesCopy = aria.utils.Json.copy(selectedValues, false);
+                var selectedSuggestionsCopy = aria.utils.Json.copy(this.selectedSuggestions, false);
+                for (var i = 0, l = selectedSuggestionsCopy.length; i < l; i++) {
+                    var curSelectedSuggestion = selectedSuggestionsCopy[i];
+                    if (typeUtil.isObject(curSelectedSuggestion)) {
+                        var index = this._findSuggestion(selectedValuesCopy, curSelectedSuggestion);
+                        if (index > -1) {
+                            arrayUtil.removeAt(selectedValuesCopy, index);
+                        } else {
+                            arrayUtil.removeAt(selectedSuggestionsCopy, i);
+                            l--;
+                            i--;
+                        }
+                    }
+                }
+                selectedSuggestionsCopy = selectedSuggestionsCopy.concat(selectedValuesCopy);
+                var report = this.checkValue(selectedSuggestionsCopy);
+                this._isExpanded = true;
+                report.repositionDropDown = true;
+                return report;
+            },
+
+            /**
+             * Checks a value coming from the data model. The MultiAutoComplete only accepts arrays or null values from
+             * the data model.
+             * @param {Array} value
+             * @return {aria.widgets.controllers.reports.DropDownControllerReport}
+             * @override
+             */
+            checkValue : function (value) {
+                var report = new aria.widgets.controllers.reports.DropDownControllerReport(), dataModel = this._dataModel;
+
+                if (value == null) {
                     dataModel.text = (this._pendingRequestNb > 0 && dataModel.text) ? dataModel.text : "";
                     dataModel.value = null;
                     report.ok = true;
-                    reportVal = null;
-                } else if (value && !typeUtil.isString(value)) {
+                    this.selectedSuggestions = [];
+                } else if (typeUtil.isArray(value)) {
                     if (this._checkWithSuggestionBean(value, this._resourcesHandler.SUGGESTION_BEAN)) {
-                        var text = this._getLabelFromSuggestion(value);
-                        dataModel.text = text;
-                        report.ok = true;
-                        reportVal = value;
-                    } else {
+                        dataModel.text = "";
                         dataModel.value = null;
                         report.ok = true;
+                        this.selectedSuggestions = value;
+                    } else {
+                        report.ok = false;
                         this.$logError("Value does not match definition for this multiautocomplete: "
                                 + this._resourcesHandler.SUGGESTION_BEAN, [], value);
-                        reportVal = null;
                     }
                 } else {
-                    if (typeUtil.isString(value)) {
-                        dataModel.text = value;
-                        reportVal = value;
-                    }
-                    if (isRangeValue && dataModel.listContent) {
-                        for (var k = 0, len = dataModel.listContent.length; k < len; k++) {
-                            rangeMatch.push(dataModel.listContent[k].value);
-                        }
-                    }
-                    if (!this.freeText) {
-                        report.ok = false;
-                        dataModel.value = null;
-                    } else {
-                        report.ok = true;
-                        reportVal = value;
+                    report.ok = false;
+                    this.$logError("Wrong multiautocomplete value: " + value, [], value);
+                }
 
-                    }
-                }
-                var suggestionsToAdd = rangeMatch.length > 0 ? rangeMatch : reportVal;
-                if (this.editMode) {
-                    suggestionsToAdd = "";
-                }
-                addedValue = this._checkValidSuggestion(suggestionsToAdd);
-                report.value = addedValue;
+                report.clearSuggestions = true;
+                report.suggestionsToAdd = report.value = this.selectedSuggestions;
                 report.text = dataModel.text;
-                report.suggestionsToAdd = suggestionsToAdd;
                 return report;
             },
+
             /**
-             * Checks if the suggestion to be added is an array or abject & pushes it to all suggestions
+             * Check the value selected by the user in the dropdown. It is called by checkKeyStroke.
+             * @param {Object} value
+             * @return {aria.widgets.controllers.reports.ControllerReport}
+             */
+            checkDropdownValue : function (value) {
+                var isRangeValue = this._isRangeValue;
+                if (!isRangeValue && typeUtil.isString(value)) {
+                    return this.checkText(value);
+                } else {
+                    var report = new aria.widgets.controllers.reports.DropDownControllerReport();
+                    var dataModel = this._dataModel, listContent = dataModel.listContent;
+                    var suggestionsToAdd = [];
+                    if (isRangeValue && listContent) {
+                        for (var k = 0, len = listContent.length; k < len; k++) {
+                            suggestionsToAdd.push(listContent[k].value);
+                        }
+                    } else if (value) {
+                        suggestionsToAdd.push(value);
+                    }
+                    report.suggestionsToAdd = this._checkNewSuggestions(suggestionsToAdd);
+                    report.value = this.selectedSuggestions;
+                    report.text = "";
+                    dataModel.text = "";
+                    dataModel.value = null;
+                    return report;
+                }
+            },
+
+            /**
+             * Pushes new suggestions to the array of selectedSuggestions and return the array of new suggestions.
              * @protected
              * @param {Object} suggestionToBeAdded
              * @return {Array}
              */
-            _checkValidSuggestion : function (suggestionToBeAdded) {
-                var allSuggestions = aria.utils.Json.copy(this.selectedSuggestions);
-                if (typeUtil.isObject(suggestionToBeAdded) || typeUtil.isString(suggestionToBeAdded)) {
-                    allSuggestions.push(suggestionToBeAdded);
+            _checkNewSuggestions : function (suggestionToBeAdded) {
+                var allSuggestions = aria.utils.Json.copy(this.selectedSuggestions, false);
+                var res = [];
+                var maxOptions = this.maxOptions;
+                var length = suggestionToBeAdded.length;
+                if (maxOptions && allSuggestions.length + length > maxOptions) {
+                    length = maxOptions - allSuggestions.length;
                 }
-                if (typeUtil.isArray(suggestionToBeAdded)) {
-                    for (var k = 0; k < suggestionToBeAdded.length; k++) {
+                if (length > 0) {
+                    for (var k = 0; k < length; k++) {
                         allSuggestions.push(suggestionToBeAdded[k]);
+                        res[k] = suggestionToBeAdded[k];
                     }
+                    this.selectedSuggestions = allSuggestions;
                 }
-                return allSuggestions;
+                return res;
             },
             /**
              * Callback after the asynchronous suggestions
@@ -222,7 +274,6 @@
              * @param {Object} args nextValue and triggerDropDown properties
              */
             _suggestionsCallback : function (res, args) {
-
                 this._pendingRequestNb -= 1;
 
                 var suggestions = null;
@@ -242,6 +293,7 @@
 
                 // default selection is first element
                 var nextValue = args.nextValue, triggerDropDown = args.triggerDropDown, matchValueIndex = -1, dataModel = this._dataModel;
+                var allSuggestions = !!args.allSuggestions;
 
                 // don't do anything if displayedValue has changed
                 // -> user has typed something else before the callback returned
@@ -260,7 +312,7 @@
                             }
                         }
                         // reformat the suggestions to be compatible with the list widget
-                        suggestions = !this._isExpanded ? this._filterSuggestions(suggestions) : suggestions;
+                        suggestions = allSuggestions ? suggestions : this._filterSuggestions(suggestions);
                         matchValueIndex = this._prepareSuggestionsAndMatch(suggestions, nextValue);
 
                     } else {
@@ -283,11 +335,11 @@
                         for (var i = 0; i < dataModel.listContent.length; i++) {
                             selectedValues.push(dataModel.listContent[i].value);
                         }
-                        jsonUtils.setValue(dataModel, 'isRangeValue', this._isRangeValue);
+                        jsonUtils.setValue(dataModel, 'multipleSelect', this._isRangeValue);
                         jsonUtils.setValue(dataModel, 'selectedValues', selectedValues);
-                    } else if (this._isExpanded) {
+                    } else if (allSuggestions) {
                         jsonUtils.setValue(dataModel, 'selectedValues', this.selectedSuggestions);
-                        jsonUtils.setValue(dataModel, 'isRangeValue', true);
+                        jsonUtils.setValue(dataModel, 'multipleSelect', true);
                     } else {
                         if (matchValueIndex != -1) {
                             dataModel.value = dataModel.listContent[matchValueIndex].value;
@@ -324,14 +376,12 @@
                         dataModel.value = nextValue;
                     }
                     report.displayDropDown = hasSuggestions && triggerDropDown;
-                    report.repositionDropDown = repositionDropDown;
+                    report.repositionDropDown = repositionDropDown || (this._isExpanded !== allSuggestions);
+                    this._isExpanded = allSuggestions;
                     var arg = {};
                     arg.stopValueProp = true;
                     this._raiseReport(report, arg);
                     aria.templates.RefreshManager.resume();
-                }
-                if (this._isExpanded) {
-                    this._isExpanded = false;
                 }
             },
             /**
@@ -340,44 +390,48 @@
              * @return {Array}
              */
             _filterSuggestions : function (suggestions) {
+                var selectedSuggestions = this.selectedSuggestions;
                 var filteredSuggestions = [];
                 for (var i = 0; i < suggestions.length; i++) {
-                    if (arrayUtil.indexOf(this.selectedSuggestionsLabelsArray, suggestions[i].label) == -1) {
-                        filteredSuggestions.push(suggestions[i]);
+                    var curSuggestion = suggestions[i];
+                    if (this._findSuggestion(selectedSuggestions, curSuggestion) == -1) {
+                        filteredSuggestions.push(curSuggestion);
                     }
                 }
                 return filteredSuggestions;
             },
+
             /**
-             * Prepare the drop down list
-             * @param {String} displayValue
-             * @param {Boolean} currentlyOpen
-             * @return {aria.widgets.controllers.reports.DropDownControllerReport}
-             */
-            toggleDropdown : function (displayValue, currentlyOpen) {
-                this._isExpanded = !this._isExpanded;
-                this.$AutoCompleteController.toggleDropdown.call(this, displayValue, currentlyOpen);
-            },
-            /**
-             * Internal method to validate the value with suggestion bean
-             * @param {Object} value
-             * @param {aria.resources.handlers.LCResourcesHandlerBean.Suggestion} bean to validate with
+             * Returns the index of the given suggestion in the given array of suggestions. The comparison is based on
+             * labels.
+             * @param {Array} suggestionsList
+             * @param {Object} suggestion
              * @return {Boolean}
              */
-            _checkWithSuggestionBean : function (value, beanName) {
-                var valid = true, arrayOfSuggestions = [];
-                if (typeUtil.isObject(value)) {
-                    arrayOfSuggestions.push(value);
-                } else if (typeUtil.isArray(value)) {
-                    arrayOfSuggestions = value;
+            _findSuggestion : function (suggestionsList, suggestion) {
+                for (var i = 0, l = suggestionsList.length; i < l; i++) {
+                    if (suggestion.label == suggestionsList[i].label) {
+                        return i;
+                    }
                 }
-                for (var k = 0; k < arrayOfSuggestions.length; k++) {
-                    if (!typeUtil.isString(arrayOfSuggestions[k])
-                            && !aria.core.JsonValidator.check(arrayOfSuggestions[k], beanName)) {
+                return -1;
+            },
+
+            /**
+             * Internal method to validate the value with suggestion bean.
+             * @param {Array} value
+             * @param {String} bean to validate each item of the array with
+             * @return {Boolean}
+             */
+            _checkWithSuggestionBean : function (arrayOfSuggestions, beanName) {
+                for (var k = 0, l = arrayOfSuggestions.length; k < l; k++) {
+                    var currentSuggestion = arrayOfSuggestions[k];
+                    if (!typeUtil.isString(currentSuggestion)
+                            && !aria.core.JsonValidator.check(currentSuggestion, beanName)) {
                         return false;
                     }
                 }
-                return valid;
+                return true;
             },
 
             /**
@@ -422,7 +476,7 @@
                                 caretPosStart : caretPosStart,
                                 caretPosEnd : caretPosEnd
                             }
-                        }, controller.selectedSuggestionsLabelsArray);
+                        });
                     }
                 }, 10);
                 return null;

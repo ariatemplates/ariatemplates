@@ -36,6 +36,10 @@
 			maxOptions: data.maxOptions || 8,
 			freeText: (data.freeText !== false),
 			resourcesHandler: getAirLinesHandler(),
+			onchange: {
+				fn : this.onChangeHandler,
+				scope : this
+			},
 			bind:{
 			  	"value" : {
 			  		inside : data,
