@@ -160,7 +160,7 @@ Aria.classDefinition({
                         dataModel.value = dataModel.listContent[dataModel.selectedIdx].value;
                     }
                     if (dataModel.selectedId != -1) {
-                        report = this.checkValue(dataModel.value);
+                        report = this.checkDropdownValue(dataModel.value);
                         report.displayDropDown = false; // close the dropdown
                         report.cancelKeyStroke = true; // prevent fieldset onSubmit when closing the popup through
                         // ENTER
@@ -176,7 +176,7 @@ Aria.classDefinition({
                             dataModel.value = dataModel.initialInput;
                         }
                     }
-                    report = this.checkValue(dataModel.value);
+                    report = this.checkDropdownValue(dataModel.value);
                     report.displayDropDown = false; // close the dropdown
                     report.cancelKeyStroke = false;
                     return report;
@@ -215,6 +215,15 @@ Aria.classDefinition({
                 }
                 return report;
             }
+        },
+
+        /**
+         * Check the value selected by the user in the dropdown.
+         * @param {Object} value
+         * @return {aria.widgets.controllers.reports.ControllerReport}
+         */
+        checkDropdownValue : function (value) {
+            return this.checkValue(value);
         },
 
         /**

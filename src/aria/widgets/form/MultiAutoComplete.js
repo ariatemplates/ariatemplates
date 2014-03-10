@@ -83,11 +83,11 @@ Aria.classDefinition({
          */
         _reactToControllerReport : function (report, arg) {
             if (report && report.ok === false) {
-                report.errorValue =  this.controller.selectedSuggestions;
+                report.errorValue = this.controller.selectedSuggestions;
             }
             this.$AutoComplete._reactToControllerReport.call(this, report, arg);
-            if (report && report.value !== null) {
-                this._addMultiselectValues(report, arg);
+            if (report) {
+                this._updateMultiselectValues(report);
             }
         },
 
@@ -152,7 +152,7 @@ Aria.classDefinition({
                         inside : dm
                     },
                     multipleSelect : {
-                        to : "isRangeValue",
+                        to : "multipleSelect",
                         inside : dm
                     }
                 },
@@ -160,7 +160,6 @@ Aria.classDefinition({
             };
             if (controller._isExpanded) {
                 listObj.defaultTemplate = controller.getExpandoTemplate();
-                listObj.multipleSelect = true;
                 listObj.maxOptions = (this.controller.maxOptions) ? this.__returnMaxCount() : null;
                 listObj.onchange = {
                     fn : this._changeOnItem,
@@ -236,9 +235,9 @@ Aria.classDefinition({
          */
         initWidget : function () {
             this.$AutoComplete.initWidget.call(this);
-            var cfg = this._cfg, initWidget = true;
+            var cfg = this._cfg;
             if (cfg.value) {
-                var report = this.controller.checkValue(cfg.value, initWidget);
+                var report = this.controller.checkValue(cfg.value);
                 this._reactToControllerReport(report);
             }
         },
@@ -247,53 +246,32 @@ Aria.classDefinition({
          * @protected
          * @param {aria.widgets.form.MultiAutoComplete} ref
          * @param {aria.widgets.controllers.reports.DropDownControllerReport} report
-         * @param {Object} arg Optional parameters
          */
 
-        _addMultiselectValues : function (report, arg) {
-            var controller = this.controller, suggestionToBeAdded = report.suggestionsToAdd;
-            var isValid;
-            var typeUtil = aria.utils.Type;
-            var domUtil = aria.utils.Dom;
-            if (controller.editMode) {
-                isValid = typeUtil.isString(suggestionToBeAdded);
-            } else {
-                isValid = typeUtil.isArray(suggestionToBeAdded) || typeUtil.isObject(suggestionToBeAdded);
-            }
-
-            if (controller.freeText && suggestionToBeAdded) {
-                isValid = true;
-            }
-            if (controller.maxOptions && controller.selectedSuggestions.length == controller.maxOptions) {
-                this._textInputField.value = "";
-            }
-            if (isValid && suggestionToBeAdded && !this._dropdownPopup) {
-                var suggestionsMarkup = "";
-                if (typeUtil.isArray(suggestionToBeAdded)) {
-                    var maxOptionsLength = (controller.maxOptions)
-                            ? aria.utils.Math.min((controller.maxOptions - controller.selectedSuggestions.length), suggestionToBeAdded.length)
-                            : suggestionToBeAdded.length;
-                    for (var i = 0; i < maxOptionsLength; i++) {
-                        suggestionsMarkup += this._generateSuggestionMarkup(suggestionToBeAdded[i], this);
-                    }
-                } else {
-                    var lessThanMaxOptions = controller.maxOptions
-                            ? controller.maxOptions > controller.selectedSuggestions.length
-                            : true;
-                    if (lessThanMaxOptions) {
-                        suggestionsMarkup = this._generateSuggestionMarkup(suggestionToBeAdded);
-                    }
+        _updateMultiselectValues : function (report) {
+            var controller = this.controller;
+            var inputField = this._textInputField;
+            var inputFieldParent = inputField.parentNode;
+            if (report.clearSuggestions) {
+                this._makeInputFieldLastChild();
+                while (inputFieldParent.firstChild != inputField) {
+                    inputFieldParent.removeChild(inputFieldParent.firstChild);
                 }
-                domUtil.insertAdjacentHTML(this._textInputField, "beforeBegin", suggestionsMarkup);
-                this.__createEllipsis(this._textInputField);
-                this._textInputField.value = "";
+            }
+            var suggestionsToAdd = report.suggestionsToAdd;
+            if (suggestionsToAdd && suggestionsToAdd.length > 0) {
+                var suggestionsMarkup = [];
+                for (var i = 0, l = suggestionsToAdd.length; i < l; i++) {
+                    suggestionsMarkup.push(this._generateSuggestionMarkup(suggestionsToAdd[i]));
+                }
+                aria.utils.Dom.insertAdjacentHTML(inputField, "beforeBegin", suggestionsMarkup.join(""));
+                this.__createEllipsis(inputField);
                 this._makeInputFieldLastChild();
                 if (controller.editMode) {
                     controller.editMode = false;
                 }
-                this._textInputField.style.width = "0px";
+                inputField.style.width = "0px";
                 this.__resizeInput();
-
             }
         },
         /**
@@ -303,22 +281,11 @@ Aria.classDefinition({
          * @return {String}
          */
         _generateSuggestionMarkup : function (value) {
-            var suggestionMarkup, checkExistingValue = false, cfg = this._cfg;
+            var cfg = this._cfg;
             var label = aria.utils.String.escapeHTML(value.label || value);
-            for (var k = 0; k < this.controller.selectedSuggestions.length; k++) {
-                if (this.controller.selectedSuggestions[k].label == value) {
-                    checkExistingValue = true;
-                    break;
-                }
-            }
-            if (!checkExistingValue) {
-                this.controller.selectedSuggestions.push(value);
-                this.controller.selectedSuggestionsLabelsArray.push(label);
-            }
-            suggestionMarkup = "<div class='xMultiAutoComplete_" + cfg.sclass + "_options' "
-                    + "><span class='xMultiAutoComplete_Option_Text' >" + label
-                    + "</span><a href='javascript:void(0);' class='closeBtn'></a></div>";
-            return suggestionMarkup;
+            return '<div class="xMultiAutoComplete_' + cfg.sclass
+                    + '_options"><span class="xMultiAutoComplete_Option_Text">' + label
+                    + '</span><a href="javascript:void(0);" class="closeBtn"></a></div>';
         },
         /**
          * Method to create ellipsis for an added Suggestion
@@ -366,11 +333,12 @@ Aria.classDefinition({
          * @protected
          */
         _makeInputFieldLastChild : function () {
-            var domUtil = aria.utils.Dom;
-            if (this._frame.getChild(0).lastChild !== this._textInputField) {
-                domUtil.insertAdjacentHTML(this._frame.getChild(0).lastChild, "afterEnd", "<span></span>");
-                domUtil.replaceDomElement(this._frame.getChild(0).lastChild, this._textInputField);
-                this._textInputField.style.width = "0px";
+            var inputField = this._textInputField;
+            var inputFieldParent = inputField.parentNode;
+            if (inputFieldParent.lastChild !== inputField) {
+                inputFieldParent.removeChild(inputField);
+                inputFieldParent.appendChild(inputField);
+                inputField.style.width = "0px";
                 this.__resizeInput();
             }
         },
@@ -467,7 +435,7 @@ Aria.classDefinition({
          * @protected
          */
         _editMultiselectValue : function (domElement, event) {
-            var label, arg = {};
+            var label;
             var domUtil = aria.utils.Dom;
             label = domElement.textContent || domElement.innerText;
             domUtil.replaceDomElement(domElement.parentNode, this._textInputField);
@@ -477,10 +445,11 @@ Aria.classDefinition({
             // to select the edited text.
             this._keepFocus = true;
             // this._textInputField.style.width = "0px";
-            var report = this.controller.checkValue(label);
+            var report = this.controller.checkText("");
+            report.text = label;
             report.caretPosStart = 0;
             report.caretPosEnd = label.length;
-            this.$TextInput._reactToControllerReport.call(this, report, arg);
+            this._reactToControllerReport(report);
             // after setting the value removing focus
             this._keepFocus = false;
 
@@ -491,19 +460,8 @@ Aria.classDefinition({
          * @protected
          */
         _removeValues : function (label) {
-            var indexToRemove, controller = this.controller;
-            var arrayUtil = aria.utils.Array;
-            arrayUtil.forEach(controller.selectedSuggestions, function (obj, index) {
-                var suggestionLabel = obj.label || obj;
-                if (suggestionLabel == label) {
-                    indexToRemove = index;
-                    controller.editedSuggestion = obj;
-                }
-            });
-            arrayUtil.removeAt(controller.selectedSuggestions, indexToRemove);
-            arrayUtil.remove(controller.selectedSuggestionsLabelsArray, label);
-            var newSuggestions = aria.utils.Json.copy(controller.selectedSuggestions);
-            this.setProperty("value", newSuggestions);
+            var report = this.controller.removeValue(label);
+            this._reactToControllerReport(report);
             this._textInputField.style.width = "0px";
             this.__resizeInput();
         },
@@ -622,131 +580,8 @@ Aria.classDefinition({
          * @param {Array} newVals array of values that will be selected after the change
          */
         _changeOnItem : function (values) {
-            this._closeDropdown();
-            var newArrayValue = this._constructSelectedSuggestion();
-            var valueArray = this.__constructLabelArray(values);
-            var checkedValue = this._selectDeselectValues(newArrayValue, valueArray, values);
-            if (checkedValue && aria.utils.Type.isArray(checkedValue)) {
-                var report = this.controller.checkValue(checkedValue);
-                this._reactToControllerReport(report);
-            }
-        },
-        /**
-         * Internal Method for bulding label array from values
-         * @param {Array} values
-         * @return {Array} Array of labels
-         */
-        __constructLabelArray : function (values) {
-            var valueArray = [];
-            for (var m = 0; m < values.length; m++) {
-                valueArray.push(values[m].label);
-            }
-            return valueArray;
-        },
-        /**
-         * To select or deselect the options from widget depending on the action performed on the template
-         * @param {Array} newArray Array containing all the selected suggestions from allSuggestions.
-         * @param {} newlabelArray Array containing the all the labels returned from the list template
-         * @param {} values actual Array of values returned from list Template.
-         * @return {Boolean}
-         */
-        _selectDeselectValues : function (newArray, newlabelArray, values) {
-            var arrayUtil = aria.utils.Array, jsonUtil = aria.utils.Json;
-            // In case of deselectAll
-            if (!values.length > 0) {
-                this._unselectValues(newArray);
-                return false;
-            }
-            // In case of deselecting individually
-            if (values.length < newArray.length) {
-                var labelArray = jsonUtil.copy(newArray);
-                for (var l = 0; l < newArray.length; l++) {
-                    if (arrayUtil.contains(newlabelArray, newArray[l])) {
-                        arrayUtil.removeAt(labelArray, arrayUtil.indexOf(labelArray, newArray[l]));
-                    }
-                }
-                this._unselectValues(labelArray);
-                return false;
-            }
-            // In case of selectAll and each select
-            if (values.length > newArray.length) {
-                var optionsArray = [];
-                for (var m = 0; m < values.length; m++) {
-                    if (!arrayUtil.contains(newArray, values[m].label) && this._checkMaxCount(optionsArray)) {
-                        optionsArray.push(values[m]);
-                    }
-                }
-                return optionsArray;
-            }
-            return false;
-        },
-        /**
-         * for checking the maxoptions is not exceeded while adding options from list
-         * @param {Array} options total number of options to the widget
-         * @return {Boolean} returns true if maxOptions are not exceeded
-         */
-        _checkMaxCount : function (options) {
-            if (!this.controller.maxOptions) {
-                return true;
-            } else {
-                var totalOptions = this.controller.selectedSuggestions.length + options.length;
-                return totalOptions < this.controller.maxOptions;
-            }
-        },
-        /**
-         * To filter the the array of elements to remove
-         * @param {Array} newArray
-         */
-        _unselectValues : function (newArray) {
-            var selectedElements = this._textInputField.parentElement.childNodes, elementArray = [];
-            for (var index = 0, elementLen = newArray.length; index < elementLen; index++) {
-                var elementLabel = newArray[index];
-                for (var eleIndex = 0, len = selectedElements.length - 1; eleIndex < len; eleIndex++) {
-                    var element = selectedElements[eleIndex], label = element.firstChild.innerText
-                            || element.firstChild.textContent;
-                    if (label === elementLabel) {
-                        elementArray.push(element);
-                        break;
-                    }
-
-                }
-            }
-            this._removeElements(elementArray);
-        },
-        /**
-         * Method to remove the selected options after deselecting in list template
-         * @param {Array} of elementsToremove
-         */
-        _removeElements : function (elementsToremove) {
-            if (elementsToremove.length === 0) {
-                // do Nothing
-                return;
-            }
-            for (var k = 0, len = elementsToremove.length; k < len; k++) {
-                this._removeMultiselectValues(elementsToremove[k], null, 1);
-            }
-        },
-        /**
-         * Method to construct the Array after comparing the selected suggestion in widget with allSuggestions
-         * @return {Array} returns the Array of suggestons labels
-         */
-        _constructSelectedSuggestion : function () {
-            var selectedArray = this.controller.selectedSuggestionsLabelsArray, labelArray = aria.utils.Json.copy(selectedArray), arrayUtil = aria.utils.Array;
-            for (var labelIndex = 0; labelIndex < selectedArray.length; labelIndex++) {
-                var eachLabel = selectedArray[labelIndex];
-                var allSuggestions = this.controller._resourcesHandler._suggestions, matchFound = false;
-                for (var suggstion = 0; suggstion < allSuggestions.length; suggstion++) {
-                    var suggestionLabel = allSuggestions[suggstion].label;
-                    if (suggestionLabel === eachLabel.toLowerCase()) {
-                        matchFound = true;
-                        break;
-                    }
-                }
-                if (!matchFound) {
-                    arrayUtil.removeAt(labelArray, arrayUtil.indexOf(labelArray, eachLabel));
-                }
-            }
-            return labelArray;
+            var report = this.controller.checkExpandedValues(values);
+            this._reactToControllerReport(report);
         }
     }
 });

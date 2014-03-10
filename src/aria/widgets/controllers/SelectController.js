@@ -316,6 +316,15 @@
             },
 
             /**
+             * Check the value selected by the user in the dropdown.
+             * @param {Object} value
+             * @return {aria.widgets.controllers.reports.ControllerReport}
+             */
+            checkDropdownValue : function (value) {
+                return this.checkValue(value);
+            },
+
+            /**
              * Verify a given text and return a report. Always returns null (as a select widget does not support setting
              * its displayed text directly).
              * @param {String} text

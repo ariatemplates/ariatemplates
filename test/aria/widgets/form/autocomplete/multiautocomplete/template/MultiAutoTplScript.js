@@ -42,19 +42,19 @@ Aria.tplScriptDefinition({
                 }, {
                     label : 'P4.redd',
                     code : 'P4'
-                },{
+                }, {
                     label : 'P5.loreum',
                     code : 'P5'
-                },{
+                }, {
                     label : 'P6.ipsum',
                     code : 'P6'
-                },{
+                }, {
                     label : 'P7.lomeo',
                     code : 'P7'
-                },{
+                }, {
                     label : 'P8.amino',
                     code : 'P8'
-                },{
+                }, {
                     label : 'Scandinavian Airlines System',
                     code : 'SK'
                 }]);
@@ -66,6 +66,9 @@ Aria.tplScriptDefinition({
     $prototype : {
         getAirLinesHandler : function () {
             return this._airLineHandler;
+        },
+        onChangeHandler : function () {
+            this.data.onChangeCalls++;
         }
     }
 });

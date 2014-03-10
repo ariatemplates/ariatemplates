@@ -43,9 +43,6 @@ Aria.classDefinition({
 
         _checkValuefirst : function () {
             this.checkSelectedItems(1, ["Qantas"]);
-            this.clickonExpandoButton("_checkOptionsAgain");
-        },
-        _checkOptionsAgain : function () {
             this.toggleOption("MultiAutoId", 4, "_checkValueSecond");
         },
         _checkValueSecond : function () {
@@ -58,10 +55,6 @@ Aria.classDefinition({
                         code : 'P2'
 
                     }]);
-            this.clickonExpandoButton("_uncheckOptions");
-
-        },
-        _uncheckOptions : function () {
             this.toggleOption("MultiAutoId", 1, "_checkFinalValue");
         },
         _checkFinalValue : function () {

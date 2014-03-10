@@ -46,7 +46,7 @@ Aria.classDefinition({
          */
         _clickOnItem : function (evt) {
             this._closeDropdown();
-            var report = this.controller.checkValue(evt.value);
+            var report = this.controller.checkDropdownValue(evt.value);
             this._reactToControllerReport(report);
         },
 

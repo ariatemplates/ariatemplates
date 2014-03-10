@@ -464,7 +464,8 @@
                     args : {
                         nextValue : displayValue,
                         triggerDropDown : !currentlyOpen,
-                        keepSelectedValue : true
+                        keepSelectedValue : true,
+                        allSuggestions : true
                     }
                 });
             },
