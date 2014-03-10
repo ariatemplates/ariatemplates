@@ -266,40 +266,43 @@ Aria.classDefinition({
     },
     $prototype : {
         /**
-         * Perform an asynchronous request to the server <br />
-         * Note: callback is always called in an asynchronous way (even in case of errors)
+         * Perform an asynchronous request to the server.<br>
+         * The callback is always called in an asynchronous way (even in case of errors).<br>
+         * <br>
+         * <strong>Note: in order to have non-null `responseJSON`/`responseXML` node in the response, you have to
+         * explicitly set expectedResponseType: 'json'/'xml' respectively in your request config.</strong>
          * @param {aria.core.CfgBeans:IOAsyncRequestCfg} req the request description
          *
          * <pre>
          * [req] {
-         *    url: 'myfile.txt',     // absolute or relative URL
-         *    method: 'POST',        // POST, PUT, DELETE, OPTIONS, HEAD, TRACE, OPTIONS, CONNECT, PATCH or GET (default)
-         *    data: '',              // {String} null by default
-         *    contentTypeHeader:'',  // {String} application/x-www-form-urlencoded; charset=UTF-8 by default
-         *    timeout: 1000,         // {Integer} timeout in ms - default: defaultTimeout
+         *    url: 'myfile.txt',            // absolute or relative URL
+         *    expectedResponseType: 'json'  // 'json', 'xml' or 'text' (default)
+         *    method: 'POST',               // POST, PUT, DELETE, OPTIONS, HEAD, TRACE, OPTIONS, CONNECT, PATCH or GET (default)
+         *    data: '',                     // {String} null by default
+         *    contentTypeHeader: '',        // {String} application/x-www-form-urlencoded; charset=UTF-8 by default
+         *    timeout: 1000,                // {Integer} timeout in ms - default: defaultTimeout
          *    callback: {
-         *      fn: obj.method,        // mandatory
-         *      scope: obj,            // mandatory
-         *      onerror: obj2.method2  // callback error handler - optional
-         *      onerrorScope: obj2     // optional
-         *      args: {x:123}          // optional - default: null
+         *      fn: obj.method,             // mandatory
+         *      scope: obj,                 // mandatory
+         *      onerror: obj2.method2       // callback error handler - optional
+         *      onerrorScope: obj2          // optional
+         *      args: {x:123}               // optional - default: null
          *    }
          * }
          * When a response is received, the callback function is called with the following arguments:
          * <code>
-         * cb(asyncRes, cbArgs)
+         * callback(response, callbackArgs)
          * </code>
-         * where:
-         * the structure of asyncRes is described in aria.core.CfgBeans.IOAsyncRequestResponseCfg
-         * [asyncRes] {
+         * where the structure of `response` is described in aria.core.CfgBeans.IOAsyncRequestResponseCfg
+         * [response] {
          *    url: '',
          *    status: '',
          *    responseText: '',
-         *    responseXML: xmlObj,
-         *    responseJSON: JSON Object,
+         *    responseXML: xmlObj,          // not always available, see note above
+         *    responseJSON: JSON Object,    // not always available, see note above
          *    error: ''
          * }
-         * [cbArgs] == args object in the req object
+         * [callbackArgs] == args object in the req object
          * </pre>
          *
          * @return {Integer} a request id
@@ -328,41 +331,27 @@ Aria.classDefinition({
          * Make a pseudo asynchronous form submission. The form is submitted through an iframe, that is set as the
          * target of the form. When calling this method, the form is actually submitted, so that the response is added
          * in the body of the iframe. This mechanism is a common workaround that avoids the full refresh of the current
-         * page, as everything happens in the iframe. BEWARE: this method may fail in certain browsers depending on the
-         * Content-Type of the response. For example, if the Content-Type of the response is "application/json", some
-         * browsers will not output its content inside the body, or will prompt you to save or open the file. XML
-         * responses are generally accepted. In these specific cases, bear in mind that it is possible to serialize a
-         * form using method aria.utils.Html.serializeForm and use the extracted string as the data of a standard ajax
-         * request (aria.core.IO.asyncRequest). This will not be possible if some of the elements of your form are not
+         * page, as everything happens in the iframe.<br>
+         * <br>
+         * BEWARE: this method may fail in certain browsers depending on the Content-Type of the response. For example,
+         * if the Content-Type of the response is "application/json", some browsers will not output its content inside
+         * the body, or will prompt you to save or open the file. XML responses are generally accepted. In these
+         * specific cases, bear in mind that it is possible to serialize a form using method
+         * aria.utils.Html.serializeForm and use the extracted string as the data of a standard ajax request
+         * (aria.core.IO.asyncRequest). This will not be possible if some of the elements of your form are not
          * serializable.
-         * @param {aria.core.CfgBeans:IOAsyncRequestCfg} request Request description
+         * @param {aria.core.CfgBeans:IOAsyncRequestCfg} request Request description<br>
+         * <br>
+         * See the documentation of `asyncRequest` method regarding the structure and options of request and response.<br>
+         * On top of that, the `request` object can contain `form` or `formId`.<br>
+         * If `request.url` and `request.method` are not set, they're taken from the form's `action` and `method`
+         * attributes respectively.
          *
          * <pre>
          * [request] {
-         *    formId: &quot;callback&quot;,  // ID of the form that is to be submitted
-         *    form: //the html form element
-         *    url:&quot;myfile.txt&quot;, // absolute or relative URL
-         *    method: &quot;POST&quot;,   // POST or GET (default)
-         *    timeout: 1000,    // {Integer} timeout in ms - default: defaultTimeout
-         *    callback: {
-         *      fn: obj.method,     // mandatory
-         *      scope: obj,         // mandatory
-         *      onerror: obj2.method2 // callback error handler - optional - default: Timer error log
-         *      onerrorScope: obj2    // optional - default: Timer or scope if onError is provided
-         *      args: {x:123}       // optional - default: null
-         *    }
+         *    form: HTMLElement       // a reference to the HTML &lt;form&gt; element
+         *    formId: 'myForm',       // HTML ID of the form that is to be submitted
          * }
-         * When a response is received, the callback function is called with the following arguments:
-         * callback(response, callbackArgs)
-         * where:
-         * [response] { // the structure of response is described in aria.core.CfgBeans.IOAsyncRequestResponseCfg
-         *    url: &quot;&quot;,
-         *    status: &quot;&quot;,
-         *    responseText: &quot;&quot;,
-         *    responseXML: XML Object,
-         *    error: &quot;&quot; // error description
-         * }
-         * and callbackArgs == args object in the request callback object
          * </pre>
          *
          * @return {Integer} Request identifier

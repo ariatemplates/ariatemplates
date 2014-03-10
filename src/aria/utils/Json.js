@@ -623,13 +623,13 @@
 
             /**
              * Adds a listener to an object. The listener is a standard callback which is called when data are modified
-             * through setValue.
+             * through setValue. <strong>Note that callback parameter cannot be a function - see the note below</strong>.
              * @param {Object} container reference to the data holder object - e.g. data.search.preferedCity
              * @param {String} property name of a given property in the targeted container. If specified, the callback
              * will be called only if this property is changed.
-             * @param {aria.core.CfgBeans:Callback} callback listener callback to add. Note that JsObject.$callback is
-             * not used for performance reasons, so that only the form { fn : {Function}, scope: {Object}, args :
-             * {MultiTypes}} is supported for this callback.
+             * @param {aria.core.CfgBeans:Callback} callback listener callback to add. <strong>Note that
+             * JsObject.$callback is not used for performance reasons, so that only the form { fn : {Function}, scope:
+             * {Object}, args : {MultiTypes}} is supported for this callback.</strong>
              * @param {Boolean} throwError if true, throws errors instead of logging it.
              * @param {Boolean} recursive If true, the listener will also be called for changes in the whole sub-tree of
              * the container. If false, it will be called only for changes in the container itself.

@@ -32,7 +32,7 @@ Aria.classDefinition({
          *
          * <pre>
          * {
-         *     uinqueId : aria.utils.overlay.LoadingOverlay
+         *     uniqueId : aria.utils.overlay.LoadingOverlay
          * }
          * </pre>
          */

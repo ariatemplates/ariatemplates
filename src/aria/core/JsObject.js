@@ -441,7 +441,7 @@
 
             /**
              * Gets a proper signature callback from description given in argument
-             * @param {Object | String} cn callback signature
+             * @param {Object|String} cn callback signature
              * @return {Object} callback object with fn and scope
              */
             $normCallback : function (cb) {
@@ -733,6 +733,7 @@
             /**
              * Remove all listeners associated to a given scope - if no scope is provided all listeneres will be removed
              * @param {Object} scope the scope of the listeners to remove
+             * @param {Object} itfWrap
              */
             $unregisterListeners : function (scope, itfWrap) {
                 if (this._listeners == null) {
@@ -764,6 +765,8 @@
             /**
              * Adds a listener to an event, and removes it right after the event has been raised. Please refer to
              * $addListeners() for parameters description
+             * @param {Object} lstCfg
+             * @param {Object} itfWrap
              */
             $onOnce : function (lstCfg, itfWrap) {
                 for (var evt in lstCfg) {
