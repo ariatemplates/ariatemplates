@@ -37,6 +37,14 @@
         {var skinClassName=info.skinClassName/}
         {var skinClass=info.skinClass/}
 
+        .xMultiAutoComplete_list{
+            {if skinClass.listTop}
+                top: ${skinClass.listTop}px;
+            {/if}
+            {if skinClass.listLeft}
+                left: ${skinClass.listLeft}px;
+            {/if}
+        }
         .xMultiAutoComplete_${skinClassName}_options{
             display:inline-block;
             position:relative;
