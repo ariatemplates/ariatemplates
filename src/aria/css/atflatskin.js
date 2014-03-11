@@ -54,6 +54,117 @@ Aria.classDefinition({
                     }
                 }
             },
+            "MultiAutoComplete" : {
+                "std" : {
+                    "iconsRight" : "dropdown",
+                    "frameType" : "Simple",
+                    "states" : {
+                        "normal" : {
+                            "borderTop" : 1,
+                            "borderLeft" : 1,
+                            "borderBottom" : 1,
+                            "border" : "solid",
+                            "borderColor" : "#DFDFDF",
+                            "borderTopLeftRadius" : 3,
+                            "borderTopRightRadius" : 0,
+                            "borderBottomLeftRadius" : 3,
+                            "borderBottomRightRadius" : 0,
+                            "backgroundColor" : "#FFF",
+                            "color" : "#000",
+                            "icons" : {
+                                "dropdown" : "multiSelectNormalRight:multiselect"
+                            },
+                            "paddingTop" : 5,
+                            "paddingRight" : 10,
+                            "paddingLeft" : 10,
+                            "paddingBottom" : 5,
+                            "frameHeight" : 16
+                        },
+                        "normalFocused" : {
+                            "borderColor" : "#34495E",
+                            "backgroundColor" : "#FFF",
+                            "icons" : {
+                                "dropdown" : "multiSelectNormalFocusedRight:multiselect"
+                            }
+                        },
+                        "normalError" : {
+                            "borderColor" : "#d87e8b",
+                            "backgroundColor" : "#f2dede",
+                            "icons" : {
+                                "dropdown" : "multiSelectErrorRight:multiselect"
+                            }
+                        },
+                        "normalErrorFocused" : {
+                            "borderColor" : "#be293f",
+                            "backgroundColor" : "#f2dede",
+                            "icons" : {
+                                "dropdown" : "multiSelectErrorFocusedRight:multiselect"
+                            }
+                        },
+                        "mandatory" : {
+                            "backgroundColor" : "#FFC",
+                            "icons" : {
+                                "dropdown" : "multiSelectMandatoryRight:multiselect"
+                            }
+                        },
+                        "mandatoryFocused" : {
+                            "backgroundColor" : "#FFC",
+                            "borderColor" : "#F1C40F",
+                            "icons" : {
+                                "dropdown" : "multiSelectMandatoryFocusedRight:multiselect"
+                            }
+                        },
+                        "mandatoryError" : {
+                            "borderColor" : "#d87e8b",
+                            "backgroundColor" : "#f2dede",
+                            "icons" : {
+                                "dropdown" : "multiSelectErrorRight:multiselect"
+                            }
+                        },
+                        "mandatoryErrorFocused" : {
+                            "borderColor" : "#be293f",
+                            "backgroundColor" : "#f2dede",
+                            "icons" : {
+                                "dropdown" : "multiSelectErrorFocusedRight:multiselect"
+                            }
+                        },
+                        "readOnly" : {
+                            "backgroundColor" : "#F8F8F8",
+                            "icons" : {
+                                "dropdown" : "multiSelectReadOnlyRight:multiselect"
+                            }
+                        },
+                        "prefill" : {
+                            "color" : "gray"
+                        },
+                        "disabled" : {
+                            "backgroundColor" : "#DFDFDF",
+                            "icons" : {
+                                "dropdown" : "multiSelectDisabledRight:multiselect"
+                            }
+                        }
+                    },
+                    "helpText" : {
+                        italics : true,
+                        color : "#b2b2b2"
+                    },
+                    "listTop" : -5,
+                    "listLeft" : -10,
+                    "offsetTop" : 1,
+                    "optionsBackgroundColor" : "#E4E4E4",
+                    "optionsColor" : "#333",
+                    "optionsBorderWidth" : 1,
+                    "optionsBorderColor" : "#AAAAAA",
+                    "closeSpriteURL" : "data:image/svg+xml;base64,PHN2ZyANCiAgICAgdmVyc2lvbj0iMS4xIiANCiAgICAgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiANCiAgICAgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIA0KICAgICB3aWR0aD0iMjFweCIgaGVpZ2h0PSI0MXB4IiANCiAgICAgdmlld0JveD0iMCAwIDIxIDQxIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIj4gDQogICA8Zz4gDQo8aW1hZ2Ugd2lkdGg9IjIxIiBoZWlnaHQ9IjQxIiB4bGluazpocmVmPSJkYXRhOmltYWdlL2dpZjtiYXNlNjQsIA0KUjBsR09EbGhGUUFwQUtFQ0FJaUlpTXpNelAvLy8vLy8veUgrRVVOeVpXRjBaV1FnZDJsMGFDQkhTVTFRQUNINUJBRUtBQUlBTEFBQQ0KQUFBVkFDa0FBQUk3bEkrcHkrMFBvNXkwR25Dd0JGeHdIWDBkOVZVaUNKWGxsbG51QzhmeVROZjJqZC9Cc1V2QkwvajFJa0lnUlZncA0KRGlGSXBJK1hpMHFuakFJQU93PT0NCiIvPiANCiAgIDwvZz4gDQo8L3N2Zz4JDQo=",
+                    "closeSpriteHeight" : 10,
+                    "closeSpriteWidth" : 9,
+                    "optionsHighlightBackgroundColor" : "#0088CC",
+                    "optionsHighlightColor" : "#FFF",
+                    "optionsHighlightBorderWidth" : 1,
+                    "optionsHighlightBorderColor" : "#AAAAAA",
+                    "closeHighlightSpriteURL" : "data:image/svg+xml;base64,PHN2ZyANCiAgICAgdmVyc2lvbj0iMS4xIiANCiAgICAgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiANCiAgICAgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIA0KICAgICB3aWR0aD0iMjFweCIgaGVpZ2h0PSI0MXB4IiANCiAgICAgdmlld0JveD0iMCAwIDIxIDQxIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIj4gDQogICA8Zz4gDQo8aW1hZ2Ugd2lkdGg9IjIxIiBoZWlnaHQ9IjQxIiB4bGluazpocmVmPSJkYXRhOmltYWdlL2dpZjtiYXNlNjQsIA0KUjBsR09EbGhGUUFwQUtFQ0FJaUlpTXpNelAvLy8vLy8veUgrRVVOeVpXRjBaV1FnZDJsMGFDQkhTVTFRQUNINUJBRUtBQUlBTEFBQQ0KQUFBVkFDa0FBQUk3bEkrcHkrMFBvNXkwR25Dd0JGeHdIWDBkOVZVaUNKWGxsbG51QzhmeVROZjJqZC9Cc1V2QkwvajFJa0lnUlZncA0KRGlGSXBJK1hpMHFuakFJQU93PT0NCiIvPiANCiAgIDwvZz4gDQo8L3N2Zz4JDQo="
+                }
+            },
             "MultiSelect" : {
                 "std" : {
                     "iconsRight" : "dropdown",
