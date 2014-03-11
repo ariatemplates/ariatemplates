@@ -1356,7 +1356,6 @@
      * }
      * </pre>
      *
-     *
      * If there is no need to specify the <code>scope</code> and <code>args</code>, the callbacks can be passed
      * directly as functions: e.g. <code>oncomplete: function () {...}</code> instead of
      * <code>oncomplete: {fn: function () {...}}</code>
@@ -1562,11 +1561,21 @@
         return null;
     };
 
-    /*
-     * We need __temporaryIsIE outside of the closure to define the correct version of Aria["eval"]. In IE with Selenium,
-     * adding the sourceURL raises an error. (PTR 05647136)
+    /**
+     * Private variable to support sourceURL statement. Evaluates to "@" in old Firefoxes and "#" in other browsers.
+     * @type String
      */
-    Aria.__tempIE = __temporaryIsIE;
+    Aria.__sourceUrlPrefix = (function () {
+        // Versions of Firebug available for Firefox <= 22 support only @ syntax
+        // New versions of Chrome, Safari, and Firebugs for Firefox 23+ support # syntax
+        // Also let's use # in IE though it doesn't do anything as of IE11, but at least it doesn't create issues like
+        // //@ does in old versions of IE
+        var matchesFx = navigator ? navigator.userAgent.match(/Firefox\/(\d+)/) : false;
+        if (matchesFx && +matchesFx[1] <= 22) {
+            return "@";
+        }
+        return "#";
+    })();
 
 })();
 
@@ -1579,11 +1588,7 @@
  * @param {Object} evalContext An object to be available from the javascript code being evaluated. The object is named
  * evalContext.
  */
-Aria["eval"] = Aria.__tempIE ? function (srcJS, srcURL, evalContext) {
-    // PTR 05647136: on IE with Selenium, adding the sourceURL raises an error.
-    // Moreover, the debugger in IE does not make any use of sourceURL.
-    return eval(srcJS);
-} : function (srcJS, srcURL, evalContext) {
+Aria["eval"] = function (srcJS, srcURL, evalContext) {
     // PTR 05051375: this eval method must be put outside of the closure because, in packaged mode, variables in the
     // closure are renamed and it is possible that loading a file through eval changes the value of those variables
     // resulting in very strange JS exceptions
@@ -1591,9 +1596,7 @@ Aria["eval"] = Aria.__tempIE ? function (srcJS, srcURL, evalContext) {
     // changed by assignment inside the eval
     if (srcURL) {
         // To have better debugging support:
-        srcJS = [srcJS, '\n//@ sourceURL=', Aria.rootFolderPath, srcURL, '\n'].join('');
+        srcJS = [srcJS, '\n//', Aria.__sourceUrlPrefix, ' sourceURL=', Aria.rootFolderPath, srcURL, '\n'].join('');
     }
     return eval(srcJS);
 };
-
-delete Aria.__tempIE;
