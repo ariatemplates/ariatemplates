@@ -346,7 +346,7 @@
                         }, 0);
                     }
                 } else {
-                    endProps.opacity = oldValues.opacity || 1;
+                    endProps.opacity = (oldValues.opacity)? oldValues.opacity.fullValue : 1;
                 }
 
                 elem.style.display = display || "block";
