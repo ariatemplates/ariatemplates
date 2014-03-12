@@ -108,7 +108,7 @@ Aria.classDefinition({
 
         this.$TestCase.$destructor.call(this);
     },
-    $dependencies : ["aria.utils.SynEvents", "aria.templates.RefreshManager", "aria.utils.Type"],
+    $dependencies : ["aria.utils.SynEvents", "aria.templates.RefreshManager", "aria.utils.Type", "aria.utils.Dom"],
     $statics : {
         IFRAME_LOAD_TEMPLATE : "Error loading template '%1' in iframe",
         IFRAME_LOADER : "Unable to load Aria Templates in iframe because: %1"
@@ -410,26 +410,12 @@ Aria.classDefinition({
         },
 
         /**
-         * Useful method to emulate the getElementsByClassName on browser which doesn't support this feature
-         * @param {HTMLElement} dom The source dom element
-         * @param {String} classname The class name to look for
-         * @return {Array} Array of Html elements
-         */
-        getElementsByClassName : function (dom, classname) {
-            if (dom.getElementsByClassName) {
-                return dom.getElementsByClassName(classname);
-            } else {
-                var els = dom.getElementsByTagName("*");
-                var found = [];
-                var regexp = new RegExp("\\b" + classname + "\\b");
-                for (var i = 0, ii = els.length; i < ii; i++) {
-                    var el = els[i];
-                    if (regexp.test(el.className)) {
-                        found.push(el);
-                    }
-                }
-                return found;
-            }
+         * Proxy to aria.utils.Dom.getElementsByClassName - kept for backwards compatibility.
+         * Better use aria.utils.Dom.getElementsByClassName directly.
+         * @deprecated
+        */
+        getElementsByClassName : function (domElt, classname) {
+            return aria.utils.Dom.getElementsByClassName(domElt, classname);
         },
 
         /**
