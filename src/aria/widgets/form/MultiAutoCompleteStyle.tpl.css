@@ -59,10 +59,12 @@
             width:${skinClass.closeSpriteWidth}px;
             display:inline-block;
             padding-left:2px;
+            cursor:pointer;
             {call background(skinClass.optionsBackgroundColor, skinClass.closeSpriteURL, "no-repeat -5px -25px")/}
         }
 
         .xMultiAutoComplete_${skinClassName}_options span.xMultiAutoComplete_Option_Text{
+            outline: none;
             margin:2px 5px;
             display:inline-block;
             cursor:pointer;
@@ -78,7 +80,6 @@
             background-position: -5px -5px;
         }
         .xMultiAutoComplete_${skinClassName}_options.highlight{
-            outline: none;
             border: ${skinClass.optionsHighlightBorderWidth}px solid ${skinClass.optionsHighlightBorderColor};
             background-color: ${skinClass.optionsHighlightBackgroundColor};
             color:${skinClass.optionsHighlightColor};

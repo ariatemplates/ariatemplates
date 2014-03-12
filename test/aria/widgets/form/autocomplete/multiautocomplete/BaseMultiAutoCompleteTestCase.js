@@ -16,7 +16,7 @@
 Aria.classDefinition({
     $classpath : "test.aria.widgets.form.autocomplete.multiautocomplete.BaseMultiAutoCompleteTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
-    $dependencies : ["aria.utils.Type", "aria.utils.FireDomEvent", "aria.utils.Math"],
+    $dependencies : ["aria.utils.Type", "aria.utils.Math"],
     $constructor : function () {
         this.$TemplateTestCase.constructor.call(this);
 
@@ -148,9 +148,12 @@ Aria.classDefinition({
             var suggestionToBeHighlighted = suggestionsContainer.children[index].firstChild;
             return suggestionToBeHighlighted;
         },
-        _fireClickOnSuggestion : function (index) {
+        _fireClickOnSuggestion : function (index, continueWith) {
             var suggestionToBeHighlighted = this._suggestionToBeHighlighted(index);
-            aria.utils.FireDomEvent.fireEvent('click', suggestionToBeHighlighted);
+            this.synEvent.click(suggestionToBeHighlighted, {
+                scope : this,
+                fn : continueWith
+            });
         },
         checkHighlightedElementsIndices : function (expectedHighlightedArray) {
             var widgetInstance = this._getWidgetInstance();

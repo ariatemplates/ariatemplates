@@ -192,7 +192,7 @@ Aria.classDefinition({
             this.$AutoComplete._dom_onclick.call(this, event);
             var element = event.target;
             if (element.className === "closeBtn") {
-                this._removeMultiselectValues(element, event);
+                this._removeMultiselectValue(element, event);
                 this._textInputField.focus();
             }
             if (element.className.indexOf("xMultiAutoComplete_Option_Text") != -1) {
@@ -200,7 +200,6 @@ Aria.classDefinition({
                 var index = this._getIndexFromNode(element.parentNode);
                 if (this.controller.freeText && aria.utils.Json.equals(highlightedSuggestions, [index])) {
                     this._editMultiselectValue(element);
-                    this._textInputField.focus();
                 } else {
                     this.highlightOption(index);
                 }
@@ -250,7 +249,6 @@ Aria.classDefinition({
          */
 
         _updateMultiselectValues : function (report) {
-            var controller = this.controller;
             var inputField = this._textInputField;
             var inputFieldParent = inputField.parentNode;
             if (report.clearSuggestions) {
@@ -268,9 +266,6 @@ Aria.classDefinition({
                 aria.utils.Dom.insertAdjacentHTML(inputField, "beforeBegin", suggestionsMarkup.join(""));
                 this.__createEllipsis(inputField);
                 this._makeInputFieldLastChild();
-                if (controller.editMode) {
-                    controller.editMode = false;
-                }
                 inputField.style.width = "0px";
                 this.__resizeInput();
             }
@@ -331,8 +326,8 @@ Aria.classDefinition({
                 if (inputField.nextSibling != null && inputField.value === "") {
                     this._makeInputFieldLastChild();
                 }
-            } else if (blurredElement.className.indexOf("highlight") != -1) {
-                this.unhighlightOption(blurredElement);
+            } else if (blurredElement.parentNode.className.indexOf("highlight") != -1) {
+                this.unhighlightOption(blurredElement.parentNode);
             }
 
             this.$TextInput._dom_onblur.call(this, event);
@@ -448,14 +443,14 @@ Aria.classDefinition({
                                 }
                             }
 
-                            this._removeValues(highlightedElementLabel);
+                            this._removeValue(highlightedElementLabel);
                         } else {
                             var previousSiblingElement = domUtil.getPreviousSiblingElement(inputField);
                             if (previousSiblingElement) {
                                 var previousSiblingLabel = previousSiblingElement.firstChild.textContent
                                         || previousSiblingElement.firstChild.innerText;
                                 domUtil.removeElement(previousSiblingElement);
-                                this._removeValues(previousSiblingLabel);
+                                this._removeValue(previousSiblingLabel);
                             }
                         }
                         event.preventDefault();
@@ -479,7 +474,7 @@ Aria.classDefinition({
                                 this._enterInputField();
                             }
 
-                            this._removeValues(highlightedElementLabel);
+                            this._removeValue(highlightedElementLabel);
                         }
                     }
 
@@ -503,12 +498,12 @@ Aria.classDefinition({
          * @param {aria.utils.Event} event
          * @param {Boolean} if current element is a parent element itself
          */
-        _removeMultiselectValues : function (domElement, event, isParent) {
+        _removeMultiselectValue : function (domElement, event, isParent) {
             var parent = (!isParent) ? domElement.parentNode : domElement;
             var domUtil = aria.utils.Dom;
             var label = parent.firstChild.textContent || parent.firstChild.innerText;
             domUtil.removeElement(parent);
-            this._removeValues(label);
+            this._removeValue(label);
             if (event && event.type == "click") {
                 this.getTextInputField().focus();
 
@@ -526,31 +521,45 @@ Aria.classDefinition({
             var domUtil = aria.utils.Dom;
             label = domElement.textContent || domElement.innerText;
             domUtil.replaceDomElement(domElement.parentNode, this._textInputField);
-            this.controller.editMode = true;
-            this._removeValues(label);
-            this._textInputField.focus();
-            // to select the edited text.
+            var removedSuggestion = this._removeValue(label);
             this._keepFocus = true;
-            // this._textInputField.style.width = "0px";
-            var report = this.controller.checkText("");
-            report.text = label;
-            report.caretPosStart = 0;
-            report.caretPosEnd = label.length;
-            this._reactToControllerReport(report);
-            // after setting the value removing focus
-            this._keepFocus = false;
-
+            this._textInputField.focus();
+            if (removedSuggestion) {
+                var report = this.controller.editValue(removedSuggestion);
+                this._reactToControllerReport(report);
+            }
+            this._restoreKeepFocus();
         },
+
+        /**
+         * Sets _keepFocus back to false. This is done asynchronously on IE (because the focus event is raised
+         * asynchronously on IE).
+         */
+        _restoreKeepFocus : aria.core.Browser.isIE ? function () {
+            var self = this;
+            // The focus is asynchronous on IE, so we need to set _keepFocus back to false
+            // only after the _dom_onfocus method was called
+            self._keepFocus = true;
+            setTimeout(function () {
+                self._keepFocus = false;
+            }, 1);
+        } : function () {
+            this._keepFocus = false;
+        },
+
         /**
          * To remove the label from widget
          * @param {String} label
+         * @return {String|Object} the item removed from the controller.selectedValues array.
          * @protected
          */
-        _removeValues : function (label) {
+        _removeValue : function (label) {
             var report = this.controller.removeValue(label);
+            var removedSuggestion = report.removedSuggestion;
             this._reactToControllerReport(report);
             this._textInputField.style.width = "0px";
             this.__resizeInput();
+            return removedSuggestion;
         },
         /**
          * Method used to get a dom reference for positioning the popup
@@ -610,7 +619,7 @@ Aria.classDefinition({
 
             if (suggestionNode != null) {
                 this._removeClass(suggestionNode, 'highlight');
-                suggestionNode.removeAttribute('tabindex');
+                suggestionNode.firstChild.removeAttribute('tabindex');
             }
         },
 
@@ -644,8 +653,8 @@ Aria.classDefinition({
             }
 
             if (latestSuggestionNode != null) {
-                latestSuggestionNode.setAttribute('tabindex', 0);
-                latestSuggestionNode.focus();
+                latestSuggestionNode.firstChild.setAttribute('tabindex', 0);
+                latestSuggestionNode.firstChild.focus();
             }
         },
 
@@ -681,8 +690,8 @@ Aria.classDefinition({
             var suggestionNode = this._getSuggestionsContainer().children[index - 1];
 
             this._addClass(suggestionNode, 'highlight');
-            suggestionNode.setAttribute('tabindex', 0);
-            suggestionNode.focus();
+            suggestionNode.firstChild.setAttribute('tabindex', 0);
+            suggestionNode.firstChild.focus();
         },
 
         /**

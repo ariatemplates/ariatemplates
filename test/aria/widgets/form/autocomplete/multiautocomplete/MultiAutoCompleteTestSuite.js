@@ -24,6 +24,10 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.form.autocomplete.multiautocomplete.test3.MultiAutoDataCheck");
         this.addTests("test.aria.widgets.form.autocomplete.multiautocomplete.test4.MultiAutoPrefill");
         this.addTests("test.aria.widgets.form.autocomplete.multiautocomplete.test5.MultiAutoEdit");
+        this.addTests("test.aria.widgets.form.autocomplete.multiautocomplete.test5.MultiAutoEditChangedFreetext");
+        this.addTests("test.aria.widgets.form.autocomplete.multiautocomplete.test5.MultiAutoEditChangedSuggestion");
+        this.addTests("test.aria.widgets.form.autocomplete.multiautocomplete.test5.MultiAutoEditUnchangedFreetext");
+        this.addTests("test.aria.widgets.form.autocomplete.multiautocomplete.test5.MultiAutoEditUnchangedSuggestion");
         this.addTests("test.aria.widgets.form.autocomplete.multiautocomplete.test6.MultiAutoRange1");
         this.addTests("test.aria.widgets.form.autocomplete.multiautocomplete.test6.MultiAutoRange2");
         this.addTests("test.aria.widgets.form.autocomplete.multiautocomplete.test7.MultiAutoError");
