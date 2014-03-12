@@ -543,6 +543,31 @@ Aria.classDefinition({
             aria.utils.Dom.refreshScrollbars(testElt.firstChild); // this makes sure scrollbars are up to date
             this.assertFalse(testElt.scrollWidth > testElt.clientWidth); // there should not be any scrollbar anymore
             document.body.removeChild(testElt);
+        },
+
+        testGetElementsByClassName: function() {
+            var document = Aria.$window.document;
+            var testHtml = '<div id="main"> <span class="span_1 span_2"></span> <span class="span_1"></span> <span class="span_2"></span> <br/> <div> <div class="div_1"></div> <div class="div_1"></div> <div class="div_1"></div> <div class="div_1"></div> </div> </div>';
+            var container = document.createElement("div");
+            container.innerHTML = testHtml;
+            document.body.appendChild(container);
+
+            var span1Elements = aria.utils.Dom.getElementsByClassName(container, "span_1");
+            this.assertTruthy(span1Elements);
+            this.assertEquals(2, span1Elements.length);
+
+            var span2Elements = aria.utils.Dom.getElementsByClassName(container, "span_2");
+            this.assertTruthy(span2Elements);
+            this.assertEquals(2, span2Elements.length);
+
+            var div1Elements = aria.utils.Dom.getElementsByClassName(container, "div_1");
+            this.assertTruthy(div1Elements);
+            this.assertEquals(4, div1Elements.length);
+
+            this.assertEquals(0, aria.utils.Dom.getElementsByClassName(container, "CLASS_NAME_FAIL").length);
+            this.assertEquals(0, aria.utils.Dom.getElementsByClassName(null, "CLASS_NAME_FAIL").length);
+            this.assertEquals(0, aria.utils.Dom.getElementsByClassName(container, null).length);
+            this.assertEquals(0, aria.utils.Dom.getElementsByClassName(null, null).length);
         }
 
     }
