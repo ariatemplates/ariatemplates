@@ -42,21 +42,13 @@
              * @type Boolean
              */
             this.freeText = false;
-            /**
-             * To edit the suggestion on double click
-             * @type Boolean
-             */
-            this.editMode = false;
+
             /**
              * All the selected suggestions
              * @type Array
              */
             this.selectedSuggestions = [];
-            /**
-             * Keeps the suggestion which is being edited
-             * @type Object
-             */
-            this.editedSuggestion;
+
             /**
              * Check if expando is enabled
              * @type Boolean
@@ -104,8 +96,8 @@
                     if (this.freeText) {
                         report.ok = true;
                         var valueToAdd;
-                        if (this.editMode && trimText === this.editedSuggestion.label) {
-                            valueToAdd = this.editedSuggestion;
+                        if (dataModel.text == trimText) {
+                            valueToAdd = dataModel.value;
                         } else {
                             valueToAdd = trimText;
                         }
@@ -131,17 +123,40 @@
              * @override
              */
             removeValue : function (label) {
+                var report = new aria.widgets.controllers.reports.DropDownControllerReport();
                 var newSuggestions = aria.utils.Json.copy(this.selectedSuggestions, false);
+
                 var indexToRemove = this._findSuggestion(newSuggestions, {
                     label : label
                 });
-                this.editedSuggestion = newSuggestions[indexToRemove];
-                aria.utils.Array.removeAt(newSuggestions, indexToRemove);
+                if (indexToRemove == -1) {
+                    // try to find a free-text option
+                    indexToRemove = aria.utils.Array.indexOf(newSuggestions, label);
+                }
+                if (indexToRemove > -1) {
+                    report.removedSuggestion = newSuggestions[indexToRemove];
+                    aria.utils.Array.removeAt(newSuggestions, indexToRemove);
+                    this.selectedSuggestions = newSuggestions;
+                }
 
-                this.selectedSuggestions = newSuggestions;
+                report.value = this.selectedSuggestions;
+                return report;
+            },
 
+            /**
+             * Start editing a value. The value is supposed to have already been removed from the selectedSuggestions
+             * array.
+             * @param {String|Object} value (normally coming from the selectedSuggestions array)
+             * @return {aria.widgets.controllers.reports.DropDownControllerReport}
+             */
+            editValue : function (value) {
+                var dataModel = this._dataModel;
                 var report = new aria.widgets.controllers.reports.DropDownControllerReport();
-
+                dataModel.value = value;
+                dataModel.text = typeUtil.isString(value) ? value : value.label;
+                report.text = dataModel.text;
+                report.caretPosStart = 0;
+                report.caretPosEnd = report.text.length;
                 report.value = this.selectedSuggestions;
                 return report;
             },
@@ -217,7 +232,7 @@
              */
             checkDropdownValue : function (value) {
                 if (typeUtil.isString(value) || value == null) {
-                    // do nothing
+                    return new aria.widgets.controllers.reports.DropDownControllerReport();
                 } else {
                     var report = new aria.widgets.controllers.reports.DropDownControllerReport();
                     var dataModel = this._dataModel;
@@ -445,10 +460,6 @@
                 if (keyCode == domEvent.KC_ARROW_DOWN && !nextValue && controller.expandButton) {
                     controller.toggleDropdown("", !!controller._listWidget);
                     return;
-                }
-
-                if (this.editMode) {
-                    this.editMode = false;
                 }
 
                 this._typeTimeout = setTimeout(function () {

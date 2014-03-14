@@ -33,11 +33,17 @@ Aria.classDefinition({
             // initial test for all the suggestions added
             this.checkSelectedItems(4);
 
-            this._fireClickOnSuggestion(1);
+            this._fireClickOnSuggestion(1, "_afterFirstClick");
+        },
+
+        _afterFirstClick : function () {
             this.checkHighlightedElementsIndices([2]);
 
             // test for removal, and adding highlight again
-            this._fireClickOnSuggestion(2);
+            this._fireClickOnSuggestion(2, "_afterSecondClick");
+        },
+
+        _afterSecondClick : function () {
             this.checkHighlightedElementsIndices([3]);
 
             this.type({
@@ -71,13 +77,17 @@ Aria.classDefinition({
             this.checkHighlightedElementsIndices([2]);
 
             // since the element is already highlighted, it should now go to edit mode
-            this._fireClickOnSuggestion(1);
-            this.synEvent.click(this._getField(), {
-                fn : this._checkForEdit,
-                scope : this
-            });
-
+            this._fireClickOnSuggestion(1, "_afterEditSingapore");
         },
+
+        _afterEditSingapore : function () {
+            aria.core.Timer.addCallback({
+                fn : this._checkForEdit,
+                scope : this,
+                delay : 10
+            });
+        },
+
         _checkForEdit : function () {
             this.type({
                 text : ["p1-3", "[enter]"],
@@ -100,7 +110,10 @@ Aria.classDefinition({
                         label : 'P3.red',
                         code : 'P3'
                     }]);
-            this._fireClickOnSuggestion(3);
+            this._fireClickOnSuggestion(3, "_afterClickOnP3");
+        },
+
+        _afterClickOnP3 : function () {
             this.checkHighlightedElementsIndices([4]);
             this.type({
                 text : ["[delete]"],
@@ -113,7 +126,10 @@ Aria.classDefinition({
         },
         _afterDeleteLastSuggestion : function () {
             this.checkHighlightedElementsIndices([]);
-            this._fireClickOnSuggestion(0);
+            this._fireClickOnSuggestion(0, "_afterClickOnIndia");
+        },
+
+        _afterClickOnIndia : function () {
             this.type({
                 text : ["[backspace]"],
                 cb : {
