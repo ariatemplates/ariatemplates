@@ -23,8 +23,6 @@ Aria.classDefinition({
     $implements : ["aria.pageEngine.SiteRootModuleInterface"],
     $dependencies : ["aria.utils.Path", "aria.pageEngine.utils.PageEngineUtils"],
     $constructor : function () {
-        this._enableMethodEvents = false;
-
         this.$ModuleCtrl.constructor.call(this);
 
         /**
