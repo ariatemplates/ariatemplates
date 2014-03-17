@@ -31,8 +31,8 @@ Aria.classDefinition({
             "methodCallEnd" : this.onMethodCallEnd,
             scope : this
         });
-        this.unexpectedMethodCallBegin = false;
-        this.unexpectedMethodCallEnd = false;
+        this.eventCallBeginRaised = false;
+        this.eventCallEndRaised = false;
     },
     $destructor : function () {
         this.$publicInterface().DisableMethodEventsModuleCtrDisposed = true;
@@ -47,10 +47,10 @@ Aria.classDefinition({
 
         },
         onMethodCallBegin : function () {
-            this.unexpectedMethodCallBegin = true;
+            this.eventCallBeginRaised = true;
         },
         onMethodCallEnd : function () {
-            this.unexpectedMethodCallEnd = true;
+            this.eventCallEndRaised = true;
         }
     }
 });
