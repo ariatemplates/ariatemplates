@@ -288,9 +288,6 @@
             SECTION_BINDING_ERROR_SINGLE_VAR : "line %1: Cannot bind section to single variable except data. Binding must be something like container.parameter",
             BINDREFRESHTO_STATEMENT_DEPRECATED : "Template '%1', line %2:\nThe {bindRefreshTo} statement is deprecated. It will be removed in Aria Templates 1.5.1. Please use 'bindRefreshTo' property of a {section} statement instead.",
             /* BACKWARD-COMPATIBILITY-END */
-            /* BACKWARD-COMPATIBILITY-BEGIN GH-754*/
-            GET_DOM_ID_DEPRECATED : "The TemplateCtxt.getDomId() method became private. You should probably use $getId() instead.",
-            /* BACKWARD-COMPATIBILITY-END GH-754 */
             SECTION_MACRO_MISUSED : "Template %1 \nline %2: section statement must either be a container or have a non-null macro property.",
             SECTION_MISSING_ID : "Template %1 \nline %2: A section used as a container must have an id.",
             TEMPLATE_EXCEPTION_REMOVING_LISTENERS : "Error in template '%1' while removing module or flow listeners.",
@@ -1339,18 +1336,6 @@
                     this._out.write('id="' + genId + '"');
                 }
             },
-
-            /* BACKWARD-COMPATIBILITY-BEGIN GH-754 */
-            /**
-             * Return the generated domId for specified id.
-             * @param {String|Number} id specified in the template
-             * @return {String}
-             */
-            getDomId : function (id) {
-                this.$logWarn(this.GET_DOM_ID_DEPRECATED);
-                return this._generateDomId(id);
-            },
-            /* BACKWARD-COMPATIBILITY-END GH-754 */
 
             /**
              * Return the generated domId for specified id.
