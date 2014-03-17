@@ -39,10 +39,9 @@ Aria.classDefinition({
             try {
                 var mc = res.moduleCtrlPrivate;
                 this.assertTrue(mc.__$interceptors != null);
-                this.assertErrorInLogs(mc.DEPRECATED_METHOD_EVENTS);
                 mc.incrementCount();
                 aria.core.Timer.addCallback({
-                    fn : this._endTestAsyncEnableInterceptor,
+                    fn : this._endTestAsyncDisableInterceptor,
                     scope : this,
                     args : {
                         "mc" : mc,
@@ -82,8 +81,8 @@ Aria.classDefinition({
             }
         },
         _endTestAsyncDisableInterceptor : function (args) {
-            this.assertFalse(args.mc.unexpectedMethodCallBegin);
-            this.assertFalse(args.mc.unexpectedMethodCallEnd);
+            this.assertFalse(args.mc.eventCallBeginRaised);
+            this.assertFalse(args.mc.eventCallEndRaised);
             args.mc.$dispose();
             this.notifyTestEnd("testAsyncDisableInterceptor");
         },

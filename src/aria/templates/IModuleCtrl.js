@@ -21,19 +21,19 @@ Aria.interfaceDefinition({
     $classpath : 'aria.templates.IModuleCtrl',
     $events : {
         "methodCallBegin" : {
-            description : "Raised before a method from the module controller public interface is called.",
+            description : "Raised before a method from the module controller public interface is called (raised only if you set this._enableMethodEvents = true).",
             properties : {
                 method : "Name of the method about to be called."
             }
         },
         "methodCallEnd" : {
-            description : "Raised after a method from the module controller public interface has been called.",
+            description : "Raised after a method from the module controller public interface has been called (raised only if you set this._enableMethodEvents = true).",
             properties : {
                 method : "Name of the method which was called."
             }
         },
         "methodCallback" : {
-            description : "Raised when a method from the module controller public interface calls its callback.",
+            description : "Raised when a method from the module controller public interface calls its callback (raised only if you set this._enableMethodEvents = true).",
             properties : {
                 method : "Name of the method which was called."
             }
