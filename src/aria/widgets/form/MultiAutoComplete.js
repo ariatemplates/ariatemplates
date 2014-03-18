@@ -414,8 +414,6 @@ Aria.classDefinition({
                                 this._makeInputFieldLastChild();
                                 this.setHelpText(false);
                                 inputField.focus();
-                                var newSuggestions = aria.utils.Json.copy(this.controller.selectedSuggestions);
-                                this.setProperty("value", newSuggestions);
                             }
                         }
                     }
