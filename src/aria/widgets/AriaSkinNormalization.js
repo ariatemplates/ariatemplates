@@ -68,20 +68,6 @@ Aria.classDefinition({
     },
     $prototype : {
         /**
-         * Available frame types. It is used to convert the integer sprite type (index in this array) into the
-         * corresponding string.
-         * @type Array
-         */
-        _frameTypes : [ // 0,1,2 corresponded to old frames which were removed as of AT 1.4.1
-                /* 0 */"",
-                /* 1 */"",
-                /* 2 */"",
-                /* 3 */"Table",
-                /* 4 */"FixedHeight",
-                /* 5 */"SimpleHTML",
-                /* 6 */"Simple"],
-
-        /**
          * Available skinnable classes.
          * @type Map
          */
@@ -136,16 +122,12 @@ Aria.classDefinition({
             if (skin.simpleHTML) {
                 frameType = "SimpleHTML";
             } else {
-                var possibleValues = [skinFrame.frameType || skinFrame.sprType, skin.sprType,
-                        stdFrame.frameType || stdFrame.sprType, std.sprType, defaultFrameType /* default */];
+                var possibleValues = [skinFrame.frameType, stdFrame.frameType, defaultFrameType /* default */];
                 for (var i = 0, l = possibleValues.length; i < l; i++) {
                     if (possibleValues[i] != null) {
                         frameType = possibleValues[i];
                         break;
                     }
-                }
-                if (aria.utils.Type.isNumber(frameType)) {
-                    frameType = this._frameTypes[frameType];
                 }
             }
             var frameNormalizers = this._getFrameNormalizers(widgetName, skinClassName, frameType);
