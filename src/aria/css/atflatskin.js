@@ -63,12 +63,13 @@ Aria.classDefinition({
                             "borderTop" : 1,
                             "borderLeft" : 1,
                             "borderBottom" : 1,
+                            "borderRight" : 1,
                             "border" : "solid",
                             "borderColor" : "#DFDFDF",
                             "borderTopLeftRadius" : 3,
-                            "borderTopRightRadius" : 0,
+                            "borderTopRightRadius" : 3,
                             "borderBottomLeftRadius" : 3,
-                            "borderBottomRightRadius" : 0,
+                            "borderBottomRightRadius" : 3,
                             "backgroundColor" : "#FFF",
                             "color" : "#000",
                             "icons" : {
@@ -77,8 +78,7 @@ Aria.classDefinition({
                             "paddingTop" : 5,
                             "paddingRight" : 10,
                             "paddingLeft" : 10,
-                            "paddingBottom" : 5,
-                            "frameHeight" : 16
+                            "paddingBottom" : 5
                         },
                         "normalFocused" : {
                             "borderColor" : "#34495E",
@@ -148,8 +148,6 @@ Aria.classDefinition({
                         italics : true,
                         color : "#b2b2b2"
                     },
-                    "listTop" : -5,
-                    "listLeft" : -10,
                     "offsetTop" : 1,
                     "optionsBackgroundColor" : "#E4E4E4",
                     "optionsColor" : "#333",
