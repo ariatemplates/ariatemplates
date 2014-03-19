@@ -1450,10 +1450,6 @@ Aria.beanDefinitions({
             $type : "Object",
             $description : "Used for widgets which have a basic frame around them. Frame properties are then specified state-wise.",
             $properties : {
-                "sprType" : {
-                    $type : "json:Integer",
-                    $description : "Deprecated, please use frameType instead. The value corresponding to this type of frame is 6."
-                },
                 "frameType" : {
                     $type : "json:Enum",
                     $enumValues : ["Simple"],
@@ -1591,10 +1587,6 @@ Aria.beanDefinitions({
             $type : "Object",
             $description : "Used for widgets which have a fixed height. Frame properties are then specified state-wise.",
             $properties : {
-                "sprType" : {
-                    $type : "json:Integer",
-                    $description : "Deprecated, please use frameType instead. The value corresponding to this type of frame is 2."
-                },
                 "frameType" : {
                     $type : "json:Enum",
                     $enumValues : ["FixedHeight"],
@@ -1665,10 +1657,6 @@ Aria.beanDefinitions({
             $type : "Object",
             $description : "Used for widgets which have a layout based on a table. Frame properties are then specified state-wise.",
             $properties : {
-                "sprType" : {
-                    $type : "json:Integer",
-                    $description : "Deprecated, please use frameType instead. The value corresponding to this type of frame is 3."
-                },
                 "frameType" : {
                     $type : "json:Enum",
                     $enumValues : ["Table"],
@@ -1761,10 +1749,6 @@ Aria.beanDefinitions({
             $type : "Object",
             $description : "Used for widgets which have no frame at all. No frame properties have to be specified state-wise.",
             $properties : {
-                "sprType" : {
-                    $type : "json:Integer",
-                    $description : "Deprecated, please use frameType instead. The value corresponding to this type of frame is 5."
-                },
                 "frameType" : {
                     $type : "json:Enum",
                     $enumValues : ["SimpleHTML"],

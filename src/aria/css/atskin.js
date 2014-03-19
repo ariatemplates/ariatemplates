@@ -27,7 +27,9 @@ Aria.classDefinition({
             },
             Fieldset : {
                 std : {
-                    sprType : 3,
+                    frame : {
+                        frameType : "Table"
+                    },
                     states : {
                         normal : {
                             spriteURLv : "atskin/sprites/fieldset_v.gif",
@@ -53,7 +55,9 @@ Aria.classDefinition({
             MultiSelect : {
                 std : {
                     iconsRight : "dropdown",
-                    sprType : 4,
+                    frame : {
+                        frameType : "FixedHeight"
+                    },
                     states : {
                         normal : {
                             marginBottom : 2,
@@ -201,7 +205,9 @@ Aria.classDefinition({
                 },
                 std : {
                     iconsRight : "dropdown",
-                    sprType : 4,
+                    frame : {
+                        frameType : "FixedHeight"
+                    },
                     states : {
                         readOnly : {
                             color : "#AB9B85",
@@ -317,7 +323,9 @@ Aria.classDefinition({
             },
             Textarea : {
                 std : {
-                    sprType : 3,
+                    frame : {
+                        frameType : "Table"
+                    },
                     states : {
                         readOnly : {
                             backgroundColor : "#FFFFFF",
@@ -376,7 +384,9 @@ Aria.classDefinition({
             },
             TabPanel : {
                 std : {
-                    sprType : 3,
+                    frame : {
+                        frameType : "Table"
+                    },
                     states : {
                         normal : {
                             marginBottom : -6,
@@ -473,7 +483,9 @@ Aria.classDefinition({
                 },
                 std : {
                     iconsRight : "dropdown",
-                    sprType : 4,
+                    frame : {
+                        frameType : "FixedHeight"
+                    },
                     states : {
                         readOnly : {
                             color : "#AB9B85",
@@ -555,7 +567,9 @@ Aria.classDefinition({
                     simpleHTML : true
                 },
                 std : {
-                    sprType : 4,
+                    frame : {
+                        frameType : "FixedHeight"
+                    },
                     states : {
                         normal : {
                             marginBottom : 5,
@@ -660,7 +674,9 @@ Aria.classDefinition({
                 },
                 std : {
                     iconsRight : "dropdown",
-                    sprType : 4,
+                    frame : {
+                        frameType : "FixedHeight"
+                    },
                     states : {
                         readOnly : {
                             color : "#AB9B85",
@@ -769,7 +785,9 @@ Aria.classDefinition({
                 std : {
                     innerPaddingTop : 0,
                     innerPaddingRight : 0,
-                    sprType : 4,
+                    frame : {
+                        frameType : "FixedHeight"
+                    },
                     states : {
                         readOnly : {
                             color : "#AB9B85",
@@ -863,7 +881,9 @@ Aria.classDefinition({
             },
             Tab : {
                 demoMainTabs : {
-                    sprType : 3,
+                    frame : {
+                        frameType : "Table"
+                    },
                     states : {
                         selectedFocused : {
                             marginBottom : 0,
@@ -930,7 +950,9 @@ Aria.classDefinition({
                     }
                 },
                 std : {
-                    sprType : 3,
+                    frame : {
+                        frameType : "Table"
+                    },
                     states : {
                         selectedFocused : {
                             spcTop : 14,
@@ -1149,7 +1171,9 @@ Aria.classDefinition({
                     }
                 },
                 underlineError : {
-                    sprType : 4,
+                    frame : {
+                        frameType : "FixedHeight"
+                    },
                     states : {
                         readOnly : {
                             color : "#AB9B85",
@@ -1198,7 +1222,9 @@ Aria.classDefinition({
                 },
                 std : {
                     iconsRight : "dropdown",
-                    sprType : 4,
+                    frame : {
+                        frameType : "FixedHeight"
+                    },
                     states : {
                         readOnly : {
                             color : "#AB9B85",
@@ -1277,7 +1303,9 @@ Aria.classDefinition({
 
             MultiAutoComplete : {
                 std : {
-                    sprType : 3,
+                    frame : {
+                        frameType : "Table"
+                    },
                     states : {
                         readOnly : {
                             backgroundColor : "#FFFFFF",
@@ -1376,7 +1404,9 @@ Aria.classDefinition({
             },
             Div : {
                 dlg : {
-                    sprType : 3,
+                    frame : {
+                        frameType : "Table"
+                    },
                     states : {
                         normal : {
                             marginBottom : -5,
@@ -1394,7 +1424,9 @@ Aria.classDefinition({
                     }
                 },
                 errorlist : {
-                    sprType : 6,
+                    frame : {
+                        frameType : "Simple"
+                    },
                     states : {
                         normal : {
                             borderSize : 0,
@@ -1408,7 +1440,9 @@ Aria.classDefinition({
                     }
                 },
                 basic : {
-                    sprType : 6,
+                    frame : {
+                        frameType : "Simple"
+                    },
                     states : {
                         normal : {
                             borderSize : 1,
@@ -1423,7 +1457,9 @@ Aria.classDefinition({
                     }
                 },
                 std : {
-                    sprType : 6,
+                    frame : {
+                        frameType : "Simple"
+                    },
                     states : {
                         normal : {
                             color : "#000000"
@@ -1431,7 +1467,9 @@ Aria.classDefinition({
                     }
                 },
                 errortip : {
-                    sprType : 3,
+                    frame : {
+                        frameType : "Table"
+                    },
                     states : {
                         bottomLeft : {
                             frameIcon : "atskin/sprites/frameIconErrortipTopRight.png",
@@ -1467,7 +1505,9 @@ Aria.classDefinition({
                     }
                 },
                 list : {
-                    sprType : 3,
+                    frame : {
+                        frameType : "Table"
+                    },
                     states : {
                         normal : {
                             spriteURLv : "atskin/sprites/list_v.png",
@@ -1481,7 +1521,9 @@ Aria.classDefinition({
                     }
                 },
                 dropdown : {
-                    sprType : 3,
+                    frame : {
+                        frameType : "Table"
+                    },
                     states : {
                         normal : {
                             spriteURLv : "atskin/sprites/dropdown_v.png",
@@ -1497,7 +1539,9 @@ Aria.classDefinition({
                     }
                 },
                 tooltip : {
-                    sprType : 3,
+                    frame : {
+                        frameType : "Table"
+                    },
                     states : {
                         normal : {
                             spriteURLv : "atskin/sprites/tooltip_v.png",
