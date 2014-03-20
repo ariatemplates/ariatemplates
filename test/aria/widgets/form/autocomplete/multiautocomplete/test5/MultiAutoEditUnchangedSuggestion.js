@@ -61,11 +61,11 @@ Aria.classDefinition({
 
         _afterFocusOut : function () {
             this.checkDataModel(2, [{
-                        label : "Scandinavian Airlines System",
-                        code : "SK"
-                    }, {
                         label : "Air France",
                         code : "AF"
+                    }, {
+                        label : "Scandinavian Airlines System",
+                        code : "SK"
                     }]);
             this.end();
         }

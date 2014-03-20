@@ -51,7 +51,7 @@ Aria.classDefinition({
         },
 
         _afterFocusOut : function () {
-            this.checkDataModel(2, ["a", "b"]);
+            this.checkDataModel(2, ["b", "a"]);
             this.end();
         }
 

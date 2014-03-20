@@ -521,11 +521,13 @@ Aria.classDefinition({
             var domUtil = aria.utils.Dom;
             label = domElement.textContent || domElement.innerText;
             domUtil.replaceDomElement(domElement.parentNode, this._textInputField);
-            var removedSuggestion = this._removeValue(label);
+            var removedSuggestionInfo = this._removeValue(label);
+            var removedSuggestion = removedSuggestionInfo.removedSuggestion;
+            var removedSuggestionIndex = removedSuggestionInfo.removedSuggestionIndex;
             this._keepFocus = true;
             this._textInputField.focus();
             if (removedSuggestion) {
-                var report = this.controller.editValue(removedSuggestion);
+                var report = this.controller.editValue(removedSuggestion, removedSuggestionIndex);
                 this._reactToControllerReport(report);
             }
             this._restoreKeepFocus();
@@ -556,10 +558,14 @@ Aria.classDefinition({
         _removeValue : function (label) {
             var report = this.controller.removeValue(label);
             var removedSuggestion = report.removedSuggestion;
+            var removedSuggestionIndex = report.removedSuggestionIndex;
             this._reactToControllerReport(report);
             this._textInputField.style.width = "0px";
             this.__resizeInput();
-            return removedSuggestion;
+            return {
+                removedSuggestion : removedSuggestion,
+                removedSuggestionIndex : removedSuggestionIndex
+            };
         },
         /**
          * Method used to get a dom reference for positioning the popup
