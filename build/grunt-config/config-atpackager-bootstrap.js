@@ -31,6 +31,7 @@ module.exports = function (grunt) {
 
     grunt.config.set('atpackager.bootstrap', {
         options : {
+            ATDebug : true,
             sourceDirectories : ['src'],
             sourceFiles : ['aria/**/*', '!aria/node.js', '!aria/bootstrap.js'],
             defaultBuilder : {
@@ -63,7 +64,8 @@ module.exports = function (grunt) {
                     }, {
                         type : 'ATNormalizeSkin',
                         cfg : {
-                            files : ['aria/css/*.js']
+                            files : ['aria/css/*.js'],
+                            strict : true
                         }
                     }, {
                         type : 'CopyUnpackaged',
