@@ -54,6 +54,11 @@
              * @type Boolean
              */
             this._isExpanded = false;
+            /**
+             * Edited Suggestion Index
+             * @type Integer
+             */
+            this._editedSuggestionIndex = -1;
 
             // Inherited from aria.html.controllers.Suggestions
             this._init();
@@ -135,10 +140,11 @@
                 }
                 if (indexToRemove > -1) {
                     report.removedSuggestion = newSuggestions[indexToRemove];
+
                     aria.utils.Array.removeAt(newSuggestions, indexToRemove);
                     this.selectedSuggestions = newSuggestions;
                 }
-
+                report.removedSuggestionIndex = indexToRemove;
                 report.value = this.selectedSuggestions;
                 return report;
             },
@@ -149,8 +155,9 @@
              * @param {String|Object} value (normally coming from the selectedSuggestions array)
              * @return {aria.widgets.controllers.reports.DropDownControllerReport}
              */
-            editValue : function (value) {
+            editValue : function (value, removedSuggestionIndex) {
                 var dataModel = this._dataModel;
+                this._editedSuggestionIndex = removedSuggestionIndex;
                 var report = new aria.widgets.controllers.reports.DropDownControllerReport();
                 dataModel.value = value;
                 dataModel.text = typeUtil.isString(value) ? value : value.label;
@@ -262,9 +269,15 @@
                 }
                 if (length > 0) {
                     for (var k = 0; k < length; k++) {
-                        allSuggestions.push(suggestionToBeAdded[k]);
+                        if (this._editedSuggestionIndex != -1) {
+                            allSuggestions.splice(this._editedSuggestionIndex, 0, suggestionToBeAdded[k]);
+                            this._editedSuggestionIndex += 1;
+                        } else {
+                            allSuggestions.push(suggestionToBeAdded[k]);
+                        }
                         res[k] = suggestionToBeAdded[k];
                     }
+                    this._editedSuggestionIndex = -1;
                     this.selectedSuggestions = allSuggestions;
                 }
                 return res;
