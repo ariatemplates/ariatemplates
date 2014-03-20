@@ -55,7 +55,7 @@ Aria.classDefinition({
         },
 
         _afterChange : function () {
-            this.checkDataModel(2, ["a", "k"]);
+            this.checkDataModel(2, ["k", "a"]);
             this.end();
         }
 
