@@ -35,10 +35,6 @@ Aria.classDefinition({
          */
         this._history = aria.utils.History;
 
-        /* BACKWARD-COMPATIBILITY-BEGIN-#441 */
-        this._history.isBackwardCompatible = false;
-        /* BACKWARD-COMPATIBILITY-END-#441 */
-
         /**
          * Listener of the onpopstate event raised by the History
          * @type aria.core.CfgBeans:Callback
