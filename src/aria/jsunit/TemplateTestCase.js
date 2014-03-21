@@ -860,7 +860,10 @@ Aria.classDefinition({
                 div : div,
                 data : definition.data,
                 moduleCtrl : definition.moduleCtrl,
-                provideContext : true
+                provideContext : true,
+                width : definition.width,
+                height : definition.height,
+                rootDim : definition.rootDim
             }, {
                 fn : this._iframeDone,
                 scope : this,
