@@ -26,8 +26,7 @@ Aria.classDefinition({
         this.$ClassGenerator.constructor.call(this);
 
         // Load the Template specific statements
-        this._loadStatements(["Library", "id", "on", "createView", "section", "@", "repeater"
-                /* BACKWARD-COMPATIBILITY-BEGIN */, "bindRefreshTo"/* BACKWARD-COMPATIBILITY-END */]);
+        this._loadStatements(["Library", "id", "on", "createView", "section", "@", "repeater"]);
 
         // Redefine the protected parser
         this._parser = aria.templates.TplParser;
