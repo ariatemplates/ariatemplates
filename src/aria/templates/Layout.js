@@ -35,6 +35,8 @@
             eventUtils.addListener(Aria.$window, "resize", {
                 fn : __onResize
             });
+            // PTR 08127833 - it updates the viewport sizes the first time a DOM element is registered as autoresizable
+            __applyNewSize();
         }
     };
 
