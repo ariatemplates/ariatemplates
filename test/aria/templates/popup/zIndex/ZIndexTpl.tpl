@@ -31,7 +31,7 @@ Open a dialog
         }
     },
     onOpen : dialogOpen,
-    contentMacro : "dialogMacro",
+    macro : "dialogMacro",
     id : "dialog"
 }/}
 {/macro}

@@ -42,7 +42,7 @@
     	{var dataModel = data["firstDialog"] /}
         {@aria:Dialog {
             id : "firstDialog",
-            contentMacro : {
+            macro : {
                 name : "displayDialogContent",
 				 args : ["one"]
 

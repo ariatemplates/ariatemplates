@@ -20,7 +20,7 @@
         <a href="#" id="dummy">dummy</a>
 
         {@aria:Dialog {
-            contentMacro: "dialogContent",
+            macro: "dialogContent",
             visible : true,
             bind: {
                 visible: {

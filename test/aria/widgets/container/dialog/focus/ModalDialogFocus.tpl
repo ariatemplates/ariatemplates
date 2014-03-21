@@ -22,7 +22,7 @@
 			label: "my label"
 		}/}
 		{@aria:Dialog {
-			contentMacro : "dialogContent",
+			macro : "dialogContent",
 			visible : true,
 			modal: true
 		}}
