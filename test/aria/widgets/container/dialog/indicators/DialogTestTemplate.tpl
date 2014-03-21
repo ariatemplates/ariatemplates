@@ -27,7 +27,7 @@
               inside : data
             }
           },
-          contentMacro : "dialogMacro"
+          macro : "dialogMacro"
         }/}
         {@aria:Dialog {
           id : "secondDialog",
@@ -37,7 +37,7 @@
               inside : data
             }
           },
-          contentMacro : "secondDialogMacro"
+          macro : "secondDialogMacro"
         }/}
         {@aria:Dialog {
           id : "thirdDialog",
@@ -47,7 +47,7 @@
               inside : data
             }
           },
-          contentMacro : "thirdDialogMacro"
+          macro : "thirdDialogMacro"
         }/}
         {section {
           id : "testMainSection",

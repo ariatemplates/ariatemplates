@@ -21,7 +21,7 @@
 	    {@aria:Dialog {
 	        id : "dialogWithConstraints",
 	        title: "Dialog with constraints",
-	        contentMacro : "dialogContent",
+	        macro : "dialogContent",
 	        visible : true,
 	        width : 500,
 	        maxHeight : 400,

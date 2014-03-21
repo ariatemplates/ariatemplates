@@ -20,7 +20,7 @@
     {macro main()}
         {@aria:Dialog {
             id : "theDialog",
-            contentMacro: "dialogContent",
+            macro: "dialogContent",
             modal: false,
             center : false,
             visible : true,

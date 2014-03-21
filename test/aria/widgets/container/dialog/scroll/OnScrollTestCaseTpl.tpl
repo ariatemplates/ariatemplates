@@ -27,7 +27,7 @@
             Nunc vitae lectus augue. Fusce eu tellus consequat orci facilisis sagittis. Sed eu adipiscing nibh. Maecenas hendrerit rutrum gravida. Vivamus consectetur velit in mauris accumsan dictum. Donec hendrerit, est nec accumsan eleifend, elit ipsum fermentum sem, et semper nulla purus sed nulla. Nunc sollicitudin pharetra massa. Praesent quis pulvinar purus. In imperdiet lectus nec ipsum gravida dapibus. Donec cursus laoreet ullamcorper.
         </div>
         {@aria:Dialog {
-            contentMacro: "dialogContent",
+            macro: "dialogContent",
             modal: true,
             bind: {
                 visible: {
