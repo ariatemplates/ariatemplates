@@ -14,29 +14,21 @@
  */
 
 {Template {
-    $classpath: "test.aria.templates.autorefresh.TemplateA"
+    $classpath: "test.aria.templates.autorefresh.TemplateA",
+    $extends : "test.aria.templates.autorefresh.TemplateToExtend"
 }}
 
     {var d = data /}
 
 
-    /*BACKWARD-COMPATIBILITY-FIX-START*/ /* add this and change also some lines in AutorefreshTestCase */
-    /*
     {macro main()}
         {section {
             macro : "mainSection",
-            bindRefreshTo : [{ inside : data.c, to : "b" }]
+            bindRefreshTo : [{inside : data.c, to : "b"}]
         } /}
     {/macro}
 
     {macro mainSection()}
-    */
-    /*BACKWARD-COMPATIBILITY-FIX-END*/
-
-    /* BACKWARD-COMPATIBILITY-BEGIN*/ /*remove this - deprecation of {bindRefreshTo}*/
-    {macro main()}
-            {bindRefreshTo data.c.b /}
-            /* BACKWARD-COMPATIBILITY-END*/
         TEMPLATE A
         <br/>
         Main Section - A.
@@ -44,37 +36,45 @@
 
         {section {
             id : "SectionAA",
-            bindRefreshTo : [{inside : data, to : "a"}]
-        }}
-               Section AA
-               {@aria:Template {
-                defaultTemplate: "test.aria.templates.autorefresh.TemplateB",
-                data : data
-              }/}
+            bindRefreshTo : [{inside : data, to : "a"}],
+            macro : "displaySectionAA"
+        }/}
 
-              {section "SectionAAA"}
-                Section AAA
-                {@aria:TextField {
-                    id: "AAAtextfield",
-                    width: 40,
-                    label: "TextFieldAAA",
-                    bind: {
-                      value: {
-                        to: 'a',
-                        inside: data.a
-                      }
-                    }
-                }/}
-             {/section}
-
-        {/section}
 
         {@aria:Template {
             defaultTemplate: "test.aria.templates.autorefresh.TemplateC",
             data : data
-       }/}
+        }/}
 
     {/macro}
 
+    {macro displaySectionAA()}
+        Section AA
+        {@aria:Template {
+            defaultTemplate: "test.aria.templates.autorefresh.TemplateB",
+            data : data
+        }/}
+
+        {section {
+            id : "SectionAAA",
+            macro : "displaySectionAAA"
+        }/}
+    {/macro}
+
+    {macro displaySectionAAA()}
+        Section AAA
+
+        {@aria:TextField {
+            id: "AAAtextfield",
+            width: 40,
+            label: "TextFieldAAA",
+            bind: {
+                value: {
+                    to: 'a',
+                    inside: data.a
+                }
+            }
+        }/}
+    {/macro}
 
 {/Template}

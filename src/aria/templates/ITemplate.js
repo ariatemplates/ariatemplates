@@ -234,18 +234,5 @@ Aria.interfaceDefinition({
          * @private
          */
         __$endSection : function () {}
-
-        /* BACKWARD-COMPATIBILITY-BEGIN */,
-        /**
-         * Bind an automatic refresh to a section or the template. This method is intended to be called only from the
-         * generated code of templates (created in aria.templates.ClassGenerator) and never directly from developper
-         * code. A call to this method is generated for the bindRefreshTo statement.
-         * @private
-         * @param {Object} container object containing the parameter a section or template is bound to, or data
-         * @param {String} param parameter on which to bind, or null if binding to data
-         * @param {Number} linNumber
-         */
-        __$bindAutoRefresh : function () {}
-        /* BACKWARD-COMPATIBILITY-END */
     }
 });

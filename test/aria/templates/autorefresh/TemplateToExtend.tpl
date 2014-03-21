@@ -14,36 +14,11 @@
  */
 
 {Template {
-    $classpath: "test.aria.templates.autorefresh.TemplateC",
-    $extends : "test.aria.templates.autorefresh.TemplateToExtend"
+    $classpath: "test.aria.templates.autorefresh.TemplateToExtend",
+    $hasScript : true
 }}
 
-    {var d = data /}
-
     {macro main()}
-        TEMPLATE C
-        <br/>
-        Main Section - C.
-        <br/>
-        {section {
-            id : "SectionCA",
-            bindRefreshTo : [{inside : data.c, to : "a"}],
-            macro : "mainSection"
-        }/}
-
-        {@aria:TextField {
-          id: "Ctextfield",
-          width: 40,
-          label: "TextFieldC"
-        }/}
-
     {/macro}
-
-    {macro mainSection()}
-           {@aria:Template {
-            defaultTemplate: "test.aria.templates.autorefresh.TemplateD"
-          }/}
-    {/macro}
-
 
 {/Template}
