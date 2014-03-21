@@ -23,7 +23,7 @@
 
         {@aria:Dialog {
             id : "firstDialog",
-            contentMacro : {
+            macro : {
                 name : "dialogMacro",
                 args : ["one"]
             },

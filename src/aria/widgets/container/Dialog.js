@@ -135,10 +135,6 @@ Aria.classDefinition({
     },
     $statics : {
         CONTAINER_USAGE_DEPRECATED : "%1The usage as a container {@aria:Dialog}{/@aria:Dialog} is deprecated; use the {@aria:Dialog /} syntax instead.",
-        /* BACKWARD-COMPATIBILITY-BEGIN GH-687 */
-        INCONSISTENT_MACRO_CONTENTMACRO_USAGE : "%1Please consistently use either 'macro' or 'contentMacro' in cfg and cfg.bind in the Dialog configuration and do not mix them.",
-        CONTENTMACRO_DEPRECATED : "%1The 'contentMacro' property in Dialog configuration has been deprecated in favor of 'macro'.",
-        /* BACKWARD-COMPATIBILITY-END GH-687 */
         MISSING_CONTENT_MACRO : "%1Missing 'macro' in Dialog configuration."
     },
     $prototype : {
@@ -173,41 +169,9 @@ Aria.classDefinition({
                 this._setMaximizedHeightAndWidth(viewport);
             }
         },
-        /* BACKWARD-COMPATIBILITY-BEGIN GH-687 */
-        /**
-         * Register listeners for the bindings associated to this widget
-         * @protected
-         */
-        _registerBindings : function () {
-            // Make 'macro' behave like an alias for 'contentMacro' for consistency with other widgets
-            // Handle this before registering the bindings, not to have improper/duplicate bindings defined.
-            // Store things inside "macro" internally instead of "contentMacro" for future-proofness
-            var cfg = this._cfg;
-            var bindCfg = cfg.bind;
-            var logWarning = false;
-
-            // Note that bound and not-bound property are not mutually exclusive;
-            // i.e. there can be both .macro and .bind.macro defined at the same time.
-            if (cfg.contentMacro && !cfg.macro) {
-                cfg.macro = cfg.contentMacro;
-                logWarning = true;
-                delete cfg.contentMacro;
-            }
-
-            if (bindCfg && bindCfg.contentMacro && !bindCfg.macro) {
-                bindCfg.macro = bindCfg.contentMacro;
-                logWarning = true;
-                delete bindCfg.contentMacro;
-            }
-            if (logWarning) {
-                this.$logWarn(this.CONTENTMACRO_DEPRECATED);
-            }
-            this.$Container._registerBindings.call(this);
-        },
-        /* BACKWARD-COMPATIBILITY-BEGIN END-687 */
 
         /**
-         * Check that a contentMacro is specified or bound to the dataModel
+         * Check that a content macro is specified or bound to the dataModel
          * @param {aria.widgets.CfgBeans:DialogCfg} cfg
          * @protected
          */
@@ -216,13 +180,6 @@ Aria.classDefinition({
             if (!("macro" in cfg) && !("bind" in cfg && "macro" in cfg.bind)) {
                 this.$logError(this.MISSING_CONTENT_MACRO);
             }
-            /* BACKWARD-COMPATIBILITY-BEGIN GH-687 */
-            // They shouldn't be here anymore; if defined, they should've been replaced with "macro" in
-            // _registerBindings. If they're still present, it means the user mixes "macro" and "contentMacro" usage
-            if (("contentMacro" in cfg) || ("bind" in cfg && "contentMacro" in cfg.bind)) {
-                this.$logError(this.INCONSISTENT_MACRO_CONTENTMACRO_USAGE);
-            }
-            /* BACKWARD-COMPATIBILITY-END GH-687 */
             var appEnvDialogSettings = aria.widgets.environment.WidgetSettings.getWidgetSettings().dialog;
             if (!("movable" in cfg)) {
                 cfg.movable = appEnvDialogSettings.movable;
@@ -240,7 +197,7 @@ Aria.classDefinition({
         _widgetMarkupBegin : function (out) {
             if (this._container) {
                 // Dialog's usage as a container doesn't really make sense at all and probably no one uses that;
-                // it still needs 'contentMacro' defined, and if anything is present between
+                // it still needs 'macro' defined, and if anything is present between
                 // {@aria:Dialog}{/@aria:Dialog}, it will be flushed to the HTML.
                 this.$logWarn(this.CONTAINER_USAGE_DEPRECATED);
             }

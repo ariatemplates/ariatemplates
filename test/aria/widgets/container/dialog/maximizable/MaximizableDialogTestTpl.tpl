@@ -41,7 +41,7 @@
     {@aria:Dialog {
         id : "dialogMaxi",
         title: "Maximizable Dialog",
-        contentMacro : "dialogContent",
+        macro : "dialogContent",
         center : true,
         movable : true,
         resizable : true,
@@ -83,7 +83,7 @@
 {macro dialogMaxiFromStart()}
     {@aria:Dialog {
         id : "dialogMaxiFromStart",
-        contentMacro : "dialogContent",
+        macro : "dialogContent",
         center : false, // true is the default, we want to override it
         movable : true,
         resizable : true,
