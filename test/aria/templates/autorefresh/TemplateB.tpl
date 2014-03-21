@@ -14,34 +14,43 @@
  */
 
 {Template {
-    $classpath: "test.aria.templates.autorefresh.TemplateB"
+    $classpath: "test.aria.templates.autorefresh.TemplateB",
+    $extends : "test.aria.templates.autorefresh.TemplateToExtend"
 }}
-
-    {var d = data /}
 
     {macro main()}
         TEMPLATE B
         <br/>
         Main Section - B.
         <br/>
-        {section "SectionBA"}
-           Section BA
-           {@aria:TextField {
-              id: "BAtextfield",
-              width: 40,
-              label: "TextFieldB",
-              bind: {
-                value: {
-                  to: 'b',
-                  inside: data
-                }
-              }
-            }/}
-        {/section}
+        {section {
+            id : "SectionBA",
+            macro : "displaySectionBA"
+        }/}
 
-        {section "SectionBB"}
-           Section BB
-        {/section}
+        {section {
+            id : "SectionBB",
+            macro : "displaySectionBB"
+        }/}
+    {/macro}
+
+    {macro displaySectionBB()}
+        Section BB
+    {/macro}
+
+    {macro displaySectionBA()}
+       Section BA
+       {@aria:TextField {
+          id: "BAtextfield",
+          width: 40,
+          label: "TextFieldB",
+          bind: {
+            value: {
+              to: 'b',
+              inside: data
+            }
+          }
+        }/}
     {/macro}
 
 
