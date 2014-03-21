@@ -103,5 +103,7 @@ Aria.classDefinition({
         this.addTests("test.aria.templates.refresh.partial.PartialRefreshTestCase");
         this.addTests("test.aria.templates.reloadResources.ReloadResourcesTestCase");
         this.addTests("test.aria.templates.reloadParentTemplate.ParentReloadTestSuite");
+
+        this.addTests("test.aria.templates.layoutResize.ResizeTestCase");
     }
 });
