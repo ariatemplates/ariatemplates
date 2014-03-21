@@ -43,7 +43,6 @@ Aria.classDefinition({
     $constructor : function () {
         var utilString = aria.utils.String;
         var modifiers = aria.templates.Modifiers;
-        var pathUtils = aria.utils.Path;
         var statementsSingleton = this;
 
         // Root statements are processed differently from other statements (they are processed directly without going
@@ -210,25 +209,6 @@ Aria.classDefinition({
                     out.writeln("this.__$statementOnEvent(", out.stringify(eventName), ",this.$normCallback(", callback, "),", statement.lineNumber, ');');
                 }
             },
-            /* BACKWARD-COMPATIBILITY-BEGIN */
-            "bindRefreshTo" : {
-                inMacro : true,
-                container : false,
-                paramRegexp : /^([\s\S]+)$/,
-                process : function (out, statement, param) {
-                    var data = statement.paramBlock, container, pathParts;
-                    pathParts = pathUtils.parse(utilString.trim(data));
-                    if (pathParts.length > 1) {
-                        param = out.stringify(pathParts.pop());
-                        container = pathUtils.pathArrayToString(pathParts);
-                    } else {
-                        // case for {bindRefreshTo myVar/}
-                        param = "null";
-                        container = pathParts[0];
-                    }
-                    out.writeln("this.__$bindAutoRefresh(", container, ", ", param, ", ", statement.lineNumber, ");");
-                }
-            },/* BACKWARD-COMPATIBILITY-END */
             "if" : {
                 inMacro : true,
                 container : true,

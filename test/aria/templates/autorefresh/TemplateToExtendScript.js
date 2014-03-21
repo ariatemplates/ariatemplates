@@ -13,26 +13,22 @@
  * limitations under the License.
  */
 
-{Template {
-    $classpath: "test.aria.templates.autorefresh.TemplateD",
-    $extends : "test.aria.templates.autorefresh.TemplateToExtend"
-}}
+Aria.tplScriptDefinition({
+    $classpath : "test.aria.templates.autorefresh.TemplateToExtendScript",
+    $dependencies : ["aria.utils.Object"],
+    $prototype : {
 
-    {var d = data /}
+        $dataReady : function () {
+            this.data.refreshes = this.data.refreshes || {};
+        },
 
-    {macro main()}
-        {section {
-            macro : "mainSection",
-            bindRefreshTo : [{ inside : data }]
-        } /}
-    {/macro}
-
-    {macro mainSection()}
-        TEMPLATE D
-        <br/>
-        Main Section - D.
-        <br/>
-    {/macro}
-
-
-{/Template}
+        $afterRefresh : function (args) {
+            if (aria.utils.Object.isEmpty(args)) {
+                if (!this.data.refreshes[this.$class]) {
+                    this.data.refreshes[this.$class] = 0;
+                }
+                this.data.refreshes[this.$class]++;
+            }
+        }
+    }
+});
