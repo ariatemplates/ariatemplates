@@ -23,7 +23,7 @@
 
         {@aria:Dialog {
             id : "firstDialog",
-            contentMacro : "dialogMacro",
+            macro : "dialogMacro",
             title : "Movable dialog whose content is refreshed",
             width: 300,
             height : 300,
@@ -38,7 +38,7 @@
         } /}
         {@aria:Dialog {
             id : "secondDialog",
-            contentMacro : "loremIpsum",
+            macro : "loremIpsum",
             title : "Movable dialog whose containing template is refreshed",
             width: 300,
             height : 300,

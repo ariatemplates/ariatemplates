@@ -25,7 +25,7 @@
 		 {@aria:Dialog {
           id : "myid",
           title: "mytitle",
-          contentMacro: "dialogMacro",
+          macro: "dialogMacro",
           visible: true,
           movable : true,
 		  center: false,

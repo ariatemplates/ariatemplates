@@ -20,7 +20,7 @@
 	{macro main()}
 		{@aria:Dialog {
 			id : "myDialog",
-			contentMacro : "dialogContent",
+			macro : "dialogContent",
 			modal : true,
 			closeOnMouseClick : true,
 			onCloseClick : {

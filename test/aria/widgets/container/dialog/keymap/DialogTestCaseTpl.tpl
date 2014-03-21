@@ -21,7 +21,7 @@
           id : "tf1"
         } /}
         {@aria:Dialog {
-            contentMacro: "dialogContent",
+            macro: "dialogContent",
             visible : true,
             modal : true,
             bind: {
