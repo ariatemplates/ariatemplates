@@ -18,7 +18,7 @@
 }}
     {macro main()}
         {@aria:Dialog {
-            contentMacro: "dialogContent",
+            macro: "dialogContent",
             modal: true,
             center: true,
             visible : true,

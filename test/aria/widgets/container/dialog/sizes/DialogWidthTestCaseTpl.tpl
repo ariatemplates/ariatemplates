@@ -21,27 +21,27 @@
 
 		{@aria:Dialog {
 		    visible : true,
-		    contentMacro : "dialogMacro",
+		    macro : "dialogMacro",
 		    id : "center"
 		}/}
 
 		{@aria:Dialog {
 		    visible : true,
-		    contentMacro : "dialogMacro",
+		    macro : "dialogMacro",
 		    id : "centerHeight",
 		    height : 500
 		}/}
 
 		{@aria:Dialog {
 		    visible : true,
-		    contentMacro : "dialogMacro",
+		    macro : "dialogMacro",
 		    id : "notCentered",
 		    center : false
 		}/}
 
 		{@aria:Dialog {
 		    visible : true,
-		    contentMacro : "dialogMacro",
+		    macro : "dialogMacro",
 		    id : "positioned",
 		    center : false,
 		    xpos : 500,
@@ -50,7 +50,7 @@
 
 		{@aria:Dialog {
 		    visible : true,
-		    contentMacro : "dialogMacro",
+		    macro : "dialogMacro",
 		    id : "positionedHeight",
 		    center : false,
 		    xpos : 1000,
