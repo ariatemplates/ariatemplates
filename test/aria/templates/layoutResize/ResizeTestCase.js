@@ -92,8 +92,8 @@ Aria.classDefinition({
             this.data.showDiv = true;
             this.templateCtxt.$refresh();
             var div = this.testDocument.getElementById("resizableDiv");
-            this.assertEqualsWithTolerance(parseInt(div.style.height), this.iframeGeom.height, 50, "Bad height after resize: %1, should be ~%2");
-            this.assertEqualsWithTolerance(parseInt(div.style.width), this.iframeGeom.width, 50, "Bad width after resize: %1, should be ~%2");
+            this.assertEqualsWithTolerance(parseInt(div.style.height, 10), this.iframeGeom.height, 50, "Bad height after resize: %1, should be ~%2");
+            this.assertEqualsWithTolerance(parseInt(div.style.width, 10), this.iframeGeom.width, 50, "Bad width after resize: %1, should be ~%2");
             this.cb.$dispose();
             this.notifyTemplateTestEnd();
 
