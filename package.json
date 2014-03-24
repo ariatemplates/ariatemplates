@@ -23,7 +23,7 @@
     "test": "npm run-script lint && npm run-script grunt && npm run-script mocha && npm run-script attester"
   },
   "devDependencies": {
-    "atpackager": "0.2.2",
+    "atpackager": "0.2.3",
     "attester": "1.3.0",
     "express": "3.4.8",
     "grunt": "0.4.2",
