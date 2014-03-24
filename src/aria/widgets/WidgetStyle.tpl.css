@@ -78,17 +78,6 @@
     {/macro}
 
     // Macros for frames:
-
-    /*{macro writeStateOfFrame(info)}
-        {var sprType=info.skinClass.sprType/}
-        {if sprType==}
-            {call writeStateOfTableFrame(info)/}
-        {elseif sprType==""/}
-            {call writeStateOfFixedHeightFrame(info)/}
-        {elseif sprType==6/}
-            {call writeStateOfSimpleFrame(info)/}
-        {/if}        
-    {/macro}*/
     
     {macro writeStateOfFixedHeightFrame(info)}
         {var state=info.state.frame/}
