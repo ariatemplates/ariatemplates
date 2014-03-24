@@ -75,7 +75,11 @@ Aria.beanDefinitions({
                 },
                 /* Backward Compatibility ends here */
                 "headers" : {
-                    $type : "json:Object",
+                    $type : "json:Map",
+                    $contentType : {
+                        $type : "json:String",
+                        $description : "HTTP request header"
+                    },
                     $description : "Request Headers to be used.",
                     $sample : {
                         "Content-Type" : "text/plain",
