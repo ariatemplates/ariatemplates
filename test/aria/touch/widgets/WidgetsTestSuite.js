@@ -30,9 +30,6 @@ Aria.classDefinition({
         this.addTests("test.aria.touch.widgets.SliderSwitch");
         this.addTests("test.aria.touch.widgets.SliderSwitchDrag");
         this.addTests("test.aria.touch.widgets.ButtonTouch");
-        /* Backward Compatibility begins here*/
-        this.addTests("test.aria.touch.widgets.dialog.closeOnClick.DialogTestCase");
-        /* Backward Compatibility ends here*/
         this.addTests("test.aria.touch.widgets.popup.PopupTestCase");
     }
 });
