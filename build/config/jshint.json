@@ -3,7 +3,7 @@
     "camelcase" : false,
     "curly" : false,
     "eqeqeq" : false,
-    "es3" : false,
+    "es3" : true,
     "forin" : false,
     "immed" : false,
     "indent" : false,
