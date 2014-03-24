@@ -26,7 +26,7 @@ Aria.classDefinition({
             var req = {
                 url : aria.core.DownloadMgr.resolveURL("test/aria/core/test/TestFile.txt", true),
                 method : "POST",
-                postData : "notChanged"
+                data : "notChanged"
             };
             filter.setJsonPostData(req, {});
             this.assertTrue(req.data == "{}");
@@ -37,7 +37,7 @@ Aria.classDefinition({
             req = {
                 url : aria.core.DownloadMgr.resolveURL("test/aria/core/test/TestFile.txt", true),
                 method : "POST",
-                postData : "notChanged"
+                data : "notChanged"
             };
             filter.setJsonPostData(req, {
                 a : {
@@ -59,7 +59,7 @@ Aria.classDefinition({
             var req = {
                 url : aria.core.DownloadMgr.resolveURL("test/aria/core/test/TestFile.txt", true),
                 method : "GET",
-                postData : "notChanged",
+                data : "notChanged",
                 callback : {
                     fn : function () {
                         this.notifyTestEnd("testAsyncEndToEndJsonPostData");

@@ -380,7 +380,7 @@ Aria.classDefinition({
                 sender : senderObject,
                 url : req.url,
                 method : req.method,
-                postData : req.data,
+                data : req.data,
                 headers : req.headers,
                 timeout : req.timeout,
                 callback : {
@@ -398,11 +398,11 @@ Aria.classDefinition({
                     }
                 }
             };
-            /* Backward Compatibility begins here */
+            /* BACKWARD-COMPATIBILITY-BEGIN HEADERS */
             if (req.postHeader) {
                 requestObject.postHeader = req.postHeader;
             }
-            /* Backward Compatibility ends here */
+            /* BACKWARD-COMPATIBILITY-END HEADERS */
             if (handler.expectedResponseType) {
                 requestObject.expectedResponseType = handler.expectedResponseType;
             }

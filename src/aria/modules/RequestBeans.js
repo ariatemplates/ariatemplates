@@ -68,12 +68,12 @@ Aria.beanDefinitions({
                     $type : "json:Integer",
                     $description : "Timeout in milliseconds (after which the request is canceled if no answer was received before). If this parameter is not set, the default timeout applies (specified in aria.core.IO.defaultTimeout). This property can be changed by filters."
                 },
-                /* Backward Compatibility begins here */
+                /* BACKWARD-COMPATIBILITY-BEGIN GH-1044 HEADERS */
                 "postHeader" : {
                     $type : "json:String",
-                    $description : "[DEPRECATED] Header 'Content-type' to be used for POST requests, please use headers"
+                    $description : "[DEPRECATED, use 'headers' object] Header 'Content-type' to be used for POST requests"
                 },
-                /* Backward Compatibility ends here */
+                /* BACKWARD-COMPATIBILITY-END GH-1044 HEADERS */
                 "headers" : {
                     $type : "json:Map",
                     $contentType : {

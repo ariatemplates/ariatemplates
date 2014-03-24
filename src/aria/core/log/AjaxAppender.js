@@ -87,7 +87,7 @@ Aria.classDefinition({
                 },
                 url : this.url,
                 method : "POST",
-                postData : data,
+                data : data,
                 callback : {
                     fn : this._stackSent,
                     scope : this
