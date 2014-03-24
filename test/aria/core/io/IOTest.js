@@ -205,13 +205,82 @@ Aria.classDefinition({
         },
 
         /**
+         * The Content-Type header should be taken from aria.core.IO.postHeaders if not present directly in the request
+         */
+        testAsyncDefaultHeaders_ContentType : function () {
+            var request = {
+                url : this.urlRoot + "aria/core/test/TestFile.txt",
+                method : "POST",
+                data : "my post data",
+                callback : {
+                    fn : this._defaultHeaders_ContentType_Response,
+                    scope : this
+                }
+            };
+            var valid = aria.core.JsonValidator.normalize({
+                json : request,
+                beanName : "aria.core.CfgBeans.IOAsyncRequestCfg"
+            }, true);
+            this.assertTrue(valid);
+
+            // asyncRequest will normalize the request internally, let's check it on a clone ourselves
+            var normalizedRequest = aria.utils.Json.copy(request, false);
+            aria.core.IO.__normalizeRequest(normalizedRequest);
+            this.assertEquals(normalizedRequest.headers["Content-Type"], "application/x-www-form-urlencoded; charset=UTF-8");
+
+            aria.core.IO.asyncRequest(request);
+        },
+
+        _defaultHeaders_ContentType_Response : function (res) {
+            this.assertEquals(res.status, 200);
+            this.notifyTestEnd("testAsyncDefaultHeaders_ContentType");
+        },
+
+        /**
+         * Test overriding Content-Type in headers property in aria.core.CfgBeans.IOAsyncRequestCfg.<br>
+         * This should override the default value from aria.core.IO.postHeaders
+         */
+        testAsyncConfigureHeaders_ContentType : function () {
+            var request = {
+                url : this.urlRoot + "aria/core/test/TestFile.txt",
+                method : "POST",
+                data : "my post data",
+                headers : {
+                    "Content-Type" : "text/plain"
+                },
+                callback : {
+                    fn : this._configureHeaders_ContentType_Response,
+                    scope : this
+                }
+            };
+            var valid = aria.core.JsonValidator.normalize({
+                json : request,
+                beanName : "aria.core.CfgBeans.IOAsyncRequestCfg"
+            }, true);
+            this.assertTrue(valid);
+            this.assertEquals(request.headers["Content-Type"], "text/plain");
+
+            // asyncRequest will normalize the request internally, let's check it on a clone ourselves
+            var normalizedRequest = aria.utils.Json.copy(request, false);
+            aria.core.IO.__normalizeRequest(normalizedRequest);
+            this.assertEquals(normalizedRequest.headers["Content-Type"], "text/plain");
+
+            aria.core.IO.asyncRequest(request);
+        },
+        _configureHeaders_ContentType_Response : function (res) {
+            this.assertEquals(res.status, 200);
+            this.notifyTestEnd("testAsyncConfigureHeaders_ContentType");
+        },
+
+        /* BACKWARD-COMPATIBILITY-BEGIN GH-1044 HEADERS */
+        /**
          * Test postHeader property in aria.core.CfgBeans.IOAsyncRequestCfg.
          */
         testAsyncConfigurePostHeader : function () {
             var request = {
                 url : this.urlRoot + "aria/core/test/TestFile.txt",
                 method : "POST",
-                postData : "my post data",
+                data : "my post data",
                 postHeader : "text/plain",
                 callback : {
                     fn : this._configurePostHeaderResponse,
@@ -234,7 +303,7 @@ Aria.classDefinition({
             var request = {
                 url : this.urlRoot + "aria/core/test/TestFile.txt",
                 method : "POST",
-                postData : "my post data",
+                data : "my post data",
                 callback : {
                     fn : this._noPostHeaderResponse,
                     scope : this
@@ -296,6 +365,8 @@ Aria.classDefinition({
             this.assertTrue(res.status === 200);
             this.notifyTestEnd("testAsyncConfigureContentTypeHeader");
         },
+        /* BACKWARD-COMPATIBILITY-END GH-1044 HEADERS */
+
         /**
          * Test HEAD Request Method.
          */

@@ -74,6 +74,7 @@ Aria.classDefinition({
         TIMEOUT_ERROR : "timeout expired",
 
         // ERROR MESSAGES:
+        DEPRECATED_DEFAULT_POSTHEADERS : "`defaultPostHeader`,`useDefaultPostHeader`, `defaultContentTypeHeader` and `useDefaultContentTypeHeader` in aria.core.IO are deprecated, use `aria.core.IO.headers` and `aria.core.IO.postHeaders` instead to customize headers settings",
         MISSING_IO_CALLBACK : "Missing callback in IO call - Please check\nurl: %1",
         IO_CALLBACK_ERROR : "Error in IO callback handling on url: %1",
         IO_REQUEST_FAILED : "Invalid Request: \nurl: %1\nerror: %2",
@@ -138,19 +139,20 @@ Aria.classDefinition({
          */
         this._uriLocal = /^(?:file):$/;
 
-        /* Backward Compatibility begins here */
+        /* BACKWARD-COMPATIBILITY-BEGINS GH-1044 XHRHEADER */
         /**
-         * Identify any request as Ajax through the header X-Requested-With.
+         * [DEPRECATED, use this.headers and this.postHeaders] Identify any request as Ajax through the header
+         * X-Requested-With.
          * @type Boolean
          */
         this.useXHRHeader = true;
 
         /**
-         * Default value for X-Requested-With header
+         * [DEPRECATED, use this.headers and this.postHeaders] Default value for X-Requested-With header
          * @type String
          */
         this.defaultXHRHeader = "XMLHttpRequest";
-        /* Backward Compatibility ends here */
+        /* BACKWARD-COMPATIBILITY-ENDS GH-1044 XHRHEADER */
 
         /**
          * Map of headers sent with every request.
@@ -161,30 +163,41 @@ Aria.classDefinition({
         };
 
         /**
-         * Set the header "Content-type" to a default value in case of POST requests (@see defaultPostHeader)
+         * Map of additional headers sent with each POST and PUT request (in addition to the ones in this.headers).
+         * @type Object
+         */
+        this.postHeaders = {
+            "Content-Type" : "application/x-www-form-urlencoded; charset=UTF-8"
+        };
+
+        /* BACKWARD-COMPATIBILITY-BEGINS GH-1044 HEADERS */
+        /**
+         * [DEPRECATED, use this.headers and this.postHeaders] Set the header "Content-type" to a default value in case
+         * of POST requests (@see defaultPostHeader)
          * @type Boolean
          */
-        /* Backward Compatibility begins here */
         this.useDefaultPostHeader = true;
 
         /**
-         * Default value for header "Content-type". Used only for POST requests
+         * [DEPRECATED, use this.headers and this.postHeaders] Default value for header "Content-type". Used only for
+         * POST requests
          * @type String
          */
         this.defaultPostHeader = 'application/x-www-form-urlencoded; charset=UTF-8';
 
         /**
-         * Set the header "Content-type" to a default value (@see defaultContentTypeHeader)
+         * [DEPRECATED, use this.headers and this.postHeaders] Set the header "Content-type" to a default value (@see
+         * defaultContentTypeHeader)
          * @type Boolean
          */
         this.useDefaultContentTypeHeader = true;
 
         /**
-         * Default value for header "Content-type".
+         * [DEPRECATED, use this.headers and this.postHeaders] Default value for header "Content-type".
          * @type String
          */
         this.defaultContentTypeHeader = 'application/x-www-form-urlencoded; charset=UTF-8';
-        /* Backward Compatibility ends here */
+        /* BACKWARD-COMPATIBILITY-ENDS GH-1044 HEADERS */
 
         /**
          * Map each request to the polling timeout added while handling the ready state.
@@ -406,11 +419,11 @@ Aria.classDefinition({
 
             // as postData can possibly be changed by filters, we compute the requestSize only after filters have been
             // called:
-            /* Backward Compatibility begins here */
+            /* BACKWARD-COMPATIBILITY-BEGINS GH-1044 POSTDATA */
             if (req.method == "POST" && req.postData) {
                 req.requestSize = req.postData.length;
             }
-            /* Backward Compatibility ends here */
+            /* BACKWARD-COMPATIBILITY-ENDS GH-1044 POSTDATA */
             else {
                 req.requestSize = ((req.method == "POST" || req.method == "PUT") && req.data) ? req.data.length : 0;
             }
@@ -476,6 +489,22 @@ Aria.classDefinition({
                     headers[key] = this.headers[key];
                 }
             }
+            // Then add POST/PUT-specific headers
+            if (req.method === "POST" || req.method === "PUT") {
+                /* BACKWARD-COMPATIBILITY-BEGINS GH-1044 HEADERS */
+                if (this.postHeaders && this.useDefaultContentTypeHeader === false
+                        && this.useDefaultPostHeader === false) {
+                    // user must have set this manually to false
+                    this.$logWarn(this.DEPRECATED_DEFAULT_POSTHEADERS);
+                    delete this.postHeaders["Content-Type"];
+                }
+                /* BACKWARD-COMPATIBILITY-ENDS GH-1044 HEADERS */
+                for (var key in this.postHeaders) {
+                    if (this.postHeaders.hasOwnProperty(key)) {
+                        headers[key] = this.postHeaders[key];
+                    }
+                }
+            }
             // Then the headers from the request object
             for (var key in req.headers) {
                 if (req.headers.hasOwnProperty(key)) {
@@ -483,45 +512,48 @@ Aria.classDefinition({
                 }
             }
 
+            /* BACKWARD-COMPATIBILITY-BEGINS GH-1044 HEADERS */
             if (req.method === "POST" || req.method === "PUT") {
 
-                /* Backward Compatibility begins here */
                 // Fist the one specified in the request
                 var contentType = headers["Content-Type"] || req.contentTypeHeader || req.postHeader;
 
                 if (!contentType && this.useDefaultPostHeader) {
+                    this.$logWarn(this.DEPRECATED_DEFAULT_POSTHEADERS);
                     contentType = this.defaultPostHeader;
                 }
                 if (!contentType && this.useDefaultContentTypeHeader) {
+                    this.$logWarn(this.DEPRECATED_DEFAULT_POSTHEADERS);
                     contentType = this.defaultContentTypeHeader;
                 }
 
                 if (contentType) {
                     headers["Content-Type"] = contentType;
                 }
-                /* Backward Compatibility ends here */
-                // When compatibility is removed, we should only have
-                // if (!headers["Content-Type"] && this.useDefaultContentTypeHeader) {
-                // headers["Content-Type"] = this.defaultContentTypeHeader
-                // }
             }
+            /* BACKWARD-COMPATIBILITY-ENDS GH-1044 HEADERS */
 
-            /* Backward Compatibility begins here */
+            /* BACKWARD-COMPATIBILITY-BEGINS GH-1044 XHRHEADER */
             if (this.useXHRHeader) {
                 headers["X-Requested-With"] = this.defaultXHRHeader;
             } else {
+                // user must have set this manually
+                this.$logWarn("`aria.core.IO.useXHRHeader` property is deprecated, please override `aria.core.IO.headers` instead");
                 delete headers["X-Requested-With"];
             }
-            /* Backward Compatibility ends here */
+            /* BACKWARD-COMPATIBILITY-ENDS GH-1044 XHRHEADER */
 
             req.headers = headers;
 
-            /* Backward Compatibility begins here */
+            /* BACKWARD-COMPATIBILITY-BEGINS GH-1044 POSTDATA */
             // This one makes sure that we always use data, not post data
             if (!req.data) {
                 req.data = req.postData;
+                if (req.postData) {
+                    this.$logWarn("`request.postData` property is deprecated, use `request.data` instead");
+                }
             }
-            /* Backward Compatibility ends here */
+            /* BACKWARD-COMPATIBILITY-ENDS GH-1044 POSTDATA */
         },
 
         /**
