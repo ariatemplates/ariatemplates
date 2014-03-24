@@ -18,6 +18,7 @@
  */
 Aria.classDefinition({
     $classpath : "aria.jsunit.Test",
+    $dependencies : ["aria.utils.Array", "aria.utils.String"],
     $events : {
         "failure" : {
             description : "raised when a failure occurs (failures are expected and correspond to wrong assertions)",
@@ -259,26 +260,43 @@ Aria.classDefinition({
          * @param {String} optMsg optional message to add to the error description
          */
         raiseError : function (err, optMsg) {
-            var msg = (err.description) ? err.description : err.message;
-            msg = '[' + msg + ']';
-            if (optMsg) {
-                msg += " " + optMsg;
+            var errorMessages = [];
+            if (err.errors) {
+                // special case for errors reported by JsonValidator
+                aria.utils.Array.forEach(err.errors, function (entry) {
+                    if (entry.msgId) {
+                        var msg = aria.utils.String.substitute(entry.msgId, entry.msgArgs);
+                        errorMessages.push(msg);
+                    } else {
+                        // "should never happen" but just in case, to not lose anything
+                        errorMessages.push(entry);
+                    }
+                });
+            } else {
+                var msg = (err.description) ? err.description : err.message;
+                msg = '[' + msg + ']';
+                if (optMsg) {
+                    msg += " " + optMsg;
+                }
+                errorMessages = [msg];
             }
 
-            this._errors.push({
-                type : this.ERROR_TYPES.ERROR,
-                testMethod : this._currentTestName,
-                description : msg
-            });
+            aria.utils.Array.forEach(errorMessages, function (msg) {
+                this._errors.push({
+                    type : this.ERROR_TYPES.ERROR,
+                    testMethod : this._currentTestName,
+                    description : msg
+                });
 
-            // note: no exception need to be thrown as we are already in an exception call
-            this.$raiseEvent({
-                name : "error",
-                testClass : this.$classpath,
-                testState : this._currentTestName,
-                exception : err,
-                msg : msg
-            });
+                // note: no exception need to be thrown as we are already in an exception call
+                this.$raiseEvent({
+                    name : "error",
+                    testClass : this.$classpath,
+                    testState : this._currentTestName,
+                    exception : err,
+                    msg : msg
+                });
+            }, this);
         },
 
         /**
