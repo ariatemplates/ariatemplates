@@ -83,7 +83,7 @@ Aria.classDefinition({
          */
         getRGBComponentsFromRGBNotation : function (color) {
             var rgb = color.split(/[\(\)\,]/);
-            return [parseInt(rgb[1]), parseInt(rgb[2]), parseInt(rgb[3])];
+            return [parseInt(rgb[1], 10), parseInt(rgb[2], 10), parseInt(rgb[3], 10)];
         },
 
         /**
