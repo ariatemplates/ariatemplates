@@ -155,35 +155,6 @@ Aria.classDefinition({
             "Content-Type" : "application/x-www-form-urlencoded; charset=UTF-8"
         };
 
-        /* BACKWARD-COMPATIBILITY-BEGINS GH-1044 HEADERS */
-        /**
-         * [DEPRECATED, use this.headers and this.postHeaders] Set the header "Content-type" to a default value in case
-         * of POST requests (@see defaultPostHeader)
-         * @type Boolean
-         */
-        this.useDefaultPostHeader = true;
-
-        /**
-         * [DEPRECATED, use this.headers and this.postHeaders] Default value for header "Content-type". Used only for
-         * POST requests
-         * @type String
-         */
-        this.defaultPostHeader = 'application/x-www-form-urlencoded; charset=UTF-8';
-
-        /**
-         * [DEPRECATED, use this.headers and this.postHeaders] Set the header "Content-type" to a default value (@see
-         * defaultContentTypeHeader)
-         * @type Boolean
-         */
-        this.useDefaultContentTypeHeader = true;
-
-        /**
-         * [DEPRECATED, use this.headers and this.postHeaders] Default value for header "Content-type".
-         * @type String
-         */
-        this.defaultContentTypeHeader = 'application/x-www-form-urlencoded; charset=UTF-8';
-        /* BACKWARD-COMPATIBILITY-ENDS GH-1044 HEADERS */
-
         /**
          * Map each request to the polling timeout added while handling the ready state.
          * @type Object
@@ -469,14 +440,6 @@ Aria.classDefinition({
             }
             // Then add POST/PUT-specific headers
             if (req.method === "POST" || req.method === "PUT") {
-                /* BACKWARD-COMPATIBILITY-BEGINS GH-1044 HEADERS */
-                if (this.postHeaders && this.useDefaultContentTypeHeader === false
-                        && this.useDefaultPostHeader === false) {
-                    // user must have set this manually to false
-                    this.$logWarn(this.DEPRECATED_DEFAULT_POSTHEADERS);
-                    delete this.postHeaders["Content-Type"];
-                }
-                /* BACKWARD-COMPATIBILITY-ENDS GH-1044 HEADERS */
                 for (var key in this.postHeaders) {
                     if (this.postHeaders.hasOwnProperty(key)) {
                         headers[key] = this.postHeaders[key];
@@ -489,27 +452,6 @@ Aria.classDefinition({
                     headers[key] = req.headers[key];
                 }
             }
-
-            /* BACKWARD-COMPATIBILITY-BEGINS GH-1044 HEADERS */
-            if (req.method === "POST" || req.method === "PUT") {
-
-                // Fist the one specified in the request
-                var contentType = headers["Content-Type"] || req.contentTypeHeader || req.postHeader;
-
-                if (!contentType && this.useDefaultPostHeader) {
-                    this.$logWarn(this.DEPRECATED_DEFAULT_POSTHEADERS);
-                    contentType = this.defaultPostHeader;
-                }
-                if (!contentType && this.useDefaultContentTypeHeader) {
-                    this.$logWarn(this.DEPRECATED_DEFAULT_POSTHEADERS);
-                    contentType = this.defaultContentTypeHeader;
-                }
-
-                if (contentType) {
-                    headers["Content-Type"] = contentType;
-                }
-            }
-            /* BACKWARD-COMPATIBILITY-ENDS GH-1044 HEADERS */
 
             req.headers = headers;
         },
