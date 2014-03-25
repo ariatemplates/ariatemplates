@@ -258,12 +258,6 @@ Aria.beanDefinitions({
                     $type : "json:String",
                     $description : "Data to be sent in the body of the request methods. Ignored for GET requests. This property can be changed by filters."
                 },
-                /* BACKWARD-COMPATIBILITY-BEGINS GH-1044 POSTDATA */
-                "postData" : {
-                    $type : "json:String",
-                    $description : "[DEPRECATED, use 'data' instead] Data to be sent in the body of the POST method. Ignored for GET requests. This property can be changed by filters."
-                },
-                /* BACKWARD-COMPATIBILITY-END GH-1044 POSTDATA */
                 /* BACKWARD-COMPATIBILITY-BEGINS GH-1044 HEADERS */
                 "postHeader" : {
                     $type : "json:String",
