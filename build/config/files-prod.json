@@ -114,7 +114,6 @@
             "aria/widgets/frames/*",
             "aria/widgets/*",
             "!aria/widgets/AriaSkinBeans.js",
-            "!aria/widgets/IconLib.js",
             "aria/popups/*",
             "aria/utils/environment/Number.js",
             "aria/utils/environment/NumberCfgBeans.js",
@@ -125,7 +124,6 @@
         "name": "aria/pack-widgets2.js",
         "files": [
             "aria/widgets/AriaSkinBeans.js",
-            "aria/widgets/IconLib.js",
             "aria/widgets/action/SortIndicator.js",
             "aria/widgets/action/SortIndicatorStyle.tpl.css",
             "aria/widgets/action/IconButton.js",
