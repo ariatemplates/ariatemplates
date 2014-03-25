@@ -419,14 +419,7 @@ Aria.classDefinition({
 
             // as postData can possibly be changed by filters, we compute the requestSize only after filters have been
             // called:
-            /* BACKWARD-COMPATIBILITY-BEGINS GH-1044 POSTDATA */
-            if (req.method == "POST" && req.postData) {
-                req.requestSize = req.postData.length;
-            }
-            /* BACKWARD-COMPATIBILITY-ENDS GH-1044 POSTDATA */
-            else {
-                req.requestSize = ((req.method == "POST" || req.method == "PUT") && req.data) ? req.data.length : 0;
-            }
+            req.requestSize = ((req.method == "POST" || req.method == "PUT") && req.data) ? req.data.length : 0;
 
             // PROFILING // req.profilingId = this.$startMeasure(req.url);
 
@@ -550,16 +543,6 @@ Aria.classDefinition({
             /* BACKWARD-COMPATIBILITY-ENDS GH-1044 XHRHEADER */
 
             req.headers = headers;
-
-            /* BACKWARD-COMPATIBILITY-BEGINS GH-1044 POSTDATA */
-            // This one makes sure that we always use data, not post data
-            if (!req.data) {
-                req.data = req.postData;
-                if (req.postData) {
-                    this.$logWarn("`request.postData` property is deprecated, use `request.data` instead");
-                }
-            }
-            /* BACKWARD-COMPATIBILITY-ENDS GH-1044 POSTDATA */
         },
 
         /**
