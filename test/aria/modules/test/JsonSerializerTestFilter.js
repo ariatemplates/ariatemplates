@@ -25,7 +25,7 @@ Aria.classDefinition({
     $prototype : {
         onRequest : function (req) {
             if (req.sender.requestObject && req.sender.requestObject.actionName == "serializerTestAction") {
-                this.__postData = req.postData;
+                this.__postData = req.data;
                 this.redirectToFile(req, "test/aria/modules/test/TestFile.txt", false);
             }
         },

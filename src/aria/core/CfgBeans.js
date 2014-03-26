@@ -254,35 +254,35 @@ Aria.beanDefinitions({
                             "REBIND"],
                     $sample : "POST"
                 },
-                /* Backward Compatibility begins here, use data property instead */
-                "postData" : {
-                    $type : "json:String",
-                    $description : "[DEPRECATED] Data to be sent in the body of the POST method. Ignored for GET requests. This property can be changed by filters."
-                },
-                /* Backward Compatibility ends here */
                 "data" : {
                     $type : "json:String",
                     $description : "Data to be sent in the body of the request methods. Ignored for GET requests. This property can be changed by filters."
                 },
-                /* Backward Compatibility begins here, use contentTypeHeader property instead */
+                /* BACKWARD-COMPATIBILITY-BEGINS GH-1044 POSTDATA */
+                "postData" : {
+                    $type : "json:String",
+                    $description : "[DEPRECATED, use 'data' instead] Data to be sent in the body of the POST method. Ignored for GET requests. This property can be changed by filters."
+                },
+                /* BACKWARD-COMPATIBILITY-END GH-1044 POSTDATA */
+                /* BACKWARD-COMPATIBILITY-BEGINS GH-1044 HEADERS */
                 "postHeader" : {
                     $type : "json:String",
-                    $description : "[DEPRECATED] Header 'Content-type' to be used for POST requests.",
+                    $description : "[DEPRECATED, use 'headers' object] Header 'Content-type' to be used for POST requests.",
                     $default : "application/x-www-form-urlencoded; charset=UTF-8"
                 },
-                /* Backward Compatibility ends here */
                 "contentTypeHeader" : {
                     $type : "json:String",
-                    $description : "Header 'Content-type' to be used for requests.",
+                    $description : "[DEPRECATED, use 'headers' object] Header 'Content-type' to be used for requests.",
                     $default : "application/x-www-form-urlencoded; charset=UTF-8"
                 },
+                /* BACKWARD-COMPATIBILITY-END GH-1044 HEADERS */
                 "headers" : {
                     $type : "json:Map",
                     $contentType : {
                         $type : "json:String",
                         $description : "HTTP request header"
                     },
-                    $description : "HTTP message headers",
+                    $description : "HTTP headers to be included with this request. This array will be merged with `aria.core.IO.headers` and, in case of POST / PUT requests, also with `aria.core.IO.postHeaders`. You can override those properties of aria.core.IO to establish your application's defaults.",
                     $sample : {
                         "Content-Type" : "text/plain",
                         "Connection" : "keep-alive"

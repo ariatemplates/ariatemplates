@@ -502,7 +502,7 @@ Aria.classDefinition({
                 // The assert must be done on the right request, which comes from the request manager)
                 if (args.sender.classpath == "aria.modules.RequestMgr") {
                     requestMgrSentRequest++;
-                    currentTest.assertEquals(-1, args.postData.indexOf(Aria.FRAMEWORK_PREFIX), "Metadata in json request");
+                    currentTest.assertEquals(-1, args.data.indexOf(Aria.FRAMEWORK_PREFIX), "Metadata in json request");
                 }
             };
             try {

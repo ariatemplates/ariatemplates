@@ -29,7 +29,7 @@ Aria.classDefinition({
             // For test purpose only
             req.url = Aria.rootFolderPath + "test/aria/modules/test/SampleResponse.xml";
             req.method = "POST";
-            this.__jsonData = req.postData;
+            this.__jsonData = req.data;
         },
 
         /**
