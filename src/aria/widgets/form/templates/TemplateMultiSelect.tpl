@@ -45,10 +45,10 @@
                 <td>{call renderItem(item, item_info.initIndex)/}</td>
                 {if (data.displayOptions.tableMode == true)}
                     {var checkboxLabelSplit = item.label.split('|')/}
-                    <td {on click {fn: "itemTableClick", args: {    item : item, itemIdx : item.index }}/}>${checkboxLabelSplit[0]}</td>
-                    <td {on click {fn: "itemTableClick", args: {    item : item, itemIdx : item.index }}/}>${checkboxLabelSplit[1]}</td>
-                    <td {on click {fn: "itemTableClick", args: {    item : item, itemIdx : item.index }}/}>${checkboxLabelSplit[2]}</td>
-                    <td {on click {fn: "itemTableClick", args: {    item : item, itemIdx : item.index }}/}>${checkboxLabelSplit[3]}</td>
+                    <td {on click {fn: "itemTableClick", args: {    item : item, itemIdx : item.index }}/}>${checkboxLabelSplit[0]|escapeForHTML:{text: true}}</td>
+                    <td {on click {fn: "itemTableClick", args: {    item : item, itemIdx : item.index }}/}>${checkboxLabelSplit[1]|escapeForHTML:{text: true}}</td>
+                    <td {on click {fn: "itemTableClick", args: {    item : item, itemIdx : item.index }}/}>${checkboxLabelSplit[2]|escapeForHTML:{text: true}}</td>
+                    <td {on click {fn: "itemTableClick", args: {    item : item, itemIdx : item.index }}/}>${checkboxLabelSplit[3]|escapeForHTML:{text: true}}</td>
                 {/if}
 
                 {if (item_index + 1) % data.numberOfColumns == 0}

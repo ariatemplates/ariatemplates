@@ -155,7 +155,7 @@ Aria.classDefinition({
                     '<!DOCTYPE html>\n',
                     "<html><head><title>" + config.title + "</title>", // HEAD
 
-                    "<script type='text/javascript'>Aria = { _xxDebug: true, rootFolderPath : '" + root
+                    "<script type='text/javascript'>Aria = { _xxDebug: true, rootFolderPath : '" + root + devPart
                             + "' };</script>",
                     "<script language='JavaScript' src='", // AT script
                     root + devPart + "aria/" + atJsName, // AT script

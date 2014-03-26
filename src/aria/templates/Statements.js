@@ -98,33 +98,38 @@ Aria.classDefinition({
                     }
                     parts.push(param);
 
-                    // Check if the secure must be done automatically or not:
-                    // - either the modifier is present in the list and thus we leave the default behavior of modifiers
-                    // - either we are in the context of a CSS Template and we decide not to escape automatically
-                    var automaticSecure = true;
+                    // Automatic escape detection ------------------------------
 
-                    var escapeModifier = classGenerator.escapeModifier;
-                    if (!escapeModifier) {
-                        automaticSecure = false;
+                    // We automatically escape expressions if needed, using the feature of modifiers, since the escape is already handled by a modifier itself.
+                    // There are two cases where we don't do it automatically:
+                    // - in CSS templates
+                    // - if the modifier is already used, in which case the user has full control on how to apply the escape
+                    var automaticEscape = true;
+
+                    var escapeModifierName = classGenerator.escapeModifier; // Gets the actual name of the modifier in this context
+                    if (escapeModifierName == null) {
+                        automaticEscape = false;
                     } else {
                         for (var i = parts.length - 1; i >= 1; i--) {
                             var part = parts[i];
-                            if (part.indexOf(escapeModifier) === 0) {
-                                automaticSecure = false;
+                            if (part.indexOf(escapeModifierName) === 0) {
+                                automaticEscape = false;
                                 break;
                             }
                         }
                     }
 
-                    /* Begin non backward compatible change */
-                    var automaticSecure = false;
-                    /* End non backward compatible change */
+                    // end of: automatic escape detection ----------------------
 
-                    // If the secure must be done automatically, we add the modifier at the end of the list, to rely on
-                    // this available mechanism
-                    if (automaticSecure) {
-                        parts.splice(1, 0, escapeModifier);
+                    // Automatic escape application - part 1 -------------------
+
+                    // If the escape must be done automatically, we add the modifier at the beginning of the list.
+
+                    if (automaticEscape) {
+                        parts.splice(1, 0, escapeModifierName);
                     }
+
+                    // end of: automatic escape application - part 1 -----------
 
                     var beginexpr = [], endexpr = [];
                     var expr;
@@ -142,9 +147,17 @@ Aria.classDefinition({
                         expr = match[2]; // parameters of the modifier
                         if (expr) {
                             endexpr[i] = ", " + expr;
-                            if (automaticSecure) {
-                                endexpr[i] += ", '" + escapeModifier + "'";
+                            // Automatic escape application - part 2 -----------
+
+                            // We automatically pass to any modifier the name of the escaping modifier as last parameter.
+
+                            // This is done so that the other modifiers know that we are in automatic escape mode, and so that they know which modifier to use to do the escape. Useful for the implementation of modifiers receiving possibly untrusted data.
+
+                            if (automaticEscape) {
+                                endexpr[i] += ", '" + escapeModifierName + "'";
                             }
+
+                            // end of: Automatic escape application - part 2 ---
                             endexpr[i] += "])";
                         } else {
                             endexpr[i] = "])";

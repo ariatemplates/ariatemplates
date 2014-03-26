@@ -21,10 +21,10 @@
 }}
 
     {macro main()}
-        
+
         <div style="padding: 10px;">
-        
-        <div style="text-align:center; padding:5px; background:#F3F3F3; border:solid 1px #DDDDDD; margin-bottom:10px;">    
+
+        <div style="text-align:center; padding:5px; background:#F3F3F3; border:solid 1px #DDDDDD; margin-bottom:10px;">
             {@aria:Button {
                 label : "Clean",
                 onclick : {
@@ -33,7 +33,7 @@
                 }
             }/}
         </div>
-        
+
         <table style="width:100%" cellpadding="3" cellspacing="0">
             <thead>
                 <tr style="color:white; border-bottom:solid 1px #444444; font-weight:bold;">
@@ -44,7 +44,7 @@
                     <th style="background:#444;">Data</th>
                 </tr>
             </thead>
-            
+
             <tbody>
                 {foreach log inArray data.logs}
                     <tr style="background:
@@ -60,10 +60,10 @@
                             ${log.className}
                         </td>
                         <td style="border-right:solid 1px white; border-top:solid 1px #444444;">
-                            ${log.msgId|empty:"&nbsp;"}
+                            ${log.msgId|empty:"&nbsp;"|escapeForHTML:false}
                         </td>
-                        <td style="border-right:solid 1px white; border-top:solid 1px #444444;"> 
-                            ${log.msg|empty:"&nbsp;"}
+                        <td style="border-right:solid 1px white; border-top:solid 1px #444444;">
+                            ${log.msg|empty:"&nbsp;"|escapeForHTML:false}
                         </td >
                         <td style="border-top:solid 1px #444444;">
                             {if (log.object)}
@@ -82,14 +82,14 @@
                     </tr>
                 {/foreach}
             </tbody>
-            
+
         </table>
-        
+
         </div>
-        
-            
+
+
     {/macro}
-    
-    
+
+
 
 {/Template}

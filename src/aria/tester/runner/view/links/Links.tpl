@@ -31,7 +31,7 @@
                         href="${link.href}"
                         target="_blank"
                     >
-                        ${link.title}
+                        ${link.title|escapeForHTML:false}
                     </a>
                 </li>
             {/foreach}
@@ -44,7 +44,7 @@
                             scope : this
                         }/}
                     >
-                        Press <b>${link.key}</b> : ${link.description}
+                        Press <b>${link.key}</b> : ${link.description|escapeForHTML:false}
                     </a>
                 </li>
             {/foreach}

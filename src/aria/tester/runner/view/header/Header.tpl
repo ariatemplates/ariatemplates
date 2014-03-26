@@ -62,7 +62,7 @@
           <div
             {on click {fn:"_onStartTestsButtonClick", scope: this, args: {}}/}
             id="startTestsButton" class="${cssclass}">
-            ${this.getButtonLabel()}
+            ${this.getButtonLabel()|escapeForHTML:false}
         </div>
     {/macro}
 

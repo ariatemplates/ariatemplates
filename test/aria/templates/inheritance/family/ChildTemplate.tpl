@@ -50,7 +50,7 @@
     // test library inheritance
     {call libGP.print("output")/}
     {call libOne.print("output")/}
-    ${libGP.myMacroScript("output")}
+    ${libGP.myMacroScript("output")|escapeForHTML:false}
     // test CSS inheritance
     <h1 {id "titleoneid"/}>title 1</h1>
   {/macro}
