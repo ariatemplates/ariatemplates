@@ -53,7 +53,7 @@
     {/macro}
 
     {macro displayReportAsTree()}
-        ${this._beforeDisplayReport()|empty:""}
+        ${this._beforeDisplayReport()}
         {var testsArray = this.getFilteredTestsArray()/}
         <table
             class="reportTable"
@@ -96,9 +96,9 @@
         >
             <td>
                 {if (isTestSuite)}
-                    <b>${getSuiteName(test.instance)}</b>
+                    <b>${getSuiteName(test.instance)|escapeForHTML:false}</b>
                 {else/}
-                        <div style="float:left;">${getTestName(test)}</div>
+                        <div style="float:left;">${getTestName(test)|escapeForHTML:false}</div>
                     {if (hasError)}
                         <div class="errorCount"
                         {on click {fn:this._onErrorTestClick,scope:this, args:test}/}
@@ -106,11 +106,11 @@
                             style="cursor:pointer; text-decoration:underline;"
                         {/if}
                         >
-                        (${formatTestErrorsCount(test)})
+                        (${formatTestErrorsCount(test)|escapeForHTML:false})
                         </div>
                     {elseif data.flow.currentState == "finished"/}
                         <div class="testInfo">
-                            ${formatTestInfo(test)}
+                            ${formatTestInfo(test)|escapeForHTML:false}
                         </div>
                     {/if}
                 {/if}

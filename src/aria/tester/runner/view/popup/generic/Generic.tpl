@@ -40,7 +40,7 @@
                 scope : this
             }/}
         >
-            ${getLabelWithShortcut(label)}
+            ${getLabelWithShortcut(label)|escapeForHTML:false}
         </div>
     {/macro}
 {/Template}

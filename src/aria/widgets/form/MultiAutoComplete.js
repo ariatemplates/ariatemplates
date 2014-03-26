@@ -610,7 +610,7 @@ Aria.classDefinition({
 
         /**
          * Removes the highlighted state from the given option.
-         * @param[in] {HTMLElement} suggestionNode The HTML element corresponding to the highlighted option
+         * @param {HTMLElement} suggestionNode The HTML element corresponding to the highlighted option
          */
         unhighlightOption : function (suggestionNode) {
             if (suggestionNode == null) {
@@ -677,7 +677,7 @@ Aria.classDefinition({
         /**
          * Exclusively highlights the inserted option located at the given index. That means that any other highlighted
          * option will not be highlighted anymore, and this even if the targeted option is already highlighted.
-         * @param[in] {Number} index Index of the option to highlight. 1-based.
+         * @param {Number} index Index of the option to highlight. 1-based.
          * @see removeHighlight
          * @see addHighlight
          */

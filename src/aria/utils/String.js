@@ -105,41 +105,85 @@ Aria.classDefinition({
         },
 
         /**
-         * Escape the given string depending on the options. The string can be escaped for different contexts: - safe
-         * insertion inside an HTML text node - safe insertion inside an attribute value
-         * @param {String} str input string
-         * @param {Object|Boolean} options when it is a boolean, if it is true the input string is escaped for all the
-         * contexts, otherwise it is left unmodified. When it is an object, the string is escaped only for the specified
-         * contexts. Here is the format of the object:
+         * Escape the given string depending on the options. When no options is passed, the escaping is applied for all contexts.
          *
+         * The string can be escaped for different contexts:
+         * <ul>
+         * <li>safe insertion inside an HTML text node</li>
+         * <li>safe insertion inside an attribute value</li>
+         * </ul>
+         *
+         *
+         *
+         * @param {String} str Input string
+         *
+         * @param options In its more comprehensive form, it is an object in which each property correspond to a context that can be set to a truthy value to activate escaping (a falsy value, thus including null or undefined, will disable it).
          * <pre>
          * {
-         *   attr: true, // will escape the string for safe insertion inside the value of an attribute
-         *   text: false // will NOT escape the string for safe insertion inside an HTML text node
+         *     attr: true, // will escape the string for safe insertion inside the value of an attribute
+         *     text: false // will NOT escape the string for safe insertion inside an HTML text node
          * }
          * </pre>
          *
-         * When the value is nor a boolean neither an object (null, undefined, number...) the string is escaped for all
-         * the contexts (equivalent to passing true).
+         * There are however two shortcuts that can be used:
+         * <ul>
+         * <li>if nothing is passed, it is equivalent as passing true for all contexts</li>
+         * <li>if something is passed but it's not an object, the value is converted to a boolean, and this boolean value will be used for all contexts.</li>
+         * </ul>
+         *
+         * Therefore, you can also pass those kinds of values:
+         * <pre>
+         * 1, "1", true // escapes all
+         * null, undefined // escapes all too
+         * 0, "", false // escapes nothing
+         * </pre>
+         *
+         * @param {Object} infos An optional object for additional infos on what has been done. For now, tells if it has actually been escaped or not, and for which contexts.
+         *
          * @return {String} processed string
          */
-        escapeForHTML : function (str, options) {
-            var escapeForHTMLText = false;
-            var escapeForHTMLAttr = false;
+        escapeForHTML : function (str, options, infos) {
+            // Input arguments processing --------------------------------------
 
-            if (aria.utils.Type.isObject(options)) {
-                escapeForHTMLText = options.text === true;
-                escapeForHTMLAttr = options.attr === true;
-            } else if (!aria.utils.Type.isBoolean(options) || options) {
-                escapeForHTMLText = true;
-                escapeForHTMLAttr = true;
+            // --------------------------------------------------------- options
+
+            if (!aria.utils.Type.isObject(options)) {
+                if (options == null) {
+                    options = true;
+                }
+
+                options = !!options;
+                options = {
+                    text: options,
+                    attr: options
+                };
             }
 
+            var escapeForHTMLText = !!(options.text);
+            var escapeForHTMLAttr = !!(options.attr);
+
+            // ----------------------------------------------------------- infos
+
+            // Creates a dummy object for simplicity
+            if (infos == null) {
+                infos = {};
+            }
+
+            infos.escaped = false;
+            infos.text = false;
+            infos.attr = false;
+
+            // Processing ------------------------------------------------------
+
             if (escapeForHTMLText) {
+                infos.escaped = true;
+                infos.text = true;
                 str = this.escapeHTML(str).replace(/\//g, "&#x2F;");
             }
 
             if (escapeForHTMLAttr) {
+                infos.escaped = true;
+                infos.attr = true;
                 str = this.escapeHTMLAttr(str);
             }
 

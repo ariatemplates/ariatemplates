@@ -30,59 +30,176 @@ Aria.classDefinition({
             this.assertErrorInLogs(aria.templates.Modifiers.UNKNOWN_MODIFIER);
         },
 
+        /**
+         * Tests the "escapeforhtml" modifier.
+         */
         testEscapeForHTML : function () {
-            var identity = null;
-            this.assertTrue(aria.templates.Modifiers.callModifier("escapeforhtml", [identity]) === identity, "Full escape modifier failed.");
+            // Identity tests --------------------------------------------------
+
+            // Checks that the input is left completely unaltered
+
+            var identity;
+            var output;
+
+            // ------------------------------------------------------------ null
+
+            identity = null;
+
+            this.assertEquals(aria.templates.Modifiers.callModifier("escapeforhtml", [identity]), identity, "A null input should result in a null output.");
+
+            // ------------------------------------------------------- undefined
+
             identity = undefined;
-            this.assertTrue(aria.templates.Modifiers.callModifier("escapeforhtml", [identity]) === identity, "Full escape modifier failed.");
+
+            this.assertEquals(aria.templates.Modifiers.callModifier("escapeforhtml", [identity]), identity, "An undefined input should result in an undefined output.");
+
+
+            // Actual escaping data --------------------------------------------
+
+            // ----------------------------------------------------------- input
 
             var originalString = "<div id='id' class=\"class\">/</div>";
+
+            // ------------------------------------------------- expected output
+
             // The following should be computed directly with the proper utility function if the latter is fully tested
             // and working
             // Indeed, having the same results with this modifier as with the utility function is a sort of requirement
+
             var escapedForAttrString = "<div id=&#x27;id&#x27; class=&quot;class&quot;>/</div>";
             var escapedForHTMLString = "&lt;div id='id' class=\"class\"&gt;&#x2F;&lt;&#x2F;div&gt;";
+
             var escapedForAllString = "&lt;div id=&#x27;id&#x27; class=&quot;class&quot;&gt;&#x2F;&lt;&#x2F;div&gt;";
 
-            this.assertTrue(aria.templates.Modifiers.callModifier("escapeforhtml", [originalString]) === escapedForAllString, "Full escape modifier failed.");
-            this.assertTrue(aria.templates.Modifiers.callModifier("escapeforhtml", [originalString, true]) === escapedForAllString, "Full escape modifier failed.");
-            this.assertTrue(aria.templates.Modifiers.callModifier("escapeforhtml", [originalString, {
-                        text : true,
-                        attr : true
-                    }]) === escapedForAllString, "Full escape modifier failed.");
 
-            this.assertTrue(aria.templates.Modifiers.callModifier("escapeforhtml", [originalString, false]) === originalString, "Full escape modifier failed.");
-            this.assertTrue(aria.templates.Modifiers.callModifier("escapeforhtml", [originalString, {
-                        text : false,
-                        attr : false
-                    }]) === originalString, "Full escape modifier failed.");
 
-            this.assertTrue(aria.templates.Modifiers.callModifier("escapeforhtml", [originalString, {
-                        text : false,
-                        attr : true
-                    }]) === escapedForAttrString, "Full escape modifier failed.");
-            this.assertTrue(aria.templates.Modifiers.callModifier("escapeforhtml", [originalString, {
-                        text : true,
-                        attr : false
-                    }]) === escapedForHTMLString, "Full escape modifier failed.");
+            // Actual escaping tests -------------------------------------------
+
+            var self = this;
+            function test(spec) {
+                var arg = spec.arg;
+                var expected = spec.expected;
+                var message = spec.message;
+
+                var output = aria.templates.Modifiers.callModifier("escapeforhtml", [originalString, arg]);
+
+                self.assertEquals(output, expected, message);
+
+            }
+
+            var testSpec = {};
+
+            // -------------------------------------------------- escape for all
+
+            testSpec = {
+                expected: escapedForAllString,
+                message: "The string should be escaped for all contexts."
+            };
+
+            test(testSpec);
+
+            testSpec.arg = true;
+            test(testSpec);
+
+            testSpec.arg = {
+                text : true,
+                attr : true
+            };
+            test(testSpec);
+
+            // ---------------------------------------------- escape for nothing
+
+            testSpec = {
+                expected: originalString,
+                message: "The string should not be escaped at all"
+            };
+
+            testSpec.arg = false;
+            test(testSpec);
+
+            testSpec.arg = {
+                text : false,
+                attr : false
+            };
+            test(testSpec);
+
+            // ------------------------------------ escape for text OR attribute
+
+            test({
+                arg: {
+                    text : false,
+                    attr : true
+                },
+                expected: escapedForAttrString,
+                message: "The string should be escaped for an attribute context."
+            });
+
+            test({
+                arg: {
+                    text : true,
+                    attr : false
+                },
+                expected: escapedForHTMLString,
+                message: "The string should be escaped for a text context."
+            });
         },
 
+        __testModifierWithEscaping : function(modifierName, cases) {
+            for (var i = 0, length = cases.length; i < length; i++) {
+                var _case = cases[i];
+
+                var input = _case.input;
+                var expected = _case.expected;
+
+                var actual = aria.templates.Modifiers.callModifier(modifierName, input);
+
+                var message = "Expected output was: " + aria.utils.String.escapeForHTML(expected, {text: true}) + " | Actual output is: " + aria.utils.String.escapeForHTML(actual, {text: true});
+
+                this.assertEquals(actual, expected, message);
+            }
+        },
+
+        /**
+         * Tests the "default" modifier in the context of escaping.
+         */
         testDefaultEscape : function () {
-            this.assertTrue(aria.templates.Modifiers.callModifier("default", [null,
-                    "<div id='id' class=\"class\">/</div>"]) === "<div id='id' class=\"class\">/</div>", "Default with escape failed.");
-            this.assertTrue(aria.templates.Modifiers.callModifier("default", [null,
-                    "<div id='id' class=\"class\">/</div>", '']) === "<div id='id' class=\"class\">/</div>", "Default with escape failed.");
-            this.assertTrue(aria.templates.Modifiers.callModifier("default", [null,
-                    "<div id='id' class=\"class\">/</div>", "escapeForHTML"]) === "&lt;div id=&#x27;id&#x27; class=&quot;class&quot;&gt;&#x2F;&lt;&#x2F;div&gt;", "Default with escape failed.");
+            this.__testModifierWithEscaping("default", [
+                {
+                    input: [null, "<div id='id' class=\"class\">/</div>"],
+                    expected: "<div id='id' class=\"class\">/</div>"
+                },
+                {
+                    input: [null, "<div id='id' class=\"class\">/</div>", ''],
+                    expected: "<div id='id' class=\"class\">/</div>"
+                },
+                {
+                    input: [null, "<div id='id' class=\"class\">/</div>", "escapeForHTML"],
+                    expected: "&lt;div id=&#x27;id&#x27; class=&quot;class&quot;&gt;&#x2F;&lt;&#x2F;div&gt;"
+                }
+            ]);
         },
 
+        /**
+         * Tests the "empty" modifier in the context of escaping.
+         */
         testEmptyEscape : function () {
-            this.assertTrue(aria.templates.Modifiers.callModifier("empty", ['', "<div id='id' class=\"class\">/</div>"]) === "<div id='id' class=\"class\">/</div>", "Default with escape failed.");
-            this.assertTrue(aria.templates.Modifiers.callModifier("empty", ['', "<div id='id' class=\"class\">/</div>",
-                    '']) === "<div id='id' class=\"class\">/</div>", "Default with escape failed.");
-            this.assertTrue(aria.templates.Modifiers.callModifier("empty", ['', "<div id='id' class=\"class\">/</div>",
-                    "escapeForHTML"]) === "&lt;div id=&#x27;id&#x27; class=&quot;class&quot;&gt;&#x2F;&lt;&#x2F;div&gt;", "Default with escape failed.");
+            this.__testModifierWithEscaping("empty", [
+                {
+                    input: ['', "<div id='id' class=\"class\">/</div>"],
+                    expected: "<div id='id' class=\"class\">/</div>"
+                },
+                {
+                    input: ['', "<div id='id' class=\"class\">/</div>", ''],
+                    expected: "<div id='id' class=\"class\">/</div>"
+                },
+                {
+                    input: ['', "<div id='id' class=\"class\">/</div>", "escapeForHTML"],
+                    expected: "&lt;div id=&#x27;id&#x27; class=&quot;class&quot;&gt;&#x2F;&lt;&#x2F;div&gt;"
+                }
+            ]);
         },
+
+        // ---------------------------------------------------------------------
 
         testPad : function () {
             var callModifier = aria.templates.Modifiers.callModifier;
