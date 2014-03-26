@@ -19,13 +19,12 @@
 
 	{macro main()}
 		{@aria:Dialog {
-			contentMacro: "dialogContent",
+			macro: "dialogContent",
 			modal: true,
 			center: true,
 			visible : true,
 			maxWidth: 800
-		}}
-		{/@aria:Dialog}
+		}/}
 	{/macro}
 
 	{macro dialogContent()}

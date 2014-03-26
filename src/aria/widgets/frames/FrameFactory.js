@@ -24,7 +24,6 @@ Aria.classDefinition({
             "aria.widgets.frames.SimpleFrame", "aria.widgets.frames.TableFrame",
             "aria.widgets.frames.FixedHeightFrame", "aria.widgets.frames.SimpleHTMLFrame"],
     $constructor : function () {
-        /* The keys in the following map are associated with the STATIC sprite types */
         this._frameTypeBuilders = {
             "Table" : aria.widgets.frames.TableFrame,
             "FixedHeight" : aria.widgets.frames.FixedHeightFrame,
@@ -33,17 +32,6 @@ Aria.classDefinition({
         };
     },
     $statics : {
-        /**
-         * The different values for the (old) sprType property in skin properties.
-         */
-        SPRTYPE_OLD_STD : 0,
-        SPRTYPE_OLD_BGREPEAT : 1,
-        SPRTYPE_OLD_FIXED_HEIGHT : 2,
-        SPRTYPE_TABLE : 3,
-        SPRTYPE_FIXED_HEIGHT : 4,
-        SPRTYPE_NO_FRAME : 5,
-        SPRTYPE_SIMPLE_FRAME : 6,
-
         // ERROR MESSAGES:
         FRAME_INVALID_FRAMETYPE : "Invalid frame type: %1.",
         FRAME_INVALID_CONFIG : "Invalid frame configuration."

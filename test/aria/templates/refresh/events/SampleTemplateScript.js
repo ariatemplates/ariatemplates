@@ -24,7 +24,7 @@ Aria.tplScriptDefinition({
         divClicked : function () {},
         partialRefresh : function () {
 
-            this.$refresh({outputSection : "sctn"});
+            this.$refresh({section : "sctn"});
         }
     }
 });

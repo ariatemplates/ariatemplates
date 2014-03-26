@@ -31,15 +31,14 @@
         <br/>
         <span {id "from"/}></span>
         {@aria:Dialog {
-            contentMacro: "dialogContent",
+            macro: "dialogContent",
             bind: {
                 visible: {
                     to: "dialogVisible",
                     inside: data
                 }
             }
-        }}
-        {/@aria:Dialog}
+        }/}
     {/macro}
 
     {macro dialogContent()}

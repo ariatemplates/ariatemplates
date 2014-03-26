@@ -18,7 +18,7 @@
 }}
 	{macro main()}
 		{@aria:Dialog {
-			contentMacro : "dialogContent",
+			macro : "dialogContent",
 			modal : true,
 			bind : {
 				visible : {
@@ -26,8 +26,7 @@
 					inside : data
 				}
 			}
-		}}
-		{/@aria:Dialog}
+		}/}
 	{/macro}
 
 	{macro dialogContent()}

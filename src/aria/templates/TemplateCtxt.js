@@ -23,9 +23,8 @@
     // list of methods to map between the template and the template context
     var methodMapping = ["$refresh", "$getChild", "$getElementById", "$focus", "$hdim", "$vdim", "getContainerScroll",
             "setContainerScroll", "__$writeId", "__$processWidgetMarkup", "__$beginContainerWidget", "$getId",
-            "__$endContainerWidget", "__$statementOnEvent", "__$statementRepeater", "__$createView", "__$beginSection",
-            "__$endSection", /* BACKWARD-COMPATIBILITY-BEGIN */"__$bindAutoRefresh",/* BACKWARD-COMPATIBILITY-END */
-            "$setFocusedWidget", "$getFocusedWidget"];
+            "__$endContainerWidget", "__$statementOnEvent", "__$statementRepeater", "__$createView",
+            "__$insertSection", "$setFocusedWidget", "$getFocusedWidget"];
 
     // list of parameters to map between the template and the template context
     var paramMapping = ["data", "moduleCtrl", "flowCtrl", "moduleRes"];
@@ -282,17 +281,8 @@
             // ERROR MESSAGES:
             WIDGET_LIBRARY_NOT_FOUND : "Error in template '%2': widget library '%1' was not found.",
             INVALID_STATE_FOR_REFRESH : "Error in template '%1': calling $refresh while the template is being refreshed is not allowed.",
-            SECTION_OUTPUT_NOT_FOUND : "Error while refreshing template '%1': output section '%2' was not found.",
+            SECTION_OUTPUT_NOT_FOUND : "Error while refreshing template '%1': section '%2' was not found.",
             VAR_NULL_OR_UNDEFINED : "Template %2 \nLine %1: expression is null or undefined.",
-            /* BACKWARD-COMPATIBILITY-BEGIN */
-            SECTION_BINDING_ERROR_SINGLE_VAR : "line %1: Cannot bind section to single variable except data. Binding must be something like container.parameter",
-            BINDREFRESHTO_STATEMENT_DEPRECATED : "Template '%1', line %2:\nThe {bindRefreshTo} statement is deprecated. It will be removed in Aria Templates 1.5.1. Please use 'bindRefreshTo' property of a {section} statement instead.",
-            /* BACKWARD-COMPATIBILITY-END */
-            /* BACKWARD-COMPATIBILITY-BEGIN GH-754*/
-            GET_DOM_ID_DEPRECATED : "The TemplateCtxt.getDomId() method became private. You should probably use $getId() instead.",
-            /* BACKWARD-COMPATIBILITY-END GH-754 */
-            SECTION_MACRO_MISUSED : "Template %1 \nline %2: section statement must either be a container or have a non-null macro property.",
-            SECTION_MISSING_ID : "Template %1 \nline %2: A section used as a container must have an id.",
             TEMPLATE_EXCEPTION_REMOVING_LISTENERS : "Error in template '%1' while removing module or flow listeners.",
             TEMPLATE_NOT_READY_FOR_REFRESH : "Error in template '%1': the $refresh method was called, but the template is not yet ready to be refreshed.",
             FOCUS_FAILURE : "Focus failure: widget/element with id '%1' in '%2' does not exist or it is not yet ready for focus.",
@@ -303,7 +293,7 @@
             AFTER_REFRESH_EXCEPTION : "Error in template %1: an exception happened in $afterRefresh.",
             ALREADY_REFRESHING : "$refresh was called while another refresh is happening on the same template (%1). This is not allowed. Please check bindings.",
             MISSING_MODULE_CTRL_FACTORY : "Template %1 cannot be initialized without aria.templates.ModuleCtrlFactory, make sure it is loaded",
-            DEPRECATED_FILTER_SECTION : "Template %1 : '%2' is deprecated. Please use 'section' with the section id"
+            MISSING_SECTION_MACRO : "Error in template %1 : 'macro' property is missing in section %2"
         },
         $prototype : {
 
@@ -365,7 +355,7 @@
              *
              * <pre>
              *     {
-             *         outputSection : // {String} section id
+             *         section : // {String} section id
              *     }
              * </pre>
              */
@@ -390,7 +380,7 @@
                 if (aria.templates.RefreshManager.isStopped()) {
                     // look for the section to be refreshed, and notify it:
                     if (args) {
-                        var sectionToRefresh = args.section || args.outputSection || args.filterSection;
+                        var sectionToRefresh = args.section;
                         if (sectionToRefresh && this._mainSection) {
                             var section = this._mainSection.getSectionById(sectionToRefresh);
                             if (section) {
@@ -442,8 +432,6 @@
                     this.beforeRefresh(args);
 
                     var section = this.getRefreshedSection({
-                        filterSection : args.filterSection,
-                        outputSection : args.outputSection,
                         section : args.section,
                         macro : args.macro
                     });
@@ -541,10 +529,10 @@
              * undefined. When this function returns a non-null argument, you must call linkToPreviousMarkup after
              * inserting the returned html in the DOM, so that widgets are properly initialized.
              * @param {aria.templates.CfgBeans:MacroCfg} macro macro to call to generate the markup
-             * @param {String} filterSection section to filter
+             * @param {String} sectionId id of the section to filter
              * @return {String} html markup for the template
              */
-            getMarkup : function (macro, filterSection) {
+            getMarkup : function (macro, sectionId) {
                 /* must not be already linked */
                 this.$assert(299, this._cfg.tplDiv == null);
                 /* must not have already been called */
@@ -553,8 +541,7 @@
 
                 var section = this.getRefreshedSection({
                     macro : macro,
-                    filterSection : filterSection,
-                    outputSection : null
+                    section : sectionId
                 });
                 // returns corresponding markup
                 return section.html;
@@ -625,15 +612,7 @@
                 jsonValidator.normalize(validatorParam);
                 args = validatorParam.json;
 
-                if (args.filterSection) {
-                    this.$logWarn(this.DEPRECATED_FILTER_SECTION, [this.tplClasspath, 'filterSection']);
-                }
-                if (args.outputSection) {
-                    this.$logWarn(this.DEPRECATED_FILTER_SECTION, [this.tplClasspath, 'outputSection']);
-                }
-
-                var filterSectionId = args.filterSection;
-                var sectionId = args.section || args.outputSection || filterSectionId;
+                var sectionId = args.section;
 
                 var sectionToReplace = null;
                 if (sectionId != null) {
@@ -658,7 +637,6 @@
                     };
                 }
                 var section = this.createSection(writerCallback, {
-                    filterSection : filterSectionId,
                     ownIdMap : (sectionToReplace == null)
                 });
                 if (section == null) {
@@ -672,22 +650,13 @@
                     }
                     this._mainSection = section;
                 } else {
-                    if (filterSectionId) {
-                        sectionToReplace.copyConfigurationTo(section);
-                        var parentSection = sectionToReplace.parent;
-                        this.$assert(402, parentSection != null);
-                        sectionToReplace.$dispose();
-                        parentSection.addSubSection(section);
-                    } else {
-                        // empty old section, move new section content to old section and dispose new section
-                        sectionToReplace.removeContent();
-                        sectionToReplace.removeDelegateIdsAndCallbacks();
-                        section.moveContentTo(sectionToReplace);
-                        sectionToReplace.html = section.html;
-                        section.$dispose();
-                        section = sectionToReplace;
-                        section.resumeListeners(); // resume listeners
-                    }
+                    sectionToReplace.removeContent();
+                    sectionToReplace.removeDelegateIdsAndCallbacks();
+                    section.moveContentTo(sectionToReplace);
+                    sectionToReplace.html = section.html;
+                    section.$dispose();
+                    section = sectionToReplace;
+                    section.resumeListeners();
                 }
                 // PROFILING // this.$stopMeasure(profilingId);
                 return section;
@@ -737,7 +706,7 @@
                 this.__processDifferedItems(differed);
                 for (var i = 0; i < args.sections.length; i++) {
                     this.afterRefresh({
-                        outputSection : args.sections[i].id
+                        section : args.sections[i].id
                     });
                 }
             },
@@ -751,8 +720,7 @@
             __dynamicSectionWriter : function (out, args) {
                 var sections = args.sections;
                 for (var i = 0, l = sections.length; i < l; i++) {
-                    this.__$beginSection(null, false, sections[i]);
-                    this.__$endSection();
+                    this.__$insertSection(null, sections[i]);
                 }
             },
 
@@ -875,9 +843,6 @@
              */
             __$processWidgetMarkup : function (lib, widget, cfg, lineNbr) {
                 var out = this._out;
-                if (out.sectionState != out.SECTION_KEEP) {
-                    return; // skip when we are not in the right section
-                }
                 var wlib = __getLib.call(this, lib);
                 if (!wlib) {
                     return;
@@ -899,9 +864,6 @@
              */
             __$beginContainerWidget : function (lib, widget, cfg, lineNbr) {
                 var out = this._out;
-                if (out.sectionState == out.SECTION_SKIP) {
-                    return false; // skip only when the right section has already been found
-                }
                 out.skipContent = false;
                 var wlib = __getLib.call(this, lib);
                 if (!wlib) {
@@ -1140,49 +1102,20 @@
             },
 
             /**
-             * Begin a section. This method is intended to be called only from the generated code of templates (created
-             * in aria.templates.ClassGenerator) and never directly from developper code. A call to this method is
-             * generated for the {section ...} opening statement.
+             * Insert a section. This method is intended to be called only from the generated code of templates (created
+             * in aria.templates.ClassGenerator) and never directly from developer code. A call to this method is
+             * generated for the {section ...} statement.
              * @param {Number} lineNumber line number at which the section begins, used for error reporting
-             * @param {Boolean} container true if the section statement is used as a container, false otherwise
-             * @param {Object|String} sectionParam section id, or configuration object
-             * @param {String} Dom element wrapper type to be created.
+             * @param {aria.templates.CfgBeans:SectionCfg} sectionParam section configuration object
              * @private
              * @implements aria.templates.ITemplate
              */
-            __$beginSection : function (lineNumber, container, sectionParam, type) {
-                // do the normalization here
-                if (aria.utils.Type.isString(sectionParam)) {
-                    sectionParam = {
-                        id : sectionParam
-                    };
-                    if (type) {
-                        sectionParam.type = type;
-                    }
-                }
-
-                if (container && !sectionParam.id) {
-                    this.$logError(this.SECTION_MISSING_ID, [this.tplClasspath, lineNumber]);
-                }
-
-                if (container === (sectionParam.macro != null)) {
-                    // the section statement must either be a container or have a macro property
-                    this.$logError(this.SECTION_MACRO_MISUSED, [this.tplClasspath, lineNumber]);
-                    if (container) {
-                        sectionParam.macro = null;
-                    }
+            __$insertSection : function (lineNumber, sectionParam) {
+                if (!sectionParam.macro) {
+                    var sectionId = sectionParam.id || "";
+                    this.$logError(this.MISSING_SECTION_MACRO, [this.tplClasspath, "'" + sectionId + "'"]);
                 }
                 this._out.beginSection(sectionParam);
-            },
-
-            /**
-             * End a section previously started with a call to __$beginSection. This method is intended to be called
-             * only from the generated code of templates (created in aria.templates.ClassGenerator) and never directly
-             * from developper code. A call to this method is generated for the {/section} closing statement.
-             * @private
-             * @implements aria.templates.ITemplate
-             */
-            __$endSection : function () {
                 return this._out.endSection();
             },
 
@@ -1339,18 +1272,6 @@
                     this._out.write('id="' + genId + '"');
                 }
             },
-
-            /* BACKWARD-COMPATIBILITY-BEGIN GH-754 */
-            /**
-             * Return the generated domId for specified id.
-             * @param {String|Number} id specified in the template
-             * @return {String}
-             */
-            getDomId : function (id) {
-                this.$logWarn(this.GET_DOM_ID_DEPRECATED);
-                return this._generateDomId(id);
-            },
-            /* BACKWARD-COMPATIBILITY-END GH-754 */
 
             /**
              * Return the generated domId for specified id.
@@ -1672,40 +1593,6 @@
                     this._callLoadTemplate(tmpCfg, callback);
                 }
             },
-
-            /* BACKWARD-COMPATIBILITY-BEGIN */
-            /**
-             * [DEPRECATED] Bind an automatic refresh to the template or section
-             * @private
-             * @implements aria.templates.ITemplate
-             * @param {Object} container object containing the parameter a section or template is bound to, or data
-             * @param {String} param parameter on which to bind, or null if binding to data
-             * @param {Number} linNumber
-             */
-            __$bindAutoRefresh : function (container, param, lineNumber) {
-
-                this.$logWarn(this.BINDREFRESHTO_STATEMENT_DEPRECATED, [this.tplClasspath, lineNumber]);
-
-                // de not register for partial refresh if section is not in the refresh
-                if (this._out._currentSection) {
-                    var boundCfg = {
-                        inside : container,
-                        to : param
-                    };
-
-                    if (param === null) {
-                        if (container == this.data) {
-                            boundCfg.inside = this.__dataGround;
-                            boundCfg.to = "data";
-                        } else {
-                            this.$logError(this.SECTION_BINDING_ERROR_SINGLE_VAR, [lineNumber]);
-                        }
-                    }
-
-                    this._out._currentSection.registerBinding(boundCfg);
-                }
-            },
-            /* BACKWARD-COMPATIBILITY-END */
 
             /**
              * Get the list of CSS classpath on which the template depends on

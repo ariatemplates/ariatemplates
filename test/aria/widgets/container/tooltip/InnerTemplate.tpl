@@ -42,6 +42,13 @@
             showDelay : 12
         }/}
 
+        {@aria:Tooltip {
+        	id : "wrong",
+        	macro : "tooltipContent"
+        }}
+        	a__b__c__d__e__f__g__h__i
+        {/@aria:Tooltip}
+
         {@aria:Div {
             tooltipId : "myTestingTooltip",
             block : true

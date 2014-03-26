@@ -13,8 +13,7 @@
  * limitations under the License.
  */
 {Template {
- $classpath:'test.aria.templates.issue353.Main',
- $hasScript : false
+ $classpath:'test.aria.templates.issue353.Main'
 }}
     // Template entry point
     {macro main()}
@@ -23,34 +22,19 @@
                 bindRefreshTo : [{
                    inside : this.data,
                    to : "items"
-                }]
-              }}
-                  <fieldset>
-                <legend>Section bound to this.data.items</legend>
-                    <ul>
-                          {foreach item in data.items}
-                              <li>${item.name}</li>
-                        {/foreach}
-                    </ul>
-                  </fieldset>
+                }],
+                macro : "listContent"
+              }/}
 
-              {/section}
               {section {
                 id: "sublist",
                 bindRefreshTo : [{
                    inside : this.data,
                    to : "subItems"
-                }]
-              }}
-                  <fieldset>
-                <legend>Section bound to this.data.subItems</legend>
-                    <ul>
-                          {foreach item in data.subItems}
-                              <li>${item.name}</li>
-                        {/foreach}
-                    </ul>
-                  </fieldset>
-              {/section}
+                }],
+                macro : "subListContent"
+              }/}
+
               {@aria:TextField {
                 id: "textField1",
                 bind:{value: {inside:this.data.items[0], to:"name"}},
@@ -65,4 +49,27 @@
             } /}
     <div id="outsideDiv">&nbsp;</div>
     {/macro}
+
+    {macro listContent()}
+        <fieldset>
+            <legend>Section bound to this.data.items</legend>
+            <ul>
+            {foreach item in data.items}
+                <li>${item.name}</li>
+            {/foreach}
+            </ul>
+        </fieldset>
+    {/macro}
+
+    {macro subListContent()}
+        <fieldset>
+            <legend>Section bound to this.data.subItems</legend>
+            <ul>
+            {foreach item in data.subItems}
+                <li>${item.name}</li>
+            {/foreach}
+            </ul>
+        </fieldset>
+    {/macro}
+
 {/Template}

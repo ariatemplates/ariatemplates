@@ -13,19 +13,36 @@
  * limitations under the License.
  */
 
-{CSSTemplate {
-    $classpath : "aria.touch.widgets.DialogCSS"
+{Template {
+    $classpath : "test.aria.widgets.container.tabpanel.TabPanelTestTpl"
 }}
-
     {macro main()}
-
-        div.touchLibDialog {
-            background: none repeat scroll 0 0 #EFF9FF;
-            border: 2px solid #999999;
-            border-radius: 32px 32px 32px 32px;
-        }
-
-
+        {@aria:TabPanel {
+            id : "myPanel",
+		    macro : "panelContent",
+		    bind : {
+		    	selectedTab : {
+		    		to : "tab",
+		    		inside : data
+		    	}
+		    }
+        }/}
+        {@aria:TabPanel {
+            id : "myWrongPanel"
+        }/}
+        {@aria:TabPanel {
+        	macro : "panelContent"
+        }}
+        cccccc
+        {/@aria:TabPanel}
     {/macro}
 
-{/CSSTemplate}
+    {macro panelContent()}
+    	{if data.tab == "a"}
+    	    aaaaaa
+    	{else/}
+    	    bbbbbb
+    	{/if}
+    {/macro}
+
+{/Template}

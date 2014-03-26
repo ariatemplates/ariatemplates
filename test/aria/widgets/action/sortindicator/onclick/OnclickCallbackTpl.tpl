@@ -37,7 +37,19 @@
     {/macro}
 
     {macro displayBound(priceIndex, boundIndex)}
-        {section "bound" + boundIndex}
+
+    	{section {
+    	    id : "bound" + boundIndex,
+    	    macro : {
+    	        name : "displayBoundContent",
+    	        args : [priceIndex, boundIndex]
+    	    }
+    	}/}
+    	<br/>
+
+    {/macro}
+
+    {macro displayBoundContent(priceIndex, boundIndex)}
 
             {var bound=data.avail.prices[priceIndex].bounds[boundIndex]/}
             {var selection=getSelection(boundIndex)/}
@@ -67,7 +79,7 @@
                                         },
                                         labelWidth : 70,
                                         id : 'SortIndicatorId'+boundIndex,
-                                        refreshArgs:[{filterSection:"bound"+boundIndex}],
+                                        refreshArgs:[{section:"bound"+boundIndex}],
                                         activateEllipsis:true,
                                         ellipsis: '...',
                                         ellipsisLocation: 'right',
@@ -117,7 +129,7 @@
                                         sortKeyGetter:function(o) {
                                             return o.value.segments[0].equipment;
                                         },
-                                        refreshArgs:[{filterSection:"bound"+boundIndex}],
+                                        refreshArgs:[{section:"bound"+boundIndex}],
                                         activateEllipsis:false,
                                         ellipsis: '...',
                                         ellipsisLocation: 'right'
@@ -133,7 +145,6 @@
                     </table>
                 </div>
             {/if}
-        {/section}<br/>
 
     {/macro}
     {macro displayRecommendation(recommendation, index, selection, boundIndex)}

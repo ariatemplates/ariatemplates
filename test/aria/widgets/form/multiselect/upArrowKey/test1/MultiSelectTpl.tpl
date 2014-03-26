@@ -55,13 +55,16 @@
         <span id="clickM"></span>
         {section {
             id : "selected",
-            bindRefreshTo : [{inside : content, to : "value"}]
-        }}
-            SELECTED:
-                {foreach item in content.value}
-                    <span id="test1">${item}</span>
-                {/foreach}
-        {/section}
+            bindRefreshTo : [{inside : content, to : "value"}],
+            macro : "selectedContent"
+        }/}
+    {/macro}
+
+    {macro selectedContent()}
+        SELECTED:
+            {foreach item in content.value}
+                <span id="test1">${item}</span>
+            {/foreach}
     {/macro}
 
 {/Template}

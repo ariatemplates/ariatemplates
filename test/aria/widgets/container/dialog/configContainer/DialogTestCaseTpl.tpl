@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Amadeus s.a.s.
+ * Copyright 2013 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,13 +13,11 @@
  * limitations under the License.
  */
 
-/**
- * Aria resource object for calendar sp_AR
- */
-Aria.resourcesDefinition({
-    $classpath : 'aria.resources.CalendarRes',
-    $resources : {
-        today : "\u0627\u0644\u064a\u0648\u0645",
-        selectedDate : "\u0627\u0644\u062a\u0627\u0631\u064a\u062e \u0627\u0644\u0645\u062d\u062f\u062f"
-    }
-});
+{Template {
+   $classpath:"test.aria.widgets.container.dialog.configContainer.DialogTestCaseTpl"
+}}
+    {macro main()}
+        {@aria:Dialog}a__b__c__d__e{/@aria:Dialog}
+    {/macro}
+
+{/Template}

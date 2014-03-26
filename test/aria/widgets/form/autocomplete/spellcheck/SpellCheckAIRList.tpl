@@ -26,33 +26,38 @@
                 width: -1,
                 height: -1,
                 margins: "0 0 0 0"
-            }}
+        }}
 
                 // FIXME: remove me, i'm a hack for minWidth
                 <div style="width: 250px; height:1px;"></div>
                 {call checkSpellingMistake()/}
 
-                {section 'Items'}
-                <table
-                        {if !data.disabled}
-                            {on mouseup {fn: "itemClick"} /}
-                            {on mouseover {fn: "itemMouseOver"} /}
-                        {/if}
-
-                        cellpadding="0"
-                        cellspacing="0"
-                        style="width:100%"
-                >
-                    <tbody {id "suggestionsRows" /} >
-
-                        {for var i=0;i<data.items.length;i++}
-                            {call renderItem(data.items[i], i)/}
-                        {/for}
-
-                    </tbody>
-                </table>
-                {/section}
+                {section {
+                    id : "Items",
+                    macro : "itemsList"
+                }/}
         {/@aria:Div}
+    {/macro}
+
+    {macro itemsList()}
+        <table
+                {if !data.disabled}
+                    {on mouseup {fn: "itemClick"} /}
+                    {on mouseover {fn: "itemMouseOver"} /}
+                {/if}
+
+                cellpadding="0"
+                cellspacing="0"
+                style="width:100%"
+        >
+            <tbody {id "suggestionsRows" /} >
+
+                {for var i=0;i<data.items.length;i++}
+                    {call renderItem(data.items[i], i)/}
+                {/for}
+
+            </tbody>
+        </table>
     {/macro}
 
     {macro checkSpellingMistake()}

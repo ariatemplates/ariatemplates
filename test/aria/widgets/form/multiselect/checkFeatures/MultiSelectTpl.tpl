@@ -71,17 +71,6 @@
         }/}
         </p>
 
-        /*
-        {section {
-            id : "selected",
-            bindRefreshTo : [{inside : content, to : "value"}]
-        }}
-        SELECTED
-            {foreach item in content.value}
-                ${item} &nbsp;
-            {/foreach}
-        {/section}
-        */
 
         <hr/>
 

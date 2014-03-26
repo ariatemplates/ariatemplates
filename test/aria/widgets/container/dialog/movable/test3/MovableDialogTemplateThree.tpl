@@ -42,7 +42,7 @@
     	{var dataModel = data["firstDialog"] /}
         {@aria:Dialog {
             id : "firstDialog",
-            contentMacro : {
+            macro : {
                 name : "displayDialogContent",
 				 args : ["one"]
 
@@ -100,7 +100,7 @@
 
         {section {
             id: "testInnerMacroSection",
-            macro: ""
+            macro: "noContent"
         } /}
 
         <div>
@@ -136,6 +136,9 @@
         </div>
 
 
+    {/macro}
+
+    {macro noContent()}
     {/macro}
 
 {/Template}

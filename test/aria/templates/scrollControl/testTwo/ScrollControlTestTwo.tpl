@@ -22,10 +22,10 @@
                 id:"myDialog",
                 title:"My sample dialog",
                 visible:true,
-                contentMacro:"myDialogMacro",
+                macro:"myDialogMacro",
                 closable:true,
                 center:true
-        } }{/@aria:Dialog}
+        }/}
     {/macro}
 
     {macro myDialogMacro()}

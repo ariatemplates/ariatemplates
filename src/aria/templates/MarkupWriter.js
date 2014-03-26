@@ -23,7 +23,6 @@
         $dependencies : ['aria.templates.Section', 'aria.utils.Delegate', 'aria.templates.DomEventWrapper',
                 'aria.utils.Type'],
         $constructor : function (tplCtxt, options) {
-            var filterSection = options ? options.filterSection : null;
 
             /**
              * list of markup chunks added during the template processing
@@ -43,32 +42,15 @@
             this.tplCtxt = tplCtxt;
 
             /**
-             * State of section filtering.
-             * @type String
-             */
-            this.sectionState = !filterSection ? this.SECTION_KEEP : this.SECTION_SEARCHING;
-
-            /**
-             * Function for writing
-             * @type Function
-             */
-            this.write = !filterSection ? this.__writeOK : this.__writeSkip;
-
-            /**
-             * Section to filter
-             */
-            this._filterSection = filterSection;
-
-            /**
-             * Root section. This section is automatically created for the case of a global refresh. This section does
-             * not have an id on purpose (this is used to recognize it as the main section).
+             * A root section is always created. It will be used either to just get its generated HTML or as the main
+             * section, when the section being refreshed is the main one.
              * @protected
              * @type aria.templates.Section
              */
-            this._topSection = !filterSection ? new aria.templates.Section(this.tplCtxt, null, {
+            this._topSection = new aria.templates.Section(this.tplCtxt, null, {
                 isRoot : true,
                 ownIdMap : options && options.ownIdMap
-            }) : null;
+            });
 
             /**
              * Current containing section.
@@ -93,18 +75,6 @@
                 this._topSection = null;
             }
         },
-        $statics : {
-            /**
-             * Values for the section state.
-             */
-            SECTION_SEARCHING : 0, // skip everything, but enter in containers to search for the right section
-            SECTION_KEEP : 1, // keep everything, we are in the right section
-            SECTION_SKIP : 2,
-            // skip everything: the right section has already been found
-
-            // ERROR MESSAGES:
-            SECTION_FILTER_NOT_FOUND : "Error while refreshing template '%1': filter section '%2' was not found."
-        },
         $prototype : {
             /**
              * If a container widget sets skipContent to true, the container's content will be skipped.
@@ -118,37 +88,20 @@
              * @param {Function} sectionConstructor may be either aria.templates.Section or aria.templates.Repeater
              */
             _beginSectionOrRepeater : function (sectionParam, sectionConstructor) {
-                if (this.sectionState == this.SECTION_SKIP) {
-                    return; // skip section if previous section is in SKIP mode
-                }
-
-                // retrieve id here, for partial refresh we do not need to generate the section if not needed
-                var id = sectionParam.id;
-
-                // case of a partial refresh : sectionState is SECTION_SEARCHING until we find the good section
-                if (this.sectionState != this.SECTION_KEEP && id != this._filterSection) {
-                    return;
-                }
 
                 var newSection = new sectionConstructor(this.tplCtxt, sectionParam);
 
                 if (!newSection.cfgOk) {
                     // TODO: log error
                     newSection.$dispose();
-                    return;
+                    newSection = new aria.templates.Section(this.tplCtxt, {});
                 }
 
-                if (this.sectionState == this.SECTION_KEEP) {
-                    // in the case of a partial refresh, currentSection might be null
-                    if (this._currentSection) {
-                        this._currentSection.addSubSection(newSection); // add the section to its parent
-                    }
-                    // only set the id after the section has been added to its parent
-                    newSection.writeBegin(this);
-                } else { // this is the filtered section we were looking for
-                    this.sectionState = this.SECTION_KEEP;
-                    this.write = this.__writeOK;
+                if (this._currentSection) {
+                    this._currentSection.addSubSection(newSection); // add the section to its parent
                 }
+                // only set the id after the section has been added to its parent
+                newSection.writeBegin(this);
                 // Update current section with new created section
                 this._currentSection = newSection;
                 newSection.writeContent(this);
@@ -176,23 +129,9 @@
              * End the current section
              */
             endSection : function () {
-                if (this.sectionState != this.SECTION_KEEP) {
-                    return; // skip section
-                }
                 var section = this._currentSection;
-
-                // case of the filtered section end
-                if (section.id == this._filterSection) {
-                    // replace top section with current section : this allows to return the content of this specific
-                    // section instead of the content of the container section.
-                    this._topSection = this._currentSection;
-                    this.sectionState = this.SECTION_SKIP;
-                    this.write = this.__writeSkip;
-                } else if (this.sectionState == this.SECTION_KEEP) {
-                    section.writeEnd(this);
-                    // update current section
-                    this._currentSection = section.parent;
-                }
+                section.writeEnd(this);
+                this._currentSection = section.parent;
                 this.$assert(99, !!this._currentSection);
             },
 
@@ -215,10 +154,9 @@
 
             /**
              * Put markup in current output stream
-             * @private
              * @param {String} m the HTML markup to write in the current output
              */
-            __writeOK : function (m) {
+            write : function (m) {
                 if (this._delegateMap) {
                     if (m || m === 0) {
                         // String cast
@@ -252,12 +190,6 @@
             },
 
             /**
-             * Writer in SKIP mode : does nothing
-             * @private
-             */
-            __writeSkip : function () {},
-
-            /**
              * Add a delegate function on current markup
              * @param {String} eventName
              * @param {aria.core.CfgBeans:Callback} callback
@@ -270,10 +202,6 @@
                 }
 
                 var delegate = aria.utils.Delegate;
-
-                if (this.sectionState != this.SECTION_KEEP) {
-                    return; // skip section
-                }
 
                 // Fallback mechanism for event that can not be delegated
                 if (!delegate.isDelegated(eventName)) {
@@ -319,12 +247,8 @@
              */
             getSection : function () {
                 var res = this._topSection;
-                if (res) {
-                    res.html = this._out.join("");
-                    this._delegate = null;
-                } else {
-                    this.$logError(this.SECTION_FILTER_NOT_FOUND, [this.tplCtxt.tplClasspath, this._filterSection]);
-                }
+                res.html = this._out.join("");
+                this._delegate = null;
                 this._out = null;
                 this._topSection = null; // so that the section is not disposed in the MarkupWriter destructor
                 return res;

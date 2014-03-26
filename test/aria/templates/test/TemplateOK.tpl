@@ -46,13 +46,21 @@
 		{/foreach}
 		{@aria:Div {sclass:"errortip", width:400}}
 			{for var i=0; i<b.length; i++}
-				{section "mySection"+i}
-					{if i==0}<br>{elseif i==1/}! {else/}-{/if}${b[i]|capitalize}
-				{/section}
+				{section {
+					id : "mySection"+i,
+					macro : {
+						name : "mySectionContent",
+						args : [i, b]
+					}
+				}/}
 			{/for}
 			<br />
 			{@aria:Button { label: "OK" }/}
 		{/@aria:Div}
+	{/macro}
+
+	{macro mySectionContent(i, b)}
+		{if i==0}<br>{elseif i==1/}! {else/}-{/if}${b[i]|capitalize}
 	{/macro}
 
 {/Template}

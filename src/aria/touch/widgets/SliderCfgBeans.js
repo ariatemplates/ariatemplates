@@ -63,24 +63,6 @@ Aria.beanDefinitions({
                     $description : "Off label for switch mode",
                     $default : "OFF"
                 },
-                /* BACKWARD-COMPATIBILITY-BEGIN GH-715 */
-                bindValue : {
-                    $type : "json:Object",
-                    $description : "(Deprecated, use bind.value instead) Binding for the value of the slider.",
-                    $properties : {
-                        inside : {
-                            $type : "json:ObjectRef",
-                            $description : "Reference to the object that holds the property to bind to.",
-                            $mandatory : true
-                        },
-                        to : {
-                            $type : "json:String",
-                            $description : "Name of the JSON property to bind to.",
-                            $mandatory : true
-                        }
-                    }
-                },
-                /* BACKWARD-COMPATIBILITY-END GH-715 */
                 bind : {
                     $type : "json:Object",
                     $description : "Automatic bindings for the widget properties",

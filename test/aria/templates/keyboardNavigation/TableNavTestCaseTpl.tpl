@@ -24,8 +24,12 @@
 
         {section {
             "id" : "mySection",
-            "tableNav" : true
-         }}
+            "tableNav" : true,
+            macro : "mySectionContent"
+         }/}
+     {/macro}
+
+     {macro mySectionContent()}
 
          <div {on focus { fn : function () { this.data.focus['tf-1'] = true; }}/}>
             {@aria:TextField {label:"tf-1", id:"tf-1", block:true}/}
@@ -71,8 +75,6 @@
         <div {on focus { fn : function () { this.data.focus['tf7'] = true; }}/}>
             {@aria:TextField {label:"tf7", id:"tf7", block:true}/}
         </div>
-
-         {/section}
 
     {/macro}
 

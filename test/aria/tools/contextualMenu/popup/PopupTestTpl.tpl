@@ -20,7 +20,7 @@
     {macro main()}
         <div {id "divOutsideDialog"/}>Here is a div outside of the dialog.</div>
         {@aria:Dialog {
-            contentMacro : "dialogMacro",
+            macro : "dialogMacro",
             width : 200,
             height : 300,
             modal : true,
@@ -30,8 +30,7 @@
                     inside: data
                 }
             }
-        }}
-        {/@aria:Dialog}
+        }/}
     {/macro}
 
     {macro dialogMacro()}

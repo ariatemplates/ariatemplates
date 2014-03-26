@@ -21,7 +21,7 @@
 {@aria:Dialog {
    // actually, visible true is important for this test
    visible : true,
-   contentMacro : "someContent",
+   macro : "someContent",
    missingProperty : true
 }/}
 
