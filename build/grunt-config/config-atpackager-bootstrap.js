@@ -37,7 +37,7 @@ module.exports = function (grunt) {
             defaultBuilder : {
                 type : 'ATMultipart',
                 cfg : {
-                    header : '<%= packaging.license %>'
+                    header : '<%= packaging.license_min %>'
                 }
             },
             outputDirectory : '<%= packaging.bootstrap.outputdir %>',
@@ -74,7 +74,7 @@ module.exports = function (grunt) {
                             builder : {
                                 type : 'Concat',
                                 cfg : {
-                                    header : '<%= packaging.license %>'
+                                    header : '<%= packaging.license_min %>'
                                 }
                             }
                         }
