@@ -13,17 +13,11 @@
  * limitations under the License.
  */
 
-Aria.tplScriptDefinition({
-    $classpath : "test.aria.templates.dynamicSection.testFour.RepeaterSampleScript",
-    $prototype : {
-        myCSSFunction : function (item) {
-            return (item.ct % 2 === 0) ? "evenRow" : "oddRow";
-        },
-        addNext : function (evt, args) {
-            this.$json.add.apply(this, args);
-        },
-        removeAt : function (evt, args) {
-            this.$json.removeAt.apply(this, args);
-        }
-    }
-});
+{Template {
+   $classpath:"test.aria.widgets.container.dialog.configContainer.DialogTestCaseTpl"
+}}
+    {macro main()}
+        {@aria:Dialog}a__b__c__d__e{/@aria:Dialog}
+    {/macro}
+
+{/Template}

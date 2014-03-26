@@ -23,7 +23,7 @@ Aria.tplScriptDefinition({
 
                 // Partial refresh inside the dialog
                 this.$refresh({
-                    outputSection : "innerSection"
+                    section : "innerSection"
                 });
 
                 // compare with the second zIndex

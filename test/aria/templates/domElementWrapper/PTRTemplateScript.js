@@ -25,7 +25,7 @@ Aria.tplScriptDefinition({
             this.data["view:counts1" ]++;
             if(args){
                 this.$refresh({
-                   outputSection : "Section1"
+                   section : "Section1"
                 });
             } else {
                 this.$refresh();
@@ -33,7 +33,7 @@ Aria.tplScriptDefinition({
 
         },
         $afterRefresh : function(args) {
-            var txt = (args.outputSection) ? "After partial refresh" : "After full refresh";
+            var txt = (args.section) ? "After partial refresh" : "After full refresh";
             this.$json.setValue(this.data,'textAfterRefresh',txt);
         }
     }

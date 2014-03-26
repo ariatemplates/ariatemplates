@@ -60,13 +60,16 @@
     </p>
     {section {
         id : "selected",
-        bindRefreshTo : [{inside : content, to : "value"}]
-    }}
+        bindRefreshTo : [{inside : content, to : "value"}],
+        macro : "selectedContent"
+    }/}
+  {/macro}
+
+  {macro selectedContent()}
       SELECTED:
         {foreach item in content.value}
           <span id="test1">${item}</span>
         {/foreach}
-    {/section}
   {/macro}
 
 {/Template}

@@ -22,65 +22,70 @@
         <ul>
             <li>
                 <br>
-                {section 'datepickers'}
-                    {@aria:DatePicker {
-                        id : "Date1",
-                    bind : {
-                        value : {
-                            inside : data,
-                            to : "value1"
-                        },
-                        invalidText : {
-                            inside : data,
-                            to : "invalid1"
-                        }
-                    },
-                    directOnBlurValidation : false
-                    }/}
-
-                    {@aria:DatePicker {
-                        id : "Date2",
-                        bind : {
-                        value : {
-                            inside : data,
-                            to : "value2"
-                        },
-                        invalidText : {
-                            inside : data,
-                            to : "invalid2"
-                        }
-                    },
-                    directOnBlurValidation : true
-                    }/}
-
-                    {@aria:Button {
-                            id : "Button1",
-                        label : "Clear Invalid Text and Value",
-                        onclick : "clear"
-                    }/}
-                    {@aria:Button {
-                            id : "Button2",
-                        label : "Refresh",
-                        onclick : "refresh"
-                    }/}
-                    {@aria:Button {
-                            id : "Button3",
-                        label : "Clear Invalid Text Only",
-                        onclick : "clearInvalidText"
-                    }/}
-                    {@aria:Button {
-                            id : "Button4",
-                        label : "Set Invalid Text Only",
-                        onclick : "setInvalidText"
-                    }/}
-                    {@aria:Button {
-                            id : "Button5",
-                        label : "Set Value Only",
-                        onclick : "setValidValue"
-                    }/}
-                {/section}
+                {section {
+                	id : 'datepickers',
+                	macro : "dpContent"
+                }/}
             </li>
         </div>
+    {/macro}
+
+    {macro dpContent()}
+        {@aria:DatePicker {
+            id : "Date1",
+        bind : {
+            value : {
+                inside : data,
+                to : "value1"
+            },
+            invalidText : {
+                inside : data,
+                to : "invalid1"
+            }
+        },
+        directOnBlurValidation : false
+        }/}
+
+        {@aria:DatePicker {
+            id : "Date2",
+            bind : {
+            value : {
+                inside : data,
+                to : "value2"
+            },
+            invalidText : {
+                inside : data,
+                to : "invalid2"
+            }
+        },
+        directOnBlurValidation : true
+        }/}
+
+        {@aria:Button {
+                id : "Button1",
+            label : "Clear Invalid Text and Value",
+            onclick : "clear"
+        }/}
+        {@aria:Button {
+                id : "Button2",
+            label : "Refresh",
+            onclick : "refresh"
+        }/}
+        {@aria:Button {
+                id : "Button3",
+            label : "Clear Invalid Text Only",
+            onclick : "clearInvalidText"
+        }/}
+        {@aria:Button {
+                id : "Button4",
+            label : "Set Invalid Text Only",
+            onclick : "setInvalidText"
+        }/}
+        {@aria:Button {
+                id : "Button5",
+            label : "Set Value Only",
+            onclick : "setValidValue"
+        }/}
     {/macro}
 
 {/Template}

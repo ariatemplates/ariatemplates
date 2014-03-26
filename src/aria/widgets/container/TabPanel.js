@@ -40,7 +40,6 @@ Aria.classDefinition({
             block : cfg.block
         });
 
-        this._container = true;
         this._defaultMargin = 0;
 
         this._spanStyle = "top:-1.5px;";
@@ -56,12 +55,6 @@ Aria.classDefinition({
         }
         this.$Container.$destructor.call(this);
 
-    },
-    $statics : {
-        // ERROR MESSAGES:
-        TABPANEL_INVALID_CONFIG_MACRO : "%1Invalid tab panel configuration, you must pass a macro if your panel is not a container.",
-        TABPANEL_INVALID_CONFIG_ID : "%1Invalid tab panel configuration, you must pass an ID if your panel is a container",
-        CONTAINER_USAGE_DEPRECATED : "%1The usage as a container {@aria:TabPanel}{/@aria:TabPanel} is deprecated; use the {@aria:TabPanel /} syntax instead."
     },
     $prototype : {
         /**
@@ -92,16 +85,9 @@ Aria.classDefinition({
          */
         _onBoundPropertyChange : function (propertyName, newValue, oldValue) {
             if (propertyName == "selectedTab") {
-                if (this._container) {
-                    this._context.$refresh({
-                        filterSection : "__tabPanel_" + this._domId
-                    });
-                } else {
-                    this._context.$refresh({
-                        section : "__tabPanel_" + this._domId,
-                        macro : this._cfg.macro
-                    });
-                }
+                this._context.$refresh({
+                    section : "__tabPanel_" + this._domId
+                });
             } else {
                 this.$Container._onBoundPropertyChange.call(this, propertyName, newValue, oldValue);
             }
@@ -113,45 +99,27 @@ Aria.classDefinition({
          * @protected
          */
         _widgetMarkup : function (out) {
-            this._container = false;
-            if (this._cfg.macro) {
-                this._widgetMarkupBegin(out);
-                out.callMacro(this._cfg.macro);
-                this._widgetMarkupEnd(out);
-            } else {
-                this.$logError(this.TABPANEL_INVALID_CONFIG_MACRO);
-            }
-
-        },
-
-        /**
-         * Internal function to generate the internal widget markup
-         * @param {aria.templates.MarkupWriter} out
-         * @protected
-         */
-        _widgetMarkupBegin : function (out) {
-            if (this._container) {
-                this.$logWarn(this.CONTAINER_USAGE_DEPRECATED);
-                if (!this._cfg.id) {
-                    this.$logError(this.TABPANEL_INVALID_CONFIG_ID);
-                }
-            }
             this._frame.writeMarkupBegin(out);
             out.beginSection({
-                id : "__tabPanel_" + this._domId
+                id : "__tabPanel_" + this._domId,
+                macro : this._cfg.macro
             });
-
-        },
-
-        /**
-         * Internal function to generate the internal widget markup
-         * @param {aria.templates.MarkupWriter} out
-         * @protected
-         */
-        _widgetMarkupEnd : function (out) {
             out.endSection();
             this._frame.writeMarkupEnd(out);
         },
+
+        /**
+         * @param {aria.templates.MarkupWriter} out
+         */
+        writeMarkupBegin : function (out) {
+            out.skipContent = true;
+            this.$logError(this.INVALID_USAGE_AS_CONTAINER, ["TabPanel"]);
+        },
+
+        /**
+         * @param {aria.templates.MarkupWriter} out
+         */
+        writeMarkupEnd : Aria.empty,
 
         /**
          * A protected method to set this objects skin object

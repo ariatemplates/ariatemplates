@@ -42,12 +42,16 @@
                         },
                         scope : this
                     }
-                }]
-             }}
+                }],
+                macro : "mySectionContent"
+             }/}
+        </fieldset>
+
+    {/macro}
+
+    {macro mySectionContent()}
 
             {@aria:TextField {label:"This is a textfield in section 1", block:true, labelWidth : 200, id:"tf1"}/}
-
-
                  <fieldset>
                     <legend>Section 2</legend>
                     {section {
@@ -55,15 +59,15 @@
                         "keyMap" : [{
                             key: "*",
                             callback : function () {return false;}
-                        }]
-                     }}
-                        {@aria:TextField {label:"This is a textfield in section 2", block:true, labelWidth : 200, id:"tf2"}/}
-                    {/section}
+                        }],
+                        macro : "mySection2Content"
+                     }/}
                 </fieldset>
+    {/macro}
 
-            {/section}
-        </fieldset>
 
+    {macro mySection2Content()}
+        {@aria:TextField {label:"This is a textfield in section 2", block:true, labelWidth : 200, id:"tf2"}/}
     {/macro}
 
 {/Template}

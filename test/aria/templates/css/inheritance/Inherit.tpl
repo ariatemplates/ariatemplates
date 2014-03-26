@@ -29,8 +29,12 @@ SelectBox inherits TextInput that inherits Icon
     bindRefreshTo : [{
         inside : data,
         to : "step"
-    }]
-}}
+    }],
+    macro : "widgetContent"
+}/}
+{/macro}
+
+{macro widgetContent()}
     Current Step: ${data.step}
 
     {if data.step === 0}
@@ -53,7 +57,7 @@ SelectBox inherits TextInput that inherits Icon
         },
         scope : this
     }/}>Next step</a>
-{/section}
 {/macro}
+
 
 {/Template}

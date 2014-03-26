@@ -35,8 +35,7 @@
                     inside: data
                 }
             }
-        }}
-        {/@aria:Dialog}
+        }/}
         <div style="height:6000px">&nbsp;</div>
     {/macro}
 
