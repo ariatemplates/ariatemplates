@@ -26,15 +26,23 @@
                         args: ["section1"]
                     }
                 }/}
-                {section "section2", "div"}
-                    ${updateRefreshCountOf("section2")}
-                    <div>section2</div>
-                {/section}
+
+                {section {
+                    id : "section2",
+                    type : "div",
+                    macro : "section2Content"
+                }/}
+
     {/macro}
 
     {macro macroContentToAdd(id)}
         ${updateRefreshCountOf(id)}
         <div>${id}</div>
+    {/macro}
+
+    {macro section2Content()}
+        ${updateRefreshCountOf("section2")}
+        <div>section2</div>
     {/macro}
 
 {/Template}

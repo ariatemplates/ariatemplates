@@ -13,17 +13,15 @@
  * limitations under the License.
  */
 
-{CSSTemplate {
-  $classpath : "test.aria.templates.dynamicSection.testFour.RepeaterSampleCSS"
-}}
+Aria.classDefinition({
+    $classpath : "test.aria.templates.section.sectionWithoutMacro.SectionWithoutMacro",
+    $extends : "aria.jsunit.TemplateTestCase",
+    $prototype : {
 
-  {macro main()}
-  .evenRow {
-    background: magenta;
-  }
-  .oddRow {
-    background: cyan;
-  }
-{/macro}
+        runTemplateTest : function () {
+            this.assertErrorInLogs(aria.templates.TemplateCtxt.MISSING_SECTION_MACRO);
+            this.end();
+        }
 
-{/CSSTemplate}
+    }
+});

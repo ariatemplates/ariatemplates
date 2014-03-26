@@ -25,8 +25,7 @@
 			macro : "dialogContent",
 			visible : true,
 			modal: true
-		}}
-		{/@aria:Dialog}
+		}/}
 	{/macro}
 
 	{macro dialogContent()}

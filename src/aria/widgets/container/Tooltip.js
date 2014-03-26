@@ -61,50 +61,15 @@
             this._associatedWidget = null;
             this.$Container.$destructor.call(this);
         },
-        $statics : {
-            // ERROR MESSAGES:
-            CONTAINER_USAGE_DEPRECATED : "%1The usage as a container {@aria:Tooltip}{/@aria:Tooltip} is deprecated; use the {@aria:Tooltip /} syntax instead.",
-            WIDGET_TOOLTIP_MACRO : "%1Tooltip with id '%2' must either have the 'macro' property specified (recommended) or be a container ({@aria:Tooltip}{/@aria:Tooltip}; deprecated)."
-        },
         $prototype : {
-            /**
-             * @private
-             */
-            _checkCfgConsistency : function () {
-                if (!this._cfgOk) {
-                    return;
-                }
-                var cfg = this._cfg;
-                if ((this._container && cfg.macro) || (!this._container && !cfg.macro)) {
-                    this.$logError(this.WIDGET_TOOLTIP_MACRO, [cfg.id]);
-                    this._cfgOk = false;
-                    return;
-                }
-            },
-            /**
-             * @private
-             */
-            _widgetMarkupBegin : function (out) {
-                var cfg = this._cfg;
-                this._sectionId = ["__toolTipSection_", cfg.id].join("");
-                // if out.sectionState == out.SECTION_KEEP, it means the content of the tooltip
-                // would be kept at the same place as the widget in the template, instead of being
-                // sent to the popup so, in this case, we always skip the content
-                this._skipContent = (out.sectionState == out.SECTION_KEEP) || !__tooltipsDisplayed[this._domId];
-                out.skipContent = this._skipContent;
-                out.beginSection({
-                    id : this._sectionId,
-                    type : "" // a tooltip has nothing in the dom until it is displayed
-                });
-                if (this._skipContent) {
-                    return;
-                }
-                this._widgetMarkupBeginCommon(out);
-            },
 
-            _widgetMarkupBeginCommon : function (out) {
+            /**
+             * @param {aria.templates.MarkupWriter} out
+             * @private
+             */
+            _writerCallback : function (out) {
                 var cfg = this._cfg;
-                // We loose the reference to this div, as it will be destroyed by the section
+                // We can lose the reference to this div, as it will be destroyed by the section
                 var div = new aria.widgets.container.Div({
                     sclass : cfg.sclass,
                     width : cfg.width,
@@ -112,56 +77,43 @@
                     printOptions : cfg.printOptions,
                     cssClass : this._context.getCSSClassNames(true)
                 }, this._context, this._lineNumber);
-                this._tooltipDiv = div;
                 out.registerBehavior(div);
                 div.writeMarkupBegin(out);
-            },
-            /**
-             * @private
-             */
-            _widgetMarkupEnd : function (out) {
-                if (!this._skipContent) {
-                    this._widgetMarkupEndCommon(out);
-                }
-                out.endSection();
-            },
-
-            _widgetMarkupEndCommon : function (out) {
-                var div = this._tooltipDiv;
-                this._tooltipDiv = null;
+                out.callMacro(cfg.macro);
                 div.writeMarkupEnd(out);
                 this.$assert(52, div);
             },
+
             /**
+             * @param {aria.templates.MarkupWriter} out
              * @private
              */
-            _writerCallback : function (out) {
-                this._widgetMarkupBeginCommon(out);
-                out.callMacro(this._cfg.macro);
-                this._widgetMarkupEndCommon(out);
-            },
             writeMarkup : function (out) {
-                this._container = false;
                 this._checkCfgConsistency();
                 if (this._cfgOk) {
-                    this._widgetMarkupBegin(out);
-                    this._widgetMarkupEnd(out);
+                    var cfg = this._cfg;
+                    this._sectionId = ["__toolTipSection_", cfg.id].join("");
+                    out.beginSection({
+                        id : this._sectionId,
+                        type : ""
+                    });
+                    out.endSection();
                 }
             },
+
+            /**
+             * @param {aria.templates.MarkupWriter} out
+             */
             writeMarkupBegin : function (out) {
-                // When Tooltip is used as a container, every time it's shown, the whole macro is recalculated,
-                // and even the calling macros up the hierarchy. This reduces performance and, at first,
-                // can lead to unexepected behavior.
-                this.$logWarn(this.CONTAINER_USAGE_DEPRECATED);
-                this._container = true;
-                this._checkCfgConsistency();
-                if (this._cfgOk) {
-                    this._widgetMarkupBegin(out);
-                }
+                out.skipContent = true;
+                this.$logError(this.INVALID_USAGE_AS_CONTAINER, ["Tooltip"]);
             },
-            writeMarkupEnd : function (out) {
-                this._widgetMarkupEnd(out);
-            },
+
+            /**
+             * @param {aria.templates.MarkupWriter} out
+             */
+            writeMarkupEnd : Aria.empty,
+
             /**
              * Called when the associated widget receives a mouseover event.
              * @param {aria.widgets.Widget} widget associated widget
@@ -250,14 +202,14 @@
                 if (this._popup) {
                     return;
                 }
-                var refreshParams = this._container ? {
-                    filterSection : this._sectionId
-                }: { writerCallback : {
+                var refreshParams = {
+                    writerCallback : {
                         fn : this._writerCallback,
                         scope : this
                     },
                     section : this._sectionId
                 };
+
                 __tooltipsDisplayed[this._domId] = true;
                 var section = this._context.getRefreshedSection(refreshParams);
                 var cfg = this._cfg;
@@ -282,6 +234,7 @@
                     }
                 });
             },
+
             /**
              * Close the tooltip.
              */

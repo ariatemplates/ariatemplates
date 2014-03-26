@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Amadeus s.a.s.
+ * Copyright 2012 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,33 +14,35 @@
  */
 
 {Template {
-    $classpath: "test.aria.utils.overlay.loadingIndicator.manual.DomInside"
+    $classpath : "test.aria.widgets.container.tabpanel.TabPanelTestTpl"
 }}
-
-
     {macro main()}
-        {@aria:Button {
-            label : "Click Me",
-            onclick : "clickMe"
+        {@aria:TabPanel {
+            id : "myPanel",
+		    macro : "panelContent",
+		    bind : {
+		    	selectedTab : {
+		    		to : "tab",
+		    		inside : data
+		    	}
+		    }
         }/}
-        <br />
-
-
-        <div style="border: 5px solid cyan; padding: 10px">
-            <span {id "spanOverlay" /} style="border: 1px solid black;">Overlay something here<br />on two lines</span>
-        </div>
-
-
-        {section {
-        	id : "s1",
-        	macro : "s1Content"
+        {@aria:TabPanel {
+            id : "myWrongPanel"
         }/}
+        {@aria:TabPanel {
+        	macro : "panelContent"
+        }}
+        cccccc
+        {/@aria:TabPanel}
     {/macro}
 
-    {macro s1Content()}
-        <div {id "overlay0" /} style="border: 1px solid black; height: 50px; margin: 20px">
-            Overlay something here
-        </div>
+    {macro panelContent()}
+    	{if data.tab == "a"}
+    	    aaaaaa
+    	{else/}
+    	    bbbbbb
+    	{/if}
     {/macro}
 
 {/Template}

@@ -62,7 +62,7 @@ Aria.tplScriptDefinition({
          * @param {aria.templates.CfgBeans.RefreshCfg} args arguments given for the refresh
          */
         $afterRefresh : function (args) {
-            var sectionId = args ? (args.section || args.outputSection) : null;
+            var sectionId = args ? args.section : null;
             if (sectionId == null || sectionId == "Items") {
                 // automatically scroll to display selected item
                 var idx = this.data.selectedIndex;

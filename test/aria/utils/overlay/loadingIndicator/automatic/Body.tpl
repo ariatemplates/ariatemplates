@@ -24,33 +24,45 @@
 
         There should be a section with overlay
         {section {
-            id : "s1"
-        }}
-            <span>containing an element with an id</span>
-            <div style="height: 80px; border: 1px dashed black" {id "d1" /}>&nbsp;</div>
-        {/section}
+            id : "s1",
+            macro : "s1Content"
+        }/}
 
         There should also be a grand parent section
         {section {
-            id : "grandParent"
-        }}
-            containing a parent section
-            {section {
-                id : "parent"
-            }}
-                with a child section that has an overlay
-                {section {
-                    id : "s2"
-                }}
-                    <div style="height: 80px; border: 1px dashed black" {id "d2" /}>&nbsp;</div>
-                {/section}
-            {/section}
-        {/section}
+            id : "grandParent",
+            macro : "grandParentContent"
+        }/}
 
         And then comes the sub template
         {@aria:Template {
             defaultTemplate : "test.aria.utils.overlay.loadingIndicator.automatic.SubTemplate"
         } /}
+    {/macro}
+
+    {macro s1Content()}
+        <span>containing an element with an id</span>
+        <div style="height: 80px; border: 1px dashed black" {id "d1" /}>&nbsp;</div>
+    {/macro}
+
+    {macro grandParentContent()}
+        containing a parent section
+        {section {
+            id : "parent",
+            macro : "parentContent"
+        }/}
+    {/macro}
+
+    {macro parentContent()}
+        with a child section that has an overlay
+        {section {
+            id : "s2",
+            macro : "s2Content"
+        }/}
+    {/macro}
+
+    {macro s2Content()}
+        <div style="height: 80px; border: 1px dashed black" {id "d2" /}>&nbsp;</div>
     {/macro}
 
 {/Template}

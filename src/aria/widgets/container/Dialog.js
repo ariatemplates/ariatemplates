@@ -47,13 +47,6 @@ Aria.classDefinition({
         this._hasMarkup = false;
 
         /**
-         * Indicates if Dialog is written as a container (to know whether to log a deprecation warning)
-         * @protected
-         * @type Boolean
-         */
-        this._container = true;
-
-        /**
          * Id for event delegation on close icon
          * @protected
          * @type String
@@ -134,7 +127,6 @@ Aria.classDefinition({
         this.$Container.$destructor.call(this);
     },
     $statics : {
-        CONTAINER_USAGE_DEPRECATED : "%1The usage as a container {@aria:Dialog}{/@aria:Dialog} is deprecated; use the {@aria:Dialog /} syntax instead.",
         MISSING_CONTENT_MACRO : "%1Missing 'macro' in Dialog configuration."
     },
     $prototype : {
@@ -190,17 +182,24 @@ Aria.classDefinition({
         },
 
         /**
+         * @param {aria.templates.MarkupWriter} out
+         */
+        writeMarkupBegin : function (out) {
+            out.skipContent = true;
+            this.$logError(this.INVALID_USAGE_AS_CONTAINER, ["Dialog"]);
+        },
+
+        /**
+         * @param {aria.templates.MarkupWriter} out
+         */
+        writeMarkupEnd : Aria.empty,
+
+        /**
          * Widget markup starts here
          * @param {aria.templates.MarkupWriter} out the writer Object to use to output markup
          * @protected
          */
         _widgetMarkupBegin : function (out) {
-            if (this._container) {
-                // Dialog's usage as a container doesn't really make sense at all and probably no one uses that;
-                // it still needs 'macro' defined, and if anything is present between
-                // {@aria:Dialog}{/@aria:Dialog}, it will be flushed to the HTML.
-                this.$logWarn(this.CONTAINER_USAGE_DEPRECATED);
-            }
             out.beginSection({
                 id : "__dialog_" + this._domId
             });
@@ -239,7 +238,6 @@ Aria.classDefinition({
          * @param {aria.templates.MarkupWriter} out the writer Object to use to output markup
          */
         _widgetMarkup : function (out) {
-            this._container = false;
             this._widgetMarkupBegin(out);
             this._widgetMarkupEnd(out);
         },

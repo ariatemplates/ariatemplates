@@ -29,11 +29,16 @@
 
         {section {
             id : "s2",
-            bindProcessingTo : {inside: data, to: "processing"}
-        }}
-            <div {id "overlay1" /} style="border: 10px solid green; height: 60px">
-                Overlay something here
-            </div>
-        {/section}
+            bindProcessingTo : {inside: data, to: "processing"},
+            macro : "s2Content"
+        }/}
     {/macro}
+
+    {macro s2Content()}
+        <div {id "overlay1" /} style="border: 10px solid green; height: 60px">
+            Overlay something here
+        </div>
+    {/macro}
+
+
 {/Template}

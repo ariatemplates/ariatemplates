@@ -27,16 +27,34 @@
     {/macro}
 
     {macro mySectionMacro(name,tagName)}
-        {section name,tagName}
-            {call myTRSectionMacro(name+"_1")/}
-            {call myTRSectionMacro(name+"_2")/}
-        {/section}
+        {section {
+        	id : name,
+        	type : tagName,
+        	macro : {
+        		name : "mySectionContent",
+        		args : [name]
+        	}
+        }/}
+    {/macro}
+
+    {macro mySectionContent(name)}
+        {call myTRSectionMacro(name+"_1")/}
+        {call myTRSectionMacro(name+"_2")/}
     {/macro}
 
     {macro myTRSectionMacro(name)}
-        {section name,"TR"}
-            <td>${name}.1-${data.refreshNbr}</td><td>${name}.2-${data.refreshNbr}</td>
-        {/section}
+        {section {
+        	id : name,
+        	type : "TR",
+        	macro : {
+        		name : "myTRContent",
+        		args : [name]
+        	}
+        }/}
+    {/macro}
+
+    {macro myTRContent(name)}
+    	<td>${name}.1-${data.refreshNbr}</td><td>${name}.2-${data.refreshNbr}</td>
     {/macro}
 
 {/Template}

@@ -69,7 +69,7 @@ Aria.classDefinition({
                         tpl : "{TextTemplate {$classpath: 'test.aria.templates.test.MyWrongTemplate'}}{on /}{/TextTemplate}",
                         errors : [classGen.UNKNOWN_STATEMENT]
                     }, {
-                        tpl : "{TextTemplate {$classpath: 'test.aria.templates.test.MyWrongTemplate'}}{section}{/section}{/TextTemplate}",
+                        tpl : "{TextTemplate {$classpath: 'test.aria.templates.test.MyWrongTemplate'}}{section {macro : 'aaa'}/}{/TextTemplate}",
                         errors : [classGen.UNKNOWN_STATEMENT]
                     }, {
                         tpl : "{TextTemplate {$classpath: 'test.aria.templates.test.MyWrongTemplate'}}{createView/}{/TextTemplate}",

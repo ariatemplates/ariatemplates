@@ -39,7 +39,7 @@ Aria.classDefinition({
                     return "equipment";
                 },
                 refreshArgs : [{
-                            filterSection : "bound1"
+                            section : "bound1"
                         }]
             });
 

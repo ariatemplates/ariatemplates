@@ -19,10 +19,15 @@
 
 
     {macro main()}
-        {section "s1"}
-            <div {id "d1" /} style="border: 1px solid black; height: 50px; margin: 20px">
-                Overlay something here
-            </div>
-        {/section}
+        {section {
+        	id : "s1",
+        	macro : "s1Content"
+        }/}
+    {/macro}
+
+    {macro s1Content()}
+        <div {id "d1" /} style="border: 1px solid black; height: 50px; margin: 20px">
+            Overlay something here
+        </div>
     {/macro}
 {/Template}

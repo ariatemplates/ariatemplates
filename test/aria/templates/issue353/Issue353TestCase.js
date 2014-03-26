@@ -36,17 +36,16 @@ Aria.classDefinition({
     },
     $prototype : {
         runTemplateTest : function () {
-            var textField1 = this.__getChildrenByIdAndTagName("textField1", "input")[0];
 
-            this.synEvent.execute([["click", textField1], ["type", textField1, "test1"]], {
+            var textField1 = this.getWidgetDomElement("textField1", "input");
+            this.synEvent.execute([["click", textField1], ["type", textField1, "[right]test1"]], {
                 fn : this.__afterFirstType,
                 scope : this
             });
-
         },
 
         __afterFirstType : function () {
-            var outside = aria.utils.Dom.getElementById("outsideDiv");
+            var outside = this.testWindow.aria.utils.Dom.getElementById("outsideDiv");
 
             this.synEvent.click(outside, {
                 fn : this.__afterFirstClick,
@@ -55,10 +54,10 @@ Aria.classDefinition({
         },
 
         __afterFirstClick : function () {
-            var textField2 = this.__getChildrenByIdAndTagName("textField2", "input")[0];
-
             this.__checkFieldsets(["item1test1", "item2"], ["item1test1"]);
             this.__checkInputs("item1test1");
+
+            var textField2 = this.getWidgetDomElement("textField2", "input");
             this.synEvent.execute([["click", textField2], ["type", textField2, "test2"]], {
                 fn : this.__afterSecondType,
                 scope : this
@@ -66,7 +65,7 @@ Aria.classDefinition({
         },
 
         __afterSecondType : function () {
-            var outside = aria.utils.Dom.getElementById("outsideDiv");
+            var outside = this.testWindow.aria.utils.Dom.getElementById("outsideDiv");
 
             this.synEvent.click(outside, {
                 fn : this.__afterSecondClick,
@@ -75,10 +74,9 @@ Aria.classDefinition({
         },
 
         __afterSecondClick : function () {
-
             this.__checkFieldsets(["item1test1test2", "item2"], ["item1test1test2"]);
             this.__checkInputs("item1test1test2");
-            this.__finishTest();
+            this.end();
         },
 
         __checkFieldsets : function (items, subitems) {
@@ -100,32 +98,21 @@ Aria.classDefinition({
             var arrLi;
 
             arrLi = this.__getChildrenByIdAndTagName("textField1", "input");
-            this.assertTrue(arrLi[0].value == itemValue, "The arrLi[0].innerHTML value in list is not correct [textField]: "
-                    + arrLi[0].value + "!=" + itemValue);
+            this.assertTrue(arrLi.value == itemValue, "The arrLi[0].innerHTML value in list is not correct [textField]: "
+                    + arrLi.value + "!=" + itemValue);
 
             arrLi = this.__getChildrenByIdAndTagName("textField2", "input");
-            this.assertTrue(arrLi[0].value == itemValue, "The arrLi[0].innerHTML value in sublist is not correct [textField]: "
-                    + arrLi[0].value + "!=" + itemValue);
+            this.assertTrue(arrLi.value == itemValue, "The arrLi[0].innerHTML value in sublist is not correct [textField]: "
+                    + arrLi.value + "!=" + itemValue);
 
         },
 
         __getChildrenByIdAndTagName : function (id, tagName, section) {
-            var domId, elem, arrLi;
-
             if (section) {
-                elem = this.getElementById(id);
+                return aria.utils.Dom.getDomElementsChildByTagName(this.getElementById(id), tagName);
             } else {
-                domId = this.getWidgetInstance(id)._domId;
-                elem = aria.utils.Dom.getElementById(domId);
+                return this.getWidgetDomElement(id, tagName);
             }
-
-            arrLi = aria.utils.Dom.getDomElementsChildByTagName(elem, tagName);
-
-            return arrLi;
-        },
-
-        __finishTest : function () {
-            this.notifyTemplateTestEnd();
         }
     }
 });

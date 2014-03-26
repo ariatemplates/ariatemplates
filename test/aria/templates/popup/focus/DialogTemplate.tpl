@@ -32,8 +32,7 @@
                       to: 'visible'
                   }
             }
-        }}
-        {/@aria:Dialog}
+        }/}
 
 
     {/macro}

@@ -154,7 +154,7 @@ Aria.tplScriptDefinition({
 
             currentSelection.classes[segmentIndex] = rbd;
             this.$refresh({
-                filterSection : "bound" + boundIndex
+                section : "bound" + boundIndex
             });
         },
 
