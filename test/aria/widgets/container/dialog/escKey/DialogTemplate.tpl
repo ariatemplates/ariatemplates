@@ -28,8 +28,7 @@
                     inside : data
                 }
             }
-        }}
-        {/@aria:Dialog}
+        }/}
     {/macro}
 
     {macro dialogContent()}

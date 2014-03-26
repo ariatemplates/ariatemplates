@@ -748,7 +748,7 @@ Aria.beanDefinitions({
             $properties : {
                 "id" : {
                     $type : "json:String",
-                    $description : "Id of the section. Mandatory if the section is used as a container."
+                    $description : "Id of the section."
                 },
                 "type" : {
                     $type : "json:String",
@@ -796,7 +796,7 @@ Aria.beanDefinitions({
                 },
                 "macro" : {
                     $type : "MacroCfg",
-                    $description : "Macro to call to fill the section. It must not be defined if the section statement is used as a container."
+                    $description : "Macro to call to fill the section."
                 },
                 "cssClass" : {
                     $type : "json:String",
@@ -900,16 +900,6 @@ Aria.beanDefinitions({
                 "section" : {
                     $type : "json:String",
                     $description : "Id of the section to refresh.",
-                    $mandatory : false
-                },
-                "filterSection" : {
-                    $type : "json:String",
-                    $description : "Deprecated. Use 'section' instead. Id of the section to filter. If specified, the section with this id must exist in the macro called for the refresh, and any output outside the specified section is ignored.",
-                    $mandatory : false
-                },
-                "outputSection" : {
-                    $type : "json:String",
-                    $description : "Deprecated. Use 'section' instead. Id of the section to replace. By default, its value is the one of filterSection. If null, the whole template is replaced.",
                     $mandatory : false
                 }
             }

@@ -706,16 +706,10 @@
                 if (!this._initWidgetsDone || !args.tplCtxt._cfg || !args.tplCtxt._cfg.tplDiv) {
                     return;
                 }
-                if (this.macro) {
-                    args.tplCtxt.$refresh({
-                        section : this.id,
-                        macro : this.macro
-                    });
-                } else {
-                    args.tplCtxt.$refresh({
-                        filterSection : this.id
-                    });
-                }
+                args.tplCtxt.$refresh({
+                    section : this.id,
+                    macro : this.macro
+                });
             },
 
             /**

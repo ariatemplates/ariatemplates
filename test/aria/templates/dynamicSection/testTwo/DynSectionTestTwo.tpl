@@ -26,19 +26,6 @@
                         args: ["section1"]
                     }
                 }/}
-                // this section is a container and contains a macro
-                {section {
-                    id: "section2",
-                    macro: {
-                        name: "macroContentToAdd",
-                        args: ["section2"]
-                    }
-                }}
-                {/section}
-                // this section is not a container or defines a macro
-                {section {
-                    id: "section3"
-                }/}
 
     {/macro}
 

@@ -27,10 +27,13 @@
     {macro subSection()}
         {section {
             id : "subSection",
-            bindProcessingTo : {inside: data, to: "subSection"}
-        }}
-            <div style="height: 80px; border: 1px dashed black">&nbsp;</div>
-        {/section}
+            bindProcessingTo : {inside: data, to: "subSection"},
+            macro : "subContent"
+       }/}
+    {/macro}
+
+    {macro subContent()}
+        <div style="height: 80px; border: 1px dashed black">&nbsp;</div>
     {/macro}
 
 {/Template}

@@ -27,8 +27,7 @@ Aria.tplScriptDefinition({
         },
         refreshInnerSection : function () {
             this.$refresh({
-                filterSection : "testInnerMacroSection",
-                macro : "displayDialogContent"
+                section : "testInnerMacroSection"
             });
         }
     }

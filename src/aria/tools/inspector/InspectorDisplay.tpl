@@ -33,8 +33,7 @@
                     inside : data
                 }
             }
-        }}
-        {/@aria:Dialog}
+        }/}
 
         <div style="float:left;width:${$hdim(380,0.5)}px;margin:5px;">
             <h2 style="color:#99CC00;margin-bottom:0px;">Templates</h2>

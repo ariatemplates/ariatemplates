@@ -58,7 +58,7 @@ Aria.classDefinition({
             this.templateCtxt.data.refreshCount = 0;
 
             this.templateCtxt.$refresh({
-                filterSection : "myComplexeSection"
+                section : "myComplexeSection"
             });
 
             this.assertTrue(this.templateCtxt.data.refreshCount == 1, "this.$refresh did not work");
@@ -77,7 +77,7 @@ Aria.classDefinition({
             this.templateCtxt.data.macroParam = null;
 
             this.templateCtxt.$refresh({
-                outputSection : "mySectionWithMacro1"
+                section : "mySectionWithMacro1"
             });
 
             this.assertTrue(this.templateCtxt.data.refreshCount === 0, "mySectionWithMacro1: main macro was called instead of only macroForSection");
@@ -90,7 +90,7 @@ Aria.classDefinition({
             this.templateCtxt.data.macroParam = null;
 
             this.templateCtxt.$refresh({
-                outputSection : "mySectionWithMacro1",
+                section : "mySectionWithMacro1",
                 macro : {
                     // overriding the args parameter or the macro
                     args : ["newParam"]
@@ -107,7 +107,7 @@ Aria.classDefinition({
             this.templateCtxt.data.macroParam = null;
 
             this.templateCtxt.$refresh({
-                outputSection : "mySectionWithMacro2"
+                section : "mySectionWithMacro2"
             });
 
             this.assertTrue(this.templateCtxt.data.refreshCount === 0, "mySectionWithMacro2: main macro was called instead of only macroForSection");
@@ -120,7 +120,7 @@ Aria.classDefinition({
             this.templateCtxt.data.macroParam = null;
 
             this.templateCtxt.$refresh({
-                outputSection : "mySectionWithMacro2",
+                section : "mySectionWithMacro2",
                 macro : {
                     // overriding the args parameter or the macro
                     args : ["newParam"]

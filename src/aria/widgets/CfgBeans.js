@@ -1336,7 +1336,7 @@ Aria.beanDefinitions({
                 "macro" : {
                     $type : "templates:MacroCfg",
                     $description : "Macro to call to get the tooltip content. It is recommended to use macro for generating tooltip, and it will be mandatory in the future. For backward compatibility, the Tooltip widget can be used as a container (in which case this property must not be specified, and content has to be defined inline), but this is deprecated and will be removed soon.",
-                    $mandatory : false
+                    $mandatory : true
                 },
                 "sclass" : {
                     $type : "WidgetCfg.sclass",
@@ -1893,7 +1893,7 @@ Aria.beanDefinitions({
                 "macro" : {
                     $type : "templates:MacroCfg",
                     $description : "Macro to call to display the content of the TabPanel",
-                    $mandatory : false
+                    $mandatory : true
                 },
                 "block" : {
                     $type : "WidgetCfg.block",

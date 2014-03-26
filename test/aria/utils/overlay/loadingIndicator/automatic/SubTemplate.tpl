@@ -26,10 +26,13 @@
 
     {macro subSection()}
         {section {
-            id : "subSection"
-        }}
-            <div style="height: 80px; border: 1px dashed black">&nbsp;</div>
-        {/section}
+            id : "subSection",
+            macro : "subContent"
+        }/}
+    {/macro}
+
+    {macro subContent()}
+        <div style="height: 80px; border: 1px dashed black">&nbsp;</div>
     {/macro}
 
 {/Template}

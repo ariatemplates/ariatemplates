@@ -28,6 +28,11 @@ Aria.classDefinition({
     },
     $prototype : {
         runTemplateTest : function () {
+            // check that an error is raised because of the tooltip used as a container. Likewise, check that the
+            // content has not been displayed
+            this.assertErrorInLogs(this.testWindow.aria.widgets.container.Container.INVALID_USAGE_AS_CONTAINER);
+            this.assertNull(this.testDiv.innerHTML.match(/a__b__c__d__e__f__g__h__i/));
+
             var tooltipDiv = this.testWindow.aria.utils.Dom.getElementById("mouseOverMe");
 
             this.synEvent.move({

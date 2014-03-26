@@ -31,17 +31,18 @@
                         bindProcessingTo : {
                             inside : test,
                             to : "show"
-                        }
-                }}
-
-                    <div style="width:200px;height:200px;background:green;">
-                    </div>
-
-                {/section}
+                        },
+                        macro : "totoContent"
+                }/}
 
                 </div>
             </div>
         </div>
 
+    {/macro}
+
+    {macro totoContent()}
+        <div style="width:200px;height:200px;background:green;">
+        </div>
     {/macro}
 {/Template}

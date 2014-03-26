@@ -27,28 +27,31 @@
 
         {section {
             id : "SectionAA",
-            bindRefreshTo : [{inside : data, to : "a"}]
-        }}
-               Section AA
-
-             {@aria:TextField {
-                    id: "AAAtextfield",
-                    width: 40,
-                    label: "TextFieldAAA",
-                    bind: {
-                      value: {
-                        to: 'a',
-                        inside: data.a
-                      }
-                    }
-                }/}
-
-        {/section}
+            bindRefreshTo : [{inside : data, to : "a"}],
+            macro : "aaContent"
+        }/}
 
         {@aria:Template {
             defaultTemplate: "test.aria.templates.autorefresh.Template5D",
             data : data
        }/}
+
+    {/macro}
+
+    {macro aaContent()}
+        Section AA
+
+        {@aria:TextField {
+            id: "AAAtextfield",
+            width: 40,
+            label: "TextFieldAAA",
+            bind: {
+                value: {
+                    to: 'a',
+                    inside: data.a
+                }
+            }
+        }/}
 
     {/macro}
 

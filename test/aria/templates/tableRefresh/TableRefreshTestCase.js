@@ -44,11 +44,7 @@ Aria.classDefinition({
             // change refresh number and refresh only section 1:
             aria.utils.Json.setValue(this.env.data, "refreshNbr", 1);
             this.templateCtxt.$refresh({
-                macro : {
-                    name : "mySectionMacro",
-                    args : ["section1", "tbody"]
-                },
-                filterSection : "section1"
+                section : "section1"
             });
             // check that only section 1 was refreshed
             this._checkTableElement(table.children[0], "head", "thead", 0);
@@ -60,11 +56,7 @@ Aria.classDefinition({
             // change refresh number and refresh again only section 1:
             aria.utils.Json.setValue(this.env.data, "refreshNbr", 2);
             this.templateCtxt.$refresh({
-                macro : {
-                    name : "mySectionMacro",
-                    args : ["section1", "tbody"]
-                },
-                filterSection : "section1"
+                section : "section1"
             });
             // check that only section 1 was refreshed
             this._checkTableElement(table.children[0], "head", "thead", 0);
@@ -76,11 +68,7 @@ Aria.classDefinition({
             // change refresh number and refresh only section thead:
             aria.utils.Json.setValue(this.env.data, "refreshNbr", 3);
             this.templateCtxt.$refresh({
-                macro : {
-                    name : "mySectionMacro",
-                    args : ["head", "thead"]
-                },
-                filterSection : "head"
+                section : "head"
             });
             // check that only section 1 was refreshed
             this._checkTableElement(table.children[0], "head", "thead", 3);
@@ -92,11 +80,7 @@ Aria.classDefinition({
             // change refresh number and refresh again only section thead:
             aria.utils.Json.setValue(this.env.data, "refreshNbr", 4);
             this.templateCtxt.$refresh({
-                macro : {
-                    name : "mySectionMacro",
-                    args : ["head", "thead"]
-                },
-                filterSection : "head"
+                section : "head"
             });
             // check that only section 1 was refreshed
             this._checkTableElement(table.children[0], "head", "thead", 4);
@@ -108,11 +92,7 @@ Aria.classDefinition({
             // change refresh number and refresh only section tfoot:
             aria.utils.Json.setValue(this.env.data, "refreshNbr", 5);
             this.templateCtxt.$refresh({
-                macro : {
-                    name : "mySectionMacro",
-                    args : ["foot", "tfoot"]
-                },
-                filterSection : "foot"
+                section : "foot"
             });
             // check that only section 1 was refreshed
             this._checkTableElement(table.children[0], "head", "thead", 4);
@@ -124,11 +104,7 @@ Aria.classDefinition({
             // change refresh number and refresh again only section tfoot:
             aria.utils.Json.setValue(this.env.data, "refreshNbr", 6);
             this.templateCtxt.$refresh({
-                macro : {
-                    name : "mySectionMacro",
-                    args : ["foot", "tfoot"]
-                },
-                filterSection : "foot"
+                section : "foot"
             });
             // check that only section 1 was refreshed
             this._checkTableElement(table.children[0], "head", "thead", 4);
@@ -140,11 +116,7 @@ Aria.classDefinition({
             // change refresh number and refresh only a TR in section 2:
             aria.utils.Json.setValue(this.env.data, "refreshNbr", 7);
             this.templateCtxt.$refresh({
-                macro : {
-                    name : "myTRSectionMacro",
-                    args : ["section2_1"]
-                },
-                filterSection : "section2_1"
+                section : "section2_1"
             });
             // check that only section 1 was refreshed
             this._checkTableElement(table.children[0], "head", "thead", 4);
@@ -156,11 +128,7 @@ Aria.classDefinition({
             // change refresh number and refresh again only a TR in section 2:
             aria.utils.Json.setValue(this.env.data, "refreshNbr", 8);
             this.templateCtxt.$refresh({
-                macro : {
-                    name : "myTRSectionMacro",
-                    args : ["section2_1"]
-                },
-                filterSection : "section2_1"
+                section : "section2_1"
             });
             // check that only section 1 was refreshed
             this._checkTableElement(table.children[0], "head", "thead", 4);

@@ -107,7 +107,6 @@ Aria.classDefinition({
          * position is not one in [before|after]+[Begin|End]
          */
         runTestTwo : function () {
-            this.assertErrorInLogs(aria.templates.TemplateCtxt.SECTION_MACRO_MISUSED, 2);
             this.assertErrorInLogs(aria.utils.Dom.INSERT_ADJACENT_INVALID_POSITION);
             this.assertErrorInLogs(aria.templates.Section.SECTION_ALREADY_EXISTS);
 

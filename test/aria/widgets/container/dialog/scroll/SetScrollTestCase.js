@@ -56,7 +56,7 @@ Aria.classDefinition({
             this.assertTrue(scrollTop == 300, "setScroll did not work");
             aria.utils.Json.setValue(this.data, "step", 1);
             this.templateCtxt.$refresh({
-                outputSection : "mySection"
+                section : "mySection"
             });
             aria.core.Timer.addCallback({
                 fn : this._checkSecondScroll,

@@ -22,13 +22,16 @@
 
     {macro main()}
 
-        {section "mySimpleSection"}
-            mySimpleSection
-        {/section}
+        {section {
+        	id : "mySimpleSection",
+        	macro : "mySimpleMacro"
+        }/}
 
-        {section "myTypedSection", "div"}
-            <div id="childOfTypedSection">myTypedSection</div>
-        {/section}
+        {section {
+        	id : "myTypedSection",
+        	type : "div",
+        	macro : "myTypedContent"
+        }/}
 
         {section {
             id : "myComplexeSection",
@@ -38,24 +41,9 @@
                     to : null,
                     inside : data
                 }
-            ]
-        }}
-            // increment refresh counter and clean data.totoValue
-            {var dummy = (function () { data.refreshCount += 1; delete data.totoValue;})()/}
-
-            // test inner section widget that set a value in the datamodel -> should not fail
-            {@aria:TextField {
-                value : "toto",
-                bind : {
-                    value : {
-                        inside : data,
-                        to : 'totoValue'
-                    }
-                }
-            }/}
-
-            <div id="childOfComplexeSection">myComplexeSection</div>
-        {/section}
+            ],
+            macro : "myComplexMacro"
+        }/}
 
         {section {
             id : "mySectionWithMacro1",
@@ -76,6 +64,32 @@
     {macro macroForSection(param)}
         {var dummy = (function () { data.macroRefreshCount += 1; })()/}
         {set dummy = (function () { data.macroParam = param })()/}
+    {/macro}
+
+    {macro mySimpleMacro()}
+    	mySimpleSection
+    {/macro}
+
+    {macro myTypedContent()}
+	    <div id="childOfTypedSection">myTypedSection</div>
+    {/macro}
+
+    {macro myComplexMacro()}
+        // increment refresh counter and clean data.totoValue
+        {var dummy = (function () { data.refreshCount += 1; delete data.totoValue;})()/}
+
+        // test inner section widget that set a value in the datamodel -> should not fail
+        {@aria:TextField {
+            value : "toto",
+            bind : {
+                value : {
+                    inside : data,
+                    to : 'totoValue'
+                }
+            }
+        }/}
+
+        <div id="childOfComplexeSection">myComplexeSection</div>
     {/macro}
 
 {/Template}

@@ -36,7 +36,7 @@ Aria.classDefinition({
             var startDeleg = this.__countDelegatedMappings();
             for (var i = 0; i < 20; i++) {
                 this.templateCtxt.$refresh({
-                    outputSection : "sctn"
+                    section : "sctn"
                 });
             }
             var endDeleg = this.__countDelegatedMappings();
