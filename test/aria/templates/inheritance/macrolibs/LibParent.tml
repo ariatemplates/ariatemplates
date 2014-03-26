@@ -25,7 +25,7 @@
     {/macro}
 
     {macro myMacro1(arg)}
-      ${myMacroScript(arg)}
+      ${myMacroScript(arg)|escapeForHTML:false}
     {/macro}
 
 

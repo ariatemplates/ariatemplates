@@ -64,7 +64,7 @@
                     {var suiteName = this.getSuiteName(testWrapper)/}
                     {var isSelected =  test.isSelected()/}
                     {call displaySelect(isSelected)/}
-                    <b>${suiteName}</b>
+                    <b>${suiteName|escapeForHTML:false}</b>
                         {call displaySuite(test, 1)/}
                     </td>
                 </tr>
@@ -90,7 +90,7 @@
                     <td style="padding-left:${5 + (15*nesting)}px">
                         {var isSelected = instance && instance.isSelected()/}
                         {call displaySelect(isSelected)/}
-                        <b>${suiteName}</b>
+                        <b>${suiteName|escapeForHTML:false}</b>
                         {call displaySuite(instance, nesting+1)/}
                     </td>
                 </tr>

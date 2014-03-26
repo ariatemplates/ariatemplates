@@ -62,18 +62,37 @@
             /**
              * <span style="font-weight: bold">MODIFIER</span>
              * <br/>
-             * Use the aria.utils.String.escapeForHTML utility to process the given input. If the input is null or
-             * undefined, it is returned as is.
+             *
+             * Use the <a href="http://ariatemplates.com/aria/guide/apps/apidocs/#aria.utils.String:escapeForHTML:method">aria.utils.String.escapeForHTML</li> utility to process the given input, converting the latter to a string before sending it.
+             *
+             * However this modifier skips the escaping in several cases, returning the value as is (and thus without type conversion):
+             * <ul>
+             * <li>if the input is null or undefined</li>
+             * <li>if the argument passed to control the escaping finally tells not to escape anything</li>
+             * </li>
+             *
              * @name aria.templates.Modifiers.prototype.escapeForHTML
-             * @param {String} str the input string
-             * @return {String} the processed string
-             * @see aria.utils.String.escapeForHTML
+             *
+             * @param input the input value
+             * @param arg the argument forwarded to the <a href="http://ariatemplates.com/aria/guide/apps/apidocs/#aria.utils.String:escapeForHTML:method">aria.utils.String.escapeForHTML</li> method. Please refer to its own documentation for more information.
+             *
+             * @return the processed input value. See detailed description for more information.
+             *
+             * @see <a href="http://ariatemplates.com/aria/guide/apps/apidocs/#aria.utils.String:escapeForHTML:method">aria.utils.String.escapeForHTML</li>
              */
-            fn : function (s, arg) {
-                if (s == null) {
-                    return s;
+            fn : function (input, arg) {
+                if (input == null) {
+                    return input;
                 }
-                return aria.utils.String.escapeForHTML(s + '', arg);
+
+                var infos = {};
+                var output = aria.utils.String.escapeForHTML(input + '', arg, infos);
+
+                if (!infos.escaped) {
+                    return input;
+                }
+
+                return output;
             }
         },
         "capitalize" : {
@@ -97,14 +116,20 @@
              * @name aria.templates.Modifiers.prototype.default
              * @param {String} str the entry
              * @param {String} defaultValue the default value
-             * @param {String} escape the name of the escaping modifier function to use to process the given default
+             * @param {String} escapeModifierName the name of the escaping modifier function to use to process the given default
              * value. When empty, this value is left as is.
              * @return {String}
              */
-            fn : function (str, defaultValue, escape) {
-                return str != null ? str : escape
-                        ? aria.templates.Modifiers.callModifier(escape, [defaultValue])
-                        : defaultValue;
+            fn : function (str, defaultValue, escapeModifierName) {
+                if (str != null) {
+                    return str;
+                }
+
+                if (modifierExists(escapeModifierName)) {
+                    return aria.templates.Modifiers.callModifier(escapeModifierName, [defaultValue]);
+                }
+
+                return defaultValue;
             }
         },
         "empty" : {
@@ -115,14 +140,20 @@
              * @name aria.templates.Modifiers.prototype.empty
              * @param {String} str the entry
              * @param {String} defaultValue the default value
-             * @param {String} escape the name of the escaping modifier function to use to process the given default
+             * @param {String} escapeModifierName the name of the escaping modifier function to use to process the given default
              * value. When empty, this value is left as is.
              * @return {String}
              */
-            fn : function (str, defaultValue, escape) {
-                return !!str && !/^\s*$/.test(str) ? str : escape
-                        ? aria.templates.Modifiers.callModifier(escape, [defaultValue])
-                        : defaultValue;
+            fn : function (str, defaultValue, escapeModifierName) {
+                if (!!str && !/^\s*$/.test(str)) {
+                    return str;
+                }
+
+                if (modifierExists(escapeModifierName)) {
+                    return aria.templates.Modifiers.callModifier(escapeModifierName, [defaultValue]);
+                }
+
+                return defaultValue;
             }
         },
         "pad" : {
@@ -344,6 +375,17 @@
             }
         }
     };
+
+    /**
+     * Tests whether or not the specified modifier is available.
+     *
+     * @param {String} name The name of the modifier. Should be a String but any value is handled.
+     *
+     * @return true is the modifier exists, false otherwise.
+     */
+    function modifierExists(name) {
+        return name != null && __modifiers.hasOwnProperty(('' + name).toLowerCase());
+    }
 
     /**
      * Template modifiers. Modifiers can be used inside the template syntax

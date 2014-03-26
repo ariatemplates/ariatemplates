@@ -34,7 +34,7 @@
         {if (data.showSource)}
             <p {on click {fn:toggleSource}/} style="cursor:pointer;">{@aria:Icon {icon:"std:collapse" }/} Source code</p>
             <textarea id='aria.tools.inspector.TemplateInspector_Src' style='width:${$hdim(96,1)}px;font-family: "courier New", courier, monospace; height:250px;' {on keyup {fn:this.editSource}/}>
-                ${data.source|escape}
+                ${data.source|escapeForHTML}
             </textarea>
         {else/}
             <p {on click {fn:toggleSource}/} style="cursor:pointer;">{@aria:Icon {icon:"std:expand" }/} Source code</p>
