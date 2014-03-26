@@ -24,8 +24,7 @@
 			center: true,
 			visible : true,
 			maxWidth: 800
-		}}
-		{/@aria:Dialog}
+		}/}
 	{/macro}
 
 	{macro dialogContent()}

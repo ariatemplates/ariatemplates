@@ -127,7 +127,7 @@
              * method. The arguments are modified to add default parameters (macro) if not specified.
              */
             beforeRefresh : function (args) {
-                // TODO: check that args.macro and filterSection are not defined, and raise an error if this is the case
+                // TODO: check that args.macro and section are not defined, and raise an error if this is the case
                 args.writerCallback = {
                     fn : this._refreshWriterCallback,
                     scope : this
@@ -172,8 +172,7 @@
                 this._initItem(item);
                 this.items[item.ct - 1] = item; // keep the array of items
                 var sectionParam = this._createSectionParam(item);
-                this.tplCtxt.__$beginSection(0, false, sectionParam);
-                this.tplCtxt.__$endSection();
+                this.tplCtxt.__$insertSection(0, sectionParam);
             },
 
             _loopOver_array : function (iteratedSet, method, param) {

@@ -100,7 +100,7 @@
 
         {section {
             id: "testInnerMacroSection",
-            macro: ""
+            macro: "noContent"
         } /}
 
         <div>
@@ -136,6 +136,9 @@
         </div>
 
 
+    {/macro}
+
+    {macro noContent()}
     {/macro}
 
 {/Template}

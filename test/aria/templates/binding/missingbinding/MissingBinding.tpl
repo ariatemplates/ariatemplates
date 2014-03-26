@@ -27,21 +27,23 @@
            bindProcessingTo: {
             inside: myData.waitingResults,
             to: 0
-           }
-        }}
-        mySection content
-        {/section}
+           },
+           macro : "main1Content"
+        }/}
 
         {section {
            id: "main2",
            type: "div",
            bindProcessingTo: {
             inside: myData.waitingResults
-           }
-        }}
-        mySection content
-        {/section}
+           },
+           macro : "main1Content"
+        }/}
 
+    {/macro}
+
+    {macro main1Content()}
+        mySection content
     {/macro}
 
 {/Template}

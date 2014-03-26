@@ -28,27 +28,37 @@
         This section should be updated:
         {section {
             id : "s1",
-            bindRefreshTo : [{to : "a", inside: data}]
-        }}
-            <input type="text" {id "v1" /} value="${data.a.value}" />
-        {/section}
+            bindRefreshTo : [{to : "a", inside: data}],
+            macro : "s1Content"
+        }/}
 
         <br />
         This section should <strong>NOT</strong> be updated:
         {section {
             id : "s2",
-            bindRefreshTo : [{to : "b", inside: data}]
-        }}
-            <input type="text" {id "v2" /} value="${data.a.value}" />
-        {/section}
+            bindRefreshTo : [{to : "b", inside: data}],
+            macro : "s2Content"
+        }/}
 
-                <br />
+        <br />
         This section should <strong>NOT</strong> be updated either:
         {section {
             id : "s3",
-            bindRefreshTo : [{to : "b", inside: data, recursive:false}]
-        }}
-            <input type="text" {id "v3" /} value="${data.a.value}" />
-        {/section}
+            bindRefreshTo : [{to : "b", inside: data, recursive:false}],
+            macro : "s3Content"
+        }/}
     {/macro}
+
+    {macro s1Content()}
+        <input type="text" {id "v1" /} value="${data.a.value}" />
+    {/macro}
+
+    {macro s2Content()}
+        <input type="text" {id "v2" /} value="${data.a.value}" />
+    {/macro}
+
+    {macro s3Content()}
+        <input type="text" {id "v3" /} value="${data.a.value}" />
+    {/macro}
+
 {/Template}

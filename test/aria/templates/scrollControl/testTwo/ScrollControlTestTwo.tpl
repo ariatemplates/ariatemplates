@@ -25,7 +25,7 @@
                 macro:"myDialogMacro",
                 closable:true,
                 center:true
-        } }{/@aria:Dialog}
+        }/}
     {/macro}
 
     {macro myDialogMacro()}

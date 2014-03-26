@@ -292,14 +292,14 @@ Aria.classDefinition({
          * @private
          */
         _elemMatches : function (qElem, node) {
-            var isSectionRefresh = (qElem.cb.args && (qElem.cb.args.filterSection != null || qElem.cb.args.outputSection != null));
+            var isSectionRefresh = (qElem.cb.args && (qElem.cb.args.section != null));
             if (isSectionRefresh) {
                 if (node.type == "section") {
                     var secCtxt = node.elem.tplCtxt;
                     if (secCtxt != qElem.elem) {
                         return false; // must belong to the same templateCtxt!
                     }
-                    var filterId = qElem.cb.args.filterSection || qElem.cb.args.outputSection;
+                    var filterId = qElem.cb.args.section;
                     var sectionId = node.elem.id;
                     return (filterId == sectionId);
                 } else {

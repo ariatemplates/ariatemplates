@@ -31,11 +31,14 @@
                     foo1: "Foo 1",
                     foo2: "Foo 2"
                 }
-            }
-        }}<span _myExpando="" {id "mySpan"/}></span>
-            New css attributes
-        {/section}
+            },
+            macro : "section1Content"
+        }/}
+    {/macro}
 
+    {macro section1Content()}
+		<span _myExpando="" {id "mySpan"/}></span>
+            New css attributes
     {/macro}
 
 {/Template}

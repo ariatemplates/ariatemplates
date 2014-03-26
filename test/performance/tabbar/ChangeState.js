@@ -24,7 +24,8 @@ Aria.classDefinition({
                         inside : state,
                         to : "selected"
                     }
-                }
+                },
+                macro : "panelContent"
             }, this.outObj.tplCtxt);
 
             aria.utils.Json.setValue(state, "selected", "two");

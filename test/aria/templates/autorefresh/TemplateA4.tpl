@@ -34,36 +34,44 @@
 
         {section {
             id : "SectionAA",
-            bindRefreshTo : [{inside : data, to : "a"}]
-        }}
-               Section AA
-               {@aria:Template {
-                defaultTemplate: "test.aria.templates.autorefresh.TemplateB",
-                data : data
-              }/}
-
-              {section "SectionAAA"}
-                Section AAA
-                {@aria:TextField {
-                    id: "AAAtextfield",
-                    width: 40,
-                    label: "TextFieldAAA",
-                    bind: {
-                      value: {
-                        to: 'a',
-                        inside: data.a
-                      }
-                    }
-                }/}
-             {/section}
-
-        {/section}
+            bindRefreshTo : [{inside : data, to : "a"}],
+            macro : "aaContent"
+        }/}
 
         {@aria:Template {
             defaultTemplate: "test.aria.templates.autorefresh.TemplateC",
             data : data
        }/}
 
+    {/macro}
+
+    {macro aaContent()}
+        Section AA
+        {@aria:Template {
+            defaultTemplate: "test.aria.templates.autorefresh.TemplateB",
+            data : data
+        }/}
+
+        {section {
+            id : "SectionAAA",
+            macro : "aaaContent"
+        }/}
+
+    {/macro}
+
+    {macro aaaContent()}
+        Section AAA
+        {@aria:TextField {
+            id: "AAAtextfield",
+            width: 40,
+            label: "TextFieldAAA",
+            bind: {
+                value: {
+                    to: 'a',
+                    inside: data.a
+                }
+            }
+        }/}
     {/macro}
 
 
