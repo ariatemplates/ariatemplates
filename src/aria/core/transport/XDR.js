@@ -197,7 +197,8 @@ Aria.classDefinition({
             var args = {
                 xdr : true,
                 method : request.method,
-                data : request.data
+                data : request.data,
+                headers : request.headers
             };
 
             // This might throw an error, propagate it and let the IO know that there was an exception

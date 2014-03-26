@@ -129,6 +129,44 @@ Aria.classDefinition({
         },
 
         /**
+         * Asynchronous XDR with headers
+         */
+        testAsyncXdrHeaders : function () {
+            aria.core.IO.asyncRequest({
+                url : "http://echo.ariatemplates.com/?testheader=test-custom-header",
+                method : "POST",
+                headers : {
+                    "test-custom-header" : "test" // only the header name is tested
+                },
+                callback : {
+                    fn : this._asyncXdrHeadersSuccess,
+                    scope : this,
+                    onerror : this._asyncXdrHeadersFailure,
+                    onerrorScope : this
+                }
+            });
+            try {
+                this.assertLogsEmpty();
+            } catch (ex) {
+                this.notifyTestEnd("testAsyncXdrHeaders");
+            }
+        },
+
+        _asyncXdrHeadersSuccess : function(o) {
+            try {
+                this.assertEquals("OK", o.responseText, "testAsyncXdrHeaders: the call succeeded but the custom header was not received properly");
+            } catch (ex) {}
+            this.notifyTestEnd("testAsyncXdrHeaders");
+        },
+
+        _asyncXdrHeadersFailure : function(o) {
+            try {
+                this.fail("testAsyncXdrHeaders: the call failed with the following error: " + o.error + ": " + o.errorText);
+            } catch(ex) {}
+            this.notifyTestEnd("testAsyncXdrHeaders");
+        },
+
+        /**
          * Asynchronous failing XDR test
          */
         testAsyncFailingXdr : function () {
