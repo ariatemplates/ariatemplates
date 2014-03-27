@@ -24,5 +24,6 @@ module.exports = function (grunt) {
     grunt.config.set('packaging.prod.localization_files', require('../config/files-prod-localization.json'));
     grunt.config.set('packaging.prod.hash_include_files', []);
     grunt.config.set('packaging.license', grunt.file.read('build/templates/LICENSE'));
+    grunt.config.set('packaging.license_min', grunt.file.read('build/templates/LICENSE-MIN'));
     grunt.config.set('pkg', require('../../package.json'));
 };

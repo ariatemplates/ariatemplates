@@ -43,7 +43,7 @@ module.exports = function (grunt) {
             defaultBuilder : {
                 type : 'ATMultipart',
                 cfg : {
-                    header : '<%= packaging.license %>'
+                    header : '<%= packaging.license_min %>'
                 }
             },
             outputDirectory : '<%= packaging.prod.outputdir %>',
@@ -66,6 +66,7 @@ module.exports = function (grunt) {
                     }, {
                         type : 'Hash',
                         cfg : {
+                            hash : "murmur3",
                             files : hashFiles
                         }
                     }, {
@@ -80,11 +81,22 @@ module.exports = function (grunt) {
                     }, {
                         type : 'CopyUnpackaged',
                         cfg : {
-                            files : [mainATFile, 'aria/css/*.js', '<%= packaging.prod.allow_unpackaged_files %>'],
+                            files : [mainATFile, 'aria/css/*.js'],
                             builder : {
                                 type : 'ATMultipart',
                                 cfg : {
                                     header : '<%= packaging.license %>'
+                                }
+                            }
+                        }
+                    }, {
+                        type : 'CopyUnpackaged',
+                        cfg : {
+                            files : ['<%= packaging.prod.allow_unpackaged_files %>'],
+                            builder : {
+                                type : 'ATMultipart',
+                                cfg : {
+                                    header : '<%= packaging.license_min %>'
                                 }
                             }
                         }
