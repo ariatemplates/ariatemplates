@@ -70,14 +70,6 @@
                 "aria.utils.Array"]),
         $statics : {
 
-            /* BACKWARD-COMPATIBILITY-BEGIN-#441 */
-            /**
-             * Deprecation warning for onpopstate event
-             * @type String
-             */
-            DEPRECATED_ONPOPSTATE : "onpopstate event raised after calling pushState and replaceState methods is deprecated.",
-            /* BACKWARD-COMPATIBILITY-END-#441 */
-
             /**
              * Key that is used in order to save state information in the local storage
              * @type String
@@ -170,14 +162,6 @@
              */
             this.state = this.getState();
 
-            /* BACKWARD-COMPATIBILITY-BEGIN-#441 */
-            /**
-             * State whether this class should be backward compatible
-             * @type Boolean
-             */
-            this.isBackwardCompatible = true;
-            /* BACKWARD-COMPATIBILITY-END-#441 */
-
         },
         $destructor : function () {
             if (this._storage) {
@@ -203,25 +187,13 @@
             getState : html5History ? function () {
                 var state = aria.utils.Json.copy(readHtml5HistoryState());
                 if (state) {
-                    /* BACKWARD-COMPATIBILITY-BEGIN-#441 */
-                    state = this._addExtraInfo(state);
-                    /* BACKWARD-COMPATIBILITY-END-#441 */
                     delete state.__info;
-                } /* BACKWARD-COMPATIBILITY-BEGIN-#441 */else {
-                    if (this.isBackwardCompatible) {
-                        var stateInfo = this._retrieveFromMemory();
-                        state = this._addExtraInfo(null, stateInfo.state);
-                    }
                 }
-                /* BACKWARD-COMPATIBILITY-END-#441 */
 
                 return state;
             } : function () {
                 var stateInfo = this._retrieveFromMemory();
                 var state = stateInfo ? stateInfo.state.state : null;
-                /* BACKWARD-COMPATIBILITY-BEGIN-#441 */
-                state = this._addExtraInfo(state, stateInfo.state);
-                /* BACKWARD-COMPATIBILITY-END-#441 */
                 return state;
             },
 
@@ -289,15 +261,11 @@
                 title = this._setTitle(title);
                 data = data ? aria.utils.Json.copy(data) : {};
                 data.__info = {
-                    /* BACKWARD-COMPATIBILITY-BEGIN-#441 */
-                    id : this._generateId(),
-                    /* BACKWARD-COMPATIBILITY-END-#441 */
                     title : title,
                     url : url
                 };
                 window.history.pushState(data, title, url);
                 this.state = this.getState();
-                /* BACKWARD-COMPATIBILITY-BEGIN-#441 */this._raisePopStateForBackWardCompatibility();/* BACKWARD-COMPATIBILITY-END-#441 */
 
             } : function (data, title, url) {
                 this._setState(data, title, url);
@@ -313,15 +281,11 @@
                 title = this._setTitle(title);
                 data = data ? aria.utils.Json.copy(data) : {};
                 data.__info = {
-                    /* BACKWARD-COMPATIBILITY-BEGIN-#441 */
-                    id : this._generateId(),
-                    /* BACKWARD-COMPATIBILITY-END-#441 */
                     title : title,
                     url : url
                 };
                 window.history.replaceState(data, title, url);
                 this.state = this.getState();
-                /* BACKWARD-COMPATIBILITY-BEGIN-#441 */this._raisePopStateForBackWardCompatibility();/* BACKWARD-COMPATIBILITY-END-#441 */
             } : function (data, title, url) {
                 this._setState(data, title, url, true);
             },
@@ -510,9 +474,6 @@
                     var stateInfo = this._retrieveFromMemory();
                     title = stateInfo ? stateInfo.state.title : null;
                 }
-                /* BACKWARD-COMPATIBILITY-BEGIN-#441 */
-                state = this.getState();
-                /* BACKWARD-COMPATIBILITY-END-#441 */
                 this.state = state;
                 if (title) {
                     this._setTitle(title);
@@ -585,7 +546,6 @@
                     window.location.replace(window.location.href.replace(/#.*$/, "") + "#" + hash);
                 }
                 this.state = this.getState();
-                /* BACKWARD-COMPATIBILITY-BEGIN-#441 */this._raisePopStateForBackWardCompatibility();/* BACKWARD-COMPATIBILITY-END-#441 */
 
             },
 
@@ -623,88 +583,6 @@
                 return true;
             }
 
-            /* BACKWARD-COMPATIBILITY-BEGIN-#441 */
-            ,
-
-            /**
-             * Add extra information in the state object in order to keep backward compatibility
-             * @param {Object} state Real state object
-             * @param {Object} extraInfo Contains extra information such as the title and the id
-             * @return {Object} Modified state
-             * @deprecated
-             * @private
-             */
-            _addExtraInfo : function (state, extraInfo) {
-                if (this.isBackwardCompatible) {
-                    extraInfo = extraInfo || (state ? state.__info : null);
-                    var memory = this._retrieveFromMemory();
-                    extraInfo = extraInfo || (memory ? memory.state : null);
-                    var bcState = aria.utils.Json.copy(state) || {};
-                    bcState.data = state ? aria.utils.Json.copy(state) : {};
-                    delete bcState.data.__info;
-
-                    bcState.normalized = true;
-                    bcState.title = extraInfo.title;
-                    bcState.id = extraInfo.id;
-                    extraInfo.url = extraInfo.url || this.getUrl();
-                    var url = (extraInfo.url != window.location.href.replace(/#.*$/, "")) ? extraInfo.url : "";
-                    bcState.url = this._buildCleanUrl(url);
-                    bcState.cleanUrl = bcState.url;
-                    bcState.hash = this._buildCleanUrl(url, false);
-                    if (bcState.hash.match(/\?/) === null) {
-                        bcState.hash += "?";
-                    }
-                    bcState.hash += "&_suid=" + extraInfo.id;
-                    bcState.hashedUrl = Aria.$window.location.origin + bcState.hash;
-
-                    return bcState;
-                }
-                return state;
-            },
-
-            /**
-             * Raise the onpopupstate event. Called when pushState and replaceState events are raised
-             * @deprecated
-             * @private
-             */
-            _raisePopStateForBackWardCompatibility : function () {
-                if (this.isBackwardCompatible) {
-                    this.$logWarn(this.DEPRECATED_ONPOPSTATE);
-                    this.$raiseEvent({
-                        name : "onpopstate",
-                        state : this.state
-                    });
-                }
-            },
-
-            /**
-             * Build the url information in accordance with the previous implementation
-             * @param {String} url The url that was used for push/replace state
-             * @param {Boolean} origin Whether the location origin should be added or not
-             * @return {String} clean url
-             * @deprecated
-             * @private
-             */
-            _buildCleanUrl : function (url, origin) {
-                var location = Aria.$window.location;
-                var cleanUrl = [];
-                if (origin !== false) {
-                    cleanUrl.push(location.origin);
-                }
-                if (html5History) {
-                    cleanUrl.push(location.pathname);
-                } else {
-                    if (url.match(/^\//) === null) {
-                        cleanUrl.push(location.pathname);
-                    } else {
-                        cleanUrl.push("/");
-                    }
-                    cleanUrl.push(url);
-                }
-                cleanUrl.push(location.search);
-                return cleanUrl.join("");
-            }
-            /* BACKWARD-COMPATIBILITY-END-#441 */
         }
     });
 })();

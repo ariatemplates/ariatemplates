@@ -28,7 +28,7 @@
       maxHeight : 500,
       modal : true,
       visible : false,
-      contentMacro : "myContent",
+      macro : "myContent",
       closeOnMouseClick : true,
       bind: {
         title: {

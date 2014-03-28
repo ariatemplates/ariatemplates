@@ -21,7 +21,7 @@
     {@aria:Dialog {
         id : "dialogNoConstraints",
         title: "Test1",
-        contentMacro : "contentMacroLong",
+        macro : "contentMacroLong",
         bind : {
             width : {
               to : "width",
@@ -42,7 +42,7 @@
     {@aria:Dialog {
         id : "dialogWithConstraints",
         title: "Test2",
-        contentMacro : "contentMacroLong",
+        macro : "contentMacroLong",
         maxWidth: 333,
         maxHeight: 333,
         minWidth: 111,

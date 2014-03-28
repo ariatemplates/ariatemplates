@@ -22,7 +22,7 @@
         {@aria:Dialog {
             visible : false,
             bind: {
-                contentMacro: {
+                macro: {
                     to: "contentMacro",
                     inside: data
                 }

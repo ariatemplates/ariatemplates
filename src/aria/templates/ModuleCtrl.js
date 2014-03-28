@@ -83,21 +83,15 @@ Aria.classDefinition({
          */
         this.$requestJsonSerializer = null;
 
-        /* Backward compatability code starts */
-        if (this._enableMethodEvents == null) {
-            this.$logWarn(this.DEPRECATED_METHOD_EVENTS);
-            this._enableMethodEvents = true;
-        }
-        /* Backward compatability code ends */
-
         /**
-         * The enableMethodEvents is set to true to enable method events (methodCallBegin, methodCallEnd,
-         * methodCallback), it is currently defaults to true for backward compatibility and will default to false in a
-         * future release.
+         * The _enableMethodEvents setting defaults to false, it should be set to true to enable method events
+         * (methodCallBegin, methodCallEnd, methodCallback). Note that if you want to enable this feature, you must set
+         * this._enableMethodEvents to true in your module controller's constructor <em>before</em> calling parent
+         * constructor. Turning this setting on has an impact on the performance of your application.
          * @protected
          * @type Boolean
          */
-        this._enableMethodEvents = (this._enableMethodEvents !== true) ? false : this._enableMethodEvents;
+        this._enableMethodEvents = (this._enableMethodEvents === true);
 
         if (this._enableMethodEvents) {
             // Add the interceptor to send generic events
@@ -129,9 +123,7 @@ Aria.classDefinition({
     $statics : {
         // ERROR MESSAGES
         INIT_CALLBACK_ERROR : "An error occured while processing a Module init callback in class %1",
-        DATA_CONTENT_INVALID : "Content of datamodel does not match databean:\nbean name: %1,\nmodule class: %2",
-        DEPRECATED_METHOD_EVENTS : "Generic method events (methodCallBegin, methodCallEnd, methodCallback) will be turned off by default in a future release. If the application relies on those events please set the enableMethodEvents variable to true. To already benefit from performance improvements by disabling them, you can set this variable to false."
-
+        DATA_CONTENT_INVALID : "Content of datamodel does not match databean:\nbean name: %1,\nmodule class: %2"
     },
     $prototype : {
         /**
