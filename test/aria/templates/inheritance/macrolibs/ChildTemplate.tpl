@@ -27,7 +27,7 @@
   {macro main()}
   <div>${libParent.myVar}</div>
   {call libParent.print("output") /}
-  ${libParent.myMacroScript("output")}
+  ${libParent.myMacroScript("output")|escapeForHTML:false}
   {call libOverride.print("output") /}
   {/macro}
 

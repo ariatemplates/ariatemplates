@@ -34,10 +34,9 @@ Aria.classDefinition({
                     name : "aria.widgets.calendar.Calendar"
                 }, {
                     name : "aria.widgets.container.Dialog",
-                    isContainer : true,
                     checkInnerHTML : false,
                     cfg : {
-                        contentMacro : "dialogMacro"
+                        macro : "dialogMacro"
                     }
                 }, {
                     name : "aria.widgets.action.Link"
@@ -66,7 +65,6 @@ Aria.classDefinition({
                     }
                 }, {
                     name : "aria.widgets.container.TabPanel",
-                    isContainer : true,
                     cfg : {
                         id : "myId",
                         macro : "myMacro"

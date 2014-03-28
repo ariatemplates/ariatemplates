@@ -46,6 +46,9 @@ Aria.classDefinition({
         // if size contrains -> adjust size after init. Do not set directInit to false if already to true.
         this._directInit = this._directInit || this._sizeConstraints;
     },
+    $statics : {
+        INVALID_USAGE_AS_CONTAINER : "%1%2 widget cannot be used as a container ({@aria:%2}{/@aria:%2}); use the {@aria:%2 /} syntax instead."
+    },
     $prototype : {
 
         /**
@@ -174,7 +177,7 @@ Aria.classDefinition({
          * @param {aria.templates.MarkupWriter} out the writer Object to use to output markup
          * @protected
          */
-        _widgetMarkupBegin : function (out) {},
+        _widgetMarkupBegin : Aria.empty,
 
         /**
          * The main entry point into the Div end markup. Here we check whether it is a Div, defined in the AriaSkin
@@ -182,7 +185,7 @@ Aria.classDefinition({
          * @param {aria.templates.MarkupWriter} out the writer Object to use to output markup
          * @protected
          */
-        _widgetMarkupEnd : function (out) {}
+        _widgetMarkupEnd : Aria.empty
 
     }
 });

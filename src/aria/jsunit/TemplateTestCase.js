@@ -396,7 +396,7 @@ Aria.classDefinition({
             var genId = tplCtxt.$getId(id), oElm = domUtility.getElementById(genId);
             if (recursive && !oElm) {
                 var subTplCtxts = [];
-                this.__retrieveDirectSubTemplates(tplCtxt, subTplCtxts);
+                this._retrieveDirectSubTemplates(tplCtxt, subTplCtxts);
                 // var content = tplCtxt._mainSection._content;
                 for (var i = 0, sz = subTplCtxts.length; i < sz; i++) {
                     oElm = this.getElementById(id, true, subTplCtxts[i], domUtility);
@@ -434,17 +434,21 @@ Aria.classDefinition({
         /**
          * @param {aria.templates.TemplateCtxt|aria.templates.Section} obj
          * @param {Array} output contains the sub-template contexts
+         * @return {Array} output contains the sub-template contexts
+         * @protected
          */
-        __retrieveDirectSubTemplates : function (obj, output) {
+        _retrieveDirectSubTemplates : function (obj, output) {
+            output = output || [];
             var section = (obj.$TemplateCtxt) ? obj._mainSection : obj;
             var content = section._content;
             for (var i = 0, sz = content.length; i < sz; i++) {
                 if (content[i].behavior && content[i].behavior.subTplCtxt) {
                     output.push(content[i].behavior.subTplCtxt);
                 } else if (content[i]._content) {
-                    this.__retrieveDirectSubTemplates(content[i], output);
+                    this._retrieveDirectSubTemplates(content[i], output);
                 }
             }
+            return output;
         },
         /**
          * Get the &lt;input&gt; DOM element of an input based widget.

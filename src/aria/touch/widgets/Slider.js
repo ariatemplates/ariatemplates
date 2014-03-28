@@ -21,9 +21,6 @@ Aria.classDefinition({
     $extends : "aria.widgetLibs.BaseWidget",
     $css : ["aria.touch.widgets.SliderCSS"],
     $statics : {
-        /* BACKWARD-COMPATIBILITY-BEGIN GH-715 */
-        BINDVALUE_DEPRECATED : "Binding value through 'bindValue : {...}' is deprecated, please use 'bind : value : {..} syntax.",
-        /* BACKWARD-COMPATIBILITY-END GH-715 */
         INVALID_CONFIGURATION : "Invalid configuration for the slider!"
     },
     // The dependency on aria.touch.Tap is needed to be able to register on tap events
@@ -182,12 +179,6 @@ Aria.classDefinition({
         this._delegateId = null;
 
         var binding = this._cfg.bind ? this._cfg.bind.value : null;
-        /* BACKWARD-COMPATIBILITY-BEGIN GH-715 */
-        if (!binding && this._cfg.bindValue) {
-            this.$logWarn(this.BINDVALUE_DEPRECATED);
-            binding = this._cfg.bindValue;
-        }
-        /* BACKWARD-COMPATIBILITY-END GH-715 */
         this._binding = binding;
         if (binding) {
             this._bindingCallback = {

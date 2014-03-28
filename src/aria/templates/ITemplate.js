@@ -216,36 +216,14 @@ Aria.interfaceDefinition({
         __$createView : function (viewName, parameters, array) {},
 
         /**
-         * Begin a section. This method is intended to be called only from the generated code of templates (created in
-         * aria.templates.ClassGenerator) and never directly from developper code. A call to this method is generated
-         * for the {section ...} opening statement.
+         * Insert a section. This method is intended to be called only from the generated code of templates (created in
+         * aria.templates.ClassGenerator) and never directly from developer code. A call to this method is generated for
+         * the {section ...} statement.
          * @param {Number} lineNumber line number at which the section begins, used for error reporting
-         * @param {Boolean} container true if the section statement is used as a container, false otherwise
-         * @param {Object|String} sectionParam section id, or configuration object
-         * @param {String} Dom element wrapper type to be created.
+         * @param {aria.templates.CfgBeans:SectionCfg} sectionParam section configuration object
          * @private
+         * @implements aria.templates.ITemplate
          */
-        __$beginSection : function (lineNumber, container, sectionParam, domType) {},
-
-        /**
-         * End a section previously started with a call to __$beginSection. This method is intended to be called only
-         * from the generated code of templates (created in aria.templates.ClassGenerator) and never directly from
-         * developper code. A call to this method is generated for the {/section} closing statement.
-         * @private
-         */
-        __$endSection : function () {}
-
-        /* BACKWARD-COMPATIBILITY-BEGIN */,
-        /**
-         * Bind an automatic refresh to a section or the template. This method is intended to be called only from the
-         * generated code of templates (created in aria.templates.ClassGenerator) and never directly from developper
-         * code. A call to this method is generated for the bindRefreshTo statement.
-         * @private
-         * @param {Object} container object containing the parameter a section or template is bound to, or data
-         * @param {String} param parameter on which to bind, or null if binding to data
-         * @param {Number} linNumber
-         */
-        __$bindAutoRefresh : function () {}
-        /* BACKWARD-COMPATIBILITY-END */
+        __$insertSection : function (lineNumber, sectionParam) {}
     }
 });

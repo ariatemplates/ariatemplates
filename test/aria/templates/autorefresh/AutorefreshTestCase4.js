@@ -53,6 +53,9 @@ Aria.classDefinition({
         this._refreshesTemplateC = 0;
         this._refreshesTemplateD = 0;
 
+        this._expectedRefreshesSync = 1;
+        this._expectedRefreshesAsync = 1;
+
         this.defaultTestTimeout = 30000;
 
     },
@@ -83,7 +86,8 @@ Aria.classDefinition({
             this.mc.syncRefreshes(this._templateA);
 
             // test Template A was refreshed just once
-            this.assertTrue(this._refreshesTemplateA == 1);
+            this._gotRefreshesSync = this._refreshesTemplateA;
+            this.assertEquals(this._gotRefreshesSync, this._expectedRefreshesSync, "Expected %2 sync refreshes but got %1");
 
             this._testAsyncMethod();
 
@@ -98,7 +102,8 @@ Aria.classDefinition({
 
         _testAsyncMethodCB : function () {
             // test Template A was refreshed jsut once since the last time!
-            this.assertTrue(this._refreshesTemplateA == 2);
+            var gotRefreshesAsync = this._refreshesTemplateA - this._gotRefreshesSync;
+            this.assertEquals(gotRefreshesAsync, this._expectedRefreshesAsync, "Expected %2 async refreshes but got %1");
             this.finishTest();
         },
 

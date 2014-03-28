@@ -37,13 +37,11 @@ Aria.classDefinition({
         INCORRECT_VARIABLE_NAME : "line %2: Template error: incorrect variable name '%1'.",
         INVALID_FOREACH_INKEYWORD : "line %2: Template error: invalid foreach syntax, expected one of 'in', 'inView', 'inFilteredView', 'inSortedView', 'inPagedView' but found: '%1'.",
         INVALID_WIDGET_LIBRARY : "line %3: Template error: %1 (%2) is not a valid widget library. A widget library must extend aria.widgetLibs.WidgetLib.",
-        INVALID_EVENT_TYPE : "The event type: '%1' is an invalid event type.",
-        DEPRECATED_SECTION_CONTENT : "%1, line %2:, the section content has been deprecated, please use the macro attribute."
+        INVALID_EVENT_TYPE : "The event type: '%1' is an invalid event type."
     },
     $constructor : function () {
         var utilString = aria.utils.String;
         var modifiers = aria.templates.Modifiers;
-        var pathUtils = aria.utils.Path;
         var statementsSingleton = this;
 
         // Root statements are processed differently from other statements (they are processed directly without going
@@ -98,33 +96,38 @@ Aria.classDefinition({
                     }
                     parts.push(param);
 
-                    // Check if the secure must be done automatically or not:
-                    // - either the modifier is present in the list and thus we leave the default behavior of modifiers
-                    // - either we are in the context of a CSS Template and we decide not to escape automatically
-                    var automaticSecure = true;
+                    // Automatic escape detection ------------------------------
 
-                    var escapeModifier = classGenerator.escapeModifier;
-                    if (!escapeModifier) {
-                        automaticSecure = false;
+                    // We automatically escape expressions if needed, using the feature of modifiers, since the escape is already handled by a modifier itself.
+                    // There are two cases where we don't do it automatically:
+                    // - in CSS templates
+                    // - if the modifier is already used, in which case the user has full control on how to apply the escape
+                    var automaticEscape = true;
+
+                    var escapeModifierName = classGenerator.escapeModifier; // Gets the actual name of the modifier in this context
+                    if (escapeModifierName == null) {
+                        automaticEscape = false;
                     } else {
                         for (var i = parts.length - 1; i >= 1; i--) {
                             var part = parts[i];
-                            if (part.indexOf(escapeModifier) === 0) {
-                                automaticSecure = false;
+                            if (part.indexOf(escapeModifierName) === 0) {
+                                automaticEscape = false;
                                 break;
                             }
                         }
                     }
 
-                    /* Begin non backward compatible change */
-                    var automaticSecure = false;
-                    /* End non backward compatible change */
+                    // end of: automatic escape detection ----------------------
 
-                    // If the secure must be done automatically, we add the modifier at the end of the list, to rely on
-                    // this available mechanism
-                    if (automaticSecure) {
-                        parts.splice(1, 0, escapeModifier);
+                    // Automatic escape application - part 1 -------------------
+
+                    // If the escape must be done automatically, we add the modifier at the beginning of the list.
+
+                    if (automaticEscape) {
+                        parts.splice(1, 0, escapeModifierName);
                     }
+
+                    // end of: automatic escape application - part 1 -----------
 
                     var beginexpr = [], endexpr = [];
                     var expr;
@@ -142,9 +145,17 @@ Aria.classDefinition({
                         expr = match[2]; // parameters of the modifier
                         if (expr) {
                             endexpr[i] = ", " + expr;
-                            if (automaticSecure) {
-                                endexpr[i] += ", '" + escapeModifier + "'";
+                            // Automatic escape application - part 2 -----------
+
+                            // We automatically pass to any modifier the name of the escaping modifier as last parameter.
+
+                            // This is done so that the other modifiers know that we are in automatic escape mode, and so that they know which modifier to use to do the escape. Useful for the implementation of modifiers receiving possibly untrusted data.
+
+                            if (automaticEscape) {
+                                endexpr[i] += ", '" + escapeModifierName + "'";
                             }
+
+                            // end of: Automatic escape application - part 2 ---
                             endexpr[i] += "])";
                         } else {
                             endexpr[i] = "])";
@@ -210,25 +221,6 @@ Aria.classDefinition({
                     out.writeln("this.__$statementOnEvent(", out.stringify(eventName), ",this.$normCallback(", callback, "),", statement.lineNumber, ');');
                 }
             },
-            /* BACKWARD-COMPATIBILITY-BEGIN */
-            "bindRefreshTo" : {
-                inMacro : true,
-                container : false,
-                paramRegexp : /^([\s\S]+)$/,
-                process : function (out, statement, param) {
-                    var data = statement.paramBlock, container, pathParts;
-                    pathParts = pathUtils.parse(utilString.trim(data));
-                    if (pathParts.length > 1) {
-                        param = out.stringify(pathParts.pop());
-                        container = pathUtils.pathArrayToString(pathParts);
-                    } else {
-                        // case for {bindRefreshTo myVar/}
-                        param = "null";
-                        container = pathParts[0];
-                    }
-                    out.writeln("this.__$bindAutoRefresh(", container, ", ", param, ", ", statement.lineNumber, ");");
-                }
-            },/* BACKWARD-COMPATIBILITY-END */
             "if" : {
                 inMacro : true,
                 container : true,
@@ -516,18 +508,10 @@ Aria.classDefinition({
             },
             "section" : {
                 inMacro : true,
-                container : null, /* may be used either as a container or not */
+                container : false,
                 process : function (out, statement) {
                     var sectionParam = statement.paramBlock;
-                    var container = (statement.content ? "true" : "false");
-                    out.writeln("this.__$beginSection(", statement.lineNumber, ",", container, ",", sectionParam, ");");
-                    if (statement.content) {
-                        out.logWarn(statement, statementsSingleton.DEPRECATED_SECTION_CONTENT, [out.templateParam.$classpath, statement.lineNumber]);
-
-                        // in case it is used as a container
-                        out.processContent(statement.content);
-                    }
-                    out.writeln("this.__$endSection();");
+                    out.writeln("this.__$insertSection(", statement.lineNumber, ",", sectionParam, ");");
                 }
             },
             "var" : {

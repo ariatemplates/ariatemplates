@@ -31,22 +31,23 @@
         <p>Main Section - A</p>
         <h1>There is ${data.a.a} times here</h1>
 
-    {section {
-        id : "SectionAAA",
-        bindRefreshTo : [{inside : data.a, to : "b"}]
-    }}
-            /***** Section AAA bound to data.a.b */
-            <h1>I am bound to 'data.a.b' who's value is ${data.a.b}</h1>
-            Section AAA
-        {/section}
+        {section {
+            id : "SectionAAA",
+            bindRefreshTo : [{inside : data.a, to : "b"}],
+            macro : "aaaContent"
+        }/}
 
         {@aria:Template {
             defaultTemplate: "test.aria.templates.autorefresh.Template5B",
             data : data
         }/}
 
+    {/macro}
 
-
+    {macro aaaContent()}
+        /***** Section AAA bound to data.a.b */
+        <h1>I am bound to 'data.a.b' who's value is ${data.a.b}</h1>
+        Section AAA
     {/macro}
 
 

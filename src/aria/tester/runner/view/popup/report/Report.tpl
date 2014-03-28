@@ -49,10 +49,10 @@
 
     {macro displayTestErrors(test)}
         <div class="classpath">
-            ${this.formatTestClasspath(test)}
+            ${this.formatTestClasspath(test)|escapeForHTML:false}
         </div>
         <div class="count">
-            (${this.formatTestErrorsCount(test)})
+            (${this.formatTestErrorsCount(test)|escapeForHTML:false})
         </div>
         {var errors = this.getTestErrors(test)/}
         {if errors.length == 0}
@@ -68,7 +68,7 @@
     {macro displayTestError(error, test)}
         <li class="error">
             <div class="message">
-                ${this.formatErrorMessage(error)}
+                ${this.formatErrorMessage(error)|escapeForHTML:false}
             </div>
         </li>
     {/macro}

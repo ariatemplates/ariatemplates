@@ -22,7 +22,7 @@
 
 	    {@aria:Dialog {
 	        id : "firstDialog",
-	        contentMacro : {
+	        macro : {
 	            name : "dialogMacro",
 	            args : ["one"]
 	        },
@@ -54,7 +54,7 @@
 
         {@aria:Dialog {
             id : "secondDialog",
-            contentMacro : {
+            macro : {
                 name : "dialogMacro",
                 args : ["two"]
             },

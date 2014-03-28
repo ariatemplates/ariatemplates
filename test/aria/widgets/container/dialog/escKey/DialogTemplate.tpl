@@ -21,15 +21,14 @@
         <a href="#" id="dummy">dummy</a>
 
         {@aria:Dialog {
-            contentMacro : "dialogContent",
+            macro : "dialogContent",
             bind : {
                 visible : {
                     to : 'visible',
                     inside : data
                 }
             }
-        }}
-        {/@aria:Dialog}
+        }/}
     {/macro}
 
     {macro dialogContent()}

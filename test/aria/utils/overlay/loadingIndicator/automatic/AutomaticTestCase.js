@@ -102,7 +102,7 @@ Aria.classDefinition({
             // Call a partial refresh
             this.templateCtxt.data.countRefresh += 1;
             this.templateCtxt.$refresh({
-                filterSection : "s2"
+                section : "s2"
             });
 
             // Check that it's still in the DOM
@@ -128,7 +128,7 @@ Aria.classDefinition({
         },
 
         _Section : function () {
-            var document = Aria.$window.document;
+            var document = this.testWindow.document;
             // Put a div outside aria templates
             var div = document.createElement("div");
 
@@ -180,7 +180,7 @@ Aria.classDefinition({
             // Call a partial refresh
             this.templateCtxt.data.countRefresh += 1;
             this.templateCtxt.$refresh({
-                filterSection : "s2"
+                section : "s2"
             });
 
             // Check the refresh
@@ -192,19 +192,21 @@ Aria.classDefinition({
             // - body
             // - outside of AT
             // - s1
+            // - s2 (a section refresh does not remove its processing indicator)
             // - subSection
             // the others should be destroyed after a refresh ?
-            this.assertTrue(this.helper.countInDom() === 4);
+            this.assertTrue(this.helper.countInDom() === 5);
 
             // Destroy it
             aria.utils.DomOverlay.detachFrom(document.body);
 
             // Check for leaks
             var overlays = this.helper.totalOverlays();
-            this.assertTrue(overlays === 3, "Overlays not disposed: " + overlays);
+            this.assertTrue(overlays === 4, "Overlays not disposed: " + overlays);
 
             // Destroy all of them
             this.templateCtxt.$getElementById("s1").setProcessingIndicator(false);
+            this.templateCtxt.$getElementById("s2").setProcessingIndicator(false);
             subsection = this.__getSubTemplateSectionWrapper("subSection");
             subsection.setProcessingIndicator(false);
             aria.utils.DomOverlay.detachFrom(div);
@@ -289,7 +291,7 @@ Aria.classDefinition({
             // Call a partial refresh
             this.templateCtxt.data.countRefresh += 1;
             this.templateCtxt.$refresh({
-                filterSection : "s2"
+                section : "s2"
             });
 
             // Check the refresh

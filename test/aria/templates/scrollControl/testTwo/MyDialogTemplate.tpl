@@ -21,8 +21,22 @@
     {macro main()}
         {section {
             id : 'introduction',
-            type : 'DIV'
-        }}
+            type : 'DIV',
+            macro : "firstContent"
+        }/}
+
+        {section {
+            id : 'content',
+            macro : 'contentDisplay',
+            bindRefreshTo : [{
+                to : 'fullDisplay',
+                inside : data
+            }]
+        } /}
+
+    {/macro}
+
+    {macro firstContent()}
             <h1>Scroll to the bottom of this dialog and click on "more" to display the rest</h1>
             <p style='width: 220px'>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
             Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed,
@@ -47,22 +61,7 @@
             Curabitur iaculis, lorem vel rhoncus faucibus, felis magna fermentum augue, et ultricies lacus lorem
             varius purus. Curabitur eu amet.</p>
 
-        {/section}
-
-
-        {section {
-            id : 'content',
-            macro : 'contentDisplay',
-            bindRefreshTo : [{
-                to : 'fullDisplay',
-                inside : data
-            }]
-        } /}
-
     {/macro}
-
-
-
 
     {macro contentDisplay()}
 

@@ -45,7 +45,7 @@
             {if ! item.label}
                 &nbsp;
             {else/}
-                ${item.label|escape}
+                ${item.label|escapeForHTML:{text: true}}
             {/if}
         </a>
     {/macro}

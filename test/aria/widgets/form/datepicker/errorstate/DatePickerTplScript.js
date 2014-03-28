@@ -18,7 +18,7 @@ Aria.tplScriptDefinition({
     $prototype : {
         refresh : function () {
             this.$refresh({
-                filterSection : "datepickers"
+                section : "datepickers"
             });
         },
         clear : function () {

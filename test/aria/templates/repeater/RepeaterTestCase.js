@@ -480,10 +480,10 @@ Aria.classDefinition({
             var myArray = tpl.data.cities;
             var tableBody = this.testDiv.children[0].children[0].children[0].children[0];
             tpl.$refresh({
-                outputSection : "subSection" + myArray[0].repeaterItem.sectionIdSuffix
+                section : "subSection" + myArray[0].repeaterItem.sectionIdSuffix
             });
             tpl.$refresh({
-                outputSection : "containingSection"
+                section : "containingSection"
             });
 
             tableBody = this.testDiv.children[0].children[0].children[0].children[0];
@@ -507,10 +507,10 @@ Aria.classDefinition({
             this.assertEquals(tableBody.children[2].children[0].innerHTML, "Tokyo");
 
             tpl.$refresh({
-                outputSection : "subSection" + myArray[3].repeaterItem.sectionIdSuffix
+                section : "subSection" + myArray[3].repeaterItem.sectionIdSuffix
             });
             tpl.$refresh({
-                outputSection : "containingSection"
+                section : "containingSection"
             });
 
             this.assertEquals(myArray[0].subRefreshCt, 0);
@@ -562,10 +562,10 @@ Aria.classDefinition({
             this.assertEquals(myArray[5].subRefreshCt, 3);
 
             tpl.$refresh({
-                outputSection : "subSection" + myArray[3].repeaterItem.sectionIdSuffix
+                section : "subSection" + myArray[3].repeaterItem.sectionIdSuffix
             });
             tpl.$refresh({
-                outputSection : "childSection" + myArray[4].repeaterItem.sectionIdSuffix
+                section : "childSection" + myArray[4].repeaterItem.sectionIdSuffix
             });
 
             aria.templates.RefreshManager.resume();
@@ -588,7 +588,7 @@ Aria.classDefinition({
 
             // Refreshing a repeater using its section id is not supported yet.
             tpl.$refresh({
-                outputSection : "repeaterSection"
+                section : "repeaterSection"
             });
 
             this.assertEquals(myArray[0].subRefreshCt, 2);

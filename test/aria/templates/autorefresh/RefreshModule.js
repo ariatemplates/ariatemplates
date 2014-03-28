@@ -20,16 +20,21 @@ Aria.classDefinition({
     $classpath : "test.aria.templates.autorefresh.RefreshModule",
     $extends : "aria.templates.ModuleCtrl",
     $implements : ["test.aria.templates.autorefresh.IRefreshModule"],
+    $constructor : function () {
+        this._enableMethodEvents = true;
+        this.$ModuleCtrl.constructor.call(this);
+    },
     $prototype : {
         $publicInterfaceName : "test.aria.templates.autorefresh.IRefreshModule",
 
         syncRefreshes : function (tplCtxt) {
+            // here we expect to have just 1 refresh due to _enableMethodEvents=true which causes the RefreshMgr to stop
+            // before each call to the module's public method
             this.tplCtxt = tplCtxt;
             tplCtxt.$refresh();
             tplCtxt.$refresh();
             tplCtxt.$refresh();
         },
-
         asyncRefreshes : function (argCB) {
             var cb = {
                 scope : this,
@@ -44,6 +49,8 @@ Aria.classDefinition({
         },
 
         _asyncRefreshesCB : function (res, args) {
+            // here we expect to have just 1 refresh due to submitJsonRequest internally pausing RefreshMgr in
+            // _submitJsonRequestCB
             this.tplCtxt.$refresh();
             this.tplCtxt.$refresh();
             this.tplCtxt.$refresh();
