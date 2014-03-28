@@ -21,15 +21,6 @@ Aria.classDefinition({
         this.$TemplateTestCase.constructor.call(this);
         this.data = {
             dialogEnabled : {
-                /* BACKWARD-COMPATIBILITY-BEGIN GH-687 */
-                ContentMacro : false,
-                BindContentMacro : false,
-                ContentMacroBindContentMacro : false,
-                mixed1 : false,
-                mixed2 : false,
-                mixed3 : false,
-                mixed4 : false,
-                /* BACKWARD-COMPATIBILITY-END GH-687 */
                 Macro : false,
                 BindMacro : false,
                 MacroBindMacro : false
@@ -47,11 +38,7 @@ Aria.classDefinition({
             // If enabled in the reverse order, then BindMacro would have had a binding to null.
 
             this._testMacro();
-            /* BACKWARD-COMPATIBILITY-BEGIN GH-687 */
-            this._testContentMacro();
-            this._testMixedUsageLogsError();
-            /* BACKWARD-COMPATIBILITY-END GH-687 */
-            this.notifyTemplateTestEnd();
+            this.end();
         },
 
         _testMacro : function () {
@@ -67,49 +54,7 @@ Aria.classDefinition({
             this.__assertDialogInnerHtmlMatches("MacroBindMacro", "Macro2Content");
 
             this.assertLogsEmpty();
-
-            // set back to old value
-            aria.utils.Json.setValue(this.data, "dialogMacroName", "macro1");
         },
-        /* BACKWARD-COMPATIBILITY-BEGIN GH-687 */
-        _testContentMacro : function () {
-            var deprecatedMsg = aria.widgets.container.Dialog.CONTENTMACRO_DEPRECATED;
-
-            this.__enableDialogAndCheckHtml("ContentMacro", "Macro1Content");
-            this.assertErrorInLogs(deprecatedMsg);
-
-            this.__enableDialogAndCheckHtml("ContentMacroBindContentMacro", "Macro1Content");
-            this.assertErrorInLogs(deprecatedMsg);
-
-            this.__enableDialogAndCheckHtml("BindContentMacro", "Macro1Content");
-            this.assertErrorInLogs(deprecatedMsg);
-
-            // let's now change the data model value; dialogs with bindings should notice the change
-            aria.utils.Json.setValue(this.data, "dialogMacroName", "macro2");
-
-            // only check the two dialogs with bindings
-            this.__assertDialogInnerHtmlMatches("BindMacro", "Macro2Content");
-            this.__assertDialogInnerHtmlMatches("MacroBindMacro", "Macro2Content");
-
-            this.assertLogsEmpty();
-        },
-        _testMixedUsageLogsError : function () {
-            // enable the mixed dialogs one-by-one, and check the errors are logged for each
-            var errorMsg = aria.widgets.container.Dialog.INCONSISTENT_MACRO_CONTENTMACRO_USAGE;
-
-            this.__enableDialog("mixed1");
-            this.assertErrorInLogs(errorMsg);
-
-            this.__enableDialog("mixed2");
-            this.assertErrorInLogs(errorMsg);
-
-            this.__enableDialog("mixed3");
-            this.assertErrorInLogs(errorMsg);
-
-            this.__enableDialog("mixed4");
-            this.assertErrorInLogs(errorMsg);
-        },
-        /* BACKWARD-COMPATIBILITY-END GH-687 */
 
         __enableDialog : function (dialogId) {
             aria.utils.Json.setValue(this.data.dialogEnabled, dialogId, true);

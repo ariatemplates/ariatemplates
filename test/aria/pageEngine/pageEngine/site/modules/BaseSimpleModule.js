@@ -27,9 +27,6 @@ Aria.classDefinition({
 
         isInPage : function () {
             return this.pageEngine.isModuleInPage(this);
-        },
-
-        _enableMethodEvents : false
-
+        }
     }
 });

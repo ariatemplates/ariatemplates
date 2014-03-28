@@ -14,16 +14,11 @@
  */
 
 {Template {
-    $classpath : "test.aria.widgets.container.dialog.wrongCfg.ValidationTestTpl"
+    $classpath: "test.aria.templates.autorefresh.TemplateToExtend",
+    $hasScript : true
 }}
-{macro main()}
 
-{@aria:Dialog {
-   // actually, visible true is important for this test
-   visible : true,
-   macro : "someContent",
-   missingProperty : true
-}/}
+    {macro main()}
+    {/macro}
 
-{/macro}
 {/Template}

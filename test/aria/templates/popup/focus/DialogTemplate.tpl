@@ -25,7 +25,7 @@
             height: 500,
             modal: true,
             center: true,
-            contentMacro: "myDialogMacro",
+            macro: "myDialogMacro",
             bind:{
                   "visible": {
                       inside: data.dialog,

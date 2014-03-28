@@ -24,7 +24,7 @@
     {macro main()}
 
         {@aria:Dialog {
-            contentMacro : "showLock",
+            macro : "showLock",
             modal : true,
             closable : false,
             bind : {

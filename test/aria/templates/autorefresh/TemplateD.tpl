@@ -14,7 +14,8 @@
  */
 
 {Template {
-    $classpath: "test.aria.templates.autorefresh.TemplateD"
+    $classpath: "test.aria.templates.autorefresh.TemplateD",
+    $extends : "test.aria.templates.autorefresh.TemplateToExtend"
 }}
 
     {var d = data /}

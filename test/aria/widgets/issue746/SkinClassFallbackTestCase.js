@@ -37,7 +37,7 @@ Aria.classDefinition({
                     isContainer : true,
                     checkInnerHTML : false,
                     cfg : {
-                        contentMacro : "dialogMacro"
+                        macro : "dialogMacro"
                     }
                 }, {
                     name : "aria.widgets.action.Link"

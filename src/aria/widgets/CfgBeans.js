@@ -1686,10 +1686,6 @@ Aria.beanDefinitions({
                         "movable" : {
                             $type : "common:BindingRef"
                         },
-                        "contentMacro" : {
-                            $type : "common:BindingRef",
-                            $description : "Deprecated in favor of 'macro' property."
-                        },
                         "macro" : {
                             $type : "common:BindingRef"
                         },
@@ -1720,10 +1716,6 @@ Aria.beanDefinitions({
                     $type : "json:Boolean",
                     $description : "A boolean whether the dialog is visible",
                     $default : false
-                },
-                "contentMacro" : {
-                    $type : "templates:MacroCfg",
-                    $description : "[DEPRECATED in favor of 'macro'] The macro that will be used as dialog content. Browser will freeze if it does not find this property as part of widget or bindable property."
                 },
                 "macro" : {
                     $type : "templates:MacroCfg",

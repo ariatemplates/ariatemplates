@@ -27,7 +27,9 @@ Aria.classDefinition({
             },
             "Fieldset" : {
                 "std" : {
-                    "frameType" : "Simple",
+                    "frame" : {
+                        "frameType" : "Simple"
+                    },
                     "states" : {
                         "normal" : {
                             "backgroundColor" : "#F8F8F8",
@@ -57,7 +59,9 @@ Aria.classDefinition({
             "MultiAutoComplete" : {
                 "std" : {
                     "iconsRight" : "dropdown",
-                    "frameType" : "Simple",
+                    "frame" : {
+                        "frameType" : "Simple"
+                    },
                     "states" : {
                         "normal" : {
                             "borderTop" : 1,
@@ -166,7 +170,9 @@ Aria.classDefinition({
             "MultiSelect" : {
                 "std" : {
                     "iconsRight" : "dropdown",
-                    "frameType" : "Simple",
+                    "frame" : {
+                        "frameType" : "Simple"
+                    },
                     "states" : {
                         "normal" : {
                             "borderTop" : 1,
@@ -348,7 +354,9 @@ Aria.classDefinition({
                 },
                 "std" : {
                     "iconsRight" : "dropdown",
-                    "frameType" : "Simple",
+                    "frame" : {
+                        "frameType" : "Simple"
+                    },
                     "calendar" : {
                         "sclass" : "std"
                     },
@@ -483,7 +491,9 @@ Aria.classDefinition({
             },
             "Textarea" : {
                 "std" : {
-                    "frameType" : "Simple",
+                    "frame" : {
+                        "frameType" : "Simple"
+                    },
                     "states" : {
                         "normal" : {
                             "borderSize" : 1,
@@ -551,7 +561,9 @@ Aria.classDefinition({
             },
             "TabPanel" : {
                 "std" : {
-                    "frameType" : "Simple",
+                    "frame" : {
+                        "frameType" : "Simple"
+                    },
                     "states" : {
                         "normal" : {
                             "color" : "#34495c",
@@ -695,7 +707,9 @@ Aria.classDefinition({
                 },
                 "std" : {
                     "iconsRight" : "dropdown",
-                    "frameType" : "Simple",
+                    "frame" : {
+                        "frameType" : "Simple"
+                    },
                     "states" : {
                         "normal" : {
                             "borderTop" : 1,
@@ -785,7 +799,9 @@ Aria.classDefinition({
             },
             "Button" : {
                 "important" : {
-                    "frameType" : "Simple",
+                    "frame" : {
+                        "frameType" : "Simple"
+                    },
                     "states" : {
                         "normal" : {
                             "backgroundColor" : "#1abc9c"
@@ -805,7 +821,9 @@ Aria.classDefinition({
                     "simpleHTML" : true
                 },
                 "std" : {
-                    "frameType" : "Simple",
+                    "frame" : {
+                        "frameType" : "Simple"
+                    },
                     "states" : {
                         "normal" : {
                             "color" : "#FFF",
@@ -933,7 +951,9 @@ Aria.classDefinition({
                 },
                 "std" : {
                     "iconsRight" : "dropdown",
-                    "frameType" : "Simple",
+                    "frame" : {
+                        "frameType" : "Simple"
+                    },
                     "states" : {
                         "normal" : {
                             "borderTop" : 1,
@@ -1058,7 +1078,9 @@ Aria.classDefinition({
                     "simpleHTML" : true
                 },
                 "std" : {
-                    "frameType" : "Simple",
+                    "frame" : {
+                        "frameType" : "Simple"
+                    },
                     "states" : {
                         "normal" : {
                             "borderSize" : 1,
@@ -1162,7 +1184,9 @@ Aria.classDefinition({
             },
             "Tab" : {
                 "demoMainTabs" : {
-                    "sprType" : 3,
+                    "frame" : {
+                        "frameType" : "Table"
+                    },
                     "states" : {
                         "selectedFocused" : {
                             "marginBottom" : 0,
@@ -1229,7 +1253,9 @@ Aria.classDefinition({
                     }
                 },
                 "std" : {
-                    "frameType" : "Simple",
+                    "frame" : {
+                        "frameType" : "Simple"
+                    },
                     "states" : {
                         "selectedFocused" : {
                             "color" : "#34495c",
@@ -2404,7 +2430,9 @@ Aria.classDefinition({
                     "simpleHTML" : true
                 },
                 "underlineError" : {
-                    "frameType" : "Simple",
+                    "frame" : {
+                        "frameType" : "Simple"
+                    },
                     "states" : {
                         "normal" : {
                             "borderTop" : 1,
@@ -2526,7 +2554,9 @@ Aria.classDefinition({
                 },
                 "std" : {
                     "iconsRight" : "dropdown",
-                    "frameType" : "Simple",
+                    "frame" : {
+                        "frameType" : "Simple"
+                    },
                     "states" : {
                         "normal" : {
                             "borderTop" : 1,
@@ -2634,7 +2664,9 @@ Aria.classDefinition({
             },
             "Div" : {
                 "dlg" : {
-                    "frameType" : "Simple",
+                    "frame" : {
+                        "frameType" : "Simple"
+                    },
                     "states" : {
                         "normal" : {
                             "backgroundColor" : "#F8F8F8",
@@ -2650,7 +2682,9 @@ Aria.classDefinition({
                     }
                 },
                 "errorlist" : {
-                    "frameType" : "Simple",
+                    "frame" : {
+                        "frameType" : "Simple"
+                    },
                     "states" : {
                         "normal" : {
                             "backgroundColor" : "#F8F8F8",
@@ -2670,7 +2704,9 @@ Aria.classDefinition({
                     }
                 },
                 "basic" : {
-                    "frameType" : "Simple",
+                    "frame" : {
+                        "frameType" : "Simple"
+                    },
                     "states" : {
                         "normal" : {
                             "backgroundColor" : "#F8F8F8",
@@ -2686,7 +2722,9 @@ Aria.classDefinition({
                     }
                 },
                 "std" : {
-                    "frameType" : "Simple",
+                    "frame" : {
+                        "frameType" : "Simple"
+                    },
                     "states" : {
                         "normal" : {
                             "color" : "#000"
@@ -2694,7 +2732,9 @@ Aria.classDefinition({
                     }
                 },
                 "errortip" : {
-                    "frameType" : "Simple",
+                    "frame" : {
+                        "frameType" : "Simple"
+                    },
                     "states" : {
                         "normal" : {
                             "backgroundColor" : "#E74C3C",
@@ -2711,7 +2751,9 @@ Aria.classDefinition({
                     }
                 },
                 "list" : {
-                    "frameType" : "Simple",
+                    "frame" : {
+                        "frameType" : "Simple"
+                    },
                     "states" : {
                         "normal" : {
                             "backgroundColor" : "#F8F8F8",
@@ -2731,7 +2773,9 @@ Aria.classDefinition({
                     }
                 },
                 "calendar" : {
-                    "frameType" : "Simple",
+                    "frame" : {
+                        "frameType" : "Simple"
+                    },
                     "states" : {
                         "normal" : {
                             "backgroundColor" : "#FFF",
@@ -2751,7 +2795,9 @@ Aria.classDefinition({
                     }
                 },
                 "dropdown" : {
-                    "frameType" : "Simple",
+                    "frame" : {
+                        "frameType" : "Simple"
+                    },
                     "states" : {
                         "normal" : {
                             "backgroundColor" : "#F8F8F8",
@@ -2771,7 +2817,9 @@ Aria.classDefinition({
                     }
                 },
                 "tooltip" : {
-                    "frameType" : "Simple",
+                    "frame" : {
+                        "frameType" : "Simple"
+                    },
                     "states" : {
                         "normal" : {
                             "backgroundColor" : "#34495E",
