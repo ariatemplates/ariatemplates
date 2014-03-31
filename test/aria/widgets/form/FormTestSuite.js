@@ -35,6 +35,7 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.form.issue411.DropdownTestSuite");
         this.addTests("test.aria.widgets.form.issue599.LabelColorTestCase");
         this.addTests("test.aria.widgets.form.autocomplete.AutoCompleteTestSuite");
+        this.addTests("test.aria.widgets.form.multiautocomplete.MultiAutoCompleteTestSuite");
         this.addTests("test.aria.widgets.form.selectbox.SelectboxTestSuite");
         this.addTests("test.aria.widgets.form.multiselect.MultiselectTestSuite");
         this.addTests("test.aria.widgets.form.select.SelectTestSuite");
