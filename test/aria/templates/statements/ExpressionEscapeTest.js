@@ -152,6 +152,7 @@ Aria.classDefinition({
 
             var textContent = element.textContent || element.innerText || element.nodeValue || "";
             textContent = textContent.replace(/\n/g, '');
+            textContent = textContent.replace(/^\s+|\s+$/g, '');
 
             // --------------- number of children nodes which are not text nodes
 
