@@ -110,8 +110,12 @@ Aria.classDefinition({
                     if (escapeModifierName == null) {
                         automaticEscape = false;
                     } else {
+                        escapeModifierName = escapeModifierName.toLowerCase();
+
                         for (var i = parts.length - 1; i >= 1; i--) {
                             var part = parts[i];
+                            part = part.toLowerCase();
+
                             if (part.indexOf(escapeModifierName) === 0) {
                                 automaticEscape = false;
                                 break;
