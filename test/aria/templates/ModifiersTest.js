@@ -144,61 +144,6 @@ Aria.classDefinition({
             });
         },
 
-        __testModifierWithEscaping : function(modifierName, cases) {
-            for (var i = 0, length = cases.length; i < length; i++) {
-                var _case = cases[i];
-
-                var input = _case.input;
-                var expected = _case.expected;
-
-                var actual = aria.templates.Modifiers.callModifier(modifierName, input);
-
-                var message = "Expected output was: " + aria.utils.String.escapeForHTML(expected, {text: true}) + " | Actual output is: " + aria.utils.String.escapeForHTML(actual, {text: true});
-
-                this.assertEquals(actual, expected, message);
-            }
-        },
-
-        /**
-         * Tests the "default" modifier in the context of escaping.
-         */
-        testDefaultEscape : function () {
-            this.__testModifierWithEscaping("default", [
-                {
-                    input: [null, "<div id='id' class=\"class\">/</div>"],
-                    expected: "<div id='id' class=\"class\">/</div>"
-                },
-                {
-                    input: [null, "<div id='id' class=\"class\">/</div>", ''],
-                    expected: "<div id='id' class=\"class\">/</div>"
-                },
-                {
-                    input: [null, "<div id='id' class=\"class\">/</div>", "escapeForHTML"],
-                    expected: "&lt;div id=&#x27;id&#x27; class=&quot;class&quot;&gt;&#x2F;&lt;&#x2F;div&gt;"
-                }
-            ]);
-        },
-
-        /**
-         * Tests the "empty" modifier in the context of escaping.
-         */
-        testEmptyEscape : function () {
-            this.__testModifierWithEscaping("empty", [
-                {
-                    input: ['', "<div id='id' class=\"class\">/</div>"],
-                    expected: "<div id='id' class=\"class\">/</div>"
-                },
-                {
-                    input: ['', "<div id='id' class=\"class\">/</div>", ''],
-                    expected: "<div id='id' class=\"class\">/</div>"
-                },
-                {
-                    input: ['', "<div id='id' class=\"class\">/</div>", "escapeForHTML"],
-                    expected: "&lt;div id=&#x27;id&#x27; class=&quot;class&quot;&gt;&#x2F;&lt;&#x2F;div&gt;"
-                }
-            ]);
-        },
-
         // ---------------------------------------------------------------------
 
         testPad : function () {
