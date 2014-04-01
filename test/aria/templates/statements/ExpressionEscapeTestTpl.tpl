@@ -28,24 +28,24 @@
 </div>
 
 <div {id "all-boolean"/}>
-    ${"<div class='output' style=\"color:blue\">&amp;</div>"|escapeForHTML:true}
+    ${"<div class='output' style=\"color:blue\">&amp;</div>"|escapeforHTML:true}
 </div>
 <div {id "all-object"/}>
-    ${"<div class='output' style=\"color:blue\">&amp;</div>"|escapeForHTML:{text: true, attr: true}}
+    ${"<div class='output' style=\"color:blue\">&amp;</div>"|escapeForhtml:{text: true, attr: true}}
 </div>
 
 <div {id "nothing-boolean"/}>
-    ${"<div class='output' style=\"color:blue\">&amp;</div>"|escapeForHTML:false}
+    ${"<div class='output' style=\"color:blue\">&amp;</div>"|escapeForHtml:false}
 </div>
 <div {id "nothing-object"/}>
-    ${"<div class='output' style=\"color:blue\">&amp;</div>"|escapeForHTML:{text: false, attr: false}}
+    ${"<div class='output' style=\"color:blue\">&amp;</div>"|escapeforHtml:{text: false, attr: false}}
 </div>
 
 <div {id "attr"/}>
-    ${"<div class='output' style=\"color:blue\">&amp;</div>"|escapeForHTML:{attr: true}}
+    ${"<div class='output' style=\"color:blue\">&amp;</div>"|escapeforhtml:{attr: true}}
 </div>
 <div {id "text"/}>
-    ${"<div class='output' style=\"color:blue\">&amp;</div>"|escapeForHTML:{text: true}}
+    ${"<div class='output' style=\"color:blue\">&amp;</div>"|ESCAPEFORHTML:{text: true}}
 </div>
 
 
