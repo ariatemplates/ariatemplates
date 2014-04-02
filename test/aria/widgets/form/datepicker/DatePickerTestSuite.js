@@ -25,5 +25,7 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.form.datepicker.checkValue.DatePicker");
         this.addTests("test.aria.widgets.form.datepicker.checkFormat.DatePicker");
         this.addTests("test.aria.widgets.form.datepicker.checkBind.DatePicker");
+        this.addTests("test.aria.widgets.form.datepicker.pickdate.PickDate");
+
     }
 });
