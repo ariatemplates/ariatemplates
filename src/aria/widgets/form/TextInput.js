@@ -861,7 +861,7 @@ Aria.classDefinition({
          * @param {aria.DomEvent} event Focus event
          * @protected
          */
-        _dom_onfocus : function (event) {
+        _dom_onfocus : function (event, avoidCallback) {
             this._hasFocus = true;
 
             if (!this._keepFocus) {
@@ -899,7 +899,7 @@ Aria.classDefinition({
                     this.setCaretPosition(caretPosition.start, caretPosition.end);
                 }
             }
-            if (!!this._cfg.onfocus) {
+            if (!!this._cfg.onfocus && !avoidCallback) {
                 this.evalCallback(this._cfg.onfocus);
             }
         },
@@ -911,7 +911,7 @@ Aria.classDefinition({
          * @param {aria.DomEvent} event Blur event
          * @protected
          */
-        _dom_onblur : function (event) {
+        _dom_onblur : function (event, avoidCallback) {
             if (!this._hasFocus) {
                 return;
             }
@@ -971,7 +971,7 @@ Aria.classDefinition({
                 // this._hasFocus = false must be after the call of this.getCaretPosition()
                 this._hasFocus = false;
             }
-            if (this._cfg.onblur) {
+            if (this._cfg.onblur && !avoidCallback) {
                 this.evalCallback(this._cfg.onblur);
             }
         },
@@ -1195,7 +1195,7 @@ Aria.classDefinition({
             if (!fromSelf) {
                 // IE FIX: the focus() can be asynchronous, so let's add a timeout to manage the autoselect
                 aria.core.Timer.addCallback({
-                    fn : function() {
+                    fn : function () {
                         this._autoselect();
                     },
                     scope : this,

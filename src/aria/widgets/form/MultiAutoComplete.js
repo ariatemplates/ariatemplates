@@ -329,8 +329,41 @@ Aria.classDefinition({
             } else if (blurredElement.parentNode.className.indexOf("highlight") != -1) {
                 this.unhighlightOption(blurredElement.parentNode);
             }
+            // call TextInput onblur handler with avoidCallback set to true
+            this.$TextInput._dom_onblur.call(this, event, true);
 
-            this.$TextInput._dom_onblur.call(this, event);
+            if (this._cfg.onblur) {
+                // timeout is needed to retrieve (on every browser) the activeElement
+                aria.core.Timer.addCallback({
+                    fn : function () {
+                        var isAncestor = aria.utils.Dom.isAncestor;
+                        var focusedEl = Aria.$window.document.activeElement;
+
+                        // if onblur is defined and window lost focus ( ==null ) or if focus is not in the widget or
+                        // dropdown element
+                        if (this._cfg
+                                && (focusedEl == null || ((this._dropdownPopup == null || !isAncestor(focusedEl, this._dropdownPopup.domElement)) && !isAncestor(focusedEl, this._domElt)))) {
+                            this.evalCallback(this._cfg.onblur);
+                        }
+                    },
+                    scope : this,
+                    delay : 100
+                });
+            }
+        },
+
+        /**
+         * Handling focus event
+         * @param {aria.utils.Event} event
+         * @protected
+         */
+        _dom_onfocus : function (event) {
+            // flag that avoids to trigger the user callback when browsing the checkbox list
+            var avoidCallback = (this._hasFocus || this._keepFocus);
+            this.$TextInput._dom_onfocus.call(this, event, true);
+            if (this._cfg.onfocus && !avoidCallback) {
+                this.evalCallback(this._cfg.onfocus);
+            }
         },
         /**
          * Make the inputfield as last child of widget

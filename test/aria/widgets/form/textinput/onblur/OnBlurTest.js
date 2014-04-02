@@ -24,7 +24,6 @@ Aria.classDefinition({
                 action : 0
             }
         });
-        this._delay = 10;
     },
     $prototype : {
         runTemplateTest : function () {
