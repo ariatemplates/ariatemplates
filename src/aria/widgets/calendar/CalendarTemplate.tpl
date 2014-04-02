@@ -50,7 +50,7 @@
         {/for}
         {if settings.showShortcuts}
             <div style="text-align: center; margin: 1px;">
-                <a title="${calendar.today|dateformat:settings.completeDateLabelFormat|escapeForHTML:{attr: true}}" tabIndex="-1" href="javascript:;" {on click {fn: "navigate", scope: moduleCtrl, args: {date:calendar.today}}/}>${res.today}</a>
+                <a title="${calendar.today|dateformat:settings.completeDateLabelFormat}" tabIndex="-1" href="javascript:;" {on click {fn: "navigate", scope: moduleCtrl, args: {date:calendar.today}}/}>${res.today}</a>
                 {section {
                     id : "selectedDay",
                     macro : "selectedDay"
@@ -61,7 +61,7 @@
 
     {macro selectedDay()}
         {if settings.value}
-            &nbsp;|&nbsp; <a title="${settings.value|dateformat:settings.completeDateLabelFormat|escapeForHTML:{attr: true}}" tabIndex="-1" href="javascript:;" {on click {fn: "navigate", scope: moduleCtrl, args: {date:settings.value}}/}>${res.selectedDate}</a>
+            &nbsp;|&nbsp; <a title="${settings.value|dateformat:settings.completeDateLabelFormat}" tabIndex="-1" href="javascript:;" {on click {fn: "navigate", scope: moduleCtrl, args: {date:settings.value}}/}>${res.selectedDate}</a>
         {/if}
     {/macro}
 

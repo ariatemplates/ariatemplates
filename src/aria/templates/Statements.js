@@ -98,42 +98,25 @@ Aria.classDefinition({
                     }
                     parts.push(param);
 
-                    // Automatic escape detection ------------------------------
+                    // Automatic escape ----------------------------------------
 
                     // We automatically escape expressions if needed, using the feature of modifiers, since the escape is already handled by a modifier itself.
+                    // For safety and logical reasons, the escaping is done at the end, so the modifier is added as the last one.
                     // There are two cases where we don't do it automatically:
                     // - in CSS templates
-                    // - if the modifier is already used, in which case the user has full control on how to apply the escape
-                    var automaticEscape = true;
+                    // - if the modifier is already present at the end of the list, in which case the user gets control back on how to apply the final escape
 
                     var escapeModifierName = classGenerator.escapeModifier; // Gets the actual name of the modifier in this context
-                    if (escapeModifierName == null) {
-                        automaticEscape = false;
-                    } else {
+
+                    if (escapeModifierName != null) {
                         escapeModifierName = escapeModifierName.toLowerCase();
 
-                        for (var i = parts.length - 1; i >= 1; i--) {
-                            var part = parts[i];
-                            part = part.toLowerCase();
-
-                            if (part.indexOf(escapeModifierName) === 0) {
-                                automaticEscape = false;
-                                break;
-                            }
+                        if (parts[parts.length - 1].toLowerCase().indexOf(escapeModifierName) < 0) {
+                            parts.push(escapeModifierName);
                         }
                     }
 
-                    // end of: automatic escape detection ----------------------
-
-                    // Automatic escape application - part 1 -------------------
-
-                    // If the escape must be done automatically, we add the modifier at the beginning of the list.
-
-                    if (automaticEscape) {
-                        parts.splice(1, 0, escapeModifierName);
-                    }
-
-                    // end of: automatic escape application - part 1 -----------
+                    // end of: automatic escape --------------------------------
 
                     var beginexpr = [], endexpr = [];
                     var expr;
@@ -150,19 +133,7 @@ Aria.classDefinition({
                         beginexpr.push("this.$modifier('" + modifierName + "',[");
                         expr = match[2]; // parameters of the modifier
                         if (expr) {
-                            endexpr[i] = ", " + expr;
-                            // Automatic escape application - part 2 -----------
-
-                            // We automatically pass to any modifier the name of the escaping modifier as last parameter.
-
-                            // This is done so that the other modifiers know that we are in automatic escape mode, and so that they know which modifier to use to do the escape. Useful for the implementation of modifiers receiving possibly untrusted data.
-
-                            if (automaticEscape) {
-                                endexpr[i] += ", '" + escapeModifierName + "'";
-                            }
-
-                            // end of: Automatic escape application - part 2 ---
-                            endexpr[i] += "])";
+                            endexpr[i] = ", " + expr + "])";
                         } else {
                             endexpr[i] = "])";
                         }

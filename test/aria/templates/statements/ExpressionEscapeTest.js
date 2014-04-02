@@ -13,53 +13,73 @@
  * limitations under the License.
  */
 
+
+
 Aria.classDefinition({
     $classpath: "test.aria.templates.statements.ExpressionEscapeTest",
     $extends: "aria.jsunit.TemplateTestCase",
-    $dependencies: ["aria.utils.Dom", "aria.utils.String"],
+    $dependencies: ["aria.utils.Dom", "aria.utils.String", "aria.utils.Date", "aria.utils.Type"],
 
-    $statics: {
-        /***********************************************************************
-         * Use cases
-         **********************************************************************/
+    $constructor : function() {
+        this.$TemplateTestCase.constructor.call(this);
 
-        USE_CASES: {
-            // The following use cases test the standard application of the escaping both with a default application
-            // and an explicit use of the modifier
-            'default': {
-                outputText: "<div class='output' style=\"color:blue\">&amp;</div>"
-            },
+        // ---------------------------------------------------------------------
 
-            'implicit': {
-                outputText: "<div class='output' style=\"color:blue\">&amp;</div>"
-            },
+        this.date = new Date();
+        this.dateformat = "dd MMMM yyyy";
+
+        var formattedDate = aria.utils.Date.format(this.date, this.dateformat);
+
+        // Please refer to the associated template to understand the following
+        // The keys of the object correspond to the ids of the "div"s encapsulating each tested use case
+        // By looking at the template, you will know what the use case is about (the id gives a hint about it too). You will also see what is the input and when the escaping is expected to be done.
+        // Below, you will see for each of these cases what is the expected content in the resulting HTML Text Node (inside the div), as well as the number of possibly other generated HTML nodes.
+
+        var useCasesSpecs = {
+            'automatic': "<div class='output' style=\"color:blue\">&amp;</div>",
+
+            // -----------------------------------------------------------------
+
+            'all-implicit': "<div class='output' style=\"color:blue\">&amp;</div>",
 
             'all-boolean': {
-                outputText: "<div class='output' style=\"color:blue\">&amp;</div>"
-            },
-            'all-object': {
-                outputText: "<div class='output' style=\"color:blue\">&amp;</div>"
+                input: "<div class='output' style=\"color:blue\">&amp;</div>",
+                escape: true
             },
 
+            'all-object': {
+                input: "<div class='output' style=\"color:blue\">&amp;</div>",
+                escape: {text: true, attr: true}
+            },
+
+            // -----------------------------------------------------------------
+
             'nothing-boolean': {
+                input: "<div class='output' style=\"color:blue\">&amp;</div>",
+                escape: false,
                 outputText: "&",
                 outputNodesNumber: 1
 
             },
             'nothing-object': {
+                input: "<div class='output' style=\"color:blue\">&amp;</div>",
+                escape: {text: false, attr: false},
                 outputText: "&",
                 outputNodesNumber: 1
             },
+
+            // -----------------------------------------------------------------
 
             'attr': {
+                input: "<div class='output' style=\"color:blue\">&amp;</div>",
+                escape: {attr: true},
                 outputText: "&",
                 outputNodesNumber: 1
             },
-            'text': {
-                outputText: "<div class='output' style=\"color:blue\">&amp;</div>"
-            },
+            'text': "<div class='output' style=\"color:blue\">&amp;</div>",
 
-            'special-attr': {
+            'attr-special': {
+                escape: {attr:true},
                 outputText: "",
                 outputNodesNumber: 1,
                 attributes: {
@@ -68,78 +88,291 @@ Aria.classDefinition({
                 }
             },
 
-            // The following use cases just test the behavior of the escaping with the specific unsafe modifiers
-            // (default and empty), both with a default application and an explicit use of the escaping modifier
-            'default-modifier-default': {
-                outputText: "<div></div>"
-            },
-            'nothing-modifier-default-before': {
-                outputText: "",
-                outputNodesNumber: 1
-            },
-            'nothing-modifier-default-after': {
-                outputText: "",
-                outputNodesNumber: 1
-            },
-            'all-modifier-default-before': {
-                outputText: "",
-                outputNodesNumber: 1
-            },
-            'all-modifier-default-after': {
+            // ----------------------------------------------- modifier: default
+
+            'automatic-modifier_default': {
+                input: undefined,
+                modifiers: {
+                    'default': ["<div></div>"]
+                },
                 outputText: "<div></div>"
             },
 
-            'default-modifier-empty': {
+            'nothing-modifier_default-before': {
+                input: undefined,
+                escape: false,
+                modifiers: {
+                    'default': ["<div></div>"]
+                },
                 outputText: "<div></div>"
             },
-            'nothing-modifier-empty-before': {
-                outputText: "",
-                outputNodesNumber: 1
-            },
-            'nothing-modifier-empty-after': {
-                outputText: "",
-                outputNodesNumber: 1
-            },
-            'all-modifier-empty-before': {
-                outputText: "",
-                outputNodesNumber: 1
-            },
-            'all-modifier-empty-after': {
+            'all-modifier_default-before': {
+                input: undefined,
+                escape: true,
+                modifiers: {
+                    'default': ["<div></div>"]
+                },
                 outputText: "<div></div>"
+            },
+
+            'all-modifier_default-after': {
+                input: undefined,
+                escape: true,
+                modifiers: {
+                    'default': ["<div></div>"]
+                },
+                outputText: "<div></div>"
+            },
+
+
+            'nothing-modifier_default-after': {
+                input: undefined,
+                escape: false,
+                modifiers: {
+                    'default': ["<div></div>"]
+                },
+                outputText: "",
+                outputNodesNumber: 1
+            },
+
+            // ------------------------------------------------- modifier: empty
+
+            'automatic-modifier_empty': {
+                input: '',
+                modifiers: {
+                    empty: ['<div></div>']
+                },
+                outputText: "<div></div>"
+            },
+
+            'nothing-modifier_empty-before': {
+                input: '',
+                escape: false,
+                modifiers: {
+                    empty: ['<div></div>']
+                },
+                outputText: "<div></div>"
+            },
+            'all-modifier_empty-before': {
+                input: '',
+                escape: true,
+                modifiers: {
+                    empty: ['<div></div>']
+                },
+                outputText: "<div></div>"
+            },
+
+            'all-modifier_empty-after': {
+                input: '',
+                escape: true,
+                modifiers: {
+                    empty: ['<div></div>']
+                },
+                outputText: "<div></div>"
+            },
+
+            'nothing-modifier_empty-after': {
+                input: '',
+                escape: false,
+                modifiers: {
+                    empty: ['<div></div>']
+                },
+                outputNodesNumber: 1
+            },
+
+            // --------------------------------------------- modifier: highlight
+
+            'automatic-modifier_highlight': {
+                input: 'start-middle-end',
+                modifiers: {
+                    highlight: ['middle']
+                },
+                outputText: "start-<strong>middle</strong>-end"
+            },
+
+            'nothing-modifier_highlight-before': {
+                input: 'start-middle-end',
+                escape: false,
+                modifiers: {
+                    highlight: ['middle']
+                },
+                outputText: "start-<strong>middle</strong>-end"
+            },
+
+            'all-modifier_highlight-before': {
+                input: 'start-middle-end',
+                escape: true,
+                modifiers: {
+                    highlight: ['middle']
+                },
+                outputText: "start-<strong>middle</strong>-end"
+            },
+            'all-modifier_highlight-after': {
+                input: 'start-middle-end',
+                escape: true,
+                modifiers: {
+                    highlight: ['middle']
+                },
+                outputText: "start-<strong>middle</strong>-end"
+            },
+
+            'nothing-modifier_highlight-after': {
+                input: 'start-middle-end',
+                escape: false,
+                modifiers: {
+                    highlight: ['middle']
+                },
+                outputNodesNumber: 1
+            },
+
+            // -------------------------------------------- modifier: dateformat
+
+            'automatic-modifier_dateformat': {
+                input: this.date,
+                modifiers: {
+                    dateformat: [this.dateformat]
+                },
+                outputText: formattedDate
+            },
+            'nothing-modifier_dateformat-before': {
+                input: this.date,
+                escape: false,
+                modifiers: {
+                    dateformat: [this.dateformat]
+                },
+                outputText: formattedDate
+            },
+            'nothing-modifier_dateformat-after': {
+                input: this.date,
+                escape: false,
+                modifiers: {
+                    dateformat: [this.dateformat]
+                },
+                outputText: formattedDate
+            },
+            // This one should fail
+            // 'all-modifier_dateformat-before': {
+            //     input: this.date,
+            //     escape: true,
+            //     modifiers: {
+            //         dateformat: [this.dateformat]
+            //     },
+            //     outputText: formattedDate
+            // },
+            // ----
+            'all-modifier_dateformat-after': {
+                input: this.date,
+                escape: true,
+                modifiers: {
+                    dateformat: [this.dateformat]
+                },
+                outputText: formattedDate
             }
-        }
+        };
+
+
+
+        this.useCases = [];
+        this.useCasesMap = {};
+        this.inputsMap = {};
+
+        this.__forOwn(useCasesSpecs, function(id, spec) {
+            this.addUseCase(this.buildUseCase(id, spec));
+        });
+
+        this.setTestEnv({
+            data: {
+                useCases: this.useCasesMap,
+                inputs: this.inputsMap,
+                dateformat: this.dateformat,
+                date: this.date
+            }
+        });
     },
 
     $prototype: {
+        /***********************************************************************
+         * Use cases
+         **********************************************************************/
+
+        buildUseCase : function(id, spec) {
+            if (aria.utils.Type.isString(spec)) {
+                spec = {
+                    input: spec
+                };
+            }
+
+            spec.id = id;
+
+            return new this.UseCase(spec);
+        },
+
+        addUseCase : function(useCase) {
+            this.useCases.push(useCase);
+            this.useCasesMap[useCase.id] = useCase;
+            this.inputsMap[useCase.id] = useCase.input;
+        },
+
+        UseCase: function(spec) {
+            // -------------------------------------------------------------- id
+
+            this.id = spec.id;
+
+            // ----------------------------------------------------------- input
+
+            var input = spec.input;
+            this.input = input;
+
+            // ---------------------------------------------------------- escape
+
+            var escape = spec.escape;
+            this.escape = escape;
+
+            // ------------------------------------------------------- modifiers
+
+            var modifiers = spec.modifiers;
+            if (modifiers == null) {
+                modifiers = {};
+            }
+            this.modifiers = modifiers;
+
+            // ----------------------------------------------------- output text
+
+            var outputText = spec.outputText;
+            if (outputText == null) {
+                outputText = input;
+            }
+            outputText = "" + outputText;
+            this.outputText = outputText;
+
+            // ------------------------------------------------- number of nodes
+
+            var outputNodesNumber = spec.outputNodesNumber;
+            if (outputNodesNumber == null) {
+                outputNodesNumber = 0;
+            }
+            this.outputNodesNumber = outputNodesNumber;
+
+            // ------------------------------------------------------ attributes
+
+            var attributes = spec.attributes;
+            this.attributes = attributes;
+        },
+
         /***********************************************************************
          * Tests
          **********************************************************************/
 
         runTemplateTest: function() {
-            this.__forOwn(this.USE_CASES, this.__testUseCase);
+            this.__forEach(this.useCases, this.__testUseCase);
 
             this.end();
         },
 
-        __testUseCase: function(domId, useCase) {
-            // Expected results ------------------------------------------------
-
-            // ----------------------------------------------------- output text
-
+        __testUseCase: function(index, useCase) {
+            var domId = useCase.id;
             var expectedText = useCase.outputText;
-            if (expectedText == null) {
-                expectedText = "";
-            }
-
-            // ------------------------------------------------- number of nodes
-
             var expectedNumberOfNodes = useCase.outputNodesNumber;
-            if (expectedNumberOfNodes == null) {
-                expectedNumberOfNodes = 0;
-            }
-
-            // ------------------------------------------------------ attributes
-
             var attributes = useCase.attributes;
 
 

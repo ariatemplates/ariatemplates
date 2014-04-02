@@ -169,12 +169,12 @@
                 <td class="depTime">
                     {var datetoFormat = segment.departure.date /}
                     {var depDate = new Date(datetoFormat.year, datetoFormat.month, datetoFormat.date, datetoFormat.hours, datetoFormat.minutes, datetoFormat.seconds) /}
-                    ${depDate|dateformat:"hh:mm"|escapeForHTML}
+                    ${depDate|dateformat:"hh:mm"}
                 </td>
                 <td class="arrTime">
                     {var datetoFormat = segment.arrival.date /}
                     {var arrDate = new Date(datetoFormat.year, datetoFormat.month, datetoFormat.date, datetoFormat.hours, datetoFormat.minutes, datetoFormat.seconds) /}
-                    ${arrDate|dateformat:"hh:mm"|escapeForHTML}
+                    ${arrDate|dateformat:"hh:mm"}
                     {if !(aria.utils.Date.isSameDay(arrDate, depDate))}
                         ${getDayDelta(arrDate, depDate)}
                     {/if}
