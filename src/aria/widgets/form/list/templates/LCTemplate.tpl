@@ -27,9 +27,9 @@
             {if ! item.label}
                 &nbsp;
             {elseif item.value.multiWordMatch/}
-                ${item.label|escapeForHTML:{text: true}|highlightfromnewword:entry}
+                ${item.label|escapeForHTML:{text:true}|highlightfromnewword:entry|escapeForHTML:false}
             {else/}
-                ${item.label|escapeForHTML:{text: true}|starthighlight:entry}
+                ${item.label|escapeForHTML:{text:true}|starthighlight:entry|escapeForHTML:false}
             {/if}
         </a>
     {/macro}

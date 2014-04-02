@@ -27,7 +27,7 @@
             {var minDate = new Date(1980,0,1)/}
             {var maxDate = new Date(2025,11,25)/}
             {var shortFormat = aria.utils.environment.Date.getDateFormats().shortFormat/}
-            <p>Both dates should be between ${minDate|dateformat:shortFormat|escapeForHTML} and ${maxDate|dateformat:shortFormat|escapeForHTML}.</p>
+            <p>Both dates should be between ${minDate|dateformat:shortFormat} and ${maxDate|dateformat:shortFormat}.</p>
         </div>
         {if (data.displayField)}
         <p>
