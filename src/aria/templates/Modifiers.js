@@ -112,21 +112,15 @@
             /**
              * <span style="font-weight: bold">MODIFIER</span>
              * <br/>
-             * if str is not defined or empty string "" return the default value
+             * if str is null or undefined return the default value
              * @name aria.templates.Modifiers.prototype.default
              * @param {String} str the entry
              * @param {String} defaultValue the default value
-             * @param {String} escapeModifierName the name of the escaping modifier function to use to process the given default
-             * value. When empty, this value is left as is.
              * @return {String}
              */
-            fn : function (str, defaultValue, escapeModifierName) {
+            fn : function (str, defaultValue) {
                 if (str != null) {
                     return str;
-                }
-
-                if (modifierExists(escapeModifierName)) {
-                    return aria.templates.Modifiers.callModifier(escapeModifierName, [defaultValue]);
                 }
 
                 return defaultValue;
@@ -140,17 +134,11 @@
              * @name aria.templates.Modifiers.prototype.empty
              * @param {String} str the entry
              * @param {String} defaultValue the default value
-             * @param {String} escapeModifierName the name of the escaping modifier function to use to process the given default
-             * value. When empty, this value is left as is.
              * @return {String}
              */
-            fn : function (str, defaultValue, escapeModifierName) {
+            fn : function (str, defaultValue) {
                 if (!!str && !/^\s*$/.test(str)) {
                     return str;
-                }
-
-                if (modifierExists(escapeModifierName)) {
-                    return aria.templates.Modifiers.callModifier(escapeModifierName, [defaultValue]);
                 }
 
                 return defaultValue;
@@ -163,7 +151,7 @@
              * Pad the string with the provided padding character(s) or non-breaking spaces
              * @name aria.templates.Modifiers.prototype.pad
              * @param {String} str the entry
-             * @param {Integer} sz the targetted size for the result string
+             * @param {Integer} sz the targeted size for the result string
              * @param {Boolean} begin tells if the padding must be added at the beginning (true) or at the end (false)
              * of the string - Default is false
              * @param {String} padStr the HTML string to be used for padding. Default is '&nbsp;'. Note that if this
@@ -328,8 +316,8 @@
             /**
              * <span style="font-weight: bold">MODIFIER</span>
              * <br/>
-             * Will highlight with &lt;strong&gt; tag the begining of a word that matches any of the words in the
-             * highligh value.
+             * Will highlight with &lt;strong&gt; tag the beginning of a word that matches any of the words in the
+             * highlight value.
              * @example
              * Given the input string, str: "Using highlight"
              * and the matching string, highlight: "us hi"
@@ -375,17 +363,6 @@
             }
         }
     };
-
-    /**
-     * Tests whether or not the specified modifier is available.
-     *
-     * @param {String} name The name of the modifier. Should be a String but any value is handled.
-     *
-     * @return true is the modifier exists, false otherwise.
-     */
-    function modifierExists(name) {
-        return name != null && __modifiers.hasOwnProperty(('' + name).toLowerCase());
-    }
 
     /**
      * Template modifiers. Modifiers can be used inside the template syntax

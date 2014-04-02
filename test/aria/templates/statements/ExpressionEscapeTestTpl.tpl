@@ -19,72 +19,215 @@
 
 {macro main()}
 
-<div {id "default"/}>
-    ${"<div class='output' style=\"color:blue\">&amp;</div>"}
-</div>
 
-<div {id "implicit"/}>
-    ${"<div class='output' style=\"color:blue\">&amp;</div>"|escapeForHTML}
-</div>
 
-<div {id "all-boolean"/}>
-    ${"<div class='output' style=\"color:blue\">&amp;</div>"|escapeforHTML:true}
-</div>
-<div {id "all-object"/}>
-    ${"<div class='output' style=\"color:blue\">&amp;</div>"|escapeForhtml:{text: true, attr: true}}
-</div>
+/*******************************************************************************
+ * Automatic escaping
+ ******************************************************************************/
 
-<div {id "nothing-boolean"/}>
-    ${"<div class='output' style=\"color:blue\">&amp;</div>"|escapeForHtml:false}
-</div>
-<div {id "nothing-object"/}>
-    ${"<div class='output' style=\"color:blue\">&amp;</div>"|escapeforHtml:{text: false, attr: false}}
-</div>
-
-<div {id "attr"/}>
-    ${"<div class='output' style=\"color:blue\">&amp;</div>"|escapeforhtml:{attr: true}}
-</div>
-<div {id "text"/}>
-    ${"<div class='output' style=\"color:blue\">&amp;</div>"|ESCAPEFORHTML:{text: true}}
+{var id = "automatic" /}
+<div {id id /}>
+    {var c = data.useCases[id] /}
+    ${c.input}
 </div>
 
 
-<div {id "special-attr"/}>
-    <div data-quot="${'"quot"'|escapeForHTML:{attr:true}}" data-apos='${"'apos'"|escapeForHTML:{attr:true}}'></div>
+
+/*******************************************************************************
+ * Explicit final escaping
+ ******************************************************************************/
+
+// ------------------------------------------------------------------ Escape all
+
+{var id = "all-implicit" /}
+<div {id id /}>
+    {var c = data.useCases[id] /}
+    ${c.input|escapeForHTML}
+</div>
+
+{var id = "all-boolean" /}
+<div {id id /}>
+    {var c = data.useCases[id] /}
+    ${c.input|escapeforHTML:c.escape}
+</div>
+
+{var id = "all-object" /}
+<div {id id /}>
+    {var c = data.useCases[id] /}
+    ${c.input|escapeForhtml:c.escape}
+</div>
+
+// -------------------------------------------------------------- Escape nothing
+
+{var id = "nothing-boolean" /}
+<div {id id /}>
+    {var c = data.useCases[id] /}
+    ${c.input|escapeForHtml:c.escape}
+</div>
+
+{var id = "nothing-object" /}
+<div {id id /}>
+    {var c = data.useCases[id] /}
+    ${c.input|escapeforHtml:c.escape}
+</div>
+
+// ------------------------------------------------ Escape for specific contexts
+
+{var id = "attr" /}
+<div {id id /}>
+    {var c = data.useCases[id] /}
+    ${c.input|escapeforhtml:c.escape}
+</div>
+
+{var id = "text" /}
+<div {id id /}>
+    {var c = data.useCases[id] /}
+    ${c.input|ESCAPEFORHTML:c.escape}
 </div>
 
 
-<div {id "default-modifier-default"/}>
-    ${undefined|default:'<div></div>'}
-</div>
-<div {id "nothing-modifier-default-before"/}>
-    ${undefined|escapeForHTML:false|default:'<div></div>'}
-</div>
-<div {id "nothing-modifier-default-after"/}>
-    ${undefined|default:'<div></div>'|escapeForHTML:false}
-</div>
-<div {id "all-modifier-default-before"/}>
-    ${undefined|escapeForHTML:true|default:'<div></div>'}
-</div>
-<div {id "all-modifier-default-after"/}>
-    ${undefined|default:'<div></div>'|escapeForHTML:true}
+{var id = "attr-special" /}
+<div {id id /}>
+    {var c = data.useCases[id] /}
+    <div data-quot="${'"quot"'|escapeForHTML:c.escape}" data-apos='${"'apos'"|escapeForHTML:c.escape}'></div>
 </div>
 
-<div {id "default-modifier-empty"/}>
-    ${''|empty:'<div></div>'}
+
+
+/*******************************************************************************
+ * Other modifiers behavior
+ ******************************************************************************/
+
+// --------------------------------------------------------------------- default
+
+{var id = "automatic-modifier_default" /}
+<div {id id /}>
+    {var c = data.useCases[id] /}
+    ${c.input|default:c.modifiers["default"][0]}
 </div>
-<div {id "nothing-modifier-empty-before"/}>
-    ${''|escapeForHTML:false|empty:'<div></div>'}
+
+{var id = "nothing-modifier_default-before" /}
+<div {id id /}>
+    {var c = data.useCases[id] /}
+    ${c.input|escapeForHTML:c.escape|default:c.modifiers["default"][0]}
 </div>
-<div {id "nothing-modifier-empty-after"/}>
-    ${''|empty:'<div></div>'|escapeForHTML:false}
+
+{var id = "nothing-modifier_default-after" /}
+<div {id id /}>
+    {var c = data.useCases[id] /}
+    ${c.input|default:c.modifiers["default"][0]|escapeForHTML:c.escape}
 </div>
-<div {id "all-modifier-empty-before"/}>
-    ${''|escapeForHTML:true|empty:'<div></div>'}
+
+{var id = "all-modifier_default-before" /}
+<div {id id /}>
+    {var c = data.useCases[id] /}
+    ${c.input|escapeForHTML:c.escape|default:c.modifiers["default"][0]}
 </div>
-<div {id "all-modifier-empty-after"/}>
-    ${''|empty:'<div></div>'|escapeForHTML:true}
+
+{var id = "all-modifier_default-after" /}
+<div {id id /}>
+    {var c = data.useCases[id] /}
+    ${c.input|default:c.modifiers["default"][0]|escapeForHTML:c.escape}
 </div>
+
+// ----------------------------------------------------------------------- empty
+
+{var id = "automatic-modifier_empty" /}
+<div {id id /}>
+    {var c = data.useCases[id] /}
+    ${c.input|empty:c.modifiers["empty"][0]}
+</div>
+
+{var id = "nothing-modifier_empty-before" /}
+<div {id id /}>
+    {var c = data.useCases[id] /}
+    ${c.input|escapeForHTML:c.escape|empty:c.modifiers["empty"][0]}
+</div>
+
+{var id = "nothing-modifier_empty-after" /}
+<div {id id /}>
+    {var c = data.useCases[id] /}
+    ${c.input|empty:c.modifiers["empty"][0]|escapeForHTML:c.escape}
+</div>
+
+{var id = "all-modifier_empty-before" /}
+<div {id id /}>
+    {var c = data.useCases[id] /}
+    ${c.input|escapeForHTML:c.escape|empty:c.modifiers["empty"][0]}
+</div>
+
+{var id = "all-modifier_empty-after" /}
+<div {id id /}>
+    {var c = data.useCases[id] /}
+    ${c.input|empty:c.modifiers["empty"][0]|escapeForHTML:c.escape}
+</div>
+
+// ------------------------------------------------------------------- highlight
+
+{var id = "automatic-modifier_highlight" /}
+<div {id id /}>
+    {var c = data.useCases[id] /}
+    ${c.input|highlight:c.modifiers["highlight"][0]}
+</div>
+
+{var id = "nothing-modifier_highlight-before" /}
+<div {id id /}>
+    {var c = data.useCases[id] /}
+    ${c.input|escapeForHTML:c.escape|highlight:c.modifiers["highlight"][0]}
+</div>
+
+{var id = "nothing-modifier_highlight-after" /}
+<div {id id /}>
+    {var c = data.useCases[id] /}
+    ${c.input|highlight:c.modifiers["highlight"][0]|escapeForHTML:c.escape}
+</div>
+
+{var id = "all-modifier_highlight-before" /}
+<div {id id /}>
+    {var c = data.useCases[id] /}
+    ${c.input|escapeForHTML:c.escape|highlight:c.modifiers["highlight"][0]}
+</div>
+
+{var id = "all-modifier_highlight-after" /}
+<div {id id /}>
+    {var c = data.useCases[id] /}
+    ${c.input|highlight:c.modifiers["highlight"][0]|escapeForHTML:c.escape}
+</div>
+
+// ------------------------------------------------------------------ dateformat
+
+{var id = "automatic-modifier_dateformat" /}
+<div {id id /}>
+    {var c = data.useCases[id] /}
+    ${c.input|dateformat:c.modifiers["dateformat"][0]}
+</div>
+
+{var id = "nothing-modifier_dateformat-before" /}
+<div {id id /}>
+    {var c = data.useCases[id] /}
+    ${c.input|escapeForHTML:c.escape|dateformat:c.modifiers["dateformat"][0]}
+</div>
+
+{var id = "nothing-modifier_dateformat-after" /}
+<div {id id /}>
+    {var c = data.useCases[id] /}
+    ${c.input|dateformat:c.modifiers["dateformat"][0]|escapeForHTML:c.escape}
+</div>
+
+// This one should fail
+// {var id = "all-modifier_dateformat-before" /}
+// <div {id id /}>
+//     {var c = data.useCases[id] /}
+//     ${c.input|escapeForHTML:c.escape|dateformat:c.modifiers["dateformat"][0]}
+// </div>
+// ----
+
+{var id = "all-modifier_dateformat-after" /}
+<div {id id /}>
+    {var c = data.useCases[id] /}
+    ${c.input|dateformat:c.modifiers["dateformat"][0]|escapeForHTML:c.escape}
+</div>
+
 
 {/macro}
 
