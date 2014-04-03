@@ -69,6 +69,12 @@ Aria.tplScriptDefinition({
         },
         onChangeHandler : function () {
             this.data.onChangeCalls++;
+        },
+        onBlurHandler : function () {
+            this.data.onBlurCalls++;
+        },
+        onFocusHandler : function () {
+            this.data.onFocusCalls++;
         }
     }
 });

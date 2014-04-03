@@ -21,35 +21,44 @@
 
 
 
-	{macro main()}
+    {macro main()}
 
-		 <h2>AutoComplete with Multi Options</h2>
-		 <br />
-		{@aria:MultiAutoComplete{
-			label:"Choose your city: ",
-			id:"MultiAutoId",
-			labelPos:"left",
-			labelAlign:"right",
-			width:400,
-			block:false,
-			labelWidth:180,
-			maxOptions: data.maxOptions || 8,
-			freeText: (data.freeText !== false),
-			resourcesHandler: getAirLinesHandler(),
-			onchange: {
-				fn : this.onChangeHandler,
-				scope : this
-			},
-			bind:{
-			  	"value" : {
-			  		inside : data,
-			  		to : 'ac_airline_values'
-		  		}
-			},
-			spellCheck: false
-		}/}
-		 <br />
-		 <input {id "justToFocusOut"/}>
-	{/macro}
+         <h2>AutoComplete with Multi Options</h2>
+         <br />
+        {@aria:MultiAutoComplete{
+            label:"Choose your city: ",
+            id:"MultiAutoId",
+            labelPos:"left",
+            labelAlign:"right",
+            width:400,
+            block:false,
+            labelWidth:180,
+            expandButton: (data.expandButton == true),
+            maxOptions: data.maxOptions || 8,
+            freeText: (data.freeText !== false),
+            resourcesHandler: getAirLinesHandler(),
+            onchange: {
+                fn : this.onChangeHandler,
+                scope : this
+            },
+            onblur: {
+                fn : this.onBlurHandler,
+                scope : this
+            },
+            onfocus: {
+                fn : this.onFocusHandler,
+                scope : this
+            },
+            bind:{
+                  "value" : {
+                      inside : data,
+                      to : 'ac_airline_values'
+                  }
+            },
+            spellCheck: false
+        }/}
+         <br />
+         <input {id "justToFocusOut"/}>
+    {/macro}
 
 {/Template}
