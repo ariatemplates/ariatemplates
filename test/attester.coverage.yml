@@ -1,0 +1,16 @@
+# This extra configuration is appended to attester.yml when COVERAGE=true in travis
+# (cf ../.travis.yml)
+
+coverage:
+ files:
+  rootDirectory: '.'
+  includes:
+   - 'src/aria/**/*.js'
+  excludes:
+   - 'src/aria/css/**'
+   - 'src/aria/resources/DateRes*.js'
+   - 'src/aria/resources/CalendarRes*.js'
+   - 'src/aria/resources/multiselect/FooterRes*.js'
+coverage-reports:
+ lcov-file: 'test-results/coverage.lcov'
+ json-file: 'test-results/coverage.json'
