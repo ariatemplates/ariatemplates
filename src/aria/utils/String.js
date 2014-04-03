@@ -109,8 +109,8 @@ Aria.classDefinition({
          *
          * The string can be escaped for different contexts:
          * <ul>
-         * <li>safe insertion inside an HTML text node</li>
-         * <li>safe insertion inside an attribute value</li>
+         * <li>- safe insertion inside an HTML text node</li>
+         * <li>- safe insertion inside an attribute value</li>
          * </ul>
          *
          *
@@ -138,7 +138,15 @@ Aria.classDefinition({
          * 0, "", false // escapes nothing
          * </pre>
          *
-         * @param {Object} infos An optional object for additional infos on what has been done. For now, tells if it has actually been escaped or not, and for which contexts.
+         * @param {Object} infos An optional object for additional infos on what has been done. For now, tells if it has actually been escaped or not, and for which contexts. I has the following properties possibly set:
+         *
+         * <pre>
+         * {
+         *     escaped, // true if something has been escaped, falsy otherwise
+         *     text, // true if it has been escaped for the context of an HTML text node
+         *     attr // true if it has been escaped for the context of an attribute value
+         * }
+         * </pre>
          *
          * @return {String} processed string
          */

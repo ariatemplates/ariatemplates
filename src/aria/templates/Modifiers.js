@@ -59,23 +59,25 @@
                 out.addDependencies(["aria.utils.String"]);
             },
             /**
-             * <span style="font-weight: bold">MODIFIER</span> <br/> Use the <a
-             * href="http://ariatemplates.com/aria/guide/apps/apidocs/#aria.utils.String:escapeForHTML:method">aria.utils.String.escapeForHTML</a>
-             * utility to process the given input, converting the latter to a string before sending it. However this
-             * modifier skips the escaping in several cases, returning the value as is (and thus without type
-             * conversion):
+             * <span style="font-weight: bold">MODIFIER</span>
+             * <br/>
+             *
+             * Use the <a href="http://ariatemplates.com/aria/guide/apps/apidocs/#aria.utils.String:escapeForHTML:method">aria.utils.String.escapeForHTML</a> utility to process the given input, converting the latter to a string before sending it.
+             * <br />
+             * However this modifier skips the escaping in several cases, returning the value as is (and thus without type conversion):
              * <ul>
-             * <li>if the input is null or undefined</li>
-             * <li>if the argument passed to control the escaping finally tells not to escape anything</li>
-             * </li>
+             * <li>- if the input is null or undefined</li>
+             * <li>- if the argument passed to control the escaping finally tells not to escape anything</li>
+             * </ul>
+             *
              * @name aria.templates.Modifiers.prototype.escapeForHTML
+             *
              * @param input the input value
-             * @param arg the argument forwarded to the <a
-             * href="http://ariatemplates.com/aria/guide/apps/apidocs/#aria.utils.String:escapeForHTML:method">aria.utils.String.escapeForHTML</a>
-             * method. Please refer to its own documentation for more information.
+             * @param arg the argument forwarded to the <a href="http://ariatemplates.com/aria/guide/apps/apidocs/#aria.utils.String:escapeForHTML:method">aria.utils.String.escapeForHTML</a> method. Please refer to its own documentation for more information.
+             *
              * @return the processed input value. See detailed description for more information.
-             * @see <a
-             * href="http://ariatemplates.com/aria/guide/apps/apidocs/#aria.utils.String:escapeForHTML:method">aria.utils.String.escapeForHTML</a>
+             *
+             * @see http://ariatemplates.com/aria/guide/apps/apidocs/#aria.utils.String:escapeForHTML:method
              */
             fn : function (input, arg) {
                 if (input == null) {
