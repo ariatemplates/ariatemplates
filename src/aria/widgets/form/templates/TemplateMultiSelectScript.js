@@ -62,8 +62,7 @@ Aria.tplScriptDefinition({
 
                 if (evt.keyCode == aria.DomEvent.KC_ARROW_UP && evt.focusIndex === 0) {
                     evt.cancelDefault = true;
-                    // var idToFocus = 'listItem'+evt.focusIndex;
-                    var viewFocusIndex = this.data.itemsView.items[focusIndex].value.index;
+                    var viewFocusIndex = this.data.itemsView.items[evt.focusIndex].value.index;
 
                     var idToFocus = 'listItem' + viewFocusIndex;
 
