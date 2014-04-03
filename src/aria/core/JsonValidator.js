@@ -576,7 +576,7 @@
 
             /**
              * Get a bean from its string reference.
-             * @param {String} The fully qualified bean name, ex: aria.widgets.calendar.CfgBeans.CalendarSettings
+             * @param {String} strType The fully qualified bean name, ex: aria.widgets.calendar.CfgBeans.CalendarSettings
              * @return {aria.core.BaseTypes:Bean} The bean definition if strType is valid, or null otherwise.
              */
             _getBean : function (strType) {
