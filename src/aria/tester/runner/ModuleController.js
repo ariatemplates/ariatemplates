@@ -20,8 +20,8 @@ Aria.classDefinition({
     $classpath : "aria.tester.runner.ModuleController",
     $extends : "aria.templates.ModuleCtrl",
     $dependencies : ["aria.tester.runner.datamodel.DataDefinitions", "aria.tester.runner.utils.Hash",
-            "aria.jsunit.IOViewer", "aria.jsunit.AppletWorker", "aria.utils.QueryString", "aria.jsunit.NewTestRunner",
-            "aria.jsunit.JsCoverage", "aria.jsunit.TestCommunicator", "aria.utils.Callback",
+            "aria.jsunit.IOViewer", "aria.utils.QueryString", "aria.jsunit.NewTestRunner",
+            "aria.jsunit.JsCoverage", "aria.utils.Callback",
             "aria.tester.runner.utils.TestUtils", "aria.tester.runner.appenders.JsonTextDivAppender",
             "aria.jsunit.TestacularReport"],
     $statics : {
@@ -292,9 +292,6 @@ Aria.classDefinition({
 
         startCampaign : function (cb) {
             var skipTests = [];
-            if (aria.utils.QueryString.getKeyValue("UITest") != "1") {
-                skipTests = ['test.aria.widgets.WidgetsUITestSuite'];
-            }
             this._startCampaignCb = cb;
 
             // Notify testacular in case it is available:

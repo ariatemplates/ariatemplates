@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="Shortcut Icon" href="./at16-green.png">
+    <title>AT tests</title>
+    <script type="text/javascript">
+
+        if (document.location.protocol == "file:") {
+            alert("file:// protocol is not supported, please run this URL through HTTP server")
+        }
+        var isAmaBuild = !!(document.location.pathname.match(/\/aria\-templates(-dave|-dev)?\/test\//));
+        var url = document.location.href;
+
+        // Aria Templates framework parameters
+        var Aria = {
+            memCheckMode : true, // checks that constructors and destructors are well called on all objects
+            debug : true,
+            verbose : (url.indexOf('verbose=false') == -1)
+        };
+
+        // serve dev files by default, unless stated otherwise in query string
+        var devFiles = (url.indexOf("dev=false") == -1);
+
+        var atversion;
+        if (isAmaBuild) {
+            atversion = "1.1-SNAPSHOT";
+        } else if (!devFiles) { // if opensource build && not dev files requested, then version must be placed in the URL
+            var versionMatch = url.match(/atversion\=(\d+\.\d+\.\d+)/);
+            if (versionMatch) {
+                atversion = versionMatch[1];
+            } else {
+                alert("Need an 'atversion=x.y.z' in the query string if you want to use non-dev opensource version!\nRemember to run Grunt build before.");
+            }
+        }
+
+        var ariaRootPath;
+        if (isAmaBuild) {
+            if (devFiles) {
+                ariaRootPath = "../dev/";
+                bootstrapFile = "aria/aria-templates-" + atversion + ".js";
+                skinFile = "aria/css/atskin-" + atversion + ".js";
+            } else {
+                ariaRootPath = "../";
+                bootstrapFile = "aria/aria-templates-" + atversion + ".js";
+                skinFile = "aria/css/atskin-" + atversion + ".js";
+            }
+        } else {
+            if (devFiles) {
+                ariaRootPath = "../src/";
+                bootstrapFile = "aria/bootstrap.js";
+                skinFile = "aria/css/atskin.js";
+            } else {
+                ariaRootPath = "../build/target/production/";
+                bootstrapFile = "aria/ariatemplates-" + atversion + ".js";
+                skinFile = "aria/css/atskin-" + atversion + ".js";
+            }
+        }
+
+        document.write('<scr' + 'ipt type="text/javascript" src="' + ariaRootPath + bootstrapFile + '"></scri' + 'pt>');
+    </script>
+    <script type="text/javascript">
+        document.write('<scr' + 'ipt type="text/javascript" src="' + ariaRootPath + skinFile + '"></scri' + 'pt>');
+    </script>
+    <script type="text/javascript">
+        Aria.rootFolderPath = "../";
+        aria.core.DownloadMgr.updateRootMap({"aria": {"*" : ariaRootPath}});
+    </script>
+    <style>
+        #_TestInfoOutput_ {
+            position: absolute;
+            left:215px;
+            top:30px;
+            font: 10px Arial;
+        }
+        #_TestRunnerOutput_{
+            padding: 5px;
+            position : absolute;
+            left:50px;
+            margin-right:50px;
+            float:left;
+            top:20px;
+            right:300px;
+            bottom:5px;
+            margin-bottom: 5px;
+        }
+        #_ObjectsOutput_ {
+            padding: 5px;
+            width : 250px;
+            position : absolute;
+            top:20px;
+            right:5px;
+            bottom:5px;
+            margin-bottom: 5px;
+        }
+        table#summaryTable {
+            border-collapse: collapse;
+            font-size: small;
+        }
+        #TESTAREA {
+            background-color : white;
+            position:absolute;
+            top: 0px;
+            left: 0px;
+            z-index: 5000;
+        }
+    </style>
+</head>
+<body style="margin:0; padding:0;">
+    <div id="TESTAREA"></div>
+    <div id="_TestInfoOutput_"></div>
+    <div id="_TestRunnerOutput_"></div>
+    <div id="_ObjectsOutput_"></div>
+    <script type="text/javascript" src="testLauncher.js"></script>
+    <script type="text/javascript">
+        var info = "";
+        info += (devFiles ? "dev" : "built") + " files / ";
+        info += (isAmaBuild ? "ama" : "opensource") + " / ";
+        info += (Aria.verbose ? "verbose" : "nonverbose") + " console";
+        document.getElementById("_TestInfoOutput_").innerHTML = info;
+    </script>
+</body>
+</html>

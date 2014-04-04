@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<html><head><script type="text/javascript">
+    // This file is here for historical reasons
+    var newLocation = document.location.href.replace("beta.html", "test.htm");
+    if (newLocation.indexOf("dev=true") == -1) {
+        newLocation += "&dev=false";
+    }
+    document.location.href = newLocation;
+</script></head></html>
