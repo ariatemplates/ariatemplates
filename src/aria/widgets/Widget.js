@@ -20,7 +20,8 @@ Aria.classDefinition({
     $classpath : "aria.widgets.Widget",
     $extends : "aria.widgetLibs.BindableWidget",
     $dependencies : ["aria.widgets.CfgBeans", "aria.utils.Json", "aria.utils.Dom", "aria.DomEvent",
-            "aria.utils.Delegate", "aria.widgets.AriaSkinInterface", "aria.utils.Type", "aria.templates.RefreshManager"],
+            "aria.utils.Delegate", "aria.widgets.AriaSkinInterface", "aria.utils.Type",
+            "aria.templates.RefreshManager", "aria.utils.String"],
     $css : ["aria.widgets.GlobalStyle"],
     $onload : function () {
         // check for skin existency
@@ -372,7 +373,7 @@ Aria.classDefinition({
                 out.write('margin:' + this._defaultMargin + 'px;" ');
             }
             if (cfg.tooltip) {
-                out.write('title="' + cfg.tooltip + '" ');
+                out.write('title="' + aria.utils.String.escapeHTMLAttr(cfg.tooltip) + '" ');
             }
             if (cfg.tabIndex != null && !this._customTabIndexProvided && !cfg.disabled) {
                 var tabIndex = this._calculateTabIndex();
