@@ -23,7 +23,8 @@
             {@aria:Link {
                 label: "Do not click here",
                 id: "link",
-                onclick: linkClick
+                onclick: linkClick,
+                tooltip:'"Tooltip" in quotes'
             }/}
         </div>
     {/macro}
