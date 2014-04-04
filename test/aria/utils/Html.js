@@ -193,6 +193,100 @@ Aria.classDefinition({
             this.assertEquals(html.serializeForm(testFormElement), "vehicle=Bike");
 
             document.body.removeChild(testDiv);
+        },
+
+        test_setOrRemoveDataset : function () {
+
+            var document = Aria.$window.document, testDiv = document.createElement("div"), html = aria.utils.Html;
+            document.body.appendChild(testDiv);
+            var should, shouldNot;
+
+            // check the set method
+
+            html.setDataset(testDiv, {
+                "index" : "one",
+                "quoted" : "\"quoted",
+                "camCase" : "more"
+            });
+
+            should = {
+                "index" : "one",
+                "quoted" : "\"quoted",
+                "cam-case" : "more"
+            };
+
+            shouldNot = ["camcase"];
+
+            /* BACKWARD-COMPATIBILITY-BEGIN (GH-499) */
+            delete should["cam-case"];
+            should["camcase"] = "more";
+            shouldNot = ["cam-case"];
+            /* BACKWARD-COMPATIBILITY-END (GH-499) */
+
+            this.checkDataset(testDiv, should, shouldNot);
+
+            // check the remove method
+
+            html.removeDataset(testDiv, {
+                "index" : "one",
+                "camCase" : "more"
+            });
+            should = {
+                "quoted" : "\"quoted"
+            };
+            shouldNot = ["camcase", "index", "cam-case"];
+
+            this.checkDataset(testDiv, should, shouldNot);
+
+            // check set with invalid key
+
+            html.setDataset(testDiv, {
+                "some-thing" : "two"
+            });
+
+            should = {
+                "quoted" : "\"quoted"
+            };
+
+            shouldNot = ["some-thing"];
+
+            /* BACKWARD-COMPATIBILITY-BEGIN (GH-499) */
+            should["some-thing"] = "two";
+            shouldNot = [];
+            /* BACKWARD-COMPATIBILITY-END (GH-499) */
+
+            this.checkDataset(testDiv, should, shouldNot);
+            this.assertErrorInLogs(html.INVALID_DATASET_KEY, 1);
+
+            // check set with invalid key
+
+            html.removeDataset(testDiv, {
+                "some-thing" : "two"
+            });
+
+            should = {
+                "quoted" : "\"quoted"
+            };
+
+            shouldNot = ["some-thing"];
+
+            this.checkDataset(testDiv, should, shouldNot);
+            this.assertErrorInLogs(html.INVALID_DATASET_KEY, 1);
+
+            document.body.removeChild(testDiv);
+        },
+
+        checkDataset : function (element, should, shouldNot) {
+            var fullKey;
+            for (var att in should) {
+                fullKey = "data-" + att;
+                this.assertEquals(element.getAttribute(fullKey), should[att]);
+            }
+            for (var i = 0, len = shouldNot.length; i < len; i++) {
+                fullKey = "data-" + shouldNot[i];
+                this.assertNull(element.getAttribute(fullKey));
+            }
         }
+
     }
 });

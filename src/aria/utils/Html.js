@@ -135,6 +135,59 @@ Aria.classDefinition({
 
             return element.name && !element.disabled && submittable.test(element.nodeName)
                     && !submitterTypes.test(type) && (element.checked || !checkableTypes.test(type));
+        },
+
+        /**
+         * Set "data-" attributes
+         * @param {HTMLElement} domElement
+         * @param {Object} dataset
+         */
+        setDataset : function (domElement, dataset) {
+            this.__setOrRemoveDataset(domElement, dataset);
+        },
+
+        /**
+         * Remove "data-" attributes
+         * @param {HTMLElement} domElement
+         * @param {Object} dataset
+         */
+        removeDataset : function (domElement, dataset) {
+            this.__setOrRemoveDataset(domElement, dataset, true);
+        },
+
+        /**
+         * Set or remove "data-" attributes
+         * @param {HTMLElement} domElement
+         * @param {Object} dataset
+         * @param {Boolean} remove if false or undefined, attributes will be set instead
+         */
+        __setOrRemoveDataset : function (domElement, dataset, remove) {
+            var fullKey, stringUtil = aria.utils.String;
+            for (var dataKey in dataset) {
+                if (dataset.hasOwnProperty(dataKey) && !aria.utils.Json.isMetadata(dataKey)) {
+                    if (this.datasetRegex.test(dataKey)) {
+                        fullKey = "data-" + stringUtil.camelToDashed(dataKey);
+                        /* BACKWARD-COMPATIBILITY-BEGIN (GH-499) */
+                        fullKey = "data-" + dataKey;
+                        /* BACKWARD-COMPATIBILITY-END (GH-499) */
+                        if (remove) {
+                            domElement.removeAttribute(fullKey);
+                        } else {
+                            domElement.setAttribute(fullKey, dataset[dataKey]);
+                        }
+                    } else {
+                        /* BACKWARD-COMPATIBILITY-BEGIN (GH-499): change to $logError and don't remove */
+                        this.$logWarn(this.INVALID_DATASET_KEY, dataKey);
+                        fullKey = "data-" + dataKey;
+                        if (remove) {
+                            domElement.removeAttribute(fullKey);
+                        } else {
+                            domElement.setAttribute(fullKey, dataset[dataKey]);
+                        }
+                        /* BACKWARD-COMPATIBILITY-END (GH-499) */
+                    }
+                }
+            }
         }
     }
 });
