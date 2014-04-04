@@ -50,6 +50,8 @@ Aria.classDefinition({
         _step2 : function () {
             this.assertTrue(this.env.data.linkClickCalled == 1);
             this.assertTrue(this.env.data.divClickCalled === 0);
+            var tooltipInQuotes = this._linkDomElt.parentNode.title;
+            this.assertEquals(tooltipInQuotes, '"Tooltip" in quotes', "Tooltip string is not properly escaped");
             this._linkDomElt = null;
             this.notifyTemplateTestEnd();
         }
