@@ -96,14 +96,7 @@ Aria.classDefinition({
         var parentClassListSetClassName = this.classList.setClassName;
         this.classList.setClassName = function (className) {
             parentClassListSetClassName.call(this, className);
-            sectionObject.cssClass = className;
-        };
-
-        var parentSetClassName = this.setClassName;
-        this.setClassName = function (className) {
-            parentSetClassName.call(this, className);
-            // also update the cssClass property of the section object:
-            sectionObject.cssClass = className;
+            sectionObject.updateClassList(className);
         };
 
         var parentDispose = this._dispose;
@@ -115,7 +108,6 @@ Aria.classDefinition({
             parentDispose.call(this);
             sectionObject = null;
             parentDispose = null;
-            parentSetClassName = null;
         };
     },
     $prototype : {}
