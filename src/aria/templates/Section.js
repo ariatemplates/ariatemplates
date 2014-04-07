@@ -262,11 +262,24 @@
              */
             this.attributes = cfg.attributes;
 
+            /**
+             * Attributes binding configuration
+             * @type aria.templates.CfgBeans:BindingConfiguration
+             */
+            this._attributesBinding = null;
+
+            /**
+             * Listener added to the data model bound to the section attributes
+             * @type aria.core.CfgBeans:Callback
+             */
+            this._attributesChangeListener = null;
+
             // register binding for attributes
             var attributeBind = (cfg.bind && cfg.bind.attributes) ? cfg.bind.attributes : null;
+            this._attributesBinding = attributeBind;
             if (attributeBind) {
-                this.attributes = attributeBind.inside[attributeBind.to];
-                this.registerBinding(attributeBind, this._notifyAttributeChange);
+                this.attributes = this.__json.copy(attributeBind.inside[attributeBind.to]);
+                this._attributesChangeListener = this.registerBinding(attributeBind, this._notifyAttributeChange);
             }
         },
         $destructor : function () {
@@ -305,6 +318,8 @@
             this._refreshMgrInfo = null;
             this.tplCtxt = null;
             this._cfg = null;
+            this._attributesBinding = null;
+            this._attributesChangeListener = null;
         },
         $events : {
             "beforeRemoveContent" : "Raised just before the section content is disposed.",
@@ -550,21 +565,15 @@
             /**
              * RegisterBinding is used to add bindings to Templates and sections.
              * @public
-             * @param {Object} bind
+             * @param {aria.templates.CfgBeans:BindingConfiguration} bind
              * @param {Object} callback
-             *
-             * <pre>
-             *  {
-             *      inside : ...
-             *      to : ...
-             *  }
-             * </pre>
+             * @return {aria.core.CfgBeans:Callback} Listener that has been actually added
              */
             registerBinding : function (bind, callback) {
-
+                var jsonChangeCallback = null;
                 // register as listener for the bindings defined for this control:
                 if (bind) {
-                    var jsonChangeCallback = {
+                    jsonChangeCallback = {
                         fn : callback || this._notifyDataChange,
                         scope : this,
                         args : {
@@ -588,7 +597,7 @@
                         this.$logError(this.SECTION_BINDING_ERROR, [bind.inside, bind.to, this.id,
                                 this.tplCtxt.tplClasspath]);
                     }
-
+                    return jsonChangeCallback;
                 }
             },
 
@@ -720,32 +729,55 @@
              * @see initWidget()
              */
             _notifyAttributeChange : function (res) {
-                var attribute, domElt = this.getDom(), deleteAttribute;
-                // determine if multiple attributes have changed
-                if (this._cfg.bind && res.dataName === this._cfg.bind.attributes.to) {
-                    // remove old members
-                    for (attribute in res.oldValue) {
-                        if (res.oldValue.hasOwnProperty(attribute) && !res.newValue[attribute]) {
-                            domElt.removeAttribute(attribute);
+                var attribute, domElt = this.getDom(), whiteList = aria.templates.DomElementWrapper.attributesWhiteList, newAttributeValue;
+                var oldValue = this.attributes, attrBinding = this._cfg.bind.attributes, newValue = attrBinding.inside[attrBinding.to];
+
+                // remove old members
+                for (attribute in oldValue) {
+                    if (oldValue.hasOwnProperty(attribute)) {
+                        if (attribute == "dataset") {
+                            aria.utils.Html.removeDataset(domElt, oldValue[attribute]);
+                        } else if (!newValue[attribute]) {
+                            if (attribute == "classList") {
+                                this.getWrapper().classList.setClassName("");
+                            } else {
+                                domElt.removeAttribute(attribute);
+                            }
                         }
                     }
-                    // add new members
-                    for (attribute in res.newValue) {
-                        if (res.newValue.hasOwnProperty(attribute) && !aria.utils.Json.isMetadata(attribute)
-                                && aria.templates.DomElementWrapper.attributesWhiteList.test(attribute)
-                                && res.newValue[attribute] !== res.oldValue[attribute]
-                                && res.newValue[attribute] != null) {
-                            domElt.setAttribute(attribute, res.newValue[attribute]);
+                }
+
+                // add new members
+                for (attribute in newValue) {
+                    newAttributeValue = newValue[attribute];
+                    if (newValue.hasOwnProperty(attribute) && !this.__json.isMetadata(attribute)
+                            && newAttributeValue != null) {
+                        if (attribute == "classList") {
+                            this.getWrapper().classList.setClassName(newAttributeValue.join(" "));
+                        } else if (attribute == "dataset") {
+                            aria.utils.Html.setDataset(domElt, newAttributeValue);
+                        } else if (whiteList.test(attribute) && newAttributeValue !== oldValue[attribute]) {
+                            domElt.setAttribute(attribute, newAttributeValue);
                         }
                     }
-                    // check if an individual attribute has changed
-                } else if (aria.templates.DomElementWrapper.attributesWhiteList.test(res.dataName)
-                        && res.newValue !== res.oldValue) {
-                    deleteAttribute = (!res.newValue) ? true : false;
-                    if (deleteAttribute) {
-                        domElt.removeAttribute(res.dataName, res.newValue);
-                    } else {
-                        domElt.setAttribute(res.dataName, res.newValue);
+                }
+
+                this.attributes = this.__json.copy(newValue);
+            },
+
+            /**
+             * Update the section object variables that are linked to the className of the HTML element representing the
+             * section in the DOM. It does not update the HTML class attribute, but should be called only after it has
+             * been updated by another entity.
+             * @param {String} className
+             */
+            updateClassList : function (className) {
+                this.cssClass = className;
+                if (this.attributes && this.attributes.classList) {
+                    this.attributes.classList = className.split(" ");
+                    var attrBinding = this._attributesBinding;
+                    if (attrBinding) {
+                        this.__json.setValue(attrBinding.inside[attrBinding.to], "classList", className.split(" "), this._attributesChangeListener);
                     }
                 }
             },

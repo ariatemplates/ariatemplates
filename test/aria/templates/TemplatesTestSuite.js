@@ -23,7 +23,6 @@ Aria.classDefinition({
         this.addTests("test.aria.templates.beforeRefresh.BeforeRefreshTestCase");
 
         this.addTests("test.aria.templates.binding.missingbinding.MissingBindingTestCase");
-        this.addTests("test.aria.templates.sectionTest.RefreshSection");
         this.addTests("test.aria.templates.ClassGeneratorTest");
         this.addTests("test.aria.templates.css.CSSTestSuite");
         this.addTests("test.aria.templates.csslibs.CSSLibsTestCase");
@@ -89,11 +88,7 @@ Aria.classDefinition({
         this.addTests("test.aria.templates.tabsRefresh.TabsRefreshTestCase");
         this.addTests("test.aria.templates.macrolibs.MacrolibsTestCase");
         this.addTests("test.aria.templates.textTemplates.TextTemplatesTestCase");
-        this.addTests("test.aria.templates.section.SectionTestCase");
-        this.addTests("test.aria.templates.section.sectionAttributes.SectionAttributes");
-        this.addTests("test.aria.templates.section.autorefresh.SectionAutorefreshTestCase");
-        this.addTests("test.aria.templates.section.processingIndicator.ProcessingIndicatorOnSection");
-        this.addTests("test.aria.templates.section.sectionWithoutMacro.SectionWithoutMacro");
+        this.addTests("test.aria.templates.section.SectionTestSuite");
         this.addTests("test.aria.templates.repeater.RepeaterTestCase");
         this.addTests("test.aria.templates.visualFocus.VisualFocusTestCase");
         this.addTests("test.aria.templates.testmode.TestIdsTestCase");
