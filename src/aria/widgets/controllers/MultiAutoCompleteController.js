@@ -353,7 +353,14 @@
                         jsonUtils.setValue(dataModel, 'selectedValues', selectedValues);
                         dataModel.value = selectedValues;
                     } else if (allSuggestions) {
-                        jsonUtils.setValue(dataModel, 'selectedValues', this.selectedSuggestions);
+                        var selectedValues = [];
+                        for (var i = 0; i < dataModel.listContent.length; i++) {
+                            var index = this._findSuggestion(this.selectedSuggestions, dataModel.listContent[i].value);
+                            if (index != -1) {
+                                selectedValues.push(dataModel.listContent[i].value);
+                            }
+                        }
+                        jsonUtils.setValue(dataModel, 'selectedValues', selectedValues);
                         jsonUtils.setValue(dataModel, 'multipleSelect', true);
                         dataModel.value = null;
                     } else {
