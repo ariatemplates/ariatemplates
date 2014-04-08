@@ -14,8 +14,8 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.autocomplete.multiautocomplete.issue1085.InitCheckboxesTest",
-    $extends : "test.aria.widgets.form.autocomplete.multiautocomplete.BaseMultiAutoCompleteTestCase",
+    $classpath : "test.aria.widgets.form.multiautocomplete.issue1085.InitCheckboxesTest",
+    $extends : "test.aria.widgets.form.multiautocomplete.BaseMultiAutoCompleteTestCase",
     $constructor : function () {
         this.$BaseMultiAutoCompleteTestCase.constructor.call(this);
 
