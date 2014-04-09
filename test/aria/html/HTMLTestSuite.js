@@ -28,6 +28,7 @@ Aria.classDefinition({
         this.addTests("test.aria.html.radioButton.RadioButtonTest");
         this.addTests("test.aria.html.select.SelectTest");
         this.addTests("test.aria.html.select.bodycontent.BodyContentTestCase");
+        this.addTests("test.aria.html.select.onchange.DataModelOnChangeTestCase");
         this.addTests("test.aria.html.DisabledTraitTest");
         this.addTests("test.aria.html.radioButton.ieBug.RadioButtonTestCase");
         this.addTests("test.aria.html.textarea.TextAreaTestSuite");
