@@ -375,7 +375,6 @@ Aria.beanDefinitions({
                         $description : "List of pieces of contents to be displayed."
                     }]
         },
-
         "Module" : {
             $type : "json:Object",
             $description : "Description of the module that is created at page level.",
@@ -392,6 +391,19 @@ Aria.beanDefinitions({
                 "bind" : {
                     $type : "json:ObjectRef",
                     $description : "List of data bindings. The key is a location in the module's data model, the value is inside the site module controller and has the form 'location:path' like 'appData:search.from'"
+                },
+                "services" : {
+                    $type : "json:Map",
+                    $keyType : {
+                        $type : "json:String",
+                        $description : "Public name of the service."
+                    },
+                    $contentType : {
+                        $type : "json:String",
+                        $description : "Name of the method as declared inside the module controller."
+                    },
+                    $description : "Map containing the module controller methods to expose.",
+                    $default : {}
                 }
             }
         },
