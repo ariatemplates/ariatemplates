@@ -53,6 +53,8 @@ Before you start coding, take this advice: [__Test Driven Development (TDD)__](h
 
 At any stage of development, feel free to contact us for suggestions, code review or general support, we're here to help.
 
+## Git workflow & opening pull requests
+
 Done with testing + coding? Create a __pull request__ from your forked repository.
 
 Here's the process we follow in the team. We believe it'll be good for you as well:
@@ -94,6 +96,8 @@ Here's the process we follow in the team. We believe it'll be good for you as we
 >
 > Please provide a detailed description of your changes. Your code should be self-explanatory, but a good pull request description is always appreciated.
 
+## Commit message
+
 When you commit make sure to provide a good commit message. Messages should be informative and easy to understand.
 
 __DON'T__:
@@ -110,9 +114,15 @@ __BETTER__:
 
 Remember:
 
-- The first line is a short description. It should start with "fix #123" for a bugfix, "feat #123" for a new feature, or "refactor" (#123 is the GitHub issue ID).
+- The first line is a short description. It should start with "fix #123" for a bugfix, "feat #123" for a new feature,
+  (#123 is the GitHub issue ID) "refactor" if it just refactors/reformats the code or "doc" if it adds documentation.
 - The next paragraphs provide more explanation if necessary.
 - In the last line, add "Close #456" as many times as necessary, to [close the related issues / a pull request once the commits lands in master](https://github.com/blog/1386-closing-issues-via-commit-messages). If the first starts with "feat #123", you should duplicate that ID here.
+
+We have a build-time checker that verifies that commit message format, you can also install a Git hook to do it for you
+at commit time. You can install it with this command in your repository's root folder:
+
+    npm install -g grunt grunt-commit-message-verify; cp ./hooks/* ./.git/hooks/
 
 For brand new features, make sure to write some documentation.
 You'll see how in the [next chapter](#improve-documentation).

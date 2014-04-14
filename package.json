@@ -14,19 +14,22 @@
     "phantomjsInstances": 2
   },
   "scripts": {
-    "start": "node scripts/server.js",
-    "prestart": "npm install && npm run-script grunt",
-    "grunt": "node build/grunt-cli.js",
     "attester": "node node_modules/attester/bin/attester.js test/attester.yml",
+    "grunt": "node build/grunt-cli.js",
+    "grunt-git": "node build/grunt-cli.js grunt-commit-message-verify",
+    "install-hooks" : "npm install -g grunt grunt-commit-message-verify && cp ./hooks/* ./.git/hooks/",
     "lint": "node build/grunt-cli.js checkStyle",
     "mocha": "mocha --recursive test/node",
-    "test": "npm run-script lint && npm run-script grunt && npm run-script mocha && npm run-script attester"
+    "prestart": "npm install && npm run-script grunt",
+    "start": "node scripts/server.js",
+    "test": "npm run lint && npm run grunt && npm run mocha && npm run attester && npm run grunt-git"
   },
   "devDependencies": {
     "atpackager": "0.2.4",
     "attester": "1.3.0",
     "express": "3.4.8",
     "grunt": "0.4.2",
+    "grunt-commit-message-verify" : "0.1.0",
     "grunt-contrib-jshint": "0.8.0",
     "grunt-leading-indent": "0.1.0",
     "grunt-verifylowercase": "0.2.0",
