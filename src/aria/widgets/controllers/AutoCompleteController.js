@@ -485,9 +485,8 @@
              * Checking against special key combinations that trigger a selection of the item in the dropdown
              * @param {aria.DomEvent} event
              * @return {Boolean} Whether the event corresponds to a selection key
-             * @protected
              */
-            _checkSelectionKeys : function (event) {
+            checkSelectionKeys : function (event) {
                 var specialKey = false, keyCode = event.keyCode;
                 for (var index = 0, keyMap; index < this.selectionKeys.length; index++) {
                     keyMap = this.selectionKeys[index];
