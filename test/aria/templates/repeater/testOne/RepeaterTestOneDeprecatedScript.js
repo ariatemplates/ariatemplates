@@ -12,22 +12,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-{Template {
-    $classpath:"test.aria.templates.repeater.testSeven.RepeaterTestSeven",
-    $hasScript:false,
-    $macrolibs: {
-        libOne : "test.aria.templates.repeater.testSeven.RepeaterTestSevenLib"
+/* BACKWARD-COMPATIBILITY-BEGIN (cssclass) */
+// This file should be deleted when removing backward compatibility on cssClass
+Aria.tplScriptDefinition({
+    $classpath : "test.aria.templates.repeater.testOne.RepeaterTestOneDeprecatedScript",
+    $prototype : {
+        myCSSFunction : function (item) {
+            return (item.ct % 2 === 0) ? "evenRow" : "oddRow";
+        }
     }
-}}
-
-    {var myData = {myArray : ["just","an","array"]}/}
-    {macro main()}
-        {call libOne.insertRepeater(myData)/}
-    {/macro}
-
-    {macro myMacro()}
-        templateMacro
-    {/macro}
-
-{/Template}
+});
+/* BACKWARD-COMPATIBILITY-END (cssclass) */

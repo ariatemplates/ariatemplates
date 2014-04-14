@@ -12,33 +12,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-{Library {
-    $classpath : "test.aria.templates.repeater.testSeven.RepeaterTestSevenLib"
+/* BACKWARD-COMPATIBILITY-BEGIN (cssclass) */
+// This file should be deleted when removing backward compatibility on cssClass
+{Template {
+    $classpath:"test.aria.templates.repeater.testOne.RepeaterTestOneDeprecated",
+    $hasScript:true,
+    $extends: "test.aria.templates.repeater.testOne.RepeaterTestOne"
 }}
 
-    {macro insertRepeater(myData)}
+    {macro main()}
         <table>
         {repeater {
             loopType: "array",
-            content: myData.myArray,
+            content: data.myArray,
             type: "TBODY",
+            cssClass : "container",
             childSections : {
                     id: "myChildSection",
-                    macro: {
-                            name: "myMacro",
-                            args: [],
-                            scope: this
-                    },
-
-                    type: "TR"
+                    macro: "myMacro",
+                    type: "TR",
+                    cssClass: myCSSFunction
             }
         }/}
         </table>
     {/macro}
 
-    {macro myMacro()}
-        <td>libraryMacro</td>
-    {/macro}
-
-{/Library}
+{/Template}
+/* BACKWARD-COMPATIBILITY-END (cssclass) */

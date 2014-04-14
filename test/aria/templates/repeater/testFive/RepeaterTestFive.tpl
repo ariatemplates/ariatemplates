@@ -14,37 +14,61 @@
  */
 
 {Template {
-    $classpath:"test.aria.templates.repeater.testFive.RepeaterTestFive",
-    $hasScript:true
+    $classpath:"test.aria.templates.repeater.testFive.RepeaterTestFive"
 }}
-    {createView mySortedView on data.cities/}
-    {macro main()}
-    ${initializeView()}
-        <table>
-        {repeater {
-            loopType: "pagedView",
-            content: mySortedView,
-            type: "TBODY",
-            childSections : {
-                    id: "myChildSection",
-                    macro: {
-                            name: "myMacro",
-                            args: []
-                    },
 
-                    type: "TR"
+    {macro main()}
+        {section {
+            id :"containingSection",
+            macro: {
+                name: "containingMacro",
+                args : []
             }
         }/}
-        </table>
     {/macro}
 
-    {macro myMacro(item)}
-        <td>${item.item.city}</td>
-        <td>${item.ct}</td>
-        <td>${item.sectionId}</td>
-        <td>${item.sectionIdSuffix}</td>
-        <td>${item.index}</td>
-        ${updateRefreshCountOf(item)}
+
+    {macro containingMacro()}
+            <table>
+            {repeater {
+                id: "repeaterSection",
+                loopType: "array",
+                content: data.cities,
+                type: "TBODY",
+                childSections : {
+                        id: "childSection",
+                        macro: "childSectionMacro",
+                        type: "TR"
+                }
+            }/}
+            </table>
+    {/macro}
+
+    {macro childSectionMacro(repeaterItem)}
+        {var arrayItem = repeaterItem.item/}
+        ${(function(){
+            arrayItem.refreshCt++;
+            arrayItem.repeaterItem = repeaterItem;
+        })()}
+        <td>${arrayItem.city}</td>
+        <td>
+            ${arrayItem.refreshCt}
+        </td>
+        {section {
+            id: "subSection" + repeaterItem.sectionIdSuffix,
+            type: "td",
+            macro: {
+                name: "childSubSectionMacro",
+                args : [arrayItem]
+            }
+        }/}
+    {/macro}
+
+    {macro childSubSectionMacro(arrayItem)}
+        ${(function(){
+            arrayItem.subRefreshCt++;
+        })()}
+
     {/macro}
 
 {/Template}

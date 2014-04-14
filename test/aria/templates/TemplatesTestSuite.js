@@ -89,7 +89,7 @@ Aria.classDefinition({
         this.addTests("test.aria.templates.macrolibs.MacrolibsTestCase");
         this.addTests("test.aria.templates.textTemplates.TextTemplatesTestCase");
         this.addTests("test.aria.templates.section.SectionTestSuite");
-        this.addTests("test.aria.templates.repeater.RepeaterTestCase");
+        this.addTests("test.aria.templates.repeater.RepeaterTestSuite");
         this.addTests("test.aria.templates.visualFocus.VisualFocusTestCase");
         this.addTests("test.aria.templates.testmode.TestIdsTestCase");
         this.addTests("test.aria.templates.memoization.MemoTestCase");

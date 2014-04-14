@@ -15,17 +15,54 @@
 
 {Template {
     $classpath:"test.aria.templates.repeater.testThree.RepeaterTestThree",
-    $hasScript:true
+    $hasScript:false
 }}
-    {createView mySortedView on data.cities/}
+    {var myArray=[]/}
+    {var myMap={}/}
     {macro main()}
-    ${initializeView()}
         <table>
-        {repeater {
-            loopType: "sortedView",
-            content: this.mySortedView,
-            type: "TBODY",
-            childSections : {
+        {if data.step == 1}
+            {repeater {
+                // inconsistent loop type:
+                loopType: "array",
+                content: myMap,
+                type: "TBODY",
+                childSections : {
+                        id: "myChildSection",
+                        macro: {
+                                name: "myMacro",
+                                args: []
+                        },
+
+                        type: "TR"
+                }
+            }/}
+        {elseif data.step == 2/}
+            {repeater {
+                // no content
+                content : null,
+                type: "TBODY",
+                childSections : {
+                        id: "myChildSection",
+                        macro: {
+                                name: "myMacro",
+                                args: []
+                        },
+
+                        type: "TR"
+                }
+            }/}
+        {elseif data.step == 3/}
+            {repeater {
+                loopType: "array",
+                content: myArray,
+                // macro parameter is not supported
+                macro: {
+                        name: "myMacro",
+                        args: []
+                },
+                type: "TBODY",
+                childSections : {
                     id: "myChildSection",
                     macro: {
                             name: "myMacro",
@@ -33,18 +70,24 @@
                     },
 
                     type: "TR"
-            }
-        }/}
+                }
+            }/}
+        {elseif data.step == 4/}
+            {repeater {
+                loopType: "array",
+                content: myArray,
+                type: "TBODY",
+                childSections : {
+                    // missing macro parameter
+                    id: "myChildSection",
+                    type: "TR"
+                }
+            }/}
+        {/if}
         </table>
     {/macro}
 
     {macro myMacro(item)}
-        <td>${item.item.city}</td>
-        <td>${item.ct}</td>
-        <td>${item.sectionId}</td>
-        <td>${item.sectionIdSuffix}</td>
-        <td>${item.index}</td>
-        ${updateRefreshCountOf(item)}
     {/macro}
 
 {/Template}

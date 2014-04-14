@@ -198,11 +198,17 @@
              */
             this.id = id || "_gen_" + this._domId;
 
+            /* BACKWARD-COMPATIBILITY-BEGIN (cssclass) */
             /**
              * CSS class for the section
              * @type String
              */
             this.cssClass = cfg.cssClass;
+
+            if (cfg.cssClass) {
+                this.$logWarn(this.DEPRECATED_CSSCLASS);
+            }
+            /* BACKWARD-COMPATIBILITY-END (cssclass) */
 
             /**
              * Configuration for keyboard shortcuts
@@ -281,6 +287,29 @@
                 this.attributes = this.__json.copy(attributeBind.inside[attributeBind.to]);
                 this._attributesChangeListener = this.registerBinding(attributeBind, this._notifyAttributeChange);
             }
+
+            /* BACKWARD-COMPATIBILITY-BEGIN (cssclass) */
+            if (cfg.cssClass) {
+                if (this.attributes) {
+                    if (!this.attributes.classList) {
+                        this.attributes.classList = cfg.cssClass.split(" ");
+                        if (attributeBind) {
+                            this.__json.setValue(attributeBind.inside[attributeBind.to], "classList", cfg.cssClass.split(" "), this._attributesChangeListener);
+                        }
+                    }
+                } else {
+                    this.attributes = {
+                        classList : cfg.cssClass.split(" ")
+                    };
+                    if (attributeBind) {
+                        this.__json.setValue(attributeBind.inside, attributeBind.to, {
+                            classList : cfg.cssClass.split(" ")
+                        }, this._attributesChangeListener);
+                    }
+                }
+            }
+            /* BACKWARD-COMPATIBILITY-END (cssclass) */
+
         },
         $destructor : function () {
 
@@ -327,6 +356,9 @@
         },
         $statics : {
             // ERROR MESSAGES:
+            /* BACKWARD-COMPATIBILITY-BEGIN (cssclass) */
+            DEPRECATED_CSSCLASS : "cssClass property in section configuration is deprecated. Please use attributes.classList instead.",
+            /* BACKWARD-COMPATIBILITY-END (cssclass) */
             MISSING_TO_BINDING : "Invalid Binding Configuration: 'to' is mandatory",
             INVALID_TO_BINDING : "Invalid Binding Configuration: 'to' must be a Boolean value or null",
             WIDGETCALL_ERROR : "Error in '%2' for widget '%1'.",
@@ -564,7 +596,6 @@
 
             /**
              * RegisterBinding is used to add bindings to Templates and sections.
-             * @public
              * @param {aria.templates.CfgBeans:BindingConfiguration} bind
              * @param {Object} callback
              * @return {aria.core.CfgBeans:Callback} Listener that has been actually added
@@ -596,6 +627,7 @@
                     } catch (e) {
                         this.$logError(this.SECTION_BINDING_ERROR, [bind.inside, bind.to, this.id,
                                 this.tplCtxt.tplClasspath]);
+                        jsonChangeCallback = null;
                     }
                     return jsonChangeCallback;
                 }
@@ -725,12 +757,36 @@
              * JSON listener callback: called anytime a bindable attribute property has changed on a holder object
              * defined in one of the bindings
              * @protected
-             * @param {Object} res Object containing information about the attribute that changed
              * @see initWidget()
              */
-            _notifyAttributeChange : function (res) {
+            _notifyAttributeChange : function () {
+                var attrBinding = this._attributesBinding, newValue = attrBinding.inside[attrBinding.to];
+                this._applyNewAttributes(newValue);
+            },
+
+            /**
+             * Apply the new attributes by removing the current ones. If attributes are bound, the data model is updated
+             * @param {aria.templates.CfgBeans:HtmlAttribute} newValue
+             * @protected
+             */
+            updateAttributes : function (attributes) {
+                var attrBinding = this._attributesBinding;
+                if (attrBinding) {
+                    this.__json.setValue(attrBinding.inside, attrBinding.to, attributes);
+                } else {
+                    this._applyNewAttributes(attributes);
+                }
+            },
+
+            /**
+             * Apply the new attributes by removing the current ones. Even if attributes are bound, the data model is
+             * not updated
+             * @param {aria.templates.CfgBeans:HtmlAttribute} newValue
+             * @protected
+             */
+            _applyNewAttributes : function (newValue) {
                 var attribute, domElt = this.getDom(), whiteList = aria.templates.DomElementWrapper.attributesWhiteList, newAttributeValue;
-                var oldValue = this.attributes, attrBinding = this._cfg.bind.attributes, newValue = attrBinding.inside[attrBinding.to];
+                var oldValue = this.attributes;
 
                 // remove old members
                 for (attribute in oldValue) {
@@ -772,7 +828,9 @@
              * @param {String} className
              */
             updateClassList : function (className) {
+                /* BACKWARD-COMPATIBILITY-BEGIN (cssclass) */
                 this.cssClass = className;
+                /* BACKWARD-COMPATIBILITY-END (cssclass) */
                 if (this.attributes && this.attributes.classList) {
                     this.attributes.classList = className.split(" ");
                     var attrBinding = this._attributesBinding;
@@ -828,9 +886,8 @@
                 if (this.domType) {
                     // if domType is empty, we do not output anything for the section
                     // (used in the tooltip)
-                    var cssClass = this.cssClass ? ' class="' + this.cssClass + '"' : '';
                     var attributeList = this.attributes ? aria.utils.Html.buildAttributeList(this.attributes) : '';
-                    var h = ['<', this.domType, attributeList, cssClass, ' id="', this._domId, '" ',
+                    var h = ['<', this.domType, attributeList, ' id="', this._domId, '" ',
                             aria.utils.Delegate.getMarkup(this.delegateId), '>'];
                     out.write(h.join(''));// opening the section
                 }

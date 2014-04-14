@@ -15,26 +15,20 @@
 
 {Template {
     $classpath:"test.aria.templates.repeater.testOne.RepeaterTestOne",
-    $hasScript:true,
-    $css:["test.aria.templates.repeater.testOne.RepeaterTestOneCSS"]
+    $hasScript:true
 }}
 
-    {var myData = {myArray : ["just","an","array"]}/}
     {macro main()}
         <table>
         {repeater {
             loopType: "array",
-            content: myData.myArray,
+            content: data.myArray,
             type: "TBODY",
             childSections : {
                     id: "myChildSection",
-                    macro: {
-                            name: "myMacro",
-                            args: []
-                    },
-
+                    macro: "myMacro",
                     type: "TR",
-                    cssClass: myCSSFunction
+                    attributes: myAttributes
             }
         }/}
         </table>
