@@ -759,7 +759,9 @@ Aria.classDefinition({
          */
         _getPlaceholderContents : function (pageConfig, contentId) {
             var outputContent = [];
-            var content = pageConfig.contents.placeholderContents ? pageConfig.contents.placeholderContents[contentId] : null;
+            var content = pageConfig.contents.placeholderContents
+                    ? pageConfig.contents.placeholderContents[contentId]
+                    : null;
             if (!content) {
                 return outputContent;
             }
@@ -836,6 +838,14 @@ Aria.classDefinition({
          */
         getPageProvider : function () {
             return this._pageProvider;
+        },
+
+        /**
+         * Exposed methods of module controllers as services
+         * @return {aria.pageEngine.CfgBeans:Module.services} Map containing exposed module controller methods
+         */
+        getServices : function () {
+            return this._rootModule.services;
         },
 
         /**

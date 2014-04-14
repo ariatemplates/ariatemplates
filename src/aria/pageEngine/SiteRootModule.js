@@ -21,7 +21,7 @@ Aria.classDefinition({
     $classpath : "aria.pageEngine.SiteRootModule",
     $extends : "aria.templates.ModuleCtrl",
     $implements : ["aria.pageEngine.SiteRootModuleInterface"],
-    $dependencies : ["aria.utils.Path", "aria.pageEngine.utils.PageEngineUtils"],
+    $dependencies : ["aria.utils.Path", "aria.pageEngine.utils.PageEngineUtils", "aria.utils.Function"],
     $constructor : function () {
         this.$ModuleCtrl.constructor.call(this);
 
@@ -40,7 +40,7 @@ Aria.classDefinition({
         /**
          * Contains the refpaths of the loaded submodules
          * @type Object
-         * @private
+         * @protected
          */
         this._modulesPaths = {
             common : [],
@@ -50,28 +50,42 @@ Aria.classDefinition({
         /**
          * Shortcut for page engine utilities
          * @type aria.pageEngine.utils.PageEngineUtils
-         * @private
+         * @protected
          */
         this._utils = aria.pageEngine.utils.PageEngineUtils;
 
         /**
          * @type aria.utils.Path
-         * @private
+         * @protected
          */
         this._pathUtils = aria.utils.Path;
 
         /**
          * Contains bindings definitions
          * @type Object
+         * @protected
          */
         this._bindings = {};
 
         /**
          * Public interface of the pageEngine that exposes the navigate method
          * @type aria.pageEngine.PageEngineInterface
-         * @private
+         * @protected
          */
         this._pageEngine = null;
+
+        /**
+         * Exposed methods of module controllers as services
+         * @type Object
+         */
+        this.services = {};
+
+        /**
+         * Contains module refpaths and their exposure as a service {refpath:[servicename]}
+         * @type Object
+         * @protected
+         */
+        this._serviceList = {};
 
     },
     $destructor : function () {
@@ -87,7 +101,13 @@ Aria.classDefinition({
         this.commonModules = null;
         this.pageModules = null;
 
+        this.services = null;
+
         this.$ModuleCtrl.$destructor.call(this);
+    },
+    $statics : {
+        SERVICE_METHOD_NOT_FOUND : "Cannot expose module controller method as a service, the method '%1' is not declared in module '%2' public interface",
+        SERVICE_ALREADY_DEFINED : "A service called '%1' already exists"
     },
     $prototype : {
         $publicInterfaceName : 'aria.pageEngine.SiteRootModuleInterface',
@@ -205,7 +225,7 @@ Aria.classDefinition({
             }
 
             this.loadSubModules(definitions, {
-                fn : this.connectBindings,
+                fn : this.createServices,
                 scope : this,
                 resIndex : -1,
                 args : {
@@ -214,6 +234,38 @@ Aria.classDefinition({
                     modules : descriptions
                 }
             });
+        },
+
+        /**
+         * Exposes methods of module controllers as services
+         * @param {Object} args
+         */
+        createServices : function (args) {
+            var modules = args.modules;
+            for (var i = 0; i < modules.length; i += 1) {
+                var services = modules[i].services, refpath = modules[i].refpath, moduleInstance = this._utils.resolvePath(refpath, this);
+                if (services) {
+                    for (var service in services) {
+                        if (services.hasOwnProperty(service) && !this.json.isMetadata(service)) {
+                            if (this.services[service]) {
+                                this.$logWarn(this.SERVICE_ALREADY_DEFINED, service);
+                            }
+                            if (aria.utils.Type.isFunction(moduleInstance[services[service]])) {
+                                this.services[service] = aria.utils.Function.bind(moduleInstance[services[service]], moduleInstance);
+                                if (this._serviceList[refpath]) {
+                                    this._serviceList[refpath].push(service);
+                                } else {
+                                    this._serviceList[refpath] = [service];
+                                }
+                            } else {
+                                this.$logError(this.SERVICE_METHOD_NOT_FOUND, [services[service],
+                                        moduleInstance.$classpath]);
+                            }
+                        }
+                    }
+                }
+            }
+            this.connectBindings(args);
         },
 
         _injectPageEngine : function (initArgs) {
@@ -232,6 +284,12 @@ Aria.classDefinition({
                 refpath = modRefpaths[i];
                 this._disconnectModuleBindings(refpath);
                 this.disposeSubModule(this._utils.resolvePath(refpath, this));
+                if (this._serviceList[refpath]) {
+                    for (var i = 0; i < this._serviceList[refpath].length; i++) {
+                        delete this.services[this._serviceList[refpath][i]];
+                    }
+                    delete this._serviceList[refpath];
+                }
             }
         },
 
