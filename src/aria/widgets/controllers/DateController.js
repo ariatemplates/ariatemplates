@@ -35,7 +35,9 @@ Aria.classDefinition({
              * @type Date
              */
             jsDate : null,
-            displayText : ''
+            displayText : '',
+            lastValidText : '',
+            lastValidDate : null
         };
 
         /**
@@ -71,6 +73,13 @@ Aria.classDefinition({
          * @type Date
          */
         this._referenceDate = null;
+
+        /**
+         * allowing individual year changing (for fullFormat and longFormat)
+         * @protected
+         * @type Boolean
+         */
+        this._allowChangeYear = false;
     },
     $destructor : function () {
         this._dataModel = null;
@@ -105,6 +114,14 @@ Aria.classDefinition({
             // remove the time, so that comparisons between the value and minValue are
             // correct
             this._minValue = aria.utils.Date.removeTime(value);
+        },
+
+        /**
+         * allows year changing (for fullFormat and longFormat)
+         * @param {Boolean} allowChangeYear - true to allow the year to be individually changed
+         */
+        setAllowChangeYear : function (allowChangeYear) {
+            this._allowChangeYear = allowChangeYear;
         },
 
         /**
@@ -152,6 +169,8 @@ Aria.classDefinition({
                     report.ok = true;
                     this._dataModel.jsDate = internalValue;
                     this._dataModel.displayText = aria.utils.Date.format(internalValue, this._pattern);
+                    this._dataModel.lastValidText = this._dataModel.displayText;
+                    this._dataModel.lastValidDate = this._dataModel.jsDate;
                 }
             }
             if (report.ok) {
@@ -185,6 +204,9 @@ Aria.classDefinition({
                         outputPattern : this._pattern
                     };
                     var date = aria.utils.Date.interpret(text, options);
+                    if (this._getCanChangeYear() && !date) {
+                        date = this._getDateWithNewYear(text);
+                    }
                     if (date) {
                         report = this.checkValue(date);
                     } else {
@@ -196,6 +218,46 @@ Aria.classDefinition({
             }
 
             return report;
+        },
+
+        /**
+         * checks if the changed input text is equal to the old input value except for the year and, in that case
+         * returns the corresponding new date
+         * @param {String} text - the inputted text
+         * @return {Date}
+         */
+        _getDateWithNewYear : function (text) {
+            var oldText = this._dataModel.displayText || this._dataModel.lastValidText;
+            if (!oldText) {
+                return null;
+            }
+
+            var trimmedText = aria.utils.String.trim(text);
+            var oldDayMonth = oldText.substring(0, oldText.length - 5);
+            var newYear = trimmedText.substring(trimmedText.length - 4, trimmedText.length);
+            var newDayMonth = trimmedText.substring(0, trimmedText.length - 5);
+
+            var newDate = new Date(this._dataModel.jsDate || this._dataModel.lastValidDate);
+            newDate.setFullYear(newYear);
+
+            if (newDayMonth === oldDayMonth && aria.utils.Type.isDate(newDate)) {
+                return newDate;
+            }
+            return null;
+        },
+
+        /**
+         * returns true if user should be allowed to change individually the year in a fullFormat/longFormat date
+         * pattern
+         * @return {Boolean}
+         */
+        _getCanChangeYear : function () {
+            if (this._canChangeYear == null) {
+                var format = aria.utils.environment.Date.getDateFormats();
+                this._canChangeYear = this._allowChangeYear
+                        && (this._pattern == format.longFormat || this._pattern == format.fullFormat);
+            }
+            return this._canChangeYear;
         },
 
         /**

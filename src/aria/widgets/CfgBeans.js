@@ -521,6 +521,10 @@ Aria.beanDefinitions({
                     $type : "json:Date",
                     $description : "Reference date from which value can be calculated."
                 },
+                "allowChangeYear" : {
+                    $type : "json:Boolean",
+                    $description : "Specifies whether user should be allowed to change individually the year in a fullFormat/longFormat date pattern."
+                },
                 "bind" : {
                     $type : "TextInputCfg.bind",
                     $properties : {
