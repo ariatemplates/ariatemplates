@@ -15,36 +15,19 @@
 
 {Template {
     $classpath:"test.aria.templates.repeater.testFour.RepeaterTestFour",
-    $hasScript:true
+    $hasScript:false,
+    $macrolibs: {
+        libOne : "test.aria.templates.repeater.testFour.RepeaterTestFourLib"
+    }
 }}
-    {createView mySortedView on data.cities/}
-    {macro main()}
-    ${initializeView()}
-        <table>
-        {repeater {
-            loopType: "filteredView",
-            content: mySortedView,
-            type: "TBODY",
-            childSections : {
-                    id: "myChildSection",
-                    macro: {
-                            name: "myMacro",
-                            args: []
-                    },
 
-                    type: "TR"
-            }
-        }/}
-        </table>
+    {var myData = {myArray : ["just","an","array"]}/}
+    {macro main()}
+        {call libOne.insertRepeater(myData)/}
     {/macro}
 
-    {macro myMacro(item)}
-        <td>${item.item.city}</td>
-        <td>${item.ct}</td>
-        <td>${item.sectionId}</td>
-        <td>${item.sectionIdSuffix}</td>
-        <td>${item.index}</td>
-        ${updateRefreshCountOf(item)}
+    {macro myMacro()}
+        templateMacro
     {/macro}
 
 {/Template}

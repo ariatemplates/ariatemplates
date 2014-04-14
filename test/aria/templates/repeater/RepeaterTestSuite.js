@@ -14,20 +14,18 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.templates.section.SectionTestSuite",
+    $classpath : "test.aria.templates.repeater.RepeaterTestSuite",
     $extends : "aria.jsunit.TestSuite",
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
-        this.addTests("test.aria.templates.section.SectionTestCase");
-        this.addTests("test.aria.templates.section.sectionAttributes.SectionAttributes");
-        this.addTests("test.aria.templates.section.autorefresh.SectionAutorefreshTestCase");
-        this.addTests("test.aria.templates.section.processingIndicator.ProcessingIndicatorOnSection");
-        this.addTests("test.aria.templates.section.sectionWithoutMacro.SectionWithoutMacro");
-        this.addTests("test.aria.templates.section.sectionAttributes.binding.SectionAttributesBinding");
-        this.addTests("test.aria.templates.section.sectionAttributes.binding.SectionAttributesBindingNonRecursive");
         /* BACKWARD-COMPATIBILITY-BEGIN (cssclass) */
-        this.addTests("test.aria.templates.section.sectionAttributes.cssClass.CssClassDeprecationTest");
+        this.addTests("test.aria.templates.repeater.testOne.RepeaterOneDeprecated");
         /* BACKWARD-COMPATIBILITY-END (cssclass) */
+        this.addTests("test.aria.templates.repeater.testOne.RepeaterOne");
+        this.addTests("test.aria.templates.repeater.testTwo.RepeaterTwo");
+        this.addTests("test.aria.templates.repeater.testThree.RepeaterThree");
+        this.addTests("test.aria.templates.repeater.testFour.RepeaterFour");
+        this.addTests("test.aria.templates.repeater.testFive.RepeaterFive");
     }
 });

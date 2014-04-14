@@ -16,20 +16,23 @@
 Aria.tplScriptDefinition({
     $classpath : "test.aria.templates.repeater.testOne.RepeaterTestOneScript",
     $prototype : {
-        myCSSFunction : function (item) {
-            return (item.ct % 2 === 0) ? "evenRow" : "oddRow";
-        },
-        updateRefreshCountOf : (function () {
-            var index = 0;
-            return function (item) {
-                var sectionId = item.sectionId;
-                if (!this.data.refCount[sectionId]) {
-                    this.data.refCount[sectionId] = 1;
-                    this.data.items[index++] = item;
-                } else {
-                    this.data.refCount[sectionId]++;
+        myAttributes : function (item) {
+            return {
+                classList : (item.ct % 2 === 0) ? ["evenRow"] : ["oddRow"],
+                dataset : {
+                    index : item.ct + ""
                 }
             };
-        })()
+        },
+        updateRefreshCountOf : function (item) {
+            var sectionId = item.sectionId;
+            if (!this.data.refCount[sectionId]) {
+                this.data.refCount[sectionId] = 1;
+                this.data.items.push(item);
+            } else {
+                this.data.refCount[sectionId]++;
+            }
+        }
+
     }
 });

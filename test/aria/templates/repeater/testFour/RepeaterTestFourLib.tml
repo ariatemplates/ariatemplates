@@ -13,39 +13,32 @@
  * limitations under the License.
  */
 
-{Template {
-    $classpath:"test.aria.templates.repeater.testTwo.RepeaterTestTwo",
-    $css:["test.aria.templates.repeater.testTwo.RepeaterTestTwoCSS"]
+{Library {
+    $classpath : "test.aria.templates.repeater.testFour.RepeaterTestFourLib"
 }}
 
-    {macro main()}
+    {macro insertRepeater(myData)}
         <table>
         {repeater {
-            loopType: "map",
-            content: data.myMap,
+            loopType: "array",
+            content: myData.myArray,
             type: "TBODY",
             childSections : {
                     id: "myChildSection",
                     macro: {
                             name: "myMacro",
-                            args: []
+                            args: [],
+                            scope: this
                     },
 
-                    type: "TR",
-                    attributes : {
-                    	classList : ["line"]
-                    }
+                    type: "TR"
             }
         }/}
         </table>
     {/macro}
 
-    {macro myMacro(item)}
-        <td>{if item.item}${item.item.name}{/if}</td>
-        <td>${item.ct}</td>
-        <td>${item.sectionId}</td>
-        <td>${item.sectionIdSuffix}</td>
-        <td>${item.index}</td>
+    {macro myMacro()}
+        <td>libraryMacro</td>
     {/macro}
 
-{/Template}
+{/Library}
