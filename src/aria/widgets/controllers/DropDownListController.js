@@ -103,9 +103,8 @@ Aria.classDefinition({
          * Checking against special key combinations that trigger a selection of the item in the dropdown
          * @param {aria.DomEvent} event
          * @return {Boolean} Whether the event corresponds to a selection key
-         * @protected
          */
-        _checkSelectionKeys : function (event) {
+        checkSelectionKeys : function (event) {
             return event.keyCode == event.KC_ENTER;
         },
 
@@ -122,7 +121,7 @@ Aria.classDefinition({
             var dataModel = this._dataModel, domEvent = aria.DomEvent, report, selectionKey;
 
             if (this._listWidget) {
-                selectionKey = this._checkSelectionKeys(event);
+                selectionKey = this.checkSelectionKeys(event);
             }
             if (!domEvent.isNavigationKey(keyCode) && !selectionKey) {
                 // value that should be in the input after this keystroke and also the caret positions

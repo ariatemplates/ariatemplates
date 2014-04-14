@@ -432,9 +432,8 @@ Aria.classDefinition({
                 case event.KC_TAB :
                     if (this.isInputFieldFocused()) {
                         if (!inputFieldIsEmpty) {
-                            if (this.controller.freeText) {
+                            if (!this.controller.checkSelectionKeys(event) && this.controller.freeText) {
                                 event.preventDefault();
-
                                 var report = this.controller.checkText(inputFieldValue, false);
                                 this._reactToControllerReport(report);
                                 this.setHelpText(false);
