@@ -47,5 +47,6 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.form.multiautocomplete.issue1076.blur.OnBlurTest");
         this.addTests("test.aria.widgets.form.multiautocomplete.issue1076.focus.OnFocusTest");
         this.addTests("test.aria.widgets.form.multiautocomplete.issue1085.InitCheckboxesTest");
+        this.addTests("test.aria.widgets.form.multiautocomplete.enterAndTab.EnterAndTabTestCase");
     }
 });
