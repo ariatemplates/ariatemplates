@@ -534,11 +534,17 @@ Aria.classDefinition({
             /* BACKWARD-COMPATIBILITY-ENDS GH-1044 HEADERS */
 
             /* BACKWARD-COMPATIBILITY-BEGINS GH-1044 XHRHEADER */
-            if (this.useXHRHeader) {
-                headers["X-Requested-With"] = this.defaultXHRHeader;
-            } else {
-                // user must have set this manually
-                this.$logWarn("`aria.core.IO.useXHRHeader` property is deprecated, please override `aria.core.IO.headers` instead");
+            // if (!this.headers["X-Requested-With"]) {
+            // // user uses new syntax to say "I don't want the xhr header"
+            // } else if (this.useXHRHeader) {
+            // // If user didn't alter this.headers["X-Requested-With"], the header is already there, no need to set it
+            // // headers["X-Requested-With"] = this.defaultXHRHeader;
+            // } else { // the code below }
+            if (this.headers["X-Requested-With"] && !this.useXHRHeader) {
+                // User must have set this.useXHRHeader=false manually, while this.headers["X-Requested-With"] was
+                // left untouched nonempty
+                // Let's delete the header and tell the user to override this.headers instead
+                this.$logWarn("Using `aria.core.IO.useXHRHeader = false` is deprecated, please override `aria.core.IO.headers` instead to get rid of `X-Requested-With` header");
                 delete headers["X-Requested-With"];
             }
             /* BACKWARD-COMPATIBILITY-ENDS GH-1044 XHRHEADER */
