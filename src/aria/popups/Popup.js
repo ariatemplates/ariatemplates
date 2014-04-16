@@ -847,7 +847,17 @@ Aria.classDefinition({
                     domEvent : domEvent
                 };
                 this.$raiseEvent(event);
-                this.close(domEvent);
+
+                // timeout needed by IE for the PTR07394450 : it allows the browser to move the focus (asynchronous in
+                // IE), before to close the popup
+                if (aria.core.Browser.isIE) {
+                    var that = this;
+                    setTimeout(function () {
+                        that.close(domEvent);
+                    }, 1);
+                } else {
+                    this.close(domEvent);
+                }
                 return true;
             }
         },
