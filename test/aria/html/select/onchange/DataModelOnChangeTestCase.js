@@ -15,13 +15,13 @@
 
 Aria.classDefinition({
     $classpath : "test.aria.html.select.onchange.DataModelOnChangeTestCase",
-    $extends : "aria.jsunit.TemplateTestCase",
-    $dependencies : ["aria.utils.Dom", "aria.html.Select", "aria.utils.SynEvents"],
+    $extends : "aria.jsunit.RobotTestCase",
     $constructor : function () {
-        this.$TemplateTestCase.constructor.call(this);
+        this.$RobotTestCase.constructor.call(this);
 
         this.data = {
             selectedOption : "EURO",
+            onChangeCalls : 0,
             onChangeOption : ""
         };
         this.setTestEnv({
@@ -32,34 +32,18 @@ Aria.classDefinition({
     },
     $prototype : {
         runTemplateTest : function () {
+            var selectWidget = this.testDiv.getElementsByTagName("select")[0]; // we know there's only one
 
-            var document = Aria.$window.document;
-            var selectWidgets = this.testDiv.getElementsByTagName("select");
+            this.assertEquals(selectWidget.selectedIndex, 0, "The selected Index should be %2 but was %1");
 
-            // we know there's only one
-            var selectWidget = selectWidgets[0];
-            this.assertEquals(selectWidget.selectedIndex, 0, "The selected Index should be %2  but was %1 ");
-
-            // to be nullified in the callback of the click action
-            this.selectWidget = selectWidget;
-            this.selectWidget.focus();
-
-            this.synEvent.type(this.selectWidget, "[down][down][enter]", {
-                fn : function () {
-                    this.templateCtxt.$focus("justToFocusOut");
-                    this.waitFor({
-                        condition : function () {
-                            return this.data.onChangeOption !== "";
-                        },
-                        callback : this.afterChange
-                    });
-
-                },
+            this.synEvent.execute([["click", selectWidget], ["type", null, "[down][down][enter]\t"]], {
+                fn : this.afterChange,
                 scope : this
             });
         },
 
         afterChange : function () {
+            this.assertEquals(this.data.onChangeCalls, 1, "onchange should have been called exactly once");
             this.assertEquals(this.data.selectedOption, "POUND", "Selected Option should be %2  but was %1");
             this.assertEquals(this.data.onChangeOption, "POUND", "Changed Option should be %2  but was %1");
             this.end();

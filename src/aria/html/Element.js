@@ -84,6 +84,13 @@
              */
             this.__delegateId = null;
 
+            /**
+             * Array of event names which are not delegated and can only be handled through the fallback markup.
+             * @type Array
+             * @private
+             */
+            this.__delegateFallbackEvents = null;
+
             this._registerBindings();
             this._normalizeCallbacks();
         },
@@ -91,6 +98,7 @@
             if (this.__delegateId) {
                 aria.utils.Delegate.remove(this.__delegateId);
                 this.__delegateId = null;
+                this.__delegateFallbackEvents = null;
             }
 
             this.$BindableWidget.$destructor.call(this);
@@ -119,10 +127,15 @@
              */
             _normalizeCallbacks : function () {
                 var eventListeners = this._cfg.on, hasListeners = false, listArray;
+                var delegateManager = aria.utils.Delegate;
+                var delegateFallbackEvents = [];
 
                 for (var listener in eventListeners) {
                     if (eventListeners.hasOwnProperty(listener)) {
                         hasListeners = true;
+                        if (!delegateManager.isDelegated(listener)) {
+                            delegateFallbackEvents.push(listener);
+                        }
                         listArray = eventListeners[listener];
                         if (!aria.utils.Type.isArray(listArray)) {
                             listArray = [listArray];
@@ -135,11 +148,11 @@
                 }
 
                 if (hasListeners) {
-                    var delegateManager = aria.utils.Delegate;
                     this.__delegateId = delegateManager.add({
                         fn : this._delegate,
                         scope : this
                     });
+                    this.__delegateFallbackEvents = delegateFallbackEvents;
                 }
             },
 
@@ -231,8 +244,14 @@
                     markup.push(attributes, " ");
                 }
 
-                if (this.__delegateId) {
-                    markup.push(aria.utils.Delegate.getMarkup(this.__delegateId), " ");
+                var delegateId = this.__delegateId;
+                if (delegateId) {
+                    var delegateManager = aria.utils.Delegate;
+                    markup.push(delegateManager.getMarkup(delegateId), " ");
+                    var delegateFallbackEvents = this.__delegateFallbackEvents;
+                    for (var i = 0, l = delegateFallbackEvents.length; i < l; i++) {
+                        markup.push(delegateManager.getFallbackMarkup(delegateFallbackEvents[i], delegateId, false), " ");
+                    }
                 }
 
                 out.write(markup.join(""));
