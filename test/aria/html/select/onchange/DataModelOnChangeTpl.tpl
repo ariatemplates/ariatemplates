@@ -23,20 +23,19 @@
 
 {macro main()}
 
- {var myStringOptions = ["EURO","FRANC SUISSE","POUND"]/}
-
-  {@html:Select{
-    options : myStringOptions,
-	bind : {
+	{@html:Select{
+		options : ["EURO","FRANC SUISSE","POUND"],
+		bind : {
 			value : {
-					inside : data,
-					to : "selectedOption"
-					}
-			},
-	on  :{
-		change:myFunc
+				inside : data,
+				to : "selectedOption"
+			}
+		},
+		on : {
+			change : onChange
 		}
 	}/}
-	<input {id "justToFocusOut"/}>
+	<input type="text">
 {/macro}
+
 {/Template}

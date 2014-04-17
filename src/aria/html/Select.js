@@ -37,6 +37,11 @@ Aria.classDefinition({
             scope : this
         });
 
+        this._chainListener(cfg.on, 'blur', {
+            fn : this.__updateDataModel,
+            scope : this
+        });
+
         this.$Element.constructor.call(this, cfg, context, line);
     },
     $prototype : {
