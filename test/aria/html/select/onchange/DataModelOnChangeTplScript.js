@@ -16,7 +16,8 @@
 Aria.tplScriptDefinition({
     $classpath : "test.aria.html.select.onchange.DataModelOnChangeTplScript",
     $prototype : {
-        myFunc : function () {
+        onChange : function () {
+            this.data.onChangeCalls++;
             this.data.onChangeOption = this.data.selectedOption;
         }
     }
