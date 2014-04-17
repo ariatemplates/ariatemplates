@@ -1,101 +1,12 @@
 /* globals window, document */
-var applet = null;
 
 aria.core.AppEnvironment.setEnvironment({
     appSettings : {
         devMode : true
-    },
-    widgetSettings : {
-        middleAlignment : true
     }
 });
 
-function onTestResultsSaved () {
-    applet.sendInstruction({
-        instruction : "_TESTMON:Test ended"
-    });
-}
-
-var console;
-var startTest = function (evt) {
-    var qs = aria.utils.QueryString;
-    applet = aria.jsunit.AppletWorker;
-
-    if (qs.getKeyValue("UITest") == "1" || qs.getKeyValue("monitorTest") == "1") {
-        applet.init("appletContainer");
-    }
-
-    if (qs.getKeyValue("monitorTest") == "1") {
-        if (applet.isReady()) {
-            applet.sendInstruction({
-                instruction : "_TESTMON:Test started"
-            });
-        }
-    }
-};
-
-/**
- * Communicators are DIVs in the page with a test statuses
- */
-var createCommunicators = function () {
-    createStatusCommunicator();
-    createMailReportCommunicator();
-    createFullReportCommunicator();
-    createFailedTestCommunicator();
-};
-
-var createStatusCommunicator = function () {
-    var errors = aria.jsunit.TestRunner.getErrors();
-    if (errors.length > 0) {
-        var testStatus = "ko";
-    } else {
-        var testStatus = "ok";
-    }
-    new aria.jsunit.TestCommunicator({
-        id : "__ARIA_TEST_STATUS",
-        content : testStatus
-    });
-};
-
-var createMailReportCommunicator = function () {
-    var jsCoverage = aria.jsunit.JsCoverage;
-    var testRunner = aria.jsunit.TestRunner;
-
-    var mailHeader = testRunner.getReporter().getMailHeader();
-    var runnerReport = testRunner.getReport();
-    var jsCoverageEmailReport = jsCoverage.getReportForEmail();
-    var mailFooter = testRunner.getReporter().getMailFooter();
-
-    var report = mailHeader + runnerReport + jsCoverageEmailReport +
-            // Insert new reports here
-            mailFooter;
-
-    new aria.jsunit.TestCommunicator({
-        id : "__ARIA_MAIL_REPORT",
-        content : report
-    });
-};
-
-var createFullReportCommunicator = function () {
-    var jsCoverage = aria.jsunit.JsCoverage;
-    var testRunner = aria.jsunit.TestRunner;
-
-    var report = testRunner.getSonarReporter().getReport();
-
-    new aria.jsunit.TestCommunicator({
-        id : "__ARIA_FULL_REPORT",
-        content : report
-    });
-};
-
-var createFailedTestCommunicator = function () {
-    var failures = aria.jsunit.TestRunner.getFailures();
-
-    new aria.jsunit.TestCommunicator({
-        id : "__ARIA_FAILED_TESTS",
-        content : failures
-    });
-};
+var startTest = function (evt) {};
 
 var toBeDisposed = [];
 
@@ -114,8 +25,7 @@ var endTest = function (evt) {
             aria.jsunit.JsCoverage.addFiltersFromQueryString();
 
             var exclude = ["aria.jsunit.JsCoverage", "aria.jsunit.JsCoverageObject", "aria.jsunit.JsCoverageReport",
-                    "aria.jsunit.JsCoverageStore", "aria.jsunit.TestRunner", "aria.jsunit.TestCommunicator",
-                    "aria.utils.Type"];
+                    "aria.jsunit.JsCoverageStore", "aria.jsunit.TestRunner", "aria.utils.Type"];
 
             for (var i = Aria.$classes.length - 1; i >= 0; i--) {
                 var elt = Aria.$classes[i];
@@ -152,25 +62,18 @@ var disposeEverything = function () {
 
         var storeResults = document.location.href.indexOf("store=true") != -1;
         if (storeResults) {
-            aria.jsunit.JsCoverage.store({
-                callback : {
-                    fn : createCommunicators,
-                    scope : window
-                }
-            });
-        } else {
-            createCommunicators();
+            aria.jsunit.JsCoverage.store();
         }
     }
 };
 
 Aria.load({
-    classes : ["aria.jsunit.IOViewer", "aria.jsunit.AppletWorker", "aria.widgets.AriaSkinInterface",
+    classes : ["aria.jsunit.IOViewer", "aria.widgets.AriaSkinInterface",
             "aria.jsunit.TestacularReport", "aria.utils.Array"],
     oncomplete : function () {
         var qs = aria.utils.QueryString;
 
-        var testToRun = qs.getKeyValue("testClasspath");
+        var testToRun = qs.getKeyValue("testClasspath").replace(/^\s+|\s+$/g, '');
         if (!testToRun || testToRun == "testClasspath") {
             var html = '';
             html += '<form action="test.htm" style="text-align:center; font-family:Arial;">';
@@ -191,8 +94,8 @@ Aria.load({
             //testToRun = "test.CoverageTestSuite";
         }
 
-        var neededClasses = ["aria.jsunit.TestRunner", "aria.jsunit.JsCoverage", "aria.jsunit.TestCommunicator",
-            "aria.utils.Callback", "aria.jsunit.TestWrapper", "aria.utils.Type", testToRun];
+        var neededClasses = ["aria.jsunit.TestRunner", "aria.jsunit.JsCoverage", "aria.utils.Callback",
+                "aria.jsunit.TestWrapper", "aria.utils.Type", testToRun];
 
         var additionalAppender = qs.getKeyValue("appender");
         if (additionalAppender === "window") {
@@ -227,9 +130,6 @@ Aria.load({
 
                 // test cases and test suites specified in the array will be skipped
                 var skipTests = [];
-                if (qs.getKeyValue("UITest") != "1") {
-                    skipTests.push("test.aria.widgets.WidgetsUITestSuite");
-                }
                 if (qs.getKeyValue("robot") === "false") {
                     skipTests.push("aria.jsunit.RobotTestCase");
                 }
