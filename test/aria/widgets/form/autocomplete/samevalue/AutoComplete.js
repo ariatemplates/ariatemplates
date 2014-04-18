@@ -15,7 +15,7 @@
 
 Aria.classDefinition({
     $classpath : "test.aria.widgets.form.autocomplete.samevalue.AutoComplete",
-    $extends : "aria.jsunit.TemplateTestCase",
+    $extends : "aria.jsunit.RobotTestCase",
     $prototype : {
         runTemplateTest : function () {
             this.clickAndType('acDest1', 'lon', {
