@@ -21,9 +21,7 @@
     var regExSpecials, __modifiers = {
         "eat" : {
             /**
-             * <span style="font-weight: bold">MODIFIER</span>
-             * <br/>
-             * Returns "" for any entry.
+             * <span style="font-weight: bold">MODIFIER</span> <br/> Returns "" for any entry.
              * @name aria.templates.Modifiers.prototype.eat
              * @return {String}
              */
@@ -31,6 +29,7 @@
                 return "";
             }
         },
+        /* BACKWARD-COMPATIBILITY-BEGIN (deprecate escape modifier) */
         "escape" : {
             /**
              * Initialization function called when the template is parsed
@@ -40,17 +39,17 @@
                 out.addDependencies(["aria.utils.String"]);
             },
             /**
-             * <span style="font-weight: bold">MODIFIER</span>
-             * <br/>
-             * Escape < > & in the given entry.
+             * <span style="font-weight: bold">MODIFIER</span> <br/> Escape < > & in the given entry.
              * @name aria.templates.Modifiers.prototype.escape
              * @param {String} str the entry
              * @return {String}
              */
             fn : function (s) {
+                this.$logWarn(this.DEPRECATED_ESCAPE_MODIFIER);
                 return aria.utils.String.escapeHTML(String(s));
             }
         },
+        /* BACKWARD-COMPATIBILITY-END (deprecate escape modifier) */
         "escapeforhtml" : {
             /**
              * Initialization function called when the template is parsed
@@ -60,25 +59,23 @@
                 out.addDependencies(["aria.utils.String"]);
             },
             /**
-             * <span style="font-weight: bold">MODIFIER</span>
-             * <br/>
-             *
-             * Use the <a href="http://ariatemplates.com/aria/guide/apps/apidocs/#aria.utils.String:escapeForHTML:method">aria.utils.String.escapeForHTML</li> utility to process the given input, converting the latter to a string before sending it.
-             *
-             * However this modifier skips the escaping in several cases, returning the value as is (and thus without type conversion):
+             * <span style="font-weight: bold">MODIFIER</span> <br/> Use the <a
+             * href="http://ariatemplates.com/aria/guide/apps/apidocs/#aria.utils.String:escapeForHTML:method">aria.utils.String.escapeForHTML</a>
+             * utility to process the given input, converting the latter to a string before sending it. However this
+             * modifier skips the escaping in several cases, returning the value as is (and thus without type
+             * conversion):
              * <ul>
              * <li>if the input is null or undefined</li>
              * <li>if the argument passed to control the escaping finally tells not to escape anything</li>
              * </li>
-             *
              * @name aria.templates.Modifiers.prototype.escapeForHTML
-             *
              * @param input the input value
-             * @param arg the argument forwarded to the <a href="http://ariatemplates.com/aria/guide/apps/apidocs/#aria.utils.String:escapeForHTML:method">aria.utils.String.escapeForHTML</li> method. Please refer to its own documentation for more information.
-             *
+             * @param arg the argument forwarded to the <a
+             * href="http://ariatemplates.com/aria/guide/apps/apidocs/#aria.utils.String:escapeForHTML:method">aria.utils.String.escapeForHTML</a>
+             * method. Please refer to its own documentation for more information.
              * @return the processed input value. See detailed description for more information.
-             *
-             * @see <a href="http://ariatemplates.com/aria/guide/apps/apidocs/#aria.utils.String:escapeForHTML:method">aria.utils.String.escapeForHTML</li>
+             * @see <a
+             * href="http://ariatemplates.com/aria/guide/apps/apidocs/#aria.utils.String:escapeForHTML:method">aria.utils.String.escapeForHTML</a>
              */
             fn : function (input, arg) {
                 if (input == null) {
@@ -97,9 +94,7 @@
         },
         "capitalize" : {
             /**
-             * <span style="font-weight: bold">MODIFIER</span>
-             * <br/>
-             * Returns the entry in capital letters
+             * <span style="font-weight: bold">MODIFIER</span> <br/> Returns the entry in capital letters
              * @name aria.templates.Modifiers.prototype.capitalize
              * @param {String} str the entry
              * @return {String}
@@ -110,9 +105,8 @@
         },
         "default" : {
             /**
-             * <span style="font-weight: bold">MODIFIER</span>
-             * <br/>
-             * if str is null or undefined return the default value
+             * <span style="font-weight: bold">MODIFIER</span> <br/> if str is null or undefined return the default
+             * value
              * @name aria.templates.Modifiers.prototype.default
              * @param {String} str the entry
              * @param {String} defaultValue the default value
@@ -128,9 +122,8 @@
         },
         "empty" : {
             /**
-             * <span style="font-weight: bold">MODIFIER</span>
-             * <br/>
-             * if str is not defined or empty string "", or string composed of whitespaces, return the default value
+             * <span style="font-weight: bold">MODIFIER</span> <br/> if str is not defined or empty string "", or
+             * string composed of whitespaces, return the default value
              * @name aria.templates.Modifiers.prototype.empty
              * @param {String} str the entry
              * @param {String} defaultValue the default value
@@ -146,9 +139,8 @@
         },
         "pad" : {
             /**
-             * <span style="font-weight: bold">MODIFIER</span>
-             * <br/>
-             * Pad the string with the provided padding character(s) or non-breaking spaces
+             * <span style="font-weight: bold">MODIFIER</span> <br/> Pad the string with the provided padding
+             * character(s) or non-breaking spaces
              * @name aria.templates.Modifiers.prototype.pad
              * @param {String} str the entry
              * @param {Integer} sz the targeted size for the result string
@@ -189,9 +181,7 @@
                 out.addDependencies(["aria.utils.Date", "aria.utils.Type"]);
             },
             /**
-             * <span style="font-weight: bold">MODIFIER</span>
-             * <br/>
-             * Format a date with a given pattern
+             * <span style="font-weight: bold">MODIFIER</span> <br/> Format a date with a given pattern
              * @name aria.templates.Modifiers.prototype.dateformat
              * @param {Date} date the given entry
              * @param {String} pattern the date pattern
@@ -214,9 +204,7 @@
                 out.addDependencies(["aria.utils.Date", "aria.utils.Type"]);
             },
             /**
-             * <span style="font-weight: bold">MODIFIER</span>
-             * <br/>
-             * Format a time with a given pattern
+             * <span style="font-weight: bold">MODIFIER</span> <br/> Format a time with a given pattern
              * @name aria.templates.Modifiers.prototype.timeformat
              * @param {Date} time for the given entry
              * @param {String} pattern applied to time
@@ -240,10 +228,9 @@
                 out.addDependencies(["aria.utils.String", "aria.utils.Type"]);
             },
             /**
-             * <span style="font-weight: bold">MODIFIER</span>
-             * <br/>
-             * Will highlight with &lt:strong&gt; tag the first occurrence of the entry (starting from a new word -
-             * won't highlight in the middle of the word) if it matches the highlight value.
+             * <span style="font-weight: bold">MODIFIER</span> <br/> Will highlight with &lt:strong&gt; tag the first
+             * occurrence of the entry (starting from a new word - won't highlight in the middle of the word) if it
+             * matches the highlight value.
              * @name aria.templates.Modifiers.prototype.highlightfromnewword
              * @param {String} str the entry
              * @param {String} highlight the default value
@@ -285,9 +272,8 @@
                 out.addDependencies(["aria.utils.String", "aria.utils.Type"]);
             },
             /**
-             * <span style="font-weight: bold">MODIFIER</span>
-             * <br/>
-             * Will highlight with &lt:strong&gt; tag the begining of the entry if it match the highligh value
+             * <span style="font-weight: bold">MODIFIER</span> <br/> Will highlight with &lt:strong&gt; tag the
+             * begining of the entry if it match the highligh value
              * @name aria.templates.Modifiers.prototype.starthighlight
              * @param {String} str the entry
              * @param {String} highlight the default value
@@ -314,10 +300,8 @@
                 out.addDependencies(["aria.utils.String", "aria.utils.Type"]);
             },
             /**
-             * <span style="font-weight: bold">MODIFIER</span>
-             * <br/>
-             * Will highlight with &lt;strong&gt; tag the beginning of a word that matches any of the words in the
-             * highlight value.
+             * <span style="font-weight: bold">MODIFIER</span> <br/> Will highlight with &lt;strong&gt; tag the
+             * beginning of a word that matches any of the words in the highlight value.
              * @example
              * Given the input string, str: "Using highlight"
              * and the matching string, highlight: "us hi"
@@ -371,14 +355,17 @@
      * ${'some text'|modifier}
      * </pre>
      *
-     * <span style="font-weight: bold">WARNING</span>: below in the <span style="font-style: italic">Public methods</span> section you will see a bunch of methods corresponding to the actual modifier functions. The implementation behind however does not give access to those methods directly. To call them, please use the method <span style="font-style: italic">callModifiers</span> instead, like this:
+     * <span style="font-weight: bold">WARNING</span>: below in the <span style="font-style: italic">Public methods</span>
+     * section you will see a bunch of methods corresponding to the actual modifier functions. The implementation behind
+     * however does not give access to those methods directly. To call them, please use the method <span
+     * style="font-style: italic">callModifiers</span> instead, like this:
      *
      * <pre>
      * aria.templates.Mofifiers.callModifier('modifierName', [param1, param2, ...]);
      * </pre>
      *
-     * Concerned methods are marked as <span style="font-weight: bold">MODIFIER</span> at the beginning of their descriptions.
-     *
+     * Concerned methods are marked as <span style="font-weight: bold">MODIFIER</span> at the beginning of their
+     * descriptions.
      * @singleton
      */
     Aria.classDefinition({
@@ -389,6 +376,9 @@
         },
         $statics : {
             UNKNOWN_MODIFIER : "Unknown modifier %1.",
+            /* BACKWARD-COMPATIBILITY-BEGIN (deprecate escape modifier) */
+            DEPRECATED_ESCAPE_MODIFIER : "Escape modifier is deprecated, please use escapeforhtml modifier instead",
+            /* BACKWARD-COMPATIBILITY-END (deprecate escape modifier) */
             DATEFORMAT_MODIFIER_ENTRY : "Entry %1 is not a date."
         },
         $prototype : {
