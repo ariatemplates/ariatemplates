@@ -73,7 +73,7 @@ Aria.load({
     oncomplete : function () {
         var qs = aria.utils.QueryString;
 
-        var testToRun = qs.getKeyValue("testClasspath").replace(/^\s+|\s+$/g, '');
+        var testToRun = (qs.getKeyValue("testClasspath") || "").replace(/^\s+|\s+$/g, '');
         if (!testToRun || testToRun == "testClasspath") {
             var html = '';
             html += '<form action="test.htm" style="text-align:center; font-family:Arial;">';
