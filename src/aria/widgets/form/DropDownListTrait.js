@@ -140,15 +140,11 @@ Aria.classDefinition({
             var referenceMaxHeight = options.maxHeight || this.MAX_HEIGHT;
             maxHeight = (maxHeight < this.MIN_HEIGHT) ? this.MIN_HEIGHT : maxHeight;
             maxHeight = (maxHeight > referenceMaxHeight) ? referenceMaxHeight : maxHeight - 2;
-            var list = new aria.widgets.form.list.List({
+            var listObj = {
                 id : cfg.id,
                 defaultTemplate : "defaultTemplate" in options ? options.defaultTemplate : cfg.listTemplate,
                 block : true,
                 sclass : cfg.listSclass || this._skinObj.listSclass,
-                onclick : {
-                    fn : this._clickOnItem,
-                    scope : this
-                },
                 onmouseover : {
                     fn : this._mouseOverItem,
                     scope : this
@@ -163,7 +159,7 @@ Aria.classDefinition({
                 },
                 maxHeight : maxHeight,
                 minWidth : "minWidth" in options ? options.minWidth : this._inputMarkupWidth + 15,
-                width : this.__computeListWidth(cfg.popupWidth, this._inputMarkupWidth + 15),
+                width : "popupWidth" in options ? options.popupWidth : this.__computeListWidth(cfg.popupWidth, this._inputMarkupWidth + 15),
                 preselect : cfg.preselect,
                 bind : {
                     items : {
@@ -176,7 +172,29 @@ Aria.classDefinition({
                     }
                 },
                 scrollBarX : false
-            }, this._context, this._lineNumber);
+            };
+
+            if ("onclick" in options) {
+                if (options.onclick !== false) {
+                    listObj.onclick = options.onclick;
+                }
+            } else {
+                listObj.onclick = {
+                    fn : this._clickOnItem,
+                    scope : this
+                };
+            }
+
+            if ("onchange" in options) {
+                listObj.onchange = options.onchange;
+            }
+
+            if ("bind" in options) {
+                listObj.bind.selectedValues = options.bind.selectedValues;
+                listObj.bind.multipleSelect = options.bind.multipleSelect;
+            }
+
+            var list = new aria.widgets.form.list.List(listObj, this._context, this._lineNumber);
             list.$on({
                 'widgetContentReady' : this._refreshPopup,
                 scope : this

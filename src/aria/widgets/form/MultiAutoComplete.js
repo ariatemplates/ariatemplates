@@ -100,86 +100,38 @@ Aria.classDefinition({
          */
         _renderDropdownContent : function (out, options) {
             options = options || {};
-            var cfg = this._cfg;
-            var controller = this.controller;
-            var dm = controller.getDataModel();
-            var element = this._domElt.lastChild;
-            var domUtil = aria.utils.Dom;
-            var geometry = domUtil.getGeometry(element);
-            if (geometry === null) {
-                return;
+            var dm = this.controller.getDataModel();
+
+            options.bind = {
+                selectedValues : {
+                    to : "selectedValues",
+                    inside : dm
+                },
+                multipleSelect : {
+                    to : "multipleSelect",
+                    inside : dm
+                }
+            };
+
+            if ("popupWidth" in this._cfg && this._cfg.popupWidth > -1) {
+                options.popupWidth = this._cfg.popupWidth;
+                options.minWidth = this._cfg.popupWidth;
             }
 
-            domUtil.scrollIntoView(element);
-            var top = geometry.y;
-            var viewPort = aria.utils.Dom._getViewportSize();
-            var bottom = viewPort.height - top - geometry.height;
-            var maxHeight = (top > bottom) ? top : bottom;
-            var referenceMaxHeight = options.maxHeight || this.MAX_HEIGHT;
-            maxHeight = (maxHeight < this.MIN_HEIGHT) ? this.MIN_HEIGHT : maxHeight;
-            maxHeight = (maxHeight > referenceMaxHeight) ? referenceMaxHeight : maxHeight - 2;
-            var listObj = {
-                id : cfg.id,
-                defaultTemplate : "defaultTemplate" in options ? options.defaultTemplate : cfg.listTemplate,
-                block : true,
-                sclass : cfg.listSclass || this._skinObj.listSclass,
-                onmouseover : {
-                    fn : this._mouseOverItem,
-                    scope : this
-                },
-                onkeyevent : {
-                    fn : this._keyPressed,
-                    scope : this
-                },
-                onclose : {
-                    fn : this._closeDropdown,
-                    scope : this
-                },
-                maxHeight : maxHeight,
-                minWidth : "minWidth" in options ? options.minWidth : this._inputMarkupWidth + 15,
-                width : this.__computeListWidth(cfg.popupWidth, this._inputMarkupWidth + 15),
-                preselect : cfg.preselect,
-                bind : {
-                    items : {
-                        to : "listContent",
-                        inside : dm
-                    },
-                    selectedIndex : {
-                        to : "selectedIdx",
-                        inside : dm
-                    },
-                    selectedValues : {
-                        to : "selectedValues",
-                        inside : dm
-                    },
-                    multipleSelect : {
-                        to : "multipleSelect",
-                        inside : dm
-                    }
-                },
-                scrollBarX : false
-            };
-            if (controller._isExpanded) {
-                listObj.defaultTemplate = controller.getExpandoTemplate();
-                listObj.maxOptions = (this.controller.maxOptions) ? this.__returnMaxCount() : null;
-                listObj.onchange = {
+            if (this.controller._isExpanded) {
+                options.defaultTemplate = this.controller.getExpandoTemplate();
+                options.maxOptions = (this.controller.maxOptions) ? this.__returnMaxCount() : null;
+                options.onchange = {
                     fn : this._changeOnItem,
                     scope : this
                 };
             } else {
-                listObj.onclick = {
+                options.onclick = {
                     fn : this._clickOnItem,
                     scope : this
                 };
             }
-            var list = new aria.widgets.form.list.List(listObj, this._context, this._lineNumber);
-            list.$on({
-                'widgetContentReady' : this._refreshPopup,
-                scope : this
-            });
-            out.registerBehavior(list);
-            list.writeMarkup(out);
-            this.controller.setListWidget(list);
+            this.$AutoComplete._renderDropdownContent.call(this, out, options);
         },
 
         /**
