@@ -1,3 +1,4 @@
+/* BACKWARD-COMPATIBILITY-BEGIN GH-1104 */
 /* jshint maxparams:7 */
 /*
  * Copyright 2012 Amadeus s.a.s.
@@ -41,6 +42,7 @@ Aria.classDefinition({
          * @protected
          */
         this._applet = aria.jsunit.AppletWorker;
+        this.$logWarn("aria.jsunit.ScreenCapture class is deprecated and will be removed soon from the framework");
     },
     $destructor : function () {
         this._applet = null;
@@ -161,3 +163,4 @@ Aria.classDefinition({
         }
     }
 });
+/* BACKWARD-COMPATIBILITY-END GH-1104 */

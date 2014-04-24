@@ -1,3 +1,4 @@
+/* BACKWARD-COMPATIBILITY-BEGIN GH-1104 */
 /*
  * Copyright 2012 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,9 +29,9 @@
     };
 
     /**
-     * The AppletWorker class is the API that allows to use the applet as a communication bridge
-     * between the javascript and external applications For the bridge to work you need to add an applet tag to your
-     * HTML page in the following way:
+     * The AppletWorker class is the API that allows to use the applet as a communication bridge between the javascript
+     * and external applications For the bridge to work you need to add an applet tag to your HTML page in the following
+     * way:
      * @param {String} appletName The name of the applet that was added the page
      */
     Aria.classDefinition({
@@ -40,6 +41,7 @@
             this._applet = null;
             this._appletName = null;
             this._isReady = false;
+            this.$logWarn("aria.jsunit.AppletWorker class is deprecated and will be removed soon from the framework");
         },
         $destructor : function () {
             // this._applet = null;
@@ -132,3 +134,4 @@
         }
     });
 })();
+/* BACKWARD-COMPATIBILITY-END GH-1104 */
