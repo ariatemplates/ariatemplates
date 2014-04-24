@@ -1,3 +1,4 @@
+/* BACKWARD-COMPATIBILITY-BEGIN GH-1104 */
 /*
  * Copyright 2012 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,6 +27,7 @@ Aria.classDefinition({
         // constructor
         this.$TestCase.constructor.call(this);
         this.screenCapture = aria.jsunit.ScreenCapture;
+        this.$logWarn("aria.jsunit.UITestCase class is deprecated and will be removed soon from the framework");
     },
     $destructor : function () {
         this.$TestCase.$destructor.call(this);
@@ -83,3 +85,4 @@ Aria.classDefinition({
         }
     }
 });
+/* BACKWARD-COMPATIBILITY-END GH-1104 */
