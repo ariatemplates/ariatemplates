@@ -12,12 +12,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
 
 (function () {
 
-    var typeUtils = aria.utils.Type;
+    var typeUtils = (require("../utils/Type"));
     var __mergeEvents = Aria.__mergeEvents;
-    var __clsMgr = aria.core.ClassMgr;
+
     var __cpt = -1; // last used number to store the key inside the interface
     var __getNextCpt = function () {
         __cpt++;
@@ -97,7 +98,7 @@
             // the error is logged later
             return null;
         }
-        if (!aria.core.JsonValidator.normalize({
+        if (!(require("./JsonValidator")).normalize({
             json : res,
             beanName : "aria.core.CfgBeans.ItfMember" + memberType + "Cfg"
         })) {
@@ -214,7 +215,7 @@
      * not be called directly by the application developer.
      * @private
      */
-    Aria.classDefinition({
+    module.exports = Aria.classDefinition({
         $classpath : "aria.core.Interfaces",
         $singleton : true,
         $statics : {
@@ -267,15 +268,13 @@
                     superInterface = Aria.getClassRef(def.$extends);
                     if (!superInterface) {
                         this.$logError(this.BASE_INTERFACE_UNDEFINED, [classpath, def.$extends]);
-                        __clsMgr.notifyClassLoadError(classpath);
-                        return;
+                        throw new Error(this.BASE_INTERFACE_UNDEFINED);
                     }
                     var parentCstr = superInterface ? superInterface.interfaceDefinition : null;
                     parentCstr = parentCstr ? parentCstr.$noargConstructor : null;
                     if (!parentCstr) {
                         this.$logError(this.WRONG_BASE_INTERFACE, [classpath, def.$extends]);
-                        __clsMgr.notifyClassLoadError(classpath);
-                        return;
+                        throw new Error(this.WRONG_BASE_INTERFACE);
                     }
                     proto = new parentCstr();
                     proto.$interfaces = __copyMap(superInterface.prototype.$interfaces);
@@ -365,26 +364,27 @@
                 def.$noargConstructor = new Function();
                 def.$noargConstructor.prototype = proto;
                 Aria.$classes.push(constructor);
-                __clsMgr.notifyClassLoad(classpath);
+                return constructor;
             },
 
             /**
              * This method is intended to be called only from Aria.loadClass for each interface declared in $implements.
-             * @param {String} interfaceClasspath Classpath of the interface to apply to the class definition. This
-             * interface must already be completely loaded.
+             * @param {String|Object} interfaceOrClasspath Classpath or reference of the interface to apply to the class
+             * definition. This interface must already be completely loaded.
              * @param {Object} classPrototype Prototype of the class being loaded.
              * @return {Boolean} false if a fatal error occured, true otherwise
              */
-            applyInterface : function (interfaceClasspath, classPrototype) {
+            applyInterface : function (interfaceOrClasspath, classPrototype) {
+                var itf = Aria.getClassRef(interfaceOrClasspath);
+                if (!itf.interfaceDefinition) {
+                    this.$logError(this.WRONG_INTERFACE, [interfaceOrClasspath, classPrototype.$classpath]);
+                    return false;
+                }
+                var interfaceClasspath = itf.interfaceDefinition.$classpath;
                 var interfaces = classPrototype.$interfaces;
                 if (interfaces && interfaces[interfaceClasspath]) {
                     // the interface was already applied
                     return true;
-                }
-                var itf = Aria.getClassRef(interfaceClasspath);
-                if (!itf.interfaceDefinition) {
-                    this.$logError(this.WRONG_INTERFACE, [interfaceClasspath, classPrototype.$classpath]);
-                    return false;
                 }
                 if (itf.superInterface) {
                     // apply the parent interface before this interface

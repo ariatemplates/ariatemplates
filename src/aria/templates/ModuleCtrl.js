@@ -366,25 +366,19 @@ Aria.classDefinition({
          * @return {Object} The module resource set
          */
         getResourceSet : function () {
-            if (!this.__resources) {
-                if (this.$resources) {
-                    this.__resources = {};
-
-                    for (var itm in this.$resources) {
-                        if (this.$resources[itm].hasOwnProperty('provider')) {
-                            // it's a resource provider: it's in the prototype
-                            this.__resources[itm] = this[itm];
-                        } else {
-                            this.__resources[itm] = (Aria.getClassRef(this.$resources[itm]));
+            var res = this.__resources;
+            if (!res) {
+                var src = this.$resources;
+                if (src) {
+                    this.__resources = res = {};
+                    for (var itm in src) {
+                        if (src.hasOwnProperty(itm)) {
+                            res[itm] = this[itm];
                         }
                     }
-                } else {
-                    // TODO: Log no resources error
-                    return undefined;
                 }
             }
-
-            return this.__resources;
+            return res;
         },
 
         /**

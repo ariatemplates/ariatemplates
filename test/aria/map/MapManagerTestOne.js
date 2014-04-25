@@ -59,7 +59,7 @@ Aria.classDefinition({
         },
 
         _testAsyncInexistentProviderCb : function () {
-            this.assertErrorInLogs(aria.core.ClassLoader.CLASS_LOAD_FAILURE);
+            this.assertErrorInLogs(aria.core.MultiLoader.LOAD_ERROR);
             this.assertErrorInLogs(this.mapMgr.INEXISTENT_PROVIDER);
             this.notifyTestEnd("testAsyncInexistentProvider");
         },

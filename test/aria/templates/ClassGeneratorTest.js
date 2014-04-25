@@ -253,7 +253,7 @@ Aria.classDefinition({
             try {
                 var res = args.classDef;
                 // check the syntax of the class definition
-                res = res.replace("Aria.classDefinition", ""); // do not really load the class (it would not be the
+                res = res.replace("Aria.classDefinition", "return "); // do not really load the class (it would not be the
                 // proper way)
                 var classDef = Aria['eval'](res);
                 // check class definition properties
@@ -299,7 +299,7 @@ Aria.classDefinition({
             try {
                 var res = args.classDef;
                 // check the syntax of the class definition
-                res = res.replace("Aria.classDefinition", ""); // do not really load the class (it would not be the
+                res = res.replace("Aria.classDefinition", "return "); // do not really load the class (it would not be the
                 // proper way)
                 var classDef = Aria["eval"](res);
                 var classDefProto = classDef.$prototype;

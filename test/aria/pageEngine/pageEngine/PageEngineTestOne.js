@@ -60,7 +60,7 @@ Aria.classDefinition({
         _onMissingSiteDependencies : function (args) {
             this.assertTrue(args == this.pageEngine.MISSING_DEPENDENCIES);
             this.assertErrorInLogs(this.pageEngine.MISSING_DEPENDENCIES);
-            this.assertErrorInLogs(aria.core.ClassLoader.CLASS_LOAD_FAILURE);
+            this.assertErrorInLogs(aria.core.MultiLoader.LOAD_ERROR);
 
             this._disposePageEngine();
             this._createPageEngine({
@@ -98,7 +98,7 @@ Aria.classDefinition({
         _onMissingPageDependencies : function (args) {
             this.assertTrue(args == this.pageEngine.MISSING_DEPENDENCIES);
             this.assertErrorInLogs(this.pageEngine.MISSING_DEPENDENCIES);
-            this.assertErrorInLogs(aria.core.ClassLoader.CLASS_LOAD_FAILURE);
+            this.assertErrorInLogs(aria.core.MultiLoader.LOAD_ERROR);
 
             this.end();
         },

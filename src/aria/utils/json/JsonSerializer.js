@@ -12,13 +12,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
 
 /**
  * Utility to convert data to a JSON string
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.utils.json.JsonSerializer",
-    $dependencies : ["aria.utils.Type"],
     /**
      * @param {Boolean} optimized If true, an optimized version of the serializer will be used whwnever the options
      * allow to do so
@@ -233,7 +233,7 @@ Aria.classDefinition({
             }
         })();
 
-        var typeUtil = aria.utils.Type;
+        var typeUtil = (require("../Type"));
 
         var defaults = {
             indent : "",
@@ -380,7 +380,7 @@ Aria.classDefinition({
                             // to be compatible with JSON.stringify
                             res.push(' ');
                         }
-                        var newOptions = aria.utils.Json.copy(options, true);
+                        var newOptions = require("../Json").copy(options, true);
                         newOptions.baseIndent = subIndent;
                         newOptions.maxDepth = options.maxDepth - 1;
                         output = this._serialize(item[key], newOptions);
@@ -419,7 +419,7 @@ Aria.classDefinition({
              */
             __preserveObjectKey : function (key, options) {
                 if (!options.keepMetadata) {
-                    return !aria.utils.Json.isMetadata(key);
+                    return !require("../Json").isMetadata(key);
                 }
                 return true;
             },
@@ -454,7 +454,7 @@ Aria.classDefinition({
                         if (indent) {
                             res.push(subIndent);
                         }
-                        var newOptions = aria.utils.Json.copy(options, true);
+                        var newOptions = require("../Json").copy(options, true);
                         newOptions.baseIndent = subIndent;
                         newOptions.maxDepth = options.maxDepth - 1;
                         output = this._serialize(item[i], newOptions);

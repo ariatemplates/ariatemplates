@@ -27,7 +27,7 @@ Aria.classDefinition({
     $prototype : {
         runTemplateTest : function () {
             this.assertErrorInLogs(aria.jsunit.TemplateTestCase.IFRAME_LOAD_TEMPLATE);
-            this.assertErrorInLogs(aria.core.ClassLoader.CLASS_LOAD_FAILURE);
+            this.assertErrorInLogs(aria.core.MultiLoader.LOAD_ERROR);
 
             this.end();
         }

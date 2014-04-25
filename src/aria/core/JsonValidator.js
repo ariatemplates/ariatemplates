@@ -12,11 +12,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
 
 (function () {
 
-    var jsonUtils = aria.utils.Json;
-    var typeUtils = aria.utils.Type;
+    var jsonUtils = (require("../utils/Json"));
+    var typeUtils = (require("../utils/Type"));
 
     /**
      * The JSON Validator does two main operations:
@@ -33,9 +34,8 @@
      * changing something: any protected method in this class (method whose name starts with one underscore) may be
      * called from JsonTypesCheck. Private methods (starting with two underscores) are not called from JsonTypesCheck.
      */
-    Aria.classDefinition({
+    module.exports = Aria.classDefinition({
         $classpath : "aria.core.JsonValidator",
-        $dependencies : ["aria.utils.Json", "aria.utils.Type"],
         $singleton : true,
 
         $constructor : function () {
@@ -294,6 +294,9 @@
                     var ns = typeName.substr(0, i);
                     typeName = typeName.substr(i + 1);
                     packageName = (packageDef.$namespaces == null ? null : packageDef.$namespaces[ns]);
+                    if (typeUtils.isObject(packageName)) {
+                        packageName = packageName.$package;
+                    }
                     if (!packageName) {
                         this._logError(this.UNDEFINED_PREFIX, [ns, this._currentBeanName]);
                         return this._typeRefError;
@@ -678,9 +681,9 @@
                 noerrors = noerrors && this.__logAllErrors(this.__preprocessBP(def));
                 if (noerrors) {
                     this.__loadedBeans[bp] = def;
-                    aria.core.ClassMgr.notifyClassLoad(bp);
+                    return def;
                 } else {
-                    aria.core.ClassMgr.notifyClassLoadError(bp);
+                    throw new Error("Error while loading " + bp);
                 }
             },
 
@@ -699,11 +702,15 @@
                 var dep = [];
 
                 // load missing dependencies
+
+                // FIXME: find a way to restore the following block:
+                /*
                 if (this._options.checkBeans && !this.__loadedBeans[this._BEANS_SCHEMA_PACKAGE]
                         && bp != this._BEANS_SCHEMA_PACKAGE && bp != this._BASE_TYPES_PACKAGE) {
                     // if checking beans is required, add the corresponding schema for that
                     dep.push(this._BEANS_SCHEMA_PACKAGE);
                 }
+                */
 
                 // add $dependencies
                 var dependencies = def.$dependencies || [];
@@ -718,20 +725,17 @@
                     }
                 }
 
-                var dpMap = {
-                    "JS" : dep
-                };
-
-                var doLoad = aria.core.ClassMgr.loadClassDependencies(bp, dpMap, {
-                    fn : this.__loadBeans,
-                    scope : this,
-                    args : bp
+                return Aria.loadOldDependencies({
+                    classpaths : {
+                        "JS" : dep
+                    },
+                    oldModuleLoader : def.$oldModuleLoader,
+                    complete : {
+                        scope : this,
+                        fn : this.__loadBeans,
+                        args : [bp]
+                    }
                 });
-
-                // load definition
-                if (doLoad) {
-                    this.__loadBeans(bp);
-                }
             },
 
             /**
@@ -778,13 +782,16 @@
              * Validate a configuration object compared to its definition. All errors are logged.
              * @param {String} cfgBeanName The configuration classpath;
              * @param {Object} cfg The configuration bean to validate
-             * @param {Object} errorToLog Optional json. By default, the INVALID_CONFIGURATION message is used with the conrfiguration bean name.
+             * @param {Object} errorToLog Optional json. By default, the INVALID_CONFIGURATION message is used with the
+             * conrfiguration bean name.
+             *
              * <pre>
              * {
              *      msg : {String} log message used with $logError,
              *      params : {Array} parameters used with $logError,
              * }
              * </pre>
+             *
              * @return {Boolean} true if the configuration is valid.
              */
             validateCfg : function (cfgBeanName, cfg, errorToLog) {
@@ -804,7 +811,10 @@
                             error.message = logs.prepareLoggedMessage(error.msgId, error.msgArgs);
                         }
 
-                        errorToLog = errorToLog || {msg: this.INVALID_CONFIGURATION, params : [cfgBeanName]};
+                        errorToLog = errorToLog || {
+                            msg : this.INVALID_CONFIGURATION,
+                            params : [cfgBeanName]
+                        };
                         this.$logError(errorToLog.msg, errorToLog.params, e);
                     }
                 }
@@ -822,3 +832,4 @@
         }
     });
 })();
+require('./JsonTypesCheck');

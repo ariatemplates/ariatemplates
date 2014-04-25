@@ -98,6 +98,20 @@ Aria.beanDefinitions({
             $description : "A string which contains a complete path to a package or a class.",
             $sample : "aria.core.JsonTypes",
             $regExp : /^([a-zA-Z_\$][\w\$]*($|\.(?=.)))+$/
+        },
+        "ClassRef" : {
+            $type : "MultiTypes",
+            $description : "Reference to a class.",
+            $contentTypes : [{
+                        $type : "PackageName",
+                        $description : "Classpath of a class."
+                    }, {
+                        $type : "ObjectRef",
+                        $description : "Reference to a singleton."
+                    }, {
+                        $type : "FunctionRef",
+                        $description : "Reference to a class constructor."
+                    }]
         }
     }
 });

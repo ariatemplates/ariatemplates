@@ -12,6 +12,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaCoreLog = require("../core/Log");
+var ariaUtilsType = require("../utils/Type");
+var ariaUtilsString = require("../utils/String");
+var ariaUtilsJson = require("../utils/Json");
 
 (function () {
     var console = Aria.$global.console;
@@ -43,16 +48,15 @@
     /**
      * Base class gathering all assertions used in Test case classes
      */
-    Aria.classDefinition({
+    module.exports = Aria.classDefinition({
         $classpath : "aria.jsunit.Assert",
-        $extends : "aria.jsunit.Test",
+        $extends : (require("./Test")),
         $statics : {
             ERROR_TYPES : {
                 ERROR : "error",
                 FAILURE : "failure"
             }
         },
-        $dependencies : ["aria.core.log.SilentArrayAppender", "aria.core.Log"],
         $constructor : function () {
             // constructor
             this.$Test.constructor.call(this);
@@ -85,17 +89,17 @@
              */
             this._expectedErrorList = null;
 
-            aria.core.Log.clearAppenders();
-            aria.core.Log.addAppender(new aria.core.log.SilentArrayAppender());
+            ariaCoreLog.clearAppenders();
+            ariaCoreLog.addAppender(new (require("../core/log/SilentArrayAppender"))());
             if (Aria.verbose) {
                 // Readd the default appender in verbose mode to log things also to the browser console.
                 // The order of appenders matters due to getAppenders()[0] used in assertErrorInLogs|assertLogsEmpty.
                 // Not using Aria.debug not to have a message flood in Attester.
-                aria.core.Log.addAppender(new aria.core.log.DefaultAppender());
+                ariaCoreLog.addAppender(new (require("../core/log/DefaultAppender"))());
             }
 
-            aria.core.Log.resetLoggingLevels();
-            aria.core.Log.setLoggingLevel("*", 1);
+            ariaCoreLog.resetLoggingLevels();
+            ariaCoreLog.setLoggingLevel("*", 1);
         },
         $destructor : function () {
             this._expectedEventsList = null;
@@ -178,7 +182,7 @@
 
                     this.raiseFailure(msg);
 
-                    if (console && aria.utils.Type.isFunction(console.trace)) {
+                    if (console && ariaUtilsType.isFunction(console.trace)) {
                         console.assert(false, "Stack trace for failed Assert #" + this._assertCount + " in test : ["
                                 + this._currentTestName + "]");
                     }
@@ -266,7 +270,7 @@
                 var msg;
 
                 if (optMsg) {
-                    msg = aria.utils.String.substitute(optMsg, ['"' + value1 + '"', '"' + value2 + '"']);
+                    msg = ariaUtilsString.substitute(optMsg, ['"' + value1 + '"', '"' + value2 + '"']);
                 } else {
                     msg = 'First value: "' + value1 + '" differs from the second: "' + value2 + '".';
                 }
@@ -286,7 +290,7 @@
                 var msg;
 
                 if (optMsg) {
-                    msg = aria.utils.String.substitute(optMsg, ['"' + value1 + '"', '"' + value2 + '"']);
+                    msg = ariaUtilsString.substitute(optMsg, ['"' + value1 + '"', '"' + value2 + '"']);
                 } else {
                     msg = 'First value: ' + value1 + ', second value: ' + value2 + ', tolerance was: ' + tolerance;
                 }
@@ -321,7 +325,7 @@
                     this._assertCount++;
                     this._totalAssertCount++;
                 }
-                var logAppender = aria.core.Log.getAppenders()[0];
+                var logAppender = ariaCoreLog.getAppenders()[0];
 
                 if (!logAppender.isEmpty()) {
                     var logs = logAppender.getLogs(), errFound = false, msg = '';
@@ -334,10 +338,13 @@
 
                             var err = logItem.objOrErr;
                             if (err) {
+                                if (err.logDetails) {
+                                    err.logDetails();
+                                }
                                 msg += "\n";
                                 msg += (err.name && err.message) ? (err.name + ": " + err.message) : err;
 
-                                if (console && aria.utils.Type.isFunction(console.error)) {
+                                if (console && ariaUtilsType.isFunction(console.error)) {
                                     console.error(this.$classpath + "." + this._currentTestName + ": " + msg + "\n"
                                             + err.stack);
                                 }
@@ -367,7 +374,7 @@
              * @param {Number} count [optional] number of times the error must be present in the logs
              */
             assertErrorInLogs : function (errorMsg, count) {
-                var logAppender = aria.core.Log.getAppenders()[0];
+                var logAppender = ariaCoreLog.getAppenders()[0];
                 var logs = logAppender.getLogs(), errFound = false, newLogs = [];
                 if (!errorMsg) {
                     this.assertTrue(false, "assertErrorInLogs was called with a null error message.");
@@ -403,7 +410,7 @@
              * @param {Object} smallJ the contained structure
              */
             assertJsonContains : function (bigJ, smallJ, optMsg) {
-                this.assertTrue(aria.utils.Json.contains(bigJ, smallJ), optMsg);
+                this.assertTrue(ariaUtilsJson.contains(bigJ, smallJ), optMsg);
             },
 
             /**
@@ -423,12 +430,12 @@
                     var jsonOptions = {
                         indent : "   "
                     };
-                    var s1 = aria.utils.Json.convertToJsonString(obj1, jsonOptions);
-                    var s2 = aria.utils.Json.convertToJsonString(obj2, jsonOptions);
+                    var s1 = ariaUtilsJson.convertToJsonString(obj1, jsonOptions);
+                    var s2 = ariaUtilsJson.convertToJsonString(obj2, jsonOptions);
                     optMsg = "JSON comparison failed. First object:<br><code><pre>" + s1
                             + "</pre></code> differs from the second:<br><code><pre>" + s2 + "</pre></code>";
                 }
-                this.assertTrue(aria.utils.Json.equals(obj1, obj2), optMsg);
+                this.assertTrue(ariaUtilsJson.equals(obj1, obj2), optMsg);
             },
 
             /**
@@ -444,7 +451,7 @@
              * @param {String} optMsg optional message to add to the failure description
              */
             assertJsonNotEquals : function (obj1, obj2, optMsg) {
-                this.assertFalse(aria.utils.Json.equals(obj1, obj2), optMsg);
+                this.assertFalse(ariaUtilsJson.equals(obj1, obj2), optMsg);
             },
 
             /**
@@ -636,6 +643,7 @@
                 if (this._overriddenClasses == null) {
                     this._overriddenClasses = {};
                 }
+                var cacheKey = Aria.getLogicalPath(initialClass, ".js", true);
                 var clsInfos = this._overriddenClasses[initialClass];
                 if (clsInfos == null) { // only save the previous class if it was not already overridden
                     var currentClass = Aria.nspace(initialClass);
@@ -656,10 +664,30 @@
                             initialClass : currentClass
                         };
                     }
+                    clsInfos.cachedModule = require.cache[cacheKey];
                     this._overriddenClasses[initialClass] = clsInfos;
                 }
+
+                // alter the global classpath to point to the mock
                 var ns = Aria.nspace(clsInfos.clsNs);
                 ns[clsInfos.clsName] = mockClass;
+
+                // also alter require cache
+                delete require.cache[cacheKey];
+                var currentContext = require("noder-js/currentContext");
+                var modull;
+                if (currentContext) {
+                    modull = currentContext.getModule(cacheKey);
+                } else {
+                    modull = {
+                        id : cacheKey,
+                        filename : cacheKey
+                    };
+                    require.cache[cacheKey] = modull;
+                }
+                modull.exports = mockClass;
+                modull.loaded = true;
+                modull.preloaded = true;
             },
 
             /**
@@ -669,8 +697,15 @@
                 if (this._overriddenClasses != null) {
                     for (var i in this._overriddenClasses) {
                         var clsInfos = this._overriddenClasses[i];
+
+                        // restore the global classpath to point to the original
                         var ns = Aria.nspace(clsInfos.clsNs);
                         ns[clsInfos.clsName] = clsInfos.initialClass;
+
+                        // also restore require cache
+                        var initialClasspath = clsInfos.clsNs + "." + clsInfos.clsName;
+                        var cacheKey = Aria.getLogicalPath(initialClasspath, ".js", true);
+                        require.cache[cacheKey] = clsInfos.cachedModule;
                     }
                     this._overriddenClasses = null;
                 }

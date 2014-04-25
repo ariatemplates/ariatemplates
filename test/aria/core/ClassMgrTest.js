@@ -13,47 +13,46 @@
  * limitations under the License.
  */
 
+var Aria = require("ariatemplates/Aria");
+require("ariatemplates/templates/Template");
+var testAriaCoreTestClassMgrTestClass1 = require("./test/classMgrTest/Class1");
+var testAriaCoreTestClassMgrTestUnloadFilter = require("./test/classMgrTest/UnloadFilter");
+var ariaJsunitTestCase = require("ariatemplates/jsunit/TestCase");
+var ariaCoreMultiLoader = require("ariatemplates/core/MultiLoader");
+var ariaCoreClassMgr = require("ariatemplates/core/ClassMgr");
+var ariaCoreTimer = require("ariatemplates/core/Timer");
+var ariaCoreIOFiltersMgr = require("ariatemplates/core/IOFiltersMgr");
+
 /**
  * Test case for the class manager.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "test.aria.core.ClassMgrTest",
-    $extends : "aria.jsunit.TestCase",
-    $dependencies : ["aria.templates.Template", "test.aria.core.test.classMgrTest.Class1",
-            "test.aria.core.test.classMgrTest.UnloadFilter"],
+    $extends : ariaJsunitTestCase,
     $prototype : {
 
         testAsyncMissingJS : function () {
             this._checkAriaLoadError({
                 classes : ["test.aria.core.test.ClassWhichDoesNotExist"]
-            }, "testAsyncMissingJS", aria.core.ClassLoader.CLASS_LOAD_FAILURE);
+            }, "testAsyncMissingJS", ariaCoreMultiLoader.LOAD_ERROR);
         },
 
         testAsyncMissingTPL : function () {
             this._checkAriaLoadError({
                 templates : ["test.aria.core.test.TemplateWhichDoesNotExist"]
-            }, "testAsyncMissingTPL", aria.core.ClassLoader.CLASS_LOAD_FAILURE);
+            }, "testAsyncMissingTPL", ariaCoreMultiLoader.LOAD_ERROR);
         },
 
         testAsyncJSClassWrongClasspath : function () {
             this._checkAriaLoadError({
                 classes : ["test.aria.core.test.JSWrongClasspath"]
-            }, "testAsyncJSClassWrongClasspath", aria.core.ClassLoader.MISSING_CLASS_DEFINITION);
+            }, "testAsyncJSClassWrongClasspath", ariaCoreMultiLoader.LOAD_ERROR);
         },
 
         testAsyncTPLClassWrongClasspath : function () {
             this._checkAriaLoadError({
                 templates : ["test.aria.core.test.TPLWrongClasspath"]
-            }, "testAsyncTPLClassWrongClasspath", aria.core.ClassLoader.MISSING_CLASS_DEFINITION);
-        },
-
-        /**
-         * Test that a circular dependency raises an error
-         */
-        testAsyncCircularDependency : function () {
-            this._checkAriaLoadError({
-                classes : ['test.aria.core.test.CircularClassA']
-            }, "testAsyncCircularDependency", aria.core.ClassMgr.CIRCULAR_DEPENDENCY);
+            }, "testAsyncTPLClassWrongClasspath", ariaCoreMultiLoader.LOAD_ERROR);
         },
 
         /**
@@ -87,12 +86,6 @@ Aria.classDefinition({
         _onAriaLoadError : function (args) {
             try {
                 this.assertErrorInLogs(args.errorID);
-                if (args.testName == "testAsyncCircularDependency") {
-                    // When there is a circular dependency, the corresponding loader is known not to be disposed
-                    // properly. Let's dispose it manually:
-                    var loader = aria.core.ClassMgr.getClassLoader("test.aria.core.test.CircularClassF");
-                    loader.$dispose();
-                }
                 this.notifyTestEnd(args.testName);
             } catch (e) {
                 this.handleAsyncTestError(e);
@@ -107,9 +100,9 @@ Aria.classDefinition({
             this.assertTrue(original.a === 1, "Original value is wrong");
             original.$dispose();
 
-            var filter = new test.aria.core.test.classMgrTest.UnloadFilter();
-            aria.core.IOFiltersMgr.addFilter(filter);
-            aria.core.ClassMgr.unloadClass("test.aria.core.test.classMgrTest.Class1");
+            var filter = new testAriaCoreTestClassMgrTestUnloadFilter();
+            ariaCoreIOFiltersMgr.addFilter(filter);
+            ariaCoreClassMgr.unloadClass("test.aria.core.test.classMgrTest.Class1");
             Aria.load({
                 classes : ['test.aria.core.test.classMgrTest.Class1'],
                 oncomplete : {
@@ -125,7 +118,7 @@ Aria.classDefinition({
                 var modified = new test.aria.core.test.classMgrTest.Class1();
                 this.assertTrue(modified.a === 2, "Replaced class has wrong value");
                 modified.$dispose();
-                aria.core.IOFiltersMgr.removeFilter(filter);
+                ariaCoreIOFiltersMgr.removeFilter(filter);
                 filter.$dispose();
                 this.notifyTestEnd('testAsyncUnloadClass');
             } catch (e) {
@@ -136,7 +129,7 @@ Aria.classDefinition({
         testAsyncLoadClassDuplicate : function () {
             var nbCalls = 0;
             // make sure the class is first unloaded:
-            aria.core.ClassMgr.unloadClass('test.aria.core.test.ClassA');
+            ariaCoreClassMgr.unloadClass('test.aria.core.test.ClassA');
             // then try to load it, and repeat the same classpath twice when calling Aria.load:
             Aria.load({
                 classes : ['test.aria.core.test.ClassA', 'test.aria.core.test.ClassA'],
@@ -144,13 +137,49 @@ Aria.classDefinition({
                     fn : function () {
                         this.assertEquals(nbCalls, 0, "oncomplete was called several times");
                         nbCalls++;
-                        aria.core.Timer.addCallback({
+                        ariaCoreTimer.addCallback({
                             fn : function () {
                                 this.notifyTestEnd('testAsyncLoadClassDuplicate');
                             },
                             scope : this,
                             delay : 300
                         });
+                    },
+                    scope : this
+                }
+            });
+        },
+
+        /**
+         * Test that a circular dependency is handled properly
+         */
+        testAsyncCircularDependency : function () {
+            Aria.load({
+                classes : ['test.aria.core.test.CircularClassA'],
+                oncomplete : {
+                    fn : function () {
+                        this.assertTrue(require.cache['test/aria/core/test/CircularClassA.js'].loaded);
+                        this.assertTrue(require.cache['test/aria/core/test/CircularClassB.js'].loaded);
+                        this.assertTrue(require.cache['test/aria/core/test/CircularClassC.js'].loaded);
+                        this.assertTrue(require.cache['test/aria/core/test/CircularClassD.js'].loaded);
+                        this.assertTrue(require.cache['test/aria/core/test/CircularClassE.js'].loaded);
+                        this.assertTrue(require.cache['test/aria/core/test/CircularClassF.js'].loaded);
+
+                        this.assertEquals(require.cache['test/aria/core/test/CircularClassA.js'].exports, test.aria.core.test.CircularClassA);
+                        this.assertEquals(require.cache['test/aria/core/test/CircularClassB.js'].exports, test.aria.core.test.CircularClassB);
+                        this.assertEquals(require.cache['test/aria/core/test/CircularClassC.js'].exports, test.aria.core.test.CircularClassC);
+                        this.assertEquals(require.cache['test/aria/core/test/CircularClassD.js'].exports, test.aria.core.test.CircularClassD);
+                        this.assertEquals(require.cache['test/aria/core/test/CircularClassE.js'].exports, test.aria.core.test.CircularClassE);
+                        this.assertEquals(require.cache['test/aria/core/test/CircularClassF.js'].exports, test.aria.core.test.CircularClassF);
+
+                        this.assertEquals(test.aria.core.test.CircularClassA.prototype.$classpath, "test.aria.core.test.CircularClassA");
+                        this.assertEquals(test.aria.core.test.CircularClassB.prototype.$classpath, "test.aria.core.test.CircularClassB");
+                        this.assertEquals(test.aria.core.test.CircularClassC.prototype.$classpath, "test.aria.core.test.CircularClassC");
+                        this.assertEquals(test.aria.core.test.CircularClassD.prototype.$classpath, "test.aria.core.test.CircularClassD");
+                        this.assertEquals(test.aria.core.test.CircularClassE.prototype.$classpath, "test.aria.core.test.CircularClassE");
+                        this.assertEquals(test.aria.core.test.CircularClassF.prototype.$classpath, "test.aria.core.test.CircularClassF");
+
+                        this.notifyTestEnd("testAsyncCircularDependency");
                     },
                     scope : this
                 }

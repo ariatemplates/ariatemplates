@@ -12,8 +12,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaCoreCache = require("./Cache");
 
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.core.FileLoader",
 
     $events : {
@@ -41,7 +43,7 @@ Aria.classDefinition({
          * Loader url item in cache
          * @type Object
          */
-        this._urlItm = aria.core.Cache.getItem("urls", fileURL, true);
+        this._urlItm = ariaCoreCache.getItem("urls", fileURL, true);
 
         this._logicalPaths = [];
         this._isProcessing = false;
@@ -50,7 +52,7 @@ Aria.classDefinition({
          * Status of the file loader. Value are available in aria.core.Cache
          * @type Number
          */
-        this.status = aria.core.Cache.STATUS_NEW;
+        this.status = ariaCoreCache.STATUS_NEW;
 
     },
     $statics : {
@@ -73,12 +75,13 @@ Aria.classDefinition({
             }
             this.$assert(33, this._logicalPaths.length > 0);
             this._isProcessing = true;
-            aria.core.IO.asyncRequest({
+            (require("./IO")).asyncRequest({
                 sender : {
                     classpath : this.$classpath,
                     logicalPaths : this._logicalPaths
                 },
-                url : aria.core.DownloadMgr.getURLWithTimestamp(this._url), // add a timestamp to the URL if required
+                url : require("./DownloadMgr").getURLWithTimestamp(this._url), // add a timestamp to the URL if
+                // required
                 callback : {
                     fn : this._onFileReceive,
                     onerror : this._onFileReceive,
@@ -127,6 +130,7 @@ Aria.classDefinition({
          * @private
          */
         _onFileReceive : function (ioRes) {
+            var ariaCoreDownloadMgr = require("./DownloadMgr");
             var multipart;
             // store file in cache
             var downloadFailed = (ioRes.status != '200');
@@ -152,10 +156,10 @@ Aria.classDefinition({
                         }
                         // for last element, set this loader as finished (available status)
                         if (i + 3 > partsLength) {
-                            this._urlItm.status = aria.core.Cache.STATUS_AVAILABLE;
+                            this._urlItm.status = ariaCoreCache.STATUS_AVAILABLE;
                         }
                         lpReceived[logicalpath] = 1;
-                        aria.core.DownloadMgr.loadFileContent(logicalpath, content, content == null);
+                        ariaCoreDownloadMgr.loadFileContent(logicalpath, content, content == null);
                     }
                     var nbFilesMissing = 0;
                     // check that all expected logical paths were returned, or otherwise report an error for that
@@ -164,7 +168,7 @@ Aria.classDefinition({
                         logicalpath = this._logicalPaths[i];
                         if (lpReceived[logicalpath] != 1) {
                             this.$logError(this.LPNOTFOUND_MULTIPART, [logicalpath, ioRes.url]);
-                            aria.core.DownloadMgr.loadFileContent(logicalpath, null, true);
+                            ariaCoreDownloadMgr.loadFileContent(logicalpath, null, true);
                             nbFilesMissing++;
                         }
                     }
@@ -172,10 +176,10 @@ Aria.classDefinition({
                         downloadFailed = true;
                     }
                 } else {
-                    this._urlItm.status = aria.core.Cache.STATUS_AVAILABLE;
+                    this._urlItm.status = ariaCoreCache.STATUS_AVAILABLE;
                     // we did not receive a multipart, we should have only one logical path
                     if (this._logicalPaths.length == 1) {
-                        aria.core.DownloadMgr.loadFileContent(this._logicalPaths[0], ioRes.responseText, false);
+                        ariaCoreDownloadMgr.loadFileContent(this._logicalPaths[0], ioRes.responseText, false);
                     } else {
                         this.$logError(this.EXPECTED_MULTIPART, ioRes.url);
                         downloadFailed = true;
@@ -187,7 +191,7 @@ Aria.classDefinition({
                 // if an error occurred, and we have not yet done it,
                 // we put the error in the cache for every expected logical path
                 for (var i = 0; i < this._logicalPaths.length; i++) {
-                    aria.core.DownloadMgr.loadFileContent(this._logicalPaths[i], ioRes.responseText, true);
+                    ariaCoreDownloadMgr.loadFileContent(this._logicalPaths[i], ioRes.responseText, true);
                 }
             }
 

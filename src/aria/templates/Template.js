@@ -13,12 +13,18 @@
  * limitations under the License.
  */
 
+var Aria = require('../Aria');
+var ArrayUtils = require('../utils/Array');
+var contextualEnvironment = require('../tools/contextual/environment/ContextualMenu');
+var AppEnvironment = require('../core/AppEnvironment');
+var ITemplate = require('./ITemplate');
+
 (function () {
     /**
      * This function handles environment change. When the contextual menu is enabled it loads the required classes.
      */
     var changingEnvironment = function (evt) {
-        if (!evt || !evt.changedProperties || aria.utils.Array.contains(evt.changedProperties, "contextualMenu")) {
+        if (!evt || !evt.changedProperties || ArrayUtils.contains(evt.changedProperties, "contextualMenu")) {
             Aria.load({
                 classes : [contextualClasspath]
             });
@@ -39,35 +45,28 @@
      */
     var contextualClasspath = "aria.tools.contextual.ContextualMenu";
 
-    /**
-     * Dependencies of aria.templates.Template. It's here because we might need to push a new dependency before calling
-     * the class definition.
-     */
-    var $dependencies = ["aria.tools.contextual.environment.ContextualMenu", "aria.templates.TemplateCtxt",
-            "aria.utils.Array", "aria.utils.Json", "aria.templates.ITemplate", "aria.utils.environment.VisualFocus"];
-
     if (isEnabled()) {
-        $dependencies.push(contextualClasspath);
+        // FIXME: pb of really dynamically loading contextualClasspath
+        require('../tools/contextual/ContextualMenu');
     }
+    require("../utils/environment/VisualFocus");
 
     /**
      * Base class from which all templates inherit. Some methods will be added to instances of this class, from the
      * TemplateCtxt class.
      */
-    Aria.classDefinition({
+    module.exports = Aria.classDefinition({
         $classpath : "aria.templates.Template",
-        $extends : "aria.templates.BaseTemplate",
-        $dependencies : $dependencies,
+        $extends : require("./BaseTemplate"),
         $statics : {
             // ERROR MESSAGES:
             EXCEPTION_IN_CONTROL_PARAMETERS : "line %2: Uncaught runtime exception in control %3 for parameters '%1'",
             EXCEPTION_IN_REPEATER_PARAMETER : "line %2: Uncaught runtime exception in repeater parameter '%1'"
         },
         $onload : function () {
-            var contextualEnvironment = aria.tools.contextual.environment.ContextualMenu;
             if (!contextualEnvironment.getContextualMenu().enabled) {
                 // since it's disabled, add a listener to load a class when it's enabled
-                aria.core.AppEnvironment.$on({
+                AppEnvironment.$on({
                     "environmentChanged" : changingEnvironment,
                     scope : {}
                 });
@@ -89,7 +88,7 @@
                 p.$BaseTemplate.constructor.classDefinition.$prototype.$init(p, def);
 
                 // copy the prototype of ITemplate:
-                var itf = aria.templates.ITemplate.prototype;
+                var itf = ITemplate.prototype;
                 for (var key in itf) {
                     if (itf.hasOwnProperty(key) && !p.hasOwnProperty(key)) {
                         // copy methods which are not already on this object (this avoids copying $classpath and
@@ -100,7 +99,7 @@
 
                 // get shortcuts to necessary functions in other classes,
                 // so that templates work even in a sandbox
-                p.$json = aria.utils.Json;
+                p.$json = require('../utils/Json');
             },
 
             /**

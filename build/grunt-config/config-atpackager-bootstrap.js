@@ -15,9 +15,9 @@
 
 /**
  * Aria Templates opensource bootstrap build file.<br>
- * This is a very minimalistic build. The main thing it does is to create a file 'aria-templates-x.y.z.js' as a
- * concatenation of the framework's most essential files. The x.y.z stands for current release version that is read from
- * JSON config file.<br>
+ * This is a very minimalistic build. The main thing it does is to create a file 'aria-templates-x.y.z.js' containing
+ * noder-js and able to load the core part of the framework. The x.y.z stands for current release version that is read
+ * from JSON config file.<br>
  * It also:
  * <ul>
  * <li>updates license headers in all the files accordingly,</li>
@@ -27,30 +27,78 @@
 
 module.exports = function (grunt) {
     var atExtensions = ['**/*.js', '**/*.tpl', '**/*.tpl.css', '**/*.tpl.txt', '**/*.tml', '**/*.cml'];
-    var mainATFile = 'aria/<%= pkg.name %>-<%= pkg.version %>.js';
+
+    var getNoderPackage = function (packageFile, mainFile, environment) {
+        return {
+            name : packageFile,
+            builder : {
+                type : 'NoderBootstrapPackage',
+                cfg : {
+                    header : '<%= packaging.license %>',
+                    noderModules : ['src/noder-modules/*'],
+                    noderEnvironment : environment,
+                    noderConfigOptions : {
+                        main : mainFile,
+                        failFast : false,
+                        resolver : {
+                            "default" : {
+                                ariatemplates : "aria"
+                            }
+                        },
+                        packaging : {
+                            ariatemplates : true
+                        }
+                    }
+                }
+            },
+            files : [mainFile]
+        };
+    };
 
     grunt.config.set('atpackager.bootstrap', {
         options : {
-            ATDebug : true,
             sourceDirectories : ['src'],
-            sourceFiles : ['aria/**/*', '!aria/node.js', '!aria/bootstrap.js'],
-            defaultBuilder : {
-                type : 'ATMultipart',
-                cfg : {
-                    header : '<%= packaging.license_min %>'
-                }
-            },
+            sourceFiles : ['aria/**/*', '!aria/node.js', '!aria/bootstrap.tpl.js', '!aria/css/**'],
             outputDirectory : '<%= packaging.bootstrap.outputdir %>',
             visitors : [{
-                        type : 'CheckDependencies',
+                        type : 'NoderPlugins',
                         cfg : {
-                            // only check dependencies for the bootstrap
-                            files : [mainATFile]
+                            targetBaseLogicalPath : "aria",
+                            targetFiles : "aria/noderError/**"
                         }
-                    }, 'ATDependencies', {
+                    }, {
+                        type : 'NoderRequiresGenerator',
+                        cfg : {
+                            requireFunction : "syncRequire",
+                            wrapper : "<%= grunt.file.read('src/aria/bootstrap.tpl.js') %>",
+                            targetLogicalPath : 'aria/bootstrap.js',
+                            requires : '<%= packaging.bootstrap.files %>'
+                        }
+                    }, {
+                        type : 'NoderRequiresGenerator',
+                        cfg : {
+                            requireFunction : "syncRequire",
+                            wrapper : "<%= grunt.file.read('src/aria/bootstrap.tpl.js') %>",
+                            targetLogicalPath : 'aria/bootstrap-node.js',
+                            requires : '<%= packaging.bootstrap.files %>'
+                        }
+                    }, {
+                        type : 'ATNoderConverter',
+                        cfg : {
+                            files : ['aria/**/*.js']
+                        }
+                    }, {
+                        type : 'CheckGlobals',
+                        cfg : {
+                            files : '<%= packaging.check_globals.files %>',
+                            allowCommonJSGlobals : true,
+                            allowedGlobals : ["aria", "Aria", "setTimeout", "clearTimeout", "setInterval",
+                                    "clearInterval", "global"]
+                        }
+                    }, {
                         type : 'JSStripBanner',
                         cfg : {
-                            files : atExtensions
+                            files : atExtensions.concat("!aria/noderError/**")
                         }
                     }, {
                         type : "TextReplace",
@@ -60,12 +108,6 @@ module.exports = function (grunt) {
                                         find : "ARIA-SNAPSHOT",
                                         replace : '<%= pkg.version %>'
                                     }]
-                        }
-                    }, {
-                        type : 'ATNormalizeSkin',
-                        cfg : {
-                            files : ['aria/css/*.js'],
-                            strict : true
                         }
                     }, {
                         type : 'CopyUnpackaged',
@@ -79,22 +121,8 @@ module.exports = function (grunt) {
                             }
                         }
                     }, 'CopyUnpackaged'],
-            packages : [{
-                        name : mainATFile,
-                        builder : {
-                            type : 'Concat',
-                            cfg : {
-                                header : '<%= packaging.license %>'
-                            }
-                        },
-                        files : '<%= packaging.bootstrap.files %>'
-                    }, {
-                        name : 'aria/css/atskin-<%= pkg.version %>.js',
-                        files : ['aria/css/atskin.js']
-                    }, {
-                        name : 'aria/css/atflatskin-<%= pkg.version %>.js',
-                        files : ['aria/css/atflatskin.js']
-                    }]
+            packages : [getNoderPackage('<%= packaging.main_file %>', "aria/bootstrap.js", "browser"),
+                    getNoderPackage("aria/node.js", "aria/bootstrap-node.js", "node")]
         }
     });
 
@@ -102,6 +130,6 @@ module.exports = function (grunt) {
         folders : ['<%= packaging.bootstrap.outputdir %>']
     });
 
-    grunt.registerTask('bootstrap', 'atpackager:bootstrap');
+    grunt.registerTask('bootstrap', ['atpackager:bootstrap', 'atpackager:bootstrapSkin']);
 
 };
