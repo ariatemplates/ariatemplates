@@ -4,6 +4,8 @@ node_js:
 before_install:
   - npm config set ca ""
   - phantomjs --version
+script:
+  - npm run ci
 notifications:
   email:
     - build@ariatemplates.com
