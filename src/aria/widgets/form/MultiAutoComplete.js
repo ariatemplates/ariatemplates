@@ -136,6 +136,20 @@ Aria.classDefinition({
         },
 
         /**
+         * Internal method to handle the left offset that the popup should have when there are items inside the text
+         * field
+         * @protected
+         * @return {Integer} Left offset
+         */
+        _getPopupLeftOffset : function () {
+            if (!this.controller._isExpanded) {
+                return this._textInputField.offsetLeft;
+            } else {
+                return 0;
+            }
+        },
+
+        /**
          * Internal method to handle the click event to remove suggestion. This event is used to set focus on input
          * field
          * @param {aria.DomEvent} event Event object
