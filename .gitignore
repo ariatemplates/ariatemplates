@@ -1,11 +1,9 @@
 node_modules
 .DS_Store
-target
-build/at-bootstrap
-build/at-core
-build/at-lint
 .project
 .settings
 .benchmarks.rb.swp
 .checkstyle
 *.log
+
+/build/target/

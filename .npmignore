@@ -1,9 +1,5 @@
 node_modules
 .DS_Store
-target
-build/at-bootstrap
-build/at-core
-build/at-lint
 .project
 .settings
 .benchmarks.rb.swp
@@ -16,5 +12,10 @@ build/at-lint
 /test/
 /hooks/
 /scripts/
-/build/
+/build/config/
+/build/grunt-config/
+/build/grunt-tasks/
+/build/target/bootstrap/
+/build/templates/
+/build/grunt-cli.js
 /Gruntfile.js
