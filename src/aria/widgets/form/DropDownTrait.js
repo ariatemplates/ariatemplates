@@ -72,13 +72,23 @@ Aria.classDefinition({
                             popup : "bottom left"
                         }],
                 offset : {
-                    top : this._skinObj.offsetTop
+                    top : this._skinObj.offsetTop,
+                    left : this._getPopupLeftOffset()
                 },
                 closeOnMouseClick : true,
                 closeOnMouseScroll : true,
                 ignoreClicksOn : this._getPopupIgnoreClicksOnDomElts(),
                 preferredWidth : this._getPopupWidth()
             });
+        },
+
+        /**
+         * Internal method to handle the left offset of the popup
+         * @protected
+         * @return {Integer} Left offset
+         */
+        _getPopupLeftOffset : function () {
+            return 0;
         },
 
         /**
