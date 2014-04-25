@@ -81,5 +81,6 @@ module.exports = function (grunt) {
         src : ['src/**/*.js', 'test/**/*.js', '!src/aria/pageEngine/contentProcessors/MarkdownProcessor.js']
     });
 
-    grunt.registerTask('checkStyle', ['jshint', 'verifylowercase:sourceFiles', 'leadingIndent:jsFiles']);
+    grunt.registerTask('checkStyle', ['jshint:build', 'jshint:node', 'jshint:source', 'verifylowercase:sourceFiles', 'leadingIndent:jsFiles']);
+    grunt.registerTask('checkStyleTest', ['jshint:test']);
 };
