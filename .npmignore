@@ -15,7 +15,6 @@ node_modules
 /build/config/
 /build/grunt-config/
 /build/grunt-tasks/
-/build/target/bootstrap/
 /build/templates/
 /build/grunt-cli.js
 /Gruntfile.js
