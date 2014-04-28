@@ -28,6 +28,10 @@ Aria.interfaceDefinition({
         },
         exposedProperty : {
             $type : "Object"
+        },
+
+        methodToTestServicesAvailabilityInModules : {
+            $type : "Function"
         }
     }
 });

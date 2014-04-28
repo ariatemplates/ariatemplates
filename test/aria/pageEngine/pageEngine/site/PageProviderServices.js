@@ -51,7 +51,8 @@ Aria.classDefinition({
                         services : {
                             "SiteModuleServicesMethod2" : "exposedMethod",
                             "SiteModuleServicesMethod3" : "exposedMethod",
-                            "SiteModuleServicesMethod4" : "exposedMethodDoesNotExist"
+                            "SiteModuleServicesMethod4" : "exposedMethodDoesNotExist",
+                            "SiteModuleServicesMethod6" : "methodToTestServicesAvailabilityInModules"
                         }
                     }
                 }

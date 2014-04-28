@@ -62,6 +62,14 @@ Aria.interfaceDefinition({
         },
 
         /**
+         * Exposed methods of module controllers as services
+         * @return {aria.pageEngine.CfgBeans:Module.services} Map containing exposed module controller methods
+         */
+        getServices : {
+            $type : "Function"
+        },
+
+        /**
          * Return instance of the pageProvider
          * @return {aria.pageEngine.CfgBeans:Start.pageProvider}
          */

@@ -18,7 +18,7 @@ Aria.classDefinition({
     $extends : "test.aria.pageEngine.pageEngine.site.modules.BaseModuleService",
     $constructor : function () {
         this.$BaseModuleService.constructor.call(this);
-        this.publicProperty = true;
+        this.publicProperty = "abcdef";
     },
     $prototype : {
         exposedMethod : function () {

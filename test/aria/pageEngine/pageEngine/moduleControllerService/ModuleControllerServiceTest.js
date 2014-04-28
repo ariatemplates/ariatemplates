@@ -58,7 +58,7 @@ Aria.classDefinition({
             // tests property exposed directly as a service
             this.assertUndefined(services.SiteModuleServicesProperty);
             // tests property exposed through a method on ModuleServices1 (scope test)
-            this.assertTrue(services.SiteModuleServicesScope());
+            this.assertEquals(services.SiteModuleServicesScope(), "abcdef");
             // tests method exposed on ModuleServices1 (test.aria.pageEngine.pageEngine.site.modules.ModuleServices1)
             this.assertTrue(services.SiteModuleServicesMethod1() === "ModuleServices1");
             // tests method exposed on ModuleServices2 (test.aria.pageEngine.pageEngine.site.modules.ModuleServices2)
@@ -78,6 +78,9 @@ Aria.classDefinition({
             this.pageEngine._rootModule.unloadPageModules("ModuleServices1");
             // tests services are removed when a module gets unloaded
             this.assertUndefined(services.PageModuleServicesMethod1);
+            // test that getServices method is available also within modules
+            this.assertEquals(services.SiteModuleServicesMethod6(), "abcdef");
+
         },
 
         end : function () {

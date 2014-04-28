@@ -20,6 +20,7 @@ Aria.classDefinition({
     $prototype : {
         $publicInterfaceName : "test.aria.pageEngine.pageEngine.site.modules.IModuleService",
         exposedMethod : function () {},
-        exposedPropertyThroughMethod : function () {}
+        exposedPropertyThroughMethod : function () {},
+        methodToTestServicesAvailabilityInModules : function () {}
     }
 });
