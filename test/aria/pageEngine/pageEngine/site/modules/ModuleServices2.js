@@ -17,8 +17,19 @@ Aria.classDefinition({
     $classpath : "test.aria.pageEngine.pageEngine.site.modules.ModuleServices2",
     $extends : "test.aria.pageEngine.pageEngine.site.modules.BaseModuleService",
     $prototype : {
+
+        init : function (args, cb) {
+            this._pageEngine = args.pageEngine;
+            this.$callback(cb);
+        },
+
         exposedMethod : function () {
             return "ModuleServices2";
+        },
+
+        methodToTestServicesAvailabilityInModules : function () {
+            var services = this._pageEngine.getServices();
+            return services.SiteModuleServicesScope();
         }
     }
 });
