@@ -51,6 +51,15 @@ Aria.classDefinition({
          * @type HTMLElement
          */
         this._selectField = null;
+
+        /**
+         * Whether the width of the popup can be smaller than the field, when configured to be so. If false, the
+         * popupWidth property will be overridden when it is smaller than the field width
+         * @type Boolean
+         * @protected
+         */
+        this._freePopupWidth = false;
+
     },
     $destructor : function () {
         // the controller is disposed in DropDownInput
