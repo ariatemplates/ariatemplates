@@ -6,8 +6,6 @@ aria.core.AppEnvironment.setEnvironment({
     }
 });
 
-var startTest = function (evt) {};
-
 var toBeDisposed = [];
 
 var endTest = function (evt) {
@@ -68,8 +66,7 @@ var disposeEverything = function () {
 };
 
 Aria.load({
-    classes : ["aria.jsunit.IOViewer", "aria.widgets.AriaSkinInterface",
-            "aria.jsunit.TestacularReport", "aria.utils.Array"],
+    classes : ["aria.jsunit.IOViewer", "aria.widgets.AriaSkinInterface", "aria.utils.Array"],
     oncomplete : function () {
         var qs = aria.utils.QueryString;
 
@@ -78,9 +75,11 @@ Aria.load({
             var html = '';
             html += '<form action="test.htm" style="text-align:center; font-family:Arial;">';
             if (qs.getKeyValue('dev') == "false") {
-                var atversion = qs.getKeyValue('atversion');
                 html += '<input type="hidden" name="dev" value="false">';
-                html += '<input type="hidden" name="atversion" value="' + atversion + '">';
+                var atversion = qs.getKeyValue('atversion');
+                if (atversion) {
+                    html += '<input type="hidden" name="atversion" value="' + atversion + '">';
+                }
             }
             if (qs.getKeyValue('verbose') == "false") {
                 html += '<input type="hidden" name="verbose" value="false">';
@@ -123,7 +122,6 @@ Aria.load({
                     ts = new cstr();
                 }
                 ts.$addListeners({
-                    'start' : startTest,
                     'end' : endTest,
                     scope : window
                 });
@@ -138,7 +136,6 @@ Aria.load({
                     skipTests.push("test.aria.core.io.IOXDRTest");
                 }
 
-                aria.jsunit.TestacularReport.attachTestEngine(aria.jsunit.TestRunner.getEngine());
                 aria.jsunit.TestRunner.getEngine().runIsolated = runIsolated;
 
                 if (qs.getKeyValue("demo") == "true") {

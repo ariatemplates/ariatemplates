@@ -292,9 +292,6 @@ Aria.classDefinition({
 
         startCampaign : function (cb) {
             var skipTests = [];
-            if (aria.utils.QueryString.getKeyValue("UITest") != "1") {
-                skipTests = ['test.aria.widgets.WidgetsUITestSuite'];
-            }
             this._startCampaignCb = cb;
 
             // Notify testacular in case it is available:
