@@ -59,6 +59,14 @@ Aria.classDefinition({
         controllerInstance.maxlength = cfg.maxlength;
         controllerInstance.expandButton = cfg.expandButton;
         controllerInstance.selectionKeys = cfg.selectionKeys;
+
+        /**
+         * Whether the width of the popup can be smaller than the field, when configured to be so. If false, the
+         * popupWidth property will be overridden when it is smaller than the field width
+         * @type Boolean
+         * @protected
+         */
+        this._freePopupWidth = false;
     },
     $destructor : function () {
         // The dropdown might still be open when we destroy the widget, destroy it now

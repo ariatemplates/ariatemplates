@@ -140,17 +140,20 @@ Aria.classDefinition({
             var referenceMaxHeight = options.maxHeight || this.MAX_HEIGHT;
             maxHeight = (maxHeight < this.MIN_HEIGHT) ? this.MIN_HEIGHT : maxHeight;
             maxHeight = (maxHeight > referenceMaxHeight) ? referenceMaxHeight : maxHeight - 2;
-            var list = new aria.widgets.form.list.List({
+
+            var defaultMinWidth = this._freePopupWidth ? 0 : this._inputMarkupWidth + 15;
+
+            var listObj = {
                 id : cfg.id,
                 defaultTemplate : "defaultTemplate" in options ? options.defaultTemplate : cfg.listTemplate,
                 block : true,
                 sclass : cfg.listSclass || this._skinObj.listSclass,
-                onclick : {
-                    fn : this._clickOnItem,
-                    scope : this
-                },
                 onmouseover : {
                     fn : this._mouseOverItem,
+                    scope : this
+                },
+                onclick : options.onclick || {
+                    fn : this._clickOnItem,
                     scope : this
                 },
                 onkeyevent : {
@@ -161,9 +164,10 @@ Aria.classDefinition({
                     fn : this._closeDropdown,
                     scope : this
                 },
+                onchange : options.onchange,
                 maxHeight : maxHeight,
-                minWidth : "minWidth" in options ? options.minWidth : this._inputMarkupWidth + 15,
-                width : this.__computeListWidth(cfg.popupWidth, this._inputMarkupWidth + 15),
+                minWidth : "minWidth" in options ? options.minWidth : defaultMinWidth,
+                width : this.__computeListWidth(cfg.popupWidth, defaultMinWidth),
                 preselect : cfg.preselect,
                 bind : {
                     items : {
@@ -176,7 +180,14 @@ Aria.classDefinition({
                     }
                 },
                 scrollBarX : false
-            }, this._context, this._lineNumber);
+            };
+
+            if ("bind" in options) {
+                listObj.bind.selectedValues = options.bind.selectedValues;
+                listObj.bind.multipleSelect = options.bind.multipleSelect;
+            }
+
+            var list = new aria.widgets.form.list.List(listObj, this._context, this._lineNumber);
             list.$on({
                 'widgetContentReady' : this._refreshPopup,
                 scope : this
@@ -210,8 +221,7 @@ Aria.classDefinition({
             if (aria.core.Browser.isIE6) {
                 return popupWidth;
             }
-
-            return (popupWidth > inputMarkupWidth) ? popupWidth : inputMarkupWidth;
+            return Math.max(popupWidth, inputMarkupWidth);
         }
     }
 });

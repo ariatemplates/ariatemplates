@@ -34,6 +34,15 @@ Aria.classDefinition({
         var controller = new aria.widgets.controllers.SelectBoxController();
         this.$DropDownTextInput.constructor.call(this, cfg, ctxt, lineNumber, controller);
         this.controller.setListOptions(this._cfg.options);
+
+        /**
+         * Whether the width of the popup can be smaller than the field, when configured to be so. If false, the
+         * popupWidth property will be overridden when it is smaller than the field width
+         * @type Boolean
+         * @protected
+         */
+        this._freePopupWidth = false;
+
     },
     $prototype : {
         /**
