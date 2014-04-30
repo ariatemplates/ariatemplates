@@ -92,8 +92,9 @@ Aria.beanDefinitions({
                     $default : 0
                 },
                 "preselect" : {
-                    $type : "json:String",
+                    $type : "json:Enum",
                     $description : "strict: for strict highlighting (exact match only), always: for selecting the first item everytime, none: for no highlighting",
+                    $enumValues : ["strict", "always", "none"],
                     $default : "none"
                 }
             }

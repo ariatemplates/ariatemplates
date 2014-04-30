@@ -83,6 +83,12 @@
              */
             this.selectionKeys = null;
 
+            /**
+             * Set by the widget. If set to "none", selection of suggestions based on exactMatch will be ignored
+             * @type aria.widgets.CfgBeans:AutoCompleteCfg.preselect
+             */
+            this.preselect = null;
+
             // Inherited from aria.html.controllers.Suggestions
             this._init();
         },
@@ -414,7 +420,7 @@
                     };
                     suggestions[index] = tmp;
                 }
-                return matchValueIndex;
+                return this.preselect === "none" ? -1 : matchValueIndex;
             },
 
             /**

@@ -91,7 +91,6 @@ Aria.classDefinition({
          * @type Object
          */
         KEYS : {
-            "VK_TAB" : "\t",
             "VK_SPACE" : " ",
             "VK_BACK_SPACE" : "\b",
             "VK_MULTIPLY" : "*",

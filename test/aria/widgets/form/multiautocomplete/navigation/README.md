@@ -12,7 +12,7 @@ This is mainly GUI test, which means that simulating user actions is necessary. 
 
 After a user action has been simulated, some checks have to be done. This is usually a synchronous process.
 
-It is usually quite painful to handle mix of synchronous and asynchronous from a pure programming point of view. However, there is a class in the framework which handles the two in a quite nice way: `aria.core.Sequencer`. The thing is that I think it would have been enhanced, so I rebuilt a Sequencing system based on this one. Those are the files:
+It is usually quite painful to handle mix of synchronous and asynchronous from a pure programming point of view. However, there is a class in the framework which handles the two in a quite nice way: `aria.core.Sequencer`. The thing is that I think it would have been enhanced, so I rebuilt a sequencing system based on this one. Here are the files:
 
 * [`Sequencer.js`](./Sequencer.js)
 * [`Sequence.js`](./Sequence.js)

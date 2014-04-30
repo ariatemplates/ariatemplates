@@ -83,9 +83,9 @@ Aria.classDefinition({
         },
 
         /**
-         * Adds multiple tasks. Uses <code>addTask<code> behind.
+         * Adds multiple tasks. Uses <code>addTask</code> behind.
          *
-         * @return An array containing the results of the calls to <code>addTask<code>.
+         * @return An array containing the results of the calls to <code>addTask</code>.
          */
         addTasks : function (input) {
             return this.HELPERS.map(this.HELPERS.arrayFactory(input), function (item) {
@@ -95,7 +95,7 @@ Aria.classDefinition({
 
         /**
          * Adds a child sequence, wrapped as a new task. If it's not already a sequence, builds it. Uses
-         * <code>addTask<code> to add the wrapping task.
+         * <code>addTask</code> to add the wrapping task.
          *
          * @return The given or built sequence
          */

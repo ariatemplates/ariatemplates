@@ -54,7 +54,7 @@ Aria.classDefinition({
                 {
                     name : 'Insert two options',
                     method : 'selectSuggestions',
-                    args : [['a', 'a']]
+                    args : [['a', 'a'], true]
                 }, {
                     name : 'Navigate right to be within the text again',
                     method : 'pressRightArrow'

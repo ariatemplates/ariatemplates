@@ -254,8 +254,9 @@ Aria.classDefinition({
          * @param[in] task The task context in which this method is being called.
          * @param[in] {Array{String}} inputs A list of text input values to use to match available suggestions. Only the
          * first matching selection gets inserted.
+         * @param[in] {Boolean} Whether the current state has to be restored after the selection
          */
-        selectSuggestions : function (task, inputs) {
+        selectSuggestions : function (task, inputs, restore) {
             // Backup state ----------------------------------------------------
 
             var field = this._getField();
@@ -266,33 +267,53 @@ Aria.classDefinition({
             };
 
             // Insert options --------------------------------------------------
-
-            field.value = "";
+            if (restore) {
+                field.value = "";
+            }
 
             var text = [];
-            aria.utils.Array.forEach(inputs, function (input) {
-                text.push(input);
-                text.push("[down]");
-                text.push("[enter]");
-            });
 
             var tasks = [{
                         name : 'Ensures input field is focused first',
-                        method : 'focusInputField'
-                    }, {
-                        name : 'Type sequence',
-                        method : 'typeSequence',
-                        args : [text],
+                        method : 'focusInputField',
                         asynchronous : true
-                    }, {
-                        name : 'Restore state',
-                        fn : function () {
-                            field.value = backup.value;
-                            aria.utils.Caret.setPosition(field, backup.caret);
-                            backup.focused.focus();
-                        },
-                        asynchronous : false
                     }];
+
+            aria.utils.Array.forEach(inputs, function (input) {
+
+                tasks.push({
+                    name : 'Type sequence',
+                    method : 'typeSequence',
+                    args : [[input]],
+                    asynchronous : true
+                });
+
+                tasks.push({
+                    name : 'Wait for dropdown',
+                    method : 'waitForDropdownState',
+                    args : [true],
+                    asynchronous : true
+                });
+
+                tasks.push({
+                    name : 'Type sequence',
+                    method : 'typeSequence',
+                    args : [["[DOWN]", "[ENTER]"]],
+                    asynchronous : true
+                });
+            });
+
+            if (restore) {
+                tasks.push({
+                    name : 'Restore state',
+                    fn : function () {
+                        field.value = backup.value;
+                        aria.utils.Caret.setPosition(field, backup.caret);
+                        backup.focused.focus();
+                    },
+                    asynchronous : false
+                });
+            }
 
             var sequencer = new test.aria.widgets.form.multiautocomplete.navigation.Sequencer({
                 scope : this,
@@ -411,6 +432,19 @@ Aria.classDefinition({
             var position = aria.utils.Caret.getPosition(this._getField()).start;
             this.assertEquals(position, expectedPosition, "Actual caret position: " + position + ". Expected: "
                     + expectedPosition);
+        },
+
+        /**
+         * Check that the dropdown is open or closed.
+         * @param[in] task The task context in which this method is being called.
+         * @param[in] {Boolean} open Whether we want the dropdown to be closed or open before going on with the task.
+         */
+        waitForDropdownState : function (task, open) {
+            this.$BaseMultiAutoCompleteTestCase.waitForDropdownState.call(this, open, {
+                fn : task.end,
+                scope : task
+            });
+
         }
     }
 });

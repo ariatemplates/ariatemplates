@@ -32,10 +32,10 @@ Aria.classDefinition({
             "test.aria.widgets.form.multiautocomplete.navigation.Task",
             "test.aria.widgets.form.multiautocomplete.navigation.Helpers"],
     /**
-     * Builds a new Sequencer. Default properties:
+     * Builds a new Sequencer. Default properties for tasks added to this sequencer:
      * <ul>
      * <li><code>scope</code>: default to an empty object</li>
-     * <li><code>asynchronous</code> / <code>Boolean</code>: </li>
+     * <li><code>asynchronous</code> / <code>Boolean</code>: whether tasks have to be considered asynchronous by default or not</li>
      * <li><code>trace</code>: tracing configuration</li>
      * </ul>
      * @param[in] defaults {Object} Default properties. See full description for more information.

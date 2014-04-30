@@ -34,7 +34,7 @@
             expandButton:true,
 			autoFill: true,
 			spellCheck: false,
-			//preselect: "always",
+			preselect: "always",
 			resourcesHandler: getAirLinesHandler(),
 			selectionKeys: [{ 'key': 'ENTER' },
 			                { 'key': 'TAB' }],
