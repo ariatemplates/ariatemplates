@@ -28,38 +28,44 @@ Aria.classDefinition({
     },
     $prototype : {
         /**
-         * This test is here to be sure that 'tab', defined as a selection key, behaves the same way as 'enter'
-         * (the first list item is selected)
+         * This test is here to be sure that 'tab', defined as a selection key, behaves the same way as 'enter' (the
+         * first list item is selected)
          */
         runTemplateTest : function (id, continueWith) {
-            this.clickAndType(["fi", "[tab]"], {
-                fn : this._afterTab,
+            this.clickAndType(["fi"], {
+                fn : this._afterType,
                 scope : this
-            }, 25);
+            });
         },
 
-        _afterTab : function (evt, args) {
+        _afterType : function (evt, args) {
             this.waitFor({
                 condition : function () {
-                    return !this.isMultiAutoCompleteOpen("MultiAutoId");
+                    return this.isMultiAutoCompleteOpen("MultiAutoId");
                 },
-                callback : this._checkValues
+                callback : this._pressTab
+            });
+        },
+
+        _pressTab : function () {
+            this.type({
+                text : ["[TAB]"],
+                cb : {
+                    fn : this._checkValues,
+                    scope : this
+                }
             });
         },
 
         _checkValues : function (evt, args) {
-
             this.checkSelectedItems(1, ["Finnair"]);
-            this.checkDataModel(1, [
-                {
-                    label : 'Finnair',
-                    code : 'XX'
-                }
-            ]);
+            this.checkDataModel(1, [{
+                        label : 'Finnair',
+                        code : 'XX'
+                    }]);
 
             this.end();
         }
-
 
     }
 });

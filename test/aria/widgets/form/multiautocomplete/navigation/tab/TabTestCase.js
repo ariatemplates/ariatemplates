@@ -21,9 +21,6 @@ Aria.classDefinition({
     },
     $prototype : {
         _initialization : [{
-                    name : 'Focus input field',
-                    method : 'focusInputField'
-                }, {
                     name : 'Insert options',
                     method : 'selectSuggestions',
                     args : [['a', 'a']]

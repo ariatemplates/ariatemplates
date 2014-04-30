@@ -73,6 +73,7 @@ Aria.classDefinition({
              */
             listContent : []
         };
+
     },
     $destructor : function () {
         if (this._listWidget && this._listWidget.$dispose) {
@@ -152,32 +153,20 @@ Aria.classDefinition({
                     dataModel.value = null;
                     return report;
 
-                } else if (selectionKey) {
-                    if (dataModel.listContent.length === 1) {
-                        dataModel.selectedIdx = 0;
-                        dataModel.text = this._getLabelFromListValue(dataModel.listContent[dataModel.selectedIdx]);
-                        dataModel.value = dataModel.listContent[dataModel.selectedIdx].value;
-                    }
-                    if (dataModel.selectedId != -1) {
-                        report = this.checkDropdownValue(dataModel.value);
-                        report.displayDropDown = false; // close the dropdown
-                        report.cancelKeyStroke = true; // prevent fieldset onSubmit when closing the popup through
-                        // ENTER
-                        return report;
-                    }
-                } else if (keyCode == domEvent.KC_TAB) {
-                    if (dataModel.listContent.length === 1) {
-                        dataModel.selectedIdx = 0;
-                        dataModel.text = this._getLabelFromListValue(dataModel.listContent[dataModel.selectedIdx]);
-                        dataModel.value = dataModel.listContent[dataModel.selectedIdx].value;
-                        // freeText will take precedence if there is not an exact match
-                        if (this.freeText && !dataModel.listContent[dataModel.selectedIdx].value.exactMatch) {
-                            dataModel.value = dataModel.initialInput;
+                } else if (selectionKey || keyCode == domEvent.KC_TAB) {
+                    if (dataModel.selectedIdx != -1) {
+                        if (dataModel.selectedIdx != null) {
+                            dataModel.text = this._getLabelFromListValue(dataModel.listContent[dataModel.selectedIdx]);
+                            dataModel.value = dataModel.listContent[dataModel.selectedIdx].value;
                         }
+                        report = this.checkDropdownValue(dataModel.value);
+                    } else {
+                        var report = new aria.widgets.controllers.reports.DropDownControllerReport();
                     }
-                    report = this.checkDropdownValue(dataModel.value);
                     report.displayDropDown = false; // close the dropdown
-                    report.cancelKeyStroke = false;
+                    if (keyCode != domEvent.KC_TAB) {
+                        report.cancelKeyStroke = true; // prevent fieldset onSubmit when typing ENTER
+                    }
                     return report;
                 } else if (keyCode == domEvent.KC_ARROW_LEFT) {
                     return;

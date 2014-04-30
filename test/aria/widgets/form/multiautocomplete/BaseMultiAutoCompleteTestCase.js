@@ -15,10 +15,10 @@
 
 Aria.classDefinition({
     $classpath : "test.aria.widgets.form.multiautocomplete.BaseMultiAutoCompleteTestCase",
-    $extends : "aria.jsunit.TemplateTestCase",
+    $extends : "aria.jsunit.RobotTestCase",
     $dependencies : ["aria.utils.Type", "aria.utils.Math"],
     $constructor : function () {
-        this.$TemplateTestCase.constructor.call(this);
+        this.$RobotTestCase.constructor.call(this);
 
         this.data = this.data || {
             ac_airline_values : [],
@@ -70,7 +70,6 @@ Aria.classDefinition({
             var cb;
             if (args.text.length === 0) {
                 cb = args.cb;
-
             } else {
                 cb = {
                     fn : this.type,
@@ -116,7 +115,14 @@ Aria.classDefinition({
         },
 
         focusOut : function (cb) {
-            this.templateCtxt.$focus("justToFocusOut");
+            this.synEvent.click(this.getElementById("justToFocusOut"), {
+                fn : this._onFocusOut,
+                scope : this,
+                args : cb
+            });
+        },
+
+        _onFocusOut : function (evt, cb) {
             cb.delay = cb.delay || 10;
             aria.core.Timer.addCallback(cb);
         },
@@ -198,22 +204,22 @@ Aria.classDefinition({
                 fn : this.openAutoPopup,
                 scope : this,
                 args : {
-                    cb : callback
+                    fn : callback,
+                    scope : this
                 }
             });
 
         },
-        openAutoPopup : function (evt, args) {
+        openAutoPopup : function (evt, cb) {
+            this.waitForDropdownState(true, cb);
+        },
+
+        waitForDropdownState : function (open, cb) {
             this.waitFor({
                 condition : function () {
-                    this.isOpen = this.isMultiAutoCompleteOpen("MultiAutoId");
-                    return this.isOpen;
+                    return this.isMultiAutoCompleteOpen("MultiAutoId") == open;
                 },
-                callback : {
-                    fn : args.cb,
-                    scope : this
-
-                }
+                callback : cb
             });
         }
 
