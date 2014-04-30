@@ -83,6 +83,7 @@ Aria.classDefinition({
             }
             var itemsView = new aria.templates.View(this._data.items);
             this.json.setValue(this._data, "itemsView", itemsView);
+
             if (this._data.activateSort) {
                 itemsView.setSort(itemsView.SORT_ASCENDING, "sortByLabel", this._sortByLabel);
             }
@@ -897,9 +898,15 @@ Aria.classDefinition({
          * @param {Array} newlyUnselectedIndexes array of newly unselected indexes
          */
         _raiseOnChangeEvent : function (newlySelectedIndexes, newlyUnselectedIndexes) {
-            if (newlySelectedIndexes.length === 0) {
+            var data = this._data;
+            if (newlySelectedIndexes.length === 0 && data.selectedCount === 0) {
                 var preselect = this._checkPreselect();
-                newlySelectedIndexes = (preselect === undefined) ? newlySelectedIndexes : [preselect];
+                if (preselect != null) {
+                    newlySelectedIndexes = [preselect];
+                    this.json.setValue(data.itemsView.items[preselect].value, "selected", true);
+                    this.json.setValue(data, "selectedIndex", preselect);
+                    this.json.setValue(data, "selectedCount", 1);
+                }
             }
 
             this.$raiseEvent({

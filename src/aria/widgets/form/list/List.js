@@ -127,13 +127,8 @@ Aria.classDefinition({
          */
         _onModuleEvent : function (evt) {
             if (evt.name == "onChange") {
-                // The selection has changed, triggered by the user
-                // Get the new selected values and expose in widget property
-                var moduleCtrl = this._subTplModuleCtrl;
-                var selectedValues = moduleCtrl.getSelectedValues();
-                this.setProperty("selectedValues", selectedValues);
-                this.setProperty("selectedIndex", moduleCtrl.getData().selectedIndex);
-                this.evalCallback(this._cfg.onchange, selectedValues);
+                this._retrieveControllerSelection();
+                this.evalCallback(this._cfg.onchange, this._subTplModuleCtrl.getSelectedValues());
             } else if (evt.name == "itemClick") {
                 this.evalCallback(this._cfg.onclick, {
                     value : evt.value,
@@ -147,6 +142,27 @@ Aria.classDefinition({
             } else if (evt.name == "close") {
                 this.evalCallback(this._cfg.onclose);
             }
+        },
+
+        /**
+         * Callback executed after the template is loaded and initialized. It overrides the parent implementation in
+         * order to retrieve some information about the initlally selected values
+         * @param {Object} args Contains information about the load and instance of the template context
+         * @protected
+         */
+        _tplLoadCallback : function (args) {
+            this.$TemplateBasedWidget._tplLoadCallback.call(this, args);
+            this._retrieveControllerSelection();
+        },
+
+        /**
+         * Retrieve the selected indexes and values from the list controller and set them on the widget
+         * @protected
+         */
+        _retrieveControllerSelection : function () {
+            var moduleCtrl = this._subTplModuleCtrl;
+            this.setProperty("selectedValues", moduleCtrl.getSelectedValues());
+            this.setProperty("selectedIndex", moduleCtrl.getData().selectedIndex);
         },
 
         /**
@@ -239,11 +255,11 @@ Aria.classDefinition({
                 try {
                     aria.utils.Json.addListener(bind.inside, bind.to, callback, true, true);
                     this._bindingListeners[property] = {
-                            inside : bind.inside,
-                            to : bind.to,
-                            transform : bind.transform,
-                            cb : callback
-                        };
+                        inside : bind.inside,
+                        to : bind.to,
+                        transform : bind.transform,
+                        cb : callback
+                    };
 
                     var newValue = this._transform(bind.transform, bind.inside[bind.to], "toWidget");
                     this._cfg[property] = newValue;

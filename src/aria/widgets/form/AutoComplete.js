@@ -59,6 +59,7 @@ Aria.classDefinition({
         controllerInstance.maxlength = cfg.maxlength;
         controllerInstance.expandButton = cfg.expandButton;
         controllerInstance.selectionKeys = cfg.selectionKeys;
+        controllerInstance.preselect = cfg.preselect;
 
         /**
          * Whether the width of the popup can be smaller than the field, when configured to be so. If false, the

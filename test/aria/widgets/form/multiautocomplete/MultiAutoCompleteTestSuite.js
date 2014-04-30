@@ -49,5 +49,6 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.form.multiautocomplete.issue1085.InitCheckboxesTest");
         this.addTests("test.aria.widgets.form.multiautocomplete.enterAndTab.EnterAndTabTestCase");
         this.addTests("test.aria.widgets.form.multiautocomplete.popupGeometry.PopupWidthTest");
+        this.addTests("test.aria.widgets.form.multiautocomplete.preselectAutofill.PreselectAutofillTestSuite");
     }
 });

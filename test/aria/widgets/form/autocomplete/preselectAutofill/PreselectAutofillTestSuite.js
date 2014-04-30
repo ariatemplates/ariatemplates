@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Amadeus s.a.s.
+ * Copyright 2013 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,13 +14,16 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.selectbox.SelectboxTestSuite",
+    $classpath : "test.aria.widgets.form.autocomplete.preselectAutofill.PreselectAutofillTestSuite",
     $extends : "aria.jsunit.TestSuite",
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
-        this.addTests("test.aria.widgets.form.selectbox.SelectboxTestCase");
-        this.addTests("test.aria.widgets.form.selectbox.checkValue.MainTemplateTestCase");
-        this.addTests("test.aria.widgets.form.selectbox.checkTypeLetters.SelectBoxTypeAllLetters");
-        this.addTests("test.aria.widgets.form.selectbox.preselect.PreselectTestCase");
+        this.addTests(this.$package + ".PreselectAutofillDefaultTest");
+        this.addTests(this.$package + ".StrictFalseTest");
+        this.addTests(this.$package + ".AlwaysTrueTest");
+        this.addTests(this.$package + ".AlwaysFalseTest");
+        this.addTests(this.$package + ".NoneTrueTest");
+        this.addTests(this.$package + ".NoneFalseTest");
+        this.addTests(this.$package + ".PreselectAutofillWithTabDefaultTest");
     }
 });

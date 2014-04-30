@@ -827,7 +827,14 @@ Aria.beanDefinitions({
                             $type : "common:BindingRef"
                         }
                     }
+                },
+                "preselect" : {
+                    $type : "json:Enum",
+                    $description : "always: for selecting the first item everytime, none: for no highlighting",
+                    $enumValues : ["always", "none"],
+                    $default : "always"
                 }
+
             }
         },
 
@@ -901,8 +908,9 @@ Aria.beanDefinitions({
                     $mandatory : true
                 },
                 "preselect" : {
-                    $type : "json:String",
+                    $type : "json:Enum",
                     $description : "strict: for strict highlighting (exact match only), always: for selecting the first item everytime, none: for no highlighting",
+                    $enumValues : ["strict", "always", "none"],
                     $default : "strict"
                 },
                 "expandButton" : {
@@ -1537,8 +1545,9 @@ Aria.beanDefinitions({
                     $default : "aria.widgets.form.list.templates.ListTemplate"
                 },
                 "preselect" : {
-                    $type : "json:String",
+                    $type : "json:Enum",
                     $description : "strict: for strict highlighting (exact match only), always: for selecting the first item everytime, none: for no highlighting",
+                    $enumValues : ["strict", "always", "none"],
                     $default : "strict"
                 },
                 "items" : {
