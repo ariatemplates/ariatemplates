@@ -13,30 +13,29 @@
  * limitations under the License.
  */
 
+/**
+ * Test the defautl values for the preselect and autoFill properties, namely 'strict' and true, respectively.
+ */
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.autocomplete.preselectAutofill.AlwaysFalseTest",
+    $classpath : "test.aria.widgets.form.autocomplete.preselectAutofill.StrictTrueTest",
     $extends : "test.aria.widgets.form.autocomplete.preselectAutofill.PreselectAutofillBaseTest",
     $constructor : function () {
-        this.autofill = false;
-        this.preselect = "always";
+        this.$PreselectAutofillBaseTest.constructor.call(this);
         this.allTestValues = {
             freetext : {
-                input : ["p", "P4. TESTER D", "p1", "P1. TESTER A", "p", "P3. TESTER C"],
-                dataModel : [null, {
-                            label : "P4. TESTER D",
-                            code : "P4"
-                        }, null, {
+                input : ["p", "p", "p1", "P1. TESTER A", "P4. TESTER D", "P4. TESTER D"],
+                dataModel : [null, "p", null, {
                             label : "P1. TESTER A",
                             code : "P1"
                         }, null, {
-                            label : "P3. TESTER C",
-                            code : "P3"
+                            label : "P4. TESTER D",
+                            code : "P4"
                         }],
-                items : [[4, [0]], [0], [1, [0]], [0], [4, [1]], [0]]
+                items : [[4], [0], [1, [0]], [0], [4, [0]], [0]]
             }
         };
 
         this.allTestValues.noFreetext = aria.utils.Json.copy(this.allTestValues.freetext);
-        this.$PreselectAutofillBaseTest.constructor.call(this);
+        this.allTestValues.noFreetext.dataModel[1] = undefined;
     }
 });

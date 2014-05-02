@@ -15,12 +15,25 @@
 
 Aria.classDefinition({
     $classpath : "test.aria.widgets.form.autocomplete.preselectAutofill.StrictFalseTest",
-    $extends : "test.aria.widgets.form.autocomplete.preselectAutofill.PreselectAutofillDefaultTest",
+    $extends : "test.aria.widgets.form.autocomplete.preselectAutofill.PreselectAutofillBaseTest",
     $constructor : function () {
         this.autofill = false;
-        this.$PreselectAutofillDefaultTest.constructor.call(this);
-        this.allTestValues.freetext.input[4] = "p";
-        this.allTestValues.noFreetext.input[4] = "p";
-    },
-    $prototype : {}
+        this.$PreselectAutofillBaseTest.constructor.call(this);
+        this.allTestValues = {
+            freetext : {
+                input : ["p", "p", "p1", "P1. TESTER A", "p", "P4. TESTER D"],
+                dataModel : [null, "p", null, {
+                            label : "P1. TESTER A",
+                            code : "P1"
+                        }, null, {
+                            label : "P4. TESTER D",
+                            code : "P4"
+                        }],
+                items : [[4], [0], [1, [0]], [0], [4, [0]], [0]]
+            }
+        };
+
+        this.allTestValues.noFreetext = aria.utils.Json.copy(this.allTestValues.freetext);
+        this.allTestValues.noFreetext.dataModel[1] = undefined;
+    }
 });

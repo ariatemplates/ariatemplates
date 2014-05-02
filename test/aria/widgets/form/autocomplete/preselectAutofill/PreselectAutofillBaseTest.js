@@ -13,8 +13,37 @@
  * limitations under the License.
  */
 
+/**
+ * This is a base class to extend for all tests dealing with preselect and autofill options in the AutoComplete. It
+ * performs the following scenario:
+ *
+ * <pre>
+ * 1 - type
+ * 'p'  in the field
+ * 2 - type the selection key (can be configured, it defaults to [ENTER])
+ * 3 - type 'p1' in the field. In this case there is an exact match, because 'p1' is the code of one returned suggestion.
+ * 4 - type the selection key
+ * 5 - type 'p1', then [BACKSPACE] in the field (the widget and the data model should be in the same status as step 1)
+ * 6 - type the selection key  (the widget and the data model should be in the same status as step 2)
+ * 7 - type 'p1', then [BACKSPACE] and [DOWN] in the field. In this case, a navigation in the displayed list is triggered
+ * 8 - type the selection key
+ *
+ * For each of these steps, a set of assertions is performed on the input field value, the data model, the highlighted suggestions in the dropdown, the element which has focus.
+ *
+ * The scenario is performed twice: the first time the AutoComplete freeText configuration property is set to true, the second time it is set to false.
+ *
+ * The reference values are not explicitly set in this test, but are contained in this.allTestvalues class property. It is up to extending classes to provide these values.
+ *
+ * Many test options can be configured:
+ * 1 - the preselect option for the AutoComplete
+ * 2 - the autofill option for the AutoComplete
+ * 3 - the selection key (either [ENTER] or [TAB])
+ * 4 - the template to test
+ * 5 - the resources handler to use
+ * </pre>
+ */
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.autocomplete.preselectAutofill.PreselectAutofillDefaultTest",
+    $classpath : "test.aria.widgets.form.autocomplete.preselectAutofill.PreselectAutofillBaseTest",
     $extends : "aria.jsunit.RobotTestCase",
     $dependencies : ["aria.popups.PopupManager", "aria.resources.handlers.LCResourcesHandler", "aria.utils.Array",
             "aria.utils.Type"],
@@ -60,22 +89,29 @@ Aria.classDefinition({
         this.field = null;
 
         if (!this.allTestValues) {
+
+            /**
+             * <pre>
+             * It contains two objects (one for the freeText=true scenario, the other for the freeText=false scenario), each containing, for each of the steps described in the comment above the class the expected values for
+             * 1 - the input's value
+             * 2 - the value in the data model
+             * 3 - the status of the dropdown (the first entry being the number of suggestions, the second one an array containing the indices of highlighted items)
+             *
+             * Notice that the status after step 5 and 6 should be the same as step 1 and 2, respectively. That's why there are only six entries in the arrays.
+             * </pre>
+             */
             this.allTestValues = {
                 freetext : {
-                    input : ["p", "p", "p1", "P1. TESTER A", "P4. TESTER D", "P4. TESTER D"],
-                    dataModel : [null, "p", null, {
-                                label : "P1. TESTER A",
-                                code : "P1"
-                            }, null, {
-                                label : "P4. TESTER D",
-                                code : "P4"
-                            }],
-                    items : [[4], [0], [1, [0]], [0], [4, [0]], [0]]
+                    input : [],
+                    dataModel : [],
+                    items : []
+                },
+                noFreetext : {
+                    input : [],
+                    dataModel : [],
+                    items : []
                 }
             };
-
-            this.allTestValues.noFreetext = aria.utils.Json.copy(this.allTestValues.freetext);
-            this.allTestValues.noFreetext.dataModel[1] = undefined;
         }
 
         this.scenario = null;
@@ -100,6 +136,9 @@ Aria.classDefinition({
 
             var field = this.field;
 
+            /**
+             * type 'p'
+             */
             this.synEvent.execute([["click", field], ["type", field, "p"]], {
                 fn : this._testPopupOpen,
                 scope : this,
@@ -107,6 +146,9 @@ Aria.classDefinition({
             });
         },
 
+        /**
+         * test status after suggestions for 'p' have been retrieved, then type the selection key
+         */
         _afterFirstTyping : function () {
             this._testAll(0);
 
@@ -117,6 +159,10 @@ Aria.classDefinition({
             });
         },
 
+        /**
+         * test status after the slection key has been pressed, then refresh the template to start a new scenario. 'p1'
+         * is typed, it corresponds to the code of one of the suggestions
+         */
         _afterSecondTyping : function () {
             this._testAll(1);
             this._reset();
@@ -128,6 +174,9 @@ Aria.classDefinition({
 
         },
 
+        /**
+         * test status after suggestions for 'p1' have been retrieved, then type the selection key
+         */
         _afterThirdTyping : function () {
             this._testAll(2);
             this.synEvent.execute([["type", this.field, this.selectionKey]], {
@@ -137,6 +186,10 @@ Aria.classDefinition({
             });
         },
 
+        /**
+         * test status after the slection key has been pressed, then refresh the template to start a new scenario. 'p1',
+         * then [BACKSPACE] is typed.
+         */
         _afterFourthTyping : function () {
             this._testAll(3);
             this._reset();
@@ -149,6 +202,10 @@ Aria.classDefinition({
             });
         },
 
+        /**
+         * test status after suggestions for 'p' have been retrieved. The same situation as _afterFirstTyping should
+         * occur. Then type the selection key
+         */
         _afterFifthTyping : function () {
             this._testAll(0);
             this.synEvent.execute([["type", this.field, this.selectionKey]], {
@@ -158,6 +215,10 @@ Aria.classDefinition({
             });
         },
 
+        /**
+         * test status after the slection key has been pressed. The same situation as _afterSecondTyping should occur.
+         * Then refresh the template to start a new scenario. 'p1', then [BACKSPACE] and [DOWN] is typed.
+         */
         _afterSixthTyping : function () {
             this._testAll(1);
             this._reset();
@@ -170,6 +231,10 @@ Aria.classDefinition({
             });
         },
 
+        /**
+         * test status after suggestions for 'p' have been retrieved and a navigation down the list of suggestions has
+         * been performed. Then type the selection key
+         */
         _afterSeventhTyping : function () {
             this._testAll(4);
             this.synEvent.execute([["type", this.field, this.selectionKey]], {
@@ -179,6 +244,9 @@ Aria.classDefinition({
             });
         },
 
+        /**
+         * test status after the slection key has been pressed.
+         */
         _afterEighthTyping : function () {
             this._testAll(5);
             this._furtherTests();
@@ -198,6 +266,11 @@ Aria.classDefinition({
             });
         },
 
+        /**
+         * Test the input value, the data model value and the dropdown displayed and highlighted suggestions. Every
+         * second step, the status of the focus is also tested.
+         * @param {Integer} index used in order to retrieve the reference values from the object containing them all
+         */
         _testAll : function (index) {
             this._testInputText(this.testValues.input[index]);
             this._testDataModel(this.testValues.dataModel[index]);
@@ -206,6 +279,7 @@ Aria.classDefinition({
                 this._testFocusAfterSelection();
             }
         },
+
         _testInputText : function (value) {
             this.assertEquals(this.field.value, value, "Value in input field is not correct. Expected: \"" + value
                     + "\", found \"" + this.field.value + "\" instead.");
@@ -278,6 +352,9 @@ Aria.classDefinition({
             this.field = this.getInputField("ac");
         },
 
+        /**
+         * This method has to be implemented in order to add steps in the scenario
+         */
         _furtherTests : function () {
             this.end();
         },

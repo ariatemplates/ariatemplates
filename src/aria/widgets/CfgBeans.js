@@ -830,7 +830,7 @@ Aria.beanDefinitions({
                 },
                 "preselect" : {
                     $type : "json:Enum",
-                    $description : "always: for selecting the first item everytime, none: for no highlighting",
+                    $description : "when set to \"always\", the first option in the list is highlighted, so that it can be selected by hitting the ENTER key. When set to \"none\", no option will be automatically highlighted. The user will have to use navigation keys to move through the list and select an item.",
                     $enumValues : ["always", "none"],
                     $default : "always"
                 }
@@ -909,7 +909,7 @@ Aria.beanDefinitions({
                 },
                 "preselect" : {
                     $type : "json:Enum",
-                    $description : "strict: for strict highlighting (exact match only), always: for selecting the first item everytime, none: for no highlighting",
+                    $description : "when set to \"always\", the first option in the list is highlighted, so that it can be selected by hitting the ENTER key. When set to \"none\", no option will be automatically highlighted. The user will have to use navigation keys to move through the list and select an item. When set to \"strict\", the first suggestion will be selected only if it is an \"exactMatch\" (which means, in the default case, that the value of the input field coincides with its code)",
                     $enumValues : ["strict", "always", "none"],
                     $default : "strict"
                 },
@@ -1546,7 +1546,7 @@ Aria.beanDefinitions({
                 },
                 "preselect" : {
                     $type : "json:Enum",
-                    $description : "strict: for strict highlighting (exact match only), always: for selecting the first item everytime, none: for no highlighting",
+                    $description : "when set to \"always\", the first option in the list is highlighted, so that it can be selected by hitting the ENTER key. When set to \"none\", no option will be automatically highlighted. The user will have to use navigation keys to move through the list and select an item. The \"strict\" option does not make sense when the List widget is used on its own, but needs to be added here for compatibility with respect to the AutoComplete and MultiAutoComplete widgets that use a List.",
                     $enumValues : ["strict", "always", "none"],
                     $default : "strict"
                 },

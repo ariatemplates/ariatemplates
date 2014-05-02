@@ -13,9 +13,20 @@
  * limitations under the License.
  */
 
+/**
+ * <pre>
+ * This is a base class to extend for all tests dealing with preselect and autofill options in the MultiAutoComplete. It extends from
+ * 'test.aria.widgets.form.autocomplete.preselectAutofill.PreselectAutofillBaseTest', thus performing the same scenario, but it also adds the following two steps
+ *
+ * 9 - type 'p1-4'  in the field. No matter what the preselect, autoFill, or freeText options are, 4 items have to be highlighted in the dropdown.
+ * 10 - type the selection key. No matter what the preselect, autoFill, or freeText options are, 4 suggestions have to be selected.
+ *
+ * A test on the items that are selected inside the MultiAutocomplete is also performed, based on the values that should be found in the data model
+ * </pre>
+ */
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.multiautocomplete.preselectAutofill.MACPreselectAutofillDefaultTest",
-    $extends : "test.aria.widgets.form.autocomplete.preselectAutofill.PreselectAutofillDefaultTest",
+    $classpath : "test.aria.widgets.form.multiautocomplete.preselectAutofill.MACPreselectAutofillBaseTest",
+    $extends : "test.aria.widgets.form.autocomplete.preselectAutofill.PreselectAutofillBaseTest",
     $dependencies : ["aria.resources.handlers.LCRangeResourceHandler"],
     $constructor : function () {
         this.testTemplate = "test.aria.widgets.form.multiautocomplete.preselectAutofill.PreselectAutofillCommonTemplate";
@@ -72,11 +83,14 @@ Aria.classDefinition({
                                 code : "P4"
                             }]];
         }
-        this.$PreselectAutofillDefaultTest.constructor.call(this);
+        this.$PreselectAutofillBaseTest.constructor.call(this);
         this.data.value = [];
     },
     $prototype : {
 
+        /**
+         * type 'p1-4'
+         */
         _furtherTests : function () {
             this._reset();
             this.synEvent.execute([["click", this.field], ["type", this.field, "p1-4"]], {
@@ -86,6 +100,9 @@ Aria.classDefinition({
             });
         },
 
+        /**
+         * Test that 4 items are highlighted in the dropdown. Type the selection key
+         */
         _afterNinthTyping : function () {
             this._testAll(6);
             this.synEvent.execute([["type", this.field, this.selectionKey]], {
@@ -95,6 +112,9 @@ Aria.classDefinition({
             });
         },
 
+        /**
+         * test that 4 items have been selected.
+         */
         _afterTenthTyping : function () {
             this._testAll(7);
             this.end();
@@ -102,7 +122,7 @@ Aria.classDefinition({
 
         _testAll : function (index) {
             this.field = this.getInputField("ac");
-            this.$PreselectAutofillDefaultTest._testAll.call(this, index);
+            this.$PreselectAutofillBaseTest._testAll.call(this, index);
             this._testSelectedItems(this.testValues.dataModel[index]);
         },
 

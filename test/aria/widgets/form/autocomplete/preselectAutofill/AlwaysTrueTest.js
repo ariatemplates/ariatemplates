@@ -15,9 +15,9 @@
 
 Aria.classDefinition({
     $classpath : "test.aria.widgets.form.autocomplete.preselectAutofill.AlwaysTrueTest",
-    $extends : "test.aria.widgets.form.autocomplete.preselectAutofill.PreselectAutofillDefaultTest",
+    $extends : "test.aria.widgets.form.autocomplete.preselectAutofill.PreselectAutofillBaseTest",
     $constructor : function () {
-        this.autofill = (this.autofill !== undefined) ? this.autofill : true;
+        this.autofill = true;
         this.preselect = "always";
         this.allTestValues = {
             freetext : {
@@ -38,6 +38,6 @@ Aria.classDefinition({
 
         this.allTestValues.noFreetext = aria.utils.Json.copy(this.allTestValues.freetext);
 
-        this.$PreselectAutofillDefaultTest.constructor.call(this);
+        this.$PreselectAutofillBaseTest.constructor.call(this);
     }
 });
