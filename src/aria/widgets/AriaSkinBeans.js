@@ -627,8 +627,11 @@ module.exports = Aria.beanDefinitions({
                             $type : "LinkStateCfg"
                         }
                     }
+                },
+                "disabledColor" : {
+                    $type : "json:String",
+                    $description : ""
                 }
-
             }
         },
         "LinkStateCfg" : {

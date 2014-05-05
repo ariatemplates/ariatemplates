@@ -1152,7 +1152,22 @@ module.exports = Aria.beanDefinitions({
 
         "LinkCfg" : {
             $type : "ActionWidgetCfg",
-            $description : "The base configuration for the link widget"
+            $description : "The base configuration for the link widget",
+            $properties : {
+                "bind" : {
+                    $type : "ActionWidgetCfg.bind",
+                    $properties : {
+                        "disabled" : {
+                            $type : "common:BindingRef"
+                        }
+                    }
+                },
+                "disabled" : {
+                    $type : "json:Boolean",
+                    $description : "A boolean whether the button is disabled or not",
+                    $default : false
+                }
+            }
         },
 
         "SpriteCfg" : {
