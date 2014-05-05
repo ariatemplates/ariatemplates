@@ -612,7 +612,8 @@ Aria.classDefinition({
                         focus : {
                             color : "#6365FF"
                         }
-                    }
+                    },
+                    disabledColor : "#E6D9C6"
                 }
             },
             SelectBox : {
