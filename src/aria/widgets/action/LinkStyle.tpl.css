@@ -12,25 +12,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 {CSSTemplate {
     $classpath : "aria.widgets.action.LinkStyle",
     $extends : "aria.widgets.WidgetStyle"
 }}
-    {var skinnableClassName="Link"/}
+{var skinnableClassName="Link"/}
+{macro writeState(info)}
+	{var pseudoclass=""/}
+	{if info.stateName != "normal"}
+	{set pseudoclass=":"+info.stateName/}
+	{/if}
 
-    {macro writeState(info)}
-        {var pseudoclass=""/}
-        {if info.stateName != "normal"}
-            {set pseudoclass=":"+info.stateName/}
-        {/if}
-        
-        a${pseudoclass}.xLink_${info.skinClassName} {
-            color:${info.state.color};
-            {if info.state.textDecoration}
-                text-decoration:${info.state.textDecoration};
-            {/if}
-        }
-    {/macro}
-    
+	a${pseudoclass}.xLink_${info.skinClassName} {
+	color:${info.state.color};
+	{if info.state.textDecoration}
+		text-decoration:${info.state.textDecoration};
+	{/if}
+	}
+{/macro}
+
+{macro writeSkinClass(info)}
+	{var skinClassName=info.skinClassName/}
+	{var skinClass=info.skinClass/}
+	a.xLink_disabled{
+		color:${skinClass.disabledColor};
+		text-decoration:none;
+		cursor:default;
+	}
+
+{/macro}
 {/CSSTemplate}

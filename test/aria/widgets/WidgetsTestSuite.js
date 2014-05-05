@@ -29,10 +29,7 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.AriaSkinInterfaceTest");
         this.addTests("test.aria.widgets.AriaSkinNormalizationTest");
         this.addTests("test.aria.widgets.WidgetTest");
-        this.addTests("test.aria.widgets.action.link.LinkClick");
-        this.addTests("test.aria.widgets.action.sortindicator.SortIndicatorTest");
-        this.addTests("test.aria.widgets.action.sortindicator.onclick.OnclickCallback");
-        this.addTests("test.aria.widgets.action.sortindicator.block.SortIndicatorBlockTest");
+        this.addTests("test.aria.widgets.action.ActionTestSuite");
         this.addTests("test.aria.widgets.form.text.Text");
         this.addTests("test.aria.widgets.form.text.EllipsisTest");
         this.addTests("test.aria.widgets.calendar.CalendarControllerTest");

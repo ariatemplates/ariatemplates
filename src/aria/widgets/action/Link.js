@@ -56,7 +56,11 @@ Aria.classDefinition({
          */
         _widgetMarkup : function (out) {
             var cfg = this._cfg;
-            out.write(['<a', Aria.testMode ? ' id="' + this._domId + '_link"' : '', ' class="xLink_', cfg.sclass,
+            var linkClass = "xLink_" + cfg.sclass;
+            if (cfg.disabled) {
+                linkClass = "xLink_disabled";
+            }
+            out.write(['<a', Aria.testMode ? ' id="' + this._domId + '_link"' : '', ' class="', linkClass,
                     '" href="javascript:(function(){})()"',
                     (cfg.tabIndex != null ? ' tabindex=' + this._calculateTabIndex() + '"' : ''), '>',
                     aria.utils.String.escapeHTML(cfg.label), '</a>'].join(''));
@@ -118,6 +122,38 @@ Aria.classDefinition({
                 return true;
             }
             return true;
+        },
+
+        /**
+         * A method called when a bindable property has changed in the data model
+         * @param {String} propertyName the property name
+         * @param {Object} newValue the new value. If transformation is used, refers to widget value and not data model
+         * value.
+         * @param {Object} oldValue the old property value. If transformation is used, refers to widget value and not
+         * data model value.
+         * @protected
+         */
+        _onBoundPropertyChange : function (propertyName, newValue, oldValue) {
+            this.$ActionWidget._onBoundPropertyChange.apply(this, arguments);
+            if (propertyName === "disabled") {
+                this._cfg[propertyName] = newValue;
+                this._updateState();
+            }
+
+        },
+        /**
+         * Internal method to update the state of the widget
+         * @protected
+         */
+        _updateState : function () {
+            var cfg = this._cfg, state = "xLink_" + cfg.sclass;
+            if (this._focusElt) {
+                if (cfg.disabled) {
+                    state = "xLink_disabled";
+                }
+                this._focusElt.className = state;
+            }
+
         }
     }
 });
