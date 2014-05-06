@@ -22,7 +22,8 @@ Aria.classDefinition({
     $dependencies : ["aria.pageEngine.CfgBeans", "aria.pageEngine.SiteRootModule", "aria.templates.ModuleCtrlFactory",
             "aria.core.JsonValidator", "aria.pageEngine.utils.SiteConfigHelper",
             "aria.pageEngine.utils.PageConfigHelper", "aria.embed.PlaceholderManager", "aria.utils.Type",
-            "aria.pageEngine.utils.PageEngineUtils", "aria.utils.CSSLoader", "aria.utils.Json", "aria.core.Browser"],
+            "aria.utils.String", "aria.pageEngine.utils.PageEngineUtils", "aria.utils.CSSLoader", "aria.utils.Json",
+            "aria.core.Browser"],
     $constructor : function () {
         /**
          * Start configuration
@@ -226,7 +227,8 @@ Aria.classDefinition({
         INVALID_SITE_CONFIGURATION : "The configuration object of the application is not valid",
         PAGE_NOT_AVAILABLE : "Unable to retrieve page %1",
         INVALID_PAGE_DEFINITION : "The page definition does not match the bean aria.pageEngine.CfgBeans.PageDefinition",
-        MISSING_DEPENDENCIES : "Unable to download Page Engine dependencies"
+        MISSING_DEPENDENCIES : "Unable to download Page Engine dependencies",
+        INVALID_ROOTMODULE_PARENT : "Custom root module controller should extend aria.pageEngine.SiteRootModule"
     },
     $prototype : {
 
@@ -248,12 +250,7 @@ Aria.classDefinition({
                     fn : this._loadRootModule,
                     scope : this
                 },
-                onfailure : {
-                    fn : this._errorCallback,
-                    scope : this,
-                    args : [this.SITE_CONFIG_NOT_AVAILABLE],
-                    resIndex : -1
-                }
+                onfailure : this._getErrorCallbackConfig([this.SITE_CONFIG_NOT_AVAILABLE])
             });
 
         },
@@ -273,16 +270,47 @@ Aria.classDefinition({
 
             // Initialization
             var appData = helper.getAppData();
-
             appData.menus = appData.menus || {};
 
-            aria.templates.ModuleCtrlFactory.createModuleCtrl({
-                classpath : "aria.pageEngine.SiteRootModule",
-                initArgs : {
-                    appData : helper.getAppData(),
-                    pageEngine : this._wrapper
+            var initArgs = {
+                appData : appData,
+                pageEngine : this._wrapper
+            };
+
+            var rootModuleConfig = this._config.rootModule;
+            if (rootModuleConfig) {
+                var customControllerClasspath = rootModuleConfig.classpath;
+                if (rootModuleConfig.initArgs) {
+                    aria.utils.Json.inject(initArgs, rootModuleConfig.initArgs);
                 }
-            }, {
+                var that = this;
+                Aria.load({
+                    classes : [customControllerClasspath],
+                    oncomplete : function () {
+                        if (Aria.getClassRef(customControllerClasspath).classDefinition.$extends !== "aria.pageEngine.SiteRootModule") {
+                            that._errorCallback([that.INVALID_ROOTMODULE_PARENT]);
+                            return;
+                        }
+                        that._createModuleCtrl(rootModuleConfig);
+                    },
+                    onerror : this._getErrorCallbackConfig([this.MISSING_DEPENDENCIES])
+                });
+            } else {
+                this._createModuleCtrl({
+                    classpath : "aria.pageEngine.SiteRootModule",
+                    initArgs : initArgs
+                });
+            }
+
+        },
+
+        /**
+         * Internal method to create the site root module controller
+         * @param {aria.templates.CfgBeans:InitModuleCtrl} rootModuleConfig
+         * @protected
+         */
+        _createModuleCtrl : function (rootModuleConfig) {
+            aria.templates.ModuleCtrlFactory.createModuleCtrl(rootModuleConfig, {
                 fn : this._loadSiteDependencies,
                 scope : this
             });
@@ -301,6 +329,7 @@ Aria.classDefinition({
 
             var classesToLoad = siteHelper.getListOfContentProcessors();
             var navigationManagerClass = siteHelper.getNavigationManagerClass();
+
             if (navigationManagerClass) {
                 classesToLoad.push(navigationManagerClass);
             }
@@ -320,12 +349,7 @@ Aria.classDefinition({
                     scope : this,
                     args : commonModulesToLoad
                 },
-                onerror : {
-                    fn : this._errorCallback,
-                    scope : this,
-                    args : [this.MISSING_DEPENDENCIES],
-                    resIndex : -1
-                }
+                onerror : this._getErrorCallbackConfig([this.MISSING_DEPENDENCIES])
             });
 
         },
@@ -395,12 +419,7 @@ Aria.classDefinition({
                             cb : cb
                         }
                     },
-                    onfailure : {
-                        fn : this._errorCallback,
-                        scope : this,
-                        args : [this.PAGE_NOT_AVAILABLE, pageId],
-                        resIndex : -1
-                    }
+                    onfailure : this._getErrorCallbackConfig([this.PAGE_NOT_AVAILABLE, pageId])
                 });
             }
         },
@@ -476,12 +495,7 @@ Aria.classDefinition({
                     }
                 }
             };
-            dependencies.onerror = {
-                fn : this._errorCallback,
-                scope : this,
-                args : [this.MISSING_DEPENDENCIES],
-                resIndex : -1
-            };
+            dependencies.onerror = this._getErrorCallbackConfig([this.MISSING_DEPENDENCIES]);
             Aria.load(dependencies);
         },
 
@@ -511,7 +525,7 @@ Aria.classDefinition({
             } catch (ex) {
                 this._utils.logMultipleErrors(error, ex.errors, this);
                 if (this._config.onerror) {
-                    this.$callback(this._config.onerror, error);
+                    this.$callback(this._config.onerror, [error]);
                 }
                 return false;
             }
@@ -790,13 +804,30 @@ Aria.classDefinition({
 
         /**
          * Logs an error and calls the onerror callback if specified in the configuration
+         * @param {Array} msg Parameters to pass to the $logError method or to the error method provided in the
+         * configuration
+         * @protected
          */
         _errorCallback : function (msg) {
             var config = this._config;
             this.$logError.apply(this, msg);
             if (config.onerror) {
-                this.$callback(config.onerror, msg[0]);
+                this.$callback(config.onerror, msg);
             }
+        },
+
+        /**
+         * @param {Array} msg Parameters to pass to the $logError method or to the error method provided in the
+         * @return {aria.core.CfgBeans:Callback}
+         * @protected
+         */
+        _getErrorCallbackConfig : function (msg) {
+            return {
+                fn : this._errorCallback,
+                scope : this,
+                args : msg,
+                resIndex : -1
+            };
         },
 
         /**

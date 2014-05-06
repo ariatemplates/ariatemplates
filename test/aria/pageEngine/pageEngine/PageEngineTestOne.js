@@ -33,7 +33,7 @@ Aria.classDefinition({
         },
 
         _onSiteConfigFailure : function (args) {
-            this.assertTrue(args == this.pageEngine.SITE_CONFIG_NOT_AVAILABLE);
+            this.assertTrue(args[0] == this.pageEngine.SITE_CONFIG_NOT_AVAILABLE);
             this.assertErrorInLogs(this.pageEngine.SITE_CONFIG_NOT_AVAILABLE);
             this._disposePageEngine();
 
@@ -45,7 +45,7 @@ Aria.classDefinition({
             });
         },
         _onInvalidSiteConfig : function (args) {
-            this.assertTrue(args == this.pageEngine.INVALID_SITE_CONFIGURATION);
+            this.assertTrue(args[0] == this.pageEngine.INVALID_SITE_CONFIGURATION);
             this.assertErrorInLogs(this.pageEngine.INVALID_SITE_CONFIGURATION + ":");
             this.assertErrorInLogs("1 - " + aria.core.JsonValidator.MISSING_MANDATORY);
 
@@ -58,7 +58,7 @@ Aria.classDefinition({
             });
         },
         _onMissingSiteDependencies : function (args) {
-            this.assertTrue(args == this.pageEngine.MISSING_DEPENDENCIES);
+            this.assertTrue(args[0] == this.pageEngine.MISSING_DEPENDENCIES);
             this.assertErrorInLogs(this.pageEngine.MISSING_DEPENDENCIES);
             this.assertErrorInLogs(aria.core.ClassLoader.CLASS_LOAD_FAILURE);
 
@@ -71,7 +71,7 @@ Aria.classDefinition({
             });
         },
         _onPageFailure : function (args) {
-            this.assertTrue(args == this.pageEngine.PAGE_NOT_AVAILABLE);
+            this.assertTrue(args[0] == this.pageEngine.PAGE_NOT_AVAILABLE);
             this.assertErrorInLogs(this.pageEngine.PAGE_NOT_AVAILABLE);
 
             this._disposePageEngine();
@@ -83,7 +83,7 @@ Aria.classDefinition({
             });
         },
         _onInvalidPage : function (args) {
-            this.assertTrue(args == this.pageEngine.INVALID_PAGE_DEFINITION);
+            this.assertTrue(args[0] == this.pageEngine.INVALID_PAGE_DEFINITION);
             this.assertErrorInLogs(this.pageEngine.INVALID_PAGE_DEFINITION + ":");
             this.assertErrorInLogs("1 - " + aria.core.JsonValidator.MISSING_MANDATORY);
 
@@ -96,7 +96,7 @@ Aria.classDefinition({
             });
         },
         _onMissingPageDependencies : function (args) {
-            this.assertTrue(args == this.pageEngine.MISSING_DEPENDENCIES);
+            this.assertTrue(args[0] == this.pageEngine.MISSING_DEPENDENCIES);
             this.assertErrorInLogs(this.pageEngine.MISSING_DEPENDENCIES);
             this.assertErrorInLogs(aria.core.ClassLoader.CLASS_LOAD_FAILURE);
 
