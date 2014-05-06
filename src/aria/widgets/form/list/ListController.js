@@ -974,7 +974,9 @@ Aria.classDefinition({
          */
         deselectAll : function () {
             this.setSelectedValues([]);
-            this.json.setValue(this._data, "focusIndex", 0);
+            if (this._data) {
+                this.json.setValue(this._data, "focusIndex", 0);
+            }
         },
 
         /**
@@ -991,7 +993,9 @@ Aria.classDefinition({
                 }
             }
             this.setSelectedValues(selected);
-            this.json.setValue(this._data, "focusIndex", 0);
+            if (this._data) {
+                this.json.setValue(this._data, "focusIndex", 0);
+            }
         }
     }
 });
