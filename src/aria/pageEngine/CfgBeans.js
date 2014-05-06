@@ -22,6 +22,7 @@ Aria.beanDefinitions({
     $namespaces : {
         "json" : "aria.core.JsonTypes",
         "core" : "aria.core.CfgBeans",
+        "template" : "aria.templates.CfgBeans",
         "animation" : "aria.utils.css.AnimationsBean"
     },
     $beans : {
@@ -55,6 +56,10 @@ Aria.beanDefinitions({
                 "oncomplete" : {
                     $type : "core:Callback",
                     $description : "Callback for the correct start of the Page Engine."
+                },
+                "rootModule" : {
+                    $type : "template:InitModuleCtrl",
+                    $description : "Custom root module controller for the application, it must extend aria.pageEngine.SiteRootModule"
                 }
             }
         },
