@@ -94,9 +94,18 @@ Aria.classDefinition({
             if (report && report.ok === false) {
                 report.errorValue = this.controller.selectedSuggestions;
             }
+            var repositionDropDown = false;
+            if (report && report.repositionDropDown) {
+                repositionDropDown = true;
+                report.repositionDropDown = false;
+            }
             this.$AutoComplete._reactToControllerReport.call(this, report, arg);
             if (report) {
                 this._updateMultiselectValues(report);
+            }
+            if (repositionDropDown && this._dropdownPopup) {
+                this._closeDropdown();
+                this._openDropdown();
             }
         },
 
