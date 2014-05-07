@@ -34,55 +34,31 @@ Aria.classDefinition({
             allowRangeValues : true
         });
         if (!this.allTestValues) {
+
+            /**
+             * <pre>
+             * It contains two objects (one for the freeText=true scenario, the other for the freeText=false scenario), each containing, for each of the steps described in the comment above the class the expected values for
+             * 1 - the input's value
+             * 2 - the value in the data model
+             * 3 - the status of the dropdown (the first entry being the number of suggestions, the second one an array containing the indices of highlighted items)
+             *
+             * Notice that the status after step 5 and 6 should be the same as step 1 and 2, respectively. That's why there are only six entries in the arrays.
+             * </pre>
+             */
             this.allTestValues = {
                 freetext : {
-                    input : ["p", "", "p1", "", "P4. TESTER D", "", "p1-4", ""],
-                    dataModel : [null, ["p"], null, [{
-                                        label : "P1. TESTER A",
-                                        code : "P1"
-                                    }], null, [{
-                                        label : "P4. TESTER D",
-                                        code : "P4"
-                                    }], null, [{
-                                        label : "P1. TESTER A",
-                                        code : "P1"
-                                    }, {
-                                        label : "P2. TESTER B",
-                                        code : "P2"
-                                    }, {
-                                        label : "P3. TESTER C",
-                                        code : "P3"
-                                    }, {
-                                        label : "P4. TESTER D",
-                                        code : "P4"
-                                    }]],
-                    items : [[4], [0], [1, [0]], [0], [4, [0]], [0], [4, [0, 1, 2, 3]], [0]]
+                    input : [],
+                    dataModel : [],
+                    items : []
+                },
+                noFreetext : {
+                    input : [],
+                    dataModel : [],
+                    items : []
                 }
             };
-
-            this.allTestValues.noFreetext = aria.utils.Json.copy(this.allTestValues.freetext);
-            this.allTestValues.noFreetext.input = ["p", "p", "p1", "", "P4. TESTER D", "", "p1-4", ""];
-
-            this.allTestValues.noFreetext.dataModel = [null, [], null, [{
-                                label : "P1. TESTER A",
-                                code : "P1"
-                            }], null, [{
-                                label : "P4. TESTER D",
-                                code : "P4"
-                            }], null, [{
-                                label : "P1. TESTER A",
-                                code : "P1"
-                            }, {
-                                label : "P2. TESTER B",
-                                code : "P2"
-                            }, {
-                                label : "P3. TESTER C",
-                                code : "P3"
-                            }, {
-                                label : "P4. TESTER D",
-                                code : "P4"
-                            }]];
         }
+
         this.$PreselectAutofillBaseTest.constructor.call(this);
         this.data.value = [];
     },
