@@ -77,12 +77,15 @@ Aria.classDefinition({
          * @param {HTMLElement} frame frame
          * @param {aria.core.CfgBeans:Callback} cb callback. The first argument is an object containing success
          * information.
+         * @param {Object} options So far one option supported: iframePageCss:String which injects CSS text to the
+         * iframe. E.g. {iframePageCss : "body {font-family:Arial}"}
          */
-        loadAriaTemplatesInFrame : function (frame, cb) {
+        loadAriaTemplatesInFrame : function (frame, cb, options) {
             this.loadBootstrap({
                 fn : this._loadATInFrameCb1,
                 scope : this,
                 args : {
+                    options : options || {},
                     frame : frame,
                     cb : cb
                 }
@@ -108,11 +111,8 @@ Aria.classDefinition({
                 args : args
             });
 
-
-            var href = Aria.$frameworkWindow.location.href.replace(/(\?|\#).*$/, "").
-                replace(/[^\/.]+\.[^\/.]+$/, "").
-                replace(/\/$/, "") +
-                "/";
+            var href = Aria.$frameworkWindow.location.href.replace(/(\?|\#).*$/, "").replace(/[^\/.]+\.[^\/.]+$/, "").replace(/\/$/, "")
+                    + "/";
             var docUrl = [aria.core.DownloadMgr.resolveURL("aria/utils/FrameATLoaderHTML.html"), '?',
                     encodeURIComponent(href), '#', callbackId].join('');
             // args.frame.contentWindow is defined only if the framework is loaded in an iframe. In the case of a new
@@ -181,6 +181,10 @@ Aria.classDefinition({
          */
         _loadATInFrameCb4 : function (res, args) {
             var window = args.frame.contentWindow || args.frame;
+            if (args.options.iframePageCss) {
+                this._injectGlobalCss(window, args.options.iframePageCss);
+            }
+
             window.Aria.rootFolderPath = Aria.rootFolderPath;
             var rootMap = window.aria.utils.Json.copy(aria.core.DownloadMgr._rootMap);
             window.aria.core.DownloadMgr.updateRootMap(rootMap);
@@ -225,6 +229,25 @@ Aria.classDefinition({
             this.$callback(args.cb, {
                 success : true
             });
+        },
+
+        /**
+         * Create <style> tag and append to the head of the window, with the content as in cssText param
+         * @param {Window} window
+         * @param {String} cssText
+         */
+        _injectGlobalCss : function (window, cssText) {
+            var document = window.document;
+            var head = document.head || document.getElementsByTagName("head")[0];
+            var style = document.createElement("style");
+
+            style.type = "text/css";
+            if (style.styleSheet) {
+                style.styleSheet.cssText = cssText;
+            } else {
+                style.appendChild(document.createTextNode(cssText));
+            }
+            head.appendChild(style);
         },
 
         /**
