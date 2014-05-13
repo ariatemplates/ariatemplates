@@ -23,7 +23,7 @@ Aria.classDefinition({
         this.setTestEnv({
             template : "test.aria.widgets.container.tooltip.InnerTemplate",
             iframe : true,
-            css : "top:0;left:0;width:200px;height:200px;"
+            css : "top:0;left:0;width:200px;height:400px;"
         });
     },
     $prototype : {
@@ -31,7 +31,7 @@ Aria.classDefinition({
             // check that an error is raised because of the tooltip used as a container. Likewise, check that the
             // content has not been displayed
             this.assertErrorInLogs(this.testWindow.aria.widgets.container.Container.INVALID_USAGE_AS_CONTAINER);
-            this.assertNull(this.testDiv.innerHTML.match(/a__b__c__d__e__f__g__h__i/));
+            this.assertNull(this.testDiv.innerHTML.match(/TOOLTIP_AS_A_CONTAINER_IS_DEPRECATED/));
 
             var tooltipDiv = this.testWindow.aria.utils.Dom.getElementById("mouseOverMe");
 

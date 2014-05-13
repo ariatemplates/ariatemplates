@@ -46,7 +46,7 @@
         	id : "wrong",
         	macro : "tooltipContent"
         }}
-        	a__b__c__d__e__f__g__h__i
+        	TOOLTIP_AS_A_CONTAINER_IS_DEPRECATED - this usage should raise an error
         {/@aria:Tooltip}
 
         {@aria:Div {
