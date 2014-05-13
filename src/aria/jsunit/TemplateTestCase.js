@@ -41,7 +41,8 @@ Aria.classDefinition({
             moduleCtrl : null,
             data : {},
             iframe : false,
-            baseCss : this.IFRAME_BASE_CSS_TEXT
+            baseCss : this.IFRAME_BASE_CSS_TEXT, // css that will be set on the <iframe> itself
+            iframePageCss : "" // css that will be injected into iframe as <style> tag
         };
 
         /**
@@ -792,11 +793,15 @@ Aria.classDefinition({
             document.body.appendChild(containerDiv);
             args.iframe = iframe;
 
-            aria.utils.FrameATLoader.loadAriaTemplatesInFrame(iframe, {
+            var cb = {
                 fn : this._iframeInnerDepLoad,
                 scope : this,
                 args : args
-            });
+            };
+            var options = {
+                iframePageCss : this.env.iframePageCss
+            };
+            aria.utils.FrameATLoader.loadAriaTemplatesInFrame(iframe, cb, options);
         },
 
         /**
