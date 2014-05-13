@@ -26,7 +26,8 @@ Aria.classDefinition({
         this.setTestEnv({
             template : "test.aria.widgets.container.dialog.resize.test3.DialogOnResizeTemplate",
             data : this.data,
-            iframe : true
+            iframe : true,
+            iframePageCss : "body {font:10px Arial}"
         });
     },
     $prototype : {
@@ -77,10 +78,10 @@ Aria.classDefinition({
             var left = popupPos.x;
             var top = popupPos.y;
 
-            this.assertEqualsWithTolerance(left, expectedLeft, tolerance, "Bad offset from left: "
-                    + left + ", should be ~311");
-            this.assertEqualsWithTolerance(top, expectedTop, tolerance, "Bad offset from top: "
-                    + top + ", should be ~ 223");
+            this.assertEqualsWithTolerance(left, expectedLeft, tolerance, "Bad offset from left: " + left
+                    + ", should be ~311");
+            this.assertEqualsWithTolerance(top, expectedTop, tolerance, "Bad offset from top: " + top
+                    + ", should be ~ 223");
             this.notifyTemplateTestEnd();
         }
 
