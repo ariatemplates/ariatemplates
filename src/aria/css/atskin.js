@@ -114,7 +114,7 @@ Aria.classDefinition({
                         normalErrorFocused : {
                             sprIdx : 4,
                             icons : {
-                                dropdown : "dropdown::multiselect_error"
+                                dropdown : "dropdown:multiselect_error"
                             }
                         },
                         mandatory : {
