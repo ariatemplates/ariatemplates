@@ -170,12 +170,13 @@
             this._dispose();
         },
         $events : {
-            "onpopstate" : {
+            "popstate" : {
                 description : "Notify window when a state is popped and raise this event",
                 properties : {
                     state : "The state that has been popped."
                 }
-            }
+            },
+            "onpopstate" : "Alias to the standard html5 `popstate` event"
         },
         $prototype : {
 
@@ -480,6 +481,10 @@
                 }
                 this.$raiseEvent({
                     name : "onpopstate",
+                    state : state
+                });
+                this.$raiseEvent({
+                    name : "popstate",
                     state : state
                 });
             },
