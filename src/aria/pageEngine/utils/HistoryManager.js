@@ -36,7 +36,7 @@ Aria.classDefinition({
         this._history = aria.utils.History;
 
         /**
-         * Listener of the onpopstate event raised by the History
+         * Listener of the popstate event raised by the History
          * @type aria.core.CfgBeans:Callback
          * @private
          */
@@ -46,7 +46,7 @@ Aria.classDefinition({
         };
 
         this._history.$addListeners({
-            "onpopstate" : this._onPopStateCallback
+            "popstate" : this._onPopStateCallback
         });
 
         /**
@@ -60,7 +60,7 @@ Aria.classDefinition({
     },
     $destructor : function () {
         this._history.$removeListeners({
-            "onpopstate" : this._onPopStateCallback
+            "popstate" : this._onPopStateCallback
         });
         this._onPopStateCallback = null;
         this._history = null;
