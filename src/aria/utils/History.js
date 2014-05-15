@@ -79,6 +79,9 @@ var dynamicDependencies = require("./$History").getDependencies();
         $classpath : "aria.utils.History",
         $singleton : true,
         $statics : {
+            /* BACKWARD-COMPATIBILITY-BEGIN GH-1123 */
+            ONPOPSTATE_DEPRECATED_EVENT : "`onpopstate` event is deprecated, please use `popstate` instead",
+            /* BACKWARD-COMPATIBILITY-END GH-1123 */
 
             /**
              * Key that is used in order to save state information in the local storage
@@ -176,7 +179,15 @@ var dynamicDependencies = require("./$History").getDependencies();
             this._dispose();
         },
         $events : {
+            /* BACKWARD-COMPATIBILITY-BEGIN GH-1123 */
             "onpopstate" : {
+                description : "[DEPRECATED, use `popstate` event] Notify window when a state is popped and raise this event",
+                properties : {
+                    state : "The state that has been popped."
+                }
+            },
+            /* BACKWARD-COMPATIBILITY-END GH-1123 */
+            "popstate" : {
                 description : "Notify window when a state is popped and raise this event",
                 properties : {
                     state : "The state that has been popped."
@@ -184,6 +195,17 @@ var dynamicDependencies = require("./$History").getDependencies();
             }
         },
         $prototype : {
+            /* BACKWARD-COMPATIBILITY-BEGIN GH-1123 */
+            $on : function (lstCfg, itfWrap) {
+                this.$addListeners(lstCfg, itfWrap);
+            },
+            $addListeners : function (lstCfg, itfWrap) {
+                if ("onpopstate" in lstCfg) {
+                    this.$logWarn(this.ONPOPSTATE_DEPRECATED_EVENT);
+                }
+                this.$JsObject.$addListeners.call(this, lstCfg, itfWrap);
+            },
+            /* BACKWARD-COMPATIBILITY-END GH-1123 */
 
             /**
              * Gets the current state of the browser
@@ -484,8 +506,14 @@ var dynamicDependencies = require("./$History").getDependencies();
                 if (title) {
                     this._setTitle(title);
                 }
+                /* BACKWARD-COMPATIBILITY-BEGIN GH-1123 */
                 this.$raiseEvent({
                     name : "onpopstate",
+                    state : state
+                });
+                /* BACKWARD-COMPATIBILITY-END GH-1123 */
+                this.$raiseEvent({
+                    name : "popstate",
                     state : state
                 });
             },
@@ -515,8 +543,14 @@ var dynamicDependencies = require("./$History").getDependencies();
                 var id = stateInfo ? stateInfo.state.id : null;
                 if (id && this._currentId != id && this._applyState(stateInfo)) {
                     this.state = this.getState();
+                    /* BACKWARD-COMPATIBILITY-BEGIN GH-1123 */
                     this.$raiseEvent({
                         name : "onpopstate",
+                        state : this.state
+                    });
+                    /* BACKWARD-COMPATIBILITY-END GH-1123 */
+                    this.$raiseEvent({
+                        name : "popstate",
                         state : this.state
                     });
                 }

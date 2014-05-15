@@ -16,6 +16,9 @@
 (function () {
 
     var logs = [];
+    /* BACKWARD-COMPATIBILITY-BEGIN GH-1123 */
+    var logsLegacy = [];
+    /* BACKWARD-COMPATIBILITY-END GH-1123 */
 
     Aria.classDefinition({
         $classpath : "test.aria.utils.History",
@@ -29,6 +32,12 @@
                 fn : this._onpopstate,
                 scope : this
             };
+            /* BACKWARD-COMPATIBILITY-BEGIN GH-1123 */
+            this._onpopstateCBLegacy = {
+                fn : this._onpopstateLegacy,
+                scope : this
+            };
+            /* BACKWARD-COMPATIBILITY-END GH-1123 */
 
             var browser = aria.core.Browser;
             var version = parseInt(browser.majorVersion, 10);
@@ -41,6 +50,10 @@
             this._history = null;
             logs = null;
             this._onpopstateCB = null;
+            /* BACKWARD-COMPATIBILITY-BEGIN GH-1123 */
+            logsLegacy = null;
+            this._onpopstateCBLegacy = null;
+            /* BACKWARD-COMPATIBILITY-END GH-1123 */
             this.$TestCase.$destructor.apply(this, arguments);
         },
         $prototype : {
@@ -101,9 +114,17 @@
 
             startTest : function () {
                 this._history = this._newWindow.aria.utils.History;
+
+                /* BACKWARD-COMPATIBILITY-BEGIN GH-1123 */
+                // this one will produce a warning
                 this._history.$on({
-                    "onpopstate" : this._onpopstateCB
+                    "onpopstate" : this._onpopstateCBLegacy
                 });
+                /* BACKWARD-COMPATIBILITY-END GH-1123 */
+                this._history.$on({
+                    "popstate" : this._onpopstateCB
+                });
+
                 this._checkState(null);// 2
                 this._checkTitle("HistoryTest");// 4
                 this._history.pushState({
@@ -267,13 +288,26 @@
 
             _checkLogs : function (index, state) {
                 this.assertJsonEquals(logs[index], state);
+                /* BACKWARD-COMPATIBILITY-BEGIN GH-1123 */
+                this.assertJsonEquals(logsLegacy[index], state);
+                /* BACKWARD-COMPATIBILITY-END GH-1123 */
             },
 
             _onpopstate : function (evt) {
                 logs.push(evt.state);
             },
 
+            /* BACKWARD-COMPATIBILITY-BEGIN GH-1123 */
+            _onpopstateLegacy : function (evt) {
+                logsLegacy.push(evt.state);
+            },
+            /* BACKWARD-COMPATIBILITY-END GH-1123 */
+
             _finalizeTest : function (testName) {
+                /* BACKWARD-COMPATIBILITY-BEGIN GH-1123 */
+                this.assertErrorInLogs(this._history.ONPOPSTATE_DEPRECATED_EVENT, "Deprecation warning for onpopstate event should have been raised");
+                /* BACKWARD-COMPATIBILITY-END GH-1123 */
+
                 if (this._testInIframe) {
                     Aria.$window.document.body.removeChild(this._iframe);
                 } else {
