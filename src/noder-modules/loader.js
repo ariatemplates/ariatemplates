@@ -61,7 +61,7 @@ var Loader = function (context) {
         module : "ariatemplates/core/loaders/GeneralTplPreprocessor"
     });
     this.parentLoader = new ParentLoader(context);
-    this.parentLoader.parentLoadUnpackaged = bind(this.parentLoader.loadUnpackaged, this.parentLoader);
+    this.parentLoadUnpackaged = bind(this.parentLoader.loadUnpackaged, this.parentLoader);
     this.parentLoader.loadUnpackaged = bind(this.loadUnpackaged, this);
     this.parentLoader.defineUnpackaged = bind(this.defineUnpackaged, this);
 
