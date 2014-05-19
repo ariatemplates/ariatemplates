@@ -41,7 +41,7 @@ Aria.classDefinition({
             this.compare();
         },
 
-        compare : function (expectedResult) {
+        compare : function () {
             var document = Aria.$window.document;
             // Select the divs to compare
             var found = document.getElementsByTagName("div");
@@ -54,30 +54,38 @@ Aria.classDefinition({
 
             for (var i = 0, ii = divs.length; i < ii; i++) {
                 var div = divs[i];
-                //var left = div.offsetLeft;
+                // var left = div.offsetLeft;
                 var top = div.offsetTop;
-                //var width = div.offsetWidth;
+                // var width = div.offsetWidth;
                 var height = div.offsetHeight;
                 var middlePosition = height / 2;
 
                 var widgets = this.getElementsByClassName(div, "xWidget");
 
                 // Check that every widget are centered
-                for(var j = 0, jj = widgets.length; j < jj; j++) {
+                for (var j = 0, jj = widgets.length; j < jj; j++) {
                     var widget = widgets[j];
                     // Check only the direct children of a line
                     if (widget.parentNode === div) {
                         if (widget.style.verticalAlign == "bottom") {
                             var offsetBottom = Math.abs(height - (widget.offsetTop + widget.offsetHeight));
-                            this.assertTrue(offsetBottom < 4, "Widget " + j + " in line " + i + " is not bottom aligned");
+                            this.assertTrue(offsetBottom < 4, "Widget " + j + " in line " + i
+                                    + " is not bottom aligned");
+                            var labelContent = widget.textContent || widget.innerText;
+                            if (labelContent === "email address") {
+                                var labelBottom = Math.abs(widget.offsetHeight
+                                        - (widget.firstChild.offsetTop + widget.firstChild.offsetHeight));
+                                this.assertTrue(labelBottom === 0, "Widget label " + j + " in line " + i
+                                        + " is not bottom aligned");
+                            }
                         } else {
                             var offsetMiddle = Math.abs(middlePosition - (widget.offsetTop + widget.offsetHeight / 2));
-                            this.assertTrue(offsetMiddle < 2, "Widget " + j + " in line " + i + " is not vertical aligned");
+                            this.assertTrue(offsetMiddle < 2, "Widget " + j + " in line " + i
+                                    + " is not vertical aligned");
                         }
                     }
                 }
-           }
-
+            }
             this.notifyTemplateTestEnd();
         }
     }

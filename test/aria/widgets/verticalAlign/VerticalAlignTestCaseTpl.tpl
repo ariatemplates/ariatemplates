@@ -38,7 +38,8 @@
 			{@aria:TextField {
 				label:"email address",
 				labelAlign:"left",
-				helptext:"Textfield "
+				helptext:"Textfield ",
+				verticalAlign: "bottom"
 			}/}
 			{@aria:Select {
 				id: "mySelect1",
@@ -61,7 +62,8 @@
 			{@aria:TextField {
 				label:"email address",
 				labelAlign:"left",
-				helptext:"Textfield "
+				helptext:"Textfield ",
+				verticalAlign: "bottom"
 			}/}
 			{@aria:MultiSelect {
 				activateSort: true,
@@ -82,7 +84,8 @@
 			{@aria:TextField {
 				label:"email address",
 				labelAlign:"left",
-				helptext:"Textfield "
+				helptext:"Textfield ",
+				verticalAlign: "bottom"
 			}/}
 			{@aria:AutoComplete {
 				id: "acDest",
@@ -108,7 +111,8 @@
 			{@aria:TextField {
 				label:"email address",
 				labelAlign:"left",
-				helptext:"Textfield "
+				helptext:"Textfield ",
+				verticalAlign: "bottom"
 			}/}
 			{@aria:Button {label:"Button"} /}
 		</div><br />
@@ -116,7 +120,8 @@
 			{@aria:TextField {
 				label:"email address",
 				labelAlign:"left",
-				helptext:"Textfield "
+				helptext:"Textfield ",
+				verticalAlign: "bottom"
 			}/}
 			{@aria:Gauge {
 					minValue: -100,
@@ -129,7 +134,8 @@
 			{@aria:TextField {
 				label:"email address",
 				labelAlign:"left",
-				helptext:"Textfield "
+				helptext:"Textfield ",
+				verticalAlign: "bottom"
 			}/}
 			{@aria:DateField {
 				label:"DateField: ",
@@ -142,7 +148,8 @@
 			{@aria:TextField {
 				label:"email address",
 				labelAlign:"left",
-				helptext:"Textfield "
+				helptext:"Textfield ",
+				verticalAlign: "bottom"
 			}/}
 			{@aria:DatePicker {
 				label: "DatePicker: "
@@ -152,7 +159,8 @@
 			{@aria:TextField {
 				label:"email address",
 				labelAlign:"left",
-				helptext:"Textfield "
+				helptext:"Textfield ",
+				verticalAlign: "bottom"
 			}/}
 			{@aria:CheckBox {
 					label: "Checkbox 1 "
