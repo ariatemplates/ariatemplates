@@ -13,6 +13,10 @@
  * limitations under the License.
  */
 
+// //////////////////////////////////////////////////////////////////////////////////////////
+// IMPORTANT: no modifier should assume `this === aria.templates.Modifiers` holds.
+// Use fully qualified path. Beware especially when refering to statics in this.$logWarn etc.
+// //////////////////////////////////////////////////////////////////////////////////////////
 (function () {
     /**
      * Map of available modifiers
@@ -45,7 +49,7 @@
              * @return {String}
              */
             fn : function (s) {
-                this.$logWarn(this.DEPRECATED_ESCAPE_MODIFIER);
+                this.$logWarn(aria.templates.Modifiers.DEPRECATED_ESCAPE_MODIFIER);
                 return aria.utils.String.escapeHTML(String(s));
             }
         },
@@ -388,8 +392,9 @@
              * @param {Array} params
              */
             callModifier : function (modifierName, params) {
-                // this method should not suppose 'this' is aria.templates.Modifiers,
-                // as it is copied in aria.core.Template (so 'this' is most of the time
+                // IMPORTANT: neither this method, nor any modifier, should assume
+                // that `this === aria.templates.Modifiers` holds,
+                // as they're copied in aria.core.Template (so 'this' is most of the time
                 // an object extending aria.core.Template)
                 modifierName = "" + modifierName;
                 var modifier = __modifiers[modifierName.toLowerCase()];
