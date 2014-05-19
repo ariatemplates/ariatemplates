@@ -5,5 +5,7 @@ node_modules
 .benchmarks.rb.swp
 .checkstyle
 *.log
+*.tgz
+/src/aria/jsunit/robot-applet*
 
 /build/target/
