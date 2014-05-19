@@ -164,7 +164,7 @@ module.exports = function (grunt) {
                                 }
                             }
                         },
-                        files : ['aria/bootstrap.js']
+                        files : ['aria/bootstrap.js', '<%= packaging.bootstrap.files %>']
                     }, '<%= packaging.prod.files %>', '<%= packaging.prod.expanded_localization_files %>']
         }
     });

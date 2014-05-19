@@ -20,10 +20,11 @@
     "prepublish": "node build/grunt-cli.js checkStyle && npm run grunt",
     "grunt": "node build/grunt-cli.js",
     "attester": "node node_modules/attester/bin/attester.js test/attester.yml --env package.json",
+    "attester-packaged": "node node_modules/attester/bin/attester.js test/attester-packaged.yml --env package.json",
     "lint": "node build/grunt-cli.js checkStyle checkStyleTest",
     "mocha": "mocha --recursive test/node",
-    "test": "npm run lint && npm run grunt && npm run mocha && npm run attester",
-    "ci": "node build/grunt-cli.js checkStyleTest && npm run mocha && npm run attester"
+    "test": "npm run lint && npm run grunt && npm run mocha && npm run attester && npm run attester-packaged",
+    "ci": "node build/grunt-cli.js checkStyleTest && npm run mocha && npm run attester && npm run attester-packaged"
   },
   "dependencies" : {
     "noder-js": "1.3.0"
