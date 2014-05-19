@@ -1,0 +1,15 @@
+resources:
+ '/':
+  - 'build/target/production'
+ '/test':
+  - 'test'
+tests:
+ aria-templates:
+  bootstrap: '/aria/<%= env.name %>-<%= env.version %>.js'
+  extraScripts:
+    - /aria/css/atskin-<%= env.version %>.js
+  classpaths:
+   includes:
+    - test.aria.widgets.form.datepicker.pickdate.PickDate
+#Includes only a simple test in packaged mode, to check that the framework is correctly
+#loaded in packaged mode
