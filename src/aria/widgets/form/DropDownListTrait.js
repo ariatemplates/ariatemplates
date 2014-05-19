@@ -168,7 +168,7 @@ Aria.classDefinition({
                 maxHeight : maxHeight,
                 minWidth : "minWidth" in options ? options.minWidth : defaultMinWidth,
                 width : this.__computeListWidth(cfg.popupWidth, defaultMinWidth),
-                preselect : cfg.preselect,
+                preselect : options.preselect || cfg.preselect,
                 bind : {
                     items : {
                         to : "listContent",

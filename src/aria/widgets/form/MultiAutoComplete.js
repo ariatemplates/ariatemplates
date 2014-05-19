@@ -131,6 +131,7 @@ Aria.classDefinition({
             };
 
             if (this.controller._isExpanded) {
+                options.preselect = "none";
                 options.defaultTemplate = this.controller.getExpandoTemplate();
                 options.maxOptions = (this.controller.maxOptions) ? this.__returnMaxCount() : null;
                 options.onchange = {
