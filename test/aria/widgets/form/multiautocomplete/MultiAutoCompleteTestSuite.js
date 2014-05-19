@@ -19,6 +19,7 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
+        this.addTests("test.aria.widgets.form.multiautocomplete.preselectExpandButton.PreselectExpandButtonTestCase");
         this.addTests("test.aria.widgets.form.multiautocomplete.test1.MultiAutoAdd");
         this.addTests("test.aria.widgets.form.multiautocomplete.test2.MultiAutoRemove");
         this.addTests("test.aria.widgets.form.multiautocomplete.test3.MultiAutoDataCheck");
