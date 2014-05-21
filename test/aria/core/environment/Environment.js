@@ -136,6 +136,23 @@ Aria.classDefinition({
             this.assertFalse(dev);
         },
 
+        testHasEscapeHtmlByDefault : function () {
+            aria.core.AppEnvironment.setEnvironment({
+                "templateSettings" : {
+                    "hasEscapeHtml" : true
+                }
+            }, null, true);
+            var escape = aria.core.environment.Environment.hasEscapeHtmlByDefault();
+            this.assertTrue(escape);
+        },
+
+        testSetEscapeHtmlByDefault : function () {
+            aria.core.environment.Environment.setEscapeHtmlByDefault(false);
+            var escape = aria.core.environment.Environment.hasEscapeHtmlByDefault();
+            this.assertFalse(escape);
+        },
+
+
         testAsyncSettingsPreservedAfterCustomizationEnabled : function () {
             // make sure the class is not loaded - clue of this test
             if (aria.core.environment.Customizations) {
