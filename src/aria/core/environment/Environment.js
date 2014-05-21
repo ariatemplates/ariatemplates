@@ -179,6 +179,35 @@ Aria.classDefinition({
                 return true;
             }
             return false;
+        },
+
+        /**
+         * Turn on or off auto-escaping of HTML in statements
+         * @public
+         * @param {Boolean} escape
+         */
+        setEscapeHtmlByDefault : function (escape) {
+            var currentValue = this.hasEscapeHtmlByDefault();
+            if (currentValue !== escape && (escape === true || escape === false)) {
+                aria.core.AppEnvironment.setEnvironment({
+                    "templateSettings" : {
+                        "escapeHtmlByDefault" : escape
+                    }
+                }, null, true);
+            }
+        },
+
+        /**
+         * Return true if auto-escaping of HTML is enabled.
+         * @public
+         * @return {Boolean}
+         */
+        hasEscapeHtmlByDefault : function () {
+            var settings = this.checkApplicationSettings("templateSettings");
+            if (settings && settings.escapeHtmlByDefault) {
+                return true;
+            }
+            return false;
         }
     }
 });

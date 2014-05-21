@@ -106,7 +106,8 @@ Aria.classDefinition({
 
                     var escapeModifierName = classGenerator.escapeModifier; // Gets the actual name of the modifier in this context
 
-                    if (escapeModifierName != null) {
+                    var escapeHtmlByDefault = aria.core.environment.Environment.hasEscapeHtmlByDefault();
+                    if (escapeHtmlByDefault && escapeModifierName != null) {
                         escapeModifierName = escapeModifierName.toLowerCase();
 
                         if (parts[parts.length - 1].toLowerCase().indexOf(escapeModifierName) < 0) {
