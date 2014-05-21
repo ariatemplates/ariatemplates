@@ -42,6 +42,12 @@ Aria.beanDefinitions({
                         "primaryLanguage" : "en",
                         "region" : "US"
                     }
+                },
+
+                "templateSettings" : {
+                    $type : "TemplateSettingsCfg",
+                    $description : "Default templating engine settings",
+                    $default : {}
                 }
             }
         },
@@ -82,6 +88,18 @@ Aria.beanDefinitions({
                 }
             }
 
+        },
+
+        "TemplateSettingsCfg" : {
+            $type : "json:Object",
+            $description : "",
+            $properties : {
+                "escapeHtmlByDefault" : {
+                    $type : "json:Boolean",
+                    $description : "Indicates if markup should be automatically escaped in ${} statements",
+                    $default : true
+                }
+            }
         },
 
         "FormatTypes" : {
