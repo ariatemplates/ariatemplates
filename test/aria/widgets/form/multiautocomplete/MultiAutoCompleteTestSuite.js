@@ -53,5 +53,6 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.form.multiautocomplete.popupGeometry.PopupLeftPositionTest");
         this.addTests("test.aria.widgets.form.multiautocomplete.popupGeometry.PopupTopPositionTest");
         this.addTests("test.aria.widgets.form.multiautocomplete.preselectAutofill.PreselectAutofillTestSuite");
+        this.addTests("test.aria.widgets.form.multiautocomplete.testDMOnFreetext.MultiAutoDataModelTest");
     }
 });

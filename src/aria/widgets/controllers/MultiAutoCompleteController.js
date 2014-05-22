@@ -101,11 +101,7 @@
                     if (this.freeText) {
                         report.ok = true;
                         var valueToAdd;
-                        if (dataModel.text == trimText) {
-                            valueToAdd = dataModel.value;
-                        } else {
-                            valueToAdd = trimText;
-                        }
+                        valueToAdd = dataModel.value || trimText;
                         dataModel.value = null;
                         dataModel.text = '';
                         report.text = "";
@@ -351,7 +347,7 @@
                         }
                         jsonUtils.setValue(dataModel, 'multipleSelect', true);
                         jsonUtils.setValue(dataModel, 'selectedValues', selectedValues);
-                        dataModel.value = selectedValues;
+                        dataModel.value = selectedValues.length > 0 ? selectedValues : null;
                     } else if (allSuggestions) {
                         var selectedValues = [];
                         for (var i = 0; i < dataModel.listContent.length; i++) {
