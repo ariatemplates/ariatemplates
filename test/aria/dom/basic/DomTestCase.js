@@ -25,7 +25,8 @@ Aria.classDefinition({
         this.$TemplateTestCase.constructor.call(this);
 
         this.setTestEnv({
-            template : "test.aria.dom.basic.BigPage"
+            template : "test.aria.dom.basic.BigPage",
+            css : "font-family:Tahoma,Verdana,sans-serif"
         });
     },
     $prototype : {
@@ -74,7 +75,7 @@ Aria.classDefinition({
             var viewport = aria.utils.Dom._getViewportSize();
 
             // Should be bigger equal to the viewport
-            this.assertTrue(size.width === viewport.width, "Page width should be viewport width.");
+            this.assertEquals(size.width, viewport.width, "Page width should be viewport width.");
             // This assertion cannot be proved, the tester adds something in the page that makes it long
             // this.assertTrue(size.height === viewport.height);
 
@@ -97,8 +98,8 @@ Aria.classDefinition({
 
             this.assertTrue(geo.x < 30, "d1: Expected x < 30, got " + geo.x);
             this.assertTrue(geo.y < 30, "d1: Expected y < 30, got " + geo.y);
-            this.assertTrue(geo.width === 100, "d1: Expected width equal to 100, got " + geo.width);
-            this.assertTrue(geo.height === 100, "d1: Expected height equal to 100, got " + geo.height);
+            this.assertEquals(geo.width, 100, "d1: Expected width equal to 100, got " + geo.width);
+            this.assertEquals(geo.height, 100, "d1: Expected height equal to 100, got " + geo.height);
 
             // Geometry of the second div
             div = this.getElementById("d2");
@@ -106,8 +107,8 @@ Aria.classDefinition({
 
             this.assertTrue(geo.x < 30, "d2: Expected x < 30, got " + geo.x);
             this.assertTrue(geo.y >= 100, "d2: Expected y >= 100, got " + geo.y);
-            this.assertTrue(geo.width === 100, "d2: Expected width equal to 100, got " + geo.width);
-            this.assertTrue(geo.height === 100, "d2: Expected height equal to 100, got " + geo.height);
+            this.assertEquals(geo.width, 100, "d2: Expected width equal to 100, got " + geo.width);
+            this.assertEquals(geo.height, 100, "d2: Expected height equal to 100, got " + geo.height);
 
             // Geometry of the span
             span = this.getElementById("s1");
@@ -119,15 +120,11 @@ Aria.classDefinition({
 
             // On mac, webkit scrollbars are not visualized without scrolling
             if (aria.core.Browser.isMac && aria.core.Browser.isWebkit) {
-                this.assertTrue(geo.width == 100, "s1: Expected width == 100, got "
-                    + geo.width);
-                this.assertTrue(geo.height == 100, "s1: Expected height == 100, got "
-                    + geo.height);
+                this.assertEquals(geo.width, 100, "s1: Expected width == 100, got %1");
+                this.assertEquals(geo.height, 100, "s1: Expected height == 100, got %1");
             } else {
-                this.assertTrue(geo.width == (100 - scrollbarsWidth), "s1: Expected width == 100 - scollbarsWidth, got "
-                    + geo.width);
-                this.assertTrue(geo.height == (100 - scrollbarsWidth), "s1: Expected height == 100 - scollbarsWidth, got "
-                    + geo.height);
+                this.assertEquals(geo.width, (100 - scrollbarsWidth), "s1: Expected width == %2, got %1");
+                this.assertEquals(geo.height, (100 - scrollbarsWidth), "s1: Expected height == %2, got %1");
             }
 
             // End of test
