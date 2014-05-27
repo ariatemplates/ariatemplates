@@ -28,6 +28,7 @@ Aria.classDefinition({
         this.addTests("test.aria.dom.logscheck.LogsCheckTestCase");
         this.addTests("test.aria.dom.getid.GetIdTestCase");
         this.addTests("test.aria.dom.getGeometry.PartiallyOverflowingFromParentTest");
+        this.addTests("test.aria.dom.getGeometry.AbsoluteParentGeometryTest");
 
     }
 });
