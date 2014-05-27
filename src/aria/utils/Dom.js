@@ -715,7 +715,6 @@ Aria.classDefinition({
                 return null;
             }
             var document = element.ownerDocument;
-            var width, height, browser = aria.core.Browser, position = this.calculatePosition(element);
 
             if (element === document.body) {
                 var size = this.getFullPageSize();
@@ -728,7 +727,8 @@ Aria.classDefinition({
                 };
 
             } else {
-
+                var width, height;
+                var browser = aria.core.Browser;
                 if (browser.isChrome || browser.isSafari) {
                     var rectTextObject = element.getBoundingClientRect();
                     width = rectTextObject.width;
@@ -738,6 +738,7 @@ Aria.classDefinition({
                     height = element.offsetHeight;
                 }
 
+                var position = this.calculatePosition(element);
                 var res = {
                     x : position.left,
                     y : position.top,
@@ -747,17 +748,29 @@ Aria.classDefinition({
 
                 // PTR 04606169:
                 // adapt res if one of the parent overflow property prevents parts of the item from being visible
-                var parent = element.parentNode;
+                var parent = element;
                 // we do not need to go up to html or body element (and it can lead to wrong results
                 // especially in IE7)
                 var documentElement = document.documentElement;
                 var body = document.body;
-                while (parent && parent != documentElement && parent != body) {
+                do {
+                    var parentPosition = this.getStyle(parent, "position");
+                    if (parentPosition == "absolute" || parentPosition == "fixed") {
+                        parent = parent.offsetParent;
+                    } else {
+                        parent = parent.parentNode;
+                    }
+                    if (!parent || parent == documentElement || parent == body) {
+                        return res;
+                    }
+
+                    // taking client geometry of the parent so that it does not include scrollbars
                     var parentGeometry = this.getClientGeometry(parent);
                     var parentOverflowX = this.getStyle(parent, "overflowX");
                     var parentOverflowY = this.getStyle(parent, "overflowY");
+
                     var delta;
-                    if (parentOverflowX == "auto" || parentOverflowX == "scroll") {
+                    if (parentOverflowX != "visible") {
                         delta = parentGeometry.x - res.x;
                         if (delta > 0) {
                             res.x += delta;
@@ -774,7 +787,7 @@ Aria.classDefinition({
                             }
                         }
                     }
-                    if (parentOverflowY == "auto" || parentOverflowY == "scroll") {
+                    if (parentOverflowY != "visible") {
                         delta = parentGeometry.y - res.y;
                         if (delta > 0) {
                             res.y += delta;
@@ -791,10 +804,7 @@ Aria.classDefinition({
                             }
                         }
                     }
-                    parent = parent.parentNode;
-                }
-
-                return res;
+                } while (true);
             }
         },
 

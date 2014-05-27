@@ -26,5 +26,6 @@ Aria.classDefinition({
 
 		this.addTests("test.aria.dom.DomReadyTest");
 		this.addTests("test.aria.dom.getGeometry.PartiallyOverflowingFromParentTest");
+		this.addTests("test.aria.dom.getGeometry.AbsoluteParentGeometryTest");
 	}
 });
