@@ -25,5 +25,6 @@ Aria.classDefinition({
 		this.$TestSuite.constructor.call(this);
 
 		this.addTests("test.aria.dom.DomReadyTest");
+		this.addTests("test.aria.dom.getGeometry.PartiallyOverflowingFromParentTest");
 	}
 });
