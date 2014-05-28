@@ -20,10 +20,9 @@ Aria.classDefinition({
     $classpath : "aria.tester.runner.ModuleController",
     $extends : "aria.templates.ModuleCtrl",
     $dependencies : ["aria.tester.runner.datamodel.DataDefinitions", "aria.tester.runner.utils.Hash",
-            "aria.jsunit.IOViewer", "aria.utils.QueryString", "aria.jsunit.NewTestRunner",
-            "aria.jsunit.JsCoverage", "aria.utils.Callback",
-            "aria.tester.runner.utils.TestUtils", "aria.tester.runner.appenders.JsonTextDivAppender",
-            "aria.jsunit.TestacularReport"],
+            "aria.jsunit.IOViewer", "aria.utils.QueryString", "aria.jsunit.NewTestRunner", "aria.jsunit.JsCoverage",
+            "aria.utils.Callback", "aria.tester.runner.utils.TestUtils",
+            "aria.tester.runner.appenders.JsonTextDivAppender", "aria.jsunit.TestacularReport"],
     $statics : {
         DATA_DEFINITION : "aria.tester.runner.datamodel.DataDefinitions"
     },
@@ -334,7 +333,9 @@ Aria.classDefinition({
                 if (!loadedClasses.hasOwnProperty(classpath) || classpath.indexOf("aria.") === 0) {
                     continue;
                 }
-                aria.core.ClassMgr.unloadClass(classpath, true);
+                if (classpath) {
+                    aria.core.ClassMgr.unloadClass(classpath, true);
+                }
             }
 
             // Activate the autorun in order to start the campaign as soon as the tests have been reloaded
