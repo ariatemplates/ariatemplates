@@ -27,6 +27,6 @@
   "devDependencies": {
     "express": "3.0.x",
     "jade": "0.x",
-    "attester": "1.0.1"
+    "attester": "1.4.1"
   }
 }
