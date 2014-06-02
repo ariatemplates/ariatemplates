@@ -25,5 +25,6 @@ Aria.classDefinition({
         this.addTests("test.aria.utils.overlay.loadingIndicator.zindex.IndexTest");
         this.addTests("test.aria.utils.overlay.loadingIndicator.refresh.RefreshTest");
         this.addTests("test.aria.utils.overlay.loadingIndicator.scrollableBody.ScrollableBodyTest");
+        this.addTests("test.aria.utils.overlay.loadingIndicator.ieScrollIssue.IEScrollIssueTest");
     }
 });
