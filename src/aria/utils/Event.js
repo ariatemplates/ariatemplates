@@ -98,6 +98,56 @@
             },
 
             /**
+             * Appends an event handler to the given element and its ancestors. Note that in general you should prefer
+             * to use event delegation pattern for performance reasons. Use this method only for events that do not
+             * bubble.
+             * @param {HTMLElement} element an element reference to assign the listener to.
+             * @param {String} event The type of event to append
+             * @param {aria.utils.Callback|Object} callback The method the event invokes, if callback is of type Object
+             * fn property is mandatory. <strong>Note that callback parameter cannot be a function - the form { fn :
+             * {Function}, scope: {Object}, args : {MultiTypes}} is preferred for this callback</strong>
+             * @param {Boolean} useCapture capture or bubble phase
+             * @param {Function} filterFunction function used to select HTML elements to append the listener to (it
+             * selects all the elements if the function is not provided)
+             * @return {Boolean} True if at least one listener was added, false otherwise.
+             */
+            addListenerRecursivelyUp : function (element, event, callback, useCapture, filterFunction) {
+                var added = false;
+                var parent = element.parentElement || element.parentNode; // Fx < 9 compat
+                while (parent != null) {
+                    if (!filterFunction || filterFunction(parent)) {
+                        added = this.addListener(parent, event, callback, useCapture) || added;
+                    }
+                    parent = parent.parentElement || parent.parentNode; // Fx < 9 compat
+                }
+                return added;
+            },
+
+            /**
+             * Removes an event handler to every ancestor of the given element. Note that in general you should prefer
+             * to use event delegation pattern for performance reasons. Use this method only for events that do not
+             * bubble.
+             * @param {HTMLElement} element an element reference to remove the listener from.
+             * @param {String} event The type of event to remove
+             * @param {aria.utils.Callback|Object} callback The method the event invokes, if callback is undefined, then
+             * all event handlers for the type of event are removed.
+             * @param {Function} filterFunction function used to select HTML elements to remove the listener from (it
+             * selects all the elements if the function is not provided)
+             * @return {Boolean} True if at least one listener was removed, false otherwise.
+             */
+            removeListenerRecursivelyUp : function (element, event, callback, filterFunction) {
+                var removed = false;
+                var parent = element.parentElement || element.parentNode; // Fx < 9 compat
+                while (parent != null) {
+                    if (!filterFunction || filterFunction(parent)) {
+                        removed = this.removeListener(parent, event, callback) || removed;
+                    }
+                    parent = parent.parentElement || parent.parentNode; // Fx < 9 compat
+                }
+                return removed;
+            },
+
+            /**
              * Appends an event handler
              * @param {String|HTMLElement|Array} element An id, an element reference, or a collection of ids and/or
              * elements to assign the listener to.
