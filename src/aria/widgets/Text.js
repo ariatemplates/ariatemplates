@@ -161,6 +161,7 @@ Aria.classDefinition({
                     // String cast
                     newValue = '' + newValue;
                     dom.getElementsByTagName("span")[0].innerHTML = aria.utils.String.escapeHTML(newValue);
+                    this.textContent = newValue;
                 }
             }
         },
