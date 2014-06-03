@@ -78,19 +78,22 @@ describe("npm start", function () {
         });
     });
 
-    it("should serve Aria Templates bootstrap file", function (callback) {
+    it("should serve generic Aria Templates bootstrap file", function (callback) {
         var url = "http://localhost:" + port + "/aria-templates/dev/aria/ariatemplates-bootstrap.js";
         get(url, function (response) {
-            assert.ok(response, "Expecting to have a server response");
+            assert.ok(response, "Expecting to have a server response from " + url);
             assert.ok(/rootFolderPath/gi.test(response), "Expecting to receive the bootstrap");
             callback();
         });
     });
 
-    it("should serve Aria Templates bootstrap file", function (callback) {
-        var url = "http://localhost:" + port + "/aria-templates/aria/ariatemplates-" + process.env.npm_package_version + ".js";
+    // note that this test requires grunt build beforehand to pass
+    it("should serve versioned Aria Templates bootstrap file", function (callback) {
+        // npm 1.4.x changes 1.4.17A from package.json into 1.4.17-A in process.env.npm_package_version
+        var atVersion = require('../../package.json').version;
+        var url = "http://localhost:" + port + "/aria-templates/aria/ariatemplates-" + atVersion + ".js";
         get(url, function (response) {
-            assert.ok(response, "Expecting to have a server response");
+            assert.ok(response, "Expecting to have a server response from " + url);
             assert.ok(/rootFolderPath/gi.test(response), "Expecting to receive the bootstrap");
             callback();
         });
