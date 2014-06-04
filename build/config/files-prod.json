@@ -30,7 +30,7 @@
         "name": "aria/pack-templates1.js",
         "files": [
             "aria/$resources.js",
-            "aria/core/loaders/ResProviderLoader.js",
+            "aria/$resourcesProviders.js",
             "aria/core/loaders/*Preprocessor.js",
             "!aria/core/loaders/TxtPreprocessor.js",
             "aria/core/environment/Customizations.js",
