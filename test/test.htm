@@ -26,12 +26,12 @@
         var atversion;
         if (isAmaBuild) {
             atversion = "1.1-SNAPSHOT";
-        } else if (!devFiles) { // if opensource build && not dev files requested, then version must be placed in the URL
+        } else { // if opensource build then version must be placed in the URL
             var versionMatch = url.match(/atversion\=(\d+\.\d+\.\d+)/);
             if (versionMatch) {
                 atversion = versionMatch[1];
             } else {
-                alert("Need an 'atversion=x.y.z' in the query string if you want to use non-dev opensource version!\nRemember to run Grunt build before.");
+                alert("Need an 'atversion=x.y.z' in the query string.");
             }
         }
 
@@ -48,9 +48,9 @@
             }
         } else {
             if (devFiles) {
-                ariaRootPath = "../src/";
-                bootstrapFile = "aria/bootstrap.js";
-                skinFile = "aria/css/atskin.js";
+                ariaRootPath = "../build/target/bootstrap/";
+                bootstrapFile = "aria/ariatemplates-" + atversion + ".js";
+                skinFile = "aria/css/atskin-" + atversion + ".js";
             } else {
                 ariaRootPath = "../build/target/production/";
                 bootstrapFile = "aria/ariatemplates-" + atversion + ".js";

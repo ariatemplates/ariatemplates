@@ -828,7 +828,7 @@ var Aria = module.exports = global.Aria;
         }
     };
 
-    var resProviderLoaderModulePath = resolveModulePath("./core/loaders/ResProviderLoader");
+    var resourcesProvidersModulePath = resolveModulePath("./$resourcesProviders");
     var resourcesModulePath = resolveModulePath("./$resources");
     var appendMissingResDependencies = function (missingDeps, array) {
         if (array) {
@@ -1000,16 +1000,23 @@ var Aria = module.exports = global.Aria;
             for (var itm in def.$resources) {
                 if (def.$resources.hasOwnProperty(itm)) {
                     var itmValue = def.$resources[itm];
-                    if (itmValue.hasOwnProperty("provider")) {
-                        var resProviderInfo = itmValue["aria:resProviderInfo"] = {
-                            clsName : clsName,
-                            refName : itm,
-                            resProvider : itmValue
-                        };
+                    if (itmValue.hasOwnProperty("provider") && typeof itmValue.provider == 'string') {
+                        var resProviderInfo = itmValue["aria:resProviderInfo"] = ["",
+                                Aria.getLogicalPath(itmValue.provider, ".js"), clsPath, itmValue.onLoad];
+
+                        var itmValueResources = itmValue.resources;
+                        if (itmValue.handler || itmValueResources) {
+                            resProviderInfo.push(itmValue.handler);
+                        }
+                        if (itmValueResources) {
+                            for (var j = 0; j < itmValueResources.length; j++) {
+                                resProviderInfo.push(itmValueResources[j]);
+                            }
+                        }
                         missingDependencies.push({
-                            module : resProviderLoaderModulePath,
-                            method : "load",
-                            args : [resProviderInfo]
+                            module : resourcesProvidersModulePath,
+                            method : "fetch",
+                            args : resProviderInfo
                         });
                     } else {
                         appendMissingResDependencies(missingDependencies, [itmValue]);
@@ -1244,9 +1251,13 @@ var Aria = module.exports = global.Aria;
                     if (p[k] && !parentResources[k]) {
                         Aria.$logError(Aria.RESOURCES_HANDLE_CONFLICT, [k, publicClassPath]);
                     } else if (defResources[k].hasOwnProperty("provider")) {
-                        var resProviderInfo = defResources[k]["aria:resProviderInfo"];
-                        resProviderInfo.clsProto = p;
-                        p[k] = require(resProviderLoaderModulePath).load(resProviderInfo);
+                        if (typeof defResources[k].provider == "string") {
+                            var resProviderInfo = defResources[k]["aria:resProviderInfo"];
+                            var resourcesProvidersModule = require(resourcesProvidersModulePath);
+                            p[k] = resourcesProvidersModule.fetch.apply(resourcesProvidersModule, resProviderInfo).provider;
+                        } else {
+                            p[k] = defResources[k].provider;
+                        }
                     } else {
                         p[k] = Aria.getClassRef(defResources[k]);
                     }
