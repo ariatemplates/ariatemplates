@@ -278,14 +278,6 @@
             },
 
             /**
-             * Function to return the id
-             * @return {String} Element id.
-             */
-            getId : function () {
-                return this._cfg.id;
-            },
-
-            /**
              * Function to assign the focus to input field.
              */
             focus : function () {

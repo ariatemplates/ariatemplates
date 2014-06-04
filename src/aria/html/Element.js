@@ -289,6 +289,14 @@
                     listArray.splice(0, 0, callback);
                 }
                 listeners[eventType] = listArray;
+            },
+
+            /**
+             * Function to return the id
+             * @return {String} Element id.
+             */
+            getId : function () {
+                return this._cfg.id;
             }
         }
     });
