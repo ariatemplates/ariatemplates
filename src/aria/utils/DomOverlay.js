@@ -73,13 +73,11 @@ Aria.classDefinition({
                 // fix 08364518 : if IE<9, the scroll event on an element does not bubble up and trigger the handler
                 // attached to the window
                 this._noBubbleEvent = (browser.isIE8 || browser.isIE7 || browser.isIE6);
-                if (!this._noBubbleEvent) {
-                    // Listen for scroll event to update the position of the overlay
-                    aria.utils.Event.addListener(Aria.$window, "scroll", {
-                        fn : this.__refresh,
-                        scope : this
-                    }, true);
-                }
+                // Listen for scroll event to update the position of the overlay
+                aria.utils.Event.addListener(Aria.$window, "scroll", {
+                    fn : this.__refresh,
+                    scope : this
+                }, true);
                 aria.templates.Layout.$on({
                     "viewportResized" : this.__refresh,
                     scope : this
