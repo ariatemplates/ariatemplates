@@ -26,8 +26,6 @@ Aria.classDefinition({
                 valueNoFill : ""
             }
         });
-
-        // this.defaultTestTimeout = 60000;
     },
     $prototype : {
         runTemplateTest : function () {

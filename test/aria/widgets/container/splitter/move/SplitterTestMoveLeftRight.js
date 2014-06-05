@@ -19,9 +19,14 @@
 Aria.classDefinition({
     $classpath : "test.aria.widgets.container.splitter.move.SplitterTestMoveLeftRight",
     $extends : "aria.jsunit.RobotTestCase",
+    $dependencies : ["aria.core.Browser"],
     $constructor : function () {
         this.$RobotTestCase.constructor.call(this);
-        this.defaultTestTimeout = aria.core.Browser.isSafari ? 150000 : 40000;
+        if (aria.core.Browser.isIE7 || aria.core.Browser.isPhantomJS || aria.core.Browser.isSafari) {
+            this.defaultTestTimeout = 40000;
+        } else if (aria.core.Browser.isIE8) {
+            this.defaultTestTimeout = 30000;
+        }
     },
     $prototype : {
         // TODO change all those delays into waitFor({condition, callback})
@@ -92,7 +97,7 @@ Aria.classDefinition({
                 y : geometry.y + 100
             };
             var options = {
-                duration : 2500,
+                duration : 1000,
                 to : {
                     x : from.x + (args.destPosX),
                     y : from.y

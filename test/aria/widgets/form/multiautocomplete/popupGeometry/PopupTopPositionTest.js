@@ -16,8 +16,12 @@
 Aria.classDefinition({
     $classpath : "test.aria.widgets.form.multiautocomplete.popupGeometry.PopupTopPositionTest",
     $extends : "test.aria.widgets.form.multiautocomplete.BaseMultiAutoCompleteTestCase",
+    $dependencies : ["aria.core.Browser"],
     $constructor : function () {
         this.$BaseMultiAutoCompleteTestCase.$constructor.call(this);
+        if (aria.core.Browser.isIE7) {
+            this.defaultTestTimeout = 30000;
+        }
         this.data.expandButton = true;
     },
     $prototype : {

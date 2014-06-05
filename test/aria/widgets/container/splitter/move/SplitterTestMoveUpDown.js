@@ -19,6 +19,15 @@
 Aria.classDefinition({
     $classpath : "test.aria.widgets.container.splitter.move.SplitterTestMoveUpDown",
     $extends : "aria.jsunit.RobotTestCase",
+    $dependencies : ["aria.core.Browser"],
+    $constructor : function () {
+        this.$RobotTestCase.constructor.call(this);
+        if (aria.core.Browser.isIE7 || aria.core.Browser.isPhantomJS || aria.core.Browser.isSafari) {
+            this.defaultTestTimeout = 40000;
+        } else if (aria.core.Browser.isIE8) {
+            this.defaultTestTimeout = 30000;
+        }
+    },
     $prototype : {
         runTemplateTest : function () {
             aria.core.Timer.addCallback({
@@ -87,7 +96,7 @@ Aria.classDefinition({
                 y : geometry.y
             };
             var options = {
-                duration : 2500,
+                duration : 1000,
                 to : {
                     x : from.x,
                     y : from.y + (args.destPosY)

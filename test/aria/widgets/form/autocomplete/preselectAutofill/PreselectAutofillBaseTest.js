@@ -46,9 +46,12 @@ Aria.classDefinition({
     $classpath : "test.aria.widgets.form.autocomplete.preselectAutofill.PreselectAutofillBaseTest",
     $extends : "aria.jsunit.RobotTestCase",
     $dependencies : ["aria.popups.PopupManager", "aria.resources.handlers.LCResourcesHandler", "aria.utils.Array",
-            "aria.utils.Type"],
+            "aria.utils.Type", "aria.core.Browser"],
     $constructor : function () {
         this.$RobotTestCase.constructor.call(this);
+        if (aria.core.Browser.isPhantomJS || aria.core.Browser.isIE7) {
+            this.defaultTestTimeout = 40000;
+        }
         this.resourcesHandler = this.resourcesHandler || new aria.resources.handlers.LCResourcesHandler();
         this.resourcesHandler.setSuggestions([{
                     label : "P2. TESTER B",

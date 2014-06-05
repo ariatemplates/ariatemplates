@@ -16,9 +16,12 @@
 Aria.classDefinition({
     $classpath : "test.aria.widgets.form.multiautocomplete.test11.MultiAutoInvalidDataModel",
     $extends : "test.aria.widgets.form.multiautocomplete.BaseMultiAutoCompleteTestCase",
+    $dependencies : ["aria.core.Browser"],
     $constructor : function () {
         this.$BaseMultiAutoCompleteTestCase.constructor.call(this);
-
+        if (aria.core.Browser.isPhantomJS) {
+            this.defaultTestTimeout = 40000;
+        }
         this.data.freeText = false;
     },
     $prototype : {
