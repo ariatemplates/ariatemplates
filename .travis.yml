@@ -5,6 +5,7 @@ before_install:
   - npm install -g npm
   - npm --version
   - npm config set ca ""
+  - npm config set spin false
   - phantomjs --version
 script:
   - npm run ci
