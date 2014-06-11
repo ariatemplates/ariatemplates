@@ -12,39 +12,47 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+var Aria = require("../Aria");
+var ariaUtilsType = require("./Type");
+var ariaUtilsJson = require("./Json");
+var ariaStorageLocalStorage = require("../storage/LocalStorage");
+var ariaCoreBrowser = require("../core/Browser");
+var ariaUtilsEvent = require("./Event");
+/**
+ * <pre>
+ * {
+ *     isHtml5HistoryAvailable : whether the HTML5 History API is available,
+ *     hashManager : a reference to aria.utils.HashManager if needed,
+ *     arrayUtil : a reference to aria.utils.Array if needed
+ * }
+ * </pre>
+ *
+ * @type Object
+ * @private
+ */
+var dynamicDependencies = require("./$History").getDependencies("");
+
 (function () {
     "use strict";
 
-    var isHtml5HistoryAvailable = function () {
-        var history = Aria.$window.history;
-        if (history && history.pushState) {
-            try {
-                return history.state !== undefined;
-            } catch (e) {
-                // reading history.state on IE 10 can raise an "Unspecified error" exception
-                return true;
-            }
-        }
-        return false;
-    };
+    var window = Aria.$window;
 
     var readHtml5HistoryState = function () {
         try {
-            return Aria.$window.history.state;
+            return window.history.state;
         } catch (e) {
             // reading history.state on IE 10 can raise an "Unspecified error" exception
             return null;
         }
     };
 
-    var window = Aria.$window;
-
     /**
      * Whether HTML5 history API is natively supported
      * @type Boolean
      * @private
      */
-    var html5History = isHtml5HistoryAvailable();
+    var html5History = dynamicDependencies.isHtml5HistoryAvailable;
 
     /**
      * Contains a set of states that have to be stored. If the browser supports native HTML5 history API, it only
@@ -60,14 +68,11 @@
      * @type aria.utils.HashManager
      * @private
      */
-    var hashManager = null;
+    var hashManager = dynamicDependencies.hashManager;
 
-    Aria.classDefinition({
+    module.exports = Aria.classDefinition({
         $classpath : "aria.utils.History",
         $singleton : true,
-        // FIXME: the HashManager is not needed when html5History is true
-        $dependencies : ["aria.utils.String", "aria.utils.Type", "aria.utils.Json", "aria.storage.LocalStorage",
-                "aria.core.Browser", "aria.utils.HashManager", "aria.utils.Event", "aria.utils.Array"],
         $statics : {
 
             /**
@@ -103,8 +108,6 @@
                 scope : this
             };
 
-            hashManager = !html5History ? aria.utils.HashManager : null;
-
             /**
              * Current state id. Only used in browsers that do not support HTML5 history API.
              * @type String
@@ -135,23 +138,21 @@
              * @type aria.storage.LocalStorage
              * @private
              */
-            this._storage = new aria.storage.LocalStorage();
+            this._storage = new ariaStorageLocalStorage();
 
             stateMemory = this._storage.getItem(this._STORAGE_KEY) || {
                 discarded : [],
                 states : []
             };
 
-            aria.utils.Event.addListener(window, "unload", this._saveStateCB);
-
-            var browser = aria.core.Browser;
+            ariaUtilsEvent.addListener(window, "unload", this._saveStateCB);
 
             /**
              * Whether the browser is IE7 or a previous version
              * @type Boolean
              * @private
              */
-            this._isIE7OrLess = browser.isOldIE && browser.majorVersion < 8;
+            this._isIE7OrLess = ariaCoreBrowser.isOldIE && ariaCoreBrowser.majorVersion < 8;
 
             this._init();
 
@@ -185,7 +186,7 @@
              * the state. Compliant with the standard window.history.state
              */
             getState : html5History ? function () {
-                var state = aria.utils.Json.copy(readHtml5HistoryState());
+                var state = ariaUtilsJson.copy(readHtml5HistoryState());
                 if (state) {
                     delete state.__info;
                 }
@@ -259,7 +260,7 @@
              */
             pushState : html5History ? function (data, title, url) {
                 title = this._setTitle(title);
-                data = data ? aria.utils.Json.copy(data) : {};
+                data = data ? ariaUtilsJson.copy(data) : {};
                 data.__info = {
                     title : title,
                     url : url
@@ -279,7 +280,7 @@
              */
             replaceState : html5History ? function (data, title, url) {
                 title = this._setTitle(title);
-                data = data ? aria.utils.Json.copy(data) : {};
+                data = data ? ariaUtilsJson.copy(data) : {};
                 data.__info = {
                     title : title,
                     url : url
@@ -330,7 +331,7 @@
              */
             _saveState : function () {
                 this._removeOldStates();
-                aria.utils.Event.removeListener(window, "unload", this._saveStateCB);
+                ariaUtilsEvent.removeListener(window, "unload", this._saveStateCB);
                 this._storage.setItem(this._STORAGE_KEY, stateMemory);
                 this._storage.$dispose();
                 this._storage = null;
@@ -355,7 +356,7 @@
              */
             _setTitle : function (title) {
                 var document = window.document;
-                if (aria.utils.Type.isString(title)) {
+                if (ariaUtilsType.isString(title)) {
                     document.title = title;
                 } else {
                     title = document.title;
@@ -438,7 +439,7 @@
 
             /**
              * Remove old states that are present in the state store. States are considered old if they have been stored
-             * more than aria.utils.HashManager.EXPIRATION_TIME seconds before
+             * more than aria.utils.History.EXPIRATION_TIME seconds before
              * @private
              */
             _removeOldStates : function () {
@@ -466,7 +467,7 @@
              * @private
              */
             _raiseOnPopStateEvent : function (evt) {
-                var state = aria.utils.Json.copy(evt.state), title;
+                var state = ariaUtilsJson.copy(evt.state), title;
                 if (state && state.__info) {
                     title = state.__info.title;
                     delete state.__info;
@@ -536,7 +537,7 @@
                 var stateEntry = {
                     id : id,
                     title : title,
-                    state : data ? aria.utils.Json.copy(data) : {}
+                    state : data ? ariaUtilsJson.copy(data) : {}
                 };
                 this._currentPos++;
                 stateMemory.states.splice(this._currentPos, stateMemory.states.length - this._currentPos, stateEntry);
@@ -569,7 +570,7 @@
              * @private
              */
             _applyState : function (stateInfo) {
-                if (aria.utils.Array.contains(stateMemory.discarded, stateInfo.state.id)) {
+                if (dynamicDependencies.arrayUtil.contains(stateMemory.discarded, stateInfo.state.id)) {
                     if (stateInfo.position < this._currentPos) {
                         this.back();
                     } else {

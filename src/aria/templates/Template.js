@@ -18,6 +18,10 @@ var ArrayUtils = require('../utils/Array');
 var contextualEnvironment = require('../tools/contextual/environment/ContextualMenu');
 var AppEnvironment = require('../core/AppEnvironment');
 var ITemplate = require('./ITemplate');
+/**
+ * Load the contextual menu if needed
+ */
+require("./$Template").load("");
 
 (function () {
     /**
@@ -26,29 +30,11 @@ var ITemplate = require('./ITemplate');
     var changingEnvironment = function (evt) {
         if (!evt || !evt.changedProperties || ArrayUtils.contains(evt.changedProperties, "contextualMenu")) {
             Aria.load({
-                classes : [contextualClasspath]
+                classes : ["aria.tools.contextual.ContextualMenu"]
             });
         }
     };
 
-    /**
-     * Checks if the Contextual Menu is enable. This function should be used only before loading the class definition.
-     * It would be nice to use aria.tools.contextual.environment.ContextualMenu, but it might not be loaded yet.
-     */
-    var isEnabled = function () {
-        var settings = aria.core.AppEnvironment.applicationSettings.contextualMenu;
-        return settings && settings.enabled;
-    };
-
-    /**
-     * Classpath of the ContextualMenu class
-     */
-    var contextualClasspath = "aria.tools.contextual.ContextualMenu";
-
-    if (isEnabled()) {
-        // FIXME: pb of really dynamically loading contextualClasspath
-        require('../tools/contextual/ContextualMenu');
-    }
     require("../utils/environment/VisualFocus");
 
     /**
