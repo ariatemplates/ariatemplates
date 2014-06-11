@@ -13,9 +13,7 @@
  * limitations under the License.
  */
 
-var promise = require('noder-js/promise');
-var request = require('noder-js/request');
-var typeUtils = require('noder-js/type');
+var Promise = require('noder-js/promise');
 var findRequires = require('noder-js/findRequires');
 var scriptBaseUrl = require('noder-js/scriptBaseUrl');
 var ParentLoader = require('noder-js/loader');
@@ -83,22 +81,23 @@ LoaderProto.isDownloadMgrUsable = function () {
 };
 
 LoaderProto.downloadModule = function (module) {
-    var deferred = promise.defer();
-    var logicalPath = module.filename;
-    var downloadMgr = this.downloadMgr.exports;
-    module.url = downloadMgr.resolveURL(logicalPath, true);
-    downloadMgr.loadFile(logicalPath, {
-        scope : this,
-        fn : function () {
-            var fileContent = downloadMgr.getFileContent(logicalPath);
-            if (fileContent == null) {
-                deferred.reject(new Error("Error while downloading " + logicalPath));
-            } else {
-                deferred.resolve(fileContent);
+    var self = this;
+    return new Promise(function (resolve, reject) {
+        var logicalPath = module.filename;
+        var downloadMgr = self.downloadMgr.exports;
+        module.url = downloadMgr.resolveURL(logicalPath, true);
+        downloadMgr.loadFile(logicalPath, {
+            scope : self,
+            fn : function () {
+                var fileContent = downloadMgr.getFileContent(logicalPath);
+                if (fileContent == null) {
+                    reject(new Error("Error while downloading " + logicalPath));
+                } else {
+                    resolve(fileContent);
+                }
             }
-        }
+        });
     });
-    return deferred.promise;
 };
 
 // first entry point: if it is present, use the DownloadMgr to download files
@@ -130,7 +129,7 @@ LoaderProto.defineUnpackaged = function (module, fileContent) {
         return oldATLoader(module, fileContent);
     } else {
         var self = this;
-        return context.moduleAsyncRequire(context.rootModule, [oldATLoaderPath]).thenSync(function (oldATLoader) {
+        return context.moduleAsyncRequire(context.rootModule, [oldATLoaderPath]).spreadSync(function (oldATLoader) {
             self.oldATLoader = oldATLoader;
             return oldATLoader(module, fileContent);
         });

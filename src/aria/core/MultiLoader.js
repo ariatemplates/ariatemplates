@@ -102,7 +102,7 @@ module.exports = Aria.classDefinition({
                         self.$logError(self.LOAD_ERROR, null, error);
                     }
                     self._execCallback(false, true);
-                }).end();
+                }).done();
             } else {
                 this._execCallback(true);
             }

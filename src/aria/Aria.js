@@ -1600,7 +1600,7 @@ var jsEval = require("noder-js/jsEval");
  * evalContext.
  */
 Aria["eval"] = function (srcJS, srcURL, evalContext) {
-    var fct = jsEval(["(function(){\n", srcJS, "\n})"].join(''), srcURL, 1);
+    var fct = jsEval(srcJS, srcURL, "(function(){\n", "\n})");
     return fct(srcJS, srcURL, evalContext);
 };
 require("./core/Log");

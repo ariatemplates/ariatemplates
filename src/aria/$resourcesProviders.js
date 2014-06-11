@@ -14,7 +14,7 @@
  */
 
 var Aria = require("./Aria");
-var promise = require("noder-js/promise");
+var Promise = require("noder-js/promise");
 var asyncRequire = require("noder-js/asyncRequire").create(module);
 
 /**
@@ -169,14 +169,12 @@ var convertArguments = function (args) {
 var fetch = function (referencePath, baseLogicalPath, callerClasspath, onLoad, handler) {
     var args = convertArguments(arguments);
     if (args.onLoad) {
-        var defer = promise.defer();
-        asyncRequire(args.provider).thenSync(function (providerConstr) {
-            fetchDataAfterLoading(providerConstr, args, defer);
-        });
-        defer.promise.then(function () {
+        asyncRequire(args.provider).spreadSync(function (providerConstr) {
+            return fetchDataAfterLoading(providerConstr, args);
+        }).then(function () {
             var callerPrototype = Aria.getClassRef(args.caller).prototype;
             callerPrototype[args.onLoad].call(callerPrototype);
-        });
+        }).done();
     }
     return {
         provider : getInstanceFromStore(args)
@@ -187,20 +185,21 @@ var fetch = function (referencePath, baseLogicalPath, callerClasspath, onLoad, h
  * Create an instance of the contructor, set the handler and the resources, call the fetch method
  * @param {Function} providerConstr contructor of the provider
  * @param {Object} args see the value returned by "convertArguments" method
- * @param {Object} defer defer object to resolve once resources have been fetched
+ * @return {Object} promise
  */
-var fetchDataAfterLoading = function (providerConstr, args, defer) {
-    var instance = new providerConstr();
-    addInstanceToStore(args, instance);
-    createGetData(instance, args.caller);
-    if (args.hasOwnProperty("handler")) {
-        instance.setHandler(args.handler);
-    }
-    if (args.hasOwnProperty("resources")) {
-        instance.setResources(args.resources);
-    }
-    instance.fetchData(defer.resolve, args.caller);
-
+var fetchDataAfterLoading = function (providerConstr, args) {
+    return new Promise(function (resolve) {
+        var instance = new providerConstr();
+        addInstanceToStore(args, instance);
+        createGetData(instance, args.caller);
+        if (args.hasOwnProperty("handler")) {
+            instance.setHandler(args.handler);
+        }
+        if (args.hasOwnProperty("resources")) {
+            instance.setResources(args.resources);
+        }
+        instance.fetchData(resolve, args.caller);
+    });
 };
 
 /**
@@ -213,11 +212,9 @@ fetch.$preload = function () {
     if (args.onLoad) {
         return loadPromise;
     } else {
-        var defer = promise.defer();
-        loadPromise.then(function (providerConstr) {
-            fetchDataAfterLoading(providerConstr, args, defer);
+        return loadPromise.spreadSync(function (providerConstr) {
+            return fetchDataAfterLoading(providerConstr, args);
         });
-        return defer.promise;
     }
 
 };

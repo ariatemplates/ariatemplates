@@ -31,7 +31,7 @@ var ariaUtilsEvent = require("./Event");
  * @type Object
  * @private
  */
-var dynamicDependencies = require("./$History").getDependencies("");
+var dynamicDependencies = require("./$History").getDependencies();
 
 (function () {
     "use strict";

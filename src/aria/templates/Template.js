@@ -21,7 +21,7 @@ var ITemplate = require('./ITemplate');
 /**
  * Load the contextual menu if needed
  */
-require("./$Template").load("");
+require("./$Template").load();
 
 (function () {
     /**

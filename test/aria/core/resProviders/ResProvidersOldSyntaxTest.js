@@ -32,7 +32,7 @@ module.exports = Aria.classDefinition({
                 scope : this
             });
 
-            asyncRequire(this._classWithProvidersName).then(function (classWithProviders) {
+            asyncRequire(this._classWithProvidersName).spread(function (classWithProviders) {
                 self._afterClassLoading.call(self, classWithProviders);
             });
 

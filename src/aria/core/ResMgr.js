@@ -14,7 +14,7 @@
  */
 
 var asyncRequire = require('noder-js/asyncRequire').create(module);
-var promise = require('noder-js/promise');
+var Promise = require('noder-js/promise');
 var environment = require('./environment/Environment');
 
 var currentEntry = null;
@@ -34,18 +34,18 @@ var normalizeBaseLogicalPath = function (logicalPath) {
 };
 
 var loadFile = function (logicalPath, args) {
-    var downloadMgr = require('./DownloadMgr');
-    var defer = promise.defer();
-    downloadMgr.loadFile(logicalPath, {
-        fn : function (evt) {
-            if (evt.downloadFailed) {
-                return defer.reject(new Error("Download of '" + logicalPath + "' failed."));
-            }
-            defer.resolve(downloadMgr.getFileContent(logicalPath));
-        },
-        scope : downloadMgr
-    }, args);
-    return defer.promise;
+    return new Promise(function (resolve, reject) {
+        var downloadMgr = require('./DownloadMgr');
+        downloadMgr.loadFile(logicalPath, {
+            fn : function (evt) {
+                if (evt.downloadFailed) {
+                    return reject(new Error("Download of '" + logicalPath + "' failed."));
+                }
+                resolve(downloadMgr.getFileContent(logicalPath));
+            },
+            scope : downloadMgr
+        }, args);
+    });
 };
 
 /**
@@ -131,15 +131,15 @@ var resMgr = module.exports = Aria.classDefinition({
                     // if in dev mode, use static resource definition file with no specific locale
                     // otherwise, call the server with the url built by the request manager
                     if (toBeLoaded.server) {
-                        return asyncRequire('../modules/RequestMgr').thenSync(function (requestMgr) {
-                            var defer = promise.defer();
-                            requestMgr.createI18nUrl(serverModuleName, locale, function (url) {
-                                entry.logicalPaths[toBeLoaded.logicalPath] = true;
-                                loadFile(toBeLoaded.logicalPath, {
-                                    fullLogicalPath : url
-                                }).thenSync(defer.resolve, defer.reject);
+                        return asyncRequire('../modules/RequestMgr').spreadSync(function (requestMgr) {
+                            return new Promise(function (resolve, reject) {
+                                requestMgr.createI18nUrl(serverModuleName, locale, function (url) {
+                                    entry.logicalPaths[toBeLoaded.logicalPath] = true;
+                                    loadFile(toBeLoaded.logicalPath, {
+                                        fullLogicalPath : url
+                                    }).thenSync(resolve, reject);
+                                });
                             });
-                            return defer.promise;
                         });
                     } else {
                         toBeLoaded.logicalPath = baseLogicalPath + ".js";
@@ -314,7 +314,7 @@ var resMgr = module.exports = Aria.classDefinition({
                 }
             }
             var self = this;
-            promise.when(tasks).thenSync(function () {
+            Promise.all(tasks).thenSync(function () {
                 self.$callback(cb);
             });
         },

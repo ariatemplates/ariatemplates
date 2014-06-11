@@ -14,16 +14,16 @@
  */
 
 // Creates a preprocessor for a specific class generator
-var promise = require('noder-js/promise.js');
+var Promise = require('noder-js/promise.js');
 
 module.exports = function (classGenerator) {
     return function (content, fileName) {
-        var defer = promise.defer();
-        classGenerator.parseTemplate(content, false, function (res) {
-            defer.resolve(res.classDef);
-        }, {
-            "file_classpath" : fileName
+        return new Promise(function (resolve) {
+            classGenerator.parseTemplate(content, false, function (res) {
+                resolve(res.classDef);
+            }, {
+                "file_classpath" : fileName
+            });
         });
-        return defer.promise;
     };
 };

@@ -20,10 +20,10 @@ var syncRequire = function (logicalPath) {
     var url = Aria.rootFolderPath + logicalPath;
     request(url, {
         sync : true
-    }).thenSync(function (content) {
-        var newModule = currentContext.jsModuleDefine(content, logicalPath, url);
+    }).thenSync(function (xhr) {
+        var newModule = currentContext.jsModuleDefine(xhr.responseText, logicalPath, url);
         modulesToExecute.push(newModule);
-    }).end();
+    }).done();
 };
 
 // The following content is replaced at build time by a set of calls to syncRequire

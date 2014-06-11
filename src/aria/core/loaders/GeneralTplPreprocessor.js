@@ -45,7 +45,7 @@ module.exports = function (content, moduleFileName) {
     if (!curPreprocessorPath || isTemplateCompiled(content)) {
         return content;
     }
-    return asyncRequire(curPreprocessorPath).thenSync(function (curPreprocessor) {
+    return asyncRequire(curPreprocessorPath).spreadSync(function (curPreprocessor) {
         return curPreprocessor(content, moduleFileName);
     });
 };

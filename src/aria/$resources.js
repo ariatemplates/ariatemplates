@@ -47,15 +47,9 @@ var loadResourceModule = function (serverResource, referencePath, staticFile) {
     if (!res) {
         // even if that resource is not yet loaded, maybe it can be loaded synchronously
         var promise = resMgr.loadResource(serverResource, baseLogicalPath);
-        var waitResult = true;
-        promise.thenSync(function (result) {
-            if (waitResult) {
-                waitResult = false;
-                res = result;
-            }
-        });
-        if (waitResult) {
-            waitResult = false;
+        if (promise.isFulfilled()) {
+            res = promise.result();
+        } else {
             throw new Error("Resource " + serverResource + "," + referencePath + "," + staticFile
                     + " is not yet loaded.");
         }
