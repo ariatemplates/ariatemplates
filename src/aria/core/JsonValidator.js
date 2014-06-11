@@ -703,15 +703,6 @@ var Aria = require("../Aria");
 
                 // load missing dependencies
 
-                // FIXME: find a way to restore the following block:
-                /*
-                if (this._options.checkBeans && !this.__loadedBeans[this._BEANS_SCHEMA_PACKAGE]
-                        && bp != this._BEANS_SCHEMA_PACKAGE && bp != this._BASE_TYPES_PACKAGE) {
-                    // if checking beans is required, add the corresponding schema for that
-                    dep.push(this._BEANS_SCHEMA_PACKAGE);
-                }
-                */
-
                 // add $dependencies
                 var dependencies = def.$dependencies || [];
                 if (dependencies.length) {
