@@ -139,7 +139,7 @@ Aria.classDefinition({
         testHasEscapeHtmlByDefault : function () {
             aria.core.AppEnvironment.setEnvironment({
                 "templateSettings" : {
-                    "hasEscapeHtml" : true
+                    "escapeHtmlByDefault" : true
                 }
             }, null, true);
             var escape = aria.core.environment.Environment.hasEscapeHtmlByDefault();

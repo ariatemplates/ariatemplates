@@ -98,21 +98,24 @@ Aria.classDefinition({
 
                     // Automatic escape ----------------------------------------
 
-                    // We automatically escape expressions if needed, using the feature of modifiers, since the escape is already handled by a modifier itself.
-                    // For safety and logical reasons, the escaping is done at the end, so the modifier is added as the last one.
-                    // There are two cases where we don't do it automatically:
-                    // - in CSS templates
-                    // - if the modifier is already present at the end of the list, in which case the user gets control back on how to apply the final escape
+                    if (aria.core.environment.Environment.hasEscapeHtmlByDefault()) {
 
-                    var escapeModifierName = classGenerator.escapeModifier; // Gets the actual name of the modifier in this context
+                        // We automatically escape expressions if needed, using the feature of modifiers, since the escape is already handled by a modifier itself.
+                        // For safety and logical reasons, the escaping is done at the end, so the modifier is added as the last one.
+                        // There are two cases where we don't do it automatically:
+                        // - in CSS templates
+                        // - if the modifier is already present at the end of the list, in which case the user gets control back on how to apply the final escape
 
-                    var escapeHtmlByDefault = aria.core.environment.Environment.hasEscapeHtmlByDefault();
-                    if (escapeHtmlByDefault && escapeModifierName != null) {
-                        escapeModifierName = escapeModifierName.toLowerCase();
+                        var escapeModifierName = classGenerator.escapeModifier; // Gets the actual name of the modifier in this context
 
-                        if (parts[parts.length - 1].toLowerCase().indexOf(escapeModifierName) < 0) {
-                            parts.push(escapeModifierName);
+                        if (escapeModifierName != null) {
+                            escapeModifierName = escapeModifierName.toLowerCase();
+
+                            if (parts[parts.length - 1].toLowerCase().indexOf(escapeModifierName) < 0) {
+                                parts.push(escapeModifierName);
+                            }
                         }
+
                     }
 
                     // end of: automatic escape --------------------------------

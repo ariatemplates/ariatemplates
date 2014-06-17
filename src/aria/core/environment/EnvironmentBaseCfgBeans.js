@@ -125,7 +125,7 @@ Aria.beanDefinitions({
                 $description : "A user-defined function used to parse the input in a JavaScript date."
             }, {
                 $type : "json:Array",
-                $description : "Contains an array of patterns and/of funtions",
+                $description : "Contains an array of patterns and/or functions",
                 $contentType : {
                     $type : "json:MultiTypes",
                     $description : "",
