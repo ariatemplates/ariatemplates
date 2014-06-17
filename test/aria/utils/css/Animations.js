@@ -76,6 +76,9 @@ Aria.classDefinition({
                     scope : this
                 });
 
+                //Validates that the animations CSS rules are well loaded in their own element
+                this.assertNotNull(document.getElementById("xCsspool1"));
+
                 this.divPage1 = document.createElement('div');
                 this.divPage2 = document.createElement('div');
 
