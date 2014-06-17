@@ -13,16 +13,18 @@
  * limitations under the License.
  */
 
-/**
- * Test suite regrouping all tests of the core namespace
- */
-Aria.classDefinition({
-    $classpath : "test.aria.templates.statements.StatementsTestSuite",
-    $extends : "aria.jsunit.TestSuite",
-    $constructor : function () {
-        this.$TestSuite.constructor.call(this);
+{Template {
+    $classpath: 'test.aria.templates.statements.escape.ExpressionEscapeEnvironmentTestTpl'
+}}
 
-        this.addTests("test.aria.templates.statements.StatementParserTest");
-        this.addTests("test.aria.templates.statements.escape.ExpressionEscapeTestSuite");
-    }
-});
+{macro main()}
+
+{var id = "automatic-globally-disabled" /}
+<div {id id /}>
+    {var c = data.useCases[id] /}
+    ${c.input}
+</div>
+
+{/macro}
+
+{/Template}

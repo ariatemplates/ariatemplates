@@ -17,12 +17,12 @@
  * Test suite regrouping all tests of the core namespace
  */
 Aria.classDefinition({
-    $classpath : "test.aria.templates.statements.StatementsTestSuite",
+    $classpath : "test.aria.templates.statements.escape.ExpressionEscapeTestSuite",
     $extends : "aria.jsunit.TestSuite",
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
-        this.addTests("test.aria.templates.statements.StatementParserTest");
-        this.addTests("test.aria.templates.statements.escape.ExpressionEscapeTestSuite");
+        this.addTests("test.aria.templates.statements.escape.ExpressionEscapeTest");
+        this.addTests("test.aria.templates.statements.escape.ExpressionEscapeEnvironmentTest");
     }
 });
