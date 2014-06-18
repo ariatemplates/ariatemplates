@@ -1,12 +1,13 @@
 /* global Aria:true, aria:true */
 var vm = require("vm"), fs = require("fs"), path = require("path");
+var ariaRootFolderPath = path.normalize(__dirname + "/../../build/target/bootstrap/");
 
 /* aria and Aria are going to be global */
 aria = {};
 
 // DownloadMgr is not yet available, set rootFolderPath temporarily to load the framework
 Aria = {
-    rootFolderPath : __dirname + "/../"
+    rootFolderPath : ariaRootFolderPath
 };
 
 /* This is the global load method used by the framework, it's common to Rhino */
@@ -18,7 +19,7 @@ global.load = function (filePath) {
 };
 
 try {
-    global.load(__dirname + "/bootstrap.js");
+    require(ariaRootFolderPath + "aria/node.js");
 
     // For all the other classes we use IO, define our node transport
     Aria.classDefinition({
@@ -52,9 +53,13 @@ try {
     // (and so that the user can change `Aria.rootFolderPath` without breaking framework's classes loading).
     aria.core.DownloadMgr.updateRootMap({
         aria : {
-            "*" : __dirname + "/../"
+            "*" : ariaRootFolderPath
         }
     });
+
+    // Update root folder to point to the user's repo root folder;
+    // assuming we're in "<projectFolder>/node_modules/ariatemplates/src/aria"
+    Aria.rootFolderPath = path.normalize(__dirname + "/../../../../");
 
 } catch (ex) {
     console.error('\n[Error] Aria Templates framework not loaded.', ex);

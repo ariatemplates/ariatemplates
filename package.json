@@ -26,9 +26,6 @@
     "test": "npm run lint && npm run grunt && npm run mocha && npm run attester && npm run attester-packaged",
     "ci": "node build/grunt-cli.js checkStyleTest && npm run mocha && npm run attester && npm run attester-packaged"
   },
-  "dependencies": {
-    "noder-js": "1.4.0"
-  },
   "devDependencies": {
     "at-noder-converter": "1.0.1",
     "atpackager": "0.2.4",
@@ -40,6 +37,7 @@
     "grunt-verifylowercase": "0.2.0",
     "gzip-js": "0.3.2",
     "jade": "1.1.5",
-    "mocha": "1.17.0"
+    "mocha": "1.17.0",
+    "noder-js": "1.4.0"
   }
 }
