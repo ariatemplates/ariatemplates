@@ -56,6 +56,10 @@ try {
         }
     });
 
+    // Update root folder to point to the user's repo root folder;
+    // assuming we're in "<projectFolder>/node_modules/ariatemplates/src/aria"
+    Aria.rootFolderPath = __dirname + "/../../../../";
+
 } catch (ex) {
     console.error('\n[Error] Aria Templates framework not loaded.', ex);
     process.exit(1);
