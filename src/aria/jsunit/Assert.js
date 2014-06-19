@@ -47,6 +47,9 @@ var ariaUtilsJson = require("../utils/Json");
 
     /**
      * Base class gathering all assertions used in Test case classes
+     * @extends aria.jsunit.Test
+     * @dependencies ["aria.core.Log", "aria.utils.Type", "aria.utils.String", "aria.utils.Json",
+     * "aria.core.log.SilentArrayAppender", "aria.core.log.DefaultAppender"]
      */
     module.exports = Aria.classDefinition({
         $classpath : "aria.jsunit.Assert",

@@ -20,8 +20,8 @@ require("./CSSMgr");
 
 /**
  * Base class from which all CSS templates inherit.
- * @class aria.templates.CSSTemplate
  * @extends aria.core.BaseTemplate
+ * @dependencies ["aria.templates.CSSMgr", "aria.core.DownloadMgr", "aria.templates.ICSS"]
  */
 module.exports = Aria.classDefinition({
     $classpath : "aria.templates.CSSTemplate",

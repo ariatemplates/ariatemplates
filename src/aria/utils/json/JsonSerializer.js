@@ -16,6 +16,7 @@ var Aria = require("../../Aria");
 
 /**
  * Utility to convert data to a JSON string
+ * @dependencies ["aria.utils.Type", "aria.utils.Json"]
  */
 module.exports = Aria.classDefinition({
     $classpath : "aria.utils.json.JsonSerializer",

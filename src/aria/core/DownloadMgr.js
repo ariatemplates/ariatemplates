@@ -19,6 +19,7 @@ var Aria = require("../Aria");
  * associated to the same physical URL, makes sure listeneres are associated to the same loader Manage logical path /
  * physical URL mapping (the same physical URL can be used for multiple logical paths in case of multipart (packaged)
  * files) thanks to the Url Map.
+ * @dependencies ["aria.core.Cache", "aria.utils.Json", "aria.utils.Type", "aria.core.FileLoader"]
  */
 module.exports = Aria.classDefinition({
     $classpath : "aria.core.DownloadMgr",

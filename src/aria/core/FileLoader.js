@@ -15,6 +15,9 @@
 var Aria = require("../Aria");
 var ariaCoreCache = require("./Cache");
 
+/**
+ * @dependencies ["aria.core.Cache", "aria.core.IO", "aria.core.DownloadMgr"]
+ */
 module.exports = Aria.classDefinition({
     $classpath : "aria.core.FileLoader",
 

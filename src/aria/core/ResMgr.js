@@ -50,6 +50,7 @@ var loadFile = function (logicalPath, args) {
 
 /**
  * Resources Manager. It keeps the list of loaded resources in order to reload them in case of locale change.
+ * @dependencies ["aria.core.environment.Environment", "aria.core.DownloadMgr"]
  */
 var resMgr = module.exports = Aria.classDefinition({
     $classpath : "aria.core.ResMgr",

@@ -70,6 +70,11 @@ var dynamicDependencies = require("./$History").getDependencies();
      */
     var hashManager = dynamicDependencies.hashManager;
 
+    /**
+     * Provides a cross-browser implementation of the history API. It uses native HTML5 History API when possible.
+     * @dependencies ["aria.utils.String", "aria.utils.Type", "aria.utils.Json", "aria.storage.LocalStorage",
+     * "aria.core.Browser", "aria.utils.Event"]
+     */
     module.exports = Aria.classDefinition({
         $classpath : "aria.utils.History",
         $singleton : true,

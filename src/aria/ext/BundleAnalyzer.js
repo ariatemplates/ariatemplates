@@ -33,6 +33,8 @@ var ariaCoreResMgr = require("../core/ResMgr");
  *     }
  * });
  * </pre>
+ *
+ * @dependencies ["aria.core.Cache", "aria.core.ResMgr"]
  */
 module.exports = Aria.classDefinition({
     $classpath : "aria.ext.BundleAnalyzer",

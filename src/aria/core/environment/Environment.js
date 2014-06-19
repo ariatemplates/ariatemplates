@@ -18,6 +18,8 @@ var ariaCoreAppEnvironment = require("../AppEnvironment");
 
 /**
  * Public API for retrieving, applying application variables.
+ * @extends aria.core.environment.EnvironmentBase
+ * @dependencies ["aria.core.environment.EnvironmentBaseCfgBeans", "aria.core.AppEnvironment"]
  */
 module.exports = Aria.classDefinition({
     $classpath : "aria.core.environment.Environment",
