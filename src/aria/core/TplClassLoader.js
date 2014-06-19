@@ -225,6 +225,8 @@ var ariaCoreJsonValidator = require("./JsonValidator");
 
     /**
      * ClassLoader for .tpl files.
+     * @extends aria.core.ClassLoader
+     * @dependencies ["aria.core.JsObject", "aria.core.Browser", "aria.core.JsonValidator"]
      */
     module.exports = Aria.classDefinition({
         $classpath : "aria.core.TplClassLoader",

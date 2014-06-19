@@ -21,6 +21,7 @@ var ariaCoreDownloadMgr = require("./DownloadMgr");
  * "TPL", "RES", "CSS", "TML" and "TXT"). Before loading a class, it is necessary to know its type (there is no naming
  * convention). This class uses the Cache object to store class definitions (through the DownloadMgr) and indicators
  * telling that a class is being downloaded.
+ * @dependencies ["aria.core.Cache", "aria.core.DownloadMgr"]
  */
 module.exports = Aria.classDefinition({
     $classpath : "aria.core.ClassMgr",

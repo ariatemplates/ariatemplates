@@ -16,9 +16,7 @@ var Aria = require("../Aria");
 
 /**
  * List of active CSS templates loaded by Aria.loadTemplate
- * @class aria.templates.CSSCtxtManager
- * @extends aria.core.JsObject
- * @singleton
+ * @dependencies ["aria.templates.CSSCtxt"]
  */
 module.exports = Aria.classDefinition({
     $classpath : "aria.templates.CSSCtxtManager",

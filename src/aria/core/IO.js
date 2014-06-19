@@ -20,6 +20,8 @@ var ariaUtilsJson = require("../utils/Json");
  * Connection manager class. Provides a way to make requests for different URI (file, XHR, XDR) and keeps a list of all
  * pending requests.
  * @singleton
+ * @dependencies ["aria.utils.Type", "aria.utils.Json", "aria.utils.json.JsonSerializer", "aria.core.Timer",
+ * "aria.utils.Array", "aria.utils.String"]
  */
 module.exports = Aria.classDefinition({
     $classpath : "aria.core.IO",

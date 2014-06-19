@@ -40,6 +40,9 @@ require("./$Template").load();
     /**
      * Base class from which all templates inherit. Some methods will be added to instances of this class, from the
      * TemplateCtxt class.
+     * @extends aria.templates.BaseTemplate
+     * @dependencies ["aria.utils.Array", "aria.tools.contextual.environment.ContextualMenu",
+     * "aria.core.AppEnvironment", "aria.templates.ITemplate", "aria.utils.environment.VisualFocus", "aria.utils.Json"]
      */
     module.exports = Aria.classDefinition({
         $classpath : "aria.templates.Template",

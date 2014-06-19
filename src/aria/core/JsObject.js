@@ -252,6 +252,7 @@ var Aria = require("../Aria");
 
     /**
      * Base class from which derive all JS classes defined through Aria.classDefinition()
+     * @dependencies ["aria.utils.String", "aria.core.Interfaces", "aria.utils.Type"]
      */
     module.exports = Aria.classDefinition({
         $classpath : "aria.core.JsObject",

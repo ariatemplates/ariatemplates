@@ -33,6 +33,7 @@ var Aria = require("../Aria");
      * Note: this class is tightly linked with JsonTypesCheck, to keep files with a reasonable size. Be carefull if
      * changing something: any protected method in this class (method whose name starts with one underscore) may be
      * called from JsonTypesCheck. Private methods (starting with two underscores) are not called from JsonTypesCheck.
+     * @dependencies ["aria.utils.Type", "aria.utils.Json", "aria.core.JsonTypesCheck"]
      */
     module.exports = Aria.classDefinition({
         $classpath : "aria.core.JsonValidator",
@@ -579,7 +580,8 @@ var Aria = require("../Aria");
 
             /**
              * Get a bean from its string reference.
-             * @param {String} strType The fully qualified bean name, ex: aria.widgets.calendar.CfgBeans.CalendarSettings
+             * @param {String} strType The fully qualified bean name, ex:
+             * aria.widgets.calendar.CfgBeans.CalendarSettings
              * @return {aria.core.BaseTypes:Bean} The bean definition if strType is valid, or null otherwise.
              */
             _getBean : function (strType) {
