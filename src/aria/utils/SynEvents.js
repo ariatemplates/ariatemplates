@@ -73,13 +73,53 @@
         }
     };
 
+    var Syn = Aria.$global.Syn;
+
+    var leakFixItems;
+
+    var leakFixUnset = function (obj, prop, oldValue) {
+        obj[prop] = oldValue;
+    };
+
+    var leakFixSet = function (obj, prop, value) {
+        var oldValue = obj[prop];
+        obj[prop] = value;
+        leakFixItems.push([leakFixUnset, obj, prop, oldValue]);
+    };
+
+    var leakFixBind = function (el, ev, f) {
+        Syn.bind(el, ev, f);
+        leakFixItems.push([Syn.unbind, el, ev, f]);
+    };
+
+    var leakFixClean = function () {
+        while (leakFixItems.length) {
+            var curItem = leakFixItems.shift();
+            var fn = curItem.shift();
+            try {
+                fn.apply(null, curItem);
+            } catch (e) {}
+        }
+    };
+
+    var leakFixCall = function (fn) {
+        var previousLeakFixItems = leakFixItems;
+        leakFixItems = [];
+        try {
+            fn();
+        } finally {
+            leakFixClean();
+            leakFixItems = previousLeakFixItems;
+        }
+    };
+
     // fake steal
     var steal = function (dependencies, /* many, */ callback) {
         // we assume dependencies are always met
         for (var i = 0; i < arguments.length; i += 1) {
             var arg = arguments[i];
             if (arg.call) {
-                Aria.$global.Syn = arg.call(Aria.$window, Aria.$global.Syn);
+                Aria.$global.Syn = Syn = arg.call(Aria.$window, Syn);
             }
         }
     };
@@ -91,6 +131,7 @@
      * - Inside mouse.js and behavior for mouse events, add mouseenter and mouseleave
      * - Inside synthetic.js trigger method, trigger the event only if the element is _isInDom
      * - Inside drag.js support for non jquery center
+     * - Fixing a memory leak in IE (cf calls to leakFixSomething)
      */
 
 
@@ -980,9 +1021,9 @@
                     //try{
                     if ( code != "//" && code.indexOf("void(0)") == -1 ) {
                         if ( Aria.$window.selenium ) {
-                            eval("with(selenium.browserbot.getCurrentWindow()){" + code + "}");
+                            Aria["eval"]("with(selenium.browserbot.getCurrentWindow()){" + code + "}");
                         } else {
-                            eval("with(scope){" + code + "}");
+                            Aria["eval"]("with(scope){" + code + "}");
                         }
                     }
                 }
@@ -1163,79 +1204,77 @@
                 setTimeout(arguments.callee, 1);
                 return;
             }
-            var oldSynth = Aria.$window.__synthTest;
-            Aria.$window.__synthTest = function() {
-                Syn.support.linkHrefJS = true;
-            };
-            var div = Aria.$window.document.createElement("div"),
-                checkbox, submit, form, input, select;
+            leakFixCall(function() {
+                leakFixSet(Aria.$window, "__synthTest", function() {
+                    Syn.support.linkHrefJS = true;
+                });
+                var div = Aria.$window.document.createElement("div"),
+                    checkbox, submit, form, input, select;
+                Aria.$window.document.documentElement.appendChild(div);
+                div.innerHTML = "<form id='outer'>" + "<input name='checkbox' type='checkbox'/>" + "<input name='radio' type='radio' />" + "<input type='submit' name='submitter'/>" + "<input type='input' name='inputter'/>" + "<input name='one'>" + "<input name='two'/>" + "<a href='javascript:__synthTest()' id='synlink'></a>" + "<select><option></option></select>" + "</form>";
+                form = div.firstChild;
+                checkbox = form.childNodes[0];
+                submit = form.childNodes[2];
+                select = form.getElementsByTagName('select')[0];
 
-            div.innerHTML = "<form id='outer'>" + "<input name='checkbox' type='checkbox'/>" + "<input name='radio' type='radio' />" + "<input type='submit' name='submitter'/>" + "<input type='input' name='inputter'/>" + "<input name='one'>" + "<input name='two'/>" + "<a href='javascript:__synthTest()' id='synlink'></a>" + "<select><option></option></select>" + "</form>";
-            Aria.$window.document.documentElement.appendChild(div);
-            form = div.firstChild;
-            checkbox = form.childNodes[0];
-            submit = form.childNodes[2];
-            select = form.getElementsByTagName('select')[0];
+                checkbox.checked = false;
+                leakFixSet(checkbox, "onchange", function() {
+                    Syn.support.clickChanges = true;
+                });
 
-            checkbox.checked = false;
-            checkbox.onchange = function() {
-                Syn.support.clickChanges = true;
-            };
+                Syn.trigger("click", {}, checkbox);
+                Syn.support.clickChecks = checkbox.checked;
 
-            Syn.trigger("click", {}, checkbox);
-            Syn.support.clickChecks = checkbox.checked;
+                checkbox.checked = false;
 
-            checkbox.checked = false;
+                Syn.trigger("change", {}, checkbox);
 
-            Syn.trigger("change", {}, checkbox);
+                Syn.support.changeChecks = checkbox.checked;
 
-            Syn.support.changeChecks = checkbox.checked;
-
-            form.onsubmit = function( ev ) {
-                if ( ev.preventDefault ) ev.preventDefault();
-                Syn.support.clickSubmits = true;
-                return false;
-            };
-            Syn.trigger("click", {}, submit);
-
+                leakFixSet(form, "onsubmit", function( ev ) {
+                    if ( ev.preventDefault ) ev.preventDefault();
+                    Syn.support.clickSubmits = true;
+                    return false;
+                });
+                Syn.trigger("click", {}, submit);
 
 
-            form.childNodes[1].onchange = function() {
-                Syn.support.radioClickChanges = true;
-            };
-            Syn.trigger("click", {}, form.childNodes[1]);
+
+                leakFixSet(form.childNodes[1], "onchange", function() {
+                    Syn.support.radioClickChanges = true;
+                });
+                Syn.trigger("click", {}, form.childNodes[1]);
 
 
-            Syn.bind(div, 'click', function() {
-                Syn.support.optionClickBubbles = true;
-                Syn.unbind(div, 'click', arguments.callee);
+                leakFixBind(div, 'click', function() {
+                    Syn.support.optionClickBubbles = true;
+                    Syn.unbind(div, 'click', arguments.callee);
+                });
+                Syn.trigger("click", {}, select.firstChild);
+
+
+                Syn.support.changeBubbles = Syn.eventSupported('change');
+
+                //test if mousedown followed by mouseup causes click (opera), make sure there are no clicks after this
+                var clicksCount = 0;
+                leakFixSet(div, "onclick", function() {
+                    Syn.support.mouseDownUpClicks = true;
+                    //we should use this to check for opera potentially, but would
+                    //be difficult to remove element correctly
+                    //Syn.support.mouseDownUpRepeatClicks = (2 == (++clicksCount))
+                });
+                Syn.trigger("mousedown", {}, div);
+                Syn.trigger("mouseup", {}, div);
+
+                //setTimeout(function(){
+                //  Syn.trigger("mousedown",{},div)
+                //  Syn.trigger("mouseup",{},div)
+                //},1)
+
+                Aria.$window.document.documentElement.removeChild(div);
+                div = checkbox = submit = form = input = select = null;
+                Syn.support.ready++;
             });
-            Syn.trigger("click", {}, select.firstChild);
-
-
-            Syn.support.changeBubbles = Syn.eventSupported('change');
-
-            //test if mousedown followed by mouseup causes click (opera), make sure there are no clicks after this
-            var clicksCount = 0;
-            div.onclick = function() {
-                Syn.support.mouseDownUpClicks = true;
-                //we should use this to check for opera potentially, but would
-                //be difficult to remove element correctly
-                //Syn.support.mouseDownUpRepeatClicks = (2 == (++clicksCount))
-            };
-            Syn.trigger("mousedown", {}, div);
-            Syn.trigger("mouseup", {}, div);
-
-            //setTimeout(function(){
-            //  Syn.trigger("mousedown",{},div)
-            //  Syn.trigger("mouseup",{},div)
-            //},1)
-
-            Aria.$window.document.documentElement.removeChild(div);
-
-            //check stuff
-            Aria.$window.__synthTest = oldSynth;
-            Syn.support.ready++;
         })();
         return Syn;
     });
@@ -2259,74 +2298,73 @@
                 setTimeout(arguments.callee, 1);
                 return;
             }
+            leakFixCall(function() {
+                var div = Aria.$window.document.createElement("div"),
+                    checkbox, submit, form, input, submitted = false,
+                    anchor, textarea, inputter;
+                Aria.$window.document.documentElement.appendChild(div);
+                div.innerHTML = "<form id='outer'>" +
+                                "<input name='checkbox' type='checkbox'/>" +
+                                "<input name='radio' type='radio' />" +
+                                "<input type='submit' name='submitter'/>" +
+                                "<input type='input' name='inputter'/>" +
+                                "<input name='one'>" +
+                                "<input name='two'/>" +
+                                "<a href='#abc'></a>" +
+                                "<textarea>1\n2</textarea>" +
+                                "</form>";
+                form = div.firstChild;
+                checkbox = form.childNodes[0];
+                submit = form.childNodes[2];
+                anchor = form.getElementsByTagName("a")[0];
+                textarea = form.getElementsByTagName("textarea")[0];
+                inputter = form.childNodes[3];
 
-            var div = Aria.$window.document.createElement("div"),
-                checkbox, submit, form, input, submitted = false,
-                anchor, textarea, inputter;
-
-            div.innerHTML = "<form id='outer'>" +
-                            "<input name='checkbox' type='checkbox'/>" +
-                            "<input name='radio' type='radio' />" +
-                            "<input type='submit' name='submitter'/>" +
-                            "<input type='input' name='inputter'/>" +
-                            "<input name='one'>" +
-                            "<input name='two'/>" +
-                            "<a href='#abc'></a>" +
-                            "<textarea>1\n2</textarea>" +
-                            "</form>";
-
-            Aria.$window.document.documentElement.appendChild(div);
-            form = div.firstChild;
-            checkbox = form.childNodes[0];
-            submit = form.childNodes[2];
-            anchor = form.getElementsByTagName("a")[0];
-            textarea = form.getElementsByTagName("textarea")[0];
-            inputter = form.childNodes[3];
-
-            form.onsubmit = function( ev ) {
-                if ( ev.preventDefault ) ev.preventDefault();
-                Syn.support.keypressSubmits = true;
-                ev.returnValue = false;
-                return false;
-            };
-            // Firefox 4 won't write key events if the element isn't focused
-            inputter.focus();
-            Syn.trigger("keypress", "\r", inputter);
+                leakFixSet(form, "onsubmit", function( ev ) {
+                    if ( ev.preventDefault ) ev.preventDefault();
+                    Syn.support.keypressSubmits = true;
+                    ev.returnValue = false;
+                    return false;
+                });
+                // Firefox 4 won't write key events if the element isn't focused
+                inputter.focus();
+                Syn.trigger("keypress", "\r", inputter);
 
 
-            Syn.trigger("keypress", "a", inputter);
-            Syn.support.keyCharacters = inputter.value === "a";
+                Syn.trigger("keypress", "a", inputter);
+                Syn.support.keyCharacters = inputter.value === "a";
 
 
-            inputter.value = "a";
-            Syn.trigger("keypress", "\b", inputter);
-            Syn.support.backspaceWorks = inputter.value === "";
+                inputter.value = "a";
+                Syn.trigger("keypress", "\b", inputter);
+                Syn.support.backspaceWorks = inputter.value === "";
 
 
 
-            inputter.onchange = function() {
-                Syn.support.focusChanges = true;
-            };
-            inputter.focus();
-            Syn.trigger("keypress", "a", inputter);
-            form.childNodes[5].focus(); // this will throw a change event
-            Syn.trigger("keypress", "b", inputter);
-            Syn.support.keysOnNotFocused = inputter.value === "ab";
+                leakFixSet(inputter, "onchange", function() {
+                    Syn.support.focusChanges = true;
+                });
+                inputter.focus();
+                Syn.trigger("keypress", "a", inputter);
+                form.childNodes[5].focus(); // this will throw a change event
+                Syn.trigger("keypress", "b", inputter);
+                Syn.support.keysOnNotFocused = inputter.value === "ab";
 
-            //test keypress \r on anchor submits
-            Syn.bind(anchor, "click", function( ev ) {
-                if ( ev.preventDefault ) ev.preventDefault();
-                Syn.support.keypressOnAnchorClicks = true;
-                ev.returnValue = false;
-                return false;
+                //test keypress \r on anchor submits
+                leakFixBind(anchor, "click", function( ev ) {
+                    if ( ev.preventDefault ) ev.preventDefault();
+                    Syn.support.keypressOnAnchorClicks = true;
+                    ev.returnValue = false;
+                    return false;
+                });
+                Syn.trigger("keypress", "\r", anchor);
+
+                Syn.support.textareaCarriage = textarea.value.length == 4;
+
+                Aria.$window.document.documentElement.removeChild(div);
+                div = checkbox = submit = form = input = anchor = textarea = inputter = null;
+                Syn.support.ready++;
             });
-            Syn.trigger("keypress", "\r", anchor);
-
-            Syn.support.textareaCarriage = textarea.value.length == 4;
-
-            Aria.$window.document.documentElement.removeChild(div);
-
-            Syn.support.ready++;
         })();
         return Syn;
 
@@ -2695,7 +2733,7 @@
              * @param {Object} cb
              */
             click : function (el, cb) {
-                Aria.$global.Syn.click({}, el, aria.utils.Function.bindCallback(cb));
+                Syn.click({}, el, aria.utils.Function.bindCallback(cb));
             },
 
             /**
@@ -2705,7 +2743,7 @@
              * @param {Object} cb
              */
             type : function (el, text, cb) {
-                Aria.$global.Syn.type(text, el, aria.utils.Function.bindCallback(cb));
+                Syn.type(text, el, aria.utils.Function.bindCallback(cb));
             },
 
             /**
@@ -2715,7 +2753,7 @@
              * @param {Object} cb
              */
             move : function (options, from, cb) {
-                Aria.$global.Syn.move(options, from, aria.utils.Function.bindCallback(cb));
+                Syn.move(options, from, aria.utils.Function.bindCallback(cb));
             }
         }
     });
