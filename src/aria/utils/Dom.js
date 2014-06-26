@@ -731,27 +731,28 @@ Aria.classDefinition({
          * @public
          */
         getOffset : function (element) {
-            var style = element.currentStyle || element.style;
-            var isAbsolute = style.position == "absolute";
-            var pxRegExp = this.pxRegExp;
-
-            var offsetTop = element.offsetTop;
-            var offsetLeft = element.offsetLeft;
-            var offset = {
-                top : (isAbsolute && pxRegExp.test(style.top)) ? parseInt(style.top, 10) : offsetTop,
-                left : (isAbsolute && pxRegExp.test(style.left)) ? parseInt(style.left, 10) : offsetLeft
-            };
-
-            if (isNaN(offset.top)) {
-                offset.top = offsetTop;
+            var isAbsolute = this.getStyle(element, "position") === "absolute";
+            var position = {};
+            if (isAbsolute) {
+                position.left = this.getStylePx(element, "left", null);
+                position.top = this.getStylePx(element, "top", null);
+            }
+            if (position.left == null || position.top == null) {
+                var offsetParent = element.offsetParent;
+                var offsetParentPosition = this.calculatePosition(offsetParent);
+                var elementPosition = this.calculatePosition(element);
+                if (position.left == null) {
+                    var borderLeft = this.getStylePx(offsetParent, "borderLeftWidth", 0);
+                    position.left = elementPosition.left - offsetParentPosition.left + offsetParent.scrollLeft
+                            - borderLeft;
+                }
+                if (position.top == null) {
+                    var borderTop = this.getStylePx(offsetParent, "borderTopWidth", 0);
+                    position.top = elementPosition.top - offsetParentPosition.top + offsetParent.scrollTop - borderTop;
+                }
             }
 
-            if (isNaN(offset.left)) {
-                offset.left = offsetLeft;
-            }
-
-            return offset;
-
+            return position;
         },
 
         /**
@@ -1275,6 +1276,22 @@ Aria.classDefinition({
         refreshScrollbars : function (domElt) {
             this.refreshScrollbars = this._checkRefreshScrollbarsNeeded() ? this._refreshScrollbarsFix : Aria.empty;
             this.refreshScrollbars(domElt);
+        },
+
+        /**
+         * Calls getStyle(domElt, property) and returns the value as a number if it is in pixels. Otherwise, returns the
+         * provided default value.
+         * @param {HTMLElement} element The DOM element on which to retrieve a CSS property
+         * @param {String} property The CSS property to retrieve
+         * @param {Number} defaultValue default value to return in case getStyle does not return a value in pixels
+         * @return {Number}
+         */
+        getStylePx : function (element, property, defaultValue) {
+            var value = this.getStyle(element, property);
+            if (this.pxRegExp.test(value)) {
+                return parseInt(value, 10);
+            }
+            return defaultValue;
         }
     }
 });

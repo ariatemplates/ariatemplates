@@ -22,6 +22,7 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
+        this.addTests("test.aria.utils.dragdrop.ScrollIntoViewThenDragTest");
         this.addTests("test.aria.utils.dragdrop.DragErrorTest");
         this.addTests("test.aria.utils.dragdrop.DragBasicTest");
         this.addTests("test.aria.utils.dragdrop.DragConstraintTest");

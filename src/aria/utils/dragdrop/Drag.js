@@ -289,11 +289,7 @@
              * @param {HTMLElement} element
              */
             _setElementStyle : function (element) {
-                var offset = aria.utils.Dom.getOffset(element);
-                var position = {
-                    left : offset.left,
-                    top : offset.top
-                };
+                var position = aria.utils.Dom.getOffset(element);
                 this._elementInitialPosition = position;
 
                 var style = element.style;
@@ -383,10 +379,9 @@
             start : function (coord) {
                 this.posX = coord.x;
                 this.posY = coord.y;
-                var element = this.getElement(true), parentScroll, domUtil = aria.utils.Dom;
+                var element = this.getElement(true), domUtil = aria.utils.Dom;
                 // This will prevent text selection on IE on the element
                 element.onselectstart = Aria.returnFalse;
-
                 this._setElementStyle(element);
                 this._setBoundary();
                 var movable = this.getMovable();
@@ -399,15 +394,9 @@
                             className : ' '
                         });
                     }
-                    if (movable.offsetTop < element.offsetTop) {
-                        movable.style.top = element.offsetTop + "px";
-                    }
                     this._movableInitialGeometry = aria.utils.Dom.getGeometry(movable);
                     this._movableGeometry = aria.utils.Json.copy(this._movableInitialGeometry);
-                    // This is to handle if there is a scroll
-                    parentScroll = domUtil._getDocumentScroll().scrollTop;
-                    this._movableGeometry.y += (parentScroll > 0) ? parentScroll : 0;
-                    var offset = aria.utils.Dom.getOffset(movable);
+                    var offset = domUtil.getOffset(movable);
                     this._baseMovableOffset = {
                         left : this._movableGeometry.x - offset.left,
                         top : this._movableGeometry.y - offset.top
@@ -453,9 +442,8 @@
              * Handle the drag end. Apply the correct positioning to the draggable element
              */
             end : function () {
-                var element = this.getElement(), parentScroll, domUtil = aria.utils.Dom;
+                var element = this.getElement();
                 // This is to handle if there is a scroll
-                parentScroll = domUtil._getDocumentScroll().scrollTop;
                 element.onselectstart = Aria.returnTrue;
                 if (this.overlay) {
                     // remove overlay here
@@ -463,7 +451,6 @@
                     this.overlay = null;
                 }
                 if (this.proxy && this.proxy.overlay) {
-                    this._movableInitialGeometry.y += (parentScroll > 0) ? parentScroll : 0;
                     element.style.top = (this._elementInitialPosition.top + this._movableGeometry.y - this._movableInitialGeometry.y)
                             + "px";
                     element.style.left = (this._elementInitialPosition.left + this._movableGeometry.x - this._movableInitialGeometry.x)
