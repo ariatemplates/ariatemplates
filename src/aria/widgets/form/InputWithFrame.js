@@ -19,7 +19,7 @@
 Aria.classDefinition({
     $classpath : "aria.widgets.form.InputWithFrame",
     $extends : "aria.widgets.form.Input",
-    $dependencies : ["aria.widgets.frames.FrameWithIcons"],
+    $dependencies : ["aria.widgets.frames.FrameWithIcons", "aria.utils.Event"],
     $css : ["aria.widgets.IconStyle"],
     $constructor : function (cfg, ctxt) {
         this.$Input.constructor.apply(this, arguments);
@@ -51,6 +51,12 @@ Aria.classDefinition({
             this._frame.$dispose();
             this._frame = null;
         }
+        if (this._label) {
+            aria.utils.Event.removeListener(this._label, "click", {
+                fn : this._onLabelClick,
+                scope : this
+            });
+        }
         this.$Input.$destructor.call(this);
     },
     $prototype : {
@@ -60,6 +66,28 @@ Aria.classDefinition({
          * @protected
          */
         _frame_events : function (evt) {},
+        /**
+         * Override the Input _init method
+         * @protected
+         */
+        _init : function () {
+            this.$Input._init.call(this);
+            var label = this.getLabel();
+            if (label) {
+                aria.utils.Event.addListener(label, "click", {
+                    fn : this._onLabelClick,
+                    scope : this
+                });
+            }
+        },
+        /**
+         * Function to set the focus on input element.
+         * @param {Object} evt the original event
+         * @protected
+         */
+        _onLabelClick : function (evt) {
+            this.getTextInputField().focus();
+        },
 
         /**
          * Internal method to override to process the input block markup
