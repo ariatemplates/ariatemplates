@@ -190,6 +190,16 @@ Aria.classDefinition({
             }
             return "inherit";
         },
+        /**
+         * Function to set the focus on input element and to select the input field value.
+         * @Override the InputWithFrame _onLabelClick method
+         * @param {Object} evt the original event
+         * @protected
+         */
+        _onLabelClick : function (evt) {
+            this.$InputWithFrame._onLabelClick.call(this, evt);
+            aria.utils.Caret.select(this.getTextInputField());
+        },
 
         /**
          * Get the text value of the input field. If available it tries to use the internal valid value, otherwise uses
