@@ -28,6 +28,9 @@ Aria.classDefinition({
             this.assertEquals(value, null);
             this.assertNotEquals(noValue, null);
 
+            this.assertEquals(validator.validate(0), null, "0 must be considered as a non empty value");
+            this.assertNotEquals(validator.validate(""), null, "An empty string must be considered as an empty value");
+
             validator.$dispose();
         }
     }
