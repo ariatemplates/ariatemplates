@@ -141,7 +141,7 @@ Aria.classDefinition({
             maxHeight = (maxHeight < this.MIN_HEIGHT) ? this.MIN_HEIGHT : maxHeight;
             maxHeight = (maxHeight > referenceMaxHeight) ? referenceMaxHeight : maxHeight - 2;
 
-            var defaultMinWidth = this._freePopupWidth ? 0 : this._inputMarkupWidth + 15;
+            var defaultMinWidth = this._freePopupWidth ? 0 : this._inputMarkupWidth + this._skinObj.offsetRight;
 
             var listObj = {
                 id : cfg.id,

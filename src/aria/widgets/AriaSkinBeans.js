@@ -979,6 +979,11 @@ Aria.beanDefinitions({
                 "offsetTop" : {
                     $type : "Pixels"
                 },
+                "offsetRight" : {
+                    $type : "json:Integer",
+                    $description : "Offset to be added on the right to manage box shadow (for example)",
+                    $default : 15
+                },
                 "listSclass" : {
                     $type : "json:String",
                     $description : "sclass of the List to use inside the widget. It must be defined in the skin.",
@@ -1337,6 +1342,11 @@ Aria.beanDefinitions({
             $properties : {
                 "offsetTop" : {
                     $type : "Pixels"
+                },
+                "offsetRight" : {
+                    $type : "Pixels",
+                    $description : "Offset to be added on the right to manage box shadow (for example)",
+                    $default : 15
                 }
             }
         },

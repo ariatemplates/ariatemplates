@@ -174,7 +174,7 @@ Aria.classDefinition({
                     fn : this._toggleDropdown,
                     scope : this
                 },
-                minWidth : this._inputMarkupWidth + 15,
+                minWidth : this._inputMarkupWidth + this._skinObj.offsetRight,
                 width : (cfg.popupWidth > 0 && cfg.popupWidth > this._inputMarkupWidth) ? cfg.popupWidth : null,
                 multipleSelect : true,
                 maxHeight : 250,
