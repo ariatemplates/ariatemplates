@@ -35,26 +35,34 @@
             }
         }
 
+        // Looking for the skin parameter
+        var skinRegExp = /skin=([a-z]*)/i;
+        var skinName = "atskin";
+        var matches = url.match(skinRegExp);
+        if (matches && matches.length) {
+            skinName = matches[1];
+        }
+
         var ariaRootPath;
         if (isAmaBuild) {
             if (devFiles) {
                 ariaRootPath = "../dev/";
                 bootstrapFile = "aria/aria-templates-" + atversion + ".js";
-                skinFile = "aria/css/atskin-" + atversion + ".js";
+                skinFile = "aria/css/" + skinName + "-" + atversion + ".js";
             } else {
                 ariaRootPath = "../";
                 bootstrapFile = "aria/aria-templates-" + atversion + ".js";
-                skinFile = "aria/css/atskin-" + atversion + ".js";
+                skinFile = "aria/css/" + skinName + "-" + atversion + ".js";
             }
         } else {
             if (devFiles) {
                 ariaRootPath = "../build/target/bootstrap/";
                 bootstrapFile = "aria/ariatemplates-" + atversion + ".js";
-                skinFile = "aria/css/atskin-" + atversion + ".js";
+                skinFile = "aria/css/" + skinName + "-" + atversion + ".js";
             } else {
                 ariaRootPath = "../build/target/production/";
                 bootstrapFile = "aria/ariatemplates-" + atversion + ".js";
-                skinFile = "aria/css/atskin-" + atversion + ".js";
+                skinFile = "aria/css/" + skinName + "-" + atversion + ".js";
             }
         }
 
@@ -114,7 +122,7 @@
     <div id="_ObjectsOutput_"></div>
     <script type="text/javascript" src="testLauncher.js"></script>
     <script type="text/javascript">
-        var info = "";
+        var info = "skin " + skinName + " / ";
         info += (devFiles ? "dev" : "built") + " files / ";
         info += (isAmaBuild ? "ama" : "opensource") + " / ";
         info += (Aria.verbose ? "verbose" : "nonverbose") + " console";

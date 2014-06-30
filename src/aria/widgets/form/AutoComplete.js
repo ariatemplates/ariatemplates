@@ -133,7 +133,7 @@ Aria.classDefinition({
                 var inputMarkupWidth = this._inputMarkupWidth;
                 // set a minimum size for the autocomplete content
                 inputMarkupWidth = (inputMarkupWidth < 150) ? 150 : inputMarkupWidth;
-                options.minWidth = inputMarkupWidth + 15;
+                options.minWidth = inputMarkupWidth + this._skinObj.offsetRight;
             }
             options.maxHeight = this._cfg.popupMaxHeight || 210;
             this.$DropDownListTrait._renderDropdownContent.call(this, out, options);

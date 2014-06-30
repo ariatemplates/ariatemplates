@@ -170,6 +170,7 @@ Aria.classDefinition({
             "MultiSelect" : {
                 "std" : {
                     "iconsRight" : "dropdown",
+                    "offsetRight" : 0,
                     "frame" : {
                         "frameType" : "Simple"
                     },
@@ -707,6 +708,7 @@ Aria.classDefinition({
                 },
                 "std" : {
                     "iconsRight" : "dropdown",
+                    "offsetRight" : 0,
                     "frame" : {
                         "frameType" : "Simple"
                     },
@@ -951,6 +953,7 @@ Aria.classDefinition({
                 },
                 "std" : {
                     "iconsRight" : "dropdown",
+                    "offsetRight" : 0,
                     "frame" : {
                         "frameType" : "Simple"
                     },
@@ -2554,6 +2557,7 @@ Aria.classDefinition({
                 },
                 "std" : {
                     "iconsRight" : "dropdown",
+                    "offsetRight" : 0,
                     "frame" : {
                         "frameType" : "Simple"
                     },
