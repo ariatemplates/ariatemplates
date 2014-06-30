@@ -24,7 +24,7 @@ Aria.classDefinition({
     },
     $prototype : {
         validate : function (value) {
-            if (value) {
+            if (value != null && value !== "") {
                 return this._validationSucceeded();
             }
             return this._validationFailed();
