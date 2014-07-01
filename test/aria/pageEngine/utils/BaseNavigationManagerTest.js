@@ -271,6 +271,11 @@ Aria.classDefinition({
             this._navManager.$dispose();
 
             this._clearLocalStorage();
+
+            this._furtherTests();
+        },
+
+        _furtherTests : function () {
             this.end();
 
         },

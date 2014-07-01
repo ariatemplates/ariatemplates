@@ -67,10 +67,11 @@ Aria.classDefinition({
         loadPageDefinition : function (pageRequest, callback) {
             var cssBasePath = "test/aria/pageEngine/pageEngine/site/css/";
             var pageId = pageRequest.pageId;
+            var url = pageRequest.url;
             if ((!pageId) || (pageId == "aaa")) {
                 this.$callback(callback.onsuccess, {
                     pageId : "aaa",
-                    url : "/pageEngine/aaa",
+                    url : url || "/pageEngine/aaa",
                     title : "page_aaa",
                     contents : {
                         menus : {
@@ -137,7 +138,7 @@ Aria.classDefinition({
             if (pageId == "bbb") {
                 this.$callback(callback.onsuccess, {
                     pageId : "bbb",
-                    url : "",
+                    url : url || "",
                     title : "page_bbb",
                     contents : {
                         menus : {
@@ -198,7 +199,7 @@ Aria.classDefinition({
             if (pageId == "ccc") {
                 this.$callback(callback.onsuccess, {
                     pageId : "ccc",
-                    url : "/pageEngine/ccc",
+                    url : url || "/pageEngine/ccc",
                     title : "page_ccc",
                     contents : {
                         menus : {
