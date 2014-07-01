@@ -31,22 +31,27 @@ Aria.classDefinition({
         /**
          * Shortcut to the hash manager
          * @type aria.utils.HashManager
-         * @private
+         * @protected
          */
         this._hashManager = aria.utils.HashManager;
 
         /**
          * Listener of the hashchange
          * @type aria.core.CfgBeans:Callback
-         * @private
+         * @protected
          */
         this._onHashChangeCallback = {
             fn : this._onHashChange,
             scope : this
         };
 
-        this._hashManager.addCallback(this._onHashChangeCallback);
+        /**
+         * @type String
+         * @protected
+         */
+        this._lastPageId = null;
 
+        this._hashManager.addCallback(this._onHashChangeCallback);
     },
     $destructor : function () {
         this._hashManager.removeCallback(this._onHashChangeCallback);
@@ -58,16 +63,20 @@ Aria.classDefinition({
 
         /**
          * Retrieves the pageId from the cache and navigates to it
-         * @private
+         * @protected
          */
         _onHashChange : function () {
             var url = this.getUrl();
             var pageId = this._cache[url] ? this._cache[url].id : null;
-            if (pageId && this._navigate) {
-                this.$callback(this._navigate, {
-                    pageId : pageId,
-                    url : url
-                });
+            if (pageId) {
+                if (this._navigate) {
+                    this.$callback(this._navigate, {
+                        pageId : pageId,
+                        url : url
+                    });
+                }
+            } else {
+                this._addInCache(url, this._lastPageId);
             }
         },
 
@@ -76,9 +85,10 @@ Aria.classDefinition({
          * @param {aria.pageEngine.CfgBeans:PageRequest} pageRequest
          */
         update : function (pageRequest) {
-            var url = pageRequest.url, title = pageRequest.title, typeUtil = aria.utils.Type;
+            var url = pageRequest.url, title = pageRequest.title, pageId = pageRequest.pageId, typeUtil = aria.utils.Type;
+            this._lastPageId = pageId;
             if (typeUtil.isString(url)) {
-                this._addInCache(url, pageRequest.pageId);
+                this._addInCache(url, pageId);
                 if (this.getUrl() != url) {
                     this._hashManager.setHash(url);
                 }
