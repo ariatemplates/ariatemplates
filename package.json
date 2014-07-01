@@ -16,15 +16,18 @@
   },
   "scripts": {
     "start": "node scripts/server.js",
-    "prestart": "npm install && npm run grunt",
-    "prepublish": "node build/grunt-cli.js checkStyle && npm run grunt",
+    "prestart": "npm install",
+    "prepublish": "npm run lint-src && npm run grunt",
+    "lint-src": "node build/grunt-cli.js checkStyle",
+    "lint-test": "node build/grunt-cli.js checkStyleTest",
+    "lint": "node build/grunt-cli.js checkStyle checkStyleTest",
     "grunt": "node build/grunt-cli.js",
     "attester": "node node_modules/attester/bin/attester.js test/attester.yml --env package.json",
     "attester-packaged": "node node_modules/attester/bin/attester.js test/attester-packaged.yml --env package.json",
-    "lint": "node build/grunt-cli.js checkStyle checkStyleTest",
     "mocha": "mocha --recursive test/node",
-    "test": "npm run lint && npm run grunt && npm run mocha && npm run attester && npm run attester-packaged",
-    "ci": "node build/grunt-cli.js checkStyleTest && npm run mocha && npm run attester && npm run attester-packaged"
+    "test-suites": "npm run mocha && npm run attester && npm run attester-packaged",
+    "test": "npm run lint && npm run grunt && npm run test-suites",
+    "ci": "npm run lint-test && npm run test-suites"
   },
   "devDependencies": {
     "at-noder-converter": "1.0.1",
