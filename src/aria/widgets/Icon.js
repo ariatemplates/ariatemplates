@@ -89,9 +89,13 @@ Aria.classDefinition({
                 delegationMarkup = delegateManager.getMarkup(this._delegateId) + " ";
             }
 
-            out.write(['<span id="', id, '" class="', this._getIconClasses(iconInfo), '" ', tooltip, delegationMarkup,
+            if (!iconInfo.spriteURL && cfg.icon) {
+                var classes = aria.widgets.AriaSkinInterface.getSkinObject("Icon", cfg.icon.split(":")[0], true).content[cfg.icon.split(":")[1]];
+                out.write(['<span id="', id, '" class="xWidget ', classes, '" ', '></span>'].join(''));
+            } else {
+                out.write(['<span id="', id, '" class="', this._getIconClasses(iconInfo), '" ', tooltip, delegationMarkup,
                     'style="', this._getIconStyle(iconInfo), '"></span>'].join(''));
-
+            }
         },
 
         /**

@@ -11,3 +11,4 @@ tests:
   classpaths:
    includes:
     - test.aria.widgets.skin.ExternalCSSTest
+    - test.aria.widgets.icon.fontIcon.FontIconTest
