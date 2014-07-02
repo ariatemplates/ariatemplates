@@ -21,7 +21,19 @@ Aria.classDefinition({
     $classpath : "aria.widgets.AriaSkinInterface",
     $singleton : true,
     $dependencies : ["aria.core.JsonValidator", "aria.widgets.AriaSkinBeans", "aria.widgets.AriaSkinNormalization",
-            "aria.core.DownloadMgr"],
+            "aria.core.DownloadMgr", "aria.utils.CSSLoader"],
+    $onload : function () {
+        // check for skin existency
+        if (aria.widgets.AriaSkin) {
+            var general = aria.widgets.AriaSkinInterface.getGeneral();
+            if (general.externalCSS.length > 0) {
+                for (var i = 0; i < general.externalCSS.length; i++) {
+                    general.externalCSS[i] = general.imagesRoot + general.externalCSS[i];
+                }
+                aria.utils.CSSLoader.add(general.externalCSS);
+            }
+        }
+    },
     $statics : {
         // ERROR MESSAGES:
         PRELOAD_FROM_HEAD : "You should place your call to preloadSkinImages() in <BODY> of your HTML file, not in <HEAD>.",

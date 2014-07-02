@@ -98,6 +98,15 @@ Aria.beanDefinitions({
                     $description : "Root path for skin images (relative to Aria.rootFolderPath). It is supposed to end with a slash.",
                     $default : "css/"
                 },
+                "externalCSS" : {
+                    $type : "json:Array",
+                    $description : "List of external CSS files to load with the skin. The path is calculated starting from the imagesRoot property.",
+                    $contentType : {
+                        $type : "json:String",
+                        $description : "Path and filename of the CSS to load."
+                    },
+                    $default : []
+                },
                 "colors" : {
                     $type : "Object",
                     $description : "General color settings for your application",
