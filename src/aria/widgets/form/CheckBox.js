@@ -116,12 +116,12 @@ Aria.classDefinition({
 
                 out.write(['<input style="display:inline-block"', cfg.disabled ? ' disabled' : '',
                         this._isChecked() ? ' checked' : '', ' type="', cfg._inputType, '"', name, ' value="',
-                        cfg.value.toString(), '" ' + tabIndex + '/>'].join(''));
+                        cfg.value, '" ' + tabIndex + '/>'].join(''));
             } else {
                 this._icon.writeMarkup(out);
                 out.write(['<input', Aria.testMode ? ' id="' + this._domId + '_input"' : '', ' style="display:none"',
                         cfg.disabled ? ' disabled' : '', this._isChecked() ? ' checked' : '', ' type="',
-                        cfg._inputType, '"', name, ' value="', cfg.value.toString(), '"/>'].join(''));
+                        cfg._inputType, '"', name, ' value="', cfg.value, '"/>'].join(''));
             }
         },
 
