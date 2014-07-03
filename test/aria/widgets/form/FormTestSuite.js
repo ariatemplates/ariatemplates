@@ -22,6 +22,7 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.form.datefield.DateFieldTestSuite");
         this.addTests("test.aria.widgets.form.CheckBoxTest");
         this.addTests("test.aria.widgets.form.checkbox.SetDisabledTest");
+        this.addTests("test.aria.widgets.form.checkbox.nullBoundValue.CheckBoxNullBoundValueTest");
         this.addTests("test.aria.widgets.form.GaugeTest");
         this.addTests("test.aria.widgets.form.InputTest");
         this.addTests("test.aria.widgets.form.InputValidationHandlerTest");
