@@ -13,6 +13,8 @@
  * limitations under the License.
  */
 var Aria = require("../Aria");
+var ariaCoreDownloadMgr = require("../core/DownloadMgr");
+
 /**
  * Even if not used in this class, the CSSMgr is needed in order to allow a CSSTemplate to be registered
  */
@@ -25,26 +27,27 @@ require("./CSSMgr");
  */
 module.exports = Aria.classDefinition({
     $classpath : "aria.templates.CSSTemplate",
-    $extends : (require("./BaseTemplate")),
+    $extends : require("./BaseTemplate"),
     $constructor : function () {
         this.$BaseTemplate.constructor.call(this);
+
+        var baseLogicalPath = this.$classpath.replace(/\./g, "/");
 
         /**
          * Path of the CSS Template. It corresponds to the classpath and starts with "/". Exposed to the {CSSTemplate}
          * @type String
          */
-        this.cssPath = "/" + this.$classpath.replace(/\./g, "/");
+        this.cssPath = "/" + baseLogicalPath;
 
-        var url = (require("../core/DownloadMgr")).resolveURL(this.cssPath, true);
+        // Even if we remove the whole file name afterwards, it is important to pass the extension to resolveURL:
+        var url = ariaCoreDownloadMgr.resolveURL(baseLogicalPath + ".tpl.css", true);
+
         /**
          * Path of the folder containing the CSS Template. It is relative to the Aria.rootFolderPath and takes into
          * account the Root Map (not the Url map). Exposed to the {CSSTemplate}
          * @type String
          */
         this.cssFolderPath = url.substring(0, url.lastIndexOf("/"));
-    },
-    $destructor : function () {
-        this.$BaseTemplate.$destructor.call(this);
     },
     $prototype : {
         /**

@@ -26,6 +26,7 @@ Aria.classDefinition({
         this.addTests("test.aria.templates.css.CSSCtxtTest");
         this.addTests("test.aria.templates.css.CSSMgrTest");
         this.addTests("test.aria.templates.css.CSSParserTest");
+        this.addTests("test.aria.templates.css.cssFolderPath.CSSFolderPathTestCase");
         this.addTests("test.aria.templates.css.cssMgr.CSSMgrTestCase");
         this.addTests("test.aria.templates.css.cssMgr.issue722.CSSMgrIssue722TestCase");
         this.addTests("test.aria.templates.css.ctxtMgr.CtxtMgrTestCase");
