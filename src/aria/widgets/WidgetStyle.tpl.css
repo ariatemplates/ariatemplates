@@ -131,10 +131,9 @@
             {if state.fontWeight}
                 font-weight: ${state.fontWeight};
             {/if}
-            border-top-right-radius: ${state.borderTopRightRadius}px;
-            border-top-left-radius: ${state.borderTopLeftRadius}px;
-            border-bottom-right-radius: ${state.borderBottomRightRadius}px;
-            border-bottom-left-radius: ${state.borderBottomLeftRadius}px;
+
+            {call writeBorderRadius(state)/}
+
             {if state.boxShadow}
                 box-shadow: ${state.boxShadow};
             {/if}
@@ -146,6 +145,13 @@
             color: ${state.color};
             vertical-align: top;
         }
+    {/macro}
+
+    {macro writeBorderRadius(state)}
+        border-top-right-radius: ${state.borderTopRightRadius}px;
+        border-top-left-radius: ${state.borderTopLeftRadius}px;
+        border-bottom-right-radius: ${state.borderBottomRightRadius}px;
+        border-bottom-left-radius: ${state.borderBottomLeftRadius}px;
     {/macro}
 
     {macro writeStateOfTableFrame(info)}

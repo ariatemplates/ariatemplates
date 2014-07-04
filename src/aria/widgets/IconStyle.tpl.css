@@ -38,10 +38,7 @@
                 border-right: ${info.skinClass.borderRight}px;
                 border-bottom: ${info.skinClass.borderBottom}px;
                 border-left: ${info.skinClass.borderLeft}px;
-                border-top-right-radius: ${info.skinClass.borderTopRightRadius}px;
-                border-top-left-radius: ${info.skinClass.borderTopLeftRadius}px;
-                border-bottom-right-radius: ${info.skinClass.borderBottomRightRadius}px;
-                border-bottom-left-radius: ${info.skinClass.borderBottomLeftRadius}px;
+                {call writeBorderRadius(info.skinClass)/}
                 {if info.skinClass.borderStyle}
                   border-style: ${info.skinClass.borderStyle};
                 {/if}
