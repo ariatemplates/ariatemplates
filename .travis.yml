@@ -2,6 +2,9 @@ language: node_js
 node_js:
   - 0.8
 before_install:
+  - npm install -g npm
+  - npm --version
+  - npm config set ca ""
   - phantomjs --version
 notifications:
   email:
