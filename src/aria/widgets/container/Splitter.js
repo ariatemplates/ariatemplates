@@ -209,7 +209,7 @@ Aria.classDefinition({
             var size = this._calculateSize(cfg);
             this.setProperty("size1", size.size1);
             this.setProperty("size2", size.size2);
-            var borderClass = "", splitterBarSize = orientation ? cfg.width : cfg.height;
+            var borderClass = "";
             var height = this._height + this._skinObj.separatorHeight, width = this._width
                     + this._skinObj.separatorWidth;
             var bordersWidth = 0;
@@ -237,11 +237,11 @@ Aria.classDefinition({
             out.endSection();
             out.write('</span> ');
 
-            var sDimension, sPosition, sEndPosition;
+            var sDimension, sPosition, sEndPosition, splitterBarSize;
             if (orientation) {
-                cfgHclass = size.size2, cfgWclass = cfg.width - bordersWidth, sDimension = "width", sPosition = "top", sEndPosition = "bottom";
+                cfgHclass = size.size2, cfgWclass = cfg.width - bordersWidth, sDimension = "width", splitterBarSize = cfgWclass, sPosition = "top", sEndPosition = "bottom";
             } else {
-                cfgHclass = cfg.height - bordersWidth, cfgWclass = size.size2, sDimension = "height", sPosition = "left", sEndPosition = "right";
+                cfgHclass = cfg.height - bordersWidth, cfgWclass = size.size2, sDimension = "height", splitterBarSize = cfgHclass, sPosition = "left", sEndPosition = "right";
             }
 
             out.write(['<span class="', this._handleBarClass, '" style="' + sDimension + ':', splitterBarSize,
