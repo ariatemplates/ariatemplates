@@ -409,6 +409,15 @@
                     // beanDef.$strDefault = typeRef.$strDefault;
                 }
 
+                var tempFastNorm = baseType && baseType.makeFastNorm && !beanDef.$fastNorm;
+                if (tempFastNorm) {
+                    // Prepare with empty $fastNorm and $getDefault functions because the existence of those functions
+                    // can be checked during the call to baseType.preprocess.
+                    // This happens especially in case the bean structure is recursive.
+                    beanDef.$fastNorm = Aria.returnNull;
+                    beanDef.$getDefault = Aria.returnNull;
+                }
+
                 // apply baseType preprocessing if any
                 if (baseType && baseType.preprocess) {
                     baseType.preprocess(beanDef, beanName, packageDef);
@@ -419,12 +428,8 @@
                     return this._typeError;
                 }
 
-                if (baseType && baseType.makeFastNorm && !beanDef.$fastNorm) {
-
-                    // prepare with empty getDefault function
-                    beanDef.$getDefault = Aria.returnNull;
-
-                    // generate fast normalizer, if not provided
+                if (tempFastNorm) {
+                    // generate fast normalizer
                     baseType.makeFastNorm(beanDef);
                 }
 
