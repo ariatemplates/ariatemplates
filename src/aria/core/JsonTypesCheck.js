@@ -413,10 +413,18 @@
                             continue;
                         }
                         var property = properties[propertyName];
+                        var strDefault = null;
                         if ("$strDefault" in property) {
+                            strDefault = property.$strDefault;
+                        } else if (("$default" in property) && property.$getDefault) {
+                            // $strDefault may not be already defined at the time makeFastNorm is called,
+                            // even if a default value does exist. In that case, let's generate a call to $getDefault.
+                            strDefault = "beanProperties['" + propertyName + "'].$getDefault()";
+                        }
+                        if (strDefault) {
                             hasProperties = true;
-                            strBuffer.push("if (obj['" + propertyName + "'] == null) { obj['" + propertyName + "']  = "
-                                    + property.$strDefault + "}");
+                            strBuffer.push("if (obj['" + propertyName + "'] == null) { obj['" + propertyName + "'] = "
+                                    + strDefault + "; }");
                             if (property.$fastNorm) {
                                 strBuffer.push("else { beanProperties['" + propertyName + "'].$fastNorm(obj['"
                                         + propertyName + "']); }");
