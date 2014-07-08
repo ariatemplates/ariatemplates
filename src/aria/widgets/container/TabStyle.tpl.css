@@ -19,20 +19,49 @@
 }}
     {var skinnableClassName="Tab"/}
     {var useFrame=true/}
-    
-    {macro main()}
-        .xTab_std_selectedFocused_c {
-            outline: 1px dotted;
+
+    {macro writeStateOfTableFrame(info)}
+        {call $WidgetStyle.writeStateOfTableFrame(info) /}
+        {var prefix = cssPrefix(info)/}
+        {var stateName = info.stateName /}
+        .${prefix}tlc,
+        .${prefix}ts,
+        .${prefix}trc,
+        .${prefix}ls,
+        .${prefix}m,
+        .${prefix}rs,
+        .${prefix}blc,
+        .${prefix}bs,
+        .${prefix}brc {
+            {call writeCursor(stateName) /}
         }
-        
-        .xTab_std_normalFocused_c {
-            outline: 1px dotted;
-        }
-        
-        .xTab_std_msoverFocused_c {
-            outline: 1px dotted;
-        }
-        {call startLooping()/}
+        {if /Focused/.test(stateName) }
+            .${prefix}c {
+                outline: 1px dotted;
+            }
+        {/if}
     {/macro}
-    
+
+    {macro writeStateOfSimpleFrame(info)}
+        {call $WidgetStyle.writeStateOfSimpleFrame(info) /}
+        .${cssPrefix(info)}frame {
+            {call writeCursor(info.stateName) /}
+        }
+    {/macro}
+
+    {macro writeStateOfFixedHeightFrame(info)}
+        {call $WidgetStyle.writeStateOfFixedHeightFrame(info) /}
+        .${cssPrefix(info)}w {
+            {call writeCursor(info.stateName) /}
+        }
+    {/macro}
+
+    {macro writeCursor(stateName)}
+            {if stateName == "disabled"}
+                cursor: default;
+            {else/}
+                cursor: pointer;
+            {/if}
+    {/macro}
+
 {/CSSTemplate}
