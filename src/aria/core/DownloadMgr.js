@@ -13,6 +13,7 @@
  * limitations under the License.
  */
 var Aria = require("../Aria");
+var browser = require("./Browser");
 
 /**
  * Download Manager manages file download synchronization thanks to the FileLoader and Cache. When multiple files are
@@ -24,6 +25,16 @@ var Aria = require("../Aria");
 module.exports = Aria.classDefinition({
     $classpath : "aria.core.DownloadMgr",
     $singleton : true,
+    $statics : {
+        /**
+         * When the loadFile method is called, if the file is already available in the AT cache the callback is called
+         * synchronously. A big height for the dependency tree of a class leads to a growth of the function call stack,
+         * which can transcend the limit imposed by some browsers, which leads to an error. This variable represents the
+         * maximum number of allowed synchronous nested file loads.
+         * @type Number
+         */
+        MAX_LOAD_STACK : browser.isIE && /win64/i.test(browser.ua) ? 5 : Infinity
+    },
     $constructor : function () {
 
         /**
@@ -69,6 +80,13 @@ module.exports = Aria.classDefinition({
          * @type Object
          */
         this._timestampURL = {};
+
+        /**
+         * Number of files loaded synchronously in a nested way
+         * @protected
+         * @type Number
+         */
+        this._syncLoadCounter = 0;
     },
     $destructor : function () {
         this._cache = null;
@@ -223,7 +241,7 @@ module.exports = Aria.classDefinition({
                     logicalPaths : [logicalPath],
                     url : null
                 };
-                return this.$callback(cb, evt);
+                return this._callback(cb, evt);
             }
 
             // file is not loaded: create a file loader if not already done
@@ -253,7 +271,7 @@ module.exports = Aria.classDefinition({
                         url : url,
                         downloadFailed : true
                     };
-                    return this.$callback(cb, evt);
+                    return this._callback(cb, evt);
                 }
 
                 if (urlItm.loader) {
@@ -277,16 +295,15 @@ module.exports = Aria.classDefinition({
 
             // add caller as listener to the FileLoader
             loader.addLogicalPath(logicalPath);
-            var cbArgs = (cb.args) ? cb.args : null;
             loader.$on({
                 'fileReady' : {
                     fn : cb.fn,
-                    args : cbArgs,
+                    args : cb.args || null,
                     scope : cb.scope
                 }
             });
             loader.loadFile();
-            cbArgs = loader = null;
+            loader = null;
         },
 
         /**
@@ -479,6 +496,26 @@ module.exports = Aria.classDefinition({
             delete content.urls[url];
             if (timestampNextTime) {
                 this.enableURLTimestamp(url, true); // browser cache will be bypassed next time the file is loaded
+            }
+        },
+
+        /**
+         * It calls the callback provided as argument. The call is synchronous unless the number of synchronous file
+         * loads has exceeded the allowed limit
+         * @protected
+         * @param {aria.core.CfgBeans:Callback} cb Callback
+         * @param {Object} evt Description of a "fileReady" event
+         */
+        _callback : function (cb, evt) {
+            if (this._syncLoadCounter < this.MAX_LOAD_STACK) {
+                this._syncLoadCounter++;
+                this.$callback(cb, evt);
+                this._syncLoadCounter--;
+            } else {
+                var self = this;
+                Aria.$global.setTimeout(function () {
+                    self.$callback(cb, evt);
+                }, 0);
             }
         }
     }
