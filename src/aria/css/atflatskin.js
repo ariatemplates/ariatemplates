@@ -590,7 +590,13 @@ Aria.classDefinition({
                     "titleBarHeight" : 32,
                     "titleColor" : "#34495e",
                     "divsclass" : "dlg",
-                    "titleBarRight" : 10
+                    "titleBarRight" : 0,
+                    "titleBackgroundColor" : "#BDC3C7",
+                    "titleBorderRadius" : "6px 6px 0px 0px",
+                    "titlePadding" : "0px 10px 0px 0px",
+                    "titleBorder" : "0px 0px 1px 0px",
+                    "titleBorderStyle" : "solid",
+                    "titleBorderColor" : "#34495e"
                 }
             },
             "Calendar" : {
@@ -2680,7 +2686,7 @@ Aria.classDefinition({
                             "borderBottomLeftRadius" : 6,
                             "paddingLeft" : 12,
                             "paddingBottom" : 12,
-                            "paddingTop" : 12,
+                            "paddingTop" : 45,
                             "paddingRight" : 12
                         }
                     }

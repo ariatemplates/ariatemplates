@@ -10,4 +10,4 @@ tests:
     - /aria/css/atflatskin-<%= env.version %>.js
   classpaths:
    includes:
-    - test.aria.widgets.skin.SkinTestSuite
+    - test.aria.widgets.skin.FlatSkinTestSuite
