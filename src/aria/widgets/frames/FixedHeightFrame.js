@@ -58,7 +58,12 @@
                 } else {
                     this.innerWidth = -1;
                 }
-                this.innerHeight = state.sprHeight - state.marginTop - state.marginBottom;
+                this.innerHeight = state.innerHeight || state.sprHeight - state.marginTop - state.marginBottom;
+                /*
+                this.innerHeight = state.verticalAlign && state.innerHeight ?
+                        state.innerHeight :
+                        state.sprHeight - state.marginTop - state.marginBottom;
+                        */
             },
 
             /**

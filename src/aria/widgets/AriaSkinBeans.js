@@ -1410,6 +1410,14 @@ Aria.beanDefinitions({
             $type : "Object",
             $description : "Properties of a frame of type \"Simple\" for this state.",
             $properties : {
+                "verticalAlign" : {
+                    $type : "json:String",
+                    $description : "Vertical alignment value applied to the content. The standard html values are accepted (top, middle, ...). The innerHeight must be set to have it working"
+                },
+                "innerHeight" : {
+                    $type : "Pixels",
+                    $description : "The text line height. It must be set when the verticalAlign is used."
+                },
                 "paddingTop" : {
                     $type : "Pixels",
                     $default : 0
@@ -1563,6 +1571,14 @@ Aria.beanDefinitions({
                 },
                 "sprHeight" : {
                     $type : "Pixels"
+                },
+                "verticalAlign" : {
+                    $type : "json:String",
+                    $description : "Vertical alignment value applied to the content. The standard html values are accepted (top, middle, ...). The innerHeight must be set to have it working"
+                },
+                "innerHeight" : {
+                    $type : "Pixels",
+                    $description : "The text line height. It must be set when the verticalAlign is used."
                 },
                 "sprIdx" : {
                     $type : "json:Integer"

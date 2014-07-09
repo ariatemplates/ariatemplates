@@ -23,6 +23,15 @@ Aria.classDefinition({
     $dependencies : ['aria.utils.Dom'],
     $constructor : function (cfg) {
         this.$Frame.constructor.call(this, cfg);
+        var state = this._cfg.stateObject;
+
+        /**
+         * Indicate if a vertical alignment is required
+         * @type Boolean
+         * @protected
+         */
+        this._verticalAlignApplied = state.verticalAlign && state.innerHeight;
+
         this._computeSize();
     },
     $prototype : {
@@ -68,6 +77,12 @@ Aria.classDefinition({
                 style : cfg.block ? 'display:block;' : '',
                 className : "xSimpleFrame " + this._cssPrefix + "frame " + cfg.cssClass
             };
+
+            var verticalAlignApplied = this._verticalAlignApplied;
+            if (verticalAlignApplied) {
+                sizeInfo.style += "line-height: " + this.innerHeight + "px;";
+            }
+
             this._appendInnerWidthInfo(sizeInfo);
             this._appendInnerHeightInfo(sizeInfo);
             if (!this._hasBorder(state.skipLeftBorder, cfg.iconsLeft)) {
@@ -80,6 +95,19 @@ Aria.classDefinition({
             }
             out.write('<span ' + (sizeInfo.style ? 'style="' + sizeInfo.style + '"' : '') + 'class="'
                     + sizeInfo.className + '">');
+            if (verticalAlignApplied) {
+                var innerHeight = state.innerHeight;
+                // Vertical align is added in this block, as this property has no effect without the heights information
+                out.write([
+                    '<span style="height:',
+                    innerHeight,
+                    'px;line-height:',
+                    innerHeight,
+                    'px;vertical-align:',
+                    state.verticalAlign,
+                    '">'
+                ].join(""));
+            }
         },
 
         /**
@@ -87,6 +115,9 @@ Aria.classDefinition({
          * @param {aria.templates.MarkupWriter} out
          */
         writeMarkupEnd : function (out) {
+            if (this._verticalAlignApplied) {
+                out.write('</span>');
+            }
             out.write('</span>');
         },
 
@@ -97,7 +128,9 @@ Aria.classDefinition({
          */
         linkToDom : function (domElt) {
             this.$Frame.linkToDom.call(this, domElt);
-            this._childRootElt = domElt;
+            this._childRootElt = this._verticalAlignApplied ?
+                aria.utils.Dom.getDomElementChild(domElt, 0) :
+                domElt;
         },
 
         /**
@@ -107,6 +140,8 @@ Aria.classDefinition({
         changeState : function (stateName) {
             this.$Frame.changeState.call(this, stateName);
             this._computeSize();
+            var cfg = this._cfg;
+            var state = cfg.stateObject;
             var domElt = this._domElt;
             var sizeInfo = {
                 className : "xSimpleFrame " + this._cssPrefix + "frame " + this._cfg.cssClass
@@ -115,6 +150,10 @@ Aria.classDefinition({
             this._appendInnerHeightInfo(sizeInfo);
             domElt.style.width = sizeInfo.width;
             domElt.style.height = sizeInfo.height;
+            if (this._verticalAlignApplied) {
+                domElt.style.lineHeight = sizeInfo.height;
+                domElt.style.verticalAlign = state.verticalAlign;
+            }
             domElt.className = sizeInfo.className;
         },
 

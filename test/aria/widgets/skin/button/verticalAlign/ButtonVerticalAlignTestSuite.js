@@ -14,12 +14,13 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.skin.AllSkinTestSuite",
+    $classpath : "test.aria.widgets.skin.button.verticalAlign.ButtonVerticalAlignTestSuite",
     $extends : "aria.jsunit.TestSuite",
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
-        this.addTests("test.aria.widgets.skin.dropdownwidth.DropdownWidthTestCase");
-        this.addTests("test.aria.widgets.skin.button.verticalAlign.ButtonVerticalAlignTestSuite");
+        this.addTests("test.aria.widgets.skin.button.verticalAlign.VerticalAlignTopTestCase");
+        this.addTests("test.aria.widgets.skin.button.verticalAlign.VerticalAlignBottomTestCase");
+        this.addTests("test.aria.widgets.skin.button.verticalAlign.VerticalAlignMiddleTestCase");
     }
 });
