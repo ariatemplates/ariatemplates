@@ -108,6 +108,24 @@
             left:${skinClass.titleBarLeft}px;
             right:${skinClass.titleBarRight}px;
             height:${skinClass.titleBarHeight}px;
+            {if (skinClass.titleBackgroundColor)}
+                background-color:${skinClass.titleBackgroundColor};
+            {/if}
+            {if (skinClass.titlePadding)}
+                padding:${skinClass.titlePadding};
+            {/if}
+            {if (skinClass.titleBorder)}
+                border-width:${skinClass.titleBorder};
+            {/if}
+            {if (skinClass.titleBorderStyle)}
+                border-style:${skinClass.titleBorderStyle};
+            {/if}
+            {if (skinClass.titleBorderColor)}
+                border-color:${skinClass.titleBorderColor};
+            {/if}
+            {if (skinClass.titleBorderRadius)}
+                border-radius:${skinClass.titleBorderRadius};
+            {/if}
         }
         .xDialog_${skinClassName}_title {
             padding-left: 6px;

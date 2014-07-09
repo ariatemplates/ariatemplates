@@ -13,12 +13,28 @@
  * limitations under the License.
  */
 
-Aria.classDefinition({
-    $classpath : "test.aria.widgets.skin.SkinTestSuite",
-    $extends : "aria.jsunit.TestSuite",
-    $constructor : function () {
-        this.$TestSuite.constructor.call(this);
+{Template {
+    $classpath:"test.aria.widgets.skin.dialogTitleBar.DialogTitleBarTestCaseTpl",
+    $hasScript:false
+}}
 
-        this.addTests("test.aria.widgets.skin.dropdownwidth.DropdownWidthTestCase");
-    }
-});
+   {macro main()}
+        {@aria:Dialog {
+            id: "myDialog",
+            macro: "dialogContent",
+            bind: {
+                visible: {
+                    to: "dialogVisible",
+                    inside: data
+                }
+            }
+        }/}
+    {/macro}
+
+    {macro dialogContent()}
+        <span>
+            <p>My test</p>
+        </span>
+    {/macro}
+
+{/Template}

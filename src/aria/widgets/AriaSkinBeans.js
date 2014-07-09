@@ -25,7 +25,6 @@ Aria.beanDefinitions({
     $beans : {
         "Object" : {
             $type : "json:Object",
-            $description : "",
             $default : {}
         },
         "Color" : {
@@ -38,17 +37,14 @@ Aria.beanDefinitions({
         },
         "Opacity" : {
             $type : "json:Float",
-            $description : "",
             $minValue : 0,
             $maxValue : 100
         },
         "WidgetGeneralCfg" : {
             $type : "Object",
-            $description : "",
             $properties : {
                 "font" : {
                     $type : "Object",
-                    $description : "",
                     $properties : {
                         "size" : {
                             $type : "Pixels",
@@ -66,7 +62,6 @@ Aria.beanDefinitions({
                     $properties : {
                         "states" : {
                             $type : "StatesSet",
-                            $description : "",
                             $properties : {
                                 "normal" : {
                                     $type : "AnchorState"
@@ -91,7 +86,6 @@ Aria.beanDefinitions({
         },
         "PageGeneralCfg" : {
             $type : "WidgetGeneralCfg",
-            $description : "",
             $properties : {
                 "imagesRoot" : {
                     $type : "json:String",
@@ -126,12 +120,10 @@ Aria.beanDefinitions({
                             $type : "Color"
                         },
                         "spriteURL" : {
-                            $type : "json:String",
-                            $description : ""
+                            $type : "json:String"
                         },
                         "opacity" : {
-                            $type : "Opacity",
-                            $description : ""
+                            $type : "Opacity"
                         }
                     }
                 },
@@ -145,12 +137,10 @@ Aria.beanDefinitions({
                         },
                         "opacity" : {
                             $type : "Opacity",
-                            $description : "",
                             $default : 100
                         },
                         "border" : {
                             $type : "json:String",
-                            $description : "",
                             $default : "1px solid black"
                         },
                         "borderTopLeftRadius" : {
@@ -181,22 +171,18 @@ Aria.beanDefinitions({
                         },
                         "opacity" : {
                             $type : "Opacity",
-                            $description : "",
                             $default : 40
                         }
                     }
                 },
                 "disable" : {
                     $type : "Object",
-                    $description : "",
                     $properties : {
                         "ul" : {
                             $type : "Object",
-                            $description : "",
                             $properties : {
                                 "list" : {
                                     $type : "Object",
-                                    $description : "",
                                     $properties : {
                                         "style" : {
                                             $type : "json:Boolean",
@@ -275,13 +261,10 @@ Aria.beanDefinitions({
             $properties : {
                 "icons" : {
                     $type : "json:Map",
-                    $description : "",
                     $contentType : {
                         $type : "json:MultiTypes",
-                        $description : "",
                         $contentTypes : [{
-                                    $type : "json:Boolean",
-                                    $description : ""
+                                    $type : "json:Boolean"
                                 }, {
                                     $type : "Icons"
                                 }]
@@ -316,7 +299,6 @@ Aria.beanDefinitions({
         },
         "ButtonCfg" : {
             $type : "Object",
-            $description : "",
             $properties : {
                 "states" : {
                     $type : "StatesSet",
@@ -351,11 +333,9 @@ Aria.beanDefinitions({
                 },
                 "label" : {
                     $type : "Object",
-                    $description : "",
                     $properties : {
                         "fontWeight" : {
                             $type : "json:String",
-                            $description : "",
                             $default : "normal"
                         }
                     }
@@ -364,7 +344,6 @@ Aria.beanDefinitions({
         },
         "CalendarCfg" : {
             $type : "Object",
-            $description : "",
             $properties : {
                 "generalBackgroundColor" : {
                     $type : "Color"
@@ -383,12 +362,10 @@ Aria.beanDefinitions({
                 },
                 "monthTitlePaddingTop" : {
                     $type : "json:String",
-                    $description : "",
                     $default : "0px"
                 },
                 "monthTitlePaddingBottom" : {
                     $type : "json:String",
-                    $description : "",
                     $default : "0px"
                 },
                 "monthTitleFontSize" : {
@@ -407,12 +384,10 @@ Aria.beanDefinitions({
                 },
                 "dayPadding" : {
                     $type : "json:String",
-                    $description : "",
                     $default : "0px"
                 },
                 "dayFontWeight" : {
                     $type : "json:String",
-                    $description : "",
                     $default : "normal"
                 },
                 "weekEndBackgroundColor" : {
@@ -466,7 +441,6 @@ Aria.beanDefinitions({
                 },
                 "weekDaysLabelFontWeight" : {
                     $type : "json:String",
-                    $description : "",
                     $default : "bold"
                 },
                 "weekDaysLabelColor" : {
@@ -475,7 +449,6 @@ Aria.beanDefinitions({
                 },
                 "weekDaysLabelPadding" : {
                     $type : "json:String",
-                    $description : "",
                     $default : "0px"
                 },
                 "selectedBackgroundColor" : {
@@ -521,7 +494,6 @@ Aria.beanDefinitions({
         },
         "ListCfg" : {
             $type : "Object",
-            $description : "",
             $properties : {
                 "divsclass" : {
                     $type : "json:String",
@@ -539,7 +511,6 @@ Aria.beanDefinitions({
                 },
                 "highlightMouseOver" : {
                     $type : "json:Boolean",
-                    $description : "",
                     $default : true
                 },
                 "selectedItemBackgroundColor" : {
@@ -550,7 +521,6 @@ Aria.beanDefinitions({
                 },
                 "link" : {
                     $type : "Object",
-                    $description : "",
                     $properties : {
                         marginLeft : {
                             $type : "Pixels",
@@ -564,7 +534,6 @@ Aria.beanDefinitions({
                 },
                 "footer" : {
                     $type : "Object",
-                    $description : "",
                     $properties : {
                         "padding" : {
                             $type : "Pixels",
@@ -580,12 +549,10 @@ Aria.beanDefinitions({
                         },
                         "borderTopOnly" : {
                             $type : "json:Boolean",
-                            $description : "",
                             $default : false
                         },
                         "borderStyle" : {
                             $type : "json:String",
-                            $description : "",
                             $default : "solid"
                         },
                         "borderWidth" : {
@@ -614,7 +581,6 @@ Aria.beanDefinitions({
         },
         "LinkCfg" : {
             $type : "Object",
-            $description : "",
             $properties : {
                 "states" : {
                     $type : "StatesSet",
@@ -635,7 +601,6 @@ Aria.beanDefinitions({
         },
         "LinkStateCfg" : {
             $type : "Object",
-            $description : "",
             $properties : {
                 "color" : {
                     $type : "Color"
@@ -648,11 +613,9 @@ Aria.beanDefinitions({
         },
         "GaugeCfg" : {
             $type : "Object",
-            $description : "",
             $properties : {
                 "spriteUrl" : {
                     $type : "json:String",
-                    $description : "",
                     $default : 'atdefskin/sprites/back.gif'
                 },
                 "backgroundColor" : {
@@ -663,8 +626,7 @@ Aria.beanDefinitions({
                     $type : "Pixels"
                 },
                 "border" : {
-                    $type : "json:String",
-                    $description : ""
+                    $type : "json:String"
                 },
                 "borderTopLeftRadius" : {
                     $type : "Pixels",
@@ -686,15 +648,13 @@ Aria.beanDefinitions({
                     $type : "Pixels"
                 },
                 "labelMargins" : {
-                    $type : "json:String",
-                    $description : ""
+                    $type : "json:String"
                 },
                 "labelFontSize" : {
                     $type : "Pixels"
                 },
                 "container" : {
                     $type : "Object",
-                    $description : "",
                     $properties : {
                         "backgroundColor" : {
                             $type : "Color",
@@ -725,12 +685,10 @@ Aria.beanDefinitions({
             }
         },
         "RadioButtonCfg" : {
-            $type : "CheckBoxCfg",
-            $description : ""
+            $type : "CheckBoxCfg"
         },
         "CheckBoxCfg" : {
             $type : "Object",
-            $description : "",
             $properties : {
                 "states" : {
                     $type : "StatesSet",
@@ -767,18 +725,15 @@ Aria.beanDefinitions({
                     $default : false
                 },
                 "iconset" : {
-                    $type : "json:String",
-                    $description : ""
+                    $type : "json:String"
                 },
                 "iconprefix" : {
-                    $type : "json:String",
-                    $description : ""
+                    $type : "json:String"
                 }
             }
         },
         "CheckBoxStateCfg" : {
             $type : "Object",
-            $description : "",
             $properties : {
                 "color" : {
                     $type : "Color"
@@ -787,29 +742,24 @@ Aria.beanDefinitions({
         },
         "DatePickerCfg" : {
             $type : "DropDownTextInputCfg",
-            $description : "",
             $properties : {
                 calendar : {
                     $type : "Object",
                     $properties : {
                         showWeekNumbers : {
                             $type : "json:Boolean",
-                            $description : "",
                             $default : true
                         },
                         restrainedNavigation : {
                             $type : "json:Boolean",
-                            $description : "",
                             $default : true
                         },
                         showShortcuts : {
                             $type : "json:Boolean",
-                            $description : "",
                             $default : true
                         },
                         numberOfUnits : {
                             $type : "json:Integer",
-                            $description : "",
                             $default : 3
                         },
                         sclass : {
@@ -823,7 +773,6 @@ Aria.beanDefinitions({
         },
         "SelectBoxCfg" : {
             $type : "DropDownTextInputCfg",
-            $description : "",
             $properties : {
                 "listSclass" : {
                     $type : "json:String",
@@ -833,12 +782,10 @@ Aria.beanDefinitions({
             }
         },
         "TextareaCfg" : {
-            $type : "TextInputCfg",
-            $description : ""
+            $type : "TextInputCfg"
         },
         "ErrorListCfg" : {
             $type : "Object",
-            $description : "",
             $properties : {
                 "divsclass" : {
                     $type : "json:String",
@@ -848,7 +795,6 @@ Aria.beanDefinitions({
         },
         "FieldsetCfg" : {
             $type : "Object",
-            $description : "",
             $properties : {
                 "states" : {
                     $type : "StatesSet",
@@ -865,11 +811,9 @@ Aria.beanDefinitions({
         },
         "FieldsetStateCfg" : {
             $type : "StateWithFrame",
-            $description : "",
             $properties : {
                 "label" : {
                     $type : "Object",
-                    $description : "",
                     $properties : {
                         "left" : {
                             $type : "Pixels",
@@ -901,7 +845,6 @@ Aria.beanDefinitions({
                         },
                         "fontWeight" : {
                             $type : "json:String",
-                            $description : "",
                             $default : "bold"
                         },
                         "color" : {
@@ -914,7 +857,6 @@ Aria.beanDefinitions({
         },
         "MultiSelectCfg" : {
             $type : "DropDownTextInputCfg",
-            $description : "",
             $properties : {
                 "listSclass" : {
                     $type : "json:String",
@@ -925,7 +867,6 @@ Aria.beanDefinitions({
         },
         "SelectCfg" : {
             $type : "Object",
-            $description : "",
             $properties : {
                 "states" : {
                     $type : "StatesSet",
@@ -993,21 +934,17 @@ Aria.beanDefinitions({
         },
         "SortIndicatorCfg" : {
             $type : "Object",
-            $description : "",
             $properties : {
                 iconset : {
-                    $type : "json:String",
-                    $description : ""
+                    $type : "json:String"
                 },
                 iconprefix : {
-                    $type : "json:String",
-                    $description : ""
+                    $type : "json:String"
                 }
             }
         },
         "SplitterCfg" : {
             $type : "Object",
-            $description : "",
             $properties : {
                 separatorHeight : {
                     $type : "Pixels"
@@ -1020,24 +957,20 @@ Aria.beanDefinitions({
                     $default : "transparent"
                 },
                 handleSpriteURLh : {
-                    $type : "json:String",
-                    $description : ""
+                    $type : "json:String"
                 },
                 handleSpriteURLv : {
-                    $type : "json:String",
-                    $description : ""
+                    $type : "json:String"
                 },
                 proxyBackgroundColor : {
                     $type : "Color",
                     $default : "transparent"
                 },
                 proxySpriteURLh : {
-                    $type : "json:String",
-                    $description : ""
+                    $type : "json:String"
                 },
                 proxySpriteURLv : {
-                    $type : "json:String",
-                    $description : ""
+                    $type : "json:String"
                 },
                 borderColor : {
                     $type : "Color"
@@ -1083,7 +1016,6 @@ Aria.beanDefinitions({
                 },
                 "biDimensional" : {
                     $type : "json:Boolean",
-                    $description : "",
                     $default : false
                 },
                 "direction" : {
@@ -1094,7 +1026,6 @@ Aria.beanDefinitions({
                 "content" : {
                     $type : "json:Map",
                     $default : {},
-                    $description : "",
                     $contentType : {
                         $type : "json:Integer",
                         $description : "Index of the icon inside the sprite."
@@ -1105,12 +1036,10 @@ Aria.beanDefinitions({
                     }
                 },
                 "spriteURL" : {
-                    $type : "json:String",
-                    $description : ""
+                    $type : "json:String"
                 },
                 "backgroundSize" : {
-                    $type : "json:Integer",
-                    $description : ""
+                    $type : "json:Integer"
                 },
                 "backgroundColor" : {
                     $type : "Color",
@@ -1158,7 +1087,6 @@ Aria.beanDefinitions({
         },
         "DivCfg" : {
             $type : "Object",
-            $description : "",
             $properties : {
                 "states" : {
                     $type : "StatesSet",
@@ -1184,7 +1112,6 @@ Aria.beanDefinitions({
         },
         "DialogCfg" : {
             $type : "Object",
-            $description : "",
             $properties : {
                 "titleBarTop" : {
                     $type : "Pixels"
@@ -1202,17 +1129,33 @@ Aria.beanDefinitions({
                     $type : "Color",
                     $default : "#615E55"
                 },
+                "titleBackgroundColor" : {
+                    $type : "Color"
+                },
+                "titlePadding" : {
+                    $type : "json:String"
+                },
+                "titleBorder" : {
+                    $type : "json:String"
+                },
+                "titleBorderStyle" : {
+                    $type : "json:String"
+                },
+                "titleBorderColor" : {
+                    $type : "Color"
+                },
+                "titleBorderRadius" : {
+                    $type : "json:String"
+                },
                 "divsclass" : {
                     $type : "json:String",
                     $description : "sclass of the Div to use inside the widget. It must be defined in the skin."
                 },
                 "closeIcon" : {
-                    $type : "json:String",
-                    $description : ""
+                    $type : "json:String"
                 },
                 "maximizeIcon" : {
-                    $type : "json:String",
-                    $description : ""
+                    $type : "json:String"
                 },
                 "shadowLeft" : {
                     $type : "Pixels"
@@ -1230,7 +1173,6 @@ Aria.beanDefinitions({
         },
         "TextInputCfg" : {
             $type : "Object",
-            $description : "",
             $properties : {
                 "states" : {
                     $type : "StatesSet",
@@ -1286,25 +1228,21 @@ Aria.beanDefinitions({
                 },
                 "label" : {
                     $type : "Object",
-                    $description : "",
                     $properties : {
                         "fontWeight" : {
                             $type : "json:String",
-                            $description : "",
                             $default : "normal"
                         }
                     }
                 },
                 "helpText" : {
                     $type : "Object",
-                    $description : "",
                     $properties : {
                         "color" : {
                             $type : "Color"
                         },
                         "italics" : {
-                            $type : "json:Boolean",
-                            $description : ""
+                            $type : "json:Boolean"
                         }
                     }
                 },
@@ -1328,7 +1266,6 @@ Aria.beanDefinitions({
         },
         "TextInputStateCfg" : {
             $type : "StateWithFrameWithIconsAndLabel",
-            $description : "",
             $properties : {
                 "color" : {
                     $type : "Color",
@@ -1338,7 +1275,6 @@ Aria.beanDefinitions({
         },
         "DropDownTextInputCfg" : {
             $type : "TextInputCfg",
-            $description : "",
             $properties : {
                 "offsetTop" : {
                     $type : "Pixels"
@@ -1352,7 +1288,6 @@ Aria.beanDefinitions({
         },
         "AutoCompleteCfg" : {
             $type : "DropDownTextInputCfg",
-            $description : "",
             $properties : {
                 "listSclass" : {
                     $type : "json:String",
@@ -1363,15 +1298,12 @@ Aria.beanDefinitions({
         },
         "MultiAutoCompleteCfg" : {
             $type : "DropDownTextInputCfg",
-            $description : "",
             $properties : {
                 "closeSpriteURL" : {
-                    $type : "json:String",
-                    $description : ""
+                    $type : "json:String"
                 },
                 "closeHighlightSpriteURL" : {
-                    $type : "json:String",
-                    $description : ""
+                    $type : "json:String"
                 },
                 "closeSpriteHeight" : {
                     $type : "Pixels"
@@ -1415,7 +1347,6 @@ Aria.beanDefinitions({
         },
         "TabPanelCfg" : {
             $type : "Object",
-            $description : "",
             $properties : {
                 "states" : {
                     $type : "StatesSet",
@@ -1432,7 +1363,6 @@ Aria.beanDefinitions({
         },
         "TabCfg" : {
             $type : "Object",
-            $description : "",
             $properties : {
                 "states" : {
                     $type : "StatesSet",
@@ -1571,12 +1501,10 @@ Aria.beanDefinitions({
                     $default : ""
                 },
                 "skipLeftBorder" : {
-                    $type : "SkipBorderCfg",
-                    $description : ""
+                    $type : "SkipBorderCfg"
                 },
                 "skipRightBorder" : {
-                    $type : "SkipBorderCfg",
-                    $description : ""
+                    $type : "SkipBorderCfg"
                 },
                 "fontWeight" : {
                     $type : "json:String",
@@ -1590,14 +1518,11 @@ Aria.beanDefinitions({
         },
         "SkipBorderCfg" : {
             $type : "json:MultiTypes",
-            $description : "",
             $default : false,
             $contentTypes : [{
-                        $type : "json:Boolean",
-                        $description : ""
+                        $type : "json:Boolean"
                     }, {
                         $type : "json:Enum",
-                        $description : "",
                         $enumValues : ["dependsOnIcon"]
                     }]
 
@@ -1622,20 +1547,16 @@ Aria.beanDefinitions({
                     $default : "#000"
                 },
                 "spriteURL" : {
-                    $type : "json:String",
-                    $description : ""
+                    $type : "json:String"
                 },
                 "spriteURLv" : {
-                    $type : "json:String",
-                    $description : ""
+                    $type : "json:String"
                 },
                 "skipLeftBorder" : {
-                    $type : "SkipBorderCfg",
-                    $description : ""
+                    $type : "SkipBorderCfg"
                 },
                 "skipRightBorder" : {
-                    $type : "SkipBorderCfg",
-                    $description : ""
+                    $type : "SkipBorderCfg"
                 },
                 "sprWidth" : {
                     $type : "Pixels"
@@ -1644,8 +1565,7 @@ Aria.beanDefinitions({
                     $type : "Pixels"
                 },
                 "sprIdx" : {
-                    $type : "json:Integer",
-                    $description : ""
+                    $type : "json:Integer"
                 },
                 "sprSpacing" : {
                     $type : "Pixels",
@@ -1695,7 +1615,6 @@ Aria.beanDefinitions({
                 },
                 "sprIdx" : {
                     $type : "json:Integer",
-                    $description : "",
                     $default : 0
                 },
                 "sprSpacing" : {
@@ -1709,16 +1628,13 @@ Aria.beanDefinitions({
                     $type : "Pixels"
                 },
                 "spriteURL" : {
-                    $type : "json:String",
-                    $description : ""
+                    $type : "json:String"
                 },
                 "spriteURLv" : {
-                    $type : "json:String",
-                    $description : ""
+                    $type : "json:String"
                 },
                 "spriteURLh" : {
-                    $type : "json:String",
-                    $description : ""
+                    $type : "json:String"
                 },
                 "marginTop" : {
                     $type : "Pixels",
@@ -1749,17 +1665,14 @@ Aria.beanDefinitions({
                 },
                 "frameIcon" : {
                     $type : "json:String",
-                    $description : "",
                     $default : ""
                 },
                 "frameIconHPos" : {
                     $type : "json:String",
-                    $description : "",
                     $default : "left"
                 },
                 "frameIconVPos" : {
                     $type : "json:String",
-                    $description : "",
                     $default : "bottom"
                 }
             }
