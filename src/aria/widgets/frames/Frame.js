@@ -211,9 +211,9 @@ Aria.classDefinition({
          */
         _appendInnerHeightInfo : function (obj) {
             if (this.innerHeight > -1) {
-                obj.height = this.innerHeight + "px";
+                var height = obj.height = this.innerHeight + "px";
                 if (obj.style != null) {
-                    obj.style += "height:" + obj.height + ";";
+                    obj.style += "height:" + height + ";";
                 }
                 if (this._cfg.scrollBarY) {
                     obj.className += " xOverflowYAuto";

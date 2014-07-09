@@ -21,7 +21,7 @@
 
     {var skinnableClassName="Widget"/}
     {var useFrame=false/}
-    
+
     {macro main()}
         {call startLooping()/}
     {/macro}
@@ -63,14 +63,14 @@
     {macro writeState(info)}
         // to be overridden
     {/macro}
-    
+
     {macro background(color,imageurl,otherparams)}
         {checkDefault color=""/}
         {checkDefault imageurl=""/}
         {checkDefault otherparams=""/}
         ${aria.widgets.AriaSkinInterface.backgroundMacro(color,imageurl,otherparams)}
     {/macro}
-    
+
     {macro opacity(percent)}
         filter: alpha(opacity=${percent});
         -moz-opacity: ${percent/100};
@@ -78,7 +78,7 @@
     {/macro}
 
     // Macros for frames:
-    
+
     {macro writeStateOfFixedHeightFrame(info)}
         {var state=info.state.frame/}
         {var sprWidth=state.sprWidth/}
@@ -89,6 +89,7 @@
         {var spcLeft=state.spcLeft/}
         {var spcRight=sprWidth-spcLeft/}
         {var prefix=cssPrefix(info)/}
+        {var verticalAlignApplied = state.verticalAlign && state.innerHeight /}
 
         .${prefix}bkgA {
             {call background("transparent",state.spriteURL,"no-repeat scroll 0 0")/}
@@ -103,13 +104,29 @@
         .${prefix}c {
             margin: ${state.marginTop}px ${state.marginRight}px ${state.marginBottom}px ${state.marginLeft}px;
             color: ${state.color};
+            {if state.verticalAlign}
+            	vertical-align: ${state.verticalAlign};
+            	line-height: ${state.innerHeight}px;
+            {/if}
         }
         {if state.skipLeftBorder!=true}
-        .${prefix}b {width:${spcLeft}px; height:${sprHeight}px; background-position:0 ${-refTop}px;}
+            .${prefix}b {width:${spcLeft}px; height:${sprHeight}px; background-position:0 ${-refTop}px;
+                {if verticalAlignApplied}
+                    line-height:${sprHeight}px;
+                {/if}
+            }
         {/if}
-        .${prefix}m {height:${sprHeight}px; background-position:0 ${-refTop}px;}
+        .${prefix}m {height:${sprHeight}px; background-position:0 ${-refTop}px;
+            {if verticalAlignApplied}
+                line-height:${sprHeight}px;
+            {/if}
+        }
         {if state.skipRightBorder!=true}
-        .${prefix}e {width:${spcRight}px; height:${sprHeight}px; background-position: ${-spcLeft}px ${-refTop}px;}
+            .${prefix}e {width:${spcRight}px; height:${sprHeight}px; background-position: ${-spcLeft}px ${-refTop}px;
+                {if verticalAlignApplied}
+                    line-height:${sprHeight}px;
+                {/if}
+            }
         {/if}
     {/macro}
 
