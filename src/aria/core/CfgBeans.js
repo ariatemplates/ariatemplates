@@ -245,6 +245,11 @@ Aria.beanDefinitions({
                     $description : "Contains the name of the parameter that specifies the callback to be executed. If this property is specified, the request will be done through JSON-P. This property can be changed by filters.",
                     $sample : "callback"
                 },
+                "async" : {
+                    $type : "json:Boolean",
+                    $description : "Whether the request has to be asynchronous or synchronous  (use it with care: sync requests can freeze the UI). It can be used only for XHR transport.",
+                    $default : true
+                },
                 "method" : {
                     $type : "json:Enum",
                     $description : "HTTP method used in the request. Ignored for JSON-P requests. This property can be changed by filters.",

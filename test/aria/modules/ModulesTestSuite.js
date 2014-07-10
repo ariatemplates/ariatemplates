@@ -26,6 +26,7 @@ Aria.classDefinition({
         this.addTests("test.aria.modules.RequestMgrI18nTest");
         this.addTests("test.aria.modules.RequestMgrJsonSerializerTest");
         this.addTests("test.aria.modules.RequestMgrTest");
+        this.addTests("test.aria.modules.RequestMgrSyncTest");
 
         this.addTests("test.aria.modules.queuing.SimpleSessionQueuingTest");
 

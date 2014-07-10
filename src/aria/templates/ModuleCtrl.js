@@ -194,8 +194,10 @@ Aria.classDefinition({
          * </ul>
          * @param {Object} jsonData - the data to post to the server
          * @param {aria.core.CfgBeans:Callback} cb the callback
+         * @param {Boolean} async flag to specify wether the request has to be asynchronous or synchronous (use it with
+         * care: sync requests can freeze the UI)
          */
-        submitJsonRequest : function (targetService, jsonData, cb) {
+        submitJsonRequest : function (targetService, jsonData, cb, async) {
             var typeUtils = aria.utils.Type;
             // change cb as an object if a string or a function is passed as a
             // callback
@@ -219,6 +221,7 @@ Aria.classDefinition({
             // Request object constructed with all necessary properties
             var requestObject = {
                 moduleName : this.$package,
+                async : (async !== false),
                 session : this._session,
                 actionQueuing : null,
                 requestHandler : this.$requestHandler,

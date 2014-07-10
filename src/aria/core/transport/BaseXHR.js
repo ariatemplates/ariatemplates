@@ -47,8 +47,9 @@ Aria.classDefinition({
          */
         request : function (request, callback) {
             var connection = this._getConnection();
+            var async = (request.async !== false);
 
-            connection.open(request.method, request.url, true);
+            connection.open(request.method, request.url, async);
 
             for (var header in request.headers) {
                 if (request.headers.hasOwnProperty(header)) {
@@ -56,17 +57,21 @@ Aria.classDefinition({
                 }
             }
 
-            // Timer for aborting the request after a timeout
-            aria.core.IO.setTimeout(request.id, request.timeout, {
-                fn : this.onAbort,
-                scope : this,
-                args : [request.id, connection]
-            });
-
-            this._handleReadyState(request.id, connection, callback);
+            if (async) {
+                // Timer for aborting the request after a timeout
+                aria.core.IO.setTimeout(request.id, request.timeout, {
+                    fn : this.onAbort,
+                    scope : this,
+                    args : [request.id, connection]
+                });
+                this._handleReadyState(request.id, connection, callback);
+            }
 
             // This might throw an error, propagate it and let the IO know that there was an exception
             connection.send(request.data || null);
+            if (!async) {
+                this._handleTransactionResponse(request.id, connection, callback);
+            }
         },
 
         /**

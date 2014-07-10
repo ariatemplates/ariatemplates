@@ -250,6 +250,7 @@ module.exports = Aria.classDefinition({
          * <pre>
          * [req] {
          *    url: 'myfile.txt',            // absolute or relative URL
+         *    async: 'true',                // asynchronous or synchronous behavior (use it with care: sync requests can freeze the UI)
          *    expectedResponseType: 'json'  // 'json', 'xml' or 'text' (default)
          *    method: 'POST',               // POST, PUT, DELETE, OPTIONS, HEAD, TRACE, OPTIONS, CONNECT, PATCH or GET (default)
          *    data: '',                     // {String} null by default

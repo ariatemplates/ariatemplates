@@ -84,7 +84,7 @@ Aria.classDefinition({
                 var requestId = this._sendRequest(requestObject, jsonData, cb);
                 if (requestId === aria.modules.RequestMgr.ERROR_STATUS) {
                     return requestId;
-                } else {
+                } else if (requestObject.async !== false) {
                     // This request is ongoing
                     this._idSessionMap[requestId] = sessionId;
                     queue.push(requestId);
