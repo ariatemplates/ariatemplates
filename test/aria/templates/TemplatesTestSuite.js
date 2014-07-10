@@ -35,6 +35,7 @@ Aria.classDefinition({
         this.addTests("test.aria.templates.ModifiersTest");
         this.addTests("test.aria.templates.ModuleCtrlFactoryTest");
         this.addTests("test.aria.templates.ModuleCtrlTest");
+        this.addTests("test.aria.templates.moduleCtrlSyncRequest.ModuleCtrlSyncRequestTest");
         this.addTests("test.aria.templates.ParserTest");
         this.addTests("test.aria.templates.SectionOnTypeTest");
         this.addTests("test.aria.templates.SectionTest");

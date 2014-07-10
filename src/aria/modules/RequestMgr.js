@@ -379,6 +379,7 @@ Aria.classDefinition({
             var requestObject = {
                 sender : senderObject,
                 url : req.url,
+                async : (req.requestObject.async !== false),
                 method : req.method,
                 data : req.data,
                 headers : req.headers,

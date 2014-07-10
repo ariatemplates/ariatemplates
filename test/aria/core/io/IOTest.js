@@ -318,6 +318,36 @@ Aria.classDefinition({
         _asyncOptionsResponse : function (res) {
             this.assertTrue(res.status === 200);
             this.notifyTestEnd("testAsyncOptionsRequest");
+        },
+
+        /**
+         * Synchronous test to test a file download Note: the file path is given from the index file (i.e. test
+         * namespace)
+         */
+        testSyncFileDownload : function () {
+            this.url = this.urlRoot + "aria/core/test/TestFile.txt";
+            this.syncFlag = false;
+            var reqId = aria.core.IO.asyncRequest({
+                url : this.url,
+                async : false,
+                callback : {
+                    fn : this._onsuccessSyncCb,
+                    scope : this,
+                    onerror : this._onerrorSyncCb,
+                    args : {
+                        x : 123
+                    }
+                }
+            });
+
+            this.assertTrue(this.syncFlag, "Sync flag has not been set to true");
+        },
+        _onsuccessSyncCb : function (res, args) {
+            this.assertEquals(res.responseText, "[Some Test Content]", "Response text is %1 instead of %2");
+            this.syncFlag = true;
+        },
+        _onerrorSyncCb : function () {
+            this.fail("Unexpected error callback called (2)");
         }
     }
 });
