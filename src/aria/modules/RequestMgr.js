@@ -155,7 +155,8 @@ Aria.classDefinition({
         INVALID_BASEURL : "The base URL defined in the RequestMgr object is empty or invalid - please check: \nurl: %1",
         MISSING_SERVICESPEC : "Provided request object must contain an actionName or a serviceSpec element",
         CALLBACK_ERROR : "An error occured in the Request manager while processing the callback function.",
-        INVALID_URL : "Url for request is invalid: %1"
+        INVALID_URL : "Url for request is invalid: %1",
+        DEPENDENCIES_BROKE_SYNC : "Dependencies asynchronous load broke a synchronous request: all the dependencies have to be loaded before: %1"
     },
     $prototype : {
 
@@ -312,7 +313,8 @@ Aria.classDefinition({
                 id : id,
                 session : requestObject.session,
                 actionQueuing : requestObject.actionQueuing,
-                requestHandler : requestObject.requestHandler
+                requestHandler : requestObject.requestHandler,
+                syncFlag : false
             };
             Aria.load({
                 classes : dependencies,
@@ -322,6 +324,11 @@ Aria.classDefinition({
                     args : args
                 }
             });
+
+            // check if the request has been executed synchronously
+            if (!args.syncFlag && requestObject.async === false) {
+                this.$logError(this.DEPENDENCIES_BROKE_SYNC, [dependencies]);
+            }
 
             return id;
         },
@@ -333,6 +340,7 @@ Aria.classDefinition({
          */
         _onDependenciesReady : function (args) {
 
+            args.syncFlag = true;
             var req = args.req;
             // creates url for request
             var details = this.createRequestDetails(req.requestObject, args.session);

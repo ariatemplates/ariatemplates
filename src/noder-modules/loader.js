@@ -103,7 +103,7 @@ LoaderProto.downloadModule = function (module) {
 // first entry point: if it is present, use the DownloadMgr to download files
 LoaderProto.loadUnpackaged = function (module) {
     if (this.isDownloadMgrUsable()) {
-        return this.downloadModule(module).then(bind1(this.parentLoader.preprocessUnpackaged, this.parentLoader, module));
+        return this.downloadModule(module).thenSync(bind1(this.parentLoader.preprocessUnpackaged, this.parentLoader, module));
     } else {
         return this.parentLoadUnpackaged(module);
     }

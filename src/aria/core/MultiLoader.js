@@ -94,7 +94,7 @@ module.exports = Aria.classDefinition({
 
             if (promise) {
                 var self = this;
-                promise.then(function () {
+                promise.thenSync(function () {
                     self._execCallback(false);
                 }, function (error) {
                     if (!descriptor.onerror || !descriptor.onerror.override) {

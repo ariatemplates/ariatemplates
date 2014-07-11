@@ -19,7 +19,7 @@
 Aria.classDefinition({
     $classpath : "test.aria.templates.moduleCtrlSyncRequest.ModuleCtrlSyncRequestTest",
     $extends : "aria.jsunit.ModuleCtrlTestCase",
-    $dependencies : ["aria.modules.urlService.PatternURLCreationImpl", "aria.modules.requestHandler.JSONRequestHandler"],
+    $dependencies : ["test.aria.modules.IoFilter"],
     $constructor : function () {
         this.$ModuleCtrlTestCase.constructor.call(this);
         this.defaultTestTimeout = 5000;
@@ -30,9 +30,8 @@ Aria.classDefinition({
         $controller : "test.aria.templates.moduleCtrlSyncRequest.TestModuleCtrl",
 
         testSyncJsonRequest : function () {
-            this._mockIO();
-
-            this.$moduleCtrlPrivate.submitJsonRequest("search", {
+            this._addFilter(true);
+            this.$moduleCtrlPrivate.submitJsonRequest("test", {
                 from : "here"
             }, {
                 fn : this._callback1,
@@ -40,12 +39,11 @@ Aria.classDefinition({
             }, false);
 
             this.assertTrue(this._flagOne, "The request was not executed synchronously.");
-            this._unmockIO();
-
         },
 
         _callback1 : function (req) {
             this._flagOne = true;
+            this._removeFilter();
         },
 
         /**
@@ -53,9 +51,8 @@ Aria.classDefinition({
          * stack
          */
         testAsyncBehavior : function () {
-            this._mockIO();
-
-            this.$moduleCtrlPrivate.submitJsonRequest("search", {
+            this._addFilter(true);
+            this.$moduleCtrlPrivate.submitJsonRequest("test", {
                 from : "here"
             }, {
                 fn : this._callback2,
@@ -69,25 +66,17 @@ Aria.classDefinition({
         _callback2 : function () {
             this.assertTrue(this._flagTwo, "The request was not executed asynchronously.");
             this._flagTwo = true;
+            this._removeFilter();
             this.notifyTestEnd("testAsyncBehavior");
-            this._unmockIO();
         },
 
-        _mockIO : function (req) {
-            var asyncRequest = this._asyncRequest = aria.core.IO.asyncRequest;
-            aria.core.IO.asyncRequest = function (req) {
-                req.url = Aria.rootFolderPath + "test/aria/modules/test/SampleResponse.json";
-                asyncRequest.call(aria.core.IO, req);
-            };
+        _addFilter : function (switchSyncAsync) {
+            this._filterInstance = new test.aria.modules.IoFilter("test/aria/templates/moduleCtrlSyncRequest/test", switchSyncAsync);
+            aria.core.IOFiltersMgr.addFilter(this._filterInstance);
         },
 
-        _unmockIO : function (req) {
-            aria.core.IO.asyncRequest = this._asyncRequest;
-        },
-
-        _syncIORequestMock : function (req) {
-            this.assertFalse(req.async, "async flag is not false as expected");
-            aria.core.IO.asyncRequest = this._asyncRequest;
+        _removeFilter : function () {
+            aria.core.IOFiltersMgr.removeFilter(this._filterInstance);
         }
 
     }

@@ -17,10 +17,9 @@
  * Test for the RequestMgr class
  */
 Aria.classDefinition({
-    $classpath : "test.aria.modules.RequestMgrSyncTest",
+    $classpath : "test.aria.modules.requestMgrSyncTest.SyncTest",
     $extends : "aria.jsunit.TestCase",
-    $dependencies : ["aria.modules.urlService.PatternURLCreationImpl",
-            "aria.modules.requestHandler.JSONRequestHandler", "aria.modules.RequestMgr"],
+    $dependencies : ["aria.modules.RequestMgr", "test.aria.modules.IoFilter"],
     $constructor : function () {
         this.$TestCase.constructor.call(this);
         this.defaultTestTimeout = 5000;
@@ -29,25 +28,12 @@ Aria.classDefinition({
     },
     $prototype : {
 
-        mockIO : function () {
-            var oldAsyncRequest = this._oldAsyncRequest = aria.core.IO.asyncRequest;
-            aria.core.IO.asyncRequest = function (req) {
-                req.url = Aria.rootFolderPath + "test/aria/modules/test/SampleResponse.json";
-                oldAsyncRequest.call(aria.core.IO, req);
-            };
-            // aria.modules.RequestMgr.defaultActionQueuing._sessionQueues = [];
-        },
-
-        unmockIO : function () {
-            aria.core.IO.asyncRequest = this._oldAsyncRequest;
-        },
-
         /**
          * Test that aria.core.IO.asyncRequest is called with the right parameter (async: false) at the end of the call
          * stack
          */
         testSyncBehavior : function () {
-            this.mockIO();
+            this._addFilter(true);
             aria.modules.RequestMgr.submitJsonRequest({
                 moduleName : "xxx",
                 actionName : "yyy",
@@ -60,12 +46,12 @@ Aria.classDefinition({
                 scope : this
             });
             this.assertTrue(this._flagOne, "The request was not executed synchronously.");
-            this.unmockIO();
 
         },
 
         _cbOne : function (res) {
             this._flagOne = true;
+            this._removeFilter();
         },
 
         /**
@@ -73,7 +59,7 @@ Aria.classDefinition({
          * stack
          */
         testAsyncBehavior : function () {
-            this.mockIO();
+            this._addFilter(true);
             aria.modules.RequestMgr.submitJsonRequest({
                 moduleName : "xxx",
                 actionName : "yyy"
@@ -91,8 +77,18 @@ Aria.classDefinition({
         _cbTwo : function () {
             this.assertTrue(this._flagTwo, "The request was not executed asynchronously.");
             this._flagTwo = true;
+            this._removeFilter();
             this.notifyTestEnd("testAsyncBehavior");
-            this.unmockIO();
+        },
+
+        _addFilter : function (switchSyncAsync) {
+            this._filterInstance = new test.aria.modules.IoFilter("xxx/yyy", switchSyncAsync);
+            aria.core.IOFiltersMgr.addFilter(this._filterInstance);
+        },
+
+        _removeFilter : function () {
+            aria.core.IOFiltersMgr.removeFilter(this._filterInstance);
         }
+
     }
 });
