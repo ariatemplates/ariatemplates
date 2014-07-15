@@ -45,6 +45,7 @@ Aria.classDefinition({
             tpl.changeArrayView.updateInitialArray(newArray);
             this.assertEquals(tpl.changeArrayView.items.length, newArray.length);
             this.assertEquals(tpl.changeArrayView.items[0].value, newArray[0]);
+            this.templateCtxt._tpl.changeArrayView.$dispose();
         }
 
     }
