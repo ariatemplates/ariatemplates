@@ -21,10 +21,10 @@
     {var useFrame=true/}
 
     {macro writeState(info)}
-        {call $InputStyle.writeState(info) /}
         .${cssPrefix(info)}label {
             font-weight: ${info.skinClass.label.fontWeight}
         }
+        {call $InputStyle.writeState(info) /}
     {/macro}
 
 {/CSSTemplate}

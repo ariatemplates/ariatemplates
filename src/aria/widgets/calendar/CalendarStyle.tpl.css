@@ -42,6 +42,12 @@
             border: 0px none;
             border-collapse:separate;
             border-spacing:0;
+            {if skinClass.fontFamily}
+                font-family:${skinClass.fontFamily};
+            {/if}
+            {if skinClass.fontVariant}
+                font-variant:${skinClass.fontVariant};
+            {/if}
         }
         .xCalendar_${skinClassName}_monthTitle {
             width: 100%;
