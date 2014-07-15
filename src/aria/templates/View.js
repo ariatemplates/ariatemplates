@@ -735,6 +735,15 @@
                         return i;
                     }
                 }
+            },
+
+            /**
+             * Updates initial array of the view. Needed in case where the previous initial array is replaced by another object
+             * @param {Array} array new initial array
+             */
+            updateInitialArray : function (array) {
+                this.initialArray = array;
+                this._refreshInitialArray();
             }
 
         }
