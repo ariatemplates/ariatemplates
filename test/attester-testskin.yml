@@ -12,3 +12,4 @@ tests:
    includes:
     - test.aria.widgets.skin.ExternalCSSTest
     - test.aria.widgets.icon.fontIcon.FontIconTest
+    - test.aria.widgets.form.widgetsfont.WidgetsFontTest

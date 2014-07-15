@@ -18,5 +18,13 @@
     $extends : "aria.widgets.WidgetStyle"
 }}
     {var skinnableClassName="CheckBox"/}
-    
+    {macro writeState(info)}
+        {var labelFontStyle = info.state.font /}
+        {if labelFontStyle}
+            .${cssPrefix(info)}label {
+                {call generateFontStyle(labelFontStyle)/}
+            }
+        {/if}
+    {/macro}
+
 {/CSSTemplate}

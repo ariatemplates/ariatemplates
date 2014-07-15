@@ -81,6 +81,7 @@
 
     {macro writeStateOfFixedHeightFrame(info)}
         {var state=info.state.frame/}
+        {var fontStyle=state.font/}
         {var sprWidth=state.sprWidth/}
         {var sprHeight=state.sprHeight/}
         {var sprIndex=state.sprIdx/}
@@ -104,10 +105,13 @@
             margin: ${state.marginTop}px ${state.marginRight}px ${state.marginBottom}px ${state.marginLeft}px;
             color: ${state.color};
             {if verticalAlignApplied}
-            	vertical-align: ${state.verticalAlign};
+                vertical-align: ${state.verticalAlign};
                 line-height: ${state.innerHeight + (aria.utils.Type.isNumber(state.innerHeight) ? "px" : "")};
             {/if}
         }
+        {if fontStyle}
+            {call formElementsFontStyle(prefix+"c", fontStyle)/}
+        {/if}
         {if state.skipLeftBorder!=true}
             .${prefix}b {width:${spcLeft}px; height:${sprHeight}px; background-position:0 ${-refTop}px;
                 {if verticalAlignApplied}
@@ -131,8 +135,10 @@
 
     {macro writeStateOfSimpleFrame(info)}
         {var state=info.state.frame/}
+        {var fontStyle=state.font/}
         {var padTop=state.paddingTop/}
-        .${cssPrefix(info)}frame  {
+        {var prefix=cssPrefix(info)/}
+        .${prefix}frame  {
             {if state.frameHeight}
                 height: ${state.frameHeight}px;
             {/if}
@@ -161,6 +167,9 @@
             color: ${state.color};
             vertical-align: top;
         }
+        {if fontStyle}
+            {call formElementsFontStyle(prefix+"frame", fontStyle)/}
+        {/if}
     {/macro}
 
     {macro writeBorderRadius(state)}
@@ -172,6 +181,7 @@
 
     {macro writeStateOfTableFrame(info)}
         {var state=info.state.frame/}
+        {var fontStyle=state.font/}
         {var sprWidth=state.sprWidth/}
         {var sprHeight=state.sprHeight/}
         {var sprIndex=state.sprIdx/}
@@ -200,6 +210,9 @@
             margin: ${state.marginTop}px ${state.marginRight}px ${state.marginBottom}px ${state.marginLeft}px;
             color: ${state.color};
         }
+        {if fontStyle}
+            {call formElementsFontStyle(prefix+"c", fontStyle)/}
+        {/if}
         .${prefix}m {
             background-color: ${state.backgroundColor};
         }
@@ -216,6 +229,28 @@
                 height:${state.frameHeight}px;
                 {call background("",state.frameIcon,"no-repeat "+state.frameIconHPos)/}
         }
+    {/macro}
+    {macro formElementsFontStyle(className, fontStyle)}
+        .${className}, .${className} input, .${className} textarea{
+            {call generateFontStyle(fontStyle)/}
+        }
+    {/macro}
+    {macro generateFontStyle(fontStyleObj)}
+        {if fontStyleObj.fontStyle}
+            font-style: ${fontStyleObj.fontStyle};
+        {/if}
+        {if fontStyleObj.fontVariant}
+            font-variant: ${fontStyleObj.fontVariant};
+        {/if}
+        {if fontStyleObj.fontSize}
+            font-size: ${fontStyleObj.fontSize}px;
+        {/if}
+        {if fontStyleObj.fontWeight}
+            font-weight: ${fontStyleObj.fontWeight};
+        {/if}
+        {if fontStyleObj.fontFamily}
+            font-family: ${fontStyleObj.fontFamily};
+        {/if}
     {/macro}
 
 {/CSSTemplate}

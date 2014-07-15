@@ -43,6 +43,683 @@ Aria.classDefinition({
                         "shield-90" : "fa fa-shield fa-rotate-90",
                         "shield-180" : "fa fa-shield fa-rotate-180"
                     }
+                },
+                "checkBoxes" : {
+                    "content" : {
+                        "cb_disabled" : 4,
+                        "rb_disabled" : 12,
+                        "cb_focusedSelected" : 3,
+                        "cb_focused" : 2,
+                        "cb_disabledSelected" : 5,
+                        "rb_readonlySelected" : 15,
+                        "rb_normalSelected" : 9,
+                        "cb_readonly" : 6,
+                        "cb_normalSelected" : 1,
+                        "rb_focusedSelected" : 11,
+                        "rb_readonly" : 14,
+                        "cb_readonlySelected" : 7,
+                        "rb_disabledSelected" : 13,
+                        "rb_focused" : 10,
+                        "cb_normal" : 0,
+                        "rb_normal" : 8
+                    },
+                    "spriteSpacing" : 3,
+                    "direction" : "x",
+                    "iconWidth" : 19,
+                    "spriteURL" : "atskin/sprites/checkbox.png",
+                    "iconHeight" : 18,
+                    "biDimensional" : false
+                },
+                "dropdown" : {
+                    "content" : {
+                        "multiselect_error" : 8,
+                        "datepicker_focused" : 4,
+                        "selectbox_focused" : 1,
+                        "multiselect_focused" : 7,
+                        "datepicker_error" : 5,
+                        "datepicker_normal" : 3,
+                        "multiselect_normal" : 6,
+                        "selectbox_error" : 2,
+                        "selectbox_normal" : 0
+                    },
+                    "spriteSpacing" : 2,
+                    "direction" : "x",
+                    "iconWidth" : 14,
+                    "spriteURL" : "atskin/imgs/dropdownbtns.gif",
+                    "iconHeight" : 20,
+                    "biDimensional" : false
+                }
+            },
+            "MultiSelect" : {
+                "std" : {
+                    "iconsRight" : "dropdown",
+                    "frame" : {
+                        "frameType" : "FixedHeight"
+                    },
+                    "states" : {
+                        "normal" : {
+                            "marginBottom" : 2,
+                            "spriteURLv" : "atskin/sprites/inputCentre.gif",
+                            "sprHeight" : 20,
+                            "sprWidth" : 7,
+                            "marginTop" : 3,
+                            "color" : "#000000",
+                            "sprIdx" : 0,
+                            "spcLeft" : 3,
+                            "icons" : {
+                                "dropdown" : "dropdown:multiselect_normal"
+                            },
+                            "skipRightBorder" : true,
+                            "spriteURL" : "atskin/sprites/inputEdge.gif",
+                            "font" : {
+                                "fontStyle" : "italic",
+                                "fontSize" : 17,
+                                "fontFamily" : "Tahoma",
+                                "fontVariant" : "small-caps",
+                                "fontWeight" : "bold"
+                            },
+                            "label" : {
+                                "font" : {
+                                    "fontStyle" : "italic",
+                                    "fontSize" : 17,
+                                    "fontFamily" : "Tahoma",
+                                    "fontVariant" : "small-caps",
+                                    "fontWeight" : "bold"
+                                }
+                            }
+                        },
+                        "disabled" : {
+                            "font" : {
+                                "fontStyle" : "italic",
+                                "fontSize" : 19,
+                                "fontFamily" : "Arial",
+                                "fontVariant" : "small-caps",
+                                "fontWeight" : "bold"
+                            },
+                            "label" : {
+                                "font" : {
+                                    "fontStyle" : "italic",
+                                    "fontSize" : 19,
+                                    "fontFamily" : "Arial",
+                                    "fontVariant" : "small-caps",
+                                    "fontWeight" : "bold"
+                                }
+                            }
+                        }
+
+                    }
+
+                }
+            },
+            "TextInput" : {
+                "std" : {
+                    "frame" : {
+                        "frameType" : "FixedHeight"
+                    },
+                    "states" : {
+                        "normal" : {
+                            "marginBottom" : 2,
+                            "spriteURLv" : "atskin/sprites/inputCentre.gif",
+                            "sprHeight" : 20,
+                            "sprWidth" : 7,
+                            "marginTop" : 3,
+                            "color" : "#000000",
+                            "sprIdx" : 0,
+                            "spcLeft" : 3,
+                            "spriteURL" : "atskin/sprites/inputEdge.gif",
+                            "font" : {
+                                "fontStyle" : "italic",
+                                "fontSize" : 17,
+                                "fontFamily" : "Tahoma",
+                                "fontVariant" : "small-caps",
+                                "fontWeight" : "bold"
+                            },
+                            "label" : {
+                                "font" : {
+                                    "fontStyle" : "italic",
+                                    "fontSize" : 17,
+                                    "fontFamily" : "Tahoma",
+                                    "fontVariant" : "small-caps",
+                                    "fontWeight" : "bold"
+                                }
+                            }
+                        },
+                        "disabled" : {
+                            "font" : {
+                                "fontStyle" : "italic",
+                                "fontSize" : 19,
+                                "fontFamily" : "Arial",
+                                "fontVariant" : "small-caps",
+                                "fontWeight" : "bold"
+                            },
+                            "label" : {
+                                "font" : {
+                                    "fontStyle" : "italic",
+                                    "fontSize" : 19,
+                                    "fontFamily" : "Arial",
+                                    "fontVariant" : "small-caps",
+                                    "fontWeight" : "bold"
+                                }
+                            }
+                        }
+
+                    }
+
+                }
+            },
+            "SelectBox" : {
+                "std" : {
+                    "iconsRight" : "dropdown",
+                    "frame" : {
+                        "frameType" : "FixedHeight"
+                    },
+                    "states" : {
+                        "normal" : {
+                            "marginBottom" : 2,
+                            "spriteURLv" : "atskin/sprites/inputCentre.gif",
+                            "sprWidth" : 7,
+                            "sprHeight" : 20,
+                            "color" : "#000000",
+                            "marginTop" : 3,
+                            "sprIdx" : 0,
+                            "spcLeft" : 3,
+                            "icons" : {
+                                "dropdown" : "dropdown:selectbox_normal"
+                            },
+                            "spriteURL" : "atskin/sprites/inputEdge.gif",
+                            "skipRightBorder" : true,
+                            "font" : {
+                                "fontStyle" : "italic",
+                                "fontSize" : 17,
+                                "fontFamily" : "Tahoma",
+                                "fontVariant" : "small-caps",
+                                "fontWeight" : "bold"
+                            },
+                            "label" : {
+                                "font" : {
+                                    "fontStyle" : "italic",
+                                    "fontSize" : 17,
+                                    "fontFamily" : "Tahoma",
+                                    "fontVariant" : "small-caps",
+                                    "fontWeight" : "bold"
+                                }
+                            }
+                        },
+                        "disabled" : {
+                            "font" : {
+                                "fontStyle" : "italic",
+                                "fontSize" : 19,
+                                "fontFamily" : "Arial",
+                                "fontVariant" : "small-caps",
+                                "fontWeight" : "bold"
+                            },
+                            "label" : {
+                                "font" : {
+                                    "fontStyle" : "italic",
+                                    "fontSize" : 19,
+                                    "fontFamily" : "Arial",
+                                    "fontVariant" : "small-caps",
+                                    "fontWeight" : "bold"
+                                }
+                            }
+                        }
+
+                    }
+
+                }
+            },
+            "AutoComplete" : {
+                "std" : {
+                    "iconsRight" : "dropdown",
+                    "frame" : {
+                        "frameType" : "FixedHeight"
+                    },
+                    "states" : {
+                        "normal" : {
+                            "marginBottom" : 2,
+                            "spriteURLv" : "atskin/sprites/inputCentre.gif",
+                            "skipLeftBorder" : false,
+                            "sprWidth" : 7,
+                            "sprHeight" : 20,
+                            "color" : "#000000",
+                            "marginTop" : 3,
+                            "sprIdx" : 0,
+                            "spcLeft" : 3,
+                            "icons" : {
+                                "dropdown" : "dropdown:multiselect_normal"
+                            },
+                            "spriteURL" : "atskin/sprites/inputEdge.gif",
+                            "skipRightBorder" : "dependsOnIcon",
+                            "font" : {
+                                "fontStyle" : "italic",
+                                "fontSize" : 17,
+                                "fontFamily" : "Tahoma",
+                                "fontVariant" : "small-caps",
+                                "fontWeight" : "bold"
+                            },
+                            "label" : {
+                                "font" : {
+                                    "fontStyle" : "italic",
+                                    "fontSize" : 17,
+                                    "fontFamily" : "Tahoma",
+                                    "fontVariant" : "small-caps",
+                                    "fontWeight" : "bold"
+                                }
+                            }
+                        },
+                        "disabled" : {
+                            "font" : {
+                                "fontStyle" : "italic",
+                                "fontSize" : 19,
+                                "fontFamily" : "Arial",
+                                "fontVariant" : "small-caps",
+                                "fontWeight" : "bold"
+                            },
+                            "label" : {
+                                "font" : {
+                                    "fontStyle" : "italic",
+                                    "fontSize" : 19,
+                                    "fontFamily" : "Arial",
+                                    "fontVariant" : "small-caps",
+                                    "fontWeight" : "bold"
+                                }
+                            }
+                        }
+
+                    }
+
+                }
+            },
+            "Textarea" : {
+
+                "std" : {
+                    "frame" : {
+                        "frameType" : "Table"
+                    },
+                    "states" : {
+                        "normal" : {
+                            "spriteURLv" : "atskin/sprites/textarea_v.gif",
+                            "spcTop" : 6,
+                            "sprWidth" : 8,
+                            "sprHeight" : 12,
+                            "backgroundColor" : "#FFFFFF",
+                            "spriteURLh" : "atskin/sprites/textarea_h.gif",
+                            "sprIdx" : 0,
+                            "spcLeft" : 4,
+                            "spriteURL" : "atskin/sprites/textarea.gif",
+                            "font" : {
+                                "fontStyle" : "italic",
+                                "fontSize" : 17,
+                                "fontFamily" : "Tahoma",
+                                "fontVariant" : "small-caps",
+                                "fontWeight" : "bold"
+                            },
+                            "label" : {
+                                "font" : {
+                                    "fontStyle" : "italic",
+                                    "fontSize" : 17,
+                                    "fontFamily" : "Tahoma",
+                                    "fontVariant" : "small-caps",
+                                    "fontWeight" : "bold"
+                                }
+                            }
+                        },
+                        "disabled" : {
+                            "font" : {
+                                "fontStyle" : "italic",
+                                "fontSize" : 19,
+                                "fontFamily" : "Arial",
+                                "fontVariant" : "small-caps",
+                                "fontWeight" : "bold"
+                            },
+                            "label" : {
+                                "font" : {
+                                    "fontStyle" : "italic",
+                                    "fontSize" : 19,
+                                    "fontFamily" : "Arial",
+                                    "fontVariant" : "small-caps",
+                                    "fontWeight" : "bold"
+                                }
+                            }
+                        }
+
+                    }
+
+                }
+            },
+            "RadioButton" : {
+                "std" : {
+                    "iconset" : "checkBoxes",
+                    "iconprefix" : "rb_",
+                    "states" : {
+                        "normal" : {
+                            "font" : {
+                                "fontStyle" : "italic",
+                                "fontSize" : 17,
+                                "fontFamily" : "Tahoma",
+                                "fontVariant" : "small-caps",
+                                "fontWeight" : "bold"
+                            }
+                        },
+                        "disabledSelected" : {
+                            "font" : {
+                                "fontStyle" : "italic",
+                                "fontSize" : 19,
+                                "fontFamily" : "Arial",
+                                "fontVariant" : "small-caps",
+                                "fontWeight" : "bold"
+                            }
+                        }
+
+                    }
+
+                }
+            },
+            "CheckBox" : {
+                "std" : {
+                    "iconset" : "checkBoxes",
+                    "iconprefix" : "cb_",
+                    "states" : {
+                        "normal" : {
+                            "font" : {
+                                "fontStyle" : "italic",
+                                "fontSize" : 17,
+                                "fontFamily" : "Tahoma",
+                                "fontVariant" : "small-caps",
+                                "fontWeight" : "bold"
+                            }
+                        },
+                        "disabled" : {
+                            "font" : {
+                                "fontStyle" : "italic",
+                                "fontSize" : 19,
+                                "fontFamily" : "Arial",
+                                "fontVariant" : "small-caps",
+                                "fontWeight" : "bold"
+                            }
+                        }
+
+                    }
+                }
+            },
+            "Select" : {
+                "std" : {
+                    "iconsRight" : "dropdown",
+                    "frame" : {
+                        "frameType" : "FixedHeight"
+                    },
+                    "states" : {
+                        "normal" : {
+                            "marginBottom" : 2,
+                            "spriteURLv" : "atskin/sprites/inputCentre.gif",
+                            "sprWidth" : 7,
+                            "sprHeight" : 20,
+                            "color" : "#000000",
+                            "marginTop" : 3,
+                            "sprIdx" : 0,
+                            "spcLeft" : 3,
+                            "icons" : {
+                                "dropdown" : "dropdown:selectbox_normal"
+                            },
+                            "spriteURL" : "atskin/sprites/inputEdge.gif",
+                            "skipRightBorder" : true,
+                            "font" : {
+                                "fontStyle" : "italic",
+                                "fontSize" : 17,
+                                "fontFamily" : "Tahoma",
+                                "fontVariant" : "small-caps",
+                                "fontWeight" : "bold"
+                            },
+                            "label" : {
+                                "font" : {
+                                    "fontStyle" : "italic",
+                                    "fontSize" : 17,
+                                    "fontFamily" : "Tahoma",
+                                    "fontVariant" : "small-caps",
+                                    "fontWeight" : "bold"
+                                }
+                            }
+                        },
+                        "disabled" : {
+                            "font" : {
+                                "fontStyle" : "italic",
+                                "fontSize" : 19,
+                                "fontFamily" : "Arial",
+                                "fontVariant" : "small-caps",
+                                "fontWeight" : "bold"
+                            },
+                            "label" : {
+                                "font" : {
+                                    "fontStyle" : "italic",
+                                    "fontSize" : 19,
+                                    "fontFamily" : "Arial",
+                                    "fontVariant" : "small-caps",
+                                    "fontWeight" : "bold"
+                                }
+                            }
+                        }
+
+                    }
+
+                }
+            },
+            "DatePicker" : {
+                "std" : {
+                    "iconsRight" : "dropdown",
+                    "frame" : {
+                        "frameType" : "FixedHeight"
+                    },
+                    "states" : {
+                        "normal" : {
+                            "marginBottom" : 2,
+                            "spriteURLv" : "atskin/sprites/inputCentre.gif",
+                            "sprWidth" : 7,
+                            "sprHeight" : 20,
+                            "color" : "#000000",
+                            "marginTop" : 3,
+                            "sprIdx" : 0,
+                            "spcLeft" : 3,
+                            "icons" : {
+                                "dropdown" : "dropdown:datepicker_normal"
+                            },
+                            "spriteURL" : "atskin/sprites/inputEdge.gif",
+                            "skipRightBorder" : true,
+                            "font" : {
+                                "fontStyle" : "italic",
+                                "fontSize" : 17,
+                                "fontFamily" : "Tahoma",
+                                "fontVariant" : "small-caps",
+                                "fontWeight" : "bold"
+                            },
+                            "label" : {
+                                "font" : {
+                                    "fontStyle" : "italic",
+                                    "fontSize" : 17,
+                                    "fontFamily" : "Tahoma",
+                                    "fontVariant" : "small-caps",
+                                    "fontWeight" : "bold"
+                                }
+                            }
+                        },
+                        "disabled" : {
+                            "font" : {
+                                "fontStyle" : "italic",
+                                "fontSize" : 19,
+                                "fontFamily" : "Arial",
+                                "fontVariant" : "small-caps",
+                                "fontWeight" : "bold"
+                            },
+                            "label" : {
+                                "font" : {
+                                    "fontStyle" : "italic",
+                                    "fontSize" : 19,
+                                    "fontFamily" : "Arial",
+                                    "fontVariant" : "small-caps",
+                                    "fontWeight" : "bold"
+                                }
+                            }
+                        }
+                    },
+                    "helpText" : {
+                        "italics" : true,
+                        "color" : "gray"
+                    },
+                    "offsetTop" : 1,
+                    "iconsLeft" : ""
+                }
+            },
+            "Button" : {
+                "std" : {
+                    "frame" : {
+                        "frameType" : "FixedHeight"
+                    },
+                    "states" : {
+                        "normal" : {
+                            "marginBottom" : 5,
+                            "spriteURLv" : "atskin/sprites/buttonCentre_1-4-2.gif",
+                            "sprHeight" : 25,
+                            "sprWidth" : 17,
+                            "marginTop" : 5,
+                            "color" : "#000000",
+                            "sprIdx" : 0,
+                            "spcLeft" : 8,
+                            "spriteURL" : "atskin/sprites/buttonEdges_1-4-2.gif",
+                            "font" : {
+                                "fontStyle" : "italic",
+                                "fontSize" : 17,
+                                "fontFamily" : "Tahoma",
+                                "fontVariant" : "small-caps",
+                                "fontWeight" : "bold"
+                            }
+                        },
+                        "disabled" : {
+                            "font" : {
+                                "fontStyle" : "italic",
+                                "fontSize" : 19,
+                                "fontFamily" : "Arial",
+                                "fontVariant" : "small-caps",
+                                "fontWeight" : "bold"
+                            }
+                        }
+                    }
+                }
+
+            },
+            "Calendar" : {
+                "std" : {
+                    "previousPageIcon" : "std:home",
+                    "nextPageIcon" : "std:home",
+                    "defaultTemplate" : "aria.widgets.calendar.CalendarTemplate",
+                    "fontFamily" : "Tahoma",
+                    "fontVariant" : "small-caps"
+                }
+            },
+            "TabPanel" : {
+                "std" : {
+                    "frame" : {
+                        "frameType" : "Table"
+                    },
+                    "states" : {
+                        "normal" : {
+                            "marginBottom" : -6,
+                            "spcTop" : 16,
+                            "sprWidth" : 66,
+                            "sprHeight" : 16,
+                            "backgroundColor" : "#FFFFFF",
+                            "marginLeft" : -25,
+                            "marginTop" : -6,
+                            "color" : "#333333",
+                            "marginRight" : -14,
+                            "sprIdx" : 0,
+                            "spcLeft" : 36
+                        }
+                    }
+                }
+            },
+            "Tab" : {
+                "std" : {
+                    "frame" : {
+                        "frameType" : "Table"
+                    },
+                    "states" : {
+                        "normal" : {
+                            "spriteURLh" : "atskin/sprites/tabs_h.png",
+                            "spriteURLv" : "atskin/sprites/tabs_v.png",
+                            "spriteURL" : "atskin/sprites/tabs.png",
+                            "font" : {
+                                "fontStyle" : "italic",
+                                "fontSize" : 17,
+                                "fontVariant" : "small-caps",
+                                "fontFamily" : "Tahoma",
+                                "fontWeight" : "bold"
+                            }
+                        },
+                        "disabled" : {
+                            "font" : {
+                                "fontStyle" : "italic",
+                                "fontSize" : 19,
+                                "fontVariant" : "small-caps",
+                                "fontFamily" : "Arial",
+                                "fontWeight" : "bold"
+                            }
+                        }
+                    }
+                }
+            },
+            "Div" : {
+                "std" : {
+                    "frame" : {
+                        "frameType" : "Simple"
+                    },
+                    "states" : {
+                        "normal" : {
+                            "color" : "#000000",
+                            "font" : {
+                                "fontStyle" : "italic",
+                                "fontSize" : 17,
+                                "fontVariant" : "small-caps",
+                                "fontFamily" : "Tahoma",
+                                "fontWeight" : "bold"
+                            }
+                        }
+                    }
+                }
+            },
+            "MultiAutoComplete" : {
+                "std" : {
+                    "frame" : {
+                        "frameType" : "Table"
+                    },
+                    "states" : {
+                        "normal" : {
+                            "spriteURLv" : "atskin/sprites/textarea_v.gif",
+                            "spriteURLh" : "atskin/sprites/textarea_h.gif",
+                            "spriteURL" : "atskin/sprites/textarea.gif",
+                            "icons" : {
+                                "dropdown" : "dropdown:multiselect_normal"
+                            },
+                            "label" : {
+                                "font" : {
+                                    "fontStyle" : "italic",
+                                    "fontSize" : 17,
+                                    "fontVariant" : "small-caps",
+                                    "fontFamily" : "Tahoma",
+                                    "fontWeight" : "bold"
+                                }
+                            }
+                        },
+                        "disabled" : {
+                            "label" : {
+                                "font" : {
+                                    "fontStyle" : "italic",
+                                    "fontSize" : 19,
+                                    "fontVariant" : "small-caps",
+                                    "fontFamily" : "Arial",
+                                    "fontWeight" : "bold"
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }

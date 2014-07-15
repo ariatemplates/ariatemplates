@@ -60,9 +60,12 @@
     {/macro}
 
     {macro writeState(info)}
-        .${cssPrefix(info)}c {
-            font-weight: ${info.skinClass.label.fontWeight}
-        }
+        {var buttonTextFont = info.state.frame.font /}
+        {if !(buttonTextFont && buttonTextFont.fontWeight)}
+            .${cssPrefix(info)}c {
+                font-weight: ${info.skinClass.label.fontWeight}
+            }
+        {/if}
     {/macro}
 
 {/CSSTemplate}

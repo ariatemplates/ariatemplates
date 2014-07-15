@@ -43,6 +43,26 @@ module.exports = Aria.beanDefinitions({
             $minValue : 0,
             $maxValue : 100
         },
+        "FontCSS" : {
+            $type : "Object",
+            $properties : {
+                "fontStyle" : {
+                    $type : "json:String"
+                },
+                "fontVariant" : {
+                    $type : "json:String"
+                },
+                "fontWeight" : {
+                    $type : "json:String"
+                },
+                "fontSize" : {
+                    $type : "Pixels"
+                },
+                "fontFamily" : {
+                    $type : "json:String"
+                }
+            }
+        },
         "WidgetGeneralCfg" : {
             $type : "Object",
             $properties : {
@@ -297,6 +317,9 @@ module.exports = Aria.beanDefinitions({
             $properties : {
                 "color" : {
                     $type : "Color"
+                },
+                "font" : {
+                    $type : "FontCSS"
                 }
             }
         },
@@ -492,6 +515,12 @@ module.exports = Aria.beanDefinitions({
                 },
                 "nextPageIcon" : {
                     $type : "Icons"
+                },
+                "fontFamily" : {
+                    $type : "json:String"
+                },
+                "fontVariant" : {
+                    $type : "json:String"
                 }
             }
         },
@@ -740,6 +769,9 @@ module.exports = Aria.beanDefinitions({
             $properties : {
                 "color" : {
                     $type : "Color"
+                },
+                "font" : {
+                    $type : "FontCSS"
                 }
             }
         },
@@ -1419,13 +1451,13 @@ module.exports = Aria.beanDefinitions({
                 },
                 "innerHeight" : {
                     $type : "json:MultiTypes",
-                    $default: "normal",
+                    $default : "normal",
                     $description : "The text line height. It must be set when the verticalAlign is used.",
                     $contentTypes : [{
-                        $type : "Pixels"
-                    }, {
-                        $type : "json:String"
-                     }]
+                                $type : "Pixels"
+                            }, {
+                                $type : "json:String"
+                            }]
                 },
                 "paddingTop" : {
                     $type : "Pixels",
@@ -1530,6 +1562,9 @@ module.exports = Aria.beanDefinitions({
                 "frameHeight" : {
                     $type : "json:Integer",
                     $description : "Simple frame height."
+                },
+                "font" : {
+                    $type : "FontCSS"
                 }
             }
         },
@@ -1587,13 +1622,13 @@ module.exports = Aria.beanDefinitions({
                 },
                 "innerHeight" : {
                     $type : "json:MultiTypes",
-                    $default: "normal",
+                    $default : "normal",
                     $description : "The text line height. It must be set when the verticalAlign is used.",
                     $contentTypes : [{
-                        $type : "Pixels"
-                    }, {
-                        $type : "json:String"
-                     }]
+                                $type : "Pixels"
+                            }, {
+                                $type : "json:String"
+                            }]
                 },
                 "sprIdx" : {
                     $type : "json:Integer"
@@ -1620,6 +1655,9 @@ module.exports = Aria.beanDefinitions({
                 "marginBottom" : {
                     $type : "Pixels",
                     $default : 0
+                },
+                "font" : {
+                    $type : "FontCSS"
                 }
             }
         },
@@ -1705,6 +1743,9 @@ module.exports = Aria.beanDefinitions({
                 "frameIconVPos" : {
                     $type : "json:String",
                     $default : "bottom"
+                },
+                "font" : {
+                    $type : "FontCSS"
                 }
             }
         },

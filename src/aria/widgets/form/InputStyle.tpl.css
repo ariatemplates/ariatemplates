@@ -20,11 +20,15 @@
 
     {macro writeState(info)}
         {var label = info.state.label || {} /}
-        {if label.color}
-            .${cssPrefix(info)}label {
+
+        .${cssPrefix(info)}label {
+            {if label.color}
                 color: ${label.color};
-            }
-        {/if}
+            {/if}
+            {if label.font}
+                {call generateFontStyle(label.font)/}
+            {/if}
+        }
     {/macro}
 
 {/CSSTemplate}
