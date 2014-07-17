@@ -153,7 +153,7 @@ Aria.classDefinition({
     },
     $statics : {
         // ERROR MESSAGE:
-        WIDGET_VALUE_IS_WRONG_TYPE : "%1Value %2 is of incorrect type."
+        WIDGET_VALUE_IS_WRONG_TYPE : "%1Value '%2' is of incorrect type."
     },
     $prototype : {
         /**

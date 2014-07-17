@@ -22,6 +22,8 @@ Aria.classDefinition({
     $dependencies : ["aria.widgets.form.DropDownListTrait", "aria.widgets.controllers.SelectBoxController"],
     $css : ["aria.widgets.form.SelectBoxStyle", "aria.widgets.form.list.ListStyle", "aria.widgets.container.DivStyle"],
     $statics : {
+        /* overrides TextInput.WIDGET_VALUE_IS_WRONG_TYPE */
+        WIDGET_VALUE_IS_WRONG_TYPE : "%1Value '%2' is invalid. Note that SelectBox's value must be present in its options array. When changing both `value` and `options` via aria.utils.Json.setValue, change the options array first.",
         DUPLICATE_VALUE : "%1 - Duplicate values %2 found in options"
     },
     /**
