@@ -22,5 +22,7 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.skin.button.verticalAlign.VerticalAlignTopTestCase");
         this.addTests("test.aria.widgets.skin.button.verticalAlign.VerticalAlignBottomTestCase");
         this.addTests("test.aria.widgets.skin.button.verticalAlign.VerticalAlignMiddleTestCase");
+        this.addTests("test.aria.widgets.skin.button.verticalAlign.VerticalAlignBottomWithHeightTestCase");
+
     }
 });

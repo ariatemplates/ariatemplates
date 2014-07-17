@@ -1412,11 +1412,17 @@ Aria.beanDefinitions({
             $properties : {
                 "verticalAlign" : {
                     $type : "json:String",
-                    $description : "Vertical alignment value applied to the content. The standard html values are accepted (top, middle, ...). The innerHeight must be set to have it working"
+                    $description : "Vertical alignment value applied to the content. The standard html values are accepted (top, middle, ...)."
                 },
                 "innerHeight" : {
-                    $type : "Pixels",
-                    $description : "The text line height. It must be set when the verticalAlign is used."
+                    $type : "json:MultiTypes",
+                    $default: "normal",
+                    $description : "The text line height. It must be set when the verticalAlign is used.",
+                    $contentTypes : [{
+                        $type : "Pixels"
+                    }, {
+                        $type : "json:String"
+                     }]
                 },
                 "paddingTop" : {
                     $type : "Pixels",
@@ -1574,11 +1580,17 @@ Aria.beanDefinitions({
                 },
                 "verticalAlign" : {
                     $type : "json:String",
-                    $description : "Vertical alignment value applied to the content. The standard html values are accepted (top, middle, ...). The innerHeight must be set to have it working"
+                    $description : "Vertical alignment value applied to the content. The standard html values are accepted (top, middle, ...)."
                 },
                 "innerHeight" : {
-                    $type : "Pixels",
-                    $description : "The text line height. It must be set when the verticalAlign is used."
+                    $type : "json:MultiTypes",
+                    $default: "normal",
+                    $description : "The text line height. It must be set when the verticalAlign is used.",
+                    $contentTypes : [{
+                        $type : "Pixels"
+                    }, {
+                        $type : "json:String"
+                     }]
                 },
                 "sprIdx" : {
                     $type : "json:Integer"

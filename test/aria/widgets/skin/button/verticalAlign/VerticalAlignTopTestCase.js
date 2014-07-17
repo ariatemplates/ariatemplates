@@ -23,7 +23,6 @@ Aria.classDefinition({
             var frame = aria.widgets.AriaSkin.skinObject.Button.std.states.normal.frame;
             frame.sprHeight = 50;
             frame.verticalAlign = "top";
-            frame.innerHeight = 16;
         },
 
         runTemplateTest : function () {
