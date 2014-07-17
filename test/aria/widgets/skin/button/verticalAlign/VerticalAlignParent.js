@@ -16,6 +16,7 @@
 Aria.classDefinition({
     $classpath : "test.aria.widgets.skin.button.verticalAlign.VerticalAlignParent",
     $extends : "aria.jsunit.TemplateTestCase",
+    $dependencies : ["aria.utils.Dom"],
     $constructor : function () {
         this.$TemplateTestCase.constructor.call(this);
         this.setTestEnv({
@@ -25,23 +26,33 @@ Aria.classDefinition({
     },
 
     $prototype : {
-        checkPosition : function(position) {
+        getElements : function() {
             var tpl = this.tpl = this.testDiv.getElementsByTagName("div")[0];
             var widgetDom = this.getElementsByClassName(tpl, "xWidget")[0];
-
-            //var top = widgetDom.offsetTop;
-            var height = widgetDom.offsetHeight;
-
-            var skinName = aria.widgets.AriaSkin.skinName;
             var spans = widgetDom.getElementsByTagName("span");
             var innerDom;
+            var skinName = aria.widgets.AriaSkin.skinName;
             if (skinName == "atskin") {
                 innerDom = this.getElementsByClassName(tpl, "xFrameContent")[0];
             } else {
                 innerDom = spans[1];
             }
 
+            return {
+                skinName : skinName,
+                widgetDom : widgetDom,
+                innerDom : innerDom
+            };
+
+        },
+        checkPosition : function(position) {
+
+            var elements = this.getElements();
+            var widgetDom = elements.widgetDom;
+            var innerDom = elements.innerDom;
+
             // Check the position
+            var height = widgetDom.offsetHeight;
             var difference;
             var errorMargin = 10;
             if (position == 'top') {
@@ -56,10 +67,23 @@ Aria.classDefinition({
                 return;
             }
 
+            this.assertTrue(innerDom.offsetHeight < 25, "The inner dom height is too high (" + innerDom.offsetHeight + " pixels found)");
             this.assertTrue(
                     difference >= 0 && difference <= errorMargin,
-                    "The position of the button label should be on the " + position + " in the skin " + skinName
+                    "The position of the button label should be on the " + position + " in the skin " + elements.skinName
             );
+
+        },
+
+        checkInnerHeight : function(height) {
+            var elements = this.getElements();
+            var widgetDom = elements.widgetDom;
+            var innerDom = elements.innerDom;
+
+            this.assertEquals(innerDom.offsetHeight, height, "The inner dom height should be %2, %1 found");
+            var lineHeight = aria.utils.Dom.getStyle(innerDom, 'lineHeight');
+            this.assertEquals(lineHeight, height + "px", "The inner dom line-height should be %2, %1 found");
+
 
         }
     }

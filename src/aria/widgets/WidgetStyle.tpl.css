@@ -15,7 +15,7 @@
 
 {CSSTemplate {
     $classpath : "aria.widgets.WidgetStyle",
-    $dependencies : ["aria.widgets.AriaSkinInterface"],
+    $dependencies : ["aria.widgets.AriaSkinInterface", "aria.utils.Type"],
     $hasScript: true
 }}
 
@@ -90,7 +90,6 @@
         {var spcRight=sprWidth-spcLeft/}
         {var prefix=cssPrefix(info)/}
         {var verticalAlignApplied = state.verticalAlign && state.innerHeight /}
-
         .${prefix}bkgA {
             {call background("transparent",state.spriteURL,"no-repeat scroll 0 0")/}
             font-size:1px;
@@ -104,9 +103,9 @@
         .${prefix}c {
             margin: ${state.marginTop}px ${state.marginRight}px ${state.marginBottom}px ${state.marginLeft}px;
             color: ${state.color};
-            {if state.verticalAlign}
+            {if verticalAlignApplied}
             	vertical-align: ${state.verticalAlign};
-            	line-height: ${state.innerHeight}px;
+                line-height: ${state.innerHeight + (aria.utils.Type.isNumber(state.innerHeight) ? "px" : "")};
             {/if}
         }
         {if state.skipLeftBorder!=true}

@@ -20,7 +20,7 @@
 Aria.classDefinition({
     $classpath : 'aria.widgets.frames.SimpleFrame',
     $extends : 'aria.widgets.frames.Frame',
-    $dependencies : ['aria.utils.Dom'],
+    $dependencies : ['aria.utils.Dom', 'aria.utils.Type'],
     $constructor : function (cfg) {
         this.$Frame.constructor.call(this, cfg);
         var state = this._cfg.stateObject;
@@ -97,13 +97,17 @@ Aria.classDefinition({
                     + sizeInfo.className + '">');
             if (verticalAlignApplied) {
                 var innerHeight = state.innerHeight;
+                if (aria.utils.Type.isNumber(innerHeight)) {
+                    innerHeight += "px";
+                }
+
                 // Vertical align is added in this block, as this property has no effect without the heights information
                 out.write([
-                    '<span style="height:',
+                    '<span style="display: inline-block;height:',
                     innerHeight,
-                    'px;line-height:',
+                    ';line-height:',
                     innerHeight,
-                    'px;vertical-align:',
+                    ';vertical-align:',
                     state.verticalAlign,
                     '">'
                 ].join(""));

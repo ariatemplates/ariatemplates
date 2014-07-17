@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.skin.button.verticalAlign.VerticalAlignMiddleTestCase",
+    $classpath : "test.aria.widgets.skin.button.verticalAlign.VerticalAlignBottomWithHeightTestCase",
     $extends : "test.aria.widgets.skin.button.verticalAlign.VerticalAlignParent",
     $dependencies : ["aria.core.Browser"],
 
@@ -22,7 +22,8 @@ Aria.classDefinition({
         setUp : function () {
             var frame = aria.widgets.AriaSkin.skinObject.Button.std.states.normal.frame;
             frame.sprHeight = 50;
-            frame.verticalAlign = "middle";
+            frame.verticalAlign = "bottom";
+            frame.innerHeight = 17;
         },
 
         runTemplateTest : function () {
@@ -35,7 +36,9 @@ Aria.classDefinition({
                 }
             }
 
-            this.checkPosition("middle");
+            this.checkPosition("bottom");
+            this.checkInnerHeight(17);
+
             this.end();
         }
     }

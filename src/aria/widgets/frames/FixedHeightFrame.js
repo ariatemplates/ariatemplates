@@ -25,7 +25,7 @@
     Aria.classDefinition({
         $classpath : "aria.widgets.frames.FixedHeightFrame",
         $extends : "aria.widgets.frames.Frame",
-        $dependencies : ["aria.utils.Dom"],
+        $dependencies : ["aria.utils.Dom", "aria.utils.Type"],
         $onload : function () {
             domUtils = aria.utils.Dom;
         },
@@ -58,12 +58,12 @@
                 } else {
                     this.innerWidth = -1;
                 }
-                this.innerHeight = state.innerHeight || state.sprHeight - state.marginTop - state.marginBottom;
-                /*
-                this.innerHeight = state.verticalAlign && state.innerHeight ?
-                        state.innerHeight :
-                        state.sprHeight - state.marginTop - state.marginBottom;
-                        */
+
+                if (state.verticalAlign && state.innerHeight) {
+                    this.innerHeight = aria.utils.Type.isNumber(state.innerHeight) ? state.innerHeight : -1;
+                } else {
+                    this.innerHeight = state.sprHeight - state.marginTop - state.marginBottom;
+                }
             },
 
             /**
