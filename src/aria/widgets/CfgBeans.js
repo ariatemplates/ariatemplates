@@ -814,7 +814,7 @@ Aria.beanDefinitions({
                 },
                 "options" : {
                     $type : "json:Array",
-                    $description : "List of the possible values that have to be proposed to the user",
+                    $description : "List of the possible values that have to be proposed to the user. Note that the `value` of SelectBox is validated each time it's set and it must be one of the entries of the `options` array.",
                     $contentType : {
                         $type : "ListItemCfg"
                     },
