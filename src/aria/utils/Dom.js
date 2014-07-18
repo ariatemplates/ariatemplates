@@ -1275,6 +1275,34 @@ Aria.classDefinition({
         refreshScrollbars : function (domElt) {
             this.refreshScrollbars = this._checkRefreshScrollbarsNeeded() ? this._refreshScrollbarsFix : Aria.empty;
             this.refreshScrollbars(domElt);
+        },
+
+        /**
+         * Proxy/polly fill method for getElementsByClassName.
+         * On browser which don't support this feature the behaviour is emulated,
+         * otherwise the native version is called.
+         * @param {HTMLElement} dom The source dom element
+         * @param {String} className The class name to look for
+         * @return {Array} Array of Html elements
+         */
+        getElementsByClassName : function (domElement, className) {
+            if(!domElement || !className) {
+                return [];
+            }
+            if (domElement.getElementsByClassName) {
+                return domElement.getElementsByClassName(className);
+            } else {
+                var elements = domElement.getElementsByTagName("*");
+                var found = [];
+                var regexp = new RegExp("\\b" + className + "\\b");
+                for (var i = 0, ii = elements.length; i < ii; i++) {
+                    var el = elements[i];
+                    if (regexp.test(el.className)) {
+                        found.push(el);
+                    }
+                }
+                return found;
+            }
         }
     }
 });
