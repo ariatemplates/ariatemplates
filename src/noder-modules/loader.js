@@ -136,4 +136,8 @@ LoaderProto.defineUnpackaged = function (module, fileContent) {
     }
 };
 
+LoaderProto.updatePackagesMap = function(newMap) {
+    this.parentLoader.updatePackagesMap(newMap);
+};
+
 module.exports = Loader;
