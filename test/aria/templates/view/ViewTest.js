@@ -20,14 +20,32 @@ Aria.classDefinition({
     $prototype : {
 
         runTemplateTest : function () {
+            this.changeInitialArrayTest();
+            this.dummyViewTest();
+            this.end();
+        },
 
+        dummyViewTest : function () {
             // only happens with IE when creating views with a null element in an array
             if (this.templateCtxt._tpl.dummyview.initialArray.length === 3) {
                 this.assertErrorInLogs(this.templateCtxt._tpl.dummyview.UNDEFINED_ARRAY_ELEMENT, 1);
             }
             this.templateCtxt._tpl.dummyview.$dispose();
-            this.end();
+        },
 
+        //
+        changeInitialArrayTest : function () {
+            var tpl = this.templateCtxt._tpl;
+            // check if initial array has 3 items
+            this.assertEquals(tpl.changeArrayView.items.length, tpl.testArray.length);
+            this.assertJsonEquals(tpl.testArray, ["a", "b", "c"]);
+
+            var newArray = ["d"];
+            tpl.testArray = newArray;
+            tpl.changeArrayView.updateInitialArray(newArray);
+            this.assertEquals(tpl.changeArrayView.items.length, newArray.length);
+            this.assertEquals(tpl.changeArrayView.items[0].value, newArray[0]);
+            this.templateCtxt._tpl.changeArrayView.$dispose();
         }
 
     }

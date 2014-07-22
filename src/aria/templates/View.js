@@ -735,6 +735,19 @@
                         return i;
                     }
                 }
+            },
+
+            /**
+             * Updates initial array of the view. Needed in case where the previous initial array is replaced by another object
+             * @param {Array|Object} new obj array or map on which to create the view
+             */
+            updateInitialArray : function (array) {
+                if (!(aria.utils.Type.isObject(array) || aria.utils.Type.isArray(array))) {
+                    this.$logError(this.INVALID_TYPE_OF_ARGUMENT);
+                    return;
+                }
+                this.initialArray = array;
+                this._refreshInitialArray();
             }
 
         }

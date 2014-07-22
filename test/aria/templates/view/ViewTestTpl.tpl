@@ -25,6 +25,9 @@
 					            ["b"],
 					     ] /}
 
+	{var testArray = ["a", "b", "c"] /}
+	{createView changeArrayView on testArray /}
+
 	{macro main()}
 		//nothing to display
 	{/macro}
