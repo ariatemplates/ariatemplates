@@ -102,7 +102,7 @@
             startTest : function () {
                 this._history = this._newWindow.aria.utils.History;
                 this._history.$on({
-                    "onpopstate" : this._onpopstateCB
+                    "popstate" : this._onpopstateCB
                 });
                 this._checkState(null);// 2
                 this._checkTitle("HistoryTest");// 4
