@@ -407,11 +407,6 @@ Aria.classDefinition({
                     }
                 }
             };
-            /* BACKWARD-COMPATIBILITY-BEGIN HEADERS */
-            if (req.postHeader) {
-                requestObject.postHeader = req.postHeader;
-            }
-            /* BACKWARD-COMPATIBILITY-END HEADERS */
             if (handler.expectedResponseType) {
                 requestObject.expectedResponseType = handler.expectedResponseType;
             }

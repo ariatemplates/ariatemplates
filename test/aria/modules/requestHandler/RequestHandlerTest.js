@@ -95,28 +95,6 @@ Aria.classDefinition({
             handler.$dispose();
         },
 
-        /* BACKWARD-COMPATIBILITY-BEGIN HEADERS */
-        /**
-         * Test to configure post data header.
-         */
-        testConfigurePostHeader : function () {
-            var handler = new aria.modules.requestHandler.RequestHandler();
-            var request = {
-                moduleName : "test",
-                actionName : "testConfigurePostHeader",
-                postHeader : "text/plain",
-                requestHandler : handler
-            };
-            var valid = aria.core.JsonValidator.normalize({
-                json : request,
-                beanName : "aria.modules.RequestBeans.RequestObject"
-            }, true);
-            this.assertTrue(valid);
-            this.assertTrue(request.postHeader === "text/plain");
-            handler.$dispose();
-        },
-        /* BACKWARD-COMPATIBILITY-END HEADERS */
-
         /**
          * Test to configure custom headers.
          */
