@@ -176,7 +176,7 @@ var dynamicDependencies = require("./$History").getDependencies();
             this._dispose();
         },
         $events : {
-            "onpopstate" : {
+            "popstate" : {
                 description : "Notify window when a state is popped and raise this event",
                 properties : {
                     state : "The state that has been popped."
@@ -184,7 +184,6 @@ var dynamicDependencies = require("./$History").getDependencies();
             }
         },
         $prototype : {
-
             /**
              * Gets the current state of the browser
              * @return {object} state object containing the data that were associated to it when pushing or replacing
@@ -485,7 +484,7 @@ var dynamicDependencies = require("./$History").getDependencies();
                     this._setTitle(title);
                 }
                 this.$raiseEvent({
-                    name : "onpopstate",
+                    name : "popstate",
                     state : state
                 });
             },
@@ -516,7 +515,7 @@ var dynamicDependencies = require("./$History").getDependencies();
                 if (id && this._currentId != id && this._applyState(stateInfo)) {
                     this.state = this.getState();
                     this.$raiseEvent({
-                        name : "onpopstate",
+                        name : "popstate",
                         state : this.state
                     });
                 }

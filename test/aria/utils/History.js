@@ -102,8 +102,9 @@
             startTest : function () {
                 this._history = this._newWindow.aria.utils.History;
                 this._history.$on({
-                    "onpopstate" : this._onpopstateCB
+                    "popstate" : this._onpopstateCB
                 });
+
                 this._checkState(null);// 2
                 this._checkTitle("HistoryTest");// 4
                 this._history.pushState({
@@ -125,7 +126,6 @@
                 this._checkUrl("fghi");// 16
                 if (this._stopTestBeforeNavigation) {
                     this._finalizeTest("testAsyncLoadIFrame");
-
                 } else {
                     this._history.back();
                     aria.core.Timer.addCallback({
