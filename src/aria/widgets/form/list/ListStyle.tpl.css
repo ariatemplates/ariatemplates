@@ -75,6 +75,7 @@
         a.x${skinnableClassName}DisabledItem_${skinClassName}:hover,
         a.x${skinnableClassName}DisabledItem_${skinClassName}:link {
             color:#888;
+            cursor:default;
         }
 
         .x${skinnableClassName}Footer_${skinClassName} {
