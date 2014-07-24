@@ -69,12 +69,24 @@ Aria.classDefinition({
             if (report.displayDropDown) {
                 dm.initialInput = displayValue;
                 var jsonUtils = aria.utils.Json;
-                jsonUtils.setValue(dm, 'selectedIdx', -1);
+                var selectedIndex = this._getSelectedIndex(dm.value);
+                jsonUtils.setValue(dm, 'selectedIdx', selectedIndex);
                 jsonUtils.setValue(dm, 'listContent', sgs);
             }
             return report;
         },
-
+        /**
+         * Returns the index of selected option
+         * @param {String} value selected option value
+         * @return {Integer}
+         */
+        _getSelectedIndex : function (value) {
+            for (var i = 0; i < this._options.length; i++) {
+                if (this._options[i].value === value) {
+                    return i;
+                }
+            }
+        },
         /**
          * Set the list widget.
          * @param {aria.widgets.form.list.List} listWidget
