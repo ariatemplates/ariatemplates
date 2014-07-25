@@ -168,8 +168,9 @@ Aria.classDefinition({
          * @param {Object} arg Any parameter which will be passed as first parameter to callback function.
          */
         evalCallback : function (callback, args) {
-            return this._context.evalCallback(callback, args);
+            if (this._context) {
+                return this._context.evalCallback(callback, args);
+            }
         }
-
     }
 });
