@@ -13,19 +13,42 @@
  * limitations under the License.
  */
 
+var path = require('path');
+
+var getPath = function (lastPart) {
+    return path.join(__dirname, lastPart);
+};
+
 module.exports = function (grunt) {
-    grunt.config.set('packaging.locales', require('../config/locales.json'));
-    grunt.config.set('packaging.bootstrap.outputdir', 'build/target/bootstrap');
-    grunt.config.set('packaging.bootstrap.files', require('../config/files-bootstrap.json'));
-    grunt.config.set('packaging.check_globals.files', ['**/*.js', '!aria/noderError/**']);
-    grunt.config.set('packaging.prod.outputdir', 'build/target/production');
-    grunt.config.set('packaging.prod.files', require('../config/files-prod.json'));
-    grunt.config.set('packaging.prod.source_files', ['**/*', '!aria/node.js']);
-    grunt.config.set('packaging.prod.allow_unpackaged_files', []);
-    grunt.config.set('packaging.prod.localization_files', require('../config/files-prod-localization.json'));
-    grunt.config.set('packaging.prod.hash_include_files', []);
-    grunt.config.set('packaging.license', grunt.file.read('build/templates/LICENSE'));
-    grunt.config.set('packaging.license_min', grunt.file.read('build/templates/LICENSE-MIN'));
-    grunt.config.set('pkg', require('../../package.json'));
-    grunt.config.set('packaging.main_file', 'aria/<%= pkg.name %>-<%= pkg.version %>.js');
+
+    var pkg = require('../../package.json');
+    var atExtensions = ['**/*.js', '**/*.tpl', '**/*.tpl.css', '**/*.tpl.txt', '**/*.tml', '**/*.cml'];
+
+    grunt.config.set('pkg', pkg);
+
+    return {
+        bootstrap : {
+            outputDirectory : getPath('../target/bootstrap'),
+            files : require('../config/files-bootstrap.json'),
+            checkGlobalsFiles : ['**/*.js', '!aria/noderError/**'],
+            bootstrapFileName : 'aria/' + pkg.name + '-' + pkg.version + '.js'
+        },
+        prod : {
+            // in the outputDirectory option here we don't use the getPath method because this setting becomes the
+            // default output directory for the packages of a project. If someone installs ariatemplates in their
+            // project and makes a custom build without specifying an output directory, we want the output of the build
+            // to end up in the root build\target folder of their project
+            outputDirectory : 'build/target/production',
+            sourceDirectories : [getPath('../target/bootstrap')],
+            noderModulesPath : getPath('../../src/noder-modules'),
+            allowUnpackagedFiles : [],
+            hashIncludeFiles : [],
+            clean : true
+        },
+        license : grunt.file.read(getPath('../templates/LICENSE')),
+        licenseMin : grunt.file.read(getPath('../templates/LICENSE-MIN')),
+        pkg : pkg,
+        atExtensions : atExtensions
+
+    };
 };

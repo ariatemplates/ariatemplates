@@ -49,12 +49,6 @@
         ]
     },
     {
-        "name": "aria/pack-html.js",
-        "files": [
-            "aria/html/**/*"
-        ]
-    },
-    {
         "name": "aria/pack-embed.js",
         "files": [
             "aria/embed/*",
@@ -92,71 +86,6 @@
         "name": "aria/pack-pageengine.js",
         "files": [
             "aria/pageEngine/**/*"
-        ]
-    },
-    {
-        "name": "aria/pack-widgets1.js",
-        "files": [
-            "aria/widgets/environment/*",
-            "aria/widgets/action/ActionWidget.js",
-            "aria/widgets/action/Button.js",
-            "aria/widgets/action/ButtonStyle.tpl.css",
-            "aria/widgets/action/Link.js",
-            "aria/widgets/action/LinkStyle.tpl.css",
-            "aria/widgets/calendar/*",
-            "aria/widgets/container/*",
-            "!aria/widgets/container/Splitter.js",
-            "!aria/widgets/container/Fieldset.js",
-            "!aria/widgets/container/Tab.js",
-            "!aria/widgets/container/TabPanel.js",
-            "!aria/widgets/container/Tooltip.js",
-            "aria/widgets/controllers/reports/*",
-            "aria/widgets/controllers/*",
-            "!aria/widgets/controllers/MultiSelectController.js",
-            "!aria/widgets/controllers/DateController.js",
-            "!aria/widgets/controllers/TimeController.js",
-            "aria/widgets/errorlist/*",
-            "aria/widgets/form/list/templates/*",
-            "aria/widgets/form/list/*",
-            "aria/widgets/form/*",
-            "!aria/widgets/form/Gauge.js",
-            "!aria/widgets/form/DateField.js",
-            "!aria/widgets/form/MultiSelect.js",
-            "!aria/widgets/form/PasswordField.js",
-            "!aria/widgets/form/TimeField.js",
-            "aria/widgets/frames/*",
-            "aria/widgets/*",
-            "!aria/widgets/AriaSkinBeans.js",
-            "aria/popups/*",
-            "aria/utils/environment/Number.js",
-            "aria/utils/environment/NumberCfgBeans.js",
-            "aria/resources/handlers/*.js"
-        ]
-    },
-    {
-        "name": "aria/pack-widgets2.js",
-        "files": [
-            "aria/widgets/AriaSkinBeans.js",
-            "aria/widgets/action/SortIndicator.js",
-            "aria/widgets/action/SortIndicatorStyle.tpl.css",
-            "aria/widgets/action/IconButton.js",
-            "aria/widgets/container/Splitter.js",
-            "aria/widgets/container/Fieldset.js",
-            "aria/widgets/container/Tab.js",
-            "aria/widgets/container/TabPanel.js",
-            "aria/widgets/container/Tooltip.js",
-            "aria/widgets/controllers/MultiSelectController.js",
-            "aria/widgets/controllers/DateController.js",
-            "aria/widgets/controllers/TimeController.js",
-            "aria/widgets/form/Gauge.js",
-            "aria/widgets/form/DateField.js",
-            "aria/widgets/form/MultiSelect.js",
-            "aria/widgets/form/PasswordField.js",
-            "aria/widgets/form/TimeField.js",
-            "aria/widgets/form/templates/*",
-            "aria/widgets/transform/*",
-            "aria/utils/environment/Date.js",
-            "aria/utils/environment/DateCfgBeans.js"
         ]
     },
     {
@@ -205,10 +134,7 @@
             "aria/noderError/**"
         ],
         "builder": {
-             "type": "NoderPackage",
-             "cfg": {
-                 "header": "<%= atbuildOptions.license_min %>"
-             }
+             "type": "NoderPackage"
         }
     }
 ]

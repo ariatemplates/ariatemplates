@@ -25,8 +25,9 @@
  * </ul>
  */
 
+
 module.exports = function (grunt) {
-    var atExtensions = ['**/*.js', '**/*.tpl', '**/*.tpl.css', '**/*.tpl.txt', '**/*.tml', '**/*.cml'];
+    var packagingSettings = require('./config-packaging')(grunt);
 
     var getNoderPackage = function (packageFile, mainFile, environment) {
         return {
@@ -34,7 +35,7 @@ module.exports = function (grunt) {
             builder : {
                 type : 'NoderBootstrapPackage',
                 cfg : {
-                    header : '<%= packaging.license %>',
+                    header : packagingSettings.license,
                     noderModules : ['src/noder-modules/*'],
                     noderEnvironment : environment,
                     noderConfigOptions : {
@@ -59,7 +60,7 @@ module.exports = function (grunt) {
         options : {
             sourceDirectories : ['src'],
             sourceFiles : ['aria/**/*', '!aria/node.js', '!aria/bootstrap.tpl.js', '!aria/css/**'],
-            outputDirectory : '<%= packaging.bootstrap.outputdir %>',
+            outputDirectory : packagingSettings.bootstrap.outputDirectory,
             visitors : [{
                         type : 'NoderPlugins',
                         cfg : {
@@ -72,7 +73,7 @@ module.exports = function (grunt) {
                             requireFunction : "syncRequire",
                             wrapper : "<%= grunt.file.read('src/aria/bootstrap.tpl.js') %>",
                             targetLogicalPath : 'aria/bootstrap.js',
-                            requires : '<%= packaging.bootstrap.files %>'
+                            requires : packagingSettings.bootstrap.files
                         }
                     }, {
                         type : 'NoderRequiresGenerator',
@@ -80,7 +81,7 @@ module.exports = function (grunt) {
                             requireFunction : "syncRequire",
                             wrapper : "<%= grunt.file.read('src/aria/bootstrap.tpl.js') %>",
                             targetLogicalPath : 'aria/bootstrap-node.js',
-                            requires : '<%= packaging.bootstrap.files %>'
+                            requires : packagingSettings.bootstrap.files
                         }
                     }, {
                         type : 'ATNoderConverter',
@@ -90,7 +91,7 @@ module.exports = function (grunt) {
                     }, {
                         type : 'CheckGlobals',
                         cfg : {
-                            files : '<%= packaging.check_globals.files %>',
+                            files : packagingSettings.bootstrap.checkGlobalsFiles,
                             allowCommonJSGlobals : true,
                             allowedGlobals : ["aria", "Aria", "setTimeout", "clearTimeout", "setInterval",
                                     "clearInterval", "global"]
@@ -98,7 +99,7 @@ module.exports = function (grunt) {
                     }, {
                         type : 'JSStripBanner',
                         cfg : {
-                            files : atExtensions.concat("!aria/noderError/**")
+                            files : packagingSettings.atExtensions.concat("!aria/noderError/**")
                         }
                     }, {
                         type : "TextReplace",
@@ -106,29 +107,31 @@ module.exports = function (grunt) {
                             files : ['aria/Aria.js'],
                             replacements : [{
                                         find : "ARIA-SNAPSHOT",
-                                        replace : '<%= pkg.version %>'
+                                        replace : packagingSettings.pkg.version
                                     }]
                         }
                     }, {
                         type : 'CopyUnpackaged',
                         cfg : {
-                            files : atExtensions,
+                            files : packagingSettings.atExtensions,
                             builder : {
                                 type : 'Concat',
                                 cfg : {
-                                    header : '<%= packaging.license_min %>'
+                                    header : packagingSettings.license_min
                                 }
                             }
                         }
                     }, 'CopyUnpackaged'],
-            packages : [getNoderPackage('<%= packaging.main_file %>', "aria/bootstrap.js", "browser"),
+            packages : [getNoderPackage(packagingSettings.bootstrap.bootstrapFileName, "aria/bootstrap.js", "browser"),
                     getNoderPackage("aria/node.js", "aria/bootstrap-node.js", "node")]
         }
     });
 
     grunt.config.set('removedirs.bootstrap', {
-        folders : ['<%= packaging.bootstrap.outputdir %>']
+        folders : [packagingSettings.bootstrap.outputDirectory]
     });
+
+    require('./config-atpackager-bootstrap-skin')(grunt);
 
     grunt.registerTask('bootstrap', ['atpackager:bootstrap', 'atpackager:bootstrapSkin']);
 

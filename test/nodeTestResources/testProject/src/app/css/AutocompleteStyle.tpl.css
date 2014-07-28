@@ -1,0 +1,78 @@
+/*
+ * Copyright 2012 Amadeus s.a.s.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+{CSSTemplate {
+	$classpath : "app.css.AutocompleteStyle",
+	$dependencies : ["app.css.AutocompleteSkin"],
+	$prefix : false
+}}
+
+    {macro main()}
+        {var skinClasses = app.css.AutocompleteSkin.skinObject /}
+        {foreach skinClass in skinClasses}
+            {var info={
+                skinClassName: skinClass_index,
+                skinClass: skinClass
+            }/}
+            {call writeSkinClass(info)/}
+        {/foreach}
+    {/macro}
+
+    {macro writeSkinClass(info)}
+        {var skinClassName=info.skinClassName/}
+        {var skinClass=info.skinClass/}
+        {var prefix = "." + skinClassName + "acListContainer" /}
+
+        ${prefix} .autocomplete_container {
+        	background-color: ${skinClass.backgroundColor};
+        	border: ${skinClass.border};
+        	border-radius: ${skinClass.borderRadius};
+        	padding: ${skinClass.padding};
+        	width: ${skinClass.width};
+        }
+
+        ${prefix} table {
+            width: 100%;
+        }
+
+        ${prefix} td {
+            display: block;
+        }
+
+        ${prefix} .xACEnabledItem {
+        	background-color: ${skinClass.item.background};
+        	color: ${skinClass.item.color};
+        	padding: ${skinClass.item.padding};
+        	display: block
+        }
+
+		${prefix} .xACSelectedItem {
+        	background-color: ${skinClass.selectedItem.background};
+        	color: ${skinClass.selectedItem.color};
+        }
+
+		${prefix} .xACDisabledItem {
+        	background-color: ${skinClass.disabledItem.background};
+        	color: ${skinClass.disabledItem.color};
+        }
+
+		${prefix} .xACMouseOverItem {
+        	background-color: ${skinClass.mouseOverItem.background};
+        	color: ${skinClass.mouseOverItem.color};
+        }
+
+	{/macro}
+
+{/CSSTemplate}

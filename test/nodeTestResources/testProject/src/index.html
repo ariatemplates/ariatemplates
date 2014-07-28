@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Light widgets</title>
+        <meta content="" name="description">
+        <meta content="width=device-width" name="viewport">
+        <script type="text/javascript" src="myApp.js"></script>
+        <script type="text/javascript" src="map.js"></script>
+        <script type="text/javascript">
+
+          aria.core.AppEnvironment.setEnvironment({
+            appSettings:{
+              devMode: true
+            },
+            widgetSettings : {
+              middleAlignment: true
+            },
+            defaultWidgetLibs : {
+              "light" : "atplugins.lightWidgets.LightWidgetLib"
+            }
+          });
+        </script>
+
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="myApp"></div>
+
+        <script type="text/javascript">
+            Aria.load({
+            	classes : ["app.css.SkinLoader"],
+            	oncomplete : function () {
+                    Aria.loadTemplate({
+                        classpath: "app.SampleTemplate",
+                        div: "myApp",
+                        data: {
+                        	textInput : "",
+                        	date : null,
+                        	airline : null,
+                        	skin : "std"
+                        }
+                    });
+            	}
+            });
+        </script>
+    </body>
+</html>

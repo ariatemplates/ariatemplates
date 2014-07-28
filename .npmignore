@@ -1,4 +1,3 @@
-node_modules
 .DS_Store
 .project
 .settings
@@ -14,9 +13,12 @@ node_modules
 /test/
 /hooks/
 /scripts/
-/build/config/
-/build/grunt-config/
-/build/grunt-tasks/
-/build/templates/
+/build/config/jshint.json
+/build/grunt-config/config-atpackager-bootstrap-skin.js
+/build/grunt-config/config-atpackager-bootstrap.js
+/build/grunt-config/config-checkStyle.js
+/build/grunt-config/config-bootstrap-packaging.js
+/build/grunt-config/config-extra.js
+/build/grunt-tasks/task-hooks.js
 /build/grunt-cli.js
 /Gruntfile.js

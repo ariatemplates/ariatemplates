@@ -1,0 +1,60 @@
+/*
+ * Copyright 2012 Amadeus s.a.s.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+{CSSTemplate {
+    $classpath: "app.css.DatePickerStyle",
+    $dependencies : ["app.css.DatePickerSkin"],
+    $prefix : false
+}}
+    {var skinnableClassName="Calendar"/}
+
+    {macro main()}
+        {var skinClasses = app.css.DatePickerSkin.skinObject /}
+        {foreach skinClass in skinClasses}
+            {var info={
+                skinClassName: skinClass_index,
+                skinClass: skinClass
+            }/}
+            {call writeSkinClass(info)/}
+        {/foreach}
+    {/macro}
+
+    {macro writeSkinClass(info)}
+        {var skinClassName=info.skinClassName/}
+        {var skinClass=info.skinClass/}
+
+        .${skinClassName}dpCalendarContainer {
+        	background-color: ${skinClass.generalBackgroundColor};
+        	padding: ${skinClass.generalPadding};
+        	border: ${skinClass.generalBorder};
+        	border-radius: ${skinClass.generalBorderRadius};
+        }
+
+        {var icon = skinClass.icon /}
+        .${skinClassName}-dropdown-icon {
+        	background-image: url('${icon.url}');
+        	background-color: ${icon.backgroundColor};
+        	display: inline-block;
+        	width: ${icon.width};
+        	height: ${icon.height};
+        	background-size: ${icon.width} ${icon.height};
+        	border: ${icon.border};
+        	border-radius: ${icon.borderRadius};
+        	vertical-align: middle;
+        }
+
+    {/macro}
+
+{/CSSTemplate}

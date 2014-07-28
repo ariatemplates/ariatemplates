@@ -1,0 +1,124 @@
+/*
+ * Copyright 2012 Amadeus s.a.s.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+{CSSTemplate {
+    $classpath: "app.css.CalendarStyle",
+    $dependencies : ["app.css.CalendarSkin"],
+    $prefix : false
+}}
+    {var skinnableClassName="Calendar"/}
+
+    {macro main()}
+        {var skinClasses = app.css.CalendarSkin.skinObject /}
+        {foreach skinClass in skinClasses}
+            {var info={
+                skinClassName: skinClass_index,
+                skinClass: skinClass
+            }/}
+            {call writeSkinClass(info)/}
+        {/foreach}
+    {/macro}
+
+    {macro writeSkinClass(info)}
+        {var skinClassName=info.skinClassName/}
+        {var skinClass=info.skinClass/}
+
+		.${skinClassName}dpCalendarContainer .nextMonth {
+			background-image: url(${cssFolderPath}/${skinClass.nextMonth});
+			width: 20px;
+			height: 20px;
+		}
+
+		.${skinClassName}dpCalendarContainer .previousMonth {
+			background-image: url(${cssFolderPath}/${skinClass.previousMonth});
+			width: 20px;
+			height: 20px;
+		}
+
+        .xCalendar_${skinClassName}_label {
+            font-weight:bold;
+            margin: 2px;
+        }
+        .xCalendar_${skinClassName}_general a:hover {
+            text-decoration: underline;
+        }
+        table.xCalendar_${skinClassName}_month {
+            font-size: ${skinClass.fontSize}px;
+            text-align: center;
+            border: 0px none;
+            border-collapse:separate;
+            border-spacing:0;
+        }
+        .xCalendar_${skinClassName}_monthTitle {
+            width: 100%;
+            border-color:${skinClass.monthTitleBorderColor};
+            border-style:solid;
+            border-width:1px 0;
+            color:${skinClass.monthTitleColor};
+            font-weight:bold;
+            background-color:${skinClass.monthTitleBackgroundColor};
+            padding-top:${skinClass.monthTitlePaddingTop};
+            padding-bottom:${skinClass.monthTitlePaddingBottom};
+        }
+        .xCalendar_${skinClassName}_day {
+            {if skinClass.dayBorderColor}
+                border:1px solid ${skinClass.dayBorderColor};
+            {/if}
+            width: 13px;
+            background-color:${skinClass.dayBackgroundColor};
+            color:${skinClass.dayColor};
+            padding:${skinClass.dayPadding};
+            font-weight:${skinClass.dayFontWeight};
+        }
+        .xCalendar_${skinClassName}_weekEnd {
+            background-color:${skinClass.weekEndBackgroundColor};
+            border:1px solid ${skinClass.weekEndBorderColor};
+            color:${skinClass.weekEndColor};
+        }
+        .xCalendar_${skinClassName}_selectable  {
+            cursor: pointer;
+        }
+        .xCalendar_${skinClassName}_unselectable {
+            border: 1px solid ${skinClass.unselectableBorderColor|default:skinClass.dayBorderColor};
+            background-color:${skinClass.unselectableBackgroundColor|default:skinClass.dayBackgroundColor};
+            color:${skinClass.unselectableColor|default:skinClass.disabled};
+        }
+        .xCalendar_${skinClassName}_today {
+            border: 1px solid ${skinClass.todayBorderColor};
+            background-color:${skinClass.todayBackgroundColor};
+            color:${skinClass.todayColor};
+        }
+        .xCalendar_${skinClassName}_weekNumber {
+            background-color:${skinClass.weekNumberBackgroundColor};
+            border:1px solid ${skinClass.weekNumberBorderColor};
+            font-weight:bold;
+            width: 13px;
+        }
+        .xCalendar_${skinClassName}_weekDaysLabel {
+            background-color:${skinClass.weekDaysLabelBackgroundColor};
+            border:1px solid ${skinClass.weekDaysLabelBorderColor};
+            font-weight:${skinClass.weekDaysLabelFontWeight};
+            color:${skinClass.weekDaysLabelColor};
+            width: 13px;
+            padding:${skinClass.weekDaysLabelPadding};
+        }
+        .xCalendar_${skinClassName}_selected,.xCalendar_${skinClassName}_mouseOver {
+            background-color:${skinClass.selectedBackgroundColor};
+            border: 1px solid ${skinClass.selectedBorderColor};
+            color:${skinClass.selectedColor};
+        }
+    {/macro}
+
+{/CSSTemplate}

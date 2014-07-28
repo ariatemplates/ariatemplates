@@ -22,42 +22,44 @@
  * <li>compiles templates to JavaScript classes</li>,
  * <li>minifies JavaScript</li>,
  * <li>adds a header in each package with license and current release version</li>,
- * <li>appends MD5 checksum to each file name as a way to make files cacheable for longer periods</li>.
+ * <li>appends hash to each file name as a way to make files cacheable for longer periods</li>.
  * </ul>
  */
 
 module.exports = function (grunt) {
-    var atExtensions = ['**/*.js', '**/*.tpl', '**/*.tpl.css', '**/*.tpl.txt', '**/*.tml', '**/*.cml'];
+
+    var packagingSettings = require('./config-packaging')(grunt);
+
+    var atExtensions = packagingSettings.atExtensions;
     var notAtExtensions = atExtensions.map(function (value) {
         return '!' + value;
     });
     var hashFiles = atExtensions.concat(['aria/core/transport/iframeSource*', 'aria/utils/FrameATLoaderHTML*',
-            '**/*.swf', '**/*.jnlp', '!aria/css/**', '!<%= packaging.main_file %>',
-            '<%= packaging.prod.hash_include_files %>']);
+            '**/*.swf', '**/*.jnlp', '!aria/css/**', '!<%= atbuildOptions.outputBootstrapFile %>']).concat(packagingSettings.prod.hashIncludeFiles);
 
     grunt.config.set('atpackager.prod', {
         options : {
-            ATBootstrapFile : '<%= packaging.main_file %>',
-            sourceDirectories : ['<%= packaging.bootstrap.outputdir %>'],
-            sourceFiles : ['<%= packaging.prod.source_files %>', '!<%= packaging.main_file %>'],
+            ATBootstrapFile : packagingSettings.bootstrap.bootstrapFileName,
+            sourceDirectories : packagingSettings.prod.sourceDirectories,
+            sourceFiles : ['**/*', '!aria/node.js', '!' + packagingSettings.bootstrap.bootstrapFileName],
             defaultBuilder : {
                 type : 'ATMultipart',
                 cfg : {
-                    header : '<%= packaging.license_min %>'
+                    header : packagingSettings.licenseMin
                 }
             },
-            outputDirectory : '<%= packaging.prod.outputdir %>',
+            outputDirectory : '<%= atbuildOptions.outputDirectory %>',
             visitors : [{
                         type : 'NoderRequiresGenerator',
                         cfg : {
                             targetLogicalPath : 'aria/bootstrap.js',
-                            requires : '<%= packaging.bootstrap.files %>'
+                            requires : '<%= atbuildOptions.bootstrapFiles %>'
                         }
                     }, {
                         type : 'NoderDependencies',
                         cfg : {
                             externalDependencies : ['noder-js/**'],
-                            files : /*atExtensions*/['**/*.js'].concat(['!<%= packaging.main_file %>'])
+                            files : ['**/*.js'].concat(['!<%= atbuildOptions.outputBootstrapFile %>'])
                         }
                     }, {
                         type : 'CheckDependencies',
@@ -93,7 +95,7 @@ module.exports = function (grunt) {
                     }, {
                         type : 'ATUrlMap',
                         cfg : {
-                            mapFile : '<%= packaging.main_file %>',
+                            mapFile : '<%= atbuildOptions.outputBootstrapFile %>',
                             onlyATMultipart : false,
                             sourceFiles : hashFiles.concat('!aria/noderError/**'),
                             starCompress : ['**/*', '!aria', '!aria/resources/**'],
@@ -106,18 +108,18 @@ module.exports = function (grunt) {
                             builder : {
                                 type : 'ATMultipart',
                                 cfg : {
-                                    header : '<%= packaging.license %>'
+                                    header : packagingSettings.license
                                 }
                             }
                         }
                     }, {
                         type : 'CopyUnpackaged',
                         cfg : {
-                            files : ['aria/noderError/**', '<%= packaging.prod.allow_unpackaged_files %>'],
+                            files : ['aria/noderError/**', '<%= atbuildOptions.allow_unpackaged_files %>'],
                             builder : {
                                 type : 'ATMultipart',
                                 cfg : {
-                                    header : '<%= packaging.license_min %>'
+                                    header : packagingSettings.licenseMin
                                 }
                             }
                         }
@@ -133,14 +135,14 @@ module.exports = function (grunt) {
                         cfg : {
                             files : ['**/*'].concat(notAtExtensions)
                         }
-                    }, 'CheckPackaged'],
+                    }, grunt.config.get('atbuildOptions.checkPackaged') ? 'CheckPackaged' : null],
             packages : [{
-                        name : '<%= packaging.main_file %>',
+                        name : '<%= atbuildOptions.outputBootstrapFile %>',
                         builder : {
                             type : 'NoderBootstrapPackage',
                             cfg : {
-                                header : '<%= packaging.license %>',
-                                noderModules : ['src/noder-modules/*'],
+                                header : packagingSettings.license,
+                                noderModules : [packagingSettings.prod.noderModulesPath + '/*'],
                                 noderConfigOptions : {
                                     main : "aria/bootstrap",
                                     failFast : false,
@@ -164,31 +166,31 @@ module.exports = function (grunt) {
                                 }
                             }
                         },
-                        files : ['aria/bootstrap.js', '<%= packaging.bootstrap.files %>']
-                    }, '<%= packaging.prod.files %>', '<%= packaging.prod.expanded_localization_files %>']
+                        files : ['aria/bootstrap.js', '<%= atbuildOptions.bootstrapFiles %>']
+                    }, '<%= atbuildOptions.packages %>', '<%= atbuildOptions.expanded_localization_files %>']
         }
     });
 
     grunt.config.set('gzipStats.prod', {
-        src : '<%= packaging.prod.outputdir %>'
+        src : '<%= atbuildOptions.outputDirectory %>'
     });
 
     grunt.config.set('removedirs.prod', {
-        folders : ['<%= packaging.prod.outputdir %>']
+        folders : ['<%= atbuildOptions.outputDirectory %>']
     });
 
     grunt.registerTask('expandLocalizationFiles', function () {
         var res = [];
         var savedLocale = grunt.config.getRaw('locale');
-        var locales = grunt.config.get('packaging.locales');
+        var locales = require('../config/locales.json');
         locales.forEach(function (curLocale) {
             grunt.config.set('locale', "_" + curLocale);
-            res.push(grunt.config.get('packaging.prod.localization_files'));
+            res.push(grunt.config.get('atbuildOptions.localization_files'));
         });
         grunt.config.set('locale', "");
-        res.push(grunt.config.get('packaging.prod.localization_files'));
+        res.push(grunt.config.get('atbuildOptions.localization_files'));
         grunt.config.set('locale', savedLocale);
-        grunt.config.set('packaging.prod.expanded_localization_files', res);
+        grunt.config.set('atbuildOptions.expanded_localization_files', res);
     });
 
     grunt.registerTask('prod', ['expandLocalizationFiles', 'atpackager:prod']);

@@ -1,0 +1,14 @@
+resources:
+ '/':
+  - 'test/nodeTestResources/testProject/target/fwk'
+  - 'test/nodeTestResources/testProject/target/two'
+  - 'test/nodeTestResources/testProject/test'
+tests:
+ aria-templates:
+  bootstrap: '/custom-at.js'
+  extraScripts:
+   - /anotherMap.js
+   - /extraScript.js
+  classpaths:
+   includes:
+    - AppTemplateTest

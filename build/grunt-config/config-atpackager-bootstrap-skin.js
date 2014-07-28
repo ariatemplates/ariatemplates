@@ -14,14 +14,16 @@
  */
 
 module.exports = function (grunt) {
+    var packagingSettings = require('./config-packaging')(grunt);
+
     grunt.config.set('atpackager.bootstrapSkin', {
         options : {
             ATDebug : true,
-            ATBootstrapFile : '<%= packaging.main_file %>',
-            ATDirectories : ['<%= packaging.bootstrap.outputdir %>'],
+            ATBootstrapFile : packagingSettings.bootstrap.bootstrapFileName,
+            ATDirectories : [packagingSettings.bootstrap.outputDirectory],
             sourceDirectories : ['src'],
             sourceFiles : ['aria/css/**'],
-            outputDirectory : '<%= packaging.bootstrap.outputdir %>',
+            outputDirectory : packagingSettings.bootstrap.outputDirectory,
             visitors : [{
                         type : 'ATNormalizeSkin',
                         cfg : {
@@ -33,12 +35,12 @@ module.exports = function (grunt) {
                         cfg : {
                             files : ['aria/css/*.js'],
                             renameFunction : function (name) {
-                                return name.replace(/.js$/, grunt.config.process("-<%= pkg.version %>.js"));
+                                return name.replace(/.js$/, grunt.config.process('-' + packagingSettings.pkg.version + '.js'));
                             },
                             builder : {
                                 type : 'Concat',
                                 cfg : {
-                                    header : '<%= packaging.license %>'
+                                    header : packagingSettings.license
                                 }
                             }
                         }

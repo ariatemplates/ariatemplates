@@ -1,0 +1,75 @@
+/*
+ * Copyright 2012 Amadeus s.a.s.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+{CSSTemplate {
+	$classpath : "app.css.TextInputStyle",
+	$dependencies : ["app.css.TextInputSkin"],
+	$prefix : false
+}}
+
+    {macro main()}
+        {var skinClasses = app.css.TextInputSkin.skinObject /}
+        {foreach skinClass in skinClasses}
+            {var info={
+                skinClassName: skinClass_index,
+                skinClass: skinClass
+            }/}
+            {call writeSkinClass(info)/}
+        {/foreach}
+    {/macro}
+
+    {macro writeSkinClass(info)}
+        {var skinClassName=info.skinClassName/}
+        {var skinClass=info.skinClass/}
+
+        .${skinClassName}  {
+        	background-color: ${skinClass.normal.backgroundColor};
+        	border: ${skinClass.normal.border};
+        	border-radius: ${skinClass.normal.borderRadius};
+        	padding: ${skinClass.normal.padding};
+        	color: ${skinClass.normal.color};
+        	width: ${skinClass.normal.width};
+        	vertical-align: middle;
+		}
+
+		.${skinClassName}:focus  {
+        	background-color: ${skinClass.focus.backgroundColor};
+        	border: ${skinClass.focus.border};
+        	border-radius: ${skinClass.focus.borderRadius};
+        	color: ${skinClass.focus.padding};
+        	outline: none;
+		}
+
+        .${skinClassName}.placeholder {
+			color : ${skinClass.placeholder.color};
+			font-style: ${skinClass.placeholder.fontStyle};
+		}
+
+		input.${skinClassName}::-webkit-input-placeholder {
+			font-style: ${skinClass.placeholder.fontStyle};
+		}
+
+		input.${skinClassName}::-moz-input-placeholder {
+			font-style: ${skinClass.placeholder.fontStyle};
+		}
+
+		input.${skinClassName}::-ms-input-placeholder {
+			font-style: ${skinClass.placeholder.fontStyle};
+		}
+
+
+	{/macro}
+
+{/CSSTemplate}

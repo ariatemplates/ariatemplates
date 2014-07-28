@@ -31,18 +31,20 @@
     "test": "npm run lint && npm run grunt && npm run test-suites",
     "ci": "npm run lint-test && npm run test-suites"
   },
-  "devDependencies": {
+  "dependencies" : {
     "at-noder-converter": "1.0.1",
-    "atpackager": "0.2.4",
+    "atpackager": "0.2.5",
+    "gzip-js": "0.3.2",
+    "noder-js": "1.6.0"
+  },
+  "devDependencies": {
     "attester": "1.5.0",
     "express": "3.4.8",
     "grunt": "0.4.2",
     "grunt-contrib-jshint": "0.8.0",
     "grunt-leading-indent": "0.1.0",
     "grunt-verifylowercase": "0.2.0",
-    "gzip-js": "0.3.2",
     "jade": "1.1.5",
-    "mocha": "1.17.0",
-    "noder-js": "1.6.0"
+    "mocha": "1.17.0"
   }
 }
