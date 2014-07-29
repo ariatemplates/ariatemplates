@@ -17,16 +17,16 @@
  * Test cases for aria.utils.validators.AlphaInternational
  */
 Aria.classDefinition({
-    $classpath : "test.aria.utils.validators.AlphaInternational",
+    $classpath : "test.aria.utils.validators.AlphaNumInternational",
     $extends : "aria.jsunit.TestCase",
-    $dependencies : ["aria.utils.validators.AlphaInternational"],
+    $dependencies : ["aria.utils.validators.AlphaNumInternational"],
     $prototype : {
         /**
          * Test case 1: tests valid use cases.
          */
         test_isValid : function () {
-            var useCases = ["àÀáÁâÂãÃäÄåÅæÆçÇèÈéÉêÊëËìÌíÍîÎïÏðÐñÑòÒóÓôÔõÕöÖøØùÙúÚûÛüÜýÝþÞÿßabc", "abc"];
-            var validator = new aria.utils.validators.AlphaInternational();
+            var useCases = ["àÀáÁâÂãÃäÄåÅæÆçÇèÈéÉêÊëËìÌíÍîÎïÏðÐñÑòÒóÓôÔõÕöÖøØùÙúÚûÛüÜýÝþÞÿß123abc", "abc", "123"];
+            var validator = new aria.utils.validators.AlphaNumInternational();
             var test;
             for (var i = 0; i < useCases.length; i++) {
                 test = validator.validate(useCases[i]); // if successful then null is returned.
@@ -38,8 +38,8 @@ Aria.classDefinition({
          * Test case 2: tests invalid use cases.
          */
         test_invalid : function () {
-            var useCases = ["/////", ":::::", ":àÀáÁâÂãÃäÄåÅæÆçÇèÈéÉêÊëËìÌíÍîÎïÏðÐñÑòÒóÓôÔõÕöÖøØùÙúÚûÛüÜýÝþÞÿß/", "a123b", "123"];
-            var validator = new aria.utils.validators.AlphaInternational();
+            var useCases = ["/////", ":::::", ":àÀáÁâÂãÃäÄåÅæÆçÇèÈéÉêÊëËìÌíÍîÎïÏðÐñÑòÒóÓôÔõÕöÖøØùÙúÚûÛüÜýÝþÞÿß/"];
+            var validator = new aria.utils.validators.AlphaNumInternational();
             var test;
             for (var i = 0; i < useCases.length; i++) {
                 test = validator.validate(useCases[i]); // if successful then null is returned.

@@ -25,6 +25,7 @@ Aria.classDefinition({
         this.addTests("test.aria.utils.validators.Alpha");
         this.addTests("test.aria.utils.validators.AlphaInternational");
         this.addTests("test.aria.utils.validators.AlphaNum");
+        this.addTests("test.aria.utils.validators.AlphaNumInternational");
         this.addTests("test.aria.utils.validators.Email");
         this.addTests("test.aria.utils.validators.Mandatory");
         this.addTests("test.aria.utils.validators.MinMaxLength");
