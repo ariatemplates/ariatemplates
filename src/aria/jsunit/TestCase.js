@@ -35,7 +35,8 @@ Aria.classDefinition({
 
         ERROR_NOTIFY_END : "Synchronous test is calling notifyTestEnd",
         EXCEPTION_IN_METHOD : "Exception raised while calling '%1' in an asynchronous test",
-        ASYNC_IN_SYNC_TEST : "Doing asynchronous actions inside a synchronous test, please check '%1'"
+        ASYNC_IN_SYNC_TEST : "Doing asynchronous actions inside a synchronous test, please check '%1'",
+        FORGOTTEN_CB : "Did you forget to call this.$callback(callback)?"
     },
     $constructor : function () {
         // constructor
@@ -80,7 +81,8 @@ Aria.classDefinition({
         var methods = aria.utils.Object.keys(proto);
         var isFunction = aria.utils.Type.isFunction;
         methods = aria.utils.Array.filter(methods, function (method) {
-            return isFunction(proto[method]) && !aria.utils.Array.contains(["setUp", "tearDown"], method);
+            return isFunction(proto[method])
+                    && !aria.utils.Array.contains(["setUp", "tearDown", "beforeClass", "afterClass"], method);
         });
         this.__wrapTestMethods(methods);
         this.__wrapAriaLoad();
@@ -139,6 +141,29 @@ Aria.classDefinition({
                 "end" : this._onSequencerEnd,
                 scope : this
             });
+
+            try {
+                this._beforeClass(this._startSequencer);
+            } catch (exBeforeClass) {
+                this.raiseError(exBeforeClass, "Error location: beforeClass() method");
+            }
+        },
+
+        /**
+         * Cancels the timeout timer if it exists.
+         */
+        _clearTimeoutTimer : function () {
+            if (this._timeoutTimer) {
+                aria.core.Timer.cancelCallback(this._timeoutTimer);
+                this._timeoutTimer = null;
+            }
+        },
+
+        /**
+         * Start the test tasks sequence.
+         */
+        _startSequencer : function () {
+            this._clearTimeoutTimer(); // reset the timer for beforeClass
             this._sequencer.start();
         },
 
@@ -361,23 +386,46 @@ Aria.classDefinition({
          * after a certain delay. This method allows to increase or decrease this delay. When called the timer is
          * restarted. Meaning after the call, the test will have ${timeout} milliseconds before failing for timeout.
          * @param {Number} timeout
-         * @param {String} testName
+         * @param {String} methodName name of the test or a special method (e.g. beforeClass)
          */
-        setTestTimeout : function (timeout, testName) {
+        setTestTimeout : function (timeout, methodName) {
             if (this.demoMode) {
                 return;
             }
-            if (this._timeoutTimer) {
-                aria.core.Timer.cancelCallback(this._timeoutTimer);
-            }
-            var error = new Error("Assert " + testName + " has timed out");
+            this._clearTimeoutTimer();
 
+            var msg = "The method " + methodName + " has timed out.";
+            var beforeOrAfterClass = (methodName == "beforeClass" || methodName == "afterClass");
+            if (beforeOrAfterClass) {
+                msg = msg + " " + this.FORGOTTEN_CB;
+            }
+            var error = new Error(msg);
             this._timeoutTimer = aria.core.Timer.addCallback({
-                fn : this.handleAsyncTestError,
+                fn : beforeOrAfterClass ? this._beforeAfterClassError : this.handleAsyncTestError,
                 scope : this,
                 delay : timeout,
-                args : error
+                args : beforeOrAfterClass ? [error, methodName] : error
             });
+        },
+
+        /**
+         * Handler for the timeouts of asynchronous `beforeClass` and `afterClass` special methods.
+         * @param {Array} args [0]{Error} [1]{String} either "beforeClass" or "afterClass"
+         */
+        _beforeAfterClassError : function (args) {
+            var ex = args[0];
+            var methodName = args[1];
+
+            if (methodName == "beforeClass") {
+                // disallow executing any tests, probably most of them would fail and unnecessarily flood the console
+                this._sequencer._tasks = [];
+            }
+
+            this.handleAsyncTestError(ex, methodName);
+
+            if (methodName == "afterClass") {
+                this._onSequencerEndCallback();
+            }
         },
 
         /**
@@ -398,10 +446,8 @@ Aria.classDefinition({
                 return this.$logInfo("notifyTestEnd called when Aria.load is still pending, waiting");
             }
 
-            if (this._timeoutTimer) {
-                aria.core.Timer.cancelCallback(this._timeoutTimer);
-                this._timeoutTimer = null;
-            }
+            this._clearTimeoutTimer();
+
             // check that all expected events have occurred
             this.checkExpectedEventListEnd();
             this.checkExpectedErrorListEnd();
@@ -488,6 +534,52 @@ Aria.classDefinition({
         },
 
         /**
+         * Executes the <code>this.beforeClass</code> if it exists and is a function, and passes the callback.
+         * Otherwise, it executes the callback.
+         * @param {Function} done Callback function
+         */
+        _beforeClass : function (done) {
+            this.__beforeOrAfterClass(this.beforeClass, "beforeClass", done);
+        },
+
+        /**
+         * Executes the <code>this.afterClass</code> if it exists and is a function, and passes the callback.
+         * Otherwise, it executes the callback.
+         * @param {Function} done Callback function
+         */
+        _afterClass : function (done) {
+            this.__beforeOrAfterClass(this.afterClass, "afterClass", done);
+        },
+
+        /**
+         * Calls <code>func</code>, if it is a function, in a synchronous or asynchronous way (inferred from function
+         * length), and calls/relays the <code>done</code> callback accordingly.
+         * @param {Function} func Function to be executed
+         * @param {String} funcName Name that will be logged for debugging purpose if the callback was not executed
+         * @param {Function} done Callback function
+         * @private
+         */
+        __beforeOrAfterClass : function (func, funcName, done) {
+            var cb = {
+                fn : done,
+                scope : this
+            };
+
+            if (aria.utils.Type.isFunction(func)) {
+                if (func.length === 0) { // func is sync, execute the callback ourselves
+                    func.call(this);
+                    this.$callback(cb);
+                } else { // func is async, let the user execute the callback
+                    // first, set the timer, in case the user forgot to call the callback
+                    this.setTestTimeout(this.defaultTestTimeout, funcName);
+                    func.call(this, cb);
+                }
+            } else {
+                this.$callback(cb);
+            }
+        },
+
+        /**
          * Internal method called at the end of the test
          * @param {Object} evt the event sent by the sequencer
          * @private
@@ -497,6 +589,19 @@ Aria.classDefinition({
                 this._sequencer.$dispose(); // will also remove listeners
                 this._sequencer = null;
             }
+
+            try {
+                this._afterClass(this._onSequencerEndCallback);
+            } catch (exAfterClass) {
+                this.raiseError(exAfterClass, "Error location: afterClass() method");
+            }
+        },
+
+        /**
+         * Internal method called at the end of the test, after <code>this.afterClass</code>.
+         */
+        _onSequencerEndCallback : function () {
+            this._clearTimeoutTimer(); // reset the timer for afterClass
             this._testPassed++;
 
             this._endTest();
