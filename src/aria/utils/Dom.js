@@ -1305,6 +1305,7 @@ Aria.classDefinition({
             if (!domElement) {
                 return [];
             }
+            className = String(className); // Fx 3.6 compat
             if (domElement.getElementsByClassName) {
                 return domElement.getElementsByClassName(className);
             } else {
