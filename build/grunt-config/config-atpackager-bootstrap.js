@@ -130,6 +130,28 @@ module.exports = function (grunt) {
         folders : ['<%= packaging.bootstrap.outputdir %>']
     });
 
-    grunt.registerTask('bootstrap', ['atpackager:bootstrap', 'atpackager:bootstrapSkin']);
+    // For bootstrap build, it makes more sense to have unversioned main AT file (ariatemplates-latest)
+    // and skin files (atskin-latest etc.) so they can be included in HTML files for development,
+    // though for backward compatibility, the versioned ones (ariatemplates-1.x.x, atskin-1.x.x) should be kept too.
+    // The easiest way to do is to just copy the versioned files to unversioned paths.
+    grunt.registerTask('copyBootstrap', 'Copy versioned bootstrap file to a generic, unversioned path', function () {
+        var src = grunt.template.process('<%= packaging.bootstrap.outputdir + "/" + packaging.main_file %>');
+        var dest = grunt.template.process('<%= packaging.bootstrap.outputdir + "/" + packaging.main_file_latest %>');
+        grunt.file.copy(src, dest);
+    });
+
+    grunt.registerTask('copySkins', 'Copy versioned bootstrap skin file to generic, unversioned paths', function () {
+        var cwd = grunt.template.process('<%= packaging.bootstrap.outputdir %>');
+        var version = grunt.template.process('-<%= pkg.version %>');
+
+        var skinFiles = grunt.file.expand(cwd + '/aria/css/*.js');
+
+        skinFiles.forEach(function (srcFile) {
+            var destFile = srcFile.replace(version, "-latest");
+            grunt.file.copy(srcFile, destFile);
+        });
+    });
+
+    grunt.registerTask('bootstrap', ['atpackager:bootstrap', 'atpackager:bootstrapSkin', 'copyBootstrap', 'copySkins']);
 
 };

@@ -26,10 +26,15 @@
         var atversion;
         if (isAmaBuild) {
             atversion = "1.1-SNAPSHOT";
-        } else { // if opensource build then version must be placed in the URL
+        } else {
+            // for opensource non-dev build, the version MUST be placed in the URL
+            // it MIGHT also be placed for opensource dev build, if not, we fall back to "latest"
+            // which is produced by "npm run watch" task
             var versionMatch = url.match(/atversion\=(\d+\.\d+\.\d+)/);
             if (versionMatch) {
                 atversion = versionMatch[1];
+            } else if (devFiles){
+                atversion = "latest";
             } else {
                 alert("Need an 'atversion=x.y.z' in the query string.");
             }
@@ -125,6 +130,7 @@
         var info = "skin " + skinName + " / ";
         info += (devFiles ? "dev" : "built") + " files / ";
         info += (isAmaBuild ? "ama" : "opensource") + " / ";
+        info += "atversion: " + atversion + " / ";
         info += (Aria.verbose ? "verbose" : "nonverbose") + " console";
         document.getElementById("_TestInfoOutput_").innerHTML = info;
     </script>

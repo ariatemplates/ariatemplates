@@ -21,11 +21,12 @@ module.exports = function (grunt) {
     grunt.config.set('packaging.prod.outputdir', 'build/target/production');
     grunt.config.set('packaging.prod.files', require('../config/files-prod.json'));
     grunt.config.set('packaging.prod.source_files', ['**/*', '!aria/node.js']);
-    grunt.config.set('packaging.prod.allow_unpackaged_files', []);
+    grunt.config.set('packaging.prod.allow_unpackaged_files', ['aria/ariatemplates-latest.js']);
     grunt.config.set('packaging.prod.localization_files', require('../config/files-prod-localization.json'));
     grunt.config.set('packaging.prod.hash_include_files', []);
     grunt.config.set('packaging.license', grunt.file.read('build/templates/LICENSE'));
     grunt.config.set('packaging.license_min', grunt.file.read('build/templates/LICENSE-MIN'));
     grunt.config.set('pkg', require('../../package.json'));
     grunt.config.set('packaging.main_file', 'aria/<%= pkg.name %>-<%= pkg.version %>.js');
+    grunt.config.set('packaging.main_file_latest', 'aria/<%= pkg.name %>-latest.js');
 };

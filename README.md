@@ -1,7 +1,9 @@
-# Aria Templates - JavaScript Framework [![Build Status](https://secure.travis-ci.org/ariatemplates/ariatemplates.png?branch=master)](http://travis-ci.org/ariatemplates/ariatemplates)
+[![Build Status](https://secure.travis-ci.org/ariatemplates/ariatemplates.png?branch=master)](http://travis-ci.org/ariatemplates/ariatemplates)
+[![devDependency Status](https://david-dm.org/ariatemplates/ariatemplates/dev-status.png?branch=master)](https://david-dm.org/ariatemplates/ariatemplates#info=devDependencies)
+
+# Aria Templates - JavaScript Framework
 
 ![Aria Templates logo](http://ariatemplates.com/images/logo-forum.png)
-
 
 [Aria Templates](http://ariatemplates.com/) (aka AT) is an application framework written in JavaScript for building rich and **large-scaled enterprise web applications**. Developed since 2009 by [Amadeus](http://www.amadeus.com) for its professional products, it has been designed to build web apps used intensively that need to display and process a **high amount of data** with a **minimum of bandwidth consumption**.
 
@@ -115,8 +117,12 @@ Support & contributing
 
 Visit our **[forum](http://ariatemplates.com/forum/)** to ask questions.
 
-If you spotted some **code problems** in the framework, please open [an AT issue](https://github.com/ariatemplates/ariatemplates/issues?state=open) or ideally, a pull request with the fix and a test.
+If you spotted some issue with **missing / incorrect documentation** on ariatemplates.com, please open a [usermanual issue](https://github.com/ariatemplates/usermanual/issues?state=open) or a pull request with the fix, done in the `next` folder.
 
-If you spotted some issue with **missing / incorrect documentation** on ariatemplates.com, please open a [usermanual issue](https://github.com/ariatemplates/usermanual/issues?state=open).
+If you spotted some **code problems** in the framework, please open [an AT issue](https://github.com/ariatemplates/ariatemplates/issues?state=open).
 
-See more in [CONTRIBUTING.md](CONTRIBUTING.md) and [TDD guide for Aria Templates](http://ariatemplates.github.io/Test-Driven-Development/).
+Ideally, you may take some time to dive into AT code and submit a pull request with the fix and a test. We are more than happy to accept your contributions! If you feel like contributing, please read:
+
+- [Contributing guide](CONTRIBUTING.md)
+- [Testing README](test/README.md)
+- [TDD guide for Aria Templates](http://ariatemplates.github.io/Test-Driven-Development/).
