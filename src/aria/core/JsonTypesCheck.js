@@ -452,7 +452,7 @@
                 preprocess : __checkContentType,
                 process : function (args) {
                     var v = args.value;
-                    if (typeof(v) != 'object' || v == null || v.constructor != Array) {
+                    if (!typeUtils.isArray(v)) {
                         return __badTypeError(this, args);
                     }
                     var ct = args.beanDef.$contentType;
