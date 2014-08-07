@@ -32,7 +32,19 @@ Aria.resourcesDefinition({
         // a false value for the following items mean: use substring
         // to generate the short versions of days or months
         dayShort : false,
-        monthShort : false,
+        monthShort : [
+            "tammi",
+            "helmi",
+            "maalis",
+            "huhti",
+            "touko",
+            "kes\u00E4",
+            "hein\u00E4",
+            "elo",
+            "syys",
+            "loka",
+            "marras",
+            "joulu"],
         month : [
             "tammikuu",
             "helmikuu",
