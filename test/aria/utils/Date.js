@@ -308,10 +308,10 @@ Aria.classDefinition({
             try {
 
                 var formattedValue = aria.utils.Date.format(new Date(2010, 3, 1, 0, 0, 0), "d MMM y");
-                this.assertTrue(formattedValue === "1 Avr 10", "Wrong output: " + formattedValue);
+                this.assertTrue(formattedValue === "1 Avr. 10", "Wrong output: " + formattedValue);
 
                 formattedValue = aria.utils.Date.format(new Date(2010, 3, 1, 0, 0, 0), "Ud MMM y");
-                this.assertTrue(formattedValue === "1 AVR 10", "Wrong output: " + formattedValue);
+                this.assertTrue(formattedValue === "1 AVR. 10", "Wrong output: " + formattedValue);
 
                 formattedValue = aria.utils.Date.format(new Date(2010, 3, 1, 0, 0, 0), "d I y");
                 this.assertTrue(formattedValue === "1 APR 10", "Wrong output: " + formattedValue);
@@ -323,7 +323,7 @@ Aria.classDefinition({
                 this.assertTrue(formattedValue === "01 APR 2010", "Wrong output: " + formattedValue);
 
                 formattedValue = aria.utils.Date.format(new Date(2010, 3, 1, 0, 0, 0), "Ud MMM y");
-                this.assertTrue(formattedValue === "1 AVR 10", "Wrong output: " + formattedValue);
+                this.assertTrue(formattedValue === "1 AVR. 10", "Wrong output: " + formattedValue);
 
                 this.notifyTestEnd("testAsyncDateFormatting");
 

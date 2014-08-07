@@ -78,6 +78,9 @@ var resMgr = module.exports = Aria.classDefinition({
         this.loadedResources = null;
         this.resources = null;
     },
+    $events : {
+        "resourcesReloadComplete" : "Raised after resources are reloaded after a locale change"
+    },
     $statics : {
         DEPRECATED_METHOD : "%1 is deprecated.",
         BYPASSING_LOADER : "Unexpected call to Aria.resourcesDefinition for %1. The resource loader was not properly used.",
@@ -316,6 +319,7 @@ var resMgr = module.exports = Aria.classDefinition({
             }
             var self = this;
             Promise.all(tasks).thenSync(function () {
+                self.$raiseEvent("resourcesReloadComplete");
                 self.$callback(cb);
             });
         },
