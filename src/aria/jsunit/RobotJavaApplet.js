@@ -232,7 +232,7 @@ Aria.classDefinition({
             VK_Y : 89,
             VK_Z : 90
         },
-        absoluteUrlRegExp : /^https?:\/\//
+        absoluteUrlRegExp : /^(https?:\/)?\//
     },
     $prototype : {
 
