@@ -78,7 +78,7 @@ module.exports = function (grunt) {
 
     grunt.config.set('leadingIndent.indentation', 'spaces');
     grunt.config.set('leadingIndent.jsFiles', {
-        src : ['src/**/*.js', 'test/**/*.js', '!src/aria/pageEngine/contentProcessors/MarkdownProcessor.js']
+        src : ['src/**/*.js', 'test/**/*.js', '!src/aria/pageEngine/contentProcessors/MarkdownProcessor.js', '!test/nodeTestResources/testProject/target/**/*']
     });
 
     grunt.registerTask('checkStyle', ['jshint:build', 'jshint:node', 'jshint:source', 'verifylowercase:sourceFiles', 'leadingIndent:jsFiles']);
