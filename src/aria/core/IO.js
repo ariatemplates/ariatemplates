@@ -79,7 +79,6 @@ module.exports = Aria.classDefinition({
         TIMEOUT_ERROR : "timeout expired",
 
         // ERROR MESSAGES:
-        DEPRECATED_DEFAULT_POSTHEADERS : "`defaultPostHeader`,`useDefaultPostHeader`, `defaultContentTypeHeader` and `useDefaultContentTypeHeader` in aria.core.IO are deprecated, use `aria.core.IO.headers` and `aria.core.IO.postHeaders` instead to customize headers settings",
         MISSING_IO_CALLBACK : "Missing callback in IO call - Please check\nurl: %1",
         IO_CALLBACK_ERROR : "Error in IO callback handling on url: %1",
         IO_REQUEST_FAILED : "Invalid Request: \nurl: %1\nerror: %2",
@@ -251,11 +250,14 @@ module.exports = Aria.classDefinition({
          * [req] {
          *    url: 'myfile.txt',            // absolute or relative URL
          *    async: 'true',                // asynchronous or synchronous behavior (use it with care: sync requests can freeze the UI)
-         *    expectedResponseType: 'json'  // 'json', 'xml' or 'text' (default)
+         *    expectedResponseType: 'json'  // 'json', 'xml' or 'text' (default). Tells the framework to try to parse the server response accordingly
          *    method: 'POST',               // POST, PUT, DELETE, OPTIONS, HEAD, TRACE, OPTIONS, CONNECT, PATCH or GET (default)
          *    data: '',                     // {String} null by default
-         *    contentTypeHeader: '',        // {String} application/x-www-form-urlencoded; charset=UTF-8 by default
-         *    timeout: 1000,                // {Integer} timeout in ms - default: defaultTimeout
+         *    headers: {                    // map of HTTP headers for this requests; you may override the defaults and add custom headers.
+         *     'X-Requested-With' : 'XMLHttpRequest', // auto-injected for all requests
+         *     'Content-Type': 'application/json'     // for POST/PUT requests defaults to 'application/x-www-form-urlencoded; charset=UTF-8', otherwise not injected
+         *    },                            // See aria.core.IO.headers and aria.core.IO.postHeaders
+         *    timeout: 1000,                // {Integer} timeout in ms; default: aria.core.IO.defaultTimeout (60000)
          *    callback: {
          *      fn: obj.method,             // mandatory
          *      scope: obj,                 // mandatory
