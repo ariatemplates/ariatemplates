@@ -39,7 +39,9 @@
         {@aria:Tooltip {
             id : "myTestingTooltip",
             macro : "tooltipContent",
-            showDelay : 12
+            showDelay : 12,
+            minWidth : 80,
+            maxWidth : 100
         }/}
 
         {@aria:Tooltip {
