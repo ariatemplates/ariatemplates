@@ -71,9 +71,12 @@ Aria.classDefinition({
             var tooltipContent = DomUtil.getElementById("testMe");
             var contentGeometry = DomUtil.getGeometry(tooltipContent);
             var anchorGeometry = DomUtil.getGeometry(tooltipAnchor);
+            var tooltipContainerWidth = DomUtil.getGeometry(tooltipContent.parentNode).width;
 
             var distance = Math.abs(contentGeometry.y - anchorGeometry.y);
             this.assertTrue(distance < 60, "Tooltip is too far from the anchor");
+            this.assertTrue(tooltipContainerWidth >= 80, "Tooltip width is " + tooltipContainerWidth + " while minWidth was set to 80");
+            this.assertTrue(tooltipContainerWidth <= 100, "Tooltip width is " + tooltipContainerWidth + " while maxWidth was set to 100");
 
             this.end();
         }
