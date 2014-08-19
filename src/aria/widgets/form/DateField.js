@@ -39,6 +39,9 @@ Aria.classDefinition({
         if (cfg.referenceDate) {
             controller.setReferenceDate(new Date(cfg.referenceDate));
         }
+        if (cfg.allowChangeYear) {
+            controller.setAllowChangeYear(cfg.allowChangeYear);
+        }
     },
     $prototype : {
 
