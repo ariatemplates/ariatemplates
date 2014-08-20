@@ -76,10 +76,10 @@ Aria.load({
             html += '<form action="test.htm" style="text-align:center; font-family:Arial;">';
             if (qs.getKeyValue('dev') == "false") {
                 html += '<input type="hidden" name="dev" value="false">';
-                var atversion = qs.getKeyValue('atversion');
-                if (atversion) {
-                    html += '<input type="hidden" name="atversion" value="' + atversion + '">';
-                }
+            }
+            var atversion = qs.getKeyValue('atversion');
+            if (atversion) {
+                html += '<input type="hidden" name="atversion" value="' + atversion + '">';
             }
             if (qs.getKeyValue('verbose') == "false") {
                 html += '<input type="hidden" name="verbose" value="false">';

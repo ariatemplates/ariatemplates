@@ -10,8 +10,7 @@
         if (document.location.protocol == "file:") {
             alert("file:// protocol is not supported, please run this URL through HTTP server")
         }
-        var isAmaBuild = !!(document.location.pathname.match(/\/aria\-templates(-dave|-dev)?\/test\//));
-        var url = document.location.href;
+        var url = document.location.search;
 
         // Aria Templates framework parameters
         var Aria = {
@@ -24,12 +23,15 @@
         var devFiles = (url.indexOf("dev=false") == -1);
 
         var atversion;
-        if (isAmaBuild) {
-            atversion = "1.1-SNAPSHOT";
-        } else { // if opensource build then version must be placed in the URL
-            var versionMatch = url.match(/atversion\=(\d+\.\d+\.\d+)/);
-            if (versionMatch) {
-                atversion = versionMatch[1];
+        var versionMatch = url.match(/atversion\=(\d+\.\d+(\.|-)[0-9A-Z]+)/);
+        var isAmaBuild;
+        if (versionMatch) {
+            atversion = versionMatch[1];
+            isAmaBuild = (versionMatch[2] == "-");
+        } else {
+            isAmaBuild = !!(document.location.pathname.match(/\/aria\-templates(-\w+)?\/test\//));
+            if (isAmaBuild) {
+                atversion = "1.1-SNAPSHOT";
             } else {
                 alert("Need an 'atversion=x.y.z' in the query string.");
             }
@@ -125,6 +127,7 @@
         var info = "skin " + skinName + " / ";
         info += (devFiles ? "dev" : "built") + " files / ";
         info += (isAmaBuild ? "ama" : "opensource") + " / ";
+        info += "atversion: " + atversion + " / ";
         info += (Aria.verbose ? "verbose" : "nonverbose") + " console";
         document.getElementById("_TestInfoOutput_").innerHTML = info;
     </script>
