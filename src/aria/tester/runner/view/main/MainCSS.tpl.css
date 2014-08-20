@@ -42,8 +42,15 @@
         height : 100px;
     }
 
+    .nameHeader {
+        float:left;
+        position:relative;
+        height: 50px;
+        font: italic bold 28px/50px 'Times New Roman';
+        color: rgb(0, 60, 136)
+    }
+
     .monitor {
-        margin-top:50px;
         position:relative;
         float:left;
         z-index:10000;
