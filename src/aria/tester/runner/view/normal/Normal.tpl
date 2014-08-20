@@ -37,6 +37,9 @@
             defaultTemplate:"aria.tester.runner.view.nav.Nav"
         } /}
         </div>
+        <div class="nameHeader" style="width: ${$hdim(180)}px;">
+            Classic Test Runner
+        </div>
         <div class="monitor" style="
             height : ${$vdim(282)}px;
             width : ${$hdim(180)}px;
