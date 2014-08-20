@@ -261,6 +261,10 @@ Aria.classDefinition({
         _onBoundPropertyChange : function (propertyName, newValue, oldValue) {
             if (propertyName === 'referenceDate') {
                 this.controller.setReferenceDate(newValue);
+            } else if (propertyName === 'minValue') {
+                this.controller.setMinValue(newValue);
+            } else if (propertyName === 'maxValue') {
+                this.controller.setMaxValue(newValue);
             } else {
                 this.$DropDownTextInput._onBoundPropertyChange.call(this, propertyName, newValue, oldValue);
             }

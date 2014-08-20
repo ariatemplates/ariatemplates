@@ -786,6 +786,12 @@ Aria.beanDefinitions({
                     $properties : {
                         "referenceDate" : {
                             $type : "common:BindingRef"
+                        },
+                        "minValue" : {
+                            $type : "common:BindingRef"
+                        },
+                        "maxValue" : {
+                            $type : "common:BindingRef"
                         }
                     }
                 },
