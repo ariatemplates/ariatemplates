@@ -19,7 +19,8 @@
 Aria.classDefinition({
     $classpath : "aria.utils.Date",
     $singleton : true,
-    $dependencies : ["aria.utils.String", "aria.utils.Type", "aria.utils.environment.Date", "aria.utils.Array"],
+    $dependencies : ["aria.utils.String", "aria.utils.Type", "aria.utils.environment.Date", "aria.utils.Array",
+            "aria.core.ResMgr"],
     $resources : {
         dateRes : "aria.resources.DateRes",
         res : "aria.utils.UtilsRes"
@@ -43,13 +44,20 @@ Aria.classDefinition({
         var res = this.dateRes, utilString = aria.utils.String, utilRes = this.res;
 
         /**
-         * IATA Months for interpretation
+         * IATA and localized months for interpretation. It is set in method _prepareLocalizedPatterns at initialization
+         * and every time the locale changes
          * @protected
          * @type Array
          */
-        this._interpret_monthTexts = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV",
-                "DEC"];
-        var iataMonths = this._interpret_monthTexts;
+        this._interpret_monthTexts;
+
+        /**
+         * IATA months for interpretation
+         * @protected
+         * @type Array
+         */
+        var iataMonths = this._iataMonths = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT",
+                "NOV", "DEC"];
 
         /**
          * Date formatter letter patterns.
@@ -178,7 +186,7 @@ Aria.classDefinition({
          * @private
          * @type RegExp
          */
-        this._interpret_isValid = /^[\d\W]*([a-z]{3})?[\d\W]*$/i;
+        this._interpret_isValid = /^[\d\W]*([^\d\+\\\/]+)?[\d\W]*$/i;
 
         /**
          * special case 1 RegExp : 5 -> the 5th of today's month
@@ -195,11 +203,12 @@ Aria.classDefinition({
         this._interpret_specialCase2 = /^[+\-]\d{1,3}$/;
 
         /**
-         * special case 3 RegExp : 10DEC/+-5 -> 10DEC +-5 days
+         * special case 3 RegExp : 10DEC/+-5 -> 10DEC +-5 days. Localized regexp.It is set in method
+         * _prepareLocalizedPatterns at initialization and every time the locale changes
          * @private
          * @type RegExp
          */
-        this._interpret_specialCase3 = /^(\d{1,2}[a-z]{3}\d{0,4})\/([+\-]\d{1,3})$/i;
+        this._interpret_specialCase3 = null;
         /**
          * @private
          * @type String
@@ -325,11 +334,13 @@ Aria.classDefinition({
         this._interpret_isAnymonth = /MMM|I|MM/g;
 
         /**
-         * month recognition RegExp Parenthesis are used in this regexp to capture a backreference for replacement
+         * Localized month recognition RegExp Parenthesis are used in this regexp to capture a backreference for
+         * replacement. It is set in method _prepareLocalizedPatterns at initialization and every time the locale
+         * changes
          * @private
          * @type RegExp
          */
-        this._interpret_isMonth = /([a-z]{3})/i;
+        this._interpret_isMonth = null;
         /**
          * day recognition RegExp, used in inputPattern definition
          * @private
@@ -392,9 +403,17 @@ Aria.classDefinition({
          */
         this._formatToUpperCase = false;
 
+        this._prepareLocalizedPatterns();
+
+        aria.core.ResMgr.$on({
+            "resourcesReloadComplete" : this._prepareLocalizedPatterns,
+            scope : this
+        });
+
     },
     $destructor : function () {
         this._formatCache = null;
+        aria.core.ResMgr.$unregisterListeners(this);
     },
     $statics : {
         PATTERN_ERROR_MESSAGE : "##PATTERN_ERROR##",
@@ -436,7 +455,6 @@ Aria.classDefinition({
          * Given the following extry string, the result in the hh:mm:ss format is
          * <pre>
          * string     format (24h)
-         *
          * 1            01:00:00
          * 1 10         01:10:00
          * 1,20         01:20:00
@@ -780,12 +798,10 @@ Aria.classDefinition({
          * Given the following extry string, the result in the format d:MMM:Y is
          * <pre>
          * string       format
-         *
          * 1             (first day of current month)
          * 1 12          1 Dec (current year)
          * 10/3/2012     10 Mar 2012
          * 2APR2012      2 Apr 2012
-         *
          * +5            (five days from now)
          * -2            (two days ago)
          * 10JUN2012/+3  13 Jun 2012
@@ -931,8 +947,8 @@ Aria.classDefinition({
                             indexes = this._generateIndexes(datePattern, patternComposition);
                             // user input parser
                             userInputInterpreter = this._userInputFormatGenerator(patternComposition);
-                            if (userInputInterpreter.test(entry)) {
-                                jsDate = this._interpretDateWithAnySeparator(userInputInterpreter, entry, indexes.yearIndex, indexes.monthIndex, indexes.dayIndex);
+                            if (userInputInterpreter.test(entry.toUpperCase())) {
+                                jsDate = this._interpretDateWithAnySeparator(userInputInterpreter, entry.toUpperCase(), indexes.yearIndex, indexes.monthIndex, indexes.dayIndex);
                             }
                             if (aria.utils.Type.isDate(jsDate)) {
                                 return jsDate;
@@ -1025,7 +1041,7 @@ Aria.classDefinition({
         interpretFullDateRef : function (dateStr) {
             var execResult = this._interpret_specialCase3.exec(dateStr), jsdate;
             var newEntry = execResult[1];
-            var shift = parseInt(execResult[2], 10);
+            var shift = parseInt(execResult[3], 10);
             // format valid only if number of days <= 365
             if (Math.abs(shift) > 365) {
                 return null;
@@ -1091,7 +1107,7 @@ Aria.classDefinition({
             if (monthIndex === -1) {
                 monthIndex = aria.utils.Array.indexOf(patterncomposition, "I");
             }
-            var IataMonth = "([a-zA-Z]{3})";
+            var monthRegExpSource = this._interpret_isMonth.source;
             switch (monthIndex) {
                 case -1 :
                     // no Iata month
@@ -1110,12 +1126,12 @@ Aria.classDefinition({
                     // Iata month is in the first position example Mar 05, 2012
                     if (patterncomposition.length === 4) {
                         // full iata date pattern
-                        userInputFormat = new RegExp("^" + IataMonth + this._allowedSeparator + "(\\d{"
+                        userInputFormat = new RegExp("^" + monthRegExpSource + this._allowedSeparator + "(\\d{"
                                 + patterncomposition[2].length + "})" + this._allowedSeparator + "(\\d{"
                                 + patterncomposition[3].length + "})" + "$");
                     } else if (patterncomposition.length === 3) {
                         // monthAndYear or dayAndMonth iata date pattern
-                        userInputFormat = new RegExp("^" + IataMonth + this._allowedSeparator + "(\\d{"
+                        userInputFormat = new RegExp("^" + monthRegExpSource + this._allowedSeparator + "(\\d{"
                                 + patterncomposition[2].length + "})" + "$");
                     }
                     break;
@@ -1124,12 +1140,12 @@ Aria.classDefinition({
                     if (patterncomposition.length === 4) {
                         // full iata date pattern
                         userInputFormat = new RegExp("^" + "(\\d{" + patterncomposition[1].length + "})"
-                                + this._allowedSeparator + IataMonth + this._allowedSeparator + "(\\d{"
+                                + this._allowedSeparator + monthRegExpSource + this._allowedSeparator + "(\\d{"
                                 + patterncomposition[3].length + "})" + "$");
                     } else if (patterncomposition.length === 3) {
                         // monthAndYear or dayAndMonth iata date pattern
                         userInputFormat = new RegExp("^" + "(\\d{" + patterncomposition[1].length + "})"
-                                + this._allowedSeparator + IataMonth + "$");
+                                + this._allowedSeparator + monthRegExpSource + "$");
                     }
                     break;
                 case 3 :
@@ -1137,7 +1153,7 @@ Aria.classDefinition({
                     // full iata date pattern
                     userInputFormat = new RegExp("^" + "(\\d{" + patterncomposition[1].length + "})"
                             + this._allowedSeparator + "(\\d{" + patterncomposition[2].length + "})"
-                            + this._allowedSeparator + IataMonth + "$");
+                            + this._allowedSeparator + monthRegExpSource + "$");
 
                     break;
                 default :
@@ -1167,7 +1183,7 @@ Aria.classDefinition({
             }
             if (dateStr.match(this._interpret_isMonth)) {
                 // IATA date
-                month = aria.utils.Array.indexOf(this._interpret_monthTexts, execResult[monthIndex].toUpperCase());
+                month = this._getMonthIndex(execResult[monthIndex]);
             } else {
                 month = execResult[monthIndex];
                 month -= 1;
@@ -1192,10 +1208,10 @@ Aria.classDefinition({
          * @return {Date}
          */
         interpretMonth : function (dateStr) {
-            var arrayUtil = aria.utils.Array, entry = dateStr.toUpperCase(), jsdate, monthIndex;
-            if (arrayUtil.contains(this._interpret_monthTexts, entry)) {
+            var jsdate;
+            var monthIndex = this._getMonthIndex(dateStr);
+            if (monthIndex != -1) {
                 jsdate = new Date();
-                monthIndex = arrayUtil.indexOf(this._interpret_monthTexts, entry);
                 if (jsdate.getMonth() != monthIndex) {
                     jsdate.setDate(1);
                     jsdate.setMonth(monthIndex);
@@ -1349,14 +1365,26 @@ Aria.classDefinition({
             if (this._interpret_digitOnly.test(entry)) {
                 entry = entry.slice(0, 2) + "/" + entry.slice(2, 4) + "/" + entry.slice(4);
             } else {
-                // replace JAN by /JAN/ for example
-                entry = entry.replace(this._interpret_isMonth, "/$1/");
+                // replace all non-word characters with "/" skipping the month. Then surround the month word, if any,
+                // with "/"
+                var month = entry.match(this._interpret_isMonth);
+                if (month) {
+                    var parts = entry.split(month[0]);
+                    for (var i = 0, len = parts.length; i < len; i++) {
+                        parts[i] = parts[i].replace(/\W+/g, "/");
+                    }
+                    entry = parts.join("/" + month[0] + "/");
+                } else {
+                    entry = entry.replace(/\W+/g, "/");
+                }
             }
-            dateArray = entry.split(/\W+/);
+            dateArray = entry.split(/\/+/);
             // clean the array of useless piece of empty strings
             for (var index = 0, l = dateArray.length; index < l; index++) {
                 if (!dateArray[index]) {
                     dateArray.splice(index, 1);
+                    index--;
+                    l--;
                 }
             }
             return dateArray;
@@ -1383,8 +1411,7 @@ Aria.classDefinition({
             if (this._interpret_digitOnly.test(interpretdMonth)) {
                 interpretdMonth = parseInt(interpretdMonth, 10) - 1;
             } else {
-                interpretdMonth = interpretdMonth.toUpperCase();
-                var monthIndex = aria.utils.Array.indexOf(this._interpret_monthTexts, interpretdMonth);
+                var monthIndex = this._getMonthIndex(interpretdMonth);
                 if (monthIndex !== -1) {
                     interpretdMonth = monthIndex;
                 } else {
@@ -1799,6 +1826,42 @@ Aria.classDefinition({
             var secondTime = time ? secondDate.getTime() : this.removeTime(secondDate).getTime();
             var difference = firstTime - secondTime;
             return (difference === 0) ? 0 : difference / Math.abs(difference);
+        },
+
+        /**
+         * Prepare the array containing IATA months, localized long and short months for data interpretation
+         * @private
+         */
+        _prepareLocalizedPatterns : function () {
+            var res = this.dateRes, localizedMonths = res.month, localizedShortMonths = res.monthShort;
+            var monthTexts = [], i, len;
+            for (i = 0, len = localizedMonths.length; i < len; i++) {
+                monthTexts.push(localizedMonths[i].toUpperCase());
+            }
+            if (localizedShortMonths) {
+                for (i = 0, len = localizedShortMonths.length; i < len; i++) {
+                    monthTexts.push(localizedShortMonths[i].toUpperCase());
+                }
+            } else {
+                for (i = 0, len = localizedMonths.length; i < len; i++) {
+                    monthTexts.push(localizedMonths[i].substring(0, 3).toUpperCase());
+                }
+            }
+
+            monthTexts = monthTexts.concat(this._iataMonths);
+            this._interpret_monthTexts = monthTexts;
+            var source = monthTexts.join("|").replace("\\", "\\\\").replace(/\s/g, "\\s").replace(/\./g, "\\.");
+            this._interpret_isMonth = new RegExp("(" + source + ")", "i");
+            this._interpret_specialCase3 = new RegExp("^(\\d{1,2}\\s*(" + source + ")\\s*\\d{0,4})\\/([+\\-]\\d{1,3})$", "i");
+        },
+
+        /**
+         * Compute the month number out of the month name
+         * @param {String} entry Month present in the date text
+         * @return {Integer} month number, or -1 if no month is found
+         */
+        _getMonthIndex : function (entry) {
+            return aria.utils.Array.indexOf(this._interpret_monthTexts, entry.toUpperCase()) % 12;
         }
     }
 });

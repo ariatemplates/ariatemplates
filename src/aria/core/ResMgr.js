@@ -29,6 +29,9 @@ Aria.classDefinition({
         this.currentLocale = null;
         this.loadedResources = null;
     },
+    $events : {
+        "resourcesReloadComplete" : "Raised after resources are reloaded after a locale change"
+    },
     $prototype : {
 
         /**
@@ -83,7 +86,19 @@ Aria.classDefinition({
         changeLocale : function (newLocale, cb) {
             this.currentLocale = newLocale;
             aria.core.ClassMgr.unloadClassesByType("RES");
-            this.__loadResourceFiles(this.loadedResources, cb);
+            this.__loadResourceFiles(this.loadedResources, {
+                fn: this._afterLocaleChange,
+                args: cb,
+                scope: this
+            });
+        },
+
+        /**
+         * Called after the locale is changed.
+         */
+        _afterLocaleChange : function (unused, cb) {
+            this.$raiseEvent("resourcesReloadComplete");
+            this.$callback(cb);
         },
 
         /**
