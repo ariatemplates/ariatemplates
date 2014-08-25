@@ -25,7 +25,6 @@
  * </ul>
  */
 
-
 module.exports = function (grunt) {
     var packagingSettings = require('./config-packaging')(grunt);
 
@@ -82,11 +81,6 @@ module.exports = function (grunt) {
                             wrapper : "<%= grunt.file.read('src/aria/bootstrap.tpl.js') %>",
                             targetLogicalPath : 'aria/bootstrap-node.js',
                             requires : packagingSettings.bootstrap.files
-                        }
-                    }, {
-                        type : 'ATNoderConverter',
-                        cfg : {
-                            files : ['aria/**/*.js']
                         }
                     }, {
                         type : 'CheckGlobals',

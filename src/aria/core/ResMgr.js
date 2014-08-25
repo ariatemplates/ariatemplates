@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+var Aria = require("../Aria");
 var asyncRequire = require('noder-js/asyncRequire').create(module);
 var Promise = require('noder-js/promise');
 var environment = require('./environment/Environment');

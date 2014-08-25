@@ -72,7 +72,6 @@
 
     "globals" : {
         "aria" : false,
-        "Aria" : true,
         "setTimeout" : false,
         "setInterval" : false,
         "clearTimeout" : false,

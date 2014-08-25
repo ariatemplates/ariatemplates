@@ -25,11 +25,28 @@ module.exports = function (grunt) {
                     'build/grunt-config/*.js', 'build/*.js']
         },
         source : {
-            src : ['src/aria/**/*.js',
+            src : [
+                    'src/aria/**/*.js',
                     // Using node.js globals
                     '!src/aria/node.js',
+                    // Resource and skin definitions use the global Aria without require
+                    '!src/aria/css/*.js', '!src/aria/resources/CalendarRes*.js', '!src/aria/resources/DateRes*.js',
+                    '!src/aria/resources/multiselect/FooterRes*.js', '!src/aria/utils/UtilsRes.js',
+                    '!src/aria/widgets/WidgetsRes.js',
                     // Showdown.js direct include inside a classDefinition. We do not want to touch it
                     '!src/aria/pageEngine/contentProcessors/MarkdownProcessor.js']
+        },
+        resource : {
+            // Resource and skin definitions use the global Aria without require
+            src : ['src/aria/css/*.js', 'src/aria/resources/CalendarRes*.js', 'src/aria/resources/DateRes*.js',
+                    'src/aria/resources/multiselect/FooterRes*.js', 'src/aria/utils/UtilsRes.js',
+                    'src/aria/widgets/WidgetsRes.js'],
+            options : {
+                "globals" : {
+                    // allowing read-only access to Aria
+                    "Aria" : false
+                }
+            }
         },
         test : {
             files : {
@@ -46,10 +63,6 @@ module.exports = function (grunt) {
                 "globals" : {
                     "aria" : false,
                     "Aria" : true, // allowing to override this global
-                    "setTimeout" : false,
-                    "setInterval" : false,
-                    "clearTimeout" : false,
-                    "clearInterval" : false,
                     "test" : false,
                     "Syn" : false
                 }
@@ -78,9 +91,11 @@ module.exports = function (grunt) {
 
     grunt.config.set('leadingIndent.indentation', 'spaces');
     grunt.config.set('leadingIndent.jsFiles', {
-        src : ['src/**/*.js', 'test/**/*.js', '!src/aria/pageEngine/contentProcessors/MarkdownProcessor.js', '!test/nodeTestResources/testProject/target/**/*']
+        src : ['src/**/*.js', 'test/**/*.js', '!src/aria/pageEngine/contentProcessors/MarkdownProcessor.js',
+                '!test/nodeTestResources/testProject/target/**/*']
     });
 
-    grunt.registerTask('checkStyle', ['jshint:build', 'jshint:node', 'jshint:source', 'verifylowercase:sourceFiles', 'leadingIndent:jsFiles']);
+    grunt.registerTask('checkStyle', ['jshint:build', 'jshint:node', 'jshint:source', 'jshint:resource',
+            'verifylowercase:sourceFiles', 'leadingIndent:jsFiles']);
     grunt.registerTask('checkStyleTest', ['jshint:test']);
 };
