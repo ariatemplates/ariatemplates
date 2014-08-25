@@ -12,19 +12,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaCoreMultiLoader = require("./MultiLoader");
+
 
 /**
  * With the migration to noder-js, this class is no longer supported.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.core.ClassLoader",
     $constructor : function () {
         this.$logError(this.NODER_MIGRATION);
     },
     $statics : {
         NODER_MIGRATION : "With the migration to noder-js, this class is no longer supported.",
-        CLASS_LOAD_ERROR : aria.core.MultiLoader.LOAD_ERROR,
-        CLASS_LOAD_FAILURE : aria.core.MultiLoader.LOAD_ERROR,
-        MISSING_CLASS_DEFINITION : aria.core.MultiLoader.LOAD_ERROR
+        CLASS_LOAD_ERROR : ariaCoreMultiLoader.LOAD_ERROR,
+        CLASS_LOAD_FAILURE : ariaCoreMultiLoader.LOAD_ERROR,
+        MISSING_CLASS_DEFINITION : ariaCoreMultiLoader.LOAD_ERROR
     }
 });

@@ -13,6 +13,10 @@
  * limitations under the License.
  */
 /* jshint unused : false */
+var Aria = require("../Aria");
+var ariaUtilsFunction = require("./Function");
+require("./Dom");
+
 
 (function () {
     var _isInDom = function (element) {
@@ -2721,10 +2725,9 @@
     /**
      * Class to simulate DOM events which can bubble in the DOM.
      */
-    Aria.classDefinition({
+    module.exports = Aria.classDefinition({
         $classpath : "aria.utils.SynEvents",
         $singleton : true,
-        $dependencies : ["aria.utils.Function", "aria.utils.Dom"],
         $prototype : {
 
             /**
@@ -2733,7 +2736,7 @@
              * @param {Object} cb
              */
             click : function (el, cb) {
-                Syn.click({}, el, aria.utils.Function.bindCallback(cb));
+                Syn.click({}, el, ariaUtilsFunction.bindCallback(cb));
             },
 
             /**
@@ -2743,7 +2746,7 @@
              * @param {Object} cb
              */
             type : function (el, text, cb) {
-                Syn.type(text, el, aria.utils.Function.bindCallback(cb));
+                Syn.type(text, el, ariaUtilsFunction.bindCallback(cb));
             },
 
             /**
@@ -2753,7 +2756,7 @@
              * @param {Object} cb
              */
             move : function (options, from, cb) {
-                Syn.move(options, from, aria.utils.Function.bindCallback(cb));
+                Syn.move(options, from, ariaUtilsFunction.bindCallback(cb));
             }
         }
     });

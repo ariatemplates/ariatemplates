@@ -12,13 +12,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaUtilsDom = require("../../utils/Dom");
+var ariaPageEngineUtilsPageEngineUtils = require("./PageEngineUtils");
+var ariaUtilsArray = require("../../utils/Array");
+var ariaUtilsType = require("../../utils/Type");
+
 
 /**
  * Helper class that helps with returning information from the site configuration object
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.pageEngine.utils.SiteConfigHelper",
-    $dependencies : ["aria.utils.Dom", "aria.pageEngine.utils.PageEngineUtils", "aria.utils.Array"],
     $constructor : function (siteConfig) {
 
         /**
@@ -34,7 +39,7 @@ Aria.classDefinition({
          */
         this._contentProcessorsInstances = {};
 
-        aria.pageEngine.utils.PageEngineUtils.addKeyAsProperty(this.siteConfig.commonModules, "refpath");
+        ariaPageEngineUtilsPageEngineUtils.addKeyAsProperty(this.siteConfig.commonModules, "refpath");
     },
     $destructor : function () {
         this.disposeContentProcessorsInstances();
@@ -52,7 +57,7 @@ Aria.classDefinition({
          */
         getRootDiv : function () {
             var rootDivId = this.getRootDivId();
-            var domElt = aria.utils.Dom.getElementById(rootDivId);
+            var domElt = ariaUtilsDom.getElementById(rootDivId);
             if (domElt === Aria.$window.document.body) {
                 this.$logError(this.CONTAINER_ID_CANT_BE_BODY_ID);
             } else if (!domElt) {
@@ -98,7 +103,7 @@ Aria.classDefinition({
          * @return {Object}
          */
         getContentProcessorInstances : function () {
-            var processors = {}, typeUtils = aria.utils.Type;
+            var processors = {}, typeUtils = ariaUtilsType;
             for (var cp in this.siteConfig.contentProcessors) {
                 if (this.siteConfig.contentProcessors.hasOwnProperty(cp)) {
                     var classRef = Aria.getClassRef(this.siteConfig.contentProcessors[cp]);
@@ -117,7 +122,7 @@ Aria.classDefinition({
         },
 
         disposeContentProcessorsInstances : function () {
-            var typeUtils = aria.utils.Type;
+            var typeUtils = ariaUtilsType;
             var instances = this._contentProcessorsInstances;
             for (var cp in instances) {
                 if (instances.hasOwnProperty(cp)) {
@@ -141,7 +146,7 @@ Aria.classDefinition({
         getCommonModulesDescription : function (filters) {
             var commonModules = this.siteConfig.commonModules;
             if (!filters) {
-                return aria.utils.Array.extractValuesFromMap(commonModules);
+                return ariaUtilsArray.extractValuesFromMap(commonModules);
             }
             var priority = filters.priority;
             var refpaths = filters.refpaths;

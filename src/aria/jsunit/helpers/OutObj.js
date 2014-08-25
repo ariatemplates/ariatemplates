@@ -12,13 +12,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaUtilsDom = require("../../utils/Dom");
+
 
 /**
  * Helper to simulate a writer used in template context
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.jsunit.helpers.OutObj",
-    $dependencies : ["aria.utils.Dom"],
     $singleton : true,
     $constructor : function () {
         /**
@@ -87,7 +89,7 @@ Aria.classDefinition({
          * Put the stored markup in the test area
          */
         putInDOM : function () {
-            aria.utils.Dom.insertAdjacentHTML(this.testArea, "beforeEnd", this.store);
+            ariaUtilsDom.insertAdjacentHTML(this.testArea, "beforeEnd", this.store);
             this.store = "";
         },
 

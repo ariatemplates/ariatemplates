@@ -12,15 +12,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaCoreBrowser = require("../core/Browser");
+var ariaUtilsEnvironmentVisualFocus = require("./environment/VisualFocus");
+var ariaUtilsDelegate = require("./Delegate");
+var ariaCoreEnvironmentEnvironment = require("../core/environment/Environment");
+
 
 /**
  * Manages the visual focus. Loaded when needed by Environment
  * @class aria.utils.VisualFocus
  * @singleton: true
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.utils.VisualFocus",
-    $dependencies : ['aria.core.Browser', 'aria.utils.environment.VisualFocus', 'aria.utils.Delegate'],
     $singleton : true,
     $constructor : function () {
 
@@ -30,8 +35,8 @@ Aria.classDefinition({
          * @private
          * @type String
          */
-        this.__style = (!aria.core.Browser.isIE6 && !aria.core.Browser.isIE7)
-                ? aria.utils.environment.VisualFocus.getAppOutlineStyle()
+        this.__style = (!ariaCoreBrowser.isIE6 && !ariaCoreBrowser.isIE7)
+                ? ariaUtilsEnvironmentVisualFocus.getAppOutlineStyle()
                 : null;
 
         /**
@@ -40,7 +45,7 @@ Aria.classDefinition({
          * @private
          * @type HTMLElement
          */
-        this.__focusedElement = aria.utils.Delegate.getFocus();
+        this.__focusedElement = ariaUtilsDelegate.getFocus();
 
         /**
          * Element that actually receives the outline
@@ -66,20 +71,20 @@ Aria.classDefinition({
          */
         this.__previousStyle = null;
 
-        aria.utils.environment.VisualFocus.$on({
+        ariaUtilsEnvironmentVisualFocus.$on({
             "environmentChanged" : function () {
                 this.updateOutlineStyle();
             },
             scope : this
         });
 
-        aria.utils.Delegate.$on({
+        ariaUtilsDelegate.$on({
             "elementFocused" : function (evt) {
                 this.addVisualFocus(evt.focusedElement);
             },
             scope : this
         });
-        aria.utils.Delegate.$on({
+        ariaUtilsDelegate.$on({
             "elementBlurred" : function () {
                 this.removeVisualFocus();
             },
@@ -97,11 +102,11 @@ Aria.classDefinition({
         this.__focusedElement = null;
         this.__outlinedElement = null;
         // unregister Listeners
-        if (aria.utils.Delegate) {
-            aria.utils.Delegate.$unregisterListeners(this);
+        if (ariaUtilsDelegate) {
+            ariaUtilsDelegate.$unregisterListeners(this);
         }
-        if (aria.core.environment.Environment) {
-            aria.core.environment.Environment.$unregisterListeners(this);
+        if (ariaCoreEnvironmentEnvironment) {
+            ariaCoreEnvironmentEnvironment.$unregisterListeners(this);
         }
     },
     $prototype : {
@@ -131,7 +136,7 @@ Aria.classDefinition({
                 }
                 if (this.__outlinedElement) {
                     // see comments on top of this.__previousOutline to uderstand the reason for this if statement
-                    if (aria.core.Browser.isIE8) {
+                    if (ariaCoreBrowser.isIE8) {
                         this.__previousStyle = this.__outlinedElement.style.cssText;// aria.utils.Dom.getStyle(this.__outlinedElement,
                         // "outline");
                     } else {
@@ -151,7 +156,7 @@ Aria.classDefinition({
         removeVisualFocus : function () {
             if (this.__style && this.__outlinedElement) {
                 // restore the previous outline
-                if (aria.core.Browser.isIE8) {
+                if (ariaCoreBrowser.isIE8) {
                     this.__outlinedElement.style.cssText = this.__previousStyle;
                 } else {
                     this.__outlinedElement.style.outline = this.__previousStyle;
@@ -169,8 +174,8 @@ Aria.classDefinition({
          * @param {String} newStyle [optional] outline style that you want to apply
          */
         updateOutlineStyle : function (newStyle) {
-            var styleToApply = (newStyle) ? newStyle : aria.utils.environment.VisualFocus.getAppOutlineStyle();
-            this.__style = (!aria.core.Browser.isIE6 && !aria.core.Browser.isIE7) ? styleToApply : null;
+            var styleToApply = (newStyle) ? newStyle : ariaUtilsEnvironmentVisualFocus.getAppOutlineStyle();
+            this.__style = (!ariaCoreBrowser.isIE6 && !ariaCoreBrowser.isIE7) ? styleToApply : null;
             this.__updateVisualFocus();
         },
 
@@ -184,7 +189,7 @@ Aria.classDefinition({
                 if (this.__style) {
                     this.__outlinedElement.style.outline = this.__style;
                 } else {
-                    if (aria.core.Browser.isIE8) {
+                    if (ariaCoreBrowser.isIE8) {
                         this.__outlinedElement.style.cssText = this.__previousStyle;
                     } else {
                         this.__outlinedElement.style.outline = this.__previousStyle;

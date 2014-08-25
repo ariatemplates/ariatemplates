@@ -12,18 +12,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaTemplatesIModuleCtrl = require("./IModuleCtrl");
+var ariaUtilsJson = require("../utils/Json");
+var ariaUtilsType = require("../utils/Type");
+var ariaTemplatesModuleCtrlFactory = require("./ModuleCtrlFactory");
+var ariaTemplatesRefreshManager = require("./RefreshManager");
+var ariaModulesRequestMgr = require("../modules/RequestMgr");
+var ariaTemplatesPublicWrapper = require("./PublicWrapper");
+var ariaUtilsArray = require("../utils/Array");
+var ariaCoreJsonValidator = require("../core/JsonValidator");
+
 
 /**
  * Module Controller. Base class for all module controllers.
  * @class aria.templates.ModuleCtrl
  * @extends aria.core.JsObject
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : 'aria.templates.ModuleCtrl',
-    $extends : 'aria.templates.PublicWrapper',
-    $implements : ["aria.templates.IModuleCtrl"],
-    $dependencies : ['aria.utils.Json', 'aria.utils.Type', 'aria.templates.ModuleCtrlFactory',
-            'aria.templates.RefreshManager', 'aria.modules.RequestMgr'],
+    $extends : ariaTemplatesPublicWrapper,
+    $implements : [ariaTemplatesIModuleCtrl],
     $constructor : function () {
         this.$PublicWrapper.constructor.call(this);
 
@@ -116,7 +125,7 @@ Aria.classDefinition({
         this._data = null;
         this._resources = null;
         this._smList = null; // sub-modules are disposed in the ModuleCtrlFactory below:
-        aria.templates.ModuleCtrlFactory.__notifyModuleCtrlDisposed(this);
+        ariaTemplatesModuleCtrlFactory.__notifyModuleCtrlDisposed(this);
         this.$PublicWrapper.$destructor.call(this);
         this.$requestJsonSerializer = null;
     },
@@ -147,7 +156,7 @@ Aria.classDefinition({
          * @param {Object} sdef the superclass class definition
          */
         $init : function (p, def, sdef) {
-            p.json = aria.utils.Json; // shortcut
+            p.json = ariaUtilsJson; // shortcut
         },
 
         /**
@@ -168,7 +177,7 @@ Aria.classDefinition({
          */
         _interceptPublicInterface : function (info) {
             if (info.step == "CallBegin" && !aria.templates.ModuleCtrl.prototype[info.method]) {
-                aria.templates.RefreshManager.stop();
+                ariaTemplatesRefreshManager.stop();
             }
             var evt = {
                 name : "method" + info.step, /*
@@ -179,7 +188,7 @@ Aria.classDefinition({
             this.$raiseEvent(evt);
 
             if (info.step == "CallEnd" && !aria.templates.ModuleCtrl.prototype[info.method]) {
-                aria.templates.RefreshManager.resume();
+                ariaTemplatesRefreshManager.resume();
             }
         },
 
@@ -198,7 +207,7 @@ Aria.classDefinition({
          * care: sync requests can freeze the UI)
          */
         submitJsonRequest : function (targetService, jsonData, cb, async) {
-            var typeUtils = aria.utils.Type;
+            var typeUtils = ariaUtilsType;
             // change cb as an object if a string or a function is passed as a
             // callback
             if (typeUtils.isString(cb) || typeUtils.isFunction(cb)) {
@@ -235,7 +244,7 @@ Aria.classDefinition({
                 requestObject.serviceSpec = targetService;
             }
 
-            aria.modules.RequestMgr.submitJsonRequest(requestObject, jsonData, wrapCB);
+            ariaModulesRequestMgr.submitJsonRequest(requestObject, jsonData, wrapCB);
         },
 
         /**
@@ -245,9 +254,9 @@ Aria.classDefinition({
          * @param {Object} args See this.submitJsonRequest()
          */
         _submitJsonRequestCB : function (res, args) {
-            aria.templates.RefreshManager.stop();
+            ariaTemplatesRefreshManager.stop();
             this.$callback(args.cb, res);
-            aria.templates.RefreshManager.resume();
+            ariaTemplatesRefreshManager.resume();
         },
 
         /**
@@ -272,7 +281,7 @@ Aria.classDefinition({
                 // smList can be null if the module is in the process of being disposed
                 for (var i = 0, l = smList.length; i < l; i++) {
                     if (smList[i] == evt.src) {
-                        aria.utils.Array.removeAt(smList, i);
+                        ariaUtilsArray.removeAt(smList, i);
                         if (evt.reloadingObject) {
                             evt.reloadingObject.$onOnce({
                                 "objectLoaded" : {
@@ -307,7 +316,7 @@ Aria.classDefinition({
         loadSubModules : function (smList, cb) {
             // sub-module creation is now entirely managed in ModuleCtrlFactory
             // simple shortcut for aria.templates.ModuleCtrlFactory.loadSubModules
-            aria.templates.ModuleCtrlFactory.__loadSubModules(this, smList, {
+            ariaTemplatesModuleCtrlFactory.__loadSubModules(this, smList, {
                 fn : this.__onLoadSubModulesComplete,
                 scope : this,
                 args : cb
@@ -336,7 +345,7 @@ Aria.classDefinition({
          * @param {aria.templates.IModuleCtrl} subModuleRef reference to the sub-module to dispose.
          */
         disposeSubModule : function (subModuleRef) {
-            aria.templates.ModuleCtrlFactory.__disposeSubModule(this, subModuleRef);
+            ariaTemplatesModuleCtrlFactory.__disposeSubModule(this, subModuleRef);
         },
 
         /**
@@ -355,7 +364,7 @@ Aria.classDefinition({
         setData : function (data, merge) {
             this.json.inject(data, this._data, merge);
             if (this._dataBeanName) {
-                if (!aria.core.JsonValidator.normalize({
+                if (!ariaCoreJsonValidator.normalize({
                     json : this._data,
                     beanName : this._dataBeanName
                 })) {

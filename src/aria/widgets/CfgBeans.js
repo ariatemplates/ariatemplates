@@ -12,17 +12,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaCoreJsonTypes = require("../core/JsonTypes");
+var ariaTemplatesCfgBeans = require("../templates/CfgBeans");
+var ariaCoreEnvironmentEnvironmentBaseCfgBeans = require("../core/environment/EnvironmentBaseCfgBeans");
+var ariaWidgetsFormListCfgBeans = require("./form/list/CfgBeans");
+var ariaUtilsDragdropDragDropBean = require("../utils/dragdrop/DragDropBean");
+var ariaWidgetLibsCommonBeans = require("../widgetLibs/CommonBeans");
 
-Aria.beanDefinitions({
+
+module.exports = Aria.beanDefinitions({
     $package : "aria.widgets.CfgBeans",
     $description : "Definition of the JSON beans used by the aria widgets library",
     $namespaces : {
-        "json" : "aria.core.JsonTypes",
-        "templates" : "aria.templates.CfgBeans",
-        "environmentBase" : "aria.core.environment.EnvironmentBaseCfgBeans",
-        "FormListCfg" : "aria.widgets.form.list.CfgBeans",
-        "dragDrop" : "aria.utils.dragdrop.DragDropBean",
-        "common" : "aria.widgetLibs.CommonBeans"
+        "json" : ariaCoreJsonTypes,
+        "templates" : ariaTemplatesCfgBeans,
+        "environmentBase" : ariaCoreEnvironmentEnvironmentBaseCfgBeans,
+        "FormListCfg" : ariaWidgetsFormListCfgBeans,
+        "dragDrop" : ariaUtilsDragdropDragDropBean,
+        "common" : ariaWidgetLibsCommonBeans
     },
     $beans : {
         "WidgetCfg" : {

@@ -12,14 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaTemplatesIModuleCtrl = require("../../templates/IModuleCtrl");
+
 
 /**
  * Public interface for the calendar controller.
  * @class aria.widgets.calendar.ICalendarController
  */
-Aria.interfaceDefinition({
+module.exports = Aria.interfaceDefinition({
     $classpath : 'aria.widgets.calendar.ICalendarController',
-    $extends : "aria.templates.IModuleCtrl",
+    $extends : ariaTemplatesIModuleCtrl,
     $events : {
         "focusChanged" : {
             description : "Raised when the focus changed.",

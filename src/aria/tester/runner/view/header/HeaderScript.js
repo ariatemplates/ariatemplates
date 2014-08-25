@@ -12,8 +12,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../../../Aria");
+var ariaUtilsArray = require("../../../../utils/Array");
 
-Aria.tplScriptDefinition({
+
+module.exports = Aria.tplScriptDefinition({
     $classpath : 'aria.tester.runner.view.header.HeaderScript',
     $prototype : {
         /**
@@ -50,7 +53,7 @@ Aria.tplScriptDefinition({
             disabledStates.push(this.flowCtrl.STATES.RESUMING);
             disabledStates.push(this.flowCtrl.STATES.OPTIONS);
 
-            if (aria.utils.Array.indexOf(disabledStates, state) != -1) {
+            if (ariaUtilsArray.indexOf(disabledStates, state) != -1) {
                 return true;
             }
             return false;

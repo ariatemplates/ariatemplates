@@ -12,6 +12,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaResourcesHandlersIResourcesHandler = require("./IResourcesHandler");
+var ariaUtilsString = require("../../utils/String");
+require("./LCResourcesHandlerBean");
+var ariaUtilsType = require("../../utils/Type");
+var ariaCoreJsonValidator = require("../../core/JsonValidator");
+
 (function () {
 
     // shortcuts
@@ -21,10 +28,9 @@
      * Resources handler for LABEL-CODE suggestions. This handler is to be fed and used with user defined entries.<br />
      * Suggestion must match the bean defined in this.SUGGESTION_BEAN
      */
-    Aria.classDefinition({
+    module.exports = Aria.classDefinition({
         $classpath : "aria.resources.handlers.LCResourcesHandler",
-        $implements : ["aria.resources.handlers.IResourcesHandler"],
-        $dependencies : ["aria.utils.String", "aria.resources.handlers.LCResourcesHandlerBean"],
+        $implements : [ariaResourcesHandlersIResourcesHandler],
         $statics : {
             /**
              * Suggestion bean that validates a given suggestion
@@ -108,9 +114,9 @@
             this._suggestions = null;
         },
         $onload : function () {
-            jsonValidator = aria.core.JsonValidator;
-            stringUtil = aria.utils.String;
-            typesUtil = aria.utils.Type;
+            jsonValidator = ariaCoreJsonValidator;
+            stringUtil = ariaUtilsString;
+            typesUtil = ariaUtilsType;
         },
         $onunload : function () {
             jsonValidator = null;

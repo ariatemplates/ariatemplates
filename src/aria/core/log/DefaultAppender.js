@@ -12,6 +12,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+
 
 (function () {
     var console = Aria.$global.console;
@@ -20,7 +22,7 @@
      * log (or in fact, any console that defines the window.console object). Other appenders can be written by extending
      * this default class in order to output elsewhere.
      */
-    Aria.classDefinition({
+    module.exports = Aria.classDefinition({
         $classpath : "aria.core.log.DefaultAppender",
         $prototype : console ? {
             /**

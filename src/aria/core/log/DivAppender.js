@@ -12,11 +12,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+
 
 /**
  * This appender output logs to a div in simple HTML format.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.core.log.DivAppender",
     /**
      * Takes the div used for logs as argument

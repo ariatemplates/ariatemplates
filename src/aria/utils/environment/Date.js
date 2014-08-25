@@ -12,6 +12,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+require("./DateCfgBeans");
+var ariaCoreEnvironmentEnvironmentBase = require("../../core/environment/EnvironmentBase");
+
 
 /**
  * Contains getters for the Date environment.
@@ -19,10 +23,9 @@
  * @extends aria.core.environment.EnvironmentBase
  * @singleton
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.utils.environment.Date",
-    $dependencies : ["aria.utils.environment.DateCfgBeans"],
-    $extends : "aria.core.environment.EnvironmentBase",
+    $extends : ariaCoreEnvironmentEnvironmentBase,
     $singleton : true,
     $prototype : {
         /**

@@ -12,6 +12,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaUtilsString = require("../String");
+var ariaCoreBrowser = require("../../core/Browser");
+var ariaUtilsCssPropertiesConfig = require("./PropertiesConfig");
+
 
 (function () {
 
@@ -19,9 +24,8 @@
         return Math.round(value * 100) / 100;
     }
 
-    Aria.classDefinition({
+    module.exports = Aria.classDefinition({
         $classpath : "aria.utils.css.Units",
-        $dependencies : ["aria.utils.String", "aria.core.Browser", "aria.utils.css.PropertiesConfig"],
         $singleton : true,
         $statics : {
             __convertFromPixels : {
@@ -166,7 +170,7 @@
 
         },
         $constructor : function () {
-            this.cfg = aria.utils.css.PropertiesConfig;
+            this.cfg = ariaUtilsCssPropertiesConfig;
 
             /**
              * DPI is lazy-evaluated by the call to this.getDpi() when needed, as we don't want to write to &lt;BODY&gt;
@@ -174,7 +178,7 @@
              */
             this._dpi = null;
 
-            var browser = aria.core.Browser;
+            var browser = ariaCoreBrowser;
             this.isIE8orLess = browser.isIE8 || browser.isIE7 || browser.isIE6;
         },
         $prototype : {
@@ -214,7 +218,7 @@
              */
             __getBorderWidth : function (element, which) {
                 var style = element.currentStyle;
-                var isIE7 = aria.core.Browser.isIE7;
+                var isIE7 = ariaCoreBrowser.isIE7;
                 var propName = "border" + which + "Width";
 
                 var hasBorder = (style["border" + which + "Style"] != "none");
@@ -335,7 +339,7 @@
                 // ""+value to accept numbers and not throw an exception, just in case
                 // /(em|%|px|ex|cm|mm|in|pt|pc)$/
                 var unitRegExp = new RegExp("(" + this.cfg.UNITS.join("|") + ")$");
-                var unit = aria.utils.String.trim("" + value).toLowerCase().match(unitRegExp);
+                var unit = ariaUtilsString.trim("" + value).toLowerCase().match(unitRegExp);
                 if (prop == "opacity" || prop == "scrollTop" || prop == "scrollLeft") {
                     return null;
                 } else

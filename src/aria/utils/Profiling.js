@@ -12,13 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaCoreJsObject = require("../core/JsObject");
+var ariaUtilsJson = require("./Json");
+
 
 /**
  * Application and performances profiling utility
  * @class aria.utils.Profiling
  * @singleton
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : 'aria.utils.Profiling',
     $singleton : true,
     $constructor : function () {
@@ -111,15 +115,15 @@ Aria.classDefinition({
             }
 
             // map function on JsObject prototype
-            aria.core.JsObject.prototype.$logTimestamp = function (msg, classpath) {
+            ariaCoreJsObject.prototype.$logTimestamp = function (msg, classpath) {
                 classpath = classpath ? classpath : this.$classpath;
                 aria.utils.Profiling.logTimestamp(classpath, msg);
             };
-            aria.core.JsObject.prototype.$startMeasure = function (msg, classpath) {
+            ariaCoreJsObject.prototype.$startMeasure = function (msg, classpath) {
                 classpath = classpath ? classpath : this.$classpath;
                 return aria.utils.Profiling.startMeasure(classpath, msg);
             };
-            aria.core.JsObject.prototype.$stopMeasure = function (id, classpath) {
+            ariaCoreJsObject.prototype.$stopMeasure = function (id, classpath) {
                 classpath = classpath ? classpath : this.$classpath;
                 aria.utils.Profiling.stopMeasure(classpath, id);
             };
@@ -202,7 +206,7 @@ Aria.classDefinition({
             Aria.loadTemplate({
                 classpath : 'aria.utils.ProfilingDisplay',
                 div : this._displayDiv,
-                data : aria.utils.Json.copy(this._logsPerClasspath, true)
+                data : ariaUtilsJson.copy(this._logsPerClasspath, true)
             });
         },
 

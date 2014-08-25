@@ -12,14 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaUtilsAriaWindow = require("./AriaWindow");
+var ariaUtilsJson = require("./Json");
+
 
 /**
  * Creates a subwindow and load a module inside
  * @class aria.utils.Bridge
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : 'aria.utils.Bridge',
-    $dependencies : ['aria.utils.AriaWindow'],
     $events : {
         "forwardEvent" : {
             description : "Wrapper for an event to forward",
@@ -164,7 +167,7 @@ Aria.classDefinition({
                     (aria.widgets && aria.widgets.AriaSkin) ? ["<script type='text/javascript'>",
                             "Aria['classDefinition']({$classpath : 'aria.widgets.AriaSkin',", "$singleton : true,",
                             "$prototype : window.aria.utils.Json.copy(",
-                            aria.utils.Json.convertToJsonString(aria.widgets.AriaSkin.classDefinition.$prototype), ")",
+                            ariaUtilsJson.convertToJsonString(aria.widgets.AriaSkin.classDefinition.$prototype), ")",
                             "});</script>"].join("") : ["<script language='JavaScript' src='", // AT Skin script
                             root + "aria/css/" + atSkinName, // AT Skin script
                             "'></script>" // AT Skin script
@@ -195,8 +198,8 @@ Aria.classDefinition({
             }, 2000);
 
             this._config = config;
-            aria.utils.AriaWindow.attachWindow();
-            aria.utils.AriaWindow.$on({
+            ariaUtilsAriaWindow.attachWindow();
+            ariaUtilsAriaWindow.$on({
                 "unloadWindow" : this._onMainWindowUnload,
                 scope : this
             });
@@ -317,8 +320,8 @@ Aria.classDefinition({
                 this._subWindow.close();
                 this._subWindow = null;
 
-                aria.utils.AriaWindow.$unregisterListeners(this);
-                aria.utils.AriaWindow.detachWindow();
+                ariaUtilsAriaWindow.$unregisterListeners(this);
+                ariaUtilsAriaWindow.detachWindow();
 
                 // restaure hijacked function
                 this.isOpen = false;

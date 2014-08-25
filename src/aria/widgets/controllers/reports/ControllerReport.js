@@ -12,15 +12,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../../Aria");
+
 
 /**
  * Report emitted by a controller on a check
  * @class aria.widgets.controllers.reports.ControllerReport
  * @extends aria.core.JsObject
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : 'aria.widgets.controllers.reports.ControllerReport',
-    $dependencies : [],
     $constructor : function () {
         /**
          * Specifies if the value given to the controller was correct

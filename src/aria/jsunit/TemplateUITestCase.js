@@ -1,3 +1,7 @@
+
+var Aria = require("../Aria");
+var ariaJsunitScreenCapture = require("./ScreenCapture");
+var ariaJsunitTemplateTestCase = require("./TemplateTestCase");
 /* BACKWARD-COMPATIBILITY-BEGIN GH-1104 */
 /*
  * Copyright 2012 Amadeus s.a.s.
@@ -21,15 +25,14 @@
  * @class aria.jsunit.TemplateUITestCase
  * @extends aria.jsunit.TemplateTestCase
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : 'aria.jsunit.TemplateUITestCase',
-    $extends : 'aria.jsunit.TemplateTestCase',
+    $extends : ariaJsunitTemplateTestCase,
     $constructor : function () {
         this.$TemplateTestCase.constructor.call(this);
-        this.screenCapture = aria.jsunit.ScreenCapture;
+        this.screenCapture = ariaJsunitScreenCapture;
         this.$logWarn("aria.jsunit.TemplateUITestCase class is deprecated and will be removed soon from the framework");
     },
-    $dependencies : ['aria.jsunit.ScreenCapture'],
     $prototype : {
         /**
          * Runs the UI comparison test. The goal here is to pass a use case name that will be used to save the image,

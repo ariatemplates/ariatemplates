@@ -12,16 +12,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaWidgetsErrorlistIErrorListController = require("./IErrorListController");
+require("./CfgBeans");
+var ariaTemplatesModuleCtrl = require("../../templates/ModuleCtrl");
+var ariaUtilsArray = require("../../utils/Array");
+var ariaUtilsJson = require("../../utils/Json");
+
 
 /**
  * Error list
  * @class classname
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : 'aria.widgets.errorlist.ErrorListController',
-    $extends : 'aria.templates.ModuleCtrl',
-    $implements : ['aria.widgets.errorlist.IErrorListController'],
-    $dependencies : ['aria.widgets.errorlist.CfgBeans'],
+    $extends : ariaTemplatesModuleCtrl,
+    $implements : [ariaWidgetsErrorlistIErrorListController],
     $constructor : function () {
         this.$ModuleCtrl.constructor.call(this);
         this._dataBeanName = "aria.widgets.errorlist.CfgBeans.Model";
@@ -96,7 +102,7 @@ Aria.classDefinition({
             for (var i = 0, l = messagesList.length; i < l; i++) {
                 var msg = messagesList[i];
                 var type = msg.type;
-                var includeMsg = !filterTypes || aria.utils.Array.contains(filterTypes, type);
+                var includeMsg = !filterTypes || ariaUtilsArray.contains(filterTypes, type);
                 if (includeMsg) {
                     if (!map[msg.type]) {
                         map[msg.type] = 1;
@@ -119,7 +125,7 @@ Aria.classDefinition({
                         // messages which contains it
                         needNewRes = true;
                         // 1 level copy of the message:
-                        msg = aria.utils.Json.copy(msg, false);
+                        msg = ariaUtilsJson.copy(msg, false);
                         msg.subMessages = subMessages;
                     } else {
                         needNewRes = !includeMsg;

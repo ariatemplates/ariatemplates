@@ -12,16 +12,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaTemplatesClassWriter = require("./ClassWriter");
+require("./TreeBeans");
+require("./CfgBeans");
+var ariaTemplatesStatements = require("./Statements");
+require("./Modifiers");
+var ariaUtilsArray = require("../utils/Array");
+var ariaUtilsJson = require("../utils/Json");
+var ariaCoreJsonValidator = require("../core/JsonValidator");
+var ariaCoreEnvironmentEnvironment = require("../core/environment/Environment");
+
 
 /**
  * The class generator is used to generate the class corresponding to a template. This class uses the tree from the
  * template parser, and generates a string containing the corresponding class definition. This is an abstract class and
  * is extended by the more specific classes aria.templates.TplClassGenerator and aria.templates.CSSClassGenerator
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.templates.ClassGenerator",
-    $dependencies : ["aria.templates.ClassWriter", "aria.templates.TreeBeans", "aria.templates.CfgBeans",
-            "aria.templates.Statements", "aria.templates.Modifiers"],
     $singleton : false,
     $constructor : function () {
         /**
@@ -69,7 +78,7 @@ Aria.classDefinition({
          * Map of all statements allowed
          * @type Object
          */
-        this.ALLSTATEMENTS = aria.templates.Statements.ALLSTATEMENTS;
+        this.ALLSTATEMENTS = ariaTemplatesStatements.ALLSTATEMENTS;
 
         // Automatically load general statements:
         this._loadStatements(["#ROOT#", "#TEXT#", "#CDATA#", "#EXPRESSION#", "if", "elseif", "else", "for", "foreach",
@@ -80,10 +89,10 @@ Aria.classDefinition({
          * @protected
          * @type Boolean
          */
-        this._isDebug = aria.core.environment.Environment.isDebug();
-        aria.core.environment.Environment.$on({
+        this._isDebug = ariaCoreEnvironmentEnvironment.isDebug();
+        ariaCoreEnvironmentEnvironment.$on({
             "debugChanged" : function () {
-                this._isDebug = aria.core.environment.Environment.isDebug();
+                this._isDebug = ariaCoreEnvironmentEnvironment.isDebug();
             },
             scope : this
         });
@@ -168,8 +177,8 @@ Aria.classDefinition({
          * @return {String} the generated class definition or null it there were errors.
          */
         __buildClass : function (tree, allDeps, callback, errorContext, debug) {
-            aria.core.JsonValidator.check(tree, "aria.templates.TreeBeans.Root");
-            var out = new aria.templates.ClassWriter({
+            ariaCoreJsonValidator.check(tree, "aria.templates.TreeBeans.Root");
+            var out = new ariaTemplatesClassWriter({
                 fn : this.__processStatement,
                 scope : this
             }, {
@@ -215,7 +224,7 @@ Aria.classDefinition({
                 return out.logError(rootStatement, this.ERROR_IN_TEMPLATE_PARAMETER, [this._rootStatement], e);
             }
 
-            if (!aria.core.JsonValidator.normalize({
+            if (!ariaCoreJsonValidator.normalize({
                 json : param,
                 beanName : this._templateParamBean
             })) {
@@ -251,7 +260,7 @@ Aria.classDefinition({
                 out.logError(statement, this.UNEXPECTED_CONTAINER, [statname]);
             } else if (handler.inMacro !== undefined && out.isOutputReady() !== handler.inMacro) {
                 if (handler.inMacro) {
-                    out.logError(statement, aria.templates.Statements.SHOULD_BE_IN_MACRO, [statname]);
+                    out.logError(statement, ariaTemplatesStatements.SHOULD_BE_IN_MACRO, [statname]);
                 } else {
                     out.logError(statement, this.SHOULD_BE_OUT_OF_MACRO, [statname]);
                 }
@@ -419,7 +428,7 @@ Aria.classDefinition({
          */
         _writeDependencies : function (out) {
             var tplParam = out.templateParam;
-            var json = aria.utils.Json;
+            var json = ariaUtilsJson;
             out.writeln(out.getDependencies());
             if (tplParam.$res) {
                 out.writeln("$resources: ", json.convertToJsonString(tplParam.$res), ",");
@@ -431,13 +440,13 @@ Aria.classDefinition({
                 out.writeln("$css: ", json.convertToJsonString(tplParam.$css), ",");
             }
             if (tplParam.$macrolibs) {
-                var macrolibsArray = aria.utils.Array.extractValuesFromMap(tplParam.$macrolibs);
+                var macrolibsArray = ariaUtilsArray.extractValuesFromMap(tplParam.$macrolibs);
                 if (macrolibsArray.length > 0) {
                     out.writeln("$macrolibs: ", json.convertToJsonString(macrolibsArray), ",");
                 }
             }
             if (tplParam.$csslibs) {
-                var csslibsArray = aria.utils.Array.extractValuesFromMap(tplParam.$csslibs);
+                var csslibsArray = ariaUtilsArray.extractValuesFromMap(tplParam.$csslibs);
                 if (csslibsArray.length > 0) {
                     out.writeln("$csslibs: ", json.convertToJsonString(csslibsArray), ",");
                 }
@@ -468,11 +477,11 @@ Aria.classDefinition({
                     // get parent macrolibs:
                     out.writeln("Aria.copyObject(proto.", name, ",", newMap, ");");
                     // add or change child's own macrolibs:
-                    out.writeln("Aria.copyObject(", aria.utils.Json.convertToJsonString(map), ",", newMap, ");");
+                    out.writeln("Aria.copyObject(", ariaUtilsJson.convertToJsonString(map), ",", newMap, ");");
                     out.writeln("proto.", name, " = ", newMap, ";");
                 }
             } else {
-                var mapStr = map ? aria.utils.Json.convertToJsonString(map) : defaultValue;
+                var mapStr = map ? ariaUtilsJson.convertToJsonString(map) : defaultValue;
                 out.writeln("proto.", name, " = ", mapStr, ";");
             }
         },
@@ -491,10 +500,10 @@ Aria.classDefinition({
             if (out.parentClassType == this._classType) {
                 // override value at class loading time, as there is a parent template:
                 if (value != null) {
-                    out.writeln("proto.", name, " = ", aria.utils.Json.convertToJsonString(value), ";");
+                    out.writeln("proto.", name, " = ", ariaUtilsJson.convertToJsonString(value), ";");
                 }
             } else {
-                var valueStr = value != null ? aria.utils.Json.convertToJsonString(value) : defaultValue;
+                var valueStr = value != null ? ariaUtilsJson.convertToJsonString(value) : defaultValue;
                 out.writeln("proto.", name, " = ", valueStr, ";");
             }
         },

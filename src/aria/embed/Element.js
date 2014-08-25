@@ -12,22 +12,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+require("./CfgBeans");
+var ariaUtilsHtml = require("../utils/Html");
+var ariaCoreJsonValidator = require("../core/JsonValidator");
+require("../core/Log");
+var ariaUtilsDom = require("../utils/Dom");
+var ariaWidgetLibsBaseWidget = require("../widgetLibs/BaseWidget");
+
 
 /**
  * Element widget for the Embed Lib
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.embed.Element",
-    $extends : "aria.widgetLibs.BaseWidget",
-    $dependencies : ["aria.embed.CfgBeans", "aria.utils.Html", "aria.core.JsonValidator", "aria.core.Log",
-            "aria.utils.Dom"],
+    $extends : ariaWidgetLibsBaseWidget,
     $constructor : function (cfg, context, lineNumber) {
         // The parent constructor takes care of storing the config in this._cfg, the template context in this._context
         // and the line number in this._lineNumber
         this.$BaseWidget.constructor.apply(this, arguments);
 
 
-        this._cfgOk = aria.core.JsonValidator.validateCfg(this._cfgBeanName, cfg);
+        this._cfgOk = ariaCoreJsonValidator.validateCfg(this._cfgBeanName, cfg);
 
     },
     $destructor : function () {
@@ -36,10 +42,10 @@ Aria.classDefinition({
             // typo on onEmbeddedElementDispose
             if (this._cfg.controller.onEmbededElementDispose) {
                 this.$logWarn("onEmbededElementDispose has been deprecated, please use onEmbeddedElementDispose");
-                this._cfg.controller.onEmbededElementDispose(aria.utils.Dom.getElementById(this._domId), this._cfg.args);
+                this._cfg.controller.onEmbededElementDispose(ariaUtilsDom.getElementById(this._domId), this._cfg.args);
             } else {
             /* BACKWARD COMATIBILITY END */
-                this._cfg.controller.onEmbeddedElementDispose(aria.utils.Dom.getElementById(this._domId), this._cfg.args);
+                this._cfg.controller.onEmbeddedElementDispose(ariaUtilsDom.getElementById(this._domId), this._cfg.args);
             /* BACKWARD COMATIBILITY BEGIN */
             }
             /* BACKWARD COMATIBILITY END */
@@ -61,7 +67,7 @@ Aria.classDefinition({
                 var tagName = this._cfg.type;
                 var markup = ['<', tagName, ' id="', this._domId, '"'];
                 if (this._cfg.attributes) {
-                    markup.push(' ' + aria.utils.Html.buildAttributeList(this._cfg.attributes));
+                    markup.push(' ' + ariaUtilsHtml.buildAttributeList(this._cfg.attributes));
                 }
                 markup.push('></' + tagName + '>');
                 out.write(markup.join(''));
@@ -77,10 +83,10 @@ Aria.classDefinition({
                 // typo on onEmbeddedElementDispose
                 if (this._cfg.controller.onEmbededElementCreate) {
                     this.$logWarn("onEmbededElementCreate has been deprecated, please use onEmbeddedElementCreate");
-                    this._cfg.controller.onEmbededElementCreate(aria.utils.Dom.getElementById(this._domId), this._cfg.args);
+                    this._cfg.controller.onEmbededElementCreate(ariaUtilsDom.getElementById(this._domId), this._cfg.args);
                 } else {
                 /* BACKWARD COMATIBILITY END */
-                    this._cfg.controller.onEmbeddedElementCreate(aria.utils.Dom.getElementById(this._domId), this._cfg.args);
+                    this._cfg.controller.onEmbeddedElementCreate(ariaUtilsDom.getElementById(this._domId), this._cfg.args);
                 /* BACKWARD COMATIBILITY BEGIN */
                 }
                 /* BACKWARD COMATIBILITY END */

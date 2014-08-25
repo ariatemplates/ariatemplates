@@ -12,12 +12,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaJsunitTestEngine = require("./TestEngine");
+var ariaJsunitTestReport = require("./TestReport");
+var ariaCoreLog = require("../core/Log");
+var ariaJsunitTestWrapper = require("./TestWrapper");
+var ariaCoreJsObject = require("../core/JsObject");
+var ariaCoreDownloadMgr = require("../core/DownloadMgr");
+
 
 /**
  * HTML UI Renderer for aria.jsunit.TestEngine
  * @singleton
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.jsunit.NewTestRunner",
     $events : {
         "preloadBegin" : "preloadBegin",
@@ -26,7 +34,6 @@ Aria.classDefinition({
         "campaignEnd" : "campaignEnd",
         "campaignChange" : "campaignChange"
     },
-    $dependencies : ['aria.jsunit.TestEngine', 'aria.jsunit.TestReport', 'aria.core.Log', 'aria.jsunit.TestWrapper'],
     $constructor : function () {
         /**
          * @private
@@ -38,7 +45,7 @@ Aria.classDefinition({
          * @private
          * @type aria.jsunit.TestReport
          */
-        this._reporter = new aria.jsunit.TestReport({
+        this._reporter = new ariaJsunitTestReport({
             testRunner : this
         });
 
@@ -95,7 +102,7 @@ Aria.classDefinition({
                 this._rootTest.preload();
             } else {
                 if (this.runIsolated) {
-                    this._rootTest = new aria.jsunit.TestWrapper(this._rootClasspath);
+                    this._rootTest = new ariaJsunitTestWrapper(this._rootClasspath);
                 } else {
                     // Instanciate the test object
                     this._rootTest = new classCstr();
@@ -145,10 +152,10 @@ Aria.classDefinition({
          */
         __overrideLogError : function () {
             // backup original $logError
-            var bkpLogError = aria.core.JsObject.prototype.$logError;
+            var bkpLogError = ariaCoreJsObject.prototype.$logError;
             // override $logError
-            aria.core.JsObject.prototype.$logError = function (id, args, error) {
-                var msg = aria.core.Log.prepareLoggedMessage(id, args);
+            ariaCoreJsObject.prototype.$logError = function (id, args, error) {
+                var msg = ariaCoreLog.prepareLoggedMessage(id, args);
                 var errorMessage = (error ? ". Error : " + error.message : "");
                 if (!Aria.__runtimeErrors)
                     Aria.__runtimeErrors = [];
@@ -165,11 +172,11 @@ Aria.classDefinition({
          */
         __overrideGetURLWithTimestamp : function () {
             // backup original getURLWithTimestamp
-            var bkpGetURLWithTimestamp = aria.core.DownloadMgr.getURLWithTimestamp;
+            var bkpGetURLWithTimestamp = ariaCoreDownloadMgr.getURLWithTimestamp;
             // override getURLWithTimestamp
-            aria.core.DownloadMgr.getURLWithTimestamp = function (url, force) {
+            ariaCoreDownloadMgr.getURLWithTimestamp = function (url, force) {
                 // call the original getURLWithTimestamp
-                return bkpGetURLWithTimestamp.apply(aria.core.DownloadMgr, [url, true]);
+                return bkpGetURLWithTimestamp.apply(ariaCoreDownloadMgr, [url, true]);
             };
         },
 
@@ -306,7 +313,7 @@ Aria.classDefinition({
          */
         getEngine : function () {
             if (this._testEngine == null) {
-                this._testEngine = new aria.jsunit.TestEngine();
+                this._testEngine = new ariaJsunitTestEngine();
                 this._testEngine.runIsolated = this.runIsolated;
 
                 this._testEngine.$on({

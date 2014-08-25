@@ -12,11 +12,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+
 
 /**
  * Default interface for a content provider
  */
-Aria.interfaceDefinition({
+module.exports = Aria.interfaceDefinition({
     $classpath : "aria.embed.IContentProvider",
     $events : {
         "contentChange" : {

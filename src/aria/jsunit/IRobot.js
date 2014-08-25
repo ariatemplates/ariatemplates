@@ -12,13 +12,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+
 
 /**
  * This interface is still experimental, it may change in the future without notice. It describes the features that
  * every robot implementation should provide.
  * @private
  */
-Aria.interfaceDefinition({
+module.exports = Aria.interfaceDefinition({
     $classpath : "aria.jsunit.IRobot",
     $interface : {
         /**

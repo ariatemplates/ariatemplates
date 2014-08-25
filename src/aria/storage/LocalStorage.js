@@ -12,6 +12,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaCoreBrowser = require("../core/Browser");
+var ariaStorageUserData = require("./UserData");
+var ariaStorageHTML5Storage = require("./HTML5Storage");
+
 
 (function () {
     /**
@@ -24,8 +29,8 @@
         self._remove = instance._remove;
         self._clear = instance._clear;
 
-        self.storage = aria.storage.UserData._STORAGE;
-        self.__keys = aria.storage.UserData._ALL_KEYS;
+        self.storage = ariaStorageUserData._STORAGE;
+        self.__keys = ariaStorageUserData._ALL_KEYS;
     }
 
     /**
@@ -39,22 +44,21 @@
      * Being stored in local storage, the information is available even after the user closes and reopens the browser's
      * window.
      */
-    Aria.classDefinition({
+    module.exports = Aria.classDefinition({
         $classpath : "aria.storage.LocalStorage",
-        $extends : "aria.storage.HTML5Storage",
-        $dependencies : ["aria.core.Browser", "aria.storage.UserData"],
+        $extends : ariaStorageHTML5Storage,
         /**
          * Create an instance of LocalStorage. Try ot use userData if missing
          * @param {aria.storage.Beans:ConstructorArgs} options Constructor options
          */
         $constructor : function (options) {
-            var isIE7 = aria.core.Browser.isIE7;
+            var isIE7 = ariaCoreBrowser.isIE7;
 
             // Throw an error only in IE7
             this.$HTML5Storage.constructor.call(this, options, "localStorage", !isIE7);
 
             if (!this.storage && isIE7) {
-                var instance = new aria.storage.UserData(options);
+                var instance = new ariaStorageUserData(options);
                 fallback(this, instance);
 
                 /**

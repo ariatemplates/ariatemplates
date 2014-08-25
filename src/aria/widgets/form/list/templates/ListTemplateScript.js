@@ -12,11 +12,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../../../Aria");
+var ariaCoreBrowser = require("../../../../core/Browser");
+var ariaCoreTimer = require("../../../../core/Timer");
+
 
 /**
  * Script for the default list template
  */
-Aria.tplScriptDefinition({
+module.exports = Aria.tplScriptDefinition({
     $classpath : "aria.widgets.form.list.templates.ListTemplateScript",
     $constructor : function () {
         /**
@@ -35,7 +39,7 @@ Aria.tplScriptDefinition({
     },
     $destructor : function () {
         if (this._scrollToSelectedItemCb != null) {
-            aria.core.Timer.cancelCallback(this._scrollToSelectedItemCb);
+            ariaCoreTimer.cancelCallback(this._scrollToSelectedItemCb);
             this._scrollToSelectedItemCb = null;
         }
     },
@@ -67,7 +71,7 @@ Aria.tplScriptDefinition({
                 // automatically scroll to display selected item
                 var idx = this.data.selectedIndex;
                 if (idx != null && idx > -1 && this._scrollToSelectedItemCb == null) {
-                    this._scrollToSelectedItemCb = aria.core.Timer.addCallback({
+                    this._scrollToSelectedItemCb = ariaCoreTimer.addCallback({
                         fn : this._scrollToSelectedItem,
                         scope : this,
                         delay : 1
@@ -122,7 +126,7 @@ Aria.tplScriptDefinition({
             if (!this.data.disabled) {
                 var itemIdx = evt.target.getData("itemIdx", true);
                 if (itemIdx) {
-                    if (aria.core.Browser.isWebkit) {
+                    if (ariaCoreBrowser.isWebkit) {
                         // webkit-based browsers explicitly need this
                         // (http://www.quirksmode.org/dom/events/blurfocus.html)
                         evt.target.focus();

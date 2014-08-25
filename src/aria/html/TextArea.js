@@ -12,13 +12,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+require("./beans/TextAreaCfg");
+var ariaHtmlTextInput = require("./TextInput");
+
 /**
  * TextArea widget. Bindable widget providing bi-directional bind of 'value' and on 'type' event callback.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.html.TextArea",
-    $extends : "aria.html.TextInput",
-    $dependencies : ["aria.html.beans.TextAreaCfg"],
+    $extends : ariaHtmlTextInput,
     $constructor : function (cfg, context, line) {
         this.$TextInput.constructor.call(this, cfg, context, line);
 

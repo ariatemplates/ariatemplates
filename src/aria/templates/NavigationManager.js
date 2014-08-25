@@ -12,15 +12,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaUtilsType = require("../utils/Type");
+require("./CfgBeans");
+var ariaCoreJsonValidator = require("../core/JsonValidator");
+
 
 /**
  * Handle keyboard navigation and shortcut for a given section.
  * @class aria.templates.NavigationManager
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.templates.NavigationManager",
     $singleton : true,
-    $dependencies : ["aria.utils.Type", "aria.templates.CfgBeans"],
     $constructor : function () {
         /**
          * Marker used to tag the event, to notify if table navigation has already been done.
@@ -63,7 +67,7 @@ Aria.classDefinition({
                 json : configuration,
                 beanName : "aria.templates.CfgBeans.GlobalKeyMapCfg"
             };
-            if (aria.core.JsonValidator.normalize(normalizeCfg)) {
+            if (ariaCoreJsonValidator.normalize(normalizeCfg)) {
                 configuration = normalizeCfg.json;
                 this.globalKeyMap.push(configuration);
             } else {
@@ -561,7 +565,7 @@ Aria.classDefinition({
                     }
 
                     // case real key defined
-                    if (aria.utils.Type.isNumber(mapConfig.key)) {
+                    if (ariaUtilsType.isNumber(mapConfig.key)) {
                         if (mapConfig.key == keyCode) {
                             bubble = this.$callback(mapConfig.callback);
                             found = true;

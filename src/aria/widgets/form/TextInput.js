@@ -12,16 +12,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+require("../../utils/Function");
+var ariaUtilsData = require("../../utils/Data");
+var ariaUtilsString = require("../../utils/String");
+var ariaWidgetsEnvironmentWidgetSettings = require("../environment/WidgetSettings");
+var ariaUtilsCaret = require("../../utils/Caret");
+var ariaWidgetsFormTextInputStyle = require("./TextInputStyle.tpl.css");
+var ariaWidgetsFormInputWithFrame = require("./InputWithFrame");
+var ariaUtilsType = require("../../utils/Type");
+var ariaUtilsArray = require("../../utils/Array");
+var ariaCoreBrowser = require("../../core/Browser");
+var ariaCoreTimer = require("../../core/Timer");
+
 
 /**
  * Specialize the input classes for Text input and manage the HTML input element
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.widgets.form.TextInput",
-    $extends : "aria.widgets.form.InputWithFrame",
-    $dependencies : ["aria.utils.Function", "aria.utils.Data", "aria.utils.String",
-            "aria.widgets.environment.WidgetSettings", "aria.utils.Caret"],
-    $css : ["aria.widgets.form.TextInputStyle"],
+    $extends : ariaWidgetsFormInputWithFrame,
+    $css : [ariaWidgetsFormTextInputStyle],
     /**
      * TextInput constructor
      * @param {aria.widgets.CfgBeans.TextInputCfg} cfg the widget configuration
@@ -198,7 +209,7 @@ Aria.classDefinition({
          */
         _onLabelClick : function (evt) {
             this.$InputWithFrame._onLabelClick.call(this, evt);
-            aria.utils.Caret.select(this.getTextInputField());
+            ariaUtilsCaret.select(this.getTextInputField());
         },
 
         /**
@@ -283,7 +294,7 @@ Aria.classDefinition({
          */
         _inputWithFrameMarkup : function (out) {
             var cfg = this._cfg, skinObj = this._skinObj, hts = this._helpTextSet, htc = this._skinObj.helpText, color = this._getTextFieldColor();
-            var stringUtils = aria.utils.String;
+            var stringUtils = ariaUtilsString;
 
             var inlineStyle = ['padding:', skinObj.innerPaddingTop, 'px ', skinObj.innerPaddingRight, 'px ',
                     skinObj.innerPaddingBottom, 'px ', skinObj.innerPaddingLeft, 'px;position:relative;margin:0;'];
@@ -447,7 +458,7 @@ Aria.classDefinition({
                     this.changeProperty("value", null);
                     this.changeProperty("invalidText", text);
                 }
-            } else if (this._cfg.formatError === false && aria.utils.Type.isArray(this._cfg.formatErrorMessages)
+            } else if (this._cfg.formatError === false && ariaUtilsType.isArray(this._cfg.formatErrorMessages)
                     && this._cfg.formatErrorMessages.length) {
                 this.changeProperty("invalidText", null);
                 this.changeProperty("formatErrorMessages", []);
@@ -531,7 +542,7 @@ Aria.classDefinition({
                             start : report.caretPosStart,
                             end : report.caretPosEnd
                         } : null;
-                        if (aria.core.Browser.isModernIE && !caretPosition) {
+                        if (ariaCoreBrowser.isModernIE && !caretPosition) {
                             caretPosition = this.getCaretPosition();
                         }
                         this.getTextInputField().value = text;
@@ -590,7 +601,7 @@ Aria.classDefinition({
                 return null;
             }
             var ctrl = this.getTextInputField();
-            return aria.utils.Caret.getPosition(ctrl);
+            return ariaUtilsCaret.getPosition(ctrl);
         },
 
         /**
@@ -604,7 +615,7 @@ Aria.classDefinition({
             }
 
             var ctrl = this.getTextInputField();
-            aria.utils.Caret.setPosition(ctrl, start, end);
+            ariaUtilsCaret.setPosition(ctrl, start, end);
         },
 
         /**
@@ -668,7 +679,7 @@ Aria.classDefinition({
 
                 // in case things have changed the field, try to set an helptext
                 this.setHelpText(true);
-                if (((aria.utils.Type.isArray(cfg.value) && aria.utils.Array.isEmpty(cfg.value)) || !cfg.value)
+                if (((ariaUtilsType.isArray(cfg.value) && ariaUtilsArray.isEmpty(cfg.value)) || !cfg.value)
                         && cfg.prefill && cfg.prefill + "") {
                     this.setPrefillText(true, cfg.prefill, true);
                 }
@@ -838,10 +849,10 @@ Aria.classDefinition({
         _dom_onkeyup : function (event) {
             if (this._cfg.validationDelay) {
                 if (this._valTimer) {
-                    aria.core.Timer.cancelCallback(this._valTimer);
+                    ariaCoreTimer.cancelCallback(this._valTimer);
                 }
 
-                this._valTimer = aria.core.Timer.addCallback({
+                this._valTimer = ariaCoreTimer.addCallback({
                     fn : this.checkValue,
                     scope : this,
                     args : {
@@ -965,7 +976,7 @@ Aria.classDefinition({
                                 var dataholder = bind.inside;
                                 var name = bind.to;
                                 var groups = cfg.validationGroups;
-                                aria.utils.Data.validateValue(dataholder, name, null, groups, 'onblur');
+                                ariaUtilsData.validateValue(dataholder, name, null, groups, 'onblur');
                                 // PTR05705466: validateValue could have triggered widget dispose, need to re-check
                                 // this._cfg before continuing
                                 if (!this._cfg) {
@@ -1002,7 +1013,7 @@ Aria.classDefinition({
             }
 
             if (value && value.inside) {
-                metaDataObject = aria.utils.Data._getMeta(value.inside, value.to, false);
+                metaDataObject = ariaUtilsData._getMeta(value.inside, value.to, false);
                 if (!cfg.bind.invalidText) {
                     cfg.bind.invalidText = {
                         "inside" : metaDataObject,
@@ -1011,7 +1022,7 @@ Aria.classDefinition({
                 }
             }
             if (prefill && prefill.inside) {
-                metaDataObject = aria.utils.Data._getMeta(prefill.inside, prefill.to, false);
+                metaDataObject = ariaUtilsData._getMeta(prefill.inside, prefill.to, false);
                 if (!cfg.bind.prefillError) {
                     cfg.bind.prefillError = {
                         "inside" : metaDataObject,
@@ -1035,7 +1046,7 @@ Aria.classDefinition({
 
             if (cfg.autoselect == null) {
                 // the default value for autoselect comes from the environment
-                cfg.autoselect = aria.widgets.environment.WidgetSettings.getWidgetSettings().autoselect;
+                cfg.autoselect = ariaWidgetsEnvironmentWidgetSettings.getWidgetSettings().autoselect;
             }
 
             var value = cfg.value;
@@ -1077,7 +1088,7 @@ Aria.classDefinition({
                 // if the value is not set (namely it is null, undefined, an
                 // empty string or an empty array) and the
                 // prefill is defined
-                if ((aria.utils.Type.isArray(value) && aria.utils.Array.isEmpty(value)) || (!value && value !== 0)) {
+                if ((ariaUtilsType.isArray(value) && ariaUtilsArray.isEmpty(value)) || (!value && value !== 0)) {
                     if (cfg.prefill && cfg.prefill + "") {
                         this._isPrefilled = true;
                     } else {
@@ -1204,7 +1215,7 @@ Aria.classDefinition({
 
             if (!fromSelf) {
                 // IE FIX: the focus() can be asynchronous, so let's add a timeout to manage the autoselect
-                aria.core.Timer.addCallback({
+                ariaCoreTimer.addCallback({
                     fn : function () {
                         this._autoselect();
                     },

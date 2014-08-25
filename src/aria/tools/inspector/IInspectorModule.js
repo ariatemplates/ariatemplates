@@ -12,13 +12,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaTemplatesIModuleCtrl = require("../../templates/IModuleCtrl");
+
 
 /**
  * Interface for the inspector module
  */
-Aria.interfaceDefinition({
+module.exports = Aria.interfaceDefinition({
     $classpath : "aria.tools.inspector.IInspectorModule",
-    $extends : "aria.templates.IModuleCtrl",
+    $extends : ariaTemplatesIModuleCtrl,
     $interface : {
         // The $interface section contains empty functions and empty object or array properties
         displayHighlight : function () {},

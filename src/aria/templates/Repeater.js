@@ -12,6 +12,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaTemplatesSection = require("./Section");
+var ariaUtilsType = require("../utils/Type");
+var ariaUtilsArray = require("../utils/Array");
+var ariaUtilsJson = require("../utils/Json");
+
 
 (function () {
     var idMgr = null;
@@ -34,9 +40,9 @@
      * Repeater, which automatically adds or removes sub-sections when the array to which it is bound is modified.
      * @class aria.templates.Repeater
      */
-    Aria.classDefinition({
+    module.exports = Aria.classDefinition({
         $classpath : 'aria.templates.Repeater',
-        $extends : 'aria.templates.Section',
+        $extends : ariaTemplatesSection,
         $constructor : function (tplCtxt, cfg, options) {
             if (cfg.id == null) {
                 cfg.id = idMgr.getId();
@@ -104,9 +110,9 @@
         },
         $onload : function () {
             idMgr = new aria.utils.IdManager("__repeater");
-            typeUtils = aria.utils.Type;
-            jsonUtils = aria.utils.Json;
-            arrayUtils = aria.utils.Array;
+            typeUtils = ariaUtilsType;
+            jsonUtils = ariaUtilsJson;
+            arrayUtils = ariaUtilsArray;
         },
         $onunload : function () {
             idMgr.$dispose();

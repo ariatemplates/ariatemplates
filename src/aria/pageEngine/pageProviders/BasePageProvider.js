@@ -12,14 +12,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaPageEnginePageProvidersPageProviderInterface = require("./PageProviderInterface");
+var ariaCoreDownloadMgr = require("../../core/DownloadMgr");
+var ariaUtilsJson = require("../../utils/Json");
+
 
 /**
  * Base Page provider for static site configuration and page definitions
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.pageEngine.pageProviders.BasePageProvider",
-    $implements : ["aria.pageEngine.pageProviders.PageProviderInterface"],
-    $dependencies : ["aria.core.DownloadMgr"],
+    $implements : [ariaPageEnginePageProvidersPageProviderInterface],
 
     /**
      * @param {aria.pageEngine.pageProviders.BasePageProviderBeans:Config} config
@@ -81,7 +85,7 @@ Aria.classDefinition({
             var pageUrl = this.__basePageUrl + pageId + ".json";
 
             if (!this.__config.cache) {
-                aria.core.DownloadMgr.clearFile(pageUrl);
+                ariaCoreDownloadMgr.clearFile(pageUrl);
             }
 
             this.__sendRequest(pageUrl, {
@@ -124,7 +128,7 @@ Aria.classDefinition({
          * @private
          */
         __sendRequest : function (url, args, type) {
-            aria.core.DownloadMgr.loadFile(url, {
+            ariaCoreDownloadMgr.loadFile(url, {
                 fn : this.__onRawFileReceive,
                 scope : this,
                 args : {
@@ -144,8 +148,8 @@ Aria.classDefinition({
             if (res.downloadFailed) {
                 this.__onFailure(res, cb.args);
             } else {
-                var fileContent = aria.core.DownloadMgr.getFileContent(res.logicalPaths[0]);
-                var responseJSON = aria.utils.Json.load(fileContent);
+                var fileContent = ariaCoreDownloadMgr.getFileContent(res.logicalPaths[0]);
+                var responseJSON = ariaUtilsJson.load(fileContent);
                 if (responseJSON) {
                     this.$callback(cb, responseJSON);
                 } else {

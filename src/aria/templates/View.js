@@ -12,6 +12,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaUtilsJson = require("../utils/Json");
+var ariaUtilsStackHashMap = require("../utils/StackHashMap");
+var ariaUtilsType = require("../utils/Type");
+
 
 (function () {
 
@@ -68,11 +73,10 @@
      * A view is an object which allows sorting, filtering and paging of an array.
      * @class aria.templates.View
      */
-    Aria.classDefinition({
+    module.exports = Aria.classDefinition({
         $classpath : 'aria.templates.View',
-        $dependencies : ['aria.utils.Json', 'aria.utils.StackHashMap', 'aria.utils.Type'],
         $onload : function () {
-            json = aria.utils.Json;
+            json = ariaUtilsJson;
         },
         $onunload : function () {
             json = null;
@@ -83,7 +87,7 @@
          */
         $constructor : function (obj) {
 
-            if (!(aria.utils.Type.isObject(obj) || aria.utils.Type.isArray(obj))) {
+            if (!(ariaUtilsType.isObject(obj) || ariaUtilsType.isArray(obj))) {
                 this.$logError(this.INVALID_TYPE_OF_ARGUMENT);
                 return;
             }
@@ -349,7 +353,7 @@
                 if (curState.initialArray) {
                     // there was already an array, let's keep its values
                     // to keep filteredInState when old values are reused
-                    oldValues = new aria.utils.StackHashMap();
+                    oldValues = new ariaUtilsStackHashMap();
                     var oldItems = this.items;
                     var oldItemsLength = oldItems.length, oldElt;
                     for (var i = 0; i < oldItemsLength; i++) {
@@ -358,7 +362,7 @@
                     }
                 }
 
-                if (aria.utils.Type.isObject(initialArray)) {
+                if (ariaUtilsType.isObject(initialArray)) {
                     var returnedItems = this._getItemsFromMap(oldValues);
                 } else {
                     var returnedItems = this._getItemsFromArray(oldValues);
@@ -495,8 +499,8 @@
                 var newItems = [];
                 var initialArray = this.initialArray;
 
-                if (aria.utils.Type.isObject(initialArray)) {
-                    var oldItemsMap = new aria.utils.StackHashMap();
+                if (ariaUtilsType.isObject(initialArray)) {
+                    var oldItemsMap = new ariaUtilsStackHashMap();
                     var oldElt;
                     for (var i = 0; i < oldItemsLength; i++) {
                         oldElt = oldItems[i];
@@ -742,7 +746,7 @@
              * @param {Array|Object} new obj array or map on which to create the view
              */
             updateInitialArray : function (array) {
-                if (!(aria.utils.Type.isObject(array) || aria.utils.Type.isArray(array))) {
+                if (!(ariaUtilsType.isObject(array) || ariaUtilsType.isArray(array))) {
                     this.$logError(this.INVALID_TYPE_OF_ARGUMENT);
                     return;
                 }

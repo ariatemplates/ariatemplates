@@ -12,11 +12,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaCoreBrowser = require("../Browser");
+var ariaCoreDownloadMgr = require("../DownloadMgr");
+var ariaCoreIO = require("../IO");
+
 
 /**
  * Transport class for IFrame.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.core.transport.IFrame",
     $singleton : true,
     $statics : {
@@ -52,7 +57,7 @@ Aria.classDefinition({
             };
 
             // handle timeout
-            aria.core.IO.setTimeout(request.id, request.timeout, {
+            ariaCoreIO.setTimeout(request.id, request.timeout, {
                 fn : this.onAbort,
                 scope : this,
                 args : [request]
@@ -69,21 +74,21 @@ Aria.classDefinition({
          */
         _createIFrame : function (request) {
             var iFrame;
-            var browser = aria.core.Browser;
+            var browser = ariaCoreBrowser;
             var document = Aria.$frameworkWindow.document;
 
             // Issue when using document.createElement("iframe") in IE7
             if (browser.isIE7 || browser.isIE6) {
                 var container = document.createElement("div");
                 container.innerHTML = ['<iframe style="display:none" src="',
-                        aria.core.DownloadMgr.resolveURL("aria/core/transport/iframeSource.txt"), '" id="xIFrame',
+                        ariaCoreDownloadMgr.resolveURL("aria/core/transport/iframeSource.txt"), '" id="xIFrame',
                         request.id, '" name="xIFrame', request.id, '"></iframe>'].join('');
                 document.body.appendChild(container);
                 iFrame = document.getElementById("xIFrame" + request.id);
                 request.iFrameContainer = container;
             } else {
                 iFrame = document.createElement("iframe");
-                iFrame.src = aria.core.DownloadMgr.resolveURL("aria/core/transport/iframeSource.txt");
+                iFrame.src = ariaCoreDownloadMgr.resolveURL("aria/core/transport/iframeSource.txt");
                 iFrame.id = iFrame.name = "xIFrame" + request.id;
                 iFrame.style.cssText = "display:none";
                 document.body.appendChild(iFrame);
@@ -119,7 +124,7 @@ Aria.classDefinition({
             } catch (er) {
                 this.$logError(this.ERROR_DURING_SUBMIT, null, er);
                 this._deleteRequest(request);
-                aria.core.IO._handleTransactionResponse({
+                ariaCoreIO._handleTransactionResponse({
                     conn : {
                         status : 0,
                         responseText : null,

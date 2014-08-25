@@ -12,12 +12,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+
 
 /**
  * This appender is simply stacking all messages in a in-memory array. It is used by the jsUnit test framework to assert
  * the existence of logs during the execution of a test.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.core.log.SilentArrayAppender",
     $constructor : function () {
         /**

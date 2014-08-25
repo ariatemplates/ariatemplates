@@ -1,3 +1,5 @@
+
+var Aria = require("../Aria");
 /* BACKWARD-COMPATIBILITY-BEGIN GH-1104 */
 /*
  * Copyright 2012 Amadeus s.a.s.
@@ -34,7 +36,7 @@
      * way:
      * @param {String} appletName The name of the applet that was added the page
      */
-    Aria.classDefinition({
+    module.exports = Aria.classDefinition({
         $classpath : "aria.jsunit.AppletWorker",
         $singleton : true,
         $constructor : function () {

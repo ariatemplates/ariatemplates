@@ -12,6 +12,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+require("../utils/Object");
+require("../utils/Dom");
+var ariaUtilsJsonJsonSerializer = require("../utils/json/JsonSerializer");
+var ariaCoreBrowser = require("../core/Browser");
+var ariaStorageIStorage = require("./IStorage");
+var ariaStorageAbstractStorage = require("./AbstractStorage");
+
 
 (function () {
     var storage, privateSerializer, allKeyMap = {}, _UNIQUE_ID = 4;
@@ -27,7 +35,7 @@
      */
     function getAllKeys () {
         if (!privateSerializer) {
-            privateSerializer = new aria.utils.json.JsonSerializer(true);
+            privateSerializer = new ariaUtilsJsonJsonSerializer(true);
         }
 
         var storedMap = storage.getAttribute("kMap");
@@ -76,13 +84,12 @@
      * This class is used transparently by aria.storage.LocalStorage so you don't need to create an instance of it
      * unless you know what you're doing.
      */
-    Aria.classDefinition({
+    module.exports = Aria.classDefinition({
         $classpath : "aria.storage.UserData",
-        $dependencies : ["aria.utils.Object", "aria.utils.Dom", "aria.utils.json.JsonSerializer", "aria.core.Browser"],
-        $implements : ["aria.storage.IStorage"],
-        $extends : "aria.storage.AbstractStorage",
+        $implements : [ariaStorageIStorage],
+        $extends : ariaStorageAbstractStorage,
         $onload : function () {
-            if (aria.core.Browser.isOldIE) {
+            if (ariaCoreBrowser.isOldIE) {
                 try {
                     var form = Aria.$frameworkWindow.document.createElement("form");
                     form.innerHTML = "<input type='hidden' id='__aria_storage_UserData__' style='behavior:url(#default#userData)'>";
@@ -98,7 +105,7 @@
             }
         },
         $onunload : function () {
-            if (aria.core.Browser.isOldIE) {
+            if (ariaCoreBrowser.isOldIE) {
                 if (storage) {
                     storage.parentNode.removeChild(storage);
                 }

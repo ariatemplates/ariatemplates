@@ -12,13 +12,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaUtilsValidatorsRegExp = require("./RegExp");
+
 
 /**
  * Validates the entry if it is formatted as a number.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.utils.validators.Number",
-    $extends : "aria.utils.validators.RegExp",
+    $extends : ariaUtilsValidatorsRegExp,
     $constructor : function (message) {
         this.$RegExp.constructor.call(this, this.NUM_REGEXP, message);
     },

@@ -12,13 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaCoreJsonTypes = require("../../core/JsonTypes");
+var ariaWidgetLibsCommonBeans = require("../../widgetLibs/CommonBeans");
 
-Aria.beanDefinitions({
+
+module.exports = Aria.beanDefinitions({
     $package : "aria.touch.widgets.SliderCfgBeans",
     $description : "Slider config beans",
     $namespaces : {
-        "json" : "aria.core.JsonTypes",
-        "common" : "aria.widgetLibs.CommonBeans"
+        "json" : ariaCoreJsonTypes,
+        "common" : ariaWidgetLibsCommonBeans
     },
     $beans : {
         "SliderCfg" : {

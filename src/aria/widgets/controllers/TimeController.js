@@ -12,17 +12,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaWidgetsControllersReportsControllerReport = require("./reports/ControllerReport");
+var ariaUtilsDate = require("../../utils/Date");
+var ariaUtilsEnvironmentDate = require("../../utils/environment/Date");
+var ariaWidgetsWidgetsRes = require("../../$resources").file(__dirname, "../WidgetsRes");
+var ariaWidgetsControllersTextDataController = require("./TextDataController");
+var ariaUtilsType = require("../../utils/Type");
+
 
 /**
  * @class aria.widgets.controllers.TimeController
  * @extends aria.widgets.controllers.TextDataController*
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.widgets.controllers.TimeController",
-    $extends : "aria.widgets.controllers.TextDataController",
-    $dependencies : ["aria.widgets.controllers.reports.ControllerReport", "aria.utils.Date", "aria.utils.environment.Date"],
+    $extends : ariaWidgetsControllersTextDataController,
     $resources : {
-        "res" : "aria.widgets.WidgetsRes"
+        "res" : ariaWidgetsWidgetsRes
     },
     $constructor : function () {
         this.$TextDataController.constructor.call(this);
@@ -59,7 +66,7 @@ Aria.classDefinition({
          */
         setPattern : function (pattern) {
             if (!pattern) {
-                var pattern = aria.utils.environment.Date.getTimeFormats().longFormat;
+                var pattern = ariaUtilsEnvironmentDate.getTimeFormats().longFormat;
             }
             this._pattern = pattern;
         },
@@ -70,12 +77,12 @@ Aria.classDefinition({
          * @return {aria.widgets.controllers.reports.ControllerReport}
          */
         checkValue : function (internalValue) {
-            var report = new aria.widgets.controllers.reports.ControllerReport();
-            report.ok = (internalValue == null || aria.utils.Type.isDate(internalValue));
+            var report = new ariaWidgetsControllersReportsControllerReport();
+            report.ok = (internalValue == null || ariaUtilsType.isDate(internalValue));
             if (report.ok) {
                 this._dataModel.jsDate = internalValue;
                 this._dataModel.displayText = (internalValue
-                        ? aria.utils.Date.format(internalValue, this._pattern)
+                        ? ariaUtilsDate.format(internalValue, this._pattern)
                         : '');
                 report.text = this._dataModel.displayText;
                 report.value = this._dataModel.jsDate;
@@ -93,7 +100,7 @@ Aria.classDefinition({
             if (!text) {
                 return this.checkValue(null);
             } else {
-                var report = new aria.widgets.controllers.reports.ControllerReport(), timeUtil = aria.utils.Date;
+                var report = new ariaWidgetsControllersReportsControllerReport(), timeUtil = ariaUtilsDate;
                 report.ok = false;
 
                 if (text === this._dataModel.displayText) {
@@ -122,7 +129,7 @@ Aria.classDefinition({
          * @return {String}
          */
         getDisplayTextFromValue : function (time) {
-            return (time && aria.utils.Type.isDate(time)) ? aria.utils.Date.format(time, this._pattern) : "";
+            return (time && ariaUtilsType.isDate(time)) ? ariaUtilsDate.format(time, this._pattern) : "";
         }
 
     }

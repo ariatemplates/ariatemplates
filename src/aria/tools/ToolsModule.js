@@ -12,15 +12,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaToolsIToolsModule = require("./IToolsModule");
+var ariaTemplatesModuleCtrl = require("../templates/ModuleCtrl");
+
 
 /**
  * Main module for external tools such as template highlighting
  * @class aria.tools.ToolsModule
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : 'aria.tools.ToolsModule',
-    $extends : 'aria.templates.ModuleCtrl',
-    $implements : ['aria.tools.IToolsModule'],
+    $extends : ariaTemplatesModuleCtrl,
+    $implements : [ariaToolsIToolsModule],
     $constructor : function () {
 
         /**

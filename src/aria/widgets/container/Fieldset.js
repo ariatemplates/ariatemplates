@@ -12,16 +12,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+require("../../utils/Function");
+require("../../DomEvent");
+var ariaWidgetsFramesFrameFactory = require("../frames/FrameFactory");
+var ariaUtilsString = require("../../utils/String");
+var ariaWidgetsContainerFieldsetStyle = require("./FieldsetStyle.tpl.css");
+var ariaWidgetsContainerContainer = require("./Container");
+
 
 /**
  * Fieldset widget, to group related fields together.
  * @class aria.widgets.container.Fieldset
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.widgets.container.Fieldset",
-    $extends : "aria.widgets.container.Container",
-    $dependencies : ["aria.utils.Function", "aria.DomEvent", "aria.widgets.frames.FrameFactory", "aria.utils.String"],
-    $css : ["aria.widgets.container.FieldsetStyle"],
+    $extends : ariaWidgetsContainerContainer,
+    $css : [ariaWidgetsContainerFieldsetStyle],
 
     /**
      * Fieldset constructor
@@ -32,7 +39,7 @@ Aria.classDefinition({
         this.$Container.constructor.apply(this, arguments);
         if (!this._frame) {
             /* this._frame could be overriden in sub-classes */
-            this._frame = aria.widgets.frames.FrameFactory.createFrame({
+            this._frame = ariaWidgetsFramesFrameFactory.createFrame({
                 skinnableClass : this._skinnableClass,
                 sclass : cfg.sclass,
                 state : "normal",
@@ -121,7 +128,7 @@ Aria.classDefinition({
             var label = this._cfg.label;
             if (label) {
                 out.write('<span class="xFieldset_' + this._cfg.sclass + '_normal_label">'
-                        + aria.utils.String.escapeHTML(label) + '</span>');
+                        + ariaUtilsString.escapeHTML(label) + '</span>');
             }
         }
     }

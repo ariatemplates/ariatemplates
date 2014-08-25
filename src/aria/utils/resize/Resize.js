@@ -12,14 +12,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaUtilsDom = require("../Dom");
+var ariaUtilsString = require("../String");
+var ariaUtilsJson = require("../Json");
+var ariaUtilsDragdropDrag = require("../dragdrop/Drag");
+
 
 /**
  * This Class defines resizable element and implements IResize interface providing beforeresize/resizeend events
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.utils.resize.Resize",
-    $extends : "aria.utils.dragdrop.Drag",
-    $dependencies : ["aria.utils.Dom", "aria.utils.String", "aria.utils.Json"],
+    $extends : ariaUtilsDragdropDrag,
     $constructor : function (id, params) {
         params = params || {};
 
@@ -40,7 +45,7 @@ Aria.classDefinition({
             cursor : params.cursor,
             proxy : proxy,
             axis : params.axis,
-            constrainTo : aria.utils.Dom.VIEWPORT
+            constrainTo : ariaUtilsDom.VIEWPORT
         });
 
     },
@@ -68,8 +73,8 @@ Aria.classDefinition({
             if (movable) {
                 // This will prevent text selection on IE on the movable
                 movable.onselectstart = Aria.returnFalse;
-                this._movableInitialGeometry = aria.utils.Dom.getGeometry(movable);
-                this._movableGeometry = aria.utils.Json.copy(this._movableInitialGeometry);
+                this._movableInitialGeometry = ariaUtilsDom.getGeometry(movable);
+                this._movableGeometry = ariaUtilsJson.copy(this._movableInitialGeometry);
                 this._baseMovableOffset = {
                     left : this._movableGeometry.x - movable.offsetLeft,
                     top : this._movableGeometry.y - movable.offsetTop,
@@ -91,7 +96,7 @@ Aria.classDefinition({
 
                 var offsetX = this._vertical ? 0 : evt.clientX - this.posX;
                 var offsetY = this._horizontal ? 0 : evt.clientY - this.posY;
-                var geometry = aria.utils.Json.copy(this._movableGeometry), dw, dh;
+                var geometry = ariaUtilsJson.copy(this._movableGeometry), dw, dh;
 
                 geometry = this._resizeWitHandlers(geometry, this.cursor, offsetX, offsetY);
 
@@ -154,7 +159,7 @@ Aria.classDefinition({
          * @return {Object} new position of resized and resize handle element
          */
         _resizeWitHandlers : function (geometry, cursor, offX, offY) {
-            var geometry = aria.utils.Json.copy(geometry), trim = aria.utils.String.trim;
+            var geometry = ariaUtilsJson.copy(geometry), trim = ariaUtilsString.trim;
             cursor = trim(cursor);
             var offsetX = geometry.width >= this.minWidth ? offX : 0;
             var offsetY = geometry.height >= this.minHeight ? offY : 0;
@@ -224,7 +229,7 @@ Aria.classDefinition({
          */
 
         _fitResizeBoundary : function (geometry) {
-            var domUtil = aria.utils.Dom;
+            var domUtil = ariaUtilsDom;
             var pos = (this._boundary) ? domUtil.fitInside(geometry, this._boundary) : {
                 top : geometry.y,
                 left : geometry.x

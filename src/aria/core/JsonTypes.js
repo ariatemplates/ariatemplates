@@ -12,11 +12,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+
 
 /**
  * Definition of all base types used in JSON schemas
  */
-Aria.beanDefinitions({
+module.exports = Aria.beanDefinitions({
     $package : "aria.core.JsonTypes",
     $description : "Definition of all base types used in JSON schemas",
     $beans : {

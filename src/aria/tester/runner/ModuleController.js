@@ -12,29 +12,43 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+require("./datamodel/DataDefinitions");
+var ariaTesterRunnerUtilsHash = require("./utils/Hash");
+require("../../jsunit/IOViewer");
+require("../../utils/QueryString");
+var ariaJsunitNewTestRunner = require("../../jsunit/NewTestRunner");
+require("../../jsunit/JsCoverage");
+require("../../utils/Callback");
+var ariaTesterRunnerUtilsTestUtils = require("./utils/TestUtils");
+var ariaTesterRunnerAppendersJsonTextDivAppender = require("./appenders/JsonTextDivAppender");
+var ariaJsunitTestacularReport = require("../../jsunit/TestacularReport");
+var ariaTesterRunnerModuleControllerInterface = require("./ModuleControllerInterface");
+var ariaTemplatesModuleCtrl = require("../../templates/ModuleCtrl");
+var ariaUtilsJson = require("../../utils/Json");
+var ariaCoreCache = require("../../core/Cache");
+var ariaCoreClassMgr = require("../../core/ClassMgr");
+var ariaCoreJsonValidator = require("../../core/JsonValidator");
+
 
 /**
  * Todo List module sample
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.tester.runner.ModuleController",
-    $extends : "aria.templates.ModuleCtrl",
-    $dependencies : ["aria.tester.runner.datamodel.DataDefinitions", "aria.tester.runner.utils.Hash",
-            "aria.jsunit.IOViewer", "aria.utils.QueryString", "aria.jsunit.NewTestRunner", "aria.jsunit.JsCoverage",
-            "aria.utils.Callback", "aria.tester.runner.utils.TestUtils",
-            "aria.tester.runner.appenders.JsonTextDivAppender", "aria.jsunit.TestacularReport"],
+    $extends : ariaTemplatesModuleCtrl,
     $statics : {
         DATA_DEFINITION : "aria.tester.runner.datamodel.DataDefinitions"
     },
-    $implements : ["aria.tester.runner.ModuleControllerInterface"],
+    $implements : [ariaTesterRunnerModuleControllerInterface],
     $constructor : function () {
         this.$ModuleCtrl.constructor.call(this);
         this._testRunner = null;
 
         // Should be configurable at some stage when we have more than one possible report appenders
-        this._reportAppenders = [new aria.tester.runner.appenders.JsonTextDivAppender()];
+        this._reportAppenders = [new ariaTesterRunnerAppendersJsonTextDivAppender()];
 
-        aria.core.JsonValidator.normalize({
+        ariaCoreJsonValidator.normalize({
             json : this._data,
             beanName : this.DATA_DEFINITION + ".Root"
         });
@@ -81,7 +95,7 @@ Aria.classDefinition({
          * @param {aria.core.CfgBeans:Callback} cb Callback defined by contract for this asynchronous method
          */
         switchView : function (cb) {
-            var __hash = aria.tester.runner.utils.Hash;
+            var __hash = ariaTesterRunnerUtilsHash;
             this.json.setValue(this._data.view.configuration, "mini", !this._data.view.configuration.mini);
             __hash.setParameter("mini", this._data.view.configuration.mini);
             this.$callback(cb);
@@ -97,7 +111,7 @@ Aria.classDefinition({
          * </ul>
          */
         _readConfigurationParameters : function () {
-            var campaignData = this.getData().campaign, viewData = this.getData().view, __hash = aria.tester.runner.utils.Hash, json = aria.utils.Json;
+            var campaignData = this.getData().campaign, viewData = this.getData().view, __hash = ariaTesterRunnerUtilsHash, json = ariaUtilsJson;
 
             if (__hash.getParameter("mini") == "true") {
                 json.setValue(viewData.configuration, "mini", true);
@@ -107,7 +121,7 @@ Aria.classDefinition({
                 json.setValue(campaignData, "rootClasspath", __hash.getParameter("testClasspath"));
             }
 
-            if (__hash.getParameter("autorun") == "true" || aria.jsunit.TestacularReport.isTestacularEnabled()) {
+            if (__hash.getParameter("autorun") == "true" || ariaJsunitTestacularReport.isTestacularEnabled()) {
                 // if Testacular is detected, then automatically run the test suite
                 json.setValue(campaignData, "autorun", true);
             }
@@ -126,7 +140,7 @@ Aria.classDefinition({
          */
         _onInitLoadCompleted : function (cb) {
             this.getData().campaign.loadSuccessful = true;
-            var __hash = aria.tester.runner.utils.Hash, campaignData = this.getData().campaign;
+            var __hash = ariaTesterRunnerUtilsHash, campaignData = this.getData().campaign;
             __hash.setParameter("testClasspath", campaignData.rootClasspath);
 
             this.$callback(cb);
@@ -150,7 +164,7 @@ Aria.classDefinition({
         preloadSuites : function (cb) {
             var campaignData = this.getData().campaign;
             var rootClasspath = campaignData.rootClasspath;
-            this._testRunner = new aria.jsunit.NewTestRunner();
+            this._testRunner = new ariaJsunitNewTestRunner();
             this._testRunner.runIsolated = campaignData.runIsolated;
             this._testRunner.setRootClasspath(rootClasspath);
 
@@ -238,24 +252,24 @@ Aria.classDefinition({
             // Update progress
             var finishedTests = this._testRunner.getFinishedTestsCount();
             var percentage = Math.floor(100 * (finishedTests / this._testRunner.getTestsCount()));
-            aria.utils.Json.setValue(this.getData().campaign, "progress", percentage);
+            ariaUtilsJson.setValue(this.getData().campaign, "progress", percentage);
         },
 
         updateErrorCount : function () {
             var failedTests = this._testRunner.getFailedTests();
-            aria.utils.Json.setValue(this.getData().campaign, "errorCount", failedTests.length);
+            ariaUtilsJson.setValue(this.getData().campaign, "errorCount", failedTests.length);
         },
 
         updateTests : function (cb) {
             // Update tests
-            aria.utils.Json.setValue(this.getData().campaign, "tests", this._testRunner.getTestCases());
-            aria.utils.Json.setValue(this.getData().campaign, "testsTree", [this._testRunner._rootTest]);
+            ariaUtilsJson.setValue(this.getData().campaign, "tests", this._testRunner.getTestCases());
+            ariaUtilsJson.setValue(this.getData().campaign, "testsTree", [this._testRunner._rootTest]);
             this.storeUnselectedSuitesInHash();
             this.$callback(cb);
         },
 
         selectTestSuitesFromHash : function () {
-            var __hash = aria.tester.runner.utils.Hash;
+            var __hash = ariaTesterRunnerUtilsHash;
             var unselectedSuites = __hash.getParameter("unselected");
             var rootSuite = this._testRunner._rootTest;
 
@@ -276,8 +290,8 @@ Aria.classDefinition({
         },
 
         storeUnselectedSuitesInHash : function () {
-            var __testUtils = aria.tester.runner.utils.TestUtils;
-            var __hash = aria.tester.runner.utils.Hash;
+            var __testUtils = ariaTesterRunnerUtilsTestUtils;
+            var __hash = ariaTesterRunnerUtilsHash;
             var rootSuite = this._testRunner._rootTest;
 
             if (!rootSuite.$TestSuite) {
@@ -294,7 +308,7 @@ Aria.classDefinition({
             this._startCampaignCb = cb;
 
             // Notify testacular in case it is available:
-            aria.jsunit.TestacularReport.attachTestEngine(this._testRunner.getEngine());
+            ariaJsunitTestacularReport.attachTestEngine(this._testRunner.getEngine());
 
             if (this.getData().campaign.demoMode) {
                 this._testRunner.getRootTest().demoMode = true;
@@ -323,24 +337,24 @@ Aria.classDefinition({
          * Dynamically reload the campaign. Only non-framework classes will be redownloaded
          */
         reload : function (cb) {
-            aria.jsunit.TestacularReport.detachTestEngine(this._testRunner.getEngine());
+            ariaJsunitTestacularReport.detachTestEngine(this._testRunner.getEngine());
             // The testRunner is responsible for disposing the test engine and all subsequent classes
             this._testRunner.$dispose();
 
             // unload all the classes that don' t belong to the framework
             // TODO change this -- aria.core.Cache.content.classes is not used anymore
-            var loadedClasses = aria.core.Cache.content.classes;
+            var loadedClasses = ariaCoreCache.content.classes;
             for (var classpath in loadedClasses) {
                 if (!loadedClasses.hasOwnProperty(classpath) || classpath.indexOf("aria.") === 0) {
                     continue;
                 }
                 if (classpath) {
-                    aria.core.ClassMgr.unloadClass(classpath, true);
+                    ariaCoreClassMgr.unloadClass(classpath, true);
                 }
             }
 
             // Activate the autorun in order to start the campaign as soon as the tests have been reloaded
-            aria.utils.Json.setValue(this.getData().campaign, "autorun", true);
+            ariaUtilsJson.setValue(this.getData().campaign, "autorun", true);
 
             this.$callback(cb);
         }

@@ -12,6 +12,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaWidgetsCalendarICalendarController = require("./ICalendarController");
+require("../Template");
+var ariaUtilsDate = require("../../utils/Date");
+require("./CfgBeans");
+var ariaUtilsEnvironmentDate = require("../../utils/environment/Date");
+var ariaUtilsArray = require("../../utils/Array");
+var ariaTemplatesModuleCtrl = require("../../templates/ModuleCtrl");
+var ariaCoreJsonValidator = require("../../core/JsonValidator");
+
 
 (function () {
     var dateUtils;
@@ -19,14 +29,12 @@
     /**
      * Calendar controller which manages calendar data.
      */
-    Aria.classDefinition({
+    module.exports = Aria.classDefinition({
         $classpath : "aria.widgets.calendar.CalendarController",
-        $extends : "aria.templates.ModuleCtrl",
-        $implements : ["aria.widgets.calendar.ICalendarController"],
-        $dependencies : ["aria.widgets.Template", "aria.utils.Date", "aria.widgets.calendar.CfgBeans",
-                "aria.utils.environment.Date", "aria.utils.Array"],
+        $extends : ariaTemplatesModuleCtrl,
+        $implements : [ariaWidgetsCalendarICalendarController],
         $onload : function () {
-            dateUtils = aria.utils.Date;
+            dateUtils = ariaUtilsDate;
         },
         $onunload : function () {
             dateUtils = null;
@@ -156,12 +164,12 @@
                     settings.startDate = new Date();
                 }
                 if (!settings.completeDateLabelFormat) {
-                    settings.completeDateLabelFormat = aria.utils.environment.Date.getDateFormats().longFormat;
+                    settings.completeDateLabelFormat = ariaUtilsEnvironmentDate.getDateFormats().longFormat;
                 }
                 if (settings.firstDayOfWeek == null) { // compare to null because 0 is a valid value
-                    settings.firstDayOfWeek = aria.utils.environment.Date.getFirstDayOfWeek();
+                    settings.firstDayOfWeek = ariaUtilsEnvironmentDate.getFirstDayOfWeek();
                 }
-                aria.core.JsonValidator.normalize({
+                ariaCoreJsonValidator.normalize({
                     json : this._calendarSettings,
                     beanName : "aria.widgets.calendar.CfgBeans.CalendarSettings"
                 });
@@ -226,7 +234,7 @@
              * null if the date cannot be found in the current calendar data model.
              */
             getDatePosition : function (jsDate) {
-                var arrayUtils = aria.utils.Array;
+                var arrayUtils = ariaUtilsArray;
                 var calendar = this._calendarData;
                 var diff = dateUtils.dayDifference(this._realStartDate, jsDate);
                 var weekIndex = Math.floor(diff / 7);

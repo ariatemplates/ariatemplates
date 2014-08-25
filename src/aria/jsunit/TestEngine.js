@@ -12,6 +12,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaUtilsType = require("../utils/Type");
+var ariaUtilsArray = require("../utils/Array");
+var ariaUtilsQueryString = require("../utils/QueryString");
+
 
 /**
  * This class drives the test execution by looping on all Tests it is associated to.<br />
@@ -22,9 +27,8 @@
  * (otherwise the refresh would only occur at the end of the Thread execution) <br />
  * Note: This class doesn't display any information - see TestRunner to get a runner with an HTML UI
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.jsunit.TestEngine",
-    $dependencies : ["aria.utils.Type"],
     $events : {
         "change" : {
             description : "raised when some data have changed in the test report",
@@ -162,7 +166,7 @@ Aria.classDefinition({
             var testObject = evt.testObject, classpath = testObject.$classpath;
 
             // verify if the test is supposed to be skipped and store the value
-            if (this.skipTests != null && aria.utils.Array.contains(this.skipTests, testObject.$classpath)) {
+            if (this.skipTests != null && ariaUtilsArray.contains(this.skipTests, testObject.$classpath)) {
                 testObject.skipTest = true;
             }
             // verify also that it doesn't extend from a skipped test
@@ -171,7 +175,7 @@ Aria.classDefinition({
                 if (!definition) {
                     break;
                 }
-                if (aria.utils.Array.contains(this.skipTests, definition.$extends)) {
+                if (ariaUtilsArray.contains(this.skipTests, definition.$extends)) {
                     testObject.skipTest = true;
                 }
                 classpath = definition.$extends;
@@ -278,7 +282,7 @@ Aria.classDefinition({
          * @private
          */
         _registerAsListener : function (testObject) {
-            if (this.runIsolated && aria.utils.Type.isInstanceOf(testObject, 'aria.jsunit.TestSuite')) {
+            if (this.runIsolated && ariaUtilsType.isInstanceOf(testObject, 'aria.jsunit.TestSuite')) {
                 testObject.runIsolated = true;
             }
             testObject.$on({
@@ -312,7 +316,7 @@ Aria.classDefinition({
          * @return {String} the URL to use to retry the test
          */
         _getRetryTestUrl : function (testClasspath) {
-            var queryStringUtil = aria.utils.QueryString;
+            var queryStringUtil = ariaUtilsQueryString;
             queryStringUtil.getKeyValue("testClasspath");
             var keyValues = queryStringUtil.keyValues;
             keyValues["testClasspath"] = testClasspath;

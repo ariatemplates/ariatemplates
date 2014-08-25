@@ -12,16 +12,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaUtilsDom = require("../../utils/Dom");
+var ariaWidgetsFramesFrameFactory = require("../frames/FrameFactory");
+var ariaWidgetsContainerDivStyle = require("./DivStyle.tpl.css");
+var ariaWidgetsContainerContainer = require("./Container");
+
 
 /**
  * @class aria.widgets.container.Div Class definition for the div widget.
  * @extends aria.widgets.container.Container
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.widgets.container.Div",
-    $extends : "aria.widgets.container.Container",
-    $dependencies : ["aria.utils.Dom", "aria.widgets.frames.FrameFactory"],
-    $css : ["aria.widgets.container.DivStyle"],
+    $extends : ariaWidgetsContainerContainer,
+    $css : [ariaWidgetsContainerDivStyle],
     /**
      * Div constructor
      * @param {aria.widgets.CfgBeans:DivCfg} cfg the widget configuration
@@ -32,7 +37,7 @@ Aria.classDefinition({
         // make a call to the AriaSkinInterface to get access to the skin object applicable here
         if (!this._frame) {
             /* this._frame could be overriden in sub-classes */
-            this._frame = aria.widgets.frames.FrameFactory.createFrame({
+            this._frame = ariaWidgetsFramesFrameFactory.createFrame({
                 skinnableClass : this._skinnableClass,
                 sclass : cfg.sclass,
                 state : "normal",
@@ -70,7 +75,7 @@ Aria.classDefinition({
          */
         _init : function () {
             // link the frame
-            var content = aria.utils.Dom.getDomElementChild(this.getDom(), 0);
+            var content = ariaUtilsDom.getDomElementChild(this.getDom(), 0);
             this._frame.linkToDom(content);
 
             aria.widgets.container.Div.superclass._init.call(this);

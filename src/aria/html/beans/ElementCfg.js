@@ -12,13 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaCoreJsonTypes = require("../../core/JsonTypes");
+var ariaTemplatesCfgBeans = require("../../templates/CfgBeans");
 
-Aria.beanDefinitions({
+
+module.exports = Aria.beanDefinitions({
     $package : "aria.html.beans.ElementCfg",
     $description : "Base configuration for Element widget.",
     $namespaces : {
-        "json" : "aria.core.JsonTypes",
-        "html" : "aria.templates.CfgBeans"
+        "json" : ariaCoreJsonTypes,
+        "html" : ariaTemplatesCfgBeans
     },
     $beans : {
         "Properties" : {

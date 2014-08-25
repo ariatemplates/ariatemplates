@@ -12,15 +12,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaUtilsDom = require("../../utils/Dom");
+var ariaUtilsClassList = require("../../utils/ClassList");
+var ariaUtilsDragdropDrag = require("../../utils/dragdrop/Drag");
+var ariaCoreBrowser = require("../../core/Browser");
+var ariaWidgetsContainerSplitterStyle = require("./SplitterStyle.tpl.css");
+var ariaWidgetsContainerContainer = require("./Container");
+
 
 /**
  * Splitter Widget
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.widgets.container.Splitter",
-    $extends : "aria.widgets.container.Container",
-    $dependencies : ["aria.utils.Dom", "aria.utils.ClassList", "aria.utils.dragdrop.Drag", "aria.core.Browser"],
-    $css : ["aria.widgets.container.SplitterStyle"],
+    $extends : ariaWidgetsContainerContainer,
+    $css : [ariaWidgetsContainerSplitterStyle],
     /**
      * Splitter constructor
      * @param {aria.widgets.CfgBeans:SplitterCfg} cfg the widget configuration
@@ -125,17 +132,17 @@ Aria.classDefinition({
          */
         initWidget : function () {
             this.$Container.initWidget.apply(this, arguments);
-            var getChild = aria.utils.Dom.getDomElementChild;
+            var getChild = ariaUtilsDom.getDomElementChild;
             var parentContainer = getChild(getChild(this.getDom(), 0), 0);
             this._splitPanel1 = getChild(parentContainer, 0);
             this._splitBar = getChild(parentContainer, 1);
             this._splitBarProxy = getChild(parentContainer, 2);
             this._splitPanel2 = getChild(parentContainer, 3);
 
-            this._splitBarProxyClass = new aria.utils.ClassList(this._splitBarProxy);
+            this._splitBarProxyClass = new ariaUtilsClassList(this._splitBarProxy);
             var handleBarElem = "splitBarProxy_" + this._domId;
             var cursor = this._orientation ? "n-resize" : "e-resize";
-            this._draggable = new aria.utils.dragdrop.Drag(handleBarElem, {
+            this._draggable = new ariaUtilsDragdropDrag(handleBarElem, {
                 handle : handleBarElem,
                 cursor : cursor,
                 proxy : null,
@@ -156,7 +163,7 @@ Aria.classDefinition({
 
         },
         _onDragStart : function () {
-            if (aria.core.Browser.isOldIE) {
+            if (ariaCoreBrowser.isOldIE) {
                 this.getDom().onselectstart = Aria.returnFalse;
             }
             this._splitBarProxyClass.remove(this._handleBarClass);

@@ -12,11 +12,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../../Aria");
+
 
 /**
  * Script for the default list template
  */
-Aria.tplScriptDefinition({
+module.exports = Aria.tplScriptDefinition({
     $classpath : "aria.widgets.form.templates.TemplateMultiSelectScript",
     $constructor : function () {
         /**

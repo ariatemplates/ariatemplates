@@ -12,16 +12,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaWidgetsFormGaugeStyle = require("./GaugeStyle.tpl.css");
+var ariaUtilsString = require("../../utils/String");
+var ariaWidgetsWidget = require("../Widget");
+
 
 /**
  * @class aria.widgets.form.Gauge Gauge widget
  * @extends aria.widgets.Widget
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.widgets.form.Gauge",
-    $extends : "aria.widgets.Widget",
-    $css : ["aria.widgets.form.GaugeStyle"],
-    $dependencies : ["aria.utils.String"],
+    $extends : ariaWidgetsWidget,
+    $css : [ariaWidgetsFormGaugeStyle],
     /**
      * Gauge constructor
      * @param {aria.widgets.CfgBeans:GaugeCfg} cfg the widget configuration
@@ -99,7 +103,7 @@ Aria.classDefinition({
                     skinObj.labelMargins ? ';margin:' + skinObj.labelMargins : '',
                     skinObj.labelFontSize ? ';font-size:' + skinObj.labelFontSize + 'px' : '',
                     cfg.labelWidth > -1 ? ';width:' + cfg.labelWidth + 'px' : '', '">',
-                    aria.utils.String.escapeHTML(cfg.label), '</span>'].join(""));
+                    ariaUtilsString.escapeHTML(cfg.label), '</span>'].join(""));
         },
 
         /**

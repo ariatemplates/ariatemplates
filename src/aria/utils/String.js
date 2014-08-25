@@ -12,14 +12,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaUtilsType = require("./Type");
+
 
 /**
  * Utilities for String manipulation
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.utils.String",
     $singleton : true,
-    $dependencies : ["aria.utils.Type"],
     $prototype : {
         /**
          * Substitute %n parameters in a string
@@ -29,7 +31,7 @@ Aria.classDefinition({
          * @return {String} The final string, with %n occurences replaced with their equivalent
          */
         substitute : function (string, params) {
-            if (!aria.utils.Type.isArray(params)) {
+            if (!ariaUtilsType.isArray(params)) {
                 params = [params];
             }
 
@@ -147,7 +149,7 @@ Aria.classDefinition({
 
             // --------------------------------------------------------- options
 
-            if (!aria.utils.Type.isObject(options)) {
+            if (!ariaUtilsType.isObject(options)) {
                 if (options == null) {
                     options = true;
                 }
@@ -350,13 +352,13 @@ Aria.classDefinition({
          * </pre>
          */
         chunk : function (string, size, begin) {
-            if (!aria.utils.Type.isString(string)) {
+            if (!ariaUtilsType.isString(string)) {
                 return null;
             } else if (!string) {
                 return [string];
             }
 
-            if (aria.utils.Type.isArray(size)) {
+            if (ariaUtilsType.isArray(size)) {
                 return this._chunkArray(string, size, begin);
             } else {
                 return this._chunkNumber(string, size, begin);

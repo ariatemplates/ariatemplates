@@ -12,15 +12,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaWidgetsControllersTextDataController = require("../controllers/TextDataController");
+var ariaWidgetsFormTextInput = require("./TextInput");
+
 
 /**
  * Password widget
  * @class aria.widgets.form.PasswordField
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : 'aria.widgets.form.PasswordField',
-    $extends : 'aria.widgets.form.TextInput',
-    $dependencies : ['aria.widgets.controllers.TextDataController'],
+    $extends : ariaWidgetsFormTextInput,
     /**
      * PasswordField constructor
      * @param {aria.widgets.CfgBeans:PasswordFieldCfg} cfg the widget configuration
@@ -28,7 +31,7 @@ Aria.classDefinition({
      * @param {Number} lineNumber Line number corresponding in the .tpl file where the widget is created
      */
     $constructor : function (cfg, ctxt, lineNumber) {
-        var controller = new aria.widgets.controllers.TextDataController();
+        var controller = new ariaWidgetsControllersTextDataController();
         this.$TextInput.constructor.call(this, cfg, ctxt, lineNumber, controller);
         this._isPassword = true;
     },

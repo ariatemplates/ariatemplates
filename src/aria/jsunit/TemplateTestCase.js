@@ -12,13 +12,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaUtilsSynEvents = require("../utils/SynEvents");
+require("../templates/RefreshManager");
+require("../utils/Type");
+var ariaUtilsDom = require("../utils/Dom");
+var ariaJsunitTestCase = require("./TestCase");
+var ariaCoreLog = require("../core/Log");
+var ariaCoreTimer = require("../core/Timer");
+
 
 /**
  * Class to be extended to create a template test case
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.jsunit.TemplateTestCase",
-    $extends : "aria.jsunit.TestCase",
+    $extends : ariaJsunitTestCase,
     $events : {
         "beforeLoadTplInIframe" : {
             description : "Raised before calling Aria.loadTemplate inside an iframe",
@@ -92,7 +101,7 @@ Aria.classDefinition({
          * Shortcut to the synthetic event library. This kept in sync when the test window changes
          * @type aria.utils.SynEvents
          */
-        this.synEvent = aria.utils.SynEvents;
+        this.synEvent = ariaUtilsSynEvents;
     },
     $destructor : function () {
         // Free also some memory cleaning the environment
@@ -108,7 +117,6 @@ Aria.classDefinition({
 
         this.$TestCase.$destructor.call(this);
     },
-    $dependencies : ["aria.utils.SynEvents", "aria.templates.RefreshManager", "aria.utils.Type", "aria.utils.Dom"],
     $statics : {
         IFRAME_LOAD_TEMPLATE : "Error loading template '%1' in iframe",
         IFRAME_LOADER : "Unable to load Aria Templates in iframe because: %1"
@@ -221,7 +229,7 @@ Aria.classDefinition({
                             // Wait a little bit before starting the test
                             if (args) {
                                 args.delay = 50;
-                                aria.core.Timer.addCallback({
+                                ariaCoreTimer.addCallback({
                                     fn : function (callback) {
                                         this.$callback(callback);
                                     },
@@ -304,7 +312,7 @@ Aria.classDefinition({
          */
         _replaceTestTemplate : function (env, cb) {
             // async call allows the template to finish init
-            aria.core.Timer.addCallback({
+            ariaCoreTimer.addCallback({
                 fn : function () {
                     this._disposeTestTemplate();
                     this.__cleanEnv();
@@ -339,7 +347,7 @@ Aria.classDefinition({
         nextTest : function () {
             var nextTestName = this._testsToExecute.shift();
             if (nextTestName) {
-                aria.core.Timer.addCallback({
+                ariaCoreTimer.addCallback({
                     fn : function () {
                         this._currentTestName = nextTestName; // for logging purposes
                         this[nextTestName]();
@@ -361,7 +369,7 @@ Aria.classDefinition({
             if (this.demoMode) {
                 return;
             }
-            aria.core.Timer.addCallback({
+            ariaCoreTimer.addCallback({
                 fn : function () {
                     // Need to dispose the template since we are always using the same div to do Aria.loadTemplate
                     this._disposeTestTemplate();
@@ -415,7 +423,7 @@ Aria.classDefinition({
          * @deprecated
         */
         getElementsByClassName : function (domElt, classname) {
-            return aria.utils.Dom.getElementsByClassName(domElt, classname);
+            return ariaUtilsDom.getElementsByClassName(domElt, classname);
         },
 
         /**
@@ -801,7 +809,7 @@ Aria.classDefinition({
                 return this._iframeLoadError(args, result.reason);
             }
             var window = args.iframe.contentWindow;
-            var appenders = aria.core.Log.getAppenders();
+            var appenders = ariaCoreLog.getAppenders();
             for (var i = 0, len = appenders.length; i < len; i += 1) {
                 window.aria.core.Log.addAppender(appenders[i]);
             }

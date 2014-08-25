@@ -12,14 +12,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaWidgetsFormListList = require("./list/List");
+var ariaUtilsJson = require("../../utils/Json");
+var ariaCoreBrowser = require("../../core/Browser");
+var ariaCoreTimer = require("../../core/Timer");
+
 
 /**
  * DropDownListTrait is a class to share code between dropdown widgets containing a list in their popup. The purpose of
  * this class is not to be created directly, but to allow its prototype to be imported.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.widgets.form.DropDownListTrait",
-    $dependencies : ["aria.widgets.form.list.List"],
     $constructor : function () {
         // The purpose of this class is to provide a prototype to be imported, not to be created directly.
         this.$assert(11, false);
@@ -61,9 +66,9 @@ Aria.classDefinition({
             // For smooth scrolling without the selection being always put back on the item under the mouse,
             // we disable the mouseOver handler during a short time delay:
             if (this._ignoreMouseOverItemCallback) {
-                aria.core.Timer.cancelCallback(this._ignoreMouseOverItemCallback);
+                ariaCoreTimer.cancelCallback(this._ignoreMouseOverItemCallback);
             }
-            this._ignoreMouseOverItemCallback = aria.core.Timer.addCallback({
+            this._ignoreMouseOverItemCallback = ariaCoreTimer.addCallback({
                 fn : this._enableMouseOverItem,
                 scope : this,
                 delay : 100
@@ -91,7 +96,7 @@ Aria.classDefinition({
         _mouseOverItem : function (evt) {
             if (!this._ignoreMouseOverItemCallback) {
                 var dm = this.controller.getDataModel();
-                aria.utils.Json.setValue(dm, "selectedIdx", evt.index);
+                ariaUtilsJson.setValue(dm, "selectedIdx", evt.index);
             }
         },
 
@@ -187,7 +192,7 @@ Aria.classDefinition({
                 listObj.bind.multipleSelect = options.bind.multipleSelect;
             }
 
-            var list = new aria.widgets.form.list.List(listObj, this._context, this._lineNumber);
+            var list = new ariaWidgetsFormListList(listObj, this._context, this._lineNumber);
             list.$on({
                 'widgetContentReady' : this._refreshPopup,
                 scope : this
@@ -218,7 +223,7 @@ Aria.classDefinition({
                 // No width specified, let the widget decide
                 return null;
             }
-            if (aria.core.Browser.isIE6) {
+            if (ariaCoreBrowser.isIE6) {
                 return popupWidth;
             }
             return Math.max(popupWidth, inputMarkupWidth);

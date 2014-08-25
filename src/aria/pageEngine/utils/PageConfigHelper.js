@@ -12,13 +12,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaPageEngineUtilsPageEngineUtils = require("./PageEngineUtils");
+var ariaUtilsType = require("../../utils/Type");
+var ariaUtilsArray = require("../../utils/Array");
+var ariaUtilsJson = require("../../utils/Json");
+
 
 /**
  * Helper class that helps with returning information from a given page configuration object
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.pageEngine.utils.PageConfigHelper",
-    $dependencies : ["aria.pageEngine.utils.PageEngineUtils", "aria.utils.Type", "aria.utils.Array"],
     $constructor : function (pageConfig) {
         /**
          * Page definition
@@ -32,14 +37,14 @@ Aria.classDefinition({
          * @type aria.pageEngine.utils.PageEngineUtils
          * @protected
          */
-        this._utils = aria.pageEngine.utils.PageEngineUtils;
+        this._utils = ariaPageEngineUtilsPageEngineUtils;
 
         /**
          * Copy of the list of modules from the page definition
          * @type aria.pageEngine.CfgBeans:PageComposition.modules
          * @protected
          */
-        this._pageModules = aria.utils.Json.copy(this._pageConfig.pageComposition.modules) || {};
+        this._pageModules = ariaUtilsJson.copy(this._pageConfig.pageComposition.modules) || {};
 
         this._utils.addKeyAsProperty(this._pageModules, "refpath");
     },
@@ -77,7 +82,7 @@ Aria.classDefinition({
             };
             var pageComposition = this._pageConfig.pageComposition;
             var placeholders = pageComposition.placeholders || {};
-            var typeUtils = aria.utils.Type;
+            var typeUtils = ariaUtilsType;
 
             if (!lazy) {
                 this._utils.addIfMissing(pageComposition.template, dependencies.templates);
@@ -109,7 +114,7 @@ Aria.classDefinition({
          * @private
          */
         _addPlaceholderDependencies : function (placeholder, dependencies, lazy) {
-            var modules = this._pageModules, refpath, moduleDesc, typeUtils = aria.utils.Type;
+            var modules = this._pageModules, refpath, moduleDesc, typeUtils = ariaUtilsType;
             if (!typeUtils.isObject(placeholder)) {
                 return;
             }
@@ -153,7 +158,7 @@ Aria.classDefinition({
                 }
                 return filteredMods;
             }
-            return aria.utils.Array.extractValuesFromMap(modules);
+            return ariaUtilsArray.extractValuesFromMap(modules);
         },
 
         /**
@@ -161,7 +166,7 @@ Aria.classDefinition({
          * @return {Array} ids of the lazy placeholders.
          */
         getLazyPlaceholdersIds : function () {
-            var output = [], isLazy, typeUtils = aria.utils.Type;
+            var output = [], isLazy, typeUtils = ariaUtilsType;
             var placeholders = this._pageConfig.pageComposition.placeholders || {};
             for (var placeholderName in placeholders) {
                 if (placeholders.hasOwnProperty(placeholderName)) {

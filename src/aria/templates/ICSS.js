@@ -12,14 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaTemplatesIBaseTemplate = require("./IBaseTemplate");
+
 
 /**
  * Interface exposed from a CSS template context to its CSS template.
  * @class aria.templates.ICSS
  */
-Aria.interfaceDefinition({
+module.exports = Aria.interfaceDefinition({
     $classpath : 'aria.templates.ICSS',
-    $extends : 'aria.templates.IBaseTemplate',
+    $extends : ariaTemplatesIBaseTemplate,
     $events : {},
     $interface : {
         /**

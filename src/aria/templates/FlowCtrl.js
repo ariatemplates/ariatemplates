@@ -12,16 +12,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaTemplatesIFlowCtrl = require("./IFlowCtrl");
+require("../utils/String");
+var ariaTemplatesPublicWrapper = require("./PublicWrapper");
+
 
 /**
  * Base class for flow controllers.
  * @class aria.templates.FlowCtrl
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : 'aria.templates.FlowCtrl',
-    $extends : 'aria.templates.PublicWrapper',
-    $implements : ['aria.templates.IFlowCtrl'],
-    $dependencies : ['aria.utils.String'],
+    $extends : ariaTemplatesPublicWrapper,
+    $implements : [ariaTemplatesIFlowCtrl],
     $constructor : function () {
         this.$PublicWrapper.constructor.call(this);
     },

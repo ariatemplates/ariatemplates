@@ -12,14 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaWidgetsIcon = require("../Icon");
+var ariaWidgetsActionButton = require("./Button");
+
 
 /**
  * Class definition for the button widget.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.widgets.action.IconButton",
-    $extends : "aria.widgets.action.Button",
-    $dependencies : ["aria.widgets.Icon"],
+    $extends : ariaWidgetsActionButton,
     /**
      * ActionWidget constructor
      * @param {aria.widgets.CfgBeans:ActionWidgetCfg} cfg the widget configuration
@@ -33,7 +36,7 @@ Aria.classDefinition({
          * @type aria.widgets.Icon
          * @protected
          */
-        this._icon = new aria.widgets.Icon({
+        this._icon = new ariaWidgetsIcon({
             icon : cfg.icon,
             sourceImage : cfg.sourceImage
         }, ctxt, lineNumber);

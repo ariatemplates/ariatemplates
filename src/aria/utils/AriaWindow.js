@@ -12,13 +12,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaUtilsEvent = require("./Event");
+
 
 /**
  * This class manages changes to Aria.$window and page navigation in Aria.$window.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : 'aria.utils.AriaWindow',
-    $dependencies : ['aria.utils.Event'],
     $singleton : true,
     $constructor : function () {
         /**
@@ -50,7 +52,7 @@ Aria.classDefinition({
         attachWindow : function () {
             this._windowUsages++;
             if (this._windowUsages === 1) {
-                aria.utils.Event.addListener(Aria.$window, "unload", {
+                ariaUtilsEvent.addListener(Aria.$window, "unload", {
                     fn : this._unloadWindow,
                     scope : this
                 });
@@ -79,11 +81,11 @@ Aria.classDefinition({
         _raiseDetachWindow : function () {
             this.$assert(42, this._windowUsages === 0);
             this.$raiseEvent("detachWindow");
-            aria.utils.Event.removeListener(Aria.$window, "unload", {
+            ariaUtilsEvent.removeListener(Aria.$window, "unload", {
                 fn : this._unloadWindow,
                 scope : this
             });
-            aria.utils.Event.reset();
+            ariaUtilsEvent.reset();
         },
 
         /**

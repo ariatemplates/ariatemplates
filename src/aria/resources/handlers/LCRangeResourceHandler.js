@@ -12,6 +12,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+require("./LCRangeResourceHandlerBean");
+var ariaUtilsString = require("../../utils/String");
+require("../../utils/Array");
+var ariaResourcesHandlersLCResourcesHandler = require("./LCResourcesHandler");
+var ariaUtilsType = require("../../utils/Type");
+
 (function () {
 
     // shortcuts
@@ -21,10 +28,9 @@
      * Resources handler for LABEL-CODE suggestions. This handler is to be fed and used with user defined entries.<br />
      * Suggestion must match the bean defined in this.SUGGESTION_BEAN
      */
-    Aria.classDefinition({
+    module.exports = Aria.classDefinition({
         $classpath : "aria.resources.handlers.LCRangeResourceHandler",
-        $extends : "aria.resources.handlers.LCResourcesHandler",
-        $dependencies : ["aria.resources.handlers.LCRangeResourceHandlerBean", "aria.utils.String", "aria.utils.Array"],
+        $extends : ariaResourcesHandlersLCResourcesHandler,
         $statics : {
             /**
              * Suggestion bean that validates a given suggestion
@@ -41,8 +47,8 @@
 
         },
         $onload : function () {
-            stringUtil = aria.utils.String;
-            typesUtil = aria.utils.Type;
+            stringUtil = ariaUtilsString;
+            typesUtil = ariaUtilsType;
         },
         $onunload : function () {
             stringUtil = null;

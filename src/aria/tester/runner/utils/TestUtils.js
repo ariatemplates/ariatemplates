@@ -12,11 +12,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../../Aria");
+
 
 /**
  * Mutualize most of the test formatting and information extraction logic
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.tester.runner.utils.TestUtils",
     $singleton : true,
     $prototype : {

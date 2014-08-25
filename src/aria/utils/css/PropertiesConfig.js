@@ -12,6 +12,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+
 
 (function () {
 
@@ -19,7 +21,7 @@
     var VERTICAL = 2;
     var COMPOSITE = 3;
 
-    Aria.classDefinition({
+    module.exports = Aria.classDefinition({
         $classpath : "aria.utils.css.PropertiesConfig",
         $singleton : true,
         $statics : {

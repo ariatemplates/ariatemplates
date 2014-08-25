@@ -12,13 +12,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaUtilsValidatorsValidator = require("./Validator");
+
 
 /**
  * A Base RegExp utility extended by all regex type utilities.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.utils.validators.RegExp",
-    $extends : "aria.utils.validators.Validator",
+    $extends : ariaUtilsValidatorsValidator,
     $constructor : function (regexp, message) {
         this.$Validator.constructor.call(this, message);
 

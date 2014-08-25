@@ -12,13 +12,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaCoreBrowser = require("../core/Browser");
+
 
 /**
  * Sonar Report
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.jsunit.SonarReport",
-    $dependencies : ["aria.core.Browser"],
     $statics : {
         REPORT_SEPARATOR : "###__REPORT__DELIMITER__###",
         LINE_SEPARATOR : "####",
@@ -27,8 +29,8 @@ Aria.classDefinition({
     $constructor : function (conf) {
         this.testRunner = conf.testRunner;
 
-        var browserName = aria.core.Browser.toString().replace(/ /g, "_").replace(/\./g, "");
-        var osName = aria.core.Browser.environment;
+        var browserName = ariaCoreBrowser.toString().replace(/ /g, "_").replace(/\./g, "");
+        var osName = ariaCoreBrowser.environment;
         this.__browserInfo = browserName + "_" + osName + ".";
     },
     $destructor : function () {

@@ -12,12 +12,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+
 
 /**
  * Utility class allowing to store a reference to a callback object and get a string which, when evaluated, will call
  * that callback object.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.utils.StringCallback",
     $singleton : true,
     $constructor : function () {

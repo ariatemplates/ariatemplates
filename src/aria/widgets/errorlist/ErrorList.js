@@ -12,16 +12,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+require("../Template");
+require("./ErrorListController");
+require("../../DomEvent");
+var ariaWidgetsTemplateBasedWidget = require("../TemplateBasedWidget");
+var ariaUtilsJson = require("../../utils/Json");
+
 
 /**
  * Error list widget, which is a template-based widget. Most of the logic of the error list widget is implemented in the
  * ErrorListController class. This class only does the link between the properties of the error list widget and the
  * error list controller.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.widgets.errorlist.ErrorList",
-    $extends : "aria.widgets.TemplateBasedWidget",
-    $dependencies : ["aria.widgets.Template", "aria.widgets.errorlist.ErrorListController", "aria.DomEvent"],
+    $extends : ariaWidgetsTemplateBasedWidget,
     $onload : function () {
         /*
          * Preload the default template here, to improve performances TODO: find a better way, to also improve
@@ -34,7 +40,7 @@ Aria.classDefinition({
     $constructor : function (cfg, ctxt) {
         this.$TemplateBasedWidget.constructor.apply(this, arguments);
         var skinObj = aria.widgets.AriaSkinInterface.getSkinObject(this._skinnableClass, this._cfg.sclass);
-        var divCfg = aria.utils.Json.copy(cfg, true, ['width', 'minWidth', 'maxWidth', 'height', 'minHeight', 'block',
+        var divCfg = ariaUtilsJson.copy(cfg, true, ['width', 'minWidth', 'maxWidth', 'height', 'minHeight', 'block',
                 'maxHeight']);
         divCfg.sclass = skinObj.divsclass;
         divCfg.margins = "0 0 0 0";

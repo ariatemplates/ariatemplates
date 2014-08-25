@@ -12,10 +12,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaTemplatesFlowCtrl = require("../../templates/FlowCtrl");
+var ariaUtilsJson = require("../../utils/Json");
 
-Aria.classDefinition({
+
+module.exports = Aria.classDefinition({
     $classpath : 'aria.tester.runner.BaseFlow',
-    $extends : 'aria.templates.FlowCtrl',
+    $extends : ariaTemplatesFlowCtrl,
     $constructor : function () {
         this.$FlowCtrl.constructor.call(this);
     },
@@ -36,7 +40,7 @@ Aria.classDefinition({
                 return this.$logError("FLOW_INVALID_TRANSITION", [targetState]);
             }
 
-            var json = aria.utils.Json;
+            var json = ariaUtilsJson;
 
             // change current state to new state
             json.setValue(flowData, "currentState", targetState);

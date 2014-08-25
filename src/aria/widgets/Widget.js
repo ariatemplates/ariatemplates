@@ -12,17 +12,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+require("./CfgBeans");
+var ariaUtilsJson = require("../utils/Json");
+var ariaUtilsDom = require("../utils/Dom");
+require("../DomEvent");
+var ariaUtilsDelegate = require("../utils/Delegate");
+var ariaWidgetsAriaSkinInterface = require("./AriaSkinInterface");
+require("../utils/Type");
+var ariaTemplatesRefreshManager = require("../templates/RefreshManager");
+var ariaUtilsString = require("../utils/String");
+var ariaWidgetsGlobalStyle = require("./GlobalStyle.tpl.css");
+var ariaWidgetLibsBindableWidget = require("../widgetLibs/BindableWidget");
+var ariaCoreTplClassLoader = require("../core/TplClassLoader");
+var ariaCoreJsonValidator = require("../core/JsonValidator");
+
 
 /**
  * Base Widget class from which all widgets must derive
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.widgets.Widget",
-    $extends : "aria.widgetLibs.BindableWidget",
-    $dependencies : ["aria.widgets.CfgBeans", "aria.utils.Json", "aria.utils.Dom", "aria.DomEvent",
-            "aria.utils.Delegate", "aria.widgets.AriaSkinInterface", "aria.utils.Type",
-            "aria.templates.RefreshManager", "aria.utils.String"],
-    $css : ["aria.widgets.GlobalStyle"],
+    $extends : ariaWidgetLibsBindableWidget,
+    $css : [ariaWidgetsGlobalStyle],
     $onload : function () {
         // check for skin existency
         if (!aria.widgets.AriaSkin) {
@@ -113,11 +125,11 @@ Aria.classDefinition({
          */
         this.__initWhileContentChange = false;
 
-        this._cfgOk = aria.core.JsonValidator.validateCfg(this._cfgBean || this._cfgPackage + "." + this.$class + "Cfg", cfg);
+        this._cfgOk = ariaCoreJsonValidator.validateCfg(this._cfgBean || this._cfgPackage + "." + this.$class + "Cfg", cfg);
 
         // Check if the defined skinClass exists for this widget, if not set it to 'std'
         if (this._skinnableClass) {
-            if (!aria.widgets.AriaSkinInterface.checkSkinClassExists(this._skinnableClass, cfg.sclass)) {
+            if (!ariaWidgetsAriaSkinInterface.checkSkinClassExists(this._skinnableClass, cfg.sclass)) {
                 cfg.sclass = 'std';
             }
         }
@@ -231,7 +243,7 @@ Aria.classDefinition({
                             // If the property is explicitly set, transfer to data model
                             if (typeof(this._cfg[bindedProperty]) != "undefined") {
                                 var valueToDataModel = this._transform(transform, this._cfg[bindedProperty], "fromWidget");
-                                aria.utils.Json.setValue(inside, to, valueToDataModel);
+                                ariaUtilsJson.setValue(inside, to, valueToDataModel);
                             }
                         }
                     }
@@ -323,8 +335,8 @@ Aria.classDefinition({
          * @param {aria.templates.MarkupWriter} out
          */
         __markupBegin : function (out) {
-            var cfg = this._cfg, cssClasses = aria.core.TplClassLoader.addPrintOptions(this._cssClassNames, cfg.printOptions);
-            var delegateManager = aria.utils.Delegate;
+            var cfg = this._cfg, cssClasses = ariaCoreTplClassLoader.addPrintOptions(this._cssClassNames, cfg.printOptions);
+            var delegateManager = ariaUtilsDelegate;
             if (cfg.block) {
                 cssClasses += " xBlock";
             }
@@ -373,7 +385,7 @@ Aria.classDefinition({
                 out.write('margin:' + this._defaultMargin + 'px;" ');
             }
             if (cfg.tooltip) {
-                out.write('title="' + aria.utils.String.escapeHTMLAttr(cfg.tooltip) + '" ');
+                out.write('title="' + ariaUtilsString.escapeHTMLAttr(cfg.tooltip) + '" ');
             }
             if (cfg.tabIndex != null && !this._customTabIndexProvided && !cfg.disabled) {
                 var tabIndex = this._calculateTabIndex();
@@ -502,7 +514,7 @@ Aria.classDefinition({
         initWidgetDom : function (dom) {
             this._initDone = true;
             if (!dom) {
-                dom = aria.utils.Dom.getElementById(this._domId);
+                dom = ariaUtilsDom.getElementById(this._domId);
                 if (!dom) {
                     this.$logError(this.WIDGET_NOT_FOUND, [this._domId, this.$class]);
                 }
@@ -551,7 +563,7 @@ Aria.classDefinition({
                     if (holder && (nm || nm === 0)) {
                         structureValue = this._transform(transform, newValue, "fromWidget");
                         var listener = this._bindingListeners[propertyName];
-                        aria.utils.Json.setValue(holder, nm, structureValue, listener ? listener.cb : null);
+                        ariaUtilsJson.setValue(holder, nm, structureValue, listener ? listener.cb : null);
                     }
                 }
             }
@@ -626,11 +638,11 @@ Aria.classDefinition({
 
             // retrieve new value in datamodel, and convert it to have new value for this widget
 
-            if (aria.templates.RefreshManager.isStopped()) {
+            if (ariaTemplatesRefreshManager.isStopped()) {
                 // refreshes have been paused: queue a request to call for the update (only once),
                 // and store parameter change
                 if (!this._refreshMap) {
-                    aria.templates.RefreshManager.queue({
+                    ariaTemplatesRefreshManager.queue({
                         fn : this._notifyDataChangeCB,
                         scope : this
                     }, this);
@@ -738,7 +750,7 @@ Aria.classDefinition({
          */
         removeDelegation : function () {
             if (this._delegateId) {
-                aria.utils.Delegate.remove(this._delegateId);
+                ariaUtilsDelegate.remove(this._delegateId);
                 delete this._delegateId;
             }
         }

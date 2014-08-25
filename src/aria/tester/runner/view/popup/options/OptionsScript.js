@@ -12,13 +12,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../../../../Aria");
+
 
 /**
  * Template script definition for aria.tester.runner.view.popup.options.Options
  */
-Aria.tplScriptDefinition({
+module.exports = Aria.tplScriptDefinition({
     $classpath : 'aria.tester.runner.view.popup.options.OptionsScript',
-    $dependencies : [],
     $prototype : {
         _onApplyButtonClicked : function () {
             this.flowCtrl.navigate(this.flowCtrl.STATES.READY);

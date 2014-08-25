@@ -12,14 +12,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+require("./Array");
+
 
 /**
  * Handle Id generation
  * @class aria.utils.IdManager
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : 'aria.utils.IdManager',
-    $dependencies : ['aria.utils.Array'],
 
     /**
      * Constructor

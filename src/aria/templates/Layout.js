@@ -12,6 +12,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+require("./CfgBeans");
+var ariaTemplatesTemplateCtxtManager = require("./TemplateCtxtManager");
+var ariaUtilsEvent = require("../utils/Event");
+var ariaCoreBrowser = require("../core/Browser");
+var ariaUtilsDom = require("../utils/Dom");
+var ariaUtilsAriaWindow = require("../utils/AriaWindow");
+var ariaCoreTimer = require("../core/Timer");
+var ariaCoreJsonValidator = require("../core/JsonValidator");
+
 
 (function () {
     var layout;
@@ -31,7 +41,7 @@
     var __init = function () {
         if (__autoresizes == null) {
             __autoresizes = [];
-            aria.utils.AriaWindow.attachWindow();
+            ariaUtilsAriaWindow.attachWindow();
             eventUtils.addListener(Aria.$window, "resize", {
                 fn : __onResize
             });
@@ -53,7 +63,7 @@
             eventUtils.removeListener(Aria.$window, "resize", {
                 fn : __onResize
             });
-            aria.utils.AriaWindow.detachWindow();
+            ariaUtilsAriaWindow.detachWindow();
             __autoresizes = null;
         }
     };
@@ -105,7 +115,7 @@
 
     var __applyNewSize = function () {
         var oldSize = layout.viewportSize;
-        var newSize = aria.utils.Dom._getViewportSize();
+        var newSize = ariaUtilsDom._getViewportSize();
         if (newSize.width != oldSize.width || newSize.height != oldSize.height) {
             layout.viewportSize = newSize;
             layout.setSOViewport(__rootDim.width, newSize.width);
@@ -122,7 +132,7 @@
             for (var i = 0; i < sz; i++) {
                 var ar = __autoresizes[i];
                 layout.setDivSize(ar.domElt, ar.width, ar.height);
-                var tpl = aria.templates.TemplateCtxtManager.getFromDom(ar.domElt);
+                var tpl = ariaTemplatesTemplateCtxtManager.getFromDom(ar.domElt);
                 if (tpl) {
                     var changed = false;
                     if (tpl.$setViewportWidth(__getIntSize(ar.width, "width"))) {
@@ -135,7 +145,7 @@
                         tpl.$refresh();
                     }
                 }
-                aria.utils.Dom.refreshScrollbars(ar.domElt);
+                ariaUtilsDom.refreshScrollbars(ar.domElt);
             }
             __applyNewSize();
             layout.$raiseEvent({
@@ -156,10 +166,8 @@
      * This class listens to changes in viewport size and raises an event for templates to refresh.
      * @singleton
      */
-    Aria.classDefinition({
+    module.exports = Aria.classDefinition({
         $classpath : "aria.templates.Layout",
-        $dependencies : ["aria.templates.CfgBeans", "aria.templates.TemplateCtxtManager", "aria.utils.Event",
-                "aria.core.Browser", "aria.utils.Dom", "aria.utils.AriaWindow"],
         $singleton : true,
         $events : {
             "viewportResized" : {
@@ -171,9 +179,9 @@
         },
         $constructor : function () {
             layout = this;
-            timer = aria.core.Timer;
+            timer = ariaCoreTimer;
             __applyNewSize();
-            eventUtils = aria.utils.Event;
+            eventUtils = ariaUtilsEvent;
         },
         $destructor : function () {
             __reset();
@@ -244,7 +252,7 @@
             },
 
             setRootDim : function (rootDim) {
-                aria.core.JsonValidator.check(rootDim, "aria.templates.CfgBeans.RootDimCfg");
+                ariaCoreJsonValidator.check(rootDim, "aria.templates.CfgBeans.RootDimCfg");
                 this.setSOSizeCfg(__rootDim.width, rootDim.width);
                 this.setSOSizeCfg(__rootDim.height, rootDim.height);
             },
@@ -336,7 +344,7 @@
                 if (__scrollBarsWidth != null) {
                     return __scrollBarsWidth;
                 }
-                if (aria.core.Browser.isMac && aria.core.Browser.isWebkit) {
+                if (ariaCoreBrowser.isMac && ariaCoreBrowser.isWebkit) {
                     return 17; // 17px is the size of scrollbar width on Safari and Chrome on Mac
                 } else {
                     var document = Aria.$window.document;
@@ -352,7 +360,7 @@
                     // for all browsers except IE7. Some research gives that
                     // just for IE7 this method does not work when setting width 100%,
                     // but works correctly setting no width
-                    if (!aria.core.Browser.isIE7) {
+                    if (!ariaCoreBrowser.isIE7) {
                         i.style.width = "100%";
                     }
                     i.style.height = "100%";

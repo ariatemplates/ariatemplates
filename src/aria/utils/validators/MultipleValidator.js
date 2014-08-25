@@ -12,14 +12,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaUtilsArray = require("../Array");
+var ariaUtilsData = require("../Data");
+var ariaUtilsValidatorsValidator = require("./Validator");
+var ariaUtilsJson = require("../Json");
+
 
 /**
  * Handles a stack of validators.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.utils.validators.MultipleValidator",
-    $extends : "aria.utils.validators.Validator",
-    $dependencies : ["aria.utils.Array", "aria.utils.Data"],
+    $extends : ariaUtilsValidatorsValidator,
     $constructor : function (message, groups, event) {
         this.$Validator.constructor.call(this, message);
         this.validators = [];
@@ -27,7 +32,7 @@ Aria.classDefinition({
         this.groupMessages = (message != null);
         this.groups = (groups != null) ? groups : [];
         this.eventToValidate = (event != null) ? event : "onsubmit";
-        this.dataUtils = aria.utils.Data;
+        this.dataUtils = ariaUtilsData;
     },
     $destructor : function () {
         this.breakOnError = null;
@@ -66,7 +71,7 @@ Aria.classDefinition({
                 }
                 if (res && res.length > 0) {
                     if (this.groupMessages) {
-                        var msgGroup = aria.utils.Json.copy(this.message);
+                        var msgGroup = ariaUtilsJson.copy(this.message);
                         msgGroup.subMessages = res;
                         return [msgGroup];
                     } else {
@@ -98,7 +103,7 @@ Aria.classDefinition({
          * @param {Object} arguments
          */
         remove : function () {
-            var arrayUtils = aria.utils.Array;
+            var arrayUtils = ariaUtilsArray;
             for (var i = 0, item; item = arguments[i]; i++) {
                 arrayUtils.remove(this.validators, item);
             }

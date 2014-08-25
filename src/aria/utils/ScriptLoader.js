@@ -12,16 +12,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaUtilsType = require("./Type");
+var ariaCoreBrowser = require("../core/Browser");
+
 
 /**
  * Utility to load external scripts. Please do NOT use it for loading Aria Templates classes (the ones that use
  * <code>Aria.classDefinition()</code>) and templates. Use <code>Aria.load()</code> instead, which is capable of
  * caching, resolving dependencies and reading multipart files containing templates.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.utils.ScriptLoader",
     $singleton : true,
-    $dependencies : ['aria.utils.Type', 'aria.core.Browser'],
     $constructor : function () {
         this._queueIndex = 0;
         this._queueCount = {};
@@ -54,7 +57,7 @@ Aria.classDefinition({
                 }
             };
 
-            if (aria.utils.Type.isString(scripts)) {
+            if (ariaUtilsType.isString(scripts)) {
                 scripts = [scripts];
             }
 
@@ -89,7 +92,7 @@ Aria.classDefinition({
          * @private
          */
         _addScriptLoadedCallback : function (scriptNode, callback, callbackArgs) {
-            if (aria.core.Browser.isOldIE) {
+            if (ariaCoreBrowser.isOldIE) {
                 this._addScriptLoadedCallback = function (scriptNode, callback, callbackArgs) {
                     scriptNode.onreadystatechange = function () {
                         if (this.readyState == 'complete' || this.readyState == 'loaded') {

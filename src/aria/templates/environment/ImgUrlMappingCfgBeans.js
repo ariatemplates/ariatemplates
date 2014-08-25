@@ -12,16 +12,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaCoreJsonTypes = require("../../core/JsonTypes");
+
 
 /**
  * Bean definitions that are either common to multiple areas of the framework, or are needed before dependencies are
  * loaded by the framework.
  */
-Aria.beanDefinitions({
+module.exports = Aria.beanDefinitions({
     $package : "aria.templates.environment.ImgUrlMappingCfgBeans",
     $description : "A definition of the JSON beans used to set the environment settings.",
     $namespaces : {
-        "json" : "aria.core.JsonTypes"
+        "json" : ariaCoreJsonTypes
     },
     $beans : {
         "AppCfg" : {

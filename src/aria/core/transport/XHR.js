@@ -12,13 +12,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaCoreTransportBaseXHR = require("./BaseXHR");
+
 
 /**
  * Transport class for XHR requests.
  * @singleton
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.core.transport.XHR",
-    $extends : "aria.core.transport.BaseXHR",
+    $extends : ariaCoreTransportBaseXHR,
     $singleton : true
 });

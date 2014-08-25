@@ -12,12 +12,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+
 
 /**
  * Script for main tools display
  * @class aria.tools.ToolsDisplayScript
  */
-Aria.tplScriptDefinition({
+module.exports = Aria.tplScriptDefinition({
     $classpath : 'aria.tools.ToolsDisplayScript',
     $prototype : {
 

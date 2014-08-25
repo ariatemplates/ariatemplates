@@ -12,17 +12,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+require("../../DomEvent");
+var ariaWidgetsControllersReportsControllerReport = require("./reports/ControllerReport");
+var ariaUtilsNumber = require("../../utils/Number");
+var ariaCoreJsonValidator = require("../../core/JsonValidator");
+var ariaWidgetsWidgetsRes = require("../../$resources").file(__dirname, "../WidgetsRes");
+var ariaWidgetsControllersTextDataController = require("./TextDataController");
+var ariaUtilsType = require("../../utils/Type");
+
 
 /**
  * Data controller associated to NumberField. It checks the input value, updates the data model and generates a report
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.widgets.controllers.NumberController",
-    $extends : "aria.widgets.controllers.TextDataController",
-    $dependencies : ["aria.DomEvent", "aria.widgets.controllers.reports.ControllerReport", "aria.utils.Number",
-                     "aria.core.JsonValidator"],
+    $extends : ariaWidgetsControllersTextDataController,
     $resources : {
-        "res" : "aria.widgets.WidgetsRes"
+        "res" : ariaWidgetsWidgetsRes
     },
     $constructor : function () {
         this.$TextDataController.constructor.call(this);
@@ -55,10 +62,10 @@ Aria.classDefinition({
          */
         setPattern : function (pattern) {
             if (pattern) {
-                if (aria.utils.Number.isValidPattern(pattern)) {
+                if (ariaUtilsNumber.isValidPattern(pattern)) {
                     this._pattern = pattern;
                 } else {
-                    this.$logError(aria.core.JsonValidator.INVALID_CONFIGURATION, ["pattern "]);
+                    this.$logError(ariaCoreJsonValidator.INVALID_CONFIGURATION, ["pattern "]);
                 }
             }
         },
@@ -69,15 +76,15 @@ Aria.classDefinition({
          * @return {aria.widgets.controllers.reports.ControllerReport}
          */
         checkValue : function (internalValue) {
-            var report = new aria.widgets.controllers.reports.ControllerReport();
+            var report = new ariaWidgetsControllersReportsControllerReport();
 
-            report.ok = (internalValue === null || aria.utils.Type.isNumber(internalValue));
+            report.ok = (internalValue === null || ariaUtilsType.isNumber(internalValue));
             if (report.ok) {
                 this._dataModel.number = internalValue;
 
                 if (internalValue !== null) {
                     if (this._pattern) {
-                        this._dataModel.displayText = aria.utils.Number.formatNumber(internalValue.toString(), this._pattern);
+                        this._dataModel.displayText = ariaUtilsNumber.formatNumber(internalValue.toString(), this._pattern);
                     } else {
                         this._dataModel.displayText = internalValue.toString();
                     }
@@ -99,7 +106,7 @@ Aria.classDefinition({
          */
         checkText : function (text, hasErrors) {
             // return object
-            var report = new aria.widgets.controllers.reports.ControllerReport();
+            var report = new ariaWidgetsControllersReportsControllerReport();
             report.ok = false;
             // an empty field is not usually considered as an error
             if (!text) {
@@ -117,13 +124,13 @@ Aria.classDefinition({
                     // Update the text datamodel
                     this._dataModel.displayText = text;
 
-                    var number = aria.utils.Number.interpretNumber(text, this._pattern);
-                    number = aria.utils.Number.toNumber(number);
+                    var number = ariaUtilsNumber.interpretNumber(text, this._pattern);
+                    number = ariaUtilsNumber.toNumber(number);
 
                     // If the number is valid, update the datamodel
                     if (number !== null) {
                         this._dataModel.number = number;
-                        this._dataModel.displayText = aria.utils.Number.formatNumber(number, this._pattern);
+                        this._dataModel.displayText = ariaUtilsNumber.formatNumber(number, this._pattern);
 
                         report.ok = true;
                     } else {

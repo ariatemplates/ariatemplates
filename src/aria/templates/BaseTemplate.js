@@ -12,6 +12,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaTemplatesModifiers = require("./Modifiers");
+var ariaTemplatesIBaseTemplate = require("./IBaseTemplate");
+var ariaUtilsJson = require("../utils/Json");
+
 
 /**
  * Base class from which all templates inherit. This is extended by aria.templates.Template for HTML templates or
@@ -19,9 +24,8 @@
  * @class aria.templates.BaseTemplate
  * @extends aria.core.JsObject
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : 'aria.templates.BaseTemplate',
-    $dependencies : ['aria.templates.Modifiers', 'aria.templates.IBaseTemplate', 'aria.utils.Json'],
     $destructor : function () {
         /* this is important for $destructor not to be overridden by the one of ITemplate interface */
     },
@@ -37,7 +41,7 @@ Aria.classDefinition({
         MACRO_NOT_FOUND : "line %1: Template error: macro '%2' is not defined."
     },
     $prototype : {
-        $json : aria.utils.Json,
+        $json : ariaUtilsJson,
 
         /**
          * Prototype init method called at prototype creation time Allows to store class-level objects that are shared
@@ -47,7 +51,7 @@ Aria.classDefinition({
          */
         $init : function (p, def) {
             // copy the prototype of IBaseTemplate:
-            var itf = aria.templates.IBaseTemplate.prototype;
+            var itf = ariaTemplatesIBaseTemplate.prototype;
             for (var k in itf) {
                 if (itf.hasOwnProperty(k) && !p.hasOwnProperty(k)) {
                     // copy methods which are not already on this object (this avoids copying $classpath and
@@ -58,7 +62,7 @@ Aria.classDefinition({
 
             // get shortcuts to necessary functions in other classes,
             // so that templates work even in a sandbox
-            p.$modifier = aria.templates.Modifiers.callModifier;
+            p.$modifier = ariaTemplatesModifiers.callModifier;
         }
     }
 });

@@ -12,8 +12,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
 
-Aria.interfaceDefinition({
+
+module.exports = Aria.interfaceDefinition({
     $classpath : "aria.utils.dragdrop.IDrag",
     $interface : {
         /**

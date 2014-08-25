@@ -12,16 +12,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaUtilsString = require("../utils/String");
+var ariaTemplatesParser = require("./Parser");
+
 
 /**
  * Parser for CSS Template. A CSS template should be interpreted by the template engine to build a CSS Template class.
  * The difference with the HTML Template parser is that in this case it's necessary to escape any curly brackets that
  * does not belong to a dictionary of allowed Template statements.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.templates.CSSParser",
-    $extends : "aria.templates.Parser",
-    $dependencies : ["aria.utils.String"],
+    $extends : ariaTemplatesParser,
     $singleton : true,
     $statics : {
         // ERROR MESSAGES:
@@ -61,7 +64,7 @@ Aria.classDefinition({
          */
         __preprocess : function (dictionary) {
             // Everyting starts on the first {
-            var text = this.template, utilString = aria.utils.String, currentPosition = 0, nextOpening = -1, nextClosing = -1, wholeText = [], nameExtractor = /^\{[\s\/]*?([\w]+)\b/, lastCopiedPosition = 0, textLength = text.length, statementLevel = -1, currentLevel = 0, lastOpenedLevel0 = -1;
+            var text = this.template, utilString = ariaUtilsString, currentPosition = 0, nextOpening = -1, nextClosing = -1, wholeText = [], nameExtractor = /^\{[\s\/]*?([\w]+)\b/, lastCopiedPosition = 0, textLength = text.length, statementLevel = -1, currentLevel = 0, lastOpenedLevel0 = -1;
 
             while (lastCopiedPosition < textLength) {
                 // Update the pointers

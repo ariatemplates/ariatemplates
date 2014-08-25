@@ -12,12 +12,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaUtilsJson = require("../utils/Json");
+var ariaCoreDownloadMgr = require("./DownloadMgr");
+
 
 /**
  * Base class for any filter that needs to be plugged on IO.
  * @see aria.core.IOFiltersMgr.addFilter()
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.core.IOFilter",
     $constructor : function (args) {
         /**
@@ -70,7 +74,7 @@ Aria.classDefinition({
             var sender = req.sender;
             req.data = (sender && sender.classpath == "aria.modules.RequestMgr")
                     ? sender.requestObject.requestHandler.prepareRequestBody(jsonData, sender.requestObject)
-                    : aria.utils.Json.convertToJsonString(jsonData);
+                    : ariaUtilsJson.convertToJsonString(jsonData);
 
         },
 
@@ -86,9 +90,9 @@ Aria.classDefinition({
         redirectToFile : function (req, path, preventTimestamp) {
             if (path) {
                 // change request url and method to target the requested file:
-                req.url = aria.core.DownloadMgr.resolveURL(path, true);
+                req.url = ariaCoreDownloadMgr.resolveURL(path, true);
                 if (preventTimestamp !== true) {
-                    req.url = aria.core.DownloadMgr.getURLWithTimestamp(req.url, true);
+                    req.url = ariaCoreDownloadMgr.getURLWithTimestamp(req.url, true);
                 }
                 req.method = "GET";
                 req.jsonp = null; // not a json-p request

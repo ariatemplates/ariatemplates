@@ -12,15 +12,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaWidgetsIcon = require("../Icon");
+require("../../utils/Function");
+var ariaDomEvent = require("../../DomEvent");
+var ariaUtilsString = require("../../utils/String");
+var ariaWidgetsFormCheckBoxStyle = require("./CheckBoxStyle.tpl.css");
+var ariaWidgetsFormInput = require("./Input");
+var ariaCoreBrowser = require("../../core/Browser");
+
 
 /**
  * CheckBox widget
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.widgets.form.CheckBox",
-    $extends : "aria.widgets.form.Input",
-    $dependencies : ["aria.widgets.Icon", "aria.utils.Function", "aria.DomEvent", "aria.utils.String"],
-    $css : ["aria.widgets.form.CheckBoxStyle"],
+    $extends : ariaWidgetsFormInput,
+    $css : [ariaWidgetsFormCheckBoxStyle],
     /**
      * CheckBox constructor
      * @param {aria.widgets.CfgBeans:CheckBoxCfg} cfg the widget configuration
@@ -39,7 +47,7 @@ Aria.classDefinition({
              * @type aria.widgets.Icon
              * @protected
              */
-            this._icon = new aria.widgets.Icon({
+            this._icon = new ariaWidgetsIcon({
                 icon : this._getIconName(this._state)
             }, ctxt, lineNumber);
         }
@@ -149,7 +157,7 @@ Aria.classDefinition({
                 out.write("padding-bottom: 7px;display:inline-block;");
             }
 
-            if (lineHeight && aria.core.Browser.isOldIE) {
+            if (lineHeight && ariaCoreBrowser.isOldIE) {
                 out.write('line-height:' + (lineHeight - 2) + 'px;');
             }
             var cssClass = 'class="x' + this._skinnableClass + '_' + cfg.sclass + '_' + this._state + '_label"';
@@ -165,7 +173,7 @@ Aria.classDefinition({
                 out.write(';color:' + color);
             }
             out.write(';text-align:' + cfg.labelAlign + ';">');
-            out.write(aria.utils.String.escapeHTML(cfg.label));
+            out.write(ariaUtilsString.escapeHTML(cfg.label));
 
             out.write('</label></span>');
         },
@@ -435,7 +443,7 @@ Aria.classDefinition({
          * @protected
          */
         _dom_onkeydown : function (event) {
-            if (event.keyCode == aria.DomEvent.KC_SPACE) {
+            if (event.keyCode == ariaDomEvent.KC_SPACE) {
                 this._toggleValue();
                 event.preventDefault(true);
             }

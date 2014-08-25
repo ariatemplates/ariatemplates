@@ -12,13 +12,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-Aria.beanDefinitions({
+var Aria = require("../../Aria");
+var ariaCoreJsonTypes = require("../../core/JsonTypes");
+var ariaHtmlBeansElementCfg = require("../../html/beans/ElementCfg");
+var ariaWidgetLibsCommonBeans = require("../../widgetLibs/CommonBeans");
+
+module.exports = Aria.beanDefinitions({
     $package : "aria.touch.widgets.ButtonCfg",
     $description : "Configuration for Button widget.",
     $namespaces : {
-        "json" : "aria.core.JsonTypes",
-        "base" : "aria.html.beans.ElementCfg",
-        "common" : "aria.widgetLibs.CommonBeans"
+        "json" : ariaCoreJsonTypes,
+        "base" : ariaHtmlBeansElementCfg,
+        "common" : ariaWidgetLibsCommonBeans
     },
     $beans : {
         "Properties" : {

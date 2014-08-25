@@ -12,6 +12,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaUtilsType = require("./Type");
+
 
 (function () {
     /**
@@ -29,11 +32,10 @@
      * accepts any type of keys (in addition to any type of values) in the map. It is implemented as metadata for object
      * keys and with a JavaScript map for strings and numbers.
      */
-    Aria.classDefinition({
+    module.exports = Aria.classDefinition({
         $classpath : "aria.utils.StackHashMap",
-        $dependencies : ["aria.utils.Type"],
         $onload : function () {
-            typeUtils = aria.utils.Type;
+            typeUtils = ariaUtilsType;
         },
         $onunload : function () {
             typeUtils = null;

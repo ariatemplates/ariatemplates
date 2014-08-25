@@ -12,6 +12,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaTemplatesTxtParser = require("./TxtParser");
+var ariaTemplatesClassGenerator = require("./ClassGenerator");
+
 
 /**
  * Generate the class definition for a Text Template
@@ -19,11 +23,10 @@
  * @extends aria.templates.ClassGenerator
  * @singleton
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : 'aria.templates.TxtClassGenerator',
-    $extends : 'aria.templates.ClassGenerator',
+    $extends : ariaTemplatesClassGenerator,
     $singleton : true,
-    $dependencies : ['aria.templates.TxtParser'],
     $constructor : function () {
         this.$ClassGenerator.constructor.call(this);
 
@@ -31,7 +34,7 @@ Aria.classDefinition({
         this._loadStatements(["TextTemplate"]);
 
         // Redefine the protected parser
-        this._parser = aria.templates.TxtParser;
+        this._parser = ariaTemplatesTxtParser;
 
         /**
          * Redefine the class used as the parent for templates which do not inherit from any other template

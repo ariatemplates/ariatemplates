@@ -12,6 +12,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+require("./CfgBeans");
+var ariaUtilsString = require("../utils/String");
+var ariaUtilsFunction = require("../utils/Function");
+var ariaTemplatesICSS = require("./ICSS");
+var ariaTemplatesBaseCtxt = require("./BaseCtxt");
+var ariaCoreJsonValidator = require("../core/JsonValidator");
+var ariaCoreAppEnvironment = require("../core/AppEnvironment");
+
 
 /**
  * A CSSCtxt object is the interface toward an Aria CSS template. CSSCtxt is used to generate the CSS selectors from a
@@ -19,11 +28,10 @@
  * @class aria.templates.CSSCtxt
  * @extends aria.templates.BaseCtxt
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : 'aria.templates.CSSCtxt',
-    $dependencies : ['aria.templates.CfgBeans', 'aria.utils.String', 'aria.utils.Function'],
-    $implements : ['aria.templates.ICSS'],
-    $extends : "aria.templates.BaseCtxt",
+    $implements : [ariaTemplatesICSS],
+    $extends : ariaTemplatesBaseCtxt,
     $constructor : function (classPath) {
         this.$BaseCtxt.constructor.apply(this, arguments);
 
@@ -70,7 +78,7 @@ Aria.classDefinition({
                 this.$logError(this.TEMPLATE_DESTR_ERROR, [this.tplClasspath], e);
             }
             // dispose the template interface wrapper as well:
-            aria.templates.ICSS.prototype.$destructor.call(this._tpl);
+            ariaTemplatesICSS.prototype.$destructor.call(this._tpl);
             this._tpl = null;
         }
 
@@ -91,7 +99,7 @@ Aria.classDefinition({
          * @return {Boolean} true if there was no error
          */
         initTemplate : function (cfg) {
-            if (!aria.core.JsonValidator.normalize({
+            if (!ariaCoreJsonValidator.normalize({
                 json : cfg,
                 beanName : "aria.templates.CfgBeans.InitCSSTemplateCfg"
             })) {
@@ -117,7 +125,7 @@ Aria.classDefinition({
             // We no longer create new methods in a closure each time a new instance of a template is created,
             // instead we use the interface mechanism to expose methods to the template and prevent access to the
             // template context
-            aria.templates.ICSS.call(tpl, this);
+            ariaTemplatesICSS.call(tpl, this);
 
             // TEMPORARY PERF IMPROVMENT : interface on these two functions results in poor performances.
             // Investigation ongoing on interceptors
@@ -179,7 +187,7 @@ Aria.classDefinition({
             this._out = [];
             this._callMacro(null, "main");
             var text = this._out.join("");
-            if (aria.core.AppEnvironment.applicationSettings.hasOwnProperty("imgUrlMapping") && aria.core.AppEnvironment.applicationSettings.imgUrlMapping !== null) {
+            if (ariaCoreAppEnvironment.applicationSettings.hasOwnProperty("imgUrlMapping") && ariaCoreAppEnvironment.applicationSettings.imgUrlMapping !== null) {
                 text = this._prefixCSSImgUrl(text);
             }
             this._out = null;
@@ -209,8 +217,8 @@ Aria.classDefinition({
          * @return {String}
          */
         _prefixCSSImgUrl : function (cssText) {
-            cssText = cssText.replace(/\burl\s*\(\s*["']?([^"'\r\n,]+|[^'\r\n,]+|[^"\r\n,]+)["']?\s*\)/gi, aria.utils.Function.bind(function (match, urlpart) {
-                var prefixedUrl = aria.core.AppEnvironment.applicationSettings.imgUrlMapping(urlpart, this.tplClasspath);
+            cssText = cssText.replace(/\burl\s*\(\s*["']?([^"'\r\n,]+|[^'\r\n,]+|[^"\r\n,]+)["']?\s*\)/gi, ariaUtilsFunction.bind(function (match, urlpart) {
+                var prefixedUrl = ariaCoreAppEnvironment.applicationSettings.imgUrlMapping(urlpart, this.tplClasspath);
                 return this._parseImgUrl(prefixedUrl);
             }, this));
 
@@ -262,7 +270,7 @@ Aria.classDefinition({
                 };
             }
 
-            var trim = aria.utils.String.trim;
+            var trim = ariaUtilsString.trim;
             var MEDIA_RULE = this.MEDIA_RULE;
 
             /* Splitting on } means that each line is a CSS rule */

@@ -12,15 +12,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+require("./WidgetLibsSettingsCfgBeans");
+var ariaCoreEnvironmentEnvironmentBase = require("../../core/environment/EnvironmentBase");
+
 
 /**
  * Contains getters for the WidgetLibs environment.
  * @singleton
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.widgetLibs.environment.WidgetLibsSettings",
-    $extends : "aria.core.environment.EnvironmentBase",
-    $dependencies : ["aria.widgetLibs.environment.WidgetLibsSettingsCfgBeans"],
+    $extends : ariaCoreEnvironmentEnvironmentBase,
     $singleton : true,
     $prototype : {
         /**

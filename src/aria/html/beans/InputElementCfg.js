@@ -8,13 +8,17 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaHtmlBeansElementCfg = require("./ElementCfg");
+var ariaWidgetLibsCommonBeans = require("../../widgetLibs/CommonBeans");
 
-Aria.beanDefinitions({
+
+module.exports = Aria.beanDefinitions({
     $package : "aria.html.beans.InputElementCfg",
     $description : "Configuration for the generic InputElement.",
     $namespaces : {
-        "base" : "aria.html.beans.ElementCfg",
-        "common" : "aria.widgetLibs.CommonBeans"
+        "base" : ariaHtmlBeansElementCfg,
+        "common" : ariaWidgetLibsCommonBeans
     },
     $beans : {
         "Properties" : {

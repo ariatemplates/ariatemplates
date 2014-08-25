@@ -12,16 +12,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaCoreJsonTypes = require("../core/JsonTypes");
+var ariaModulesRequestHandlerEnvironmentRequestHandlerCfgBeans = require("./requestHandler/environment/RequestHandlerCfgBeans");
+
 
 /**
  * Bean definitions associated to the aria.modules.RequestMgr
  */
-Aria.beanDefinitions({
+module.exports = Aria.beanDefinitions({
     $package : "aria.modules.RequestBeans",
     $description : "Definition of the JSON beans used to set application variables",
     $namespaces : {
-        "json" : "aria.core.JsonTypes",
-        "env" : "aria.modules.requestHandler.environment.RequestHandlerCfgBeans"
+        "json" : ariaCoreJsonTypes,
+        "env" : ariaModulesRequestHandlerEnvironmentRequestHandlerCfgBeans
     },
     $beans : {
         "RequestObject" : {

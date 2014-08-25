@@ -12,12 +12,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+
 
 /**
  * Helper for templates/widgets refresh. It allows to reduce the number of refreshes by queueing and computing the
  * minimum subset of needed refreshes.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.templates.RefreshManager",
     $singleton : true,
     $constructor : function () {

@@ -12,6 +12,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+
 
 /**
  * Simple class to extract the information provided by the files instrumented by jscoverage-server. Documentation on
@@ -20,7 +22,7 @@
  * @class aria.jsunit.JsCoverageObject description
  * @extends aria.core.JsObject
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : 'aria.jsunit.JsCoverageObject',
     $singleton : false,
     $statics : {
@@ -34,7 +36,6 @@ Aria.classDefinition({
             return -1;
         }
     },
-    $dependencies : [],
     $constructor : function (conf) {
         /**
          * Filename (from the static root) "/aria-templates-dev/dev/aria/jsunit/JsCoverageObject.js"

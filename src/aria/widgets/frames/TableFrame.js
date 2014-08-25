@@ -12,16 +12,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaUtilsDom = require("../../utils/Dom");
+var ariaWidgetsFramesFrame = require("./Frame");
+var ariaCoreBrowser = require("../../core/Browser");
+
 
 /**
  * A table frame is a frame which is based on the table tag. The width, as well as the height, can either be defined by
  * the frame configuration, or left undefined so that they are adapted to the content. The expansion in width and height
  * are done by repeating images horizontally and vertically.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.widgets.frames.TableFrame",
-    $extends : "aria.widgets.frames.Frame",
-    $dependencies : ["aria.utils.Dom"],
+    $extends : ariaWidgetsFramesFrame,
     $constructor : function (cfg) {
         this.$Frame.constructor.call(this, cfg);
 
@@ -107,7 +111,7 @@ Aria.classDefinition({
 
             if (this._inlineBlock) {
                 displayInline = "vertical-align: middle;display: inline";
-                displayInline += (aria.core.Browser.isIE7) ? ";zoom:1" : "-block;";
+                displayInline += (ariaCoreBrowser.isIE7) ? ";zoom:1" : "-block;";
             }
 
             out.write(['<table cellspacing="0" cellpadding="0" style="position: relative;' + displayInline + '"',
@@ -140,7 +144,7 @@ Aria.classDefinition({
          */
         linkToDom : function (domElt) {
             this.$Frame.linkToDom.call(this, domElt);
-            var getDomElementChild = aria.utils.Dom.getDomElementChild;
+            var getDomElementChild = ariaUtilsDom.getDomElementChild;
             /*
              * FIXME: extend getDomElementChild API to have getDomElementChild(domElt,0,1,1,0) instead
              */
@@ -170,7 +174,7 @@ Aria.classDefinition({
             // called before
             // assigning
             // cssPrefix
-            var cfg = this._cfg, cssPrefix = this._cssPrefix, tr, td, getDomElementChild = aria.utils.Dom.getDomElementChild;
+            var cfg = this._cfg, cssPrefix = this._cssPrefix, tr, td, getDomElementChild = ariaUtilsDom.getDomElementChild;
 
             this._computeSize();
 

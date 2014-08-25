@@ -12,14 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaWidgetLibsWidgetLib = require("../widgetLibs/WidgetLib");
+
 
 /**
  * Widget library provided by the Aria Templates framework.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.widgets.AriaLib",
     $singleton : true,
-    $extends : "aria.widgetLibs.WidgetLib",
+    $extends : ariaWidgetLibsWidgetLib,
     $prototype : {
         /**
          * Map of all the widgets in the library. Keys in the map are widget names as they can be used in templates.

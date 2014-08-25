@@ -12,14 +12,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+require("../../DomEvent");
+var ariaWidgetsControllersReportsControllerReport = require("./reports/ControllerReport");
+var ariaUtilsDate = require("../../utils/Date");
+var ariaUtilsType = require("../../utils/Type");
+var ariaUtilsEnvironmentDate = require("../../utils/environment/Date");
+var ariaWidgetsWidgetsRes = require("../../$resources").file(__dirname, "../WidgetsRes");
+var ariaWidgetsControllersTextDataController = require("./TextDataController");
 
-Aria.classDefinition({
+
+module.exports = Aria.classDefinition({
     $classpath : "aria.widgets.controllers.DateController",
-    $extends : "aria.widgets.controllers.TextDataController",
-    $dependencies : ["aria.DomEvent", "aria.widgets.controllers.reports.ControllerReport", "aria.utils.Date",
-            "aria.utils.Type", "aria.utils.environment.Date"],
+    $extends : ariaWidgetsControllersTextDataController,
     $resources : {
-        "res" : "aria.widgets.WidgetsRes"
+        "res" : ariaWidgetsWidgetsRes
     },
     $constructor : function () {
 
@@ -84,7 +91,7 @@ Aria.classDefinition({
          */
         setPattern : function (pattern) {
             if (!pattern) {
-                var pattern = aria.utils.environment.Date.getDateFormats().shortFormat;
+                var pattern = ariaUtilsEnvironmentDate.getDateFormats().shortFormat;
             }
             this._pattern = pattern;
         },
@@ -104,7 +111,7 @@ Aria.classDefinition({
         setMinValue : function (value) {
             // remove the time, so that comparisons between the value and minValue are
             // correct
-            this._minValue = aria.utils.Date.removeTime(value);
+            this._minValue = ariaUtilsDate.removeTime(value);
         },
 
         /**
@@ -114,7 +121,7 @@ Aria.classDefinition({
         setMaxValue : function (value) {
             // remove the time, so that comparisons between the value and maxValue are
             // correct
-            this._maxValue = aria.utils.Date.removeTime(value);
+            this._maxValue = ariaUtilsDate.removeTime(value);
         },
 
         /**
@@ -122,7 +129,7 @@ Aria.classDefinition({
          * @param {Date} value reference date
          */
         setReferenceDate : function (value) {
-            this._referenceDate = aria.utils.Date.removeTime(value);
+            this._referenceDate = ariaUtilsDate.removeTime(value);
         },
 
         /**
@@ -131,17 +138,17 @@ Aria.classDefinition({
          * @return {aria.widgets.controllers.reports.ControllerReport}
          */
         checkValue : function (internalValue) {
-            var report = new aria.widgets.controllers.reports.ControllerReport();
+            var report = new ariaWidgetsControllersReportsControllerReport();
             if (internalValue == null) {
                 report.ok = true;
                 this._dataModel.jsDate = null;
                 this._dataModel.displayText = "";
-            } else if (!aria.utils.Type.isDate(internalValue)) {
+            } else if (!ariaUtilsType.isDate(internalValue)) {
                 report.ok = false;
             } else {
                 // remove the time, so that comparisons with minValue and maxValue are
                 // correct.
-                internalValue = aria.utils.Date.removeTime(internalValue);
+                internalValue = ariaUtilsDate.removeTime(internalValue);
                 if (this._minValue && internalValue < this._minValue) {
                     report.ok = false;
                     report.errorMessages.push(this.res.errors["40018_WIDGET_DATEFIELD_MINVALUE"]);
@@ -151,7 +158,7 @@ Aria.classDefinition({
                 } else {
                     report.ok = true;
                     this._dataModel.jsDate = internalValue;
-                    this._dataModel.displayText = aria.utils.Date.format(internalValue, this._pattern);
+                    this._dataModel.displayText = ariaUtilsDate.format(internalValue, this._pattern);
                 }
             }
             if (report.ok) {
@@ -176,7 +183,7 @@ Aria.classDefinition({
                 report = this.checkValue(null);
             } else {
                 if (text === this._dataModel.displayText) {
-                    report = new aria.widgets.controllers.reports.ControllerReport();
+                    report = new ariaWidgetsControllersReportsControllerReport();
                     report.ok = true;
                 } else {
                     var options = {
@@ -184,11 +191,11 @@ Aria.classDefinition({
                         inputPattern : this._inputPattern,
                         outputPattern : this._pattern
                     };
-                    var date = aria.utils.Date.interpret(text, options);
+                    var date = ariaUtilsDate.interpret(text, options);
                     if (date) {
                         report = this.checkValue(date);
                     } else {
-                        report = new aria.widgets.controllers.reports.ControllerReport();
+                        report = new ariaWidgetsControllersReportsControllerReport();
                         report.ok = false;
                         report.errorMessages.push(this.res.errors["40008_WIDGET_DATEFIELD_VALIDATION"]);
                     }
@@ -203,7 +210,7 @@ Aria.classDefinition({
          * @param {Date} date
          */
         getDisplayTextFromValue : function (date) {
-            return (date && aria.utils.Type.isDate(date)) ? aria.utils.Date.format(date, this._pattern) : "";
+            return (date && ariaUtilsType.isDate(date)) ? ariaUtilsDate.format(date, this._pattern) : "";
         }
     }
 });

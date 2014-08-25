@@ -12,12 +12,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+require("./ButtonCfg");
+require("../Tap");
+var ariaUtilsClassList = require("../../utils/ClassList");
+var ariaTouchWidgetsButtonCSS = require("./ButtonCSS.tpl.css");
+var ariaHtmlElement = require("../../html/Element");
+var ariaCoreTimer = require("../../core/Timer");
 
-Aria.classDefinition({
+
+module.exports = Aria.classDefinition({
     $classpath : "aria.touch.widgets.Button",
-    $extends : "aria.html.Element",
-    $dependencies : ["aria.touch.widgets.ButtonCfg", "aria.touch.Tap", "aria.utils.ClassList"],
-    $css : ["aria.touch.widgets.ButtonCSS"],
+    $extends : ariaHtmlElement,
+    $css : [ariaTouchWidgetsButtonCSS],
     $statics : {
         INVALID_USAGE : "Widget %1 can only be used as a %2.",
         BUTTON_CLASS : "appButton",
@@ -64,7 +71,7 @@ Aria.classDefinition({
     },
     $destructor : function () {
         if (this.timerId) {
-            aria.core.Timer.cancelCallback(this.timerId);
+            ariaCoreTimer.cancelCallback(this.timerId);
             this.timerId = null;
         }
 
@@ -89,7 +96,7 @@ Aria.classDefinition({
          */
         initWidget : function () {
             this.$Element.initWidget.call(this);
-            this._classList = new aria.utils.ClassList(this._domElt);
+            this._classList = new ariaUtilsClassList(this._domElt);
             var classType = (this._isLink) ? this.LINK_CLASS : this.BUTTON_CLASS;
             this._classList.add(classType);
         },
@@ -124,7 +131,7 @@ Aria.classDefinition({
          */
         _manageEvents : function (event) {
             if (event.type == "tapstart") {
-                this.timerId = aria.core.Timer.addCallback({
+                this.timerId = ariaCoreTimer.addCallback({
                     fn : this._delayedHighlightCB,
                     scope : this,
                     delay : this._timeDelay
@@ -132,7 +139,7 @@ Aria.classDefinition({
             }
             if (event.type == "tapcancel" || event.type == "tap") {
                 if (this.timerId) {
-                    aria.core.Timer.cancelCallback(this.timerId);
+                    ariaCoreTimer.cancelCallback(this.timerId);
                     this.timerId = null;
                 }
 

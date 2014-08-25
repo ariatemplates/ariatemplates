@@ -12,18 +12,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaCoreJsonTypes = require("../../core/JsonTypes");
+var ariaTemplatesCfgBeans = require("../../templates/CfgBeans");
+
 
 /**
  * Beans describing the configuration object for frames.
  * @class aria.widgets.frames.CfgBeans
  */
-Aria.beanDefinitions({
+module.exports = Aria.beanDefinitions({
     $package : "aria.widgets.frames.CfgBeans",
     $description : "Beans describing the configuration object for frames.",
     $namespaces : {
         // add external namespaces here
-        "json" : "aria.core.JsonTypes",
-        "templates" : "aria.templates.CfgBeans"
+        "json" : ariaCoreJsonTypes,
+        "templates" : ariaTemplatesCfgBeans
     },
     $beans : {
         "FrameCfg" : {

@@ -12,13 +12,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaUtilsEvent = require("../utils/Event");
+var ariaUtilsDelegate = require("../utils/Delegate");
+var ariaUtilsAriaWindow = require("../utils/AriaWindow");
+var ariaTouchEvent = require("./Event");
+
 
 /**
  * General class for gestures. Actual gesture implementations should extend this class.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.touch.Gesture",
-    $dependencies : ["aria.utils.Event", "aria.utils.Delegate", "aria.utils.AriaWindow", "aria.touch.Event"],
     $statics : {
         /**
          * Defines the number of touch for the gesture.
@@ -35,8 +40,8 @@ Aria.classDefinition({
          * Event map uses aria.touch.Event for touch event detection.
          * @type Object
          */
-        this.touchEventMap = aria.touch.Event.touchEventMap;
-        var ariaWindow = aria.utils.AriaWindow;
+        this.touchEventMap = ariaTouchEvent.touchEventMap;
+        var ariaWindow = ariaUtilsAriaWindow;
         ariaWindow.$on({
             "attachWindow" : this._connectTouchEvents,
             "detachWindow" : this._disconnectTouchEvents,
@@ -67,7 +72,7 @@ Aria.classDefinition({
         this.currentData = null;
     },
     $destructor : function () {
-        aria.utils.AriaWindow.$unregisterListeners(this);
+        ariaUtilsAriaWindow.$unregisterListeners(this);
         this._disconnectTouchEvents();
         this.body = null;
     },
@@ -146,7 +151,7 @@ Aria.classDefinition({
             }
             this._disconnectTouchEvents();
             this.startData = {
-                positions : aria.touch.Event.getPositions(event),
+                positions : ariaTouchEvent.getPositions(event),
                 time : (new Date()).getTime()
             };
             this.currentData = null;
@@ -169,7 +174,7 @@ Aria.classDefinition({
                 return null;
             }
             this.currentData = {
-                positions : aria.touch.Event.getPositions(event),
+                positions : ariaTouchEvent.getPositions(event),
                 time : (new Date()).getTime()
             };
             if (this._getFakeEventsMap().move) {
@@ -193,7 +198,7 @@ Aria.classDefinition({
             this._disconnectAdditionalTouchEvents();
             this._connectTouchEvents();
             this.currentData = {
-                positions : aria.touch.Event.getPositions(event),
+                positions : ariaTouchEvent.getPositions(event),
                 time : (new Date()).getTime()
             };
             if (this._getFakeEventsMap().end) {
@@ -214,7 +219,7 @@ Aria.classDefinition({
             this._disconnectAdditionalTouchEvents();
             this._connectTouchEvents();
             this.currentData = {
-                positions : aria.touch.Event.getPositions(event),
+                positions : ariaTouchEvent.getPositions(event),
                 time : (new Date()).getTime()
             };
             if (this._getFakeEventsMap().cancel) {
@@ -253,7 +258,7 @@ Aria.classDefinition({
          * @protected
          */
         _addListener : function (eventName, cb) {
-            aria.utils.Event.addListener(this.body, eventName, cb);
+            ariaUtilsEvent.addListener(this.body, eventName, cb);
         },
 
         /**
@@ -263,7 +268,7 @@ Aria.classDefinition({
          * @protected
          */
         _removeListener : function (eventName, cb) {
-            aria.utils.Event.removeListener(this.body, eventName, cb);
+            ariaUtilsEvent.removeListener(this.body, eventName, cb);
         },
 
         /**
@@ -299,11 +304,11 @@ Aria.classDefinition({
             }
             extraData.startX = this.startData.positions[0].x;
             extraData.startY = this.startData.positions[0].y;
-            var position = aria.touch.Event.getPositions(event);
+            var position = ariaTouchEvent.getPositions(event);
             extraData.currentX = position[0].x;
             extraData.currentY = position[0].y;
             fakeEvent.detail = extraData;
-            aria.utils.Delegate.delegate(fakeEvent);
+            ariaUtilsDelegate.delegate(fakeEvent);
             event.cancelBubble = fakeEvent.hasStopPropagation;
             event.returnValue = !fakeEvent.hasPreventDefault;
             return event.returnValue;
@@ -331,7 +336,7 @@ Aria.classDefinition({
          * @return {Boolean} true if the event's touches are validated for the current gesture.
          */
         __validateNbTouches : function (event) {
-            var fingerIndex = aria.touch.Event.getFingerIndex(event);
+            var fingerIndex = ariaTouchEvent.getFingerIndex(event);
             return this.NB_TOUCHES == 1 && fingerIndex === 0 || this.NB_TOUCHES == 2 && fingerIndex >= 0;
         }
     }

@@ -12,17 +12,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaCoreJsonTypes = require("../../core/JsonTypes");
+var ariaCoreEnvironmentEnvironmentBaseCfgBeans = require("../../core/environment/EnvironmentBaseCfgBeans");
+
 
 /**
  * TODOC
  * @class aria.widgets.calendar.CfgBeans
  */
-Aria.beanDefinitions({
+module.exports = Aria.beanDefinitions({
     $package : "aria.widgets.calendar.CfgBeans",
     $description : "Beans used for the data model of the calendar module controller.",
     $namespaces : {
-        "json" : "aria.core.JsonTypes",
-        "AppCfg" : "aria.core.environment.EnvironmentBaseCfgBeans"
+        "json" : ariaCoreJsonTypes,
+        "AppCfg" : ariaCoreEnvironmentEnvironmentBaseCfgBeans
     },
     $beans : {
         "CalendarSettings" : {

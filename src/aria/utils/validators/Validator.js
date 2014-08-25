@@ -12,15 +12,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaUtilsData = require("../Data");
+var ariaUtilsValidatorsIValidator = require("./IValidator");
+var ariaCoreJsObject = require("../../core/JsObject");
+var ariaUtilsType = require("../Type");
+var ariaUtilsJson = require("../Json");
+
 
 /**
  * Base class for framework-provided validators, which support one error message specified outside of the validator.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.utils.validators.Validator",
-    $dependencies : ['aria.utils.Data'],
-    $implements : ['aria.utils.validators.IValidator'],
-    $extends : "aria.core.JsObject",
+    $implements : [ariaUtilsValidatorsIValidator],
+    $extends : ariaCoreJsObject,
     $constructor : function (message) {
 
         /**
@@ -64,7 +70,7 @@ Aria.classDefinition({
          * @param {Object} def the class definition
          */
         $init : function (p, def) {
-            p.utilsType = aria.utils.Type;
+            p.utilsType = ariaUtilsType;
         },
 
         /**
@@ -87,7 +93,7 @@ Aria.classDefinition({
                 this.localized_message = msg.localizedMessage;
             } else if (this.utilsType.isString(msg)) {
                 this.localized_message = msg;
-                this.message = aria.utils.Data.createMessage(msg);
+                this.message = ariaUtilsData.createMessage(msg);
             }
         },
 
@@ -96,7 +102,7 @@ Aria.classDefinition({
          * @return {Array}
          */
         _validationFailed : function () {
-            return [aria.utils.Json.copy(this.message)];
+            return [ariaUtilsJson.copy(this.message)];
         },
 
         /**

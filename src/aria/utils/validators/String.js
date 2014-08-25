@@ -12,13 +12,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaUtilsValidatorsRegExp = require("./RegExp");
+
 
 /**
  * Validates the entry if it is formatted as a simple string without numbers but with special characters.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.utils.validators.String",
-    $extends : "aria.utils.validators.RegExp",
+    $extends : ariaUtilsValidatorsRegExp,
     $constructor : function (message) {
         this.$RegExp.constructor.call(this, this.STRING_REGEXP, message);
     },

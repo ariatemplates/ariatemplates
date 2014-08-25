@@ -12,22 +12,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaWidgetsControllersNumberController = require("../controllers/NumberController");
+var ariaWidgetsFormTextInput = require("./TextInput");
+
 
 /**
  * @class aria.widgets.form.NumberField NumberField widget
  * @extends aria.widgets.form.TextInput
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : 'aria.widgets.form.NumberField',
-    $extends : 'aria.widgets.form.TextInput',
-    $dependencies : ['aria.widgets.controllers.NumberController'],
+    $extends : ariaWidgetsFormTextInput,
     /**
      * NumberField constructor
      * @param{aria.widgets.CfgBeans:NumberFieldCfg} cfg the widget configuration
      * @param{aria.templates.TemplateCtxt} ctxt template context
      */
     $constructor : function (cfg, ctxt, lineNumber) {
-        var controller = new aria.widgets.controllers.NumberController();
+        var controller = new ariaWidgetsControllersNumberController();
         if (cfg.pattern) {
             controller.setPattern(cfg.pattern);
         }

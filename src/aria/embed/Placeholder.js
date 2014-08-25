@@ -12,19 +12,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+require("./CfgBeans");
+var ariaCoreJsonValidator = require("../core/JsonValidator");
+var ariaHtmlTemplate = require("../html/Template");
+var ariaEmbedPlaceholderManager = require("./PlaceholderManager");
+var ariaUtilsArray = require("../utils/Array");
+var ariaWidgetLibsBaseWidget = require("../widgetLibs/BaseWidget");
+var ariaUtilsType = require("../utils/Type");
+
 
 /**
  * Placeholder widget
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.embed.Placeholder",
-    $extends : "aria.widgetLibs.BaseWidget",
-    $dependencies : ["aria.embed.CfgBeans", "aria.core.JsonValidator", "aria.html.Template",
-            "aria.embed.PlaceholderManager", "aria.utils.Array"],
+    $extends : ariaWidgetLibsBaseWidget,
     $constructor : function (cfg, context, lineNumber) {
         this.$BaseWidget.constructor.apply(this, arguments);
 
-        this._cfgOk = aria.core.JsonValidator.validateCfg(this._cfgBeanName, cfg);
+        this._cfgOk = ariaCoreJsonValidator.validateCfg(this._cfgBeanName, cfg);
 
         /**
          * Path of the placeholder that is recognized by the PlaceholderManager
@@ -55,7 +62,7 @@ Aria.classDefinition({
          * @type aria.embed.PlaceholderManager
          * @private
          */
-        this._placeholderManager = aria.embed.PlaceholderManager;
+        this._placeholderManager = ariaEmbedPlaceholderManager;
 
         this._placeholderManager.$addListeners({
             "contentChange" : this._onContentChangeListener
@@ -105,7 +112,7 @@ Aria.classDefinition({
          * @private
          */
         _writePlaceholderContent : function (out) {
-            var typeUtil = aria.utils.Type, placeholderManager = aria.embed.PlaceholderManager;
+            var typeUtil = ariaUtilsType, placeholderManager = ariaEmbedPlaceholderManager;
             var placeholderPath = this._placeholderPath;
             var contents = placeholderManager.getContent(placeholderPath);
             for (var i = 0, ii = contents.length; i < ii; i++) {
@@ -114,7 +121,7 @@ Aria.classDefinition({
                     out.write(content);
                 } else {
                     // Assume json here (aria.html.beans.TemplateCfg)
-                    var template = new aria.html.Template(content, this._context, this._lineNumber);
+                    var template = new ariaHtmlTemplate(content, this._context, this._lineNumber);
                     template.subTplCtxt.placeholderPath = placeholderPath;
                     out.registerBehavior(template);
                     template.writeMarkup(out);
@@ -129,7 +136,7 @@ Aria.classDefinition({
          */
         _onContentChange : function (event) {
             var paths = event.placeholderPaths;
-            if (aria.utils.Array.contains(paths, this._placeholderPath)) {
+            if (ariaUtilsArray.contains(paths, this._placeholderPath)) {
                 var newSection = this._context.getRefreshedSection({
                     section : this._sectionId,
                     writerCallback : {

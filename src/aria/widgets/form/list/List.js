@@ -12,29 +12,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../../Aria");
+var ariaUtilsJson = require("../../../utils/Json");
+require("./ListController");
+var ariaWidgetsFormListListStyle = require("./ListStyle.tpl.css");
+var ariaWidgetsTemplateBasedWidget = require("../../TemplateBasedWidget");
+
 
 /**
  * A simple list of selectable items
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.widgets.form.list.List",
-    $extends : "aria.widgets.TemplateBasedWidget",
-    $dependencies : ["aria.utils.Json", "aria.widgets.form.list.ListController"],
-    $css : ["aria.widgets.form.list.ListStyle"],
+    $extends : ariaWidgetsTemplateBasedWidget,
+    $css : [ariaWidgetsFormListListStyle],
     $constructor : function (cfg, ctxt) {
         this.$TemplateBasedWidget.constructor.apply(this, arguments);
         if (!this._cfg) {
             this._cfg = {};
         }
         var realSkinObj = aria.widgets.AriaSkinInterface.getSkinObject(this._skinnableClass, this._cfg.sclass);
-        var skinObj = aria.utils.Json.copy(realSkinObj, false);
+        var skinObj = ariaUtilsJson.copy(realSkinObj, false);
         skinObj.cssClassItem = "x" + this._skinnableClass + "Item_" + this._cfg.sclass;
         skinObj.cssClassEnabled = "x" + this._skinnableClass + "EnabledItem_" + this._cfg.sclass;
         skinObj.cssClassSelected = "x" + this._skinnableClass + "SelectedItem_" + this._cfg.sclass;
         skinObj.cssClassDisabled = "x" + this._skinnableClass + "DisabledItem_" + this._cfg.sclass;
         skinObj.cssClassMouseover = "x" + this._skinnableClass + "MouseOverItem_" + this._cfg.sclass;
         skinObj.cssClassFooter = "x" + this._skinnableClass + "Footer_" + this._cfg.sclass;
-        var divCfg = aria.utils.Json.copy(cfg, true, ["width", "minWidth", "maxWidth", "height", "minHeight",
+        var divCfg = ariaUtilsJson.copy(cfg, true, ["width", "minWidth", "maxWidth", "height", "minHeight",
                 "maxHeight", "scrollBarX", "scrollBarY"]);
         divCfg.sclass = skinObj.divsclass;
         divCfg.margins = "0 0 0 0";
@@ -253,7 +258,7 @@ Aria.classDefinition({
                     args : property
                 };
                 try {
-                    aria.utils.Json.addListener(bind.inside, bind.to, callback, true, true);
+                    ariaUtilsJson.addListener(bind.inside, bind.to, callback, true, true);
                     this._bindingListeners[property] = {
                         inside : bind.inside,
                         to : bind.to,

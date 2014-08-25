@@ -12,16 +12,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+require("./beans/TemplateCfg");
+var ariaTemplatesTemplateTrait = require("../templates/TemplateTrait");
+var ariaUtilsHtml = require("../utils/Html");
+var ariaTemplatesTemplateCtxt = require("../templates/TemplateCtxt");
+var ariaUtilsDom = require("../utils/Dom");
+require("../templates/ModuleCtrlFactory");
+var ariaCoreEnvironmentCustomizations = require("../core/environment/Customizations");
+var ariaWidgetLibsBaseWidget = require("../widgetLibs/BaseWidget");
+var ariaCoreJsonValidator = require("../core/JsonValidator");
+
 
 /**
  * A HTML Template include simple widget
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.html.Template",
-    $extends : "aria.widgetLibs.BaseWidget",
-    $dependencies : ["aria.html.beans.TemplateCfg", "aria.templates.TemplateTrait", "aria.utils.Html",
-            "aria.templates.TemplateCtxt", "aria.utils.Dom", "aria.templates.ModuleCtrlFactory",
-            "aria.core.environment.Customizations"],
+    $extends : ariaWidgetLibsBaseWidget,
     $events : {
         "ElementReady" : {
             description : "Raised when the template content is fully displayed."
@@ -78,7 +86,7 @@ Aria.classDefinition({
          * @type aria.templates.CfgBeans:InitTemplateCfg
          */
         this._tplcfg = {
-            classpath : aria.core.environment.Customizations.getTemplateCP(cfg.classpath),
+            classpath : ariaCoreEnvironmentCustomizations.getTemplateCP(cfg.classpath),
             args : cfg.args,
             id : this._domId,
             moduleCtrl : cfg.moduleCtrl
@@ -86,7 +94,7 @@ Aria.classDefinition({
         // does the normalization
         this._checkCfgConsistency(cfg);
 
-        var tplCtxt = new aria.templates.TemplateCtxt();
+        var tplCtxt = new ariaTemplatesTemplateCtxt();
         this.subTplCtxt = tplCtxt;
 
         /**
@@ -124,7 +132,7 @@ Aria.classDefinition({
     },
     $prototype : {
         $init : function (p) {
-            var src = aria.templates.TemplateTrait.prototype;
+            var src = ariaTemplatesTemplateTrait.prototype;
             for (var key in src) {
                 if (src.hasOwnProperty(key) && !p.hasOwnProperty(key)) {
                     // copy methods which are not already on this object (this avoids copying $classpath and
@@ -139,7 +147,7 @@ Aria.classDefinition({
          */
         _checkCfgConsistency : function (cfg) {
 
-            var jsonValidator = aria.core.JsonValidator;
+            var jsonValidator = ariaCoreJsonValidator;
             this._cfgOk = jsonValidator.validateCfg("aria.html.beans.TemplateCfg.Properties", cfg);
             if (this._needCreatingModuleCtrl) {
                 this._cfgOk = this._cfgOk
@@ -222,7 +230,7 @@ Aria.classDefinition({
          */
         initWidget : function () {
             aria.html.Template.superclass.initWidget.call(this);
-            var tplDiv = aria.utils.Dom.getElementById(this._domId);
+            var tplDiv = ariaUtilsDom.getElementById(this._domId);
             this._subTplDiv = tplDiv;
 
             if (this._initCtxDone) {
@@ -255,7 +263,7 @@ Aria.classDefinition({
                     var tagName = this._cfg.type;
                     var markup = ['<', tagName, ' id="', this._domId, '"'];
                     if (this._cfg.attributes) {
-                        markup.push(' ' + aria.utils.Html.buildAttributeList(this._cfg.attributes));
+                        markup.push(' ' + ariaUtilsHtml.buildAttributeList(this._cfg.attributes));
                     }
                     markup.push('>');
                     if (this._initCtxDone) {

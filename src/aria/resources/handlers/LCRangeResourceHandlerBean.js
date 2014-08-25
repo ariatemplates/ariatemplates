@@ -12,16 +12,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaResourcesHandlersLCResourcesHandlerBean = require("./LCResourcesHandlerBean");
+var ariaCoreJsonTypes = require("../../core/JsonTypes");
+
 /**
  * Definition of the suggestions used in the MultiAutoComplete Handler
  * @class aria.resources.handlers.MultiAutoCompleteHandlerBean
  */
-Aria.beanDefinitions({
+module.exports = Aria.beanDefinitions({
     $package : "aria.resources.handlers.LCRangeResourceHandlerBean",
     $description : "Definition of the suggestions used in the MultiAutoComplete resource handler",
     $namespaces : {
-        "base" : "aria.resources.handlers.LCResourcesHandlerBean",
-        "json" : "aria.core.JsonTypes"
+        "base" : ariaResourcesHandlersLCResourcesHandlerBean,
+        "json" : ariaCoreJsonTypes
     },
     $beans : {
         "Configuration" : {

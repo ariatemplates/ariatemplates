@@ -12,11 +12,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaCoreBrowser = require("../core/Browser");
+
 
 /**
  * Global class it checks DOM is in Ready state and executes the callback function
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.dom.DomReady",
     $singleton : true,
     $events : {
@@ -78,7 +81,7 @@ Aria.classDefinition({
             if (this.isReady) {
                 return;
             }
-            var docRef = windowObj.document, browser = aria.core.Browser, that = this, handler;
+            var docRef = windowObj.document, browser = ariaCoreBrowser, that = this, handler;
             if (windowObj.addEventListener) {
                 if (!browser.isOpera) {
                     handler = function () {

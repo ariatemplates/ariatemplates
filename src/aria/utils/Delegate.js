@@ -12,14 +12,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaUtilsEvent = require("./Event");
+var ariaDomEvent = require("../DomEvent");
+var ariaUtilsIdManager = require("./IdManager");
+var ariaUtilsCallback = require("./Callback");
+require("./Array");
+var ariaCoreBrowser = require("../core/Browser");
+var ariaUtilsAriaWindow = require("./AriaWindow");
+
 
 /**
  * Contains a reference to elements ready for event delegation, and manage delegation
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.utils.Delegate",
-    $dependencies : ["aria.utils.Event", "aria.DomEvent", "aria.utils.IdManager", "aria.utils.Callback",
-            "aria.utils.Array", "aria.core.Browser", "aria.utils.AriaWindow"],
     $singleton : true,
     $events : {
         "elementFocused" : {
@@ -163,7 +170,7 @@ Aria.classDefinition({
 
         // note that the change event does not bubble on all browsers (e.g.: on IE) but is necessary as it is the only
         // event which is raised when clicking on an option in the select in other browsers (Chrome)
-        if (!aria.core.Browser.isOldIE) {
+        if (!ariaCoreBrowser.isOldIE) {
             this.delegatedOnBody.push("change", "paste", "cut");
         }
 
@@ -213,7 +220,7 @@ Aria.classDefinition({
          * @private
          * @type aria.utils.IdManager
          */
-        this.__idMgr = new aria.utils.IdManager("d");
+        this.__idMgr = new ariaUtilsIdManager("d");
 
         /**
          * This cache store the dom hierarchy for a start id. It is clean on each add/remove.
@@ -235,7 +242,7 @@ Aria.classDefinition({
          */
         this._focusTracking = null;
 
-        aria.utils.AriaWindow.$on({
+        ariaUtilsAriaWindow.$on({
             "unloadWindow" : this.reset,
             scope : this
         });
@@ -246,7 +253,7 @@ Aria.classDefinition({
         this.__idMgr.$dispose();
         this.__idMgr = null;
 
-        aria.utils.AriaWindow.$unregisterListeners(this);
+        ariaUtilsAriaWindow.$unregisterListeners(this);
     },
     $statics : {
         DELEGATE_UTIL_CALLBACK_FAIL : "Error caught in callback for event %1"
@@ -269,7 +276,7 @@ Aria.classDefinition({
                 }
 
                 var body = Aria.$window.document.body;
-                var utilEvent = aria.utils.Event, index, l;
+                var utilEvent = ariaUtilsEvent, index, l;
                 for (index = 0, l = this.delegatedOnBody.length; index < l; index++) {
                     utilEvent.removeListener(body, this.delegatedOnBody[index], {
                         fn : this.delegate
@@ -288,7 +295,7 @@ Aria.classDefinition({
                 // nullify dom reference
                 this._focusTracking = null;
 
-                aria.utils.AriaWindow.detachWindow();
+                ariaUtilsAriaWindow.detachWindow();
             }
         },
 
@@ -311,12 +318,12 @@ Aria.classDefinition({
 
             // initialization of delegation manager
             if (!this.__delegateMapping) {
-                aria.utils.AriaWindow.attachWindow();
+                ariaUtilsAriaWindow.attachWindow();
 
                 var body = Aria.$window.document.body;
-                this.rootListener = aria.core.Browser.isOldIE ? body : Aria.$window;
+                this.rootListener = ariaCoreBrowser.isOldIE ? body : Aria.$window;
                 this.__delegateMapping = {};
-                var utilEvent = aria.utils.Event, index, l;
+                var utilEvent = ariaUtilsEvent, index, l;
                 for (index = 0, l = this.delegatedOnBody.length; index < l; index++) {
                     utilEvent.addListener(body, this.delegatedOnBody[index], {
                         fn : this.delegate,
@@ -335,7 +342,7 @@ Aria.classDefinition({
                 this._changed[id] = false;
                 id = this.__idMgr.getId();
             }
-            this.__delegateMapping[id] = new aria.utils.Callback(handler);
+            this.__delegateMapping[id] = new ariaUtilsCallback(handler);
             return id;
         },
 
@@ -365,7 +372,7 @@ Aria.classDefinition({
          * @return {String}
          */
         getFallbackMarkup : function (eventName, delegateId, wrapTarget) {
-            if (aria.core.Browser.isOldIE) {
+            if (ariaCoreBrowser.isOldIE) {
                 this.getFallbackMarkup = function (eventName, delegateId, wrapTarget) {
                     wrapTarget = wrapTarget ? "true" : "false";
                     return " on" + eventName + "=\"aria.utils.Delegate.directCall(event, '" + delegateId + "', "
@@ -400,7 +407,7 @@ Aria.classDefinition({
                 // It's already wrapped
                 return event;
             } else {
-                return templatesWrapper ? new aria.templates.DomEventWrapper(event) : new aria.DomEvent(event);
+                return templatesWrapper ? new aria.templates.DomEventWrapper(event) : new ariaDomEvent(event);
             }
         },
 

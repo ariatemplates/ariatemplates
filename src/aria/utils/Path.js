@@ -12,13 +12,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaUtilsString = require("./String");
+var ariaUtilsType = require("./Type");
+
 
 /**
  * Utility to handle JSON path. NOTE: this could be extended to support XPath like queries
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.utils.Path",
-    $dependencies : ["aria.utils.String", "aria.utils.Type"],
     $singleton : true,
     $statics : {
         WRONG_PATH_SYNTAX : "Syntax for path %1 is not valid. Note that variables cannot be used in paths.",
@@ -41,7 +44,7 @@ Aria.classDefinition({
          * @param {Object} value What should be set on the given path
          */
         setValue : function (inside, path, value) {
-            var typeUtils = aria.utils.Type;
+            var typeUtils = ariaUtilsType;
             if (!inside || !path || !typeUtils.isObject(inside)) {
                 return;
             }
@@ -78,10 +81,10 @@ Aria.classDefinition({
          * @param {Object} inside If not specified, window is used.
          */
         resolve : function (path, inside) {
-            if (aria.utils.Type.isString(path)) {
+            if (ariaUtilsType.isString(path)) {
                 path = this.parse(path);
             }
-            if (aria.utils.Type.isArray(path)) {
+            if (ariaUtilsType.isArray(path)) {
                 for (var index = 0, param, len = path.length; index < len; index++) {
                     param = path[index];
                     inside = inside[param];
@@ -138,7 +141,7 @@ Aria.classDefinition({
                         return nextParse;
                     } else {
                         // check that part is "something" or 'somethingelse'
-                        var strMarker = part.charAt(0), utilString = aria.utils.String;
+                        var strMarker = part.charAt(0), utilString = ariaUtilsString;
                         if ((strMarker == "'" || strMarker == '"')
                                 && utilString.indexOfNotEscaped(part, strMarker, 1) == part.length - 1) {
                             nextParse = this._paramParse(next);
@@ -201,7 +204,7 @@ Aria.classDefinition({
          * @return {Object}
          */
         describe : function (container, path) {
-            var typeUtils = aria.utils.Type;
+            var typeUtils = ariaUtilsType;
             if (!container || !path || !typeUtils.isObject(container)) {
                 return;
             }

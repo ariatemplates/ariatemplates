@@ -12,12 +12,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaCoreJsonTypes = require("../../core/JsonTypes");
 
-Aria.beanDefinitions({
+
+module.exports = Aria.beanDefinitions({
     $package : "aria.widgets.form.AutoCompleteBean",
     $description : "Definition of the suggestions used in the autocomplete",
     $namespaces : {
-        "json" : "aria.core.JsonTypes"
+        "json" : ariaCoreJsonTypes
     },
     $beans : {
         "Suggestion" : {

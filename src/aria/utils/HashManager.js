@@ -12,6 +12,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaCoreBrowser = require("../core/Browser");
+var ariaUtilsType = require("./Type");
+var ariaUtilsEvent = require("./Event");
+var ariaUtilsObject = require("./Object");
+var ariaUtilsAriaWindow = require("./AriaWindow");
+var ariaUtilsArray = require("./Array");
+var ariaUtilsJson = require("./Json");
+var ariaCoreTimer = require("../core/Timer");
+
 
 /**
  * Utils for location hash management TODO: when the framework will implement a History utility, this class has to be
@@ -20,11 +30,9 @@
  * with HTML5 specifications for history management
  * @singleton
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.utils.HashManager",
     $singleton : true,
-    $dependencies : ["aria.core.Browser", "aria.utils.Type", "aria.utils.Event", "aria.utils.Object",
-            "aria.utils.AriaWindow"],
     $statics : {
         INVALID_SETHASH_ARGUMENT : "Invalid argument passed to aria.utils.HashManager.setHash method.",
         INVALID_SETSEPARATORS_ARGUMENTS : "Invalid argument passed to aria.utils.HashManager.setSeparators method.",
@@ -84,7 +92,7 @@ Aria.classDefinition({
          * @type Boolean
          * @protected
          */
-        this._isIE7OrLess = aria.core.Browser.isOldIE && aria.core.Browser.majorVersion < 8;
+        this._isIE7OrLess = ariaCoreBrowser.isOldIE && ariaCoreBrowser.majorVersion < 8;
 
         /**
          * Enable polling for hashChange
@@ -98,7 +106,7 @@ Aria.classDefinition({
          * @type aria.utils.Type
          * @protected
          */
-        this._typeUtil = aria.utils.Type;
+        this._typeUtil = ariaUtilsType;
 
         /**
          * Poll interval for ie7
@@ -145,7 +153,7 @@ Aria.classDefinition({
             this._hashPoll();
         }
 
-        aria.utils.AriaWindow.$on({
+        ariaUtilsAriaWindow.$on({
             "unloadWindow" : this._removeHashChangeInternalCallback,
             scope : this
         });
@@ -157,7 +165,7 @@ Aria.classDefinition({
          */
         this._removeHashChangeInternalCallback();
         if (this._hashPollCallback) {
-            aria.core.Timer.cancelCallback(this._hashPollCallback);
+            ariaCoreTimer.cancelCallback(this._hashPollCallback);
             this._hashPollCallback = null;
         }
 
@@ -180,7 +188,7 @@ Aria.classDefinition({
          * @return {Object} current hash object
          */
         getHashObject : function (window) {
-            return aria.utils.Json.copy(this._extractHashObject(this.getHashString(window)));
+            return ariaUtilsJson.copy(this._extractHashObject(this.getHashString(window)));
         },
         /**
          * Return the current hash string excluding the '#' character at the beginning
@@ -284,7 +292,7 @@ Aria.classDefinition({
             this._separatorRegExp = this.__buildRegExpFromArray(this._separators);
             this._nonEncodableSeparators = this.__getNonEncodedSeparators(this._separators);
             this._nonEncodableSepRegExp = this.__buildRegExpFromArray(this._nonEncodableSeparators);
-            if (!aria.utils.Object.isEmpty(hashObject)) {
+            if (!ariaUtilsObject.isEmpty(hashObject)) {
                 this.setHash(hashObject);
             }
         },
@@ -304,7 +312,7 @@ Aria.classDefinition({
                 return;
             }
             for (var i = 0, len = addedSeparators.length; i < len; i++) {
-                if (!(aria.utils.Array.contains(this._separators, addedSeparators[i]))) {
+                if (!(ariaUtilsArray.contains(this._separators, addedSeparators[i]))) {
                     newSeparators.push(addedSeparators[i]);
                 }
             }
@@ -377,8 +385,8 @@ Aria.classDefinition({
         _addHashChangeInternalCallback : function () {
             if (!this._isIE7OrLess) {
                 this._hashChangeCallbackAdded = true;
-                aria.utils.AriaWindow.attachWindow();
-                aria.utils.Event.addListener(Aria.$window, 'hashchange', {
+                ariaUtilsAriaWindow.attachWindow();
+                ariaUtilsEvent.addListener(Aria.$window, 'hashchange', {
                     fn : this._internalCallback,
                     scope : this
                 }, true);
@@ -392,7 +400,7 @@ Aria.classDefinition({
          */
         _hashPoll : function () {
             if (this._enableIEpolling) {
-                this._hashPollCallback = aria.core.Timer.addCallback({
+                this._hashPollCallback = ariaCoreTimer.addCallback({
                     fn : this._hashPoll,
                     scope : this,
                     delay : this.ie7PollDelay
@@ -440,10 +448,10 @@ Aria.classDefinition({
         _removeHashChangeInternalCallback : function () {
             if (!this._isIE7OrLess && this._hashChangeCallbackAdded) {
                 this._hashChangeCallbackAdded = false;
-                aria.utils.Event.removeListener(Aria.$window, 'hashchange', {
+                ariaUtilsEvent.removeListener(Aria.$window, 'hashchange', {
                     fn : this._internalCallback
                 });
-                aria.utils.AriaWindow.detachWindow();
+                ariaUtilsAriaWindow.detachWindow();
             }
         },
 

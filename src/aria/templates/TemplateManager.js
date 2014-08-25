@@ -12,8 +12,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaCoreCache = require("../core/Cache");
+var ariaCoreClassMgr = require("../core/ClassMgr");
 
-Aria.classDefinition({
+
+module.exports = Aria.classDefinition({
     $classpath : "aria.templates.TemplateManager",
     $singleton : true,
     $events : {
@@ -34,11 +38,11 @@ Aria.classDefinition({
          * only the template, defined by classpath, is unloaded.
          */
         unloadTemplate : function (classpath, timestampNextTime, stopAtClasspath) {
-            var classMgr = aria.core.ClassMgr;
+            var classMgr = ariaCoreClassMgr;
             var scriptClasspath = classpath + "Script";
             var scriptLogicalPath = Aria.getLogicalPath(scriptClasspath, ".js");
             // do some cleaning in cache
-            if (Aria.nspace(scriptClasspath, false) || aria.core.Cache.getItem("files", scriptLogicalPath)) {
+            if (Aria.nspace(scriptClasspath, false) || ariaCoreCache.getItem("files", scriptLogicalPath)) {
                 classMgr.unloadClass(scriptClasspath, timestampNextTime);
             }
             var itm = Aria.$classDefinitions[classpath];

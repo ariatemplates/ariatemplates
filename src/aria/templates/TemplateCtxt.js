@@ -12,6 +12,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaTemplatesLayout = require("./Layout");
+require("./CfgBeans");
+var ariaUtilsArray = require("../utils/Array");
+var ariaUtilsFunction = require("../utils/Function");
+var ariaUtilsType = require("../utils/Type");
+var ariaTemplatesTemplateCtxtManager = require("./TemplateCtxtManager");
+var ariaTemplatesRefreshManager = require("./RefreshManager");
+var ariaTemplatesCSSMgr = require("./CSSMgr");
+require("../utils/Path");
+var ariaUtilsDelegate = require("../utils/Delegate");
+var ariaTemplatesNavigationManager = require("./NavigationManager");
+var ariaTemplatesSectionWrapper = require("./SectionWrapper");
+require("../core/environment/Customizations");
+var ariaUtilsDom = require("../utils/Dom");
+var ariaTemplatesDomElementWrapper = require("./DomElementWrapper");
+var ariaTemplatesMarkupWriter = require("./MarkupWriter");
+var ariaUtilsDomOverlay = require("../utils/DomOverlay");
+var ariaTemplatesITemplate = require("./ITemplate");
+var ariaTemplatesITemplateCtxt = require("./ITemplateCtxt");
+var ariaTemplatesBaseCtxt = require("./BaseCtxt");
+var ariaUtilsJson = require("../utils/Json");
+var ariaCoreCache = require("../core/Cache");
+var ariaCoreTplClassLoader = require("../core/TplClassLoader");
+var ariaCoreJsonValidator = require("../core/JsonValidator");
+
 
 (function () {
 
@@ -53,18 +79,13 @@
      * have it yet, but want to include the markup of this template inside another markup and link the template with its
      * markup later
      */
-    Aria.classDefinition({
+    module.exports = Aria.classDefinition({
         $classpath : "aria.templates.TemplateCtxt",
-        $dependencies : ["aria.templates.Layout", "aria.templates.CfgBeans", "aria.utils.Array", "aria.utils.Function",
-                "aria.utils.Type", "aria.templates.TemplateCtxtManager", "aria.templates.RefreshManager",
-                "aria.templates.CSSMgr", "aria.utils.Path", "aria.utils.Delegate", "aria.templates.NavigationManager",
-                "aria.templates.SectionWrapper", "aria.core.environment.Customizations", "aria.utils.Dom",
-                "aria.templates.DomElementWrapper", "aria.templates.MarkupWriter", "aria.utils.DomOverlay"],
-        $implements : ["aria.templates.ITemplate", "aria.templates.ITemplateCtxt"],
-        $extends : "aria.templates.BaseCtxt",
+        $implements : [ariaTemplatesITemplate, ariaTemplatesITemplateCtxt],
+        $extends : ariaTemplatesBaseCtxt,
         $onload : function () {
-            layout = aria.templates.Layout;
-            jsonValidator = aria.core.JsonValidator;
+            layout = ariaTemplatesLayout;
+            jsonValidator = ariaCoreJsonValidator;
         },
         $onunload : function () {
             layout = null;
@@ -161,25 +182,25 @@
             this._globalCssDepsLoaded = false; // added for PTR 05086835
         },
         $destructor : function () {
-            aria.templates.TemplateCtxtManager.remove(this);
+            ariaTemplatesTemplateCtxtManager.remove(this);
             if (this._cssClasses) {
                 // PTR 04913091: only unload CSS dependencies if they were already loaded
                 // Warn the CSS Manager that we are removing a template (it won't change the style)
-                aria.templates.CSSMgr.unloadDependencies(this);
+                ariaTemplatesCSSMgr.unloadDependencies(this);
                 if (this._globalCssDepsLoaded) {
                     // PTR 05086835: only unload the global CSS if it was loaded by this instance
                     var deps = ['aria.templates.GlobalStyle'];
                     if (aria.widgets && aria.widgets.AriaSkin) {
                         deps.push('aria.templates.LegacyGeneralStyle');
                     }
-                    aria.templates.CSSMgr.unloadWidgetDependencies('aria.templates.Template', deps);
+                    ariaTemplatesCSSMgr.unloadWidgetDependencies('aria.templates.Template', deps);
                     this._globalCssDepsLoaded = false;
                 }
                 this._cssClasses = null;
             }
             if (this.__dataGround) {
                 // break link used for root level refresh
-                aria.utils.Json.setValue(this.__dataGround, "data", null);
+                ariaUtilsJson.setValue(this.__dataGround, "data", null);
                 this.__dataGround = null;
             }
 
@@ -248,11 +269,11 @@
                     cfg.tplDiv = null;
                 }
                 if (cfg.div) {
-                    var isObject = aria.utils.Type.isObject;
+                    var isObject = ariaUtilsType.isObject;
                     if (isObject(cfg.width) || isObject(cfg.height)) {
                         layout.unregisterAutoresize(cfg.div);
                     }
-                    aria.utils.Dom.replaceHTML(cfg.div, "");
+                    ariaUtilsDom.replaceHTML(cfg.div, "");
                     cfg.div = null;
                 }
                 if (cfg.toDispose) {
@@ -377,7 +398,7 @@
              * @implements aria.templates.ITemplate
              */
             $refresh : function (args) {
-                if (aria.templates.RefreshManager.isStopped()) {
+                if (ariaTemplatesRefreshManager.isStopped()) {
                     // look for the section to be refreshed, and notify it:
                     if (args) {
                         var sectionToRefresh = args.section;
@@ -389,7 +410,7 @@
                             }
                         }
                     }
-                    aria.templates.RefreshManager.queue({
+                    ariaTemplatesRefreshManager.queue({
                         fn : this.$refresh,
                         args : args,
                         scope : this
@@ -414,9 +435,9 @@
 
                     // stopping the refresh manager ensure that what we are doing now will not impact elements that will
                     // be disposed
-                    aria.templates.RefreshManager.stop();
+                    ariaTemplatesRefreshManager.stop();
                     // stopping the CSS Manager as weel to avoid refreshing it every time we create a widget
-                    aria.templates.CSSMgr.stop();
+                    ariaTemplatesCSSMgr.stop();
 
                     this.$assert(304, !!this._tpl); // CSS dependencies
 
@@ -445,7 +466,7 @@
                     }
 
                     // Inserting a section will add the html in the page, resume the CSSMgr before
-                    aria.templates.CSSMgr.resume();
+                    ariaTemplatesCSSMgr.resume();
 
                     if (section != null) {
                         this.insertSection(section);
@@ -455,7 +476,7 @@
 
                     // PROFILING // this.$stopMeasure(profilingId);
                     // restaure refresh manager
-                    aria.templates.RefreshManager.resume();
+                    ariaTemplatesRefreshManager.resume();
 
                     // WARNING: this must always be the last thing to do
                     if (section != null) {
@@ -492,7 +513,7 @@
              * @return {Array} contains ids for the widget and templates that make the focused widget path.
              */
             _getWidgetPath : function (element) {
-                if (element.tagName === "BODY" || !aria.utils.Dom.isInDom(element)) {
+                if (element.tagName === "BODY" || !ariaUtilsDom.isInDom(element)) {
                     return [];
                 }
                 var Ids = [];
@@ -689,8 +710,8 @@
                     args : args
                 });
                 // insert the new section items in the DOM and initialize them
-                aria.utils.Dom.insertAdjacentHTML(args.refSection.domElt, position, topSection.html);
-                aria.utils.Dom.refreshDomElt(this._cfg.tplDiv);
+                ariaUtilsDom.insertAdjacentHTML(args.refSection.domElt, position, topSection.html);
+                ariaUtilsDom.refreshDomElt(this._cfg.tplDiv);
                 var parentSection = args.refSection.object;
                 if (position == "beforeBegin" || position == "afterEnd") {
                     parentSection = parentSection.parent;
@@ -734,7 +755,7 @@
                     this.$logError(this.INVALID_STATE_FOR_REFRESH, [this.tplClasspath]);
                     return null;
                 }
-                var out = new aria.templates.MarkupWriter(this, options);
+                var out = new ariaTemplatesMarkupWriter(this, options);
                 var res = null;
                 this._setOut(out);
                 this.$callback(callback, out);
@@ -758,7 +779,7 @@
                 if (domElt) {
                     if (!skipInsertHTML) {
                         // replaceHTML may change domElt (especially on IE)
-                        domElt = aria.utils.Dom.replaceHTML(domElt, section.html);
+                        domElt = ariaUtilsDom.replaceHTML(domElt, section.html);
                         section.setDom(domElt);
                     }
                     if (!section.id) {
@@ -768,7 +789,7 @@
                     }
 
                     // update expando of container
-                    aria.utils.Delegate.addExpando(domElt, section.delegateId);
+                    ariaUtilsDelegate.addExpando(domElt, section.delegateId);
 
                     differed = section.initWidgets();
                     this.__processDifferedItems(differed);
@@ -778,7 +799,7 @@
                 if (!skipInsertHTML) {
                     // Redundant, but makes sure that insertSection doesn't dispose the template
                     this.$assert(743, params.tplDiv && tpl);
-                    aria.utils.Dom.refreshDomElt(params.tplDiv);
+                    ariaUtilsDom.refreshDomElt(params.tplDiv);
                 }
                 // PROFILING // this.$stopMeasure(profilingId);
             },
@@ -815,7 +836,7 @@
                 if (evt) {
                     var src = evt.src, differed = this._differed;
                     if (differed) {
-                        aria.utils.Array.remove(differed, src);
+                        ariaUtilsArray.remove(differed, src);
                     }
                 }
                 if (!differed || !differed.length) {
@@ -1040,7 +1061,7 @@
                 cfg.moduleCtrl = moduleCtrl;
 
                 // register this template in the templateCtxtManager
-                aria.templates.TemplateCtxtManager.add(this);
+                ariaTemplatesTemplateCtxtManager.add(this);
 
                 if (this.data != null) {
                     this.__dataGround = {
@@ -1059,7 +1080,7 @@
                     tpl[name] = this[name];
                 }
 
-                var functionUtils = aria.utils.Function;
+                var functionUtils = ariaUtilsFunction;
                 for (index = 0; name = methodMapping[index]; index++) {
                     tpl[name] = functionUtils.bind(this[name], this);
                 }
@@ -1297,7 +1318,7 @@
              */
             $getElementById : function (id) {
                 var genId = this.$getId(id);
-                var oElm = aria.utils.Dom.getElementById(genId);
+                var oElm = ariaUtilsDom.getElementById(genId);
                 if (!oElm) {
                     return null;
                 }
@@ -1308,10 +1329,10 @@
                 var wrapper;
                 if (sectionObject) {
                     // section element
-                    wrapper = new aria.templates.SectionWrapper(oElm, sectionObject);
+                    wrapper = new ariaTemplatesSectionWrapper(oElm, sectionObject);
                 } else {
                     // dom element
-                    wrapper = new aria.templates.DomElementWrapper(oElm, this);
+                    wrapper = new ariaTemplatesDomElementWrapper(oElm, this);
                 }
                 if (this.__wrappers) {
                     this.__wrappers.push(wrapper);
@@ -1328,12 +1349,12 @@
              * @return {aria.templates.DomElementWrapper}
              */
             $getChild : function (id, index) {
-                var Dom = aria.utils.Dom, genId = this.$getId(id), parent = Dom.getElementById(genId);
+                var Dom = ariaUtilsDom, genId = this.$getId(id), parent = Dom.getElementById(genId);
                 if (parent) {
                     var oElm = Dom.getDomElementChild(parent, index);
                 }
                 if (oElm) {
-                    var wrapper = new aria.templates.DomElementWrapper(oElm, this);
+                    var wrapper = new ariaTemplatesDomElementWrapper(oElm, this);
                     if (this.__wrappers) {
                         this.__wrappers.push(wrapper);
                     }
@@ -1382,9 +1403,9 @@
              * @implements aria.templates.ITemplate
              */
             $focus : function (idArray) {
-                aria.utils.Delegate.ieFocusFix();
+                ariaUtilsDelegate.ieFocusFix();
                 var idToFocus;
-                if (aria.utils.Type.isArray(idArray)) {
+                if (ariaUtilsType.isArray(idArray)) {
                     idArray = idArray.slice(0);
                     idToFocus = idArray.shift();
                 } else {
@@ -1403,7 +1424,7 @@
                 // ... then look for arbitrary dom element with id
                 if (!focusSuccess) {
                     var domElementId = this.$getId(idToFocus);
-                    var elementToFocus = aria.utils.Dom.getElementById(domElementId);
+                    var elementToFocus = ariaUtilsDom.getElementById(domElementId);
                     if (elementToFocus) {
                         elementToFocus.focus();
                         focusSuccess = true;
@@ -1424,8 +1445,8 @@
                 if (this._tpl.$focusFromParent) {
                     return this._tpl.$focusFromParent();
                 } else {
-                    var templateContainer = aria.utils.Dom.getElementById(this._id);
-                    return aria.templates.NavigationManager.focusFirst(templateContainer);
+                    var templateContainer = ariaUtilsDom.getElementById(this._id);
+                    return ariaTemplatesNavigationManager.focusFirst(templateContainer);
                 }
             },
 
@@ -1532,7 +1553,7 @@
                 var div = tmpCfg.div;
                 // check if the div is still in the dom
                 // (because it could be inside a template which was refreshed, so no longer in the dom)
-                if (!aria.utils.Dom.isInDom(div)) {
+                if (!ariaUtilsDom.isInDom(div)) {
                     this.$callback(callback);
                     return;
                 }
@@ -1541,7 +1562,7 @@
                     // remap widget content
                     if (args.success && tplWidget) {
                         var tplCtxt = args.tplCtxt;
-                        var tplCtxtManager = aria.templates.TemplateCtxtManager;
+                        var tplCtxtManager = ariaTemplatesTemplateCtxtManager;
                         // TODO: find a cleaner way to do this
                         // as this template is inside a template widget, it is not a root template
                         // (even if we reloaded it with Aria.loadTemplate)
@@ -1572,7 +1593,7 @@
                         "unloadTemplate" : {
                             fn : function () {
                                 var logicalPath = tmpCfg.classpath.replace(/\./g, "/") + ".tpl";
-                                var cacheContent = aria.core.Cache.getItem("files", logicalPath, true);
+                                var cacheContent = ariaCoreCache.getItem("files", logicalPath, true);
                                 cacheContent.status = 3; // status OK
                                 cacheContent.value = tplSource;
                             },
@@ -1623,11 +1644,11 @@
                         if (aria.widgets && aria.widgets.AriaSkin) {
                             deps.push('aria.templates.LegacyGeneralStyle');
                         }
-                        aria.templates.CSSMgr.loadWidgetDependencies('aria.templates.Template', deps);
+                        ariaTemplatesCSSMgr.loadWidgetDependencies('aria.templates.Template', deps);
                         this._globalCssDepsLoaded = true;
                     }
                     // Load the CSS dependencies, the style should be added before the html
-                    classes = aria.templates.CSSMgr.loadDependencies(this);
+                    classes = ariaTemplatesCSSMgr.loadDependencies(this);
                     this._cssClasses = classes; // save classes for later calls
                 }
                 if (onlyCSSDep) {
@@ -1638,7 +1659,7 @@
                 if (classes.length) {
                     classNames = classNames.concat(classes);
                 }
-                return aria.core.TplClassLoader.addPrintOptions(classNames.join(" "), this._cfg.printOptions);
+                return ariaCoreTplClassLoader.addPrintOptions(classNames.join(" "), this._cfg.printOptions);
             },
 
             /**
@@ -1658,7 +1679,7 @@
                     }
                 } else {
                     if (!sectionId) {
-                        aria.utils.Array.remove(this.__loadingOverlays, id);
+                        ariaUtilsArray.remove(this.__loadingOverlays, id);
                     } else {
                         delete this.__loadingOverlaysSection[sectionId];
                     }
@@ -1680,7 +1701,7 @@
              * @private
              */
             __disposeProcessingIndicators : function (section) {
-                var domOverlay = aria.utils.DomOverlay;
+                var domOverlay = ariaUtilsDomOverlay;
 
                 // Dispose all the overlays that are not bound to a section
                 domOverlay.disposeOverlays(this.__loadingOverlays);
@@ -1688,7 +1709,7 @@
 
                 if (!section || section.isRoot) {
                     // If I refresh the root section, dispose also all the overlays on any section
-                    domOverlay.disposeOverlays(aria.utils.Array.extractValuesFromMap(this.__loadingOverlaysSection));
+                    domOverlay.disposeOverlays(ariaUtilsArray.extractValuesFromMap(this.__loadingOverlaysSection));
                     this.__loadingOverlaysSection = {};
                 } else {
                     domOverlay.disposeOverlays([this.__loadingOverlaysSection[section.id]]);

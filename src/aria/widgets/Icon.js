@@ -12,15 +12,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+require("../utils/Dom");
+var ariaWidgetsIconStyle = require("./IconStyle.tpl.css");
+var ariaWidgetsWidget = require("./Widget");
+var ariaCoreTplClassLoader = require("../core/TplClassLoader");
+
 
 /**
  * Aria Icon Widget
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.widgets.Icon",
-    $extends : "aria.widgets.Widget",
-    $dependencies : ["aria.utils.Dom"],
-    $css : ["aria.widgets.IconStyle"],
+    $extends : ariaWidgetsWidget,
+    $css : [ariaWidgetsIconStyle],
     $constructor : function (cfg, ctxt) {
 
         this.$Widget.constructor.apply(this, arguments);
@@ -184,7 +189,7 @@ Aria.classDefinition({
          */
         _getIconClasses : function (iconInfo) {
             var cfg = this._cfg;
-            var cssClasses = aria.core.TplClassLoader.addPrintOptions(this._cssClassNames, cfg.printOptions);
+            var cssClasses = ariaCoreTplClassLoader.addPrintOptions(this._cssClassNames, cfg.printOptions);
             if (iconInfo.cssClass) {
                 cssClasses += " " + iconInfo.cssClass;
             }

@@ -12,20 +12,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaUtilsType = require("./Type");
+var ariaUtilsPath = require("./Path");
+var ariaUtilsJson = require("./Json");
+var ariaCoreJsObject = require("../core/JsObject");
+var ariaUtilsArray = require("./Array");
+
 
 /**
  * Handles the link between the validators and the data model.
  * @class aria.utils.Data
  * @extends aria.core.JsObject
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : 'aria.utils.Data',
-    $extends : 'aria.core.JsObject',
+    $extends : ariaCoreJsObject,
     $singleton : true,
-    $dependencies : ['aria.utils.Type', 'aria.utils.Path', 'aria.utils.Json'],
     $constructor : function () {
-        this.utilsType = aria.utils.Type;
-        this.utilsArray = aria.utils.Array;
+        this.utilsType = ariaUtilsType;
+        this.utilsArray = ariaUtilsArray;
     },
     $statics : {
         NBROF_PREFIX : "nbrOf",
@@ -63,7 +69,7 @@ Aria.classDefinition({
                 if (notifyChange === false) {
                     dataHolder[metaDataName] = res;
                 } else {
-                    aria.utils.Json.setValue(dataHolder, metaDataName, res);
+                    ariaUtilsJson.setValue(dataHolder, metaDataName, res);
                 }
             }
             return res;
@@ -80,7 +86,7 @@ Aria.classDefinition({
             if (!meta) {
                 return null;
             }
-            return aria.utils.Json.getValue(meta, "validator");
+            return ariaUtilsJson.getValue(meta, "validator");
         },
 
         /**
@@ -132,7 +138,7 @@ Aria.classDefinition({
             this.setValidatorProperties(validator, groups, event);
             if ((this.utilsType.isObject(dataHolder) || this.utilsType.isArray(dataHolder)) && dataName in dataHolder) {
                 meta = this._getMeta(dataHolder, dataName);
-                aria.utils.Json.setValue(meta, "validator", validator);
+                ariaUtilsJson.setValue(meta, "validator", validator);
             } else {
                 this.$logError(this.DATA_NO_PARAMETER_TO_CONTAINER, [dataName], dataHolder);
             }
@@ -179,7 +185,7 @@ Aria.classDefinition({
          */
         addMessage : function (message, messagesList, inside, to, addToList) {
 
-            var jsonUtils = aria.utils.Json;
+            var jsonUtils = ariaUtilsJson;
 
             // internal variable to handle suberrors
             addToList = addToList !== false;
@@ -305,7 +311,7 @@ Aria.classDefinition({
          * @return {Array}
          */
         validateValue : function (dataHolder, dataName, messages, groups, event) {
-            var validator = this.getValidator(dataHolder, dataName), utilsJson = aria.utils.Json;
+            var validator = this.getValidator(dataHolder, dataName), utilsJson = ariaUtilsJson;
             var frameworkMessage = this.getFrameworkMessage(dataHolder, dataName);
             var hasFrameworkMessage = frameworkMessage && frameworkMessage.length;
             var meta = this._getMeta(dataHolder, dataName);
@@ -384,7 +390,7 @@ Aria.classDefinition({
          */
         __subValidateModel : function (dataHolder, parameter, messages, groups) {
             // filters meta marker and aria metadata
-            if (!aria.utils.Json.isMetadata(parameter)) {
+            if (!ariaUtilsJson.isMetadata(parameter)) {
                 if (dataHolder[this.META_PREFIX + parameter]) {
                     this.validateValue(dataHolder, parameter, messages, groups);
                 }
@@ -406,7 +412,7 @@ Aria.classDefinition({
          */
         processMessages : function (newMessages, rootData, messages, addToListOfMessages) {
 
-            var pathUtils = aria.utils.Path, jsonUtils = aria.utils.Json, pathParts, lastPath, container;
+            var pathUtils = ariaUtilsPath, jsonUtils = ariaUtilsJson, pathParts, lastPath, container;
 
             if (messages == null) {
                 messages = {};

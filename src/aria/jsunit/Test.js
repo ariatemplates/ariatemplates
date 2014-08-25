@@ -12,11 +12,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaCoreClassMgr = require("../core/ClassMgr");
+
 
 /**
  * Base class for all Test objects (Test Case and TestSuite). Defines the interface expected by the Test Runner
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.jsunit.Test",
     $events : {
         "failure" : {
@@ -115,12 +118,12 @@ Aria.classDefinition({
         // Free some memory, not for failed tests
         if (!this._failedOnCreate) {
             var classRef = Aria.getClassRef(this.$classpath);
-            aria.core.ClassMgr.unloadClass(this.$classpath);
+            ariaCoreClassMgr.unloadClass(this.$classpath);
             if (classRef && classRef.classDefinition && classRef.classDefinition.$dependencies) {
                 var dep = classRef.classDefinition.$dependencies;
                 for (var i = 0, len = dep.length; i < len; i += 1) {
                     if (dep[i].substring(0, 5) == "test.") {
-                        aria.core.ClassMgr.unloadClass(dep[i]);
+                        ariaCoreClassMgr.unloadClass(dep[i]);
                     }
                 }
             }

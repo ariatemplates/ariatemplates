@@ -12,6 +12,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaUtilsType = require("../utils/Type");
+var ariaCoreJsonValidator = require("./JsonValidator");
+
 
 (function () {
     /*
@@ -615,13 +619,13 @@
     /**
      * Contains the definition of base types used by the JsonValidator.
      */
-    Aria.classDefinition({
+    module.exports = Aria.classDefinition({
         $classpath : "aria.core.JsonTypesCheck",
         $singleton : true,
         $constructor : function () {
             // define shortcuts
-            jv = aria.core.JsonValidator;
-            typeUtils = aria.utils.Type;
+            jv = ariaCoreJsonValidator;
+            typeUtils = ariaUtilsType;
 
             // add base types to json validator
             for (var index = 0, length = baseTypes.length; index < length; index++) {

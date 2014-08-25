@@ -1,3 +1,7 @@
+
+var Aria = require("../Aria");
+var ariaJsunitScreenCapture = require("./ScreenCapture");
+var ariaJsunitTestCase = require("./TestCase");
 /* BACKWARD-COMPATIBILITY-BEGIN GH-1104 */
 /*
  * Copyright 2012 Amadeus s.a.s.
@@ -19,14 +23,13 @@
  * @class aria.jsunit.UITestCase
  * @extends aria.jsunit.TestCase
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : 'aria.jsunit.UITestCase',
-    $extends : 'aria.jsunit.TestCase',
-    $dependencies : ['aria.jsunit.ScreenCapture'],
+    $extends : ariaJsunitTestCase,
     $constructor : function () {
         // constructor
         this.$TestCase.constructor.call(this);
-        this.screenCapture = aria.jsunit.ScreenCapture;
+        this.screenCapture = ariaJsunitScreenCapture;
         this.$logWarn("aria.jsunit.UITestCase class is deprecated and will be removed soon from the framework");
     },
     $destructor : function () {

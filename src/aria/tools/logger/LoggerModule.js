@@ -12,17 +12,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaUtilsDate = require("../../utils/Date");
+require("./LoggerDisplay.tpl");
+var ariaToolsLoggerILoggerModule = require("./ILoggerModule");
+var ariaTemplatesModuleCtrl = require("../../templates/ModuleCtrl");
+var ariaCoreLog = require("../../core/Log");
+
 
 /**
  * Utility to manage and highligh template and modules on an application
  * @class aria.tools.logger.LoggerModule
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : 'aria.tools.logger.LoggerModule',
-    $extends : 'aria.templates.ModuleCtrl',
-    $dependencies : ['aria.utils.Date'],
-    $templates : ['aria.tools.logger.LoggerDisplay'],
-    $implements : ['aria.tools.logger.ILoggerModule'],
+    $extends : ariaTemplatesModuleCtrl,
+    $implements : [ariaToolsLoggerILoggerModule],
     $constructor : function () {
 
         // call parent constructor
@@ -89,7 +94,7 @@ Aria.classDefinition({
          * @param {Object} o An optional object to be inspected
          */
         debug : function (className, msg, msgId, o) {
-            this._log(aria.core.Log.LEVEL_DEBUG, className, msg, msgId, o);
+            this._log(ariaCoreLog.LEVEL_DEBUG, className, msg, msgId, o);
         },
 
         /**
@@ -100,7 +105,7 @@ Aria.classDefinition({
          * @param {Object} o An optional object to be inspected
          */
         info : function (className, msg, msgId, o) {
-            this._log(aria.core.Log.LEVEL_INFO, className, msg, msgId, o);
+            this._log(ariaCoreLog.LEVEL_INFO, className, msg, msgId, o);
         },
 
         /**
@@ -111,7 +116,7 @@ Aria.classDefinition({
          * @param {Object} o An optional object to be inspected
          */
         warn : function (className, msg, msgId, o) {
-            this._log(aria.core.Log.LEVEL_WARN, className, msg, msgId, o);
+            this._log(ariaCoreLog.LEVEL_WARN, className, msg, msgId, o);
         },
 
         /**
@@ -122,7 +127,7 @@ Aria.classDefinition({
          * @param {Object} e The exception to format
          */
         error : function (className, msg, msgId, e) {
-            this._log(aria.core.Log.LEVEL_ERROR, className, msg, msgId, e);
+            this._log(ariaCoreLog.LEVEL_ERROR, className, msg, msgId, e);
         },
 
         /**
@@ -142,7 +147,7 @@ Aria.classDefinition({
                 msg : msg,
                 msgId : msgId,
                 object : o,
-                date : aria.utils.Date.format(new Date(), "HH:mm:ss")
+                date : ariaUtilsDate.format(new Date(), "HH:mm:ss")
             });
             // remove first element of array if size exceed limit
             if (length > this.logsMaxLength) {

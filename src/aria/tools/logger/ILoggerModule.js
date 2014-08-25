@@ -12,13 +12,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaTemplatesIModuleCtrl = require("../../templates/IModuleCtrl");
+
 
 /**
  * Interface for the logger module
  */
-Aria.interfaceDefinition({
+module.exports = Aria.interfaceDefinition({
     $classpath : "aria.tools.logger.ILoggerModule",
-    $extends : "aria.templates.IModuleCtrl",
+    $extends : ariaTemplatesIModuleCtrl,
     $interface : {
         /**
          * Clean the logs

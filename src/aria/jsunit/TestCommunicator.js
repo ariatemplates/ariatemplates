@@ -12,13 +12,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+
 
 /**
  * TestCommunicator is a DOM element that will be used to communicated with the test shell (for instance selenium).<br />
  * A TestCommunicator is defined by a contract made of the HTML id (which is expected by the shell) and the content
  * (only certain values might be accepted for instance)
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.jsunit.TestCommunicator",
     $constructor : function (conf) {
         /**

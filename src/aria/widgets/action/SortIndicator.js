@@ -12,18 +12,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+require("../container/Div");
+var ariaWidgetsIcon = require("../Icon");
+var ariaUtilsEllipsis = require("../../utils/Ellipsis");
+var ariaUtilsDom = require("../../utils/Dom");
+require("../../DomEvent");
+var ariaUtilsString = require("../../utils/String");
+var ariaUtilsType = require("../../utils/Type");
+var ariaWidgetsActionSortIndicatorStyle = require("./SortIndicatorStyle.tpl.css");
+var ariaWidgetsActionActionWidget = require("./ActionWidget");
+var ariaCoreBrowser = require("../../core/Browser");
+
 
 /**
  * Sort Indicator widget
  * @class aria.widgets.action.SortIndicator
  * @extends aria.widgets.action.ActionWidget
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.widgets.action.SortIndicator",
-    $extends : "aria.widgets.action.ActionWidget",
-    $dependencies : ["aria.widgets.container.Div", "aria.widgets.Icon", "aria.utils.Ellipsis", "aria.utils.Dom",
-            "aria.DomEvent", "aria.utils.String", "aria.utils.Type"],
-    $css : ["aria.widgets.action.SortIndicatorStyle"],
+    $extends : ariaWidgetsActionActionWidget,
+    $css : [ariaWidgetsActionSortIndicatorStyle],
     /**
      * SortIndicator constructor
      * @param {aria.widgets.CfgBeans:SortIndicatorCfg} cfg the widget configuration
@@ -50,11 +60,11 @@ Aria.classDefinition({
          * @type aria.widgets.Icon
          * @protected
          */
-        this._icon = new aria.widgets.Icon({
+        this._icon = new ariaWidgetsIcon({
             icon : this._getIconName(this._state)
         }, ctxt, lineNumber);
 
-        if (aria.utils.Type.isString(cfg.ellipsis)) {
+        if (ariaUtilsType.isString(cfg.ellipsis)) {
             /**
              * Activate ellipsis ot not
              * @type Boolean
@@ -174,11 +184,11 @@ Aria.classDefinition({
          */
         _initializeEllipsis : function () {
             var cfg = this._cfg;
-            var anchorElement = aria.utils.Dom.getDomElementChild(this.getDom(), 0);
+            var anchorElement = ariaUtilsDom.getDomElementChild(this.getDom(), 0);
 
             var ellipseElement = Aria.$window.document.createElement("span");
 
-            ellipseElement.innerHTML = aria.utils.String.escapeHTML(cfg.label);
+            ellipseElement.innerHTML = ariaUtilsString.escapeHTML(cfg.label);
 
             this.textContent = cfg.label;
 
@@ -188,7 +198,7 @@ Aria.classDefinition({
 
             var labelWidth = cfg.labelWidth;
             if (labelWidth > 0) {
-                this._ellipsis = new aria.utils.Ellipsis(ellipseElement, labelWidth, cfg.ellipsisLocation, cfg.ellipsis, this._context, cfg.ellipsisEndStyle);
+                this._ellipsis = new ariaUtilsEllipsis(ellipseElement, labelWidth, cfg.ellipsisLocation, cfg.ellipsis, this._context, cfg.ellipsisEndStyle);
             }
 
             if (ellipseElement.innerHTML) {
@@ -213,7 +223,7 @@ Aria.classDefinition({
             var cfg = this._cfg;
             var tabString = (cfg.tabIndex != null ? ' tabindex="' + this._calculateTabIndex() + '" ' : ' ');
             out.write(['<a', Aria.testMode ? ' id="' + this._domId + '_link"' : '',
-                    ' class="sortIndicatorLink" href="#"' + tabString + '>' + aria.utils.String.escapeHTML(cfg.label)].join(""));
+                    ' class="sortIndicatorLink" href="#"' + tabString + '>' + ariaUtilsString.escapeHTML(cfg.label)].join(""));
             this._icon.writeMarkup(out);
             out.write('</a>');
         },
@@ -316,12 +326,12 @@ Aria.classDefinition({
 
                     this._hasMouseOver = true;
                     var offset;
-                    if (aria.core.Browser.isFirefox) {
+                    if (ariaCoreBrowser.isFirefox) {
                         offset = {
                             left : 1,
                             top : 2
                         };
-                    } else if (aria.core.Browser.isIE8) {
+                    } else if (ariaCoreBrowser.isIE8) {
                         offset = {
                             left : 0,
                             top : 1
@@ -368,7 +378,7 @@ Aria.classDefinition({
             if (this._actingDom && this._hasMouseOver === false) {
                 this._hasFocus = true;
                 var offset;
-                if (aria.core.Browser.isFirefox) {
+                if (ariaCoreBrowser.isFirefox) {
                     offset = {
                         left : 1,
                         top : 2

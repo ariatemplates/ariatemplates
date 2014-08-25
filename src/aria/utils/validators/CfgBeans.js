@@ -12,16 +12,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaCoreJsonTypes = require("../../core/JsonTypes");
+
 
 /**
  * Beans describing the message structure used in validators, in the error list widget, and returned in server side
  * validation.
  */
-Aria.beanDefinitions({
+module.exports = Aria.beanDefinitions({
     $package : "aria.utils.validators.CfgBeans",
     $description : "Beans used in validators and in the error widget.",
     $namespaces : {
-        "json" : "aria.core.JsonTypes"
+        "json" : ariaCoreJsonTypes
     },
     $beans : {
         "MessagesList" : {

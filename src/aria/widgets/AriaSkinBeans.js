@@ -12,15 +12,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaCoreJsonTypes = require("../core/JsonTypes");
+
 
 /**
  * The beans contained in this file describe the structure of a skin configuration in the aria.widgets.AriaSkin class.
  */
-Aria.beanDefinitions({
+module.exports = Aria.beanDefinitions({
     $package : "aria.widgets.AriaSkinBeans",
     $description : "Structure of a skin.",
     $namespaces : {
-        "json" : "aria.core.JsonTypes"
+        "json" : ariaCoreJsonTypes
     },
     $beans : {
         "Object" : {

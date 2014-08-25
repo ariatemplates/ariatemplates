@@ -12,15 +12,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaUtilsArray = require("../utils/Array");
+var ariaUtilsAriaWindow = require("../utils/AriaWindow");
+var ariaUtilsStore = require("../utils/Store");
+
 
 /**
  * @class aria.templates.TemplateCtxtManager List of active templates loaded by Aria.loadTemplate
  * @singleton
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : 'aria.templates.TemplateCtxtManager',
-    $extends : 'aria.utils.Store',
-    $dependencies : ['aria.utils.Array', 'aria.utils.AriaWindow'],
+    $extends : ariaUtilsStore,
     $singleton : true,
     $constructor : function () {
         this.$Store.constructor.call(this);
@@ -33,14 +37,14 @@ Aria.classDefinition({
 
         Aria.rootTemplates = this._rootTemplateContexts;
 
-        aria.utils.AriaWindow.$on({
+        ariaUtilsAriaWindow.$on({
             "unloadWindow" : this._unloadWindow,
             scope : this
         });
     },
     $destructor : function () {
         Aria.rootTemplates = this._templateContexts = null;
-        aria.utils.AriaWindow.$unregisterListeners(this);
+        ariaUtilsAriaWindow.$unregisterListeners(this);
         this.$Store.$destructor.call(this);
     },
     $prototype : {
@@ -66,7 +70,7 @@ Aria.classDefinition({
 
             if (templateContext._cfg && templateContext._cfg.isRootTemplate) {
                 this._rootTemplateContexts.push(templateContext);
-                aria.utils.AriaWindow.attachWindow();
+                ariaUtilsAriaWindow.attachWindow();
             }
 
             this.$Store.add.call(this, templateContext);
@@ -80,11 +84,11 @@ Aria.classDefinition({
 
             if (templateContext._cfg && templateContext._cfg.isRootTemplate) {
                 // now remove it from the root template contexts array, if necessary
-                if (aria.utils.Array.remove(this._rootTemplateContexts, templateContext)) {
+                if (ariaUtilsArray.remove(this._rootTemplateContexts, templateContext)) {
                     // it is important to check whether the item was actually present in the array
                     // so that we don't decrement the counter in AriaWindow when it should not be decremented (this can
                     // have very bad consequences)
-                    aria.utils.AriaWindow.detachWindow();
+                    ariaUtilsAriaWindow.detachWindow();
                 }
             }
 

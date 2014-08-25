@@ -12,13 +12,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaPopupsPopup = require("../../popups/Popup");
+var ariaUtilsJson = require("../../utils/Json");
+
 
 /**
  * Class whose prototype is intended to be imported for all widgets that use a drop-down popup
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.widgets.form.DropDownTrait",
-    $dependencies : ["aria.popups.Popup"],
     $constructor : function () {
         // The purpose of this class is to provide a prototype to be imported, not to be created directly.
         this.$assert(14, false);
@@ -43,7 +46,7 @@ Aria.classDefinition({
                 scope : this
             });
 
-            var popup = new aria.popups.Popup();
+            var popup = new ariaPopupsPopup();
             this._dropdownPopup = popup;
 
             var onDescription = {
@@ -247,7 +250,7 @@ Aria.classDefinition({
             cfg.popupOpen = value;
             if (cfg.bind && cfg.bind.popupOpen) {
                 var binding = cfg.bind.popupOpen;
-                aria.utils.Json.setValue(binding.inside, binding.to, value);
+                ariaUtilsJson.setValue(binding.inside, binding.to, value);
             }
         }
     }

@@ -12,14 +12,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaPopupsPopupManager = require("./PopupManager");
+require("./Beans");
+require("../DomEvent");
+require("../utils/Math");
+var ariaUtilsDom = require("../utils/Dom");
+var ariaUtilsSize = require("../utils/Size");
+var ariaUtilsEvent = require("../utils/Event");
+var ariaUtilsDelegate = require("../utils/Delegate");
+var ariaUtilsCssAnimations = require("../utils/css/Animations");
+var ariaUtilsArray = require("../utils/Array");
+var ariaCoreBrowser = require("../core/Browser");
+var ariaCoreTimer = require("../core/Timer");
+var ariaCoreJsonValidator = require("../core/JsonValidator");
+
 
 /**
  * Popup instance
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.popups.Popup",
-    $dependencies : ["aria.popups.PopupManager", "aria.popups.Beans", "aria.DomEvent", "aria.utils.Math",
-            "aria.utils.Dom", "aria.utils.Size", "aria.utils.Event", "aria.utils.Delegate", "aria.utils.css.Animations"],
     $events : {
         onBeforeClose : {
             description : "Event triggered before closing the event",
@@ -78,7 +91,7 @@ Aria.classDefinition({
          * @protected
          * @type String
          */
-        this._delegateId = aria.utils.Delegate.add({
+        this._delegateId = ariaUtilsDelegate.add({
             fn : this._handleDelegate,
             scope : this
         });
@@ -151,7 +164,7 @@ Aria.classDefinition({
          * @protected
          * @type HTMLElement
          */
-        this._rootElement = aria.utils.Dom.getDocumentScrollElement();
+        this._rootElement = ariaUtilsDom.getDocumentScrollElement();
 
         /**
          * Used to display the popup
@@ -180,7 +193,7 @@ Aria.classDefinition({
          * @type HTMLElement
          */
         this._document = Aria.$window.document;
-        aria.popups.PopupManager.registerPopup(this);
+        ariaPopupsPopupManager.registerPopup(this);
 
     },
 
@@ -189,7 +202,7 @@ Aria.classDefinition({
         this.close();
         this.reference = null;
         if (this._delegateId) {
-            aria.utils.Delegate.remove(this._delegateId);
+            ariaUtilsDelegate.remove(this._delegateId);
         }
         if (this.section) {
             this.section.$unregisterListeners(this);
@@ -201,11 +214,11 @@ Aria.classDefinition({
             this.section = null;
         }
         if (this.modalMaskDomElement) {
-            aria.utils.Dom.removeElement(this.modalMaskDomElement);
+            ariaUtilsDom.removeElement(this.modalMaskDomElement);
             this.modalMaskDomElement = null;
         }
         if (this.domElement) {
-            aria.utils.Dom.removeElement(this.domElement);
+            ariaUtilsDom.removeElement(this.domElement);
             this.domElement = null;
         }
         this.conf.domReference = null;
@@ -222,7 +235,7 @@ Aria.classDefinition({
             this._maskAnimator = null;
         }
         // The popup manager is responsible for destroying the DOM of the popup
-        aria.popups.PopupManager.unregisterPopup(this);
+        ariaPopupsPopupManager.unregisterPopup(this);
     },
 
     $prototype : {
@@ -236,20 +249,20 @@ Aria.classDefinition({
 
             this.conf = conf;
 
-            aria.core.JsonValidator.normalize({
+            ariaCoreJsonValidator.normalize({
                 json : conf,
                 beanName : "aria.popups.Beans.PopupConf"
             });
 
             if (this.modalMaskDomElement) {
-                aria.utils.Dom.removeElement(this.modalMaskDomElement);
+                ariaUtilsDom.removeElement(this.modalMaskDomElement);
                 this.modalMaskDomElement = null;
             }
             if (conf.modal) {
                 this.modalMaskDomElement = this._createMaskDomElement(conf.maskCssClass);
             }
             if (this.domElement != null) {
-                aria.utils.Dom.removeElement(this.domElement);
+                ariaUtilsDom.removeElement(this.domElement);
             }
             this.domElement = this._createDomElement();
 
@@ -279,7 +292,7 @@ Aria.classDefinition({
          */
         _attachMouseOverListener : function () {
             this._detachMouseOverListener();
-            aria.utils.Event.addListener(this.getDomElement(), "mouseover", {
+            ariaUtilsEvent.addListener(this.getDomElement(), "mouseover", {
                 fn : this._clearMouseOutTimer,
                 scope : this
             });
@@ -306,7 +319,7 @@ Aria.classDefinition({
             var div = document.createElement("div");
             div.style.cssText = "position:absolute;top:-15000px;left:-15000px;";
             document.body.appendChild(div);
-            div.innerHTML = "<div " + aria.utils.Delegate.getMarkup(this._delegateId)
+            div.innerHTML = "<div " + ariaUtilsDelegate.getMarkup(this._delegateId)
                     + " style='position:absolute;top:-15000px;left:-15000px;visibility:hidden;display:block;'></div>";
             var domElement = div.firstChild;
             document.body.removeChild(div);
@@ -334,7 +347,7 @@ Aria.classDefinition({
          * @protected
          */
         _clearMouseOutTimer : function () {
-            aria.core.Timer.cancelCallback(this._mouseOutTimer);
+            ariaCoreTimer.cancelCallback(this._mouseOutTimer);
         },
 
         /**
@@ -360,7 +373,7 @@ Aria.classDefinition({
          * @protected
          */
         _detachMouseOverListener : function () {
-            aria.utils.Event.removeListener(this.getDomElement(), "mouseover", {
+            ariaUtilsEvent.removeListener(this.getDomElement(), "mouseover", {
                 fn : this._clearMouseOutTimer
             });
         },
@@ -388,7 +401,7 @@ Aria.classDefinition({
                 // This is a parial refresh, no need to update the zindex
                 zIndex = this.computedStyle.zIndex;
             } else {
-                zIndex = aria.popups.PopupManager.getZIndexForPopup(this);
+                zIndex = ariaPopupsPopupManager.getZIndexForPopup(this);
             }
 
             if (this.conf.preferredWidth > 0) {
@@ -428,7 +441,7 @@ Aria.classDefinition({
          */
         _getFreeSize : function () {
             var domElement = this.domElement;
-            var browser = aria.core.Browser;
+            var browser = ariaCoreBrowser;
             domElement.style.cssText = "position:absolute;top:-15000px;left:-15000px;visibility:hidden;display:block;";
 
             // PTR05398297: fixes rounding issue in IE9 for offsetWidth.
@@ -462,8 +475,8 @@ Aria.classDefinition({
                     width : size.width + offset.left + offset.right,
                     height : size.height + offset.top + offset.bottom
                 };
-                position = aria.utils.Dom.centerInViewport(newSize, this.reference);
-                position = aria.utils.Dom.fitInViewport(position, newSize, this.reference);
+                position = ariaUtilsDom.centerInViewport(newSize, this.reference);
+                position = ariaUtilsDom.fitInViewport(position, newSize, this.reference);
             } else {
                 var i = 0, preferredPosition;
                 do {
@@ -472,7 +485,7 @@ Aria.classDefinition({
                     position = this._getPositionForAnchor(preferredPosition, size);
                     // If this position+size is out of the viewport, try the
                     // next anchor available
-                    isInViewSet = aria.utils.Dom.isInViewport(position, size);
+                    isInViewSet = ariaUtilsDom.isInViewport(position, size);
                     i++;
                 } while (!isInViewSet && this.preferredPositions[i]);
 
@@ -484,7 +497,7 @@ Aria.classDefinition({
                 if (!isInViewSet) {
                     // Currently simply fallback to first anchor ...
                     position = this._getPositionForAnchor(this.preferredPositions[0], size);
-                    position = aria.utils.Dom.fitInViewport(position, size);
+                    position = ariaUtilsDom.fitInViewport(position, size);
                 } else {
                     positionEvent.position = this.preferredPositions[i - 1];
                 }
@@ -548,7 +561,7 @@ Aria.classDefinition({
             }
 
             // add scroll of document from absolute positioning
-            var documentScroll = aria.utils.Dom._getDocumentScroll();
+            var documentScroll = ariaUtilsDom._getDocumentScroll();
             if (left != null) {
                 left += documentScroll.scrollLeft;
             }
@@ -618,8 +631,8 @@ Aria.classDefinition({
                 }
 
                 if (this._rootElementOverflow != -1) {
-                    if (aria.core.Browser.isFirefox) {
-                        var docScroll = aria.utils.Dom._getDocumentScroll();
+                    if (ariaCoreBrowser.isFirefox) {
+                        var docScroll = ariaUtilsDom._getDocumentScroll();
                         this._rootElement.style.overflow = this._rootElementOverflow;
                         this._rootElement.scrollTop = docScroll.scrollTop;
                         this._rootElement.scrollLeft = docScroll.scrollLeft;
@@ -646,7 +659,7 @@ Aria.classDefinition({
 
             for (var i = 0, l = keys.length; i < l; i++) {
                 var key = keys[i];
-                if (!aria.utils.Array.contains(this.ANCHOR_KEYS, key)) {
+                if (!ariaUtilsArray.contains(this.ANCHOR_KEYS, key)) {
                     return false;
                 }
             }
@@ -684,8 +697,8 @@ Aria.classDefinition({
 
                 if (this._rootElementOverflow == -1) {
                     this._rootElementOverflow = this._rootElement.style.overflow;
-                    if (aria.core.Browser.isFirefox) {
-                        var docScroll = aria.utils.Dom._getDocumentScroll();
+                    if (ariaCoreBrowser.isFirefox) {
+                        var docScroll = ariaUtilsDom._getDocumentScroll();
                         this._rootElement.style.overflow = "hidden";
                         this._rootElement.scrollTop = docScroll.scrollTop;
                         this._rootElement.scrollLeft = docScroll.scrollLeft;
@@ -693,7 +706,7 @@ Aria.classDefinition({
                         this._rootElement.style.overflow = "hidden";
                     }
                 }
-                var viewport = aria.utils.Dom._getViewportSize();
+                var viewport = ariaUtilsDom._getViewportSize();
 
                 var width = this._rootElement.scrollWidth;
                 var height = this._rootElement.scrollHeight;
@@ -743,7 +756,7 @@ Aria.classDefinition({
                 }, false);
             }
 
-            if (aria.core.Browser.isIE7 && !this.isOpen) {
+            if (ariaCoreBrowser.isIE7 && !this.isOpen) {
                 // Without the following line, the autocomplete does not initially display its content on IE7:
                 this._document.body.appendChild(this.domElement);
             }
@@ -805,7 +818,7 @@ Aria.classDefinition({
                     this._hide();
                     this.isOpen = false;
                     // Notify the popup manager this popup was closed
-                    aria.popups.PopupManager.onPopupClose(this);
+                    ariaPopupsPopupManager.onPopupClose(this);
                     if (!this.conf.animateOut) {
                         this._onAfterClose();
                     } else {
@@ -850,7 +863,7 @@ Aria.classDefinition({
 
                 // timeout needed by IE for the PTR07394450 : it allows the browser to move the focus (asynchronous in
                 // IE), before to close the popup
-                if (aria.core.Browser.isIE) {
+                if (ariaCoreBrowser.isIE) {
                     var that = this;
                     setTimeout(function () {
                         that.close(domEvent);
@@ -874,7 +887,7 @@ Aria.classDefinition({
                     this.close(domEvent);
                 } else {
                     this.cancelMouseOutTimer();
-                    this._mouseOutTimer = aria.core.Timer.addCallback({
+                    this._mouseOutTimer = ariaCoreTimer.addCallback({
                         fn : this._onMouseOutTimeout,
                         scope : this,
                         delay : this.conf.closeOnMouseOutDelay
@@ -907,8 +920,8 @@ Aria.classDefinition({
             var domReference = this.reference;
             if (domReference) {
 
-                var geometry = aria.utils.Dom.getGeometry(domReference);
-                var referenceIsInViewport = geometry && (aria.utils.Dom.isInViewport({
+                var geometry = ariaUtilsDom.getGeometry(domReference);
+                var referenceIsInViewport = geometry && (ariaUtilsDom.isInViewport({
                     left : geometry.x,
                     top : geometry.y
                 }, geometry, this.domElement));
@@ -951,7 +964,7 @@ Aria.classDefinition({
                 this.$raiseEvent("onBeforeOpen");
                 this._show();
                 this.isOpen = true;
-                aria.popups.PopupManager.onPopupOpen(this);
+                ariaPopupsPopupManager.onPopupOpen(this);
                 this.refreshProcessingIndicators();
                 if (!this.conf.animateIn) {
                     this._onAfterOpen();
@@ -1007,7 +1020,7 @@ Aria.classDefinition({
          * @param {HTMLElement} element Element which will be used as a reference to position the popup
          */
         setReference : function (element) {
-            var size = aria.utils.Size.getSize(element), domUtil = aria.utils.Dom;
+            var size = ariaUtilsSize.getSize(element), domUtil = ariaUtilsDom;
             domUtil.scrollIntoView(element);
             var position = domUtil.calculatePosition(element);
 
@@ -1024,7 +1037,7 @@ Aria.classDefinition({
         setSection : function (section) {
             // PROFILING // var profilingId = this.$startMeasure("Inserting
             // section in DOM");
-            aria.utils.Dom.replaceHTML(this.domElement, section.html);
+            ariaUtilsDom.replaceHTML(this.domElement, section.html);
 
             // var sectionDomElement = this.domElement.firstChild;
 
@@ -1051,7 +1064,7 @@ Aria.classDefinition({
          */
         _getAnimator : function () {
             if (!this._animator) {
-                this._animator = new aria.utils.css.Animations();
+                this._animator = new ariaUtilsCssAnimations();
             }
             return this._animator;
         },
@@ -1062,7 +1075,7 @@ Aria.classDefinition({
          */
         _getMaskAnimator : function () {
             if (!this._maskAnimator) {
-                this._maskAnimator = new aria.utils.css.Animations();
+                this._maskAnimator = new ariaUtilsCssAnimations();
             }
             return this._maskAnimator;
         },

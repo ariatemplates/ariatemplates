@@ -12,15 +12,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaWidgetsFramesFrameFactory = require("../frames/FrameFactory");
+var ariaUtilsDom = require("../../utils/Dom");
+var ariaDomEvent = require("../../DomEvent");
+var ariaUtilsString = require("../../utils/String");
+var ariaWidgetsActionButtonStyle = require("./ButtonStyle.tpl.css");
+var ariaWidgetsActionActionWidget = require("./ActionWidget");
+var ariaCoreBrowser = require("../../core/Browser");
+
 
 /**
  * Class definition for the button widget.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.widgets.action.Button",
-    $extends : "aria.widgets.action.ActionWidget",
-    $dependencies : ["aria.widgets.frames.FrameFactory", "aria.utils.Dom", "aria.DomEvent", "aria.utils.String"],
-    $css : ["aria.widgets.action.ButtonStyle"],
+    $extends : ariaWidgetsActionActionWidget,
+    $css : [ariaWidgetsActionButtonStyle],
     /**
      * ActionWidget constructor
      * @param {aria.widgets.CfgBeans:ActionWidgetCfg} cfg the widget configuration
@@ -86,7 +94,7 @@ Aria.classDefinition({
              * @protected
              * @type {aria.widgets.frames.Frame}
              */
-            this._frame = aria.widgets.frames.FrameFactory.createFrame({
+            this._frame = ariaWidgetsFramesFrameFactory.createFrame({
                 height : cfg.height,
                 width : cfg.width,
                 state : this._state,
@@ -149,7 +157,7 @@ Aria.classDefinition({
                     }
                 } else {
                     this._frame.changeState(this._state);
-                    var ie8plus = aria.core.Browser.isOldIE && aria.core.Browser.majorVersion >= 8;
+                    var ie8plus = ariaCoreBrowser.isOldIE && ariaCoreBrowser.majorVersion >= 8;
                     if (state == "disabled") {
                         this._focusElt.className = "xButton xButtonDisabled";
                         if (ie8plus) {
@@ -196,7 +204,7 @@ Aria.classDefinition({
          */
         _initActionWidget : function (actingDom) {
             if (!this._simpleHTML) {
-                this._frame.linkToDom(aria.utils.Dom.getDomElementChild(actingDom, 0));
+                this._frame.linkToDom(ariaUtilsDom.getDomElementChild(actingDom, 0));
             }
             this._focusElt = actingDom;
         },
@@ -209,14 +217,14 @@ Aria.classDefinition({
         _widgetMarkup : function (out) {
             var cfg = this._cfg;
             var tabIndexString = (cfg.tabIndex != null ? ' tabindex="' + this._calculateTabIndex() + '" ' : '');
-            var ie67 = aria.core.Browser.isIE7 || aria.core.Browser.isIE6;
+            var ie67 = ariaCoreBrowser.isIE7 || ariaCoreBrowser.isIE6;
             var ariaTestMode = (Aria.testMode) ? ' id="' + this._domId + '_button" ' : '';
             var buttonClass = cfg.disabled ? "xButton xButtonDisabled" : "xButton";
 
             if (this._simpleHTML) {
                 var disableMarkup = cfg.disabled ? " disabled='disabled' " : "";
                 var styleMarkup = cfg.width != "-1" ? " style='width:" + cfg.width + "px;' " : "";
-                out.write(['<input type="button" value="', aria.utils.String.encodeForQuotedHTMLAttribute(cfg.label),
+                out.write(['<input type="button" value="', ariaUtilsString.encodeForQuotedHTMLAttribute(cfg.label),
                         '"', ariaTestMode, tabIndexString, disableMarkup, styleMarkup, '/>'].join(''));
             } else {
                 if (ie67) {
@@ -227,7 +235,7 @@ Aria.classDefinition({
                 } else {
                     // PTR 05613372: prevent 'clickability' of greyed out button. Adding "disabled" makes adjusting the
                     // text color impossible in IE, thus onfocusin used (more suitable for this use case than onfocus)
-                    var onFocusInString = (aria.core.Browser.isOldIE && cfg.disabled)
+                    var onFocusInString = (ariaCoreBrowser.isOldIE && cfg.disabled)
                             ? " onfocusin='this.blur()' "
                             : "";
                     out.write(['<button type="button" class="' + buttonClass + '"', onFocusInString, tabIndexString,
@@ -252,7 +260,7 @@ Aria.classDefinition({
          * @protected
          */
         _widgetMarkupContent : function (out) {
-            out.write(aria.utils.String.escapeHTML(this._cfg.label));
+            out.write(ariaUtilsString.escapeHTML(this._cfg.label));
         },
 
         /**
@@ -289,7 +297,7 @@ Aria.classDefinition({
             this._mousePressed = true;
             this._updateState();
 
-            if (aria.core.Browser.isChrome || aria.core.Browser.isSafari) {
+            if (ariaCoreBrowser.isChrome || ariaCoreBrowser.isSafari) {
                 this.currTarget = domEvt.currentTarget;
             }
         },
@@ -303,7 +311,7 @@ Aria.classDefinition({
             // TODO: this method should also be called when the mouse button is released, not depending on where it is
             // released
 
-            if (aria.core.Browser.isChrome || aria.core.Browser.isSafari) {
+            if (ariaCoreBrowser.isChrome || ariaCoreBrowser.isSafari) {
                 if (this._mousePressed && domEvt.currentTarget == this.currTarget) {
                     // handle an onclick event
                     this._performAction(domEvt);
@@ -325,7 +333,7 @@ Aria.classDefinition({
          * @param {aria.DomEvent} domEvt Event
          */
         _dom_onkeydown : function (domEvt) {
-            if (domEvt.keyCode == aria.DomEvent.KC_SPACE || domEvt.keyCode == aria.DomEvent.KC_ENTER) {
+            if (domEvt.keyCode == ariaDomEvent.KC_SPACE || domEvt.keyCode == ariaDomEvent.KC_ENTER) {
                 this._keyPressed = true;
                 this._updateState();
                 domEvt.stopPropagation();
@@ -341,7 +349,7 @@ Aria.classDefinition({
          * @method
          * @private
          */
-        _dom_onclick : (aria.core.Browser.isChrome || aria.core.Browser.isSafari) ? function (domEvent) {
+        _dom_onclick : (ariaCoreBrowser.isChrome || ariaCoreBrowser.isSafari) ? function (domEvent) {
             this._keyPressed = false;
             return; // we don't catch onclick's for buttons on chrome & safari. we catch mouseup's instead
         } : function (domEvent) {
@@ -358,7 +366,7 @@ Aria.classDefinition({
          * @param {aria.DomEvent} domEvt Event
          */
         _dom_onkeyup : function (domEvt) {
-            if (domEvt.keyCode == aria.DomEvent.KC_SPACE || domEvt.keyCode == aria.DomEvent.KC_ENTER) {
+            if (domEvt.keyCode == ariaDomEvent.KC_SPACE || domEvt.keyCode == ariaDomEvent.KC_ENTER) {
                 this._keyPressed = false;
                 this._updateState();
 

@@ -12,14 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaTemplatesIModuleCtrl = require("../templates/IModuleCtrl");
+
 
 /**
  * Public API of the Application Manager
  * @class aria.pageEngine.ApplicationMgrInterface
  */
-Aria.interfaceDefinition({
+module.exports = Aria.interfaceDefinition({
     $classpath : 'aria.pageEngine.SiteRootModuleInterface',
-    $extends : 'aria.templates.IModuleCtrl',
+    $extends : ariaTemplatesIModuleCtrl,
     $events : {
         "pageReady" : "Raised when the page is ready to be displayed."
     },

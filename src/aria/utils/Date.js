@@ -12,18 +12,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaUtilsString = require("./String");
+var ariaUtilsType = require("./Type");
+var ariaUtilsEnvironmentDate = require("./environment/Date");
+var ariaUtilsArray = require("./Array");
+var ariaCoreResMgr = require("../core/ResMgr");
+var ariaResourcesDateRes = require("../$resources").file(__dirname, "../resources/DateRes");
+var ariaUtilsUtilsRes = require("../$resources").file(__dirname, "./UtilsRes");
+
 
 /**
  * This class contains utilities to manipulate Dates.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.utils.Date",
     $singleton : true,
-    $dependencies : ["aria.utils.String", "aria.utils.Type", "aria.utils.environment.Date", "aria.utils.Array",
-            "aria.core.ResMgr"],
     $resources : {
-        dateRes : "aria.resources.DateRes",
-        res : "aria.utils.UtilsRes"
+        dateRes : ariaResourcesDateRes,
+        res : ariaUtilsUtilsRes
     },
     $constructor : function () {
 
@@ -39,9 +46,9 @@ Aria.classDefinition({
          * @private
          * @type aria.utils.environment.Date
          */
-        this._environment = aria.utils.environment.Date;
+        this._environment = ariaUtilsEnvironmentDate;
 
-        var res = this.dateRes, utilString = aria.utils.String, utilRes = this.res;
+        var res = this.dateRes, utilString = ariaUtilsString, utilRes = this.res;
 
         /**
          * IATA and localized months for interpretation. It is set in method _prepareLocalizedPatterns at initialization
@@ -405,7 +412,7 @@ Aria.classDefinition({
 
         this._prepareLocalizedPatterns();
 
-        aria.core.ResMgr.$on({
+        ariaCoreResMgr.$on({
             "resourcesReloadComplete" : this._prepareLocalizedPatterns,
             scope : this
         });
@@ -413,7 +420,7 @@ Aria.classDefinition({
     },
     $destructor : function () {
         this._formatCache = null;
-        aria.core.ResMgr.$unregisterListeners(this);
+        ariaCoreResMgr.$unregisterListeners(this);
     },
     $statics : {
         PATTERN_ERROR_MESSAGE : "##PATTERN_ERROR##",
@@ -652,7 +659,7 @@ Aria.classDefinition({
                 }
             }
 
-            time = aria.utils.String.trim(time);
+            time = ariaUtilsString.trim(time);
 
             return time;
         },
@@ -841,7 +848,7 @@ Aria.classDefinition({
 
             var dateBeforeMonth, entry, entrylen, dateOptions;
             /* Code for Reference Date backward compatibility */
-            dateOptions = aria.utils.Type.isDate(options) ? {
+            dateOptions = ariaUtilsType.isDate(options) ? {
                 referenceDate : options
             } : options || {};
             /* Code for Reference Date backward compatibility ends */
@@ -849,7 +856,7 @@ Aria.classDefinition({
             if (!entryStr) {
                 return null;
             }
-            entry = aria.utils.String.trim(entryStr);
+            entry = ariaUtilsString.trim(entryStr);
             entrylen = entry.length;
             // will not interpret something that does not looks like a bit
             // like a date
@@ -919,20 +926,20 @@ Aria.classDefinition({
          * @return {Date}
          */
         _interpretAgainstPattern : function (entryStr, inputPattern) {
-            if (aria.utils.Type.isFunction(inputPattern) || aria.utils.Type.isString(inputPattern)) {
+            if (ariaUtilsType.isFunction(inputPattern) || ariaUtilsType.isString(inputPattern)) {
                 inputPattern = [inputPattern];
-            } else if (!aria.utils.Type.isArray(inputPattern)) {
+            } else if (!ariaUtilsType.isArray(inputPattern)) {
                 this.$logError(this.INVALID_INPUT_PATTERN_TYPE, inputPattern);
                 return null;
             }
-            var entry = aria.utils.String.trim(entryStr), jsDate, indexes, datePattern, patternComposition, userInputInterpreter;
+            var entry = ariaUtilsString.trim(entryStr), jsDate, indexes, datePattern, patternComposition, userInputInterpreter;
             for (var i = 0; i < inputPattern.length; i++) {
-                if (aria.utils.Type.isFunction(inputPattern[i])) {
+                if (ariaUtilsType.isFunction(inputPattern[i])) {
                     jsDate = inputPattern[i](entry);
-                    if (aria.utils.Type.isDate(jsDate)) {
+                    if (ariaUtilsType.isDate(jsDate)) {
                         return jsDate;
                     }
-                } else if (!aria.utils.Type.isString(inputPattern[i])) {
+                } else if (!ariaUtilsType.isString(inputPattern[i])) {
                     this.$logError(this.INVALID_INPUT_PATTERN_TYPE, inputPattern);
                 } else {
                     if (this._containDuplicates(inputPattern[i])) {
@@ -950,7 +957,7 @@ Aria.classDefinition({
                             if (userInputInterpreter.test(entry.toUpperCase())) {
                                 jsDate = this._interpretDateWithAnySeparator(userInputInterpreter, entry.toUpperCase(), indexes.yearIndex, indexes.monthIndex, indexes.dayIndex);
                             }
-                            if (aria.utils.Type.isDate(jsDate)) {
+                            if (ariaUtilsType.isDate(jsDate)) {
                                 return jsDate;
                             }
                         }
@@ -1060,7 +1067,7 @@ Aria.classDefinition({
          */
 
         _generateIndexes : function (format, patternComposition) {
-            var result = {}, yearIndex = null, monthIndex = null, dayIndex = null, arrayUtil = aria.utils.Array;
+            var result = {}, yearIndex = null, monthIndex = null, dayIndex = null, arrayUtil = ariaUtilsArray;
             yearIndex = arrayUtil.indexOf(patternComposition, "yyyy");
             if (yearIndex === -1) {
                 yearIndex = arrayUtil.indexOf(patternComposition, "yy");
@@ -1103,9 +1110,9 @@ Aria.classDefinition({
          */
         _userInputFormatGenerator : function (patterncomposition) {
             var userInputFormat = null;
-            var monthIndex = aria.utils.Array.indexOf(patterncomposition, "MMM");
+            var monthIndex = ariaUtilsArray.indexOf(patterncomposition, "MMM");
             if (monthIndex === -1) {
-                monthIndex = aria.utils.Array.indexOf(patterncomposition, "I");
+                monthIndex = ariaUtilsArray.indexOf(patterncomposition, "I");
             }
             var monthRegExpSource = this._interpret_isMonth.source;
             switch (monthIndex) {
@@ -1418,7 +1425,7 @@ Aria.classDefinition({
                     interpretdMonth = null;
                 }
                 // check if month is integer
-                if (!aria.utils.Type.isNumber(interpretdMonth)) {
+                if (!ariaUtilsType.isNumber(interpretdMonth)) {
                     interpretdMonth = null;
                 }
             }
@@ -1453,7 +1460,7 @@ Aria.classDefinition({
             }
             // new date instance with parsed date string
             jsdate = new Date(interpretdYear, interpretdMonth, interpretdDate);
-            if (aria.utils.Type.isDate(jsdate)) {
+            if (ariaUtilsType.isDate(jsdate)) {
                 if (jsdate.getDate() != interpretdDate || jsdate.getMonth() != interpretdMonth
                         || jsdate.getFullYear() != interpretdYear) {
                     return null;
@@ -1492,7 +1499,7 @@ Aria.classDefinition({
          * @return {String}
          */
         format : function (date, pattern, utcTime) {
-            if (!aria.utils.Type.isDate(date)) {
+            if (!ariaUtilsType.isDate(date)) {
                 return null;
             }
 
@@ -1508,7 +1515,7 @@ Aria.classDefinition({
             }
 
             var formatFn = this._getFormatFunction(pattern);
-            this.$assert(118, aria.utils.Type.isFunction(formatFn));
+            this.$assert(118, ariaUtilsType.isFunction(formatFn));
 
             return formatFn(date);
         },
@@ -1615,7 +1622,7 @@ Aria.classDefinition({
                 // try {
                 for (var index = 0, l = fnParts.length; index < l; index++) {
                     element = fnParts[index];
-                    if (aria.utils.Type.isObject(element)) {
+                    if (ariaUtilsType.isObject(element)) {
                         result.push(element.patternFn(entry, element.occurency));
                     } else {
                         result.push(element);
@@ -1647,7 +1654,7 @@ Aria.classDefinition({
          * @param {String} originalPattern
          */
         _pushIfExists : function (fnParts, patternChar, patternOccurency, originalPattern) {
-            var patternFn, utilType = aria.utils.Type;
+            var patternFn, utilType = ariaUtilsType;
             if (patternOccurency) {
                 // special case for uppercase
                 if (patternChar == 'U') {
@@ -1773,7 +1780,7 @@ Aria.classDefinition({
          */
         getWeekNumber : function (date, firstDayOfWeek) {
 
-            if (!aria.utils.Type.isDate(date)) {
+            if (!ariaUtilsType.isDate(date)) {
                 return;
             }
 
@@ -1861,7 +1868,7 @@ Aria.classDefinition({
          * @return {Integer} month number, or -1 if no month is found
          */
         _getMonthIndex : function (entry) {
-            return aria.utils.Array.indexOf(this._interpret_monthTexts, entry.toUpperCase()) % 12;
+            return ariaUtilsArray.indexOf(this._interpret_monthTexts, entry.toUpperCase()) % 12;
         }
     }
 });

@@ -12,16 +12,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaUtilsDomOverlay = require("../utils/DomOverlay");
+var ariaUtilsDom = require("../utils/Dom");
+var ariaTemplatesDomElementWrapper = require("./DomElementWrapper");
+
 
 /**
  * Wrapper around a Section Object and it's DOM Element
  * @class aria.templates.SectionWrapper
  * @extends aria.core.JsObject
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : 'aria.templates.SectionWrapper',
-    $extends : 'aria.templates.DomElementWrapper',
-    $dependencies : ['aria.utils.DomOverlay', 'aria.utils.Dom'],
+    $extends : ariaTemplatesDomElementWrapper,
     /**
      * Create a Wrapper object to allow safe changes in the DOM without giving direct access to the DOM. Note that a
      * closure is used to prevent access to the domElt object from the template.
@@ -44,7 +48,7 @@ Aria.classDefinition({
          */
         this.insertAdjacentSection = function (where, sectionParam) {
             if (where != "beforeBegin" && where != "afterBegin" && where != "beforeEnd" && where != "afterEnd") {
-                this.$logError(aria.utils.Dom.INSERT_ADJACENT_INVALID_POSITION, [where]);
+                this.$logError(ariaUtilsDom.INSERT_ADJACENT_INVALID_POSITION, [where]);
                 return;
             }
             sectionObject.tplCtxt.insertAdjacentSections({
@@ -63,8 +67,8 @@ Aria.classDefinition({
         this.remove = function () {
             sectionObject.$dispose();
             var parentNode = domElt.parentNode;
-            aria.utils.Dom.removeElement(domElt);
-            aria.utils.Dom.refreshDomElt(parentNode);
+            ariaUtilsDom.removeElement(domElt);
+            ariaUtilsDom.refreshDomElt(parentNode);
             this.$dispose();
         };
 
@@ -77,9 +81,9 @@ Aria.classDefinition({
             var overlay, doRegistration = true;
 
             if (visible) {
-                overlay = aria.utils.DomOverlay.create(domElt, message);
+                overlay = ariaUtilsDomOverlay.create(domElt, message);
             } else {
-                overlay = aria.utils.DomOverlay.detachFrom(domElt);
+                overlay = ariaUtilsDomOverlay.detachFrom(domElt);
 
                 if (!overlay) {
                     // Trying to remove an overlay from an element that has no overlay attached

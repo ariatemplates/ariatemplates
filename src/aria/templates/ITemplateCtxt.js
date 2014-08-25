@@ -12,13 +12,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+
 
 /**
  * Interface for aria.templates.TemplateCtxt to be accessible from outside the framework, when developping tools to
  * debug or customize Aria Templates applications.
  * @class aria.templates.ITemplateCtxt
  */
-Aria.interfaceDefinition({
+module.exports = Aria.interfaceDefinition({
     $classpath : 'aria.templates.ITemplateCtxt',
     $interface : {
         /**

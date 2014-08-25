@@ -12,11 +12,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaJsunitHelpersOutObj = require("./helpers/OutObj");
+var ariaJsunitTestCase = require("./TestCase");
 
-Aria.classDefinition({
+
+module.exports = Aria.classDefinition({
     $classpath : "aria.jsunit.WidgetTestCase",
-    $extends : "aria.jsunit.TestCase",
-    $dependencies : ["aria.jsunit.helpers.OutObj"],
+    $extends : ariaJsunitTestCase,
     $destructor : function () {
         this.outObj.clean();
         this.outObj = null;
@@ -29,7 +32,7 @@ Aria.classDefinition({
          * Override the default behavior to create a test area in the DOM
          */
         run : function () {
-            this.outObj = aria.jsunit.helpers.OutObj;
+            this.outObj = ariaJsunitHelpersOutObj;
             this.outObj.createPlayground(this.$class);
 
             this.$TestCase.run.apply(this, arguments);

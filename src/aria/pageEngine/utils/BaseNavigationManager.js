@@ -12,14 +12,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaStorageLocalStorage = require("../../storage/LocalStorage");
+var ariaUtilsEvent = require("../../utils/Event");
+var ariaUtilsType = require("../../utils/Type");
+
 
 /**
  * Base class that is extended in order to provide page navigation, whether it is based on hash or on history API.
  * Classes extending it have to implement a getUrl method in their prototype.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.pageEngine.utils.BaseNavigationManager",
-    $dependencies : ["aria.storage.LocalStorage", "aria.utils.Event", "aria.utils.Type"],
     $statics : {
 
         /**
@@ -66,7 +70,7 @@ Aria.classDefinition({
              * @type Integer
              * @protected
              */
-            this._expiresAfter = aria.utils.Type.isNumber(options.expiresAfter)
+            this._expiresAfter = ariaUtilsType.isNumber(options.expiresAfter)
                     ? options.expiresAfter
                     : this.EXPIRATION_TIME;
 
@@ -75,7 +79,7 @@ Aria.classDefinition({
              * @type aria.storage.LocalStorage
              * @private
              */
-            this._storage = new aria.storage.LocalStorage();
+            this._storage = new ariaStorageLocalStorage();
 
             /**
              * Called on window unload.
@@ -87,7 +91,7 @@ Aria.classDefinition({
                 scope : this
             };
 
-            aria.utils.Event.addListener(Aria.$window, "unload", this._saveCacheCB);
+            ariaUtilsEvent.addListener(Aria.$window, "unload", this._saveCacheCB);
 
             /**
              * Contains the association between hashes and pageIds for already visited pages
@@ -134,7 +138,7 @@ Aria.classDefinition({
                 this._storage.$dispose();
                 this._storage = null;
             }
-            aria.utils.Event.removeListener(Aria.$window, "unload", this._saveCacheCB);
+            ariaUtilsEvent.removeListener(Aria.$window, "unload", this._saveCacheCB);
         },
 
         /**

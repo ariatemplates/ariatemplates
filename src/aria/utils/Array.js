@@ -12,6 +12,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+
 
 (function () {
     var arrayPrototype = Array.prototype;
@@ -22,7 +24,7 @@
      * @extends aria.core.JsObject
      * @singleton
      */
-    Aria.classDefinition({
+    module.exports = Aria.classDefinition({
         $classpath : 'aria.utils.Array',
         $singleton : true,
         $constructor : function () {

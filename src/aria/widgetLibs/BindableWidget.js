@@ -12,6 +12,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaUtilsJson = require("../utils/Json");
+var ariaUtilsType = require("../utils/Type");
+var ariaWidgetLibsBaseWidget = require("./BaseWidget");
+
 
 /**
  * Base class to be extended by any widget that allows bindings.<br />
@@ -19,13 +24,12 @@
  * in the data model the function '_notifyDataChange' is called. It also provides a method to transform bound values
  * to/from the widget.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.widgetLibs.BindableWidget",
-    $extends : "aria.widgetLibs.BaseWidget",
+    $extends : ariaWidgetLibsBaseWidget,
     $statics : {
         INVALID_BEAN : "%1Invalid property '%2' in widget's '%3' configuration."
     },
-    $dependencies : ["aria.utils.Json", "aria.utils.Type"],
     /**
      * Create an instance of the widget.
      * @param {Object} cfg widget configuration, which is the parameter given in the template
@@ -56,7 +60,7 @@ Aria.classDefinition({
         this._bindingListeners = {};
     },
     $destructor : function () {
-        var listeners = this._bindingListeners, jsonUtils = aria.utils.Json;
+        var listeners = this._bindingListeners, jsonUtils = ariaUtilsJson;
         for (var property in listeners) {
             if (listeners.hasOwnProperty(property)) {
                 var bind = listeners[property];
@@ -84,7 +88,7 @@ Aria.classDefinition({
         },
 
         _registerSingleProperty : function (property) {
-            var bindings = this._cfg.bind, bind = bindings[property], jsonUtils = aria.utils.Json;
+            var bindings = this._cfg.bind, bind = bindings[property], jsonUtils = ariaUtilsJson;
             if (bind) {
                 var callback = {
                     fn : this._notifyDataChange,
@@ -141,7 +145,7 @@ Aria.classDefinition({
             var retVal = value;
             if (transform) {
                 var created = false;
-                var typeUtils = aria.utils.Type;
+                var typeUtils = ariaUtilsType;
 
                 // Instantiate the class if we refer to a class path
                 if (typeUtils.isString(transform) && transform.indexOf('.') != -1) {

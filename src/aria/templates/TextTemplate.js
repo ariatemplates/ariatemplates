@@ -12,14 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaTemplatesTxtCtxt = require("./TxtCtxt");
+var ariaTemplatesBaseTemplate = require("./BaseTemplate");
+
 
 /**
  * Base class from which all text templates inherit.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.templates.TextTemplate",
-    $extends : "aria.templates.BaseTemplate",
-    $dependencies : ["aria.templates.TxtCtxt"],
+    $extends : ariaTemplatesBaseTemplate,
     $prototype : {
         /**
          * Data model available to the text template. It can be overridden by the text template context.
@@ -45,7 +48,7 @@ Aria.classDefinition({
              * @return {String}
              */
             aria.templates.TextTemplate.processTextTemplate = function (data) {
-                var textContext = new aria.templates.TxtCtxt();
+                var textContext = new ariaTemplatesTxtCtxt();
                 textContext.initTemplate({
                     "classpath" : this.prototype.$classpath,
                     "data" : data

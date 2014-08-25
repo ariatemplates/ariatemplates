@@ -12,16 +12,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaTemplatesTplParser = require("./TplParser");
+var ariaWidgetLibsEnvironmentWidgetLibsSettings = require("../widgetLibs/environment/WidgetLibsSettings");
+var ariaTemplatesClassGenerator = require("./ClassGenerator");
+
 
 /**
  * Generate the class definition for an HTML Template
  * @class aria.templates.TplClassGenerator
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : 'aria.templates.TplClassGenerator',
-    $extends : 'aria.templates.ClassGenerator',
+    $extends : ariaTemplatesClassGenerator,
     $singleton : true,
-    $dependencies : ['aria.templates.TplParser', 'aria.widgetLibs.environment.WidgetLibsSettings'],
     $constructor : function () {
         this.$ClassGenerator.constructor.call(this);
 
@@ -29,7 +33,7 @@ Aria.classDefinition({
         this._loadStatements(["Template", "id", "on", "createView", "section", "@", "repeater"]);
 
         // Redefine the protected parser
-        this._parser = aria.templates.TplParser;
+        this._parser = ariaTemplatesTplParser;
 
         // Redefine the class used as the parent for templates which do not inherit from any other template
         this._superClass = "aria.templates.Template";
@@ -73,7 +77,7 @@ Aria.classDefinition({
             var tplParam = out.templateParam;
             var wlibs = tplParam.$wlibs;
             var classes = [];
-            var defaultLibs = aria.widgetLibs.environment.WidgetLibsSettings.getWidgetLibs();
+            var defaultLibs = ariaWidgetLibsEnvironmentWidgetLibsSettings.getWidgetLibs();
             // add all default widget libraries if they are not overridden:
             for (var i in defaultLibs) {
                 if (defaultLibs.hasOwnProperty(i)) {

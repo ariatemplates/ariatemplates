@@ -12,18 +12,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+require("../Template");
+require("./CalendarController");
+require("../../DomEvent");
+var ariaWidgetsCalendarCalendarStyle = require("./CalendarStyle.tpl.css");
+require("./CalendarTemplate.tpl");
+var ariaWidgetsTemplateBasedWidget = require("../TemplateBasedWidget");
+var ariaCoreBrowser = require("../../core/Browser");
+
 
 /**
  * Calendar widget, which is a template-based widget. Most of the logic of the calendar is implemented in the
  * CalendarController class. This class only does the link between the properties of the calendar widget and the
  * calendar controller.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.widgets.calendar.Calendar",
-    $extends : "aria.widgets.TemplateBasedWidget",
-    $dependencies : ["aria.widgets.Template", "aria.widgets.calendar.CalendarController", "aria.DomEvent"],
-    $css : ["aria.widgets.calendar.CalendarStyle"],
-    $templates : ["aria.widgets.calendar.CalendarTemplate"],
+    $extends : ariaWidgetsTemplateBasedWidget,
+    $css : [ariaWidgetsCalendarCalendarStyle],
     $constructor : function (cfg, ctxt) {
         this.$TemplateBasedWidget.constructor.apply(this, arguments);
         var sclass = this._cfg.sclass;
@@ -176,7 +183,7 @@ Aria.classDefinition({
                     var domEltStyle = dom.style;
                     var visualFocusStyle = (aria.utils.VisualFocus) ? aria.utils.VisualFocus.getStyle() : null;
                     if (this._hasFocus) {
-                        if (aria.core.Browser.isIE6 || aria.core.Browser.isIE7) {
+                        if (ariaCoreBrowser.isIE6 || ariaCoreBrowser.isIE7) {
                             domEltStyle.border = "1px dotted black";
                             domEltStyle.padding = "0px";
                         } else {
@@ -185,7 +192,7 @@ Aria.classDefinition({
                             }
                         }
                     } else {
-                        if (aria.core.Browser.isIE6 || aria.core.Browser.isIE7) {
+                        if (ariaCoreBrowser.isIE6 || ariaCoreBrowser.isIE7) {
                             domEltStyle.border = "0px";
                             domEltStyle.padding = "1px";
                         } else {

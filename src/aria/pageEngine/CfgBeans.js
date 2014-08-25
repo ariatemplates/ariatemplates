@@ -12,18 +12,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaCoreJsonTypes = require("../core/JsonTypes");
+var ariaCoreCfgBeans = require("../core/CfgBeans");
+var ariaTemplatesCfgBeans = require("../templates/CfgBeans");
+var ariaUtilsCssAnimationsBean = require("../utils/css/AnimationsBean");
+
 
 /**
  * Beans to describe the parameters used in aria.pageEngine
  */
-Aria.beanDefinitions({
+module.exports = Aria.beanDefinitions({
     $package : "aria.pageEngine.CfgBeans",
     $description : "Definition of the beans used in aria.pageEngine",
     $namespaces : {
-        "json" : "aria.core.JsonTypes",
-        "core" : "aria.core.CfgBeans",
-        "template" : "aria.templates.CfgBeans",
-        "animation" : "aria.utils.css.AnimationsBean"
+        "json" : ariaCoreJsonTypes,
+        "core" : ariaCoreCfgBeans,
+        "template" : ariaTemplatesCfgBeans,
+        "animation" : ariaUtilsCssAnimationsBean
     },
     $beans : {
         "ExtendedCallback" : {

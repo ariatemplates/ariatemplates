@@ -12,8 +12,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../../../Aria");
 
-Aria.tplScriptDefinition({
+
+module.exports = Aria.tplScriptDefinition({
     $classpath : 'aria.tester.runner.view.links.LinksScript',
     $prototype : {
         getDocumentationLinks : function () {

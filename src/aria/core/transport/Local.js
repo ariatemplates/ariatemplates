@@ -12,15 +12,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaCoreTransportBaseXHR = require("./BaseXHR");
+var ariaCoreBrowser = require("../Browser");
+
 
 /**
  * Transport class for Local requests. It's a XHR transport but redefines some methods to work with file:// protocol.
  * @singleton
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.core.transport.Local",
     $singleton : true,
-    $extends : "aria.core.transport.BaseXHR",
+    $extends : ariaCoreTransportBaseXHR,
     $prototype : {
         /**
          * Perform a request.
@@ -29,7 +33,7 @@ Aria.classDefinition({
          * @throws
          */
         request : function (request, callback) {
-            if (aria.core.Browser.isOpera) {
+            if (ariaCoreBrowser.isOpera) {
                 // Opera doesn't work with file protocol but the iFrameHack seems to work
                 return this._iFrameHack(request, callback);
             }

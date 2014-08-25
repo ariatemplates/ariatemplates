@@ -12,14 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+require("./NumberCfgBeans");
+var ariaCoreEnvironmentEnvironmentBase = require("../../core/environment/EnvironmentBase");
+
 
 /**
  * Contains getters for the Number environment.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.utils.environment.Number",
-    $extends : "aria.core.environment.EnvironmentBase",
-    $dependencies : ["aria.utils.environment.NumberCfgBeans"],
+    $extends : ariaCoreEnvironmentEnvironmentBase,
     $singleton : true,
     $prototype : {
         /**

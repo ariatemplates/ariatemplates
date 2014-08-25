@@ -12,15 +12,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaTemplatesTemplateTrait = require("../templates/TemplateTrait");
+var ariaTemplatesTemplateCtxt = require("../templates/TemplateCtxt");
+var ariaUtilsDom = require("../utils/Dom");
+require("../templates/CfgBeans");
+require("../templates/ModuleCtrlFactory");
+var ariaCoreEnvironmentCustomizations = require("../core/environment/Customizations");
+var ariaWidgetsContainerContainer = require("./container/Container");
+var ariaCoreJsonValidator = require("../core/JsonValidator");
+
 
 /**
  * Widget used to load sub-templates.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.widgets.Template",
-    $extends : "aria.widgets.container.Container",
-    $dependencies : ["aria.templates.TemplateTrait", "aria.templates.TemplateCtxt", "aria.utils.Dom",
-            "aria.templates.CfgBeans", "aria.templates.ModuleCtrlFactory", "aria.core.environment.Customizations"],
+    $extends : ariaWidgetsContainerContainer,
     $events : {
         "ElementReady" : {
             description : "Raised when the template content is fully displayed."
@@ -70,7 +78,7 @@ Aria.classDefinition({
          * @type aria.templates.CfgBeans:InitTemplateCfg
          */
         this._tplcfg = {
-            classpath : aria.core.environment.Customizations.getTemplateCP(cfg.defaultTemplate),
+            classpath : ariaCoreEnvironmentCustomizations.getTemplateCP(cfg.defaultTemplate),
             args : cfg.args,
             id : this._domId,
             originalId : this.getId()
@@ -110,7 +118,7 @@ Aria.classDefinition({
     },
     $prototype : {
         $init : function (p) {
-            var src = aria.templates.TemplateTrait.prototype;
+            var src = ariaTemplatesTemplateTrait.prototype;
             for (var key in src) {
                 if (src.hasOwnProperty(key) && !p.hasOwnProperty(key)) {
                     // copy methods which are not already on this object (this avoids copying $classpath and
@@ -160,7 +168,7 @@ Aria.classDefinition({
             var tplDiv = this._subTplDiv; // may be null at this time
             if (tplDiv) {
                 tplDiv.className = "xTplContent"; // remove the loading indicator
-                aria.utils.Dom.replaceHTML(tplDiv, "#ERROR WHILE LOADING TEMPLATE#");
+                ariaUtilsDom.replaceHTML(tplDiv, "#ERROR WHILE LOADING TEMPLATE#");
             }
             this._deleteTplcfg();
             this.$callback(this.tplLoadCallback, {
@@ -176,7 +184,7 @@ Aria.classDefinition({
             var tplcfg = this._tplcfg;
             var cfg = this._cfg;
             if (this._needCreatingModuleCtrl) {
-                if (!aria.core.JsonValidator.normalize({
+                if (!ariaCoreJsonValidator.normalize({
                     json : cfg.moduleCtrl,
                     beanName : "aria.templates.CfgBeans.InitModuleCtrl"
                 })) {
@@ -235,7 +243,7 @@ Aria.classDefinition({
                 }
             }
 
-            var tplCtxt = new aria.templates.TemplateCtxt();
+            var tplCtxt = new ariaTemplatesTemplateCtxt();
             this.subTplCtxt = tplCtxt;
             tplCtxt.parent = this._context;
 
@@ -289,7 +297,7 @@ Aria.classDefinition({
         _init : function () {
             aria.widgets.Template.superclass._init.call(this);
 
-            var tplDiv = aria.utils.Dom.getDomElementChild(this._domElt, 0);
+            var tplDiv = ariaUtilsDom.getDomElementChild(this._domElt, 0);
             this._subTplDiv = tplDiv;
             var tplCtxt = this.subTplCtxt;
 

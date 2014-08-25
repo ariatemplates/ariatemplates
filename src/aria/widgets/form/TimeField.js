@@ -12,15 +12,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaWidgetsControllersTimeController = require("../controllers/TimeController");
+var ariaWidgetsFormTextInput = require("./TextInput");
+
 
 /**
  * @class aria.widgets.form.TimeField TimeField widget
  * @extends aria.widgets.form.TextInput
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : 'aria.widgets.form.TimeField',
-    $extends : 'aria.widgets.form.TextInput',
-    $dependencies : ['aria.widgets.controllers.TimeController'],
+    $extends : ariaWidgetsFormTextInput,
     /**
      * TimeField constructor
      * @param{aria.widgets.CfgBeans.TimeFieldCfg} cfg the widget configuration
@@ -28,7 +31,7 @@ Aria.classDefinition({
      * @param {Number} lineNumber Line number corresponding in the .tpl file where the widget is created
      */
     $constructor : function (cfg, ctxt, lineNumber) {
-        var controller = new aria.widgets.controllers.TimeController(cfg);
+        var controller = new ariaWidgetsControllersTimeController(cfg);
         controller.setPattern(cfg.pattern);
         this.$TextInput.constructor.call(this, cfg, ctxt, lineNumber, controller);
     },

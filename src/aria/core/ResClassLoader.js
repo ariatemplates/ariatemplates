@@ -12,11 +12,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaCoreClassLoader = require("./ClassLoader");
+
 
 /**
  * With the migration to noder-js, this class is no longer supported.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.core.ResClassLoader",
-    $extends : 'aria.core.ClassLoader'
+    $extends : ariaCoreClassLoader
 });

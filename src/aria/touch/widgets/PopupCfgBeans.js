@@ -12,18 +12,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaCoreJsonTypes = require("../../core/JsonTypes");
+var ariaWidgetLibsCommonBeans = require("../../widgetLibs/CommonBeans");
+var ariaHtmlBeansElementCfg = require("../../html/beans/ElementCfg");
+var ariaUtilsDomBeans = require("../../utils/DomBeans");
+var ariaTemplatesCfgBeans = require("../../templates/CfgBeans");
+var ariaUtilsCssAnimationsBean = require("../../utils/css/AnimationsBean");
+var ariaPopupsBeans = require("../../popups/Beans");
 
-Aria.beanDefinitions({
+
+module.exports = Aria.beanDefinitions({
     $package : "aria.touch.widgets.PopupCfgBeans",
     $description : "Popup config beans",
     $namespaces : {
-        "json" : "aria.core.JsonTypes",
-        "common" : "aria.widgetLibs.CommonBeans",
-        "base" : "aria.html.beans.ElementCfg",
-        "dom" : "aria.utils.DomBeans",
-        "templates" : "aria.templates.CfgBeans",
-        "animation" : "aria.utils.css.AnimationsBean",
-        "popup" : "aria.popups.Beans"
+        "json" : ariaCoreJsonTypes,
+        "common" : ariaWidgetLibsCommonBeans,
+        "base" : ariaHtmlBeansElementCfg,
+        "dom" : ariaUtilsDomBeans,
+        "templates" : ariaTemplatesCfgBeans,
+        "animation" : ariaUtilsCssAnimationsBean,
+        "popup" : ariaPopupsBeans
     },
     $beans : {
         "PopupCfg" : {

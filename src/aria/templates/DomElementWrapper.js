@@ -12,15 +12,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaUtilsDom = require("../utils/Dom");
+var ariaUtilsDomOverlay = require("../utils/DomOverlay");
+var ariaUtilsClassList = require("../utils/ClassList");
+var ariaUtilsSandboxDOMProperties = require("../utils/sandbox/DOMProperties");
+
 
 /**
  * Wrapper for DOM elements inside templates (so that the templates do not have a direct access to the DOM).
  * @class aria.templates.DomElementWrapper
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : 'aria.templates.DomElementWrapper',
-    $dependencies : ['aria.utils.Dom', 'aria.utils.DomOverlay', 'aria.utils.ClassList',
-            'aria.utils.sandbox.DOMProperties'],
     /**
      * Create a DOM Wrapper object to allow safe changes in the DOM without giving direct access to the DOM. Note that a
      * closure is used to prevent access to the domElt object from the template.
@@ -55,7 +59,7 @@ Aria.classDefinition({
          * @return {aria.templates.DomElementWrapper} A wrapper on the child element, if the child element exists, or null if it does not exist.
          */
         this.getChild = function (childIndex) {
-            var oElm = aria.utils.Dom.getDomElementChild(domElt, childIndex);
+            var oElm = ariaUtilsDom.getDomElementChild(domElt, childIndex);
             return (oElm) ? new aria.templates.DomElementWrapper(oElm) : null;
         };
 
@@ -150,7 +154,7 @@ Aria.classDefinition({
          * Wrapper to manage classes for DOM elements inside templates
          * @type aria.utils.ClassList
          */
-        this.classList = new aria.utils.ClassList(domElt);
+        this.classList = new ariaUtilsClassList(domElt);
 
         /**
          * Set focus on dom element.
@@ -179,7 +183,7 @@ Aria.classDefinition({
          * @param {String} propertyName name of the property to get
          */
         this.getProperty = function (propertyName) {
-            if (aria.utils.sandbox.DOMProperties.isReadSafe(tagName, propertyName)) {
+            if (ariaUtilsSandboxDOMProperties.isReadSafe(tagName, propertyName)) {
                 return domElt[propertyName];
             } else {
                 this.$logError(this.READ_ACCESS_DENIED, [propertyName, tagName]);
@@ -195,7 +199,7 @@ Aria.classDefinition({
          * @param {String} value value of the property to set
          */
         this.setProperty = function (propertyName, value) {
-            if (aria.utils.sandbox.DOMProperties.isWriteSafe(tagName, propertyName)) {
+            if (ariaUtilsSandboxDOMProperties.isWriteSafe(tagName, propertyName)) {
                 domElt[propertyName] = value;
             } else {
                 this.$logError(this.WRITE_ACCESS_DENIED, [propertyName, tagName]);
@@ -231,9 +235,9 @@ Aria.classDefinition({
         this.setProcessingIndicator = function (visible, message) {
             var overlay, doRegistration = true;
             if (visible) {
-                overlay = aria.utils.DomOverlay.create(domElt, message);
+                overlay = ariaUtilsDomOverlay.create(domElt, message);
             } else {
-                overlay = aria.utils.DomOverlay.detachFrom(domElt, message);
+                overlay = ariaUtilsDomOverlay.detachFrom(domElt, message);
 
                 if (!overlay) {
                     // Trying to remove an overlay from an element that has no overlay attached
@@ -253,7 +257,7 @@ Aria.classDefinition({
          * false, try to align with bottom. Otherwise, just perform minimal scroll.
          */
         this.scrollIntoView = function (alignTop) {
-            aria.utils.Dom.scrollIntoView(domElt, alignTop);
+            ariaUtilsDom.scrollIntoView(domElt, alignTop);
         };
 
         /**

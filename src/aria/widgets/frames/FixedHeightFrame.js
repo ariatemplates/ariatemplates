@@ -12,6 +12,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaUtilsDom = require("../../utils/Dom");
+var ariaUtilsType = require("../../utils/Type");
+var ariaWidgetsFramesFrame = require("./Frame");
+
 
 (function () {
 
@@ -22,12 +27,11 @@
      * The width can either be defined by the frame configuration, or left undefined so that it is adapted to the
      * content. The expansion in width is done by repeating an image horizontally.
      */
-    Aria.classDefinition({
+    module.exports = Aria.classDefinition({
         $classpath : "aria.widgets.frames.FixedHeightFrame",
-        $extends : "aria.widgets.frames.Frame",
-        $dependencies : ["aria.utils.Dom", "aria.utils.Type"],
+        $extends : ariaWidgetsFramesFrame,
         $onload : function () {
-            domUtils = aria.utils.Dom;
+            domUtils = ariaUtilsDom;
         },
         $onunload : function () {
             domUtils = null;
@@ -60,7 +64,7 @@
                 }
 
                 if (state.verticalAlign && state.innerHeight) {
-                    this.innerHeight = aria.utils.Type.isNumber(state.innerHeight) ? state.innerHeight : -1;
+                    this.innerHeight = ariaUtilsType.isNumber(state.innerHeight) ? state.innerHeight : -1;
                 } else {
                     this.innerHeight = state.sprHeight - state.marginTop - state.marginBottom;
                 }

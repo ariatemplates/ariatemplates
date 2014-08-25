@@ -12,13 +12,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+
 
 /**
  * Interface exposed from the Request Manager to the application. It is used by the request manager to create a cutom
  * URL
  * @class aria.modules.urlService.IUrlService
  */
-Aria.interfaceDefinition({
+module.exports = Aria.interfaceDefinition({
     $classpath : 'aria.modules.urlService.IUrlService',
     $interface : {
         /**

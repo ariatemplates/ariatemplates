@@ -12,15 +12,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaJsunitIRobot = require("./IRobot");
+var ariaCoreTimer = require("../core/Timer");
+
 
 /**
  * This class is still experimental, its interface may change without notice. Implementation of the aria.jsunit.IRobot
  * interface through calls to the PhantomJS sendEvent method (made available through attester).
  * @private
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : 'aria.jsunit.RobotPhantomJS',
-    $implements : ['aria.jsunit.IRobot'],
+    $implements : [ariaJsunitIRobot],
     $singleton : true,
     $constructor : function () {
         /**
@@ -344,7 +348,7 @@ Aria.classDefinition({
          * @param {aria.core.CfgBeans.Calllback} callback
          */
         _callCallback : function (cb) {
-            aria.core.Timer.addCallback({
+            ariaCoreTimer.addCallback({
                 fn : this.$callback,
                 scope : this,
                 args : cb,

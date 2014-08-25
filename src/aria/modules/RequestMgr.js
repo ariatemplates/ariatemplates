@@ -12,6 +12,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaModulesQueuingSimpleSessionQueuing = require("./queuing/SimpleSessionQueuing");
+require("./RequestBeans");
+var ariaModulesUrlServiceEnvironmentUrlService = require("./urlService/environment/UrlService");
+var ariaModulesRequestHandlerEnvironmentRequestHandler = require("./requestHandler/environment/RequestHandler");
+var ariaUtilsType = require("../utils/Type");
+var ariaCoreIO = require("../core/IO");
+var ariaCoreJsonValidator = require("../core/JsonValidator");
+var ariaCoreAppEnvironment = require("../core/AppEnvironment");
+
 
 /**
  * The request Manager class handles the functional requests and manage the URL transport arguments (session id, etc).
@@ -19,11 +29,8 @@
  * receives its data as if it had called IO directly. Note that the URL service of the application environment must be
  * correctly specified.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.modules.RequestMgr",
-    $dependencies : ["aria.modules.queuing.SimpleSessionQueuing", "aria.modules.RequestBeans",
-            "aria.modules.urlService.environment.UrlService", "aria.modules.requestHandler.environment.RequestHandler",
-            "aria.utils.Type"],
     $singleton : true,
     $events : {
         "error" : {
@@ -67,7 +74,7 @@ Aria.classDefinition({
          * Default action queuing mechanism
          * @type aria.modules.queuing.SimpleSessionQueuing
          */
-        this.defaultActionQueuing = new aria.modules.queuing.SimpleSessionQueuing();
+        this.defaultActionQueuing = new ariaModulesQueuingSimpleSessionQueuing();
 
         /**
          * Id counter for the requests
@@ -91,7 +98,7 @@ Aria.classDefinition({
         this._requestHandler = null;
 
         // Listen for environment change event
-        aria.core.AppEnvironment.$on({
+        ariaCoreAppEnvironment.$on({
             changingEnvironment : {
                 fn : this.__environmentUpdated,
                 scope : this
@@ -237,7 +244,7 @@ Aria.classDefinition({
          */
         submitJsonRequest : function (requestObject, jsonData, cb) {
             try {
-                aria.core.JsonValidator.normalize({
+                ariaCoreJsonValidator.normalize({
                     json : requestObject,
                     beanName : "aria.modules.RequestBeans.RequestObject"
                 }, true);
@@ -271,13 +278,13 @@ Aria.classDefinition({
          * @return Array
          */
         __getHandlersDependencies : function () {
-            var dependencies = [], appEnv = aria.modules.urlService.environment.UrlService;
+            var dependencies = [], appEnv = ariaModulesUrlServiceEnvironmentUrlService;
             if (!this._urlService) {
                 var urlServiceCfg = appEnv.getUrlServiceCfg();
                 dependencies.push(urlServiceCfg.implementation);
             }
             if (!this._requestHandler) {
-                var requestHandlerCfg = aria.modules.requestHandler.environment.RequestHandler.getRequestHandlerCfg();
+                var requestHandlerCfg = ariaModulesRequestHandlerEnvironmentRequestHandler.getRequestHandlerCfg();
                 dependencies.push(requestHandlerCfg.implementation);
             }
             return dependencies;
@@ -410,7 +417,7 @@ Aria.classDefinition({
             if (handler.expectedResponseType) {
                 requestObject.expectedResponseType = handler.expectedResponseType;
             }
-            aria.core.IO.asyncRequest(requestObject);
+            ariaCoreIO.asyncRequest(requestObject);
         },
 
         /**
@@ -549,7 +556,7 @@ Aria.classDefinition({
          * @return {String} the url
          */
         createRequestDetails : function (requestObject, session) {
-            var typeUtils = aria.utils.Type;
+            var typeUtils = ariaUtilsType;
             var urlService = requestObject.urlService;
             if (!urlService) {
                 // If no service is set , it takes from app environment
@@ -630,7 +637,7 @@ Aria.classDefinition({
          * @return {String} the url
          */
         createI18nUrl : function (moduleName, locale, callback) {
-            var urlServiceCfg = aria.modules.urlService.environment.UrlService.getUrlServiceCfg();
+            var urlServiceCfg = ariaModulesUrlServiceEnvironmentUrlService.getUrlServiceCfg();
 
             Aria.load({
                 classes : [urlServiceCfg.implementation],
@@ -767,7 +774,7 @@ Aria.classDefinition({
          */
         __getUrlService : function () {
             if (!this._urlService) {
-                var cfg = aria.modules.urlService.environment.UrlService.getUrlServiceCfg(), actionUrlPattern = cfg.args[0], i18nUrlPattern = cfg.args[1];
+                var cfg = ariaModulesUrlServiceEnvironmentUrlService.getUrlServiceCfg(), actionUrlPattern = cfg.args[0], i18nUrlPattern = cfg.args[1];
                 var ClassRef = Aria.getClassRef(cfg.implementation);
                 this._urlService = new (ClassRef)(actionUrlPattern, i18nUrlPattern);
             }
@@ -781,7 +788,7 @@ Aria.classDefinition({
          */
         __getRequestHandler : function () {
             if (!this._requestHandler) {
-                var cfg = aria.modules.requestHandler.environment.RequestHandler.getRequestHandlerCfg();
+                var cfg = ariaModulesRequestHandlerEnvironmentRequestHandler.getRequestHandlerCfg();
                 this._requestHandler = Aria.getClassInstance(cfg.implementation, cfg.args);
             }
             return this._requestHandler;

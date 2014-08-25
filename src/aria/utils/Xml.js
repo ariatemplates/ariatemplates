@@ -12,13 +12,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+
 
 /**
  * @class aria.utils.Xml Utilities for manipulating xml content
  * @extends aria.core.JsObject
  * @singleton
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : 'aria.utils.Xml',
     $singleton : true,
     $prototype : {

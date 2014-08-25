@@ -12,15 +12,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaUtilsOverlayLoadingOverlay = require("./overlay/LoadingOverlay");
+var ariaUtilsType = require("./Type");
+var ariaUtilsEvent = require("./Event");
+var ariaUtilsAriaWindow = require("./AriaWindow");
+var ariaTemplatesLayout = require("../templates/Layout");
+var ariaCoreBrowser = require("../core/Browser");
+
 
 /**
  * This class contains utilities to show and hide a loading indicator above a DOM Element
  * @singleton
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.utils.DomOverlay",
-    $dependencies : ["aria.utils.overlay.LoadingOverlay", "aria.utils.Type", "aria.utils.Event",
-            "aria.utils.AriaWindow", "aria.templates.Layout", "aria.core.Browser"],
     $singleton : true,
     $statics : {
         UNIQUE_ID_GENERATOR : 12
@@ -50,14 +56,14 @@ Aria.classDefinition({
          */
         this.bodyOverlay = null;
 
-        aria.utils.AriaWindow.$on({
+        ariaUtilsAriaWindow.$on({
             "unloadWindow" : this._reset,
             scope : this
         });
     },
     $destructor : function () {
         this._reset();
-        aria.utils.AriaWindow.$unregisterListeners(this);
+        ariaUtilsAriaWindow.$unregisterListeners(this);
     },
     $prototype : {
         /**
@@ -67,18 +73,18 @@ Aria.classDefinition({
         _init : function () {
             if (this.overlays == null) {
                 this.overlays = {};
-                aria.utils.AriaWindow.attachWindow();
+                ariaUtilsAriaWindow.attachWindow();
 
-                var browser = aria.core.Browser;
+                var browser = ariaCoreBrowser;
                 // fix 08364518 : if IE<9, the scroll event on an element does not bubble up and trigger the handler
                 // attached to the window
                 this._noBubbleEvent = (browser.isIE8 || browser.isIE7 || browser.isIE6);
                 // Listen for scroll event to update the position of the overlay
-                aria.utils.Event.addListener(Aria.$window, "scroll", {
+                ariaUtilsEvent.addListener(Aria.$window, "scroll", {
                     fn : this.__refresh,
                     scope : this
                 }, true);
-                aria.templates.Layout.$on({
+                ariaTemplatesLayout.$on({
                     "viewportResized" : this.__refresh,
                     scope : this
                 });
@@ -91,14 +97,14 @@ Aria.classDefinition({
          */
         _reset : function () {
             if (this.overlays != null) {
-                aria.utils.Event.removeListener(Aria.$window, "scroll", {
+                ariaUtilsEvent.removeListener(Aria.$window, "scroll", {
                     fn : this.__refresh
                 });
-                aria.templates.Layout.$removeListeners({
+                ariaTemplatesLayout.$removeListeners({
                     "viewportResized" : this.__refresh,
                     scope : this
                 });
-                aria.utils.AriaWindow.detachWindow();
+                ariaUtilsAriaWindow.detachWindow();
                 this.overlays = null;
                 this._nbOverlays = 0;
             }
@@ -122,12 +128,12 @@ Aria.classDefinition({
             var id = ++this.UNIQUE_ID_GENERATOR;
 
             // Create the overlay
-            overlay = new aria.utils.overlay.LoadingOverlay(element, id, message);
+            overlay = new ariaUtilsOverlayLoadingOverlay(element, id, message);
 
             this._init(); // check it is initialized
 
             if (this._noBubbleEvent) {
-                aria.utils.Event.addListenerRecursivelyUp(element, "scroll", {
+                ariaUtilsEvent.addListenerRecursivelyUp(element, "scroll", {
                     fn : overlay.refreshPosition,
                     scope : overlay
                 }, true, function (element) {
@@ -161,7 +167,7 @@ Aria.classDefinition({
             }
 
             if (this._noBubbleEvent) {
-                aria.utils.Event.removeListenerRecursivelyUp(element, "scroll", {
+                ariaUtilsEvent.removeListenerRecursivelyUp(element, "scroll", {
                     fn : overlayInfo.overlay.refreshPosition,
                     scope : overlayInfo.overlay
                 }, function (element) {
@@ -251,7 +257,7 @@ Aria.classDefinition({
          * @param {Array} ids Array of overlay id
          */
         disposeOverlays : function (ids) {
-            if (!aria.utils.Type.isArray(ids) || this.overlays == null) {
+            if (!ariaUtilsType.isArray(ids) || this.overlays == null) {
                 return;
             }
             for (var i = 0, len = ids.length; i < len; i += 1) {

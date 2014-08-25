@@ -8,13 +8,17 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaHtmlBeansInputElementCfg = require("./InputElementCfg");
+var ariaWidgetLibsCommonBeans = require("../../widgetLibs/CommonBeans");
 
-Aria.beanDefinitions({
+
+module.exports = Aria.beanDefinitions({
     $package : "aria.html.beans.CheckBoxCfg",
     $description : "Configuration for CheckBox widget.",
     $namespaces : {
-        "base" : "aria.html.beans.InputElementCfg",
-        "common" : "aria.widgetLibs.CommonBeans"
+        "base" : ariaHtmlBeansInputElementCfg,
+        "common" : ariaWidgetLibsCommonBeans
     },
     $beans : {
         "Properties" : {

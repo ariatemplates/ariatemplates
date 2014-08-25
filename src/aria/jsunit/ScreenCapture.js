@@ -1,3 +1,6 @@
+
+var Aria = require("../Aria");
+var ariaJsunitAppletWorker = require("./AppletWorker");
 /* BACKWARD-COMPATIBILITY-BEGIN GH-1104 */
 /* jshint maxparams:7 */
 /*
@@ -31,9 +34,8 @@
  * var sc = new ScreenCapture('myTestApplet');
  * </pre>
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : 'aria.jsunit.ScreenCapture',
-    $dependencies : ['aria.jsunit.AppletWorker'],
     $singleton : true,
     $constructor : function () {
         /**
@@ -41,7 +43,7 @@ Aria.classDefinition({
          * @type HTMLElement
          * @protected
          */
-        this._applet = aria.jsunit.AppletWorker;
+        this._applet = ariaJsunitAppletWorker;
         this.$logWarn("aria.jsunit.ScreenCapture class is deprecated and will be removed soon from the framework");
     },
     $destructor : function () {

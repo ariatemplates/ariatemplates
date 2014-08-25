@@ -12,16 +12,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaCoreJsonTypes = require("../core/JsonTypes");
+var ariaCoreCfgBeans = require("../core/CfgBeans");
+
 
 /**
  * @class aria.templates.CfgBeans
  */
-Aria.beanDefinitions({
+module.exports = Aria.beanDefinitions({
     $package : "aria.templates.CfgBeans",
     $description : "Definition of JSON beans used in aria templates",
     $namespaces : {
-        "json" : "aria.core.JsonTypes",
-        "coreBeans" : "aria.core.CfgBeans"
+        "json" : ariaCoreJsonTypes,
+        "coreBeans" : ariaCoreCfgBeans
     },
     $beans : {
         "BaseTemplateCfg" : {

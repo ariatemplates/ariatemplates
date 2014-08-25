@@ -12,14 +12,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaUtilsFrameATLoader = require("../utils/FrameATLoader");
+var ariaJsunitAssert = require("./Assert");
+var ariaCoreTimer = require("../core/Timer");
+
 
 /**
  * Run tests in an isolated environment.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.jsunit.TestWrapper",
-    $extends : "aria.jsunit.Assert",
-    $dependencies : ["aria.utils.FrameATLoader"],
+    $extends : ariaJsunitAssert,
     $constructor : function (testClasspath) {
         this.$Assert.constructor.call(this);
         this.$classpath = testClasspath;
@@ -40,7 +44,7 @@ Aria.classDefinition({
             this._frame.style.cssText = "z-index:100000;position:absolute;left:0px;top:0px;width:1024px;height:768px;border:1px solid black;visibility:hidden;display:block;background-color:white;";
             document.body.appendChild(this._frame);
             this._subWindow = this._frame.contentWindow;
-            aria.utils.FrameATLoader.loadAriaTemplatesInFrame(this._frame, {
+            ariaUtilsFrameATLoader.loadAriaTemplatesInFrame(this._frame, {
                 fn : this._atLoadedInFrame,
                 scope : this
             });
@@ -129,7 +133,7 @@ Aria.classDefinition({
             } else if (evt.name == "end") {
                 this._totalAssertCount = evt.nbrOfAsserts;
                 this._testsCount = this._testInstance._testsCount;
-                aria.core.Timer.addCallback({
+                ariaCoreTimer.addCallback({
                     fn : this._end,
                     scope : this,
                     delay : 100

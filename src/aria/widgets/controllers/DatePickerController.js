@@ -12,15 +12,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaWidgetsControllersReportsControllerReport = require("./reports/ControllerReport");
+var ariaUtilsJson = require("../../utils/Json");
+var ariaWidgetsControllersDateController = require("./DateController");
+
 
 /**
  * TODOC
  * @class aria.widgets.controllers.DatePickerController
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : 'aria.widgets.controllers.DatePickerController',
-    $dependencies : ['aria.widgets.controllers.reports.ControllerReport', 'aria.utils.Json'],
-    $extends : 'aria.widgets.controllers.DateController',
+    $extends : ariaWidgetsControllersDateController,
     $constructor : function () {
         this.$DateController.constructor.call(this);
         this._calendar = null;
@@ -50,7 +54,7 @@ Aria.classDefinition({
         checkText : function (displayValue) {
             var report = this.$DateController.checkText.apply(this, arguments);
             if (report.ok) {
-                aria.utils.Json.setValue(this._dataModel, "calendarValue", this._dataModel.jsDate);
+                ariaUtilsJson.setValue(this._dataModel, "calendarValue", this._dataModel.jsDate);
             }
             return report;
         },
@@ -63,7 +67,7 @@ Aria.classDefinition({
         checkValue : function (internalValue) {
             var report = this.$DateController.checkValue.apply(this, arguments);
             if (report.ok) {
-                aria.utils.Json.setValue(this._dataModel, "calendarValue", this._dataModel.jsDate);
+                ariaUtilsJson.setValue(this._dataModel, "calendarValue", this._dataModel.jsDate);
             }
             return report;
         },
@@ -87,7 +91,7 @@ Aria.classDefinition({
                     // onSubmit when closing the popup through ENTER) except for TAB
                     return report;
                 } else {
-                    var report = new aria.widgets.controllers.reports.ControllerReport();
+                    var report = new ariaWidgetsControllersReportsControllerReport();
                     report.text = currentValue;
                     if (keyCode == 27 /* KC_ESCAPE */) {
                         // close and forget the value of the calendar

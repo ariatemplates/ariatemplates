@@ -12,13 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaUtilsValidatorsValidator = require("./Validator");
+var ariaUtilsString = require("../String");
+
 
 /**
  * Validator for a mandatory value
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.utils.validators.MinMaxLength",
-    $extends : "aria.utils.validators.Validator",
+    $extends : ariaUtilsValidatorsValidator,
     $constructor : function (min, max, message) {
         this.minLength = min;
         this.maxLength = max;
@@ -26,7 +30,7 @@ Aria.classDefinition({
             this.$logError(this.MISSING_MIN_MAX_VALUES);
         }
         var params = [this.minLength, this.maxLength];
-        message = (!message) ? aria.utils.String.substitute(this.DEFAULT_LOCALIZED_MESSAGE, params) : message;
+        message = (!message) ? ariaUtilsString.substitute(this.DEFAULT_LOCALIZED_MESSAGE, params) : message;
         this.$Validator.constructor.call(this, message);
     },
     $destructor : function () {

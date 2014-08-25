@@ -12,6 +12,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("./Aria");
+var ariaCoreBrowser = require("./core/Browser");
+
 
 (function () {
 
@@ -81,13 +84,12 @@
     /**
      * Event wrapper to normalize DOM event handling on all browsers
      */
-    Aria.classDefinition({
+    module.exports = Aria.classDefinition({
         $classpath : 'aria.DomEvent',
-        $dependencies : ["aria.core.Browser"],
         $onload : function () {
             // Browser shortcuts are done in the $onload which is executed only once
-            isIE8orLess = (aria.core.Browser.isIE6 || aria.core.Browser.isIE7 || aria.core.Browser.isIE8);
-            isGecko = !(aria.core.Browser.isIE || aria.core.Browser.isOpera || aria.core.Browser.isChrome || aria.core.Browser.isSafari);
+            isIE8orLess = (ariaCoreBrowser.isIE6 || ariaCoreBrowser.isIE7 || ariaCoreBrowser.isIE8);
+            isGecko = !(ariaCoreBrowser.isIE || ariaCoreBrowser.isOpera || ariaCoreBrowser.isChrome || ariaCoreBrowser.isSafari);
         },
         /**
          * DomEvent constructor. It is advised to use the getWrapper static method instead of the constructor,

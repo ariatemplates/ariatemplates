@@ -12,6 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaCoreSequencer = require("../core/Sequencer");
+var ariaUtilsJson = require("../utils/Json");
+var ariaUtilsType = require("../utils/Type");
+var ariaUtilsObject = require("../utils/Object");
+var ariaUtilsArray = require("../utils/Array");
+var ariaCoreBrowser = require("../core/Browser");
+var ariaJsunitAssert = require("./Assert");
+var ariaCoreTimer = require("../core/Timer");
+var ariaCoreAppEnvironment = require("../core/AppEnvironment");
+
 
 /**
  * A test case defines the fixture to run multiple tests. To define a test case
@@ -23,13 +34,11 @@
  * </ol>
  * Each test runs in its own fixture so there can be no side effects among test runs
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.jsunit.TestCase",
-    $extends : "aria.jsunit.Assert",
-    $dependencies : ["aria.core.Sequencer", "aria.utils.Json", "aria.utils.Type", "aria.utils.Object",
-            "aria.utils.Array", "aria.core.Browser"],
+    $extends : ariaJsunitAssert,
     $statics : {
-        "defaultTestTimeout" : aria.core.Browser.isIE7 ? 30000 : 20000,
+        "defaultTestTimeout" : ariaCoreBrowser.isIE7 ? 30000 : 20000,
 
         IFRAME_BASE_CSS_TEXT : "position:fixed;top:20px;left:20px;z-index:10000;width:1000px;height:700px;border:1px solid blue;background:aliceblue;opacity:0.8;-ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=80)';filter: alpha(opacity=80);",
 
@@ -77,10 +86,10 @@ Aria.classDefinition({
         this.__appEnv = {};
 
         var proto = Aria.nspace(this.$classpath).classDefinition.$prototype;
-        var methods = aria.utils.Object.keys(proto);
-        var isFunction = aria.utils.Type.isFunction;
-        methods = aria.utils.Array.filter(methods, function (method) {
-            return isFunction(proto[method]) && !aria.utils.Array.contains(["setUp", "tearDown"], method);
+        var methods = ariaUtilsObject.keys(proto);
+        var isFunction = ariaUtilsType.isFunction;
+        methods = ariaUtilsArray.filter(methods, function (method) {
+            return isFunction(proto[method]) && !ariaUtilsArray.contains(["setUp", "tearDown"], method);
         });
         this.__wrapTestMethods(methods);
         this.__wrapAriaLoad();
@@ -116,9 +125,9 @@ Aria.classDefinition({
         run : function () {
             this._saveAppEnvironment();
             this._startTest();
-            this._sequencer = new aria.core.Sequencer();
+            this._sequencer = new ariaCoreSequencer();
 
-            var isFunction = aria.utils.Type.isFunction;
+            var isFunction = ariaUtilsType.isFunction;
             // do not add tasks to the sequencer if the TestCase is mean to be skipped
             if (!this.skipTest) {
                 for (var key in this) {
@@ -261,14 +270,14 @@ Aria.classDefinition({
                 if (this.$callback(condition)) {
                     this.$callback(args.callback);
                 } else {
-                    aria.core.Timer.addCallback({
+                    ariaCoreTimer.addCallback({
                         fn : timeoutFn,
                         scope : this,
                         delay : delay
                     });
                 }
             };
-            aria.core.Timer.addCallback({
+            ariaCoreTimer.addCallback({
                 fn : timeoutFn,
                 scope : this,
                 delay : delay
@@ -368,11 +377,11 @@ Aria.classDefinition({
                 return;
             }
             if (this._timeoutTimer) {
-                aria.core.Timer.cancelCallback(this._timeoutTimer);
+                ariaCoreTimer.cancelCallback(this._timeoutTimer);
             }
             var error = new Error("Assert " + testName + " has timed out");
 
-            this._timeoutTimer = aria.core.Timer.addCallback({
+            this._timeoutTimer = ariaCoreTimer.addCallback({
                 fn : this.handleAsyncTestError,
                 scope : this,
                 delay : timeout,
@@ -399,7 +408,7 @@ Aria.classDefinition({
             }
 
             if (this._timeoutTimer) {
-                aria.core.Timer.cancelCallback(this._timeoutTimer);
+                ariaCoreTimer.cancelCallback(this._timeoutTimer);
                 this._timeoutTimer = null;
             }
             // check that all expected events have occurred
@@ -428,7 +437,7 @@ Aria.classDefinition({
                 }
             }
             // clean any remaining callbacks
-            aria.core.Timer.callbacksRemaining();
+            ariaCoreTimer.callbacksRemaining();
             if (asyncTest !== false) {
                 if (this._sequencer) {
                     this._sequencer.notifyTaskEnd(this._currentTaskId);
@@ -455,7 +464,7 @@ Aria.classDefinition({
             if (object[methodName] == null) {
                 this.raiseError(new Error("Object " + object + "has no method called '" + methodName + "'"));
             }
-            if (!aria.utils.Type.isFunction(object[methodName])) {
+            if (!ariaUtilsType.isFunction(object[methodName])) {
                 this.raiseError(new Error("Method '" + methodName + "' in " + object + " is not a Function"));
             }
 
@@ -525,7 +534,7 @@ Aria.classDefinition({
          * @protected
          */
         _saveAppEnvironment : function () {
-            this.__appEnv = aria.utils.Json.copy(aria.core.AppEnvironment.applicationSettings);
+            this.__appEnv = ariaUtilsJson.copy(ariaCoreAppEnvironment.applicationSettings);
         },
 
         /**
@@ -534,7 +543,7 @@ Aria.classDefinition({
          * @protected
          */
         _restoreAppEnvironment : function () {
-            aria.core.AppEnvironment.setEnvironment(aria.utils.Json.copy(this.__appEnv));
+            ariaCoreAppEnvironment.setEnvironment(ariaUtilsJson.copy(this.__appEnv));
         }
     }
 });

@@ -12,14 +12,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaTouchGesture = require("./Gesture");
+var ariaCoreTimer = require("../core/Timer");
+
 
 /**
  * Contains delegated handler for a double tap event
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $singleton : true,
     $classpath : "aria.touch.DoubleTap",
-    $extends : "aria.touch.Gesture",
+    $extends : ariaTouchGesture,
     $statics : {
         /**
          * The move tolerance to validate the gesture.
@@ -77,7 +81,7 @@ Aria.classDefinition({
             }
             if (this.timerId) {
                 //Second tap starting
-                aria.core.Timer.cancelCallback(this.timerId);
+                ariaCoreTimer.cancelCallback(this.timerId);
                 return status;
             }
             else {
@@ -121,7 +125,7 @@ Aria.classDefinition({
             }
             else {
                 //First tap ending, timer created to wait for second tap
-                this.timerId = aria.core.Timer.addCallback({
+                this.timerId = ariaCoreTimer.addCallback({
                     fn : this._doubleTapFinalCancel,
                     scope : this,
                     delay : this.BETWEEN_DELAY,
@@ -139,7 +143,7 @@ Aria.classDefinition({
          */
         _doubleTapCancel : function (event) {
             if (this.timerId) {
-                aria.core.Timer.cancelCallback(this.timerId);
+                ariaCoreTimer.cancelCallback(this.timerId);
                 this.timerId = null;
             }
             return this._gestureCancel(event);
@@ -153,7 +157,7 @@ Aria.classDefinition({
          */
         _doubleTapFinalCancel: function(event) {
             if (this.timerId) {
-                aria.core.Timer.cancelCallback(this.timerId);
+                ariaCoreTimer.cancelCallback(this.timerId);
                 this.timerId = null;
             }
             return this._raiseFakeEvent(event, this._getFakeEventsMap().cancel);

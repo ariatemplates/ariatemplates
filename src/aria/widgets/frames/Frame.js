@@ -12,14 +12,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaUtilsDom = require("../../utils/Dom");
+
 
 /**
  * The Frame class is a base class used by widgets which need a border.
  * @class aria.widgets.container.Frame
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : 'aria.widgets.frames.Frame',
-    $dependencies : ['aria.utils.Dom'],
     /**
      * @param {aria.widgets.frames.CfgBeans:FrameCfg} cfg Frame configuration.
      */
@@ -109,7 +111,7 @@ Aria.classDefinition({
          * @return {HTMLElement} the requested DOM element inside the frame
          */
         getChild : function (idx) {
-            return aria.utils.Dom.getDomElementChild(this._childRootElt, idx);
+            return ariaUtilsDom.getDomElementChild(this._childRootElt, idx);
         },
 
         /**

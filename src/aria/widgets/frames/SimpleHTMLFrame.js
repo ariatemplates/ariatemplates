@@ -12,13 +12,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaWidgetsFramesFrame = require("./Frame");
+
 
 /**
  * Frame that does nothing, for the simple HTML skinning mode
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.widgets.frames.SimpleHTMLFrame",
-    $extends : "aria.widgets.frames.Frame",
+    $extends : ariaWidgetsFramesFrame,
     $constructor : function (cfg) {
         this.$Frame.constructor.call(this, cfg);
         this._computeSize();

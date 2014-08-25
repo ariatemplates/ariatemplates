@@ -12,14 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaUtilsObject = require("../utils/Object");
+var ariaUtilsJson = require("../utils/Json");
+
 
 /**
  * Store for application variables.
  * @singleton
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.core.AppEnvironment",
-    $dependencies : ["aria.utils.Object"],
     $singleton : true,
     $events : {
         "changingEnvironment" : {
@@ -54,9 +57,9 @@ Aria.classDefinition({
          */
         setEnvironment : function (cfg, callback, update) {
             update = !!update;
-            var keys = aria.utils.Object.keys(cfg);
+            var keys = ariaUtilsObject.keys(cfg);
             if (update) {
-                aria.utils.Json.inject(cfg, this.applicationSettings, true);
+                ariaUtilsJson.inject(cfg, this.applicationSettings, true);
             } else {
                 if (keys.length === 0) {
                     // reset stored application settings

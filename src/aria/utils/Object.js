@@ -12,12 +12,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaUtilsType = require("./Type");
+
 
 /**
  * Utils for general Objects/Map
  * @singleton
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.utils.Object",
     $singleton : true,
     $prototype : {
@@ -28,13 +31,13 @@ Aria.classDefinition({
          * @return {Array}
          */
         keys : (Object.keys) ? function (object) {
-            if (!aria.utils.Type.isObject(object)) {
+            if (!ariaUtilsType.isObject(object)) {
                 return [];
             }
 
             return Object.keys(object);
         } : function (object) {
-            if (!aria.utils.Type.isObject(object)) {
+            if (!ariaUtilsType.isObject(object)) {
                 return [];
             }
             var enumKeys = [];

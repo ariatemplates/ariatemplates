@@ -12,13 +12,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaCoreTimer = require("./Timer");
+
 
 /**
  * This class allows to sequence several tasks in an asynchronous way. This is particularly useful for long-running
  * processes that need to notify HTML-based UIs of process progression (HTML UIs are only refreshed when the main thread
  * pauses)
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.core.Sequencer",
     $events : {
         "start" : "raised when the sequencer starts",
@@ -128,7 +131,7 @@ Aria.classDefinition({
             this.$raiseEvent("start");
 
             if (this._tasks.length > 0) {
-                aria.core.Timer.addCallback({
+                ariaCoreTimer.addCallback({
                     fn : this._execTask,
                     scope : this,
                     delay : 12,
@@ -214,7 +217,7 @@ Aria.classDefinition({
             if (terminate !== true) {
                 if (taskId < sz - 1) {
                     // this is not the last task
-                    aria.core.Timer.addCallback({
+                    ariaCoreTimer.addCallback({
                         fn : this._execTask,
                         scope : this,
                         delay : 1,

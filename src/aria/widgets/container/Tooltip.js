@@ -12,6 +12,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaWidgetsContainerDiv = require("./Div");
+var ariaPopupsPopup = require("../../popups/Popup");
+var ariaUtilsMath = require("../../utils/Math");
+var ariaUtilsDom = require("../../utils/Dom");
+var ariaWidgetsContainerContainer = require("./Container");
+var ariaCoreTimer = require("../../core/Timer");
+
 
 (function () {
 
@@ -32,12 +40,11 @@
     /**
      * @class aria.widgets.container.Tooltip
      */
-    Aria.classDefinition({
+    module.exports = Aria.classDefinition({
         $classpath : 'aria.widgets.container.Tooltip',
-        $extends : 'aria.widgets.container.Container',
-        $dependencies : ['aria.widgets.container.Div', 'aria.popups.Popup', 'aria.utils.Math', 'aria.utils.Dom'],
+        $extends : ariaWidgetsContainerContainer,
         $onload : function (classRef) {
-            timer = aria.core.Timer;
+            timer = ariaCoreTimer;
         },
         $onunload : function () {
             __tooltipsDisplayed = null;
@@ -70,16 +77,16 @@
              */
             _writerCallback : function (out) {
                 var cfg = this._cfg;
-                var viewport = aria.utils.Dom._getViewportSize();
+                var viewport = ariaUtilsDom._getViewportSize();
                 // We can lose the reference to this div, as it will be destroyed by the section
-                var div = new aria.widgets.container.Div({
+                var div = new ariaWidgetsContainerDiv({
                     sclass : cfg.sclass,
                     width : cfg.width,
                     height : cfg.height,
                     minWidth : cfg.minWidth,
                     minHeight : cfg.minHeight,
-                    maxWidth : aria.utils.Math.min(cfg.maxWidth, viewport.width),
-                    maxHeight : aria.utils.Math.min(cfg.maxHeight, viewport.height),
+                    maxWidth : ariaUtilsMath.min(cfg.maxWidth, viewport.width),
+                    maxHeight : ariaUtilsMath.min(cfg.maxHeight, viewport.height),
                     printOptions : cfg.printOptions,
                     cssClass : this._context.getCSSClassNames(true)
                 }, this._context, this._lineNumber);
@@ -219,7 +226,7 @@
                 __tooltipsDisplayed[this._domId] = true;
                 var section = this._context.getRefreshedSection(refreshParams);
                 var cfg = this._cfg;
-                var popup = new aria.popups.Popup();
+                var popup = new ariaPopupsPopup();
                 this._popup = popup;
                 popup.$on({
                     scope : this,

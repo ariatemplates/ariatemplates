@@ -12,6 +12,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaUtilsIdManager = require("../../utils/IdManager");
+var ariaUtilsArray = require("../../utils/Array");
+var ariaWidgetsFormRadioButtonStyle = require("./RadioButtonStyle.tpl.css");
+var ariaWidgetsFormCheckBox = require("./CheckBox");
+
 
 (function () {
 
@@ -21,11 +27,10 @@
      * Radio Button widget
      * @class aria.widgets.form.RadioButton
      */
-    Aria.classDefinition({
+    module.exports = Aria.classDefinition({
         $classpath : 'aria.widgets.form.RadioButton',
-        $extends : 'aria.widgets.form.CheckBox',
-        $dependencies : ['aria.utils.IdManager', 'aria.utils.Array'],
-        $css : ['aria.widgets.form.RadioButtonStyle'],
+        $extends : ariaWidgetsFormCheckBox,
+        $css : [ariaWidgetsFormRadioButtonStyle],
         /**
          * RadioButton constructor
          * @param {aria.widgets.CfgBeans:RadioButtonCfg} cfg the widget configuration
@@ -36,7 +41,7 @@
             this.$CheckBox.constructor.apply(this, arguments);
             if (this._skinObj.simpleHTML) {
                 if (!idManager) {
-                    idManager = new aria.utils.IdManager("radio");
+                    idManager = new ariaUtilsIdManager("radio");
                 }
                 this._inputName = idManager.getId();
             }
@@ -48,7 +53,7 @@
         },
 
         $destructor : function () {
-            aria.utils.Array.remove(this._instances, this);
+            ariaUtilsArray.remove(this._instances, this);
 
             if (this._inputName) {
                 idManager.releaseId(this._inputName);
@@ -158,7 +163,7 @@
                     return;
                 }
                 var currentBinding = this._cfg.bind.value;
-                var index = aria.utils.Array.indexOf(this._instances, this), radioButtonNb = this._instances.length;
+                var index = ariaUtilsArray.indexOf(this._instances, this), radioButtonNb = this._instances.length;
                 var bindings, next, nextBinding;
                 while (index > 0 || index < radioButtonNb) {
                     index = index + direction;

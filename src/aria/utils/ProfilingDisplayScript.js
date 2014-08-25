@@ -12,12 +12,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaCoreBrowser = require("../core/Browser");
+
 
 /**
  * Script display for profile informations
  * @class aria.utils.ProfilingDisplayScript
  */
-Aria.tplScriptDefinition({
+module.exports = Aria.tplScriptDefinition({
     $classpath : 'aria.utils.ProfilingDisplayScript',
     $prototype : {
         zoomIn : function () {
@@ -78,7 +81,7 @@ Aria.tplScriptDefinition({
             // TODO: remove this horrible hack to have the position:
             var refPos = aria.utils.Dom.calculatePosition(aria.utils.Profiling._displayDiv.firstChild);
             var position = evt.clientX - refPos.left;
-            if (aria.core.Browser.isIE7) {
+            if (ariaCoreBrowser.isIE7) {
                 position -= 2;
             }
 

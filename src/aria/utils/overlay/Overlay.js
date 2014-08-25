@@ -12,14 +12,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaUtilsDom = require("../Dom");
+
 
 /**
  * This class creates an overlay and keeps it positioned above a given HTML element
  * @class aria.utils.overlay.Overlay
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : 'aria.utils.overlay.Overlay',
-    $dependencies : ['aria.utils.Dom'],
     $constructor : function (element, params) {
         var overlay = this._createOverlay(params);
 
@@ -90,14 +92,14 @@ Aria.classDefinition({
          * @protected
          */
         _setInPosition : function (element, overlay) {
-            var dom = aria.utils.Dom;
+            var dom = ariaUtilsDom;
             var overlayStyle = overlay.style;
             var positions = ["Top", "Right", "Bottom", "Left"], singleBorder, border = {};
             for (var i = 0, posCount = positions.length; i < posCount; i++) {
                 singleBorder = dom.getStyle(overlay, "border" + positions[i] + "Width").split("px")[0];
                 border[positions[i].toLowerCase()] = singleBorder ? +singleBorder : 0;
             }
-            var geometry = aria.utils.Dom.getGeometry(element);
+            var geometry = ariaUtilsDom.getGeometry(element);
             if (geometry) {
                 overlayStyle.position = "absolute";
                 overlayStyle.top = geometry.y + "px";

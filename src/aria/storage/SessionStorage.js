@@ -12,6 +12,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaStorageHTML5Storage = require("./HTML5Storage");
+
 
 /**
  * Storage class using HTML5 session storage as data storage/retrieval mechanism.<br />
@@ -21,9 +24,9 @@
  * An optional namespace string can be given to avoid collisions between different instances of session storage. <br />
  * Being stored in session storage, the information is available in all pages until the browser is closed.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.storage.SessionStorage",
-    $extends : "aria.storage.HTML5Storage",
+    $extends : ariaStorageHTML5Storage,
     /**
      * Create an instance of SessionStorage
      * @param {aria.storage.Beans:ConstructorArgs} options Constructor options

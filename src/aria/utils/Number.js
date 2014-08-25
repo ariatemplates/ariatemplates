@@ -12,14 +12,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaUtilsEnvironmentNumber = require("./environment/Number");
+var ariaUtilsString = require("./String");
+var ariaUtilsType = require("./Type");
+var ariaUtilsArray = require("./Array");
+var ariaCoreAppEnvironment = require("../core/AppEnvironment");
+
 
 /**
  * Utility to parse and format numbers.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.utils.Number",
     $singleton : true,
-    $dependencies : ["aria.utils.environment.Number", "aria.utils.String", "aria.utils.Type", "aria.utils.Array"],
     $constructor : function () {
 
         /**
@@ -108,7 +114,7 @@ Aria.classDefinition({
          */
         this._cache = {};
 
-        aria.core.AppEnvironment.$on({
+        ariaCoreAppEnvironment.$on({
             "changingEnvironment" : {
                 fn : this._appEnvChanged,
                 scope : this
@@ -294,7 +300,7 @@ Aria.classDefinition({
             // The if block prevents this by manipulating only the string representation when necessary
             if (patternDescription.maxDecLen > decimalS.length) {
                 integer = nString[0];
-                decimalF = aria.utils.String.pad(decimalS, patternDescription.maxDecLen, "0");
+                decimalF = ariaUtilsString.pad(decimalS, patternDescription.maxDecLen, "0");
             } else {
                 var nFixed = Math.abs(number).toFixed(patternDescription.maxDecLen).split(".");
                 integer = nFixed[0];
@@ -303,13 +309,13 @@ Aria.classDefinition({
 
             // The integer part should be modified only if it shorter than the minimum length
             if (integer.length < patternDescription.minIntLen) {
-                integer = aria.utils.String.pad(integer, patternDescription.minIntLen, "0", true);
+                integer = ariaUtilsString.pad(integer, patternDescription.minIntLen, "0", true);
             }
 
             // decimal part
             if (decimalF.length !== decimalS.length) {
                 // toFixed cropped or padded the number, remove any unnecessary trailing 0
-                decimalF = aria.utils.String.crop(decimalF, patternDescription.minDecLen, "0");
+                decimalF = ariaUtilsString.crop(decimalF, patternDescription.minDecLen, "0");
             } // either empty string or already correctly padded (crop is impossible)
 
             var res = [sign + this._addGrouping(integer, patternDescription, formatSymbols)];
@@ -367,11 +373,11 @@ Aria.classDefinition({
          * @private
          */
         _appEnvChanged : function (evt) {
-            var uArray = aria.utils.Array;
+            var uArray = ariaUtilsArray;
             if (!evt || !evt.changedProperties || uArray.contains(evt.changedProperties, "decimalFormatSymbols")
                     || uArray.contains(evt.changedProperties, "currencyFormats")) {
-                var symbols = aria.utils.environment.Number.getDecimalFormatSymbols();
-                var formats = aria.utils.environment.Number.getCurrencyFormats();
+                var symbols = ariaUtilsEnvironmentNumber.getDecimalFormatSymbols();
+                var formats = ariaUtilsEnvironmentNumber.getCurrencyFormats();
                 var exps = this._buildRegEx(symbols.groupingSeparator, symbols.decimalSeparator);
 
                 if (exps.valid) {
@@ -382,7 +388,7 @@ Aria.classDefinition({
                     this._strictGrouping = symbols.strictGrouping;
                 }
 
-                var uType = aria.utils.Type;
+                var uType = ariaUtilsType;
                 if (!uType.isString(formats.currencyFormat) && !uType.isFunction(formats.currencyFormat)) {
                     this.$logError(this.INVALID_FORMAT, ["currencyFormat", this.CURRENCY_BEAN]);
                     // still valid for building the regular expressions
@@ -485,7 +491,7 @@ Aria.classDefinition({
                 pattern = this._format;
             }
 
-            var typeUtil = aria.utils.Type;
+            var typeUtil = ariaUtilsType;
             if (typeUtil.isFunction(pattern)) {
                 pattern = pattern();
             }
@@ -572,7 +578,7 @@ Aria.classDefinition({
                 }
             }
 
-            return aria.utils.String.chunk(integer, lengths).join(grouping);
+            return ariaUtilsString.chunk(integer, lengths).join(grouping);
         }
 
     }

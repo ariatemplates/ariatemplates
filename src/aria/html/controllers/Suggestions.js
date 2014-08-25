@@ -12,6 +12,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaUtilsJson = require("../../utils/Json");
+var ariaUtilsType = require("../../utils/Type");
+var ariaCoreTimer = require("../../core/Timer");
+
 
 (function () {
     /**
@@ -77,7 +82,7 @@
      * @private
      */
     function delayLoading (args) {
-        aria.core.Timer.addCallback({
+        ariaCoreTimer.addCallback({
             fn : resourcesHandlerLoaded,
             args : args,
             scope : {},
@@ -126,9 +131,8 @@
      * The list of possible suggestions must be specified inside a ReasourcesHandler, a class implementing
      * aria.resources.handlers.IResourcesHandler
      */
-    Aria.classDefinition({
+    module.exports = Aria.classDefinition({
         $classpath : "aria.html.controllers.Suggestions",
-        $dependencies : ["aria.utils.Json", "aria.utils.Type"],
         $constructor : function () {
             this._init();
         },
@@ -197,7 +201,7 @@
              * @param {String|Object} resourcesHandler classpath or instance
              */
             setResourcesHandler : function (resourcesHandler) {
-                if (aria.utils.Type.isString(resourcesHandler)) {
+                if (ariaUtilsType.isString(resourcesHandler)) {
                     resourcesHandler = loadResourcesHandler(resourcesHandler, this);
                     this._autoDisposeHandler = true;
                 }
@@ -222,7 +226,7 @@
              * @param {Array} suggestions List of suggestions
              */
             _callback : function (suggestions) {
-                aria.utils.Json.setValue(this.data, "suggestions", suggestions || []);
+                ariaUtilsJson.setValue(this.data, "suggestions", suggestions || []);
             },
 
             /**
@@ -230,7 +234,7 @@
              * @param {Object} suggestion Selected suggestion
              */
             setSelected : function (suggestion) {
-                aria.utils.Json.setValue(this.data, "value", suggestion);
+                ariaUtilsJson.setValue(this.data, "value", suggestion);
                 this.empty();
             },
 
@@ -238,7 +242,7 @@
              * Empty the list of suggestions without modifying the selected value
              */
             empty : function () {
-                aria.utils.Json.setValue(this.data, "suggestions", []);
+                ariaUtilsJson.setValue(this.data, "suggestions", []);
             }
         }
     });

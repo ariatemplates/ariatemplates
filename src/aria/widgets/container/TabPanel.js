@@ -12,15 +12,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaWidgetsFramesFrameFactory = require("../frames/FrameFactory");
+require("../../utils/Function");
+var ariaWidgetsContainerTabPanelStyle = require("./TabPanelStyle.tpl.css");
+var ariaWidgetsContainerContainer = require("./Container");
+
 
 /**
  * TabPanel widget
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.widgets.container.TabPanel",
-    $extends : "aria.widgets.container.Container",
-    $dependencies : ["aria.widgets.frames.FrameFactory", "aria.utils.Function"],
-    $css : ["aria.widgets.container.TabPanelStyle"],
+    $extends : ariaWidgetsContainerContainer,
+    $css : [ariaWidgetsContainerTabPanelStyle],
     /**
      * TabPanel constructor
      * @param {aria.widgets.CfgBeans:TabPanelCfg} cfg the widget configuration
@@ -30,7 +35,7 @@ Aria.classDefinition({
         this.$Container.constructor.apply(this, arguments);
         this._setSkinObj(this._skinnableClass);
 
-        this._frame = aria.widgets.frames.FrameFactory.createFrame({
+        this._frame = ariaWidgetsFramesFrameFactory.createFrame({
             height : cfg.height,
             state : "normal",
             width : cfg.width,

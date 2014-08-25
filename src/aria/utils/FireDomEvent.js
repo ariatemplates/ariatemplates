@@ -13,6 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaUtilsType = require("./Type");
+var ariaCoreBrowser = require("../core/Browser");
+
 
 (function () {
     /**
@@ -551,16 +555,15 @@
      * Class to simulate DOM events which can bubble in the DOM. (This class comes from Aria)
      * @class aria.utils.FireDomEvent
      */
-    Aria.classDefinition({
+    module.exports = Aria.classDefinition({
         $classpath : 'aria.utils.FireDomEvent',
         $singleton : true,
-        $dependencies : ['aria.utils.Type', 'aria.core.Browser'],
         $constructor : function () {
-            typeUtils = aria.utils.Type;
+            typeUtils = ariaUtilsType;
             fireDomEvent = this;
 
             // Workaround for the bug in Firefox 3.6 where customEvent.pageX is unsettable
-            var browser = aria.core.Browser;
+            var browser = ariaCoreBrowser;
             if (browser.isFirefox && browser.majorVersion == 3) {
                 var mouseEventProto = Aria.$window.MouseEvent.prototype;
 
@@ -584,7 +587,7 @@
             }
         },
         $destructor : function () {
-            var browser = aria.core.Browser;
+            var browser = ariaCoreBrowser;
             if (browser.isFirefox && browser.majorVersion == 3) {
                 var mouseEventProto = Aria.$window.MouseEvent.prototype;
 
@@ -640,7 +643,7 @@
              * @method
              */
             fireKeydownEventAdaptedForKeyNav : function (target, options) {
-                if (aria.core.Browser.isOldIE || aria.core.Browser.isSafari) {
+                if (ariaCoreBrowser.isOldIE || ariaCoreBrowser.isSafari) {
                     this.fireKeydownEventAdaptedForKeyNav = function (target, options) {
                         // For IE and Safari:
                         simulate(target, "keydown", options);

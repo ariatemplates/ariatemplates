@@ -12,6 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaDomEvent = require("../../DomEvent");
+var ariaUtilsJson = require("../../utils/Json");
+var ariaTemplatesRefreshManager = require("../../templates/RefreshManager");
+var ariaWidgetsControllersReportsDropDownControllerReport = require("./reports/DropDownControllerReport");
+var ariaUtilsType = require("../../utils/Type");
+var ariaHtmlControllersSuggestions = require("../../html/controllers/Suggestions");
+var ariaWidgetsWidgetsRes = require("../../$resources").file(__dirname, "../WidgetsRes");
+var ariaWidgetsControllersDropDownListController = require("./DropDownListController");
+var ariaCoreJsonValidator = require("../../core/JsonValidator");
+
 
 (function () {
 
@@ -22,17 +33,14 @@
      * Controller for the AutoComplete widget. This controller manage the keystroke forwarded by the autocomplete
      * widget, and the resources handler.
      */
-    Aria.classDefinition({
+    module.exports = Aria.classDefinition({
         $classpath : "aria.widgets.controllers.AutoCompleteController",
-        $extends : "aria.widgets.controllers.DropDownListController",
-        $dependencies : ["aria.DomEvent", "aria.utils.Json", "aria.templates.RefreshManager",
-                "aria.widgets.controllers.reports.DropDownControllerReport", "aria.utils.Type",
-                "aria.html.controllers.Suggestions"],
+        $extends : ariaWidgetsControllersDropDownListController,
         $resources : {
-            res : "aria.widgets.WidgetsRes"
+            res : ariaWidgetsWidgetsRes
         },
         $onload : function () {
-            typeUtil = aria.utils.Type;
+            typeUtil = ariaUtilsType;
         },
         $onunload : function () {
             typeUtil = null;
@@ -102,7 +110,7 @@
              * @param {Object} p the prototype object being built
              */
             $init : function (p) {
-                var parent = aria.html.controllers.Suggestions.prototype;
+                var parent = ariaHtmlControllersSuggestions.prototype;
                 for (var key in parent) {
                     if (parent.hasOwnProperty(key) && !p.hasOwnProperty(key)) {
                         p[key] = parent[key];
@@ -145,7 +153,7 @@
                 }
 
                 // returned object
-                var report = new aria.widgets.controllers.reports.DropDownControllerReport();
+                var report = new ariaWidgetsControllersReportsDropDownControllerReport();
 
                 // an empty field is usually not considered as an error
                 if (text === '') {
@@ -204,14 +212,14 @@
              * @override
              */
             checkValue : function (value) {
-                var report = new aria.widgets.controllers.reports.DropDownControllerReport(), dataModel = this._dataModel;
+                var report = new ariaWidgetsControllersReportsDropDownControllerReport(), dataModel = this._dataModel;
                 if (value == null) {
                     // can be null either because it bound to null or because a request is in progress
                     dataModel.text = (this._pendingRequestNb > 0 && dataModel.text) ? dataModel.text : "";
                     dataModel.value = null;
                     report.ok = true;
                 } else if (value && !typeUtil.isString(value)) {
-                    if (aria.core.JsonValidator.check(value, this._resourcesHandler.SUGGESTION_BEAN)) {
+                    if (ariaCoreJsonValidator.check(value, this._resourcesHandler.SUGGESTION_BEAN)) {
                         var text = this._getLabelFromSuggestion(value);
                         dataModel.text = text;
                         dataModel.value = value;
@@ -266,7 +274,7 @@
                     clearTimeout(this._typeTimout);
                     this._typeTimout = null;
                 }
-                var controller = this, domEvent = aria.DomEvent;
+                var controller = this, domEvent = ariaDomEvent;
 
                 if (keyCode == domEvent.KC_ARROW_DOWN && !nextValue && controller.expandButton) {
                     controller.toggleDropdown("", !!controller._listWidget);
@@ -345,16 +353,16 @@
                     var hasSuggestions = suggestions.length > 0;
                     // for resetting focus when suggestions are empty
                     this._resetFocus = suggestions.length > 0 || !(this.expandButton);
-                    aria.templates.RefreshManager.stop();
+                    ariaTemplatesRefreshManager.stop();
                     // as item are changed, force datamodel to change to activate selection
-                    var jsonUtils = aria.utils.Json;
+                    var jsonUtils = ariaUtilsJson;
                     jsonUtils.setValue(dataModel, 'selectedIdx', -1);
 
                     // update datamodel through setValue to update the list has well
                     jsonUtils.setValue(dataModel, 'listContent', suggestions);
                     jsonUtils.setValue(dataModel, 'selectedIdx', matchValueIndex);
 
-                    var report = new aria.widgets.controllers.reports.DropDownControllerReport();
+                    var report = new ariaWidgetsControllersReportsDropDownControllerReport();
                     report.text = nextValue;
                     report.caretPosStart = args.caretPosStart;
                     report.caretPosEnd = args.caretPosEnd;
@@ -391,7 +399,7 @@
                     var arg = {};
                     arg.stopValueProp = true;
                     this._raiseReport(report, arg);
-                    aria.templates.RefreshManager.resume();
+                    ariaTemplatesRefreshManager.resume();
                 }
             },
 
@@ -498,7 +506,7 @@
                     keyMap = this.selectionKeys[index];
                     if (this._validateModifiers(keyMap, event)) {
                         // case real key defined. For eg: 65 for a
-                        if (aria.utils.Type.isNumber(keyMap.key)) {
+                        if (ariaUtilsType.isNumber(keyMap.key)) {
                             if (keyMap.key === keyCode) {
                                 specialKey = true;
                                 break;

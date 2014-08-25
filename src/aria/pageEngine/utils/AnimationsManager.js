@@ -12,13 +12,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaUtilsCssAnimations = require("../../utils/css/Animations");
+
 
 /**
  * Utility class that manages the animations for the page transitions
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : 'aria.pageEngine.utils.AnimationsManager',
-    $dependencies : ['aria.utils.css.Animations'],
     $constructor : function () {
 
         /**
@@ -62,7 +64,7 @@ Aria.classDefinition({
          * @protected
          */
         _start : function (animationCfg, animationInfo) {
-            var animate = new aria.utils.css.Animations();
+            var animate = new ariaUtilsCssAnimations();
 
             this._syncCfg.toDispose.push(animate);
             animate.$on({

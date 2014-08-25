@@ -12,13 +12,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaUtilsValidatorsRegExp = require("./RegExp");
+
 
 /**
  * Validator to format an email address
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.utils.validators.Email",
-    $extends : "aria.utils.validators.RegExp",
+    $extends : ariaUtilsValidatorsRegExp,
     $constructor : function (message) {
         this.$RegExp.constructor.call(this, this.EMAIL_REGEXP, message);
     },

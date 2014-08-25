@@ -12,13 +12,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaUtilsString = require("../utils/String");
+var ariaTemplatesModifiers = require("./Modifiers");
+require("../utils/Path");
+var ariaUtilsDelegate = require("../utils/Delegate");
+var ariaUtilsType = require("../utils/Type");
+var ariaCoreEnvironmentEnvironment = require("../core/environment/Environment");
+
 
 /**
  * Template statements. Note that root statements are special ones and are not included here.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.templates.Statements",
-    $dependencies : ["aria.utils.String", "aria.templates.Modifiers", "aria.utils.Path", "aria.utils.Delegate"],
     $singleton : true,
     $statics : {
         // ERROR MESSAGES:
@@ -40,8 +47,8 @@ Aria.classDefinition({
         INVALID_EVENT_TYPE : "The event type: '%1' is an invalid event type."
     },
     $constructor : function () {
-        var utilString = aria.utils.String;
-        var modifiers = aria.templates.Modifiers;
+        var utilString = ariaUtilsString;
+        var modifiers = ariaTemplatesModifiers;
         var statementsSingleton = this;
 
         // Root statements are processed differently from other statements (they are processed directly without going
@@ -98,7 +105,7 @@ Aria.classDefinition({
 
                     // Automatic escape ----------------------------------------
 
-                    if (aria.core.environment.Environment.hasEscapeHtmlByDefault()) {
+                    if (ariaCoreEnvironmentEnvironment.hasEscapeHtmlByDefault()) {
 
                         // We automatically escape expressions if needed, using the feature of modifiers, since the escape is already handled by a modifier itself.
                         // For safety and logical reasons, the escaping is done at the end, so the modifier is added as the last one.
@@ -189,7 +196,7 @@ Aria.classDefinition({
                 process : function (out, statement, param) {
                     var eventName = param[1];
                     var callback = param[2];
-                    var delegate = aria.utils.Delegate;
+                    var delegate = ariaUtilsDelegate;
                     var eventDependencies = delegate.delegatedGestures[eventName];
                     if (eventDependencies) {
                         out.addDependency(eventDependencies);
@@ -578,7 +585,7 @@ Aria.classDefinition({
                     var wlib = out.wlibs[libName];
                     if (!wlib) {
                         wlib = Aria.getClassRef(libclasspath);
-                        if (!aria.utils.Type.isInstanceOf(wlib, "aria.widgetLibs.WidgetLib")) {
+                        if (!ariaUtilsType.isInstanceOf(wlib, "aria.widgetLibs.WidgetLib")) {
                             return out.logError(statement, statementsSingleton.INVALID_WIDGET_LIBRARY, [libName,
                                     libclasspath]);
                         }

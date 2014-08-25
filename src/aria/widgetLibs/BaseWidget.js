@@ -12,6 +12,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaUtilsIdManager = require("../utils/IdManager");
+var ariaTemplatesCSSMgr = require("../templates/CSSMgr");
+var ariaUtilsArray = require("../utils/Array");
+
 
 (function () {
     var idMgr = null;
@@ -38,12 +43,11 @@
     /**
      * Base class that all widgets have to extend.
      */
-    Aria.classDefinition({
+    module.exports = Aria.classDefinition({
         $classpath : "aria.widgetLibs.BaseWidget",
-        $dependencies : ["aria.utils.IdManager", "aria.templates.CSSMgr"],
         $onload : function () {
-            idMgr = new aria.utils.IdManager("w");
-            arrayUtils = aria.utils.Array;
+            idMgr = new ariaUtilsIdManager("w");
+            arrayUtils = ariaUtilsArray;
         },
         $onunload : function () {
             idMgr.$dispose();
@@ -86,7 +90,7 @@
             this._dynamicIds = null;
 
             // Notify the Skin Manager that a new widget was created
-            aria.templates.CSSMgr.loadWidgetDependencies(this.$classpath, this.$css);
+            ariaTemplatesCSSMgr.loadWidgetDependencies(this.$classpath, this.$css);
 
             /**
              * True if the CSS is loaded, false otherwise. This is to make sure the CSS is not unloaded twice.
@@ -99,7 +103,7 @@
 
             if (this.__cssLoaded) {
                 // Notify the Skin Manager that a widget was destroyed
-                aria.templates.CSSMgr.unloadWidgetDependencies(this.$classpath, this.$css);
+                ariaTemplatesCSSMgr.unloadWidgetDependencies(this.$classpath, this.$css);
                 this.__cssLoaded = false;
             } else {
                 this.$logError(this.WIDGET_DISPOSED_TWICE);

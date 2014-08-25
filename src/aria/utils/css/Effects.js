@@ -12,6 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaUtilsCssUnits = require("./Units");
+var ariaUtilsCssColors = require("./Colors");
+var ariaUtilsCssPropertiesConfig = require("./PropertiesConfig");
+var ariaUtilsType = require("../Type");
+var ariaUtilsString = require("../String");
+var ariaUtilsArray = require("../Array");
+var ariaUtilsJson = require("../Json");
+var ariaUtilsObject = require("../Object");
+var ariaCoreBrowser = require("../../core/Browser");
+
 
 (function () {
 
@@ -48,9 +59,8 @@
      *      }
      * </pre>
      */
-    Aria.classDefinition({
+    module.exports = Aria.classDefinition({
         $classpath : "aria.utils.css.Effects",
-        $dependencies : ["aria.utils.css.Units", "aria.utils.css.Colors", "aria.utils.css.PropertiesConfig"],
         $singleton : true,
         $statics : {
             // animation interval in ms
@@ -106,9 +116,9 @@
         },
         $constructor : function () {
 
-            this.cfg = aria.utils.css.PropertiesConfig;
-            this.unitUtil = aria.utils.css.Units;
-            this.colorUtil = aria.utils.css.Colors;
+            this.cfg = ariaUtilsCssPropertiesConfig;
+            this.unitUtil = ariaUtilsCssUnits;
+            this.colorUtil = ariaUtilsCssColors;
             this.queues = {};
             this.animations = {};
             this.animCount = 0;
@@ -136,9 +146,9 @@
                 animInfo.duration = cfg.duration ? parseInt(cfg.duration, 10) : this.DEFAULT_DURATION;
                 animInfo.interval = cfg.interval ? parseInt(cfg.interval, 10) : this.DEFAULT_INTERVAL;
                 if (cfg.easing != null) {
-                    if (aria.utils.Type.isFunction(cfg.easing)) {
+                    if (ariaUtilsType.isFunction(cfg.easing)) {
                         animInfo.easing = cfg.easing;
-                    } else if (aria.utils.Type.isString(cfg.easing)) {
+                    } else if (ariaUtilsType.isString(cfg.easing)) {
                         animInfo.easing = this._easing[cfg.easing];
                     }
                 }
@@ -188,7 +198,7 @@
                     } else {
                         delete this.animations[animId];
                         if (animInfo.queue) {
-                            var queueOrder = aria.utils.Array.indexOf(this.queues[animInfo.queue].list, animInfo);
+                            var queueOrder = ariaUtilsArray.indexOf(this.queues[animInfo.queue].list, animInfo);
                             this.queues[animInfo.queue].list.splice(queueOrder, 1);
                         }
                     }
@@ -312,7 +322,7 @@
              */
             show : function (htmlElem, properties, cfg) {
                 var elem = this._getHTMLElement(htmlElem), endProps = {};
-                var props = (properties == null) ? [] : aria.utils.Array.clone(properties);
+                var props = (properties == null) ? [] : ariaUtilsArray.clone(properties);
                 if (elem == null) {
                     this.$logWarn(this.INVALID_HTML_ELEMENT);
                     return null;
@@ -328,7 +338,7 @@
 
                 if (props && props.length > 0) {
                     for (var prop in oldValues) {
-                        var ix = aria.utils.Array.indexOf(props, prop);
+                        var ix = ariaUtilsArray.indexOf(props, prop);
                         if (ix != -1) {
                             endProps[prop] = oldValues[prop].fullValue;
                             props.splice(ix, 0);
@@ -364,7 +374,7 @@
              * @return {String} animation ID
              */
             hide : function (htmlElem, properties, cfg) {
-                var cfgWrap = (cfg == null) ? {} : aria.utils.Json.copy(cfg, false);
+                var cfgWrap = (cfg == null) ? {} : ariaUtilsJson.copy(cfg, false);
                 var elem = this._getHTMLElement(htmlElem), startProps = {}, endProps = {};
                 if (elem == null) {
                     this.$logWarn(this.INVALID_HTML_ELEMENT);
@@ -373,7 +383,7 @@
 
                 if (properties) {
                     for (var i = 0, l = properties.length; i < l; i++) {
-                        if (aria.utils.Array.indexOf(["height", "width", "opacity"], properties[i]) != -1) {
+                        if (ariaUtilsArray.indexOf(["height", "width", "opacity"], properties[i]) != -1) {
                             // startProps[properties[i]] = aria.utils.Dom.getStyle(elem, properties[i]);
 
                             var currentValue = this._getProperty(elem, properties[i]);
@@ -386,7 +396,7 @@
                         }
                     }
                 }
-                if (aria.utils.Object.isEmpty(startProps)) {
+                if (ariaUtilsObject.isEmpty(startProps)) {
                     var opacity = aria.utils.Dom.getStyle(elem, "opacity");
                     startProps.opacity = {
                         value : opacity,
@@ -425,7 +435,7 @@
             },
 
             _getHTMLElement : function (htmlElem) {
-                if (!aria.utils.Type.isHTMLElement(htmlElem)) {
+                if (!ariaUtilsType.isHTMLElement(htmlElem)) {
                     return aria.utils.Dom.getElementById(htmlElem);
                 }
                 return htmlElem;
@@ -474,7 +484,7 @@
                         var propIsValid = (prop in PROPS && !(PROPS[prop].percentNotAdmitted && unit == "%"));
 
                         if (isColor
-                                || (aria.utils.Type.isNumber(valueNum) && aria.utils.Type.isNumber(currentValueNum) && propIsValid)) {
+                                || (ariaUtilsType.isNumber(valueNum) && ariaUtilsType.isNumber(currentValueNum) && propIsValid)) {
                             // detect if the property has multiple components (ex. margin-left, margin-right...) and
                             // explode it if different values are set
                             var explodedProps = [];
@@ -612,7 +622,7 @@
             _getUnit : function (value, prop) {
                 // /(em|%|px|ex|cm|mm|in|pt|pc)$/
                 var unitRegExp = new RegExp("(" + this.cfg.UNITS.join("|") + ")$");
-                var unit = aria.utils.String.trim(value).toLowerCase().match(unitRegExp);
+                var unit = ariaUtilsString.trim(value).toLowerCase().match(unitRegExp);
                 if (prop == "opacity" || prop == "scrollTop" || prop == "scrollLeft") {
                     return null;
                 } else
@@ -634,7 +644,7 @@
             },
 
             _setProperty : function (elem, item, value) {
-                var prop = item.prop, browser = aria.core.Browser, unit = item.unit || "";
+                var prop = item.prop, browser = ariaCoreBrowser, unit = item.unit || "";
                 if (item.isColor) {
                     elem.style[prop] = this.colorUtil.getRGBNotationFromRGBComponents(value);
                 } else if (this.cfg.PROPERTIES[prop] && !this.cfg.PROPERTIES[prop].notStyleProperty) {

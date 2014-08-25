@@ -12,17 +12,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaWidgetsFormDropDownListTrait = require("./DropDownListTrait");
+var ariaWidgetsControllersAutoCompleteController = require("../controllers/AutoCompleteController");
+var ariaUtilsEvent = require("../../utils/Event");
+var ariaWidgetsFormAutoCompleteStyle = require("./AutoCompleteStyle.tpl.css");
+var ariaWidgetsFormListListStyle = require("./list/ListStyle.tpl.css");
+var ariaWidgetsContainerDivStyle = require("../container/DivStyle.tpl.css");
+var ariaWidgetsFormDropDownTextInput = require("./DropDownTextInput");
+var ariaCoreBrowser = require("../../core/Browser");
+
 
 /**
  * AutoComplete widget
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.widgets.form.AutoComplete",
-    $extends : "aria.widgets.form.DropDownTextInput",
-    $dependencies : ["aria.widgets.form.DropDownListTrait", "aria.widgets.controllers.AutoCompleteController",
-            "aria.utils.Event"],
-    $css : ["aria.widgets.form.AutoCompleteStyle", "aria.widgets.form.list.ListStyle",
-            "aria.widgets.container.DivStyle"],
+    $extends : ariaWidgetsFormDropDownTextInput,
+    $css : [ariaWidgetsFormAutoCompleteStyle, ariaWidgetsFormListListStyle,
+            ariaWidgetsContainerDivStyle],
     /**
      * AutoComplete constructor
      * @param {aria.widgets.CfgBeans:AutoCompleteCfg} cfg the widget configuration
@@ -31,7 +39,7 @@ Aria.classDefinition({
      * @param {Number} controller the data controller object
      */
     $constructor : function (cfg, ctxt, lineNumber, controller) {
-        var controllerInstance = controller || new aria.widgets.controllers.AutoCompleteController();
+        var controllerInstance = controller || new ariaWidgetsControllersAutoCompleteController();
 
         if (!cfg.expandButton && cfg.bind) {
             delete cfg.bind.popupOpen;
@@ -103,7 +111,7 @@ Aria.classDefinition({
          * @param {Object} p the prototype object being built
          */
         $init : function (p) {
-            var src = aria.widgets.form.DropDownListTrait.prototype;
+            var src = ariaWidgetsFormDropDownListTrait.prototype;
             for (var key in src) {
                 if (src.hasOwnProperty(key) && !p.hasOwnProperty(key)) {
                     // copy methods which are not already on this object (this avoids copying $classpath and
@@ -175,15 +183,15 @@ Aria.classDefinition({
          * @method
          * @override
          */
-        _init : aria.core.Browser.isOldIE ? function () {
+        _init : ariaCoreBrowser.isOldIE ? function () {
             this.$DropDownTextInput._init.call(this);
 
             var field = this.getTextInputField();
-            aria.utils.Event.addListener(field, "paste", {
+            ariaUtilsEvent.addListener(field, "paste", {
                 fn : this._dom_onpaste,
                 scope : this
             });
-            aria.utils.Event.addListener(field, "cut", {
+            ariaUtilsEvent.addListener(field, "cut", {
                 fn : this._dom_oncut,
                 scope : this
             });
@@ -196,10 +204,10 @@ Aria.classDefinition({
          * @method
          * @protected
          */
-        _removeEvents : aria.core.Browser.isOldIE ? function () {
+        _removeEvents : ariaCoreBrowser.isOldIE ? function () {
             var field = this.getTextInputField();
-            aria.utils.Event.removeListener(field, "paste");
-            aria.utils.Event.removeListener(field, "cut");
+            ariaUtilsEvent.removeListener(field, "paste");
+            ariaUtilsEvent.removeListener(field, "cut");
         } : function () {},
 
         /**

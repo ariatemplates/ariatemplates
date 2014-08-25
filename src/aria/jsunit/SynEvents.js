@@ -12,18 +12,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaJsunitRobot = require("./Robot");
+var ariaUtilsType = require("../utils/Type");
+var ariaCoreTimer = require("../core/Timer");
+
 
 /**
  * Layer on top of aria.jsunit.Robot to allow higher-level input (involving DOM elements). (This class is still
  * experimental currently, and is marked private for that reason)
  * @private
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.jsunit.SynEvents",
     $singleton : true,
-    $dependencies : ["aria.jsunit.Robot"],
     $constructor : function () {
-        this._robot = aria.jsunit.Robot;
+        this._robot = ariaJsunitRobot;
     },
     $destructor : function () {
         this._robot = null;
@@ -94,7 +98,7 @@ Aria.classDefinition({
             } else {
                 var callParams = array[curIdx];
                 args.curIdx++;
-                if (!aria.utils.Type.isArray(callParams)) {
+                if (!ariaUtilsType.isArray(callParams)) {
                     this.$logError("Not an array");
                     return;
                 }
@@ -134,7 +138,7 @@ Aria.classDefinition({
         },
 
         pause : function (duration, cb) {
-            aria.core.Timer.addCallback({
+            ariaCoreTimer.addCallback({
                 fn : this.$callback,
                 scope : this,
                 args : cb,
@@ -241,11 +245,11 @@ Aria.classDefinition({
         _resolvePosition : function (position) {
             var domUtils = aria.utils.Dom;
             var res;
-            if (aria.utils.Type.isString(position)) {
+            if (ariaUtilsType.isString(position)) {
                 // it is a string, resolve it to an HTML element
                 position = this._resolveHTMLElement(position);
             }
-            if (aria.utils.Type.isHTMLElement(position)) {
+            if (ariaUtilsType.isHTMLElement(position)) {
                 // put the mouse on the center of the element
                 // TODO: check if the item is really visible
                 var geometry = domUtils.getGeometry(position);
@@ -266,11 +270,11 @@ Aria.classDefinition({
         _resolveGeometry : function (geometry) {
             var domUtils = aria.utils.Dom;
             var res;
-            if (aria.utils.Type.isString(geometry)) {
+            if (ariaUtilsType.isString(geometry)) {
                 // it is a string, resolve it to an HTML element
                 geometry = this._resolveHTMLElement(geometry);
             }
-            if (aria.utils.Type.isHTMLElement(geometry)) {
+            if (ariaUtilsType.isHTMLElement(geometry)) {
                 res = domUtils.getGeometry(geometry);
                 // TODO: check if the item is really visible
             } else if (geometry.hasOwnProperty("x") && geometry.hasOwnProperty("y") &&
@@ -286,7 +290,7 @@ Aria.classDefinition({
 
         _resolveHTMLElement : function (element) {
             var res;
-            if (aria.utils.Type.isString(element)) {
+            if (ariaUtilsType.isString(element)) {
                 // it is a string, resolve it to an HTML element
                 res = aria.utils.Dom.getElementById(element);
                 if (res == null) {
@@ -294,7 +298,7 @@ Aria.classDefinition({
                     this.$logError("HTML element was not found.");
                     return null;
                 }
-            } else if (aria.utils.Type.isHTMLElement(element)) {
+            } else if (ariaUtilsType.isHTMLElement(element)) {
                 res = element;
             } else {
                 // FIXME: log error correctly

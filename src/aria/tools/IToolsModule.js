@@ -12,13 +12,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaTemplatesIModuleCtrl = require("../templates/IModuleCtrl");
+
 
 /**
  * Interface for the tools module
  */
-Aria.interfaceDefinition({
+module.exports = Aria.interfaceDefinition({
     $classpath : "aria.tools.IToolsModule",
-    $extends : "aria.templates.IModuleCtrl",
+    $extends : ariaTemplatesIModuleCtrl,
     $interface : {
         /**
          * Sub modules, one for each tool available. Each will load a sub module and appropriate display.

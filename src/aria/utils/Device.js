@@ -12,10 +12,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaCoreBrowser = require("../core/Browser");
 
-Aria.classDefinition({
+
+module.exports = Aria.classDefinition({
     $classpath : "aria.utils.Device",
-    $dependencies : ["aria.core.Browser"],
     $singleton : true,
     $constructor : function () {
         var navigator = Aria.$global.navigator;
@@ -91,7 +93,7 @@ Aria.classDefinition({
          * Checks whether it is a Touch Device
          */
         isTouch : function () {
-            var blackBerryTouch = aria.core.Browser.isBlackBerry;
+            var blackBerryTouch = ariaCoreBrowser.isBlackBerry;
             var bbModel = this._getBlackBerryVersion();
             if (".9670.9100.9105.9360.9350.9330.9320.9310.9300.9220.9780.9700.9650.".indexOf("." + bbModel + ".")) {
                 blackBerryTouch = false;
@@ -216,7 +218,7 @@ Aria.classDefinition({
          * Checks whether the cursor moved with a trackball or trackpad.
          */
         isClickNavigation : function () {
-            if (aria.core.Browser.isBlackBerry) {
+            if (ariaCoreBrowser.isBlackBerry) {
                 this.isClickNavigation = Aria.returnTrue;
             } else {
                 this.isClickNavigation = Aria.returnFalse;

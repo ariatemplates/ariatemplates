@@ -12,13 +12,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaUtilsValidatorsValidator = require("./Validator");
+
 
 /**
  * Validator for a mandatory value
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.utils.validators.Mandatory",
-    $extends : "aria.utils.validators.Validator",
+    $extends : ariaUtilsValidatorsValidator,
     $statics : {
         DEFAULT_LOCALIZED_MESSAGE : "This field is a mandatory field."
     },

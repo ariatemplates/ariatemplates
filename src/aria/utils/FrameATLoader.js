@@ -12,12 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaCoreCache = require("../core/Cache");
+var ariaCoreDownloadMgr = require("../core/DownloadMgr");
+var ariaCoreIO = require("../core/IO");
+
 
 /**
  * Utility class used to load Aria Templates in an iframe or in a new window. This is used by aria.jsunit.TestWrapper to
  * isolate tests, but it can be used for any purpose. It is still experimental for now.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.utils.FrameATLoader",
     $singleton : true,
     $events : {
@@ -113,7 +118,7 @@ Aria.classDefinition({
 
             var href = Aria.$frameworkWindow.location.href.replace(/(\?|\#).*$/, "").replace(/[^\/.]+\.[^\/.]+$/, "").replace(/\/$/, "")
                     + "/";
-            var docUrl = [aria.core.DownloadMgr.resolveURL("aria/utils/FrameATLoaderHTML.html"), '?',
+            var docUrl = [ariaCoreDownloadMgr.resolveURL("aria/utils/FrameATLoaderHTML.html"), '?',
                     encodeURIComponent(href), '#', callbackId].join('');
             // args.frame.contentWindow is defined only if the framework is loaded in an iframe. In the case of a new
             // window, args.frame is already the correct window object
@@ -186,7 +191,7 @@ Aria.classDefinition({
             }
 
             window.Aria.rootFolderPath = Aria.rootFolderPath;
-            var rootMap = window.aria.utils.Json.copy(aria.core.DownloadMgr._rootMap);
+            var rootMap = window.aria.utils.Json.copy(ariaCoreDownloadMgr._rootMap);
             window.aria.core.DownloadMgr.updateRootMap(rootMap);
             if (aria.widgets && aria.widgets.AriaSkin) {
                 var skin = aria.widgets.AriaSkin.classDefinition;
@@ -200,7 +205,7 @@ Aria.classDefinition({
 
             var newDownloadMgr = window.aria.core.DownloadMgr;
             var newCache = window.aria.core.Cache;
-            var cache = aria.core.Cache;
+            var cache = ariaCoreCache;
             var filesCache = cache.content.files;
             var urlsCache = cache.content.urls;
             var loadedStatus = cache.STATUS_AVAILABLE;
@@ -297,7 +302,7 @@ Aria.classDefinition({
          */
         loadBootstrap : function (cb) {
             if (this.bootRootFolderPath == null) {
-                var bootRootFolderPath = aria.core.DownloadMgr.resolveURL("aria/Aria.js", true);
+                var bootRootFolderPath = ariaCoreDownloadMgr.resolveURL("aria/Aria.js", true);
                 this.bootRootFolderPath = bootRootFolderPath.replace(/aria\/Aria\.js$/, "");
             }
             if (this.frameworkJS) {
@@ -318,7 +323,7 @@ Aria.classDefinition({
                 return;
             }
             this._loadingFrameworkJs = true;
-            aria.core.IO.asyncRequest({
+            ariaCoreIO.asyncRequest({
                 url : this.frameworkHref,
                 callback : {
                     fn : this._frameworkLoaded,

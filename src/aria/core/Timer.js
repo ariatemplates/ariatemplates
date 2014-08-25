@@ -12,13 +12,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+
 
 /**
  * This class handles asynchronous callbacks and gives the possibility to associate an object
  * (scope) to the callback function - which is not possible with setTimeout(...) It also creates a unique id that
  * can be used to cancel the callback
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.core.Timer",
     $singleton : true,
     $constructor : function () {

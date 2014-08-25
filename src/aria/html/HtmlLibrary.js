@@ -12,10 +12,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaWidgetLibsWidgetLib = require("../widgetLibs/WidgetLib");
 
-Aria.classDefinition({
+
+module.exports = Aria.classDefinition({
     $classpath : "aria.html.HtmlLibrary",
-    $extends : "aria.widgetLibs.WidgetLib",
+    $extends : ariaWidgetLibsWidgetLib,
     $singleton : true,
     $prototype : {
         widgets : {

@@ -1,3 +1,6 @@
+
+var Aria = require("../../Aria");
+var ariaCoreJsObject = require("../../core/JsObject");
 (function () {
 	//
 	// showdown.js -- A javascript port of Markdown.
@@ -1075,9 +1078,9 @@
 	 * @extends aria.core.JsObject
 	 * @singleton
 	 */
-	Aria.classDefinition({
+	module.exports = Aria.classDefinition({
 		$classpath : "aria.pageEngine.contentProcessors.MarkdownProcessor",
-		$extends : "aria.core.JsObject",
+		$extends : ariaCoreJsObject,
 		$singleton : true,
 		$constructor : function () {
 			/**

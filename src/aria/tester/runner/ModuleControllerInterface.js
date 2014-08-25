@@ -12,14 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaTemplatesIModuleCtrl = require("../../templates/IModuleCtrl");
+
 
 /**
  * Public API of the runner module
  * @class aria.tester.runner.ModuleControllerInterface
  */
-Aria.interfaceDefinition({
+module.exports = Aria.interfaceDefinition({
     $classpath : 'aria.tester.runner.ModuleControllerInterface',
-    $extends : 'aria.templates.IModuleCtrl',
+    $extends : ariaTemplatesIModuleCtrl,
     $events : {
         "initSuccessful" : "initSuccessful",
         "preloadEnd" : "preloadEnd",

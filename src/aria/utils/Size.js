@@ -12,6 +12,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaUtilsMath = require("./Math");
+var ariaUtilsType = require("./Type");
+var ariaCoreBrowser = require("../core/Browser");
+
 
 /**
  * Handles sizes measurements and application for DOM elements
@@ -19,9 +24,8 @@
  * @extends aria.core.JsObject
  * @singleton
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : 'aria.utils.Size',
-    $dependencies : ['aria.utils.Math'],
     $singleton : true,
     $prototype : {
 
@@ -69,7 +73,7 @@ Aria.classDefinition({
                 'height' : height
             };
 
-            if (aria.utils.Type.isHTMLElement(parentNode)) {
+            if (ariaUtilsType.isHTMLElement(parentNode)) {
                 parentNode.appendChild(element);
             }
 
@@ -111,7 +115,7 @@ Aria.classDefinition({
             // for width
             if (widthConf) {
                 measured = element.offsetWidth;
-                newValue = aria.utils.Math.normalize(measured, widthConf.min, widthConf.max);
+                newValue = ariaUtilsMath.normalize(measured, widthConf.min, widthConf.max);
                 if (newValue != measured) {
                     element.style.width = newValue + "px";
                     changedWidth = true;
@@ -122,19 +126,19 @@ Aria.classDefinition({
             // for height
             if (heightConf) {
                 measured = element.offsetHeight;
-                newValue = aria.utils.Math.normalize(measured, heightConf.min, heightConf.max);
+                newValue = ariaUtilsMath.normalize(measured, heightConf.min, heightConf.max);
                 if (newValue != measured) {
                     element.style.height = newValue + "px";
                     changedHeight = true;
                     changedOverflowY = (newValue < measured);
                     if (changedOverflowY) {
                         element.style.overflowY = "scroll";
-                        if ((aria.core.Browser.isOldIE && aria.core.Browser.majorVersion < 8) || (aria.core.Browser.isMac)) {
+                        if ((ariaCoreBrowser.isOldIE && ariaCoreBrowser.majorVersion < 8) || (ariaCoreBrowser.isMac)) {
                             var scrollbarSize = aria.templates.Layout.getScrollbarsWidth();
                             element.style['paddingRight'] = element.style['paddingRight'] === '' ? scrollbarSize + 'px' : (parseInt(element.style['paddingRight'], 10) + scrollbarSize) + "px";
                         }
                         // recalculate the width
-                        var newWidth = aria.utils.Math.normalize(element.offsetWidth, widthConf.min, widthConf.max);
+                        var newWidth = ariaUtilsMath.normalize(element.offsetWidth, widthConf.min, widthConf.max);
                         element.style.width = newWidth + "px";
                         changedWidth = true;
                         result.width = newWidth;
@@ -154,7 +158,7 @@ Aria.classDefinition({
 
                 if (changedOverflowY) {
                     element.style.overflowY = savedScrollBarY;
-                    if ((aria.core.Browser.isOldIE && aria.core.Browser.majorVersion < 8)  || (aria.core.Browser.isMac)) {
+                    if ((ariaCoreBrowser.isOldIE && ariaCoreBrowser.majorVersion < 8)  || (ariaCoreBrowser.isMac)) {
                         var scrollbarSize = aria.templates.Layout.getScrollbarsWidth();
                         element.style['paddingRight'] = (parseInt(element.style['paddingRight'], 10) - scrollbarSize) + "px";
                     }

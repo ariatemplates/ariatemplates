@@ -12,6 +12,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+require("./beans/RadioButtonCfg");
+var ariaHtmlInputElement = require("./InputElement");
+var ariaUtilsJson = require("../utils/Json");
+
 
 (function () {
     /**
@@ -24,16 +29,15 @@
     function bidirectionalClickBinding (event) {
         var bind = this._bindingListeners.selectedValue;
         var newValue = this._transform(bind.transform, this._cfg.value, "fromWidget");
-        aria.utils.Json.setValue(bind.inside, bind.to, newValue);
+        ariaUtilsJson.setValue(bind.inside, bind.to, newValue);
     }
 
     /**
      * RadioButton widget. Bindable widget providing bi-directional bind of 'selectedValue'.
      */
-    Aria.classDefinition({
+    module.exports = Aria.classDefinition({
         $classpath : "aria.html.RadioButton",
-        $extends : "aria.html.InputElement",
-        $dependencies : ["aria.html.beans.RadioButtonCfg"],
+        $extends : ariaHtmlInputElement,
         $constructor : function (cfg, context, line) {
             cfg.on = cfg.on || {};
             this._chainListener(cfg.on, 'click', {

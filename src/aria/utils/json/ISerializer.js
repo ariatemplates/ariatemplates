@@ -12,12 +12,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+
 
 /**
  * Interface definition for JSON serializers. A Serializer is a class able to convert an object into a string and
  * vice-versa. Serializers are utility classes, this interface defines the method that might be required by their users.
  */
-Aria.interfaceDefinition({
+module.exports = Aria.interfaceDefinition({
     $classpath : "aria.utils.json.ISerializer",
     $interface : {
         /**

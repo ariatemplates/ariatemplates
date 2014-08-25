@@ -12,6 +12,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaUtilsClassList = require("../ClassList");
+var ariaUtilsDelegate = require("../Delegate");
+var ariaTemplatesCSSMgr = require("../../templates/CSSMgr");
+var ariaUtilsCssTransitions = require("./Transitions.tpl.css");
+
 
 /**
  * Utilities for CSS3 animations Add CSS animations. To add a new animation you need to create a new instance of
@@ -29,10 +35,9 @@
  *      }
  * </pre>
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.utils.css.Animations",
-    $dependencies : ["aria.utils.ClassList", "aria.utils.Delegate", "aria.templates.CSSMgr"],
-    $css : ["aria.utils.css.Transitions"],
+    $css : [ariaUtilsCssTransitions],
     $constructor : function () {
 
         /**
@@ -50,12 +55,12 @@ Aria.classDefinition({
         /**
          * Loads the CSSTemplate for the animations
          */
-        aria.templates.CSSMgr.loadClassPathDependencies(this.$classpath, this.$css);
+        ariaTemplatesCSSMgr.loadClassPathDependencies(this.$classpath, this.$css);
         this.__cssLoaded = true;
     },
     $destructor : function () {
         if (this.__cssLoaded) {
-            aria.templates.CSSMgr.unloadClassPathDependencies(this.$classpath, this.$css);
+            ariaTemplatesCSSMgr.unloadClassPathDependencies(this.$classpath, this.$css);
             this.__cssLoaded = false;
         }
     },
@@ -193,7 +198,7 @@ Aria.classDefinition({
          * @param {String} Css classes to add
          */
         _addClass : function (element, classes) {
-            var elmClass = new aria.utils.ClassList(element);
+            var elmClass = new ariaUtilsClassList(element);
             elmClass.add(classes);
             elmClass.$dispose();
         },
@@ -204,7 +209,7 @@ Aria.classDefinition({
          * @param {String} Css classes to remove
          */
         _removeClass : function (element, classes) {
-            var elmCss = new aria.utils.ClassList(element);
+            var elmCss = new ariaUtilsClassList(element);
             elmCss.remove(classes);
             elmCss.$dispose();
         },
@@ -227,7 +232,7 @@ Aria.classDefinition({
          * Toggle some classes to the body
          */
         _toggleClassBody : function () {
-            var bodyClass = new aria.utils.ClassList(Aria.$window.document.body);
+            var bodyClass = new ariaUtilsClassList(Aria.$window.document.body);
             bodyClass.toggle("xviewport-xanimation");
             bodyClass.toggle("xviewport-" + this._name);
             bodyClass.$dispose();
@@ -248,7 +253,7 @@ Aria.classDefinition({
          * Returns the right event due to the vendor prefix. Needed it because the browser event is case sensitive.
          */
         _animationEndEvent : function () {
-            var vendorPrefix = (aria.utils.Delegate.vendorPrefix || "").toLowerCase();
+            var vendorPrefix = (ariaUtilsDelegate.vendorPrefix || "").toLowerCase();
 
             switch (vendorPrefix) {
                 case "webkit" :

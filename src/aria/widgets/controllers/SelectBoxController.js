@@ -12,14 +12,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+require("../../DomEvent");
+var ariaUtilsJson = require("../../utils/Json");
+var ariaWidgetsControllersReportsDropDownControllerReport = require("./reports/DropDownControllerReport");
+var ariaWidgetsControllersDropDownListController = require("./DropDownListController");
+
 
 /**
  * The list controller is used to check that a value entered in a field is one of the allowed values.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.widgets.controllers.SelectBoxController",
-    $extends : "aria.widgets.controllers.DropDownListController",
-    $dependencies : ["aria.DomEvent", "aria.utils.Json", "aria.widgets.controllers.reports.DropDownControllerReport"],
+    $extends : ariaWidgetsControllersDropDownListController,
     $constructor : function () {
 
         this.$DropDownListController.constructor.call(this);
@@ -63,12 +68,12 @@ Aria.classDefinition({
          */
         toggleDropdown : function (displayValue, currentlyOpen) {
             var dm = this._dataModel;
-            var report = new aria.widgets.controllers.reports.DropDownControllerReport();
+            var report = new ariaWidgetsControllersReportsDropDownControllerReport();
             var sgs = this._options;
             report.displayDropDown = sgs.length > 0 && (!currentlyOpen || dm.listContent.length < sgs.length);
             if (report.displayDropDown) {
                 dm.initialInput = displayValue;
-                var jsonUtils = aria.utils.Json;
+                var jsonUtils = ariaUtilsJson;
                 var selectedIndex = this._getSelectedIndex(dm.value);
                 jsonUtils.setValue(dm, 'selectedIdx', selectedIndex);
                 jsonUtils.setValue(dm, 'listContent', sgs);
@@ -140,7 +145,7 @@ Aria.classDefinition({
          * @return {aria.widgets.controllers.reports.DropDownControllerReport}
          */
         checkValue : function (value) {
-            var report = new aria.widgets.controllers.reports.DropDownControllerReport();
+            var report = new ariaWidgetsControllersReportsDropDownControllerReport();
             var dm = this._dataModel;
             var options = this._options;
             if (value == null) {
@@ -175,7 +180,7 @@ Aria.classDefinition({
          */
         checkText : function (displayedText) {
             // return object
-            var report = new aria.widgets.controllers.reports.DropDownControllerReport();
+            var report = new ariaWidgetsControllersReportsDropDownControllerReport();
             var dm = this._dataModel;
             var lowerCaseDispValue = displayedText.toLowerCase();
             var dispValueLength = displayedText.length;
@@ -223,7 +228,7 @@ Aria.classDefinition({
          * @return {aria.widgets.controllers.reports.ControllerReport}
          */
         _checkInputKey : function (charCode, keyCode, nextValue, caretPosStart, caretPosEnd) {
-            var report = new aria.widgets.controllers.reports.DropDownControllerReport();
+            var report = new ariaWidgetsControllersReportsDropDownControllerReport();
             var dataModel = this._dataModel;
             report.caretPosStart = caretPosStart;
             report.caretPosEnd = caretPosEnd;
@@ -250,7 +255,7 @@ Aria.classDefinition({
                     report.displayDropDown = (sgs.length > 0);
                 }
 
-                var jsonUtils = aria.utils.Json;
+                var jsonUtils = ariaUtilsJson;
                 jsonUtils.setValue(dataModel, 'listContent', sgs);
                 jsonUtils.setValue(dataModel, 'selectedIdx', exactMatch);
                 dataModel.initialInput = report.text;

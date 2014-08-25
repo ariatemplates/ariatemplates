@@ -12,17 +12,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaUtilsString = require("../../utils/String");
+var ariaWidgetsActionLinkStyle = require("./LinkStyle.tpl.css");
+var ariaWidgetsActionActionWidget = require("./ActionWidget");
+
 
 /**
  * Class definition for the link widget.
  * @class aria.widgets.action.Link
  * @extends aria.widgets.action.ActionWidget
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.widgets.action.Link",
-    $extends : "aria.widgets.action.ActionWidget",
-    $dependencies : ["aria.utils.String"],
-    $css : ["aria.widgets.action.LinkStyle"],
+    $extends : ariaWidgetsActionActionWidget,
+    $css : [ariaWidgetsActionLinkStyle],
     /**
      * ActionWidget constructor
      * @param {aria.widgets.CfgBeans:ActionWidgetCfg} cfg the widget configuration
@@ -59,7 +63,7 @@ Aria.classDefinition({
             out.write(['<a', Aria.testMode ? ' id="' + this._domId + '_link"' : '', ' class="xLink_', cfg.sclass,
                     '" href="javascript:(function(){})()"',
                     (cfg.tabIndex != null ? ' tabindex=' + this._calculateTabIndex() + '"' : ''), '>',
-                    aria.utils.String.escapeHTML(cfg.label), '</a>'].join(''));
+                    ariaUtilsString.escapeHTML(cfg.label), '</a>'].join(''));
             cfg = null;
         },
 

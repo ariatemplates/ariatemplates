@@ -12,16 +12,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaUtilsEllipsis = require("../utils/Ellipsis");
+require("../DomEvent");
+var ariaUtilsDom = require("../utils/Dom");
+var ariaUtilsString = require("../utils/String");
+var ariaWidgetsWidget = require("./Widget");
+var ariaUtilsType = require("../utils/Type");
+
 
 /**
  * The Text Widget
  * @class aria.widgets.Text Class definition for the Text widget.
  * @extends aria.widgets.Widget
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.widgets.Text",
-    $extends : "aria.widgets.Widget",
-    $dependencies : ["aria.utils.Ellipsis", "aria.DomEvent", "aria.utils.Dom", "aria.utils.String"],
+    $extends : ariaWidgetsWidget,
     /**
      * Text constructor
      * @param {aria.widgets.CfgBeans:Text} cfg the widget configuration
@@ -30,7 +37,7 @@ Aria.classDefinition({
     $constructor : function (cfg, ctxt) {
         this.$Widget.constructor.apply(this, arguments);
 
-        if (aria.utils.Type.isString(cfg.ellipsis)) {
+        if (ariaUtilsType.isString(cfg.ellipsis)) {
             this._activateEllipsis = true;
             this._directInit = true;
         }
@@ -86,7 +93,7 @@ Aria.classDefinition({
                 textContent = '';
             }
             this.textContent = textContent;
-            out.write('<span class="createdEllipisElement">' + aria.utils.String.escapeHTML(this.textContent)
+            out.write('<span class="createdEllipisElement">' + ariaUtilsString.escapeHTML(this.textContent)
                     + "</span>");
         },
 
@@ -114,7 +121,7 @@ Aria.classDefinition({
             }
             var dom = this.getDom();
             if (dom) {
-                var stringUtils = aria.utils.String;
+                var stringUtils = ariaUtilsString;
                 this.textContent = textContent;
 
                 dom.style.display = "inline-block";
@@ -122,17 +129,17 @@ Aria.classDefinition({
                 dom.style.whiteSpace = "nowrap";
                 dom.style.verticalAlign = "top";
 
-                var textWidth, ellipsisElement = aria.utils.Dom.getDomElementChild(dom, 0);
+                var textWidth, ellipsisElement = ariaUtilsDom.getDomElementChild(dom, 0);
                 if (!ellipsisElement) {
                     dom.innerHTML = '<span class="createdEllipisElement">' + stringUtils.escapeHTML(this.textContent)
                             + '</span>';
-                    ellipsisElement = aria.utils.Dom.getDomElementChild(dom, 0);
+                    ellipsisElement = ariaUtilsDom.getDomElementChild(dom, 0);
                 }
                 if (this._cfg.width > 0) {
                     textWidth = this._cfg.width;
                     dom.style.width = this._cfg.width + "px";
 
-                    this._ellipsis = new aria.utils.Ellipsis(ellipsisElement, textWidth, this._cfg.ellipsisLocation, this._cfg.ellipsis, this._context, this._cfg.ellipsisEndStyle);
+                    this._ellipsis = new ariaUtilsEllipsis(ellipsisElement, textWidth, this._cfg.ellipsisLocation, this._cfg.ellipsis, this._context, this._cfg.ellipsisEndStyle);
 
                     if (!this._ellipsis.ellipsesNeeded) {
                         // No ellipsis was done so remove the <span> and put the full text into the text widget itself
@@ -160,7 +167,7 @@ Aria.classDefinition({
                 } else {
                     // String cast
                     newValue = '' + newValue;
-                    dom.getElementsByTagName("span")[0].innerHTML = aria.utils.String.escapeHTML(newValue);
+                    dom.getElementsByTagName("span")[0].innerHTML = ariaUtilsString.escapeHTML(newValue);
                     this.textContent = newValue;
                 }
             }

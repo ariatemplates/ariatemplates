@@ -12,6 +12,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaCoreIOFilter = require("../../core/IOFilter");
+
 
 /**
  * This request filter can be used to show in the logs the XML responses received from the server. This can be
@@ -29,9 +32,9 @@
  * aria.core.IOFiltersMgr.addFilter(&quot;aria.utils.filters.DisplayXmlResponse&quot;);
  * </pre>
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.utils.filters.DisplayXmlResponse",
-    $extends : "aria.core.IOFilter",
+    $extends : ariaCoreIOFilter,
     $constructor : function () {
         this.$IOFilter.constructor.call(this);
     },

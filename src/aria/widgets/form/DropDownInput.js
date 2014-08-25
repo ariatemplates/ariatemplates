@@ -12,14 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaWidgetsFormDropDownTrait = require("./DropDownTrait");
+var ariaWidgetsFormInputWithFrame = require("./InputWithFrame");
+
 
 /**
  * Base class for input widgets that use a drop-down popup without being a text input
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.widgets.form.DropDownInput",
-    $extends : "aria.widgets.form.InputWithFrame",
-    $dependencies : ["aria.widgets.form.DropDownTrait"],
+    $extends : ariaWidgetsFormInputWithFrame,
     /**
      * DropDownInput constructor
      * @param {aria.widgets.CfgBeans:DropDownInputCfg} cfg the widget configuration
@@ -46,7 +49,7 @@ Aria.classDefinition({
     },
     $prototype : {
         $init : function (p) {
-            var src = aria.widgets.form.DropDownTrait.prototype;
+            var src = ariaWidgetsFormDropDownTrait.prototype;
             for (var key in src) {
                 if (src.hasOwnProperty(key) && !p.hasOwnProperty(key)) {
                     // copy methods which are not already on this object (this avoids copying $classpath and

@@ -12,12 +12,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+
 
 /**
  * Interface definition for public storage classes. It define the publicly accessible methods and the event raised by
  * such classes.
  */
-Aria.interfaceDefinition({
+module.exports = Aria.interfaceDefinition({
     $classpath : "aria.storage.IStorage",
     $events : {
         "change" : {

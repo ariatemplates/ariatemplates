@@ -12,14 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaTemplatesParser = require("./Parser");
+
 
 /**
  * Parser for text template. It is specific has it keeps whitespaces
  * @class aria.templates.TxtParser
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : 'aria.templates.TxtParser',
-    $extends : 'aria.templates.Parser',
+    $extends : ariaTemplatesParser,
     $singleton : true,
     $constructor : function () {
         this.$Parser.constructor.apply(this, arguments);

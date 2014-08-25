@@ -12,13 +12,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../../../../Aria");
+
 
 /**
  * Template script definition for aria.tester.runner.view.popup.report.Report
  */
-Aria.tplScriptDefinition({
+module.exports = Aria.tplScriptDefinition({
     $classpath : 'aria.tester.runner.view.popup.report.ReportScript',
-    $dependencies : [],
     $prototype : {
         getTestsWithErrors : function () {
             var __testUtils = aria.tester.runner.utils.TestUtils;

@@ -12,23 +12,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaWidgetsAriaSkinInterface = require("../AriaSkinInterface");
+require("./CfgBeans");
+var ariaWidgetsFramesSimpleFrame = require("./SimpleFrame");
+var ariaWidgetsFramesTableFrame = require("./TableFrame");
+var ariaWidgetsFramesFixedHeightFrame = require("./FixedHeightFrame");
+var ariaWidgetsFramesSimpleHTMLFrame = require("./SimpleHTMLFrame");
+var ariaCoreJsonValidator = require("../../core/JsonValidator");
+
 
 /**
  * Frame factory, which provides a method to create a frame.
  * @class aria.widgets.frames.FrameFactory
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : 'aria.widgets.frames.FrameFactory',
     $singleton : true,
-    $dependencies : ["aria.widgets.AriaSkinInterface", "aria.widgets.frames.CfgBeans",
-            "aria.widgets.frames.SimpleFrame", "aria.widgets.frames.TableFrame",
-            "aria.widgets.frames.FixedHeightFrame", "aria.widgets.frames.SimpleHTMLFrame"],
     $constructor : function () {
         this._frameTypeBuilders = {
-            "Table" : aria.widgets.frames.TableFrame,
-            "FixedHeight" : aria.widgets.frames.FixedHeightFrame,
-            "SimpleHTML" : aria.widgets.frames.SimpleHTMLFrame,
-            "Simple" : aria.widgets.frames.SimpleFrame
+            "Table" : ariaWidgetsFramesTableFrame,
+            "FixedHeight" : ariaWidgetsFramesFixedHeightFrame,
+            "SimpleHTML" : ariaWidgetsFramesSimpleHTMLFrame,
+            "Simple" : ariaWidgetsFramesSimpleFrame
         };
     },
     $statics : {
@@ -49,11 +55,11 @@ Aria.classDefinition({
                 json : cfg,
                 beanName : "aria.widgets.frames.CfgBeans.FrameCfg"
             };
-            if (aria.core.JsonValidator.normalize(normalizeCfg)) {
+            if (ariaCoreJsonValidator.normalize(normalizeCfg)) {
                 cfg = normalizeCfg.json;
                 var skinObject = cfg.skinObject;
                 if (skinObject == null) {
-                    skinObject = aria.widgets.AriaSkinInterface.getSkinObject(cfg.skinnableClass, cfg.sclass);
+                    skinObject = ariaWidgetsAriaSkinInterface.getSkinObject(cfg.skinnableClass, cfg.sclass);
                     cfg.skinObject = skinObject;
                 }
                 return cfg;

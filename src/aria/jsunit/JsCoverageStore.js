@@ -12,13 +12,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaUtilsDate = require("../utils/Date");
+var ariaCoreBrowser = require("../core/Browser");
+
 
 /**
  * Store for coverage reports
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.jsunit.JsCoverageStore",
-    $dependencies : ["aria.utils.Date", "aria.core.Browser"],
     $statics : {
         baseReportsURL : "http://aria/jscoverage-reports/",
         baseStoreURL : "http://aria/jscoverage-store/"
@@ -28,13 +31,13 @@ Aria.classDefinition({
          * The timestamp for the current test, which will be used to store the results
          * @type String
          */
-        this.reportDate = aria.utils.Date.format(new Date(), "yyyy'_'MM'_'dd'_'hh'_'mm'_'ss");
+        this.reportDate = ariaUtilsDate.format(new Date(), "yyyy'_'MM'_'dd'_'hh'_'mm'_'ss");
 
         /**
          * URL "suffix" describing the current report
          * @type String
          */
-        this._urlSuffix = aria.core.Browser.name.toLowerCase() + "/" + this.reportDate + "/";
+        this._urlSuffix = ariaCoreBrowser.name.toLowerCase() + "/" + this.reportDate + "/";
     },
     $prototype : {
         /**

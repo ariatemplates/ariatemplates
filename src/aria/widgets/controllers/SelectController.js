@@ -12,6 +12,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaDomEvent = require("../../DomEvent");
+var ariaWidgetsControllersReportsDropDownControllerReport = require("./reports/DropDownControllerReport");
+var ariaWidgetsControllersTextDataController = require("./TextDataController");
+var ariaUtilsJson = require("../../utils/Json");
+var ariaCoreTimer = require("../../core/Timer");
+
 
 (function () {
     var jsonUtils;
@@ -20,10 +27,9 @@
     /**
      * The Select controller is the controller used in the Select widget.
      */
-    Aria.classDefinition({
+    module.exports = Aria.classDefinition({
         $classpath : "aria.widgets.controllers.SelectController",
-        $extends : "aria.widgets.controllers.TextDataController",
-        $dependencies : ["aria.DomEvent", "aria.widgets.controllers.reports.DropDownControllerReport"],
+        $extends : ariaWidgetsControllersTextDataController,
         $constructor : function () {
             this.$TextDataController.constructor.call(this);
             this._dataModel = {
@@ -49,8 +55,8 @@
             this.$TextDataController.$destructor.call(this);
         },
         $onload : function () {
-            jsonUtils = aria.utils.Json;
-            domEvent = aria.DomEvent;
+            jsonUtils = ariaUtilsJson;
+            domEvent = ariaDomEvent;
         },
         $onunload : function () {
             jsonUtils = null;
@@ -93,7 +99,7 @@
              */
             _createReport : function (includeValue) {
                 var dataModel = this._dataModel;
-                var report = new aria.widgets.controllers.reports.DropDownControllerReport();
+                var report = new ariaWidgetsControllersReportsDropDownControllerReport();
                 report.ok = true;
                 if (includeValue) {
                     report.value = dataModel.value;
@@ -140,11 +146,11 @@
                 var dataModel = this._dataModel;
                 jsonUtils.setValue(dataModel, "lastTypedKeys", lastTypedKeys);
                 if (this._reinitTypedKeysTimeout) {
-                    aria.core.Timer.cancelCallback(this._reinitTypedKeysTimeout);
+                    ariaCoreTimer.cancelCallback(this._reinitTypedKeysTimeout);
                     this._reinitTypedKeysTimeout = null;
                 }
                 if (lastTypedKeys != null) {
-                    this._reinitTypedKeysTimeout = aria.core.Timer.addCallback({
+                    this._reinitTypedKeysTimeout = ariaCoreTimer.addCallback({
                         fn : this._reinitLastTypedKeys,
                         scope : this,
                         delay : this.LAST_TYPED_KEYS_DELAY
@@ -339,7 +345,7 @@
              * @return {aria.widgets.controllers.reports.DropDownControllerReport}
              */
             toggleDropdown : function () {
-                var report = new aria.widgets.controllers.reports.DropDownControllerReport();
+                var report = new ariaWidgetsControllersReportsDropDownControllerReport();
                 report.displayDropDown = (this._listWidget == null);
                 if (this._dataModel && this._dataModel.displayIdx !== this._dataModel.selectedIdx) {
                     this._setDisplayIdx(this._dataModel.displayIdx);

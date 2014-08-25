@@ -12,6 +12,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+
 
 /**
  * Base Interface for template context. It is extended by aria.templates.ITemplate to expose methods on
@@ -19,7 +21,7 @@
  * are called by the general macros in aria.templates.ClassGenerator
  * @class aria.templates.IBaseTemplate
  */
-Aria.interfaceDefinition({
+module.exports = Aria.interfaceDefinition({
     $classpath : 'aria.templates.IBaseTemplate',
     $events : {},
     $interface : {

@@ -12,15 +12,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaUtilsBridge = require("../utils/Bridge");
+
 
 /**
  * Entry point for the tools
  * @singleton
  * @class aria.tools.ToolsBridge
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : 'aria.tools.ToolsBridge',
-    $extends : 'aria.utils.Bridge',
+    $extends : ariaUtilsBridge,
     $singleton : true,
     $constructor : function () {
         this.$Bridge.constructor.call(this);

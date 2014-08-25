@@ -12,14 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaTouchGesture = require("./Gesture");
+
 
 /**
  * Contains delegated handler for a tap event
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $singleton : true,
     $classpath : "aria.touch.Tap",
-    $extends : "aria.touch.Gesture",
+    $extends : ariaTouchGesture,
     $statics : {
         /**
          * The move tolerance to validate the gesture.

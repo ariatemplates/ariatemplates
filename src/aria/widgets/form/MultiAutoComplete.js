@@ -12,17 +12,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaWidgetsControllersMultiAutoCompleteController = require("../controllers/MultiAutoCompleteController");
+require("../../utils/Event");
+var ariaUtilsDom = require("../../utils/Dom");
+var ariaUtilsType = require("../../utils/Type");
+require("../../utils/Array");
+require("../../utils/Math");
+var ariaUtilsString = require("../../utils/String");
+var ariaUtilsCaret = require("../../utils/Caret");
+var ariaWidgetsFormMultiAutoCompleteStyle = require("./MultiAutoCompleteStyle.tpl.css");
+var ariaWidgetsFormListListStyle = require("./list/ListStyle.tpl.css");
+var ariaWidgetsContainerDivStyle = require("../container/DivStyle.tpl.css");
+var ariaWidgetsFormAutoComplete = require("./AutoComplete");
+var ariaUtilsJson = require("../../utils/Json");
+var ariaCoreBrowser = require("../../core/Browser");
+var ariaCoreTimer = require("../../core/Timer");
+
 
 /**
  * MultiAutoComplete widget
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.widgets.form.MultiAutoComplete",
-    $extends : "aria.widgets.form.AutoComplete",
-    $dependencies : ["aria.widgets.controllers.MultiAutoCompleteController", "aria.utils.Event", "aria.utils.Dom",
-            "aria.utils.Type", "aria.utils.Array", "aria.utils.Math", "aria.utils.String", "aria.utils.Caret"],
-    $css : ["aria.widgets.form.MultiAutoCompleteStyle", "aria.widgets.form.list.ListStyle",
-            "aria.widgets.container.DivStyle"],
+    $extends : ariaWidgetsFormAutoComplete,
+    $css : [ariaWidgetsFormMultiAutoCompleteStyle, ariaWidgetsFormListListStyle,
+            ariaWidgetsContainerDivStyle],
     /**
      * MultiAutoComplete constructor
      * @param {aria.widgets.CfgBeans:MultiAutoCompleteCfg} cfg the widget configuration
@@ -31,7 +46,7 @@ Aria.classDefinition({
      * @param {Number} controller the data controller object
      */
     $constructor : function (cfg, ctxt, lineNumber, controllerInstance) {
-        var controller = controllerInstance || new aria.widgets.controllers.MultiAutoCompleteController();
+        var controller = controllerInstance || new ariaWidgetsControllersMultiAutoCompleteController();
 
         this.$AutoComplete.constructor.call(this, cfg, ctxt, lineNumber, controller);
         if (!cfg.expandButton) {
@@ -175,7 +190,7 @@ Aria.classDefinition({
             if (element.className.indexOf("xMultiAutoComplete_Option_Text") != -1) {
                 var highlightedSuggestions = this.getHighlight();
                 var index = this._getIndexFromNode(element.parentNode);
-                if (this.controller.freeText && aria.utils.Json.equals(highlightedSuggestions, [index])) {
+                if (this.controller.freeText && ariaUtilsJson.equals(highlightedSuggestions, [index])) {
                     this._editMultiselectValue(element);
                 } else {
                     this.highlightOption(index);
@@ -240,7 +255,7 @@ Aria.classDefinition({
                 for (var i = 0, l = suggestionsToAdd.length; i < l; i++) {
                     suggestionsMarkup.push(this._generateSuggestionMarkup(suggestionsToAdd[i]));
                 }
-                aria.utils.Dom.insertAdjacentHTML(inputField, "beforeBegin", suggestionsMarkup.join(""));
+                ariaUtilsDom.insertAdjacentHTML(inputField, "beforeBegin", suggestionsMarkup.join(""));
                 this.__createEllipsis(inputField);
                 this._makeInputFieldLastChild();
                 inputField.style.width = "0px";
@@ -255,7 +270,7 @@ Aria.classDefinition({
          */
         _generateSuggestionMarkup : function (value) {
             var cfg = this._cfg;
-            var label = aria.utils.String.escapeHTML(value.label || value);
+            var label = ariaUtilsString.escapeHTML(value.label || value);
             return '<div class="xMultiAutoComplete_' + cfg.sclass
                     + '_options"><span class="xMultiAutoComplete_Option_Text">' + label
                     + '</span><span class="closeBtn"></span></div>';
@@ -311,9 +326,9 @@ Aria.classDefinition({
 
             if (this._cfg.onblur) {
                 // timeout is needed to retrieve (on every browser) the activeElement
-                aria.core.Timer.addCallback({
+                ariaCoreTimer.addCallback({
                     fn : function () {
-                        var isAncestor = aria.utils.Dom.isAncestor;
+                        var isAncestor = ariaUtilsDom.isAncestor;
                         var focusedEl = Aria.$window.document.activeElement;
 
                         // if onblur is defined and window lost focus ( ==null ) or if focus is not in the widget or
@@ -362,11 +377,11 @@ Aria.classDefinition({
          * @protected
          */
         _dom_onkeydown : function (event) {
-            var domUtil = aria.utils.Dom;
+            var domUtil = ariaUtilsDom;
 
             var inputField = this.getTextInputField();
             var inputFieldValue = inputField.value;
-            var inputFieldIsEmpty = (aria.utils.String.trim(inputFieldValue) === "");
+            var inputFieldIsEmpty = (ariaUtilsString.trim(inputFieldValue) === "");
 
             switch (event.keyCode) {
 
@@ -374,7 +389,7 @@ Aria.classDefinition({
                     if (this.hasInsertedOptions()) {
 
                         if (this.isInputFieldFocused()) {
-                            var position = aria.utils.Caret.getPosition(inputField);
+                            var position = ariaUtilsCaret.getPosition(inputField);
                             if (position.start === 0 && position.end === 0) {
                                 event.preventDefault();
 
@@ -499,7 +514,7 @@ Aria.classDefinition({
          */
         _removeMultiselectValue : function (domElement, event, isParent) {
             var parent = (!isParent) ? domElement.parentNode : domElement;
-            var domUtil = aria.utils.Dom;
+            var domUtil = ariaUtilsDom;
             var label = parent.firstChild.textContent || parent.firstChild.innerText;
             domUtil.removeElement(parent);
             this._removeValue(label);
@@ -517,7 +532,7 @@ Aria.classDefinition({
          */
         _editMultiselectValue : function (domElement, event) {
             var label;
-            var domUtil = aria.utils.Dom;
+            var domUtil = ariaUtilsDom;
             label = domElement.textContent || domElement.innerText;
             domUtil.replaceDomElement(domElement.parentNode, this._textInputField);
             var removedSuggestionInfo = this._removeValue(label);
@@ -536,7 +551,7 @@ Aria.classDefinition({
          * Sets _keepFocus back to false. This is done asynchronously on IE (because the focus event is raised
          * asynchronously on IE).
          */
-        _restoreKeepFocus : aria.core.Browser.isIE ? function () {
+        _restoreKeepFocus : ariaCoreBrowser.isIE ? function () {
             var self = this;
             // The focus is asynchronous on IE, so we need to set _keepFocus back to false
             // only after the _dom_onfocus method was called
@@ -585,7 +600,7 @@ Aria.classDefinition({
         removeHighlight : function (indices) {
             if (indices == null) {
                 indices = this.getHighlight();
-            } else if (!aria.utils.Type.isArray(indices)) {
+            } else if (!ariaUtilsType.isArray(indices)) {
                 indices = [indices];
             }
 
@@ -643,7 +658,7 @@ Aria.classDefinition({
          * @public
          */
         addHighlight : function (indices) {
-            if (!aria.utils.Type.isArray(indices)) {
+            if (!ariaUtilsType.isArray(indices)) {
                 indices = [indices];
             }
 
@@ -749,7 +764,7 @@ Aria.classDefinition({
                 return this.controller.maxOptions;
             } else {
                 for (var i = 0, len = suggestion.length; i < len; i++) {
-                    if (aria.utils.Type.isObject(suggestion[i])) {
+                    if (ariaUtilsType.isObject(suggestion[i])) {
                         maxCount++;
                     }
                 }
@@ -783,7 +798,7 @@ Aria.classDefinition({
         _enterInputField : function () {
             var field = this.getTextInputField();
             field.focus();
-            aria.utils.Caret.setPosition(field, 0, 0);
+            ariaUtilsCaret.setPosition(field, 0, 0);
         },
 
         // Inserted options management -----------------------------------------

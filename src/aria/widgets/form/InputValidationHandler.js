@@ -12,14 +12,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+require("../../DomEvent");
+require("../../utils/Dom");
+var ariaPopupsPopup = require("../../popups/Popup");
+var ariaWidgetsContainerDiv = require("../container/Div");
+var ariaTemplatesLayout = require("../../templates/Layout");
+
 
 /**
  * Validation Class for all Input widgets.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.widgets.form.InputValidationHandler",
-    $dependencies : ["aria.DomEvent", "aria.utils.Dom", "aria.popups.Popup", "aria.widgets.container.Div",
-            "aria.templates.Layout"],
     $constructor : function (widget) {
         this._context = widget._context;
         this._lineNumber = widget._lineNumber;
@@ -106,7 +111,7 @@ Aria.classDefinition({
                 errorMessage = this._WidgetCfg.errorMessages;
             }
 
-            var div = new aria.widgets.container.Div({
+            var div = new ariaWidgetsContainerDiv({
                 sclass : "errortip",
                 width : 289,
                 margins : "0 0 0 0"
@@ -133,14 +138,14 @@ Aria.classDefinition({
             });
             // we no longer store the section in this._section as the section is properly disposed by the popup when it
             // is disposed
-            var popup = new aria.popups.Popup();
+            var popup = new ariaPopupsPopup();
             this._validationPopup = popup;
             this._validationPopup.$on({
                 "onAfterClose" : this._afterValidationClose,
                 "onPositioned" : this._onTooltipPositioned,
                 scope : this
             });
-            aria.templates.Layout.$on({
+            ariaTemplatesLayout.$on({
                 "viewportResized" : this._onViewportResized,
                 scope : this
             });
@@ -179,7 +184,7 @@ Aria.classDefinition({
             // as this is already done through the section
             this._div = null;
             this._validationPopup = null;
-            aria.templates.Layout.$unregisterListeners(this);
+            ariaTemplatesLayout.$unregisterListeners(this);
         },
 
         /**

@@ -12,13 +12,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaUtilsType = require("../utils/Type");
+var ariaUtilsJson = require("../utils/Json");
+
 
 /**
  * Common class for all elements supporting a disabled attribute
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.html.DisabledTrait",
-    $dependencies : ["aria.utils.Type", "aria.utils.Json"],
     $prototype : {
 
         /**
@@ -30,10 +33,10 @@ Aria.classDefinition({
             var binding = bindings.disabled;
             if (binding) {
                 var newValue = this._transform(binding.transform, binding.inside[binding.to], "toWidget");
-                if (aria.utils.Type.isBoolean(newValue)) {
+                if (ariaUtilsType.isBoolean(newValue)) {
                     this._domElt.disabled = newValue;
                 } else {
-                    aria.utils.Json.setValue(binding.inside, binding.to, this._domElt.disabled);
+                    ariaUtilsJson.setValue(binding.inside, binding.to, this._domElt.disabled);
                 }
             }
         },

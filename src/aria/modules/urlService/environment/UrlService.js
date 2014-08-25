@@ -12,11 +12,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../../Aria");
+require("./UrlServiceCfgBeans");
+var ariaCoreEnvironmentEnvironmentBase = require("../../../core/environment/EnvironmentBase");
+var ariaUtilsJson = require("../../../utils/Json");
 
-Aria.classDefinition({
+
+module.exports = Aria.classDefinition({
     $classpath : "aria.modules.urlService.environment.UrlService",
-    $dependencies : ["aria.modules.urlService.environment.UrlServiceCfgBeans"],
-    $extends : "aria.core.environment.EnvironmentBase",
+    $extends : ariaCoreEnvironmentEnvironmentBase,
     $singleton : true,
     $prototype : {
         /**
@@ -32,7 +36,7 @@ Aria.classDefinition({
          * @return {aria.core.environment.environment.EnvironmentBaseCfgBeans:AppCfg} The classpath configuration
          */
         getUrlServiceCfg : function () {
-            return aria.utils.Json.copy(this.checkApplicationSettings("urlService"));
+            return ariaUtilsJson.copy(this.checkApplicationSettings("urlService"));
         }
     }
 });

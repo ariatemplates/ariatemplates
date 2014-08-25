@@ -12,12 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaCoreDownloadMgr = require("../DownloadMgr");
+var ariaCoreTimer = require("../Timer");
+var ariaCoreIO = require("../IO");
+
 
 /**
  * Transport class for XDR requests.
  * @singleton
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.core.transport.XDR",
     $singleton : true,
     $constructor : function () {
@@ -110,7 +115,7 @@ Aria.classDefinition({
             }
 
             // We're not ready, wait for the ready event to reissue the request, but cancel this request on timeout
-            this._pending[reqId] = aria.core.Timer.addCallback({
+            this._pending[reqId] = ariaCoreTimer.addCallback({
                 fn : this._swfTimeout,
                 scope : this,
                 args : {
@@ -121,7 +126,7 @@ Aria.classDefinition({
             });
 
             if (!this._transport) {
-                var swfUri = aria.core.DownloadMgr.resolveURL('aria/resources/handlers/IO.swf');
+                var swfUri = ariaCoreDownloadMgr.resolveURL('aria/resources/handlers/IO.swf');
                 // note that the flash transport does not work with Safari if the following line is present in
                 // parameters:
                 // '<param name="wmode" value="transparent"/>'
@@ -154,8 +159,8 @@ Aria.classDefinition({
 
             for (var id in this._pending) {
                 if (this._pending.hasOwnProperty(id)) {
-                    aria.core.Timer.cancelCallback(this._pending[id]);
-                    aria.core.IO.reissue(id);
+                    ariaCoreTimer.cancelCallback(this._pending[id]);
+                    ariaCoreIO.reissue(id);
                 }
             }
             this._pending = {};
@@ -238,14 +243,14 @@ Aria.classDefinition({
         _xdrStart : function (connection) {
             if (connection) {
                 // raise global custom event -- startEvent
-                aria.core.IO.$raiseEvent({
+                ariaCoreIO.$raiseEvent({
                     name : "startEvent",
                     o : connection
                 });
 
                 if (connection.startEvent) {
                     // raise transaction custom event -- startEvent
-                    aria.core.IO.$raiseEvent({
+                    ariaCoreIO.$raiseEvent({
                         name : connection.startEvent,
                         o : connection
                     });

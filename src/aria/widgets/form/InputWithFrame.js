@@ -12,15 +12,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaWidgetsFramesFrameWithIcons = require("../frames/FrameWithIcons");
+var ariaUtilsEvent = require("../../utils/Event");
+var ariaWidgetsIconStyle = require("../IconStyle.tpl.css");
+var ariaWidgetsFormInput = require("./Input");
+
 
 /**
  * Base class for the input widgets which use a frame.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.widgets.form.InputWithFrame",
-    $extends : "aria.widgets.form.Input",
-    $dependencies : ["aria.widgets.frames.FrameWithIcons", "aria.utils.Event"],
-    $css : ["aria.widgets.IconStyle"],
+    $extends : ariaWidgetsFormInput,
+    $css : [ariaWidgetsIconStyle],
     $constructor : function (cfg, ctxt) {
         this.$Input.constructor.apply(this, arguments);
 
@@ -52,7 +57,7 @@ Aria.classDefinition({
             this._frame = null;
         }
         if (this._label) {
-            aria.utils.Event.removeListener(this._label, "click", {
+            ariaUtilsEvent.removeListener(this._label, "click", {
                 fn : this._onLabelClick,
                 scope : this
             });
@@ -74,7 +79,7 @@ Aria.classDefinition({
             this.$Input._init.call(this);
             var label = this.getLabel();
             if (label) {
-                aria.utils.Event.addListener(label, "click", {
+                ariaUtilsEvent.addListener(label, "click", {
                     fn : this._onLabelClick,
                     scope : this
                 });
@@ -96,7 +101,7 @@ Aria.classDefinition({
          */
         _inputMarkup : function (out) {
             var cfg = this._cfg;
-            this._frame = aria.widgets.frames.FrameWithIcons.createFrame({
+            this._frame = ariaWidgetsFramesFrameWithIcons.createFrame({
                 sclass : cfg.sclass,
                 id : this._domId,
                 skinnableClass : this._skinnableClass,

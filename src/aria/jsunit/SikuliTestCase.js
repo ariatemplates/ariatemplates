@@ -12,16 +12,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaJsunitRobotJavaApplet = require("./RobotJavaApplet");
+var ariaJsunitTestCase = require("./TestCase");
+var ariaCoreDownloadMgr = require("../core/DownloadMgr");
+
 
 /**
  * Base class for test cases which are using Sikuli. This is still experimental. It relies on the RobotApplet, which, by
  * default, is not distributed with Aria Templates.
  * @private
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : 'aria.jsunit.SikuliTestCase',
-    $extends : 'aria.jsunit.TestCase',
-    $dependencies : ['aria.jsunit.RobotJavaApplet'],
+    $extends : ariaJsunitTestCase,
     $statics : {
         /**
          * Settings to run test cases.
@@ -44,7 +48,7 @@ Aria.classDefinition({
          * Directory containing images. By default, it corresponds to the directory containing the test case.
          * @type String
          */
-        this.imagesRoot = aria.core.DownloadMgr.resolveURL(this.$package.replace(/\./g, "/", true)) + "/";
+        this.imagesRoot = ariaCoreDownloadMgr.resolveURL(this.$package.replace(/\./g, "/", true)) + "/";
 
         /**
          * Reference to the RobotJavaApplet object.
@@ -82,7 +86,7 @@ Aria.classDefinition({
          * Entry point for the Sikuli test.
          */
         testAsyncRunSikuliTest : function () {
-            aria.jsunit.RobotJavaApplet.initRobot({
+            ariaJsunitRobotJavaApplet.initRobot({
                 fn : this._robotStarted,
                 scope : this
             });
@@ -93,7 +97,7 @@ Aria.classDefinition({
          * automatically from testAsyncRunSikuli once the robot applet is initialized.
          */
         _robotStarted : function () {
-            this.robot = aria.jsunit.RobotJavaApplet.applet;
+            this.robot = ariaJsunitRobotJavaApplet.applet;
             this.screen = this.robot.createSikuliScreen();
             this.KeyModifier = this.robot.Packages.org.sikuli.script.KeyModifier;
             this.Key = this.robot.Packages.org.sikuli.script.Key;

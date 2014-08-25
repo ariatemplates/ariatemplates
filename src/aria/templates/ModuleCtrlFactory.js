@@ -12,6 +12,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+require("./CfgBeans");
+var ariaTemplatesObjectLoading = require("./ObjectLoading");
+var ariaCoreEnvironmentCustomizations = require("../core/environment/Customizations");
+var ariaUtilsType = require("../utils/Type");
+var ariaUtilsArray = require("../utils/Array");
+var ariaCoreClassMgr = require("../core/ClassMgr");
+var ariaCoreInterfaces = require("../core/Interfaces");
+var ariaCoreJsonValidator = require("../core/JsonValidator");
+
 
 (function () {
 
@@ -42,7 +52,7 @@
      * @private
      * @type Function
      */
-    var generateKey = aria.core.Interfaces.generateKey;
+    var generateKey = ariaCoreInterfaces.generateKey;
 
     /**
      * Error callback method called if there is a failure while loading the module controller class, or the flow
@@ -135,7 +145,7 @@
             }
 
             // Check that the module controller inherits from aria.templates.ModuleCtrl
-            if (!(moduleCtrlConstr && aria.utils.Type.isInstanceOf(moduleCtrlConstr.prototype, "aria.templates.ModuleCtrl"))) {
+            if (!(moduleCtrlConstr && ariaUtilsType.isInstanceOf(moduleCtrlConstr.prototype, "aria.templates.ModuleCtrl"))) {
                 this.$logError(this.INVALID_MODULE_CTRL, [moduleClasspath]);
                 return loadModuleError.call(this, args);
             }
@@ -152,7 +162,7 @@
                     flowCtrlClasspath = moduleClasspath + "Flow";
                 }
                 // get customized classpath
-                flowCtrlClasspath = aria.core.environment.Customizations.getFlowCP(flowCtrlClasspath);
+                flowCtrlClasspath = ariaCoreEnvironmentCustomizations.getFlowCP(flowCtrlClasspath);
 
                 args.flowCtrlClasspath = flowCtrlClasspath;
                 flowCtrlConstr = Aria.getClassRef(flowCtrlClasspath);
@@ -202,7 +212,7 @@
                     args.flowCtrlConstr = Aria.getClassRef(args.flowCtrlClasspath);
                 }
                 // Check that the flow controller inherits from aria.templates.FlowCtrl
-                if (!(args.flowCtrlConstr && aria.utils.Type.isInstanceOf(args.flowCtrlConstr.prototype, "aria.templates.FlowCtrl"))) {
+                if (!(args.flowCtrlConstr && ariaUtilsType.isInstanceOf(args.flowCtrlConstr.prototype, "aria.templates.FlowCtrl"))) {
                     this.$logError(this.INVALID_FLOW_CTRL, [args.flowCtrlClasspath]);
                     return loadModuleError.call(this, args);
                 }
@@ -235,7 +245,7 @@
             };
 
             // load custom sub modules attached to this module controller
-            var customModules = aria.core.environment.Customizations.getCustomModules(args.desc.classpath);
+            var customModules = ariaCoreEnvironmentCustomizations.getCustomModules(args.desc.classpath);
             if (customModules.length > 0) {
                 var recursionCheck = args.recursionCheck;
                 if (recursionCheck) {
@@ -510,7 +520,7 @@
             toBeLoaded : subModulesDescArrayLength,
             customModules : customModules
         };
-        var typeUtils = aria.utils.Type;
+        var typeUtils = ariaUtilsType;
         for (var i = 0; i < subModulesDescArrayLength; i++) {
             var subModuleDesc = subModulesDescArray[i];
             var error = false;
@@ -521,7 +531,7 @@
                 };
             }
             var classpath = subModuleDesc.classpath;
-            if (!aria.core.JsonValidator.check(subModuleDesc, "aria.templates.CfgBeans.SubModuleDefinition")) {
+            if (!ariaCoreJsonValidator.check(subModuleDesc, "aria.templates.CfgBeans.SubModuleDefinition")) {
                 error = this.INVALID_SM_DEF;
             } else if (customModules && subModuleDesc.refpath.substring(0, 7) != "custom:") {
                 error = this.INVALID_CUSTOM_MODULE_REFPATH;
@@ -591,7 +601,7 @@
         if (newModuleCtrl) {
             // no error while reloading
             // link the old interface wrapper the new one
-            var itfUtils = aria.core.Interfaces;
+            var itfUtils = ariaCoreInterfaces;
             itfUtils.linkItfWrappers(args.oldModuleCtrl, newModuleCtrl);
 
             // do the same for the flow:
@@ -612,10 +622,8 @@
      * This singleton class manages the initialization and destruction of module controllers and their associated flow
      * controller. Every module controller creation or destruction should pass through this class.
      */
-    Aria.classDefinition({
+    module.exports = Aria.classDefinition({
         $classpath : "aria.templates.ModuleCtrlFactory",
-        $dependencies : ["aria.templates.CfgBeans", "aria.templates.ObjectLoading",
-                "aria.core.environment.Customizations"],
         $singleton : true,
         $statics : {
             // ERROR MESSAGES:
@@ -763,14 +771,14 @@
 
                 var oldModuleCtrl = res.moduleCtrl;
                 var oldFlowCtrl = res.flowCtrl;
-                var classMgr = aria.core.ClassMgr;
+                var classMgr = ariaCoreClassMgr;
                 var toBeUnloaded = [moduleCtrlPrivate.$classpath, moduleCtrlPrivate.$publicInterfaceName];
                 var flowCtrlPrivate = res.flowCtrlPrivate;
                 if (flowCtrlPrivate) {
                     toBeUnloaded[2] = flowCtrlPrivate.$classpath;
                     toBeUnloaded[3] = flowCtrlPrivate.$publicInterfaceName;
                 }
-                var objectLoading = new aria.templates.ObjectLoading();
+                var objectLoading = new ariaTemplatesObjectLoading();
                 moduleCtrlPrivate.__$reloadingObject = objectLoading;
                 moduleCtrlPrivate.$dispose();
                 for (var i = 0, l = toBeUnloaded.length; i < l; i++) {
@@ -808,7 +816,7 @@
                     // This module is a sub-module and its parent module is not being disposed
 
                     // remove the module from parent array of sub-modules
-                    aria.utils.Array.remove(parentModule.subModules, moduleCtrlPrivate);
+                    ariaUtilsArray.remove(parentModule.subModules, moduleCtrlPrivate);
                     // remove module controller from refpath:
                     putSubModuleAtRefPath.call(this, parentModule, subModuleInfos.subModuleDesc, null, subModuleInfos.customModule);
                 }

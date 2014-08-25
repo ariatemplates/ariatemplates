@@ -12,14 +12,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaTemplatesDomElementWrapper = require("../templates/DomElementWrapper");
+var ariaUtilsString = require("./String");
+var ariaUtilsJson = require("./Json");
+var ariaCoreJsObject = require("../core/JsObject");
+
 
 /**
  * This class contains utilities to manipulate Html elements.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.utils.Html",
-    $extends : "aria.core.JsObject",
-    $dependencies : ["aria.templates.DomElementWrapper", "aria.utils.String", "aria.utils.Json"],
+    $extends : ariaCoreJsObject,
     $singleton : true,
     $statics : {
         datasetRegex : /^\w+$/, /* This is to mainly to forbid dashes. Actually uppercase chars are not allowed by the spec, but they're transparently lowercased by the browser */
@@ -33,14 +38,14 @@ Aria.classDefinition({
          * @return {String} String which can be used directly in a html tag
          */
         buildAttributeList : function (attributes) {
-            var result = [], whiteList = aria.templates.DomElementWrapper.attributesWhiteList;
-            var jsonUtils = aria.utils.Json;
+            var result = [], whiteList = ariaTemplatesDomElementWrapper.attributesWhiteList;
+            var jsonUtils = ariaUtilsJson;
 
             /*
              * This assumes that white list is performed by config validation, but this is only available in debug mode :
              * FIXME!
              */
-            var stringUtil = aria.utils.String;
+            var stringUtil = ariaUtilsString;
             for (var key in attributes) {
                 if (attributes.hasOwnProperty(key) && !jsonUtils.isMetadata(key)) {
                     var attribute = attributes[key];
@@ -162,9 +167,9 @@ Aria.classDefinition({
          * @param {Boolean} remove if false or undefined, attributes will be set instead
          */
         __setOrRemoveDataset : function (domElement, dataset, remove) {
-            var fullKey, stringUtil = aria.utils.String;
+            var fullKey, stringUtil = ariaUtilsString;
             for (var dataKey in dataset) {
-                if (dataset.hasOwnProperty(dataKey) && !aria.utils.Json.isMetadata(dataKey)) {
+                if (dataset.hasOwnProperty(dataKey) && !ariaUtilsJson.isMetadata(dataKey)) {
                     if (this.datasetRegex.test(dataKey)) {
                         fullKey = "data-" + stringUtil.camelToDashed(dataKey);
                         /* BACKWARD-COMPATIBILITY-BEGIN (GH-499) */

@@ -12,6 +12,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaTemplatesDomElementWrapper = require("./DomElementWrapper");
+var ariaDomEvent = require("../DomEvent");
+
 
 /**
  * Wrapper class for DOM events to be passed to templates. Templates must not have direct access to the DOM, so the
@@ -19,16 +23,15 @@
  * references by wrappers on that references for safe DOM access.
  * @class aria.templates.DomEventWrapper
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.templates.DomEventWrapper",
-    $extends : "aria.DomEvent",
-    $dependencies : ["aria.templates.DomElementWrapper"],
+    $extends : ariaDomEvent,
     /**
      * Build a DomEventWrapper object.
      * @param {Object} domEvt DOM event object (passed directly)
      */
     $constructor : function (domEvt) {
-        var DomWrapper = aria.templates.DomElementWrapper;
+        var DomWrapper = ariaTemplatesDomElementWrapper;
         this.$DomEvent.constructor.call(this, domEvt);
 
         /**
@@ -68,7 +71,7 @@ Aria.classDefinition({
             if (this.target) {
                 this.target.$dispose();
             }
-            this.target = target ? new aria.templates.DomElementWrapper(target) : null;
+            this.target = target ? new ariaTemplatesDomElementWrapper(target) : null;
         }
     }
 });

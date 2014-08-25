@@ -12,17 +12,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaCoreJsonTypes = require("../../core/JsonTypes");
+
 
 /**
  * Describe the data model of the error list widget.
  * @class aria.widgets.errorlist.CfgBeans
  */
-Aria.beanDefinitions({
+module.exports = Aria.beanDefinitions({
     $package : "aria.widgets.errorlist.CfgBeans",
     $description : "Data model of the error list widget.",
     $namespaces : {
         // "validators" : "aria.validators.CfgBeans",
-        "json" : "aria.core.JsonTypes"
+        "json" : ariaCoreJsonTypes
     },
     $beans : {
         "Model" : {

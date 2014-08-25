@@ -12,14 +12,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaCoreJsonValidator = require("../core/JsonValidator");
+require("./AriaSkinBeans");
+var ariaUtilsInheritanceNormalization = require("../utils/InheritanceNormalization");
+var ariaUtilsFunctionWriter = require("../utils/FunctionWriter");
+var ariaUtilsFunction = require("../utils/Function");
+var ariaCoreLog = require("../core/Log");
+
 
 /**
  * Skin normalization utility.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : 'aria.widgets.AriaSkinNormalization',
-    $dependencies : ['aria.core.JsonValidator', 'aria.widgets.AriaSkinBeans', 'aria.utils.InheritanceNormalization',
-            'aria.utils.FunctionWriter', 'aria.utils.Function'],
     $singleton : true,
     $constructor : function () {
         /**
@@ -45,8 +51,8 @@ Aria.classDefinition({
 
         // Prototype used by all normalizers
         var normalizerPrototype = {
-            normFrame : aria.utils.Function.bind(this._normFrame, this),
-            checkFrameState : aria.utils.Function.bind(this._checkFrameState, this)
+            normFrame : ariaUtilsFunction.bind(this._normFrame, this),
+            checkFrameState : ariaUtilsFunction.bind(this._checkFrameState, this)
         };
         this._createNormalizerObject.prototype = normalizerPrototype;
     },
@@ -175,7 +181,7 @@ Aria.classDefinition({
         _getFrameNormalizers : function (widgetName, skinClassName, frameType) {
             var res = this._frameNormalizers[frameType];
             if (res == null) {
-                var frameBeanDef = aria.core.JsonValidator.getBean('aria.widgets.AriaSkinBeans.' + frameType
+                var frameBeanDef = ariaCoreJsonValidator.getBean('aria.widgets.AriaSkinBeans.' + frameType
                         + 'FrameCfg');
                 if (frameBeanDef == null) {
                     this.$logError(this.INVALID_FRAME_TYPE, [widgetName, skinClassName, frameType]);
@@ -227,8 +233,8 @@ Aria.classDefinition({
                 };
             }
             var hasFrame = (beanDef.$properties.frame != null);
-            var writer = new aria.utils.FunctionWriter(["skinClassName", "skin", "std"]);
-            aria.utils.InheritanceNormalization.writeInheritanceNormalization({
+            var writer = new ariaUtilsFunctionWriter(["skinClassName", "skin", "std"]);
+            ariaUtilsInheritanceNormalization.writeInheritanceNormalization({
                 writer : writer,
                 beanDef : beanDef,
                 varToNormalize : "skin",
@@ -284,8 +290,8 @@ Aria.classDefinition({
             if (states == null) {
                 return null;
             }
-            var writer = new aria.utils.FunctionWriter(["state", "stdState", "normal", "stdNormal"]);
-            aria.utils.InheritanceNormalization.writeInheritanceNormalization({
+            var writer = new ariaUtilsFunctionWriter(["state", "stdState", "normal", "stdNormal"]);
+            ariaUtilsInheritanceNormalization.writeInheritanceNormalization({
                 writer : writer,
                 beanDef : states.$properties.normal,
                 varToNormalize : "state",
@@ -306,14 +312,14 @@ Aria.classDefinition({
          * @return {Function}
          */
         _createFrameStateNormalizer : function (frameType, beanName) {
-            var beanDef = aria.core.JsonValidator.getBean(beanName);
-            var writer = new aria.utils.FunctionWriter(["skinClassName", "stateName", "state", "stdState", "normal",
+            var beanDef = ariaCoreJsonValidator.getBean(beanName);
+            var writer = new ariaUtilsFunctionWriter(["skinClassName", "stateName", "state", "stdState", "normal",
                     "stdNormal"]);
             writer.writeEnsureObjectExists("state.frame");
             writer.writeEnsureObjectExists("stdState");
             writer.writeEnsureObjectExists("normal");
             writer.writeEnsureObjectExists("stdNormal");
-            aria.utils.InheritanceNormalization.writeInheritanceNormalization({
+            ariaUtilsInheritanceNormalization.writeInheritanceNormalization({
                 writer : writer,
                 beanDef : beanDef,
                 varToNormalize : "state.frame",
@@ -343,11 +349,11 @@ Aria.classDefinition({
          * @return {Function}
          */
         _createFrameNormalizer : function (frameType, beanDef) {
-            var writer = new aria.utils.FunctionWriter(["skin", "std"]);
+            var writer = new ariaUtilsFunctionWriter(["skin", "std"]);
             var out = writer.out;
             // writer.writeEnsureObjectExists("skin.frame"); // not necessary, already done by normFrame
             // writer.writeEnsureObjectExists("std"); // not necessary, already done by normFrame
-            aria.utils.InheritanceNormalization.writeInheritanceNormalization({
+            ariaUtilsInheritanceNormalization.writeInheritanceNormalization({
                 writer : writer,
                 beanDef : beanDef,
                 varToNormalize : "skin.frame",
@@ -375,7 +381,7 @@ Aria.classDefinition({
         _getWidgetNormalizer : function (widgetName) {
             var res = this._widgetNormalizers[widgetName];
             if (!res) {
-                var beanDef = aria.core.JsonValidator.getBean('aria.widgets.AriaSkinBeans.' + widgetName + 'Cfg');
+                var beanDef = ariaCoreJsonValidator.getBean('aria.widgets.AriaSkinBeans.' + widgetName + 'Cfg');
                 res = new this._createNormalizerObject();
                 res.widgetName = widgetName;
                 res.normSkinClass = this._createSkinClassNormalizer(widgetName, beanDef);
@@ -410,7 +416,7 @@ Aria.classDefinition({
                 widgetSkinObj.std = std;
             }
             var result = true;
-            var logs = aria.core.Log;
+            var logs = ariaCoreLog;
             var msgs = [];
             var checkRes;
             // Note that the order of this process is very important (std must be normalized at the end only)
@@ -455,7 +461,7 @@ Aria.classDefinition({
             var message;
             var errors = e.errors;
             // PTR 05038013: aria.core.Log may not be available
-            var logs = aria.core.Log;
+            var logs = ariaCoreLog;
             if (errors && errors.length > 0 && logs) {
                 var msgs = [];
                 var error;
@@ -482,7 +488,7 @@ Aria.classDefinition({
         _check : function (object, beanName) {
             try {
                 return {
-                    result : aria.core.JsonValidator.check(object, beanName, true),
+                    result : ariaCoreJsonValidator.check(object, beanName, true),
                     message : null
                 };
             } catch (e) {
@@ -500,7 +506,7 @@ Aria.classDefinition({
         _normalize : function (param) {
             try {
                 return {
-                    result : aria.core.JsonValidator.normalize(param, true),
+                    result : ariaCoreJsonValidator.normalize(param, true),
                     message : null
                 };
             } catch (e) {

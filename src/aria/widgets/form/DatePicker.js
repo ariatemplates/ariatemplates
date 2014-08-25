@@ -12,19 +12,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaWidgetsCalendarCalendar = require("../calendar/Calendar");
+var ariaWidgetsControllersDatePickerController = require("../controllers/DatePickerController");
+var ariaWidgetsFormDatePickerStyle = require("./DatePickerStyle.tpl.css");
+var ariaWidgetsCalendarCalendarStyle = require("../calendar/CalendarStyle.tpl.css");
+var ariaWidgetsContainerDivStyle = require("../container/DivStyle.tpl.css");
+var ariaWidgetsFormDropDownTextInput = require("./DropDownTextInput");
+var ariaCoreBrowser = require("../../core/Browser");
+
 
 /**
  * DatePicker widget, which is a template-based widget.
  * @class aria.widgets.form.DatePicker
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.widgets.form.DatePicker",
-    $extends : "aria.widgets.form.DropDownTextInput",
-    $dependencies : ["aria.widgets.calendar.Calendar", "aria.widgets.controllers.DatePickerController"],
-    $css : ["aria.widgets.form.DatePickerStyle", "aria.widgets.calendar.CalendarStyle",
-            "aria.widgets.container.DivStyle"],
+    $extends : ariaWidgetsFormDropDownTextInput,
+    $css : [ariaWidgetsFormDatePickerStyle, ariaWidgetsCalendarCalendarStyle,
+            ariaWidgetsContainerDivStyle],
     $constructor : function (cfg, ctxt, lineNumber) {
-        var controller = new aria.widgets.controllers.DatePickerController();
+        var controller = new ariaWidgetsControllersDatePickerController();
         this.$DropDownTextInput.constructor.call(this, cfg, ctxt, lineNumber, controller);
         controller.setPattern(cfg.pattern);
         controller.setInputPattern(cfg.inputPattern);
@@ -184,7 +192,7 @@ Aria.classDefinition({
          */
         _renderDropdownContent : function (out) {
             var cfg = this._cfg;
-            var wrapperDiv = cfg.popupWidth && cfg.popupWidth > -1 && aria.core.Browser.isIE6;
+            var wrapperDiv = cfg.popupWidth && cfg.popupWidth > -1 && ariaCoreBrowser.isIE6;
             if (wrapperDiv) {
                 out.write('<div style="width: ' + cfg.popupWidth + 'px;">');
             }
@@ -219,7 +227,7 @@ Aria.classDefinition({
                 this._applyCalendarCfg(property, calendarConf);
             }
 
-            var calendar = new aria.widgets.calendar.Calendar(calendarConf, this._context, this._lineNumber);
+            var calendar = new ariaWidgetsCalendarCalendar(calendarConf, this._context, this._lineNumber);
             calendar.$on({
                 'widgetContentReady' : this._refreshPopup,
                 scope : this

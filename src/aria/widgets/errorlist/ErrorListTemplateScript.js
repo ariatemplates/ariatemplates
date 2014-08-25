@@ -12,13 +12,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaUtilsData = require("../../utils/Data");
+var ariaUtilsDom = require("../../utils/Dom");
+
 
 /**
  * Template script for the default ErrorListTemplate
  */
-Aria.tplScriptDefinition({
+module.exports = Aria.tplScriptDefinition({
     $classpath : "aria.widgets.errorlist.ErrorListTemplateScript",
-    $dependencies : ["aria.utils.Data", "aria.utils.Dom"],
     $statics : {
         /**
          * Links each type of message with an icon. The order in the array is important as the first entry for which
@@ -44,25 +47,25 @@ Aria.tplScriptDefinition({
             // Using push instead of resetting the reference because items are not copied from proto but from the
             // parameter of tplScriptDefinition directly
             proto.ICONS.push({
-                type : aria.utils.Data.TYPE_ERROR,
+                type : ariaUtilsData.TYPE_ERROR,
                 icon : "std:error"
             }, {
-                type : aria.utils.Data.TYPE_WARNING,
+                type : ariaUtilsData.TYPE_WARNING,
                 icon : "std:warning"
             }, {
-                type : aria.utils.Data.TYPE_INFO,
+                type : ariaUtilsData.TYPE_INFO,
                 icon : "std:info"
             }, {
-                type : aria.utils.Data.TYPE_FATAL,
+                type : ariaUtilsData.TYPE_FATAL,
                 icon : "std:error"
             }, {
-                type : aria.utils.Data.TYPE_NOTYPE,
+                type : ariaUtilsData.TYPE_NOTYPE,
                 icon : "std:info"
             }, {
-                type : aria.utils.Data.TYPE_CRITICAL_WARNING,
+                type : ariaUtilsData.TYPE_CRITICAL_WARNING,
                 icon : "std:warning"
             }, {
-                type : aria.utils.Data.TYPE_CONFIRMATION,
+                type : ariaUtilsData.TYPE_CONFIRMATION,
                 icon : "std:confirm"
             });
         },
@@ -75,7 +78,7 @@ Aria.tplScriptDefinition({
 
             if (evt.name == "messagesChanged") {
                 if (evt.domRef) {
-                    aria.utils.Dom.scrollIntoView(evt.domRef);
+                    ariaUtilsDom.scrollIntoView(evt.domRef);
                 }
                 this.$refresh();
             }

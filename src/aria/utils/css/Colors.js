@@ -12,13 +12,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaUtilsCssPropertiesConfig = require("./PropertiesConfig");
 
-Aria.classDefinition({
+
+module.exports = Aria.classDefinition({
     $classpath : "aria.utils.css.Colors",
-    $dependencies : ["aria.utils.css.PropertiesConfig"],
     $singleton : true,
     $constructor : function () {
-        this.cfg = aria.utils.css.PropertiesConfig;
+        this.cfg = ariaUtilsCssPropertiesConfig;
     },
     $prototype : {
 

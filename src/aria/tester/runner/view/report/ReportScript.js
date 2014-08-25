@@ -12,13 +12,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../../../Aria");
+var ariaTesterRunnerUtilsTestUtils = require("../../utils/TestUtils");
+
 
 /**
  * Template script definition for aria.tester.runner.view.Report
  */
-Aria.tplScriptDefinition({
+module.exports = Aria.tplScriptDefinition({
     $classpath : 'aria.tester.runner.view.report.ReportScript',
-    $dependencies : ['aria.tester.runner.utils.TestUtils'],
     $destructor : function () {
         this._backupScrollPosition();
     },
@@ -53,7 +55,7 @@ Aria.tplScriptDefinition({
         },
 
         getTestsArray : function () {
-            var __testUtils = aria.tester.runner.utils.TestUtils;
+            var __testUtils = ariaTesterRunnerUtilsTestUtils;
 
             var rootSuite = this.data.campaign.testsTree[0];
             if (!rootSuite) {
@@ -120,7 +122,7 @@ Aria.tplScriptDefinition({
         },
 
         getSuiteName : function (suite) {
-            var __testUtils = aria.tester.runner.utils.TestUtils;
+            var __testUtils = ariaTesterRunnerUtilsTestUtils;
             var displayName = __testUtils.formatTestSuiteName(suite);
 
             var parentSuite = suite.getParentTest();
@@ -132,12 +134,12 @@ Aria.tplScriptDefinition({
         },
 
         getTestName : function (testCase) {
-            var __testUtils = aria.tester.runner.utils.TestUtils;
+            var __testUtils = ariaTesterRunnerUtilsTestUtils;
             return __testUtils.formatTestCaseName(testCase, this.data.view.configuration.mini);
         },
 
         formatTestErrorsCount : function (testCase) {
-            var __testUtils = aria.tester.runner.utils.TestUtils;
+            var __testUtils = ariaTesterRunnerUtilsTestUtils;
             return __testUtils.formatTestErrorsCount(testCase);
         },
 

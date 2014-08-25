@@ -12,16 +12,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaTemplatesIBaseTemplate = require("./IBaseTemplate");
+require("./CfgBeans");
+var ariaTemplatesBaseCtxt = require("./BaseCtxt");
+var ariaCoreJsonValidator = require("../core/JsonValidator");
+
 
 /**
  * A TxtCtxt object is the interface toward an Aria text template. TxtCtxt is used to generate and initialize a text
  * template
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.templates.TxtCtxt",
-    $extends : "aria.templates.BaseCtxt",
-    $implements : ["aria.templates.IBaseTemplate"],
-    $dependencies : ["aria.templates.CfgBeans"],
+    $extends : ariaTemplatesBaseCtxt,
+    $implements : [ariaTemplatesIBaseTemplate],
     $constructor : function (classPath) {
         this.$BaseCtxt.constructor.apply(this, arguments);
 
@@ -39,7 +44,7 @@ Aria.classDefinition({
                 this.$logError(this.TEMPLATE_DESTR_ERROR, [this.tplClasspath], e);
             }
             // dispose the template interface wrapper as well:
-            aria.templates.IBaseTemplate.prototype.$destructor.call(this._tpl);
+            ariaTemplatesIBaseTemplate.prototype.$destructor.call(this._tpl);
             this._tpl = null;
         }
 
@@ -53,7 +58,7 @@ Aria.classDefinition({
          */
         initTemplate : function (cfg) {
 
-            if (!aria.core.JsonValidator.normalize({
+            if (!ariaCoreJsonValidator.normalize({
                 json : cfg,
                 beanName : "aria.templates.CfgBeans.InitTxtTemplateCfg"
             })) {
@@ -77,7 +82,7 @@ Aria.classDefinition({
             // We no longer create new methods in a closure each time a new instance of a template is created,
             // instead we use the interface mechanism to expose methods to the template and prevent access to the
             // template context
-            aria.templates.IBaseTemplate.call(tpl, this);
+            ariaTemplatesIBaseTemplate.call(tpl, this);
 
             // TEMPORARY PERF IMPROVMENT : interface on these two functions results in poor performances.
             // Investigation ongoing on interceptors

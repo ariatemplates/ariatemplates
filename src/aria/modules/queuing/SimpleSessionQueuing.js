@@ -12,11 +12,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+
 
 /**
  * Simple Session Queuing per session for standalone mode
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.modules.queuing.SimpleSessionQueuing",
     // TODO break the dependency passing a callback to the push
     // Note that this class has references to aria.modules.RequestMgr

@@ -12,10 +12,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaTemplatesIFlowCtrl = require("../../templates/IFlowCtrl");
 
-Aria.interfaceDefinition({
+
+module.exports = Aria.interfaceDefinition({
     $classpath : 'aria.tester.runner.ModuleControllerFlowInterface',
-    $extends : 'aria.templates.IFlowCtrl',
+    $extends : ariaTemplatesIFlowCtrl,
     $events : {
         "stateChange" : "raised when the current flow state changed"
     },

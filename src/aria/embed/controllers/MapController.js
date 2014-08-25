@@ -12,6 +12,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaMapMapManager = require("../../map/MapManager");
+var ariaUtilsJson = require("../../utils/Json");
+
 
 (function () {
 
@@ -29,13 +33,12 @@
      */
     var mapReadyHandlerArgs = {};
 
-    Aria.classDefinition({
+    module.exports = Aria.classDefinition({
         $classpath : "aria.embed.controllers.MapController",
         $singleton : true,
-        $dependencies : ["aria.map.MapManager", "aria.utils.Json"],
         $constructor : function () {
 
-            this.mapManager = aria.map.MapManager;
+            this.mapManager = ariaMapMapManager;
             this.mapManager.$addListeners({
                 "mapDestroy" : {
                     fn : this._nullifyMapDom,
@@ -89,7 +92,7 @@
              * @private
              */
             _createMap : function (container, cfg) {
-                var createMapConfig = aria.utils.Json.copy(cfg);
+                var createMapConfig = ariaUtilsJson.copy(cfg);
                 // var provider = createMapConfig.provider;
                 delete createMapConfig.loadingIndicator;
                 var domElement = Aria.$window.document.createElement("div");

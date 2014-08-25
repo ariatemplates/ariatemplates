@@ -12,6 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+require("./beans/ElementCfg");
+var ariaCoreJsonValidator = require("../core/JsonValidator");
+var ariaUtilsHtml = require("../utils/Html");
+require("../utils/Json");
+var ariaUtilsDelegate = require("../utils/Delegate");
+var ariaTemplatesDomEventWrapper = require("../templates/DomEventWrapper");
+var ariaUtilsDom = require("../utils/Dom");
+var ariaUtilsType = require("../utils/Type");
+var ariaWidgetLibsBindableWidget = require("../widgetLibs/BindableWidget");
+
 
 (function () {
     /**
@@ -32,11 +43,9 @@
      * element (like div, img, input ...). It's a simple markup generator for both container and non container widgets
      * and does not provide any binding mechanism.
      */
-    Aria.classDefinition({
+    module.exports = Aria.classDefinition({
         $classpath : "aria.html.Element",
-        $extends : "aria.widgetLibs.BindableWidget",
-        $dependencies : ["aria.html.beans.ElementCfg", "aria.core.JsonValidator", "aria.utils.Html", "aria.utils.Json",
-                "aria.utils.Delegate", "aria.templates.DomEventWrapper", "aria.utils.Dom", "aria.utils.Type"],
+        $extends : ariaWidgetLibsBindableWidget,
         /**
          * Create an instance of the widget.
          * @param {aria.html.beans.ElementCfg:Properties} cfg widget configuration, which is the parameter given in the
@@ -49,7 +58,7 @@
                 cfg.tagName = this.tagName;
             }
 
-            var validCfg = aria.core.JsonValidator.normalize({
+            var validCfg = ariaCoreJsonValidator.normalize({
                 json : cfg,
                 beanName : this.$cfgBean
             });
@@ -96,7 +105,7 @@
         },
         $destructor : function () {
             if (this.__delegateId) {
-                aria.utils.Delegate.remove(this.__delegateId);
+                ariaUtilsDelegate.remove(this.__delegateId);
                 this.__delegateId = null;
                 this.__delegateFallbackEvents = null;
             }
@@ -127,7 +136,7 @@
              */
             _normalizeCallbacks : function () {
                 var eventListeners = this._cfg.on, hasListeners = false, listArray;
-                var delegateManager = aria.utils.Delegate;
+                var delegateManager = ariaUtilsDelegate;
                 var delegateFallbackEvents = [];
 
                 for (var listener in eventListeners) {
@@ -137,7 +146,7 @@
                             delegateFallbackEvents.push(listener);
                         }
                         listArray = eventListeners[listener];
-                        if (!aria.utils.Type.isArray(listArray)) {
+                        if (!ariaUtilsType.isArray(listArray)) {
                             listArray = [listArray];
                         }
                         for (var i = 0, listCount = listArray.length; i < listCount; i++) {
@@ -165,7 +174,7 @@
             _delegate : function (event) {
                 var type = event.type, callbackArray = this._cfg.on[type], callback, returnValue;
                 if (callbackArray) {
-                    var wrapped = new aria.templates.DomEventWrapper(event);
+                    var wrapped = new ariaTemplatesDomEventWrapper(event);
                     for (var i = 0, listCount = callbackArray.length; i < listCount; i++) {
                         callback = callbackArray[i];
                         returnValue = callback.fn.call(callback.scope, wrapped, callback.args);
@@ -218,7 +227,7 @@
              * Initialization method called after the markup of the widget has been inserted in the DOM.
              */
             initWidget : function () {
-                this._domElt = aria.utils.Dom.getElementById(this._id);
+                this._domElt = ariaUtilsDom.getElementById(this._id);
             },
 
             /**
@@ -237,7 +246,7 @@
              */
             _openTag : function (out) {
                 var cfg = this._cfg;
-                var attributes = aria.utils.Html.buildAttributeList(cfg.attributes);
+                var attributes = ariaUtilsHtml.buildAttributeList(cfg.attributes);
                 var markup = ["<", cfg.tagName, " id='", this._id, "' "];
 
                 if (attributes) {
@@ -246,7 +255,7 @@
 
                 var delegateId = this.__delegateId;
                 if (delegateId) {
-                    var delegateManager = aria.utils.Delegate;
+                    var delegateManager = ariaUtilsDelegate;
                     markup.push(delegateManager.getMarkup(delegateId), " ");
                     var delegateFallbackEvents = this.__delegateFallbackEvents;
                     for (var i = 0, l = delegateFallbackEvents.length; i < l; i++) {
@@ -279,7 +288,7 @@
              */
             _chainListener : function (listeners, eventType, callback, after) {
                 var listArray = listeners[eventType] || [];
-                if (!aria.utils.Type.isArray(listArray)) {
+                if (!ariaUtilsType.isArray(listArray)) {
                     listArray = [listArray];
                 }
 

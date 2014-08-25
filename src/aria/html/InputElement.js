@@ -12,16 +12,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaHtmlDisabledTrait = require("./DisabledTrait");
+var ariaHtmlElement = require("./Element");
+
 
 (function () {
 
     /**
      * Common base class for input elements. Bindable widget providing bi-directional bind of value
      */
-    Aria.classDefinition({
+    module.exports = Aria.classDefinition({
         $classpath : "aria.html.InputElement",
-        $extends : "aria.html.Element",
-        $dependencies : ["aria.html.DisabledTrait"],
+        $extends : ariaHtmlElement,
         $statics : {
             INVALID_USAGE : "Widget %1 can only be used as a %2.",
             BINDING_NEEDED : "The property '%2' from Widget %1 should be bound to a data model"
@@ -49,7 +52,7 @@
              * @param {Object} p the prototype object being built
              */
             $init : function (p) {
-                var src = aria.html.DisabledTrait.prototype;
+                var src = ariaHtmlDisabledTrait.prototype;
                 for (var key in src) {
                     if (src.hasOwnProperty(key) && !p.hasOwnProperty(key)) {
                         p[key] = src[key];

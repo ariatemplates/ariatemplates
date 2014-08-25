@@ -12,13 +12,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaUtilsJson = require("../utils/Json");
+
 
 /**
  * Reports test results to Testacular.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.jsunit.TestacularReport",
-    $dependencies : ["aria.utils.Json"],
     $singleton : true,
     $constructor : function () {
         var window = Aria.$frameworkWindow;
@@ -147,7 +149,7 @@ Aria.classDefinition({
          * @return {Object}
          */
         createFinalReport : function (engineReport) {
-            var res = aria.utils.Json.copy(engineReport, false);
+            var res = ariaUtilsJson.copy(engineReport, false);
             res.executionTime = res.instance.getExecutionTime();
             delete res.instance;
             delete res.state;

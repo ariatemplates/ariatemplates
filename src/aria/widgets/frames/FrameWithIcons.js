@@ -12,16 +12,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaWidgetsAriaSkinInterface = require("../AriaSkinInterface");
+var ariaWidgetsFramesFrameFactory = require("./FrameFactory");
+var ariaUtilsDom = require("../../utils/Dom");
+var ariaUtilsType = require("../../utils/Type");
+require("../../utils/Function");
+var ariaUtilsArray = require("../../utils/Array");
+var ariaUtilsDelegate = require("../../utils/Delegate");
+
 
 /**
  * A frame with icons on the left and right. To create an object of this class, use the createFrame static method (not
  * the constructor).
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : 'aria.widgets.frames.FrameWithIcons',
-    $dependencies : ["aria.widgets.AriaSkinInterface", "aria.widgets.frames.FrameFactory", "aria.utils.Dom",
-            "aria.utils.Type", "aria.utils.Function", "aria.widgets.frames.FrameFactory", "aria.utils.Array",
-            "aria.utils.Delegate"],
     /**
      * FrameWithIcons constructor. Do not use directly, use the createFrame static method instead, so that the
      * FrameWithIcons is not used when there is no icon defined in the skin.
@@ -47,8 +53,8 @@ Aria.classDefinition({
          */
         this._tooltipLabels = cfg.tooltipLabels;
 
-        aria.utils.Array.forEach(this._iconsLeft, this._initIcon, this);
-        aria.utils.Array.forEach(this._iconsRight, this._initIcon, this);
+        ariaUtilsArray.forEach(this._iconsLeft, this._initIcon, this);
+        ariaUtilsArray.forEach(this._iconsRight, this._initIcon, this);
 
         this._outerWidth = cfg.width;
         this._outerHeight = cfg.height;
@@ -57,7 +63,7 @@ Aria.classDefinition({
         this._updateFrameWidth();
 
         cfg.width = this._frameWidth;
-        this._frame = aria.widgets.frames.FrameFactory.createFrame(cfg);
+        this._frame = ariaWidgetsFramesFrameFactory.createFrame(cfg);
         this.domElementNbr = this._frame.domElementNbr + this._iconsLeft.length + this._iconsRight.length;
         this.innerWidth = this._frame.innerWidth;
         this.innerHeight = this._frame.innerHeight;
@@ -68,8 +74,8 @@ Aria.classDefinition({
             this._frame = null;
         }
         if (this._icons) {
-            aria.utils.Array.forEach(this._iconsLeft, this._destroyIcon, this);
-            aria.utils.Array.forEach(this._iconsRight, this._destroyIcon, this);
+            ariaUtilsArray.forEach(this._iconsLeft, this._destroyIcon, this);
+            ariaUtilsArray.forEach(this._iconsRight, this._destroyIcon, this);
             this._iconsLeft = null;
             this._iconsRight = null;
             this._icons = null;
@@ -120,18 +126,18 @@ Aria.classDefinition({
          */
         createFrame : function (cfg) {
 
-            cfg = aria.widgets.frames.FrameFactory.normalizeFrameCfg(cfg);
+            cfg = ariaWidgetsFramesFrameFactory.normalizeFrameCfg(cfg);
             var skinObject = cfg.skinObject;
 
             // normalize the skin:
             if (skinObject.iconsLeft == null || skinObject.iconsLeft === "") {
                 skinObject.iconsLeft = [];
-            } else if (aria.utils.Type.isString(skinObject.iconsLeft)) {
+            } else if (ariaUtilsType.isString(skinObject.iconsLeft)) {
                 skinObject.iconsLeft = skinObject.iconsLeft.split(',');
             }
             if (skinObject.iconsRight == null || skinObject.iconsRight === "") {
                 skinObject.iconsRight = [];
-            } else if (aria.utils.Type.isString(skinObject.iconsRight)) {
+            } else if (ariaUtilsType.isString(skinObject.iconsRight)) {
                 skinObject.iconsRight = skinObject.iconsRight.split(',');
             }
 
@@ -141,7 +147,7 @@ Aria.classDefinition({
             cfg.iconsRight = iconsRight;
             if (iconsLeft.length === 0 && iconsRight.length === 0) {
                 // do not use the icon frame if there is no icon (useless overhead)
-                return aria.widgets.frames.FrameFactory.createFrame(cfg);
+                return ariaWidgetsFramesFrameFactory.createFrame(cfg);
             } else {
                 return new aria.widgets.frames.FrameWithIcons(cfg);
             }
@@ -155,8 +161,8 @@ Aria.classDefinition({
         _filterIcons : function (iconsList, iconNames) {
             if (iconNames.length > 0) {
                 var icons = [];
-                aria.utils.Array.forEach(iconsList, function (item, i) {
-                    if (!aria.utils.Array.contains(iconNames, iconsList[i])) {
+                ariaUtilsArray.forEach(iconsList, function (item, i) {
+                    if (!ariaUtilsArray.contains(iconNames, iconsList[i])) {
                         icons.push(iconsList[i]);
                     }
                 });
@@ -188,7 +194,7 @@ Aria.classDefinition({
          */
         writeMarkupBegin : function (out) {
             var oSelf = this;
-            aria.utils.Array.forEach(this._iconsLeft, function (value) {
+            ariaUtilsArray.forEach(this._iconsLeft, function (value) {
                 oSelf._writeIcon(value, out);
             });
             this._frame.writeMarkupBegin(out);
@@ -201,7 +207,7 @@ Aria.classDefinition({
         writeMarkupEnd : function (out) {
             this._frame.writeMarkupEnd(out);
             var oSelf = this;
-            aria.utils.Array.forEach(this._iconsRight, function (value) {
+            ariaUtilsArray.forEach(this._iconsRight, function (value) {
                 oSelf._writeIcon(value, out);
             });
         },
@@ -264,7 +270,7 @@ Aria.classDefinition({
          */
         _destroyIcon : function (iconName) {
             this._icons[iconName].domElts = null;
-            aria.utils.Delegate.remove(this._icons[iconName].iconDelegateId);
+            ariaUtilsDelegate.remove(this._icons[iconName].iconDelegateId);
             this._icons[iconName] = null;
             delete this._icons[iconName];
         },
@@ -278,10 +284,10 @@ Aria.classDefinition({
                 width : 0,
                 activeIconIndex : 0
             }, oSelf = this;
-            aria.utils.Array.forEach(this._iconsLeft, function (value) {
+            ariaUtilsArray.forEach(this._iconsLeft, function (value) {
                 oSelf._computeIconSize(value, param);
             });
-            aria.utils.Array.forEach(this._iconsRight, function (value) {
+            ariaUtilsArray.forEach(this._iconsRight, function (value) {
                 oSelf._computeIconSize(value, param);
             });
             this._iconsWidth = param.width;
@@ -317,7 +323,7 @@ Aria.classDefinition({
         _computeIconSize : function (icon, param) {
             var stateObject = this.getStateObject();
             var iconParts = stateObject.icons[icon].split(":");
-            var iconInfo = aria.widgets.AriaSkinInterface.getIcon(iconParts[0], iconParts[1]);
+            var iconInfo = ariaWidgetsAriaSkinInterface.getIcon(iconParts[0], iconParts[1]);
             var active = stateObject.icons[icon + "IsActive"];
             if (iconInfo) {
                 this._icons[icon].iconInfo = iconInfo;
@@ -341,12 +347,12 @@ Aria.classDefinition({
                 domElt : domElt
                 // this property changes in the _linkIconToDom method
             }, oSelf = this;
-            aria.utils.Array.forEach(this._iconsLeft, function (value) {
+            ariaUtilsArray.forEach(this._iconsLeft, function (value) {
                 oSelf._linkIconToDom(value, param);
             });
             this._frame.linkToDom(param.domElt);
-            param.domElt = aria.utils.Dom.getNextSiblingElement(param.domElt, this._frame.domElementNbr);
-            aria.utils.Array.forEach(this._iconsRight, function (value) {
+            param.domElt = ariaUtilsDom.getNextSiblingElement(param.domElt, this._frame.domElementNbr);
+            ariaUtilsArray.forEach(this._iconsRight, function (value) {
                 oSelf._linkIconToDom(value, param);
             });
         },
@@ -361,9 +367,9 @@ Aria.classDefinition({
             if (this._updateFrameWidth()) {
                 this._frame.resize(this._frameWidth, this._outerHeight);
             }
-            aria.utils.Array.forEach(this._iconsLeft, this._changeIconState, this);
+            ariaUtilsArray.forEach(this._iconsLeft, this._changeIconState, this);
             this._frame.changeState(stateName);
-            aria.utils.Array.forEach(this._iconsRight, this._changeIconState, this);
+            ariaUtilsArray.forEach(this._iconsRight, this._changeIconState, this);
             this.innerWidth = this._frame.innerWidth;
             this.innerHeight = this._frame.innerHeight;
         },
@@ -404,7 +410,7 @@ Aria.classDefinition({
             var icon = this._icons[iconName];
             var iconInfo = icon.iconInfo;
             var iconStyle = this._getIconStyle(iconInfo, icon.active);
-            var utilDelegate = aria.utils.Delegate;
+            var utilDelegate = ariaUtilsDelegate;
 
             var delegateId = utilDelegate.add({
                 fn : this._delegateIcon,
@@ -425,7 +431,7 @@ Aria.classDefinition({
         _linkIconToDom : function (icon, param) {
             var domElt = param.domElt;
             // set the dom element for the next icon or frame:
-            param.domElt = aria.utils.Dom.getNextSiblingElement(domElt);
+            param.domElt = ariaUtilsDom.getNextSiblingElement(domElt);
             this._icons[icon].domElts.push(domElt);
         },
 

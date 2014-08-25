@@ -12,19 +12,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaTouchWidgetsSliderCSS = require("./SliderCSS.tpl.css");
+require("./SliderCfgBeans");
+var ariaUtilsDom = require("../../utils/Dom");
+require("../Tap");
+var ariaUtilsHtml = require("../../utils/Html");
+var ariaWidgetLibsBaseWidget = require("../../widgetLibs/BaseWidget");
+var ariaUtilsJson = require("../../utils/Json");
+var ariaCoreJsonValidator = require("../../core/JsonValidator");
+
 
 /**
  * Touch Slider Widget.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.touch.widgets.Slider",
-    $extends : "aria.widgetLibs.BaseWidget",
-    $css : ["aria.touch.widgets.SliderCSS"],
+    $extends : ariaWidgetLibsBaseWidget,
+    $css : [ariaTouchWidgetsSliderCSS],
     $statics : {
         INVALID_CONFIGURATION : "Invalid configuration for the slider!"
     },
-    // The dependency on aria.touch.Tap is needed to be able to register on tap events
-    $dependencies : ["aria.touch.widgets.SliderCfgBeans", "aria.utils.Dom", "aria.touch.Tap", "aria.utils.Html"],
     /**
      * Slider Constructor.
      * @param {aria.touch.widgets.SliderCfgBeans:SliderCfg} cfg slider configuration
@@ -34,7 +42,7 @@ Aria.classDefinition({
     $constructor : function (cfg, context, lineNumber) {
         this.$BaseWidget.constructor.apply(this, arguments);
 
-        this._cfgOk = aria.core.JsonValidator.validateCfg("aria.touch.widgets.SliderCfgBeans.SliderCfg", cfg);
+        this._cfgOk = ariaCoreJsonValidator.validateCfg("aria.touch.widgets.SliderCfgBeans.SliderCfg", cfg);
         if (!this._cfgOk) {
             return;
         }
@@ -186,7 +194,7 @@ Aria.classDefinition({
                 scope : this,
                 args : true
             };
-            aria.utils.Json.addListener(binding.inside, binding.to, this._bindingCallback, false);
+            ariaUtilsJson.addListener(binding.inside, binding.to, this._bindingCallback, false);
         }
         /**
          * Drag instances associated to the thumb
@@ -202,7 +210,7 @@ Aria.classDefinition({
 
         if (this._bindingCallback) {
             var binding = this._binding;
-            aria.utils.Json.removeListener(binding.inside, binding.to, this._bindingCallback, false);
+            ariaUtilsJson.removeListener(binding.inside, binding.to, this._bindingCallback, false);
             this._bindingCallback = null;
         }
 
@@ -263,7 +271,7 @@ Aria.classDefinition({
 
             out.write([
                     // Div containing the widget
-                    '<div ', aria.utils.Html.buildAttributeList(cfg.attributes), '" style="width:', this._cfg.width,
+                    '<div ', ariaUtilsHtml.buildAttributeList(cfg.attributes), '" style="width:', this._cfg.width,
                     'px;" ', delegateMarkup, '>',
                     // Rail, thumbs move over here
                     '<span class="touchContainer" style="width:', this._cfg.width, 'px;" id="', this._parentDomId,
@@ -291,15 +299,15 @@ Aria.classDefinition({
          */
         initWidget : function () {
             this._readValue();
-            var domUtils = aria.utils.Dom;
+            var domUtils = ariaUtilsDom;
 
             this._slider = domUtils.getElementById(this._domId);
             this._highlight = domUtils.getElementById(this._highlightDomId);
             this._sliderContainer = domUtils.getElementById(this._parentDomId);
-            this._sliderDimension = aria.utils.Dom.getGeometry(this._sliderContainer);
+            this._sliderDimension = ariaUtilsDom.getGeometry(this._sliderContainer);
             this._sliderWidth = parseInt(domUtils.getStyle(this._slider, "width"), 10);
-            this._sliderWidth += parseInt(aria.utils.Dom.getStyle(this._slider, "borderLeftWidth"), 10) || 0;
-            this._sliderWidth += parseInt(aria.utils.Dom.getStyle(this._slider, "borderRightWidth"), 10) || 0;
+            this._sliderWidth += parseInt(ariaUtilsDom.getStyle(this._slider, "borderLeftWidth"), 10) || 0;
+            this._sliderWidth += parseInt(ariaUtilsDom.getStyle(this._slider, "borderRightWidth"), 10) || 0;
             this._railWidth = this._cfg.width - this._sliderWidth;
             if (this._isSwitch) {
                 this._onContainer = domUtils.getElementById(this._onSwitchId);
@@ -443,7 +451,7 @@ Aria.classDefinition({
         _storeValue : function () {
             var binding = this._binding;
             if (binding) {
-                aria.utils.Json.setValue(binding.inside, binding.to, this._value, this._bindingCallback);
+                ariaUtilsJson.setValue(binding.inside, binding.to, this._value, this._bindingCallback);
             }
         },
 

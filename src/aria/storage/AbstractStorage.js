@@ -12,6 +12,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaStorageEventBus = require("./EventBus");
+var ariaUtilsJsonJsonSerializer = require("../utils/json/JsonSerializer");
+var ariaUtilsType = require("../utils/Type");
+var ariaStorageIStorage = require("./IStorage");
+var ariaUtilsJson = require("../utils/Json");
+
 
 /**
  * Abstract class that defines the API to interact with any storage mechanism. Defines an event mechanism across
@@ -26,10 +33,9 @@
  * which have direct access to the storage location. This class calls the mentioned methodes with namespaced and
  * serialized key/value pairs.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.storage.AbstractStorage",
-    $dependencies : ["aria.storage.EventBus", "aria.utils.json.JsonSerializer", "aria.utils.Type"],
-    $implements : ["aria.storage.IStorage"],
+    $implements : [ariaStorageIStorage],
     $statics : {
         INVALID_SERIALIZER : "Invalid serializer configuration. Make sure it implements aria.utils.json.ISerializer",
         INVALID_NAMESPACE : "Inavlid namespace configuration. Must be a string.",
@@ -57,7 +63,7 @@ Aria.classDefinition({
         };
 
         // listen to events raised by other instances on the same window
-        aria.storage.EventBus.$on({
+        ariaStorageEventBus.$on({
             "change" : this._eventCallback
         });
 
@@ -72,7 +78,7 @@ Aria.classDefinition({
             }
         }
         if (create) {
-            serializer = new aria.utils.json.JsonSerializer(true);
+            serializer = new ariaUtilsJsonJsonSerializer(true);
             this._disposeSerializer = true;
         }
 
@@ -84,7 +90,7 @@ Aria.classDefinition({
 
         var nspace = "";
         if (options && options.namespace) {
-            if (!aria.utils.Type.isString(options.namespace)) {
+            if (!ariaUtilsType.isString(options.namespace)) {
                 this.$logError(this.INVALID_NAMESPACE);
             } else {
                 // The dollar is just there to separate the keys from the namespace
@@ -99,7 +105,7 @@ Aria.classDefinition({
         this.namespace = nspace;
     },
     $destructor : function () {
-        aria.storage.EventBus.$removeListeners({
+        ariaStorageEventBus.$removeListeners({
             "change" : this._eventCallback
         });
 
@@ -140,14 +146,14 @@ Aria.classDefinition({
                 keepMetadata : false
             });
 
-            aria.storage.EventBus.stop = true;
+            ariaStorageEventBus.stop = true;
             this._set(this.namespace + key, serializedValue);
-            aria.storage.EventBus.stop = false;
+            ariaStorageEventBus.stop = false;
 
             // don't notify directly value because the serialization might modify the object (e.g. metadata)
             value = this.serializer.parse(serializedValue);
 
-            aria.storage.EventBus.notifyChange(this.type, key, value, oldValue, this.namespace);
+            ariaStorageEventBus.notifyChange(this.type, key, value, oldValue, this.namespace);
         },
 
         /**
@@ -159,11 +165,11 @@ Aria.classDefinition({
             var oldValue = this.getItem(key);
 
             if (oldValue !== null) {
-                aria.storage.EventBus.stop = true;
+                ariaStorageEventBus.stop = true;
                 this._remove(this.namespace + key);
-                aria.storage.EventBus.stop = false;
+                ariaStorageEventBus.stop = false;
 
-                aria.storage.EventBus.notifyChange(this.type, key, null, oldValue, this.namespace);
+                ariaStorageEventBus.notifyChange(this.type, key, null, oldValue, this.namespace);
             }
         },
 
@@ -172,11 +178,11 @@ Aria.classDefinition({
          * storage location.
          */
         clear : function () {
-            aria.storage.EventBus.stop = true;
+            ariaStorageEventBus.stop = true;
             this._clear();
-            aria.storage.EventBus.stop = false;
+            ariaStorageEventBus.stop = false;
 
-            aria.storage.EventBus.notifyChange(this.type, null, null, null);
+            ariaStorageEventBus.notifyChange(this.type, null, null, null);
         },
 
         /**
@@ -186,7 +192,7 @@ Aria.classDefinition({
          */
         _onStorageEvent : function (event) {
             if (event.key === null || event.namespace === this.namespace) {
-                var lessDetailedEvent = aria.utils.Json.copy(event, false, this.EVENT_KEYS);
+                var lessDetailedEvent = ariaUtilsJson.copy(event, false, this.EVENT_KEYS);
                 this.$raiseEvent(lessDetailedEvent);
             }
         }

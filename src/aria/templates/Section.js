@@ -12,6 +12,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaUtilsArray = require("../utils/Array");
+var ariaUtilsJson = require("../utils/Json");
+var ariaUtilsDelegate = require("../utils/Delegate");
+var ariaTemplatesNavigationManager = require("./NavigationManager");
+require("./CfgBeans");
+var ariaUtilsDom = require("../utils/Dom");
+require("../utils/String");
+var ariaTemplatesDomElementWrapper = require("./DomElementWrapper");
+var ariaUtilsHtml = require("../utils/Html");
+var ariaTemplatesDomEventWrapper = require("./DomEventWrapper");
+var ariaUtilsIdManager = require("../utils/IdManager");
+var ariaTemplatesSectionWrapper = require("./SectionWrapper");
+var ariaUtilsType = require("../utils/Type");
+var ariaCoreJsonValidator = require("../core/JsonValidator");
+
 
 (function () {
     var idMgr = null;
@@ -24,14 +40,10 @@
     /**
      * Represents a section in a template.
      */
-    Aria.classDefinition({
+    module.exports = Aria.classDefinition({
         $classpath : "aria.templates.Section",
-        $dependencies : ["aria.utils.Array", "aria.utils.Json", "aria.utils.Delegate",
-                "aria.templates.NavigationManager", "aria.templates.CfgBeans", "aria.utils.Dom", "aria.utils.String",
-                "aria.utils.Json", "aria.templates.DomElementWrapper", "aria.utils.Html",
-                "aria.templates.DomEventWrapper", "aria.utils.IdManager", "aria.templates.SectionWrapper"],
         $onload : function () {
-            idMgr = new aria.utils.IdManager("s");
+            idMgr = new ariaUtilsIdManager("s");
         },
         $onunload : function () {
             idMgr.$dispose();
@@ -137,7 +149,7 @@
              * Id for event delegation (used for keyboard navigation and events specified in section configuration)
              * @type String
              */
-            this.delegateId = aria.utils.Delegate.add({
+            this.delegateId = ariaUtilsDelegate.add({
                 fn : this._onDomEvent,
                 scope : this
             });
@@ -148,7 +160,7 @@
             }
 
             // normalize configuration
-            this.cfgOk = aria.core.JsonValidator.validateCfg("aria.templates.CfgBeans." + this.$class + "Cfg", cfg, {
+            this.cfgOk = ariaCoreJsonValidator.validateCfg("aria.templates.CfgBeans." + this.$class + "Cfg", cfg, {
                 msg : this.INVALID_CONFIGURATION,
                 params : [this.tplCtxt.tplClasspath, cfg.id]
             });
@@ -318,7 +330,7 @@
 
             // remove delegation for this section
             if (this.delegateId) {
-                aria.utils.Delegate.remove(this.delegateId);
+                ariaUtilsDelegate.remove(this.delegateId);
                 this.delegateId = null;
             }
 
@@ -380,8 +392,8 @@
              * @param {Object} sdef the superclass class definition
              */
             $init : function (p, def, sdef) {
-                p.__navigationManager = aria.templates.NavigationManager;
-                p.__json = aria.utils.Json; // shortcut
+                p.__navigationManager = ariaTemplatesNavigationManager;
+                p.__json = ariaUtilsJson; // shortcut
             },
 
             // type used to identify the sections in the behaviours
@@ -464,7 +476,7 @@
                 // remove delegation done with "on" statement
                 if (this.delegateIds) {
                     for (var i = 0, l = this.delegateIds.length; i < l; i++) {
-                        aria.utils.Delegate.remove(this.delegateIds[i]);
+                        ariaUtilsDelegate.remove(this.delegateIds[i]);
                     }
                     this.delegateIds = [];
                 }
@@ -590,7 +602,7 @@
             removeSubSection : function (subSection) {
                 // filter the case where the parent is controlling itself the removal
                 if (!this._removingContent) {
-                    aria.utils.Array.remove(this._content, subSection);
+                    ariaUtilsArray.remove(this._content, subSection);
                 }
             },
 
@@ -656,7 +668,7 @@
                 }
 
                 var bindedValue = bind.inside[bind.to];
-                if (bindedValue == null || aria.utils.Type.isBoolean(bindedValue)) {
+                if (bindedValue == null || ariaUtilsType.isBoolean(bindedValue)) {
                     // If it is bound to something that doesn't exist or a boolean, it is valid
                     return true;
                 }
@@ -785,14 +797,14 @@
              * @protected
              */
             _applyNewAttributes : function (newValue) {
-                var attribute, domElt = this.getDom(), whiteList = aria.templates.DomElementWrapper.attributesWhiteList, newAttributeValue;
+                var attribute, domElt = this.getDom(), whiteList = ariaTemplatesDomElementWrapper.attributesWhiteList, newAttributeValue;
                 var oldValue = this.attributes;
 
                 // remove old members
                 for (attribute in oldValue) {
                     if (oldValue.hasOwnProperty(attribute)) {
                         if (attribute == "dataset") {
-                            aria.utils.Html.removeDataset(domElt, oldValue[attribute]);
+                            ariaUtilsHtml.removeDataset(domElt, oldValue[attribute]);
                         } else if (!newValue[attribute]) {
                             if (attribute == "classList") {
                                 this.getWrapper().classList.setClassName("");
@@ -811,7 +823,7 @@
                         if (attribute == "classList") {
                             this.getWrapper().classList.setClassName(newAttributeValue.join(" "));
                         } else if (attribute == "dataset") {
-                            aria.utils.Html.setDataset(domElt, newAttributeValue);
+                            ariaUtilsHtml.setDataset(domElt, newAttributeValue);
                         } else if (whiteList.test(attribute) && newAttributeValue !== oldValue[attribute]) {
                             domElt.setAttribute(attribute, newAttributeValue);
                         }
@@ -872,7 +884,7 @@
             getWrapper : function () {
                 var wrapper = this.wrapper;
                 if (!wrapper) {
-                    this.wrapper = wrapper = new aria.templates.SectionWrapper(this.getDom(), this);
+                    this.wrapper = wrapper = new ariaTemplatesSectionWrapper(this.getDom(), this);
                 }
 
                 return wrapper;
@@ -886,9 +898,9 @@
                 if (this.domType) {
                     // if domType is empty, we do not output anything for the section
                     // (used in the tooltip)
-                    var attributeList = this.attributes ? aria.utils.Html.buildAttributeList(this.attributes) : '';
+                    var attributeList = this.attributes ? ariaUtilsHtml.buildAttributeList(this.attributes) : '';
                     var h = ['<', this.domType, attributeList, ' id="', this._domId, '" ',
-                            aria.utils.Delegate.getMarkup(this.delegateId), '>'];
+                            ariaUtilsDelegate.getMarkup(this.delegateId), '>'];
                     out.write(h.join(''));// opening the section
                 }
             },
@@ -915,7 +927,7 @@
                 if (this._cfg && this._cfg.on) {
                     var callback = this._cfg.on[evt.type];
                     if (callback) {
-                        var wrapped = new aria.templates.DomEventWrapper(evt), returnValue;
+                        var wrapped = new ariaTemplatesDomEventWrapper(evt), returnValue;
                         try {
                             returnValue = callback.fn.call(callback.scope, wrapped, callback.args);
                         } catch (e) {
@@ -1020,7 +1032,7 @@
                         args.macro = sectionMacro;
                     } else {
                         var targetMacro = args.macro;
-                        if (aria.utils.Type.isObject(targetMacro) && !targetMacro.name) {
+                        if (ariaUtilsType.isObject(targetMacro) && !targetMacro.name) {
                             targetMacro.name = sectionMacro.name;
                             targetMacro.scope = sectionMacro.scope;
                             if (!targetMacro.args) {
@@ -1040,7 +1052,7 @@
              */
             getDom : function () {
                 if (!this._domElt) {
-                    this._domElt = aria.utils.Dom.getElementById(this._domId);
+                    this._domElt = ariaUtilsDom.getElementById(this._domId);
                 }
                 return this._domElt;
             },

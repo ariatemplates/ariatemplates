@@ -12,13 +12,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../../../../Aria");
+
 
 /**
  * Template script definition for aria.tester.runner.view.popup.generic.Generic
  */
-Aria.tplScriptDefinition({
+module.exports = Aria.tplScriptDefinition({
     $classpath : 'aria.tester.runner.view.popup.generic.GenericScript',
-    $dependencies : [],
     $constructor : function () {
         this.keys = this._getKeys();
         var keys = this.keys;

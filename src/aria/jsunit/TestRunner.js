@@ -12,15 +12,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaJsunitTestEngine = require("./TestEngine");
+var ariaJsunitTestReport = require("./TestReport");
+var ariaJsunitSonarReport = require("./SonarReport");
+var ariaUtilsDom = require("../utils/Dom");
+var ariaUtilsType = require("../utils/Type");
+
 
 /**
  * HTML UI Renderer for aria.jsunit.TestEngine
  * @singleton
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.jsunit.TestRunner",
     $singleton : true,
-    $dependencies : ["aria.jsunit.TestEngine", "aria.jsunit.TestReport", "aria.jsunit.SonarReport", "aria.utils.Dom"],
     $constructor : function () {
         /**
          * @private
@@ -32,11 +38,11 @@ Aria.classDefinition({
          * @private
          * @type aria.jsunit.TestReport
          */
-        this._reporter = new aria.jsunit.TestReport({
+        this._reporter = new ariaJsunitTestReport({
             testRunner : this
         });
 
-        this._sonarReporter = new aria.jsunit.SonarReport({
+        this._sonarReporter = new ariaJsunitSonarReport({
             testRunner : this
         });
         /**
@@ -86,7 +92,7 @@ Aria.classDefinition({
          */
         run : function (test, skipTests) {
             // get a reference to the output div
-            var elt = aria.utils.Dom.getElementById(this.outputDivId);
+            var elt = ariaUtilsDom.getElementById(this.outputDivId);
             if (elt == null) {
                 var document = Aria.$window.document;
                 elt = document.createElement('div');
@@ -225,17 +231,17 @@ Aria.classDefinition({
             var report = this.getEngineReport();
 (function   (report) {
                 var subTests = report.subTests;
-                if (aria.utils.Type.isArray(subTests)) {
+                if (ariaUtilsType.isArray(subTests)) {
                     for (var i = 0, l = subTests.length; i < l; i++) {
                         var subTest = subTests[i];
                         arguments.callee(subTest);
                     }
                 }
                 var failures = [];
-                if (aria.utils.Type.isArray(report.failures)) {
+                if (ariaUtilsType.isArray(report.failures)) {
                     failures = failures.concat(report.failures);
                 }
-                if (aria.utils.Type.isArray(report.errors)) {
+                if (ariaUtilsType.isArray(report.errors)) {
                     failures = failures.concat(report.errors);
                 }
                 if (failures.length > 0) {
@@ -377,7 +383,7 @@ Aria.classDefinition({
          */
         getEngine : function () {
             if (this._testEngine == null) {
-                this._testEngine = new aria.jsunit.TestEngine();
+                this._testEngine = new ariaJsunitTestEngine();
 
                 this._testEngine.$on({
                     'change' : this._onChange,

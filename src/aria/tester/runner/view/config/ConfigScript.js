@@ -12,16 +12,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../../../Aria");
+var ariaTesterRunnerUtilsTestUtils = require("../../utils/TestUtils");
+require("../../utils/Hash");
+
 
 /**
  * Template script definition for aria.tester.runner.view.Report
  */
-Aria.tplScriptDefinition({
+module.exports = Aria.tplScriptDefinition({
     $classpath : 'aria.tester.runner.view.config.ConfigScript',
-    $dependencies : [
-        'aria.tester.runner.utils.TestUtils',
-        'aria.tester.runner.utils.Hash'
-    ],
     $prototype : {
         /**
          * Format information about a test suite for display purposes.
@@ -29,13 +29,13 @@ Aria.tplScriptDefinition({
          * @return {String} Formatted information
          */
         getSuiteInfo : function (testSuite) {
-            var __testUtils = aria.tester.runner.utils.TestUtils;
+            var __testUtils = ariaTesterRunnerUtilsTestUtils;
             return __testUtils.getTestSuiteInfo(testSuite);
         },
 
 
         getSuiteName : function (testSuite) {
-            var __testUtils = aria.tester.runner.utils.TestUtils;
+            var __testUtils = ariaTesterRunnerUtilsTestUtils;
             return __testUtils.formatTestSuiteName(testSuite);
         },
 

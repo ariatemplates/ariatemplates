@@ -12,6 +12,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaUtilsDom = require("../Dom");
+var ariaUtilsMouse = require("../Mouse");
+var ariaUtilsType = require("../Type");
+var ariaUtilsDragdropIDrag = require("./IDrag");
+var ariaUtilsJson = require("../Json");
+
 
 (function () {
     /**
@@ -47,10 +54,9 @@
     /**
      * This class defines a draggable element and implements IDrag interface providing dragstart/end events.
      */
-    Aria.classDefinition({
+    module.exports = Aria.classDefinition({
         $classpath : "aria.utils.dragdrop.Drag",
-        $dependencies : ["aria.utils.Dom", "aria.utils.Mouse", "aria.utils.Type"],
-        $implements : ["aria.utils.dragdrop.IDrag"],
+        $implements : [ariaUtilsDragdropIDrag],
         $statics : {
             INVALID_ATTRIBUTE : "Invalid attribute '%1' in '%2'"
         },
@@ -68,7 +74,7 @@
              */
             this.element = null;
 
-            var typeUtils = aria.utils.Type;
+            var typeUtils = ariaUtilsType;
             if (typeUtils.isString(id)) {
                 this.id = id;
             } else if (typeUtils.isHTMLElement(id)) {
@@ -178,9 +184,9 @@
              * Unique identifier for the draggable instance
              * @type Number
              */
-            this.listenerId = aria.utils.Mouse.listen("drag", this);
+            this.listenerId = ariaUtilsMouse.listen("drag", this);
 
-            setAttribute(this.getDraggable(true), aria.utils.Mouse.DRAGGABLE_ATTRIBUTE, this.listenerId);
+            setAttribute(this.getDraggable(true), ariaUtilsMouse.DRAGGABLE_ATTRIBUTE, this.listenerId);
 
             // This will start loading the proxy class if needed without creating it.
             this.getMovable(false);
@@ -189,7 +195,7 @@
         $destructor : function () {
             var draggable = this.getDraggable();
             if (draggable) {
-                removeAttribute(draggable, aria.utils.Mouse.DRAGGABLE_ATTRIBUTE);
+                removeAttribute(draggable, ariaUtilsMouse.DRAGGABLE_ATTRIBUTE);
 
                 draggable.style.cursor = this.originalCursor;
                 draggable = null;
@@ -201,7 +207,7 @@
             this.handle = null;
             this.cursor = null;
             this.proxy = null;
-            aria.utils.Mouse.stopListen("drag", this);
+            ariaUtilsMouse.stopListen("drag", this);
         },
         $prototype : {
 
@@ -219,10 +225,10 @@
                 if (!handle) {
                     element = this.getElement(logError);
                 } else {
-                    var typeUtils = aria.utils.Type;
+                    var typeUtils = ariaUtilsType;
 
                     if (typeUtils.isString(handle)) {
-                        handle = aria.utils.Dom.getElementById(handle);
+                        handle = ariaUtilsDom.getElementById(handle);
                     }
                     if (typeUtils.isHTMLElement(handle)) {
                         this.handle = handle;
@@ -252,7 +258,7 @@
                 var element = this.element;
 
                 if (!element) {
-                    element = aria.utils.Dom.getElementById(this.id);
+                    element = ariaUtilsDom.getElementById(this.id);
                     if (!element) {
                         if (logError === true) {
                             this.$logError(this.INVALID_ATTRIBUTE, ["id", "constructor"]);
@@ -271,7 +277,7 @@
              * @param {HTMLElement} element
              */
             _setElementStyle : function (element) {
-                var position = aria.utils.Dom.getOffset(element);
+                var position = ariaUtilsDom.getOffset(element);
                 this._elementInitialPosition = position;
 
                 var style = element.style;
@@ -361,7 +367,7 @@
             start : function (coord) {
                 this.posX = coord.x;
                 this.posY = coord.y;
-                var element = this.getElement(true), domUtil = aria.utils.Dom;
+                var element = this.getElement(true), domUtil = ariaUtilsDom;
                 // This will prevent text selection on IE on the element
                 element.onselectstart = Aria.returnFalse;
                 this._setElementStyle(element);
@@ -371,7 +377,7 @@
                     // This will prevent text selection on IE on the movable
                     movable.onselectstart = Aria.returnFalse;
                     this._movableInitialGeometry = domUtil.getGeometry(movable);
-                    this._movableGeometry = aria.utils.Json.copy(this._movableInitialGeometry);
+                    this._movableGeometry = ariaUtilsJson.copy(this._movableInitialGeometry);
                     var offset = domUtil.getOffset(movable);
                     this._baseMovableOffset = {
                         left : this._movableGeometry.x - offset.left,
@@ -388,12 +394,12 @@
              */
             move : function (evt) {
                 var movable = this.getMovable();
-                var domUtil = aria.utils.Dom;
+                var domUtil = ariaUtilsDom;
 
                 if (movable && movable.style) {
                     var offsetX = this._vertical ? 0 : evt.clientX - this.posX;
                     var offsetY = this._horizontal ? 0 : evt.clientY - this.posY;
-                    var geometry = aria.utils.Json.copy(this._movableGeometry);
+                    var geometry = ariaUtilsJson.copy(this._movableGeometry);
                     geometry.x += offsetX;
                     geometry.y += offsetY;
                     var pos = (this._boundary) ? domUtil.fitInside(geometry, this._boundary) : {
@@ -438,17 +444,17 @@
              * @protected
              */
             _setBoundary : function () {
-                var constrainTo = this.params.constrainTo, domUtil = aria.utils.Dom;
+                var constrainTo = this.params.constrainTo, domUtil = ariaUtilsDom;
                 if (!constrainTo || constrainTo === domUtil.VIEWPORT) {
                     this._boundary = constrainTo;
                     return;
                 }
-                if (aria.utils.Type.isString(constrainTo)) {
+                if (ariaUtilsType.isString(constrainTo)) {
                     constrainTo = domUtil.getElementById(constrainTo);
 
                 }
                 if (constrainTo) {
-                    this._boundary = aria.utils.Dom.getGeometry(constrainTo);
+                    this._boundary = ariaUtilsDom.getGeometry(constrainTo);
                     return;
                 }
                 this._boundary = null;

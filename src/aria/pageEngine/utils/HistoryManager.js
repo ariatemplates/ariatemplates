@@ -12,14 +12,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaUtilsHistory = require("../../utils/History");
+var ariaUtilsType = require("../../utils/Type");
+var ariaPageEngineUtilsBaseNavigationManager = require("./BaseNavigationManager");
+
 
 /**
  * Utility class that manages the history of the application
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.pageEngine.utils.HistoryManager",
-    $extends : "aria.pageEngine.utils.BaseNavigationManager",
-    $dependencies : ["aria.utils.History", "aria.utils.Type"],
+    $extends : ariaPageEngineUtilsBaseNavigationManager,
     /**
      * @param {aria.core.CfgBeans:Callback} cb Callback called on pop state. It corresponds to a navigate method
      * @param {aria.core.CfgBeans:Site.storage} options Options for local storage
@@ -33,7 +37,7 @@ Aria.classDefinition({
          * @type aria.utils.History
          * @private
          */
-        this._history = aria.utils.History;
+        this._history = ariaUtilsHistory;
 
         /**
          * Listener of the popstate event raised by the History
@@ -91,7 +95,7 @@ Aria.classDefinition({
          */
         update : function (pageRequest) {
             var url = pageRequest.url;
-            if (aria.utils.Type.isString(url)) {
+            if (ariaUtilsType.isString(url)) {
                 this._addInCache(url, pageRequest.pageId);
                 if (!this._poppedState) {
                     if (pageRequest.replace) {

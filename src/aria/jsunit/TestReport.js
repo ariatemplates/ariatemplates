@@ -12,14 +12,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+
 
 /**
  * Report representation
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.jsunit.TestReport",
     $singleton : false,
-    $dependencies : [],
     $constructor : function (conf) {
         this.testRunner = conf.testRunner;
     },

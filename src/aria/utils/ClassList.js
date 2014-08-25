@@ -12,12 +12,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+
 
 /**
  * Wrapper to manage classes for DOM elements inside templates.
  * @class aria.utils.ClassList
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : 'aria.utils.ClassList',
     /**
      * Create a DOM Wrapper object to allow safe changes in the DOM classes without giving direct access to the DOM.

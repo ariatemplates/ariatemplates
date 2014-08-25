@@ -12,13 +12,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+
 
 /**
  * This class is still experimental, its interface may change without notice. This class gives access to a robot
  * implementation, allowing to send low-level mouse and keyboard events to a web page.
  * @private
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : 'aria.jsunit.Robot',
     $singleton : true,
     $statics : {

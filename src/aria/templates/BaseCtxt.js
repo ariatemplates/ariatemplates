@@ -12,12 +12,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+
 
 /**
  * A context object is a wrapper around a Template. It provides the basic methods needed to call a macro on a template.
  * This class is extended by aria.templates.TemplateCtxt and aria.templates.CSSCtxt
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.templates.BaseCtxt",
     $singleton : false,
     $constructor : function () {

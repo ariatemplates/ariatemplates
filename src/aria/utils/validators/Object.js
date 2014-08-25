@@ -12,14 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaUtilsType = require("../Type");
+var ariaUtilsValidatorsValidator = require("./Validator");
+
 
 /**
  * Validator for the object type.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.utils.validators.Object",
-    $dependencies : ['aria.utils.Type'],
-    $extends : "aria.utils.validators.Validator",
+    $extends : ariaUtilsValidatorsValidator,
     $prototype : {
 
         /**
@@ -28,7 +31,7 @@ Aria.classDefinition({
          * @return {Object}
          */
         validate : function (value) {
-            if (value === null || aria.utils.Type.isObject(value)) {
+            if (value === null || ariaUtilsType.isObject(value)) {
                 return this._validationSucceeded();
             }
             return this._validationFailed();

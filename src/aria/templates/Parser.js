@@ -12,13 +12,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaUtilsString = require("../utils/String");
+
 
 /**
  * Template parser: builds a tree of type aria.templates.TreeBeans.Root from a template string.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.templates.Parser",
-    $dependencies : ["aria.utils.String"],
     $singleton : false,
     $constructor : function () {
         /**
@@ -183,7 +185,7 @@ Aria.classDefinition({
          */
         __findClosingBraces : function (str, start) {
             var cursorPos = start, nbrOfBlockOpened = 0, nextBlockBegin = -1, nextBlockEnd = -1;
-            var utilString = aria.utils.String;
+            var utilString = ariaUtilsString;
             do {
                 if (nextBlockBegin < cursorPos) {
                     nextBlockBegin = utilString.indexOfNotEscaped(str, '{', cursorPos);
@@ -270,7 +272,7 @@ Aria.classDefinition({
          * @protected
          */
         _buildTree : function () {
-            var utilString = aria.utils.String;
+            var utilString = ariaUtilsString;
             this.__currentLn = 0;
             var tpl = this.template, begin = 0, // start of the current block
             end = 0, // end of the current block

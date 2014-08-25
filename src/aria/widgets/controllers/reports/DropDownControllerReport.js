@@ -12,16 +12,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../../Aria");
+var ariaWidgetsControllersReportsControllerReport = require("./ControllerReport");
+
 
 /**
  * Report emitted by a controller on a check for a controller that support dropdown
  * @class aria.widgets.controllers.reports.DropDownControllerReport
  * @extends aria.widgets.controllers.reports.ControllerReport
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : 'aria.widgets.controllers.reports.DropDownControllerReport',
-    $extends : 'aria.widgets.controllers.reports.ControllerReport',
-    $dependencies : [],
+    $extends : ariaWidgetsControllersReportsControllerReport,
     $constructor : function () {
 
         this.$ControllerReport.constructor.call(this);

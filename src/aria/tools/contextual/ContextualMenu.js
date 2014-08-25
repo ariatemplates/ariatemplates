@@ -12,6 +12,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaUtilsEvent = require("../../utils/Event");
+var ariaDomEvent = require("../../DomEvent");
+var ariaTemplatesTemplateCtxtManager = require("../../templates/TemplateCtxtManager");
+var ariaPopupsPopup = require("../../popups/Popup");
+var ariaWidgetsTemplate = require("../../widgets/Template");
+var ariaUtilsDom = require("../../utils/Dom");
+var ariaToolsContextualEnvironmentContextualMenu = require("./environment/ContextualMenu");
+var ariaUtilsAriaWindow = require("../../utils/AriaWindow");
+var ariaToolsContextualIContextualMenu = require("./IContextualMenu");
+var ariaCoreBrowser = require("../../core/Browser");
+var ariaCoreEnvironmentEnvironment = require("../../core/environment/Environment");
+
 
 (function () {
 
@@ -27,20 +40,17 @@
      * @singleton
      * @class aria.tools.contextual.ContextualMenu
      */
-    Aria.classDefinition({
+    module.exports = Aria.classDefinition({
         $classpath : 'aria.tools.contextual.ContextualMenu',
         $singleton : true,
-        $dependencies : ['aria.utils.Event', 'aria.DomEvent', 'aria.templates.TemplateCtxtManager',
-                'aria.popups.Popup', 'aria.widgets.Template', 'aria.utils.Dom',
-                'aria.tools.contextual.environment.ContextualMenu', 'aria.utils.AriaWindow'],
-        $implements : ['aria.tools.contextual.IContextualMenu'],
+        $implements : [ariaToolsContextualIContextualMenu],
         $constructor : function () {
 
             // shortcut
-            eventUtils = aria.utils.Event;
-            contextManager = aria.templates.TemplateCtxtManager;
-            appEnvironment = aria.tools.contextual.environment.ContextualMenu;
-            domUtils = aria.utils.Dom;
+            eventUtils = ariaUtilsEvent;
+            contextManager = ariaTemplatesTemplateCtxtManager;
+            appEnvironment = ariaToolsContextualEnvironmentContextualMenu;
+            domUtils = ariaUtilsDom;
 
             /**
              * Specifies whether the contextual menu should be enabled (defined in the app environment).
@@ -75,15 +85,15 @@
             });
             this._environmentChanged();
 
-            aria.utils.AriaWindow.$on({
+            ariaUtilsAriaWindow.$on({
                 "attachWindow" : this._attachWindow,
                 "detachWindow" : this._detachWindow,
                 scope : this
             });
         },
         $destructor : function () {
-            aria.core.environment.Environment.$unregisterListeners(this);
-            aria.utils.AriaWindow.$unregisterListeners(this);
+            ariaCoreEnvironmentEnvironment.$unregisterListeners(this);
+            ariaUtilsAriaWindow.$unregisterListeners(this);
 
             // remove the listener:
             this._setEnabled(false);
@@ -144,7 +154,7 @@
                             fn : this._onContextMenu,
                             scope : this
                         });
-                        if (aria.core.Browser.isSafari) {
+                        if (ariaCoreBrowser.isSafari) {
                             // PTR 04547842: Safari does not support the
                             // ctrlKey property on contextmenu event
                             // register the mouseup event to get this
@@ -161,7 +171,7 @@
                     eventUtils.removeListener(document, "contextmenu", {
                         fn : this._onContextMenu
                     });
-                    if (aria.core.Browser.isSafari) {
+                    if (ariaCoreBrowser.isSafari) {
                         eventUtils.removeListener(document, "mouseup", {
                             fn : this._onSafariMouseUp
                         });
@@ -188,8 +198,8 @@
                 if (!this._enabled) {
                     return;
                 }
-                event = new aria.DomEvent(event);
-                if (aria.core.Browser.isSafari) {
+                event = new ariaDomEvent(event);
+                if (ariaCoreBrowser.isSafari) {
                     event.ctrlKey = this._safariCtrlKey;
                 }
                 // ctrl right click only
@@ -315,7 +325,7 @@
                     return;
                 }
 
-                var popup = new aria.popups.Popup();
+                var popup = new ariaPopupsPopup();
                 this._popup = popup;
 
                 popup.$on({
@@ -326,7 +336,7 @@
                 // create a section on the founded template context
                 var section = templateCtxt.createSection({
                     fn : function (out) {
-                        var tplWidget = new aria.widgets.Template({
+                        var tplWidget = new ariaWidgetsTemplate({
                             defaultTemplate : this._appEnvCfg.template,
                             moduleCtrl : {
                                 classpath : this._appEnvCfg.moduleCtrl,

@@ -12,14 +12,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaWidgetsFormDropDownTrait = require("./DropDownTrait");
+var ariaWidgetsFormTextInput = require("./TextInput");
+var ariaCoreBrowser = require("../../core/Browser");
+var ariaCoreTimer = require("../../core/Timer");
+
 
 /**
  * Base class for all text input widgets that use a drop-down popup
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.widgets.form.DropDownTextInput",
-    $extends : "aria.widgets.form.TextInput",
-    $dependencies : ["aria.widgets.form.DropDownTrait"],
+    $extends : ariaWidgetsFormTextInput,
     /**
      * DropDownInput constructor
      * @param {aria.widgets.CfgBeans:DropDownTextInputCfg} cfg the widget configuration
@@ -48,7 +53,7 @@ Aria.classDefinition({
          * @param {Object} p the prototype object being built
          */
         $init : function (p) {
-            var src = aria.widgets.form.DropDownTrait.prototype;
+            var src = ariaWidgetsFormDropDownTrait.prototype;
             for (var key in src) {
                 if (src.hasOwnProperty(key) && !p.hasOwnProperty(key)) {
                     // import methods from DropDownTrait which are not already on this object (this avoids copying
@@ -93,7 +98,7 @@ Aria.classDefinition({
                 } else {
                     // alt or ctrl keys are pressed
                     // we check that copy/paste content is correct
-                    aria.core.Timer.addCallback({
+                    ariaCoreTimer.addCallback({
                         fn : this._checkKeyStroke,
                         scope : this,
                         args : event,
@@ -149,7 +154,7 @@ Aria.classDefinition({
          * @param {aria.DomEvent} event
          */
         _dom_onkeyup : function (event) {
-            var browser = aria.core.Browser;
+            var browser = ariaCoreBrowser;
             if (browser.isAndroid && browser.isChrome && !event.isSpecialKey && event.keyCode == 229) {
                 event.charCode = 0;
                 this._handleKey(event);

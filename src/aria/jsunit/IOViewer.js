@@ -12,11 +12,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaCoreIO = require("../core/IO");
+
 
 /**
  * HTML UI Renderer for aria.core.IO
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.jsunit.IOViewer",
     $singleton : true,
     $constructor : function () {
@@ -26,7 +29,7 @@ Aria.classDefinition({
     $destructor : function () {
         this._outputDiv = null;
         this._requests = null;
-        aria.core.IO.$unregisterListeners(this);
+        ariaCoreIO.$unregisterListeners(this);
     },
     $prototype : {
         /**
@@ -48,7 +51,7 @@ Aria.classDefinition({
                 document.body.appendChild(elt);
             }
             this._outputDiv = elt;
-            aria.core.IO.$on({
+            ariaCoreIO.$on({
                 'request' : this._onRequest,
                 'response' : this._onResponse,
                 scope : this
@@ -80,11 +83,11 @@ Aria.classDefinition({
             var h = ['<div style="font-family:Arial;font-size:12px">',
                     '<span style="font-size:15px;font-weight:bold">IO Report</span>', '<hr/>',
                     '<div style="padding: 3px;font-size: 12px; font-weight: bold;font-family:Arial">', 'Requests: ',
-                    aria.core.IO.nbRequests, ' (pending: ',
-                    aria.core.IO.nbRequests - aria.core.IO.nbOKResponses - aria.core.IO.nbKOResponses, ', OK: ',
-                    aria.core.IO.nbOKResponses, ', failed: ', aria.core.IO.nbKOResponses, ')<br />Traffic: ',
-                    aria.core.IO.trafficDown + aria.core.IO.trafficUp, ' bytes (down: ', aria.core.IO.trafficDown,
-                    ' bytes, up: ', aria.core.IO.trafficUp, ' bytes)', '</div>',
+                    ariaCoreIO.nbRequests, ' (pending: ',
+                    ariaCoreIO.nbRequests - ariaCoreIO.nbOKResponses - ariaCoreIO.nbKOResponses, ', OK: ',
+                    ariaCoreIO.nbOKResponses, ', failed: ', ariaCoreIO.nbKOResponses, ')<br />Traffic: ',
+                    ariaCoreIO.trafficDown + ariaCoreIO.trafficUp, ' bytes (down: ', ariaCoreIO.trafficDown,
+                    ' bytes, up: ', ariaCoreIO.trafficUp, ' bytes)', '</div>',
                     '<table style="font-size:12px;font-family:Arial; width:100%;">', '<tr style="font-weight: bold;">',
                     '<td style="width: 50px;">Method</td>', '<td>URL</td>',
                     '<td style="text-align: right; width: 50px;">Up</td>',

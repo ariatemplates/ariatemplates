@@ -12,14 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaUtilsArray = require("./Array");
+var ariaUtilsCallback = require("./Callback");
+
 
 /**
  * Store utility class. Usefull to register a stack of object, retrieve elements, filter, browse.
  * @class aria.utils.Store
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : 'aria.utils.Store',
-    $dependencies : ['aria.utils.Array', 'aria.utils.Callback'],
     $constructor : function () {
         /**
          * Internal stack of elements.
@@ -70,7 +73,7 @@ Aria.classDefinition({
          * @return {Boolean} true if element was found and removed
          */
         remove : function (elt) {
-            if (this._store && aria.utils.Array.remove(this._store, elt)) {
+            if (this._store && ariaUtilsArray.remove(this._store, elt)) {
                 this._storeLength--;
                 return true;
             }
@@ -116,7 +119,7 @@ Aria.classDefinition({
          * @return {Object|Array}
          */
         removeMatch : function (matchFunction, multiple) {
-            matchFunction = new aria.utils.Callback(matchFunction);
+            matchFunction = new ariaUtilsCallback(matchFunction);
             multiple = multiple === true;
             var elt = null, result = multiple ? [] : null;
             for (var i = 0; i < this._storeLength; i++) {
@@ -145,10 +148,10 @@ Aria.classDefinition({
         foreach : function (actionFunction, matchFunction) {
             var elt = null;
 
-            actionFunction = new aria.utils.Callback(actionFunction);
+            actionFunction = new ariaUtilsCallback(actionFunction);
 
             if (matchFunction) {
-                matchFunction = new aria.utils.Callback(matchFunction);
+                matchFunction = new ariaUtilsCallback(matchFunction);
             }
 
             for (var i = 0; i < this._storeLength; i++) {

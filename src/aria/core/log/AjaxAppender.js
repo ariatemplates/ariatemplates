@@ -12,6 +12,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaCoreIO = require("../IO");
+var ariaUtilsJson = require("../../utils/Json");
+
 
 /**
  * This type of appender gathers all the logs sent to it and sends them in a JSON POST
@@ -24,9 +28,8 @@
  * @param {Number} minLogNb Optional, defaults to 5. The minimum number of separate log entries to wait before sending
  * logs (logs are sent as a batch)
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.core.log.AjaxAppender",
-    $dependencies : ["aria.core.IO", "aria.utils.Json"],
     $constructor : function (url, minInterval, minLogNb) {
         this._logStack = [];
         this._lastLogSent = 0;
@@ -74,14 +77,14 @@ Aria.classDefinition({
          */
         _sendStack : function () {
             // stringify the json data
-            var data = aria.utils.Json.convertToJsonString({
+            var data = ariaUtilsJson.convertToJsonString({
                 logs : this._logStack
             }, {
                 maxDepth : 4
             });
 
             // Send json post request
-            aria.core.IO.asyncRequest({
+            ariaCoreIO.asyncRequest({
                 sender : {
                     classpath : this.$classpath
                 },

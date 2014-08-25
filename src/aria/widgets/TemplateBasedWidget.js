@@ -12,14 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaWidgetsTemplate = require("./Template");
+var ariaWidgetsContainerContainer = require("./container/Container");
+
 
 /**
  * Abstract widget which enables an easy implementation of any template-based widget.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.widgets.TemplateBasedWidget",
-    $extends : "aria.widgets.container.Container",
-    $dependencies : ["aria.widgets.Template"],
+    $extends : ariaWidgetsContainerContainer,
     $events : {
         "widgetContentReady" : {
             description : "Raised when the template content is displayed."
@@ -70,7 +73,7 @@ Aria.classDefinition({
                 if (cfg.id) {
                     tplCfg.id = cfg.id + "_t_";
                 }
-                this._tplWidget = new aria.widgets.Template(tplCfg, this._context, this._lineNumber);
+                this._tplWidget = new ariaWidgetsTemplate(tplCfg, this._context, this._lineNumber);
                 this._tplWidget.tplLoadCallback = {
                     fn : this._tplLoadCallback,
                     scope : this

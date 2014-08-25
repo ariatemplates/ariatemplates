@@ -12,17 +12,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+require("../../utils/Event");
+require("../../utils/Dom");
+var ariaUtilsJson = require("../../utils/Json");
+require("./InspectorDisplay.tpl");
+var ariaToolsInspectorIInspectorModule = require("./IInspectorModule");
+var ariaTemplatesModuleCtrl = require("../../templates/ModuleCtrl");
+
 
 /**
  * Utility to manage and highligh template and modules on an application
  * @class aria.tools.inspector.InpectorModule
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : 'aria.tools.inspector.InspectorModule',
-    $extends : 'aria.templates.ModuleCtrl',
-    $dependencies : ['aria.utils.Event', 'aria.utils.Dom', 'aria.utils.Json'],
-    $templates : ['aria.tools.inspector.InspectorDisplay'],
-    $implements : ['aria.tools.inspector.IInspectorModule'],
+    $extends : ariaTemplatesModuleCtrl,
+    $implements : [ariaToolsInspectorIInspectorModule],
     $constructor : function () {
 
         // call parent constructor
@@ -358,7 +364,7 @@ Aria.classDefinition({
          */
         reloadTemplate : function (templateCtxt, tplSource) {
 
-            aria.utils.Json.setValue(this._data, "locked", true);
+            ariaUtilsJson.setValue(this._data, "locked", true);
 
             if (tplSource) {
                 tplSource = this._data.selectedTemplate.tplSrcEdit;
@@ -393,7 +399,7 @@ Aria.classDefinition({
         _unlock : function () {
             var data = this._data;
             setTimeout(function () {
-                aria.utils.Json.setValue(data, "locked", false);
+                ariaUtilsJson.setValue(data, "locked", false);
             }, 500);
         },
 
@@ -403,7 +409,7 @@ Aria.classDefinition({
          */
         reloadModule : function (moduleCtrl) {
             var moduleFactory = this.bridge.getAriaPackage().templates.ModuleCtrlFactory;
-            aria.utils.Json.setValue(this._data, "locked", true);
+            ariaUtilsJson.setValue(this._data, "locked", true);
 
             // do some cleaning
             this.clearHightlight();

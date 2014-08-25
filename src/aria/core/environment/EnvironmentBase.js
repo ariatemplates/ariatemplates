@@ -12,13 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+require("../../utils/Object");
+var ariaCoreJsonValidator = require("../JsonValidator");
+var ariaCoreAppEnvironment = require("../AppEnvironment");
+
 
 /**
  * Base class containing shared methods for all environment classes.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.core.environment.EnvironmentBase",
-    $dependencies : ["aria.utils.Object"],
     $constructor : function () {
         this.$assert(9, this._cfgPackage != null);
         /**
@@ -27,7 +31,7 @@ Aria.classDefinition({
          * @type Object
          */
         this._localDefCfg = {};
-        var validCfg = aria.core.JsonValidator.normalize({
+        var validCfg = ariaCoreJsonValidator.normalize({
             json : this._localDefCfg,
             beanName : this._cfgPackage
         });
@@ -38,13 +42,13 @@ Aria.classDefinition({
             asyncCalls : 0,
             callback : null
         });
-        aria.core.AppEnvironment.$on({
+        ariaCoreAppEnvironment.$on({
             "changingEnvironment" : this._changingEnvironment,
             scope : this
         });
     },
     $destructor : function () {
-        aria.core.AppEnvironment.$unregisterListeners(this);
+        ariaCoreAppEnvironment.$unregisterListeners(this);
         this._localDefCfg = null;
     },
     $events : {
@@ -92,8 +96,8 @@ Aria.classDefinition({
          * @param {aria.core.CfgBeans:Callback} callback Will be called when the environment is applied.
          */
         _normAndApplyEnv : function (callback) {
-            var validConfig = aria.core.JsonValidator.normalize({
-                json : aria.core.AppEnvironment.applicationSettings,
+            var validConfig = ariaCoreJsonValidator.normalize({
+                json : ariaCoreAppEnvironment.applicationSettings,
                 beanName : this._cfgPackage
             });
             if (validConfig) {
@@ -121,7 +125,7 @@ Aria.classDefinition({
          * definitions.
          */
         checkApplicationSettings : function (name) {
-            return aria.core.AppEnvironment.applicationSettings[name];
+            return ariaCoreAppEnvironment.applicationSettings[name];
         }
 
     }

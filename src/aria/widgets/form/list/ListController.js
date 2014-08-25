@@ -12,15 +12,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../../Aria");
+var ariaWidgetsFormListIListController = require("./IListController");
+var ariaUtilsArray = require("../../../utils/Array");
+require("./CfgBeans");
+var ariaTemplatesView = require("../../../templates/View");
+var ariaDomEvent = require("../../../DomEvent");
+var ariaTemplatesModuleCtrl = require("../../../templates/ModuleCtrl");
+var ariaUtilsType = require("../../../utils/Type");
+
 
 /**
  * The list widget is constructed with a sub module controller and a sub template. This is the sub module controller.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.widgets.form.list.ListController",
-    $extends : "aria.templates.ModuleCtrl",
-    $implements : ["aria.widgets.form.list.IListController"],
-    $dependencies : ["aria.utils.Array", "aria.widgets.form.list.CfgBeans", "aria.templates.View", "aria.DomEvent"],
+    $extends : ariaTemplatesModuleCtrl,
+    $implements : [ariaWidgetsFormListIListController],
     $constructor : function () {
         this.$ModuleCtrl.constructor.call(this);
         this._dataBeanName = "aria.widgets.form.list.CfgBeans.ListModel";
@@ -81,7 +89,7 @@ Aria.classDefinition({
             if (itemsInfo.selectedValues == null) {
                 this.setSelectedIndex(itemsInfo.selectedIndex);
             }
-            var itemsView = new aria.templates.View(this._data.items);
+            var itemsView = new ariaTemplatesView(this._data.items);
             this.json.setValue(this._data, "itemsView", itemsView);
 
             if (this._data.activateSort) {
@@ -376,7 +384,7 @@ Aria.classDefinition({
          * @return {} Returns an object with 4 properties..
          */
         _mergeItemsAndSelectionInfo : function (items, selectedValues, selectedIdx) {
-            var arrayUtil = aria.utils.Array;
+            var arrayUtil = ariaUtilsArray;
             var preselect = this._checkPreselect(selectedIdx);
             selectedIdx = (preselect === undefined) ? selectedIdx : preselect;
             var maxSelectedCount = this._getTrueMaxSelectedCount(items);
@@ -388,7 +396,7 @@ Aria.classDefinition({
             var labelProperty = "label";
             var valueProperty = "value";
             var disabledProperty = "disabled";
-            if (!aria.utils.Type.isArray(items)) {
+            if (!ariaUtilsType.isArray(items)) {
                 container = items.container;
                 labelProperty = items.labelProperty;
                 valueProperty = items.valueProperty;
@@ -490,15 +498,15 @@ Aria.classDefinition({
             var moveFocus = focusIndex;
 
             if (numberOfColumns == 1) {
-                if (keyCode == aria.DomEvent.KC_ARROW_UP) {
+                if (keyCode == ariaDomEvent.KC_ARROW_UP) {
                     moveFocus--;
                 }
-                if (keyCode == aria.DomEvent.KC_ARROW_DOWN) {
+                if (keyCode == ariaDomEvent.KC_ARROW_DOWN) {
                     moveFocus++;
                 }
             } else {
 
-                if (keyCode == aria.DomEvent.KC_ARROW_UP) {
+                if (keyCode == ariaDomEvent.KC_ARROW_UP) {
 
                     if (flowOrientation == 'vertical') {
                         moveFocus = focusIndex - 1;
@@ -510,7 +518,7 @@ Aria.classDefinition({
                         }
                     }
 
-                } else if (keyCode == aria.DomEvent.KC_ARROW_DOWN) {
+                } else if (keyCode == ariaDomEvent.KC_ARROW_DOWN) {
 
                     if (flowOrientation == 'vertical') {
                         moveFocus = focusIndex + 1;
@@ -521,7 +529,7 @@ Aria.classDefinition({
                             return focusIndex;
                         }
                     }
-                } else if (keyCode == aria.DomEvent.KC_ARROW_LEFT) {
+                } else if (keyCode == ariaDomEvent.KC_ARROW_LEFT) {
                     if (flowOrientation == 'horizontal') {
                         moveFocus = focusIndex - 1;
                     } else {
@@ -531,7 +539,7 @@ Aria.classDefinition({
                             return focusIndex;
                         }
                     }
-                } else if (keyCode == aria.DomEvent.KC_ARROW_RIGHT) {
+                } else if (keyCode == ariaDomEvent.KC_ARROW_RIGHT) {
                     if (flowOrientation == 'horizontal') {
                         moveFocus = focusIndex + 1;
                     } else {
@@ -578,7 +586,7 @@ Aria.classDefinition({
             if (data && !evt.cancelDefault) {
 
                 var moveFocus, itemsView = data.itemsView;
-                if (aria.DomEvent.isNavigationKey(evt.keyCode)) {
+                if (ariaDomEvent.isNavigationKey(evt.keyCode)) {
                     this._navigationEvent = true;
                     var startIndex = data.multipleSelect ? data.focusIndex : data.selectedIndex, isFocusable = false, oldFocus = startIndex;
                     moveFocus = startIndex;
@@ -739,7 +747,7 @@ Aria.classDefinition({
          * @param {Array} newValues
          */
         setSelectedValues : function (newValues) {
-            var arrayUtil = aria.utils.Array;
+            var arrayUtil = ariaUtilsArray;
 
             this._stopUpdates();
             var newlySelectedIndexes = [];

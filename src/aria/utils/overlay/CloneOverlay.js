@@ -12,14 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaUtilsDom = require("../Dom");
+var ariaUtilsOverlayOverlay = require("./Overlay");
+
 
 /**
  * This class creates an overlay cloning the HTML element and keeps it positioned above a given HTML element
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.utils.overlay.CloneOverlay",
-    $extends : "aria.utils.overlay.Overlay",
-    $dependencies : ["aria.utils.Dom"],
+    $extends : ariaUtilsOverlayOverlay,
     $constructor : function (element, params) {
 
         /**
@@ -55,7 +58,7 @@ Aria.classDefinition({
         _createOverlay : function (params) {
             var clone = this.__clone;
             var opacity = ("opacity" in params) ? params.opacity : 0.5;
-            aria.utils.Dom.setOpacity(clone, opacity);
+            ariaUtilsDom.setOpacity(clone, opacity);
 
             return clone;
         },

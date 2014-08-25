@@ -12,16 +12,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaCoreJsonTypes = require("../core/JsonTypes");
+var ariaCoreEnvironmentEnvironmentBaseCfgBeans = require("../core/environment/EnvironmentBaseCfgBeans");
+
 
 /**
  * @class aria.utils.Beans
  */
-Aria.beanDefinitions({
+module.exports = Aria.beanDefinitions({
     $package : "aria.utils.Beans",
     $description : "",
     $namespaces : {
-        "json" : "aria.core.JsonTypes",
-        "environmentBase" : "aria.core.environment.EnvironmentBaseCfgBeans"
+        "json" : ariaCoreJsonTypes,
+        "environmentBase" : ariaCoreEnvironmentEnvironmentBaseCfgBeans
     },
     $beans : {
         "options" : {

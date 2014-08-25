@@ -12,20 +12,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaWidgetsFormListList = require("./list/List");
+var ariaWidgetsControllersMultiSelectController = require("../controllers/MultiSelectController");
+var ariaDomEvent = require("../../DomEvent");
+var ariaWidgetsFormMultiSelectStyle = require("./MultiSelectStyle.tpl.css");
+var ariaWidgetsFormListListStyle = require("./list/ListStyle.tpl.css");
+var ariaWidgetsContainerDivStyle = require("../container/DivStyle.tpl.css");
+var ariaWidgetsFormCheckBoxStyle = require("./CheckBoxStyle.tpl.css");
+var ariaWidgetsFormDropDownTextInput = require("./DropDownTextInput");
+
 
 /**
  * Multi-select widget which is a list of checkboxes and labels passed in an array of predefined values
  * @extends aria.widgets.form.DropDownTextInput
  * @class aria.widgets.form.MultiSelect
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.widgets.form.MultiSelect",
-    $extends : "aria.widgets.form.DropDownTextInput",
-    $dependencies : ["aria.widgets.form.list.List", "aria.widgets.controllers.MultiSelectController", "aria.DomEvent"],
-    $css : ["aria.widgets.form.MultiSelectStyle", "aria.widgets.form.list.ListStyle",
-            "aria.widgets.container.DivStyle", "aria.widgets.form.CheckBoxStyle"],
+    $extends : ariaWidgetsFormDropDownTextInput,
+    $css : [ariaWidgetsFormMultiSelectStyle, ariaWidgetsFormListListStyle,
+            ariaWidgetsContainerDivStyle, ariaWidgetsFormCheckBoxStyle],
     $constructor : function (cfg, ctxt, lineNumber) {
-        var controller = new aria.widgets.controllers.MultiSelectController();
+        var controller = new ariaWidgetsControllersMultiSelectController();
 
         // The following line was added for PTR 04557432: if the value in cfg is not set to [] as a default, then the
         // handle specified as the onchange configuration property will be executed also on the first click
@@ -122,7 +131,7 @@ Aria.classDefinition({
          * @return {Boolean}
          */
         _keyPressed : function (evt) {
-            if ((evt.keyCode == aria.DomEvent.KC_ARROW_UP) && this._checkCloseItem(evt)) {
+            if ((evt.keyCode == ariaDomEvent.KC_ARROW_UP) && this._checkCloseItem(evt)) {
                 this.focus();
                 this._toggleDropdown();
                 return true;
@@ -157,7 +166,7 @@ Aria.classDefinition({
 
             var dm = this.controller.getDataModel();
 
-            var list = new aria.widgets.form.list.List({
+            var list = new ariaWidgetsFormListList({
                 defaultTemplate : cfg.listTemplate,
                 block : true,
                 sclass : cfg.listSclass || this._skinObj.listSclass,

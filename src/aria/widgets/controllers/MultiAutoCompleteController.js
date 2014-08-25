@@ -12,6 +12,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+require("../../utils/Delegate");
+var ariaUtilsArray = require("../../utils/Array");
+var ariaUtilsJson = require("../../utils/Json");
+var ariaUtilsString = require("../../utils/String");
+var ariaWidgetsControllersAutoCompleteController = require("./AutoCompleteController");
+var ariaUtilsType = require("../../utils/Type");
+var ariaCoreJsonValidator = require("../../core/JsonValidator");
+
 
 (function () {
 
@@ -22,13 +31,12 @@
      * Controller for the MultiAutoComplete widget. This controller manage the keystroke forwarded by the
      * multiautocomplete widget, and the resources handler.
      */
-    Aria.classDefinition({
+    module.exports = Aria.classDefinition({
         $classpath : "aria.widgets.controllers.MultiAutoCompleteController",
-        $extends : "aria.widgets.controllers.AutoCompleteController",
-        $dependencies : ["aria.utils.Delegate", "aria.utils.Array", "aria.utils.Json", "aria.utils.String"],
+        $extends : ariaWidgetsControllersAutoCompleteController,
         $onload : function () {
-            typeUtil = aria.utils.Type;
-            arrayUtil = aria.utils.Array;
+            typeUtil = ariaUtilsType;
+            arrayUtil = ariaUtilsArray;
         },
         $onunload : function () {
             typeUtil = null;
@@ -72,7 +80,7 @@
              */
             checkText : function (text) {
                 var dataModel = this._dataModel;
-                var trimText = aria.utils.String.trim(text);
+                var trimText = ariaUtilsString.trim(text);
 
                 if (text !== '' && text !== dataModel.text) {
                     dataModel.text = trimText;
@@ -125,19 +133,19 @@
              */
             removeValue : function (label) {
                 var report = new aria.widgets.controllers.reports.DropDownControllerReport();
-                var newSuggestions = aria.utils.Json.copy(this.selectedSuggestions, false);
+                var newSuggestions = ariaUtilsJson.copy(this.selectedSuggestions, false);
 
                 var indexToRemove = this._findSuggestion(newSuggestions, {
                     label : label
                 });
                 if (indexToRemove == -1) {
                     // try to find a free-text option
-                    indexToRemove = aria.utils.Array.indexOf(newSuggestions, label);
+                    indexToRemove = ariaUtilsArray.indexOf(newSuggestions, label);
                 }
                 if (indexToRemove > -1) {
                     report.removedSuggestion = newSuggestions[indexToRemove];
 
-                    aria.utils.Array.removeAt(newSuggestions, indexToRemove);
+                    ariaUtilsArray.removeAt(newSuggestions, indexToRemove);
                     this.selectedSuggestions = newSuggestions;
                 }
                 report.removedSuggestionIndex = indexToRemove;
@@ -169,8 +177,8 @@
              * @param {Array} values
              */
             checkExpandedValues : function (selectedValues) {
-                var selectedValuesCopy = aria.utils.Json.copy(selectedValues, false);
-                var selectedSuggestionsCopy = aria.utils.Json.copy(this.selectedSuggestions, false);
+                var selectedValuesCopy = ariaUtilsJson.copy(selectedValues, false);
+                var selectedSuggestionsCopy = ariaUtilsJson.copy(this.selectedSuggestions, false);
                 for (var i = 0, l = selectedSuggestionsCopy.length; i < l; i++) {
                     var curSelectedSuggestion = selectedSuggestionsCopy[i];
                     if (typeUtil.isObject(curSelectedSuggestion)) {
@@ -256,7 +264,7 @@
              * @return {Array}
              */
             _checkNewSuggestions : function (suggestionToBeAdded) {
-                var allSuggestions = aria.utils.Json.copy(this.selectedSuggestions, false);
+                var allSuggestions = ariaUtilsJson.copy(this.selectedSuggestions, false);
                 var res = [];
                 var maxOptions = this.maxOptions;
                 var length = suggestionToBeAdded.length;
@@ -334,7 +342,7 @@
                     this._resetFocus = suggestions.length > 0 || !(this.expandButton);
                     aria.templates.RefreshManager.stop();
                     // as item are changed, force datamodel to change to activate selection
-                    var jsonUtils = aria.utils.Json;
+                    var jsonUtils = ariaUtilsJson;
                     jsonUtils.setValue(dataModel, 'selectedIdx', -1);
 
                     // update datamodel through setValue to update the list as well
@@ -446,7 +454,7 @@
                 for (var k = 0, l = arrayOfSuggestions.length; k < l; k++) {
                     var currentSuggestion = arrayOfSuggestions[k];
                     if (!typeUtil.isString(currentSuggestion)
-                            && !aria.core.JsonValidator.check(currentSuggestion, beanName)) {
+                            && !ariaCoreJsonValidator.check(currentSuggestion, beanName)) {
                         return false;
                     }
                 }

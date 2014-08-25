@@ -12,14 +12,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaModulesRequestHandlerIRequestHandler = require("./IRequestHandler");
+var ariaModulesRequestHandlerRequestHandler = require("./RequestHandler");
+var ariaUtilsJson = require("../../utils/Json");
+
 
 /**
  * JSON handler, that handles JSON as well as a JavaScript object retrieved in responseJSON
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.modules.requestHandler.JSONRequestHandler",
-    $extends : "aria.modules.requestHandler.RequestHandler",
-    $implements : ["aria.modules.requestHandler.IRequestHandler"],
+    $extends : ariaModulesRequestHandlerRequestHandler,
+    $implements : [ariaModulesRequestHandlerIRequestHandler],
     $statics : {
         PARSING_ERROR : "Response text could not be evaluated as JSON."
     },
@@ -52,7 +57,7 @@ Aria.classDefinition({
             if (successResponse.responseJSON) {
                 res.response = successResponse.responseJSON;
             } else if (successResponse.responseText) {
-                res.response = aria.utils.Json.load(successResponse.responseText, this, this.PARSING_ERROR);
+                res.response = ariaUtilsJson.load(successResponse.responseText, this, this.PARSING_ERROR);
                 if (!res.response) {
                     res.error = true;
                 }

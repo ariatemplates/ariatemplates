@@ -12,6 +12,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+require("./CfgBeans");
+var ariaTemplatesDomElementWrapper = require("../templates/DomElementWrapper");
+var ariaUtilsType = require("../utils/Type");
+var ariaCoreJsonValidator = require("../core/JsonValidator");
+
 
 (function () {
     /**
@@ -61,10 +67,9 @@
     /**
      * Manages the creation and destruction of maps
      */
-    Aria.classDefinition({
+    module.exports = Aria.classDefinition({
         $classpath : "aria.map.MapManager",
         $singleton : true,
-        $dependencies : ["aria.map.CfgBeans", "aria.templates.DomElementWrapper", "aria.utils.Type"],
         $constructor : function () {
 
             /**
@@ -120,7 +125,7 @@
              * @param {aria.map.CfgBeans:CreateMapCfg} cfg
              */
             createMap : function (cfg) {
-                if (!aria.core.JsonValidator.validateCfg("aria.map.CfgBeans.CreateMapCfg", cfg)) {
+                if (!ariaCoreJsonValidator.validateCfg("aria.map.CfgBeans.CreateMapCfg", cfg)) {
                     return;
                 }
 
@@ -160,7 +165,7 @@
                 }
                 var dom = mapDoms[mapId];
                 if (dom) {
-                    wrapper = new aria.templates.DomElementWrapper(dom);
+                    wrapper = new ariaTemplatesDomElementWrapper(dom);
                     this._createdDomWrappers[mapId] = wrapper;
                     return wrapper;
                 }
@@ -216,7 +221,7 @@
                 if (providers[providerName]) {
                     this.$logError(this.DUPLICATED_PROVIDER, providerName);
                 } else {
-                    if (aria.utils.Type.isObject(provider)) {
+                    if (ariaUtilsType.isObject(provider)) {
                         if (this._isValidProvider(provider)) {
                             providerInstances[providerName] = provider;
                             providers[providerName] = provider;
@@ -305,7 +310,7 @@
             _setProviderInstance : function (args) {
                 var providerName = args.providerName;
                 var classRef = Aria.getClassRef(providers[providerName]);
-                var isSingleton = !(aria.utils.Type.isFunction(classRef));
+                var isSingleton = !(ariaUtilsType.isFunction(classRef));
                 var provInstance = (isSingleton) ? classRef : new classRef();
 
                 var valid = this._isValidProvider(provInstance);
@@ -336,7 +341,7 @@
             _isValidProvider : function (provider) {
                 var valid = true, methods = ["load", "getMap", "disposeMap"];
                 for (var i = 0; i < methods.length; i++) {
-                    valid = valid && provider[methods[i]] && aria.utils.Type.isFunction(provider[methods[i]]);
+                    valid = valid && provider[methods[i]] && ariaUtilsType.isFunction(provider[methods[i]]);
                 }
                 return valid;
             },

@@ -12,10 +12,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaTesterRunnerModuleControllerFlowInterface = require("./ModuleControllerFlowInterface");
+var ariaTesterRunnerBaseFlow = require("./BaseFlow");
 
-Aria.classDefinition({
+
+module.exports = Aria.classDefinition({
     $classpath : 'aria.tester.runner.ModuleControllerFlow',
-    $extends : 'aria.tester.runner.BaseFlow',
+    $extends : ariaTesterRunnerBaseFlow,
     $statics : {
         STATES : {
             INIT : "init",
@@ -30,7 +34,7 @@ Aria.classDefinition({
             REPORT : "report"
         }
     },
-    $implements : ['aria.tester.runner.ModuleControllerFlowInterface'],
+    $implements : [ariaTesterRunnerModuleControllerFlowInterface],
     $constructor : function () {
         this.$BaseFlow.constructor.call(this);
         /**

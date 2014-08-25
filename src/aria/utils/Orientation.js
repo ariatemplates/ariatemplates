@@ -12,10 +12,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaUtilsEvent = require("./Event");
 
-Aria.classDefinition({
+
+module.exports = Aria.classDefinition({
     $classpath : "aria.utils.Orientation",
-    $dependencies : ["aria.utils.Event"],
     $singleton : true,
     $events : {
         "change" : {
@@ -37,7 +39,7 @@ Aria.classDefinition({
             this.isPortrait = this.__isPortrait();
 
             // start listening native event orinetationchange.
-            aria.utils.Event.addListener(window, "orientationchange", {
+            ariaUtilsEvent.addListener(window, "orientationchange", {
                 fn : this._onOrientationChange,
                 scope : this
             });
@@ -45,7 +47,7 @@ Aria.classDefinition({
     },
 
     $destructor : function () {
-        aria.utils.Event.removeListener(Aria.$window, "orientationchange", {
+        ariaUtilsEvent.removeListener(Aria.$window, "orientationchange", {
             fn : this._onOrientationChange
         });
     },

@@ -12,11 +12,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+
 
 /**
  * Base class for widget libraries.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : 'aria.widgetLibs.WidgetLib',
     $statics : {
         UNKWOWN_WIDGET : "Unknown widget name in the library.",

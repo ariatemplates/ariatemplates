@@ -12,14 +12,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaUtilsIdManager = require("./IdManager");
+var ariaUtilsType = require("./Type");
+var ariaUtilsObject = require("./Object");
+var ariaCoreDownloadMgr = require("../core/DownloadMgr");
+
 
 /**
  * Utility to load external CSS files. Do NOT use it for loading CSS Templates
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.utils.CSSLoader",
     $singleton : true,
-    $dependencies : ["aria.utils.IdManager", "aria.utils.Type", "aria.utils.Object", "aria.core.DownloadMgr"],
     $statics : {
 
         /**
@@ -48,7 +53,7 @@ Aria.classDefinition({
          * @type aria.utils.IdManager
          * @private
          */
-        this._idManager = new aria.utils.IdManager(this.TAG_PREFIX);
+        this._idManager = new ariaUtilsIdManager(this.TAG_PREFIX);
 
     },
     $destructor : function () {
@@ -66,7 +71,7 @@ Aria.classDefinition({
          */
         add : function (sources, media) {
             media = media || this.DEFAULT_MEDIA;
-            if (aria.utils.Type.isString(sources)) {
+            if (ariaUtilsType.isString(sources)) {
                 sources = [sources];
             }
             var source, storeId, tagArray = [];
@@ -96,7 +101,7 @@ Aria.classDefinition({
          */
         remove : function (sources, media) {
             media = media || this.DEFAULT_MEDIA;
-            if (aria.utils.Type.isString(sources)) {
+            if (ariaUtilsType.isString(sources)) {
                 sources = [sources];
             }
             var source, storeId;
@@ -133,7 +138,7 @@ Aria.classDefinition({
          * Unload all the CSS previously added
          */
         removeAll : function () {
-            var storeIds = aria.utils.Object.keys(this._store);
+            var storeIds = ariaUtilsObject.keys(this._store);
             for (var i = 0, length = storeIds.length; i < length; i++) {
                 this._remove(storeIds[i], true);
             }
@@ -156,7 +161,7 @@ Aria.classDefinition({
             tag.type = "text/css";
             tag.media = media;
             tag.rel = "stylesheet";
-            tag.href = aria.core.DownloadMgr.resolveURL(source);
+            tag.href = ariaCoreDownloadMgr.resolveURL(source);
 
             head.appendChild(tag);
             tag = head.lastChild;

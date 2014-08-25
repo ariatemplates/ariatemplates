@@ -12,29 +12,46 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaCoreJsonValidator = require("../../core/JsonValidator");
+require("./GeneratorBeans");
+var ariaExtFilesgeneratorTplClass = require("./tpl/Class.tpl.txt");
+var ariaExtFilesgeneratorTplInterface = require("./tpl/Interface.tpl.txt");
+var ariaExtFilesgeneratorTplHtmlTemplate = require("./tpl/HtmlTemplate.tpl.txt");
+var ariaExtFilesgeneratorTplCssTemplate = require("./tpl/CssTemplate.tpl.txt");
+var ariaExtFilesgeneratorTplTemplateScript = require("./tpl/TemplateScript.tpl.txt");
+var ariaExtFilesgeneratorTplMacroLibrary = require("./tpl/MacroLibrary.tpl.txt");
+var ariaExtFilesgeneratorTplCssLibrary = require("./tpl/CssLibrary.tpl.txt");
+var ariaExtFilesgeneratorTplFlowController = require("./tpl/FlowController.tpl.txt");
+var ariaExtFilesgeneratorTplModuleController = require("./tpl/ModuleController.tpl.txt");
+var ariaExtFilesgeneratorTplModuleControllerInterface = require("./tpl/ModuleControllerInterface.tpl.txt");
+var ariaExtFilesgeneratorTplFlowControllerInterface = require("./tpl/FlowControllerInterface.tpl.txt");
+var ariaExtFilesgeneratorTplBootstrap = require("./tpl/Bootstrap.tpl.txt");
+var ariaCoreJsObject = require("../../core/JsObject");
+var ariaUtilsJson = require("../../utils/Json");
+
 
 /**
  * File skeleton generator utility class to be used to get the text content of any type of Aria Templates file. A class,
  * a module controller, a template, a template script, a CSS template, a flow, an interface, ...
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.ext.filesgenerator.Generator",
-    $extends : "aria.core.JsObject",
+    $extends : ariaCoreJsObject,
     $singleton : true,
-    $dependencies : ["aria.core.JsonValidator", "aria.ext.filesgenerator.GeneratorBeans"],
     $texts : {
-        classTxtTplHandle : 'aria.ext.filesgenerator.tpl.Class',
-        interfaceTxtTplHandle : 'aria.ext.filesgenerator.tpl.Interface',
-        htmlTemplateTxtTplHandle : 'aria.ext.filesgenerator.tpl.HtmlTemplate',
-        cssTemplateTxtTplHandle : 'aria.ext.filesgenerator.tpl.CssTemplate',
-        templateScriptTxtTplHandle : 'aria.ext.filesgenerator.tpl.TemplateScript',
-        macroLibraryTxtTplHandle : 'aria.ext.filesgenerator.tpl.MacroLibrary',
-        cssLibraryTxtTplHandle : 'aria.ext.filesgenerator.tpl.CssLibrary',
-        flowControllerTxtTplHandle : 'aria.ext.filesgenerator.tpl.FlowController',
-        moduleControllerTxtTplHandle : 'aria.ext.filesgenerator.tpl.ModuleController',
-        moduleControllerInterfaceTxtTplHandle : 'aria.ext.filesgenerator.tpl.ModuleControllerInterface',
-        flowControllerInterfaceTxtTplHandle : 'aria.ext.filesgenerator.tpl.FlowControllerInterface',
-        bootstrapTxtTplHandle : 'aria.ext.filesgenerator.tpl.Bootstrap'
+        classTxtTplHandle : ariaExtFilesgeneratorTplClass,
+        interfaceTxtTplHandle : ariaExtFilesgeneratorTplInterface,
+        htmlTemplateTxtTplHandle : ariaExtFilesgeneratorTplHtmlTemplate,
+        cssTemplateTxtTplHandle : ariaExtFilesgeneratorTplCssTemplate,
+        templateScriptTxtTplHandle : ariaExtFilesgeneratorTplTemplateScript,
+        macroLibraryTxtTplHandle : ariaExtFilesgeneratorTplMacroLibrary,
+        cssLibraryTxtTplHandle : ariaExtFilesgeneratorTplCssLibrary,
+        flowControllerTxtTplHandle : ariaExtFilesgeneratorTplFlowController,
+        moduleControllerTxtTplHandle : ariaExtFilesgeneratorTplModuleController,
+        moduleControllerInterfaceTxtTplHandle : ariaExtFilesgeneratorTplModuleControllerInterface,
+        flowControllerInterfaceTxtTplHandle : ariaExtFilesgeneratorTplFlowControllerInterface,
+        bootstrapTxtTplHandle : ariaExtFilesgeneratorTplBootstrap
     },
     $statics : {
         TYPE_CLASS : "class",
@@ -191,7 +208,7 @@ Aria.classDefinition({
          * @private
          */
         __isAllowedType : function (type) {
-            return aria.utils.Json.getValue(this, type);
+            return ariaUtilsJson.getValue(this, type);
         },
 
         /**
@@ -209,7 +226,7 @@ Aria.classDefinition({
             if (!cfg) {
                 cfg = {};
             }
-            aria.core.JsonValidator.normalize({
+            ariaCoreJsonValidator.normalize({
                 json : cfg,
                 beanName : beanName
             });

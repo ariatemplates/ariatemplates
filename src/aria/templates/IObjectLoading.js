@@ -12,12 +12,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+
 
 /**
  * Interface for an object which raises an event when an object is loaded.
  * @class aria.templates.IObjectLoading
  */
-Aria.interfaceDefinition({
+module.exports = Aria.interfaceDefinition({
     $classpath : 'aria.templates.IObjectLoading',
     $events : {
         "objectLoaded" : {

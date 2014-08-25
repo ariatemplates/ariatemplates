@@ -12,16 +12,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaWidgetsFormAutoCompleteBean = require("../../widgets/form/AutoCompleteBean");
+var ariaCoreJsonTypes = require("../../core/JsonTypes");
+
 /**
  * Definition of the suggestions used in the LC resource handler
  * @class aria.resources.handlers.LCResourcesHandlerBean
  */
-Aria.beanDefinitions({
+module.exports = Aria.beanDefinitions({
     $package : "aria.resources.handlers.LCResourcesHandlerBean",
     $description : "Definition of the suggestions used in the LC resource handler",
     $namespaces : {
-        "base" : "aria.widgets.form.AutoCompleteBean",
-        "json" : "aria.core.JsonTypes"
+        "base" : ariaWidgetsFormAutoCompleteBean,
+        "json" : ariaCoreJsonTypes
     },
     $beans : {
         "Suggestion" : {

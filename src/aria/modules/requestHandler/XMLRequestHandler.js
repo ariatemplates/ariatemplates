@@ -12,15 +12,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaModulesRequestHandlerIRequestHandler = require("./IRequestHandler");
+var ariaModulesRequestHandlerRequestHandler = require("./RequestHandler");
+
 
 /**
  * Base class for XML request handler, that handles wrong MIME types
  * @class aria.modules.test.XMLRequestHandler
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.modules.requestHandler.XMLRequestHandler",
-    $extends : "aria.modules.requestHandler.RequestHandler",
-    $implements : ["aria.modules.requestHandler.IRequestHandler"],
+    $extends : ariaModulesRequestHandlerRequestHandler,
+    $implements : [ariaModulesRequestHandlerIRequestHandler],
     $statics : {
         MIMETYPE_ERROR : "Response type is badly configured, it should have returned a xml response."
     },

@@ -12,13 +12,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaCoreJsonValidator = require("../core/JsonValidator");
+require("./FunctionWriter");
+
 
 /**
  * Utility to create inheritance normalization functions.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : 'aria.utils.InheritanceNormalization',
-    $dependencies : ['aria.core.JsonValidator', 'aria.utils.FunctionWriter'],
     $singleton : true,
     $prototype : {
 
@@ -53,7 +56,7 @@ Aria.classDefinition({
             var out = writer.out;
             var varToNormalize = args.varToNormalize;
             var parentVars = args.parentVars;
-            var beanDef = args.beanDef || aria.core.JsonValidator.getBean(args.beanName);
+            var beanDef = args.beanDef || ariaCoreJsonValidator.getBean(args.beanName);
             var typeName = beanDef['aria:baseType'].typeName;
             var isObject = (typeName == "Object");
 

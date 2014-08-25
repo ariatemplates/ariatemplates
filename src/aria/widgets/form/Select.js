@@ -12,17 +12,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaWidgetsFormDropDownListTrait = require("./DropDownListTrait");
+var ariaUtilsString = require("../../utils/String");
+var ariaWidgetsControllersSelectController = require("../controllers/SelectController");
+var ariaUtilsDom = require("../../utils/Dom");
+var ariaWidgetsFormSelectStyle = require("./SelectStyle.tpl.css");
+var ariaWidgetsFormListListStyle = require("./list/ListStyle.tpl.css");
+var ariaWidgetsContainerDivStyle = require("../container/DivStyle.tpl.css");
+var ariaWidgetsFormDropDownInput = require("./DropDownInput");
+var ariaCoreBrowser = require("../../core/Browser");
+
 
 /**
  * Select widget allows the use of a simple HTML select element or an AT skin version. Class for both versions of Select -
  * simpleHtml and AT skin.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.widgets.form.Select",
-    $extends : "aria.widgets.form.DropDownInput",
-    $dependencies : ["aria.widgets.form.DropDownListTrait", "aria.utils.String",
-            "aria.widgets.controllers.SelectController", "aria.utils.Dom"],
-    $css : ["aria.widgets.form.SelectStyle", "aria.widgets.form.list.ListStyle", "aria.widgets.container.DivStyle"],
+    $extends : ariaWidgetsFormDropDownInput,
+    $css : [ariaWidgetsFormSelectStyle, ariaWidgetsFormListListStyle, ariaWidgetsContainerDivStyle],
     /**
      * @param {aria.widgets.CfgBeans:SelectCfg} cfg the widget configuration
      * @param {aria.templates.TemplateCtxt} ctxt template context
@@ -34,7 +43,7 @@ Aria.classDefinition({
         var skinObj = this._skinObj;
         if (!skinObj.simpleHTML) {
             // the controller is needed only for the skin version
-            var controller = new aria.widgets.controllers.SelectController();
+            var controller = new ariaWidgetsControllersSelectController();
             this.controller = controller;
             controller.setListOptions(cfg.options);
         } else {
@@ -84,7 +93,7 @@ Aria.classDefinition({
          * @param {Object} p the prototype object being built
          */
         $init : function (p) {
-            var src = aria.widgets.form.DropDownListTrait.prototype;
+            var src = ariaWidgetsFormDropDownListTrait.prototype;
             for (var key in src) {
                 if (src.hasOwnProperty(key) && !p.hasOwnProperty(key)) {
                     // copy methods which are not already on this object (this avoids copying $classpath and
@@ -125,7 +134,7 @@ Aria.classDefinition({
                 var stopValueProp = options ? options.stopValueProp : false;
                 if (text != null) {
                     var domElt = this.getSelectField();
-                    domElt.innerHTML = aria.utils.String.escapeHTML(text) + '&nbsp;';
+                    domElt.innerHTML = ariaUtilsString.escapeHTML(text) + '&nbsp;';
                     // the &nbsp; at the end of the label is useful to make sure there is always something in the line
                     // so that the height does not change
                 }
@@ -247,7 +256,7 @@ Aria.classDefinition({
         _dom_onmousedown : function (evt) {
             var target = evt.target;
             var inputDomElt = this._getInputMarkupDomElt();
-            if (this.controller && aria.utils.Dom.isAncestor(target, inputDomElt)) {
+            if (this.controller && ariaUtilsDom.isAncestor(target, inputDomElt)) {
                 this._toggleDropdown();
                 evt.preventDefault(); // prevent the selection of the text when clicking
             }
@@ -350,7 +359,7 @@ Aria.classDefinition({
             var disabledOrReadonly = cfg.disabled || cfg.readOnly;
             var tabIndex = disabledOrReadonly ? '' : ' tabindex="' + this._calculateTabIndex() + '"';
             if (this._skinObj.simpleHTML) {
-                var stringUtils = aria.utils.String;
+                var stringUtils = ariaUtilsString;
                 var options = cfg.options;
                 var selectedValue = cfg.value;
                 /*
@@ -380,7 +389,7 @@ Aria.classDefinition({
                 // of the fieldset:
                 out.write(['<span', Aria.testMode ? ' id="' + this._domId + '_input"' : '', ' class="xSelect" style="',
                         (width > 0) ? 'width:' + width + 'px;' : '', '"', tabIndex, ' _ariaInput="1">',
-                        aria.utils.String.escapeHTML(text), '&nbsp;</span>'].join(''));
+                        ariaUtilsString.escapeHTML(text), '&nbsp;</span>'].join(''));
                 // the &nbsp; at the end of the label is useful to make sure there is always something in the line so
                 // that the height does not change
             }
@@ -433,7 +442,7 @@ Aria.classDefinition({
                 } else {
                     // markup for the options
                     var optionsMarkup = [];
-                    var stringUtils = aria.utils.String;
+                    var stringUtils = ariaUtilsString;
                     for (var i = 0, l = newValue.length; i < l; i++) {
                         // string cast, otherwise encoding will fail
                         var optValue = '' + newValue[i].value;
@@ -443,7 +452,7 @@ Aria.classDefinition({
                     var selectField = this.getSelectField();
                     // update the options list
                     var optionsListString = optionsMarkup.join('');
-                    if (aria.core.Browser.isIE9 || aria.core.Browser.isIE8 || aria.core.Browser.isIE7) {
+                    if (ariaCoreBrowser.isIE9 || ariaCoreBrowser.isIE8 || ariaCoreBrowser.isIE7) {
                         // innerHTML replacing in IE truncates the first element and breaks the whole select...
                         selectField.innerHTML = '';
                         var helperDiv = Aria.$window.document.createElement('div');

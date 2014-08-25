@@ -12,15 +12,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaUtilsDom = require("../../utils/Dom");
+var ariaUtilsType = require("../../utils/Type");
+var ariaWidgetsFramesFrame = require("./Frame");
+
 
 /**
  * A simple frame is a span with a configurable border width and color.
  * @class aria.widgets.frames.SimpleFrame
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : 'aria.widgets.frames.SimpleFrame',
-    $extends : 'aria.widgets.frames.Frame',
-    $dependencies : ['aria.utils.Dom', 'aria.utils.Type'],
+    $extends : ariaWidgetsFramesFrame,
     $constructor : function (cfg) {
         this.$Frame.constructor.call(this, cfg);
         var state = this._cfg.stateObject;
@@ -97,7 +101,7 @@ Aria.classDefinition({
                     + sizeInfo.className + '">');
             if (verticalAlignApplied) {
                 var innerHeight = state.innerHeight;
-                if (aria.utils.Type.isNumber(innerHeight)) {
+                if (ariaUtilsType.isNumber(innerHeight)) {
                     innerHeight += "px";
                 }
 
@@ -133,7 +137,7 @@ Aria.classDefinition({
         linkToDom : function (domElt) {
             this.$Frame.linkToDom.call(this, domElt);
             this._childRootElt = this._verticalAlignApplied ?
-                aria.utils.Dom.getDomElementChild(domElt, 0) :
+                ariaUtilsDom.getDomElementChild(domElt, 0) :
                 domElt;
         },
 

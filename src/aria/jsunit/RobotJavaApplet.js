@@ -12,6 +12,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaUtilsDom = require("../utils/Dom");
+var ariaUtilsAriaWindow = require("../utils/AriaWindow");
+var ariaUtilsStringCallback = require("../utils/StringCallback");
+var ariaJsunitIRobot = require("./IRobot");
+var ariaCoreDownloadMgr = require("../core/DownloadMgr");
+var ariaCoreTimer = require("../core/Timer");
+
 
 /**
  * This class is still experimental, its interface may change without notice. Implementation of the aria.jsunit.IRobot
@@ -19,22 +27,21 @@
  * internally when testing the framework to generate low-level mouse and keyboard events.
  * @private
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : 'aria.jsunit.RobotJavaApplet',
-    $dependencies : ['aria.utils.Dom', 'aria.utils.AriaWindow', 'aria.utils.StringCallback'],
-    $implements : ['aria.jsunit.IRobot'],
+    $implements : [ariaJsunitIRobot],
     $singleton : true,
     $constructor : function () {
         this._robotInitialized = false;
         this._initStringCb = null;
-        aria.utils.AriaWindow.$on({
+        ariaUtilsAriaWindow.$on({
             'unloadWindow' : this._reset,
             scope : this
         });
     },
     $destructor : function () {
         this._reset();
-        aria.utils.AriaWindow.$unregisterListeners(this);
+        ariaUtilsAriaWindow.$unregisterListeners(this);
     },
     $events : {
         "appletInitialized" : "Raised when the applet is initialized."
@@ -256,7 +263,7 @@ Aria.classDefinition({
         initRobot : function (cb) {
             if (this.applet == null) {
                 var document = Aria.$window.document;
-                var jnlp = aria.core.DownloadMgr.resolveURL('aria/jsunit/robot-applet.jnlp');
+                var jnlp = ariaCoreDownloadMgr.resolveURL('aria/jsunit/robot-applet.jnlp');
 
                 // Resolve the url depending on the base tag
                 var baseTags = document.getElementsByTagName('head')[0].getElementsByTagName("base");
@@ -281,7 +288,7 @@ Aria.classDefinition({
                 var initCallbackParam = document.createElement("param");
                 initCallbackParam.setAttribute("name", "initCallback");
                 if (!this._initStringCb) {
-                    this._initStringCb = aria.utils.StringCallback.createStringCallback({
+                    this._initStringCb = ariaUtilsStringCallback.createStringCallback({
                         scope : this,
                         fn : this._callCallback,
                         args : this._raiseInitEvent,
@@ -297,7 +304,7 @@ Aria.classDefinition({
 
                 // Safari (and perhaps other browsers) does not support loading JNLP files, so in that case, we use the
                 // old mechanism. Note that this mechanism does not allow to use Sikuli.
-                var jar = aria.core.DownloadMgr.resolveURL('aria/jsunit/robot-applet.jar', true);
+                var jar = ariaCoreDownloadMgr.resolveURL('aria/jsunit/robot-applet.jar', true);
                 applet.setAttribute("archive", jar);
                 applet.setAttribute("code", "com.amadeus.ui.aria.robotapplet.RobotApplet");
 
@@ -305,7 +312,7 @@ Aria.classDefinition({
                 document.body.appendChild(applet);
 
                 this.applet = applet;
-                aria.utils.AriaWindow.attachWindow();
+                ariaUtilsAriaWindow.attachWindow();
             }
             if (cb) {
                 if (this._robotInitialized) {
@@ -335,7 +342,7 @@ Aria.classDefinition({
                     this._robotInitialized = false;
                 }
                 this.applet = null;
-                aria.utils.AriaWindow.detachWindow();
+                ariaUtilsAriaWindow.detachWindow();
             }
         },
 
@@ -343,7 +350,7 @@ Aria.classDefinition({
             // keep the applet at position 0,0 (even when the window is scrolled)
             var applet = this.applet;
             // var document = applet.ownerDocument;
-            var scrollPos = aria.utils.Dom._getDocumentScroll();
+            var scrollPos = ariaUtilsDom._getDocumentScroll();
             applet.style.left = scrollPos.scrollLeft + "px";
             applet.style.top = scrollPos.scrollTop + "px";
             // after updating the applet position, it is needed to wait a bit,
@@ -358,7 +365,7 @@ Aria.classDefinition({
         },
 
         mouseMove : function (position, cb) {
-            var viewport = aria.utils.Dom._getViewportSize();
+            var viewport = ariaUtilsDom._getViewportSize();
             if (position.x < 0 || position.y < 0 || position.x > viewport.width || position.y > viewport.height) {
                 // FIXME: log error correctly
                 this.$logWarn("MouseMove position outside of the viewport.");
@@ -380,7 +387,7 @@ Aria.classDefinition({
         },
 
         smoothMouseMove : function (from, to, duration, cb) {
-            var viewport = aria.utils.Dom._getViewportSize();
+            var viewport = ariaUtilsDom._getViewportSize();
             if (from.x < 0 || from.y < 0 || from.x > viewport.width || from.y > viewport.height || to.x < 0 || to.y < 0
                     || to.x > viewport.width || to.y > viewport.height) {
                 // FIXME: log error correctly
@@ -401,7 +408,7 @@ Aria.classDefinition({
         _smoothMouseMoveCb : function (unused, args) {
             var from = args.from;
             var to = args.to;
-            this.applet.smoothMouseMove(from.x, from.y, to.x, to.y, args.duration, aria.utils.StringCallback.createStringCallback({
+            this.applet.smoothMouseMove(from.x, from.y, to.x, to.y, args.duration, ariaUtilsStringCallback.createStringCallback({
                 fn : this._callCallback,
                 scope : this,
                 args : args.cb,
@@ -435,7 +442,7 @@ Aria.classDefinition({
         },
 
         screenCapture : function (geometry, imageName, cb) {
-            var viewport = aria.utils.Dom._getViewportSize();
+            var viewport = ariaUtilsDom._getViewportSize();
             if (geometry.x < 0 || geometry.y < 0 || geometry.width < 0 || geometry.height < 0
                     || geometry.x + geometry.width > viewport.width || geometry.y + geometry.height > viewport.height) {
                 // FIXME: log error correctly
@@ -471,7 +478,7 @@ Aria.classDefinition({
         },
 
         _callCallback : function (cb) {
-            aria.core.Timer.addCallback({
+            ariaCoreTimer.addCallback({
                 fn : this.$callback,
                 scope : this,
                 args : cb,

@@ -12,13 +12,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+
 
 /**
  * Singleton used as an event bus between multiple instances of Storage classes. This class raises events trigger by
  * instances on the same page or on different pages accessing the same storage location (like in a different browser's
  * tab)
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.storage.EventBus",
     $singleton : true,
     $events : {

@@ -12,15 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaWidgetsFormInputValidationHandler = require("./form/InputValidationHandler");
+
 
 /**
  * WidgetTrait is a class to share code between input widgets and action widgets, although this can be extended to
  * include other widget types in the future. The purpose of this class is not to be created directly, but to allow its
  * prototype to be imported.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.widgets.WidgetTrait",
-    $dependencies : ["aria.widgets.form.InputValidationHandler"],
     $constructor : function () {
         // The purpose of this class is to provide a prototype to be imported, not to be created directly.
         this.$assert(11, false);
@@ -33,7 +35,7 @@ Aria.classDefinition({
         _validationPopupShow : function () {
             // check validation popup isn't already displayed
             if (!this._onValidatePopup) {
-                this._onValidatePopup = new aria.widgets.form.InputValidationHandler(this);
+                this._onValidatePopup = new ariaWidgetsFormInputValidationHandler(this);
             }
             this._onValidatePopup.show();
         },

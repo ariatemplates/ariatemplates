@@ -12,6 +12,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../../Aria");
+require("./RequestHandlerCfgBeans");
+var ariaCoreEnvironmentEnvironmentBase = require("../../../core/environment/EnvironmentBase");
+var ariaUtilsJson = require("../../../utils/Json");
+
 
 /**
  * Public API for retrieving, applying application variables.
@@ -19,11 +24,10 @@
  * @extends aria.core.environment.EnvironmentBase
  * @singleton
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.modules.requestHandler.environment.RequestHandler",
-    $dependencies : ["aria.modules.requestHandler.environment.RequestHandlerCfgBeans"],
     $singleton : true,
-    $extends : "aria.core.environment.EnvironmentBase",
+    $extends : ariaCoreEnvironmentEnvironmentBase,
     $prototype : {
         /**
          * Classpath of the bean which allows to validate the part of the environment managed by this class.
@@ -38,7 +42,7 @@ Aria.classDefinition({
          * @return {aria.modules.requestHandler.environment.RequestHandlerCfgBeans:AppCfg} The classpath configuration
          */
         getRequestHandlerCfg : function () {
-            return aria.utils.Json.copy(this.checkApplicationSettings("requestHandler"));
+            return ariaUtilsJson.copy(this.checkApplicationSettings("requestHandler"));
         },
 
         /**

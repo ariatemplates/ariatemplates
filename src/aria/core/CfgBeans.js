@@ -12,16 +12,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaCoreJsonTypes = require("./JsonTypes");
+
 
 /**
  * Beans to describe Aria Templates base structures (like parameters accepted for interface definitions). To be
  * completed with, maybe, class definitions, resource definitions...
  */
-Aria.beanDefinitions({
+module.exports = Aria.beanDefinitions({
     $package : "aria.core.CfgBeans",
     $description : "Definition of Aria Templates base structures.",
     $namespaces : {
-        "json" : "aria.core.JsonTypes"
+        "json" : ariaCoreJsonTypes
     },
     $beans : {
         "ClassDefinitionCfg" : {

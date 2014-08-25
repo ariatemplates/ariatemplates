@@ -12,14 +12,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaTouchGesture = require("./Gesture");
+var ariaCoreTimer = require("../core/Timer");
+
 
 /**
  * Contains delegated handler for a long press event.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $singleton : true,
     $classpath : "aria.touch.LongPress",
-    $extends : "aria.touch.Gesture",
+    $extends : ariaTouchGesture,
     $statics : {
         /**
          * The move tolerance to validate the gesture.
@@ -91,7 +95,7 @@ Aria.classDefinition({
         _longPressStart : function (event) {
             var status = this._gestureStart(event);
             if (status != null) {
-                this.timerId = aria.core.Timer.addCallback({
+                this.timerId = ariaCoreTimer.addCallback({
                     fn : this._longPressFinalize,
                     scope : this,
                     delay : this.PRESS_DURATION,
@@ -132,7 +136,7 @@ Aria.classDefinition({
          */
         _longPressCancel : function (event) {
             if (this.timerId) {
-                aria.core.Timer.cancelCallback(this.timerId);
+                ariaCoreTimer.cancelCallback(this.timerId);
                 this.timerId = null;
             }
             return this._gestureCancel(event);
@@ -145,7 +149,7 @@ Aria.classDefinition({
          */
         _longPressFinalize : function (event) {
             if (this.timerId) {
-                aria.core.Timer.cancelCallback(this.timerId);
+                ariaCoreTimer.cancelCallback(this.timerId);
                 this.timerId = null;
             }
             this._gestureEnd(event);

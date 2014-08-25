@@ -12,12 +12,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+
 
 /**
  * TODOC
  * @class aria.widgets.calendar.CalendarTemplateScript
  */
-Aria.tplScriptDefinition({
+module.exports = Aria.tplScriptDefinition({
     $classpath : 'aria.widgets.calendar.CalendarTemplateScript',
     $prototype : {
         onModuleEvent : function (evt) {

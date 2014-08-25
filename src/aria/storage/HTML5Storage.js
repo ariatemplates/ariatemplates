@@ -12,16 +12,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaUtilsEvent = require("../utils/Event");
+var ariaStorageAbstractStorage = require("./AbstractStorage");
+var ariaCoreBrowser = require("../core/Browser");
+
 
 /**
  * Abstract class that defines the API to interact with HTML5 DOM storage mechanism like localStorage and
  * sessionStorage. On top of the standard functionalities it also provides an event mechanism across instances, while in
  * the standard API events are not raised in the page that is currently modifying the storage location.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.storage.HTML5Storage",
-    $dependencies : ["aria.utils.Event"],
-    $extends : "aria.storage.AbstractStorage",
+    $extends : ariaStorageAbstractStorage,
     $statics : {
         UNAVAILABLE : "%1 not supported by the browser."
     },
@@ -56,7 +60,7 @@ Aria.classDefinition({
 
         if (this.storage) {
             // listen to events raised by instances in a different window but the same storage location
-            aria.utils.Event.addListener(Aria.$window, "storage", this._browserEventCb);
+            ariaUtilsEvent.addListener(Aria.$window, "storage", this._browserEventCb);
         } else if (throwIfMissing !== false) {
             // This might have been created by AbstractStorage
             if (this._disposeSerializer && this.serializer) {
@@ -68,7 +72,7 @@ Aria.classDefinition({
         }
     },
     $destructor : function () {
-        aria.utils.Event.removeListener(Aria.$window, "storage", this._browserEventCb);
+        ariaUtilsEvent.removeListener(Aria.$window, "storage", this._browserEventCb);
         this._browserEventCb = null;
         this.__target = null;
 
@@ -149,7 +153,7 @@ Aria.classDefinition({
          * @override
          */
         $on : function (event) {
-            if (aria.core.Browser.isIE8) {
+            if (ariaCoreBrowser.isIE8) {
                 this.$logWarn(this.UNAVAILABLE, "change event");
             }
 

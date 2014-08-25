@@ -12,16 +12,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaUtilsFunction = require("./Function");
+var ariaUtilsFireDomEvent = require("./FireDomEvent");
+var ariaUtilsDom = require("./Dom");
+var ariaPopupsPopup = require("../popups/Popup");
+var ariaUtilsString = require("./String");
+var ariaCoreBrowser = require("../core/Browser");
+var ariaCoreTimer = require("../core/Timer");
+
 
 /**
  * Constrain a given text element in the DOM to a specific width. This method only works on leaf elements (final dom
  * elements containing nothing but text). It will force the text to display on a single line only and cut it if it is
  * longer than the specified width.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : 'aria.utils.Ellipsis',
-    $dependencies : ['aria.utils.Function', 'aria.utils.FireDomEvent', 'aria.utils.Dom', 'aria.popups.Popup',
-            'aria.utils.String'],
 
     /**
      * Create ellipsis
@@ -83,7 +90,7 @@ Aria.classDefinition({
                 textSpan.style.verticalAlign = "bottom";
 
                 // ie 6 isn't calculating the width properly. As such it can cut off a bit of the sort indicator icon
-                if (aria.core.Browser.isIE6) {
+                if (ariaCoreBrowser.isIE6) {
                     width = width - 4;
                 }
 
@@ -124,7 +131,7 @@ Aria.classDefinition({
                             numberOfCharToBeDisplayed++;
                         }
 
-                        tmpContainerElement.innerHTML = aria.utils.String.escapeForHTML(this._getCharacters(numberOfCharToBeDisplayed));
+                        tmpContainerElement.innerHTML = ariaUtilsString.escapeForHTML(this._getCharacters(numberOfCharToBeDisplayed));
 
                         width = tmpContainerElement.offsetWidth;
 
@@ -147,7 +154,7 @@ Aria.classDefinition({
                     tmpContainerElement.parentNode.removeChild(tmpContainerElement);
                     tmpContainerElement = null;
 
-                    textSpan.innerHTML = aria.utils.String.escapeForHTML(this.truncatedText);
+                    textSpan.innerHTML = ariaUtilsString.escapeForHTML(this.truncatedText);
                 } else {
                     if (width < 0) {
                         // this check is important, otherwise IE can raise an
@@ -194,7 +201,7 @@ Aria.classDefinition({
         this.ellipsesNeeded = null;
 
         if (this.callbackID) {
-            aria.core.Timer.cancelCallback(this.callbackID);
+            ariaCoreTimer.cancelCallback(this.callbackID);
         }
         this.callbackID = null;
 
@@ -262,13 +269,13 @@ Aria.classDefinition({
         displayFullText : function (offset) {
 
             if (this.callbackID) {
-                aria.core.Timer.cancelCallback(this.callbackID);
+                ariaCoreTimer.cancelCallback(this.callbackID);
                 this.callbackID = null;
             }
 
             if (this._popup == null && this.ellipsesNeeded === true) {
 
-                this.callbackID = aria.core.Timer.addCallback({
+                this.callbackID = ariaCoreTimer.addCallback({
                     fn : this._showPopup,
                     scope : this,
                     delay : 500,
@@ -288,7 +295,7 @@ Aria.classDefinition({
                 scope : this
             });
 
-            var popup = new aria.popups.Popup();
+            var popup = new ariaPopupsPopup();
             this._popup = popup;
 
             popup.$on({
@@ -310,7 +317,7 @@ Aria.classDefinition({
                 }
             });
 
-            popup.domElement.firstChild.onclick = aria.utils.Function.bind(this._popup_onmouseclick, this);
+            popup.domElement.firstChild.onclick = ariaUtilsFunction.bind(this._popup_onmouseclick, this);
 
             this.callbackID = null;
         },
@@ -320,7 +327,7 @@ Aria.classDefinition({
          * @protected
          */
         _popup_onmouseclick : function () {
-            aria.utils.FireDomEvent.fireEvent('click', this.ellipsisElement, {});
+            ariaUtilsFireDomEvent.fireEvent('click', this.ellipsisElement, {});
         },
 
         /**
@@ -331,10 +338,10 @@ Aria.classDefinition({
         _hideFullText : function (relatedTarget) {
 
             if (this.callbackID) {
-                aria.core.Timer.cancelCallback(this.callbackID);
+                ariaCoreTimer.cancelCallback(this.callbackID);
             }
             if (this._popup != null) {
-                if (!aria.utils.Dom.isAncestor(relatedTarget, this._popup.domElement)) {
+                if (!ariaUtilsDom.isAncestor(relatedTarget, this._popup.domElement)) {
 
                     if (this._popup) {
                         this._popup.closeOnMouseOut();

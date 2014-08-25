@@ -12,14 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaUtilsArray = require("../../utils/Array");
+var ariaUtilsPath = require("../../utils/Path");
+
 
 /**
  * Generic utilities needed across different classes in the page engine
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.pageEngine.utils.PageEngineUtils",
     $singleton : true,
-    $dependencies : ["aria.utils.Array", "aria.utils.Path"],
     $prototype : {
 
         /**
@@ -28,7 +31,7 @@ Aria.classDefinition({
          * @param {Array} container
          */
         addIfMissing : function (item, container) {
-            if (item && !aria.utils.Array.contains(container, item)) {
+            if (item && !ariaUtilsArray.contains(container, item)) {
                 container.push(item);
             }
         },
@@ -85,7 +88,7 @@ Aria.classDefinition({
         resolvePath : function (path, inside) {
             var output;
             try {
-                output = aria.utils.Path.resolve(path, inside);
+                output = ariaUtilsPath.resolve(path, inside);
             } catch (ex) {
                 output = undefined;
             }

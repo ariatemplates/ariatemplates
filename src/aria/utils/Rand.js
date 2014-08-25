@@ -12,12 +12,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+
 
 /**
  * Pseudo random number generator.
  * Generates random numbers from a seed using a linear congruential generator.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.utils.Rand",
     $singleton : true,
     $constructor : function (seed) {

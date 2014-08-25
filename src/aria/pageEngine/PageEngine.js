@@ -12,18 +12,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaEmbedIContentProvider = require("../embed/IContentProvider");
+var ariaPageEnginePageEngineInterface = require("./PageEngineInterface");
+require("./CfgBeans");
+require("./SiteRootModule");
+var ariaTemplatesModuleCtrlFactory = require("../templates/ModuleCtrlFactory");
+var ariaCoreJsonValidator = require("../core/JsonValidator");
+var ariaPageEngineUtilsSiteConfigHelper = require("./utils/SiteConfigHelper");
+var ariaPageEngineUtilsPageConfigHelper = require("./utils/PageConfigHelper");
+var ariaEmbedPlaceholderManager = require("../embed/PlaceholderManager");
+var ariaUtilsType = require("../utils/Type");
+require("../utils/String");
+var ariaPageEngineUtilsPageEngineUtils = require("./utils/PageEngineUtils");
+var ariaUtilsCSSLoader = require("../utils/CSSLoader");
+var ariaUtilsJson = require("../utils/Json");
+var ariaCoreBrowser = require("../core/Browser");
+var ariaUtilsArray = require("../utils/Array");
+var ariaCoreTimer = require("../core/Timer");
+
 
 /**
  * Page engine bootstrap singleton to be used to start the site given a configuration file
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.pageEngine.PageEngine",
-    $implements : ["aria.embed.IContentProvider", "aria.pageEngine.PageEngineInterface"],
-    $dependencies : ["aria.pageEngine.CfgBeans", "aria.pageEngine.SiteRootModule", "aria.templates.ModuleCtrlFactory",
-            "aria.core.JsonValidator", "aria.pageEngine.utils.SiteConfigHelper",
-            "aria.pageEngine.utils.PageConfigHelper", "aria.embed.PlaceholderManager", "aria.utils.Type",
-            "aria.utils.String", "aria.pageEngine.utils.PageEngineUtils", "aria.utils.CSSLoader", "aria.utils.Json",
-            "aria.core.Browser"],
+    $implements : [ariaEmbedIContentProvider, ariaPageEnginePageEngineInterface],
     $constructor : function () {
         /**
          * Start configuration
@@ -46,7 +60,7 @@ Aria.classDefinition({
          */
         this._navigationManager = null;
 
-        var browser = aria.core.Browser;
+        var browser = ariaCoreBrowser;
 
         /**
          * Whether animations are compatible with the browser
@@ -116,7 +130,7 @@ Aria.classDefinition({
          * @type aria.pageEngine.utils.PageEngineUtils
          * @protected
          */
-        this._utils = aria.pageEngine.utils.PageEngineUtils;
+        this._utils = ariaPageEngineUtilsPageEngineUtils;
 
         /**
          * Public interface that is available to templates
@@ -187,7 +201,7 @@ Aria.classDefinition({
         };
     },
     $destructor : function () {
-        aria.embed.PlaceholderManager.unregister(this);
+        ariaEmbedPlaceholderManager.unregister(this);
         if (this._navigationManager) {
             this._navigationManager.$dispose();
         }
@@ -203,7 +217,7 @@ Aria.classDefinition({
             this._secondDiv.parentNode.removeChild(this._secondDiv);
             this._secondDiv = null;
         }
-        var siteConfigHelper = this._siteConfigHelper, cssLoader = aria.utils.CSSLoader;
+        var siteConfigHelper = this._siteConfigHelper, cssLoader = ariaUtilsCSSLoader;
         if (siteConfigHelper) {
             cssLoader.remove(siteConfigHelper.getSiteCss());
             siteConfigHelper.$dispose();
@@ -240,7 +254,7 @@ Aria.classDefinition({
 
             this._config = config;
             this._pageProvider = config.pageProvider;
-            aria.embed.PlaceholderManager.register(this);
+            ariaEmbedPlaceholderManager.register(this);
             this._pageProvider.$addListeners({
                 "pageDefinitionChange" : this._onPageDefinitionChangeListener
             });
@@ -265,7 +279,7 @@ Aria.classDefinition({
             if (!valid) {
                 return;
             }
-            var helper = new aria.pageEngine.utils.SiteConfigHelper(siteConfig);
+            var helper = new ariaPageEngineUtilsSiteConfigHelper(siteConfig);
             this._siteConfigHelper = helper;
 
             // Initialization
@@ -281,7 +295,7 @@ Aria.classDefinition({
             if (rootModuleConfig) {
                 var customControllerClasspath = rootModuleConfig.classpath;
                 if (rootModuleConfig.initArgs) {
-                    aria.utils.Json.inject(initArgs, rootModuleConfig.initArgs);
+                    ariaUtilsJson.inject(initArgs, rootModuleConfig.initArgs);
                 }
                 var that = this;
                 Aria.load({
@@ -310,7 +324,7 @@ Aria.classDefinition({
          * @protected
          */
         _createModuleCtrl : function (rootModuleConfig) {
-            aria.templates.ModuleCtrlFactory.createModuleCtrl(rootModuleConfig, {
+            ariaTemplatesModuleCtrlFactory.createModuleCtrl(rootModuleConfig, {
                 fn : this._loadSiteDependencies,
                 scope : this
             });
@@ -325,7 +339,7 @@ Aria.classDefinition({
             this._data = this._rootModule.getData().storage;
             var siteHelper = this._siteConfigHelper;
 
-            aria.utils.CSSLoader.add(siteHelper.getSiteCss());
+            ariaUtilsCSSLoader.add(siteHelper.getSiteCss());
 
             var classesToLoad = siteHelper.getListOfContentProcessors();
             var navigationManagerClass = siteHelper.getNavigationManagerClass();
@@ -405,7 +419,7 @@ Aria.classDefinition({
                 this.$callback(cb);
                 if (this._navigationManager) {
                     this._navigationManager.update(pageRequest);
-                    aria.utils.Json.setValue(this._data, "pageInfo", pageRequest);
+                    ariaUtilsJson.setValue(this._data, "pageInfo", pageRequest);
                 }
             } else {
                 this._previousPageCSS = this._currentPageCSS;
@@ -436,8 +450,8 @@ Aria.classDefinition({
                 return;
             }
 
-            var pageConfigHelper = new aria.pageEngine.utils.PageConfigHelper(cfg);
-            aria.utils.Json.inject(pageConfigHelper.getMenus(), this._siteConfigHelper.getAppData().menus);
+            var pageConfigHelper = new ariaPageEngineUtilsPageConfigHelper(cfg);
+            ariaUtilsJson.inject(pageConfigHelper.getMenus(), this._siteConfigHelper.getAppData().menus);
             this._pageConfigHelper = pageConfigHelper;
             this._lazyContent = true;
             this._loadPageDependencies({
@@ -480,7 +494,7 @@ Aria.classDefinition({
             var pageSpecificModules = this._pageConfigHelper.getPageModulesDescriptions(dependencies.modules.page);
 
             this._currentPageCSS = this._currentPageCSS.concat(dependencies.css);
-            aria.utils.CSSLoader.add(dependencies.css);
+            ariaUtilsCSSLoader.add(dependencies.css);
             delete dependencies.css;
 
             dependencies.oncomplete = {
@@ -518,7 +532,7 @@ Aria.classDefinition({
          */
         isConfigValid : function (cfg, beanName, error) {
             try {
-                aria.core.JsonValidator.normalize({
+                ariaCoreJsonValidator.normalize({
                     json : cfg,
                     beanName : beanName
                 }, true);
@@ -551,7 +565,7 @@ Aria.classDefinition({
             pageRequest.pageId = pageConfig.pageId;
             pageRequest.title = pageConfig.title;
 
-            var json = aria.utils.Json;
+            var json = ariaUtilsJson;
             json.setValue(this._data, "pageData", cfg.pageData);
             json.setValue(this._data, "pageInfo", pageRequest);
 
@@ -589,9 +603,9 @@ Aria.classDefinition({
                 this._navigationManager.update(args.pageRequest);
             }
 
-            var browser = aria.core.Browser;
+            var browser = ariaCoreBrowser;
             if (browser.isOldIE && browser.majorVersion < 8) {
-                aria.core.Timer.addCallback({
+                ariaCoreTimer.addCallback({
                     fn : function () {
                         args.div.style.zoom = 0;
                         args.div.style.zoom = 1;
@@ -640,7 +654,7 @@ Aria.classDefinition({
          * @protected
          */
         _finishDisplay : function (params) {
-            aria.utils.CSSLoader.remove(this._previousPageCSS);
+            ariaUtilsCSSLoader.remove(this._previousPageCSS);
             this.$raiseEvent({
                 name : "pageReady",
                 pageId : params.pageConfig.pageId
@@ -699,7 +713,7 @@ Aria.classDefinition({
          */
         getContent : function (placeholderPath) {
             var outputContent;
-            var typeUtil = aria.utils.Type;
+            var typeUtil = ariaUtilsType;
             var pageConfig = this._pageConfigs[this.currentPageId];
             if (pageConfig) {
                 var placeholders = pageConfig.pageComposition.placeholders;
@@ -779,7 +793,7 @@ Aria.classDefinition({
             if (!content) {
                 return outputContent;
             }
-            if (!aria.utils.Type.isArray(content)) {
+            if (!ariaUtilsType.isArray(content)) {
                 content = [content];
             }
             for (var i = 0, length = content.length; i < length; i++) {
@@ -885,7 +899,7 @@ Aria.classDefinition({
          * @return {Boolean}
          */
         isModuleInPage : function (module) {
-            return aria.utils.Array.contains(this._modulesInPage, module.$publicInterface());
+            return ariaUtilsArray.contains(this._modulesInPage, module.$publicInterface());
         }
     }
 });

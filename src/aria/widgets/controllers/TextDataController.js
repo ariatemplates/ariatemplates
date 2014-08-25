@@ -12,13 +12,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaWidgetsControllersReportsControllerReport = require("./reports/ControllerReport");
+var ariaUtilsType = require("../../utils/Type");
+
 
 /**
  * Base class for any data controller associated to Text Input objects
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.widgets.controllers.TextDataController",
-    $dependencies : ["aria.widgets.controllers.reports.ControllerReport"],
     $events : {
         "onCheck" : {
             description : "Notifies that controller has finished am asynchronouse check (internal, of the value or of a keystroke)",
@@ -48,7 +51,7 @@ Aria.classDefinition({
          * @return {aria.widgets.controllers.reports.ControllerReport}
          */
         checkKeyStroke : function (charCode, keyCode, currentValue, caretPos) {
-            return new aria.widgets.controllers.reports.ControllerReport();
+            return new ariaWidgetsControllersReportsControllerReport();
         },
 
         /**
@@ -57,8 +60,8 @@ Aria.classDefinition({
          * @return {aria.widgets.controllers.reports.ControllerReport}
          */
         checkText : function (text) {
-            var report = new aria.widgets.controllers.reports.ControllerReport();
-            if (aria.utils.Type.isString(text) || aria.utils.Type.isNumber(text)) {
+            var report = new ariaWidgetsControllersReportsControllerReport();
+            if (ariaUtilsType.isString(text) || ariaUtilsType.isNumber(text)) {
                 // allow values that can be easily displayed in the textfield
                 report.value = text;
                 report.ok = true;

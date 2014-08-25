@@ -12,14 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaTemplatesIBaseTemplate = require("./IBaseTemplate");
+
 
 /**
  * Interface exposed from a template context to its template.
  * @class aria.templates.ITemplate
  */
-Aria.interfaceDefinition({
+module.exports = Aria.interfaceDefinition({
     $classpath : 'aria.templates.ITemplate',
-    $extends : 'aria.templates.IBaseTemplate',
+    $extends : ariaTemplatesIBaseTemplate,
     $events : {
         "SectionRefreshed" : {
             description : "Raised when a section in the template has been refreshed",

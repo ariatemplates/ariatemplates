@@ -12,14 +12,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaCoreTransportITransports = require("./ITransports");
+var ariaCoreIO = require("../IO");
+
 
 /**
  * Transport class for XHR requests. This is the base implementation and is shared between all transports that use
  * XMLHttpRequest
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.core.transport.BaseXHR",
-    $implements : ["aria.core.transport.ITransports"],
+    $implements : [ariaCoreTransportITransports],
     $prototype : {
         /**
          * Polling interval for the handle ready state in milliseconds.
@@ -59,7 +63,7 @@ Aria.classDefinition({
 
             if (async) {
                 // Timer for aborting the request after a timeout
-                aria.core.IO.setTimeout(request.id, request.timeout, {
+                ariaCoreIO.setTimeout(request.id, request.timeout, {
                     fn : this.onAbort,
                     scope : this,
                     args : [request.id, connection]
@@ -117,13 +121,13 @@ Aria.classDefinition({
          * @private
          */
         _handleReadyState : function (reqId, connection, callback) {
-            var ariaIO = aria.core.IO;
+            var ariaIO = ariaCoreIO;
 
             // Interval for processing the response from the server
             var scope = this;
             ariaIO._poll[reqId] = setInterval(function () {
                 if (connection && connection.readyState === 4) {
-                    aria.core.IO.clearTimeout(reqId);
+                    ariaCoreIO.clearTimeout(reqId);
 
                     clearInterval(ariaIO._poll[reqId]);
                     delete ariaIO._poll[reqId];
@@ -224,8 +228,8 @@ Aria.classDefinition({
          * @return {Boolean} Whether the connection was aborted or not
          */
         onAbort : function (reqId, connection) {
-            clearInterval(aria.core.IO._poll[reqId]);
-            delete aria.core.IO._poll[reqId];
+            clearInterval(ariaCoreIO._poll[reqId]);
+            delete ariaCoreIO._poll[reqId];
 
             if (this._inProgress(connection)) {
                 connection.abort();

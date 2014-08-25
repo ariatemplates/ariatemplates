@@ -12,17 +12,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+require("./beans/SelectCfg");
+var ariaUtilsType = require("../utils/Type");
+var ariaHtmlDisabledTrait = require("./DisabledTrait");
+var ariaHtmlElement = require("./Element");
+var ariaUtilsString = require("../utils/String");
+var ariaUtilsJson = require("../utils/Json");
+
 /**
  * Select widget. Bindable widget providing bi-directional bind of 'selectedIndex'.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.html.Select",
-    $extends : "aria.html.Element",
+    $extends : ariaHtmlElement,
     $statics : {
         BINDING_NEEDED : "The property '%2' from Widget %1 should be bound to a data model",
         WRONG_OPTIONS : "Can't use the options property if an html body content is defined for %1"
     },
-    $dependencies : ["aria.html.beans.SelectCfg", "aria.utils.Type", "aria.html.DisabledTrait"],
     $constructor : function (cfg, context, line) {
         cfg.attributes = cfg.attributes || {};
         cfg.on = cfg.on || {};
@@ -61,7 +68,7 @@ Aria.classDefinition({
          * @param {Object} p the prototype object being built
          */
         $init : function (p) {
-            var src = aria.html.DisabledTrait.prototype;
+            var src = ariaHtmlDisabledTrait.prototype;
             for (var key in src) {
                 if (src.hasOwnProperty(key) && !p.hasOwnProperty(key)) {
                     p[key] = src[key];
@@ -83,14 +90,14 @@ Aria.classDefinition({
 
             if (cfgOptions) {
                 this.options = [];
-                var string = aria.utils.String;
+                var string = ariaUtilsString;
                 for (var i = 0, l = cfgOptions.length; i < l; i++) {
                     out.write("<option ");
                     var option = cfgOptions[i];
 
                     // need to know what is the type of the array: array of strings or array of ListItemCfgs (see
                     // selectCfg.js)
-                    if (aria.utils.Type.isString(option)) {
+                    if (ariaUtilsType.isString(option)) {
                         // use the string as a value and a label
                         option = {
                             label : option,
@@ -165,7 +172,7 @@ Aria.classDefinition({
          * @param {MultiTypes} index
          */
         isIndexValid : function (index) {
-            return aria.utils.Type.isNumber(index) && index >= 0 && index <= this.options.length - 1;
+            return ariaUtilsType.isNumber(index) && index >= 0 && index <= this.options.length - 1;
         },
 
         /**
@@ -287,7 +294,7 @@ Aria.classDefinition({
                     value = this.options[this._domElt.selectedIndex].value;
                 }
                 var newValue = this._transform(bind.transform, value, "fromWidget");
-                aria.utils.Json.setValue(bind.inside, bind.to, newValue, bind.cb);
+                ariaUtilsJson.setValue(bind.inside, bind.to, newValue, bind.cb);
 
             }
 
@@ -300,7 +307,7 @@ Aria.classDefinition({
             var bind = this._bindingListeners.selectedIndex;
             if (bind) {
                 var newIndex = this._transform(bind.transform, this._domElt.selectedIndex, "fromWidget");
-                aria.utils.Json.setValue(bind.inside, bind.to, newIndex, bind.cb);
+                ariaUtilsJson.setValue(bind.inside, bind.to, newIndex, bind.cb);
             }
         }
     }

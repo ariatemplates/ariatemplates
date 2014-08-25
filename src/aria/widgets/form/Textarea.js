@@ -12,16 +12,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaWidgetsControllersTextDataController = require("../controllers/TextDataController");
+var ariaWidgetsFormTextareaStyle = require("./TextareaStyle.tpl.css");
+var ariaWidgetsFormTextInput = require("./TextInput");
+
 
 /**
  * @class aria.widgets.form.Textarea Textarea widget
  * @extends aria.widgets.form.TextInput
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : 'aria.widgets.form.Textarea',
-    $extends : 'aria.widgets.form.TextInput',
-    $dependencies : ['aria.widgets.controllers.TextDataController'],
-    $css : ["aria.widgets.form.TextareaStyle"],
+    $extends : ariaWidgetsFormTextInput,
+    $css : [ariaWidgetsFormTextareaStyle],
     $statics : {
         LABEL_HEIGHT : 13
     },
@@ -32,7 +36,7 @@ Aria.classDefinition({
      * @param {Number} lineNumber Line number corresponding in the .tpl file where the widget is created
      */
     $constructor : function (cfg, ctxt, lineNumber) {
-        var controller = new aria.widgets.controllers.TextDataController();
+        var controller = new ariaWidgetsControllersTextDataController();
         this.$TextInput.constructor.call(this, cfg, ctxt, lineNumber, controller);
         this._isTextarea = true;
         cfg.labelHeight = (cfg.labelHeight > -1) ? cfg.labelHeight : this.LABEL_HEIGHT;

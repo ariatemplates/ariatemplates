@@ -12,14 +12,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaUtilsHashManager = require("../../utils/HashManager");
+var ariaUtilsType = require("../../utils/Type");
+var ariaPageEngineUtilsBaseNavigationManager = require("./BaseNavigationManager");
+
 
 /**
  * Utility class that manages the change of url by only changing the hash
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.pageEngine.utils.HashManager",
-    $extends : "aria.pageEngine.utils.BaseNavigationManager",
-    $dependencies : ["aria.utils.HashManager", "aria.utils.Type"],
+    $extends : ariaPageEngineUtilsBaseNavigationManager,
     /**
      * @param {aria.core.CfgBeans:Callback} cb Callback called on hash change. It corresponds to a navigate method
      * @param {aria.core.CfgBeans:Site.storage} options Options for local storage
@@ -33,7 +37,7 @@ Aria.classDefinition({
          * @type aria.utils.HashManager
          * @protected
          */
-        this._hashManager = aria.utils.HashManager;
+        this._hashManager = ariaUtilsHashManager;
 
         /**
          * Listener of the hashchange
@@ -85,7 +89,7 @@ Aria.classDefinition({
          * @param {aria.pageEngine.CfgBeans:PageRequest} pageRequest
          */
         update : function (pageRequest) {
-            var url = pageRequest.url, title = pageRequest.title, pageId = pageRequest.pageId, typeUtil = aria.utils.Type;
+            var url = pageRequest.url, title = pageRequest.title, pageId = pageRequest.pageId, typeUtil = ariaUtilsType;
             this._lastPageId = pageId;
             if (typeUtil.isString(url)) {
                 this._addInCache(url, pageId);

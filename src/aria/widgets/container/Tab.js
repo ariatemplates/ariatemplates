@@ -12,15 +12,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaWidgetsFramesFrameFactory = require("../frames/FrameFactory");
+require("../../utils/Function");
+var ariaWidgetsContainerTabStyle = require("./TabStyle.tpl.css");
+var ariaWidgetsContainerContainer = require("./Container");
+
 
 /**
  * Tab widget
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.widgets.container.Tab",
-    $extends : "aria.widgets.container.Container",
-    $dependencies : ["aria.widgets.frames.FrameFactory", "aria.utils.Function"],
-    $css : ["aria.widgets.container.TabStyle"],
+    $extends : ariaWidgetsContainerContainer,
+    $css : [ariaWidgetsContainerTabStyle],
     /**
      * Tab constructor
      * @param {aria.widgets.CfgBeans:TabCfg} cfg the widget configuration
@@ -51,7 +56,7 @@ Aria.classDefinition({
          * @type aria.widgets.frames.Frame
          * @protected
          */
-        this._frame = aria.widgets.frames.FrameFactory.createFrame({
+        this._frame = ariaWidgetsFramesFrameFactory.createFrame({
             height : cfg.height,
             state : this._state,
             width : cfg.width,

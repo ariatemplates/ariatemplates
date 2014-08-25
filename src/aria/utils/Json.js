@@ -12,6 +12,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaUtilsJsonJsonSerializer = require("./json/JsonSerializer");
+var ariaUtilsType = require("./Type");
+var ariaUtilsArray = require("./Array");
+var ariaUtilsObject = require("./Object");
+
 
 (function () {
 
@@ -293,14 +299,13 @@
      * Json utility class
      * @singleton
      */
-    Aria.classDefinition({
+    module.exports = Aria.classDefinition({
         $classpath : "aria.utils.Json",
-        $dependencies : ["aria.utils.json.JsonSerializer"],
         $singleton : true,
         $constructor : function () {
             jsonUtils = this;
-            arrayUtils = aria.utils.Array;
-            typeUtils = aria.utils.Type;
+            arrayUtils = ariaUtilsArray;
+            typeUtils = ariaUtilsType;
             parProp = this.OBJECT_PARENT_PROPERTY;
 
             /**
@@ -308,7 +313,7 @@
              * @private
              * @type aria.utils.json.JsonSerializer
              */
-            this.__defaultJsonSerializer = new aria.utils.json.JsonSerializer(true);
+            this.__defaultJsonSerializer = new ariaUtilsJsonJsonSerializer(true);
         },
         $destructor : function () {
             jsonUtils = null;
@@ -944,8 +949,8 @@
              * @see aria.utils.Object.keys
              */
             keys : function (container) {
-                var raw = aria.utils.Object.keys(container);
-                return aria.utils.Array.filter(raw, function (key) {
+                var raw = ariaUtilsObject.keys(container);
+                return ariaUtilsArray.filter(raw, function (key) {
                     return !aria.utils.Json.isMetadata(key);
                 });
             },
@@ -956,7 +961,7 @@
              * @returns {Boolean} True if the property is a String and it's used as metadata, false otherwise
              */
             isMetadata : function (property) {
-                if (!aria.utils.Type.isString(property)) {
+                if (!ariaUtilsType.isString(property)) {
                     return false;
                 }
                 return (property.indexOf(Aria.FRAMEWORK_PREFIX) === 0);

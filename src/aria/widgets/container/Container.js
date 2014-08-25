@@ -12,16 +12,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaUtilsSize = require("../../utils/Size");
+var ariaUtilsMath = require("../../utils/Math");
+var ariaWidgetsWidget = require("../Widget");
+var ariaCoreTplClassLoader = require("../../core/TplClassLoader");
+
 
 /**
  * Class definition for the Container widget. Handles min and max sizes
  * @class aria.widgets.container.Container
  * @extends aria.widgets.Widget
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.widgets.container.Container",
-    $extends : "aria.widgets.Widget",
-    $dependencies : ["aria.utils.Size", "aria.utils.Math"],
+    $extends : ariaWidgetsWidget,
     /**
      * Container constructor
      * @param {aria.widgets.CfgBeans:ContainerCfg} cfg the widget configuration
@@ -30,7 +35,7 @@ Aria.classDefinition({
     $constructor : function (cfg, ctxt) {
         this.$Widget.constructor.apply(this, arguments);
 
-        this._cssClassNames = aria.core.TplClassLoader.addPrintOptions(this._cssClassNames, cfg.printOptions);
+        this._cssClassNames = ariaCoreTplClassLoader.addPrintOptions(this._cssClassNames, cfg.printOptions);
 
         // might be set by subclasses
         this._frame = null;
@@ -121,8 +126,8 @@ Aria.classDefinition({
                     // when maximized from start, widthMaximized will be empty initially, but it'll be adjusted later
                     var width = cfg.widthMaximized || cfg.width;
                     var height = cfg.heightMaximized || cfg.height;
-                    var constrainedWidth = aria.utils.Math.normalize(width, widthConf.min, widthConf.max);
-                    var constrainedHeight = aria.utils.Math.normalize(height, heightConf.min, heightConf.max);
+                    var constrainedWidth = ariaUtilsMath.normalize(width, widthConf.min, widthConf.max);
+                    var constrainedHeight = ariaUtilsMath.normalize(height, heightConf.min, heightConf.max);
 
                     domElt.style.width = width > -1 ? constrainedWidth + "px" : "";
                     domElt.style.height = height > -1 ? constrainedHeight + "px" : "";
@@ -133,7 +138,7 @@ Aria.classDefinition({
                     }
                 }
 
-                var changed = aria.utils.Size.setContrains(domElt, widthConf, heightConf);
+                var changed = ariaUtilsSize.setContrains(domElt, widthConf, heightConf);
                 if (changed && this._frame) {
                     this._frame.resize(changed.width, changed.height);
                     // throws a onchange event on parent

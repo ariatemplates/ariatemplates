@@ -12,14 +12,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaDomEvent = require("../../DomEvent");
+var ariaWidgetsControllersReportsDropDownControllerReport = require("./reports/DropDownControllerReport");
+var ariaWidgetsControllersTextDataController = require("./TextDataController");
+
 
 /**
  * Controller for the a widget with a dropdown that contains a list.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.widgets.controllers.DropDownListController",
-    $extends : "aria.widgets.controllers.TextDataController",
-    $dependencies : ["aria.DomEvent", "aria.widgets.controllers.reports.DropDownControllerReport"],
+    $extends : ariaWidgetsControllersTextDataController,
 
     /**
      * Constructor
@@ -119,7 +123,7 @@ Aria.classDefinition({
          * @return {aria.widgets.controllers.reports.ControllerReport}
          */
         checkKeyStroke : function (charCode, keyCode, currentText, caretPosStart, caretPosEnd, event) {
-            var dataModel = this._dataModel, domEvent = aria.DomEvent, report, selectionKey;
+            var dataModel = this._dataModel, domEvent = ariaDomEvent, report, selectionKey;
 
             if (this._listWidget) {
                 selectionKey = this.checkSelectionKeys(event);
@@ -144,7 +148,7 @@ Aria.classDefinition({
                 if (!selectionKey && keyCode == domEvent.KC_ESCAPE) {
                     report = this.checkText(dataModel.initialInput);
                     if (!report) {
-                        report = new aria.widgets.controllers.reports.DropDownControllerReport();
+                        report = new ariaWidgetsControllersReportsDropDownControllerReport();
                     }
                     report.displayDropDown = false; // close the dropdown
                     report.text = dataModel.initialInput;
@@ -161,7 +165,7 @@ Aria.classDefinition({
                         }
                         report = this.checkDropdownValue(dataModel.value);
                     } else {
-                        var report = new aria.widgets.controllers.reports.DropDownControllerReport();
+                        var report = new ariaWidgetsControllersReportsDropDownControllerReport();
                     }
                     report.displayDropDown = false; // close the dropdown
                     if (keyCode != domEvent.KC_TAB) {
@@ -171,7 +175,7 @@ Aria.classDefinition({
                 } else if (keyCode == domEvent.KC_ARROW_LEFT) {
                     return;
                 } else {
-                    report = new aria.widgets.controllers.reports.DropDownControllerReport();
+                    report = new ariaWidgetsControllersReportsDropDownControllerReport();
 
                     var oldIdx = dataModel.selectedIdx;
                     this._listWidget.sendKey(0, keyCode);
@@ -194,7 +198,7 @@ Aria.classDefinition({
                 if (keyCode == domEvent.KC_ARROW_DOWN) {
                     report = this._checkInputKey(charCode, keyCode, currentText, caretPosStart, caretPosEnd);
                 } else {
-                    report = new aria.widgets.controllers.reports.DropDownControllerReport();
+                    report = new ariaWidgetsControllersReportsDropDownControllerReport();
                 }
                 // domEvent.KC_ESCAPE for issue#697 on FF
                 if (report && keyCode != domEvent.KC_TAB) {
@@ -224,7 +228,7 @@ Aria.classDefinition({
          * @return {aria.widgets.controllers.reports.ControllerReport}
          */
         _checkInputKey : function (charCode, keyCode, currentText, caretPosStart, caretPosEnd) {
-            var report = new aria.widgets.controllers.reports.DropDownControllerReport();
+            var report = new ariaWidgetsControllersReportsDropDownControllerReport();
             report.ok = true;
             report.cancelKeyStroke = false;
             report.displayDropDown = this._dataModel.listContent.length > 0;

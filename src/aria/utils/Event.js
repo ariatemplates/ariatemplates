@@ -12,6 +12,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaUtilsType = require("./Type");
+var ariaUtilsCallback = require("./Callback");
+var ariaCoreBrowser = require("../core/Browser");
+
 
 (function () {
     var FOCUSIN = "focusin";
@@ -30,16 +35,15 @@
     /**
      * Utilities for handling Dom event listeners
      */
-    Aria.classDefinition({
+    module.exports = Aria.classDefinition({
         $classpath : "aria.utils.Event",
-        $dependencies : ["aria.utils.Type", "aria.utils.Callback", "aria.core.Browser"],
         $singleton : true,
         $statics : {
             INVALID_TARGET : "Unable to add '%2' event on element %1"
         },
         $constructor : function () {
-            this.typesUtil = aria.utils.Type;
-            this.UA = aria.core.Browser;
+            this.typesUtil = ariaUtilsType;
+            this.UA = ariaCoreBrowser;
             var oSelf = this;
             this._unload = function (e) {
                 oSelf._unloadEvent(e);
@@ -256,7 +260,7 @@
                 }
                 var handlerCBInstance = callback;
                 if (!callback.$Callback) {
-                    handlerCBInstance = new aria.utils.Callback(handler);
+                    handlerCBInstance = new ariaUtilsCallback(handler);
                 }
 
                 // wrap the function so we can return the obj object
@@ -264,7 +268,7 @@
                 // the event fires;
 
                 var wrappedCallback;
-                if (event != "mousemove" || !aria.core.Browser.isWebkit) {
+                if (event != "mousemove" || !ariaCoreBrowser.isWebkit) {
                     wrappedCallback = function (e) {
                         return handlerCBInstance.call(aria.utils.Event.getEvent(e, element));
                     };
@@ -412,8 +416,8 @@
              * @protected
              */
             _specialTypes : {
-                focusin : (aria.core.Browser.isOldIE ? "focusin" : "focus"),
-                focusout : (aria.core.Browser.isOldIE ? "focusout" : "blur")
+                focusin : (ariaCoreBrowser.isOldIE ? "focusin" : "focus"),
+                focusout : (ariaCoreBrowser.isOldIE ? "focusout" : "blur")
             },
 
             /**
@@ -464,7 +468,7 @@
                         for (i = unloadListeners.length - 1; i > -1; i--) {
                             li = unloadListeners[i];
                             var cbCheck;
-                            if (li && aria.utils.Type.isObject(li[FN]) && !li[FN].$Callback) {
+                            if (li && ariaUtilsType.isObject(li[FN]) && !li[FN].$Callback) {
                                 cbCheck = ("fn" in callback) && (li[FN].fn == callback.fn);
                             } else {
                                 cbCheck = (li[FN] == callback);

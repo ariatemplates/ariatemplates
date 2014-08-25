@@ -12,15 +12,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+require("./TestMsgHandler");
+require("../modules/RequestMgr");
+var ariaTemplatesModuleCtrlFactory = require("../templates/ModuleCtrlFactory");
+var ariaJsunitTestCase = require("./TestCase");
+var ariaUtilsType = require("../utils/Type");
+var ariaCoreIOFiltersMgr = require("../core/IOFiltersMgr");
+
 
 /**
  * Test case for module controllers should extend this class. It provides a log of connection requests and responses and
  * a log of events.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.jsunit.ModuleCtrlTestCase",
-    $extends : "aria.jsunit.TestCase",
-    $dependencies : ["aria.jsunit.TestMsgHandler", "aria.modules.RequestMgr", "aria.templates.ModuleCtrlFactory"],
+    $extends : ariaJsunitTestCase,
     $constructor : function () {
         this.$TestCase.constructor.call(this);
 
@@ -33,13 +40,13 @@ Aria.classDefinition({
         this.cxLogs = [];
 
         // we pass a reference to this so the TestMsgHandler can access it during initialization
-        aria.core.IOFiltersMgr.addFilter({
+        ariaCoreIOFiltersMgr.addFilter({
             classpath : "aria.jsunit.TestMsgHandler",
             initArgs : this
         });
     },
     $destructor : function () {
-        aria.core.IOFiltersMgr.removeFilter({
+        ariaCoreIOFiltersMgr.removeFilter({
             classpath : "aria.jsunit.TestMsgHandler",
             initArgs : this
         });
@@ -65,11 +72,11 @@ Aria.classDefinition({
          */
         run : function () {
             if (this.$controller) {
-                var description = aria.utils.Type.isString(this.$controller) ? {
+                var description = ariaUtilsType.isString(this.$controller) ? {
                     classpath : this.$controller
                 } : this.$controller;
                 // We want to automatically load a module controller
-                aria.templates.ModuleCtrlFactory.createModuleCtrl(description, {
+                ariaTemplatesModuleCtrlFactory.createModuleCtrl(description, {
                     fn : this._goOnWithRun,
                     scope : this,
                     args : description

@@ -12,12 +12,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaCoreIO = require("../IO");
+
 
 /**
  * Transport class for JSON-P requests.
  * @singleton
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.core.transport.JsonP",
     $singleton : true,
     $constructor : function () {
@@ -100,9 +103,9 @@ Aria.classDefinition({
             request.evalCb = serverCallback;
 
             // handle abort timeout
-            aria.core.IO.setTimeout(reqId, request.timeout, {
-                fn : aria.core.IO.abort,
-                scope : aria.core.IO,
+            ariaCoreIO.setTimeout(reqId, request.timeout, {
+                fn : ariaCoreIO.abort,
+                scope : ariaCoreIO,
                 args : [reqId, callback]
             });
 

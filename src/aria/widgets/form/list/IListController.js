@@ -12,14 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../../Aria");
+var ariaTemplatesIModuleCtrl = require("../../../templates/IModuleCtrl");
+
 
 /**
  * Public interface for the list controller.
  * @class aria.widgets.form.list.IListController
  */
-Aria.interfaceDefinition({
+module.exports = Aria.interfaceDefinition({
     $classpath : 'aria.widgets.form.list.IListController',
-    $extends : "aria.templates.IModuleCtrl",
+    $extends : ariaTemplatesIModuleCtrl,
     $events : {
         "onChange" : {
             description : "Raised when user changes selection of items",

@@ -12,14 +12,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+require("./CustomizationsCfgBeans");
+var ariaCoreEnvironmentEnvironmentBase = require("./EnvironmentBase");
+var ariaUtilsType = require("../../utils/Type");
+var ariaUtilsJson = require("../../utils/Json");
+var ariaCoreIO = require("../IO");
+var ariaCoreJsonValidator = require("../JsonValidator");
+
 
 /**
  * Contains getters for the Number environment.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.core.environment.Customizations",
-    $extends : "aria.core.environment.EnvironmentBase",
-    $dependencies : ["aria.core.environment.CustomizationsCfgBeans"],
+    $extends : ariaCoreEnvironmentEnvironmentBase,
     $singleton : true,
     $statics : {
         DESCRIPTOR_NOT_LOADED : "A customization descriptor was specified but could not be loaded (url: '%1')",
@@ -76,7 +83,7 @@ Aria.classDefinition({
             var customization = this.checkApplicationSettings("customization");
             // if the descriptor path has changed or a json object has been passed reload it
             if (customization
-                    && (customization.descriptor !== this._customizationDescriptor || aria.utils.Type.isObject(customization.descriptor))) {
+                    && (customization.descriptor !== this._customizationDescriptor || ariaUtilsType.isObject(customization.descriptor))) {
                 // the path to the customization descriptor has changed, reload it
                 this._customizationDescriptor = customization.descriptor;
                 this.reloadCustomizationDescriptor();
@@ -94,7 +101,7 @@ Aria.classDefinition({
             if (downloadFailed) {
                 this.$logError(this.DESCRIPTOR_NOT_LOADED, this._customizationDescriptor);
             } else {
-                var resJson = aria.utils.Json.load(ioRes.responseText);
+                var resJson = ariaUtilsJson.load(ioRes.responseText);
                 if (resJson == null) {
                     // the descriptor was not valid json
                     this.$logError(this.INVALID_DESCRIPTOR, this._customizationDescriptor);
@@ -115,7 +122,7 @@ Aria.classDefinition({
          * @param {aria.core.environment.CustomizationsCfgBeans:DescriptorCfg} descrObj Json object containg descriptor
          */
         _setCustomizationDescriptor : function (descrObj) {
-            var validJson = aria.core.JsonValidator.normalize({
+            var validJson = ariaCoreJsonValidator.normalize({
                 json : descrObj,
                 beanName : "aria.core.environment.CustomizationsCfgBeans.DescriptorCfg"
             });
@@ -137,8 +144,8 @@ Aria.classDefinition({
             if (this._isCustomized) {
                 this._descriptorLoaded = false;
 
-                if (aria.utils.Type.isString(this._customizationDescriptor)) {
-                    aria.core.IO.asyncRequest({
+                if (ariaUtilsType.isString(this._customizationDescriptor)) {
+                    ariaCoreIO.asyncRequest({
                         url : this._customizationDescriptor,
                         callback : {
                             fn : this._onDescriptorReceive,
@@ -211,7 +218,7 @@ Aria.classDefinition({
          * @return {aria.core.environment.CustomizationsCfgBeans:DescriptorCfg}
          */
         getCustomizations : function () {
-            return aria.utils.Json.copy(this._customizations);
+            return ariaUtilsJson.copy(this._customizations);
         },
 
         /**

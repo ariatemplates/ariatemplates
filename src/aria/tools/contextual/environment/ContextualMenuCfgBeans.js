@@ -12,16 +12,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../../Aria");
+var ariaCoreJsonTypes = require("../../../core/JsonTypes");
+var ariaCoreEnvironmentEnvironmentBaseCfgBeans = require("../../../core/environment/EnvironmentBaseCfgBeans");
+
 
 /**
  * Bean definition containing default settings for the ContextualMenu environment.
  */
-Aria.beanDefinitions({
+module.exports = Aria.beanDefinitions({
     $package : "aria.tools.contextual.environment.ContextualMenuCfgBeans",
     $description : "A definition of the JSON beans used to set the environment settings.",
     $namespaces : {
-        "json" : "aria.core.JsonTypes",
-        "environmentBase" : "aria.core.environment.EnvironmentBaseCfgBeans"
+        "json" : ariaCoreJsonTypes,
+        "environmentBase" : ariaCoreEnvironmentEnvironmentBaseCfgBeans
     },
     $beans : {
         "AppCfg" : {

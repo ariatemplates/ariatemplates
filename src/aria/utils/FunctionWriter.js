@@ -12,13 +12,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaUtilsString = require("./String");
+
 
 /**
  * Utility to build a function.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.utils.FunctionWriter",
-    $dependencies : ["aria.utils.String"],
     /**
      * Create a function writer.
      * @param {Array} functionArguments Array of argument names for the function being built.
@@ -81,7 +83,7 @@ Aria.classDefinition({
     $prototype : {
         $init : function (proto) {
             // shortcut:
-            proto.stringify = aria.utils.String.stringify;
+            proto.stringify = ariaUtilsString.stringify;
         },
 
         /**

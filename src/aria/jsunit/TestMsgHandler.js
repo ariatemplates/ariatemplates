@@ -12,6 +12,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaJsunitConnectionSession = require("./ConnectionSession");
+var ariaCoreIOFilter = require("../core/IOFilter");
+
 
 (function () {
 
@@ -21,10 +25,9 @@
      * This class implements a message handler for the ModuleCtrlTestCase class. It intercepts and logs connection
      * requests and responses
      */
-    Aria.classDefinition({
+    module.exports = Aria.classDefinition({
         $classpath : 'aria.jsunit.TestMsgHandler',
-        $extends : 'aria.core.IOFilter',
-        $dependencies : ['aria.jsunit.ConnectionSession'],
+        $extends : ariaCoreIOFilter,
         /**
          * This function initializes the filter so that the module controller which is using it can access its data
          * structures
@@ -51,7 +54,7 @@
                 var sender = req.sender;
                 if (sender && sender.classpath == "aria.modules.RequestMgr") {
                     this.$assert(38, sender[this._metaData] == null);
-                    var connectionSession = new aria.jsunit.ConnectionSession({
+                    var connectionSession = new ariaJsunitConnectionSession({
                         ioRequest : req
                     });
                     sender[this._metaData] = connectionSession;

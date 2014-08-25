@@ -12,15 +12,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaWidgetsFormDropDownListTrait = require("./DropDownListTrait");
+var ariaWidgetsControllersSelectBoxController = require("../controllers/SelectBoxController");
+var ariaWidgetsFormSelectBoxStyle = require("./SelectBoxStyle.tpl.css");
+var ariaWidgetsFormListListStyle = require("./list/ListStyle.tpl.css");
+var ariaWidgetsContainerDivStyle = require("../container/DivStyle.tpl.css");
+var ariaWidgetsFormDropDownTextInput = require("./DropDownTextInput");
+
 
 /**
  * SelectBox widget allows to select a value in an array of predefined values
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.widgets.form.SelectBox",
-    $extends : "aria.widgets.form.DropDownTextInput",
-    $dependencies : ["aria.widgets.form.DropDownListTrait", "aria.widgets.controllers.SelectBoxController"],
-    $css : ["aria.widgets.form.SelectBoxStyle", "aria.widgets.form.list.ListStyle", "aria.widgets.container.DivStyle"],
+    $extends : ariaWidgetsFormDropDownTextInput,
+    $css : [ariaWidgetsFormSelectBoxStyle, ariaWidgetsFormListListStyle, ariaWidgetsContainerDivStyle],
     $statics : {
         /* overrides TextInput.WIDGET_VALUE_IS_WRONG_TYPE */
         WIDGET_VALUE_IS_WRONG_TYPE : "%1Value '%2' is invalid. Note that SelectBox's value must be present in its options array. When changing both `value` and `options` via aria.utils.Json.setValue, change the options array first.",
@@ -33,7 +40,7 @@ Aria.classDefinition({
      * @param {Number} lineNumber Line number corresponding in the .tpl file where the widget is created
      */
     $constructor : function (cfg, ctxt, lineNumber) {
-        var controller = new aria.widgets.controllers.SelectBoxController();
+        var controller = new ariaWidgetsControllersSelectBoxController();
         this.$DropDownTextInput.constructor.call(this, cfg, ctxt, lineNumber, controller);
         this.controller.setListOptions(this._cfg.options);
 
@@ -55,7 +62,7 @@ Aria.classDefinition({
         _skinnableClass : "SelectBox",
 
         $init : function (p) {
-            var src = aria.widgets.form.DropDownListTrait.prototype;
+            var src = ariaWidgetsFormDropDownListTrait.prototype;
             for (var key in src) {
                 if (src.hasOwnProperty(key) && !p.hasOwnProperty(key)) {
                     // copy methods which are not already on this object (this avoids copying $classpath and

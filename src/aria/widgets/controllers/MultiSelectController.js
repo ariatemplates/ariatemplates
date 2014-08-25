@@ -12,14 +12,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaUtilsJson = require("../../utils/Json");
+var ariaDomEvent = require("../../DomEvent");
+var ariaWidgetsControllersReportsDropDownControllerReport = require("./reports/DropDownControllerReport");
+var ariaWidgetsControllersDropDownListController = require("./DropDownListController");
+var ariaUtilsString = require("../../utils/String");
+var ariaUtilsArray = require("../../utils/Array");
+
 
 /**
  * Controller for the Multi-Select widget.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.widgets.controllers.MultiSelectController",
-    $dependencies : ["aria.utils.Json", "aria.DomEvent", "aria.widgets.controllers.reports.DropDownControllerReport"],
-    $extends : 'aria.widgets.controllers.DropDownListController',
+    $extends : ariaWidgetsControllersDropDownListController,
     $constructor : function () {
         this.$DropDownListController.constructor.call(this);
         /**
@@ -133,21 +140,21 @@ Aria.classDefinition({
             selectedValues = this._parseInputString(options, displayValue);
             if (!currentlyOpen) {
                 // update list and datamodel
-                if (!aria.utils.Json.equals(selectedValues, dataModel.value)) {
-                    aria.utils.Json.setValue(dataModel, 'selectedValues', selectedValues);
+                if (!ariaUtilsJson.equals(selectedValues, dataModel.value)) {
+                    ariaUtilsJson.setValue(dataModel, 'selectedValues', selectedValues);
                     dataModel.value = selectedValues;
                     dataModel.text = this._getDisplayValue(selectedValues);
                 }
             }
 
-            var report = new aria.widgets.controllers.reports.DropDownControllerReport();
+            var report = new ariaWidgetsControllersReportsDropDownControllerReport();
             report.displayDropDown = options.length > 0 && !currentlyOpen;
 
             if (report.displayDropDown) {
                 // save initial input
                 dataModel.initialInput = displayValue;
                 // update list of options
-                aria.utils.Json.setValue(dataModel, 'listContent', options);
+                ariaUtilsJson.setValue(dataModel, 'listContent', options);
             }
 
             report.text = dataModel.text;
@@ -168,7 +175,7 @@ Aria.classDefinition({
         _parseInputString : function (options, textFieldValue) {
 
             var selectedOptions = [];
-            var trim = aria.utils.String.trim;
+            var trim = ariaUtilsString.trim;
 
             var inSplit = textFieldValue.split(this._separator);
             if (inSplit) {
@@ -180,7 +187,7 @@ Aria.classDefinition({
                         key = key + "";
 
                         if ((trim(options[j].label.toLowerCase()) == key.toLowerCase() || trim(options[j].value.toLowerCase()) == key.toLowerCase())
-                                && !aria.utils.Array.contains(selectedOptions, options[j].value)
+                                && !ariaUtilsArray.contains(selectedOptions, options[j].value)
                                 && !options[j].disabled) {
                             selectedOptions.push(options[j].value);
                         }
@@ -221,20 +228,20 @@ Aria.classDefinition({
          * @return {aria.widgets.controllers.reports.DropDownControllerReport}
          */
         checkValue : function (value) {
-            var report = new aria.widgets.controllers.reports.DropDownControllerReport();
+            var report = new ariaWidgetsControllersReportsDropDownControllerReport();
             var dataModel = this._dataModel;
             if (value === null) {
                 report.ok = true;
                 dataModel.value = null;
                 dataModel.text = '';
             } else {
-                if (!aria.utils.Json.equals(value, dataModel.value)) {
+                if (!ariaUtilsJson.equals(value, dataModel.value)) {
                     // Only update the data-model if there has been a change, otherwise onchange is raised
-                    aria.utils.Json.setValue(dataModel, 'selectedValues', value);
+                    ariaUtilsJson.setValue(dataModel, 'selectedValues', value);
                     dataModel.value = value;
 
                 } else {
-                    if (!aria.utils.Json.equals(dataModel.selectedValues, dataModel.value)) {
+                    if (!ariaUtilsJson.equals(dataModel.selectedValues, dataModel.value)) {
                         // Only update the data-model if there has been a change, otherwise onchange is raised
                         value = dataModel.selectedValues;
                         dataModel.value = value;
@@ -263,14 +270,14 @@ Aria.classDefinition({
             // retrieve selection from string
             selectedValues = this._parseInputString(options, str);
 
-            if (!aria.utils.Json.equals(selectedValues, dataModel.value)) {
+            if (!ariaUtilsJson.equals(selectedValues, dataModel.value)) {
 
-                aria.utils.Json.setValue(dataModel, 'value', selectedValues);
-                aria.utils.Json.setValue(dataModel, 'text', this._getDisplayValue(selectedValues));
-                aria.utils.Json.setValue(dataModel, 'selectedValues', selectedValues);
+                ariaUtilsJson.setValue(dataModel, 'value', selectedValues);
+                ariaUtilsJson.setValue(dataModel, 'text', this._getDisplayValue(selectedValues));
+                ariaUtilsJson.setValue(dataModel, 'selectedValues', selectedValues);
             }
 
-            var report = new aria.widgets.controllers.reports.DropDownControllerReport();
+            var report = new ariaWidgetsControllersReportsDropDownControllerReport();
 
             report.text = dataModel.text;
             report.value = this._getValue(dataModel.text, dataModel.value);
@@ -303,16 +310,16 @@ Aria.classDefinition({
          * @return {aria.widgets.controllers.reports.DropDownControllerReport}
          */
         _checkInputKey : function (charCode, keyCode, currentText, caretPosStart, caretPosEnd) {
-            if (aria.DomEvent.KC_ARROW_DOWN === keyCode) {
+            if (ariaDomEvent.KC_ARROW_DOWN === keyCode) {
                 var report = this.checkValue(currentText.split(this._separator));
                 if (report != null) {
                     report.$dispose();
                 }
             }
-            var report = new aria.widgets.controllers.reports.DropDownControllerReport();
+            var report = new ariaWidgetsControllersReportsDropDownControllerReport();
             report.ok = true;
             report.cancelKeyStroke = false;
-            report.displayDropDown = keyCode === aria.DomEvent.KC_ARROW_DOWN;
+            report.displayDropDown = keyCode === ariaDomEvent.KC_ARROW_DOWN;
             return report;
         },
 

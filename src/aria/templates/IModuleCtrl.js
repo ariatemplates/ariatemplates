@@ -12,12 +12,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+
 
 /**
  * Base interface for module controller interfaces, exposed to templates and parent module controllers.
  * @class aria.templates.IModuleCtrl
  */
-Aria.interfaceDefinition({
+module.exports = Aria.interfaceDefinition({
     $classpath : 'aria.templates.IModuleCtrl',
     $events : {
         "methodCallBegin" : {

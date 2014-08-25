@@ -12,13 +12,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaWidgetLibsWidgetLib = require("../../widgetLibs/WidgetLib");
+
 
 /**
  * Touch widget library.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.touch.widgets.TouchWidgetLib",
-    $extends : "aria.widgetLibs.WidgetLib",
+    $extends : ariaWidgetLibsWidgetLib,
     $singleton : true,
     $prototype : {
         /**

@@ -12,12 +12,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaUtilsJson = require("../../utils/Json");
+
 
 /**
  * Script for template display interactions
  * @class aria.tools.inspector.TemplateInspectorScript
  */
-Aria.tplScriptDefinition({
+module.exports = Aria.tplScriptDefinition({
     $classpath : 'aria.tools.inspector.TemplateInspectorScript',
     $prototype : {
 
@@ -124,7 +127,7 @@ Aria.tplScriptDefinition({
          */
         editSource : function (event) {
             if (this.data.initialSource) {
-                aria.utils.Json.setValue(this.data, "initialSource", false);
+                ariaUtilsJson.setValue(this.data, "initialSource", false);
                 this.$refresh({
                     section : "controls"
                 });

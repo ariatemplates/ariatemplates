@@ -12,12 +12,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+
 
 /**
  * Flow controller base interface (currently empty, but may be completed later).
  * @class aria.templates.IFlowCtrl
  */
-Aria.interfaceDefinition({
+module.exports = Aria.interfaceDefinition({
     $classpath : 'aria.templates.IFlowCtrl',
     $interface : {}
 });

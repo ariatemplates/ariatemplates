@@ -12,20 +12,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaTouchWidgetsPopupCSS = require("./PopupCSS.tpl.css");
+require("./PopupCfgBeans");
+var ariaUtilsDom = require("../../utils/Dom");
+require("../../utils/Mouse");
+var ariaUtilsJson = require("../../utils/Json");
+var ariaWidgetLibsBindableWidget = require("../../widgetLibs/BindableWidget");
+var ariaCoreJsonValidator = require("../../core/JsonValidator");
+
 
 /**
  * Popup Widget.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.touch.widgets.Popup",
-    $extends : "aria.widgetLibs.BindableWidget",
-    $css : ["aria.touch.widgets.PopupCSS"],
+    $extends : ariaWidgetLibsBindableWidget,
+    $css : [ariaTouchWidgetsPopupCSS],
     $statics : {
         BINDING_NEEDED : "The property '%2' from Widget %1 should be bound to a data model",
         CSS_CLASS : "touchLibPopup",
         WIDGET_CFG : "aria.touch.widgets.PopupCfgBeans.PopupCfg"
     },
-    $dependencies : ["aria.touch.widgets.PopupCfgBeans", "aria.utils.Dom", "aria.utils.Mouse", "aria.utils.Json"],
     /**
      * Popup Constructor.
      * @param {aria.touch.widgets.PopupCfgBeans.PopupCfg} cfg popup configuration
@@ -35,7 +43,7 @@ Aria.classDefinition({
     $constructor : function (cfg, context, lineNumber) {
         this.$BindableWidget.constructor.apply(this, arguments);
 
-        this._cfgOk = aria.core.JsonValidator.validateCfg(this.WIDGET_CFG, cfg);
+        this._cfgOk = ariaCoreJsonValidator.validateCfg(this.WIDGET_CFG, cfg);
 
         if (!this._cfgOk) {
             return;
@@ -184,7 +192,7 @@ Aria.classDefinition({
             if (cfg.domReference) {
                 domReference = cfg.domReference;
             } else if (cfg.referenceId) {
-                domReference = aria.utils.Dom.getElementById(this._context.$getId(cfg.referenceId));
+                domReference = ariaUtilsDom.getElementById(this._context.$getId(cfg.referenceId));
             }
 
             popup.open({
@@ -228,7 +236,7 @@ Aria.classDefinition({
             var bind = this._bindingListeners.visible;
             if (bind) {
                 var newValue = this._transform(bind.transform, false, "fromWidget");
-                aria.utils.Json.setValue(bind.inside, bind.to, newValue, bind.cb);
+                ariaUtilsJson.setValue(bind.inside, bind.to, newValue, bind.cb);
             }
         }
     }

@@ -12,18 +12,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaEmbedControllersMapController = require("./controllers/MapController");
+var ariaEmbedElement = require("./Element");
+
 
 /**
  * Map widget for the Embed Lib
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.embed.Map",
-    $extends : "aria.embed.Element",
-    $dependencies : ["aria.embed.controllers.MapController"],
+    $extends : ariaEmbedElement,
     $constructor : function (cfg, context, lineNumber) {
 
         this.$Element.constructor.apply(this, arguments);
-        this._cfg.controller = aria.embed.controllers.MapController;
+        this._cfg.controller = ariaEmbedControllersMapController;
         this._cfg.args = {
             id : cfg.id,
             provider : cfg.provider,

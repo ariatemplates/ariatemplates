@@ -12,22 +12,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaWidgetsControllersDateController = require("../controllers/DateController");
+var ariaWidgetsFormTextInput = require("./TextInput");
+
 
 /**
  * @class aria.widgets.form.DateField Datefield widget
  * @extends aria.widgets.form.TextInput
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : 'aria.widgets.form.DateField',
-    $extends : 'aria.widgets.form.TextInput',
-    $dependencies : ['aria.widgets.controllers.DateController'],
+    $extends : ariaWidgetsFormTextInput,
     /**
      * TextField constructor
      * @param {aria.widgets.CfgBeans:DateFieldCfg} cfg the widget configuration
      * @param {aria.templates.TemplateCtxt} ctxt template context
      */
     $constructor : function (cfg, ctxt, lineNumber) {
-        var controller = new aria.widgets.controllers.DateController();
+        var controller = new ariaWidgetsControllersDateController();
         this.$TextInput.constructor.call(this, cfg, ctxt, lineNumber, controller);
         controller.setPattern(cfg.pattern);
         if (cfg.minValue) {

@@ -12,13 +12,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+require("../core/JsonValidator");
+var ariaCoreBrowser = require("../core/Browser");
+var ariaUtilsString = require("./String");
+var ariaUtilsCssUnits = require("./css/Units");
+
 
 /**
  * This class contains utilities to manipulate the DOM.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.utils.Dom",
-    $dependencies : ["aria.core.JsonValidator", "aria.core.Browser", "aria.utils.String", "aria.utils.css.Units"],
     $singleton : true,
     $statics : {
 
@@ -39,7 +44,7 @@ Aria.classDefinition({
          * @return {HTMLElement}
          */
         getElementById : function (id) {
-            if (aria.core.Browser.isIE6 || aria.core.Browser.isIE7) {
+            if (ariaCoreBrowser.isIE6 || ariaCoreBrowser.isIE7) {
                 this.getElementById = function (id) {
                     var document = Aria.$window.document;
                     var el = document.getElementById(id);
@@ -158,7 +163,7 @@ Aria.classDefinition({
          * @param {HTMLElement} domElt
          */
         refreshDomElt : function (domElt) {
-            if (aria.core.Browser.isIE7) {
+            if (ariaCoreBrowser.isIE7) {
                 this.refreshDomElt = function (domElt) {
                     // Ugly fix for IE, it might fail if domElt is inside an iFrame
                     try {
@@ -173,7 +178,7 @@ Aria.classDefinition({
                         s2.zoom = 1;
                     } catch (ex) {}
                 };
-            } else if (aria.core.Browser.isIE8) {
+            } else if (ariaCoreBrowser.isIE8) {
                 this.refreshDomElt = function (domElt) {
                     // why on earth it is necessary to write code like this is a mystery
                     // but as it stands, we abide. fixes PTR 04273172
@@ -219,7 +224,7 @@ Aria.classDefinition({
                 domElt = this.getElementById(domElt);
             }
             if (domElt) {
-                if ((aria.core.Browser.isIE7 || aria.core.Browser.isIE8) && aria.utils && aria.utils.Delegate) {
+                if ((ariaCoreBrowser.isIE7 || ariaCoreBrowser.isIE8) && aria.utils && aria.utils.Delegate) {
                     try {
                         var activeElement = Aria.$window.document.activeElement;
                         if (activeElement && this.isAncestor(activeElement, domElt)) {
@@ -612,7 +617,7 @@ Aria.classDefinition({
 
             var document = element.ownerDocument;
             // shortcut to Browser
-            var browser = aria.core.Browser;
+            var browser = ariaCoreBrowser;
 
             var offsetLeft = 0;
             var offsetTop = 0;
@@ -781,7 +786,7 @@ Aria.classDefinition({
 
             } else {
                 var width, height;
-                var browser = aria.core.Browser;
+                var browser = ariaCoreBrowser;
                 if (browser.isChrome || browser.isSafari) {
                     var rectTextObject = element.getBoundingClientRect();
                     width = Math.round(rectTextObject.width);
@@ -867,7 +872,7 @@ Aria.classDefinition({
          * @param {String} property The CSS property to retrieve
          */
         getStyle : function (element, property) {
-            var browser = aria.core.Browser;
+            var browser = ariaCoreBrowser;
             var isIE8orLess = browser.isIE8 || browser.isIE7 || browser.isIE6;
             if (isIE8orLess) {
                 this.getStyle = function (element, property) {
@@ -882,7 +887,7 @@ Aria.classDefinition({
                         }
                         return (val / 100).toString(10); // to be consistent with getComputedStyle
                     } else if (property == 'width' || property == 'height') {
-                        return aria.utils.css.Units.getDomWidthOrHeightForOldIE(element, property);
+                        return ariaUtilsCssUnits.getDomWidthOrHeightForOldIE(element, property);
                     } else if (property == 'float') { // fix reserved word
                         property = 'styleFloat'; // fall through
                     }
@@ -892,7 +897,7 @@ Aria.classDefinition({
                         value = element.currentStyle[property];
                         if (!value) {
                             // Try the camel case
-                            var camel = aria.utils.String.dashedToCamel(property);
+                            var camel = ariaUtilsString.dashedToCamel(property);
                             value = element.currentStyle[camel];
                         }
                     }
@@ -1181,7 +1186,7 @@ Aria.classDefinition({
             if (document == null) {
                 document = Aria.$window.document;
             }
-            return ((!(aria.core.Browser.isSafari || aria.core.Browser.isChrome) && (document.compatMode == "CSS1Compat"))
+            return ((!(ariaCoreBrowser.isSafari || ariaCoreBrowser.isChrome) && (document.compatMode == "CSS1Compat"))
                     ? document.documentElement
                     : document.body);
         },
@@ -1192,7 +1197,7 @@ Aria.classDefinition({
          * @param {Number} opacity must be between 0 and 1
          */
         setOpacity : function (element, opacity) {
-            var browser = aria.core.Browser;
+            var browser = ariaCoreBrowser;
             var isIE8OrLess = (browser.isIE8 || browser.isIE7 || browser.isIE6);
             this.setOpacity = isIE8OrLess ? this._setOpacityLegacyIE : this._setOpacityW3C;
             this.setOpacity(element, opacity);
@@ -1247,7 +1252,7 @@ Aria.classDefinition({
          * @return {Boolean} true if Webkit is used and the bug is still there. false otherwise.
          */
         _checkRefreshScrollbarsNeeded : function () {
-            if (!aria.core.Browser.isWebkit) {
+            if (!ariaCoreBrowser.isWebkit) {
                 // we only do this check on Webkit
                 return false;
             }

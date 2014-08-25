@@ -12,15 +12,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaTouchGesture = require("./Gesture");
+var ariaCoreTimer = require("../core/Timer");
+
 
 /**
  * Contains delegated handler for a single tap event. It has to be used on elements which are also listening to
  * doubletap, since listening to tap is non sense in that case.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $singleton : true,
     $classpath : "aria.touch.SingleTap",
-    $extends : "aria.touch.Gesture",
+    $extends : ariaTouchGesture,
     $statics : {
         /**
          * The move tolerance to validate the gesture.
@@ -124,7 +128,7 @@ Aria.classDefinition({
         _singleTapEnd : function (event) {
             var status = this._gestureEnd(event);
             if (status != null) {
-                this.timerId = aria.core.Timer.addCallback({
+                this.timerId = ariaCoreTimer.addCallback({
                     fn : this._singleTapFinalize,
                     scope : this,
                     delay : this.FINAL_DELAY,
@@ -144,7 +148,7 @@ Aria.classDefinition({
          */
         _singleTapCancel : function (event) {
             if (this.timerId) {
-                aria.core.Timer.cancelCallback(this.timerId);
+                ariaCoreTimer.cancelCallback(this.timerId);
                 this.timerId = null;
             }
             return this._gestureCancel(event);
@@ -157,7 +161,7 @@ Aria.classDefinition({
          */
         _singleTapFinalize : function (event) {
             if (this.timerId) {
-                aria.core.Timer.cancelCallback(this.timerId);
+                ariaCoreTimer.cancelCallback(this.timerId);
                 this.timerId = null;
             }
             this._raiseFakeEvent(event, this._getFakeEventsMap().finalize);
@@ -171,7 +175,7 @@ Aria.classDefinition({
          */
         _singleTapFinalCancel : function (event) {
             if (this.timerId) {
-                aria.core.Timer.cancelCallback(this.timerId);
+                ariaCoreTimer.cancelCallback(this.timerId);
                 this.timerId = null;
             }
             return this._raiseFakeEvent(event, this._getFakeEventsMap().cancel);

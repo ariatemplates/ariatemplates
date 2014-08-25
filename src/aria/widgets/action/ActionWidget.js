@@ -12,17 +12,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+require("../../utils/Function");
+var ariaUtilsDom = require("../../utils/Dom");
+var ariaTemplatesDomEventWrapper = require("../../templates/DomEventWrapper");
+var ariaWidgetsWidgetTrait = require("../WidgetTrait");
+var ariaWidgetsWidget = require("../Widget");
+
 
 /**
  * @class aria.widgets.action.ActionWidget Base class for all action widgets such as buttons, icon buttons and links.
  * This class will handle the onclick action.
  * @extends aria.widget.Widget
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.widgets.action.ActionWidget",
-    $extends : "aria.widgets.Widget",
-    $dependencies : ["aria.utils.Function", "aria.utils.Dom", "aria.templates.DomEventWrapper",
-            "aria.widgets.WidgetTrait"],
+    $extends : ariaWidgetsWidget,
     /**
      * ActionWidget constructor
      * @param {aria.widgets.CfgBeans:ActionWidgetCfg} cfg the widget configuration
@@ -57,7 +62,7 @@ Aria.classDefinition({
          * @param {Object} p the prototype object being built
          */
         $init : function (p) {
-            var src = aria.widgets.WidgetTrait.prototype;
+            var src = ariaWidgetsWidgetTrait.prototype;
             for (var key in src) {
                 if (src.hasOwnProperty(key) && !p.hasOwnProperty(key)) {
                     // copy methods which are not already on this object (this avoids copying $classpath and
@@ -73,7 +78,7 @@ Aria.classDefinition({
          */
         _init : function () {
 
-            var actingDom = aria.utils.Dom.getDomElementChild(this.getDom(), 0);
+            var actingDom = ariaUtilsDom.getDomElementChild(this.getDom(), 0);
             if (actingDom) {
                 this._actingDom = actingDom;
                 this._initActionWidget(actingDom);
@@ -106,7 +111,7 @@ Aria.classDefinition({
             if (cfg) {
                 var domEvtWrapper;
                 if (domEvent) {
-                    domEvtWrapper = new aria.templates.DomEventWrapper(domEvent);
+                    domEvtWrapper = new ariaTemplatesDomEventWrapper(domEvent);
                 }
                 var returnValue = this.evalCallback(cfg.onclick, domEvtWrapper);
                 if (domEvtWrapper) {

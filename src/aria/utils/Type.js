@@ -12,13 +12,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaCoreJsObject = require("../core/JsObject");
+
 
 /**
  * @class aria.utils.Type Utilities for comparing types
  * @extends aria.core.JsObject
  * @singleton
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : 'aria.utils.Type',
     $singleton : true,
     $prototype : {
@@ -145,7 +148,7 @@ Aria.classDefinition({
          * @return {Boolean} isContainer
          */
         isContainer : function (value) {
-            return (this.isObject(value) || this.isArray(value)) && !(value instanceof aria.core.JsObject);
+            return (this.isObject(value) || this.isArray(value)) && !(value instanceof ariaCoreJsObject);
         },
 
         /**

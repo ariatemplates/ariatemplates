@@ -12,17 +12,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaWidgetsContainerDiv = require("./Div");
+var ariaPopupsPopup = require("../../popups/Popup");
+var ariaWidgetsIcon = require("../Icon");
+var ariaUtilsDom = require("../../utils/Dom");
+require("../../utils/Function");
+var ariaUtilsDelegate = require("../../utils/Delegate");
+var ariaTemplatesNavigationManager = require("../../templates/NavigationManager");
+var ariaUtilsString = require("../../utils/String");
+var ariaUtilsMath = require("../../utils/Math");
+var ariaTemplatesLayout = require("../../templates/Layout");
+var ariaWidgetsContainerDialogStyle = require("./DialogStyle.tpl.css");
+var ariaWidgetsContainerContainer = require("./Container");
+var ariaCoreTimer = require("../../core/Timer");
+
 
 /**
  * Dialog widget
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.widgets.container.Dialog",
-    $extends : "aria.widgets.container.Container",
-    $dependencies : ["aria.widgets.container.Div", "aria.popups.Popup", "aria.widgets.Icon", "aria.utils.Dom",
-            "aria.utils.Function", "aria.utils.Delegate", "aria.templates.NavigationManager", "aria.utils.String",
-            "aria.utils.Math", "aria.templates.Layout"],
-    $css : ["aria.widgets.container.DialogStyle"],
+    $extends : ariaWidgetsContainerContainer,
+    $css : [ariaWidgetsContainerDialogStyle],
 
     /**
      * Dialog constructor
@@ -224,8 +236,8 @@ Aria.classDefinition({
         __writeTitlebarButton : function (out, delegateId, cssClassPostfix, skinIcon) {
             var cfg = this._cfg;
             out.write(['<span class="x', this._skinnableClass, '_', cssClassPostfix, ' x', this._skinnableClass, '_',
-                    cfg.sclass, '_', cssClassPostfix, '" ', aria.utils.Delegate.getMarkup(delegateId), '>'].join(''));
-            var button = new aria.widgets.Icon({
+                    cfg.sclass, '_', cssClassPostfix, '" ', ariaUtilsDelegate.getMarkup(delegateId), '>'].join(''));
+            var button = new ariaWidgetsIcon({
                 icon : this._skinObj[skinIcon]
             }, this._context, this._lineNumber);
             out.registerBehavior(button);
@@ -249,10 +261,10 @@ Aria.classDefinition({
          */
         _writerCallback : function (out) {
             var cfg = this._cfg;
-            var viewport = aria.utils.Dom._getViewportSize();
+            var viewport = ariaUtilsDom._getViewportSize();
 
             // constrain dialog to viewport
-            var math = aria.utils.Math;
+            var math = ariaUtilsMath;
             var maxHeight, maxWidth;
             if (this._cfg.maximized) {
                 maxHeight = viewport.height + this._shadows.top + this._shadows.bottom;
@@ -261,7 +273,7 @@ Aria.classDefinition({
                 maxHeight = math.min(this._cfg.maxHeight, viewport.height);
                 maxWidth = math.min(this._cfg.maxWidth, viewport.width);
             }
-            this._div = new aria.widgets.container.Div({
+            this._div = new ariaWidgetsContainerDiv({
                 sclass : this._skinObj.divsclass,
                 margins : "0 0 0 0",
                 block : true,
@@ -309,7 +321,7 @@ Aria.classDefinition({
             out.write(['<div class="xDialog_titleBar x', this._skinnableClass, '_', cfg.sclass, '_titleBar">'].join(''));
             if (cfg.icon) {
                 out.write(['<span class="xDialog_icon x', this._skinnableClass, '_', cfg.sclass, '_icon">'].join(''));
-                var icon = new aria.widgets.Icon({
+                var icon = new ariaWidgetsIcon({
                     icon : cfg.icon
                 }, this._context, this._lineNumber);
                 out.registerBehavior(icon);
@@ -317,18 +329,18 @@ Aria.classDefinition({
                 out.write('</span>');
             }
             out.write(['<span class="x', this._skinnableClass, '_title x', this._skinnableClass, '_', cfg.sclass,
-                    '_title">', aria.utils.String.escapeHTML(cfg.title), '</span>'].join(''));
+                    '_title">', ariaUtilsString.escapeHTML(cfg.title), '</span>'].join(''));
 
             // buttons are floated to the right, so close should be first in the markup
             if (cfg.closable) {
-                this._closeDelegateId = aria.utils.Delegate.add({
+                this._closeDelegateId = ariaUtilsDelegate.add({
                     fn : this._onCloseBtnEvent,
                     scope : this
                 });
                 this.__writeTitlebarButton(out, this._closeDelegateId, "close", "closeIcon");
             }
             if (cfg.maximizable) {
-                this._maximizeDelegateId = aria.utils.Delegate.add({
+                this._maximizeDelegateId = ariaUtilsDelegate.add({
                     fn : this._onMaximizeBtnEvent,
                     scope : this
                 });
@@ -436,7 +448,7 @@ Aria.classDefinition({
                 return;
             }
 
-            this._updateDivSize(aria.utils.Dom._getViewportSize());
+            this._updateDivSize(ariaUtilsDom._getViewportSize());
             if (this._cfg.center) {
                 this.updatePosition();
             }
@@ -514,7 +526,7 @@ Aria.classDefinition({
             };
 
             var section = this._context.getRefreshedSection(refreshParams);
-            var popup = new aria.popups.Popup();
+            var popup = new ariaPopupsPopup();
             this._popup = popup;
             popup.$on({
                 "onAfterOpen" : this._onAfterPopupOpen,
@@ -549,7 +561,7 @@ Aria.classDefinition({
             });
 
             // must be registered before we check for _cfg.maximized, to fire the event correctly after overflow change
-            aria.templates.Layout.$on({
+            ariaTemplatesLayout.$on({
                 "viewportResized" : this._onViewportResized,
                 scope : this
             });
@@ -566,16 +578,16 @@ Aria.classDefinition({
          */
         _onAfterPopupOpen : function () {
             var cfg = this._cfg;
-            var getDomElementChild = aria.utils.Dom.getDomElementChild;
+            var getDomElementChild = ariaUtilsDom.getDomElementChild;
             this._domElt = this._popup.domElement;
             this._titleBarDomElt = getDomElementChild(this._domElt, 0, true);
             this._titleDomElt = getDomElementChild(this._titleBarDomElt, cfg.icon ? 1 : 0);
             this._calculatePosition();
             if (cfg.modal) {
-                aria.templates.NavigationManager.focusFirst(this._domElt);
+                ariaTemplatesNavigationManager.focusFirst(this._domElt);
             }
 
-            aria.core.Timer.addCallback({
+            ariaCoreTimer.addCallback({
                 fn : function () {
                     this.evalCallback(cfg.onOpen);
                 },
@@ -635,7 +647,7 @@ Aria.classDefinition({
          */
         _onMouseClickClose : function () {
             // forces the blur on the active input to store its value in the data model
-            aria.utils.Delegate.delegate(aria.DomEvent.getFakeEvent('blur', Aria.$window.document.activeElement));
+            ariaUtilsDelegate.delegate(aria.DomEvent.getFakeEvent('blur', Aria.$window.document.activeElement));
             this.actionClose();
         },
 
@@ -657,16 +669,16 @@ Aria.classDefinition({
                 this._titleBarDomElt = null;
                 this._titleDomElt = null;
                 if (this._closeDelegateId) {
-                    aria.utils.Delegate.remove(this._closeDelegateId);
+                    ariaUtilsDelegate.remove(this._closeDelegateId);
                 }
                 if (this._maximizeDelegateId) {
-                    aria.utils.Delegate.remove(this._maximizeDelegateId);
+                    ariaUtilsDelegate.remove(this._maximizeDelegateId);
                 }
                 this._popup.close();
                 this._popup.$dispose();
                 this._popup = null;
 
-                aria.templates.Layout.$removeListeners({
+                ariaTemplatesLayout.$removeListeners({
                     "viewportResized" : this._onViewportResized,
                     scope : this
                 });
@@ -688,7 +700,7 @@ Aria.classDefinition({
          * @protected
          */
         _updateDivSize : function (viewport) {
-            var math = aria.utils.Math;
+            var math = ariaUtilsMath;
 
             var maxHeight, maxWidth;
             if (this._cfg.maximized) {
@@ -733,7 +745,7 @@ Aria.classDefinition({
          * Compute the actual position of the popup and update the data model with the correct values
          */
         _calculatePosition : function () {
-            var position = aria.utils.Dom.calculatePosition(this._domElt);
+            var position = ariaUtilsDom.calculatePosition(this._domElt);
             if (!this._cfg.maximized) { // in maximized mode, positioning is handled by the Popup itself
                 this.setProperty("xpos", position.left);
                 this.setProperty("ypos", position.top);
@@ -743,7 +755,7 @@ Aria.classDefinition({
          * Computes the size of the popup and update the data model with the updated values
          */
         _calculateSize : function () {
-            var position = aria.utils.Dom.getGeometry(this._domElt);
+            var position = ariaUtilsDom.getGeometry(this._domElt);
             this.setProperty("height", position.height);
             this.setProperty("width", position.width);
         },
@@ -855,7 +867,7 @@ Aria.classDefinition({
         _setBodyOverflow : function (newValue) {
             Aria.$window.document.documentElement.style.overflow = newValue;
             // need to explicitly raise viewportResized so that maxwidth/maxheight constraints are recalculated
-            var viewportSize = aria.utils.Dom._getViewportSize();
+            var viewportSize = ariaUtilsDom._getViewportSize();
             this._onViewportResized({
                 viewportNewSize : viewportSize
             });
@@ -886,7 +898,7 @@ Aria.classDefinition({
                 handle : this._titleBarDomElt,
                 cursor : "move",
                 proxy : this._cfg.movableProxy,
-                constrainTo : aria.utils.Dom.VIEWPORT
+                constrainTo : ariaUtilsDom.VIEWPORT
             });
             this._draggable.$on({
                 "dragstart" : {
@@ -910,7 +922,7 @@ Aria.classDefinition({
         _createResize : function () {
             if (this._handlesArr) {
                 this._resizable = {};
-                var handleArr = this._handlesArr, index = 0, parent = this._domElt, getDomElementChild = aria.utils.Dom.getDomElementChild;
+                var handleArr = this._handlesArr, index = 0, parent = this._domElt, getDomElementChild = ariaUtilsDom.getDomElementChild;
                 for (var i = 0, ii = handleArr.length; i < ii; i++) {
                     var handleElement = getDomElementChild(parent, ++index, false), axis = null, cursor;
                     cursor = handleArr[i];

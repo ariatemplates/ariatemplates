@@ -12,6 +12,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaUtilsType = require("./Type");
+
 
 /**
  * Object representing a callback. Does normalization on creation, and expose a simple call method.<br />
@@ -84,9 +87,8 @@
  * callback.call('my result here');
  * </code></pre>
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.utils.Callback",
-    $dependencies : ["aria.utils.Type"],
     $statics : {
         INVALID_CALLBACK : "The callback function is invalid or missing or it was called after $dispose."
     },
@@ -109,7 +111,7 @@ Aria.classDefinition({
         // normalise definition
         callbackDefinition = this.$normCallback(callbackDefinition);
 
-        var valid = aria.utils.Type.isFunction(callbackDefinition.fn);
+        var valid = ariaUtilsType.isFunction(callbackDefinition.fn);
 
         /**
          * Scope for callback execution
@@ -156,7 +158,7 @@ Aria.classDefinition({
          * @param {Object} event
          */
         call : function (evt) {
-            var args = (this._apply === true && aria.utils.Type.isArray(this._args)) ? this._args.slice() : [this._args];
+            var args = (this._apply === true && ariaUtilsType.isArray(this._args)) ? this._args.slice() : [this._args];
             var resIndex = (this._resIndex === undefined) ? 0 : this._resIndex;
 
             if (resIndex > -1) {

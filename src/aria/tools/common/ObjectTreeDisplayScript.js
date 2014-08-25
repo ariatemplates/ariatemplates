@@ -12,11 +12,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaUtilsType = require("../../utils/Type");
+
 
 /**
  * Script associated with template dedicated to object display in tree
  */
-Aria.tplScriptDefinition({
+module.exports = Aria.tplScriptDefinition({
     $classpath : "aria.tools.common.ObjectTreeDisplayScript",
     $prototype : {
 
@@ -88,7 +91,7 @@ Aria.tplScriptDefinition({
                     booleans : [],
                     others : []
                 }
-            }, typeUtils = aria.utils.Type;
+            }, typeUtils = ariaUtilsType;
 
             for (var key in element) {
                 if (element.hasOwnProperty(key) && !this.$json.isMetadata(key) && key.indexOf("view:ariaDebug:showOpen") !== 0) {

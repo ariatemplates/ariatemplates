@@ -12,14 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaTemplatesIModuleCtrl = require("../../templates/IModuleCtrl");
+
 
 /**
  * Interface for the error list controller.
  * @class aria.widgets.errorlist.IErrorListController
  */
-Aria.interfaceDefinition({
+module.exports = Aria.interfaceDefinition({
     $classpath : 'aria.widgets.errorlist.IErrorListController',
-    $extends : 'aria.templates.IModuleCtrl',
+    $extends : ariaTemplatesIModuleCtrl,
     $events : {
         "messagesChanged" : "Raised when the list of messages to be displayed has changed."
     },

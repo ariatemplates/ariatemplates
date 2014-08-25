@@ -12,6 +12,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+require("./beans/TextInputCfg");
+var ariaUtilsCaret = require("../utils/Caret");
+var ariaDomEvent = require("../DomEvent");
+var ariaHtmlInputElement = require("./InputElement");
+var ariaUtilsType = require("../utils/Type");
+var ariaUtilsArray = require("../utils/Array");
+var ariaUtilsJson = require("../utils/Json");
+var ariaCoreTimer = require("../core/Timer");
+
 
 (function () {
     /**
@@ -48,7 +58,7 @@
      * @private
      */
     function keyDownToType (event, callbackArray) {
-        this._typeCallback = aria.core.Timer.addCallback({
+        this._typeCallback = ariaCoreTimer.addCallback({
             fn : typeCallback,
             scope : this,
             delay : 12,
@@ -70,7 +80,7 @@
      */
     function keyDownCallback (event) {
         if (this._hasPlaceholder) {
-            if (!aria.utils.Array.contains(specialKeys, event.keyCode)) {
+            if (!ariaUtilsArray.contains(specialKeys, event.keyCode)) {
                 this._removePlaceholder();
             } else {
                 event.preventDefault();
@@ -94,9 +104,9 @@
         if (this._hasPlaceholder) {
             // We're handling the placeholder. Set an empty string in the datamodel instead of the placeholder value
             // Note that the placeholder is set by the type function, so we know the field must be empty
-            aria.utils.Json.setValue(bind.inside, bind.to, "", bind.cb);
+            ariaUtilsJson.setValue(bind.inside, bind.to, "", bind.cb);
         } else {
-            aria.utils.Json.setValue(bind.inside, bind.to, newValue, bind.cb);
+            ariaUtilsJson.setValue(bind.inside, bind.to, newValue, bind.cb);
         }
         this._firstFocus = true;
 
@@ -110,7 +120,7 @@
     function focusBinding (event) {
         this._hasFocus = true;
         if (this._hasPlaceholder) {
-            aria.core.Timer.addCallback({
+            ariaCoreTimer.addCallback({
                 fn : this._setCaretForPlaceholder,
                 scope : this,
                 delay : 4
@@ -125,7 +135,7 @@
      */
     function clickBinding (event) {
         if (this._hasPlaceholder) {
-            aria.utils.Caret.setPosition(this._domElt, 0, 0);
+            ariaUtilsCaret.setPosition(this._domElt, 0, 0);
         } else if (this._cfg.autoselect) {
             this._autoselect();
         }
@@ -141,10 +151,9 @@
     /**
      * TextInput widget. Bindable widget providing bi-directional bind of 'value' and on 'type' event callback.
      */
-    Aria.classDefinition({
+    module.exports = Aria.classDefinition({
         $classpath : "aria.html.TextInput",
-        $extends : "aria.html.InputElement",
-        $dependencies : ["aria.html.beans.TextInputCfg", "aria.utils.Caret", "aria.DomEvent"],
+        $extends : ariaHtmlInputElement,
         $statics : {
             /* BACKWARD-COMPATIBILITY-BEGIN GH-551*/
             /**
@@ -155,7 +164,7 @@
             /* BACKWARD-COMPATIBILITY-END GH-551*/
         },
         $onload : function () {
-            var domevent = aria.DomEvent;
+            var domevent = ariaDomEvent;
             specialKeys = [domevent.KC_END, domevent.KC_RIGHT, domevent.KC_ARROW_RIGHT, domevent.KC_DOWN,
                     domevent.KC_ARROW_DOWN, domevent.KC_DELETE, domevent.KC_BACKSPACE];
 
@@ -226,7 +235,7 @@
         },
         $destructor : function () {
             if (this._typeCallback) {
-                aria.core.Timer.cancelCallback(this._typeCallback);
+                ariaCoreTimer.cancelCallback(this._typeCallback);
             }
             this.$InputElement.$destructor.call(this);
         },
@@ -296,7 +305,7 @@
                     this._chainListener(listeners, "keydown", {
                         fn : keyDownToType,
                         scope : this,
-                        args : aria.utils.Type.isArray(listeners.type) ? listeners.type : [listeners.type]
+                        args : ariaUtilsType.isArray(listeners.type) ? listeners.type : [listeners.type]
                     });
                     delete listeners.type;
                 }
@@ -309,7 +318,7 @@
             _autoselect : function () {
                 if (this._firstFocus) {
                     this._firstFocus = false;
-                    aria.utils.Caret.select(this._domElt);
+                    ariaUtilsCaret.select(this._domElt);
                 }
             },
 
@@ -327,7 +336,7 @@
                         cssClass.add('placeholder');
                         cssClass.$dispose();
                         if (this._hasFocus) {
-                            aria.utils.Caret.setPosition(element, 0, 0);
+                            ariaUtilsCaret.setPosition(element, 0, 0);
                         }
                         this._hasPlaceholder = true;
                         this._domElt.unselectable = "on";
@@ -393,7 +402,7 @@
              */
             _setCaretForPlaceholder : function () {
                 if (this._hasPlaceholder) {
-                    aria.utils.Caret.setPosition(this._domElt, 0, 0);
+                    ariaUtilsCaret.setPosition(this._domElt, 0, 0);
                 }
             }
 

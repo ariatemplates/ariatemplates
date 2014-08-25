@@ -12,6 +12,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaCoreLogDefaultAppender = require("./log/DefaultAppender");
+var ariaUtilsString = require("../utils/String");
+var ariaCoreJsObject = require("./JsObject");
+
 
 /**
  * Singleton to be used to log messages from any class. This object should probably not be used
@@ -43,10 +48,9 @@
  *
  * @singleton
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.core.Log",
     $singleton : true,
-    $dependencies : ["aria.core.log.DefaultAppender", "aria.utils.String"],
     $statics : {
         /**
          * Debug log level
@@ -96,7 +100,7 @@ Aria.classDefinition({
         this._appenders = [];
 
         var oSelf = this;
-        var jsObjectProto = aria.core.JsObject.prototype;
+        var jsObjectProto = ariaCoreJsObject.prototype;
         // map function on JsObject prototype and Aria
 
         jsObjectProto.$logDebug = function (msg, msgArgs, obj) {
@@ -129,7 +133,7 @@ Aria.classDefinition({
 
         this.resetLoggingLevels();
         this.setLoggingLevel("*", Aria.debug ? this.LEVEL_DEBUG : this.LEVEL_ERROR);
-        this.addAppender(new aria.core.log.DefaultAppender());
+        this.addAppender(new ariaCoreLogDefaultAppender());
     },
     $destructor : function () {
         this.resetLoggingLevels();
@@ -137,7 +141,7 @@ Aria.classDefinition({
 
         // remove functions on JsObject and Aria (added in the constructor):
 
-        var jsObjectProto = aria.core.JsObject.prototype;
+        var jsObjectProto = ariaCoreJsObject.prototype;
         var alert = Aria.$window.alert;
         jsObjectProto.$logError = function (msg, msgArgs, err) {
             alert(["Error after aria.core.Log is disposed:\nin:", this.$classpath, "\nmsg:", msg].join(''));
@@ -291,7 +295,7 @@ Aria.classDefinition({
          */
         prepareLoggedMessage : function (msg, msgArgs, errorContext) {
             if (msgArgs) {
-                msg = aria.utils.String.substitute(msg, msgArgs);
+                msg = ariaUtilsString.substitute(msg, msgArgs);
             }
             for (var error in errorContext) {
                 if (errorContext.hasOwnProperty(error)) {

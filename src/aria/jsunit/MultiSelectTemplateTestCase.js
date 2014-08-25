@@ -12,14 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaJsunitTemplateTestCase = require("./TemplateTestCase");
+
 
 /**
  * Class to be extended to create a template test case that tests the multiselect widget. Provides utility methods
  * related to multiselect.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.jsunit.MultiSelectTemplateTestCase",
-    $extends : "aria.jsunit.TemplateTestCase",
+    $extends : ariaJsunitTemplateTestCase,
     $prototype : {
 
         /**

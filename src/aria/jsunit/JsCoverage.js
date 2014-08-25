@@ -12,15 +12,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaUtilsFunction = require("../utils/Function");
+var ariaJsunitJsCoverageObject = require("./JsCoverageObject");
+var ariaJsunitJsCoverageReport = require("./JsCoverageReport");
+var ariaJsunitJsCoverageStore = require("./JsCoverageStore");
+var ariaUtilsType = require("../utils/Type");
+var ariaUtilsQueryString = require("../utils/QueryString");
+
 
 /**
  * Handles the informations regarding JsCoverage
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.jsunit.JsCoverage",
     $singleton : true,
-    $dependencies : ["aria.utils.Function", "aria.jsunit.JsCoverageObject", "aria.jsunit.JsCoverageReport",
-            "aria.jsunit.JsCoverageStore"],
     $constructor : function () {
         /**
          * Array of jscoverage objects extracted, from the main jscoverage data
@@ -39,14 +45,14 @@ Aria.classDefinition({
          * @private
          * @type aria.jsunit.JsCoverageReport
          */
-        this._reporter = new aria.jsunit.JsCoverageReport({
+        this._reporter = new ariaJsunitJsCoverageReport({
             jsCoverage : this
         });
 
         /**
          * @type aria.jsunit.JsCoverageStore
          */
-        this.jsCoverageStore = new aria.jsunit.JsCoverageStore();
+        this.jsCoverageStore = new ariaJsunitJsCoverageStore();
     },
 
     $destructor : function () {
@@ -74,7 +80,7 @@ Aria.classDefinition({
                 if (!data.hasOwnProperty(filename)) {
                     continue;
                 }
-                var jsCoverageObject = new aria.jsunit.JsCoverageObject({
+                var jsCoverageObject = new ariaJsunitJsCoverageObject({
                     data : data[filename],
                     filename : filename
                 });
@@ -104,7 +110,7 @@ Aria.classDefinition({
 
             for (var i = 0, l = filters.length; i < l; i++) {
                 var filter = filters[i];
-                var boundFilter = aria.utils.Function.bind(filterFunction, this, filter);
+                var boundFilter = ariaUtilsFunction.bind(filterFunction, this, filter);
                 this.addFilter(boundFilter);
             }
         },
@@ -114,10 +120,10 @@ Aria.classDefinition({
          * Example : filters=util,-math,-bridge
          */
         addFiltersFromQueryString : function () {
-            var qs = aria.utils.QueryString;
+            var qs = ariaUtilsQueryString;
             var filterParameter = qs.getKeyValue("filter");
 
-            if (!aria.utils.Type.isString(filterParameter)) {
+            if (!ariaUtilsType.isString(filterParameter)) {
                 return;
             }
             this.addFiltersFromString(filterParameter);

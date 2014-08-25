@@ -12,16 +12,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaTemplatesTplParser = require("./TplParser");
+var ariaTemplatesTplClassGenerator = require("./TplClassGenerator");
+var ariaTemplatesClassGenerator = require("./ClassGenerator");
+
 
 /**
  * Generate the class definition for an HTML Template library
  * @class aria.templates.TmlClassGenerator
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : 'aria.templates.TmlClassGenerator',
-    $extends : 'aria.templates.ClassGenerator',
+    $extends : ariaTemplatesClassGenerator,
     $singleton : true,
-    $dependencies : ['aria.templates.TplParser', 'aria.templates.TplClassGenerator'],
     $constructor : function () {
         this.$ClassGenerator.constructor.call(this);
 
@@ -29,7 +33,7 @@ Aria.classDefinition({
         this._loadStatements(["Library", "id", "on", "createView", "section", "@", "repeater"]);
 
         // Redefine the protected parser
-        this._parser = aria.templates.TplParser;
+        this._parser = ariaTemplatesTplParser;
 
         // Redefine the class used as the parent for templates which do not inherit from any other template
         this._superClass = "aria.templates.Template";
@@ -46,7 +50,7 @@ Aria.classDefinition({
     },
     $prototype : {
         $init : function (p) {
-            var tplClassGen = aria.templates.TplClassGenerator;
+            var tplClassGen = ariaTemplatesTplClassGenerator;
             // TODO: instead of copying methods from TplClassGenerator, it may be a good idea to make TmlClassGenerator
             // extend TplClassGenerator in the future (the problem is that TplClassGenerator is a singleton)
             p._processTemplateContent = tplClassGen._processTemplateContent;

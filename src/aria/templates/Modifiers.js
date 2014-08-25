@@ -12,6 +12,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaUtilsType = require("../utils/Type");
+var ariaUtilsString = require("../utils/String");
+var ariaUtilsArray = require("../utils/Array");
+
 
 // //////////////////////////////////////////////////////////////////////////////////////////
 // IMPORTANT: no modifier should assume `this === aria.templates.Modifiers` holds.
@@ -50,7 +55,7 @@
              */
             fn : function (s) {
                 this.$logWarn(aria.templates.Modifiers.DEPRECATED_ESCAPE_MODIFIER);
-                return aria.utils.String.escapeHTML(String(s));
+                return ariaUtilsString.escapeHTML(String(s));
             }
         },
         /* BACKWARD-COMPATIBILITY-END (deprecate escape modifier) */
@@ -87,7 +92,7 @@
                 }
 
                 var infos = {};
-                var output = aria.utils.String.escapeForHTML(input + '', arg, infos);
+                var output = ariaUtilsString.escapeForHTML(input + '', arg, infos);
 
                 if (!infos.escaped) {
                     return input;
@@ -192,7 +197,7 @@
              * @return {String} formatted date
              */
             fn : function (date, pattern) {
-                if (aria.utils.Type.isDate(date)) {
+                if (ariaUtilsType.isDate(date)) {
                     return aria.utils.Date.format(date, pattern);
                 } else {
                     this.$logError(aria.templates.Modifiers.DATEFORMAT_MODIFIER_ENTRY, [date]);
@@ -215,7 +220,7 @@
              * @return {String} formatted time
              */
             fn : function (time, pattern) {
-                if (aria.utils.Type.isDate(time)) {
+                if (ariaUtilsType.isDate(time)) {
                     return aria.utils.Date.format(time, pattern);
                 } else {
                     this.$logError(aria.templates.Modifiers.DATEFORMAT_MODIFIER_ENTRY, [time]);
@@ -284,8 +289,8 @@
              * @return {String}
              */
             fn : function (str, highlight) {
-                if (aria.utils.Type.isString(str) && highlight.length) {
-                    var beginning = aria.utils.String.stripAccents(str.substring(0, highlight.length)).toLowerCase();
+                if (ariaUtilsType.isString(str) && highlight.length) {
+                    var beginning = ariaUtilsString.stripAccents(str.substring(0, highlight.length)).toLowerCase();
                     highlight = highlight.toLowerCase();
                     if (beginning === highlight) {
                         return "<strong>" + str.substring(0, highlight.length) + "</strong>"
@@ -317,14 +322,14 @@
              * @return {String}
              */
             fn : function (str, highlight) {
-                if (aria.utils.Type.isString(str) && aria.utils.Type.isString(highlight)) {
+                if (ariaUtilsType.isString(str) && ariaUtilsType.isString(highlight)) {
                     var toBeMatched = str.split(" ");
                     // sort toBeHighlighted by longest running match
                     var toBeHighlighted = highlight.split(" ").sort(function (first, second) {
                         var aLen = first.length, bLen = second.length;
                         return aLen === bLen ? 0 : (aLen < bLen ? 1 : -1);
                     });
-                    aria.utils.Array.forEach(toBeMatched, function (value, index, array) {
+                    ariaUtilsArray.forEach(toBeMatched, function (value, index, array) {
                         for (var i = 0, len = toBeHighlighted.length; value && i <= len; i += 1) {
                             if (toBeHighlighted[i] == null || toBeHighlighted[i] === "") {
                                 continue;
@@ -372,7 +377,7 @@
      * descriptions.
      * @singleton
      */
-    Aria.classDefinition({
+    module.exports = Aria.classDefinition({
         $classpath : "aria.templates.Modifiers",
         $singleton : true,
         $constructor : function () {

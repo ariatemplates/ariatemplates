@@ -13,15 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaCoreJsonValidator = require("../core/JsonValidator");
+require("./AriaSkinBeans");
+var ariaWidgetsAriaSkinNormalization = require("./AriaSkinNormalization");
+var ariaCoreDownloadMgr = require("../core/DownloadMgr");
+var ariaUtilsCSSLoader = require("../utils/CSSLoader");
+var ariaUtilsString = require("../utils/String");
+
 
 /**
  * A class that provides an interface to the AriaSkin object that comes from the skinning system.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.widgets.AriaSkinInterface",
     $singleton : true,
-    $dependencies : ["aria.core.JsonValidator", "aria.widgets.AriaSkinBeans", "aria.widgets.AriaSkinNormalization",
-            "aria.core.DownloadMgr", "aria.utils.CSSLoader"],
     $onload : function () {
         // check for skin existency
         if (aria.widgets.AriaSkin) {
@@ -30,7 +36,7 @@ Aria.classDefinition({
                 for (var i = 0; i < general.externalCSS.length; i++) {
                     general.externalCSS[i] = general.imagesRoot + general.externalCSS[i];
                 }
-                aria.utils.CSSLoader.add(general.externalCSS);
+                ariaUtilsCSSLoader.add(general.externalCSS);
             }
         }
     },
@@ -51,7 +57,7 @@ Aria.classDefinition({
          * Normalizes the whole current skin, if not already done.
          */
         normalizeSkin : function () {
-            aria.widgets.AriaSkinNormalization.normalizeSkin(aria.widgets.AriaSkin.skinObject);
+            ariaWidgetsAriaSkinNormalization.normalizeSkin(aria.widgets.AriaSkin.skinObject);
         },
 
         /**
@@ -62,7 +68,7 @@ Aria.classDefinition({
          * @return {Object}
          */
         getWidgetStates : function (widgetName) {
-            var bean = aria.core.JsonValidator.getBean("aria.widgets.AriaSkinBeans." + widgetName + "Cfg");
+            var bean = ariaCoreJsonValidator.getBean("aria.widgets.AriaSkinBeans." + widgetName + "Cfg");
             if (bean && bean.$properties.states) {
                 return bean.$properties.states.$properties;
             }
@@ -106,7 +112,7 @@ Aria.classDefinition({
         getSkinClasses : function (widgetName) {
             var widgetSkinObj = aria.widgets.AriaSkin.skinObject[widgetName];
             if (!widgetSkinObj || !widgetSkinObj['aria:skinNormalized']) {
-                var newValue = aria.widgets.AriaSkinNormalization.normalizeWidget(widgetName, widgetSkinObj);
+                var newValue = ariaWidgetsAriaSkinNormalization.normalizeWidget(widgetName, widgetSkinObj);
                 if (newValue && newValue != widgetSkinObj) {
                     widgetSkinObj = newValue;
                     aria.widgets.AriaSkin.skinObject[widgetName] = newValue;
@@ -139,7 +145,7 @@ Aria.classDefinition({
         _normalizeAndGetGeneral : function (skinObjProp, beanType) {
             var general = aria.widgets.AriaSkin.skinObject[skinObjProp];
             if (!general || !general['aria:skinNormalized']) {
-                var newValue = aria.widgets.AriaSkinNormalization.normalizeGeneral(general, beanType);
+                var newValue = ariaWidgetsAriaSkinNormalization.normalizeGeneral(general, beanType);
                 if (general != newValue) {
                     aria.widgets.AriaSkin.skinObject[skinObjProp] = general = newValue;
                 }
@@ -280,7 +286,7 @@ Aria.classDefinition({
          * @return {String} full URL (taking into account Aria.rootFolderPath and the general.imagesRoot skin property)
          */
         getSkinImageFullUrl : function (imageUrl) {
-            return aria.core.DownloadMgr.resolveURL(this.getGeneral().imagesRoot + imageUrl, true);
+            return ariaCoreDownloadMgr.resolveURL(this.getGeneral().imagesRoot + imageUrl, true);
         },
 
         /**
@@ -300,7 +306,7 @@ Aria.classDefinition({
                 var imageFullUrl = /^(data|https?):/i.test(imageurl) ? imageurl : this.getSkinImageFullUrl(imageurl);
                 fullUrl = "url(" + imageFullUrl + ") ";
 
-                if (aria.utils.String.endsWith(imageurl, ".png")) {
+                if (ariaUtilsString.endsWith(imageurl, ".png")) {
                     gifUrl = imageFullUrl.substring(0, imageFullUrl.length - 4) + ".gif";
                 } else {
                     gifUrl = imageFullUrl;

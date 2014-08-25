@@ -12,15 +12,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaUtilsScriptLoader = require("../../utils/ScriptLoader");
+var ariaMapProvidersIMapProvider = require("./IMapProvider");
+var ariaUtilsJson = require("../../utils/Json");
+
 
 /**
  * Load the bing 7 dependencies and creates map instances
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.map.providers.Microsoft7MapProvider",
     $singleton : true,
-    $dependencies : ["aria.utils.ScriptLoader"],
-    $implements : ["aria.map.providers.IMapProvider"],
+    $implements : [ariaMapProvidersIMapProvider],
     $constructor : function () {
 
         /**
@@ -54,7 +58,7 @@ Aria.classDefinition({
                     that._afterLoad.apply(that);
                     that = null;
                 };
-                aria.utils.ScriptLoader.load(["http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0&mkt=en-US&onscriptload=__bing7MapLoadCallback"]);
+                ariaUtilsScriptLoader.load(["http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0&mkt=en-US&onscriptload=__bing7MapLoadCallback"]);
 
             }
         },
@@ -95,7 +99,7 @@ Aria.classDefinition({
                 credentials : this.credentials
             };
 
-            aria.utils.Json.inject(cfg.initArgs, initArgs);
+            ariaUtilsJson.inject(cfg.initArgs, initArgs);
             return (this.isLoaded()) ? new Aria.$window.Microsoft.Maps.Map(cfg.domElement, initArgs) : null;
         },
 

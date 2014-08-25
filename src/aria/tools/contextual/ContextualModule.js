@@ -12,14 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaTemplatesModuleCtrl = require("../../templates/ModuleCtrl");
+
 
 /**
  * Module controller for contextual menu.
  * @class aria.tools.contextual.ContextualModuleCtrl
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : 'aria.tools.contextual.ContextualModule',
-    $extends : 'aria.templates.ModuleCtrl',
+    $extends : ariaTemplatesModuleCtrl,
     $constructor : function () {
         this.$ModuleCtrl.constructor.call(this);
     },

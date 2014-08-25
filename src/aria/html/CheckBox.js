@@ -12,6 +12,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+require("./beans/CheckBoxCfg");
+var ariaHtmlInputElement = require("./InputElement");
+var ariaUtilsJson = require("../utils/Json");
+
 
 (function () {
     /**
@@ -24,16 +29,15 @@
     function bidirectionalClickBinding (event) {
         var bind = this._bindingListeners.checked;
         var newValue = this._transform(bind.transform, event.target.getProperty('checked'), "fromWidget");
-        aria.utils.Json.setValue(bind.inside, bind.to, newValue, bind.cb);
+        ariaUtilsJson.setValue(bind.inside, bind.to, newValue, bind.cb);
     }
 
     /**
      * CheckBox widget. Bindable widget providing bi-directional bind of 'checked'.
      */
-    Aria.classDefinition({
+    module.exports = Aria.classDefinition({
         $classpath : "aria.html.CheckBox",
-        $extends : "aria.html.InputElement",
-        $dependencies : ["aria.html.beans.CheckBoxCfg"],
+        $extends : ariaHtmlInputElement,
         /**
          * Create an instance of the widget.
          * @param {aria.html.beans.CheckBoxCfg:Properties} cfg widget configuration, which is the parameter given in the

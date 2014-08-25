@@ -12,13 +12,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaUtilsType = require("../utils/Type");
+var ariaUtilsArray = require("../utils/Array");
+
 
 /**
  * Placeholder Manager used by the Placeholder widget
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.embed.PlaceholderManager",
-    $dependencies : ["aria.utils.Type", "aria.utils.Array"],
     $singleton : true,
     $constructor : function () {
 
@@ -63,7 +66,7 @@ Aria.classDefinition({
          */
         getContent : function (placeholderPath) {
             var contents = [];
-            var typeUtils = aria.utils.Type;
+            var typeUtils = ariaUtilsType;
 
             var providers = this._providers;
             for (var i = 0, ii = providers.length; i < ii; i++) {
@@ -93,7 +96,7 @@ Aria.classDefinition({
          */
         register : function (provider) {
             var providers = this._providers;
-            if (!aria.utils.Array.contains(providers, provider)) {
+            if (!ariaUtilsArray.contains(providers, provider)) {
                 provider.$addListeners({
                     "contentChange" : this._contentChangeListener
                 });
@@ -107,7 +110,7 @@ Aria.classDefinition({
          */
         unregister : function (provider) {
             var providers = this._providers;
-            if (aria.utils.Array.remove(providers, provider)) {
+            if (ariaUtilsArray.remove(providers, provider)) {
                 provider.$removeListeners({
                     "contentChange" : this._contentChangeListener
                 });

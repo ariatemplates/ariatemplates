@@ -12,18 +12,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaUtilsType = require("./Type");
+
 
 /**
  * @class aria.utils.Event Various Math utilities
  * @extends aria.core.JsObject
  * @singleton
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : 'aria.utils.Math',
     $singleton : true,
-    $dependencies : ['aria.utils.Type'],
     $constructor : function () {
-        this.utilType = aria.utils.Type;
+        this.utilType = ariaUtilsType;
     },
     $prototype : {
 

@@ -12,6 +12,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../../Aria");
+var ariaUtilsDom = require("../../../utils/Dom");
+var ariaUtilsJson = require("../../../utils/Json");
+
 
 // Appenders should implement an interface
 // And the type of the <report> object passed to the append method should be documented in a bean
@@ -20,21 +24,20 @@
  * Appender that will output the report as a JSON string inside a hidden DIV so that browser drivers such as Selenium
  * can retrieve it
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.tester.runner.appenders.JsonTextDivAppender",
-    $dependencies : ['aria.utils.Dom', 'aria.utils.Json'],
     $statics : {
         REPORT_DIV_ID : 'testReport'
     },
     $prototype : {
         _destroyReportDiv : function () {
-            var div = aria.utils.Dom.getElementById(this.REPORT_DIV_ID);
+            var div = ariaUtilsDom.getElementById(this.REPORT_DIV_ID);
             if (div) {
                 div.parentNode.removeChild(div);
             }
         },
         _createReportDiv : function (content) {
-            var div = aria.utils.Dom.getElementById(this.REPORT_DIV_ID);
+            var div = ariaUtilsDom.getElementById(this.REPORT_DIV_ID);
             if (!div) {
                 var document = Aria.$window.document;
                 div = document.createElement("DIV");
@@ -50,7 +53,7 @@ Aria.classDefinition({
          */
         append : function (report) {
             this._destroyReportDiv();
-            this._createReportDiv(aria.utils.Json.convertToJsonString(report));
+            this._createReportDiv(ariaUtilsJson.convertToJsonString(report));
         }
     }
 });

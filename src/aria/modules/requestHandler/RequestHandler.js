@@ -12,14 +12,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaModulesRequestHandlerIRequestHandler = require("./IRequestHandler");
+var ariaModulesRequestHandlerEnvironmentRequestHandler = require("./environment/RequestHandler");
+var ariaUtilsJson = require("../../utils/Json");
+var ariaCoreAppEnvironment = require("../../core/AppEnvironment");
+
 
 /**
  * Base class for request handler, that handles HTTP errors
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.modules.requestHandler.RequestHandler",
-    $implements : ["aria.modules.requestHandler.IRequestHandler"],
-    $dependencies : ["aria.modules.requestHandler.environment.RequestHandler"],
+    $implements : [ariaModulesRequestHandlerIRequestHandler],
     $statics : {
         HTTP_ERRORS_GENERAL : "An uncatalogued HTTP error was generated",
         HTTP_ERRORS_400 : "400 Bad Request: The request cannot be fulfilled due to bad syntax.",
@@ -34,10 +39,10 @@ Aria.classDefinition({
          * @protected
          * @type aria.modules.requestHandler.environment.RequestHandler:RequestJsonSerializerCfg
          */
-        this._requestJsonSerializer = aria.modules.requestHandler.environment.RequestHandler.getRequestJsonSerializerCfg();
+        this._requestJsonSerializer = ariaModulesRequestHandlerEnvironmentRequestHandler.getRequestJsonSerializerCfg();
 
         // Listen for environment change event
-        aria.core.AppEnvironment.$on({
+        ariaCoreAppEnvironment.$on({
             changingEnvironment : {
                 fn : this.__environmentUpdated,
                 scope : this
@@ -133,12 +138,12 @@ Aria.classDefinition({
             var instance = reqSerializer ? reqSerializer.instance : null;
 
             if (instance) {
-                return aria.utils.Json.convertToJsonString(jsonData, aria.utils.Json.copy(options, true), instance);
+                return ariaUtilsJson.convertToJsonString(jsonData, ariaUtilsJson.copy(options, true), instance);
             } else {
                 options = options || this._requestJsonSerializer.options;
                 instance = this._requestJsonSerializer.instance;
 
-                return aria.utils.Json.convertToJsonString(jsonData, aria.utils.Json.copy(options, true), instance);
+                return ariaUtilsJson.convertToJsonString(jsonData, ariaUtilsJson.copy(options, true), instance);
             }
         },
 
@@ -156,7 +161,7 @@ Aria.classDefinition({
          * @private
          */
         __environmentUpdated : function () {
-            this._requestJsonSerializer = aria.modules.requestHandler.environment.RequestHandler.getRequestJsonSerializerCfg();
+            this._requestJsonSerializer = ariaModulesRequestHandlerEnvironmentRequestHandler.getRequestJsonSerializerCfg();
         }
     }
 });

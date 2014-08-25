@@ -12,15 +12,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaUtilsDom = require("../../utils/Dom");
+var ariaUtilsData = require("../../utils/Data");
+var ariaUtilsString = require("../../utils/String");
+var ariaWidgetsEnvironmentWidgetSettings = require("../environment/WidgetSettings");
+var ariaCoreBrowser = require("../../core/Browser");
+var ariaWidgetsWidgetTrait = require("../WidgetTrait");
+var ariaWidgetsWidget = require("../Widget");
+var ariaUtilsJson = require("../../utils/Json");
+
 
 /**
  * Base class for all input widgets. Manage input data structure and properties, as well as the label support
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.widgets.form.Input",
-    $extends : "aria.widgets.Widget",
-    $dependencies : ["aria.utils.Dom", "aria.utils.Data", "aria.utils.String",
-            "aria.widgets.environment.WidgetSettings", "aria.core.Browser", "aria.widgets.WidgetTrait"],
+    $extends : ariaWidgetsWidget,
     /**
      * Input constructor
      * @param {aria.widgets.CfgBeans:InputCfg} cfg the widget configuration
@@ -82,7 +90,7 @@ Aria.classDefinition({
          * @type Boolean
          * @private
          */
-        this._isIE7OrLess = aria.core.Browser.isOldIE && aria.core.Browser.majorVersion < 8;
+        this._isIE7OrLess = ariaCoreBrowser.isOldIE && ariaCoreBrowser.majorVersion < 8;
     },
     $destructor : function () {
         if (this._onValidatePopup) {
@@ -106,7 +114,7 @@ Aria.classDefinition({
          * @param {Object} sdef the superclass class definition
          */
         $init : function (p, def, sdef) {
-            var src = aria.widgets.WidgetTrait.prototype;
+            var src = ariaWidgetsWidgetTrait.prototype;
             for (var key in src) {
                 if (src.hasOwnProperty(key) && !p.hasOwnProperty(key)) {
                     // copy methods which are not already on this object (this avoids copying $classpath and
@@ -207,7 +215,7 @@ Aria.classDefinition({
             if (this._isIE7OrLess) {
                 dom = dom ? dom.firstChild : null;
             }
-            return aria.utils.Dom.getDomElementChild(dom, idx);
+            return ariaUtilsDom.getDomElementChild(dom, idx);
         },
         /**
          * Get the DOM elt associated to the Label Markup HTML element
@@ -221,7 +229,7 @@ Aria.classDefinition({
                 if (this._isIE7OrLess) {
                     dom = dom ? dom.firstChild : null;
                 }
-                var elems = aria.utils.Dom.getDomElementsChildByTagName(dom, 'label');
+                var elems = ariaUtilsDom.getDomElementsChildByTagName(dom, 'label');
                 if (elems) {
                     if (elems.length === 0) {
                         this.$logError(this.WIDGET_INPUT_NO_LABEL, []);
@@ -266,14 +274,14 @@ Aria.classDefinition({
 
             // PTR04951216 skinnable labels
             var cssClass = 'class="x' + this._skinnableClass + '_' + cfg.sclass + '_' + this._state + '_label"';
-            var IE7Align = aria.core.Browser.isIE7 ? "-25%" : (cfg.verticalAlign) ? cfg.verticalAlign : "middle";
+            var IE7Align = ariaCoreBrowser.isIE7 ? "-25%" : (cfg.verticalAlign) ? cfg.verticalAlign : "middle";
             out.write('<label ' + cssClass + ' style="');
-            if (!aria.widgets.environment.WidgetSettings.getWidgetSettings().middleAlignment) {
+            if (!ariaWidgetsEnvironmentWidgetSettings.getWidgetSettings().middleAlignment) {
                 out.write('vertical-align:-1px;');
             } else {
                 out.write('vertical-align:' + IE7Align + ';');
             }
-            if (aria.core.Browser.isIE7 && cssDisplay === "inline-block") {
+            if (ariaCoreBrowser.isIE7 && cssDisplay === "inline-block") {
                 out.write('display:inline;zoom:1');
             } else {
                 out.write('display:' + cssDisplay);
@@ -288,7 +296,7 @@ Aria.classDefinition({
                 out.write(';height:' + cfg.labelHeight + 'px');
             }
             out.write(';text-align:' + cfg.labelAlign + ';">');
-            out.write(aria.utils.String.escapeHTML(cfg.label));
+            out.write(ariaUtilsString.escapeHTML(cfg.label));
 
             out.write('</label>');
         },
@@ -362,7 +370,7 @@ Aria.classDefinition({
             if (cfg.directOnBlurValidation == null) {
                 // the default value for directOnBlurValidation comes from the
                 // environment
-                cfg.directOnBlurValidation = aria.widgets.environment.WidgetSettings.getWidgetSettings().directOnBlurValidation;
+                cfg.directOnBlurValidation = ariaWidgetsEnvironmentWidgetSettings.getWidgetSettings().directOnBlurValidation;
             }
 
             if (cfg.height > -1) {
@@ -407,13 +415,13 @@ Aria.classDefinition({
                     // we set the focus on the input and immediately set the
                     // value back to false in the data model
                     this.focus();
-                    aria.utils.Json.setValue(binding.inside, binding.to, false);
+                    ariaUtilsJson.setValue(binding.inside, binding.to, false);
                 }
             } else if (propertyName === "label") {
                 this._cfg[propertyName] = newValue;
                 var label = this.getLabel();
                 if (label) {
-                    label.innerHTML = aria.utils.String.escapeHTML(newValue);
+                    label.innerHTML = ariaUtilsString.escapeHTML(newValue);
                 }
             }
             return this.$Widget._onBoundPropertyChange.apply(this, arguments);
@@ -438,7 +446,7 @@ Aria.classDefinition({
             if (value && value.inside) { // only add the meta data convention
                 // if a value property has been
                 // bound
-                metaDataObject = aria.utils.Data._getMeta(value.inside, value.to, false);
+                metaDataObject = ariaUtilsData._getMeta(value.inside, value.to, false);
                 if (!cfg.bind.error) {
                     cfg.bind.error = {
                         "inside" : metaDataObject,

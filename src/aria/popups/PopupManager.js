@@ -12,6 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaDomEvent = require("../DomEvent");
+var ariaUtilsEvent = require("../utils/Event");
+var ariaUtilsArray = require("../utils/Array");
+var ariaUtilsDom = require("../utils/Dom");
+require("../utils/Math");
+var ariaTemplatesNavigationManager = require("../templates/NavigationManager");
+var ariaUtilsAriaWindow = require("../utils/AriaWindow");
+var ariaCoreBrowser = require("../core/Browser");
+var ariaCoreTimer = require("../core/Timer");
+
 
 (function () {
 
@@ -24,10 +35,8 @@
      * Singleton dedicated to popup management
      * @singleton
      */
-    Aria.classDefinition({
+    module.exports = Aria.classDefinition({
         $classpath : "aria.popups.PopupManager",
-        $dependencies : ["aria.DomEvent", "aria.utils.Event", "aria.utils.Array", "aria.utils.Dom", "aria.utils.Math",
-                "aria.templates.NavigationManager", "aria.utils.AriaWindow"],
         $events : {
             "modalPopupPresent" : {
                 description : "Notifies that a modal popup has been opened when no other modal popup was already opened."
@@ -49,9 +58,9 @@
             }
         },
         $onload : function () {
-            utilsArray = aria.utils.Array;
-            utilsDom = aria.utils.Dom;
-            utilsEvent = aria.utils.Event;
+            utilsArray = ariaUtilsArray;
+            utilsDom = ariaUtilsDom;
+            utilsEvent = ariaUtilsEvent;
         },
         $onunload : function () {
             utilsArray = null;
@@ -91,14 +100,14 @@
              */
             this.currentZIndex = this.baseZIndex;
 
-            aria.utils.AriaWindow.$on({
+            ariaUtilsAriaWindow.$on({
                 "unloadWindow" : this._reset,
                 scope : this
             });
         },
 
         $destructor : function () {
-            aria.utils.AriaWindow.$unregisterListeners(this);
+            ariaUtilsAriaWindow.$unregisterListeners(this);
             this._reset();
         },
 
@@ -132,7 +141,7 @@
              * @return {Boolean}
              */
             _isEventInsidePopup : function (domEvent, popup) {
-                var documentScroll = aria.utils.Dom._getDocumentScroll();
+                var documentScroll = ariaUtilsDom._getDocumentScroll();
                 var clickPosition = {
                     'top' : domEvent.clientY + documentScroll.scrollTop,
                     'left' : domEvent.clientX + documentScroll.scrollLeft
@@ -168,7 +177,7 @@
              */
             connectEvents : function () {
                 this.disconnectEvents();
-                aria.utils.AriaWindow.attachWindow();
+                ariaUtilsAriaWindow.attachWindow();
                 this._document = Aria.$window.document;
                 utilsEvent.addListener(this._document, "mousedown", {
                     fn : this.onDocumentClick,
@@ -188,16 +197,16 @@
                     scope : this
                 }, true);
 
-                if (aria.core.Browser.isOldIE) {
+                if (ariaCoreBrowser.isOldIE) {
                     // IE does not support scroll event on the document until IE9
-                    aria.utils.Event.addListener(Aria.$window, "mousewheel", {
+                    ariaUtilsEvent.addListener(Aria.$window, "mousewheel", {
                         fn : this._onScroll,
                         scope : this
                     }, true);
 
                 } else {
                     // All other browsers support scroll event on the document
-                    aria.utils.Event.addListener(Aria.$window, "scroll", {
+                    ariaUtilsEvent.addListener(Aria.$window, "scroll", {
                         fn : this._onScroll,
                         scope : this
                     }, true);
@@ -221,14 +230,14 @@
                     utilsEvent.removeListener(this._document, "mousewheel", {
                         fn : this.onDocumentMouseScroll
                     });
-                    aria.utils.AriaWindow.detachWindow();
+                    ariaUtilsAriaWindow.detachWindow();
                     this._document = null;
-                    if (aria.core.Browser.isOldIE) {
-                        aria.utils.Event.removeListener(Aria.$window, "mousewheel", {
+                    if (ariaCoreBrowser.isOldIE) {
+                        ariaUtilsEvent.removeListener(Aria.$window, "mousewheel", {
                             fn : this._onScroll
                         });
                     } else {
-                        aria.utils.Event.removeListener(Aria.$window, "scroll", {
+                        ariaUtilsEvent.removeListener(Aria.$window, "scroll", {
                             fn : this._onScroll
                         });
                     }
@@ -239,7 +248,7 @@
              * Connect events specific to modal popups.
              */
             connectModalEvents : function () {
-                var navManager = aria.templates.NavigationManager;
+                var navManager = ariaTemplatesNavigationManager;
                 navManager.addGlobalKeyMap({
                     key : "ESCAPE",
                     modal : true,
@@ -261,7 +270,7 @@
              * Disconnect events specific to modal popups.
              */
             disconnectModalEvents : function () {
-                var navManager = aria.templates.NavigationManager;
+                var navManager = ariaTemplatesNavigationManager;
                 navManager.removeGlobalKeyMap({
                     key : "ESCAPE",
                     modal : true,
@@ -286,7 +295,7 @@
                 for (var i = this.openedPopups.length - 1; i >= 0; i--) {
                     var popup = this.openedPopups[i];
                     if (event.type === "mousewheel") {
-                        aria.core.Timer.addCallback({
+                        ariaCoreTimer.addCallback({
                             fn : popup._isScrolling,
                             scope : popup
                         });
@@ -320,7 +329,7 @@
              * @param {Object} event The DOM focusin event triggering the callback
              */
             onDocumentFocusIn : function (event) {
-                var domEvent = new aria.DomEvent(event);
+                var domEvent = new ariaDomEvent(event);
                 var target = domEvent.target;
                 var searchModal = target != this._document.body;
                 if (searchModal) {
@@ -331,7 +340,7 @@
                             break;
                         }
                         if (popup.modalMaskDomElement) {
-                            aria.templates.NavigationManager.focusFirst(popup.domElement);
+                            ariaTemplatesNavigationManager.focusFirst(popup.domElement);
                             break;
                         }
                     }
@@ -345,7 +354,7 @@
              */
             onDocumentClick : function (event) {
                 var domEvent = /** @type aria.DomEvent */
-                new aria.DomEvent(event), target = /** @type HTMLElement */
+                new ariaDomEvent(event), target = /** @type HTMLElement */
                 domEvent.target;
 
                 if (this.openedPopups.length === 0) {
@@ -378,7 +387,7 @@
              */
             onDocumentMouseOut : function (event) {
                 var domEvent = /** @type aria.DomEvent */
-                new aria.DomEvent(event);
+                new ariaDomEvent(event);
                 var fromTarget = /** @type HTMLElement */
                 domEvent.target;
                 var toTarget = /** @type HTMLElement */
@@ -400,7 +409,7 @@
              */
             onDocumentMouseScroll : function (event) {
                 var domEvent = /** @type aria.DomEvent */
-                new aria.DomEvent(event);
+                new ariaDomEvent(event);
 
                 // Retrieve the dom target
                 var target = /** @type HTMLElement */
@@ -469,7 +478,7 @@
 
                 var topPopup = openedPopups.length > 0 ? openedPopups[openedPopups.length - 1] : null;
                 if (topPopup) {
-                    aria.templates.NavigationManager.focusFirst(topPopup.domElement);
+                    ariaTemplatesNavigationManager.focusFirst(topPopup.domElement);
                 }
             },
 

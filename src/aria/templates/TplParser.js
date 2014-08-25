@@ -12,14 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaTemplatesParser = require("./Parser");
+
 
 /**
  * Parser class for templates files. It converts a file written with the template syntax into a tree matching bean
  * definitions in <code>aria.templates.TreeBeans</code>
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.templates.TplParser",
-    $extends : "aria.templates.Parser",
+    $extends : ariaTemplatesParser,
     $singleton : true,
     $prototype : {
         /**

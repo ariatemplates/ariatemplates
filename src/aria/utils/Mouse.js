@@ -12,6 +12,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaUtilsEvent = require("./Event");
+var ariaUtilsAriaWindow = require("./AriaWindow");
+var ariaTouchEvent = require("../touch/Event");
+var ariaDomEvent = require("../DomEvent");
+var ariaCoreBrowser = require("../core/Browser");
+
 
 (function () {
     /**
@@ -101,10 +108,9 @@
      * Handle mouse interaction globally. This class determines whether global actions like drag or gestures happen on
      * the page and notifies the listeners of such events.
      */
-    Aria.classDefinition({
+    module.exports = Aria.classDefinition({
         $classpath : "aria.utils.Mouse",
         $singleton : true,
-        $dependencies : ["aria.utils.Event", "aria.utils.AriaWindow", "aria.touch.Event", "aria.DomEvent"],
         $statics : {
             /**
              * Expando used to mark an element as draggable
@@ -113,15 +119,15 @@
             DRAGGABLE_ATTRIBUTE : "atdraggable"
         },
         $destructor : function () {
-            aria.utils.AriaWindow.$unregisterListeners(this);
+            ariaUtilsAriaWindow.$unregisterListeners(this);
             this._disconnectMouseDownEvent();
 
             eventUtil = null;
 
         },
         $constructor : function () {
-            eventUtil = aria.utils.Event;
-            var ariaWindow = aria.utils.AriaWindow;
+            eventUtil = ariaUtilsEvent;
+            var ariaWindow = ariaUtilsAriaWindow;
             ariaWindow.$on({
                 "attachWindow" : this._connectMouseDownEvent,
                 "detachWindow" : this._disconnectMouseDownEvent,
@@ -261,13 +267,13 @@
              * @private
              */
             _onMouseDown : function (evt) {
-                var event = new aria.DomEvent(evt);
+                var event = new ariaDomEvent(evt);
 
                 connectMouseEvents(this);
 
                 if (evt.type === "touchstart") {
                     // The position of touch events is not determined correctly by clientX/Y
-                    var elementPosition = aria.touch.Event.getPositions(event);
+                    var elementPosition = ariaTouchEvent.getPositions(event);
                     event.clientX = elementPosition[0].x;
                     event.clientY = elementPosition[0].y;
                 }
@@ -327,10 +333,10 @@
              * @private
              */
             _onMouseMove : function (evt) {
-                var event = new aria.DomEvent(evt);
+                var event = new ariaDomEvent(evt);
 
                 if (event.type === "touchmove") {
-                    var elementPosition = aria.touch.Event.getPositions(evt);
+                    var elementPosition = ariaTouchEvent.getPositions(evt);
                     if (elementPosition.length === 1) {
                         event.clientX = elementPosition[0].x;
                         event.clientY = elementPosition[0].y;
@@ -345,7 +351,7 @@
                 if (element) {
                     // IE mouseup check - mouseup happened when mouse was out of window
                     if (evt.type !== "touchmove" && !evt.button) {
-                        var browser = aria.core.Browser;
+                        var browser = ariaCoreBrowser;
                         if (browser.isIE8 || browser.isIE7 || browser.isIE6) {
                             event.$dispose();
                             return this._onMouseUp(evt);

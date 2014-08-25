@@ -12,12 +12,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+
 
 /**
  * Global class gathering information about current browser type and version A list of user agent string for mobile
  * phones could be find here: http://www.useragentstring.com/pages/Mobile%20Browserlist/
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : 'aria.core.Browser',
     $singleton : true,
     $constructor : function () {

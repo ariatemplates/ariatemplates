@@ -12,15 +12,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaCoreJsonTypes = require("../../core/JsonTypes");
+var ariaHtmlBeansElementCfg = require("./ElementCfg");
+var ariaWidgetLibsCommonBeans = require("../../widgetLibs/CommonBeans");
+var ariaTemplatesCfgBeans = require("../../templates/CfgBeans");
 
-Aria.beanDefinitions({
+
+module.exports = Aria.beanDefinitions({
     $package : "aria.html.beans.SelectCfg",
     $description : "Configuration for Select widget.",
     $namespaces : {
-        "json" : "aria.core.JsonTypes",
-        "base" : "aria.html.beans.ElementCfg",
-        "common" : "aria.widgetLibs.CommonBeans",
-        "html" : "aria.templates.CfgBeans"
+        "json" : ariaCoreJsonTypes,
+        "base" : ariaHtmlBeansElementCfg,
+        "common" : ariaWidgetLibsCommonBeans,
+        "html" : ariaTemplatesCfgBeans
     },
     $beans : {
         "Properties" : {

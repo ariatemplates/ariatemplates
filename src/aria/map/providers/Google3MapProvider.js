@@ -12,15 +12,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaUtilsScriptLoader = require("../../utils/ScriptLoader");
+var ariaMapProvidersIMapProvider = require("./IMapProvider");
+var ariaUtilsJson = require("../../utils/Json");
+
 
 /**
  * Load the google map 3 dependencies and creates map instances
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.map.providers.Google3MapProvider",
     $singleton : true,
-    $dependencies : ["aria.utils.ScriptLoader"],
-    $implements : ["aria.map.providers.IMapProvider"],
+    $implements : [ariaMapProvidersIMapProvider],
     $statics : {
         MISSING_ARGS : "Missing map arguments",
         MISSING_LATLNG : "Missing latitude (lat) or longitude (lng) in the initArgs of the map cfg"
@@ -51,7 +55,7 @@ Aria.classDefinition({
                     that = null;
                 };
 
-                aria.utils.ScriptLoader.load([this._getFullUrl()]);
+                ariaUtilsScriptLoader.load([this._getFullUrl()]);
 
             }
         },
@@ -98,7 +102,7 @@ Aria.classDefinition({
                 };
 
                 // Inject other arguments given by the application
-                aria.utils.Json.inject(cfg.initArgs, initArgsGoogle);
+                ariaUtilsJson.inject(cfg.initArgs, initArgsGoogle);
 
                 // Check that domElement has an height, which is required for google map
                 var domElement = cfg.domElement;

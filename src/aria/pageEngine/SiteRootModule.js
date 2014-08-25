@@ -12,16 +12,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaPageEngineSiteRootModuleInterface = require("./SiteRootModuleInterface");
+var ariaUtilsPath = require("../utils/Path");
+var ariaPageEngineUtilsPageEngineUtils = require("./utils/PageEngineUtils");
+var ariaUtilsFunction = require("../utils/Function");
+var ariaTemplatesModuleCtrl = require("../templates/ModuleCtrl");
+var ariaUtilsType = require("../utils/Type");
+var ariaUtilsJson = require("../utils/Json");
+
 
 /**
  * Main module controller that is used to load all the application modules as submodules. It is the default module
  * controller for all templates that are not linked to another module in a page definition
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.pageEngine.SiteRootModule",
-    $extends : "aria.templates.ModuleCtrl",
-    $implements : ["aria.pageEngine.SiteRootModuleInterface"],
-    $dependencies : ["aria.utils.Path", "aria.pageEngine.utils.PageEngineUtils", "aria.utils.Function"],
+    $extends : ariaTemplatesModuleCtrl,
+    $implements : [ariaPageEngineSiteRootModuleInterface],
     $constructor : function () {
         this.$ModuleCtrl.constructor.call(this);
 
@@ -52,13 +60,13 @@ Aria.classDefinition({
          * @type aria.pageEngine.utils.PageEngineUtils
          * @protected
          */
-        this._utils = aria.pageEngine.utils.PageEngineUtils;
+        this._utils = ariaPageEngineUtilsPageEngineUtils;
 
         /**
          * @type aria.utils.Path
          * @protected
          */
-        this._pathUtils = aria.utils.Path;
+        this._pathUtils = ariaUtilsPath;
 
         /**
          * Contains bindings definitions
@@ -211,7 +219,7 @@ Aria.classDefinition({
                 for (var i = 0, len = modules.length; i < len; i += 1) {
                     refpath = this.buildModuleRefpath(modules[i].refpath, isCommon, pageId);
                     if (this._utils.resolvePath(refpath, this) == null) {
-                        def = aria.utils.Json.copy(modules[i]);
+                        def = ariaUtilsJson.copy(modules[i]);
                         def.refpath = refpath;
                         definitions.push({
                             classpath : def.classpath,
@@ -250,8 +258,8 @@ Aria.classDefinition({
                             if (this.services[service]) {
                                 this.$logWarn(this.SERVICE_ALREADY_DEFINED, service);
                             }
-                            if (aria.utils.Type.isFunction(moduleInstance[services[service]])) {
-                                this.services[service] = aria.utils.Function.bind(moduleInstance[services[service]], moduleInstance);
+                            if (ariaUtilsType.isFunction(moduleInstance[services[service]])) {
+                                this.services[service] = ariaUtilsFunction.bind(moduleInstance[services[service]], moduleInstance);
                                 if (this._serviceList[refpath]) {
                                     this._serviceList[refpath].push(service);
                                 } else {

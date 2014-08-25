@@ -12,13 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaUtilsOverlayOverlay = require("./Overlay");
+var ariaCoreBrowser = require("../../core/Browser");
+
 
 /**
  * This class creates an overlay and keeps it positioned above a given HTML element
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.utils.overlay.LoadingOverlay",
-    $extends : "aria.utils.overlay.Overlay",
+    $extends : ariaUtilsOverlayOverlay,
     $constructor : function (element, overlayId, text) {
         // This is used by the parent constructor.
         this.__text = text;
@@ -87,7 +91,7 @@ Aria.classDefinition({
                 style.width = overlayGeometry.width + "px";
                 style.height = overlayGeometry.height + "px";
                 style.display = "block";
-                var browser = aria.core.Browser;
+                var browser = ariaCoreBrowser;
                 if (browser.isIE && browser.majorVersion < 9 && overlay.firstChild) {
                     overlay.firstChild.style.top = Math.round(overlayGeometry.height / 2) + "px";
                 }

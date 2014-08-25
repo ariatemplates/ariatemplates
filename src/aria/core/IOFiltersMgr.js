@@ -12,10 +12,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaUtilsType = require("../utils/Type");
+var ariaUtilsArray = require("../utils/Array");
+var ariaCoreTimer = require("./Timer");
+
 
 (function () {
-    var typeUtils = aria.utils.Type;
-    var arrayUtils = aria.utils.Array;
+    var typeUtils = ariaUtilsType;
+    var arrayUtils = ariaUtilsArray;
 
     // Mechanism to find filters.
     /**
@@ -105,7 +110,7 @@
     /**
      * Manages filters for IO.
      */
-    Aria.classDefinition({
+    module.exports = Aria.classDefinition({
         $classpath : "aria.core.IOFiltersMgr",
         $singleton : true,
         $constructor : function () {
@@ -352,7 +357,7 @@
                 }
                 if (request.delay > 0) {
                     // wait for the specified delay
-                    aria.core.Timer.addCallback({
+                    ariaCoreTimer.addCallback({
                         fn : this._afterDelay,
                         args : args,
                         scope : this,

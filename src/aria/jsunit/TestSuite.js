@@ -12,14 +12,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaCoreSequencer = require("../core/Sequencer");
+var ariaJsunitTestCase = require("./TestCase");
+var ariaJsunitTestWrapper = require("./TestWrapper");
+var ariaUtilsType = require("../utils/Type");
+var ariaJsunitTest = require("./Test");
+var ariaCoreLog = require("../core/Log");
+
 
 /**
  * The testsuite class
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.jsunit.TestSuite",
-    $extends : "aria.jsunit.Test",
-    $dependencies : ["aria.core.Sequencer", "aria.jsunit.TestCase", "aria.jsunit.TestWrapper", "aria.utils.Type"],
+    $extends : ariaJsunitTest,
     $constructor : function () {
         this.$Test.constructor.call(this);
 
@@ -206,7 +213,7 @@ Aria.classDefinition({
             if (testSuites.length === 0) {
                 return this.$raiseEvent("preloadEnd");
             }
-            this._preloadSequencer = new aria.core.Sequencer();
+            this._preloadSequencer = new ariaCoreSequencer();
 
             for (var i = 0, l = testSuites.length; i < l; i++) {
                 var suite = testSuites[i];
@@ -284,7 +291,7 @@ Aria.classDefinition({
             var args = arguments;
             for (var i = 0, l = args.length; i < l; i++) {
                 var testClassPath = args[i];
-                if (aria.utils.Type.isString(testClassPath)) {
+                if (ariaUtilsType.isString(testClassPath)) {
                     this._tests.push(testClassPath);
                 }
             }
@@ -309,7 +316,7 @@ Aria.classDefinition({
          */
         run : function () {
             this._startTest();
-            this._sequencer = new aria.core.Sequencer();
+            this._sequencer = new ariaCoreSequencer();
             this._assertCount = 0;
             var subTests = this.getSubTests();
             // do not add tasks to the sequencer if the TestSuite is mean to be skipped
@@ -495,8 +502,8 @@ Aria.classDefinition({
             var testInstance;
             try {
                 var classRef = Aria.getClassRef(classpath);
-                if (this.runIsolated && !aria.utils.Type.isInstanceOf(classRef.prototype, "aria.jsunit.TestSuite")) {
-                    testInstance = new aria.jsunit.TestWrapper(classpath);
+                if (this.runIsolated && !ariaUtilsType.isInstanceOf(classRef.prototype, "aria.jsunit.TestSuite")) {
+                    testInstance = new ariaJsunitTestWrapper(classpath);
                 } else {
                     testInstance = new classRef();
                 }
@@ -535,7 +542,7 @@ Aria.classDefinition({
          * @return {aria.jsunit.TestCase}
          */
         __createFailedTest : function (method, message, classpath) {
-            var testInstance = new aria.jsunit.TestCase();
+            var testInstance = new ariaJsunitTestCase();
             testInstance._errors = [{
                         type : "failure",
                         testMethod : method,
@@ -575,8 +582,8 @@ Aria.classDefinition({
                 });
             }
 
-            aria.core.Log.clearAppenders();
-            aria.core.Log.resetLoggingLevels();
+            ariaCoreLog.clearAppenders();
+            ariaCoreLog.resetLoggingLevels();
 
             this.__runningTest = null;
         },

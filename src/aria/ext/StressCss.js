@@ -12,6 +12,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaUtilsObject = require("../utils/Object");
+var ariaUtilsString = require("../utils/String");
+
 
 (function () {
 
@@ -55,7 +59,7 @@
      */
     var refreshCSS = function (force, cssText) {
         if (force !== true) {
-            aria.templates.CSSMgr.__textToDOM(aria.utils.Object.keys(aria.templates.CSSMgr.__styleTagPool));
+            aria.templates.CSSMgr.__textToDOM(ariaUtilsObject.keys(aria.templates.CSSMgr.__styleTagPool));
         } else {
             // Having an empty text to dom go deeper in the CSSMgr to force a reload
             var styleBuilder = {};
@@ -106,7 +110,7 @@
      * </pre>
      */
     var extractSelectors = function (text, location) {
-        var match = null, selectors = [], trim = aria.utils.String.trim;
+        var match = null, selectors = [], trim = ariaUtilsString.trim;
         var reg = /[\s]*(([^{]+)\{[^}]+\})/g;
         while (match = reg.exec(text)) {
             selectors.push({
@@ -566,10 +570,9 @@
      * templates. This action can be modified from the arguments of 'stressTest' method
      * @since 1.1-13
      */
-    Aria.classDefinition({
+    module.exports = Aria.classDefinition({
         $classpath : "aria.ext.StressCss",
         $singleton : true,
-        $dependencies : ["aria.utils.Object", "aria.utils.String"],
         $prototype : {
             /**
              * Stress test the page finding slow CSS rules.

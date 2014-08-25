@@ -12,17 +12,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../Aria");
+var ariaTemplatesCSSParser = require("./CSSParser");
+var ariaTemplatesClassGenerator = require("./ClassGenerator");
+
 
 /**
  * Generate the class definition for a CSS Template
  * @class aria.templates.CSSClassGenerator
  * @extends aria.templates.ClassGenerator
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : 'aria.templates.CSSClassGenerator',
-    $extends : 'aria.templates.ClassGenerator',
+    $extends : ariaTemplatesClassGenerator,
     $singleton : true,
-    $dependencies : ['aria.templates.CSSParser'],
     $constructor : function () {
         this.$ClassGenerator.constructor.call(this);
 
@@ -30,7 +33,7 @@ Aria.classDefinition({
         this._loadStatements(["CSSTemplate"]);
 
         // Redefine the protected parser
-        this._parser = aria.templates.CSSParser;
+        this._parser = ariaTemplatesCSSParser;
 
         // Redefine the class used as the parent for templates which do not inherit from any other template
         this._superClass = "aria.templates.CSSTemplate";

@@ -12,6 +12,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("../../Aria");
+var ariaTouchWidgetsDoubleSliderCSS = require("./DoubleSliderCSS.tpl.css");
+require("./SliderCfgBeans");
+var ariaUtilsDom = require("../../utils/Dom");
+var ariaUtilsType = require("../../utils/Type");
+require("../../utils/Mouse");
+var ariaUtilsHtml = require("../../utils/Html");
+var ariaWidgetLibsBaseWidget = require("../../widgetLibs/BaseWidget");
+var ariaUtilsJson = require("../../utils/Json");
+var ariaCoreBrowser = require("../../core/Browser");
+var ariaCoreJsonValidator = require("../../core/JsonValidator");
+
 
 /**
  * Double Slider widget.<br/> This widget has two movable thumbs over a region defined by the width of the widget.<br/>
@@ -19,15 +31,13 @@
  * value. The length of the rail (where the thumbs can move) is thus the difference between the widget's width and its
  * thumbs width.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "aria.touch.widgets.DoubleSlider",
-    $extends : "aria.widgetLibs.BaseWidget",
-    $css : ["aria.touch.widgets.DoubleSliderCSS"],
+    $extends : ariaWidgetLibsBaseWidget,
+    $css : [ariaTouchWidgetsDoubleSliderCSS],
     $statics : {
         INVALID_CONFIGURATION : "Invalid configuration for the slider!"
     },
-    $dependencies : ["aria.touch.widgets.SliderCfgBeans", "aria.utils.Dom", "aria.utils.Type", "aria.utils.Mouse",
-            "aria.utils.Html"],
     /**
      * Slider Constructor.
      * @param {aria.touch.widgets.SliderCfgBeans:DoubleSliderCfg} cfg slider configuration
@@ -42,7 +52,7 @@ Aria.classDefinition({
          * @type Boolean
          * @protected
          */
-        this._cfgOk = aria.core.JsonValidator.validateCfg("aria.touch.widgets.SliderCfgBeans.DoubleSliderCfg", cfg);
+        this._cfgOk = ariaCoreJsonValidator.validateCfg("aria.touch.widgets.SliderCfgBeans.DoubleSliderCfg", cfg);
 
         if (!this._cfgOk) {
             return;
@@ -145,7 +155,7 @@ Aria.classDefinition({
                 fn : this._notifyDataChange,
                 scope : this
             };
-            aria.utils.Json.addListener(binding.inside, binding.to, this._bindingCallback, false);
+            ariaUtilsJson.addListener(binding.inside, binding.to, this._bindingCallback, false);
         }
 
         /**
@@ -197,7 +207,7 @@ Aria.classDefinition({
     $destructor : function () {
         if (this._binding) {
             var binding = this._binding;
-            aria.utils.Json.removeListener(binding.inside, binding.to, this._bindingCallback, false);
+            ariaUtilsJson.removeListener(binding.inside, binding.to, this._bindingCallback, false);
             this._bindingCallback = null;
         }
         if (this._draggable) {
@@ -247,7 +257,7 @@ Aria.classDefinition({
 
             out.write([
                     // Div containing the widget
-                    '<div ', aria.utils.Html.buildAttributeList(cfg.attributes), '" style="width:', this._cfg.width,
+                    '<div ', ariaUtilsHtml.buildAttributeList(cfg.attributes), '" style="width:', this._cfg.width,
                     'px;">',
                     // Rail, thumbs move over here
                     '<span class="touchContainer" style="width:', cfg.width, 'px;" id="', this._domId, '">',
@@ -266,21 +276,21 @@ Aria.classDefinition({
         initWidget : function () {
             this._readValue();
 
-            this._firstSlider = aria.utils.Dom.getElementById(this._firstDomId);
-            this._secondSlider = aria.utils.Dom.getElementById(this._secondDomId);
-            this._domElt = aria.utils.Dom.getElementById(this._domId);
-            this._highlight = aria.utils.Dom.getElementById(this._domId + "_highlight");
+            this._firstSlider = ariaUtilsDom.getElementById(this._firstDomId);
+            this._secondSlider = ariaUtilsDom.getElementById(this._secondDomId);
+            this._domElt = ariaUtilsDom.getElementById(this._domId);
+            this._highlight = ariaUtilsDom.getElementById(this._domId + "_highlight");
 
-            this._firstWidth = parseInt(aria.utils.Dom.getStyle(this._firstSlider, "width"), 10);
-            this._secondWidth = parseInt(aria.utils.Dom.getStyle(this._secondSlider, "width"), 10);
-            this._secondWidth += parseInt(aria.utils.Dom.getStyle(this._secondSlider, "borderLeftWidth"), 10) || 0;
-            this._secondWidth += parseInt(aria.utils.Dom.getStyle(this._secondSlider, "borderRightWidth"), 10) || 0;
+            this._firstWidth = parseInt(ariaUtilsDom.getStyle(this._firstSlider, "width"), 10);
+            this._secondWidth = parseInt(ariaUtilsDom.getStyle(this._secondSlider, "width"), 10);
+            this._secondWidth += parseInt(ariaUtilsDom.getStyle(this._secondSlider, "borderLeftWidth"), 10) || 0;
+            this._secondWidth += parseInt(ariaUtilsDom.getStyle(this._secondSlider, "borderRightWidth"), 10) || 0;
             this._railWidth = this._cfg.width - this._firstWidth - this._secondWidth;
 
-            this._geometry = aria.utils.Dom.getGeometry(this._domElt);
+            this._geometry = ariaUtilsDom.getGeometry(this._domElt);
             this._setLeft();
             this._updateDisplay();
-            if (aria.core.Browser.isOldIE) {
+            if (ariaCoreBrowser.isOldIE) {
                 this.getDom().onselectstart = Aria.returnFalse;
             }
             this._loadAndCreateDraggable();
@@ -296,12 +306,12 @@ Aria.classDefinition({
                 return;
             }
             value = binding.inside[binding.to];
-            if (aria.utils.Type.isArray(value)) {
+            if (ariaUtilsType.isArray(value)) {
                 // Constrain values to be between 0 and 1 and the first to be smaller
                 this.value[0] = Math.max(0, Math.min(value[0], value[1], 1));
                 this.value[1] = Math.min(1, Math.max(value[0], value[1], 0));
             }
-            aria.utils.Json.setValue(binding.inside, binding.to, this.value, this._bindingCallback);
+            ariaUtilsJson.setValue(binding.inside, binding.to, this.value, this._bindingCallback);
         },
 
         /**
@@ -479,7 +489,7 @@ Aria.classDefinition({
             if (this.value[0] !== first || this.value[1] !== second) {
                 this.value = [first, second];
                 var binding = this._binding;
-                aria.utils.Json.setValue(binding.inside, binding.to, this.value);
+                ariaUtilsJson.setValue(binding.inside, binding.to, this.value);
             } else {
                 // Trying to go somewhere far, don't update value, but only the display
                 this._notifyDataChange();
