@@ -1,6 +1,6 @@
 /* global Aria:true, aria:true */
 var vm = require("vm"), fs = require("fs"), path = require("path");
-var ariaRootFolderPath = path.normalize(__dirname + "/../../build/target/bootstrap/");
+var ariaRootFolderPath = path.normalize(__dirname + "/../");
 
 /* aria and Aria are going to be global */
 aria = {};
@@ -19,7 +19,7 @@ global.load = function (filePath) {
 };
 
 try {
-    require(ariaRootFolderPath + "aria/node.js");
+    require(ariaRootFolderPath + "aria/bootstrap-node.js");
 
     // For all the other classes we use IO, define our node transport
     Aria.classDefinition({

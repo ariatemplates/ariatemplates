@@ -27,6 +27,10 @@ module.exports = function (grunt) {
         source : {
             src : [
                     'src/aria/**/*.js',
+                    // Excludes generated files:
+                    '!src/aria/bootstrap.js',
+                    '!src/aria/bootstrap-node.js',
+                    '!src/aria/noderError/**',
                     // Using node.js globals
                     '!src/aria/node.js',
                     // Resource and skin definitions use the global Aria without require

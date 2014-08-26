@@ -27,97 +27,56 @@
 
 module.exports = function (grunt) {
     var packagingSettings = require('./config-packaging')(grunt);
-
-    var getNoderPackage = function (packageFile, mainFile, environment) {
-        return {
-            name : packageFile,
-            builder : {
-                type : 'NoderBootstrapPackage',
-                cfg : {
-                    header : packagingSettings.license,
-                    noderModules : ['src/noder-modules/*'],
-                    noderEnvironment : environment,
-                    noderConfigOptions : {
-                        main : mainFile,
-                        failFast : false,
-                        resolver : {
-                            "default" : {
-                                ariatemplates : "aria"
-                            }
-                        },
-                        packaging : {
-                            ariatemplates : true
-                        }
-                    }
-                }
-            },
-            files : [mainFile]
-        };
+    var builder = {
+        type : 'Concat',
+        cfg : {
+            header : packagingSettings.license
+        }
     };
+    var stripBannerFiles = packagingSettings.atExtensions.concat("!aria/noderError/**");
 
     grunt.config.set('atpackager.bootstrap', {
         options : {
             sourceDirectories : ['src'],
             sourceFiles : ['aria/**/*', '!aria/node.js', '!aria/bootstrap.tpl.js', '!aria/css/**'],
             outputDirectory : packagingSettings.bootstrap.outputDirectory,
+            defaultBuilder : builder,
             visitors : [{
-                        type : 'NoderPlugins',
-                        cfg : {
-                            targetBaseLogicalPath : "aria",
-                            targetFiles : "aria/noderError/**"
-                        }
+                type : 'CheckGlobals',
+                cfg : {
+                    files : packagingSettings.bootstrap.checkGlobalsFiles,
+                    allowCommonJSGlobals : true,
+                    allowedGlobals : ["aria", "Aria", "setTimeout", "clearTimeout", "setInterval", "clearInterval",
+                            "global"]
+                }
+            }, {
+                type : 'JSStripBanner',
+                cfg : {
+                    files : stripBannerFiles
+                }
+            }, {
+                type : "TextReplace",
+                cfg : {
+                    files : ['aria/Aria.js'],
+                    replacements : [{
+                                find : "ARIA-SNAPSHOT",
+                                replace : packagingSettings.pkg.version
+                            }]
+                }
+            }, {
+                type : 'CopyUnpackaged',
+                cfg : {
+                    files : stripBannerFiles,
+                    builder : builder
+                }
+            }, 'CopyUnpackaged'],
+            packages : [{
+                        name : packagingSettings.bootstrap.bootstrapFileName,
+                        files : ["aria/bootstrap.js"]
                     }, {
-                        type : 'NoderRequiresGenerator',
-                        cfg : {
-                            requireFunction : "syncRequire",
-                            wrapper : "<%= grunt.file.read('src/aria/bootstrap.tpl.js') %>",
-                            targetLogicalPath : 'aria/bootstrap.js',
-                            requires : packagingSettings.bootstrap.files
-                        }
-                    }, {
-                        type : 'NoderRequiresGenerator',
-                        cfg : {
-                            requireFunction : "syncRequire",
-                            wrapper : "<%= grunt.file.read('src/aria/bootstrap.tpl.js') %>",
-                            targetLogicalPath : 'aria/bootstrap-node.js',
-                            requires : packagingSettings.bootstrap.files
-                        }
-                    }, {
-                        type : 'CheckGlobals',
-                        cfg : {
-                            files : packagingSettings.bootstrap.checkGlobalsFiles,
-                            allowCommonJSGlobals : true,
-                            allowedGlobals : ["aria", "Aria", "setTimeout", "clearTimeout", "setInterval",
-                                    "clearInterval", "global"]
-                        }
-                    }, {
-                        type : 'JSStripBanner',
-                        cfg : {
-                            files : packagingSettings.atExtensions.concat("!aria/noderError/**")
-                        }
-                    }, {
-                        type : "TextReplace",
-                        cfg : {
-                            files : ['aria/Aria.js'],
-                            replacements : [{
-                                        find : "ARIA-SNAPSHOT",
-                                        replace : packagingSettings.pkg.version
-                                    }]
-                        }
-                    }, {
-                        type : 'CopyUnpackaged',
-                        cfg : {
-                            files : packagingSettings.atExtensions,
-                            builder : {
-                                type : 'Concat',
-                                cfg : {
-                                    header : packagingSettings.license_min
-                                }
-                            }
-                        }
-                    }, 'CopyUnpackaged'],
-            packages : [getNoderPackage(packagingSettings.bootstrap.bootstrapFileName, "aria/bootstrap.js", "browser"),
-                    getNoderPackage("aria/node.js", "aria/bootstrap-node.js", "node")]
+                        name : "aria/node.js",
+                        files : ["aria/bootstrap-node.js"]
+                    }]
         }
     });
 
@@ -125,8 +84,9 @@ module.exports = function (grunt) {
         folders : [packagingSettings.bootstrap.outputDirectory]
     });
 
+    require('./config-atpackager-bootstrap-src')(grunt);
     require('./config-atpackager-bootstrap-skin')(grunt);
 
-    grunt.registerTask('bootstrap', ['atpackager:bootstrap', 'atpackager:bootstrapSkin']);
+    grunt.registerTask('bootstrap', ['src', 'atpackager:bootstrap', 'atpackager:bootstrapSkin']);
 
 };

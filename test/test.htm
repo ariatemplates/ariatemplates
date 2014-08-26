@@ -32,6 +32,8 @@
             isAmaBuild = !!(document.location.pathname.match(/\/aria\-templates(-\w+)?\/test\//));
             if (isAmaBuild) {
                 atversion = "1.1-SNAPSHOT";
+            } else if (devFiles) {
+                atversion = "bootstrap"; // atversion is not used in this case
             } else {
                 alert("Need an 'atversion=x.y.z' in the query string.");
             }
@@ -58,9 +60,9 @@
             }
         } else {
             if (devFiles) {
-                ariaRootPath = "../build/target/bootstrap/";
-                bootstrapFile = "aria/ariatemplates-" + atversion + ".js";
-                skinFile = "aria/css/" + skinName + "-" + atversion + ".js";
+                ariaRootPath = "../src/";
+                bootstrapFile = "aria/bootstrap.js";
+                skinFile = "aria/css/" + skinName + ".js";
             } else {
                 ariaRootPath = "../build/target/production/";
                 bootstrapFile = "aria/ariatemplates-" + atversion + ".js";
