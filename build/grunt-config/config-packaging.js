@@ -30,7 +30,7 @@ module.exports = function (grunt) {
         bootstrap : {
             outputDirectory : getPath('../target/bootstrap'),
             files : require('../config/files-bootstrap.json'),
-            checkGlobalsFiles : ['**/*.js', '!aria/noderError/**'],
+            checkGlobalsFiles : ['**/*.js', '!aria/noderError/**', '!aria/bootstrap.js', '!aria/bootstrap-node.js'],
             bootstrapFileName : 'aria/' + pkg.name + '-' + pkg.version + '.js'
         },
         prod : {
