@@ -56,7 +56,8 @@ module.exports = function (grunt) {
                         // Syntax errors, used for testing
                         '!test/aria/templates/test/error/*.js',
                         // Syntax errors, used for testing
-                        '!test/aria/templates/reloadResources/ExternalResourceErr.js']
+                        '!test/aria/templates/reloadResources/ExternalResourceErr.js',
+                        '!test/nodeTestResources/testProject/target/**/*']
             },
             options : {
                 "unused" : false,
