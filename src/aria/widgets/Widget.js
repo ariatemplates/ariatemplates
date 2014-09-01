@@ -27,7 +27,6 @@ var ariaWidgetLibsBindableWidget = require("../widgetLibs/BindableWidget");
 var ariaCoreTplClassLoader = require("../core/TplClassLoader");
 var ariaCoreJsonValidator = require("../core/JsonValidator");
 
-
 /**
  * Base Widget class from which all widgets must derive
  */
@@ -172,7 +171,8 @@ module.exports = Aria.classDefinition({
     },
     $statics : {
         // ERROR MESSAGES:
-        SKIN_NOT_READY : "CRITICAL ! There is no skin available, widgets can not be used. Check that the skin (css+js) is properly loaded.",
+        SKIN_NOT_READY : "CRITICAL! There is no skin available, widgets can not be used.\nCheck that the skin is properly loaded in a script tag that looks like this:\n<script src=\"/aria/css/atskin-"
+                + Aria.version + ".js\" ></script>",
         WIDGET_NOT_FOUND : "%1Following %3 widget was not found in DOM: %2",
         WIDGET_TOOLTIP_NOT_FOUND : "%1Tooltip with id '%2', for widget %3 was not found in template '%4'.",
         WIDGET_BINDING_ERROR : "%1Binding failed in widget: \tInside:%2\tTo:%3",
