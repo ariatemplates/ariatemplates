@@ -270,7 +270,12 @@ var ariaCoreBrowser = require("../core/Browser");
                 var wrappedCallback;
                 if (event != "mousemove" || !ariaCoreBrowser.isWebkit) {
                     wrappedCallback = function (e) {
-                        return handlerCBInstance.call(aria.utils.Event.getEvent(e, element));
+                        // only if the event is safetap is used (so aria.touch.ClickBuster is loaded, not null),
+                        // click, mousedown or touchend, it is analised in order to avoid ghost click's side effects
+                        if ((e.type != "click" && e.type != "mousedown" && e.type != "touchend")
+                                || !aria.touch || !aria.touch.ClickBuster || aria.touch.ClickBuster.preventGhostClick(e)) {
+                            return handlerCBInstance.call(aria.utils.Event.getEvent(e, element));
+                        }
                     };
                 } else {
 
