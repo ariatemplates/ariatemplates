@@ -174,6 +174,9 @@ require("../utils/Type");
                                 var eventWrapper = new ariaTemplatesDomEventWrapper(event), result = true;
                                 var targetCallback = delegateMap[event.type];
                                 if (targetCallback) {
+                                    if (event.type == "safetap") {
+                                        aria.touch.ClickBuster.registerTap(event);
+                                    }
                                     result = targetCallback.call(eventWrapper);
                                 }
                                 eventWrapper.$dispose();

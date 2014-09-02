@@ -45,6 +45,10 @@ module.exports = Aria.classDefinition({
          * @private
          */
         __touchDetection : function () {
+            if(!Aria.$frameworkWindow){
+                this.touch = false;
+                return;
+            }
             this.touch = (('ontouchstart' in Aria.$frameworkWindow) || Aria.$frameworkWindow.DocumentTouch
                     && Aria.$frameworkWindow.document instanceof Aria.$frameworkWindow.DocumentTouch);
             if (!this.touch) {

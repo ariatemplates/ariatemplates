@@ -13,26 +13,27 @@
  * limitations under the License.
  */
 var Aria = require("../Aria");
+require("./ClickBuster");
 var ariaTouchBaseTap = require("./BaseTap");
 
 
 /**
- * Contains delegated handler for a tap event
+ * Contains delegated handler for a safetap event
  */
 module.exports = Aria.classDefinition({
     $singleton : true,
-    $classpath : "aria.touch.Tap",
+    $classpath : "aria.touch.SafeTap",
     $extends : ariaTouchBaseTap,
     $prototype : {
         /**
-         * The fake events raised during the Tap lifecycle.
+         * The fake events raised during the safetap lifecycle.
          * @protected
          */
         _getFakeEventsMap : function () {
             return {
-                start : "tapstart",
-                end : "tap",
-                cancel : "tapcancel"
+                start : "safetapstart",
+                end : "safetap",
+                cancel : "safetapcancel"
             };
         }
     }

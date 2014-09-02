@@ -117,6 +117,9 @@ module.exports = Aria.classDefinition({
          * @type Object
          */
         this.delegatedGestures = {
+            "safetap" : "aria.touch.SafeTap",
+            "safetapstart" : "aria.touch.SafeTap",
+            "safetapcancel" : "aria.touch.SafeTap",
             "tap" : "aria.touch.Tap",
             "tapstart" : "aria.touch.Tap",
             "tapcancel" : "aria.touch.Tap",
