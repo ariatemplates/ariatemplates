@@ -47,6 +47,9 @@ module.exports = Aria.classDefinition({
             if (Aria.$frameworkWindow.top.phantomJSRobot) {
                 return "aria.jsunit.RobotPhantomJS";
             }
+            if (Aria.$frameworkWindow.top.SeleniumJavaRobot) {
+                return "aria.jsunit.RobotJavaSelenium";
+            }
             var navigator = Aria.$window.navigator;
             try {
                 var res = navigator && navigator.javaEnabled();
