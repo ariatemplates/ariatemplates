@@ -22,7 +22,6 @@ var ariaUtilsAriaWindow = require("../utils/AriaWindow");
 var ariaCoreTimer = require("../core/Timer");
 var ariaCoreJsonValidator = require("../core/JsonValidator");
 
-
 (function () {
     var layout;
     var timer;
@@ -337,41 +336,51 @@ var ariaCoreJsonValidator = require("../core/JsonValidator");
             },
 
             /**
-             * Returns the width of scrollbars.
+             * Returns the width of scrollbars in pixels, as measured in the current browser.
              * @return {Number}
              */
-            getScrollbarsWidth : function () {
+            getScrollbarsMeasuredWidth : function () {
                 if (__scrollBarsWidth != null) {
                     return __scrollBarsWidth;
                 }
-                if (ariaCoreBrowser.isMac && ariaCoreBrowser.isWebkit) {
-                    return 17; // 17px is the size of scrollbar width on Safari and Chrome on Mac
-                } else {
-                    var document = Aria.$window.document;
-                    var o = document.createElement("div"); // outer div
-                    var i = document.createElement("div"); // inner div
-                    o.style.overflow = "";
-                    o.style.position = "absolute";
-                    o.style.left = "-10000px";
-                    o.style.top = "-10000px";
-                    o.style.width = "500px";
-                    o.style.height = "500px";
-                    // Old solution with width 100% seems to behave correctly
-                    // for all browsers except IE7. Some research gives that
-                    // just for IE7 this method does not work when setting width 100%,
-                    // but works correctly setting no width
-                    if (!ariaCoreBrowser.isIE7) {
-                        i.style.width = "100%";
-                    }
-                    i.style.height = "100%";
-                    document.body.appendChild(o);
-                    o.appendChild(i);
-                    __scrollBarsWidth = i.offsetWidth;
-                    o.style.overflow = "scroll";
-                    __scrollBarsWidth -= i.offsetWidth;
-                    document.body.removeChild(o);
-                    return __scrollBarsWidth;
+                var document = Aria.$window.document;
+                var o = document.createElement("div"); // outer div
+                var i = document.createElement("div"); // inner div
+                o.style.overflow = "";
+                o.style.position = "absolute";
+                o.style.left = "-10000px";
+                o.style.top = "-10000px";
+                o.style.width = "500px";
+                o.style.height = "500px";
+                // Old solution with width 100% seems to behave correctly
+                // for all browsers except IE7. Some research gives that
+                // just for IE7 this method does not work when setting width 100%,
+                // but works correctly setting no width
+                if (!ariaCoreBrowser.isIE7) {
+                    i.style.width = "100%";
                 }
+                i.style.height = "100%";
+                document.body.appendChild(o);
+                o.appendChild(i);
+                __scrollBarsWidth = i.offsetWidth;
+                o.style.overflow = "scroll";
+                __scrollBarsWidth -= i.offsetWidth;
+                document.body.removeChild(o);
+                return __scrollBarsWidth;
+            },
+
+            /**
+             * Returns the width of scrollbars in pixels. It uses the measured value returned by
+             * getScrollbarsMeasuredWidth if it is greater than zero, and a hard-coded value of 17px otherwise.<br>
+             * The need for a hard-coded value comes from Mac OS for which scrollbars cannot be measured with the
+             * getScrollbarsMeasuredWidth method, because they reserve no space. They are hidden by default, but they
+             * are displayed when scrolling, in which case they can hide some content, if they were not taken into
+             * account in the layout.
+             * @return {Number}
+             */
+            getScrollbarsWidth : function () {
+                var value = this.getScrollbarsMeasuredWidth();
+                return value > 0 ? value : 17;
             }
         }
     });
