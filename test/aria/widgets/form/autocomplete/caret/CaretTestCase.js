@@ -21,8 +21,10 @@ Aria.classDefinition({
     },
     $prototype : {
         runTemplateTest : function () {
+            var isMac = aria.core.Browser.isMac;
+            var home = isMac ? "[<META>][left][>META<]" : "[home]";
             var input = this.getInputField("ac");
-            this.synEvent.execute([["click", input], ["type", input, "[home][right][<shift>][right][right][>shift<]"],
+            this.synEvent.execute([["click", input], ["type", input, home + "[right][<shift>][right][right][>shift<]"],
                     ["pause", 1000], ["type", input, "a"], ["pause", 500], ["type", input, "p"], ["pause", 500]], {
                 fn : this.onType,
                 scope : this

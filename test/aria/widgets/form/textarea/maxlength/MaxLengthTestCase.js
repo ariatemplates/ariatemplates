@@ -23,6 +23,8 @@ Aria.classDefinition({
     },
     $prototype : {
         runTemplateTest : function () {
+            var isMac = aria.core.Browser.isMac;
+            this.ctrlKey = isMac ? "META" : "CTRL";
 
             var textareas = Aria.$window.document.getElementsByTagName("textarea");
             this.textarea = textareas[0];
@@ -49,7 +51,7 @@ Aria.classDefinition({
             this.synEvent.click(this.textareaForCopy, {
                 fn : function () {
                     aria.utils.Caret.setPosition(this.textareaForCopy, 0, 3);
-                    this.synEvent.type(this.textareaForCopy, "[<CTRL>]c[>CTRL<]", {
+                    this.synEvent.type(this.textareaForCopy, "[<" + this.ctrlKey + ">]c[>" + this.ctrlKey + "<]", {
                         fn : this.paste,
                         scope : this
                     });
@@ -62,7 +64,7 @@ Aria.classDefinition({
             this.synEvent.click(this.textarea, {
                 fn : function () {
                     aria.utils.Caret.setPosition(this.textarea, 0, 2);
-                    this.synEvent.type(this.textarea, "[<CTRL>]v[>CTRL<]", {
+                    this.synEvent.type(this.textarea, "[<" + this.ctrlKey + ">]v[>" + this.ctrlKey + "<]", {
                         fn : function () {
                             /*
                             this.waitFor({
