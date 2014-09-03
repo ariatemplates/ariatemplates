@@ -21,7 +21,7 @@ var ariaUtilsHtml = require("../../utils/Html");
 var ariaWidgetLibsBaseWidget = require("../../widgetLibs/BaseWidget");
 var ariaUtilsJson = require("../../utils/Json");
 var ariaCoreJsonValidator = require("../../core/JsonValidator");
-
+var ariaUtilsDragdropDrag = require("../../utils/dragdrop/Drag");
 
 /**
  * Touch Slider Widget.
@@ -316,7 +316,7 @@ module.exports = Aria.classDefinition({
             }
             this._setLeftPosition();
             this._updateDisplay();
-            this._loadAndCreateDraggable();
+            this._createSliderDrag();
         },
 
         /**
@@ -352,33 +352,11 @@ module.exports = Aria.classDefinition({
         },
 
         /**
-         * Load the dependency for Drag before if not loaded yet.
-         * @protected
-         */
-        _loadAndCreateDraggable : function () {
-            if (aria.utils.dragdrop && aria.utils.dragdrop.Drag) {
-                this._createSliderDrag();
-            } else {
-                Aria.load({
-                    classes : ["aria.utils.dragdrop.Drag"],
-                    oncomplete : {
-                        fn : this._createSliderDrag,
-                        scope : this
-                    }
-                });
-            }
-        },
-
-        /**
          * Create the Draggable element.
          * @protected
          */
         _createSliderDrag : function () {
-            if (!this._cfg) {
-                // In case the widget gets disposed while loading the dependencies
-                return;
-            }
-            this._draggable = new aria.utils.dragdrop.Drag(this._slider, {
+            this._draggable = new ariaUtilsDragdropDrag(this._slider, {
                 handle : this._slider,
                 proxy : null,
                 axis : "x",

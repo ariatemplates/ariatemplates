@@ -23,7 +23,7 @@ var ariaWidgetLibsBaseWidget = require("../../widgetLibs/BaseWidget");
 var ariaUtilsJson = require("../../utils/Json");
 var ariaCoreBrowser = require("../../core/Browser");
 var ariaCoreJsonValidator = require("../../core/JsonValidator");
-
+var ariaUtilsDragdropDrag = require("../../utils/dragdrop/Drag");
 
 /**
  * Double Slider widget.<br/> This widget has two movable thumbs over a region defined by the width of the widget.<br/>
@@ -293,7 +293,7 @@ module.exports = Aria.classDefinition({
             if (ariaCoreBrowser.isOldIE) {
                 this.getDom().onselectstart = Aria.returnFalse;
             }
-            this._loadAndCreateDraggable();
+            this._createSliderDrag();
         },
 
         /**
@@ -359,35 +359,13 @@ module.exports = Aria.classDefinition({
         },
 
         /**
-         * Load the dependency for Drag before if not loaded yet.
-         * @protected
-         */
-        _loadAndCreateDraggable : function () {
-            if (aria.utils.dragdrop && aria.utils.dragdrop.Drag) {
-                this._createSliderDrag();
-            } else {
-                Aria.load({
-                    classes : ["aria.utils.dragdrop.Drag"],
-                    oncomplete : {
-                        fn : this._createSliderDrag,
-                        scope : this
-                    }
-                });
-            }
-        },
-
-        /**
          * Create the Draggable element.
          * @protected
          */
         _createSliderDrag : function () {
-            if (!this._cfg) {
-                // In case the widget gets disposed while loading the dependencies
-                return;
-            }
             var thumbs = [this._firstSlider, this._secondSlider];
             for (var i = 0, len = thumbs.length; i < len; i++) {
-                this._draggable[i] = new aria.utils.dragdrop.Drag(thumbs[i], {
+                this._draggable[i] = new ariaUtilsDragdropDrag(thumbs[i], {
                     handle : thumbs[i],
                     proxy : null,
                     axis : "x",
