@@ -20,7 +20,7 @@ Aria.classDefinition({
     $classpath : "test.aria.utils.Dom",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.utils.Dom", "aria.utils.Type", "aria.utils.DomBeans", "aria.popups.Beans",
-            "aria.utils.Math", "aria.core.JsonValidator"],
+            "aria.utils.Math", "aria.core.JsonValidator", "aria.templates.Layout"],
     $constructor : function () {
         /**
          * Dom elements created, to delete them if there was any issue in the test
@@ -239,6 +239,7 @@ Aria.classDefinition({
          * Test the scroll Into View method
          */
         test_scrollIntoView : function () {
+            var scrollbarsWidth = aria.templates.Layout.getScrollbarsMeasuredWidth();
             Aria.$window.scroll(0, 0);
             var document = Aria.$window.document;
             var test = document.createElement("div");
@@ -280,23 +281,25 @@ Aria.classDefinition({
             // measuring pos is more reliable
             var position = aria.utils.Dom.calculatePosition(target);
 
-            this.assertTrue(position.top <= 405 && position.top >= 401, "Did not scroll vertically properly to object");
-            this.assertTrue(position.left <= 304 && position.left >= 300, "Did not scroll vertically properly to object");
+            this.assertEqualsWithTolerance(position.top, 150 + 10 + 20 + 10 + 300 + 10 - scrollbarsWidth - 60 - 2 * 10, 2, "Did not scroll vertically properly to object (position.top is %1, expecting %2)");
+            this.assertEqualsWithTolerance(position.left, 50 + 10 + 20 + 10 + 300 + 10 - scrollbarsWidth - 60 - 2 * 10, 2, "Did not scroll vertically properly to object (position.left is %1, expecting %2)");
 
             target = document.getElementById("block_66");
 
             aria.utils.Dom.scrollIntoView(target, true);
 
-            var position = aria.utils.Dom.calculatePosition(target);
-            this.assertTrue(position.top < 182 && position.top > 178, "Did not scroll vertically properly to object");
-            this.assertTrue(position.left < 82 && position.left > 78, "Did not scroll vertically properly to object");
+            position = aria.utils.Dom.calculatePosition(target);
+            this.assertEqualsWithTolerance(position.top, 150 + 10 + 20, 2, "Did not scroll vertically properly to object (position.top is %1, expecting %2)");
+            this.assertEqualsWithTolerance(position.left, 50 + 10 + 20, 2, "Did not scroll vertically properly to object (position.left is %1, expecting %2)");
 
             target = document.getElementById("block_77");
-
             // this should not change scrolls as target is already visible
             aria.utils.Dom.scrollIntoView(target);
-            this.assertTrue(position.top < 182 && position.top > 178, "Did not scroll vertically properly to object");
-            this.assertTrue(position.left < 82 && position.left > 78, "Did not scroll vertically properly to object");
+
+            target = document.getElementById("block_66");
+            position = aria.utils.Dom.calculatePosition(target);
+            this.assertEqualsWithTolerance(position.top, 150 + 10 + 20, 2, "Did not scroll vertically properly to object (position.top is %1, expecting %2)");
+            this.assertEqualsWithTolerance(position.left, 50 + 10 + 20, 2, "Did not scroll vertically properly to object (position.left is %1, expecting %2)");
 
             // test body scrolling
             test.innerHTML = "<div id='block_block' style='display:inline-block;height:60px;width:60px;margin:10px;border:solid 10px #A39770;background:#A32500;'></div>";

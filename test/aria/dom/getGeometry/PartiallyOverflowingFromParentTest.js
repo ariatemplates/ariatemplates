@@ -21,7 +21,7 @@
 Aria.classDefinition({
     $classpath : 'test.aria.dom.getGeometry.PartiallyOverflowingFromParentTest',
     $extends : 'aria.jsunit.TestCase',
-    $dependencies : ['aria.utils.Dom'],
+    $dependencies : ['aria.utils.Dom', 'aria.templates.Layout'],
     $constructor : function () {
         this.$TestCase.constructor.call(this);
         this.testarea = Aria.$window.document.getElementById("TESTAREA");
@@ -193,7 +193,7 @@ Aria.classDefinition({
             // SSSSSOOSSSSSSS
             // _____OO_______
 
-            // using range to not care much about exact height of the scrollbar which may vary across the browsers
+            var scrollbarWidth = aria.templates.Layout.getScrollbarsMeasuredWidth();
             this._testChildGeometryHeight({
                 parent : {
                     height : 333,
@@ -203,7 +203,7 @@ Aria.classDefinition({
                     height : 500
                 },
                 expectChildGeo : true,
-                expectedChildGeoHeightRange : [313, 332]
+                expectedChildGeoHeight : 333 - scrollbarWidth
             });
         },
 
@@ -239,10 +239,6 @@ Aria.classDefinition({
 
             if (opt.expectedChildGeoHeight) {
                 this.assertEquals(geo.height, opt.expectedChildGeoHeight, "Child's getGeometry().height should have been %2, got %1");
-            }
-            if (opt.expectedChildGeoHeightRange) {
-                var range = opt.expectedChildGeoHeightRange;
-                this.assertTrue(range[0] < geo.height && geo.height < range[1]);
             }
         }
     }
