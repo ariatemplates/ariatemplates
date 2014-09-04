@@ -136,6 +136,12 @@ module.exports = Aria.classDefinition({
          * @param {Object} env
          */
         setTestEnv : function (env) {
+
+            // internal data must be null in case of a module controller, in order to get them from the controller itself if needed
+            if (env.moduleCtrl) {
+                this.env.data = null;
+            }
+
             // override existing value
             for (var i in env) {
                 if (env.hasOwnProperty(i)) {
