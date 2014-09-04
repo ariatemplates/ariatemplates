@@ -385,6 +385,7 @@ module.exports = Aria.classDefinition({
          */
         _onDragStart : function (evt) {
             this._initialDrag = evt.src.posX;
+            this._initialSavedX = this._savedX;
         },
 
         /**
@@ -404,6 +405,7 @@ module.exports = Aria.classDefinition({
         _onDragEnd : function (evt) {
             this._move(evt.src);
             this._initialDrag = null;
+            this._initialSavedX = null;
             if (this._isSwitch) {
                 this._changeSwith();
             }
@@ -438,9 +440,7 @@ module.exports = Aria.classDefinition({
          * @param {Object} src Source of the drag gesture
          */
         _move : function (src) {
-            var diff = src.posX - this._initialDrag;
-            this._savedX += diff;
-            this._initialDrag = src.posX;
+            this._savedX = this._initialSavedX + src.posX - this._initialDrag;
             this._setValue();
             if (this._isSwitch) {
                 this._switchDisplay();
