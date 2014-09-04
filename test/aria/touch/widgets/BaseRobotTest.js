@@ -53,16 +53,11 @@ Aria.classDefinition({
          * Get the coordinates of a position in the slider, useful as to in Robot.drag
          */
         toSlider : function (thumb, position) {
-            var geometry = this.widget._geometry;
-            var offset = 0;
-            if (thumb === "second") {
-                // We want the second thumb's left border to be on the target, since we are moving
-                // the thumb from the middle we need some offset
-                offset = 0.5 * this.widget._secondWidth;
-            }
+            var geometry = aria.utils.Dom.getClientGeometry(this.widget._domElt);
+            var offset = thumb === "second" ? this.widget._secondWidth / 2 : -this.widget._firstWidth / 2;
             return {
-                x : geometry.x + this.widget._cfg.width * position + offset,
-                y : geometry.y
+                x : geometry.x + this.widget._firstWidth + this.widget._railWidth * position + offset,
+                y : geometry.y + geometry.height / 2
             };
         },
 
@@ -98,8 +93,8 @@ Aria.classDefinition({
 
         expectAround : function (expected) {
             var widgetValue = this.widget.value;
-            this.assertEqualsWithTolerance(widgetValue[0], expected[0], 0.05, "Wrong first value in widget, %1 != %2");
-            this.assertEqualsWithTolerance(widgetValue[1], expected[1], 0.05, "Wrong second value in widget, %1 != %2");
+            this.assertEqualsWithTolerance(widgetValue[0], expected[0], 0.005, "Wrong first value in widget, %1 != %2");
+            this.assertEqualsWithTolerance(widgetValue[1], expected[1], 0.005, "Wrong second value in widget, %1 != %2");
 
             var modelValues = this.data.slider;
             this.assertEquals(widgetValue[0], modelValues[0], "Model differs from widget values, %1 != %2");
@@ -108,11 +103,11 @@ Aria.classDefinition({
             var positionFirst = parseInt(aria.utils.Dom.getStyle(this.widget._firstSlider, "left"), 10);
             var positionSecond = parseInt(aria.utils.Dom.getStyle(this.widget._secondSlider, "left"), 10);
 
-            // 15 is the size of the thumbs
-            var expectedFirst = (this.widget._cfg.width - 30) * expected[0];
-            var expectedSecond = (this.widget._cfg.width - 30) * expected[1] + 15;
-            this.assertEqualsWithTolerance(positionFirst, expectedFirst, 5, "Position of first is %1, expected %2");
-            this.assertEqualsWithTolerance(positionSecond, expectedSecond, 5, "Position of second is %1, expected %2");
+            var expectedFirst = this.widget._railWidth * expected[0];
+            var expectedSecond = this.widget._railWidth * expected[1] + this.widget._firstWidth;
+
+            this.assertEqualsWithTolerance(positionFirst, expectedFirst, 1, "Position of first is %1, expected %2");
+            this.assertEqualsWithTolerance(positionSecond, expectedSecond, 1, "Position of second is %1, expected %2");
         }
     }
 });

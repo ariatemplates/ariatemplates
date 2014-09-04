@@ -125,13 +125,6 @@ module.exports = Aria.classDefinition({
         this._highlight = null;
 
         /**
-         * Geometry of the parent slider element
-         * @type Object
-         * @protected
-         */
-        this._geometry = null;
-
-        /**
          * Initial position of the element being dragged
          * @type Number
          * @protected
@@ -282,12 +275,13 @@ module.exports = Aria.classDefinition({
             this._highlight = ariaUtilsDom.getElementById(this._domId + "_highlight");
 
             this._firstWidth = parseInt(ariaUtilsDom.getStyle(this._firstSlider, "width"), 10);
+            this._firstWidth += parseInt(ariaUtilsDom.getStyle(this._firstSlider, "borderLeftWidth"), 10) || 0;
+            this._firstWidth += parseInt(ariaUtilsDom.getStyle(this._firstSlider, "borderRightWidth"), 10) || 0;
             this._secondWidth = parseInt(ariaUtilsDom.getStyle(this._secondSlider, "width"), 10);
             this._secondWidth += parseInt(ariaUtilsDom.getStyle(this._secondSlider, "borderLeftWidth"), 10) || 0;
             this._secondWidth += parseInt(ariaUtilsDom.getStyle(this._secondSlider, "borderRightWidth"), 10) || 0;
             this._railWidth = this._cfg.width - this._firstWidth - this._secondWidth;
 
-            this._geometry = ariaUtilsDom.getGeometry(this._domElt);
             this._setLeft();
             this._updateDisplay();
             if (ariaCoreBrowser.isOldIE) {
@@ -419,6 +413,7 @@ module.exports = Aria.classDefinition({
             this._oldValue = [this.value[0], this.value[1]];
             // Just store the initial position of the element to compute the move later
             this._initialDrag = evt.src.posX;
+            this._initialSavedX = evt.src.id === this._firstDomId ? this._savedX1 : this._savedX2;
         },
 
         /**
@@ -438,6 +433,7 @@ module.exports = Aria.classDefinition({
         _onDragEnd : function (evt) {
             this._move(evt.src);
             this._initialDrag = null;
+            this._initialSavedX = null;
             if (this._oldValue[0] !== this.value[0] || this._oldValue[1] !== this.value[1]) {
                 if (this._cfg.onchange) {
                     this._context.evalCallback(this._cfg.onchange);
@@ -450,26 +446,22 @@ module.exports = Aria.classDefinition({
          * @param {Object} src Source of the drag gesture
          */
         _move : function (src) {
-            var move = src.posX - this._initialDrag;
+            var newSavedX = this._initialSavedX + src.posX - this._initialDrag;
 
             if (src.id === this._firstDomId) {
                 // We can't move further the second thumb
                 var limit = this._savedX2 - this._firstWidth;
-                if (this._savedX1 + move >= limit) {
+                if (newSavedX >= limit) {
                     this._savedX1 = limit;
-                    // No need to update the initial drag because we are not moving
                 } else {
-                    this._savedX1 += move;
-                    // Update the initial drag to take care of the current move
-                    this._initialDrag = src.posX;
+                    this._savedX1 = newSavedX;
                 }
             } else {
                 var limit = this._savedX1 + this._firstWidth;
-                if (this._savedX2 + move <= limit) {
+                if (newSavedX <= limit) {
                     this._savedX2 = limit;
                 } else {
-                    this._savedX2 += move;
-                    this._initialDrag = src.posX;
+                    this._savedX2 = newSavedX;
                 }
             }
             this._updateHighlight();

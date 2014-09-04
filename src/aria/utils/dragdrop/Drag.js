@@ -19,7 +19,6 @@ var ariaUtilsType = require("../Type");
 var ariaUtilsDragdropIDrag = require("./IDrag");
 var ariaUtilsJson = require("../Json");
 
-
 (function () {
     /**
      * Set an expando attribute on the draggable element, useful for delegation
@@ -157,6 +156,13 @@ var ariaUtilsJson = require("../Json");
              * @type aria.utils.DomBeans:Position
              */
             this._elementInitialPosition = null;
+
+            /**
+             * Position of the mouse at drag start
+             * @protected
+             * @type aria.utils.DomBeans:Position
+             */
+            this._mouseInitialPosition = null;
 
             /**
              * Geometry of the movable element at drag start
@@ -367,6 +373,10 @@ var ariaUtilsJson = require("../Json");
             start : function (coord) {
                 this.posX = coord.x;
                 this.posY = coord.y;
+                this._mouseInitialPosition = {
+                    left : coord.x,
+                    top : coord.y
+                };
                 var element = this.getElement(true), domUtil = ariaUtilsDom;
                 // This will prevent text selection on IE on the element
                 element.onselectstart = Aria.returnFalse;
@@ -397,11 +407,15 @@ var ariaUtilsJson = require("../Json");
                 var domUtil = ariaUtilsDom;
 
                 if (movable && movable.style) {
-                    var offsetX = this._vertical ? 0 : evt.clientX - this.posX;
-                    var offsetY = this._horizontal ? 0 : evt.clientY - this.posY;
                     var geometry = ariaUtilsJson.copy(this._movableGeometry);
-                    geometry.x += offsetX;
-                    geometry.y += offsetY;
+                    var mouseInitPos = this._mouseInitialPosition;
+                    var movableInitPos = this._movableInitialGeometry;
+                    if (!this._vertical) {
+                        geometry.x = movableInitPos.x + evt.clientX - mouseInitPos.left;
+                    }
+                    if (!this._horizontal) {
+                        geometry.y = movableInitPos.y + evt.clientY - mouseInitPos.top;
+                    }
                     var pos = (this._boundary) ? domUtil.fitInside(geometry, this._boundary) : {
                         top : geometry.y,
                         left : geometry.x
@@ -413,8 +427,8 @@ var ariaUtilsJson = require("../Json");
                     geometry.y = pos.top;
                     geometry.x = pos.left;
 
-                    this.posY += geometry.y - this._movableGeometry.y;
-                    this.posX += geometry.x - this._movableGeometry.x;
+                    this.posY = mouseInitPos.top + geometry.y - movableInitPos.y;
+                    this.posX = mouseInitPos.left + geometry.x - movableInitPos.x;
                     this._movableGeometry = geometry;
                     this.$raiseEvent("move");
                 }

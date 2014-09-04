@@ -67,11 +67,10 @@ Aria.classDefinition({
             var positionFirst = parseInt(aria.utils.Dom.getStyle(widget._firstSlider, "left"), 10);
             var positionSecond = parseInt(aria.utils.Dom.getStyle(widget._secondSlider, "left"), 10);
 
-            // 15 is the size of the thumbs
-            var expectedFirst = (widget._cfg.width - 30) * expected[0];
-            var expectedSecond = (widget._cfg.width - 30) * expected[1] + 15;
-            this.assertEqualsWithTolerance(positionFirst, expectedFirst, 5, "Position of first is %1, expected %2");
-            this.assertEqualsWithTolerance(positionSecond, expectedSecond, 5, "Position of second is %1, expected %2");
+            var expectedFirst = widget._railWidth * expected[0];
+            var expectedSecond = widget._railWidth * expected[1] + widget._firstWidth;
+            this.assertEqualsWithTolerance(positionFirst, expectedFirst, 1, "Position of first is %1, expected %2");
+            this.assertEqualsWithTolerance(positionSecond, expectedSecond, 1, "Position of second is %1, expected %2");
         },
 
         /**
