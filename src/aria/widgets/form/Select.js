@@ -413,13 +413,7 @@ module.exports = Aria.classDefinition({
                         stopValueProp : true
                     });
                 } else {
-                    var selectField = this.getSelectField();
-                    for (var i = 0; i < selectField.options.length; i++) {
-                        if (selectField.options[i].value === newValue) {
-                            selectField.options[i].selected = true;
-                            break;
-                        }
-                    }
+                    this._selectValue(newValue);
                 }
             } else if (propertyName === 'mandatory') {
                 this._updateState();
@@ -434,8 +428,9 @@ module.exports = Aria.classDefinition({
                 this._updateState();
             } else if (propertyName === 'options') {
                 if (this.controller) {
+                    var selectValue = this.controller.getDataModel().value;
                     this.controller.setListOptions(newValue);
-                    var report = this.controller.checkValue(null);
+                    var report = this.controller.checkValue(selectValue);
                     this._reactToControllerReport(report, {
                         stopValueProp : true
                     });
@@ -450,6 +445,7 @@ module.exports = Aria.classDefinition({
                     }
 
                     var selectField = this.getSelectField();
+                    var currentValue = selectField.value;
                     // update the options list
                     var optionsListString = optionsMarkup.join('');
                     if (ariaCoreBrowser.isIE9 || ariaCoreBrowser.isIE8 || ariaCoreBrowser.isIE7) {
@@ -463,6 +459,7 @@ module.exports = Aria.classDefinition({
                     } else {
                         selectField.innerHTML = optionsListString;
                     }
+                    this._selectValue(currentValue);
                 }
 
             } else if (propertyName === 'formatError' || propertyName === 'formatErrorMessages'
@@ -471,6 +468,24 @@ module.exports = Aria.classDefinition({
                 this._updateState();
             } else {
                 this.$DropDownInput._onBoundPropertyChange.apply(this, arguments);
+            }
+        },
+
+
+        /**
+         * Set the 'selected' attribut on each options to true or false depending on the value
+         * @param {String} value The value to compare
+         * @private
+         */
+        _selectValue : function(value) {
+            var selectField = this.getSelectField();
+            var options = selectField.options;
+            for (var i = 0; i < options.length; i++) {
+                var option = options[i];
+                if (option.value === value) {
+                    option.selected = true;
+                    break;
+                }
             }
         },
 
