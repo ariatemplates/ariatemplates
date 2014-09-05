@@ -15,7 +15,6 @@
 var Aria = require("../Aria");
 var ariaCoreJsObject = require("../core/JsObject");
 
-
 /**
  * @class aria.utils.Type Utilities for comparing types
  * @extends aria.core.JsObject
@@ -62,9 +61,15 @@ module.exports = Aria.classDefinition({
          * @return {Boolean} isNumber
          */
         isNumber : function (value) {
+            // to handle the NaN bug
+            if (isNaN(value)) {
+                return false;
+            }
+
             if (typeof(value) === 'number') {
                 return true;
             }
+
             return Object.prototype.toString.apply(value) === "[object Number]";
         },
 
