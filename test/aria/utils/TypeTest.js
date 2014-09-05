@@ -171,6 +171,16 @@ Aria.classDefinition({
                 scope : this
             }));
         },
+        testIsNumber : function () {
+            var typeUtils = aria.utils.Type;
+            this.assertFalse(typeUtils.isNumber(NaN));
+            this.assertFalse(typeUtils.isNumber(undefined));
+            this.assertFalse(typeUtils.isNumber(true));
+            this.assertFalse(typeUtils.isNumber(null));
+            this.assertTrue(typeUtils.isNumber(21));
+            this.assertTrue(typeUtils.isNumber(21.21));
+            this.assertTrue(typeUtils.isNumber(Infinity));
+        },
 
         _myTestMethod : function () {}
     }
