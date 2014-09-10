@@ -21,6 +21,7 @@ Aria.classDefinition({
 
         this._tests = ["test.aria.widgets.container.dialog.resize.test1.DialogOnResizeTestCase",
                 "test.aria.widgets.container.dialog.resize.test2.ResizableDialogTestCase",
-                "test.aria.widgets.container.dialog.resize.test3.DialogOnResizeTestCase"];
+                "test.aria.widgets.container.dialog.resize.test3.DialogOnResizeTestCase",
+                "test.aria.widgets.container.dialog.resize.test4.DialogOnResizeTestCase"];
     }
 });
