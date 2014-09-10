@@ -14,13 +14,14 @@
  */
 
 Aria.classDefinition({
-    $classpath: "test.aria.templates.keyboardNavigation.NavigationTestSuite",
-    $extends: "aria.jsunit.TestSuite",
-    $constructor: function () {
+    $classpath : "test.aria.templates.keyboardNavigation.NavigationTestSuite",
+    $extends : "aria.jsunit.TestSuite",
+    $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
         this.addTests("test.aria.templates.keyboardNavigation.TableNavTestCase");
         this.addTests("test.aria.templates.keyboardNavigation.KeyMapTestCase");
         this.addTests("test.aria.templates.keyboardNavigation.enter.EnterTestCase");
+        this.addTests("test.aria.templates.keyboardNavigation.DialogNavTestCase");
     }
 });
