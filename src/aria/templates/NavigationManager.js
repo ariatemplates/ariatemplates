@@ -12,7 +12,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 /**
  * Handle keyboard navigation and shortcut for a given section.
  * @class aria.templates.NavigationManager
@@ -65,7 +64,7 @@ Aria.classDefinition({
             };
             if (aria.core.JsonValidator.normalize(normalizeCfg)) {
                 configuration = normalizeCfg.json;
-                this.globalKeyMap.push(configuration);
+                this.globalKeyMap.unshift(configuration);
             } else {
                 this.$logError(this.INVALID_GLOBAL_KEYMAP_CFG);
             }
@@ -90,8 +89,9 @@ Aria.classDefinition({
         removeGlobalKeyMap : function (configuration) {
             for (var index = 0, l = this.globalKeyMap.length, mapConfig; index < l; index++) {
                 mapConfig = this.globalKeyMap[index];
-                if (mapConfig.key == configuration.key && (!!configuration.alt == !!mapConfig.alt)
-                        && (!!configuration.shift == !!mapConfig.shift) && (!!configuration.ctrl == !!mapConfig.ctrl)) {
+                if (mapConfig.key == configuration.key && (!!configuration.modal == !!mapConfig.modal)
+                        && (!!configuration.alt == !!mapConfig.alt) && (!!configuration.shift == !!mapConfig.shift)
+                        && (!!configuration.ctrl == !!mapConfig.ctrl)) {
                     this.globalKeyMap.splice(index, 1);
                     return true;
                 }
