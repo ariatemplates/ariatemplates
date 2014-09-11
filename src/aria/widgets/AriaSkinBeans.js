@@ -981,6 +981,33 @@ module.exports = Aria.beanDefinitions({
                 }
             }
         },
+        "BorderCfg" : {
+            $type : "Object",
+            $properties : {
+                style : {
+                    $type : "json:String"
+                },
+                color : {
+                    $type : "Color"
+                },
+                topWidth : {
+                    $type : "Pixels",
+                    $default : 0
+                },
+                bottomWidth : {
+                    $type : "Pixels",
+                    $default : 0
+                },
+                leftWidth : {
+                    $type : "Pixels",
+                    $default : 0
+                },
+                rightWidth : {
+                    $type : "Pixels",
+                    $default : 0
+                }
+            }
+        },
         "SplitterCfg" : {
             $type : "Object",
             $properties : {
@@ -989,6 +1016,9 @@ module.exports = Aria.beanDefinitions({
                 },
                 separatorWidth : {
                     $type : "Pixels"
+                },
+                separatorBorder : {
+                    $type : "BorderCfg"
                 },
                 handleBackgroundColor : {
                     $type : "Color",
@@ -1031,11 +1061,34 @@ module.exports = Aria.beanDefinitions({
                 },
                 borderWidth : {
                     $type : "Pixels",
-                    $default : 1
+                    $description : "If defined, it overrides the individual values (borderTopWidth, borderBottomWidth, borderRightWidth, borderLeftWidth)."
+                },
+                borderTopWidth : {
+                    $type : "Pixels",
+                    $default : 1,
+                    $description : "If borderWidth defined, this value is not used."
+                },
+                borderBottomWidth : {
+                    $type : "Pixels",
+                    $default : 1,
+                    $description : "If borderWidth defined, this value is not used."
+                },
+                borderLeftWidth : {
+                    $type : "Pixels",
+                    $default : 1,
+                    $description : "If borderWidth defined, this value is not used."
+                },
+                borderRightWidth : {
+                    $type : "Pixels",
+                    $default : 1,
+                    $description : "If borderWidth defined, this value is not used."
                 },
                 backgroundColor : {
                     $type : "Color",
                     $default : "transparent"
+                },
+                panelBorder : {
+                    $type : "BorderCfg"
                 }
             }
         },

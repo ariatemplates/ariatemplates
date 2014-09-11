@@ -20,7 +20,6 @@ var ariaCoreBrowser = require("../../core/Browser");
 var ariaWidgetsContainerSplitterStyle = require("./SplitterStyle.tpl.css");
 var ariaWidgetsContainerContainer = require("./Container");
 
-
 /**
  * Splitter Widget
  */
@@ -108,6 +107,48 @@ module.exports = Aria.classDefinition({
          */
         this._spanStyle = "overflow: hidden;";
 
+        /**
+         * Panel horizontal borders
+         * @protected
+         * @type Number
+         */
+        this._panelBorderH = 0;
+
+        /**
+         * Panel vertical borders
+         * @protected
+         * @type Number
+         */
+        this._panelBorderV = 0;
+
+        /**
+         * Horizontal container borders
+         * @protected
+         * @type Number
+         */
+        this._containerBorderH = 0;
+
+        /**
+         * Vertical container borders
+         * @protected
+         * @type Number
+         */
+        this._containerBorderV = 0;
+
+        /**
+         * Horizontal separator borders
+         * @protected
+         * @type Number
+         */
+        this._separatorBorderH = 0;
+
+        /**
+         * Vertical separator borders
+         * @protected
+         * @type Number
+         */
+        this._separatorBorderV = 0;
+
     },
     $destructor : function () {
         this._skinObj = null;
@@ -175,20 +216,36 @@ module.exports = Aria.classDefinition({
             this.getDom().onselectstart = Aria.returnTrue;
             this._splitBarProxyClass.remove("xSplitter_" + this._cfg.sclass + this._addHandleCls);
             this._splitBarProxyClass.add(this._handleBarClass);
-            var elem = this._draggable.element, offSetType, dimType, dimMode, dimension;
+            var elem = this._draggable.element, offSetType, dimType, dimMode, dimension, panelBorder = this._skinObj.panelBorder, limitMin, limitMax, handlePosition, size1, size2;
             if (this._orientation) {
                 offSetType = "offsetTop";
                 dimType = "height";
                 dimMode = "top";
                 dimension = this._height;
+                limitMin = panelBorder.topWidth + panelBorder.bottomWidth;
+                limitMax = dimension + limitMin;
             } else {
                 offSetType = "offsetLeft";
                 dimType = "width";
                 dimMode = "left";
                 dimension = this._width;
+                limitMin = panelBorder.leftWidth + panelBorder.rightWidth;
+                limitMax = dimension + limitMin;
             }
-            var size1 = (elem[offSetType] <= 0) ? 0 : elem[offSetType];
-            var size2 = ((dimension - size1) <= 0) ? 0 : (dimension - size1);
+
+            handlePosition = elem[offSetType];
+
+            if (handlePosition <= limitMin) {
+                size1 = 0;
+                size2 = limitMax;
+            } else if (handlePosition >= limitMax) {
+                size1 = limitMax;
+                size2 = 0;
+            } else {
+                size1 = handlePosition - limitMin;
+                size2 = dimension - size1;
+            }
+
             this.setProperty("size1", size1);
             this.setProperty("size2", size2);
             this._splitPanel1.style[dimType] = size1 + "px";
@@ -197,8 +254,18 @@ module.exports = Aria.classDefinition({
                 this._splitPanel1.style.overflowY = (size1 <= 16) ? "hidden" : "";
                 this._splitPanel2.style.overflowY = (size2 <= 16) ? "hidden" : "";
             }
-            this._splitBar.style[dimMode] = size1 + "px";
-            this._splitBarProxy.style[dimMode] = size1 + "px";
+
+            if (size1 <= 0) {
+                this._splitBar.style[dimMode] = size1 + "px";
+                this._splitBarProxy.style[dimMode] = size1 + "px";
+            } else if (size2 <= 0) {
+                this._splitBar.style[dimMode] = limitMin + limitMax + "px";
+                this._splitBarProxy.style[dimMode] = limitMin + limitMax + "px";
+            } else {
+                this._splitBar.style[dimMode] = handlePosition + "px";
+                this._splitBarProxy.style[dimMode] = handlePosition + "px";
+            }
+
             this._context.$refresh({
                 section : "_splitterContent1_" + this._domId
             });
@@ -213,29 +280,38 @@ module.exports = Aria.classDefinition({
          */
         _widgetMarkupBegin : function (out) {
             var cfg = this._cfg, orientation = this._orientation, cfgH, cfgW, cfgHclass, cfgWclass;
-            var size = this._calculateSize(cfg);
-            this.setProperty("size1", size.size1);
-            this.setProperty("size2", size.size2);
+            var size = this._calculateSize(cfg), size1 = size.size1, size2 = size.size2, splitterBarPos;
+            var panelBorder = orientation ? this._panelBorderH : this._panelBorderV;
+            if (size1 === 0) {
+                splitterBarPos = 0;
+                size2 += panelBorder;
+            } else {
+                if (size2 === 0) {
+                    size1 += panelBorder;
+                }
+                splitterBarPos = size1 + panelBorder;
+            }
+
+            this.setProperty("size1", size1);
+            this.setProperty("size2", size2);
             var borderClass = "";
-            var height = this._height + this._skinObj.separatorHeight, width = this._width
-                    + this._skinObj.separatorWidth;
-            var bordersWidth = 0;
+            var sclass = cfg.sclass;
+            var height = cfg.height - this._containerBorderH, width = cfg.width - this._containerBorderV;
 
             if (cfg.border) {
-                borderClass = "xSplitter_" + cfg.sclass + "_sBdr";
-                bordersWidth = this._skinObj.borderWidth * 2;
+                borderClass = "xSplitter_" + sclass + "_sBdr";
             }
-            this._handleBarClass = "xSplitter_" + cfg.sclass + (orientation ? "_sHandleH" : "_sHandleV");
+            this._handleBarClass = "xSplitter_" + sclass + (orientation ? "_sHandleH" : "_sHandleV");
 
             if (orientation) {
-                cfgH = height, cfgW = cfgWclass = cfg.width - bordersWidth, cfgHclass = size.size1;
+                cfgH = height, cfgW = width, cfgWclass = width - this._panelBorderV, cfgHclass = size1;
             } else {
-                cfgH = cfgHclass = cfg.height - bordersWidth, cfgW = width, cfgWclass = size.size1;
+                cfgH = height, cfgHclass = height - this._panelBorderH, cfgW = width, cfgWclass = size1;
             }
 
-            out.write(['<span class="xSplitter_', cfg.sclass, '_sContainer ', borderClass, '" style="height:', cfgH,
-                    'px;width:', cfgW, 'px;"><span class="xSplitter_', cfg.sclass,
-                    '_sConstrained"  ><span class="xSplitter_', cfg.sclass, '_sMacro" style="height: ', cfgHclass,
+            out.write(['<span class="xSplitter_', sclass, '_sContainer ', borderClass, '" style="height:', cfgH,
+                    'px;width:', cfgW, 'px;"><span class="xSplitter_', sclass,
+                    '_sConstrained"  ><span class="xSplitter_', sclass, '_sMacro" style="height: ', cfgHclass,
                     'px; width:', cfgWclass, 'px;">'].join(""));
             out.beginSection({
                 id : "_splitterContent1_" + this._domId,
@@ -246,15 +322,17 @@ module.exports = Aria.classDefinition({
 
             var sDimension, sPosition, sEndPosition, splitterBarSize;
             if (orientation) {
-                cfgHclass = size.size2, cfgWclass = cfg.width - bordersWidth, sDimension = "width", splitterBarSize = cfgWclass, sPosition = "top", sEndPosition = "bottom";
+                cfgHclass = size2, cfgWclass = width - this._panelBorderV, sDimension = "width", splitterBarSize = width
+                        - this._separatorBorderV, sPosition = "top", sEndPosition = "bottom";
             } else {
-                cfgHclass = cfg.height - bordersWidth, cfgWclass = size.size2, sDimension = "height", splitterBarSize = cfgHclass, sPosition = "left", sEndPosition = "right";
+                cfgHclass = height - this._panelBorderH, cfgWclass = size2, sDimension = "height", splitterBarSize = height
+                        - this._separatorBorderH, sPosition = "left", sEndPosition = "right";
             }
 
             out.write(['<span class="', this._handleBarClass, '" style="' + sDimension + ':', splitterBarSize,
-                    'px;' + sPosition + ':', size.size1, 'px; "> </span><span id="splitBarProxy_', this._domId,
-                    '" class="', this._handleBarClass, ' " style="' + sPosition + ':', size.size1,
-                    'px; ' + sDimension + ':100%;"></span><span class="xSplitter_', cfg.sclass,
+                    'px;' + sPosition + ':', splitterBarPos, 'px; "> </span><span id="splitBarProxy_', this._domId,
+                    '" class="', this._handleBarClass, ' " style="' + sPosition + ':', splitterBarPos,
+                    'px; ' + sDimension + ':' + splitterBarSize + 'px;"></span><span class="xSplitter_', sclass,
                     '_sMacro" style="height: ', cfgHclass, 'px;width:', cfgWclass, 'px;' + sEndPosition + ':0px">'].join(""));
 
             out.beginSection({
@@ -267,13 +345,49 @@ module.exports = Aria.classDefinition({
         },
 
         /**
+         * calculate the border size of an element
+         * @param {aria.widgets.CfgBeans:BorderCfg}
+         * @param {String} H, V
+         * @return {Number} border size
+         */
+        _calculateBorderSize : function (element, orientation) {
+            if (element.style && element.color) {
+                if (orientation == "V") {
+                    return element.leftWidth + element.rightWidth;
+                } else if (orientation == "H") {
+                    return element.topWidth + element.bottomWidth;
+                }
+            }
+            return 0;
+        },
+
+        /**
          * calculate the width/height of panels from the splitter configuration
          * @param {aria.widgets.CfgBeans:SplitterCfg}
          */
         _calculateSize : function (cfg) {
-            var border = cfg.border ? this._skinObj.borderWidth * 2 : 0, size = {}, totalHeight, initDimension;
-            this._height = cfg.height - this._skinObj.separatorHeight - border;
-            this._width = cfg.width - this._skinObj.separatorWidth - border;
+            var size = {}, totalHeight, initDimension, skinObj = this._skinObj;
+
+            this._panelBorderH = this._calculateBorderSize(skinObj.panelBorder, "H");
+            this._panelBorderV = this._calculateBorderSize(skinObj.panelBorder, "V");
+
+            this._separatorBorderH = this._calculateBorderSize(skinObj.separatorBorder, "H");
+            this._separatorBorderV = this._calculateBorderSize(skinObj.separatorBorder, "V");
+
+            if (cfg.border) {
+                this._containerBorderH = (skinObj.borderWidth || skinObj.borderWidth === 0)
+                        ? skinObj.borderWidth * 2
+                        : this._skinObj.borderTopWidth + this._skinObj.borderBottomWidth;
+                this._containerBorderV = (skinObj.borderWidth || skinObj.borderWidth === 0)
+                        ? skinObj.borderWidth * 2
+                        : this._skinObj.borderLeftWidth + this._skinObj.borderRightWidth;
+            }
+
+            this._height = cfg.height - skinObj.separatorHeight - this._separatorBorderH - this._panelBorderH * 2
+                    - this._containerBorderH;
+            this._width = cfg.width - skinObj.separatorWidth - this._separatorBorderV - this._panelBorderV * 2
+                    - this._containerBorderV;
+
             if (this._height < 0) {
                 this._height = 0;
             }
@@ -338,7 +452,7 @@ module.exports = Aria.classDefinition({
          */
         _onBoundPropertyChange : function (propertyName, newValue, oldValue) {
             if (propertyName == "size1" || propertyName == "size2") {
-                var orientation = this._orientation, splitterDimension = orientation ? this._height : this._width, dimType, dimMode;
+                var orientation = this._orientation, splitterDimension = orientation ? this._height : this._width, dimType, dimMode, splitPos;
                 if (newValue > splitterDimension) {
                     newValue = splitterDimension;
                 }
@@ -349,22 +463,33 @@ module.exports = Aria.classDefinition({
                 var otherSize = splitterDimension - newValue;
                 dimType = orientation ? "height" : "width";
                 dimMode = orientation ? "top" : "left";
+                var panelBorder = orientation ? this._panelBorderH : this._panelBorderV;
 
+                var size1, size2;
                 if (propertyName == "size1") {
-                    this._splitPanel2.style[dimType] = otherSize + "px";
-                    this._splitPanel1.style[dimType] = newValue + "px";
-                    this._splitBar.style[dimMode] = newValue + "px";
-                    this._splitBarProxy.style[dimMode] = newValue + "px";
-                    this.setProperty("size1", newValue);
-                    this.setProperty("size2", otherSize);
+                    size1 = newValue;
+                    size2 = otherSize;
                 } else {
-                    this._splitPanel1.style[dimType] = otherSize + "px";
-                    this._splitPanel2.style[dimType] = newValue + "px";
-                    this._splitBar.style[dimMode] = otherSize + "px";
-                    this._splitBarProxy.style[dimMode] = otherSize + "px";
-                    this.setProperty("size2", newValue);
-                    this.setProperty("size1", otherSize);
+                    size2 = newValue;
+                    size1 = otherSize;
                 }
+
+                if (size1 === 0) {
+                    splitPos = 0;
+                    size2 += panelBorder;
+                } else {
+                    if (size2 === 0) {
+                        size1 += panelBorder;
+                    }
+                    splitPos = size1 + panelBorder;
+                }
+                this._splitPanel2.style[dimType] = size2 + "px";
+                this._splitPanel1.style[dimType] = size1 + "px";
+                this._splitBar.style[dimMode] = splitPos + "px";
+                this._splitBarProxy.style[dimMode] = splitPos + "px";
+                this.setProperty("size1", size1);
+                this.setProperty("size2", size2);
+
                 this._context.$refresh({
                     section : "_splitterContent1_" + this._domId
                 });
