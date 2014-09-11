@@ -25,6 +25,7 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.container.splitter.move.SplitterTestMoveUpDown");
         this.addTests("test.aria.widgets.container.splitter.move.SplitterTestMoveLeftRight");
         this.addTests("test.aria.widgets.container.splitter.skin.SplitterBorderWidthTest");
+        this.addTests("test.aria.widgets.container.splitter.skin.border.BordersAndSizesTest");
         this.addTests("test.aria.widgets.container.tooltip.TooltipTestCase");
         this.addTests("test.aria.widgets.container.dialog.DialogTestSuite");
         this.addTests("test.aria.widgets.container.bindableSize.BindableSizeTestSuite");
