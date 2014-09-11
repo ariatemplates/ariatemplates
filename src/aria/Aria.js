@@ -1603,5 +1603,3 @@ Aria["eval"] = function (srcJS, srcURL, evalContext) {
     var fct = jsEval(srcJS, srcURL, "(function(){\n", "\n})");
     return fct(srcJS, srcURL, evalContext);
 };
-require("./core/Log");
-require("./core/Browser");

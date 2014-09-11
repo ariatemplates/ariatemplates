@@ -13,7 +13,6 @@
  * limitations under the License.
  */
 var Aria = require("../../Aria");
-require("../../utils/Object");
 var ariaCoreJsonValidator = require("../JsonValidator");
 var ariaCoreAppEnvironment = require("../AppEnvironment");
 

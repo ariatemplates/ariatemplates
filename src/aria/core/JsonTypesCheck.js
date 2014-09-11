@@ -24,8 +24,7 @@ var ariaCoreJsonValidator = require("./JsonValidator");
      */
 
     // shortcuts
-    var jv;
-    var typeUtils;
+    var jv = ariaCoreJsonValidator;
 
     /**
      * Utility function which logs a bad type error.
@@ -250,7 +249,7 @@ var ariaCoreJsonValidator = require("./JsonValidator");
                         return __badTypeError(this, args);
                     }
                     var classpath = args.beanDef.$classpath;
-                    if (classpath && !typeUtils.isInstanceOf(args.value, classpath)) {
+                    if (classpath && !ariaUtilsType.isInstanceOf(args.value, classpath)) {
                         jv._logError(jv.NOT_OF_SPECIFIED_CLASSPATH, [classpath, args.beanDef[jv._MD_TYPENAME],
                                 args.value, args.path]);
                         return;
@@ -456,7 +455,7 @@ var ariaCoreJsonValidator = require("./JsonValidator");
                 preprocess : __checkContentType,
                 process : function (args) {
                     var v = args.value;
-                    if (!typeUtils.isArray(v)) {
+                    if (!ariaUtilsType.isArray(v)) {
                         return __badTypeError(this, args);
                     }
                     var ct = args.beanDef.$contentType;
@@ -622,19 +621,8 @@ var ariaCoreJsonValidator = require("./JsonValidator");
     module.exports = Aria.classDefinition({
         $classpath : "aria.core.JsonTypesCheck",
         $singleton : true,
-        $constructor : function () {
-            // define shortcuts
-            jv = ariaCoreJsonValidator;
-            typeUtils = ariaUtilsType;
-
-            // add base types to json validator
-            for (var index = 0, length = baseTypes.length; index < length; index++) {
-                jv._addBaseType(baseTypes[index]);
-            }
-        },
-        $destructor : function () {
-            jv = null;
-            typeUtils = null;
+        $statics : {
+            baseTypes : baseTypes
         },
         $prototype : {}
     });

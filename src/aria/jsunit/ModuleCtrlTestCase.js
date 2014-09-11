@@ -14,7 +14,6 @@
  */
 var Aria = require("../Aria");
 require("./TestMsgHandler");
-require("../modules/RequestMgr");
 var ariaTemplatesModuleCtrlFactory = require("../templates/ModuleCtrlFactory");
 var ariaJsunitTestCase = require("./TestCase");
 var ariaUtilsType = require("../utils/Type");

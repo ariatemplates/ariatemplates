@@ -14,7 +14,6 @@
  */
 var Aria = require("../Aria");
 var ariaUtilsEllipsis = require("../utils/Ellipsis");
-require("../DomEvent");
 var ariaUtilsDom = require("../utils/Dom");
 var ariaUtilsString = require("../utils/String");
 var ariaWidgetsWidget = require("./Widget");

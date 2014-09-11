@@ -15,8 +15,6 @@
 var Aria = require("../Aria");
 var ariaPopupsPopupManager = require("./PopupManager");
 require("./Beans");
-require("../DomEvent");
-require("../utils/Math");
 var ariaUtilsDom = require("../utils/Dom");
 var ariaUtilsSize = require("../utils/Size");
 var ariaUtilsEvent = require("../utils/Event");

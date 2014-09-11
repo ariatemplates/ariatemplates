@@ -13,7 +13,6 @@
  * limitations under the License.
  */
 var Aria = require("../../Aria");
-require("../../utils/Function");
 var ariaUtilsData = require("../../utils/Data");
 var ariaUtilsString = require("../../utils/String");
 var ariaWidgetsEnvironmentWidgetSettings = require("../environment/WidgetSettings");

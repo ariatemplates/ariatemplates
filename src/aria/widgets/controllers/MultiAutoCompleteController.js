@@ -13,7 +13,6 @@
  * limitations under the License.
  */
 var Aria = require("../../Aria");
-require("../../utils/Delegate");
 var ariaUtilsArray = require("../../utils/Array");
 var ariaUtilsJson = require("../../utils/Json");
 var ariaUtilsString = require("../../utils/String");

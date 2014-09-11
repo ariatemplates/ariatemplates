@@ -830,4 +830,12 @@ var Aria = require("../Aria");
         }
     });
 })();
-require('./JsonTypesCheck');
+
+(function () {
+    // augment JsonValidator with base types from JsonTypesCheck
+    var baseTypes = require("./JsonTypesCheck").baseTypes;
+    var jv = module.exports;
+    for (var i = 0, length = baseTypes.length; i < length; i++) {
+        jv._addBaseType(baseTypes[i]);
+    }
+})();

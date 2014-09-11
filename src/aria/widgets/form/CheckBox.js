@@ -14,7 +14,6 @@
  */
 var Aria = require("../../Aria");
 var ariaWidgetsIcon = require("../Icon");
-require("../../utils/Function");
 var ariaDomEvent = require("../../DomEvent");
 var ariaUtilsString = require("../../utils/String");
 var ariaWidgetsFormCheckBoxStyle = require("./CheckBoxStyle.tpl.css");

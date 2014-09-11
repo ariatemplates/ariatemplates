@@ -14,7 +14,6 @@
  */
 var Aria = require("../../Aria");
 var ariaWidgetsFramesFrameFactory = require("../frames/FrameFactory");
-require("../../utils/Function");
 var ariaWidgetsContainerTabStyle = require("./TabStyle.tpl.css");
 var ariaWidgetsContainerContainer = require("./Container");
 

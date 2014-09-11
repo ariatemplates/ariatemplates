@@ -13,11 +13,9 @@
  * limitations under the License.
  */
 var Aria = require("../../Aria");
-require("../container/Div");
 var ariaWidgetsIcon = require("../Icon");
 var ariaUtilsEllipsis = require("../../utils/Ellipsis");
 var ariaUtilsDom = require("../../utils/Dom");
-require("../../DomEvent");
 var ariaUtilsString = require("../../utils/String");
 var ariaUtilsType = require("../../utils/Type");
 var ariaWidgetsActionSortIndicatorStyle = require("./SortIndicatorStyle.tpl.css");

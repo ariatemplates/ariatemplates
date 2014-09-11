@@ -17,7 +17,6 @@ var ariaDomEvent = require("../DomEvent");
 var ariaUtilsEvent = require("../utils/Event");
 var ariaUtilsArray = require("../utils/Array");
 var ariaUtilsDom = require("../utils/Dom");
-require("../utils/Math");
 var ariaTemplatesNavigationManager = require("../templates/NavigationManager");
 var ariaUtilsAriaWindow = require("../utils/AriaWindow");
 var ariaCoreBrowser = require("../core/Browser");
