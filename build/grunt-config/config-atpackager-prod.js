@@ -67,7 +67,7 @@ module.exports = function (grunt) {
                             noCircularDependencies : false,
                             checkPackagesOrder : false
                         }
-                    }, 'ATCompileTemplates', 'ATRemoveDoc', {
+                    }, 'ATValidateTemplates', 'ATCompileTemplates', 'ATRemoveDoc', {
                         type : 'JSMinify',
                         cfg : {
                             files : atExtensions,

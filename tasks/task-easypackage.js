@@ -38,6 +38,7 @@ module.exports = function (grunt) {
             clean : true,
             license : "",
             includeDependencies : true,
+            validateTemplates : false,
             compileTemplates : true,
             minify : true,
             hash : true,

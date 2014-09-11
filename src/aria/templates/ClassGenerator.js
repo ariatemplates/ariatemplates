@@ -520,7 +520,7 @@ module.exports = Aria.classDefinition({
                 // this is the new way of including template scripts
                 out.enterBlock("classInit");
                 out.addDependencies(["aria.core.TplClassLoader"]);
-                out.writeln("aria.core.TplClassLoader._importScriptPrototype(" + scriptClasspath + ",proto)");
+                out.writeln("aria.core.TplClassLoader._importScriptPrototype(" + scriptClasspath + ",proto);");
                 out.leaveBlock();
             }
             var classInit = out.getBlockContent("classInit");
@@ -583,7 +583,7 @@ module.exports = Aria.classDefinition({
             out.decreaseIndent();
             out.writeln("}");
             out.decreaseIndent();
-            out.writeln("})");
+            out.writeln("});");
             out.leaveBlock();
         },
 
