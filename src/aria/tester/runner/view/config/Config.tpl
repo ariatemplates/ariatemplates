@@ -36,7 +36,7 @@
                    inside : data.campaign,
                    to : "testsTree"
                 }],
-                type:"div",
+                type:"div"
               } /}
         </div>
     {/macro}

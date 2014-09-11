@@ -15,7 +15,7 @@
 
 {Template {
     $classpath : "test.aria.templates.keyboardNavigation.DialogNavTestCaseTpl",
-    $hasScript : true,
+    $hasScript : true
 }}
 
     {macro main()}
