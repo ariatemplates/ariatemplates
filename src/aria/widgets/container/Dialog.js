@@ -17,7 +17,6 @@ var ariaWidgetsContainerDiv = require("./Div");
 var ariaPopupsPopup = require("../../popups/Popup");
 var ariaWidgetsIcon = require("../Icon");
 var ariaUtilsDom = require("../../utils/Dom");
-require("../../utils/Function");
 var ariaUtilsDelegate = require("../../utils/Delegate");
 var ariaTemplatesNavigationManager = require("../../templates/NavigationManager");
 var ariaUtilsString = require("../../utils/String");

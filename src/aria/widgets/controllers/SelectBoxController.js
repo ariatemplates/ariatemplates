@@ -13,7 +13,6 @@
  * limitations under the License.
  */
 var Aria = require("../../Aria");
-require("../../DomEvent");
 var ariaUtilsJson = require("../../utils/Json");
 var ariaWidgetsControllersReportsDropDownControllerReport = require("./reports/DropDownControllerReport");
 var ariaWidgetsControllersDropDownListController = require("./DropDownListController");

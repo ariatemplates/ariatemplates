@@ -15,7 +15,6 @@
 var Aria = require("../Aria");
 var ariaUtilsSynEvents = require("../utils/SynEvents");
 require("../templates/RefreshManager");
-require("../utils/Type");
 var ariaUtilsDom = require("../utils/Dom");
 var ariaJsunitTestCase = require("./TestCase");
 var ariaCoreLog = require("../core/Log");

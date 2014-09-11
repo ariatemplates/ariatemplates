@@ -13,8 +13,6 @@
  * limitations under the License.
  */
 var Aria = require("../Aria");
-require("../utils/Object");
-require("../utils/Dom");
 var ariaUtilsJsonJsonSerializer = require("../utils/json/JsonSerializer");
 var ariaCoreBrowser = require("../core/Browser");
 var ariaStorageIStorage = require("./IStorage");

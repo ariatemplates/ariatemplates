@@ -14,11 +14,8 @@
  */
 var Aria = require("../../Aria");
 var ariaWidgetsControllersMultiAutoCompleteController = require("../controllers/MultiAutoCompleteController");
-require("../../utils/Event");
 var ariaUtilsDom = require("../../utils/Dom");
 var ariaUtilsType = require("../../utils/Type");
-require("../../utils/Array");
-require("../../utils/Math");
 var ariaUtilsString = require("../../utils/String");
 var ariaUtilsCaret = require("../../utils/Caret");
 var ariaWidgetsFormMultiAutoCompleteStyle = require("./MultiAutoCompleteStyle.tpl.css");

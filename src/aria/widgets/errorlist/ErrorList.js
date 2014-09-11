@@ -13,9 +13,7 @@
  * limitations under the License.
  */
 var Aria = require("../../Aria");
-require("../Template");
 require("./ErrorListController");
-require("../../DomEvent");
 var ariaWidgetsTemplateBasedWidget = require("../TemplateBasedWidget");
 var ariaUtilsJson = require("../../utils/Json");
 

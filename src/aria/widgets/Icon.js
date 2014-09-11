@@ -13,7 +13,6 @@
  * limitations under the License.
  */
 var Aria = require("../Aria");
-require("../utils/Dom");
 var ariaWidgetsIconStyle = require("./IconStyle.tpl.css");
 var ariaWidgetsWidget = require("./Widget");
 var ariaCoreTplClassLoader = require("../core/TplClassLoader");

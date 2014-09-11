@@ -16,7 +16,6 @@ var Aria = require("../Aria");
 require("./beans/ElementCfg");
 var ariaCoreJsonValidator = require("../core/JsonValidator");
 var ariaUtilsHtml = require("../utils/Html");
-require("../utils/Json");
 var ariaUtilsDelegate = require("../utils/Delegate");
 var ariaTemplatesDomEventWrapper = require("../templates/DomEventWrapper");
 var ariaUtilsDom = require("../utils/Dom");

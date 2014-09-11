@@ -17,7 +17,6 @@ var ariaTemplatesTemplateTrait = require("../templates/TemplateTrait");
 var ariaTemplatesTemplateCtxt = require("../templates/TemplateCtxt");
 var ariaUtilsDom = require("../utils/Dom");
 require("../templates/CfgBeans");
-require("../templates/ModuleCtrlFactory");
 var ariaCoreEnvironmentCustomizations = require("../core/environment/Customizations");
 var ariaWidgetsContainerContainer = require("./container/Container");
 var ariaCoreJsonValidator = require("../core/JsonValidator");

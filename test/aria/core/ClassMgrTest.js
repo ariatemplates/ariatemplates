@@ -14,7 +14,6 @@
  */
 
 var Aria = require("ariatemplates/Aria");
-require("ariatemplates/templates/Template");
 var testAriaCoreTestClassMgrTestClass1 = require("./test/classMgrTest/Class1");
 var testAriaCoreTestClassMgrTestUnloadFilter = require("./test/classMgrTest/UnloadFilter");
 var ariaJsunitTestCase = require("ariatemplates/jsunit/TestCase");

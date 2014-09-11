@@ -13,7 +13,6 @@
  * limitations under the License.
  */
 var Aria = require("../../Aria");
-require("../../utils/Function");
 var ariaUtilsDom = require("../../utils/Dom");
 var ariaTemplatesDomEventWrapper = require("../../templates/DomEventWrapper");
 var ariaWidgetsWidgetTrait = require("../WidgetTrait");

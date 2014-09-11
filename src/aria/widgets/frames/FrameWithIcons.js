@@ -17,7 +17,6 @@ var ariaWidgetsAriaSkinInterface = require("../AriaSkinInterface");
 var ariaWidgetsFramesFrameFactory = require("./FrameFactory");
 var ariaUtilsDom = require("../../utils/Dom");
 var ariaUtilsType = require("../../utils/Type");
-require("../../utils/Function");
 var ariaUtilsArray = require("../../utils/Array");
 var ariaUtilsDelegate = require("../../utils/Delegate");
 

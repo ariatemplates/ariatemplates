@@ -16,7 +16,6 @@ var Aria = require("../Aria");
 require("./CfgBeans");
 var ariaUtilsHtml = require("../utils/Html");
 var ariaCoreJsonValidator = require("../core/JsonValidator");
-require("../core/Log");
 var ariaUtilsDom = require("../utils/Dom");
 var ariaWidgetLibsBaseWidget = require("../widgetLibs/BaseWidget");
 

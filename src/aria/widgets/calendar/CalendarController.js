@@ -14,7 +14,6 @@
  */
 var Aria = require("../../Aria");
 var ariaWidgetsCalendarICalendarController = require("./ICalendarController");
-require("../Template");
 var ariaUtilsDate = require("../../utils/Date");
 require("./CfgBeans");
 var ariaUtilsEnvironmentDate = require("../../utils/environment/Date");

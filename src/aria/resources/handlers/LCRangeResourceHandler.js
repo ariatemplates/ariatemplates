@@ -15,7 +15,6 @@
 var Aria = require("../../Aria");
 require("./LCRangeResourceHandlerBean");
 var ariaUtilsString = require("../../utils/String");
-require("../../utils/Array");
 var ariaResourcesHandlersLCResourcesHandler = require("./LCResourcesHandler");
 var ariaUtilsType = require("../../utils/Type");
 

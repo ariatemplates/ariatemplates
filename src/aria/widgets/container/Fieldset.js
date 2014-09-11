@@ -13,8 +13,6 @@
  * limitations under the License.
  */
 var Aria = require("../../Aria");
-require("../../utils/Function");
-require("../../DomEvent");
 var ariaWidgetsFramesFrameFactory = require("../frames/FrameFactory");
 var ariaUtilsString = require("../../utils/String");
 var ariaWidgetsContainerFieldsetStyle = require("./FieldsetStyle.tpl.css");

@@ -13,9 +13,7 @@
  * limitations under the License.
  */
 var Aria = require("../../Aria");
-require("../Template");
 require("./CalendarController");
-require("../../DomEvent");
 var ariaWidgetsCalendarCalendarStyle = require("./CalendarStyle.tpl.css");
 require("./CalendarTemplate.tpl");
 var ariaWidgetsTemplateBasedWidget = require("../TemplateBasedWidget");
