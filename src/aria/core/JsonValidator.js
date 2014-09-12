@@ -830,3 +830,5 @@ var Aria = require("../Aria");
         }
     });
 })();
+
+(require("./JsonTypesCheck").augmentJsonValidator());
