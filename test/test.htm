@@ -21,15 +21,14 @@
 
         // serve dev files by default, unless stated otherwise in query string
         var devFiles = (url.indexOf("dev=false") == -1);
+        // amadeus build is not used, unless stated otherwise in query string
+        var isAmaBuild = (url.indexOf("amabuild=true") != -1);
 
         var atversion;
         var versionMatch = url.match(/atversion\=(\d+\.\d+(\.|-)[0-9A-Z]+)/);
-        var isAmaBuild;
         if (versionMatch) {
             atversion = versionMatch[1];
-            isAmaBuild = (versionMatch[2] == "-");
         } else {
-            isAmaBuild = !!(document.location.pathname.match(/\/aria\-templates(-\w+)?\/test\//));
             if (isAmaBuild) {
                 atversion = "1.1-SNAPSHOT";
             } else if (devFiles) {
