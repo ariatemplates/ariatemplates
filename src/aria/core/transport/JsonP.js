@@ -68,30 +68,6 @@ module.exports = Aria.classDefinition({
         request : function (request, callback) {
             var head = this._head || this._initHead();
             var reqId = request.id;
-            var insertScript = function () {
-                var script = Aria.$frameworkWindow.document.createElement("script");
-                script.src = request.url;
-                script.id = "xJsonP" + reqId;
-                script.async = "async";
-                script.type = "text/javascript";
-
-                script.onload = script.onreadystatechange = function (event, isAbort) {
-                    if (isAbort || !script.readyState || /loaded|complete/.test(script.readyState)) {
-                        // Memory leak
-                        script.onload = script.onreadystatechange = null;
-
-                        // Remove the script
-                        if (script.parentNode) {
-                            head.removeChild(script);
-                        }
-
-                        script = undefined;
-                        head = undefined;
-                    }
-                };
-
-                head.appendChild(script);
-            };
 
             // Generate a callback in this namespace
             var serverCallback = "_jsonp" + reqId;
@@ -102,12 +78,45 @@ module.exports = Aria.classDefinition({
                     + serverCallback;
             request.evalCb = serverCallback;
 
-            // handle abort timeout
-            ariaCoreIO.setTimeout(reqId, request.timeout, {
-                fn : ariaCoreIO.abort,
-                scope : ariaCoreIO,
-                args : [reqId, callback]
-            });
+            var self = this;
+            var insertScript = function () {
+                var script = Aria.$frameworkWindow.document.createElement("script");
+                script.src = request.url;
+                script.id = "xJsonP" + reqId;
+                script.async = "async";
+                script.type = "text/javascript";
+
+                script.onload = script.onreadystatechange = function (event, isAbort) {
+                    if (isAbort || !script.readyState || /loaded|complete/.test(script.readyState)) {
+                        delete self[serverCallback];
+                        
+                        // Memory leak
+                        script.onload = script.onreadystatechange = script.onerror = null;
+
+                        // Remove the script
+                        if (script.parentNode) {
+                            head.removeChild(script);
+                        }
+
+                        script = null;
+                        head = null;
+                    }
+                };
+                
+                // ie<9 and Opera will ignore the following and rely only on timeout
+                script.onerror = function (event) {
+                    ariaCoreIO.abort(reqId, callback);
+                    script.onload(null, true);
+                };
+
+                head.appendChild(script);
+
+                // handle abort timeout
+                setTimeout(function(){
+                        ariaCoreIO.abort(reqId, callback, true);
+                        if (script && script.onload) script.onload(null, true);
+                    }, request.timeout);
+            };
 
             // This makes sure the the request is asynchronous also in IE, that in some cases (local requests)
             // will block the normal execution while loading the script synchronously
