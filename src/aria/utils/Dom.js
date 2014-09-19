@@ -1025,13 +1025,8 @@ Aria.classDefinition({
             geometry.width = geometry.width || 0;
             geometry.height = geometry.height || 0;
             if (container == this.VIEWPORT) {
-                return this.fitInViewport({
-                    left : geometry.x,
-                    top : geometry.y
-                }, {
-                    width : geometry.width,
-                    height : geometry.height
-                });
+                container = this.getViewportSize();
+                container.x = container.y = 0;
             }
             container.width = container.width || 0;
             container.height = container.height || 0;
