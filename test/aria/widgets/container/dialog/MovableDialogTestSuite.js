@@ -27,6 +27,7 @@ Aria.classDefinition({
                 "test.aria.widgets.container.dialog.movable.test1.MovableDialogTestCase",
                 "test.aria.widgets.container.dialog.movable.test2.MovableDialogTestCaseTwo",
                 "test.aria.widgets.container.dialog.movable.test3.MovableDialogTestCaseThree",
-                "test.aria.widgets.container.dialog.movable.test4.MovableDialogTestCaseFour"];
+                "test.aria.widgets.container.dialog.movable.test4.MovableDialogTestCaseFour",
+                "test.aria.widgets.container.dialog.movable.test5.MovableDialogTestCaseFive"];
     }
 });

@@ -22,5 +22,6 @@ tests:
     - test.aria.widgets.container.dialog.resize.test3.DialogOnResizeTestCase
     - test.aria.utils.overlay.loadingIndicator.scrollableBody.ScrollableBodyTest
     - test.aria.widgets.container.dialog.indicators.DialogTestCase
+    - test.aria.widgets.container.dialog.movable.test5.MovableDialogTestCaseFive
    #Excluded from this file but added in attester.yml (tests for the unpackaged version):
     - test.aria.core.JsonValidatorTest
