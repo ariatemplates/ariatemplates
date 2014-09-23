@@ -24,7 +24,7 @@ The MVC's terminology in AT:
 
 Templates can either be evaluated client-side or precompiled at build time.
 
-- See [TodoMVC example done in Aria Templates](http://addyosmani.github.io/todomvc/labs/architecture-examples/ariatemplates/) and a [step-by-step guide](http://ariatemplates.com/guides/todo/) for it.
+- See [TodoMVC example done in Aria Templates](http://todomvc.com/labs/architecture-examples/ariatemplates/) and a [step-by-step guide](http://ariatemplates.com/guides/todo/) for it.
 - Want to see some code of the templates? Have a look at [list of samples](http://ariatemplates.com/samples).
 - If you're developing for mobile, see [Aria Templates Mobile Kitchen Sink](http://ariatemplates.com/mobile/kitchensink/).
 
