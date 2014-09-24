@@ -102,8 +102,9 @@ module.exports = Aria.classDefinition({
             var geometry = ariaUtilsDom.getGeometry(element);
             if (geometry) {
                 overlayStyle.position = "absolute";
-                overlayStyle.top = geometry.y + "px";
-                overlayStyle.left = geometry.x + "px";
+                var scroll = dom.getDocumentScrollElement();
+                overlayStyle.top = geometry.y + scroll.scrollTop + "px";
+                overlayStyle.left = geometry.x + scroll.scrollLeft + "px";
                 overlayStyle.width = (geometry.width - border.left - border.right) + "px";
                 overlayStyle.height = (geometry.height - border.top - border.bottom) + "px";
                 overlayStyle.display = "block";
