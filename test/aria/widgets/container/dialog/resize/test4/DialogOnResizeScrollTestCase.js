@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Amadeus s.a.s.
+ * Copyright 2013 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,15 +13,20 @@
  * limitations under the License.
  */
 
-/**
- * Test that resizable dialog is actually resized in the DOM by dragging its edges.
- */
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.container.dialog.resize.test2.ResizableDialogTestCase",
+    $classpath : "test.aria.widgets.container.dialog.resize.test4.DialogOnResizeScrollTestCase",
     $extends : "test.aria.widgets.container.dialog.resize.AbstractResizableDialogTestCase",
+    $constructor : function () {
+        this.$AbstractResizableDialogTestCase.constructor.call(this);
+
+        this.setTestEnv({
+            css : "position:relative;top:400px;border:15px solid blue;"
+        });
+    },
     $prototype : {
 
         runTemplateTest : function () {
+            Aria.$window.scrollBy(0,150);
             this.startResizeTest();
         }
     }
