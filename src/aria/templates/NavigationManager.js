@@ -143,7 +143,7 @@ module.exports = Aria.classDefinition({
          */
         focusFirst : function (container, reverse) {
             var cb;
-            if (container.nodeType == 1) {
+            if (container && container.nodeType == 1) {
                 var childNodes = container.childNodes, length = childNodes.length, index = reverse ? length - 1 : 0, child;
                 for (; index > -1 && index < length; reverse ? index-- : index++) {
                     child = childNodes[index];
