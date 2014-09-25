@@ -27,7 +27,7 @@
     Aria.classDefinition({
         $classpath : "aria.popups.PopupManager",
         $dependencies : ["aria.DomEvent", "aria.utils.Event", "aria.utils.Array", "aria.utils.Dom", "aria.utils.Math",
-                "aria.templates.NavigationManager", "aria.utils.AriaWindow"],
+                "aria.templates.NavigationManager", "aria.utils.AriaWindow", "aria.utils.Delegate"],
         $events : {
             "modalPopupPresent" : {
                 description : "Notifies that a modal popup has been opened when no other modal popup was already opened."
@@ -468,9 +468,15 @@
                 });
 
                 var topPopup = openedPopups.length > 0 ? openedPopups[openedPopups.length - 1] : null;
-                if (topPopup) {
-                    aria.templates.NavigationManager.focusFirst(topPopup.domElement);
-                }
+
+                // the timeout waits for a possible focus change after the mousedown event that possibly triggered this
+                // method
+                setTimeout(function () {
+                    var focusedEl = aria.utils.Delegate.getFocus();
+                    if (topPopup && !aria.utils.Dom.isAncestor(focusedEl, topPopup.domElement)) {
+                        aria.templates.NavigationManager.focusFirst(topPopup.domElement);
+                    }
+                }, 1);
             },
 
             /**
