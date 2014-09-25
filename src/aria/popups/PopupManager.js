@@ -22,7 +22,7 @@ var ariaTemplatesNavigationManager = require("../templates/NavigationManager");
 var ariaUtilsAriaWindow = require("../utils/AriaWindow");
 var ariaCoreBrowser = require("../core/Browser");
 var ariaCoreTimer = require("../core/Timer");
-
+var ariaUtilsDelegate = require("../utils/Delegate");
 
 (function () {
 
@@ -477,9 +477,15 @@ var ariaCoreTimer = require("../core/Timer");
                 });
 
                 var topPopup = openedPopups.length > 0 ? openedPopups[openedPopups.length - 1] : null;
-                if (topPopup) {
-                    ariaTemplatesNavigationManager.focusFirst(topPopup.domElement);
-                }
+
+                // the timeout waits for a possible focus change after the mousedown event that possibly triggered this
+                // method
+                setTimeout(function () {
+                    var focusedEl = ariaUtilsDelegate.getFocus();
+                    if (topPopup && !utilsDom.isAncestor(focusedEl, topPopup.domElement)) {
+                        ariaTemplatesNavigationManager.focusFirst(topPopup.domElement);
+                    }
+                }, 1);
             },
 
             /**
