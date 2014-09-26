@@ -14,7 +14,6 @@
  */
 var Aria = require("../Aria");
 
-
 /**
  * This class is still experimental, its interface may change without notice. This class gives access to a robot
  * implementation, allowing to send low-level mouse and keyboard events to a web page.
@@ -50,15 +49,7 @@ module.exports = Aria.classDefinition({
             if (Aria.$frameworkWindow.top.SeleniumJavaRobot) {
                 return "aria.jsunit.RobotJavaSelenium";
             }
-            var navigator = Aria.$window.navigator;
-            try {
-                var res = navigator && navigator.javaEnabled();
-                if (res) {
-                    return "aria.jsunit.RobotJavaApplet";
-                }
-            } catch (e) {
-                return null;
-            }
+            return null;
         },
 
         /**
