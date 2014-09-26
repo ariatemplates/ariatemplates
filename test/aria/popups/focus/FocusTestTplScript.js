@@ -16,10 +16,15 @@
 Aria.tplScriptDefinition({
     $classpath : "test.aria.popups.focus.FocusTestTplScript",
     $dependencies : ['aria.utils.validators.Mandatory'],
+    $destructor : function () {
+        this.validator.$dispose();
+        this.validator = null;
+    },
     $prototype : {
         $dataReady : function () {
-            aria.utils.Data.setValidator(this.data, "firstName", new aria.utils.validators.Mandatory("MANDATORY."));
-            aria.utils.Data.setValidator(this.data, "lastName", new aria.utils.validators.Mandatory("MANDATORY."));
+            this.validator = new aria.utils.validators.Mandatory("MANDATORY");
+            aria.utils.Data.setValidator(this.data, "firstName", this.validator);
+            aria.utils.Data.setValidator(this.data, "lastName", this.validator);
         },
         $viewReady : function () {
             this.myMethod();
