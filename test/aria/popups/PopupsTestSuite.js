@@ -22,5 +22,6 @@ Aria.classDefinition({
         this.addTests("test.aria.popups.Popup");
         this.addTests("test.aria.popups.PopupEventsTestCase");
         this.addTests("test.aria.popups.PopupAnimationsTestCase");
+        this.addTests("test.aria.popups.focus.FocusTest");
     }
 });

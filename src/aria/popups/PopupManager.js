@@ -503,9 +503,15 @@
                 });
 
                 var topPopup = openedPopups.length > 0 ? openedPopups[openedPopups.length - 1] : null;
-                if (topPopup) {
-                    aria.templates.NavigationManager.focusFirst(topPopup.domElement);
-                }
+
+                // the timeout waits for a possible focus change after the mousedown event that possibly triggered this
+                // method
+                setTimeout(function () {
+                    var focusedEl = Aria.$window.document.activeElement;
+                    if (topPopup && !utilsDom.isAncestor(focusedEl, topPopup.domElement)) {
+                        aria.templates.NavigationManager.focusFirst(topPopup.domElement);
+                    }
+                }, 1);
             },
 
             /**
