@@ -432,7 +432,7 @@ module.exports = Aria.classDefinition({
                     this.controller.setListOptions(newValue);
                     var report = this.controller.checkValue(selectValue);
                     this._reactToControllerReport(report, {
-                        stopValueProp : true
+                        stopValueProp : false
                     });
                 } else {
                     // markup for the options
