@@ -18,6 +18,10 @@ Aria.classDefinition({
     $extends : "test.aria.widgets.form.textinput.onclick.OnClickTest",
     $constructor : function () {
         this.$OnClickTest.constructor.call(this);
+        this.defaultTestTimeout = 40000;
+        if (aria.core.Browser.isIE7 || aria.core.Browser.isIE8) {
+            this.defaultTestTimeout = 120000;
+        }
         this.setTestEnv({
             template : "test.aria.widgets.form.textinput.onblur.OnBlurTemplate",
             data : {

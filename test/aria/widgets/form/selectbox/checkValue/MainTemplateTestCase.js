@@ -53,6 +53,9 @@ Aria.classDefinition({
             data : this.data
         });
         this.defaultTestTimeout = 10000;
+        if (aria.core.Browser.isIE7 || aria.core.Browser.isIE8) {
+            this.defaultTestTimeout = 60000;
+        }
     },
     $prototype : {
         /**
