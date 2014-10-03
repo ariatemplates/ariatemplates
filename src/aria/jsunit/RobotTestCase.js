@@ -17,7 +17,6 @@ var ariaJsunitSynEvents = require("./SynEvents");
 var ariaJsunitRobot = require("./Robot");
 var ariaJsunitTemplateTestCase = require("./TemplateTestCase");
 
-
 /**
  * Class to be extended to create a template test case using the Robot applet. The applet allows to execute user actions
  * (click, type, move, drag, ...) as if they were done by the user instead of simulating browser events.<br />
@@ -48,9 +47,14 @@ module.exports = Aria.classDefinition({
          */
         run : function () {
             var robot = ariaJsunitRobot;
+
             if (!this.skipTest && !robot.isUsable()) {
                 this._startTest();
-                this.raiseFailure('The robot is not usable');
+                var isOldFirefox = (aria.core.Browser.isFirefox && aria.core.Browser.majorVersion < 4);
+                if (!isOldFirefox) {
+                    this._currentTestName = 'RobotTestCase:run';
+                    this.raiseFailure('The robot is not usable');
+                }
                 this._endTest();
             } else {
                 this.$TemplateTestCase.run.call(this);
