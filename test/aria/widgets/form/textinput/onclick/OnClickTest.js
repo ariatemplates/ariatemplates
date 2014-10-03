@@ -25,6 +25,9 @@ Aria.classDefinition({
             }
         });
         this.defaultTestTimeout = 10000;
+        if (aria.core.Browser.isIE7 || aria.core.Browser.isIE8) {
+            this.defaultTestTimeout = 60000;
+        }
         this._delay = 200;
         this._widgetIds = ["df", "tf", "nf", "pf", "dp", "ac", "ms", "time", "sb", "mac"];
         this._currentIndex = null;

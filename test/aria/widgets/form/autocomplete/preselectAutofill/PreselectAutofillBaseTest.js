@@ -49,8 +49,8 @@ Aria.classDefinition({
             "aria.utils.Type", "aria.core.Browser"],
     $constructor : function () {
         this.$RobotTestCase.constructor.call(this);
-        if (aria.core.Browser.isPhantomJS || aria.core.Browser.isIE7) {
-            this.defaultTestTimeout = 40000;
+        if (aria.core.Browser.isPhantomJS || aria.core.Browser.isIE7 || aria.core.Browser.isIE8) {
+            this.defaultTestTimeout = 120000;
         }
         this.resourcesHandler = this.resourcesHandler || new aria.resources.handlers.LCResourcesHandler();
         this.resourcesHandler.setSuggestions([{
