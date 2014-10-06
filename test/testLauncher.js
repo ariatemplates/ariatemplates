@@ -77,6 +77,10 @@ Aria.load({
             if (qs.getKeyValue('dev') == "false") {
                 html += '<input type="hidden" name="dev" value="false">';
             }
+            if (qs.getKeyValue('amabuild') === "true") {
+                html += '<input type="hidden" name="amabuild" value="true">';
+            }
+
             var atversion = qs.getKeyValue('atversion');
             if (atversion) {
                 html += '<input type="hidden" name="atversion" value="' + atversion + '">';
@@ -90,7 +94,7 @@ Aria.load({
             html += '</form>';
             document.body.innerHTML = html;
             return;
-            //testToRun = "test.CoverageTestSuite";
+            // testToRun = "test.CoverageTestSuite";
         }
 
         var neededClasses = ["aria.jsunit.TestRunner", "aria.jsunit.JsCoverage", "aria.utils.Callback",
