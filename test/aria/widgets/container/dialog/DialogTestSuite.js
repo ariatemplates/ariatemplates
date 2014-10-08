@@ -25,6 +25,7 @@ Aria.classDefinition({
 
         this.addTests("test.aria.widgets.container.dialog.resize.DialogResizeTestSuite");
         this.addTests("test.aria.widgets.container.dialog.closeOnClick.CloseDialogOnClickTestCase");
+        this.addTests("test.aria.widgets.container.dialog.onCloseCallback.OnCloseCallbackTestCase");
         this.addTests("test.aria.widgets.container.dialog.sizes.DialogSizesTestSuite");
         this.addTests("test.aria.widgets.container.dialog.scroll.SetScrollTestCase");
         this.addTests("test.aria.widgets.container.dialog.scroll.OnScrollTestCase");
