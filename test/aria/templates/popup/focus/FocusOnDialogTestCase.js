@@ -42,7 +42,7 @@ Aria.classDefinition({
                 aria.core.Timer.addCallback({
                     fn : this._waitAndSee,
                     scope : this,
-                    delay : 1
+                    delay : 10
                 });
             }
         },

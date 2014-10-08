@@ -250,8 +250,6 @@ var ariaCoreJsonValidator = require("../core/JsonValidator");
                 for (index = 0; name = methodMapping[index]; index++) {
                     delete tpl[name];
                 }
-
-                this._tpl = null;
             }
 
             // dispose of sections and their widgets
@@ -296,6 +294,7 @@ var ariaCoreJsonValidator = require("../core/JsonValidator");
             this.flowCtrl = null;
             this.flowCtrlPrivate = null;
 
+            this._tpl = null;
             this.$BaseCtxt.$destructor.call(this);
         },
         $statics : {
