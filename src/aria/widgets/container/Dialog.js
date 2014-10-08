@@ -563,10 +563,8 @@ Aria.classDefinition({
             this._popup = popup;
             popup.$on({
                 "onAfterOpen" : this._onAfterPopupOpen,
-                scope : this
-            });
-            popup.$on({
                 "onEscape" : this.actionClose,
+                "onAfterClose" : this._onAfterPopupClose,
                 scope : this
             });
             if (cfg.closeOnMouseClick) {
@@ -707,7 +705,9 @@ Aria.classDefinition({
                 if (this._maximizeDelegateId) {
                     aria.utils.Delegate.remove(this._maximizeDelegateId);
                 }
+
                 this._popup.close();
+                this._popup.$unregisterListeners(this);
                 this._popup.$dispose();
                 this._popup = null;
 
@@ -716,6 +716,13 @@ Aria.classDefinition({
                     scope : this
                 });
             }
+        },
+
+        /**
+         * Is called when the popup has been closed.
+         */
+        _onAfterPopupClose : function () {
+            this.evalCallback(this._cfg.onClose);
         },
 
         /**

@@ -230,8 +230,6 @@
                 for (index = 0; name = methodMapping[index]; index++) {
                     delete tpl[name];
                 }
-
-                this._tpl = null;
             }
 
             // dispose of sections and their widgets
@@ -276,6 +274,7 @@
             this.flowCtrl = null;
             this.flowCtrlPrivate = null;
 
+            this._tpl = null;
             this.$BaseCtxt.$destructor.call(this);
         },
         $statics : {

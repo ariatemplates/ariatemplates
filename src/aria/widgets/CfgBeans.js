@@ -1794,6 +1794,10 @@ Aria.beanDefinitions({
                     $type : "common:Callback",
                     $description : "Callback called when the dialog is open, right after it is displayed. Can be used to set the focus on the right element in the dialog."
                 },
+                "onClose" : {
+                    $type : "common:Callback",
+                    $description : "Callback called when the dialog is closed."
+                },
                 "onCloseClick" : {
                     $type : "common:Callback",
                     $description : "Callback called when the close button is clicked. If not specified, the dialog will simply be closed when clicking on the close button. If specified, the dialog will only be closed if the callback either sets the visible property of the Dialog to false (through bindings) or sets to false the cancelDefault property of its first parameter. This allows the developper to give the same callback method to both the onCloseClick property of the dialog and the onclick property of a close button inside the dialog."
