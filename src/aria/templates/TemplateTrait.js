@@ -47,8 +47,8 @@ module.exports = Aria.classDefinition({
                 this._onTplLoad({
                     moduleCtrl : tplcfg.moduleCtrl
                 }, {
-                    autoDispose : false
-                });
+                        autoDispose : false
+                    });
             }
         },
 
@@ -63,16 +63,40 @@ module.exports = Aria.classDefinition({
             this.isDiffered = false;
         },
 
-         /**
-         * @param {Array} id contains the widget and template ids forming the focused widget path.
-         * @return {Boolean}
-         */
-         _focusHelper : function (id) {
+        /**
+        * @param {Array} id contains the widget and template ids forming the focused widget path.
+        * @return {Boolean}
+        */
+        _focusHelper : function (id) {
             if (!id || !id.length) {
                 return this.subTplCtxt.$focusFromParent();
             } else {
                 this.subTplCtxt.$focus(id);
                 return true;
+            }
+        },
+
+        /**
+         * Clean and delete template config. Dispose associated elements if needed. This is used if something has gone
+         * wrong during initialization (ex: early disposed). Otherwiser, this is done by the dispose of the template
+         * context.
+         * @protected
+         */
+        _deleteTplcfg : function () {
+            if (this._tplcfg) {
+                var tplcfg = this._tplcfg;
+                var toDispose = tplcfg.toDispose;
+                if (toDispose) {
+                    var toDisposeLength = toDispose.length;
+                    for (var i = 0; i < toDisposeLength; i++) {
+                        toDispose[i].$dispose();
+                    }
+                }
+                tplcfg.toDispose = null;
+                tplcfg.tplDiv = null;
+                tplcfg.div = null;
+                tplcfg.data = null;
+                this._tplcfg = null;
             }
         },
 

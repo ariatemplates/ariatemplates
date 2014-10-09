@@ -136,30 +136,6 @@ module.exports = Aria.classDefinition({
         _directInit : true,
 
         /**
-         * Clean and delete template config. Dispose associated elements if needed. This is used if something has gone
-         * wrong during initialization (ex: early disposed). Otherwiser, this is done by the dispose of the template
-         * context.
-         * @protected
-         */
-        _deleteTplcfg : function () {
-            if (this._tplcfg) {
-                var tplcfg = this._tplcfg;
-                var toDispose = tplcfg.toDispose;
-                if (toDispose) {
-                    var toDisposeLength = toDispose.length;
-                    for (var i = 0; i < toDisposeLength; i++) {
-                        toDispose[i].$dispose();
-                    }
-                }
-                tplcfg.toDispose = null;
-                tplcfg.tplDiv = null;
-                tplcfg.div = null;
-                tplcfg.data = null;
-                this._tplcfg = null;
-            }
-        },
-
-        /**
          * Display an error message inside the template div. This might happen because the template context wasn't able
          * to initialize the template.
          * @protected
