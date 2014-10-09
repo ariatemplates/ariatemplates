@@ -128,6 +128,7 @@ module.exports = Aria.classDefinition({
             this.subTplCtxt.$dispose();
             this.subTplCtxt = null;
         }
+        this._deleteTplcfg();
         this.$BaseWidget.$destructor.apply(this, arguments);
     },
     $prototype : {
@@ -151,7 +152,7 @@ module.exports = Aria.classDefinition({
             this._cfgOk = jsonValidator.validateCfg("aria.html.beans.TemplateCfg.Properties", cfg);
             if (this._needCreatingModuleCtrl) {
                 this._cfgOk = this._cfgOk
-                        && jsonValidator.validateCfg("aria.templates.CfgBeans.InitModuleCtrl", cfg.moduleCtrl);
+                && jsonValidator.validateCfg("aria.templates.CfgBeans.InitModuleCtrl", cfg.moduleCtrl);
             }
         },
 
