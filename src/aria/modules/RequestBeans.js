@@ -16,7 +16,6 @@ var Aria = require("../Aria");
 var ariaCoreJsonTypes = require("../core/JsonTypes");
 var ariaModulesRequestHandlerEnvironmentRequestHandlerCfgBeans = require("./requestHandler/environment/RequestHandlerCfgBeans");
 
-
 /**
  * Bean definitions associated to the aria.modules.RequestMgr
  */
@@ -29,8 +28,8 @@ module.exports = Aria.beanDefinitions({
     },
     $beans : {
         "RequestObject" : {
-            $type : "json:Object",
-            $description : "Request Object passed to submitJsonRequest",
+            $type : "SubmitJsonRequestOptions",
+            $description : "Request Object passed to the submitJsonRequest method of the RequestMgr.",
             $restricted : false,
             $properties : {
                 "moduleName" : {
@@ -67,7 +66,13 @@ module.exports = Aria.beanDefinitions({
                 "requestJsonSerializer" : {
                     $type : "env:RequestJsonSerializerCfg",
                     $description : "JSON serializer settings that have to be used for this request"
-                },
+                }
+            }
+        },
+        "SubmitJsonRequestOptions" : {
+            $type : "json:Object",
+            $description : "Options which can be passed to the submitJsonRequest method of a module controller.",
+            $properties : {
                 "async" : {
                     $type : "json:Boolean",
                     $description : "Whether the request has to be asynchronous or synchronous  (use it with care: sync requests can freeze the UI)",

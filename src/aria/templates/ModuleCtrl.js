@@ -23,7 +23,6 @@ var ariaTemplatesPublicWrapper = require("./PublicWrapper");
 var ariaUtilsArray = require("../utils/Array");
 var ariaCoreJsonValidator = require("../core/JsonValidator");
 
-
 /**
  * Module Controller. Base class for all module controllers.
  * @class aria.templates.ModuleCtrl
@@ -132,7 +131,8 @@ module.exports = Aria.classDefinition({
     $statics : {
         // ERROR MESSAGES
         INIT_CALLBACK_ERROR : "An error occured while processing a Module init callback in class %1",
-        DATA_CONTENT_INVALID : "Content of datamodel does not match databean:\nbean name: %1,\nmodule class: %2"
+        DATA_CONTENT_INVALID : "Content of datamodel does not match databean:\nbean name: %1,\nmodule class: %2",
+        DEPRECATED_ASYNC_ARG : "It is deprecated to pass a boolean value for the fourth argument of submitJsonRequest. Please use an object with the async property instead."
     },
     $prototype : {
         /**
@@ -203,10 +203,11 @@ module.exports = Aria.classDefinition({
          * </ul>
          * @param {Object} jsonData - the data to post to the server
          * @param {aria.core.CfgBeans:Callback} cb the callback
-         * @param {Boolean} async flag to specify wether the request has to be asynchronous or synchronous (use it with
-         * care: sync requests can freeze the UI)
+         * @param {aria.modules.RequestBeans.SubmitJsonRequestOptions} options object containing options for the
+         * request, such as timeout and headers. For backward compatibility, if this parameter contains a boolean value
+         * (which is deprecated), it is used as the value of the async option.
          */
-        submitJsonRequest : function (targetService, jsonData, cb, async) {
+        submitJsonRequest : function (targetService, jsonData, cb, options) {
             var typeUtils = ariaUtilsType;
             // change cb as an object if a string or a function is passed as a
             // callback
@@ -219,7 +220,15 @@ module.exports = Aria.classDefinition({
             } else if (typeUtils.isObject(cb) && cb.scope == null) {
                 cb.scope = this; // default scope = this
             }
-
+            if (typeUtils.isBoolean(options)) {
+                this.$logWarn(this.DEPRECATED_ASYNC_ARG);
+                options = {
+                    async : options
+                };
+            }
+            if (!options) {
+                options = {};
+            }
             var wrapCB = {
                 fn : this._submitJsonRequestCB,
                 scope : this,
@@ -230,12 +239,14 @@ module.exports = Aria.classDefinition({
             // Request object constructed with all necessary properties
             var requestObject = {
                 moduleName : this.$package,
-                async : (async !== false),
                 session : this._session,
                 actionQueuing : null,
                 requestHandler : this.$requestHandler,
                 urlService : this.$urlService,
-                requestJsonSerializer : this.$requestJsonSerializer
+                requestJsonSerializer : this.$requestJsonSerializer,
+                async : options.async,
+                timeout : options.timeout,
+                headers : options.headers
             };
 
             if (typeUtils.isString(targetService)) {

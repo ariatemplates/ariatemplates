@@ -39,5 +39,7 @@ Aria.classDefinition({
 
         this.addTests("test.aria.modules.moduleReload.ModuleReloadTestCase1");
         this.addTests("test.aria.modules.moduleReload.ModuleReloadTestCase2");
+
+        this.addTests("test.aria.modules.ModuleSubmitJsonRequestTest");
     }
 });

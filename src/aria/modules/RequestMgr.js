@@ -21,7 +21,7 @@ var ariaUtilsType = require("../utils/Type");
 var ariaCoreIO = require("../core/IO");
 var ariaCoreJsonValidator = require("../core/JsonValidator");
 var ariaCoreAppEnvironment = require("../core/AppEnvironment");
-
+var ariaUtilsJson = require("../utils/Json");
 
 /**
  * The request Manager class handles the functional requests and manage the URL transport arguments (session id, etc).
@@ -378,6 +378,10 @@ module.exports = Aria.classDefinition({
                     ? handler.prepareRequestBody(req.jsonData, req.requestObject)
                     : req.data;
             req.headers = handler.getRequestHeaders();
+            if (req.requestObject.headers) {
+                req.headers = ariaUtilsJson.copy(req.headers, false);
+                ariaUtilsJson.inject(req.requestObject.headers, req.headers, false);
+            }
 
             // call the server
             var senderObject = {
