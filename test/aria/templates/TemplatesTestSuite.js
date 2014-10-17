@@ -86,6 +86,8 @@ Aria.classDefinition({
         this.addTests("test.aria.templates.issue727.RefreshManagerExceptionTestCase");
         this.addTests("test.aria.templates.issue833.CaretPositionTestCase");
 
+        this.addTests("test.aria.templates.issue1319.TplDefinitionChangedTestCase");
+
         this.addTests("test.aria.templates.tabsRefresh.TabsRefreshTestCase");
         this.addTests("test.aria.templates.macrolibs.MacrolibsTestCase");
         this.addTests("test.aria.templates.textTemplates.TextTemplatesTestCase");
