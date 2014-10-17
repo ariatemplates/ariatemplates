@@ -269,17 +269,19 @@
 
                 var scriptResources = scriptClass.classDefinition.$resources;
                 if (scriptResources) {
-                    if (!tplPrototype.$resources) {
-                        tplPrototype.$resources = {};
+                    var tplPrototypeRes = {};
+                    if (tplPrototype.$resources) {
+                        Aria.copyObject(tplPrototype.$resources, tplPrototypeRes);
                     }
+                    tplPrototype.$resources = tplPrototypeRes;
                     var scriptTransformedProto = scriptClass.prototype;
                     for (var member in scriptResources) {
                         if (scriptResources.hasOwnProperty(member)) {
-                            if (tplPrototype[member] && !tplPrototype.$resources[member]) {
+                            if (tplPrototype[member] && !tplPrototypeRes[member]) {
                                 this.$logError(Aria.RESOURCES_HANDLE_CONFLICT, [member, scriptDef.$classpath]);
                             } else {
                                 proto[member] = scriptTransformedProto[member];
-                                tplPrototype.$resources[member] = scriptResources[member];
+                                tplPrototypeRes[member] = scriptResources[member];
                             }
                         }
                     }
@@ -287,16 +289,18 @@
 
                 var scriptTexts = scriptClass.classDefinition.$texts;
                 if (scriptTexts) {
-                    if (!tplPrototype.$texts) {
-                        tplPrototype.$texts = {};
+                    var tplPrototypeText = {};
+                    if (tplPrototype.$texts) {
+                        Aria.copyObject(tplPrototype.$texts, tplPrototypeText);
                     }
+                    tplPrototype.$texts = tplPrototypeText;
                     for (var member in scriptTexts) {
                         if (scriptTexts.hasOwnProperty(member)) {
-                            if (tplPrototype[member] && !tplPrototype.$texts[member]) {
+                            if (tplPrototype[member] && !tplPrototypeText[member]) {
                                 this.$logError(Aria.TEXT_TEMPLATE_HANDLE_CONFLICT, [member, scriptDef.$classpath]);
                             } else {
                                 proto[member] = scriptClass.prototype[member];
-                                tplPrototype.$texts[member] = scriptTexts[member];
+                                tplPrototypeText[member] = scriptTexts[member];
                             }
                         }
                     }
