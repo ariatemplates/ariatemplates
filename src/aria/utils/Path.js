@@ -84,6 +84,7 @@ module.exports = Aria.classDefinition({
             if (ariaUtilsType.isString(path)) {
                 path = this.parse(path);
             }
+            inside = inside ? inside : Aria.$window;
             if (ariaUtilsType.isArray(path)) {
                 for (var index = 0, param, len = path.length; index < len; index++) {
                     param = path[index];
