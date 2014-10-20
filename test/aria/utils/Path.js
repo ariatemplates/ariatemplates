@@ -52,6 +52,9 @@ Aria.classDefinition({
             // test that properties starting with the dollar sign are correctly resolved
             var pathWithDollar = "param1[0].$var";
 
+            // test that properties inside window object are correctly resolved (resolve method used without 2nd parameter)
+            var pathInsideWindow = "Aria.version";
+
             var obj = {
                 param1 : [{
                             param3 : 13,
@@ -62,6 +65,7 @@ Aria.classDefinition({
             this.assertTrue(aria.utils.Path.resolve(pathStr, obj) == 13);
             this.assertTrue(aria.utils.Path.resolve(pathArray, obj) === false);
             this.assertTrue(aria.utils.Path.resolve(pathWithDollar, obj) === "testString");
+            this.assertEquals(aria.utils.Path.resolve(pathInsideWindow), Aria.version, "resolve method without second parameter does not extract the correct information: %1 != %2");
         },
 
         /**
