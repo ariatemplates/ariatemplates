@@ -217,11 +217,17 @@ module.exports = Aria.classDefinition({
             this._secondDiv.parentNode.removeChild(this._secondDiv);
             this._secondDiv = null;
         }
-        var siteConfigHelper = this._siteConfigHelper, cssLoader = ariaUtilsCSSLoader;
+        var siteConfigHelper = this._siteConfigHelper,
+            pageConfigHelper = this._pageConfigHelper,
+            cssLoader = ariaUtilsCSSLoader;
         if (siteConfigHelper) {
             cssLoader.remove(siteConfigHelper.getSiteCss());
             siteConfigHelper.$dispose();
 
+        }
+        if (pageConfigHelper) {
+            pageConfigHelper.$dispose();
+            pageConfigHelper = null;
         }
         cssLoader.remove(this._previousPageCSS);
         cssLoader.remove(this._currentPageCSS);
@@ -230,9 +236,11 @@ module.exports = Aria.classDefinition({
             this._rootModule.$dispose();
             this._rootModule = null;
         }
-        this._pageProvider.$removeListeners({
-            "pageDefinitionChange" : this._onPageDefinitionChangeListener
-        });
+        if (this._pageProvider) {
+            this._pageProvider.$removeListeners({
+                "pageDefinitionChange" : this._onPageDefinitionChangeListener
+            });
+        }
         this._onPageDefinitionChangeListener = null;
 
     },
@@ -485,6 +493,10 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         _loadPageDependencies : function (args) {
+            if (!this._pageConfigHelper) {
+                this.$callback(args.cb);
+                return;
+            }
             var dependencies = this._pageConfigHelper.getPageDependencies(args.lazy);
             var pageCommonModules = this._siteConfigHelper.getCommonModulesDescription({
                 priority : 2,
@@ -552,6 +564,10 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         _displayPage : function (args) {
+            if (!this._pageConfigHelper) {
+                this.$callback(args.cb);
+                return;
+            }
             var pageConfig = args.pageConfig, cfg = pageConfig.pageComposition, pageId = pageConfig.pageId;
             this.$raiseEvent({
                 name : "beforePageTransition",
@@ -696,6 +712,9 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         _afterLazyDependenciesLoad : function () {
+            if (!this._pageConfigHelper) {
+                return;
+            }
             var lazyPlaceholders = this._pageConfigHelper.getLazyPlaceholdersIds();
             this._lazyContent = false;
             this.$raiseEvent({
