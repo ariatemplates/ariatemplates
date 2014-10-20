@@ -202,8 +202,10 @@ Aria.classDefinition({
          * </ul>
          * @param {Object} jsonData - the data to post to the server
          * @param {aria.core.CfgBeans:Callback} cb the callback
+         * @param {aria.modules.RequestBeans.SubmitJsonRequestOptions} options object containing options for the
+         * request, such as timeout and headers.
          */
-        submitJsonRequest : function (targetService, jsonData, cb) {
+        submitJsonRequest : function (targetService, jsonData, cb, options) {
             var typeUtils = aria.utils.Type;
             // change cb as an object if a string or a function is passed as a
             // callback
@@ -216,7 +218,9 @@ Aria.classDefinition({
             } else if (typeUtils.isObject(cb) && cb.scope == null) {
                 cb.scope = this; // default scope = this
             }
-
+            if (!options) {
+                options = {};
+            }
             var wrapCB = {
                 fn : this._submitJsonRequestCB,
                 scope : this,
@@ -231,7 +235,9 @@ Aria.classDefinition({
                 actionQueuing : null,
                 requestHandler : this.$requestHandler,
                 urlService : this.$urlService,
-                requestJsonSerializer : this.$requestJsonSerializer
+                requestJsonSerializer : this.$requestJsonSerializer,
+                timeout : options.timeout,
+                headers : options.headers
             };
 
             if (typeUtils.isString(targetService)) {

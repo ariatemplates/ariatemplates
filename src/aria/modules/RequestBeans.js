@@ -25,8 +25,8 @@ Aria.beanDefinitions({
     },
     $beans : {
         "RequestObject" : {
-            $type : "json:Object",
-            $description : "Request Object passed to submitJsonRequest",
+            $type : "SubmitJsonRequestOptions",
+            $description : "Request Object passed to the submitJsonRequest method of the RequestMgr.",
             $restricted : false,
             $properties : {
                 "moduleName" : {
@@ -64,16 +64,22 @@ Aria.beanDefinitions({
                     $type : "env:RequestJsonSerializerCfg",
                     $description : "JSON serializer settings that have to be used for this request"
                 },
-                "timeout" : {
-                    $type : "json:Integer",
-                    $description : "Timeout in milliseconds (after which the request is canceled if no answer was received before). If this parameter is not set, the default timeout applies (specified in aria.core.IO.defaultTimeout). This property can be changed by filters."
-                },
                 /* Backward Compatibility begins here */
                 "postHeader" : {
                     $type : "json:String",
                     $description : "[DEPRECATED] Header 'Content-type' to be used for POST requests, please use headers"
-                },
+                }
                 /* Backward Compatibility ends here */
+            }
+        },
+        "SubmitJsonRequestOptions" : {
+            $type : "json:Object",
+            $description : "Options which can be passed to the submitJsonRequest method of a module controller.",
+            $properties : {
+                "timeout" : {
+                    $type : "json:Integer",
+                    $description : "Timeout in milliseconds (after which the request is canceled if no answer was received before). If this parameter is not set, the default timeout applies (specified in aria.core.IO.defaultTimeout). This property can be changed by filters."
+                },
                 "headers" : {
                     $type : "json:Map",
                     $contentType : {

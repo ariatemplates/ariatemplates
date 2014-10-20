@@ -23,7 +23,7 @@ Aria.classDefinition({
     $classpath : "aria.modules.RequestMgr",
     $dependencies : ["aria.modules.queuing.SimpleSessionQueuing", "aria.modules.RequestBeans",
             "aria.modules.urlService.environment.UrlService", "aria.modules.requestHandler.environment.RequestHandler",
-            "aria.utils.Type"],
+            "aria.utils.Type", "aria.utils.Json"],
     $singleton : true,
     $events : {
         "error" : {
@@ -363,6 +363,10 @@ Aria.classDefinition({
                     ? handler.prepareRequestBody(req.jsonData, req.requestObject)
                     : req.data;
             req.headers = handler.getRequestHeaders();
+            if (req.requestObject.headers) {
+                req.headers = aria.utils.Json.copy(req.headers, false);
+                aria.utils.Json.inject(req.requestObject.headers, req.headers, false);
+            }
 
             // call the server
             var senderObject = {
