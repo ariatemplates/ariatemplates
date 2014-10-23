@@ -61,6 +61,9 @@ Aria.classDefinition({
 
         this.$PreselectAutofillBaseTest.constructor.call(this);
         this.data.value = [];
+        if (aria.core.Browser.isIE) {
+            this.defaultTestTimeout = 25000;
+        }
     },
     $prototype : {
 
