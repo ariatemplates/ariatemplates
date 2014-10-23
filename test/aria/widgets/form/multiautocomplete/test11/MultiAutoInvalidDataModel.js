@@ -19,7 +19,7 @@ Aria.classDefinition({
     $dependencies : ["aria.core.Browser"],
     $constructor : function () {
         this.$BaseMultiAutoCompleteTestCase.constructor.call(this);
-        if (aria.core.Browser.isPhantomJS || aria.core.Browser.isIE7 || aria.core.Browser.isIE8) {
+        if (aria.core.Browser.isPhantomJS || aria.core.Browser.isIE) {
             this.defaultTestTimeout = 120000;
         }
         this.data.freeText = false;
