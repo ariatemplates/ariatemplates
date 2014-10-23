@@ -274,16 +274,17 @@ module.exports = Aria.classDefinition({
 
         /**
          * Return an array of dependencies from used handlers : urlService, requestHandler
+         * @param {aria.modules.RequestBeans:RequestObject} requestObject
          * @private
          * @return Array
          */
-        __getHandlersDependencies : function () {
+        __getHandlersDependencies : function (requestObject) {
             var dependencies = [], appEnv = ariaModulesUrlServiceEnvironmentUrlService;
-            if (!this._urlService) {
+            if (!requestObject.urlService && !this._urlService) {
                 var urlServiceCfg = appEnv.getUrlServiceCfg();
                 dependencies.push(urlServiceCfg.implementation);
             }
-            if (!this._requestHandler) {
+            if (!requestObject.requestHandler && !this._requestHandler) {
                 var requestHandlerCfg = ariaModulesRequestHandlerEnvironmentRequestHandler.getRequestHandlerCfg();
                 dependencies.push(requestHandlerCfg.implementation);
             }
@@ -312,7 +313,7 @@ module.exports = Aria.classDefinition({
                 method : "POST"
             }, id = this._idCounter++;
 
-            var dependencies = this.__getHandlersDependencies();
+            var dependencies = this.__getHandlersDependencies(requestObject);
 
             var args = {
                 req : req,
