@@ -27,6 +27,9 @@ module.exports = Aria.classDefinition({
     $extends : ariaJsunitTemplateTestCase,
     $constructor : function () {
         this.$TemplateTestCase.constructor.call(this);
+        if (aria.core.Browser.isIE) {
+            this.defaultTestTimeout = 60000;
+        }
 
         /**
          * Events utility to simulate user actions
