@@ -137,6 +137,68 @@ Aria.classDefinition({
         },
 
         /**
+         * Test the validateModel method with the stopOnError parameter set to true
+         */
+        test_validateModelStopOnError : function (group) {
+            var data = {
+                param1 : 'value1',
+                param2 : [{
+                            elem1 : 'value2'
+                        }, {
+                            elem2 : 'value3'
+                        }, "thirdElement", null]
+            }, utilData = aria.utils.Data;
+
+            var numberValidator = new aria.utils.validators.Number();
+            var mandatoryValidator = new aria.utils.validators.Mandatory();
+            var length2Validator = new aria.utils.validators.Validator();
+            length2Validator.validate = function (value) {
+                if (value && value.length == 2) {
+                    return this._validationSucceeded();
+                } else {
+                    return this._validationFailed();
+                }
+            };
+
+            var notNullValidator = new aria.utils.validators.Validator();
+            notNullValidator.validate = function (value) {
+                if (value) {
+                    return this._validationSucceeded();
+                } else {
+                    return this._validationFailed();
+                }
+            };
+
+            utilData.setValidator(data, 'param1', mandatoryValidator);
+            utilData.setValidator(data.param2[1], 'elem2', numberValidator);
+            utilData.setValidator(data, 'param2', length2Validator);
+            utilData.setValidator(data.param2, 3, notNullValidator);
+
+            this._checkValidation(data, length2Validator);
+
+            utilData.setValidator(data, 'param2', mandatoryValidator);
+
+            this._checkValidation(data, numberValidator);
+
+            // updates datamodel to make things valid
+            data.param2[1].elem2 = "13";
+
+            this._checkValidation(data, notNullValidator);
+
+            numberValidator.$dispose();
+            mandatoryValidator.$dispose();
+            length2Validator.$dispose();
+            notNullValidator.$dispose();
+        },
+
+        _checkValidation : function (data, validator) {
+            var messages = {};
+            aria.utils.Data.validateModel(data, messages, null, true);
+            this.assertEquals(messages.nbrOfE, 1, "There should be only 1 message in the list of messages");
+            this.assertEquals(messages.listOfMessages[0].metaDataRef.validator, validator, "The validator that returned error does not correspond to the expected one: %1 != %2");
+        },
+
+        /**
          * test processMessages method
          */
         test_processMessages : function () {

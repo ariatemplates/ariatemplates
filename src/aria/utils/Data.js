@@ -32,6 +32,7 @@ module.exports = Aria.classDefinition({
     $constructor : function () {
         this.utilsType = ariaUtilsType;
         this.utilsArray = ariaUtilsArray;
+        this.errorNbrKey = this.NBROF_PREFIX + this.TYPE_ERROR;
     },
     $statics : {
         NBROF_PREFIX : "nbrOf",
@@ -365,17 +366,25 @@ module.exports = Aria.classDefinition({
          * @param {Object} messages
          * @param {Array} groups an optional parameter that contains the group(s) to be validated, if no group is
          * specified then validation will occur on the model as normal.
+         * @param {Boolean} stopOnError an optional parameter that (when set to true) stops the validation as soon as an error is detected in
+         * the model provided (defaults to false)
          */
-        validateModel : function (dataHolder, messages, groups) {
+        validateModel : function (dataHolder, messages, groups, stopOnError) {
             if (this.utilsType.isObject(dataHolder)) {
                 for (var key in dataHolder) {
                     if (dataHolder.hasOwnProperty(key)) {
-                        this.__subValidateModel(dataHolder, key, messages, groups);
+                        this.__subValidateModel(dataHolder, key, messages, groups, stopOnError);
+                        if (stopOnError && messages && messages[this.errorNbrKey] > 0){
+                            return;
+                        }
                     }
                 }
             } else if (this.utilsType.isArray(dataHolder)) {
                 for (var index = 0, l = dataHolder.length; index < l; index++) {
-                    this.__subValidateModel(dataHolder, index, messages, groups);
+                    this.__subValidateModel(dataHolder, index, messages, groups, stopOnError);
+                    if (stopOnError && messages && messages[this.errorNbrKey] > 0){
+                        return;
+                    }
                 }
             }
         },
@@ -387,15 +396,20 @@ module.exports = Aria.classDefinition({
          * @param {String} parameter
          * @param {Object} messages
          * @param {Array} group an optional parameter that contains the group(s) to be validated.
+         * @param {Boolean} stopOnError an optional parameter that (when set to true) stops the validation as soon as an error is detected in
+         * the model provided (defaults to false)
          */
-        __subValidateModel : function (dataHolder, parameter, messages, groups) {
+        __subValidateModel : function (dataHolder, parameter, messages, groups, stopOnError) {
             // filters meta marker and aria metadata
             if (!ariaUtilsJson.isMetadata(parameter)) {
                 if (dataHolder[this.META_PREFIX + parameter]) {
                     this.validateValue(dataHolder, parameter, messages, groups);
+                    if (stopOnError && messages && messages[this.errorNbrKey] > 0){
+                        return;
+                    }
                 }
                 var value = dataHolder[parameter];
-                this.validateModel(value, messages, groups);
+                return this.validateModel(value, messages, groups, stopOnError);
             }
         },
 
