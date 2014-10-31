@@ -90,6 +90,8 @@ Syntax highlighters:
 Other tools:
 
 - [Yeoman generator](https://github.com/ariatemplates/generator-ariatemplates) for AT project scaffolding
+- [Snippets](https://github.com/ariatemplates/sublime-ariatemplates-snippets)
+and [even more snippets](https://github.com/dpreussner/advanced-at-snippets-pack) for Sublime Text
 - [Aria Templates aware JS Deminifier](https://github.com/jakub-g/atjsd) plugin for Firefox/Firebug
 
 Feel invited to contribute highlighters for editor of your choice, or other useful tools!
