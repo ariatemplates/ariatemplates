@@ -15,7 +15,6 @@
 var Aria = require("./Aria");
 var ariaCoreBrowser = require("./core/Browser");
 
-
 (function () {
 
     // Map of W3C/IE event properties
@@ -161,10 +160,15 @@ var ariaCoreBrowser = require("./core/Browser");
                     if (baseKeyCode > 32 && baseKeyCode < 38) {
                         this.keyCode = baseKeyCode + 16;
                     }
+                    if (baseKeyCode == 38) {
+                        this.keyCode = 55;
+                    }
+                    if (baseKeyCode == 40) {
+                        this.keyCode = 57;
+                    }
                     /*
-                     * if (baseKeyCode == 38) { this.keyCode = 55; } if (baseKeyCode == 39) { this.keyCode = 56; } if
-                     * (baseKeyCode == 40) { this.keyCode = 57; } if (baseKeyCode == 41) { this.keyCode = 48; }
-                     */
+                    *  if (baseKeyCode == 39) { this.keyCode = 56; } if (baseKeyCode == 41) { this.keyCode = 48; }
+                    */
                     if (baseKeyCode > 41 && baseKeyCode < 48) {
                         // / to * range
                         this.keyCode = baseKeyCode + 64;
