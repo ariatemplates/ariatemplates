@@ -19,6 +19,7 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
+        this.addTests("test.aria.widgets.form.autocomplete.ampersand.AutoComplete");
         this.addTests("test.aria.widgets.form.autocomplete.issue315.OpenDropDownFromButtonTest");
         this.addTests("test.aria.widgets.form.autocomplete.selectionKey.AutoComplete");
         this.addTests("test.aria.widgets.form.autocomplete.selectionKey.AutoCompleteModifier");
