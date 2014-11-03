@@ -168,7 +168,7 @@ module.exports = Aria.classDefinition({
         },
 
         /**
-         * return true if the index is a number within the valid boudaries
+         * return true if the index is a number within the valid boundaries
          * @param {MultiTypes} index
          */
         isIndexValid : function (index) {
