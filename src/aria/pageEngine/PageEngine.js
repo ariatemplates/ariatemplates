@@ -31,7 +31,6 @@ var ariaCoreBrowser = require("../core/Browser");
 var ariaUtilsArray = require("../utils/Array");
 var ariaCoreTimer = require("../core/Timer");
 
-
 /**
  * Page engine bootstrap singleton to be used to start the site given a configuration file
  */
@@ -458,7 +457,7 @@ module.exports = Aria.classDefinition({
                 return;
             }
 
-            var pageConfigHelper = new ariaPageEngineUtilsPageConfigHelper(cfg);
+            var pageConfigHelper = this._getPageConfigHelper(cfg);
             ariaUtilsJson.inject(pageConfigHelper.getMenus(), this._siteConfigHelper.getAppData().menus);
             this._pageConfigHelper = pageConfigHelper;
             this._lazyContent = true;
@@ -476,6 +475,15 @@ module.exports = Aria.classDefinition({
                 }
             });
 
+        },
+
+        /**
+         * @param {aria.pageEngine.CfgBeans:PageDefinition} cfg
+         * @return {Object} instance of page config helper
+         * @protected
+         */
+        _getPageConfigHelper : function (cfg) {
+            return new ariaPageEngineUtilsPageConfigHelper(cfg);
         },
 
         /**
