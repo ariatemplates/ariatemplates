@@ -344,7 +344,14 @@ Aria.classDefinition({
          * @param {String} id
          */
         getMarkup : function (id) {
-            return this.delegateExpando + "='" + id + "'";
+            var output = this.delegateExpando + "='" + id + "'";
+
+            // for iOS, see: https://developer.apple.com/library/IOS/documentation/AppleApplications/Reference/SafariWebContent/HandlingEvents/HandlingEvents.html#//apple_ref/doc/uid/TP40006511-SW3
+            if (aria.core.Browser.isIOS) {
+                output += " onclick='void(0)'";
+            }
+
+            return output;
         },
 
         /**
@@ -354,6 +361,13 @@ Aria.classDefinition({
          */
         addExpando : function (domElt, id) {
             domElt.setAttribute(this.delegateExpando, id);
+
+            // for iOS, refer to method getMarkup
+            if (aria.core.Browser.isIOS) {
+                if (domElt.onclick == null) {
+                    domElt.onclick = Aria.empty;
+                }
+            }
         },
 
         /**
