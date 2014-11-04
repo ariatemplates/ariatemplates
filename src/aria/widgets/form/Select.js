@@ -104,7 +104,7 @@ module.exports = Aria.classDefinition({
         },
 
         /**
-         * Used to check that the value for the widget when it is initialised, is set.
+         * Used to check that the value for the widget when it is initialized, is set.
          */
         _checkCfgConsistency : function () {
             this.$DropDownInput._checkCfgConsistency.call(this);
