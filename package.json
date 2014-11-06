@@ -35,7 +35,7 @@
     "at-noder-converter": "1.0.1",
     "atpackager": "0.2.5",
     "gzip-js": "0.3.2",
-    "noder-js": "1.6.0"
+    "noder-js": "1.6.1"
   },
   "devDependencies": {
     "attester": "1.5.0",
