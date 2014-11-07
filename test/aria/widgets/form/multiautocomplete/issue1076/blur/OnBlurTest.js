@@ -82,6 +82,17 @@ Aria.classDefinition({
         },
 
         _checkFirstBlur : function () {
+            // The first blur doesn't occur, as the popup is close first and the focus is given to the main input
+            this.assertEquals(this.data.onBlurCalls, 0, "The number of blur events should be %2. It is %1 instead");
+
+            this.focusOut({
+                fn : this._checkSecondBlur,
+                scope : this,
+                delay : 300
+            });
+        },
+
+        _checkSecondBlur : function () {
             this.assertEquals(this.data.onBlurCalls, 1, "The number of blur events should be %2. It is %1 instead");
 
             this.removeByCrossClick(0, {
