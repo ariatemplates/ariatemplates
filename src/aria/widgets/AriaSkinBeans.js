@@ -423,18 +423,70 @@ module.exports = Aria.beanDefinitions({
                 "day" : {
                     $type : "DateStyleCfg"
                 },
+                "dayBorderColor" : {
+                    $type : "Color",
+                    $description : "[Deprecated] Use day.borderColor instead."
+                },
+                "dayBackgroundColor" : {
+                    $type : "Color",
+                    $description : "[Deprecated] Use day.backgroundColor instead."
+                },
+                "dayColor" : {
+                    $type : "Color",
+                    $description : "[Deprecated] Use day.color instead."
+                },
                 "dayPadding" : {
                     $type : "json:String",
                     $default : "0px"
                 },
+                "dayFontWeight" : {
+                    $type : "json:String",
+                    $description : "[Deprecated] Use day.fontWeight instead."
+                },
                 "weekEnd" : {
                     $type : "DateStyleCfg"
+                },
+                "weekEndBackgroundColor" : {
+                    $type : "Color",
+                    $description : "[Deprecated] Use weekEnd.backgroundColor instead."
+                },
+                "weekEndBorderColor" : {
+                    $type : "Color",
+                    $description : "[Deprecated] Use weekEnd.borderColor instead."
+                },
+                "weekEndColor" : {
+                    $type : "Color",
+                    $description : "[Deprecated] Use weekEnd.color instead."
                 },
                 "unselectableDate" : {
                     $type : "DateStyleCfg"
                 },
+                "unselectableBorderColor" : {
+                    $type : "Color",
+                    $description : "[Deprecated] Use unselectableDate.borderColor instead."
+                },
+                "unselectableBackgroundColor" : {
+                    $type : "Color",
+                    $description : "[Deprecated] Use unselectableDate.backgroundColor instead."
+                },
+                "unselectableColor" : {
+                    $type : "Color",
+                    $description : "[Deprecated] Use unselectableDate.color instead."
+                },
                 "today" : {
                     $type : "DateStyleCfg"
+                },
+                "todayBorderColor" : {
+                    $type : "Color",
+                    $description : "[Deprecated] Use today.borderColor instead."
+                },
+                "todayBackgroundColor" : {
+                    $type : "Color",
+                    $description : "[Deprecated] Use today.backgroundColor instead."
+                },
+                "todayColor" : {
+                    $type : "Color",
+                    $description : "[Deprecated] Use today.color instead."
                 },
                 "weekNumberBackgroundColor" : {
                     $type : "Color",
@@ -467,6 +519,18 @@ module.exports = Aria.beanDefinitions({
                 "selectedDate" : {
                     $type : "DateStyleCfg"
                 },
+                "selectedBackgroundColor" : {
+                    $type : "Color",
+                    $description : "[Deprecated] Use selectedDate.backgroundColor instead."
+                },
+                "selectedBorderColor" : {
+                    $type : "Color",
+                    $description : "[Deprecated] Use selectedDate.borderColor instead."
+                },
+                "selectedColor" : {
+                    $type : "Color",
+                    $description : "[Deprecated] Use selectedDate.color instead."
+                },
                 "focusedDate" : {
                     $type : "DateStyleCfg"
                 },
@@ -497,6 +561,18 @@ module.exports = Aria.beanDefinitions({
                 },
                 "mouseOverDate" : {
                     $type : "DateStyleCfg"
+                },
+                "mouseOverBackgroundColor" : {
+                    $type : "Color",
+                    $description : "[Deprecated] Use mouseOverDate.backgroundColor instead."
+                },
+                "mouseOverColor" : {
+                    $type : "Color",
+                    $description : "[Deprecated] Use mouseOverDate.color instead."
+                },
+                "mouseOverBorderColor" : {
+                    $type : "Color",
+                    $description : "[Deprecated] Use mouseOverDate.borderColor instead."
                 },
                 "previousPageIcon" : {
                     $type : "Icons"

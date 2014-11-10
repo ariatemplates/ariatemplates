@@ -72,14 +72,6 @@
         fontWeight : "bold"
     }/}
 
-    {var dayDefault = {
-        backgroundColor : "transparent",
-        borderColor : "transparent",
-        color : "black",
-        fontWeight : "normal",
-        borderStyle : "solid"
-    }/}
-
     {macro writeSkinClass(info)}
         /* Calendar classes. Should only be used in the calendar templates. */
         {var skinClassName=info.skinClassName/}
@@ -128,19 +120,19 @@
             border-width: 1px;
             width: 13px;
             padding:${skinClass.dayPadding};
-            {call dateStyle(skinClass, "day")/}
+            {call dateStyle(skinClass, "day", "day", getDayDefault(skinClass))/}
         }
         .${prefix}_weekEnd {
-            {call dateStyle(skinClass, "weekEnd")/}
+            {call dateStyle(skinClass, "weekEnd", "weekEnd")/}
         }
         .${prefix}_selectable  {
             cursor: pointer;
         }
         .${prefix}_unselectable {
-            {call dateStyle(skinClass, "unselectableDate")/}
+            {call dateStyle(skinClass, "unselectableDate", "unselectable", getUnselectableDefault(skinClass))/}
         }
         .${prefix}_today {
-            {call dateStyle(skinClass, "today")/}
+            {call dateStyle(skinClass, "today", "today")/}
         }
         .${prefix}_weekNumber {
             background-color:${skinClass.weekNumberBackgroundColor};
@@ -161,7 +153,7 @@
         // to increase their priority
 
         .${prefix}_day.${prefix}_selectable.${prefix}_selected {
-            {call dateStyle(skinClass, "selectedDate")/}
+            {call dateStyle(skinClass, "selectedDate", "selected")/}
         }
         .${prefix}_day.${prefix}_selectable.${prefix}_selected_from_to {
             {call dateStyle(skinClass, "selectedFromToDate")/}
@@ -184,12 +176,12 @@
         }
 
         .${prefix}_day.${prefix}_selectable.${prefix}_mouseOver {
-            {call dateStyle(skinClass, "mouseOverDate")/}
+            {call dateStyle(skinClass, "mouseOverDate", "mouseOver", getMouseOverDefault(skinClass))/}
         }
     {/macro}
 
-    {macro dateStyle(skinClass, propertyName)}
-        {var obj = getStyleFor(skinClass, propertyName) /}
+    {macro dateStyle(skinClass, propertyName, oldPrefix, defaultValues)}
+        {var obj = getStyleFor(skinClass, propertyName, oldPrefix, defaultValues) /}
         {if obj}
             {if isSet(obj.backgroundColor)}
                 background-color: ${obj.backgroundColor};

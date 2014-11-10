@@ -24,18 +24,49 @@ module.exports = Aria.tplScriptDefinition({
             return value != null && value != "undefined";
         },
 
-        getStyleFor : function (skinClass, propertyName) {
-            var defaultValues = this[propertyName + "Default"] || {};
+        getStyleFor : function (skinClass, propertyName, oldPrefix, defaultValues) {
+            var backwardCompat = oldPrefix ? skinClass : {};
+            defaultValues = defaultValues || this[propertyName + "Default"] || {};
             var newObject = skinClass[propertyName] || {};
             return {
                 // existing properties:
-                backgroundColor : newObject.backgroundColor || defaultValues.backgroundColor,
-                color : newObject.color || defaultValues.color,
-                borderColor : newObject.borderColor || defaultValues.borderColor,
+                backgroundColor : newObject.backgroundColor || backwardCompat[oldPrefix + "BackgroundColor"]
+                        || defaultValues.backgroundColor,
+                color : newObject.color || backwardCompat[oldPrefix + "Color"] || defaultValues.color,
+                borderColor : newObject.borderColor || backwardCompat[oldPrefix + "BorderColor"]
+                        || defaultValues.borderColor,
                 // new properties:
                 fontWeight : newObject.fontWeight || defaultValues.fontWeight,
                 borderStyle : newObject.borderStyle || defaultValues.borderStyle,
                 fontStyle : newObject.fontStyle || defaultValues.fontStyle
+            };
+        },
+
+        getUnselectableDefault : function (skinClass) {
+            var general = aria.widgets.AriaSkinInterface.getGeneral();
+            return {
+                // existing properties:
+                backgroundColor : skinClass.dayBackgroundColor,
+                borderColor : skinClass.dayBorderColor,
+                color : general.colors.disabled
+            };
+        },
+
+        getMouseOverDefault : function (skinClass) {
+            return {
+                backgroundColor : skinClass.selectedBackgroundColor,
+                borderColor : skinClass.selectedBorderColor,
+                color : skinClass.selectedColor
+            };
+        },
+
+        getDayDefault : function (skinClass) {
+            return {
+                backgroundColor : "transparent",
+                borderColor : "transparent",
+                color : "black",
+                fontWeight : skinClass.dayFontWeight || "normal",
+                borderStyle : "solid"
             };
         }
     }
