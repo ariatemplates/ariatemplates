@@ -15,7 +15,6 @@
 var Aria = require("../Aria");
 var ariaWidgetLibsWidgetLib = require("../widgetLibs/WidgetLib");
 
-
 /**
  * Widget library provided by the Aria Templates framework.
  */
@@ -36,6 +35,7 @@ module.exports = Aria.classDefinition({
             "Tooltip" : "aria.widgets.container.Tooltip",
             "Text" : "aria.widgets.Text",
             "Calendar" : "aria.widgets.calendar.Calendar",
+            "RangeCalendar" : "aria.widgets.calendar.RangeCalendar",
             "Dialog" : "aria.widgets.container.Dialog",
             "Link" : "aria.widgets.action.Link",
             "Div" : "aria.widgets.container.Div",

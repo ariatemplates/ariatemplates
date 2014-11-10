@@ -16,7 +16,6 @@ var Aria = require("../../Aria");
 var ariaCoreJsonTypes = require("../../core/JsonTypes");
 var ariaCoreEnvironmentEnvironmentBaseCfgBeans = require("../../core/environment/EnvironmentBaseCfgBeans");
 
-
 /**
  * TODOC
  * @class aria.widgets.calendar.CfgBeans
@@ -107,8 +106,16 @@ module.exports = Aria.beanDefinitions({
                 "focus" : {
                     $type : "json:Boolean",
                     $description : "Is true if the calendar currently has the focus."
+                },
+                "ranges" : {
+                    $type : "json:Array",
+                    $description : "Ranges of days to highlight.",
+                    $contentType : {
+                        $type : "Range",
+                        $mandatory : true
+                    },
+                    $default : []
                 }
-
             }
         },
         "CalendarModel" : {
@@ -133,6 +140,10 @@ module.exports = Aria.beanDefinitions({
                         "skinObject" : {
                             $type : "json:ObjectRef",
                             $description : "Properties provided by the skin class."
+                        },
+                        "selectedClass" : {
+                            $type : "json:String",
+                            $description : "CSS class to use on selected days."
                         }
                     }
                 },
@@ -386,6 +397,28 @@ module.exports = Aria.beanDefinitions({
                     $type : "json:Boolean",
                     $description : "Is true if the date is selectable.",
                     $mandatory : false
+                },
+                "ranges" : {
+                    $type : "json:Array",
+                    $description : "Information about ranges this day belongs to.",
+                    $contentType : {
+                        $type : "json:Object",
+                        $description : "Information about a range the day belongs to.",
+                        $mandatory : true,
+                        $properties : {
+                            "range" : {
+                                $type : "Range",
+                                $description : "Reference to the range object defined in the 'ranges' setting.",
+                                $mandatory : true
+                            },
+                            "positionInRange" : {
+                                $type : "json:Enum",
+                                $description : "Position of the day in the range, corresponding to the name of the property containing the class to apply.",
+                                $enumValues : ["sameFromTo", "from", "to", "fromTo"]
+                            }
+                        }
+                    },
+                    $mandatory : false
                 }
             },
             $mandatory : true
@@ -407,7 +440,6 @@ module.exports = Aria.beanDefinitions({
                     $type : "json:Integer",
                     $description : "Index in the weeks array of the month, or null if the month is not in the data model",
                     $mandatory : true
-
                 },
                 "dayInWeekIndex" : {
                     $type : "json:Integer",
@@ -428,6 +460,45 @@ module.exports = Aria.beanDefinitions({
                     $type : "Date",
                     $description : "Date information.",
                     $mandatory : true
+                }
+            }
+        },
+        "Range" : {
+            $type : "json:Object",
+            $description : "Represents a range of days which should be styled with the given CSS classes.",
+            $properties : {
+                "fromDate" : {
+                    $type : "json:Date",
+                    $description : "Start date of the range.",
+                    $mandatory : true
+                },
+                "toDate" : {
+                    $type : "json:Date",
+                    $description : "End date of the range.",
+                    $mandatory : true
+                },
+                "classes" : {
+                    $type : "json:Object",
+                    $description : "CSS classes to be applied to the dates in the range, depending on the different cases. For each date in the range, only one of the properties is used (either 'from', 'to', 'fromTo' or 'sameFromTo' but not several of them).",
+                    $mandatory : true,
+                    $properties : {
+                        "sameFromTo" : {
+                            $type : "json:String",
+                            $description : "CSS class that should be applied in to the date specified in 'fromDate' if it is the same as 'toDate'."
+                        },
+                        "from" : {
+                            $type : "json:String",
+                            $description : "CSS class that should be applied to the date specified in the 'fromDate' property (except if 'fromDate' and 'toDate' refer to the same date)."
+                        },
+                        "fromTo" : {
+                            $type : "json:String",
+                            $description : "CSS class that should be applied to all the dates between 'fromDate' and 'toDate' (excluding 'fromDate' and 'toDate' themselves)."
+                        },
+                        "to" : {
+                            $type : "json:String",
+                            $description : "CSS class that should be applied to the date specified in the 'toDate' property (except if 'fromDate' and 'toDate' refer to the same date)."
+                        }
+                    }
                 }
             }
         }

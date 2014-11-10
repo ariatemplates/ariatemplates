@@ -614,9 +614,11 @@ Aria.classDefinition({
 
                     "generalBackgroundColor" : "#FFF",
 
-                    "dayBorderColor" : "#FFF",
-                    "dayBackgroundColor" : "#FFF",
-                    "dayColor" : "#000",
+                    "day" : {
+                        "borderColor" : "#FFF",
+                        "backgroundColor" : "#FFF",
+                        "color" : "#000"
+                    },
                     "dayPadding" : "3px",
 
                     "monthTitleBackgroundColor" : "#FFF",
@@ -632,24 +634,69 @@ Aria.classDefinition({
                     "weekDaysLabelFontWeight" : "bold",
                     "weekDaysLabelPadding" : "3px",
 
-                    "weekEndBackgroundColor" : "#DFDFDF",
-                    "weekEndBorderColor" : "#DFDFDF",
-                    "weekEndColor" : "#000",
+                    "weekEnd" : {
+                        "backgroundColor" : "#DFDFDF",
+                        "borderColor" : "#DFDFDF",
+                        "color" : "#000"
+                    },
 
                     "weekNumberBackgroundColor" : "#FFF",
                     "weekNumberBorderColor" : "#FFF",
 
-                    "selectedBorderColor" : "#E74C3C",
-                    "selectedBackgroundColor" : "#E74C3C",
-                    "selectedColor" : "#FFF",
+                    "selectedDate" : {
+                        "borderColor" : "#E74C3C",
+                        "backgroundColor" : "#E74C3C",
+                        "color" : "#FFF"
+                    },
 
-                    "mouseOverBorderColor" : "#E74C3C",
-                    "mouseOverBackgroundColor" : "#FFF",
-                    "mouseOverColor" : "#000",
+                    "mouseOverDate" : {
+                        "borderColor" : "#E74C3C",
+                        "backgroundColor" : "#FFF",
+                        "color" : "#000",
+                        "borderStyle" : "solid"
+                    },
 
-                    "todayBorderColor" : "#34495E",
-                    "todayBackgroundColor" : "#34495E",
-                    "todayColor" : "#FFF"
+                    "today" : {
+                        "borderColor" : "#34495E",
+                        "backgroundColor" : "#34495E",
+                        "color" : "#FFF"
+                    },
+
+                    "selectedFromDate" : {
+                        "borderColor" : "#E74C3C",
+                        "backgroundColor" : "#E74C3C",
+                        "color" : "#FFF",
+                        "borderStyle" : "solid",
+                        "fontWeight" : "bold"
+                    },
+
+                    "selectedToDate" : {
+                        "borderColor" : "#E74C3C",
+                        "backgroundColor" : "#E74C3C",
+                        "color" : "#FFF",
+                        "borderStyle" : "solid",
+                        "fontWeight" : "bold"
+                    },
+
+                    "selectedFromToDate" : {
+                        "borderColor" : "#E74C3C",
+                        "backgroundColor" : "#E74C3C",
+                        "color" : "#FFF"
+                    },
+
+                    "selectedSameFromToDate" : {
+                        "borderColor" : "#E74C3C",
+                        "backgroundColor" : "#E74C3C",
+                        "color" : "#FFF"
+                    },
+
+                    "focusedDate" : {
+                        "backgroundColor" : "undefined",
+                        "color" : "undefined",
+                        "borderStyle" : "dotted",
+                        "borderColor" : "black"
+                    }
+
                 }
             },
             "general" : {

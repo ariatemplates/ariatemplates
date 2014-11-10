@@ -425,39 +425,54 @@ Aria.classDefinition({
             },
             Calendar : {
                 std : {
-                    dayFontWeight : "normal",
+                    day : {
+                        fontWeight : "normal",
+                        color : "black",
+                        backgroundColor : "transparent",
+                        borderColor : "white"
+                    },
+                    today : {
+                        color : "black",
+                        backgroundColor : "transparent",
+                        borderColor : "black"
+                    },
+                    selectedDate : {
+                        color : "black",
+                        backgroundColor : "#FFCC66",
+                        borderColor : "black"
+                    },
+                    mouseOverDate : {
+                        color : "black",
+                        backgroundColor : "#FFCC66",
+                        borderColor : "black"
+                    },
+                    weekEnd : {
+                        color : "black",
+                        borderColor : "#F2ECDE",
+                        backgroundColor : "#F2ECDE"
+                    },
+                    unselectableDate : {
+                        color : "#AB9B85",
+                        backgroundColor : "transparent",
+                        borderColor : "white"
+                    },
                     previousPageIcon : "std:left_arrow",
-                    dayColor : "black",
                     monthTitleBackgroundColor : "transparent",
                     monthTitleColor : "black",
                     weekDaysLabelBorderColor : "white",
                     weekDaysLabelFontWeight : "bold",
                     dayPadding : "0px",
-                    dayBackgroundColor : "transparent",
                     weekDaysLabelBackgroundColor : "white",
                     nextPageIcon : "std:right_arrow",
                     monthTitleBorderColor : "#E6D9C6",
                     monthTitlePaddingBottom : "0px",
-                    todayColor : "black",
                     weekDaysLabelColor : "black",
-                    selectedColor : "black",
-                    weekEndColor : "black",
-                    weekEndBorderColor : "#F2ECDE",
-                    unselectableColor : "#AB9B85",
-                    weekEndBackgroundColor : "#F2ECDE",
                     generalBackgroundColor : "white",
-                    todayBackgroundColor : "transparent",
-                    dayBorderColor : "white",
-                    selectedBackgroundColor : "#FFCC66",
                     weekDaysLabelPadding : "0px",
-                    unselectableBackgroundColor : "transparent",
                     divsclass : "list",
                     monthTitlePaddingTop : "0px",
                     defaultTemplate : "aria.widgets.calendar.CalendarTemplate",
                     weekNumberBackgroundColor : "#E7DBC6",
-                    unselectableBorderColor : "white",
-                    todayBorderColor : "black",
-                    selectedBorderColor : "black",
                     weekNumberBorderColor : "#E7DBC6"
                 },
                 dropdown : {

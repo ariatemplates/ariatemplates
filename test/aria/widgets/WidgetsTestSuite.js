@@ -34,6 +34,7 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.form.text.EllipsisTest");
         this.addTests("test.aria.widgets.calendar.CalendarControllerTest");
         this.addTests("test.aria.widgets.calendar.lineHeight.CalendarLineHeightTest");
+        this.addTests("test.aria.widgets.calendar.rangeCalendar.RangeCalendarTestSuite");
         this.addTests("test.aria.widgets.controllers.SelectBoxControllerTest");
         this.addTests("test.aria.widgets.controllers.SelectControllerTest");
         this.addTests("test.aria.widgets.dropdown.DropDownTestSuite");

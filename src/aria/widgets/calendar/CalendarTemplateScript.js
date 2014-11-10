@@ -14,7 +14,6 @@
  */
 var Aria = require("../../Aria");
 
-
 /**
  * TODOC
  * @class aria.widgets.calendar.CalendarTemplateScript
@@ -25,13 +24,24 @@ module.exports = Aria.tplScriptDefinition({
         onModuleEvent : function (evt) {
             if (evt.name == "update") {
                 var valueInfos = evt.properties['value'];
-                if (evt.propertiesNbr == 1 && valueInfos) {
-                    this.updateClass(valueInfos.oldValuePosition);
-                    this.updateClass(valueInfos.newValuePosition);
-                    if (evt.propertyshowShortcuts) {
-                        this.$refresh({
-                            section : "selectedDay"
-                        });
+                var rangesInfos = evt.properties['ranges'];
+                var optimizedUpdate = (evt.propertiesNbr == 1 && (valueInfos || rangesInfos))
+                        || (evt.propertiesNbr == 2 && valueInfos && rangesInfos);
+                if (optimizedUpdate) {
+                    if (rangesInfos) {
+                        var changedPositions = rangesInfos.changedPositions;
+                        for (var i = 0, l = changedPositions.length; i < l; i++) {
+                            this.updateClass(changedPositions[i]);
+                        }
+                    }
+                    if (valueInfos) {
+                        this.updateClass(valueInfos.oldValuePosition);
+                        this.updateClass(valueInfos.newValuePosition);
+                        if (evt.propertyshowShortcuts) {
+                            this.$refresh({
+                                section : "selectedDay"
+                            });
+                        }
                     }
                 } else {
                     this.$refresh();
@@ -69,28 +79,50 @@ module.exports = Aria.tplScriptDefinition({
                 res.push(baseCSS + "weekEnd");
             }
             if (day.isSelected) {
-                res.push(baseCSS + "selected");
+                res.push(this.skin.selectedClass);
             }
             if (day.isToday) {
                 res.push(baseCSS + "today");
             }
             res.push(day.isSelectable ? baseCSS + "selectable" : baseCSS + "unselectable");
+            var ranges = day.ranges;
+            if (ranges) {
+                for (var i = 0, l = ranges.length; i < l; i++) {
+                    var curRangeLink = ranges[i];
+                    var className = curRangeLink.range.classes[curRangeLink.positionInRange];
+                    if (className) {
+                        res.push(className);
+                    }
+                }
+            }
             return res.join(' ');
         },
 
         mouseOverDay : function (evt) {
             var date = evt.target.getData("date");
             if (date) {
-                evt.target.classList.setClassName(evt.target.classList.getClassName().replace(this.skin.baseCSS + "mouseOut", this.skin.baseCSS
-                        + "mouseOver"));
+                var jsDate = new Date(parseInt(date, 10));
+                var preventDefault = this.moduleCtrl.dateMouseOver({
+                    date : jsDate
+                });
+                if (!preventDefault) {
+                    evt.target.classList.setClassName(evt.target.classList.getClassName().replace(this.skin.baseCSS
+                            + "mouseOut", this.skin.baseCSS + "mouseOver"));
+                }
             }
         },
 
         mouseOutDay : function (evt) {
             var date = evt.target.getData("date");
             if (date) {
-                evt.target.classList.setClassName(evt.target.classList.getClassName().replace(this.skin.baseCSS + "mouseOver", this.skin.baseCSS
-                        + "mouseOut"));
+                var jsDate = new Date(parseInt(date, 10));
+                var preventDefault = this.moduleCtrl.dateMouseOut({
+                    date : jsDate
+                });
+                if (!preventDefault) {
+                    evt.target.classList.setClassName(evt.target.classList.getClassName().replace(this.skin.baseCSS
+                            + "mouseOver", this.skin.baseCSS + "mouseOut"));
+                }
             }
         }
     }

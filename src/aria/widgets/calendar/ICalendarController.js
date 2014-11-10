@@ -15,7 +15,6 @@
 var Aria = require("../../Aria");
 var ariaTemplatesIModuleCtrl = require("../../templates/IModuleCtrl");
 
-
 /**
  * Public interface for the calendar controller.
  * @class aria.widgets.calendar.ICalendarController
@@ -42,7 +41,21 @@ module.exports = Aria.interfaceDefinition({
             description : "Raised when the user clicked on a date in the calendar.",
             properties : {
                 "date" : "Date which the user clicked on.",
-                "cancelDefault" : ""
+                "cancelDefault" : "If set to true, the default action (selecting the date) will be cancelled."
+            }
+        },
+        "dateMouseOver" : {
+            description : "Raised when the user moved the mouse on a date in the calendar.",
+            properties : {
+                "date" : "Date which the user moved the mouse on.",
+                "cancelDefault" : "If set to true, the default action (changing the style of the date in the calendar) will be cancelled."
+            }
+        },
+        "dateMouseOut" : {
+            description : "Raised when the user moved the mouse out of a date in the calendar.",
+            properties : {
+                "date" : "Date which the user moved the mouse out of.",
+                "cancelDefault" : "If set to true, the default action (changing the style of the date in the calendar) will be cancelled."
             }
         },
         "keyevent" : {
@@ -70,6 +83,12 @@ module.exports = Aria.interfaceDefinition({
         selectDay : function (args) {},
 
         /**
+         * Sets the ranges of dates to be highlighted in the calendar.
+         * @param {Array} ranges Array of ranges (of type aria.widgets.calendar.CfgBeans.Range) to be highlighted.
+         */
+        setRanges : function () {},
+
+        /**
          * Update the calendar.
          */
         update : function () {},
@@ -88,6 +107,16 @@ module.exports = Aria.interfaceDefinition({
          * Notify the calendar controller that the user has clicked on a date.
          */
         dateClick : function (args) {},
+
+        /**
+         * Notify the calendar controller that the user has moved the mouse on a date.
+         */
+        dateMouseOver : function (args) {},
+
+        /**
+         * Notify the calendar controller that the user has moved the mouse out of a date.
+         */
+        dateMouseOut : function (args) {},
 
         /**
          * Return information about the position of the given JavaScript date in the calendar data model.

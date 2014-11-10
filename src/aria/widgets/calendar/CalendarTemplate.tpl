@@ -71,10 +71,10 @@
                 <tr>
                     <th colspan="8">
                         <div class="${skin.baseCSS}monthTitle" style="position: relative;">
-                            {if first && (calendar.previousPageEnabled || !settings.restrainedNavigation)}
+                            {if first && (calendar.previousPageEnabled || !settings.restrainedNavigation) && skin.skinObject.previousPageIcon}
                                 <div style="position: absolute; left: 0px; top: -2px; cursor: pointer;" {on click {fn: "navigate", args : { increment: -1, incrementUnit: "M" }, scope : moduleCtrl}/}>{@aria:Icon { icon: skin.skinObject.previousPageIcon }/}</div>
                             {/if}
-                            {if last && (calendar.nextPageEnabled || !settings.restrainedNavigation)}
+                            {if last && (calendar.nextPageEnabled || !settings.restrainedNavigation) && skin.skinObject.nextPageIcon}
                                 <div style="position: absolute; right: 0px; top: -2px; cursor: pointer;" {on click {fn: "navigate", args : { increment: 1, incrementUnit: "M" }, scope : moduleCtrl}/}>{@aria:Icon { icon: skin.skinObject.nextPageIcon }/}</div>
                             {/if}
                             ${month.label}

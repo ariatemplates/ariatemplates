@@ -13,30 +13,91 @@
  * limitations under the License.
  */
 
-{CSSTemplate {
+ {CSSTemplate {
     $classpath : "aria.widgets.calendar.CalendarStyle",
-    $extends : "aria.widgets.WidgetStyle"
+    $extends : "aria.widgets.WidgetStyle",
+    $hasScript: true
 }}
+
     {var skinnableClassName="Calendar"/}
+
+    {var weekEndDefault = {
+        backgroundColor : "#F2ECDE",
+        borderColor : "#F2ECDE",
+        color : "black"
+    }/}
+
+    {var todayDefault = {
+        borderColor : "black",
+        backgroundColor : "transparent",
+        color : "black"
+    }/}
+
+    {var selectedDateDefault = {
+        backgroundColor : "#FFCC66",
+        borderColor : "black",
+        color : "black"
+    }/}
+
+    {var focusedDateDefault = {
+        borderStyle : "dotted",
+        borderColor : "black"
+    }/}
+
+    {var selectedFromDateDefault = {
+        backgroundColor : "#FFCC66",
+        borderColor : "#FFCC66",
+        color : "black",
+        fontWeight : "bold"
+    }/}
+
+    {var selectedToDateDefault = {
+        backgroundColor : "#FFCC66",
+        borderColor : "#FFCC66",
+        color : "black",
+        fontWeight : "bold"
+    }/}
+
+
+    {var selectedFromToDateDefault = {
+        backgroundColor : "#FFEE88",
+        borderColor : "#FFEE88",
+        color : "black"
+    }/}
+
+    {var selectedSameFromToDateDefault = {
+        backgroundColor : "#FFCC66",
+        borderColor : "#FFCC66",
+        color : "black",
+        fontWeight : "bold"
+    }/}
+
+    {var dayDefault = {
+        backgroundColor : "transparent",
+        borderColor : "transparent",
+        color : "black",
+        fontWeight : "normal",
+        borderStyle : "solid"
+    }/}
 
     {macro writeSkinClass(info)}
         /* Calendar classes. Should only be used in the calendar templates. */
         {var skinClassName=info.skinClassName/}
+        {var prefix="x"+skinnableClassName+"_"+skinClassName/}
         {var skinClass=info.skinClass/}
-        {var general=aria.widgets.AriaSkinInterface.getGeneral()/}
-        .xCalendar_${skinClassName}_general {
+        .${prefix}_general {
             {if skinClass.generalBackgroundColor}
                 background-color:${skinClass.generalBackgroundColor};
             {/if}
         }
-        .xCalendar_${skinClassName}_label {
+        .${prefix}_label {
             font-weight:bold;
             margin: 2px;
         }
-        .xCalendar_${skinClassName}_general a:hover {
+        .${prefix}_general a:hover {
             text-decoration: underline;
         }
-        table.xCalendar_${skinClassName}_month {
+        table.${prefix}_month {
             font-size:${skinClass.fontSize}px;
             text-align: center;
             border: 0px none;
@@ -49,7 +110,7 @@
                 font-variant:${skinClass.fontVariant};
             {/if}
         }
-        .xCalendar_${skinClassName}_monthTitle {
+        .${prefix}_monthTitle {
             width: 100%;
             border-color:${skinClass.monthTitleBorderColor};
             border-style:solid;
@@ -63,41 +124,31 @@
                 font-size:${skinClass.monthTitleFontSize}px;
             {/if}
         }
-        .xCalendar_${skinClassName}_day {
-            {if skinClass.dayBorderColor}
-                border:1px solid ${skinClass.dayBorderColor};
-            {/if}
+        .${prefix}_day {
+            border-width: 1px;
             width: 13px;
-            background-color:${skinClass.dayBackgroundColor};
-            color:${skinClass.dayColor};
             padding:${skinClass.dayPadding};
-            font-weight:${skinClass.dayFontWeight};
+            {call dateStyle(skinClass, "day")/}
         }
-        .xCalendar_${skinClassName}_weekEnd {
-            background-color:${skinClass.weekEndBackgroundColor};
-            border:1px solid ${skinClass.weekEndBorderColor};
-            color:${skinClass.weekEndColor};
+        .${prefix}_weekEnd {
+            {call dateStyle(skinClass, "weekEnd")/}
         }
-        .xCalendar_${skinClassName}_selectable  {
+        .${prefix}_selectable  {
             cursor: pointer;
         }
-        .xCalendar_${skinClassName}_unselectable {
-            border: 1px solid ${skinClass.unselectableBorderColor|default:skinClass.dayBorderColor};
-            background-color:${skinClass.unselectableBackgroundColor|default:skinClass.dayBackgroundColor};
-            color:${skinClass.unselectableColor|default:general.colors.disabled};
+        .${prefix}_unselectable {
+            {call dateStyle(skinClass, "unselectableDate")/}
         }
-        .xCalendar_${skinClassName}_today {
-            border: 1px solid ${skinClass.todayBorderColor};
-            background-color:${skinClass.todayBackgroundColor};
-            color:${skinClass.todayColor};
+        .${prefix}_today {
+            {call dateStyle(skinClass, "today")/}
         }
-        .xCalendar_${skinClassName}_weekNumber {
+        .${prefix}_weekNumber {
             background-color:${skinClass.weekNumberBackgroundColor};
             border:1px solid ${skinClass.weekNumberBorderColor};
             font-weight:bold;
             width: 13px;
         }
-        .xCalendar_${skinClassName}_weekDaysLabel {
+        .${prefix}_weekDaysLabel {
             background-color:${skinClass.weekDaysLabelBackgroundColor};
             border:1px solid ${skinClass.weekDaysLabelBorderColor};
             font-weight:${skinClass.weekDaysLabelFontWeight};
@@ -105,15 +156,60 @@
             width: 13px;
             padding:${skinClass.weekDaysLabelPadding};
         }
-        .xCalendar_${skinClassName}_selected {
-            background-color:${skinClass.selectedBackgroundColor};
-            border: 1px solid ${skinClass.selectedBorderColor};
-            color:${skinClass.selectedColor};
+
+        // The following rules include ${prefix}_day and ${prefix}_selectable
+        // to increase their priority
+
+        .${prefix}_day.${prefix}_selectable.${prefix}_selected {
+            {call dateStyle(skinClass, "selectedDate")/}
         }
-        .xCalendar_${skinClassName}_mouseOver {
-            background-color:${skinClass.mouseOverBackgroundColor ? skinClass.mouseOverBackgroundColor : skinClass.selectedBackgroundColor};
-            border: 1px solid ${skinClass.mouseOverBorderColor ? skinClass.mouseOverBorderColor : skinClass.selectedBorderColor};
-            color:${skinClass.mouseOverColor ? skinClass.mouseOverColor : skinClass.selectedColor};
+        .${prefix}_day.${prefix}_selectable.${prefix}_selected_from_to {
+            {call dateStyle(skinClass, "selectedFromToDate")/}
+        }
+
+        .${prefix}_day.${prefix}_selectable.${prefix}_selected_from {
+            {call dateStyle(skinClass, "selectedFromDate")/}
+        }
+
+        .${prefix}_day.${prefix}_selectable.${prefix}_selected_to {
+            {call dateStyle(skinClass, "selectedToDate")/}
+        }
+
+        .${prefix}_day.${prefix}_selectable.${prefix}_selected_same_from_to {
+            {call dateStyle(skinClass, "selectedSameFromToDate")/}
+        }
+
+        .${prefix}_day.${prefix}_selectable.${prefix}_focused {
+            {call dateStyle(skinClass, "focusedDate")/}
+        }
+
+        .${prefix}_day.${prefix}_selectable.${prefix}_mouseOver {
+            {call dateStyle(skinClass, "mouseOverDate")/}
         }
     {/macro}
+
+    {macro dateStyle(skinClass, propertyName)}
+        {var obj = getStyleFor(skinClass, propertyName) /}
+        {if obj}
+            {if isSet(obj.backgroundColor)}
+                background-color: ${obj.backgroundColor};
+            {/if}
+            {if isSet(obj.borderStyle)}
+                border-style: ${obj.borderStyle};
+            {/if}
+            {if isSet(obj.borderColor)}
+                border-color: ${obj.borderColor};
+            {/if}
+            {if isSet(obj.color)}
+                color: ${obj.color};
+            {/if}
+            {if isSet(obj.fontWeight)}
+                font-weight: ${obj.fontWeight};
+            {/if}
+            {if isSet(obj.fontStyle)}
+                font-style: ${obj.fontStyle};
+            {/if}
+        {/if}
+    {/macro}
+
 {/CSSTemplate}

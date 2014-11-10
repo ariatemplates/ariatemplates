@@ -14,7 +14,6 @@
  */
 var Aria = require("../../Aria");
 require("./CalendarController");
-var ariaWidgetsCalendarCalendarStyle = require("./CalendarStyle.tpl.css");
 require("./CalendarTemplate.tpl");
 var ariaWidgetsTemplateBasedWidget = require("../TemplateBasedWidget");
 var ariaCoreBrowser = require("../../core/Browser");
@@ -25,14 +24,16 @@ var ariaCoreBrowser = require("../../core/Browser");
  * calendar controller.
  */
 module.exports = Aria.classDefinition({
-    $classpath : "aria.widgets.calendar.Calendar",
+    $classpath : "aria.widgets.calendar.RangeCalendar",
     $extends : ariaWidgetsTemplateBasedWidget,
-    $css : [ariaWidgetsCalendarCalendarStyle],
+    $css : [require("./CalendarStyle.tpl.css")],
     $constructor : function (cfg, ctxt) {
         this.$TemplateBasedWidget.constructor.apply(this, arguments);
         var sclass = this._cfg.sclass;
         var skinObj = aria.widgets.AriaSkinInterface.getSkinObject(this._skinnableClass, sclass);
         this._hasFocus = false;
+        this._dateToChange = "fromDate";
+        this._dateToKeep = "toDate";
         this._initTemplate({
             defaultTemplate : skinObj.defaultTemplate,
             moduleCtrl : {
@@ -42,10 +43,10 @@ module.exports = Aria.classDefinition({
                         sclass : sclass,
                         skinObject : skinObj,
                         baseCSS : "xCalendar_" + sclass + "_",
-                        selectedClass : "xCalendar_" + sclass + "_selected"
+                        selectedClass : "xCalendar_" + sclass + "_focused"
                     },
                     settings : {
-                        ranges : cfg.ranges,
+                        ranges : this._getRanges(),
                         value : cfg.value,
                         minValue : cfg.minValue,
                         maxValue : cfg.maxValue,
@@ -58,7 +59,7 @@ module.exports = Aria.classDefinition({
                         dayOfWeekLabelFormat : cfg.dayOfWeekLabelFormat,
                         completeDateLabelFormat : cfg.completeDateLabelFormat,
                         showWeekNumbers : cfg.showWeekNumbers,
-                        showShortcuts : cfg.showShortcuts,
+                        showShortcuts : false,
                         restrainedNavigation : cfg.restrainedNavigation,
                         label : cfg.label,
                         focus : this._hasFocus
@@ -88,17 +89,43 @@ module.exports = Aria.classDefinition({
                 if (evt.properties["startDate"]) {
                     this.setProperty("startDate", this._subTplData.settings.startDate);
                 }
-                if (evt.properties["value"]) {
-                    this.setProperty("value", this._subTplData.settings.value);
-                    this.evalCallback(this._cfg.onchange);
-                }
             } else if (evt.name == "dateClick") {
                 this.evalCallback(this._cfg.onclick, evt);
+                if (!evt.cancelDefault) {
+                    this.dateSelect(evt.date);
+                }
             } else if (evt.name == "dateMouseOver") {
                 this.evalCallback(this._cfg.onmouseover, evt);
             } else if (evt.name == "dateMouseOut") {
                 this.evalCallback(this._cfg.onmouseout, evt);
             }
+        },
+
+        /**
+         * Returns the array of ranges to be passed to the calendar controller.
+         * @return {Array}
+         */
+        _getRanges : function () {
+            var res = [];
+            var cfg = this._cfg;
+            if (cfg.fromDate || cfg.toDate) {
+                var cssPrefix = "x" + this._skinnableClass + "_" + this._cfg.sclass;
+                res.push({
+                    fromDate : cfg.fromDate || cfg.toDate,
+                    toDate : cfg.toDate || cfg.fromDate,
+                    classes : {
+                        from : cssPrefix + "_selected_from",
+                        to : cssPrefix + "_selected_to",
+                        fromTo : cssPrefix + "_selected_from_to",
+                        sameFromTo : cssPrefix + "_selected_same_from_to"
+                    }
+                });
+            }
+            var cfgRanges = cfg.ranges;
+            if (cfgRanges) {
+                res = res.concat(cfgRanges);
+            }
+            return res;
         },
 
         /**
@@ -117,12 +144,8 @@ module.exports = Aria.classDefinition({
                     this._subTplModuleCtrl.navigate({}, {
                         date : newValue
                     });
-                } else if (propertyName == "value") {
-                    this._subTplModuleCtrl.selectDay({
-                        date : newValue
-                    });
-                } else if (propertyName == "ranges") {
-                    this._subTplModuleCtrl.setRanges(newValue);
+                } else if (propertyName == "fromDate" || propertyName == "toDate" || propertyName == "ranges") {
+                    this._subTplModuleCtrl.setRanges(this._getRanges());
                 }
             } finally {
                 this._inOnBoundPropertyChange = false;
@@ -205,6 +228,16 @@ module.exports = Aria.classDefinition({
                         }
                     }
                 }
+                if (this._hasFocus) {
+                    moduleCtrl.selectDay({
+                        date : this._cfg.fromDate || this._cfg.toDate,
+                        ensureVisible : false
+                    });
+                } else {
+                    moduleCtrl.selectDay({
+                        date : null
+                    });
+                }
             }
         },
 
@@ -217,12 +250,57 @@ module.exports = Aria.classDefinition({
         sendKey : function (charCode, keyCode) {
             var moduleCtrl = this._subTplModuleCtrl;
             if (moduleCtrl) {
-                return moduleCtrl.keyevent({
-                    charCode : charCode,
-                    keyCode : keyCode
-                });
+                var value = this._subTplData.settings.value;
+                if ((keyCode == 13 || keyCode == 32) && value) {
+                    // SPACE or ENTER -> call dateSelect
+                    this.dateSelect(value);
+                    return true;
+                } else {
+                    return moduleCtrl.keyevent({
+                        charCode : charCode,
+                        keyCode : keyCode
+                    });
+                }
             } else {
                 return false;
+            }
+        },
+
+        /**
+         * Calls the onDateSelect callback for the given date and implements the default behavior (which is to
+         * alternatively set the fromDate and toDate properties), if the default behavior is not cancelled in the
+         * callback.
+         * @param {Date} date
+         */
+        dateSelect : function (date) {
+            var evt = {
+                date : date,
+                cancelDefault : false
+            };
+            this.evalCallback(this._cfg.onDateSelect, evt);
+            if (evt.cancelDefault !== true) {
+                var cfg = this._cfg;
+                var dateToChange = this._dateToChange;
+                var dateToKeep = this._dateToKeep;
+                var properties = {};
+                var tmp;
+                properties[dateToChange] = date;
+                properties[dateToKeep] = cfg[dateToKeep];
+                if (properties.fromDate > properties.toDate) {
+                    tmp = properties.fromDate;
+                    properties.fromDate = properties.toDate;
+                    properties.toDate = tmp;
+                } else {
+                    tmp = dateToKeep;
+                    dateToKeep = dateToChange;
+                    dateToChange = tmp;
+                }
+                this.setProperty("fromDate", properties.fromDate);
+                this.setProperty("toDate", properties.toDate);
+                this._dateToChange = dateToChange;
+                this._dateToKeep = dateToKeep;
+                this._subTplModuleCtrl.setRanges(this._getRanges());
+                this.evalCallback(cfg.onchange);
             }
         }
     }

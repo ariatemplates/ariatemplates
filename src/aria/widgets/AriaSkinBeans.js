@@ -15,7 +15,6 @@
 var Aria = require("../Aria");
 var ariaCoreJsonTypes = require("../core/JsonTypes");
 
-
 /**
  * The beans contained in this file describe the structure of a skin configuration in the aria.widgets.AriaSkin class.
  */
@@ -368,6 +367,30 @@ module.exports = Aria.beanDefinitions({
                 }
             }
         },
+        "DateStyleCfg" : {
+            $type : "Object",
+            $description : "Styles to apply to a day in the calendar.",
+            $properties : {
+                "backgroundColor" : {
+                    $type : "Color"
+                },
+                "borderColor" : {
+                    $type : "Color"
+                },
+                "color" : {
+                    $type : "Color"
+                },
+                "borderStyle" : {
+                    $type : "json:String"
+                },
+                "fontWeight" : {
+                    $type : "json:String"
+                },
+                "fontStyle" : {
+                    $type : "json:String"
+                }
+            }
+        },
         "CalendarCfg" : {
             $type : "Object",
             $properties : {
@@ -397,57 +420,21 @@ module.exports = Aria.beanDefinitions({
                 "monthTitleFontSize" : {
                     $type : "json:Integer"
                 },
-                "dayBorderColor" : {
-                    $type : "Color"
-                },
-                "dayBackgroundColor" : {
-                    $type : "Color",
-                    $default : "transparent"
-                },
-                "dayColor" : {
-                    $type : "Color",
-                    $default : "black"
+                "day" : {
+                    $type : "DateStyleCfg"
                 },
                 "dayPadding" : {
                     $type : "json:String",
                     $default : "0px"
                 },
-                "dayFontWeight" : {
-                    $type : "json:String",
-                    $default : "normal"
+                "weekEnd" : {
+                    $type : "DateStyleCfg"
                 },
-                "weekEndBackgroundColor" : {
-                    $type : "Color",
-                    $default : "#F2ECDE"
+                "unselectableDate" : {
+                    $type : "DateStyleCfg"
                 },
-                "weekEndBorderColor" : {
-                    $type : "Color",
-                    $default : "#F2ECDE"
-                },
-                "weekEndColor" : {
-                    $type : "Color",
-                    $default : "black"
-                },
-                "unselectableBorderColor" : {
-                    $type : "Color"
-                },
-                "unselectableBackgroundColor" : {
-                    $type : "Color"
-                },
-                "unselectableColor" : {
-                    $type : "Color"
-                },
-                "todayBorderColor" : {
-                    $type : "Color",
-                    $default : "black"
-                },
-                "todayBackgroundColor" : {
-                    $type : "Color",
-                    $default : "transparent"
-                },
-                "todayColor" : {
-                    $type : "Color",
-                    $default : "black"
+                "today" : {
+                    $type : "DateStyleCfg"
                 },
                 "weekNumberBackgroundColor" : {
                     $type : "Color",
@@ -477,21 +464,28 @@ module.exports = Aria.beanDefinitions({
                     $type : "json:String",
                     $default : "0px"
                 },
-                "selectedBackgroundColor" : {
-                    $type : "Color",
-                    $default : "#FFCC66"
+                "selectedDate" : {
+                    $type : "DateStyleCfg"
                 },
-                "selectedBorderColor" : {
-                    $type : "Color",
-                    $default : "black"
+                "focusedDate" : {
+                    $type : "DateStyleCfg"
                 },
-                "selectedColor" : {
-                    $type : "Color",
-                    $default : "black"
+                "selectedFromDate" : {
+                    $type : "DateStyleCfg"
+                },
+                "selectedToDate" : {
+                    $type : "DateStyleCfg"
+                },
+                "selectedFromToDate" : {
+                    $type : "DateStyleCfg"
+                },
+                "selectedSameFromToDate" : {
+                    $type : "DateStyleCfg"
                 },
                 "defaultTemplate" : {
                     $type : "json:PackageName",
-                    $description : "Classpath of the default template used to display the Calendar widget."
+                    $description : "Classpath of the default template used to display the Calendar widget.",
+                    $default : "aria.widgets.calendar.CalendarTemplate"
                 },
                 "divsclass" : {
                     $type : "json:String",
@@ -501,14 +495,8 @@ module.exports = Aria.beanDefinitions({
                     $type : "json:Integer",
                     $default : 10
                 },
-                "mouseOverBackgroundColor" : {
-                    $type : "Color"
-                },
-                "mouseOverColor" : {
-                    $type : "Color"
-                },
-                "mouseOverBorderColor" : {
-                    $type : "Color"
+                "mouseOverDate" : {
+                    $type : "DateStyleCfg"
                 },
                 "previousPageIcon" : {
                     $type : "Icons"

@@ -20,7 +20,6 @@ var ariaWidgetsFormListCfgBeans = require("./form/list/CfgBeans");
 var ariaUtilsDragdropDragDropBean = require("../utils/dragdrop/DragDropBean");
 var ariaWidgetLibsCommonBeans = require("../widgetLibs/CommonBeans");
 
-
 module.exports = Aria.beanDefinitions({
     $package : "aria.widgets.CfgBeans",
     $description : "Definition of the JSON beans used by the aria widgets library",
@@ -1454,19 +1453,80 @@ module.exports = Aria.beanDefinitions({
                 }
             }
         },
+        "RangeCalendarCfg" : {
+            $type : "BaseCalendarCfg",
+            $description : "Configuration for the RangeCalendar widget",
+            $properties : {
+                "bind" : {
+                    $type : "BaseCalendarCfg.bind",
+                    $properties : {
+                        "fromDate" : {
+                            $type : "common:BindingRef"
+                        },
+                        "toDate" : {
+                            $type : "common:BindingRef"
+                        }
+                    }
+                },
+                "fromDate" : {
+                    $type : "json:Date",
+                    $description : "First date of the range selection."
+                },
+                "toDate" : {
+                    $type : "json:Date",
+                    $description : "Last date of the range selection."
+                },
+                "onDateSelect" : {
+                    $type : "common:Callback",
+                    $description : "Function to be called when the user selects a date in the calendar. If the cancelDefault property on the event object is not set to true, the range calendar will alternatively set the fromDate or the toDate value with the selected date."
+                }
+            }
+        },
         "CalendarCfg" : {
-            $type : "ResizableWidgetCfg",
+            $type : "BaseCalendarCfg",
             $description : "Configuration for the Calendar widget",
+            $properties : {
+                "bind" : {
+                    $type : "BaseCalendarCfg.bind",
+                    $properties : {
+                        "value" : {
+                            $type : "common:BindingRef"
+                        }
+                    }
+                },
+                "value" : {
+                    $type : "json:Date",
+                    $description : "Date currently selected in the calendar."
+                },
+                "showShortcuts" : {
+                    $type : "json:Boolean",
+                    $description : "Specifies if today and selected day shortcuts should be displayed",
+                    $default : true
+                }
+            }
+        },
+        "BaseCalendarCfg" : {
+            $type : "ResizableWidgetCfg",
+            $description : "Common configuration properties for the Calendar and RangeCalendar widgets",
             $properties : {
                 "bind" : {
                     $type : "WidgetCfg.bind",
                     $properties : {
-                        "value" : {
-                            $type : "common:BindingRef"
-                        },
                         "startDate" : {
                             $type : "common:BindingRef"
+                        },
+                        "ranges" : {
+                            $type : "common:BindingRef"
                         }
+                    }
+                },
+                "ranges" : {
+                    $type : "json:Array",
+                    $description : "Ranges of days to highlight.",
+                    $contentType : {
+                        $type : "json:ObjectRef",
+                        $mandatory : true,
+                        $description : "Range of dates (of type aria.widgets.calendar.CfgBeans.Range) to be highlighted."
                     }
                 },
                 "tabIndex" : {
@@ -1490,13 +1550,17 @@ module.exports = Aria.beanDefinitions({
                     $type : "common:Callback",
                     $description : "Function to be called when the user clicks on a date in the calendar, before it is actually selected."
                 },
+                "onmouseover" : {
+                    $type : "common:Callback",
+                    $description : "Function to be called when the user moves the mouse on a date."
+                },
+                "onmouseout" : {
+                    $type : "common:Callback",
+                    $description : "Function to be called when the user moves the mouse out of a date."
+                },
                 "onchange" : {
                     $type : "common:Callback",
-                    $description : "Function to be called when the selected date in the calendar changes because of user action (click or keyboard selection)."
-                },
-                "value" : {
-                    $type : "json:Date",
-                    $description : "Date currently selected in the calendar."
+                    $description : "Function to be called when the selected date or range in the calendar changes because of user action (click or keyboard selection)."
                 },
                 "minValue" : {
                     $type : "json:Date",
@@ -1541,11 +1605,6 @@ module.exports = Aria.beanDefinitions({
                 "completeDateLabelFormat" : {
                     $type : "json:String",
                     $description : "Date pattern to be used when displaying complete dates."
-                },
-                "showShortcuts" : {
-                    $type : "json:Boolean",
-                    $description : "Specifies if today and selected day shortcuts should be displayed",
-                    $default : true
                 },
                 "restrainedNavigation" : {
                     $type : "json:Boolean",
