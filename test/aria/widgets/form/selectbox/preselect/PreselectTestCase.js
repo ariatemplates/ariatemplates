@@ -96,7 +96,7 @@ Aria.classDefinition({
         _afterThirdSelection : function () {
             var field = this.getInputField("selectbox");
             this.assertEquals(field.value, "S");
-            this.assertUndefined(this.data.value);
+            this.assertUndefined(this.data.value == null ? undefined : this.data.value);
             this.data.value = null;
             this._refreshTestTemplate();
             field = this.getInputField("selectbox");
@@ -109,7 +109,7 @@ Aria.classDefinition({
         _afterFourthSelection : function () {
             var field = this.getInputField("selectbox");
             this.assertEquals(field.value, "Swe");
-            this.assertUndefined(this.data.value);
+            this.assertUndefined(this.data.value == null ? undefined : this.data.value);
             this.end();
         }
 

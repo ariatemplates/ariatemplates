@@ -127,6 +127,13 @@ Aria.classDefinition({
     },
     $prototype : {
 
+        /**
+         * Returns `null` in case the value is considered _void_, which means `undefined` or already `null`. Otherwise returns the value itself. Useful for contexts using strict equality comparison but in which we want to merge the meaning of `null` and `undefined` (through using the `null` value).
+         */
+        _normalizeNull : function(value) {
+            return value == null ? null : value;
+        },
+
         runTemplateTest : function () {
             this._runScenario("freetext");
         },
@@ -309,7 +316,8 @@ Aria.classDefinition({
                     }
                 }
             }
-            this.assertJsonEquals(dmValue, value, "Value in data model is not correct. Expected: \""
+
+            this.assertJsonEquals(this._normalizeNull(dmValue), this._normalizeNull(value), "Value in data model is not correct. Expected: \""
                     + jsonUtil.convertToJsonString(value) + "\", found \"" + jsonUtil.convertToJsonString(dmValue)
                     + "\" instead.");
         },

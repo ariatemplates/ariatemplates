@@ -573,7 +573,9 @@ module.exports = Aria.classDefinition({
                         }
                         // if the text is incorrect, the bound property should
                         // be set to 'undefined'
-                        hasChange = this.setProperty("value", report.errorValue);
+                        if (!this._isPropertyEquals("value", report.errorValue)) {
+                            hasChange = this.setProperty("value", report.errorValue);
+                        }
                     }
                 }
 
@@ -618,16 +620,18 @@ module.exports = Aria.classDefinition({
         },
 
         /**
-         * Compare newValue with the one stored in _cfg[propertyName] Can be overrided to have a specific comparison
+         * Compare newValue with the one stored in _cfg[propertyName].
+         * Can be overridden to have a specific comparison.
+         * Two values are considered equal if they are strictly equal, or if they are both either null or undefined (we consider them as being "void").
          * @param {String} propertyName
          * @param {MultiTypes} newValue If transformation is used, this should be the widget value and not the data
          * model value
          * @private
-         * @return {Boolean} true if values are considered as equals.
+         * @return {Boolean} true if values are considered as equal.
          */
-        _isPropertyEquals : function (propertyName, value) {
+        _isPropertyEquals : function (propertyName, newValue) {
             var oldValue = this.getProperty(propertyName);
-            return oldValue === value;
+            return oldValue === newValue || (oldValue == null && newValue == null);
         },
         /**
          * Internal method called when one of the model property that the widget is bound to has changed Must be
