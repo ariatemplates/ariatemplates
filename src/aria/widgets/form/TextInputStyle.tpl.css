@@ -20,6 +20,15 @@
     {var skinnableClassName="TextInput"/}
     {var useFrame=true/}
 
+    {macro main()}
+        .xWidget.xFullWidth .xFrameContent .x${skinnableClassName}Input,
+        .xWidget.xFullWidth .xSimpleFrame .x${skinnableClassName}Input {
+            width: 100% !important;
+            box-sizing: border-box;
+        }
+        {call $InputStyle.main() /}
+    {/macro}
+
     {macro writeState(info)}
         .${cssPrefix(info)}label {
             font-weight: ${info.skinClass.label.fontWeight}

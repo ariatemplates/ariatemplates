@@ -62,7 +62,7 @@
     {call text.writeAnchorsStyle(widgetGeneral.anchor.states, ".xWidget") /}
 {/if}
 
-.xWidget.xBlock, .xBlock {
+.xWidget.xBlock, .xBlock, .xWidget.xFullWidth {
     display: block;
 }
 
@@ -121,6 +121,25 @@
     outline: 0;
 }
 {/if}
+
+.xWidget.xFullWidth .xSimpleFrame {
+    display: block;
+    width: auto !important;
+}
+.xWidget.xFullWidth .xFixedHeightFrame_w {
+    display: block;
+}
+.xWidget.xFullWidth .xFixedHeightFrame_w .xFrameContent {
+    width: 100% !important;
+}
+
+.xFloatLabelRight {
+    float: right;
+}
+.xFloatLabelLeft {
+    float: left;
+}
+
 {/macro}
 
 {/CSSTemplate}

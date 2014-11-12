@@ -48,6 +48,14 @@ module.exports = Aria.classDefinition({
          * @type Array
          */
         this._hideIconNames = null;
+
+        /**
+         * Flag for input that has to be displayed in full width
+         * @type Boolean
+         * @protected
+         */
+        this._fullWidth = cfg.fullWidth || false;
+
         this._setState();
     },
     $destructor : function () {
@@ -63,6 +71,9 @@ module.exports = Aria.classDefinition({
             });
         }
         this.$Input.$destructor.call(this);
+    },
+    $statics : {
+        FULL_WIDTH_NOT_SUPPORTED : "The fullWidth property is not supported when used with a SimpleHTML or Table frame or in a frame that uses icons. The property is not applied. Please use a Simple Frame inside your skin."
     },
     $prototype : {
         /**
@@ -113,15 +124,47 @@ module.exports = Aria.classDefinition({
                 hideIconNames : this._hideIconNames,
                 inlineBlock : true,
                 // used for table frame, defaults to false
-                height : this._inputMarkupHeight
+                height : this._inputMarkupHeight,
+                fullWidth : this._fullWidth
             });
             this._frame.$on({
                 "*" : this._frame_events,
                 scope : this
             });
+
             this._frame.writeMarkupBegin(out);
             this._inputWithFrameMarkup(out);
             this._frame.writeMarkupEnd(out);
+        },
+
+        /**
+         * Internal function called before markup generation to check the widget configuration consistency.
+         * It checks if the fullWidth property is applicable to the widget. When called the cfg structure has already
+         * been normalized from its bean definition Note: this method must be overridden if extra-checks have to be made
+         * in sub-widgets
+         * @protected
+         */
+        _checkCfgConsistency : function () {
+            if (this._fullWidth) {
+                if (this._skinObj.frame.frameType === "SimpleHTML" || this._skinObj.frame.frameType === "Table" || this._checkFrameHasIcons()) {
+                    this._fullWidth = false;
+                    this.$logError(this.FULL_WIDTH_NOT_SUPPORTED);
+                } else {
+                    this._extraCssClassNames.push("xFullWidth");
+                    this._cfg.width = -1;
+                }
+            }
+            this.$Input._checkCfgConsistency.call(this);
+        },
+
+        /**
+         * Internal method that checks if the frame used has icons defined inside the skin.
+         * This method is used to check if the fullWidth is applicable to the frame used.
+         * @return {Boolean}
+         * @protected
+         */
+        _checkFrameHasIcons : function () {
+            return ariaWidgetsFramesFrameWithIcons.computeIcons(this._skinObj, this._hideIconNames).hasIcons;
         },
 
         /**

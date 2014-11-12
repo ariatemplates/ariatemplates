@@ -420,6 +420,11 @@ module.exports = Aria.beanDefinitions({
                     $type : "json:Boolean",
                     $description : "Specifies whether display text should be highlighted when the field gains focus."
                 },
+                "fullWidth" : {
+                    $type : "json:Boolean",
+                    $description : "Specifies whether the widget should be displayed in full width or not. The true value is supported only for textinput widgets, without icons and only if they use Simple Frame or FixedHeight frame.",
+                    $default: false
+                },
                 "bind" : {
                     $type : "InputCfg.bind",
                     $properties : {

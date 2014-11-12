@@ -116,6 +116,13 @@ module.exports = Aria.classDefinition({
         this._cssClassNames = "xWidget";
 
         /**
+         * CSS extra classes for the widget.
+         * @protected
+         * @type String
+         */
+        this._extraCssClassNames = [];
+
+        /**
          * True if the widget is in the middle of an initialization triggered by a delegated content change event.
          * @type Boolean
          * @private
@@ -340,6 +347,9 @@ module.exports = Aria.classDefinition({
             }
 
             this._checkCfgConsistency();
+            if (this._extraCssClassNames.length > 0) {
+                cssClasses += " " + this._extraCssClassNames.join(" ");
+            }
 
             // widget markup begin
             out.write('<span id="' + this._domId + '" ');

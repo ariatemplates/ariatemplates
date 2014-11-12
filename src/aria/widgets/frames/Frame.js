@@ -45,7 +45,7 @@ module.exports = Aria.classDefinition({
          * will be adapted.
          * @type Number
          */
-        this.innerWidth = cfg.width;
+        this.innerWidth = cfg.fullWidth ? -1 : cfg.width;
         /**
          * The width available for the client area. This value is set at the Frame creation time and may change when the
          * state changes. A value of -1 means that the content of the frame can have any height, the size of the frame
@@ -189,6 +189,10 @@ module.exports = Aria.classDefinition({
                 if (obj.style != null) {
                     obj.style += "width:" + obj.width + ";";
                 }
+            } else {
+                obj.width = "";
+            }
+            if (this.innerWidth > -1 || this._cfg.fullWidth) {
                 if (this._cfg.scrollBarX) {
                     obj.className += " xOverflowXAuto";
                 } else {
@@ -197,8 +201,6 @@ module.exports = Aria.classDefinition({
                 if (this._cfg.printOptions == "adaptX" || this._cfg.printOptions == "adaptXY") {
                     obj.className += " xPrintAdaptX";
                 }
-            } else {
-                obj.width = "";
             }
         },
 
