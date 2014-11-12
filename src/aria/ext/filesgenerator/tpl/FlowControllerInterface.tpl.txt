@@ -19,5 +19,5 @@
         interfaceTxtTpl : 'aria.ext.filesgenerator.tpl.Interface'
     }
 }}
-{macro main()}${function(){data.$extends = "aria.templates.IFlowCtrl"}()}${interfaceTxtTpl.processTextTemplate(data)}{/macro}
+{macro main()}${function(){data.$extends = "aria.templates.IFlowCtrl";}()}${interfaceTxtTpl.processTextTemplate(data)}{/macro}
 {/TextTemplate}

@@ -59,7 +59,8 @@ module.exports = function (grunt, args) {
                         noCircularDependencies : false,
                         checkPackagesOrder : false
                     }
-                } : null, args.compileTemplates ? 'ATCompileTemplates' : null, 'ATRemoveDoc', args.convertToNoderjs ? {
+                } : null, args.validateTemplates ? 'ATValidateTemplates' : null,
+                args.compileTemplates ? 'ATCompileTemplates' : null, 'ATRemoveDoc', args.convertToNoderjs ? {
                     type : 'ATNoderConverter',
                     cfg : {
                         files : args.convertToNoderjs
