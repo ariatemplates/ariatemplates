@@ -48,7 +48,7 @@ var ariaWidgetsFramesFrame = require("./Frame");
              */
             _computeSize : function () {
                 var cfg = this._cfg, state = cfg.stateObject;
-                if (cfg.width > -1) {
+                if (!cfg.fullWidth && cfg.width > -1) {
                     var w = cfg.width - state.marginLeft - state.marginRight;
                     if (this._hasBorder(state.skipLeftBorder, cfg.iconsLeft)) {
                         // remove the size of the left border if there is one:

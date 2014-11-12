@@ -20,12 +20,12 @@ Aria.classDefinition({
         skinName : "customTestSkin",
         skinObject : {
             "general" : {
-                "imagesRoot" : "test/aria/widgets",
+                "imagesRoot" : "aria/css/",
                 "font" : {
                     "family" : "Arial,Tahoma, sans-serif",
                     "size" : 14
                 },
-                "externalCSS" : ["/skin/ExternalStyle.css"]
+                "externalCSS" : ["../../test/aria/widgets/skin/ExternalStyle.css"]
             },
             "Icon" : {
                 "std" : {
@@ -202,9 +202,157 @@ Aria.classDefinition({
                                 }
                             }
                         }
-
                     }
-
+                },
+                "simpleFrame" : {
+                    "frame": {
+                        "frameType": "Simple"
+                    },
+                    "states" : {
+                        "normal" : {
+                            "marginBottom" : 2,
+                            "spriteURLv" : "atskin/sprites/inputCentre.gif",
+                            "sprHeight" : 20,
+                            "sprWidth" : 7,
+                            "marginTop" : 3,
+                            "color" : "#000000",
+                            "sprIdx" : 0,
+                            "spcLeft" : 3,
+                            "spriteURL" : "atskin/sprites/inputEdge.gif",
+                            "font" : {
+                                "fontStyle" : "italic",
+                                "fontSize" : 17,
+                                "fontFamily" : "Tahoma",
+                                "fontVariant" : "small-caps",
+                                "fontWeight" : "bold"
+                            },
+                            "label" : {
+                                "font" : {
+                                    "fontStyle" : "italic",
+                                    "fontSize" : 17,
+                                    "fontFamily" : "Tahoma",
+                                    "fontVariant" : "small-caps",
+                                    "fontWeight" : "bold"
+                                }
+                            }
+                        },
+                        "disabled" : {
+                            "font" : {
+                                "fontStyle" : "italic",
+                                "fontSize" : 19,
+                                "fontFamily" : "Arial",
+                                "fontVariant" : "small-caps",
+                                "fontWeight" : "bold"
+                            },
+                            "label" : {
+                                "font" : {
+                                    "fontStyle" : "italic",
+                                    "fontSize" : 19,
+                                    "fontFamily" : "Arial",
+                                    "fontVariant" : "small-caps",
+                                    "fontWeight" : "bold"
+                                }
+                            }
+                        }
+                    },
+                    "helpText" : {
+                        "italics" : true,
+                        "color" : "gray"
+                    }
+                },
+                "table": {
+                    "frame": {
+                        "frameType": "Table"
+                    },
+                    "states": {
+                        "normal": {
+                            "label": {
+                                "font": {}
+                            },
+                            "frame": {
+                                "sprWidth": 8,
+                                "sprHeight": 12,
+                                "sprIdx": 0,
+                                "sprSpacing": 2,
+                                "spcLeft": 4,
+                                "spcTop": 6,
+                                "spriteURL": "atskin/sprites/textarea.gif",
+                                "spriteURLv": "atskin/sprites/textarea_v.gif",
+                                "spriteURLh": "atskin/sprites/textarea_h.gif",
+                                "marginTop": 0,
+                                "marginLeft": 0,
+                                "marginRight": 0,
+                                "marginBottom": 0,
+                                "color": "#000",
+                                "backgroundColor": "#FFFFFF",
+                                "frameIcon": "",
+                                "frameIconHPos": "left",
+                                "frameIconVPos": "bottom",
+                                "font": {}
+                            }
+                        },
+                        "disabled": {
+                            "label": {
+                                "color": "#E6D9C6",
+                                "font": {}
+                            },
+                            "frame": {
+                                "sprWidth": 8,
+                                "sprHeight": 12,
+                                "sprIdx": 2,
+                                "sprSpacing": 2,
+                                "spcLeft": 4,
+                                "spcTop": 6,
+                                "spriteURL": "atskin/sprites/textarea.gif",
+                                "spriteURLv": "atskin/sprites/textarea_v.gif",
+                                "spriteURLh": "atskin/sprites/textarea_h.gif",
+                                "marginTop": 0,
+                                "marginLeft": 0,
+                                "marginRight": 0,
+                                "marginBottom": 0,
+                                "color": "#E6D9C6",
+                                "backgroundColor": "#FFFFFF",
+                                "frameIcon": "",
+                                "frameIconHPos": "left",
+                                "frameIconVPos": "bottom",
+                                "font": {}
+                            }
+                        }
+                    }
+                },
+                "simple": {
+                    "simpleHTML": true,
+                    "label": {
+                        "fontWeight": "normal"
+                    },
+                    "helpText": {
+                        "color": "gray",
+                        "italics": true
+                    },
+                    "innerPaddingTop": 0,
+                    "innerPaddingRight": 0,
+                    "innerPaddingBottom": 0,
+                    "innerPaddingLeft": 2,
+                    "frame": {
+                        "frameType": "SimpleHTML"
+                    },
+                    "states": {
+                        "disabled": {
+                            "color": "#E6D9C6",
+                            "label": {
+                                "color": "#E6D9C6",
+                                "font": {}
+                            },
+                            "frame": {}
+                        },
+                        "normal": {
+                            "color": "#000000",
+                            "label": {
+                                "font": {}
+                            },
+                            "frame": {}
+                        }
+                    }
                 }
             },
             "SelectBox" : {
@@ -325,9 +473,65 @@ Aria.classDefinition({
                                 }
                             }
                         }
-
                     }
-
+                },
+                "simpleFrame" : {
+                    "iconsRight" : "dropdown",
+                    "frame" : {
+                        "frameType" : "Simple"
+                    },
+                    "states" : {
+                        "normal" : {
+                            "marginBottom" : 2,
+                            "spriteURLv" : "atskin/sprites/inputCentre.gif",
+                            "skipLeftBorder" : false,
+                            "sprWidth" : 7,
+                            "sprHeight" : 20,
+                            "color" : "#000000",
+                            "marginTop" : 3,
+                            "sprIdx" : 0,
+                            "spcLeft" : 3,
+                            "icons" : {
+                                "dropdown" : "dropdown:multiselect_normal"
+                            },
+                            "spriteURL" : "atskin/sprites/inputEdge.gif",
+                            "skipRightBorder" : "dependsOnIcon",
+                            "font" : {
+                                "fontStyle" : "italic",
+                                "fontSize" : 17,
+                                "fontFamily" : "Tahoma",
+                                "fontVariant" : "small-caps",
+                                "fontWeight" : "bold"
+                            },
+                            "label" : {
+                                "font" : {
+                                    "fontStyle" : "italic",
+                                    "fontSize" : 17,
+                                    "fontFamily" : "Tahoma",
+                                    "fontVariant" : "small-caps",
+                                    "fontWeight" : "bold"
+                                }
+                            }
+                        },
+                        "disabled" : {
+                            "font" : {
+                                "fontStyle" : "italic",
+                                "fontSize" : 19,
+                                "fontFamily" : "Arial",
+                                "fontVariant" : "small-caps",
+                                "fontWeight" : "bold"
+                            },
+                            "label" : {
+                                "font" : {
+                                    "fontStyle" : "italic",
+                                    "fontSize" : 19,
+                                    "fontFamily" : "Arial",
+                                    "fontVariant" : "small-caps",
+                                    "fontWeight" : "bold"
+                                }
+                            }
+                        }
+                    }
                 }
             },
             "Textarea" : {

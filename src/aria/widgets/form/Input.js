@@ -80,6 +80,13 @@ module.exports = Aria.classDefinition({
         this._label = null;
 
         /**
+         * Flag for input that has to be displayed in full width
+         * @type Boolean
+         * @protected
+         */
+        this._fullWidth = false;
+
+        /**
          * Height of the label.
          * @type Number
          * @protected
@@ -164,7 +171,6 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         _widgetMarkup : function (out) {
-
             var cfg = this._cfg, showLabel = (!cfg.hideLabel && !!cfg.label);
 
             if (this._isIE7OrLess) {
@@ -182,8 +188,13 @@ module.exports = Aria.classDefinition({
                     this._inputMarkup(out);
                     this._inputLabelMarkup(out, 'block', false);
                 } else { // right
-                    this._inputMarkup(out);
-                    this._inputLabelMarkup(out, 'inline-block', 'left');
+                    if (this._fullWidth) {
+                        this._inputLabelMarkup(out, 'inline-block', 'left');
+                        this._inputMarkup(out);
+                    } else {
+                        this._inputMarkup(out);
+                        this._inputLabelMarkup(out, 'inline-block', 'left');
+                    }
                 }
 
             } else {
@@ -203,11 +214,7 @@ module.exports = Aria.classDefinition({
         _getInputMarkupDomElt : function () {
             var cfg = this._cfg, showLabel = (!cfg.hideLabel && !!cfg.label), idx;
             if (showLabel) {
-                if (cfg.labelPos === "right" || cfg.labelPos === "bottom") {
-                    idx = 0;
-                } else {
-                    idx = 1;
-                }
+                idx = ((cfg.labelPos === "right" && !this._fullWidth) || cfg.labelPos === "bottom") ? 0 : 1;
             } else {
                 idx = 0;
             }
@@ -271,9 +278,8 @@ module.exports = Aria.classDefinition({
          */
         _inputLabelMarkup : function (out, cssDisplay, margin) {
             var cfg = this._cfg;
-
             // PTR04951216 skinnable labels
-            var cssClass = 'class="x' + this._skinnableClass + '_' + cfg.sclass + '_' + this._state + '_label"';
+            var cssClass = 'class="x' + this._skinnableClass + '_' + cfg.sclass + '_' + this._state + '_label' + this._getFloatingLabelClass() + '"';
             var IE7Align = ariaCoreBrowser.isIE7 ? "-25%" : (cfg.verticalAlign) ? cfg.verticalAlign : "middle";
             out.write('<label ' + cssClass + ' style="');
             if (!ariaWidgetsEnvironmentWidgetSettings.getWidgetSettings().middleAlignment) {
@@ -302,12 +308,30 @@ module.exports = Aria.classDefinition({
         },
 
         /**
+         * Internal method used to compute when the input needs a css class in order to make the label float.
+         * @return {String}
+         * @protected
+         */
+        _getFloatingLabelClass : function () {
+            var cfg = this._cfg;
+
+            if (this._fullWidth) {
+                if (cfg.labelPos === "right") {
+                    return " xFloatLabelRight";
+                } else if (cfg.labelPos === "left") {
+                    return " xFloatLabelLeft";
+                }
+            }
+            return "";
+        },
+
+        /**
          * Updates the CSS class of the label to match the current state of the widget.
          */
         _updateLabelState : function () {
             var label = this.getLabel();
             if (label) {
-                label.className = 'x' + this._skinnableClass + '_' + this._cfg.sclass + '_' + this._state + '_label';
+                label.className = 'x' + this._skinnableClass + '_' + this._cfg.sclass + '_' + this._state + '_label' + this._getFloatingLabelClass();
             }
         },
 

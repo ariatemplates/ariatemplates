@@ -128,6 +128,24 @@ module.exports = Aria.classDefinition({
             cfg = ariaWidgetsFramesFrameFactory.normalizeFrameCfg(cfg);
             var skinObject = cfg.skinObject;
 
+            var icons = this.computeIcons(skinObject, cfg.hideIconNames);
+
+            cfg.iconsLeft = icons.iconsLeft;
+            cfg.iconsRight = icons.iconsRight;
+            if (icons.hasIcons) {
+                return new aria.widgets.frames.FrameWithIcons(cfg);
+            } else {
+                // do not use the icon frame if there is no icon (useless overhead)
+                return ariaWidgetsFramesFrameFactory.createFrame(cfg);
+            }
+        },
+        /**
+         * Computes the icons and returns the information about if the frame has icons or not.
+         * @param {Object} skinObject Skin class object
+         * @param {Array} hideIconNames Icons to be hidden
+         * @return {Object}
+         */
+        computeIcons : function (skinObject, hideIconNames) {
             // normalize the skin:
             if (skinObject.iconsLeft == null || skinObject.iconsLeft === "") {
                 skinObject.iconsLeft = [];
@@ -140,16 +158,14 @@ module.exports = Aria.classDefinition({
                 skinObject.iconsRight = skinObject.iconsRight.split(',');
             }
 
-            var iconsLeft = this._filterIcons(skinObject.iconsLeft, cfg.hideIconNames);
-            var iconsRight = this._filterIcons(skinObject.iconsRight, cfg.hideIconNames);
-            cfg.iconsLeft = iconsLeft;
-            cfg.iconsRight = iconsRight;
-            if (iconsLeft.length === 0 && iconsRight.length === 0) {
-                // do not use the icon frame if there is no icon (useless overhead)
-                return ariaWidgetsFramesFrameFactory.createFrame(cfg);
-            } else {
-                return new aria.widgets.frames.FrameWithIcons(cfg);
-            }
+            var iconsLeft = this._filterIcons(skinObject.iconsLeft, hideIconNames);
+            var iconsRight = this._filterIcons(skinObject.iconsRight, hideIconNames);
+
+            return {
+                iconsLeft : iconsLeft,
+                iconsRight : iconsRight,
+                hasIcons : iconsLeft.length > 0 || iconsRight.length > 0
+            };
         },
         /**
          * Does the filtering of icons
@@ -158,7 +174,7 @@ module.exports = Aria.classDefinition({
          * @return {Array}
          */
         _filterIcons : function (iconsList, iconNames) {
-            if (iconNames.length > 0) {
+            if (iconNames && iconNames.length > 0) {
                 var icons = [];
                 ariaUtilsArray.forEach(iconsList, function (item, i) {
                     if (!ariaUtilsArray.contains(iconNames, iconsList[i])) {

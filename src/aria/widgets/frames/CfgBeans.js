@@ -131,6 +131,11 @@ module.exports = Aria.beanDefinitions({
                 "inlineBlock" : {
                     $type : "json:Boolean",
                     $description : "This frame needs to be inline-block."
+                },
+                "fullWidth" : {
+                    $type : "json:Boolean",
+                    $description : "Specifies whether the frame should be displayed in full width or not. The true value is supported only for Simple Frame or FixedHeight frame without icons.",
+                    $default: false
                 }
             }
         }

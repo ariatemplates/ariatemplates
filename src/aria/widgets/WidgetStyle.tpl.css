@@ -131,6 +131,18 @@
                 {/if}
             }
         {/if}
+        .xWidget.xFullWidth .${prefix}m {
+            position: absolute;
+            top: 0px;
+            bottom: 0px;
+            left: ${spcLeft}px;
+            right: ${spcRight}px;
+        }
+
+        .xWidget.xFullWidth .${prefix}e {
+            position: absolute;
+            right: 0px;
+        }
     {/macro}
 
     {macro writeStateOfSimpleFrame(info)}

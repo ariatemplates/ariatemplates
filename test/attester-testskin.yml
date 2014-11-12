@@ -13,3 +13,5 @@ tests:
     - test.aria.widgets.skin.ExternalCSSTest
     - test.aria.widgets.icon.fontIcon.FontIconTest
     - test.aria.widgets.form.widgetsfont.WidgetsFontTest
+    - test.aria.widgets.form.fullWidth.FullWidthTest
+    - test.aria.widgets.form.fullWidth.errorLog.ErrorLogTest
