@@ -106,11 +106,14 @@ module.exports = Aria.classDefinition({
         }
 
         /**
-         * Delegated events on window. On modern browser, if focus is not on an element, event are not caught by the
+         * Delegated events on window. Only on Firefox 3, if focus is not on an element, event are not caught by the
          * body but the window.
          * @type Array
          */
-        this.delegatedOnWindow = ["keydown", "keyup", "keypress"];
+        this.delegatedOnWindow = [];
+
+        var elemDelegationArray = (ariaCoreBrowser.isFirefox && ariaCoreBrowser.majorVersion == 3)? this.delegatedOnWindow : this.delegatedOnBody;
+        elemDelegationArray.push("keydown", "keyup", "keypress");
 
         /**
          * Map of delegated events for gestures and their class paths.
