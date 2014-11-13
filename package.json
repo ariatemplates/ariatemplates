@@ -29,6 +29,7 @@
     "mocha": "mocha --recursive test/node",
     "test-suites": "npm run mocha && npm run attester && npm run attester-packaged && npm run attester-flatskin && npm run attester-testskin",
     "test": "npm run lint && npm run grunt && npm run test-suites",
+    "attest": "node scripts/attest.js",
     "ci": "npm run lint-test && npm run test-suites"
   },
   "dependencies": {
