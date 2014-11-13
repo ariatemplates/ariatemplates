@@ -23,5 +23,6 @@ Aria.classDefinition({
         this.addTests("test.aria.templates.keyboardNavigation.KeyMapTestCase");
         this.addTests("test.aria.templates.keyboardNavigation.enter.EnterTestCase");
         this.addTests("test.aria.templates.keyboardNavigation.DialogNavTestCase");
+        this.addTests("test.aria.templates.keyboardNavigation.bingCompatibility.KeyMapBingCompatibility");
     }
 });
