@@ -16,7 +16,7 @@
 Aria.classDefinition({
     $classpath : "test.aria.widgets.skin.button.verticalAlign.VerticalAlignParent",
     $extends : "aria.jsunit.TemplateTestCase",
-    $dependencies : ["aria.utils.Dom"],
+    $dependencies : ["aria.utils.Dom", "aria.widgets.AriaSkinInterface"],
     $constructor : function () {
         this.$TemplateTestCase.constructor.call(this);
         this.setTestEnv({
@@ -26,6 +26,11 @@ Aria.classDefinition({
     },
 
     $prototype : {
+
+        getFrame : function() {
+            return aria.widgets.AriaSkinInterface.getSkinClasses("Button").std.states.normal.frame;
+        },
+
         getElements : function() {
             var tpl = this.tpl = this.testDiv.getElementsByTagName("div")[0];
             var widgetDom = this.getElementsByClassName(tpl, "xWidget")[0];

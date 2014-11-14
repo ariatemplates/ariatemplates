@@ -20,7 +20,7 @@ Aria.classDefinition({
 
     $prototype : {
         setUp : function () {
-            var frame = aria.widgets.AriaSkin.skinObject.Button.std.states.normal.frame;
+            var frame = this.getFrame();
             frame.sprHeight = 50;
             frame.verticalAlign = "top";
         },
