@@ -27,7 +27,8 @@ Aria.classDefinition({
                 "test.aria.widgets.form.select.dispose.DisposeTestCase",
                 "test.aria.widgets.form.select.downArrowKey.SelectTestCase",
                 "test.aria.widgets.form.select.popupWidth.SelectTestCase",
-                "test.aria.widgets.form.select.boundOptionsRemoval.SelectTemplateTestCase"
+                "test.aria.widgets.form.select.boundOptionsRemoval.SelectTemplateTestCase",
+                "test.aria.widgets.form.select.mouseWheel.SelectMouseWheelTestCase"
         ];
     }
 });

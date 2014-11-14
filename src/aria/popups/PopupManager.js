@@ -419,10 +419,18 @@ var ariaUtilsDelegate = require("../utils/Delegate");
                     var popup = /** @type aria.popups.Popup */
                     this.openedPopups[i];
                     if (!utilsDom.isAncestor(target, popup.getDomElement())) {
+
+                        if (ariaCoreBrowser.isFirefox) {
+                            // There's a strange bug in FF when wheelmouse'ing quickly raises an event which target is HTML instead of the popup
+                            if (utilsDom.isAncestor(this._document.elementFromPoint(domEvent.clientX, domEvent.clientY), popup.getDomElement()))
+                                continue;
+                        }
+
                         var closed = popup.closeOnMouseScroll(domEvent);
                         if (closed) {
                             break;
                         }
+
                     }
                 }
                 domEvent.$dispose();
