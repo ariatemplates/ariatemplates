@@ -15,6 +15,7 @@
 var Aria = require("../../Aria");
 require("./CalendarController");
 require("./CalendarTemplate.tpl");
+var functionUtils = require("../../utils/Function");
 var ariaWidgetsTemplateBasedWidget = require("../TemplateBasedWidget");
 var ariaCoreBrowser = require("../../core/Browser");
 
@@ -31,7 +32,8 @@ module.exports = Aria.classDefinition({
         this.$TemplateBasedWidget.constructor.apply(this, arguments);
         var sclass = this._cfg.sclass;
         var skinObj = aria.widgets.AriaSkinInterface.getSkinObject(this._skinnableClass, sclass);
-        this._hasFocus = false;
+        this._hasFocus = false; // real focus
+        this._focusStyle = false; // focus style
         this._dateToChange = "fromDate";
         this._dateToKeep = "toDate";
         this._initTemplate({
@@ -198,10 +200,26 @@ module.exports = Aria.classDefinition({
         },
 
         /**
+         * Plan a focus style update with setTimeout, but only if it is needed. This avoids multiple calls to
+         * _focusStyleUpdate in case a blur is immediately followed by a focus event (which can happen on IE), causing
+         * the reset of the currently focused date.
+         */
+        _focusUpdate : function () {
+            if (this._focusStyle != this._hasFocus && !this._plannedFocusUpdate) {
+                this._plannedFocusUpdate = setTimeout(functionUtils.bind(this._focusStyleUpdate, this), 1);
+            }
+        },
+
+        /**
          * Notify the calendar module controller of a change of focus.
          * @protected
          */
-        _focusUpdate : function () {
+        _focusStyleUpdate : function () {
+            this._plannedFocusUpdate = null;
+            if (this._focusStyle == this._hasFocus) {
+                // nothing to do!
+                return;
+            }
             var moduleCtrl = this._subTplModuleCtrl, dom = this.getDom();
             if (moduleCtrl && dom && this._cfg.tabIndex != null && this._cfg.tabIndex >= 0) {
                 var preventDefaultVisualAspect = moduleCtrl.notifyFocusChanged(this._hasFocus);
@@ -238,6 +256,7 @@ module.exports = Aria.classDefinition({
                         date : null
                     });
                 }
+                this._focusStyle = this._hasFocus;
             }
         },
 
