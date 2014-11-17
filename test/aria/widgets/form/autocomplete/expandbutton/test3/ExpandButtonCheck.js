@@ -15,10 +15,10 @@
 
 Aria.classDefinition({
     $classpath : "test.aria.widgets.form.autocomplete.expandbutton.test3.ExpandButtonCheck",
-    $extends : "aria.jsunit.TemplateTestCase",
+    $extends : "aria.jsunit.RobotTestCase",
     $dependencies : ["aria.core.Timer"],
     $constructor : function () {
-        this.$TemplateTestCase.constructor.call(this);
+        this.$RobotTestCase.constructor.call(this);
         this.dataModel = {
             value1 : ""
         };
@@ -41,23 +41,11 @@ Aria.classDefinition({
                 delay : 25
             });
         },
+        
         _downArrow : function () {
-            this.synEvent.type(this.getInputField("ac1"), "[down]", {
-                fn : this._addDelay,
-                scope : this
-            });
-        },
-
-        _addDelay : function () {
-            aria.core.Timer.addCallback({
-                fn : this._checkSelected,
-                scope : this,
-                delay : 1000
-            });
-        },
-
-        _checkSelected : function () {
-            this.synEvent.type(this.getInputField("ac1"), "[down][down][enter]", {
+            var field = this.getInputField("ac1");
+            this.synEvent.execute([["click", field], ["type", field, "[down]"], ["pause", 500],
+                    ["type", field, "[down][down]\r"], ["pause", 500]], {
                 fn : this._checkFinalVal,
                 scope : this
             });
