@@ -19,9 +19,8 @@ Aria.classDefinition({
     $dependencies : ["aria.core.Browser"],
     $constructor : function () {
         this.$BaseMultiAutoCompleteTestCase.constructor.call(this);
-        if (aria.core.Browser.isPhantomJS || aria.core.Browser.isIE) {
-            this.defaultTestTimeout = 120000;
-        }
+        var browser = aria.core.Browser;
+        this.defaultTestTimeout = 120000;
         this.data.freeText = false;
     },
     $prototype : {
@@ -40,8 +39,8 @@ Aria.classDefinition({
             this.assertTrue(dataBind.length === 2, "The data model should contain 2 items.");
 
             this.clickAndType(["[backspace]", "z", "[tab]"], {
-                fn: this._afterTab,
-                scope: this
+                fn : this._afterTab,
+                scope : this
             }, 800);
         },
 
@@ -51,8 +50,8 @@ Aria.classDefinition({
             this.assertTrue(dataBind.length === 2, "The data model should contain 2 items.");
 
             this.clickAndType(["[backspace]", "z"], {
-                fn: this._afterType,
-                scope: this
+                fn : this._afterType,
+                scope : this
             }, 800);
         },
 
