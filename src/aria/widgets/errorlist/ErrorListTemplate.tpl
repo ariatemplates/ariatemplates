@@ -29,7 +29,7 @@
             {/@aria:Div}
         {/if}
     {/macro}
-    
+
     {macro messagesList(messages, indentation)}
         <ul style="margin: 0 0 0 10px; padding-left: 10px;">
             {foreach msg inArray messages}
@@ -40,7 +40,7 @@
                         onclick: { fn: clickOnMessage, args: msg }
                     }/}
                 {else/}
-                    ${getDisplayMessage(msg)}
+                    ${getDisplayMessage(msg)|escapeForHTML:msg.escape}
                 {/if}
                 {if msg.subMessages}
                     {call messagesList(msg.subMessages)/}
