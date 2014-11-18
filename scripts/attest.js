@@ -14,7 +14,9 @@
  */
 
 var attester = require("attester");
-var options = {};
+var options = {
+    "phantomjs-instances": 0
+};
 var browser = "phantomjs";
 var testsToExecute = process.argv.slice(2).filter(function (arg) {
     if (/^--browser=/.test(arg)) {
