@@ -79,7 +79,9 @@ Aria.classDefinition({
             this._toSkip = {
                 "ja_JP" : {
                     "ddMMMyyyy" : [0, 1],
-                    "ddMMM" : [0, 1]
+                    "ddMMMMyyyy" : [0, 1],
+                    "ddMMM" : [0, 1],
+                    "ddMMMM" : [0, 1]
                 },
                 "ko_KR" : {
                     "ddMMMyyyy" : [0, 1],
@@ -116,7 +118,7 @@ Aria.classDefinition({
         _afterLocaleChange : function (res, index) {
             var language = this.languages[index].join("_");
             var patterns = ["dd MMM yyyy", "dd MMMM yyyy", "ddMMMyyyy", "ddMMMMyyyy", "dd MMM", "dd MMMM", "ddMMM",
-                    "ddMMMM", "dd I yyyy", "ddIyyyy", "ddI", "dd-MMM-yyyy","dd/MMM*yyyy"];
+                    "ddMMMM", "dd I yyyy", "ddIyyyy", "ddI", "dd-MMM-yyyy", "dd/MMM*yyyy"];
             var date, dateUtil = aria.utils.Date, formattedDate, interpreted, middleDate;
             for (var k = 0; k < 12; k++) {
                 date = new Date(2015, k, 1);
