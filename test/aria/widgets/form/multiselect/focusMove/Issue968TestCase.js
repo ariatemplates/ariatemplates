@@ -43,20 +43,6 @@ Aria.classDefinition({
             this.assertEquals("AC", firstOption, "The first option of the opened dropdown is %2 instead of %1");
 
             this.synEvent.click(this.ms2, {
-                fn : this._waitFocusAndOpenDropdown(null, this._verifyFirstDropdown2),
-                scope : this
-            });
-        },
-
-        _verifyFirstDropdown2 : function () {
-
-            // After one click, the first dropdown is closed and the first MS is still focused
-
-            var firstOption = this._getFirstOption();
-            this.assertEquals("AC", firstOption, "The first option of the opened dropdown is %2 instead of %1");
-
-            // 2 clicks will focus the second MS
-            this.synEvent.execute([["click", this.ms2], ["pause", 500], ["click", this.ms2]],{
                 fn : this._waitFocusAndOpenDropdown(null, this._verifySecondDropdown),
                 scope : this
             });
@@ -66,8 +52,7 @@ Aria.classDefinition({
             var firstOption = this._getFirstOption();
             this.assertEquals("IB", firstOption, "The first option of the opened dropdown is %2 instead of %1");
 
-            // 2 clicks will focus the first MS
-            this.synEvent.execute([["click", this.ms1], ["pause", 500], ["click", this.ms1]],{
+            this.synEvent.click(this.ms1, {
                 fn : this._waitFocusAndOpenDropdown(null, this._verifyAgainFirstDropdown),
                 scope : this
             });

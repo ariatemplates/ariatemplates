@@ -23,7 +23,6 @@ Aria.classDefinition({
                 "test.aria.widgets.form.select.sharedSelect.SimpleHtmlTestCase",
                 "test.aria.widgets.form.select.checkBinding.SelectTemplateTestCase",
                 "test.aria.widgets.form.select.checkFeatures.SelectTemplateTestCase",
-                "test.aria.widgets.form.select.checkStates.SelectStatesTestCase",
                 "test.aria.widgets.form.select.dispose.DisposeTestCase",
                 "test.aria.widgets.form.select.downArrowKey.SelectTestCase",
                 "test.aria.widgets.form.select.popupWidth.SelectTestCase",

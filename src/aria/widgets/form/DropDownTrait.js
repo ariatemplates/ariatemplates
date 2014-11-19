@@ -157,7 +157,6 @@ module.exports = Aria.classDefinition({
             this._dropdownPopup.$dispose();
             this._dropdownPopup = null;
             aria.templates.Layout.$unregisterListeners(this);
-            this.focus(null, true);
             this._keepFocus = false;
         },
 
@@ -168,9 +167,10 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         _dropDownMouseClickClose : function (evt) {
-            var domEvent = evt.domEvent;
-            if (!aria.utils.Dom.isAncestor(domEvent.target, this._domElt)) {
-                domEvent.preventDefault(true);
+            if (!aria.utils.Dom.isAncestor(evt.domEvent.target, this._domElt)) {
+                this._keepFocus = false;
+                this._hasFocus = false;
+                this._updateState();
             }
         },
 
