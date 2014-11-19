@@ -40,7 +40,7 @@ Aria.classDefinition({
         },
         _check : function () {
             var dom = this.getWidgetInstance("datePicker").getDom();
-            var span = dom.children[0];
+            var span = dom.children[0].children[0];
             this.assertTrue(span.className.indexOf("normalError") > -1, "The datepicker should have the error state");
             this.end();
         }
