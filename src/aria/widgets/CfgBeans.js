@@ -1591,7 +1591,7 @@ module.exports = Aria.beanDefinitions({
                 },
                 "firstDayOfWeek" : {
                     $type : "json:Integer",
-                    $description : "First day of the week. 0 = Sunday, ... 6 = Saturday. The null value means that it is set according to the regional settings.",
+                    $description : "First day of the week. 0 = Sunday, ... 6 = Saturday. The null value means that it is set according to the application environment.",
                     $minValue : 0,
                     $maxValue : 6
                 },
