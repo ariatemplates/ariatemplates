@@ -703,7 +703,7 @@ module.exports = Aria.classDefinition({
          * @param {Object} transports class name and path
          *
          * <pre>
-         * aria.core.IO.updateTransport({
+         * aria.core.IO.updateTransports({
          *     'sameDomain' : 'myApplication.transports.SameDomainCustomTransport',
          *     'crossDomain' : 'myApplication.transports.CrossDomainCustomTransport',
          *     'jsonp' : 'myApplication.transports.JsonP',
