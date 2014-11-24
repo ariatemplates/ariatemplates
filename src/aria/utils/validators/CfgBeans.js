@@ -45,6 +45,10 @@ Aria.beanDefinitions({
                     $mandatory : true,
                     $description : "Message in user language."
                 },
+                escape : {
+                    $default : "true",
+                    $description : "The parameter to pass to the aria.utils.String.escapeForHTML method (please refer to it for more information). This can be used to disable the automatic escaping or refine its configuration inside the default template which is used by the widget to display the messages. This is up to the user to use this information in case he provides a custom template."
+                },
                 code : {
                     $type : "json:String",
                     $mandatory : false,

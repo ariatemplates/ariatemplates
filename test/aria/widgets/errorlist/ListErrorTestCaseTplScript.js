@@ -13,24 +13,11 @@
  * limitations under the License.
  */
 
-{Template {
-	$classpath : "test.aria.widgets.errorlist.ListErrorTestCaseTpl",
-	$hasScript: true
-}}
+Aria.tplScriptDefinition({
+    $classpath : "test.aria.widgets.errorlist.ListErrorTestCaseTplScript",
+    $dependencies : ["aria.utils.Data"],
 
-	{macro main()}
-		{@aria:ErrorList {
-			width: 650,
-			margins: "10 1 10 1",
-			title: "Success",
-			filterTypes: [this.dataUtils.TYPE_CONFIRMATION],
-			bind: {
-				messages: {
-					to: "errorMessages",
-					inside: data
-				}
-			}
-		}/}
-	{/macro}
-
-{/Template}
+    $constructor : function() {
+        this.dataUtils = aria.utils.Data;
+    }
+});
