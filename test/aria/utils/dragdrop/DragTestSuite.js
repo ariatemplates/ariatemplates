@@ -30,6 +30,7 @@ Aria.classDefinition({
         this.addTests("test.aria.utils.dragdrop.DragProxyTest");
         this.addTests("test.aria.utils.dragdrop.DragDropBean");
         this.addTests("test.aria.utils.dragdrop.issue397.MovableScrollbarTest");
+        this.addTests("test.aria.utils.dragdrop.fixedElements.FixedElementTest");
 
     }
 });

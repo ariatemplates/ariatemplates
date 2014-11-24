@@ -736,14 +736,16 @@ module.exports = Aria.classDefinition({
          * @public
          */
         getOffset : function (element) {
-            var isAbsolute = this.getStyle(element, "position") === "absolute";
+            var positionStyle = this.getStyle(element, "position");
+            var isAbsolute = positionStyle === "absolute";
+            var isFixed = positionStyle === "fixed";
             var position = {};
             if (isAbsolute) {
                 position.left = this.getStylePx(element, "left", null);
                 position.top = this.getStylePx(element, "top", null);
             }
             if (position.left == null || position.top == null) {
-                var offsetParent = element.offsetParent;
+                var offsetParent = isFixed ? Aria.$window.document.body : element.offsetParent;
                 var offsetParentPosition = this.calculatePosition(offsetParent);
                 var elementPosition = this.calculatePosition(element);
                 if (position.left == null) {
