@@ -136,6 +136,7 @@ require("./Dom");
      * - Inside synthetic.js trigger method, trigger the event only if the element is _isInDom
      * - Inside drag.js support for non jquery center
      * - Fixing a memory leak in IE (cf calls to leakFixSomething)
+     * - browser detection update (using the aria.core.Browser class)
      */
 
 
@@ -154,12 +155,12 @@ require("./Dom");
         },
         // only uses browser detection for key events
         browser = {
-            msie: !! (Aria.$window.attachEvent && !Aria.$window.opera),
-            opera: !! Aria.$window.opera,
-            webkit: Aria.$global.navigator.userAgent.indexOf('AppleWebKit/') > -1,
-            safari: Aria.$global.navigator.userAgent.indexOf('AppleWebKit/') > -1 && Aria.$global.navigator.userAgent.indexOf('Chrome/') === -1,
-            gecko: Aria.$global.navigator.userAgent.indexOf('Gecko') > -1,
-            mobilesafari: !! Aria.$global.navigator.userAgent.match(/Apple.*Mobile.*Safari/),
+            msie: aria.core.Browser.isIE,
+            opera: aria.core.Browser.isOpera,
+            webkit: aria.core.Browser.isWebkit,
+            safari: aria.core.Browser.isSafari,
+            gecko: aria.core.Browser.isGecko,
+            mobilesafari: aria.core.Browser.isSafariMobile,
             rhino: Aria.$global.navigator.userAgent.match(/Rhino/) && true
         },
         createEventObject = function( type, options, element ) {
