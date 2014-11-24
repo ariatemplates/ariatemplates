@@ -23,7 +23,7 @@ Aria.classDefinition({
          */
         testLogWarnRaisedForEscape : function () {
             var escapedValue = aria.templates.Modifiers.callModifier("escape", ["<escape string>"]);
-            this.assertEquals(escapedValue, "&lt;escape string&gt;", "String is not escaped prooperly");
+            this.assertEquals(escapedValue, "&lt;escape string&gt;", "String is not escaped properly");
             this.assertErrorInLogs(aria.templates.Modifiers.DEPRECATED_ESCAPE_MODIFIER, 1);
         }
     }
