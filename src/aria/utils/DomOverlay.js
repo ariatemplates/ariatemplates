@@ -18,8 +18,6 @@ var ariaUtilsType = require("./Type");
 var ariaUtilsEvent = require("./Event");
 var ariaUtilsAriaWindow = require("./AriaWindow");
 var ariaTemplatesLayout = require("../templates/Layout");
-var ariaCoreBrowser = require("../core/Browser");
-
 
 /**
  * This class contains utilities to show and hide a loading indicator above a DOM Element
@@ -75,10 +73,6 @@ module.exports = Aria.classDefinition({
                 this.overlays = {};
                 ariaUtilsAriaWindow.attachWindow();
 
-                var browser = ariaCoreBrowser;
-                // fix 08364518 : if IE<9, the scroll event on an element does not bubble up and trigger the handler
-                // attached to the window
-                this._noBubbleEvent = (browser.isIE8 || browser.isIE7 || browser.isIE6);
                 // Listen for scroll event to update the position of the overlay
                 ariaUtilsEvent.addListener(Aria.$window, "scroll", {
                     fn : this.__refresh,
@@ -132,15 +126,6 @@ module.exports = Aria.classDefinition({
 
             this._init(); // check it is initialized
 
-            if (this._noBubbleEvent) {
-                ariaUtilsEvent.addListenerRecursivelyUp(element, "scroll", {
-                    fn : overlay.refreshPosition,
-                    scope : overlay
-                }, true, function (element) {
-                    return element.style && element.style.overflow != "hidden";
-                });
-            }
-
             // Store the overlay internally
             if (element !== Aria.$window.document.body) {
                 this.overlays[id] = overlay;
@@ -164,15 +149,6 @@ module.exports = Aria.classDefinition({
 
             if (!overlayInfo) {
                 return;
-            }
-
-            if (this._noBubbleEvent) {
-                ariaUtilsEvent.removeListenerRecursivelyUp(element, "scroll", {
-                    fn : overlayInfo.overlay.refreshPosition,
-                    scope : overlayInfo.overlay
-                }, function (element) {
-                    return element.style && element.style.overflow != "hidden";
-                });
             }
 
             // Dispose the overlay

@@ -38,7 +38,6 @@ var ariaCoreCache = require("../core/Cache");
 var ariaCoreTplClassLoader = require("../core/TplClassLoader");
 var ariaCoreJsonValidator = require("../core/JsonValidator");
 
-
 (function () {
 
     // shortcuts
@@ -134,13 +133,6 @@ var ariaCoreJsonValidator = require("../core/JsonValidator");
              * @private
              */
             this.__loadingOverlays = [];
-
-            /**
-             * Map of loading overlays registered on a section
-             * @type Object
-             * @private
-             */
-            this.__loadingOverlaysSection = {};
 
             /**
              * Template context configuration
@@ -457,7 +449,7 @@ var ariaCoreJsonValidator = require("../core/JsonValidator");
                     });
 
                     // Before removing the content from the DOM dispose any processing indicators to avoid leaks
-                    this.__disposeProcessingIndicators(section);
+                    this.__disposeProcessingIndicators();
 
                     if (section && !section.id) {
                         // remove also any html wrapper, in case it is a complete refresh
@@ -670,6 +662,7 @@ var ariaCoreJsonValidator = require("../core/JsonValidator");
                 } else {
                     sectionToReplace.removeContent();
                     sectionToReplace.removeDelegateIdsAndCallbacks();
+                    sectionToReplace.disposeProcessingIndicator();
                     section.moveContentTo(sectionToReplace);
                     sectionToReplace.html = section.html;
                     section.$dispose();
@@ -1666,22 +1659,13 @@ var ariaCoreJsonValidator = require("../core/JsonValidator");
              * necessary to know which are the visible indicators during a refresh.
              * @param {Boolean} status if the indicator is visible or not
              * @param {String} id Unique indicator identifier
-             * @param {String} sectionId Optional id of the section (in case the indicator is above a section)
              */
-            registerProcessingIndicator : function (status, id, sectionId) {
+            registerProcessingIndicator : function (status, id) {
                 this.$assert(1200, id != null);
                 if (status) {
-                    if (!sectionId) {
-                        this.__loadingOverlays.push(id);
-                    } else {
-                        this.__loadingOverlaysSection[sectionId] = id;
-                    }
+                    this.__loadingOverlays.push(id);
                 } else {
-                    if (!sectionId) {
-                        ariaUtilsArray.remove(this.__loadingOverlays, id);
-                    } else {
-                        delete this.__loadingOverlaysSection[sectionId];
-                    }
+                    ariaUtilsArray.remove(this.__loadingOverlays, id);
                 }
             },
 
@@ -1695,25 +1679,14 @@ var ariaCoreJsonValidator = require("../core/JsonValidator");
             },
 
             /**
-             * Dispose all the processing indicators associated to this template context
-             * @param {aria.templates.Section} section Optional Section object in case of a section refresh
+             * Dispose all the processing indicators associated to this template context (which are not associated to a
+             * section)
              * @private
              */
-            __disposeProcessingIndicators : function (section) {
-                var domOverlay = ariaUtilsDomOverlay;
-
+            __disposeProcessingIndicators : function () {
                 // Dispose all the overlays that are not bound to a section
-                domOverlay.disposeOverlays(this.__loadingOverlays);
+                ariaUtilsDomOverlay.disposeOverlays(this.__loadingOverlays);
                 this.__loadingOverlays = [];
-
-                if (!section || section.isRoot) {
-                    // If I refresh the root section, dispose also all the overlays on any section
-                    domOverlay.disposeOverlays(ariaUtilsArray.extractValuesFromMap(this.__loadingOverlaysSection));
-                    this.__loadingOverlaysSection = {};
-                } else {
-                    domOverlay.disposeOverlays([this.__loadingOverlaysSection[section.id]]);
-                    delete this.__loadingOverlaysSection[section.id];
-                }
             },
 
             /**

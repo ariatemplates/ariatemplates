@@ -13,10 +13,8 @@
  * limitations under the License.
  */
 var Aria = require("../Aria");
-var ariaUtilsDomOverlay = require("../utils/DomOverlay");
 var ariaUtilsDom = require("../utils/Dom");
 var ariaTemplatesDomElementWrapper = require("./DomElementWrapper");
-
 
 /**
  * Wrapper around a Section Object and it's DOM Element
@@ -78,23 +76,7 @@ module.exports = Aria.classDefinition({
          * @param {String} message Text message to display inside the loading indicator
          */
         this.setProcessingIndicator = function (visible, message) {
-            var overlay, doRegistration = true;
-
-            if (visible) {
-                overlay = ariaUtilsDomOverlay.create(domElt, message);
-            } else {
-                overlay = ariaUtilsDomOverlay.detachFrom(domElt);
-
-                if (!overlay) {
-                    // Trying to remove an overlay from an element that has no overlay attached
-                    doRegistration = false;
-                }
-            }
-
-            // Update the binding in the datamodel
-            if (doRegistration) {
-                sectionObject.registerProcessingIndicator(visible, overlay);
-            }
+            sectionObject.setProcessingIndicator(visible, message);
         };
 
         var parentClassListSetClassName = this.classList.setClassName;
@@ -109,6 +91,9 @@ module.exports = Aria.classDefinition({
          * @private
          */
         this._dispose = function () {
+            // Prevents the call to setProcessingIndicator done in DomElementWrapper,
+            // because processing indicators on sections should keep their state on refresh:
+            this.setProcessingIndicator = Aria.empty;
             parentDispose.call(this);
             sectionObject = null;
             parentDispose = null;

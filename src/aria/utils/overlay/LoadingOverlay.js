@@ -15,7 +15,7 @@
 var Aria = require("../../Aria");
 var ariaUtilsOverlayOverlay = require("./Overlay");
 var ariaCoreBrowser = require("../../core/Browser");
-
+var ariaUtilsEvent = require("../Event");
 
 /**
  * This class creates an overlay and keeps it positioned above a given HTML element
@@ -31,6 +31,29 @@ module.exports = Aria.classDefinition({
             id : overlayId,
             className : "xLDI"
         });
+
+        var browser = aria.core.Browser;
+        // fix 08364518 : if IE<9, the scroll event on an element does not bubble up and trigger the handler
+        // attached to the window
+        if (browser.isIE8 || browser.isIE7 || browser.isIE6) {
+            this._scrollRecListener = true;
+            ariaUtilsEvent.addListenerRecursivelyUp(this.element, "scroll", {
+                fn : this.refreshPosition,
+                scope : this
+            }, true, function (element) {
+                return element.style && element.style.overflow != "hidden";
+            });
+        }
+    },
+    $destructor : function () {
+        if (this._scrollRecListener) {
+            ariaUtilsEvent.removeListenerRecursivelyUp(this.element, "scroll", {
+                fn : this.refreshPosition,
+                scope : this
+            });
+            this._scrollRecListener = false;
+        }
+        this.$Overlay.$destructor.call(this);
     },
     $prototype : {
         /**
