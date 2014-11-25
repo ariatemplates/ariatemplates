@@ -695,6 +695,9 @@ module.exports = Aria.classDefinition({
          * @private
          */
         __cleanEnv : function (mctrl) {
+            if (!this.testWindow) {
+                return;
+            }
             var classRef = this.testWindow.Aria.getClassRef(this.env.template);
             var classMgr = this.testWindow.aria.core.ClassMgr;
             if (classRef && classRef.classDefinition.$hasScript) {
