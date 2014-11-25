@@ -50,7 +50,7 @@ Aria.classDefinition({
 
         _checkNoBlurOnOpenPopup : function () {
             this.assertEquals(this.data.onBlurCalls, 0, "The number of blur events %2. It is %1 instead.");
-            this.synEvent.type(Aria.$window.document.activeElement, "[down]", {
+            this.synEvent.type(null, "[down]", {
                 fn : this._wait2,
                 scope : this
             });
@@ -62,7 +62,7 @@ Aria.classDefinition({
 
         _checkNoBlurOnFocusPopup : function () {
             this.assertEquals(this.data.onBlurCalls, 0, "The number of blur events %2. It is %1 instead.");
-            this.synEvent.type(Aria.$window.document.activeElement, "[space]", {
+            this.synEvent.type(null, "[space]", {
                 fn : this._wait3,
                 scope : this
             });

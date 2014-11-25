@@ -114,6 +114,7 @@ module.exports = Aria.classDefinition({
             this.$AutoComplete._reactToControllerReport.call(this, report, arg);
             if (report) {
                 this._updateMultiselectValues(report);
+                ariaUtilsDom.refreshDomElt(this._domElt);
             }
             if (repositionDropDown && this._dropdownPopup) {
                 this._closeDropdown();

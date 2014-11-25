@@ -83,6 +83,9 @@ module.exports = Aria.classDefinition({
                 ignoreClicksOn : this._getPopupIgnoreClicksOnDomElts(),
                 preferredWidth : this._getPopupWidth()
             });
+
+           this._keepFocusOnPopupClose = true;
+
         },
 
         /**
@@ -157,6 +160,17 @@ module.exports = Aria.classDefinition({
             this._dropdownPopup.$dispose();
             this._dropdownPopup = null;
             aria.templates.Layout.$unregisterListeners(this);
+            if (this._keepFocusOnPopupClose) {
+                this.focus(null, true);
+            } else {
+                var document = Aria.$window.document;
+                if (!aria.utils.Dom.isAncestor(document.activeElement || document.body, this._domElt)) {
+                    this._keepFocus = false;
+                    this._hasFocus = false;
+                    this._updateState();
+                }
+
+            }
             this._keepFocus = false;
         },
 
@@ -167,10 +181,9 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         _dropDownMouseClickClose : function (evt) {
-            if (!aria.utils.Dom.isAncestor(evt.domEvent.target, this._domElt)) {
-                this._keepFocus = false;
-                this._hasFocus = false;
-                this._updateState();
+            var domEvent = evt.domEvent;
+            if (!aria.utils.Dom.isAncestor(domEvent.target, this._domElt)) {
+                this._keepFocusOnPopupClose = false;
             }
         },
 
