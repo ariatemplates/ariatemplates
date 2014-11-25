@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Amadeus s.a.s.
+ * Copyright 2012 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,25 +13,16 @@
  * limitations under the License.
  */
 
-{Template {
-	$classpath : "test.aria.widgets.errorlist.ListErrorTestCaseTpl",
-	$css : ["test.aria.widgets.errorlist.ListErrorTestCaseStyle"],
-	$hasScript: true
+{CSSTemplate {
+    $classpath : "test.aria.widgets.errorlist.ListErrorTestCaseStyle"
 }}
+    {macro main()}
+        .italic {
+            font-style: italic;
+        }
 
-	{macro main()}
-		{@aria:ErrorList {
-			width: 650,
-			margins: "10 1 10 1",
-			title: "Success",
-			filterTypes: [this.dataUtils.TYPE_CONFIRMATION],
-			bind: {
-				messages: {
-					to: "errorMessages",
-					inside: data
-				}
-			}
-		}/}
-	{/macro}
-
-{/Template}
+        .bold {
+            font-weight: bold;
+        }
+    {/macro}
+{/CSSTemplate}

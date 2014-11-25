@@ -41,11 +41,11 @@ module.exports = Aria.classDefinition({
                     type : type
                 },
                 {
-                    localizedMessage : "with <b>HTML</b>",
+                    localizedMessage : "with <b><em>HTML</em></b>",
                     type : type
                 },
                 {
-                    localizedMessage : "with <span style=\"font-weight: bold;\">HTML</span>",
+                    localizedMessage : "with <span class=\"bold italic\">HTML</span>",
                     escape : false,
                     type : type
                 }
@@ -65,6 +65,10 @@ module.exports = Aria.classDefinition({
             return text;
         };
 
+        var compareCaseInsensitive = function(a, b) {
+            return a.toLowerCase() === b.toLowerCase();
+        };
+
         var getElementText = function(element) {
             var textContent = element.textContent || element.innerText || element.nodeValue || "";
             return cleanText(textContent);
@@ -80,15 +84,14 @@ module.exports = Aria.classDefinition({
             expected = stringUtils.escapeForHTML(expected, errorMessage.escape);
 
             var actual = getElementHTML(domElement);
-
-            return actual === expected;
+            return compareCaseInsensitive(actual, expected);
         };
 
         var elementComparator = function (errorMessage, domElement) {
             var expected = errorMessage.localizedMessage;
             var actual = getElementText(domElement);
 
-            return actual === expected && domElement.children.length === 0;
+            return compareCaseInsensitive(actual, expected) && domElement.children.length === 0;
         };
 
         this.messagesExtraData = [
@@ -111,7 +114,7 @@ module.exports = Aria.classDefinition({
 
                 this.assertTrue(
                     comparator(errorMessage, domElement),
-                    "Message number " + index + " content is different than expected."
+                    "Message number " + (index + 1) + " content is different than expected."
                 );
             }
 
