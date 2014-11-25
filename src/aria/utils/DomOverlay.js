@@ -20,7 +20,7 @@
 Aria.classDefinition({
     $classpath : "aria.utils.DomOverlay",
     $dependencies : ["aria.utils.overlay.LoadingOverlay", "aria.utils.Type", "aria.utils.Event",
-            "aria.utils.AriaWindow", "aria.templates.Layout", "aria.core.Browser"],
+            "aria.utils.AriaWindow", "aria.templates.Layout"],
     $singleton : true,
     $statics : {
         UNIQUE_ID_GENERATOR : 12
@@ -69,10 +69,6 @@ Aria.classDefinition({
                 this.overlays = {};
                 aria.utils.AriaWindow.attachWindow();
 
-                var browser = aria.core.Browser;
-                // fix 08364518 : if IE<9, the scroll event on an element does not bubble up and trigger the handler
-                // attached to the window
-                this._noBubbleEvent = (browser.isIE8 || browser.isIE7 || browser.isIE6);
                 // Listen for scroll event to update the position of the overlay
                 aria.utils.Event.addListener(Aria.$window, "scroll", {
                     fn : this.__refresh,
@@ -126,15 +122,6 @@ Aria.classDefinition({
 
             this._init(); // check it is initialized
 
-            if (this._noBubbleEvent) {
-                aria.utils.Event.addListenerRecursivelyUp(element, "scroll", {
-                    fn : overlay.refreshPosition,
-                    scope : overlay
-                }, true, function (element) {
-                    return element.style && element.style.overflow != "hidden";
-                });
-            }
-
             // Store the overlay internally
             if (element !== Aria.$window.document.body) {
                 this.overlays[id] = overlay;
@@ -158,15 +145,6 @@ Aria.classDefinition({
 
             if (!overlayInfo) {
                 return;
-            }
-
-            if (this._noBubbleEvent) {
-                aria.utils.Event.removeListenerRecursivelyUp(element, "scroll", {
-                    fn : overlayInfo.overlay.refreshPosition,
-                    scope : overlayInfo.overlay
-                }, function (element) {
-                    return element.style && element.style.overflow != "hidden";
-                });
             }
 
             // Dispose the overlay

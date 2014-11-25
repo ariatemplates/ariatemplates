@@ -116,13 +116,6 @@
             this.__loadingOverlays = [];
 
             /**
-             * Map of loading overlays registered on a section
-             * @type Object
-             * @private
-             */
-            this.__loadingOverlaysSection = {};
-
-            /**
              * Template context configuration
              * @protected
              * @type Object
@@ -448,7 +441,7 @@
                     });
 
                     // Before removing the content from the DOM dispose any processing indicators to avoid leaks
-                    this.__disposeProcessingIndicators(section);
+                    this.__disposeProcessingIndicators();
 
                     if (section && !section.id) {
                         // remove also any html wrapper, in case it is a complete refresh
@@ -681,6 +674,7 @@
                         // empty old section, move new section content to old section and dispose new section
                         sectionToReplace.removeContent();
                         sectionToReplace.removeDelegateIdsAndCallbacks();
+                        sectionToReplace.disposeProcessingIndicator();
                         section.moveContentTo(sectionToReplace);
                         sectionToReplace.html = section.html;
                         section.$dispose();
@@ -1760,22 +1754,13 @@
              * necessary to know which are the visible indicators during a refresh.
              * @param {Boolean} status if the indicator is visible or not
              * @param {String} id Unique indicator identifier
-             * @param {String} sectionId Optional id of the section (in case the indicator is above a section)
              */
-            registerProcessingIndicator : function (status, id, sectionId) {
+            registerProcessingIndicator : function (status, id) {
                 this.$assert(1200, id != null);
                 if (status) {
-                    if (!sectionId) {
-                        this.__loadingOverlays.push(id);
-                    } else {
-                        this.__loadingOverlaysSection[sectionId] = id;
-                    }
+                    this.__loadingOverlays.push(id);
                 } else {
-                    if (!sectionId) {
-                        aria.utils.Array.remove(this.__loadingOverlays, id);
-                    } else {
-                        delete this.__loadingOverlaysSection[sectionId];
-                    }
+                    aria.utils.Array.remove(this.__loadingOverlays, id);
                 }
             },
 
@@ -1789,25 +1774,14 @@
             },
 
             /**
-             * Dispose all the processing indicators associated to this template context
-             * @param {aria.templates.Section} section Optional Section object in case of a section refresh
+             * Dispose all the processing indicators associated to this template context (which are not associated to a
+             * section)
              * @private
              */
-            __disposeProcessingIndicators : function (section) {
-                var domOverlay = aria.utils.DomOverlay;
-
+            __disposeProcessingIndicators : function () {
                 // Dispose all the overlays that are not bound to a section
-                domOverlay.disposeOverlays(this.__loadingOverlays);
+                aria.utils.DomOverlay.disposeOverlays(this.__loadingOverlays);
                 this.__loadingOverlays = [];
-
-                if (!section || section.isRoot) {
-                    // If I refresh the root section, dispose also all the overlays on any section
-                    domOverlay.disposeOverlays(aria.utils.Array.extractValuesFromMap(this.__loadingOverlaysSection));
-                    this.__loadingOverlaysSection = {};
-                } else {
-                    domOverlay.disposeOverlays([this.__loadingOverlaysSection[section.id]]);
-                    delete this.__loadingOverlaysSection[section.id];
-                }
             },
 
             /**

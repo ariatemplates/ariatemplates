@@ -21,7 +21,7 @@
 Aria.classDefinition({
     $classpath : 'aria.templates.SectionWrapper',
     $extends : 'aria.templates.DomElementWrapper',
-    $dependencies : ['aria.utils.DomOverlay', 'aria.utils.Dom'],
+    $dependencies : ['aria.utils.Dom'],
     /**
      * Create a Wrapper object to allow safe changes in the DOM without giving direct access to the DOM. Note that a
      * closure is used to prevent access to the domElt object from the template.
@@ -74,23 +74,7 @@ Aria.classDefinition({
          * @param {String} message Text message to display inside the loading indicator
          */
         this.setProcessingIndicator = function (visible, message) {
-            var overlay, doRegistration = true;
-
-            if (visible) {
-                overlay = aria.utils.DomOverlay.create(domElt, message);
-            } else {
-                overlay = aria.utils.DomOverlay.detachFrom(domElt);
-
-                if (!overlay) {
-                    // Trying to remove an overlay from an element that has no overlay attached
-                    doRegistration = false;
-                }
-            }
-
-            // Update the binding in the datamodel
-            if (doRegistration) {
-                sectionObject.registerProcessingIndicator(visible, overlay);
-            }
+            sectionObject.setProcessingIndicator(visible, message);
         };
 
         var parentClassListSetClassName = this.classList.setClassName;
@@ -112,6 +96,9 @@ Aria.classDefinition({
          * @private
          */
         this._dispose = function () {
+            // Prevents the call to setProcessingIndicator done in DomElementWrapper,
+            // because processing indicators on sections should keep their state on refresh:
+            this.setProcessingIndicator = Aria.empty;
             parentDispose.call(this);
             sectionObject = null;
             parentDispose = null;

@@ -29,7 +29,8 @@
         $dependencies : ["aria.utils.Array", "aria.utils.Json", "aria.utils.Delegate",
                 "aria.templates.NavigationManager", "aria.templates.CfgBeans", "aria.utils.Dom", "aria.utils.String",
                 "aria.utils.Json", "aria.templates.DomElementWrapper", "aria.utils.Html",
-                "aria.templates.DomEventWrapper", "aria.utils.IdManager", "aria.templates.SectionWrapper"],
+                "aria.templates.DomEventWrapper", "aria.utils.IdManager", "aria.templates.SectionWrapper",
+                "aria.utils.DomOverlay"],
         $onload : function () {
             idMgr = new aria.utils.IdManager("s");
         },
@@ -86,6 +87,13 @@
              * @type Object
              */
             this._processing = null;
+
+            /**
+             * Overlay id, in case a processing indicator is linked to this section.
+             * @protected
+             * @type String
+             */
+            this._overlayId = null;
 
             /**
              * Array of delegateIds
@@ -271,6 +279,7 @@
         },
         $destructor : function () {
 
+            this.disposeProcessingIndicator();
             this.removeDelegateIdsAndCallbacks();
             this._releaseAllDynamicIds();
 
@@ -651,22 +660,32 @@
             },
 
             /**
-             * Register a processing indicator with given id
-             * @param {Boolean} status
-             * @param {String} overlayId
+             * Set the state of the processing indicator. It updates the datamodel if the section has a processing
+             * binding
+             * @param {Boolean} visible True if the loading indicator should be visible
+             * @param {String} message Text message to display inside the loading indicator
              */
-            registerProcessingIndicator : function (status, overlayId) {
-                // If this section is bound to the datamodel we must take extra care
-                var processing = this._processing, isBound = !!processing;
+            setProcessingIndicator : function (visible, message) {
+                visible = !!visible;
+                var alreadyVisible = !!this._overlayId;
 
-                // Notify the template context as well
-                this.tplCtxt.registerProcessingIndicator(status, overlayId, this.id);
+                if (visible !== alreadyVisible) {
+                    if (visible) {
+                        this._overlayId = aria.utils.DomOverlay.create(this.getDom(), message);
+                    } else {
+                        this.disposeProcessingIndicator();
+                    }
 
-                if (isBound) {
-                    // Update the value in the datamodel (someone else might be listening to it)
-                    this.__skipProcessingChange = true;
-                    this.__json.setValue(processing.inside, processing.to, status);
-                    this.__skipProcessingChange = false;
+                    var processing = this._processing;
+                    if (processing) {
+                        // Update the value in the datamodel (someone else might be listening to it)
+                        this.__skipProcessingChange = true;
+                        this.__json.setValue(processing.inside, processing.to, visible);
+                        this.__skipProcessingChange = false;
+                    }
+                } else if (visible) {
+                    // refresh the overlay
+                    aria.utils.DomOverlay.overlays[this._overlayId].refresh();
                 }
             },
 
@@ -689,8 +708,18 @@
                 var processing = this._processing, isBound = !!processing;
 
                 if (isBound && processing.inside[processing.to]) {
-                    // Display the loading indicator using a Wrapper to set/unset the loading indicator
-                    this.getWrapper().setProcessingIndicator(true, this.processingLabel);
+                    // Display the loading indicator
+                    this.setProcessingIndicator(true, this.processingLabel);
+                }
+            },
+
+            /**
+             * Remove the processing indicator from this section, if any.
+             */
+            disposeProcessingIndicator : function () {
+                if (this._overlayId) {
+                    aria.utils.DomOverlay.disposeOverlays([this._overlayId]);
+                    this._overlayId = null;
                 }
             },
 
@@ -777,8 +806,8 @@
                     return;
                 }
 
-                // Use a Wrapper to set/unset the loading indicator
-                this.getWrapper().setProcessingIndicator(res.newValue, this.processingLabel);
+                // set/unset the loading indicator
+                this.setProcessingIndicator(res.newValue, this.processingLabel);
             },
 
             /**

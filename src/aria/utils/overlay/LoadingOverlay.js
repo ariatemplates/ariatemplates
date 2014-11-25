@@ -19,6 +19,7 @@
 Aria.classDefinition({
     $classpath : "aria.utils.overlay.LoadingOverlay",
     $extends : "aria.utils.overlay.Overlay",
+    $dependencies : ["aria.core.Browser", "aria.utils.Event"],
     $constructor : function (element, overlayId, text) {
         // This is used by the parent constructor.
         this.__text = text;
@@ -27,6 +28,29 @@ Aria.classDefinition({
             id : overlayId,
             className : "xLDI"
         });
+
+        var browser = aria.core.Browser;
+        // fix 08364518 : if IE<9, the scroll event on an element does not bubble up and trigger the handler
+        // attached to the window
+        if (browser.isIE8 || browser.isIE7 || browser.isIE6) {
+            this._scrollRecListener = true;
+            aria.utils.Event.addListenerRecursivelyUp(this.element, "scroll", {
+                fn : this.refreshPosition,
+                scope : this
+            }, true, function (element) {
+                return element.style && element.style.overflow != "hidden";
+            });
+        }
+    },
+    $destructor : function () {
+        if (this._scrollRecListener) {
+            aria.utils.Event.removeListenerRecursivelyUp(this.element, "scroll", {
+                fn : this.refreshPosition,
+                scope : this
+            });
+            this._scrollRecListener = false;
+        }
+        this.$Overlay.$destructor.call(this);
     },
     $prototype : {
         /**
