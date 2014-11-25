@@ -35,13 +35,8 @@ Aria.classDefinition({
             var tpl = this.tpl = this.testDiv.getElementsByTagName("div")[0];
             var widgetDom = this.getElementsByClassName(tpl, "xWidget")[0];
             var spans = widgetDom.getElementsByTagName("span");
-            var innerDom;
+            var innerDom = this.getElementsByClassName(tpl, "xFrameContent")[0] || spans[1];
             var skinName = aria.widgets.AriaSkin.skinName;
-            if (skinName == "atskin") {
-                innerDom = this.getElementsByClassName(tpl, "xFrameContent")[0];
-            } else {
-                innerDom = spans[1];
-            }
 
             return {
                 skinName : skinName,
