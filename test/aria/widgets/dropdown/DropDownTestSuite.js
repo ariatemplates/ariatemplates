@@ -25,5 +25,6 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.dropdown.predictableId.AutoCompleteTest");
         this.addTests("test.aria.widgets.dropdown.predictableId.SelectBoxTest");
         this.addTests("test.aria.widgets.dropdown.predictableId.SelectTest");
+        this.addTests("test.aria.widgets.dropdown.touchDevices.DropDownTouchDevicesTestSuite");
     }
 });

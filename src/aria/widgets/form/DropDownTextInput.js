@@ -17,7 +17,7 @@ var ariaWidgetsFormDropDownTrait = require("./DropDownTrait");
 var ariaWidgetsFormTextInput = require("./TextInput");
 var ariaCoreBrowser = require("../../core/Browser");
 var ariaCoreTimer = require("../../core/Timer");
-
+var ariaUtilsDevice = require("../../utils/Device");
 
 /**
  * Base class for all text input widgets that use a drop-down popup
@@ -37,6 +37,7 @@ module.exports = Aria.classDefinition({
     },
     $destructor : function () {
         this._closeDropdown();
+        this._touchFocusSpan = null;
         this.$TextInput.$destructor.call(this);
     },
     $prototype : {
@@ -70,6 +71,8 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         _toggleDropdown : function () {
+            // toggleDropdown should not make the virtual keyboard appear on touch devices
+            this._updateFocusNoKeyboard();
             if (!this._hasFocus) {
                 this.focus(null, true);
             }
@@ -203,6 +206,57 @@ module.exports = Aria.classDefinition({
             this.$TextInput.initWidget.call(this);
             if (this._cfg.popupOpen) {
                 this._toggleDropdown();
+            }
+        },
+
+        /**
+         * Set the caret position in the field if the focus is currently on the field.
+         * @param {Number} start The starting caret position
+         * @param {Number} end The ending caret position
+         */
+        setCaretPosition : function () {
+            this._updateFocusNoKeyboard();
+            if (!this._focusNoKeyboard) {
+                this.$TextInput.setCaretPosition.apply(this, arguments);
+            }
+        },
+
+        /**
+         * On touch devices, this method checks the currently focused element and defines this._focusNoKeyboard
+         * accordingly. On desktop devices, this method does nothing.
+         */
+        _updateFocusNoKeyboard : ariaUtilsDevice.isTouch() ? function () {
+            var activeElement = Aria.$window.document.activeElement;
+            this._focusNoKeyboard = (activeElement != this.getTextInputField());
+        } : Aria.empty,
+
+        /**
+         * This method focuses the widget without making the virtual keyboard appear on touch devices.
+         */
+        _focusTouchFocusSpan : function () {
+            var touchFocusSpan = this._touchFocusSpan;
+            if (!touchFocusSpan) {
+                touchFocusSpan = this._touchFocusSpan = Aria.$window.document.createElement("span");
+                touchFocusSpan.setAttribute("tabIndex", "-1");
+                var widgetDomElt = this.getDom();
+                widgetDomElt.appendChild(touchFocusSpan);
+            }
+            touchFocusSpan.focus();
+        },
+
+        /**
+         * Focus this field
+         * @param {Array} idArray Path of ids on which we should give focus. Should be empty
+         * @param {Boolean} fromSelf Whether the focus is coming from the widget itself. In this case we don't try to
+         * autoselect
+         * @return {Boolean} true if focus was possible
+         * @override
+         */
+        focus : function (idArray, fromSelf) {
+            if (!fromSelf || this._cfg.disabled || !this._focusNoKeyboard) {
+                return this.$TextInput.focus.call(this, idArray, fromSelf);
+            } else {
+                this._focusTouchFocusSpan();
             }
         }
     }

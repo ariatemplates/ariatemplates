@@ -21,7 +21,6 @@ var ariaWidgetsContainerDivStyle = require("../container/DivStyle.tpl.css");
 var ariaWidgetsFormDropDownTextInput = require("./DropDownTextInput");
 var ariaCoreBrowser = require("../../core/Browser");
 
-
 /**
  * DatePicker widget, which is a template-based widget.
  * @class aria.widgets.form.DatePicker
@@ -29,8 +28,7 @@ var ariaCoreBrowser = require("../../core/Browser");
 module.exports = Aria.classDefinition({
     $classpath : "aria.widgets.form.DatePicker",
     $extends : ariaWidgetsFormDropDownTextInput,
-    $css : [ariaWidgetsFormDatePickerStyle, ariaWidgetsCalendarCalendarStyle,
-            ariaWidgetsContainerDivStyle],
+    $css : [ariaWidgetsFormDatePickerStyle, ariaWidgetsCalendarCalendarStyle, ariaWidgetsContainerDivStyle],
     $constructor : function (cfg, ctxt, lineNumber) {
         var controller = new ariaWidgetsControllersDatePickerController();
         this.$DropDownTextInput.constructor.call(this, cfg, ctxt, lineNumber, controller);
@@ -138,7 +136,7 @@ module.exports = Aria.classDefinition({
         /**
          * Function called (either internally or externally) to set the focus on the DatePicker.
          */
-        focus : function () {
+        focus : function (idArray, fromSelf) {
             if (this._dropdownPopup) {
                 if (this._hasFocus && !this._dropDownIconFocus) {
                     // passing the focus from the text field to the icon
@@ -156,7 +154,7 @@ module.exports = Aria.classDefinition({
                     this._keepFocus = true;
                 }
                 // do the normal action otherwise:
-                this.$DropDownTextInput.focus.call(this);
+                this.$DropDownTextInput.focus.call(this, idArray, fromSelf);
             }
         },
 
@@ -243,7 +241,7 @@ module.exports = Aria.classDefinition({
         _closeDropdown : function () {
             if (this._dropdownPopup) {
                 this.$DropDownTextInput._closeDropdown.call(this);
-                this.focus();
+                this.focus(null, true);
             }
         },
 
