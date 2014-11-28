@@ -18,7 +18,6 @@ var ariaUtilsJson = require("../../utils/Json");
 var ariaCoreBrowser = require("../../core/Browser");
 var ariaCoreTimer = require("../../core/Timer");
 
-
 /**
  * DropDownListTrait is a class to share code between dropdown widgets containing a list in their popup. The purpose of
  * this class is not to be created directly, but to allow its prototype to be imported.
@@ -50,6 +49,9 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         _clickOnItem : function (evt) {
+            if (this._updateFocusNoKeyboard) {
+                this._updateFocusNoKeyboard();
+            }
             this._closeDropdown();
             var report = this.controller.checkDropdownValue(evt.value);
             this._reactToControllerReport(report);
