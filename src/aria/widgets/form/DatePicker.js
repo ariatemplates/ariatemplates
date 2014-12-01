@@ -135,8 +135,9 @@ module.exports = Aria.classDefinition({
 
         /**
          * Function called (either internally or externally) to set the focus on the DatePicker.
+         * @override
          */
-        focus : function (idArray, fromSelf) {
+        focus : function () {
             if (this._dropdownPopup) {
                 if (this._hasFocus && !this._dropDownIconFocus) {
                     // passing the focus from the text field to the icon
@@ -154,7 +155,7 @@ module.exports = Aria.classDefinition({
                     this._keepFocus = true;
                 }
                 // do the normal action otherwise:
-                this.$DropDownTextInput.focus.call(this, idArray, fromSelf);
+                this.$DropDownTextInput.focus.apply(this, arguments);
             }
         },
 

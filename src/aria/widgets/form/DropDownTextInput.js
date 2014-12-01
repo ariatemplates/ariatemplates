@@ -210,9 +210,8 @@ module.exports = Aria.classDefinition({
         },
 
         /**
-         * Set the caret position in the field if the focus is currently on the field.
-         * @param {Number} start The starting caret position
-         * @param {Number} end The ending caret position
+         * Cf the documentation of this method in the parent class.
+         * @override
          */
         setCaretPosition : function () {
             this._updateFocusNoKeyboard();
@@ -245,11 +244,7 @@ module.exports = Aria.classDefinition({
         },
 
         /**
-         * Focus this field
-         * @param {Array} idArray Path of ids on which we should give focus. Should be empty
-         * @param {Boolean} fromSelf Whether the focus is coming from the widget itself. In this case we don't try to
-         * autoselect
-         * @return {Boolean} true if focus was possible
+         * Cf the documentation of this method in the parent class.
          * @override
          */
         focus : function (idArray, fromSelf) {
