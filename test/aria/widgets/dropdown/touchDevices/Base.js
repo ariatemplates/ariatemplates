@@ -56,37 +56,11 @@ module.exports = Aria.classDefinition({
         },
 
         caseDatePickerPopup : function (cb) {
-            var self = this;
-            var widget = self.getWidgetInstance("myDatePicker");
-
-            function step0 () {
-                self.clickOnWidgetIcon(widget, step1);
-            }
-
-            function step1 () {
-                self.waitForPopupAndClickInPopup(widget, "xCalendar_dropdown_day", step2);
-            }
-
-            function step2 () {
-                self.waitForNoPopupAndCheckFocus(widget, cb);
-            }
-
-            step0();
+            this.checkSelectLikeWidgetClickInPopup("myDatePicker", "xCalendar_dropdown_day", cb);
         },
 
         caseDatePickerInput : function (cb) {
-            var self = this;
-            var widget = self.getWidgetInstance("myDatePicker");
-
-            function step0 () {
-                self.clickOnWidgetIcon(widget, step1);
-            }
-
-            function step1 () {
-                self.waitForPopupAndClickOnInput(widget, "xCalendar_dropdown_day", cb);
-            }
-
-            step0();
+            this.checkSelectLikeWidgetClickOnInput("myDatePicker", "xCalendar_dropdown_day", cb);
         },
 
         caseAutoCompleteNoExpButPopup : function (cb) {
@@ -94,7 +68,7 @@ module.exports = Aria.classDefinition({
             var widget = self.getWidgetInstance("myAutoCompleteWithoutExpandButton");
 
             function step0 () {
-                self.synEvent.execute([["click", widget.getDom()], ["type", null, "t"]], step1);
+                self.typeInWidget(widget, step1);
             }
 
             function step1 () {
@@ -113,30 +87,34 @@ module.exports = Aria.classDefinition({
             var widget = self.getWidgetInstance("myAutoCompleteWithoutExpandButton");
 
             function step0 () {
-                self.synEvent.execute([["click", widget.getDom()], ["type", null, "t"]], step1);
+                self.typeInWidget(widget, step1);
             }
 
             function step1 () {
-                self.waitForPopupAndClickOnInput(widget, "xListItem_dropdown", cb);
+                self.waitForPopupClickOnInputAndCheckFocus(widget, "xListItem_dropdown", cb);
             }
 
             step0();
         },
 
+        typeInWidget : function (widget, cb) {
+            this.synEvent.execute([["click", widget.getDom()], ["type", null, "t"]], cb);
+        },
+
         caseAutoCompleteExpButPopup : function (cb) {
-            this.checkSelectLikeWidgetClickInPopup("myAutoCompleteWithExpandButton", cb);
+            this.checkSelectLikeWidgetClickInPopup("myAutoCompleteWithExpandButton", "xListItem_dropdown", cb);
         },
 
         caseAutoCompleteExpButInput : function (cb) {
-            this.checkSelectLikeWidgetClickOnInput("myAutoCompleteWithExpandButton", cb);
+            this.checkSelectLikeWidgetClickOnInput("myAutoCompleteWithExpandButton", "xListItem_dropdown", cb);
         },
 
         caseSelectBoxPopup : function (cb) {
-            this.checkSelectLikeWidgetClickInPopup("mySelectBox", cb);
+            this.checkSelectLikeWidgetClickInPopup("mySelectBox", "xListItem_dropdown", cb);
         },
 
         caseSelectBoxInput : function (cb) {
-            this.checkSelectLikeWidgetClickOnInput("mySelectBox", cb);
+            this.checkSelectLikeWidgetClickOnInput("mySelectBox", "xListItem_dropdown", cb);
         },
 
         caseMultiSelectPopup : function (cb) {
@@ -163,21 +141,10 @@ module.exports = Aria.classDefinition({
         },
 
         caseMultiSelectInput : function (cb) {
-            var self = this;
-            var widget = self.getWidgetInstance("myMultiSelect");
-
-            function step0 () {
-                self.clickOnWidgetIcon(widget, step1);
-            }
-
-            function step1 () {
-                self.waitForPopupAndClickOnInput(widget, "xICNcheckBoxes", cb);
-            }
-
-            step0();
+            this.checkSelectLikeWidgetClickOnInput("myMultiSelect", "xICNcheckBoxes", cb);
         },
 
-        checkSelectLikeWidgetClickInPopup : function (id, cb) {
+        checkSelectLikeWidgetClickInPopup : function (id, idInPopup, cb) {
             var self = this;
             var widget = self.getWidgetInstance(id);
 
@@ -186,7 +153,7 @@ module.exports = Aria.classDefinition({
             }
 
             function step1 () {
-                self.waitForPopupAndClickInPopup(widget, "xListItem_dropdown", step2);
+                self.waitForPopupAndClickInPopup(widget, idInPopup, step2);
             }
 
             function step2 () {
@@ -196,7 +163,7 @@ module.exports = Aria.classDefinition({
             step0();
         },
 
-        checkSelectLikeWidgetClickOnInput : function (id, cb) {
+        checkSelectLikeWidgetClickOnInput : function (id, idInPopup, cb) {
             var self = this;
             var widget = self.getWidgetInstance(id);
 
@@ -205,7 +172,7 @@ module.exports = Aria.classDefinition({
             }
 
             function step1 () {
-                self.waitForPopupAndClickOnInput(widget, "xListItem_dropdown", cb);
+                self.waitForPopupClickOnInputAndCheckFocus(widget, idInPopup, cb);
             }
 
             step0();
@@ -216,31 +183,29 @@ module.exports = Aria.classDefinition({
             this.synEvent.click(icon, cb);
         },
 
-        waitForPopupAndClickInPopup : function (widget, idInPopup, cb) {
+        waitForPopup : function (widget, idInPopup, cb) {
             this.waitFor({
                 condition : function () {
                     var popup = widget._dropdownPopup;
                     return popup && ariaUtilsDom.getElementsByClassName(popup.domElement, idInPopup).length > 0;
                 },
-                callback : function () {
-                    var elts = ariaUtilsDom.getElementsByClassName(widget._dropdownPopup.domElement, idInPopup);
-                    this.synEvent.click(elts[0], cb);
-                }
+                callback : cb
             });
         },
 
-        waitForPopupAndClickOnInput : function (widget, idInPopup, cb) {
+        waitForPopupAndClickInPopup : function (widget, idInPopup, cb) {
+            this.waitForPopup(widget, idInPopup, function () {
+                var elements = ariaUtilsDom.getElementsByClassName(widget._dropdownPopup.domElement, idInPopup);
+                this.synEvent.click(elements[0], cb);
+            });
+        },
+
+        waitForPopupClickOnInputAndCheckFocus : function (widget, idInPopup, cb) {
             var self = this;
 
             function step0 () {
-                self.waitFor({
-                    condition : function () {
-                        var popup = widget._dropdownPopup;
-                        return popup && ariaUtilsDom.getElementsByClassName(popup.domElement, idInPopup).length > 0;
-                    },
-                    callback : function () {
-                        self.synEvent.click(widget.getDom(), step1);
-                    }
+                self.waitForPopup(widget, idInPopup, function () {
+                    self.synEvent.click(widget.getDom(), step1);
                 });
             }
 
@@ -304,8 +269,8 @@ module.exports = Aria.classDefinition({
         },
 
         checkFocusTouch : function (widget) {
-            // the active element after selecting something in the popup on desktops
-            // must be the text field in the widget
+            // the active element after selecting something in the popup on touch devices
+            // must not be the text field in the widget
             var activeElement = this.testWindow.document.activeElement;
             this.assertTrue(ariaUtilsDom.isAncestor(activeElement, widget.getDom()), "Widget " + widget.$class
                     + " should be focused");
