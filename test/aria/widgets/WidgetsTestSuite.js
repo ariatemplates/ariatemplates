@@ -44,6 +44,7 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.action.iconbutton.issue276.IconButtonTestCase");
         this.addTests("test.aria.widgets.verticalAlign.VerticalAlignTestCase");
         this.addTests("test.aria.widgets.icon.IconTest");
+        this.addTests("test.aria.widgets.icon.notooltip.NoTooltipIconTest");
         this.addTests("test.aria.widgets.splitter.scrollbars.ScrollbarTestCase");
         this.addTests("test.aria.widgets.issue746.SkinClassFallbackTestCase");
         this.addTests("test.aria.widgets.form.text.textcontentissue.TextContentTest");

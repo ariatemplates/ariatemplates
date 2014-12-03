@@ -82,16 +82,14 @@ module.exports = Aria.classDefinition({
             }
 
             var delegationMarkup = "";
-            if (cfg.tooltipId) {
-                var delegateManager = aria.utils.Delegate;
-                if (!this._delegateId) {
-                    this._delegateId = delegateManager.add({
-                        fn : this.delegate,
-                        scope : this
-                    });
-                }
-                delegationMarkup = delegateManager.getMarkup(this._delegateId) + " ";
+            var delegateManager = aria.utils.Delegate;
+            if (!this._delegateId) {
+                this._delegateId = delegateManager.add({
+                    fn : this.delegate,
+                    scope : this
+                });
             }
+            delegationMarkup = delegateManager.getMarkup(this._delegateId) + " ";
 
             if (!iconInfo.spriteURL && cfg.icon) {
                 var classes = aria.widgets.AriaSkinInterface.getSkinObject("Icon", cfg.icon.split(":")[0], true).content[cfg.icon.split(":")[1]];
