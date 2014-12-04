@@ -29,5 +29,6 @@ Aria.classDefinition({
         /* BACKWARD-COMPATIBILITY-BEGIN (cssclass) */
         this.addTests("test.aria.templates.section.sectionAttributes.cssClass.CssClassDeprecationTest");
         /* BACKWARD-COMPATIBILITY-END (cssclass) */
+        this.addTests("test.aria.templates.section.animations.SectionAnimations");
     }
 });

@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Amadeus s.a.s.
+ * Copyright 2014 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,21 +14,15 @@
  */
 
 Aria.tplScriptDefinition({
-    $classpath : "test.aria.templates.autorefresh.TemplateToExtendScript",
-    $dependencies : ["aria.utils.Object"],
+    $classpath : "test.aria.templates.section.animations.TestTemplateScript",
+    $constructor : function () {},
     $prototype : {
-
-        $dataReady : function () {
-            this.data.refreshes = this.data.refreshes || {};
+        $afterRefresh : function () {
+            this.data.refreshNum++;
         },
 
-        $afterRefresh : function (args) {
-            if (!args || !args.section) {
-                if (!this.data.refreshes[this.$class]) {
-                    this.data.refreshes[this.$class] = 0;
-                }
-                this.data.refreshes[this.$class]++;
-            }
+        $onRefreshAnimationEnd : function () {
+            this.data.refreshAnimationNum++;
         }
     }
 });

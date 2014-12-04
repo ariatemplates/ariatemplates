@@ -25,6 +25,7 @@ var ariaUtilsHtml = require("../utils/Html");
 var ariaTemplatesDomEventWrapper = require("./DomEventWrapper");
 var ariaUtilsIdManager = require("../utils/IdManager");
 var ariaTemplatesSectionWrapper = require("./SectionWrapper");
+var ariaUtilsCssAnimations = require("../utils/css/Animations");
 var ariaUtilsType = require("../utils/Type");
 var ariaCoreJsonValidator = require("../core/JsonValidator");
 var ariaUtilsDomOverlay = require("../utils/DomOverlay");
@@ -305,6 +306,13 @@ var ariaUtilsDomOverlay = require("../utils/DomOverlay");
             if (attributeBind) {
                 this.attributes = this.__json.copy(attributeBind.inside[attributeBind.to]);
                 this._attributesChangeListener = this.registerBinding(attributeBind, this._notifyAttributeChange);
+            }
+
+            // register binding for animation
+            var animationBind = (cfg.bind && cfg.bind.animation) ? cfg.bind.animation : null;
+            if (animationBind) {
+                cfg.animation = animationBind.inside[animationBind.to];
+                this._animationChangeListener = this.registerBinding(animationBind,this._notifyAnimationChange);
             }
 
             /* BACKWARD-COMPATIBILITY-BEGIN (cssclass) */
@@ -628,7 +636,8 @@ var ariaUtilsDomOverlay = require("../utils/DomOverlay");
                         fn : callback || this._notifyDataChange,
                         scope : this,
                         args : {
-                            tplCtxt : this.tplCtxt
+                            tplCtxt : this.tplCtxt,
+                            animate : bind.animate
                         }
                     };
 
@@ -789,7 +798,8 @@ var ariaUtilsDomOverlay = require("../utils/DomOverlay");
                 }
                 args.tplCtxt.$refresh({
                     section : this.id,
-                    macro : this.macro
+                    macro : this.macro,
+                    animate : args.animate
                 });
             },
 
@@ -802,6 +812,12 @@ var ariaUtilsDomOverlay = require("../utils/DomOverlay");
             _notifyAttributeChange : function () {
                 var attrBinding = this._attributesBinding, newValue = attrBinding.inside[attrBinding.to];
                 this._applyNewAttributes(newValue);
+            },
+
+            _notifyAnimationChange : function () {
+                var cfg = this._cfg;
+                var animationBind = cfg.bind.animation;
+                cfg.animation = animationBind.inside[animationBind.to];
             },
 
             /**
@@ -1006,6 +1022,9 @@ var ariaUtilsDomOverlay = require("../utils/DomOverlay");
             notifyRefreshPlanned : function (args) {
                 var refreshMgrInfo = this._registerInRefreshMgr();
                 refreshMgrInfo.queue = null;
+                if(refreshMgrInfo.refreshArgs && refreshMgrInfo.refreshArgs.animate){
+                    args.animate = true;
+                }
                 refreshMgrInfo.refreshArgs = args;
             },
 
@@ -1209,6 +1228,100 @@ var ariaUtilsDomOverlay = require("../utils/DomOverlay");
                 if (this.macro) {
                     out.callMacro(this.macro);
                 }
+            },
+
+            /**
+             * Returns an object containing the animation type and direction.
+             */
+            _getAnimation : function () {
+                var splitted1 = this._cfg.animation.animateIn.split(" ");
+                var splitted2 = this._cfg.animation.animateOut.split(" ");
+                return {
+                    animIn : {
+                        type : splitted1[0],
+                        reverse : (splitted1[1] == "right")
+                    },
+                    animOut : {
+                        type : splitted2[0],
+                        reverse : (splitted2[1] == "right")
+                    }
+                };
+            },
+
+            /**
+             * Prepares and performs the transition animation from a section to another one.
+             * @param {HTMLElement} domElt element to be animated
+             * @param {Object} refreshArgs parameter provided to the template onRefreshAnimationEnd handler
+             */
+            _animateRefresh : function (domElt, refreshArgs) {
+                // lazy processing of animation in/out string
+                var animation = this._getAnimation();
+                this._animating = true;
+                var newSection = this._domElt.cloneNode(false);
+                domElt.id = null;
+                newSection.className += " not-visible";
+                newSection = ariaUtilsDom.replaceHTML(newSection, this.html);
+                var from = domElt;
+                var to = newSection;
+                ariaUtilsDom.insertAdjacentElement(from, "afterEnd", newSection);
+                this.setDom(newSection);
+
+                var animSemaphore = false;
+                var cfg = {
+                    // from : from,
+                    to : to,
+                    type : 3,
+                    reverse : animation.animIn.reverse,
+                    hiddenClass : 'not-visible'
+                };
+
+                var cfg2 = {
+                    from : from,
+                    // to : to,
+                    type : 3,
+                    reverse : animation.animOut.reverse,
+                    hiddenClass : 'not-visible'
+                };
+
+                var anim = new ariaUtilsCssAnimations();
+                var anim2 = new ariaUtilsCssAnimations();
+
+                var animEnd = {
+                    "animationend" : function () {
+                        if (animSemaphore) {
+                            ariaUtilsDom.removeElement(from);
+                            this._animating = false;
+                            this.tplCtxt.onRefreshAnimationEnd(refreshArgs);
+                        } else {
+                            animSemaphore = true;
+                        }
+                    },
+                    scope : this
+                };
+
+                anim.$on(animEnd);
+                anim2.$on(animEnd);
+
+                anim.start(animation.animIn.type, cfg);
+                anim2.start(animation.animOut.type, cfg2);
+
+            },
+
+            /**
+             * Either updates the section content or performs the transition animation from a section to another one (if animate property is true).
+             * @param {HTMLElement} domElt element to be animated
+             * @param {Object} refreshArgs parameter provided to the template onRefreshAnimationEnd handler
+             */
+            insertHTML : function (domElt, refreshArgs) {
+
+                if (this._cfg && this._cfg.animation && refreshArgs && refreshArgs.animate && !this._animating) {
+                    this._animateRefresh(domElt, refreshArgs);
+                } else {
+                    // replaceHTML may change domElt (especially on IE)
+                    domElt = ariaUtilsDom.replaceHTML(domElt, this.html);
+                    this.setDom(domElt);
+                }
+
             }
 
         }

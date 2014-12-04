@@ -17,7 +17,7 @@ var ariaUtilsClassList = require("../ClassList");
 var ariaUtilsDelegate = require("../Delegate");
 var ariaTemplatesCSSMgr = require("../../templates/CSSMgr");
 var ariaUtilsCssTransitions = require("./Transitions.tpl.css");
-
+var _isSupported;
 
 /**
  * Utilities for CSS3 animations Add CSS animations. To add a new animation you need to create a new instance of
@@ -71,6 +71,30 @@ module.exports = Aria.classDefinition({
                 animation_name : "The animation name completed."
             }
         }
+    },
+    $statics : {
+        /**
+         * Checks if transitions are supported by the used browser
+         * @return {Boolean} true if the browser supports transitions, otherwise false
+         */
+        isSupported : function () {
+            if(_isSupported !== undefined){
+                return _isSupported;
+            }
+            _isSupported = false;
+            var document = Aria.$window.document;
+            var div = document.createElement("div");
+            var p, pre = ["ms", "O", "Webkit", "Moz"];
+            for (p in pre) {
+                if (div.style[pre[p] + "Transition"] !== undefined) {
+                    _isSupported = true;
+                    break;
+                }
+            }
+            div = null;
+            return _isSupported;
+        }
+
     },
     $prototype : {
         /**

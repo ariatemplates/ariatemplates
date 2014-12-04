@@ -19,26 +19,7 @@ Aria.classDefinition({
     $dependencies : ["aria.utils.css.Animations", "aria.utils.Dom"],
     $prototype : {
         setUp : function () {
-            this.Detect = (function () {
-                function cssTransitions () {
-                    var document = Aria.$window.document;
-                    var div = document.createElement("div");
-                    var p, ext, pre = ["ms", "O", "Webkit", "Moz"];
-                    for (p in pre) {
-                        if (div.style[pre[p] + "Transition"] !== undefined) {
-                            ext = pre[p];
-                            break;
-                        }
-                    }
-                    div = null;
-                    return ext;
-                }
-                return {
-                    "cssTransitions" : cssTransitions
-                };
-            }());
-
-            if (this.Detect.cssTransitions()) {
+            if (aria.utils.css.Animations.isSupported()) {
                 var document = Aria.$window.document;
                 var testArea = document.createElement("div");
                 var anime = new aria.utils.css.Animations();
@@ -94,7 +75,7 @@ Aria.classDefinition({
         },
 
         tearDown : function () {
-            if (this.Detect.cssTransitions()) {
+            if (aria.utils.css.Animations.isSupported()) {
                 this.playgroundTestArea.parentNode.removeChild(this.playgroundTestArea);
                 this.playgroundTestArea = null;
                 this.animate.$dispose();
@@ -104,7 +85,7 @@ Aria.classDefinition({
         },
 
         testAsyncAnimations : function () {
-            if (!this.Detect.cssTransitions()) {
+            if (!aria.utils.css.Animations.isSupported()) {
                 this.notifyTestEnd('testAsyncAnimations');
             } else {
                 var cfg = {

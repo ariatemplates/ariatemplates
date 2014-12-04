@@ -303,6 +303,7 @@ var ariaCoreJsonValidator = require("../core/JsonValidator");
             DISPLAY_READY_EXCEPTION : "Error in template %1: an exception happened in $displayReady.",
             BEFORE_REFRESH_EXCEPTION : "Error in template %1: an exception happened in $beforeRefresh.",
             AFTER_REFRESH_EXCEPTION : "Error in template %1: an exception happened in $afterRefresh.",
+            AFTER_ANIMATION_END_EXCEPTION : "Error in template %1: an exception happened in $onRefreshAnimationEnd.",
             ALREADY_REFRESHING : "$refresh was called while another refresh is happening on the same template (%1). This is not allowed. Please check bindings.",
             MISSING_MODULE_CTRL_FACTORY : "Template %1 cannot be initialized without aria.templates.ModuleCtrlFactory, make sure it is loaded",
             MISSING_SECTION_MACRO : "Error in template %1 : 'macro' property is missing in section %2"
@@ -377,6 +378,27 @@ var ariaCoreJsonValidator = require("../core/JsonValidator");
                         this._tpl.$afterRefresh(sectionDescription);
                     } catch (e) {
                         this.$logError(this.AFTER_REFRESH_EXCEPTION, [this.tplClasspath], e);
+                    }
+                }
+            },
+
+            /**
+             * This method is called after an animation due to a refresh, and call a method $onRefreshAnimationEnd in
+             * the Template that can be overriden.
+             * @param {Object} sectionDescription
+             *
+             * <pre>
+             *     {
+             *         section : // {String} section id
+             *     }
+             * </pre>
+             */
+            onRefreshAnimationEnd : function (sectionDescription) {
+                if (this._tpl.$onRefreshAnimationEnd) {
+                    try {
+                        this._tpl.$onRefreshAnimationEnd(sectionDescription);
+                    } catch (e) {
+                        this.$logError(this.AFTER_ANIMATION_END_EXCEPTION, [this.tplClasspath], e);
                     }
                 }
             },
@@ -460,7 +482,7 @@ var ariaCoreJsonValidator = require("../core/JsonValidator");
                     ariaTemplatesCSSMgr.resume();
 
                     if (section != null) {
-                        this.insertSection(section);
+                        this.insertSection(section, false, args);
                     }
 
                     this._refreshing = false;
@@ -760,7 +782,7 @@ var ariaCoreJsonValidator = require("../core/JsonValidator");
             /**
              * Insert the section's markup in the DOM
              */
-            insertSection : function (section, skipInsertHTML) {
+            insertSection : function (section, skipInsertHTML, refreshArgs) {
                 // PROFILING // var profilingId = this.$startMeasure("Inserting section in DOM from " +
                 // PROFILING // this.tplClasspath);
                 var differed;
@@ -770,9 +792,7 @@ var ariaCoreJsonValidator = require("../core/JsonValidator");
 
                 if (domElt) {
                     if (!skipInsertHTML) {
-                        // replaceHTML may change domElt (especially on IE)
-                        domElt = ariaUtilsDom.replaceHTML(domElt, section.html);
-                        section.setDom(domElt);
+                        section.insertHTML(domElt, refreshArgs);
                     }
                     if (!section.id) {
                         // the whole template is being refreshed; let's apply the correct size
