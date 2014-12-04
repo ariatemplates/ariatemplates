@@ -521,7 +521,7 @@ module.exports = Aria.classDefinition({
                     expandoValue = target.attributes[this.delegateExpando];
                     if (expandoValue) {
                         ATflag = true;
-                        expandoValue = expandoValue.nodeValue;
+                        expandoValue = expandoValue.value;
                         cacheStack = this.__stackCache[expandoValue];
 
                         // search the cache for existing hierachy
