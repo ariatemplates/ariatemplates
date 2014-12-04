@@ -821,6 +821,21 @@ module.exports = Aria.beanDefinitions({
                     $properties : {
                         "attributes" : {
                             $type : "BindingConfiguration"
+                        },
+                        "animation" : {
+                            $type : "BindingConfiguration"
+                        }
+                    }
+                },
+                "animation" : {
+                    $type : "json:Object",
+                    $description : "",
+                    $properties : {
+                        "animateIn" : {
+                            $type : "json:String"
+                        },
+                        "animateOut" : {
+                            $type : "json:String"
                         }
                     }
                 }
@@ -884,6 +899,11 @@ module.exports = Aria.beanDefinitions({
                     $type : "json:Boolean",
                     $description : "Listen to change of the element, or listen for recursive changes",
                     $default : true
+                },
+                "animate" : {
+                    $type : "json:Boolean",
+                    $description : "Animate the section when refresh is due to a change of a specific property",
+                    $default : true
                 }
             }
         },
@@ -904,6 +924,11 @@ module.exports = Aria.beanDefinitions({
                     $type : "json:String",
                     $description : "Id of the section to refresh.",
                     $mandatory : false
+                },
+                "animate" : {
+                    $type : "json:Boolean",
+                    $description : "Animate the section when refresh is due to a change of a specific property",
+                    $default : true
                 }
             }
         },
