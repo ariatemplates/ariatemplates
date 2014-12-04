@@ -65,7 +65,7 @@ Aria.classDefinition({
         _testDraggable : function (draggable, end) {
             var dom = aria.utils.Dom;
             var geometry = dom.getGeometry(draggable);
-            var geometryChild = dom.getGeometry(draggable.firstElementChild);
+            var geometryChild = (aria.core.Browser.isIE7 || aria.core.Browser.isIE8) ? dom.getGeometry(draggable.firstChild) : dom.getGeometry(draggable.firstElementChild);
 
             var from = {
                 x : geometry.x + geometry.width / 2,
