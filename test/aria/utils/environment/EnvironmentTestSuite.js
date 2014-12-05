@@ -22,5 +22,6 @@ Aria.classDefinition({
         this.addTests("test.aria.utils.environment.Date");
         this.addTests("test.aria.utils.environment.Number");
         this.addTests("test.aria.utils.environment.VisualFocus");
+        this.addTests("test.aria.utils.environment.VisualFocusDependency");
     }
 });

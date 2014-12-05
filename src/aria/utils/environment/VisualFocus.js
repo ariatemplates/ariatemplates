@@ -13,9 +13,20 @@
  * limitations under the License.
  */
 var Aria = require("../../Aria");
+var Promise = require("noder-js/promise");
+var asyncRequire = require("noder-js/asyncRequire");
 require("./VisualFocusCfgBeans");
 var ariaCoreEnvironmentEnvironmentBase = require("../../core/environment/EnvironmentBase");
 
+// This module is not yet fully loaded, but will be in the next tick:
+var thisModuleIsLoaded = Promise.done.then(Aria.empty);
+
+var loadVisualFocus = function () {
+    // make sure this module is fully loaded before loading VisualFocus (which has a dependency on this module)
+    return thisModuleIsLoaded.thenSync(function () {
+        return asyncRequire(require.resolve("../VisualFocus"));
+    });
+};
 
 /**
  * Contains getters for the Visual Focus environment.
@@ -52,15 +63,14 @@ module.exports = Aria.classDefinition({
             var appOutlineStyle = this.checkApplicationSettings("appOutlineStyle");
             // load aria.utils.VisualFocus if needed
             if (appOutlineStyle) {
-                Aria.load({
-                    classes : ['aria.utils.VisualFocus'],
-                    oncomplete : callback ? {
-                        fn : function () {
-                            this.$callback(callback);
-                        },
-                        scope : this
-                    } : null
-                });
+                var whenLoaded = loadVisualFocus();
+                if (callback) {
+                    var self = this;
+                    whenLoaded = whenLoaded.thenSync(function () {
+                        self.$callback(callback);
+                    });
+                }
+                whenLoaded.done();
             } else {
                 this.$callback(callback);
             }
