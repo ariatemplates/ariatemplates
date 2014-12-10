@@ -476,12 +476,6 @@ var ariaUtilsJson = require("../utils/Json");
 
             _updateRemainingItems : function (beginIndex, updateIndex) {
                 var items = this.items;
-                /* BACKWARD-COMPATIBILITY-BEGIN (cssclass) */
-                var cssClassCb = this._childSections.cssClass;
-                if (!_isCallback(cssClassCb)) {
-                    cssClassCb = null;
-                }
-                /* BACKWARD-COMPATIBILITY-END (cssclass) */
                 var attributesCB = this._childSections.attributes;
                 if (!_isCallback(attributesCB)) {
                     attributesCB = null;
@@ -493,17 +487,6 @@ var ariaUtilsJson = require("../utils/Json");
                         jsonUtils.setValue(item, "index", i);
                     }
                     jsonUtils.setValue(item, "ct", i + 1);
-                    /* BACKWARD-COMPATIBILITY-BEGIN (cssclass) */
-                    if (cssClassCb) {
-                        var section = this.getSectionById(item.sectionId);
-                        var oldCssClass = section.cssClass;
-                        var newCssClass = this.tplCtxt.evalCallback(cssClassCb, item);
-                        if (oldCssClass != newCssClass) {
-                            var domEltWrapper = section.getWrapper();
-                            domEltWrapper.classList.setClassName(newCssClass);
-                        }
-                    }
-                    /* BACKWARD-COMPATIBILITY-END (cssclass) */
                     if (attributesCB) {
                         var section = this.getSectionById(item.sectionId);
                         section.updateAttributes(this.tplCtxt.evalCallback(attributesCB, item));

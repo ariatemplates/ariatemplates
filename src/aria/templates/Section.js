@@ -218,18 +218,6 @@ var ariaUtilsDomOverlay = require("../utils/DomOverlay");
              */
             this.id = id || "_gen_" + this._domId;
 
-            /* BACKWARD-COMPATIBILITY-BEGIN (cssclass) */
-            /**
-             * CSS class for the section
-             * @type String
-             */
-            this.cssClass = cfg.cssClass;
-
-            if (cfg.cssClass) {
-                this.$logWarn(this.DEPRECATED_CSSCLASS);
-            }
-            /* BACKWARD-COMPATIBILITY-END (cssclass) */
-
             /**
              * Configuration for keyboard shortcuts
              * @type Object
@@ -315,28 +303,6 @@ var ariaUtilsDomOverlay = require("../utils/DomOverlay");
                 this._animationChangeListener = this.registerBinding(animationBind,this._notifyAnimationChange);
             }
 
-            /* BACKWARD-COMPATIBILITY-BEGIN (cssclass) */
-            if (cfg.cssClass) {
-                if (this.attributes) {
-                    if (!this.attributes.classList) {
-                        this.attributes.classList = cfg.cssClass.split(" ");
-                        if (attributeBind) {
-                            this.__json.setValue(attributeBind.inside[attributeBind.to], "classList", cfg.cssClass.split(" "), this._attributesChangeListener);
-                        }
-                    }
-                } else {
-                    this.attributes = {
-                        classList : cfg.cssClass.split(" ")
-                    };
-                    if (attributeBind) {
-                        this.__json.setValue(attributeBind.inside, attributeBind.to, {
-                            classList : cfg.cssClass.split(" ")
-                        }, this._attributesChangeListener);
-                    }
-                }
-            }
-            /* BACKWARD-COMPATIBILITY-END (cssclass) */
-
         },
         $destructor : function () {
 
@@ -384,9 +350,6 @@ var ariaUtilsDomOverlay = require("../utils/DomOverlay");
         },
         $statics : {
             // ERROR MESSAGES:
-            /* BACKWARD-COMPATIBILITY-BEGIN (cssclass) */
-            DEPRECATED_CSSCLASS : "cssClass property in section configuration is deprecated. Please use attributes.classList instead.",
-            /* BACKWARD-COMPATIBILITY-END (cssclass) */
             MISSING_TO_BINDING : "Invalid Binding Configuration: 'to' is mandatory",
             INVALID_TO_BINDING : "Invalid Binding Configuration: 'to' must be a Boolean value or null",
             WIDGETCALL_ERROR : "Error in '%2' for widget '%1'.",
@@ -884,9 +847,6 @@ var ariaUtilsDomOverlay = require("../utils/DomOverlay");
              * @param {String} className
              */
             updateClassList : function (className) {
-                /* BACKWARD-COMPATIBILITY-BEGIN (cssclass) */
-                this.cssClass = className;
-                /* BACKWARD-COMPATIBILITY-END (cssclass) */
                 if (this.attributes && this.attributes.classList) {
                     this.attributes.classList = className.split(" ");
                     var attrBinding = this._attributesBinding;

@@ -19,9 +19,6 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
-        /* BACKWARD-COMPATIBILITY-BEGIN (cssclass) */
-        this.addTests("test.aria.templates.repeater.testOne.RepeaterOneDeprecated");
-        /* BACKWARD-COMPATIBILITY-END (cssclass) */
         this.addTests("test.aria.templates.repeater.testOne.RepeaterOne");
         this.addTests("test.aria.templates.repeater.testTwo.RepeaterTwo");
         this.addTests("test.aria.templates.repeater.testThree.RepeaterThree");
