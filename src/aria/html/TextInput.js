@@ -155,13 +155,6 @@ var ariaCoreTimer = require("../core/Timer");
         $classpath : "aria.html.TextInput",
         $extends : ariaHtmlInputElement,
         $statics : {
-            /* BACKWARD-COMPATIBILITY-BEGIN GH-551*/
-            /**
-             * Deprecation warning
-             * @type String
-             */
-            DEPRECATED_PASSWORD : "The Password property is deprecated. Add the input type as an attribute"
-            /* BACKWARD-COMPATIBILITY-END GH-551*/
         },
         $onload : function () {
             var domevent = ariaDomEvent;
@@ -178,19 +171,7 @@ var ariaCoreTimer = require("../core/Timer");
          */
         $constructor : function (cfg, context, line) {
             cfg.attributes = cfg.attributes || {};
-            var type = cfg.attributes.type;
-
-            /* BACKWARD-COMPATIBILITY-BEGIN GH-551*/
-
-            // leave that check for backward compatibility
-            if (cfg.password) {
-                type = "password";
-                this.$logWarn(this.DEPRECATED_PASSWORD, [this.tplClasspath, line]);
-            } else if (!type) {
-                type = "text";
-            }
-
-            /* BACKWARD-COMPATIBILITY-END GH-551*/
+            var type = cfg.attributes.type || "text";
 
             cfg.on = cfg.on || {};
 
