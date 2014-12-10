@@ -38,27 +38,6 @@ var ariaUtilsArray = require("../utils/Array");
                 return "";
             }
         },
-        /* BACKWARD-COMPATIBILITY-BEGIN (deprecate escape modifier) */
-        "escape" : {
-            /**
-             * Initialization function called when the template is parsed
-             * @param {aria.templates.ClassWriter} out
-             */
-            init : function (out) {
-                out.addDependencies(["aria.utils.String"]);
-            },
-            /**
-             * <span style="font-weight: bold">MODIFIER</span> <br/> Escape < > & in the given entry.
-             * @name aria.templates.Modifiers.prototype.escape
-             * @param {String} str the entry
-             * @return {String}
-             */
-            fn : function (s) {
-                this.$logWarn(aria.templates.Modifiers.DEPRECATED_ESCAPE_MODIFIER);
-                return ariaUtilsString.escapeHTML(String(s));
-            }
-        },
-        /* BACKWARD-COMPATIBILITY-END (deprecate escape modifier) */
         "escapeforhtml" : {
             /**
              * Initialization function called when the template is parsed
@@ -385,9 +364,6 @@ var ariaUtilsArray = require("../utils/Array");
         },
         $statics : {
             UNKNOWN_MODIFIER : "Unknown modifier %1.",
-            /* BACKWARD-COMPATIBILITY-BEGIN (deprecate escape modifier) */
-            DEPRECATED_ESCAPE_MODIFIER : "Escape modifier is deprecated, please use escapeforhtml modifier instead",
-            /* BACKWARD-COMPATIBILITY-END (deprecate escape modifier) */
             DATEFORMAT_MODIFIER_ENTRY : "Entry %1 is not a date."
         },
         $prototype : {

@@ -105,9 +105,6 @@ Aria.classDefinition({
         this.addTests("test.aria.templates.reloadParentTemplate.ParentReloadTestSuite");
 
         this.addTests("test.aria.templates.layoutResize.ResizeTestCase");
-        /* BACKWARD-COMPATIBILITY-BEGIN (deprecate escape modifier) */
-        this.addTests("test.aria.templates.escapemodifier.EscapeModifierLogTest");
-        /* BACKWARD-COMPATIBILITY-END (deprecate escape modifier) */
 
     }
 });
