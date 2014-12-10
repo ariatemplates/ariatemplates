@@ -131,8 +131,7 @@ module.exports = Aria.classDefinition({
     $statics : {
         // ERROR MESSAGES
         INIT_CALLBACK_ERROR : "An error occured while processing a Module init callback in class %1",
-        DATA_CONTENT_INVALID : "Content of datamodel does not match databean:\nbean name: %1,\nmodule class: %2",
-        DEPRECATED_ASYNC_ARG : "It is deprecated to pass a boolean value for the fourth argument of submitJsonRequest. Please use an object with the async property instead."
+        DATA_CONTENT_INVALID : "Content of datamodel does not match databean:\nbean name: %1,\nmodule class: %2"
     },
     $prototype : {
         /**
@@ -204,8 +203,7 @@ module.exports = Aria.classDefinition({
          * @param {Object} jsonData - the data to post to the server
          * @param {aria.core.CfgBeans:Callback} cb the callback
          * @param {aria.modules.RequestBeans.SubmitJsonRequestOptions} options object containing options for the
-         * request, such as timeout and headers. For backward compatibility, if this parameter contains a boolean value
-         * (which is deprecated), it is used as the value of the async option.
+         * request, such as timeout and headers.
          */
         submitJsonRequest : function (targetService, jsonData, cb, options) {
             var typeUtils = ariaUtilsType;
@@ -219,12 +217,6 @@ module.exports = Aria.classDefinition({
                 cb = ncb;
             } else if (typeUtils.isObject(cb) && cb.scope == null) {
                 cb.scope = this; // default scope = this
-            }
-            if (typeUtils.isBoolean(options)) {
-                this.$logWarn(this.DEPRECATED_ASYNC_ARG);
-                options = {
-                    async : options
-                };
             }
             if (!options) {
                 options = {};
