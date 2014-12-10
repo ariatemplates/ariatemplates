@@ -37,18 +37,7 @@ module.exports = Aria.classDefinition({
     },
     $destructor : function () {
         if (this._domId) {
-            /* BACKWARD COMATIBILITY BEGIN */
-            // typo on onEmbeddedElementDispose
-            if (this._cfg.controller.onEmbededElementDispose) {
-                this.$logWarn("onEmbededElementDispose has been deprecated, please use onEmbeddedElementDispose");
-                this._cfg.controller.onEmbededElementDispose(ariaUtilsDom.getElementById(this._domId), this._cfg.args);
-            } else {
-            /* BACKWARD COMATIBILITY END */
-                this._cfg.controller.onEmbeddedElementDispose(ariaUtilsDom.getElementById(this._domId), this._cfg.args);
-            /* BACKWARD COMATIBILITY BEGIN */
-            }
-            /* BACKWARD COMATIBILITY END */
-            // When the backward compatibility is removed, only the else should remain
+            this._cfg.controller.onEmbeddedElementDispose(ariaUtilsDom.getElementById(this._domId), this._cfg.args);
         }
         this.$BaseWidget.$destructor.apply(this, arguments);
     },
@@ -78,18 +67,7 @@ module.exports = Aria.classDefinition({
          */
         initWidget : function () {
             if (this._cfgOk) {
-                /* BACKWARD COMATIBILITY BEGIN */
-                // typo on onEmbeddedElementDispose
-                if (this._cfg.controller.onEmbededElementCreate) {
-                    this.$logWarn("onEmbededElementCreate has been deprecated, please use onEmbeddedElementCreate");
-                    this._cfg.controller.onEmbededElementCreate(ariaUtilsDom.getElementById(this._domId), this._cfg.args);
-                } else {
-                /* BACKWARD COMATIBILITY END */
-                    this._cfg.controller.onEmbeddedElementCreate(ariaUtilsDom.getElementById(this._domId), this._cfg.args);
-                /* BACKWARD COMATIBILITY BEGIN */
-                }
-                /* BACKWARD COMATIBILITY END */
-                // When the backward compatibility is removed, only the else should remain
+                this._cfg.controller.onEmbeddedElementCreate(ariaUtilsDom.getElementById(this._domId), this._cfg.args);
             }
         }
     }
