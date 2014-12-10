@@ -44,7 +44,10 @@ Aria.classDefinition({
                         for (var dataKey in attribute) {
                             if (attribute.hasOwnProperty(dataKey)) {
                                 var value = stringUtil.encodeForQuotedHTMLAttribute(attribute[dataKey]);
-                                var got = div.getAttribute("data-" + dataKey);
+                                // in "dataset" the key will be camelCased, but as an HTML attrib
+                                // it gets converted to dash-separated equivalent
+                                var queryKey = stringUtil.camelToDashed(dataKey);
+                                var got = div.getAttribute("data-" + queryKey);
                                 this.assertEquals(got, value, "data-" + dataKey + " should be %2, got %1");
                             }
                         }
@@ -217,12 +220,6 @@ Aria.classDefinition({
 
             shouldNot = ["camcase"];
 
-            /* BACKWARD-COMPATIBILITY-BEGIN (GH-499) */
-            delete should["cam-case"];
-            should["camcase"] = "more";
-            shouldNot = ["cam-case"];
-            /* BACKWARD-COMPATIBILITY-END (GH-499) */
-
             this.checkDataset(testDiv, should, shouldNot);
 
             // check the remove method
@@ -249,11 +246,6 @@ Aria.classDefinition({
             };
 
             shouldNot = ["some-thing"];
-
-            /* BACKWARD-COMPATIBILITY-BEGIN (GH-499) */
-            should["some-thing"] = "two";
-            shouldNot = [];
-            /* BACKWARD-COMPATIBILITY-END (GH-499) */
 
             this.checkDataset(testDiv, should, shouldNot);
             this.assertErrorInLogs(html.INVALID_DATASET_KEY, 1);
