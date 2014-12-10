@@ -38,11 +38,10 @@ Aria.classDefinition({
         testPasswordMarkup : function () {
             // tag name should be ignored
             var cfg = {
-                password : true,
                 attributes : {
                     name : "division",
                     classList : ["a", "b"],
-                    type : "text"
+                    type : "password"
                 }
             };
 
