@@ -36,7 +36,9 @@ Aria.classDefinition({
             }, {
                 fn : this._callback1,
                 scope : this
-            }, false);
+            }, {
+                async : false
+            });
 
             this.assertTrue(this._flagOne, "The request was not executed synchronously.");
         },
