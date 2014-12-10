@@ -57,19 +57,11 @@ module.exports = Aria.classDefinition({
                         for (var dataKey in attribute) {
                             if (attribute.hasOwnProperty(dataKey) && !jsonUtils.isMetadata(dataKey)) {
                                 if (this.datasetRegex.test(dataKey)) {
-                                    /* BACKWARD-COMPATIBILITY-BEGIN (GH-499): hyphenate it in the new version */
-                                    // result.push(" data-", stringUtil.camelToDashed(dataKey), "=\"");
-                                    result.push(" data-", dataKey, "=\"");
-                                    /* BACKWARD-COMPATIBILITY-END */
+                                    result.push(" data-", stringUtil.camelToDashed(dataKey), "=\"");
                                     result.push(stringUtil.encodeForQuotedHTMLAttribute(attribute[dataKey]));
                                     result.push("\"");
                                 } else {
-                                    /* BACKWARD-COMPATIBILITY-BEGIN (GH-499): change to $logError and don't output */
-                                    this.$logWarn(this.INVALID_DATASET_KEY, dataKey);
-                                    result.push(" data-", dataKey, "=\"");
-                                    result.push(stringUtil.encodeForQuotedHTMLAttribute(attribute[dataKey]));
-                                    result.push("\"");
-                                    /* BACKWARD-COMPATIBILITY-END */
+                                    this.$logError(this.INVALID_DATASET_KEY, dataKey);
                                 }
                             }
                         }
@@ -172,24 +164,13 @@ module.exports = Aria.classDefinition({
                 if (dataset.hasOwnProperty(dataKey) && !ariaUtilsJson.isMetadata(dataKey)) {
                     if (this.datasetRegex.test(dataKey)) {
                         fullKey = "data-" + stringUtil.camelToDashed(dataKey);
-                        /* BACKWARD-COMPATIBILITY-BEGIN (GH-499) */
-                        fullKey = "data-" + dataKey;
-                        /* BACKWARD-COMPATIBILITY-END (GH-499) */
                         if (remove) {
                             domElement.removeAttribute(fullKey);
                         } else {
                             domElement.setAttribute(fullKey, dataset[dataKey]);
                         }
                     } else {
-                        /* BACKWARD-COMPATIBILITY-BEGIN (GH-499): change to $logError and don't remove */
-                        this.$logWarn(this.INVALID_DATASET_KEY, dataKey);
-                        fullKey = "data-" + dataKey;
-                        if (remove) {
-                            domElement.removeAttribute(fullKey);
-                        } else {
-                            domElement.setAttribute(fullKey, dataset[dataKey]);
-                        }
-                        /* BACKWARD-COMPATIBILITY-END (GH-499) */
+                        this.$logError(this.INVALID_DATASET_KEY, dataKey);
                     }
                 }
             }
