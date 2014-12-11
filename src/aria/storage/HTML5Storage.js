@@ -17,7 +17,6 @@ var ariaUtilsEvent = require("../utils/Event");
 var ariaStorageAbstractStorage = require("./AbstractStorage");
 var ariaCoreBrowser = require("../core/Browser");
 
-
 /**
  * Abstract class that defines the API to interact with HTML5 DOM storage mechanism like localStorage and
  * sessionStorage. On top of the standard functionalities it also provides an event mechanism across instances, while in
@@ -53,15 +52,9 @@ module.exports = Aria.classDefinition({
          * Event Callback for storage event happening on different windows
          * @type aria.core.CfgBeans:Callback
          */
-        this._browserEventCb = {
-            fn : this._browserEvent,
-            scope : this
-        };
+        this._browserEventCb = null;
 
-        if (this.storage) {
-            // listen to events raised by instances in a different window but the same storage location
-            ariaUtilsEvent.addListener(Aria.$window, "storage", this._browserEventCb);
-        } else if (throwIfMissing !== false) {
+        if (!this.storage && throwIfMissing !== false) {
             // This might have been created by AbstractStorage
             if (this._disposeSerializer && this.serializer) {
                 this.serializer.$dispose();
@@ -72,11 +65,12 @@ module.exports = Aria.classDefinition({
         }
     },
     $destructor : function () {
-        ariaUtilsEvent.removeListener(Aria.$window, "storage", this._browserEventCb);
-        this._browserEventCb = null;
         this.__target = null;
-
         this.$AbstractStorage.$destructor.call(this);
+
+        this._listeners = null;
+        this._checkListeners();
+        this.storage = null;
     },
     $prototype : {
         /**
@@ -131,10 +125,14 @@ module.exports = Aria.classDefinition({
             if (isInteresting) {
                 var oldValue = event.oldValue, newValue = event.newValue;
                 if (oldValue) {
-                    oldValue = this.serializer.parse(oldValue);
+                    try {
+                        oldValue = this.serializer.parse(oldValue);
+                    } catch (e) {}
                 }
                 if (newValue) {
-                    newValue = this.serializer.parse(newValue);
+                    try {
+                        newValue = this.serializer.parse(newValue);
+                    } catch (e) {}
                 }
                 this._onStorageEvent({
                     name : "change",
@@ -148,6 +146,40 @@ module.exports = Aria.classDefinition({
         },
 
         /**
+         * Depending on whether there is any listener, registers or unregisters the browser storage event.
+         */
+        _checkListeners : function () {
+            if (!this.storage) {
+                return;
+            }
+            var listeners = !!this._listeners;
+            var registeredBrowserEvent = !!this._browserEventCb;
+
+            if (listeners !== registeredBrowserEvent) {
+                if (listeners) {
+                    this._browserEventCb = {
+                        fn : this._browserEvent,
+                        scope : this
+                    };
+                    // listen to events raised by instances in a different window but the same storage location
+                    ariaUtilsEvent.addListener(Aria.$window, "storage", this._browserEventCb);
+                } else {
+                    ariaUtilsEvent.removeListener(Aria.$window, "storage", this._browserEventCb);
+                    this._browserEventCb = null;
+                }
+            }
+
+        },
+
+        /**
+         * Override the $addListeners function to also register to the browser storage event if needed.
+         * @override
+         */
+        $addListeners : function () {
+            this.$on.apply(this, arguments);
+        },
+
+        /**
          * Override the $on function to log an error in IE8 that doesn't support storage event
          * @param {Object} event Event description
          * @override
@@ -158,6 +190,25 @@ module.exports = Aria.classDefinition({
             }
 
             this.$AbstractStorage.$on.call(this, event);
+            this._checkListeners();
+        },
+
+        /**
+         * Override the $unregisterListeners function to also unregister the browser storage event if needed.
+         * @override
+         */
+        $unregisterListeners : function () {
+            this.$AbstractStorage.$unregisterListeners.apply(this, arguments);
+            this._checkListeners();
+        },
+
+        /**
+         * Override the $removeListeners function to also unregister the browser storage event if needed.
+         * @override
+         */
+        $removeListeners : function () {
+            this.$AbstractStorage.$removeListeners.apply(this, arguments);
+            this._checkListeners();
         }
     }
 });
