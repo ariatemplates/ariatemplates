@@ -29,6 +29,8 @@ Aria.classDefinition({
         this.addTests("test.aria.storage.sessionStorage.Serialize");
         this.addTests("test.aria.storage.sessionStorage.Namespace");
 
+        this.addTests("test.aria.storage.localStorage.EventIssue");
+
         this.addTests("test.aria.storage.userData.API");
         this.addTests("test.aria.storage.userData.Events");
         this.addTests("test.aria.storage.userData.Serialize");
