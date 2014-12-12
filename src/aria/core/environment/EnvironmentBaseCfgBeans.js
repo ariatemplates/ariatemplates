@@ -101,6 +101,11 @@ module.exports = Aria.beanDefinitions({
                     $type : "json:Boolean",
                     $description : "Indicates if markup should be automatically escaped in ${} statements",
                     $default : true
+                },
+                "dangerouslyAllowSectionsAsContainers" : {
+                    $type : "json:Boolean",
+                    $description : "Indicates whether sections can be used as containers ({section {...}}...{/section}) in templates",
+                    $default : false
                 }
             }
         },
