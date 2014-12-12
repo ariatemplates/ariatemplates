@@ -30,5 +30,6 @@ Aria.classDefinition({
         this.addTests("test.aria.templates.section.sectionAttributes.cssClass.CssClassDeprecationTest");
         /* BACKWARD-COMPATIBILITY-END (cssclass) */
         this.addTests("test.aria.templates.section.animations.SectionAnimations");
+        this.addTests("test.aria.templates.section.asContainer.SectionAsContainerTest");
     }
 });

@@ -1141,7 +1141,13 @@ var ariaCoreJsonValidator = require("../core/JsonValidator");
              * @private
              * @implements aria.templates.ITemplate
              */
-            __$insertSection : function (lineNumber, sectionParam) {
+            __$insertSection : function (lineNumber, sectionParam, macro) {
+                if (ariaUtilsType.isString(sectionParam)) {
+                    sectionParam = {
+                        id : sectionParam
+                    };
+                }
+                sectionParam.macro = sectionParam.macro || macro;
                 if (!sectionParam.macro) {
                     var sectionId = sectionParam.id || "";
                     this.$logError(this.MISSING_SECTION_MACRO, [this.tplClasspath, "'" + sectionId + "'"]);
