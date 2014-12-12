@@ -234,6 +234,76 @@ Aria.classDefinition({
             this.domCreated.pop();
             aria.utils.Dom.removeElement(element);
         },
+        test_positionAndOffsetWhenBodyScrolled_StaticElement : function () {
+            var document = Aria.$window.document;
+
+            var baseCss = 'position:static; display:block; width:50px; height:50px; background-color:orange';
+
+            // element under test
+            var eut = document.createElement("div");
+            eut.style.cssText = baseCss;
+
+            // create a helper out of viewport and scroll it into view
+            var vp = aria.utils.Dom.getViewportSize();
+            var helper = document.createElement("div");
+            var left = 'left:' + vp.width + 'px';
+            var top = 'top:' + vp.height + 'px';
+            helper.style.cssText = [baseCss, top, left, 'position:absolute'].join(';');
+
+            // insert element under test as first child of BODY => it should have top/left position 0px/0px
+            document.body.insertBefore(eut, document.body.firstChild);
+            document.body.appendChild(helper);
+            this.domCreated.push(eut);
+            this.domCreated.push(helper);
+
+            helper.scrollIntoView();
+
+            // check that getOffset is cross-browser for statically-positioned elements
+            var offset = aria.utils.Dom.getOffset(eut);
+            this.assertEquals(offset.top, 0);
+            this.assertEquals(offset.left, 0);
+        },
+
+        test_positionAndOffsetWhenBodyScrolled_AbsoluteElement : function () {
+            var document = Aria.$window.document;
+
+            var baseCss = 'position:absolute; display:block; width:50px; height:50px; background-color:orange';
+
+            // element under test
+            var eut = document.createElement("div");
+            eut.style.cssText = [baseCss, 'top: 100px; left: 100px;'].join(';');
+
+            // create a helper out of viewport and scroll it into view
+            var vp = aria.utils.Dom.getViewportSize();
+            var helper = document.createElement("div");
+            var left = 'left:' + vp.width + 'px';
+            var top = 'top:' + vp.height + 'px';
+            helper.style.cssText = [baseCss, top, left].join(';');
+
+            document.body.appendChild(eut);
+            document.body.appendChild(helper);
+            this.domCreated.push(eut);
+            this.domCreated.push(helper);
+
+            helper.scrollIntoView();
+
+            // check that document.body's returned position is cross-browser
+            // i.e. we want to work around https://code.google.com/p/chromium/issues/detail?id=284141
+            var bodyPos = aria.utils.Dom.calculatePosition(document.body);
+            if (!aria.core.Browser.isPhantomJS) {
+                // this does not hold in PhantomJS as it dynamically resizes
+                // the viewport as needed when adding out-of-viewport element into DOM
+                this.assertTrue(bodyPos.top <= -50);
+                this.assertTrue(bodyPos.left <= -50);
+            }
+            this.assertEquals(bodyPos.scrollTop, 0);
+            this.assertEquals(bodyPos.scrollLeft, 0);
+
+            // check that getOffset is cross-browser for absolute-positioned elements
+            var offset = aria.utils.Dom.getOffset(eut);
+            this.assertEquals(offset.top, 100);
+            this.assertEquals(offset.left, 100);
+        },
 
         /**
          * Test the scroll Into View method
