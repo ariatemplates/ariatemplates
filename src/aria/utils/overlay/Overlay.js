@@ -70,7 +70,16 @@ module.exports = Aria.classDefinition({
                 overlay.id = "xOverlay" + params.id;
             }
             overlay.className = params.className || "xOverlay";
-            overlay.style.position = params.position || "fixed";
+
+            // absolute positioning is preferred over fixed since Safari Mobile doesn't repaint fixed elements on scroll
+            var position = params.position || "absolute";
+
+            // Place it in the top-left corner of the page, otherwise if it happens to be inserted far in the DOM, it
+            // may temporarily create unnecessary scrollbars on the page - this may affect proper positioning of the
+            // overlay. We'll set left/top later.
+            overlay.style.left = 0;
+            overlay.style.top = 0;
+            overlay.style.position = position;
 
             return overlay;
         },
