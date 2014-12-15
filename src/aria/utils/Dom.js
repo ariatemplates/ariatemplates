@@ -604,7 +604,8 @@ module.exports = Aria.classDefinition({
         },
 
         /**
-         * Get the absolute position in a page of an element
+         * Get the position in a page of an element. It is relative to the current viewport (i.e. depends on scroll of
+         * the page)
          * @param {HTMLElement} element
          * @param {Boolean} stopAbsolute <i>[optional, default=false]</i> if true, it will stop calculating the
          * position when it encounters the first ancestor of the element with absolute positioning
@@ -714,7 +715,8 @@ module.exports = Aria.classDefinition({
 
         /**
          * Get the client geometry of an element. It means the coordinates of the top/left corner and the width and
-         * height of the area inside the element which can be used by its child elements.
+         * height of the area inside the element which can be used by its child elements. Returned value is relative to
+         * the current viewport.
          * @param {HTMLElement} element Element whose client geometry is requested.
          * @return {aria.utils.DomBeans:Geometry} Geometry object
          */
@@ -729,8 +731,8 @@ module.exports = Aria.classDefinition({
         },
 
         /**
-         * Get the offset top and left of an element, based either on the style or the offset element. Useful to manage
-         * some internet explorer offset issues.
+         * Get the offset top and left of an element (relative to its offset parent), based either on the style or the
+         * offset element. Useful to manage some internet explorer offset issues.
          * @param {HTMLElement} element Element whose offset is requested.
          * @return {Object} JSON with the top ad left properties.
          * @public
@@ -763,9 +765,9 @@ module.exports = Aria.classDefinition({
         },
 
         /**
-         * Get the geometry of an element. It means the coordinates of top/left corner and its width and height. If the
-         * element is the body, the geometry corresponds to the whole page, otherwise it's the visible part of the
-         * element.
+         * Get the geometry of an element, relative to the current viewport. It means the coordinates of top/left corner
+         * and its width and height. If the element is the body, the geometry corresponds to the whole page, otherwise
+         * it's the visible part of the element.
          * @param {HTMLElement} element Element whose geometry is requested.
          * @return {aria.utils.DomBeans:Geometry} Geometry object
          * @public
