@@ -35,7 +35,7 @@
     Aria.classDefinition({
         $classpath : 'aria.widgets.container.Tooltip',
         $extends : 'aria.widgets.container.Container',
-        $dependencies : ['aria.widgets.container.Div', 'aria.popups.Popup'],
+        $dependencies : ['aria.widgets.container.Div', 'aria.popups.Popup', 'aria.utils.Math', 'aria.utils.Dom'],
         $onload : function (classRef) {
             timer = aria.core.Timer;
         },
@@ -45,6 +45,7 @@
         },
         $constructor : function (cfg, ctxt) {
             this.$Container.constructor.apply(this, arguments);
+            this._directInit = false;
             this._associatedWidget = null;
             this._showTimeout = null;
             this._popup = null; // will contain the popup object when displayed
@@ -104,11 +105,16 @@
 
             _widgetMarkupBeginCommon : function (out) {
                 var cfg = this._cfg;
+                var viewport = aria.utils.Dom._getViewportSize();
                 // We loose the reference to this div, as it will be destroyed by the section
                 var div = new aria.widgets.container.Div({
                     sclass : cfg.sclass,
                     width : cfg.width,
                     height : cfg.height,
+                    minWidth : cfg.minWidth,
+                    minHeight : cfg.minHeight,
+                    maxWidth : aria.utils.Math.min(cfg.maxWidth, viewport.width),
+                    maxHeight : aria.utils.Math.min(cfg.maxHeight, viewport.height),
                     printOptions : cfg.printOptions,
                     cssClass : this._context.getCSSClassNames(true)
                 }, this._context, this._lineNumber);
@@ -252,7 +258,8 @@
                 }
                 var refreshParams = this._container ? {
                     filterSection : this._sectionId
-                }: { writerCallback : {
+                } : {
+                    writerCallback : {
                         fn : this._writerCallback,
                         scope : this
                     },
