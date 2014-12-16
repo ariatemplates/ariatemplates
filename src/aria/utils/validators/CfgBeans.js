@@ -15,7 +15,6 @@
 var Aria = require("../../Aria");
 var ariaCoreJsonTypes = require("../../core/JsonTypes");
 
-
 /**
  * Beans describing the message structure used in validators, in the error list widget, and returned in server side
  * validation.
@@ -49,7 +48,8 @@ module.exports = Aria.beanDefinitions({
                     $description : "Message in user language."
                 },
                 escape : {
-                    $default : "true",
+                    $type : "json:Boolean",
+                    $default : true,
                     $description : "The parameter to pass to the aria.utils.String.escapeForHTML method (please refer to it for more information). This can be used to disable the automatic escaping or refine its configuration inside the default template which is used by the widget to display the messages. This is up to the user to use this information in case he provides a custom template."
                 },
                 code : {

@@ -20,6 +20,7 @@ var dataUtils = require("ariatemplates/utils/Data");
 
 var TemplateTestCase = require("ariatemplates/jsunit/TemplateTestCase");
 
+require("ariatemplates/utils/validators/CfgBeans"); // just to make sure it is correctly defined
 require("ariatemplates/widgets/errorlist/ErrorListTemplate.tpl"); // just to be sure the template is loaded when the test is run, since it depends on its (DOM) content
 
 module.exports = Aria.classDefinition({
