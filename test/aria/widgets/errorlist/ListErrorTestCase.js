@@ -20,7 +20,12 @@ Aria.classDefinition({
         // just to be sure the template is loaded when the test is run, since it depends on its (DOM) content
         "aria.widgets.errorlist.ErrorListTemplate"
     ],
-    $dependencies : ["aria.utils.String", "aria.utils.Data"],
+    $dependencies : [
+        "aria.utils.String",
+        "aria.utils.Data",
+        // just to make sure it is correctly defined:
+        "aria.utils.validators.CfgBeans"
+    ],
 
     $constructor : function() {
         // ---------------------------------------------------------------------
