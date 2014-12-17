@@ -15,7 +15,6 @@
 var Aria = require("../../Aria");
 var ariaWidgetsFormListList = require("./list/List");
 var ariaUtilsJson = require("../../utils/Json");
-var ariaCoreBrowser = require("../../core/Browser");
 var ariaCoreTimer = require("../../core/Timer");
 
 /**
@@ -224,9 +223,6 @@ module.exports = Aria.classDefinition({
             if (popupWidth < 0) {
                 // No width specified, let the widget decide
                 return null;
-            }
-            if (ariaCoreBrowser.isIE6) {
-                return popupWidth;
             }
             return Math.max(popupWidth, inputMarkupWidth);
         }

@@ -31,11 +31,11 @@ module.exports = Aria.classDefinition({
 
         /**
          * Style of visual focus specified in the application environment. It is equal to null if no visual focus was
-         * set, or even when the current browser is IE7 or IE6, which do not support the
+         * set, or even when the current browser is IE7, which do not support it.
          * @private
          * @type String
          */
-        this.__style = (!ariaCoreBrowser.isIE6 && !ariaCoreBrowser.isIE7)
+        this.__style = (!ariaCoreBrowser.isIE7)
                 ? ariaUtilsEnvironmentVisualFocus.getAppOutlineStyle()
                 : null;
 
@@ -175,7 +175,7 @@ module.exports = Aria.classDefinition({
          */
         updateOutlineStyle : function (newStyle) {
             var styleToApply = (newStyle) ? newStyle : ariaUtilsEnvironmentVisualFocus.getAppOutlineStyle();
-            this.__style = (!ariaCoreBrowser.isIE6 && !ariaCoreBrowser.isIE7) ? styleToApply : null;
+            this.__style = !ariaCoreBrowser.isIE7 ? styleToApply : null;
             this.__updateVisualFocus();
         },
 

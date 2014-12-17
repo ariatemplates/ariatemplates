@@ -28,7 +28,7 @@ module.exports = Aria.classDefinition({
         DELAY : 500
     },
     $constructor : function () {
-        this.isDesktop = ariaCoreBrowser.DesktopView;
+        this.isDesktop = ariaCoreBrowser.isDesktopView;
         this.lastEvt = null;
     },
     $prototype : {

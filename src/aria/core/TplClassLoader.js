@@ -191,8 +191,8 @@ var ariaCoreJsonValidator = require("./JsonValidator");
         }
 
         // Because of css-related positioning problems, it is safer to set a relative positioning on the div here
-        // This is actually an IE6/7 only problem that can cause scrolling problems
-        if (ariaCoreBrowser.isIE6 || ariaCoreBrowser.isIE7) {
+        // This is actually an IE7 only problem that can cause scrolling problems
+        if (ariaCoreBrowser.isIE7) {
             var curPosition = div.style.position;
             if (curPosition != "absolute" && curPosition != "relative") {
                 div.style.position = "relative";

@@ -178,8 +178,8 @@ var ariaUtilsCssPropertiesConfig = require("./PropertiesConfig");
              */
             this._dpi = null;
 
-            var browser = ariaCoreBrowser;
-            this.isIE8orLess = browser.isIE8 || browser.isIE7 || browser.isIE6;
+            var Browser = ariaCoreBrowser;
+            this.isIE8orLess = Browser.isIE8 || Browser.isIE7;
         },
         $prototype : {
 

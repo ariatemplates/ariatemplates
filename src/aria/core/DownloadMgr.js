@@ -247,7 +247,7 @@ module.exports = Aria.classDefinition({
             // file is not loaded: create a file loader if not already done
             var loader = itm.loader;
             if (!loader) {
-                var ariaCoreFileLoader = require("aria/core/FileLoader");
+                var ariaCoreFileLoader = require("./FileLoader");
                 this.$assert(63, ariaCoreFileLoader);
 
                 var url;

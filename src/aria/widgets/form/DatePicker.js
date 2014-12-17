@@ -19,7 +19,6 @@ var ariaWidgetsFormDatePickerStyle = require("./DatePickerStyle.tpl.css");
 var ariaWidgetsCalendarCalendarStyle = require("../calendar/CalendarStyle.tpl.css");
 var ariaWidgetsContainerDivStyle = require("../container/DivStyle.tpl.css");
 var ariaWidgetsFormDropDownTextInput = require("./DropDownTextInput");
-var ariaCoreBrowser = require("../../core/Browser");
 
 /**
  * DatePicker widget, which is a template-based widget.
@@ -191,10 +190,6 @@ module.exports = Aria.classDefinition({
          */
         _renderDropdownContent : function (out) {
             var cfg = this._cfg;
-            var wrapperDiv = cfg.popupWidth && cfg.popupWidth > -1 && ariaCoreBrowser.isIE6;
-            if (wrapperDiv) {
-                out.write('<div style="width: ' + cfg.popupWidth + 'px;">');
-            }
 
             var dm = this.controller.getDataModel();
 
@@ -234,9 +229,6 @@ module.exports = Aria.classDefinition({
             this.controller.setCalendar(calendar);
             out.registerBehavior(calendar);
             calendar.writeMarkup(out);
-            if (wrapperDiv) {
-                out.write('</div>');
-            }
         },
 
         _closeDropdown : function () {

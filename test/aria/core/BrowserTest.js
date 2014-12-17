@@ -15,29 +15,124 @@
 
 Aria.classDefinition({
     $classpath : "test.aria.core.BrowserTest",
-    $dependencies : ["aria.core.Browser"],
+    $dependencies : ["aria.core.Browser", "aria.utils.Array"],
     $extends : "aria.jsunit.TestCase",
+
+    $constructor : function () {
+        this.$TestCase.constructor.call(this);
+
+        this.originalWindow = Aria.$window;
+    },
+
+    $destructor : function () {
+        this.originalWindow = null;
+
+        this.$TestCase.$destructor.call(this);
+    },
+
     $prototype : {
-        testToString : function () {
-            var browserToString = aria.core.Browser.toString();
-            this.assertTrue(browserToString != "[object Object]", "aria.core.Browser.toString method not overrided correctly. "
-                    + "Expected something different from [object Object] and got " + browserToString);
+        tearDown : function () {
+            this.reset();
         },
-        testVersion : function () {
-            var browser = aria.core.Browser;
-            if (Object.defineProperty) {
-                this.assertFalse(browser.isIE6);
-                this.assertFalse(browser.isIE7);
-                try {
-                    var testVar = {};
-                    Object.defineProperty(testVar, "a", {
-                        get : function () {}
-                    });
-                    this.assertFalse(browser.isIE8);
-                } catch (e) {
-                    this.assertFalse(browser.isIE9);
+
+        /**
+         * Resets everything altered for testing purposes.
+         */
+        reset : function () {
+            aria.core.Browser.init();
+
+            Aria.$window = this.originalWindow;
+        },
+
+        testPhoneGap : function () {
+            var Browser = aria.core.Browser;
+
+            // -----------------------------------------------------------------
+
+            Aria.$window = {
+                cordova : {},
+                device : {}
+            };
+            this.assertTrue(Browser.isPhoneGap(), "Having global cordova means on PhoneGap");
+
+            // -----------------------------------------------------------------
+
+            this.reset();
+            Aria.$window = {
+                device : {
+                    phonegap : "yeah!"
                 }
-            }
+            };
+            this.assertTrue(Browser.isPhoneGap(), "Having global phonegap means on PhoneGap");
+
+            // -----------------------------------------------------------------
+
+            this.reset();
+            Aria.$window = {
+                device : "what?"
+            };
+            this.assertFalse(Browser.isPhoneGap(), "Missing globals means not on PhoneGap");
+        },
+
+        /**
+         * Sets the document.documentElement value of the current window to the given value.
+         *
+         * @param value The value to set.
+         *
+         * @return The given value.
+         */
+        _setDocumentElementStyle : function(value) {
+            Aria.$window = {
+                document : {
+                    documentElement : {
+                        style : value
+                    }
+                }
+            };
+
+            return value;
+        },
+
+        test2DSupported : function () {
+            var Browser = aria.core.Browser;
+
+            // ------------------------------------------- native implementation
+
+            this._setDocumentElementStyle({"transform" : "yeah!"});
+            this.assertTrue(Browser.is2DTransformCapable(), "2D transform should be natively supported");
+
+            // ----------------------------------------------- browser dependent
+
+            this.reset();
+            this._setDocumentElementStyle({"MozTransform" : "o yeah!"});
+            this.assertTrue(Browser.is2DTransformCapable(), "2D transform should be -moz supported");
+
+            // ------------------------------------------------------ no support
+
+            this.reset();
+            this._setDocumentElementStyle({"missing" : "transform"});
+            this.assertFalse(Browser.is2DTransformCapable(), "2D transform shouldn't be supported");
+        },
+
+        test3DSupported : function () {
+            var Browser = aria.core.Browser;
+
+            // ------------------------------------------- native implementation
+
+            this._setDocumentElementStyle({"perspective" : "yeah!"});
+            this.assertTrue(Browser.is3DTransformCapable(), "3D transform should be natively supported");
+
+            // ----------------------------------------------- browser dependent
+
+            this.reset();
+            this._setDocumentElementStyle({"OPerspective" : "o yeah!"});
+            this.assertTrue(Browser.is3DTransformCapable(), "3D transform should be -o supported");
+
+            // ------------------------------------------------------ no support
+
+            this.reset();
+            this._setDocumentElementStyle({"missing" : "perspective"});
+            this.assertFalse(Browser.is3DTransformCapable(), "3D transform shouldn't be supported");
         }
     }
 });

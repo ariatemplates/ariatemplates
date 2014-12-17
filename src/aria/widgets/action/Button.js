@@ -217,7 +217,7 @@ module.exports = Aria.classDefinition({
         _widgetMarkup : function (out) {
             var cfg = this._cfg;
             var tabIndexString = (cfg.tabIndex != null ? ' tabindex="' + this._calculateTabIndex() + '" ' : '');
-            var ie67 = ariaCoreBrowser.isIE7 || ariaCoreBrowser.isIE6;
+            var isIE7 = ariaCoreBrowser.isIE7;
             var ariaTestMode = (Aria.testMode) ? ' id="' + this._domId + '_button" ' : '';
             var buttonClass = cfg.disabled ? "xButton xButtonDisabled" : "xButton";
 
@@ -227,9 +227,9 @@ module.exports = Aria.classDefinition({
                 out.write(['<input type="button" value="', ariaUtilsString.encodeForQuotedHTMLAttribute(cfg.label),
                         '"', ariaTestMode, tabIndexString, disableMarkup, styleMarkup, '/>'].join(''));
             } else {
-                if (ie67) {
-                    // FIXME: find a way to put a button also on ie6-7
-                    // on ie6 and 7 the button is having display issues the current frame implementation inside it
+                if (isIE7) {
+                    // FIXME: find a way to put a button also on IE7
+                    // on IE7 the button is having display issues the current frame implementation inside it
                     out.write(['<span class="' + buttonClass + '" style="margin: 0;"', tabIndexString, ariaTestMode,
                             '>'].join(''));
                 } else {
@@ -246,7 +246,7 @@ module.exports = Aria.classDefinition({
                 // the label cfg attribute, but the method can be overwritten in child classes
                 this._widgetMarkupContent(out);
                 this._frame.writeMarkupEnd(out);
-                if (ie67) {
+                if (isIE7) {
                     out.write('</span>');
                 } else {
                     out.write('</button>');

@@ -37,13 +37,13 @@ module.exports = Aria.classDefinition({
     $prototype : {
 
         /**
-         * To be used instead of document.getElementById because IE6/7 do not retrieve correctly the elements in some
+         * To be used instead of document.getElementById because IE7 does not retrieve correctly the elements in some
          * cases
          * @param {String} id the 'id' parameter of the element to find
          * @return {HTMLElement}
          */
         getElementById : function (id) {
-            if (ariaCoreBrowser.isIE6 || ariaCoreBrowser.isIE7) {
+            if (ariaCoreBrowser.isIE7) {
                 this.getElementById = function (id) {
                     var document = Aria.$window.document;
                     var el = document.getElementById(id);
@@ -661,7 +661,7 @@ module.exports = Aria.classDefinition({
 
             if (obj.getBoundingClientRect && !stopAbsolute) {
                 // IE getBoundingClientRect have extra pixels.
-                var shift = (browser.isIE6 || browser.isIE7) ? 2 : 0;
+                var shift = browser.isIE7 ? 2 : 0;
                 // IE throws an error if the element is not in DOM
                 try {
                     var rect = obj.getBoundingClientRect();
@@ -904,7 +904,7 @@ module.exports = Aria.classDefinition({
          */
         getStyle : function (element, property) {
             var browser = ariaCoreBrowser;
-            var isIE8orLess = browser.isIE8 || browser.isIE7 || browser.isIE6;
+            var isIE8orLess = browser.isIE8 || browser.isIE7;
             if (isIE8orLess) {
                 this.getStyle = function (element, property) {
                     if (property == 'opacity') {// IE<=8 opacity uses filter
@@ -1224,7 +1224,7 @@ module.exports = Aria.classDefinition({
          */
         setOpacity : function (element, opacity) {
             var browser = ariaCoreBrowser;
-            var isIE8OrLess = (browser.isIE8 || browser.isIE7 || browser.isIE6);
+            var isIE8OrLess = (browser.isIE8 || browser.isIE7);
             this.setOpacity = isIE8OrLess ? this._setOpacityLegacyIE : this._setOpacityW3C;
             this.setOpacity(element, opacity);
         },

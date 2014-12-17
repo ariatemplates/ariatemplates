@@ -186,7 +186,7 @@ module.exports = Aria.classDefinition({
                     var domEltStyle = dom.style;
                     var visualFocusStyle = (aria.utils.VisualFocus) ? aria.utils.VisualFocus.getStyle() : null;
                     if (this._hasFocus) {
-                        if (ariaCoreBrowser.isIE6 || ariaCoreBrowser.isIE7) {
+                        if (ariaCoreBrowser.isIE7) {
                             domEltStyle.border = "1px dotted black";
                             domEltStyle.padding = "0px";
                         } else {
@@ -195,7 +195,7 @@ module.exports = Aria.classDefinition({
                             }
                         }
                     } else {
-                        if (ariaCoreBrowser.isIE6 || ariaCoreBrowser.isIE7) {
+                        if (ariaCoreBrowser.isIE7) {
                             domEltStyle.border = "0px";
                             domEltStyle.padding = "1px";
                         } else {
