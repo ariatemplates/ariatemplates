@@ -33,7 +33,7 @@ module.exports = function (grunt) {
             header : packagingSettings.license
         }
     };
-    var stripBannerFiles = packagingSettings.atExtensions.concat("!aria/noderError/**");
+    var stripBannerFiles = packagingSettings.atExtensions.concat(["!aria/noderError/**", "!aria/core/useragent/ua-parser.js"]);
 
     grunt.config.set('atpackager.bootstrap', {
         options : {
@@ -69,7 +69,12 @@ module.exports = function (grunt) {
                     files : stripBannerFiles,
                     builder : builder
                 }
-            }, 'CopyUnpackaged'],
+            }, {
+                type : 'CopyUnpackaged',
+                cfg : {
+                    files : ['**/*', '!aria/core/useragent/readme.md']
+                }
+            }],
             packages : [{
                         name : packagingSettings.bootstrap.bootstrapFileName,
                         files : ["aria/bootstrap.js"]

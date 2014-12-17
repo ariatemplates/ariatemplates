@@ -25,8 +25,8 @@ Aria.classDefinition({
         this.addTests("test.aria.core.environment.Environment");
         this.addTests("test.aria.core.environment.Customizations");
         this.addTests("test.aria.core.AppEnvironmentTest");
+        this.addTests("test.aria.core.useragent.BrowserAndDeviceTest");
         this.addTests("test.aria.core.BrowserTest");
-        this.addTests("test.aria.core.MobileBrowserTest");
         this.addTests("test.aria.core.CacheTest");
         this.addTests("test.aria.core.CallbackTest");
         this.addTests("test.aria.core.ClassMgrTest");

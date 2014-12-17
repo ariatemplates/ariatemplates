@@ -87,8 +87,8 @@ var ariaCoreBrowser = require("./core/Browser");
         $classpath : 'aria.DomEvent',
         $onload : function () {
             // Browser shortcuts are done in the $onload which is executed only once
-            isIE8orLess = (ariaCoreBrowser.isIE6 || ariaCoreBrowser.isIE7 || ariaCoreBrowser.isIE8);
-            isGecko = !(ariaCoreBrowser.isIE || ariaCoreBrowser.isOpera || ariaCoreBrowser.isChrome || ariaCoreBrowser.isSafari);
+            isIE8orLess = (ariaCoreBrowser.isIE7 || ariaCoreBrowser.isIE8);
+            isGecko = !(ariaCoreBrowser.isIE || ariaCoreBrowser.isOpera || ariaCoreBrowser.isChrome || ariaCoreBrowser.isSafari || ariaCoreBrowser.isPhantomJS);
         },
         /**
          * DomEvent constructor. It is advised to use the getWrapper static method instead of the constructor,

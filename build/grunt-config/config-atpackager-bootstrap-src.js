@@ -46,12 +46,43 @@ module.exports = function (grunt) {
         };
     };
 
+    function uaparserVisitor() {
+        return {
+            onInit: function(packaging) {
+                var logicalPath = 'aria/core/useragent/ua-parser.js';
+
+                // -------------------------------------------- read source file
+
+                var sourcePath = require.resolve('ua-parser-js/src/ua-parser.js');
+                var content = grunt.file.read(sourcePath, {encoding: 'utf8'});
+
+                // ----------------------------------------------- alter content
+
+                var insertedText = '\n * @license applies to ' + logicalPath;
+                var insertionMark = '/**';
+                var insertionIndex = content.indexOf(insertionMark) + insertionMark.length;
+
+                content = content.slice(0, insertionIndex) + insertedText + content.slice(insertionIndex, content.length);
+
+                // -------------------------------------------- add to packaging
+
+                var sourceFile = packaging.addSourceFile(logicalPath);
+                sourceFile.setTextContent(content);
+
+                var targetFile = packaging.addOutputFile(logicalPath, true);
+                targetFile.builder = packaging.createObject('Concat', targetFile.builtinBuilders);
+                sourceFile.setOutputFile(targetFile);
+            }
+        };
+    }
+
     grunt.config.set('atpackager.bootstrapSrc', {
         options : {
             sourceDirectories : ['src'],
             sourceFiles : [],
             outputDirectory : 'src',
-            visitors : [{
+            visitors : [uaparserVisitor,
+                        'CopyUnpackaged', {
                         type : 'NoderPlugins',
                         cfg : {
                             targetBaseLogicalPath : "aria",

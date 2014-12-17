@@ -1,0 +1,2 @@
+- [UAParser project](https://github.com/faisalman/ua-parser-js)
+- Automatically included through an ATPackager plugin, so external source file is ignored

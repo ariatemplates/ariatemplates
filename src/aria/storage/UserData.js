@@ -78,7 +78,7 @@ var ariaStorageAbstractStorage = require("./AbstractStorage");
 
     /**
      * Define the API to interact with userData, the IE implementation of localStorage. This class should only be used
-     * in IE7 as a fallback for localStorage altough it is also available on IE6+.<br />
+     * in IE7 as a fallback for localStorage.<br />
      * This class is used transparently by aria.storage.LocalStorage so you don't need to create an instance of it
      * unless you know what you're doing.
      */

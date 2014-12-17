@@ -29,8 +29,9 @@ module.exports = Aria.classDefinition({
     $constructor : function (conf) {
         this.testRunner = conf.testRunner;
 
-        var browserName = ariaCoreBrowser.toString().replace(/ /g, "_").replace(/\./g, "");
-        var osName = ariaCoreBrowser.environment;
+        var browserName = ariaCoreBrowser.name + " " + ariaCoreBrowser.version;
+        browserName = browserName.replace(/ /g, "_").replace(/\./g, "");
+        var osName = ariaCoreBrowser.osName;
         this.__browserInfo = browserName + "_" + osName + ".";
     },
     $destructor : function () {

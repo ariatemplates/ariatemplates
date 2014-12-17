@@ -13,217 +13,276 @@
  * limitations under the License.
  */
 var Aria = require("../Aria");
+var ariaUtilsArray = require("../utils/Array");
 var ariaCoreBrowser = require("../core/Browser");
+var UserAgent = require("../core/useragent/UserAgent");
+var ariaUtilsEvent = require("./Event");
+var ariaUtilsDom = require("./Dom");
+
 
 
 module.exports = Aria.classDefinition({
     $classpath : "aria.utils.Device",
     $singleton : true,
+    $events : {
+        "orientationchange" : {
+            description : "This event is fired when there is orientation change on the device",
+            properties : {
+                "isPortrait" : "Boolean value indicating that the screen's orientation is portrait"
+            }
+        }
+    },
+
     $constructor : function () {
-        var navigator = Aria.$global.navigator;
-
         /**
-         * The user agent string.
-         * @type String
-         */
-        this.ua = navigator ? navigator.userAgent.toLowerCase() : "";
-
-        /**
-         * Cache for the supported styles
-         * @type Object
+         * Previous orientation value to check if event should be raised (value changed or not).
+         * @type Boolean
          * @private
          */
-        this._styleCache = {};
+        this._previousIsPortrait = this.isPortrait(true);
+
+        this.init();
     },
     $prototype : {
-        /**
-         * Checks whether it is a Mobile Device including a Tablet
-         */
-        isDevice : function () {
-            var isDevice = /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i.test(this.ua)
-                    || /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(this.ua.substr(0, 4))
-                    || this.isTablet();
 
-            if (isDevice === true) {
-                this.isDevice = Aria.returnTrue;
-            } else {
-                this.isDevice = Aria.returnFalse;
-            }
-            return this.isDevice();
+
+        /**
+         * Makes the class work with the given user agent.
+         *
+         * <p>
+         * If no user agent is given, current browser's one is taken.
+         * </p>
+         *
+         * @param {String} userAgent The user agent to take into account in this class
+         *
+         * @return {Object} The user agent wrapper used to compute the properties (see <em>aria.core.useragent.UserAgent.getUserAgentInfo</em>)
+         */
+        init : function (userAgent) {
+            var userAgentWrapper = ariaCoreBrowser.init(userAgent);
+
+            this.__userAgentWrapper = userAgentWrapper;
+
+            return userAgentWrapper;
         },
 
         /**
-         * Checks whether it is a Mobile Device rather than a Tablet
+         * Returns the model of the device, if any.
+         *
+         * @return {String} The model of the device if any, an empty otherwise
          */
-        isMobile : function () {
-            if (this.isDevice() === true && this.isTablet() === false) {
-                this.isMobile = Aria.returnTrue;
-            } else {
-                this.isMobile = Aria.returnFalse;
+        model : function() {
+            var model = this.__userAgentWrapper.results.device.model;
+
+            if (model != null) {
+                return model;
             }
-            return this.isMobile();
+
+            return "";
         },
 
         /**
-         * Checks whether it is a Desktop
+         * Returns the vendor of the device, if any.
+         *
+         * @return {String} The device vendor if any, an empty otherwise
          */
-        isDesktop : function () {
-            if (this.isDevice() === false) {
-                this.isDesktop = Aria.returnTrue;
-            } else {
-                this.isDesktop = Aria.returnFalse;
+        vendor: function () {
+            var vendor = this.__userAgentWrapper.results.device.vendor;
+
+            if (vendor != null) {
+                return vendor;
             }
-            return this.isDesktop();
+
+            return "";
         },
 
         /**
-         * Checks whether the device is a Tablet Device
+         * Returns the device name, which is a mix of model and vendor properties when available.
+         *
+         * <p>
+         * The format is the following: <em>vendor - model</em>
+         * </p>
+         *
+         * @return {String} The device name or an empty string if no information at all is available
          */
-        isTablet : function () {
-            var isTablet = /(iPad|SCH-I800|android 4.0|GT-P1000|GT-P1000R|GT-P1000M|SGH-T849|SHW-M180S|android 3.0|xoom|NOOK|playbook|tablet|silk|kindle|GT-P7510)/i.test(this.ua);
-            if (isTablet) {
-                this.isTablet = Aria.returnTrue;
-            } else {
-                this.isTablet = Aria.returnFalse;
-            }
-            return this.isTablet();
-        },
+        deviceName: function() {
+            var parts = [
+                this.vendor(),
+                this.model()
+            ];
 
-        /**
-         * Checks whether it is a Touch Device
-         */
-        isTouch : function () {
-            var blackBerryTouch = ariaCoreBrowser.isBlackBerry;
-            var bbModel = this._getBlackBerryVersion();
-            if (".9670.9100.9105.9360.9350.9330.9320.9310.9300.9220.9780.9700.9650.".indexOf("." + bbModel + ".")) {
-                blackBerryTouch = false;
-            }
-
-            var window = Aria.$window;
-            if ((('ontouchstart' in window) || window.DocumentTouch && window.document instanceof window.DocumentTouch)
-                    || !!blackBerryTouch) {
-                this.isTouch = Aria.returnTrue;
-            } else {
-                this.isTouch = Aria.returnFalse;
-            }
-            return this.isTouch();
-        },
-
-        /**
-         * Get the BlackBerry model from the User Agent
-         * @return {String}
-         * @private
-         */
-        _getBlackBerryVersion : function () {
-            var match = this.ua.match(/BlackBerry[\/\s]*(\d+).+/i);
-            if (match) {
-                return match[1];
-            }
-        },
-
-        /**
-         * Checks whether the Browser supports 2D transform
-         */
-        is2DTransformCapable : function () {
-            if (this._isStyleSupported('transform')) {
-                this.is2DTransformCapable = Aria.returnTrue;
-            } else {
-                this.is2DTransformCapable = Aria.returnFalse;
-            }
-            return this.is2DTransformCapable();
-        },
-
-        /**
-         * Checks whether the Browser supports 3D transform
-         */
-        is3DTransformCapable : function () {
-            if (this._isStyleSupported('perspective')) {
-                this.is3DTransformCapable = Aria.returnTrue;
-            } else {
-                this.is3DTransformCapable = Aria.returnFalse;
-            }
-            return this.is3DTransformCapable();
-        },
-
-        /**
-         * Check whether the style property is supported by the browser
-         * @param {String} property CSS Property
-         * @private
-         */
-        _isStyleSupported : function (property) {
-            // first check in the cache
-            if (property in this._styleCache) {
-                return this._styleCache[property];
-            }
-
-            var prefixes = ['Moz', 'Webkit', 'Khtml', 'O', 'Ms'];
-
-            var element = Aria.$window.document.documentElement;
-            var style = element.style;
-
-            // test standard property
-            if (typeof style[property] === 'string') {
-                this._styleCache[property] = true;
-                return true;
-            }
-
-            // capitalize
-            var upperCase = property.charAt(0).toUpperCase() + property.slice(1);
-
-            // test vendor specific properties
-            for (var i = 0, len = prefixes.length; i < len; i++) {
-                var prefixed = prefixes[i] + upperCase;
-                if (typeof style[prefixed] === 'string') {
-                    this._styleCache[property] = true;
-                    return true;
+            for (var index = parts.length - 1; index >= 0; index--) {
+                var part = parts[index];
+                if (part == null || part.length == null || part.length <= 0) {
+                    parts.splice(index, 1);
                 }
             }
 
-            // couldn't find it
-            this._styleCache[property] = false;
-            return false;
+            var deviceName = parts.join(" - ");
+
+            return deviceName;
         },
 
         /**
-         * Checks whether the Device supports PhoneGap/Cordova
+         * Checks whether it is a phone device rather than a tablet.
+         *
+         * <p>
+         * We consider that if a mobile operating system is detected but nothing tells that is is a tablet, by default the device is a mobile phone.
+         * </p>
+         *
+         * @return {Boolean} <em>true</em> if so, <em>false</em> otherwise
          */
-        isPhoneGap : function () {
-            var window = Aria.$window;
-            if ((window.cordova && window.device) || (window.device && window.device.phonegap)) {
-                this.isPhonegap = Aria.returnTrue;
-            } else {
-                this.isPhonegap = Aria.returnFalse;
+        isPhone : function () {
+            // -------------------------------------------- result initial value
+
+            var result = false;
+
+            // -------------------------------------------------- standard check
+
+            var deviceType = this.__userAgentWrapper.results.device.type;
+
+            if (!result) {
+                if (deviceType != null) {
+                    result = UserAgent.normalizeName(deviceType) == "mobile";
+                }
             }
-            return this.isPhonegap();
+
+            // --------------------------------------------------- special cases
+
+            if (!result) {
+                if (!this.isTablet()) {
+                    result = ariaCoreBrowser.isAndroid
+                    || ariaCoreBrowser.isBlackBerry
+                    || ariaCoreBrowser.isIOS
+                    || ariaCoreBrowser.isSymbian
+                    || ariaCoreBrowser.isWindowsPhone
+                    || UserAgent.normalizeName(ariaCoreBrowser.osName) == "webos"
+                    ;
+                }
+            }
+
+            // ---------------------------------------------------------- result
+
+            return !!result;
         },
 
         /**
-         * Checks the orientation whether it is portrait or landscape
+         * Checks whether the device is a tablet device rather than a phone.
+         *
+         * @return {Boolean} <em>true</em> if so, <em>false</em> otherwise
+         */
+        isTablet : function () {
+            // -------------------------------------------- result initial value
+
+            var result = false;
+
+            // -------------------------------------------------- standard check
+
+            var deviceType = this.__userAgentWrapper.results.device.type;
+            if (!result) {
+                if (deviceType != null) {
+                    result = UserAgent.normalizeName(deviceType) == "tablet";
+                }
+            }
+
+            // --------------------------------------------------- special cases
+
+            if (!result) {
+                var userAgent = this.__userAgentWrapper.ua.toLowerCase();
+                result = /(iPad|SCH-I800|GT-P1000|GT-P1000R|GT-P1000M|SGH-T849|SHW-M180S|android 3.0|xoom|NOOK|playbook|tablet|silk|kindle|GT-P7510)/i.test(userAgent);
+            }
+
+            // ---------------------------------------------------------- result
+
+            return !!result;
+        },
+
+        /**
+         * Checks whether the computer is a mobile device.
+         *
+         * @return {Boolean} <em>true</em> if so, <em>false</em> otherwise
+         */
+        isDevice : function () {
+            return this.isPhone() || this.isTablet();
+        },
+
+        /**
+         * Checks whether the computer is a desktop.
+         *
+         * @return {Boolean} <em>true</em> if so, <em>false</em> otherwise
+         */
+        isDesktop : function () {
+            return !(this.isDevice());
+        },
+
+        /**
+         * Checks whether it is a touch device.
+         *
+         * @return {Boolean} <em>true</em> if so, <em>false</em> otherwise
+         */
+        isTouch : function () {
+            var isTouch = false;
+
+            if (ariaCoreBrowser.isBlackBerry) {
+                if (!ariaUtilsArray.contains([9670, 9100, 9105, 9360, 9350, 9330, 9320, 9310, 9300, 9220, 9780, 9700, 9650], +this.model())) {
+                    isTouch = true;
+                }
+            } else {
+                var window = Aria.$window;
+
+                if (('ontouchstart' in window) || window.DocumentTouch && window.document instanceof window.DocumentTouch) {
+                    isTouch = true;
+                }
+            }
+
+            return !!isTouch;
+        },
+
+        /**
+         * Override the $on function to only listen to resize (for orientation changes) when needed.
+         *
+         * @override
+         */
+        $on : function () {
+            ariaUtilsEvent.addListener(Aria.$window, "resize", {
+                fn : this._onResize,
+                scope : this
+            });
+            this._previousIsPortrait = this.isPortrait();
+            this.$JsObject.$on.apply(this, arguments);
+        },
+
+        /**
+         * Checks device orientation and raises event accordingly.
+         * @private
+         */
+        _onResize : function() {
+            var isPortrait = this.isPortrait();
+            if (isPortrait !== this._previousIsPortrait) {
+                this.$raiseEvent({
+                    name : "orientationchange",
+                    isPortrait : isPortrait
+                });
+                this._previousIsPortrait = isPortrait;
+            }
+        },
+
+        /**
+         * Returns <em>true</em> if the device's orientation is portrait, <em>false</em> if it is landscape.
+         *
+         * @return {Boolean}
          */
         isPortrait : function () {
-            if (this._getBlackBerryVersion() === "9670") {
-                // 9670 is a special model that is landscape
-                return false;
-            }
-            var orientation = Aria.$window.orientation;
-            if (orientation && (orientation !== 0 && orientation !== 180)) {
-                // device is rotated
-                return false;
-            } else {
-                return true;
-            }
+            var dim = ariaUtilsDom.getViewportSize();
+            return dim.height > dim.width;
         },
 
         /**
          * Checks whether the cursor moved with a trackball or trackpad.
+         *
+         * @return {Boolean} <em>true</em> if so, <em>false</em> otherwise
          */
         isClickNavigation : function () {
-            if (ariaCoreBrowser.isBlackBerry) {
-                this.isClickNavigation = Aria.returnTrue;
-            } else {
-                this.isClickNavigation = Aria.returnFalse;
-            }
-            return this.isClickNavigation();
+            return ariaCoreBrowser.isBlackBerry;
         }
     }
 });

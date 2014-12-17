@@ -78,7 +78,7 @@ module.exports = Aria.classDefinition({
             var document = Aria.$frameworkWindow.document;
 
             // Issue when using document.createElement("iframe") in IE7
-            if (browser.isIE7 || browser.isIE6) {
+            if (browser.isIE7) {
                 var container = document.createElement("div");
                 container.innerHTML = ['<iframe style="display:none" src="',
                         ariaCoreDownloadMgr.resolveURL("aria/core/transport/iframeSource.txt"), '" id="xIFrame',

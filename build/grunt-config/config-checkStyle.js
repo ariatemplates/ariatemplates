@@ -38,7 +38,9 @@ module.exports = function (grunt) {
                     '!src/aria/resources/multiselect/FooterRes*.js', '!src/aria/utils/UtilsRes.js',
                     '!src/aria/widgets/WidgetsRes.js',
                     // Showdown.js direct include inside a classDefinition. We do not want to touch it
-                    '!src/aria/pageEngine/contentProcessors/MarkdownProcessor.js']
+                    '!src/aria/pageEngine/contentProcessors/MarkdownProcessor.js',
+                    // ua-parser.js direct include inside a package. We do not want to touch it
+                    '!src/aria/core/useragent/ua-parser.js']
         },
         resource : {
             // Resource and skin definitions use the global Aria without require

@@ -18,7 +18,6 @@ var ariaUtilsFireDomEvent = require("./FireDomEvent");
 var ariaUtilsDom = require("./Dom");
 var ariaPopupsPopup = require("../popups/Popup");
 var ariaUtilsString = require("./String");
-var ariaCoreBrowser = require("../core/Browser");
 var ariaCoreTimer = require("../core/Timer");
 
 
@@ -88,11 +87,6 @@ module.exports = Aria.classDefinition({
                 textSpan.style.overflow = "hidden";
                 textSpan.style.display = "inline-block";
                 textSpan.style.verticalAlign = "bottom";
-
-                // ie 6 isn't calculating the width properly. As such it can cut off a bit of the sort indicator icon
-                if (ariaCoreBrowser.isIE6) {
-                    width = width - 4;
-                }
 
                 width -= ellipsisWidth;
 

@@ -487,7 +487,7 @@ var Aria = module.exports = global.Aria;
 
     /**
      * The domain variable has to be set only when you explicitly set the value of document.domain. It is needed by
-     * classes using iframes (like aria.utils.HashManager) in order to overcome the limitations imposed by IE6/7 on the
+     * classes using iframes (like aria.utils.HashManager) in order to overcome the limitations imposed by IE7 on the
      * access of the iframe contents. It is desirable to set it at the very beginning, even before loading the bootstrap
      * file of the framework.
      * @type String

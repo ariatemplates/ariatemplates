@@ -35,7 +35,7 @@ module.exports = Aria.classDefinition({
         var browser = aria.core.Browser;
         // fix 08364518 : if IE<9, the scroll event on an element does not bubble up and trigger the handler
         // attached to the window
-        if (browser.isIE8 || browser.isIE7 || browser.isIE6) {
+        if (browser.isIE8 || browser.isIE7) {
             this._scrollRecListener = true;
             ariaUtilsEvent.addListenerRecursivelyUp(this.element, "scroll", {
                 fn : this.refreshPosition,

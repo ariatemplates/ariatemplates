@@ -352,7 +352,7 @@ var ariaCoreBrowser = require("../core/Browser");
                     // IE mouseup check - mouseup happened when mouse was out of window
                     if (evt.type !== "touchmove" && !evt.button) {
                         var browser = ariaCoreBrowser;
-                        if (browser.isIE8 || browser.isIE7 || browser.isIE6) {
+                        if (browser.isIE8 || browser.isIE7) {
                             event.$dispose();
                             return this._onMouseUp(evt);
                         }
