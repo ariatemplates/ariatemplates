@@ -333,7 +333,7 @@ module.exports = Aria.classDefinition({
                         ';overflow:auto;resize:none;height: ' + this._frame.innerHeight + 'px; width:', inputWidth,
                         'px;"', 'value=""', (cfg.maxlength > -1 ? 'maxlength="' + cfg.maxlength + '" ' : ' '),
                         (cfg.tabIndex != null ? 'tabindex="' + this._calculateTabIndex() + '" ' : ' '), spellCheck,
-                        '>', stringUtils.encodeForQuotedHTMLAttribute((this._helpTextSet) ? cfg.helptext : text),
+                        '>', stringUtils.escapeHTML(((this._helpTextSet) ? cfg.helptext : text) || ""),
                         '</textarea>'
 
                 ].join(''));
