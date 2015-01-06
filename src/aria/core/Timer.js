@@ -74,6 +74,8 @@ module.exports = Aria.classDefinition({
     },
     $statics : {
         // ERROR MESSAGES:
+        CB_FN_MANDATORY : "Callback object needs to have 'fn' property specifying the callback function",
+        CB_SCOPE_UNDEFINED : "Trying to add callback with empty scope",
         TIMER_CB_ERROR : "Uncaught exception in Timer callback (%1)",
         TIMER_CB_ERROR_ERROR : "Uncaught exception in Timer callback error handler (%1)"
     },
@@ -115,8 +117,12 @@ module.exports = Aria.classDefinition({
          * @return {String} cancel id
          */
         addCallback : function (cb) {
-            // TODO: check mandatory attributes and log error if pb
-            this.$assert(74, cb && cb.scope && cb.fn); // temporary solution
+            if (!cb || !cb.fn) {
+                this.$logError(this.CB_FN_MANDATORY);
+            }
+            if (!cb.scope) {
+                this.$logWarn(this.CB_SCOPE_UNDEFINED);
+            }
             var onerror = (cb.onerror) ? cb.onerror : null;
             var onerrorScope = (cb.onerrorScope) ? cb.onerrorScope : null;
             // create new cb
