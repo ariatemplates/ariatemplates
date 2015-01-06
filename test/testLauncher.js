@@ -12,32 +12,29 @@ var endTest = function (evt) {
     var src = evt.src;
 
     // Show information about objects created/disposed
-    aria.core.Timer.addCallback({
-        fn : function () {
-            var templatesTestContainer = document.getElementById("TESTAREA");
-            templatesTestContainer.style.cssText = "visibility:hidden";
+    setTimeout(function () {
+        var templatesTestContainer = document.getElementById("TESTAREA");
+        templatesTestContainer.style.cssText = "visibility:hidden";
 
-            /* Try to collect some information on disposed object */
+        /* Try to collect some information on disposed object */
 
-            // this method depends on aria.utils.Function, call it now before disposal
-            aria.jsunit.JsCoverage.addFiltersFromQueryString();
+        // this method depends on aria.utils.Function, call it now before disposal
+        aria.jsunit.JsCoverage.addFiltersFromQueryString();
 
-            var exclude = ["aria.jsunit.JsCoverage", "aria.jsunit.JsCoverageObject", "aria.jsunit.JsCoverageReport",
-                    "aria.jsunit.JsCoverageStore", "aria.jsunit.TestRunner", "aria.utils.Type"];
+        var exclude = ["aria.jsunit.JsCoverage", "aria.jsunit.JsCoverageObject", "aria.jsunit.JsCoverageReport",
+                "aria.jsunit.JsCoverageStore", "aria.jsunit.TestRunner", "aria.utils.Type"];
 
-            for (var i = Aria.$classes.length - 1; i >= 0; i--) {
-                var elt = Aria.$classes[i];
-                // beans and interfaces don't have a classdefinition, dispose then anyway
-                var classpath = elt.classDefinition ? elt.classDefinition.$classpath : "_no_classpath";
-                if (!aria.utils.Array.contains(exclude, classpath)) {
-                    toBeDisposed.push(elt);
-                }
+        for (var i = Aria.$classes.length - 1; i >= 0; i--) {
+            var elt = Aria.$classes[i];
+            // beans and interfaces don't have a classdefinition, dispose then anyway
+            var classpath = elt.classDefinition ? elt.classDefinition.$classpath : "_no_classpath";
+            if (!aria.utils.Array.contains(exclude, classpath)) {
+                toBeDisposed.push(elt);
             }
+        }
 
-            disposeEverything();
-        },
-        delay : 15
-    });
+        disposeEverything();
+    }, 15);
 };
 
 var disposeEverything = function () {
