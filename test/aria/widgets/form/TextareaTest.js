@@ -395,6 +395,24 @@ Aria.classDefinition({
             }, false);
 
             aria.core.AppEnvironment.setEnvironment({});
+        },
+
+        testEncodedCharacters : function () {
+            var data = {
+                value : "&currency&cent"
+            };
+            var tf = this._createTextarea({
+                label : "TESTLABEL",
+                bind : {
+                    value : {
+                        to : "value",
+                        inside : data
+                    }
+                }
+            });
+            var instance = tf.instance;
+            this.assertEquals(tf.dom.getElementsByTagName('textarea')[0].value, data.value, "Value has been transformed incorrectly");
+            this._destroyTextarea(instance);
         }
     }
 });
