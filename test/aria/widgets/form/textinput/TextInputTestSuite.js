@@ -24,6 +24,7 @@ Aria.classDefinition({
                 "test.aria.widgets.form.textinput.blurvalidation.BlurValidationTestCase",
                 "test.aria.widgets.form.textinput.quotes.QuotesTestCase",
                 "test.aria.widgets.form.textinput.onclick.OnClickTest",
-                "test.aria.widgets.form.textinput.onfocus.OnFocusTest"];
+                "test.aria.widgets.form.textinput.onfocus.OnFocusTest",
+                "test.aria.widgets.form.textinput.blurOnDestroy.ClickButtonAfterDestroyTest"];
     }
 });

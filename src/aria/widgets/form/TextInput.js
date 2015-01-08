@@ -24,7 +24,6 @@ var ariaUtilsArray = require("../../utils/Array");
 var ariaCoreBrowser = require("../../core/Browser");
 var ariaCoreTimer = require("../../core/Timer");
 
-
 /**
  * Specialize the input classes for Text input and manage the HTML input element
  */
@@ -153,6 +152,11 @@ module.exports = Aria.classDefinition({
 
     },
     $destructor : function () {
+        if (this._hasFocus) {
+            // In IE, blurring is important in order to release properly the focus before destroying the element
+            this._dom_onblur = Aria.empty;
+            this._textInputField.blur();
+        }
         this._textInputField = null;
 
         if (this.controller) {
