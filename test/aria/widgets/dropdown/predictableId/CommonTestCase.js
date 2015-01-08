@@ -47,7 +47,17 @@ Aria.classDefinition({
             this.assertEquals(iconClass, "xICNdropdown", "Couldn't find the dropdown icon, targetting " + iconClass);
 
             this.synEvent.click(icon, {
-                fn : this.onWidgetClick,
+                fn : function () {
+                    this.waitFor({
+                        condition : function () {
+                            return !!this.getWidgetDropDownPopup(this.idToBeTested);
+                        },
+                        callback : {
+                            fn : this.onWidgetClick,
+                            scope : this
+                        }
+                    });
+                },
                 scope : this
             });
         },

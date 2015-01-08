@@ -414,7 +414,13 @@ Aria.classDefinition({
         // Helpers
         _clickTest : function (id, cb) {
             this.synEvent.click(this.getElementById(id), {
-                fn : cb,
+                fn : function () {
+                    if (this.getInputField(id)) {
+                        this.waitForWidgetFocus(id, cb);
+                    } else {
+                        cb.call(this);
+                    }
+                },
                 scope : this
             });
         },

@@ -30,7 +30,9 @@ Aria.classDefinition({
     $prototype : {
         runTemplateTest : function () {
             this.synEvent.click(this.getInputField("tf1"), {
-                fn : this.onFieldFocused,
+                fn : function () {
+                    this.waitForWidgetFocus("tf1", this.onFieldFocused);
+                },
                 scope : this
             });
         },
@@ -45,13 +47,9 @@ Aria.classDefinition({
             var myField = this.getInputField("tf1");
 
             myField.blur();
-            aria.core.Timer.addCallback({
-                fn : function() {
-                    this.assertTrue(myField.value === "00:00", "'00:00' was expected in the timefield.");
-                    this.notifyTemplateTestEnd();
-                },
-                scope : this,
-                delay : 25
+            this.waitForWidgetBlur("tf1", function () {
+                this.assertTrue(myField.value === "00:00", "'00:00' was expected in the timefield.");
+                this.notifyTemplateTestEnd();
             });
         }
     }

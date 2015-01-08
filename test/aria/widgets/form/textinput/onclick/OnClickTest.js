@@ -56,10 +56,14 @@ Aria.classDefinition({
         },
 
         onAfterUserAction : function () {
-            aria.core.Timer.addCallback({
-                fn : this.onAfterDelay,
-                scope : this,
-                delay : this._delay
+            this.waitFor({
+                condition : function () {
+                    return this.templateCtxt.data.action == this._currentIndex + 1;
+                },
+                callback : {
+                    fn : this.onAfterDelay,
+                    scope : this
+                }
             });
         },
 

@@ -40,9 +40,11 @@ Aria.classDefinition({
             var input = this.getInputField("ac1");
             input.focus();
 
-            this.synEvent.click(input, {
-                fn : this.onUserClick,
-                scope : this
+            this.waitForWidgetFocus("ac1", function () {
+                this.synEvent.click(input, {
+                    fn : this.onUserClick,
+                    scope : this
+                });
             });
         },
 
@@ -56,14 +58,10 @@ Aria.classDefinition({
         },
 
         onUserTyped : function () {
-            var input = this.getInputField("ac1");
             this.templateCtxt.$focus('focusHelper');
-            aria.core.Timer.addCallback({
-                fn : this.afterBlur,
-                scope : this,
-                delay : 500
+            this.waitForWidgetBlur("ac1", function () {
+                this.afterBlur();
             });
-
         },
 
         afterBlur : function () {

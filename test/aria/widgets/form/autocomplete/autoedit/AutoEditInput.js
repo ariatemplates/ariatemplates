@@ -23,7 +23,9 @@ Aria.classDefinition({
         runTemplateTest : function () {
 
             this.synEvent.click(this.getInputField("AutoEdit1"), {
-                fn : this.onSelectBoxFocused,
+                fn : function () {
+                    this.waitForWidgetFocus("AutoEdit1", this.onSelectBoxFocused);
+                },
                 scope : this
             });
         },
@@ -49,12 +51,14 @@ Aria.classDefinition({
         afterTypeSecondLetter : function () {
 
             this.getInputField("AutoEdit1").blur();
-            this.assertTrue(this.getInputField("AutoEdit1").value == "Pa--ris");
-            aria.core.Timer.addCallback({
-                fn : this.end,
-                scope : this,
-                delay : 500
-                // give some time to download P.txt before disposing everything
+            this.waitForWidgetBlur("AutoEdit1", function () {
+                this.assertTrue(this.getInputField("AutoEdit1").value == "Pa--ris");
+                aria.core.Timer.addCallback({
+                    fn : this.end,
+                    scope : this,
+                    delay : 500
+                    // give some time to download P.txt before disposing everything
+                });
             });
         }
     }

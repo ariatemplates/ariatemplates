@@ -38,10 +38,17 @@ Aria.classDefinition({
         this.$TemplateTestCase.$destructor.call(this);
     },
     $prototype : {
+        runTemplateTest : function () {
+            aria.core.Timer.addCallback({
+                fn : this.start,
+                scope : this,
+                delay : 25
+            });
+        },
         /**
          * Start the template test suite for the LongPress event.
          */
-        runTemplateTest : function () {
+        start : function () {
             this.target = this.domUtil.getElementById("touchboard");
             this._testCancelMultiLongPress();
         },
@@ -78,7 +85,7 @@ Aria.classDefinition({
                             clientY : 5
                         }]
             });
-            this._delay(10, this._testEvents, args);
+            this._testEvents(args);
         },
         /**
          * Test a cancel long press: touchstart, touchmove with distance > 10.
@@ -96,7 +103,7 @@ Aria.classDefinition({
                 clientX : 100,
                 clientY : 100
             });
-            this._delay(10, this._testEvents, args);
+            this._testEvents(args);
         },
         /**
          * Test a not completed long press: touchstart, touchmove with distance <= 10, touchend within 2000ms.
@@ -118,7 +125,7 @@ Aria.classDefinition({
                 clientX : 5,
                 clientY : 5
             });
-            this._delay(10, this._testEvents, args);
+            this._testEvents(args);
         },
         /**
          * Test a valid long press: touchstart, touchmove with distance <= 10, wait 2100 ms.
@@ -136,14 +143,7 @@ Aria.classDefinition({
                 clientX : 5,
                 clientY : 5
             });
-            this._delay(1500, this._testEventsFinal, args);
-        },
-        /**
-         * Finalize the long press gesture.
-         * @param {Object} args
-         */
-        _testEventsFinal : function (args) {
-            this._delay(10, this._testEvents, args);
+            this._testEvents(args);
         },
         /**
          * Utility to raise fake events.
@@ -159,7 +159,7 @@ Aria.classDefinition({
          * @param {Object} args
          */
         _delay : function (delay, callback, args) {
-            var callback = (callback) ? callback : args.callback;
+            var callback = callback || args.callback;
             aria.core.Timer.addCallback({
                 fn : callback,
                 scope : this,
@@ -172,14 +172,25 @@ Aria.classDefinition({
          * @param {Object} args
          */
         _testEvents : function (args) {
-            var isSameLength = args.sequence.length == this.templateCtxt.data.events.length;
-            this.assertTrue(isSameLength);
-            if (isSameLength) {
-                for (var i = 0; i < args.sequence.length; i++) {
-                    this.assertTrue(args.sequence[i] === this.templateCtxt.data.events[i]);
+            this.waitFor({
+                msg: "Waiting for the sequence to be equals to [" + this.templateCtxt.data.events.join(", ") + "]",
+                condition : function () {
+                    return args.sequence.length == this.templateCtxt.data.events.length;
+                },
+                callback : {
+                    fn : function() {
+                        var isSameLength = args.sequence.length == this.templateCtxt.data.events.length;
+                        this.assertTrue(isSameLength);
+                        if (isSameLength) {
+                            for (var i = 0; i < args.sequence.length; i++) {
+                                this.assertTrue(args.sequence[i] === this.templateCtxt.data.events[i]);
+                            }
+                        }
+                        this._delay(args.addDelay || 50, null, args);
+                    },
+                    scope : this
                 }
-            }
-            this._delay(args.addDelay || 10, null, args);
+            });
         },
         /**
          * Wrapper to end the tests.
@@ -189,7 +200,8 @@ Aria.classDefinition({
                 clientX : 5,
                 clientY : 5
             });
-            this._delay(1000, this.end, {});
+            //this._delay(1000, this.end, {});
+            this.end();
         }
     }
 });

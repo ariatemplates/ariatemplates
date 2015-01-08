@@ -31,20 +31,11 @@ Aria.classDefinition({
          * This test is here to be sure that 'tab', defined as a selection key, behaves the same way as 'enter' (the
          * first list item is selected)
          */
-        runTemplateTest : function (id, continueWith) {
-            this.clickAndType(["fi"], {
-                fn : this._afterType,
+        runTemplateTest : function () {
+            this.clickAndType(["fi", this.dropdownOpenCondition], {
+                fn : this._pressTab,
                 scope : this
-            });
-        },
-
-        _afterType : function (evt, args) {
-            this.waitFor({
-                condition : function () {
-                    return this.isMultiAutoCompleteOpen("MultiAutoId");
-                },
-                callback : this._pressTab
-            });
+            }, 1);
         },
 
         _pressTab : function () {
@@ -57,7 +48,7 @@ Aria.classDefinition({
             });
         },
 
-        _checkValues : function (evt, args) {
+        _checkValues : function () {
             this.checkSelectedItems(1, ["Finnair"]);
             this.checkDataModel(1, [{
                         label : 'Finnair',

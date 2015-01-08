@@ -18,10 +18,10 @@ Aria.classDefinition({
     $extends : "test.aria.widgets.form.multiautocomplete.BaseMultiAutoCompleteTestCase",
     $prototype : {
         runTemplateTest : function () {
-            this.clickAndType(["sca", "[down][enter]"], {
+            this.clickAndType(["sca", this.dropdownOpenCondition, "[down][enter]", this.dropdownCloseCondition], {
                 fn : this._checkDataAdded,
                 scope : this
-            }, 1000);
+            }, 1);
         },
 
         _checkDataAdded : function () {

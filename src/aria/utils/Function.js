@@ -14,7 +14,6 @@
  */
 var Aria = require("../Aria");
 
-
 /**
  * Utils for javascript functions
  */
@@ -65,14 +64,16 @@ module.exports = Aria.classDefinition({
         },
 
         /**
-         * Create a function from a callback object. When the function is called, the callback is called. The first parameter in the callback is the argument array given to the function.
+         * Create a function from a callback object. When the function is called, the callback is called. The first
+         * parameter in the callback is the argument array given to the function.
          * @param {aria.core.CfgBeans:Callback} cb
          * @return {Function}
          */
         bindCallback : function (cb) {
-            cb = this.$normCallback(cb);
+            var self = this;
+            cb = self.$normCallback(cb);
             return function () {
-                cb.fn.call(cb.scope, arguments, cb.args);
+                return self.$callback(cb, arguments);
             };
         }
 

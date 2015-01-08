@@ -27,67 +27,74 @@ module.exports = Aria.classDefinition({
             var toDate;
 
             function step0 () {
-                self.assertSelectedDates(0);
-                self.assertFalsy(data.fromDate);
-                self.assertFalsy(data.toDate);
+                self.assertSelectedDates(0, null, null, function () {
+                    self.assertFalsy(data.fromDate);
+                    self.assertFalsy(data.toDate);
 
-                fromDate = self.addDays(new Date(), 3);
-                self.clickDate(fromDate, step1);
+                    fromDate = self.addDays(new Date(), 3);
+                    self.clickDate(fromDate, step1);
+                });
             }
 
             function step1 () {
-                self.assertSelectedDates(1, fromDate, fromDate);
-                self.assertDateEquals(data.fromDate, fromDate);
-                self.assertFalsy(data.toDate);
+                self.assertSelectedDates(1, fromDate, fromDate, function () {
+                    self.assertDateEquals(data.fromDate, fromDate);
+                    self.assertFalsy(data.toDate);
 
-                toDate = self.addDays(fromDate, 3);
-                self.clickDate(toDate, step2);
+                    toDate = self.addDays(fromDate, 3);
+                    self.clickDate(toDate, step2);
+                });
             }
 
             function step2 () {
-                self.assertSelectedDates(4, fromDate, toDate);
-                self.assertDateEquals(data.fromDate, fromDate);
-                self.assertDateEquals(data.toDate, toDate);
+                self.assertSelectedDates(4, fromDate, toDate, function () {
+                    self.assertDateEquals(data.fromDate, fromDate);
+                    self.assertDateEquals(data.toDate, toDate);
 
-                fromDate = toDate;
-                toDate = self.addDays(toDate, 14);
-                self.synEvent.type(null, "[down][down][enter]", step3);
+                    fromDate = toDate;
+                    toDate = self.addDays(toDate, 14);
+                    self.synEvent.type(null, "[down][down][enter]", step3);
+                });
             }
 
             function step3 () {
-                self.assertSelectedDates(15, fromDate, toDate);
-                self.assertDateEquals(data.fromDate, fromDate);
-                self.assertDateEquals(data.toDate, toDate);
+                self.assertSelectedDates(15, fromDate, toDate, function () {
+                    self.assertDateEquals(data.fromDate, fromDate);
+                    self.assertDateEquals(data.toDate, toDate);
 
-                fromDate = self.addDays(fromDate, 5);
-                self.clickDate(fromDate, step4);
+                    fromDate = self.addDays(fromDate, 5);
+                    self.clickDate(fromDate, step4);
+                });
             }
 
             function step4 () {
-                self.assertSelectedDates(10, fromDate, toDate);
-                self.assertDateEquals(data.fromDate, fromDate);
-                self.assertDateEquals(data.toDate, toDate);
+                self.assertSelectedDates(10, fromDate, toDate, function () {
+                    self.assertDateEquals(data.fromDate, fromDate);
+                    self.assertDateEquals(data.toDate, toDate);
 
-                fromDate = self.addDays(fromDate, -7);
-                jsonUtils.setValue(data, "fromDate", self.addDays(fromDate, 0));
-                step5();
+                    fromDate = self.addDays(fromDate, -7);
+                    jsonUtils.setValue(data, "fromDate", self.addDays(fromDate, 0));
+                    step5();
+                });
             }
 
             function step5 () {
-                self.assertSelectedDates(17, fromDate, toDate);
-                self.assertDateEquals(data.fromDate, fromDate);
-                self.assertDateEquals(data.toDate, toDate);
+                self.assertSelectedDates(17, fromDate, toDate, function () {
+                    self.assertDateEquals(data.fromDate, fromDate);
+                    self.assertDateEquals(data.toDate, toDate);
 
-                toDate = self.addDays(fromDate, 1);
-                jsonUtils.setValue(data, "toDate", self.addDays(toDate, 0));
-                step6();
+                    toDate = self.addDays(fromDate, 1);
+                    jsonUtils.setValue(data, "toDate", self.addDays(toDate, 0));
+                    step6();
+                });
             }
 
             function step6 () {
-                self.assertSelectedDates(2, fromDate, toDate);
-                self.assertDateEquals(data.fromDate, fromDate);
-                self.assertDateEquals(data.toDate, toDate);
-                self.end();
+                self.assertSelectedDates(2, fromDate, toDate, function () {
+                    self.assertDateEquals(data.fromDate, fromDate);
+                    self.assertDateEquals(data.toDate, toDate);
+                    self.end();
+                });
             }
 
             step0();

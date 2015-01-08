@@ -103,8 +103,9 @@ Aria.classDefinition({
 
         _downEnter : function (res, args) {
             this.type({
-                text : ["[DOWN][ENTER]"],
-                cb : args.cb
+                text : ["[DOWN][ENTER]", this.dropdownCloseCondition],
+                cb : args.cb,
+                delay : 1
             });
         },
 

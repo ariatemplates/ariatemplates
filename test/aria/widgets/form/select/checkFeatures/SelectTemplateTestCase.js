@@ -19,6 +19,9 @@ Aria.classDefinition({
     $dependencies : ["aria.utils.Dom", "aria.utils.Json"],
     $constructor : function () {
         this.$TemplateTestCase.constructor.call(this);
+
+        this._widgetSelectId = "selectWidget";
+
     },
     $prototype : {
         testAsyncStartTemplateTest : function () {
@@ -79,7 +82,7 @@ Aria.classDefinition({
         },
 
         _getSelectWidget : function () {
-            return this.getWidgetInstance("selectWidget");
+            return this.getWidgetInstance(this._widgetSelectId);
         },
 
         _getSelectField : function () {
@@ -93,9 +96,11 @@ Aria.classDefinition({
                 this._checkValue("C");
                 var elt = this._getSelectField();
                 elt.focus();
-                this.synEvent.type(elt, "[down][down]", {
-                    fn : this._testStep2,
-                    scope : this
+                this.waitForWidgetFocus(this._widgetSelectId, function () {
+                    this.synEvent.type(elt, "[down][down]", {
+                        fn : this._testStep2,
+                        scope : this
+                    });
                 });
             } catch (e) {
                 this.handleAsyncTestError(e);

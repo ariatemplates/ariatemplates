@@ -28,12 +28,12 @@ Aria.classDefinition({
             aria.core.Timer.addCallback({
                 fn : fn,
                 scope : scope,
-                delay : 300
+                delay : 50
             });
         },
 
         runTemplateTest : function () {
-            this.clickAndType(["[down]"], {
+            this.clickAndType(["[down]", this.dropdownOpenCondition], {
                 fn : this._wait1,
                 scope : this
             }, 1);
@@ -76,8 +76,7 @@ Aria.classDefinition({
             this.assertEquals(this.data.onBlurCalls, 0, "The number of blur events %2. It is %1 instead.");
             this.focusOut({
                 fn : this._checkFirstBlur,
-                scope : this,
-                delay : 300
+                scope : this
             });
         },
 

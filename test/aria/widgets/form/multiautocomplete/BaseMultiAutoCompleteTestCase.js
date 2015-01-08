@@ -47,7 +47,11 @@ Aria.classDefinition({
                 text = [text];
             }
             this.synEvent.click(this._getField(), {
-                fn : this.type,
+                fn : function (evt, args) {
+                    this.waitForWidgetFocus("MultiAutoId", function () {
+                        this.type(args);
+                    });
+                },
                 scope : this,
                 args : {
                     text : text,
@@ -59,11 +63,24 @@ Aria.classDefinition({
 
         type : function (evt, args) {
             args = args || evt;
-            this.synEvent.type(this.getFocusedElement(), args.text.shift(), {
+
+            var nextText = args.text.shift();
+
+            var cb = {
                 fn : this.__wait,
                 scope : this,
                 args : args
-            });
+            };
+
+            if (typeof(nextText) == "function") {
+                this.waitFor({
+                    condition : nextText,
+                    callback : cb
+                });
+            } else {
+                // nextText is a string
+                this.synEvent.type(this.getFocusedElement(), nextText, cb);
+            }
         },
 
         __wait : function (evt, args) {
@@ -79,6 +96,14 @@ Aria.classDefinition({
             }
             cb.delay = args.delay;
             aria.core.Timer.addCallback(cb);
+        },
+
+        dropdownOpenCondition : function () {
+            return this.getWidgetDropDownPopup("MultiAutoId");
+        },
+
+        dropdownCloseCondition : function () {
+            return !this.getWidgetDropDownPopup("MultiAutoId");
         },
 
         checkSelectedItems : function (count, labels) {
@@ -115,8 +140,13 @@ Aria.classDefinition({
         },
 
         focusOut : function (cb) {
-            this.synEvent.click(this.getElementById("justToFocusOut"), {
-                fn : this._onFocusOut,
+            var dom = this.getElementById("justToFocusOut");
+            this.synEvent.click(dom, {
+                fn : function (evt, cb) {
+                    this.waitForDomEltFocus(dom, function () {
+                        this._onFocusOut(null, cb);
+                    });
+                },
                 scope : this,
                 args : cb
             });
@@ -158,9 +188,20 @@ Aria.classDefinition({
         },
         _fireClickOnSuggestion : function (index, continueWith) {
             var suggestionToBeHighlighted = this._suggestionToBeHighlighted(index);
+
             this.synEvent.click(suggestionToBeHighlighted, {
                 scope : this,
-                fn : continueWith
+                fn : function () {
+                    this.waitFor({
+                        condition : function () {
+                            return !this.getWidgetDropDownPopup("MultiAutoId");
+                        },
+                        callback : {
+                            fn : continueWith,
+                            scope : this
+                        }
+                    });
+                }
             });
         },
         checkHighlightedElementsIndices : function (expectedHighlightedArray) {
@@ -173,19 +214,26 @@ Aria.classDefinition({
         },
 
         toggleOption : function (id, index, continueWith) {
-            aria.core.Timer.addCallback({
-                fn : function () {
-                    var checkBox = this.getCheckBox(id, index).getDom();
-                    if (checkBox) {
-                        this.synEvent.click(checkBox, {
-                            fn : continueWith,
-                            scope : this
+            var checkBox = this.getCheckBox(id, index).getDom();
+            var inputElt = checkBox.getElementsByTagName("input")[0];
+            var isChecked = inputElt.checked;
+            if (checkBox) {
+                this.synEvent.click(checkBox, {
+                    fn : function () {
+                        this.waitFor({
+                            msg : "Waiting for dropdown to be closed",
+                            condition : function () {
+                                return isChecked != inputElt.checked;
+                            },
+                            callback : {
+                                fn : continueWith,
+                                scope : this
+                            }
                         });
-                    }
-                },
-                scope : this,
-                delay : 1000
-            });
+                    },
+                    scope : this
+                });
+            }
         },
         getCheckBox : function (msId, index) {
             var ms = this.getWidgetInstance(msId), list = ms.controller.getListWidget();

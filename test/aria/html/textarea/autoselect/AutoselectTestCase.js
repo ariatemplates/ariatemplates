@@ -52,7 +52,7 @@ Aria.classDefinition({
             this.assertEquals(caretPos.start, this.element.value.length, "The start pos of caret is not at the end of the word typed");
             this.assertEquals(caretPos.end, this.element.value.length, "The end pos of caret is not at the end of the word typed");
 
-            this.assertEquals(this.element.value, "brazil", "The value of text area is not brazil");
+            this.assertEquals(this.element.value, "brazil");
 
             var outside = aria.utils.Dom.getElementById("outsideDiv");
 
@@ -75,7 +75,7 @@ Aria.classDefinition({
             var caretPos = aria.utils.Caret.getPosition(this.element);
             this.assertEquals(caretPos.start, 0, "The start pos of caret is not zero");
             this.assertEquals(caretPos.end, this.element.value.length, "The end pos of caret is not at the end of the word typed");
-            this.assertEquals(this.element.value, "brazil", "The value of text area is not brazil");
+            this.assertEquals(this.element.value, "brazil");
 
             this.synEvent.execute([["pause", 500], ["click", this.element]], {
                 fn : this.afterFourthClick,
@@ -114,7 +114,7 @@ Aria.classDefinition({
             this.assertEquals(caretPos.start, this.secondElement.value.length, "The start pos of caret is not at the end of the word typed");
             this.assertEquals(caretPos.end, this.secondElement.value.length, "The end pos of caret is not at the end of the word typed");
 
-            this.assertEquals(this.secondElement.value, "argentina", "The value of text area is not argentina");
+            this.assertEquals(this.secondElement.value, "argentina");
 
             var outside = aria.utils.Dom.getElementById("outsideDiv");
 
@@ -137,7 +137,7 @@ Aria.classDefinition({
 
             var caretPos = aria.utils.Caret.getPosition(this.secondElement);
             this.assertEquals(caretPos.start - caretPos.end, 0, "Autoselect false has not been taken into account");
-            this.assertEquals(this.secondElement.value, "argentina", "The value of text area is not argentina");
+            this.assertEquals(this.secondElement.value, "argentina");
 
             this.end();
         }

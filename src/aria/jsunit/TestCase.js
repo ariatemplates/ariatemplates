@@ -23,7 +23,6 @@ var ariaJsunitAssert = require("./Assert");
 var ariaCoreTimer = require("../core/Timer");
 var ariaCoreAppEnvironment = require("../core/AppEnvironment");
 
-
 /**
  * A test case defines the fixture to run multiple tests. To define a test case
  * <ol>
@@ -77,6 +76,16 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         this._testPassed = 0;
+
+        /**
+         * Wait for information. Useful to localize a failing waitFor
+         * @protected
+         */
+        this._waitForStatus = {
+            count : 0,
+            msg : null,
+            ongoing : false
+        };
 
         /**
          * Copy of the appenvironment application settings
@@ -264,11 +273,24 @@ module.exports = Aria.classDefinition({
          */
         waitFor : function (args) {
             var delay = args.delay || 250;
+            var timeout = args.timeout || 10000;
+            var timeoutTime = new Date().getTime() + timeout;
+
             var condition = args.condition;
+
+            var waitForStatus = this._waitForStatus;
+            waitForStatus.count++;
+            waitForStatus.msg = args.msg;
+            waitForStatus.ongoing = true;
 
             var timeoutFn = function () {
                 if (this.$callback(condition)) {
+                    waitForStatus.msg = null;
+                    waitForStatus.ongoing = false;
+
                     this.$callback(args.callback);
+                } else if (new Date().getTime() > timeoutTime) {
+                    this.setTestTimeout(0, this._currentTestName);
                 } else {
                     ariaCoreTimer.addCallback({
                         fn : timeoutFn,
@@ -382,7 +404,20 @@ module.exports = Aria.classDefinition({
             var error = new Error("Assert " + testName + " has timed out");
 
             this._timeoutTimer = ariaCoreTimer.addCallback({
-                fn : this.handleAsyncTestError,
+                fn : function (error) {
+                    var waitForStatus = this._waitForStatus;
+                    if (waitForStatus.ongoing) {
+                        var errorMsg = "Assert " + testName + ", waitFor #" + waitForStatus.count + " has timed out";
+                        if (waitForStatus.msg) {
+                            var msg = waitForStatus.msg;
+                            errorMsg += ": " + (typeof(msg) == "function" ? msg.call(this) : msg);
+                        }
+
+                        error = new Error(errorMsg);
+                    }
+
+                    this.handleAsyncTestError(error);
+                },
                 scope : this,
                 delay : timeout,
                 args : error

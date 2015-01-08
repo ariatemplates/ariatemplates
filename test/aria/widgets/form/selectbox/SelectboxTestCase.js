@@ -16,7 +16,7 @@
 Aria.classDefinition({
     $classpath : "test.aria.widgets.form.selectbox.SelectboxTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
-    $dependencies : ["aria.jsunit.SynEvents", "aria.utils.Dom"],
+    $dependencies : ["aria.utils.Dom"],
     $constructor : function () {
         this.$TemplateTestCase.constructor.call(this);
 
@@ -51,29 +51,31 @@ Aria.classDefinition({
             this.inputField = this.getInputField("myId");
             this.expandButton = this.getExpandButton("myId");
 
-            aria.utils.SynEvents.click(this.expandButton, {
-                fn : this._afterClick,
+            this.synEvent.click(this.expandButton, {
+                fn : function () {
+                    this.waitFor({
+                        condition : function () {
+                            return this.getWidgetDropDownPopup("myId");
+                        },
+                        callback : {
+                            fn : this._afterClick,
+                            scope : this
+                        }
+                    });
+                },
                 scope : this
             });
         },
 
         _afterClick : function () {
             this.cont += 1;
-            aria.core.Timer.addCallback({
-                fn : this._afterTimer,
-                scope : this,
-                delay : 500
-            });
-        },
-
-        _afterTimer : function () {
             this.dropdown = this.getWidgetDropDownPopup("myId");
             this.options = this.getElementsByClassName(this.dropdown, "xListEnabledItem_dropdown");
 
             var opts = {};
             opts.to = this.cont == 1 ? this.options[0] : this.options[1];
 
-            aria.utils.SynEvents.move(opts, this.inputField, {
+            this.synEvent.move(opts, this.inputField, {
                 fn : this._afterMouseMoveDown,
                 scope : this
             });
@@ -81,12 +83,12 @@ Aria.classDefinition({
 
         _afterMouseMoveDown : function () {
             if (this.cont == 1) {
-                aria.utils.SynEvents.click(this.options[0], {
+                this.synEvent.click(this.options[0], {
                     fn : this._afterItemClick,
                     scope : this
                 });
             } else {
-                aria.utils.SynEvents.click(this.options[1], {
+                this.synEvent.click(this.options[1], {
                     fn : this._afterItemClick,
                     scope : this
                 });
@@ -94,23 +96,33 @@ Aria.classDefinition({
         },
 
         _afterItemClick : function () {
-            if (this.cont === 1) {
-                this.assertTrue(this.inputField.value === "option 0");
-                aria.core.Timer.addCallback({
-                    fn : this._afterSecondTimer,
-                    scope : this,
-                    delay : 500
-                });
-            } else {
-                this.inputField = this.getInputField("myId");
-                this.assertTrue(this.inputField.value === "option 1");
-                this.end();
-            }
+            this.waitFor({
+                condition : function () {
+                    return !this.getWidgetDropDownPopup("myId");
+                },
+                callback : {
+                    fn : function () {
+                        if (this.cont === 1) {
+                            this.assertTrue(this.inputField.value === "option 0");
+                            aria.core.Timer.addCallback({
+                                fn : this._afterSecondTimer,
+                                scope : this,
+                                delay : 500
+                            });
+                        } else {
+                            this.inputField = this.getInputField("myId");
+                            this.assertTrue(this.inputField.value === "option 1");
+                            this.end();
+                        }
+                    },
+                    scope : this
+                }
+            });
         },
 
         _afterSecondTimer : function () {
             this.expandButton = this.getExpandButton("myId");
-            aria.utils.SynEvents.click(this.expandButton, {
+            this.synEvent.click(this.expandButton, {
                 fn : this._afterClick,
                 scope : this
             });

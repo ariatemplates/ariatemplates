@@ -30,7 +30,9 @@ Aria.classDefinition({
     $prototype : {
         runTemplateTest : function () {
             this.synEvent.click(this.getInputField("df1"), {
-                fn : this.onFieldFocused,
+                fn : function () {
+                    this.waitForWidgetFocus("df1", this.onFieldFocused);
+                },
                 scope : this
             });
         },
@@ -44,7 +46,9 @@ Aria.classDefinition({
 
         onUserDateTyped : function () {
             this.synEvent.click(this.getInputField("df2"), {
-                fn : this.onBlur,
+                fn : function () {
+                    this.waitForWidgetFocus("df2", this.onBlur);
+                },
                 scope : this
             });
         },

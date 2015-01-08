@@ -19,10 +19,11 @@ Aria.classDefinition({
     $prototype : {
 
         runTemplateTest : function () {
-            this.clickAndType(["a", "[down][down][enter]", "air", "[down][down][enter]"], {
+            this.clickAndType(["a", this.dropdownOpenCondition, "[down][down][enter]", this.dropdownCloseCondition,
+                    "air", this.dropdownOpenCondition, "[down][down][enter]", this.dropdownCloseCondition], {
                 fn : this._editValues,
                 scope : this
-            }, 500);
+            }, 1);
         },
 
         _editValues : function () {
@@ -53,13 +54,42 @@ Aria.classDefinition({
                         label : "Scandinavian Airlines System",
                         code : "SK"
                     }]);
+
             this.type({
-                text : ["q", "[down][enter]"],
+                text : ["q"],
                 cb : {
-                    fn : this._afterChange,
+                    fn : function () {
+                        this.waitFor({
+                            condition : this.dropdownOpenCondition,
+                            callback : {
+                                fn : this._afterLastDropdownOpen,
+                                scope : this
+                            }
+                        });
+                    },
                     scope : this
                 },
-                delay : 500
+                delay : 25
+            });
+
+        },
+
+        _afterLastDropdownOpen : function () {
+            this.type({
+                text : ["[down][enter]"],
+                cb : {
+                    fn : function () {
+                        this.waitFor({
+                            condition : this.dropdownCloseCondition,
+                            callback : {
+                                fn : this._afterChange,
+                                scope : this
+                            }
+                        });
+                    },
+                    scope : this
+                },
+                delay : 25
             });
         },
 

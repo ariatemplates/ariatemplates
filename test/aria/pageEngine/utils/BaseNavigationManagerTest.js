@@ -298,7 +298,7 @@ Aria.classDefinition({
         },
 
         _testCacheLength : function (n) {
-            this.assertEquals(n, aria.utils.Object.keys(this._navManager.getCache()).length, "The cache does not contain the expected number of elements");
+            this.assertEquals(n, aria.utils.Object.keys(this._navManager.getCache()).length, "The cache does contains %2 elements instead of %1");
         },
 
         _testCacheEntry : function (url, pageId) {

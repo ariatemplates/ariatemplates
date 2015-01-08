@@ -104,18 +104,20 @@ Aria.classDefinition({
             };
             var outerWidget = this.getWidgetInstance("widget");
             outerWidget.focus();
-            aria.core.Timer.addCallback({
-                fn : function() {
-                    outerWidget._toggleDropdown();
-                },
-                scope : this,
-                delay : 25
+            this.waitForWidgetFocus("widget", function () {
+                aria.core.Timer.addCallback({
+                    fn : function () {
+                        outerWidget._toggleDropdown();
+                    },
+                    scope : this,
+                    delay : 25
+                });
             });
         },
 
         _checkInnerSclassCb : function (args) {
-            this.assertJsonEquals([args.expected], this.innerSclasses, "Expected sclass '" + args.expected +
-                    "' but got '" + this.innerSclasses + "'.");
+            this.assertJsonEquals([args.expected], this.innerSclasses, "Expected sclass '" + args.expected
+                    + "' but got '" + this.innerSclasses + "'.");
             this.$callback(args.cb);
         }
 

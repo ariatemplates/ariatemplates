@@ -30,62 +30,59 @@ Aria.classDefinition({
     },
     $prototype : {
         runTemplateTest : function () {
-            aria.core.Timer.addCallback({
-                fn : this._afterWidgetLoad,
-                scope : this,
-                delay : 1000
+            this.waitFor({
+                condition : function () {
+                    var widget = this.getWidgetInstance("btnInc");
+                    return widget && widget.getDom() && this.getWidgetInstance("sampleSplitterElem");
+                },
+                callback : {
+                    fn : this._afterWidgetLoad,
+                    scope : this
+                }
             });
         },
         _afterWidgetLoad : function () {
             var btn = this.getWidgetInstance("btnInc").getDom();
             this.splitter = this.getWidgetInstance("sampleSplitterElem");
-            var self = this;
             this.synEvent.click(btn, {
                 fn : function () {
-                    aria.core.Timer.addCallback({
-                        fn : self._afterIncBtnClick,
-                        scope : self,
-                        delay : 1000
+                    this.waitFor({
+                        condition : function () {
+                            var splitter = this.splitter;
+                            return splitter._splitPanel1.style.height == "250px"
+                                    && splitter._splitPanel2.style.height == "142px";
+                        },
+                        callback : {
+                            fn : this._afterIncBtnClick,
+                            scope : this
+                        }
                     });
                 },
                 scope : this
             });
         },
         _afterIncBtnClick : function () {
-            this.assertTrue(this.splitter._splitPanel1.style.height === "250px");
-            this.assertTrue(this.splitter._splitPanel2.style.height === "142px");
+            this.assertEquals(this.splitter._splitPanel1.style.height, "250px", "splitPanel1 should be %2 height instead of %1");
+            this.assertEquals(this.splitter._splitPanel2.style.height, "142px", "splitPanel1 should be %2 height instead of %1");
 
             var btn = this.getWidgetInstance("btnDec").getDom();
-            var self = this;
             this.synEvent.click(btn, {
                 fn : function () {
-                    aria.core.Timer.addCallback({
-                        fn : self._afterDecBtnClick,
-                        scope : self,
-                        delay : 1000
+                    this.waitFor({
+                        condition : function () {
+                            var splitter = this.splitter;
+                            return splitter._splitPanel1.style.height == "200px"
+                                    && splitter._splitPanel2.style.height == "192px";
+                        },
+                        callback : {
+                            fn : this._afterDecBtnClick,
+                            scope : this
+                        }
                     });
                 },
                 scope : this
             });
 
-        },
-        _afterDecBtnClick : function () {
-            this.assertTrue(this.splitter._splitPanel1.style.height === "200px");
-            this.assertTrue(this.splitter._splitPanel2.style.height === "192px");
-
-            var args = {
-                destPosY : 100,
-                callback : {
-                    scope : this,
-                    fn : this._testMoveDown
-                }
-            };
-            aria.core.Timer.addCallback({
-                fn : this._doDragging,
-                args : args,
-                scope : this,
-                delay : 1000
-            });
         },
         _doDragging : function (args) {
             var dom = aria.utils.Dom;
@@ -96,13 +93,42 @@ Aria.classDefinition({
                 y : geometry.y
             };
             var options = {
-                duration : 1000,
+                duration : 500,
                 to : {
                     x : from.x,
                     y : from.y + (args.destPosY)
                 }
             };
-            this.synEvent.execute([["drag", options, from]], args.callback);
+            var self = this;
+            this.synEvent.execute([["drag", options, from]], function () {
+                self.waitFor(args.waitFor);
+            });
+        },
+
+        _afterDecBtnClick : function () {
+            this.assertEquals(this.splitter._splitPanel1.style.height, "200px", "splitPanel1 should be %2 height instead of %1");
+            this.assertEquals(this.splitter._splitPanel2.style.height, "192px", "splitPanel1 should be %2 height instead of %1");
+
+            var args = {
+                destPosY : 100,
+                waitFor : {
+                    condition : function () {
+                        var splitter = this.splitter;
+                        return parseInt(splitter._splitPanel1.style.height, 10) > 200
+                                && parseInt(splitter._splitPanel2.style.height, 10) < 194;
+                    },
+                    callback : {
+                        fn : this._testMoveDown,
+                        scope : this
+                    }
+                }
+            };
+            aria.core.Timer.addCallback({
+                fn : this._doDragging,
+                args : args,
+                scope : this,
+                delay : 50
+            });
         },
 
         _testMoveDown : function () {
@@ -111,16 +137,23 @@ Aria.classDefinition({
 
             var args = {
                 destPosY : -100,
-                callback : {
-                    scope : this,
-                    fn : this._testMoveUp
+                waitFor : {
+                    condition : function () {
+                        var splitter = this.splitter;
+                        return parseInt(splitter._splitPanel1.style.height, 10) < 290
+                                && parseInt(splitter._splitPanel2.style.height, 10) > 94;
+                    },
+                    callback : {
+                        fn : this._testMoveUp,
+                        scope : this
+                    }
                 }
             };
             aria.core.Timer.addCallback({
                 fn : this._doDragging,
                 args : args,
                 scope : this,
-                delay : 1000
+                delay : 50
             });
         },
         _testMoveUp : function () {
@@ -129,16 +162,23 @@ Aria.classDefinition({
 
             var args = {
                 destPosY : (parseInt(this.splitter._splitPanel2.style.height, 10) + 20),
-                callback : {
-                    scope : this,
-                    fn : this._testMoveFullDown
+                waitFor : {
+                    condition : function () {
+                        var splitter = this.splitter;
+                        return parseInt(splitter._splitPanel1.style.height, 10) == this.splitter._height
+                                && parseInt(splitter._splitPanel2.style.height, 10) === 0;
+                    },
+                    callback : {
+                        fn : this._testMoveFullDown,
+                        scope : this
+                    }
                 }
             };
             aria.core.Timer.addCallback({
                 fn : this._doDragging,
                 args : args,
                 scope : this,
-                delay : 1000
+                delay : 50
             });
         },
         _testMoveFullDown : function () {
@@ -147,16 +187,23 @@ Aria.classDefinition({
 
             var args = {
                 destPosY : (-(this.splitter._height + 20)),
-                callback : {
-                    scope : this,
-                    fn : this._testMoveFullUp
+                waitFor : {
+                    condition : function () {
+                        var splitter = this.splitter;
+                        return parseInt(splitter._splitPanel1.style.height, 10) === 0
+                                && parseInt(splitter._splitPanel2.style.height, 10) == this.splitter._height;
+                    },
+                    callback : {
+                        fn : this._testMoveFullUp,
+                        scope : this
+                    }
                 }
             };
             aria.core.Timer.addCallback({
                 fn : this._doDragging,
                 args : args,
                 scope : this,
-                delay : 1000
+                delay : 50
             });
         },
         _testMoveFullUp : function () {

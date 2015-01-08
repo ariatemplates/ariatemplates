@@ -68,24 +68,40 @@ module.exports = Aria.classDefinition({
             return res;
         },
 
-        assertSelectedDates : function (number, fromDate, toDate) {
-            var selectedItems = this.getSelectedDatesDomElements();
-            this.assertEquals(number, selectedItems.length, "The number of selected items is wrong: expected %1, got %2.");
-            var selectedDates = [];
-            for (var i = 0, l = selectedItems.length; i < l; i++) {
-                selectedDates.push(parseInt(selectedItems[i].getAttribute("data-date"), 10));
-            }
-            if (fromDate) {
-                var curDate = new Date(fromDate.getFullYear(), fromDate.getMonth(), fromDate.getDate(), 12);
-                var endDateTime = new Date(toDate.getFullYear(), toDate.getMonth(), toDate.getDate(), 12).getTime();
-                while (curDate.getTime() <= endDateTime) {
-                    var removed = arrayUtils.remove(selectedDates, curDate.getTime());
-                    this.assertTrue(removed, "The following date should be selected: " + curDate);
-                    curDate.setDate(curDate.getDate() + 1);
+        assertSelectedDates : function (number, fromDate, toDate, cb) {
+
+            this.waitFor({
+                msg : function () {
+                    return "The number of selected items is wrong: expected " + number + ", got "
+                            + this.getSelectedDatesDomElements().length + ".";
+                },
+                condition : function () {
+                    return number == this.getSelectedDatesDomElements().length;
+                },
+                callback : {
+                    fn : function () {
+                        var selectedItems = this.getSelectedDatesDomElements();
+                        var selectedDates = [];
+                        for (var i = 0, l = selectedItems.length; i < l; i++) {
+                            selectedDates.push(parseInt(selectedItems[i].getAttribute("data-date"), 10));
+                        }
+                        if (fromDate) {
+                            var curDate = new Date(fromDate.getFullYear(), fromDate.getMonth(), fromDate.getDate(), 12);
+                            var endDateTime = new Date(toDate.getFullYear(), toDate.getMonth(), toDate.getDate(), 12).getTime();
+                            while (curDate.getTime() <= endDateTime) {
+                                var removed = arrayUtils.remove(selectedDates, curDate.getTime());
+                                this.assertTrue(removed, "The following date should be selected: " + curDate);
+                                curDate.setDate(curDate.getDate() + 1);
+                            }
+                            this.assertEquals(selectedDates.length, 0, "Some selected dates are outside of the expected range: "
+                                    + selectedDates.join(", "));
+                        }
+
+                        cb.call(this);
+                    },
+                    scope : this
                 }
-                this.assertEquals(selectedDates.length, 0, "Some selected dates are outside of the expected range: "
-                        + selectedDates.join(", "));
-            }
+            });
         },
 
         assertDateEquals : function (date1, date2) {

@@ -40,7 +40,7 @@ Aria.classDefinition({
             this.clickAndType("o", {
                 fn : this._afterWrongType,
                 scope : this
-            }, 100);
+            }, 25);
         },
 
         _afterWrongType : function () {
@@ -51,10 +51,11 @@ Aria.classDefinition({
         },
 
         _afterFocusOut : function () {
-            this.clickAndType(["[right][backspace]P1", "[enter]"], {
+            this.clickAndType(["[right][backspace]P1", this.dropdownOpenCondition, "[enter]",
+                    this.dropdownCloseCondition], {
                 fn : this._afterSelectionWithEnter,
                 scope : this
-            }, 200);
+            }, 1);
         },
 
         _afterSelectionWithEnter : function () {

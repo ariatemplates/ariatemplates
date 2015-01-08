@@ -30,39 +30,54 @@ Aria.classDefinition({
     },
     $prototype : {
         runTemplateTest : function () {
-            this.focusDate(null, ["date1", "date"]);
+            aria.core.Timer.addCallback({
+                fn : function () {
+                    this.focusDate(null, ["date1", "date"]);
+                },
+                scope : this,
+                delay : 25
+            });
         },
-        focusDate : function (e, args) {
+        focusDate : function () {
             this.synEvent.click(this.getInputField("date1"), {
-                fn : this.typeDate,
+                fn : function () {
+                    this.waitForWidgetFocus("date1", this.typeDate);
+                },
                 scope : this
             });
         },
-        typeDate : function (e, args) {
-            this.synEvent.type(this.getInputField("date1"), "10/09/11", {
+        typeDate : function () {
+            var input = this.getInputField("date1");
+            this.synEvent.type(input, "10/09/11", {
                 fn : this.focusDate2,
                 scope : this
             });
         },
-        focusDate2 : function (e, args) {
+        focusDate2 : function () {
             this.synEvent.click(this.getInputField("date2"), {
-                fn : this.typeDate2,
+                fn : function () {
+                    this.waitForWidgetFocus("date2", this.typeDate2);
+                },
                 scope : this
             });
+
         },
-        typeDate2 : function (e, args) {
+        typeDate2 : function () {
             this.synEvent.type(this.getInputField("date2"), "+5", {
                 fn : this.focusDate3,
                 scope : this
             });
         },
-        focusDate3 : function (e, args) {
+        focusDate3 : function () {
             this.synEvent.click(this.getInputField("date3"), {
-                fn : this.typeDate3,
+                fn : function () {
+                    this.waitForWidgetFocus("date3", this.typeDate3);
+                },
                 scope : this
             });
+
         },
-        typeDate3 : function (e, args) {
+        typeDate3 : function () {
             this.synEvent.type(this.getInputField("date3"), "+5", {
                 fn : this.focusText,
                 scope : this
@@ -70,15 +85,16 @@ Aria.classDefinition({
         },
         focusText : function () {
             this.synEvent.click(this.getInputField("text1"), {
-                fn : this.finishTest,
+                fn : function () {
+                    this.waitForWidgetFocus("text1", this.finishTest);
+                },
                 scope : this
             });
+
         },
         finishTest : function () {
-            var val1 = this.getInputField("date2").value;
-            var val2 = this.getInputField("date3").value;
-            this.assertTrue(val1 === "15/9/11", "Value is not 15/9/11");
-            this.assertTrue(val2 === "20/9/11", "Value is not 20/9/11");
+            this.assertEquals(this.getInputField("date2").value, "15/9/11", "Value of date2 is %1 instead of %2");
+            this.assertEquals(this.getInputField("date3").value, "20/9/11", "Value of date3 is %1 instead of %2");
             this.notifyTemplateTestEnd();
         }
     }

@@ -29,11 +29,19 @@ Aria.classDefinition({
     },
     $prototype : {
         runTemplateTest : function () {
+            aria.core.Timer.addCallback({
+                fn : this.start,
+                scope : this,
+                delay : 25
+            });
+        },
+
+        start : function () {
             this.datepickerDom = this.getElementById('myDatepicker');
             var icon = this.getElementsByClassName(this.datepickerDom, "xICNdropdown")[0];
 
             this.synEvent.click(icon, {
-                fn : function() {
+                fn : function () {
                     this.waitFor({
                         condition : function () {
                             return this.getElementsByClassName(Aria.$window.document.body, "xCalendar_dropdown_day").length > 0;
@@ -52,7 +60,7 @@ Aria.classDefinition({
             this.selectedDate = new Date(parseInt(tdDay.getAttribute("data-date"), 10));
 
             this.synEvent.click(tdDay, {
-                fn : function() {
+                fn : function () {
                     this.waitFor({
                         condition : function () {
                             return this.getElementsByClassName(Aria.$window.document.body, "xCalendar_dropdown_day").length === 0;
@@ -77,7 +85,6 @@ Aria.classDefinition({
             // Check that the same value is in the data model
             strDate = aria.utils.Date.format(this.data.boundValue, "yyyy-MM-dd");
             this.assertEquals(inputValue, strDate, "Discrepancy found between the selected date (%1) and the data model (%2)");
-
 
             this.end();
         }

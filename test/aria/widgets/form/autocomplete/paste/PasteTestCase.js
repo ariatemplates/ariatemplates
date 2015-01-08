@@ -21,11 +21,18 @@ Aria.classDefinition({
     },
     $prototype : {
         runTemplateTest : function () {
+            aria.core.Timer.addCallback({
+                fn : this.start,
+                scope : this,
+                delay : 25
+            });
+        },
+        start : function () {
             var field = this.getInputField("ac");
 
             this.templateCtxt.$focus("ac");
 
-            var evt = new Syn("paste", field, {
+            new Syn("paste", field, {
                 ctrlKey : true,
                 keyCode : 86
                 // v
@@ -33,11 +40,17 @@ Aria.classDefinition({
                 field.value = "japan";
             });
 
-            aria.core.Timer.addCallback({
-                fn : this.onPaste,
-                scope : this,
-                delay : 1000
+            this.waitFor({
+                msg : "Waiting for dropdown to be closed",
+                condition : function () {
+                    return !!this.getWidgetDropDownPopup("ac");
+                },
+                callback : {
+                    fn : this.onPaste,
+                    scope : this
+                }
             });
+
         },
 
         /**
@@ -51,10 +64,15 @@ Aria.classDefinition({
             var collector = aria.utils.Dom.getElementById("clickCollector");
             Syn.click(collector);
 
-            aria.core.Timer.addCallback({
-                fn : this.onBlur,
-                scope : this,
-                delay : 500
+            this.waitFor({
+                condition : function () {
+                    // Wait for the dropdown to be close
+                    return !this.getWidgetDropDownPopup("ac") && this.templateCtxt.data.value.label == "Japan";
+                },
+                callback : {
+                    fn : this.onBlur,
+                    scope : this
+                }
             });
         },
 
@@ -84,7 +102,7 @@ Aria.classDefinition({
 
             this.templateCtxt.$focus("ac");
 
-            var evt = new Syn("cut", field, {
+            new Syn("cut", field, {
                 ctrlKey : true,
                 keyCode : 88
                 // x
@@ -92,10 +110,14 @@ Aria.classDefinition({
                 field.value = "";
             });
 
-            aria.core.Timer.addCallback({
-                fn : this.onCut,
-                scope : this,
-                delay : 1000
+            this.waitFor({
+                condition : function () {
+                    return field.value === "" && !this.getWidgetDropDownPopup("ac");
+                },
+                callback : {
+                    fn : this.onCut,
+                    scope : this
+                }
             });
         },
 
@@ -110,10 +132,14 @@ Aria.classDefinition({
             Syn.click(collector); // click listeners are not added when DropDown is closed
             this.getInputField("ac").blur();
 
-            aria.core.Timer.addCallback({
-                fn : this.onBlurCut,
-                scope : this,
-                delay : 500
+            this.waitFor({
+                condition : function () {
+                    return !this.getWidgetDropDownPopup("ac") && !this.templateCtxt.data.value;
+                },
+                callback : {
+                    fn : this.onBlurCut,
+                    scope : this
+                }
             });
         },
 

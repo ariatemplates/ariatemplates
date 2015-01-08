@@ -39,10 +39,16 @@ Aria.classDefinition({
 
         _afterDialogOpen : function (change) {
             if (change.newValue == 3) {
-                aria.core.Timer.addCallback({
-                    fn : this._waitAndSee,
-                    scope : this,
-                    delay : 10
+                this.waitFor({
+                    condition : function () {
+                        // Wait for the dropdown to be close
+                        return aria.core.Browser.isOldIE
+                                || (this.getInputField("tf1") == aria.utils.Delegate.getFocus());
+                    },
+                    callback : {
+                        fn : this._waitAndSee,
+                        scope : this
+                    }
                 });
             }
         },

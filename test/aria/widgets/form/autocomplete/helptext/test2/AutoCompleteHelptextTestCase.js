@@ -29,16 +29,9 @@ Aria.classDefinition({
     $prototype : {
 
         runTemplateTest : function () {
-            this._setData();
             var field = this.getInputField("ac");
             field.focus();
-        },
-        _setData : function () {
-            aria.core.Timer.addCallback({
-                fn : this._setWidgetValue,
-                scope : this,
-                delay : 100
-            });
+            this.waitForWidgetFocus("ac", this._setWidgetValue);
         },
         _setWidgetValue : function () {
             var myData = Aria.$window.document.getElementById("testArea_" + this.$class).childNodes[0].__data;

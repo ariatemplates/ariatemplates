@@ -20,7 +20,6 @@ var ariaJsunitTestCase = require("./TestCase");
 var ariaCoreLog = require("../core/Log");
 var ariaCoreTimer = require("../core/Timer");
 
-
 /**
  * Class to be extended to create a template test case
  */
@@ -136,7 +135,8 @@ module.exports = Aria.classDefinition({
          */
         setTestEnv : function (env) {
 
-            // internal data must be null in case of a module controller, in order to get them from the controller itself if needed
+            // internal data must be null in case of a module controller, in order to get them from the controller
+            // itself if needed
             if (env.moduleCtrl) {
                 this.env.data = null;
             }
@@ -423,10 +423,10 @@ module.exports = Aria.classDefinition({
         },
 
         /**
-         * Proxy to aria.utils.Dom.getElementsByClassName - kept for backwards compatibility.
-         * Better use aria.utils.Dom.getElementsByClassName directly.
+         * Proxy to aria.utils.Dom.getElementsByClassName - kept for backwards compatibility. Better use
+         * aria.utils.Dom.getElementsByClassName directly.
          * @deprecated
-        */
+         */
         getElementsByClassName : function (domElt, classname) {
             return ariaUtilsDom.getElementsByClassName(domElt, classname);
         },
@@ -589,6 +589,52 @@ module.exports = Aria.classDefinition({
             return this.getWidgetDomElement(templateWidgetId, "a");
         },
 
+        /**
+         * Waits for the given text-input based widget to have the focus.
+         * @param {String} widgetId : widget id
+         * @param {Function} cb : callback which will be called when the widget has the focus
+         */
+        waitForWidgetFocus : function (widgetId, cb) {
+            this.waitForDomEltFocus(this.getInputField(widgetId), cb);
+        },
+
+        /**
+         * Waits for the given DOM element to have the focus.
+         * @param {HTMLElement} domElt : DOM element
+         * @param {Function} cb : callback which will be called when the DOM element has the focus
+         */
+        waitForDomEltFocus : function (domElt, cb) {
+            this.waitFor({
+                condition : function () {
+                    return domElt === this.testDocument.activeElement;
+                },
+                callback : cb
+            });
+        },
+
+        /**
+         * Waits for the given text-input based widget to no longer have the focus.
+         * @param {String} widgetId : widget id
+         * @param {Function} cb : callback which will be called when the widget no longer has the focus
+         */
+        waitForWidgetBlur : function (widgetId, cb) {
+            this.waitForDomEltBlur(this.getInputField(widgetId), cb);
+        },
+
+        /**
+         * Waits for the given DOM element to no longer have the focus.
+         * @param {HTMLElement} domElt : DOM element
+         * @param {Function} cb : callback which will be called when the DOM element no longer has the focus
+         */
+        waitForDomEltBlur : function (domElt, cb) {
+            this.waitFor({
+                condition : function () {
+                    return domElt !== this.testDocument.activeElement;
+                },
+                callback : cb
+            });
+        },
+
         _findInHierarchy : function (node, widgetID, context) {
             var contextUpdated = false;
             if (node.type == "template") {
@@ -654,10 +700,14 @@ module.exports = Aria.classDefinition({
          * @param {Boolean} blur Blur the widget after typing. Default true
          */
         clickAndType : function (id, text, callback, blur) {
-            this.synEvent.click(this.getInputField(id), {
-                fn : this.__afterClick,
-                scope : this,
-                args : [id, text, callback, blur]
+            var textInput = this.getInputField(id);
+            this.synEvent.click(textInput, {
+                fn : function () {
+                    this.waitForDomEltFocus(textInput, function () {
+                        this.__afterClick(textInput, text, callback, blur);
+                    });
+                },
+                scope : this
             });
         },
 
@@ -665,13 +715,13 @@ module.exports = Aria.classDefinition({
          * Internal methods used by clickAndType
          * @private
          */
-        __afterClick : function () {
-            var id = arguments[1][0], text = arguments[1][1], callback = arguments[1][2], blur = arguments[1][3];
-
-            this.synEvent.type(this.getInputField(id), text, {
+        __afterClick : function (textInput, text, callback, blur) {
+            this.synEvent.type(textInput, text, {
                 fn : this.__afterType,
                 scope : this,
-                args : [id, text, callback, blur]
+                args : [callback, blur],
+                apply : true,
+                resIndex : -1
             });
         },
 
@@ -679,9 +729,7 @@ module.exports = Aria.classDefinition({
          * Internal methods used by clickAndType
          * @private
          */
-        __afterType : function () {
-            var callback = arguments[1][2], blur = arguments[1][3];
-            // text = arguments[1][1]
+        __afterType : function (callback, blur) {
             if (blur === false) {
                 this.$callback(callback);
             } else {

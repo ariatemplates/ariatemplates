@@ -8,40 +8,35 @@ Aria.classDefinition({
          * popup.
          */
         runTemplateTest : function () {
-            this.assertTrue(this.getInputField("ms1").value === "");
-            this.getInputField("ms1").focus();
-            aria.core.Timer.addCallback({
-                fn : function() {
-                    this.synEvent.type(this.getInputField("ms1"), "AF,AC,DL,AY", {
-                        fn : this._afterTyping,
-                        scope : this
-                    });
-                },
-                scope : this,
-                delay : 25
+
+            this.ms = this.getInputField("ms1");
+            this.msDom = this.getWidgetInstance('ms1')._domElt;
+
+            this.assertTrue(this.ms.value === "");
+            this.ms.focus();
+
+            // Wait for the field to be focused
+            this.waitForWidgetFocus("ms1", function () {
+                this.synEvent.type(this.ms, "AF,AC,DL,AY", {
+                    fn : this._afterTyping,
+                    scope : this
+                });
             });
         },
 
         _afterTyping : function () {
-            this.assertTrue(this.getInputField("ms1").value === "AF,AC,DL,AY");
-            aria.core.Timer.addCallback({
-                fn : this.finishTest,
-                scope : this,
-                delay : 100
-            });
+            this.assertTrue(this.ms.value === "AF,AC,DL,AY");
+
+            this.getInputField("myTextField").focus();
+
+            // Wait for the ms field to be blured
+            this.waitForWidgetFocus("myTextField", this.finishTest);
 
         },
 
         finishTest : function () {
-            this.getInputField("myTextField").focus();
-            aria.core.Timer.addCallback({
-                fn : function() {
-                    this.assertTrue(this.getInputField("ms1").value === "AF,AC,DL");
-                    this.end();
-                },
-                scope : this,
-                delay : 25
-            });
+            this.assertTrue(this.ms.value === "AF,AC,DL");
+            this.end();
         }
     }
 });

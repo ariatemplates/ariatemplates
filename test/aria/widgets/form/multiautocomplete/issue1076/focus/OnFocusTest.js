@@ -33,7 +33,7 @@ Aria.classDefinition({
         },
 
         runTemplateTest : function () {
-            this.clickAndType(["[down]"], {
+            this.clickAndType(["[down]", this.dropdownOpenCondition], {
                 fn : this._wait1,
                 scope : this
             }, 1);
@@ -77,8 +77,7 @@ Aria.classDefinition({
             this.assertEquals(this.data.onFocusCalls, 1, "The number of focus events %2. It is %1 instead.");
             this.focusOut({
                 fn : this._afterBlur,
-                scope : this,
-                delay : 100
+                scope : this
             });
         },
 

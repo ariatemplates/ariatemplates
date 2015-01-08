@@ -14,6 +14,8 @@
  */
 var Aria = require("../Aria");
 var ariaUtilsDom = require("../utils/Dom");
+var ariaCoreTimer = require("../core/Timer");
+var ariaCoreBrowser = require("../core/Browser");
 
 /**
  * This class contains an implementation of the aria.jsunit.IRobot interface which uses the Selenium Java Robot tool.
@@ -192,11 +194,26 @@ module.exports = Aria.classDefinition({
             });
         },
 
-        keyPress : function (keycode, cb) {
-            this._robot.keyPress(keycode, {
+        keyPress : function (keyCode, cb) {
+            // IE sometimes miss some keystrokes, that's why we are adding a 100 ms
+            // delay before each keypress (which experimentally seems to help...)
+            // http://answers.microsoft.com/en-us/ie/forum/ie8-windows_other/internet-explorer-missing-keystroke-problem/1bee2ec3-828c-4a3d-8b05-638e44baf0a8
+            ariaCoreTimer.addCallback({
+                fn : this._keyPress,
+                scope : this,
+                args : {
+                    keyCode : keyCode,
+                    cb : cb
+                },
+                delay : ariaCoreBrowser.isIE ? 100 : 1
+            });
+        },
+
+        _keyPress : function (args) {
+            this._robot.keyPress(args.keyCode, {
                 scope : this,
                 fn : this._callCallback,
-                args : cb
+                args : args.cb
             });
         },
 

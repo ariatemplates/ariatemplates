@@ -19,10 +19,11 @@ Aria.classDefinition({
     $prototype : {
 
         runTemplateTest : function () {
-            this.clickAndType(["b", "[enter]", "a", "[enter]"], {
+            this.clickAndType(["b", "[enter]", this.dropdownCloseCondition, "a", this.dropdownOpenCondition, "[enter]",
+                    this.dropdownCloseCondition], {
                 fn : this._editValues,
                 scope : this
-            }, 500);
+            }, 1);
         },
 
         _editValues : function () {
