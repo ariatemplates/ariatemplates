@@ -95,24 +95,36 @@ module.exports = Aria.classDefinition({
             var overlayGeometry = null;
 
             if (geometry) {
+                var width1, width2, height1, height2;
+
+                var overlayGeometryViewportRelative = {
+                    x : Math.max(geometry.x, 0),
+                    y : Math.max(geometry.y, 0)
+                };
                 if (overlay.style.position == "absolute") {
                     // geometry is relative to viewport
+                    // overlayGeometry will be relative to the page!
                     var documentScroll = aria.utils.Dom._getDocumentScroll();
                     overlayGeometry = {
                         x : Math.max(geometry.x + documentScroll.scrollLeft, 0),
                         y : Math.max(geometry.y + documentScroll.scrollTop, 0)
                     };
                 } else { // fixed
-                    overlayGeometry = {
-                        x : Math.max(geometry.x, 0),
-                        y : Math.max(geometry.y, 0)
-                    };
+                    // geometry is relative to viewport
+                    // overlayGeometry will be relative to the viewport too
+                    overlayGeometry = overlayGeometryViewportRelative;
                 }
 
-                overlayGeometry.width = Math.min(geometry.width + Math.min(geometry.x, 0), viewportSize.width
-                        - overlayGeometry.x);
-                overlayGeometry.height = Math.min(geometry.height + Math.min(geometry.y, 0), viewportSize.height
-                        - overlayGeometry.y);
+                // "cut-off" the overlay if the element stands out of the viewport to the left / top
+                width1 = geometry.width + Math.min(geometry.x, 0);
+                height1 = geometry.height + Math.min(geometry.y, 0);
+
+                // "cut-off" the overlay if the element stands out of the viewport to the right / bottom
+                width2 = viewportSize.width - overlayGeometryViewportRelative.x;
+                height2 = viewportSize.height - overlayGeometryViewportRelative.y;
+
+                overlayGeometry.width = Math.min(width1, width2);
+                overlayGeometry.height = Math.min(height1, height2);
             }
 
             var style = overlay.style;

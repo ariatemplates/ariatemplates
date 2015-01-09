@@ -43,6 +43,7 @@ Aria.classDefinition({
         _addLoadingIndicatorOnSpan : function () {
             this.domOverlay.create(this.spanWithLoader, "just a message");
             this.domOverlay.create(this.body, "just a message");
+
             this._testOverlay(this.spanWithLoader, "none");
             this._testBodyOverlay();
 
@@ -65,7 +66,6 @@ Aria.classDefinition({
                 scope : this,
                 delay : 300
             });
-
         },
 
         _afterSecondScroll : function () {
@@ -140,15 +140,16 @@ Aria.classDefinition({
             tolHeight = tolHeight || 0;
             var overlay = this.domOverlay.__getOverlay(element).overlay.overlay;
             if (display) {
-                this.assertEquals(overlay.style.display, display);
+                var msg = "The overlay on " + element.tagName + " had display: %1 instead of %2";
+                this.assertEquals(overlay.style.display, display, msg);
             }
             if (width) {
                 var actualWidth = parseInt(overlay.style.width, 10);
-                this.assertTrue(Math.abs(actualWidth - width) <= tolWidth, "Wrong width");
+                this.assertEqualsWithTolerance(actualWidth, width, tolWidth, "Wrong width, expected %2, got %1");
             }
             if (height) {
                 var actualHeight = parseInt(overlay.style.height, 10);
-                this.assertTrue(Math.abs(actualHeight - height) <= tolHeight, "Wrong height");
+                this.assertEqualsWithTolerance(actualHeight, height, tolHeight, "Wrong height, expected %2, got %1");
             }
         },
 
