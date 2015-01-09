@@ -19,10 +19,12 @@
  */
 Aria.classDefinition({
     $classpath : "test.aria.storage.localStorage.EventIssue",
-    $dependencies : ["aria.storage.LocalStorage", "aria.utils.FrameATLoader"],
+    $dependencies : ["aria.storage.LocalStorage"],
     $extends : "test.aria.storage.base.BaseTests",
     $prototype : {
         storageLocation : "localStorage",
+
+        EVENT_DELAY : 500,
 
         setUp : function () {
             var localStorageProto = aria.storage.LocalStorage.prototype;
@@ -47,15 +49,16 @@ Aria.classDefinition({
                 this.notifyTestEnd();
                 return;
             }
-
-            var storage = new aria.storage.LocalStorage();
-
             var self = this;
-            this.setLocalStorageItem("testAsyncUselessEvent", "{}", function () {
-                self.assertEquals(self._browserEventCalled, 0);
-                storage.$dispose();
-                self.notifyTestEnd();
-            });
+            setTimeout(function () {
+                var storage = new aria.storage.LocalStorage();
+
+                self.setLocalStorageItem("testAsyncUselessEvent", "{}", function () {
+                    self.assertEquals(self._browserEventCalled, 0);
+                    storage.$dispose();
+                    self.notifyTestEnd();
+                });
+            }, self.EVENT_DELAY);
         },
 
         testAsyncUsefulEvent : function () {
@@ -65,24 +68,25 @@ Aria.classDefinition({
                 return;
             }
 
-            var storage = new aria.storage.LocalStorage();
-            var changeEventCalled = 0;
-
-            storage.$on({
-                "change" : function () {
-                    changeEventCalled++;
-                },
-                scope : this
-            });
-
             var self = this;
+            setTimeout(function () {
+                var storage = new aria.storage.LocalStorage();
+                var changeEventCalled = 0;
 
-            this.setLocalStorageItem("testAsyncUsefulEvent", "{}", function () {
-                self.assertEquals(self._browserEventCalled, 1);
-                self.assertEquals(changeEventCalled, 1);
-                storage.$dispose();
-                self.notifyTestEnd();
-            });
+                storage.$on({
+                    "change" : function () {
+                        changeEventCalled++;
+                    },
+                    scope : self
+                });
+
+                self.setLocalStorageItem("testAsyncUsefulEvent", "{}", function () {
+                    self.assertEquals(self._browserEventCalled, 1);
+                    self.assertEquals(changeEventCalled, 1);
+                    storage.$dispose();
+                    self.notifyTestEnd();
+                });
+            }, self.EVENT_DELAY);
         },
 
         testAsyncJsonErrorInStorageEvent : function () {
@@ -93,43 +97,45 @@ Aria.classDefinition({
             }
             localStorage.setItem("testAsyncJsonErrorInStorageEvent", "this/is-NOT*a.JSON-Object");
 
-            var storage = new aria.storage.LocalStorage();
-            var changeEventCalled = 0;
-
             var self = this;
+            setTimeout(function () {
+                var storage = new aria.storage.LocalStorage();
+                var changeEventCalled = 0;
 
-            storage.$on({
-                "change" : function (event) {
-                    changeEventCalled++;
-                    self.assertEquals(event.key, "testAsyncJsonErrorInStorageEvent");
-                    self.assertEquals(event.oldValue, "this/is-NOT*a.JSON-Object");
-                    self.assertJsonEquals(event.newValue, {});
-                },
-                scope : this
-            });
+                storage.$on({
+                    "change" : function (event) {
+                        changeEventCalled++;
+                        self.assertEquals(event.key, "testAsyncJsonErrorInStorageEvent");
+                        self.assertEquals(event.oldValue, "this/is-NOT*a.JSON-Object");
+                        self.assertJsonEquals(event.newValue, {});
+                    },
+                    scope : self
+                });
 
-            this.setLocalStorageItem("testAsyncJsonErrorInStorageEvent", "{}", function () {
-                self.assertEquals(self._browserEventCalled, 1);
-                self.assertEquals(changeEventCalled, 1);
-                storage.$dispose();
-                self.notifyTestEnd();
-            });
+                self.setLocalStorageItem("testAsyncJsonErrorInStorageEvent", "{}", function () {
+                    self.assertEquals(self._browserEventCalled, 1);
+                    self.assertEquals(changeEventCalled, 1);
+                    storage.$dispose();
+                    self.notifyTestEnd();
+                });
+            }, self.EVENT_DELAY);
         },
 
         setLocalStorageItem : function (item, value, cb) {
             var iframe;
+            var self = this;
 
             function step0 () {
                 var document = Aria.$window.document;
                 iframe = document.createElement("iframe");
                 document.body.appendChild(iframe);
-                aria.utils.FrameATLoader.loadAriaTemplatesInFrame(iframe, step1);
+                setTimeout(step1, 10);
             }
 
             function step1 () {
                 var window = iframe.contentWindow;
                 window.localStorage.setItem(item, value);
-                setTimeout(step2, 10);
+                setTimeout(step2, self.EVENT_DELAY);
             }
 
             function step2 () {
