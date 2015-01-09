@@ -18,7 +18,6 @@ var ariaCoreBrowser = require("../core/Browser");
 var ariaUtilsString = require("./String");
 var ariaUtilsCssUnits = require("./css/Units");
 
-
 /**
  * This class contains utilities to manipulate the DOM.
  */
@@ -516,17 +515,45 @@ module.exports = Aria.classDefinition({
          * @private
          */
         _getViewportSize : function () {
-            var document = Aria.$window.document;
-            var docEl = document.documentElement;
-            var size = {
-                'width' : docEl.clientWidth,
-                'height' : docEl.clientHeight
-            };
-            return size;
+            if (ariaCoreBrowser.isIOS || ariaCoreBrowser.isAndroid || ariaCoreBrowser.isWindowsPhone) {
+                // Initially (without user-initiated zoom) window's dimensions are the same or nearly the same as
+                // documentElement's.
+                // Note however that documentElement's clientWidth/Height is unaffected by user zoom while window's
+                // innerWidth/Height change on zoom.
+                // Also, in Safari on ipad, the viewport resizes when scrolling the page (the address bar is shrinked
+                // gradually) and documentElement's size is unaffected, while window's size changes (but in Chrome on
+                // mobile, both change).
+
+                // See also http://jakub-g.github.io/quirksmode/widthtest.html
+                return {
+                    'width' : Aria.$window.innerWidth,
+                    'height' : Aria.$window.innerHeight
+                };
+            } else {
+                var docEl = Aria.$window.document.documentElement;
+                return {
+                    'width' : docEl.clientWidth,
+                    'height' : docEl.clientHeight
+                };
+            }
         },
 
         /**
-         * @return {aria.utils.DomBeans:Size} Size object width 'width' and 'height' properties
+         * @return {aria.utils.DomBeans:Size} Size object width 'width' and 'height' properties.<br>
+         * This method returns the size in pixels of the <strong>visible on screen portion of the viewport</strong> (in
+         * contrast to the so called "virtual viewport" on the mobile devices). It is suitable for usages like
+         * determining the size of the overlays covering whole or part of the page.<br>
+         * <br>
+         * Note that viewport size may change in many situations, such as when the user:<br> - resizes the browser,<br> -
+         * rotates the mobile device,<br> - scrolls the page (on mobile devices),<br> - zooms the page (on mobile
+         * devices),<br>
+         * as well as on desktop browsers when some elements are added to/removed from the DOM (since viewport size
+         * excludes scrollbars, which may or may not appear on the page in desktop browsers).<br>
+         * <br>
+         * If you depend on the precise viewport size information, you should listen to <tt>window.onresize</tt> and
+         * <tt>document.onscroll</tt> events.<br>
+         * <br>
+         * See also http://jakub-g.github.io/quirksmode/widthtest.html
          */
         getViewportSize : function () {
             return this._getViewportSize();
