@@ -518,11 +518,23 @@ module.exports = Aria.classDefinition({
         _getViewportSize : function () {
             var document = Aria.$window.document;
             var docEl = document.documentElement;
-            var size = {
-                'width' : docEl.clientWidth,
-                'height' : docEl.clientHeight
-            };
-            return size;
+            if (ariaCoreBrowser.isIOS || ariaCoreBrowser.isAndroid) {
+                // On ipad, normally window's dimensions are the same as documentElement's
+                // But the viewport resizes when scrolling the page (the address bar is shrinked
+                // gradually) and documentElement's size is unaffected while window's size changes
+
+                // On android/chrome however, docEl.clientHeight is the virtual viewport's size
+                // (which may be many times bigger), not the screen-visible viewport size
+                return {
+                    'width' : Aria.$window.innerWidth,
+                    'height' : Aria.$window.innerHeight
+                };
+            } else {
+                return {
+                    'width' : docEl.clientWidth,
+                    'height' : docEl.clientHeight
+                };
+            }
         },
 
         /**
