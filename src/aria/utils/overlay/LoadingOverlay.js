@@ -106,8 +106,8 @@ module.exports = Aria.classDefinition({
                     // overlayGeometry will be relative to the page!
                     var documentScroll = aria.utils.Dom._getDocumentScroll();
                     overlayGeometry = {
-                        x : Math.max(geometry.x + documentScroll.scrollLeft, 0),
-                        y : Math.max(geometry.y + documentScroll.scrollTop, 0)
+                        x : Math.max(geometry.x, 0) + documentScroll.scrollLeft,
+                        y : Math.max(geometry.y, 0) + documentScroll.scrollTop
                     };
                 } else { // fixed
                     // geometry is relative to viewport

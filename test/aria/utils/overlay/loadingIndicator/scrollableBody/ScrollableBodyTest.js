@@ -21,8 +21,12 @@ Aria.classDefinition({
 
         this.setTestEnv({
             template : "test.aria.utils.overlay.loadingIndicator.scrollableBody.TestTemplate",
-            iframe : true
+            iframe : true,
+            iframePageCss : "body {margin:0; padding:0;}"
         });
+
+        this.__scrollTop = 0;
+        this.__scrollLeft = 0;
     },
     $prototype : {
 
@@ -132,6 +136,9 @@ Aria.classDefinition({
         },
 
         _setScroll : function (scrollTop, scrollLeft) {
+            // save scroll values for reference in assertions
+            this.__scrollTop = scrollTop;
+            this.__scrollLeft = scrollLeft;
             this.testWindow.scrollTo(scrollLeft, scrollTop);
         },
 
@@ -142,6 +149,19 @@ Aria.classDefinition({
             if (display) {
                 var msg = "The overlay on " + element.tagName + " had display: %1 instead of %2";
                 this.assertEquals(overlay.style.display, display, msg);
+            }
+            // check overlay's positioning if it's visible
+            if (display != "none") {
+                var overlayTop = this.testWindow.aria.utils.Dom.getStylePx(overlay, "top");
+                var overlayLeft = this.testWindow.aria.utils.Dom.getStylePx(overlay, "left");
+
+                // leveraging facts that element's offsetParent is BODY
+                // and BODY has 0 margins / paddings due to iframePageCss
+                var expectedTop = Math.max(element.offsetTop, this.__scrollTop);
+                var expectedLeft = Math.max(element.offsetLeft, this.__scrollLeft);
+
+                this.assertEquals(overlayTop, expectedTop, "Overlay top position is %1, expected %2");
+                this.assertEquals(overlayLeft, expectedLeft, "Overlay left position is %1, expected %2");
             }
             if (width) {
                 var actualWidth = parseInt(overlay.style.width, 10);
