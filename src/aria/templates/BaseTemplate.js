@@ -31,14 +31,14 @@ module.exports = Aria.classDefinition({
     },
     $statics : {
         // ERROR MESSAGES:
-        EXCEPTION_IN_MACRO : "Uncaught exception in macro '%1', line %2",
+        EXCEPTION_IN_MACRO : "file %2, line %3: Uncaught exception in macro '%1'",
         EXCEPTION_IN_VARINIT : "Uncaught exception when initializing global variables in template '%0'.",
-        ITERABLE_UNDEFINED : "line %2: Template error: cannot iterate over a null or undefined variable.",
-        EXCEPTION_IN_EXPRESSION : "line %2: Uncaught runtime exception in expression '%1'",
-        EXCEPTION_IN_VAR_EXPRESSION : "line %2: Uncaught runtime exception in var expression '%1'",
-        EXCEPTION_IN_SET_EXPRESSION : "line %2: Uncaught runtime exception in set expression '%1'",
-        EXCEPTION_IN_CHECKDEFAULT_EXPRESSION : "line %2: Uncaught runtime exception in checkdefault expression '%1'",
-        MACRO_NOT_FOUND : "line %1: Template error: macro '%2' is not defined."
+        ITERABLE_UNDEFINED : "file %2, line %3: Template error: cannot iterate over a null or undefined variable.",
+        EXCEPTION_IN_EXPRESSION : "file %2, line %3: Uncaught runtime exception in expression '%1'",
+        EXCEPTION_IN_VAR_EXPRESSION : "file %2, line %3: Uncaught runtime exception in var expression '%1'",
+        EXCEPTION_IN_SET_EXPRESSION : "file %2, line %3: Uncaught runtime exception in set expression '%1'",
+        EXCEPTION_IN_CHECKDEFAULT_EXPRESSION : "file %2, line %3: Uncaught runtime exception in checkdefault expression '%1'",
+        MACRO_NOT_FOUND : "file %1, line %2: Template error: macro '%3' is not defined."
     },
     $prototype : {
         $json : ariaUtilsJson,
