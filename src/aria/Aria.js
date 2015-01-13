@@ -526,6 +526,15 @@ var Aria = module.exports = global.Aria;
      */
     Aria.$classes = [];
 
+    Aria.ACCEPTED_TYPES = {
+        JS : '.js',
+        TPL : '.tpl',
+        TML : '.tml',
+        CSS : '.tpl.css',
+        CML : '.cml',
+        TXT : '.tpl.txt'
+    };
+
     /**
      * Access for undisposed objects from within test cases.
      * @type Object
@@ -1031,14 +1040,7 @@ var Aria = module.exports = global.Aria;
 
         if (typeof defExtends == "string" && defExtends != 'aria.core.JsObject') {
             var extendsType = def.$extendsType || "JS";
-            var acceptedTypes = {
-                JS : '.js',
-                TPL : '.tpl',
-                TML : '.tml',
-                CSS : '.tpl.css',
-                CML : '.cml',
-                TXT : '.tpl.txt'
-            };
+            var acceptedTypes = Aria.ACCEPTED_TYPES;
             if (!acceptedTypes.hasOwnProperty(extendsType)) {
                 return __classLoadError(def, Aria.INVALID_EXTENDSTYPE, [clsName]);
             }

@@ -467,7 +467,7 @@ module.exports = Aria.classDefinition({
             this.decreaseIndent();
             this.writeln("} catch (e) {");
             this.increaseIndent();
-            this.writeln("this.$logError(", errorMsg, ",[\"", exprStr, "\",", statement.lineNumber, ",", this.stringify(statement.name), "], e);");
+            this.writeln("this.$logError(", errorMsg, ",[\"", exprStr, "\",__filename,", statement.lineNumber, ",", this.stringify(statement.name), "], e);");
             this.decreaseIndent();
             this.writeln("}");
 

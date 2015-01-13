@@ -391,7 +391,7 @@ module.exports = Aria.classDefinition({
 
                     out.writeln("if(", iteratedObject, "==undefined){");
                     out.increaseIndent();
-                    out.writeln("this.$logError(this.ITERABLE_UNDEFINED,[", out.stringify(statement.name), ", ", statement.lineNumber, "]);");
+                    out.writeln("this.$logError(this.ITERABLE_UNDEFINED,[", out.stringify(statement.name), ",__filename, ", statement.lineNumber, "]);");
                     out.decreaseIndent();
                     out.writeln("}");
 
@@ -482,7 +482,7 @@ module.exports = Aria.classDefinition({
                     out.decreaseIndent();
                     out.writeln("} catch (_ex) {");
                     out.increaseIndent();
-                    out.writeln("this.$logError(this.EXCEPTION_IN_MACRO,[", out.stringify(macroname), ", this['"
+                    out.writeln("this.$logError(this.EXCEPTION_IN_MACRO,[", out.stringify(macroname), ",__filename, this['"
                             + Aria.FRAMEWORK_PREFIX + "currentLineNumber']],_ex);");
                     out.decreaseIndent();
                     out.writeln("}");
@@ -532,7 +532,7 @@ module.exports = Aria.classDefinition({
                         var macroDisplay = macroContainer ? macroContainer + macroname : macroname;
                         out.writeln("if (", macroRef, " == null) {");
                         out.increaseIndent();
-                        out.writeln('this.$logError(this.MACRO_NOT_FOUND,[', statement.lineNumber, ',', out.stringify(macroDisplay), ']);');
+                        out.writeln('this.$logError(this.MACRO_NOT_FOUND,[__filename,', statement.lineNumber, ',', out.stringify(macroDisplay), ']);');
                         out.decreaseIndent();
                         out.writeln("}");
                     }
@@ -558,7 +558,7 @@ module.exports = Aria.classDefinition({
                         out.decreaseIndent();
                         out.writeln("} catch (_ex) {");
                         out.increaseIndent();
-                        out.writeln("this.$logError(this.EXCEPTION_IN_MACRO,[", out.stringify(currentMacroName), ", this['"
+                        out.writeln("this.$logError(this.EXCEPTION_IN_MACRO,[", out.stringify(currentMacroName), ",__filename, this['"
                                 + Aria.FRAMEWORK_PREFIX + "currentLineNumber']],_ex);");
                         out.decreaseIndent();
                         out.writeln("}");
