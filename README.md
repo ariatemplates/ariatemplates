@@ -1,7 +1,12 @@
-# Aria Templates - JavaScript Framework [![Build Status](https://secure.travis-ci.org/ariatemplates/ariatemplates.png?branch=master)](http://travis-ci.org/ariatemplates/ariatemplates)
+# Aria Templates - JavaScript Framework
+
+[![Build Status](https://secure.travis-ci.org/ariatemplates/ariatemplates.png?branch=master)](http://travis-ci.org/ariatemplates/ariatemplates)
+[![Dependencies](https://david-dm.org/ariatemplates/ariatemplates.svg?style=flat)](https://david-dm.org/ariatemplates/ariatemplates)
+[![devDependencies](https://david-dm.org/ariatemplates/ariatemplates/dev-status.svg?style=flat)](https://david-dm.org/ariatemplates/ariatemplates#info=devDependencies)
+
+[![npm](https://nodei.co/npm/ariatemplates.png?compact=true)](https://www.npmjs.com/package/ariatemplates)
 
 ![Aria Templates logo](http://ariatemplates.com/images/logo-forum.png)
-
 
 [Aria Templates](http://ariatemplates.com/) (aka AT) is an application framework written in JavaScript for building rich and **large-scaled enterprise web applications**. Developed since 2009 by [Amadeus](http://www.amadeus.com) for its professional products, it has been designed to build web apps used intensively that need to display and process a **high amount of data** with a **minimum of bandwidth consumption**.
 
