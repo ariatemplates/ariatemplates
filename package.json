@@ -23,11 +23,12 @@
     "lint": "node build/grunt-cli.js checkStyle checkStyleTest",
     "grunt": "node build/grunt-cli.js",
     "attester": "node node_modules/attester/bin/attester.js test/attester.yml --env package.json",
+    "attester-nophantom": "sh ./scripts/attester-nophantom.sh",
     "attester-flatskin": "node node_modules/attester/bin/attester.js test/attester-flatskin.yml --env package.json",
     "attester-packaged": "node node_modules/attester/bin/attester.js test/attester-packaged.yml --env package.json",
     "attester-testskin": "node node_modules/attester/bin/attester.js test/attester-testskin.yml --env package.json",
     "mocha": "mocha --recursive test/node",
-    "test-suites": "npm run mocha && npm run attester && npm run attester-packaged && npm run attester-flatskin && npm run attester-testskin",
+    "test-suites": "npm run mocha && npm run attester && npm run attester-packaged && npm run attester-flatskin && npm run attester-testskin && npm run attester-nophantom",
     "test": "npm run lint && npm run grunt && npm run test-suites",
     "attest": "node scripts/attest.js",
     "ci": "npm run lint-test && npm run test-suites"

@@ -41,7 +41,11 @@ Aria.classDefinition({
         _firstDrag : function () {
             var dom = aria.utils.Dom;
             this.assertEquals(dom.getDocumentScrollElement().scrollTop, 150, "The page should have %2 px of scroll, but it has %1 px instead");
+
             var handleGeometry = dom.getGeometry(this._getHandle("firstDialog"));
+            // We are dragging up, make sure we have enough space at the top
+            this.assertTrue(handleGeometry.y > 100, "Dialog y is " + handleGeometry.y + ", it must be >100 as a prerequisite");
+
             this.dialogPos = {
                 x : handleGeometry.x,
                 y : handleGeometry.y
@@ -55,7 +59,7 @@ Aria.classDefinition({
                 duration : 2000,
                 to : {
                     x : from.x,
-                    y : from.y - 200
+                    y : from.y - 100
                 }
             };
 
@@ -68,8 +72,8 @@ Aria.classDefinition({
         _afterFirstDrag : function () {
             var handleGeometry = aria.utils.Dom.getGeometry(this._getHandle("firstDialog"));
 
-            this.assertEquals(this.dialogPos.x, handleGeometry.x, "The dialog xpos position is not corrrectly set, expected %1, actual %2.");
-            this.assertEquals(this.dialogPos.y - 200, handleGeometry.y, "The dialog ypos position is not corrrectly set, expected %1, actual %2.");
+            this.assertEquals(this.dialogPos.x, handleGeometry.x, "The dialog xpos position is not correctly set, expected %1, actual %2.");
+            this.assertEquals(this.dialogPos.y - 100, handleGeometry.y, "The dialog ypos position is not correctly set, expected %1, actual %2.");
 
             this.end();
         },
