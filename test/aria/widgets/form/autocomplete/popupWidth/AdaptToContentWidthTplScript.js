@@ -13,14 +13,20 @@
  * limitations under the License.
  */
 
-Aria.classDefinition({
-    $classpath : "test.aria.widgets.skin.FlatSkinTestSuite",
-    $extends : "aria.jsunit.TestSuite",
-    $constructor : function () {
-        this.$TestSuite.constructor.call(this);
+Aria.tplScriptDefinition({
+    $classpath : "test.aria.widgets.form.autocomplete.popupWidth.AdaptToContentWidthTplScript",
+    $dependencies : ["test.aria.widgets.form.autocomplete.popupWidth.CustomResourceHandler"],
+    $destructor : function () {
+        this.handler.$dispose();
+    },
+    $prototype : {
 
-        this.addTests("test.aria.widgets.skin.dialogTitleBar.DialogTitleBarTestCase");
-        this.addTests("test.aria.widgets.skin.AllSkinTestSuite");
-        this.addTests("test.aria.widgets.form.autocomplete.popupWidth.AdaptToContentWidthTest");
+        getHandler : function () {
+            if (!this.handler) {
+                this.handler = new test.aria.widgets.form.autocomplete.popupWidth.CustomResourceHandler();
+            }
+
+            return this.handler;
+        }
     }
 });

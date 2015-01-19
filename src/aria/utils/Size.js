@@ -15,8 +15,6 @@
 var Aria = require("../Aria");
 var ariaUtilsMath = require("./Math");
 var ariaUtilsType = require("./Type");
-var ariaCoreBrowser = require("../core/Browser");
-
 
 /**
  * Handles sizes measurements and application for DOM elements
@@ -110,7 +108,6 @@ module.exports = Aria.classDefinition({
             // PROFILING // var profilingId = this.$startMeasure("setContrains");
             var measured, newValue, result = {}, changedWidth = false, changedHeight = false;
             var changedOverflowY = false;
-            var savedScrollBarY = element.style.overflowY;
 
             // for width
             if (widthConf) {
@@ -132,13 +129,10 @@ module.exports = Aria.classDefinition({
                     changedHeight = true;
                     changedOverflowY = (newValue < measured);
                     if (changedOverflowY) {
-                        element.style.overflowY = "scroll";
-                        if ((ariaCoreBrowser.isOldIE && ariaCoreBrowser.majorVersion < 8) || (ariaCoreBrowser.isMac)) {
-                            var scrollbarSize = aria.templates.Layout.getScrollbarsWidth();
-                            element.style['paddingRight'] = element.style['paddingRight'] === '' ? scrollbarSize + 'px' : (parseInt(element.style['paddingRight'], 10) + scrollbarSize) + "px";
-                        }
+                        var additionalWidth = aria.templates.Layout.getScrollbarsWidth() + 1;
                         // recalculate the width
-                        var newWidth = ariaUtilsMath.normalize(element.offsetWidth, widthConf.min, widthConf.max);
+                        var newWidth = ariaUtilsMath.normalize(element.offsetWidth + additionalWidth, widthConf.min, widthConf.max);
+
                         element.style.width = newWidth + "px";
                         changedWidth = true;
                         result.width = newWidth;
@@ -154,14 +148,6 @@ module.exports = Aria.classDefinition({
                 }
                 if (!heightConf) {
                     result.height = element.offsetHeight;
-                }
-
-                if (changedOverflowY) {
-                    element.style.overflowY = savedScrollBarY;
-                    if ((ariaCoreBrowser.isOldIE && ariaCoreBrowser.majorVersion < 8)  || (ariaCoreBrowser.isMac)) {
-                        var scrollbarSize = aria.templates.Layout.getScrollbarsWidth();
-                        element.style['paddingRight'] = (parseInt(element.style['paddingRight'], 10) - scrollbarSize) + "px";
-                    }
                 }
                 // PROFILING // this.$stopMeasure(profilingId);
                 return result;
