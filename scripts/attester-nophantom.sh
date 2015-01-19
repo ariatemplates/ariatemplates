@@ -6,6 +6,6 @@ runAttester() {
 
 if [ "$TRAVIS" = "true" ]; then
   runAttester "Firefox"
+else
+  runAttester "Chrome"
 fi
-
-runAttester "Chrome"

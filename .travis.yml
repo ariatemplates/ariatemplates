@@ -5,13 +5,10 @@ before_install:
 # Changing the /etc/hosts file is needed for the selenium Firefox driver to work correctly
 # (see https://code.google.com/p/selenium/issues/detail?id=3280)
   - (echo "127.0.0.1 localhost" && cat /etc/hosts) > /tmp/hosts && sudo mv /tmp/hosts /etc/hosts
-# Settings needed for graphic output in Chrome/Firefox
+# Settings needed for graphic output in Firefox
   - export DISPLAY=:99.0
   - /sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x16
-# We need a symlink to Chrome (for webdriver), and additionally a --no-sandbox flag (to make it run on Travis)
-  - echo -e '#!/bin/bash\nexec /usr/bin/chromium-browser --no-sandbox "$@"' | sudo tee /usr/bin/google-chrome
-  - sudo chmod +x /usr/bin/google-chrome
-# This test fails on Travis in Chrome/Firefox but works locally, TODO investigate that...
+# This test fails on Travis in Firefox but works locally, TODO investigate that...
   - sed -i "s/ - test.aria.widgets.container.dialog.movable.test5.MovableDialogTestCaseFive/#/" test/attester-nophantom.yml
 # No Flash on Travis
   - sed -i "s/ - test.aria.core.io.IOXDRTest/#/" test/attester-nophantom.yml
