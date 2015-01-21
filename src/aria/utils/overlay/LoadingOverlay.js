@@ -95,10 +95,19 @@ module.exports = Aria.classDefinition({
             var overlayGeometry = null;
 
             if (geometry) {
-                overlayGeometry = {
-                    x : Math.max(geometry.x, 0),
-                    y : Math.max(geometry.y, 0)
-                };
+                if (overlay.style.position == "absolute") {
+                    // geometry is relative to viewport
+                    var documentScroll = aria.utils.Dom._getDocumentScroll();
+                    overlayGeometry = {
+                        x : Math.max(geometry.x + documentScroll.scrollLeft, 0),
+                        y : Math.max(geometry.y + documentScroll.scrollTop, 0)
+                    };
+                } else { // fixed
+                    overlayGeometry = {
+                        x : Math.max(geometry.x, 0),
+                        y : Math.max(geometry.y, 0)
+                    };
+                }
 
                 overlayGeometry.width = Math.min(geometry.width + Math.min(geometry.x, 0), viewportSize.width
                         - overlayGeometry.x);
