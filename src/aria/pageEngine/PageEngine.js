@@ -802,6 +802,9 @@ module.exports = Aria.classDefinition({
                 templateCfg.moduleCtrl = module;
                 this._modulesInPage.push(module);
             }
+            if (item.data) {
+                templateCfg.data = item.data;
+            }
             return templateCfg;
         },
 
