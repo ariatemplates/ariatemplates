@@ -26,7 +26,6 @@ var ariaWidgetsContainerDialogStyle = require("./DialogStyle.tpl.css");
 var ariaWidgetsContainerContainer = require("./Container");
 var ariaCoreTimer = require("../../core/Timer");
 
-
 /**
  * Dialog widget
  */
@@ -234,8 +233,12 @@ module.exports = Aria.classDefinition({
          */
         __writeTitlebarButton : function (out, delegateId, cssClassPostfix, skinIcon) {
             var cfg = this._cfg;
-            out.write(['<span class="x', this._skinnableClass, '_', cssClassPostfix, ' x', this._skinnableClass, '_',
-                    cfg.sclass, '_', cssClassPostfix, '" ', ariaUtilsDelegate.getMarkup(delegateId), '>'].join(''));
+            // Adding atdraggable="" to make sure clicking on the button does not start the drag operation
+            // Using the atdraggable attribute directly instead of the aria.utils.Mouse.DRAGGABLE_ATTRIBUTE
+            // variable because aria.utils.Mouse may not be loaded yet.
+            out.write(['<span atdraggable="" class="x', this._skinnableClass, '_', cssClassPostfix, ' x',
+                    this._skinnableClass, '_', cfg.sclass, '_', cssClassPostfix, '" ',
+                    ariaUtilsDelegate.getMarkup(delegateId), '>'].join(''));
             var button = new ariaWidgetsIcon({
                 icon : this._skinObj[skinIcon]
             }, this._context, this._lineNumber);
