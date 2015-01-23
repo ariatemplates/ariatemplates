@@ -22,6 +22,7 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.container.dialog.maximizable.MaximizableDialogTest");
         this.addTests("test.aria.widgets.container.dialog.closeOutside.Issue389TestCase");
         this.addTests("test.aria.widgets.container.dialog.MovableDialogTestSuite");
+        this.addTests("test.aria.widgets.container.dialog.closeOrDrag.CloseOrDragTest");
 
         this.addTests("test.aria.widgets.container.dialog.resize.DialogResizeTestSuite");
         this.addTests("test.aria.widgets.container.dialog.closeOnClick.CloseDialogOnClickTestCase");
