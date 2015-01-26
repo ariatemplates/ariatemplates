@@ -173,8 +173,11 @@ module.exports = Aria.classDefinition({
         _beforeDropdownClose : function (event) {
             if (this._cfg.autoFill && event.domEvent) {
                 // Closing the dropdown after typing is not a domEvent
-                var report = this.controller.checkDropdownValue(this.controller.getDataModel().value);
-                this._reactToControllerReport(report);
+                var value = this.controller.getDataModel().value;
+                if (value != null) {
+                    var report = this.controller.checkDropdownValue(value);
+                    this._reactToControllerReport(report);
+                }
             }
         },
 

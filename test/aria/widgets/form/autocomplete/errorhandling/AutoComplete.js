@@ -59,7 +59,52 @@ Aria.classDefinition({
         checkErrorTooltip : function () {
             var acWidget = this.getWidgetInstance("acDest");
             this.assertTrue(!!acWidget._onValidatePopup);
-            this.notifyTemplateTestEnd();
-        }
+
+            this.synEvent.type(this.getInputField("acDest"), "\bm", {
+                fn : function() {
+                    this.waitFor({
+                        condition : function () {
+                            return !!this.getWidgetDropDownPopup("acDest");
+                        },
+                        callback : function () {
+                            this.clickOutside();
+                        }
+                    });
+                },
+                scope : this
+            });
+        },
+
+         /**
+         * Check that clicking outside with a wrong value and dropdown open keep the value in the textfield with an error
+         */
+         clickOutside : function () {
+             this.synEvent.click(Aria.$window.document.body, {
+                 fn : function() {
+                     this.waitFor({
+                         condition : function () {
+                             return !this.getWidgetDropDownPopup("acDest");
+                         },
+                            callback : function () {
+                                this.checkTextAndState();
+                            }
+                        });
+                    },
+                    scope : this
+            });
+        },
+
+         /**
+         * Check that clicking outside with a wrong value and dropdown open keep the value in the textfield with an error
+         */
+         checkTextAndState : function () {
+             var acWidget = this.getWidgetInstance("acDest");
+             this.assertEquals(acWidget._state, "normalError", "The field should have the %2 state instead of %1");
+
+             var input = this.getInputField("acDest");
+             this.assertEquals(input.value, "m", "The input value should be equal to '%2' instead of '%1'");
+
+             this.notifyTemplateTestEnd();
+         }
     }
 });
