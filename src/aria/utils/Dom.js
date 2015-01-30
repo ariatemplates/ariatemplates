@@ -515,7 +515,7 @@ module.exports = Aria.classDefinition({
          * @private
          */
         _getViewportSize : function () {
-            if (ariaCoreBrowser.isIOS || ariaCoreBrowser.isAndroid || ariaCoreBrowser.isWindowsPhone) {
+            if (ariaCoreBrowser.isIOS || ariaCoreBrowser.isAndroid) {
                 // Initially (without user-initiated zoom) window's dimensions are the same or nearly the same as
                 // documentElement's.
                 // Note however that documentElement's clientWidth/Height is unaffected by user zoom while window's
