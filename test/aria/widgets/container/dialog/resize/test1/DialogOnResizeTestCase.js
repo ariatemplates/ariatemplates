@@ -16,7 +16,7 @@
 Aria.classDefinition({
     $classpath : "test.aria.widgets.container.dialog.resize.test1.DialogOnResizeTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
-    $dependencies : ["aria.utils.Json", "aria.utils.Dom", "aria.core.Browser"],
+    $dependencies : ["aria.utils.Json", "aria.utils.Dom", "aria.core.Browser", "aria.templates.Layout"],
     $constructor : function () {
         this.$TemplateTestCase.constructor.call(this);
 
@@ -41,15 +41,12 @@ Aria.classDefinition({
             this.divDialog = divDialog;
 
             // Check position
-            var value;
-            value = divDialog.offsetTop;
-            this.assertTrue(value === 0, "offsetTop should be around 0 instead of " + value);
-            value = divDialog.offsetLeft;
-            this.assertTrue(value >= 95 && value <= 105, "offsetLeft should be around 100 instead of " + value);
-            value = divDialog.offsetWidth;
-            this.assertTrue(value >= 795 && value <= 805, "offsetWidth should be around 800 instead of " + value);
-            value = divDialog.offsetHeight;
-            this.assertTrue(value >= 695 && value <= 705, "offsetHeight should be around 700 instead of " + value);
+            this._checkOffsets(divDialog, {
+                offsetTop : 0,
+                offsetLeft : 100,
+                offsetWidth : 800,
+                offsetHeight : 700
+            });
 
             if (aria.core.Browser.isPhantomJS) {
                 this.end();
@@ -66,18 +63,15 @@ Aria.classDefinition({
         },
 
         _checkResize : function () {
-            var divDialog = this.divDialog;
-
+            // Only for this case, the scrollbar is taken into account because the maximum width is not reached
+            var scrollbarSize = aria.templates.Layout.getScrollbarsWidth() + 1;
             // Check position
-            var value;
-            value = divDialog.offsetTop;
-            this.assertTrue(value === 0, "offsetTop should be around 0 instead of " + value);
-            value = divDialog.offsetLeft;
-            this.assertTrue(value >= 45 && value <= 55, "offsetLeft should be around 50 instead of " + value);
-            value = divDialog.offsetWidth;
-            this.assertTrue(value >= 25 && value <= 305, "offsetWidth should be around 300 instead of " + value);
-            value = divDialog.offsetHeight;
-            this.assertTrue(value >= 395 && value <= 405, "offsetHeight should be around 400 instead of " + value);
+            this._checkOffsets(this.divDialog, {
+                offsetTop : 0,
+                offsetLeft : 50 - (scrollbarSize / 2),
+                offsetWidth : 300 + scrollbarSize,
+                offsetHeight : 400
+            });
 
             this.testIframe.style.width = "1000px";
             this.testIframe.style.height = "700px";
@@ -89,20 +83,23 @@ Aria.classDefinition({
         },
 
         _checkSizeBack : function () {
-            var divDialog = this.divDialog;
-
             // Check position
-            var value;
-            value = divDialog.offsetTop;
-            this.assertTrue(value === 0, "offsetTop should be around 0 instead of " + value);
-            value = divDialog.offsetLeft;
-            this.assertTrue(value >= 95 && value <= 105, "offsetLeft should be around 100 instead of " + value);
-            value = divDialog.offsetWidth;
-            this.assertTrue(value >= 795 && value <= 805, "offsetWidth should be around 800 instead of " + value);
-            value = divDialog.offsetHeight;
-            this.assertTrue(value >= 695 && value <= 705, "offsetHeight should be around 700 instead of " + value);
+            this._checkOffsets(this.divDialog, {
+                offsetTop : 0,
+                offsetLeft : 100,
+                offsetWidth : 800,
+                offsetHeight : 700
+            });
 
             this.end();
+        },
+
+        _checkOffsets : function (element, values) {
+            for (var i in values) {
+                if (values.hasOwnProperty(i)) {
+                    this.assertEqualsWithTolerance(element[i], values[i], 5, i + " should be around %2 instead of %1");
+                }
+            }
         }
 
     }
