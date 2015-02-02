@@ -64,7 +64,7 @@ Aria.classDefinition({
 
         _checkResize : function () {
             // Only for this case, the scrollbar is taken into account because the maximum width is not reached
-            var scrollbarSize = aria.templates.Layout.getScrollbarsWidth() + 1;
+            var scrollbarSize = aria.templates.Layout.getScrollbarsMeasuredWidth() + 1;
             // Check position
             this._checkOffsets(this.divDialog, {
                 offsetTop : 0,

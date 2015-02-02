@@ -15,6 +15,7 @@
 var Aria = require("../Aria");
 var ariaUtilsMath = require("./Math");
 var ariaUtilsType = require("./Type");
+var ariaTemplatesLayout = require("../templates/Layout");
 
 /**
  * Handles sizes measurements and application for DOM elements
@@ -129,7 +130,7 @@ module.exports = Aria.classDefinition({
                     changedHeight = true;
                     changedOverflowY = (newValue < measured);
                     if (changedOverflowY) {
-                        var additionalWidth = aria.templates.Layout.getScrollbarsWidth() + 1;
+                        var additionalWidth = ariaTemplatesLayout.getScrollbarsMeasuredWidth() + 1;
                         // recalculate the width
                         var newWidth = ariaUtilsMath.normalize(element.offsetWidth + additionalWidth, widthConf.min, widthConf.max);
 
