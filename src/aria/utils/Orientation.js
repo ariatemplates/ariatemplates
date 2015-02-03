@@ -14,12 +14,8 @@
  */
 var Aria = require("../Aria");
 var ariaUtilsEvent = require("./Event");
-/* BACKWARD-COMPATIBILITY-BEGIN GH-1388 */
 
-/**
- * This class is deprecated, use aria.utils.Device instead
- * @deprecated
- */
+
 module.exports = Aria.classDefinition({
     $classpath : "aria.utils.Orientation",
     $singleton : true,
@@ -37,8 +33,6 @@ module.exports = Aria.classDefinition({
      * Adding a listener while initializing Orientation to listen to the native orientationchange event.
      */
     $constructor : function () {
-        this.$logWarn("This class is deprecated and will be removed from the framework, please use aria.utils.Device instead");
-
         var window = Aria.$window;
         if (typeof(window.orientation) != "undefined") { // check if browser support orientation change
             this.screenOrientation = window.orientation;
@@ -91,4 +85,3 @@ module.exports = Aria.classDefinition({
         }
     }
 });
-/* BACKWARD-COMPATIBILITY-END GH-1388 */

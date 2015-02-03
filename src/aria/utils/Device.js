@@ -14,20 +14,11 @@
  */
 var Aria = require("../Aria");
 var ariaCoreBrowser = require("../core/Browser");
-var ariaUtilsEvent = require("./Event");
 
 
 module.exports = Aria.classDefinition({
     $classpath : "aria.utils.Device",
     $singleton : true,
-    $events : {
-        "orientationchange" : {
-            description : "This event is fired when there is orientation change on the device",
-            properties : {
-                "isPortrait" : "Boolean value indicating that the screen's orientation is portrait"
-            }
-        }
-    },
     $constructor : function () {
         var navigator = Aria.$global.navigator;
 
@@ -43,13 +34,6 @@ module.exports = Aria.classDefinition({
          * @private
          */
         this._styleCache = {};
-
-        /**
-         * Current orientation value to avoid unnecessary rechecking
-         * @type Boolean
-         * @private
-         */
-        this._isPortrait = this.isPortrait(true);
     },
     $prototype : {
         /**
@@ -214,40 +198,20 @@ module.exports = Aria.classDefinition({
         },
 
         /**
-         * Override the $on function to only listen to resize (for orientation changes) when needed
-         * @override
+         * Checks the orientation whether it is portrait or landscape
          */
-        $on : function () {
-            ariaUtilsEvent.addListener(Aria.$window, "resize", {
-                fn : this._onResize,
-                scope : this
-            });
-            this.$JsObject.$on.apply(this, arguments);
-        },
-
-        /**
-         * Checks device orientation and raises event accordingly
-         * @private
-         */
-        _onResize : function() {
-            var isPortrait = this.isPortrait(true);
-            if (isPortrait !== this._isPortrait) {
-                this.$raiseEvent({
-                    name : "orientationchange",
-                    isPortrait : isPortrait
-                });
-                this._isPortrait = isPortrait;
+        isPortrait : function () {
+            if (this._getBlackBerryVersion() === "9670") {
+                // 9670 is a special model that is landscape
+                return false;
             }
-        },
-
-        /**
-         * Returns true if the device's orientation is portrait, false if it is landscape
-         * @param {Boolean} forceCheck If true, forces rechecking instead of returning current orientation
-         * @return {Boolean}
-         */
-        isPortrait : function (forceCheck) {
-            if (forceCheck) return Aria.$window.innerHeight > Aria.$window.innerWidth;
-            return this._isPortrait;
+            var orientation = Aria.$window.orientation;
+            if (orientation && (orientation !== 0 && orientation !== 180)) {
+                // device is rotated
+                return false;
+            } else {
+                return true;
+            }
         },
 
         /**
