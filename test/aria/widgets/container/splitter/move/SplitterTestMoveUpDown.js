@@ -90,7 +90,7 @@ Aria.classDefinition({
             var geometry = dom.getGeometry(elem);
             var from = {
                 x : geometry.x + 100,
-                y : geometry.y
+                y : geometry.y + geometry.height / 2
             };
             var options = {
                 duration : 500,

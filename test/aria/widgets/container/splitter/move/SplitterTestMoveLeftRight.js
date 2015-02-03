@@ -93,7 +93,7 @@ Aria.classDefinition({
             var elem = this.splitter._draggable.element;
             var geometry = dom.getGeometry(elem);
             var from = {
-                x : geometry.x,
+                x : geometry.x + geometry.width / 2,
                 y : geometry.y + 100
             };
             var options = {
