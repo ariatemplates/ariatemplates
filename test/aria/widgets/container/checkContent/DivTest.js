@@ -16,7 +16,7 @@
 Aria.classDefinition({
     $classpath : "test.aria.widgets.container.checkContent.DivTest",
     $extends : "aria.jsunit.TemplateTestCase",
-    $dependencies : ["aria.utils.Json"],
+    $dependencies : ["aria.utils.Json", "aria.templates.Layout"],
     $prototype : {
         runTemplateTest : function () {
             var div = this.getElementById('MyDiv');
@@ -24,23 +24,17 @@ Aria.classDefinition({
             var spanHeight = parseInt(span.style.height, 10);
             var spanWidth = parseInt(span.style.width, 10);
             var expectedHeight = 400;
-            var expectedWidth = 634; // 617 from the h3 element width + 17px for the scrollbar
+            // Usually: expectedWidth = 634 (617 from the h3 element width + 17px for the scrollbar)
+            // but on Mac, there is no scrollbar... so we need to use getScrollbarsMeasuredWidth
+            var expectedWidth = 617 + aria.templates.Layout.getScrollbarsMeasuredWidth();
 
             if (aria.core.Browser.isOldIE && aria.core.Browser.majorVersion < 8) {
                 var expectedWidthIE7 = 888; // 871 from the h3 element width + 17px added for the scrollbar
-                this.assertEqualsWithTolerance(spanWidth, expectedWidthIE7, 2, "The div width is %1, insted of %2");
-            } else if (aria.core.Browser.isMac) {
-                if (aria.core.Browser.isWebkit) {
-                    var expectedWidthMac = 634;
-                    this.assertEqualsWithTolerance(spanWidth, expectedWidthMac, 2, "The div width is %1, insted of %2");
-                } else {
-                    var expectedWidthMac = 647;
-                    this.assertEqualsWithTolerance(spanWidth, expectedWidthMac, 2, "The div width is %1, insted of %2");
-                }
+                this.assertEqualsWithTolerance(spanWidth, expectedWidthIE7, 2, "The div width is %1, instead of %2");
             } else {
-                this.assertEqualsWithTolerance(spanWidth, expectedWidth, 2, "The div width is %1, insted of %2");
+                this.assertEqualsWithTolerance(spanWidth, expectedWidth, 2, "The div width is %1, instead of %2");
             }
-            this.assertEqualsWithTolerance(spanHeight, expectedHeight, 2, "The div height is %1, insted of %2");
+            this.assertEqualsWithTolerance(spanHeight, expectedHeight, 2, "The div height is %1, instead of %2");
             this.end();
         }
     }
