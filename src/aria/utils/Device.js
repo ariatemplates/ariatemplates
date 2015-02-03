@@ -15,6 +15,7 @@
 var Aria = require("../Aria");
 var ariaCoreBrowser = require("../core/Browser");
 var ariaUtilsEvent = require("./Event");
+var ariaUtilsDom = require("./Dom");
 
 
 module.exports = Aria.classDefinition({
@@ -246,7 +247,10 @@ module.exports = Aria.classDefinition({
          * @return {Boolean}
          */
         isPortrait : function (forceCheck) {
-            if (forceCheck) return Aria.$window.innerHeight > Aria.$window.innerWidth;
+            if (this._isPortrait === null || forceCheck) {
+                var dim = ariaUtilsDom.getViewportSize();
+                return dim.height > dim.width;
+            }
             return this._isPortrait;
         },
 
