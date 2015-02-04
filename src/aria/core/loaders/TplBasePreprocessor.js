@@ -18,12 +18,31 @@ var Promise = require('noder-js/promise.js');
 
 module.exports = function (classGenerator) {
     return function (content, fileName) {
-        return new Promise(function (resolve) {
+        return new Promise(function (resolve, reject) {
             classGenerator.parseTemplate(content, false, function (res) {
-                resolve(res.classDef);
+                if (res.classDef) {
+                    resolve(res.classDef);
+                } else {
+                    var errorDetails;
+                    var log = aria.core.Log; // log may not be included in the bootstrap
+                    if (log && res.errors && res.errors.length > 0) {
+                        var errors = res.errors;
+                        errorDetails = [];
+                        for (var i = 0, l = errors.length; i < l; i++) {
+                            var curError = errors[i];
+                            errorDetails[i] = log.prepareLoggedMessage(curError.msgId, curError.msgArgs);
+                        }
+                        errorDetails = ":\n - " + errorDetails.join("\n - ");
+                    } else {
+                        errorDetails = ".";
+                    }
+                    var error = new Error("Template '" + fileName + "' could not be compiled to javascript"
+                            + errorDetails);
+                    reject(error);
+                }
             }, {
                 "file_classpath" : fileName
-            });
+            }, false, true);
         });
     };
 };

@@ -110,8 +110,12 @@ Aria.classDefinition({
                 this.assertTrue(!marker, "Origin template should have been removed");
 
                 // and there should be some errors in the logs
-                this.assertErrorInLogs(aria.core.MultiLoader.LOAD_ERROR, "Missing error 1");
-                this.assertErrorInLogs(aria.templates.Parser.MISSING_CLOSINGBRACES, "Missing error 2");
+                var errorObj = this.assertErrorInLogs(aria.core.MultiLoader.LOAD_ERROR, "Missing error 1").objOrErr;
+                if (errorObj.logDetails) {
+                    errorObj.logDetails();
+                }
+                var error = errorObj + "";
+                this.assertTrue(error.indexOf("line 23: Template parsing error: could not find corresponding '}'") > -1, "Missing details about the error.");
 
                 // ok, this time redirect to the good template
                 args.filter.goError = false;
