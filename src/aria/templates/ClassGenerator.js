@@ -23,7 +23,6 @@ var ariaUtilsJson = require("../utils/Json");
 var ariaCoreJsonValidator = require("../core/JsonValidator");
 var ariaCoreEnvironmentEnvironment = require("../core/environment/Environment");
 
-
 /**
  * The class generator is used to generate the class corresponding to a template. This class uses the tree from the
  * template parser, and generates a string containing the corresponding class definition. This is an abstract class and
@@ -120,15 +119,21 @@ module.exports = Aria.classDefinition({
          * @param {Object} context - passes template context information to improve debugging
          * @param {Boolean} debug debug mode
          */
-        parseTemplate : function (template, allDeps, callback, context, debug) {
-            var tree = this._parser.parseTemplate(template, context, this.STATEMENTS);
+        parseTemplate : function (template, allDeps, callback, context, debug, skipLogError) {
+            var tree, errors;
+            try {
+                tree = this._parser.parseTemplate(template, context, this.STATEMENTS, skipLogError);
+            } catch (e) {
+                errors = e.errors || e;
+            }
             if (tree == null) {
                 this.$callback(callback, {
-                    classDef : null
+                    classDef : null,
+                    errors : errors || true
                 });
                 return;
             }
-            this.__buildClass(tree, allDeps, callback, context, debug);
+            this.__buildClass(tree, allDeps, callback, context, debug, skipLogError);
         },
 
         /**
@@ -140,8 +145,8 @@ module.exports = Aria.classDefinition({
          * @param {Object} context - passes template context information to improve debugging
          * @param {Boolean} debug debug mode
          */
-        parseTemplateFromTree : function (tree, allDeps, callback, context, debug) {
-            this.__buildClass(tree, allDeps, callback, context, debug);
+        parseTemplateFromTree : function (tree, allDeps, callback, context, debug, skipLogError) {
+            this.__buildClass(tree, allDeps, callback, context, debug, skipLogError);
         },
 
         /**
@@ -176,12 +181,12 @@ module.exports = Aria.classDefinition({
          * @param {Boolean} debug generate debug template (expression wrap in try-catch)
          * @return {String} the generated class definition or null it there were errors.
          */
-        __buildClass : function (tree, allDeps, callback, errorContext, debug) {
+        __buildClass : function (tree, allDeps, callback, errorContext, debug, skipLogError) {
             ariaCoreJsonValidator.check(tree, "aria.templates.TreeBeans.Root");
             var out = new ariaTemplatesClassWriter({
                 fn : this.__processStatement,
                 scope : this
-            }, {
+            }, skipLogError ? null : {
                 fn : this.__logError,
                 scope : this
             });
@@ -195,6 +200,7 @@ module.exports = Aria.classDefinition({
             if (out.errors) {
                 out.$dispose();
                 this.$callback(callback, {
+                    errors : out.errors,
                     classDef : null
                 });
             }
@@ -617,7 +623,8 @@ module.exports = Aria.classDefinition({
             if (out.errors) {
                 out.$dispose();
                 this.$callback(out.callback, {
-                    classDef : null
+                    classDef : null,
+                    errors : out.errors
                 });
                 // in case of synchronous call, the following line prevents a second call of the callback
                 // to report the error

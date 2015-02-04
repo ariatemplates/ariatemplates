@@ -15,7 +15,6 @@
 var Aria = require("../Aria");
 var ariaUtilsString = require("../utils/String");
 
-
 /**
  * Template parser: builds a tree of type aria.templates.TreeBeans.Root from a template string.
  */
@@ -62,7 +61,7 @@ module.exports = Aria.classDefinition({
          * Parse the given template and return a tree representing the template. This is an abstract method and is
          * implemented by the subclasses aria.templates.TplParser and aria.templates.CSSParser
          */
-        parseTemplate : function (template, context, statements) {},
+        parseTemplate : function (template, context, statements, throwErrors) {},
 
         /**
          * Transform the given template and set this.template and this.__lineNumbers for the given template
@@ -70,9 +69,10 @@ module.exports = Aria.classDefinition({
          * contains the modified template; modifications include removing comments, and spaces at the begining and end
          * of each line this.__lineNumbers: contains an array such that this.__lineNumbers[i] contains the position of
          * the \n character for the line #i
+         * @param {Boolean} throwErrors if true, errors will be thrown instead of being logged
          * @protected
          */
-        _prepare : function (template) {
+        _prepare : function (template, throwErrors) {
             // normalize line breaks
             template = template.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
 
@@ -84,7 +84,7 @@ module.exports = Aria.classDefinition({
             for (var index = 1, l = cdataSplit.length; index < l; index++) {
                 cdataParts = cdataSplit[index].split("{/CDATA}");
                 if (cdataParts.length != 2) {
-                    this.$logError(this.MISSING_CLOSING_STATEMENT, "CDATA", this.context);
+                    this.logOrThrowError(this.MISSING_CLOSING_STATEMENT, ["CDATA"], this.context, throwErrors);
                     this.template = template;
                     return;
                 }
@@ -217,8 +217,8 @@ module.exports = Aria.classDefinition({
          * @param {String} tpl template
          * @param {Integer} start
          * @param {Integer} end
-         * @return {String} tpl.substring(start,end) with escaped characters replaced by their value. Also remove new lines at
-         * the begining and the end of the param
+         * @return {String} tpl.substring(start,end) with escaped characters replaced by their value. Also remove new
+         * lines at the begining and the end of the param
          * @private
          */
         __unescapeParam : function (tpl, start, end) {
@@ -234,8 +234,8 @@ module.exports = Aria.classDefinition({
          * @param {String} tpl template
          * @param {Integer} start
          * @param {Integer} end
-         * @return {String} tpl.substring(start,end) with escaped characters replaced by their value or "" if this string
-         * contains only new lines
+         * @return {String} tpl.substring(start,end) with escaped characters replaced by their value or "" if this
+         * string contains only new lines
          * @private
          */
         __unescapeText : function (tpl, start, end) {
@@ -249,29 +249,46 @@ module.exports = Aria.classDefinition({
             return res;
         },
 
+        logOrThrowError : function (msgId, msgArgs, errorContext, throwErrors) {
+            if (throwErrors) {
+                var error = new Error();
+                error.errors = [{
+                            msgId : msgId,
+                            msgArgs : msgArgs,
+                            errorContext : errorContext
+                        }];
+                throw error;
+            } else {
+                this.$logError(msgId, msgArgs, errorContext);
+                return null;
+            }
+        },
+
         /**
          * Log the given error.
          * @param {Integer} charIndex Position in this.template to locate the error. Will be transformed into a line
          * number and added at the end of otherParams
          * @param {String} msgId error id, used to find the error message
          * @param {Array} otherParams parameters of the error message
+         * @param {Boolean} throwErrors if true, errors will be thrown instead of being logged
          * @private
          */
-        __logError : function (charIndex, msgId, otherParams) {
+        __logError : function (charIndex, msgId, otherParams, throwErrors) {
             if (!otherParams) {
                 otherParams = [];
             }
             otherParams.push(this.positionToLineNumber(charIndex));
-            this.$logError(msgId, otherParams, this.context);
+            return this.logOrThrowError(msgId, otherParams, this.context, throwErrors);
         },
 
         /**
          * Use this.template to build a tree At this step no external information is used (list of accepted
          * statements,...)
+         * @param {Boolean} throwErrors if true, errors will be thrown instead of being logged
          * @return {Object} the tree built
          * @protected
          */
-        _buildTree : function () {
+        _buildTree : function (throwErrors) {
             var utilString = ariaUtilsString;
             this.__currentLn = 0;
             var tpl = this.template, begin = 0, // start of the current block
@@ -306,8 +323,7 @@ module.exports = Aria.classDefinition({
                 end = info.indexClose;
                 index = info.indexOpen;
                 if (end == -1) {
-                    this.__logError(begin, this.MISSING_CLOSINGBRACES);
-                    return null;
+                    return this.__logError(begin, this.MISSING_CLOSINGBRACES, null, throwErrors);
                 }
                 if (dollar) {
                     curContainer.push({
@@ -327,20 +343,17 @@ module.exports = Aria.classDefinition({
                         curStatement = stack.pop();
                         var closingStatement = tpl.substring(begin, end);
                         if (stack.length === 0) { // the stack should always contain at least #ROOT#
-                            this.__logError(begin, this.STATEMENT_CLOSED_NOT_OPEN, [closingStatement]);
-                            return null;
+                            return this.__logError(begin, this.STATEMENT_CLOSED_NOT_OPEN, [closingStatement], throwErrors);
                         } else if (curStatement.name != closingStatement) {
                             // look into the stack to see if there was a corresponding open statement
                             // to give the appropriate error message
                             for (var i = stack.length - 1; i >= 1; i--) {
                                 if (stack[i].name == closingStatement) {
-                                    this.__logError(begin, this.EXPECTING_OTHER_CLOSING_STATEMENT, [curStatement.name,
-                                            closingStatement, curStatement.lineNumber]);
-                                    return null;
+                                    return this.__logError(begin, this.EXPECTING_OTHER_CLOSING_STATEMENT, [
+                                            curStatement.name, closingStatement, curStatement.lineNumber], throwErrors);
                                 }
                             }
-                            this.__logError(begin, this.STATEMENT_CLOSED_NOT_OPEN, [closingStatement]);
-                            return null;
+                            return this.__logError(begin, this.STATEMENT_CLOSED_NOT_OPEN, [closingStatement], throwErrors);
                         }
                         curStatement.lastCharContentIndex = begin - 2; // end of the content just before the {
                         curContainer = stack[stack.length - 1].content; // return to the previous container from the
@@ -388,8 +401,7 @@ module.exports = Aria.classDefinition({
                             }
 
                             if (!/^[_\w@:]+$/.test(curStatement.name)) {
-                                this.__logError(begin, this.INVALID_STATEMENT_NAME, [curStatement.name]);
-                                return null;
+                                return this.__logError(begin, this.INVALID_STATEMENT_NAME, [curStatement.name], throwErrors);
                             }
 
                             curStatement.paramBlock = this.__unescapeParam(tpl, firstCharParamIndex, end);
@@ -405,8 +417,7 @@ module.exports = Aria.classDefinition({
                                 begin = info.indexClose + 1;
                                 index = info.indexOpen;
                             } else {
-                                this.__logError(begin, this.MISSING_CLOSING_STATEMENT, ["CDATA"]);
-                                return null;
+                                return this.__logError(begin, this.MISSING_CLOSING_STATEMENT, ["CDATA"], throwErrors);
                             }
                         }
                     }
@@ -427,9 +438,8 @@ module.exports = Aria.classDefinition({
                 }
             }
             if (stack.length > 1) {
-                this.__logError(stack[stack.length - 1].firstCharContentIndex, this.MISSING_CLOSING_STATEMENT, [stack[stack.length
-                        - 1].name]);
-                return null;
+                return this.__logError(stack[stack.length - 1].firstCharContentIndex, this.MISSING_CLOSING_STATEMENT, [stack[stack.length
+                        - 1].name], throwErrors);
             }
 
             // Empty some attributes that might take memory

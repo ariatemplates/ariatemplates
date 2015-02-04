@@ -377,16 +377,19 @@ var ariaUtilsJson = require("../utils/Json");
              * @param {Number} count [optional] number of times the error must be present in the logs
              */
             assertErrorInLogs : function (errorMsg, count) {
+                var res = null;
                 var logAppender = ariaCoreLog.getAppenders()[0];
                 var logs = logAppender.getLogs(), errFound = false, newLogs = [];
                 if (!errorMsg) {
                     this.assertTrue(false, "assertErrorInLogs was called with a null error message.");
                 }
                 if (count && count > 0) {
+                    res = [];
                     var localCount = 0;
                     for (var i = 0; logs.length > i; i++) {
                         if (localCount < count && logs[i].msgId == errorMsg) {
                             localCount++;
+                            res.push(logs[i]);
                         } else {
                             newLogs.push(logs[i]);
                         }
@@ -398,6 +401,7 @@ var ariaUtilsJson = require("../utils/Json");
                     for (var i = 0; logs.length > i; i++) {
                         if (logs[i].msgId == errorMsg) {
                             errFound = true;
+                            res = logs[i];
                         } else {
                             newLogs.push(logs[i]);
                         }
@@ -405,6 +409,7 @@ var ariaUtilsJson = require("../utils/Json");
                     logAppender.setLogs(newLogs);
                     this.assertTrue(errFound, "Expected error not found in logs: " + errorMsg);
                 }
+                return res;
             },
 
             /**

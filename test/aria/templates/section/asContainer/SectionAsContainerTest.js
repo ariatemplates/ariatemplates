@@ -26,8 +26,14 @@ Aria.classDefinition({
     },
     $prototype : {
         runTemplateTest : function () {
-            this.assertErrorInLogs(aria.templates.ClassGenerator.UNEXPECTED_CONTAINER);
-            this.assertErrorInLogs(aria.core.MultiLoader.LOAD_ERROR);
+            var errorObj = this.assertErrorInLogs(aria.core.MultiLoader.LOAD_ERROR).objOrErr;
+            if (errorObj.logDetails) {
+                errorObj.logDetails();
+            }
+            var error = errorObj + "";
+            var expectedError = aria.templates.ClassGenerator.UNEXPECTED_CONTAINER.replace("%1", "section").replace("%2", "21");
+            this.assertTrue(error.indexOf(expectedError) > -1, "Expected some details about the error ("
+                    + expectedError + "), found: " + error);
 
             aria.core.AppEnvironment.setEnvironment({
                 templateSettings : {

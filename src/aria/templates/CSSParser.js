@@ -16,7 +16,6 @@ var Aria = require("../Aria");
 var ariaUtilsString = require("../utils/String");
 var ariaTemplatesParser = require("./Parser");
 
-
 /**
  * Parser for CSS Template. A CSS template should be interpreted by the template engine to build a CSS Template class.
  * The difference with the HTML Template parser is that in this case it's necessary to escape any curly brackets that
@@ -37,22 +36,23 @@ module.exports = Aria.classDefinition({
          * @param {String} template to parse
          * @param {Object} context template context data, passes additional information the to error log
          * @param {Object} statements list of statements allowed by the class generator
+         * @param {Boolean} throwErrors if true, errors will be thrown instead of being logged
          * @return {aria.templates.TreeBeans:Root} The tree built from the template, or null if an error occured. After
          * the execution of this method, this.template contains the template with comments and some spaces and removed,
          * and this.positionToLineNumber can be used to transform positions in this.template into line numbers.
          */
-        parseTemplate : function (template, context, statements) {
+        parseTemplate : function (template, context, statements, throwErrors) {
             this.context = context;
             // Remove comments
-            this._prepare(template);
+            this._prepare(template, throwErrors);
             // Preprocess
-            if (!this.__preprocess(statements)) {
+            if (!this.__preprocess(statements, throwErrors)) {
                 return null;
             }
             // Compute line numbers
             this._computeLineNumbers();
             // Build the tree
-            return this._buildTree();
+            return this._buildTree(throwErrors);
         },
 
         /**
@@ -62,7 +62,7 @@ module.exports = Aria.classDefinition({
          * and '}'
          * @private
          */
-        __preprocess : function (dictionary) {
+        __preprocess : function (dictionary, throwErrors) {
             // Everyting starts on the first {
             var text = this.template, utilString = ariaUtilsString, currentPosition = 0, nextOpening = -1, nextClosing = -1, wholeText = [], nameExtractor = /^\{[\s\/]*?([\w]+)\b/, lastCopiedPosition = 0, textLength = text.length, statementLevel = -1, currentLevel = 0, lastOpenedLevel0 = -1;
 
@@ -107,7 +107,7 @@ module.exports = Aria.classDefinition({
                     if (currentLevel === 0) {
                         // missing opening '{' corresponding to '}'
                         this._computeLineNumbers();
-                        this.$logError(this.MISSING_OPENINGBRACES, [this.positionToLineNumber(nextClosing)], this.context);
+                        this.logOrThrowError(this.MISSING_OPENINGBRACES, [this.positionToLineNumber(nextClosing)], this.context, throwErrors);
                         return false;
                     }
                     if (statementLevel == currentLevel) {
@@ -131,7 +131,7 @@ module.exports = Aria.classDefinition({
             if (currentLevel > 0) {
                 // missing opening '{' corresponding to '}'
                 this._computeLineNumbers();
-                this.$logError(this.MISSING_CLOSINGBRACES, [this.positionToLineNumber(lastOpenedLevel0)], this.context);
+                this.logOrThrowError(this.MISSING_CLOSINGBRACES, [this.positionToLineNumber(lastOpenedLevel0)], this.context, throwErrors);
                 return false;
             }
             this.template = wholeText.join("");
