@@ -13,6 +13,7 @@
  * limitations under the License.
  */
 var Aria = require("../Aria");
+var robotClasspath = require("./$RobotSelection").getRobotClasspath();
 
 /**
  * This class is still experimental, its interface may change without notice. This class gives access to a robot
@@ -43,13 +44,7 @@ module.exports = Aria.classDefinition({
          * @return {String}
          */
         getRobotClasspath : function () {
-            if (Aria.$frameworkWindow.top.phantomJSRobot) {
-                return "aria.jsunit.RobotPhantomJS";
-            }
-            if (Aria.$frameworkWindow.top.SeleniumJavaRobot) {
-                return "aria.jsunit.RobotJavaSelenium";
-            }
-            return null;
+            return robotClasspath;
         },
 
         /**
@@ -68,7 +63,6 @@ module.exports = Aria.classDefinition({
             if (this.robot) {
                 this.robot.initRobot(cb);
             } else {
-                var robotClasspath = this.getRobotClasspath();
                 if (!robotClasspath) {
                     this.$logError(this.ROBOT_UNAVAILABLE);
                     return;
@@ -79,7 +73,6 @@ module.exports = Aria.classDefinition({
                         fn : this._robotLoaded,
                         scope : this,
                         args : {
-                            robotClasspath : robotClasspath,
                             cb : cb
                         }
                     }
@@ -93,7 +86,7 @@ module.exports = Aria.classDefinition({
          */
         _robotLoaded : function (args) {
             if (!this.robot) {
-                this.robot = Aria.getClassRef(args.robotClasspath).$interface("aria.jsunit.IRobot");
+                this.robot = Aria.getClassRef(robotClasspath).$interface("aria.jsunit.IRobot");
             }
             this.robot.initRobot(args.cb);
         }
