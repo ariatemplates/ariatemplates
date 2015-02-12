@@ -40,15 +40,22 @@ module.exports = Aria.classDefinition({
          * Load the scripts then call a callback function
          * @param {Array} scripts - An array of scripts to load
          * @param {Function} callback - A function to call once the whole set of scripts are loaded
+         * @param {Object} options - (optional) { document: Document, force: Boolean }
+         * `document` options specifies document into which the scripts should be injected.
+         * `force` (defaults to false) defines whether it should be checked if the script was loaded already
          */
-        load : function (scripts, callback) {
-            var i, ii, url, scriptNode, scriptCount, loadedScripts = this._loadedScripts,
+        load : function (scripts, callback, options) {
+            var i, ii, url, scriptNode, scriptCount;
 
-            queueIndex = this._queueIndex, document = Aria.$frameworkWindow.document,
+            var options = options || {};
+            var force = options.force || false;
+            var document = options.document || Aria.$frameworkWindow.document;
 
-            head = document.getElementsByTagName('head')[0], that = this,
-
-            onReadyStateChangeCallback = function (queueId, scriptNode) {
+            var loadedScripts = this._loadedScripts;
+            var queueIndex = this._queueIndex;
+            var head = document.getElementsByTagName('head')[0];
+            var that = this;
+            var onReadyStateChangeCallback = function (queueId, scriptNode) {
                 var key = "" + queueId;
                 that._queueCount[key]--;
                 if (that._queueCount[key] === 0) {
@@ -64,7 +71,7 @@ module.exports = Aria.classDefinition({
             scriptCount = 0;
             for (i = 0, ii = scripts.length; i < ii; i++) {
                 url = scripts[i];
-                if (!loadedScripts[url]) {
+                if (force || !loadedScripts[url]) {
                     scriptCount++;
                     loadedScripts[url] = true;
                     scriptNode = document.createElement('script');

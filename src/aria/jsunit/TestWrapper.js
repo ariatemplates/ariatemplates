@@ -16,6 +16,7 @@ var Aria = require("../Aria");
 var ariaUtilsFrameATLoader = require("../utils/FrameATLoader");
 var ariaJsunitAssert = require("./Assert");
 var ariaCoreTimer = require("../core/Timer");
+var ariaUtilsScriptLoader = require("../utils/ScriptLoader");
 
 
 /**
@@ -44,10 +45,56 @@ module.exports = Aria.classDefinition({
             this._frame.style.cssText = "opacity:0.6;filter:alpha(opacity=60);zoom:1;z-index:100000;position:absolute;left:0px;top:0px;width:1024px;height:768px;border:1px solid black;visibility:hidden;display:block;background-color:white;";
             document.body.appendChild(this._frame);
             this._subWindow = this._frame.contentWindow;
+            this._injectExtraScriptsIntoFrame(this._subWindow, "before", {
+                fn: this._loadAtInFrame,
+                scope: this
+            });
+        },
+
+        /**
+         * Calls ATFrameLoader to load AT into the iframe
+         */
+        _loadAtInFrame : function () {
             ariaUtilsFrameATLoader.loadAriaTemplatesInFrame(this._frame, {
                 fn : this._atLoadedInFrame,
                 scope : this
             });
+        },
+
+        /**
+         * Finds SCRIPT nodes of the top-level document that have specific `data-extrascript` attribute
+         * and injects them into an iframe. If there are no such scripts, it does nothing.
+         * It calls the callback
+         * @param {Document} subDocument document element of the iframe
+         * @param {String} whereToInsert expected value of `data-extrascript` attribute
+         * @param {aria.core.CfgBeans.Callback} callback
+         */
+        _injectExtraScriptsIntoFrame : function (subWindow, whereToInsert, callback) {
+            var document = Aria.$window.document;
+            var subDocument = subWindow.document;
+            var scripts = document.querySelectorAll('script') || document.scripts;
+
+            var scriptsToLoad = [];
+            for (var i = 0; i < scripts.length; i++) {
+                var script = scripts[i];
+                var extraScriptData = script.getAttribute("data-extrascript");
+                if (extraScriptData == whereToInsert) {
+                    var src = script.getAttribute("src");
+                    if (!(/^((https?)|(\/\/))/.test(src))) {
+                        src = "//" + document.location.host + src;
+                    }
+                    scriptsToLoad.push(src);
+                }
+            }
+
+            if (scriptsToLoad.length === 0) {
+                this.$callback(callback);
+            } else {
+                ariaUtilsScriptLoader.load(scriptsToLoad, callback, {
+                    document: subDocument,
+                    force: true
+                });
+            }
         },
 
         /**
@@ -60,6 +107,16 @@ module.exports = Aria.classDefinition({
                 this._end();
                 return;
             }
+            this._injectExtraScriptsIntoFrame(this._subWindow, "after", {
+                fn: this._extraScriptsAfterLoadedInFrame,
+                scope: this
+            });
+        },
+
+        /**
+         * Called after the "after" extrascripts (if any) were injected into the DOM of the iframe
+         */
+        _extraScriptsAfterLoadedInFrame : function () {
             var subWindow = this._subWindow;
             var subAria = subWindow.Aria;
             var subDocument = subWindow.document;
