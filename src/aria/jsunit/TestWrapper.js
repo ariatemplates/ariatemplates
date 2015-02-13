@@ -41,7 +41,7 @@ module.exports = Aria.classDefinition({
             this._startTest();
             var document = Aria.$window.document;
             this._frame = document.createElement("iframe");
-            this._frame.style.cssText = "z-index:100000;position:absolute;left:0px;top:0px;width:1024px;height:768px;border:1px solid black;visibility:hidden;display:block;background-color:white;";
+            this._frame.style.cssText = "opacity:0.6;filter:alpha(opacity=60);zoom:1;z-index:100000;position:absolute;left:0px;top:0px;width:1024px;height:768px;border:1px solid black;visibility:hidden;display:block;background-color:white;";
             document.body.appendChild(this._frame);
             this._subWindow = this._frame.contentWindow;
             ariaUtilsFrameATLoader.loadAriaTemplatesInFrame(this._frame, {
