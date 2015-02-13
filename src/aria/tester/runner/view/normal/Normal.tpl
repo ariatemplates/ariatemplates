@@ -39,6 +39,10 @@
         </div>
         <div class="nameHeader" style="width: ${$hdim(180)}px;">
             Classic Test Runner
+            <small title="In isolated mode, each test is run in an IFRAME sandbox; otherwise they're run in a DIV"
+                style="font-size:10pt; cursor: help;">
+              isolated mode is ${data.campaign.runIsolated ? "ON" : "off"}
+            </small>
         </div>
         <div class="monitor" style="
             height : ${$vdim(282)}px;
