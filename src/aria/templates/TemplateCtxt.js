@@ -379,6 +379,10 @@
              * @implements aria.templates.ITemplate
              */
             $refresh : function (args) {
+                if (!this._cfg) {
+                  //template has been disposed no need to refresh
+                  return;
+                }
                 if (aria.templates.RefreshManager.isStopped()) {
                     // look for the section to be refreshed, and notify it:
                     if (args) {
