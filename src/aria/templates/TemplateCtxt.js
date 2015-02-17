@@ -411,6 +411,10 @@ var ariaCoreJsonValidator = require("../core/JsonValidator");
              * @implements aria.templates.ITemplate
              */
             $refresh : function (args) {
+                if (!this._cfg) {
+                  //template has been disposed no need to refresh
+                  return;
+                }
                 if (ariaTemplatesRefreshManager.isStopped()) {
                     // look for the section to be refreshed, and notify it:
                     if (args) {
