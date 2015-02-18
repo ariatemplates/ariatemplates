@@ -16,6 +16,9 @@
 var Aria = require("../Aria");
 var UserAgent = require("./useragent/UserAgent");
 var ariaUtilsArray = require("../utils/Array");
+/* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1397) */
+var ariaUtilsType = require("../utils/Type");
+/* BACKWARD-COMPATIBILITY-END (GitHub #1397) */
 
 /**
  * Global class gathering information about current browser.
@@ -24,6 +27,14 @@ module.exports = Aria.classDefinition({
     $classpath : 'aria.core.Browser',
     $singleton : true,
 
+    /* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1397) */
+    $statics : {
+        DEPRECATED_REPLACED_PROPERTY : "Property %1 is deprecated, use %2 instead.",
+        DEPRECATED_REMOVED_PROPERTY : "Property %1 is deprecated and is gonna be removed (not supported anymore).",
+        DEPRECATED_REPLACED_METHOD : "Method %1 is deprecated, use %2 instead.",
+        DEPRECATED_REMOVED_METHOD : "Method %1 is deprecated and is gonna be removed (not supported anymore)."
+    },
+    /* BACKWARD-COMPATIBILITY-END (GitHub #1397) */
     $constructor : function () {
         /**
          * Cache for the supported CSS styles.
@@ -73,13 +84,49 @@ module.exports = Aria.classDefinition({
          */
         this.majorVersion = 0;
 
+        /* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1397) */
+        /**
+         * <b>Deprecated, use <em>aria.core.Browser.name instead</em>.</b>
+         *
+         * <p>
+         * Browser name.
+         * </p>
+         *
+         * @type String
+         * @deprecated use aria.core.Browser.name instead
+         */
+        this.browserType = "";
 
+        /**
+         * <b>Deprecated, use <em>aria.core.Browser.version instead</em>.</b>
+         *
+         * <p>
+         * Browser version.
+         * </p>
+         *
+         * @type String
+         * @deprecated use aria.core.Browser.version instead
+         */
+        this.browserVersion = "";
+        /* BACKWARD-COMPATIBILITY-END (GitHub #1397) */
 
         /**
          * <em>true</em> if the browser is any version of Internet Explorer.
          * @type Boolean
          */
         this.isIE = false;
+
+        /* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1397) */
+        /**
+         * <b>Deprecated, <em>isIE6</em> is not supported anymore.</b>
+         *
+         * <em>true</em> if the browser is Internet Explorer 6.
+         *
+         * @type Boolean
+         * @deprecated isIE6 is not supported anymore
+         */
+        this.isIE6 = false;
+        /* BACKWARD-COMPATIBILITY-END (GitHub #1397) */
 
         /**
          * <em>true</em> if the browser is Internet Explorer 7.
@@ -129,6 +176,20 @@ module.exports = Aria.classDefinition({
          * @type Boolean
          */
         this.isFirefox = false;
+
+        /* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1397) */
+        /**
+         * <b>Deprecated, use <em>aria.core.Browser.isFirefox instead</em>.</b>
+         *
+         * <p>
+         * <em>true</em> if the browser is any version of Firefox.
+         * </p>
+         *
+         * @type Boolean
+         * @deprecated use aria.core.Browser.isFirefox instead
+         */
+        this.isFF = false;
+        /* BACKWARD-COMPATIBILITY-END (GitHub #1397) */
 
         /**
          * <em>true</em> if the browser is any version of Chrome.
@@ -238,7 +299,19 @@ module.exports = Aria.classDefinition({
          */
         this.osVersion = "";
 
-
+        /* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1397) */
+        /**
+         * <b>Deprecated, use <em>aria.core.Browser.osName instead</em>.</b>
+         *
+         * <p>
+         * MacOS or Windows.
+         * </p>
+         *
+         * @type String
+         * @deprecated use aria.core.Browser.osName instead
+         */
+        this.environment = "";
+        /* BACKWARD-COMPATIBILITY-END (GitHub #1397) */
 
         /**
          * <em>true</em> if the operating system is Windows.
@@ -288,6 +361,20 @@ module.exports = Aria.classDefinition({
          */
         this.isOtherOS = false;
 
+        /* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1397) */
+        /**
+         * <b>Deprecated, use <em>aria.core.Browser.isOtherOS instead</em>.</b>
+         *
+         * <p>
+         * <em>true</em> if operating system is not a known one.
+         * </p>
+         *
+         * @type Boolean
+         * @deprecated use aria.core.Browser.isOtherOS instead
+         */
+        this.isOtherMobile = false;
+        /* BACKWARD-COMPATIBILITY-END (GitHub #1397) */
+
 
 
         ////////////////////////////////////////////////////////////////////////
@@ -309,16 +396,279 @@ module.exports = Aria.classDefinition({
          */
         this.isDesktopView = false;
 
+        /* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1397) */
+        /**
+         * <b>Deprecated, use <em>aria.core.Browser.isDesktopView instead</em>.</b>
+         *
+         * <p>
+         * <em>true</em> if view type is Desktop.
+         * </p>
+         *
+         * @type Boolean
+         * @deprecated use aria.core.Browser.isDesktopView instead
+         */
+        this.DesktopView = false;
+        /* BACKWARD-COMPATIBILITY-END (GitHub #1397) */
+
+
+
+        /* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1397) */
+        ////////////////////////////////////////////////////////////////////////
+        // Device properties
+        ////////////////////////////////////////////////////////////////////////
+
+        // For Mobile Browsers
+        /**
+         * <b>Deprecated, use <em>aria.utils.Device.isPhone instead</em>.</b>
+         *
+         * <p>
+         * <em>true</em> if the device is of type phone.
+         * </p>
+         *
+         * @type Boolean
+         * @deprecated use aria.utils.Device.isPhone instead
+         */
+        this.isPhone = false;
+
+        /**
+         * <b>Deprecated, use <em>aria.utils.Device.isTablet instead</em>.</b>
+         *
+         * <p>
+         * <em>true</em> if the device is of type tablet.
+         * </p>
+         *
+         * @type Boolean
+         * @deprecated use aria.utils.Device.isTablet instead
+         */
+        this.isTablet = false;
+
+        /**
+         * <b>Deprecated, use <em>aria.utils.Device.deviceName instead</em>.</b>
+         *
+         * <p>
+         * Name of the device, combining the vendor and the model.
+         * </p>
+         *
+         * @type String
+         * @deprecated use aria.utils.Device.deviceName instead
+         */
+        this.deviceName = "";
+        /* BACKWARD-COMPATIBILITY-END (GitHub #1397) */
+
 
 
         ////////////////////////////////////////////////////////////////////////
         // Initialization
         ////////////////////////////////////////////////////////////////////////
 
+        /* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1397) */
+        var properties = [
+            "isIE6",
+            {
+                name: "isFF",
+                synonym: "isFirefox"
+            },
+            {
+                name: "browserType",
+                synonym: "name"
+            },
+            {
+                name: "browserVersion",
+                synonym: "version"
+            },
+
+            {
+                name: "environment",
+                synonym: "osName"
+            },
+            {
+                name: "isOtherMobile",
+                synonym: "isOtherOS"
+            },
+
+            {
+                name: "DesktopView",
+                synonym: "isDesktopView"
+            },
+
+            {
+                name: "isPhone",
+                alternative: "aria.utils.Device.isPhone"
+            },
+            {
+                name: "isTablet",
+                alternative: "aria.utils.Device.isTablet"
+            },
+            {
+                name: "deviceName",
+                alternative: "aria.utils.Device.deviceName"
+            },
+            {
+                name: "toString",
+                type: "method"
+            }
+        ];
+
+        var deprecatedProperties = [];
+        var isString = ariaUtilsType.isString;
+        ariaUtilsArray.forEach(properties, function(property) {
+            // ------------------------------------------------ property factory
+
+            if (isString(property)) {
+                property = {name: property};
+            }
+
+            // ------------------------------------------------------------ name
+
+            var name = property.name;
+
+            // ------------------------------------------------------------ type
+
+            var type = property.type;
+
+            if (type == null) {
+                type = "attribute";
+            }
+
+            property.type = type;
+
+            // ----------------------------------------------- underlying method
+
+            if (type == "method") {
+                var underlyingContainer = this;
+                var underlyingName = name;
+                var underlying = underlyingContainer[underlyingName];
+
+                property.underlying = underlying;
+            }
+
+            // --------------------------------------------------------- synonym
+
+            var possibleAlternative;
+
+            var synonym = property.synonym;
+
+            possibleAlternative = synonym;
+
+            // ----------------------------------------------------- alternative
+
+            var alternative = property.alternative;
+
+            if (alternative == null && possibleAlternative != null) {
+                alternative = possibleAlternative;
+            }
+
+            property.alternative = alternative;
+
+            // --------------------------------------------------- extrapolation
+
+            var loggingMessage;
+            var loggingMessageArguments = [name];
+
+            if (alternative != null) {
+                loggingMessage = type == "attribute" ? "DEPRECATED_REPLACED_PROPERTY" : "DEPRECATED_REPLACED_METHOD";
+                loggingMessageArguments.push(alternative);
+            } else {
+                loggingMessage = type == "attribute" ? "DEPRECATED_REMOVED_PROPERTY" : "DEPRECATED_REMOVED_METHOD";
+            }
+
+            property.loggingMessage = this[loggingMessage];
+            property.loggingMessageArguments = loggingMessageArguments;
+
+            // ---------------------------------------------------------- result
+
+            deprecatedProperties.push(property);
+        }, this);
+
+        this._deprecatedProperties = deprecatedProperties;
+        this.__deprecateProperties();
+        /* BACKWARD-COMPATIBILITY-END (GitHub #1397) */
+
         this.init();
     },
 
     $prototype : {
+        /* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1397) */
+        /**
+         * Puts in place, if possible, properties descriptors in order to be able to log warnings for all possible accesses to the deprecated properties.
+         */
+        __deprecateProperties : function() {
+            if (this.supportsPropertyDescriptors()) {
+                ariaUtilsArray.forEach(this._deprecatedProperties, function(property) {
+                    // ------------------------------------------- destructuring
+
+                    var name = property.name;
+                    var type = property.type;
+                    var underlying = property.underlying;
+                    var loggingMessage = property.loggingMessage;
+                    var loggingMessageArguments = property.loggingMessageArguments;
+
+                    // ---------------------------------------------- processing
+
+                    var self = this;
+
+                    if (type == "attribute") {
+                        var prefixedName = "_" + name;
+                        this[prefixedName] = this[name];
+
+                        Object.defineProperty(this, name, {
+                            get : function () {
+                                self.$logWarn(loggingMessage, loggingMessageArguments);
+                                return self[prefixedName];
+                            },
+                            set : function (value) {
+                                self.$logWarn(loggingMessage, loggingMessageArguments);
+                                self[prefixedName] = value;
+                            }
+                        });
+                    } else {
+                        this[name] = function() {
+                            self.$logWarn(loggingMessage, loggingMessageArguments);
+                            return underlying.apply(self, arguments);
+                        };
+                    }
+                }, this);
+            }
+        },
+
+        /**
+         * Ensures that public properties will always return the proper value, no matter if and how the deprecation was put in place.
+         */
+        __ensureDeprecatedProperties : function() {
+            // -------------------------------------------- synonymy application
+
+            ariaUtilsArray.forEach(this._deprecatedProperties, function(property) {
+                var type = property.type;
+
+                if (type == "attribute") {
+                    var synonym = property.synonym;
+
+                    if (synonym != null) {
+                        var name = property.name;
+                        var prefixedName = "_" + name;
+
+                        this[prefixedName] = this[synonym];
+                    }
+                }
+            }, this);
+
+            // ----------------------------------------------- value propagation
+
+            if (!this.supportsPropertyDescriptors()) {
+                ariaUtilsArray.forEach(this._deprecatedProperties, function(property) {
+                    var type = property.type;
+
+                    if (type == "attribute") {
+                        var name = property.name;
+                        var prefixedName = "_" + name;
+
+                        this[name] = this[prefixedName];
+                    }
+                }, this);
+            }
+        },
+        /* BACKWARD-COMPATIBILITY-END (GitHub #1397) */
+
         /**
          * Tells whether property descriptors are fully supported by the <b>running</b> browser or not.
          *
@@ -642,9 +992,15 @@ module.exports = Aria.classDefinition({
                 // In IE7 document.documentMode is undefined. For IE8+
                 // (also in document modes emulating IE7) it is defined
                 // and readonly.
+                /* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1397) */
+                if (browser.major != "6") {
+                /* BACKWARD-COMPATIBILITY-END (GitHub #1397) */
                 var document = Aria.$frameworkWindow.document;
                 detectedMajorVersion = document.documentMode || 7;
                 detectedMajorVersion = +detectedMajorVersion;
+                /* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1397) */
+                }
+                /* BACKWARD-COMPATIBILITY-END (GitHub #1397) */
             }
 
             // ---------------------------------------------------- full version
@@ -694,6 +1050,12 @@ module.exports = Aria.classDefinition({
                 if (majorVersion != null) {
                     this._setFlag(output, "IE" + majorVersion);
 
+                    /* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1397) */
+                    if (majorVersion == 6) {
+                        output._isIE6 = true;
+                        this._setFlag(output, "OldIE");
+                    }
+                    /* BACKWARD-COMPATIBILITY-END (GitHub #1397) */
                     if (majorVersion >= 7) {
                         if (majorVersion <= 10) {
                             this._setFlag(output, "OldIE");
@@ -758,6 +1120,79 @@ module.exports = Aria.classDefinition({
 
 
 
+            /* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1397) */
+
+            ////////////////////////////////////////////////////////////////////
+            // Device detection
+            //
+            // Copied (and adapted) from aria.utils.Device
+            ////////////////////////////////////////////////////////////////////
+
+            var device = uaInfo.device;
+            var deviceType = device.type;
+            var result;
+
+            // -------------------------------------------------------- isTablet
+
+            result = false;
+
+            if (!result) {
+                if (deviceType != null) {
+                    result = UserAgent.normalizeName(deviceType) == "tablet";
+                }
+            }
+            if (!result) {
+                result = /(iPad|SCH-I800|GT-P1000|GT-P1000R|GT-P1000M|SGH-T849|SHW-M180S|android 3.0|xoom|NOOK|playbook|tablet|silk|kindle|GT-P7510)/i.test(output.ua);
+            }
+
+            if (result) {
+                output._isTablet = true;
+            }
+
+            // --------------------------------------------------------- isPhone
+
+            result = false;
+
+            if (!result) {
+                if (deviceType != null) {
+                    result = UserAgent.normalizeName(deviceType) == "mobile";
+                }
+            }
+            if (!result) {
+                if (!output._isTablet) {
+                    result = output.isAndroid
+                    || output.isBlackBerry
+                    || output.isIOS
+                    || output.isSymbian
+                    || output.isWindowsPhone
+                    || UserAgent.normalizeName(output.osName) == "webos"
+                    ;
+                }
+            }
+
+            if (result) {
+                output._isPhone = true;
+            }
+
+            // ------------------------------------------------------ deviceName
+
+            var parts = [
+                device.vendor,
+                device.model
+            ];
+
+            for (var index = parts.length - 1; index >= 0; index--) {
+                var part = parts[index];
+                if (part == null || part.length == null || part.length <= 0) {
+                    parts.splice(index, 1);
+                }
+            }
+
+            var deviceName = parts.join(" - ");
+
+            output._deviceName = deviceName;
+            /* BACKWARD-COMPATIBILITY-END (GitHub #1397) */
+
             ////////////////////////////////////////////////////////////////////
             // Output
             ////////////////////////////////////////////////////////////////////
@@ -780,8 +1215,16 @@ module.exports = Aria.classDefinition({
 
             this.name = "";
             this.version = "";
+
             this.majorVersion = 0;
+            /* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1397) */
+            this._browserType = "";
+            this._browserVersion = "";
+            /* BACKWARD-COMPATIBILITY-END (GitHub #1397) */
             this.isIE = false;
+            /* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1397) */
+            this._isIE6 = false;
+            /* BACKWARD-COMPATIBILITY-END (GitHub #1397) */
             this.isIE7 = false;
             this.isIE8 = false;
             this.isIE9 = false;
@@ -790,6 +1233,9 @@ module.exports = Aria.classDefinition({
             this.isOldIE = false;
             this.isModernIE = false;
             this.isFirefox = false;
+            /* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1397) */
+            this._isFF = false;
+            /* BACKWARD-COMPATIBILITY-END (GitHub #1397) */
             this.isChrome = false;
             this.isSafari = false;
             this.isOpera = false;
@@ -808,6 +1254,9 @@ module.exports = Aria.classDefinition({
 
             this.osName = "";
             this.osVersion = "";
+            /* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1397) */
+            this._environment = "";
+            /* BACKWARD-COMPATIBILITY-END (GitHub #1397) */
             this.isWindows = false;
             this.isMac = false;
             this.isIOS = false;
@@ -816,9 +1265,21 @@ module.exports = Aria.classDefinition({
             this.isBlackBerry = false;
             this.isSymbian = false;
             this.isOtherOS = false;
+            /* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1397) */
+            this._isOtherMobile = false;
+            /* BACKWARD-COMPATIBILITY-END (GitHub #1397) */
 
             this.isMobileView = false;
             this.isDesktopView = false;
+            /* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1397) */
+            this._DesktopView = false;
+            /* BACKWARD-COMPATIBILITY-END (GitHub #1397) */
+
+            /* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1397) */
+            this._isPhone = false;
+            this._isTablet = false;
+            this._deviceName = "";
+            /* BACKWARD-COMPATIBILITY-END (GitHub #1397) */
         },
 
         /**
@@ -845,6 +1306,10 @@ module.exports = Aria.classDefinition({
 
             var properties = this._getProperties(userAgentWrapper);
             this._import(properties);
+
+            /* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1397) */
+            this.__ensureDeprecatedProperties();
+            /* BACKWARD-COMPATIBILITY-END (GitHub #1397) */
 
             // ---------------------------------------------------------- return
 
