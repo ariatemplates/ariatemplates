@@ -44,6 +44,18 @@ Aria.classDefinition({
             Aria.$window = this.originalWindow;
         },
 
+        /* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1397) */
+        testToString : function () {
+            var browserToString = aria.core.Browser.toString();
+
+            this.assertTrue(
+                browserToString != "[object Object]",
+                "aria.core.Browser.toString method not overridden correctly. " +
+                "Expected something different from [object Object]"
+            );
+        },
+        /* BACKWARD-COMPATIBILITY-END (GitHub #1397) */
+
         testPhoneGap : function () {
             var Browser = aria.core.Browser;
 
@@ -134,5 +146,40 @@ Aria.classDefinition({
             this._setDocumentElementStyle({"missing" : "perspective"});
             this.assertFalse(Browser.is3DTransformCapable(), "3D transform shouldn't be supported");
         }
+        /* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1397) */
+        ,
+        testDeprecation : function() {
+            var Browser = aria.core.Browser;
+
+            // -----------------------------------------------------------------
+
+            Browser.init();
+            if (!Browser.supportsPropertyDescriptors()) {
+                return;
+            }
+
+            // -----------------------------------------------------------------
+
+            var properties = Browser._deprecatedProperties;
+
+            aria.utils.Array.forEach(properties, function(property) {
+                var name = property.name;
+                var type = property.type;
+                var loggingMessage = property.loggingMessage;
+
+                // -------------------------------------------------------------
+
+                if (type == "attribute") {
+                    var dummy = Browser[name];
+                } else {
+                    Browser[name]();
+                }
+
+                // -------------------------------------------------------------
+
+                this.assertErrorInLogs(loggingMessage, 1);
+            }, this);
+        }
+        /* BACKWARD-COMPATIBILITY-END (GitHub #1397) */
     }
 });

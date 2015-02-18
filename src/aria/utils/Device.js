@@ -18,6 +18,9 @@ var ariaCoreBrowser = require("../core/Browser");
 var UserAgent = require("../core/useragent/UserAgent");
 var ariaUtilsEvent = require("./Event");
 var ariaUtilsDom = require("./Dom");
+/* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1397) */
+var ariaUtilsType = require("../utils/Type");
+/* BACKWARD-COMPATIBILITY-END (GitHub #1397) */
 
 
 
@@ -33,7 +36,29 @@ module.exports = Aria.classDefinition({
         }
     },
 
+    /* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1397) */
+    $statics : {
+        DEPRECATED_REPLACED_PROPERTY : "Property %1 is deprecated, use %2 instead.",
+        DEPRECATED_REMOVED_PROPERTY : "Property %1 is deprecated and is gonna be removed (not supported anymore).",
+        DEPRECATED_REPLACED_METHOD : "Method %1 is deprecated, use %2 instead.",
+        DEPRECATED_REMOVED_METHOD : "Method %1 is deprecated and is gonna be removed (not supported anymore)."
+    },
+    /* BACKWARD-COMPATIBILITY-END (GitHub #1397) */
     $constructor : function () {
+        /* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1397) */
+        /**
+         * <b>Deprecated, use aria.core.Browser.ua instead.</b>
+         *
+         * <p>
+         * The user agent string.
+         * </p>
+         *
+         * @type String
+         * @deprecated use aria.core.Browser.ua instead
+         */
+        this.ua = null;
+        /* BACKWARD-COMPATIBILITY-END (GitHub #1397) */
+
         /**
          * Previous orientation value to check if event should be raised (value changed or not).
          * @type Boolean
@@ -41,10 +66,215 @@ module.exports = Aria.classDefinition({
          */
         this._previousIsPortrait = this.isPortrait(true);
 
+        /* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1397) */
+        this._deprecatedProperties = []; // for init to process well
+        /* BACKWARD-COMPATIBILITY-END (GitHub #1397) */
         this.init();
+
+        /* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1397) */
+        var properties = [
+            {
+                name: "ua",
+                alternative: "aria.core.Browser.ua"
+            },
+
+            {
+                name: "isMobile",
+                type: "method",
+                underlying: "isPhone"
+            },
+            {
+                name: "isPhoneGap",
+                type: "method",
+                underlying: {
+                    name: "isPhoneGap",
+                    container: ariaCoreBrowser,
+                    containerName: "aria.core.Browser"
+                }
+            },
+            {
+                name: "is2DTransformCapable",
+                type: "method",
+                underlying: {
+                    name: "is2DTransformCapable",
+                    container: ariaCoreBrowser,
+                    containerName: "aria.core.Browser"
+                }
+            },
+            {
+                name: "is3DTransformCapable",
+                type: "method",
+                underlying: {
+                    name: "is3DTransformCapable",
+                    container: ariaCoreBrowser,
+                    containerName: "aria.core.Browser"
+                }
+            }
+        ];
+
+        var deprecatedProperties = [];
+        var isString = ariaUtilsType.isString;
+        ariaUtilsArray.forEach(properties, function(property) {
+            // ------------------------------------------------ property factory
+
+            if (ariaUtilsType.isString(property)) {
+                property = {name: property};
+            }
+
+            // ------------------------------------------------------------ name
+
+            var name = property.name;
+
+            // ------------------------------------------------------------ type
+
+            var type = property.type;
+
+            if (type == null) {
+                type = "attribute";
+            }
+
+            property.type = type;
+
+            // ----------------------------------------------- underlying method
+
+            var possibleAlternative;
+
+            if (type == "method") {
+                var underlying = property.underlying;
+
+                if (isString(underlying)) {
+                    underlying = {name: underlying};
+                }
+
+                var underlyingName = underlying.name;
+
+                var underlyingContainer = underlying.container;
+                if (underlyingContainer == null) {
+                    underlyingContainer = this;
+                }
+                underlying.container = underlyingContainer;
+
+                var underlyingContainerName = underlying.containerName;
+
+                // -------------------------------------------------------------
+
+                possibleAlternative = "";
+                if (underlyingContainerName != null) {
+                    possibleAlternative += underlyingContainerName + ".";
+                }
+                possibleAlternative += underlyingName;
+
+                underlying = function() {
+                    return underlyingContainer[underlyingName].apply(underlyingContainer, arguments);
+                };
+
+                property.underlying = underlying;
+            }
+
+            // ----------------------------------------------------- alternative
+
+            var alternative = property.alternative;
+
+            if (alternative == null && possibleAlternative != null) {
+                alternative = possibleAlternative;
+            }
+
+            property.alternative = alternative;
+
+            // --------------------------------------------------- extrapolation
+
+            var loggingMessage;
+            var loggingMessageArguments = [name];
+
+            if (alternative != null) {
+                loggingMessage = type == "attribute" ? "DEPRECATED_REPLACED_PROPERTY" : "DEPRECATED_REPLACED_METHOD";
+                loggingMessageArguments.push(alternative);
+            } else {
+                loggingMessage = type == "attribute" ? "DEPRECATED_REMOVED_PROPERTY" : "DEPRECATED_REMOVED_METHOD";
+            }
+
+            property.loggingMessage = this[loggingMessage];
+            property.loggingMessageArguments = loggingMessageArguments;
+
+            // ---------------------------------------------------------- result
+
+            deprecatedProperties.push(property);
+        }, this);
+
+        this._deprecatedProperties = deprecatedProperties;
+        this.__deprecateProperties();
+        this.__ensureDeprecatedProperties();
+        /* BACKWARD-COMPATIBILITY-END (GitHub #1397) */
     },
     $prototype : {
+        /* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1397) */
+        /**
+         * Applies deprecation for properties.
+         *
+         * <p>
+         * For attributes, puts in place - if possible - properties descriptors in order to be able to log warnings for all possible accesses to the deprecated properties.
+         * </p>
+         * <p>
+         * For methods, wraps the actual implementation to call it but log a deprecation warning before.
+         * </p>
+         */
+        __deprecateProperties : function() {
+            if (ariaCoreBrowser.supportsPropertyDescriptors()) {
+                ariaUtilsArray.forEach(this._deprecatedProperties, function(property) {
+                    // --------------------------------- arguments destructuring
 
+                    var name = property.name;
+                    var type = property.type;
+                    var underlying = property.underlying;
+                    var loggingMessage = property.loggingMessage;
+                    var loggingMessageArguments = property.loggingMessageArguments;
+
+                    // ---------------------------------------------- processing
+
+                    var self = this;
+
+                    if (type == "attribute") {
+                        var prefixedName = "_" + name;
+                        this[prefixedName] = this[name];
+
+                        Object.defineProperty(this, name, {
+                            get : function () {
+                                self.$logWarn(loggingMessage, loggingMessageArguments);
+                                return self[prefixedName];
+                            },
+                            set : function (value) {
+                                self.$logWarn(loggingMessage, loggingMessageArguments);
+                                self[prefixedName] = value;
+                            }
+                        });
+                    } else {
+                        this[name] = function() {
+                            self.$logWarn(loggingMessage, loggingMessageArguments);
+                            return underlying.apply(self, arguments);
+                        };
+                    }
+                }, this);
+            }
+        },
+
+        /**
+         * Ensures that public properties will always return the proper value, no matter if and how the deprecation was put in place.
+         */
+        __ensureDeprecatedProperties : function() {
+            if (!ariaCoreBrowser.supportsPropertyDescriptors()) {
+                ariaUtilsArray.forEach(this._deprecatedProperties, function(property) {
+                    var type = property.type;
+
+                    if (type == "attribute") {
+                        var name = property.name;
+                        var prefixedName = "_" + name;
+
+                        this[name] = this[prefixedName];
+                    }
+                }, this);
+            }
+        },
+        /* BACKWARD-COMPATIBILITY-END (GitHub #1397) */
 
         /**
          * Makes the class work with the given user agent.
@@ -61,6 +291,11 @@ module.exports = Aria.classDefinition({
             var userAgentWrapper = ariaCoreBrowser.init(userAgent);
 
             this.__userAgentWrapper = userAgentWrapper;
+
+            /* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1397) */
+            this._ua = userAgentWrapper.ua;
+            this.__ensureDeprecatedProperties();
+            /* BACKWARD-COMPATIBILITY-END (GitHub #1397) */
 
             return userAgentWrapper;
         },
@@ -164,6 +399,20 @@ module.exports = Aria.classDefinition({
 
             return !!result;
         },
+
+        /* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1397) */
+        /**
+         * <b>Deprecated, use isPhone instead.</b>
+         *
+         * <p>
+         * Checks whether it is a phone device rather than a tablet.
+         * </p>
+         *
+         * @name aria.utils.Device.isMobile
+         * @return {Boolean} <em>true</em> if so, <em>false</em> otherwise
+         * @deprecated use isPhone instead
+         */
+        /* BACKWARD-COMPATIBILITY-END (GitHub #1397) */
 
         /**
          * Checks whether the device is a tablet device rather than a phone.
@@ -284,5 +533,41 @@ module.exports = Aria.classDefinition({
         isClickNavigation : function () {
             return ariaCoreBrowser.isBlackBerry;
         }
+
+        /* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1397) */
+        /**
+         * <b>Deprecated, use aria.core.Browser.isPhoneGap instead.</b>
+         *
+         * <p>
+         * Checks whether the browser supports PhoneGap/Cordova.
+         * </p>
+         *
+         * @name aria.utils.Device.isPhoneGap
+         * @return {Boolean} <em>true</em> if so, <em>false</em> otherwise
+         * @deprecated use aria.core.Browser.isPhoneGap instead
+         */
+        /**
+         * <b>Deprecated, use aria.core.Browser.is2DTransformCapable instead.</b>
+         *
+         * <p>
+         * Checks whether the Browser supports 2D transform.
+         * </p>
+         *
+         * @name aria.utils.Device.is2DTransformCapable
+         * @return {Boolean} <em>true</em> if so, <em>false</em> otherwise
+         * @deprecated use aria.core.Browser.is2DTransformCapable instead
+         */
+        /**
+         * <b>Deprecated, use aria.core.Browser.is3DTransformCapable instead.</b>
+         *
+         * <p>
+         * Checks whether the Browser supports 3D transform.
+         * </p>
+         *
+         * @name aria.utils.Device.is3DTransformCapable
+         * @return {Boolean} <em>true</em> if so, <em>false</em> otherwise
+         * @deprecated use aria.core.Browser.is3DTransformCapable instead
+         */
+         /* BACKWARD-COMPATIBILITY-END (GitHub #1397) */
     }
 });
