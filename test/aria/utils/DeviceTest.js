@@ -14,7 +14,7 @@
  */
 Aria.classDefinition({
     $classpath : "test.aria.utils.DeviceTest",
-    $dependencies : ["aria.utils.Device", "aria.utils.String", "aria.core.Browser"],
+    $dependencies : ["aria.utils.Device", "aria.utils.String", "aria.core.Browser", "aria.utils.FrameATLoader", "aria.utils.Function"],
     $extends : "aria.jsunit.TestCase",
     $constructor : function () {
         this.$TestCase.constructor.call(this);
@@ -34,6 +34,8 @@ Aria.classDefinition({
         this.isDevice = aria.utils.Device.isDevice;
 
         this.originalWindow = Aria.$window;
+
+        this._tmpWindow = null;
     },
     $destructor : function () {
         this.originalWindow = null;
@@ -379,32 +381,6 @@ Aria.classDefinition({
             this.assertFalse(aria.utils.Device.isPhoneGap(), "Missing globals means not on PhoneGap");
         },
 
-        testPortrait : function () {
-            // test only once because it doesn't rewrite the method
-            Aria.$window = {};
-            this.assertTrue(aria.utils.Device.isPortrait(), "No information -> portrait");
-
-            Aria.$window = {
-                orientation : 90
-            };
-            this.assertFalse(aria.utils.Device.isPortrait(), "90 degrees -> landscape");
-
-            Aria.$window = {
-                orientation : 180
-            };
-            this.assertTrue(aria.utils.Device.isPortrait(), "180 degrees -> portrait");
-
-            var originalBroweserBlackBerry = aria.core.Browser.isBlackBerry;
-            aria.core.Browser.isBlackBerry = true;
-            aria.utils.Device.ua = "BlackBerry9100/4.6.0.31 Profile/MIDP-2.0 Configuration/CLDC-1.1 VendorID/100";
-            this.assertTrue(aria.utils.Device.isPortrait(), "BlackBerry are always portrait");
-            // only 9670 is landscape
-            aria.utils.Device.ua = "BlackBerry9670/6.0.0.248 Profile/MIDP-2.1 Configuration/CLDC-1.1 VendorID/104";
-            this.assertFalse(aria.utils.Device.isPortrait(), "BlackBerry 9670 should be landscape");
-
-            aria.core.Browser.isBlackBerry = originalBroweserBlackBerry;
-        },
-
         testClickNavigation : function () {
             // Only BlackBerries are clickable navigation
             var originalBroweserBlackBerry = aria.core.Browser.isBlackBerry;
@@ -418,6 +394,71 @@ Aria.classDefinition({
             this.assertFalse(aria.utils.Device.isClickNavigation(), "Non BlackBerry shouldn't be clickable");
             this.assertFalse(aria.utils.Device.isClickNavigation(), "Non BlackBerry shouldn't be clickable");
             aria.core.Browser.isBlackBerry = originalBroweserBlackBerry;
+        },
+
+        // Phantom does not handle windows resizing, so we'll use an iframe for orientation tests instead
+
+        _fakeNewWindow : function (width, height) {
+            if (this._tmpWindow == null) {
+                this._tmpWindow = Aria.$window.document.createElement("iframe");
+                Aria.$window.document.body.appendChild(this._tmpWindow);
+            }
+            this._tmpWindow.style.width = width+"px";
+            this._tmpWindow.style.height = height+"px";
+        },
+
+        testAsyncOrientation : function () {
+            this._fakeNewWindow(40, 80);
+            aria.utils.FrameATLoader.loadAriaTemplatesInFrame(this._tmpWindow, {
+                fn : this._orientation1,
+                scope : this
+            });
+        },
+
+        _orientation1 : function () {
+            this._tmpWindow.contentWindow.Aria.load({
+                classes: [
+                    "aria.utils.Device"
+                ],
+                oncomplete: {
+                    fn : this._orientation2,
+                    scope : this
+                }
+            });
+        },
+
+        _orientation2 : function () {
+            this.assertTrue(this._tmpWindow.contentWindow.aria.utils.Device.isPortrait(), "Initial viewport orientation should be reported as portrait");
+
+            var that = this;
+            this.eventRaised = false;
+
+            this._tmpWindow.contentWindow.aria.utils.Device.$raiseEvent = function (e) {
+                if (e.name == "orientationchange") {
+                    that.eventRaised = true;
+                }
+            };
+
+            this._tmpWindow.contentWindow.aria.utils.Device.$on({
+                "orientationchange" : function(){},
+                scope : this
+            });
+
+            this._fakeNewWindow(400, 800);
+            setTimeout(aria.utils.Function.bind(this._orientation3, this), 50);
+        },
+
+        _orientation3 : function () {
+            this.assertFalse(this.eventRaised, "Different viewport size with same orientation: event shouldn't be raised");
+
+            this._fakeNewWindow(80, 40);
+            setTimeout(aria.utils.Function.bind(this._orientation4, this), 50);
+        },
+
+        _orientation4 : function () {
+            this.assertTrue(this.eventRaised, "Different viewport size with different orientation: event should be raised");
+            this.notifyTestEnd("testAsyncOrientation");
         }
+
     }
 });
