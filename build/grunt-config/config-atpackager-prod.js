@@ -43,7 +43,7 @@ module.exports = function (grunt) {
             sourceDirectories : packagingSettings.prod.sourceDirectories,
             sourceFiles : ['**/*', '!aria/node.js', '!' + packagingSettings.bootstrap.bootstrapFileName],
             defaultBuilder : {
-                type : 'ATMultipart',
+                type : 'ATFillCache',
                 cfg : {
                     header : packagingSettings.licenseMin
                 }

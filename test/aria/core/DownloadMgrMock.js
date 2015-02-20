@@ -36,6 +36,9 @@ Aria.classDefinition({
             if (content) {
                 content = content.replace(/\r\n|\r/g, '\n');
             }
+            if (this.lastLoadedFiles) {
+                this.lastLoadedFiles[logicalPath] = 1;
+            }
             this.$raiseEvent({
                 name : 'loadFileContent',
                 logicalPath : logicalPath,
