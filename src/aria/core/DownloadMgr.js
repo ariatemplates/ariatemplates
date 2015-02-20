@@ -87,6 +87,12 @@ module.exports = Aria.classDefinition({
          * @type Number
          */
         this._syncLoadCounter = 0;
+
+        /**
+         * If lastLoadedFiles is an object (not null), aria.core.DownloadMgr.loadFileContent adds an entry to this
+         * object for each call. The key in the object is the logical path and the value is 1.
+         */
+        this.lastLoadedFiles = null;
     },
     $destructor : function () {
         this._cache = null;
@@ -414,7 +420,6 @@ module.exports = Aria.classDefinition({
             }
             // dispose
             loader.$dispose();
-            loader = cache = itm = lps = null;
         },
 
         /**
@@ -430,7 +435,9 @@ module.exports = Aria.classDefinition({
                 itm.value = content;
                 itm.status = this._cache.STATUS_AVAILABLE;
             }
-            itm = null;
+            if (this.lastLoadedFiles) {
+                this.lastLoadedFiles[logicalPath] = 1;
+            }
         },
 
         /**

@@ -62,11 +62,12 @@ module.exports = Aria.classDefinition({
         // ERROR MESSAGES:
         INVALID_MULTIPART : "Error in multipart structure of %1, part %2",
         LPNOTFOUND_MULTIPART : "The expected logical path %1 was not found in multipart %2",
-        EXPECTED_MULTIPART : "The expected multipart structure was not found in %1."
+        EXPECTED_MULTIPART : "The expected multipart structure was not found in %1.",
+        ERROR_EVAL_PACKAGE : "Error while evaluating package %1"
     },
     $prototype : {
 
-        _multiPartHeader : /^(\/\*[\s\S]*?\*\/\s*\r?\n)?\/\/\*\*\*MULTI-PART(\r?\n[^\n]+\n)/,
+        _multiPartHeader : /^(\/\*[\s\S]*?\*\/\s*\r?\n)?(\/\/\*\*\*MULTI-PART(\r?\n[^\n]+\n)|aria\.core\.DownloadMgr\.loadFileContent)/,
         _logicalPathHeader : /^\/\/LOGICAL-PATH:([^\s]+)$/,
 
         /**
@@ -140,30 +141,40 @@ module.exports = Aria.classDefinition({
             this.$assert(79, this._logicalPaths.length > 0);
 
             if (!downloadFailed) {
+                this._urlItm.status = ariaCoreCache.STATUS_AVAILABLE;
+
                 // check if the file received is multipart
                 multipart = this._multiPartHeader.exec(ioRes.responseText);
                 if (multipart != null) {
-                    // it is multipart, we split it; separator is multipart[2]
-                    var parts = ioRes.responseText.split(multipart[2]), partsLength = parts.length;
-                    var lpReceived = {}; // hash table to know which logical paths were received
+                    var savedLastLoadedFiles = ariaCoreDownloadMgr.lastLoadedFiles;
+                    var lpReceived = ariaCoreDownloadMgr.lastLoadedFiles = {}; // hash table to know which logical
+                    // paths were received
                     var logicalpath; // current logical path
-                    for (var i = 1; i < partsLength; i += 2) {
-                        logicalpath = this._logicalPathHeader.exec(parts[i]);
-                        if (logicalpath != null) {
-                            logicalpath = logicalpath[1];
+                    if (multipart[2].charAt(0) == "a") {
+                        // ioRes.responseText is expected to contain a set of calls to
+                        // aria.core.DownloadMgr.loadFileContent, we simply evaluate it
+                        try {
+                            Aria["eval"](ioRes.responseText, ioRes.url);
+                        } catch (e) {
+                            this.$logError(this.ERROR_EVAL_PACKAGE, [ioRes.url], e);
                         }
-                        var content = parts[i + 1];
-                        if (logicalpath == null || content == null) {
-                            this.$logError(this.INVALID_MULTIPART, [ioRes.url, (i + 1) / 2]);
-                            continue;
+                    } else {
+                        // it is multipart, we split it; separator is multipart[3]
+                        var parts = ioRes.responseText.split(multipart[3]), partsLength = parts.length;
+                        for (var i = 1; i < partsLength; i += 2) {
+                            logicalpath = this._logicalPathHeader.exec(parts[i]);
+                            if (logicalpath != null) {
+                                logicalpath = logicalpath[1];
+                            }
+                            var content = parts[i + 1];
+                            if (logicalpath == null || content == null) {
+                                this.$logError(this.INVALID_MULTIPART, [ioRes.url, (i + 1) / 2]);
+                                continue;
+                            }
+                            ariaCoreDownloadMgr.loadFileContent(logicalpath, content, content == null);
                         }
-                        // for last element, set this loader as finished (available status)
-                        if (i + 3 > partsLength) {
-                            this._urlItm.status = ariaCoreCache.STATUS_AVAILABLE;
-                        }
-                        lpReceived[logicalpath] = 1;
-                        ariaCoreDownloadMgr.loadFileContent(logicalpath, content, content == null);
                     }
+                    ariaCoreDownloadMgr.lastLoadedFiles = savedLastLoadedFiles;
                     var nbFilesMissing = 0;
                     // check that all expected logical paths were returned, or otherwise report an error for that
                     // logical path:
@@ -179,7 +190,6 @@ module.exports = Aria.classDefinition({
                         downloadFailed = true;
                     }
                 } else {
-                    this._urlItm.status = ariaCoreCache.STATUS_AVAILABLE;
                     // we did not receive a multipart, we should have only one logical path
                     if (this._logicalPaths.length == 1) {
                         ariaCoreDownloadMgr.loadFileContent(this._logicalPaths[0], ioRes.responseText, false);

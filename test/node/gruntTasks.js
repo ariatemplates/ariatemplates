@@ -73,7 +73,7 @@ describe("easypackage grunt task", function () {
 
             var packageContent = fs.readFileSync(testProjectPath + "target/one/" + packageName, 'utf8');
             assert.ok(/abcdefg/.test(packageContent), "License has not been added");
-            assert.ok(/require\("ariatemplates\/Aria"\)/.test(packageContent), "Conversion to noderJS syntax missing");
+            assert.ok(/require\(\\"ariatemplates\/Aria\\"\)/.test(packageContent), "Conversion to noderJS syntax missing");
             assert.ok(!/\{Template/.test(packageContent), "Template compilation missing");
             callback();
         });
@@ -83,7 +83,7 @@ describe("easypackage grunt task", function () {
 
             // Retrieving this file without error implictly checks that the hash:false has been taken into account
             var packageContent = fs.readFileSync(testProjectPath + "target/two/plugins.js", 'utf8');
-            assert.ok(!/require\("ariatemplates\/Aria"\)/.test(packageContent), "Conversion to noderJS syntax has been done");
+            assert.ok(!/require\(\\"ariatemplates\/Aria\\"\)/.test(packageContent), "Conversion to noderJS syntax has been done");
             assert.ok(/\{Template/.test(packageContent), "Template compilation has been done");
             assert.ok(!/Apache\sLicense/.test(packageContent), "stripBanner option didn't work");
 

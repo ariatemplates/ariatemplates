@@ -35,7 +35,7 @@ module.exports = function (grunt, args) {
         sourceDirectories : args.sourceDirectories,
         sourceFiles : args.sourceFiles.concat(['!' + packagingSettings.bootstrap.bootstrapFileName]),
         defaultBuilder : {
-            type : 'ATMultipart',
+            type : 'ATFillCache',
             cfg : {
                 header : args.license
             }
