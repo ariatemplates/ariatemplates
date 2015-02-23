@@ -30,7 +30,7 @@ Aria.classDefinition({
             if (errorObj.logDetails) {
                 errorObj.logDetails();
             }
-            var error = errorObj + "";
+            var error = (errorObj.message || errorObj.description || errorObj) + "";
             var expectedError = aria.templates.ClassGenerator.UNEXPECTED_CONTAINER.replace("%1", "section").replace("%2", "21");
             this.assertTrue(error.indexOf(expectedError) > -1, "Expected some details about the error ("
                     + expectedError + "), found: " + error);

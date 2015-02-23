@@ -114,7 +114,7 @@ Aria.classDefinition({
                 if (errorObj.logDetails) {
                     errorObj.logDetails();
                 }
-                var error = errorObj + "";
+                var error = (errorObj.message || errorObj.description || errorObj) + "";
                 this.assertTrue(error.indexOf("line 23: Template parsing error: could not find corresponding '}'") > -1, "Missing details about the error.");
 
                 // ok, this time redirect to the good template
