@@ -283,7 +283,8 @@
                             nextValue : nextValue,
                             triggerDropDown : true,
                             caretPosStart : caretPosStart,
-                            caretPosEnd : caretPosEnd
+                            caretPosEnd : caretPosEnd,
+                            avoidChangingText : true
                         }
                     });
                 }, 10);
@@ -354,9 +355,11 @@
                     jsonUtils.setValue(dataModel, 'selectedIdx', matchValueIndex);
 
                     var report = new aria.widgets.controllers.reports.DropDownControllerReport();
-                    report.text = nextValue;
-                    report.caretPosStart = args.caretPosStart;
-                    report.caretPosEnd = args.caretPosEnd;
+                    if (!args.avoidChangingText) {
+                        report.text = nextValue;
+                        report.caretPosStart = args.caretPosStart;
+                        report.caretPosEnd = args.caretPosEnd;
+                    }
 
                     if (matchValueIndex != -1) {
                         dataModel.value = dataModel.listContent[matchValueIndex].value;
