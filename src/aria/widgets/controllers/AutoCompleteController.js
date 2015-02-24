@@ -23,7 +23,6 @@ var ariaWidgetsWidgetsRes = require("../../$resources").file(__dirname, "../Widg
 var ariaWidgetsControllersDropDownListController = require("./DropDownListController");
 var ariaCoreJsonValidator = require("../../core/JsonValidator");
 
-
 (function () {
 
     // shortcut
@@ -292,7 +291,8 @@ var ariaCoreJsonValidator = require("../../core/JsonValidator");
                             nextValue : nextValue,
                             triggerDropDown : true,
                             caretPosStart : caretPosStart,
-                            caretPosEnd : caretPosEnd
+                            caretPosEnd : caretPosEnd,
+                            avoidChangingText : true
                         }
                     });
                 }, 10);
@@ -363,9 +363,11 @@ var ariaCoreJsonValidator = require("../../core/JsonValidator");
                     jsonUtils.setValue(dataModel, 'selectedIdx', matchValueIndex);
 
                     var report = new ariaWidgetsControllersReportsDropDownControllerReport();
-                    report.text = nextValue;
-                    report.caretPosStart = args.caretPosStart;
-                    report.caretPosEnd = args.caretPosEnd;
+                    if (!args.avoidChangingText) {
+                        report.text = nextValue;
+                        report.caretPosStart = args.caretPosStart;
+                        report.caretPosEnd = args.caretPosEnd;
+                    }
 
                     if (matchValueIndex != -1) {
                         dataModel.value = dataModel.listContent[matchValueIndex].value;
