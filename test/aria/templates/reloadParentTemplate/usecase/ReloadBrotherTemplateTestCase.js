@@ -48,8 +48,8 @@ Aria.classDefinition({
             var url = Aria.rootFolderPath + "test/aria/templates/reloadParentTemplate/ParentTemplate";
 
             // Testing the initial values
-            this.assertTrue(test.aria.templates.reloadParentTemplate.ChildTemplate.classDefinition.$extends == test.aria.templates.reloadParentTemplate.ParentTemplate.classDefinition.$classpath, "Child doesn't extend parent");
-            this.assertTrue(test.aria.templates.reloadParentTemplate.usecase.BrotherTemplate.classDefinition.$extends == test.aria.templates.reloadParentTemplate.ParentTemplate.classDefinition.$classpath, "Brother doesn't extend parent");
+            this.assertEquals(Aria.getClasspath(test.aria.templates.reloadParentTemplate.ChildTemplate.classDefinition.$extends), test.aria.templates.reloadParentTemplate.ParentTemplate.classDefinition.$classpath, "Child doesn't extend parent");
+            this.assertEquals(Aria.getClasspath(test.aria.templates.reloadParentTemplate.usecase.BrotherTemplate.classDefinition.$extends), test.aria.templates.reloadParentTemplate.ParentTemplate.classDefinition.$classpath, "Brother doesn't extend parent");
             this.assertTrue(this.data.something === 0, "Data.something is not zero");
 
             // Listen for requests sent to the server

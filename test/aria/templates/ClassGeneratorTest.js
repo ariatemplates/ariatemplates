@@ -13,6 +13,29 @@
  * limitations under the License.
  */
 
+var getGeneratedClassDef = function (classDef) {
+    var code = "var module=arguments[2],require=module.require,exports=module.exports,__filename=module.filename,__dirname=module.dirname;\n"
+            + classDef + "\nreturn module.exports;";
+    var moduleObject = {
+        require : function (logicalPath) {
+            if (logicalPath == "ariatemplates/Aria") {
+                return {
+                    classDefinition : function (arg) {
+                        return arg;
+                    }
+                };
+            }
+            return {
+                requiredPath : logicalPath
+            };
+        },
+        filename : "",
+        dirname : "",
+        exports : {}
+    };
+    return Aria["eval"](code, null, moduleObject);
+};
+
 Aria.classDefinition({
     $classpath : "test.aria.templates.ClassGeneratorTest",
     $extends : "aria.jsunit.TestCase",
@@ -251,14 +274,10 @@ Aria.classDefinition({
 
         _onReceivingTemplateOKGenerated : function (args) {
             try {
-                var res = args.classDef;
-                // check the syntax of the class definition
-                res = res.replace("Aria.classDefinition", "return "); // do not really load the class (it would not be the
-                // proper way)
-                var classDef = Aria['eval'](res);
+                var classDef = getGeneratedClassDef(args.classDef);
                 // check class definition properties
                 this.assertTrue(classDef.$classpath == "test.aria.templates.test.TemplateOK");
-                this.assertTrue(classDef.$extends == "aria.templates.Template");
+                this.assertTrue(classDef.$extends.requiredPath == "ariatemplates/templates/Template.js");
                 this.assertTrue(typeof(classDef.$prototype.__$initTemplate) == "function");
                 this.assertTrue(typeof(classDef.$prototype.macro_main) == "function");
                 this.assertTrue(typeof(classDef.$prototype.macro_myMacroWithParams) == "function");
@@ -297,11 +316,7 @@ Aria.classDefinition({
 
         _onReceivingTemplateKO_RuntimeGenerated : function (args) {
             try {
-                var res = args.classDef;
-                // check the syntax of the class definition
-                res = res.replace("Aria.classDefinition", "return "); // do not really load the class (it would not be the
-                // proper way)
-                var classDef = Aria["eval"](res);
+                var classDef = getGeneratedClassDef(args.classDef);
                 var classDefProto = classDef.$prototype;
                 var tplProto = aria.templates.Template.prototype;
 

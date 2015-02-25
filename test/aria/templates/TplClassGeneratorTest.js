@@ -12,13 +12,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("ariatemplates/Aria");
+require("ariatemplates/templates/Template");
+require("ariatemplates/tools/contextual/ContextualMenu");
+require("ariatemplates/templates/TextTemplate");
+var ariaCoreJsonValidator = require("ariatemplates/core/JsonValidator");
+var currentContext = require("noder-js/currentContext");
 
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "test.aria.templates.TplClassGeneratorTest",
-    $extends : "aria.jsunit.TestCase",
-    $dependencies : ["aria.templates.TplClassGenerator", "aria.templates.CSSClassGenerator",
-            "aria.templates.TxtClassGenerator", "aria.templates.TmlClassGenerator", "aria.templates.Template",
-            "aria.tools.contextual.ContextualMenu", "aria.templates.TextTemplate"],
+    $extends : require("ariatemplates/jsunit/TestCase"),
     $constructor : function () {
         this.$TestCase.constructor.call(this);
     },
@@ -54,10 +57,10 @@ Aria.classDefinition({
          */
         _getGenerator : function (category) {
             var generators = {
-                "TPL" : aria.templates.TplClassGenerator,
-                "CSS" : aria.templates.CSSClassGenerator,
-                "TXT" : aria.templates.TxtClassGenerator,
-                "TML" : aria.templates.TmlClassGenerator
+                "TPL" : require("ariatemplates/templates/TplClassGenerator"),
+                "CSS" : require("ariatemplates/templates/CSSClassGenerator"),
+                "TXT" : require("ariatemplates/templates/TxtClassGenerator"),
+                "TML" : require("ariatemplates/templates/TmlClassGenerator")
             };
 
             return generators[category];
@@ -91,10 +94,11 @@ Aria.classDefinition({
                 TextTemplate : true,
                 Library : true
             };
+            var self = this;
 
             try {
                 var tree = def.tree;
-                aria.core.JsonValidator.check(tree, 'aria.templates.TreeBeans.Root');
+                ariaCoreJsonValidator.check(tree, 'aria.templates.TreeBeans.Root');
 
                 this.assertEquals(tree.content.length, 1);
                 var tpl = tree.content[0];
@@ -111,13 +115,19 @@ Aria.classDefinition({
                 this.assertEquals(text.name, "#TEXT#");
                 this.assertTrue(text.paramBlock.indexOf("Hello") != -1);
 
-                Aria["eval"](def.classDef);
-
+                var logicalPath = require.resolve(def.logicalPath);
+                // remove any already loaded class for this logical path:
+                delete currentContext.cache[logicalPath];
+                currentContext.jsModuleExecute(def.classDef, logicalPath).thenSync(function (templateClass) {
+                    // no error! it is ok
+                    self.notifyTestEnd(args);
+                }, function (ex) {
+                    // we should never reach this place
+                    self.handleAsyncTestError(ex);
+                }).done();
             } catch (ex) {
-                this.$logError("Error in template definition: " + args, ex);
+                this.handleAsyncTestError(ex);
             }
-
-            this.notifyTestEnd(args);
         },
 
         /* Actual tests */

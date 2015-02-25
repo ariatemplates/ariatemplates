@@ -314,6 +314,7 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         _createBlocks : function (out) {
+            out.newBlock("main", 0);
             out.newBlock("classDefinition", 0);
             out.newBlock("prototype", 2);
             out.newBlock("globalVars", 5);
@@ -328,14 +329,11 @@ module.exports = Aria.classDefinition({
          */
         _writeClassDefHeaders : function (out) {
             var tplParam = out.templateParam;
-            out.writeln("Aria.classDefinition({");
+            out.writeln("module.exports = Aria.classDefinition({");
             out.increaseIndent();
             out.writeln("$classpath: ", out.stringify(tplParam.$classpath), ",");
             if (out.parentClasspath) {
-                out.writeln("$extends: ", out.stringify(out.parentClasspath), ",");
-            }
-            if (out.parentClassType != "JS") {
-                out.writeln("$extendsType: ", out.stringify(out.parentClassType), ",");
+                out.writeln("$extends: require(", out.stringify(Aria.getLogicalPath(out.parentClasspath, Aria.ACCEPTED_TYPES[out.parentClassType])), "),");
             }
         },
 
@@ -427,6 +425,45 @@ module.exports = Aria.classDefinition({
         },
 
         /**
+         * Add $dependencies, $templates, $macrolibs and $csslibs to the set of dependencies referenced by the class
+         * writer.
+         * @param {aria.templates.ClassWriter} out
+         */
+        _processDependencies : function (out) {
+            var tplParam = out.templateParam;
+            out.addDependencies(tplParam.$dependencies);
+            out.addDependencies(tplParam.$templates, ".tpl");
+            if (tplParam.$macrolibs) {
+                out.addDependencies(ariaUtilsArray.extractValuesFromMap(tplParam.$macrolibs), ".tml");
+            }
+            if (tplParam.$csslibs) {
+                out.addDependencies(ariaUtilsArray.extractValuesFromMap(tplParam.$csslibs), ".cml");
+            }
+        },
+
+        /**
+         * Returns a resource dependency
+         * @param {Object|String} res
+         */
+        _getResourceDependency : function (out, res) {
+            if (typeof res == "string") {
+                var logicalPath = Aria.getLogicalPath(res);
+                var serverRes = /([^\/]*)\/Res$/.exec(logicalPath);
+                return 'require("ariatemplates/$resources").' + (serverRes ? "module(" + serverRes[1] + "," : "file(")
+                        + out.stringify(logicalPath) + ")";
+            }
+            if (typeof res == "object") {
+                var tplParam = out.templateParam;
+                var params = ["", Aria.getLogicalPath(res.provider), tplParam.$classpath, res.onLoad || "",
+                        res.handler || ""].concat(res.resources || []);
+                for (var i = 0, l = params.length; i < l; i++) {
+                    params[i] = out.stringify(params[i]);
+                }
+                return 'require("ariatemplates/$resourcesProviders").fetch(' + params.join(",") + ')';
+            }
+        },
+
+        /**
          * Write to the current block of the class writer the dependencies of the template, including JS classes,
          * resources, templates, css, macrolibs and text templates.
          * @param {aria.templates.ClassWriter} out
@@ -434,33 +471,47 @@ module.exports = Aria.classDefinition({
          */
         _writeDependencies : function (out) {
             var tplParam = out.templateParam;
-            var json = ariaUtilsJson;
-            out.writeln(out.getDependencies());
-            if (tplParam.$res) {
-                out.writeln("$resources: ", json.convertToJsonString(tplParam.$res), ",");
-            }
-            if (tplParam.$templates) {
-                out.writeln("$templates: ", json.convertToJsonString(tplParam.$templates), ",");
-            }
-            if (tplParam.$css) {
-                out.writeln("$css: ", json.convertToJsonString(tplParam.$css), ",");
-            }
-            if (tplParam.$macrolibs) {
-                var macrolibsArray = ariaUtilsArray.extractValuesFromMap(tplParam.$macrolibs);
-                if (macrolibsArray.length > 0) {
-                    out.writeln("$macrolibs: ", json.convertToJsonString(macrolibsArray), ",");
+            var res = tplParam.$res;
+            if (res) {
+                out.writeln("$resources: {");
+                out.increaseIndent();
+                var first = true;
+                for (var key in res) {
+                    if (res.hasOwnProperty(key)) {
+                        out.writeln(first ? "" : ",", out.stringify(key), ": ", this._getResourceDependency(out, res[key]));
+                        first = false;
+                    }
                 }
+                out.decreaseIndent();
+                out.writeln("},");
             }
-            if (tplParam.$csslibs) {
-                var csslibsArray = ariaUtilsArray.extractValuesFromMap(tplParam.$csslibs);
-                if (csslibsArray.length > 0) {
-                    out.writeln("$csslibs: ", json.convertToJsonString(csslibsArray), ",");
+            var css = tplParam.$css;
+            if (css && css.length) {
+                out.writeln("$css: [");
+                out.increaseIndent();
+                for (var i = 0, l = css.length; i < l; i++) {
+                    out.writeln("require(", out.stringify(Aria.getLogicalPath(css[i], ".tpl.css")), (i == l - 1
+                            ? ")"
+                            : "),"));
                 }
+                out.decreaseIndent();
+                out.writeln("],");
             }
-            if (tplParam.$texts) {
-                out.writeln("$texts: ", json.convertToJsonString(tplParam.$texts), ",");
+            var texts = tplParam.$texts;
+            if (texts) {
+                out.writeln("$texts: {");
+                out.increaseIndent();
+                var first = true;
+                for (var key in texts) {
+                    if (texts.hasOwnProperty(key)) {
+                        out.writeln(first ? "" : ",", out.stringify(key), ": require(", out.stringify(Aria.getLogicalPath(texts[key], ".tpl.txt"))
+                                + ")");
+                        first = false;
+                    }
+                }
+                out.decreaseIndent();
+                out.writeln("},");
             }
-
         },
 
         /**
@@ -590,7 +641,6 @@ module.exports = Aria.classDefinition({
             out.writeln("}");
             out.decreaseIndent();
             out.writeln("});");
-            out.writeln("var __filename = ", out.stringify(Aria.getLogicalPath(out.templateParam.$classpath, Aria.ACCEPTED_TYPES[this._classType])), ";");
             out.leaveBlock();
         },
 
@@ -601,15 +651,18 @@ module.exports = Aria.classDefinition({
          */
         _processTemplateContent : function (arg) {
             var out = arg.out;
-            var tplParam = out.templateParam;
             var statement = arg.statement;
 
             // Add dependencies specified explicitly in the template declaration
-            out.addDependencies(tplParam.$dependencies);
+            this._processDependencies(out);
 
             this._createBlocks(out);
             this._processInheritance(out);
             this._processScript(out);
+
+            out.enterBlock("main");
+            out.writeln("var Aria = require('ariatemplates/Aria');");
+            out.leaveBlock();
 
             out.enterBlock("classDefinition");
             this._writeClassDefHeaders(out);
@@ -642,11 +695,17 @@ module.exports = Aria.classDefinition({
             this._writeClassDefEnd(out);
             out.leaveBlock();
 
+            out.enterBlock("main");
+            out.writeDependencies();
+            out.write(out.getBlockContent("classDefinition"));
+            out.leaveBlock();
+
             var res = null;
-            res = out.getBlockContent("classDefinition");
+            res = out.getBlockContent("main");
             out.$dispose();
             this.$callback(out.callback, {
                 classDef : res,
+                logicalPath : Aria.getLogicalPath(out.templateParam.$classpath, Aria.ACCEPTED_TYPES[this._classType]),
                 tree : out.tree,
                 debug : out.debug
             });

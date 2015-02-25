@@ -220,36 +220,34 @@ module.exports = Aria.classDefinition({
         /**
          * Add a list of classpath dependencies
          * @param {Array} dependencies list of classpath
+         * @param {String} extension dependencies extension (default: ".js")
          */
-        addDependencies : function (dependencies) {
-            for (var i = dependencies.length - 1; i >= 0; i--) {
-                this.addDependency(dependencies[i]);
+        addDependencies : function (dependencies, extension) {
+            if (dependencies) {
+                for (var i = dependencies.length - 1; i >= 0; i--) {
+                    this.addDependency(dependencies[i], extension);
+                }
             }
         },
 
         /**
          * Add a single classpath dependency
          * @param {String} dependency classpath
+         * @param {String} extension dependency extension (default: ".js")
          */
-        addDependency : function (dependency) {
-            this._dependencies[dependency] = 1;
+        addDependency : function (dependency, extension) {
+            var logicalPath = Aria.getLogicalPath(dependency, extension || ".js");
+            this._dependencies[logicalPath] = 1;
         },
 
         /**
-         * Get the list of unique dependencies as a string preceded by $dependencies.
-         * @return {String} empty string if no dependencies
+         * Writes the list of unique dependencies as a set of calls to require in the current block.
          */
-        getDependencies : function () {
-            var res = [];
+        writeDependencies : function () {
             for (var i in this._dependencies) {
                 if (this._dependencies.hasOwnProperty(i)) {
-                    res.push(this.stringify(i));
+                    this.writeln("require(", this.stringify(i), ");");
                 }
-            }
-            if (res.length > 0) {
-                return ["$dependencies: [", res.join(","), "],"].join('');
-            } else {
-                return "";
             }
         },
 
@@ -339,10 +337,7 @@ module.exports = Aria.classDefinition({
          * @param {Object} expression Expression to be converted into a string
          * @return {String}
          */
-        stringify : function (expression) {
-            this.stringify = ariaUtilsString.stringify;
-            return this.stringify(expression);
-        },
+        stringify : ariaUtilsString.stringify,
 
         /**
          * Create a new unique var name

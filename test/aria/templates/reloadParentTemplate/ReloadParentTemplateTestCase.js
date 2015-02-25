@@ -69,7 +69,7 @@ Aria.classDefinition({
                     + "test/aria/templates/reloadParentTemplate/reloadGrandParentTemplate/GrandParentTemplate";
 
             // Testing the initial values
-            this.assertTrue(test.aria.templates.reloadParentTemplate.ChildTemplate.classDefinition.$extends == test.aria.templates.reloadParentTemplate.ParentTemplate.classDefinition.$classpath, "Child doesn't extend parent");
+            this.assertEquals(Aria.getClasspath(test.aria.templates.reloadParentTemplate.ChildTemplate.classDefinition.$extends), test.aria.templates.reloadParentTemplate.ParentTemplate.classDefinition.$classpath, "Child doesn't extend parent");
             this.assertTrue(this.data.something === 0, "Data.something is not zero");
             this.assertTrue(this.data.anything === 0, "Data.anything is not zero");
 
