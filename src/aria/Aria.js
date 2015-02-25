@@ -821,6 +821,24 @@ var Aria = module.exports = global.Aria;
         return res;
     };
 
+    /**
+     * This function is useful when either a classpath or a reference to a class is expected, to convert such a value to
+     * a classpath. If the parameter is a reference to an Aria Templates class or interface, its classpath is returned.
+     * Otherwise, the parameter is returned as is.
+     * @param {String|Object|Function} classpathOrCstr Classpath or reference to a class.
+     * @return {String} Classpath corresponding to classpathOrCstr
+     */
+    Aria.getClasspath = function (classpathOrCstr) {
+        if (classpathOrCstr && typeof classpathOrCstr != "string") {
+            if (classpathOrCstr.classDefinition) {
+                return classpathOrCstr.classDefinition.$classpath;
+            } else if (classpathOrCstr.interfaceDefinition) {
+                return classpathOrCstr.interfaceDefinition.$classpath;
+            }
+        }
+        return classpathOrCstr;
+    };
+
     var appendMissingDependencies = function (missingDeps, array, extension) {
         if (array) {
             for (var i = 0, l = array.length; i < l; i++) {

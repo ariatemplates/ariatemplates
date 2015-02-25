@@ -112,17 +112,16 @@ LoaderProto.loadUnpackaged = function (module) {
 // second entry point: process old AT classes if needed
 LoaderProto.defineUnpackaged = function (module, fileContent) {
     var context = this.context;
-    var newSyntax = !tplFileNameRegExp.test(module.filename); // templates still use the old syntax
+
+    var dependencies = findRequires(fileContent, true);
+    // classes containing require or without Aria.xDefinition are using the new syntax
+    var newSyntax = dependencies.length > 0 || !oldATClassRegExp.test(fileContent);
     if (newSyntax) {
-        var dependencies = findRequires(fileContent, true);
-        // classes containing require or without Aria.xDefinition are using the new syntax
-        newSyntax = dependencies.length > 0 || !oldATClassRegExp.test(fileContent);
-        if (newSyntax) {
-            var definition = context.jsModuleEval(fileContent, module.url);
-            context.moduleDefine(module, dependencies, definition);
-            return;
-        }
+        var definition = context.jsModuleEval(fileContent, module.url);
+        context.moduleDefine(module, dependencies, definition);
+        return;
     }
+
     // old syntax, let's delegate the work to the old loader
     var oldATLoader = this.oldATLoader;
     if (oldATLoader) {
@@ -136,7 +135,7 @@ LoaderProto.defineUnpackaged = function (module, fileContent) {
     }
 };
 
-LoaderProto.updatePackagesMap = function(newMap) {
+LoaderProto.updatePackagesMap = function (newMap) {
     this.parentLoader.updatePackagesMap(newMap);
 };
 
