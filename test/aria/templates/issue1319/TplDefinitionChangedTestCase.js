@@ -16,6 +16,7 @@
 Aria.classDefinition({
     $classpath : 'test.aria.templates.issue1319.TplDefinitionChangedTestCase',
     $extends : 'aria.jsunit.TemplateTestCase',
+    $dependencies : ['aria.utils.Object'],
     $constructor : function () {
         this.$TemplateTestCase.constructor.call(this);
         this.setTestEnv({
@@ -37,22 +38,18 @@ Aria.classDefinition({
             });
 
             // Defined in the template:
-            this.assertJsonEquals(tplDef.$resources, {
-                calendarRes : "aria.resources.CalendarRes"
-            });
-            this.assertJsonEquals(tplDef.$texts, {
-                bootstrapTpl : "aria.ext.filesgenerator.tpl.Bootstrap"
-            });
+            this.assertJsonEquals(aria.utils.Object.keys(tplDef.$resources), ["calendarRes"]);
+            this.assertEquals(Aria.getClasspath(tplDef.$resources.calendarRes), "aria.resources.CalendarRes");
+            this.assertJsonEquals(aria.utils.Object.keys(tplDef.$texts), ["bootstrapTpl"]);
+            this.assertEquals(Aria.getClasspath(tplDef.$texts.bootstrapTpl), "aria.ext.filesgenerator.tpl.Bootstrap");
 
             // The template prototype has everything:
-            this.assertJsonEquals(tpl.$resources, {
-                calendarRes : "aria.resources.CalendarRes",
-                dateRes : "aria.resources.DateRes"
-            });
-            this.assertJsonEquals(tpl.$texts, {
-                bootstrapTpl : "aria.ext.filesgenerator.tpl.Bootstrap",
-                classTpl : "aria.ext.filesgenerator.tpl.Class"
-            });
+            this.assertJsonEquals(aria.utils.Object.keys(tpl.$resources).sort(), ["calendarRes", "dateRes"]);
+            this.assertEquals(Aria.getClasspath(tpl.$resources.calendarRes), "aria.resources.CalendarRes");
+            this.assertEquals(Aria.getClasspath(tpl.$resources.dateRes), "aria.resources.DateRes");
+            this.assertJsonEquals(aria.utils.Object.keys(tpl.$texts).sort(), ["bootstrapTpl", "classTpl"]);
+            this.assertEquals(Aria.getClasspath(tpl.$texts.bootstrapTpl), "aria.ext.filesgenerator.tpl.Bootstrap");
+            this.assertEquals(Aria.getClasspath(tpl.$texts.classTpl), "aria.ext.filesgenerator.tpl.Class");
             this.assertEquals(tpl.calendarRes, aria.resources.CalendarRes);
             this.assertEquals(tpl.dateRes, aria.resources.DateRes);
             this.assertEquals(tpl.bootstrapTpl, aria.ext.filesgenerator.tpl.Bootstrap);

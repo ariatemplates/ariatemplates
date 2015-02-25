@@ -21,7 +21,14 @@ module.exports = function (classGenerator) {
         return new Promise(function (resolve, reject) {
             classGenerator.parseTemplate(content, false, function (res) {
                 if (res.classDef) {
-                    resolve(res.classDef);
+                    var logicalPath = res.logicalPath;
+                    if (logicalPath === fileName || require.resolve(logicalPath) === fileName) {
+                        resolve(res.classDef);
+                    } else {
+                        reject(new Error("Module '"
+                                + fileName
+                                + "' does not contain the expected Aria Templates class. Please check the classpath inside the file."));
+                    }
                 } else {
                     var errorDetails;
                     var log = aria.core.Log; // log may not be included in the bootstrap
