@@ -54,12 +54,14 @@ module.exports = Aria.classDefinition({
                 }
                 if (itm.$resources != null) {
                     var resources = itm.$resources;
-                    for (var res in resources)
-                        if (resources.hasOwnProperty(res) && !resources[res].hasOwnProperty("provider")) {
-                            classMgr.unloadClass(resources[res], timestampNextTime);
+                    for (var res in resources) {
+                        var curRes = resources[res];
+                        if (resources.hasOwnProperty(res) && !curRes.hasOwnProperty("provider")) {
+                            classMgr.unloadClass(Aria.getClasspath(curRes), timestampNextTime);
                         }
+                    }
                 }
-                var ext = itm.$extends;
+                var ext = Aria.getClasspath(itm.$extends);
                 if ((ext != null) && (ext != "aria.templates.Template")) {
                     if ((stopAtClasspath !== undefined) && (stopAtClasspath != classpath)) {
                         this.unloadTemplate(ext, timestampNextTime, stopAtClasspath);

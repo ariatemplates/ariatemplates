@@ -15,7 +15,7 @@
 
 var asyncRequire = require("noder-js/asyncRequire").create(module);
 var firstComment = /^\s*\/\*[\s\S]*?\*\//;
-var alreadyGeneratedRegExp = /^\s*Aria\.classDefinition\(/;
+var alreadyGeneratedRegExp = /^\s*(?:var\s+|Aria\.classDefinition\()/;
 
 var getExtension = function (filename) {
     var withoutPath = filename.replace(/^(.*\/)?([^/]*)$/, "$2");

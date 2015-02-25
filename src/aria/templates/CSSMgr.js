@@ -19,11 +19,6 @@ var ariaUtilsObject = require("../utils/Object");
 var ariaUtilsAriaWindow = require("../utils/AriaWindow");
 var ariaCoreClassMgr = require("../core/ClassMgr");
 
-
-var getClasspath = function (classpathOrCstr) {
-    return classpathOrCstr.classDefinition ? classpathOrCstr.classDefinition.$classpath : classpathOrCstr;
-};
-
 /**
  * CSS Manager manages the insertion of CSS Template output in the page. It is responsible for prefixing the CSS
  * selectors according to the containing Template, adding the style tags in the page.
@@ -276,7 +271,7 @@ module.exports = Aria.classDefinition({
                 var css = {};
                 if (dependencies) {
                     for (var i = 0, ii = dependencies.length; i < ii; i++) {
-                        css[getClasspath(dependencies[i])] = true;
+                        css[Aria.getClasspath(dependencies[i])] = true;
                     }
                 }
 
@@ -285,7 +280,7 @@ module.exports = Aria.classDefinition({
                     var $css = tpl.$css;
                     if ($css) {
                         for (var i = 0, ii = $css.length; i < ii; i++) {
-                            css[getClasspath($css[i])] = true;
+                            css[Aria.getClasspath($css[i])] = true;
                         }
                     }
                     tpl = tpl.constructor.superclass;
@@ -326,7 +321,7 @@ module.exports = Aria.classDefinition({
             var changes = [];
             var classes = [];
             for (var i = 0, len = dependencies.length; i < len; i += 1) {
-                var cssClasspath = getClasspath(dependencies[i]);
+                var cssClasspath = Aria.getClasspath(dependencies[i]);
                 // this object will be used for configuration and changed,
                 // as this is a loop on dependencies, make a copy - PTR 04543463
                 var localContextArgs = {};
@@ -457,7 +452,7 @@ module.exports = Aria.classDefinition({
             }
 
             for (var i = 0, len = dependencies.length; i < len; i += 1) {
-                var cssClasspath = dependencies[i];
+                var cssClasspath = Aria.getClasspath(dependencies[i]);
                 this.__unload(classpath, cssClasspath);
             }
         },
@@ -756,7 +751,7 @@ module.exports = Aria.classDefinition({
          */
         registerDependencies : function (classpath, cssTemplates) {
             for (var i = 0, length = cssTemplates.length; i < length; i++) {
-                var cssClasspath = getClasspath(cssTemplates[i]);
+                var cssClasspath = Aria.getClasspath(cssTemplates[i]);
                 if (!this.__globalUsage[cssClasspath]) {
                     this.__globalUsage[cssClasspath] = [];
                 }
@@ -775,7 +770,7 @@ module.exports = Aria.classDefinition({
         unregisterDependencies : function (classpath, cssTemplates, unload, timestampNextTime) {
             var array = ariaUtilsArray, classMgr = ariaCoreClassMgr;
             for (var i = 0, length = cssTemplates.length; i < length; i++) {
-                var cssClasspath = getClasspath(cssTemplates[i]);
+                var cssClasspath = Aria.getClasspath(cssTemplates[i]);
                 var usage = this.__globalUsage[cssClasspath];
                 array.remove(usage, classpath);
                 if (unload) {

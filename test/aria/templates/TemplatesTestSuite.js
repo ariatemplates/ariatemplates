@@ -84,6 +84,7 @@ Aria.classDefinition({
 
         this.addTests("test.aria.templates.statements.StatementsTestSuite");
         this.addTests("test.aria.templates.issue400.AlreadyCompiledTplTestCase");
+        this.addTests("test.aria.templates.issue400.AlreadyCompiledTplNewSyntaxTestCase");
 
         this.addTests("test.aria.templates.issue727.RefreshManagerExceptionTestCase");
         this.addTests("test.aria.templates.issue833.CaretPositionTestCase");
