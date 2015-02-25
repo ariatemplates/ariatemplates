@@ -15,7 +15,6 @@
 var Aria = require("../Aria");
 var ariaCoreClassMgr = require("../core/ClassMgr");
 
-
 /**
  * Base class for all Test objects (Test Case and TestSuite). Defines the interface expected by the Test Runner
  */
@@ -262,6 +261,9 @@ module.exports = Aria.classDefinition({
          * @param {String} optMsg optional message to add to the error description
          */
         raiseError : function (err, optMsg) {
+            if (err.logDetails) {
+                err.logDetails();
+            }
             var msg = (err.description) ? err.description : err.message;
             msg = '[' + msg + ']';
             if (optMsg) {
