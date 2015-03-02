@@ -453,8 +453,9 @@ module.exports = Aria.classDefinition({
                         selectField.innerHTML = '';
                         var helperDiv = Aria.$window.document.createElement('div');
                         helperDiv.innerHTML = '<select>' + optionsListString + '</select>';
-                        for (var j = 0, options = helperDiv.children[0].children; j < options.length; j++) {
-                            selectField.appendChild(options[j]);
+                        var options = helperDiv.children[0].children;
+                        while (options.length) {
+                            selectField.appendChild(options[0]);
                         }
                     } else {
                         selectField.innerHTML = optionsListString;
