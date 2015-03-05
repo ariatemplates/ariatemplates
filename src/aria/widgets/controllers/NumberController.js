@@ -16,7 +16,6 @@ var Aria = require("../../Aria");
 var ariaWidgetsControllersReportsControllerReport = require("./reports/ControllerReport");
 var ariaUtilsNumber = require("../../utils/Number");
 var ariaCoreJsonValidator = require("../../core/JsonValidator");
-var ariaWidgetsWidgetsRes = require("../../$resources").file(__dirname, "../WidgetsRes");
 var ariaWidgetsControllersTextDataController = require("./TextDataController");
 var ariaUtilsType = require("../../utils/Type");
 
@@ -27,10 +26,9 @@ var ariaUtilsType = require("../../utils/Type");
 module.exports = Aria.classDefinition({
     $classpath : "aria.widgets.controllers.NumberController",
     $extends : ariaWidgetsControllersTextDataController,
-    $resources : {
-        "res" : ariaWidgetsWidgetsRes
-    },
     $constructor : function () {
+        this._widgetName = "NumberField";
+
         this.$TextDataController.constructor.call(this);
 
         /**
@@ -117,7 +115,7 @@ module.exports = Aria.classDefinition({
                     // Nothing changed
                     report.ok = !hasErrors;
                     if (!report.ok) {
-                        report.errorMessages[0] = this.res.errors["40006_WIDGET_NUMBERFIELD_VALIDATION"];
+                        report.errorMessages[0] = this.getErrorMessage("validation");
                     }
                 } else {
                     // Update the text datamodel
@@ -133,7 +131,7 @@ module.exports = Aria.classDefinition({
 
                         report.ok = true;
                     } else {
-                        report.errorMessages[0] = this.res.errors["40006_WIDGET_NUMBERFIELD_VALIDATION"];
+                        report.errorMessages[0] = this.getErrorMessage("validation");
                         // The text doesn't correspond to a valid number
                         this._dataModel.number = null;
                     }

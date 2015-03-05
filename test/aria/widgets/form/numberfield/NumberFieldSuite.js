@@ -22,5 +22,6 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.form.numberfield.NumberFieldTest");
         this.addTests("test.aria.widgets.form.numberfield.inputPattern.InputPattern");
         this.addTests("test.aria.widgets.form.numberfield.inputPattern.SeparatedInputPattern");
+        this.addTests("test.aria.widgets.form.numberfield.defaultErrorMessages.DefaultErrorMessagesTest");
     }
 });

@@ -17,17 +17,14 @@ var ariaWidgetsControllersReportsControllerReport = require("./reports/Controlle
 var ariaUtilsDate = require("../../utils/Date");
 var ariaUtilsType = require("../../utils/Type");
 var ariaUtilsEnvironmentDate = require("../../utils/environment/Date");
-var ariaWidgetsWidgetsRes = require("../../$resources").file(__dirname, "../WidgetsRes");
 var ariaWidgetsControllersTextDataController = require("./TextDataController");
 
 
 module.exports = Aria.classDefinition({
     $classpath : "aria.widgets.controllers.DateController",
     $extends : ariaWidgetsControllersTextDataController,
-    $resources : {
-        "res" : ariaWidgetsWidgetsRes
-    },
     $constructor : function () {
+        this._widgetName = "DateField";
 
         this.$TextDataController.constructor.call(this);
 
@@ -150,10 +147,10 @@ module.exports = Aria.classDefinition({
                 internalValue = ariaUtilsDate.removeTime(internalValue);
                 if (this._minValue && internalValue < this._minValue) {
                     report.ok = false;
-                    report.errorMessages.push(this.res.errors["40018_WIDGET_DATEFIELD_MINVALUE"]);
+                    report.errorMessages.push(this.getErrorMessage("minValue"));
                 } else if (this._maxValue && internalValue > this._maxValue) {
                     report.ok = false;
-                    report.errorMessages.push(this.res.errors["40019_WIDGET_DATEFIELD_MAXVALUE"]);
+                    report.errorMessages.push(this.getErrorMessage("maxValue"));
                 } else {
                     report.ok = true;
                     this._dataModel.jsDate = internalValue;
@@ -196,7 +193,7 @@ module.exports = Aria.classDefinition({
                     } else {
                         report = new ariaWidgetsControllersReportsControllerReport();
                         report.ok = false;
-                        report.errorMessages.push(this.res.errors["40008_WIDGET_DATEFIELD_VALIDATION"]);
+                        report.errorMessages.push(this.getErrorMessage("validation"));
                     }
                 }
             }

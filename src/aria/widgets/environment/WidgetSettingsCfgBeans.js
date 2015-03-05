@@ -15,6 +15,7 @@
 var Aria = require("../../Aria");
 var ariaCoreJsonTypes = require("../../core/JsonTypes");
 var ariaUtilsDragdropDragDropBean = require("../../utils/dragdrop/DragDropBean");
+var ariaWidgetsCfgBeans = require("../CfgBeans");
 
 
 /**
@@ -24,7 +25,8 @@ module.exports = Aria.beanDefinitions({
     $package : "aria.widgets.environment.WidgetSettingsCfgBeans",
     $namespaces : {
         "json" : ariaCoreJsonTypes,
-        "dragDrop" : ariaUtilsDragdropDragDropBean
+        "dragDrop" : ariaUtilsDragdropDragDropBean,
+        "widgets" : ariaWidgetsCfgBeans
     },
     $description : "",
     $beans : {
@@ -70,7 +72,30 @@ module.exports = Aria.beanDefinitions({
                         },
                         "movableProxy" : {
                             $type : "dragDrop:ProxyCfg",
-                            $description : "Specifies the type of proxy dor the dialog motion."
+                            $description : "Specifies the type of proxy for the dialog motion."
+                        }
+                    },
+                    $default : {}
+                },
+                "defaultErrorMessages" : {
+                    $type : "json:Object",
+                    $description : "Default values for widgets' error messages.",
+                    $properties : {
+                        "NumberField" : {
+                            $type : "widgets:NumberFieldCfg.defaultErrorMessages",
+                            $description : "Default values for NumberField's error messages."
+                        },
+                        "TimeField" : {
+                            $type : "widgets:TimeFieldCfg.defaultErrorMessages",
+                            $description : "Default values for TimeField's error messages."
+                        },
+                        "DateField" : {
+                            $type : "widgets:DateFieldCfg.defaultErrorMessages",
+                            $description : "Default values for DateField's error messages."
+                        },
+                        "AutoComplete" : {
+                            $type : "widgets:AutoCompleteCfg.defaultErrorMessages",
+                            $description : "Default values for AutoComplete's error messages."
                         }
                     },
                     $default : {}

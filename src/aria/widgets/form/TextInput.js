@@ -72,7 +72,7 @@ module.exports = Aria.classDefinition({
 
         this._isTextarea = false;
         /**
-         * Internal timer ID used to calidate a keyup event.
+         * Internal timer ID used to validate a keyup event.
          * @see _dom_onkeyup
          * @protected
          * @type String
@@ -88,7 +88,7 @@ module.exports = Aria.classDefinition({
         this._keepFocus = false;
 
         /**
-         * Use on keep focus to restaure selection. Keep selection start and end.
+         * Use on keep focus to restore selection. Keep selection start and end.
          * @protected
          * @type Object
          */
@@ -105,6 +105,8 @@ module.exports = Aria.classDefinition({
                 'onCheck' : this._reactToControllerReportEvent,
                 scope : this
             });
+
+            controller.setDefaultErrorMessages(cfg.defaultErrorMessages);
         }
 
         /**
@@ -143,9 +145,9 @@ module.exports = Aria.classDefinition({
         this._simpleHTML = this._skinObj.simpleHTML;
 
         /**
-         * Flag set to false after first focus, and set back to true after a blur. Used for the autoselect behaviour.<br />
+         * Flag set to false after first focus, and set back to true after a blur. Used for the autoselect behavior.<br />
          * This value is true when the field receives focus for the first time (user action) and false when the focus is
-         * giveng programmatically by the controller
+         * given programmatically by the controller
          * @type Boolean
          */
         this._firstFocus = true;
@@ -402,7 +404,7 @@ module.exports = Aria.classDefinition({
          *     value: {Object} - internal widget value,
          *     performCheckOnly: {Boolean} - perfom only value/text check do not update th widget display,
          *     resetErrorIfOK: {Boolean} (default:true) - tells if error display must be removed if check is OK
-         *         (usefull when check is done on 'strange' events like mouseover)
+         *         (useful when check is done on 'strange' events like mouseover)
          * }
          * </pre>
          *
@@ -754,6 +756,10 @@ module.exports = Aria.classDefinition({
                     this.setPrefillText(true, "", true);
                 } else if (newValue === false) {
                     this.setPrefillText(true, this._cfg.prefill, true);
+                }
+            } else if (propertyName == "defaultErrorMessages") {
+                if (this.controller) {
+                    this.controller.setDefaultErrorMessages(newValue);
                 }
             } else {
                 // delegate to parent class
@@ -1111,7 +1117,7 @@ module.exports = Aria.classDefinition({
 
         /**
          * Set the helptext of the field if needed
-         * @param {Boolean} enable Wheter to enable it or not
+         * @param {Boolean} enable Whether to enable it or not
          */
         setHelpText : function (enable) {
             var cfg = this._cfg;
