@@ -18,10 +18,8 @@ Aria.classDefinition({
     $extends : "aria.widgets.controllers.TextDataController",
     $dependencies : ["aria.DomEvent", "aria.widgets.controllers.reports.ControllerReport", "aria.utils.Date",
             "aria.utils.Type", "aria.utils.environment.Date"],
-    $resources : {
-        "res" : "aria.widgets.WidgetsRes"
-    },
     $constructor : function () {
+        this._widgetName = "DateField";
 
         this.$TextDataController.constructor.call(this);
 
@@ -144,10 +142,10 @@ Aria.classDefinition({
                 internalValue = aria.utils.Date.removeTime(internalValue);
                 if (this._minValue && internalValue < this._minValue) {
                     report.ok = false;
-                    report.errorMessages.push(this.res.errors["40018_WIDGET_DATEFIELD_MINVALUE"]);
+                    report.errorMessages.push(this.getErrorMessage("minValue"));
                 } else if (this._maxValue && internalValue > this._maxValue) {
                     report.ok = false;
-                    report.errorMessages.push(this.res.errors["40019_WIDGET_DATEFIELD_MAXVALUE"]);
+                    report.errorMessages.push(this.getErrorMessage("maxValue"));
                 } else {
                     report.ok = true;
                     this._dataModel.jsDate = internalValue;
@@ -190,7 +188,7 @@ Aria.classDefinition({
                     } else {
                         report = new aria.widgets.controllers.reports.ControllerReport();
                         report.ok = false;
-                        report.errorMessages.push(this.res.errors["40008_WIDGET_DATEFIELD_VALIDATION"]);
+                        report.errorMessages.push(this.getErrorMessage("validation"));
                     }
                 }
             }

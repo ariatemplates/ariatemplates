@@ -18,10 +18,13 @@
  */
 Aria.classDefinition({
     $classpath : "aria.widgets.controllers.TextDataController",
-    $dependencies : ["aria.widgets.controllers.reports.ControllerReport"],
+    $dependencies : ["aria.widgets.controllers.reports.ControllerReport", "aria.widgets.environment.WidgetSettings"],
+    $resources : {
+        res : "aria.widgets.WidgetsRes"
+    },
     $events : {
         "onCheck" : {
-            description : "Notifies that controller has finished am asynchronouse check (internal, of the value or of a keystroke)",
+            description : "Notifies that controller has finished an asynchronous check (internal, of the value or of a keystroke)",
             properties : {
                 report : "{aria.widgets.controllers.reports.ControllerReport} a check report"
             }
@@ -36,6 +39,8 @@ Aria.classDefinition({
             value : null,
             displayText : ''
         };
+
+        this.setDefaultErrorMessages();
     },
     $prototype : {
 
@@ -90,6 +95,31 @@ Aria.classDefinition({
          */
         getDataModel : function () {
             return this._dataModel;
+        },
+
+        /**
+         * Sets the default error messages map to the given value.
+         *
+         * <p>
+         * The input value type is specified in bean <em>aria.widgets.CfgBeans</em> for the widgets supporting it.
+         * </p>
+         *
+         * <p>
+         * If the given value is <em>null</em>, an empty object is set, meaning no default messages.
+         * </p>
+         *
+         * @param {Object} defaultErrorMessages The map of error messages to set for the controller.
+         *
+         * @return {Object} The final default error messages (as given or further processed ones).
+         */
+        setDefaultErrorMessages : function (defaultErrorMessages) {
+            if (defaultErrorMessages == null) {
+                defaultErrorMessages = {};
+            }
+
+            this._defaultErrorMessages = defaultErrorMessages;
+
+            return defaultErrorMessages;
         },
 
         /**
@@ -219,6 +249,98 @@ Aria.classDefinition({
                 report : report,
                 arg : arg
             });
+        },
+
+        /**
+         * Retrieves the requested error message from different sets of configuration ordered by precedence.
+         *
+         * <p>
+         * An error message value is requested from this error message name.
+         * </p>
+         *
+         * <p>
+         * There can be three levels of configuration for the error messages of a widget, enumerated here by order of precedence:
+         * <ol>
+         *  <li>local: in the configuration of the widget's instance</li>
+         *  <li>global: in the application's environment configuration</li>
+         *  <li>hardcoded: in internal resources; it is used as a fallback</li>
+         * </ol>
+         * </p>
+         *
+         * <p>
+         * As soon as a configuration contains a non-void value for the requested error message, this one is used for the return value.
+         * </p>
+         *
+         * <p>
+         * Note that since there are hardcoded values, there will always be an error message for a valid message name. However, if the message name is not supported, an <em>undefined</em> value is returned in the end.
+         * </p>
+         *
+         * @param {String} errorMessageName The name of the error message to retrieve (it is the key to the requested message in the collection).
+         *
+         * @return {String} The retrieved error message if any, <em>undefined</em> if the message name is not supported.
+         */
+        getErrorMessage : function (errorMessageName) {
+            // ----------------------------------------------- early termination
+
+            if (errorMessageName == null) {
+                return "";
+            }
+
+            // ------------------------------------------------------ processing
+
+            var errorMessage;
+
+            var widgetName = this._widgetName;
+
+            // local -----------------------------------------------------------
+
+            if (errorMessage == null) {
+                errorMessage = this._defaultErrorMessages[errorMessageName];
+            }
+
+            // global ----------------------------------------------------------
+
+            if (errorMessage == null) {
+                var allMessages = aria.widgets.environment.WidgetSettings.getWidgetSettings()["defaultErrorMessages"];
+                if (allMessages != null) {
+                    var widgetMessages = allMessages[widgetName];
+                    if (widgetMessages != null) {
+                        errorMessage = widgetMessages[errorMessageName];
+                    }
+                }
+            }
+
+            // hardcoded -------------------------------------------------------
+
+            if (errorMessage == null) {
+                errorMessage = this.res.errors[widgetName][errorMessageName];
+                /* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1428) */
+                errorMessage = this.res.errors[this._newKeysToOldKeysMap[widgetName][errorMessageName]];
+                /* BACKWARD-COMPATIBILITY-END (GitHub #1428) */
+            }
+
+            // ---------------------------------------------------------- return
+
+            return errorMessage;
         }
+        /* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1428) */
+        ,
+        _newKeysToOldKeysMap: {
+            "NumberField" : {
+                "validation" : "40006_WIDGET_NUMBERFIELD_VALIDATION"
+            },
+            "TimeField" : {
+                "validation" : "40007_WIDGET_TIMEFIELD_VALIDATION"
+            },
+            "DateField" : {
+                "validation" : "40008_WIDGET_DATEFIELD_VALIDATION",
+                "minValue" : "40018_WIDGET_DATEFIELD_MINVALUE",
+                "maxValue" : "40019_WIDGET_DATEFIELD_MAXVALUE"
+            },
+            "AutoComplete" : {
+                "validation" : "40020_WIDGET_AUTOCOMPLETE_VALIDATION"
+            }
+        }
+        /* BACKWARD-COMPATIBILITY-END (GitHub #1428) */
     }
 });

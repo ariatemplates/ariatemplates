@@ -52,5 +52,6 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.form.autocomplete.issue697.EscKeyTestCase");
         this.addTests("test.aria.widgets.form.autocomplete.errorhandling.AutoComplete");
         this.addTests("test.aria.widgets.form.autocomplete.preselectAutofill.PreselectAutofillTestSuite");
+        this.addTests("test.aria.widgets.form.autocomplete.defaultErrorMessages.DefaultErrorMessagesTest");
     }
 });

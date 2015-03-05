@@ -28,9 +28,6 @@
         $dependencies : ["aria.DomEvent", "aria.utils.Json", "aria.templates.RefreshManager",
                 "aria.widgets.controllers.reports.DropDownControllerReport", "aria.utils.Type",
                 "aria.html.controllers.Suggestions"],
-        $resources : {
-            res : "aria.widgets.WidgetsRes"
-        },
         $onload : function () {
             typeUtil = aria.utils.Type;
         },
@@ -38,6 +35,8 @@
             typeUtil = null;
         },
         $constructor : function () {
+            this._widgetName = "AutoComplete";
+
             this.$DropDownListController.constructor.call(this);
 
             /**
@@ -167,7 +166,7 @@
                             } else {
                                 report.ok = false;
                                 report.value = null;
-                                report.errorMessages.push(this.res.errors["40020_WIDGET_AUTOCOMPLETE_VALIDATION"]);
+                                report.errorMessages.push(this.getErrorMessage("validation"));
                             }
                         }
 
@@ -378,7 +377,7 @@
                     } else {
                         if (!this.freeText && suggestionsAvailable && !hasSuggestions) {
                             report.ok = false;
-                            report.errorMessages.push(this.res.errors["40020_WIDGET_AUTOCOMPLETE_VALIDATION"]);
+                            report.errorMessages.push(this.getErrorMessage("validation"));
                         } else {
                             report.ok = true;
                         }
@@ -516,7 +515,6 @@
                 }
                 return specialKey;
             }
-
         }
     });
 })();

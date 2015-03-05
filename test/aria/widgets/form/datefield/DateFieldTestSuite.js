@@ -22,5 +22,6 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.form.datefield.issue303.InvalidState");
         this.addTests("test.aria.widgets.form.datefield.checkValue.DateField");
         this.addTests("test.aria.widgets.form.datefield.checkDate.DateField");
+        this.addTests("test.aria.widgets.form.datefield.defaultErrorMessages.DefaultErrorMessagesTest");
     }
 });

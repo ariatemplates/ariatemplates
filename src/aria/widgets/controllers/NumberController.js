@@ -21,10 +21,9 @@ Aria.classDefinition({
     $extends : "aria.widgets.controllers.TextDataController",
     $dependencies : ["aria.DomEvent", "aria.widgets.controllers.reports.ControllerReport", "aria.utils.Number",
                      "aria.core.JsonValidator"],
-    $resources : {
-        "res" : "aria.widgets.WidgetsRes"
-    },
     $constructor : function () {
+        this._widgetName = "NumberField";
+
         this.$TextDataController.constructor.call(this);
 
         /**
@@ -111,7 +110,7 @@ Aria.classDefinition({
                     // Nothing changed
                     report.ok = !hasErrors;
                     if (!report.ok) {
-                        report.errorMessages[0] = this.res.errors["40006_WIDGET_NUMBERFIELD_VALIDATION"];
+                        report.errorMessages[0] = this.getErrorMessage("validation");
                     }
                 } else {
                     // Update the text datamodel
@@ -127,7 +126,7 @@ Aria.classDefinition({
 
                         report.ok = true;
                     } else {
-                        report.errorMessages[0] = this.res.errors["40006_WIDGET_NUMBERFIELD_VALIDATION"];
+                        report.errorMessages[0] = this.getErrorMessage("validation");
                         // The text doesn't correspond to a valid number
                         this._dataModel.number = null;
                     }

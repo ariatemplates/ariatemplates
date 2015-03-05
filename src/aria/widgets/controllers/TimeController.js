@@ -21,10 +21,9 @@ Aria.classDefinition({
     $classpath : "aria.widgets.controllers.TimeController",
     $extends : "aria.widgets.controllers.TextDataController",
     $dependencies : ["aria.widgets.controllers.reports.ControllerReport", "aria.utils.Date", "aria.utils.environment.Date"],
-    $resources : {
-        "res" : "aria.widgets.WidgetsRes"
-    },
     $constructor : function () {
+        this._widgetName = "TimeField";
+
         this.$TextDataController.constructor.call(this);
 
         /**
@@ -109,7 +108,7 @@ Aria.classDefinition({
                             report.value = this._dataModel.jsDate;
                         }
                     } else {
-                        report.errorMessages[0] = this.res.errors["40007_WIDGET_TIMEFIELD_VALIDATION"];
+                        report.errorMessages[0] = this.getErrorMessage("validation");
                     }
                 }
             }
@@ -124,6 +123,5 @@ Aria.classDefinition({
         getDisplayTextFromValue : function (time) {
             return (time && aria.utils.Type.isDate(time)) ? aria.utils.Date.format(time, this._pattern) : "";
         }
-
     }
 });
