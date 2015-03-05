@@ -16,7 +16,6 @@ var Aria = require("../../Aria");
 var ariaWidgetsControllersReportsControllerReport = require("./reports/ControllerReport");
 var ariaUtilsDate = require("../../utils/Date");
 var ariaUtilsEnvironmentDate = require("../../utils/environment/Date");
-var ariaWidgetsWidgetsRes = require("../../$resources").file(__dirname, "../WidgetsRes");
 var ariaWidgetsControllersTextDataController = require("./TextDataController");
 var ariaUtilsType = require("../../utils/Type");
 
@@ -28,10 +27,9 @@ var ariaUtilsType = require("../../utils/Type");
 module.exports = Aria.classDefinition({
     $classpath : "aria.widgets.controllers.TimeController",
     $extends : ariaWidgetsControllersTextDataController,
-    $resources : {
-        "res" : ariaWidgetsWidgetsRes
-    },
     $constructor : function () {
+        this._widgetName = "TimeField";
+
         this.$TextDataController.constructor.call(this);
 
         /**
@@ -116,7 +114,7 @@ module.exports = Aria.classDefinition({
                             report.value = this._dataModel.jsDate;
                         }
                     } else {
-                        report.errorMessages[0] = this.res.errors["40007_WIDGET_TIMEFIELD_VALIDATION"];
+                        report.errorMessages[0] = this.getErrorMessage("validation");
                     }
                 }
             }
@@ -131,6 +129,5 @@ module.exports = Aria.classDefinition({
         getDisplayTextFromValue : function (time) {
             return (time && ariaUtilsType.isDate(time)) ? ariaUtilsDate.format(time, this._pattern) : "";
         }
-
     }
 });

@@ -19,7 +19,6 @@ var ariaTemplatesRefreshManager = require("../../templates/RefreshManager");
 var ariaWidgetsControllersReportsDropDownControllerReport = require("./reports/DropDownControllerReport");
 var ariaUtilsType = require("../../utils/Type");
 var ariaHtmlControllersSuggestions = require("../../html/controllers/Suggestions");
-var ariaWidgetsWidgetsRes = require("../../$resources").file(__dirname, "../WidgetsRes");
 var ariaWidgetsControllersDropDownListController = require("./DropDownListController");
 var ariaCoreJsonValidator = require("../../core/JsonValidator");
 
@@ -36,9 +35,6 @@ var ariaCoreJsonValidator = require("../../core/JsonValidator");
     module.exports = Aria.classDefinition({
         $classpath : "aria.widgets.controllers.AutoCompleteController",
         $extends : ariaWidgetsControllersDropDownListController,
-        $resources : {
-            res : ariaWidgetsWidgetsRes
-        },
         $onload : function () {
             typeUtil = ariaUtilsType;
         },
@@ -46,6 +42,8 @@ var ariaCoreJsonValidator = require("../../core/JsonValidator");
             typeUtil = null;
         },
         $constructor : function () {
+            this._widgetName = "AutoComplete";
+
             this.$DropDownListController.constructor.call(this);
 
             /**
@@ -175,7 +173,7 @@ var ariaCoreJsonValidator = require("../../core/JsonValidator");
                             } else {
                                 report.ok = false;
                                 report.value = null;
-                                report.errorMessages.push(this.res.errors["40020_WIDGET_AUTOCOMPLETE_VALIDATION"]);
+                                report.errorMessages.push(this.getErrorMessage("validation"));
                             }
                         }
 
@@ -386,7 +384,7 @@ var ariaCoreJsonValidator = require("../../core/JsonValidator");
                     } else {
                         if (!this.freeText && suggestionsAvailable && !hasSuggestions) {
                             report.ok = false;
-                            report.errorMessages.push(this.res.errors["40020_WIDGET_AUTOCOMPLETE_VALIDATION"]);
+                            report.errorMessages.push(this.getErrorMessage("validation"));
                         } else {
                             report.ok = true;
                         }
@@ -524,7 +522,6 @@ var ariaCoreJsonValidator = require("../../core/JsonValidator");
                 }
                 return specialKey;
             }
-
         }
     });
 })();

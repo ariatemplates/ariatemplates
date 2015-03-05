@@ -538,8 +538,33 @@ module.exports = Aria.beanDefinitions({
                     $properties : {
                         "referenceDate" : {
                             $type : "common:BindingRef"
+                        },
+                        "defaultErrorMessages" : {
+                            $type : "common:BindingRef"
                         }
                     }
+                },
+                "defaultErrorMessages" : {
+                    $type : "json:Object",
+                    $description : "Default values for error messages.",
+                    $properties : {
+                        "validation" : {
+                            $type : "json:String",
+                            $description : "Default message for validation error.",
+                            $default : null
+                        },
+                        "minValue": {
+                            $type : "json:String",
+                            $description : "Default message for minimum value validation error.",
+                            $default : null
+                        },
+                        "maxValue": {
+                            $type : "json:String",
+                            $description : "Default message for maximum value validation error.",
+                            $default : null
+                        }
+                    },
+                    $default : {}
                 }
             }
         },
@@ -551,6 +576,26 @@ module.exports = Aria.beanDefinitions({
                 "pattern" : {
                     $type : "environmentBase:FormatTypes",
                     $description : "Time pattern used to generate a value for the time entry"
+                },
+                "bind" : {
+                    $type : "TextInputCfg.bind",
+                    $properties : {
+                        "defaultErrorMessages" : {
+                            $type : "common:BindingRef"
+                        }
+                    }
+                },
+                "defaultErrorMessages" : {
+                    $type : "json:Object",
+                    $description : "Default values for error messages.",
+                    $properties : {
+                        "validation" : {
+                            $type : "json:String",
+                            $description : "Default message for validation error.",
+                            $default : null
+                        }
+                    },
+                    $default : {}
                 }
             }
         },
@@ -571,9 +616,30 @@ module.exports = Aria.beanDefinitions({
                                 $type : "json:Float",
                                 $description : ""
                             }]
+                },
+                "bind" : {
+                    $type : "TextInputCfg.bind",
+                    $properties : {
+                        "defaultErrorMessages" : {
+                            $type : "common:BindingRef"
+                        }
+                    }
+                },
+                "defaultErrorMessages" : {
+                    $type : "json:Object",
+                    $description : "Default values for error messages.",
+                    $properties : {
+                        "validation" : {
+                            $type : "json:String",
+                            $description : "Default message for validation error.",
+                            $default : null
+                        }
+                    },
+                    $default : {}
                 }
             }
         },
+
         "DropDownTextInputCfg" : {
             $type : "TextInputCfg",
             $description : "The base configuration for any widget extending DropDownInput",
@@ -977,6 +1043,26 @@ module.exports = Aria.beanDefinitions({
                     $default : [{
                                 key : "ENTER"
                             }]
+                },
+                "bind" : {
+                    $type : "DropDownTextInputCfg.bind",
+                    $properties : {
+                        "defaultErrorMessages" : {
+                            $type : "common:BindingRef"
+                        }
+                    }
+                },
+                "defaultErrorMessages" : {
+                    $type : "json:Object",
+                    $description : "Default values for error messages.",
+                    $properties : {
+                        "validation" : {
+                            $type : "json:String",
+                            $description : "Default message for validation error.",
+                            $default : null
+                        }
+                    },
+                    $default : {}
                 }
             }
         },
