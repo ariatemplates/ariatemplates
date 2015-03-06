@@ -464,6 +464,7 @@ module.exports = Aria.classDefinition({
         /* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1397) */
         var properties = [
             "isIE6",
+            "environment",
             {
                 name: "isFF",
                 synonym: "isFirefox"
@@ -477,10 +478,6 @@ module.exports = Aria.classDefinition({
                 synonym: "version"
             },
 
-            {
-                name: "environment",
-                synonym: "osName"
-            },
             {
                 name: "isOtherMobile",
                 synonym: "isOtherOS"
@@ -881,13 +878,17 @@ module.exports = Aria.classDefinition({
                         }
                     } else {
                         this._setFlag(output, "Windows");
-                        output.environment = "Windows";
+                        /* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1397) */
+                        output._environment = "Windows";
+                        /* BACKWARD-COMPATIBILITY-END (GitHub #1397) */
                     }
                     break;
 
                 case "macos":
                     this._setFlag(output, "Mac");
-                    output.environment = "MacOS";
+                    /* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1397) */
+                    output._environment = "MacOS";
+                    /* BACKWARD-COMPATIBILITY-END (GitHub #1397) */
                     break;
 
                 case 'ios':
