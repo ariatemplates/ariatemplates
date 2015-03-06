@@ -29,6 +29,7 @@ Aria.classDefinition({
         this.addTests("test.aria.templates.css.cssFolderPath.CSSFolderPathTestCase");
         this.addTests("test.aria.templates.css.cssMgr.CSSMgrTestCase");
         this.addTests("test.aria.templates.css.cssMgr.issue722.CSSMgrIssue722TestCase");
+        this.addTests("test.aria.templates.css.cssMgr.tagReuse.TagReuseTestCase");
         this.addTests("test.aria.templates.css.ctxtMgr.CtxtMgrTestCase");
         this.addTests("test.aria.templates.css.cssScripts.CSSScriptTestCase");
         this.addTests("test.aria.templates.css.dataReadyRefresh.RefreshTest");

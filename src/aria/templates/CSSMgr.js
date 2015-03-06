@@ -18,6 +18,7 @@ var ariaUtilsArray = require("../utils/Array");
 var ariaUtilsObject = require("../utils/Object");
 var ariaUtilsAriaWindow = require("../utils/AriaWindow");
 var ariaCoreClassMgr = require("../core/ClassMgr");
+var ariaUtilsDom = require("../utils/Dom");
 
 
 var getClasspath = function (classpathOrCstr) {
@@ -656,25 +657,30 @@ module.exports = Aria.classDefinition({
          * @private
          */
         __buildStyleIfMissing : function (tagName) {
-            // A pointer to the style might be already there
+
+            // A pointer to the style might be already there or an element with the correct id might be there
             var tag = this.__styleTagPool[tagName];
 
             if (!tag) {
-                // If missing, create one
-                var document = Aria.$window.document;
-                var head = document.getElementsByTagName("head")[0];
-                tag = document.createElement("style");
+                var id = this.__TAG_PREFX + tagName;
+                tag = ariaUtilsDom.getElementById(id);
 
-                tag.id = this.__TAG_PREFX + tagName;
-                tag.type = "text/css";
-                tag.media = "all"; // needed as the default media is screen in FF but all in IE
+                if (!tag) {
+                    // If missing, create one
+                    var document = Aria.$window.document;
+                    var head = document.getElementsByTagName("head")[0];
+                    tag = document.createElement("style");
 
-                head.appendChild(tag);
-                tag = head.lastChild;
+                    tag.id = id;
+                    tag.type = "text/css";
+                    tag.media = "all"; // needed as the default media is screen in FF but all in IE
+
+                    head.appendChild(tag);
+                    tag = head.lastChild;
+                }
 
                 this.__styleTagPool[tagName] = tag;
             }
-
             return tag;
         },
 
