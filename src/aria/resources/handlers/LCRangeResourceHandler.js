@@ -63,7 +63,7 @@ var ariaUtilsType = require("../../utils/Type");
              * Call the callback with an array of suggestions in its arguments. Suggestions that are exact match are
              * marked with parameter exactMatch set to true.
              * @param {String} textEntry Search string
-             * @param {aria.core.CfgBeans.Callback} callback Called when suggestions are ready
+             * @param {aria.core.CfgBeans:Callback} callback Called when suggestions are ready
              */
             getSuggestions : function (textEntry, callback) {
                 if (!typesUtil.isString(textEntry) || textEntry.length < this.threshold) {
@@ -112,7 +112,7 @@ var ariaUtilsType = require("../../utils/Type");
             /**
              * Internal method to call LCResourcesHandler
              * @param {String} textEntry Search string
-             * @param {aria.core.CfgBeans.Callback} callback Called when suggestions are ready
+             * @param {aria.core.CfgBeans:Callback} callback Called when suggestions are ready
              * @private
              */
             __getSuggestion : function (textEntry, callback) {

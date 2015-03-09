@@ -26,7 +26,7 @@ module.exports = Aria.classDefinition({
     $extends : ariaWidgetsFormTextInput,
     /**
      * TimeField constructor
-     * @param{aria.widgets.CfgBeans.TimeFieldCfg} cfg the widget configuration
+     * @param{aria.widgets.CfgBeans:TimeFieldCfg} cfg the widget configuration
      * @param{aria.templates.TemplateCtxt} ctxt template context
      * @param {Number} lineNumber Line number corresponding in the .tpl file where the widget is created
      */

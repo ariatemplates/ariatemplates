@@ -23,8 +23,8 @@ var ariaCoreJsonValidator = require("../../core/JsonValidator");
 
 /**
  * Function to sort ranges by fromDate.
- * @param {aria.widgets.calendar.CfgBeans.Range} a
- * @param {aria.widgets.calendar.CfgBeans.Range} b
+ * @param {aria.widgets.calendar.CfgBeans:Range} a
+ * @param {aria.widgets.calendar.CfgBeans:Range} b
  * @return {Number} Returns -1 if a.fromDate < b.fromDate, 0 if a.fromDate == b.fromDate, and 1 if a.fromDate >
  * b.fromDate
  */

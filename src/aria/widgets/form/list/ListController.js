@@ -310,7 +310,7 @@ module.exports = Aria.classDefinition({
 
         /**
          * Set the items property.
-         * @param {aria.widgets.form.list.CfgBeans.ItemsArray} newItems array of items
+         * @param {aria.widgets.form.list.CfgBeans:ItemsArray} newItems array of items
          * @protected
          */
         _setItems : function (newItems) {
@@ -474,7 +474,7 @@ module.exports = Aria.classDefinition({
 
         /**
          * Set the items property.
-         * @param {aria.widgets.form.list.CfgBeans.Items} newItems
+         * @param {aria.widgets.form.list.CfgBeans:Items} newItems
          */
         setItems : function (newItems) {
             var res = this._mergeItemsAndSelectionInfo(newItems, this.getSelectedValues());
