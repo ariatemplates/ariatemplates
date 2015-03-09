@@ -33,7 +33,7 @@ module.exports = Aria.classDefinition({
     $css : [ariaWidgetsFormTextInputStyle],
     /**
      * TextInput constructor
-     * @param {aria.widgets.CfgBeans.TextInputCfg} cfg the widget configuration
+     * @param {aria.widgets.CfgBeans:TextInputCfg} cfg the widget configuration
      * @param {aria.templates.TemplateCtxt} ctxt template context
      * @param {Number} lineNumber Line number corresponding in the .tpl file where the widget is created
      * @param {aria.widgets.controller.TextDataController} controller the data controller object

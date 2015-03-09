@@ -31,7 +31,7 @@ module.exports = Aria.classDefinition({
     },
     /**
      * Textarea constructor
-     * @param {aria.widgets.CfgBeans.TextareaCfg} cfg the widget configuration
+     * @param {aria.widgets.CfgBeans:TextareaCfg} cfg the widget configuration
      * @param {aria.templates.TemplateCtxt} ctxt template context
      * @param {Number} lineNumber Line number corresponding in the .tpl file where the widget is created
      */

@@ -36,7 +36,7 @@ module.exports = Aria.classDefinition({
     },
     /**
      * Popup Constructor.
-     * @param {aria.touch.widgets.PopupCfgBeans.PopupCfg} cfg popup configuration
+     * @param {aria.touch.widgets.PopupCfgBeans:PopupCfg} cfg popup configuration
      * @param {aria.templates.TemplateCtxt} context template context
      * @param {Number} lineNumber line number in the template
      */

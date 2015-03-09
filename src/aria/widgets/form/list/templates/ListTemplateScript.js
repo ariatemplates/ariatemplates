@@ -63,7 +63,7 @@ module.exports = Aria.tplScriptDefinition({
         /**
          * Called after a refresh. This method adds a timer callback to change scrollbar position for the selected item
          * to be displayed (if there is only one item selected).
-         * @param {aria.templates.CfgBeans.RefreshCfg} args arguments given for the refresh
+         * @param {aria.templates.CfgBeans:RefreshCfg} args arguments given for the refresh
          */
         $afterRefresh : function (args) {
             var sectionId = args ? args.section : null;
