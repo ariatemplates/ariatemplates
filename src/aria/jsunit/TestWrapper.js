@@ -91,8 +91,7 @@ module.exports = Aria.classDefinition({
                 this.$callback(callback);
             } else {
                 ariaUtilsScriptLoader.load(scriptsToLoad, callback, {
-                    document: subDocument,
-                    force: true
+                    document: subDocument
                 });
             }
         },

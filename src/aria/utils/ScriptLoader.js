@@ -28,6 +28,10 @@ module.exports = Aria.classDefinition({
     $constructor : function () {
         this._queueIndex = 0;
         this._queueCount = {};
+        /**
+         * Array of scripts that were already loaded *in the main document*
+         * (`Aria.$frameworkWindow.document`).
+         */
         this._loadedScripts = [];
     },
     $destructor : function () {
@@ -42,14 +46,15 @@ module.exports = Aria.classDefinition({
          * @param {Function} callback - A function to call once the whole set of scripts are loaded
          * @param {Object} options - (optional) { document: Document, force: Boolean }
          * `document` options specifies document into which the scripts should be injected.
-         * `force` (defaults to false) defines whether it should be checked if the script was loaded already
+         * If the document is different than `Aria.$frameworkWindow.document` then the script
+         * won't be added to `_loadedScripts` array.
          */
         load : function (scripts, callback, options) {
             var i, ii, url, scriptNode, scriptCount;
 
             var options = options || {};
-            var force = options.force || false;
             var document = options.document || Aria.$frameworkWindow.document;
+            var isTargetMainDocument = (document === Aria.$frameworkWindow.document);
 
             var loadedScripts = this._loadedScripts;
             var queueIndex = this._queueIndex;
@@ -71,9 +76,11 @@ module.exports = Aria.classDefinition({
             scriptCount = 0;
             for (i = 0, ii = scripts.length; i < ii; i++) {
                 url = scripts[i];
-                if (force || !loadedScripts[url]) {
+                if (!loadedScripts[url] || !isTargetMainDocument) {
                     scriptCount++;
-                    loadedScripts[url] = true;
+                    if (isTargetMainDocument) {
+                        loadedScripts[url] = true;
+                    }
                     scriptNode = document.createElement('script');
                     scriptNode.setAttribute("type", "text/javascript");
                     if (callback) {
