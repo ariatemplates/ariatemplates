@@ -18,7 +18,7 @@
  */
 Aria.classDefinition({
     $classpath : "aria.utils.validators.Validator",
-    $dependencies : ['aria.utils.Data'],
+    $dependencies : ['aria.utils.Data', 'aria.utils.validators.ValidatorMessages'],
     $implements : ['aria.utils.validators.IValidator'],
     $extends : "aria.core.JsObject",
     $constructor : function (message) {
@@ -38,7 +38,12 @@ Aria.classDefinition({
         if (message) {
             this.setMessage(message);
         } else {
-            this.setMessage(this.DEFAULT_LOCALIZED_MESSAGE);
+            var globallyDefinedMsg = aria.utils.validators.ValidatorMessages.getValidatorMessages()[this.$class];
+            if (globallyDefinedMsg) {
+                this.setMessage(globallyDefinedMsg);
+            } else {
+                this.setMessage(this.DEFAULT_LOCALIZED_MESSAGE);
+            }
         }
         this.groups = [];
         this.eventToValidate = "onsubmit";
