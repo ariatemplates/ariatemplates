@@ -18,6 +18,7 @@ var ariaUtilsValidatorsIValidator = require("./IValidator");
 var ariaCoreJsObject = require("../../core/JsObject");
 var ariaUtilsType = require("../Type");
 var ariaUtilsJson = require("../Json");
+var ariaWidgetsEnvironmentValidatorMessages = require("../validators/ValidatorMessages");
 
 
 /**
@@ -44,7 +45,12 @@ module.exports = Aria.classDefinition({
         if (message) {
             this.setMessage(message);
         } else {
-            this.setMessage(this.DEFAULT_LOCALIZED_MESSAGE);
+            var globallyDefinedMsg = ariaWidgetsEnvironmentValidatorMessages.getValidatorMessages()[this.$class];
+            if (globallyDefinedMsg) {
+                this.setMessage(globallyDefinedMsg);
+            } else {
+                this.setMessage(this.DEFAULT_LOCALIZED_MESSAGE);
+            }
         }
         this.groups = [];
         this.eventToValidate = "onsubmit";

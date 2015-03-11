@@ -19,7 +19,7 @@
 Aria.classDefinition({
     $classpath : "test.aria.utils.validators.Validator",
     $extends : "aria.jsunit.TestCase",
-    $dependencies : ["aria.utils.validators.Validator", "aria.utils.validators.Mandatory"],
+    $dependencies : ["aria.utils.validators.Validator", "aria.utils.validators.Mandatory", "aria.utils.validators.Alpha"],
     $prototype : {
         /**
          * Test case to test custom messages
@@ -27,22 +27,48 @@ Aria.classDefinition({
         test_messageOverriding : function () {
 
             // static overriding
-            var validator = new aria.utils.validators.Mandatory();
-            this.assertTrue(validator.validate()[0].errorMessage == "This field is a mandatory field.");
-            validator.$dispose();
+            this.checkAndDispose(new aria.utils.validators.Mandatory(), aria.utils.validators.Mandatory.DEFAULT_LOCALIZED_MESSAGE);
 
             // string overriding
-            validator = new aria.utils.validators.Mandatory("test");
-            this.assertTrue(validator.validate()[0].errorMessage == "test");
-            validator.$dispose();
+            this.checkAndDispose(new aria.utils.validators.Mandatory("test"), "test");
 
             // object overriding
-            validator = new aria.utils.validators.Mandatory({
+            this.checkAndDispose(new aria.utils.validators.Mandatory({
                 errorMessage : "test2"
-            });
-            this.assertTrue(validator.validate()[0].errorMessage == "test2");
-            validator.$dispose();
+            }), "test2");
 
+        },
+
+        /**
+         * Test case to test custom messages with global environment settings
+         */
+        test_messageOverridingWithGlobal : function () {
+
+            var firstMsg = "first error msg";
+            var secondMsg = "second error msg";
+            aria.core.AppEnvironment.setEnvironment({
+                validatorMessages : {
+                    AlphaNum : firstMsg,
+                    Mandatory : firstMsg,
+                    Email : secondMsg
+                }
+            });
+
+            // static overriding
+            this.checkAndDispose(new aria.utils.validators.Alpha(), aria.utils.validators.Alpha.DEFAULT_LOCALIZED_MESSAGE, 33);
+
+            // string overriding
+            this.checkAndDispose(new aria.utils.validators.Mandatory("test"), "test");
+
+            // environment overriding
+            this.checkAndDispose(new aria.utils.validators.Mandatory(), firstMsg);
+
+        },
+
+        checkAndDispose : function (validator, message, toBeValidated) {
+            this.assertTrue(validator.validate(toBeValidated)[0].errorMessage == message);
+            validator.$dispose();
         }
+
     }
 });
