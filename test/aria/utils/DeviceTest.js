@@ -166,41 +166,6 @@ Aria.classDefinition({
             Browser.isBlackBerry = false;
             this.assertFalse(Device.isClickNavigation(), "Non BlackBerry shouldn't be clickable");
             Browser.isBlackBerry = originalBrowserBlackBerry;
-        },
-
-        /* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1397) */
-        testDeprecation : function() {
-            var Device = aria.utils.Device;
-
-            // -----------------------------------------------------------------
-
-            Device.init();
-            if (!aria.core.Browser.supportsPropertyDescriptors()) {
-                return;
-            }
-
-            // -----------------------------------------------------------------
-
-            var properties = Device._deprecatedProperties;
-
-            aria.utils.Array.forEach(properties, function(property) {
-                var name = property.name;
-                var type = property.type;
-                var loggingMessage = property.loggingMessage;
-
-                // -------------------------------------------------------------
-
-                if (type == "attribute") {
-                    var dummy = Device[name];
-                } else {
-                    Device[name]();
-                }
-
-                // -------------------------------------------------------------
-
-                this.assertErrorInLogs(loggingMessage, 1);
-            }, this);
         }
-        /* BACKWARD-COMPATIBILITY-END (GitHub #1397) */
     }
 });
