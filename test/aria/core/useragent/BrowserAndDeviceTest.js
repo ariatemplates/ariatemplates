@@ -57,6 +57,18 @@ Aria.classDefinition({
         testBrowser : function () {
             var stringsEqualNoCase = this.stringsEqualNoCase;
 
+            /* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1397) */
+            var synonyms = [];
+            aria.utils.Array.forEach(aria.core.Browser._deprecatedProperties, function(property) {
+                var synonym = property.synonym;
+
+                if (synonym != null) {
+                    var name = property.name;
+                    synonyms.push([name, synonym]);
+                }
+            }, this);
+            /* BACKWARD-COMPATIBILITY-END (GitHub #1397) */
+
             var scope = {
                 name: 'browser',
 
@@ -106,6 +118,10 @@ Aria.classDefinition({
                         ]
                     }
                 ]
+                /* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1397) */
+                ,
+                synonyms: synonyms
+                /* BACKWARD-COMPATIBILITY-END (GitHub #1397) */
             };
 
             // -----------------------------------------------------------------
@@ -202,6 +218,14 @@ Aria.classDefinition({
                     type: "flags",
                     fn: this._testFlags
                 }
+                /* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1397) */
+                ,
+                {
+                    type: "synonyms",
+                    fn: this._testSynonyms,
+                    noExpectedValues: true
+                }
+                /* BACKWARD-COMPATIBILITY-END (GitHub #1397) */
             ];
 
             forEach(useCases, function(useCase) {
@@ -348,5 +372,35 @@ Aria.classDefinition({
                 }, this);
             }, this);
         }
+        /* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1397) */
+        ,
+        _testSynonyms : function(spec) {
+            var forEach = aria.utils.Array.forEach;
+            var Browser = aria.core.Browser;
+
+            // ----------------------------------------- arguments destructuring
+
+            var specifications = spec.specifications;
+            var useCase = spec.useCase;
+            var actualValues = spec.actualValues;
+
+            // -------------------------------------------------- implementation
+
+            forEach(specifications, function(specification) {
+                var first = specification[0];
+                var second = specification[1];
+
+                 // -------------------------------------------------- value test
+
+                var firstValue = actualValues[first];
+                var secondValue = actualValues[second];
+                var message = 'The values returned through entry points "' + first + '" and "' + second + '" should be equal. ' +
+                'Got first value "' + firstValue + '" and second one "' + secondValue + '". ' +
+                'Additional information: ' + useCase.id + ', ua: ' + useCase.ua;
+
+                this.assertTrue(firstValue === secondValue, message);
+            }, this);
+        }
+        /* BACKWARD-COMPATIBILITY-END (GitHub #1397) */
     }
 });
