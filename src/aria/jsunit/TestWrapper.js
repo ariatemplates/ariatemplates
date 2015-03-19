@@ -72,7 +72,7 @@ module.exports = Aria.classDefinition({
         _injectExtraScriptsIntoFrame : function (subWindow, whereToInsert, callback) {
             var document = Aria.$window.document;
             var subDocument = subWindow.document;
-            var scripts = document.querySelectorAll('script') || document.scripts;
+            var scripts = document.scripts || document.getElementsByTagName('script');
 
             var scriptsToLoad = [];
             for (var i = 0; i < scripts.length; i++) {
