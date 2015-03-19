@@ -279,7 +279,7 @@ module.exports = Aria.classDefinition({
          * </p>
          *
          * <p>
-         * Note that since there are hardcoded values, there will always be an error message for a valid message name. However, if the message name is not supported, an <em>unefined</em> value is returned in the end.
+         * Note that since there are hardcoded values, there will always be an error message for a valid message name. However, if the message name is not supported, an <em>undefined</em> value is returned in the end.
          * </p>
          *
          * @param {String} errorMessageName The name of the error message to retrieve (it is the key to the requested message in the collection).
@@ -295,60 +295,32 @@ module.exports = Aria.classDefinition({
 
             // ------------------------------------------------------ processing
 
-            // configurations settings -----------------------------------------
+            var errorMessage;
 
             var widgetName = this._widgetName;
 
-            var configurations = [
-                // widget internal configuration -------------------------------
-                {
-                    getDefaultErrorMessages : function () {
-                        return this._defaultErrorMessages;
-                    }
-                },
-                // widgets global configuration --------------------------------
-                {
-                    getWidgetsDefaultErrorMessages : function () {
-                        var widgetsSettings = ariaWidgetsSettings.getWidgetSettings();
+            // local -----------------------------------------------------------
 
-                        return widgetsSettings["defaultErrorMessages"];
-                    }
-                },
-                // hardcoded defaults ------------------------------------------
-                {
-                    getWidgetsDefaultErrorMessages : function () {
-                        return this.res.errors;
+            if (errorMessage == null) {
+                errorMessage = this._defaultErrorMessages[errorMessageName];
+            }
+
+            // global ----------------------------------------------------------
+
+            if (errorMessage == null) {
+                var allMessages = ariaWidgetsSettings.getWidgetSettings()["defaultErrorMessages"];
+                if (allMessages != null) {
+                    var widgetMessages = allMessages[widgetName];
+                    if (widgetMessages != null) {
+                        errorMessage = widgetMessages[errorMessageName];
                     }
                 }
-            ];
+            }
 
-            // configurations lookup -------------------------------------------
+            // hardcoded -------------------------------------------------------
 
-            var errorMessage;
-            var defaultErrorMessages;
-
-            var index = 0;
-            var length = configurations.length;
-            var configuration;
-            while (errorMessage == null && index < length) {
-                configuration = configurations[index];
-
-                var getDefaultErrorMessages = configuration.getDefaultErrorMessages;
-
-                if (getDefaultErrorMessages == null) {
-                    getDefaultErrorMessages = function () {
-                        var widgetsDefaultErrorMessages = configuration.getWidgetsDefaultErrorMessages.call(this);
-                        return widgetsDefaultErrorMessages[widgetName];
-                    };
-                }
-
-                defaultErrorMessages = getDefaultErrorMessages.call(this);
-
-                if (defaultErrorMessages != null) {
-                    errorMessage = defaultErrorMessages[errorMessageName];
-                }
-
-                index++;
+            if (errorMessage == null) {
+                errorMessage = this.res.errors[widgetName][errorMessageName];
             }
 
             // ---------------------------------------------------------- return

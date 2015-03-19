@@ -34,7 +34,7 @@ Aria.classDefinition({
         var resourcesHandler = new aria.resources.handlers.LCResourcesHandler();
         resourcesHandler.setSuggestions(suggestions);
 
-        return this.data.resourcesHandler = resourcesHandler;
+        this.data.resourcesHandler = resourcesHandler;
     },
     $destructor : function () {
         this.data.resourcesHandler.$dispose();

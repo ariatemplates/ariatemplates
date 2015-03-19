@@ -16,6 +16,10 @@
 Aria.classDefinition({
     $classpath : "test.aria.widgets.form.BaseDefaultErrorMessagesTest",
     $extends : "aria.jsunit.TemplateTestCase",
+    $resources : {
+        res : "aria.widgets.WidgetsRes"
+    },
+
     $dependencies : ["aria.utils.Array", "aria.utils.Json"],
 
     /**
@@ -70,11 +74,10 @@ Aria.classDefinition({
 
 
         _testMessageConfiguration : function (name) {
-            // Order of steps is important
             aria.utils.Array.forEach([
                 "HardCodedConfiguration",
                 "BoundConfiguration",
-                "GlobalConfiguration", // HardCodedConfiguration & BoundConfiguration will already check that instance configuration has precedence over global configuration
+                "GlobalConfiguration",
                 "HardCodedDefault"
             ], function(step) {
                 this["_test" + step](name);
@@ -82,45 +85,125 @@ Aria.classDefinition({
             }, this);
         },
 
-        _resetMessage : function (name) {
-            this._setInstanceDefault(name, null);
-            this._setGlobalDefault(name, null);
+        /**
+         * Resets the global and local (per instance) configurations of default error messages for the given message name.
+         *
+         * @param {String} messageName The name of the message to reset.
+         */
+        _resetMessage : function (messageName) {
+            this._setInstanceDefault(messageName, null);
+            this._setGlobalDefault(messageName, null);
         },
 
 
+        /**
+         * Tests that a widget for which the error message is set in its configuration, and without binding, will always use this error message.
+         */
+        _testHardCodedConfiguration : function (messageName) {
+            // -----------------------------------------------------------------
 
-        _testHardCodedConfiguration : function (name) {
-            this._checkMessage(this.hardcodedWidget, name, this.data.instanceHardCoded);
+            var widget = this.hardcodedWidget;
+            var expectedValue = this.data.instanceHardCoded;
 
-            this._setGlobalDefault(name, this.globalMessage);
-            this._checkMessage(this.hardcodedWidget, name, this.data.instanceHardCoded);
+            // -----------------------------------------------------------------
+
+            this._checkMessage(widget, messageName, expectedValue);
+
+            // -----------------------------------------------------------------
+
+            this._setGlobalDefault(messageName, this.globalMessage);
+            this._checkMessage(widget, messageName, expectedValue);
         },
 
-        _testBoundConfiguration : function (name) {
-            this._setInstanceDefault(name, this.instanceMessage);
-            this._checkMessage(this.boundWidget, name, this.instanceMessage);
+        /**
+         * Tests that a widget for which the error message is set in its configuration, and using binding, will always use this error message and that it will reflect the one set in the bound part of the data model.
+         */
+        _testBoundConfiguration : function (messageName) {
+            // -----------------------------------------------------------------
 
-            this._setGlobalDefault(name, this.globalMessage);
-            this._checkMessage(this.boundWidget, name, this.instanceMessage);
+            var widget = this.boundWidget;
+            var expectedValue;
+
+            // -----------------------------------------------------------------
+
+            expectedValue = this.instanceMessage;
+            this._setInstanceDefault(messageName, expectedValue);
+            this._checkMessage(widget, messageName, expectedValue);
+
+            // -----------------------------------------------------------------
+
+            expectedValue = this.instanceMessage;
+            this._setGlobalDefault(messageName, this.globalMessage);
+            this._checkMessage(widget, messageName, expectedValue);
         },
 
-        _testGlobalConfiguration : function (name) {
-            this._setGlobalDefault(name, this.globalMessage);
-            this._checkMessage(this.boundWidget, name, this.globalMessage);
+        /**
+         * Tests that if a global configuration is specified it will be used as long as no specific configuration is set for a widget instance.
+         */
+        _testGlobalConfiguration : function (messageName) {
+            // -----------------------------------------------------------------
+
+            var widget = this.boundWidget;
+            var expectedValue;
+
+            // -----------------------------------------------------------------
+
+            expectedValue = this.globalMessage;
+            this._setGlobalDefault(messageName, expectedValue);
+            this._checkMessage(widget, messageName, expectedValue);
+
+            // -----------------------------------------------------------------
+
+            expectedValue = this.instanceMessage;
+            this._setInstanceDefault(messageName, expectedValue);
+            this._checkMessage(widget, messageName, expectedValue);
         },
 
-        _testHardCodedDefault : function (name) {
-            this._checkMessage(this.boundWidget, name, this.boundWidget.controller.res.errors[this.widgetName][name]);
+        /**
+         * Tests that as long as there is no user configuration the hardcoded default value will be used instead.
+         */
+        _testHardCodedDefault : function (messageName) {
+            // -----------------------------------------------------------------
+
+            var widget = this.boundWidget;
+            var expectedValue;
+
+            // -----------------------------------------------------------------
+
+            expectedValue = aria.widgets.WidgetsRes.errors[this.widgetName][messageName];
+            this._checkMessage(widget, messageName, expectedValue);
+
+            // -----------------------------------------------------------------
+
+            this._resetMessage(messageName);
+
+            expectedValue = this.instanceMessage;
+            this._setInstanceDefault(messageName, expectedValue);
+            this._checkMessage(widget, messageName, expectedValue);
+
+
+            // -----------------------------------------------------------------
+
+            this._resetMessage(messageName);
+
+            expectedValue = this.globalMessage;
+            this._setGlobalDefault(messageName, expectedValue);
+            this._checkMessage(widget, messageName, expectedValue);
         },
 
-
-
-        _checkMessage : function (widget, name, expectedValue) {
+        /**
+         * Check that the queried error message (from its name) for the given widget is the expected one.
+         *
+         * @param widget The widget instance to check.
+         * @param {String} messageName The name of the message to check.
+         * @param {String} expectedValue The expected message value.
+         */
+        _checkMessage : function (widget, messageName, expectedValue) {
             var stringify = function (value) {
                 return aria.utils.Json.convertToJsonString(value);
             };
 
-            var actualValue = widget.controller.getErrorMessage(name);
+            var actualValue = widget.controller.getErrorMessage(messageName);
 
             var message = "The message value is not the expected one. Expected one is: " + stringify(expectedValue) + ", while actual one is: " + stringify(actualValue) + ".";
 
@@ -129,9 +212,15 @@ Aria.classDefinition({
 
 
 
-        _setGlobalDefault : function (name, value) {
+        /**
+         * Set the global default error message for the given message name and value.
+         *
+         * @param {String} messageName The name of the message to set.
+         * @param {String} value The value to set for the message.
+         */
+        _setGlobalDefault : function (messageName, value) {
             var messages = {};
-            messages[name] = value;
+            messages[messageName] = value;
 
             var widgets = {};
             widgets[this.widgetName] = messages;
@@ -143,8 +232,18 @@ Aria.classDefinition({
             }, null, true);
         },
 
-        _setInstanceDefault : function (name, value) {
-            aria.utils.Json.setValue(this.data.defaultErrorMessages, name, value);
+        /**
+         * Set the instance default error message for the given message name and value.
+         *
+         * <p>
+         * No need to specify any actual widget, since modifying the instance configuration actually implied modifying a property of the data model using binding.
+         * </p>
+         *
+         * @param {String} messageName The name of the message to set.
+         * @param {String} value The value to set for the message.
+         */
+        _setInstanceDefault : function (messageName, value) {
+            aria.utils.Json.setValue(this.data.defaultErrorMessages, messageName, value);
         }
     }
 });
