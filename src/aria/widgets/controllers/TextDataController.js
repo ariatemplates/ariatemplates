@@ -321,11 +321,33 @@ module.exports = Aria.classDefinition({
 
             if (errorMessage == null) {
                 errorMessage = this.res.errors[widgetName][errorMessageName];
+                /* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1428) */
+                errorMessage = this.res.errors[this._newKeysToOldKeysMap[widgetName][errorMessageName]];
+                /* BACKWARD-COMPATIBILITY-END (GitHub #1428) */
             }
 
             // ---------------------------------------------------------- return
 
             return errorMessage;
         }
+        /* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1428) */
+        ,
+        _newKeysToOldKeysMap: {
+            "NumberField" : {
+                "validation" : "40006_WIDGET_NUMBERFIELD_VALIDATION"
+            },
+            "TimeField" : {
+                "validation" : "40007_WIDGET_TIMEFIELD_VALIDATION"
+            },
+            "DateField" : {
+                "validation" : "40008_WIDGET_DATEFIELD_VALIDATION",
+                "minValue" : "40018_WIDGET_DATEFIELD_MINVALUE",
+                "maxValue" : "40019_WIDGET_DATEFIELD_MAXVALUE"
+            },
+            "AutoComplete" : {
+                "validation" : "40020_WIDGET_AUTOCOMPLETE_VALIDATION"
+            }
+        }
+        /* BACKWARD-COMPATIBILITY-END (GitHub #1428) */
     }
 });

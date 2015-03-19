@@ -52,6 +52,9 @@ Aria.classDefinition({
 
         this.globalMessage = "global message";
         this.instanceMessage = "instance message";
+        /* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1428) */
+        this.resourceMessageOldKey = "resource message (old key)";
+        /* BACKWARD-COMPATIBILITY-END (GitHub #1428) */
     },
     $prototype : {
         runTemplateTest : function () {
@@ -79,6 +82,10 @@ Aria.classDefinition({
                 "BoundConfiguration",
                 "GlobalConfiguration",
                 "HardCodedDefault"
+                /* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1428) */
+                ,
+                "HardCodedDefaultTweaking"
+                /* BACKWARD-COMPATIBILITY-END (GitHub #1428) */
             ], function(step) {
                 this["_test" + step](name);
                 this._resetMessage(name);
@@ -190,6 +197,40 @@ Aria.classDefinition({
             this._setGlobalDefault(messageName, expectedValue);
             this._checkMessage(widget, messageName, expectedValue);
         },
+        /* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1428) */
+
+        /**
+         * Tests that the hardcoded default value can be modified since it is actually an accessible single object residing in memory.
+         *
+         * <p>
+         * Note that this is a feature only available with the old keys, since now there is a preferred and supported way to do it.
+         * </p>
+         */
+        _testHardCodedDefaultTweaking : function (messageName) {
+            var widgetName = this.widgetName;
+
+            // -----------------------------------------------------------------
+
+            var widget = this.boundWidget;
+            var expectedValue;
+
+            var resourceErrors = aria.widgets.WidgetsRes.errors;
+            var resourceWidgetErrors = resourceErrors[widgetName];
+
+            // -----------------------------------------------------------------
+
+            expectedValue = resourceWidgetErrors[messageName];
+            this._checkMessage(widget, messageName, expectedValue);
+
+            // -----------------------------------------------------------------
+
+            var map = widget.controller._newKeysToOldKeysMap;
+
+            expectedValue = this.resourceMessageOldKey;
+            resourceErrors[map[widgetName][messageName]] = expectedValue;
+            this._checkMessage(widget, messageName, expectedValue);
+        },
+        /* BACKWARD-COMPATIBILITY-END (GitHub #1428) */
 
         /**
          * Check that the queried error message (from its name) for the given widget is the expected one.
