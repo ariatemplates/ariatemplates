@@ -429,8 +429,8 @@ module.exports = Aria.classDefinition({
 
         // ERROR MESSAGES:
         FORMATTER_STATEMENT_NOT_FOUND : "Following pattern %1 is not defined for this formatter: %2",
-        FORMATTER_UNFINISHED_LITTERAL : "Unfinished litteral in this formatter: %1",
-        INVALID_FORMAT_TYPE : "Application config format can only be a string or a function",
+        FORMATTER_UNFINISHED_LITTERAL : "Unfinished literal in this formatter: %1",
+        INVALID_FORMAT_TYPE : "'pattern' parameter passed to Date.format has to be a string or a function",
         INVALID_INPUT_PATTERN_TYPE : "Defined pattern : %1 inputPattern can only be a string, a function or an array of strings and/or functions",
         INVALID_INPUT_PATTERN_DUPLICATE : "Invalid pattern in inputPattern property definition: %1 year, month or day is duplicated",
         INVALID_FIRST_DAY_OF_WEEK : "Invalid first day of week. Received: %1 while allowed values are: 0, 1, 6.",
