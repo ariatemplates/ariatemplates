@@ -311,15 +311,12 @@ module.exports = Aria.classDefinition({
          */
         _checkInputKey : function (charCode, keyCode, currentText, caretPosStart, caretPosEnd) {
             if (ariaDomEvent.KC_ARROW_DOWN === keyCode) {
-                var report = this.checkValue(currentText.split(this._separator));
-                if (report != null) {
-                    report.$dispose();
-                }
+                return this.toggleDropdown(currentText, false);
             }
             var report = new ariaWidgetsControllersReportsDropDownControllerReport();
             report.ok = true;
             report.cancelKeyStroke = false;
-            report.displayDropDown = keyCode === ariaDomEvent.KC_ARROW_DOWN;
+            report.displayDropDown = false;
             return report;
         },
 
