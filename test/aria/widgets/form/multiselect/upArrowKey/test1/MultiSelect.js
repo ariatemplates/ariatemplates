@@ -27,6 +27,7 @@ Aria.classDefinition({
          * popup.
          */
         runTemplateTest : function () {
+            this.inputField = this.getInputField("ms1");
             this.toggleMultiSelectOn("ms1", this.onMsOpened);
         },
 
@@ -47,7 +48,7 @@ Aria.classDefinition({
             var domRef = aria.utils.Dom.getElementById("clickM"), that = this;
             this.getWidgetInstance("ms1")._dom_onblur = function () {};
             that.synEvent.click(domRef, {
-                fn : that.finishTest,
+                fn : that.checkAndReopen,
                 scope : that
             });
         },
@@ -55,10 +56,21 @@ Aria.classDefinition({
         /**
          * Finalize the test, check the widgets value has been correctly updated when the up key was triggered.
          */
-        finishTest : function () {
+        checkAndReopen : function () {
             var test = aria.utils.Dom.getElementById("test1");
             this.assertTrue(test.innerHTML === 'KF');
-            this.notifyTemplateTestEnd();
+
+            // Reopen the MS with the down arrow
+            this.clickAndType("ms1", "[down]", {
+                fn : this.finishTest,
+                scope : this
+            }, false);
+        },
+
+        finishTest : function() {
+            var checkBox = this.getWidgetInstance("listItem0").getDom();
+            this.assertTrue(checkBox.getElementsByTagName("input")[0].checked, "The checkbox 'King Fischer' should be checked");
+            this.end();
         }
     }
 });
