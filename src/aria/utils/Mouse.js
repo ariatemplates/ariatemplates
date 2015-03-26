@@ -38,20 +38,20 @@ var ariaCoreBrowser = require("../core/Browser");
      * @param {aria.utils.Mouse} scope Instance of the listening class
      */
     function connectMouseEvents (scope) {
-        var body = Aria.$window.document.body;
-        eventUtil.addListener(body, "mousemove", {
+        var root = Aria.$window;
+        eventUtil.addListener(root, "mousemove", {
             fn : scope._onMouseMove,
             scope : scope
         });
-        eventUtil.addListener(body, "mouseup", {
+        eventUtil.addListener(root, "mouseup", {
             fn : scope._onMouseUp,
             scope : scope
         });
-        eventUtil.addListener(body, "touchmove", {
+        eventUtil.addListener(root, "touchmove", {
             fn : scope._onMouseMove,
             scope : scope
         });
-        eventUtil.addListener(body, "touchend", {
+        eventUtil.addListener(root, "touchend", {
             fn : scope._onMouseUp,
             scope : scope
         });
@@ -62,20 +62,20 @@ var ariaCoreBrowser = require("../core/Browser");
      * @param {aria.utils.Mouse} scope Instance of the listening class
      */
     function disconnectMouseEvents (scope) {
-        var body = Aria.$window.document.body;
-        eventUtil.removeListener(body, "mousemove", {
+        var root = Aria.$window;
+        eventUtil.removeListener(root, "mousemove", {
             fn : scope._onMouseMove,
             scope : scope
         });
-        eventUtil.removeListener(body, "mouseup", {
+        eventUtil.removeListener(root, "mouseup", {
             fn : scope._onMouseUp,
             scope : scope
         });
-        eventUtil.removeListener(body, "touchmove", {
+        eventUtil.removeListener(root, "touchmove", {
             fn : scope._onMouseMove,
             scope : scope
         });
-        eventUtil.removeListener(body, "touchend", {
+        eventUtil.removeListener(root, "touchend", {
             fn : scope._onMouseUp,
             scope : scope
         });
