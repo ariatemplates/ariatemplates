@@ -18,11 +18,63 @@
  */
 Aria.classDefinition({
     $classpath : "test.aria.utils.dragdrop.DragConstraintTest",
-    $extends : "test.aria.utils.dragdrop.AbstractDragTestCase",
+    $extends : "aria.jsunit.RobotTestCase",
+    $dependencies : ["aria.utils.dragdrop.Drag", "aria.utils.Dom", "aria.tools.contextual.ContextualMenu"],
     $prototype : {
+        $constructor : function () {
+            this.$RobotTestCase.constructor.call(this);
+        },
+
+        tearDown : function () {
+            this._dialog.$dispose();
+            this._dragOne.$dispose();
+            this._dragTwo.$dispose();
+            this._dragThree.$dispose();
+            this._dragFour.$dispose();
+            this._dialog = null;
+            this._dragOne = null;
+            this._dragTwo = null;
+            this._dragThree = null;
+            this._dragFour = null;
+        },
+
+        runTemplateTest : function () {
+            var dom = aria.utils.Dom;
+            this._dialog = new aria.utils.dragdrop.Drag("dialog-container", {
+                handle : "dialog-title",
+                cursor : "pointer",
+                proxy : {
+                    type : "CloneOverlay",
+                    cfg : {
+                        opacity : 0.4
+                    }
+                },
+                constrainTo : aria.utils.Dom.VIEWPORT
+            });
+            this._dragOne = new aria.utils.dragdrop.Drag("constrained-draggable", {
+                proxy : {
+                    type : "CloneOverlay"
+                },
+                constrainTo : "first-boundary"
+            });
+            this._dragTwo = new aria.utils.dragdrop.Drag("vertical-draggable", {
+                cursor : "move",
+                constrainTo : dom.getElementById("second-boundary"),
+                axis : "y"
+            });
+            this._dragThree = new aria.utils.dragdrop.Drag(dom.getElementById("horizontal-draggable"), {
+                proxy : {
+                    type : "Overlay"
+                },
+                constrainTo : "third-boundary",
+                axis : "x"
+            });
+            this._dragFour = new aria.utils.dragdrop.Drag("free-draggable");
+            this.startDragTest();
+        },
 
         /**
-        * @override
+         * @override
          */
         startDragTest : function () {
             this._testAxisConstrainedMovement();
