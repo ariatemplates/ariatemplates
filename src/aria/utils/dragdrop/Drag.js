@@ -18,6 +18,7 @@ var ariaUtilsMouse = require("../Mouse");
 var ariaUtilsType = require("../Type");
 var ariaUtilsDragdropIDrag = require("./IDrag");
 var ariaUtilsJson = require("../Json");
+var document = Aria.$frameworkWindow.document;
 
 (function () {
     /**
@@ -191,6 +192,20 @@ var ariaUtilsJson = require("../Json");
              * @type Number
              */
             this.listenerId = ariaUtilsMouse.listen("drag", this);
+
+            /**
+             * By default this is true to fix a bug for all draggable elements containing an IFrame, but can be switched
+             * off if necessary.
+             * @type Boolean
+             */
+            this.dragOverIFrame = (params.dragOverIFrame !== undefined) ? params.dragOverIFrame : true;
+
+            /**
+             * Used with this.dragOverIFrame to add an overlay to the document, fixes an issue caused by dragging over
+             * IFrames
+             * @type HTMLElement
+             */
+            this.overlay = null;
 
             setAttribute(this.getDraggable(true), ariaUtilsMouse.DRAGGABLE_ATTRIBUTE, this.listenerId);
 
@@ -386,6 +401,12 @@ var ariaUtilsJson = require("../Json");
                 if (movable) {
                     // This will prevent text selection on IE on the movable
                     movable.onselectstart = Aria.returnFalse;
+                    if (this.dragOverIFrame) {
+                        // add overlay here for the visible page
+                        this.overlay = new aria.utils.overlay.Overlay(document.body, {
+                            className : ' '
+                        });
+                    }
                     this._movableInitialGeometry = domUtil.getGeometry(movable);
                     this._movableGeometry = ariaUtilsJson.copy(this._movableInitialGeometry);
                     var offset = domUtil.getOffset(movable);
@@ -441,6 +462,10 @@ var ariaUtilsJson = require("../Json");
                 var element = this.getElement();
                 // This is to handle if there is a scroll
                 element.onselectstart = Aria.returnTrue;
+                if (this.dragOverIFrame) {
+                    // remove overlay here
+                    this.overlay.$dispose();
+                }
                 if (this.proxy && this.proxy.overlay) {
                     element.style.top = (this._elementInitialPosition.top + this._movableGeometry.y - this._movableInitialGeometry.y)
                             + "px";

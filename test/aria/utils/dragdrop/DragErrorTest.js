@@ -40,26 +40,32 @@ Aria.classDefinition({
         runTemplateTest : function () {
 
             // Test Invalid type
-            this._drag = new this.dragUtil(1234);
+            this._drag = new this.dragUtil(1234, {
+                dragOverIFrame : false
+            });
 
             this.assertErrorInLogs(this.dragUtil.INVALID_ATTRIBUTE);
             this._drag.$dispose();
 
             // Test invalid element
-            this._drag = new this.dragUtil("fakeId");
+            this._drag = new this.dragUtil("fakeId", {
+                dragOverIFrame : false
+            });
 
             this.assertErrorInLogs(this.dragUtil.INVALID_ATTRIBUTE);
             this._drag.$dispose();
             // Test invalid handle
             this._drag = new this.dragUtil("constrained-draggable", {
-                handle : "fake-id"
+                handle : "fake-id",
+                dragOverIFrame : false
             });
             this.assertErrorInLogs(this.dragUtil.INVALID_ATTRIBUTE);
             this._drag.$dispose();
 
             // Test invalid constrainTo
             this._drag = new this.dragUtil("constrained-draggable", {
-                constrainTo : "fake-id"
+                constrainTo : "fake-id",
+                dragOverIFrame : false
             });
             this._drag.start({
                 x : 0,
@@ -74,7 +80,8 @@ Aria.classDefinition({
             this._drag = new this.dragUtil("constrained-draggable", {
                 proxy : {
                     type : "FakeClass"
-                }
+                },
+                dragOverIFrame : false
             });
             this._drag.start({
                 x : 0,
