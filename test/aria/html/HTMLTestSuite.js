@@ -33,5 +33,6 @@ Aria.classDefinition({
         this.addTests("test.aria.html.radioButton.ieBug.RadioButtonTestCase");
         this.addTests("test.aria.html.textarea.TextAreaTestSuite");
         this.addTests("test.aria.html.template.prematureDisposal.PrematureDisposalTest");
+        this.addTests("test.aria.html.radioButton.listenerAfterDestruction.ListenerCalledAfterDestructionTest");
     }
 });

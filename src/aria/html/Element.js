@@ -22,7 +22,6 @@ var ariaUtilsDom = require("../utils/Dom");
 var ariaUtilsType = require("../utils/Type");
 var ariaWidgetLibsBindableWidget = require("../widgetLibs/BindableWidget");
 
-
 (function () {
     /**
      * This function is called when the widget validation fails. It sets every public function to Aria.empty so that we
@@ -273,7 +272,9 @@ var ariaWidgetLibsBindableWidget = require("../widgetLibs/BindableWidget");
              * @override
              */
             _notifyDataChange : function (args, propertyName) {
-                this.onbind(propertyName, this._transform(this._cfg.bind[propertyName].transform, args.newValue, "toWidget"), args.oldValue);
+                if (this._cfg) {
+                    this.onbind(propertyName, this._transform(this._cfg.bind[propertyName].transform, args.newValue, "toWidget"), args.oldValue);
+                }
             },
 
             /**
