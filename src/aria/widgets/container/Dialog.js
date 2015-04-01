@@ -907,7 +907,8 @@ module.exports = Aria.classDefinition({
                 handle : this._titleBarDomElt,
                 cursor : "move",
                 proxy : this._cfg.movableProxy,
-                constrainTo : ariaUtilsDom.VIEWPORT
+                constrainTo : ariaUtilsDom.VIEWPORT,
+                dragOverIFrame : true
             });
             this._draggable.$on({
                 "dragstart" : {
