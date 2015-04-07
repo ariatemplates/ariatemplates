@@ -49,7 +49,7 @@ module.exports = Aria.classDefinition({
          * @param {Object} oldValue Value of the property before the change happened
          */
         onDisabledBind : function (name, value, oldValue) {
-            if (name === "disabled") {
+            if (this._domElt && name === "disabled") {
                 this._domElt.disabled = value;
             }
         }

@@ -34,5 +34,6 @@ Aria.classDefinition({
         this.addTests("test.aria.html.textarea.TextAreaTestSuite");
         this.addTests("test.aria.html.template.prematureDisposal.PrematureDisposalTest");
         this.addTests("test.aria.html.radioButton.listenerAfterDestruction.ListenerCalledAfterDestructionTest");
+        this.addTests("test.aria.html.radioButton.disabled.DisabledStateTest");
     }
 });
