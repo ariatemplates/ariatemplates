@@ -77,19 +77,18 @@ Aria.classDefinition({
             // When clicking the thumb, if tapToMove is true I expect the value to change
             var switchwid = this.widget.getDom();
             var pos = aria.utils.Dom.getGeometry(switchwid);
-            pos.x = pos.x + pos.width * 0.01;
+            pos.x = pos.x + pos.width * 0.15;
             this.click(pos, this._afterThumbClickOne);
         },
 
         _afterThumbClickOne : function () {
             this._assertValue(1);
-
             // Also when clicking on tapToToggle I expect the value to change
             this.widget = this.getWidgetInstance("switchToggle");
             this.dataKey = "switchVal2";
             var switchwid = this.widget.getDom();
             var pos = aria.utils.Dom.getGeometry(switchwid);
-            pos.x = pos.x + pos.width * 0.01;
+            pos.x = pos.x + pos.width * 0.15;
             this.click(pos, this._afterThumbClickTwo);
         },
 
