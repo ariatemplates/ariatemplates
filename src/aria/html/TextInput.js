@@ -119,13 +119,21 @@ var ariaCoreTimer = require("../core/Timer");
      */
     function focusBinding (event) {
         this._hasFocus = true;
+        var cb;
         if (this._hasPlaceholder) {
+            cb = this._setCaretForPlaceholder;
+        } else if (this._cfg.autoselect) {
+            cb = this._autoselect;
+        }
+
+        if (cb) {
             ariaCoreTimer.addCallback({
-                fn : this._setCaretForPlaceholder,
+                fn : cb,
                 scope : this,
                 delay : 4
             });
         }
+
     }
 
     /**
