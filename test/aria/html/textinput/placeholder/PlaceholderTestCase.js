@@ -68,7 +68,16 @@ Aria.classDefinition({
                 this.assertEquals(this.element.value, "Support placeholder", "The value inside the text input is not the placeholder");
                 this.assertTrue(this.cssClass.contains("placeholder"), "Css class placeholder is missing");
                 aria.utils.SynEvents.click(this.element, {
-                    fn : this.afterFirstClick,
+                    fn : function() {
+                        this.waitFor({
+                            condition : function () {
+                                return this.element == document.activeElement;
+                            },
+                            callback : function () {
+                                return this.afterFirstClick();
+                            }
+                        });
+                    },
                     scope : this
                 });
             } else {
