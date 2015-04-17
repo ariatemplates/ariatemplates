@@ -40,6 +40,18 @@
     {@aria:DatePicker {
         label : "Date5 :",
         id : "date5"
+    }/}<br />
+    {@aria:DatePicker {
+        label : "Date6 :",
+        id : "date6",
+        inputPattern : ["MMMddyyyy"],
+        pattern : "dd/MM/yyyy"
+    }/}<br />
+    {@aria:DatePicker {
+        label : "Date7 :",
+        id : "date7",
+        inputPattern : ["dMyy"],
+        pattern : "dd/MM/yyyy"
     }/}
 
    {/macro}

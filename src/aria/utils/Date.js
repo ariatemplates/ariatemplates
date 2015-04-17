@@ -22,10 +22,165 @@ var ariaResourcesDateRes = require("../$resources").file(__dirname, "../resource
 var ariaUtilsUtilsRes = require("../$resources").file(__dirname, "./UtilsRes");
 
 
+var nextPatternRegexp = /^(d+|M+|y+|I)/;
+var numberRegexp = /^[0-9]+$/;
+
+var getNumber = function(str, defaultValue) {
+    return numberRegexp.test(str) ? parseInt(str, 10) : defaultValue;
+};
+
+var getJsDateFromState = function(state) {
+
+    if (!state) {
+        return null;
+    }
+
+    if (state.jsDate) {
+        return state.jsDate;
+    }
+
+    var datetime = state.datetime;
+    try {
+
+        var currentDate = new Date();
+
+        var y = getNumber(datetime.y, currentDate.getFullYear());
+        if (y < 100) {
+            y += y > ariaUtilsDate._cutYear ? 1900 : 2000;
+        }
+        var M = getNumber(datetime.M, currentDate.getMonth() + 1) - 1;
+        var d = getNumber(datetime.d, 1);
+        /*
+        var H = getNumber(datetime.H, 0);
+        var m = getNumber(datetime.m, 0);
+        var s = getNumber(datetime.s, 0);
+        var dt = new Date(y, M, d, H, m, s);
+        */
+        var dt = new Date(y, M, d);
+
+        /*
+            Keep this code commented for a potential time support
+            (!datetime.d || dt.getDate() === d) &&
+            (!datetime.M || dt.getMonth() === M) &&
+            (!datetime.y || dt.getFullYear() === y) &&
+            (!datetime.H || dt.getHours() === H) &&
+            (!datetime.m || dt.getMinutes() === m) &&
+            (!datetime.s || dt.getSeconds() === s)
+       */
+       if (
+            (!datetime.d || dt.getDate() === d) &&
+            (!datetime.M || dt.getMonth() === M) &&
+            (!datetime.y || dt.getFullYear() === y)
+        ) {
+            return dt;
+        } else {
+            return null;
+        }
+    } catch (exp) {
+        // Not a date
+        return null;
+    }
+
+};
+
+var parseNextSteps = function(state) {
+
+    var currentPattern = state.pattern;
+    var currentValue = state.value;
+
+    var emptyPattern = currentPattern == null || !currentPattern.length;
+    var emptyValue = currentValue == null || !currentValue.length;
+
+
+    if ((emptyPattern && !emptyValue) || (!emptyPattern && emptyValue)) {
+        return false;
+    } else if (emptyPattern && emptyValue) {
+        return state;
+    }
+
+    var datetime = state.datetime;
+    var currentState = {
+        datetime: {
+            d: datetime.d,
+            M: datetime.M,
+            y: datetime.y
+        }
+    };
+    datetime = currentState.datetime;
+
+    var matches = nextPatternRegexp.exec(state.pattern);
+    //debugger;
+    if (matches) {
+        var fullPattern = matches[1];
+        var patternType = fullPattern.substr(0, 1);
+        if (fullPattern == "yyyy" || fullPattern == "yy" || fullPattern == "MM" || fullPattern == "dd") {
+            // Length is not variable in this case
+            var length = fullPattern.length;
+            datetime[patternType] = state.value.substr(0, length);
+
+            currentState.pattern = currentPattern.substr(length);
+            currentState.value = currentValue.substr(length);
+            return parseNextSteps(currentState);
+        } else if (fullPattern == "M" || fullPattern == "d") {
+            currentState.pattern = currentPattern.substr(1);
+
+            // Try with one character first
+            datetime[patternType] = state.value.substr(0, 1);
+            currentState.value = currentValue.substr(1);
+            var newState = parseNextSteps(currentState);
+            var jsDate = getJsDateFromState(newState);
+            if (jsDate) {
+                newState.jsDate = jsDate; // Prevent state from being validated later again
+            } else {
+                // One character fail, take the new state with 2
+                datetime[patternType] = state.value.substr(0, 2);
+                currentState.value = currentValue.substr(2);
+                newState = parseNextSteps(currentState);
+            }
+
+            return newState;
+        } else if (fullPattern == "MMM" || fullPattern == "MMMM" || fullPattern == "I") {
+            var indexStart = fullPattern == "I" ? 24 : (fullPattern == "MMM" ? 12 : 0);
+            var indexEnd = indexStart + 12;
+
+            if (patternType == "I") {
+                patternType = "M";
+            }
+
+            var value = state.value.toUpperCase();
+            for(var i = indexStart; i < indexEnd; i++) {
+                var testedMonth = ariaUtilsDate._interpret_monthTexts[i];
+                var length = testedMonth.length;
+                if (value.substr(0, length) === testedMonth) {
+                    datetime[patternType] = (i % 12) + 1;
+                    currentState.pattern = currentPattern.substr(fullPattern.length);
+                    currentState.value = currentValue.substr(length);
+                    return parseNextSteps(currentState);
+                }
+            }
+            // Nothing found
+            return false;
+        }
+    } else {
+        // 'Not a date material' here, the character must match
+        if (currentValue.substr(0, 1) == currentPattern.substr(0, 1)) {
+            currentState.pattern = currentPattern.substr(1);
+            currentState.value = currentValue.substr(1);
+            return parseNextSteps(currentState);
+        } else {
+            return false;
+        }
+
+    }
+
+};
+
+
+
 /**
  * This class contains utilities to manipulate Dates.
  */
-module.exports = Aria.classDefinition({
+var ariaUtilsDate = module.exports = Aria.classDefinition({
     $classpath : "aria.utils.Date",
     $singleton : true,
     $resources : {
@@ -221,99 +376,6 @@ module.exports = Aria.classDefinition({
          * @type String
          */
         this._allowedSeparator = "(?:\\s+|[^dMyI]{1})";
-        /**
-         * corresponding strings yy, yyyy,M,MM,d,dd
-         * @private
-         * @type String
-         */
-        this._yearOrMonthOrDay_format = "(y{2}|y{4}|M{1,2}|d{1,2})";
-        /**
-         * corresponding strings yy, yyyy,MMM,I,d,dd
-         * @private
-         * @type String
-         */
-        this._yearOrIATAMonthOrDay_format = "(y{2}|y{4}|I|[a-z|A-Z]{3}|d{1,2})";
-        /**
-         * corresponding strings yy, yyyy,M,MM
-         * @private
-         * @type String
-         */
-        this._yearOrMonth_format = "(y{2}|y{4}|M{1,2})";
-        /**
-         * corresponding strings yy, yyyy,MMM,I
-         * @private
-         * @type String
-         */
-        this._yearOrIATAMonth_format = "(y{2}|y{4}|I|[a-z|A-Z]{3})";
-        /**
-         * corresponding strings M,MM,d,dd
-         * @private
-         * @type RegExp
-         */
-        this._dayOrMonth_format = "(d{1,2}|M{1,2})";
-        /**
-         * corresponding strings MMM,I,d,dd
-         * @private
-         * @type RegExp
-         */
-        this._dayOrIATAMonth_format = "(d{1,2}|I|[a-z|A-Z]{3})";
-        /**
-         * Checks if the pattern is yyyy*MM*dd, * can be any character except alphanumeric the order of year, month and
-         * day can be reversed
-         * @private
-         * @type RegExp
-         */
-
-        this._fullDatePattern = new RegExp("^" + this._yearOrMonthOrDay_format + this._allowedSeparator
-                + this._yearOrMonthOrDay_format + this._allowedSeparator + this._yearOrMonthOrDay_format + "$");
-        /**
-         * Checks if the pattern is MM*dd, * can be any character except alphanumeric, the order of month and day can be
-         * reversed
-         * @private
-         * @type RegExp
-         */
-        this._dayAndMonthDatePattern = new RegExp("^" + this._dayOrMonth_format + this._allowedSeparator
-                + this._dayOrMonth_format + "$");
-
-        /**
-         * Checks if the pattern isMMM*dd, * can be any character except alphanumeric, the order of month and day can be
-         * reversed
-         * @private
-         * @type RegExp
-         */
-        this._dayAndIATAMonthDatePattern = new RegExp("^" + this._dayOrIATAMonth_format + this._allowedSeparator
-                + this._dayOrIATAMonth_format + "$");
-        /**
-         * Checks if the pattern is yyyy*MM, * can be any character except alphanumeric, the order of year and month can
-         * be reversed
-         * @private
-         * @type RegExp
-         */
-        this._yearAndMonthDatePattern = new RegExp("^" + this._yearOrMonth_format + this._allowedSeparator
-                + this._yearOrMonth_format + "$");
-        /**
-         * Checks if the pattern is yyyy*MMM, * can be any character except alphanumeric, the order of year and month
-         * can be reversed
-         * @private
-         * @type RegExp
-         */
-        this._yearAndIATAMonthDatePattern = new RegExp("^" + this._yearOrIATAMonth_format + this._allowedSeparator
-                + this._yearOrIATAMonth_format + "$");
-        /**
-         * Checks if the pattern is yyyy*MMM*dd, * can be any character except alphanumeric, the order of year month and
-         * day can be reversed
-         * @private
-         * @type RegExp
-         */
-        this._fullIATADatePattern = new RegExp("^" + this._yearOrIATAMonthOrDay_format + this._allowedSeparator
-                + this._yearOrIATAMonthOrDay_format + this._allowedSeparator + this._yearOrIATAMonthOrDay_format + "$");
-        /**
-         * An array containing all date patterns allowed as inputPattern
-         * @private
-         * @type RegExp
-         */
-        this._allDateInputPatterns = [this._fullDatePattern, this._fullIATADatePattern, this._dayAndMonthDatePattern,
-                this._dayAndIATAMonthDatePattern, this._yearAndMonthDatePattern, this._yearAndIATAMonthDatePattern];
 
         /**
          * 3 char possibility, something like 1/3 (1st of march)
@@ -932,10 +994,10 @@ module.exports = Aria.classDefinition({
                 this.$logError(this.INVALID_INPUT_PATTERN_TYPE, inputPattern);
                 return null;
             }
-            var entry = ariaUtilsString.trim(entryStr), jsDate, indexes, datePattern, patternComposition, userInputInterpreter;
+            var entry = ariaUtilsString.trim(entryStr);
             for (var i = 0; i < inputPattern.length; i++) {
                 if (ariaUtilsType.isFunction(inputPattern[i])) {
-                    jsDate = inputPattern[i](entry);
+                    var jsDate = inputPattern[i](entry);
                     if (ariaUtilsType.isDate(jsDate)) {
                         return jsDate;
                     }
@@ -946,28 +1008,22 @@ module.exports = Aria.classDefinition({
                         this.$logError(this.INVALID_INPUT_PATTERN_DUPLICATE, inputPattern[i]);
                         return null;
                     }
-                    for (var j = 0; j < this._allDateInputPatterns.length; j++) {
-                        datePattern = this._allDateInputPatterns[j];
-                        patternComposition = datePattern.exec(inputPattern[i]);
-                        if (patternComposition) {
-                            // determines the position of year, month ,and day
-                            indexes = this._generateIndexes(datePattern, patternComposition);
-                            // user input parser
-                            userInputInterpreter = this._userInputFormatGenerator(patternComposition);
-                            if (userInputInterpreter.test(entry.toUpperCase())) {
-                                jsDate = this._interpretDateWithAnySeparator(userInputInterpreter, entry.toUpperCase(), indexes.yearIndex, indexes.monthIndex, indexes.dayIndex);
-                            }
-                            if (ariaUtilsType.isDate(jsDate)) {
-                                return jsDate;
-                            }
-                        }
+                    var initialState = {
+                            datetime : {},
+                            pattern: inputPattern[i],
+                            value: entryStr
+                    };
 
+                    var newState = parseNextSteps(initialState);
+                    var dt = getJsDateFromState(newState);
+                    if (dt) {
+                        return dt;
                     }
-
                 }
 
             }
             return null;
+
         },
 
         /**
@@ -1060,155 +1116,7 @@ module.exports = Aria.classDefinition({
             return jsdate;
 
         },
-        /**
-         * @param {RegExp} format
-         * @param {String} patternComposition
-         * @return {Object}
-         */
 
-        _generateIndexes : function (format, patternComposition) {
-            var result = {}, yearIndex = null, monthIndex = null, dayIndex = null, arrayUtil = ariaUtilsArray;
-            yearIndex = arrayUtil.indexOf(patternComposition, "yyyy");
-            if (yearIndex === -1) {
-                yearIndex = arrayUtil.indexOf(patternComposition, "yy");
-            }
-            dayIndex = arrayUtil.indexOf(patternComposition, "dd");
-            if (dayIndex === -1) {
-                dayIndex = arrayUtil.indexOf(patternComposition, "d");
-            }
-            if (format === this._fullDatePattern || format === this._yearAndMonthDatePattern
-                    || format === this._dayAndMonthDatePattern) {
-                monthIndex = arrayUtil.indexOf(patternComposition, "MM");
-                if (monthIndex === -1) {
-                    monthIndex = arrayUtil.indexOf(patternComposition, "M");
-                }
-
-            } else if (format === this._fullIATADatePattern || format === this._yearAndIATAMonthDatePattern
-                    || format === this._dayAndIATAMonthDatePattern) {
-                monthIndex = arrayUtil.indexOf(patternComposition, "MMM");
-                if (monthIndex === -1) {
-                    monthIndex = arrayUtil.indexOf(patternComposition, "I");
-                }
-
-            }
-            if (yearIndex !== -1) {
-                result.yearIndex = yearIndex;
-            }
-            if (monthIndex !== -1) {
-                result.monthIndex = monthIndex;
-            }
-            if (dayIndex !== -1) {
-                result.dayIndex = dayIndex;
-            }
-            return result;
-
-        },
-        /**
-         * Generate a regular expression to verify user input accordingly to a date format
-         * @param {Array}
-         * @return {RegExp}
-         */
-        _userInputFormatGenerator : function (patterncomposition) {
-            var userInputFormat = null;
-            var monthIndex = ariaUtilsArray.indexOf(patterncomposition, "MMM");
-            if (monthIndex === -1) {
-                monthIndex = ariaUtilsArray.indexOf(patterncomposition, "I");
-            }
-            var monthRegExpSource = this._interpret_isMonth.source;
-            switch (monthIndex) {
-                case -1 :
-                    // no Iata month
-                    if (patterncomposition.length === 4) {
-                        // full date pattern
-                        userInputFormat = new RegExp("^" + "(\\d{" + patterncomposition[1].length + "})"
-                                + this._allowedSeparator + "(\\d{" + patterncomposition[2].length + "})"
-                                + this._allowedSeparator + "(\\d{" + patterncomposition[3].length + "})" + "$");
-                    } else if (patterncomposition.length === 3) {
-                        // monthAndYear or dayAndMonth date pattern
-                        userInputFormat = new RegExp("^" + "(\\d{" + patterncomposition[1].length + "})"
-                                + this._allowedSeparator + "(\\d{" + patterncomposition[2].length + "})" + "$");
-                    }
-                    break;
-                case 1 :
-                    // Iata month is in the first position example Mar 05, 2012
-                    if (patterncomposition.length === 4) {
-                        // full iata date pattern
-                        userInputFormat = new RegExp("^" + monthRegExpSource + this._allowedSeparator + "(\\d{"
-                                + patterncomposition[2].length + "})" + this._allowedSeparator + "(\\d{"
-                                + patterncomposition[3].length + "})" + "$");
-                    } else if (patterncomposition.length === 3) {
-                        // monthAndYear or dayAndMonth iata date pattern
-                        userInputFormat = new RegExp("^" + monthRegExpSource + this._allowedSeparator + "(\\d{"
-                                + patterncomposition[2].length + "})" + "$");
-                    }
-                    break;
-                case 2 :
-                    // Iata month is in the second position example 2012 Mar, 2012
-                    if (patterncomposition.length === 4) {
-                        // full iata date pattern
-                        userInputFormat = new RegExp("^" + "(\\d{" + patterncomposition[1].length + "})"
-                                + this._allowedSeparator + monthRegExpSource + this._allowedSeparator + "(\\d{"
-                                + patterncomposition[3].length + "})" + "$");
-                    } else if (patterncomposition.length === 3) {
-                        // monthAndYear or dayAndMonth iata date pattern
-                        userInputFormat = new RegExp("^" + "(\\d{" + patterncomposition[1].length + "})"
-                                + this._allowedSeparator + monthRegExpSource + "$");
-                    }
-                    break;
-                case 3 :
-                    // Iata month is in the third position example 2012, 05 Mar
-                    // full iata date pattern
-                    userInputFormat = new RegExp("^" + "(\\d{" + patterncomposition[1].length + "})"
-                            + this._allowedSeparator + "(\\d{" + patterncomposition[2].length + "})"
-                            + this._allowedSeparator + monthRegExpSource + "$");
-
-                    break;
-                default :
-                    break;
-            }
-            return userInputFormat;
-        },
-
-        /**
-         * Interpret into date a string in the format yyyy*MM*dd, * can be any separator except numeric
-         * @param {String} dateStr string that needs to be parsed
-         * @return {Date}
-         */
-        _interpretDateWithAnySeparator : function (userInputInterpreter, dateStr, yearIndex, monthIndex, dayIndex) {
-            var execResult = userInputInterpreter.exec(dateStr), day, month, year, jsdate = null, currentDate = new Date();
-            if (yearIndex) {
-                year = execResult[yearIndex];
-            } else {
-                // in this case the year is not specified -> default = current year
-                year = currentDate.getFullYear();
-            }
-            if (dayIndex) {
-                day = execResult[dayIndex];
-            } else {
-                // in this case the day is not specified -> default = first day of the current month
-                day = 1;
-            }
-            if (dateStr.match(this._interpret_isMonth)) {
-                // IATA date
-                month = this._getMonthIndex(execResult[monthIndex]);
-            } else {
-                month = execResult[monthIndex];
-                month -= 1;
-            }
-            day = parseInt(day, 10);
-            month = parseInt(month, 10);
-            year = parseInt(year, 10);
-            if (year < 100) {
-                if (year > this._cutYear) {
-                    year += 1900;
-                } else {
-                    year += 2000;
-                }
-            }
-            jsdate = new Date(year, month, day);
-            return jsdate;
-
-        },
         /**
          * To interpret the date for entered month string
          * @param {String} dateStr for month string

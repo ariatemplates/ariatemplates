@@ -65,6 +65,15 @@ Aria.classDefinition({
             this.interpretInputPatternAndAssert("mar-10", date3options, expectedDateCurrentYear);
             this.interpretInputPatternAndAssert("jul.2012", date3options, new Date(2012, 6, 1));
             this.interpretInputPatternAndAssert("9K07", date3options, new Date(today.getFullYear(), 6, 9));
+
+            // cut year test
+            var year = aria.utils.Date._cutYear - 1;
+            this.interpretInputPatternAndAssert("9/" + year + ".7", date3options, new Date(2000 + year, 6, 9));
+            year += 1;
+            this.interpretInputPatternAndAssert("9/" + year + ".7", date3options, new Date(2000 + year, 6, 9));
+            year += 1;
+            this.interpretInputPatternAndAssert("9/" + year + ".7", date3options, new Date(1900 + year, 6, 9));
+
         },
 
         interpretInputPatternAndAssert : function (dateStr, dateOptions, expectedDate) {
