@@ -69,6 +69,44 @@ Aria.classDefinition({
         },
 
         /**
+         * Tests validation of a model containing objects that have already been validated
+         */
+        test_validateAlreadyValidatedModelObjects : function () {
+            var data = {
+                param1 : {
+                    param1key : 'param1value'
+                }
+            };
+            data.param2 = data.param1;
+            var validator = new aria.utils.validators.Validator();
+            validator.count = 0;
+            validator.validate = function () {
+                this.count += 1;
+                return this._validationSucceeded();
+            };
+            aria.utils.Data.setValidator(data.param1, 'param1key', validator);
+            var messages = {};
+            aria.utils.Data.validateModel(data, messages);
+            this.assertTrue(validator.count === 1, "The validator should be called only once");
+            validator.$dispose();
+        },
+
+        /**
+         * Tests validation of a model containing recursive references
+         */
+        test_validateRecursiveModel : function () {
+            var data = {
+                param1 : 'value1'
+            };
+            data.param2 = data;
+            var validator = new aria.utils.validators.Validator();
+            aria.utils.Data.setValidator(data, 'param1', validator);
+            var messages = {};
+            aria.utils.Data.validateModel(data, messages);
+            validator.$dispose();
+        },
+
+        /**
          * Test the validateModel method
          */
         test_validateModel : function (group) {
@@ -282,7 +320,7 @@ Aria.classDefinition({
         test_createMessage : function () {
             // test default values
             var test = aria.utils.Data.createMessage("msg1");
-            this.assertTrue(test.code == null);
+            this.assertTrue(test.code === null);
             this.assertTrue(!("subMessages" in test));
             this.assertTrue(test.type == aria.utils.Data.TYPE_ERROR);
             this.assertTrue(test.localizedMessage == "msg1");
@@ -419,7 +457,7 @@ Aria.classDefinition({
             var check = (!res) ? false : true;
             this.assertFalse(check);
             aria.utils.Data.setValidatorProperties(validator, null, "onblur");
-            var res = aria.utils.Data.validateValue(data, "param1", null, null, "onblur"); // In this test a single
+            res = aria.utils.Data.validateValue(data, "param1", null, null, "onblur"); // In this test a single
             // validator has the same
             // event to validate as the
             // triggering event so

@@ -18,7 +18,7 @@ var ariaUtilsPath = require("./Path");
 var ariaUtilsJson = require("./Json");
 var ariaCoreJsObject = require("../core/JsObject");
 var ariaUtilsArray = require("./Array");
-
+var ariaUtilsStackHashMap = require("./StackHashMap");
 
 /**
  * Handles the link between the validators and the data model.
@@ -366,50 +366,70 @@ module.exports = Aria.classDefinition({
          * @param {Object} messages
          * @param {Array} groups an optional parameter that contains the group(s) to be validated, if no group is
          * specified then validation will occur on the model as normal.
-         * @param {Boolean} stopOnError an optional parameter that (when set to true) stops the validation as soon as an error is detected in
-         * the model provided (defaults to false)
+         * @param {Boolean} stopOnError an optional parameter that (when set to true) stops the validation as soon as an
+         * error is detected in the model provided (defaults to false)
          */
         validateModel : function (dataHolder, messages, groups, stopOnError) {
-            if (this.utilsType.isObject(dataHolder)) {
-                for (var key in dataHolder) {
-                    if (dataHolder.hasOwnProperty(key)) {
-                        this.__subValidateModel(dataHolder, key, messages, groups, stopOnError);
-                        if (stopOnError && messages && messages[this.errorNbrKey] > 0){
-                            return;
+            var map = new ariaUtilsStackHashMap();
+            this._validateModel(dataHolder, messages, groups, stopOnError, map);
+            map.$dispose();
+        },
+
+        /**
+         * validates an object within the data model, including all fields values and validation stacks for those fields
+         * @param {Object} dataHolder
+         * @param {Object} messages
+         * @param {Array} groups an optional parameter that contains the group(s) to be validated, if no group is
+         * specified then validation will occur on the model as normal.
+         * @param {Boolean} stopOnError an optional parameter that (when set to true) stops the validation as soon as an
+         * error is detected in the model provided (defaults to false)
+         * @param {aria.utils.StackHashMap} Map stores a reference to an already validated part of the model
+         */
+        _validateModel : function (dataHolder, messages, groups, stopOnError, map) {
+            if (!map.isKey(dataHolder)) {
+                map.push(dataHolder, true);
+                if (this.utilsType.isObject(dataHolder)) {
+                    for (var key in dataHolder) {
+                        if (dataHolder.hasOwnProperty(key)) {
+                            this.__subValidateModel(dataHolder, key, messages, groups, stopOnError, map);
+                            if (stopOnError && messages && messages[this.errorNbrKey] > 0) {
+                                return;
+                            }
                         }
                     }
-                }
-            } else if (this.utilsType.isArray(dataHolder)) {
-                for (var index = 0, l = dataHolder.length; index < l; index++) {
-                    this.__subValidateModel(dataHolder, index, messages, groups, stopOnError);
-                    if (stopOnError && messages && messages[this.errorNbrKey] > 0){
-                        return;
+                } else if (this.utilsType.isArray(dataHolder)) {
+                    for (var index = 0, l = dataHolder.length; index < l; index++) {
+                        this.__subValidateModel(dataHolder, index, messages, groups, stopOnError, map);
+                        if (stopOnError && messages && messages[this.errorNbrKey] > 0) {
+                            return;
+                        }
                     }
                 }
             }
         },
 
         /**
-         * validates a parameter of an object within the data model
+         * Validates a parameter of an object within the data model
          * @private
          * @param {Object} dataHolder
          * @param {String} parameter
          * @param {Object} messages
          * @param {Array} group an optional parameter that contains the group(s) to be validated.
-         * @param {Boolean} stopOnError an optional parameter that (when set to true) stops the validation as soon as an error is detected in
-         * the model provided (defaults to false)
+         * @param {Boolean} stopOnError an optional parameter that (when set to true) stops the validation as soon as an
+         * error is detected in the model provided (defaults to false)
+         * @param {aria.utils.StackHashMap} Map stores a reference to an already validated part of the model
          */
-        __subValidateModel : function (dataHolder, parameter, messages, groups, stopOnError) {
+        __subValidateModel : function (dataHolder, parameter, messages, groups, stopOnError, map) {
             // filters meta marker and aria metadata
             if (!ariaUtilsJson.isMetadata(parameter)) {
                 if (dataHolder[this.META_PREFIX + parameter]) {
                     this.validateValue(dataHolder, parameter, messages, groups);
-                    if (stopOnError && messages && messages[this.errorNbrKey] > 0){
+                    if (stopOnError && messages && messages[this.errorNbrKey] > 0) {
                         return;
                     }
                 }
                 var value = dataHolder[parameter];
-                return this.validateModel(value, messages, groups, stopOnError);
+                return this._validateModel(value, messages, groups, stopOnError, map);
             }
         },
 

@@ -15,7 +15,6 @@
 var Aria = require("../Aria");
 var ariaUtilsType = require("./Type");
 
-
 (function () {
     /**
      * Counter so that each StackHashMap object has its own metadata, and they won't interfere with each other in case
@@ -190,6 +189,39 @@ var ariaUtilsType = require("./Type");
                     }
                 }
                 map[item.index] = item;
+            },
+
+            /**
+             * Checks if a key is in the StackHashMap object and returns true if it is found.
+             * @param {MultiTypes} key key which was used to add the entry in the StackHashMap object.
+             * @return {Boolean} True if there is an entry that was added with the same key.
+             */
+            isKey : function (key) {
+                var map = this._getMap(key, false);
+                if (map == null) {
+                    return false;
+                }
+                var item;
+                if (map == this._objectKeys) {
+                    item = key[this._metaDataName];
+                } else if (map != this._otherKeys) {
+                    item = map[key];
+                } else {
+                    for (var i in map) {
+                        if (map.hasOwnProperty(i)) {
+                            var elt = map[i];
+                            if (key === elt.key) {
+                                item = elt;
+                                break;
+                            }
+                        }
+                    }
+                }
+                if (item) {
+                    return true;
+                } else {
+                    return false;
+                }
             },
 
             /**
