@@ -24,6 +24,68 @@ Aria.classDefinition({
     $prototype : {
         /**
          * Add entries with keys of different types to a StackHashMap object (using the push method) and then check they
+         * exist in the StackHashMap using the isKey method.
+         */
+        testIsKey : function () {
+            var myMap = new aria.utils.StackHashMap();
+            var myKeyA = {};
+            var myKeyB = {};
+            var myKeyC = "string1";
+            var myKeyD = "string2";
+            var myKeyE = 3.5;
+            var myKeyF = null;
+            var myKeyG = undefined;
+            var myKeyANotFound = {};
+            var myKeyBNotFound = "stringA";
+            var myKeyCNotFound = 4;
+
+            // Check keys are not in map
+            this.assertFalse(myMap.isKey(myKeyA));
+            this.assertFalse(myMap.isKey(myKeyB));
+            this.assertFalse(myMap.isKey(myKeyC));
+            this.assertFalse(myMap.isKey(myKeyD));
+            this.assertFalse(myMap.isKey(myKeyE));
+            this.assertFalse(myMap.isKey(myKeyF));
+            this.assertFalse(myMap.isKey(myKeyG));
+            this.assertFalse(myMap.isKey(myKeyANotFound));
+            this.assertFalse(myMap.isKey(myKeyBNotFound));
+            this.assertFalse(myMap.isKey(myKeyCNotFound));
+
+            // Add keys to the map
+            myMap.push(myKeyA, {});
+            myMap.push(myKeyA, {});
+            myMap.push(myKeyB, {});
+            myMap.push(myKeyC, {});
+            myMap.push(myKeyC, {});
+            myMap.push(myKeyD, {});
+            myMap.push(myKeyE, {});
+            myMap.push(myKeyE, {});
+            myMap.push(myKeyF, {});
+            myMap.push(myKeyF, {});
+            myMap.push(myKeyG, {});
+            myMap.push(myKeyG, {});
+
+            // Check keys are in map
+            this.assertTrue(myMap.isKey(myKeyA));
+            this.assertTrue(myMap.isKey(myKeyB));
+            this.assertTrue(myMap.isKey(myKeyC));
+            this.assertTrue(myMap.isKey(myKeyD));
+            this.assertTrue(myMap.isKey(myKeyE));
+            this.assertTrue(myMap.isKey(myKeyF));
+            this.assertTrue(myMap.isKey(myKeyG));
+
+            // Check keys are not in map
+            this.assertFalse(myMap.isKey(myKeyANotFound));
+            this.assertFalse(myMap.isKey(myKeyBNotFound));
+            this.assertFalse(myMap.isKey(myKeyCNotFound));
+
+            // Clean up
+            myMap.removeAll();
+            myMap.$dispose();
+        },
+
+        /**
+         * Add entries with keys of different types to a StackHashMap object (using the push method) and then check they
          * are be retrieved correctly through the pop method.
          */
         testPushAndPop : function () {
