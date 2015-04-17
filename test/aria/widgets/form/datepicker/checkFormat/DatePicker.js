@@ -44,23 +44,42 @@ Aria.classDefinition({
         },
         _clickingDatePicker5 : function () {
             this.clickAndType("date5", "2012-16-07", {
-                fn : this._finishTest,
+                fn : this._clickingDatePicker6,
                 scope : this
             }, true);
         },
-        _finishTest : function () {
-            var val1 = this.getInputField("date1").value;
-            var val2 = this.getInputField("date2").value;
-            var val3 = this.getInputField("date3").value;
-            var val4 = this.getInputField("date4").value;
-            var val5 = this.getInputField("date5").value;
+        _clickingDatePicker6 : function () {
+            this.clickAndType("date6", "dec252016", {
+                fn : this._clickingDatePicker7,
+                scope : this
+            }, true);
+        },
+        _clickingDatePicker7 : function () {
+            this.clickAndType("date7", "11216", {
+                fn : this._checkValues,
+                scope : this
+            }, true);
+        },
+        _checkValues : function () {
+            this.assertEquals(this.getInputField("date1").value, "16/7/12", "Value in datePicker1 is %1 instead of %2");
+            this.assertEquals(this.getInputField("date2").value, "16/7/12", "Value in datePicker2 is %1 instead of %2");
+            this.assertEquals(this.getInputField("date3").value, "16/7/12", "Value in datePicker3 is %1 instead of %2");
+            this.assertEquals(this.getInputField("date4").value, "16/7/12", "Value in datePicker4 is %1 instead of %2");
+            this.assertNotEquals(this.getInputField("date5").value, "16/7/12", "Value in datePicker5 shouldn't be %2");
+            this.assertEquals(this.getInputField("date6").value, "25/12/2016", "Value in datePicker6 is %1 instead of %2");
+            this.assertEquals(this.getInputField("date7").value, "01/12/2016", "Value in datePicker7 is %1 instead of %2");
 
-            this.assertTrue(val1 === "16/7/12", "Value in datePicker1  is " + val1);
-            this.assertTrue(val2 === "16/7/12", "Value in datePicker2  is " + val2);
-            this.assertTrue(val3 === "16/7/12", "Value in datePicker3  is " + val3);
-            this.assertTrue(val4 === "16/7/12", "Value in datePicker4  is " + val4);
-            this.assertFalse(val5 === "16/7/12", "Value in datePicker5  is " + val5);
-            this.notifyTemplateTestEnd();
+            // Test fallback with day in 2 digits and month on 1 (opposite case doesn't match a date).
+            this.getInputField("date7").value = "";
+            this.clickAndType("date7", "11316", {
+                fn : this._checkDate7,
+                scope : this
+            }, true);
+
+        },
+        _checkDate7 : function () {
+            this.assertEquals(this.getInputField("date7").value, "11/03/2016", "Value in datePicker7 is %1 instead of %2");
+            this.end();
         }
     }
 });
