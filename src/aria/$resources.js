@@ -69,5 +69,9 @@ loadResourceFile.$preload = function (reference, staticFile) {
 
 module.exports = {
     module : loadResourceModule,
-    file : loadResourceFile
+    file : loadResourceFile,
+    unload : function (referencePath, staticFile, cleanCache, timestampNextTime, onlyIfError) {
+        var baseLogicalPath = resolveBaseLogicalPathResource(referencePath, staticFile);
+        return resMgr.unloadResource(baseLogicalPath, cleanCache, timestampNextTime, onlyIfError);
+    }
 };

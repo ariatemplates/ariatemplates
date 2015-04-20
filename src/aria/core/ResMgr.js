@@ -214,10 +214,13 @@ var resMgr = module.exports = Aria.classDefinition({
             }
         },
 
-        unloadResource : function (baseLogicalPath, cleanCache, timestampNextTime) {
+        unloadResource : function (baseLogicalPath, cleanCache, timestampNextTime, onlyIfError) {
             baseLogicalPath = normalizeBaseLogicalPath(baseLogicalPath);
             var res = resources[baseLogicalPath];
             if (res) {
+                if (onlyIfError && !(res.loading && res.loading.promise && res.loading.promise.isRejected())) {
+                    return false;
+                }
                 delete resources[baseLogicalPath];
                 var content = res.content;
                 if (content) {

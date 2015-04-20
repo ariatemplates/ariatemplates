@@ -15,7 +15,62 @@
 var Aria = require("../Aria");
 var ariaCoreCache = require("../core/Cache");
 var ariaCoreClassMgr = require("../core/ClassMgr");
+var ariaCoreDownloadMgr = require("../core/DownloadMgr");
+var resourcesPlugin = require("../$resources");
 
+var resolveLogicalPath = function (curModule, logicalPath) {
+    try {
+        logicalPath = curModule.require.resolve(logicalPath);
+    } catch (e) {}
+    return logicalPath;
+};
+
+var resourcesPluginLogicalPath = resolveLogicalPath(module, "../$resources");
+
+var processArg = function (curModule, arg) {
+    if (typeof arg == "string") {
+        return arg;
+    } else if (arg && arg.length == 1) {
+        var item = arg[0];
+        if (item == "__dirname") {
+            return curModule.dirname;
+        } else if (item == "__filename") {
+            return curModule.filename;
+        } else if (item == "null") {
+            return null;
+        } else if (item == "module") {
+            return curModule;
+        }
+    }
+};
+
+var unloadFailingDependencies = function (resolvedLogicalPath, timestampNextTime) {
+    var curModule = require.cache[resolvedLogicalPath];
+    if (curModule && curModule.noderInfo && curModule.noderInfo.preloading
+            && curModule.noderInfo.preloading.isRejected()) {
+        var dependencies = curModule.noderInfo.dependencies;
+        if (dependencies) {
+            for (var i = 0, l = dependencies.length; i < l; i++) {
+                var curDependency = dependencies[i];
+                if (typeof curDependency == "string") {
+                    unloadFailingDependencies(resolveLogicalPath(curModule, curDependency), timestampNextTime);
+                } else if (curDependency && curDependency.module) {
+                    var pluginModule = resolveLogicalPath(curModule, curDependency.module);
+                    if (pluginModule == resourcesPluginLogicalPath) {
+                        var argStart = curDependency.method == "module" ? 1 : curDependency.method == "file" ? 0 : null;
+                        if (argStart !== null) {
+                            var args = curDependency.args;
+                            resourcesPlugin.unload(processArg(curModule, args[argStart]), processArg(curModule, args[argStart
+                                    + 1]), true, timestampNextTime, true);
+                        }
+                    }
+                }
+            }
+        }
+        ariaCoreDownloadMgr.clearFile(resolvedLogicalPath, timestampNextTime);
+        delete require.cache[resolvedLogicalPath];
+    }
+};
 
 module.exports = Aria.classDefinition({
     $classpath : "aria.templates.TemplateManager",
@@ -67,6 +122,12 @@ module.exports = Aria.classDefinition({
                         this.unloadTemplate(ext, timestampNextTime, stopAtClasspath);
                     }
                 }
+            } else {
+                // The template does not seem to be fully loaded currently.
+                // Maybe it failed to be loaded. Let's unload any of its dependencies which may have prevented it from
+                // being loaded.
+                // This is needed especially for the use case in test.aria.templates.reloadResources.ReloadResourcesTestCase
+                unloadFailingDependencies(Aria.getLogicalPath(classpath, ".tpl", true), timestampNextTime);
             }
             classMgr.unloadClass(classpath, timestampNextTime);
             // every thing is done : CSS are unhandled at classMgr level directly
