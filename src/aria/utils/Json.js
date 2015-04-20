@@ -18,7 +18,6 @@ var ariaUtilsType = require("./Type");
 var ariaUtilsArray = require("./Array");
 var ariaUtilsObject = require("./Object");
 
-
 (function () {
 
     // shortcut to array & type utils
@@ -816,6 +815,10 @@ var ariaUtilsObject = require("./Object");
 
                 if (!allArray && !allObject) {
                     return false;
+                }
+
+                if (src === target) {
+                    return true;
                 }
 
                 if (allArray) {

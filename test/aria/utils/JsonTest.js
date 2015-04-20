@@ -408,6 +408,21 @@ Aria.classDefinition({
             aria.utils.Json.inject(aria.utils.Json.copy(source), withMergeResult, true);
             this.assertJsonEquals(withMerge, withMergeResult);
 
+            // test identical objects recursion
+            var a = {
+                b : "c"
+            };
+            a.d = a;
+            var objOne = {
+                a : a
+            };
+            var objTwo = {
+                a : a
+            };
+
+            // Just test that the "Maximum call stack size exceeded" error is not raised
+            aria.utils.Json.inject(objOne, objTwo, true);
+
         },
 
         /**
@@ -1424,14 +1439,17 @@ Aria.classDefinition({
         },
 
         testKeysSimple : function () {
-            this.assertJsonEquals(['mykey'], aria.utils.Json.keys({ mykey: 'value' }));
+            this.assertJsonEquals(['mykey'], aria.utils.Json.keys({
+                mykey : 'value'
+            }));
         },
 
         testKeysWithListeners : function () {
-            var listened = { mykey: 'value' };
+            var listened = {
+                mykey : 'value'
+            };
             aria.utils.Json.addListener(listened, 'mykey', {
-                fn: function () {
-                }
+                fn : function () {}
             });
             this.assertJsonEquals(['mykey'], aria.utils.Json.keys(listened));
         }
