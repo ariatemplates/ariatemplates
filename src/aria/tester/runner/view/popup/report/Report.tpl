@@ -18,6 +18,7 @@
     $classpath:'aria.tester.runner.view.popup.report.Report',
     $extends:'aria.tester.runner.view.popup.generic.Generic',
     $css : ['aria.tester.runner.view.popup.report.ReportCSS'],
+    $wlibs : {"aria" : "aria.widgets.AriaLib"},
     $hasScript:true
 }}
     {macro displayPopupTitle()}

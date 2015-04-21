@@ -16,6 +16,7 @@
 // TODOC
 {Template {
     $classpath:'aria.tester.runner.view.popup.warning.Warning',
+    $wlibs : {"aria" : "aria.widgets.AriaLib"},
     $extends:'aria.tester.runner.view.popup.generic.Generic',
     $hasScript:true,
     $css : ['aria.tester.runner.view.popup.warning.WarningCSS']

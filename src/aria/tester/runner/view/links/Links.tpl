@@ -16,6 +16,7 @@
 // TODOC
 {Template {
     $classpath:'aria.tester.runner.view.links.Links',
+    $wlibs : {"aria" : "aria.widgets.AriaLib"},
     $hasScript:true,
     $width : {value:200},
     $height : {min:125},
