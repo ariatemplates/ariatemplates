@@ -16,10 +16,11 @@
 // TODOC
 {Template {
     $classpath:'aria.tester.runner.view.header.Header',
+    $wlibs : {"aria" : "aria.widgets.AriaLib"},
     $hasScript:true,
     $width : {"min":178},
     $height : {value:50},
-     $css:['aria.tester.runner.view.header.HeaderCSS']
+    $css:['aria.tester.runner.view.header.HeaderCSS']
 }}
     {macro main()}
         <div id="header">

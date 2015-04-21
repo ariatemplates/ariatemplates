@@ -16,7 +16,8 @@
 // TODOC
 {Template {
     $classpath:'aria.tester.runner.view.mini.Mini',
-     $css:['aria.tester.runner.view.mini.MiniCSS'],
+    $css:['aria.tester.runner.view.mini.MiniCSS'],
+    $wlibs : {"aria" : "aria.widgets.AriaLib"},
     $hasScript:true,
     $width : {"min":180},
     $height : {"min":342}
