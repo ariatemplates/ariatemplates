@@ -50,6 +50,7 @@ Aria.classDefinition({
         this.addTests("test.aria.utils.History");
         this.addTests("test.aria.utils.Html");
         this.addTests("test.aria.utils.IdManager");
+        this.addTests("test.aria.utils.IdMgr");
         this.addTests("test.aria.utils.JsonTest");
         this.addTests("test.aria.utils.Math");
         this.addTests("test.aria.utils.Number");

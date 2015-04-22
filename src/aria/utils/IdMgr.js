@@ -13,15 +13,19 @@
  * limitations under the License.
  */
 var Aria = require("../Aria");
-require("./Array");
+var ariaUtilsArray = require("./Array");
 
 
 /**
  * Handle Id generation
- * @class aria.utils.IdManager
+ * @class aria.utils.IdMgr
  */
 module.exports = Aria.classDefinition({
-    $classpath : 'aria.utils.IdManager',
+    $classpath : 'aria.utils.IdMgr',
+
+    $statics : {
+         ID_ALREADY_RELEASED : "Id %1 is already released."
+    },
 
     /**
      * Constructor
@@ -29,11 +33,11 @@ module.exports = Aria.classDefinition({
      */
     $constructor : function (prefix) {
         /**
-         * Map of free ids
+         * List of free ids
          * @protected
-         * @type Object
+         * @type Array
          */
-        this._freeIdMap = {};
+        this._freeId = [];
 
         /**
          * Counter for ids when none is free
@@ -48,11 +52,9 @@ module.exports = Aria.classDefinition({
          */
         this.prefix = prefix || "";
 
-        this.$logWarn("IdManager is deprecated, please use IdMgr instead");
-
     },
     $destructor : function () {
-        this._freeIdMap = null;
+        this._freeId = null;
     },
     $prototype : {
 
@@ -60,14 +62,9 @@ module.exports = Aria.classDefinition({
          * Create a unique id. Either reuse an existing reusable id or create a new one if none exist.
          */
         getId : function () {
-            for (var i in this._freeIdMap) {
-                if (!this._freeIdMap.hasOwnProperty(i)) {
-                    continue;
-                }
-                delete this._freeIdMap[i];
-                return i;
+            if (this._freeId.length) {
+                return this._freeId.pop();
             }
-
             var id = this.prefix + this._idCounter;
             this._idCounter++;
             return id;
@@ -78,9 +75,12 @@ module.exports = Aria.classDefinition({
          * @param {String} id
          */
         releaseId : function (id) {
-            if (id) {
-                this._freeIdMap[id] = true;
+
+            if (Aria.debug && ariaUtilsArray.indexOf(this._freeId, id) > -1) {
+                this.$logError(this.ID_ALREADY_RELEASED, [id]);
             }
+
+            this._freeId.push(id);
         }
     }
 });
