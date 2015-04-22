@@ -17,6 +17,7 @@ var ariaTemplatesSection = require("./Section");
 var ariaUtilsType = require("../utils/Type");
 var ariaUtilsArray = require("../utils/Array");
 var ariaUtilsJson = require("../utils/Json");
+var IdManager = require("../utils/IdMgr");
 
 
 (function () {
@@ -109,7 +110,7 @@ var ariaUtilsJson = require("../utils/Json");
             this.$Section.$destructor.call(this);
         },
         $onload : function () {
-            idMgr = new aria.utils.IdManager("__repeater");
+            idMgr = new IdManager("__repeater");
             typeUtils = ariaUtilsType;
             jsonUtils = ariaUtilsJson;
             arrayUtils = ariaUtilsArray;

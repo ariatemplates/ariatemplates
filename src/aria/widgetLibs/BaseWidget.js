@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 var Aria = require("../Aria");
-var ariaUtilsIdManager = require("../utils/IdManager");
+var ariaUtilsIdManager = require("../utils/IdMgr");
 var ariaTemplatesCSSMgr = require("../templates/CSSMgr");
 var ariaUtilsArray = require("../utils/Array");
 

@@ -23,7 +23,7 @@ require("../utils/String");
 var ariaTemplatesDomElementWrapper = require("./DomElementWrapper");
 var ariaUtilsHtml = require("../utils/Html");
 var ariaTemplatesDomEventWrapper = require("./DomEventWrapper");
-var ariaUtilsIdManager = require("../utils/IdManager");
+var ariaUtilsIdManager = require("../utils/IdMgr");
 var ariaTemplatesSectionWrapper = require("./SectionWrapper");
 var ariaUtilsCssAnimations = require("../utils/css/Animations");
 var ariaUtilsType = require("../utils/Type");

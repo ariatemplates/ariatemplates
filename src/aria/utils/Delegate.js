@@ -15,7 +15,7 @@
 var Aria = require("../Aria");
 var ariaUtilsEvent = require("./Event");
 var ariaDomEvent = require("../DomEvent");
-var ariaUtilsIdManager = require("./IdManager");
+var ariaUtilsIdManager = require("./IdMgr");
 var ariaUtilsCallback = require("./Callback");
 require("./Array");
 var ariaCoreBrowser = require("../core/Browser");
@@ -224,7 +224,7 @@ module.exports = Aria.classDefinition({
         /**
          * Unique id manager
          * @private
-         * @type aria.utils.IdManager
+         * @type aria.utils.IdMgr
          */
         this.__idMgr = new ariaUtilsIdManager("d");
 

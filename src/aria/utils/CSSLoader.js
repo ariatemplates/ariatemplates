@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 var Aria = require("../Aria");
-var ariaUtilsIdManager = require("./IdManager");
+var ariaUtilsIdManager = require("./IdMgr");
 var ariaUtilsType = require("./Type");
 var ariaUtilsObject = require("./Object");
 var ariaCoreDownloadMgr = require("../core/DownloadMgr");
@@ -50,7 +50,7 @@ module.exports = Aria.classDefinition({
 
         /**
          * Generator of unique ids for the style tags
-         * @type aria.utils.IdManager
+         * @type aria.utils.IdMgr
          * @private
          */
         this._idManager = new ariaUtilsIdManager(this.TAG_PREFIX);

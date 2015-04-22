@@ -18,7 +18,7 @@
  */
 Aria.classDefinition({
     $classpath : 'test.aria.widgetLibs.helpers.IdManagerSpy',
-    $dependencies : ['aria.utils.IdManager'],
+    $dependencies : ['aria.utils.IdMgr'],
     /**
      * Create an instance of the IdManagerSpy class to spy on the id manager. Until the instance is disposed, all calls
      * to the id manager will be caught and the idsCreated and idsReleased properties will be updated accordingly.
@@ -40,21 +40,21 @@ Aria.classDefinition({
 
         // spy on the id manager:
 
-        var originalGetId = aria.utils.IdManager.prototype.getId;
-        var originalReleaseId = aria.utils.IdManager.prototype.releaseId;
-        aria.utils.IdManager.prototype.getId = function () {
+        var originalGetId = aria.utils.IdMgr.prototype.getId;
+        var originalReleaseId = aria.utils.IdMgr.prototype.releaseId;
+        aria.utils.IdMgr.prototype.getId = function () {
             var res = originalGetId.call(this);
             oSelf.idsCreated.push(res);
             return res;
         };
-        aria.utils.IdManager.prototype.releaseId = function (id) {
+        aria.utils.IdMgr.prototype.releaseId = function (id) {
             oSelf.idsReleased.push(id);
             originalReleaseId.call(this, id);
         };
 
         this._dispose = function () {
-            aria.utils.IdManager.prototype.getId = originalGetId;
-            aria.utils.IdManager.prototype.releaseId = originalReleaseId;
+            aria.utils.IdMgr.prototype.getId = originalGetId;
+            aria.utils.IdMgr.prototype.releaseId = originalReleaseId;
             oSelf = null;
             originalGetId = null;
             originalReleaseId = null;
