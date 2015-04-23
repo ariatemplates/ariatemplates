@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Test - AtLoader</title>
+    <style>
+        .success {
+          background-color: green;
+        }
+        .error {
+          background-color: red;
+        }
+    </style>
+    <script>
+        document.write('<base href="' + window.parent.location.href + '">');
+        document.write('<script type="text/javascript" src="' + window.parent.frameworkHref + '"></scri'+'pt>');
+        // Load aria.utils.Number with its dependencies:
+        document.write('<script type="text/javascript" src="' + window.parent.atLoaderHref + '">["aria/utils/Number.js", "aria/utils/environment/Number.js"]</scri'+'pt>');
+    </script>
+  </head>
+  <body>
+    <h1>TEST AtLoader</h1>
+    <h2>Injecting classes: ["aria/utils/Number.js", "aria/utils/environment/Number.js"]</h2>
+    <script>
+        document.write('<script type="text/javascript" src="' + window.parent.atLoaderScript + '"></scri'+'pt>');
+    </script>
+  </body>
+</html>

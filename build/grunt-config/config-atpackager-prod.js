@@ -34,8 +34,9 @@ module.exports = function (grunt) {
     var notAtExtensions = atExtensions.map(function (value) {
         return '!' + value;
     });
+    var atLoaderFileName = 'aria/atLoader-' + packagingSettings.pkg.version + '.js';
     var hashFiles = atExtensions.concat(['aria/core/transport/iframeSource*', 'aria/utils/FrameATLoaderHTML*',
-            '**/*.swf', '**/*.jnlp', '!aria/css/**', '!<%= atbuildOptions.outputBootstrapFile %>']).concat(packagingSettings.prod.hashIncludeFiles);
+            '**/*.swf', '**/*.jnlp', '!aria/css/**', '!' + atLoaderFileName, '!<%= atbuildOptions.outputBootstrapFile %>']).concat(packagingSettings.prod.hashIncludeFiles);
 
     grunt.config.set('atpackager.prod', {
         options : {
@@ -137,6 +138,15 @@ module.exports = function (grunt) {
                         }
                     }, grunt.config.get('atbuildOptions.checkPackaged') ? 'CheckPackaged' : null],
             packages : [{
+                name: atLoaderFileName,
+                files: ['aria/atLoader.js'],
+                builder: {
+                                type : 'Concat',
+                                cfg : {
+                                    header : packagingSettings.licenseMin
+                                }
+                            }
+            },{
                         name : '<%= atbuildOptions.outputBootstrapFile %>',
                         builder : {
                             type : 'NoderBootstrapPackage',
