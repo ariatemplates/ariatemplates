@@ -15,7 +15,6 @@
 var Aria = require("../../Aria");
 var ariaUtilsDom = require("../Dom");
 
-
 /**
  * This class creates an overlay and keeps it positioned above a given HTML element
  * @class aria.utils.overlay.Overlay
@@ -105,8 +104,8 @@ module.exports = Aria.classDefinition({
             var overlayStyle = overlay.style;
             var positions = ["Top", "Right", "Bottom", "Left"], singleBorder, border = {};
             for (var i = 0, posCount = positions.length; i < posCount; i++) {
-                singleBorder = dom.getStyle(overlay, "border" + positions[i] + "Width").split("px")[0];
-                border[positions[i].toLowerCase()] = singleBorder ? +singleBorder : 0;
+                singleBorder = + dom.getStyle(overlay, "border" + positions[i] + "Width").split("px")[0];
+                border[positions[i].toLowerCase()] = isNaN(singleBorder) ? 0 : singleBorder;
             }
             var geometry = ariaUtilsDom.getGeometry(element);
             if (geometry) {
