@@ -44,7 +44,10 @@ module.exports = Aria.classDefinition({
          */
         this.offsetY = 0;
 
-        if (Aria.$frameworkWindow.top.attester) {
+        if (Aria.$frameworkWindow.top.attester && Aria.$frameworkWindow.top.location !== Aria.$frameworkWindow.location) {
+            // Aria.$frameworkWindow.top.location === Aria.$frameworkWindow.location means we are not running
+            // in the attester iframe, so there is no need to apply the extra offset.
+            // Otherwise, we are running in an iframe. Let's apply the offset:
             this.offsetY = 32; // height of the header in attester
         }
 
