@@ -224,11 +224,15 @@ var document = Aria.$frameworkWindow.document;
             if (this.proxy && this.proxy.overlay) {
                 this.proxy.$dispose();
             }
+            if (this.overlay) {
+                this.overlay.$dispose();
+                this.overlay = null;
+            }
             this.element = null;
             this.handle = null;
             this.cursor = null;
             this.proxy = null;
-            ariaUtilsMouse.stopListen("drag", this);
+            ariaUtilsMouse.stopListen("drag", this.listenerId);
         },
         $prototype : {
 
@@ -462,9 +466,10 @@ var document = Aria.$frameworkWindow.document;
                 var element = this.getElement();
                 // This is to handle if there is a scroll
                 element.onselectstart = Aria.returnTrue;
-                if (this.dragOverIFrame) {
+                if (this.overlay) {
                     // remove overlay here
                     this.overlay.$dispose();
+                    this.overlay = null;
                 }
                 if (this.proxy && this.proxy.overlay) {
                     element.style.top = (this._elementInitialPosition.top + this._movableGeometry.y - this._movableInitialGeometry.y)

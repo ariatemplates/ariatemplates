@@ -256,6 +256,15 @@ var ariaCoreBrowser = require("../core/Browser");
              */
             stopListen : function (gesture, id) {
                 if (this._idList[gesture]) {
+                    var element = this._idList[gesture][id];
+                    if (gesture == "drag" && element && element == this._activeDrag) {
+                        // the element being dragged has been disposed,
+                        // terminate the drag:
+                        this._dragStartPosition = null;
+                        disconnectMouseEvents(this);
+                        this._candidateForDrag = null;
+                        this._activeDrag = null;
+                    }
                     delete this._idList[gesture][id];
                 }
             },

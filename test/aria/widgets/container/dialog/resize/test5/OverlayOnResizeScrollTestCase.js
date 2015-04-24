@@ -84,7 +84,19 @@ Aria.classDefinition({
             this.assertEquals(parentGeometry.x, overlayGeometry.x, "The overlay xpos is not the same as the dialog one. Expected %1, got %2.");
             this.assertEquals(parentGeometry.y, overlayGeometry.y - 10, "The overlay ypos is not 10px (resize) more than the dialog one. Expected %1, got %2.");
 
-            this.end();
+            var activeDragInstance = aria.utils.Mouse._activeDrag;
+            var activeDragId = activeDragInstance.listenerId;
+            this.assertEquals(aria.utils.Mouse._idList.drag[activeDragId], activeDragInstance);
+
+            this._disposeTestTemplate();
+
+            this.assertNull(aria.utils.Mouse._activeDrag, "There is still an active drag after the template is disposed.");
+            this.assertFalsy(aria.utils.Mouse._idList.drag[activeDragId], "Drag instance was not unregistered.");
+
+            this.synEvent.execute([["mouseRelease", this._robot.BUTTON1_MASK]], {
+                fn : this.end,
+                scope : this
+            });
         },
 
         _getHandle : function (dialogId, index) {
