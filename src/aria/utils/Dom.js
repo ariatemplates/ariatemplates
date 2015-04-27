@@ -661,13 +661,15 @@ module.exports = Aria.classDefinition({
 
             if (obj.getBoundingClientRect && !stopAbsolute) {
                 // IE getBoundingClientRect have extra pixels.
-                var shift = browser.isIE7 ? 2 : 0;
+                // cf https://github.com/jquery/jquery/blob/master/src/offset.js#L101-106
+                var shiftLeft = browser.isIE7 ? document.documentElement.clientLeft : 0;
+                var shiftTop = browser.isIE7 ? document.documentElement.clientTop : 0;
                 // IE throws an error if the element is not in DOM
                 try {
                     var rect = obj.getBoundingClientRect();
                     scrollNotIncluded = false;
-                    offsetLeft = rect.left - shift;
-                    offsetTop = rect.top - shift;
+                    offsetLeft = rect.left - shiftLeft;
+                    offsetTop = rect.top - shiftTop;
 
                 } catch (er) {
                     offsetLeft = 0;
