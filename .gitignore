@@ -12,3 +12,4 @@ node_modules
 /src/aria/bootstrap.js
 /src/aria/bootstrap-node.js
 /src/aria/noderError/
+/src/aria/core/useragent/ua-parser.js
