@@ -231,7 +231,7 @@ module.exports = Aria.classDefinition({
          * @return {String}
          */
         _parseImgUrl : function (url) {
-            return "url (\"" + url + "\")";
+            return "url(\"" + url + "\")";
         },
 
         /**
