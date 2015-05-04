@@ -20,6 +20,7 @@ Aria.classDefinition({
         this.$TestSuite.constructor.call(this);
 
         this._tests = ["test.aria.widgets.form.multiselect.checkFeatures.MultiSelect",
+                "test.aria.widgets.form.multiselect.emptyMultiSelect.MultiSelect",
                 "test.aria.widgets.form.multiselect.deleteFieldValue.test1.MultiSelect",
                 "test.aria.widgets.form.multiselect.deleteFieldValue.test2.MultiSelect",
                 "test.aria.widgets.form.multiselect.downArrowKey.MultiSelect",

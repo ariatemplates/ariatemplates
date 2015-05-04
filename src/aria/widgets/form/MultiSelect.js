@@ -152,6 +152,7 @@ module.exports = Aria.classDefinition({
             if (!this._hasFocus) {
                 this.focus();
             }
+            this._keepFocus = false;
 
             var report = this.controller.toggleDropdown(this.getTextInputField().value, this._dropdownPopup != null);
             this._reactToControllerReport(report, {
