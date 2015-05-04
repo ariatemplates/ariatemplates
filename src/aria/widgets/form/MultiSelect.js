@@ -114,6 +114,9 @@ module.exports = Aria.classDefinition({
                 stopValueProp : !this._instantBind
             };
             this._reactToControllerReport(report, arg);
+            if (this._instantBind && this._dropdownPopup) {
+                this._dropdownPopup.updatePosition();
+            }
         },
 
         /**

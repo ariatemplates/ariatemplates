@@ -910,13 +910,13 @@ module.exports = Aria.classDefinition({
         },
 
         /**
-         * Repositions the popup based on the dom reference, if the dom reference is no longer visible then closes the
-         * popup and blurs the dom reference.
-         * @param {Object} event scroll event that triggered the handler.
+         * Updates the position of the popup based on the dom reference. If the dom reference is no longer visible,
+         * then the popup is made temporarily invisible (until updatePosition is called again with a visible dom
+         * reference).
          */
-        _isScrolling : function () {
+        updatePosition : function () {
             var domReference = this.reference;
-            if (domReference) {
+            if (domReference && this.isOpen) {
 
                 var geometry = ariaUtilsDom.getGeometry(domReference);
                 var referenceIsInViewport = geometry && (ariaUtilsDom.isInViewport({

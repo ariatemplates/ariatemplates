@@ -287,20 +287,27 @@ var ariaUtilsDelegate = require("../utils/Delegate");
             },
 
             /**
+             * Updates the position of all opened popups.
+             */
+            updatePositions : function () {
+                for (var i = this.openedPopups.length - 1; i >= 0; i--) {
+                    var popup = this.openedPopups[i];
+                    popup.updatePosition();
+                }
+            },
+
+            /**
              * handles the scroll for the popup
              * @param {Object} Event that triggered the scroll.
              */
             _onScroll : function (event) {
-                for (var i = this.openedPopups.length - 1; i >= 0; i--) {
-                    var popup = this.openedPopups[i];
-                    if (event.type === "mousewheel") {
-                        ariaCoreTimer.addCallback({
-                            fn : popup._isScrolling,
-                            scope : popup
-                        });
-                    } else if (event.type === "scroll") {
-                        popup._isScrolling();
-                    }
+                if (event.type === "mousewheel") {
+                    ariaCoreTimer.addCallback({
+                        fn : this.updatePositions,
+                        scope : this
+                    });
+                } else if (event.type === "scroll") {
+                    this.updatePositions();
                 }
             },
 
