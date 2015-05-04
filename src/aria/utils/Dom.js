@@ -902,7 +902,8 @@ module.exports = Aria.classDefinition({
         /**
          * Retrieve the computed style for a given CSS property on a given DOM element.
          * @param {HTMLElement} element The DOM element on which to retrieve a CSS property
-         * @param {String} property The CSS property to retrieve
+         * @param {String} property The CSS property to retrieve. For maximum portability, it should be in camel case
+         * (for instance <code>backgroundImage</code>)
          */
         getStyle : function (element, property) {
             var browser = ariaCoreBrowser;

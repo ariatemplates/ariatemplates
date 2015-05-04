@@ -25,7 +25,8 @@ Aria.classDefinition({
             template : "test.aria.templates.css.imgprefix.SimpleTemplate"
         });
 
-        this.imgPaths = ["images/bg.jpg", "images/bg.jpg", "images/bg.jpg", "images)/bg.jpg", "images/?bg.jpg", "images'/bg.'jpg", "images\"/bg.\"jpg"];
+        this.imgPaths = ["images/bg.jpg", "images/bg.jpg", "images/bg.jpg", "images)/bg.jpg", "images/?bg.jpg",
+                "images'/bg.'jpg", "images\"/bg.\"jpg"];
 
         // set the app environment
         aria.core.AppEnvironment.setEnvironment({
@@ -54,7 +55,10 @@ Aria.classDefinition({
             // reset app environment
             aria.core.AppEnvironment.setEnvironment({
                 "imgUrlMapping" : null
-            }, { fn : this._afterAppEnvResetting, scope : this}, true);
+            }, {
+                fn : this._afterAppEnvResetting,
+                scope : this
+            }, true);
         },
 
         _afterAppEnvResetting : function () {
@@ -75,12 +79,42 @@ Aria.classDefinition({
                 var tmp = this._cleanUrls(urls[i]);
                 this.assertTrue(tmp === this.imgPaths[i], "The framework is adding a prefix for image urls inside CSS templates, it shouldn't.");
             }
+            this._testImageIsActuallyLoadedAfterPrefixing();
+        },
+
+        _testImageIsActuallyLoadedAfterPrefixing : function () {
+            aria.core.AppEnvironment.setEnvironment({
+                "imgUrlMapping" : function (url) {
+                    return aria.core.DownloadMgr.resolveURL("aria/css/atskin/imgs/" + url);
+                }
+            }, {
+                fn : this._loadThirdTpl,
+                scope : this
+            }, true);
+        },
+
+        _loadThirdTpl : function () {
+            this._replaceTestTemplate({
+                template : "test.aria.templates.css.imgprefix.TemplateWithRealImage"
+            }, this._afterThirdTemplateLoaded);
+        },
+
+        _afterThirdTemplateLoaded : function () {
+            var container = Aria.$window.document.getElementById("container-real-image");
+            var style = aria.utils.Dom.getStyle(container, "backgroundImage");
+
+            // if the image did not load, it will be "none"
+            this.assertNotEquals(style, "none", "The prefixed image did not really load!");
+            this.assertTrue(style.indexOf('aria/css/atskin/imgs/errortooltip.png') > -1);
+
             this.end();
         },
 
         _cleanUrls : function (url) {
             url = url.charAt(url.length - 1) === ")" ? url.substring(0, url.length - 1) : url;
-            url = url.charAt(url.length - 1) === "\"" || url.charAt(url.length - 1) === "\'" ? url.substring(0, url.length - 1) : url;
+            url = url.charAt(url.length - 1) === "\"" || url.charAt(url.length - 1) === "\'"
+                    ? url.substring(0, url.length - 1)
+                    : url;
             return url;
         }
     }
