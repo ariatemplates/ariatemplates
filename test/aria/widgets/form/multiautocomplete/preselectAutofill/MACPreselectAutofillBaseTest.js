@@ -30,6 +30,7 @@ Aria.classDefinition({
     $dependencies : ["aria.resources.handlers.LCRangeResourceHandler"],
     $constructor : function () {
         this.testTemplate = "test.aria.widgets.form.multiautocomplete.preselectAutofill.PreselectAutofillCommonTemplate";
+        this.defaultTestTimeout = 120000;
         this.resourcesHandler = new aria.resources.handlers.LCRangeResourceHandler({
             allowRangeValues : true
         });
