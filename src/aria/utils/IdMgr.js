@@ -80,7 +80,7 @@ module.exports = Aria.classDefinition({
                 this.$logError(this.ID_ALREADY_RELEASED, [id]);
             }
 
-            this._freeId.push(id);
+            this._freeId.unshift(id);
         }
     }
 });
