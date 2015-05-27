@@ -292,6 +292,9 @@ Aria.classDefinition({
             formattedValue = ariaDateUtil.format(new Date(2010, 3, 1, 0, 0, 0), "d MMM y");
             this.assertTrue(formattedValue === "1 Apr 10", "Wrong output: " + formattedValue);
 
+            formattedValue = ariaDateUtil.format(new Date("2015/05/26 23:15:00 GMT+0000"), "EEE d MMM", true);
+            this.assertTrue(formattedValue === "Tue 26 May", "Wrong output: " + formattedValue);
+
             aria.core.environment.Environment.setLanguage("fr_FR", {
                 fn : this.appEnvChanged,
                 scope : this
