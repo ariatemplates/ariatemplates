@@ -1486,6 +1486,7 @@ Aria.classDefinition({
             newDate.getMinutes = newDate.getUTCMinutes;
             newDate.getSeconds = newDate.getUTCSeconds;
             newDate.getMilliseconds = newDate.getUTCMilliseconds;
+            newDate.getDay = newDate.getUTCDay;
             return newDate;
         },
 
