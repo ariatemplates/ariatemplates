@@ -918,7 +918,7 @@ module.exports = Aria.classDefinition({
         },
 
         /**
-         * Reiusse a pending request. A request might need to be reissued because the transport was not ready (it's the
+         * Reissue a pending request. A request might need to be reissued because the transport was not ready (it's the
          * case of XDR).
          * @param {String} reqId ID of the pending request.
          */

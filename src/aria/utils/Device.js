@@ -69,7 +69,6 @@ module.exports = Aria.classDefinition({
         /* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1397) */
         this._deprecatedProperties = []; // for init to process well
         /* BACKWARD-COMPATIBILITY-END (GitHub #1397) */
-        this.init();
 
         /* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1397) */
         var properties = [
@@ -203,8 +202,9 @@ module.exports = Aria.classDefinition({
 
         this._deprecatedProperties = deprecatedProperties;
         this.__deprecateProperties();
-        this.__ensureDeprecatedProperties();
         /* BACKWARD-COMPATIBILITY-END (GitHub #1397) */
+
+        this.init();
     },
     $prototype : {
         /* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1397) */
@@ -219,42 +219,42 @@ module.exports = Aria.classDefinition({
          * </p>
          */
         __deprecateProperties : function() {
-            if (ariaCoreBrowser.supportsPropertyDescriptors()) {
-                ariaUtilsArray.forEach(this._deprecatedProperties, function(property) {
-                    // --------------------------------- arguments destructuring
+            var supportsPropertyDescriptors = ariaCoreBrowser.supportsPropertyDescriptors();
 
-                    var name = property.name;
-                    var type = property.type;
-                    var underlying = property.underlying;
-                    var loggingMessage = property.loggingMessage;
-                    var loggingMessageArguments = property.loggingMessageArguments;
+            ariaUtilsArray.forEach(this._deprecatedProperties, function(property) {
+                // ----------------------------------------------- destructuring
 
-                    // ---------------------------------------------- processing
+                var name = property.name;
+                var type = property.type;
+                var underlying = property.underlying;
+                var loggingMessage = property.loggingMessage;
+                var loggingMessageArguments = property.loggingMessageArguments;
 
-                    var self = this;
+                // -------------------------------------------------- processing
 
-                    if (type == "attribute") {
-                        var prefixedName = "_" + name;
-                        this[prefixedName] = this[name];
+                var self = this;
 
-                        Object.defineProperty(this, name, {
-                            get : function () {
-                                self.$logWarn(loggingMessage, loggingMessageArguments);
-                                return self[prefixedName];
-                            },
-                            set : function (value) {
-                                self.$logWarn(loggingMessage, loggingMessageArguments);
-                                self[prefixedName] = value;
-                            }
-                        });
-                    } else {
-                        this[name] = function() {
+                if (type == "attribute" && supportsPropertyDescriptors) {
+                    var prefixedName = "_" + name;
+                    this[prefixedName] = this[name];
+
+                    Object.defineProperty(this, name, {
+                        get : function () {
                             self.$logWarn(loggingMessage, loggingMessageArguments);
-                            return underlying.apply(self, arguments);
-                        };
-                    }
-                }, this);
-            }
+                            return self[prefixedName];
+                        },
+                        set : function (value) {
+                            self.$logWarn(loggingMessage, loggingMessageArguments);
+                            self[prefixedName] = value;
+                        }
+                    });
+                } else if (type == "method") {
+                    this[name] = function() {
+                        self.$logWarn(loggingMessage, loggingMessageArguments);
+                        return underlying.apply(self, arguments);
+                    };
+                }
+            }, this);
         },
 
         /**

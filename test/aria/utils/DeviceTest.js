@@ -175,9 +175,7 @@ Aria.classDefinition({
             // -----------------------------------------------------------------
 
             Device.init();
-            if (!aria.core.Browser.supportsPropertyDescriptors()) {
-                return;
-            }
+            var supportsPropertyDescriptors = aria.core.Browser.supportsPropertyDescriptors();
 
             // -----------------------------------------------------------------
 
@@ -190,15 +188,20 @@ Aria.classDefinition({
 
                 // -------------------------------------------------------------
 
-                if (type == "attribute") {
+                var called = false;
+                if (type == "attribute" && supportsPropertyDescriptors) {
                     var dummy = Device[name];
-                } else {
+                    called = true;
+                } else if (type == "method") {
                     Device[name]();
+                    called = true;
                 }
 
                 // -------------------------------------------------------------
 
-                this.assertErrorInLogs(loggingMessage, 1);
+                if (called) {
+                    this.assertErrorInLogs(loggingMessage, 1);
+                }
             }, this);
         }
         /* BACKWARD-COMPATIBILITY-END (GitHub #1397) */

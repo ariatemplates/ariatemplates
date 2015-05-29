@@ -154,9 +154,7 @@ Aria.classDefinition({
             // -----------------------------------------------------------------
 
             Browser.init();
-            if (!Browser.supportsPropertyDescriptors()) {
-                return;
-            }
+            var supportsPropertyDescriptors = Browser.supportsPropertyDescriptors();
 
             // -----------------------------------------------------------------
 
@@ -169,15 +167,20 @@ Aria.classDefinition({
 
                 // -------------------------------------------------------------
 
-                if (type == "attribute") {
+                var called = false;
+                if (type == "attribute" && supportsPropertyDescriptors) {
                     var dummy = Browser[name];
-                } else {
+                    called = true;
+                } else if (type == "method") {
                     Browser[name]();
+                    called = true;
                 }
 
                 // -------------------------------------------------------------
 
-                this.assertErrorInLogs(loggingMessage, 1);
+                if (called) {
+                    this.assertErrorInLogs(loggingMessage, 1);
+                }
             }, this);
         }
         /* BACKWARD-COMPATIBILITY-END (GitHub #1397) */

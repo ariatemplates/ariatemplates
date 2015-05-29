@@ -590,42 +590,42 @@ module.exports = Aria.classDefinition({
          * Puts in place, if possible, properties descriptors in order to be able to log warnings for all possible accesses to the deprecated properties.
          */
         __deprecateProperties : function() {
-            if (this.supportsPropertyDescriptors()) {
-                ariaUtilsArray.forEach(this._deprecatedProperties, function(property) {
-                    // ------------------------------------------- destructuring
+            var supportsPropertyDescriptors = this.supportsPropertyDescriptors();
 
-                    var name = property.name;
-                    var type = property.type;
-                    var underlying = property.underlying;
-                    var loggingMessage = property.loggingMessage;
-                    var loggingMessageArguments = property.loggingMessageArguments;
+            ariaUtilsArray.forEach(this._deprecatedProperties, function(property) {
+                // ----------------------------------------------- destructuring
 
-                    // ---------------------------------------------- processing
+                var name = property.name;
+                var type = property.type;
+                var underlying = property.underlying;
+                var loggingMessage = property.loggingMessage;
+                var loggingMessageArguments = property.loggingMessageArguments;
 
-                    var self = this;
+                // -------------------------------------------------- processing
 
-                    if (type == "attribute") {
-                        var prefixedName = "_" + name;
-                        this[prefixedName] = this[name];
+                var self = this;
 
-                        Object.defineProperty(this, name, {
-                            get : function () {
-                                self.$logWarn(loggingMessage, loggingMessageArguments);
-                                return self[prefixedName];
-                            },
-                            set : function (value) {
-                                self.$logWarn(loggingMessage, loggingMessageArguments);
-                                self[prefixedName] = value;
-                            }
-                        });
-                    } else {
-                        this[name] = function() {
+                if (type == "attribute" && supportsPropertyDescriptors) {
+                    var prefixedName = "_" + name;
+                    this[prefixedName] = this[name];
+
+                    Object.defineProperty(this, name, {
+                        get : function () {
                             self.$logWarn(loggingMessage, loggingMessageArguments);
-                            return underlying.apply(self, arguments);
-                        };
-                    }
-                }, this);
-            }
+                            return self[prefixedName];
+                        },
+                        set : function (value) {
+                            self.$logWarn(loggingMessage, loggingMessageArguments);
+                            self[prefixedName] = value;
+                        }
+                    });
+                } else if (type == "method") {
+                    this[name] = function() {
+                        self.$logWarn(loggingMessage, loggingMessageArguments);
+                        return underlying.apply(self, arguments);
+                    };
+                }
+            }, this);
         },
 
         /**
