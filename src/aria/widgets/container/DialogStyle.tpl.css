@@ -132,6 +132,9 @@
             padding-top: 6px;
             color:${skinClass.titleColor};
             font-weight:bold;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
         }
         .xDialog_${skinClassName}_icon {
             padding-left: 6px;
