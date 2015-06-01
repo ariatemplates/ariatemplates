@@ -405,6 +405,7 @@ module.exports = Aria.classDefinition({
                 this._cfg.title = newValue;
                 if (this._titleDomElt) {
                     this._titleDomElt.innerHTML = newValue;
+                    this._onDimensionsChanged();
                 }
             } else if (propertyName === "macro") {
                 this._cfg.macro = newValue;
@@ -580,9 +581,12 @@ module.exports = Aria.classDefinition({
             var cfg = this._cfg;
             var getDomElementChild = ariaUtilsDom.getDomElementChild;
             this._domElt = this._popup.domElement;
-            this._titleBarDomElt = getDomElementChild(this._domElt, 0, true);
-            this._titleDomElt = getDomElementChild(this._titleBarDomElt, cfg.icon ? 1 : 0);
+            var titleBarDomElt = this._titleBarDomElt = getDomElementChild(this._domElt, 0, true);
+            this._titleDomElt = getDomElementChild(titleBarDomElt, cfg.icon ? 1 : 0);
+            this._onDimensionsChanged();
+
             this._calculatePosition();
+
             if (cfg.modal) {
                 ariaTemplatesNavigationManager.focusFirst(this._domElt);
             }
@@ -709,6 +713,7 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         _updateDivSize : function (viewport) {
+            var cfg = this._cfg;
             var math = ariaUtilsMath;
 
             var maxHeight, maxWidth;
@@ -720,16 +725,51 @@ module.exports = Aria.classDefinition({
                 maxWidth = math.min(this._cfg.maxWidth, viewport.width);
             }
 
+            var titleBarDomElt = this._titleBarDomElt;
+            var titleDomElt = this._titleDomElt;
+
+            var isIE7 = aria.core.Browser.isIE7;
+            if (isIE7) {
+                // without this, IE 7 gives wrong inner sizes
+                titleDomElt.style.overflow = "visible";
+            }
+
+            titleDomElt.style.width = "";
+            var titleWidth = ariaUtilsDom.getGeometry(titleDomElt).width;
+            var childNodes = titleBarDomElt.childNodes;
+            var iconsWidth = 0;
+            for (var i = 1, ii = childNodes.length; i < ii; i++) {
+                iconsWidth += childNodes[i].offsetWidth;
+            }
+
+            // First manage the width of the modal depending on the title bar and the max width
+            var shadows = this._shadows;
+            var minWidth = ariaUtilsMath.max(cfg.width, cfg.minWidth);
+            if (cfg.width == -1) {
+                minWidth = ariaUtilsMath.max(titleWidth + iconsWidth + shadows.left + shadows.right, minWidth);
+            }
+
             // if maximized == true, then height|widthMaximized will be used; otherwise normal width and height
             this._div.updateSize({
                 maxHeight : maxHeight,
                 maxWidth : maxWidth,
-                height : this._cfg.height,
-                width : this._cfg.width,
-                heightMaximized : this._cfg.heightMaximized,
-                widthMaximized : this._cfg.widthMaximized,
-                maximized : this._cfg.maximized
+                minWidth : minWidth,
+                height : cfg.height,
+                width : cfg.width,
+                heightMaximized : cfg.heightMaximized,
+                widthMaximized : cfg.widthMaximized,
+                maximized : cfg.maximized
             });
+
+            // The manage the title length to manage the text-overflow
+            var titleBarWidth = ariaUtilsDom.getGeometry(titleBarDomElt).width;
+            titleDomElt.style.width = (titleBarWidth - iconsWidth - shadows.left - shadows.right) + "px";
+
+            if (isIE7) {
+                // Back to overflow hidden mode
+                titleDomElt.style.overflow = "hidden";
+            }
+
         },
 
         /**
