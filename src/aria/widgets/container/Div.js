@@ -101,7 +101,7 @@ Aria.classDefinition({
          */
         updateSize : function (cfg) {
             var hasChanged = false, prefName, newVal;
-            var prefs = ['maxWidth', 'maxHeight', 'width', 'height'];
+            var prefs = ['maxWidth', 'maxHeight', 'minWidth', 'width', 'height'];
 
             for (var i = 0, len = prefs.length; i < len; i++) {
                 prefName = prefs[i];
