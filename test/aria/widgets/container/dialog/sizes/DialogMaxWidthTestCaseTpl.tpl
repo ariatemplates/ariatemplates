@@ -70,12 +70,12 @@
 
         {@aria:Dialog {
             visible : true,
-            macro : "dynamicWidth",
+            macro : "dynamicWidth5",
             title: "Normal title",
             bind: {
                 title: {
                     to : "title",
-                    inside : data
+                    inside : data.dialog5
                 }
             },
             id : "dialog5",
@@ -86,22 +86,53 @@
             maxWidth: 400
         }/}
 
+        {@aria:Dialog {
+            visible : true,
+            macro : "dynamicWidth6",
+            title: "Normal title",
+            bind: {
+                title: {
+                    to : "title",
+                    inside : data.dialog6
+                }
+            },
+            icon : "std:fire",
+            id : "dialog6",
+            center : false,
+            xpos : 20,
+            ypos : 400,
+            maxHeight: 400,
+            maxWidth: 400
+        }/}
+
     {/macro}
 
     {macro largeContent ()}
         <div style="width:700px; height: 3000px">Large dialog content</div>
     {/macro}
-    {macro dynamicWidth ()}
+    {macro dynamicWidth5 ()}
         {section {
-            macro: "dynamicWidthContent",
+            macro: "dynamicWidthContent5",
             bindRefreshTo: [{
-                inside: data,
+                inside: data.dialog5,
                 to: "width"
             }]
         }/}
     {/macro}
-    {macro dynamicWidthContent ()}
-        <div style="width:${data.width}px; height: 3000px">Large dialog content</div>
+    {macro dynamicWidth6 ()}
+        {section {
+            macro: "dynamicWidthContent6",
+            bindRefreshTo: [{
+                inside: data.dialog6,
+                to: "width"
+            }]
+        }/}
+    {/macro}
+    {macro dynamicWidthContent5 ()}
+        <div style="width:${data.dialog5.width}px; height: 3000px">Large dialog content</div>
+    {/macro}
+    {macro dynamicWidthContent6 ()}
+        <div style="width:${data.dialog6.width}px; height: 3000px">Large dialog content</div>
     {/macro}
     {macro smallContent ()}
         <div style="padding: 20px">Dialog content</div>
