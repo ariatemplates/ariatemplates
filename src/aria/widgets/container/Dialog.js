@@ -793,8 +793,9 @@ Aria.classDefinition({
             var titleWidth = aria.utils.Dom.getGeometry(titleDomElt).width;
             var childNodes = titleBarDomElt.childNodes;
             var iconsWidth = 0;
-            for (var i = 1, ii = childNodes.length; i < ii; i++) {
-                iconsWidth += childNodes[i].offsetWidth;
+            for (var i = 0, ii = childNodes.length; i < ii; i++) {
+                var node = childNodes[i];
+                iconsWidth += node !== titleDomElt ? node.offsetWidth : 0;
             }
 
             // First manage the width of the modal depending on the title bar and the max width

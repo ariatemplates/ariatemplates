@@ -26,8 +26,14 @@ Aria.classDefinition({
         this.$json = aria.utils.Json;
 
         this.data = {
-            title: "Short",
-            width: 150
+            dialog5 : {
+                title: "Short",
+                width: 150
+            },
+            dialog6 : {
+                title: "Short",
+                width: 150
+            }
         };
 
         this.setTestEnv({
@@ -55,7 +61,7 @@ Aria.classDefinition({
 
         runTemplateTest : function () {
             // The main template is Ready even if it contains a template inside the Dialog, wait
-            var dialogIds = ["dialog1", "dialog2", "dialog3", "dialog4", "dialog5"];
+            var dialogIds = ["dialog1", "dialog2", "dialog3", "dialog4", "dialog5", "dialog6"];
             this.waitFor({
                 condition : function() {
                     // Wait for every dialog ready and open
@@ -82,24 +88,44 @@ Aria.classDefinition({
             this.checkSizes("dialog3", 238);
             this.checkSizes("dialog4", 400);
 
-            this.changeContainerSize();
+            this.changeDialog5ContainerSize();
         },
 
-        changeContainerSize : function () {
+        changeDialog5ContainerSize : function () {
 
-            var data = this.data;
+            var dataDialog = this.data.dialog5;
             this.checkSizes("dialog5", 200);
-            this.$json.setValue(data, "title", "This is now a very long title");
+            this.$json.setValue(dataDialog, "title", "This is now a very long title");
             this.checkSizes("dialog5", 251);
 
-            this.$json.setValue(data, "title", "This is now a very very very very very very very long title");
+            this.$json.setValue(dataDialog, "title", "This is now a very very very very very very very long title");
             this.checkSizes("dialog5", 400);
 
-            this.$json.setValue(data, "title", "Short again");
+            this.$json.setValue(dataDialog, "title", "Short again");
             this.checkSizes("dialog5", 200);
 
-            this.$json.setValue(data, "width", 500);
+            this.$json.setValue(dataDialog, "width", 500);
             this.checkSizes("dialog5", 400);
+
+            this.changeDialog6ContainerSize();
+        },
+
+        changeDialog6ContainerSize : function () {
+
+            var dataDialog = this.data.dialog6;
+            this.checkSizes("dialog6", 200);
+
+            this.$json.setValue(dataDialog, "title", "This is now a very long title");
+            this.checkSizes("dialog6", 273);
+
+            this.$json.setValue(dataDialog, "title", "This is now a very very very very very very very long title");
+            this.checkSizes("dialog6", 400);
+
+            this.$json.setValue(dataDialog, "title", "Short again");
+            this.checkSizes("dialog6", 200);
+
+            this.$json.setValue(dataDialog, "width", 500);
+            this.checkSizes("dialog6", 400);
 
             this.end();
         }
