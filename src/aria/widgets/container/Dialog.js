@@ -819,7 +819,7 @@ Aria.classDefinition({
 
             // The manage the title length to manage the text-overflow
             var titleBarWidth = aria.utils.Dom.getGeometry(titleBarDomElt).width;
-            titleDomElt.style.width = (titleBarWidth - iconsWidth - shadows.left - shadows.right) + "px";
+            titleDomElt.style.width = math.max(titleBarWidth - iconsWidth - shadows.left - shadows.right, 0) + "px";
 
             if (isIE7) {
                 // Back to overflow hidden mode
