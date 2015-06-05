@@ -20,12 +20,7 @@ Aria.classDefinition({
     $constructor : function () {
         this.$RobotTestCase.constructor.call(this);
         // TODO this test is ridiculously long, split it
-        this.defaultTestTimeout = 40000;
-        if (aria.core.Browser.isIE7 || aria.core.Browser.isIE8) {
-            this.defaultTestTimeout = 120000;
-        } else if (aria.core.Browser.isPhantomJS) {
-            this.defaultTestTimeout = 60000;
-        }
+        this.defaultTestTimeout = 120000;
         this.setTestEnv({
             template : "test.aria.widgets.form.datepicker.errorstate.DatePickerTpl"
         });
