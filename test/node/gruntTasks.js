@@ -22,6 +22,7 @@ var getPath = function (end) {
 };
 
 var testProjectPath = getPath("../nodeTestResources/testProject/");
+var srcPath = getPath("../../src/");
 
 var testBuild = function (index, callback) {
     var gruntBuild = spawn("node", [getPath("../../build/grunt-cli.js"), "--gruntfile",
@@ -41,6 +42,20 @@ var testBuild = function (index, callback) {
 
 };
 
+var veryfyIOswfFile = function () {
+    var originalFile = fs.readFileSync(srcPath + "aria/resources/handlers/IO.swf", "hex");
+    var outputFile, outputFolderPath = testProjectPath + "target/fwk/aria/resources/handlers";
+    var containerDir = fs.readdirSync(outputFolderPath);
+    containerDir.forEach(function (fileName) {
+        if (/\.swf$/.test(fileName)) {
+            outputFile = fs.readFileSync(outputFolderPath + "/" + fileName, "hex");
+        }
+    });
+
+    return originalFile == outputFile;
+
+};
+
 describe("easypackage grunt task", function () {
     this.timeout(40000);
     it("should re-package Aria Templates correcly", function (callback) {
@@ -55,6 +70,13 @@ describe("easypackage grunt task", function () {
             } catch (ex) {
                 assert.ok(false, "Custom packaging has not been taken into account");
             }
+
+            try {
+                assert.ok(veryfyIOswfFile(), "IO.swf file has been modified by the build");
+            } catch (ex) {
+                assert.ok(false, "IO.swf file has been modified by the build");
+            }
+
             callback();
         });
 

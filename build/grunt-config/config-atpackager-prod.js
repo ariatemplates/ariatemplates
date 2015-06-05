@@ -116,7 +116,7 @@ module.exports = function (grunt) {
                     }, {
                         type : 'CopyUnpackaged',
                         cfg : {
-                            files : ['aria/noderError/**', '<%= atbuildOptions.allow_unpackaged_files %>'],
+                            files : ['aria/noderError/**', '<%= atbuildOptions.allow_unpackaged_files %>', '!**/*.swf'],
                             builder : {
                                 type : 'ATMultipart',
                                 cfg : {
