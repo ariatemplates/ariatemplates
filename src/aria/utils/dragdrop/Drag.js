@@ -211,11 +211,15 @@
             if (this.proxy && this.proxy.overlay) {
                 this.proxy.$dispose();
             }
+            if (this.overlay) {
+                this.overlay.$dispose();
+                this.overlay = null;
+            }
             this.element = null;
             this.handle = null;
             this.cursor = null;
             this.proxy = null;
-            aria.utils.Mouse.stopListen("drag", this);
+            aria.utils.Mouse.stopListen("drag", this.listenerId);
         },
         $prototype : {
 
@@ -453,9 +457,10 @@
                 // This is to handle if there is a scroll
                 parentScroll = domUtil._getDocumentScroll().scrollTop;
                 element.onselectstart = Aria.returnTrue;
-                if (this.dragOverIFrame) {
+                if (this.overlay) {
                     // remove overlay here
                     this.overlay.$dispose();
+                    this.overlay = null;
                 }
                 if (this.proxy && this.proxy.overlay) {
                     this._movableInitialGeometry.y += (parentScroll > 0) ? parentScroll : 0;
