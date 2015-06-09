@@ -180,6 +180,20 @@
              */
             this.listenerId = aria.utils.Mouse.listen("drag", this);
 
+            /**
+             * By default this is true to fix a bug for all draggable elements containing an IFrame, but can be switched
+             * off if necessary.
+             * @type Boolean
+             */
+            this.dragOverIFrame = (params.dragOverIFrame !== undefined) ? params.dragOverIFrame : false;
+
+            /**
+             * Used with this.dragOverIFrame to add an overlay to the document, fixes an issue caused by dragging over
+             * IFrames
+             * @type HTMLElement
+             */
+            this.overlay = null;
+
             setAttribute(this.getDraggable(true), aria.utils.Mouse.DRAGGABLE_ATTRIBUTE, this.listenerId);
 
             // This will start loading the proxy class if needed without creating it.
@@ -375,6 +389,12 @@
                 if (movable) {
                     // This will prevent text selection on IE on the movable
                     movable.onselectstart = Aria.returnFalse;
+                    if (this.dragOverIFrame) {
+                        // add overlay here for the visible page
+                        this.overlay = new aria.utils.overlay.Overlay(Aria.$window.document.body, {
+                            className : ' '
+                        });
+                    }
                     if (movable.offsetTop < element.offsetTop) {
                         movable.style.top = element.offsetTop + "px";
                     }
@@ -433,6 +453,10 @@
                 // This is to handle if there is a scroll
                 parentScroll = domUtil._getDocumentScroll().scrollTop;
                 element.onselectstart = Aria.returnTrue;
+                if (this.dragOverIFrame) {
+                    // remove overlay here
+                    this.overlay.$dispose();
+                }
                 if (this.proxy && this.proxy.overlay) {
                     this._movableInitialGeometry.y += (parentScroll > 0) ? parentScroll : 0;
                     element.style.top = (this._elementInitialPosition.top + this._movableGeometry.y - this._movableInitialGeometry.y)

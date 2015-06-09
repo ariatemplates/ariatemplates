@@ -942,7 +942,8 @@ Aria.classDefinition({
                 handle : this._titleBarDomElt,
                 cursor : "move",
                 proxy : this._cfg.movableProxy,
-                constrainTo : aria.utils.Dom.VIEWPORT
+                constrainTo : aria.utils.Dom.VIEWPORT,
+                dragOverIFrame : true
             });
             this._draggable.$on({
                 "dragstart" : {

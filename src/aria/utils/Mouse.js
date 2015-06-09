@@ -31,7 +31,7 @@
      * @param {aria.utils.Mouse} scope Instance of the listening class
      */
     function connectMouseEvents (scope) {
-        var root = Aria.$window;
+        var root = (aria.core.Browser.isIE7 || aria.core.Browser.isIE8) ? Aria.$window.document.body : Aria.$window;
         eventUtil.addListener(root, "mousemove", {
             fn : scope._onMouseMove,
             scope : scope
@@ -55,7 +55,7 @@
      * @param {aria.utils.Mouse} scope Instance of the listening class
      */
     function disconnectMouseEvents (scope) {
-        var root = Aria.$window;
+        var root = (aria.core.Browser.isIE7 || aria.core.Browser.isIE8) ? Aria.$window.document.body : Aria.$window;
         eventUtil.removeListener(root, "mousemove", {
             fn : scope._onMouseMove,
             scope : scope
