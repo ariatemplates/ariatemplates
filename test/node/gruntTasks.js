@@ -42,7 +42,7 @@ var testBuild = function (index, callback) {
 
 };
 
-var veryfyIOswfFile = function () {
+var verifyIOswfFile = function () {
     var originalFile = fs.readFileSync(srcPath + "aria/resources/handlers/IO.swf", "hex");
     var outputFile, outputFolderPath = testProjectPath + "target/fwk/aria/resources/handlers";
     var containerDir = fs.readdirSync(outputFolderPath);
@@ -54,6 +54,19 @@ var veryfyIOswfFile = function () {
 
     return originalFile == outputFile;
 
+};
+
+var verifyImgFiles = function (outputFolder) {
+    var outputFolderPath = testProjectPath + "target/" + outputFolder + "/app/css/img";
+    var containerDir = fs.readdirSync(outputFolderPath);
+    var checks = 0;
+    containerDir.forEach(function (fileName) {
+        checks++;
+        var outputFile = fs.readFileSync(outputFolderPath + "/" + fileName, "hex");
+        var originalFile = fs.readFileSync(testProjectPath + "src/app/css/img/" + fileName, "hex");
+        assert.strictEqual(outputFile, originalFile, fileName + " was modified by the build.");
+    });
+    assert.strictEqual(checks, 2, "Wrong number of files in app/css/img");
 };
 
 describe("easypackage grunt task", function () {
@@ -72,7 +85,7 @@ describe("easypackage grunt task", function () {
             }
 
             try {
-                assert.ok(veryfyIOswfFile(), "IO.swf file has been modified by the build");
+                assert.ok(verifyIOswfFile(), "IO.swf file has been modified by the build");
             } catch (ex) {
                 assert.ok(false, "IO.swf file has been modified by the build");
             }
@@ -97,6 +110,9 @@ describe("easypackage grunt task", function () {
             assert.ok(/abcdefg/.test(packageContent), "License has not been added");
             assert.ok(/require\(\\"ariatemplates\/Aria\\"\)/.test(packageContent), "Conversion to noderJS syntax missing");
             assert.ok(!/\{Template/.test(packageContent), "Template compilation missing");
+
+            verifyImgFiles("one");
+
             callback();
         });
     });
@@ -125,6 +141,9 @@ describe("easypackage grunt task", function () {
                 flag = false;
             }
             assert.ok(flag, "The second target of the task was not executed correctly");
+
+            verifyImgFiles("two");
+
             callback();
         });
     });

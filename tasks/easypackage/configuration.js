@@ -111,10 +111,7 @@ module.exports = function (grunt, args) {
                 }, {
                     type : 'CopyUnpackaged',
                     cfg : {
-                        files : ['**/*', '!**/*.js'],
-                        builder : {
-                            type : 'ATMultipart'
-                        }
+                        files : ['**/*']
                     }
                 }, args.checkPackaged ? 'CheckPackaged' : null],
         packages : args.packages
