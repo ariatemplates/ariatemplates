@@ -61,7 +61,9 @@ Aria.classDefinition({
 
         },
         interpretAndAssertMonthYear : function (dateStr, month, year, yearBeforeMonth) {
-            var date = aria.utils.Date.interpretMonthAndYear(dateStr, yearBeforeMonth);
+            var date = aria.utils.Date.interpretMonthAndYear(dateStr, {
+                yearBeforeMonth: yearBeforeMonth
+            });
             this.assertTrue(date.getFullYear() === year);
             this.assertTrue(date.getMonth() + 1 === month);
         },
