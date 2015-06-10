@@ -1231,6 +1231,13 @@ Aria.classDefinition({
          * @return {Date}
          */
         interpretDateAndMonth : function (dateStr, options) {
+            /* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1488) */
+            if (options != null && typeof options != "object") {
+                options = {
+                    isDateBeforeMonth: options
+                };
+            }
+            /* BACKWARD-COMPATIBILITY-END (GitHub #1488) */
             var dateBeforeMonth = (options && ("isDateBeforeMonth" in options))
                   ? options.isDateBeforeMonth
                   : this._environment.getDateFormats().dateBeforeMonth;
@@ -1299,6 +1306,13 @@ Aria.classDefinition({
          * @return {Date}
          */
         interpretMonthAndYear : function (dateStr, options) {
+            /* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1488) */
+            if (options != null && typeof options != "object") {
+                options = {
+                    yearBeforeMonth: options
+                };
+            }
+            /* BACKWARD-COMPATIBILITY-END (GitHub #1488) */
             var yearBeforeMonth = options && options.yearBeforeMonth;
             var dateArray = this._parseDateString(dateStr), interpretdDate, interpretdMonth, arrayLen, interpretdYear;
             // The Array size should always be 2 if not return nothing
