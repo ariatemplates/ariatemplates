@@ -66,6 +66,12 @@ Aria.classDefinition({
             });
             this.assertTrue(date.getFullYear() === year);
             this.assertTrue(date.getMonth() + 1 === month);
+
+            /* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1488) */
+            date = aria.utils.Date.interpretMonthAndYear(dateStr, yearBeforeMonth);
+            this.assertTrue(date.getFullYear() === year);
+            this.assertTrue(date.getMonth() + 1 === month);
+            /* BACKWARD-COMPATIBILITY-END (GitHub #1488) */
         },
         testDateinterpreter : function () {
             // should interpret as 05 Dec
