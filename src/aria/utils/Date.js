@@ -25,11 +25,25 @@ var ariaUtilsUtilsRes = require("../$resources").file(__dirname, "./UtilsRes");
 var nextPatternRegexp = /^(d+|M+|y+|I)/;
 var numberRegexp = /^[0-9]+$/;
 
+/**
+ * Returns the full year corresponding to the year entered by the user.
+ * @param {Number} year entered by the user (can be either 2 digits or 4 digits)
+ * @param {aria.utils.Beans:options} options options object, only its cutYear property is used - optional
+ * @return {Number} full year (4 digits)
+ */
+var applyCutYear = function (year, options) {
+    if (year < 100) {
+        var cutYear = (options && ("cutYear" in options)) ? options.cutYear : ariaUtilsDate._cutYear;
+        year += year > cutYear ? 1900 : 2000;
+    }
+    return year;
+};
+
 var getNumber = function(str, defaultValue) {
     return numberRegexp.test(str) ? parseInt(str, 10) : defaultValue;
 };
 
-var getJsDateFromState = function(state) {
+var getJsDateFromState = function(state, options) {
 
     if (!state) {
         return null;
@@ -45,9 +59,8 @@ var getJsDateFromState = function(state) {
         var currentDate = new Date();
 
         var y = getNumber(datetime.y, currentDate.getFullYear());
-        if (y < 100) {
-            y += y > ariaUtilsDate._cutYear ? 1900 : 2000;
-        }
+        y = applyCutYear(y, options);
+
         var M = getNumber(datetime.M, currentDate.getMonth() + 1) - 1;
         var d = getNumber(datetime.d, 1);
         /*
@@ -83,7 +96,7 @@ var getJsDateFromState = function(state) {
 
 };
 
-var parseNextSteps = function(state) {
+var parseNextSteps = function(state, options) {
 
     var currentPattern = state.pattern;
     var currentValue = state.value;
@@ -120,22 +133,22 @@ var parseNextSteps = function(state) {
 
             currentState.pattern = currentPattern.substr(length);
             currentState.value = currentValue.substr(length);
-            return parseNextSteps(currentState);
+            return parseNextSteps(currentState, options);
         } else if (fullPattern == "M" || fullPattern == "d") {
             currentState.pattern = currentPattern.substr(1);
 
             // Try with one character first
             datetime[patternType] = state.value.substr(0, 1);
             currentState.value = currentValue.substr(1);
-            var newState = parseNextSteps(currentState);
-            var jsDate = getJsDateFromState(newState);
+            var newState = parseNextSteps(currentState, options);
+            var jsDate = getJsDateFromState(newState, options);
             if (jsDate) {
                 newState.jsDate = jsDate; // Prevent state from being validated later again
             } else {
                 // One character fail, take the new state with 2
                 datetime[patternType] = state.value.substr(0, 2);
                 currentState.value = currentValue.substr(2);
-                newState = parseNextSteps(currentState);
+                newState = parseNextSteps(currentState, options);
             }
 
             return newState;
@@ -155,7 +168,7 @@ var parseNextSteps = function(state) {
                     datetime[patternType] = (i % 12) + 1;
                     currentState.pattern = currentPattern.substr(fullPattern.length);
                     currentState.value = currentValue.substr(length);
-                    return parseNextSteps(currentState);
+                    return parseNextSteps(currentState, options);
                 }
             }
             // Nothing found
@@ -166,7 +179,7 @@ var parseNextSteps = function(state) {
         if (currentValue.substr(0, 1) == currentPattern.substr(0, 1)) {
             currentState.pattern = currentPattern.substr(1);
             currentState.value = currentValue.substr(1);
-            return parseNextSteps(currentState);
+            return parseNextSteps(currentState, options);
         } else {
             return false;
         }
@@ -877,13 +890,7 @@ var ariaUtilsDate = module.exports = Aria.classDefinition({
          * </pre>
          *
          * @param {String} entryStr String to be interpreted
-         * @param {aria.utils.Beans:options} options for the date interpreter - optional
-         *
-         * <pre>
-         * referenceDate : {Date} reference date used in case entry string is (+/- Number) defaults to today
-         * isDateBeforeMonth : {Boolean} Whether the date is written before or after the month
-         * isMonthYear : {Boolean} Whether the date contains only the month and year, without day
-         * </pre>
+         * @param {aria.utils.Beans:options} options options for the date interpreter - optional
          *
          * @return {Date}
          */
@@ -896,19 +903,19 @@ var ariaUtilsDate = module.exports = Aria.classDefinition({
             }
             // is input pattern set?
             if (inputPattern) {
-                var parsedDate = this._interpretAgainstPattern(entryStr, options.inputPattern);
+                var parsedDate = this._interpretAgainstPattern(entryStr, inputPattern, options);
                 if (parsedDate) {
                     return parsedDate;
                 }
                 // In case inputPattern is not mentioned, pattern will take precedence
             } else if (outputPattern) {
-                var parsedDate = this._interpretAgainstPattern(entryStr, options.outputPattern);
+                var parsedDate = this._interpretAgainstPattern(entryStr, outputPattern, options);
                 if (parsedDate) {
                     return parsedDate;
                 }
             }
 
-            var dateBeforeMonth, entry, entrylen, dateOptions;
+            var entry, entrylen, dateOptions;
             /* Code for Reference Date backward compatibility */
             dateOptions = ariaUtilsType.isDate(options) ? {
                 referenceDate : options
@@ -967,15 +974,12 @@ var ariaUtilsDate = module.exports = Aria.classDefinition({
              * Remaining cases : classic interpret we will insert separators, then cut the entry on separators and
              * interpret it
              */
-            dateBeforeMonth = ("isDateBeforeMonth" in dateOptions)
-                    ? dateOptions.isDateBeforeMonth
-                    : this._environment.getDateFormats().dateBeforeMonth;
             // To Interpret all Remaining cases
             // check if only month and year is sent in date string.
             if (!dateOptions.isMonthYear) {
-                return this.interpretDateAndMonth(entry, dateBeforeMonth);
+                return this.interpretDateAndMonth(entry, dateOptions);
             } else {
-                return this.interpretMonthAndYear(entry, dateOptions.yearBeforeMonth);
+                return this.interpretMonthAndYear(entry, dateOptions);
             }
             // return null if nothing matches
 
@@ -984,10 +988,11 @@ var ariaUtilsDate = module.exports = Aria.classDefinition({
         /**
          * Interpret a String as a JS Date against a pattern<br />
          * @param {String} entryStr String to be interpreted
-         * @param {Array} pattern matching the string to be interpreted - optional
+         * @param {Array} pattern matching the string to be interpreted
+         * @param {aria.utils.Beans:options} options options for the date interpreter - optional
          * @return {Date}
          */
-        _interpretAgainstPattern : function (entryStr, inputPattern) {
+        _interpretAgainstPattern : function (entryStr, inputPattern, options) {
             if (ariaUtilsType.isFunction(inputPattern) || ariaUtilsType.isString(inputPattern)) {
                 inputPattern = [inputPattern];
             } else if (!ariaUtilsType.isArray(inputPattern)) {
@@ -1014,8 +1019,8 @@ var ariaUtilsDate = module.exports = Aria.classDefinition({
                             value: entryStr
                     };
 
-                    var newState = parseNextSteps(initialState);
-                    var dt = getJsDateFromState(newState);
+                    var newState = parseNextSteps(initialState, options);
+                    var dt = getJsDateFromState(newState, options);
                     if (dt) {
                         return dt;
                     }
@@ -1142,10 +1147,14 @@ var ariaUtilsDate = module.exports = Aria.classDefinition({
         /**
          * To interpret the date having month, date, optional year.
          * @param {String} dateStr string need to be parsed.
-         * @param {Boolean} dateBeforeMonth
+         * @param {aria.utils.Beans:options} options options for the date interpreter - optional
          * @return {Date}
          */
-        interpretDateAndMonth : function (dateStr, dateBeforeMonth) {
+        interpretDateAndMonth : function (dateStr, options) {
+            var dateBeforeMonth = (options && ("isDateBeforeMonth" in options))
+                  ? options.isDateBeforeMonth
+                  : this._environment.getDateFormats().dateBeforeMonth;
+
             var dateArray = this._parseDateString(dateStr), interpretdDate, interpretdMonth, interpretdYear, arrayLen;
             arrayLen = dateArray.length;
             // With the previous changes, dateArray length should be 2 or 3.
@@ -1199,18 +1208,19 @@ var ariaUtilsDate = module.exports = Aria.classDefinition({
                 }
             }
 
-            return this._checkParsedDate(interpretdDate, interpretdMonth, interpretdYear);
+            return this._checkParsedDate(interpretdDate, interpretdMonth, interpretdYear, options);
 
         },
 
         /**
          * Interpret date if the string has only month and year
          * @param {String} dateStr
-         * @param {Boolean} yearBeforeMonth optional boolean to check if the year is entered before month.
+         * @param {aria.utils.Beans:options} options options for the date interpreter - optional
          * @return {Date}
          */
-        interpretMonthAndYear : function (dateStr, yearBeforeMonth) {
-            var dateArray = this._parseDateString(dateStr), interpretdDate, interpretdMonth, arrayLen, interpretdYear, ismonthYear = true;
+        interpretMonthAndYear : function (dateStr, options) {
+            var yearBeforeMonth = options && options.yearBeforeMonth;
+            var dateArray = this._parseDateString(dateStr), interpretdDate, interpretdMonth, arrayLen, interpretdYear;
             // The Array size should always be 2 if not return nothing
             arrayLen = dateArray.length;
             if (arrayLen != 2 && arrayLen != 3) {
@@ -1266,7 +1276,7 @@ var ariaUtilsDate = module.exports = Aria.classDefinition({
 
             }
 
-            return this._checkParsedDate(interpretdDate, interpretdMonth, interpretdYear, ismonthYear);
+            return this._checkParsedDate(interpretdDate, interpretdMonth, interpretdYear, options);
 
         },
 
@@ -1310,11 +1320,11 @@ var ariaUtilsDate = module.exports = Aria.classDefinition({
          * @param {String} interpretdDate date string
          * @param {String} interpretdMonth month string
          * @param {String} interpretdYear year string
-         * @param {Boolean} ismonthYear optional boolean if only month and year are passed as string
+         * @param {aria.utils.Beans:options} options options for the date interpreter - optional
          * @return {Date} returns the date object
          */
-        _checkParsedDate : function (interpretdDate, interpretdMonth, interpretdYear, ismonthYear) {
-            var cutYear = this._cutYear, jsdate;
+        _checkParsedDate : function (interpretdDate, interpretdMonth, interpretdYear, options) {
+            var jsdate;
             // get date integer
             if (this._interpret_digitOnly.test(interpretdDate)) {
                 interpretdDate = parseInt(interpretdDate, 10);
@@ -1344,18 +1354,7 @@ var ariaUtilsDate = module.exports = Aria.classDefinition({
                 } else {
                     interpretdYear = null;
                 }
-                // increasing the cutYear in case of only month year
-                if (ismonthYear) {
-                    cutYear += 10;
-                }
-                if (interpretdYear < 100) {
-                    if (interpretdYear > this._cutYear) {
-                        interpretdYear += 1900;
-                    } else {
-                        interpretdYear += 2000;
-                    }
-                }
-
+                interpretdYear = applyCutYear(interpretdYear, options);
             } else {
                 var todaydate = new Date();
                 interpretdYear = todaydate.getFullYear();
