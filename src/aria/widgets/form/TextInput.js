@@ -337,10 +337,12 @@ module.exports = Aria.classDefinition({
                 spellCheck = ' spellcheck="' + (cfg.spellCheck ? "true" : "false") + '"';
             }
 
+            var ariaRequired = (cfg.waiAria && cfg.mandatory) ? ' aria-required' : '';
+
             if (this._isTextarea) {
                 out.write(['<textarea', Aria.testMode ? ' id="' + this._domId + '_textarea"' : '',
-                        cfg.disabled ? ' disabled="disabled"' : cfg.readOnly ? ' readonly="readonly"' : '', ' type="',
-                        type, '" style="', inlineStyle.join(''), 'color:', color,
+                        cfg.disabled ? ' disabled="disabled"' : cfg.readOnly ? ' readonly="readonly"' : '', ariaRequired
+                        , ' type="', type, '" style="', inlineStyle.join(''), 'color:', color,
                         ';overflow:auto;resize:none;height: ' + this._frame.innerHeight + 'px; width:', inputWidth,
                         'px;"', 'value=""', (cfg.maxlength > -1 ? 'maxlength="' + cfg.maxlength + '" ' : ' '),
                         (cfg.tabIndex != null ? 'tabindex="' + this._calculateTabIndex() + '" ' : ' '), spellCheck, this._extraInputAttributes,
@@ -350,8 +352,8 @@ module.exports = Aria.classDefinition({
                 ].join(''));
             } else {
                 out.write(['<input class="xTextInputInput" ', Aria.testMode ? ' id="' + this._domId + '_input"' : '',
-                        cfg.disabled ? ' disabled="disabled"' : cfg.readOnly ? ' readonly="readonly"' : '', ' type="',
-                        type, '" style="', inlineStyle.join(''), 'color:', color, ';width:', inputWidth, 'px;"',
+                        cfg.disabled ? ' disabled="disabled"' : cfg.readOnly ? ' readonly="readonly"' : '', ariaRequired,
+                        ' type="', type, '" style="', inlineStyle.join(''), 'color:', color, ';width:', inputWidth, 'px;"',
                         'value="', stringUtils.encodeForQuotedHTMLAttribute((this._helpTextSet) ? cfg.helptext : text),
                         '" ', (cfg.maxlength > -1 ? 'maxlength="' + cfg.maxlength + '" ' : ' '),
                         (cfg.tabIndex != null ? 'tabindex="' + this._calculateTabIndex() + '" ' : ' '), spellCheck, this._extraInputAttributes,
@@ -754,6 +756,16 @@ module.exports = Aria.classDefinition({
                         this._validationPopupHide();
                     }
                 }
+
+               if (cfg.waiAria && propertyName === 'mandatory') {
+                    var input = this.getTextInputField();
+                    if (newValue) {
+                        input.setAttribute("aria-required", "");
+                    } else {
+                        input.removeAttribute("aria-required");
+                    }
+               }
+
             } else if (propertyName == "prefill") {
                 this.setPrefillText(true, newValue, true);
             } else if (propertyName == "prefillError") {
@@ -841,6 +853,15 @@ module.exports = Aria.classDefinition({
                 // the recently changed cfg object
                 inputElm.readOnly = this._cfg.readOnly;
                 inputElm.disabled = this._cfg.disabled;
+
+                if (this._cfg.waiAria) {
+                    if (this._cfg.formatError || this._cfg.error) {
+                        inputElm.setAttribute("aria-invalid", "");
+                    } else {
+                        inputElm.removeAttribute("aria-invalid");
+                    }
+                }
+
             }
         },
 
