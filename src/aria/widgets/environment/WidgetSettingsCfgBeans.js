@@ -77,6 +77,11 @@ module.exports = Aria.beanDefinitions({
                     },
                     $default : {}
                 },
+                "waiAria" : {
+                    $type : "json:Boolean",
+                    $description : "If true, accessibility-related DOM attributes are enabled, to comply with WAI-ARIA specifications. This allows screen readers and other accessibility tools to work better.",
+                    $default : false
+                },
                 "defaultErrorMessages" : {
                     $type : "json:Object",
                     $description : "Default values for widgets' error messages.",

@@ -24,6 +24,7 @@ var ariaWidgetsGlobalStyle = require("./GlobalStyle.tpl.css");
 var ariaWidgetLibsBindableWidget = require("../widgetLibs/BindableWidget");
 var ariaCoreTplClassLoader = require("../core/TplClassLoader");
 var ariaCoreJsonValidator = require("../core/JsonValidator");
+var ariaWidgetsEnvironmentWidgetSettings = require("./environment/WidgetSettings");
 
 /**
  * Base Widget class from which all widgets must derive
@@ -136,6 +137,10 @@ module.exports = Aria.classDefinition({
             if (!ariaWidgetsAriaSkinInterface.checkSkinClassExists(this._skinnableClass, cfg.sclass)) {
                 cfg.sclass = 'std';
             }
+        }
+
+        if (cfg.waiAria == null) {
+            cfg.waiAria = ariaWidgetsEnvironmentWidgetSettings.getWidgetSettings().waiAria;
         }
 
         var bindings = cfg.bind;

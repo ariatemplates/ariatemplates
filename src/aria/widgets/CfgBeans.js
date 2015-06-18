@@ -97,6 +97,10 @@ module.exports = Aria.beanDefinitions({
                     $type : "json:Integer",
                     $description : "The tab index of the widget. If null it's not taken into account, if 0 or above the widget will be focusable thorugh tab, if negative it won't be focusable.",
                     $default : null
+                },
+                "waiAria" : {
+                    $type : "json:Boolean",
+                    $description : "If true, and if the widget supports it, accessibility-related DOM attributes are enabled on this widget, to comply with WAI-ARIA specifications. This allows screen readers and other accessibility tools to work better."
                 }
             }
         },
