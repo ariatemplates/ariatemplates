@@ -796,6 +796,17 @@ Aria.classDefinition({
             this.assertEquals(ariaDateUtil.format(ariaDateUtil.interpret("01#0345", {cutYear: 44, inputPattern: "dd#MMyy"}), "dd/MM/yyyy"), "01/03/1945");
             this.assertEquals(ariaDateUtil.format(ariaDateUtil.interpret("01#0345", {cutYear: 10, inputPattern: "dd#MMyy"}), "dd/MM/yyyy"), "01/03/1945");
 
+            this.assertEquals(ariaDateUtil.format(ariaDateUtil.interpret("02MAR45/-1", {cutYear: 90}), "dd/MM/yyyy"), "01/03/2045");
+            this.assertEquals(ariaDateUtil.format(ariaDateUtil.interpret("02MAR45/-1", {cutYear: 46}), "dd/MM/yyyy"), "01/03/2045");
+            this.assertEquals(ariaDateUtil.format(ariaDateUtil.interpret("02MAR45/-1", {cutYear: 45}), "dd/MM/yyyy"), "01/03/2045");
+            this.assertEquals(ariaDateUtil.format(ariaDateUtil.interpret("02MAR45/-1", {cutYear: 44}), "dd/MM/yyyy"), "01/03/1945");
+            this.assertEquals(ariaDateUtil.format(ariaDateUtil.interpret("02MAR45/-1", {cutYear: 10}), "dd/MM/yyyy"), "01/03/1945");
+
+            this.assertEquals(ariaDateUtil.format(ariaDateUtil.interpretFullDateRef("02MAR45/-1", {cutYear: 90}), "dd/MM/yyyy"), "01/03/2045");
+            this.assertEquals(ariaDateUtil.format(ariaDateUtil.interpretFullDateRef("02MAR45/-1", {cutYear: 46}), "dd/MM/yyyy"), "01/03/2045");
+            this.assertEquals(ariaDateUtil.format(ariaDateUtil.interpretFullDateRef("02MAR45/-1", {cutYear: 45}), "dd/MM/yyyy"), "01/03/2045");
+            this.assertEquals(ariaDateUtil.format(ariaDateUtil.interpretFullDateRef("02MAR45/-1", {cutYear: 44}), "dd/MM/yyyy"), "01/03/1945");
+            this.assertEquals(ariaDateUtil.format(ariaDateUtil.interpretFullDateRef("02MAR45/-1", {cutYear: 10}), "dd/MM/yyyy"), "01/03/1945");
         }
     }
 });
