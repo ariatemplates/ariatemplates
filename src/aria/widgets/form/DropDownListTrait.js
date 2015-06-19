@@ -151,6 +151,7 @@ module.exports = Aria.classDefinition({
 
             var listObj = {
                 id : cfg.id,
+                waiAria : cfg.waiAria,
                 defaultTemplate : "defaultTemplate" in options ? options.defaultTemplate : cfg.listTemplate,
                 block : true,
                 sclass : cfg.listSclass || this._skinObj.listSclass,

@@ -180,6 +180,11 @@ module.exports = Aria.classDefinition({
         _skinnableClass : "TextInput",
 
         /**
+         * Extra attributes to put on the input/textarea element.
+         */
+        _extraInputAttributes : "",
+
+        /**
          * Prototype init method called at prototype creation time Allows to store class-level objects that are shared
          * by all instances
          * @param {Object} p the prototype object being built
@@ -338,7 +343,7 @@ module.exports = Aria.classDefinition({
                         type, '" style="', inlineStyle.join(''), 'color:', color,
                         ';overflow:auto;resize:none;height: ' + this._frame.innerHeight + 'px; width:', inputWidth,
                         'px;"', 'value=""', (cfg.maxlength > -1 ? 'maxlength="' + cfg.maxlength + '" ' : ' '),
-                        (cfg.tabIndex != null ? 'tabindex="' + this._calculateTabIndex() + '" ' : ' '), spellCheck,
+                        (cfg.tabIndex != null ? 'tabindex="' + this._calculateTabIndex() + '" ' : ' '), spellCheck, this._extraInputAttributes,
                         '>', stringUtils.escapeHTML(((this._helpTextSet) ? cfg.helptext : text) || ""),
                         '</textarea>'
 
@@ -349,7 +354,7 @@ module.exports = Aria.classDefinition({
                         type, '" style="', inlineStyle.join(''), 'color:', color, ';width:', inputWidth, 'px;"',
                         'value="', stringUtils.encodeForQuotedHTMLAttribute((this._helpTextSet) ? cfg.helptext : text),
                         '" ', (cfg.maxlength > -1 ? 'maxlength="' + cfg.maxlength + '" ' : ' '),
-                        (cfg.tabIndex != null ? 'tabindex="' + this._calculateTabIndex() + '" ' : ' '), spellCheck,
+                        (cfg.tabIndex != null ? 'tabindex="' + this._calculateTabIndex() + '" ' : ' '), spellCheck, this._extraInputAttributes,
                         ' _ariaInput="1"/>'
                 // the _ariaInput attribute is present so that pressing
                 // ENTER on this widget raises the onSubmit event of

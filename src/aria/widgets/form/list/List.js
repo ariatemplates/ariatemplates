@@ -18,7 +18,6 @@ require("./ListController");
 var ariaWidgetsFormListListStyle = require("./ListStyle.tpl.css");
 var ariaWidgetsTemplateBasedWidget = require("../../TemplateBasedWidget");
 
-
 /**
  * A simple list of selectable items
  */
@@ -66,7 +65,8 @@ module.exports = Aria.classDefinition({
                         numberOfRows : cfg.numberOfRows,
                         skin : skinObj,
                         cfg : divCfg,
-                        preselect : cfg.preselect
+                        preselect : cfg.preselect,
+                        waiAria : cfg.waiAria
                     }
                 }
             }
@@ -291,6 +291,30 @@ module.exports = Aria.classDefinition({
                 this._onBoundPropertyChange(propertyName, newValue, oldValue);
             } else {
                 this.$TemplateBasedWidget.setWidgetProperty.apply(this, arguments);
+            }
+        },
+
+        /**
+         * Returns the id of the root DOM element containing the list.
+         * @return {String} id of the root DOM element containing the list.
+         */
+        getListDomId : function () {
+            return this._tplWidget.getDom().id;
+        },
+
+        /**
+         * Returns the id of the DOM element corresponding to the item in the list at the given index.
+         * This method only works if accessibility was enabled at the time the list widget was created.
+         * @param {Integer} optionIndex index of the item whose id should be returned
+         * @return {String} id of the DOM element or undefined if the list is not fully loaded yet, accessibility
+         * is disabled or the index is invalid
+         */
+        getOptionDomId : function (optionIndex) {
+            if (this._subTplCtxt) {
+                var data = this._subTplModuleCtrl.getData();
+                if (data.waiAria && optionIndex > -1 && optionIndex < data.items.length) {
+                    return this._subTplCtxt.$getId(data.listItemDomIdPrefix + optionIndex);
+                }
             }
         }
     }

@@ -31,6 +31,9 @@
             {on mouseup {fn: "itemClick"} /}
             {on mouseover {fn: "itemMouseOver"} /}
         {/if}
+        {if data.waiAria}
+            role="listbox"
+        {/if}
         >
         <a href="#" style="display: none;">&nbsp;</a> //IE6 does not highlight the 1 elm in list
         {foreach item inArray data.items}
@@ -41,7 +44,7 @@
 
     {macro renderItem(item, itemIdx)}
         {var a = _getClassForItem(item)/}
-        <a href="javascript:void(0)" class="${a}" data-itemIdx="${itemIdx}" onclick="return false;">
+        <a {if data.waiAria}{id data.listItemDomIdPrefix + itemIdx/} role="option"{/if} href="javascript:void(0)" class="${a}" data-itemIdx="${itemIdx}" onclick="return false;">
             {if ! item.label}
                 &nbsp;
             {else/}
