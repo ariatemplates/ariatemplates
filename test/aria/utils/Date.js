@@ -756,6 +756,43 @@ Aria.classDefinition({
         testUTCFormat : function () {
             var dt = new Date(Date.UTC(2014, 2, 30, 2, 15, 0, 0)); // 30/03/2014 02:15:00 UTC
             this.assertEquals(aria.utils.Date.format(dt, 'HH:mm', true), "02:15", "30/03/2014 02:15:00 UTC should be formated to %2, got %1");
+        },
+
+        /**
+         * Tests the cutYear option.
+         */
+        testCutYearOption : function () {
+            var ariaDateUtil = aria.utils.Date;
+            this.assertEquals(ariaDateUtil.format(ariaDateUtil.interpretMonthAndYear("0345", {cutYear: 90}),"dd/MM/yyyy"), "01/03/2045");
+            this.assertEquals(ariaDateUtil.format(ariaDateUtil.interpretMonthAndYear("0345", {cutYear: 46}),"dd/MM/yyyy"), "01/03/2045");
+            this.assertEquals(ariaDateUtil.format(ariaDateUtil.interpretMonthAndYear("0345", {cutYear: 45}),"dd/MM/yyyy"), "01/03/2045");
+            this.assertEquals(ariaDateUtil.format(ariaDateUtil.interpretMonthAndYear("0345", {cutYear: 44}),"dd/MM/yyyy"), "01/03/1945");
+            this.assertEquals(ariaDateUtil.format(ariaDateUtil.interpretMonthAndYear("0345", {cutYear: 10}),"dd/MM/yyyy"), "01/03/1945");
+
+            this.assertEquals(ariaDateUtil.format(ariaDateUtil.interpret("0345", {isMonthYear: true, cutYear: 90}),"dd/MM/yyyy"), "01/03/2045");
+            this.assertEquals(ariaDateUtil.format(ariaDateUtil.interpret("0345", {isMonthYear: true, cutYear: 46}),"dd/MM/yyyy"), "01/03/2045");
+            this.assertEquals(ariaDateUtil.format(ariaDateUtil.interpret("0345", {isMonthYear: true, cutYear: 45}),"dd/MM/yyyy"), "01/03/2045");
+            this.assertEquals(ariaDateUtil.format(ariaDateUtil.interpret("0345", {isMonthYear: true, cutYear: 44}),"dd/MM/yyyy"), "01/03/1945");
+            this.assertEquals(ariaDateUtil.format(ariaDateUtil.interpret("0345", {isMonthYear: true, cutYear: 10}),"dd/MM/yyyy"), "01/03/1945");
+
+            this.assertEquals(ariaDateUtil.format(ariaDateUtil.interpretDateAndMonth("010345", {cutYear: 90}), "dd/MM/yyyy"), "01/03/2045");
+            this.assertEquals(ariaDateUtil.format(ariaDateUtil.interpretDateAndMonth("010345", {cutYear: 46}), "dd/MM/yyyy"), "01/03/2045");
+            this.assertEquals(ariaDateUtil.format(ariaDateUtil.interpretDateAndMonth("010345", {cutYear: 45}), "dd/MM/yyyy"), "01/03/2045");
+            this.assertEquals(ariaDateUtil.format(ariaDateUtil.interpretDateAndMonth("010345", {cutYear: 44}), "dd/MM/yyyy"), "01/03/1945");
+            this.assertEquals(ariaDateUtil.format(ariaDateUtil.interpretDateAndMonth("010345", {cutYear: 10}), "dd/MM/yyyy"), "01/03/1945");
+
+            this.assertEquals(ariaDateUtil.format(ariaDateUtil.interpret("010345", {cutYear: 90}), "dd/MM/yyyy"), "01/03/2045");
+            this.assertEquals(ariaDateUtil.format(ariaDateUtil.interpret("010345", {cutYear: 46}), "dd/MM/yyyy"), "01/03/2045");
+            this.assertEquals(ariaDateUtil.format(ariaDateUtil.interpret("010345", {cutYear: 45}), "dd/MM/yyyy"), "01/03/2045");
+            this.assertEquals(ariaDateUtil.format(ariaDateUtil.interpret("010345", {cutYear: 44}), "dd/MM/yyyy"), "01/03/1945");
+            this.assertEquals(ariaDateUtil.format(ariaDateUtil.interpret("010345", {cutYear: 10}), "dd/MM/yyyy"), "01/03/1945");
+
+            this.assertEquals(ariaDateUtil.format(ariaDateUtil.interpret("01#03#45", {cutYear: 90, inputPattern: "dd#MM#yy"}), "dd/MM/yyyy"), "01/03/2045");
+            this.assertEquals(ariaDateUtil.format(ariaDateUtil.interpret("01#03#45", {cutYear: 46, inputPattern: "dd#MM#yy"}), "dd/MM/yyyy"), "01/03/2045");
+            this.assertEquals(ariaDateUtil.format(ariaDateUtil.interpret("01#03#45", {cutYear: 45, inputPattern: "dd#MM#yy"}), "dd/MM/yyyy"), "01/03/2045");
+            this.assertEquals(ariaDateUtil.format(ariaDateUtil.interpret("01#03#45", {cutYear: 44, inputPattern: "dd#MM#yy"}), "dd/MM/yyyy"), "01/03/1945");
+            this.assertEquals(ariaDateUtil.format(ariaDateUtil.interpret("01#03#45", {cutYear: 10, inputPattern: "dd#MM#yy"}), "dd/MM/yyyy"), "01/03/1945");
+
         }
     }
 });
