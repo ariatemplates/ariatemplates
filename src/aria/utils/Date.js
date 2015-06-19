@@ -884,7 +884,7 @@ module.exports = Aria.classDefinition({
 
             // special case 3 10DEC11/+5 -> 10DEC2011 + 5 days
             if (this._interpret_specialCase3.test(entry)) {
-                return this.interpretFullDateRef(entry);
+                return this.interpretFullDateRef(entry, dateOptions);
             }
             // if length is less than 3 its not date string
             if (entrylen < 3) {
@@ -1049,9 +1049,10 @@ module.exports = Aria.classDefinition({
         /**
          * To interpret the date 01Jan2012/+5
          * @param {String} dateStr string that needs to be parsed
+         * @param {aria.utils.Beans:options} options options for the date interpreter - optional
          * @return {Date}
          */
-        interpretFullDateRef : function (dateStr) {
+        interpretFullDateRef : function (dateStr, options) {
             var execResult = this._interpret_specialCase3.exec(dateStr), jsdate;
             var newEntry = execResult[1];
             var shift = parseInt(execResult[3], 10);
@@ -1059,7 +1060,7 @@ module.exports = Aria.classDefinition({
             if (Math.abs(shift) > 365) {
                 return null;
             }
-            jsdate = this.interpretDateAndMonth(newEntry);
+            jsdate = this.interpretDateAndMonth(newEntry, options);
             if (jsdate) {
                 jsdate.setDate(jsdate.getDate() + shift);
             }
