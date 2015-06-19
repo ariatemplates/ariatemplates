@@ -449,7 +449,7 @@ module.exports = Aria.classDefinition({
             if (typeof res == "string") {
                 var logicalPath = Aria.getLogicalPath(res);
                 var serverRes = /([^\/]*)\/Res$/.exec(logicalPath);
-                return 'require("ariatemplates/$resources").' + (serverRes ? "module(" + serverRes[1] + "," : "file(")
+                return 'require("ariatemplates/$resources").' + (serverRes ? "module(" + out.stringify(serverRes[1]) + "," : "file(")
                         + out.stringify(logicalPath) + ")";
             }
             if (typeof res == "object") {
