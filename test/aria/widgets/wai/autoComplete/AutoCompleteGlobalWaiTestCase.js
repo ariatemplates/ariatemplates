@@ -25,7 +25,7 @@ module.exports = Aria.classDefinition({
 
         run : function () {
             AppEnvironment.setEnvironment({
-                widgetSettings: {
+                appSettings: {
                     waiAria: true
                 }
             }, {

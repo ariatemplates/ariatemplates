@@ -68,6 +68,11 @@ module.exports = Aria.beanDefinitions({
                     $type : "json:Boolean",
                     $description : "Indicates if the application is in debug state (strong validation, more error reporting).",
                     $default : Aria.debug
+                },
+                "waiAria" : {
+                    $type : "json:Boolean",
+                    $description : "If true, accessibility-related DOM attributes are enabled, to comply with WAI-ARIA specifications. This allows screen readers and other accessibility tools to work better.",
+                    $default : false
                 }
             }
 

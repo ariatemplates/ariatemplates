@@ -187,6 +187,16 @@ module.exports = Aria.classDefinition({
         },
 
         /**
+         * Return true if waiAria mode is on.
+         * @public
+         * @return {Boolean}
+         */
+        isWaiAria : function () {
+            var settings = this.checkApplicationSettings("appSettings");
+            return !! (settings && settings.waiAria);
+        },
+
+        /**
          * Turn on or off auto-escaping of HTML in statements
          * @public
          * @param {Boolean} escape
