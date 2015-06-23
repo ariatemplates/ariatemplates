@@ -51,6 +51,10 @@ module.exports = Aria.beanDefinitions({
                 "cutYear" : {
                     $type : "json:Integer",
                     $description : "2-digits number above which a 2-digits year 'xx' is interpreted as '19xx' instead of '20xx'."
+                },
+                "yearBeforeMonth" : {
+                    $type : "json:Boolean",
+                    $description : "Whether the year is written before or after the month."
                 }
             }
         }
