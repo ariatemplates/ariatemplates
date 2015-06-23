@@ -47,11 +47,10 @@ module.exports = Aria.classDefinition({
                 var children = element.childNodes;
                 for (var i = 0, l = children.length; i < l; i++) {
                     var child = children[i];
-                    if (child.hasAttribute(attribute)) {
+                    if (child.getAttribute && child.getAttribute(attribute)) {
                         res.push(child);
-                    } else {
-                        loop(child);
                     }
+                    loop(child);
                 }
             };
             loop(element);
@@ -83,23 +82,26 @@ module.exports = Aria.classDefinition({
                 ariaOwnsElt = this.testDocument.getElementById(ariaOwns);
                 this.assertTrue(ariaOwnsElt != null, "the id specified in aria-owns was not found in the document");
 
-                var childrenWithRole = this.getChildrenWithAttribute(ariaOwnsElt, "role");
-                for (var i = 0, l = childrenWithRole.length; i < l; i++) {
-                    var curChild = childrenWithRole[i];
-                    var curRole = curChild.getAttribute("role");
-                    this.assertTrue(curRole === "listbox" || curRole === "option");
-                    if (curRole == "listbox") {
-                        this.assertFalsy(listBoxElt, "several items have the listbox role");
-                        listBoxElt = curChild;
-                    } else if (curRole == "option") {
-                        optionsElt.push(curChild);
+                if (listWidget._subTplCtxt) {
+                    // the list widget may take some time to be loaded
+                    var childrenWithRole = this.getChildrenWithAttribute(ariaOwnsElt, "role");
+                    for (var i = 0, l = childrenWithRole.length; i < l; i++) {
+                        var curChild = childrenWithRole[i];
+                        var curRole = curChild.getAttribute("role");
+                        this.assertTrue(curRole === "listbox" || curRole === "option");
+                        if (curRole == "listbox") {
+                            this.assertFalsy(listBoxElt, "several items have the listbox role");
+                            listBoxElt = curChild;
+                        } else if (curRole == "option") {
+                            optionsElt.push(curChild);
+                        }
                     }
-                }
-                this.assertEquals(listWidget._cfg.items.length, optionsElt.length, "the number of items in listWidget._cfg.items (%1) is not the same as the number of DOM element with role=option (%2)");
-                this.assertTruthy(listBoxElt, "no item has the listbox role");
-                for (var i = 0, l = optionsElt.length; i < l; i++) {
-                    var curOption = optionsElt[i];
-                    this.assertTrue(domUtils.isAncestor(curOption, listBoxElt), "option not inside the listbox element: " + curOption.id);
+                    this.assertEquals(listWidget._cfg.items.length, optionsElt.length, "the number of items in listWidget._cfg.items (%1) is not the same as the number of DOM element with role=option (%2)");
+                    this.assertTruthy(listBoxElt, "no item has the listbox role");
+                    for (var i = 0, l = optionsElt.length; i < l; i++) {
+                        var curOption = optionsElt[i];
+                        this.assertTrue(domUtils.isAncestor(curOption, listBoxElt), "option not inside the listbox element: " + curOption.id);
+                    }
                 }
             }
 
