@@ -41,6 +41,9 @@ module.exports = Aria.classDefinition({
             };
             IOFiltersMgr.addFilter(this.myFilter);
             AppEnvironment.setEnvironment({
+                appSettings : {
+                    devMode : false
+                },
                 urlService : {
                     "implementation": "aria.modules.urlService.PatternURLCreationImpl",
                     "args": [
