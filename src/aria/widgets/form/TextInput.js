@@ -223,6 +223,13 @@ module.exports = Aria.classDefinition({
         },
 
         /**
+         * Gets a labelled element.
+         */
+        _getLabelledElement : function () {
+            return this.getTextInputField();
+        },
+
+        /**
          * Get the text value of the input field. If available it tries to use the internal valid value, otherwise uses
          * the invalid text. If none of them is a non empty string it return the prefilled value. This method doesn't
          * handle helptext, as this value is not just text but also style.
@@ -341,23 +348,24 @@ module.exports = Aria.classDefinition({
 
             if (this._isTextarea) {
                 out.write(['<textarea', Aria.testMode ? ' id="' + this._domId + '_textarea"' : '',
-                        cfg.disabled ? ' disabled="disabled"' : cfg.readOnly ? ' readonly="readonly"' : '', ariaRequired
-                        , ' type="', type, '" style="', inlineStyle.join(''), 'color:', color,
+                        cfg.disabled ? ' disabled="disabled"' : cfg.readOnly ? ' readonly="readonly"' : '',
+                        ariaRequired, ' type="', type, '" style="', inlineStyle.join(''), 'color:', color,
                         ';overflow:auto;resize:none;height: ' + this._frame.innerHeight + 'px; width:', inputWidth,
                         'px;"', 'value=""', (cfg.maxlength > -1 ? 'maxlength="' + cfg.maxlength + '" ' : ' '),
-                        (cfg.tabIndex != null ? 'tabindex="' + this._calculateTabIndex() + '" ' : ' '), spellCheck, this._extraInputAttributes,
-                        '>', stringUtils.escapeHTML(((this._helpTextSet) ? cfg.helptext : text) || ""),
-                        '</textarea>'
+                        (cfg.tabIndex != null ? 'tabindex="' + this._calculateTabIndex() + '" ' : ' '), spellCheck,
+                        this._getAriaLabelMarkup(), this._extraInputAttributes, '>',
+                        stringUtils.escapeHTML(((this._helpTextSet) ? cfg.helptext : text) || ""), '</textarea>'
 
                 ].join(''));
             } else {
                 out.write(['<input class="xTextInputInput" ', Aria.testMode ? ' id="' + this._domId + '_input"' : '',
-                        cfg.disabled ? ' disabled="disabled"' : cfg.readOnly ? ' readonly="readonly"' : '', ariaRequired,
-                        ' type="', type, '" style="', inlineStyle.join(''), 'color:', color, ';width:', inputWidth, 'px;"',
-                        'value="', stringUtils.encodeForQuotedHTMLAttribute((this._helpTextSet) ? cfg.helptext : text),
-                        '" ', (cfg.maxlength > -1 ? 'maxlength="' + cfg.maxlength + '" ' : ' '),
-                        (cfg.tabIndex != null ? 'tabindex="' + this._calculateTabIndex() + '" ' : ' '), spellCheck, this._extraInputAttributes,
-                        ' _ariaInput="1"/>'
+                        cfg.disabled ? ' disabled="disabled"' : cfg.readOnly ? ' readonly="readonly"' : '',
+                        ariaRequired, ' type="', type, '" style="', inlineStyle.join(''), 'color:', color, ';width:',
+                        inputWidth, 'px;"', 'value="',
+                        stringUtils.encodeForQuotedHTMLAttribute((this._helpTextSet) ? cfg.helptext : text), '" ',
+                        (cfg.maxlength > -1 ? 'maxlength="' + cfg.maxlength + '" ' : ' '),
+                        (cfg.tabIndex != null ? 'tabindex="' + this._calculateTabIndex() + '" ' : ' '), spellCheck,
+                        this._getAriaLabelMarkup(), this._extraInputAttributes, ' _ariaInput="1"/>'
                 // the _ariaInput attribute is present so that pressing
                 // ENTER on this widget raises the onSubmit event of
                 // the fieldset:
@@ -633,9 +641,9 @@ module.exports = Aria.classDefinition({
         },
 
         /**
-         * Compare newValue with the one stored in _cfg[propertyName].
-         * Can be overridden to have a specific comparison.
-         * Two values are considered equal if they are strictly equal, or if they are both either null or undefined (we consider them as being "void").
+         * Compare newValue with the one stored in _cfg[propertyName]. Can be overridden to have a specific comparison.
+         * Two values are considered equal if they are strictly equal, or if they are both either null or undefined (we
+         * consider them as being "void").
          * @param {String} propertyName
          * @param {MultiTypes} newValue If transformation is used, this should be the widget value and not the data
          * model value
@@ -757,14 +765,14 @@ module.exports = Aria.classDefinition({
                     }
                 }
 
-               if (cfg.waiAria && propertyName === 'mandatory') {
+                if (cfg.waiAria && propertyName === 'mandatory') {
                     var input = this.getTextInputField();
                     if (newValue) {
                         input.setAttribute("aria-required", "");
                     } else {
                         input.removeAttribute("aria-required");
                     }
-               }
+                }
 
             } else if (propertyName == "prefill") {
                 this.setPrefillText(true, newValue, true);
