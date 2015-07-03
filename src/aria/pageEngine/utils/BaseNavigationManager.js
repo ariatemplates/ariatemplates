@@ -26,6 +26,8 @@ module.exports = Aria.classDefinition({
     $classpath : "aria.pageEngine.utils.BaseNavigationManager",
     $statics : {
 
+        STORAGE_NOT_AVAILABLE : "The storage is not available on this browser.",
+
         /**
          * Key prefix that is used in order to save cached information in the local storage
          * @type String
@@ -55,8 +57,23 @@ module.exports = Aria.classDefinition({
          */
         this._navigate = cb || null;
 
+        var storageAvailable = false;
         if (options.active) {
+            /**
+             * Used to store state information for page refresh and external navigation
+             * @type aria.storage.LocalStorage
+             * @private
+             */
+            try {
+                this._storage = new ariaStorageLocalStorage();
+                storageAvailable = true;
+            } catch(e) {
+                this.$logWarning(this.STORAGE_NOT_AVAILABLE);
+            }
+        }
 
+
+        if (storageAvailable) {
             /**
              * Key that is used in order to save cached information in the local storage
              * @type String
@@ -73,13 +90,6 @@ module.exports = Aria.classDefinition({
             this._expiresAfter = ariaUtilsType.isNumber(options.expiresAfter)
                     ? options.expiresAfter
                     : this.EXPIRATION_TIME;
-
-            /**
-             * Used to store state information for page refresh and external navigation
-             * @type aria.storage.LocalStorage
-             * @private
-             */
-            this._storage = new ariaStorageLocalStorage();
 
             /**
              * Called on window unload.
@@ -103,7 +113,6 @@ module.exports = Aria.classDefinition({
             this._removeOldCache();
 
         } else {
-
             this._storage = null;
             this._cache = {};
         }
