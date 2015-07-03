@@ -20,7 +20,6 @@ var ariaWidgetsFormCheckBoxStyle = require("./CheckBoxStyle.tpl.css");
 var ariaWidgetsFormInput = require("./Input");
 var ariaCoreBrowser = require("../../core/Browser");
 
-
 /**
  * CheckBox widget
  */
@@ -124,7 +123,7 @@ module.exports = Aria.classDefinition({
 
                 out.write(['<input style="display:inline-block"', cfg.disabled ? ' disabled' : '',
                         this._isChecked() ? ' checked' : '', ' type="', cfg._inputType, '"', name, ' value="',
-                        cfg.value, '" ' + tabIndex + '/>'].join(''));
+                        cfg.value, '" ', tabIndex, this._getAriaLabelMarkup(), '/>'].join(''));
             } else {
                 this._icon.writeMarkup(out);
                 out.write(['<input', Aria.testMode ? ' id="' + this._domId + '_input"' : '', ' style="display:none"',
@@ -142,7 +141,7 @@ module.exports = Aria.classDefinition({
          */
         _inputLabelMarkup : function (out, cssDisplay, margin) {
             var cfg = this._cfg;
-
+            var labelId = (this._labelId) ? 'id="' + this._labelId + '" ' : '';
             var iconInfo = this._icon ? this._icon.getCurrentIconInfo() : null, lineHeight, color;
             if (iconInfo != null) {
                 lineHeight = iconInfo.height;
@@ -170,7 +169,7 @@ module.exports = Aria.classDefinition({
 
             out.write('text-align:' + cfg.labelAlign + ';display:' + cssDisplay + ';');
             var cssClass = 'class="x' + this._skinnableClass + '_' + cfg.sclass + '_' + this._state + '_label"';
-            out.write('vertical-align:middle;"><label ' + cssClass + ' style="');
+            out.write('vertical-align:middle;"><label ' + labelId + cssClass + ' style="');
             if (color) {
                 out.write('color:' + color + ';');
             }
@@ -200,6 +199,13 @@ module.exports = Aria.classDefinition({
          */
         _initializeFocusableElement : function () {
             this._focusableElement = this.getDom();
+        },
+
+        /**
+         * Gets a labelled element.
+         */
+        _getLabelledElement : function () {
+            return this._getFocusableElement();
         },
 
         /**

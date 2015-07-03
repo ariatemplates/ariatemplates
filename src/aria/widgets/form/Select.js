@@ -23,7 +23,6 @@ var ariaWidgetsContainerDivStyle = require("../container/DivStyle.tpl.css");
 var ariaWidgetsFormDropDownInput = require("./DropDownInput");
 var ariaCoreBrowser = require("../../core/Browser");
 
-
 /**
  * Select widget allows the use of a simple HTML select element or an AT skin version. Class for both versions of Select -
  * simpleHtml and AT skin.
@@ -118,6 +117,13 @@ module.exports = Aria.classDefinition({
             var field = this.getSelectField();
             field.focus();
 
+        },
+
+        /**
+         * Gets a labelled element.
+         */
+        _getLabelledElement : function () {
+            return this.getSelectField();
         },
 
         /**
@@ -368,7 +374,8 @@ module.exports = Aria.classDefinition({
                  */
                 var html = ['<select', Aria.testMode ? ' id="' + this._domId + '_input"' : '',
                         (width > 0) ? ' style="width: ' + width + 'px;" ' : '', tabIndex,
-                        disabledOrReadonly ? ' disabled="disabled"' : '', ' _ariaInput="1">'];
+                        disabledOrReadonly ? ' disabled="disabled"' : '', this._getAriaLabelMarkup(),
+                        ' _ariaInput="1">'];
 
                 for (var i = 0, l = options.length; i < l; i++) {
                     // string cast, otherwise encoding will fail
@@ -388,8 +395,8 @@ module.exports = Aria.classDefinition({
                 // The _ariaInput attribute is present so that pressing ENTER on this widget raises the onSubmit event
                 // of the fieldset:
                 out.write(['<span', Aria.testMode ? ' id="' + this._domId + '_input"' : '', ' class="xSelect" style="',
-                        (width > 0) ? 'width:' + width + 'px;' : '', '"', tabIndex, ' _ariaInput="1">',
-                        ariaUtilsString.escapeHTML(text), '&nbsp;</span>'].join(''));
+                        (width > 0) ? 'width:' + width + 'px;' : '', '"', tabIndex, this._getAriaLabelMarkup(),
+                        ' _ariaInput="1">', ariaUtilsString.escapeHTML(text), '&nbsp;</span>'].join(''));
                 // the &nbsp; at the end of the label is useful to make sure there is always something in the line so
                 // that the height does not change
             }
@@ -472,13 +479,12 @@ module.exports = Aria.classDefinition({
             }
         },
 
-
         /**
          * Set the 'selected' attribut on each options to true or false depending on the value
          * @param {String} value The value to compare
          * @private
          */
-        _selectValue : function(value) {
+        _selectValue : function (value) {
             var selectField = this.getSelectField();
             var options = selectField.options;
             for (var i = 0; i < options.length; i++) {
