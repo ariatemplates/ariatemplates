@@ -47,7 +47,8 @@ module.exports = Aria.classDefinition({
              * @protected
              */
             this._icon = new ariaWidgetsIcon({
-                icon : this._getIconName(this._state)
+                icon : this._getIconName(this._state),
+                verticalAlign : cfg.verticalAlign
             }, ctxt, lineNumber);
         }
 
@@ -153,25 +154,27 @@ module.exports = Aria.classDefinition({
             out.write('<span style="');
 
             if (this._skinObj.simpleHTML && cssDisplay != "block") {
-                out.write("padding-bottom: 7px;display:inline-block;");
+                out.write("padding-bottom: 7px;");
             }
 
             if (lineHeight && ariaCoreBrowser.isOldIE) {
                 out.write('line-height:' + (lineHeight - 2) + 'px;');
             }
-            var cssClass = 'class="x' + this._skinnableClass + '_' + cfg.sclass + '_' + this._state + '_label"';
-            out.write('vertical-align:middle;"><label ' + cssClass + ' style="display:' + cssDisplay);
 
             if (margin) {
-                out.write(';margin-' + margin + ':' + this._labelPadding + 'px');
+                out.write('margin-' + margin + ':' + this._labelPadding + 'px;');
             }
             if (cfg.labelWidth > -1) {
-                out.write(';width:' + cfg.labelWidth + 'px');
+                out.write('width:' + cfg.labelWidth + 'px;');
             }
+
+            out.write('text-align:' + cfg.labelAlign + ';display:' + cssDisplay + ';');
+            var cssClass = 'class="x' + this._skinnableClass + '_' + cfg.sclass + '_' + this._state + '_label"';
+            out.write('vertical-align:middle;"><label ' + cssClass + ' style="');
             if (color) {
-                out.write(';color:' + color);
+                out.write('color:' + color + ';');
             }
-            out.write(';text-align:' + cfg.labelAlign + ';">');
+            out.write('">');
             out.write(ariaUtilsString.escapeHTML(cfg.label));
 
             out.write('</label></span>');
