@@ -153,7 +153,7 @@ Aria.classDefinition({
          */
         _getIconStyle : function (iconInfo) {
             var cfg = this._cfg;
-            var vAlign = !iconInfo.verticalAlign ? "" : "vertical-align: " + iconInfo.verticalAlign;
+            var vAlign = !cfg.verticalAlign ? "" : "vertical-align: " + cfg.verticalAlign;
             var margins = "margin: 0 0 0 0 "; // default value
 
             if (cfg.margins != null && cfg.margins.match(/^(\d+|x) (\d+|x) (\d+|x) (\d+|x)$/)) {
