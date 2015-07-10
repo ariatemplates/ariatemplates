@@ -366,7 +366,7 @@ Aria.classDefinition({
     values: {
         browser: {
             properties: {
-                name : "Mobile Safari",
+                name : "Android Browser",
                 version : "4.0",
                 osName : "Android",
                 osVersion : "4.0.3"
@@ -395,7 +395,7 @@ Aria.classDefinition({
     values: {
         browser: {
             properties: {
-                name : "Mobile Safari",
+                name : "Android Browser",
                 version : "4.0",
                 osName : "Android",
                 osVersion : "2.2"

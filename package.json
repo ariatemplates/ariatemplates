@@ -48,6 +48,6 @@
     "grunt-verifylowercase": "0.2.0",
     "jade": "1.1.5",
     "mocha": "1.17.0",
-    "ua-parser-js": "0.7.3"
+    "ua-parser-js": "git+https://github.com/ariatemplates/ua-parser-js#latest"
   }
 }
