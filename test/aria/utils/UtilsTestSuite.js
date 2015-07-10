@@ -42,6 +42,7 @@ Aria.classDefinition({
         this.addTests("test.aria.utils.DateCompare");
         this.addTests("test.aria.utils.Delegate");
         this.addTests("test.aria.utils.Dom");
+        this.addTests("test.aria.utils.DomScrollIntoView");
         this.addTests("test.aria.utils.Ellipsis");
         this.addTests("test.aria.utils.Event");
         this.addTests("test.aria.utils.FireDomEvent");

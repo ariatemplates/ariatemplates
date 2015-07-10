@@ -23,6 +23,7 @@ tests:
     - test.aria.widgets.container.dialog.resize.test4.DialogOnResizeScrollTestCase
     - test.aria.widgets.container.dialog.resize.test5.OverlayOnResizeScrollTestCase
     - test.aria.utils.overlay.loadingIndicator.scrollableBody.ScrollableBodyTest
+    - test.aria.utils.DomScrollIntoView
     - test.aria.widgets.container.dialog.indicators.DialogTestCase
     - test.aria.widgets.container.dialog.movable.test5.MovableDialogTestCaseFive
    #Excluded from this file but added in attester.yml (tests for the unpackaged version):
