@@ -84,6 +84,19 @@ Aria.classDefinition({
          */
         getOverlay : function (element) {
             return aria.utils.DomOverlay.__getOverlay(element);
+        },
+
+        /**
+         * Return the label node from the overlay associated to that element
+         * @param {HTMLElement} element
+         * @return {HTMLElement} span label node
+         */
+        getLabelElement : function(element) {
+            var overlay = this.getOverlay(element);
+            if (!overlay) {
+                return false;
+            }
+            return overlay.overlay.overlay.firstChild;
         }
     }
 });

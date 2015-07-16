@@ -28,5 +28,7 @@ Aria.classDefinition({
         this.addTests("test.aria.utils.overlay.loadingIndicator.ieScrollIssue.IEScrollIssueTest");
         this.addTests("test.aria.utils.overlay.loadingIndicator.ieScrollIssue2.IEScrollIssue2EltTest");
         this.addTests("test.aria.utils.overlay.loadingIndicator.ieScrollIssue2.IEScrollIssue2SectionTest");
+
+        this.addTests("test.aria.utils.overlay.loadingIndicator.wai.WaiAriaTest");
     }
 });
