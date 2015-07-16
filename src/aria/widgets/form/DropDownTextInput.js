@@ -248,6 +248,22 @@ module.exports = Aria.classDefinition({
         },
 
         /**
+         * Callback for the event onMouseClickClose raised by the popup.
+         * @protected
+         */
+        _dropDownMouseClickClose : function (evt) {
+            var domEvent = evt.domEvent;
+            if (domEvent.target == this.getTextInputField()) {
+                // Clicking on the input should directly give the focus to the input.
+                // Setting this boolean to false prevents the focus from being given
+                // to this._touchFocusSpan when the dropdown is closed (which would
+                // be temporary anyway, but would make Edge fail on DatePickerInputTouchTest)
+                this._focusNoKeyboard = false;
+            }
+            this.$DropDownTrait._dropDownMouseClickClose.call(this, evt);
+        },
+
+        /**
          * Cf the documentation of this method in the parent class.
          * @override
          */
