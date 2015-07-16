@@ -67,7 +67,9 @@ module.exports = Aria.classDefinition({
             var overlay = this.$Overlay._createOverlay.call(this, params);
 
             if (this.__text) {
-                overlay.innerHTML = "<span class='xLDI-text'>" + this.__text + "</span>";
+                overlay.innerHTML = this._waiAria ?
+                    "<span class='xLDI-text' aria-live='polite'>" + this.__text + "</span>" :
+                    "<span class='xLDI-text'>" + this.__text + "</span>";
             }
 
             return overlay;
