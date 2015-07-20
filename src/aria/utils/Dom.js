@@ -1148,10 +1148,13 @@ module.exports = Aria.classDefinition({
                 if (element) {
                     var hasScrollbar = (!element.clientHeight) ? false : element.scrollHeight > element.clientHeight;
 
-                    // On Chrome, documentScroll == document.body due to https://code.google.com/p/chromium/issues/detail?id=157855
-                    // But if the body has no margin: document.body.scrollHeight == document.body.clientHeight
-                    // and hasScrollbar can be false even if there is a scrollbar. That's why the following line was added:
-                    hasScrollbar = hasScrollbar || (element == documentScroll && documentScroll == document.body);
+                    if (!hasScrollbar && element == documentScroll && documentScroll == document.body) {
+                        var docElement = document.documentElement;
+                        // On Chrome, documentScroll == document.body due to https://code.google.com/p/chromium/issues/detail?id=157855
+                        // But if the body has no margin: document.body.scrollHeight == document.body.clientHeight
+                        // and hasScrollbar can be false even if there is a scrollbar. That's why the following line was added:
+                        hasScrollbar = (!docElement || !docElement.clientHeight) ? false : docElement.scrollHeight > docElement.clientHeight;
+                    }
 
                     if (!hasScrollbar) {
                         if (element == documentScroll) {
