@@ -50,14 +50,10 @@ module.exports = Aria.classDefinition({
          */
         run : function () {
             var robot = ariaJsunitRobot;
-
             if (!this.skipTest && !robot.isUsable()) {
                 this._startTest();
-                var isOldFirefox = (aria.core.Browser.isFirefox && aria.core.Browser.majorVersion < 4);
-                if (!isOldFirefox) {
-                    this._currentTestName = 'RobotTestCase:run';
-                    this.raiseFailure('The robot is not usable');
-                }
+                this._currentTestName = 'RobotTestCase:run';
+                this.raiseFailure('The robot is not usable');
                 this._endTest();
             } else {
                 this.$TemplateTestCase.run.call(this);
