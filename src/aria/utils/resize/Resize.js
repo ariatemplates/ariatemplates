@@ -45,7 +45,7 @@ module.exports = Aria.classDefinition({
             cursor : params.cursor,
             proxy : proxy,
             axis : params.axis,
-            constrainTo : ariaUtilsDom.VIEWPORT
+            constrainTo : params.constrainTo || ariaUtilsDom.VIEWPORT
         });
 
     },

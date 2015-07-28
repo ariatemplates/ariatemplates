@@ -1986,6 +1986,17 @@ module.exports = Aria.beanDefinitions({
                 "resizeend" : {
                     $type : "common:Callback",
                     $description : "Callback called after the dialog resizing ends."
+                },
+                "container" : {
+                    $type : "json:MultiTypes",
+                    $description : "Element which will contain the dialog. It can be specified either by its id or by an HTMLElement object. If not specified, the dialog will be in document.body.",
+                    $contentTypes : [{
+                        $type : "json:String",
+                        $description : "Id of the DOM element which will contain the dialog."
+                    }, {
+                        $type : "json:ObjectRef",
+                        $description : "{HTMLElement} The DOM element which will contain the dialog."
+                    }]
                 }
             }
         },
