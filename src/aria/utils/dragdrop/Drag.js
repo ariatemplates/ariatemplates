@@ -498,7 +498,7 @@ var document = Aria.$frameworkWindow.document;
 
                 }
                 if (constrainTo) {
-                    this._boundary = ariaUtilsDom.getGeometry(constrainTo);
+                    this._boundary = ariaUtilsDom.getClientGeometry(constrainTo);
                     return;
                 }
                 this._boundary = null;
