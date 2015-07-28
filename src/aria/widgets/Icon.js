@@ -17,7 +17,6 @@ var ariaWidgetsIconStyle = require("./IconStyle.tpl.css");
 var ariaWidgetsWidget = require("./Widget");
 var ariaCoreTplClassLoader = require("../core/TplClassLoader");
 
-
 /**
  * Aria Icon Widget
  */
@@ -55,6 +54,12 @@ module.exports = Aria.classDefinition({
          * @type String
          */
         this._cssClassNames = "xWidget";
+
+        /**
+         * Extra attributes for the widget.
+         * @type String
+         */
+        this.extraAttributes = "";
     },
     $statics : {
         // ERROR MESSAGES:
@@ -93,10 +98,11 @@ module.exports = Aria.classDefinition({
 
             if (!iconInfo.spriteURL && cfg.icon) {
                 var classes = aria.widgets.AriaSkinInterface.getSkinObject("Icon", cfg.icon.split(":")[0], true).content[cfg.icon.split(":")[1]];
-                out.write(['<span id="', id, '" class="xWidget ', classes, '" ', '></span>'].join(''));
+                out.write(['<span id="', id, '" class="xWidget ', classes, '" ', this.extraAttributes, '></span>'].join(''));
             } else {
-                out.write(['<span id="', id, '" class="', this._getIconClasses(iconInfo), '" ', tooltip, delegationMarkup,
-                    'style="', this._getIconStyle(iconInfo), '"></span>'].join(''));
+                out.write(['<span id="', id, '" class="', this._getIconClasses(iconInfo), '" ', tooltip,
+                        delegationMarkup, 'style="', this._getIconStyle(iconInfo), '" ', this.extraAttributes,
+                        '></span>'].join(''));
             }
         },
 

@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 {Template {
-    $classpath : "test.aria.widgets.wai.input.textArea.TextAreaTestCaseTpl",
+    $classpath : "test.aria.widgets.wai.input.checkBox.CheckBoxTestCaseTpl",
     $hasScript : false
 }}
 
@@ -21,68 +21,118 @@
         <div style="margin:10px;font-size:+3;font-style:bold;">This test needs focus.</div>
         <div style="margin:10px;">
             Using default accessibility and a label defined: <br>
-            {@aria:Textarea {
+            {@aria:CheckBox {
                 id : "default - with label",
                 label : "default - with label",
                 labelWidth: 100,
-                value: "default - with label"
+                sclass: data.sclass,
+                bind: {
+                  disabled: {
+                    to: "disableCheckbox",
+                    inside: data
+                  }
+                }
             }/} <br><br>
             Using default accessibility and no label defined: <br>
-            {@aria:Textarea {
+            {@aria:CheckBox {
                 id : "default - no label",
                 labelWidth: 100,
-                value: "default - no label"
+                sclass: data.sclass,
+                bind: {
+                  disabled: {
+                    to: "disableCheckbox",
+                    inside: data
+                  }
+                }
             }/} <br><br>
             With accessibility enabled and a label defined but hidden: <br>
-            {@aria:Textarea {
+            {@aria:CheckBox {
                 id : "enabled - with label hidden",
                 waiAria : true,
                 label : "enabled - with label hidden",
                 labelWidth: 100,
-                value: "enabled - with label hidden",
-                hideLabel: true
+                hideLabel: true,
+                sclass: data.sclass,
+                bind: {
+                  disabled: {
+                    to: "disableCheckbox",
+                    inside: data
+                  },
+                  value: {
+                    to: "checkedValue",
+                    inside: data
+                  }
+                }
             }/} <br><br>
             With accessibility enabled and a bound label defined but hidden: <br>
-            {@aria:Textarea {
+            {@aria:CheckBox {
                 id : "enabled - with bound label hidden",
                 waiAria : true,
                 label : "enabled - with bound label hidden",
                 labelWidth: 100,
-                value: "enabled - with bound label hidden",
                 hideLabel: true,
+                sclass: data.sclass,
                 bind: {
                   label: {
                     to: "label",
+                    inside: data
+                  },
+                  disabled: {
+                    to: "disableCheckbox",
                     inside: data
                   }
                 }
             }/} <br><br>
             With accessibility enabled and a label defined: <br>
-            {@aria:Textarea {
+            {@aria:CheckBox {
                 id : "enabled - with label",
                 waiAria : true,
                 label : "enabled - with label",
                 labelWidth: 100,
-                value: "enabled - with label"
+                sclass: data.sclass,
+                bind: {
+                  disabled: {
+                    to: "disableCheckbox",
+                    inside: data
+                  }
+                }
             }/} <br><br>
             With accessibility enabled and no label defined: <br>
-            {@aria:Textarea {
+            {@aria:CheckBox {
                 id : "enabled - no label",
                 waiAria : true,
-                value: "enabled - no label"
+                sclass: data.sclass,
+                bind: {
+                  disabled: {
+                    to: "disableCheckbox",
+                    inside: data
+                  }
+                }
             }/}<br><br>
             With accessibility disabled and a label defined: <br>
-            {@aria:Textarea {
+            {@aria:CheckBox {
                 id : "disabled - with label",
                 label : "disabled - with label",
                 waiAria : false,
-                value: "disabled - with label"
+                sclass: data.sclass,
+                bind: {
+                  disabled: {
+                    to: "disableCheckbox",
+                    inside: data
+                  }
+                }
             }/}<br><br>
             With accessibility disabled and no label defined: <br>
-            {@aria:Textarea {
+            {@aria:CheckBox {
                 id : "disabled - no label",
                 waiAria : false,
-                value: "disabled - no label"
+                sclass: data.sclass,
+                bind: {
+                  disabled: {
+                    to: "disableCheckbox",
+                    inside: data
+                  }
+                }
             }/}
         </div>
 
