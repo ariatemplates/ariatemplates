@@ -58,6 +58,10 @@ Aria.classDefinition({
         start : function (coord) {
             this.posX = coord.x;
             this.posY = coord.y;
+            this._mouseInitialPosition = {
+                left : coord.x,
+                top : coord.y
+            };
             var element = this.getElement(true), movable, document = Aria.$window.document;
             // This will prevent text selection on IE on the element
             element.onselectstart = Aria.returnFalse;
@@ -88,10 +92,12 @@ Aria.classDefinition({
 
             var movable = this.getMovable();
             if (movable && movable.style) {
+                var mouseInitPos = this._mouseInitialPosition;
+                var movableInitPos = this._movableInitialGeometry;
 
-                var offsetX = this._vertical ? 0 : evt.clientX - this.posX;
-                var offsetY = this._horizontal ? 0 : evt.clientY - this.posY;
-                var geometry = aria.utils.Json.copy(this._movableGeometry), dw, dh;
+                var offsetX = this._vertical ? 0 : evt.clientX - mouseInitPos.left;
+                var offsetY = this._horizontal ? 0 : evt.clientY - mouseInitPos.top;
+                var geometry = aria.utils.Json.copy(movableInitPos), dw, dh;
 
                 geometry = this._resizeWitHandlers(geometry, this.cursor, offsetX, offsetY);
 
@@ -118,6 +124,9 @@ Aria.classDefinition({
                 movable.style.left = (geometry.x - this._baseMovableOffset.left) + "px";
                 movable.style.height = (geometry.height - this._baseMovableOffset.height) + "px";
                 movable.style.width = (geometry.width - this._baseMovableOffset.width) + "px";
+
+                this.posY = mouseInitPos.top + geometry.y - movableInitPos.y;
+                this.posX = mouseInitPos.left + geometry.x - movableInitPos.x;
                 this._movableGeometry = geometry;
                 this.$raiseEvent("resize");
             }
@@ -164,15 +173,12 @@ Aria.classDefinition({
                     geometry.y += offsetY;
                     geometry.height -= offsetY;
                     geometry = this._fitResizeBoundary(geometry);
-                    this.posY += geometry.y - this._movableGeometry.y;
                     break;
                 case "ne-resize" :
                     geometry.y += offsetY;
                     geometry.height -= offsetY;
                     geometry.width += offsetX;
                     geometry = this._fitResizeBoundary(geometry);
-                    this.posX += offsetX;
-                    this.posY += geometry.y - this._movableGeometry.y;
                     break;
                 case "nw-resize" :
                     geometry.x += offsetX;
@@ -180,57 +186,73 @@ Aria.classDefinition({
                     geometry.height -= offsetY;
                     geometry.width -= offsetX;
                     geometry = this._fitResizeBoundary(geometry);
-                    this.posX += geometry.x - this._movableGeometry.x;
-                    this.posY += geometry.y - this._movableGeometry.y;
                     break;
                 case "s-resize" :
                     geometry.height += offsetY;
                     geometry = this._fitResizeBoundary(geometry);
-                    this.posY += offsetY;
                     break;
                 case "se-resize" :
                     geometry.height += offsetY;
                     geometry.width += offsetX;
                     geometry = this._fitResizeBoundary(geometry);
-                    this.posY += offsetY;
-                    this.posX += offsetX;
                     break;
                 case "sw-resize" :
                     geometry.x += offsetX;
                     geometry.height += offsetY;
                     geometry.width -= offsetX;
                     geometry = this._fitResizeBoundary(geometry);
-                    this.posY += offsetY;
-                    this.posX += geometry.x - this._movableGeometry.x;
                     break;
                 case "e-resize" :
                     geometry.width += offsetX;
                     geometry = this._fitResizeBoundary(geometry);
-                    this.posX += offsetX;
                     break;
                 case "w-resize" :
                     geometry.x += offsetX;
                     geometry.width -= offsetX;
                     geometry = this._fitResizeBoundary(geometry);
-                    this.posX += geometry.x - this._movableGeometry.x;
                     break;
             }
             return geometry;
         },
         /**
-         * fits the top and left position of the element within viewport
+         * Fits the resized element within viewport
          * @param {aria.utils.DomBeans:Geometry} geometry
-         * @return {aria.utils.DomBeans:Position} top and left values of the fitted geometry
+         * @return {aria.utils.DomBeans:Geometry} fitted geometry
          */
 
         _fitResizeBoundary : function (geometry) {
-            var domUtil = aria.utils.Dom;
-            var pos = (this._boundary) ? domUtil.fitInside(geometry, this._boundary) : {
-                top : geometry.y,
-                left : geometry.x
-            };
-            geometry.x = pos.left;
-            geometry.y = pos.top;
+            var boundary = this._boundary;
+            if (boundary) {
+                var ariaUtilsDom = aria.utils.Dom;
+                var boundaryGeometry = boundary;
+                if (boundary == ariaUtilsDom.VIEWPORT) {
+                    var viewportSize = ariaUtilsDom._getViewportSize();
+                    boundaryGeometry = {
+                        x: 0,
+                        y: 0,
+                        width: viewportSize.width,
+                        height: viewportSize.height
+                    };
+                }
+                var deltaLeft = geometry.x - boundaryGeometry.x;
+                var deltaTop = geometry.y - boundaryGeometry.y;
+                var deltaRight = boundaryGeometry.x + boundaryGeometry.width - geometry.x - geometry.width;
+                var deltaBottom = boundaryGeometry.y + boundaryGeometry.height - geometry.y - geometry.height;
+                if (deltaLeft < 0) {
+                    geometry.x -= deltaLeft;
+                    geometry.width += deltaLeft;
+                }
+                if (deltaTop < 0) {
+                    geometry.y -= deltaTop;
+                    geometry.height += deltaTop;
+                }
+                if (deltaRight < 0) {
+                    geometry.width += deltaRight;
+                }
+                if (deltaBottom < 0) {
+                    geometry.height += deltaBottom;
+                }
+            }
             return geometry;
         },
         /**
@@ -239,13 +261,10 @@ Aria.classDefinition({
          * @param {HTMLElement} element
          */
         _setElementStyle : function (element) {
+            var position = aria.utils.Dom.getOffset(element);
+            position.width = element.offsetWidth;
+            position.height = element.offsetHeight;
             var style = element.style;
-            var position = {
-                left : element.offsetLeft,
-                top : element.offsetTop,
-                height : element.offsetHeight,
-                width : element.offsetWidth
-            };
             this._elementInitialPosition = position;
             style.position = "absolute";
             style.left = position.left + "px";

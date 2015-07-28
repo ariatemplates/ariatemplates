@@ -477,7 +477,7 @@
 
                 }
                 if (constrainTo) {
-                    this._boundary = aria.utils.Dom.getGeometry(constrainTo);
+                    this._boundary = aria.utils.Dom.getClientGeometry(constrainTo);
                     return;
                 }
                 this._boundary = null;
