@@ -38,7 +38,6 @@ module.exports = Aria.classDefinition({
         },
 
         checkAttributes : function () {
-
             // get widgets to be tested
             this.widgetDefaultWithLabel = this.getWidgetInstance("default - with label");
             this.widgetDefaultNoLabel = this.getWidgetInstance("default - no label");
@@ -54,20 +53,12 @@ module.exports = Aria.classDefinition({
             this.checkAccessibilityEnabled();
             this.checkAccessibilityDisabled();
             this.notifyTemplateTestEnd();
-
-        },
-
-        checkLabelId : function (widget) {
-            // if there is a label then an id is automatically added to the label element
-            this.assertTrue(widget.getLabel().id.length > -1, "There is no id generated for the label element.");
         },
 
         checkAccessibility : function (widget) {
-            var inputWithLabel = this[widget + "WithLabel"].getTextInputField();
+            var widgetWithLabel = this[widget + "WithLabel"];
+            var inputWithLabel = widgetWithLabel.getTextInputField();
             var inputNoLabel = this[widget + "NoLabel"].getTextInputField();
-
-            // if there is a label an id should be generated
-            this.checkLabelId(this[widget + "WithLabel"]);
 
             // if there is a label: aria-labelledby is not added to the input element
             this.assertNull(inputWithLabel.getAttribute('aria-labelledby'), "If there is a label the attribute aria-labelledby is not added to the input element.");
@@ -75,6 +66,8 @@ module.exports = Aria.classDefinition({
             // if there isn't a label: aria-label is not added to the input element
             this.assertNull(inputNoLabel.getAttribute('aria-label'), "If there isn't a label the attribute aria-label is not added to the input element.");
 
+            // if there is a label then an id is not automatically added to the label element
+            this.assertFalsy(widgetWithLabel.getLabel().id, "There is no id generated for the label element.");
         },
 
         checkAccessibilityUndefined : function () {
@@ -92,11 +85,14 @@ module.exports = Aria.classDefinition({
             var inputWithLabel = this.widgetEnabledWithLabel.getTextInputField();
             var inputNoLabel = this.widgetEnabledNoLabel.getTextInputField();
 
-            // if there is a label an id should be generated
-            this.checkLabelId(this.widgetEnabledWithLabel);
+            // if there is a label then an id is automatically added to the label element
+            this.assertTruthy(this.widgetEnabledWithLabel.getLabel().id, "There is no id generated for the label element.");
+
+            // if there is a label: aria-labelledby is added to the input element
+            this.assertNotNull(inputWithLabel.getAttribute('aria-labelledby'), "checkAccessibilityEnabled: if there is a label the attribute aria-labelledby is added to the input element.");
 
             // if there is a label: aria-labelledby is added to the input element, value is the id of the widget
-            this.assertTrue(inputWithLabel.getAttribute('aria-labelledby').length != -1, "checkAccessibilityEnabled: if there is a label the attribute aria-labelledby is added to the input element.");
+            this.assertEquals(this.widgetEnabledWithLabel.getLabel().id, inputWithLabel.getAttribute('aria-labelledby'), "checkAccessibilityEnabled: if there is a label the attribute aria-labelledby is added to the input element, value is the id of the widget.");
 
             // if there isn't a label: aria-label is not added to the input element
             this.assertNull(inputNoLabel.getAttribute('aria-label'));
@@ -108,14 +104,13 @@ module.exports = Aria.classDefinition({
             // If there is a label defined but it is hidden using the hideLabel property and the value of the label
             // property is updated through bidings: aria-label is added to the input element with the value of the label
             // property, and then aria-label is changed to contain the new value updated through the label bindings
-            this.assertEquals(inputWithLabelHidden.getAttribute('aria-label'), "enabled - with label hidden");
+            this.assertEquals(inputWithBoundLabelHidden.getAttribute('aria-label'), "enabled - with bound label hidden");
 
             // update label value
             aria.utils.Json.setValue(this.templateCtxt._tpl.data, "label", "enabled - with bound label hidden and updated value through bindings");
 
             // test updated label value is now the new value of aria-label
             this.assertEquals(inputWithBoundLabelHidden.getAttribute('aria-label'), "enabled - with bound label hidden and updated value through bindings");
-
         },
 
         runTemplateTest : function () {

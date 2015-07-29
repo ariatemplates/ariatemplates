@@ -161,7 +161,7 @@ module.exports = Aria.classDefinition({
         },
 
         /**
-         * Updates the aria-label attribute on the input DOM element if accessibility is enabled.
+         * Updates the aria-label attribute on the DOM element if accessibility is enabled.
          */
         _updateAriaLabel : function () {
             var element = this._getLabelledElement();
@@ -176,7 +176,7 @@ module.exports = Aria.classDefinition({
         },
 
         /**
-         * Returns the markup for aria-labelledby attribute on the input DOM element if accessibility is enabled.
+         * Returns the markup for aria-labelledby attribute on the DOM element if accessibility is enabled.
          * @protected
          */
         _getAriaLabelMarkup : function () {

@@ -49,6 +49,8 @@ module.exports = Aria.classDefinition({
                 icon : this._getIconName(this._state),
                 verticalAlign : cfg.verticalAlign
             }, ctxt, lineNumber);
+
+            this._icon.extraAttributes = (this._cfg.waiAria) ? "role='presentation'" : "";
         }
 
         /**
@@ -64,6 +66,18 @@ module.exports = Aria.classDefinition({
          * @type Boolean
          */
         this._mousePressed = false;
+
+        if (this._cfg.waiAria) {
+            /**
+             * Extra attributes for the widget.
+             * @protected
+             * @type String
+             */
+            this._extraAttributes = this._getAriaLabelMarkup();
+            this._extraAttributes += "role='checkbox' ";
+            this._extraAttributes += "aria-disabled='" + this._cfg.disabled + "' ";
+            this._extraAttributes += "aria-checked='" + this._cfg.value + "' ";
+        }
 
     },
     $destructor : function () {
@@ -285,12 +299,17 @@ module.exports = Aria.classDefinition({
             }
 
             var inpEl = this.getDom().getElementsByTagName("input")[0];
-
+            var selected = this._isChecked();
+            if (this._cfg.waiAria) {
+                // update the attributes for WAI
+                var element = this._getFocusableElement();
+                element.setAttribute('aria-checked', selected + '');
+                element.setAttribute('aria-disabled', this.getProperty("disabled"));
+            }
             if (inpEl != null) {
                 // "normal", "normalSelected", "focused", "focusedSelected", "disabled", "disabledSelected",
                 // "readonly",
                 // "readonlySelected"
-                var selected = this._isChecked();
                 inpEl.checked = selected;
                 inpEl.value = selected ? "true" : "false";
                 inpEl.disabled = this.getProperty("disabled");

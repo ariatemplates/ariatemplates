@@ -119,9 +119,16 @@ module.exports = Aria.classDefinition({
         /**
          * CSS extra classes for the widget.
          * @protected
-         * @type String
+         * @type Array
          */
         this._extraCssClassNames = [];
+
+        /**
+         * Extra attributes for the widget.
+         * @protected
+         * @type String
+         */
+        this._extraAttributes = "";
 
         /**
          * True if the widget is in the middle of an initialization triggered by a delegated content change event.
@@ -366,6 +373,7 @@ module.exports = Aria.classDefinition({
                     scope : this
                 });
             }
+            out.write(this._extraAttributes);
 
             out.write(delegateManager.getMarkup(this._delegateId) + " ");
 
