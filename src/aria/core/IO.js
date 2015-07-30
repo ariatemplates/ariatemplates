@@ -134,7 +134,7 @@ module.exports = Aria.classDefinition({
          * @type RegExp
          * @protected
          */
-        this._uriScheme = /^([\w\+\.\-]+:)(?:\/\/)?(.*)/;
+        this._uriScheme = /^([\w\+\.\-]+:)(?:\/\/)?([^\/]*)/;
 
         /**
          * Regular expression to extract the URI scheme that should be handled as a local request
@@ -527,7 +527,7 @@ module.exports = Aria.classDefinition({
 
                 if (this._uriLocal.test(scheme)) {
                     return this.__local;
-                } else if (scheme != location.protocol || (authority.indexOf(location.host) !== 0)) {
+                } else if (scheme != location.protocol || authority != location.host) {
                     // Having different protocol or host we must use XDR
                     return this.__crossDomain;
                 }
@@ -911,7 +911,12 @@ module.exports = Aria.classDefinition({
                     // convert text to JSON
                     var errorMsg = (require("../utils/String")).substitute(this.JSON_PARSING_ERROR, [response.url,
                             response.responseText]);
-                    response.responseJSON = ariaUtilsJson.load(response.responseText, this, errorMsg);
+                    if (response.responseText === "") {
+                        var undef;
+                        response.responseJSON = undef;
+                    } else {
+                        response.responseJSON = ariaUtilsJson.load(response.responseText, this, errorMsg);
+                    }
                 }
             }
 
