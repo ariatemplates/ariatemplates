@@ -40,7 +40,7 @@ Aria.classDefinition({
             cursor : params.cursor,
             proxy : proxy,
             axis : params.axis,
-            constrainTo : aria.utils.Dom.VIEWPORT
+            constrainTo : params.constrainTo || aria.utils.Dom.VIEWPORT
         });
 
     },

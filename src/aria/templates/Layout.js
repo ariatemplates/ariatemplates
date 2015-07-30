@@ -194,6 +194,16 @@
             },
             // viewportSize: {width: ..., height: ...},
 
+            /**
+             * Raises the viewportResized event with the current viewport size.
+             */
+            refreshLayout : function () {
+                layout.$raiseEvent({
+                    name : "viewportResized",
+                    viewportNewSize : layout.viewportSize
+                });
+            },
+
             $on : function () {
                 this.$JsObject.$on.apply(this, arguments);
                 __checkListeners();

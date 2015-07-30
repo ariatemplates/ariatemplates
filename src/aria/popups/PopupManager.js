@@ -330,7 +330,8 @@
                             // the element is in the modal popup, it is fine to focus it
                             break;
                         }
-                        if (popup.modalMaskDomElement) {
+                        if (popup.modalMaskDomElement && utilsDom.isAncestor(target, popup.popupContainer.getContainerElt())) {
+                            // the element is inside the container for which there is a modal mask
                             aria.templates.NavigationManager.focusFirst(popup.domElement);
                             break;
                         }
