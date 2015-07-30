@@ -348,6 +348,30 @@ Aria.classDefinition({
         },
         _onerrorSyncCb : function () {
             this.fail("Unexpected error callback called (2)");
+        },
+        /**
+         * Test an empty response on a json request
+         */
+        testAsyncJsonEmpty : function () {
+            aria.core.IO.asyncRequest({
+                url : this.urlRoot + "aria/core/test/EmptyFile.txt",
+                method : "GET",
+                expectedResponseType : "json",
+                callback : {
+                    fn : this._onTestJsonEmptySuccess,
+                    scope : this,
+                    onerror : this._onTestJsonEmptyError,
+                    onerrorScope : this
+                }
+            });
+        },
+        _onTestJsonEmptySuccess : function (res, args) {
+            this.assertEquals(res.responseJson, undefined, "Response text is %1 instead of %2");
+            this.notifyTestEnd("testAsyncJsonEmpty");
+        },
+        _onTestJsonEmptyError : function () {
+            this.fail("Unexpected error callback called (3)");
+            this.notifyTestEnd("testAsyncJsonEmpty");
         }
     }
 });
