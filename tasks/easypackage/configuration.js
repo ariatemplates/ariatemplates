@@ -41,16 +41,17 @@ module.exports = function (grunt, args) {
             }
         },
         outputDirectory : args.outputDirectory,
-        visitors : [args.includeDependencies ? {
-                    type : 'NoderDependencies',
-                    cfg : {
-                        externalDependencies : ['noder-js/**'],
-                        files : ['**/*.js']
-                    }
-                } : null, args.includeDependencies ? {
+        visitors : [
+                args.includeDependencies ? {
                     type : 'ATDependencies',
                     cfg : {
                         externalDependencies : ['aria/**'],
+                        files : atExtensions
+                    }
+                } : null, args.includeDependencies ? {
+                    type : 'NoderDependencies',
+                    cfg : {
+                        externalDependencies : ['noder-js/**', 'ariatemplates/**'],
                         files : atExtensions
                     }
                 } : null, args.includeDependencies ? {
@@ -100,7 +101,7 @@ module.exports = function (grunt, args) {
                 } : null, {
                     type : 'CopyUnpackaged',
                     cfg : {
-                        files : ['**/*.js'],
+                        files : atExtensions,
                         builder : {
                             type : 'ATMultipart',
                             cfg : {

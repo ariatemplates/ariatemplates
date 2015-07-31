@@ -147,5 +147,27 @@ describe("easypackage grunt task", function () {
             callback();
         });
     });
+    it("should build the application correctly - third config", function (callback) {
+        testBuild(3, function () {
+            // Checks that the .tpl.css file is present and was compiled
+            var AutocompleteStyleTplCss = fs.readFileSync(testProjectPath + "target/three/app/css/AutocompleteStyle.tpl.css", 'utf8');
+            assert.ok(/abcdefg-license/.test(AutocompleteStyleTplCss), "License has not been added");
+            assert.ok(!/\{Template/.test(AutocompleteStyleTplCss), "Template compilation has not been done");
 
+            var flag;
+            try {
+                fs.readFileSync(testProjectPath + "target/three/app/css/CalendarSkin.js", 'utf8');
+                flag = false;
+            } catch (ex) {
+                flag = true;
+            }
+            assert.ok(flag, "Automatic dependency inclusion did not work");
+
+            var calendarPkg = fs.readFileSync(testProjectPath + "target/three/app/css/calendar.js", 'utf8');
+            assert.ok(/loadFileContent\("app\/css\/CalendarSkin\.js","/.test(calendarPkg), "Package app/css/calendar.js does not include CalendarSkin.js");
+            assert.ok(/loadFileContent\("app\/css\/CalendarStyle\.tpl\.css","/.test(calendarPkg), "Package app/css/calendar.js does not include CalendarStyle.tpl.css");
+            verifyImgFiles("three");
+            callback();
+        });
+    });
 });
