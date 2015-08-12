@@ -20,7 +20,6 @@ var ariaWidgetsControllersAutoCompleteController = require("./AutoCompleteContro
 var ariaUtilsType = require("../../utils/Type");
 var ariaCoreJsonValidator = require("../../core/JsonValidator");
 
-
 (function () {
 
     // shortcut
@@ -384,9 +383,11 @@ var ariaCoreJsonValidator = require("../../core/JsonValidator");
                     }
 
                     var report = new aria.widgets.controllers.reports.DropDownControllerReport();
-                    report.text = nextValue;
-                    report.caretPosStart = args.caretPosStart;
-                    report.caretPosEnd = args.caretPosEnd;
+                    if (!args.avoidChangingText) {
+                        report.text = nextValue;
+                        report.caretPosStart = args.caretPosStart;
+                        report.caretPosEnd = args.caretPosEnd;
+                    }
 
                     report.value = dataModel.value;
                     report.cancelKeyStroke = true;
@@ -496,7 +497,8 @@ var ariaCoreJsonValidator = require("../../core/JsonValidator");
                                 nextValue : nextValue,
                                 triggerDropDown : true,
                                 caretPosStart : caretPosStart,
-                                caretPosEnd : caretPosEnd
+                                caretPosEnd : caretPosEnd,
+                                avoidChangingText : true
                             }
                         });
                     }
