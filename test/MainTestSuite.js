@@ -41,6 +41,7 @@ Aria.classDefinition({
         this.addTests("test.aria.utils.UtilsTestSuite");
         this.addTests("test.aria.widgetLibs.WidgetLibsTestSuite");
         this.addTests("test.aria.widgets.WidgetsTestSuite");
+        this.addTests("test.aria.widgets.skin.AllSkinTestSuite");
         this.addTests("test.performance.PerfTestSuite");
     }
 });

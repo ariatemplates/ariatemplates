@@ -790,7 +790,8 @@ Aria.classDefinition({
             }
 
             titleDomElt.style.width = "";
-            var titleWidth = aria.utils.Dom.getGeometry(titleDomElt).width;
+            var titleWidth = titleDomElt.offsetWidth;
+            var titleBarPaddings = aria.utils.Dom.getStylePx(titleBarDomElt, "paddingLeft", 0) + aria.utils.Dom.getStylePx(titleBarDomElt, "paddingRight",0);
             var childNodes = titleBarDomElt.childNodes;
             var iconsWidth = 0;
             for (var i = 0, ii = childNodes.length; i < ii; i++) {
@@ -802,7 +803,7 @@ Aria.classDefinition({
             var shadows = this._shadows;
             var minWidth = math.max(cfg.width, cfg.minWidth);
             if (cfg.width == -1) {
-                minWidth = math.max(titleWidth + iconsWidth + shadows.left + shadows.right, minWidth);
+                minWidth = math.max(titleBarPaddings + titleWidth + iconsWidth + shadows.left + shadows.right, minWidth);
             }
 
             // if maximized == true, then height|widthMaximized will be used; otherwise normal width and height
@@ -818,8 +819,9 @@ Aria.classDefinition({
             });
 
             // The manage the title length to manage the text-overflow
-            var titleBarWidth = aria.utils.Dom.getGeometry(titleBarDomElt).width;
-            titleDomElt.style.width = math.max(titleBarWidth - iconsWidth - shadows.left - shadows.right, 0) + "px";
+            var titleBarInnerWidth = titleBarDomElt.clientWidth - titleBarPaddings;
+            var titlePaddings = aria.utils.Dom.getStylePx(titleDomElt, "paddingLeft", 0) + aria.utils.Dom.getStylePx(titleDomElt, "paddingRight", 0);
+            titleDomElt.style.width = math.max(titleBarInnerWidth - titlePaddings - iconsWidth - shadows.left - shadows.right - 1, 0) + "px";
 
             if (isIE7) {
                 // Back to overflow hidden mode
