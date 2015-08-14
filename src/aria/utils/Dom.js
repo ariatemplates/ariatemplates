@@ -31,7 +31,7 @@ module.exports = Aria.classDefinition({
         DIV_NOT_FOUND : "Missing div '%1' in DOM.",
         INSERT_ADJACENT_INVALID_POSITION : "Invalid position %1. Expected one of: beforeBegin, afterBegin, beforeEnd or afterEnd.",
 
-        pxRegExp : /^[0-9]+px$/
+        pxRegExp : /^[0-9]+(\.[0-9]+)?px$/
 
     },
     $prototype : {
@@ -1332,7 +1332,7 @@ module.exports = Aria.classDefinition({
         getStylePx : function (element, property, defaultValue) {
             var value = this.getStyle(element, property);
             if (this.pxRegExp.test(value)) {
-                return parseInt(value, 10);
+                return Math.round(parseFloat(value));
             }
             return defaultValue;
         },

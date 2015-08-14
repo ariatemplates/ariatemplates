@@ -21,5 +21,6 @@ Aria.classDefinition({
 
         this.addTests("test.aria.widgets.skin.dropdownwidth.DropdownWidthTestCase");
         this.addTests("test.aria.widgets.skin.button.verticalAlign.ButtonVerticalAlignTestSuite");
+        this.addTests("test.aria.widgets.skin.dialogTitleBar.TitleBarWidthTestCase");
     }
 });
