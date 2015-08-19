@@ -17,6 +17,16 @@
     $extends : "aria.widgets.WidgetStyle"
 }}
 {var skinnableClassName="Link"/}
+
+{macro main()}
+    {call startLooping()/}
+
+    a.xLink_disabled {
+        text-decoration:none;
+        cursor:default;
+    }
+{/macro}
+
 {macro writeState(info)}
 	{var pseudoclass=""/}
 	{if info.stateName != "normal"}
@@ -34,11 +44,9 @@
 {macro writeSkinClass(info)}
 	{var skinClassName=info.skinClassName/}
 	{var skinClass=info.skinClass/}
-	a.xLink_disabled{
+	a.xLink_${skinClassName}_disabled {
 		color:${skinClass.disabledColor};
-		text-decoration:none;
-		cursor:default;
 	}
-
 {/macro}
+
 {/CSSTemplate}

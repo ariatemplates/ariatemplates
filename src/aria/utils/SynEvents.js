@@ -1028,7 +1028,7 @@ require("./Dom");
                         if ( Aria.$window.selenium ) {
                             Aria["eval"]("with(selenium.browserbot.getCurrentWindow()){" + code + "}");
                         } else {
-                            Aria["eval"]("with(scope){" + code + "}");
+                            Aria["eval"]("with(arguments[2]){" + code + "}", null, scope);
                         }
                     }
                 }

@@ -17,9 +17,17 @@ Aria.tplScriptDefinition({
     $classpath : "test.aria.widgets.action.link.disabled.LinkDisabledTplScript",
     $prototype : {
 
-        onClickCallback : function (evt) {
-            var toggleState = !this.data.linkDisabled;
-            this.$json.setValue(this.data, "linkDisabled", toggleState);
+        onToggleDisabledClick : function (evt) {
+            this.$json.setValue(this.data, "link1Disabled", !this.data.link1Disabled);
+            this.$json.setValue(this.data, "link2Disabled", !this.data.link2Disabled);
+        },
+
+        onClickLink1 : function () {
+            this.$json.setValue(this.data, "clicksNumber1", this.data.clicksNumber1 + 1);
+        },
+
+        onClickLink2 : function () {
+            this.$json.setValue(this.data, "clicksNumber2", this.data.clicksNumber2 + 1);
         }
     }
 });
