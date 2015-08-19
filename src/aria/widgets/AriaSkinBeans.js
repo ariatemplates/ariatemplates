@@ -622,8 +622,7 @@ Aria.beanDefinitions({
                     }
                 },
                 "disabledColor" : {
-                    $type : "json:String",
-                    $description : ""
+                    $type : "Color"
                 }
             }
         },

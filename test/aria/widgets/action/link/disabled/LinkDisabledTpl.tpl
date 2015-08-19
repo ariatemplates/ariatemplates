@@ -17,20 +17,57 @@
 	$classpath: "test.aria.widgets.action.link.disabled.LinkDisabledTpl",
 	$hasScript: true
 }}
-	{var data = {linkDisabled : false}/}
+	{var data = {link1Disabled : false, link2Disabled : true, clicksNumber1: 0, clicksNumber2: 0}/}
 	{macro main()}
 		{@aria:Link {
-			label: "Some Link",
-			id: "link",
-			disabled:false,
+			label: "Some Link 1",
+			id: "link1",
 			bind :{
 				disabled : {
-				inside :data,
-				to : "linkDisabled"
+					inside :data,
+					to : "link1Disabled"
+				}
+			},
+			onclick: onClickLink1
+		}/}<br>
+
+		{@aria:Link {
+			label: "Some Link 2",
+			id: "link2",
+			sclass: "alternative",
+			bind :{
+				disabled : {
+					inside :data,
+					to : "link2Disabled"
+				}
+			},
+			onclick: onClickLink2
+		}/}<br>
+
+		<span {id "toggleDisabled"/} {on click "onToggleDisabledClick"/} >Toggle disabled</span><br>
+		<span>Number of clicks:
+		{@aria:Text {
+			bind: {
+				text: {
+					to: "clicksNumber1",
+					inside: data
+				}
+			}
+		}/},
+		{@aria:Text {
+			bind: {
+				text: {
+					to: "clicksNumber2",
+					inside: data
 				}
 			}
 		}/}
-
-	<span {id "TestID"/} {on click "onClickCallback"/} >click me</span>
+		</span><br>
+		{var skinStd = aria.widgets.AriaSkinInterface.getSkinObject("Link", "std") /}
+		<span {id "stdNormalColor"/} style="color:${skinStd.states.normal.color};">normal</span><br>
+		<span {id "stdDisabledColor"/} style="color:${skinStd.disabledColor};">disabled</span><br>
+		{var skinAlternative = aria.widgets.AriaSkinInterface.getSkinObject("Link", "alternative") /}
+		<span {id "alternativeNormalColor"/} style="color:${skinAlternative.states.normal.color};">normal</span><br>
+		<span {id "alternativeDisabledColor"/} style="color:${skinAlternative.disabledColor};">disabled</span><br>
 	{/macro}
 {/Template}

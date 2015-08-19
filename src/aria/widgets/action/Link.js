@@ -58,7 +58,7 @@ Aria.classDefinition({
             var cfg = this._cfg;
             var linkClass = "xLink_" + cfg.sclass;
             if (cfg.disabled) {
-                linkClass = "xLink_disabled";
+                linkClass = "xLink_" + cfg.sclass + "_disabled xLink_disabled";
             }
             out.write(['<a', Aria.testMode ? ' id="' + this._domId + '_link"' : '', ' class="', linkClass,
                     '" href="javascript:(function(){})()"',
@@ -146,14 +146,13 @@ Aria.classDefinition({
          * @protected
          */
         _updateState : function () {
-            var cfg = this._cfg, state = "xLink_" + cfg.sclass;
             if (this._focusElt) {
+                var cfg = this._cfg, linkClass = "xLink_" + cfg.sclass;
                 if (cfg.disabled) {
-                    state = "xLink_disabled";
+                    linkClass = "xLink_" + cfg.sclass + "_disabled xLink_disabled";
                 }
-                this._focusElt.className = state;
+                this._focusElt.className = linkClass;
             }
-
         }
     }
 });
