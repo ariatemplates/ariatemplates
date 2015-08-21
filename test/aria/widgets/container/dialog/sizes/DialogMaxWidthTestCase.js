@@ -43,7 +43,7 @@ Aria.classDefinition({
     },
     $prototype : {
 
-        checkSizes : function(dialogId, mainWidth) {
+        checkSizes : function(dialogId, mainWidth, tolerance) {
             var dialog = this.dialogs[dialogId];
 
             var dom = dialog._domElt;
@@ -53,8 +53,8 @@ Aria.classDefinition({
             var dlgTitleText = aria.utils.Dom.getElementsByClassName(dlgTitle, "sDialog_title");
             var dlgCloseIcon = aria.utils.Dom.getElementsByClassName(dlgTitle, "sDialog_close");
 
-            this.assertEqualsWithTolerance(dlgBody.offsetWidth, mainWidth, 8, dialogId + " width should be %2 instead of %1");
-            this.assertEqualsWithTolerance(dlgTitle.offsetWidth, mainWidth - 10, 8, dialogId + " title width should be %2 instead of %1");
+            this.assertEqualsWithTolerance(dlgBody.offsetWidth, mainWidth, tolerance ? tolerance : 2, dialogId + " width should be %2 instead of %1");
+            this.assertEqualsWithTolerance(dlgTitle.offsetWidth, dlgBody.offsetWidth - 10, 1, dialogId + " title width should be %2 instead of %1");
             this.assertEquals(dlgTitleText.offsetTop, dlgCloseIcon.offsetTop, "The close icon should be on teh first line");
         },
 
@@ -85,7 +85,7 @@ Aria.classDefinition({
         checkWidths : function () {
             this.checkSizes("dialog1", 400);
             this.checkSizes("dialog2", 400);
-            this.checkSizes("dialog3", 238);
+            this.checkSizes("dialog3", 238, 20);
             this.checkSizes("dialog4", 400);
 
             this.changeDialog5ContainerSize();
@@ -96,7 +96,7 @@ Aria.classDefinition({
             var dataDialog = this.data.dialog5;
             this.checkSizes("dialog5", 200);
             this.$json.setValue(dataDialog, "title", "This is now a very long title");
-            this.checkSizes("dialog5", 251);
+            this.checkSizes("dialog5", 251, 20);
 
             this.$json.setValue(dataDialog, "title", "This is now a very very very very very very very long title");
             this.checkSizes("dialog5", 400);
@@ -116,7 +116,7 @@ Aria.classDefinition({
             this.checkSizes("dialog6", 200);
 
             this.$json.setValue(dataDialog, "title", "This is now a very long title");
-            this.checkSizes("dialog6", 273);
+            this.checkSizes("dialog6", 273, 20);
 
             this.$json.setValue(dataDialog, "title", "This is now a very very very very very very very long title");
             this.checkSizes("dialog6", 400);
