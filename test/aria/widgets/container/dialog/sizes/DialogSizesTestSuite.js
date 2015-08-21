@@ -20,6 +20,7 @@ Aria.classDefinition({
         this.$TestSuite.constructor.call(this);
 
         this._tests = ["test.aria.widgets.container.dialog.sizes.HeightConstraintsTest",
+                "test.aria.widgets.container.dialog.sizes.DialogMaxWidthTestCase",
                 "test.aria.widgets.container.dialog.sizes.DialogWidthTestCase"];
     }
 });
