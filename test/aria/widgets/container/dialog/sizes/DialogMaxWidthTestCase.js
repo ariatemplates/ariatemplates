@@ -43,19 +43,26 @@ Aria.classDefinition({
     },
     $prototype : {
 
-        checkSizes : function(dialogId, mainWidth) {
+        checkSizes : function(dialogId, maxWidth) {
+            maxWidth = maxWidth || 400;
             var dialog = this.dialogs[dialogId];
 
             var dom = dialog._domElt;
             var children = dom.children;
-            var dlgBody = children[0];
-            var dlgTitle = children[1];
-            var dlgTitleText = aria.utils.Dom.getElementsByClassName(dlgTitle, "sDialog_title");
-            var dlgCloseIcon = aria.utils.Dom.getElementsByClassName(dlgTitle, "sDialog_close");
+            var dialogBody = children[0];
+            var dialogTitle = children[1];
+            var dialogTitleText = this.getElementsByClassName(dialogTitle, "xDialog_title")[0];
+            var dialogCloseIcon = this.getElementsByClassName(dialogTitle, "xDialog_close")[0];
 
-            this.assertEqualsWithTolerance(dlgBody.offsetWidth, mainWidth, 8, dialogId + " width should be %2 instead of %1");
-            this.assertEqualsWithTolerance(dlgTitle.offsetWidth, mainWidth - 10, 8, dialogId + " title width should be %2 instead of %1");
-            this.assertEquals(dlgTitleText.offsetTop, dlgCloseIcon.offsetTop, "The close icon should be on teh first line");
+            this.assertNotNull(dialogTitleText, dialogId + " title text not found");
+            this.assertNotNull(dialogCloseIcon, dialogId + " close icon not found");
+
+            this.assertTrue(dialogBody.offsetWidth <= maxWidth, dialogId + " body width should be less than " + maxWidth);
+            var innerWidth =  maxWidth - parseInt(aria.utils.Dom.getStyle(dialogTitle, "right"), 10);
+            this.assertTrue(dialogTitle.offsetWidth <= innerWidth, dialogId + " title width should be less than " + innerWidth);
+            this.assertEquals(dialogTitleText.offsetTop, dialogCloseIcon.offsetTop, dialogId + " : the close icon should be on the first line");
+            this.assertTrue(dialogTitleText.offsetWidth < dialogTitle.offsetWidth - dialogCloseIcon.offsetWidth, dialogId + " : the title text width is too large");
+
         },
 
 
@@ -83,10 +90,10 @@ Aria.classDefinition({
         },
 
         checkWidths : function () {
-            this.checkSizes("dialog1", 400);
-            this.checkSizes("dialog2", 400);
-            this.checkSizes("dialog3", 238);
-            this.checkSizes("dialog4", 400);
+            this.checkSizes("dialog1");
+            this.checkSizes("dialog2");
+            this.checkSizes("dialog3");
+            this.checkSizes("dialog4");
 
             this.changeDialog5ContainerSize();
         },
@@ -94,18 +101,18 @@ Aria.classDefinition({
         changeDialog5ContainerSize : function () {
 
             var dataDialog = this.data.dialog5;
-            this.checkSizes("dialog5", 200);
+            this.checkSizes("dialog5");
             this.$json.setValue(dataDialog, "title", "This is now a very long title");
-            this.checkSizes("dialog5", 251);
+            this.checkSizes("dialog5");
 
             this.$json.setValue(dataDialog, "title", "This is now a very very very very very very very long title");
-            this.checkSizes("dialog5", 400);
+            this.checkSizes("dialog5");
 
             this.$json.setValue(dataDialog, "title", "Short again");
-            this.checkSizes("dialog5", 200);
+            this.checkSizes("dialog5");
 
             this.$json.setValue(dataDialog, "width", 500);
-            this.checkSizes("dialog5", 400);
+            this.checkSizes("dialog5");
 
             this.changeDialog6ContainerSize();
         },
@@ -113,19 +120,19 @@ Aria.classDefinition({
         changeDialog6ContainerSize : function () {
 
             var dataDialog = this.data.dialog6;
-            this.checkSizes("dialog6", 200);
+            this.checkSizes("dialog6");
 
             this.$json.setValue(dataDialog, "title", "This is now a very long title");
-            this.checkSizes("dialog6", 273);
+            this.checkSizes("dialog6");
 
             this.$json.setValue(dataDialog, "title", "This is now a very very very very very very very long title");
-            this.checkSizes("dialog6", 400);
+            this.checkSizes("dialog6");
 
             this.$json.setValue(dataDialog, "title", "Short again");
-            this.checkSizes("dialog6", 200);
+            this.checkSizes("dialog6");
 
             this.$json.setValue(dataDialog, "width", 500);
-            this.checkSizes("dialog6", 400);
+            this.checkSizes("dialog6");
 
             this.end();
         }
