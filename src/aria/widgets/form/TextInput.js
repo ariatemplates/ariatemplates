@@ -310,26 +310,21 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         _inputWithFrameMarkup : function (out) {
-            var cfg = this._cfg, skinObj = this._skinObj, hts = this._helpTextSet, htc = this._skinObj.helpText, color = this._getTextFieldColor();
+            var cfg = this._cfg, hts = this._helpTextSet, htc = this._skinObj.helpText, color = this._getTextFieldColor();
             var stringUtils = ariaUtilsString;
-
-            var inlineStyle = ['padding:', skinObj.innerPaddingTop, 'px ', skinObj.innerPaddingRight, 'px ',
-                    skinObj.innerPaddingBottom, 'px ', skinObj.innerPaddingLeft, 'px;position:relative;margin:0;'];
-            if (!this._simpleHTML) {
-                inlineStyle.push("background-color:transparent;border-width:0px;vertical-align:top;");
-            }
 
             // check value to set appropriate state and text
             var text = this._getText();
-
+            var className = "xTextInputInput x" + this._skinnableClass + "_" + cfg.sclass + "_input";
             if (hts) {
                 // FIXME : re-activate helpText in password field in IE
                 if (this._isIE7OrLess && this._isPassword) {
                     this._helpTextSet = hts = false;
                     cfg.helptext = null;
                 } else {
-                    color = htc.color + (htc.italics ? ";font-style:italic" : "");
+                    color = htc.color;
                 }
+                className += " x" + this._skinnableClass + "_" + cfg.sclass + "_helpText";
             }
             var type = this._isPassword && !hts ? "password" : "text";
 
@@ -347,9 +342,9 @@ module.exports = Aria.classDefinition({
             var ariaRequired = (cfg.waiAria && cfg.mandatory) ? ' aria-required' : '';
 
             if (this._isTextarea) {
-                out.write(['<textarea', Aria.testMode ? ' id="' + this._domId + '_textarea"' : '',
+                out.write(['<textarea class="', className, '"', Aria.testMode ? ' id="' + this._domId + '_textarea"' : '',
                         cfg.disabled ? ' disabled="disabled"' : cfg.readOnly ? ' readonly="readonly"' : '',
-                        ariaRequired, ' type="', type, '" style="', inlineStyle.join(''), 'color:', color,
+                        ariaRequired, ' type="', type, '" style="color:', color,
                         ';overflow:auto;resize:none;height: ' + this._frame.innerHeight + 'px; width:', inputWidth,
                         'px;"', 'value=""', (cfg.maxlength > -1 ? 'maxlength="' + cfg.maxlength + '" ' : ' '),
                         (cfg.tabIndex != null ? 'tabindex="' + this._calculateTabIndex() + '" ' : ' '), spellCheck,
@@ -358,9 +353,9 @@ module.exports = Aria.classDefinition({
 
                 ].join(''));
             } else {
-                out.write(['<input class="xTextInputInput" ', Aria.testMode ? ' id="' + this._domId + '_input"' : '',
+                out.write(['<input class="', className, '"', Aria.testMode ? ' id="' + this._domId + '_input"' : '',
                         cfg.disabled ? ' disabled="disabled"' : cfg.readOnly ? ' readonly="readonly"' : '',
-                        ariaRequired, ' type="', type, '" style="', inlineStyle.join(''), 'color:', color, ';width:',
+                        ariaRequired, ' type="', type, '" style="color:', color, ';width:',
                         inputWidth, 'px;"', 'value="',
                         stringUtils.encodeForQuotedHTMLAttribute((this._helpTextSet) ? cfg.helptext : text), '" ',
                         (cfg.maxlength > -1 ? 'maxlength="' + cfg.maxlength + '" ' : ' '),
@@ -1181,13 +1176,19 @@ module.exports = Aria.classDefinition({
 
             // determine new styles and value
             var color = enable ? helpTextConfig.color : this._getTextFieldColor();
-            var fontStyle = enable && helpTextConfig.italics ? "italic" : "normal";
             var value = enable ? helpText : "";
+
+            var helpTextClass = "x" + this._skinnableClass + "_" + cfg.sclass + "_helpText";
+            var classNames = field.className.split(/\s+/);
+            ariaUtilsArray.remove(classNames, helpTextClass);
+            if (enable) {
+                classNames.push(helpTextClass);
+            }
+            field.className = classNames.join(' ');
 
             // update styles
             var style = field.style;
             style.color = color;
-            style.fontStyle = fontStyle;
 
             // update field value
             field.value = value;
