@@ -29,6 +29,45 @@
         {call $InputStyle.main() /}
     {/macro}
 
+    {macro writeSkinClass(info)}
+        {call $InputStyle.writeSkinClass(info) /}
+        {var skinClassName=info.skinClassName/}
+        {var skinObj=info.skinClass/}
+
+        input.x${skinnableClassName}_${skinClassName}_input, textarea.x${skinnableClassName}_${skinClassName}_input {
+            padding: ${skinObj.innerPaddingTop}px ${skinObj.innerPaddingRight}px ${skinObj.innerPaddingBottom}px ${skinObj.innerPaddingLeft}px;
+            position:relative;
+            margin:0;
+            {if !skinObj.simpleHTML}
+                background-color:transparent;
+                border-width:0px;
+                vertical-align:top;
+            {/if}
+        }
+
+        {var helpText = skinObj.helpText || {} /}
+        input.x${skinnableClassName}_${skinClassName}_helpText, textarea.x${skinnableClassName}_${skinClassName}_helpText {
+            {if helpText.innerPaddingTop != null}
+                padding-top: ${helpText.innerPaddingTop}px;
+            {/if}
+            {if helpText.innerPaddingRight != null}
+                padding-right: ${helpText.innerPaddingRight}px;
+            {/if}
+            {if helpText.innerPaddingBottom != null}
+                padding-bottom: ${helpText.innerPaddingBottom}px;
+            {/if}
+            {if helpText.innerPaddingLeft != null}
+                padding-left: ${helpText.innerPaddingLeft}px;
+            {/if}
+            {if helpText.italics}
+                font-style: italic;
+            {/if}
+            {if helpText.font}
+                {call generateFontStyle(helpText.font)/}
+            {/if}
+        }
+    {/macro}
+
     {macro writeState(info)}
         .${cssPrefix(info)}label {
             font-weight: ${info.skinClass.label.fontWeight}
