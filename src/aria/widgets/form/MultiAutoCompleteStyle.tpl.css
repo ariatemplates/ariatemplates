@@ -34,6 +34,7 @@
     {/macro}
 
     {macro writeSkinClass(info)}
+        {call $TextInputStyle.writeSkinClass(info) /}
         {var skinClassName=info.skinClassName/}
         {var skinClass=info.skinClass/}
 

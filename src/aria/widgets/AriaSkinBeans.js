@@ -1397,6 +1397,21 @@ module.exports = Aria.beanDefinitions({
                         },
                         "italics" : {
                             $type : "json:Boolean"
+                        },
+                        "font" : {
+                            $type : "FontCSS"
+                        },
+                        "innerPaddingTop" : {
+                            $type : "Pixels"
+                        },
+                        "innerPaddingRight" : {
+                            $type : "Pixels"
+                        },
+                        "innerPaddingBottom" : {
+                            $type : "Pixels"
+                        },
+                        "innerPaddingLeft" : {
+                            $type : "Pixels"
                         }
                     }
                 },
