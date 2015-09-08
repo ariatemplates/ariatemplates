@@ -249,8 +249,18 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         _sortList : function () {
-            this._cfg.view.toggleSortOrder(this._cfg.sortName, this._cfg.sortKeyGetter);
-            this._cfg.view.refresh();
+            var cfg = this._cfg, sortKeyGetter = cfg.sortKeyGetter;
+            if (sortKeyGetter) {
+                var view = cfg.view;
+                view.toggleSortOrder(cfg.sortName, sortKeyGetter);
+                view.refresh();
+            }
+        },
+
+        /**
+         * Updates the state and the icon to match the state of the view.
+         */
+        _updateDisplay : function () {
             this._state = this._setState(this._cfg);
             this._icon.changeIcon(this._getIconName(this._state));
         },
@@ -413,16 +423,19 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         _dom_onclick : function (domEvt) {
-
             this._sortList();
 
             // handle an onclick event
             this.$ActionWidget._dom_onclick.apply(this, arguments);
 
-            if (this._cfg.refreshArgs) {
-                this._doPartialRefresh(this._cfg.refreshArgs);
-            } else {
-                this._context.$refresh();
+            if (this._cfg) {
+                this._updateDisplay();
+
+                if (this._cfg.refreshArgs) {
+                    this._doPartialRefresh(this._cfg.refreshArgs);
+                } else {
+                    this._context.$refresh();
+                }
             }
             domEvt.preventDefault();
 

@@ -469,8 +469,8 @@ module.exports = Aria.beanDefinitions({
                     $classpath : "aria.templates.View"
                 },
                 "sortKeyGetter" : {
-                    $type : "json:FunctionRef",
-                    $description : "An anonymous function to pass the field by which we want to sort"
+                    $type : "common:Callback",
+                    $description : "An callback to return the field by which we want to sort. If this property is null, clicking on the sort indicator does not change the sort order, and only calls the onclick callback."
                 },
                 "refreshArgs" : {
                     $type : "json:Array",
