@@ -657,8 +657,6 @@
                     } else /* if (this.sortOrder == this.SORT_DESCENDING) */{
                         this.$assert(330, this.sortOrder == this.SORT_DESCENDING);
                         this.sortOrder = this.SORT_ASCENDING;
-                        this.sortName = sortName;
-                        this.sortKeyGetter = this.$normCallback(sortKeyGetter);
                     }
                 } else {
                     this.sortName = sortName;

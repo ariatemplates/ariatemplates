@@ -23,6 +23,6 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.action.sortindicator.SortIndicatorTest");
         this.addTests("test.aria.widgets.action.sortindicator.onclick.OnclickCallback");
         this.addTests("test.aria.widgets.action.sortindicator.block.SortIndicatorBlockTest");
-
+        this.addTests("test.aria.widgets.action.sortindicator.fixSortKeyGetter.SortIndicatorSortKeyGetterTest");
     }
 });
