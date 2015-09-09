@@ -16,6 +16,7 @@
 Aria.classDefinition({
     $classpath : "test.aria.widgets.container.dialog.container.ResizeDialogContainerTestCase",
     $extends : "test.aria.widgets.container.dialog.container.BaseDialogContainerTestCase",
+    $dependencies : ["aria.utils.resize.Resize"], // Required to have the dialog quickly ready
     $prototype : {
         start: function () {
             var self = this;
