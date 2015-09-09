@@ -272,7 +272,7 @@ module.exports = Aria.classDefinition({
          * {Function} callback : callback which will be called when the condition function returns true
          */
         waitFor : function (args) {
-            var delay = args.delay || 250;
+            var delay = args.delay || 25;
             var timeout = args.timeout || 10000;
             var timeoutTime = new Date().getTime() + timeout;
 
