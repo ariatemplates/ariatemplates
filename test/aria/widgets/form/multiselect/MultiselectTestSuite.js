@@ -24,6 +24,7 @@ Aria.classDefinition({
                 "test.aria.widgets.form.multiselect.deleteFieldValue.test1.MultiSelect",
                 "test.aria.widgets.form.multiselect.deleteFieldValue.test2.MultiSelect",
                 "test.aria.widgets.form.multiselect.downArrowKey.MultiSelect",
+                "test.aria.widgets.form.multiselect.downArrowKeyPreventDef.MSDownArrowKey",
                 "test.aria.widgets.form.multiselect.instantbind.InstantBindTestCase",
                 "test.aria.widgets.form.multiselect.invalidcontent.MultiSelect",
                 "test.aria.widgets.form.multiselect.issue223.MultiSelect",
