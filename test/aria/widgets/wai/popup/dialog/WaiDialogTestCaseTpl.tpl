@@ -12,16 +12,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+{Template {
+    $classpath : "test.aria.widgets.wai.popup.dialog.WaiDialogTestCaseTpl",
+    $extends: "test.aria.widgets.wai.popup.dialog.DialogTestCaseTpl"
+}}
 
-Aria.classDefinition({
-    $classpath : "test.aria.widgets.wai.WaiTestSuite",
-    $extends : "aria.jsunit.TestSuite",
-    $constructor : function () {
-        this.$TestSuite.constructor.call(this);
+    {macro main()}
+        {call dialogs(true)/}
+    {/macro}
 
-        this.addTests("test.aria.widgets.wai.autoComplete.WaiAutoCompleteTestSuite");
-        this.addTests("test.aria.widgets.wai.textInputBased.WaiTextInputBasedTestSuite");
-        this.addTests("test.aria.widgets.wai.input.WaiInputTestSuite");
-        this.addTests("test.aria.widgets.wai.popup.WaiPopupTestSuite");
-    }
-});
+{/Template}

@@ -152,7 +152,9 @@ module.exports = Aria.classDefinition({
                 domReference : this._field,
                 preferredPositions : this._getPreferredPositions(),
                 closeOnMouseClick : true,
-                closeOnMouseScroll : false
+                closeOnMouseScroll : false,
+                role: "alert",
+                waiAria: this._WidgetCfg.waiAria
             });
         },
 

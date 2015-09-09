@@ -138,6 +138,14 @@ module.exports = Aria.beanDefinitions({
                 "popupContainer" : {
                     $type : "json:ObjectRef",
                     $description : "[Optional] Object implementing the IPopupContainer interface, which defines in which container the popup will be added. By default, the aria.popups.container.Viewport singleton is used and the popup is a direct child of document.body."
+                },
+                "role" : {
+                    $type : "json:String",
+                    $description : "The role attribute to add to the container, if wai is activated"
+                },
+                "waiAria" : {
+                    $type : "json:Boolean",
+                    $description : "If true, accessibility-related DOM attributes are enabled on this container, adding the role attribute if defined."
                 }
             }
         },

@@ -561,6 +561,7 @@ module.exports = Aria.classDefinition({
                     scope : this
                 });
             }
+            var isModal = cfg.modal;
             popup.open({
                 section : section,
                 keepSection : true,
@@ -571,12 +572,14 @@ module.exports = Aria.classDefinition({
                 center : cfg.center,
                 maximized : cfg.maximized,
                 offset : cfg.maximized ? this._shadows : this._shadowsZero,
-                modal : cfg.modal,
+                modal : isModal,
                 maskCssClass : "xDialogMask",
                 popupContainer : popupContainer,
                 closeOnMouseClick : cfg.closeOnMouseClick,
                 closeOnMouseScroll : false,
-                parentDialog : this
+                parentDialog : this,
+                role: isModal ? "dialog" : null,
+                waiAria: cfg.waiAria
             });
 
             // must be registered before we check for _cfg.maximized, to fire the event correctly after overflow change

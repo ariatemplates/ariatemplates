@@ -25,6 +25,7 @@ var ariaCoreBrowser = require("../core/Browser");
 var ariaCoreTimer = require("../core/Timer");
 var ariaCoreJsonValidator = require("../core/JsonValidator");
 var ViewportPopupContainer = require("./container/Viewport");
+var environment = require("../core/environment/Environment");
 
 /**
  * Popup instance
@@ -237,6 +238,10 @@ module.exports = Aria.classDefinition({
 
             this.conf = conf;
 
+            if (conf.waiAria == null) {
+                conf.waiAria = environment.isWaiAria();
+            }
+
             ariaCoreJsonValidator.normalize({
                 json : conf,
                 beanName : "aria.popups.Beans.PopupConf"
@@ -305,11 +310,22 @@ module.exports = Aria.classDefinition({
          */
         _createDomElement : function () {
             var document = this._document;
+            var cfg = this.conf;
             var div = document.createElement("div");
             div.style.cssText = "position:absolute;top:-15000px;left:-15000px;";
             document.body.appendChild(div);
-            div.innerHTML = "<div " + ariaUtilsDelegate.getMarkup(this._delegateId)
-                    + " style='position:absolute;top:-15000px;left:-15000px;visibility:hidden;display:block;'></div>";
+            var html = [
+                 "<div ",
+                 ariaUtilsDelegate.getMarkup(this._delegateId),
+                 ' style="position:absolute;top:-15000px;left:-15000px;visibility:hidden;display:block;"'
+            ];
+            var role = cfg.role;
+            if (cfg.waiAria && role) {
+                html.push(' role="' + role + '"');
+            }
+            html.push("></div>");
+            div.innerHTML = html.join('');
+
             var domElement = div.firstChild;
             document.body.removeChild(div);
             return this.popupContainer.getContainerElt().appendChild(domElement);

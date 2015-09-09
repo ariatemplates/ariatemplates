@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Amadeus s.a.s.
+ * Copyright 2012 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,15 +13,14 @@
  * limitations under the License.
  */
 
-Aria.classDefinition({
-    $classpath : "test.aria.widgets.wai.WaiTestSuite",
-    $extends : "aria.jsunit.TestSuite",
-    $constructor : function () {
-        this.$TestSuite.constructor.call(this);
+var Aria = require("ariatemplates/Aria");
 
-        this.addTests("test.aria.widgets.wai.autoComplete.WaiAutoCompleteTestSuite");
-        this.addTests("test.aria.widgets.wai.textInputBased.WaiTextInputBasedTestSuite");
-        this.addTests("test.aria.widgets.wai.input.WaiInputTestSuite");
-        this.addTests("test.aria.widgets.wai.popup.WaiPopupTestSuite");
+module.exports = Aria.classDefinition({
+    $classpath : "test.aria.widgets.wai.popup.errortooltip.WaiErrorTooltipTestCase",
+    $extends : require("./ErrorTooltipTestCase"),
+    $prototype : {
+        runTemplateTest : function () {
+            this.checkAttributes(true);
+        }
     }
 });
