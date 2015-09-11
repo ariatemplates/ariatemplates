@@ -21,6 +21,7 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.form.selectbox.SelectboxTestCase");
         this.addTests("test.aria.widgets.form.selectbox.checkValue.MainTemplateTestCase");
         this.addTests("test.aria.widgets.form.selectbox.checkTypeLetters.SelectBoxTypeAllLetters");
+        this.addTests("test.aria.widgets.form.selectbox.emptyOption.EmptyOptionTestCase");
         this.addTests("test.aria.widgets.form.selectbox.preselect.PreselectTestCase");
     }
 });

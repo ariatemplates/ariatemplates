@@ -168,12 +168,7 @@ Aria.classDefinition({
             var lowerCaseDispValue = displayedText.toLowerCase();
             var dispValueLength = displayedText.length;
 
-            // an empty field is usually not considered as an error
-            if (!displayedText) {
-                dm.value = null;
-                dm.text = '';
-                report.ok = true;
-            } else if (displayedText == dm.text) {
+            if (displayedText == dm.text) {
                 // if the displayed value is the same as before, don't loop over the whole list
                 report.ok = true;
             } else {
@@ -192,6 +187,12 @@ Aria.classDefinition({
                             report.matchCorrectValueStart = true;
                         }
                     }
+                }
+                if (!report.ok && !displayedText) {
+                    // an empty field is usually not considered as an error
+                    dm.value = null;
+                    dm.text = '';
+                    report.ok = true;
                 }
             }
             if (report.ok) {
