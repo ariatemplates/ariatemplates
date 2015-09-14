@@ -15,7 +15,7 @@
 var Aria = require("../Aria");
 var ariaUtilsAriaWindow = require("./AriaWindow");
 var ariaUtilsJson = require("./Json");
-
+var ariaCoreDownloadMgr = require("../core/DownloadMgr");
 
 /**
  * Creates a subwindow and load a module inside
@@ -117,29 +117,24 @@ module.exports = Aria.classDefinition({
             // this._subWindow = window.open("", config.title, options);
 
             // retrieve current AT version to load the same on the subwindow
-            var scripts = Aria.$frameworkWindow.document.getElementsByTagName("script"), root = Aria.rootFolderPath, script, src, urlMatch, atJsName, atSkinName;
+            var scripts = Aria.$frameworkWindow.document.getElementsByTagName("script"), script, src, urlMatch, atJsName, atSkinName;
             for (var i = 0, l = scripts.length; i < l; i++) {
                 script = scripts[i];
                 if (script.attributes && script.attributes["src"]) {
                     src = script.attributes["src"].nodeValue;
                     urlMatch = /aria\/(aria-?templates-([^\/]+)\.js)/.exec(src);
                     if (urlMatch && urlMatch.length > 1) {
-                        atJsName = urlMatch[1]; // retrieve something like "aria-templates-1.0-SNAPSHOT.js"
-                        atSkinName = "atskin-" + urlMatch[2] + ".js";
+                        atJsName = script.src; // retrieves the full url to Aria Templates
+                        atSkinName = ariaCoreDownloadMgr.resolveURL("aria/css/atskin-" + urlMatch[2] + ".js", true);
                         break;
                     }
                     if (/aria\/bootstrap.js/.test(src)) {
                         // not packaged
-                        atJsName = "bootstrap.js";
-                        atSkinName = "atskin.js";
+                        atJsName = script.src; // retrieves the full url to Aria Templates
+                        atSkinName = ariaCoreDownloadMgr.resolveURL("aria/css/atskin.js", true);
                         break;
                     }
                 }
-            }
-
-            // case dev mode : rootFolderPath might be wrong
-            if (root.match(/dev\/$/)) {
-                root = root.substring(0, root.length - 4);
             }
 
             if (!atJsName) {
@@ -149,19 +144,14 @@ module.exports = Aria.classDefinition({
 
             // create subwindow content
             var pullTimeout = 500; // ms to wait between each check of Aria.loadTemplate
-            var devPart = "";
-
-            // This is use for debugging -> won't work with IE (scripts get injected after the body)
-            // var devPart = "dev/";
 
             var sourceCode = [
                     '<!DOCTYPE html>\n',
                     "<html><head><title>" + config.title + "</title>", // HEAD
 
-                    "<script type='text/javascript'>Aria = { _xxDebug: true, rootFolderPath : '" + root + devPart
-                            + "' };</script>",
+                    "<script type='text/javascript'>Aria = { _xxDebug: true };</script>",
                     "<script language='JavaScript' src='", // AT script
-                    root + devPart + "aria/" + atJsName, // AT script
+                    atJsName, // AT script
                     "'></script>", // AT script
 
                     (aria.widgets && aria.widgets.AriaSkin) ? ["<script type='text/javascript'>",
@@ -169,7 +159,7 @@ module.exports = Aria.classDefinition({
                             "$prototype : window.aria.utils.Json.copy(",
                             ariaUtilsJson.convertToJsonString(aria.widgets.AriaSkin.classDefinition.$prototype), ")",
                             "});</script>"].join("") : ["<script language='JavaScript' src='", // AT Skin script
-                            root + "aria/css/" + atSkinName, // AT Skin script
+                            atSkinName, // AT Skin script
                             "'></script>" // AT Skin script
                     ].join(""),
 
@@ -220,9 +210,15 @@ module.exports = Aria.classDefinition({
         moduleStart : function () {
 
             // start working in subwindow
-            var Aria = this._subWindow.Aria; // , aria = this._subWindow.aria;
+            var Aria = this._subWindow.Aria, aria = this._subWindow.aria;
 
             clearInterval(this._bridgeAttachedInterval);
+
+            // link the url map and the root map in the sub-window
+            // to the corresponding maps in the main window:
+            Aria.rootFolderPath = this.getAria().rootFolderPath;
+            aria.core.DownloadMgr._urlMap = ariaCoreDownloadMgr._urlMap;
+            aria.core.DownloadMgr._rootMap = ariaCoreDownloadMgr._rootMap;
 
             Aria.setRootDim({
                 width : {

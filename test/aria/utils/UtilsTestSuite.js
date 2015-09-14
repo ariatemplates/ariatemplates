@@ -69,6 +69,7 @@ Aria.classDefinition({
         this.addTests("test.aria.utils.Xml");
         this.addTests("test.aria.utils.DeviceTest");
         this.addTests("test.aria.utils.OrientationTest");
+        this.addTests("test.aria.utils.bridge.BridgeTest");
         this.addTests("test.aria.utils.dragdrop.DragTestSuite");
         this.addTests("test.aria.utils.events.EventsTestSuite");
     }
