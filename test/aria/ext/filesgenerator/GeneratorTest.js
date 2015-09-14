@@ -12,21 +12,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var Aria = require("ariatemplates/Aria");
+var generator = require("ariatemplates/ext/filesgenerator/Generator");
+var ariaUtilsType = require("ariatemplates/utils/Type");
+require("ariatemplates/modules/urlService/IUrlService");
+var ariaTemplatesModuleCtrlFactory = require("ariatemplates/templates/ModuleCtrlFactory");
+var ariaCoreDownloadMgr = require("ariatemplates/core/DownloadMgr");
 
 /**
  * Test case for aria.ext.filesgenerator.Generator
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "test.aria.ext.filesgenerator.GeneratorTest",
-    $extends : "aria.jsunit.TestCase",
-    $dependencies : ["aria.ext.filesgenerator.Generator", "aria.utils.Type", "aria.modules.urlService.IUrlService",
-            "aria.templates.ModuleCtrlFactory"],
+    $extends : require("ariatemplates/jsunit/TestCase"),
     $prototype : {
         /**
          * Test that a generated class indeed can be evaluated as such and instantiated
          */
         testGenerateEvalAndInstantiateClass : function () {
-            var generator = aria.ext.filesgenerator.Generator;
             var fileInfo = generator.generateFile(generator.TYPE_CLASS, {
                 $classpath : "test.my.great.test.ClassDefinition"
             });
@@ -43,7 +46,7 @@ Aria.classDefinition({
             var o = new test.my.great.test.ClassDefinition();
 
             this.assertTrue(typeof o == "object", "Instantiating generated class didn't produce an object");
-            this.assertTrue(aria.utils.Type.isInstanceOf(o, "test.my.great.test.ClassDefinition"), "Instantiated object is not of the correct type");
+            this.assertTrue(ariaUtilsType.isInstanceOf(o, "test.my.great.test.ClassDefinition"), "Instantiated object is not of the correct type");
 
             Aria.dispose("test.my.great.test.ClassDefinition");
             o.$dispose();
@@ -53,7 +56,6 @@ Aria.classDefinition({
          * Test that an interface can be generated and evaluated
          */
         testGenerateAndEvalInterface : function () {
-            var generator = aria.ext.filesgenerator.Generator;
             var fileInfo = generator.generateFile(generator.TYPE_INTERFACE, {
                 $classpath : "my.great.test.InterfaceDefinition",
                 $extends : "aria.modules.urlService.IUrlService"
@@ -62,8 +64,10 @@ Aria.classDefinition({
             this.assertEquals(fileInfo.type, "interface", "Wrong type of file was generated");
             this.assertEquals(fileInfo.classpath, "my.great.test.InterfaceDefinition", "Incorrect classpath parsed");
 
+            var logicalPath = Aria.getLogicalPath(fileInfo.classpath, ".js", true);
+            ariaCoreDownloadMgr.loadFileContent(logicalPath, fileInfo.content);
             try {
-                eval(fileInfo.content);
+                require(logicalPath);
             } catch (e) {
                 this.assertTrue(false, "Eval'ing the generated interface failed");
             }
@@ -75,7 +79,6 @@ Aria.classDefinition({
          * Test and instantiate a module controller class
          */
         testAsyncModuleControllerClass : function () {
-            var generator = aria.ext.filesgenerator.Generator;
             var test = [{
                         "type" : "moduleControllerInterface",
                         "classpath" : "aria.my.great.test.IModuleDefinition",
@@ -95,15 +98,13 @@ Aria.classDefinition({
                     }];
 
             var fileInfo = generator.generateModuleCtrl("aria.my.great.test.ModuleDefinition", true);
-            var DM = aria.core.DownloadMgr;
-            var MCFactory = aria.templates.ModuleCtrlFactory;
             for (var i = 0; i < fileInfo.length; i++) {
                 this.assertEquals(fileInfo[i].type, test[i].type, "Incorrect type of file was generated.");
                 this.assertEquals(fileInfo[i].classpath, test[i].classpath, "Incorrect classpath parsed");
-                DM.loadFileContent(test[i].logicalpath, fileInfo[i].content);
+                ariaCoreDownloadMgr.loadFileContent(test[i].logicalpath, fileInfo[i].content);
             }
 
-            MCFactory.createModuleCtrl({
+            ariaTemplatesModuleCtrlFactory.createModuleCtrl({
                 classpath : "aria.my.great.test.ModuleDefinition"
             }, {
                 fn : this.moduleControllerLoaded,
@@ -112,13 +113,13 @@ Aria.classDefinition({
         },
 
         moduleControllerLoaded : function (res) {
-            this.assertTrue(aria.utils.Type.isFunction(aria.my.great.test.IModuleDefinition));
-            this.assertTrue(aria.utils.Type.isFunction(aria.my.great.test.IModuleDefinitionFlow));
-            this.assertTrue(aria.utils.Type.isFunction(aria.my.great.test.ModuleDefinitionFlow));
-            this.assertTrue(aria.utils.Type.isFunction(aria.my.great.test.ModuleDefinition));
+            this.assertTrue(ariaUtilsType.isFunction(aria.my.great.test.IModuleDefinition));
+            this.assertTrue(ariaUtilsType.isFunction(aria.my.great.test.IModuleDefinitionFlow));
+            this.assertTrue(ariaUtilsType.isFunction(aria.my.great.test.ModuleDefinitionFlow));
+            this.assertTrue(ariaUtilsType.isFunction(aria.my.great.test.ModuleDefinition));
             this.assertTrue(typeof res.moduleCtrl == "object", "Instantiating generated Module didn't produce an object");
-            this.assertTrue(aria.utils.Type.isInstanceOf(res.moduleCtrlPrivate, "aria.my.great.test.ModuleDefinition"), "Instantiated object is not of the correct type");
-            this.assertTrue(aria.utils.Type.isInstanceOf(res.moduleCtrl, "aria.my.great.test.IModuleDefinition"), "Instantiated object is not of the correct type");
+            this.assertTrue(ariaUtilsType.isInstanceOf(res.moduleCtrlPrivate, "aria.my.great.test.ModuleDefinition"), "Instantiated object is not of the correct type");
+            this.assertTrue(ariaUtilsType.isInstanceOf(res.moduleCtrl, "aria.my.great.test.IModuleDefinition"), "Instantiated object is not of the correct type");
             res.moduleCtrlPrivate.$dispose();
             Aria.dispose("aria.my.great.test.ModuleDefinition");
             Aria.dispose("aria.my.great.test.IModuleDefinition");
@@ -131,7 +132,6 @@ Aria.classDefinition({
          * Test that a module controller can be generated correctly, with flow and interfaces, with right names
          */
         testModuleControllerGeneratedWithFlowWithRightNames : function () {
-            var generator = aria.ext.filesgenerator.Generator;
             var fileInfo = generator.generateModuleCtrl("amadeus.booking.hotel.HotelModule", true);
 
             this.assertEquals(fileInfo.length, 4, "The incorrect number of files were generated. There should be the Ctrl, ICtrl, Flow, IFlow");
@@ -163,7 +163,6 @@ Aria.classDefinition({
          * Test that a template can be generated correctly, with script and style, with the right names
          */
         testHtmlTemplateGeneratedWithScriptWithRightNames : function () {
-            var generator = aria.ext.filesgenerator.Generator;
             var fileInfo = generator.generateHtmlTemplate("amadeus.booking.hotel.Search", true, true);
 
             this.assertEquals(fileInfo.length, 3, "The incorrect number of files were generated. There should be the template, script, css");
@@ -191,7 +190,6 @@ Aria.classDefinition({
          * Test content feature for generateHtmlTemplate method
          */
         testHtmlTemplateGeneratedWithContent : function () {
-            var generator = aria.ext.filesgenerator.Generator;
             var myClasspath = generator.getUniqueClasspathIn("my.package");
             var strPackage = myClasspath.substr(0, 10);
             var className = myClasspath.substr(11);
@@ -213,7 +211,6 @@ Aria.classDefinition({
          * Test content feature
          */
         testHmlTemplateWithContent : function () {
-            var generator = aria.ext.filesgenerator.Generator;
             var myClasspath = generator.getUniqueClasspathIn("my.package");
             var strPackage = myClasspath.substr(0, 10);
             var className = myClasspath.substr(11);

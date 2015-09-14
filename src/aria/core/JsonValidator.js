@@ -727,7 +727,7 @@ var Aria = require("../Aria");
                     classpaths : {
                         "JS" : dep
                     },
-                    oldModuleLoader : def.$oldModuleLoader,
+                    classDefinition : def,
                     complete : {
                         scope : this,
                         fn : this.__loadBeans,

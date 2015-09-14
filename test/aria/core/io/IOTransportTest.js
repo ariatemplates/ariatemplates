@@ -58,7 +58,7 @@ Aria.classDefinition({
             /**
              * Base Custom Transport class.
              */
-            Aria.classDefinition({
+            var BaseXHR = Aria.classDefinition({
                 $classpath : "myApplication.transports.BaseXHR",
                 $constructor : function () {},
                 $prototype : {}
@@ -69,7 +69,7 @@ Aria.classDefinition({
              */
             Aria.classDefinition({
                 $classpath : "myApplication.transports.SameDomainCustomTransport",
-                $extends : "myApplication.transports.BaseXHR",
+                $extends : BaseXHR,
                 $singleton : true,
                 $constructor : function () {
                     this.$BaseXHR.constructor.call(this);
@@ -82,7 +82,7 @@ Aria.classDefinition({
              */
             Aria.classDefinition({
                 $classpath : "myApplication.transports.CrossDomainCustomTransport",
-                $extends : "myApplication.transports.BaseXHR",
+                $extends : BaseXHR,
                 $singleton : true,
                 $constructor : function () {
                     this.$BaseXHR.constructor.call(this);
@@ -95,7 +95,7 @@ Aria.classDefinition({
              */
             Aria.classDefinition({
                 $classpath : "myApplication.transports.JsonPCustomTransport",
-                $extends : "myApplication.transports.BaseXHR",
+                $extends : BaseXHR,
                 $singleton : true,
                 $constructor : function () {
                     this.$BaseXHR.constructor.call(this);
@@ -108,7 +108,7 @@ Aria.classDefinition({
              */
             Aria.classDefinition({
                 $classpath : "myApplication.transports.LocalCustomTransport",
-                $extends : "myApplication.transports.BaseXHR",
+                $extends : BaseXHR,
                 $singleton : true,
                 $constructor : function () {
                     this.$BaseXHR.constructor.call(this);
@@ -121,7 +121,7 @@ Aria.classDefinition({
              */
             Aria.classDefinition({
                 $classpath : "myApplication.transports.IFrameCustomTransport",
-                $extends : "myApplication.transports.BaseXHR",
+                $extends : BaseXHR,
                 $singleton : true,
                 $constructor : function () {
                     this.$BaseXHR.constructor.call(this);

@@ -24,7 +24,7 @@ try {
     // For all the other classes we use IO, define our node transport
     Aria.classDefinition({
         $classpath : "aria.node.Transport",
-        $implements : ["aria.core.transport.ITransports"],
+        $implements : [aria.core.transport.ITransports],
         $singleton : true,
         $prototype : {
             isReady : true,

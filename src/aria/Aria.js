@@ -159,6 +159,7 @@ var Aria = module.exports = global.Aria;
     Aria.CANNOT_EXTEND_SINGLETON = "Class %1 cannot extend singleton class %2";
     Aria.FUNCTION_PROTOTYPE_RETURN_NULL = "Prototype function of %1 cannot returns null";
     Aria.TPLSCRIPT_INSTANTIATED_DIRECTLY = "Template scripts can not be instantiated directly";
+    Aria.OLD_DEPENDENCIES_SYNTAX = "Class %1 is using the old syntax for the following dependencies, without using the backward-compatible loader : %2";
 
     Aria.$classpath = "Aria";
     /**
@@ -839,16 +840,22 @@ var Aria = module.exports = global.Aria;
         return classpathOrCstr;
     };
 
-    var appendMissingDependencies = function (missingDeps, array, extension) {
+    var appendMissingDependencies = function (missingDeps, array, extension, loadedDeps) {
         if (array) {
             for (var i = 0, l = array.length; i < l; i++) {
                 var item = array[i];
-                if (typeof item == "string" && !(Aria.getClassRef(item))) {
-                    // FIXME: typeof
-                    var dependency = Aria.getLogicalPath(item, extension, true);
-                    var cacheItem = require.cache[dependency];
-                    if (!cacheItem || !cacheItem.loaded) {
-                        missingDeps.push(dependency);
+                if (typeof item == "string") {
+                    var missing = !(Aria.getClassRef(item));
+                    var dependency = missing || loadedDeps ? Aria.getLogicalPath(item, extension, true) : null;
+                    if (missing) {
+                        var cacheItem = require.cache[dependency];
+                        missing = !cacheItem || !cacheItem.loaded;
+                        if (missing) {
+                            missingDeps.push(dependency);
+                        }
+                    }
+                    if (!missing && loadedDeps) {
+                        loadedDeps.push(dependency);
                     }
                 }
             }
@@ -878,17 +885,23 @@ var Aria = module.exports = global.Aria;
     };
 
     Aria.loadOldDependencies = function (config) {
+        var classDefinition = config.classDefinition;
+        var oldModuleLoader = classDefinition ? classDefinition.$oldModuleLoader : config.oldModuleLoader;
+        var loadedOldSyntaxDeps = (classDefinition && !oldModuleLoader) ? config.loadedOldSyntaxDeps || [] : null;
         var classpaths = config.classpaths || {};
         var missingDependencies = config.files ? config.files.slice(0) : [];
-        appendMissingDependencies(missingDependencies, classpaths.JS, '.js');
-        appendMissingDependencies(missingDependencies, classpaths.TPL, '.tpl');
-        appendMissingDependencies(missingDependencies, classpaths.CSS, '.tpl.css');
-        appendMissingDependencies(missingDependencies, classpaths.TML, '.tml');
-        appendMissingDependencies(missingDependencies, classpaths.TXT, '.tpl.txt');
-        appendMissingDependencies(missingDependencies, classpaths.CML, '.cml');
+        appendMissingDependencies(missingDependencies, classpaths.JS, '.js', loadedOldSyntaxDeps);
+        appendMissingDependencies(missingDependencies, classpaths.TPL, '.tpl', loadedOldSyntaxDeps);
+        appendMissingDependencies(missingDependencies, classpaths.CSS, '.tpl.css', loadedOldSyntaxDeps);
+        appendMissingDependencies(missingDependencies, classpaths.TML, '.tml', loadedOldSyntaxDeps);
+        appendMissingDependencies(missingDependencies, classpaths.TXT, '.tpl.txt', loadedOldSyntaxDeps);
+        appendMissingDependencies(missingDependencies, classpaths.CML, '.cml', loadedOldSyntaxDeps);
         appendMissingResDependencies(missingDependencies, classpaths.RES);
 
-        var oldModuleLoader = config.oldModuleLoader;
+        if (loadedOldSyntaxDeps && (loadedOldSyntaxDeps.length > 0 || missingDependencies.length > 0)) {
+            Aria.$logError(Aria.OLD_DEPENDENCIES_SYNTAX, [classDefinition.$classpath || classDefinition.$package, loadedOldSyntaxDeps.concat(missingDependencies).join(', ')]);
+        }
+
         var completeLoading = function () {
             var complete = config.complete;
             return complete.fn.apply(complete.scope, complete.args);
@@ -991,6 +1004,7 @@ var Aria = module.exports = global.Aria;
         }
 
         __checkOldModuleLoader(def, "classDefinition");
+        var loadedOldSyntaxDeps = !def.$oldModuleLoader ? [] : null;
 
         // initialize class definition: create $events, $noargConstructor,
         // $destructor... variables
@@ -1013,14 +1027,14 @@ var Aria = module.exports = global.Aria;
         // check dependencies
         var missingDependencies = [];
 
-        appendMissingDependencies(missingDependencies, def.$dependencies, '.js');
-        appendMissingDependencies(missingDependencies, def.$templates, '.tpl');
-        appendMissingDependencies(missingDependencies, def.$css, '.tpl.css');
-        appendMissingDependencies(missingDependencies, def.$macrolibs, '.tml');
-        appendMissingDependencies(missingDependencies, def.$csslibs, '.cml');
+        appendMissingDependencies(missingDependencies, def.$dependencies, '.js', loadedOldSyntaxDeps);
+        appendMissingDependencies(missingDependencies, def.$templates, '.tpl', loadedOldSyntaxDeps);
+        appendMissingDependencies(missingDependencies, def.$css, '.tpl.css', loadedOldSyntaxDeps);
+        appendMissingDependencies(missingDependencies, def.$macrolibs, '.tml', loadedOldSyntaxDeps);
+        appendMissingDependencies(missingDependencies, def.$csslibs, '.cml', loadedOldSyntaxDeps);
 
         // add implemented interfaces to dependencies map
-        appendMissingDependencies(missingDependencies, def.$implements, '.js');
+        appendMissingDependencies(missingDependencies, def.$implements, '.js', loadedOldSyntaxDeps);
 
         // add resources file to dependencies map
         if (def.$resources) {
@@ -1046,14 +1060,14 @@ var Aria = module.exports = global.Aria;
                             args : resProviderInfo
                         });
                     } else {
-                        appendMissingResDependencies(missingDependencies, [itmValue]);
+                        appendMissingResDependencies(missingDependencies, [itmValue], loadedOldSyntaxDeps);
                     }
                 }
             }
         }
         // add text template files to dependencies map
         if (def.$texts) {
-            appendMissingDependencies(missingDependencies, require('./utils/Array').extractValuesFromMap(def.$texts), '.tpl.txt');
+            appendMissingDependencies(missingDependencies, require('./utils/Array').extractValuesFromMap(def.$texts), '.tpl.txt', loadedOldSyntaxDeps);
         }
 
         if (typeof defExtends == "string" && defExtends != 'aria.core.JsObject') {
@@ -1062,12 +1076,13 @@ var Aria = module.exports = global.Aria;
             if (!acceptedTypes.hasOwnProperty(extendsType)) {
                 return __classLoadError(def, Aria.INVALID_EXTENDSTYPE, [clsName]);
             }
-            appendMissingDependencies(missingDependencies, [defExtends], acceptedTypes[extendsType]);
+            appendMissingDependencies(missingDependencies, [defExtends], acceptedTypes[extendsType], loadedOldSyntaxDeps);
         }
 
         return Aria.loadOldDependencies({
             files : missingDependencies,
-            oldModuleLoader : def.$oldModuleLoader,
+            loadedOldSyntaxDeps: loadedOldSyntaxDeps,
+            classDefinition : def,
             complete : {
                 scope : Aria,
                 fn : Aria.loadClass,
@@ -1101,7 +1116,7 @@ var Aria = module.exports = global.Aria;
             classpaths : {
                 "JS" : def.$extends ? [def.$extends] : []
             },
-            oldModuleLoader : def.$oldModuleLoader,
+            classDefinition : def,
             complete : {
                 scope : Interfaces,
                 fn : Interfaces.loadInterface,

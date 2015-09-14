@@ -147,7 +147,7 @@ Aria.classDefinition({
                             }
                         }
                     }, {
-                        errorMsgs : [jv.MISSING_BEANSPACKAGE],
+                        errorMsgs : [jv.MISSING_BEANSPACKAGE, Aria.OLD_DEPENDENCIES_SYNTAX],
                         beans : {
                             TestBean : {
                                 $type : "missing:MyBean",
@@ -352,7 +352,9 @@ Aria.classDefinition({
                     $package : "test.aria.core.test.InvalidBeans",
                     $description : "Bean package to test errors in preprocessing",
                     $namespaces : (btt.namespaces !== undefined ? btt.namespaces : {
-                        "json" : "aria.core.JsonTypes"
+                        "json" : jv.__loadedBeans["aria.core.JsonTypes"]
+                        // the previous line is equivalent to:
+                        // "json" : require("ariatemplates/core/JsonTypes")
                     }),
                     $beans : btt.beans
                 };

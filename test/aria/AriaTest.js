@@ -116,7 +116,7 @@ Aria.classDefinition({
             // Same class name as one of the class parents
             this.callAriaClassDefError({
                 $classpath : 'test.aria.test.Assert',
-                $extends : 'aria.jsunit.TestCase',
+                $extends : aria.jsunit.TestCase,
                 $constructor : function () {}
             });
             this.assertErrorInLogs(Aria.DUPLICATE_CLASSNAME);
@@ -131,7 +131,7 @@ Aria.classDefinition({
             // Inherit from Singleton
             this.callAriaClassDefError({
                 $classpath : 'test.aria.test.ClassSExtended',
-                $extends : 'test.aria.test.ClassS'
+                $extends : test.aria.test.ClassS
             });
             this.assertErrorInLogs(Aria.CANNOT_EXTEND_SINGLETON);
 
