@@ -67,16 +67,11 @@ module.exports = Aria.classDefinition({
          */
         this._mousePressed = false;
 
+        this._waiAriaAttributes = "";
         if (this._cfg.waiAria) {
-            /**
-             * Extra attributes for the widget.
-             * @protected
-             * @type String
-             */
-            this._extraAttributes = this._getAriaLabelMarkup();
-            this._extraAttributes += "role='checkbox' ";
-            this._extraAttributes += "aria-disabled='" + this._cfg.disabled + "' ";
-            this._extraAttributes += "aria-checked='" + this._cfg.value + "' ";
+            this[this._skinObj.simpleHTML ? "_waiAriaAttributes" : "_extraAttributes"] =
+                this._getAriaLabelMarkup() + "role='checkbox' aria-disabled='" + this._cfg.disabled + "' " +
+                    'aria-checked=' + this._cfg.value + '"';
         }
 
     },
@@ -137,7 +132,7 @@ module.exports = Aria.classDefinition({
 
                 out.write(['<input style="display:inline-block"', cfg.disabled ? ' disabled' : '',
                         this._isChecked() ? ' checked' : '', ' type="', cfg._inputType, '"', name, ' value="',
-                        cfg.value, '" ', tabIndex, this._getAriaLabelMarkup(), '/>'].join(''));
+                        cfg.value, '" ', tabIndex, this._waiAriaAttributes, '/>'].join(''));
             } else {
                 this._icon.writeMarkup(out);
                 out.write(['<input', Aria.testMode ? ' id="' + this._domId + '_input"' : '', ' style="display:none"',
@@ -199,7 +194,6 @@ module.exports = Aria.classDefinition({
          */
         _initInputMarkup : function (elt) {
             this._initializeFocusableElement();
-            this._getFocusableElement();
             this._label = null;
             var labels = this.getDom().getElementsByTagName("label");
             if (labels.length > 0) {
@@ -213,6 +207,9 @@ module.exports = Aria.classDefinition({
          */
         _initializeFocusableElement : function () {
             this._focusableElement = this.getDom();
+            if (this._skinObj.simpleHTML) {
+                this._focusableElement = this._focusableElement.getElementsByTagName("input")[0];
+            }
         },
 
         /**
@@ -247,9 +244,8 @@ module.exports = Aria.classDefinition({
                 this._updateDomForState();
             } else if (propertyName === 'disabled') {
                 this._cfg.disabled = newValue;
-                var checkField = this.getDom();
-                var disabledOrReadonly = this.getProperty("disabled") || this.getProperty("readOnly");
-                var tabIndex = disabledOrReadonly ? -1 : this._calculateTabIndex();
+                var checkField = this._getFocusableElement();
+                var tabIndex = this._calculateTabIndex();
                 checkField.tabIndex = tabIndex;
                 this._setState();
                 this._updateDomForState();
@@ -258,6 +254,18 @@ module.exports = Aria.classDefinition({
                 // delegate to parent class
                 this.$Input._onBoundPropertyChange.apply(this, arguments);
             }
+        },
+
+        /**
+         * Calculates the real tab index from configuration parameters given to the widget. Only valid to call if
+         * baseTabIndex and tabIndex are correctly set, otherwise method will return -1.
+         * @protected
+         * @return {Number}
+         */
+        _calculateTabIndex : function () {
+            return this.getProperty("disabled") || this.getProperty("readOnly") ?
+                    -1 :
+                    this.$Input._calculateTabIndex.call(this);
         },
 
         /**
