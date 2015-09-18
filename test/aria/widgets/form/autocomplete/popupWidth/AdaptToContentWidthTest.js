@@ -39,7 +39,7 @@ Aria.classDefinition({
 
             this.waitFor({
                 condition : function () {
-                    return !!testCase.getWidgetDropDownPopup("ac");
+                    return !!(testCase.getWidgetDropDownPopup("ac") && this.getElementById("Items", false, this.getWidgetInstance("ac").controller.getListWidget()._subTplCtxt));
                 },
                 callback : function () {
                     testCase.$callback({
