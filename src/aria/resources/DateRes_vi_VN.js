@@ -27,8 +27,15 @@ Aria.resourcesDefinition({
         ],
         // a false value for the following items mean: use substring
         // to generate the short versions of days or months
-        dayShort : false,
-        monthShort : false,
+        dayShort : [
+            "CN",
+            "T2",
+            "T3",
+            "T4",
+            "T5",
+            "T6",
+            "T7"
+        ],
         month : [
             "Tháng một",
             "Tháng hai",
@@ -42,6 +49,20 @@ Aria.resourcesDefinition({
             "Tháng mười",
             "Tháng mười một",
             "Tháng mười hai"
+        ],
+        monthShort : [
+            "Th1",
+            "Th2",
+            "Th3",
+            "Th4",
+            "Th5",
+            "Th6",
+            "Th7",
+            "Th8",
+            "Th9",
+            "Th10",
+            "Th11",
+            "Th12"
         ]
     }
 });
