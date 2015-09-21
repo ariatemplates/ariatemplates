@@ -55,7 +55,8 @@ Aria.classDefinition({
             }
 
             function step8() {
-                self.synEvent.click(self.getElementById("bodyInput2"), self.waitForFocus("bodyInput2", step9));
+                // pausing 300 ms here is necessary for Edge
+                self.synEvent.execute([["pause", 300], ["click", self.getElementById("bodyInput2")]], self.waitForFocus("bodyInput2", step9));
             }
 
             function step9() {
@@ -75,7 +76,8 @@ Aria.classDefinition({
             }
 
             function step13() {
-                self.synEvent.execute([["type", null, "[ESCAPE]"], ["click", self.getElementById("bodyInput2")]], self.waitForFocus("bodyInput2", step14));
+                // pausing 300 ms here is necessary for Edge
+                self.synEvent.execute([["type", null, "[ESCAPE]"], ["pause", 300], ["click", self.getElementById("bodyInput2")]], self.waitForFocus("bodyInput2", step14));
             }
 
             function step14() {
