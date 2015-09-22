@@ -54,7 +54,6 @@ module.exports = Aria.classDefinition({
             this.checkAccessibilityUndefined();
             this.checkAccessibilityEnabled();
             this.checkAccessibilityDisabled();
-            this.notifyTemplateTestEnd();
 
         },
 
@@ -214,6 +213,20 @@ module.exports = Aria.classDefinition({
 
         runTemplateTest : function () {
             this.checkAttributes();
+            this.waiCheckboxClick();
+        },
+
+        waiCheckboxClick : function() {
+            var id = "enabled - with label";
+            var widget = this.getWidgetInstance(id);
+            this.synEvent.click(widget.getDom(), {
+                fn : function() {
+                    this.assertTrue(widget._isChecked(), "The checked '" + id + "' should be checked");
+                    this.end();
+                },
+                scope : this
+            });
+
         }
     }
 });

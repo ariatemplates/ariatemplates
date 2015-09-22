@@ -70,8 +70,8 @@ module.exports = Aria.classDefinition({
         this._waiAriaAttributes = "";
         if (this._cfg.waiAria) {
             this[this._skinObj.simpleHTML ? "_waiAriaAttributes" : "_extraAttributes"] =
-                this._getAriaLabelMarkup() + "role='checkbox' aria-disabled='" + this._cfg.disabled + "' " +
-                    'aria-checked=' + this._cfg.value + '"';
+                this._getAriaLabelMarkup() + " role='checkbox' aria-disabled='" + this._cfg.disabled + "' " +
+                    'aria-checked=' + this._cfg.value + '" ';
         }
 
     },
