@@ -362,6 +362,14 @@ var ariaCoreTimer = require("../../core/Timer");
                 // list widget, if any. This is done when the section containing the
                 // list widget is disposed.
                 this._listWidget = listWidget;
+            },
+
+            /**
+             * Get the list widget.
+             * @return {aria.widgets.form.list.List} listWidget
+             */
+            getListWidget : function () {
+                return this._listWidget;
             }
         }
     });

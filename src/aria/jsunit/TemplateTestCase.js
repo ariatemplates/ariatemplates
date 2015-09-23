@@ -524,6 +524,27 @@ module.exports = Aria.classDefinition({
         },
 
         /**
+         * Waits for the the given widget to fully display its popup.
+         * @param {String} widgetId
+         * @param {Function} cb : callback which will be called when the popup is fully displayed
+         */
+        waitForDropDownPopup : function (widgetId, cb) {
+            this.waitFor({
+                condition : function () {
+                    var controller = this.getWidgetInstance(widgetId).controller;
+                    var popupWidget;
+                    if (controller && controller.getListWidget) {
+                        popupWidget = controller.getListWidget();
+                    } else if (controller && controller.getCalendar) {
+                        popupWidget = controller.getCalendar();
+                    }
+                    return popupWidget && popupWidget._subTplCtxt;
+                },
+                callback : cb
+            });
+        },
+
+        /**
          * Get the &lt;input&gt; DOM element of an input based widget.
          * @param {String} templateWidgetID
          * @return {HTMLElement} Returns directly the input element from the DOM, or null if the ID was not found or

@@ -47,6 +47,14 @@ module.exports = Aria.classDefinition({
         },
 
         /**
+         * Returns the calendar associated to this controller.
+         * @return {aria.widgets.calendar.Calendar}
+         */
+        getCalendar : function () {
+            return this._calendar;
+        },
+
+        /**
          * Verify a given value
          * @param {String} displayValue the displayed text
          * @return {aria.widgets.controllers.reports.ControllerReport}
