@@ -29,28 +29,11 @@ Aria.classDefinition({
         runTemplateTest : function () {
             var field = this.getInputField("ac");
             this.synEvent.execute([["click", field], ["type", field, "a"]], {
-                fn : this._afterTyping,
+                fn : this.waitForDropDownPopup,
+                args : ["ac", this._afterDropdownOpen],
+                apply : true,
+                resIndex : -1,
                 scope : this
-            });
-        },
-
-        _afterTyping : function () {
-            var testCase = this;
-
-            this.waitFor({
-                condition : function () {
-                    var listWidget = this.getWidgetInstance("ac").controller.getListWidget();
-                    if (listWidget && listWidget._subTplCtxt) {
-                        return !! this.getElementById("Items", false, listWidget._subTplCtxt);
-                    }
-                    return false;
-                },
-                callback : function () {
-                    testCase.$callback({
-                        fn : testCase._afterDropdownOpen,
-                        scope : testCase
-                    });
-                }
             });
         },
 
@@ -58,7 +41,10 @@ Aria.classDefinition({
             this._checkDropdownWidth();
             var field = this.getInputField("ac");
             this.synEvent.execute([["type", field, "[BACK_SPACE]a"]], {
-                fn : this._afterSecondDropdownOpen,
+                fn : this.waitForDropDownPopup,
+                args : ["ac", this._afterSecondDropdownOpen],
+                apply : true,
+                resIndex : -1,
                 scope : this
             });
 
