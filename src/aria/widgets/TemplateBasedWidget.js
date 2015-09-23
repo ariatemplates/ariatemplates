@@ -73,8 +73,13 @@ module.exports = Aria.classDefinition({
                 if (cfg.id) {
                     tplCfg.id = cfg.id + "_t_";
                 }
-                this._tplWidget = new ariaWidgetsTemplate(tplCfg, this._context, this._lineNumber);
-                this._tplWidget.tplLoadCallback = {
+                var tplWidget = this._tplWidget = new ariaWidgetsTemplate(tplCfg, this._context, this._lineNumber);
+                var extraAttributes = this._extraAttributes;
+                if (extraAttributes) {
+                    tplWidget.addExtraAttributes(extraAttributes);
+                }
+
+                tplWidget.tplLoadCallback = {
                     fn : this._tplLoadCallback,
                     scope : this
                 };

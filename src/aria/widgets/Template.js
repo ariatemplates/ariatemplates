@@ -127,6 +127,18 @@ module.exports = Aria.classDefinition({
             }
         },
 
+
+        /**
+         * Add custom attributes in the container markup
+         * @extraAttributes String attributes to add in the markup. For example : 'att1="val1" att1="val2"'
+         */
+        addExtraAttributes : function (extraAttributes) {
+            if (this._extraAttributes == null) {
+                this._extraAttributes = "";
+            }
+            this._extraAttributes += " " + extraAttributes;
+        },
+
         /**
          * OVERRIDE Flag for widget that get initialized right after being displayed (typically, templates)
          * @protected

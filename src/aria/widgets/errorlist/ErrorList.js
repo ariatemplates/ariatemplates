@@ -43,6 +43,11 @@ module.exports = Aria.classDefinition({
         divCfg.sclass = skinObj.divsclass;
         divCfg.margins = "0 0 0 0";
         divCfg.id = cfg.id + "_div";
+
+        if (cfg.waiAria) {
+            this._extraAttributes = ' role="alert" ';
+        }
+
         this._initTemplate({
             defaultTemplate : this._cfg.defaultTemplate,
             moduleCtrl : {
