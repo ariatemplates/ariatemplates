@@ -23,5 +23,7 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.wai.textInputBased.WaiTextInputBasedTestSuite");
         this.addTests("test.aria.widgets.wai.input.WaiInputTestSuite");
         this.addTests("test.aria.widgets.wai.popup.WaiPopupTestSuite");
+        this.addTests("test.aria.widgets.wai.errorlist.ListErrorTestCase");
+
     }
 });
