@@ -578,9 +578,7 @@ module.exports = Aria.classDefinition({
                     try {
                         result = callback.call(evt);
                     } catch (e) {
-                        this.$logError(this.DELEGATE_UTIL_CALLBACK_FAIL, [evt.type], {
-                            event : evt
-                        });
+                        this.$logError(this.DELEGATE_UTIL_CALLBACK_FAIL, [evt.type], e);
                     }
                 }
 
