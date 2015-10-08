@@ -1259,7 +1259,9 @@ module.exports = Aria.classDefinition({
             textInputField.focus();
             // IE FIX: requires the value to be reset for the cursor to be positioned
             // and focused at the end of the textinput.value string
-            textInputField.value = textInputField.value;
+            if (ariaCoreBrowser.isIE) {
+              textInputField.value = textInputField.value;
+            }
 
             if (!fromSelf) {
                 // IE FIX: the focus() can be asynchronous, so let's add a timeout to manage the autoselect
