@@ -263,16 +263,20 @@ Aria.classDefinition({
 
         _testPopupOpen : function (res, args) {
             var isOpen = this.testValues.items[args[0]][0] > 0 ? 1 : 0;
-            this.waitFor({
-                condition : function () {
-                    var openedPopups = aria.popups.PopupManager.openedPopups;
-                    return openedPopups.length == isOpen;
-                },
-                callback : {
-                    fn : this[args[1]],
-                    scope : this
-                }
-            });
+            if (isOpen) {
+                this.waitForDropDownPopup("ac", this[args[1]]);
+            } else {
+                this.waitFor({
+                    condition : function () {
+                        var openedPopups = aria.popups.PopupManager.openedPopups;
+                        return openedPopups.length == isOpen;
+                    },
+                    callback : {
+                        fn : this[args[1]],
+                        scope : this
+                    }
+                });
+            }
         },
 
         /**
