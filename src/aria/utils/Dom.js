@@ -1224,7 +1224,7 @@ module.exports = Aria.classDefinition({
             if (document == null) {
                 document = Aria.$window.document;
             }
-            return ((!(ariaCoreBrowser.isSafari || ariaCoreBrowser.isChrome || ariaCoreBrowser.isEdge) && (document.compatMode == "CSS1Compat"))
+            return ((!(ariaCoreBrowser.isSafari || ariaCoreBrowser.isChrome || ariaCoreBrowser.isEdge || ariaCoreBrowser.isOpera) && (document.compatMode == "CSS1Compat"))
                     ? document.documentElement
                     : document.body);
         },
