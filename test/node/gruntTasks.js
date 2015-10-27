@@ -14,8 +14,8 @@
  */
 var assert = require("assert");
 var path = require("path");
-var spawn = require("child_process").spawn;
 var fs = require("fs");
+var fork = require("./util/fork");
 
 var getPath = function (end) {
     return path.join(__dirname, end);
@@ -25,13 +25,11 @@ var testProjectPath = getPath("../nodeTestResources/testProject/");
 var srcPath = getPath("../../src/");
 
 var testBuild = function (index, callback) {
-    var gruntBuild = spawn("node", [getPath("../../build/grunt-cli.js"), "--gruntfile",
-            testProjectPath + "gruntfiles/Gruntfile" + index + ".js"]);
+    var gruntBuild = fork(getPath("../../build/grunt-cli.js"), ["--gruntfile", testProjectPath + "gruntfiles/Gruntfile" + index + ".js"]);
 
     gruntBuild.on("exit", function (exitCode) {
         assert.strictEqual(exitCode, 0, "The packaging failed");
-        var attesterProcess = spawn("node", [getPath("../../node_modules/attester/bin/attester.js"),
-                testProjectPath + "attester/attester" + index + ".yml", "--phantomjs-instances", "1"]);
+        var attesterProcess = fork(getPath("../../node_modules/attester/bin/attester.js"), [testProjectPath + "attester/attester" + index + ".yml", "--phantomjs-instances", "1"]);
 
         attesterProcess.on("exit", function (exitCode) {
             assert.strictEqual(exitCode, 0, "The test campaign on the packaged code failed");
@@ -70,10 +68,9 @@ var verifyImgFiles = function (outputFolder) {
 };
 
 describe("easypackage grunt task", function () {
-    this.timeout(40000);
+    this.timeout(60000);
     it("should re-package Aria Templates correcly", function (callback) {
-        var gruntBuild = spawn("node", [getPath("../../build/grunt-cli.js"), "--gruntfile",
-                testProjectPath + "gruntfiles/Gruntfile.js"]);
+        var gruntBuild = fork(getPath("../../build/grunt-cli.js"), ["--gruntfile", testProjectPath + "gruntfiles/Gruntfile.js"]);
 
         gruntBuild.on("exit", function (exitCode) {
             assert.strictEqual(exitCode, 0, "The re-packaging of the framework failed");

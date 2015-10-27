@@ -13,10 +13,9 @@
  * limitations under the License.
  */
 
-var spawn = require("child_process").spawn;
-var path = require("path");
 var assert = require("assert");
 var http = require("http");
+var fork = require("./util/fork");
 
 // This test check that npm start loads correctly a web server configured to serve Aria Tests
 // It just checks that some files are served properly, hopefully the tester then works
@@ -46,16 +45,19 @@ describe("npm start", function () {
     }
 
     before(function (callback) {
-        npm = spawn("node", ["scripts/server.js"], {
-            cwd : path.join(__dirname, "../../"),
-            stdio : "pipe"
-        });
+        var output = "";
+        npm = fork("scripts/server.js", []);
         npm.stdout.on("data", function (data) {
-            var info = data.toString().match(/Server started on \S+:(\d+)/i);
-            if (info) {
-                port = parseInt(info[1], 10);
-                callback();
-            }
+            output += data.toString();
+            var lines = output.split("\n");
+            output = lines.pop();
+            lines.forEach(function (line) {
+                var info = line.match(/Server started on \S+:(\d+)/i);
+                if (info) {
+                    port = parseInt(info[1], 10);
+                    callback();
+                }
+            });
         });
     });
 

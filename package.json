@@ -47,7 +47,7 @@
     "grunt-leading-indent": "0.1.0",
     "grunt-verifylowercase": "0.2.0",
     "jade": "1.1.5",
-    "mocha": "1.17.0",
+    "mocha": "2.3.3",
     "ua-parser-js": "git+https://github.com/ariatemplates/ua-parser-js#latest"
   }
 }
