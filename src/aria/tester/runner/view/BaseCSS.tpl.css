@@ -67,9 +67,7 @@
             background-image: -moz-linear-gradient(top, {call rgb(r,g,b,from)/}, {call rgb(r,g,b,to)/});
         {elseif aria.core.Browser.isIE && aria.core.Browser.version >=9 /}
             background-image: linear-gradient(top, {call rgb(r,g,b,from)/}, {call rgb(r,g,b,to)/});
-        {elseif aria.core.Browser.isChrome/}
-            background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from({call rgb(r,g,b,from)/}), to({call rgb(r,g,b,to)/}));
-        {elseif aria.core.Browser.isSafari/}
+        {elseif aria.core.Browser.isChrome || aria.core.Browser.isSafari || aria.core.Browser.isOpera/}
             background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from({call rgb(r,g,b,from)/}), to({call rgb(r,g,b,to)/}));
         {/if}
     {/macro}
@@ -79,7 +77,7 @@
             background-image: -moz-linear-gradient(left, {call rgb(r,g,b,from)/}, {call rgb(r,g,b,to)/});
         {elseif aria.core.Browser.isOldIE && aria.core.Browser.version >=9 /}
             background-image: linear-gradient(left, {call rgb(r,g,b,from)/}, {call rgb(r,g,b,to)/});
-        {elseif (aria.core.Browser.isChrome || aria.core.Browser.isSafari)/}
+        {elseif aria.core.Browser.isChrome || aria.core.Browser.isSafari || aria.core.Browser.isOpera/}
             background-image: -webkit-gradient(linear, 0% 0%, 100% 0%, from({call rgb(r,g,b,from)/}), to({call rgb(r,g,b,to)/}));
         {/if}
     {/macro}
@@ -89,9 +87,7 @@
             -moz-box-shadow : ${textContent};
         {elseif aria.core.Browser.isOldIE && aria.core.Browser.version >=9 /}
             box-shadow : ${textContent};
-        {elseif aria.core.Browser.isChrome/}
-            -webkit-box-shadow : ${textContent};
-        {elseif aria.core.Browser.isSafari/}
+        {elseif aria.core.Browser.isChrome || aria.core.Browser.isSafari || aria.core.Browser.isOpera/}
             -webkit-box-shadow : ${textContent};
         {/if}
     {/macro}
@@ -102,9 +98,7 @@
             -moz-border-radius : ${textContent};
         {elseif aria.core.Browser.isOldIE && aria.core.Browser.version >=9 /}
             border-radius : ${textContent};
-        {elseif aria.core.Browser.isChrome/}
-            -webkit-border-radius : ${textContent};
-        {elseif aria.core.Browser.isSafari/}
+        {elseif aria.core.Browser.isChrome || aria.core.Browser.isSafari || aria.core.Browser.isOpera/}
             -webkit-border-radius : ${textContent};
         {/if}
     {/macro}

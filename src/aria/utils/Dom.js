@@ -820,7 +820,7 @@ module.exports = Aria.classDefinition({
             } else {
                 var width, height;
                 var browser = ariaCoreBrowser;
-                if (browser.isChrome || browser.isSafari) {
+                if (browser.isChrome || browser.isOpera || browser.isSafari) {
                     var rectTextObject = element.getBoundingClientRect();
                     width = Math.round(rectTextObject.width);
                     height = Math.round(rectTextObject.height);
