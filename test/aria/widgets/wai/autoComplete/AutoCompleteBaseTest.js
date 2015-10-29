@@ -170,17 +170,12 @@ module.exports = Aria.classDefinition({
             };
 
             var step3 = function () {
-                self.waitFor({
-                    condition: function () {
-                        checkFn();
-                        var listWidget = widget.controller.getListWidget();
-                        return listWidget && listWidget._subTplCtxt;
-                    },
-                    callback: step4
-                });
+                checkFn();
+                self.waitForDropDownPopup(widget.getId(), step4);
             };
 
             var step4 = function () {
+                checkFn();
                 self.synEvent.type(input, "[down][down]", step5);
             };
 
