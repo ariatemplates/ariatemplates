@@ -22,7 +22,7 @@
     }
 }}
     {macro main()}
-    	{var checkboxLabel = "Error"/}
+        {var checkboxLabel = "Error"/}
         // The Div is used to wrap the items with good looking border.
         {@aria:Div data.cfg}
                 {section {id: 'Items', macro: 'renderList'} /}
@@ -87,9 +87,12 @@
     {/macro}
 
     {macro renderItem(item)}
-		{call renderCheckboxLabel(item)/}
-		{@aria:CheckBox {
+        {call renderCheckboxLabel(item)/}
+        {@aria:CheckBox {
             label: checkboxLabel,
+            waiAria: data.waiAria,
+            waiLabelHidden: true,
+            waiLabel: checkboxLabel,
             onchange: {
                 fn: "itemClick",
                 args: {
@@ -112,7 +115,7 @@
     {/macro}
 
     {macro renderCheckboxLabel(item)}
-    	{if (data.displayOptions.listDisplay == 'code')}
+        {if (data.displayOptions.listDisplay == 'code')}
             {set checkboxLabel = item.value/}
         {elseif (data.displayOptions.listDisplay == 'label')/}
             {set checkboxLabel = item.label/}

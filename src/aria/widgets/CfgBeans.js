@@ -792,6 +792,10 @@ module.exports = Aria.beanDefinitions({
                 "displayOptions" : {
                     $type : "FormListCfg:displayOptions",
                     $description : "Display options that are not interpreted by the list controller."
+                },
+                "iconTooltip" : {
+                    $type : "json:String",
+                    $description : "Tooltip for the multiselect icon"
                 }
             }
         },

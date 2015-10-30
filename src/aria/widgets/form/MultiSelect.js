@@ -21,6 +21,7 @@ var ariaWidgetsFormListListStyle = require("./list/ListStyle.tpl.css");
 var ariaWidgetsContainerDivStyle = require("../container/DivStyle.tpl.css");
 var ariaWidgetsFormCheckBoxStyle = require("./CheckBoxStyle.tpl.css");
 var ariaWidgetsFormDropDownTextInput = require("./DropDownTextInput");
+var ariaUtilsString = require("../../utils/String");
 
 /**
  * Multi-select widget which is a list of checkboxes and labels passed in an array of predefined values
@@ -85,6 +86,14 @@ module.exports = Aria.classDefinition({
          */
         this._dropDownList = null;
 
+        var iconTooltip = cfg.iconTooltip ? ' title="' + ariaUtilsString.escapeForHTML(cfg.iconTooltip) + '"' : '';
+        this._iconsAttributes = {
+            "dropdown": 'tabindex="-1"' + iconTooltip
+        };
+        if (cfg.waiAria) {
+            this._extraInputAttributes += ' aria-expanded="false" role="combobox" aria-autocomplete="list" ';
+            this._iconsAttributes.dropdown += ' role="button" aria-expanded="false" aria-haspopup="true"  ';
+        }
     },
     $destructor : function () {
         this._dropDownOpen = null;
@@ -187,6 +196,7 @@ module.exports = Aria.classDefinition({
 
             var list = new ariaWidgetsFormListList({
                 defaultTemplate : cfg.listTemplate,
+                waiAria : cfg.waiAria,
                 block : true,
                 sclass : cfg.listSclass || this._skinObj.listSclass,
                 onchange : {
@@ -249,6 +259,11 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         _afterDropdownClose : function () {
+            if (this._cfg.waiAria) {
+                var field = this.getTextInputField();
+                field.setAttribute("aria-expanded", "false");
+            }
+
             this._setPopupOpenProperty(false);
             this.controller.setListWidget(null);
             // Check _toggleDropdown already triggered
@@ -292,6 +307,10 @@ module.exports = Aria.classDefinition({
             var list = this.controller.getListWidget();
             this._dropDownOpen = true;
             this._focusMultiSelect(list);
+            if (this._cfg.waiAria) {
+                var field = this.getTextInputField();
+                field.setAttribute("aria-expanded", "true");
+            }
         },
 
         /**

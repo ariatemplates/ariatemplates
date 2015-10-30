@@ -41,9 +41,14 @@ module.exports = Aria.classDefinition({
         skinObj.cssClassMouseover = "x" + this._skinnableClass + "MouseOverItem_" + this._cfg.sclass;
         skinObj.cssClassFooter = "x" + this._skinnableClass + "Footer_" + this._cfg.sclass;
         var divCfg = ariaUtilsJson.copy(cfg, true, ["width", "minWidth", "maxWidth", "height", "minHeight",
-                "maxHeight", "scrollBarX", "scrollBarY"]);
+                "maxHeight", "scrollBarX", "scrollBarY", "waiAria"]);
         divCfg.sclass = skinObj.divsclass;
         divCfg.margins = "0 0 0 0";
+
+        if (cfg.waiAria) {
+            cfg.numberOfColumns = 1;
+            cfg.displayOptions.tableMode = false;
+        }
 
         this._initTemplate({
             moduleCtrl : {
