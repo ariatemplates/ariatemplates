@@ -225,8 +225,8 @@ var ariaUtilsArray = require("../utils/Array");
              * @return {String}
              */
             fn : function (str, highlight) {
-                var ariaUtil = aria.utils, highlightLen = highlight.length;
-                if (ariaUtil.Type.isString(str) && highlightLen) {
+                var highlightLen = highlight.length;
+                if (ariaUtilsType.isString(str) && highlightLen) {
                     highlight = highlight.toLowerCase();
                     var strLowerCased = str.toLowerCase(), firstOccurrenceIdx;
                     if (strLowerCased.indexOf(highlight) === 0) {
@@ -235,7 +235,7 @@ var ariaUtilsArray = require("../utils/Array");
                         var highlightRegexSafe = highlight.replace(regExSpecials, "\\$1");
                         var regexResult = new RegExp("\\s" + highlightRegexSafe, "i").exec(strLowerCased);
                         if (!regexResult) {
-                            return str;
+                            return ariaUtilsString.escapeForHTML(str);
                         } else {
                             firstOccurrenceIdx = regexResult.index + 1; // +1 for matched whitespace
                         }
@@ -243,12 +243,12 @@ var ariaUtilsArray = require("../utils/Array");
                     var a = firstOccurrenceIdx;
                     var b = firstOccurrenceIdx + highlightLen;
                     var middleOriginal = str.substring(a, b);
-                    var middle = ariaUtil.String.stripAccents(middleOriginal).toLowerCase();
+                    var middle = ariaUtilsString.stripAccents(middleOriginal).toLowerCase();
                     if (middle === highlight) {
-                        return str.substring(0, a) + "<strong>" + middleOriginal + "</strong>" + str.substring(b);
+                        return ariaUtilsString.escapeForHTML(str.substring(0, a)) + "<strong>" + ariaUtilsString.escapeForHTML(middleOriginal) + "</strong>" + ariaUtilsString.escapeForHTML(str.substring(b));
                     }
                 }
-                return str;
+                return str ? ariaUtilsString.escapeForHTML(str) : str;
             }
         },
         "starthighlight" : {
@@ -272,11 +272,11 @@ var ariaUtilsArray = require("../utils/Array");
                     var beginning = ariaUtilsString.stripAccents(str.substring(0, highlight.length)).toLowerCase();
                     highlight = highlight.toLowerCase();
                     if (beginning === highlight) {
-                        return "<strong>" + str.substring(0, highlight.length) + "</strong>"
-                                + str.substring(highlight.length);
+                        return "<strong>" + ariaUtilsString.escapeForHTML(str.substring(0, highlight.length)) + "</strong>"
+                                + ariaUtilsString.escapeForHTML(str.substring(highlight.length));
                     }
                 }
-                return str;
+                return str ? ariaUtilsString.escapeForHTML(str) : str;
             }
         },
         "highlight" : {
