@@ -68,7 +68,7 @@ var verifyImgFiles = function (outputFolder) {
 };
 
 describe("easypackage grunt task", function () {
-    this.timeout(60000);
+    this.timeout(120000);
     it("should re-package Aria Templates correcly", function (callback) {
         var gruntBuild = fork(getPath("../../build/grunt-cli.js"), ["--gruntfile", testProjectPath + "gruntfiles/Gruntfile.js"]);
 
