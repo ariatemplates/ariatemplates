@@ -13,6 +13,7 @@
  * limitations under the License.
  */
 var Aria = require("../../Aria");
+var DomEvent = require("../../DomEvent");
 var ariaWidgetsFormDropDownTrait = require("./DropDownTrait");
 var ariaWidgetsFormTextInput = require("./TextInput");
 var ariaCoreBrowser = require("../../core/Browser");
@@ -120,6 +121,10 @@ module.exports = Aria.classDefinition({
          * keyCode properties). This object may be or may not be an instance of aria.DomEvent.
          */
         _checkKeyStroke : function (event) {
+            if (this._cfg.waiAria && !this._dropdownPopup && event.keyCode === DomEvent.KC_DOWN) {
+                // disable arrow down key when waiAria is enabled and the popup is closed
+                return;
+            }
             var controller = this.controller;
             var cp = this.getCaretPosition();
             if (cp) {

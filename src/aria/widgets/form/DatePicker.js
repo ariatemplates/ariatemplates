@@ -292,6 +292,10 @@ module.exports = Aria.classDefinition({
             if (domEvtWrapper.keyCode === 32) {
                 domEvtWrapper.charCode = 32;
             }
+            if (this._isShiftF10Pressed(domEvtWrapper)) {
+                this._toggleDropdown();
+                return;
+            }
             this._handleKey(domEvtWrapper);
         },
 

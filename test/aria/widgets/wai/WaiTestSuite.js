@@ -19,6 +19,7 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
+        this.addTests("test.aria.widgets.wai.dropdown.DropdownTestSuite");
         this.addTests("test.aria.widgets.wai.autoComplete.WaiAutoCompleteTestSuite");
         this.addTests("test.aria.widgets.wai.datePicker.DatePickerTest");
         this.addTests("test.aria.widgets.wai.textInputBased.WaiTextInputBasedTestSuite");

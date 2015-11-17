@@ -457,6 +457,10 @@ var ariaCoreBrowser = require("./core/Browser");
                 if (specials.altKey && kc != this.KC_ALT) {
                     return true;
                 }
+                if (kc >= 112 && kc <= 123) {
+                    // F1 .. F12
+                    return true;
+                }
 
                 return false;
             },

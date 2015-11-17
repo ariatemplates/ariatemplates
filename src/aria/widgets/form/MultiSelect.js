@@ -22,7 +22,6 @@ var ariaWidgetsContainerDivStyle = require("../container/DivStyle.tpl.css");
 var ariaWidgetsFormCheckBoxStyle = require("./CheckBoxStyle.tpl.css");
 var ariaWidgetsFormDropDownTextInput = require("./DropDownTextInput");
 
-
 /**
  * Multi-select widget which is a list of checkboxes and labels passed in an array of predefined values
  * @extends aria.widgets.form.DropDownTextInput
@@ -129,16 +128,25 @@ module.exports = Aria.classDefinition({
 
         /**
          * Handle key event not handled by the list, in this case arrow up to close the dropdown
+         *
          * @protected
-         * @param {aria.DomEvent} evt Click event
+         *
+         * @param {Object} information Information about the key event.
+         *
          * @return {Boolean}
          */
-        _keyPressed : function (evt) {
-            if ((evt.keyCode == ariaDomEvent.KC_ARROW_UP) && this._checkCloseItem(evt)) {
+        _keyPressed : function (information) {
+            var event = information.event;
+
+            var isShiftF10Pressed = this._isShiftF10Pressed(event);
+            var isArrowUp = event.keyCode == ariaDomEvent.KC_ARROW_UP;
+
+            if (isShiftF10Pressed || (isArrowUp && this._checkCloseItem(information))) {
                 this.focus();
                 this._toggleDropdown();
                 return true;
             }
+
             return false;
         },
 
