@@ -1,6 +1,6 @@
 {
   "name": "ariatemplates",
-  "version": "1.4.17AE",
+  "version": "1.4.17AF",
   "main": "src/aria/bootstrap.js",
   "ignore": [
     "**/.*",
