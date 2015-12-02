@@ -675,9 +675,12 @@ Aria.classDefinition({
                 // Compute the style after scrollbars are removed from the
                 // container. Thus the dialog can be properly centered.
                 this.computedStyle = this._getComputedStyle();
+                if (!this.modalMaskZIndex) {
+                    this.modalMaskZIndex = this.computedStyle.zIndex;
+                }
 
                 this.modalMaskDomElement.style.cssText = ['left:0px;top:0px;', 'width:', containerSize.width, 'px;', 'height:',
-                        containerSize.height, 'px;', 'z-index:', this.computedStyle.zIndex, ';', 'position:absolute;display:block;'].join('');
+                        containerSize.height, 'px;', 'z-index:', this.modalMaskZIndex, ';', 'position:absolute;display:block;'].join('');
 
                 if (this.conf.animateIn) {
                     this._getMaskAnimator().start("fade", {
@@ -988,6 +991,30 @@ Aria.classDefinition({
 
             this.section = section;
             // PROFILING // this.$stopMeasure(profilingId);
+        },
+
+        /**
+         * Sets the zIndex of the popup, and refreshes. The zIndex of the modal mask, if any, is not changed.
+         * This method does nothing if the popup has not already been displayed.
+         * @param {Number} zIndex zIndex to set on the popup.
+         */
+        setZIndex : function (zIndex) {
+            var computedStyle = this.computedStyle;
+            if (computedStyle) {
+                computedStyle.zIndex = zIndex;
+                this.refresh();
+            }
+        },
+
+        /**
+         * Returns the current zIndex of the popup, if it is available.
+         * @return {Number} zIndex of the popup.
+         */
+        getZIndex : function () {
+            var computedStyle = this.computedStyle;
+            if (computedStyle) {
+                return computedStyle.zIndex;
+            }
         },
 
         /**
