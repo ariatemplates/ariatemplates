@@ -195,6 +195,10 @@ var ariaUtilsDelegate = require("../utils/Delegate");
                     fn : this.onDocumentMouseScroll,
                     scope : this
                 }, true);
+                utilsEvent.addListener(this._document.body, "focusin", {
+                    fn : this.onDocumentFocusIn,
+                    scope : this
+                });
 
                 if (ariaCoreBrowser.isOldIE) {
                     // IE does not support scroll event on the document until IE9
@@ -229,6 +233,9 @@ var ariaUtilsDelegate = require("../utils/Delegate");
                     utilsEvent.removeListener(this._document, "mousewheel", {
                         fn : this.onDocumentMouseScroll
                     });
+                    utilsEvent.removeListener(this._document.body, "focusin", {
+                        fn : this.onDocumentFocusIn
+                    });
                     ariaUtilsAriaWindow.detachWindow();
                     this._document = null;
                     if (ariaCoreBrowser.isOldIE) {
@@ -258,11 +265,6 @@ var ariaUtilsDelegate = require("../utils/Delegate");
                 });
                 // global navigation is disabled in case of a modal popup
                 navManager.setModalBehaviour(true);
-
-                utilsEvent.addListener(this._document.body, "focusin", {
-                    fn : this.onDocumentFocusIn,
-                    scope : this
-                });
             },
 
             /**
@@ -280,10 +282,6 @@ var ariaUtilsDelegate = require("../utils/Delegate");
                 });
                 // restore globalKeyMap
                 navManager.setModalBehaviour(false);
-
-                utilsEvent.removeListener(this._document.body, "focusin", {
-                    fn : this.onDocumentFocusIn
-                });
             },
 
             /**
@@ -331,28 +329,59 @@ var ariaUtilsDelegate = require("../utils/Delegate");
             },
 
             /**
+             * Returns the popup which contains the given target DOM element, if the DOM element is not hidden
+             * behind a modal popup.
+             * @param {HTMLElement} target DOM element for which the containing popup has to be found
+             * @param {Function} notifyTargetBehindModalPopup function which is called in case the target is behind
+             * a modal popup. The function receives the modal popup as a parameter and its return value becomes
+             * the return value of findParentPopup.
+             */
+            findParentPopup : function (target, notifyTargetBehindModalPopup) {
+                var searchPopup = this._document && target !== this._document.body;
+                if (searchPopup) {
+                    for (var i = this.openedPopups.length - 1; i >= 0; i--) {
+                        var popup = this.openedPopups[i];
+                        if (utilsDom.isAncestor(target, popup.getDomElement())) {
+                            // the element is in the modal popup, it is fine to focus it
+                            return popup;
+                        }
+                        if (popup.modalMaskDomElement && utilsDom.isAncestor(target, popup.popupContainer.getContainerElt())) {
+                            // the element is inside the container for which there is a modal mask
+                            if (notifyTargetBehindModalPopup) {
+                                return notifyTargetBehindModalPopup(popup);
+                            }
+                            return;
+                        }
+                    }
+                }
+            },
+
+            /**
              * Callback after the focus is put on an element in the document, when a modal popup is displayed.
              * @param {Object} event The DOM focusin event triggering the callback
              */
             onDocumentFocusIn : function (event) {
                 var domEvent = new ariaDomEvent(event);
                 var target = domEvent.target;
-                var searchModal = target != this._document.body;
-                if (searchModal) {
-                    for (var i = this.openedPopups.length - 1; i >= 0; i--) {
-                        var popup = this.openedPopups[i];
-                        if (utilsDom.isAncestor(target, popup.getDomElement())) {
-                            // the element is in the modal popup, it is fine to focus it
-                            break;
-                        }
-                        if (popup.modalMaskDomElement && utilsDom.isAncestor(target, popup.popupContainer.getContainerElt())) {
-                            // the element is inside the container for which there is a modal mask
-                            ariaTemplatesNavigationManager.focusFirst(popup.domElement);
-                            break;
-                        }
-                    }
+                var popup = this.findParentPopup(target, function (popup) {
+                    ariaTemplatesNavigationManager.focusFirst(popup.domElement);
+                    return popup;
+                });
+                if (popup) {
+                    this.bringToFront(popup);
                 }
                 domEvent.$dispose();
+            },
+
+            /**
+             * Bring the given popup to the front, changing its zIndex, if it is necessary.
+             * @param {aria.popups.Popup} popup popup whose zIndex is to be changed
+             */
+            bringToFront : function (popup) {
+                var curZIndex = popup.getZIndex();
+                if (curZIndex !== this.currentZIndex) {
+                    popup.setZIndex(this.getZIndexForPopup(popup));
+                }
             },
 
             /**
@@ -383,6 +412,11 @@ var ariaUtilsDelegate = require("../utils/Delegate");
 
                 if (!(ignoreClick || utilsDom.isAncestor(target, popup.getDomElement()))) {
                     popup.closeOnMouseClick(domEvent);
+                }
+
+                var topPopup = this.findParentPopup(target);
+                if (topPopup) {
+                    this.bringToFront(topPopup);
                 }
 
                 domEvent.$dispose();

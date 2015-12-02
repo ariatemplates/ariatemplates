@@ -42,5 +42,6 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.container.dialog.wrongCfg.ValidationTest");
         this.addTests("test.aria.widgets.container.dialog.configContainer.DialogTestCase");
         this.addTests("test.aria.widgets.container.dialog.container.DialogContainerTestSuite");
+        this.addTests("test.aria.widgets.container.dialog.dynamicZIndex.DynamicZIndexTestSuite");
     }
 });
