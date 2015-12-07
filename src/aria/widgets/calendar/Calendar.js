@@ -18,6 +18,9 @@ var ariaWidgetsCalendarCalendarStyle = require("./CalendarStyle.tpl.css");
 require("./CalendarTemplate.tpl");
 var ariaWidgetsTemplateBasedWidget = require("../TemplateBasedWidget");
 var ariaCoreBrowser = require("../../core/Browser");
+var ariaTemplatesDomEventWrapper = require("../../templates/DomEventWrapper");
+var ariaUtilsString = require("../../utils/String");
+var ariaUtilsDom = require("../../utils/Dom");
 
 /**
  * Calendar widget, which is a template-based widget. Most of the logic of the calendar is implemented in the
@@ -32,6 +35,10 @@ module.exports = Aria.classDefinition({
         this.$TemplateBasedWidget.constructor.apply(this, arguments);
         var sclass = this._cfg.sclass;
         var skinObj = aria.widgets.AriaSkinInterface.getSkinObject(this._skinnableClass, sclass);
+        if (cfg.waiAria) {
+            var waiAriaLabel = cfg.waiAriaLabel ? ' aria-label="' + ariaUtilsString.escapeForHTML(cfg.waiAriaLabel) + '"' : '';
+            this._extraAttributes += ' role="application"' + waiAriaLabel;
+        }
         this._hasFocus = false;
         this._initTemplate({
             defaultTemplate : skinObj.defaultTemplate,
@@ -45,6 +52,8 @@ module.exports = Aria.classDefinition({
                         selectedClass : "xCalendar_" + sclass + "_selected"
                     },
                     settings : {
+                        waiAria : cfg.waiAria,
+                        waiAriaDateFormat: cfg.waiAriaDateFormat,
                         ranges : cfg.ranges,
                         value : cfg.value,
                         minValue : cfg.minValue,
@@ -89,6 +98,7 @@ module.exports = Aria.classDefinition({
                     this.setProperty("startDate", this._subTplData.settings.startDate);
                 }
                 if (evt.properties["value"]) {
+                    this._updateAriaActiveDescendant();
                     this.setProperty("value", this._subTplData.settings.value);
                     this.evalCallback(this._cfg.onchange);
                 }
@@ -136,10 +146,28 @@ module.exports = Aria.classDefinition({
          */
         _dom_onkeydown : function (domEvt) {
             var domElt = this.getDom();
+            var domEvtWrapper = new ariaTemplatesDomEventWrapper(domEvt);
+            this.evalCallback(this._cfg.onkeydown, domEvtWrapper);
+            var stopPropagation = domEvtWrapper.hasStopPropagation;
+            domEvtWrapper.$dispose();
+            if (stopPropagation) {
+                return;
+            }
             if (this.sendKey(domEvt.charCode, domEvt.keyCode)) {
                 domEvt.preventDefault(true);
                 domElt.focus();
             }
+        },
+
+        /**
+         * Mousedown event
+         * @protected
+         * @param {aria.DomEvent} domEvt Mousedown event
+         */
+        _dom_onmousedown : function (domEvt) {
+            var domEvtWrapper = new ariaTemplatesDomEventWrapper(domEvt);
+            this.evalCallback(this._cfg.onmousedown, domEvtWrapper);
+            domEvtWrapper.$dispose();
         },
 
         /**
@@ -149,6 +177,7 @@ module.exports = Aria.classDefinition({
         _dom_onfocus : function () {
             this._hasFocus = true;
             this._focusUpdate();
+            this.evalCallback(this._cfg.onfocus);
         },
 
         /**
@@ -158,6 +187,7 @@ module.exports = Aria.classDefinition({
         _dom_onblur : function () {
             this._hasFocus = false;
             this._focusUpdate();
+            this.evalCallback(this._cfg.onblur);
         },
 
         /**
@@ -179,8 +209,11 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         _focusUpdate : function () {
-            var moduleCtrl = this._subTplModuleCtrl, dom = this.getDom();
-            if (moduleCtrl && dom && this._cfg.tabIndex != null && this._cfg.tabIndex >= 0) {
+            var moduleCtrl = this._subTplModuleCtrl, dom = this.getDom(), cfg = this._cfg;
+            if (moduleCtrl && dom) {
+                this._updateAriaActiveDescendant(true);
+            }
+            if (moduleCtrl && dom && cfg.tabIndex != null && cfg.tabIndex >= 0) {
                 var preventDefaultVisualAspect = moduleCtrl.notifyFocusChanged(this._hasFocus);
                 if (!preventDefaultVisualAspect) {
                     var domEltStyle = dom.style;
@@ -224,6 +257,69 @@ module.exports = Aria.classDefinition({
             } else {
                 return false;
             }
+        },
+
+        /**
+         * Updates the aria-activedescendant attribute.
+         */
+        _updateAriaActiveDescendant : function(justFocused) {
+            var cfg = this._cfg;
+            if (cfg.waiAria) {
+                var domElt = this.getDom();
+                var ariaLabel = cfg.waiAriaLabel;
+                var ariaActiveDescendant = this.getDayDomId(this._subTplData.settings.value);
+                if (justFocused && ariaLabel && ariaActiveDescendant) {
+                    // setting aria-activedescendant directly prevents the label of the calendar from being read
+                    // if the calendar has just been focused, let's concatenate the label of the calendar and the one of the day
+                    var ariaActiveDescendantDomElt = ariaUtilsDom.getElementById(ariaActiveDescendant);
+                    ariaActiveDescendant = null;
+                    var ariaActiveDescendantDomEltLabel = ariaActiveDescendantDomElt ? ariaActiveDescendantDomElt.getAttribute("aria-label") : null;
+                    if (ariaActiveDescendantDomEltLabel) {
+                        ariaLabel += "\n" + ariaActiveDescendantDomEltLabel;
+                    }
+                }
+                if (ariaLabel != null) {
+                    domElt.setAttribute("aria-label", ariaLabel);
+                } else {
+                    domElt.removeAttribute("aria-label");
+                }
+                if (ariaActiveDescendant != null) {
+                    domElt.setAttribute("aria-activedescendant", ariaActiveDescendant);
+                } else {
+                    domElt.removeAttribute("aria-activedescendant");
+                }
+            }
+        },
+
+        /**
+         * Returns the id of the root DOM element containing the calendar.
+         * @return {String} id of the root DOM element containing the calendar.
+         */
+        getCalendarDomId : function () {
+            return this.getDom().id;
+        },
+
+        /**
+         * Returns the id of the DOM element in the calendar corresponding to the given date.
+         * This method only works if accessibility was enabled at the time the calendar widget was created.
+         * @param {Date} jsDate date
+         * @return {String} id of the DOM element or undefined if the calendar is not fully loaded yet, accessibility
+         * is disabled or the date is invalid
+         */
+        getDayDomId : function (jsDate) {
+            if (this._subTplCtxt && jsDate) {
+                var data = this._subTplModuleCtrl.getData();
+                if (data.settings.waiAria) {
+                    return this._subTplCtxt.$getId(data.settings.dayDomIdPrefix + new Date(jsDate.getFullYear(), jsDate.getMonth(), jsDate.getDate(), 12).getTime());
+                }
+            }
+        },
+
+        /**
+         * Focuses the calendar.
+         */
+        focus: function () {
+            this.getDom().focus();
         }
     }
 });

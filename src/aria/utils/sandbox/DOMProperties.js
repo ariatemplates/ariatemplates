@@ -294,6 +294,7 @@ var Aria = require("../../Aria");
             "SELECT" : "r-",
             "TEXTAREA" : "r-"
         },
+        "unselectable" : "rw",
         "useMap" : {
             "IMG" : "rw"
         },

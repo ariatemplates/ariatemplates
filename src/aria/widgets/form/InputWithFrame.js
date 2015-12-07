@@ -50,6 +50,11 @@ module.exports = Aria.classDefinition({
         this._hideIconNames = null;
 
         /**
+         * Map of attributes for each icon name.
+         */
+        this._iconsAttributes = null;
+
+        /**
          * Flag for input that has to be displayed in full width
          * @type Boolean
          * @protected
@@ -120,7 +125,7 @@ module.exports = Aria.classDefinition({
                 state : this._state,
                 scrollBarX : false,
                 scrollBarY : false,
-                tooltipLabels : [cfg.iconTooltip],
+                iconsAttributes : this._iconsAttributes,
                 hideIconNames : this._hideIconNames,
                 inlineBlock : true,
                 // used for table frame, defaults to false

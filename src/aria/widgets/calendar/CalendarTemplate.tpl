@@ -66,7 +66,7 @@
     {/macro}
 
     {macro renderMonth(month,first,last)}
-        <table class="${skin.baseCSS}month" cellspacing="0" style="width: ${settings.showWeekNumbers?138:128}px;">
+        <table class="${skin.baseCSS}month" cellspacing="0" style="width: ${settings.showWeekNumbers?138:128}px;" {if settings.waiAria}role="grid"{/if}>
             <thead>
                 <tr>
                     <th colspan="8">
@@ -82,9 +82,9 @@
                     </th>
                 </tr>
                 <tr>
-                    {if settings.showWeekNumbers}<th  class="${skin.baseCSS}weekNumber">&nbsp;</th>{/if}
+                    {if settings.showWeekNumbers}<th class="${skin.baseCSS}weekNumber">&nbsp;</th>{/if}
                     {foreach day inArray calendar.daysOfWeek}
-                        <th class="${skin.baseCSS}weekDaysLabel">${day.label}</th>
+                        <th class="${skin.baseCSS}weekDaysLabel" {if settings.waiAria}role="presentation"{/if}>${day.label}</th>
                     {/foreach}
                 </tr>
             </thead>
@@ -92,8 +92,8 @@
                 {var nbweeks=0/}
                 {foreach week inArray month.weeks}
                     {set nbweeks+=1/}
-                    <tr>
-                        {if settings.showWeekNumbers}<td class="${skin.baseCSS}weekNumber">{if week.overlappingDays == 0 || week.monthEnd == month.monthKey}${week.weekNumber}{else/}&nbsp;{/if}</td>{/if}
+                    <tr {if settings.waiAria}role="row"{/if}>
+                        {if settings.showWeekNumbers}<td class="${skin.baseCSS}weekNumber" {if settings.waiAria}role="presentation"{/if}>{if week.overlappingDays == 0 || week.monthEnd == month.monthKey}${week.weekNumber}{else/}&nbsp;{/if}</td>{/if}
                         {foreach day inArray week.days}
                             {call renderDay(day,month)/}
                         {/foreach}
@@ -113,6 +113,12 @@
         {var jsDate=day.jsDate/}
         {if day.monthKey==month.monthKey}
             <td {if day.isSelectable} data-date="${jsDate.getTime()}" {/if}
+                {if settings.waiAria}
+                    role="gridcell"
+                    {id settings.dayDomIdPrefix + jsDate.getTime()/}
+                    aria-selected="${!!day.isSelected}"
+                    aria-label="${jsDate|dateformat:settings.waiAriaDateFormat}"
+                {/if}
                 class="${getClassForDay(day)}"
             >${day.label}</td>
         {else/}

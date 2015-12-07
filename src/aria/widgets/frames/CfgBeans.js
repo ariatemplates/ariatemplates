@@ -101,6 +101,14 @@ module.exports = Aria.beanDefinitions({
                     },
                     $default : []
                 },
+                "iconsAttributes" : {
+                    $type : "json:Map",
+                    $description : "Describes, for each icon name, the attributes to set in the markup.",
+                    $contentType : {
+                        $type : "json:String"
+                    },
+                    $default : {}
+                },
                 "hideIconNames" : {
                     $type : "json:Array",
                     $description : "Array of icon names which will not be displayed. This property is taken into account only when calling aria.widgets.frames.FrameWithIcons.createFrame.",
