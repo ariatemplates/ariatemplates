@@ -65,7 +65,14 @@ Aria.classDefinition({
             this.assertNotEquals(typeof(popup), "undefined", "Dropdown for the DatePicker is not opened");
             var expandButton = this.getExpandButton("dp");
             this.synEvent.click(expandButton, {
-                fn : this.openPopupDropdown,
+                fn : function () {
+                    this.waitFor({
+                        condition: function () {
+                            return !this.getWidgetDropDownPopup("dp");
+                        },
+                        callback: this.openPopupDropdown
+                    });
+                },
                 scope : this
             });
         },
@@ -76,11 +83,7 @@ Aria.classDefinition({
             this.assertEquals(widgetInstance._cfg.popupOpen, false, "Current value of popupOpen is true, where as it was expected to be false");
             this.assertEquals(typeof(popup), "undefined", "Dropdown for the DatePicker is still open where as it was expected to be closed.");
             aria.utils.Json.setValue(this.env.data, "popupOpenDP", true);
-            aria.core.Timer.addCallback({
-                fn : this.assertPopup1,
-                scope : this,
-                delay : 500
-            });
+            this.waitForDropDownPopup("dp", this.assertPopup1);
         },
 
         assertPopup1 : function () {

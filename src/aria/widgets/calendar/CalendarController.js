@@ -194,6 +194,9 @@ module.exports = Aria.classDefinition({
             if (!settings.completeDateLabelFormat) {
                 settings.completeDateLabelFormat = ariaUtilsEnvironmentDate.getDateFormats().longFormat;
             }
+            if (!settings.waiAriaDateFormat) {
+                settings.waiAriaDateFormat = ariaUtilsEnvironmentDate.getDateFormats().longFormat;
+            }
             if (settings.firstDayOfWeek == null) { // compare to null because 0 is a valid value
                 settings.firstDayOfWeek = ariaUtilsEnvironmentDate.getFirstDayOfWeek();
             }

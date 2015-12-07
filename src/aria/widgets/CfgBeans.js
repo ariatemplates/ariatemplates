@@ -791,6 +791,10 @@ module.exports = Aria.beanDefinitions({
                     $type : "environmentBase:inputFormatTypes",
                     $description : "Date pattern used to match user input and convert it in a Javascript valid date."
                 },
+                "waiAriaDateFormat" : {
+                    $type : "environmentBase:inputFormatTypes",
+                    $description : "Date pattern used by screen readers to read the selected date in the calendar (only used when waiAria is true)."
+                },
                 "minValue" : {
                     $type : "json:Date",
                     $description : "Minimum date for the value property."
@@ -860,8 +864,11 @@ module.exports = Aria.beanDefinitions({
                 },
                 "iconTooltip" : {
                     $type : "json:String",
-                    $description : "Tooltip label for the datepicker icon",
-                    $default : "Open the Calendar"
+                    $description : "Tooltip for the datepicker icon"
+                },
+                "waiAriaCalendarLabel": {
+                    $type : "json:String",
+                    $description : "aria-label to set on the calendar (only used when waiAria is true)."
                 },
                 "bind" : {
                     $type : "DropDownTextInputCfg.bind",
@@ -1657,6 +1664,22 @@ module.exports = Aria.beanDefinitions({
                     $type : "common:Callback",
                     $description : "Function to be called when the selected date or range in the calendar changes because of user action (click or keyboard selection)."
                 },
+                "onfocus" : {
+                    $type : "common:Callback",
+                    $description : "Function to be called when the calendar widget is focused."
+                },
+                "onblur" : {
+                    $type : "common:Callback",
+                    $description : "Function to be called when the calendar widget is blured."
+                },
+                "onkeydown" : {
+                    $type : "common:Callback",
+                    $description : "Function to be called when the user types a key while the widget is focused."
+                },
+                "onmousedown" : {
+                    $type : "common:Callback",
+                    $description : "Function to be called when the user presses the mouse on the calendar."
+                },
                 "minValue" : {
                     $type : "json:Date",
                     $description : "Minimum date for the value property."
@@ -1684,6 +1707,14 @@ module.exports = Aria.beanDefinitions({
                     $description : "First day of the week. 0 = Sunday, ... 6 = Saturday. The null value means that it is set according to the application environment.",
                     $minValue : 0,
                     $maxValue : 6
+                },
+                "waiAriaDateFormat" : {
+                    $type : "environmentBase:inputFormatTypes",
+                    $description : "Date pattern used by screen readers to read the date (only used when waiAria is true)."
+                },
+                "waiAriaLabel": {
+                    $type : "json:String",
+                    $description : "aria-label to set on the whole calendar (only used when waiAria is true)."
                 },
                 "monthLabelFormat" : {
                     $type : "json:String",
