@@ -228,9 +228,9 @@ module.exports = Aria.classDefinition({
          * On touch devices, this method checks the currently focused element and defines this._focusNoKeyboard
          * accordingly. On desktop devices, this method does nothing.
          */
-        _updateFocusNoKeyboard : ariaUtilsDevice.isTouch() ? function () {
+        _updateFocusNoKeyboard : ariaUtilsDevice.isTouch() ? function (forceFocus) {
             var activeElement = Aria.$window.document.activeElement;
-            this._focusNoKeyboard = (activeElement != this.getTextInputField());
+            this._focusNoKeyboard = forceFocus || (activeElement != this.getTextInputField());
         } : Aria.empty,
 
         /**

@@ -1849,6 +1849,10 @@ module.exports = Aria.beanDefinitions({
                     $type : "common:Callback",
                     $description : "Function to be called when the user moves the mouse over an item in the list."
                 },
+                "onmousedown" : {
+                    $type : "common:Callback",
+                    $description : "Function to be called when the user clicks the mouse in the list."
+                },
                 "bind" : {
                     $type : "WidgetCfg.bind",
                     $properties : {

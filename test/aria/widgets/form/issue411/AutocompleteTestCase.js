@@ -51,15 +51,7 @@ Aria.classDefinition({
         },
 
         runTemplateTest : function () {
-            this.waitFor({
-                condition : function () {
-                    return this.getWidgetDropDownPopup("ac");
-                },
-                callback : {
-                    fn : this.openPopupDropdownWithExpandButton,
-                    scope : this
-                }
-            });
+            this.waitForDropDownPopup("ac", this.openPopupDropdownWithExpandButton);
         },
 
         openPopupDropdownWithExpandButton : function () {
@@ -97,15 +89,7 @@ Aria.classDefinition({
         openNextPopup : function () {
             aria.utils.Json.setValue(this.env.data, "popupopenAC", true);
 
-            this.waitFor({
-                condition : function () {
-                    return !!this.getWidgetDropDownPopup("ac");
-                },
-                callback : {
-                    fn : this.assertPopup1,
-                    scope : this
-                }
-            });
+            this.waitForDropDownPopup("ac", this.assertPopup1);
         },
 
         assertPopup1 : function () {
@@ -120,15 +104,7 @@ Aria.classDefinition({
             var expandButton = this.getExpandButton("ac");
             this.synEvent.click(expandButton, {
                 fn : function () {
-                    this.waitFor({
-                        condition : function () {
-                            return !!this.getWidgetDropDownPopup("ac");
-                        },
-                        callback : {
-                            fn : this.assertPopup2,
-                            scope : this
-                        }
-                    });
+                    this.waitForDropDownPopup("ac", this.assertPopup2);
                 },
                 scope : this
             });

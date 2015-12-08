@@ -472,16 +472,27 @@ var ariaCoreJsonValidator = require("../../core/JsonValidator");
              * @return {aria.widgets.controllers.reports.DropDownControllerReport}
              */
             toggleDropdown : function (displayValue, currentlyOpen) {
-                this._resourcesHandler.getAllSuggestions({
-                    fn : this._suggestionsCallback,
-                    scope : this,
-                    args : {
-                        nextValue : displayValue,
-                        triggerDropDown : !currentlyOpen,
-                        keepSelectedValue : true,
-                        allSuggestions : true
-                    }
-                });
+                var self = this;
+                if (currentlyOpen) {
+                    var report = new ariaWidgetsControllersReportsDropDownControllerReport(), dataModel = this._dataModel;
+                    report.displayDropDown = false;
+                    report.value = dataModel.value;
+                    report.text = dataModel.text;
+                    return report;
+                } else {
+                    setTimeout(function () {
+                        self._resourcesHandler.getAllSuggestions({
+                            fn : self._suggestionsCallback,
+                            scope : self,
+                            args : {
+                                nextValue : displayValue,
+                                triggerDropDown : !currentlyOpen,
+                                keepSelectedValue : true,
+                                allSuggestions : true
+                            }
+                        });
+                    }, 1);
+                }
             },
 
             /**

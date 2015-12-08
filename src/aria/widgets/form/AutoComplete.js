@@ -46,7 +46,13 @@ module.exports = Aria.classDefinition({
 
         this.$DropDownTextInput.constructor.call(this, cfg, ctxt, lineNumber, controllerInstance);
 
-        if (!cfg.expandButton) {
+        if (cfg.expandButton) {
+            this._iconsAttributes = {
+                // unselectable is necessary on IE so that, on mouse down, there is no blur of the active element
+                // (preventing the default action on mouse down does not help on IE)
+                "dropdown" : 'unselectable="on"'
+            };
+        } else {
             /**
              * Array of icon names which need to be hidden.
              * @type Array
@@ -169,6 +175,35 @@ module.exports = Aria.classDefinition({
                 this._keepFocus = false;
             }
             this.$DropDownTextInput._reactToControllerReport.call(this, report, arg);
+        },
+
+        /**
+         * DOM callback function called when the focus is taken off the input. The onBlur event is available on the
+         * input that sits inside a span. In this function we always close the popup.
+         * @param {aria.DomEvent} event Blur event
+         * @protected
+         */
+        _dom_onblur : function (event, avoidCallback) {
+            this._keepFocus = false;
+            this.$DropDownTextInput._dom_onblur.call(this, event, avoidCallback);
+            if (this._dropdownPopup) {
+                this._dropdownPopup.close(event);
+            }
+
+        },
+
+        /**
+         * Handle events raised by the frame
+         * @param {Object} evt
+         * @override
+         */
+        _frame_events : function (evt) {
+            if (evt.name == "iconMouseDown" && evt.iconName == "dropdown" && !this._cfg.disabled) {
+                evt.event.preventDefault();
+            } else if (evt.name == "iconClick" && evt.iconName == "dropdown" && !this._cfg.disabled) {
+                this._toggleDropdown();
+                evt.event.preventDefault();
+            }
         },
 
         /**

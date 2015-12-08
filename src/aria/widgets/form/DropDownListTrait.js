@@ -49,7 +49,7 @@ module.exports = Aria.classDefinition({
          */
         _clickOnItem : function (evt) {
             if (this._updateFocusNoKeyboard) {
-                this._updateFocusNoKeyboard();
+                this._updateFocusNoKeyboard(true);
             }
             this._closeDropdown();
             var report = this.controller.checkDropdownValue(evt.value);
@@ -99,6 +99,16 @@ module.exports = Aria.classDefinition({
                 var dm = this.controller.getDataModel();
                 ariaUtilsJson.setValue(dm, "selectedIdx", evt.index);
             }
+        },
+
+        /**
+         * Callback called when the user called when the user clicks the mouse in the list.
+         * @param {Object} evt object containing information about the element on which the mouse was clicked.
+         * @protected
+         */
+        _listMouseDown : function (evt) {
+            evt.target.setProperty("unselectable", "on");
+            evt.preventDefault(); // prevent the blur when clicking the popup inside the widget
         },
 
         /**
@@ -169,6 +179,10 @@ module.exports = Aria.classDefinition({
                 },
                 onclose : {
                     fn : this._closeDropdown,
+                    scope : this
+                },
+                onmousedown : {
+                    fn : this._listMouseDown,
                     scope : this
                 },
                 onchange : options.onchange,

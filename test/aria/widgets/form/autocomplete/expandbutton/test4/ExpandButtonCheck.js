@@ -15,13 +15,7 @@
 
 Aria.classDefinition({
     $classpath : "test.aria.widgets.form.autocomplete.expandbutton.test4.ExpandButtonCheck",
-    $extends : "aria.jsunit.TemplateTestCase",
-    $constructor : function () {
-        this.$TemplateTestCase.constructor.call(this);
-    },
-    $destructor : function () {
-        this.$TemplateTestCase.$destructor.call(this);
-    },
+    $extends : "aria.jsunit.RobotTestCase",
     $prototype : {
         /**
          * This method is always the first entry point to a template test Start the test by focusing the first field
@@ -50,8 +44,6 @@ Aria.classDefinition({
         },
 
         _selectFirstItem : function () {
-            var ac = this.getInputField("ac1");
-            ac.focus();
             aria.core.Timer.addCallback({
                 fn : this._afterSelect,
                 scope : this,
@@ -61,7 +53,7 @@ Aria.classDefinition({
         },
 
         _afterSelect : function () {
-            this.synEvent.type(this.getInputField("ac1"), "[down][down][enter]", {
+            this.synEvent.type(null, "[down][down][enter]", {
                 fn : this._checkSelected,
                 scope : this
             });
@@ -104,8 +96,6 @@ Aria.classDefinition({
         },
 
         _checkHighlighted : function () {
-            var ac = this.getInputField("ac1");
-            ac.focus();
             aria.core.Timer.addCallback({
                 fn : this._afterSelect2,
                 scope : this,
@@ -128,7 +118,7 @@ Aria.classDefinition({
         },
 
         _closeAC : function () {
-            this.synEvent.type(this.getInputField("ac1"), "[backspace][backspace][backspace][backspace][backspace][backspace][backspace]", {
+            this.synEvent.type(null, "[backspace][backspace][backspace][backspace][backspace][backspace][backspace]", {
                 fn : this._checkText,
                 scope : this
             });
@@ -139,7 +129,9 @@ Aria.classDefinition({
             this.assertTrue(value === "", "The value of the autocomplete is " + value + ", but it should be empty");
             var expandButton = this.getExpandButton("ac1");
             this.synEvent.click(expandButton, {
-                fn : this._openAC3,
+                fn : function () {
+                  this.waitForDropDownPopup("ac1", this._openAC3);
+                },
                 scope : this
             });
         },

@@ -17,6 +17,7 @@ var ariaUtilsJson = require("../../../utils/Json");
 require("./ListController");
 var ariaWidgetsFormListListStyle = require("./ListStyle.tpl.css");
 var ariaWidgetsTemplateBasedWidget = require("../../TemplateBasedWidget");
+var ariaTemplatesDomEventWrapper = require("../../../templates/DomEventWrapper");
 
 /**
  * A simple list of selectable items
@@ -179,6 +180,16 @@ module.exports = Aria.classDefinition({
                     this.sendKey(event.charCode, event.keyCode);
                 }
             }
+        },
+
+        /**
+         * Mousedown event
+         * @param {aria.DomEvent} domEvt Mousedown event
+         */
+        _dom_onmousedown : function (event) {
+            var domEvtWrapper = new ariaTemplatesDomEventWrapper(event);
+            this.evalCallback(this._cfg.onmousedown, domEvtWrapper);
+            domEvtWrapper.$dispose();
         },
 
         /**
