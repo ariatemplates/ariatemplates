@@ -13,6 +13,9 @@
  * limitations under the License.
  */
 var Aria = require("../../Aria");
+
+var ariaUtilsArray = require("../../utils/Array");
+
 var ariaWidgetsFramesFrameFactory = require("../frames/FrameFactory");
 var ariaWidgetsContainerTabStyle = require("./TabStyle.tpl.css");
 var ariaWidgetsContainerContainer = require("./Container");
@@ -25,12 +28,34 @@ module.exports = Aria.classDefinition({
     $classpath : "aria.widgets.container.Tab",
     $extends : ariaWidgetsContainerContainer,
     $css : [ariaWidgetsContainerTabStyle],
+
     /**
      * Tab constructor
      * @param {aria.widgets.CfgBeans:TabCfg} cfg the widget configuration
      * @param {aria.templates.TemplateCtxt} ctxt template context
      */
     $constructor : function (cfg, ctxt) {
+        // ---------------------------------------------------------------------
+
+        var configurationOfCommonBinding = this._getConfigurationOfCommonBinding(cfg);
+
+        if (configurationOfCommonBinding != null) {
+            var bind = cfg.bind;
+            var inside = configurationOfCommonBinding.inside;
+
+            bind.controlledTabPanelId = {
+                inside: inside,
+                to: this._getControlledTabPanelIdPropertyName(cfg)
+            };
+
+            bind.labelId = {
+                inside: inside,
+                to: this._getLabelIdPropertyName(cfg)
+            };
+        }
+
+        // ---------------------------------------------------------------------
+
         this.$Container.constructor.apply(this, arguments);
         this._setSkinObj(this._skinnableClass);
 
@@ -72,9 +97,53 @@ module.exports = Aria.classDefinition({
          * @override
          */
         this._spanStyle = "z-index:100;vertical-align:top;";
-    },
-    $destructor : function () {
 
+        // ---------------------------------------------------------------------
+
+        var extraAttributes = [];
+
+        if (cfg.waiAria) {
+            extraAttributes.push(['role', 'tab']);
+
+            var bind = cfg.bind;
+            if (bind != null) {
+                var binding = bind.selectedTab;
+
+                if (binding != null) {
+                    var inside = binding.inside;
+                    var to = binding.to;
+
+                    var selected = inside[to] === cfg.tabId;
+                    var value = selected ? 'true' : 'false';
+
+                    extraAttributes.push(['aria-selected', value]);
+                    extraAttributes.push(['aria-expanded', value]);
+                }
+            }
+
+            var value = cfg.disabled ? 'true' : 'false';
+            extraAttributes.push(['aria-disabled', value]);
+
+            this._updateLabelId();
+
+            var id = this._getControlledTabPanelId();
+            if (id != null) {
+                extraAttributes.push(['aria-controls', id]);
+            }
+        }
+
+        var _extraAttributes = '';
+        ariaUtilsArray.forEach(extraAttributes, function (attribute) {
+            var key = attribute[0];
+            var value = attribute[1];
+
+            _extraAttributes += ' ' + key + '="' + value + '"';
+        });
+        _extraAttributes += ' ';
+        this._extraAttributes = _extraAttributes;
+    },
+
+    $destructor : function () {
         if (this._frame) {
             this._frame.$dispose();
             this._frame = null;
@@ -82,6 +151,7 @@ module.exports = Aria.classDefinition({
 
         this.$Container.$destructor.call(this);
     },
+
     $prototype : {
         /**
          * Skinnable class to use for this widget.
@@ -105,6 +175,124 @@ module.exports = Aria.classDefinition({
             aria.widgets.container.Tab.superclass._init.call(this);
         },
 
+
+
+        ////////////////////////////////////////////////////////////////////////
+        // Tab & TabPanel communication
+        ////////////////////////////////////////////////////////////////////////
+
+        _getConfigurationOfCommonBinding : function (cfg) {
+            if (cfg == null) {
+                cfg = this._cfg;
+            }
+
+            var bind = cfg.bind;
+
+            if (bind == null) {
+                return null;
+            }
+
+            return bind.selectedTab;
+        },
+
+        _getCommonBindingMetaDataPropertyName : function (name, cfg) {
+            var configurationOfCommonBinding = this._getConfigurationOfCommonBinding(cfg);
+
+            if (configurationOfCommonBinding == null) {
+                return null;
+            }
+
+            var to = configurationOfCommonBinding.to;
+            return 'aria:' + to + '_' + name;
+        },
+
+
+
+        ////////////////////////////////////////////////////////////////////////
+        // TabPanel label id management (from Tab to TabPanel)
+        ////////////////////////////////////////////////////////////////////////
+
+        _getLabelIdPropertyName : function (cfg) {
+            return this._getCommonBindingMetaDataPropertyName('labelId', cfg);
+        },
+
+        _updateLabelId : function (selectedTab) {
+            // --------------------------------------------------- destructuring
+
+            var id = this._domId;
+            var cfg = this._cfg;
+
+            var tabId = cfg.tabId;
+
+            // ---------------------------------------------------- facilitation
+
+            if (selectedTab == null) {
+                var binding = this._getConfigurationOfCommonBinding();
+
+                if (binding == null) {
+                    return null;
+                }
+
+                selectedTab = binding.inside[binding.to];
+            }
+
+            // ------------------------------------------------------ processing
+
+            if (!selectedTab) {
+                this.changeProperty('labelId', null);
+            } else {
+                var isSelected = selectedTab === tabId;
+
+                if (isSelected) {
+                    this.changeProperty('labelId', id);
+                }
+            }
+        },
+
+
+
+        ////////////////////////////////////////////////////////////////////////
+        // Tab controls id management (from TabPanel to Tab)
+        ////////////////////////////////////////////////////////////////////////
+
+        _getControlledTabPanelIdPropertyName : function (cfg) {
+            return this._getCommonBindingMetaDataPropertyName('controlledTabPanelId', cfg);
+        },
+
+        _getControlledTabPanelId : function () {
+            var configurationOfCommonBinding = this._getConfigurationOfCommonBinding();
+
+            if (configurationOfCommonBinding == null) {
+                return null;
+            }
+
+            var inside = configurationOfCommonBinding.inside;
+            var property = this._getControlledTabPanelIdPropertyName();
+
+            return inside[property];
+        },
+
+        _reactToControlledTabPanelIdChange : function (id) {
+            if (!this._cfg.waiAria) {
+                return;
+            }
+
+            var attributeName = 'aria-controls';
+
+            var element = this.getDom();
+            if (!id) {
+                element.removeAttribute(attributeName);
+            } else {
+                element.setAttribute(attributeName, id);
+            }
+        },
+
+
+
+        ////////////////////////////////////////////////////////////////////////
+        //
+        ////////////////////////////////////////////////////////////////////////
+
         /**
          * Give focus to the element representing the focus for this widget
          */
@@ -125,20 +313,49 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         _onBoundPropertyChange : function (propertyName, newValue, oldValue) {
+            // --------------------------------------------------- destructuring
+
+            var element = this.getDom();
+
+            var cfg = this._cfg;
+            var tabId = cfg.tabId;
+            var waiAria = cfg.waiAria;
+
+            // ------------------------------------------------------ processing
+
             var changedState = false;
             if (propertyName === "selectedTab") {
-                if (newValue === this._cfg.tabId || oldValue === this._cfg.tabId) {
+                var isSelected = newValue === tabId;
+                var wasSelected = oldValue === tabId;
+
+                if (isSelected || wasSelected) {
                     changedState = true;
                 }
+            } else if (propertyName === 'controlledTabPanelId') {
+                this._reactToControlledTabPanelIdChange(newValue);
             } else {
                 this.$Container._onBoundPropertyChange.call(this, propertyName, newValue, oldValue);
             }
 
             if (changedState) {
-                this._cfg[propertyName] = newValue;
+                cfg[propertyName] = newValue;
                 this._updateState();
+
+                if (waiAria) {
+                    var value = isSelected ? 'true' : 'false';
+                    element.setAttribute('aria-selected', value);
+                    element.setAttribute('aria-expanded', value);
+                }
             }
+
+            this._updateLabelId(newValue);
         },
+
+
+
+        ////////////////////////////////////////////////////////////////////////
+        //
+        ////////////////////////////////////////////////////////////////////////
 
         /**
          * Internal function to generate the internal widget markup
@@ -170,7 +387,7 @@ module.exports = Aria.classDefinition({
         /**
          * Internal method to update the state of the tab, from the config and the mouse over variable
          * @param {Boolean} skipChangeState - If true we don't update the state in the frame as the frame may not be
-         * initialised
+         * initialized
          * @protected
          */
         _updateState : function (skipChangeState) {
@@ -279,6 +496,7 @@ module.exports = Aria.classDefinition({
         _dom_onkeydown : function (domEvt) {
             if (domEvt.keyCode == aria.DomEvent.KC_SPACE || domEvt.keyCode == aria.DomEvent.KC_ENTER) {
                 this._selectTab();
+                domEvt.preventDefault();
             }
         }
 

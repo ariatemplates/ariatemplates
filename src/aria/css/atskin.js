@@ -1033,6 +1033,71 @@ Aria.classDefinition({
                             sprSpacing : 2
                         }
                     }
+                },
+                simple : {
+                    "frame" : {
+                        "frameType" : "Simple"
+                    },
+                    "states" : {
+                        "selectedFocused" : {
+                            "color" : "#4776A7",
+                            "borderTop" : 1,
+                            "borderLeft" : 1,
+                            "borderRight" : 1,
+                            "border" : "solid",
+                            "borderColor" : "#4776A7",
+                            "backgroundColor" : "#FFFFFF"
+                        },
+                        "selected" : {
+                            "color" : "#4776A7",
+                            "borderTop" : 1,
+                            "borderLeft" : 1,
+                            "borderRight" : 1,
+                            "border" : "solid",
+                            "borderColor" : "#4776A7",
+                            "backgroundColor" : "#FFFFFF"
+                        },
+                        "normal" : {
+                            "color" : "#FFFFFF",
+                            "backgroundColor" : "#4776A7",
+                            "borderTop" : 1,
+                            "borderLeft" : 1,
+                            "borderRight" : 1,
+                            "border" : "solid",
+                            "borderColor" : "#4776A7",
+                            "borderTopLeftRadius" : 6,
+                            "borderTopRightRadius" : 6,
+                            "paddingTop" : 10,
+                            "paddingRight" : 20,
+                            "paddingBottom" : 10,
+                            "paddingLeft" : 20
+                        },
+                        "msoverFocused" : {
+                            "backgroundColor" : "#2f6093",
+                            "borderTop" : 1,
+                            "borderLeft" : 1,
+                            "borderRight" : 1,
+                            "border" : "solid",
+                            "borderColor" : "#2f6093"
+                        },
+                        "msover" : {
+                            "backgroundColor" : "#2f6093",
+                            "borderTop" : 1,
+                            "borderLeft" : 1,
+                            "borderRight" : 1,
+                            "border" : "solid",
+                            "borderColor" : "#2f6093"
+                        },
+                        "disabled" : {
+                            "color" : "#C2C3C6",
+                            "backgroundColor" : "#4c7bac",
+                            "borderTop" : 1,
+                            "borderLeft" : 1,
+                            "borderRight" : 1,
+                            "border" : "solid",
+                            "borderColor" : "#4c7bac"
+                        }
+                    }
                 }
             },
             List : {

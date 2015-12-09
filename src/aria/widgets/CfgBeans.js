@@ -2131,6 +2131,12 @@ module.exports = Aria.beanDefinitions({
                     $properties : {
                         "selectedTab" : {
                             $type : "common:BindingRef"
+                        },
+                        "labelId" : {
+                            $type : "common:BindingRef"
+                        },
+                        "controlledTabPanelId" : {
+                            $type : "common:BindingRef"
                         }
                     }
                 },
@@ -2164,6 +2170,12 @@ module.exports = Aria.beanDefinitions({
                             $type : "common:BindingRef"
                         },
                         "selectedTab" : {
+                            $type : "common:BindingRef"
+                        },
+                        "labelId" : {
+                            $type : "common:BindingRef"
+                        },
+                        "controlledTabPanelId" : {
                             $type : "common:BindingRef"
                         }
                     }

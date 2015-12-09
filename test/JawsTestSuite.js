@@ -29,6 +29,7 @@ Aria.classDefinition({
 
         this.addTests("test.aria.widgets.wai.popup.dialog.modal.ModalDialogJawsTest");
         this.addTests("test.aria.widgets.wai.errorlist.binding.ErrorListBindingJawsTestCase");
+        this.addTests("test.aria.widgets.wai.tabs.TabsJawsTest");
 
         this.addTests("test.aria.widgets.wai.input.checkbox.CheckboxJawsTestCase");
         this.addTests("test.aria.widgets.wai.input.radiobutton.RadioButtonGroupJawsTestCase");

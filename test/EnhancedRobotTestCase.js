@@ -55,6 +55,30 @@ function createAsyncWrapper(fn) {
 
 var prototype = {
     ////////////////////////////////////////////////////////////////////////////
+    // Debug
+    ////////////////////////////////////////////////////////////////////////////
+
+    _log : function (next) {
+        var args = Array.prototype.slice.call(arguments, 1);
+
+        // IE < 9 compatible: http://stackoverflow.com/questions/5538972/console-log-apply-not-working-in-ie9#comment8444540_5539378
+        Function.prototype.apply.call(console.log, console, args);
+
+        next();
+    },
+
+    _logLazy : function (next, getValues) {
+        var values = getValues();
+
+        var args = [];
+        args.push(next);
+        args.push.apply(args, values);
+
+        this._log.apply(this, args);
+    },
+
+
+    ////////////////////////////////////////////////////////////////////////////
     // DOM
     ////////////////////////////////////////////////////////////////////////////
 
@@ -238,6 +262,7 @@ var prototype = {
 
         var self = this;
 
+
         this.waitFor({
             scope: thisArg,
             condition: function condition() {
@@ -356,10 +381,19 @@ var prototype = {
     // Assertions: DOM
     ////////////////////////////////////////////////////////////////////////////
 
-    _checkAttribute : function (id, element, attributeName, expected) {
+    _checkAttribute : function (id, element, attributeName, expected, strict) {
+        if (strict == null) {
+            strict = true;
+        }
+
         var attribute = element.getAttribute(attributeName);
 
-        var condition = attribute === expected;
+        var condition;
+        if (strict) {
+            condition = attribute === expected;
+        } else {
+            condition = attribute == expected;
+        }
 
         var message = 'Widget "%1" should have attribute "%2" set to "%3", it has value "%4" instead';
         message = ariaUtilsString.substitute(message, [
@@ -372,14 +406,14 @@ var prototype = {
         this.assertTrue(condition, message);
     },
 
-    _checkWidgetAttribute : function (id, attributeName, expected) {
+    _checkWidgetAttribute : function (id, attributeName, expected, strict) {
         var element = this._getWidgetDom(id);
-        this._checkAttribute(id, element, attributeName, expected);
+        this._checkAttribute(id, element, attributeName, expected, strict);
     },
 
-    _checkElementAttribute : function (id, attributeName, expected) {
+    _checkElementAttribute : function (id, attributeName, expected, strict) {
         var element = this.getElementById(id);
-        this._checkAttribute(id, element, attributeName, expected);
+        this._checkAttribute(id, element, attributeName, expected, strict);
     },
 
 

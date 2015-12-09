@@ -15,8 +15,7 @@
 
 var Aria = require('ariatemplates/Aria');
 
-var EnhancedRobotTestCase = require('test/EnhancedRobotTestCase');
-var ariaJsunitJawsTestCase = require('ariatemplates/jsunit/JawsTestCase');
+var EnhancedJawsTestCase = require('test/EnhancedJawsTestCase');
 
 var Model = require('./Model');
 
@@ -24,12 +23,10 @@ var Model = require('./Model');
 
 module.exports = Aria.classDefinition({
     $classpath : 'test.aria.widgets.wai.popup.dialog.modal.ModalDialogJawsTest',
-    $extends : ariaJsunitJawsTestCase,
+    $extends : EnhancedJawsTestCase,
 
     $constructor : function () {
-        this.$JawsTestCase.constructor.call(this);
-
-        this._history = [];
+        this.$EnhancedJawsTestCase.constructor.call(this);
 
         this.setTestEnv({
             template : 'test.aria.widgets.wai.popup.dialog.modal.Tpl',
@@ -44,18 +41,6 @@ module.exports = Aria.classDefinition({
     ////////////////////////////////////////////////////////////////////////////
 
     $prototype : {
-        $init : function (prototype) {
-            var source = EnhancedRobotTestCase.prototype;
-
-            for (var key in source) {
-                if (source.hasOwnProperty(key) && !prototype.hasOwnProperty(key)) {
-                    prototype[key] = source[key];
-                }
-            }
-        },
-
-
-
         ////////////////////////////////////////////////////////////////////////
         // Tests
         ////////////////////////////////////////////////////////////////////////
@@ -65,14 +50,6 @@ module.exports = Aria.classDefinition({
                 add('_testDialogs');
                 add('_checkHistory');
             }, this.end);
-        },
-
-        _checkHistory : function (callback) {
-            var history = this._history;
-
-            history = history.join('\n');
-
-            this.assertJawsHistoryEquals(history, callback);
         },
 
 
@@ -121,47 +98,6 @@ module.exports = Aria.classDefinition({
                 if (!dialog.fullyEmpty) {
                     entry(dialog.buttonLabel, 'Button');
                 }
-            });
-        },
-
-
-
-        ////////////////////////////////////////////////////////////////////////
-        // Local library
-        ////////////////////////////////////////////////////////////////////////
-
-        _executeStepsAndWriteHistory : function (callback, builder, thisArg) {
-            // -------------------------------------- input arguments processing
-
-            if (thisArg === undefined) {
-                thisArg = this;
-            }
-
-            // --------------------------------------------------- local globals
-
-            var history = this._history;
-            var steps = [];
-
-            function addStep(item) {
-                steps.push(item);
-                steps.push(['pause', 1000]);
-            }
-
-            function addToHistory(item, role) {
-                if (role != null) {
-                    item += ' ' + role;
-                }
-
-                history.push(item);
-            }
-
-            // ------------------------------------------------------ processing
-
-            builder.call(thisArg, addStep, addToHistory, steps, history);
-
-            this.synEvent.execute(steps, {
-                scope: this,
-                fn: callback
             });
         }
     }
