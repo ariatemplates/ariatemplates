@@ -16,7 +16,6 @@ var Aria = require("../Aria");
 var ariaCoreJsonTypes = require("../core/JsonTypes");
 var ariaCoreCfgBeans = require("../core/CfgBeans");
 
-
 /**
  * @class aria.templates.CfgBeans
  */
@@ -742,6 +741,10 @@ module.exports = Aria.beanDefinitions({
                 "spellcheck" : {
                     $type : "json:String",
                     $description : "whether or not to check the spelling/grammar of the text in an editable element"
+                },
+                "aria" : {
+                    $type : "json:ObjectRef",
+                    $description : "Set of WAI aria attributes for the element"
                 }
             }
         },

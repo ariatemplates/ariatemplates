@@ -43,7 +43,7 @@ Aria.classDefinition({
                     } else if (key === "dataset") {
                         for (var dataKey in attribute) {
                             if (attribute.hasOwnProperty(dataKey)) {
-                                var value = stringUtil.encodeForQuotedHTMLAttribute(attribute[dataKey]);
+                                var value = attribute[dataKey];
                                 // in "dataset" the key will be camelCased, but as an HTML attrib
                                 // it gets converted to dash-separated equivalent
                                 var queryKey = stringUtil.camelToDashed(dataKey);
@@ -51,8 +51,16 @@ Aria.classDefinition({
                                 this.assertEquals(got, value, "data-" + dataKey + " should be %2, got %1");
                             }
                         }
+                    } else if (key === "aria") {
+                        for (var ariaKey in attribute) {
+                            if (attribute.hasOwnProperty(ariaKey)) {
+                                var value = attribute[ariaKey];
+                                var got = div.getAttribute("aria-" + ariaKey);
+                                this.assertEquals(got, value, "aria-" + ariaKey + " should be %2, got %1");
+                            }
+                        }
                     } else if (aria.templates.DomElementWrapper.attributesWhiteList.test(key)) {
-                        var value = stringUtil.encodeForQuotedHTMLAttribute(attribute);
+                        var value = attribute;
                         var got = div.getAttribute(key);
 
                         if (key === "style") {
@@ -128,7 +136,11 @@ Aria.classDefinition({
                 autofocus : "autofocus",
                 autocorrect : "on",
                 autocapitalize : "off",
-                spellcheck : "true"
+                spellcheck : "true",
+                aria : {
+                    labelledby : "abcd",
+                    anything : '"abcdr"'
+                }
 
             };
 
@@ -146,6 +158,14 @@ Aria.classDefinition({
 
             var str = this._testDatasetKey("weird$characters^");
             this.assertErrorInLogs(html.INVALID_DATASET_KEY);
+        },
+
+        testBuildAttributeListAria : function () {
+            this.assertEquals(aria.utils.Html.buildAttributeList({
+                aria : {
+                    "hidden" : "true"
+                }
+            }), ' aria-hidden="true"', "Attribute aria-hidden was not correctly built");
         },
 
         _testDatasetKey : function (key) {
