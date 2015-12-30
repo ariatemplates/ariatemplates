@@ -31,6 +31,7 @@
                 labelAlign:"right",
                 width:250,
                 block:true,
+                autoselect:true,
                 pattern:aria.utils.environment.Date.getTimeFormats().shortFormat,
                 bind:{
                     "value":{

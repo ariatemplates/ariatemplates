@@ -60,17 +60,7 @@ Aria.classDefinition({
             var timeReturn = "8h9m-;67\\,.45/:0123";
             this.assertEquals(aria.utils.Date._removeUnwantedCharacters(time), timeReturn);
         },
-
-        /**
-         * TestCase5 Calculate hours from string.
-         */
-        test_calculateHours : function () {
-            var time = "24";
-            var timeReturn = 0;
-            var test = aria.utils.Date._calculateHours(time);
-            this.assertEquals(test[0], timeReturn);
-        },
-
+        
         /**
          * TestCase6 Calculate minutes or seconds from string.
          */
@@ -142,10 +132,10 @@ Aria.classDefinition({
          */
         test_interpretTime : function () {
             var ariaTimeUtil = aria.utils.Date;
-            var useCases = ["22:4p:1", "99", "9p", "9h00", "9:9", "11:09   p", "9 9", "9/2", "9;2", "9-2", "9:9",
+            var useCases = ["99", "9h00", "9:9", "9 9", "9/2", "9;2", "9-2", "9:9",
                     "09:9", "0909", "9h09", "9h9", "09h9", "9.51", "9.51pm", "9,5pm"];
 
-            var checker = ["22:04:01", "09:09:00", "21:00:00", "09:00:00", "09:09:00", "23:09:00", "09:09:00",
+            var checker = ["09:09:00", "09:00:00", "09:09:00", "09:09:00",
                     "09:02:00", "09:02:00", "09:02:00", "09:09:00", "09:09:00", "09:09:00", "09:09:00", "09:09:00",
                     "09:09:00", "09:51:00", "21:51:00", "21:05:00"];
 
@@ -165,7 +155,7 @@ Aria.classDefinition({
         testInterpretTime : function (text) {
 
             var ariaDateUtil = aria.utils.Date;
-
+            
             var interpretedDate = ariaDateUtil.interpretTime('25:01');
             // should be rejected
             this.assertTrue(interpretedDate === null);
@@ -252,3 +242,4 @@ Aria.classDefinition({
 
     }
 });
+
