@@ -50,13 +50,6 @@ var ariaWidgetsFormCheckBox = require("./CheckBox");
             if (!this._cfg.disabled) {
                 this._instances.push(this);
             }
-
-            this._waiAriaAttributes = "";
-            if (this._cfg.waiAria) {
-                this[this._skinObj.simpleHTML ? "_waiAriaAttributes" : "_extraAttributes"] =
-                    this._getAriaLabelMarkup() + 'role="radio" aria-disabled="' + this._cfg.disabled + '" ' +
-                    'aria-checked="' + this._isChecked() + '"';
-            }
         },
 
         $destructor : function () {
@@ -120,20 +113,14 @@ var ariaWidgetsFormCheckBox = require("./CheckBox");
             },
 
             /**
-             * Internal method to hande the mousedown event
-             * @param {aria.DomEvent} event
+             * Internal method to handle the click event
+             * @param {aria.DomEvent} event Click
+             * @protected
              */
-            _dom_onmousedown : function (event) {
-                this._focus();
-            },
-
-            /**
-             * Internal method to hande the mouseup event
-             * @param {aria.DomEvent} event
-             */
-            _dom_onmouseup : function (event) {
+            _dom_onclick : function (event) {
                 this._setRadioValue();
                 this._focus();
+                event.preventDefault(true);
             },
 
             /**
@@ -253,6 +240,7 @@ var ariaWidgetsFormCheckBox = require("./CheckBox");
                     this.evalCallback(this._cfg.onchange);
                 }
             }
+
         }
     });
 })();

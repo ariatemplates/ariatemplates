@@ -60,20 +60,6 @@ module.exports = Aria.classDefinition({
          */
         this._hasFocus = false;
 
-        /**
-         * True if the widget is currently pressed by the mouse.
-         * @protected
-         * @type Boolean
-         */
-        this._mousePressed = false;
-
-        this._waiAriaAttributes = "";
-        if (this._cfg.waiAria) {
-            this[this._skinObj.simpleHTML ? "_waiAriaAttributes" : "_extraAttributes"] =
-                this._getAriaLabelMarkup() + " role='checkbox' aria-disabled='" + this._cfg.disabled + "' " +
-                    'aria-checked=' + this._cfg.value + '" ';
-        }
-
     },
     $destructor : function () {
         if (this._icon) {
@@ -83,7 +69,11 @@ module.exports = Aria.classDefinition({
         this.$Input.$destructor.call(this);
     },
     $prototype : {
-        /**
+
+        // Tab index is set directly on the input
+        _customTabIndexProvided : true,
+
+         /**
          * Skinnable class to use for this widget.
          * @type String
          * @protected
@@ -95,16 +85,6 @@ module.exports = Aria.classDefinition({
          */
         focus : function () {
             this._focus();
-        },
-
-        /**
-         * Check that the widget configuration is correct.
-         * @override
-         * @protected
-         */
-        _checkCfgConsistency : function () {
-            // for the simpleHTML case, tab index is set directly on the input
-            this._customTabIndexProvided = this._skinObj.simpleHTML;
         },
 
         /**
@@ -124,21 +104,19 @@ module.exports = Aria.classDefinition({
             var cfg = this._cfg;
             var name = this._inputName ? ' name="' + this._inputName + '"' : "";
 
-            if (this._skinObj.simpleHTML) {
 
-                // tab index is needed for simple markup (not set on container span, otherwise double focus occurs)
-                var tabIndex = this._cfg.tabIndex;
-                tabIndex = !cfg.disabled ? 'tabindex="' + this._calculateTabIndex() + '" ' : "";
-
-                out.write(['<input style="display:inline-block"', cfg.disabled ? ' disabled' : '',
-                        this._isChecked() ? ' checked' : '', ' type="', cfg._inputType, '"', name, ' value="',
-                        cfg.value, '" ', tabIndex, this._waiAriaAttributes, '/>'].join(''));
-            } else {
+            if (!this._skinObj.simpleHTML) {
                 this._icon.writeMarkup(out);
-                out.write(['<input', Aria.testMode ? ' id="' + this._domId + '_input"' : '', ' style="display:none"',
-                        cfg.disabled ? ' disabled' : '', this._isChecked() ? ' checked' : '', ' type="',
-                        cfg._inputType, '"', name, ' value="', cfg.value, '"/>'].join(''));
             }
+            var tabIndex = this._cfg.tabIndex;
+            tabIndex = !cfg.disabled ? 'tabindex="' + this._calculateTabIndex() + '" ' : "";
+
+            out.write(['<input', cfg.disabled ? ' disabled' : '',
+                    this._skinObj.simpleHTML ? ' style="display:inline-block"' : ' class="xSROnly"',
+                    (Aria.testMode || cfg.waiAria) ? ' id="' + this._domId + '_input"' : '',
+                    this._isChecked() ? ' checked' : '', ' type="', cfg._inputType, '"', name, ' value="',
+                    cfg.value, '" ', tabIndex, '/>'].join(''));
+
         },
 
         /**
@@ -178,11 +156,14 @@ module.exports = Aria.classDefinition({
 
             out.write('text-align:' + cfg.labelAlign + ';display:' + cssDisplay + ';');
             var cssClass = 'class="x' + this._skinnableClass + '_' + cfg.sclass + '_' + this._state + '_label"';
-            out.write('vertical-align:middle;"><label ' + labelId + cssClass + ' style="');
+            out.write('vertical-align:middle;"><label ' + labelId + cssClass);
             if (color) {
-                out.write('color:' + color + ';');
+                out.write(' style="color:' + color + ';"');
             }
-            out.write('">');
+            if (cfg.waiAria) {
+                out.write(' for="' + this._domId + '_input"');
+            }
+            out.write('>');
             out.write(ariaUtilsString.escapeHTML(cfg.label));
 
             out.write('</label></span>');
@@ -206,10 +187,7 @@ module.exports = Aria.classDefinition({
          * Initializes the this._focusableElement property to the DOM element that will handle focus.
          */
         _initializeFocusableElement : function () {
-            this._focusableElement = this.getDom();
-            if (this._skinObj.simpleHTML) {
-                this._focusableElement = this._focusableElement.getElementsByTagName("input")[0];
-            }
+            this._focusableElement = this.getDom().getElementsByTagName("input")[0];
         },
 
         /**
@@ -310,9 +288,7 @@ module.exports = Aria.classDefinition({
             var selected = this._isChecked();
             if (this._cfg.waiAria) {
                 // update the attributes for WAI
-                var element = this._getFocusableElement();
-                element.setAttribute('aria-checked', selected + '');
-                element.setAttribute('aria-disabled', this.getProperty("disabled"));
+                this._getFocusableElement().setAttribute('aria-disabled', this.getProperty("disabled"));
             }
             if (inpEl != null) {
                 // "normal", "normalSelected", "focused", "focusedSelected", "disabled", "disabledSelected",
@@ -399,18 +375,11 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         _dom_onclick : function (event) {
-            // with simple HTML markup, we only use the checkbox for its visual appearance and prevent
-            // its default behavior (we manage it ourselves)
+            this._toggleValue();
+            if (!this._hasFocus) {
+                this._focus();
+            }
             event.preventDefault(true);
-        },
-
-        /**
-         * Internal method to handle the mouseout event
-         * @param {aria.DomEvent} event Mouse Out
-         * @protected
-         */
-        _dom_onmouseout : function (event) {
-            this._mousePressed = false;
         },
 
         /**
@@ -419,15 +388,9 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         _dom_onmousedown : function (event) {
-
-            this._mousePressed = true;
-
-            // Has to be done since onfocus on spans does not bubble
             if (!this._hasFocus) {
                 this._focus();
             }
-
-            // prevent selection of surrounding span
             event.preventDefault(true);
         },
 
@@ -437,16 +400,7 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         _dom_onmouseup : function (event) {
-            // filters right click
-            // PTR 04746599: introducing _mousePressed to have the same behavior in all browsers
-            // when selecting text in a text field and releasing the mouse over the check box
-            if (this._mousePressed) {
-                this._mousePressed = false;
-                this._toggleValue();
-                if (!this._hasFocus) {
-                    this._focus();
-                }
-            }
+            event.preventDefault(true);
         },
 
         /**
@@ -482,6 +436,17 @@ module.exports = Aria.classDefinition({
                 this._toggleValue();
                 event.preventDefault(true);
             }
+        },
+
+         /**
+         * Internal method to handle the keyup event
+         * @param {aria.DomEvent} event Key Up
+         * @protected
+         */
+        _dom_onkeyup : function (event) {
+            if (event.keyCode == ariaDomEvent.KC_SPACE) {
+                event.preventDefault(true);
+            }
         }
-    }
+   }
 });
