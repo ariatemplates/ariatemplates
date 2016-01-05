@@ -21,8 +21,10 @@ Aria.classDefinition({
 
         this.addTests("test.aria.templates.keyboardNavigation.TableNavTestCase");
         this.addTests("test.aria.templates.keyboardNavigation.KeyMapTestCase");
+        this.addTests("test.aria.templates.keyboardNavigation.actionWidgets.ActionWidgetsTest");
         this.addTests("test.aria.templates.keyboardNavigation.enter.EnterTestCase");
-        this.addTests("test.aria.templates.keyboardNavigation.DialogNavTestCase");
         this.addTests("test.aria.templates.keyboardNavigation.bingCompatibility.KeyMapBingCompatibility");
+        this.addTests("test.aria.templates.keyboardNavigation.DialogNavTestCase");
+        this.addTests("test.aria.templates.keyboardNavigation.dialog.Suite");
     }
 });

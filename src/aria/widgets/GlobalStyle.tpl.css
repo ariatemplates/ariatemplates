@@ -118,7 +118,7 @@
 
 {if aria.core.Browser.isSafari || aria.core.Browser.isChrome || aria.core.Browser.isOpera}
 *:focus {
-    outline: 0;
+    outline-width: 0;
 }
 {/if}
 

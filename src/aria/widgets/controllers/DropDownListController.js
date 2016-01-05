@@ -154,6 +154,7 @@ module.exports = Aria.classDefinition({
                     report.text = dataModel.initialInput;
                     // data Model value reset on escape to retain error no escape PTR 05163905
                     report.value = report.text;
+                    report.cancelKeyStroke = true;
                     dataModel.value = null;
                     return report;
 
@@ -203,7 +204,7 @@ module.exports = Aria.classDefinition({
                 // domEvent.KC_ESCAPE for issue#697 on FF
                 if (report && keyCode != domEvent.KC_TAB && keyCode != domEvent.KC_ARROW_DOWN) {
                     // domEvent.KC_ESCAPE for issue#697 on FF
-                    report.cancelKeyStroke = (keyCode == domEvent.KC_ESCAPE);
+                    report.cancelKeyStrokeDefaultBehavior = (keyCode == domEvent.KC_ESCAPE);
                 }
                 return report;
             }

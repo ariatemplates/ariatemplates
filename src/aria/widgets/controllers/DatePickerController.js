@@ -107,6 +107,7 @@ module.exports = Aria.classDefinition({
                         report.displayDropDown = false;
                         report.caretPosStart = 0;
                         report.caretPosEnd = currentValue.length;
+                        report.cancelKeyStroke = true;
                     } else {
                         // transmit the key to the calendar
                         // and cancel the key stroke if the calendar used it

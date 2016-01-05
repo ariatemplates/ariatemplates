@@ -104,7 +104,6 @@ module.exports = Aria.classDefinition({
             // Otherwise we will leave the application
             domEvent.preventDefault();
             if (this._keyPressed) {
-                this._keyPressed = false;
                 return false;
             } else {
                 return this.$ActionWidget._dom_onclick.apply(this, arguments);
@@ -118,14 +117,19 @@ module.exports = Aria.classDefinition({
          */
         _dom_onkeyup : function (domEvt) {
             if (domEvt.keyCode == aria.DomEvent.KC_ENTER) {
-
-                if (!this._performAction(domEvt)) {
-                    domEvt.stopPropagation();
-                    return false;
+                if (this._keyPressed) {
+                    this._keyPressed = false;
+                    if (!this._performAction(domEvt)) {
+                        domEvt.stopPropagation();
+                        return false;
+                    }
                 }
-                return true;
             }
             return true;
+        },
+
+        _dom_onblur : function (domEvent) {
+            this._keyPressed = false;
         },
 
         /**

@@ -25,6 +25,10 @@
 
         /* Icon class: ${info.skinClassName} */
         {if info.skinClass.spriteURL}
+            .xICN${info.skinClassName}:focus {
+                outline-width: initial;
+            }
+
             .xICN${info.skinClassName} {
                 {if !widgetSettings.middleAlignment}vertical-align:top;{/if}
                 font-size:1px;

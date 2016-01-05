@@ -138,6 +138,18 @@ module.exports = Aria.classDefinition({
          * @type Integer
          */
         this._cfg.heightMaximized = null;
+
+        /**
+         * Holds the list of elements that are made hidden when opening a modal dialog. This should not contain already previously hidden elements, and this should be empty for both closed or non-modal dialogs.
+         * @type Array
+         */
+        this._hiddenElements = null;
+
+        /*
+         * The element that was previously focused before opening the dialog. To be used to restore the state upon dialog closing.
+         * @protected
+         */
+        this._previouslyFocusedElement = null;
     },
     $destructor : function () {
         this.close();
@@ -246,20 +258,77 @@ module.exports = Aria.classDefinition({
          * @param {String} cssClassPostfix
          * @param {String} skinIcon
          */
-        __writeTitlebarButton : function (out, delegateId, cssClassPostfix, skinIcon) {
+        __writeTitlebarButton : function (out, delegateId, cssClassPostfix, skinIcon, label) {
+            // --------------------------------------------------- destructuring
+
             var cfg = this._cfg;
+            var skinnableClass = this._skinnableClass;
+
+            var waiAria = cfg.waiAria;
+
+            // ------------------------------------------------------ processing
+
+            // wrapper (opening) -----------------------------------------------
+
+            var attributes = [];
+
             // Adding atdraggable="" to make sure clicking on the button does not start the drag operation
             // Using the atdraggable attribute directly instead of the aria.utils.Mouse.DRAGGABLE_ATTRIBUTE
             // variable because aria.utils.Mouse may not be loaded yet.
-            out.write(['<span atdraggable="" class="x', this._skinnableClass, '_', cssClassPostfix, ' x',
-                    this._skinnableClass, '_', cfg.sclass, '_', cssClassPostfix, '" ',
-                    ariaUtilsDelegate.getMarkup(delegateId), '>'].join(''));
-            var button = new ariaWidgetsIcon({
-                icon : this._skinObj[skinIcon]
-            }, this._context, this._lineNumber);
+            attributes.push('atdraggable=""');
+
+            attributes.push('class="' + [
+                'x' + skinnableClass + '_' + cssClassPostfix,
+                'x' + skinnableClass + '_' + cfg.sclass + '_' + cssClassPostfix
+            ].join(' ') + '"');
+
+            attributes.push(ariaUtilsDelegate.getMarkup(delegateId));
+
+            var openingTagMarkup = '<span ' + attributes.join(' ') + '>';
+
+            out.write(openingTagMarkup);
+
+            // button ----------------------------------------------------------
+
+            var iconConfiguration = {
+                icon : this._skinObj[skinIcon],
+                waiAria : waiAria
+            };
+
+            if (waiAria) {
+                if (label) {
+                    iconConfiguration.tooltip = label;
+                    iconConfiguration.label = label;
+                }
+
+                iconConfiguration.role = 'button';
+                iconConfiguration.tabIndex = 0;
+            }
+
+            var button = new ariaWidgetsIcon(iconConfiguration, this._context, this._lineNumber);
+
             out.registerBehavior(button);
+
             button.writeMarkup(out);
+
+            // wrapper (closing) -----------------------------------------------
+
             out.write('</span>');
+
+            // ---------------------------------------------------------- return
+
+            return button;
+        },
+
+        __getLabelId : function () {
+            var id = this.__labelId;
+
+            if (!id) {
+                id = this._createDynamicId();
+                this.__labelId = id;
+            }
+
+            return id;
         },
 
         /**
@@ -335,7 +404,12 @@ module.exports = Aria.classDefinition({
                 }
             }
 
+            // title bar (begin) -----------------------------------------------
+
             out.write(['<div class="xDialog_titleBar x', this._skinnableClass, '_', cfg.sclass, '_titleBar">'].join(''));
+
+            // title bar > icon ------------------------------------------------
+
             if (cfg.icon) {
                 out.write(['<span class="xDialog_icon x', this._skinnableClass, '_', cfg.sclass, '_icon">'].join(''));
                 var icon = new ariaWidgetsIcon({
@@ -345,8 +419,22 @@ module.exports = Aria.classDefinition({
                 icon.writeMarkup(out);
                 out.write('</span>');
             }
-            out.write(['<span class="x', this._skinnableClass, '_title x', this._skinnableClass, '_', cfg.sclass,
-                    '_title">', ariaUtilsString.escapeHTML(cfg.title), '</span>'].join(''));
+
+            // title bar > title -----------------------------------------------
+
+            var attributes = [];
+
+            if (cfg.waiAria) {
+                attributes.push('id="' + this.__getLabelId() + '"');
+            }
+            attributes.push('class="' + [
+                'x' + this._skinnableClass + '_title',
+                'x' + this._skinnableClass + '_' + cfg.sclass + '_title'
+            ].join(' ') + '"');
+
+            out.write('<span ' + attributes.join(' ') + '>' + ariaUtilsString.escapeHTML(cfg.title) + '</span>');
+
+            // title bar > close button ----------------------------------------
 
             // buttons are floated to the right, so close should be first in the markup
             if (cfg.closable) {
@@ -354,17 +442,22 @@ module.exports = Aria.classDefinition({
                     fn : this._onCloseBtnEvent,
                     scope : this
                 });
-                this.__writeTitlebarButton(out, this._closeDelegateId, "close", "closeIcon");
+                this.__writeTitlebarButton(out, this._closeDelegateId, "close", "closeIcon", this._cfg.closeLabel);
             }
+
+            // title bar > maximize button -------------------------------------
+
             if (cfg.maximizable) {
                 this._maximizeDelegateId = ariaUtilsDelegate.add({
                     fn : this._onMaximizeBtnEvent,
                     scope : this
                 });
-                this.__writeTitlebarButton(out, this._maximizeDelegateId, "maximize", "maximizeIcon");
+                this.__writeTitlebarButton(out, this._maximizeDelegateId, "maximize", "maximizeIcon", this._cfg.maximizeLabel);
             }
-            out.write("</div>");
 
+            // title bar (end) -------------------------------------------------
+
+            out.write("</div>");
         },
 
         /**
@@ -478,7 +571,7 @@ module.exports = Aria.classDefinition({
          * @param {aria.DomEvent} event
          */
         _onCloseBtnEvent : function (event) {
-            if (event.type == "click") {
+            if (this._buttonShouldDoAction(event)) {
                 this.actionClose();
             }
         },
@@ -489,9 +582,28 @@ module.exports = Aria.classDefinition({
          * @param {aria.DomEvent} event
          */
         _onMaximizeBtnEvent : function (event) {
-            if (event.type == "click") {
+            if (this._buttonShouldDoAction(event)) {
                 this.actionToggleMaximize();
             }
+        },
+
+        _buttonShouldDoAction : function (event) {
+            var type = event.type;
+
+            var doAction = false;
+            switch (type) {
+                case "click":
+                    doAction = true;
+                    break;
+                case "keydown":
+                    var keyCode = event.keyCode;
+                    if (keyCode == event.KC_RETURN) {
+                        doAction = true;
+                    }
+                    break;
+            }
+
+            return doAction;
         },
 
         /**
@@ -534,7 +646,17 @@ module.exports = Aria.classDefinition({
          * Creates and displays the popup.
          */
         open : function () {
+            // --------------------------------------------------- destructuring
+
             var cfg = this._cfg;
+
+            var modal = cfg.modal;
+            var waiAria = cfg.waiAria;
+
+            // ------------------------------------------------------ processing
+
+            // refreshParams ---------------------------------------------------
+
             var refreshParams = {
                 section : "__dialog_" + this._domId,
                 writerCallback : {
@@ -543,28 +665,68 @@ module.exports = Aria.classDefinition({
                 }
             };
 
+            // popupContainer --------------------------------------------------
+
             var popupContainer = PopupContainerManager.createPopupContainer(cfg.container);
             this._popupContainer = popupContainer;
 
+            // previouslyFocusedElement ----------------------------------------
+
+            if (modal) {
+                this._previouslyFocusedElement = Aria.$window.document.activeElement;
+            }
+
+            // hiddenElements --------------------------------------------------
+
+            if (modal && waiAria) {
+                var attributeName = 'aria-hidden';
+                var attributeValue = 'true';
+
+                var hiddenElements = this._hiddenElements || [];
+                this._hiddenElements = hiddenElements;
+
+                var container = popupContainer.getContainerElt();
+                var children = container.children;
+
+                for (var index = 0, length = children.length; index < length; index++) {
+                    var child = children[index];
+
+                    if (!child.hasAttribute(attributeName)) {
+                        child.setAttribute(attributeName, attributeValue);
+                        hiddenElements.push(child);
+                    }
+                }
+            }
+
+            // optionsBeforeMaximize -------------------------------------------
             // store current options to reapply them when unmaximized
+
             this._optionsBeforeMaximize = this._createOptionsBeforeMaximize(cfg);
 
+            // section ---------------------------------------------------------
+
             var section = this._context.getRefreshedSection(refreshParams);
+
+            // popup -----------------------------------------------------------
+
             var popup = new ariaPopupsPopup();
+
             this._popup = popup;
+
             popup.$on({
                 "onAfterOpen" : this._onAfterPopupOpen,
                 "onEscape" : this.actionClose,
                 "onAfterClose" : this._onAfterPopupClose,
                 scope : this
             });
+
             if (cfg.closeOnMouseClick) {
                 popup.$on({
                     "onMouseClickClose" : this._onMouseClickClose,
                     scope : this
                 });
             }
-            var isModal = cfg.modal;
+
             popup.open({
                 section : section,
                 keepSection : true,
@@ -575,16 +737,19 @@ module.exports = Aria.classDefinition({
                 center : cfg.center,
                 maximized : cfg.maximized,
                 offset : cfg.maximized ? this._shadows : this._shadowsZero,
-                modal : isModal,
+                modal : modal,
                 maskCssClass : "xDialogMask",
                 popupContainer : popupContainer,
                 closeOnMouseClick : cfg.closeOnMouseClick,
                 closeOnMouseScroll : false,
                 parentDialog : this,
                 zIndexKeepOpenOrder : false, // allows to re-order dialogs (dynamic z-index)
-                role: isModal ? "dialog" : null,
-                waiAria: cfg.waiAria
+                role: modal ? "dialog" : null,
+                labelId: modal ? this.__getLabelId() : null,
+                waiAria: waiAria
             });
+
+            // -----------------------------------------------------------------
 
             // must be registered before we check for _cfg.maximized, to fire the event correctly after overflow change
             ariaTemplatesLayout.$on({
@@ -592,8 +757,10 @@ module.exports = Aria.classDefinition({
                 scope : this
             });
 
+            // -----------------------------------------------------------------
+
             // in case when bound "maximized" was toggled while Dialog was not visible
-            if (this._cfg.maximized) {
+            if (cfg.maximized) {
                 this._setContainerOverflow("hidden");
                 this._setMaximizedHeightAndWidth();
             }
@@ -687,8 +854,22 @@ module.exports = Aria.classDefinition({
          */
         close : function () {
             var cfg = this._cfg;
-            if (this._popup) {
+            var modal = cfg.modal;
+            var hiddenElements = this._hiddenElements;
 
+            if (hiddenElements != null) {
+                var attributeName = 'aria-hidden';
+
+                for (var index = 0, length = hiddenElements.length; index < length; index++) {
+                    var element = hiddenElements[index];
+
+                    element.removeAttribute(attributeName);
+                }
+
+                this._hiddenElements = null;
+            }
+
+            if (this._popup) {
                 this._destroyDraggable();
                 this._destroyResizable();
 
@@ -717,6 +898,16 @@ module.exports = Aria.classDefinition({
                     "viewportResized" : this._onViewportResized,
                     scope : this
                 });
+
+                if (modal) {
+                    var previouslyFocusedElement = this._previouslyFocusedElement;
+                    if (previouslyFocusedElement != null) {
+                        setTimeout(function () {
+                            previouslyFocusedElement.focus();
+                        }, 0);
+                        this._previouslyFocusedElement = null;
+                    }
+                }
             }
         },
 

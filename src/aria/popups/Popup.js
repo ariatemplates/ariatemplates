@@ -16,6 +16,7 @@ var Aria = require("../Aria");
 var ariaPopupsPopupManager = require("./PopupManager");
 require("./Beans");
 var ariaUtilsDom = require("../utils/Dom");
+var ariaUtilsString = require("../utils/String");
 var ariaUtilsSize = require("../utils/Size");
 var ariaUtilsEvent = require("../utils/Event");
 var ariaUtilsDelegate = require("../utils/Delegate");
@@ -320,10 +321,21 @@ module.exports = Aria.classDefinition({
                  ariaUtilsDelegate.getMarkup(this._delegateId),
                  ' style="position:absolute;top:-15000px;left:-15000px;visibility:hidden;display:block;"'
             ];
-            var role = cfg.role;
-            if (cfg.waiAria && role) {
-                html.push(' role="' + role + '"');
+
+            if (cfg.waiAria) {
+                var role = cfg.role;
+                if (role) {
+                    role = ariaUtilsString.escapeForHTML(role, {attr: true});
+                    html.push(' role="' + role + '"');
+                }
+
+                var labelId = cfg.labelId;
+                if (labelId) {
+                    labelId = ariaUtilsString.escapeForHTML(labelId, {attr: true});
+                    html.push(' aria-labelledby="' + labelId + '"');
+                }
             }
+
             html.push("></div>");
             div.innerHTML = html.join('');
 
@@ -690,13 +702,21 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         _show : function () {
+            // --------------------------------------------------- destructuring
 
-            // Insure that the top left corner is visible
-            if (this.modalMaskDomElement) {
+            var conf = this.conf;
 
+            var domElement = this.domElement;
+            var modalMaskDomElement = this.modalMaskDomElement;
+
+            // ------------------------------------------------------ processing
+
+            // Ensure that the top left corner is visible
+            if (modalMaskDomElement) {
                 if (this._containerOverflow == -1) {
                     this._containerOverflow = this.popupContainer.changeContainerOverflow("hidden");
                 }
+
                 var containerSize = this.popupContainer.getScrollSize();
 
                 // Compute the style after scrollbars are removed from the
@@ -712,12 +732,23 @@ module.exports = Aria.classDefinition({
                     modalMaskZIndex = this.computedStyle.zIndex;
                 }
 
-                this.modalMaskDomElement.style.cssText = ['left:0px;top:0px;', 'width:', containerSize.width, 'px;', 'height:',
-                        containerSize.height, 'px;', 'z-index:', modalMaskZIndex, ';', 'position:absolute;display:block;'].join('');
+                modalMaskDomElement.style.cssText = [
+                    'left:0px;',
+                    'top:0px;',
+                    'width:', containerSize.width, 'px;',
+                    'height:', containerSize.height, 'px;',
+                    'z-index:', modalMaskZIndex, ';',
+                    'position:absolute;',
+                    'display:block;'
+                ].join('');
 
-                if (this.conf.animateIn) {
+                if (conf.waiAria) {
+                    modalMaskDomElement.setAttribute('aria-hidden', 'true');
+                }
+
+                if (conf.animateIn) {
                     this._getMaskAnimator().start("fade", {
-                        to : this.modalMaskDomElement,
+                        to : modalMaskDomElement,
                         type : 1
                     });
                 }
@@ -739,19 +770,19 @@ module.exports = Aria.classDefinition({
             if (this.computedStyle.bottom != null) {
                 popupPosition = popupPosition.concat('bottom:', this.computedStyle.bottom, 'px;');
             }
-            this.domElement.style.cssText = popupPosition.concat(['z-index:', this.computedStyle.zIndex, ';',
+            domElement.style.cssText = popupPosition.concat(['z-index:', this.computedStyle.zIndex, ';',
                     'position:absolute;display:inline-block;']).join('');
 
-            if (this.conf.animateIn) {
-                this._startAnimation(this.conf.animateIn, {
-                    to : this.domElement,
+            if (conf.animateIn) {
+                this._startAnimation(conf.animateIn, {
+                    to : domElement,
                     type : 1
                 }, false);
             }
 
             if (ariaCoreBrowser.isIE7 && !this.isOpen) {
                 // Without the following line, the autocomplete does not initially display its content on IE7:
-                this.popupContainer.getContainerElt().appendChild(this.domElement);
+                this.popupContainer.getContainerElt().appendChild(domElement);
             }
 
         },

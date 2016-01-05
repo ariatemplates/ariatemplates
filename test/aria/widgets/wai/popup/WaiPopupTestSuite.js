@@ -20,6 +20,7 @@ Aria.classDefinition({
         this.$TestSuite.constructor.call(this);
         this.addTests("test.aria.widgets.wai.popup.dialog.DialogTestCase");
         this.addTests("test.aria.widgets.wai.popup.dialog.WaiDialogTestCase");
+        this.addTests("test.aria.widgets.wai.popup.dialog.modal.ModalDialogTest");
         this.addTests("test.aria.widgets.wai.popup.errortooltip.ErrorTooltipTestCase");
         this.addTests("test.aria.widgets.wai.popup.errortooltip.WaiErrorTooltipTestCase");
     }

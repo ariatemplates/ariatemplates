@@ -301,7 +301,7 @@ module.exports = Aria.classDefinition({
         },
 
         /**
-         * Check for the case when the displayedValue will change This has to be overriden to handle list update on key
+         * Check for the case when the displayedValue will change This has to be overridden to handle list update on key
          * stroke
          * @param {Integer} charCode
          * @param {Integer} keyCode

@@ -148,6 +148,10 @@ module.exports = Aria.beanDefinitions({
                     $type : "json:String",
                     $description : "The role attribute to add to the container, if wai is activated"
                 },
+                "labelId" : {
+                    $type : "json:String",
+                    $description : "The id of the element to use as a label for accessibility. Used only if wai is activated."
+                },
                 "waiAria" : {
                     $type : "json:Boolean",
                     $description : "If true, accessibility-related DOM attributes are enabled on this container, adding the role attribute if defined."

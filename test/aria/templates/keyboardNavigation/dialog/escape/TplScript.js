@@ -13,20 +13,12 @@
  * limitations under the License.
  */
 
-/**
- * Test suite grouping all tests to be run with Jaws enabled
- */
-Aria.classDefinition({
-    $classpath : "test.JawsTestSuite",
-    $extends : "aria.jsunit.TestSuite",
-    $constructor : function () {
-        this.$TestSuite.constructor.call(this);
+Aria.tplScriptDefinition({
+    $classpath : 'test.aria.templates.keyboardNavigation.dialog.escape.TplScript',
 
-        this.addTests("test.aria.widgets.wai.datePicker.DatePickerJawsTest1");
-
-        this.addTests("test.aria.widgets.wai.autoComplete.AutoCompleteJawsTest1");
-        this.addTests("test.aria.widgets.wai.autoComplete.AutoCompleteJawsTest2");
-
-        this.addTests("test.aria.widgets.wai.popup.dialog.modal.ModalDialogJawsTest");
+    $prototype : {
+        openDialog : function () {
+            this.$json.setValue(this.data, 'dialogOpen', true);
+        }
     }
 });

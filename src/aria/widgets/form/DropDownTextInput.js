@@ -131,8 +131,12 @@ module.exports = Aria.classDefinition({
                 var report = controller.checkKeyStroke(event.charCode, event.keyCode, this.getTextInputField().value, cp.start, cp.end, event);
                 // event may not always be a DomEvent object, that's why we check for the existence of
                 // preventDefault on it
-                if (report && report.cancelKeyStroke && event.preventDefault) {
-                    event.preventDefault(true);
+                if (report && event.preventDefault) {
+                    if (report.cancelKeyStroke) {
+                        event.preventDefault(true);
+                    } else if (report.cancelKeyStrokeDefaultBehavior) {
+                        event.preventDefault(false);
+                    }
                 }
                 this._reactToControllerReport(report, {
                     hasFocus : true
