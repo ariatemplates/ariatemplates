@@ -28,7 +28,5 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.wai.input.multiSelect.MultiSelectTestCase");
         this.addTests("test.aria.widgets.wai.input.datePicker.DatePickerTestCase");
         this.addTests("test.aria.widgets.wai.input.dateField.DateFieldTestCase");
-        this.addTests("test.aria.widgets.wai.input.checkBox.WaiCheckBoxTestSuite");
-        this.addTests("test.aria.widgets.wai.input.radiobutton.WaiRadioButtonTestSuite");
     }
 });
