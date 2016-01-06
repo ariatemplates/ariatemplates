@@ -68,8 +68,7 @@ Aria.classDefinition({
                 style : cfg.block ? 'display:block;' : '',
                 className : "xSimpleFrame " + this._cssPrefix + "frame " + cfg.cssClass
             };
-            this._appendInnerWidthInfo(sizeInfo);
-            this._appendInnerHeightInfo(sizeInfo);
+            this._appendInnerSizeInfo(sizeInfo);
             if (!this._hasBorder(state.skipLeftBorder, cfg.iconsLeft)) {
                 sizeInfo.style = sizeInfo.style
                         + 'border-left:0px;border-top-left-radius:0px;border-bottom-left-radius:0px;';
@@ -111,8 +110,7 @@ Aria.classDefinition({
             var sizeInfo = {
                 className : "xSimpleFrame " + this._cssPrefix + "frame " + this._cfg.cssClass
             };
-            this._appendInnerWidthInfo(sizeInfo);
-            this._appendInnerHeightInfo(sizeInfo);
+            this._appendInnerSizeInfo(sizeInfo);
             domElt.style.width = sizeInfo.width;
             domElt.style.height = sizeInfo.height;
             domElt.className = sizeInfo.className;

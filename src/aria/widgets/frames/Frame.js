@@ -174,57 +174,51 @@ Aria.classDefinition({
 
         /**
          * Method intended to be used by classes which extend this class. It reads the frame configuration (this._cfg),
-         * the inner width (this.innerWidth) and appends width info (actual width and also CSS classes for
-         * scrollbars...) to the obj parameter, so that it is easier for each frame to set this in the DOM (both at
-         * markup generation time and when updating the state of the frame).
+         * the inner dimensions (this.innerWidth and this.innerHeight) and appends size info (actual width and height
+         * and also CSS classes for scrollbars...) to the obj parameter, so that it is easier for each frame to set
+         * this in the DOM (both at markup generation time and when updating the state of the frame).
          * @param {Object} obj object with style and className properties. This method sets the width property on this
          * object (e.g. "100px"), and appends to the className property the CSS classes (e.g. " xOverflowXAuto").
          * Moreover, if the style property is not null, the width is appended to it (e.g. "width:100px;").
          */
-        _appendInnerWidthInfo : function (obj) {
+        _appendInnerSizeInfo : function (obj) {
+            var overflowX = null, overflowY = null;
             if (this.innerWidth > -1) {
                 obj.width = this.innerWidth + "px";
                 if (obj.style != null) {
                     obj.style += "width:" + obj.width + ";";
                 }
-                if (this._cfg.scrollBarX) {
-                    obj.className += " xOverflowXAuto";
-                } else {
-                    obj.className += " xOverflowXHidden";
-                }
+                overflowX = this._cfg.scrollBarX ? "Auto" : "Hidden";
                 if (this._cfg.printOptions == "adaptX" || this._cfg.printOptions == "adaptXY") {
                     obj.className += " xPrintAdaptX";
                 }
             } else {
                 obj.width = "";
             }
-        },
-
-        /**
-         * Method intended to be used by classes which extend this class. It reads the frame configuration (this._cfg),
-         * the inner height (this.innerHeight) and appends height info (actual height and also CSS classes for
-         * scrollbars...) to the obj parameter, so that it is easier for each frame to set this in the DOM (both at
-         * markup generation time and when updating the state of the frame).
-         * @param {Object} obj object with style and className properties. This method sets the height property on this
-         * object (e.g. "100px"), and appends to the className property the CSS classes (e.g. " xOverflowYAuto").
-         * Moreover, if the style property is not null, the height is appended to it (e.g. "height:100px;").
-         */
-        _appendInnerHeightInfo : function (obj) {
             if (this.innerHeight > -1) {
                 obj.height = this.innerHeight + "px";
                 if (obj.style != null) {
                     obj.style += "height:" + obj.height + ";";
                 }
-                if (this._cfg.scrollBarY) {
-                    obj.className += " xOverflowYAuto";
-                } else {
-                    obj.className += " xOverflowYHidden";
-                }
+                overflowY = this._cfg.scrollBarY ? "Auto" : "Hidden";
                 if (this._cfg.printOptions == "adaptY" || this._cfg.printOptions == "adaptXY") {
                     obj.className += " xPrintAdaptY";
                 }
             } else {
                 obj.height = "";
+            }
+            var overflowValue = overflowX || overflowY;
+            if (overflowValue) {
+                // Specifying only overflow-x or only overflow-y makes Firefox behave strangely
+                // (especially: it makes the corresponding element focusable)
+                // Here we make sure both values are always specified:
+                if (overflowX === overflowY || !overflowX || !overflowY) {
+                    // when both values are the same or one is missing, use the value for both X and Y without distinction:
+                    obj.className += " xOverflow" + overflowValue;
+                } else {
+                    // When both values are specified, use them as they are:
+                    obj.className += " xOverflowX" + overflowX + " xOverflowY" + overflowY;
+                }
             }
         }
     }
