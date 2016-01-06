@@ -105,8 +105,7 @@ module.exports = Aria.classDefinition({
                  */
                 className : 'xFrameContent ' + cssPrefix + 'c ' + cfg.cssClass
             };
-            this._appendInnerWidthInfo(sizeInfo);
-            this._appendInnerHeightInfo(sizeInfo);
+            this._appendInnerSizeInfo(sizeInfo);
             var displayInline = "";
 
             if (this._inlineBlock) {
@@ -252,8 +251,7 @@ module.exports = Aria.classDefinition({
             var sizeInfo = {
                 className : 'xFrameContent ' + cssPrefix + 'c ' + cfg.cssClass
             };
-            this._appendInnerWidthInfo(sizeInfo);
-            this._appendInnerHeightInfo(sizeInfo);
+            this._appendInnerSizeInfo(sizeInfo);
             this._childRootElt.style.width = sizeInfo.width;
             this._childRootElt.style.height = sizeInfo.height;
             this._childRootElt.className = sizeInfo.className;
