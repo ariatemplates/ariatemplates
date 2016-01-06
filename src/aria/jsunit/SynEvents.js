@@ -67,6 +67,7 @@ Aria.classDefinition({
             // higher-level actions:
             "ensureVisible" : 1,
             "focus" : 1,
+            "waitFocus" : 1,
             "pause" : 1,
 
             // higher level inputs:
@@ -130,7 +131,26 @@ Aria.classDefinition({
         focus : function (domElt, cb) {
             domElt = this._resolveHTMLElement(domElt);
             domElt.focus();
-            this.$callback(cb);
+            this.waitFocus(domElt, cb);
+        },
+
+        waitFocus : function (domElt, cb) {
+            var self = this;
+            var stopTesting = new Date().getTime() + 5000;
+            var check = function () {
+                var activeElement = Aria.$window.document.activeElement;
+                if (activeElement === domElt) {
+                    domElt = null;
+                    self.$callback(cb);
+                } else if (new Date().getTime() > stopTesting) {
+                    self.$logError("Timeout while waiting for an element to be focused: %1", [domElt
+                            ? domElt.tagName
+                            : domElt], domElt);
+                } else {
+                    setTimeout(check, 100);
+                }
+            };
+            setTimeout(check, 100);
         },
 
         pause : function (duration, cb) {

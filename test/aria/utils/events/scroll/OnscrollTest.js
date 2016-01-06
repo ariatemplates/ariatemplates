@@ -42,14 +42,14 @@ Aria.classDefinition({
         },
 
         __horizontalTest : function () {
-            this.synEvent.type(aria.utils.Dom.getElementById("touchMe"), "[right][right][right]", {
+            this.synEvent.type(null, "[right][right][right]", {
                 fn : this.__verticalTest,
                 scope : this
             });
         },
 
         __verticalTest : function () {
-            this.synEvent.type(aria.utils.Dom.getElementById("touchMe"),"[down][down][down][right][right][right]", {
+            this.synEvent.type(null,"[down][down][down][right][right][right]", {
                 fn : this.__FinishTest,
                 scope : this
             });
