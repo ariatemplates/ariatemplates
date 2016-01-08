@@ -578,6 +578,7 @@ module.exports = Aria.classDefinition({
                 closeOnMouseClick : cfg.closeOnMouseClick,
                 closeOnMouseScroll : false,
                 parentDialog : this,
+                zIndexKeepOpenOrder : false, // allows to re-order dialogs (dynamic z-index)
                 role: isModal ? "dialog" : null,
                 waiAria: cfg.waiAria
             });

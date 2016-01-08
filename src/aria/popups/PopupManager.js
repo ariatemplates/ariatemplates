@@ -21,7 +21,6 @@ var ariaTemplatesNavigationManager = require("../templates/NavigationManager");
 var ariaUtilsAriaWindow = require("../utils/AriaWindow");
 var ariaCoreBrowser = require("../core/Browser");
 var ariaCoreTimer = require("../core/Timer");
-var ariaUtilsDelegate = require("../utils/Delegate");
 
 (function () {
 
@@ -374,13 +373,62 @@ var ariaUtilsDelegate = require("../utils/Delegate");
             },
 
             /**
+             * Returns the popup with the highest zIndex.
+             */
+            getTopPopup : function () {
+                var openedPopups = this.openedPopups;
+                var topPopup = null;
+                if (openedPopups.length > 0) {
+                    topPopup = openedPopups[openedPopups.length - 1];
+                    var topZIndex = topPopup.getZIndex();
+                    for (var i = openedPopups.length - 2; i >= 0; i--) {
+                        var curPopup = openedPopups[i];
+                        var curZIndex = curPopup.getZIndex();
+                        if (curZIndex > topZIndex) {
+                            topPopup = curPopup;
+                            topZIndex = curZIndex;
+                        }
+                    }
+                }
+                return topPopup;
+            },
+
+            /**
              * Bring the given popup to the front, changing its zIndex, if it is necessary.
              * @param {aria.popups.Popup} popup popup whose zIndex is to be changed
              */
             bringToFront : function (popup) {
                 var curZIndex = popup.getZIndex();
-                if (curZIndex !== this.currentZIndex) {
-                    popup.setZIndex(this.getZIndexForPopup(popup));
+                var newBaseZIndex = this.currentZIndex;
+                if (curZIndex === newBaseZIndex) {
+                    // already top most, nothing to do in any case!
+                    return;
+                }
+                // gets all popups supposed to be in front of this one, including this one
+                var openedPopups = this.openedPopups;
+                var popupsToKeepInFront = [];
+                var i, l;
+                for (i = openedPopups.length - 1; i >= 0; i--) {
+                    var curPopup = openedPopups[i];
+                    if (curPopup === popup || curPopup.conf.zIndexKeepOpenOrder) {
+                        popupsToKeepInFront.unshift(curPopup);
+                        if (curPopup.getZIndex() === newBaseZIndex) {
+                            newBaseZIndex -= 10;
+                        }
+                        if (curPopup === popup) {
+                            break;
+                        }
+                    }
+                }
+                if (i < 0 || newBaseZIndex + 10 === curZIndex) {
+                    // either the popup is not in openedPopups (i < 0)
+                    // or it is already correctly positioned (newBaseZIndex + 10 === curZIndex)
+                    return;
+                }
+                this.currentZIndex = newBaseZIndex;
+                for (i = 0, l = popupsToKeepInFront.length; i < l; i++) {
+                    var curPopup = popupsToKeepInFront[i];
+                    curPopup.setZIndex(this.getZIndexForPopup(curPopup));
                 }
             },
 
@@ -503,7 +551,7 @@ var ariaUtilsDelegate = require("../utils/Delegate");
             },
 
             /**
-             * Manager handler when a popup is open. Unregister the popup as opened, unregister global events if needed.
+             * Manager handler when a popup is closed. Unregister the popup as opened, unregister global events if needed.
              * @param {aria.popups.Popup} popup
              */
             onPopupClose : function (popup) {
@@ -519,19 +567,24 @@ var ariaUtilsDelegate = require("../utils/Delegate");
                 if (utilsArray.isEmpty(openedPopups)) {
                     this.disconnectEvents();
                 }
+                var curZIndex = popup.getZIndex();
+                if (curZIndex === this.currentZIndex) {
+                    this.currentZIndex -= 10;
+                }
 
                 this.$raiseEvent({
                     name : "popupClose",
                     popup : popup
                 });
 
-                var topPopup = openedPopups.length > 0 ? openedPopups[openedPopups.length - 1] : null;
+                var topPopup = this.getTopPopup();
 
                 // the timeout waits for a possible focus change after the mousedown event that possibly triggered this
                 // method
                 setTimeout(function () {
-                    var focusedEl = ariaUtilsDelegate.getFocus();
-                    if (topPopup && !utilsDom.isAncestor(focusedEl, topPopup.domElement)) {
+                    var document = Aria.$window.document;
+                    var focusedEl = document.activeElement;
+                    if (topPopup && (!focusedEl || focusedEl === document.body)) {
                         ariaTemplatesNavigationManager.focusFirst(topPopup.domElement);
                     }
                 }, 1);

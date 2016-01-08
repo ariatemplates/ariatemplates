@@ -135,6 +135,11 @@ module.exports = Aria.beanDefinitions({
                     $description : "[Optional] The dialog the popup belongs to",
                     $default : null
                 },
+                "zIndexKeepOpenOrder" : {
+                    $type : "json:Boolean",
+                    $description : "If true, this popup must always be kept in front of any popup that was opened before.",
+                    $default : true
+                },
                 "preferredWidth" : {
                     $type : "json:Integer",
                     $description : "Width of the popup in px - if negative, the width is computed dynamically depending on the content.",
