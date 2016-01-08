@@ -49,7 +49,7 @@ Aria.classDefinition({
                 self.clickAndCheck(403, 115, ["nonModalDialog2", "nonModalDialog3", "nonModalDialog1"], this.end); // click on dialog 2
             }
 
-            step0();
+            setTimeout(step0, 1); // setTimeout here helps IE8
         },
 
         clickAndCheck : function (x, y, order, cb) {

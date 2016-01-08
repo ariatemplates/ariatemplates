@@ -59,7 +59,7 @@ Aria.classDefinition({
             };
             this.incrementPopup(counts, 124, 223); // 1, 2 or 3
             this.incrementPopup(counts, 124, 115); // 1 or 2
-            this.incrementPopup(counts, 403, 223); // 2 or 3
+            this.incrementPopup(counts, 430, 223); // 2 or 3
             this.incrementPopup(counts, 34, 223); // 1 or 3
             return ["nonModalDialog1", "nonModalDialog2", "nonModalDialog3"].sort(function (a, b) {
                 var res = counts[b] - counts[a];
@@ -95,7 +95,11 @@ Aria.classDefinition({
         getPopupNameFromElement: function (element) {
             var foundPopup = this.getPopupFromElement(element);
             if (foundPopup) {
-                return this.getElementsByClassName(foundPopup.domElement, "xDialog_title")[0].innerHTML;
+                var dialogTitle = this.getElementsByClassName(foundPopup.domElement, "xDialog_title");
+                if (dialogTitle.length > 0) {
+                    return dialogTitle[0].innerHTML;
+                }
+                return "unknown";
             }
             return "none";
         },

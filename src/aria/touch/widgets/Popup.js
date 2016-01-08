@@ -204,6 +204,7 @@ Aria.classDefinition({
                 offset : cfg.offset,
                 ignoreClicksOn : cfg.ignoreClicksOn,
                 parentDialog : cfg.parentDialog,
+                zIndexKeepOpenOrder : cfg.zIndexKeepOpenOrder,
                 preferredWidth : cfg.preferredWidth,
                 animateOut : cfg.animateOut,
                 animateIn : cfg.animateIn

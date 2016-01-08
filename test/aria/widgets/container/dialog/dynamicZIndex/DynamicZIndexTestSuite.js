@@ -21,7 +21,8 @@ Aria.classDefinition({
 
         this._tests = [
             "test.aria.widgets.container.dialog.dynamicZIndex.DynamicZIndexClickTestCase",
-            "test.aria.widgets.container.dialog.dynamicZIndex.DynamicZIndexFocusTestCase"
+            "test.aria.widgets.container.dialog.dynamicZIndex.DynamicZIndexFocusTestCase",
+            "test.aria.widgets.container.dialog.dynamicZIndex.innerPopup.DynamicZIndexInnerPopupTestCase"
         ];
     }
 });

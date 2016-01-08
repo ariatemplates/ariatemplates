@@ -611,7 +611,8 @@ Aria.classDefinition({
                 popupContainer : popupContainer,
                 closeOnMouseClick : cfg.closeOnMouseClick,
                 closeOnMouseScroll : false,
-                parentDialog : this
+                parentDialog : this,
+                zIndexKeepOpenOrder : false // allows to re-order dialogs (dynamic z-index)
             });
 
             // must be registered before we check for _cfg.maximized, to fire the event correctly after overflow change
