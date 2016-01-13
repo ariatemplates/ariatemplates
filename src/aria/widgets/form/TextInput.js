@@ -911,7 +911,6 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         _dom_onclick : function () {
-            this._autoselect();
             if (!!this._cfg.onclick) {
                 this.evalCallback(this._cfg.onclick);
             }
@@ -965,6 +964,8 @@ module.exports = Aria.classDefinition({
             if (!!this._cfg.onfocus && !avoidCallback) {
                 this.evalCallback(this._cfg.onfocus);
             }
+
+            this._autoselect();
         },
 
         /**
@@ -1263,16 +1264,6 @@ module.exports = Aria.classDefinition({
               textInputField.value = textInputField.value;
             }
 
-            if (!fromSelf) {
-                // IE FIX: the focus() can be asynchronous, so let's add a timeout to manage the autoselect
-                ariaCoreTimer.addCallback({
-                    fn : function () {
-                        this._autoselect();
-                    },
-                    scope : this,
-                    delay : 25
-                });
-            }
         },
 
         /**
