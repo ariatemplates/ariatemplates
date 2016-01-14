@@ -71,7 +71,7 @@ module.exports = Aria.classDefinition({
             var input = this.getInputField(inputId);
 
             dataUtils.validateModel(data);
-            this.assertTrue(input.getAttribute("aria-required") == null, "aria-required shouldn't be set in " + inputId);
+            this.assertTrue(input.getAttribute("required") == null, "required shouldn't be set in " + inputId);
             this.assertTrue(input.getAttribute("aria-invalid") == null, "aria-invalid shouldn't be set in " + inputId);
 
         },
