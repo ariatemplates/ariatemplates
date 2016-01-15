@@ -63,6 +63,6 @@ attester.event.once("attester.core.fail", function () {
 });
 
 attester.config.set(options);
-attester.campaign.create(campaign);
+attester.campaign.create(campaign, {}, 1);
 
 attester.start();
