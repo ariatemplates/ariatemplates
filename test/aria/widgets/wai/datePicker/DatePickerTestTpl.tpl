@@ -27,7 +27,7 @@
     {/macro}
 
     {macro datePicker(id, waiAria)}
-        <label>Previous field <input></label> <br><br>
+        <label>Previous field <input {id id+"PreviousInput"/}></label> <br><br>
         {@aria:DatePicker {
             id: id,
             label: "Travel date",
@@ -35,6 +35,7 @@
             waiAria: waiAria,
             waiAriaCalendarLabel: "Calendar table. Use arrow keys to navigate and space to validate.",
             waiAriaDateFormat: "EEEE d MMMM yyyy",
+            calendarShowShortcuts: false,
             bind: {
                 value: {
                     to: id + "Value",
@@ -42,7 +43,7 @@
                 }
             }
         }/} <br><br>
-        <label>Next field <input></label> <br><br>
+        <label>Next field <input {id id+"NextInput"/}></label> <br><br>
     {/macro}
 
 {/Template}
