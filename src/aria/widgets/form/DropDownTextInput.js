@@ -171,7 +171,7 @@ module.exports = Aria.classDefinition({
                 event.charCode = 0;
                 this._handleKey(event);
             }
-            this.$TextInput._dom_onkeydown.call(this, event);
+            this.$TextInput._dom_onkeyup.call(this, event);
         },
 
         /**
