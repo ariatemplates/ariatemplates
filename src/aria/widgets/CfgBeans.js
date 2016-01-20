@@ -1971,6 +1971,11 @@ module.exports = Aria.beanDefinitions({
                     $description : "If true, the dialog is always centered in the browser window. Takes priority over xpos and ypos. However, if the dialog box is movable and the user manually moves it, the centered behavior will be switched off.",
                     $default : true
                 },
+                "focusIfModal" : {
+                    $type : "json:Boolean",
+                    $description : "If true, the dialog with the modal flag set to true, will set the focus on the first focusable element when opened",
+                    $default : true
+                },
                 "xpos" : {
                     $type : "json:Integer",
                     $description : "x position of the top left corner of the dialog box.",

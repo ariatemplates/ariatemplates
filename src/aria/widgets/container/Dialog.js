@@ -609,7 +609,7 @@ module.exports = Aria.classDefinition({
 
             this._calculatePosition();
 
-            if (cfg.modal) {
+            if (cfg.focusIfModal && cfg.modal) {
                 ariaTemplatesNavigationManager.focusFirst(this._domElt);
             }
 
