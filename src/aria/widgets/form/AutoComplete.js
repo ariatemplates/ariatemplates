@@ -214,6 +214,18 @@ module.exports = Aria.classDefinition({
             this.$DropDownTextInput._dom_onkeydown.apply(this, arguments);
         },
 
+         /**
+         * Internal method to handle the onkeyup event. This is called to set the value property in the data model
+         * through the setProperty method that also handles all other widgets bound to this value.
+         * @protected
+         */
+        _dom_onkeyup : function (event) {
+            this.$DropDownTextInput._dom_onkeyup.call(this, event);
+            if (event.keyCode == event.KC_ENTER) {
+                this.checkValue();
+            }
+        },
+
         /**
          * Handle events raised by the frame
          * @param {Object} evt
