@@ -46,6 +46,13 @@
                 properties : {
                     popup : "Reference to the popup"
                 }
+            },
+            "beforeBringingPopupsToFront" : {
+                description : "Notifies that several popups are being brought to the front.",
+                properties : {
+                    popups : "Array of popups being brought to the front. The last popup in the list should be on the top.",
+                    cancel : "If set to true, the zIndex of the popups will not be changed."
+                }
             }
         },
         $onload : function () {
@@ -409,6 +416,15 @@
                 if (i < 0 || newBaseZIndex + 10 === curZIndex) {
                     // either the popup is not in openedPopups (i < 0)
                     // or it is already correctly positioned (newBaseZIndex + 10 === curZIndex)
+                    return;
+                }
+                var eventObject = {
+                    name : "beforeBringingPopupsToFront",
+                    popups : popupsToKeepInFront,
+                    cancel : false
+                };
+                this.$raiseEvent(eventObject);
+                if (eventObject.cancel) {
                     return;
                 }
                 this.currentZIndex = newBaseZIndex;

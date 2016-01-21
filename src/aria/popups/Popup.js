@@ -59,7 +59,8 @@ Aria.classDefinition({
         ANCHOR_LEFT : "left",
         ANCHOR_RIGHT : "right",
         // DEBUG MESSAGE
-        DEBUG_OVERWRITE_POSITION : "Absolute %1 position %2 is used to overwrite calculated relative position %3!"
+        DEBUG_OVERWRITE_POSITION : "Absolute %1 position %2 is used to overwrite calculated relative position %3!",
+        WRONG_MODALMASK_ZINDEX : "The z-index of the modal mask (%1) is higher than the z-index of the corresponding dialog (%2)."
     },
     $constructor : function () {
         /**
@@ -675,12 +676,18 @@ Aria.classDefinition({
                 // Compute the style after scrollbars are removed from the
                 // container. Thus the dialog can be properly centered.
                 this.computedStyle = this._getComputedStyle();
-                if (!this.modalMaskZIndex) {
-                    this.modalMaskZIndex = this.computedStyle.zIndex;
+                var modalMaskZIndex = this.modalMaskZIndex;
+                if (!modalMaskZIndex) {
+                    modalMaskZIndex = this.modalMaskZIndex = this.computedStyle.zIndex;
+                } else if (modalMaskZIndex > this.computedStyle.zIndex) {
+                    // safety check to not block the full application
+                    // this should never happen in normal circumstances
+                    this.$logError(this.WRONG_MODALMASK_ZINDEX, [modalMaskZIndex, this.computedStyle.zIndex]);
+                    modalMaskZIndex = this.computedStyle.zIndex;
                 }
 
                 this.modalMaskDomElement.style.cssText = ['left:0px;top:0px;', 'width:', containerSize.width, 'px;', 'height:',
-                        containerSize.height, 'px;', 'z-index:', this.modalMaskZIndex, ';', 'position:absolute;display:block;'].join('');
+                        containerSize.height, 'px;', 'z-index:', modalMaskZIndex, ';', 'position:absolute;display:block;'].join('');
 
                 if (this.conf.animateIn) {
                     this._getMaskAnimator().start("fade", {
@@ -994,14 +1001,19 @@ Aria.classDefinition({
         },
 
         /**
-         * Sets the zIndex of the popup, and refreshes. The zIndex of the modal mask, if any, is not changed.
+         * Sets the zIndex of the popup, and refreshes. The zIndex of the modal mask, if any, is not changed,
+         * unless the second parameter is defined.
          * This method does nothing if the popup has not already been displayed.
          * @param {Number} zIndex zIndex to set on the popup.
+         * @param {Number} modalMaskZIndex zIndex to set on the modal mask.
          */
-        setZIndex : function (zIndex) {
+        setZIndex : function (zIndex, modalMaskZIndex) {
             var computedStyle = this.computedStyle;
             if (computedStyle) {
                 computedStyle.zIndex = zIndex;
+                if (modalMaskZIndex != null) {
+                    this.modalMaskZIndex = modalMaskZIndex;
+                }
                 this.refresh();
             }
         },
