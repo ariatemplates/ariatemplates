@@ -47,6 +47,14 @@
                     popup : "Reference to the popup"
                 }
             },
+            "beforePreventingFocus" : {
+                description : "Notifies that the popup manager is about to prevent an element from being focused (because it is behind a modal popup).",
+                properties : {
+                    event: "Focus event (instance of aria.DomEvent)",
+                    modalPopup : "Modal popup which is above the element.",
+                    cancel : "If set to true, the focus will not be prevented."
+                }
+            },
             "beforeBringingPopupsToFront" : {
                 description : "Notifies that several popups are being brought to the front.",
                 properties : {
@@ -355,9 +363,20 @@
             onDocumentFocusIn : function (event) {
                 var domEvent = new aria.DomEvent(event);
                 var target = domEvent.target;
+                var self = this;
                 var popup = this.findParentPopup(target, function (popup) {
-                    aria.templates.NavigationManager.focusFirst(popup.domElement);
-                    return popup;
+                    var eventObject = {
+                        name: "beforePreventingFocus",
+                        event: domEvent,
+                        modalPopup: popup,
+                        cancel: false
+                    };
+                    self.$raiseEvent(eventObject);
+                    if (!eventObject.cancel) {
+                        aria.templates.NavigationManager.focusFirst(popup.domElement);
+                        return popup;
+                    }
+                    // if the focus is allowed, don't return any popup to bring to the front
                 });
                 if (popup) {
                     this.bringToFront(popup);
@@ -643,8 +662,7 @@
              * @protected
              */
             _raiseOnEscapeEvent : function () {
-                var openedPopups = this.openedPopups;
-                var topPopup = openedPopups.length > 0 ? openedPopups[openedPopups.length - 1] : null;
+                var topPopup = this.getTopPopup();
                 if (topPopup && topPopup.modalMaskDomElement) {
                     topPopup.$raiseEvent("onEscape");
                 }
