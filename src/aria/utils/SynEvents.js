@@ -1452,7 +1452,13 @@ require("./Dom");
             // gets the selection of an input or textarea
             getSelection = function( el ) {
                 // use selectionStart if we can
-                if ( el.selectionStart !== undefined ) {
+                var selectionStart;
+                try {
+                    selectionStart = el.selectionStart;
+                } catch (e) {
+                    // selectionStart not available, nothing to do
+                }
+                if ( selectionStart !== undefined ) {
                     // this is for opera, so we don't have to focus to type how we think we would
                     if ( Aria.$window.document.activeElement && Aria.$window.document.activeElement != el && el.selectionStart == el.selectionEnd && el.selectionStart === 0 ) {
                         return {
