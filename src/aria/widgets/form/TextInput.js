@@ -965,7 +965,12 @@ module.exports = Aria.classDefinition({
                 this.evalCallback(this._cfg.onfocus);
             }
 
-            this._autoselect();
+            // on IE9 and IE10, it is necessary to add some delay before being able to set the selection
+            ariaCoreTimer.addCallback({
+                fn : this._autoselect,
+                scope : this,
+                delay : 1
+            });
         },
 
         /**
