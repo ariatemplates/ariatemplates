@@ -68,7 +68,6 @@ Aria.classDefinition({
             this._assertDialogVisibility("one");
             this._assertDialogVisibility("two");
             this._assertDialogVisibility("three", false);
-            this._assertFocus("two");
 
             aria.utils.FireDomEvent.fireEvent('keydown', Aria.$window.document.body, {
                 keyCode : aria.DomEvent['KC_ESCAPE']
@@ -85,7 +84,6 @@ Aria.classDefinition({
             this._assertDialogVisibility("one");
             this._assertDialogVisibility("two", false);
             this._assertDialogVisibility("three", false);
-            this._assertFocus("one");
 
             aria.utils.FireDomEvent.fireEvent('keydown', Aria.$window.document.body, {
                 keyCode : aria.DomEvent['KC_ESCAPE']
@@ -112,12 +110,6 @@ Aria.classDefinition({
             var realId = this.templateCtxt.$getId(id);
             var field = aria.utils.Dom.getElementById(realId);
             this.assertEquals(!!field, open, "Dialog " + id + " should " + (open ? "" : "not ") + "be open");
-        },
-
-        _assertFocus : function (id) {
-            var field = this.getInputField(id);
-            var focused = Aria.$window.document.activeElement;
-            this.assertEquals(field, focused, "Element with id " + id + " should be focused.");
         }
     }
 });

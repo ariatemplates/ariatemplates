@@ -72,22 +72,6 @@ Aria.classDefinition({
             // when a focusable element in a popup is clicked, it should take the focus even if the most recent popup
             // has lost the focus and has been closed
             this.assertEquals(this.input2, focusedEl, "The second input has not been focused by the click");
-            this.synEvent.click(this.span, {
-                scope : this,
-                fn : function () {
-                    aria.core.Timer.addCallback({
-                        fn : this.checkFirstElementFocused,
-                        scope : this,
-                        delay : 100
-                    });
-                }
-            });
-        },
-
-        checkFirstElementFocused : function () {
-            var focusedEl = Aria.$window.document.activeElement;
-            // when a not focusable element in a popup is clicked, the focus automatically goes to its first element
-            this.assertEquals(this.anchor, focusedEl, "The anchor has not been focused by the click on an inner, not focusable zone");
             this.end();
         }
     }
