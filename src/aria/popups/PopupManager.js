@@ -611,18 +611,6 @@ var ariaCoreTimer = require("../core/Timer");
                     name : "popupClose",
                     popup : popup
                 });
-
-                var topPopup = this.getTopPopup();
-
-                // the timeout waits for a possible focus change after the mousedown event that possibly triggered this
-                // method
-                setTimeout(function () {
-                    var document = Aria.$window.document;
-                    var focusedEl = document.activeElement;
-                    if (topPopup && (!focusedEl || focusedEl === document.body)) {
-                        ariaTemplatesNavigationManager.focusFirst(topPopup.domElement);
-                    }
-                }, 1);
             },
 
             /**

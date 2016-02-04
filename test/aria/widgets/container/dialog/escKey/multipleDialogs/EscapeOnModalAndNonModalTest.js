@@ -26,7 +26,6 @@ Aria.classDefinition({
             this._assertDialogVisibility("one");
             this._assertDialogVisibility("two");
             this._assertDialogVisibility("three", false);
-            this._assertFocus("two");
 
             aria.utils.FireDomEvent.fireEvent("keydown", this.getInputField("two"), {
                 keyCode : aria.DomEvent['KC_ESCAPE']
