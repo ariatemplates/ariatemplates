@@ -968,6 +968,10 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         _createDraggable : function () {
+            if (!this._cfg) {
+                // maybe the widget was disposed while loading aria.utils.dragdrop.Drag
+                return;
+            }
             this._draggable = new aria.utils.dragdrop.Drag(this._domElt, {
                 handle : this._titleBarDomElt,
                 cursor : "move",
@@ -995,6 +999,10 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         _createResize : function () {
+            if (!this._cfg) {
+                // maybe the widget was disposed while loading aria.utils.resize.Resize
+                return;
+            }
             if (this._handlesArr) {
                 this._resizable = {};
                 var handleArr = this._handlesArr, index = 0, parent = this._domElt, getDomElementChild = ariaUtilsDom.getDomElementChild;
