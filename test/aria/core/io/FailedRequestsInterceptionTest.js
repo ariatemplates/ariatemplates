@@ -20,16 +20,11 @@
 Aria.classDefinition({
     $classpath : "test.aria.core.io.FailedRequestsInterceptionTest",
     $extends : "aria.jsunit.TestCase",
-    $dependencies : ["aria.core.IO", "aria.core.IOFiltersMgr", "aria.core.IOFilter"],
+    $dependencies : ["aria.core.IO"],
     $prototype : {
         showLogs : false, // change to true to have errors printed to console
 
         tearDown : function () {
-            if (this.filterCfg) {
-                aria.core.IOFiltersMgr.removeFilter('aria.core.IOFilter');
-                this.filterCfg = null;
-            }
-
             if (this.listenersCfg) {
                 aria.core.IO.$removeListeners(this.listenersCfg);
                 this.listenersCfg = null;
@@ -44,8 +39,7 @@ Aria.classDefinition({
          * aria.core.IO.defaultTimeout value)
          */
         testAsyncHandleTimeout : function () {
-            // set low IO timeout and a delay filter that will trigger that timeout
-            this.__setIOFilters();
+            aria.core.IO.defaultTimeout = 1;
 
             // when a request is aborted due to timeout, the 'abortEvent' event is raised by 'aria.core.IO' class
             this.listenersCfg = {
@@ -61,7 +55,7 @@ Aria.classDefinition({
 
             this.downloadAbortEventRaised = false;
             aria.core.IO.asyncRequest({
-                url : aria.core.DownloadMgr.resolveURL("test/aria/core/test/TestFile.txt", true),
+                url : "/middleware/echo?delay=100&content=[Some Test Content]",
                 method : "GET",
                 callback : {
                     fn : this.__failTest,
@@ -114,18 +108,6 @@ Aria.classDefinition({
                     onerrorScope : this
                 }
             });
-        },
-
-        __setIOFilters : function () {
-            aria.core.IO.defaultTimeout = 1;
-            this.filterCfg = {
-                classpath : 'aria.core.IOFilter',
-                initArgs : {
-                    requestDelay : 10,
-                    responseDelay : 10
-                }
-            };
-            aria.core.IOFiltersMgr.addFilter(this.filterCfg);
         },
 
         __failTest : function () {

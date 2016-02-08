@@ -160,13 +160,6 @@ module.exports = Aria.classDefinition({
         };
 
         /**
-         * Map each request to the polling timeout added while handling the ready state.
-         * @type Object
-         * @protected
-         */
-        this._poll = {};
-
-        /**
          * Map each request to the abort timeout added while handling the ready state.
          * @type Object
          * @protected
@@ -219,22 +212,19 @@ module.exports = Aria.classDefinition({
     $destructor : function () {
         // Clear any pending timeout
         var timeout;
-        for (timeout in this._poll) {
-            if (this._poll.hasOwnProperty(timeout)) {
-                clearInterval(this._poll[timeout]);
-            }
-        }
         for (timeout in this._timeOut) {
             if (this._timeOut.hasOwnProperty(timeout)) {
-                clearInterval(this._timeOut[timeout]);
+                clearTimeout(this._timeOut[timeout]);
             }
         }
+        // Prevent any pending request from calling a callback after
+        // the destructor is called:
+        this.pendingRequests = {};
         if (this.__serializer) {
             this.__serializer.$dispose();
             this.__serializer = null;
         }
 
-        this._poll = null;
         this._timeOut = null;
     },
     $prototype : {
@@ -775,12 +765,10 @@ module.exports = Aria.classDefinition({
         },
 
         /**
-         * Clear a request timeout. It removes the poll timeout as well
+         * Clear a request timeout.
          * @param {Number} id Request id
          */
         clearTimeout : function (id) {
-            clearInterval(this._poll[id]);
-            delete this._poll[id];
             clearTimeout(this._timeOut[id]);
             delete this._timeOut[id];
         },

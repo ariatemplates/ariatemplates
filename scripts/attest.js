@@ -14,6 +14,12 @@
  */
 
 var attester = require("attester");
+var middleware = require("./middleware");
+
+middleware.forEach(function (fn) {
+    attester.server.use(fn);
+});
+
 var options = {
     "phantomjs-instances": 0
 };
