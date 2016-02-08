@@ -34,7 +34,7 @@ Aria.classDefinition({
             this.assertFalse(this.reqSent);
             this.reqSent = true;
             this.onRequest(req);
-            this.filter.redirectToFile(req, "test/aria/modules/test/SampleResponse.json");
+            req.url = "/middleware/echo?delay=100&content={\"hello\":\"world\"}&ts=" + (new Date()).getTime();
         },
 
         tearDown : function () {

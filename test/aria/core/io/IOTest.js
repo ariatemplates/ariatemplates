@@ -18,10 +18,10 @@
  */
 Aria.classDefinition({
     $classpath : "test.aria.core.io.IOTest",
-    $extends : "aria.jsunit.TestCase",
+    $extends : "test.aria.core.io.BaseIOTest",
     $dependencies : ["aria.utils.Object"],
     $constructor : function () {
-        this.$TestCase.constructor.call(this);
+        this.$BaseIOTest.constructor.call(this);
         this.urlRoot = Aria.rootFolderPath + 'test/';
     },
     $prototype : {
@@ -45,21 +45,7 @@ Aria.classDefinition({
 
             aria.core.IO.$unregisterListeners(this);
             this.url = null;
-
-            // Check that we didn't forget any timer on IO
-            var timers = 0, id;
-            for (id in aria.core.IO._poll) {
-                if (aria.core.IO._poll.hasOwnProperty(id)) {
-                    timers += 1;
-                }
-            }
-            for (id in aria.core.IO._timeOut) {
-                if (aria.core.IO._timeOut.hasOwnProperty(id)) {
-                    timers += 1;
-                }
-            }
-
-            this.assertEquals(timers, 0, "Undisposed timers on aria.core.IO");
+            this.$BaseIOTest.tearDown.call(this);
         },
         onEvent : function (evt) {
             if (evt.req.url == this.url) {
@@ -164,7 +150,7 @@ Aria.classDefinition({
                             fn : this._onTestAbortEvent,
                             scope : this,
                             args : evt,
-                            dalay : 100
+                            delay : 300
                         });
                     },
                     scope : this
@@ -173,7 +159,7 @@ Aria.classDefinition({
 
             aria.core.IO.asyncRequest({
                 method : "GET",
-                url : this.urlRoot + "aria/core/test/TestFile.txt",
+                url : "/middleware/echo?delay=100&content=[Some Test Content]",
                 callback : {
                     fn : this._onTestAbortSuccess,
                     scope : this,
