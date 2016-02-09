@@ -394,11 +394,13 @@ module.exports = Aria.classDefinition({
             // Identify from which container we'll take the items and from which properties.
             var container = items;
             var labelProperty = "label";
+            var ariaLabelProperty = "ariaLabel";
             var valueProperty = "value";
             var disabledProperty = "disabled";
             if (!ariaUtilsType.isArray(items)) {
                 container = items.container;
                 labelProperty = items.labelProperty;
+                ariaLabelProperty = items.ariaLabelProperty;
                 valueProperty = items.valueProperty;
                 disabledProperty = items.disabledProperty;
             }
@@ -435,6 +437,7 @@ module.exports = Aria.classDefinition({
                 listItems[item] = {
                     index : item,
                     label : itemObj[labelProperty],
+                    ariaLabel : itemObj[ariaLabelProperty],
                     value : itemObj[valueProperty],
                     object : itemObj,
                     selected : itemSelected,

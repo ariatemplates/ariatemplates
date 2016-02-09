@@ -1074,6 +1074,14 @@ module.exports = Aria.beanDefinitions({
                         }
                     },
                     $default : {}
+                },
+                "waiSuggestionsStatusGetter" : {
+                    $type : "common:Callback",
+                    $description : "The callback specified in this parameter is called when the number of suggestions changes. It receives the new number of suggestions and should return the message to be read by screen readers. This parameter is only used if waiAria is true."
+                },
+                "waiSuggestionAriaLabelGetter" : {
+                    $type : "common:Callback",
+                    $description : "The callback specified in this parameter is called for each suggestion when the set of suggestions changes. It should return the aria-label attribute to set on the suggestion. This parameter is only used if waiAria is true."
                 }
             }
         },
@@ -1775,6 +1783,10 @@ module.exports = Aria.beanDefinitions({
                                         "value" : {
                                             $type : "json:MultiTypes",
                                             $description : "The value of the item"
+                                        },
+                                        "ariaLabel" : {
+                                            $type : "json:String",
+                                            $description : "The string to set in the aria-label attribute (only used when waiAria is true)"
                                         }
                                     }
                                 }
@@ -1790,6 +1802,11 @@ module.exports = Aria.beanDefinitions({
                                     "labelProperty" : {
                                         $type : "json:String",
                                         $description : "The name of the property containing the label",
+                                        $default : ""
+                                    },
+                                    "ariaLabelProperty" : {
+                                        $type : "json:String",
+                                        $description : "The name of the property containing the aria-label",
                                         $default : ""
                                     },
                                     "valueProperty" : {

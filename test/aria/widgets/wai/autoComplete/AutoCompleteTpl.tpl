@@ -29,6 +29,7 @@
                 autoFill : false,
                 resourcesHandler : this.acHandler
             }/} <br><br>
+            <input {id "inputBeforeAutoComplete"/}><br><br>
             With accessibility enabled: <br>
             {@aria:AutoComplete {
                 id : "city2",
@@ -36,7 +37,9 @@
                 label : "City 2",
                 labelWidth: 100,
                 autoFill : false,
-                resourcesHandler : this.acHandler
+                resourcesHandler : this.acHandler,
+                waiSuggestionsStatusGetter: this.waiSuggestionsStatusGetter,
+                waiSuggestionAriaLabelGetter: this.waiSuggestionAriaLabelGetter
             }/} <br><br>
             With accessibility disabled: <br>
             {@aria:AutoComplete {

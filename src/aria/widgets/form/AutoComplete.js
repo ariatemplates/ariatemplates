@@ -16,11 +16,19 @@ var Aria = require("../../Aria");
 var ariaWidgetsFormDropDownListTrait = require("./DropDownListTrait");
 var ariaWidgetsControllersAutoCompleteController = require("../controllers/AutoCompleteController");
 var ariaUtilsEvent = require("../../utils/Event");
+var ariaUtilsJson = require("../../utils/Json");
+var ariaUtilsString = require("../../utils/String");
+var ariaUtilsFunction = require("../../utils/Function");
 var ariaWidgetsFormAutoCompleteStyle = require("./AutoCompleteStyle.tpl.css");
 var ariaWidgetsFormListListStyle = require("./list/ListStyle.tpl.css");
 var ariaWidgetsContainerDivStyle = require("../container/DivStyle.tpl.css");
 var ariaWidgetsFormDropDownTextInput = require("./DropDownTextInput");
 var ariaCoreBrowser = require("../../core/Browser");
+
+var emptyWaiSuggestionsStatus = {
+    number: 0,
+    text: ""
+};
 
 /**
  * AutoComplete widget
@@ -73,6 +81,9 @@ module.exports = Aria.classDefinition({
         controllerInstance.expandButton = cfg.expandButton;
         controllerInstance.selectionKeys = cfg.selectionKeys;
         controllerInstance.preselect = cfg.preselect;
+        if (cfg.waiAria && cfg.waiSuggestionAriaLabelGetter) {
+            controllerInstance.waiSuggestionAriaLabelGetter = ariaUtilsFunction.bind(this._waiSuggestionAriaLabelGetter, this);
+        }
 
         /**
          * Whether the width of the popup can be smaller than the field, when configured to be so. If false, the
@@ -82,11 +93,14 @@ module.exports = Aria.classDefinition({
          */
         this._freePopupWidth = false;
 
-        if (cfg.waiAria) {
-            this._extraInputAttributes += ' aria-expanded="false" role="combobox" aria-autocomplete="list"';
-        }
+        this._waiSuggestionsStatus = emptyWaiSuggestionsStatus;
+        this._waiSuggestionsChangedListener = null;
+        this._waiSuggestionsStatusDomElt = null;
     },
     $destructor : function () {
+        this._removeWaiSuggestionsChangedListener();
+        this._waiSuggestionsStatusDomElt = null;
+
         // The dropdown might still be open when we destroy the widget, destroy it now
         if (this._dropdownPopup) {
             this._dropdownPopup.$removeListeners({
@@ -256,9 +270,66 @@ module.exports = Aria.classDefinition({
             if (this._cfg.waiAria) {
                 var field = this.getTextInputField();
                 field.setAttribute("aria-owns", this.controller.getListWidget().getListDomId());
-                field.setAttribute("aria-expanded", "true");
-                this._updateAriaActiveDescendant();
+                this._addWaiSuggestionsChangedListener();
+                this._waiSuggestionsChanged();
             }
+        },
+
+        _addWaiSuggestionsChangedListener : function () {
+            var callback = this._waiSuggestionsChangedListener;
+            if (!callback) {
+                callback = this._waiSuggestionsChangedListener = {
+                    scope: this,
+                    fn: this._waiSuggestionsChanged
+                };
+                ariaUtilsJson.addListener(this.controller.getDataModel(), "listContent", callback);
+            }
+        },
+
+        _removeWaiSuggestionsChangedListener : function () {
+            var callback = this._waiSuggestionsChangedListener;
+            if (callback) {
+                ariaUtilsJson.removeListener(this.controller.getDataModel(), "listContent", callback);
+                this._waiSuggestionsChangedListener = null;
+            }
+        },
+
+        _computeWaiSuggestionsStatus : function () {
+            var dm = this.controller.getDataModel();
+            var suggestionsList = dm.listContent;
+            var popupDisplayed = this._dropdownPopup && suggestionsList.length > 0;
+            var justClosedPopup = !popupDisplayed && (dm.value == null || dm.value === dm.text) && this._waiSuggestionsStatus.number > 0;
+            var waiSuggestionsStatusGetter = this._cfg.waiSuggestionsStatusGetter;
+            if (waiSuggestionsStatusGetter && (popupDisplayed || justClosedPopup)) {
+                return {
+                    number: suggestionsList.length,
+                    text: this.evalCallback(waiSuggestionsStatusGetter, suggestionsList.length)
+                };
+            }
+            return emptyWaiSuggestionsStatus;
+        },
+
+        _waiSuggestionsChanged : function () {
+            var waiSuggestionsStatus = this._computeWaiSuggestionsStatus();
+            // only update something if the status changed
+            if (waiSuggestionsStatus.text !== this._waiSuggestionsStatus.text) {
+                this._waiSuggestionsStatus = waiSuggestionsStatus;
+                var waiSuggestionsStatusDomElt = this._waiSuggestionsStatusDomElt;
+                if (!waiSuggestionsStatusDomElt) {
+                    waiSuggestionsStatusDomElt = this._waiSuggestionsStatusDomElt = Aria.$window.document.createElement("span");
+                    waiSuggestionsStatusDomElt.className = "xSROnly";
+                    waiSuggestionsStatusDomElt.setAttribute("role", "status");
+                    waiSuggestionsStatusDomElt.setAttribute("aria-live", "assertive");
+                    waiSuggestionsStatusDomElt.setAttribute("aria-atomic", "true");
+                    waiSuggestionsStatusDomElt.setAttribute("aria-relevant", "text");
+                    this.getDom().appendChild(waiSuggestionsStatusDomElt);
+                }
+                waiSuggestionsStatusDomElt.innerHTML = ariaUtilsString.escapeHTML(waiSuggestionsStatus.text);
+            }
+        },
+
+        _waiSuggestionAriaLabelGetter : function (param) {
+            return this.evalCallback(this._cfg.waiSuggestionAriaLabelGetter, param);
         },
 
         /**
@@ -269,10 +340,10 @@ module.exports = Aria.classDefinition({
             if (this._cfg.waiAria) {
                 var field = this.getTextInputField();
                 field.removeAttribute("aria-activedescendant");
-                field.setAttribute("aria-expanded", "false");
                 field.removeAttribute("aria-owns");
             }
             this.$DropDownListTrait._afterDropdownClose.apply(this, arguments);
+            this._waiSuggestionsChanged();
         },
 
         /**

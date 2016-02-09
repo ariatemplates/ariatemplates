@@ -94,6 +94,13 @@ var ariaCoreJsonValidator = require("../../core/JsonValidator");
              */
             this.preselect = null;
 
+            /**
+             * Function set by the widget. It is passed the suggestion, its index, and the array of suggestions and
+             * should return the aria-label attribute to set for the current suggestion.
+             * @type Function
+             */
+            this.waiSuggestionAriaLabelGetter = null;
+
             // Inherited from aria.html.controllers.Suggestions
             this._init();
         },
@@ -412,7 +419,7 @@ var ariaCoreJsonValidator = require("../../core/JsonValidator");
              */
             _prepareSuggestionsAndMatch : function (suggestions, textEntry) {
                 var matchValueIndex = -1, suggestion;
-                for (var index = 0, len = suggestions.length, label; index < len; index += 1) {
+                for (var index = 0, len = suggestions.length, label, ariaLabel; index < len; index += 1) {
                     suggestion = suggestions[index];
                     // if it's the first exact match, store it
                     if (matchValueIndex == -1) {
@@ -421,9 +428,15 @@ var ariaCoreJsonValidator = require("../../core/JsonValidator");
                         }
                     }
                     label = this._getLabelFromSuggestion(suggestion);
+                    ariaLabel = this.waiSuggestionAriaLabelGetter ? this.waiSuggestionAriaLabelGetter({
+                        value: suggestion,
+                        index: index,
+                        total: len
+                    }) : null;
                     var tmp = {
                         entry : textEntry,
                         label : label,
+                        ariaLabel : ariaLabel,
                         value : suggestion
                     };
                     suggestions[index] = tmp;

@@ -49,5 +49,18 @@ module.exports = Aria.tplScriptDefinition({
     $destructor : function () {
         this.acHandler.$dispose();
         this.acHandler = null;
+    },
+    $prototype: {
+        waiSuggestionsStatusGetter : function (number) {
+           if (number === 0) {
+               return "There is no suggestion.";
+           } else {
+               return (number == 1 ? "There is one suggestion" : "There are " + number + " suggestions") + ", use up and down arrow keys to navigate and enter to validate.";
+           }
+       },
+
+       waiSuggestionAriaLabelGetter : function (object) {
+           return object.value.label + " " + (object.index + 1) + " of " + object.total;
+       }
     }
 });

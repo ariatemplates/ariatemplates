@@ -174,6 +174,10 @@ module.exports = Aria.beanDefinitions({
                     $type : "json:String",
                     $description : "Internal value associated to the item - usually a language-independent code."
                 },
+                "ariaLabel" : {
+                    $type : "json:String",
+                    $description : "Text to set in the aria-label attribute."
+                },
                 "currentlyDisabled" : {
                     $type : "json:Boolean",
                     $description : "Whether the item is disabled (true) or enabled (false), taking into account whether the maximum number of selected items has been reached or not."
