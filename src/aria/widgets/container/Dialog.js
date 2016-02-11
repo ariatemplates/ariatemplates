@@ -610,8 +610,13 @@ module.exports = Aria.classDefinition({
             this._calculatePosition();
 
             if (cfg.modal) {
-                ariaTemplatesNavigationManager.focusFirst(this._domElt);
+                if (cfg.focusIfModal) {
+                    ariaTemplatesNavigationManager.focusFirst(this._domElt);
+                } else {
+                    Aria.$window.document.activeElement.blur();
+                }
             }
+            
 
             ariaCoreTimer.addCallback({
                 fn : function () {
