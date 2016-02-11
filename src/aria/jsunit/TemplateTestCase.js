@@ -530,18 +530,29 @@ module.exports = Aria.classDefinition({
          */
         waitForDropDownPopup : function (widgetId, cb) {
             this.waitFor({
-                condition : function () {
-                    var controller = this.getWidgetInstance(widgetId).controller;
-                    var popupWidget;
-                    if (controller && controller.getListWidget) {
-                        popupWidget = controller.getListWidget();
-                    } else if (controller && controller.getCalendar) {
-                        popupWidget = controller.getCalendar();
-                    }
-                    return popupWidget && popupWidget._subTplCtxt;
+                condition : {
+                    fn: function (event, args) {
+                        return this.isWidgetDropDownPopupOpened(widgetId);
+                    },
+                    scope: this
                 },
                 callback : cb
             });
+        },
+
+        isWidgetDropDownPopupOpened : function (id) {
+            var controller = this.getWidgetInstance(id).controller;
+
+            var popupWidget;
+            if (controller) {
+                if (controller.getListWidget) {
+                    popupWidget = controller.getListWidget();
+                } else if (controller.getCalendar) {
+                    popupWidget = controller.getCalendar();
+                }
+            }
+
+            return !!(popupWidget && popupWidget._subTplCtxt);
         },
 
         /**
