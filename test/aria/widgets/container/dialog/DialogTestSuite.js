@@ -31,6 +31,7 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.container.dialog.scroll.SetScrollTestCase");
         this.addTests("test.aria.widgets.container.dialog.scroll.OnScrollTestCase");
         this.addTests("test.aria.widgets.container.dialog.focus.FocusInsideModalDialog");
+        this.addTests("test.aria.widgets.container.dialog.autoFocus.AutoFocusTest");
 
         this.addTests("test.aria.widgets.container.dialog.checkStyle.DialogTestCase");
         this.addTests("test.aria.widgets.container.dialog.escKey.DialogTemplateTestCase");
