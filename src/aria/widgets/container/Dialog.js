@@ -201,6 +201,9 @@ module.exports = Aria.classDefinition({
             if (!("movableProxy" in cfg)) {
                 cfg.movableProxy = appEnvDialogSettings.movableProxy;
             }
+            if (cfg.autoFocus == null) {
+                cfg.autoFocus = cfg.modal;
+            }
         },
 
         /**
@@ -609,8 +612,10 @@ module.exports = Aria.classDefinition({
 
             this._calculatePosition();
 
-            if (cfg.modal) {
+            if (cfg.autoFocus) {
                 ariaTemplatesNavigationManager.focusFirst(this._domElt);
+            } else if (cfg.modal) {
+                Aria.$window.document.activeElement.blur();
             }
 
             ariaCoreTimer.addCallback({
