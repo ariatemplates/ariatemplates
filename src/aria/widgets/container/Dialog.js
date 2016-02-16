@@ -782,7 +782,11 @@ module.exports = Aria.classDefinition({
             if (cfg.autoFocus) {
                 ariaTemplatesNavigationManager.focusFirst(this._domElt);
             } else if (cfg.modal) {
-                Aria.$window.document.activeElement.blur();
+                var document = Aria.$window.document;
+                var activeElement = document.activeElement;
+                if (activeElement && activeElement !== document.body) {
+                    activeElement.blur();
+                }
             }
 
             ariaCoreTimer.addCallback({
