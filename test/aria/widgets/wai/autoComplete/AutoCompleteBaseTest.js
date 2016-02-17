@@ -19,9 +19,9 @@ var fnUtils = require("ariatemplates/utils/Function");
 
 module.exports = Aria.classDefinition({
     $classpath : "test.aria.widgets.wai.autoComplete.AutoCompleteBaseTest",
-    $extends : require("ariatemplates/jsunit/TemplateTestCase"),
+    $extends : require("ariatemplates/jsunit/RobotTestCase"),
     $constructor : function () {
-        this.$TemplateTestCase.constructor.call(this);
+        this.$RobotTestCase.constructor.call(this);
 
         this.setTestEnv({
             template : this.myTemplate

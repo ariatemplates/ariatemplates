@@ -15,9 +15,9 @@
 
 Aria.classDefinition({
     $classpath : "test.aria.widgets.form.multiselect.downArrowKey.MultiSelect",
-    $extends : "aria.jsunit.MultiSelectTemplateTestCase",
+    $extends : "test.aria.widgets.form.multiselect.MultiSelectRobotTestCase",
     $constructor : function () {
-        this.$MultiSelectTemplateTestCase.constructor.call(this);
+        this.$MultiSelectRobotTestCase.constructor.call(this);
         this.inputField = null;
     },
     $prototype : {

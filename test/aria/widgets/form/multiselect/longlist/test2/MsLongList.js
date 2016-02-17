@@ -15,9 +15,9 @@
 
 Aria.classDefinition({
     $classpath : "test.aria.widgets.form.multiselect.longlist.test2.MsLongList",
-    $extends : "aria.jsunit.MultiSelectTemplateTestCase",
+    $extends : "test.aria.widgets.form.multiselect.MultiSelectRobotTestCase",
     $constructor : function () {
-        this.$MultiSelectTemplateTestCase.constructor.call(this);
+        this.$MultiSelectRobotTestCase.constructor.call(this);
         this.inputField = null;
     },
     $prototype : {
@@ -45,8 +45,7 @@ Aria.classDefinition({
         },
 
         _closeMS : function () {
-            var checkBox = this.getWidgetInstance("listItem0").getDom();
-            this.synEvent.type(checkBox, "[space][up]", {
+            this.synEvent.type(null, "[space][up]", {
                 fn : this._onMsFocus,
                 scope : this
             });
