@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Amadeus s.a.s.
+ * Copyright 2016 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,15 +13,20 @@
  * limitations under the License.
  */
 
-Aria.classDefinition({
-    $classpath : "test.aria.widgets.wai.popup.WaiPopupTestSuite",
-    $extends : "aria.jsunit.TestSuite",
+var Aria = require('ariatemplates/Aria');
+
+
+
+module.exports = Aria.classDefinition({
+    $classpath : 'test.aria.widgets.wai.popup.dialog.modal.ModalDialogTestSuite',
+    $extends : require('ariatemplates/jsunit/TestSuite'),
+
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
-        this.addTests("test.aria.widgets.wai.popup.dialog.DialogTestCase");
-        this.addTests("test.aria.widgets.wai.popup.dialog.WaiDialogTestCase");
-        this.addTests("test.aria.widgets.wai.popup.dialog.modal.ModalDialogTestSuite");
-        this.addTests("test.aria.widgets.wai.popup.errortooltip.ErrorTooltipTestCase");
-        this.addTests("test.aria.widgets.wai.popup.errortooltip.WaiErrorTooltipTestCase");
+
+        this.addTests('test.aria.widgets.wai.popup.dialog.modal.FirstTest');
+        this.addTests('test.aria.widgets.wai.popup.dialog.modal.SecondTest');
+        this.addTests('test.aria.widgets.wai.popup.dialog.modal.ThirdTest');
+        this.addTests('test.aria.widgets.wai.popup.dialog.modal.FourthTest');
     }
 });

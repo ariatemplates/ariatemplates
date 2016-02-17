@@ -295,6 +295,7 @@ var prototype = {
         var element = this.getElementById(id);
 
         this._localAsyncSequence(function (add) {
+            add('_delay');
             add('_click', element);
             add('_waitForElementFocus', id);
         }, callback);

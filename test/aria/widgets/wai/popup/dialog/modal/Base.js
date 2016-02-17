@@ -30,18 +30,15 @@ var Model = require('./Model');
 ////////////////////////////////////////////////////////////////////////////////
 
 module.exports = Aria.classDefinition({
-    $classpath : 'test.aria.widgets.wai.popup.dialog.modal.ModalDialogTest',
+    $classpath : 'test.aria.widgets.wai.popup.dialog.modal.Base',
     $extends : require('test/EnhancedRobotTestCase'),
 
     $constructor : function () {
         this.$EnhancedRobotTestCase.constructor.call(this);
 
-        if (ariaCoreBrowser.isPhantomJS) {
-            this.defaultTestTimeout = 60000;
-        }
-
         this.setTestEnv({
-            data: Model.data
+            data: Model.buildData(this.indexOfWidgetToTest),
+            template: 'test.aria.widgets.wai.popup.dialog.modal.Tpl'
         });
     },
 
@@ -51,8 +48,10 @@ module.exports = Aria.classDefinition({
         ////////////////////////////////////////////////////////////////////////
 
         runTemplateTest : function () {
+            var dialogs = this._getData().dialogs;
+
             this._asyncIterate(
-                this._getData().dialogs,
+                dialogs,
                 this._testDialog,
                 this.end,
                 this
@@ -163,6 +162,9 @@ module.exports = Aria.classDefinition({
                 widgetDom = this._getWidgetDom(id);
 
                 var parentElement = widgetDom.parentElement;
+                if (parentElement == null) {
+                    parentElement = widgetDom.parentNode;
+                }
                 children = parentElement.children;
             }
 

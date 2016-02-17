@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath: 'test.aria.widgets.wai.popup.dialog.modal.ModalDialogTestTpl',
+    $classpath: 'test.aria.widgets.wai.popup.dialog.modal.Tpl',
     $hasScript: true
 }}
 

@@ -33,7 +33,7 @@ module.exports = Aria.classDefinition({
 
         this.setTestEnv({
             template : 'test.aria.widgets.wai.popup.dialog.modal.ModalDialogTestTpl',
-            data : Model.data
+            data : Model.buildData()
         });
     },
 

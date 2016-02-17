@@ -13,12 +13,16 @@
  * limitations under the License.
  */
 
-Aria.tplScriptDefinition({
-    $classpath : 'test.aria.widgets.wai.popup.dialog.modal.ModalDialogTestTplScript',
+var Aria = require('ariatemplates/Aria');
 
-    $prototype : {
-        openDialog : function () {
-            this.$json.setValue(this.data, 'dialogOpen', true);
-        }
+
+
+module.exports = Aria.classDefinition({
+    $classpath : 'test.aria.widgets.wai.popup.dialog.modal.FirstTest',
+
+    $extends : require('./Base'),
+
+    $statics : {
+        indexOfWidgetToTest: 0
     }
 });

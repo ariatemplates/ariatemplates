@@ -139,26 +139,33 @@ Dialog.prototype.open = function () {
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-var dialogs = [];
-dialogs.push(new Dialog({
-    wai: false
-}));
+function buildData(index) {
+    var dialogs = [];
 
-dialogs.push(new Dialog({
-    wai: true
-}));
-dialogs.push(new Dialog({
-    wai: true,
-    fullyEmpty: true
-}));
-dialogs.push(new Dialog({
-    wai: true,
-    displayInContainer: true
-}));
+    dialogs.push(new Dialog({
+        wai: false
+    }));
 
-var data = {
-    dialogs: dialogs
-};
+    dialogs.push(new Dialog({
+        wai: true
+    }));
+    dialogs.push(new Dialog({
+        wai: true,
+        fullyEmpty: true
+    }));
+    dialogs.push(new Dialog({
+        wai: true,
+        displayInContainer: true
+    }));
+
+    if (index != null) {
+        dialogs = [dialogs[index]];
+    }
+
+    return {
+       dialogs: dialogs
+    };
+}
 
 
 
@@ -167,4 +174,4 @@ var data = {
 ////////////////////////////////////////////////////////////////////////////////
 
 exports.Dialog = Dialog;
-exports.data = data;
+exports.buildData = buildData;

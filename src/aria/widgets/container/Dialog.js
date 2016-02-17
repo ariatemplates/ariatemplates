@@ -691,7 +691,8 @@ module.exports = Aria.classDefinition({
                 for (var index = 0, length = children.length; index < length; index++) {
                     var child = children[index];
 
-                    if (!child.hasAttribute(attributeName)) {
+                    var attributeNode = child.getAttributeNode(attributeName);
+                    if (attributeNode == null || attributeNode.nodeValue == null) {
                         child.setAttribute(attributeName, attributeValue);
                         hiddenElements.push(child);
                     }
