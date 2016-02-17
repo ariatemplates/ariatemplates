@@ -125,6 +125,10 @@ module.exports = Aria.classDefinition({
                     );
 
                     var actual = labelElement.textContent;
+                    if (actual == null) {
+                        actual = labelElement.innerText;
+                    }
+
                     var expected = title;
 
                     this.assertTrue(

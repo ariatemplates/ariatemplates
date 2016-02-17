@@ -19,7 +19,7 @@
 }}
     {macro main()}
         <div>
-            <a href='#' {id 'before_' + this.data.id /}>Element before</a>
+            <a tabindex='0' {id 'before_' + this.data.id /}>Element before</a>
             {@aria:MultiSelect {
                 id: this.data.id,
 

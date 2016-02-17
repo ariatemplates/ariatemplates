@@ -14,12 +14,12 @@
  */
 
 {Template {
-    $classpath : 'test.aria.templates.keyboardNavigation.dialog.escape.Tpl',
-    $hasScript : true
+    $classpath: 'test.aria.templates.keyboardNavigation.dialog.escape.Tpl',
+    $hasScript: true
 }}
 
     {macro main()}
-        <a href='#' {id 'before_' + this.data.openDialogButtonId /}>Before AutoComplete</a>
+        <a tabindex='0' {id 'before_' + this.data.openDialogButtonId /}>Before AutoComplete</a>
 
         {@aria:Button {
             id: this.data.openDialogButtonId,
@@ -51,27 +51,27 @@
         {var configurations = this.data.widgetsConfigurations /}
 
         <div>
-            <a href='#' {id 'before_autoComplete' /}>Before AutoComplete</a>
+            <a tabindex='0' {id 'before_autoComplete' /}>Before AutoComplete</a>
             {@aria:AutoComplete configurations.autoComplete /}
         </div>
         <div>
-            <a href='#' {id 'before_datePicker' /}>Before DatePicker</a>
+            <a tabindex='0' {id 'before_datePicker' /}>Before DatePicker</a>
             {@aria:DatePicker configurations.datePicker /}
         </div>
         <div>
-            <a href='#' {id 'before_multiAutoComplete' /}>Before MultiAutoComplete</a>
+            <a tabindex='0' {id 'before_multiAutoComplete' /}>Before MultiAutoComplete</a>
             {@aria:MultiAutoComplete configurations.multiAutoComplete /}
         </div>
         <div>
-            <a href='#' {id 'before_multiSelect' /}>Before MultiSelect</a>
+            <a tabindex='0' {id 'before_multiSelect' /}>Before MultiSelect</a>
             {@aria:MultiSelect configurations.multiSelect /}
         </div>
         <div>
-            <a href='#' {id 'before_select' /}>Before Select</a>
+            <a tabindex='0' {id 'before_select' /}>Before Select</a>
             {@aria:Select configurations.select /}
         </div>
         <div>
-            <a href='#' {id 'before_selectBox' /}>Before SelectBox</a>
+            <a tabindex='0' {id 'before_selectBox' /}>Before SelectBox</a>
             {@aria:SelectBox configurations.selectBox /}
         </div>
     {/macro}

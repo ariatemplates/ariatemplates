@@ -253,6 +253,12 @@ var prototype = {
     // Robot: User actions
     ////////////////////////////////////////////////////////////////////////////
 
+    // mouse -------------------------------------------------------------------
+
+    _click : function (callback, element) {
+        this.synEvent.click(element, callback);
+    },
+
     // keyboard ----------------------------------------------------------------
 
     _type : function (callback, sequence) {
@@ -287,8 +293,11 @@ var prototype = {
 
     _focusElement : function (callback, id) {
         var element = this.getElementById(id);
-        element.focus();
-        this._waitForElementFocus(callback, id);
+
+        this._localAsyncSequence(function (add) {
+            add('_click', element);
+            add('_waitForElementFocus', id);
+        }, callback);
     },
 
     _focusElementBefore : function (callback, id) {

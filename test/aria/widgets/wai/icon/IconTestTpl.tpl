@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath : 'test.aria.widgets.wai.icon.IconTestTpl',
+    $classpath: 'test.aria.widgets.wai.icon.IconTestTpl',
     $hasScript: true,
     $css: ['test.aria.widgets.wai.icon.IconTestTplCSS']
 }}
@@ -41,7 +41,7 @@
     {macro widget(icon)}
         {var id = icon.id /}
 
-        <a href='#' {id 'before_' + id /}>Element before</a>
+        <a tabindex='0' {id 'before_' + id /}>Element before</a>
 
         {@aria:Icon icon.configuration /}
     {/macro}

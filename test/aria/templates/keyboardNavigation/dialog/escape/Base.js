@@ -150,6 +150,7 @@ module.exports = Aria.classDefinition({
                 add('_openDropdown', id);
 
                 add('_pressEscape');
+                add('_delay'); // both in order to wait for the widget's dropdown to close but also to check that in the end it doesn't trigger the closing of the dialog
                 add(isOpened.waitForTrue);
 
                 add('_pressEscape');

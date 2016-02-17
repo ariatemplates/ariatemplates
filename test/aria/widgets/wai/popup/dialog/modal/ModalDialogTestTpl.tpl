@@ -14,8 +14,8 @@
  */
 
 {Template {
-    $classpath : 'test.aria.widgets.wai.popup.dialog.modal.ModalDialogTestTpl',
-    $hasScript : true
+    $classpath: 'test.aria.widgets.wai.popup.dialog.modal.ModalDialogTestTpl',
+    $hasScript: true
 }}
 
     {macro main()}
@@ -24,13 +24,13 @@
         {/foreach}
 
         <div id='container' style='position: absolute; width: 550px; height: 450px; outline: solid black 1px;'>
-            <a href='#'>Focusable</a>
+            <a tabindex='0'>Focusable</a>
         </div>
     {/macro}
 
     {macro displayDialog(dialog)}
         <div>
-            <a href='#' {id dialog.elementBeforeId /}>Element before</a>
+            <a tabindex='0' {id dialog.elementBeforeId /}>Element before</a>
 
             {@aria:Button {
                 id: dialog.buttonId,

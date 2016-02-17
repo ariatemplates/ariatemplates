@@ -18,7 +18,7 @@
     $hasScript: true
 }}
     {macro main()}
-        <a href='#' {id 'before_button' /}>First element</a>
+        <a tabindex='0' {id 'before_button' /}>First element</a>
 
         {call playground() /}
         {call debug() /}
