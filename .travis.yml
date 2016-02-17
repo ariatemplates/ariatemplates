@@ -2,6 +2,9 @@ language: node_js
 node_js:
   - 4.2
 sudo: false
+cache:
+  directories:
+    - node_modules
 before_install:
 # Settings needed for graphic output in Firefox
   - export DISPLAY=:99.0
