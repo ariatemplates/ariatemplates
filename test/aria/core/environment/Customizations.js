@@ -17,11 +17,8 @@ Aria.classDefinition({
     $classpath : "test.aria.core.environment.Customizations",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.core.environment.Customizations"],
-    $constructor : function () {
-        this.$TestCase.constructor.call(this);
-    },
     $prototype : {
-        testAsyncDescriptorLoaded : function () {
+        testAsyncDescriptorLoadedMissing : function () {
             // Customization descriptor does not exist
             aria.core.environment.Customizations.$onOnce({
                 "descriptorLoaded" : {
@@ -31,7 +28,16 @@ Aria.classDefinition({
             });
             aria.core.environment.Customizations.setCustomizations(Aria.rootFolderPath
                     + "ExternalCustomizationsFile.json");
+        },
 
+        _loadErrorFile : function () {
+            this.assertTrue(aria.core.environment.Customizations.descriptorLoaded());
+            this.assertErrorInLogs(aria.core.environment.Customizations.DESCRIPTOR_NOT_LOADED);
+            aria.core.environment.Customizations.setCustomizations({}); // remove any customization
+            this.notifyTestEnd('testAsyncDescriptorLoadedMissing');
+        },
+
+        testAsyncDescriptorLoaded : function () {
             // Customization descriptor ok
             aria.core.environment.Customizations.$onOnce({
                 "descriptorLoaded" : {
@@ -41,12 +47,6 @@ Aria.classDefinition({
             });
             aria.core.environment.Customizations.setCustomizations(Aria.rootFolderPath
                     + "test/aria/core/test/ExternalCustomizationsFile.json");
-        },
-
-        _loadErrorFile : function () {
-            this.assertTrue(aria.core.environment.Customizations.descriptorLoaded());
-            this.assertErrorInLogs(aria.core.environment.Customizations.DESCRIPTOR_NOT_LOADED);
-            aria.core.environment.Customizations.setCustomizations({}); // remove any customization
         },
 
         _afterExternalCustomFile : function () {
