@@ -32,7 +32,7 @@ module.exports = Aria.classDefinition({
         this._history = [];
 
         this.setTestEnv({
-            template : 'test.aria.widgets.wai.popup.dialog.modal.ModalDialogTestTpl',
+            template : 'test.aria.widgets.wai.popup.dialog.modal.Tpl',
             data : Model.buildData()
         });
     },
@@ -102,7 +102,7 @@ module.exports = Aria.classDefinition({
 
             this._executeStepsAndWriteHistory(callback, function (step, entry) {
                 step(['click', this.getElementById(dialog.elementBeforeId)]);
-                entry('Element before Link');
+                entry('Element before');
 
                 step(['type', null, '[tab]']);
                 entry(dialog.buttonLabel, 'Button');
