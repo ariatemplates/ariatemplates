@@ -908,7 +908,11 @@ module.exports = Aria.classDefinition({
                     var previouslyFocusedElement = this._previouslyFocusedElement;
                     if (previouslyFocusedElement != null) {
                         setTimeout(function () {
-                            previouslyFocusedElement.focus();
+                            try {
+                                // On IE 7 and 8, focusing an element which is no longer in the DOM
+                                // throws the "Unexpected call to method or property access." exception
+                                previouslyFocusedElement.focus();
+                            } catch (e) {}
                         }, 0);
                         this._previouslyFocusedElement = null;
                     }

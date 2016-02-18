@@ -16,7 +16,7 @@
 Aria.classDefinition({
     $classpath : "test.aria.widgets.container.dialog.autoFocus.AutoFocusTest",
     $extends : "aria.jsunit.TemplateTestCase",
-    $dependencies : ["aria.utils.Json"],
+    $dependencies : ["aria.utils.Json", "aria.core.Timer"],
     $constructor : function () {
         this.$TemplateTestCase.constructor.call(this);
         this.data = {
@@ -62,10 +62,16 @@ Aria.classDefinition({
             aria.utils.Json.setValue(this.data, "autoFocus", autoFocus);
             this.templateCtxt.$refresh();
             this.waitForMyDialog(false, function () {
-                var fieldOutsideDialog = this.getElementById("fieldOutsideDialog");
-                fieldOutsideDialog.focus();
-                this.waitForDomEltFocus(fieldOutsideDialog, function () {
-                    this.openDialog(cb);
+                aria.core.Timer.addCallback({
+                    fn: function () {
+                        var fieldOutsideDialog = this.getElementById("fieldOutsideDialog");
+                        fieldOutsideDialog.focus();
+                        this.waitForDomEltFocus(fieldOutsideDialog, function () {
+                            this.openDialog(cb);
+                        });
+                    },
+                    scope: this,
+                    delay: 20
                 });
             });
         },
