@@ -21,11 +21,11 @@
   {macro main ( )}
 
     <div id="draggable-fixed" class="modal fixed">
-        <div class="title-bar">Fixed</div>
+        <div class="title-bar" unselectable="on">Fixed</div>
         Cannot move :(
     </div>
     <div id="draggable-absolute" class="modal absolute" style="right:50px;">
-        <div class="title-bar">Absolute</div>
+        <div class="title-bar" unselectable="on">Absolute</div>
         Will move just fine
     </div>
 
