@@ -23,7 +23,8 @@
             width: 300,
             height: 400,
             visible: true,
-            modal: true
+            modal: true,
+            autoFocus: false
         }/}
     {/macro}
 
