@@ -22,7 +22,7 @@
         {if data.messages.length > 0}
             {@aria:Div data.divCfg}
                 {@aria:Icon {icon: getIcon()}/}
-                <span style="padding: 3px 16px 3px 10px; font-weight: bold;">${data.title}</span>
+                <span style="padding: 3px 16px 3px 10px; font-weight: bold;"{if data.waiAria} tabindex="0"{/if}>${data.title}</span>
                 <div style="padding: 3px 0 0 0;">
                     {call messagesList(data.messages)/}
                 </div>
