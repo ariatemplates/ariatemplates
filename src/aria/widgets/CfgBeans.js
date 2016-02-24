@@ -1532,6 +1532,9 @@ module.exports = Aria.beanDefinitions({
                     $properties : {
                         "messages" : {
                             $type : "common:BindingRef"
+                        },
+                        "requireFocus" : {
+                            $type : "common:BindingRef"
                         }
                     }
                 },
@@ -1569,6 +1572,11 @@ module.exports = Aria.beanDefinitions({
                 "block" : {
                     $type : "ResizableWidgetCfg.block",
                     $default : true
+                },
+                "requireFocus" : {
+                    $type : "json:Boolean",
+                    $description : "Set this bindable property to true to put the focus on the first item. As soon as the focus has been set, the property will be set back to false.",
+                    $default : false
                 }
             }
         },

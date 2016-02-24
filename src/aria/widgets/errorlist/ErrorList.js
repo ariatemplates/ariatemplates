@@ -53,6 +53,7 @@ module.exports = Aria.classDefinition({
             moduleCtrl : {
                 classpath : "aria.widgets.errorlist.ErrorListController",
                 initArgs : {
+                    waiAria: cfg.waiAria,
                     divCfg : divCfg,
                     filterTypes : cfg.filterTypes,
                     displayCodes : cfg.displayCodes,
@@ -74,14 +75,47 @@ module.exports = Aria.classDefinition({
          */
         _skinnableClass : "ErrorList",
 
+        /**
+         * Give focus to the widget
+         */
+        focus : function () {
+            this._tplWidget.focus();
+        },
+
         _onBoundPropertyChange : function (propertyName, newValue, oldValue) {
             this._inOnBoundPropertyChange = true;
             try {
                 if (propertyName == "messages") {
                     var domId = this._domElt;
                     this._subTplModuleCtrl.setMessages(newValue, domId);
+                    this._cfg[propertyName] = newValue;
+                } else if (propertyName === "requireFocus") {
+                    if (!newValue) {
+                        // nothing to do if the focus is not required, if we have no
+                        // focus method, or if
+                        // the widget is disabled
+                        return;
+                    }
+                    // The requireFocus binding is a special one as we change back
+                    // the property
+                    // to false as soon as a widget handles the property.
+                    var binding = this._cfg.bind[propertyName];
+                    var curValue = binding.inside[binding.to];
+                    // We check the actual value in the data model because there can
+                    // be several widgets
+                    // linked to the same part of the data model.
+                    // Only one will have the focus: the first non disabled widget
+                    // whose _onBoundPropertyChange is called.
+                    if (curValue) {
+                        // the value is still true in the data model
+                        // we set the focus on the input and immediately set the
+                        // value back to false in the data model
+                        this.focus();
+                        ariaUtilsJson.setValue(binding.inside, binding.to, false);
+                    }
+                } else {
+                    this._cfg[propertyName] = newValue;
                 }
-                this._cfg[propertyName] = newValue;
             } finally {
                 this._inOnBoundPropertyChange = false;
             }

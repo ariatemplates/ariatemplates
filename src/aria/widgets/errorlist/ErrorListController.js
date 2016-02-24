@@ -43,6 +43,7 @@ module.exports = Aria.classDefinition({
          */
         init : function (args, cb) {
             this._data = {
+                waiAria : args.waiAria,
                 title : args.title,
                 divCfg : args.divCfg,
                 filterTypes : args.filterTypes,
