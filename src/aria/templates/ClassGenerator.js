@@ -116,7 +116,13 @@ module.exports = Aria.classDefinition({
          * @param {aria.templates.CfgBeans:ClassGeneratorCfg} options Options for the class generation.
          * @param {aria.core.CfgBeans:Callback} callback the callback description
          */
-        parseTemplate : function (template, options, callback) {
+        parseTemplate : function (template, optionsOrAllDeps, callback, context, debug, skipLogError) {
+            var options = (typeof optionsOrAllDeps == "object") ? optionsOrAllDeps : {
+                allDependencies: optionsOrAllDeps,
+                errorContext: context,
+                debug: debug,
+                skipLogError: skipLogError
+            };
             var tree, errors;
             try {
                 tree = this._parser.parseTemplate(template, options.errorContext, this.STATEMENTS, options.skipLogError);
@@ -141,7 +147,13 @@ module.exports = Aria.classDefinition({
          * @param {Object} context - passes template context information to improve debugging
          * @param {Boolean} debug debug mode
          */
-        parseTemplateFromTree : function (tree, options, callback) {
+        parseTemplateFromTree : function (tree, optionsOrAllDeps, callback, context, debug, skipLogError) {
+            var options = (typeof optionsOrAllDeps == "object") ? optionsOrAllDeps : {
+                allDependencies: optionsOrAllDeps,
+                errorContext: context,
+                debug: debug,
+                skipLogError: skipLogError
+            };
             this.__buildClass(tree, options, callback);
         },
 
