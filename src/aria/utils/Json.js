@@ -776,11 +776,10 @@ var ariaUtilsObject = require("./Object");
              * @return {Object}
              */
             load : function (str, ctxt, errMsg) {
-                // TODO setup complete sandbox variables - e.g. through closure
                 var res = null;
                 try {
                     str = ('' + str).replace(/^\s/, ''); // remove first spaces
-                    res = eval('(' + str + ')');
+                    res = Aria["eval"]('return (' + str + ');');
                 } catch (ex) {
                     res = null;
                     if (!errMsg) {

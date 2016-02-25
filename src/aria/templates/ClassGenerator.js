@@ -223,9 +223,7 @@ module.exports = Aria.classDefinition({
             var param;
             try {
                 // The parameter should be a JSON object
-                // TODO: think about error management and call aria.utils.Json.load(...)
-                // calling JsonUtils.load because it includes a sandbox
-                param = eval("(" + rootStatement.paramBlock + ")");
+                param = Aria["eval"]("return (" + rootStatement.paramBlock + ");");
             } catch (e) {
                 return out.logError(rootStatement, this.ERROR_IN_TEMPLATE_PARAMETER, [this._rootStatement], e);
             }
