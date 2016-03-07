@@ -21,5 +21,6 @@ Aria.classDefinition({
         this.$TestSuite.constructor.call(this);
 
         this.addTests("test.aria.resources.ResourcesFallback");
+        this.addTests("test.aria.resources.handlers.LCResourcesHandlerTestCase");
     }
 });
