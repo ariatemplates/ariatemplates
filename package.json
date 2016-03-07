@@ -12,7 +12,8 @@
   "main": "src/aria/node.js",
   "config": {
     "port": "8080",
-    "phantomjsInstances": 2
+    "phantomjsInstances": 2,
+    "attesterLauncherConfig": ""
   },
   "scripts": {
     "start": "node scripts/server.js",
@@ -40,7 +41,7 @@
     "noder-js": "1.6.2"
   },
   "devDependencies": {
-    "attester": "2.4.0",
+    "attester": "2.4.1",
     "express": "3.4.8",
     "grunt": "0.4.2",
     "grunt-contrib-jshint": "0.8.0",
