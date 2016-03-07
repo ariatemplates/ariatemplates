@@ -55,6 +55,11 @@ var ariaCoreJsonValidator = require("../../core/JsonValidator");
             this.threshold = 1;
 
             /**
+             * Specifies if codes are used when looking for matches
+             * @type Boolean
+             */
+            this.codeMatch = true;
+            /**
              * Specifies if code has to be matched exactly to return the suggestion or if only the beginning is enough
              * @type Boolean
              */
@@ -139,14 +144,15 @@ var ariaCoreJsonValidator = require("../../core/JsonValidator");
                     var codeSuggestions = [], labelSuggestions = [], labelSuggestionsMultiWord = [];
                     var nbSuggestions = this._suggestions.length, textEntryLength = textEntry.length;
                     var multiWord = this._labelMatchAtWordBoundaries;
+                    var codeMatch = this.codeMatch;
                     var index, suggestion;
 
                     for (index = 0; index < nbSuggestions; index++) {
                         suggestion = this._suggestions[index];
-                        if (suggestion.code === textEntry) {
+                        if (codeMatch && suggestion.code === textEntry) {
                             suggestion.original.exactMatch = true;
                             codeSuggestions.unshift(suggestion.original);
-                        } else if (suggestion.code.substring(0, textEntryLength) === textEntry && !this.codeExactMatch) {
+                        } else if (codeMatch && !this.codeExactMatch && suggestion.code.substring(0, textEntryLength) === textEntry) {
                             codeSuggestions.push(suggestion.original);
                             suggestion.original.exactMatch = false;
                         } else {
