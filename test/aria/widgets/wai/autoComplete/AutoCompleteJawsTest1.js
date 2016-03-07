@@ -41,7 +41,7 @@ Aria.classDefinition({
                 ["pause", 1000]
             ], {
                 fn: function () {
-                    this.assertJawsHistoryEquals("Edit\nType in text.\nWith accessibility enabled:\nCity 2\nEdit\nThere are 8 suggestions, use up and down arrow keys to navigate and enter to validate.\nThere are 2 suggestions, use up and down arrow keys to navigate and enter to validate.\nList view Pau 1 of 2\nParis 2 of 2\nCity 2 Edit\nParis\nType in text.", this.end);
+                    this.assertJawsHistoryEquals("Edit\nType in text.\nWith accessibility enabled:\nCity 2\nEdit\nThere are 8 suggestions, use up and down arrow keys to navigate and enter to validate.\nThere are 2 suggestions, use up and down arrow keys to navigate and enter to validate.\nList view Pau 1 of 2\nList view Paris 2 of 2\nCity 2 Edit\nParis\nType in text.", this.end);
                 },
                 scope: this
             });

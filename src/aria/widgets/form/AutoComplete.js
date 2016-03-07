@@ -17,7 +17,6 @@ var ariaWidgetsFormDropDownListTrait = require("./DropDownListTrait");
 var ariaWidgetsControllersAutoCompleteController = require("../controllers/AutoCompleteController");
 var ariaUtilsEvent = require("../../utils/Event");
 var ariaUtilsJson = require("../../utils/Json");
-var ariaUtilsString = require("../../utils/String");
 var ariaUtilsFunction = require("../../utils/Function");
 var ariaWidgetsFormAutoCompleteStyle = require("./AutoCompleteStyle.tpl.css");
 var ariaWidgetsFormListListStyle = require("./list/ListStyle.tpl.css");
@@ -320,20 +319,28 @@ module.exports = Aria.classDefinition({
 
         _waiSuggestionsChanged : function () {
             var waiSuggestionsStatus = this._computeWaiSuggestionsStatus();
-            // only update something if the status changed
-            if (waiSuggestionsStatus.text !== this._waiSuggestionsStatus.text) {
-                this._waiSuggestionsStatus = waiSuggestionsStatus;
-                var waiSuggestionsStatusDomElt = this._waiSuggestionsStatusDomElt;
-                if (!waiSuggestionsStatusDomElt) {
-                    waiSuggestionsStatusDomElt = this._waiSuggestionsStatusDomElt = Aria.$window.document.createElement("span");
-                    waiSuggestionsStatusDomElt.className = "xSROnly";
-                    waiSuggestionsStatusDomElt.setAttribute("role", "status");
-                    waiSuggestionsStatusDomElt.setAttribute("aria-live", "assertive");
-                    waiSuggestionsStatusDomElt.setAttribute("aria-atomic", "true");
-                    waiSuggestionsStatusDomElt.setAttribute("aria-relevant", "text");
-                    this.getDom().appendChild(waiSuggestionsStatusDomElt);
-                }
-                waiSuggestionsStatusDomElt.innerHTML = ariaUtilsString.escapeHTML(waiSuggestionsStatus.text);
+            var newText = waiSuggestionsStatus.text;
+            this._waiSuggestionsStatus = waiSuggestionsStatus;
+            var waiSuggestionsStatusDomElt = this._waiSuggestionsStatusDomElt;
+            if (!waiSuggestionsStatusDomElt) {
+                waiSuggestionsStatusDomElt = this._waiSuggestionsStatusDomElt = Aria.$window.document.createElement("span");
+                waiSuggestionsStatusDomElt.className = "xSROnly";
+                waiSuggestionsStatusDomElt.setAttribute("role", "status");
+                waiSuggestionsStatusDomElt.setAttribute("aria-live", "assertive");
+                waiSuggestionsStatusDomElt.setAttribute("aria-relevant", "additions");
+                this.getDom().appendChild(waiSuggestionsStatusDomElt);
+            }
+            if (newText) {
+                var document = Aria.$window.document;
+                var textChild = document.createElement("span");
+                var textNode = document.createTextNode(newText);
+                textChild.appendChild(textNode);
+                waiSuggestionsStatusDomElt.appendChild(textChild);
+                setTimeout(function () {
+                    // remove the node after 10ms
+                    textChild.parentNode.removeChild(textChild);
+                    textChild = null;
+                }, 10);
             }
         },
 
@@ -352,7 +359,9 @@ module.exports = Aria.classDefinition({
                 field.removeAttribute("aria-owns");
             }
             this.$DropDownListTrait._afterDropdownClose.apply(this, arguments);
-            this._waiSuggestionsChanged();
+            if (this._cfg.waiAria) {
+                this._waiSuggestionsChanged();
+            }
         },
 
         /**
