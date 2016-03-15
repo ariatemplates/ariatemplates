@@ -98,12 +98,11 @@ module.exports = Aria.classDefinition({
                     scope : this._tpl
                 };
             } else {
-                if (macro.args == null) {
-                    macro.args = [];
-                }
-                if (macro.scope == null) {
-                    macro.scope = this._tpl;
-                }
+                macro = {
+                    name : macro.name,
+                    args : macro.args == null ?  [] : macro.args,
+                    scope : macro.scope == null ? this._tpl : macro.scope
+                };
             }
             // TODO: add a stronger check
             return macro;
