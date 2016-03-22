@@ -379,7 +379,9 @@ module.exports = Aria.classDefinition({
             if (!this._hasFocus) {
                 this._focus();
             }
-            event.preventDefault(true);
+            if (event.target.tagName.toLowerCase() != "input") {
+                event.preventDefault(true);
+            }
         },
 
         /**
