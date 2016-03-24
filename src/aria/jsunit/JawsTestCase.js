@@ -128,10 +128,16 @@ module.exports = Aria.classDefinition({
          * Retrieves Jaws history (with this.retrieveJawsHistory) and
          * asserts that it is equal to the expected string.
          * @param {aria.core.CfgBeans:Callback} cb
+         * @param {function} filterFn optionnal. The filter function to apply to the response.
          */
-        assertJawsHistoryEquals : function (expectedOutput, callback) {
+        assertJawsHistoryEquals : function (expectedOutput, callback, filterFn) {
             this.retrieveJawsHistory({
                 fn: function (response) {
+
+                    if (filterFn) {
+                        response = filterFn(response);
+                    }
+
                     this.assertEquals(response, expectedOutput, "JAWS history: " + ariaUtilsJson.convertToJsonString(response));
                     this.$callback(callback);
                 },

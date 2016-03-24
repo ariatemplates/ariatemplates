@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 {Template {
-    $classpath : "test.aria.widgets.wai.input.radiobutton.RadioButtonGroupTestCaseTpl",
+    $classpath : "test.aria.widgets.wai.input.checkbox.CheckboxTestCaseTpl",
     $hasScript : false
 }}
 
@@ -26,45 +26,42 @@
             value: ""
         }/}
 
-        <div style="margin:10px;" role="radiogroup">
-            {@aria:RadioButton {
-                id : "radioA",
-                keyValue: "a",
+        <div style="margin:10px;">
+            {@aria:CheckBox {
+                id : "checkboxA",
                 waiAria : true,
-                label : "Radio A",
+                label : "Checkbox A",
                 labelWidth: 100,
                 sclass: data.sclass,
                 bind: {
                   value: {
-                    to: "checkedValue",
+                    to: "checkedValue1",
                     inside: data
                   }
                 }
             }/}
-            {@aria:RadioButton {
-                id : "radioB",
-                keyValue: "b",
+            {@aria:CheckBox {
+                id : "checkboxB",
                 waiAria : true,
-                label : "Radio B",
+                label : "Checkbox B",
                 labelWidth: 100,
                 sclass: data.sclass,
                 bind: {
                   value: {
-                    to: "checkedValue",
+                    to: "checkedValue2",
                     inside: data
                   }
                 }
             }/}
-            {@aria:RadioButton {
-                id : "radioC",
-                keyValue: "c",
+            {@aria:CheckBox {
+                id : "checkboxC",
                 waiAria : true,
-                label : "Radio C",
+                label : "Checkbox C",
                 labelWidth: 100,
                 sclass: data.sclass,
                 bind: {
                   value: {
-                    to: "checkedValue",
+                    to: "checkedValue3",
                     inside: data
                   }
                 }
