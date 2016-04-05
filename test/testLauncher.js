@@ -143,7 +143,15 @@ Aria.load({
                     ts.demoMode = true;
                 }
 
-                aria.jsunit.TestRunner.run(ts, skipTests);
+                if (qs.getKeyValue("norun") == "true") {
+                    if (ts.$TemplateTestCase) {
+                        ts.$TemplateTestCase._loadTestTemplate.call(ts);
+                    } else {
+                        console.error("This is not a template test case, nothing is shown with the 'norun' parameter");
+                    }
+                } else {
+                    aria.jsunit.TestRunner.run(ts, skipTests);
+                }
 
             }
         });
