@@ -58,6 +58,9 @@ module.exports = Aria.classDefinition({
         },
 
         runTemplateTest : function () {
+
+            var doubleSlashRegExp = /\\\n/gi;
+
             this.synEvent.execute([
                 ["click", this.getInputField("email")],
                 ["pause", 1000],
@@ -68,11 +71,18 @@ module.exports = Aria.classDefinition({
                 ["type", null, "[down][down][down]"],
                 ["pause", 1000],
                 ["type", null, "[space]"],
-                ["pause", 1000]
+                ["pause", 2000],
+                ["type", null, "[down][down][down]"],
+                ["pause", 5000]
             ], {
                 fn: function () {
-                    this.assertJawsHistoryEquals("Email Address: Edit\nType in text.\nSubmit\nButton\nError\nlist of 4 items\n• Link The first name is a required field using a mandatory validator.\n• Link The last name is a required field using a mandatory validator.\nAlert!\nThe last name is a required field using a mandatory validator.\nLast Name: Edit\nType in text."
-                        , this.end);
+                    this.assertJawsHistoryEquals(
+                        "Email Address: Edit\nType in text.\nSubmit\nButton\nError\nError • The first name is a required field using a mandatory validator.• The last name is a required field using a mandatory validator.• The phone number is a required field using a mandatory validator.• The email is a required field using a mandatory validator.\nlist of 4 items\n• Link The first name is a required field using a mandatory validator.\n• Link The last name is a required field using a mandatory validator.\nEmail Address:\nThe last name is a required field using a mandatory validator.\nPhone Number:\nEdit\nPhone Number: Edit\nType in text.\nThe phone number is a required field using a mandatory validator.",
+                        this.end,
+                        function (response) {
+                            return response.replace(doubleSlashRegExp, "\n");
+                        }
+                    );
                 },
                 scope: this
             });

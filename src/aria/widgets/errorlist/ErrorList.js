@@ -45,7 +45,7 @@ module.exports = Aria.classDefinition({
         divCfg.id = cfg.id + "_div";
 
         if (cfg.waiAria) {
-            this._extraAttributes = ' role="alert" ';
+            this._extraAttributes = ' role="alert" aria-live="assertive" ';
         }
 
         this._initTemplate({
