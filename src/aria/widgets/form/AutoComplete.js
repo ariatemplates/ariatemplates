@@ -94,11 +94,9 @@ module.exports = Aria.classDefinition({
 
         this._waiSuggestionsStatus = emptyWaiSuggestionsStatus;
         this._waiSuggestionsChangedListener = null;
-        this._waiSuggestionsStatusDomElt = null;
     },
     $destructor : function () {
         this._removeWaiSuggestionsChangedListener();
-        this._waiSuggestionsStatusDomElt = null;
 
         // The dropdown might still be open when we destroy the widget, destroy it now
         if (this._dropdownPopup) {
@@ -333,27 +331,7 @@ module.exports = Aria.classDefinition({
             var waiSuggestionsStatus = this._computeWaiSuggestionsStatus();
             var newText = waiSuggestionsStatus.text;
             this._waiSuggestionsStatus = waiSuggestionsStatus;
-            var waiSuggestionsStatusDomElt = this._waiSuggestionsStatusDomElt;
-            if (!waiSuggestionsStatusDomElt) {
-                waiSuggestionsStatusDomElt = this._waiSuggestionsStatusDomElt = Aria.$window.document.createElement("span");
-                waiSuggestionsStatusDomElt.className = "xSROnly";
-                waiSuggestionsStatusDomElt.setAttribute("role", "status");
-                waiSuggestionsStatusDomElt.setAttribute("aria-live", "assertive");
-                waiSuggestionsStatusDomElt.setAttribute("aria-relevant", "additions");
-                this.getDom().appendChild(waiSuggestionsStatusDomElt);
-            }
-            if (newText) {
-                var document = Aria.$window.document;
-                var textChild = document.createElement("span");
-                var textNode = document.createTextNode(newText);
-                textChild.appendChild(textNode);
-                waiSuggestionsStatusDomElt.appendChild(textChild);
-                setTimeout(function () {
-                    // remove the node after 10ms
-                    textChild.parentNode.removeChild(textChild);
-                    textChild = null;
-                }, 10);
-            }
+            this.waiReadText(newText);
         },
 
         _waiSuggestionAriaLabelGetter : function (param) {
