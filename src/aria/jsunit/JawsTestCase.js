@@ -103,20 +103,19 @@ module.exports = Aria.classDefinition({
                 fn: function () {
                     textArea.parentNode.removeChild(textArea);
                     var textAreaContent = textArea.value;
+                    var globalFilterRegExp = /^(Aria Templates tests frame|Aria Templates tests document|New tab page)$/gi;
                     var lines = ariaUtilsString.trim(textAreaContent).split("\n");
                     for (var i = lines.length - 1; i >= 0; i--) {
                         var curLine = lines[i];
                         curLine = curLine.replace(/\s+/g, " ");
                         curLine = ariaUtilsString.trim(curLine);
-                        if (curLine) {
+                        if (curLine && !globalFilterRegExp.test(curLine)) {
                             lines[i] = curLine;
                         } else {
                             lines.splice(i, 1);
                         }
                     }
-                    if (lines[0] == "New tab page") {
-                        lines.shift();
-                    }
+
                     textAreaContent = lines.join("\n");
                     this.$callback(cb, textAreaContent);
                 },
