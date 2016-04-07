@@ -25,7 +25,7 @@ Aria.classDefinition({
     $prototype : {
         runTemplateTest : function () {
 
-            var filterRegExp = /(Aria Templates tests document|First textfield Edit|Type in text\.)\n/gi;
+            var filterRegExp = /(First textfield Edit|Type in text\.)\n/gi;
 
             this.synEvent.execute([
                 ["click", this.getElementById("tf1")],
