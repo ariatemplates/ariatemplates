@@ -26,6 +26,8 @@ Aria.classDefinition({
         runTemplateTest : function () {
 
             var filterRegExp = /(First textfield Edit|Type in text\.)\n/gi;
+            var checkedRegExp = /not checked\nchecked/g;
+            var notCheckedRegExp = /checked\nnot checked/g;
 
             this.synEvent.execute([
                 ["click", this.getElementById("tf1")],
@@ -55,10 +57,12 @@ Aria.classDefinition({
             ], {
                 fn: function () {
                     this.assertJawsHistoryEquals(
-                        "Checkbox A check box not checked\nCheckbox A check box not checked\nchecked\nCheckbox A\nCheckbox B check box not checked\nCheckbox B\nCheckbox B check box checked\nCheckbox B\nCheckbox C check box not checked\nCheckbox C check box checked\nCheckbox C\nLast textfield\nCheckbox C check box checked\nnot checked\nCheckbox B\nCheckbox B check box checked\nCheckbox B check box not checked",
+                        "Checkbox A check box not checked\nCheckbox A check box checked\nCheckbox A\nCheckbox B check box not checked\nCheckbox B\nCheckbox B check box checked\nCheckbox B\nCheckbox C check box not checked\nCheckbox C check box checked\nCheckbox C\nLast textfield\nCheckbox C check box not checked\nCheckbox B\nCheckbox B check box checked\nCheckbox B check box not checked",
                     this.end,
                     function(response) {
-                        return response.replace(filterRegExp, "");
+                        return response.replace(filterRegExp, "").
+                            replace(checkedRegExp, "checked").
+                            replace(notCheckedRegExp, "not checked");
                     });
                 },
                 scope: this
