@@ -49,7 +49,7 @@ module.exports = Aria.classDefinition({
          * @return {String}
          */
         trim : String.trim ? String.trim : function (string) {
-            return typeof string ===='string'?string.replace(/^\s+|\s+$/g, ''):string;
+            return typeof string ==='string'?string.replace(/^\s+|\s+$/g, ''):string;
         },
 
         /**
