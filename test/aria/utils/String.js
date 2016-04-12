@@ -34,7 +34,7 @@ Aria.classDefinition({
         /**
          * Test trim method with null argument
          */
-        testTrim : function () {
+        testNullTrim : function () {
             var trimResult = aria.utils.String.trim(null);
             this.assertTrue(trimResult === null);
         },
