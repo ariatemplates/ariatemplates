@@ -94,7 +94,11 @@ module.exports = Aria.classDefinition({
                     classes.push(wlibs[i]);
                 }
             }
-
+            if (out.dontLoadWidgetLibs) {
+                // skip the load of widget libraries
+                this.$ClassGenerator._processTemplateContent.call(this, args);
+                return;
+            }
             Aria.load({
                 classes : classes,
                 oncomplete : {

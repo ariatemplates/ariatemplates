@@ -210,7 +210,9 @@ Aria.classDefinition({
 
         _taskParseTemplateError : function (task, args) {
             var cg = aria.templates.TplClassGenerator;
-            cg.parseTemplate(args.tpl, true, {
+            cg.parseTemplate(args.tpl, {
+                allDependencies: true
+            }, {
                 fn : this._parseTemplateResponse,
                 scope : this,
                 args : {
@@ -263,7 +265,9 @@ Aria.classDefinition({
                 var dm = aria.core.DownloadMgr;
                 var cg = aria.templates.TplClassGenerator;
                 var tpl = dm.getFileContent("test/aria/templates/test/TemplateOK.tpl");
-                cg.parseTemplate(tpl, true, {
+                cg.parseTemplate(tpl, {
+                    allDependencies: true
+                }, {
                     fn : this._onReceivingTemplateOKGenerated,
                     scope : this
                 });
@@ -305,10 +309,14 @@ Aria.classDefinition({
                 var dm = aria.core.DownloadMgr;
                 var cg = aria.templates.TplClassGenerator;
                 var tpl = dm.getFileContent("test/aria/templates/test/TemplateKO_Runtime.tpl");
-                cg.parseTemplate(tpl, true, {
+                cg.parseTemplate(tpl, {
+                    allDependencies: true,
+                    errorContext: {},
+                    debug: true
+                }, {
                     fn : this._onReceivingTemplateKO_RuntimeGenerated,
                     scope : this
-                }, {}, true);
+                });
             } catch (e) {
                 this.handleAsyncTestError(e);
             }

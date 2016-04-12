@@ -113,16 +113,13 @@ module.exports = Aria.classDefinition({
          * parameter given to the callback function is: { classDef: {String} if null, errors occured during parsing or
          * class generation; otherwise contains the generated class }
          * @param {String} template the template
-         * @param {Boolean} allDeps If true, all dependencies should be included in the generated class. Otherwise only
-         * put classes which are not currently loaded in the $dependencies section.
+         * @param {aria.templates.CfgBeans:ClassGeneratorCfg} options Options for the class generation.
          * @param {aria.core.CfgBeans:Callback} callback the callback description
-         * @param {Object} context - passes template context information to improve debugging
-         * @param {Boolean} debug debug mode
          */
-        parseTemplate : function (template, allDeps, callback, context, debug, skipLogError) {
+        parseTemplate : function (template, options, callback) {
             var tree, errors;
             try {
-                tree = this._parser.parseTemplate(template, context, this.STATEMENTS, skipLogError);
+                tree = this._parser.parseTemplate(template, options.errorContext, this.STATEMENTS, options.skipLogError);
             } catch (e) {
                 errors = e.errors || e;
             }
@@ -133,20 +130,19 @@ module.exports = Aria.classDefinition({
                 });
                 return;
             }
-            this.__buildClass(tree, allDeps, callback, context, debug, skipLogError);
+            this.__buildClass(tree, options, callback);
         },
 
         /**
          * Parse a debug template from the tree
          * @param {aria.templates.TreeBeans:Root} tree tree returned by the parser.
-         * @param {Boolean} allDeps If true, all dependencies should be included in the generated class. Otherwise only
-         * put classes which are not currently loaded in the $dependencies section.
+         * @param {aria.templates.CfgBeans:ClassGeneratorCfg} options Options for class generation.
          * @param {aria.core.CfgBeans:Callback} callback callback the callback description
          * @param {Object} context - passes template context information to improve debugging
          * @param {Boolean} debug debug mode
          */
-        parseTemplateFromTree : function (tree, allDeps, callback, context, debug, skipLogError) {
-            this.__buildClass(tree, allDeps, callback, context, debug, skipLogError);
+        parseTemplateFromTree : function (tree, options, callback) {
+            this.__buildClass(tree, options, callback);
         },
 
         /**
@@ -174,28 +170,29 @@ module.exports = Aria.classDefinition({
          * Build the template class from the tree given by the parser.
          * @private
          * @param {aria.templates.TreeBeans:Root} tree tree returned by the parser.
-         * @param {Boolean} allDeps If true, all dependencies should be included in the generated class. Otherwise only
-         * put classes which are not currently loaded in the $dependencies section.
+         * @param {aria.templates.CfgBeans:ClassGeneratorCfg} options Options for class generation.
          * @param {aria.core.CfgBeans:Callback} callback the callback description
-         * @param {Object} errorContext
-         * @param {Boolean} debug generate debug template (expression wrap in try-catch)
-         * @return {String} the generated class definition or null it there were errors.
          */
-        __buildClass : function (tree, allDeps, callback, errorContext, debug, skipLogError) {
+        __buildClass : function (tree, options, callback) {
+            ariaCoreJsonValidator.check(options, "aria.templates.CfgBeans.ClassGeneratorCfg");
             ariaCoreJsonValidator.check(tree, "aria.templates.TreeBeans.Root");
             var out = new ariaTemplatesClassWriter({
                 fn : this.__processStatement,
                 scope : this
-            }, skipLogError ? null : {
+            }, options.skipLogError ? null : {
                 fn : this.__logError,
                 scope : this
             });
 
-            out.errorContext = errorContext;
-            out.allDependencies = allDeps;
+            out.errorContext = options.errorContext;
+            out.allDependencies = options.allDependencies;
             out.callback = callback;
             out.tree = tree;
-            out.debug = (debug === true);
+            out.debug = (options.debug === true);
+            out.dontLoadWidgetLibs = (options.dontLoadWidgetLibs === true);
+            if (options.parseOnly) {
+                out.enableParseOnly();
+            }
             this._processRootStatement(out, tree);
             if (out.errors) {
                 out.$dispose();
@@ -235,6 +232,7 @@ module.exports = Aria.classDefinition({
                 return out.logError(rootStatement, this.CHECK_ERROR_IN_TEMPLATE_PARAMETER, [this._rootStatement]);
             }
             out.templateParam = param;
+            rootStatement.properties = param;
 
             this._processTemplateContent({
                 out : out,
@@ -698,6 +696,11 @@ module.exports = Aria.classDefinition({
             out.write(out.getBlockContent("classDefinition"));
             out.leaveBlock();
 
+            out.tree.properties = {
+                macros: out.macros,
+                views: out.views,
+                wlibs: out.wlibs
+            };
             var res = null;
             res = out.getBlockContent("main");
             out.$dispose();

@@ -299,7 +299,8 @@ module.exports = Aria.classDefinition({
                 paramBlock : "",
                 parent : null,
                 content : curContainer,
-                lineNumber : 0
+                lineNumber : 0,
+                source: tpl
             }, stack = [res]; // stack of content containers
             while (index != -1) {
                 dollar = (tpl.charAt(index - 1) == "$" && !utilString.isEscaped(tpl, index - 1));
