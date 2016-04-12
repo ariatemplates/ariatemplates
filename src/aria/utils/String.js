@@ -45,11 +45,11 @@ module.exports = Aria.classDefinition({
 
         /**
          * Trim a String (remove trailing and leading white spaces)
-         * @param {String} string
+         * @param {String} string If this argument is not a string, it is returned unmodified.
          * @return {String}
          */
         trim : String.trim ? String.trim : function (string) {
-            return string.replace(/^\s+|\s+$/g, '');
+            return typeof string === 'string' ? string.replace(/^\s+|\s+$/g, '') : string;
         },
 
         /**
