@@ -52,7 +52,9 @@ Aria.classDefinition({
 
         _taskParseTemplate : function (task, args) {
             var cg = aria.templates.TplClassGenerator;
-            cg.parseTemplate(args.tpl, true, {
+            cg.parseTemplate(args.tpl, {
+                allDependencies: true
+            }, {
                 fn : this._parseTemplateResponse,
                 scope : this,
                 args : {

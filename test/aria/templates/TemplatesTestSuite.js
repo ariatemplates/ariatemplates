@@ -46,6 +46,7 @@ Aria.classDefinition({
         this.addTests("test.aria.templates.TemplateTest");
 
         this.addTests("test.aria.templates.TplClassGeneratorTest");
+        this.addTests("test.aria.templates.TplClassGeneratorParseOnlyTest");
         this.addTests("test.aria.templates.TxtClassGeneratorTest");
         this.addTests("test.aria.templates.TxtTemplateTest");
         this.addTests("test.aria.templates.ViewTest");
