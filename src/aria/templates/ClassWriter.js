@@ -189,11 +189,10 @@ module.exports = Aria.classDefinition({
         this._stack = [];
 
         /**
-         * List of dependencies found for the class to be generated
-         * @type Array
+         * Map of dependencies found for the class to be generated
          * @protected
          */
-        this._dependencies = [];
+        this._dependencies = {};
 
         /**
          * Contains information about errors which occured during the generation process. If the processErrors callback
@@ -215,6 +214,17 @@ module.exports = Aria.classDefinition({
          */
         this.tree = null;
 
+        /**
+         * If set to true, code generation is disabled, only parsing matters.
+         * @type Boolean
+         */
+        this.parseOnly = false;
+
+        /**
+         * If set to true, widget libraries will not be loaded during class generation.
+         * @type Boolean
+         */
+        this.dontLoadWidgetLibs = false;
     },
     $prototype : {
         /**
@@ -273,7 +283,9 @@ module.exports = Aria.classDefinition({
         getView : function (viewBaseName) {
             var res = this.views[viewBaseName];
             if (res == null) {
-                res = {};
+                res = {
+                    baseName: viewBaseName
+                };
                 this.views[viewBaseName] = res;
             }
             return res;
@@ -495,6 +507,21 @@ module.exports = Aria.classDefinition({
             if (this._curblock) {
                 this.writeln("this['" + Aria.FRAMEWORK_PREFIX + "currentLineNumber'] = " + lineNumber + ";");
             }
+        },
+
+        /**
+         * Set the parseOnly flag to true and disables functions which are only useful for class generation.
+         */
+        enableParseOnly : function () {
+            this.parseOnly = true;
+            // disables functions which are only useful to generate code:
+            var empty = Aria.empty;
+            this.writeDependencies = empty;
+            this.newVarName = empty;
+            this.writeln = empty;
+            this.write = empty;
+            this.wrapExpression = empty;
+            this.trackLine = empty;
         }
 
     }
