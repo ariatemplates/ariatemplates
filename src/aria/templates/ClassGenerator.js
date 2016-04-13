@@ -23,6 +23,17 @@ var ariaUtilsJson = require("../utils/Json");
 var ariaCoreJsonValidator = require("../core/JsonValidator");
 var ariaCoreEnvironmentEnvironment = require("../core/environment/Environment");
 
+var normalizeOptions = function (optionsOrAllDeps, context, debug, skipLogError) {
+    var options = (typeof optionsOrAllDeps == "object") ? optionsOrAllDeps : {
+        allDependencies: optionsOrAllDeps,
+        errorContext: context,
+        debug: debug,
+        skipLogError: skipLogError
+    };
+    ariaCoreJsonValidator.check(options, "aria.templates.CfgBeans.ClassGeneratorCfg");
+    return options;
+};
+
 /**
  * The class generator is used to generate the class corresponding to a template. This class uses the tree from the
  * template parser, and generates a string containing the corresponding class definition. This is an abstract class and
@@ -116,9 +127,9 @@ module.exports = Aria.classDefinition({
          * @param {aria.templates.CfgBeans:ClassGeneratorCfg} options Options for the class generation.
          * @param {aria.core.CfgBeans:Callback} callback the callback description
          */
-        parseTemplate : function (template, options, callback) {
+        parseTemplate : function (template, optionsOrAllDeps, callback, context, debug, skipLogError) {
             var tree, errors;
-            ariaCoreJsonValidator.check(options, "aria.templates.CfgBeans.ClassGeneratorCfg");
+            var options = normalizeOptions(optionsOrAllDeps, context, debug, skipLogError);
             try {
                 tree = this._parser.parseTemplate(template, options.errorContext, this.STATEMENTS, options.skipLogError);
             } catch (e) {
@@ -140,8 +151,8 @@ module.exports = Aria.classDefinition({
          * @param {aria.templates.CfgBeans:ClassGeneratorCfg} options Options for class generation.
          * @param {aria.core.CfgBeans:Callback} callback callback the callback description
          */
-        parseTemplateFromTree : function (tree, options, callback) {
-            ariaCoreJsonValidator.check(options, "aria.templates.CfgBeans.ClassGeneratorCfg");
+        parseTemplateFromTree : function (tree, optionsOrAllDeps, callback, context, debug, skipLogError) {
+            var options = normalizeOptions(optionsOrAllDeps, context, debug, skipLogError);
             this.__buildClass(tree, options, callback);
         },
 
