@@ -142,6 +142,7 @@ module.exports = Aria.classDefinition({
                     parts.push(param);
 
                     // Automatic escape ----------------------------------------
+
                     var autoEscape = false;
                     if (ariaCoreEnvironmentEnvironment.hasEscapeHtmlByDefault()) {
 
@@ -169,6 +170,7 @@ module.exports = Aria.classDefinition({
                     }
 
                     // end of: automatic escape --------------------------------
+
                     var modifiersList = [];
                     var beginexpr = [], endexpr = [];
                     var expr;

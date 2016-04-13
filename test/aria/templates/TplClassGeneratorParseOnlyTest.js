@@ -45,6 +45,7 @@ Aria.classDefinition({
                 result = res;
             });
 
+            this.assertTruthy(result, "The callback should have been called synchronously.");
             this.assertEquals(result.tree.content[0].properties.$classpath, "x.y.Z");
             this.assertEquals(result.tree.content[0].properties.$extends, "x.y.Y");
 
@@ -95,7 +96,6 @@ Aria.classDefinition({
             this.assertEquals(widgetStatement.properties.libClasspath, "x.y.MyWidgetsLibThatDoesNotExistButShouldNotBeChecked");
             this.assertEquals(widgetStatement.properties.widgetName, "MyWidget");
 
-            this.assertTruthy(result, "The callback should have been called synchronously.");
         }
     }
 });

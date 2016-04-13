@@ -515,7 +515,13 @@ module.exports = Aria.classDefinition({
         enableParseOnly : function () {
             this.parseOnly = true;
             // disables functions which are only useful to generate code:
-            this.writeDependencies = this.newVarName = this.writeln = this.write = this.wrapExpression = this.trackLine = Aria.empty;
+            var empty = Aria.empty;
+            this.writeDependencies = empty;
+            this.newVarName = empty;
+            this.writeln = empty;
+            this.write = empty;
+            this.wrapExpression = empty;
+            this.trackLine = empty;
         }
 
     }

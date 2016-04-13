@@ -23,6 +23,17 @@ var ariaUtilsJson = require("../utils/Json");
 var ariaCoreJsonValidator = require("../core/JsonValidator");
 var ariaCoreEnvironmentEnvironment = require("../core/environment/Environment");
 
+var normalizeOptions = function (optionsOrAllDeps, context, debug, skipLogError) {
+    var options = (typeof optionsOrAllDeps == "object") ? optionsOrAllDeps : {
+        allDependencies: optionsOrAllDeps,
+        errorContext: context,
+        debug: debug,
+        skipLogError: skipLogError
+    };
+    ariaCoreJsonValidator.check(options, "aria.templates.CfgBeans.ClassGeneratorCfg");
+    return options;
+};
+
 /**
  * The class generator is used to generate the class corresponding to a template. This class uses the tree from the
  * template parser, and generates a string containing the corresponding class definition. This is an abstract class and
@@ -117,12 +128,7 @@ module.exports = Aria.classDefinition({
          * @param {aria.core.CfgBeans:Callback} callback the callback description
          */
         parseTemplate : function (template, optionsOrAllDeps, callback, context, debug, skipLogError) {
-            var options = (typeof optionsOrAllDeps == "object") ? optionsOrAllDeps : {
-                allDependencies: optionsOrAllDeps,
-                errorContext: context,
-                debug: debug,
-                skipLogError: skipLogError
-            };
+            var options = normalizeOptions(optionsOrAllDeps, context, debug, skipLogError);
             var tree, errors;
             try {
                 tree = this._parser.parseTemplate(template, options.errorContext, this.STATEMENTS, options.skipLogError);
@@ -144,16 +150,9 @@ module.exports = Aria.classDefinition({
          * @param {aria.templates.TreeBeans:Root} tree tree returned by the parser.
          * @param {aria.templates.CfgBeans:ClassGeneratorCfg} options Options for class generation.
          * @param {aria.core.CfgBeans:Callback} callback callback the callback description
-         * @param {Object} context - passes template context information to improve debugging
-         * @param {Boolean} debug debug mode
          */
         parseTemplateFromTree : function (tree, optionsOrAllDeps, callback, context, debug, skipLogError) {
-            var options = (typeof optionsOrAllDeps == "object") ? optionsOrAllDeps : {
-                allDependencies: optionsOrAllDeps,
-                errorContext: context,
-                debug: debug,
-                skipLogError: skipLogError
-            };
+            var options = normalizeOptions(optionsOrAllDeps, context, debug, skipLogError);
             this.__buildClass(tree, options, callback);
         },
 
@@ -186,7 +185,6 @@ module.exports = Aria.classDefinition({
          * @param {aria.core.CfgBeans:Callback} callback the callback description
          */
         __buildClass : function (tree, options, callback) {
-            ariaCoreJsonValidator.check(options, "aria.templates.CfgBeans.ClassGeneratorCfg");
             ariaCoreJsonValidator.check(tree, "aria.templates.TreeBeans.Root");
             var out = new ariaTemplatesClassWriter({
                 fn : this.__processStatement,
