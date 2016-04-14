@@ -77,26 +77,33 @@ module.exports = Aria.classDefinition({
 
             // ------------------------------------------------------ processing
 
-            this._executeStepsAndWriteHistory(callback, function (step, entry) {
+            this._executeStepsAndWriteHistory(callback, function (api) {
+                // ----------------------------------------------- destructuring
+
+                var step = api.addStep;
+                var entry = api.addToHistory;
+
+                // -------------------------------------------------- processing
+
                 step(['click', this.getElementById(dialog.elementBeforeId)]);
                 entry('Element before');
 
                 step(['type', null, '[tab]']);
-                entry(dialog.buttonLabel, 'Button');
+                entry(dialog.buttonLabel + ' Button');
 
                 step(['type', null, '[enter]']);
 
                 if (!dialog.fullyEmpty) {
-                    entry(dialog.title, 'dialog');
-                    entry(dialog.closeLabel, 'Button');
+                    entry(dialog.title + ' dialog');
+                    entry(dialog.closeLabel + ' Button');
 
                     step(['type', null, '[tab]']);
-                    entry(dialog.maximizeLabel, 'Button');
+                    entry(dialog.maximizeLabel + ' Button');
                 }
 
                 step(['type', null, '[escape]']);
                 if (!dialog.fullyEmpty) {
-                    entry(dialog.buttonLabel, 'Button');
+                    entry(dialog.buttonLabel + ' Button');
                 }
             });
         }

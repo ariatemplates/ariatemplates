@@ -132,12 +132,28 @@ module.exports = Aria.classDefinition({
         assertJawsHistoryEquals : function (expectedOutput, callback, filterFn) {
             this.retrieveJawsHistory({
                 fn: function (response) {
+                    var originalResponse = response;
 
                     if (filterFn) {
                         response = filterFn(response);
                     }
+                    var changed = response !== originalResponse;
 
-                    this.assertEquals(response, expectedOutput, "JAWS history: " + ariaUtilsJson.convertToJsonString(response));
+                    var message = [];
+                    if (changed) {
+                        message.push('History was filtered');
+                    } else {
+                        message.push('History was not filtered');
+                    }
+                    message.push("JAWS history" + (changed ? ' (filtered)' : '') + ": " + ariaUtilsJson.convertToJsonString(response));
+                    message.push("Expected history: " + ariaUtilsJson.convertToJsonString(expectedOutput));
+
+                    if (changed) {
+                        message.push("JAWS history (original): " + ariaUtilsJson.convertToJsonString(originalResponse));
+                    }
+                    message = message.join('.\n') + '.';
+
+                    this.assertEquals(response, expectedOutput, message);
                     this.$callback(callback);
                 },
                 scope: this

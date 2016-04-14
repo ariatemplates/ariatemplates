@@ -28,6 +28,7 @@ module.exports = Aria.classDefinition({
         this.$JawsTestCase.constructor.call(this);
 
         this._history = [];
+        this._filter = null;
     },
 
 
@@ -54,11 +55,15 @@ module.exports = Aria.classDefinition({
         ////////////////////////////////////////////////////////////////////////
 
         _checkHistory : function (callback) {
+            // --------------------------------------------------- destructuring
+
             var history = this._history;
+            var filter = this._filter;
+
+            // ------------------------------------------------------ processing
 
             history = history.join('\n');
-
-            this.assertJawsHistoryEquals(history, callback);
+            this.assertJawsHistoryEquals(history, callback, filter);
         },
 
         _executeStepsAndWriteHistory : function (callback, builder, thisArg) {
@@ -78,17 +83,20 @@ module.exports = Aria.classDefinition({
                 steps.push(['pause', 1000]);
             }
 
-            function addToHistory(item, role) {
-                if (role != null) {
-                    item += ' ' + role;
-                }
-
+            function addToHistory(item) {
                 history.push(item);
             }
 
             // ------------------------------------------------------ processing
 
-            builder.call(thisArg, addStep, addToHistory, steps, history);
+            var api = {
+                addStep: addStep,
+                addToHistory: addToHistory,
+                steps: steps,
+                history: history
+            };
+
+            builder.call(thisArg, api);
 
             this.synEvent.execute(steps, {
                 scope: this,

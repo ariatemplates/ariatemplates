@@ -53,6 +53,25 @@ module.exports = Aria.classDefinition({
         ////////////////////////////////////////////////////////////////////////
 
         runTemplateTest : function () {
+            this._filter = function (content) {
+                function createLineRegExp(content) {
+                    return new RegExp('^' + content + '\n?', 'gm');
+                }
+
+                var regexps = [];
+                regexps.push(createLineRegExp('Element before .*'));
+                regexps.push(createLineRegExp('separator'));
+                regexps.push(createLineRegExp('AT testsTab 0'));
+
+                for (var index = 0, length = regexps.length; index < length; index++) {
+                    var regexp = regexps[index];
+
+                    content = content.replace(regexp, '');
+                }
+
+                return content;
+            };
+
             this._localAsyncSequence(function (add) {
                 add('_testGroups');
                 add('_checkHistory');
@@ -84,14 +103,18 @@ module.exports = Aria.classDefinition({
 
             var tabs = group.tabs;
 
-            this._executeStepsAndWriteHistory(callback, function (step, entry) {
+            this._executeStepsAndWriteHistory(callback, function (api) {
+                // ----------------------------------------------- destructuring
+
+                var step = api.addStep;
+                var entry = api.addToHistory;
+
                 // --------------------------------------------- local functions
 
                 var self = this;
 
                 function selectStartPoint() {
                     step(['click', self.getElementById(group.elementBeforeId)]);
-                    entry('Element before ' + group.id + ' Link');
                 }
 
                 function getSelectedTabDescription(tab) {
