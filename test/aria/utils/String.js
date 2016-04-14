@@ -32,6 +32,14 @@ Aria.classDefinition({
         },
 
         /**
+         * Test trim method with null argument
+         */
+        testNullTrim : function () {
+            var trimResult = aria.utils.String.trim(null);
+            this.assertTrue(trimResult === null);
+        },
+        
+        /**
          * Test case for the isEscaped method
          */
         testIsEscaped : function () {
