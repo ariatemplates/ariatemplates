@@ -115,7 +115,7 @@ module.exports = Aria.classDefinition({
                     this._skinObj.simpleHTML ? ' style="display:inline-block"' : ' class="xSROnly"',
                     (Aria.testMode || cfg.waiAria) ? ' id="' + this._domId + '_input"' : '',
                     this._isChecked() ? ' checked' : '', ' type="', cfg._inputType, '"', name, ' value="',
-                    cfg.value, '" ', tabIndex, '/>'].join(''));
+                    cfg.value, '" ', tabIndex, this._getAriaLabelMarkup(), '/>'].join(''));
 
         },
 
@@ -163,6 +163,7 @@ module.exports = Aria.classDefinition({
             if (cfg.waiAria) {
                 out.write(' for="' + this._domId + '_input"');
             }
+            out.write(this._getAriaLabelHiddenMarkup());
             out.write('>');
             out.write(ariaUtilsString.escapeHTML(cfg.label));
 

@@ -161,34 +161,26 @@ module.exports = Aria.classDefinition({
         },
 
         /**
-         * Updates the aria-label attribute on the DOM element if accessibility is enabled.
-         */
-        _updateAriaLabel : function () {
-            var element = this._getLabelledElement();
-            if (element) {
-                var ariaLabel = this._cfg.label;
-                if (ariaLabel != null) {
-                    element.setAttribute("aria-label", ariaLabel);
-                } else {
-                    element.removeAttribute("aria-label");
-                }
-            }
-        },
-
-        /**
-         * Returns the markup for aria-labelledby attribute on the DOM element if accessibility is enabled.
+         * Returns the markup for the aria-label related attributes on a DOM element if accessibility is enabled.
          * @protected
          */
         _getAriaLabelMarkup : function () {
+            var markup = [];
             if (this._cfg.waiAria) {
-                if (this._labelId) {
-                    return ' aria-labelledby="' + this._labelId + '" ';
-                } else {
-                    var ariaLabel = this._cfg.label;
-                    if (ariaLabel != null) {
-                        return ' aria-label="' + ariaUtilsString.encodeForQuotedHTMLAttribute(ariaLabel) + '" ';
-                    }
-                }
+              if (this._cfg.waiLabel) {markup.push(' aria-label="' + ariaUtilsString.encodeForQuotedHTMLAttribute(this._cfg.waiLabel) + '" ');}
+              if (this._cfg.waiLabelledBy) {markup.push(' aria-labelledby="' + ariaUtilsString.encodeForQuotedHTMLAttribute(this._cfg.waiLabelledBy) + '" ');}
+              if (this._cfg.waiDescribedBy) {markup.push(' aria-describedby="' + ariaUtilsString.encodeForQuotedHTMLAttribute(this._cfg.waiDescribedBy) + '" ');}
+            }
+            return markup.join('');
+        },
+
+        /**
+         * Returns the markup for the aria-hidden attribute on a DOM element if accessibility is enabled.
+         * @protected
+         */
+        _getAriaLabelHiddenMarkup : function () {
+            if (this._cfg.waiAria && this._cfg.waiLabelHidden) {
+              return ' aria-hidden="true"';
             }
             return '';
         },
@@ -349,7 +341,9 @@ module.exports = Aria.classDefinition({
             if (cfg.labelHeight > -1) {
                 out.write(';height:' + cfg.labelHeight + 'px');
             }
-            out.write(';text-align:' + cfg.labelAlign + ';">');
+            out.write(';text-align:' + cfg.labelAlign + ';"');
+            out.write(this._getAriaLabelHiddenMarkup());
+            out.write('>');
             out.write(ariaUtilsString.escapeHTML(cfg.label));
 
             out.write('</label>');
@@ -495,9 +489,6 @@ module.exports = Aria.classDefinition({
                 var label = this.getLabel();
                 if (label) {
                     label.innerHTML = ariaUtilsString.escapeHTML(newValue);
-                } else if (this._cfg.waiAria) {
-                    // check WAI flag for label attributes to be updated
-                    this._updateAriaLabel();
                 }
             }
             return this.$Widget._onBoundPropertyChange.apply(this, arguments);

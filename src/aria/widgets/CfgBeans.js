@@ -318,6 +318,23 @@ module.exports = Aria.beanDefinitions({
                     $description : "Indicates if the label must be displayed or not (if true the label is hidden)",
                     $default : false
                 },
+                "waiLabel" : {
+                    $type : "json:String",
+                    $description : "Sets aria-label on the input, value will be used as the attributes value"
+                },
+                "waiDescribedBy" : {
+                    $type : "json:String",
+                    $description : "Sets aria-describedby on the input, value will be used as the attributes value"
+                },
+                "waiLabelledBy" : {
+                    $type : "json:String",
+                    $description : "Sets aria-labelledby on the input, value will be used as the attributes value"
+                },
+                "waiLabelHidden" : {
+                    $type : "json:Boolean",
+                    $description : "Sets aria-hidden on the label when set to true",
+                    $default : false
+                },
                 "errorTipPosition" : {
                     $type : "json:String",
                     $description : "Possible values are: 'bottom left', 'bottom right', 'top left', 'top right'.",
