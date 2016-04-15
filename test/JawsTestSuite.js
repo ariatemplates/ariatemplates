@@ -33,6 +33,7 @@ Aria.classDefinition({
 
         this.addTests("test.aria.widgets.wai.input.checkbox.CheckboxJawsTestCase");
         this.addTests("test.aria.widgets.wai.input.radiobutton.RadioButtonGroupJawsTestCase");
+        this.addTests("test.aria.widgets.wai.input.label.WaiInputLabelJawsTestSuite");
 
     }
 });

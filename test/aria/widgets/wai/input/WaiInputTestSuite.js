@@ -18,15 +18,17 @@ Aria.classDefinition({
     $extends : "aria.jsunit.TestSuite",
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
+        this.addTests("test.aria.widgets.wai.input.checkbox.CheckboxTestCase");
+        this.addTests("test.aria.widgets.wai.input.dateField.DateFieldTestCase");
+        this.addTests("test.aria.widgets.wai.input.datePicker.DatePickerTestCase");
+        this.addTests("test.aria.widgets.wai.input.multiSelect.MultiSelectTestCase");
+        this.addTests("test.aria.widgets.wai.input.numberField.NumberFieldTestCase");
+        this.addTests("test.aria.widgets.wai.input.passwordField.PasswordFieldTestCase");
+        this.addTests("test.aria.widgets.wai.input.radiobutton.RadioButtonTestCase");
+        this.addTests("test.aria.widgets.wai.input.select.SelectTestCase");
+        this.addTests("test.aria.widgets.wai.input.selectBox.SelectBoxTestCase");
+        this.addTests("test.aria.widgets.wai.input.textArea.TextAreaTestCase");
         this.addTests("test.aria.widgets.wai.input.textField.TextFieldTestCase");
         this.addTests("test.aria.widgets.wai.input.timeField.TimeFieldTestCase");
-        this.addTests("test.aria.widgets.wai.input.textArea.TextAreaTestCase");
-        this.addTests("test.aria.widgets.wai.input.selectBox.SelectBoxTestCase");
-        this.addTests("test.aria.widgets.wai.input.select.SelectTestCase");
-        this.addTests("test.aria.widgets.wai.input.passwordField.PasswordFieldTestCase");
-        this.addTests("test.aria.widgets.wai.input.numberField.NumberFieldTestCase");
-        this.addTests("test.aria.widgets.wai.input.multiSelect.MultiSelectTestCase");
-        this.addTests("test.aria.widgets.wai.input.datePicker.DatePickerTestCase");
-        this.addTests("test.aria.widgets.wai.input.dateField.DateFieldTestCase");
     }
 });
