@@ -48,8 +48,8 @@ module.exports = Aria.classDefinition({
          * @param {String} string If this argument is not a string, it is returned unmodified.
          * @return {String}
          */
-        trim : String.trim ? String.trim : function (string) {
-            return typeof string === 'string' ? string.replace(/^\s+|\s+$/g, '') : string;
+        trim : function (string) {
+            return typeof string === 'string' ? string.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '') : string;
         },
 
         /**
