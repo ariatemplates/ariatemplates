@@ -21,6 +21,7 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.wai.input.label.CheckboxJawsTestCase");
         this.addTests("test.aria.widgets.wai.input.label.DateFieldJawsTestCase");
         this.addTests("test.aria.widgets.wai.input.label.DatePickerJawsTestCase");
+        this.addTests("test.aria.widgets.wai.input.label.LinkJawsTestCase");
         this.addTests("test.aria.widgets.wai.input.label.MultiSelectJawsTestCase");
         this.addTests("test.aria.widgets.wai.input.label.NumberFieldJawsTestCase");
         this.addTests("test.aria.widgets.wai.input.label.PasswordFieldJawsTestCase");
