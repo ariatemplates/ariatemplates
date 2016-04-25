@@ -25,6 +25,7 @@
             {call checkBox("cbWaiEnabledStart") /}<br>
             {call dateField("dfWaiEnabledStart") /}<br>
             {call datePicker("dpWaiEnabledStart") /}<br>
+            {call link("lWaiEnabledStart") /}<br>
             {call multiSelect("msWaiEnabledStart") /}<br>
             {call numberField("nfWaiEnabledStart") /}<br>
             {call passwordField("pfWaiEnabledStart") /}<br>
@@ -94,6 +95,23 @@
             waiLabel: "waiLabel",
             waiLabelHidden: true
         }/}
+    {/macro}
+
+    {macro link(id)}
+            <input type="text" {id id/}>
+            {@aria:Link {
+              label : "enabled - with aria label hidden",
+              margins : "60 x x 60",
+              waiAria: true,
+              waiDescribedBy: "label-for-described-by",
+              waiLabelledBy: "label-for-labelled-by",
+            }/} <br><br>
+            {@aria:Link {
+              label : "enabled - with aria label hidden",
+              margins : "60 x x 60",
+              waiAria: true,
+              waiLabel: "waiLabel"
+            }/} <br><br>
     {/macro}
 
     {macro multiSelect(id)}
