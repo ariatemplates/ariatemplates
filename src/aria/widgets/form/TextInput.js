@@ -339,7 +339,7 @@ module.exports = Aria.classDefinition({
                 spellCheck = ' spellcheck="' + (cfg.spellCheck ? "true" : "false") + '"';
             }
 
-            var ariaRequired = (cfg.waiAria && cfg.mandatory) ? ' required' : '';
+            var ariaRequired = (cfg.waiAria && cfg.mandatory) ? ' aria-required="true"' : '';
 
             if (this._isTextarea) {
                 out.write(['<textarea class="', className, '"', Aria.testMode ? ' id="' + this._domId + '_textarea"' : '',
@@ -763,9 +763,9 @@ module.exports = Aria.classDefinition({
                 if (cfg.waiAria && propertyName === 'mandatory') {
                     var input = this.getTextInputField();
                     if (newValue) {
-                        input.setAttribute("required", "");
+                        input.setAttribute("aria-required", "true");
                     } else {
-                        input.removeAttribute("required");
+                        input.removeAttribute("aria-required");
                     }
                 }
 

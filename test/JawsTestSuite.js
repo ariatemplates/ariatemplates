@@ -35,5 +35,9 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.wai.input.radiobutton.RadioButtonGroupJawsTestCase");
         this.addTests("test.aria.widgets.wai.input.label.WaiInputLabelJawsTestSuite");
 
+        this.addTests("test.aria.widgets.wai.textInputBased.NumberFieldMandatoryJawsTestCase");
+        this.addTests("test.aria.widgets.wai.textInputBased.TextAreaMandatoryJawsTestCase");
+        this.addTests("test.aria.widgets.wai.textInputBased.TextFieldMandatoryJawsTestCase");
+
     }
 });
