@@ -39,5 +39,7 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.wai.textInputBased.TextAreaMandatoryJawsTestCase");
         this.addTests("test.aria.widgets.wai.textInputBased.TextFieldMandatoryJawsTestCase");
 
+        this.addTests("test.aria.widgets.wai.fieldset.FieldsetLabelJawsTestCase");
+
     }
 });
