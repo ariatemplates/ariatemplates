@@ -20,7 +20,6 @@ var ariaWidgetsFormListListStyle = require("./list/ListStyle.tpl.css");
 var ariaWidgetsContainerDivStyle = require("../container/DivStyle.tpl.css");
 var ariaWidgetsFormDropDownTextInput = require("./DropDownTextInput");
 
-
 /**
  * SelectBox widget allows to select a value in an array of predefined values
  */
@@ -51,7 +50,12 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         this._freePopupWidth = false;
+        this._waiSuggestionsChangedListener = null;
 
+    },
+    $destructor : function () {
+        this._removeWaiSuggestionsChangedListener();
+        this.$DropDownTextInput.$destructor.call(this);
     },
     $prototype : {
         /**

@@ -219,12 +219,64 @@ module.exports = Aria.classDefinition({
         },
 
         /**
+         * Callback for the event onAfterOpen raised by the popup.
+         * @override
+         */
+        _afterDropdownOpen : function () {
+            this.$DropDownTrait._afterDropdownOpen.apply(this, arguments);
+            if (this._cfg.waiAria) {
+                this._addWaiSuggestionsChangedListener();
+                this._waiSuggestionsChanged();
+            }
+        },
+
+        /**
          * Called after the dropdown is closed.
          * @protected
          */
         _afterDropdownClose : function () {
             this.controller.setListWidget(null);
             this.$DropDownTrait._afterDropdownClose.call(this);
+            if (this._cfg.waiAria) {
+                this._waiSuggestionsChanged();
+            }
+        },
+
+        _addWaiSuggestionsChangedListener : function () {
+            var callback = this._waiSuggestionsChangedListener;
+            if (!callback) {
+                callback = this._waiSuggestionsChangedListener = {
+                    scope: this,
+                    fn: this._waiSuggestionsChanged
+                };
+                ariaUtilsJson.addListener(this.controller.getDataModel(), "listContent", callback);
+            }
+        },
+
+        _removeWaiSuggestionsChangedListener : function () {
+            var callback = this._waiSuggestionsChangedListener;
+            if (callback) {
+                ariaUtilsJson.removeListener(this.controller.getDataModel(), "listContent", callback);
+                this._waiSuggestionsChangedListener = null;
+            }
+        },
+
+        _waiSuggestionsChanged : function () {
+            var dm = this.controller.getDataModel();
+            var suggestionsList = dm.listContent;
+            var newText;
+            var popupDisplayed = this._dropdownPopup && suggestionsList.length > 0;
+            var justClosedPopup = !popupDisplayed && (dm.value == null || dm.value === dm.text) && this._waiSuggestionsStatus;
+            var waiSuggestionsStatusGetter = this._cfg.waiSuggestionsStatusGetter;
+            if (waiSuggestionsStatusGetter && (popupDisplayed || justClosedPopup)) {
+                newText = this.evalCallback(waiSuggestionsStatusGetter, suggestionsList.length);
+            }
+            this._waiSuggestionsStatus = !!newText;
+            this.waiReadText(newText);
+        },
+
+        _waiSuggestionAriaLabelGetter : function (param) {
+            return this.evalCallback(this._cfg.waiSuggestionAriaLabelGetter, param);
         },
 
         /**
