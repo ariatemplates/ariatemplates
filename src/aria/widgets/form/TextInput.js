@@ -914,11 +914,13 @@ module.exports = Aria.classDefinition({
          */
         _dom_onclick : function (event) {
             if (!!this._cfg.onclick) {
-                var evtWrapper = new ariaTemplatesDomEventWrapper(event);
-                this.evalCallback(this._cfg.onclick, evtWrapper);
-                if (evtWrapper) {
+                if (event) {
+                    var evtWrapper = new ariaTemplatesDomEventWrapper(event);
+                    this.evalCallback(this._cfg.onclick, evtWrapper);
                     evtWrapper.$dispose();
+                    return;
                 }
+                this.evalCallback(this._cfg.onclick);
             }
         },
 
@@ -968,10 +970,12 @@ module.exports = Aria.classDefinition({
                 }
             }
             if (!!this._cfg.onfocus && !avoidCallback) {
-                var evtWrapper = new ariaTemplatesDomEventWrapper(event);
-                this.evalCallback(this._cfg.onfocus, evtWrapper);
-                if (evtWrapper) {
+                if (event) {
+                    var evtWrapper = new ariaTemplatesDomEventWrapper(event);
+                    this.evalCallback(this._cfg.onfocus, evtWrapper);
                     evtWrapper.$dispose();
+                } else {
+                    this.evalCallback(this._cfg.onfocus);
                 }
             }
 
@@ -1051,11 +1055,13 @@ module.exports = Aria.classDefinition({
                 this._hasFocus = false;
             }
             if (this._cfg.onblur && !avoidCallback) {
-                var evtWrapper = new ariaTemplatesDomEventWrapper(event);
-                this.evalCallback(this._cfg.onblur, evtWrapper);
-                if (evtWrapper) {
+                if (event) {
+                    var evtWrapper = new ariaTemplatesDomEventWrapper(event);
+                    this.evalCallback(this._cfg.onblur, evtWrapper);
                     evtWrapper.$dispose();
+                    return;
                 }
+                this.evalCallback(this._cfg.onblur);
             }
         },
 
