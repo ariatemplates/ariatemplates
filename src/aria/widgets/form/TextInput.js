@@ -23,6 +23,8 @@ var ariaUtilsType = require("../../utils/Type");
 var ariaUtilsArray = require("../../utils/Array");
 var ariaCoreBrowser = require("../../core/Browser");
 var ariaCoreTimer = require("../../core/Timer");
+var ariaTemplatesDomEventWrapper = require("../../templates/DomEventWrapper");
+
 
 /**
  * Specialize the input classes for Text input and manage the HTML input element
@@ -910,9 +912,13 @@ module.exports = Aria.classDefinition({
          * input widget if the autoselect property has been set to true.
          * @protected
          */
-        _dom_onclick : function () {
+        _dom_onclick : function (event) {
             if (!!this._cfg.onclick) {
-                this.evalCallback(this._cfg.onclick);
+                var evtWrapper = new ariaTemplatesDomEventWrapper(event);
+                this.evalCallback(this._cfg.onclick, evtWrapper);
+                if (evtWrapper) {
+                    evtWrapper.$dispose();
+                }
             }
         },
 
@@ -962,7 +968,11 @@ module.exports = Aria.classDefinition({
                 }
             }
             if (!!this._cfg.onfocus && !avoidCallback) {
-                this.evalCallback(this._cfg.onfocus);
+                var evtWrapper = new ariaTemplatesDomEventWrapper(event);
+                this.evalCallback(this._cfg.onfocus, evtWrapper);
+                if (evtWrapper) {
+                    evtWrapper.$dispose();
+                }
             }
 
             // on IE9 and IE10, it is necessary to add some delay before being able to set the selection
@@ -1041,7 +1051,11 @@ module.exports = Aria.classDefinition({
                 this._hasFocus = false;
             }
             if (this._cfg.onblur && !avoidCallback) {
-                this.evalCallback(this._cfg.onblur);
+                var evtWrapper = new ariaTemplatesDomEventWrapper(event);
+                this.evalCallback(this._cfg.onblur, evtWrapper);
+                if (evtWrapper) {
+                    evtWrapper.$dispose();
+                }
             }
         },
 
