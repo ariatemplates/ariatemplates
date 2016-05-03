@@ -41,5 +41,7 @@ Aria.classDefinition({
 
         this.addTests("test.aria.widgets.wai.fieldset.FieldsetLabelJawsTestCase");
 
+        this.addTests("test.aria.widgets.wai.input.selectBox.SelectBoxSuggestionsJawsTestCase");
+
     }
 });

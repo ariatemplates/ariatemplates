@@ -939,6 +939,10 @@ module.exports = Aria.beanDefinitions({
                     $description : "when set to \"always\", the first option in the list is highlighted, so that it can be selected by hitting the ENTER key. When set to \"none\", no option will be automatically highlighted. The user will have to use navigation keys to move through the list and select an item.",
                     $enumValues : ["always", "none"],
                     $default : "always"
+                },
+                "waiSuggestionsStatusGetter" : {
+                    $type : "common:Callback",
+                    $description : "The callback specified in this parameter is called when the number of suggestions changes. It receives the new number of suggestions and should return the message to be read by screen readers. This parameter is only used if waiAria is true."
                 }
 
             }

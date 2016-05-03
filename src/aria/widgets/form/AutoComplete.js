@@ -16,18 +16,12 @@ var Aria = require("../../Aria");
 var ariaWidgetsFormDropDownListTrait = require("./DropDownListTrait");
 var ariaWidgetsControllersAutoCompleteController = require("../controllers/AutoCompleteController");
 var ariaUtilsEvent = require("../../utils/Event");
-var ariaUtilsJson = require("../../utils/Json");
 var ariaUtilsFunction = require("../../utils/Function");
 var ariaWidgetsFormAutoCompleteStyle = require("./AutoCompleteStyle.tpl.css");
 var ariaWidgetsFormListListStyle = require("./list/ListStyle.tpl.css");
 var ariaWidgetsContainerDivStyle = require("../container/DivStyle.tpl.css");
 var ariaWidgetsFormDropDownTextInput = require("./DropDownTextInput");
 var ariaCoreBrowser = require("../../core/Browser");
-
-var emptyWaiSuggestionsStatus = {
-    number: 0,
-    text: ""
-};
 
 /**
  * AutoComplete widget
@@ -91,8 +85,6 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         this._freePopupWidth = false;
-
-        this._waiSuggestionsStatus = emptyWaiSuggestionsStatus;
         this._waiSuggestionsChangedListener = null;
     },
     $destructor : function () {
@@ -284,58 +276,11 @@ module.exports = Aria.classDefinition({
          * @override
          */
         _afterDropdownOpen : function () {
-            this.$DropDownTextInput._afterDropdownOpen.apply(this, arguments);
+            this.$DropDownListTrait._afterDropdownOpen.apply(this, arguments);
             if (this._cfg.waiAria) {
                 var field = this.getTextInputField();
                 field.setAttribute("aria-owns", this.controller.getListWidget().getListDomId());
-                this._addWaiSuggestionsChangedListener();
-                this._waiSuggestionsChanged();
             }
-        },
-
-        _addWaiSuggestionsChangedListener : function () {
-            var callback = this._waiSuggestionsChangedListener;
-            if (!callback) {
-                callback = this._waiSuggestionsChangedListener = {
-                    scope: this,
-                    fn: this._waiSuggestionsChanged
-                };
-                ariaUtilsJson.addListener(this.controller.getDataModel(), "listContent", callback);
-            }
-        },
-
-        _removeWaiSuggestionsChangedListener : function () {
-            var callback = this._waiSuggestionsChangedListener;
-            if (callback) {
-                ariaUtilsJson.removeListener(this.controller.getDataModel(), "listContent", callback);
-                this._waiSuggestionsChangedListener = null;
-            }
-        },
-
-        _computeWaiSuggestionsStatus : function () {
-            var dm = this.controller.getDataModel();
-            var suggestionsList = dm.listContent;
-            var popupDisplayed = this._dropdownPopup && suggestionsList.length > 0;
-            var justClosedPopup = !popupDisplayed && (dm.value == null || dm.value === dm.text) && this._waiSuggestionsStatus.number > 0;
-            var waiSuggestionsStatusGetter = this._cfg.waiSuggestionsStatusGetter;
-            if (waiSuggestionsStatusGetter && (popupDisplayed || justClosedPopup)) {
-                return {
-                    number: suggestionsList.length,
-                    text: this.evalCallback(waiSuggestionsStatusGetter, suggestionsList.length)
-                };
-            }
-            return emptyWaiSuggestionsStatus;
-        },
-
-        _waiSuggestionsChanged : function () {
-            var waiSuggestionsStatus = this._computeWaiSuggestionsStatus();
-            var newText = waiSuggestionsStatus.text;
-            this._waiSuggestionsStatus = waiSuggestionsStatus;
-            this.waiReadText(newText);
-        },
-
-        _waiSuggestionAriaLabelGetter : function (param) {
-            return this.evalCallback(this._cfg.waiSuggestionAriaLabelGetter, param);
         },
 
         /**
@@ -349,9 +294,6 @@ module.exports = Aria.classDefinition({
                 field.removeAttribute("aria-owns");
             }
             this.$DropDownListTrait._afterDropdownClose.apply(this, arguments);
-            if (this._cfg.waiAria) {
-                this._waiSuggestionsChanged();
-            }
         },
 
         /**
