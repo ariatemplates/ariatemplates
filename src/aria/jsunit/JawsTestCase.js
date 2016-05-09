@@ -135,7 +135,7 @@ module.exports = Aria.classDefinition({
                     var originalResponse = response;
 
                     if (filterFn) {
-                        response = filterFn(response);
+                        response = filterFn.call(this, response);
                     }
                     var changed = response !== originalResponse;
 
@@ -158,6 +158,22 @@ module.exports = Aria.classDefinition({
                 },
                 scope: this
             });
+        },
+
+        /**
+         * Remove duplicate sentences
+         * @param {String} response JAWS response to be processed
+         */
+        removeDuplicates : function (response) {
+            var lines = response.split("\n");
+            var newLines = [lines[0]];
+            for(var i = 1, ii = lines.length; i < ii; i++) {
+                var line = lines[i];
+                if (line != lines[i - 1]) {
+                    newLines.push(line);
+                }
+            }
+            return newLines.join("\n");
         }
     }
 });
