@@ -47,13 +47,7 @@ module.exports = Aria.classDefinition({
 
         this.$DropDownTextInput.constructor.call(this, cfg, ctxt, lineNumber, controllerInstance);
 
-        if (cfg.expandButton) {
-            this._iconsAttributes = {
-                // unselectable is necessary on IE so that, on mouse down, there is no blur of the active element
-                // (preventing the default action on mouse down does not help on IE)
-                "dropdown" : 'unselectable="on"'
-            };
-        } else {
+        if (!cfg.expandButton) {
             /**
              * Array of icon names which need to be hidden.
              * @type Array
@@ -280,6 +274,11 @@ module.exports = Aria.classDefinition({
             if (this._cfg.waiAria) {
                 var field = this.getTextInputField();
                 field.setAttribute("aria-owns", this.controller.getListWidget().getListDomId());
+
+                var dropDownIcon = this._getDropdownIcon();
+                if (dropDownIcon) {
+                    dropDownIcon.setAttribute("aria-expanded", "true");
+                }
             }
         },
 
@@ -292,7 +291,12 @@ module.exports = Aria.classDefinition({
                 var field = this.getTextInputField();
                 field.removeAttribute("aria-activedescendant");
                 field.removeAttribute("aria-owns");
-            }
+
+                var dropDownIcon = this._getDropdownIcon();
+                if (dropDownIcon) {
+                    dropDownIcon.setAttribute("aria-expanded", "false");
+                }
+           }
             this.$DropDownListTrait._afterDropdownClose.apply(this, arguments);
         },
 
@@ -384,6 +388,7 @@ module.exports = Aria.classDefinition({
                 this.$DropDownTextInput._onBoundPropertyChange.apply(this, arguments);
             }
         },
+
         /**
          * Initialization method called by the delegate engine when the DOM is loaded
          */
