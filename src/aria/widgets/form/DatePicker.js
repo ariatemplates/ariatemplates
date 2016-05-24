@@ -19,7 +19,6 @@ var ariaWidgetsFormDatePickerStyle = require("./DatePickerStyle.tpl.css");
 var ariaWidgetsCalendarCalendarStyle = require("../calendar/CalendarStyle.tpl.css");
 var ariaWidgetsContainerDivStyle = require("../container/DivStyle.tpl.css");
 var ariaWidgetsFormDropDownTextInput = require("./DropDownTextInput");
-var ariaUtilsString = require("../../utils/String");
 
 /**
  * DatePicker widget, which is a template-based widget.
@@ -47,16 +46,6 @@ module.exports = Aria.classDefinition({
             controller.setReferenceDate(new Date(cfg.referenceDate));
         }
         this._calendarFocus = false;
-
-        var iconTooltip = cfg.iconTooltip ? ' title="' + ariaUtilsString.escapeForHTML(cfg.iconTooltip) + '"' : '';
-        this._iconsAttributes = {
-            // unselectable is necessary on IE so that, on mouse down, there is no blur of the active element
-            // (preventing the default action on mouse down does not help on IE)
-            "dropdown": 'unselectable="on"' + iconTooltip
-        };
-        if (cfg.waiAria) {
-            this._iconsAttributes.dropdown += ' role="button" aria-expanded="false" aria-haspopup="true"';
-        }
     },
     $destructor : function () {
         this._dropDownIcon = null;

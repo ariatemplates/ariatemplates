@@ -51,7 +51,6 @@ module.exports = Aria.classDefinition({
          */
         this._freePopupWidth = false;
         this._waiSuggestionsChangedListener = null;
-
     },
     $destructor : function () {
         this._removeWaiSuggestionsChangedListener();
@@ -75,6 +74,17 @@ module.exports = Aria.classDefinition({
                 }
             }
         },
+
+        _initInputMarkup : function () {
+            this.$DropDownTextInput._initInputMarkup.apply(this, arguments);
+            var dropDownIcon = null;
+            if (this._frame.getIcon) {
+                dropDownIcon = this._frame.getIcon("dropdown");
+            }
+            this.$assert(54, dropDownIcon);
+            this._dropDownIcon = dropDownIcon;
+        },
+
         /**
          * This method checks the consistancy of the values provided in the attributes of SelectBox and logs and error
          * if there are any descripancies
@@ -119,6 +129,24 @@ module.exports = Aria.classDefinition({
             } else {
                 aria.widgets.form.SelectBox.superclass._onBoundPropertyChange.call(this, propertyName, newValue, oldValue);
             }
+        },
+
+        /**
+         * Callback for the event onAfterOpen raised by the popup.
+         * @override
+         */
+        _afterDropdownOpen : function () {
+            if (this._cfg.waiAria) {
+                this._dropDownIcon.setAttribute("aria-expanded", "true");
+            }
+            this.$DropDownListTrait._afterDropdownOpen.apply(this, arguments);
+        },
+
+        _afterDropdownClose : function () {
+            if (this._cfg.waiAria) {
+                this._dropDownIcon.setAttribute("aria-expanded", "false");
+            }
+            this.$DropDownListTrait._afterDropdownClose.call(this);
         }
     }
 });

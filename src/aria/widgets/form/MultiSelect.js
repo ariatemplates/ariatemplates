@@ -91,8 +91,10 @@ module.exports = Aria.classDefinition({
             "dropdown": 'tabindex="-1"' + iconTooltip
         };
         if (cfg.waiAria) {
-            this._extraInputAttributes += ' aria-expanded="false" role="combobox" aria-autocomplete="list" ';
-            this._iconsAttributes.dropdown += ' role="button" aria-expanded="false" aria-haspopup="true"  ';
+            this._extraInputAttributes += ' role="combobox" aria-autocomplete="list" ';
+            var waiIconLabel = cfg.waiIconLabel;
+            this._iconsAttributes.dropdown += ' role="button" aria-expanded="false" aria-haspopup="true"  ' +
+               (waiIconLabel ? 'aria-label="' + waiIconLabel + '" ' : "");
         }
     },
     $destructor : function () {
@@ -260,8 +262,10 @@ module.exports = Aria.classDefinition({
          */
         _afterDropdownClose : function () {
             if (this._cfg.waiAria) {
-                var field = this.getTextInputField();
-                field.setAttribute("aria-expanded", "false");
+                var dropDownIcon = this._getDropdownIcon();
+                if (dropDownIcon) {
+                    dropDownIcon.setAttribute("aria-expanded", "false");
+                }
             }
 
             this._setPopupOpenProperty(false);
@@ -308,8 +312,10 @@ module.exports = Aria.classDefinition({
             this._dropDownOpen = true;
             this._focusMultiSelect(list);
             if (this._cfg.waiAria) {
-                var field = this.getTextInputField();
-                field.setAttribute("aria-expanded", "true");
+                var dropDownIcon = this._getDropdownIcon();
+                if (dropDownIcon) {
+                    dropDownIcon.setAttribute("aria-expanded", "true");
+                }
             }
         },
 

@@ -681,6 +681,14 @@ module.exports = Aria.beanDefinitions({
                             $type : "common:BindingRef"
                         }
                     }
+                },
+                "iconTooltip" : {
+                    $type : "json:String",
+                    $description : "Tooltip for the icon, if any"
+                },
+                "waiIconLabel" : {
+                    $type : "json:String",
+                    $description : "aria-label attribute on the icon, when waiAria is activated"
                 }
             }
         },
@@ -792,10 +800,6 @@ module.exports = Aria.beanDefinitions({
                 "displayOptions" : {
                     $type : "FormListCfg:displayOptions",
                     $description : "Display options that are not interpreted by the list controller."
-                },
-                "iconTooltip" : {
-                    $type : "json:String",
-                    $description : "Tooltip for the multiselect icon"
                 }
             }
         },
@@ -883,10 +887,6 @@ module.exports = Aria.beanDefinitions({
                     $type : "json:String",
                     $description : "sclass of the calendar used in the dropdown. The default value for this property is taken from the skin."
                 },
-                "iconTooltip" : {
-                    $type : "json:String",
-                    $description : "Tooltip for the datepicker icon"
-                },
                 "waiAriaCalendarLabel": {
                     $type : "json:String",
                     $description : "aria-label to set on the calendar (only used when waiAria is true)."
@@ -948,7 +948,6 @@ module.exports = Aria.beanDefinitions({
                     $type : "common:Callback",
                     $description : "The callback specified in this parameter is called when the number of suggestions changes. It receives the new number of suggestions and should return the message to be read by screen readers. This parameter is only used if waiAria is true."
                 }
-
             }
         },
 

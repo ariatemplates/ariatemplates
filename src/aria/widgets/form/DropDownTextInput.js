@@ -19,6 +19,7 @@ var ariaWidgetsFormTextInput = require("./TextInput");
 var ariaCoreBrowser = require("../../core/Browser");
 var ariaCoreTimer = require("../../core/Timer");
 var ariaUtilsDevice = require("../../utils/Device");
+var ariaUtilsString = require("../../utils/String");
 
 /**
  * Base class for all text input widgets that use a drop-down popup
@@ -35,6 +36,16 @@ module.exports = Aria.classDefinition({
      */
     $constructor : function (cfg, ctxt, lineNumber, controller) {
         this.$TextInput.constructor.call(this, cfg, ctxt, lineNumber, controller);
+        var iconTooltip = cfg.iconTooltip ? ' title="' + ariaUtilsString.escapeForHTML(cfg.iconTooltip) + '"' : '';
+        this._iconsAttributes = {
+            // unselectable is necessary on IE so that, on mouse down, there is no blur of the active element
+            // (preventing the default action on mouse down does not help on IE)
+            "dropdown": 'unselectable="on"' + iconTooltip
+        };
+        if (cfg.waiAria) {
+            this._iconsAttributes.dropdown += ' role="button" aria-expanded="false" aria-haspopup="true"' +
+                (cfg.waiIconLabel ? ' aria-label="' + cfg.waiIconLabel + '"' : "");
+        }
     },
     $destructor : function () {
         this._closeDropdown();
@@ -270,6 +281,18 @@ module.exports = Aria.classDefinition({
                 this._focusNoKeyboard = false;
             }
             this.$DropDownTrait._dropDownMouseClickClose.call(this, evt);
+        },
+
+        /**
+         * Return the dropdown icon
+         * @protected
+         */
+        _getDropdownIcon : function () {
+            var dropDownIcon = this._dropdownIcon;
+            if (!dropDownIcon && this._frame.getIcon) {
+                dropDownIcon = this._frame.getIcon("dropdown");
+            }
+            return dropDownIcon;
         },
 
         /**
