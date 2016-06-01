@@ -491,9 +491,12 @@ module.exports = Aria.classDefinition({
                 var option = options[i];
                 if (option.value === value) {
                     option.selected = true;
-                    break;
+                    return;
                 }
             }
+            // In case we do not find any option matching the value, let's make sure no option
+            // is selected, this is especially necessary because of a weird bug in Chrome:
+            selectField.selectedIndex = -1;
         },
 
         /**
