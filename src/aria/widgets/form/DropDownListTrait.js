@@ -102,16 +102,6 @@ module.exports = Aria.classDefinition({
         },
 
         /**
-         * Callback called when the user called when the user clicks the mouse in the list.
-         * @param {Object} evt object containing information about the element on which the mouse was clicked.
-         * @protected
-         */
-        _listMouseDown : function (evt) {
-            evt.target.setProperty("unselectable", "on");
-            evt.preventDefault(); // prevent the blur when clicking the popup inside the widget
-        },
-
-        /**
          * Callback for the keyevent on List widget. <br />
          * restore the focus on the right item if it does not have the focus, and propagate the key
          * @param {Object} evt object containing keyboard event information (charCode and keyCode). This is not an
@@ -179,10 +169,6 @@ module.exports = Aria.classDefinition({
                 },
                 onclose : {
                     fn : this._closeDropdown,
-                    scope : this
-                },
-                onmousedown : {
-                    fn : this._listMouseDown,
                     scope : this
                 },
                 onchange : options.onchange,

@@ -188,21 +188,6 @@ module.exports = Aria.classDefinition({
             this.$DropDownTextInput._reactToControllerReport.call(this, report, arg);
         },
 
-        /**
-         * DOM callback function called when the focus is taken off the input. The onBlur event is available on the
-         * input that sits inside a span. In this function we always close the popup.
-         * @param {aria.DomEvent} event Blur event
-         * @protected
-         */
-        _dom_onblur : function (event, avoidCallback) {
-            this._keepFocus = false;
-            this.$DropDownTextInput._dom_onblur.call(this, event, avoidCallback);
-            if (this._dropdownPopup) {
-                this._dropdownPopup.close(event);
-            }
-
-        },
-
         _dom_onkeydown : function (event) {
             // On Shift+F10, when AutoComplete has no expand button enabled, we don't open the dropdown, we only close it
             if (this._isShiftF10Pressed(event) && !this._cfg.expandButton && this._dropdownPopup == null) {
@@ -221,20 +206,6 @@ module.exports = Aria.classDefinition({
             this.$DropDownTextInput._dom_onkeyup.call(this, event);
             if (event.keyCode == event.KC_ENTER) {
                 this.checkValue();
-            }
-        },
-
-        /**
-         * Handle events raised by the frame
-         * @param {Object} evt
-         * @override
-         */
-        _frame_events : function (evt) {
-            if (evt.name == "iconMouseDown" && evt.iconName == "dropdown" && !this._cfg.disabled) {
-                evt.event.preventDefault();
-            } else if (evt.name == "iconClick" && evt.iconName == "dropdown" && !this._cfg.disabled) {
-                this._toggleDropdown();
-                evt.event.preventDefault();
             }
         },
 
