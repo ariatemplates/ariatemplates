@@ -13,6 +13,7 @@
  * limitations under the License.
  */
 var Aria = require("../../../../Aria");
+var ariaCoreBrowser = require("../../../../core/Browser");
 var ariaCoreTimer = require("../../../../core/Timer");
 
 
@@ -125,6 +126,11 @@ module.exports = Aria.tplScriptDefinition({
             if (!this.data.disabled) {
                 var itemIdx = evt.target.getData("itemIdx", true);
                 if (itemIdx) {
+                    if (ariaCoreBrowser.isWebkit) {
+                        // webkit-based browsers explicitly need this
+                        // (http://www.quirksmode.org/dom/events/blurfocus.html)
+                        evt.target.focus();
+                    }
                     this.moduleCtrl.itemClick(itemIdx);
                 }
             }
