@@ -77,6 +77,13 @@ var prototype = {
         this._log.apply(this, args);
     },
 
+    _debugger : function (next) {
+        /* jshint debug: true */
+        debugger;
+        next();
+    },
+
+
 
     ////////////////////////////////////////////////////////////////////////////
     // DOM

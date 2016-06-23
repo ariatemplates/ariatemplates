@@ -21,6 +21,7 @@ var ariaTemplatesNavigationManager = require("../templates/NavigationManager");
 var ariaUtilsAriaWindow = require("../utils/AriaWindow");
 var ariaCoreBrowser = require("../core/Browser");
 var ariaCoreTimer = require("../core/Timer");
+var ViewportNavigationInterceptor = require('./PopupNavigationManager').ViewportNavigationInterceptor;
 
 (function () {
 
@@ -112,6 +113,8 @@ var ariaCoreTimer = require("../core/Timer");
              * @type Number
              */
             this.currentZIndex = this.baseZIndex;
+
+            this._viewportNavigationInterceptor = ViewportNavigationInterceptor();
 
             ariaUtilsAriaWindow.$on({
                 "unloadWindow" : this._reset,
@@ -379,15 +382,31 @@ var ariaCoreTimer = require("../core/Timer");
                 var target = domEvent.target;
                 var self = this;
                 var popup = this.findParentPopup(target, function (popup) {
+                    var navigation;
+                    navigation = self._viewportNavigationInterceptor.getNavigationInformation(target);
+                    if (navigation == null) {
+                        navigation = popup.getNavigationInformation(target);
+                    }
+
                     var eventObject = {
                         name: "beforePreventingFocus",
                         event: domEvent,
                         modalPopup: popup,
-                        cancel: false
+                        cancel: false,
+                        navigation: navigation
                     };
                     self.$raiseEvent(eventObject);
                     if (!eventObject.cancel) {
-                        ariaTemplatesNavigationManager.focusFirst(popup.domElement);
+                        var direction;
+                        if (navigation != null) {
+                            direction = navigation.direction;
+                        }
+                        if (direction == null) {
+                            direction = 'forward';
+                        }
+
+                        var reverse = !!(direction === 'backward');
+                        ariaTemplatesNavigationManager.focusFirst(popup.domElement, reverse);
                         return popup;
                     }
                     // if the focus is allowed, don't return any popup to bring to the front
@@ -583,6 +602,7 @@ var ariaCoreTimer = require("../core/Timer");
                     popup : popup
                 });
 
+                this._viewportNavigationInterceptor.ensureElements();
             },
 
             /**
@@ -597,6 +617,7 @@ var ariaCoreTimer = require("../core/Timer");
                     if (this.modalPopups === 0) {
                         this.disconnectModalEvents();
                         this.$raiseEvent("modalPopupAbsent");
+                        this._viewportNavigationInterceptor.destroyElements();
                     }
                 }
                 if (utilsArray.isEmpty(openedPopups)) {

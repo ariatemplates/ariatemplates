@@ -27,6 +27,7 @@ var ariaCoreTimer = require("../core/Timer");
 var ariaCoreJsonValidator = require("../core/JsonValidator");
 var ViewportPopupContainer = require("./container/Viewport");
 var environment = require("../core/environment/Environment");
+var DialogNavigationInterceptor = require('./PopupNavigationManager').DialogNavigationInterceptor;
 
 /**
  * Popup instance
@@ -75,6 +76,8 @@ module.exports = Aria.classDefinition({
         WRONG_MODALMASK_ZINDEX : "The z-index of the modal mask (%1) is higher than the z-index of the corresponding dialog (%2)."
     },
     $constructor : function () {
+        // ---------------------------------------------------------- properties
+
         /**
          * The array of positions (couples of anchors) used for positionning the popup
          * @type Array
@@ -152,6 +155,8 @@ module.exports = Aria.classDefinition({
          */
         this.ANCHOR_KEYS = [this.ANCHOR_BOTTOM, this.ANCHOR_TOP, this.ANCHOR_LEFT, this.ANCHOR_RIGHT];
 
+        // ------------------------------------------------ protected properties
+
         /**
          * A list of HTMLElements which, when clicked upon, do not cause the popup to close
          * @protected
@@ -183,12 +188,18 @@ module.exports = Aria.classDefinition({
          * @type HTMLElement
          */
         this._document = Aria.$window.document;
-        ariaPopupsPopupManager.registerPopup(this);
 
+        var self = this;
+        this._dialogNavigationInterceptor = DialogNavigationInterceptor(function() {
+            return self.domElement;
+        });
+
+        // ---------------------------------------------------------- processing
+
+        ariaPopupsPopupManager.registerPopup(this);
     },
 
     $destructor : function () {
-
         this.close();
         this.reference = null;
         if (this._delegateId) {
@@ -230,7 +241,6 @@ module.exports = Aria.classDefinition({
     },
 
     $prototype : {
-
         /**
          * Save the configuration information for this popup.
          * @param {aria.popups.Beans:PopupCfg} conf
@@ -706,18 +716,22 @@ module.exports = Aria.classDefinition({
 
             var conf = this.conf;
 
+            var waiAria = conf.waiAria;
+            var animateIn = conf.animateIn;
+
             var domElement = this.domElement;
             var modalMaskDomElement = this.modalMaskDomElement;
+            var popupContainer = this.popupContainer;
 
             // ------------------------------------------------------ processing
 
             // Ensure that the top left corner is visible
             if (modalMaskDomElement) {
                 if (this._containerOverflow == -1) {
-                    this._containerOverflow = this.popupContainer.changeContainerOverflow("hidden");
+                    this._containerOverflow = popupContainer.changeContainerOverflow("hidden");
                 }
 
-                var containerSize = this.popupContainer.getScrollSize();
+                var containerSize = popupContainer.getScrollSize();
 
                 // Compute the style after scrollbars are removed from the
                 // container. Thus the dialog can be properly centered.
@@ -742,11 +756,11 @@ module.exports = Aria.classDefinition({
                     'display:block;'
                 ].join('');
 
-                if (conf.waiAria) {
+                if (waiAria) {
                     modalMaskDomElement.setAttribute('aria-hidden', 'true');
                 }
 
-                if (conf.animateIn) {
+                if (animateIn) {
                     this._getMaskAnimator().start("fade", {
                         to : modalMaskDomElement,
                         type : 1
@@ -773,8 +787,8 @@ module.exports = Aria.classDefinition({
             domElement.style.cssText = popupPosition.concat(['z-index:', this.computedStyle.zIndex, ';',
                     'position:absolute;display:inline-block;']).join('');
 
-            if (conf.animateIn) {
-                this._startAnimation(conf.animateIn, {
+            if (animateIn) {
+                this._startAnimation(animateIn, {
                     to : domElement,
                     type : 1
                 }, false);
@@ -782,9 +796,16 @@ module.exports = Aria.classDefinition({
 
             if (ariaCoreBrowser.isIE7 && !this.isOpen) {
                 // Without the following line, the autocomplete does not initially display its content on IE7:
-                this.popupContainer.getContainerElt().appendChild(domElement);
+                popupContainer.getContainerElt().appendChild(domElement);
             }
 
+            if (modalMaskDomElement && waiAria && popupContainer.getContainerRef() === ariaUtilsDom.VIEWPORT) {
+                this._dialogNavigationInterceptor.ensureElements();
+            }
+        },
+
+        getNavigationInformation : function(focusedElement) {
+            return this._dialogNavigationInterceptor.getNavigationInformation(focusedElement);
         },
 
         /**
@@ -840,6 +861,9 @@ module.exports = Aria.classDefinition({
                 this.$raiseEvent(event);
                 if (!event.cancelClose) {
                     this._hide();
+
+                    this._dialogNavigationInterceptor.destroyElements();
+
                     this.isOpen = false;
                     // Notify the popup manager this popup was closed
                     ariaPopupsPopupManager.onPopupClose(this);

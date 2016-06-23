@@ -34,6 +34,12 @@ function Dialog(options) {
     }
     this.wai = wai;
 
+    var fill = options.fill;
+    if (fill == null) {
+        fill = false;
+    }
+    this.fill = fill;
+
     var fullyEmpty = options.fullyEmpty;
     if (fullyEmpty == null) {
         fullyEmpty = false;
@@ -83,6 +89,18 @@ function Dialog(options) {
     var elementBeforeId = 'before_' + buttonId;
     this.elementBeforeId = elementBeforeId;
 
+    var firstInputId = null;
+    if (fill) {
+        firstInputId = id + '_firstInput';
+    }
+    this.firstInputId = firstInputId;
+
+    var secondInputId = null;
+    if (fill) {
+        secondInputId = id + '_secondInput';
+    }
+    this.secondInputId = secondInputId;
+
     var title = 'Dialog' + titlePart;
     this.title = title;
 
@@ -115,7 +133,10 @@ function Dialog(options) {
 
         title: title,
 
-        macro: 'dialogContent',
+        macro: {
+            name: 'dialogContent',
+            args: [this]
+        },
 
         bind: {
             'visible': visibleBinding
@@ -147,7 +168,8 @@ function buildData(index) {
     }));
 
     dialogs.push(new Dialog({
-        wai: true
+        wai: true,
+        fill: true
     }));
     dialogs.push(new Dialog({
         wai: true,

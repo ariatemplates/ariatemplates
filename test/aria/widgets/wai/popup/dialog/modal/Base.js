@@ -63,7 +63,8 @@ module.exports = Aria.classDefinition({
                 // attributes --------------------------------------------------
 
                 add('_testLabel', dialog);
-                add('_testElementsHiding', dialog);
+                // The following test has been disabled for reasons explained in the corresponding function's documentation
+                // add('_testElementsHiding', dialog);
 
                 // behavior ----------------------------------------------------
 
@@ -142,6 +143,11 @@ module.exports = Aria.classDefinition({
             }
         },
 
+        /**
+         * For this test to work properly, elements already hidden before opening the dialog should be recorded, in order to check their hidden state is not altered.
+         * However, due to the generic aspect of this test, this brings a sort of re-implementation of the feature, which is not worth it.
+         * The full design should be reviewed to have more static expectations, simpler to maintain and eventually a more robust test.
+         */
         _testElementsHiding : function (callback, dialog) {
             // --------------------------------------------------- configuration
 
@@ -329,7 +335,45 @@ module.exports = Aria.classDefinition({
         },
 
         _testFocusCycling : function (callback, dialog) {
-            callback();
+            // ----------------------------------------------- early termination
+
+            if (!dialog.wai || !dialog.fill || dialog.displayInContainer || dialog.fullyEmpty) {
+                callback();
+                return;
+            }
+
+            // ------------------------------------------------------ processing
+
+            var isFirstElementFocused = this._createPredicate(function () {
+                return this._getActiveElement() === ariaUtilsDom.getElementById(dialog.firstInputId);
+            }, function () {
+                return 'Focus was not cycled properly while navigating forward.';
+            });
+
+            var isLastElementFocused = this._createPredicate(function () {
+                return this._getActiveElement() === ariaUtilsDom.getElementById(dialog.secondInputId);
+            }, function () {
+                return 'Focus was not cycled properly while navigating backward.';
+            });
+
+            this._localAsyncSequence(function (add) {
+                add('_openDialog', dialog);
+                // On title
+
+                add('_navigateBackward');
+                add(isLastElementFocused.waitForTrue);
+
+                add('_navigateForward');
+                // On title again
+                add('_navigateForward');
+                // On close icon
+                add('_navigateForward');
+                // On maximize icon
+                add('_navigateForward');
+                add(isFirstElementFocused.waitForTrue);
+
+                add('_closeDialog', dialog);
+            }, callback);
         },
 
 

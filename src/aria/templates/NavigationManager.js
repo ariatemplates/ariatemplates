@@ -222,34 +222,72 @@ module.exports = Aria.classDefinition({
                 return false;
             }
             // case existing widget
-            if (target.__widget) {
-                if (target.__widget.focus) {
-                    var focusSuccess = target.__widget.focus(null, cb);
-                    // PTR 04634723 - the focus method of the template widget returns a boolean value that represents
-                    // the success/failure of the focus.
-                    // Note 30.10.2012: I refactored from return (focusSuccess==false) ? false:true
-                    // It seems that false is returned from 'focus' method in case of failure, and undefined (*not*
-                    // true, as stated above!) otherwise. So logically, seems there should be === false comparison here,
-                    // but the code seems to be working fine...
-                    return !!focusSuccess;
-                } else {
-                    return false;
-                }
+            var widget = target.__widget;
+            if (widget && widget.focus) {
+                var focusSuccess = widget.focus(null, cb);
+                // PTR 04634723 - the focus method of the template widget returns a boolean value that represents
+                // the success/failure of the focus.
+                // Note 30.10.2012: I refactored from return (focusSuccess==false) ? false:true
+                // It seems that false is returned from 'focus' method in case of failure, and undefined (*not*
+                // true, as stated above!) otherwise. So logically, seems there should be === false comparison here,
+                // but the code seems to be working fine...
+                return !!focusSuccess;
             } else {
-                var nodeName = target.nodeName, tabIndex = target.getAttributeNode("tabindex");
-                if ((nodeName == "INPUT" || nodeName == "TEXTAREA" || nodeName == "A" || nodeName == "BUTTON" || (tabIndex
-                        && tabIndex.specified && tabIndex.nodeValue != -1))
-                        && !target.disabled) {
-                    try {
-                        target.focus();
-                        return true;
-                    } catch (e) {
-                        // this happens in IE if the element is disable or hidden
-                        return false;
-                    }
+                return this.focusDomElement(target);
+            }
+        },
+
+        focusDomElement : function (domElement) {
+            // ------------------------------------------------------ processing
+
+            var focused = false;
+
+            if (this.canBeFocused(domElement)) {
+                try {
+                    domElement.focus();
+                    focused = true;
+                } catch (exception) {
+                    // this happens in IE if the element is disable or hidden
                 }
             }
-            return false;
+
+            // ---------------------------------------------------------- return
+
+            return focused;
+        },
+
+        canBeFocused : function (domElement) {
+            // --------------------------------------------------- destructuring
+
+            var nodeName = domElement.nodeName;
+            var tabIndex = domElement.getAttributeNode('tabindex');
+            var disabled = domElement.disabled;
+
+            // ------------------------------------------------------ processing
+
+            var result = false;
+
+            // TODO Check visibility
+            if (!disabled) {
+                // TODO Add "AREA" (with checking of "href")
+                if (nodeName == 'INPUT') {
+                    result = true;
+                } else if (nodeName == 'TEXTAREA') {
+                    result = true;
+                } else if (nodeName == 'A') {
+                    // FIXME Check "href"
+                    result = true;
+                } else if (nodeName == 'BUTTON') {
+                    result = true;
+                } else if (tabIndex != null && tabIndex.specified && tabIndex.nodeValue != -1) {
+                    // XXX Check that it's the correct way to test the tabIndex (getAttributeNode vs tabIndex property, using !=-1 instead of >=0)
+                    result = true;
+                }
+            }
+
+            // ---------------------------------------------------------- return
+
+            return result;
         },
 
         // TABLE NAVIGATION

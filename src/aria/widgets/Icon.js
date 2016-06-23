@@ -17,6 +17,7 @@ var ariaUtilsString = require("../utils/String");
 var ariaWidgetsIconStyle = require("./IconStyle.tpl.css");
 var ariaWidgetsWidget = require("./Widget");
 var ariaCoreTplClassLoader = require("../core/TplClassLoader");
+var ariaTemplatesNavigationManager = require('../templates/NavigationManager');
 
 /**
  * Aria Icon Widget
@@ -164,6 +165,11 @@ module.exports = Aria.classDefinition({
             // ---------------------------------------------------------- output
 
             out.write(markup);
+        },
+
+        focus : function () {
+            var element = this.getDom();
+            return ariaTemplatesNavigationManager.focusDomElement(element);
         },
 
         /**

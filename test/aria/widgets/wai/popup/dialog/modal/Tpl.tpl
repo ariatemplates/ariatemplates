@@ -46,7 +46,11 @@
         {@aria:Dialog dialog.configuration /}
     {/macro}
 
-    {macro dialogContent()}
+    {macro dialogContent(dialog)}
+        {if dialog.fill}
+            <div>One: <input type='text' id='${dialog.firstInputId}' /></div>
+            <div>Two: <input type='text' id='${dialog.secondInputId}' /></div>
+        {/if}
     {/macro}
 
 {/Template}
