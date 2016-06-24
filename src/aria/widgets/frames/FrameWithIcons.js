@@ -20,6 +20,7 @@ var ariaUtilsType = require("../../utils/Type");
 var ariaUtilsArray = require("../../utils/Array");
 var ariaUtilsDelegate = require("../../utils/Delegate");
 var ariaUtilsString = require("../../utils/String");
+var registerSafeTap = require("../../utils/$SafeTap").getRegisterSafeTap();
 
 /**
  * A frame with icons on the left and right. To create an object of this class, use the createFrame static method (not
@@ -206,6 +207,7 @@ module.exports = Aria.classDefinition({
          */
         eventMap : {
             "click" : "iconClick",
+            "safetap" : "iconClick",
             "mousedown" : "iconMouseDown",
             "mouseup" : "iconMouseUp",
             "keydown" : "iconKeyDown",
@@ -484,7 +486,15 @@ module.exports = Aria.classDefinition({
          * @param {String} iconName
          */
         _delegateIcon : function (event, iconName) {
-            var eventName = this.eventMap[event.type];
+            var eventType = event.type;
+            if (eventType == "safetap" && !registerSafeTap(event)) {
+                // $SafeTap does not load the SafeTap class on non-touch devices
+                // however, that class may be loaded for any other reason, in which case
+                // we can receive safetap events but then registerSafeTap returns false
+                // and we can ignore the safetap event (as there will be also a click event)
+                return;
+            }
+            var eventName = this.eventMap[eventType];
             if (eventName) {
                 this.$raiseEvent({
                     name : eventName,

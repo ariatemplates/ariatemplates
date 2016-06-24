@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 var Aria = require("../Aria");
-
+var ariaUtilsDevice = require("../utils/Device");
 
 /**
  * Event utility to handle touch device detection.
@@ -49,8 +49,8 @@ module.exports = Aria.classDefinition({
                 this.touch = false;
                 return;
             }
-            this.touch = (('ontouchstart' in Aria.$frameworkWindow) || Aria.$frameworkWindow.DocumentTouch
-                    && Aria.$frameworkWindow.document instanceof Aria.$frameworkWindow.DocumentTouch);
+            this.touch = ariaUtilsDevice.isTouch();
+
             if (!this.touch) {
                 this.touchEventMap = {
                     "touchstart" : "mousedown",
