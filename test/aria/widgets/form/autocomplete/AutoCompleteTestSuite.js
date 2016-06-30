@@ -56,6 +56,5 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.form.autocomplete.preselectAutofill.PreselectAutofillTestSuite");
         this.addTests("test.aria.widgets.form.autocomplete.popupWidth.AdaptToContentWidthTest");
         this.addTests("test.aria.widgets.form.autocomplete.defaultErrorMessages.DefaultErrorMessagesTest");
-        this.addTests("test.aria.widgets.form.autocomplete.iframe.AutoComplete");
     }
 });
