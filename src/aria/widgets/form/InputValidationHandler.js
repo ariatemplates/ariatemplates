@@ -120,7 +120,9 @@ module.exports = Aria.classDefinition({
             var msg = this._checkErrorMessage(errorMessage);
             if (this._WidgetCfg.waiAria) {
                 div.addExtraAttributes('aria-hidden="true"');
-                this._widget.waiReadText(msg);
+                this._widget.waiReadText(msg, {
+                    alert: true
+                });
             }
 
             out.registerBehavior(div);

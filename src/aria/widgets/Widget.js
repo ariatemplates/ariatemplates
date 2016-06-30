@@ -784,20 +784,27 @@ module.exports = Aria.classDefinition({
             }
         },
 
-        waiReadText : function (text) {
+        waiReadText : function (text, options) {
             if (this._cfg && this._cfg.waiAria && text) {
+                var isAlert = options && options.alert;
                 var document = Aria.$window.document;
                 var waiReadTextElt = document.createElement("span");
                 waiReadTextElt.className = "xSROnly";
-                waiReadTextElt.setAttribute("role", "status");
+                waiReadTextElt.setAttribute("role", isAlert ? "alert" : "status");
                 waiReadTextElt.setAttribute("aria-live", "assertive");
                 waiReadTextElt.setAttribute("aria-relevant", "additions");
+                if (isAlert) {
+                    waiReadTextElt.style.visibility = "hidden";
+                }
                 this.getDom().appendChild(waiReadTextElt);
 
                 var textChild = document.createElement("span");
                 var textNode = document.createTextNode(text);
                 textChild.appendChild(textNode);
                 waiReadTextElt.appendChild(textChild);
+                if (isAlert) {
+                    waiReadTextElt.style.visibility = "visible";
+                }
                 setTimeout(function () {
                     // remove the node after 10ms
                     waiReadTextElt.parentNode.removeChild(waiReadTextElt);

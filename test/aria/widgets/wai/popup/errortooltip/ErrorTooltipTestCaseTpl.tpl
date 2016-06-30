@@ -22,6 +22,19 @@
     {/macro}
 
     {macro fields(waiAria)}
+        {call field_tf(waiAria)/}
+        {call field_ta(waiAria)/}
+        {call field_nf(waiAria)/}
+        {call field_df(waiAria)/}
+        {call field_time(waiAria)/}
+        {call field_dp(waiAria)/}
+        {call field_ac(waiAria)/}
+        {call field_ms(waiAria)/}
+        {call field_sb(waiAria)/}
+        {call field_mac(waiAria)/}
+    {/macro}
+
+    {macro field_tf(waiAria)}
         {@aria:TextField {
             id: "tf",
             directOnBlurValidation:true,
@@ -34,6 +47,9 @@
                 }
             }
         }/}<br>
+    {/macro}
+
+    {macro field_ta(waiAria)}
         {@aria:Textarea {
             id: "ta",
             directOnBlurValidation:true,
@@ -46,6 +62,9 @@
                 }
             }
         }/}<br>
+    {/macro}
+
+    {macro field_nf(waiAria)}
         {@aria:NumberField {
             id: "nf",
             directOnBlurValidation:true,
@@ -58,6 +77,9 @@
                 }
             }
         }/}<br>
+    {/macro}
+
+    {macro field_df(waiAria)}
         {@aria:DateField {
             id: "df",
             directOnBlurValidation:true,
@@ -70,7 +92,9 @@
                 }
             }
         }/}<br>
+    {/macro}
 
+    {macro field_time(waiAria)}
         {@aria:TimeField {
             id: "time",
             directOnBlurValidation:true,
@@ -83,6 +107,9 @@
                 }
             }
         }/}<br>
+    {/macro}
+
+    {macro field_dp(waiAria)}
         {@aria:DatePicker {
             id: "dp",
             directOnBlurValidation:true,
@@ -95,6 +122,9 @@
                 }
             }
         }/}<br>
+    {/macro}
+
+    {macro field_ac(waiAria)}
         {@aria:AutoComplete {
             id: "ac",
             directOnBlurValidation:true,
@@ -108,6 +138,9 @@
                 }
             }
         }/}<br>
+    {/macro}
+
+    {macro field_ms(waiAria)}
         {@aria:MultiSelect {
             id: "ms",
             directOnBlurValidation:true,
@@ -121,6 +154,9 @@
                 }
             }
         }/}<br>
+    {/macro}
+
+    {macro field_sb(waiAria)}
         {@aria:SelectBox {
             id: "sb",
             directOnBlurValidation:true,
@@ -134,6 +170,9 @@
                 }
             }
         }/}<br>
+    {/macro}
+
+    {macro field_mac(waiAria)}
         {@aria:MultiAutoComplete {
             id: "mac",
             directOnBlurValidation:true,
