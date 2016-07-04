@@ -22,6 +22,7 @@
     {macro main()}
         .xDialog_titleBar {
             position:absolute;
+            z-index: 1;
         }
         .xDialog_icon {
             float:left;
@@ -128,8 +129,7 @@
             {/if}
         }
         .xDialog_${skinClassName}_title {
-            padding-left: 6px;
-            padding-top: 6px;
+            padding: 6px;
             color:${skinClass.titleColor};
             font-weight:bold;
             white-space: nowrap;

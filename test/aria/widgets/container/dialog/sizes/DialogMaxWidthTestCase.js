@@ -49,8 +49,8 @@ Aria.classDefinition({
 
             var dom = dialog._domElt;
             var children = dom.children;
-            var dialogBody = children[0];
-            var dialogTitle = children[1];
+            var dialogBody = children[1];
+            var dialogTitle = children[0];
             var dialogTitleText = aria.utils.Dom.getElementsByClassName(dialogTitle, "xDialog_title")[0];
             var dialogCloseIcon = aria.utils.Dom.getElementsByClassName(dialogTitle, "xDialog_close")[0];
 

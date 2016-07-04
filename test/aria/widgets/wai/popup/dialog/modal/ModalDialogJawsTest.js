@@ -93,8 +93,11 @@ module.exports = Aria.classDefinition({
 
                 step(['type', null, '[enter]']);
 
+                entry(dialog.title + ' dialog');
+                entry(dialog.title);
+
                 if (!dialog.fullyEmpty) {
-                    entry(dialog.title + ' dialog');
+                    step(['type', null, '[tab]']);
                     entry(dialog.closeLabel + ' Button');
 
                     step(['type', null, '[tab]']);
@@ -102,9 +105,8 @@ module.exports = Aria.classDefinition({
                 }
 
                 step(['type', null, '[escape]']);
-                if (!dialog.fullyEmpty) {
-                    entry(dialog.buttonLabel + ' Button');
-                }
+
+                entry(dialog.buttonLabel + ' Button');
             });
         }
     }

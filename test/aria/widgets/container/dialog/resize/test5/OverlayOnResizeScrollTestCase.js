@@ -103,7 +103,7 @@ Aria.classDefinition({
             var options = {};
             options.parent = this.getWidgetInstance(dialogId)._domElt;
             if (index) {
-                options.handle = aria.utils.Dom.getDomElementChild(options.parent, index, false);
+                options.handle = aria.utils.Dom.getDomElementChild(options.parent, 1 + index, false);
             }
             return options;
         }

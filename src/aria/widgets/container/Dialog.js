@@ -216,6 +216,15 @@ module.exports = Aria.classDefinition({
             if (cfg.autoFocus == null) {
                 cfg.autoFocus = cfg.modal;
             }
+            if (cfg.focusableTitle == null) {
+                cfg.focusableTitle = cfg.waiAria;
+            }
+            if (cfg.focusableClose == null) {
+                cfg.focusableClose = !!(cfg.waiAria && cfg.closeLabel);
+            }
+            if (cfg.focusableMaximize == null) {
+                cfg.focusableMaximize = !!(cfg.waiAria && cfg.maximizeLabel);
+            }
         },
 
         /**
@@ -258,7 +267,7 @@ module.exports = Aria.classDefinition({
          * @param {String} cssClassPostfix
          * @param {String} skinIcon
          */
-        __writeTitlebarButton : function (out, delegateId, cssClassPostfix, skinIcon, label) {
+        __writeTitlebarButton : function (out, delegateId, cssClassPostfix, skinIcon, label, focusable) {
             // --------------------------------------------------- destructuring
 
             var cfg = this._cfg;
@@ -295,15 +304,19 @@ module.exports = Aria.classDefinition({
                 waiAria : waiAria
             };
 
-            if (waiAria) {
-                if (label) {
-                    iconConfiguration.tooltip = label;
-                    iconConfiguration.label = label;
-                }
+            if (label) {
+                iconConfiguration.tooltip = label;
+                iconConfiguration.label = label;
+            }
 
+            if (label || focusable) {
                 iconConfiguration.role = 'button';
+            }
+
+            if (focusable) {
                 iconConfiguration.tabIndex = 0;
             }
+
 
             var button = new ariaWidgetsIcon(iconConfiguration, this._context, this._lineNumber);
 
@@ -359,6 +372,9 @@ module.exports = Aria.classDefinition({
                 maxHeight = math.min(this._cfg.maxHeight, containerSize.height);
                 maxWidth = math.min(this._cfg.maxWidth, containerSize.width);
             }
+
+            this.writeTitleBar(out);
+
             this._div = new ariaWidgetsContainerDiv({
                 sclass : this._skinObj.divsclass,
                 margins : "0 0 0 0",
@@ -403,6 +419,10 @@ module.exports = Aria.classDefinition({
                             '</span>'].join(''));
                 }
             }
+        },
+
+        writeTitleBar: function (out) {
+            var cfg = this._cfg;
 
             // title bar (begin) -----------------------------------------------
 
@@ -427,6 +447,9 @@ module.exports = Aria.classDefinition({
             if (cfg.waiAria) {
                 attributes.push('id="' + this.__getLabelId() + '"');
             }
+            if (cfg.focusableTitle) {
+                attributes.push('tabIndex="0"');
+            }
             attributes.push('class="' + [
                 'x' + this._skinnableClass + '_title',
                 'x' + this._skinnableClass + '_' + cfg.sclass + '_title'
@@ -442,7 +465,7 @@ module.exports = Aria.classDefinition({
                     fn : this._onCloseBtnEvent,
                     scope : this
                 });
-                this.__writeTitlebarButton(out, this._closeDelegateId, "close", "closeIcon", this._cfg.closeLabel);
+                this.__writeTitlebarButton(out, this._closeDelegateId, "close", "closeIcon", this._cfg.closeLabel, this._cfg.focusableClose);
             }
 
             // title bar > maximize button -------------------------------------
@@ -452,7 +475,7 @@ module.exports = Aria.classDefinition({
                     fn : this._onMaximizeBtnEvent,
                     scope : this
                 });
-                this.__writeTitlebarButton(out, this._maximizeDelegateId, "maximize", "maximizeIcon", this._cfg.maximizeLabel);
+                this.__writeTitlebarButton(out, this._maximizeDelegateId, "maximize", "maximizeIcon", this._cfg.maximizeLabel, this._cfg.focusableMaximize);
             }
 
             // title bar (end) -------------------------------------------------
@@ -774,7 +797,7 @@ module.exports = Aria.classDefinition({
             var cfg = this._cfg;
             var getDomElementChild = ariaUtilsDom.getDomElementChild;
             this._domElt = this._popup.domElement;
-            var titleBarDomElt = this._titleBarDomElt = getDomElementChild(this._domElt, 0, true);
+            var titleBarDomElt = this._titleBarDomElt = getDomElementChild(this._domElt, 0);
             this._titleDomElt = getDomElementChild(titleBarDomElt, cfg.icon ? 1 : 0);
             this._onDimensionsChanged();
 
@@ -1210,7 +1233,7 @@ module.exports = Aria.classDefinition({
             }
             if (this._handlesArr) {
                 this._resizable = {};
-                var handleArr = this._handlesArr, index = 0, parent = this._domElt, getDomElementChild = ariaUtilsDom.getDomElementChild;
+                var handleArr = this._handlesArr, index = 1, parent = this._domElt, getDomElementChild = ariaUtilsDom.getDomElementChild;
                 for (var i = 0, ii = handleArr.length; i < ii; i++) {
                     var handleElement = getDomElementChild(parent, ++index, false), axis = null, cursor;
                     cursor = handleArr[i];

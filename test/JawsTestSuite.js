@@ -47,6 +47,6 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.wai.multiselect.MultiSelectJawsTest");
 
         this.addTests("test.aria.widgets.wai.popup.errortooltip.ErrorTooltipJawsTestSuite");
-
+        this.addTests("test.aria.widgets.wai.popup.dialog.focusableItems.FocusableItemsJawsTestSuite");
     }
 });

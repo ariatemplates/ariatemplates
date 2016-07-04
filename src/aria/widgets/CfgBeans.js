@@ -2053,6 +2053,18 @@ module.exports = Aria.beanDefinitions({
                     $type : "json:Boolean",
                     $description : "Whether the first element in the dialog is automatically focused when the dialog is displayed. By default, it is true for modal dialogs and false for other dialogs."
                 },
+                "focusableTitle" : {
+                    $type : "json:Boolean",
+                    $description : "Whether the title of the dialog is focusable. By default, this property takes the same value as waiAria."
+                },
+                "focusableMaximize" : {
+                    $type : "json:Boolean",
+                    $description : "Whether the maximize button of the dialog is focusable. By default, this property is true only if waiAria is true and maximizeLabel is defined."
+                },
+                "focusableClose" : {
+                    $type : "json:Boolean",
+                    $description : "Whether the close button of the dialog is focusable. By default, this property is true only if waiAria is true and closeLabel is defined."
+                },
                 "xpos" : {
                     $type : "json:Integer",
                     $description : "x position of the top left corner of the dialog box.",
