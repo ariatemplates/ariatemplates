@@ -58,6 +58,8 @@ module.exports = Aria.classDefinition({
                     filterTypes : cfg.filterTypes,
                     displayCodes : cfg.displayCodes,
                     title : cfg.title,
+                    titleTag : cfg.titleTag,
+                    titleClassName : cfg.titleClassName,
                     messages : cfg.messages
                 }
             }
