@@ -113,12 +113,24 @@ module.exports = Aria.classDefinition({
          * @param {Object} evt
          */
         _frame_events : function (evt) {
-            if (evt.name == "iconMouseDown" && evt.iconName == "dropdown" && !this._cfg.disabled) {
-                if (this._hasFocus) {
-                    this._keepFocus = true;
+            if (evt.iconName == "dropdown" && !this._cfg.disabled) {
+
+                var evtName = evt.name;
+                if (evtName == "iconKeyDown") {
+                    var keyCode = evt.event.keyCode;
+                    if (keyCode == 13 || keyCode == 32) {
+                        evtName = "iconClick";
+                        evt.event.stopPropagation();
+                    }
                 }
-            } else if (evt.name == "iconClick" && evt.iconName == "dropdown" && !this._cfg.disabled) {
-                this._toggleDropdown();
+
+                if (evtName == "iconMouseDown") {
+                    if (this._hasFocus) {
+                        this._keepFocus = true;
+                    }
+                } else if (evtName == "iconClick") {
+                    this._toggleDropdown();
+                }
             }
         },
 

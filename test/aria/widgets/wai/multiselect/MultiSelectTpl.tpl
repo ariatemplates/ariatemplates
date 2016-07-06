@@ -64,6 +64,7 @@
             }
         }/}
         </div>
+        <input {id "tf2"/}><br><br>
     {/macro}
 
 {/Template}
