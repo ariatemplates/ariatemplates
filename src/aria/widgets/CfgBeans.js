@@ -2012,6 +2012,11 @@ module.exports = Aria.beanDefinitions({
                     $description : "The title of the dialog which will be displayed in the header",
                     $default : ""
                 },
+                "titleTag" : {
+                    $type : "json:String",
+                    $description : "HTML tag used to display the title in the widget. The default value is 'h1' when waiAria is true and 'span' otherwise.",
+                    $regExp: /^[a-z0-9]+$/i
+                },
                 "visible" : {
                     $type : "json:Boolean",
                     $description : "A boolean whether the dialog is visible",

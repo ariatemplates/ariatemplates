@@ -94,7 +94,7 @@ module.exports = Aria.classDefinition({
                 step(['type', null, '[enter]']);
 
                 entry(dialog.title + ' dialog');
-                entry(dialog.title);
+                entry(dialog.title + ' heading level 1');
 
                 if (!dialog.fullyEmpty) {
                     step(['type', null, '[tab]']);
