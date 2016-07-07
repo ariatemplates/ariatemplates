@@ -97,26 +97,88 @@ module.exports = Aria.classDefinition({
         },
 
         /**
+         * Returns true if it is needed to use the work-around for a bug in IE 11 with screen readers.
+         * @param {Boolean} true if the work-around is needed
+         */
+        _needWaiWorkaroundMarkup : function () {
+            var cfg = this._cfg;
+            return ariaCoreBrowser.isIE11 && cfg.waiAria && cfg.disabled && this._isChecked() && cfg._inputType === "checkbox";
+        },
+
+        /**
          * Internal method to override to process the input block markup
          * @param {aria.templates.MarkupWriter} out the writer Object to use to output markup
          */
         _inputMarkup : function (out) {
-            var cfg = this._cfg;
-            var name = this._inputName ? ' name="' + this._inputName + '"' : "";
-
-
             if (!this._skinObj.simpleHTML) {
                 this._icon.writeMarkup(out);
             }
-            var tabIndex = this._cfg.tabIndex;
-            tabIndex = !cfg.disabled ? 'tabindex="' + this._calculateTabIndex() + '" ' : "";
+            out.write(this._getInputsMarkup());
+        },
 
-            out.write(['<input', cfg.disabled ? ' disabled' : '',
-                    this._skinObj.simpleHTML ? ' style="display:inline-block"' : ' class="xSROnly"',
-                    (Aria.testMode || cfg.waiAria) ? ' id="' + this._domId + '_input"' : '',
-                    this._isChecked() ? ' checked' : '', ' type="', cfg._inputType, '"', name, ' value="',
-                    cfg.value, '" ', tabIndex, this._getAriaLabelMarkup(), '/>'].join(''));
+        /**
+         * Returns the markup of one or two input elements (depending on what is needed)
+         * representing the current state of the widget.
+         * @return {String}
+         */
+        _getInputsMarkup : function () {
+            this._hasWaiWorkaroundMarkup = this._needWaiWorkaroundMarkup();
+            this._hasTwoInputs = false;
+            if (this._skinObj.simpleHTML) {
+                if (this._hasWaiWorkaroundMarkup) {
+                    this._hasTwoInputs = true;
+                    return this._getInputMarkup(true, false) + this._getInputMarkup(false, true);
+                } else {
+                    return this._getInputMarkup(true, true);
+                }
+            } else {
+                return this._getInputMarkup(true, false);
+            }
+        },
 
+        /**
+         * Returns the markup of an input element representing the current state of the widget.
+         * @param {Boolean} hasIds Whether the input should have a name and ids (if configured so).
+         * @param {Boolean} visible Whether the input should be visible (or have the xSROnly class)
+         * @return {String}
+         */
+        _getInputMarkup : function (hasIds, visible) {
+            var cfg = this._cfg;
+            var waiAria = cfg.waiAria;
+            var markup = ['<input type="', cfg._inputType, '"', ' value="', cfg.value, '"'];
+            var checked = this._isChecked();
+            if (checked) {
+                markup.push(' checked');
+            }
+            markup.push(visible ? ' style="display:inline-block"' : ' class="xSROnly"');
+            if (hasIds) {
+                var inputName = this._inputName;
+                if (inputName) {
+                    markup.push(' name="', inputName, '"');
+                }
+                if (Aria.testMode || waiAria) {
+                    markup.push(' id="' + this._domId + '_input"');
+                }
+                if (waiAria) {
+                    markup.push(this._getAriaLabelMarkup());
+                }
+            } else if (waiAria) {
+                markup.push(' aria-hidden="true"');
+            }
+            if (cfg.disabled) {
+                if (visible || !this._hasWaiWorkaroundMarkup) {
+                    markup.push(' disabled');
+                } else /* if (!visible && this._hasWaiWorkaroundMarkup) */ {
+                    // This is the work-around: using aria-disabled and omitting the disabled attribute
+                    markup.push(' aria-disabled="true"');
+                    // to prevent the widget from being focusable by tab, we use tabindex="-1":
+                    markup.push(' tabindex="-1"');
+                }
+            } else {
+                markup.push(' tabindex="', this._calculateTabIndex(), '"');
+            }
+            markup.push('/>');
+            return markup.join('');
         },
 
         /**
@@ -285,19 +347,28 @@ module.exports = Aria.classDefinition({
                 this._icon.changeIcon(this._getIconName(newState));
             }
 
-            var inpEl = this.getDom().getElementsByTagName("input")[0];
-            var selected = this._isChecked();
-            if (this._cfg.waiAria) {
-                // update the attributes for WAI
-                this._getFocusableElement().setAttribute('aria-disabled', this.getProperty("disabled"));
-            }
+            var inpEl = this._getFocusableElement();
             if (inpEl != null) {
-                // "normal", "normalSelected", "focused", "focusedSelected", "disabled", "disabledSelected",
-                // "readonly",
-                // "readonlySelected"
-                inpEl.checked = selected;
-                inpEl.value = selected ? "true" : "false";
-                inpEl.disabled = this.getProperty("disabled");
+                var hasWaiWorkaroundMarkup = this._hasWaiWorkaroundMarkup;
+                var needWaiWorkaroundMarkup = this._needWaiWorkaroundMarkup();
+                if (hasWaiWorkaroundMarkup || needWaiWorkaroundMarkup) {
+                    // Jaws has some issues with disabled check boxes
+                    // (cf test.aria.widgets.wai.input.checkbox.CheckboxDisabledJawsTestCase)
+                    if (this._hasTwoInputs) {
+                        aria.utils.Dom.removeElement(inpEl.nextSibling);
+                    }
+                    var markup = this._getInputsMarkup();
+                    aria.utils.Dom.insertAdjacentHTML(inpEl, "afterEnd", markup);
+                    aria.utils.Dom.removeElement(inpEl);
+                    this._initializeFocusableElement();
+                    inpEl = this._getFocusableElement();
+                } else {
+                    var disabled = this.getProperty("disabled");
+                    var selected = this._isChecked();
+                    inpEl.checked = selected;
+                    inpEl.value = selected ? "true" : "false";
+                    inpEl.disabled = disabled;
+                }
             }
 
             if (this._label != null) {
@@ -449,6 +520,25 @@ module.exports = Aria.classDefinition({
         _dom_onkeyup : function (event) {
             if (event.keyCode == ariaDomEvent.KC_SPACE) {
                 event.preventDefault(true);
+            }
+        },
+
+        /**
+         * Delegate an incoming event
+         * @param {aria.DomEvent} evt
+         * @return {Boolean} event bubbles ?
+         * @override
+         */
+        delegate : function (evt) {
+            if (this._cfg.disabled) {
+                // When the checkbox is disabled without the disabled attribute,
+                // it is necessary to prevent the default action when clicking
+                // on the checkbox and when the change event happens:
+                if (evt.type === "click" || evt.type === "change") {
+                    evt.preventDefault();
+                }
+            } else {
+                return this.$Input.delegate.apply(this, arguments);
             }
         }
    }

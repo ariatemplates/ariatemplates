@@ -203,13 +203,12 @@ var ariaWidgetsFormCheckBox = require("./CheckBox");
              * @protected
              */
             _updateDomForState : function () {
+                this.$CheckBox._updateDomForState.call(this);
                 if (this._cfg.waiAria) {
                     // update the attributes for WAI
                     var element = this._getFocusableElement();
                     element.setAttribute('tabindex', this._calculateTabIndex());
                 }
-
-                this.$CheckBox._updateDomForState.call(this);
             },
 
             /**
