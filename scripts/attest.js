@@ -32,6 +32,8 @@ var testsToExecute = process.argv.slice(2).filter(function (arg) {
 });
 
 var attesterOptions = {
+//    "task-restart-on-failure": true,
+//    "max-task-restarts": 5,
     "phantomjs-instances": 0
 };
 
