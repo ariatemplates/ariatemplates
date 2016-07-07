@@ -33,6 +33,10 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.wai.tabs.TabsJawsTest");
 
         this.addTests("test.aria.widgets.wai.input.checkbox.CheckboxJawsTestCase");
+        this.addTests("test.aria.widgets.wai.input.checkbox.CheckboxInitiallyDisabledJawsTestCase");
+        this.addTests("test.aria.widgets.wai.input.checkbox.CheckboxDynamicallyDisabledJawsTestCase");
+        this.addTests("test.aria.widgets.wai.input.checkbox.CheckboxNotCheckedDisabledJawsTestCase");
+
         this.addTests("test.aria.widgets.wai.input.radiobutton.RadioButtonGroupJawsTestCase");
         this.addTests("test.aria.widgets.wai.input.radiobutton.initiallyDisabled.InitiallyDisabledRadioButtonsJawsTestCase");
         this.addTests("test.aria.widgets.wai.input.label.WaiInputLabelJawsTestSuite");
