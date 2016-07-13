@@ -271,6 +271,7 @@ module.exports = Aria.classDefinition({
             this._localAsyncSequence(function (add) {
                 add('_openDialog', dialog);
                 add('_navigateForward');
+                add('_navigateForward');
 
                 add('_pressEnter');
                 add(isMaximized.waitForTrue);
@@ -287,6 +288,7 @@ module.exports = Aria.classDefinition({
 
             this._localAsyncSequence(function (add) {
                 add('_openDialog', dialog);
+                add('_navigateForward');
 
                 add('_pressEnter');
                 add(isOpened.waitForFalse);
