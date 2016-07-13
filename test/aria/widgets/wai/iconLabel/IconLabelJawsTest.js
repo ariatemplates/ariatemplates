@@ -61,7 +61,7 @@ Aria.classDefinition({
             ], {
                 fn: function () {
                     this.assertJawsHistoryEquals(
-                        "First textfield Edit\nType in text.\nCity Edit\nType in text.\nPress space to open the autocomplete list button menu collapsed\nTravel date Edit\nType in text.\nPress space to open the calendar button menu collapsed\nedit\nType in text.\nPress space to open the selection list button menu collapsed\nAll Countries: Edit\nType in text.\nPress space to open the selection list\nbutton menu collapsed",
+                        "First textfield Edit\nType in text.\nCity Edit\nType in text.\nPress space to open the autocomplete list button menu collapsed\nTravel date Edit\nType in text.\nPress space to open the calendar button menu collapsed\nMulti-select: Edit\nType in text.\nPress space to open the selection list button menu collapsed\nAll Countries: Edit\nType in text.\nPress space to open the selection list\nbutton menu collapsed",
                         this.end,
                         function(response) {
                             return this.removeDuplicates(response);
