@@ -86,12 +86,14 @@ module.exports = Aria.classDefinition({
          */
         this._dropDownList = null;
 
+        var isWaiAria = cfg.waiAria;
         var iconTooltip = cfg.iconTooltip ? ' title="' + ariaUtilsString.escapeForHTML(cfg.iconTooltip) + '"' : '';
+        var tabIndex = isWaiAria ? (cfg.tabIndex != null ? this._calculateTabIndex() : "0") : "-1";
         this._iconsAttributes = {
-            "dropdown": 'tabindex="-1"' + iconTooltip
+            "dropdown": 'tabindex="' + tabIndex + '"' + iconTooltip
         };
-        if (cfg.waiAria) {
-            this._extraInputAttributes += ' role="combobox" aria-autocomplete="list" ';
+
+        if (isWaiAria) {
             var waiIconLabel = cfg.waiIconLabel;
             this._iconsAttributes.dropdown += ' role="button" aria-expanded="false" aria-haspopup="true"  ' +
                (waiIconLabel ? 'aria-label="' + waiIconLabel + '" ' : "");
@@ -175,6 +177,7 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         _toggleDropdown : function () {
+            this._updateFocusNoKeyboard(true);
             if (!this._hasFocus) {
                 this.focus();
             }
@@ -355,6 +358,50 @@ module.exports = Aria.classDefinition({
             // focus the list when popup is opened
             this._refreshPopup(args);
             this._dropDownList.focus();
+        },
+
+        /**
+         * DOM Event raised when the focus is given to the datepicker.
+         */
+        _dom_onfocus : function (event, avoidCallback) {
+            this._iconFocus = event.target == this._getDropdownIcon();
+            this.$DropDownTextInput._dom_onfocus.apply(this, arguments);
+        },
+
+        /**
+         * Set the caret position in the field
+         * @param {Number} start
+         * @param {Number} end
+         */
+        setCaretPosition : function (start, end) {
+            if (this._iconFocus) {
+                this._currentCaretPosition = {
+                    start : start,
+                    end : end
+                };
+            } else {
+                return this.$DropDownTextInput.setCaretPosition.apply(this, arguments);
+            }
+        },
+
+        /**
+         * Return the caret position in the DatePicker. It works also if the focus is on the expand icon.
+         * @return {Object} the caret position (start end end)
+         */
+        getCaretPosition : function () {
+            if (this._iconFocus) {
+                var currentCaretPosition = this._currentCaretPosition;
+                if (currentCaretPosition) {
+                    return currentCaretPosition;
+                }
+                return {
+                    start : 0,
+                    end : 0
+                };
+            } else {
+                return this.$DropDownTextInput.getCaretPosition.apply(this, arguments);
+            }
         }
+
     }
 });
