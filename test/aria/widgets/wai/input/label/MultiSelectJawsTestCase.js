@@ -19,6 +19,22 @@ module.exports = Aria.classDefinition({
     $classpath : "test.aria.widgets.wai.input.label.MultiSelectJawsTestCase",
     $extends : require("./LabelJawsTestCase"),
     $prototype : {
-        elementsToTest : "msWaiEnabledStart"
+        elementsToTest : "msWaiEnabledStart",
+
+        _testElement : function () {
+            var domElement = this.getElementById(this.elementsToTest);
+            // The Multiselect needs extra tabs now that the icon is focusable:
+            this.synEvent.execute([
+                ["ensureVisible", domElement],
+                ["click", domElement], ["pause", 1000],
+                ["type", null, "[tab]"], ["pause", 1000],
+                ["type", null, "[tab]"], ["pause", 1000],
+                ["type", null, "[tab]"], ["pause", 1000],
+                ["type", null, "[tab]"], ["pause", 1000]
+            ], {
+                fn : this._testValue,
+                scope : this
+            });
+        }
     }
 });
