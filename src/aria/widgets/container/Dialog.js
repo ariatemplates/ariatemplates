@@ -225,6 +225,9 @@ module.exports = Aria.classDefinition({
             if (cfg.focusableMaximize == null) {
                 cfg.focusableMaximize = !!(cfg.waiAria && cfg.maximizeLabel);
             }
+            if (cfg.titleTag == null) {
+                cfg.titleTag = cfg.waiAria ? "h1" : "span";
+            }
         },
 
         /**
@@ -455,7 +458,7 @@ module.exports = Aria.classDefinition({
                 'x' + this._skinnableClass + '_' + cfg.sclass + '_title'
             ].join(' ') + '"');
 
-            out.write('<span ' + attributes.join(' ') + '>' + ariaUtilsString.escapeHTML(cfg.title) + '</span>');
+            out.write('<' + cfg.titleTag + ' ' + attributes.join(' ') + '>' + ariaUtilsString.escapeHTML(cfg.title) + '</' + cfg.titleTag + '>');
 
             // title bar > close button ----------------------------------------
 

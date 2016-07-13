@@ -28,6 +28,8 @@
             float:left;
         }
         .xDialog_title {
+            margin: 0px;
+            font-size: 1em;
             float:left;
         }
         .xDialog_close {
