@@ -2044,6 +2044,14 @@ module.exports = Aria.beanDefinitions({
                     $type : "json:String",
                     $description : "The label to use for the close icon (can be used in various ways such as for tooltip or accessibility)."
                 },
+                "waiEscapeMsg" : {
+                    $type : "json:String",
+                    $description : "If this property is defined and if waiAria is activated, the user has to press escape twice (instead of only once) to close the dialog. This property specifies the message to read after the user pressed escape the first time."
+                },
+                "waiCloseMsg" : {
+                    $type : "json:String",
+                    $description : "When waiAria is activated, this property specifies the message to read when the modal dialog is closed."
+                },
                 "maximizable" : {
                     $type : "json:Boolean",
                     $description : "Whether the dialog has a maximize button in its title bar. Note that you can set this to false and programatically maximize the Dialog to achieve a fullscreen-only Dialog solution.",

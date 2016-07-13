@@ -150,6 +150,14 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         this._previouslyFocusedElement = null;
+
+        /**
+         * Stores the time when escape has been pressed to close the dialog.
+         * This property is used only if waiAria is true and waiEscapeMsg is defined, as escape has to be pressed twice
+         * to close a dialog in that case.
+         * @type Number
+         */
+         this._firstEscapeTime = null;
     },
     $destructor : function () {
         this.close();
@@ -401,7 +409,7 @@ module.exports = Aria.classDefinition({
                 keyMap : [{
                             key : "ESCAPE",
                             callback : {
-                                fn : this.actionClose,
+                                fn : this._onEscape,
                                 scope : this
                             }
                         }]
@@ -633,6 +641,29 @@ module.exports = Aria.classDefinition({
         },
 
         /**
+         * This function is called when escape is pressed.
+         * If waiAria is true and waiEscapeMsg is defined, escape has to be
+         * pressed twice in less than 3s to close the popup.
+         */
+        _onEscape : function () {
+            var cfg = this._cfg;
+            var waiEscapeMsg = cfg.waiEscapeMsg;
+            var confirmed = !(cfg.waiAria && waiEscapeMsg);
+            if (!confirmed) {
+                var now = new Date().getTime();
+                confirmed = this._firstEscapeTime && (now - this._firstEscapeTime) <= 3000;
+                if (!confirmed) {
+                    this._firstEscapeTime = now;
+                    this.waiReadText(waiEscapeMsg);
+                }
+            }
+            if (confirmed) {
+                this._firstEscapeTime = null;
+                this.actionClose();
+            }
+        },
+
+        /**
          * Action to close this popup, setting the appropriate value
          */
         actionClose : function () {
@@ -742,7 +773,7 @@ module.exports = Aria.classDefinition({
 
             popup.$on({
                 "onAfterOpen" : this._onAfterPopupOpen,
-                "onEscape" : this.actionClose,
+                "onEscape" : this._onEscape,
                 "onAfterClose" : this._onAfterPopupClose,
                 scope : this
             });
@@ -791,6 +822,8 @@ module.exports = Aria.classDefinition({
                 this._setContainerOverflow("hidden");
                 this._setMaximizedHeightAndWidth();
             }
+
+            this._firstEscapeTime = null;
         },
 
         /**
@@ -901,6 +934,8 @@ module.exports = Aria.classDefinition({
             }
 
             if (this._popup) {
+                this.waiReadText(cfg.waiCloseMsg);
+
                 this._destroyDraggable();
                 this._destroyResizable();
 
