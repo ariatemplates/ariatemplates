@@ -37,6 +37,14 @@ module.exports = Aria.beanDefinitions({
                     $type : "json:String",
                     $description : "Title for the list of messages."
                 },
+                "titleTag" : {
+                    $type : "json:String",
+                    $description : "HTML tag used to display the title."
+                },
+                "titleClassName" : {
+                    $type : "json:String",
+                    $description : "CSS classes to style the title. It is only taken into account if titleTag is specified."
+                },
                 "displayCodes" : {
                     $type : "json:Boolean",
                     $description : "True if message codes should be displayed along with localized messages."

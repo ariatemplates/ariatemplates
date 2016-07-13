@@ -1594,6 +1594,15 @@ module.exports = Aria.beanDefinitions({
                     $description : "Title to be displayed in the widget.",
                     $default : ""
                 },
+                "titleTag" : {
+                    $type : "json:String",
+                    $description : "HTML tag used to display the title in the widget.",
+                    $regExp: /^[a-z0-9]+$/i
+                },
+                "titleClassName" : {
+                    $type : "json:String",
+                    $description : "CSS classes to style the title. It is only taken into account if titleTag is specified."
+                },
                 "filterTypes" : {
                     $type : "json:Array",
                     $description : "If not null, specifies the types of messages which should be displayed in the widget. It must match the type property in aria.utils.validators.CfgBeans.Message.",

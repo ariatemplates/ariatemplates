@@ -45,6 +45,8 @@ module.exports = Aria.classDefinition({
             this._data = {
                 waiAria : args.waiAria,
                 title : args.title,
+                titleTag : args.titleTag,
+                titleClassName : args.titleClassName,
                 divCfg : args.divCfg,
                 filterTypes : args.filterTypes,
                 displayCodes : args.displayCodes
