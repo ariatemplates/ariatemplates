@@ -2,6 +2,8 @@
 
 var Aria = require("../Aria");
 var ariaUtilsArray = require("../utils/Array");
+var ariaTemplatesNavigationManager = require("../templates/NavigationManager");
+var ariaUtilsEvent = require("../utils/Event");
 
 var document = Aria.$window.document;
 
@@ -178,12 +180,14 @@ exports.createInterceptorElement = createInterceptorElement;
  *   <li>origin: the name of the origin of the tab navigation when intercepted by this manager (can be the reference element, but any other depending on the use cases)</li>
  *   <li>getReferenceElement: a callback to get the reference element</li>
  *   <li>interceptors: a list of interceptors (see detailed description)</li>
+ *   <li>onfocus: callback called when focusing interceptors</li>
  * </ul>
  */
 function NavigationInterceptorClass(spec) {
     this.origin = spec.origin;
     this.getReferenceElement = spec.getReferenceElement;
     this.interceptors = spec.interceptors;
+    this.onfocus = spec.onfocus;
 }
 exports.NavigationInterceptorClass = NavigationInterceptorClass;
 
@@ -214,6 +218,7 @@ prototype.ensureElements = function () {
     // -------------------------------------------------------------- processing
 
     var referenceElement = getReferenceElement();
+    var onfocus = this.onfocus;
 
     ariaUtilsArray.forEach(this.interceptors, function (interceptor) {
         var insert = interceptor.insert;
@@ -222,6 +227,9 @@ prototype.ensureElements = function () {
         if (element == null) {
             element = createInterceptorElement();
             interceptor.element = element;
+            if (onfocus) {
+                ariaUtilsEvent.addListener(element, "focus", onfocus);
+            }
         }
 
         insert(element, referenceElement);
@@ -236,10 +244,14 @@ prototype.ensureElements = function () {
  * </p>
  */
 prototype.destroyElements = function () {
+    var onfocus = this.onfocus;
     ariaUtilsArray.forEach(this.interceptors, function (interceptor) {
         var element = interceptor.element;
 
         if (element != null) {
+            if (onfocus) {
+                ariaUtilsEvent.removeListener(element, "focus", onfocus);
+            }
             removeElement(element);
             interceptor.element = null;
         }
@@ -340,6 +352,56 @@ function DialogNavigationInterceptor(getReferenceElement) {
     });
 }
 exports.DialogNavigationInterceptor = DialogNavigationInterceptor;
+
+/**
+ * Creates a NavigationInterceptor for a Popup.
+ *
+ * <p>
+ *   Interceptor elements will be inserted right before and right after the Popup element, corresponding respectively to a navigation direction "backward" or "forward".
+ * </p>
+ *
+ * @param {HtmlElement} element The reference html element
+ * @param {Boolean} loop true if the tab key must loop through the list, false if the navigation must stop at the edges.
+ *
+ * @return {NavigationInterceptorClass} an instance of NavigationInterceptorClass
+ */
+function ElementNavigationInterceptor(element, loop) {
+    var navigationInterceptor = NavigationInterceptor({
+        origin: 'popup',
+
+        getReferenceElement: function() {return element;},
+
+        interceptors: [
+           // before
+           {
+               direction: 'backward',
+               insert: insertBefore
+           },
+           // after
+           {
+               direction: 'forward',
+               insert: insertAfter
+           }
+        ],
+        onfocus : {fn:
+            function(e) {
+                var target = e.target;
+
+                var navigationInformation = navigationInterceptor.getNavigationInformation(target);
+                if (navigationInformation) {
+                    var direction = navigationInformation.direction;
+                    var reverse = direction == 'forward';
+                    if (loop) {
+                        reverse = !reverse;
+                    }
+                    ariaTemplatesNavigationManager.focusFirst(element, reverse);
+                }
+            }
+        }
+    });
+    return navigationInterceptor;
+}
+exports.ElementNavigationInterceptor = ElementNavigationInterceptor;
 
 /**
  * Creates a NavigationInterceptor for the browser/viewport.

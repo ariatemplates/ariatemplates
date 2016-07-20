@@ -107,6 +107,16 @@ module.exports = Aria.tplScriptDefinition({
         },
 
         /**
+         * Event handler to notify the module controller when an item is focused
+         * @param {aria.templates.DomEventWrapper} evt Dom event.
+         * @param {Object} item object with two properties: item (aria.widgets.form.list.CfgBeans.Item) and sortedIndex
+         * (number).
+         */
+        itemFocus : function (evt, item) {
+            this.moduleCtrl.itemFocus(item.sortedIndex);
+        },
+
+        /**
          * Gets the class name of an item depending on the data in the item (selected etc)
          * @param {aria.widgets.form.list.CfgBeans:Item} item The list item object to decide the class name for
          * @return {String} The class name. May consist of multiple classes.

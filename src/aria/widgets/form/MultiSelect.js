@@ -22,6 +22,7 @@ var ariaWidgetsContainerDivStyle = require("../container/DivStyle.tpl.css");
 var ariaWidgetsFormCheckBoxStyle = require("./CheckBoxStyle.tpl.css");
 var ariaWidgetsFormDropDownTextInput = require("./DropDownTextInput");
 var ariaUtilsString = require("../../utils/String");
+var popupNavigationManager = require("../../popups/PopupNavigationManager");
 
 /**
  * Multi-select widget which is a list of checkboxes and labels passed in an array of predefined values
@@ -136,7 +137,7 @@ module.exports = Aria.classDefinition({
          * @return {Boolean}
          */
         _checkCloseItem : function (evt) {
-            return (evt.focusIndex === evt.closeItem.id) ? true : false;
+            return evt.focusIndex === evt.closeItem.id;
         },
 
         /**
@@ -150,23 +151,24 @@ module.exports = Aria.classDefinition({
          */
         _keyPressed : function (information) {
             var event = information.event;
+            var keyCode = event.keyCode;
 
-            var isShiftF10Pressed = this._isShiftF10Pressed(event);
-            var isArrowUp = event.keyCode == ariaDomEvent.KC_ARROW_UP;
-
-            if (isShiftF10Pressed || (isArrowUp && this._checkCloseItem(information))) {
+            if (this._isShiftF10Pressed(event) || (keyCode == ariaDomEvent.KC_ARROW_UP && this._checkCloseItem(information))) {
                 this.focus();
                 this._toggleDropdown();
                 return true;
             }
 
-            if (event.keyCode == ariaDomEvent.KC_ESCAPE) {
+            if (keyCode == ariaDomEvent.KC_ESCAPE) {
                 if (this._dropDownOpen) {
                     this._toggleDropdown();
                     return true;
                 }
             }
 
+            if (keyCode == ariaDomEvent.KC_TAB) {
+                return true;
+            }
             return false;
         },
 
@@ -202,6 +204,7 @@ module.exports = Aria.classDefinition({
             var list = new ariaWidgetsFormListList({
                 defaultTemplate : cfg.listTemplate,
                 waiAria : cfg.waiAria,
+                tabIndex : -1,
                 block : true,
                 sclass : cfg.listSclass || this._skinObj.listSclass,
                 onchange : {
@@ -264,6 +267,9 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         _afterDropdownClose : function () {
+            this.navigationInterceptor.destroyElements();
+            this.navigationInterceptor = null;
+
             if (this._cfg.waiAria) {
                 var dropDownIcon = this._getDropdownIcon();
                 if (dropDownIcon) {
@@ -308,13 +314,18 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         _afterDropdownOpen : function () {
+
+            var waiAria = this._cfg.waiAria;
+            this.navigationInterceptor = popupNavigationManager.ElementNavigationInterceptor(this._dropdownPopup.domElement, !waiAria);
+            this.navigationInterceptor.ensureElements();
+
             this._setPopupOpenProperty(true);
             // when the popup is clicked, don't give it focus, allow focus to be passed to the List in _refreshPopup
             this._keepFocus = true;
             var list = this.controller.getListWidget();
             this._dropDownOpen = true;
             this._focusMultiSelect(list);
-            if (this._cfg.waiAria) {
+            if (waiAria) {
                 var dropDownIcon = this._getDropdownIcon();
                 if (dropDownIcon) {
                     dropDownIcon.setAttribute("aria-expanded", "true");
