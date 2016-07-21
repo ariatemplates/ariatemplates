@@ -2227,6 +2227,27 @@ module.exports = Aria.beanDefinitions({
                 "selectedTab" : {
                     $type : "json:String",
                     $description : "The id of the currently selected tab"
+                },
+                "waiHidden" : {
+                    $type : "json:Boolean",
+                    $description : "Sets aria-hidden on the tab when set to true",
+                    $default : false
+                },
+                "waiLabel" : {
+                    $type : "json:String",
+                    $description : "Sets aria-label on the widget, value will be used as the attribute's value"
+                },
+                "waiLabelledBy" : {
+                    $type : "json:String",
+                    $description : "Sets aria-labelledby on the widget, value will be used as the attribute's value"
+                },
+                "waiDescribedBy" : {
+                    $type : "json:String",
+                    $description : "Sets aria-describedby on the widget, value will be used as the attribute's value"
+                },
+                "waiTitleTag" : {
+                    $type : "json:String",
+                    $description : "Adds a wrapper element around the widget element if specified, value sets the tag name of the element"
                 }
             }
         },

@@ -61,7 +61,6 @@ module.exports = Aria.classDefinition({
         runTemplateTest : function () {
             this._localAsyncSequence(function (add) {
                 add('_testNavigation');
-                add('_testAttributes');
             }, this.end);
         },
 
@@ -134,7 +133,12 @@ module.exports = Aria.classDefinition({
         },
 
         _testKeyboardSelectionForGroup : function (callback, group) {
+            // --------------------------------------------------- destructuring
+
             var tabs = group.tabs;
+            var tabPanelId = group.tabPanel.id;
+
+            // ------------------------------------------------------ processing
 
             var isNoTabSelected = this._createTabSelectedPredicate(group, null);
 
@@ -143,9 +147,27 @@ module.exports = Aria.classDefinition({
                 add(isNoTabSelected.waitForTrue);
 
                 ariaUtilsArray.forEach(tabs, function (tab, index) {
+                    // --------------------------------------- early termination
+
                     if (tab.disabled) {
                         return;
                     }
+
+                    // ---------------------------------------------- processing
+
+                    add('_focusElementBefore', group.id);
+
+                    if (group.tabsUnder) {
+                        add('_navigateForward');
+                        add('_navigateForward');
+                    }
+
+                    ariaUtilsArray.forEach(tabs.slice(0, index + 1), function (tab) {
+                        if (!tab.disabled) {
+                            add('_navigateForward');
+                        }
+                    });
+
 
                     var selectionMethod = index === 0 ? '_pressEnter' : '_pressSpace';
                     add(selectionMethod);
@@ -153,198 +175,13 @@ module.exports = Aria.classDefinition({
                     var predicate = this._createTabSelectedPredicate(group, tab);
                     add(predicate.waitForTrue);
 
-                    if (index !== tabs.length - 1) {
-                        add('_navigateForward');
+                    if (tab.waiAria) {
+                        add('_checkWidgetIsFocused', tabPanelId);
+                        // Specifications often change (2016-07-22T16:54:42+02:00), what should precisely be focused might change
+                        // add('_checkElementIsFocused', 'inside_' + tabPanelId);
                     }
                 }, this);
             }, callback);
-        },
-
-
-
-        ////////////////////////////////////////////////////////////////////////
-        // Tests: attributes
-        ////////////////////////////////////////////////////////////////////////
-
-        _testAttributes : function (callback) {
-            this._localAsyncSequence(function (add) {
-                add('_testStaticAttributes');
-                add('_testDynamicAttributes');
-            }, callback);
-        },
-
-        _testStaticAttributes : function (callback) {
-            this._runTestOnGroups(callback, this._testStaticAttributesForGroup);
-        },
-
-        _testDynamicAttributes : function (callback) {
-            this._runTestOnGroups(callback, this._testDynamicAttributesForGroup);
-        },
-
-        _testStaticAttributesForGroup : function (callback, group) {
-            var tabs = group.tabs;
-            var tabPanel = group.tabPanel;
-
-            this._localAsyncSequence(function (add) {
-                add(this._createAsyncWrapper(function checkRoles() {
-                    ariaUtilsArray.forEach(tabs, this._checkTabRole, this);
-                    ariaUtilsArray.forEach(tabs, this._checkTabDisabled, this);
-                    this._checkTabPanelRole(tabPanel);
-                }));
-            }, callback);
-        },
-
-        _checkTabRole : function (tab) {
-            var expected = tab.waiAria ? 'tab' : null;
-            this._checkWidgetRole(tab.tabId, expected);
-        },
-
-        _checkTabDisabled : function (tab) {
-            var expected;
-            if (!tab.waiAria) {
-                expected = null;
-            } else {
-                expected = tab.disabled ? 'true' : 'false';
-            }
-            this._checkWidgetAttribute(tab.tabId, 'aria-disabled', expected);
-        },
-
-        _checkTabPanelRole : function (tabPanel) {
-            var expected = tabPanel.waiAria ? 'tabpanel' : null;
-            this._checkWidgetRole(tabPanel.id, expected);
-        },
-
-        _checkWidgetRole : function (id, expected) {
-            this._checkWidgetAttribute(id, 'role', expected);
-        },
-
-        _testDynamicAttributesForGroup : function (callback, group) {
-            var tabs = group.tabs;
-
-            this._localAsyncSequence(function (add) {
-                add(unSelectTab, group);
-                add('_testDynamicAttributesForGroupWhenNoTabSelected', group);
-
-                add('_focusFirstTab', group);
-
-                ariaUtilsArray.forEach(tabs, function (tab, tabIndex) {
-                    if (tab.disabled) {
-                        return;
-                    }
-
-                    add(selectTab, tab);
-                    add('_testDynamicAttributesForGroupWhenTabSelected', group, tabIndex);
-
-                    if (tabIndex !== tabs.length - 1) {
-                        add('_navigateForward');
-                    }
-                });
-            }, callback);
-
-            function unSelectTab(callback, group) {
-                this._setBindingValue(group.binding, null);
-                callback();
-            }
-
-            function selectTab(next, tab) {
-                this._localAsyncSequence(function (add) {
-                    add('_pressEnter');
-                    add('_waitForWidgetFocus', tab.tabId);
-                }, next);
-            }
-        },
-
-        _testDynamicAttributesForGroupWhenNoTabSelected : function (callback, group) {
-            // --------------------------------------------------- destructuring
-
-            var tabs = group.tabs;
-            var tabPanel = group.tabPanel;
-
-            var tabPanelId = tabPanel.id;
-
-            // ------------------------------------------------------ processing
-
-            this._checkWidgetAttribute(tabPanelId, 'aria-labelledby', null);
-
-            ariaUtilsArray.forEach(tabs, function (tab) {
-                var tabId = tab.tabId;
-
-                var expected;
-                if (tab.waiAria && tabPanel.waiAria) {
-                    expected = this._getWidgetId(tabPanelId);
-                } else {
-                    expected = null;
-                }
-
-                this._checkWidgetAttribute(tabId, 'aria-selected', tab.waiAria ? 'false' : null);
-                this._checkWidgetAttribute(tabId, 'aria-expanded', tab.waiAria ? 'false' : null);
-
-                this._checkWidgetAttribute(tabId, 'aria-controls', expected); // This is not dependent on the selection, so this check is not repeated inside the cases when a tab is selected
-            }, this);
-
-            // ---------------------------------------------------------- return
-
-            callback();
-        },
-
-        _testDynamicAttributesForGroupWhenTabSelected : function (callback, group, tabIndex) {
-            // --------------------------------------------------- destructuring
-
-            var waiAria = group.waiAria;
-
-            var tabs = group.tabs;
-            var selectedTab = tabs[tabIndex];
-
-            // ----------------------------------------------- early termination
-
-            if (selectedTab.disabled) {
-                callback();
-                return;
-            }
-
-            // ------------------------------------------------------ processing
-
-            var nonSelectedTab = tabs[tabIndex === 0 ? 2 : 0];
-
-            var expected = selectedTab.waiAria ? 'true' : null;
-            this._checkWidgetAttribute(selectedTab.tabId, 'aria-selected', expected);
-            this._checkWidgetAttribute(selectedTab.tabId, 'aria-expanded', expected);
-
-            ariaUtilsArray.forEach(tabs, function (tab) {
-                if (tab !== selectedTab) {
-                    var expected = selectedTab.waiAria ? 'false' : null;
-                    this._checkWidgetAttribute(tab.tabId, 'aria-selected', expected);
-                    this._checkWidgetAttribute(tab.tabId, 'aria-expanded', expected);
-                }
-            }, this);
-
-            this._checkAriaLabelledBy(group, tabIndex);
-
-            // ---------------------------------------------------------- return
-
-            callback();
-        },
-
-        _checkAriaLabelledBy : function (group, tabIndex) {
-            // --------------------------------------------------- destructuring
-
-            var tabs = group.tabs;
-            var tab = tabs[tabIndex];
-
-            var tabPanel = group.tabPanel;
-            var tabPanelId = tabPanel.id;
-
-            // ------------------------------------------------------ processing
-
-            var expected;
-            if (tab.waiAria && tabPanel.waiAria) {
-                var tabWidget = this.getWidgetInstance(tab.tabId);
-                expected = tabWidget._domId;
-            } else {
-                expected = null;
-            }
-
-            this._checkWidgetAttribute(tabPanelId, 'aria-labelledby', expected);
         },
 
 
