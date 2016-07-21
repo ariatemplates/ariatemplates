@@ -77,6 +77,10 @@ module.exports = Aria.classDefinition({
         var extraAttributes = [];
 
         if (cfg.waiAria) {
+            if (cfg.tabIndex == null) {
+                cfg.tabIndex = -1;
+            }
+
             extraAttributes.push(['role', 'tabpanel']);
 
             this._updateControlledTabPanelId();
