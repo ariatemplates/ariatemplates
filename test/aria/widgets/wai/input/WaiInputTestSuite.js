@@ -26,6 +26,7 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.wai.input.numberField.NumberFieldTestCase");
         this.addTests("test.aria.widgets.wai.input.passwordField.PasswordFieldTestCase");
         this.addTests("test.aria.widgets.wai.input.radiobutton.RadioButtonTestCase");
+        this.addTests("test.aria.widgets.wai.input.radiobutton.initiallyDisabled.InitiallyDisabledRadioButtonsTestCase");
         this.addTests("test.aria.widgets.wai.input.select.SelectTestCase");
         this.addTests("test.aria.widgets.wai.input.selectBox.SelectBoxTestCase");
         this.addTests("test.aria.widgets.wai.input.textArea.TextAreaTestCase");

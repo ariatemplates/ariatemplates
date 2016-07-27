@@ -39,17 +39,13 @@ var ariaWidgetsFormCheckBox = require("./CheckBox");
          */
         $constructor : function (cfg, ctxt) {
             this.$CheckBox.constructor.apply(this, arguments);
-            if (this._skinObj.simpleHTML) {
-                if (!idManager) {
-                    idManager = new ariaUtilsIdManager("radio");
-                }
-                this._inputName = idManager.getId();
+            if (!idManager) {
+                idManager = new ariaUtilsIdManager("radio");
             }
+            this._inputName = idManager.getId();
 
             // use array and not store as index is important
-            if (!this._cfg.disabled) {
-                this._instances.push(this);
-            }
+            this._instances.push(this);
         },
 
         $destructor : function () {
@@ -174,7 +170,7 @@ var ariaWidgetsFormCheckBox = require("./CheckBox");
                 var index = ariaUtilsArray.indexOf(this._instances, this), radioButtonNb = this._instances.length;
                 var bindings, next, nextBinding;
                 var waiAria = this._cfg.waiAria;
-                while (index > 0 || index < radioButtonNb) {
+                while (index >= 0 && index < radioButtonNb) {
                     index = index + direction;
                     if (waiAria) {
                         if (index < 0) {
@@ -188,7 +184,7 @@ var ariaWidgetsFormCheckBox = require("./CheckBox");
                     }
                     next = this._instances[index];
                     bindings = next._cfg.bind;
-                    if (bindings) {
+                    if (!next.getProperty("disabled") && bindings) {
                         nextBinding = bindings.value;
                         if (nextBinding) {
                             // next radio button needs to be bound to the same data. Otherwise, continue.
