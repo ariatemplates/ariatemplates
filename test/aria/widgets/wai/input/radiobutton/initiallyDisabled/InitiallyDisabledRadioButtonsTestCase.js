@@ -105,11 +105,11 @@ Aria.classDefinition({
                 }, step8);
             }
 
-            function step7 () {
+            function step8 () {
                 this.executeAndCheck([ ["type", null, "[tab]"], ["waitFocus", this.getElementById("tf2")] ], {
                     firstGroup: "auto",
                     manualOption: "opt2"
-                }, this.end());
+                }, this.end);
             }
 
             step0.call(this);
