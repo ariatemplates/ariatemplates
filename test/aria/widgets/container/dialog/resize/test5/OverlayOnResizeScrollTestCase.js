@@ -101,9 +101,10 @@ Aria.classDefinition({
 
         _getHandle : function (dialogId, index) {
             var options = {};
-            options.parent = this.getWidgetInstance(dialogId)._domElt;
+            var dialogInstance = this.getWidgetInstance(dialogId);
+            options.parent = dialogInstance._domElt;
             if (index) {
-                options.handle = aria.utils.Dom.getDomElementChild(options.parent, 1 + index, false);
+                options.handle = dialogInstance.getResizeHandle(index - 1);
             }
             return options;
         }

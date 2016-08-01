@@ -26,6 +26,11 @@ var ariaTemplatesLayout = require("../../templates/Layout");
 var ariaWidgetsContainerDialogStyle = require("./DialogStyle.tpl.css");
 var ariaWidgetsContainerContainer = require("./Container");
 var ariaCoreTimer = require("../../core/Timer");
+var ariaCoreBrowser = require("../../core/Browser");
+
+// On IE7 there is an issue with sizes when the title is the first item.
+// (this._domElt.offsetHeight has 4px more than the reality which raises issues when resizing...)
+var titleLast = ariaCoreBrowser.isIE7;
 
 /**
  * Dialog widget
@@ -384,7 +389,9 @@ module.exports = Aria.classDefinition({
                 maxWidth = math.min(this._cfg.maxWidth, containerSize.width);
             }
 
-            this.writeTitleBar(out);
+            if (!titleLast) {
+                this.writeTitleBar(out);
+            }
 
             this._div = new ariaWidgetsContainerDiv({
                 sclass : this._skinObj.divsclass,
@@ -429,6 +436,10 @@ module.exports = Aria.classDefinition({
                     out.write(['<span class="x', this._skinnableClass, '_resizable xDialog_' + handles[i] + '">',
                             '</span>'].join(''));
                 }
+            }
+
+            if (titleLast) {
+                this.writeTitleBar(out);
             }
         },
 
@@ -833,7 +844,7 @@ module.exports = Aria.classDefinition({
             var cfg = this._cfg;
             var getDomElementChild = ariaUtilsDom.getDomElementChild;
             this._domElt = this._popup.domElement;
-            var titleBarDomElt = this._titleBarDomElt = getDomElementChild(this._domElt, 0);
+            var titleBarDomElt = this._titleBarDomElt = getDomElementChild(this._domElt, 0, titleLast);
             this._titleDomElt = getDomElementChild(titleBarDomElt, cfg.icon ? 1 : 0);
             this._onDimensionsChanged();
 
@@ -1018,7 +1029,7 @@ module.exports = Aria.classDefinition({
             var titleBarDomElt = this._titleBarDomElt;
             var titleDomElt = this._titleDomElt;
 
-            var isIE7 = aria.core.Browser.isIE7;
+            var isIE7 = ariaCoreBrowser.isIE7;
             if (isIE7) {
                 // without this, IE 7 gives wrong inner sizes
                 titleDomElt.style.overflow = "visible";
@@ -1260,6 +1271,14 @@ module.exports = Aria.classDefinition({
                 }
             });
         },
+
+        /**
+         * Gets the resize handle DOM element by index (0 = the first handle defined in cfg.handles).
+         */
+        getResizeHandle : function (index) {
+            return ariaUtilsDom.getDomElementChild(this._domElt, (titleLast ? 1 : 2) + index, false);
+        },
+
         /**
          * Creates the Resize element with all the resize handle element.
          * @protected
@@ -1271,9 +1290,9 @@ module.exports = Aria.classDefinition({
             }
             if (this._handlesArr) {
                 this._resizable = {};
-                var handleArr = this._handlesArr, index = 1, parent = this._domElt, getDomElementChild = ariaUtilsDom.getDomElementChild;
+                var handleArr = this._handlesArr;
                 for (var i = 0, ii = handleArr.length; i < ii; i++) {
-                    var handleElement = getDomElementChild(parent, ++index, false), axis = null, cursor;
+                    var handleElement = this.getResizeHandle(i), axis = null, cursor;
                     cursor = handleArr[i];
                     if (cursor == "n-resize" || cursor == "s-resize") {
                         axis = "y";
