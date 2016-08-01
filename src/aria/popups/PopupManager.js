@@ -602,7 +602,18 @@ var ViewportNavigationInterceptor = require('./PopupNavigationManager').Viewport
                     popup : popup
                 });
 
-                this._viewportNavigationInterceptor.ensureElements();
+                if (!ariaCoreBrowser.isIE7) {
+                    // The navigation elements inserted by ensureElements make the following tests fail on IE 7:
+                    // - test.aria.widgets.wai.popup.dialog.modal.FirstTest
+                    // - test.aria.widgets.wai.popup.dialog.modal.FourthTest
+                    // Those tests are blocked in _testFocusRestoration while waiting for the opening element to
+                    // be focused again. It is not obvious why adding the navigation elements prevents the opening
+                    // element from being correctly focused again when the dialog is closed... just an IE 7 bug!
+                    // The issue seems not to happen if we do not remove the navigation elements from the DOM when
+                    // the dialog is closed. However, instead of keeping those elements in the DOM a little longer
+                    // (with a non-deterministic setTimeout), we simply avoid adding those elements on IE 7:
+                    this._viewportNavigationInterceptor.ensureElements();
+                }
             },
 
             /**
