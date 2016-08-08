@@ -168,6 +168,33 @@ Aria.classDefinition({
                     }
                 });
             }
+            if (pageId == "ddd") {
+                this.$callback(callback.onsuccess, {
+                    pageId : "ddd",
+                    url : "/pageEngine/ddd",
+                    contents : {
+                        menus : {
+                            mymenu : []
+
+                        },
+                        placeholderContents : {}
+                    },
+                    pageComposition : {
+                        template : "test.aria.pageEngine.pageEngine.site.templates.providerFour.MainLayout",
+                        placeholders : {
+                            "body" : {
+                                template : "test.aria.pageEngine.pageEngine.site.templates.providerFour.Body"
+                            },
+                            "body.left" : {
+                                template : "test.aria.pageEngine.pageEngine.site.templates.providerFour.Template5"
+                            },
+                            "body.middle" : {
+                                template : "test.aria.pageEngine.pageEngine.site.templates.providerFour.Template6"
+                            }
+                        }
+                    }
+                });
+            }
         }
     }
 });
