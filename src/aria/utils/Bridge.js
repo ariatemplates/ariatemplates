@@ -162,7 +162,10 @@ module.exports = Aria.classDefinition({
                             atSkinName, // AT Skin script
                             "'></script>" // AT Skin script
                     ].join(""),
-
+                    "<script type='text/javascript'>",
+                    "aria.core.DownloadMgr.updateUrlMap(" + aria.utils.Json.convertToJsonString(aria.core.DownloadMgr._urlMap) + ");",
+                    "aria.core.DownloadMgr.updateRootMap(" + aria.utils.Json.convertToJsonString(aria.core.DownloadMgr._rootMap) + ");",
+                    "</script>",
                     "</head>", // END HEAD
                     "<body onUnload='window.__atBridge&&__atBridge.close()' style='overflow:hidden;'>", // used to
                     // restore environment
