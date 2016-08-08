@@ -647,6 +647,7 @@ module.exports = Aria.classDefinition({
             out.writeln("}");
             out.decreaseIndent();
             out.writeln("});");
+            out.writeln("var __filename = ", out.stringify(Aria.getLogicalPath(out.templateParam.$classpath, Aria.ACCEPTED_TYPES[this._classType])), ";");
             out.leaveBlock();
         },
 
