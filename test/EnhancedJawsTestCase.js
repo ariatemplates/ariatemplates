@@ -102,6 +102,16 @@ module.exports = Aria.classDefinition({
                 scope: this,
                 fn: callback
             });
+        },
+
+
+
+        ////////////////////////////////////////////////////////////////////////
+        //
+        ////////////////////////////////////////////////////////////////////////
+
+        _createLineRegExp: function (content) {
+            return new RegExp('^' + content + '\n?', 'gm');
         }
     }
 });

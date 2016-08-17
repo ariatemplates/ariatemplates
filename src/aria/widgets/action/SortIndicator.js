@@ -221,7 +221,7 @@ module.exports = Aria.classDefinition({
             var cfg = this._cfg;
             var tabString = (cfg.tabIndex != null ? ' tabindex="' + this._calculateTabIndex() + '" ' : ' ');
             out.write(['<a', Aria.testMode ? ' id="' + this._domId + '_link"' : '',
-                    ' class="sortIndicatorLink" href="#"' + tabString + '>' + ariaUtilsString.escapeHTML(cfg.label)].join(""));
+                    ' class="sortIndicatorLink" href="#"' + tabString + this._getWaiAriaMarkup() + '>' + ariaUtilsString.escapeHTML(cfg.label)].join(""));
             this._icon.writeMarkup(out);
             out.write('</a>');
         },
