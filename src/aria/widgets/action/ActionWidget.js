@@ -13,11 +13,11 @@
  * limitations under the License.
  */
 var Aria = require("../../Aria");
+var ariaUtilsString = require("../../utils/String");
 var ariaUtilsDom = require("../../utils/Dom");
 var ariaTemplatesDomEventWrapper = require("../../templates/DomEventWrapper");
 var ariaWidgetsWidgetTrait = require("../WidgetTrait");
 var ariaWidgetsWidget = require("../Widget");
-
 
 /**
  * @class aria.widgets.action.ActionWidget Base class for all action widgets such as buttons, icon buttons and links.
@@ -134,6 +134,57 @@ module.exports = Aria.classDefinition({
                 this.getDom();
             }
             this._focusElt.focus();
+        },
+
+        /**
+         * Returns the markup for the WAI-ARIA attributes: aria-label, aria-labelledby, aria-describedby, aria-disabled
+         *
+         * @protected
+         */
+        _getWaiAriaMarkup : function () {
+            // --------------------------------------------------- destructuring
+
+            var cfg = this._cfg;
+
+            var waiAria = cfg.waiAria;
+
+            var waiLabel = cfg.waiLabel;
+            var waiLabelledBy = cfg.waiLabelledBy;
+            var waiDescribedBy = cfg.waiDescribedBy;
+            var disabled = cfg.disabled;
+
+            // ------------------------------------------------------ processing
+
+            var markup = '';
+
+            if (waiAria) {
+                markup = [];
+
+                if (waiLabel) {
+                    markup.push('aria-label="' + ariaUtilsString.encodeForQuotedHTMLAttribute(waiLabel) + '"');
+                }
+
+                if (waiLabelledBy) {
+                    markup.push('aria-labelledby="' + ariaUtilsString.encodeForQuotedHTMLAttribute(waiLabelledBy) + '"');
+                }
+
+                if (waiDescribedBy) {
+                    markup.push('aria-describedby="' + ariaUtilsString.encodeForQuotedHTMLAttribute(waiDescribedBy) + '"');
+                }
+
+                markup.push('aria-disabled="' + (disabled ? 'true' : 'false') + '"');
+
+                if (markup.length > 0) {
+                    markup.unshift('');
+                    markup.push('');
+                }
+
+                markup = markup.join(' ');
+            }
+
+            // ---------------------------------------------------------- return
+
+            return markup;
         }
     }
 });

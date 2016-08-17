@@ -1175,6 +1175,18 @@ module.exports = Aria.beanDefinitions({
                     $type : "json:String",
                     $description : "Possible values are: 'bottom left', 'bottom right', 'top left', 'top right'.",
                     $default : "top right"
+                },
+                "waiLabel" : {
+                    $type : "json:String",
+                    $description : "Sets aria-label on the widget, value will be used as the attribute's value"
+                },
+                "waiDescribedBy" : {
+                    $type : "json:String",
+                    $description : "Sets aria-describedby on the widget, value will be used as the attribute's value"
+                },
+                "waiLabelledBy" : {
+                    $type : "json:String",
+                    $description : "Sets aria-labelledby on the widget, value will be used as the attribute's value"
                 }
             }
         },
@@ -1303,18 +1315,6 @@ module.exports = Aria.beanDefinitions({
                     $type : "json:Boolean",
                     $description : "A boolean whether the button is disabled or not",
                     $default : false
-                },
-                "waiLabel" : {
-                    $type : "json:String",
-                    $description : "Sets aria-label on the link, value will be used as the attributes value"
-                },
-                "waiDescribedBy" : {
-                    $type : "json:String",
-                    $description : "Sets aria-describedby on the link, value will be used as the attributes value"
-                },
-                "waiLabelledBy" : {
-                    $type : "json:String",
-                    $description : "Sets aria-labelledby on the link, value will be used as the attributes value"
                 }
             }
         },

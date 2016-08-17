@@ -221,16 +221,31 @@ module.exports = Aria.classDefinition({
             var ariaTestMode = (Aria.testMode) ? ' id="' + this._domId + '_button" ' : '';
             var buttonClass = cfg.disabled ? "xButton xButtonDisabled" : "xButton";
 
+            var waiAriaAttributes = this._getWaiAriaMarkup();
+
             if (this._simpleHTML) {
                 var disableMarkup = cfg.disabled ? " disabled='disabled' " : "";
                 var styleMarkup = cfg.width != "-1" ? " style='width:" + cfg.width + "px;' " : "";
-                out.write(['<input type="button" value="', ariaUtilsString.encodeForQuotedHTMLAttribute(cfg.label),
-                        '"', ariaTestMode, tabIndexString, disableMarkup, styleMarkup, '/>'].join(''));
+
+                out.write([
+                    '<',
+                    !cfg.waiAria
+                        ? 'input type="button" value="' + ariaUtilsString.encodeForQuotedHTMLAttribute(cfg.label) + '"'
+                        : 'button',
+                    waiAriaAttributes,
+                    ariaTestMode,
+                    tabIndexString,
+                    disableMarkup,
+                    styleMarkup,
+                    !cfg.waiAria
+                        ? '/>'
+                        : '>' + ariaUtilsString.escapeForHTML(cfg.label, {text: true}) + '</button>'
+                ].join(''));
             } else {
                 if (isIE7) {
                     // FIXME: find a way to put a button also on IE7
                     // on IE7 the button is having display issues the current frame implementation inside it
-                    out.write(['<span class="' + buttonClass + '" style="margin: 0;"', tabIndexString, ariaTestMode,
+                    out.write(['<span class="' + buttonClass + '" style="margin: 0;"', waiAriaAttributes, tabIndexString, ariaTestMode,
                             '>'].join(''));
                 } else {
                     // PTR 05613372: prevent 'clickability' of greyed out button. Adding "disabled" makes adjusting the
@@ -238,8 +253,16 @@ module.exports = Aria.classDefinition({
                     var onFocusInString = (ariaCoreBrowser.isOldIE && cfg.disabled)
                             ? " onfocusin='this.blur()' "
                             : "";
-                    out.write(['<button type="button" class="' + buttonClass + '"', onFocusInString, tabIndexString,
-                            ariaTestMode, '>'].join(''));
+                    out.write([
+                        '<button',
+                        ' type="button"',
+                        ' class="' + buttonClass + '"',
+                        waiAriaAttributes,
+                        onFocusInString,
+                        tabIndexString,
+                        ariaTestMode,
+                        '>'
+                    ].join(''));
                 }
                 this._frame.writeMarkupBegin(out);
                 // call the method to write the content of the button - here is is just
