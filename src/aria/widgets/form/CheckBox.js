@@ -486,7 +486,11 @@ module.exports = Aria.classDefinition({
             this._hasFocus = true;
             this._setState();
             this._updateDomForState();
-        },
+            var focusCallback = this._cfg.onfocus;
+            if (focusCallback) {
+                this.evalCallback(focusCallback);
+            }
+       },
 
         /**
          * Internal method to handle the blur event

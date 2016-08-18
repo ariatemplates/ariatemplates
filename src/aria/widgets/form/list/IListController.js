@@ -157,6 +157,12 @@ module.exports = Aria.interfaceDefinition({
         itemClick : function (itemIndex) {},
 
         /**
+         * Called when an item is focused
+         * @param {Integer} sortedIndex
+         */
+        itemFocus : function (sortedIndex) {},
+
+        /**
          * Called when the mouse moves over an item.
          * @param {String} itemIndex index of the item over which the mouse moved
          */

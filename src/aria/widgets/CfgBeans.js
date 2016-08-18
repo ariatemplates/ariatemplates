@@ -357,6 +357,10 @@ module.exports = Aria.beanDefinitions({
                     $description : "Value associated to the widget representing the selected state",
                     $default : false
                 },
+                "onfocus" : {
+                    $type : "common:Callback",
+                    $description : "Function to be called when the widget gets the focus"
+                },
                 "onchange" : {
                     $type : "common:Callback",
                     $description : "Function to be called when the state of the widget changes due to user action(click)"
