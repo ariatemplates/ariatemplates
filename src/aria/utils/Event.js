@@ -169,15 +169,10 @@ var ariaCoreBrowser = require("../core/Browser");
                     return false;
                 }
 
-                if ('mousewheel' == event) {
-                    if (this.UA.isIE) {
-                        if (element == Aria.$window) {
-                            element = element.document;
-                        }
-                    } else if (!(this.UA.isOpera || this.UA.isSafari || this.UA.isWebkit)) {
-                        event = 'DOMMouseScroll';
-                    }
-                }
+                var normalized = this._normalizeTargetAndEvent(element, event);
+                element = normalized.element;
+                event = normalized.event;
+
                 if (!this.typesUtil.isFunction(callback)) {
                     useCapture = scope;
                 }
@@ -426,6 +421,30 @@ var ariaCoreBrowser = require("../core/Browser");
             },
 
             /**
+             * Normalize target and event for cross-browser compatibility
+             * @param {EventTarget} target of the event
+             * @param {String} event type
+             * @protected
+             */
+            _normalizeTargetAndEvent : function (element, event) {
+                var normalized = {
+                    element: element,
+                    event: event
+                };
+                if ('mousewheel' == event) {
+                    if (this.UA.isOldIE) {
+                        if (element == Aria.$window) {
+                            normalized.element = element.document;
+                        }
+                    } else if (!(this.UA.isOpera || this.UA.isSafari || this.UA.isWebkit)) {
+                        normalized.event = 'DOMMouseScroll';
+                    }
+                }
+                return normalized;
+            },
+
+
+            /**
              * Removes an event listener
              * @param {String|HTMLElement|Array} element An id, an element reference, or a collection of ids and/or
              * elements to remove the listener from.
@@ -437,15 +456,9 @@ var ariaCoreBrowser = require("../core/Browser");
             removeListener : function (element, event, callback) {
                 var i, li;
 
-                if ('mousewheel' == event) {
-                    if (this.UA.isOldIE) {
-                        if (element == Aria.$window) {
-                            element = element.document;
-                        }
-                    } else if (!(this.UA.isOpera || this.UA.isSafari || this.UA.isWebkit)) {
-                        event = 'DOMMouseScroll';
-                    }
-                }
+                var normalized = this._normalizeTargetAndEvent(element, event);
+                element = normalized.element;
+                event = normalized.event;
 
                 event = this._getType(event);
 
