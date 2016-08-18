@@ -14,9 +14,11 @@
  */
 var Aria = require("../../../Aria");
 var ariaUtilsJson = require("../../../utils/Json");
+var ariaUtilsType = require("../../../utils/Type");
 require("./ListController");
 var ariaWidgetsFormListListStyle = require("./ListStyle.tpl.css");
 var ariaWidgetsTemplateBasedWidget = require("../../TemplateBasedWidget");
+var ariaTemplatesDomEventWrapper = require("../../../templates/DomEventWrapper");
 
 /**
  * A simple list of selectable items
@@ -39,9 +41,14 @@ module.exports = Aria.classDefinition({
         skinObj.cssClassMouseover = "x" + this._skinnableClass + "MouseOverItem_" + this._cfg.sclass;
         skinObj.cssClassFooter = "x" + this._skinnableClass + "Footer_" + this._cfg.sclass;
         var divCfg = ariaUtilsJson.copy(cfg, true, ["width", "minWidth", "maxWidth", "height", "minHeight",
-                "maxHeight", "scrollBarX", "scrollBarY"]);
+                "maxHeight", "scrollBarX", "scrollBarY", "waiAria"]);
         divCfg.sclass = skinObj.divsclass;
         divCfg.margins = "0 0 0 0";
+
+        if (cfg.waiAria) {
+            cfg.numberOfColumns = 1;
+            cfg.displayOptions.tableMode = false;
+        }
 
         this._initTemplate({
             moduleCtrl : {
@@ -82,19 +89,43 @@ module.exports = Aria.classDefinition({
 
         /**
          * Return true to cancel default action.
-         * @param {Number} charCode Character code
-         * @param {Number} keyCode Code of the button pressed
+         *
+         * @param {aria.DomEvent|Number} eventOrCharCode Original event or character code directly
+         * @param {Number} keyCode Ignored if the original event has been passed, otherwise the code of the button pressed
+         *
+         * @return {Boolean}
          */
-        sendKey : function (charCode, keyCode) {
+        sendKey : function (eventOrCharCode, keyCode) {
+            // -------------------------------------- input arguments processing
+
+            var event;
+            var charCode;
+
+            if (ariaUtilsType.isObject(eventOrCharCode)) {
+                event = eventOrCharCode;
+
+                charCode = event.charCode;
+                keyCode = event.keyCode;
+            } else {
+                event = null;
+
+                charCode = eventOrCharCode;
+            }
+
+            // ------------------------------------------------------ processing
+
             var moduleCtrl = this._subTplModuleCtrl;
             var closeItem = this._getFirstEnabledItem();
+
             if (moduleCtrl) {
                 var data = moduleCtrl.getData();
+
                 if (!this.evalCallback(this._cfg.onkeyevent, {
                     charCode : charCode,
                     keyCode : keyCode,
                     focusIndex : data.focusIndex,
-                    closeItem : closeItem
+                    closeItem : closeItem,
+                    event : event
                 })) {
                     return moduleCtrl.keyevent({
                         charCode : charCode,
@@ -176,9 +207,19 @@ module.exports = Aria.classDefinition({
         _dom_onkeypress : function (event) {
             if (this._subTplModuleCtrl) {
                 if (!event.isSpecialKey && event.charCode != event.KC_SPACE) {
-                    this.sendKey(event.charCode, event.keyCode);
+                    this.sendKey(event);
                 }
             }
+        },
+
+        /**
+         * Mousedown event
+         * @param {aria.DomEvent} domEvt Mousedown event
+         */
+        _dom_onmousedown : function (event) {
+            var domEvtWrapper = new ariaTemplatesDomEventWrapper(event);
+            this.evalCallback(this._cfg.onmousedown, domEvtWrapper);
+            domEvtWrapper.$dispose();
         },
 
         /**
@@ -188,7 +229,7 @@ module.exports = Aria.classDefinition({
             // event.cancelBubble = true;
             if (this._subTplModuleCtrl) {
                 if (event.isSpecialKey) {
-                    this.sendKey(event.charCode, event.keyCode);
+                    this.sendKey(event);
                 }
             }
             if (event.keyCode != event.KC_TAB) {

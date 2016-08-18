@@ -157,6 +157,7 @@ module.exports = Aria.classDefinition({
         Aria.$logWarn = emptyFunction;
     },
     $prototype : {
+
         /**
          * Used to verify if a given level is within the known list of levels
          * @param {Number} level The level to test
@@ -255,14 +256,39 @@ module.exports = Aria.classDefinition({
         },
 
         /**
+         * Removes an appender from the logging system
+         * @param {aria.core.log.DefaultAppender} appender An instance of appender to be removed (must implement the
+         * same methods as aria.core.log.DefaultAppender)
+         */
+        removeAppender : function (appender) {
+            if (appender) {
+                this._clearAppenders(appender);
+            }
+        },
+
+        /**
+         * Remove all appenders in the logging system, if an appender is passed then will remove just a specific
+         * appender instance
+         * @param {aria.core.log.DefaultAppender} appender An instance of appender to be removed (must implement the
+         * same methods as aria.core.log.DefaultAppender)
+         */
+        _clearAppenders : function (appender) {
+            var apps = this._appenders;
+            for (var i = 0, l = apps.length; i < l; i++) {
+                if (!appender || apps[i] === appender) {
+                    apps[i].$dispose();
+                    apps.splice(i, 1);
+                    i--;
+                    l--;
+                }
+            }
+        },
+
+        /**
          * Remove all appenders in the logging system
          */
         clearAppenders : function () {
-            var apps = this.getAppenders();
-            for (var i = 0, l = apps.length; i < l; i++) {
-                apps[i].$dispose();
-            }
-            this._appenders = [];
+            this._clearAppenders();
         },
 
         /**

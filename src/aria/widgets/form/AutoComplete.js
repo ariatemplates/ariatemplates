@@ -16,6 +16,7 @@ var Aria = require("../../Aria");
 var ariaWidgetsFormDropDownListTrait = require("./DropDownListTrait");
 var ariaWidgetsControllersAutoCompleteController = require("../controllers/AutoCompleteController");
 var ariaUtilsEvent = require("../../utils/Event");
+var ariaUtilsFunction = require("../../utils/Function");
 var ariaWidgetsFormAutoCompleteStyle = require("./AutoCompleteStyle.tpl.css");
 var ariaWidgetsFormListListStyle = require("./list/ListStyle.tpl.css");
 var ariaWidgetsContainerDivStyle = require("../container/DivStyle.tpl.css");
@@ -67,6 +68,9 @@ module.exports = Aria.classDefinition({
         controllerInstance.expandButton = cfg.expandButton;
         controllerInstance.selectionKeys = cfg.selectionKeys;
         controllerInstance.preselect = cfg.preselect;
+        if (cfg.waiAria && cfg.waiSuggestionAriaLabelGetter) {
+            controllerInstance.waiSuggestionAriaLabelGetter = ariaUtilsFunction.bind(this._waiSuggestionAriaLabelGetter, this);
+        }
 
         /**
          * Whether the width of the popup can be smaller than the field, when configured to be so. If false, the
@@ -75,12 +79,11 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         this._freePopupWidth = false;
-
-        if (cfg.waiAria) {
-            this._extraInputAttributes += ' aria-expanded="false" role="combobox" aria-autocomplete="list"';
-        }
+        this._waiSuggestionsChangedListener = null;
     },
     $destructor : function () {
+        this._removeWaiSuggestionsChangedListener();
+
         // The dropdown might still be open when we destroy the widget, destroy it now
         if (this._dropdownPopup) {
             this._dropdownPopup.$removeListeners({
@@ -172,6 +175,38 @@ module.exports = Aria.classDefinition({
         },
 
         /**
+         * DOM callback function called when the focus is taken off the input. The onBlur event is available on the
+         * input that sits inside a span.
+         * @param {aria.DomEvent} event Blur event
+         * @protected
+         */
+        _dom_onblur : function (event, avoidCallback) {
+            this._keepFocus = false;
+            this.$DropDownTextInput._dom_onblur.call(this, event, avoidCallback);
+        },
+
+        _dom_onkeydown : function (event) {
+            // On Shift+F10, when AutoComplete has no expand button enabled, we don't open the dropdown, we only close it
+            if (this._isShiftF10Pressed(event) && !this._cfg.expandButton && this._dropdownPopup == null) {
+                return;
+            }
+
+            this.$DropDownTextInput._dom_onkeydown.apply(this, arguments);
+        },
+
+         /**
+         * Internal method to handle the onkeyup event. This is called to set the value property in the data model
+         * through the setProperty method that also handles all other widgets bound to this value.
+         * @protected
+         */
+        _dom_onkeyup : function (event) {
+            this.$DropDownTextInput._dom_onkeyup.call(this, event);
+            if (event.keyCode == event.KC_ENTER) {
+                this.checkValue();
+            }
+        },
+
+        /**
          * React to a dropdown close. If the widget is using autofill we want to select the pre-selected value in the
          * datamodel and report it to the input field also when the user clicks away from the field instead of
          * navigating through TAB or selecting an item from the dropdown. This function is called any time we close the
@@ -217,12 +252,15 @@ module.exports = Aria.classDefinition({
          * @override
          */
         _afterDropdownOpen : function () {
-            this.$DropDownTextInput._afterDropdownOpen.apply(this, arguments);
+            this.$DropDownListTrait._afterDropdownOpen.apply(this, arguments);
             if (this._cfg.waiAria) {
                 var field = this.getTextInputField();
                 field.setAttribute("aria-owns", this.controller.getListWidget().getListDomId());
-                field.setAttribute("aria-expanded", "true");
-                this._updateAriaActiveDescendant();
+
+                var dropDownIcon = this._getDropdownIcon();
+                if (dropDownIcon) {
+                    dropDownIcon.setAttribute("aria-expanded", "true");
+                }
             }
         },
 
@@ -234,9 +272,13 @@ module.exports = Aria.classDefinition({
             if (this._cfg.waiAria) {
                 var field = this.getTextInputField();
                 field.removeAttribute("aria-activedescendant");
-                field.setAttribute("aria-expanded", "false");
                 field.removeAttribute("aria-owns");
-            }
+
+                var dropDownIcon = this._getDropdownIcon();
+                if (dropDownIcon) {
+                    dropDownIcon.setAttribute("aria-expanded", "false");
+                }
+           }
             this.$DropDownListTrait._afterDropdownClose.apply(this, arguments);
         },
 
@@ -328,6 +370,7 @@ module.exports = Aria.classDefinition({
                 this.$DropDownTextInput._onBoundPropertyChange.apply(this, arguments);
             }
         },
+
         /**
          * Initialization method called by the delegate engine when the DOM is loaded
          */

@@ -13,9 +13,11 @@
  * limitations under the License.
  */
 var Aria = require("../Aria");
+var ariaUtilsString = require("../utils/String");
 var ariaWidgetsIconStyle = require("./IconStyle.tpl.css");
 var ariaWidgetsWidget = require("./Widget");
 var ariaCoreTplClassLoader = require("../core/TplClassLoader");
+var ariaTemplatesNavigationManager = require('../templates/NavigationManager');
 
 /**
  * Aria Icon Widget
@@ -67,7 +69,6 @@ module.exports = Aria.classDefinition({
         ICON_NOT_FOUND : "%1Icon was not found: %2"
     },
     $prototype : {
-
         /**
          * Override widget _widgetMarkup method.
          * @protected
@@ -75,35 +76,100 @@ module.exports = Aria.classDefinition({
          * @param {aria.templates.MarkupWriter} out the html output writer
          */
         _widgetMarkup : function (out) {
-            var cfg = this._cfg;
-            var id = this._domId;
-            var tooltip = cfg.tooltip;
-            var iconInfo = this._iconInfo;
+            // --------------------------------------------------- destructuring
 
-            if (tooltip != null && tooltip !== '') {
-                tooltip = 'title="' + tooltip + '" ';
-            } else {
-                tooltip = '';
+            var cfg = this._cfg;
+            var icon = cfg.icon;
+            var tooltip = cfg.tooltip;
+            var tabIndex = cfg.tabIndex;
+            var waiAria = cfg.waiAria;
+            var label = cfg.label;
+            var role = cfg.role;
+
+            var id = this._domId;
+            var iconInfo = this._iconInfo;
+            var extraAttributes = this.extraAttributes;
+
+            // ------------------------------------------------------ processing
+
+            var attributes = [];
+
+            function addAttribute(key, value) {
+                value = '' + value;
+                value = ariaUtilsString.escapeForHTML(value, {attr: true});
+                attributes.push(key + '="' + value + '"');
             }
 
-            var delegationMarkup = "";
+            // delegationMarkup ------------------------------------------------
+
             var delegateManager = aria.utils.Delegate;
-            if (!this._delegateId) {
-                this._delegateId = delegateManager.add({
+            var delegateId = this._delegateId;
+
+            if (!delegateId) {
+                delegateId = delegateManager.add({
                     fn : this.delegate,
                     scope : this
                 });
+                this._delegateId = delegateId;
             }
-            delegationMarkup = delegateManager.getMarkup(this._delegateId) + " ";
 
-            if (!iconInfo.spriteURL && cfg.icon) {
-                var classes = aria.widgets.AriaSkinInterface.getSkinObject("Icon", cfg.icon.split(":")[0], true).content[cfg.icon.split(":")[1]];
-                out.write(['<span id="', id, '" class="xWidget ', classes, '" ', this.extraAttributes, '></span>'].join(''));
+            var delegationMarkup = delegateManager.getMarkup(delegateId);
+
+            // icon ------------------------------------------------------------
+
+            addAttribute('id', id);
+
+
+            var style = null;
+
+            if (!iconInfo.spriteURL && icon) {
+                var parts = icon.split(":");
+                var skinclass = parts[0];
+                var contentKey = parts[1];
+
+                var classes = aria.widgets.AriaSkinInterface.getSkinObject("Icon", skinclass, true).content[contentKey];
+
+                addAttribute('class', ['xWidget'].concat(classes).join(' '));
             } else {
-                out.write(['<span id="', id, '" class="', this._getIconClasses(iconInfo), '" ', tooltip,
-                        delegationMarkup, 'style="', this._getIconStyle(iconInfo), '" ', this.extraAttributes,
-                        '></span>'].join(''));
+                addAttribute('class', this._getIconClasses(iconInfo));
+                if (tooltip != null && tooltip !== '') {
+                    tooltip = addAttribute('title', tooltip);
+                }
+                attributes.push(delegationMarkup);
+
+                style = this._getIconStyle(iconInfo);
             }
+
+            if (tabIndex != null) {
+                tabIndex = this._calculateTabIndex();
+                addAttribute('tabindex', tabIndex);
+            }
+
+            if (waiAria && label) {
+                addAttribute('aria-label', label);
+            }
+
+            if (waiAria && role) {
+                addAttribute('role', role);
+            }
+
+            if (style) {
+                addAttribute('style', style);
+            }
+
+            attributes.push(extraAttributes);
+
+            attributes = attributes.join(' ');
+            var markup = '<span ' + attributes + '></span>';
+
+            // ---------------------------------------------------------- output
+
+            out.write(markup);
+        },
+
+        focus : function () {
+            var element = this.getDom();
+            return ariaTemplatesNavigationManager.focusDomElement(element);
         },
 
         /**
@@ -200,6 +266,16 @@ module.exports = Aria.classDefinition({
                 cssClasses += " xBlock";
             }
             return cssClasses;
+        },
+
+        _dom_onkeydown : function (domEvent) {
+            var keyCode = domEvent.keyCode;
+
+            if (keyCode == domEvent.KC_ENTER || keyCode == domEvent.KC_SPACE) {
+                return this._dom_onclick(domEvent);
+            }
+
+            return true;
         },
 
         /**

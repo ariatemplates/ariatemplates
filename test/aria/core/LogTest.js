@@ -79,7 +79,11 @@ Aria.classDefinition({
             this.assertTrue(app.logs[1].level == "info");
             this.assertTrue(app.logs[3].level == "error");
 
-            // removing the fake appender not to compromise the rest of the test suite
+            // removing the fake appender with the removeAppenders method
+            aria.core.Log.removeAppender(app);
+            this.assertUndefined(logger.getAppenders("test.my.own.log.Appender")[0]);
+
+            // clean up appenders so as not to compromise the rest of the test suite
             aria.core.Log.clearAppenders();
             aria.core.Log.addAppender(new aria.core.log.SilentArrayAppender());
         }

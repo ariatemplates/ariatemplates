@@ -31,12 +31,7 @@ Aria.classDefinition({
 
             function step2() {
                 self.assertEquals(scrollableItem.scrollTop, 3000);
-                self.waitFor({
-                    condition: function () {
-                        return !!self.getWidgetDropDownPopup("happyMS");
-                    },
-                    callback: step3
-                });
+                self.waitForDropDownPopup("happyMS", step3);
             }
 
             function step3() {
@@ -51,12 +46,7 @@ Aria.classDefinition({
 
             function step5() {
                 self.assertEquals(scrollableItem.scrollTop, 3000);
-                self.waitFor({
-                    condition: function () {
-                        return !!self.getWidgetDropDownPopup("happyMS");
-                    },
-                    callback: step6
-                });
+                self.waitForDropDownPopup("happyMS", step6);
             }
 
             function step6() {

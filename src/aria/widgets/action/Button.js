@@ -297,7 +297,7 @@ module.exports = Aria.classDefinition({
             this._mousePressed = true;
             this._updateState();
 
-            if (ariaCoreBrowser.isChrome || ariaCoreBrowser.isSafari) {
+            if (ariaCoreBrowser.isChrome || ariaCoreBrowser.isOpera || ariaCoreBrowser.isSafari) {
                 this.currTarget = domEvt.currentTarget;
             }
         },
@@ -311,7 +311,7 @@ module.exports = Aria.classDefinition({
             // TODO: this method should also be called when the mouse button is released, not depending on where it is
             // released
 
-            if (ariaCoreBrowser.isChrome || ariaCoreBrowser.isSafari) {
+            if (ariaCoreBrowser.isChrome || ariaCoreBrowser.isOpera || ariaCoreBrowser.isSafari) {
                 if (this._mousePressed && domEvt.currentTarget == this.currTarget) {
                     // handle an onclick event
                     this._performAction(domEvt);
@@ -349,15 +349,12 @@ module.exports = Aria.classDefinition({
          * @method
          * @private
          */
-        _dom_onclick : (ariaCoreBrowser.isChrome || ariaCoreBrowser.isSafari) ? function (domEvent) {
-            this._keyPressed = false;
-            return; // we don't catch onclick's for buttons on chrome & safari. we catch mouseup's instead
+        _dom_onclick : (ariaCoreBrowser.isChrome || ariaCoreBrowser.isOpera || ariaCoreBrowser.isSafari) ? function (domEvent) {
+            // we don't catch onclick's for buttons on chrome & safari. we catch mouseup's instead
         } : function (domEvent) {
-            if (this._keyPressed) {
-                this._keyPressed = false;
-                return;
+            if (!this._keyPressed) {
+                this._performAction(domEvent);
             }
-            this._performAction(domEvent);
         },
 
         /**
@@ -367,14 +364,15 @@ module.exports = Aria.classDefinition({
          */
         _dom_onkeyup : function (domEvt) {
             if (domEvt.keyCode == ariaDomEvent.KC_SPACE || domEvt.keyCode == ariaDomEvent.KC_ENTER) {
-                this._keyPressed = false;
-                this._updateState();
+                if (this._keyPressed) {
+                    this._keyPressed = false;
+                    this._updateState();
 
-                if (!this._performAction(domEvt)) {
-                    domEvt.stopPropagation();
-                    return false;
+                    if (!this._performAction(domEvt)) {
+                        domEvt.stopPropagation();
+                        return false;
+                    }
                 }
-                return true;
             }
             return true;
         },
@@ -394,6 +392,7 @@ module.exports = Aria.classDefinition({
          */
         _dom_onblur : function (domEvt) {
             this._focused = false;
+            this._keyPressed = false;
             this._updateState();
         }
     }

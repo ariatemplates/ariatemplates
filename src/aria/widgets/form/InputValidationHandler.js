@@ -24,6 +24,7 @@ var ariaTemplatesLayout = require("../../templates/Layout");
 module.exports = Aria.classDefinition({
     $classpath : "aria.widgets.form.InputValidationHandler",
     $constructor : function (widget) {
+        this._widget = widget;
         this._context = widget._context;
         this._lineNumber = widget._lineNumber;
         this._field = widget.getValidationPopupReference();
@@ -73,6 +74,7 @@ module.exports = Aria.classDefinition({
         this._context = null;
         this._field = null;
         this._WidgetCfg = null;
+        this._widget = null;
         this._validationPopup = null;
     },
     $prototype : {
@@ -114,10 +116,21 @@ module.exports = Aria.classDefinition({
                 width : 289,
                 margins : "0 0 0 0"
             }, this._context);
+
+            var msg = this._checkErrorMessage(errorMessage);
+            if (this._WidgetCfg.waiAria) {
+                div.addExtraAttributes('aria-hidden="true"');
+                this._widget.waiReadText(msg, {
+                    alert: true
+                });
+            }
+
             out.registerBehavior(div);
             div.writeMarkupBegin(out);
-            out.write(this._checkErrorMessage(errorMessage));
+            out.write(msg);
             div.writeMarkupEnd(out);
+
+
             this._div = div;
         },
 
@@ -153,9 +166,9 @@ module.exports = Aria.classDefinition({
                 preferredPositions : this._getPreferredPositions(),
                 closeOnMouseClick : true,
                 closeOnMouseScroll : false,
-                role: "alert",
                 waiAria: this._WidgetCfg.waiAria
             });
+
         },
 
         /**

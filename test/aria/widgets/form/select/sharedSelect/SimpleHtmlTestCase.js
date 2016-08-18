@@ -31,11 +31,11 @@ Aria.classDefinition({
     $prototype : {
         // look up the parent class to see the tests
         getCurrentOptionsFirstValue : function () {
-            return this.select.options[this.select.selectedIndex].value;
+            return this.select.options[0].value;
         },
 
         getCurrentlySelectedValue : function () {
-            this.getCurrentOptionsFirstValue();
+            return this.select.options[this.select.selectedIndex].value;
         }
     }
 });

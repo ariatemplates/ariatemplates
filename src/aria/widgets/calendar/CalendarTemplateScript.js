@@ -56,6 +56,9 @@ module.exports = Aria.tplScriptDefinition({
             var weekWrapper = this.$getChild("month_" + position.month.monthKey, position.weekInMonthIndex);
             var dayWrapper = weekWrapper.getChild((this.settings.showWeekNumbers ? 1 : 0) + position.dayInWeekIndex);
             dayWrapper.classList.setClassName(this.getClassForDay(position.day));
+            if (this.settings.waiAria) {
+                dayWrapper.setAttribute("aria-selected", !!position.day.isSelected);
+            }
             dayWrapper.$dispose();
             weekWrapper.$dispose();
         },

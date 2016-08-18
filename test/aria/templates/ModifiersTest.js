@@ -292,7 +292,13 @@ Aria.classDefinition({
                     ["x abc", "a.c"],
                     // Dangerous expression
                     ["abcd .efg", ".efg"], ["abcd [efg]", "[efg]"], ["abcd efg", ".efg"], ["abcd @efg", "@ef"],
-                    ["abcd (1-123)", "(1-"], ["abcd (1-123)", "(1-123)"], ["abc-defgh", "abc-de"]];
+                    ["abcd (1-123)", "(1-"], ["abcd (1-123)", "(1-123)"], ["abc-defgh", "abc-de"],
+                    // HTML escaping:
+                    ["R&D-AFW", "R&"],
+                    ["<strong>expression</strong>", "<strong>"],
+                    ["TEST R&D-AFW", "R&"],
+                    ["test <strong>expression</strong>", "<strong>"]
+                ];
 
             var expected = [
                     // basic: finds highlights on word boundaries
@@ -330,9 +336,76 @@ Aria.classDefinition({
                     // Dangerous expression
                     "abcd <strong>.efg</strong>", "abcd <strong>[efg]</strong>", "abcd efg",
                     "abcd <strong>@ef</strong>g", "abcd <strong>(1-</strong>123)", "abcd <strong>(1-123)</strong>",
-                    "<strong>abc-de</strong>fgh"];
+                    "<strong>abc-de</strong>fgh",
+                    // HTML escaping:
+                    "<strong>R&amp;</strong>D-AFW",
+                    "<strong>&lt;strong&gt;</strong>expression&lt;&#x2F;strong&gt;",
+                    "TEST <strong>R&amp;</strong>D-AFW",
+                    "test <strong>&lt;strong&gt;</strong>expression&lt;&#x2F;strong&gt;"
+                ];
             for (var i = 0, len = testThese.length; i < len; i += 1) {
                 var got = aria.templates.Modifiers.callModifier("highlightfromnewword", testThese[i]);
+                this.assertEquals(got, expected[i], "Expecting '" + expected[i] + "', got '" + got + "'");
+            }
+        },
+
+        /**
+         * Unit test the starthighlight modifier.
+         */
+        testStartHighlight : function () {
+            var testThese = [
+                    ["abc def ghi", "abc d"], ["abc def ghi", "def g"], ["abc def ghi", "ghi"],
+                    ["abc abd", "ab"], ["abc abd abc", "abd a"],
+                    ["abc defgh ikj", "efg"],
+                    ["abc    defgh", "def"],
+                    ["abc				defgh", "def"],
+                    ["", "aaa"],
+                    ["abc", ""],
+                    ["    ", "aaa"],
+                    ["abc", "   "],
+                    [" abc def", "ab"],
+                    ["aBcDe", "abcd"], ["aBcDe", "AbCd"], ["ABCDe", "abcd"],
+                    ["abcd (123)", "123"], ["abcd +123", "123"], ["abcd .123", "123"],
+                    ["x abc", "a.c"],
+                    ["abcd .efg", ".efg"], ["abcd [efg]", "[efg]"], ["abcd efg", ".efg"], ["abcd @efg", "@ef"],
+                    ["abcd (1-123)", "(1-"], ["abcd (1-123)", "(1-123)"], ["abc-defgh", "abc-de"],
+                    ["R&D-AFW", "R&"],
+                    ["<strong>expression</strong>", "<strong>"],
+                    ["TEST R&D-AFW", "R&"],
+                    ["test <strong>expression</strong>", "<strong>"]
+                ];
+
+            var expected = [
+                    "<strong>abc d</strong>ef ghi",
+                    "abc def ghi",
+                    "abc def ghi",
+                    "<strong>ab</strong>c abd",
+                    "abc abd abc",
+                    "abc defgh ikj",
+                    "abc    defgh",
+                    "abc				defgh",
+                    "",
+                    "abc",
+                    "    ",
+                    "abc",
+                    " abc def",
+                    "<strong>aBcD</strong>e", "<strong>aBcD</strong>e",
+                    "<strong>ABCD</strong>e",
+                    "abcd (123)",
+                    "abcd +123",
+                    "abcd .123",
+                    "x abc",
+                    "abcd .efg", "abcd [efg]", "abcd efg",
+                    "abcd @efg", "abcd (1-123)", "abcd (1-123)",
+                    "<strong>abc-de</strong>fgh",
+                    // HTML escaping:
+                    "<strong>R&amp;</strong>D-AFW",
+                    "<strong>&lt;strong&gt;</strong>expression&lt;&#x2F;strong&gt;",
+                    "TEST R&amp;D-AFW",
+                    "test &lt;strong&gt;expression&lt;&#x2F;strong&gt;"
+                ];
+            for (var i = 0, len = testThese.length; i < len; i += 1) {
+                var got = aria.templates.Modifiers.callModifier("starthighlight", testThese[i]);
                 this.assertEquals(got, expected[i], "Expecting '" + expected[i] + "', got '" + got + "'");
             }
         }

@@ -13,11 +13,13 @@
  * limitations under the License.
  */
 var Aria = require("../../Aria");
+var DomEvent = require("../../DomEvent");
 var ariaWidgetsFormDropDownTrait = require("./DropDownTrait");
 var ariaWidgetsFormTextInput = require("./TextInput");
 var ariaCoreBrowser = require("../../core/Browser");
 var ariaCoreTimer = require("../../core/Timer");
 var ariaUtilsDevice = require("../../utils/Device");
+var ariaUtilsString = require("../../utils/String");
 
 /**
  * Base class for all text input widgets that use a drop-down popup
@@ -34,6 +36,16 @@ module.exports = Aria.classDefinition({
      */
     $constructor : function (cfg, ctxt, lineNumber, controller) {
         this.$TextInput.constructor.call(this, cfg, ctxt, lineNumber, controller);
+        var iconTooltip = cfg.iconTooltip ? ' title="' + ariaUtilsString.escapeForHTML(cfg.iconTooltip) + '"' : '';
+        this._iconsAttributes = {
+            // unselectable is necessary on IE so that, on mouse down, there is no blur of the active element
+            // (preventing the default action on mouse down does not help on IE)
+            "dropdown": 'unselectable="on"' + iconTooltip
+        };
+        if (cfg.waiAria) {
+            this._iconsAttributes.dropdown += ' role="button" aria-expanded="false" aria-haspopup="true"' +
+                (cfg.waiIconLabel ? ' aria-label="' + cfg.waiIconLabel + '"' : "");
+        }
     },
     $destructor : function () {
         this._closeDropdown();
@@ -120,14 +132,22 @@ module.exports = Aria.classDefinition({
          * keyCode properties). This object may be or may not be an instance of aria.DomEvent.
          */
         _checkKeyStroke : function (event) {
+            if (this._cfg.waiAria && !this._dropdownPopup && event.keyCode === DomEvent.KC_DOWN) {
+                // disable arrow down key when waiAria is enabled and the popup is closed
+                return;
+            }
             var controller = this.controller;
             var cp = this.getCaretPosition();
             if (cp) {
                 var report = controller.checkKeyStroke(event.charCode, event.keyCode, this.getTextInputField().value, cp.start, cp.end, event);
                 // event may not always be a DomEvent object, that's why we check for the existence of
                 // preventDefault on it
-                if (report && report.cancelKeyStroke && event.preventDefault) {
-                    event.preventDefault(true);
+                if (report && event.preventDefault) {
+                    if (report.cancelKeyStroke) {
+                        event.preventDefault(true);
+                    } else if (report.cancelKeyStrokeDefaultBehavior) {
+                        event.preventDefault(false);
+                    }
                 }
                 this._reactToControllerReport(report, {
                     hasFocus : true
@@ -162,7 +182,7 @@ module.exports = Aria.classDefinition({
                 event.charCode = 0;
                 this._handleKey(event);
             }
-            this.$TextInput._dom_onkeydown.call(this, event);
+            this.$TextInput._dom_onkeyup.call(this, event);
         },
 
         /**
@@ -228,9 +248,9 @@ module.exports = Aria.classDefinition({
          * On touch devices, this method checks the currently focused element and defines this._focusNoKeyboard
          * accordingly. On desktop devices, this method does nothing.
          */
-        _updateFocusNoKeyboard : ariaUtilsDevice.isTouch() ? function () {
+        _updateFocusNoKeyboard : ariaUtilsDevice.isTouch() ? function (forceFocus) {
             var activeElement = Aria.$window.document.activeElement;
-            this._focusNoKeyboard = (activeElement != this.getTextInputField());
+            this._focusNoKeyboard = forceFocus || (activeElement != this.getTextInputField());
         } : Aria.empty,
 
         /**
@@ -261,6 +281,18 @@ module.exports = Aria.classDefinition({
                 this._focusNoKeyboard = false;
             }
             this.$DropDownTrait._dropDownMouseClickClose.call(this, evt);
+        },
+
+        /**
+         * Return the dropdown icon
+         * @protected
+         */
+        _getDropdownIcon : function () {
+            var dropDownIcon = this._dropdownIcon;
+            if (!dropDownIcon && this._frame.getIcon) {
+                dropDownIcon = this._frame.getIcon("dropdown");
+            }
+            return dropDownIcon;
         },
 
         /**

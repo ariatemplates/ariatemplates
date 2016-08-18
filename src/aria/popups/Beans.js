@@ -135,6 +135,11 @@ module.exports = Aria.beanDefinitions({
                     $description : "When the popup is being opened, the animation is applied",
                     $sample : "slide left"
                 },
+                "zIndexKeepOpenOrder" : {
+                    $type : "json:Boolean",
+                    $description : "If true, this popup must always be kept in front of any popup that was opened before.",
+                    $default : true
+                },
                 "popupContainer" : {
                     $type : "json:ObjectRef",
                     $description : "[Optional] Object implementing the IPopupContainer interface, which defines in which container the popup will be added. By default, the aria.popups.container.Viewport singleton is used and the popup is a direct child of document.body."
@@ -142,6 +147,10 @@ module.exports = Aria.beanDefinitions({
                 "role" : {
                     $type : "json:String",
                     $description : "The role attribute to add to the container, if wai is activated"
+                },
+                "labelId" : {
+                    $type : "json:String",
+                    $description : "The id of the element to use as a label for accessibility. Used only if wai is activated."
                 },
                 "waiAria" : {
                     $type : "json:Boolean",

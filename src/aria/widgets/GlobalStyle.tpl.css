@@ -116,9 +116,9 @@
 }
 {/if}
 
-{if aria.core.Browser.isSafari || aria.core.Browser.isChrome}
+{if aria.core.Browser.isSafari || aria.core.Browser.isChrome || aria.core.Browser.isOpera}
 *:focus {
-    outline: 0;
+    outline-width: 0;
 }
 {/if}
 
@@ -138,6 +138,18 @@
 }
 .xFloatLabelLeft {
     float: left;
+}
+
+.xSROnly {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    border: 0;
+    outline: none;
 }
 
 {/macro}

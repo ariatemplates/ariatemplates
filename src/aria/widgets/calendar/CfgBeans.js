@@ -103,6 +103,19 @@ module.exports = Aria.beanDefinitions({
                     $description : "Specifies if today and selected day shortcuts should be displayed",
                     $default : true
                 },
+                "waiAria" : {
+                    $type : "json:Boolean",
+                    $description : "If true, accessibility-related DOM attributes are enabled, to comply with WAI-ARIA specifications. This allows screen readers and other accessibility tools to work better."
+                },
+                "waiAriaDateFormat" : {
+                    $type : "AppCfg:FormatTypes",
+                    $description : "Date pattern to be used for screen readers."
+                },
+                "dayDomIdPrefix": {
+                    $type : "json:String",
+                    $description : "Prefix to use when generating ids for days.",
+                    $default : "day"
+                },
                 "focus" : {
                     $type : "json:Boolean",
                     $description : "Is true if the calendar currently has the focus."

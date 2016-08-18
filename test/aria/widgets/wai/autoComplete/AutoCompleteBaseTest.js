@@ -19,9 +19,9 @@ var fnUtils = require("ariatemplates/utils/Function");
 
 module.exports = Aria.classDefinition({
     $classpath : "test.aria.widgets.wai.autoComplete.AutoCompleteBaseTest",
-    $extends : require("ariatemplates/jsunit/TemplateTestCase"),
+    $extends : require("ariatemplates/jsunit/RobotTestCase"),
     $constructor : function () {
-        this.$TemplateTestCase.constructor.call(this);
+        this.$RobotTestCase.constructor.call(this);
 
         this.setTestEnv({
             template : this.myTemplate
@@ -60,22 +60,11 @@ module.exports = Aria.classDefinition({
         checkAccessibilityEnabled : function (widget) {
             var inputElt = widget.getTextInputField();
 
-            var role = inputElt.getAttribute("role");
-            this.assertEquals(role, "combobox", "wrong input role value (%1)");
-
-            var ariaAutocomplete = inputElt.getAttribute("aria-autocomplete");
-            this.assertEquals(ariaAutocomplete, "list", "wrong input aria-autocomplete value (%1)");
-
-            var ariaExpanded = inputElt.getAttribute("aria-expanded");
-            this.assertTrue(ariaExpanded === "true" || ariaExpanded === "false", "wrong input aria-expanded value");
-            var ariaExpandedBool = (ariaExpanded === "true");
-            this.assertEquals(ariaExpandedBool, !! widget._dropdownPopup, "aria-expanded (%1) does not match the state of widget._dropdownPopup (%2)");
-            var listWidget = widget.controller.getListWidget();
-            this.assertEquals(ariaExpandedBool, !! listWidget, "aria-expanded (%1) does not match the state of widget.controller.getListWidget() (%2)");
-
             var ariaOwns = inputElt.getAttribute("aria-owns");
             var ariaOwnsElt;
-            this.assertEquals(!! ariaOwns, ariaExpandedBool, "aria-owns should be present (%1) if and only if aria-expanded is true (%2)");
+            this.assertEquals(!! ariaOwns, !! widget._dropdownPopup, "aria-owns (%1) does not match the state of widget._dropdownPopup (%2)");
+            var listWidget = widget.controller.getListWidget();
+            this.assertEquals(!! ariaOwns, !! listWidget, "aria-owns (%1) does not match the state of widget.controller.getListWidget() (%2)");
             var listBoxElt;
             var optionsElt = [];
             if (ariaOwns) {
@@ -108,7 +97,6 @@ module.exports = Aria.classDefinition({
             var ariaActiveDescendant = inputElt.getAttribute("aria-activedescendant");
             var ariaActiveDescendantElt;
             if (ariaActiveDescendant) {
-                this.assertTrue(ariaExpandedBool, "aria-activedescendant is defined but aria-expanded is false");
                 ariaActiveDescendantElt = this.testDocument.getElementById(ariaActiveDescendant);
                 this.assertTruthy(ariaActiveDescendantElt, "the id specified in aria-activedescendant was not found in the document");
                 this.assertEquals(ariaActiveDescendantElt.getAttribute("role"), "option", "the aria-activedescendant element does not have the option role");
@@ -170,17 +158,12 @@ module.exports = Aria.classDefinition({
             };
 
             var step3 = function () {
-                self.waitFor({
-                    condition: function () {
-                        checkFn();
-                        var listWidget = widget.controller.getListWidget();
-                        return listWidget && listWidget._subTplCtxt;
-                    },
-                    callback: step4
-                });
+                checkFn();
+                self.waitForDropDownPopup(widget.getId(), step4);
             };
 
             var step4 = function () {
+                checkFn();
                 self.synEvent.type(input, "[down][down]", step5);
             };
 

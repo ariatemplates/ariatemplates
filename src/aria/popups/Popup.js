@@ -16,6 +16,7 @@ var Aria = require("../Aria");
 var ariaPopupsPopupManager = require("./PopupManager");
 require("./Beans");
 var ariaUtilsDom = require("../utils/Dom");
+var ariaUtilsString = require("../utils/String");
 var ariaUtilsSize = require("../utils/Size");
 var ariaUtilsEvent = require("../utils/Event");
 var ariaUtilsDelegate = require("../utils/Delegate");
@@ -26,6 +27,7 @@ var ariaCoreTimer = require("../core/Timer");
 var ariaCoreJsonValidator = require("../core/JsonValidator");
 var ViewportPopupContainer = require("./container/Viewport");
 var environment = require("../core/environment/Environment");
+var DialogNavigationInterceptor = require('./PopupNavigationManager').DialogNavigationInterceptor;
 
 /**
  * Popup instance
@@ -70,9 +72,12 @@ module.exports = Aria.classDefinition({
         ANCHOR_LEFT : "left",
         ANCHOR_RIGHT : "right",
         // DEBUG MESSAGE
-        DEBUG_OVERWRITE_POSITION : "Absolute %1 position %2 is used to overwrite calculated relative position %3!"
+        DEBUG_OVERWRITE_POSITION : "Absolute %1 position %2 is used to overwrite calculated relative position %3!",
+        WRONG_MODALMASK_ZINDEX : "The z-index of the modal mask (%1) is higher than the z-index of the corresponding dialog (%2)."
     },
     $constructor : function () {
+        // ---------------------------------------------------------- properties
+
         /**
          * The array of positions (couples of anchors) used for positionning the popup
          * @type Array
@@ -150,6 +155,8 @@ module.exports = Aria.classDefinition({
          */
         this.ANCHOR_KEYS = [this.ANCHOR_BOTTOM, this.ANCHOR_TOP, this.ANCHOR_LEFT, this.ANCHOR_RIGHT];
 
+        // ------------------------------------------------ protected properties
+
         /**
          * A list of HTMLElements which, when clicked upon, do not cause the popup to close
          * @protected
@@ -181,12 +188,18 @@ module.exports = Aria.classDefinition({
          * @type HTMLElement
          */
         this._document = Aria.$window.document;
-        ariaPopupsPopupManager.registerPopup(this);
 
+        var self = this;
+        this._dialogNavigationInterceptor = DialogNavigationInterceptor(function() {
+            return self.domElement;
+        });
+
+        // ---------------------------------------------------------- processing
+
+        ariaPopupsPopupManager.registerPopup(this);
     },
 
     $destructor : function () {
-
         this.close();
         this.reference = null;
         if (this._delegateId) {
@@ -228,7 +241,6 @@ module.exports = Aria.classDefinition({
     },
 
     $prototype : {
-
         /**
          * Save the configuration information for this popup.
          * @param {aria.popups.Beans:PopupCfg} conf
@@ -319,10 +331,21 @@ module.exports = Aria.classDefinition({
                  ariaUtilsDelegate.getMarkup(this._delegateId),
                  ' style="position:absolute;top:-15000px;left:-15000px;visibility:hidden;display:block;"'
             ];
-            var role = cfg.role;
-            if (cfg.waiAria && role) {
-                html.push(' role="' + role + '"');
+
+            if (cfg.waiAria) {
+                var role = cfg.role;
+                if (role) {
+                    role = ariaUtilsString.escapeForHTML(role, {attr: true});
+                    html.push(' role="' + role + '"');
+                }
+
+                var labelId = cfg.labelId;
+                if (labelId) {
+                    labelId = ariaUtilsString.escapeForHTML(labelId, {attr: true});
+                    html.push(' aria-labelledby="' + labelId + '"');
+                }
             }
+
             html.push("></div>");
             div.innerHTML = html.join('');
 
@@ -689,25 +712,57 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         _show : function () {
+            // --------------------------------------------------- destructuring
 
-            // Insure that the top left corner is visible
-            if (this.modalMaskDomElement) {
+            var conf = this.conf;
 
+            var waiAria = conf.waiAria;
+            var animateIn = conf.animateIn;
+
+            var domElement = this.domElement;
+            var modalMaskDomElement = this.modalMaskDomElement;
+            var popupContainer = this.popupContainer;
+
+            // ------------------------------------------------------ processing
+
+            // Ensure that the top left corner is visible
+            if (modalMaskDomElement) {
                 if (this._containerOverflow == -1) {
-                    this._containerOverflow = this.popupContainer.changeContainerOverflow("hidden");
+                    this._containerOverflow = popupContainer.changeContainerOverflow("hidden");
                 }
-                var containerSize = this.popupContainer.getScrollSize();
+
+                var containerSize = popupContainer.getScrollSize();
 
                 // Compute the style after scrollbars are removed from the
                 // container. Thus the dialog can be properly centered.
                 this.computedStyle = this._getComputedStyle();
+                var modalMaskZIndex = this.modalMaskZIndex;
+                if (!modalMaskZIndex) {
+                    modalMaskZIndex = this.modalMaskZIndex = this.computedStyle.zIndex;
+                } else if (modalMaskZIndex > this.computedStyle.zIndex) {
+                    // safety check to not block the full application
+                    // this should never happen in normal circumstances
+                    this.$logError(this.WRONG_MODALMASK_ZINDEX, [modalMaskZIndex, this.computedStyle.zIndex]);
+                    modalMaskZIndex = this.computedStyle.zIndex;
+                }
 
-                this.modalMaskDomElement.style.cssText = ['left:0px;top:0px;', 'width:', containerSize.width, 'px;', 'height:',
-                        containerSize.height, 'px;', 'z-index:', this.computedStyle.zIndex, ';', 'position:absolute;display:block;'].join('');
+                modalMaskDomElement.style.cssText = [
+                    'left:0px;',
+                    'top:0px;',
+                    'width:', containerSize.width, 'px;',
+                    'height:', containerSize.height, 'px;',
+                    'z-index:', modalMaskZIndex, ';',
+                    'position:absolute;',
+                    'display:block;'
+                ].join('');
 
-                if (this.conf.animateIn) {
+                if (waiAria) {
+                    modalMaskDomElement.setAttribute('aria-hidden', 'true');
+                }
+
+                if (animateIn) {
                     this._getMaskAnimator().start("fade", {
-                        to : this.modalMaskDomElement,
+                        to : modalMaskDomElement,
                         type : 1
                     });
                 }
@@ -729,21 +784,28 @@ module.exports = Aria.classDefinition({
             if (this.computedStyle.bottom != null) {
                 popupPosition = popupPosition.concat('bottom:', this.computedStyle.bottom, 'px;');
             }
-            this.domElement.style.cssText = popupPosition.concat(['z-index:', this.computedStyle.zIndex, ';',
+            domElement.style.cssText = popupPosition.concat(['z-index:', this.computedStyle.zIndex, ';',
                     'position:absolute;display:inline-block;']).join('');
 
-            if (this.conf.animateIn) {
-                this._startAnimation(this.conf.animateIn, {
-                    to : this.domElement,
+            if (animateIn) {
+                this._startAnimation(animateIn, {
+                    to : domElement,
                     type : 1
                 }, false);
             }
 
             if (ariaCoreBrowser.isIE7 && !this.isOpen) {
                 // Without the following line, the autocomplete does not initially display its content on IE7:
-                this.popupContainer.getContainerElt().appendChild(this.domElement);
+                popupContainer.getContainerElt().appendChild(domElement);
             }
 
+            if (modalMaskDomElement && waiAria && popupContainer.getContainerRef() === ariaUtilsDom.VIEWPORT) {
+                this._dialogNavigationInterceptor.ensureElements();
+            }
+        },
+
+        getNavigationInformation : function(focusedElement) {
+            return this._dialogNavigationInterceptor.getNavigationInformation(focusedElement);
         },
 
         /**
@@ -799,6 +861,9 @@ module.exports = Aria.classDefinition({
                 this.$raiseEvent(event);
                 if (!event.cancelClose) {
                     this._hide();
+
+                    this._dialogNavigationInterceptor.destroyElements();
+
                     this.isOpen = false;
                     // Notify the popup manager this popup was closed
                     ariaPopupsPopupManager.onPopupClose(this);
@@ -1024,6 +1089,35 @@ module.exports = Aria.classDefinition({
 
             this.section = section;
             // PROFILING // this.$stopMeasure(profilingId);
+        },
+
+        /**
+         * Sets the zIndex of the popup, and refreshes. The zIndex of the modal mask, if any, is not changed,
+         * unless the second parameter is defined.
+         * This method does nothing if the popup has not already been displayed.
+         * @param {Number} zIndex zIndex to set on the popup.
+         * @param {Number} modalMaskZIndex zIndex to set on the modal mask.
+         */
+        setZIndex : function (zIndex, modalMaskZIndex) {
+            var computedStyle = this.computedStyle;
+            if (computedStyle) {
+                computedStyle.zIndex = zIndex;
+                if (modalMaskZIndex != null) {
+                    this.modalMaskZIndex = modalMaskZIndex;
+                }
+                this.refresh();
+            }
+        },
+
+        /**
+         * Returns the current zIndex of the popup, if it is available.
+         * @return {Number} zIndex of the popup.
+         */
+        getZIndex : function () {
+            var computedStyle = this.computedStyle;
+            if (computedStyle) {
+                return computedStyle.zIndex;
+            }
         },
 
         /**

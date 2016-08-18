@@ -207,9 +207,10 @@ Aria.classDefinition({
             });
         },
 
-        testAutoSelect : function () {
+        testAsyncAutoSelect : function () {
+            var self = this;
             // test autoselect is turned on
-            var tf1 = this._createTextarea({
+            var tf1 = self._createTextarea({
                 label : "TESTLABEL",
                 value : "Selected?",
                 autoselect : true
@@ -217,21 +218,41 @@ Aria.classDefinition({
 
             // autoselect on
             var instance1 = tf1.instance;
-            instance1._hasFocus = true;
-            instance1._dom_onclick();
-            if (!aria.core.Browser.isOldIE) {
-                this.assertTrue(instance1._textInputField.selectionStart === 0);
-                this.assertTrue(instance1._textInputField.selectionEnd === instance1._textInputField.value.length);
+
+            function step0() {
+                instance1._dom_onclick();
+                instance1._dom_onfocus();
+                setTimeout(step1, 10);
             }
 
-            // autoselect off
-            instance1._textInputField.selectionEnd = 0;
-            instance1._cfg.autoselect = false;
-            instance1._dom_onclick();
-            if (!aria.core.Browser.isOldIE) {
-                this.assertTrue(instance1._textInputField.selectionEnd === 0);
+            function step1() {
+                if (!aria.core.Browser.isOldIE) {
+                    self.assertTrue(instance1._textInputField.selectionStart === 0);
+                    self.assertTrue(instance1._textInputField.selectionEnd === instance1._textInputField.value.length);
+                }
+
+                instance1._textInputField.selectionEnd = 0;
+                instance1._dom_onblur();
+                setTimeout(step2, 10);
             }
-            this._destroyTextarea(instance1);
+
+            function step2() {
+                // autoselect off
+                instance1._cfg.autoselect = false;
+                instance1._dom_onclick();
+                instance1._dom_onfocus();
+                setTimeout(step3, 10);
+            }
+
+            function step3() {
+                if (!aria.core.Browser.isOldIE) {
+                    self.assertTrue(instance1._textInputField.selectionEnd === 0);
+                }
+                self._destroyTextarea(instance1);
+                self.notifyTestEnd("testAsyncAutoSelect");
+            }
+
+            step0();
         },
 
         /**

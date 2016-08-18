@@ -112,7 +112,7 @@
     .errorCounterBox {
         margin-left : 10px;
         margin-top : 10px;
-        {if (aria.core.Browser.isChrome ||aria.core.Browser.isOldIE)}
+        {if (aria.core.Browser.isChrome || aria.core.Browser.isOpera || aria.core.Browser.isOldIE)}
             height : 26px;
             padding-top : 2px;
         {else/}

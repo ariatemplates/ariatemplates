@@ -16,7 +16,17 @@ Aria.classDefinition({
             aria.core.Log.getAppenders()[0].setLogs([]);
             var expandButton = this.getExpandButton("ac1");
             this.synEvent.click(expandButton, {
-                fn : this._openAc,
+                fn : function () {
+                    this.waitFor({
+                        condition : function () {
+                            return !this.getWidgetDropDownPopup("ac1");
+                        },
+                        callback : {
+                            fn : this._openAc,
+                            scope : this
+                        }
+                    });
+                },
                 scope : this
             });
         },

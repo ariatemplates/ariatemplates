@@ -122,7 +122,7 @@ var parseNextSteps = function(state, options) {
     datetime = currentState.datetime;
 
     var matches = nextPatternRegexp.exec(state.pattern);
-    //debugger;
+
     if (matches) {
         var fullPattern = matches[1];
         var patternType = fullPattern.substr(0, 1);
@@ -492,6 +492,7 @@ var ariaUtilsDate = module.exports = Aria.classDefinition({
             scope : this
         });
 
+        this._validateEntry = /^(?:(?![a-z])\d\s?[\\h;m,.\-:\/\s]?\s?\d?\s?(am|pm|a\.m|p\.m|a\sm|p\sm|a.m.|p.m.|a. m|p. m|a .m|p .m|a . m|p . m)?\s?)+$/;
     },
     $destructor : function () {
         this._formatCache = null;
@@ -558,8 +559,8 @@ var ariaUtilsDate = module.exports = Aria.classDefinition({
 
             entry = entryStr;
 
-            // need to check for at least one digit at the beginning of the string
-            if (!this._isValidTime(entry)) {
+            // need to check for alphabetic characters
+            if (!this._validateEntry.test(entry)) {
                 return null;
             }
 
@@ -775,12 +776,8 @@ var ariaUtilsDate = module.exports = Aria.classDefinition({
             var characterCheck1 = time.charAt(0);
             var characterCheck2 = time.charAt(1);
 
-            // where the first two digits are 24 need to set the hour to 00
             if (characterCheck1 === '2' && characterCheck2 === '4') {
-                hours[0] = 0; // value to be used for hours
-                hours[1] = 2; // number of digits for hours in entry
-                // string
-                return hours;
+                return null;
             }
 
             // where there is a second digit and (the first digit is 2 the

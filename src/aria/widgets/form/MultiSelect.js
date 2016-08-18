@@ -21,7 +21,7 @@ var ariaWidgetsFormListListStyle = require("./list/ListStyle.tpl.css");
 var ariaWidgetsContainerDivStyle = require("../container/DivStyle.tpl.css");
 var ariaWidgetsFormCheckBoxStyle = require("./CheckBoxStyle.tpl.css");
 var ariaWidgetsFormDropDownTextInput = require("./DropDownTextInput");
-
+var ariaUtilsString = require("../../utils/String");
 
 /**
  * Multi-select widget which is a list of checkboxes and labels passed in an array of predefined values
@@ -86,6 +86,18 @@ module.exports = Aria.classDefinition({
          */
         this._dropDownList = null;
 
+        var isWaiAria = cfg.waiAria;
+        var iconTooltip = cfg.iconTooltip ? ' title="' + ariaUtilsString.escapeForHTML(cfg.iconTooltip) + '"' : '';
+        var tabIndex = isWaiAria ? (cfg.tabIndex != null ? this._calculateTabIndex() : "0") : "-1";
+        this._iconsAttributes = {
+            "dropdown": 'tabindex="' + tabIndex + '"' + iconTooltip
+        };
+
+        if (isWaiAria) {
+            var waiIconLabel = cfg.waiIconLabel;
+            this._iconsAttributes.dropdown += ' role="button" aria-expanded="false" aria-haspopup="true"  ' +
+               (waiIconLabel ? 'aria-label="' + waiIconLabel + '" ' : "");
+        }
     },
     $destructor : function () {
         this._dropDownOpen = null;
@@ -129,16 +141,32 @@ module.exports = Aria.classDefinition({
 
         /**
          * Handle key event not handled by the list, in this case arrow up to close the dropdown
+         *
          * @protected
-         * @param {aria.DomEvent} evt Click event
+         *
+         * @param {Object} information Information about the key event.
+         *
          * @return {Boolean}
          */
-        _keyPressed : function (evt) {
-            if ((evt.keyCode == ariaDomEvent.KC_ARROW_UP) && this._checkCloseItem(evt)) {
+        _keyPressed : function (information) {
+            var event = information.event;
+
+            var isShiftF10Pressed = this._isShiftF10Pressed(event);
+            var isArrowUp = event.keyCode == ariaDomEvent.KC_ARROW_UP;
+
+            if (isShiftF10Pressed || (isArrowUp && this._checkCloseItem(information))) {
                 this.focus();
                 this._toggleDropdown();
                 return true;
             }
+
+            if (event.keyCode == ariaDomEvent.KC_ESCAPE) {
+                if (this._dropDownOpen) {
+                    this._toggleDropdown();
+                    return true;
+                }
+            }
+
             return false;
         },
 
@@ -149,6 +177,7 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         _toggleDropdown : function () {
+            this._updateFocusNoKeyboard(true);
             if (!this._hasFocus) {
                 this.focus();
             }
@@ -172,6 +201,7 @@ module.exports = Aria.classDefinition({
 
             var list = new ariaWidgetsFormListList({
                 defaultTemplate : cfg.listTemplate,
+                waiAria : cfg.waiAria,
                 block : true,
                 sclass : cfg.listSclass || this._skinObj.listSclass,
                 onchange : {
@@ -234,6 +264,13 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         _afterDropdownClose : function () {
+            if (this._cfg.waiAria) {
+                var dropDownIcon = this._getDropdownIcon();
+                if (dropDownIcon) {
+                    dropDownIcon.setAttribute("aria-expanded", "false");
+                }
+            }
+
             this._setPopupOpenProperty(false);
             this.controller.setListWidget(null);
             // Check _toggleDropdown already triggered
@@ -277,6 +314,12 @@ module.exports = Aria.classDefinition({
             var list = this.controller.getListWidget();
             this._dropDownOpen = true;
             this._focusMultiSelect(list);
+            if (this._cfg.waiAria) {
+                var dropDownIcon = this._getDropdownIcon();
+                if (dropDownIcon) {
+                    dropDownIcon.setAttribute("aria-expanded", "true");
+                }
+            }
         },
 
         /**
@@ -315,6 +358,50 @@ module.exports = Aria.classDefinition({
             // focus the list when popup is opened
             this._refreshPopup(args);
             this._dropDownList.focus();
+        },
+
+        /**
+         * DOM Event raised when the focus is given to the datepicker.
+         */
+        _dom_onfocus : function (event, avoidCallback) {
+            this._iconFocus = event.target == this._getDropdownIcon();
+            this.$DropDownTextInput._dom_onfocus.apply(this, arguments);
+        },
+
+        /**
+         * Set the caret position in the field
+         * @param {Number} start
+         * @param {Number} end
+         */
+        setCaretPosition : function (start, end) {
+            if (this._iconFocus) {
+                this._currentCaretPosition = {
+                    start : start,
+                    end : end
+                };
+            } else {
+                return this.$DropDownTextInput.setCaretPosition.apply(this, arguments);
+            }
+        },
+
+        /**
+         * Return the caret position in the DatePicker. It works also if the focus is on the expand icon.
+         * @return {Object} the caret position (start end end)
+         */
+        getCaretPosition : function () {
+            if (this._iconFocus) {
+                var currentCaretPosition = this._currentCaretPosition;
+                if (currentCaretPosition) {
+                    return currentCaretPosition;
+                }
+                return {
+                    start : 0,
+                    end : 0
+                };
+            } else {
+                return this.$DropDownTextInput.getCaretPosition.apply(this, arguments);
+            }
         }
+
     }
 });

@@ -39,24 +39,13 @@ var ariaWidgetsFormCheckBox = require("./CheckBox");
          */
         $constructor : function (cfg, ctxt) {
             this.$CheckBox.constructor.apply(this, arguments);
-            if (this._skinObj.simpleHTML) {
-                if (!idManager) {
-                    idManager = new ariaUtilsIdManager("radio");
-                }
-                this._inputName = idManager.getId();
+            if (!idManager) {
+                idManager = new ariaUtilsIdManager("radio");
             }
+            this._inputName = idManager.getId();
 
             // use array and not store as index is important
-            if (!this._cfg.disabled) {
-                this._instances.push(this);
-            }
-
-            this._waiAriaAttributes = "";
-            if (this._cfg.waiAria) {
-                this[this._skinObj.simpleHTML ? "_waiAriaAttributes" : "_extraAttributes"] =
-                    this._getAriaLabelMarkup() + 'role="radio" aria-disabled="' + this._cfg.disabled + '" ' +
-                    'aria-checked="' + this._isChecked() + '"';
-            }
+            this._instances.push(this);
         },
 
         $destructor : function () {
@@ -120,20 +109,16 @@ var ariaWidgetsFormCheckBox = require("./CheckBox");
             },
 
             /**
-             * Internal method to hande the mousedown event
-             * @param {aria.DomEvent} event
+             * Internal method to handle the click event
+             * @param {aria.DomEvent} event Click
+             * @protected
              */
-            _dom_onmousedown : function (event) {
-                this._focus();
-            },
-
-            /**
-             * Internal method to hande the mouseup event
-             * @param {aria.DomEvent} event
-             */
-            _dom_onmouseup : function (event) {
+            _dom_onclick : function (event) {
                 this._setRadioValue();
                 this._focus();
+                if (event.target.tagName.toLowerCase() != "input") {
+                    event.preventDefault(true);
+                }
             },
 
             /**
@@ -185,7 +170,7 @@ var ariaWidgetsFormCheckBox = require("./CheckBox");
                 var index = ariaUtilsArray.indexOf(this._instances, this), radioButtonNb = this._instances.length;
                 var bindings, next, nextBinding;
                 var waiAria = this._cfg.waiAria;
-                while (index > 0 || index < radioButtonNb) {
+                while (index >= 0 && index < radioButtonNb) {
                     index = index + direction;
                     if (waiAria) {
                         if (index < 0) {
@@ -199,7 +184,7 @@ var ariaWidgetsFormCheckBox = require("./CheckBox");
                     }
                     next = this._instances[index];
                     bindings = next._cfg.bind;
-                    if (bindings) {
+                    if (!next.getProperty("disabled") && bindings) {
                         nextBinding = bindings.value;
                         if (nextBinding) {
                             // next radio button needs to be bound to the same data. Otherwise, continue.
@@ -218,13 +203,12 @@ var ariaWidgetsFormCheckBox = require("./CheckBox");
              * @protected
              */
             _updateDomForState : function () {
+                this.$CheckBox._updateDomForState.call(this);
                 if (this._cfg.waiAria) {
                     // update the attributes for WAI
                     var element = this._getFocusableElement();
                     element.setAttribute('tabindex', this._calculateTabIndex());
                 }
-
-                this.$CheckBox._updateDomForState.call(this);
             },
 
             /**
@@ -253,6 +237,7 @@ var ariaWidgetsFormCheckBox = require("./CheckBox");
                     this.evalCallback(this._cfg.onchange);
                 }
             }
+
         }
     });
 })();

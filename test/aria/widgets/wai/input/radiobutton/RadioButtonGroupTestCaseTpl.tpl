@@ -27,7 +27,6 @@
         }/}
 
         <div style="margin:10px;" role="radiogroup">
-            With accessibility enabled and a label defined but hidden: <br>
             {@aria:RadioButton {
                 id : "radioA",
                 keyValue: "a",

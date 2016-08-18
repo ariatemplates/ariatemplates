@@ -16,7 +16,6 @@ var Aria = require("../Aria");
 var ariaCoreJsonTypes = require("../core/JsonTypes");
 var ariaCoreCfgBeans = require("../core/CfgBeans");
 
-
 /**
  * @class aria.templates.CfgBeans
  */
@@ -28,6 +27,36 @@ module.exports = Aria.beanDefinitions({
         "coreBeans" : ariaCoreCfgBeans
     },
     $beans : {
+        "ClassGeneratorCfg" : {
+            $type : "json:Object",
+            $description : "Options for the class generator.",
+            $properties : {
+                "parseOnly" : {
+                    $type : "json:Boolean",
+                    $description : "If true, the class will not be generated, but the template will be fully parsed, including all statement properties."
+                },
+                "dontLoadWidgetLibs" : {
+                    $type : "json:Boolean",
+                    $description : "If true, widget libraries referenced in the template will not be loaded during the class generation process, which is convenient if they are not available at that time. However, as a result, there will probably be missing dependencies in the generated class."
+                },
+                "allDependencies" : {
+                    $type : "json:Boolean",
+                    $description : "If true, all dependencies should be included in the generated class, otherwise only classes which are not currently loaded are added as dependencies of the generated class."
+                },
+                "debug" : {
+                    $type : "json:Boolean",
+                    $description : "If true, extra code is added in the generated class to help debugging."
+                },
+                "errorContext" : {
+                    $type : "json:ObjectRef",
+                    $description : "Context object passed with the errors to help debugging."
+                },
+                "skipLogError": {
+                    $type : "json:Boolean",
+                    $description : "If true, passes the errors to the callback instead of logging them with $logError."
+                }
+            }
+        },
         "BaseTemplateCfg" : {
             $type : "json:Object",
             $description : "Base configuration for all types of templates.",
@@ -742,6 +771,10 @@ module.exports = Aria.beanDefinitions({
                 "spellcheck" : {
                     $type : "json:String",
                     $description : "whether or not to check the spelling/grammar of the text in an editable element"
+                },
+                "aria" : {
+                    $type : "json:ObjectRef",
+                    $description : "Set of WAI aria attributes for the element"
                 }
             }
         },

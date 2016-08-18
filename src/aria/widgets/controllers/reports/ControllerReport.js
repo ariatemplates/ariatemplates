@@ -36,6 +36,12 @@ module.exports = Aria.classDefinition({
         this.cancelKeyStroke = false;
 
         /**
+         * Controller specifies if the keystroke's default behavior has to be canceled
+         * @type Boolean
+         */
+        this.cancelKeyStrokeDefaultBehavior = false;
+
+        /**
          * true if the displayed value matches the begining of a correct value
          * @type Boolean
          */

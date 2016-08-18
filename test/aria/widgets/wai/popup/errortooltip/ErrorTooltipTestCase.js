@@ -39,19 +39,20 @@ module.exports = Aria.classDefinition({
 
                 var widgetInstance = this.getWidgetInstance(currentId);
                 this.waitFor({
-                   condition : function() {
-                       return widgetInstance._onValidatePopup;
-                   },
-                   callback : function() {
+                    condition : function() {
+                        return widgetInstance._onValidatePopup;
+                    },
+                    callback : function() {
                         var div = widgetInstance._onValidatePopup._div._domElt.parentNode;
                         if (waiAria) {
-                            this.assertEquals(div.getAttribute("role"), "alert", "The role of the error tooltip should be set to %2 instead of %1");
+                            // This has been deactivated as JAWS 16 doesn't read the alert. The role has been removed, as the error message is read with another solution
+                            // this.assertEquals(div.getAttribute("role"), "alert", "The role of the error tooltip should be set to %2 instead of %1");
                         } else {
                             this.assertNull(div.getAttribute("role"), "The role of the error tooltip shouldn't be set");
                         }
 
                         next.call(this);
-                   }
+                    }
                 });
 
             };

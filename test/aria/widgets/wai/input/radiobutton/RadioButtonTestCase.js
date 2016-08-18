@@ -17,11 +17,8 @@ var Aria = require("ariatemplates/Aria");
 
 module.exports = Aria.classDefinition({
     $classpath : "test.aria.widgets.wai.input.radiobutton.RadioButtonTestCase",
-    $extends : require("./RadioButtonBaseTestCase"),
+    $extends : require("../InputBaseTestCase"),
     $prototype : {
-        myTemplate : "test.aria.widgets.wai.input.radiobutton.RadioButtonTestCaseTpl",
-        myData : {
-          sclass : "std"
-        }
+        myTemplate : "test.aria.widgets.wai.input.radiobutton.RadioButtonGroupLabelTestCaseTpl"
     }
 });

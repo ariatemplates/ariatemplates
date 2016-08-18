@@ -21,8 +21,14 @@
     {macro main()}
         {if data.messages.length > 0}
             {@aria:Div data.divCfg}
+                {if data.titleTag}
+                    <${data.titleTag} {if data.titleClassName}class="${data.titleClassName}"{/if}>
+                {/if}
                 {@aria:Icon {icon: getIcon()}/}
-                <span style="padding: 3px 16px 3px 10px; font-weight: bold;">${data.title}</span>
+                <span style="padding: 3px 16px 3px 10px; font-weight: bold;"{if data.waiAria} tabindex="0"{/if}>${data.title}</span>
+                {if data.titleTag}
+                    </${data.titleTag}>
+                {/if}
                 <div style="padding: 3px 0 0 0;">
                     {call messagesList(data.messages)/}
                 </div>

@@ -43,6 +43,10 @@ module.exports = Aria.beanDefinitions({
                     $type : "Statement.parent",
                     $description : "Parent element: is null for the root statement.",
                     $mandatory : false
+                },
+                "source" : {
+                    $type : "json:String",
+                    $description : "Processed template source. It differs from the original template passed to parseTemplate, as there is some preprocessing (to remove comments, ...). Positions in the template tree are inside this string, and not the original one."
                 }
             }
         },
@@ -91,6 +95,11 @@ module.exports = Aria.beanDefinitions({
                     $type : "json:String",
                     $description : "Statement parameter, with new lines at the begining and end removed.",
                     $mandatory : true
+                },
+                "properties" : {
+                    $type : "json:ObjectRef",
+                    $description : "Statement properties, after being parsed from paramBlock and/or other parameters. This object is filled during template class generation (it is not yet present after only executing the parser). The properties it contains depend on the name of the statement.",
+                    $mandatory : false
                 },
                 "firstCharParamIndex" : {
                     $type : "json:Integer",

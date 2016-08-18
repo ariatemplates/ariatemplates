@@ -339,7 +339,7 @@ module.exports = Aria.classDefinition({
                 spellCheck = ' spellcheck="' + (cfg.spellCheck ? "true" : "false") + '"';
             }
 
-            var ariaRequired = (cfg.waiAria && cfg.mandatory) ? ' aria-required' : '';
+            var ariaRequired = (cfg.waiAria && cfg.mandatory) ? ' aria-required="true"' : '';
 
             if (this._isTextarea) {
                 out.write(['<textarea class="', className, '"', Aria.testMode ? ' id="' + this._domId + '_textarea"' : '',
@@ -763,7 +763,7 @@ module.exports = Aria.classDefinition({
                 if (cfg.waiAria && propertyName === 'mandatory') {
                     var input = this.getTextInputField();
                     if (newValue) {
-                        input.setAttribute("aria-required", "");
+                        input.setAttribute("aria-required", "true");
                     } else {
                         input.removeAttribute("aria-required");
                     }
@@ -911,7 +911,6 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         _dom_onclick : function () {
-            this._autoselect();
             if (!!this._cfg.onclick) {
                 this.evalCallback(this._cfg.onclick);
             }
@@ -965,6 +964,13 @@ module.exports = Aria.classDefinition({
             if (!!this._cfg.onfocus && !avoidCallback) {
                 this.evalCallback(this._cfg.onfocus);
             }
+
+            // on IE9 and IE10, it is necessary to add some delay before being able to set the selection
+            ariaCoreTimer.addCallback({
+                fn : this._autoselect,
+                scope : this,
+                delay : 1
+            });
         },
 
         /**
@@ -1259,18 +1265,10 @@ module.exports = Aria.classDefinition({
             textInputField.focus();
             // IE FIX: requires the value to be reset for the cursor to be positioned
             // and focused at the end of the textinput.value string
-            textInputField.value = textInputField.value;
-
-            if (!fromSelf) {
-                // IE FIX: the focus() can be asynchronous, so let's add a timeout to manage the autoselect
-                ariaCoreTimer.addCallback({
-                    fn : function () {
-                        this._autoselect();
-                    },
-                    scope : this,
-                    delay : 25
-                });
+            if (ariaCoreBrowser.isIE) {
+              textInputField.value = textInputField.value;
             }
+
         },
 
         /**

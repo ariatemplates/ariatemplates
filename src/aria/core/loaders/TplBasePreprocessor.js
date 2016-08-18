@@ -19,7 +19,14 @@ var Promise = require('noder-js/promise.js');
 module.exports = function (classGenerator) {
     return function (content, fileName) {
         return new Promise(function (resolve, reject) {
-            classGenerator.parseTemplate(content, false, function (res) {
+            classGenerator.parseTemplate(content, {
+                allDependencies: false,
+                errorContext: {
+                    "file_classpath" : fileName
+                },
+                debug: false,
+                skipLogError: true
+            }, function (res) {
                 if (res.classDef) {
                     var logicalPath = res.logicalPath;
                     if (logicalPath === fileName || require.resolve(logicalPath) === fileName) {
@@ -47,9 +54,7 @@ module.exports = function (classGenerator) {
                             + errorDetails);
                     reject(error);
                 }
-            }, {
-                "file_classpath" : fileName
-            }, false, true);
+            });
         });
     };
 };

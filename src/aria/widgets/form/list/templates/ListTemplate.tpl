@@ -44,7 +44,7 @@
 
     {macro renderItem(item, itemIdx)}
         {var a = _getClassForItem(item)/}
-        <a {if data.waiAria}{id data.listItemDomIdPrefix + itemIdx/} role="option"{/if} href="javascript:void(0)" class="${a}" data-itemIdx="${itemIdx}" onclick="return false;">
+        <a {if data.waiAria}{id data.listItemDomIdPrefix + itemIdx/} role="option" {if item.ariaLabel != null}aria-label="${item.ariaLabel}"{/if}{/if} href="javascript:void(0)" class="${a}" data-itemIdx="${itemIdx}" onclick="return false;">
             {if ! item.label}
                 &nbsp;
             {else/}

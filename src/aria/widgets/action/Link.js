@@ -66,7 +66,7 @@ module.exports = Aria.classDefinition({
             }
             out.write(['<a', Aria.testMode ? ' id="' + this._domId + '_link"' : '', ' class="', linkClass,
                     '" href="javascript:(function(){})()"',
-                    (cfg.tabIndex != null ? ' tabindex=' + this._calculateTabIndex() + '"' : ''), '>',
+                    (cfg.tabIndex != null ? ' tabindex=' + this._calculateTabIndex() + '"' : ''), this._getAriaLabelMarkup(), '>',
                     ariaUtilsString.escapeHTML(cfg.label), '</a>'].join(''));
             cfg = null;
         },
@@ -78,6 +78,22 @@ module.exports = Aria.classDefinition({
         _init : function () {
             this._focusElt = this.getDom().firstChild;
             this.$ActionWidget._init.call(this);
+        },
+
+        /**
+
+        /**
+         * Returns the markup for the aria-label related attributes on a DOM element if accessibility is enabled.
+         * @protected
+         */
+        _getAriaLabelMarkup : function () {
+            var markup = [];
+            if (this._cfg.waiAria) {
+              if (this._cfg.waiLabel) {markup.push(' aria-label="' + ariaUtilsString.encodeForQuotedHTMLAttribute(this._cfg.waiLabel) + '" ');}
+              if (this._cfg.waiLabelledBy) {markup.push(' aria-labelledby="' + ariaUtilsString.encodeForQuotedHTMLAttribute(this._cfg.waiLabelledBy) + '" ');}
+              if (this._cfg.waiDescribedBy) {markup.push(' aria-describedby="' + ariaUtilsString.encodeForQuotedHTMLAttribute(this._cfg.waiDescribedBy) + '" ');}
+            }
+            return markup.join('');
         },
 
         /**
@@ -104,7 +120,6 @@ module.exports = Aria.classDefinition({
             // Otherwise we will leave the application
             domEvent.preventDefault();
             if (this._keyPressed) {
-                this._keyPressed = false;
                 return false;
             } else {
                 return this.$ActionWidget._dom_onclick.apply(this, arguments);
@@ -118,14 +133,19 @@ module.exports = Aria.classDefinition({
          */
         _dom_onkeyup : function (domEvt) {
             if (domEvt.keyCode == aria.DomEvent.KC_ENTER) {
-
-                if (!this._performAction(domEvt)) {
-                    domEvt.stopPropagation();
-                    return false;
+                if (this._keyPressed) {
+                    this._keyPressed = false;
+                    if (!this._performAction(domEvt)) {
+                        domEvt.stopPropagation();
+                        return false;
+                    }
                 }
-                return true;
             }
             return true;
+        },
+
+        _dom_onblur : function (domEvent) {
+            this._keyPressed = false;
         },
 
         /**

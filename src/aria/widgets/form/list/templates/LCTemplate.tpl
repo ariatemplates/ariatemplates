@@ -23,13 +23,13 @@
         {var className = _getClassForItem(item)/}
         {var entry = item.object.entry/}
 
-        <a {if data.waiAria}{id data.listItemDomIdPrefix + itemIdx/} role="option"{/if} href="javascript:void(0)" class="${className}" data-itemIdx="${itemIdx}" onclick="return false;">
+        <a {if data.waiAria}{id data.listItemDomIdPrefix + itemIdx/} role="option" {if item.ariaLabel != null}aria-label="${item.ariaLabel}"{/if}{/if} href="javascript:void(0)" class="${className}" data-itemIdx="${itemIdx}" onclick="return false;">
             {if ! item.label}
                 &nbsp;
             {elseif item.value.multiWordMatch/}
-                ${item.label|escapeForHTML:{text:true}|highlightfromnewword:entry|escapeForHTML:false}
+                ${item.label|highlightfromnewword:entry|escapeForHTML:false}
             {else/}
-                ${item.label|escapeForHTML:{text:true}|starthighlight:entry|escapeForHTML:false}
+                ${item.label|starthighlight:entry|escapeForHTML:false}
             {/if}
         </a>
     {/macro}

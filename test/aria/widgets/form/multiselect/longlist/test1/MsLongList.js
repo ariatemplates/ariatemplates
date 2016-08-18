@@ -15,10 +15,10 @@
 
 Aria.classDefinition({
     $classpath : "test.aria.widgets.form.multiselect.longlist.test1.MsLongList",
-    $extends : "aria.jsunit.MultiSelectTemplateTestCase",
+    $extends : "test.aria.widgets.form.multiselect.MultiSelectRobotTestCase",
     $dependencies : ["aria.utils.FireDomEvent", "aria.DomEvent"],
     $constructor : function () {
-        this.$MultiSelectTemplateTestCase.constructor.call(this);
+        this.$MultiSelectRobotTestCase.constructor.call(this);
         this.inputField = null;
     },
     $prototype : {
@@ -52,17 +52,7 @@ Aria.classDefinition({
         },
 
         arrowDown2 : function () {
-            var cbs = this.tr.getElementsByTagName('input');
-            var domForAction = cbs[0].parentNode;
-            aria.utils.FireDomEvent.fireEvent('keydown', domForAction, {
-                keyCode : 40
-            });
-            var that = this;
-            setTimeout(function () {
-                that.checkFocus();
-            }, 200);
-            // Doesn't work for multiselect navigation
-            // this._MSType(domForAction, "[down]", this.checkFocus, this);
+            this._MSType(null, "[down]", this.checkFocus, this);
         },
 
         checkFocus : function () {

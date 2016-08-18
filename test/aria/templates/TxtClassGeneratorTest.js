@@ -121,7 +121,9 @@ Aria.classDefinition({
 
         _taskParseTemplateError : function (task, args) {
             var cg = aria.templates.TxtClassGenerator;
-            cg.parseTemplate(args.tpl, true, {
+            cg.parseTemplate(args.tpl, {
+                allDependencies: true
+            }, {
                 fn : this._parseTemplateResponse,
                 scope : this,
                 args : {

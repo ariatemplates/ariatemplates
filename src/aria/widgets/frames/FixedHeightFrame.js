@@ -99,9 +99,7 @@ var ariaWidgetsFramesFrame = require("./Frame");
                     className : 'xFrameContent ' + cssPrefix + 'c ' + cfg.cssClass
                 };
 
-                this._appendInnerWidthInfo(sizeInfo);
-                // added in PTR 05170822 to avoid the internal scrollbar for widget content
-                this._appendInnerHeightInfo(sizeInfo);
+                this._appendInnerSizeInfo(sizeInfo);
 
                 out.write(['<span class="xFixedHeightFrame_w ', cssPrefix, 'w">'].join(''));
                 var hasBorder = this._hasBorder(this._cfg.stateObject.skipLeftBorder, this._cfg.iconsLeft);
@@ -155,9 +153,7 @@ var ariaWidgetsFramesFrame = require("./Frame");
                 var sizeInfo = {
                     className : ['xFrameContent ', cssPrefix, 'c ', cfg.cssClass].join("")
                 };
-                this._appendInnerWidthInfo(sizeInfo);
-                // added in PTR 05170822 to avoid the internal scrollbar for widget content
-                this._appendInnerHeightInfo(sizeInfo);
+                this._appendInnerSizeInfo(sizeInfo);
                 curSpan.style.width = sizeInfo.width;
                 curSpan.style.height = sizeInfo.height;
                 curSpan.className = sizeInfo.className;

@@ -19,7 +19,8 @@ var ariaUtilsDom = require("../../utils/Dom");
 var ariaUtilsType = require("../../utils/Type");
 var ariaUtilsArray = require("../../utils/Array");
 var ariaUtilsDelegate = require("../../utils/Delegate");
-
+var ariaUtilsString = require("../../utils/String");
+var registerSafeTap = require("../../utils/$SafeTap").getRegisterSafeTap();
 
 /**
  * A frame with icons on the left and right. To create an object of this class, use the createFrame static method (not
@@ -51,6 +52,8 @@ module.exports = Aria.classDefinition({
          * @type Array
          */
         this._tooltipLabels = cfg.tooltipLabels;
+
+        this._iconsAttributes = cfg.iconsAttributes;
 
         ariaUtilsArray.forEach(this._iconsLeft, this._initIcon, this);
         ariaUtilsArray.forEach(this._iconsRight, this._initIcon, this);
@@ -85,31 +88,43 @@ module.exports = Aria.classDefinition({
         "iconClick" : {
             description : "Raised when an icon is clicked.",
             properties : {
-                "iconName" : "Name of the icon."
+                "iconName" : "Name of the icon.",
+                "event" : "Event"
             }
         },
         "iconMouseDown" : {
             description : "Raised when the mouse is pressed on an icon.",
             properties : {
-                "iconName" : "Name of the icon."
+                "iconName" : "Name of the icon.",
+                "event" : "Event"
             }
         },
         "iconMouseUp" : {
             description : "Raised when the mouse is released on an icon.",
             properties : {
-                "iconName" : "Name of the icon."
+                "iconName" : "Name of the icon.",
+                "event" : "Event"
             }
         },
         "iconBlur" : {
             description : "Raised when an icon is blured.",
             properties : {
-                "iconName" : "Name of the icon."
+                "iconName" : "Name of the icon.",
+                "event" : "Event"
             }
         },
         "iconFocus" : {
             description : "Raised when an icon is focused.",
             properties : {
-                "iconName" : "Name of the icon."
+                "iconName" : "Name of the icon.",
+                "event" : "Event"
+            }
+        },
+        "iconKeyDown" : {
+            description : "Raised when a key is pressed while the icon has the focus.",
+            properties : {
+                "iconName" : "Name of the icon.",
+                "event" : "Event"
             }
         }
     },
@@ -192,8 +207,10 @@ module.exports = Aria.classDefinition({
          */
         eventMap : {
             "click" : "iconClick",
+            "safetap" : "iconClick",
             "mousedown" : "iconMouseDown",
-            "mouseup" : "iconMouseDown",
+            "mouseup" : "iconMouseUp",
+            "keydown" : "iconKeyDown",
             "blur" : "iconBlur",
             "focus" : "iconFocus"
         },
@@ -436,11 +453,12 @@ module.exports = Aria.classDefinition({
             // register for disposal
             this._icons[iconName].iconDelegateId = delegateId;
 
-            var title = icon.tooltip ? " title=\"" + icon.tooltip.replace(/\"/gi, "&quot;") + "\"" : "";
+            var title = icon.tooltip ? ' title="' + ariaUtilsString.escapeForHTML(icon.tooltip) + '"' : '';
+            var attributes = this._iconsAttributes[iconName] || 'tabIndex="-1"';
 
             out.write(['<span', Aria.testMode && this._baseId ? ' id="' + this._baseId + '_' + iconName + '"' : '',
                     ' class="', iconInfo.cssClass, '" style="', iconStyle,
-                    '" ' + utilDelegate.getMarkup(delegateId) + title + ' tabIndex="-1">&nbsp;</span>'].join(''));
+                    '" ', utilDelegate.getMarkup(delegateId), title, ' ', attributes, '>&nbsp;</span>'].join(''));
         },
 
         _linkIconToDom : function (icon, param) {
@@ -468,11 +486,20 @@ module.exports = Aria.classDefinition({
          * @param {String} iconName
          */
         _delegateIcon : function (event, iconName) {
-            var eventName = this.eventMap[event.type];
+            var eventType = event.type;
+            if (eventType == "safetap" && !registerSafeTap(event)) {
+                // $SafeTap does not load the SafeTap class on non-touch devices
+                // however, that class may be loaded for any other reason, in which case
+                // we can receive safetap events but then registerSafeTap returns false
+                // and we can ignore the safetap event (as there will be also a click event)
+                return;
+            }
+            var eventName = this.eventMap[eventType];
             if (eventName) {
                 this.$raiseEvent({
                     name : eventName,
-                    iconName : iconName
+                    iconName : iconName,
+                    event: event
                 });
             }
         }

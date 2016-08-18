@@ -318,6 +318,23 @@ module.exports = Aria.beanDefinitions({
                     $description : "Indicates if the label must be displayed or not (if true the label is hidden)",
                     $default : false
                 },
+                "waiLabel" : {
+                    $type : "json:String",
+                    $description : "Sets aria-label on the input, value will be used as the attributes value"
+                },
+                "waiDescribedBy" : {
+                    $type : "json:String",
+                    $description : "Sets aria-describedby on the input, value will be used as the attributes value"
+                },
+                "waiLabelledBy" : {
+                    $type : "json:String",
+                    $description : "Sets aria-labelledby on the input, value will be used as the attributes value"
+                },
+                "waiLabelHidden" : {
+                    $type : "json:Boolean",
+                    $description : "Sets aria-hidden on the label when set to true",
+                    $default : false
+                },
                 "errorTipPosition" : {
                     $type : "json:String",
                     $description : "Possible values are: 'bottom left', 'bottom right', 'top left', 'top right'.",
@@ -664,6 +681,14 @@ module.exports = Aria.beanDefinitions({
                             $type : "common:BindingRef"
                         }
                     }
+                },
+                "iconTooltip" : {
+                    $type : "json:String",
+                    $description : "Tooltip for the icon, if any"
+                },
+                "waiIconLabel" : {
+                    $type : "json:String",
+                    $description : "aria-label attribute on the icon, when waiAria is activated"
                 }
             }
         },
@@ -791,6 +816,10 @@ module.exports = Aria.beanDefinitions({
                     $type : "environmentBase:inputFormatTypes",
                     $description : "Date pattern used to match user input and convert it in a Javascript valid date."
                 },
+                "waiAriaDateFormat" : {
+                    $type : "environmentBase:inputFormatTypes",
+                    $description : "Date pattern used by screen readers to read the selected date in the calendar (only used when waiAria is true)."
+                },
                 "minValue" : {
                     $type : "json:Date",
                     $description : "Minimum date for the value property."
@@ -858,10 +887,9 @@ module.exports = Aria.beanDefinitions({
                     $type : "json:String",
                     $description : "sclass of the calendar used in the dropdown. The default value for this property is taken from the skin."
                 },
-                "iconTooltip" : {
+                "waiAriaCalendarLabel": {
                     $type : "json:String",
-                    $description : "Tooltip label for the datepicker icon",
-                    $default : "Open the Calendar"
+                    $description : "aria-label to set on the calendar (only used when waiAria is true)."
                 },
                 "bind" : {
                     $type : "DropDownTextInputCfg.bind",
@@ -915,8 +943,11 @@ module.exports = Aria.beanDefinitions({
                     $description : "when set to \"always\", the first option in the list is highlighted, so that it can be selected by hitting the ENTER key. When set to \"none\", no option will be automatically highlighted. The user will have to use navigation keys to move through the list and select an item.",
                     $enumValues : ["always", "none"],
                     $default : "always"
+                },
+                "waiSuggestionsStatusGetter" : {
+                    $type : "common:Callback",
+                    $description : "The callback specified in this parameter is called when the number of suggestions changes. It receives the new number of suggestions and should return the message to be read by screen readers. This parameter is only used if waiAria is true."
                 }
-
             }
         },
 
@@ -1067,6 +1098,14 @@ module.exports = Aria.beanDefinitions({
                         }
                     },
                     $default : {}
+                },
+                "waiSuggestionsStatusGetter" : {
+                    $type : "common:Callback",
+                    $description : "The callback specified in this parameter is called when the number of suggestions changes. It receives the new number of suggestions and should return the message to be read by screen readers. This parameter is only used if waiAria is true."
+                },
+                "waiSuggestionAriaLabelGetter" : {
+                    $type : "common:Callback",
+                    $description : "The callback specified in this parameter is called for each suggestion when the set of suggestions changes. It should return the aria-label attribute to set on the suggestion. This parameter is only used if waiAria is true."
                 }
             }
         },
@@ -1260,6 +1299,18 @@ module.exports = Aria.beanDefinitions({
                     $type : "json:Boolean",
                     $description : "A boolean whether the button is disabled or not",
                     $default : false
+                },
+                "waiLabel" : {
+                    $type : "json:String",
+                    $description : "Sets aria-label on the link, value will be used as the attributes value"
+                },
+                "waiDescribedBy" : {
+                    $type : "json:String",
+                    $description : "Sets aria-describedby on the link, value will be used as the attributes value"
+                },
+                "waiLabelledBy" : {
+                    $type : "json:String",
+                    $description : "Sets aria-labelledby on the link, value will be used as the attributes value"
                 }
             }
         },
@@ -1339,6 +1390,10 @@ module.exports = Aria.beanDefinitions({
                     $type : "common:Callback",
                     $description : "Function to be called when the user clicks on the icon."
                 },
+                "label" : {
+                    $type : "json:String",
+                    $description : "The label to use for the icon (used for accessibility only)."
+                },
                 "sourceImage" : {
                     $type : "json:Object",
                     $description : "Configuration for custom image",
@@ -1359,6 +1414,11 @@ module.exports = Aria.beanDefinitions({
                             $default : 16
                         }
                     }
+                },
+                "role" : {
+                    $type : "json:String",
+                    $description : "The role (attribute) to give to the widget (only used when waiAria is true).",
+                    $default : null
                 }
             }
         },
@@ -1508,6 +1568,9 @@ module.exports = Aria.beanDefinitions({
                     $properties : {
                         "messages" : {
                             $type : "common:BindingRef"
+                        },
+                        "requireFocus" : {
+                            $type : "common:BindingRef"
                         }
                     }
                 },
@@ -1531,6 +1594,15 @@ module.exports = Aria.beanDefinitions({
                     $description : "Title to be displayed in the widget.",
                     $default : ""
                 },
+                "titleTag" : {
+                    $type : "json:String",
+                    $description : "HTML tag used to display the title in the widget.",
+                    $regExp: /^[a-z0-9]+$/i
+                },
+                "titleClassName" : {
+                    $type : "json:String",
+                    $description : "CSS classes to style the title. It is only taken into account if titleTag is specified."
+                },
                 "filterTypes" : {
                     $type : "json:Array",
                     $description : "If not null, specifies the types of messages which should be displayed in the widget. It must match the type property in aria.utils.validators.CfgBeans.Message.",
@@ -1545,6 +1617,11 @@ module.exports = Aria.beanDefinitions({
                 "block" : {
                     $type : "ResizableWidgetCfg.block",
                     $default : true
+                },
+                "requireFocus" : {
+                    $type : "json:Boolean",
+                    $description : "Set this bindable property to true to put the focus on the first item. As soon as the focus has been set, the property will be set back to false.",
+                    $default : false
                 }
             }
         },
@@ -1657,6 +1734,22 @@ module.exports = Aria.beanDefinitions({
                     $type : "common:Callback",
                     $description : "Function to be called when the selected date or range in the calendar changes because of user action (click or keyboard selection)."
                 },
+                "onfocus" : {
+                    $type : "common:Callback",
+                    $description : "Function to be called when the calendar widget is focused."
+                },
+                "onblur" : {
+                    $type : "common:Callback",
+                    $description : "Function to be called when the calendar widget is blured."
+                },
+                "onkeydown" : {
+                    $type : "common:Callback",
+                    $description : "Function to be called when the user types a key while the widget is focused."
+                },
+                "onmousedown" : {
+                    $type : "common:Callback",
+                    $description : "Function to be called when the user presses the mouse on the calendar."
+                },
                 "minValue" : {
                     $type : "json:Date",
                     $description : "Minimum date for the value property."
@@ -1684,6 +1777,14 @@ module.exports = Aria.beanDefinitions({
                     $description : "First day of the week. 0 = Sunday, ... 6 = Saturday. The null value means that it is set according to the application environment.",
                     $minValue : 0,
                     $maxValue : 6
+                },
+                "waiAriaDateFormat" : {
+                    $type : "environmentBase:inputFormatTypes",
+                    $description : "Date pattern used by screen readers to read the date (only used when waiAria is true)."
+                },
+                "waiAriaLabel": {
+                    $type : "json:String",
+                    $description : "aria-label to set on the whole calendar (only used when waiAria is true)."
                 },
                 "monthLabelFormat" : {
                     $type : "json:String",
@@ -1744,6 +1845,10 @@ module.exports = Aria.beanDefinitions({
                                         "value" : {
                                             $type : "json:MultiTypes",
                                             $description : "The value of the item"
+                                        },
+                                        "ariaLabel" : {
+                                            $type : "json:String",
+                                            $description : "The string to set in the aria-label attribute (only used when waiAria is true)"
                                         }
                                     }
                                 }
@@ -1759,6 +1864,11 @@ module.exports = Aria.beanDefinitions({
                                     "labelProperty" : {
                                         $type : "json:String",
                                         $description : "The name of the property containing the label",
+                                        $default : ""
+                                    },
+                                    "ariaLabelProperty" : {
+                                        $type : "json:String",
+                                        $description : "The name of the property containing the aria-label",
                                         $default : ""
                                     },
                                     "valueProperty" : {
@@ -1817,6 +1927,10 @@ module.exports = Aria.beanDefinitions({
                 "onmouseover" : {
                     $type : "common:Callback",
                     $description : "Function to be called when the user moves the mouse over an item in the list."
+                },
+                "onmousedown" : {
+                    $type : "common:Callback",
+                    $description : "Function to be called when the user clicks the mouse in the list."
                 },
                 "bind" : {
                     $type : "WidgetCfg.bind",
@@ -1898,6 +2012,11 @@ module.exports = Aria.beanDefinitions({
                     $description : "The title of the dialog which will be displayed in the header",
                     $default : ""
                 },
+                "titleTag" : {
+                    $type : "json:String",
+                    $description : "HTML tag used to display the title in the widget. The default value is 'h1' when waiAria is true and 'span' otherwise.",
+                    $regExp: /^[a-z0-9]+$/i
+                },
                 "visible" : {
                     $type : "json:Boolean",
                     $description : "A boolean whether the dialog is visible",
@@ -1921,10 +2040,26 @@ module.exports = Aria.beanDefinitions({
                     $description : "Whether the dialog has a close button in its title bar.",
                     $default : true
                 },
+                "closeLabel" : {
+                    $type : "json:String",
+                    $description : "The label to use for the close icon (can be used in various ways such as for tooltip or accessibility)."
+                },
+                "waiEscapeMsg" : {
+                    $type : "json:String",
+                    $description : "If this property is defined and if waiAria is activated, the user has to press escape twice (instead of only once) to close the dialog. This property specifies the message to read after the user pressed escape the first time."
+                },
+                "waiCloseMsg" : {
+                    $type : "json:String",
+                    $description : "When waiAria is activated, this property specifies the message to read when the modal dialog is closed."
+                },
                 "maximizable" : {
                     $type : "json:Boolean",
                     $description : "Whether the dialog has a maximize button in its title bar. Note that you can set this to false and programatically maximize the Dialog to achieve a fullscreen-only Dialog solution.",
                     $default : false
+                },
+                "maximizeLabel" : {
+                    $type : "json:String",
+                    $description : "The label to use for the maximize icon (can be used in various ways such as for tooltip or accessibility)."
                 },
                 "closeOnMouseClick" : {
                     $type : "json:Boolean",
@@ -1935,6 +2070,22 @@ module.exports = Aria.beanDefinitions({
                     $type : "json:Boolean",
                     $description : "If true, the dialog is always centered in the browser window. Takes priority over xpos and ypos. However, if the dialog box is movable and the user manually moves it, the centered behavior will be switched off.",
                     $default : true
+                },
+                "autoFocus" : {
+                    $type : "json:Boolean",
+                    $description : "Whether the first element in the dialog is automatically focused when the dialog is displayed. By default, it is true for modal dialogs and false for other dialogs."
+                },
+                "focusableTitle" : {
+                    $type : "json:Boolean",
+                    $description : "Whether the title of the dialog is focusable. By default, this property takes the same value as waiAria."
+                },
+                "focusableMaximize" : {
+                    $type : "json:Boolean",
+                    $description : "Whether the maximize button of the dialog is focusable. By default, this property is true only if waiAria is true and maximizeLabel is defined."
+                },
+                "focusableClose" : {
+                    $type : "json:Boolean",
+                    $description : "Whether the close button of the dialog is focusable. By default, this property is true only if waiAria is true and closeLabel is defined."
                 },
                 "xpos" : {
                     $type : "json:Integer",
@@ -2050,6 +2201,12 @@ module.exports = Aria.beanDefinitions({
                     $properties : {
                         "selectedTab" : {
                             $type : "common:BindingRef"
+                        },
+                        "labelId" : {
+                            $type : "common:BindingRef"
+                        },
+                        "controlledTabPanelId" : {
+                            $type : "common:BindingRef"
                         }
                     }
                 },
@@ -2083,6 +2240,12 @@ module.exports = Aria.beanDefinitions({
                             $type : "common:BindingRef"
                         },
                         "selectedTab" : {
+                            $type : "common:BindingRef"
+                        },
+                        "labelId" : {
+                            $type : "common:BindingRef"
+                        },
+                        "controlledTabPanelId" : {
                             $type : "common:BindingRef"
                         }
                     }

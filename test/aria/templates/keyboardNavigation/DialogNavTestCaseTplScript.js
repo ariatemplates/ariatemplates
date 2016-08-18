@@ -12,8 +12,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 Aria.tplScriptDefinition({
     $classpath : "test.aria.templates.keyboardNavigation.DialogNavTestCaseTplScript",
+
     $constructor : function () {
         aria.templates.NavigationManager.addGlobalKeyMap({
             key : "ESCAPE",
@@ -25,15 +27,17 @@ Aria.tplScriptDefinition({
             }
         });
     },
+
     $destructor : function () {
         aria.templates.NavigationManager.removeGlobalKeyMap({
             key : "ESCAPE"
         });
     },
+
     $prototype : {
         clickHandler : function () {
-            var holder = this.data.dialog;
-            var propName = "visible";
+            var holder = this.data;
+            var propName = "dialogOpen";
 
             this.$json.setValue(holder, propName, !holder[propName]);
         }

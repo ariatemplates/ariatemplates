@@ -820,7 +820,7 @@ module.exports = Aria.classDefinition({
             } else {
                 var width, height;
                 var browser = ariaCoreBrowser;
-                if (browser.isChrome || browser.isSafari) {
+                if (browser.isChrome || browser.isOpera || browser.isSafari) {
                     var rectTextObject = element.getBoundingClientRect();
                     width = Math.round(rectTextObject.width);
                     height = Math.round(rectTextObject.height);
@@ -1224,7 +1224,7 @@ module.exports = Aria.classDefinition({
             if (document == null) {
                 document = Aria.$window.document;
             }
-            return ((!(ariaCoreBrowser.isSafari || ariaCoreBrowser.isChrome || ariaCoreBrowser.isEdge) && (document.compatMode == "CSS1Compat"))
+            return ((!(ariaCoreBrowser.isSafari || ariaCoreBrowser.isChrome || ariaCoreBrowser.isEdge || ariaCoreBrowser.isOpera) && (document.compatMode == "CSS1Compat"))
                     ? document.documentElement
                     : document.body);
         },

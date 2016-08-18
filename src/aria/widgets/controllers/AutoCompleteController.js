@@ -94,6 +94,13 @@ var ariaCoreJsonValidator = require("../../core/JsonValidator");
              */
             this.preselect = null;
 
+            /**
+             * Function set by the widget. It is passed the suggestion, its index, and the array of suggestions and
+             * should return the aria-label attribute to set for the current suggestion.
+             * @type Function
+             */
+            this.waiSuggestionAriaLabelGetter = null;
+
             // Inherited from aria.html.controllers.Suggestions
             this._init();
         },
@@ -412,7 +419,7 @@ var ariaCoreJsonValidator = require("../../core/JsonValidator");
              */
             _prepareSuggestionsAndMatch : function (suggestions, textEntry) {
                 var matchValueIndex = -1, suggestion;
-                for (var index = 0, len = suggestions.length, label; index < len; index += 1) {
+                for (var index = 0, len = suggestions.length, label, ariaLabel; index < len; index += 1) {
                     suggestion = suggestions[index];
                     // if it's the first exact match, store it
                     if (matchValueIndex == -1) {
@@ -421,9 +428,15 @@ var ariaCoreJsonValidator = require("../../core/JsonValidator");
                         }
                     }
                     label = this._getLabelFromSuggestion(suggestion);
+                    ariaLabel = this.waiSuggestionAriaLabelGetter ? this.waiSuggestionAriaLabelGetter({
+                        value: suggestion,
+                        index: index,
+                        total: len
+                    }) : null;
                     var tmp = {
                         entry : textEntry,
                         label : label,
+                        ariaLabel : ariaLabel,
                         value : suggestion
                     };
                     suggestions[index] = tmp;
@@ -472,16 +485,27 @@ var ariaCoreJsonValidator = require("../../core/JsonValidator");
              * @return {aria.widgets.controllers.reports.DropDownControllerReport}
              */
             toggleDropdown : function (displayValue, currentlyOpen) {
-                this._resourcesHandler.getAllSuggestions({
-                    fn : this._suggestionsCallback,
-                    scope : this,
-                    args : {
-                        nextValue : displayValue,
-                        triggerDropDown : !currentlyOpen,
-                        keepSelectedValue : true,
-                        allSuggestions : true
-                    }
-                });
+                var self = this;
+                if (currentlyOpen) {
+                    var report = new ariaWidgetsControllersReportsDropDownControllerReport(), dataModel = this._dataModel;
+                    report.displayDropDown = false;
+                    report.value = dataModel.value;
+                    report.text = dataModel.text;
+                    return report;
+                } else {
+                    setTimeout(function () {
+                        self._resourcesHandler.getAllSuggestions({
+                            fn : self._suggestionsCallback,
+                            scope : self,
+                            args : {
+                                nextValue : displayValue,
+                                triggerDropDown : !currentlyOpen,
+                                keepSelectedValue : true,
+                                allSuggestions : true
+                            }
+                        });
+                    }, 1);
+                }
             },
 
             /**

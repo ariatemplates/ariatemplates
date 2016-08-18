@@ -87,6 +87,8 @@ var ariaCoreTimer = require("../../core/Timer");
                     minHeight : cfg.minHeight,
                     maxWidth : ariaUtilsMath.min(cfg.maxWidth, viewport.width),
                     maxHeight : ariaUtilsMath.min(cfg.maxHeight, viewport.height),
+                    scrollBarX : cfg.scrollBarX,
+                    scrollBarY : cfg.scrollBarY,
                     printOptions : cfg.printOptions,
                     cssClass : this._context.getCSSClassNames(true)
                 }, this._context, this._lineNumber);

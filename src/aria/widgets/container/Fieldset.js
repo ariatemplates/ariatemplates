@@ -74,7 +74,7 @@ module.exports = Aria.classDefinition({
          */
         _init : function () {
             var domElt = this.getDom();
-            var content = aria.utils.Dom.getDomElementChild(domElt, 0);
+            var content = (this._cfg.label && this._cfg.waiAria) ? aria.utils.Dom.getDomElementChild(domElt, 1) : aria.utils.Dom.getDomElementChild(domElt, 0);
             this._frame.linkToDom(content);
             this.$Container._init.call(this);
         },
@@ -113,6 +113,10 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         _widgetMarkupBegin : function (out) {
+            var label = this._cfg.label;
+            if (label && this._cfg.waiAria) {
+                out.write('<span class="xSROnly">' + ariaUtilsString.escapeHTML(label) + '</span>');
+            }
             this._frame.writeMarkupBegin(out);
         },
 
@@ -125,8 +129,8 @@ module.exports = Aria.classDefinition({
             this._frame.writeMarkupEnd(out);
             var label = this._cfg.label;
             if (label) {
-                out.write('<span class="xFieldset_' + this._cfg.sclass + '_normal_label">'
-                        + ariaUtilsString.escapeHTML(label) + '</span>');
+                var ariaHidden = this._cfg.waiAria ? ' aria-hidden="true"' : '';
+                out.write('<span class="xFieldset_' + this._cfg.sclass + '_normal_label"' + ariaHidden + '>' + ariaUtilsString.escapeHTML(label) + '</span>');
             }
         }
     }

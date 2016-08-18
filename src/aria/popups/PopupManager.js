@@ -21,7 +21,7 @@ var ariaTemplatesNavigationManager = require("../templates/NavigationManager");
 var ariaUtilsAriaWindow = require("../utils/AriaWindow");
 var ariaCoreBrowser = require("../core/Browser");
 var ariaCoreTimer = require("../core/Timer");
-var ariaUtilsDelegate = require("../utils/Delegate");
+var ViewportNavigationInterceptor = require('./PopupNavigationManager').ViewportNavigationInterceptor;
 
 (function () {
 
@@ -53,6 +53,21 @@ var ariaUtilsDelegate = require("../utils/Delegate");
                 description : "Notifies that a popup has been closed",
                 properties : {
                     popup : "Reference to the popup"
+                }
+            },
+            "beforePreventingFocus" : {
+                description : "Notifies that the popup manager is about to prevent an element from being focused (because it is behind a modal popup).",
+                properties : {
+                    event: "Focus event (instance of aria.DomEvent)",
+                    modalPopup : "Modal popup which is above the element.",
+                    cancel : "If set to true, the focus will not be prevented."
+                }
+            },
+            "beforeBringingPopupsToFront" : {
+                description : "Notifies that several popups are being brought to the front.",
+                properties : {
+                    popups : "Array of popups being brought to the front. The last popup in the list should be on the top.",
+                    cancel : "If set to true, the zIndex of the popups will not be changed."
                 }
             }
         },
@@ -98,6 +113,8 @@ var ariaUtilsDelegate = require("../utils/Delegate");
              * @type Number
              */
             this.currentZIndex = this.baseZIndex;
+
+            this._viewportNavigationInterceptor = ViewportNavigationInterceptor();
 
             ariaUtilsAriaWindow.$on({
                 "unloadWindow" : this._reset,
@@ -195,6 +212,10 @@ var ariaUtilsDelegate = require("../utils/Delegate");
                     fn : this.onDocumentMouseScroll,
                     scope : this
                 }, true);
+                utilsEvent.addListener(this._document.body, "focusin", {
+                    fn : this.onDocumentFocusIn,
+                    scope : this
+                });
 
                 if (ariaCoreBrowser.isOldIE) {
                     // IE does not support scroll event on the document until IE9
@@ -229,6 +250,9 @@ var ariaUtilsDelegate = require("../utils/Delegate");
                     utilsEvent.removeListener(this._document, "mousewheel", {
                         fn : this.onDocumentMouseScroll
                     });
+                    utilsEvent.removeListener(this._document.body, "focusin", {
+                        fn : this.onDocumentFocusIn
+                    });
                     ariaUtilsAriaWindow.detachWindow();
                     this._document = null;
                     if (ariaCoreBrowser.isOldIE) {
@@ -258,11 +282,6 @@ var ariaUtilsDelegate = require("../utils/Delegate");
                 });
                 // global navigation is disabled in case of a modal popup
                 navManager.setModalBehaviour(true);
-
-                utilsEvent.addListener(this._document.body, "focusin", {
-                    fn : this.onDocumentFocusIn,
-                    scope : this
-                });
             },
 
             /**
@@ -280,10 +299,6 @@ var ariaUtilsDelegate = require("../utils/Delegate");
                 });
                 // restore globalKeyMap
                 navManager.setModalBehaviour(false);
-
-                utilsEvent.removeListener(this._document.body, "focusin", {
-                    fn : this.onDocumentFocusIn
-                });
             },
 
             /**
@@ -331,28 +346,144 @@ var ariaUtilsDelegate = require("../utils/Delegate");
             },
 
             /**
+             * Returns the popup which contains the given target DOM element, if the DOM element is not hidden
+             * behind a modal popup.
+             * @param {HTMLElement} target DOM element for which the containing popup has to be found
+             * @param {Function} notifyTargetBehindModalPopup function which is called in case the target is behind
+             * a modal popup. The function receives the modal popup as a parameter and its return value becomes
+             * the return value of findParentPopup.
+             */
+            findParentPopup : function (target, notifyTargetBehindModalPopup) {
+                var searchPopup = this._document && target !== this._document.body;
+                if (searchPopup) {
+                    for (var i = this.openedPopups.length - 1; i >= 0; i--) {
+                        var popup = this.openedPopups[i];
+                        if (utilsDom.isAncestor(target, popup.getDomElement())) {
+                            // the element is in the modal popup, it is fine to focus it
+                            return popup;
+                        }
+                        if (popup.modalMaskDomElement && utilsDom.isAncestor(target, popup.popupContainer.getContainerElt())) {
+                            // the element is inside the container for which there is a modal mask
+                            if (notifyTargetBehindModalPopup) {
+                                return notifyTargetBehindModalPopup(popup);
+                            }
+                            return;
+                        }
+                    }
+                }
+            },
+
+            /**
              * Callback after the focus is put on an element in the document, when a modal popup is displayed.
              * @param {Object} event The DOM focusin event triggering the callback
              */
             onDocumentFocusIn : function (event) {
                 var domEvent = new ariaDomEvent(event);
                 var target = domEvent.target;
-                var searchModal = target != this._document.body;
-                if (searchModal) {
-                    for (var i = this.openedPopups.length - 1; i >= 0; i--) {
-                        var popup = this.openedPopups[i];
-                        if (utilsDom.isAncestor(target, popup.getDomElement())) {
-                            // the element is in the modal popup, it is fine to focus it
-                            break;
+                var self = this;
+                var popup = this.findParentPopup(target, function (popup) {
+                    var navigation;
+                    navigation = self._viewportNavigationInterceptor.getNavigationInformation(target);
+                    if (navigation == null) {
+                        navigation = popup.getNavigationInformation(target);
+                    }
+
+                    var eventObject = {
+                        name: "beforePreventingFocus",
+                        event: domEvent,
+                        modalPopup: popup,
+                        cancel: false,
+                        navigation: navigation
+                    };
+                    self.$raiseEvent(eventObject);
+                    if (!eventObject.cancel) {
+                        var direction;
+                        if (navigation != null) {
+                            direction = navigation.direction;
                         }
-                        if (popup.modalMaskDomElement && utilsDom.isAncestor(target, popup.popupContainer.getContainerElt())) {
-                            // the element is inside the container for which there is a modal mask
-                            ariaTemplatesNavigationManager.focusFirst(popup.domElement);
+                        if (direction == null) {
+                            direction = 'forward';
+                        }
+
+                        var reverse = !!(direction === 'backward');
+                        ariaTemplatesNavigationManager.focusFirst(popup.domElement, reverse);
+                        return popup;
+                    }
+                    // if the focus is allowed, don't return any popup to bring to the front
+                });
+                if (popup) {
+                    this.bringToFront(popup);
+                }
+                domEvent.$dispose();
+            },
+
+            /**
+             * Returns the popup with the highest zIndex.
+             */
+            getTopPopup : function () {
+                var openedPopups = this.openedPopups;
+                var topPopup = null;
+                if (openedPopups.length > 0) {
+                    topPopup = openedPopups[openedPopups.length - 1];
+                    var topZIndex = topPopup.getZIndex();
+                    for (var i = openedPopups.length - 2; i >= 0; i--) {
+                        var curPopup = openedPopups[i];
+                        var curZIndex = curPopup.getZIndex();
+                        if (curZIndex > topZIndex) {
+                            topPopup = curPopup;
+                            topZIndex = curZIndex;
+                        }
+                    }
+                }
+                return topPopup;
+            },
+
+            /**
+             * Bring the given popup to the front, changing its zIndex, if it is necessary.
+             * @param {aria.popups.Popup} popup popup whose zIndex is to be changed
+             */
+            bringToFront : function (popup) {
+                var curZIndex = popup.getZIndex();
+                var newBaseZIndex = this.currentZIndex;
+                if (curZIndex === newBaseZIndex) {
+                    // already top most, nothing to do in any case!
+                    return;
+                }
+                // gets all popups supposed to be in front of this one, including this one
+                var openedPopups = this.openedPopups;
+                var popupsToKeepInFront = [];
+                var i, l;
+                for (i = openedPopups.length - 1; i >= 0; i--) {
+                    var curPopup = openedPopups[i];
+                    if (curPopup === popup || curPopup.conf.zIndexKeepOpenOrder) {
+                        popupsToKeepInFront.unshift(curPopup);
+                        if (curPopup.getZIndex() === newBaseZIndex) {
+                            newBaseZIndex -= 10;
+                        }
+                        if (curPopup === popup) {
                             break;
                         }
                     }
                 }
-                domEvent.$dispose();
+                if (i < 0 || newBaseZIndex + 10 === curZIndex) {
+                    // either the popup is not in openedPopups (i < 0)
+                    // or it is already correctly positioned (newBaseZIndex + 10 === curZIndex)
+                    return;
+                }
+                var eventObject = {
+                    name : "beforeBringingPopupsToFront",
+                    popups : popupsToKeepInFront,
+                    cancel : false
+                };
+                this.$raiseEvent(eventObject);
+                if (eventObject.cancel) {
+                    return;
+                }
+                this.currentZIndex = newBaseZIndex;
+                for (i = 0, l = popupsToKeepInFront.length; i < l; i++) {
+                    var curPopup = popupsToKeepInFront[i];
+                    curPopup.setZIndex(this.getZIndexForPopup(curPopup));
+                }
             },
 
             /**
@@ -383,6 +514,11 @@ var ariaUtilsDelegate = require("../utils/Delegate");
 
                 if (!(ignoreClick || utilsDom.isAncestor(target, popup.getDomElement()))) {
                     popup.closeOnMouseClick(domEvent);
+                }
+
+                var topPopup = this.findParentPopup(target);
+                if (topPopup) {
+                    this.bringToFront(topPopup);
                 }
 
                 domEvent.$dispose();
@@ -466,10 +602,22 @@ var ariaUtilsDelegate = require("../utils/Delegate");
                     popup : popup
                 });
 
+                if (!ariaCoreBrowser.isIE7) {
+                    // The navigation elements inserted by ensureElements make the following tests fail on IE 7:
+                    // - test.aria.widgets.wai.popup.dialog.modal.FirstTest
+                    // - test.aria.widgets.wai.popup.dialog.modal.FourthTest
+                    // Those tests are blocked in _testFocusRestoration while waiting for the opening element to
+                    // be focused again. It is not obvious why adding the navigation elements prevents the opening
+                    // element from being correctly focused again when the dialog is closed... just an IE 7 bug!
+                    // The issue seems not to happen if we do not remove the navigation elements from the DOM when
+                    // the dialog is closed. However, instead of keeping those elements in the DOM a little longer
+                    // (with a non-deterministic setTimeout), we simply avoid adding those elements on IE 7:
+                    this._viewportNavigationInterceptor.ensureElements();
+                }
             },
 
             /**
-             * Manager handler when a popup is open. Unregister the popup as opened, unregister global events if needed.
+             * Manager handler when a popup is closed. Unregister the popup as opened, unregister global events if needed.
              * @param {aria.popups.Popup} popup
              */
             onPopupClose : function (popup) {
@@ -480,27 +628,21 @@ var ariaUtilsDelegate = require("../utils/Delegate");
                     if (this.modalPopups === 0) {
                         this.disconnectModalEvents();
                         this.$raiseEvent("modalPopupAbsent");
+                        this._viewportNavigationInterceptor.destroyElements();
                     }
                 }
                 if (utilsArray.isEmpty(openedPopups)) {
                     this.disconnectEvents();
+                }
+                var curZIndex = popup.getZIndex();
+                if (curZIndex === this.currentZIndex) {
+                    this.currentZIndex -= 10;
                 }
 
                 this.$raiseEvent({
                     name : "popupClose",
                     popup : popup
                 });
-
-                var topPopup = openedPopups.length > 0 ? openedPopups[openedPopups.length - 1] : null;
-
-                // the timeout waits for a possible focus change after the mousedown event that possibly triggered this
-                // method
-                setTimeout(function () {
-                    var focusedEl = ariaUtilsDelegate.getFocus();
-                    if (topPopup && !utilsDom.isAncestor(focusedEl, topPopup.domElement)) {
-                        ariaTemplatesNavigationManager.focusFirst(topPopup.domElement);
-                    }
-                }, 1);
             },
 
             /**
@@ -562,8 +704,7 @@ var ariaUtilsDelegate = require("../utils/Delegate");
              * @protected
              */
             _raiseOnEscapeEvent : function () {
-                var openedPopups = this.openedPopups;
-                var topPopup = openedPopups.length > 0 ? openedPopups[openedPopups.length - 1] : null;
+                var topPopup = this.getTopPopup();
                 if (topPopup && topPopup.modalMaskDomElement) {
                     topPopup.$raiseEvent("onEscape");
                 }
