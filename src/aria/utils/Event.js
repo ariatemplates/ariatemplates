@@ -432,7 +432,7 @@ var ariaCoreBrowser = require("../core/Browser");
                     event: event
                 };
                 if ('mousewheel' == event) {
-                    if (this.UA.isOldIE) {
+                    if (this.UA.isIE) {
                         if (element == Aria.$window) {
                             normalized.element = element.document;
                         }
