@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.wai.multiselect.MultiSelectJawsTest",
+    $classpath : "test.aria.widgets.wai.multiselect.MultiSelectTabJawsTest",
     $extends : "aria.jsunit.JawsTestCase",
     $constructor : function () {
         this.$JawsTestCase.constructor.call(this);
@@ -30,7 +30,7 @@ Aria.classDefinition({
         runTemplateTest : function () {
             var checkedRegExp = /not checked\nchecked/g;
             var notCheckedRegExp = /checked\nnot checked/g;
-            var chechBoxStartingLineRegExp = /\ncheck box/g;
+            var checkBoxStartingLineRegExp = /\ncheck box/g;
 
             this.synEvent.execute([
                 ["click", this.getElementById("tf")],
@@ -39,34 +39,48 @@ Aria.classDefinition({
                 ["pause", 1000],
                 ["type", null, "[<shift>][F10][>shift<]"],
                 ["pause", 1000],
-                ["type", null, "[space]"],
-                ["pause", 500],
-                ["type", null, "[down]"],
+                ["type", null, "[<shift>][tab][>shift<]"], // Shouldn't move
                 ["pause", 500],
                 ["type", null, "[space]"],
-                ["pause", 500],
-                ["type", null, "[down][down]"],
-                ["pause", 500],
-                ["type", null, "[space]"],
-                ["pause", 500],
-                ["type", null, "[down]"],
-                ["pause", 500],
-                ["type", null, "[space]"],
-                ["pause", 500],
-                ["type", null, "[escape]"],
                 ["pause", 500],
                 ["type", null, "[tab]"],
                 ["pause", 500],
-                ["type", null, "[space]"],
+                ["type", null, "[tab]"],
+                ["pause", 500],
+                ["type", null, "[tab]"],
+                ["pause", 500],
+                ["type", null, "[tab]"],
+                ["pause", 500],
+                ["type", null, "[tab]"],
+                ["pause", 500],
+                ["type", null, "[space]"], // Select all
+                ["pause", 500],
+                ["type", null, "[tab]"],
+                ["pause", 500],
+                ["type", null, "[tab]"],
+                ["pause", 500],
+                ["type", null, "[tab]"], // One extra tab, shouldn't move
+                ["pause", 500],
+                ["type", null, "[enter]"], // Close
+                ["pause", 500],
+                ["type", null, "[down]"],
+                ["pause", 500],
+                ["type", null, "[space]"], // Open dropdown
+                ["pause", 1000],
+                ["type", null, "[down]"],
+                ["pause", 500],
+                ["type", null, "[space]"], // Unselect the second one
+                ["pause", 500],
+                ["type", null, "[escape]"], // Close the dropdown
                 ["pause", 1000]
             ], {
                 fn: function () {
                     this.assertJawsHistoryEquals(
-                        "Here is the default Multi-Select: Edit\nType in text.\nMy Multi-select:\nEdit\nAir Canada check box checked\nAir France check box not checked\nAir France check box checked\nAir New Zealand check box not checked\nBritish Airways check box not checked\nBritish Airways check box checked\nDelta Airlines check box not checked Unavailable\nMy Multi-select: Edit\nAir Canada,Air France,British Airways\nType in text.\nPress space to open the selection list button menu collapsed\nAir Canada check box checked",
+                        "Here is the default Multi-Select: Edit\nType in text.\nMy Multi-select:\nEdit\nAir Canada check box checked\nAir France check box not checked\nAir New Zealand check box not checked\nBritish Airways check box not checked\nDelta Airlines check box not checked\nSelect All Link\nDeselect All Link\nClose Link\nMy Multi-select: Edit\nAir Canada,Air France,British Airways\nType in text.\nPress space to open the selection list\nbutton menu collapsed\nAir Canada check box checked\nAir France check box checked\nAir France check box not checked\nMy Multi-select: Edit\nAir Canada,British Airways\nType in text.",
                     this.end,
                     function(response) {
                         return this.removeDuplicates(response.
-                            replace(chechBoxStartingLineRegExp, " check box").
+                            replace(checkBoxStartingLineRegExp, " check box").
                             replace(checkedRegExp, "checked").
                             replace(notCheckedRegExp, "not checked")
                         );

@@ -654,6 +654,14 @@ module.exports = Aria.classDefinition({
         },
 
         /**
+         * Change the focus index
+         * @param {Integer} sortedIndex index of the item that was changed
+         */
+        itemFocus : function (sortedIndex) {
+            this.json.setValue(this._data, "focusIndex", sortedIndex);
+        },
+
+        /**
          * Called when an item is clicked
          * @param {String} itemIndex index of the item that was changed
          * @param {Boolean} alreadyChanged if true the selected property of the item was already changed (so that it is
