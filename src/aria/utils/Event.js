@@ -442,7 +442,7 @@ var ariaCoreBrowser = require("../core/Browser");
                         if (element == Aria.$window) {
                             element = element.document;
                         }
-                    } else if (!(this.UA.isOpera || this.UA.isSafari)) {
+                    } else if (!(this.UA.isOpera || this.UA.isSafari || this.UA.isWebkit)) {
                         event = 'DOMMouseScroll';
                     }
                 }
