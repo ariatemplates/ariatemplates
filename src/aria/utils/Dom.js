@@ -694,7 +694,7 @@ module.exports = Aria.classDefinition({
             i = 0;
             obj = element;
 
-            while (obj && obj.parentNode && obj.parentNode != document.body && obj.parentNode.tagName) {
+            while (obj && obj.parentNode && obj != document.body && obj.parentNode != document.body && obj.parentNode.tagName) {
 
                 if (!browser.isOpera && obj.nodeName != 'HTML') {
                     if (obj.scrollTop !== 0 && obj.scrollTop) {
@@ -779,14 +779,17 @@ module.exports = Aria.classDefinition({
                 var offsetParent = isFixed ? Aria.$window.document.body : element.offsetParent;
                 var offsetParentPosition = this.calculatePosition(offsetParent);
                 var elementPosition = this.calculatePosition(element);
+                // using offsetParentPosition.scrollXX instead of offsetParent.scrollXX, the latter is not cross-browser
+                // see https://github.com/ariatemplates/ariatemplates/issues/1374
                 if (position.left == null) {
                     var borderLeft = this.getStylePx(offsetParent, "borderLeftWidth", 0);
-                    position.left = elementPosition.left - offsetParentPosition.left + offsetParent.scrollLeft
+                    position.left = elementPosition.left - offsetParentPosition.left + offsetParentPosition.scrollLeft
                             - borderLeft;
                 }
                 if (position.top == null) {
                     var borderTop = this.getStylePx(offsetParent, "borderTopWidth", 0);
-                    position.top = elementPosition.top - offsetParentPosition.top + offsetParent.scrollTop - borderTop;
+                    position.top = elementPosition.top - offsetParentPosition.top + offsetParentPosition.scrollTop
+                            - borderTop;
                 }
             }
 
