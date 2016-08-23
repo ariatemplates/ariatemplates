@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Amadeus s.a.s.
+ * Copyright 2014 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,14 +14,21 @@
  */
 
 Aria.classDefinition({
-    $classpath: "test.aria.tools.ToolsTestSuite",
-    $extends: "aria.jsunit.TestSuite",
-    $constructor: function () {
-        this.$TestSuite.constructor.call(this);
-
-        this.addTests("test.aria.tools.contextualMenu.open.OpenMenuTest");
-        this.addTests("test.aria.tools.contextualMenu.popup.PopupTest");
-        this.addTests("test.aria.tools.contextualMenu.environment.EnvironmentTest");
-        this.addTests("test.aria.tools.debug.ForceReloadClassTest");
+    $classpath : "test.aria.tools.debug.testFiles.BarClass",
+    $constructor : function (number) {
+        this._originalConstructorParam = number;
+    },
+    $statics : {
+        STATIC1 : "original",
+        STATIC2 : "original"
+    },
+    $prototype : {
+        protoVariable1 : "original",
+        method1 : function () {
+            return "original";
+        },
+        method2 : function () {
+            return "original";
+        }
     }
 });

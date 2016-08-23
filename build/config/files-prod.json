@@ -166,6 +166,7 @@
             "aria/tools/inspector/*",
             "aria/tools/logger/*",
             "aria/tools/contextual/*",
+            "aria/tools/debug/*",
             "aria/tools/*"
         ]
     },
