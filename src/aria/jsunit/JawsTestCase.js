@@ -14,7 +14,6 @@
  */
 var Aria = require("../Aria");
 var ariaUtilsString = require("../utils/String");
-var ariaUtilsJson = require("../utils/Json");
 
 /**
  * Class to be extended to create a template test case which checks the behavior with
@@ -145,13 +144,13 @@ module.exports = Aria.classDefinition({
                     } else {
                         message.push('History was not filtered');
                     }
-                    message.push("JAWS history" + (changed ? ' (filtered)' : '') + ": " + ariaUtilsJson.convertToJsonString(response));
-                    message.push("Expected history: " + ariaUtilsJson.convertToJsonString(expectedOutput));
+                    message.push("JAWS history" + (changed ? ' (filtered)' : '') + ":", "", response, "");
+                    message.push("Expected history:", "", expectedOutput, "");
 
                     if (changed) {
-                        message.push("JAWS history (original): " + ariaUtilsJson.convertToJsonString(originalResponse));
+                        message.push("JAWS history (original): ", "", originalResponse, "");
                     }
-                    message = message.join('.\n') + '.';
+                    message = message.join('\n');
 
                     this.assertEquals(response, expectedOutput, message);
                     this.$callback(callback);
