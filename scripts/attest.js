@@ -69,7 +69,7 @@ if (browsers) {
 
 function endProcess(code) {
     attester.dispose().then(function () {
-        process.exit(0);
+        process.exit(code);
     });
 }
 
