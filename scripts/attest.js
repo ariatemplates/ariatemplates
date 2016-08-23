@@ -67,18 +67,20 @@ if (browsers) {
     attesterOptions["robot-browser"] = browser;
 }
 
-// Called when the campaign completes successfully
-attester.event.once("attester.core.idle", function () {
+function endProcess(code) {
     attester.dispose().then(function () {
         process.exit(0);
     });
+}
+
+// Called when the campaign completes successfully
+attester.event.once("attester.core.idle", function () {
+    endProcess(0);
 });
 
 // Called when the campaign fails
 attester.event.once("attester.core.fail", function () {
-    attester.dispose().then(function () {
-        process.exit(1);
-    });
+    endProcess(1);
 });
 
 console.log("Using the following options:");
@@ -87,3 +89,17 @@ attester.config.set(attesterOptions);
 attester.campaign.create(campaign, {}, 1);
 
 attester.start();
+
+process.on("SIGINT", function() {
+    endProcess(1);
+});
+
+if (process.platform === "win32") {
+    var readline = require("readline").createInterface({
+        input: process.stdin,
+        output: process.stdout
+    });
+    readline.on("SIGINT", function () {
+        process.emit("SIGINT");
+    });
+}
