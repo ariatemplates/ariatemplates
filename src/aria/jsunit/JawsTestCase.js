@@ -102,7 +102,7 @@ module.exports = Aria.classDefinition({
                 fn: function () {
                     textArea.parentNode.removeChild(textArea);
                     var textAreaContent = textArea.value;
-                    var globalFilterRegExp = /^(Aria Templates tests frame|Aria Templates tests document|New tab page)$/gi;
+                    var globalFilterRegExp = /^(Aria Templates tests frame|Aria Templates tests document|New tab page)$/i;
                     var lines = ariaUtilsString.trim(textAreaContent).split("\n");
                     for (var i = lines.length - 1; i >= 0; i--) {
                         var curLine = lines[i];
