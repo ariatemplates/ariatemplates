@@ -83,8 +83,12 @@ module.exports = Aria.classDefinition({
             ], {
                 fn: function () {
                     this.assertJawsHistoryEquals(
-                        "Email Address: Edit\nType in text.\nSubmit\nButton\nError\nError • The first name is a required field using a mandatory validator.• The last name is a required field using a mandatory validator.• The phone number is a required field using a mandatory validator.• The email is a required field using a mandatory validator.\nlist of 4 items\n• Link The first name is a required field using a mandatory validator.\n• Link The last name is a required field using a mandatory validator.\nAlert!\nThe last name is a required field using a mandatory validator.\nPhone Number:\nEdit\nAlert!\nThe phone number is a required field using a mandatory validator.",
-                        this.end
+                        "Email Address: Edit\nType in text.\nSubmit Button\nError\nError • The first name is a required field using a mandatory validator.• The last name is a required field using a mandatory validator.• The phone number is a required field using a mandatory validator.• The email is a required field using a mandatory validator.\nlist of 4 items\n• Link The first name is a required field using a mandatory validator.\n• Link The last name is a required field using a mandatory validator.\nAlert!\nThe last name is a required field using a mandatory validator.\nLast Name: Edit\nType in text.\nPhone Number:\nEdit\nAlert!\nThe phone number is a required field using a mandatory validator.",
+                        this.end,
+                        function filter(content) {
+                            content = content.replace(/(Submit)\n(Button)/gi, '$1 $2');
+                            return content;
+                        }
                     );
                 },
                 scope: this
