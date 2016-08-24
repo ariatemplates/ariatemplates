@@ -28,12 +28,6 @@ Aria.classDefinition({
          * This method is always the first entry point to a template test Start the test by focusing the first field
          */
         runTemplateTest : function () {
-            /*
-            var checkedRegExp = /not checked\nchecked/g;
-            var notCheckedRegExp = /checked\nnot checked/g;
-            var chechBoxStartingLineRegExp = /\ncheck box/g;
-            */
-
             this.synEvent.execute([
                 ["click", this.getElementById("tf")],
                 ["pause", 2000],
@@ -62,10 +56,7 @@ Aria.classDefinition({
                 fn: function () {
                     this.assertJawsHistoryEquals(
                         "First textfield Edit\nType in text.\nCity Edit\nType in text.\nPress space to open the autocomplete list button menu collapsed\nTravel date Edit\nType in text.\nPress space to open the calendar button menu collapsed\nMulti-select: Edit\nType in text.\nPress space to open the selection list button menu collapsed\nAll Countries: Edit\nType in text.\nPress space to open the selection list\nbutton menu collapsed",
-                        this.end,
-                        function(response) {
-                            return this.removeDuplicates(response);
-                        }
+                        this.end
                     );
                 },
                 scope: this

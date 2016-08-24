@@ -64,6 +64,9 @@ Aria.classDefinition({
             step1.call(this);
         },
 
+        // skips removeDuplicates in assertJawsHistoryEquals, as we call it ourselves from filterResponse
+        skipRemoveDuplicates: true,
+
         filterResponse: function (response) {
             response = response.replace(/(^|\n).*type.*(?=\n)/gi, "").trim();
             response = response.replace(/\n(?=check box)/gi, " "); // replaces the new line before "check box" by a space

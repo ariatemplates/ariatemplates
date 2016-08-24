@@ -23,6 +23,8 @@ Aria.classDefinition({
         });
     },
     $prototype : {
+        // skips removeDuplicates in assertJawsHistoryEquals, as we call it ourselves from filterResponse
+        skipRemoveDuplicates: true,
 
         /**
          * This method is always the first entry point to a template test Start the test by focusing the first field
