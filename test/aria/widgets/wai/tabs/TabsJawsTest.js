@@ -39,6 +39,67 @@ module.exports = Aria.classDefinition({
             template : 'test.aria.widgets.wai.tabs.Tpl',
             data : data
         });
+
+        this.expectedOutput = [
+            // simple traversal with no selection ------------------------------
+
+            // Tab 0
+            'Tab 0',
+            'Tab closed collapsed',
+
+            // Tab 1
+            'Tab 1',
+            'Tab Unavailable closed collapsed',
+
+            // Tab 2
+            'Tab 2',
+            'Tab closed collapsed',
+
+            // TabPanel
+            'tab panel start',
+            'WaiAria activated: true',
+            'Edit',
+            'tab panel end',
+
+            // selecting last Tab ----------------------------------------------
+
+            // Tab 0
+            'Tab 0',
+            'Tab closed collapsed',
+
+            // Tab 1
+            'Tab 1',
+            'Tab Unavailable closed collapsed',
+
+            // Tab 2
+            'Tab 2',
+            'Tab closed collapsed',
+            // glitch: since the focus is immediately moved (see next comment), the state of the Tab can not be read
+
+            // selecting a Tab means focusing the first element inside the TabPanel
+            'Edit',
+            'Type in text.',
+
+            // simple traversal with a Tab selected ----------------------------
+
+            // Tab 0
+            'Tab 0',
+            'Tab closed collapsed',
+
+            // Tab 1
+            'Tab 1',
+            'Tab Unavailable closed collapsed',
+
+            // Tab 2
+            'Tab 2',
+            'Tab open expanded',
+
+            // TabPanel: now the title of the controlling Tab is read
+            'tab panel start Tab 2',
+            'WaiAria activated: true',
+            'Edit',
+            'tab panel end'
+        ].join('\n');
     },
 
 
@@ -101,7 +162,10 @@ module.exports = Aria.classDefinition({
                 return;
             }
 
+            var expectedOutput = this.expectedOutput;
+
             var tabs = group.tabs;
+            var elementBefore = this.getElementById(group.elementBeforeId);
 
             this._executeStepsAndWriteHistory(callback, function (api) {
                 // ----------------------------------------------- destructuring
@@ -111,56 +175,22 @@ module.exports = Aria.classDefinition({
 
                 // --------------------------------------------- local functions
 
-                var self = this;
-
                 function selectStartPoint() {
-                    step(['click', self.getElementById(group.elementBeforeId)]);
-                }
-
-                function getSelectedTabDescription(tab) {
-                    entry(tab.label + ' Tab expanded');
-                    entry('To activate tab page press Spacebar.');
-                }
-
-                function getTabDescription(tab, isSelected) {
-                    entry(tab.label);
-
-                    var description = [];
-                    description.push('Tab');
-                    if (tab.disabled) {
-                        description.push('Unavailable');
-                    }
-                    if (isSelected) {
-                        description.push('open', 'expanded');
-                    } else {
-                        description.push('closed', 'collapsed');
-                    }
-                    entry(description.join(' '));
+                    step(['click', elementBefore]);
                 }
 
                 function goThroughTabs(selectedTabIndex) {
                     ariaUtilsArray.forEach(tabs, function (tab, index) {
                         step(['type', null, '[down]']);
-                        getTabDescription(tab, selectedTabIndex === index);
                     });
                 }
 
-                function goThroughTabpanel(selectedTab) {
-                    step(['type', null, '[down]']);
-                    var description = 'tab panel start';
-                    if (selectedTab != null) {
-                        description += ' ' + selectedTab.label;
-                    }
-                    entry(description);
-
-                    step(['type', null, '[down]']);
-                    entry('WaiAria activated: true');
+                function goThroughTabpanel() {
                     step(['type', null, '[down]']);
                     step(['type', null, '[down]']);
-                    entry('Edit');
-
                     step(['type', null, '[down]']);
-                    entry('tab panel end');
+                    step(['type', null, '[down]']);
+                    step(['type', null, '[down]']);
                 }
 
                 // -------------------------------------------------- processing
@@ -168,7 +198,6 @@ module.exports = Aria.classDefinition({
                 // no tab selected ---------------------------------------------
 
                 selectStartPoint();
-                step(['type', null, '[enter]']);
 
                 goThroughTabs();
                 goThroughTabpanel();
@@ -176,22 +205,16 @@ module.exports = Aria.classDefinition({
                 // selecting one tab -------------------------------------------
 
                 selectStartPoint();
-
                 goThroughTabs();
-
-                var lastTab = tabs[tabs.length - 1];
-                var tabBeforeLastTab = tabs[tabs.length - 2];
-
                 step(['type', null, '[space]']);
-                getSelectedTabDescription(lastTab);
 
-                step(['type', null, '[enter]']);
-                step(['type', null, '[up]']);
-                getTabDescription(tabBeforeLastTab);
-                step(['type', null, '[down]']);
-                getTabDescription(lastTab, true);
+                selectStartPoint();
+                goThroughTabs();
+                goThroughTabpanel();
 
-                goThroughTabpanel(lastTab);
+                // -------------------------------------------------------------
+
+                entry(expectedOutput);
             });
         }
     }
