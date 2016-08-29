@@ -40,7 +40,7 @@ module.exports = Aria.classDefinition({
                 name: 'withTabKey',
                 key: 'tab'
             },
-            // There are a lot of "blank" elements, required pressing the down key twice more
+            // Note for "actionsCount" values below: there are a lot of "blank" elements, requiring pressing the down key twice more
             {
                 name: 'withDownKey',
                 key: 'down'
@@ -50,7 +50,7 @@ module.exports = Aria.classDefinition({
         this.testData = {
             'link': {
                 withTabKey: {
-                    actionsCount: 5,
+                    actionsCount: 4,
                     expectedOutput: [
                         'this is the link label Link',
 
@@ -58,8 +58,6 @@ module.exports = Aria.classDefinition({
 
                         'link with external description Link',
                         'this is the link external description',
-
-                        'disabled link Unavailable Link',
 
                         'link: no wai ARIA Link'
                     ]
@@ -81,7 +79,7 @@ module.exports = Aria.classDefinition({
             },
             'button': {
                 withTabKey: {
-                    actionsCount: 5,
+                    actionsCount: 4,
                     expectedOutput: [
                         'this is the button label Button',
 
@@ -89,8 +87,6 @@ module.exports = Aria.classDefinition({
 
                         'button with external description Button',
                         'this is the button external description',
-
-                        'disabled button Button Unavailable',
 
                         'button: no wai ARIA Button'
                     ]
@@ -117,7 +113,7 @@ module.exports = Aria.classDefinition({
             },
             'button_simple': {
                 withTabKey: {
-                    actionsCount: 4, // a disabled button cannot be focused
+                    actionsCount: 4,
                     expectedOutput: [
                         'this is the button_simple label Button',
 
@@ -151,7 +147,7 @@ module.exports = Aria.classDefinition({
             },
             'icon_button': {
                 withTabKey: {
-                    actionsCount: 5,
+                    actionsCount: 4,
                     expectedOutput: [
                         'this is the icon_button label Button',
 
@@ -159,8 +155,6 @@ module.exports = Aria.classDefinition({
 
                         'Unlabeled 0 Button',
                         'this is the icon_button external description',
-
-                        'Unlabeled 0 Button Unavailable',
 
                         'Unlabeled 0 Button'
                     ]
