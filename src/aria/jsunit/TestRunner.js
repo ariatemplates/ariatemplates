@@ -18,7 +18,7 @@ var ariaJsunitTestReport = require("./TestReport");
 var ariaJsunitSonarReport = require("./SonarReport");
 var ariaUtilsDom = require("../utils/Dom");
 var ariaUtilsType = require("../utils/Type");
-
+var ariaUtilsString = require("../utils/String");
 
 /**
  * HTML UI Renderer for aria.jsunit.TestEngine
@@ -307,8 +307,11 @@ module.exports = Aria.classDefinition({
                         h.push("Error #" + (i + 1));
                     }
                     h.push(': ');
-                    if (itm.description) {
-                        h.push(itm.description);
+                    var description = itm.description;
+                    if (description) {
+                        description = ariaUtilsString.escapeForHTML(description, {text: true});
+                        description = description.replace(/\n/g, '<br/>');
+                        h.push(description);
                     } else {
                         if (isFailure) {
                             h.push('Failure');
