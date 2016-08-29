@@ -151,7 +151,6 @@ module.exports = Aria.classDefinition({
             var waiLabel = cfg.waiLabel;
             var waiLabelledBy = cfg.waiLabelledBy;
             var waiDescribedBy = cfg.waiDescribedBy;
-            var disabled = cfg.disabled;
 
             // ------------------------------------------------------ processing
 
@@ -171,8 +170,6 @@ module.exports = Aria.classDefinition({
                 if (waiDescribedBy) {
                     markup.push('aria-describedby="' + ariaUtilsString.encodeForQuotedHTMLAttribute(waiDescribedBy) + '"');
                 }
-
-                markup.push('aria-disabled="' + (disabled ? 'true' : 'false') + '"');
 
                 if (markup.length > 0) {
                     markup.unshift('');

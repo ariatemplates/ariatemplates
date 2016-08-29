@@ -72,6 +72,7 @@ module.exports = Aria.classDefinition({
                     ' href="javascript:(function(){})()"',
                     (cfg.tabIndex != null ? ' tabindex=' + this._calculateTabIndex() + '"' : ''),
                     this._getWaiAriaMarkup(),
+                    cfg.disabled ? ' disabled ' : '',
                 '>',
                     ariaUtilsString.escapeHTML(cfg.label),
                 '</a>'
@@ -164,12 +165,19 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         _updateState : function () {
-            if (this._focusElt) {
-                var cfg = this._cfg, linkClass = "xLink_" + cfg.sclass;
+            var cfg = this._cfg;
+
+            var focusedElement = this._focusElt;
+
+            if (focusedElement) {
+                var linkClass = "xLink_" + cfg.sclass;
                 if (cfg.disabled) {
                     linkClass = "xLink_" + cfg.sclass + "_disabled xLink_disabled";
+                    focusedElement.setAttribute('disabled', '');
+                } else {
+                    focusedElement.removeAttribute('disabled');
                 }
-                this._focusElt.className = linkClass;
+                focusedElement.className = linkClass;
             }
         }
     }
