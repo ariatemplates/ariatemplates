@@ -235,7 +235,7 @@ module.exports = Aria.classDefinition({
             if (this._cfg.waiAria) {
                 var field = this.getTextInputField();
                 var listWidget = this.controller.getListWidget();
-                var ariaActiveDescendant = listWidget.getOptionDomId(this.controller.getDataModel().selectedIdx);
+                var ariaActiveDescendant = listWidget ? listWidget.getSelectedOptionDomId() : null;
                 if (ariaActiveDescendant != null) {
                     field.setAttribute("aria-activedescendant", ariaActiveDescendant);
                 } else {
@@ -255,13 +255,27 @@ module.exports = Aria.classDefinition({
             this.$DropDownListTrait._afterDropdownOpen.apply(this, arguments);
             if (this._cfg.waiAria) {
                 var field = this.getTextInputField();
-                field.setAttribute("aria-owns", this.controller.getListWidget().getListDomId());
-
+                var listWidget = this.controller.getListWidget();
+                field.setAttribute("aria-owns", listWidget.getListDomId());
                 var dropDownIcon = this._getDropdownIcon();
                 if (dropDownIcon) {
                     dropDownIcon.setAttribute("aria-expanded", "true");
                 }
+                listWidget.afterWidgetLoaded({
+                    fn: this._updateAriaActiveDescendant,
+                    scope: this
+                });
             }
+        },
+        /**
+         * @override
+         */
+        _waiSuggestionsChanged : function () {
+            var self = this;
+            setTimeout(function () {
+                self._updateAriaActiveDescendant();
+            }, 0);
+            this.$DropDownListTrait._waiSuggestionsChanged.apply(this, arguments);
         },
 
         /**
