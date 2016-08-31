@@ -275,6 +275,7 @@ module.exports = Aria.classDefinition({
             } else if (key == "items") {
                 moduleCtrl.setItems(newValue);
                 refreshNeeded = true;
+                this._retrieveControllerSelection();
             } else if (key == "multipleSelect") {
                 moduleCtrl.setMultipleSelect(newValue);
             }
@@ -357,6 +358,25 @@ module.exports = Aria.classDefinition({
                     return this._subTplCtxt.$getId(data.listItemDomIdPrefix + optionIndex);
                 }
             }
+        },
+
+        /**
+         * Returns the currently selected index.
+         * @return {Integer}
+         */
+        getSelectedIdx : function () {
+            if (this._subTplModuleCtrl) {
+                return this._subTplModuleCtrl.getData().selectedIndex;
+            }
+        },
+
+        /**
+         * Returns the id of the DOM element corresponding to the selected item.
+         * @return {String} id of the DOM element or undefined if the list is not fully loaded yet, accessibility
+         * is disabled or the index is invalid
+         */
+        getSelectedOptionDomId : function () {
+            return this.getOptionDomId(this.getSelectedIdx());
         }
     }
 });

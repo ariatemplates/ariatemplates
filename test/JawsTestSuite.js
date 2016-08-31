@@ -26,6 +26,8 @@ Aria.classDefinition({
 
         this.addTests("test.aria.widgets.wai.autoComplete.AutoCompleteJawsTest1");
         this.addTests("test.aria.widgets.wai.autoComplete.AutoCompleteJawsTest2");
+        this.addTests("test.aria.widgets.wai.autoComplete.preselect.AutoCompletePreselectJawsTest1");
+        this.addTests("test.aria.widgets.wai.autoComplete.preselect.AutoCompletePreselectJawsTest2");
 
         this.addTests("test.aria.widgets.wai.popup.dialog.modal.ModalDialogJawsTest");
         this.addTests("test.aria.widgets.wai.errorlist.binding.ErrorListBindingJawsTestCase");

@@ -154,7 +154,21 @@ module.exports = Aria.classDefinition({
             }
             this._tplWidget.initWidget();
             // initWidgetDom is done in the template callback
-        }
+        },
 
+        /**
+         * Calls the callback after the template is loaded (this can be immediately
+         * in case the template is already loaded).
+         * @param {aria.core.CfgBeans:Callback} callback called after the template is loaded
+         */
+        afterWidgetLoaded : function (callback) {
+            if (this._subTplCtxt) {
+                this.$callback(callback);
+            } else {
+                this.$onOnce({
+                    "widgetContentReady": callback
+                });
+            }
+        }
     }
 });
