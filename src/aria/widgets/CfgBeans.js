@@ -824,6 +824,15 @@ module.exports = Aria.beanDefinitions({
                     $type : "environmentBase:inputFormatTypes",
                     $description : "Date pattern used by screen readers to read the selected date in the calendar (only used when waiAria is true)."
                 },
+                "waiAriaConfirmDateFormat" : {
+                    $type : "environmentBase:inputFormatTypes",
+                    $description : "Date pattern used by screen readers to read the input date in the text field (only used when waiAria is true)."
+                },
+                "waiAriaConfirmDateDelay" : {
+                    $type : "json:Integer",
+                    $description : "Delay (in milliseconds) for the debouncing of key events used to make the date read when the user types it in.",
+                    $default: 50
+                },
                 "minValue" : {
                     $type : "json:Date",
                     $description : "Minimum date for the value property."
