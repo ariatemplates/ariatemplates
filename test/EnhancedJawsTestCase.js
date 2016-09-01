@@ -78,13 +78,23 @@ module.exports = Aria.classDefinition({
             var history = this._history;
             var steps = [];
 
-            function addStep(item) {
+            function addStep(item, delay) {
                 steps.push(item);
-                steps.push(['pause', 1000]);
+                addDelay(delay);
             }
 
-            function addToHistory(item) {
-                history.push(item);
+            function addToHistory() {
+                history.push.apply(history, arguments);
+            }
+
+            function addDelay(delay) {
+                if (delay === undefined) {
+                    delay = api.defaultDelay;
+                }
+
+                if (delay !== null && delay > 0) {
+                    steps.push(['pause', delay]);
+                }
             }
 
             // ------------------------------------------------------ processing
@@ -92,8 +102,10 @@ module.exports = Aria.classDefinition({
             var api = {
                 addStep: addStep,
                 addToHistory: addToHistory,
+                addDelay: addDelay,
                 steps: steps,
-                history: history
+                history: history,
+                defaultDelay: 1000
             };
 
             builder.call(thisArg, api);

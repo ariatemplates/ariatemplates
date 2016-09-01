@@ -58,5 +58,7 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.wai.popup.dialog.focusableItems.FocusableItemsJawsTestSuite");
         this.addTests("test.aria.widgets.wai.popup.dialog.titleTag.DialogTitleTagJawsTestCase");
         this.addTests("test.aria.widgets.wai.popup.dialog.waiEscapeMsg.DialogEscapeJawsTestCase");
+
+        this.addTests("test.aria.widgets.wai.datePicker.readDate.DatePickerReadDateJawsTestCase");
     }
 });

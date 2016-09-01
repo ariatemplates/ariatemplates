@@ -19,6 +19,9 @@ var ariaWidgetsFormDatePickerStyle = require("./DatePickerStyle.tpl.css");
 var ariaWidgetsCalendarCalendarStyle = require("../calendar/CalendarStyle.tpl.css");
 var ariaWidgetsContainerDivStyle = require("../container/DivStyle.tpl.css");
 var ariaWidgetsFormDropDownTextInput = require("./DropDownTextInput");
+var ariaUtilsDate = require("../../utils/Date");
+var ariaUtilsEnvironmentDate = require("../../utils/environment/Date");
+var ariaUtilsFunction = require("../../utils/Function");
 
 /**
  * DatePicker widget, which is a template-based widget.
@@ -46,6 +49,40 @@ module.exports = Aria.classDefinition({
             controller.setReferenceDate(new Date(cfg.referenceDate));
         }
         this._calendarFocus = false;
+
+        if (cfg.waiAria) {
+            // -----------------------------------------------------------------
+
+            var waiAriaConfirmDateFormat = cfg.waiAriaConfirmDateFormat;
+            if (waiAriaConfirmDateFormat == null) {waiAriaConfirmDateFormat = cfg.waiAriaDateFormat;}
+            if (waiAriaConfirmDateFormat == null) {waiAriaConfirmDateFormat = ariaUtilsEnvironmentDate.getDateFormats().longFormat;}
+            cfg.waiAriaConfirmDateFormat = waiAriaConfirmDateFormat;
+
+            var waiAriaConfirmDateDelay = cfg.waiAriaConfirmDateDelay;
+
+            var self = this;
+            this._waiReadDateOnKeyDown = new Debouncer({
+                delay: waiAriaConfirmDateDelay,
+                state: {
+                    previousText: null
+                },
+                onStart: function (state) {
+                    state.inputText = self.getTextInputField().value;
+                },
+                onEnd: function (state) {
+                    var text = self.getTextInputField().value;
+                    var previousText = state.previousText;
+
+                    if (text !== previousText) {
+                        var date = self.controller.interpretText(text);
+
+                        if (date != null) {
+                            self._waiReadDate(date);
+                        }
+                    }
+                }
+            });
+        }
     },
     $destructor : function () {
         this._dropDownIcon = null;
@@ -190,6 +227,17 @@ module.exports = Aria.classDefinition({
             if (!this._keepFocus) {
                 this._closeDropdown();
             }
+        },
+
+        _dom_onkeydown : function () {
+            var cfg = this._cfg;
+            var waiAria = cfg.waiAria;
+
+            if (waiAria) {
+                this._waiReadDateOnKeyDown.run();
+            }
+
+            this.$DropDownTextInput._dom_onkeydown.apply(this, arguments);
         },
 
         /**
@@ -378,6 +426,109 @@ module.exports = Aria.classDefinition({
             } else {
                 this.$DropDownTextInput._onBoundPropertyChange.call(this, propertyName, newValue, oldValue);
             }
+        },
+
+        _reactToControllerReport : function (report) {
+            // --------------------------------------------------- destructuring
+
+            var cfg = this._cfg;
+            var waiAria = cfg.waiAria;
+
+            var ok = report.ok;
+            var value = report.value;
+
+            // ------------------------------------------------------ processing
+
+            if (waiAria && ok && value != null) {
+                this._waiReadDate(value);
+            }
+
+            // ------------------------------------------------------ delegation
+
+            this.$DropDownTextInput._reactToControllerReport.apply(this, arguments);
+        },
+
+        _waiReadDate : function (value) {
+            // --------------------------------------------------- destructuring
+
+            var cfg = this._cfg;
+            var waiAriaConfirmDateFormat = cfg.waiAriaConfirmDateFormat;
+
+            // ------------------------------------------------------ processing
+
+            var outputText = ariaUtilsDate.format(value, waiAriaConfirmDateFormat);
+            this.waiReadText(outputText);
         }
     }
 });
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Helpers
+////////////////////////////////////////////////////////////////////////////////
+
+// -----------------------------------------------------------------------------
+
+function nop() {}
+
+function assignPropertyWithDefault(destination, source, property, defaultValue) {
+    var value = source[property];
+
+    if (value == null) {
+        value = defaultValue;
+    }
+
+    destination[property] = value;
+
+    return value;
+}
+
+// -----------------------------------------------------------------------------
+
+function Debouncer(spec) {
+    this.delay = spec.delay;
+    this.state = spec.state;
+
+    assignPropertyWithDefault(this, spec, 'onStart', nop);
+    assignPropertyWithDefault(this, spec, 'onEnd', nop);
+
+    this._currentTimeout = null;
+}
+
+Debouncer.prototype.run = function () {
+    var state = this.state;
+    var onStart = this.onStart;
+
+    if (!this._isWaitingForTimeout()) {
+        onStart(state);
+    }
+
+    this._stopWaitingForTimeout();
+    this._startWaitingForTimeout();
+};
+
+Debouncer.prototype._isWaitingForTimeout = function () {
+    return this._currentTimeout != null;
+};
+
+Debouncer.prototype._stopWaitingForTimeout = function () {
+    if (this._isWaitingForTimeout()) {
+        clearTimeout(this._currentTimeout);
+    }
+};
+
+Debouncer.prototype._startWaitingForTimeout = function () {
+    this._currentTimeout = setTimeout(
+        ariaUtilsFunction.bind(this._afterTimeout, this),
+        this.delay
+    );
+};
+
+Debouncer.prototype._afterTimeout = function () {
+    var state = this.state;
+    var onEnd = this.onEnd;
+
+    onEnd(state);
+    this._currentTimeout = null;
+};
