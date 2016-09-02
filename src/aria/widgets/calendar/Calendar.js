@@ -173,20 +173,34 @@ module.exports = Aria.classDefinition({
         /**
          * Called when the calendar gets the focus.
          * @protected
+         * @param {aria.DomEvent} domEvt focus event
          */
-        _dom_onfocus : function () {
+        _dom_onfocus : function (domEvt) {
             this._hasFocus = true;
             this._focusUpdate();
+            if (domEvt) {
+                var domEvtWrapper = new ariaTemplatesDomEventWrapper(domEvt);
+                this.evalCallback(this._cfg.onfocus, domEvtWrapper);
+                domEvtWrapper.$dispose();
+                return;
+            }
             this.evalCallback(this._cfg.onfocus);
         },
 
         /**
          * Called when the calendar looses the focus.
          * @protected
+         * @param {aria.DomEvent} domEvt blur event
          */
-        _dom_onblur : function () {
+        _dom_onblur : function (domEvt) {
             this._hasFocus = false;
             this._focusUpdate();
+            if (domEvt) {
+                var domEvtWrapper = new ariaTemplatesDomEventWrapper(domEvt);
+                this.evalCallback(this._cfg.onblur, domEvtWrapper);
+                domEvtWrapper.$dispose();
+                return;
+            }
             this.evalCallback(this._cfg.onblur);
         },
 

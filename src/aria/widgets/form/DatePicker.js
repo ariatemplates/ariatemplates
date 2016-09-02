@@ -167,7 +167,7 @@ module.exports = Aria.classDefinition({
          * DOM Event raised when a click is done on the text field.
          */
         _dom_onclick : function () {
-            this.$DropDownTextInput._dom_onclick.call(this);
+            this.$DropDownTextInput._dom_onclick.call(this, arguments);
             if (!this._calendarFocus) {
                 // clicking on the field while the popup is visible should close it
                 this._closeDropdown();

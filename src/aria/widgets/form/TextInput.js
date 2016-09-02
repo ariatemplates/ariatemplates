@@ -23,6 +23,8 @@ var ariaUtilsType = require("../../utils/Type");
 var ariaUtilsArray = require("../../utils/Array");
 var ariaCoreBrowser = require("../../core/Browser");
 var ariaCoreTimer = require("../../core/Timer");
+var ariaTemplatesDomEventWrapper = require("../../templates/DomEventWrapper");
+
 
 /**
  * Specialize the input classes for Text input and manage the HTML input element
@@ -910,8 +912,14 @@ module.exports = Aria.classDefinition({
          * input widget if the autoselect property has been set to true.
          * @protected
          */
-        _dom_onclick : function () {
+        _dom_onclick : function (event) {
             if (!!this._cfg.onclick) {
+                if (event) {
+                    var evtWrapper = new ariaTemplatesDomEventWrapper(event);
+                    this.evalCallback(this._cfg.onclick, evtWrapper);
+                    evtWrapper.$dispose();
+                    return;
+                }
                 this.evalCallback(this._cfg.onclick);
             }
         },
@@ -962,7 +970,13 @@ module.exports = Aria.classDefinition({
                 }
             }
             if (!!this._cfg.onfocus && !avoidCallback) {
-                this.evalCallback(this._cfg.onfocus);
+                if (event) {
+                    var evtWrapper = new ariaTemplatesDomEventWrapper(event);
+                    this.evalCallback(this._cfg.onfocus, evtWrapper);
+                    evtWrapper.$dispose();
+                } else {
+                    this.evalCallback(this._cfg.onfocus);
+                }
             }
 
             // on IE9 and IE10, it is necessary to add some delay before being able to set the selection
@@ -1041,6 +1055,12 @@ module.exports = Aria.classDefinition({
                 this._hasFocus = false;
             }
             if (this._cfg.onblur && !avoidCallback) {
+                if (event) {
+                    var evtWrapper = new ariaTemplatesDomEventWrapper(event);
+                    this.evalCallback(this._cfg.onblur, evtWrapper);
+                    evtWrapper.$dispose();
+                    return;
+                }
                 this.evalCallback(this._cfg.onblur);
             }
         },
