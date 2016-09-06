@@ -37,7 +37,15 @@ module.exports = Aria.beanDefinitions({
             $properties : {
                 "widgetSettings" : {
                     $type : "WidgetSettingsCfg",
-                    $description : "Default widget settings for the application",
+                    $description : "General widget settings for the application",
+                    $default : {}
+                },
+                "widgetDefaults" : {
+                    $type : "json:Map",
+                    $description : "Default widget properties for each type of widget in the Aria library. Each key in the map is the name of a widget (for example: AutoComplete or DatePicker) and each value is an object containing the corresponding properties and their values to apply by default for all instances of this widget.",
+                    $contentType: {
+                        $type: "json:ObjectRef"
+                    },
                     $default : {}
                 }
             }
