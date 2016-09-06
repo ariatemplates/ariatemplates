@@ -25,6 +25,7 @@ var ariaWidgetLibsBindableWidget = require("../widgetLibs/BindableWidget");
 var ariaCoreTplClassLoader = require("../core/TplClassLoader");
 var ariaCoreJsonValidator = require("../core/JsonValidator");
 var environment = require("../core/environment/Environment");
+var ariaWidgetsEnvironmentWidgetSettings = require("./environment/WidgetSettings");
 
 /**
  * Base Widget class from which all widgets must derive
@@ -137,6 +138,7 @@ module.exports = Aria.classDefinition({
          */
         this.__initWhileContentChange = false;
 
+        this.applyWidgetDefaults(cfg);
         this._cfgOk = ariaCoreJsonValidator.validateCfg(this._cfgBean || this._cfgPackage + "." + this.$class + "Cfg", cfg);
 
         // Check if the defined skinClass exists for this widget, if not set it to 'std'
@@ -224,6 +226,26 @@ module.exports = Aria.classDefinition({
          * @type String
          */
         _skinnableClass : null,
+
+        /**
+         * Apply the default configuration from the environment for the specified widget.
+         * @param {Object} cfg widget configuration (which has to be completed with defaults from the environment)
+         * @param {String} widgetName name of the widget. If omitted, this.$class is used.
+         */
+        applyWidgetDefaults : function (cfg, widgetName) {
+            if (!widgetName) {
+                widgetName = this.$class;
+            }
+            var allDefaults = ariaWidgetsEnvironmentWidgetSettings.getWidgetDefaults();
+            var widgetDefaults = allDefaults[widgetName];
+            if (widgetDefaults) {
+                for (var property in widgetDefaults) {
+                    if (widgetDefaults.hasOwnProperty(property) && !cfg.hasOwnProperty(property)) {
+                        cfg[property] = widgetDefaults[property];
+                    }
+                }
+            }
+        },
 
         /**
          * Initialize the binding description.

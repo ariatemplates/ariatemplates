@@ -37,12 +37,18 @@ module.exports = Aria.classDefinition({
 
         /**
          * Returns the widget settings
-         * @public
-         * @return {aria.widgets.environment.WidgetSettingsCfgBeans:AppCfg.WidgetSettingsCfg}
+         * @return {aria.widgets.environment.WidgetSettingsCfgBeans:WidgetSettingsCfg}
          */
         getWidgetSettings : function () {
             return this.checkApplicationSettings("widgetSettings");
-        }
+        },
 
+        /**
+         * Returns the widget defaults
+         * @return {aria.widgets.environment.WidgetSettingsCfgBeans:AppCfg.widgetDefaults}
+         */
+        getWidgetDefaults : function () {
+            return this.checkApplicationSettings("widgetDefaults");
+        }
     }
 });
