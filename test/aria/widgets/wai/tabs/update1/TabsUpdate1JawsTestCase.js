@@ -22,7 +22,7 @@ var EnhancedJawsTestCase = require('test/EnhancedJawsTestCase');
 
 
 module.exports = Aria.classDefinition({
-    $classpath : 'test.aria.widgets.wai.tabs.update1.TabsJawsTest',
+    $classpath : 'test.aria.widgets.wai.tabs.update1.TabsUpdate1JawsTestCase',
     $extends : EnhancedJawsTestCase,
 
     $constructor : function () {

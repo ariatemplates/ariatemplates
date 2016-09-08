@@ -22,7 +22,7 @@ var Model = require('./Model');
 
 
 module.exports = Aria.classDefinition({
-    $classpath : 'test.aria.widgets.wai.popup.dialog.modal.ModalDialogJawsTest',
+    $classpath : 'test.aria.widgets.wai.popup.dialog.modal.PopupDialogModalJawsTestCase',
     $extends : EnhancedJawsTestCase,
 
     $constructor : function () {

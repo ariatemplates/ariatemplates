@@ -24,7 +24,7 @@ var Model = require('./Model');
 
 
 module.exports = Aria.classDefinition({
-    $classpath : 'test.aria.widgets.wai.tabs.TabsJawsTest',
+    $classpath : 'test.aria.widgets.wai.tabs.TabsJawsTestCase',
     $extends : EnhancedJawsTestCase,
 
     $constructor : function () {

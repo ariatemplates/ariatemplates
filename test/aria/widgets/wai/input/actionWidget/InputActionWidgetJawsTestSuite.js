@@ -18,11 +18,16 @@ var Aria = require('ariatemplates/Aria');
 
 
 module.exports = Aria.classDefinition({
-    $classpath : 'test.aria.widgets.wai.input.actionWidget.SortIndicator',
+    $classpath : 'test.aria.widgets.wai.input.actionWidget.InputActionWidgetJawsTestSuite',
+    $extends : require('ariatemplates/jsunit/TestSuite'),
 
-    $extends : require('./Base'),
+    $constructor : function () {
+        this.$TestSuite.constructor.call(this);
 
-    $statics : {
-        widgetTypeName: 'sort_indicator'
+        this.addTests('test.aria.widgets.wai.input.actionWidget.ButtonJawsTestCase');
+        this.addTests('test.aria.widgets.wai.input.actionWidget.IconButtonJawsTestCase');
+        this.addTests('test.aria.widgets.wai.input.actionWidget.SimpleButtonJawsTestCase');
+        this.addTests('test.aria.widgets.wai.input.actionWidget.LinkJawsTestCase');
+        this.addTests('test.aria.widgets.wai.input.actionWidget.SortIndicatorJawsTestCase');
     }
 });

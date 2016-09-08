@@ -18,7 +18,7 @@ var Aria = require('ariatemplates/Aria');
 
 
 module.exports = Aria.classDefinition({
-    $classpath : 'test.aria.widgets.wai.input.actionWidget.Link',
+    $classpath : 'test.aria.widgets.wai.input.actionWidget.LinkJawsTestCase',
 
     $extends : require('./Base'),
 

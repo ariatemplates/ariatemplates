@@ -29,10 +29,8 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.wai.autoComplete.preselect.AutoCompletePreselectJawsTest1");
         this.addTests("test.aria.widgets.wai.autoComplete.preselect.AutoCompletePreselectJawsTest2");
 
-        this.addTests("test.aria.widgets.wai.popup.dialog.modal.ModalDialogJawsTest");
         this.addTests("test.aria.widgets.wai.errorlist.binding.ErrorListBindingJawsTestCase");
         this.addTests("test.aria.widgets.wai.errorlist.titleTag.ErrorListTitleTagJawsTestCase");
-        this.addTests("test.aria.widgets.wai.tabs.TabsJawsTest");
 
         this.addTests("test.aria.widgets.wai.input.checkbox.CheckboxJawsTestCase");
         this.addTests("test.aria.widgets.wai.input.checkbox.CheckboxInitiallyDisabledJawsTestCase");
@@ -59,6 +57,10 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.wai.popup.dialog.titleTag.DialogTitleTagJawsTestCase");
         this.addTests("test.aria.widgets.wai.popup.dialog.waiEscapeMsg.DialogEscapeJawsTestCase");
 
+        this.addTests("test.aria.widgets.wai.tabs.TabsJawsTestCase");
+        this.addTests("test.aria.widgets.wai.tabs.update1.TabsUpdate1JawsTestCase");
+        this.addTests("test.aria.widgets.wai.popup.dialog.modal.PopupDialogModalJawsTestCase");
+        this.addTests("test.aria.widgets.wai.input.actionWidget.InputActionWidgetJawsTestSuite");
         this.addTests("test.aria.widgets.wai.datePicker.readDate.DatePickerReadDateJawsTestCase");
     }
 });
