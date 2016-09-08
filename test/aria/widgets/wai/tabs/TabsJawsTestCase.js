@@ -16,6 +16,7 @@
 var Aria = require('ariatemplates/Aria');
 
 var ariaUtilsArray = require('ariatemplates/utils/Array');
+var ariaUtilsFunction = require('ariatemplates/utils/Function');
 
 var EnhancedJawsTestCase = require('test/EnhancedJawsTestCase');
 
@@ -114,24 +115,12 @@ module.exports = Aria.classDefinition({
         ////////////////////////////////////////////////////////////////////////
 
         runTemplateTest : function () {
-            this._filter = function (content) {
-                function createLineRegExp(content) {
-                    return new RegExp('^' + content + '\n?', 'gm');
-                }
+            var regexps = [];
+            regexps.push(this._createLineRegExp('Element before .*'));
+            regexps.push(this._createLineRegExp('separator'));
+            regexps.push(this._createLineRegExp('AT test*'));
 
-                var regexps = [];
-                regexps.push(createLineRegExp('Element before .*'));
-                regexps.push(createLineRegExp('separator'));
-                regexps.push(createLineRegExp('AT testsTab 0'));
-
-                for (var index = 0, length = regexps.length; index < length; index++) {
-                    var regexp = regexps[index];
-
-                    content = content.replace(regexp, '');
-                }
-
-                return content;
-            };
+            this._filter = ariaUtilsFunction.bind(this._applyRegExps, this, regexps);
 
             this._localAsyncSequence(function (add) {
                 add('_testGroups');
@@ -170,8 +159,11 @@ module.exports = Aria.classDefinition({
             this._executeStepsAndWriteHistory(callback, function (api) {
                 // ----------------------------------------------- destructuring
 
-                var step = api.addStep;
-                var entry = api.addToHistory;
+                var step = api.step;
+                var says = api.says;
+
+                var space = api.space;
+                var down = api.down;
 
                 // --------------------------------------------- local functions
 
@@ -181,16 +173,16 @@ module.exports = Aria.classDefinition({
 
                 function goThroughTabs(selectedTabIndex) {
                     ariaUtilsArray.forEach(tabs, function (tab, index) {
-                        step(['type', null, '[down]']);
+                        down();
                     });
                 }
 
                 function goThroughTabpanel() {
-                    step(['type', null, '[down]']);
-                    step(['type', null, '[down]']);
-                    step(['type', null, '[down]']);
-                    step(['type', null, '[down]']);
-                    step(['type', null, '[down]']);
+                    down();
+                    down();
+                    down();
+                    down();
+                    down();
                 }
 
                 // -------------------------------------------------- processing
@@ -206,7 +198,7 @@ module.exports = Aria.classDefinition({
 
                 selectStartPoint();
                 goThroughTabs();
-                step(['type', null, '[space]']);
+                space();
 
                 selectStartPoint();
                 goThroughTabs();
@@ -214,7 +206,7 @@ module.exports = Aria.classDefinition({
 
                 // -------------------------------------------------------------
 
-                entry(expectedOutput);
+                says(expectedOutput);
             });
         }
     }

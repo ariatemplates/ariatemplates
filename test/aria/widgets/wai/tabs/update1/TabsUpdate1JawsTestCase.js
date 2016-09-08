@@ -16,6 +16,7 @@
 var Aria = require('ariatemplates/Aria');
 
 var ariaUtilsArray = require('ariatemplates/utils/Array');
+var ariaUtilsFunction = require('ariatemplates/utils/Function');
 
 var EnhancedJawsTestCase = require('test/EnhancedJawsTestCase');
 
@@ -170,23 +171,10 @@ module.exports = Aria.classDefinition({
         ////////////////////////////////////////////////////////////////////////
 
         runTemplateTest : function () {
-            var data = this._getData();
-            var elementBefore = data.elementBefore;
+            var regexps = [];
+            regexps.push(this._createLineRegExp(this._getData().elementBefore.textContent));
 
-            this._filter = function (content) {
-                function createLineRegExp(content) {
-                    return new RegExp('^' + content + '\\s*\\n?', 'gm');
-                }
-
-                var regexps = [];
-                regexps.push(createLineRegExp(elementBefore.textContent));
-
-                ariaUtilsArray.forEach(regexps, function(regexp) {
-                    content = content.replace(regexp, '');
-                });
-
-                return content;
-            };
+            this._filter = ariaUtilsFunction.bind(this._applyRegExps, this, regexps);
 
             this._localAsyncSequence(function (add) {
                 add('_test');
@@ -211,8 +199,12 @@ module.exports = Aria.classDefinition({
             this._executeStepsAndWriteHistory(callback, function (api) {
                 // ----------------------------------------------- destructuring
 
-                var step = api.addStep;
-                var entry = api.addToHistory;
+                var step = api.step;
+                var says = api.says;
+
+                var down = api.down;
+                var space = api.space;
+                var tabulation = api.tabulation;
 
                 // --------------------------------------------- local functions
 
@@ -222,19 +214,18 @@ module.exports = Aria.classDefinition({
                     step(['click', self.getElementById(elementBefore.id)]);
                 }
 
-                function getTabDescription(tab, key) {
+                function getTabDescription(tab, useJawsNavigation) {
                     // ---------------------------------------------------------
 
-                    var isJawsNavigation = key === 'down';
                     var description = [];
 
                     // ---------------------------------------------------------
 
-                    if (isJawsNavigation) {
+                    if (useJawsNavigation) {
                         if (tab.wrapper != null) {
                             description.push(tab.wrapperText);
                         } else {
-                            entry(tab.textContent);
+                            says(tab.textContent);
                         }
                     } else {
                         description.push(tab.title);
@@ -243,46 +234,46 @@ module.exports = Aria.classDefinition({
                     // ---------------------------------------------------------
 
                     description.push('Tab');
-                    if (isJawsNavigation) {
+                    if (useJawsNavigation) {
                         description.push('closed');
                     }
                     description.push('collapsed');
-                    if (!isJawsNavigation) {
+                    if (!useJawsNavigation) {
                         description.push('Use JawsKey+Alt+R to read descriptive text');
                     }
-                    if (isJawsNavigation && tab.wrapper != null) {
+                    if (useJawsNavigation && tab.wrapper != null) {
                         description.push(tab.textContent);
                     }
-                    entry(description.join(' '));
+                    says(description.join(' '));
 
                     // ---------------------------------------------------------
 
-                    if (!isJawsNavigation) {
+                    if (!useJawsNavigation) {
                         if (tab.labelId) {
-                            entry(tab.textContent);
+                            says(tab.textContent);
                         }
 
                         if (tab.description != null) {
-                            entry(tab.description);
+                            says(tab.description);
                         }
-                        entry('To activate tab page press Spacebar.');
+                        says('To activate tab page press Spacebar.');
                     }
                 }
 
-                function goThroughTabs(key) {
-                    var isJawsNavigation = key === 'down';
+                function goThroughTabs(useJawsNavigation) {
+                    var stepForward = useJawsNavigation ? down : tabulation;
 
                     ariaUtilsArray.forEach(tabs, function (tab, index) {
-                        if (isJawsNavigation && tab.hidden) {
+                        if (useJawsNavigation && tab.hidden) {
                             return;
                         }
 
-                        if (isJawsNavigation && tab.wrapper != null) {
-                            step(['type', null, '[' + key + ']']);
+                        if (useJawsNavigation && tab.wrapper != null) {
+                            stepForward();
                         }
 
-                        step(['type', null, '[' + key + ']']);
-                        getTabDescription(tab, key);
+                        stepForward();
+                        getTabDescription(tab, useJawsNavigation);
                     });
                 }
 
@@ -292,21 +283,21 @@ module.exports = Aria.classDefinition({
 
                 selectStartPoint();
 
-                goThroughTabs('tab');
+                goThroughTabs(false);
 
-                step(['type', null, '[tab]']);
-                entry(elementInside.textContent);
+                tabulation();
+                says(elementInside.textContent);
 
                 // -------------------------------------------------------------
 
                 selectStartPoint();
 
-                goThroughTabs('down');
+                goThroughTabs(true);
 
                 // -------------------------------------------------------------
 
-                step(['type', null, '[space]']);
-                entry(elementInside.textContent);
+                space();
+                says(elementInside.textContent);
             });
         }
     }

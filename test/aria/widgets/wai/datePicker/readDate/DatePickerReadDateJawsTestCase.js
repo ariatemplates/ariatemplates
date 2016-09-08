@@ -56,13 +56,7 @@ module.exports = Aria.classDefinition({
 
             this._filter = function (content) {
                 content = content.replace(/\s*\n/gi, '\n');
-
-                for (var index = 0, length = regexps.length; index < length; index++) {
-                    var regexp = regexps[index];
-
-                    content = content.replace(regexp, '');
-                }
-
+                content = this._applyRegExps(regexps, content);
                 return content;
             };
 
@@ -90,9 +84,14 @@ module.exports = Aria.classDefinition({
             this._executeStepsAndWriteHistory(callback, function (api) {
                 // ----------------------------------------------- destructuring
 
-                var step = api.addStep;
-                var says = api.addToHistory;
-                var delay = api.addDelay;
+                var step = api.step;
+                var says = api.says;
+                var delay = api.delay;
+                var key = api.key;
+
+                var down = api.down;
+                var enter = api.enter;
+                var right = api.right;
 
                 // --------------------------------------------- local functions
 
@@ -100,18 +99,6 @@ module.exports = Aria.classDefinition({
                     step(['click', document.getElementById(elements.before.id)]);
                     // read text is filtered
                 }
-
-                function pressKey(key) {
-                    step(['type', null, key]);
-                }
-
-                function pressSpecialKey(key) {
-                    pressKey('[' + key + ']');
-                }
-
-                function down() {pressSpecialKey('down');}
-                function enter() {pressSpecialKey('enter');}
-                function right() {pressSpecialKey('right');}
 
                 // -------------------------------------------------- processing
 
@@ -151,7 +138,7 @@ module.exports = Aria.classDefinition({
                 // -------------------------------------------------------------
                 // Inputting date "by hand"
 
-                pressKey('[backspace]5');
+                key('[backspace]5');
                 says('6'); // says removed letter, but not the one typed in
                 says('Monday 7 September 2015'); // date is read
             });

@@ -235,13 +235,7 @@ module.exports = Aria.classDefinition({
 
             this._filter = function (content) {
                 content = content.replace(/\s*\n/gi, '\n');
-
-                for (var index = 0, length = regexps.length; index < length; index++) {
-                    var regexp = regexps[index];
-
-                    content = content.replace(regexp, '');
-                }
-
+                content = this._applyRegExps(regexps, content);
                 return content;
             };
 
@@ -286,8 +280,9 @@ module.exports = Aria.classDefinition({
             this._executeStepsAndWriteHistory(callback, function (api) {
                 // ----------------------------------------------- destructuring
 
-                var step = api.addStep;
-                var entry = api.addToHistory;
+                var step = api.step;
+                var says = api.says;
+                var specialKey = api.specialKey;
 
                 // --------------------------------------------- local functions
 
@@ -298,10 +293,6 @@ module.exports = Aria.classDefinition({
                 // function isFinalElementFocused() {
                 //     return document.activeElement === finalElement;
                 // }
-
-                function pressKey(key) {
-                    step(['type', null, '[' + key + ']']);
-                }
 
                 // -------------------------------------------------- processing
 
@@ -320,10 +311,10 @@ module.exports = Aria.classDefinition({
 
                     selectStartPoint();
                     while (actionsCount > 0) {
-                        pressKey(key);
+                        specialKey(key);
                         actionsCount--;
                     }
-                    entry(expectedOutput.join('\n'));
+                    says(expectedOutput.join('\n'));
                 });
             });
         }
