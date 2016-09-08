@@ -149,13 +149,7 @@ module.exports = Aria.classDefinition({
             if (!skipChangeState) {
                 // force widget - DOM mapping
                 this.getDom();
-                if (this._simpleHTML) {
-                    if (state == "disabled") {
-                        this._focusElt.setAttribute("disabled", "disabled");
-                    } else {
-                        this._focusElt.removeAttribute("disabled");
-                    }
-                } else {
+                if (!this._simpleHTML) {
                     this._frame.changeState(this._state);
                     var ie8plus = ariaCoreBrowser.isOldIE && ariaCoreBrowser.majorVersion >= 8;
                     if (state == "disabled") {
@@ -171,6 +165,11 @@ module.exports = Aria.classDefinition({
                             this._focusElt.onfocusin = null;
                         }
                     }
+                }
+                if (state == "disabled") {
+                    this._focusElt.setAttribute("disabled", "disabled");
+                } else {
+                    this._focusElt.removeAttribute("disabled");
                 }
             }
         },
@@ -222,9 +221,8 @@ module.exports = Aria.classDefinition({
             var buttonClass = cfg.disabled ? "xButton xButtonDisabled" : "xButton";
 
             var waiAriaAttributes = this._getWaiAriaMarkup();
-
+            var disableMarkup = cfg.disabled ? " disabled='disabled' " : "";
             if (this._simpleHTML) {
-                var disableMarkup = cfg.disabled ? " disabled='disabled' " : "";
                 var styleMarkup = cfg.width != "-1" ? " style='width:" + cfg.width + "px;' " : "";
 
                 out.write([
@@ -261,6 +259,7 @@ module.exports = Aria.classDefinition({
                         onFocusInString,
                         tabIndexString,
                         ariaTestMode,
+                        disableMarkup
                         '>'
                     ].join(''));
                 }
