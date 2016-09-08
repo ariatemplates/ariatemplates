@@ -259,7 +259,7 @@ module.exports = Aria.classDefinition({
                         onFocusInString,
                         tabIndexString,
                         ariaTestMode,
-                        disableMarkup
+                        disableMarkup,
                         '>'
                     ].join(''));
                 }
