@@ -24,7 +24,7 @@ module.exports = Aria.classDefinition({
 
         // This test is split in several test cases to allow the execution to be parallelized
         // Each part is run based on the naming convention of the class
-        var match = /^(.*(Popup|Input))(Desktop|Touch)Test$/.exec(this.$class);
+        var match = /^(.*(Popup|Input))(Desktop|Touch)RobotTestCase$/.exec(this.$class);
         if (!match) {
             throw new Error("Invalid test name: " + this.$class);
         }

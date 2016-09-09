@@ -45,7 +45,7 @@ Aria.classDefinition({
 
         this.setTestEnv({
             data: data,
-            template: "test.aria.widgets.form." + widgetName.toLowerCase() + ".defaultErrorMessages.DefaultErrorMessagesTestTpl"
+            template: "test.aria.widgets.form." + widgetName.toLowerCase() + ".defaultErrorMessages.DefaultErrorMessagesTestCaseTpl"
         });
 
         // ---------------------------------------------------------------------
