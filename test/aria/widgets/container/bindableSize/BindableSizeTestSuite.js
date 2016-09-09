@@ -18,10 +18,9 @@ Aria.classDefinition({
     $extends : "aria.jsunit.TestSuite",
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
-        var packageName = this.$package;
-        this.addTests(packageName + ".DialogTest");
-        this.addTests(packageName + ".DivTest");
-        this.addTests(packageName + ".FieldsetTest");
-        this.addTests(packageName + ".TabpanelTest");
+        this.addTests("test.aria.widgets.container.bindableSize.DialogTest");
+        this.addTests("test.aria.widgets.container.bindableSize.DivTest");
+        this.addTests("test.aria.widgets.container.bindableSize.FieldsetTest");
+        this.addTests("test.aria.widgets.container.bindableSize.TabpanelTest");
     }
 });

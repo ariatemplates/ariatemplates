@@ -18,12 +18,12 @@ Aria.classDefinition({
     $extends : "aria.jsunit.TestSuite",
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
-        this.addTests(this.$package + ".StrictTrueTest");
-        this.addTests(this.$package + ".StrictFalseTest");
-        this.addTests(this.$package + ".AlwaysTrueTest");
-        this.addTests(this.$package + ".AlwaysFalseTest");
-        this.addTests(this.$package + ".NoneTrueTest");
-        this.addTests(this.$package + ".NoneFalseTest");
-        this.addTests(this.$package + ".StrictTrueWithTabTest");
+        this.addTests("test.aria.widgets.form.multiautocomplete.preselectAutofill.StrictTrueTest");
+        this.addTests("test.aria.widgets.form.multiautocomplete.preselectAutofill.StrictFalseTest");
+        this.addTests("test.aria.widgets.form.multiautocomplete.preselectAutofill.AlwaysTrueTest");
+        this.addTests("test.aria.widgets.form.multiautocomplete.preselectAutofill.AlwaysFalseTest");
+        this.addTests("test.aria.widgets.form.multiautocomplete.preselectAutofill.NoneTrueTest");
+        this.addTests("test.aria.widgets.form.multiautocomplete.preselectAutofill.NoneFalseTest");
+        this.addTests("test.aria.widgets.form.multiautocomplete.preselectAutofill.StrictTrueWithTabTest");
     }
 });

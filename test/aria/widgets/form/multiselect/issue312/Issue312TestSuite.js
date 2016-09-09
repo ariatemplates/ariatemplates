@@ -18,11 +18,10 @@ Aria.classDefinition({
     $extends : "aria.jsunit.TestSuite",
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
-        var packageName = this.$package;
-        this.addTests(packageName + ".AutoComplete");
-        this.addTests(packageName + ".DatePicker");
-        this.addTests(packageName + ".MultiSelect");
-        this.addTests(packageName + ".Select");
-        this.addTests(packageName + ".SelectBox");
+        this.addTests("test.aria.widgets.form.multiselect.issue312.AutoComplete");
+        this.addTests("test.aria.widgets.form.multiselect.issue312.DatePicker");
+        this.addTests("test.aria.widgets.form.multiselect.issue312.MultiSelect");
+        this.addTests("test.aria.widgets.form.multiselect.issue312.Select");
+        this.addTests("test.aria.widgets.form.multiselect.issue312.SelectBox");
     }
 });
