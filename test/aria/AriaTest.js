@@ -54,7 +54,7 @@ Aria.classDefinition({
             this.assertErrorInLogs(Aria.INVALID_CLASSNAME_FORMAT);
 
             // The following case only raises a warning:
-            Aria.classDefinition({
+            Aria["classDefinition"]({
                 $classpath : 'te st.aria.test.ClassZ'
             });
             this.assertErrorInLogs(Aria.INVALID_PACKAGENAME_FORMAT);
@@ -73,7 +73,7 @@ Aria.classDefinition({
             this.assertErrorInLogs(Aria.INVALID_PACKAGENAME_FORMAT);
 
             // The following case only raises a warning:
-            Aria.classDefinition({
+            Aria["classDefinition"]({
                 $class : 'ClassZ',
                 $package : 'te st.aria.test'
             });
@@ -143,7 +143,7 @@ Aria.classDefinition({
         callAriaClassDefError : function (def) {
             var raisedException = false;
             try {
-                Aria.classDefinition(def);
+                Aria["classDefinition"](def);
             } catch (e) {
                 raisedException = true;
             }

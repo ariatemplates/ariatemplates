@@ -44,7 +44,7 @@ Aria.classDefinition({
             /**
              * Base Custom Transport class.
              */
-            var BaseXHR = Aria.classDefinition({
+            var BaseXHR = Aria["classDefinition"]({
                 $classpath : "myApplication.transports.BaseXHR",
                 $constructor : function () {},
                 $prototype : {}
@@ -53,7 +53,7 @@ Aria.classDefinition({
             /**
              * Custom Transport class for same origin requests.
              */
-            Aria.classDefinition({
+            Aria["classDefinition"]({
                 $classpath : "myApplication.transports.SameDomainCustomTransport",
                 $extends : BaseXHR,
                 $singleton : true,
@@ -66,7 +66,7 @@ Aria.classDefinition({
             /**
              * Custom Transport class for different origin requests.
              */
-            Aria.classDefinition({
+            Aria["classDefinition"]({
                 $classpath : "myApplication.transports.CrossDomainCustomTransport",
                 $extends : BaseXHR,
                 $singleton : true,
@@ -79,7 +79,7 @@ Aria.classDefinition({
             /**
              * Custom Transport class for JsonP requests.
              */
-            Aria.classDefinition({
+            Aria["classDefinition"]({
                 $classpath : "myApplication.transports.JsonPCustomTransport",
                 $extends : BaseXHR,
                 $singleton : true,
@@ -92,7 +92,7 @@ Aria.classDefinition({
             /**
              * Custom Transport class for local requests.
              */
-            Aria.classDefinition({
+            Aria["classDefinition"]({
                 $classpath : "myApplication.transports.LocalCustomTransport",
                 $extends : BaseXHR,
                 $singleton : true,
@@ -105,7 +105,7 @@ Aria.classDefinition({
             /**
              * Custom Transport class for IFrame requests.
              */
-            Aria.classDefinition({
+            Aria["classDefinition"]({
                 $classpath : "myApplication.transports.IFrameCustomTransport",
                 $extends : BaseXHR,
                 $singleton : true,

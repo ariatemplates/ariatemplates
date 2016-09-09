@@ -32,7 +32,7 @@ Aria.classDefinition({
         },
 
         testNewAppender : function () {
-            Aria.classDefinition({
+            Aria["classDefinition"]({
                 $classpath : "test.my.own.log.Appender",
                 $constructor : function () {
                     this.logs = [];

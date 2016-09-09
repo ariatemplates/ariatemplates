@@ -13,9 +13,10 @@
  * limitations under the License.
  */
 
+var Aria = require("aria/Aria");
 var dataUtils = require("aria/utils/Data");
 
-Aria.tplScriptDefinition({
+module.exports = Aria.tplScriptDefinition({
     $classpath : "test.aria.widgets.errorlist.ListErrorTestCaseTplScript",
 
     $constructor : function() {

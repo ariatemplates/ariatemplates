@@ -361,7 +361,7 @@ Aria.classDefinition({
                 var exception = false;
                 try {
                     // Aria.beanDefinitions is now supposed to raise an exception when it fails.
-                    Aria.beanDefinitions(beanPackage);
+                    Aria["beanDefinitions"](beanPackage);
                 } catch (e) {
                     exception = true;
                 }
