@@ -24,7 +24,7 @@ Aria.classDefinition({
                 "test.aria.widgets.form.textinput.onblur.OnBlurTestCase",
                 "test.aria.widgets.form.textinput.blurvalidation.BlurValidationTestCase",
                 "test.aria.widgets.form.textinput.quotes.QuotesTestCase",
-                "test.aria.widgets.form.textinput.onclick.OnClickBase",
+                "test.aria.widgets.form.textinput.onclick.OnClickTestCase",
                 "test.aria.widgets.form.textinput.onfocus.OnFocusTestCase",
                 "test.aria.widgets.form.textinput.blurOnDestroy.ClickButtonAfterDestroyRobotTestCase"];
     }

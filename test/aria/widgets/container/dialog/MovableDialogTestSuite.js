@@ -19,7 +19,7 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
-        this._tests = ["test.aria.widgets.container.dialog.bindPosition.DialogRobotBase",
+        this._tests = ["test.aria.widgets.container.dialog.bindPosition.DialogRobotTestCase",
                 "test.aria.widgets.container.dialog.bindPosition.ModalDialogRobotTestCase",
                 "test.aria.widgets.container.dialog.bindPosition.DialogOnResizeRobotTestCase",
                 "test.aria.widgets.container.dialog.bindPosition.PopupMoveToRobotTestCase",

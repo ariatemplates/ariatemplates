@@ -25,7 +25,7 @@ Aria.classDefinition({
         this.addTests("test.aria.pageEngine.siteRootModule.SubModuleTwoTestCase");
         this.addTests("test.aria.pageEngine.siteRootModule.ModuleNavigationTestCase");
         this.addTests("test.aria.pageEngine.siteRootModule.ModelBindingOneTestCase");
-        this.addTests("test.aria.pageEngine.siteRootModule.ModelBindingTwoBase");
+        this.addTests("test.aria.pageEngine.siteRootModule.ModelBindingTwoTestCase");
         this.addTests("test.aria.pageEngine.siteRootModule.ModelBindingThreeTestCase");
         this.addTests("test.aria.pageEngine.siteRootModule.ModelBindingFourTestCase");
         this.addTests("test.aria.pageEngine.siteRootModule.ModelBindingFiveTestCase");

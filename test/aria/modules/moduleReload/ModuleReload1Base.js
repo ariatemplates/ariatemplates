@@ -17,7 +17,6 @@
  * This is a test of the module reload feature for a normal sub-module.
  */
 Aria.classDefinition({
-    // BE CAREFUL WHEN CHANGING THIS TEST, AS IT IS USED AS A BASE CLASS BY ModuleReloadTestCase2
     // ModuleReloadTestCase1 is to test standard sub-modules reload
     // ModuleReloadTestCase2 overrides some methods for custom sub-modules reload
     $classpath : "test.aria.modules.moduleReload.ModuleReload1Base",

@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Amadeus s.a.s.
+ * Copyright 2016 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,12 +14,6 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.core.resProviders.ResProvidersTestSuite",
-    $extends : "aria.jsunit.TestSuite",
-    $constructor : function () {
-        this.$TestSuite.constructor.call(this);
-
-        this.addTests("test.aria.core.resProviders.ResProvidersOldSyntaxTestCase");
-        this.addTests("test.aria.core.resProviders.ResProvidersConvertedClassTestCase");
-    }
+    $classpath : "test.aria.widgets.container.dialog.bindPosition.DialogRobotTestCase",
+    $extends : "test.aria.widgets.container.dialog.bindPosition.DialogRobotBase"
 });

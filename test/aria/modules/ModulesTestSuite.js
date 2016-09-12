@@ -37,7 +37,7 @@ Aria.classDefinition({
 
         this.addTests("test.aria.modules.requestHandler.RequestHandlersTestSuite");
 
-        this.addTests("test.aria.modules.moduleReload.ModuleReload1Base");
+        this.addTests("test.aria.modules.moduleReload.ModuleReload1TestCase");
         this.addTests("test.aria.modules.moduleReload.ModuleReload2TestCase");
 
         this.addTests("test.aria.modules.ModuleSubmitJsonRequestTestCase");

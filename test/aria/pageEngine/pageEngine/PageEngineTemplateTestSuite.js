@@ -24,12 +24,12 @@ Aria.classDefinition({
         this.addTests("test.aria.pageEngine.pageEngine.PageEngineOneTestCase");
         this.addTests("test.aria.pageEngine.pageEngine.PageEngineTwoTestCase");
         this.addTests("test.aria.pageEngine.pageEngine.PageEngineThreeTestCase");
-        this.addTests("test.aria.pageEngine.pageEngine.PageEngineFourBase");
-        this.addTests("test.aria.pageEngine.pageEngine.PageEngineFiveBase");
+        this.addTests("test.aria.pageEngine.pageEngine.PageEngineFourTestCase");
+        this.addTests("test.aria.pageEngine.pageEngine.PageEngineFiveTestCase");
         this.addTests("test.aria.pageEngine.pageEngine.PageEngineSixTestCase");
         this.addTests("test.aria.pageEngine.pageEngine.PageEngineSevenTestCase");
         this.addTests("test.aria.pageEngine.pageEngine.PageDefinitionChangeTestCase");
-        this.addTests("test.aria.pageEngine.pageEngine.PageEngineTemplateDisposalBase");
+        this.addTests("test.aria.pageEngine.pageEngine.PageEngineTemplateDisposalTestCase");
         this.addTests("test.aria.pageEngine.pageEngine.PageEngineTemplateDisposalWithAnimationsTestCase");
         this.addTests("test.aria.pageEngine.pageEngine.issue626.PageReadyEventTestCase");
         this.addTests("test.aria.pageEngine.pageEngine.issue770.GetContentTestCase");
