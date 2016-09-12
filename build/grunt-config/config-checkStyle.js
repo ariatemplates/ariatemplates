@@ -104,5 +104,5 @@ module.exports = function (grunt) {
 
     grunt.registerTask('checkStyle', ['jshint:build', 'jshint:node', 'jshint:source', 'jshint:resource',
             'verifylowercase:sourceFiles', 'leadingIndent:jsFiles']);
-    grunt.registerTask('checkStyleTest', ['jshint:test']);
+    grunt.registerTask('checkStyleTest', ['jshint:test', 'checkTestsConventions']);
 };

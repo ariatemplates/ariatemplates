@@ -31,6 +31,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-verifylowercase');
     grunt.loadNpmTasks('grunt-leading-indent');
     grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('at-diff');
 
     var settings = require('./build/grunt-config/config-packaging')(grunt);
     grunt.config.set('atbuild.default', {
@@ -42,6 +43,7 @@ module.exports = function (grunt) {
     grunt.loadTasks("./tasks");
 
     require('./build/grunt-config/config-checkStyle')(grunt);
+    require('./build/grunt-config/config-checkTestsConventions')(grunt);
     require('./build/grunt-config/config-atpackager-bootstrap')(grunt);
     require('./build/grunt-config/config-extra')(grunt);
 };

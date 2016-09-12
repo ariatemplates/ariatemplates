@@ -41,6 +41,7 @@
     "noder-js": "1.6.2"
   },
   "devDependencies": {
+    "at-diff": "0.0.7",
     "attester": "2.4.3",
     "express": "3.4.8",
     "grunt": "0.4.2",
