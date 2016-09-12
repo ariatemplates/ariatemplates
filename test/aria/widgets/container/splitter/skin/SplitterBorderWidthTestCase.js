@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.container.splitter.skin.SplitterBorderWidthTest",
+    $classpath : "test.aria.widgets.container.splitter.skin.SplitterBorderWidthTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $dependencies : ["aria.utils.Dom"],
     $prototype : {

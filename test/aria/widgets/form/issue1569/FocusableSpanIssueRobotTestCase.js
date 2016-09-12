@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.issue1569.FocusableSpanIssue",
+    $classpath : "test.aria.widgets.form.issue1569.FocusableSpanIssueRobotTestCase",
     $extends : "aria.jsunit.RobotTestCase",
     $dependencies : ["aria.widgets.AriaSkinNormalization"],
     $prototype : {

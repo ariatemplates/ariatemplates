@@ -14,8 +14,8 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.pageEngine.pageEngine.externalHashNavigation.ExternalHashNavigationTest",
-    $extends : "test.aria.pageEngine.pageEngine.PageEngineTestFive",
+    $classpath : "test.aria.pageEngine.pageEngine.externalHashNavigation.ExternalHashNavigationTestCase",
+    $extends : "test.aria.pageEngine.pageEngine.PageEngineFiveBase",
     $prototype : {
         _onPageEngineStarted : function (args) {
             this._hashManager = this._testWindow.aria.utils.HashManager;

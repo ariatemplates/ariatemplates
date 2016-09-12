@@ -16,8 +16,8 @@
 var Aria = require("ariatemplates/Aria");
 
 module.exports = Aria.classDefinition({
-    $classpath : "test.aria.widgets.wai.autoComplete.AutoCompleteGlobalNonWaiTestCase",
-    $extends : require("./AutoCompleteBaseTest"),
+    $classpath : "test.aria.widgets.wai.autoComplete.AutoCompleteGlobalNonWaiRobotTestCase",
+    $extends : require("./AutoCompleteRobotBase"),
     $prototype: {
         myAutoCompleteId: "city1",
         myAutoCompleteAccessible: false

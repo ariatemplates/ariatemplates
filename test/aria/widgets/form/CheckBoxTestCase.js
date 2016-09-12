@@ -17,7 +17,7 @@
  * Test case for aria.widgets.form.CheckBox
  */
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.CheckBoxTest",
+    $classpath : "test.aria.widgets.form.CheckBoxTestCase",
     $dependencies : ["aria.utils.Json"],
     $extends : "aria.jsunit.WidgetTestCase",
     $prototype : {

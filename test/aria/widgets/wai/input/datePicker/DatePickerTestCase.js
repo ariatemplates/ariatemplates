@@ -17,7 +17,7 @@ var Aria = require("ariatemplates/Aria");
 
 module.exports = Aria.classDefinition({
     $classpath : "test.aria.widgets.wai.input.datePicker.DatePickerTestCase",
-    $extends : require("../InputBaseTestCase"),
+    $extends : require("../InputBase"),
     $prototype : {
         myTemplate : "test.aria.widgets.wai.input.datePicker.DatePickerTestCaseTpl"
     }

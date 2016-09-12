@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.datefield.issue303.InvalidState",
+    $classpath : "test.aria.widgets.form.datefield.issue303.InvalidStateTestCase",
     $extends : "aria.jsunit.WidgetTestCase",
     $dependencies : ["aria.widgets.form.DateField", "aria.utils.Date", "aria.utils.Dom"],
     $prototype : {

@@ -22,7 +22,7 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
-        this.addTests("test.aria.utils.json.JsonSerializer");
-        this.addTests("test.aria.utils.json.JsonSerializerPerf");
+        this.addTests("test.aria.utils.json.JsonSerializerTestCase");
+        this.addTests("test.aria.utils.json.JsonSerializerPerfTestCase");
     }
 });

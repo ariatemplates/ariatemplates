@@ -17,7 +17,7 @@
  * aria.pageEngine.utils.PageEngineUtils test
  */
 Aria.classDefinition({
-    $classpath : "test.aria.pageEngine.utils.PageEngineUtilsTest",
+    $classpath : "test.aria.pageEngine.utils.PageEngineUtilsTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.pageEngine.utils.PageEngineUtils", "aria.utils.Array"],
     $constructor : function () {

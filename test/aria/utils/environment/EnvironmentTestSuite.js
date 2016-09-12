@@ -19,9 +19,9 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
-        this.addTests("test.aria.utils.environment.Date");
-        this.addTests("test.aria.utils.environment.Number");
-        this.addTests("test.aria.utils.environment.VisualFocus");
-        this.addTests("test.aria.utils.environment.VisualFocusDependency");
+        this.addTests("test.aria.utils.environment.DateTestCase");
+        this.addTests("test.aria.utils.environment.NumberTestCase");
+        this.addTests("test.aria.utils.environment.VisualFocusTestCase");
+        this.addTests("test.aria.utils.environment.VisualFocusDependencyTestCase");
     }
 });

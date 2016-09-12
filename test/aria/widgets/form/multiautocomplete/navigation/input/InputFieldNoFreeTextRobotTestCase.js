@@ -14,10 +14,10 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.multiautocomplete.navigation.input.InputFieldNoFreeTextTestCase",
-    $extends : "test.aria.widgets.form.multiautocomplete.navigation.BaseTestCase",
+    $classpath : "test.aria.widgets.form.multiautocomplete.navigation.input.InputFieldNoFreeTextRobotTestCase",
+    $extends : "test.aria.widgets.form.multiautocomplete.navigation.RobotBase",
     $constructor : function () {
-        this.$BaseTestCase.constructor.call(this, 'Navigation in input field - no free text');
+        this.$RobotBase.constructor.call(this, 'Navigation in input field - no free text');
         this.data.freeText = false;
     },
     $prototype : {

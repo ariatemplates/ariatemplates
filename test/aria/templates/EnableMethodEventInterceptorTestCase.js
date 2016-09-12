@@ -17,7 +17,7 @@
  * EnableMethodEventInterceptorTest Controller test class
  */
 Aria.classDefinition({
-    $classpath : 'test.aria.templates.EnableMethodEventInterceptorTest',
+    $classpath : 'test.aria.templates.EnableMethodEventInterceptorTestCase',
     $extends : 'aria.jsunit.TestCase',
     $dependencies : ['aria.templates.ModuleCtrlFactory'],
     $constructor : function () {

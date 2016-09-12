@@ -58,7 +58,7 @@ var findAttribute = function  (attributes, name, value) {
 };
 
 module.exports = Aria.classDefinition({
-    $classpath : "test.aria.widgets.wai.datePicker.DatePickerTest",
+    $classpath : "test.aria.widgets.wai.datePicker.DatePickerRobotTestCase",
     $extends : require("ariatemplates/jsunit/RobotTestCase"),
     $prototype: {
         runTemplateTest : function () {

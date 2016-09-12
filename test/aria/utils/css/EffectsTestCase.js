@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.utils.css.Effects",
+    $classpath : "test.aria.utils.css.EffectsTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.utils.css.Effects", "aria.utils.Dom"],
     $constructor : function () {

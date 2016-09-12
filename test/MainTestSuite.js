@@ -22,8 +22,8 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
-        this.addTests("test.aria.AriaTest");
-        this.addTests("test.aria.atLoader.AtLoaderTest");
+        this.addTests("test.aria.AriaTestCase");
+        this.addTests("test.aria.atLoader.AtLoaderTestCase");
         this.addTests("test.aria.core.CoreTestSuite");
         this.addTests("test.aria.dom.DomTestSuite");
         this.addTests("test.aria.embed.EmbedTestSuite");

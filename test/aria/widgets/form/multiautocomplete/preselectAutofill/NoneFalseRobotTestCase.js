@@ -14,8 +14,8 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.multiautocomplete.preselectAutofill.NoneFalseTest",
-    $extends : "test.aria.widgets.form.multiautocomplete.preselectAutofill.MACPreselectAutofillBaseTest",
+    $classpath : "test.aria.widgets.form.multiautocomplete.preselectAutofill.NoneFalseRobotTestCase",
+    $extends : "test.aria.widgets.form.multiautocomplete.preselectAutofill.MACPreselectAutofillRobotBase",
     $constructor : function () {
         this.autofill = false;
         this.preselect = "none";
@@ -48,6 +48,6 @@ Aria.classDefinition({
         this.allTestValues.noFreetext.input[1] = "p";
         this.allTestValues.noFreetext.input[3] = "p1";
 
-        this.$MACPreselectAutofillBaseTest.constructor.call(this);
+        this.$MACPreselectAutofillRobotBase.constructor.call(this);
     }
 });

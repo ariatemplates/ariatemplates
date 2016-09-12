@@ -14,11 +14,11 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.pageEngine.utils.BaseNavigationManagerTest",
-    $extends : "test.aria.pageEngine.IframeTestCase",
+    $classpath : "test.aria.pageEngine.utils.NavigationManagerBase",
+    $extends : "test.aria.pageEngine.IframeBase",
     $dependencies : ["aria.utils.Object", "aria.storage.LocalStorage"],
     $constructor : function () {
-        this.$IframeTestCase.constructor.call(this);
+        this.$IframeBase.constructor.call(this);
         this._navManager = null;
         this.defaultTestTimeout = 15000;
     },

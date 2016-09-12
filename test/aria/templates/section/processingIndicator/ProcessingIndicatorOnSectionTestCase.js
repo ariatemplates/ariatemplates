@@ -17,7 +17,7 @@
  * Test that the loading indicator follows the section
  */
 Aria.classDefinition({
-    $classpath : "test.aria.templates.section.processingIndicator.ProcessingIndicatorOnSection",
+    $classpath : "test.aria.templates.section.processingIndicator.ProcessingIndicatorOnSectionTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $dependencies : ["test.aria.utils.overlay.loadingIndicator.IndicatorHelper", "aria.utils.Json", "aria.utils.Dom"],
     $constructor : function () {

@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.templates.TplClassGeneratorParseOnlyTest",
+    $classpath : "test.aria.templates.TplClassGeneratorParseOnlyTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.templates.TplClassGenerator"],
     $prototype : {

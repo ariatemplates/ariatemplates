@@ -17,7 +17,7 @@
  * Test case for aria.widgets.errorlist.ErrorListController
  */
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.errorlist.ErrorListControllerTest",
+    $classpath : "test.aria.widgets.errorlist.ErrorListControllerTestCase",
     $dependencies : ["aria.widgets.errorlist.ErrorListController", "aria.templates.ModuleCtrlFactory"],
     $extends : "aria.jsunit.TestCase",
     $prototype : {

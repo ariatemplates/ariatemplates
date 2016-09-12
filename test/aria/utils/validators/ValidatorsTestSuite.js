@@ -22,18 +22,18 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
-        this.addTests("test.aria.utils.validators.Alpha");
-        this.addTests("test.aria.utils.validators.AlphaInternational");
-        this.addTests("test.aria.utils.validators.AlphaNum");
-        this.addTests("test.aria.utils.validators.AlphaNumInternational");
-        this.addTests("test.aria.utils.validators.Email");
-        this.addTests("test.aria.utils.validators.Mandatory");
-        this.addTests("test.aria.utils.validators.MinMaxLength");
-        this.addTests("test.aria.utils.validators.MultipleValidator");
-        this.addTests("test.aria.utils.validators.Number");
-        this.addTests("test.aria.utils.validators.Object");
-        this.addTests("test.aria.utils.validators.Phone");
-        this.addTests("test.aria.utils.validators.String");
-        this.addTests("test.aria.utils.validators.Validator");
+        this.addTests("test.aria.utils.validators.AlphaTestCase");
+        this.addTests("test.aria.utils.validators.AlphaInternationalTestCase");
+        this.addTests("test.aria.utils.validators.AlphaNumTestCase");
+        this.addTests("test.aria.utils.validators.AlphaNumInternationalTestCase");
+        this.addTests("test.aria.utils.validators.EmailTestCase");
+        this.addTests("test.aria.utils.validators.MandatoryTestCase");
+        this.addTests("test.aria.utils.validators.MinMaxLengthTestCase");
+        this.addTests("test.aria.utils.validators.MultipleValidatorTestCase");
+        this.addTests("test.aria.utils.validators.NumberTestCase");
+        this.addTests("test.aria.utils.validators.ObjectTestCase");
+        this.addTests("test.aria.utils.validators.PhoneTestCase");
+        this.addTests("test.aria.utils.validators.StringTestCase");
+        this.addTests("test.aria.utils.validators.ValidatorTestCase");
     }
 });

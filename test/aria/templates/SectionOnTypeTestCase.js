@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.templates.SectionOnTypeTest",
+    $classpath : "test.aria.templates.SectionOnTypeTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.templates.Section", "aria.utils.FireDomEvent", "aria.html.TextInput"],
     $prototype : {

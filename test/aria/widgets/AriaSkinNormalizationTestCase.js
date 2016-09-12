@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.AriaSkinNormalizationTest",
+    $classpath : "test.aria.widgets.AriaSkinNormalizationTestCase",
     $dependencies : ["aria.widgets.AriaSkinNormalization"],
     $extends : "aria.jsunit.TestCase",
     $prototype : {

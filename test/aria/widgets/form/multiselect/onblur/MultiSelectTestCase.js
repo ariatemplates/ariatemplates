@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.multiselect.onblur.MultiSelect",
+    $classpath : "test.aria.widgets.form.multiselect.onblur.MultiSelectTestCase",
     $extends : 'aria.jsunit.TemplateTestCase',
     $constructor : function () {
         this.$TemplateTestCase.constructor.call(this);

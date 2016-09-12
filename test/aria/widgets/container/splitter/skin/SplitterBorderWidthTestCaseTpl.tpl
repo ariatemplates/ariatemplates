@@ -14,7 +14,7 @@
  */
 
 {Template {
-	$classpath:"test.aria.widgets.container.splitter.skin.SplitterBorderWidthTestTpl"
+	$classpath:"test.aria.widgets.container.splitter.skin.SplitterBorderWidthTestCaseTpl"
 }}
 
    {macro main()}

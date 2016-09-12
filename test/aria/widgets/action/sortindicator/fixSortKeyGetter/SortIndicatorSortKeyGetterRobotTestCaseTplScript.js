@@ -14,7 +14,7 @@
  */
 
 Aria.tplScriptDefinition({
-    $classpath : "test.aria.widgets.action.sortindicator.fixSortKeyGetter.SortIndicatorSortKeyGetterTestTplScript",
+    $classpath : "test.aria.widgets.action.sortindicator.fixSortKeyGetter.SortIndicatorSortKeyGetterRobotTestCaseTplScript",
     $dependencies : ["aria.utils.Date"],
     $statics: {
         friends: [

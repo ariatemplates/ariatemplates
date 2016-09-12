@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.autocomplete.enterKey.AutoComplete",
+    $classpath : "test.aria.widgets.form.autocomplete.enterKey.AutoCompleteTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $constructor : function () {
         this.$TemplateTestCase.constructor.call(this);

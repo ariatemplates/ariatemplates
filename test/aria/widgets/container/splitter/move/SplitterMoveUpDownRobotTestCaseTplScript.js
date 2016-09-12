@@ -14,7 +14,7 @@
  */
 
 Aria.tplScriptDefinition({
-    $classpath : "test.aria.widgets.container.splitter.move.SplitterTestMoveUpDownTplScript",
+    $classpath : "test.aria.widgets.container.splitter.move.SplitterMoveUpDownRobotTestCaseTplScript",
     $prototype : {
         $dataReady : function () {
             this.data['firstPanelSize'] = 200;

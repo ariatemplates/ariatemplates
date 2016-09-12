@@ -17,13 +17,13 @@
  * Test case for aria.touch.gestures.DoubleTap
  */
 Aria.classDefinition({
-    $classpath : "test.aria.touch.gestures.DoubleTap",
+    $classpath : "test.aria.touch.gestures.DoubleTapTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $dependencies : ["aria.utils.Dom", "aria.utils.FireDomEvent", "aria.core.Browser", "aria.touch.Event"],
     $constructor : function () {
         this.$TemplateTestCase.constructor.call(this);
         this.setTestEnv({
-            template : "test.aria.touch.gestures.DoubleTapTpl"
+            template : "test.aria.touch.gestures.DoubleTapTestCaseTpl"
         });
         this.domUtil = aria.utils.Dom;
         this.fireEvent = aria.utils.FireDomEvent;

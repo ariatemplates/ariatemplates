@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.SelectTest",
+    $classpath : "test.aria.widgets.form.SelectTestCase",
     $extends : "aria.jsunit.WidgetTestCase",
     $dependencies : ["test.aria.widgets.form.ListData"],
     $prototype : {

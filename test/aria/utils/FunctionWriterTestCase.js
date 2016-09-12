@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.utils.FunctionWriterTest",
+    $classpath : "test.aria.utils.FunctionWriterTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.utils.FunctionWriter"],
     $prototype : {

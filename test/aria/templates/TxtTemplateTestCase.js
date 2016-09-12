@@ -17,7 +17,7 @@
  * Test basic text templates
  */
 Aria.classDefinition({
-    $classpath : 'test.aria.templates.TxtTemplateTest',
+    $classpath : 'test.aria.templates.TxtTemplateTestCase',
     $extends : 'aria.jsunit.TestCase',
     $dependencies : ['aria.utils.String'],
     $texts : {

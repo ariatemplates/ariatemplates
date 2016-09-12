@@ -17,7 +17,7 @@
  * Unit tests for the FireDomEvent utils.
  */
 Aria.classDefinition({
-    $classpath : "test.aria.utils.FireDomEvent",
+    $classpath : "test.aria.utils.FireDomEventTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.utils.FireDomEvent", "aria.utils.Function", "aria.DomEvent"],
     $prototype : {

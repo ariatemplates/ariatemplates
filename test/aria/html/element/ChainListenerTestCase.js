@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.html.element.ChainListenerTest",
+    $classpath : "test.aria.html.element.ChainListenerTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["test.aria.html.element.ElementOne", "aria.utils.Array"],
     $prototype : {

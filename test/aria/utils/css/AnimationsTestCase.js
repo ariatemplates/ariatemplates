@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.utils.css.Animations",
+    $classpath : "test.aria.utils.css.AnimationsTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.utils.css.Animations", "aria.utils.Dom"],
     $prototype : {

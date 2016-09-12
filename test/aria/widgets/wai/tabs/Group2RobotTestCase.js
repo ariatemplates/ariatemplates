@@ -18,9 +18,9 @@ var Aria = require('ariatemplates/Aria');
 
 
 module.exports = Aria.classDefinition({
-    $classpath : 'test.aria.widgets.wai.tabs.Group2',
+    $classpath : 'test.aria.widgets.wai.tabs.Group2RobotTestCase',
 
-    $extends : require('./Base'),
+    $extends : require('./RobotBase'),
 
     $statics : {
         groupIndex: 1

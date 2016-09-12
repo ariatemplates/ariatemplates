@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath : "test.aria.templates.section.sectionAttributes.SectionAttributesTpl",
+    $classpath : "test.aria.templates.section.sectionAttributes.SectionAttributesTestCaseTpl",
     $hasScript : false
 }}
 

@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.utils.NumberFormat",
+    $classpath : "test.aria.utils.NumberFormatTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.utils.Number", "aria.utils.environment.Number", "aria.utils.Json"],
     $constructor : function () {

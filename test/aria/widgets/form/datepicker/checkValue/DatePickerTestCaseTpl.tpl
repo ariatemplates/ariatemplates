@@ -14,7 +14,7 @@
  */
 
 {Template {
-	$classpath:"test.aria.widgets.form.datepicker.checkValue.DatePickerTpl"
+	$classpath:"test.aria.widgets.form.datepicker.checkValue.DatePickerTestCaseTpl"
 }}
 
 	{macro main()}

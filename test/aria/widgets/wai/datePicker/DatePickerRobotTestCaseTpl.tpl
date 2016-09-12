@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath : "test.aria.widgets.wai.datePicker.DatePickerTestTpl"
+    $classpath : "test.aria.widgets.wai.datePicker.DatePickerRobotTestCaseTpl"
 }}
     {macro main()}
         <div style="margin:10px;font-size:+3;font-weight:bold;">DatePicker accessibility sample</div>

@@ -17,7 +17,7 @@
  * Test for loading the contextual menu environment dynamically
  */
 Aria.classDefinition({
-    $classpath : "test.aria.templates.TemplateTest",
+    $classpath : "test.aria.templates.TemplateTestCase",
     $extends : "aria.jsunit.TestCase",
     $prototype : {
 

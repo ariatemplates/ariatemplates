@@ -17,7 +17,7 @@
  * Test case for the Json class.
  */
 Aria.classDefinition({
-    $classpath : "test.aria.utils.JsonTest",
+    $classpath : "test.aria.utils.JsonTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.utils.Json", "aria.utils.Data", "aria.utils.Date",
             "test.aria.utils.json.InvalidJsonSerializer", "test.aria.utils.json.FirstValidJsonSerializer",

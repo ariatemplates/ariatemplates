@@ -14,7 +14,7 @@
  */
 
 Aria.tplScriptDefinition({
-    $classpath : "test.aria.widgets.form.select.mouseWheel.SelectMouseWheelTestCaseTplScript",
+    $classpath : "test.aria.widgets.form.select.mouseWheel.SelectMouseWheelRobotTestCaseTplScript",
     $prototype : {
         getOptions : function () {
             var res = [];

@@ -14,10 +14,10 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.textinput.onfocus.OnFocusTest",
-    $extends : "test.aria.widgets.form.textinput.onclick.OnClickTest",
+    $classpath : "test.aria.widgets.form.textinput.onfocus.OnFocusTestCase",
+    $extends : "test.aria.widgets.form.textinput.onclick.OnClickBase",
     $constructor : function () {
-        this.$OnClickTest.constructor.call(this);
+        this.$OnClickBase.constructor.call(this);
         this.setTestEnv({
             template : "test.aria.widgets.form.textinput.onfocus.OnFocusTemplate",
             data : {

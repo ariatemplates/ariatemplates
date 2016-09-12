@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.container.dialog.closeOrDrag.CloseOrDragTest",
+    $classpath : "test.aria.widgets.container.dialog.closeOrDrag.CloseOrDragRobotTestCase",
     $extends : "aria.jsunit.RobotTestCase",
     $dependencies : ["aria.utils.Json", "aria.utils.dragdrop.Drag", "aria.utils.Dom"],
     $constructor : function () {

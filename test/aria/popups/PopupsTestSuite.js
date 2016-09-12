@@ -19,9 +19,9 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
-        this.addTests("test.aria.popups.Popup");
+        this.addTests("test.aria.popups.PopupTestCase");
         this.addTests("test.aria.popups.PopupEventsTestCase");
         this.addTests("test.aria.popups.PopupAnimationsTestCase");
-        this.addTests("test.aria.popups.focus.FocusTest");
+        this.addTests("test.aria.popups.focus.FocusTestCase");
     }
 });

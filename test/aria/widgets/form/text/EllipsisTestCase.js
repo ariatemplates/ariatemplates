@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.text.EllipsisTest",
+    $classpath : "test.aria.widgets.form.text.EllipsisTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $prototype : {
 

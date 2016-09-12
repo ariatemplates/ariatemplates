@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath: "test.aria.widgets.autoselect.programmatic.AutoSelectTpl",
+    $classpath: "test.aria.widgets.autoselect.programmatic.AutoSelectTestCaseTpl",
     $width: {min: 500}
 }}
 

@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath : "test.aria.tools.contextualMenu.popup.PopupTestTpl"
+    $classpath : "test.aria.tools.contextualMenu.popup.PopupTestCaseTpl"
 }}
 
     {macro main()}

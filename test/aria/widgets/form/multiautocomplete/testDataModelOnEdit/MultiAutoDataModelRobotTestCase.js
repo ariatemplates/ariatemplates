@@ -14,15 +14,15 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.multiautocomplete.testDataModelOnEdit.MultiAutoDataModelTest",
-    $extends : "test.aria.widgets.form.multiautocomplete.BaseMultiAutoCompleteTestCase",
+    $classpath : "test.aria.widgets.form.multiautocomplete.testDataModelOnEdit.MultiAutoDataModelRobotTestCase",
+    $extends : "test.aria.widgets.form.multiautocomplete.MultiAutoCompleteRobotBase",
     $constructor : function () {
 
         this.data = {
             ac_airline_values : ["India", "Singapore", "America"],
             freeText : true
         };
-        this.$BaseMultiAutoCompleteTestCase.constructor.call(this);
+        this.$MultiAutoCompleteRobotBase.constructor.call(this);
 
     },
     $prototype : {

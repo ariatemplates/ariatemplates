@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.html.select.onchange.DataModelOnChangeTestCase",
+    $classpath : "test.aria.html.select.onchange.DataModelOnChangeRobotTestCase",
     $extends : "aria.jsunit.RobotTestCase",
     $constructor : function () {
         this.$RobotTestCase.constructor.call(this);

@@ -659,7 +659,7 @@ module.exports = Aria.classDefinition({
     //
     ////////////////////////////////////////////////////////////////////////////
 
-    $classpath : 'test.EnhancedRobotTestCase',
+    $classpath : 'test.EnhancedRobotBase',
     $extends : ariaJsunitRobotTestCase,
 
 

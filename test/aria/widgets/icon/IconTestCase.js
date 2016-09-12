@@ -17,7 +17,7 @@
  * Test case for aria.widgets.Icon
  */
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.icon.IconTest",
+    $classpath : "test.aria.widgets.icon.IconTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $constructor : function () {
         this.$TemplateTestCase.constructor.call(this);

@@ -17,7 +17,7 @@
  * Test case for the aria.touch.Event class
  */
 Aria.classDefinition({
-    $classpath : "test.aria.touch.EventTest",
+    $classpath : "test.aria.touch.EventTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.touch.Event"],
     $constructor : function () {

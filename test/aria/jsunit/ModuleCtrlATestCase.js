@@ -17,7 +17,7 @@
  * Test case for aria.jsunit.ModuleCtrlTestCase
  */
 Aria.classDefinition({
-    $classpath : "test.aria.jsunit.ModuleCtrlTestCaseTest",
+    $classpath : "test.aria.jsunit.ModuleCtrlATestCase",
     $extends : "aria.jsunit.ModuleCtrlTestCase",
     $dependencies : ["test.aria.jsunit.mock.MockModule", "aria.templates.ModuleCtrlFactory", "aria.modules.requestHandler.XMLRequestHandler"],
     $constructor : function () {

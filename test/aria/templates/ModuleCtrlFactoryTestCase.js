@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.templates.ModuleCtrlFactoryTest",
+    $classpath : "test.aria.templates.ModuleCtrlFactoryTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.templates.ModuleCtrlFactory", "aria.core.environment.Customizations"],
     $prototype : {

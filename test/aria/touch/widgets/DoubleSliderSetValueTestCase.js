@@ -17,7 +17,7 @@
  * Check the initialization of a DoubleSlideWidget
  */
 Aria.classDefinition({
-    $classpath : "test.aria.touch.widgets.DoubleSliderSetValue",
+    $classpath : "test.aria.touch.widgets.DoubleSliderSetValueTestCase",
     $extends : "aria.jsunit.WidgetTestCase",
     // Depend on drag to have synchronous creation of the widget
     $dependencies : ["aria.touch.widgets.DoubleSlider", "aria.utils.Dom", "aria.utils.dragdrop.Drag"],

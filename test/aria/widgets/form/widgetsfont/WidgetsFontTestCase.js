@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.widgetsfont.WidgetsFontTest",
+    $classpath : "test.aria.widgets.form.widgetsfont.WidgetsFontTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $dependencies : ["aria.utils.Caret", "aria.utils.Date", "aria.utils.Dom"],
     $constructor : function () {

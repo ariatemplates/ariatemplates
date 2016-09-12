@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.popups.Popup",
+    $classpath : "test.aria.popups.PopupTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.popups.Popup", "aria.templates.Section", "aria.popups.PopupManager"],
     $constructor : function () {

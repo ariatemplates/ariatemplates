@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.multiselect.deleteFieldValue.test1.MultiSelect",
+    $classpath : "test.aria.widgets.form.multiselect.deleteFieldValue.test1.MultiSelectTestCase",
     $extends : 'aria.jsunit.TemplateTestCase',
     $constructor : function () {
         this.$TemplateTestCase.constructor.call(this);

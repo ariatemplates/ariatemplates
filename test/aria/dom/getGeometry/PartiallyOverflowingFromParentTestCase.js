@@ -19,7 +19,7 @@
  * accordingly. This tests different situations triggering that behavior.
  */
 Aria.classDefinition({
-    $classpath : 'test.aria.dom.getGeometry.PartiallyOverflowingFromParentTest',
+    $classpath : 'test.aria.dom.getGeometry.PartiallyOverflowingFromParentTestCase',
     $extends : 'aria.jsunit.TestCase',
     $dependencies : ['aria.utils.Dom', 'aria.templates.Layout'],
     $constructor : function () {

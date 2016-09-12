@@ -14,10 +14,10 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.multiautocomplete.preselectExpandButton.PreselectExpandButtonTestCase",
-    $extends : "test.aria.widgets.form.multiautocomplete.BaseMultiAutoCompleteTestCase",
+    $classpath : "test.aria.widgets.form.multiautocomplete.preselectExpandButton.PreselectExpandButtonRobotTestCase",
+    $extends : "test.aria.widgets.form.multiautocomplete.MultiAutoCompleteRobotBase",
     $constructor : function () {
-        this.$BaseMultiAutoCompleteTestCase.constructor.call(this);
+        this.$MultiAutoCompleteRobotBase.constructor.call(this);
 
         // setTestEnv has to be invoked before runTemplateTest fires
         this.setTestEnv({

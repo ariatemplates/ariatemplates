@@ -14,11 +14,11 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.storage.userData.API",
+    $classpath : "test.aria.storage.userData.APITestCase",
     $dependencies : ["aria.storage.UserData"],
-    $extends : "test.aria.storage.base.GeneralAPI",
+    $extends : "test.aria.storage.base.GeneralAPIBase",
     $constructor : function () {
-        this.$GeneralAPI.constructor.call(this);
+        this.$GeneralAPIBase.constructor.call(this);
     },
     $prototype : {
         /**
@@ -26,7 +26,7 @@ Aria.classDefinition({
          */
         testOneInstanceStrings : function () {
             if (this.canRunUserDataTests()) {
-                this.$GeneralAPI.testOneInstanceStrings.call(this);
+                this.$GeneralAPIBase.testOneInstanceStrings.call(this);
             }
         },
 
@@ -35,7 +35,7 @@ Aria.classDefinition({
          */
         testTwoInstancesStrings : function () {
             if (this.canRunUserDataTests()) {
-                this.$GeneralAPI.testTwoInstancesStrings.call(this);
+                this.$GeneralAPIBase.testTwoInstancesStrings.call(this);
             }
         }
     }

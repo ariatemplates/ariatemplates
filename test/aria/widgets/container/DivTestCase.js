@@ -17,7 +17,7 @@
  * Test case for aria.widgets.container.DivTest
  */
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.container.DivTest",
+    $classpath : "test.aria.widgets.container.DivTestCase",
     $extends : "aria.jsunit.WidgetTestCase",
     $dependencies : ["aria.widgets.container.Div"],
     $prototype : {

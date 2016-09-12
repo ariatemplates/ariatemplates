@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.numberfield.inputPattern.InputPattern",
+    $classpath : "test.aria.widgets.form.numberfield.inputPattern.InputPatternTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $dependencies : ["aria.core.JsonValidator"],
     $prototype : {

@@ -14,8 +14,8 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.multiautocomplete.duplicateValuesAfterError.DuplicateValuesAfterError",
-    $extends : "test.aria.widgets.form.multiautocomplete.BaseMultiAutoCompleteTestCase",
+    $classpath : "test.aria.widgets.form.multiautocomplete.duplicateValuesAfterError.DuplicateValuesAfterErrorRobotTestCase",
+    $extends : "test.aria.widgets.form.multiautocomplete.MultiAutoCompleteRobotBase",
     $constructor : function () {
 
         this.data = {
@@ -29,7 +29,7 @@ Aria.classDefinition({
                     }],
             freeText : false
         };
-        this.$BaseMultiAutoCompleteTestCase.constructor.call(this);
+        this.$MultiAutoCompleteRobotBase.constructor.call(this);
 
     },
     $prototype : {

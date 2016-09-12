@@ -15,10 +15,10 @@
 
 /**
  * Check the LCResourcesHandler improvements
- * @class test.aria.widgets.form.autocomplete.handler.test1.LCHandlerTestCase
+ * @class test.aria.widgets.form.autocomplete.handler.test1.LCHandlerRobotTestCase
  */
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.autocomplete.handler.test1.LCHandlerTestCase",
+    $classpath : "test.aria.widgets.form.autocomplete.handler.test1.LCHandlerRobotTestCase",
     $extends : "aria.jsunit.RobotTestCase",
     $dependencies : ["aria.resources.handlers.LCResourcesHandler"],
     $constructor : function () {

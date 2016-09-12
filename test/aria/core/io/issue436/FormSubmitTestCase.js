@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.core.io.issue436.FormSubmit",
+    $classpath : "test.aria.core.io.issue436.FormSubmitTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.utils.Dom", "aria.utils.Type"],
     $constructor : function () {

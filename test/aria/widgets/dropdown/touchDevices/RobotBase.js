@@ -17,7 +17,7 @@ var ariaUtilsDevice = require("ariatemplates/utils/Device");
 var ariaUtilsDom = require("ariatemplates/utils/Dom");
 
 module.exports = Aria.classDefinition({
-    $classpath : "test.aria.widgets.dropdown.touchDevices.Base",
+    $classpath : "test.aria.widgets.dropdown.touchDevices.RobotBase",
     $extends : require("ariatemplates/jsunit/RobotTestCase"),
     $constructor : function () {
         this.$RobotTestCase.constructor.call(this);

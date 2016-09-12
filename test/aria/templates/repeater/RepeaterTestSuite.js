@@ -19,10 +19,10 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
-        this.addTests("test.aria.templates.repeater.testOne.RepeaterOne");
-        this.addTests("test.aria.templates.repeater.testTwo.RepeaterTwo");
-        this.addTests("test.aria.templates.repeater.testThree.RepeaterThree");
-        this.addTests("test.aria.templates.repeater.testFour.RepeaterFour");
-        this.addTests("test.aria.templates.repeater.testFive.RepeaterFive");
+        this.addTests("test.aria.templates.repeater.testOne.RepeaterOneTestCase");
+        this.addTests("test.aria.templates.repeater.testTwo.RepeaterTwoTestCase");
+        this.addTests("test.aria.templates.repeater.testThree.RepeaterThreeTestCase");
+        this.addTests("test.aria.templates.repeater.testFour.RepeaterFourTestCase");
+        this.addTests("test.aria.templates.repeater.testFive.RepeaterFiveTestCase");
     }
 });

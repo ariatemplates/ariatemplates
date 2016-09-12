@@ -14,11 +14,11 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.autocomplete.preselectAutofill.StrictFalseTest",
-    $extends : "test.aria.widgets.form.autocomplete.preselectAutofill.PreselectAutofillBaseTest",
+    $classpath : "test.aria.widgets.form.autocomplete.preselectAutofill.StrictFalseRobotTestCase",
+    $extends : "test.aria.widgets.form.autocomplete.preselectAutofill.PreselectAutofillRobotBase",
     $constructor : function () {
         this.autofill = false;
-        this.$PreselectAutofillBaseTest.constructor.call(this);
+        this.$PreselectAutofillRobotBase.constructor.call(this);
         this.allTestValues = {
             freetext : {
                 input : ["p", "p", "p1", "P1. TESTER A", "p", "P4. TESTER D"],

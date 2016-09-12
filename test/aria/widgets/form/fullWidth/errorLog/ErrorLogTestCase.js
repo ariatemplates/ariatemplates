@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.fullWidth.errorLog.ErrorLogTest",
+    $classpath : "test.aria.widgets.form.fullWidth.errorLog.ErrorLogTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $dependencies : ["aria.utils.ClassList", "aria.utils.Dom"],
     $constructor : function () {

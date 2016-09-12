@@ -14,7 +14,7 @@
  */
 
  {Template {
-  $classpath : "test.aria.touch.gestures.LongPressTpl",
+  $classpath : "test.aria.touch.gestures.LongPressTestCaseTpl",
   $css : ["test.aria.touch.gestures.TouchEventsCSS"],
   $hasScript : true
 } }

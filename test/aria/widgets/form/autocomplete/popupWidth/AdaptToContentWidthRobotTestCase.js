@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.autocomplete.popupWidth.AdaptToContentWidthTest",
+    $classpath : "test.aria.widgets.form.autocomplete.popupWidth.AdaptToContentWidthRobotTestCase",
     $extends : "aria.jsunit.RobotTestCase",
     $dependencies : ["aria.popups.PopupManager", "aria.utils.Dom"],
     $constructor : function () {

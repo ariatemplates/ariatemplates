@@ -22,7 +22,7 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
-        this.addTests("test.aria.core.DefaultAppenderTest");
-        this.addTests("test.aria.core.DefaultAppenderTest2");
+        this.addTests("test.aria.core.DefaultAppenderTestCase");
+        this.addTests("test.aria.core.DefaultAppender2TestCase");
     }
 });

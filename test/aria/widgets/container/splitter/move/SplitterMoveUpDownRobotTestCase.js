@@ -17,7 +17,7 @@
  * Template Test case for aria.widgets.container.Splitter
  */
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.container.splitter.move.SplitterTestMoveUpDown",
+    $classpath : "test.aria.widgets.container.splitter.move.SplitterMoveUpDownRobotTestCase",
     $extends : "aria.jsunit.RobotTestCase",
     $dependencies : ["aria.core.Browser"],
     $constructor : function () {

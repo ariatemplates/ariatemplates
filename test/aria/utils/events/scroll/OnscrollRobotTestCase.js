@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.utils.events.scroll.OnscrollTest",
+    $classpath : "test.aria.utils.events.scroll.OnscrollRobotTestCase",
     $extends : "aria.jsunit.RobotTestCase",
     $dependencies : ["aria.utils.Dom"],
     $constructor : function () {

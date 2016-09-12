@@ -17,7 +17,7 @@
  * Test different API for the section statement
  */
 Aria.classDefinition({
-    $classpath : "test.aria.templates.section.sectionAttributes.SectionAttributes",
+    $classpath : "test.aria.templates.section.sectionAttributes.SectionAttributesTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $dependencies : ["aria.utils.Dom"],
     $prototype : {

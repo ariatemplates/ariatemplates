@@ -19,8 +19,8 @@ Aria.classDefinition({
     $constructor: function () {
         this.$TestSuite.constructor.call(this);
 
-        this.addTests("test.aria.tools.contextualMenu.open.OpenMenuTest");
-        this.addTests("test.aria.tools.contextualMenu.popup.PopupTest");
-        this.addTests("test.aria.tools.contextualMenu.environment.EnvironmentTest");
+        this.addTests("test.aria.tools.contextualMenu.open.OpenMenuTestCase");
+        this.addTests("test.aria.tools.contextualMenu.popup.PopupTestCase");
+        this.addTests("test.aria.tools.contextualMenu.environment.EnvironmentTestCase");
     }
 });

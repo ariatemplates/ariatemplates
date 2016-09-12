@@ -14,10 +14,10 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.multiautocomplete.issue1085.InitCheckboxesTest",
-    $extends : "test.aria.widgets.form.multiautocomplete.BaseMultiAutoCompleteTestCase",
+    $classpath : "test.aria.widgets.form.multiautocomplete.issue1085.InitCheckboxesRobotTestCase",
+    $extends : "test.aria.widgets.form.multiautocomplete.MultiAutoCompleteRobotBase",
     $constructor : function () {
-        this.$BaseMultiAutoCompleteTestCase.constructor.call(this);
+        this.$MultiAutoCompleteRobotBase.constructor.call(this);
 
         this.data.expandButton = true;
         this.checkedValues = ["P8.amino", "P6.ipsum"];

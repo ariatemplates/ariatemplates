@@ -14,7 +14,7 @@
  */
 
 Aria.tplScriptDefinition({
-    $classpath : "test.aria.popups.focus.FocusTestTplScript",
+    $classpath : "test.aria.popups.focus.FocusTestCaseTplScript",
     $dependencies : ['aria.utils.validators.Mandatory'],
     $destructor : function () {
         this.validator.$dispose();

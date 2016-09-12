@@ -14,8 +14,8 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.container.dialog.dynamicZIndex.DynamicZIndexClickTestCase",
-    $extends : "test.aria.widgets.container.dialog.dynamicZIndex.BaseDynamicZIndexTestCase",
+    $classpath : "test.aria.widgets.container.dialog.dynamicZIndex.DynamicZIndexClickRobotTestCase",
+    $extends : "test.aria.widgets.container.dialog.dynamicZIndex.DynamicZIndexRobotBase",
     $prototype : {
         runTemplateTest : function () {
             var self = this;

@@ -17,7 +17,7 @@
  * Test case for the event properties of JsObject
  */
 Aria.classDefinition({
-    $classpath : "test.aria.core.ObservableTest",
+    $classpath : "test.aria.core.ObservableTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["test.aria.core.test.ClassA"],
 

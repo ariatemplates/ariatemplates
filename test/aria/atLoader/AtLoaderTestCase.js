@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.atLoader.AtLoaderTest",
+    $classpath : "test.aria.atLoader.AtLoaderTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.utils.FrameATLoader", "aria.core.DownloadMgr"],
     $prototype : {

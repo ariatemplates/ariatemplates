@@ -17,7 +17,7 @@
  * Template Test case for different types of proxies available for dragging
  */
 Aria.classDefinition({
-    $classpath : "test.aria.utils.dragdrop.fixedElements.FixedElementTest",
+    $classpath : "test.aria.utils.dragdrop.fixedElements.FixedElementRobotTestCase",
     $extends : "aria.jsunit.RobotTestCase",
     $dependencies : ["aria.utils.dragdrop.Drag", "aria.utils.Dom"],
     $constructor : function () {

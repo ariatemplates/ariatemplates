@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.multiselect.labelsToTrim.LabelsToTrim",
+    $classpath : "test.aria.widgets.form.multiselect.labelsToTrim.LabelsToTrimTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $dependencies : ["aria.utils.Json"],
     $constructor : function () {

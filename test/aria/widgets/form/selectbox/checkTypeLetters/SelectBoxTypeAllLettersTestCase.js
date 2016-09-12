@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.selectbox.checkTypeLetters.SelectBoxTypeAllLetters",
+    $classpath : "test.aria.widgets.form.selectbox.checkTypeLetters.SelectBoxTypeAllLettersTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $prototype : {
         runTemplateTest : function () {

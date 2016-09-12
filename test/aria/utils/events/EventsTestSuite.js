@@ -19,6 +19,6 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
-        this.addTests("test.aria.utils.events.scroll.OnscrollTest");
+        this.addTests("test.aria.utils.events.scroll.OnscrollRobotTestCase");
     }
 });

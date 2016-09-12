@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.timefield.checkFormat.TimeField",
+    $classpath : "test.aria.widgets.form.timefield.checkFormat.TimeFieldTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $constructor : function () {
         this.$TemplateTestCase.constructor.call(this);

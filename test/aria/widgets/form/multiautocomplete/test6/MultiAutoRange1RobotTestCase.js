@@ -14,8 +14,8 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.multiautocomplete.test6.MultiAutoRange1",
-    $extends : "test.aria.widgets.form.multiautocomplete.test6.Common",
+    $classpath : "test.aria.widgets.form.multiautocomplete.test6.MultiAutoRange1RobotTestCase",
+    $extends : "test.aria.widgets.form.multiautocomplete.test6.CommonRobotBase",
     $prototype : {
         rangePattern1 : "p1-2",
         rangePattern2 : "p3-6",

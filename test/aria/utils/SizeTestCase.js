@@ -17,7 +17,7 @@
  * Test case for aria.utils.Size
  */
 Aria.classDefinition({
-    $classpath : "test.aria.utils.Size",
+    $classpath : "test.aria.utils.SizeTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.utils.Size", "aria.core.JsonValidator", "aria.utils.DomBeans"],
     $prototype : {

@@ -14,8 +14,8 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.multiselect.issue312.AutoComplete",
-    $extends : "test.aria.widgets.form.multiselect.issue312.Common",
+    $classpath : "test.aria.widgets.form.multiselect.issue312.AutoCompleteTestCase",
+    $extends : "test.aria.widgets.form.multiselect.issue312.CommonBase",
     $dependencies : ["aria.widgets.form.list.List", "aria.utils.Json"],
     $prototype : {
         innerWidgetClasspath : "aria.widgets.form.list.List",

@@ -17,7 +17,7 @@
  * Test case for the View class.
  */
 Aria.classDefinition({
-    $classpath : "test.aria.templates.ViewTest",
+    $classpath : "test.aria.templates.ViewTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.templates.View", "aria.utils.Json"],
     $prototype : {

@@ -17,7 +17,7 @@
  * Test case for aria.utils.Function
  */
 Aria.classDefinition({
-    $classpath : "test.aria.utils.Function",
+    $classpath : "test.aria.utils.FunctionTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.utils.Function"],
     $prototype : {

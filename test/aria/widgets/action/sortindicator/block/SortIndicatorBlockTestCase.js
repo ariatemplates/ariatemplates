@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.action.sortindicator.block.SortIndicatorBlockTest",
+    $classpath : "test.aria.widgets.action.sortindicator.block.SortIndicatorBlockTestCase",
     $dependencies : ["aria.templates.View", "aria.widgets.action.SortIndicator"],
     $extends : "aria.jsunit.TemplateTestCase",
     $prototype : {

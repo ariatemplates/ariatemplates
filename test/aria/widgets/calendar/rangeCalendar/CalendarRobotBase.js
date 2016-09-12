@@ -18,7 +18,7 @@ var domUtils = require("ariatemplates/utils/Dom");
 var dateUtils = require("ariatemplates/utils/Date");
 
 module.exports = Aria.classDefinition({
-    $classpath : "test.aria.widgets.calendar.rangeCalendar.BaseCalendarTest",
+    $classpath : "test.aria.widgets.calendar.rangeCalendar.CalendarRobotBase",
     $extends : require("ariatemplates/jsunit/RobotTestCase"),
     $constructor : function () {
         this.$RobotTestCase.constructor.call(this);

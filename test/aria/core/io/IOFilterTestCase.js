@@ -17,7 +17,7 @@
  * Test for the IOFilter class.
  */
 Aria.classDefinition({
-    $classpath : "test.aria.core.io.IOFilterTest",
+    $classpath : "test.aria.core.io.IOFilterTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.core.IOFilter"],
     $prototype : {

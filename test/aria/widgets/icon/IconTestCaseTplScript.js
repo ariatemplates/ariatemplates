@@ -14,7 +14,7 @@
  */
 
 Aria.tplScriptDefinition({
-    $classpath : "test.aria.widgets.icon.IconTestTplScript",
+    $classpath : "test.aria.widgets.icon.IconTestCaseTplScript",
     $dependencies : ["aria.utils.Json"],
     $prototype : {
 

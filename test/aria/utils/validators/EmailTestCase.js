@@ -17,7 +17,7 @@
  * Test cases for aria.utils.validators.Email
  */
 Aria.classDefinition({
-    $classpath : "test.aria.utils.validators.Email",
+    $classpath : "test.aria.utils.validators.EmailTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.utils.validators.Email"],
     $prototype : {

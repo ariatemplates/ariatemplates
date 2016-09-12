@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.utils.overlay.loadingIndicator.ieScrollIssue.IEScrollIssueTest",
+    $classpath : "test.aria.utils.overlay.loadingIndicator.ieScrollIssue.IEScrollIssueTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $dependencies : ["aria.utils.Json"],
     $constructor : function () {

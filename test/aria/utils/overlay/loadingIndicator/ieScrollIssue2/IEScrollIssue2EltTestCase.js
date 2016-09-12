@@ -18,6 +18,6 @@
  * along with the element it is attached to.
  */
 Aria.classDefinition({
-    $classpath : "test.aria.utils.overlay.loadingIndicator.ieScrollIssue2.IEScrollIssue2EltTest",
+    $classpath : "test.aria.utils.overlay.loadingIndicator.ieScrollIssue2.IEScrollIssue2EltTestCase",
     $extends : "test.aria.utils.overlay.loadingIndicator.ieScrollIssue2.IEScrollIssue2Base"
 });

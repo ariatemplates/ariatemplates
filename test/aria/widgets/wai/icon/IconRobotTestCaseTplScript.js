@@ -14,7 +14,7 @@
  */
 
 Aria.tplScriptDefinition({
-    $classpath : 'test.aria.widgets.wai.icon.IconTestTplScript',
+    $classpath : 'test.aria.widgets.wai.icon.IconRobotTestCaseTplScript',
 
     $dependencies : ['aria.utils.Json'],
 

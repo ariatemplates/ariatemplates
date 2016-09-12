@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.wai.input.radiobutton.initiallyDisabled.InitiallyDisabledRadioButtonsTestCase",
+    $classpath : "test.aria.widgets.wai.input.radiobutton.initiallyDisabled.InitiallyDisabledRadioButtonsRobotTestCase",
     $extends : "aria.jsunit.RobotTestCase",
     $dependencies : ["aria.core.Browser"],
     $constructor : function () {

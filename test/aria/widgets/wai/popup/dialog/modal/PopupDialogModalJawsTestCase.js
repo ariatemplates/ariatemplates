@@ -15,7 +15,7 @@
 
 var Aria = require('ariatemplates/Aria');
 
-var EnhancedJawsTestCase = require('test/EnhancedJawsTestCase');
+var EnhancedJawsTestCase = require('test/EnhancedJawsBase');
 
 var Model = require('./Model');
 
@@ -26,7 +26,7 @@ module.exports = Aria.classDefinition({
     $extends : EnhancedJawsTestCase,
 
     $constructor : function () {
-        this.$EnhancedJawsTestCase.constructor.call(this);
+        this.$EnhancedJawsBase.constructor.call(this);
 
         this.setTestEnv({
             template : 'test.aria.widgets.wai.popup.dialog.modal.Tpl',

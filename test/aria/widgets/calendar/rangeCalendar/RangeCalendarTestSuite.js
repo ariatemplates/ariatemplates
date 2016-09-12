@@ -21,7 +21,7 @@ module.exports = Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
-        this.addTests("test.aria.widgets.calendar.rangeCalendar.RangeCalendar1");
-        this.addTests("test.aria.widgets.calendar.rangeCalendar.RangeCalendar2");
+        this.addTests("test.aria.widgets.calendar.rangeCalendar.RangeCalendar1RobotTestCase");
+        this.addTests("test.aria.widgets.calendar.rangeCalendar.RangeCalendar2RobotTestCase");
     }
 });

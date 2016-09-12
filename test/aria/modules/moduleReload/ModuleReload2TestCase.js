@@ -17,13 +17,13 @@
  * This is a test of the module reload feature for a custom sub-module.
  */
 Aria.classDefinition({
-    $classpath : "test.aria.modules.moduleReload.ModuleReloadTestCase2",
-    $extends : "test.aria.modules.moduleReload.ModuleReloadTestCase1",
+    $classpath : "test.aria.modules.moduleReload.ModuleReload2TestCase",
+    $extends : "test.aria.modules.moduleReload.ModuleReload1Base",
     $dependencies : ["aria.core.environment.Customizations"],
     $prototype : {
 
         setUp : function () {
-            this.$ModuleReloadTestCase1.setUp.call(this);
+            this.$ModuleReload1Base.setUp.call(this);
             this.normalChildModuleLoaded = false;
             // set a custom module:
             aria.core.environment.Customizations.setCustomizations({
@@ -58,7 +58,7 @@ Aria.classDefinition({
         childModuleCtrlInit : function (args, cb) {
             if (args.custom) {
                 // only take into account the custom module
-                this.$ModuleReloadTestCase1.childModuleCtrlInit.call(this, args, cb);
+                this.$ModuleReload1Base.childModuleCtrlInit.call(this, args, cb);
             } else {
                 // check that the normal child module is not reloaded
                 this.assertFalse(this.normalChildModuleLoaded);

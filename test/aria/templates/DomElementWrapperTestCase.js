@@ -17,7 +17,7 @@
  * DomeElementWrapper test class
  */
 Aria.classDefinition({
-    $classpath : "test.aria.templates.DomElementWrapper",
+    $classpath : "test.aria.templates.DomElementWrapperTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.templates.DomElementWrapper"],
     $constructor : function () {

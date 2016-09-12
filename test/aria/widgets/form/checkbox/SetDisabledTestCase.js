@@ -18,7 +18,7 @@
  * throws an exception if the skin color is 'inherit'
  */
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.checkbox.SetDisabledTest",
+    $classpath : "test.aria.widgets.form.checkbox.SetDisabledTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $dependencies : ["aria.utils.Json", "aria.utils.Dom"],
     $prototype : {

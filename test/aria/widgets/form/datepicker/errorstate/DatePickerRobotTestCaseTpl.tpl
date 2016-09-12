@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath : "test.aria.widgets.form.datepicker.errorstate.DatePickerTpl",
+    $classpath : "test.aria.widgets.form.datepicker.errorstate.DatePickerRobotTestCaseTpl",
     $hasScript : true
 }}
     {macro main()}

@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.labelClick.FocusTest",
+    $classpath : "test.aria.widgets.form.labelClick.FocusTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $dependencies : ["aria.utils.Caret", "aria.utils.Date"],
     $constructor : function () {

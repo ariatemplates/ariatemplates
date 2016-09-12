@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.multiautocomplete.BaseMultiAutoCompleteTestCase",
+    $classpath : "test.aria.widgets.form.multiautocomplete.MultiAutoCompleteRobotBase",
     $extends : "aria.jsunit.RobotTestCase",
     $dependencies : ["aria.utils.Type", "aria.utils.Math"],
     $constructor : function () {

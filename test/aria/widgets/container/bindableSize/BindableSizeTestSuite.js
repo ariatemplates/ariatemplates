@@ -18,9 +18,9 @@ Aria.classDefinition({
     $extends : "aria.jsunit.TestSuite",
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
-        this.addTests("test.aria.widgets.container.bindableSize.DialogTest");
-        this.addTests("test.aria.widgets.container.bindableSize.DivTest");
-        this.addTests("test.aria.widgets.container.bindableSize.FieldsetTest");
-        this.addTests("test.aria.widgets.container.bindableSize.TabpanelTest");
+        this.addTests("test.aria.widgets.container.bindableSize.DialogTestCase");
+        this.addTests("test.aria.widgets.container.bindableSize.DivTestCase");
+        this.addTests("test.aria.widgets.container.bindableSize.FieldsetTestCase");
+        this.addTests("test.aria.widgets.container.bindableSize.TabpanelTestCase");
     }
 });

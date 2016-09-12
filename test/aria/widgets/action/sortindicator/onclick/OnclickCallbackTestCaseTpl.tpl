@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath: "test.aria.widgets.action.sortindicator.onclick.OnclickCallbackTpl",
+    $classpath: "test.aria.widgets.action.sortindicator.onclick.OnclickCallbackTestCaseTpl",
     $hasScript: true,
     $dependencies : ["aria.utils.String"],
     $res:{

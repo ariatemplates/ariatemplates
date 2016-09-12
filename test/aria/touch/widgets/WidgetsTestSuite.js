@@ -21,15 +21,15 @@ Aria.classDefinition({
     $extends : "aria.jsunit.TestSuite",
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
-        this.addTests("test.aria.touch.widgets.DoubleSlider");
-        this.addTests("test.aria.touch.widgets.DoubleSliderError");
-        this.addTests("test.aria.touch.widgets.DoubleSliderSetValue");
-        this.addTests("test.aria.touch.widgets.DoubleSliderChange");
-        this.addTests("test.aria.touch.widgets.SingleSliderValue");
-        this.addTests("test.aria.touch.widgets.SingleSliderDrag");
-        this.addTests("test.aria.touch.widgets.SliderSwitch");
-        this.addTests("test.aria.touch.widgets.SliderSwitchDrag");
-        this.addTests("test.aria.touch.widgets.ButtonTouch");
+        this.addTests("test.aria.touch.widgets.DoubleSliderRobotTestCase");
+        this.addTests("test.aria.touch.widgets.DoubleSliderErrorTestCase");
+        this.addTests("test.aria.touch.widgets.DoubleSliderSetValueTestCase");
+        this.addTests("test.aria.touch.widgets.DoubleSliderChangeRobotTestCase");
+        this.addTests("test.aria.touch.widgets.SingleSliderValueTestCase");
+        this.addTests("test.aria.touch.widgets.SingleSliderDragRobotTestCase");
+        this.addTests("test.aria.touch.widgets.SliderSwitchTestCase");
+        this.addTests("test.aria.touch.widgets.SliderSwitchDragRobotTestCase");
+        this.addTests("test.aria.touch.widgets.ButtonTouchTestCase");
         this.addTests("test.aria.touch.widgets.popup.PopupTestCase");
     }
 });

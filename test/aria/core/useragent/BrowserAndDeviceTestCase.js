@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.core.useragent.BrowserAndDeviceTest",
+    $classpath : "test.aria.core.useragent.BrowserAndDeviceTestCase",
     $dependencies : ["test.aria.core.useragent.UseCases", "aria.core.Browser", "aria.utils.Device", "aria.utils.Array", "aria.utils.Type"],
     $extends : "aria.jsunit.TestCase",
 

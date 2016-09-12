@@ -1,5 +1,5 @@
 Aria.classDefinition({
-    $classpath : "test.aria.core.io.ResponseJson",
+    $classpath : "test.aria.core.io.ResponseJsonTestCase",
     $extends : "aria.jsunit.TestCase",
     $prototype : {
         setUp : function () {

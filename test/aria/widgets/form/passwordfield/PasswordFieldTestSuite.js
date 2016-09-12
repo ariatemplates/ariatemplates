@@ -19,6 +19,6 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
-        this.addTests("test.aria.widgets.form.passwordfield.PasswordField");
+        this.addTests("test.aria.widgets.form.passwordfield.PasswordFieldTestCase");
     }
 });

@@ -14,10 +14,10 @@
  */
 
 /**
- * Test case for test.aria.widgets.icon.fontIcon.FontIconTest
+ * Test case for test.aria.widgets.icon.fontIcon.FontIconTestCase
  */
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.icon.fontIcon.FontIconTest",
+    $classpath : "test.aria.widgets.icon.fontIcon.FontIconTestCase",
     $dependencies : ["aria.widgets.Icon"],
     $extends : "aria.jsunit.WidgetTestCase",
     $prototype : {

@@ -14,8 +14,8 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.multiautocomplete.test10.MultiAutoRangeHighlighted",
-    $extends : "test.aria.widgets.form.multiautocomplete.BaseMultiAutoCompleteTestCase",
+    $classpath : "test.aria.widgets.form.multiautocomplete.test10.MultiAutoRangeHighlightedRobotTestCase",
+    $extends : "test.aria.widgets.form.multiautocomplete.MultiAutoCompleteRobotBase",
     $prototype : {
 
         runTemplateTest : function () {

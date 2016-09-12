@@ -14,7 +14,7 @@
  */
 
 Aria.tplScriptDefinition({
-    $classpath : 'test.aria.templates.keyboardNavigation.actionWidgets.ActionWidgetsTestTplScript',
+    $classpath : 'test.aria.templates.keyboardNavigation.actionWidgets.ActionWidgetsRobotTestCaseTplScript',
 
     $prototype : {
         onButtonAction : function () {

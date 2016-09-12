@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.html.DisabledTraitTest",
+    $classpath : "test.aria.html.DisabledTraitTestCase",
     $extends : "aria.jsunit.WidgetTestCase",
     $dependencies : ["aria.html.Select", "aria.html.CheckBox", "aria.html.RadioButton", "aria.html.TextInput",
             "aria.utils.Json"],

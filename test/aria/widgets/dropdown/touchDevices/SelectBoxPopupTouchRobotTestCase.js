@@ -15,6 +15,6 @@
 var Aria = require("ariatemplates/Aria");
 
 module.exports = Aria.classDefinition({
-    $classpath : "test.aria.widgets.dropdown.touchDevices.SelectBoxPopupTouchTest",
-    $extends : require("./Base")
+    $classpath : "test.aria.widgets.dropdown.touchDevices.SelectBoxPopupTouchRobotTestCase",
+    $extends : require("./RobotBase")
 });

@@ -20,7 +20,7 @@ var ariaCoreJsonValidator = require("ariatemplates/core/JsonValidator");
 var currentContext = require("noder-js/currentContext");
 
 module.exports = Aria.classDefinition({
-    $classpath : "test.aria.templates.TplClassGeneratorTest",
+    $classpath : "test.aria.templates.TplClassGeneratorTestCase",
     $extends : require("ariatemplates/jsunit/TestCase"),
     $constructor : function () {
         this.$TestCase.constructor.call(this);

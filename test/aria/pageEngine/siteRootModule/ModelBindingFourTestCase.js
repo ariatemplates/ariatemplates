@@ -17,8 +17,8 @@
  * Test a binding with a listener on module data
  */
 Aria.classDefinition({
-    $classpath : "test.aria.pageEngine.siteRootModule.ModelBindingTestFour",
-    $extends : "test.aria.pageEngine.siteRootModule.ModelBindingTestTwo",
+    $classpath : "test.aria.pageEngine.siteRootModule.ModelBindingFourTestCase",
+    $extends : "test.aria.pageEngine.siteRootModule.ModelBindingTwoBase",
     $prototype : {
 
         _assertDataStructure : function () {

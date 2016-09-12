@@ -14,13 +14,13 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.pageEngine.siteRootModule.ModelBindingTest",
-    $extends : "test.aria.pageEngine.siteRootModule.SiteRootModuleBaseTestCase",
+    $classpath : "test.aria.pageEngine.siteRootModule.ModelBindingTestCase",
+    $extends : "test.aria.pageEngine.siteRootModule.SiteRootModuleBase",
     $dependencies : ["aria.utils.Json", "test.aria.pageEngine.testContents.modules.BoundModule1",
             "test.aria.pageEngine.testContents.modules.BoundModule2",
             "test.aria.pageEngine.testContents.modules.BoundModule3"],
     $constructor : function () {
-        this.$SiteRootModuleBaseTestCase.constructor.call(this);
+        this.$SiteRootModuleBase.constructor.call(this);
         this.$json = aria.utils.Json;
     },
     $prototype : {

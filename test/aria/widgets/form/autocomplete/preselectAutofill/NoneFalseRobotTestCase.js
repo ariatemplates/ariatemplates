@@ -14,8 +14,8 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.autocomplete.preselectAutofill.NoneFalseTest",
-    $extends : "test.aria.widgets.form.autocomplete.preselectAutofill.PreselectAutofillBaseTest",
+    $classpath : "test.aria.widgets.form.autocomplete.preselectAutofill.NoneFalseRobotTestCase",
+    $extends : "test.aria.widgets.form.autocomplete.preselectAutofill.PreselectAutofillRobotBase",
     $constructor : function () {
         this.autofill = false;
         this.preselect = "none";
@@ -34,6 +34,6 @@ Aria.classDefinition({
         this.allTestValues.noFreetext.dataModel[1] = undefined;
         this.allTestValues.noFreetext.dataModel[3] = undefined;
 
-        this.$PreselectAutofillBaseTest.constructor.call(this);
+        this.$PreselectAutofillRobotBase.constructor.call(this);
     }
 });

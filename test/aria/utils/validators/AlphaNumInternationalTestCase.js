@@ -17,7 +17,7 @@
  * Test cases for aria.utils.validators.AlphaInternational
  */
 Aria.classDefinition({
-    $classpath : "test.aria.utils.validators.AlphaNumInternational",
+    $classpath : "test.aria.utils.validators.AlphaNumInternationalTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.utils.validators.AlphaNumInternational"],
     $prototype : {

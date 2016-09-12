@@ -17,7 +17,7 @@
  * Test case for aria.widgets.form.Input
  */
 Aria.classDefinition({
-    $classpath : "test.aria.utils.Time",
+    $classpath : "test.aria.utils.TimeTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.utils.Date"],
     $prototype : {

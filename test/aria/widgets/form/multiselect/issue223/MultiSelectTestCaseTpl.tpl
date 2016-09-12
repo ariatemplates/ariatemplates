@@ -1,5 +1,5 @@
 {Template {
-	$classpath:'test.aria.widgets.form.multiselect.issue223.MultiSelectTpl',
+	$classpath:'test.aria.widgets.form.multiselect.issue223.MultiSelectTestCaseTpl',
 	$hasScript:false
 }}
 

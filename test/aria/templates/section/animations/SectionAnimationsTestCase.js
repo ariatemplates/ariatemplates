@@ -19,7 +19,7 @@
  * properly triggered in 3 different use cases.
  */
 Aria.classDefinition({
-    $classpath : "test.aria.templates.section.animations.SectionAnimations",
+    $classpath : "test.aria.templates.section.animations.SectionAnimationsTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $dependencies : ["aria.utils.css.Animations", "aria.utils.Dom"],
     $constructor : function () {

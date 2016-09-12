@@ -16,7 +16,7 @@
 
 
 Aria.classDefinition({
-    $classpath: "test.aria.templates.statements.escape.ExpressionEscapeTestBase",
+    $classpath: "test.aria.templates.statements.escape.ExpressionEscapeBase",
     $extends: "aria.jsunit.TemplateTestCase",
     $dependencies: ["aria.utils.String", "aria.utils.Type"],
 

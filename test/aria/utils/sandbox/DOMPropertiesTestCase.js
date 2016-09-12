@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.utils.sandbox.DOMPropertiesTest",
+    $classpath : "test.aria.utils.sandbox.DOMPropertiesTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.utils.sandbox.DOMProperties"],
     $prototype : {

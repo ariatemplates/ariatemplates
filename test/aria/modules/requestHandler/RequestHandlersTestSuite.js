@@ -22,10 +22,10 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
-        this.addTests("test.aria.modules.requestHandler.environment.RequestHandler");
-        this.addTests("test.aria.modules.requestHandler.RequestHandlerTest");
-        this.addTests("test.aria.modules.requestHandler.XMLRequestHandlerTest");
-        this.addTests("test.aria.modules.requestHandler.JSONRequestHandlerTest");
-        this.addTests("test.aria.modules.requestHandler.issue459.RequestHandlerHeadersTest");
+        this.addTests("test.aria.modules.requestHandler.environment.RequestHandlerTestCase");
+        this.addTests("test.aria.modules.requestHandler.RequestHandlerTestCase");
+        this.addTests("test.aria.modules.requestHandler.XMLRequestHandlerTestCase");
+        this.addTests("test.aria.modules.requestHandler.JSONRequestHandlerTestCase");
+        this.addTests("test.aria.modules.requestHandler.issue459.RequestHandlerHeadersTestCase");
     }
 });

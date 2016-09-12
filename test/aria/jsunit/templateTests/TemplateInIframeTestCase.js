@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.jsunit.templateTests.TemplateInIframe",
+    $classpath : "test.aria.jsunit.templateTests.TemplateInIframeTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $constructor : function () {
         this.$TemplateTestCase.constructor.call(this);

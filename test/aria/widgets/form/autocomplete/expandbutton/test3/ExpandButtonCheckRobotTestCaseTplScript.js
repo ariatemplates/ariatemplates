@@ -14,7 +14,7 @@
  */
 
 Aria.tplScriptDefinition({
-    $classpath : "test.aria.widgets.form.autocomplete.expandbutton.test3.ExpandButtonCheckTplScript",
+    $classpath : "test.aria.widgets.form.autocomplete.expandbutton.test3.ExpandButtonCheckRobotTestCaseTplScript",
     $dependencies : ["aria.resources.handlers.LCResourcesHandler"],
     $constructor : function () {
         this.dateUtils = aria.utils.Date;

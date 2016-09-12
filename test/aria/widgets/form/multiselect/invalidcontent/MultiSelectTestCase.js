@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.multiselect.invalidcontent.MultiSelect",
+    $classpath : "test.aria.widgets.form.multiselect.invalidcontent.MultiSelectTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $dependencies : ["aria.widgets.controllers.MultiSelectController"],
     $constructor : function () {

@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.embed.placeholder.PlaceHolderTest",
+    $classpath : "test.aria.embed.placeholder.PlaceHolderTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $dependencies : ["aria.embed.PlaceholderManager", "aria.core.JsonValidator",
             "test.aria.embed.placeholder.resources.ContentProviderOne",

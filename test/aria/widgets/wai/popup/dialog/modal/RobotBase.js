@@ -30,11 +30,11 @@ var Model = require('./Model');
 ////////////////////////////////////////////////////////////////////////////////
 
 module.exports = Aria.classDefinition({
-    $classpath : 'test.aria.widgets.wai.popup.dialog.modal.Base',
-    $extends : require('test/EnhancedRobotTestCase'),
+    $classpath : 'test.aria.widgets.wai.popup.dialog.modal.RobotBase',
+    $extends : require('test/EnhancedRobotBase'),
 
     $constructor : function () {
-        this.$EnhancedRobotTestCase.constructor.call(this);
+        this.$EnhancedRobotBase.constructor.call(this);
 
         this.setTestEnv({
             data: Model.buildData(this.indexOfWidgetToTest),

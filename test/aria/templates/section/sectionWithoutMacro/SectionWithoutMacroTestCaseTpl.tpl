@@ -1,5 +1,5 @@
 {Template {
-	$classpath : "test.aria.templates.section.sectionWithoutMacro.SectionWithoutMacroTpl"
+	$classpath : "test.aria.templates.section.sectionWithoutMacro.SectionWithoutMacroTestCaseTpl"
 }}
 
 	{macro main()}

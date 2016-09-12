@@ -17,7 +17,7 @@
  * Test for the RequestMgr class
  */
 Aria.classDefinition({
-    $classpath : "test.aria.modules.requestMgrSyncTest.SyncTest",
+    $classpath : "test.aria.modules.requestMgrSyncTest.SyncTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.modules.RequestMgr", "test.aria.modules.IoFilter"],
     $constructor : function () {

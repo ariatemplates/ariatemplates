@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.pageEngine.pageProviders.BaseProviderWithBundlesTest",
+    $classpath : "test.aria.pageEngine.pageProviders.ProviderWithBundlesTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.pageEngine.pageProviders.BasePageProvider"],
     $prototype : {

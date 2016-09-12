@@ -17,8 +17,8 @@
  * Test a simple binding with one module
  */
 Aria.classDefinition({
-    $classpath : "test.aria.pageEngine.siteRootModule.ModelBindingTestOne",
-    $extends : "test.aria.pageEngine.siteRootModule.SiteRootModuleBaseTestCase",
+    $classpath : "test.aria.pageEngine.siteRootModule.ModelBindingOneTestCase",
+    $extends : "test.aria.pageEngine.siteRootModule.SiteRootModuleBase",
     $prototype : {
         testAsyncMultipleBinding : function () {
             this._createSiteModule({

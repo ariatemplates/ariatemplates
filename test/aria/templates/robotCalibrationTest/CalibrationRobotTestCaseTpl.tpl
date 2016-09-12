@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath:"test.aria.templates.robotCalibrationTest.RobotCalibrationTestTpl"
+    $classpath:"test.aria.templates.robotCalibrationTest.CalibrationRobotTestCaseTpl"
 }}
 
     {macro main()}

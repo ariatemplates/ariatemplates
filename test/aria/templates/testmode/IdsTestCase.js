@@ -17,7 +17,7 @@
  * Test different API for the section statement
  */
 Aria.classDefinition({
-    $classpath : "test.aria.templates.testmode.TestIdsTestCase",
+    $classpath : "test.aria.templates.testmode.IdsTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $dependencies : ["aria.utils.Dom"],
     $constructor : function () {

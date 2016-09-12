@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath:"test.aria.widgets.defaults.CheckDefaultsTestTpl"
+    $classpath:"test.aria.widgets.defaults.CheckDefaultsTestCaseTpl"
 }}
 
     {macro main()}

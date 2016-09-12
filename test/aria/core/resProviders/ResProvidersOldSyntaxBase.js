@@ -18,7 +18,7 @@ var asyncRequire = require("noder-js/asyncRequire").create(module);
 var eventBus = require("./EventBus");
 
 module.exports = Aria.classDefinition({
-    $classpath : "test.aria.core.resProviders.ResProvidersOldSyntaxTest",
+    $classpath : "test.aria.core.resProviders.ResProvidersOldSyntaxBase",
     $extends : ariaJsunitTestCase,
     $constructor : function () {
         this.$TestCase.$constructor.apply(this, arguments);

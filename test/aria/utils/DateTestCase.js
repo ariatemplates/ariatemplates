@@ -17,7 +17,7 @@
  * Test case for aria.utils.Date
  */
 Aria.classDefinition({
-    $classpath : 'test.aria.utils.Date',
+    $classpath : 'test.aria.utils.DateTestCase',
     $extends : 'aria.jsunit.TestCase',
     $dependencies : ["aria.utils.Date", "aria.core.environment.Environment"],
     $prototype : {

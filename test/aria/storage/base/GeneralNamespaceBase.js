@@ -14,8 +14,8 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.storage.base.GeneralNamespace",
-    $extends : "test.aria.storage.base.BaseTests",
+    $classpath : "test.aria.storage.base.GeneralNamespaceBase",
+    $extends : "test.aria.storage.base.Base",
     $prototype : {
         /**
          * Check what happens when you use namespaces, one namespaced shouldn't affect the others

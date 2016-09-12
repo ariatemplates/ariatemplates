@@ -3,7 +3,7 @@
  * style to the third tab that is not transitioning
  */
 Aria.classDefinition({
-    $classpath : "test.performance.tabbar.ChangeState",
+    $classpath : "test.performance.tabbar.ChangeStateTestCase",
     $extends : "aria.jsunit.WidgetTestCase",
     $dependencies : ["aria.utils.Json", "aria.widgets.container.Tab", "aria.widgets.container.TabPanel"],
     $prototype : {

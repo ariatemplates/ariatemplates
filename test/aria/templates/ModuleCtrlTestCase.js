@@ -17,7 +17,7 @@
  * Module Controller test class
  */
 Aria.classDefinition({
-    $classpath : "test.aria.templates.ModuleCtrlTest",
+    $classpath : "test.aria.templates.ModuleCtrlTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.templates.ModuleCtrlFactory"],
     $constructor : function () {

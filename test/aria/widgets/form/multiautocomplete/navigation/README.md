@@ -24,7 +24,7 @@ Concerning [`Helpers.js`](./Helpers.js), as its name suggests, it holds a set of
 
 ## The actual test files
 
-There is one base class which sets up multiple things ([`BaseTestCase.js`](./BaseTestCase.js)):
+There is one base class which sets up multiple things ([`BaseTestCase.js`](./RobotBase.js)):
 
 * helpers, shortcuts are put in place
 * utility methods are defined: to simulate user actions and to do checks for the tests. They all support the invocation through the sequencing system invoked above (proper synchronization is done).

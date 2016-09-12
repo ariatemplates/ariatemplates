@@ -17,7 +17,7 @@
  * Test case for the interfaces class.
  */
 Aria.classDefinition({
-    $classpath : "test.aria.core.InterfacesTest",
+    $classpath : "test.aria.core.InterfacesTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["test.aria.core.test.ImplementInterface1", "test.aria.core.test.ImplementInterface2",
             "test.aria.core.test.InheritAndImplementInterface"],

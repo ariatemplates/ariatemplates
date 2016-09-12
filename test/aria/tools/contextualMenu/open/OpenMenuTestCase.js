@@ -17,7 +17,7 @@
  * Check that the contextual menu can be launched from method
  */
 Aria.classDefinition({
-    $classpath : "test.aria.tools.contextualMenu.open.OpenMenuTest",
+    $classpath : "test.aria.tools.contextualMenu.open.OpenMenuTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $dependencies : ["aria.tools.contextual.ContextualMenu",
             "test.aria.tools.contextualMenu.ContextualMenuHelper"],

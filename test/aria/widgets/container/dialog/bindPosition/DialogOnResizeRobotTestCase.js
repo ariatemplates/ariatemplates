@@ -17,10 +17,10 @@
  * Test the binding of xpos, ypos and center for dialog widgets when resizing the window
  */
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.container.dialog.bindPosition.DialogOnResizeTestCase",
-    $extends : "test.aria.widgets.container.dialog.MovableDialogBaseTestCase",
+    $classpath : "test.aria.widgets.container.dialog.bindPosition.DialogOnResizeRobotTestCase",
+    $extends : "test.aria.widgets.container.dialog.MovableDialogRobotBase",
     $constructor : function () {
-        this.$MovableDialogBaseTestCase.constructor.call(this);
+        this.$MovableDialogRobotBase.constructor.call(this);
         this.testData = {
             firstDialog : {
                 visible : true,

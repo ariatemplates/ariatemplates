@@ -18,7 +18,7 @@
  * template
  */
 Aria.classDefinition({
-    $classpath : "test.aria.utils.Event",
+    $classpath : "test.aria.utils.EventTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.utils.Event", "aria.utils.SynEvents"],
     $prototype : {

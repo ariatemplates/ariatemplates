@@ -20,7 +20,7 @@ Aria.classDefinition({
     // BE CAREFUL WHEN CHANGING THIS TEST, AS IT IS USED AS A BASE CLASS BY ModuleReloadTestCase2
     // ModuleReloadTestCase1 is to test standard sub-modules reload
     // ModuleReloadTestCase2 overrides some methods for custom sub-modules reload
-    $classpath : "test.aria.modules.moduleReload.ModuleReloadTestCase1",
+    $classpath : "test.aria.modules.moduleReload.ModuleReload1Base",
     $extends : "aria.jsunit.TemplateTestCase",
     $dependencies : ["aria.templates.ModuleCtrlFactory", "aria.core.environment.Customizations"],
     $constructor : function () {

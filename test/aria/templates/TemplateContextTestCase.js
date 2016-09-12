@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.templates.TemplateContextTest",
+    $classpath : "test.aria.templates.TemplateContextTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.utils.Dom", "aria.templates.TemplateCtxt", "aria.templates.Layout",
             "aria.templates.CfgBeans", "aria.templates.DomElementWrapper"],

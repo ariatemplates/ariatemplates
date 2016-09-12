@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath : "test.aria.touch.widgets.DoubleSliderTpl",
+    $classpath : "test.aria.touch.widgets.DoubleSliderRobotTestCaseTpl",
     $hasScript : true,
     $wlibs : {
         "touch" : "aria.touch.widgets.TouchWidgetLib"

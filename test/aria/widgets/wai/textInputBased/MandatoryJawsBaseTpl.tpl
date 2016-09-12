@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath : "test.aria.widgets.wai.textInputBased.MandatoryJawsTestCaseTpl"
+    $classpath : "test.aria.widgets.wai.textInputBased.MandatoryJawsBaseTpl"
 }}
     {macro main()}
         <div style="margin:10px;font-size:+3;font-weight:bold;">Mandatory accessibility sample</div>

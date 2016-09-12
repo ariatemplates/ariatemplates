@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath: "test.aria.widgets.form.checkbox.nullBoundValue.CheckBoxNullBoundValueTestTpl"
+    $classpath: "test.aria.widgets.form.checkbox.nullBoundValue.CheckBoxNullBoundValueTestCaseTpl"
 }}
 {macro main()}
     {var d = {value:null}/}

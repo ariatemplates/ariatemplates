@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 Aria.classDefinition({
-    $classpath : "test.aria.utils.DeviceTest",
+    $classpath : "test.aria.utils.DeviceTestCase",
     $dependencies : ["aria.utils.Device", "aria.core.Browser", "aria.utils.Array", "aria.utils.FrameATLoader", "aria.utils.Function"],
     $extends : "aria.jsunit.TestCase",
 

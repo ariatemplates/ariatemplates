@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.multiselect.issue312.Common",
+    $classpath : "test.aria.widgets.form.multiselect.issue312.CommonBase",
     $extends : "aria.jsunit.TemplateTestCase",
     $dependencies : ["aria.utils.Json"],
     $prototype : {

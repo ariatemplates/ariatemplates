@@ -14,13 +14,13 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.storage.localStorage.Namespace",
+    $classpath : "test.aria.storage.localStorage.NamespaceTestCase",
     $dependencies : ["aria.storage.LocalStorage"],
-    $extends : "test.aria.storage.base.GeneralNamespace",
+    $extends : "test.aria.storage.base.GeneralNamespaceBase",
     $constructor : function () {
         this.storageLocation = "localStorage";
 
-        this.$GeneralNamespace.constructor.call(this);
+        this.$GeneralNamespaceBase.constructor.call(this);
     },
     $prototype : {
         /**
@@ -28,7 +28,7 @@ Aria.classDefinition({
          */
         testNamespaceAPI : function () {
             if (this.canRunHTML5Tests(false) || this.canRunUserDataTests()) {
-                this.$GeneralNamespace.testNamespaceAPI.call(this);
+                this.$GeneralNamespaceBase.testNamespaceAPI.call(this);
             }
         },
 
@@ -37,7 +37,7 @@ Aria.classDefinition({
          */
         testNamespaceEvents : function () {
             if (this.canRunHTML5Tests(false) || this.canRunUserDataTests()) {
-                this.$GeneralNamespace.testNamespaceEvents.call(this);
+                this.$GeneralNamespaceBase.testNamespaceEvents.call(this);
             }
         }
     }

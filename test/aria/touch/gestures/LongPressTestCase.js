@@ -17,13 +17,13 @@
  * Test case for aria.touch.gestures.LongPress
  */
 Aria.classDefinition({
-    $classpath : "test.aria.touch.gestures.LongPress",
+    $classpath : "test.aria.touch.gestures.LongPressTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $dependencies : ["aria.utils.Dom", "aria.utils.FireDomEvent", "aria.core.Browser", "aria.touch.Event"],
     $constructor : function () {
         this.$TemplateTestCase.constructor.call(this);
         this.setTestEnv({
-            template : "test.aria.touch.gestures.LongPressTpl"
+            template : "test.aria.touch.gestures.LongPressTestCaseTpl"
         });
         this.domUtil = aria.utils.Dom;
         this.fireEvent = aria.utils.FireDomEvent;

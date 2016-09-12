@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.templates.repeater.testFive.RepeaterFive",
+    $classpath : "test.aria.templates.repeater.testFive.RepeaterFiveTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $dependencies : ["aria.utils.Json"],
     $constructor : function () {

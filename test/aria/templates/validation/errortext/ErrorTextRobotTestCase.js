@@ -15,10 +15,10 @@
 
 /**
  * Check that error text persistancy works with autocomplete
- * @class test.aria.templates.validation.errortext.ErrorTextTestCase
+ * @class test.aria.templates.validation.errortext.ErrorTextRobotTestCase
  */
 Aria.classDefinition({
-    $classpath : "test.aria.templates.validation.errortext.ErrorTextTestCase",
+    $classpath : "test.aria.templates.validation.errortext.ErrorTextRobotTestCase",
     $extends : "aria.jsunit.RobotTestCase",
     $dependencies : ["aria.resources.handlers.LCResourcesHandler"],
     $constructor : function () {

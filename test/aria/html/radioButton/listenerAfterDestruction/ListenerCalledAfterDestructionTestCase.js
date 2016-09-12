@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.html.radioButton.listenerAfterDestruction.ListenerCalledAfterDestructionTest",
+    $classpath : "test.aria.html.radioButton.listenerAfterDestruction.ListenerCalledAfterDestructionTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $constructor : function () {
         this.$TemplateTestCase.constructor.call(this);

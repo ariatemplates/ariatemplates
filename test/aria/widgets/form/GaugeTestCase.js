@@ -17,7 +17,7 @@
  * Test case for aria.widgets.form.GaugeTest
  */
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.GaugeTest",
+    $classpath : "test.aria.widgets.form.GaugeTestCase",
     $dependencies : ["aria.jsunit.helpers.OutObj"],
     $extends : "aria.jsunit.WidgetTestCase",
     $prototype : {

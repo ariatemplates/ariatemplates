@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.autocomplete.popupposition.AutoCompleteMoveTestCase",
+    $classpath : "test.aria.widgets.form.autocomplete.popupposition.AutoCompleteMoveRobotTestCase",
     $extends : "aria.jsunit.RobotTestCase",
     $dependencies : ["aria.popups.PopupManager", "aria.utils.Dom"],
     $constructor : function () {

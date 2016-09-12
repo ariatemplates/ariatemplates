@@ -19,9 +19,9 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
-        this.addTests("test.aria.widgets.wai.autoComplete.AutoCompleteWaiTestCase");
-        this.addTests("test.aria.widgets.wai.autoComplete.AutoCompleteGlobalNonWaiTestCase");
-        this.addTests("test.aria.widgets.wai.autoComplete.AutoCompleteGlobalWaiTestCase");
-        this.addTests("test.aria.widgets.wai.autoComplete.AutoCompleteNonWaiTestCase");
+        this.addTests("test.aria.widgets.wai.autoComplete.AutoCompleteWaiRobotTestCase");
+        this.addTests("test.aria.widgets.wai.autoComplete.AutoCompleteGlobalNonWaiRobotTestCase");
+        this.addTests("test.aria.widgets.wai.autoComplete.AutoCompleteGlobalWaiRobotTestCase");
+        this.addTests("test.aria.widgets.wai.autoComplete.AutoCompleteNonWaiRobotTestCase");
     }
 });

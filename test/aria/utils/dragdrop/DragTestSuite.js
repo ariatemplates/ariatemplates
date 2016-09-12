@@ -22,15 +22,15 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
-        this.addTests("test.aria.utils.dragdrop.ScrollIntoViewThenDragTest");
-        this.addTests("test.aria.utils.dragdrop.DragErrorTest");
-        this.addTests("test.aria.utils.dragdrop.DragBasicTest");
-        this.addTests("test.aria.utils.dragdrop.DragConstraintTest");
-        this.addTests("test.aria.utils.dragdrop.OutOfBoundaryTest");
-        this.addTests("test.aria.utils.dragdrop.DragProxyTest");
-        this.addTests("test.aria.utils.dragdrop.DragDropBean");
-        this.addTests("test.aria.utils.dragdrop.issue397.MovableScrollbarTest");
-        this.addTests("test.aria.utils.dragdrop.fixedElements.FixedElementTest");
+        this.addTests("test.aria.utils.dragdrop.ScrollIntoViewThenDragRobotTestCase");
+        this.addTests("test.aria.utils.dragdrop.DragErrorTestCase");
+        this.addTests("test.aria.utils.dragdrop.DragBasicRobotTestCase");
+        this.addTests("test.aria.utils.dragdrop.DragConstraintRobotTestCase");
+        this.addTests("test.aria.utils.dragdrop.OutOfBoundaryRobotTestCase");
+        this.addTests("test.aria.utils.dragdrop.DragProxyRobotTestCase");
+        this.addTests("test.aria.utils.dragdrop.DragDropBeanTestCase");
+        this.addTests("test.aria.utils.dragdrop.issue397.MovableScrollbarRobotTestCase");
+        this.addTests("test.aria.utils.dragdrop.fixedElements.FixedElementRobotTestCase");
 
     }
 });

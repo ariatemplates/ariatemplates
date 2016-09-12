@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.utils.overlay.loadingIndicator.scrollableBody.ScrollableBodyTest",
+    $classpath : "test.aria.utils.overlay.loadingIndicator.scrollableBody.ScrollableBodyTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $constructor : function () {
         this.$TemplateTestCase.constructor.call(this);

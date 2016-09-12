@@ -22,12 +22,12 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
-        this.addTests("test.aria.widgets.wai.datePicker.DatePickerJawsTest1");
+        this.addTests("test.aria.widgets.wai.datePicker.DatePicker1JawsTestCase");
 
-        this.addTests("test.aria.widgets.wai.autoComplete.AutoCompleteJawsTest1");
-        this.addTests("test.aria.widgets.wai.autoComplete.AutoCompleteJawsTest2");
-        this.addTests("test.aria.widgets.wai.autoComplete.preselect.AutoCompletePreselectJawsTest1");
-        this.addTests("test.aria.widgets.wai.autoComplete.preselect.AutoCompletePreselectJawsTest2");
+        this.addTests("test.aria.widgets.wai.autoComplete.AutoComplete1JawsTestCase");
+        this.addTests("test.aria.widgets.wai.autoComplete.AutoComplete2JawsTestCase");
+        this.addTests("test.aria.widgets.wai.autoComplete.preselect.AutoCompletePreselect1JawsTestCase");
+        this.addTests("test.aria.widgets.wai.autoComplete.preselect.AutoCompletePreselect2JawsTestCase");
 
         this.addTests("test.aria.widgets.wai.errorlist.binding.ErrorListBindingJawsTestCase");
         this.addTests("test.aria.widgets.wai.errorlist.titleTag.ErrorListTitleTagJawsTestCase");
@@ -40,7 +40,7 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.wai.input.radiobutton.RadioButtonGroupJawsTestCase");
         this.addTests("test.aria.widgets.wai.input.radiobutton.initiallyDisabled.InitiallyDisabledRadioButtonsJawsTestCase");
         this.addTests("test.aria.widgets.wai.input.label.WaiInputLabelJawsTestSuite");
-        this.addTests("test.aria.widgets.wai.iconLabel.IconLabelJawsTest");
+        this.addTests("test.aria.widgets.wai.iconLabel.IconLabelJawsTestCase");
 
         this.addTests("test.aria.widgets.wai.textInputBased.NumberFieldMandatoryJawsTestCase");
         this.addTests("test.aria.widgets.wai.textInputBased.TextAreaMandatoryJawsTestCase");
@@ -50,7 +50,7 @@ Aria.classDefinition({
 
         this.addTests("test.aria.widgets.wai.input.selectBox.SelectBoxSuggestionsJawsTestCase");
 
-        this.addTests("test.aria.widgets.wai.multiselect.MultiSelectJawsTest");
+        this.addTests("test.aria.widgets.wai.multiselect.MultiSelectJawsTestCase");
 
         this.addTests("test.aria.widgets.wai.popup.errortooltip.ErrorTooltipJawsTestSuite");
         this.addTests("test.aria.widgets.wai.popup.dialog.focusableItems.FocusableItemsJawsTestSuite");

@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath:"test.aria.widgets.form.selectbox.checkTypeLetters.SelectBoxTypeAllLettersTpl",
+    $classpath:"test.aria.widgets.form.selectbox.checkTypeLetters.SelectBoxTypeAllLettersTestCaseTpl",
     $hasScript:false
 }}
 

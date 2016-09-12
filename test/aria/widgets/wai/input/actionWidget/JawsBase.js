@@ -17,16 +17,16 @@ var Aria = require('ariatemplates/Aria');
 
 var ariaUtilsArray = require('ariatemplates/utils/Array');
 
-var EnhancedJawsTestCase = require('test/EnhancedJawsTestCase');
+var EnhancedJawsTestCase = require('test/EnhancedJawsBase');
 
 
 
 module.exports = Aria.classDefinition({
-    $classpath : 'test.aria.widgets.wai.input.actionWidget.Base',
+    $classpath : 'test.aria.widgets.wai.input.actionWidget.JawsBase',
     $extends : EnhancedJawsTestCase,
 
     $constructor : function () {
-        this.$EnhancedJawsTestCase.constructor.call(this);
+        this.$EnhancedJawsBase.constructor.call(this);
 
         this.setTestEnv({
             template : 'test.aria.widgets.wai.input.actionWidget.Tpl',

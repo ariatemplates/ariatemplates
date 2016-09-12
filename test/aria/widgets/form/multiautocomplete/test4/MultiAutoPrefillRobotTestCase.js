@@ -14,8 +14,8 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.multiautocomplete.test4.MultiAutoPrefill",
-    $extends : "test.aria.widgets.form.multiautocomplete.BaseMultiAutoCompleteTestCase",
+    $classpath : "test.aria.widgets.form.multiautocomplete.test4.MultiAutoPrefillRobotTestCase",
+    $extends : "test.aria.widgets.form.multiautocomplete.MultiAutoCompleteRobotBase",
     $constructor : function () {
 
         this.data = {
@@ -23,7 +23,7 @@ Aria.classDefinition({
             freeText : true
         };
 
-        this.$BaseMultiAutoCompleteTestCase.constructor.call(this);
+        this.$MultiAutoCompleteRobotBase.constructor.call(this);
 
     },
     $prototype : {

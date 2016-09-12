@@ -14,7 +14,7 @@
  */
 
 Aria.tplScriptDefinition({
-    $classpath : "test.aria.widgets.action.sortindicator.onclick.OnclickCallbackTplScript",
+    $classpath : "test.aria.widgets.action.sortindicator.onclick.OnclickCallbackTestCaseTplScript",
     $statics : {
         weekDays : ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"],
         months : ["JAN", "FEB", "MAR", "APR", "JUN", "JUL", "SEP", "OCT", "NOV", "DEC"]

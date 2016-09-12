@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.wai.input.checkbox.CheckboxDisabledBaseJawsTestCase",
+    $classpath : "test.aria.widgets.wai.input.checkbox.CheckboxDisabledJawsBase",
     $extends : "aria.jsunit.JawsTestCase",
     $dependencies : ["aria.utils.Json"],
     $constructor : function () {

@@ -1,5 +1,5 @@
 {Template {
-   $classpath : "test.aria.widgets.form.autocomplete.issue315.OpenDropDownFromButtonTestTpl",
+   $classpath : "test.aria.widgets.form.autocomplete.issue315.OpenDropDownFromButtonTestCaseTpl",
    $dependencies : ["test.aria.widgets.form.autocomplete.issue315.Handler"]
 }}
 

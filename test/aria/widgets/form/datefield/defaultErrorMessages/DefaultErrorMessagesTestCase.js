@@ -14,13 +14,13 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.datefield.defaultErrorMessages.DefaultErrorMessagesTest",
-    $extends : "test.aria.widgets.form.BaseDefaultErrorMessagesTest",
+    $classpath : "test.aria.widgets.form.datefield.defaultErrorMessages.DefaultErrorMessagesTestCase",
+    $extends : "test.aria.widgets.form.DefaultErrorMessagesBase",
     $dependencies : ["aria.utils.Array", "aria.utils.Json"],
     $constructor : function () {
         // ---------------------------------------------------------------------
 
-        this.$BaseDefaultErrorMessagesTest.constructor.call(
+        this.$DefaultErrorMessagesBase.constructor.call(
             this,
             "DateField",
             [

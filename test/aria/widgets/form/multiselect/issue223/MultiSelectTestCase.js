@@ -1,5 +1,5 @@
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.multiselect.issue223.MultiSelect",
+    $classpath : "test.aria.widgets.form.multiselect.issue223.MultiSelectTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $prototype : {
 

@@ -14,7 +14,7 @@
  */
 
 Aria.tplScriptDefinition({
-    $classpath : "test.aria.touch.gestures.LongPressTplScript",
+    $classpath : "test.aria.touch.gestures.LongPressTestCaseTplScript",
     $constructor : function () {
         this.data = {};
     },

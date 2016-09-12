@@ -17,17 +17,17 @@
  * Test for the IO class, limited to the jsonp part
  */
 Aria.classDefinition({
-    $classpath : "test.aria.core.io.JSONPTest",
-    $extends : "test.aria.core.io.BaseIOTest",
+    $classpath : "test.aria.core.io.JSONPTestCase",
+    $extends : "test.aria.core.io.IOBase",
     $dependencies : ["test.aria.core.test.IOFilterSample"],
     $constructor : function () {
-        this.$BaseIOTest.constructor.call(this);
+        this.$IOBase.constructor.call(this);
         this.defaultTestTimeout = 10000;
     },
     $prototype : {
         tearDown : function () {
             aria.core.IO.$unregisterListeners(this);
-            this.$BaseIOTest.tearDown.call(this);
+            this.$IOBase.tearDown.call(this);
         },
 
         /**

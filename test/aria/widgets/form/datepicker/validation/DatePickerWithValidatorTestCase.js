@@ -1,5 +1,5 @@
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.datepicker.validation.DatePickerWithValidatorTest",
+    $classpath : "test.aria.widgets.form.datepicker.validation.DatePickerWithValidatorTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $constructor : function () {
         this.$TemplateTestCase.constructor.call(this);

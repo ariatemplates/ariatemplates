@@ -14,10 +14,10 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.container.dialog.escKey.multipleDialogs.EscapeOnModalAndNonModalTest",
-    $extends : "test.aria.widgets.container.dialog.escKey.multipleDialogs.EscapeOnModalTest",
+    $classpath : "test.aria.widgets.container.dialog.escKey.multipleDialogs.EscapeOnModalAndNonModalTestCase",
+    $extends : "test.aria.widgets.container.dialog.escKey.multipleDialogs.EscapeOnModalBase",
     $constructor : function () {
-        this.$EscapeOnModalTest.constructor.call(this);
+        this.$EscapeOnModalBase.constructor.call(this);
         this._data.modal = [true, false, true];
     },
     $prototype : {

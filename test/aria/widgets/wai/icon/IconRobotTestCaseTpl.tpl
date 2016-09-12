@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath: 'test.aria.widgets.wai.icon.IconTestTpl',
+    $classpath: 'test.aria.widgets.wai.icon.IconRobotTestCaseTpl',
     $hasScript: true,
     $css: ['test.aria.widgets.wai.icon.IconTestTplCSS']
 }}

@@ -18,9 +18,9 @@ var Aria = require('ariatemplates/Aria');
 
 
 module.exports = Aria.classDefinition({
-    $classpath : 'test.aria.templates.keyboardNavigation.dialog.escape.DialogEscapeAutoComplete',
+    $classpath : 'test.aria.templates.keyboardNavigation.dialog.escape.DialogEscapeAutoCompleteRobotTestCase',
 
-    $extends : require('./Base'),
+    $extends : require('./RobotBase'),
 
     $statics : {
         idOfWidgetToTest: 'autoComplete'

@@ -14,12 +14,12 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.wai.input.label.LabelJawsTestCase",
+    $classpath : "test.aria.widgets.wai.input.label.LabelJawsBase",
     $extends : "aria.jsunit.JawsTestCase",
     $constructor : function () {
         this.$JawsTestCase.constructor.call(this);
         this.setTestEnv({
-            template : "test.aria.widgets.wai.input.label.LabelJawsTestCaseTpl"
+            template : "test.aria.widgets.wai.input.label.LabelJawsBaseTpl"
         });
     },
     $prototype : {

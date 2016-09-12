@@ -14,9 +14,9 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.storage.base.GeneralSerialize",
+    $classpath : "test.aria.storage.base.GeneralSerializeBase",
     $dependencies : ["aria.utils.Type"],
-    $extends : "test.aria.storage.base.BaseTests",
+    $extends : "test.aria.storage.base.Base",
     $prototype : {
         testDefaultCorrectSerialization : function () {
             var storage = new this.storageClass();

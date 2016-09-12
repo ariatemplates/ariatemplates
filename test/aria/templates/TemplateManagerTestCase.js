@@ -17,7 +17,7 @@
  * Test for aria.templates.TemplateManager
  */
 Aria.classDefinition({
-    $classpath : 'test.aria.templates.TemplateManagerTest',
+    $classpath : 'test.aria.templates.TemplateManagerTestCase',
     $extends : 'aria.jsunit.TestCase',
     $dependencies : ['test.aria.templates.test.UnloadFilter'],
     $constructor : function () {

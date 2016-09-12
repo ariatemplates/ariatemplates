@@ -17,7 +17,7 @@
  * Test case for aria.utils.Delegate
  */
 Aria.classDefinition({
-    $classpath : "test.aria.utils.IdManager",
+    $classpath : "test.aria.utils.IdManagerTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.utils.IdManager", "aria.utils.Array"],
     $prototype : {

@@ -14,8 +14,8 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.storage.base.GeneralEvents",
-    $extends : "test.aria.storage.base.BaseTests",
+    $classpath : "test.aria.storage.base.GeneralEventsBase",
+    $extends : "test.aria.storage.base.Base",
     $prototype : {
         testEvents : function () {
             var one = new this.storageClass();

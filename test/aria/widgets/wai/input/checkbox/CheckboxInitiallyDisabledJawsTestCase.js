@@ -15,9 +15,9 @@
 
 Aria.classDefinition({
     $classpath : "test.aria.widgets.wai.input.checkbox.CheckboxInitiallyDisabledJawsTestCase",
-    $extends : "test.aria.widgets.wai.input.checkbox.CheckboxDisabledBaseJawsTestCase",
+    $extends : "test.aria.widgets.wai.input.checkbox.CheckboxDisabledJawsBase",
     $constructor : function () {
-        this.$CheckboxDisabledBaseJawsTestCase.constructor.call(this);
+        this.$CheckboxDisabledJawsBase.constructor.call(this);
         this.setupCheckedDisabledState();
     }
 });

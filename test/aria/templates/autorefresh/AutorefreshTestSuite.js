@@ -22,9 +22,9 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
         this.addTests("test.aria.templates.autorefresh.AutorefreshTestCase");
-        this.addTests("test.aria.templates.autorefresh.AutorefreshTestCase2");
-        this.addTests("test.aria.templates.autorefresh.AutorefreshTestCase4");
-        this.addTests("test.aria.templates.autorefresh.AutorefreshTestCase5");
+        this.addTests("test.aria.templates.autorefresh.Autorefresh2TestCase");
+        this.addTests("test.aria.templates.autorefresh.Autorefresh4TestCase");
+        this.addTests("test.aria.templates.autorefresh.Autorefresh5TestCase");
         this.addTests("test.aria.templates.autorefresh.MultipleTestCase");
     }
 });

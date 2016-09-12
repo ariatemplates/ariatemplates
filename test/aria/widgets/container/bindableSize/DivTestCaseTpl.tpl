@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 {Template {
-    $classpath : 'test.aria.widgets.container.bindableSize.DivTestTpl',
+    $classpath : 'test.aria.widgets.container.bindableSize.DivTestCaseTpl',
     $extends : 'test.aria.widgets.container.bindableSize.shared.BindableSizeTestTpl'
 }}
 

@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.pageEngine.pageProviders.BaseProviderPageCacheTest",
+    $classpath : "test.aria.pageEngine.pageProviders.ProviderPageCacheTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.pageEngine.pageProviders.BasePageProvider",
             "test.aria.pageEngine.pageProviders.PageProviderFilter", "aria.core.IOFiltersMgr"],

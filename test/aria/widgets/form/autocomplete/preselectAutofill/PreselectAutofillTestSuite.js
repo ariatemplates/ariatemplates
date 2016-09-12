@@ -18,12 +18,12 @@ Aria.classDefinition({
     $extends : "aria.jsunit.TestSuite",
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
-        this.addTests("test.aria.widgets.form.autocomplete.preselectAutofill.StrictTrueTest");
-        this.addTests("test.aria.widgets.form.autocomplete.preselectAutofill.StrictFalseTest");
-        this.addTests("test.aria.widgets.form.autocomplete.preselectAutofill.AlwaysTrueTest");
-        this.addTests("test.aria.widgets.form.autocomplete.preselectAutofill.AlwaysFalseTest");
-        this.addTests("test.aria.widgets.form.autocomplete.preselectAutofill.NoneTrueTest");
-        this.addTests("test.aria.widgets.form.autocomplete.preselectAutofill.NoneFalseTest");
-        this.addTests("test.aria.widgets.form.autocomplete.preselectAutofill.StrictTrueWithTabTest");
+        this.addTests("test.aria.widgets.form.autocomplete.preselectAutofill.StrictTrueRobotTestCase");
+        this.addTests("test.aria.widgets.form.autocomplete.preselectAutofill.StrictFalseRobotTestCase");
+        this.addTests("test.aria.widgets.form.autocomplete.preselectAutofill.AlwaysTrueRobotTestCase");
+        this.addTests("test.aria.widgets.form.autocomplete.preselectAutofill.AlwaysFalseRobotTestCase");
+        this.addTests("test.aria.widgets.form.autocomplete.preselectAutofill.NoneTrueRobotTestCase");
+        this.addTests("test.aria.widgets.form.autocomplete.preselectAutofill.NoneFalseRobotTestCase");
+        this.addTests("test.aria.widgets.form.autocomplete.preselectAutofill.StrictTrueWithTabRobotTestCase");
     }
 });

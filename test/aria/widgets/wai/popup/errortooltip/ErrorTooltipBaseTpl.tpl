@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 {Template {
-    $classpath : "test.aria.widgets.wai.popup.errortooltip.ErrorTooltipTestCaseTpl",
+    $classpath : "test.aria.widgets.wai.popup.errortooltip.ErrorTooltipBaseTpl",
     $hasScript: true
 }}
 

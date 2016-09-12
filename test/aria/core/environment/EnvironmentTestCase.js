@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.core.environment.Environment",
+    $classpath : "test.aria.core.environment.EnvironmentTestCase",
     $dependencies : ["aria.core.environment.Environment", "aria.tools.contextual.environment.ContextualMenu"],
     $extends : "aria.jsunit.TestCase",
     $prototype : {

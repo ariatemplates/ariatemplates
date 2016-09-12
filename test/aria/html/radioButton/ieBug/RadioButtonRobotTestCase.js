@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.html.radioButton.ieBug.RadioButtonTestCase",
+    $classpath : "test.aria.html.radioButton.ieBug.RadioButtonRobotTestCase",
     $extends : "aria.jsunit.RobotTestCase",
     $dependencies : ["aria.utils.Dom", "aria.html.RadioButton"],
     $constructor : function () {

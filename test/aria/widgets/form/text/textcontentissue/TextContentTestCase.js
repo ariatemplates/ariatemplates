@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.text.textcontentissue.TextContentTest",
+    $classpath : "test.aria.widgets.form.text.textcontentissue.TextContentTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $dependencies : ["aria.utils.Json"],
     $constructor : function () {

@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.pageEngine.IframeTestCase",
+    $classpath : "test.aria.pageEngine.IframeBase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.utils.FrameATLoader", "aria.core.log.SilentArrayAppender"],
     $constructor : function () {

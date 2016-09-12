@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.select.mouseWheel.SelectMouseWheelTestCase",
+    $classpath : "test.aria.widgets.form.select.mouseWheel.SelectMouseWheelRobotTestCase",
     $extends : "aria.jsunit.RobotTestCase",
     $dependencies : ["aria.popups.PopupManager", "aria.jsunit.Robot"],
     $prototype : {

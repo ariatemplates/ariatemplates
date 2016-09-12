@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.multiselect.downArrowKeyPreventDef.MSDownArrowKey",
+    $classpath : "test.aria.widgets.form.multiselect.downArrowKeyPreventDef.MSDownArrowKeyRobotTestCase",
     $extends : "aria.jsunit.RobotTestCase",
     $dependencies : ["aria.utils.Dom"],
     $prototype : {

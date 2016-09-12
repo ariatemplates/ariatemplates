@@ -14,7 +14,7 @@
  */
 
  {Template {
-	$classpath : "test.aria.popups.focus.FocusTestTpl",
+	$classpath : "test.aria.popups.focus.FocusTestCaseTpl",
 	$hasScript : true
 }}
 

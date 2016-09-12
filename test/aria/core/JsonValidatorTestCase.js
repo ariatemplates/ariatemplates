@@ -18,7 +18,7 @@
  * Test case for the JSON validator
  */
 Aria.classDefinition({
-    $classpath : "test.aria.core.JsonValidatorTest",
+    $classpath : "test.aria.core.JsonValidatorTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.core.BaseTypes", "aria.widgets.CfgBeans", "test.aria.core.test.Beans"],
     $prototype : {

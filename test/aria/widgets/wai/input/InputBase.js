@@ -17,7 +17,7 @@ var Aria = require("ariatemplates/Aria");
 var AppEnvironment = require("ariatemplates/core/AppEnvironment");
 
 module.exports = Aria.classDefinition({
-    $classpath : "test.aria.widgets.wai.input.InputBaseTestCase",
+    $classpath : "test.aria.widgets.wai.input.InputBase",
     $extends : require("ariatemplates/jsunit/TemplateTestCase"),
     $constructor : function () {
         this.$TemplateTestCase.constructor.call(this);

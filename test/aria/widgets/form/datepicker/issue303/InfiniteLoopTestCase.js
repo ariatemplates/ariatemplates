@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.datepicker.issue303.InfiniteLoop",
+    $classpath : "test.aria.widgets.form.datepicker.issue303.InfiniteLoopTestCase",
     $extends : "aria.jsunit.WidgetTestCase",
     $dependencies : ["aria.widgets.form.DatePicker", "aria.utils.Date"],
     $prototype : {

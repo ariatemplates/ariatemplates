@@ -14,7 +14,7 @@
  */
 
 Aria.tplScriptDefinition({
-    $classpath : "test.aria.widgets.form.autocomplete.ampersandSuggestion.AmpersandSuggestionTplScript",
+    $classpath : "test.aria.widgets.form.autocomplete.ampersandSuggestion.AmpersandSuggestionTestCaseTplScript",
     $dependencies : ["aria.resources.handlers.LCResourcesHandler"],
     $destructor : function () {
         if (this.resHandler) {

@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath : "test.aria.widgets.form.multiselect.popupReposition.MultiSelectTpl",
+    $classpath : "test.aria.widgets.form.multiselect.popupReposition.MultiSelectTestCaseTpl",
     $css : ["test.aria.widgets.form.multiselect.popupReposition.MultiSelectStyle"],
     $hasScript : true
 }}

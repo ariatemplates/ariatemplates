@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.container.dialog.movable.test4.MovableDialogTestCaseFour",
+    $classpath : "test.aria.widgets.container.dialog.movable.test4.MovableDialogFourRobotTestCase",
     $extends : "aria.jsunit.RobotTestCase",
     $dependencies : ["aria.utils.Json", "aria.utils.Dom"],
     $constructor : function () {

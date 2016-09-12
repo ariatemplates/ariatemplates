@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.autocomplete.promised.Promised",
+    $classpath : "test.aria.widgets.form.autocomplete.promised.PromisedRobotTestCase",
     $extends : "aria.jsunit.RobotTestCase",
     $prototype : {
         runTemplateTest : function () {

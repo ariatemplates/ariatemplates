@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.templates.issue353.Issue353TestCase",
+    $classpath : "test.aria.templates.issue353.Issue353RobotTestCase",
     $extends : "aria.jsunit.RobotTestCase",
     $dependencies : ["aria.utils.Dom"],
     $constructor : function () {

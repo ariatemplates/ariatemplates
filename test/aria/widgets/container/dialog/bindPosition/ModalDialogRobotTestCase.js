@@ -17,10 +17,10 @@
  * Test the binding of xpos, ypos and center for dialog widgets
  */
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.container.dialog.bindPosition.ModalDialogTestCase",
-    $extends : "test.aria.widgets.container.dialog.bindPosition.DialogTestCase",
+    $classpath : "test.aria.widgets.container.dialog.bindPosition.ModalDialogRobotTestCase",
+    $extends : "test.aria.widgets.container.dialog.bindPosition.DialogRobotBase",
     $constructor : function () {
-        this.$DialogTestCase.constructor.call(this);
+        this.$DialogRobotBase.constructor.call(this);
 
         this.setTestEnv({
             template : "test.aria.widgets.container.dialog.bindPosition.ModalDialogTemplate",

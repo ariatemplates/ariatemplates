@@ -13,20 +13,20 @@ tests:
     - test.MainTestSuite
    excludes:
    #Excluded because PhantomJS does not support flash:
-    - test.aria.core.io.IOXDRTest
+    - test.aria.core.io.IOXDRTestCase
    #Excluded because PhantomJS has random issues with history management:
    # (to be investigated)
-    - test.aria.utils.History
+    - test.aria.utils.HistoryTestCase
    #Excluded because PhantomJS has random issues with the viewport
     - test.aria.widgets.container.dialog.scroll.OnScrollTestCase
-    - test.aria.widgets.container.dialog.resize.test3.DialogOnResizeTestCase
-    - test.aria.widgets.container.dialog.resize.test4.DialogOnResizeScrollTestCase
-    - test.aria.widgets.container.dialog.resize.test5.OverlayOnResizeScrollTestCase
-    - test.aria.utils.overlay.loadingIndicator.scrollableBody.ScrollableBodyTest
-    - test.aria.utils.DomScrollIntoView
-    - test.aria.widgets.form.multiselect.downArrowKeyPreventDef.MSDownArrowKey
+    - test.aria.widgets.container.dialog.resize.test3.DialogOnResizeRobotTestCase
+    - test.aria.widgets.container.dialog.resize.test4.DialogOnResizeScrollRobotTestCase
+    - test.aria.widgets.container.dialog.resize.test5.OverlayOnResizeScrollRobotTestCase
+    - test.aria.utils.overlay.loadingIndicator.scrollableBody.ScrollableBodyTestCase
+    - test.aria.utils.DomScrollIntoViewTestCase
+    - test.aria.widgets.form.multiselect.downArrowKeyPreventDef.MSDownArrowKeyRobotTestCase
     - test.aria.widgets.container.dialog.container.DialogContainerTestSuite
     - test.aria.widgets.container.dialog.indicators.DialogTestCase
-    - test.aria.widgets.container.dialog.movable.test5.MovableDialogTestCaseFive
+    - test.aria.widgets.container.dialog.movable.test5.MovableDialogFiveRobotTestCase
    #Excluded from this file but added in attester.yml (tests for the unpackaged version):
-    - test.aria.core.JsonValidatorTest
+    - test.aria.core.JsonValidatorTestCase

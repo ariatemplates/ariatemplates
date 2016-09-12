@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.calendar.lineHeight.CalendarLineHeightTest",
+    $classpath : "test.aria.widgets.calendar.lineHeight.CalendarLineHeightTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $prototype : {
         runTemplateTest : function () {

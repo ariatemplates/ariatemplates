@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath : "test.aria.widgets.form.autocomplete.defaultErrorMessages.DefaultErrorMessagesTestTpl"
+    $classpath : "test.aria.widgets.form.autocomplete.defaultErrorMessages.DefaultErrorMessagesTestCaseTpl"
 }}
 
     {macro main()}

@@ -17,7 +17,7 @@
  * Test for the RequestMgr class
  */
 Aria.classDefinition({
-    $classpath : "test.aria.modules.RequestMgrTest",
+    $classpath : "test.aria.modules.RequestMgrTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.modules.urlService.PatternURLCreationImpl", "aria.modules.RequestMgr",
             "test.aria.modules.test.MockRequestHandler", "aria.templates.ModuleCtrl",

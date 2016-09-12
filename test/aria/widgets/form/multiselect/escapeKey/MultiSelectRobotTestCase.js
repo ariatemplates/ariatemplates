@@ -20,12 +20,12 @@ var ariaUtilsString = require('ariatemplates/utils/String');
 
 
 module.exports = Aria.classDefinition({
-    $classpath : 'test.aria.widgets.form.multiselect.escapeKey.MultiSelect',
+    $classpath : 'test.aria.widgets.form.multiselect.escapeKey.MultiSelectRobotTestCase',
 
-    $extends : require('test/EnhancedRobotTestCase'),
+    $extends : require('test/EnhancedRobotBase'),
 
     $constructor : function () {
-        this.$EnhancedRobotTestCase.constructor.call(this);
+        this.$EnhancedRobotBase.constructor.call(this);
 
         this.setTestEnv({
             data: {

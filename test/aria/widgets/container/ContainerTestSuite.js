@@ -19,18 +19,18 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
-        this.addTests("test.aria.widgets.container.DivTest");
-        this.addTests("test.aria.widgets.container.FieldsetTest");
-        this.addTests("test.aria.widgets.container.splitter.SplitterTest");
-        this.addTests("test.aria.widgets.container.splitter.move.SplitterTestMoveUpDown");
-        this.addTests("test.aria.widgets.container.splitter.move.SplitterTestMoveLeftRight");
-        this.addTests("test.aria.widgets.container.splitter.skin.SplitterBorderWidthTest");
-        this.addTests("test.aria.widgets.container.splitter.skin.border.BordersAndSizesTest");
-        this.addTests("test.aria.widgets.container.tooltip.TooltipTestCase");
-        this.addTests("test.aria.widgets.container.tooltip.scrollbar.ScrollbarTooltip");
+        this.addTests("test.aria.widgets.container.DivTestCase");
+        this.addTests("test.aria.widgets.container.FieldsetTestCase");
+        this.addTests("test.aria.widgets.container.splitter.SplitterTestCase");
+        this.addTests("test.aria.widgets.container.splitter.move.SplitterMoveUpDownRobotTestCase");
+        this.addTests("test.aria.widgets.container.splitter.move.SplitterMoveLeftRightRobotTestCase");
+        this.addTests("test.aria.widgets.container.splitter.skin.SplitterBorderWidthTestCase");
+        this.addTests("test.aria.widgets.container.splitter.skin.border.BordersAndSizesTestCase");
+        this.addTests("test.aria.widgets.container.tooltip.TooltipRobotTestCase");
+        this.addTests("test.aria.widgets.container.tooltip.scrollbar.ScrollbarTooltipRobotTestCase");
         this.addTests("test.aria.widgets.container.dialog.DialogTestSuite");
         this.addTests("test.aria.widgets.container.bindableSize.BindableSizeTestSuite");
-        this.addTests("test.aria.widgets.container.checkContent.DivTest");
-        this.addTests("test.aria.widgets.container.tabpanel.TabPanelTest");
+        this.addTests("test.aria.widgets.container.checkContent.DivTestCase");
+        this.addTests("test.aria.widgets.container.tabpanel.TabPanelTestCase");
     }
 });

@@ -19,16 +19,16 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
-        this._tests = ["test.aria.widgets.container.dialog.bindPosition.DialogTestCase",
-                "test.aria.widgets.container.dialog.bindPosition.ModalDialogTestCase",
-                "test.aria.widgets.container.dialog.bindPosition.DialogOnResizeTestCase",
-                "test.aria.widgets.container.dialog.bindPosition.PopupMoveToTestCase",
-                "test.aria.widgets.container.dialog.bindPosition.DialogInViewportTestCase",
-                "test.aria.widgets.container.dialog.movable.issue367.MovableDialogTestCase",
-                "test.aria.widgets.container.dialog.movable.test1.MovableDialogTestCase",
-                "test.aria.widgets.container.dialog.movable.test2.MovableDialogTestCaseTwo",
-                "test.aria.widgets.container.dialog.movable.test3.MovableDialogTestCaseThree",
-                "test.aria.widgets.container.dialog.movable.test4.MovableDialogTestCaseFour",
-                "test.aria.widgets.container.dialog.movable.test5.MovableDialogTestCaseFive"];
+        this._tests = ["test.aria.widgets.container.dialog.bindPosition.DialogRobotBase",
+                "test.aria.widgets.container.dialog.bindPosition.ModalDialogRobotTestCase",
+                "test.aria.widgets.container.dialog.bindPosition.DialogOnResizeRobotTestCase",
+                "test.aria.widgets.container.dialog.bindPosition.PopupMoveToRobotTestCase",
+                "test.aria.widgets.container.dialog.bindPosition.DialogInViewportRobotTestCase",
+                "test.aria.widgets.container.dialog.movable.issue367.MovableDialogRobotTestCase",
+                "test.aria.widgets.container.dialog.movable.test1.MovableDialogRobotTestCase",
+                "test.aria.widgets.container.dialog.movable.test2.MovableDialogTwoRobotTestCase",
+                "test.aria.widgets.container.dialog.movable.test3.MovableDialogThreeRobotTestCase",
+                "test.aria.widgets.container.dialog.movable.test4.MovableDialogFourRobotTestCase",
+                "test.aria.widgets.container.dialog.movable.test5.MovableDialogFiveRobotTestCase"];
     }
 });

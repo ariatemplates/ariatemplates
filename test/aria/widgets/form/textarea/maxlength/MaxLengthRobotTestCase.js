@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.textarea.maxlength.MaxLengthTestCase",
+    $classpath : "test.aria.widgets.form.textarea.maxlength.MaxLengthRobotTestCase",
     $extends : "aria.jsunit.RobotTestCase",
 
     $destructor : function () {

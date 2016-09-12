@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.templates.css.widget.DependencyTest",
+    $classpath : "test.aria.templates.css.widget.DependencyTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $dependencies : ["aria.utils.Type", "aria.templates.CSSMgr", "aria.utils.Dom"],
     $constructor : function () {

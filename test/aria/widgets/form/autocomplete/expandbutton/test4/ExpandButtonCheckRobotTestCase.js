@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.autocomplete.expandbutton.test4.ExpandButtonCheck",
+    $classpath : "test.aria.widgets.form.autocomplete.expandbutton.test4.ExpandButtonCheckRobotTestCase",
     $extends : "aria.jsunit.RobotTestCase",
     $prototype : {
         /**

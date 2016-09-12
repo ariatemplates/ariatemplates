@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.container.tooltip.TooltipTestCase",
+    $classpath : "test.aria.widgets.container.tooltip.TooltipRobotTestCase",
     $extends : "aria.jsunit.RobotTestCase",
     $dependencies : ["aria.utils.Dom"],
     $constructor : function () {

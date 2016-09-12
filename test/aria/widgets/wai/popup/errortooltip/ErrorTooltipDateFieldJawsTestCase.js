@@ -14,8 +14,8 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.wai.popup.errortooltip.ErrorTooltipJawsTestCaseDateField",
-    $extends : "test.aria.widgets.wai.popup.errortooltip.ErrorTooltipBaseJawsTestCase",
+    $classpath : "test.aria.widgets.wai.popup.errortooltip.ErrorTooltipDateFieldJawsTestCase",
+    $extends : "test.aria.widgets.wai.popup.errortooltip.ErrorTooltipJawsBase",
     $prototype : {
         fieldId: "df"
     }

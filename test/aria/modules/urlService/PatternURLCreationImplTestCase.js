@@ -17,7 +17,7 @@
  * Test case for the default url pattern creation implementation
  */
 Aria.classDefinition({
-    $classpath : "test.aria.modules.urlService.PatternURLCreationImplTest",
+    $classpath : "test.aria.modules.urlService.PatternURLCreationImplTestCase",
     $dependencies : ["aria.modules.urlService.PatternURLCreationImpl", "aria.modules.RequestMgr"],
     $extends : "aria.jsunit.TestCase",
     $prototype : {

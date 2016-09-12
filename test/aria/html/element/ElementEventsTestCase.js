@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.html.element.ElementEventsTest",
+    $classpath : "test.aria.html.element.ElementEventsTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.html.Element", "aria.utils.FireDomEvent", "aria.core.Sequencer", "aria.utils.Array",
             "aria.utils.Dom"],

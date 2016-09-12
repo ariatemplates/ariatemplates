@@ -14,7 +14,7 @@
  */
 
 Aria.tplScriptDefinition({
-    $classpath : "test.aria.html.textinput.bind.BindableTestCaseTplScript",
+    $classpath : "test.aria.html.textinput.bind.BindableRobotTestCaseTplScript",
     $prototype : {
         typing : function (value) {
             if (!this.data.keystrokes) {

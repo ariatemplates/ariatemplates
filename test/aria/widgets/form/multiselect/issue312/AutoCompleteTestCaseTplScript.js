@@ -14,7 +14,7 @@
  */
 
 Aria.tplScriptDefinition({
-    $classpath : 'test.aria.widgets.form.multiselect.issue312.AutoCompleteTplScript',
+    $classpath : 'test.aria.widgets.form.multiselect.issue312.AutoCompleteTestCaseTplScript',
     $dependencies : ['aria.resources.handlers.LCResourcesHandler'],
     $destructor : function () {
         if (this.resourcesHandler) {

@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.utils.environment.VisualFocus",
+    $classpath : "test.aria.utils.environment.VisualFocusTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.utils.environment.VisualFocus", "aria.utils.VisualFocus"],
     $prototype : {

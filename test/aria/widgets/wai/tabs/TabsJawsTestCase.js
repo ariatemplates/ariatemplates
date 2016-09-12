@@ -18,7 +18,7 @@ var Aria = require('ariatemplates/Aria');
 var ariaUtilsArray = require('ariatemplates/utils/Array');
 var ariaUtilsFunction = require('ariatemplates/utils/Function');
 
-var EnhancedJawsTestCase = require('test/EnhancedJawsTestCase');
+var EnhancedJawsTestCase = require('test/EnhancedJawsBase');
 
 var Model = require('./Model');
 
@@ -29,7 +29,7 @@ module.exports = Aria.classDefinition({
     $extends : EnhancedJawsTestCase,
 
     $constructor : function () {
-        this.$EnhancedJawsTestCase.constructor.call(this);
+        this.$EnhancedJawsBase.constructor.call(this);
 
         var data = Model.buildData();
         var groups = data.groups;

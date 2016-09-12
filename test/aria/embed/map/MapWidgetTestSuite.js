@@ -22,7 +22,7 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
-        this.addTests("test.aria.embed.map.MapTestOne");
-        this.addTests("test.aria.embed.map.MapTestTwo");
+        this.addTests("test.aria.embed.map.MapOneTestCase");
+        this.addTests("test.aria.embed.map.MapTwoTestCase");
     }
 });

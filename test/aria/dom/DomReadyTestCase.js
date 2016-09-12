@@ -17,7 +17,7 @@
  * Test for the DomReady class
  */
 Aria.classDefinition({
-    $classpath : "test.aria.dom.DomReadyTest",
+    $classpath : "test.aria.dom.DomReadyTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.dom.DomReady", "aria.utils.Callback"],
     $prototype : {

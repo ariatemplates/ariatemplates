@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.templates.SectionTest",
+    $classpath : "test.aria.templates.SectionTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.templates.Section", "aria.templates.MarkupWriter"],
     $prototype : {

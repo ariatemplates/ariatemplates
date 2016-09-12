@@ -14,10 +14,10 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.autocomplete.preselectAutofill.StrictTrueWithTabTest",
-    $extends : "test.aria.widgets.form.autocomplete.preselectAutofill.PreselectAutofillBaseTest",
+    $classpath : "test.aria.widgets.form.autocomplete.preselectAutofill.StrictTrueWithTabRobotTestCase",
+    $extends : "test.aria.widgets.form.autocomplete.preselectAutofill.PreselectAutofillRobotBase",
     $constructor : function () {
-        this.$PreselectAutofillBaseTest.constructor.call(this);
+        this.$PreselectAutofillRobotBase.constructor.call(this);
         this.selectionKey = "[TAB]";
 
         this.allTestValues = {

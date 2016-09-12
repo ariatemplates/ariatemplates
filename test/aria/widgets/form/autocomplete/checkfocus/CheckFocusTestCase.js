@@ -18,7 +18,7 @@
  * something, focus something else, check that autocomplete did not "stole" focus
  */
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.autocomplete.checkfocus.CheckFocus",
+    $classpath : "test.aria.widgets.form.autocomplete.checkfocus.CheckFocusTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $dependencies : ["aria.utils.Function", "aria.core.Timer"],
     $constructor : function () {
@@ -47,7 +47,7 @@ Aria.classDefinition({
         };
 
         this.setTestEnv({
-            template : "test.aria.widgets.form.autocomplete.checkfocus.CheckFocusTpl",
+            template : "test.aria.widgets.form.autocomplete.checkfocus.CheckFocusTestCaseTpl",
             data : {
                 handler : handler
             }

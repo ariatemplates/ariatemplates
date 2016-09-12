@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath:"test.aria.widgets.form.multiselect.longlist.test2.MsLongListTpl",
+    $classpath:"test.aria.widgets.form.multiselect.longlist.test2.MsLongListRobotTestCaseTpl",
     $hasScript:false
 }}
 

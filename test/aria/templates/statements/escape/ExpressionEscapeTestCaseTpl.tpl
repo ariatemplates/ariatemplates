@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath: 'test.aria.templates.statements.escape.ExpressionEscapeTestTpl'
+    $classpath: 'test.aria.templates.statements.escape.ExpressionEscapeTestCaseTpl'
 }}
 
 {macro main()}

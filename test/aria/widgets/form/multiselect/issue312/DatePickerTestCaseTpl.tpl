@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath:'test.aria.widgets.form.multiselect.issue312.DatePickerTpl'
+    $classpath:'test.aria.widgets.form.multiselect.issue312.DatePickerTestCaseTpl'
 }}
 
     {macro main()}

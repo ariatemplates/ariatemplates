@@ -17,7 +17,7 @@
  * Testcase for Map embed widget
  */
 Aria.classDefinition({
-    $classpath : "test.aria.embed.map.MapTestOne",
+    $classpath : "test.aria.embed.map.MapOneTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $dependencies : ["aria.map.MapManager", "test.aria.utils.overlay.loadingIndicator.IndicatorHelper"],
     $constructor : function () {

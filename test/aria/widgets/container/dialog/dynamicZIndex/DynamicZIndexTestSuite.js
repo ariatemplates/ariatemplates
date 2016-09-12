@@ -20,9 +20,9 @@ Aria.classDefinition({
         this.$TestSuite.constructor.call(this);
 
         this._tests = [
-            "test.aria.widgets.container.dialog.dynamicZIndex.DynamicZIndexClickTestCase",
-            "test.aria.widgets.container.dialog.dynamicZIndex.DynamicZIndexFocusTestCase",
-            "test.aria.widgets.container.dialog.dynamicZIndex.innerPopup.DynamicZIndexInnerPopupTestCase"
+            "test.aria.widgets.container.dialog.dynamicZIndex.DynamicZIndexClickRobotTestCase",
+            "test.aria.widgets.container.dialog.dynamicZIndex.DynamicZIndexFocusRobotTestCase",
+            "test.aria.widgets.container.dialog.dynamicZIndex.innerPopup.DynamicZIndexInnerPopupRobotTestCase"
         ];
     }
 });

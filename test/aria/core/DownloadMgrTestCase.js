@@ -17,7 +17,7 @@
  * Test for the DownloadMgr class
  */
 Aria.classDefinition({
-    $classpath : "test.aria.core.DownloadMgrTest",
+    $classpath : "test.aria.core.DownloadMgrTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.utils.Callback"],
     $prototype : {

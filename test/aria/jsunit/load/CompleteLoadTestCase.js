@@ -15,7 +15,7 @@
 
 // See what happens when both success and fail callback are present
 Aria.classDefinition({
-    $classpath : "test.aria.jsunit.load.CompleteLoad",
+    $classpath : "test.aria.jsunit.load.CompleteLoadTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["test.aria.jsunit.load.dependencies.Met"],
     $prototype : {

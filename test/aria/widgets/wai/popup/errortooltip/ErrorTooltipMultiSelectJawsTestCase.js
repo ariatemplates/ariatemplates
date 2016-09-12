@@ -14,8 +14,8 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.wai.popup.errortooltip.ErrorTooltipJawsTestCaseMultiSelect",
-    $extends : "test.aria.widgets.wai.popup.errortooltip.ErrorTooltipBaseJawsTestCase",
+    $classpath : "test.aria.widgets.wai.popup.errortooltip.ErrorTooltipMultiSelectJawsTestCase",
+    $extends : "test.aria.widgets.wai.popup.errortooltip.ErrorTooltipJawsBase",
     $prototype : {
         fieldId: "ms"
     }

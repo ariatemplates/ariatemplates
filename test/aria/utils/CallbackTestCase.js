@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.utils.Callback",
+    $classpath : "test.aria.utils.CallbackTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.utils.Callback"],
     $statics : {
@@ -22,9 +22,9 @@ Aria.classDefinition({
     },
     $prototype : {
         _assertAgainst : function (expected) {
-            var got = test.aria.utils.Callback._lastCallback;
+            var got = test.aria.utils.CallbackTestCase._lastCallback;
             // reset it
-            test.aria.utils.Callback._lastCallback = null;
+            test.aria.utils.CallbackTestCase._lastCallback = null;
 
             if (expected.fn) {
                 this.assertEquals(expected.fn, got.fn, "Functions differ");
@@ -108,7 +108,7 @@ Aria.classDefinition({
         },
 
         _callbackWithScope : function () {
-            test.aria.utils.Callback._lastCallback = {
+            test.aria.utils.CallbackTestCase._lastCallback = {
                 fn : "_callbackWithScope",
                 scope : this
             };
@@ -312,7 +312,7 @@ Aria.classDefinition({
         },
 
         _rememberArgs : function () {
-            test.aria.utils.Callback._lastCallback = {
+            test.aria.utils.CallbackTestCase._lastCallback = {
                 args : Array.prototype.slice.call(arguments)
             };
         },

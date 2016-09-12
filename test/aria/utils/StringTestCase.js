@@ -18,7 +18,7 @@
  * Test case for aria.utils.String
  */
 Aria.classDefinition({
-    $classpath : "test.aria.utils.String",
+    $classpath : "test.aria.utils.StringTestCase",
     $dependencies : ["aria.utils.String", "aria.utils.Json"],
     $extends : "aria.jsunit.TestCase",
     $prototype : {

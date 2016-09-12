@@ -22,7 +22,7 @@ var ariaUtilsFunction = require("ariatemplates/utils/Function");
 require("ariatemplates/modules/urlService/PatternURLCreationImpl");
 
 module.exports = Aria.classDefinition({
-    $classpath : "test.aria.core.ResMgrTest2",
+    $classpath : "test.aria.core.ResMgr2TestCase",
     $extends : require("ariatemplates/jsunit/TestCase"),
     $constructor : function () {
         this.$TestCase.constructor.call(this);

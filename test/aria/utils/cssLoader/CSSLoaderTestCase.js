@@ -17,7 +17,7 @@
  * Test case for aria.utils.CSSLoader
  */
 Aria.classDefinition({
-    $classpath : "test.aria.utils.cssLoader.CSSLoader",
+    $classpath : "test.aria.utils.cssLoader.CSSLoaderTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.utils.CSSLoader", "aria.utils.Dom"],
     $constructor : function () {

@@ -17,7 +17,7 @@
  * Test for the XMLRequestHandler
  */
 Aria.classDefinition({
-    $classpath : 'test.aria.modules.requestHandler.XMLRequestHandlerTest',
+    $classpath : 'test.aria.modules.requestHandler.XMLRequestHandlerTestCase',
     $extends : 'aria.jsunit.TestCase',
     $dependencies : ["aria.modules.requestHandler.XMLRequestHandler"],
     $prototype : {

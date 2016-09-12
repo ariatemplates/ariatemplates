@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.core.JsObjectTest",
+    $classpath : "test.aria.core.JsObjectTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["test.aria.core.test.ClassA", "test.aria.core.test.ClassB", "test.aria.core.test.TestClass",
             "test.aria.core.test.ImplementInterface1", "test.aria.core.test.Interface1", "test.aria.core.test.MyFlow",

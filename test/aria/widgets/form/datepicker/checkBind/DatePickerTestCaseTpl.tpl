@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath:"test.aria.widgets.form.datepicker.checkBind.DatePickerTpl",
+    $classpath:"test.aria.widgets.form.datepicker.checkBind.DatePickerTestCaseTpl",
     $hasScript: true
 }}
 

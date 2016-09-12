@@ -14,13 +14,13 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.pageEngine.pageEngine.customRootModule.RootModuleWrongInheritanceTest",
-    $extends : "test.aria.pageEngine.pageEngine.customRootModule.CustomRootModuleBaseTestCase",
+    $classpath : "test.aria.pageEngine.pageEngine.customRootModule.RootModuleWrongInheritanceTestCase",
+    $extends : "test.aria.pageEngine.pageEngine.customRootModule.CustomRootModuleBase",
     $constructor : function () {
         this.rootModuleCfg = {
             classpath : "test.aria.pageEngine.pageEngine.customRootModule.modules.TestModule"
         };
-        this.$CustomRootModuleBaseTestCase.constructor.call(this);
+        this.$CustomRootModuleBase.constructor.call(this);
     },
     $prototype : {
 

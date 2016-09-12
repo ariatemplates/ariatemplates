@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.action.sortindicator.onclick.OnclickCallback",
+    $classpath : "test.aria.widgets.action.sortindicator.onclick.OnclickCallbackTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $dependencies : ["test.aria.widgets.action.sortindicator.onclick.samples.SortData"],
     $constructor : function () {

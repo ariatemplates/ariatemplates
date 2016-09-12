@@ -15,7 +15,7 @@
 
 // See what happens when Aria.load doesn't have any callback
 Aria.classDefinition({
-    $classpath : "test.aria.jsunit.load.IgnoreCallbacks",
+    $classpath : "test.aria.jsunit.load.IgnoreCallbacksTestCase",
     $extends : "aria.jsunit.TestCase",
     $prototype : {
         testAsyncLoadError: function () {

@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath:"test.aria.widgets.form.multiautocomplete.test7.MultiAutoErrorTpl",
+    $classpath:"test.aria.widgets.form.multiautocomplete.test7.MultiAutoErrorTestCaseTpl",
     $hasScript:true
 }}
 

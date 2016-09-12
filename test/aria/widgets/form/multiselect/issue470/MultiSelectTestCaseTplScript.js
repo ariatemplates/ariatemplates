@@ -14,7 +14,7 @@
  */
 
 Aria.tplScriptDefinition({
-    $classpath : 'test.aria.widgets.form.multiselect.issue470.MultiSelectTplScript',
+    $classpath : 'test.aria.widgets.form.multiselect.issue470.MultiSelectTestCaseTplScript',
     $prototype : {
         onchange : function () {
             this.data.changed = true;

@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath : "test.aria.widgets.action.sortindicator.block.SortIndicatorBlockTestTpl"
+    $classpath : "test.aria.widgets.action.sortindicator.block.SortIndicatorBlockTestCaseTpl"
 }}
 
     {createView aview on [

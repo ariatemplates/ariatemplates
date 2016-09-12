@@ -17,7 +17,7 @@
  * Template Test case for the behaviour of drag when the mouse is outside of the boundary
  */
 Aria.classDefinition({
-    $classpath : "test.aria.utils.dragdrop.OutOfBoundaryTest",
+    $classpath : "test.aria.utils.dragdrop.OutOfBoundaryRobotTestCase",
     $extends : "aria.jsunit.RobotTestCase",
     $dependencies : ["aria.utils.dragdrop.Drag", "aria.utils.Dom", "aria.tools.contextual.ContextualMenu"],
     $constructor : function () {

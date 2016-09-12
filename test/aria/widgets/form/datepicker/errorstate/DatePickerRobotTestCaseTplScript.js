@@ -14,7 +14,7 @@
  */
 
 Aria.tplScriptDefinition({
-    $classpath : "test.aria.widgets.form.datepicker.errorstate.DatePickerTplScript",
+    $classpath : "test.aria.widgets.form.datepicker.errorstate.DatePickerRobotTestCaseTplScript",
     $prototype : {
         refresh : function () {
             this.$refresh({

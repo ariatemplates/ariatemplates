@@ -14,8 +14,8 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.html.textarea.DisabledTextAreaTest",
-    $extends : "test.aria.html.inputElement.InputElementBaseTest",
+    $classpath : "test.aria.html.textarea.DisabledTextAreaTestCase",
+    $extends : "test.aria.html.inputElement.InputElementBase",
     $dependencies : ["aria.html.TextArea"],
     $prototype : {
         _widgetClass : "aria.html.TextArea"

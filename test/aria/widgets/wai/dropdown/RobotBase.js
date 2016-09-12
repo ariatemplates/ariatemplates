@@ -24,14 +24,14 @@ var ariaResourcesHandlersLCRangeResourceHandler = require('ariatemplates/resourc
 
 
 module.exports = Aria.classDefinition({
-    $classpath : 'test.aria.widgets.wai.dropdown.Base',
+    $classpath : 'test.aria.widgets.wai.dropdown.RobotBase',
 
-    $extends : require('test/EnhancedRobotTestCase'),
+    $extends : require('test/EnhancedRobotBase'),
 
     $constructor : function () {
         // ------------------------------------------------------ initialization
 
-        this.$EnhancedRobotTestCase.constructor.call(this);
+        this.$EnhancedRobotBase.constructor.call(this);
 
         // ------------------------------------------------- internal attributes
 

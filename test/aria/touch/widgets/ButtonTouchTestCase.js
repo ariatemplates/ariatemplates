@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.touch.widgets.ButtonTouch",
+    $classpath : "test.aria.touch.widgets.ButtonTouchTestCase",
     $extends : "aria.jsunit.WidgetTestCase",
     $dependencies : ["aria.touch.widgets.Button", "aria.DomEvent", "aria.utils.Delegate", "aria.utils.ClassList"],
     $prototype : {

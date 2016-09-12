@@ -17,7 +17,7 @@
  * Test case for aria.widgets.form.InputValidationHandlerTest
  */
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.InputValidationHandlerTest",
+    $classpath : "test.aria.widgets.form.InputValidationHandlerTestCase",
     $dependencies : ["aria.widgets.form.InputValidationHandler", "aria.widgets.AriaSkinInterface",
             "aria.templates.TemplateCtxt", "aria.utils.Dom"],
     $extends : "aria.jsunit.TestCase",

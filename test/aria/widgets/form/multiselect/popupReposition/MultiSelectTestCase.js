@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.multiselect.popupReposition.MultiSelect",
+    $classpath : "test.aria.widgets.form.multiselect.popupReposition.MultiSelectTestCase",
     $dependencies : ["aria.utils.Dom"],
     $extends : "aria.jsunit.MultiSelectTemplateTestCase",
     $prototype : {

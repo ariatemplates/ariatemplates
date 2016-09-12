@@ -14,7 +14,7 @@
  */
 
  {Template {
-	$classpath : "test.aria.widgets.icon.notooltip.NoTooltipIconTestTpl",
+	$classpath : "test.aria.widgets.icon.notooltip.NoTooltipIconTestCaseTpl",
 	$hasScript : true
 }}
 

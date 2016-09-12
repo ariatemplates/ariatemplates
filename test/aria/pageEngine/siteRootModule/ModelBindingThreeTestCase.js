@@ -17,8 +17,8 @@
  * Test a simple binding with two modules and complex data
  */
 Aria.classDefinition({
-    $classpath : "test.aria.pageEngine.siteRootModule.ModelBindingTestThree",
-    $extends : "test.aria.pageEngine.siteRootModule.SiteRootModuleBaseTestCase",
+    $classpath : "test.aria.pageEngine.siteRootModule.ModelBindingThreeTestCase",
+    $extends : "test.aria.pageEngine.siteRootModule.SiteRootModuleBase",
     $prototype : {
         testAsyncMultipleBinding : function () {
             this._createSiteModule({

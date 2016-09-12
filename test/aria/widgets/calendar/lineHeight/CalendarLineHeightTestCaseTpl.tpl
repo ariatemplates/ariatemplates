@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath: "test.aria.widgets.calendar.lineHeight.CalendarLineHeightTestTpl",
+    $classpath: "test.aria.widgets.calendar.lineHeight.CalendarLineHeightTestCaseTpl",
     $css: ["test.aria.widgets.calendar.lineHeight.CalendarLineHeightStyle"]
 }}
     {macro main()}

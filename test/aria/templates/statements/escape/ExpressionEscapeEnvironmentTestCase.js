@@ -16,8 +16,8 @@
 
 
 Aria.classDefinition({
-    $classpath: "test.aria.templates.statements.escape.ExpressionEscapeEnvironmentTest",
-    $extends: "test.aria.templates.statements.escape.ExpressionEscapeTestBase",
+    $classpath: "test.aria.templates.statements.escape.ExpressionEscapeEnvironmentTestCase",
+    $extends: "test.aria.templates.statements.escape.ExpressionEscapeBase",
     $dependencies: ["aria.core.environment.Environment"],
 
     $prototype: {

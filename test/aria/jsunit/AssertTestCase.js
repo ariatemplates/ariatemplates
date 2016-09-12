@@ -15,7 +15,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : 'test.aria.jsunit.AssertTest',
+    $classpath : 'test.aria.jsunit.AssertTestCase',
     $extends : 'aria.jsunit.TestCase',
     $singleton : false,
     $dependencies : ["test.aria.jsunit.assertTest.MyClass", "aria.utils.Type"],

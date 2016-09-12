@@ -18,14 +18,14 @@
  * separator
  */
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.numberfield.inputPattern.SeparatedInputPattern",
+    $classpath : "test.aria.widgets.form.numberfield.inputPattern.SeparatedInputPatternTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $dependencies : ["aria.core.JsonValidator"],
     $constructor : function () {
         this.$TemplateTestCase.constructor.call(this);
 
         this.setTestEnv({
-            template : "test.aria.widgets.form.numberfield.inputPattern.InputPatternTpl"
+            template : "test.aria.widgets.form.numberfield.inputPattern.InputPatternTestCaseTpl"
         });
     },
     $prototype : {

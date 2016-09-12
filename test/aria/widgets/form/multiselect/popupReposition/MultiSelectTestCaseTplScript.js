@@ -14,7 +14,7 @@
  */
 
 Aria.tplScriptDefinition({
-    $classpath : 'test.aria.widgets.form.multiselect.popupReposition.MultiSelectTplScript',
+    $classpath : 'test.aria.widgets.form.multiselect.popupReposition.MultiSelectTestCaseTplScript',
     $dependencies : ['aria.utils.Array'],
     $constructor : function () {
         var types = [];

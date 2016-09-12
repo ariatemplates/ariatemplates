@@ -14,10 +14,10 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.multiautocomplete.navigation.input.InputFieldTestCase",
-    $extends : "test.aria.widgets.form.multiautocomplete.navigation.BaseTestCase",
+    $classpath : "test.aria.widgets.form.multiautocomplete.navigation.input.InputFieldRobotTestCase",
+    $extends : "test.aria.widgets.form.multiautocomplete.navigation.RobotBase",
     $constructor : function () {
-        this.$BaseTestCase.constructor.call(this, 'Navigation in input field');
+        this.$RobotBase.constructor.call(this, 'Navigation in input field');
     },
     $prototype : {
         _initialization : [{

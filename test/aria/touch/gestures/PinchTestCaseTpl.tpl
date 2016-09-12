@@ -14,7 +14,7 @@
  */
 
  {Template {
-  $classpath : "test.aria.touch.gestures.PinchTpl",
+  $classpath : "test.aria.touch.gestures.PinchTestCaseTpl",
   $css : ["test.aria.touch.gestures.TouchEventsCSS"],
   $hasScript : true
 } }

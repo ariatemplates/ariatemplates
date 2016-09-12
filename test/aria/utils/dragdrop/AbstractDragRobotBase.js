@@ -17,7 +17,7 @@
  * Abstract class for drag tests
  */
 Aria.classDefinition({
-    $classpath : "test.aria.utils.dragdrop.AbstractDragTestCase",
+    $classpath : "test.aria.utils.dragdrop.AbstractDragRobotBase",
     $extends : "aria.jsunit.RobotTestCase",
     $dependencies : ["aria.utils.dragdrop.Drag", "aria.utils.Dom", "aria.tools.contextual.ContextualMenu"],
     $constructor : function () {

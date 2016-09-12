@@ -18,9 +18,9 @@ var Aria = require('ariatemplates/Aria');
 
 
 module.exports = Aria.classDefinition({
-    $classpath : 'test.aria.widgets.wai.dropdown.SelectBoxDropdownTogglingTest',
+    $classpath : 'test.aria.widgets.wai.dropdown.SelectBoxDropdownTogglingRobotTestCase',
 
-    $extends : require('./Base'),
+    $extends : require('./RobotBase'),
 
     $statics : {
         idOfWidgetToTest: 'selectBox'

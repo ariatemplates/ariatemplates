@@ -14,12 +14,12 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.wai.datePicker.DatePickerJawsTest1",
+    $classpath : "test.aria.widgets.wai.datePicker.DatePicker1JawsTestCase",
     $extends : "aria.jsunit.JawsTestCase",
     $constructor : function () {
         this.$JawsTestCase.constructor.call(this);
         this.setTestEnv({
-            template : "test.aria.widgets.wai.datePicker.DatePickerTestTpl",
+            template : "test.aria.widgets.wai.datePicker.DatePickerRobotTestCaseTpl",
             data : {
                 dpWaiEnabledValue : new Date(2016, 0, 1)
             }

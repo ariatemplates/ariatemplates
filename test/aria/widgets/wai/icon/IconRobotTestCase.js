@@ -58,13 +58,13 @@ function Icon(id, waiAria, label) {
 ////////////////////////////////////////////////////////////////////////////////
 
 module.exports = Aria.classDefinition({
-    $classpath : 'test.aria.widgets.wai.icon.IconTest',
-    $extends : require('test/EnhancedRobotTestCase'),
+    $classpath : 'test.aria.widgets.wai.icon.IconRobotTestCase',
+    $extends : require('test/EnhancedRobotBase'),
 
     $constructor : function () {
         // ------------------------------------------------------ initialization
 
-        this.$EnhancedRobotTestCase.constructor.call(this);
+        this.$EnhancedRobotBase.constructor.call(this);
 
         // ---------------------------------------------------------- processing
 

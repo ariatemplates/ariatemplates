@@ -14,8 +14,8 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.html.checkbox.CheckBoxTest",
-    $extends : "test.aria.html.inputElement.InputElementBaseTest",
+    $classpath : "test.aria.html.checkbox.CheckBoxTestCase",
+    $extends : "test.aria.html.inputElement.InputElementBase",
     $dependencies : ["aria.html.CheckBox", "aria.utils.Json", "aria.utils.FireDomEvent"],
     $prototype : {
 

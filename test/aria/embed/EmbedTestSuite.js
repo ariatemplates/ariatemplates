@@ -19,8 +19,8 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
-        this.addTests("test.aria.embed.PlaceholderManagerTest");
-        this.addTests("test.aria.embed.placeholder.PlaceHolderTest");
+        this.addTests("test.aria.embed.PlaceholderManagerTestCase");
+        this.addTests("test.aria.embed.placeholder.PlaceHolderTestCase");
         this.addTests("test.aria.embed.map.MapWidgetTestSuite");
     }
 });

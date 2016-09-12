@@ -17,7 +17,7 @@
  * Test cases for aria.utils.validators.Phone
  */
 Aria.classDefinition({
-    $classpath : "test.aria.utils.validators.Phone",
+    $classpath : "test.aria.utils.validators.PhoneTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.utils.validators.Phone"],
     $prototype : {

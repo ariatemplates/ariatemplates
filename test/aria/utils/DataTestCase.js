@@ -17,7 +17,7 @@
  * Test cases for aria.utils.Data
  */
 Aria.classDefinition({
-    $classpath : "test.aria.utils.Data",
+    $classpath : "test.aria.utils.DataTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.utils.Data", "aria.utils.validators.Number", "aria.utils.validators.Mandatory",
             "aria.utils.validators.MultipleValidator"],

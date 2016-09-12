@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.autocomplete.errorhandling.AutoComplete",
+    $classpath : "test.aria.widgets.form.autocomplete.errorhandling.AutoCompleteTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $prototype : {
         /**

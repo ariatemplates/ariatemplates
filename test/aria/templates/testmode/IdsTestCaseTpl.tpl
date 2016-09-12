@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath : "test.aria.templates.testmode.TestIdsTestCaseTpl",
+    $classpath : "test.aria.templates.testmode.IdsTestCaseTpl",
     $hasScript : false,
     $dependencies : ["aria.resources.handlers.LCResourcesHandler", "aria.utils.environment.Date"]
 }}

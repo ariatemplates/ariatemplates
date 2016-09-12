@@ -20,25 +20,25 @@ module.exports = Aria.classDefinition({
     $extends : require("ariatemplates/jsunit/TestSuite"),
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
-        this.addTests("test.aria.widgets.dropdown.touchDevices.AutoCompleteExpButPopupDesktopTest");
-        this.addTests("test.aria.widgets.dropdown.touchDevices.AutoCompleteExpButPopupTouchTest");
-        this.addTests("test.aria.widgets.dropdown.touchDevices.AutoCompleteExpButInputDesktopTest");
-        this.addTests("test.aria.widgets.dropdown.touchDevices.AutoCompleteExpButInputTouchTest");
-        this.addTests("test.aria.widgets.dropdown.touchDevices.AutoCompleteNoExpButPopupDesktopTest");
-        this.addTests("test.aria.widgets.dropdown.touchDevices.AutoCompleteNoExpButPopupTouchTest");
-        this.addTests("test.aria.widgets.dropdown.touchDevices.AutoCompleteNoExpButInputDesktopTest");
-        this.addTests("test.aria.widgets.dropdown.touchDevices.AutoCompleteNoExpButInputTouchTest");
-        this.addTests("test.aria.widgets.dropdown.touchDevices.DatePickerPopupDesktopTest");
-        this.addTests("test.aria.widgets.dropdown.touchDevices.DatePickerPopupTouchTest");
-        this.addTests("test.aria.widgets.dropdown.touchDevices.DatePickerInputDesktopTest");
-        this.addTests("test.aria.widgets.dropdown.touchDevices.DatePickerInputTouchTest");
-        this.addTests("test.aria.widgets.dropdown.touchDevices.MultiSelectPopupDesktopTest");
-        this.addTests("test.aria.widgets.dropdown.touchDevices.MultiSelectPopupTouchTest");
-        this.addTests("test.aria.widgets.dropdown.touchDevices.MultiSelectInputDesktopTest");
-        this.addTests("test.aria.widgets.dropdown.touchDevices.MultiSelectInputTouchTest");
-        this.addTests("test.aria.widgets.dropdown.touchDevices.SelectBoxPopupDesktopTest");
-        this.addTests("test.aria.widgets.dropdown.touchDevices.SelectBoxPopupTouchTest");
-        this.addTests("test.aria.widgets.dropdown.touchDevices.SelectBoxInputDesktopTest");
-        this.addTests("test.aria.widgets.dropdown.touchDevices.SelectBoxInputTouchTest");
+        this.addTests("test.aria.widgets.dropdown.touchDevices.AutoCompleteExpButPopupDesktopRobotTestCase");
+        this.addTests("test.aria.widgets.dropdown.touchDevices.AutoCompleteExpButPopupTouchRobotTestCase");
+        this.addTests("test.aria.widgets.dropdown.touchDevices.AutoCompleteExpButInputDesktopRobotTestCase");
+        this.addTests("test.aria.widgets.dropdown.touchDevices.AutoCompleteExpButInputTouchRobotTestCase");
+        this.addTests("test.aria.widgets.dropdown.touchDevices.AutoCompleteNoExpButPopupDesktopRobotTestCase");
+        this.addTests("test.aria.widgets.dropdown.touchDevices.AutoCompleteNoExpButPopupTouchRobotTestCase");
+        this.addTests("test.aria.widgets.dropdown.touchDevices.AutoCompleteNoExpButInputDesktopRobotTestCase");
+        this.addTests("test.aria.widgets.dropdown.touchDevices.AutoCompleteNoExpButInputTouchRobotTestCase");
+        this.addTests("test.aria.widgets.dropdown.touchDevices.DatePickerPopupDesktopRobotTestCase");
+        this.addTests("test.aria.widgets.dropdown.touchDevices.DatePickerPopupTouchRobotTestCase");
+        this.addTests("test.aria.widgets.dropdown.touchDevices.DatePickerInputDesktopRobotTestCase");
+        this.addTests("test.aria.widgets.dropdown.touchDevices.DatePickerInputTouchRobotTestCase");
+        this.addTests("test.aria.widgets.dropdown.touchDevices.MultiSelectPopupDesktopRobotTestCase");
+        this.addTests("test.aria.widgets.dropdown.touchDevices.MultiSelectPopupTouchRobotTestCase");
+        this.addTests("test.aria.widgets.dropdown.touchDevices.MultiSelectInputDesktopRobotTestCase");
+        this.addTests("test.aria.widgets.dropdown.touchDevices.MultiSelectInputTouchRobotTestCase");
+        this.addTests("test.aria.widgets.dropdown.touchDevices.SelectBoxPopupDesktopRobotTestCase");
+        this.addTests("test.aria.widgets.dropdown.touchDevices.SelectBoxPopupTouchRobotTestCase");
+        this.addTests("test.aria.widgets.dropdown.touchDevices.SelectBoxInputDesktopRobotTestCase");
+        this.addTests("test.aria.widgets.dropdown.touchDevices.SelectBoxInputTouchRobotTestCase");
     }
 });

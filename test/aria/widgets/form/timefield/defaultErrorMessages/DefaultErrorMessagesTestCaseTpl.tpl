@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath : "test.aria.widgets.form.timefield.defaultErrorMessages.DefaultErrorMessagesTestTpl"
+    $classpath : "test.aria.widgets.form.timefield.defaultErrorMessages.DefaultErrorMessagesTestCaseTpl"
 }}
 
     {macro main()}

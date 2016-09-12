@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.resources.ResourcesFallback",
+    $classpath : "test.aria.resources.ResourcesFallbackTestCase",
     $extends : "aria.jsunit.TestCase",
     $prototype : {
 

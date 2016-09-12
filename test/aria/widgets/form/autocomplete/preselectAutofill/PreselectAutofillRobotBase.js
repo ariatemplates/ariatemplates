@@ -43,7 +43,7 @@
  * </pre>
  */
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.autocomplete.preselectAutofill.PreselectAutofillBaseTest",
+    $classpath : "test.aria.widgets.form.autocomplete.preselectAutofill.PreselectAutofillRobotBase",
     $extends : "aria.jsunit.RobotTestCase",
     $dependencies : ["aria.popups.PopupManager", "aria.resources.handlers.LCResourcesHandler", "aria.utils.Array",
             "aria.utils.Type", "aria.core.Browser"],

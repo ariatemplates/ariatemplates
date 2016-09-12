@@ -17,7 +17,7 @@
  * This etst fails only inside a Suite
  */
 Aria.classDefinition({
-    $classpath : "test.aria.jsunit.TestCaseTest",
+    $classpath : "test.aria.jsunit.ATestCase",
     $extends : "aria.jsunit.TestCase",
     $prototype : {
         /**

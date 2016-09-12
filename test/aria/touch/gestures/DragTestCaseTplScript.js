@@ -14,7 +14,7 @@
  */
 
 Aria.tplScriptDefinition({
-    $classpath : "test.aria.touch.gestures.DragTplScript",
+    $classpath : "test.aria.touch.gestures.DragTestCaseTplScript",
     $constructor : function () {
         this.data = {};
     },

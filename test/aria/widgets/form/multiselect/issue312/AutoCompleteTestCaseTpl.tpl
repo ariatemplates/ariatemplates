@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath:'test.aria.widgets.form.multiselect.issue312.AutoCompleteTpl',
+    $classpath:'test.aria.widgets.form.multiselect.issue312.AutoCompleteTestCaseTpl',
     $hasScript:true
 }}
 

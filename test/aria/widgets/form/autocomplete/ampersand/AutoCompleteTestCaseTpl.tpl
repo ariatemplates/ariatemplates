@@ -14,7 +14,7 @@
  */
 
 {Template {
-  $classpath:"test.aria.widgets.form.autocomplete.ampersand.AutoCompleteTpl",
+  $classpath:"test.aria.widgets.form.autocomplete.ampersand.AutoCompleteTestCaseTpl",
   $hasScript:true,
   $width: {min: 500}
 }}

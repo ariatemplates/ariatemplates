@@ -14,11 +14,11 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.pageEngine.pageEngine.issue770.GetContentTest",
-    $extends : "test.aria.pageEngine.pageEngine.PageEngineBaseTestCase",
+    $classpath : "test.aria.pageEngine.pageEngine.issue770.GetContentTestCase",
+    $extends : "test.aria.pageEngine.pageEngine.PageEngineBase",
     $constructor : function () {
         this.defaultTestTimeout = 10000;
-        this.$PageEngineBaseTestCase.constructor.call(this);
+        this.$PageEngineBase.constructor.call(this);
         this._dependencies.push("test.aria.pageEngine.pageEngine.issue770.PageProvider770");
 
         this.__pageReadyEventWasRaised = false;
@@ -64,7 +64,7 @@ Aria.classDefinition({
         end : function () {
             this.pageEngine.$dispose();
             this.pageProvider.$dispose();
-            this.$PageEngineBaseTestCase.end.call(this);
+            this.$PageEngineBase.end.call(this);
         }
     }
 });

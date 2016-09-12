@@ -19,14 +19,14 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
-        this.addTests("test.aria.core.io.IOFiltersMgrTest");
-        this.addTests("test.aria.core.io.IOFilterTest");
-        this.addTests("test.aria.core.io.IOTest");
-        this.addTests("test.aria.core.io.IOXDRTest");
-        this.addTests("test.aria.core.io.IOTransportTest");
-        this.addTests("test.aria.core.io.FormSubmit");
-        this.addTests("test.aria.core.io.JSONPTest");
-        this.addTests("test.aria.core.io.issue436.FormSubmit");
-        this.addTests("test.aria.core.io.FailedRequestsInterceptionTest");
+        this.addTests("test.aria.core.io.IOFiltersMgrTestCase");
+        this.addTests("test.aria.core.io.IOFilterTestCase");
+        this.addTests("test.aria.core.io.IOTestCase");
+        this.addTests("test.aria.core.io.IOXDRTestCase");
+        this.addTests("test.aria.core.io.IOTransportTestCase");
+        this.addTests("test.aria.core.io.FormSubmitTestCase");
+        this.addTests("test.aria.core.io.JSONPTestCase");
+        this.addTests("test.aria.core.io.issue436.FormSubmitTestCase");
+        this.addTests("test.aria.core.io.FailedRequestsInterceptionTestCase");
     }
 });

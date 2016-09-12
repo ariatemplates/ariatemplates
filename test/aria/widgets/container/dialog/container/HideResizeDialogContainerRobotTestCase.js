@@ -14,8 +14,8 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.container.dialog.container.HideResizeDialogContainerTestCase",
-    $extends : "test.aria.widgets.container.dialog.container.BaseDialogContainerTestCase",
+    $classpath : "test.aria.widgets.container.dialog.container.HideResizeDialogContainerRobotTestCase",
+    $extends : "test.aria.widgets.container.dialog.container.DialogContainerRobotBase",
     $prototype : {
 
         start: function () {

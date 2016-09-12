@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.autoselect.AutoSelect",
+    $classpath : "test.aria.widgets.autoselect.AutoSelectTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $prototype : {
         inputField : null,

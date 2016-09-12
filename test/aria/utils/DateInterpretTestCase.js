@@ -17,7 +17,7 @@
  * Test case for aria.utils.DateInterpret
  */
 Aria.classDefinition({
-    $classpath : "test.aria.utils.DateInterpret",
+    $classpath : "test.aria.utils.DateInterpretTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.utils.Date"],
     $prototype : {

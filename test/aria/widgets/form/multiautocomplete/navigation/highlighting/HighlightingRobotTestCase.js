@@ -14,10 +14,10 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.multiautocomplete.navigation.highlighting.HighlightingTestCase",
-    $extends : "test.aria.widgets.form.multiautocomplete.navigation.BaseTestCase",
+    $classpath : "test.aria.widgets.form.multiautocomplete.navigation.highlighting.HighlightingRobotTestCase",
+    $extends : "test.aria.widgets.form.multiautocomplete.navigation.RobotBase",
     $constructor : function () {
-        this.$BaseTestCase.constructor.call(this, 'Navigation in highlighted mode');
+        this.$RobotBase.constructor.call(this, 'Navigation in highlighted mode');
     },
     $prototype : {
         _initialization : [{

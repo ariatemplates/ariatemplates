@@ -19,8 +19,8 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
-        this.addTests("test.aria.widgetLibs.environment.WidgetLibsSettingsTest");
-        this.addTests("test.aria.widgetLibs.BaseWidgetTest");
+        this.addTests("test.aria.widgetLibs.environment.WidgetLibsSettingsTestCase");
+        this.addTests("test.aria.widgetLibs.WidgetTestCase");
         this.addTests("test.aria.widgetLibs.sampleWidget.WidgetLibsTestCase");
     }
 });

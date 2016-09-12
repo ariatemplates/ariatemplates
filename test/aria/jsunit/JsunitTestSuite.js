@@ -20,12 +20,12 @@ Aria.classDefinition({
         this.$TestSuite.constructor.call(this);
 
         this.addTests("test.aria.jsunit.load.LoadTestSuite");
-        this.addTests("test.aria.jsunit.ModuleCtrlTestCaseTest");
-        this.addTests("test.aria.jsunit.AssertTest");
-        this.addTests("test.aria.jsunit.TestCaseTest");
+        this.addTests("test.aria.jsunit.ModuleCtrlATestCase");
+        this.addTests("test.aria.jsunit.AssertTestCase");
+        this.addTests("test.aria.jsunit.ATestCase");
         this.addTests("test.aria.jsunit.ModuleControllerTestCase");
-        this.addTests("test.aria.jsunit.templateTests.TemplateInIframe");
-        this.addTests("test.aria.jsunit.templateTests.TemplateInIframeWithError");
-        this.addTests("test.aria.jsunit.templateTests.TestCaseModuleController");
+        this.addTests("test.aria.jsunit.templateTests.TemplateInIframeTestCase");
+        this.addTests("test.aria.jsunit.templateTests.TemplateInIframeWithErrorTestCase");
+        this.addTests("test.aria.jsunit.templateTests.ModuleControllerTestCase");
     }
 });

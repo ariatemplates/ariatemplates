@@ -14,10 +14,10 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.templates.section.sectionAttributes.binding.SectionAttributesBindingNonRecursive",
-    $extends : "test.aria.templates.section.sectionAttributes.binding.SectionAttributesBinding",
+    $classpath : "test.aria.templates.section.sectionAttributes.binding.SectionAttributesBindingNonRecursiveTestCase",
+    $extends : "test.aria.templates.section.sectionAttributes.binding.SectionAttributesBindingBase",
     $constructor : function () {
         this._recursive = false;
-        this.$SectionAttributesBinding.constructor.call(this);
+        this.$SectionAttributesBindingBase.constructor.call(this);
     }
 });

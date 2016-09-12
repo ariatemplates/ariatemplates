@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.templates.view.ViewTest",
+    $classpath : "test.aria.templates.view.ViewTestCase",
     $dependencies : ["aria.templates.View"],
     $extends : "aria.jsunit.TemplateTestCase",
     $prototype : {

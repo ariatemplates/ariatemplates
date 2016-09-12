@@ -17,8 +17,8 @@ var Aria = require("ariatemplates/Aria");
 var AppEnvironment = require("ariatemplates/core/AppEnvironment");
 
 module.exports = Aria.classDefinition({
-    $classpath : "test.aria.widgets.wai.autoComplete.AutoCompleteNonWaiTestCase",
-    $extends : require("./AutoCompleteBaseTest"),
+    $classpath : "test.aria.widgets.wai.autoComplete.AutoCompleteNonWaiRobotTestCase",
+    $extends : require("./AutoCompleteRobotBase"),
     $prototype: {
         myAutoCompleteId: "city3",
         myAutoCompleteAccessible: false,
@@ -30,7 +30,7 @@ module.exports = Aria.classDefinition({
                 }
             }, {
                 scope: this,
-                fn: this.$AutoCompleteBaseTest.run
+                fn: this.$AutoCompleteRobotBase.run
             });
         }
     }

@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.selectbox.emptyOption.EmptyOptionTestCase",
+    $classpath : "test.aria.widgets.form.selectbox.emptyOption.EmptyOptionRobotTestCase",
     $extends : "aria.jsunit.RobotTestCase",
     $dependencies : ["aria.utils.Json"],
     $prototype : {

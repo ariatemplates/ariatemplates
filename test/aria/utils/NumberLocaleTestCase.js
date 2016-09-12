@@ -15,7 +15,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.utils.NumberLocale",
+    $classpath : "test.aria.utils.NumberLocaleTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.utils.Number", "aria.utils.environment.Number", "aria.utils.Json"],
     $constructor : function () {

@@ -14,7 +14,7 @@
  */
 
 {Template {
-	$classpath : "test.aria.widgets.form.textarea.maxlength.MaxLengthTestCaseTpl"
+	$classpath : "test.aria.widgets.form.textarea.maxlength.MaxLengthRobotTestCaseTpl"
 }}
 
 {macro main()}

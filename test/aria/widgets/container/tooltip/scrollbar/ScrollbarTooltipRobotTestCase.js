@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.container.tooltip.scrollbar.ScrollbarTooltip",
+    $classpath : "test.aria.widgets.container.tooltip.scrollbar.ScrollbarTooltipRobotTestCase",
     $extends : "aria.jsunit.RobotTestCase",
     $dependencies : ["aria.templates.Layout", "aria.utils.Dom"],
     $prototype : {

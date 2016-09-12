@@ -19,15 +19,15 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
-        this.addTests("test.aria.html.textinput.TextInputTest");
-        this.addTests("test.aria.html.textinput.TextInputOnTypeTest");
-        this.addTests("test.aria.html.textinput.TextInputPasswordTest");
+        this.addTests("test.aria.html.textinput.TextInputTestCase");
+        this.addTests("test.aria.html.textinput.TextInputOnTypeTestCase");
+        this.addTests("test.aria.html.textinput.TextInputPasswordTestCase");
         this.addTests("test.aria.html.textinput.focus.FocusTestCase");
-        this.addTests("test.aria.html.textinput.autoselect.AutoselectTestCase");
+        this.addTests("test.aria.html.textinput.autoselect.AutoselectRobotTestCase");
         this.addTests("test.aria.html.textinput.autoselectapi.AutoselectTestCase");
         this.addTests("test.aria.html.textinput.placeholder.PlaceholderTestCase");
-        this.addTests("test.aria.html.textinput.bind.BindableTestCase");
-        this.addTests("test.aria.html.textinput.bind.TextInputBindTest");
-        this.addTests("test.aria.html.textinput.DisabledTextInputTest");
+        this.addTests("test.aria.html.textinput.bind.BindableRobotTestCase");
+        this.addTests("test.aria.html.textinput.bind.TextInputBindTestCase");
+        this.addTests("test.aria.html.textinput.DisabledTextInputTestCase");
     }
 });

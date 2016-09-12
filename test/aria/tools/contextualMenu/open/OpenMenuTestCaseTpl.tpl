@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath : "test.aria.tools.contextualMenu.open.OpenMenuTestTpl" } }
+    $classpath : "test.aria.tools.contextualMenu.open.OpenMenuTestCaseTpl" } }
 
     {macro main ( )}
         <div {id "divOutsideDialog"/} > Here is a simple div. </div>

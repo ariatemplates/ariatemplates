@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.html.element.ElementBindingsTest",
+    $classpath : "test.aria.html.element.ElementBindingsTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.html.Element", "aria.utils.Json", "aria.utils.Array"],
     $prototype : {

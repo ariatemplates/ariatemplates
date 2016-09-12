@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.datepicker.errorstate.DatePicker",
+    $classpath : "test.aria.widgets.form.datepicker.errorstate.DatePickerRobotTestCase",
     $extends : "aria.jsunit.RobotTestCase",
     $dependencies : ["aria.core.Browser"],
     $constructor : function () {
@@ -22,7 +22,7 @@ Aria.classDefinition({
         // TODO this test is ridiculously long, split it
         this.defaultTestTimeout = 120000;
         this.setTestEnv({
-            template : "test.aria.widgets.form.datepicker.errorstate.DatePickerTpl"
+            template : "test.aria.widgets.form.datepicker.errorstate.DatePickerRobotTestCaseTpl"
         });
         this.datePickerId = "Date1";
         this.validation = false;

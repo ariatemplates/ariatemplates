@@ -14,7 +14,7 @@
  */
 
 {Template {
-   $classpath : "test.aria.widgets.container.checkContent.DivTestTpl"
+   $classpath : "test.aria.widgets.container.checkContent.DivTestCaseTpl"
 }}
     {macro main()}
         {@aria:Div {

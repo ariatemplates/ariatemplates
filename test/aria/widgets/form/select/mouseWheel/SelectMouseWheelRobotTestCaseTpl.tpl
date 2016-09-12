@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath:"test.aria.widgets.form.select.mouseWheel.SelectMouseWheelTestCaseTpl",
+    $classpath:"test.aria.widgets.form.select.mouseWheel.SelectMouseWheelRobotTestCaseTpl",
     $hasScript: true
 }}
     {macro main()}

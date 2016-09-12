@@ -14,7 +14,7 @@
  */
 
 {Template {
-	$classpath : "test.aria.html.textinput.autoselect.AutoselectTestCaseTpl",
+	$classpath : "test.aria.html.textinput.autoselect.AutoselectRobotTestCaseTpl",
 	$hasScript: true,
 	$wlibs : {
 		html : "aria.html.HtmlLibrary"

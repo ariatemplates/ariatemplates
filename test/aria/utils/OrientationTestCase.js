@@ -17,7 +17,7 @@
  * Test case for aria.utils.Orientation
  */
 Aria.classDefinition({
-    $classpath : "test.aria.utils.OrientationTest",
+    $classpath : "test.aria.utils.OrientationTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.utils.Orientation"],
     $constructor : function () {

@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.multiselect.emptyMultiSelect.MultiSelect",
+    $classpath : "test.aria.widgets.form.multiselect.emptyMultiSelect.MultiSelectRobotTestCase",
     $extends : "aria.jsunit.RobotTestCase",
     $dependencies : ["aria.utils.Dom"],
     $prototype : {

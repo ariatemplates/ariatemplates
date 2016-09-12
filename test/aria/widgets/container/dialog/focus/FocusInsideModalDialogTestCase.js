@@ -17,7 +17,7 @@
  * Makes sure that the user cannot focus on something outside a modal dialog.
  */
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.container.dialog.focus.FocusInsideModalDialog",
+    $classpath : "test.aria.widgets.container.dialog.focus.FocusInsideModalDialogTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $dependencies : ["aria.utils.Function"],
     $constructor : function () {

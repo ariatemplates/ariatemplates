@@ -14,8 +14,8 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.container.dialog.container.FocusDialogContainerTestCase",
-    $extends : "test.aria.widgets.container.dialog.container.BaseDialogContainerTestCase",
+    $classpath : "test.aria.widgets.container.dialog.container.FocusDialogContainerRobotTestCase",
+    $extends : "test.aria.widgets.container.dialog.container.DialogContainerRobotBase",
     $prototype : {
 
         start: function () {

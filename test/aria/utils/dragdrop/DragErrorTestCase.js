@@ -17,7 +17,7 @@
  * Template Test case for aria.utils.dragdrop.Drag error logging
  */
 Aria.classDefinition({
-    $classpath : 'test.aria.utils.dragdrop.DragErrorTest',
+    $classpath : 'test.aria.utils.dragdrop.DragErrorTestCase',
     $extends : 'aria.jsunit.TemplateTestCase',
     $dependencies : ["aria.utils.dragdrop.Drag", "aria.utils.Dom", "aria.tools.contextual.ContextualMenu"],
     $constructor : function () {

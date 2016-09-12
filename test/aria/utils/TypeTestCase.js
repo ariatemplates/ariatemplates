@@ -18,7 +18,7 @@
  * Test case for aria.utils.Type
  */
 Aria.classDefinition({
-    $classpath : "test.aria.utils.TypeTest",
+    $classpath : "test.aria.utils.TypeTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.utils.Callback"],
     $prototype : {
@@ -160,13 +160,13 @@ Aria.classDefinition({
             this.assertFalse(typeUtils.isCallback(undefined));
 
             this.assertFalse(typeUtils.isCallback({
-                $classpath : "test.aria.utils.TypeTest",
+                $classpath : "test.aria.utils.TypeTestCase",
                 fn : function () {},
                 scope : this
             }));
 
             this.assertFalse(typeUtils.isCallback({
-                $classpath : "test.aria.utils.TypeTest",
+                $classpath : "test.aria.utils.TypeTestCase",
                 fn : "_myTestMethod",
                 scope : this
             }));

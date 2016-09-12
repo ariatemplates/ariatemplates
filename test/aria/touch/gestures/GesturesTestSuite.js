@@ -21,12 +21,12 @@ Aria.classDefinition({
     $extends : "aria.jsunit.TestSuite",
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
-        this.addTests("test.aria.touch.gestures.Tap");
-        this.addTests("test.aria.touch.gestures.SingleTap");
-        this.addTests("test.aria.touch.gestures.DoubleTap");
-        this.addTests("test.aria.touch.gestures.LongPress");
-        this.addTests("test.aria.touch.gestures.Drag");
-        this.addTests("test.aria.touch.gestures.Swipe");
-        this.addTests("test.aria.touch.gestures.Pinch");
+        this.addTests("test.aria.touch.gestures.TapTestCase");
+        this.addTests("test.aria.touch.gestures.SingleTapTestCase");
+        this.addTests("test.aria.touch.gestures.DoubleTapTestCase");
+        this.addTests("test.aria.touch.gestures.LongPressTestCase");
+        this.addTests("test.aria.touch.gestures.DragTestCase");
+        this.addTests("test.aria.touch.gestures.SwipeTestCase");
+        this.addTests("test.aria.touch.gestures.PinchTestCase");
     }
 });

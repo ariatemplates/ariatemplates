@@ -17,7 +17,7 @@
  * Template Test case for aria.utils.dragdrop.Drag
  */
 Aria.classDefinition({
-    $classpath : "test.aria.utils.dragdrop.ScrollIntoViewThenDragTest",
+    $classpath : "test.aria.utils.dragdrop.ScrollIntoViewThenDragRobotTestCase",
     $extends : "aria.jsunit.RobotTestCase",
     $constructor : function () {
         this.$RobotTestCase.constructor.call(this);

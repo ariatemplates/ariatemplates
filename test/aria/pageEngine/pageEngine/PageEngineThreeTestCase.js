@@ -17,10 +17,10 @@
  * Test for content processors
  */
 Aria.classDefinition({
-    $classpath : "test.aria.pageEngine.pageEngine.PageEngineTestThree",
-    $extends : "test.aria.pageEngine.pageEngine.PageEngineBaseTestCase",
+    $classpath : "test.aria.pageEngine.pageEngine.PageEngineThreeTestCase",
+    $extends : "test.aria.pageEngine.pageEngine.PageEngineBase",
     $constructor : function () {
-        this.$PageEngineBaseTestCase.constructor.call(this);
+        this.$PageEngineBase.constructor.call(this);
         this._dependencies.push("test.aria.pageEngine.pageEngine.site.PageProviderTwo");
     },
     $prototype : {
@@ -74,7 +74,7 @@ Aria.classDefinition({
 
         end : function () {
             this._disposePageEngine();
-            this.$PageEngineBaseTestCase.end.call(this);
+            this.$PageEngineBase.end.call(this);
         },
 
         _disposePageEngine : function () {

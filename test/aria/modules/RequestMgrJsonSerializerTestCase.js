@@ -17,7 +17,7 @@
  * Test for the serialization of JSON data to be sent along with the request
  */
 Aria.classDefinition({
-    $classpath : "test.aria.modules.RequestMgrJsonSerializerTest",
+    $classpath : "test.aria.modules.RequestMgrJsonSerializerTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.modules.RequestMgr", "test.aria.modules.test.JsonSerializerTestFilter",
             "aria.modules.requestHandler.RequestHandler", "aria.utils.Date",

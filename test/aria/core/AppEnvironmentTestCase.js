@@ -17,7 +17,7 @@
  * Test case for the application environment
  */
 Aria.classDefinition({
-    $classpath : "test.aria.core.AppEnvironmentTest",
+    $classpath : "test.aria.core.AppEnvironmentTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.core.environment.Environment"],
     $prototype : {

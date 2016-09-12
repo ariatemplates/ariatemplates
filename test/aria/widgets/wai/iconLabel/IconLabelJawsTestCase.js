@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.wai.iconLabel.IconLabelJawsTest",
+    $classpath : "test.aria.widgets.wai.iconLabel.IconLabelJawsTestCase",
     $extends : "aria.jsunit.JawsTestCase",
     $constructor : function () {
         this.$JawsTestCase.constructor.call(this);

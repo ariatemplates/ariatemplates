@@ -14,13 +14,13 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.autocomplete.defaultErrorMessages.DefaultErrorMessagesTest",
-    $extends : "test.aria.widgets.form.BaseDefaultErrorMessagesTest",
+    $classpath : "test.aria.widgets.form.autocomplete.defaultErrorMessages.DefaultErrorMessagesTestCase",
+    $extends : "test.aria.widgets.form.DefaultErrorMessagesBase",
     $dependencies : ["aria.utils.Array", "aria.utils.Json", "aria.resources.handlers.LCResourcesHandler"],
     $constructor : function () {
         // ---------------------------------------------------------------------
 
-        this.$BaseDefaultErrorMessagesTest.constructor.call(
+        this.$DefaultErrorMessagesBase.constructor.call(
             this,
             "AutoComplete",
             [

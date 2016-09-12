@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.checkbox.nullBoundValue.CheckBoxNullBoundValueTest",
+    $classpath : "test.aria.widgets.form.checkbox.nullBoundValue.CheckBoxNullBoundValueTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $prototype : {
         runTemplateTest : function () {

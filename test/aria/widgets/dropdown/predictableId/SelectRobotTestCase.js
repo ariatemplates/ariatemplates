@@ -14,8 +14,8 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.dropdown.predictableId.SelectTest",
-    $extends : "test.aria.widgets.dropdown.predictableId.CommonTestCase",
+    $classpath : "test.aria.widgets.dropdown.predictableId.SelectRobotTestCase",
+    $extends : "test.aria.widgets.dropdown.predictableId.CommonRobotBase",
     $templates : ["aria.widgets.form.list.templates.ListTemplate"],
     $prototype : {
         idToBeTested : "select"

@@ -14,13 +14,13 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.pageEngine.pageEngine.customRootModule.NonExistentRootModuleClassTest",
-    $extends : "test.aria.pageEngine.pageEngine.customRootModule.CustomRootModuleBaseTestCase",
+    $classpath : "test.aria.pageEngine.pageEngine.customRootModule.NonExistentRootModuleClassTestCase",
+    $extends : "test.aria.pageEngine.pageEngine.customRootModule.CustomRootModuleBase",
     $constructor : function () {
         this.rootModuleCfg = {
             classpath : "a.class.that.does.not.Exist"
         };
-        this.$CustomRootModuleBaseTestCase.constructor.call(this);
+        this.$CustomRootModuleBase.constructor.call(this);
     },
     $prototype : {
 

@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.radiobutton.checkBind.test2.RadioButtonTest",
+    $classpath : "test.aria.widgets.form.radiobutton.checkBind.test2.RadioButtonTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $constructor : function () {
         this.$TemplateTestCase.constructor.call(this);

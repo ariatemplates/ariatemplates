@@ -14,12 +14,12 @@
  */
 
 Aria.classDefinition({
-    $classpath : 'test.aria.widgets.form.autocomplete.ampersand.AutoComplete',
+    $classpath : 'test.aria.widgets.form.autocomplete.ampersand.AutoCompleteTestCase',
     $extends : 'aria.jsunit.TemplateTestCase',
     $constructor : function () {
         this.$TemplateTestCase.constructor.call(this);
         this._autoCompleteTestCaseEnv = {
-            template : "test.aria.widgets.form.autocomplete.ampersand.AutoCompleteTpl",
+            template : "test.aria.widgets.form.autocomplete.ampersand.AutoCompleteTestCaseTpl",
             moduleCtrl : {
                 classpath : 'test.aria.widgets.form.autocomplete.ampersand.AutoCompleteCtrl'
             },

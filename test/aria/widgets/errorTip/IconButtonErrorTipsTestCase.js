@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : 'test.aria.widgets.errorTip.IconButtonErrorTipsTest',
+    $classpath : 'test.aria.widgets.errorTip.IconButtonErrorTipsTestCase',
     $extends : 'aria.jsunit.TemplateTestCase',
     $constructor : function () {
         this.$TemplateTestCase.constructor.call(this);

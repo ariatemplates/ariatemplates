@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.wai.popup.errortooltip.ErrorTooltipBaseJawsTestCase",
+    $classpath : "test.aria.widgets.wai.popup.errortooltip.ErrorTooltipJawsBase",
     $extends : "aria.jsunit.JawsTestCase",
     $constructor : function () {
         this.$JawsTestCase.constructor.call(this);

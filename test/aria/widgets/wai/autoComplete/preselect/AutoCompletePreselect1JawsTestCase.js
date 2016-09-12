@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.wai.autoComplete.preselect.AutoCompletePreselectJawsTest1",
+    $classpath : "test.aria.widgets.wai.autoComplete.preselect.AutoCompletePreselect1JawsTestCase",
     $extends : "aria.jsunit.JawsTestCase",
     $constructor : function () {
         this.$JawsTestCase.constructor.call(this);

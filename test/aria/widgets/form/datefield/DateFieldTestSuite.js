@@ -19,9 +19,9 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
-        this.addTests("test.aria.widgets.form.datefield.issue303.InvalidState");
-        this.addTests("test.aria.widgets.form.datefield.checkValue.DateField");
-        this.addTests("test.aria.widgets.form.datefield.checkDate.DateField");
-        this.addTests("test.aria.widgets.form.datefield.defaultErrorMessages.DefaultErrorMessagesTest");
+        this.addTests("test.aria.widgets.form.datefield.issue303.InvalidStateTestCase");
+        this.addTests("test.aria.widgets.form.datefield.checkValue.DateFieldTestCase");
+        this.addTests("test.aria.widgets.form.datefield.checkDate.DateFieldTestCase");
+        this.addTests("test.aria.widgets.form.datefield.defaultErrorMessages.DefaultErrorMessagesTestCase");
     }
 });

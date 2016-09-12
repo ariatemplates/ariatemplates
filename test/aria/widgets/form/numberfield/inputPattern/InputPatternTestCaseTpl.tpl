@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath : "test.aria.widgets.form.numberfield.inputPattern.InputPatternTpl"
+    $classpath : "test.aria.widgets.form.numberfield.inputPattern.InputPatternTestCaseTpl"
 }}
 
 {macro main()}

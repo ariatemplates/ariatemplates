@@ -14,7 +14,7 @@
  */
 
 {Template {
-   $classpath: "test.aria.utils.overlay.loadingIndicator.refresh.RefreshTestTpl"
+   $classpath: "test.aria.utils.overlay.loadingIndicator.refresh.RefreshTestCaseTpl"
 }}
 	{macro main()}
 		{if data.myBoolean}

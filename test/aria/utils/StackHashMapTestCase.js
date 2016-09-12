@@ -18,7 +18,7 @@
  * Test case for the StackHashMap class.
  */
 Aria.classDefinition({
-    $classpath : "test.aria.utils.StackHashMapTest",
+    $classpath : "test.aria.utils.StackHashMapTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.utils.StackHashMap", "aria.utils.Array"],
     $prototype : {

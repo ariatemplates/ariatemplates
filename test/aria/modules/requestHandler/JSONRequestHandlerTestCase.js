@@ -17,7 +17,7 @@
  * Test for the JSONRequestHandler
  */
 Aria.classDefinition({
-    $classpath : 'test.aria.modules.requestHandler.JSONRequestHandlerTest',
+    $classpath : 'test.aria.modules.requestHandler.JSONRequestHandlerTestCase',
     $extends : 'aria.jsunit.TestCase',
     $dependencies : ["aria.modules.requestHandler.JSONRequestHandler"],
     $prototype : {

@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath:"test.aria.widgets.form.autocomplete.expandbutton.test2.ExpandButtonCheckTpl",
+    $classpath:"test.aria.widgets.form.autocomplete.expandbutton.test2.ExpandButtonCheckRobotTestCaseTpl",
     $hasScript:true,
     $width: {min: 500}
 }}

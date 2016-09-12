@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.templates.popup.zIndex.ZIndex",
+    $classpath : "test.aria.templates.popup.zIndex.ZIndexTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $constructor : function () {
         this.$TemplateTestCase.constructor.call(this);
@@ -45,7 +45,7 @@ Aria.classDefinition({
     },
     $prototype : {
         runTemplateTest : function () {
-            test.aria.templates.popup.zIndex.ZIndex.myself = this;
+            test.aria.templates.popup.zIndex.ZIndexTestCase.myself = this;
 
             aria.utils.Json.setValue(this.templateCtxt.data, "visible", true);
         },
@@ -62,7 +62,7 @@ Aria.classDefinition({
 
         _closeDialog : function () {
             aria.utils.Json.setValue(this.templateCtxt.data, "visible", false);
-            test.aria.templates.popup.zIndex.ZIndex.myself = null;
+            test.aria.templates.popup.zIndex.ZIndexTestCase.myself = null;
 
             this.end();
         }

@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath : "test.aria.widgets.container.tooltip.scrollbar.ScrollbarTooltipTpl"
+    $classpath : "test.aria.widgets.container.tooltip.scrollbar.ScrollbarTooltipRobotTestCaseTpl"
 }}
 
     {macro main()}

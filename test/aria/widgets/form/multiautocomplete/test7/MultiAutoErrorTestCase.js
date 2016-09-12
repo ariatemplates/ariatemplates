@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.multiautocomplete.test7.MultiAutoError",
+    $classpath : "test.aria.widgets.form.multiautocomplete.test7.MultiAutoErrorTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $constructor : function () {
         this.$TemplateTestCase.constructor.call(this);
@@ -25,7 +25,7 @@ Aria.classDefinition({
 
         // setTestEnv has to be invoked before runTemplateTest fires
         this.setTestEnv({
-            template : "test.aria.widgets.form.multiautocomplete.test7.MultiAutoErrorTpl",
+            template : "test.aria.widgets.form.multiautocomplete.test7.MultiAutoErrorTestCaseTpl",
             data : this.data
         });
 

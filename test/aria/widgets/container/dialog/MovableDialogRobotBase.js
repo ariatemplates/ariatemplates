@@ -17,7 +17,7 @@
  * Base test class that implements some basic methods
  */
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.container.dialog.MovableDialogBaseTestCase",
+    $classpath : "test.aria.widgets.container.dialog.MovableDialogRobotBase",
     $extends : "aria.jsunit.RobotTestCase",
     $constructor : function () {
         this.$RobotTestCase.constructor.call(this);

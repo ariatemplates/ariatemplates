@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath : "test.aria.widgets.action.sortindicator.fixSortKeyGetter.SortIndicatorSortKeyGetterTestTpl",
+    $classpath : "test.aria.widgets.action.sortindicator.fixSortKeyGetter.SortIndicatorSortKeyGetterRobotTestCaseTpl",
     $hasScript : true
 }}
     {createView vFriends on friends /}

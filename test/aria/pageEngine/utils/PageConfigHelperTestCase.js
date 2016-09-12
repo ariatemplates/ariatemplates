@@ -17,7 +17,7 @@
  * test.aria.pageEngine.utils.PageConfigHelper test
  */
 Aria.classDefinition({
-    $classpath : "test.aria.pageEngine.utils.PageConfigHelperTest",
+    $classpath : "test.aria.pageEngine.utils.PageConfigHelperTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.pageEngine.utils.PageConfigHelper", "aria.utils.Array", "aria.utils.Object"],
     $resources : {

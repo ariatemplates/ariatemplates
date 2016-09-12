@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.numberfield.NumberFieldTest",
+    $classpath : "test.aria.widgets.form.numberfield.NumberFieldTestCase",
     $extends : "aria.jsunit.WidgetTestCase",
     $dependencies : ["aria.widgets.form.NumberField"],
     $prototype : {

@@ -15,9 +15,9 @@
 
 Aria.classDefinition({
     $classpath : "test.aria.widgets.wai.input.checkbox.CheckboxNotCheckedDisabledJawsTestCase",
-    $extends : "test.aria.widgets.wai.input.checkbox.CheckboxDisabledBaseJawsTestCase",
+    $extends : "test.aria.widgets.wai.input.checkbox.CheckboxDisabledJawsBase",
     $constructor : function () {
-        this.$CheckboxDisabledBaseJawsTestCase.constructor.call(this);
+        this.$CheckboxDisabledJawsBase.constructor.call(this);
         aria.utils.Json.setValue(this.data, "checkboxDisabled", true);
         aria.utils.Json.setValue(this.data, "checkboxChecked", false);
         this.EXPECTED_OUTPUT_DISABLED = this.EXPECTED_OUTPUT_DISABLED.replace(/checked/gi, "not checked");

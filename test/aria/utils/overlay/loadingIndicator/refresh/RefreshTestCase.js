@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.utils.overlay.loadingIndicator.refresh.RefreshTest",
+    $classpath : "test.aria.utils.overlay.loadingIndicator.refresh.RefreshTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $constructor : function () {
         this.$TemplateTestCase.constructor.call(this);
@@ -23,7 +23,7 @@ Aria.classDefinition({
             myBoolean : true
         };
         this.setTestEnv({
-            template : "test.aria.utils.overlay.loadingIndicator.refresh.RefreshTestTpl",
+            template : "test.aria.utils.overlay.loadingIndicator.refresh.RefreshTestCaseTpl",
             data : this.data
         });
     },

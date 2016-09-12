@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.utils.overlay.loadingIndicator.scrollbar.ScrollbarTest",
+    $classpath : "test.aria.utils.overlay.loadingIndicator.scrollbar.ScrollbarTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $dependencies : ["aria.utils.Dom", "aria.templates.Layout", "aria.utils.DomOverlay"],
     $prototype : {

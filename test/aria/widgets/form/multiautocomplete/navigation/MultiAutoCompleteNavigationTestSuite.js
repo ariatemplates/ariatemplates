@@ -19,9 +19,9 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
-        this.addTests("test.aria.widgets.form.multiautocomplete.navigation.input.InputFieldTestCase");
-        this.addTests("test.aria.widgets.form.multiautocomplete.navigation.input.InputFieldNoFreeTextTestCase");
-        this.addTests("test.aria.widgets.form.multiautocomplete.navigation.highlighting.HighlightingTestCase");
-        this.addTests("test.aria.widgets.form.multiautocomplete.navigation.tab.TabTestCase");
+        this.addTests("test.aria.widgets.form.multiautocomplete.navigation.input.InputFieldRobotTestCase");
+        this.addTests("test.aria.widgets.form.multiautocomplete.navigation.input.InputFieldNoFreeTextRobotTestCase");
+        this.addTests("test.aria.widgets.form.multiautocomplete.navigation.highlighting.HighlightingRobotTestCase");
+        this.addTests("test.aria.widgets.form.multiautocomplete.navigation.tab.TabRobotTestCase");
     }
 });

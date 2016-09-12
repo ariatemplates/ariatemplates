@@ -14,30 +14,30 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.storage.sessionStorage.Serialize",
+    $classpath : "test.aria.storage.sessionStorage.SerializeTestCase",
     $dependencies : ["aria.storage.SessionStorage"],
-    $extends : "test.aria.storage.base.GeneralSerialize",
+    $extends : "test.aria.storage.base.GeneralSerializeBase",
     $constructor : function () {
         this.storageLocation = "sessionStorage";
 
-        this.$GeneralSerialize.constructor.call(this);
+        this.$GeneralSerializeBase.constructor.call(this);
     },
     $prototype : {
         testDefaultCorrectSerialization : function () {
             if (this.canRunHTML5Tests()) {
-                this.$GeneralSerialize.testDefaultCorrectSerialization.call(this);
+                this.$GeneralSerializeBase.testDefaultCorrectSerialization.call(this);
             }
         },
 
         testCustomSerializer : function () {
             if (this.canRunHTML5Tests()) {
-                this.$GeneralSerialize.testCustomSerializer.call(this);
+                this.$GeneralSerializeBase.testCustomSerializer.call(this);
             }
         },
 
         testErrorCondition : function () {
             if (this.canRunHTML5Tests()) {
-                this.$GeneralSerialize.testErrorCondition.call(this);
+                this.$GeneralSerializeBase.testErrorCondition.call(this);
             }
         }
     }

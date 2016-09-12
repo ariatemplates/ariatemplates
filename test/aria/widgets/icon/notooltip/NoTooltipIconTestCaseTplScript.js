@@ -14,7 +14,7 @@
  */
 
 Aria.tplScriptDefinition({
-    $classpath : "test.aria.widgets.icon.notooltip.NoTooltipIconTestTplScript",
+    $classpath : "test.aria.widgets.icon.notooltip.NoTooltipIconTestCaseTplScript",
     $dependencies : ["aria.utils.Json"],
     $prototype : {
         myClickHandler : function() {

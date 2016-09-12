@@ -17,7 +17,7 @@
  * Test case for aria.widgets.container.Dialog
  */
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.container.dialog.maximizable.MaximizableDialogTest",
+    $classpath : "test.aria.widgets.container.dialog.maximizable.MaximizableDialogTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $dependencies : ["aria.utils.Dom"],
     $constructor : function () {
@@ -67,7 +67,7 @@ Aria.classDefinition({
         });
 
         this.setTestEnv({
-            template : "test.aria.widgets.container.dialog.maximizable.MaximizableDialogTestTpl",
+            template : "test.aria.widgets.container.dialog.maximizable.MaximizableDialogTestCaseTpl",
             data : this.data,
             css : [
                 "width:" + this.data.iframeWrapper.width + "px",

@@ -24,9 +24,9 @@ module.exports = Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
-        this.addTests('test.aria.widgets.wai.popup.dialog.modal.FirstTest');
-        this.addTests('test.aria.widgets.wai.popup.dialog.modal.SecondTest');
-        this.addTests('test.aria.widgets.wai.popup.dialog.modal.ThirdTest');
-        this.addTests('test.aria.widgets.wai.popup.dialog.modal.FourthTest');
+        this.addTests('test.aria.widgets.wai.popup.dialog.modal.FirstRobotTestCase');
+        this.addTests('test.aria.widgets.wai.popup.dialog.modal.SecondRobotTestCase');
+        this.addTests('test.aria.widgets.wai.popup.dialog.modal.ThirdRobotTestCase');
+        this.addTests('test.aria.widgets.wai.popup.dialog.modal.FourthRobotTestCase');
     }
 });

@@ -12,7 +12,7 @@ tests:
    includes:
 #Includes only a simple template test in unpackaged mode, to check that the framework
 #can correctly load a template in unpackaged mode
-    - test.aria.widgets.form.datepicker.pickdate.PickDate
+    - test.aria.widgets.form.datepicker.pickdate.PickDateTestCase
 #The following test does not work in packaged mode (because it tries to open a file from
 #the bootstrap, but it is packaged, and bootstrap files are not in the map)
-    - test.aria.core.JsonValidatorTest
+    - test.aria.core.JsonValidatorTestCase

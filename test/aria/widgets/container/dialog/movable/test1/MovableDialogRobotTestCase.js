@@ -17,10 +17,10 @@
  * Test movable dialog without overlays
  */
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.container.dialog.movable.test1.MovableDialogTestCase",
-    $extends : "test.aria.widgets.container.dialog.MovableDialogBaseTestCase",
+    $classpath : "test.aria.widgets.container.dialog.movable.test1.MovableDialogRobotTestCase",
+    $extends : "test.aria.widgets.container.dialog.MovableDialogRobotBase",
     $constructor : function () {
-        this.$MovableDialogBaseTestCase.constructor.call(this);
+        this.$MovableDialogRobotBase.constructor.call(this);
 
         this.data = {
             firstDialog : {

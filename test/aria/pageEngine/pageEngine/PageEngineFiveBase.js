@@ -14,10 +14,10 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.pageEngine.pageEngine.PageEngineTestFive",
-    $extends : "test.aria.pageEngine.pageEngine.PageEngineTestFour",
+    $classpath : "test.aria.pageEngine.pageEngine.PageEngineFiveBase",
+    $extends : "test.aria.pageEngine.pageEngine.PageEngineFourBase",
     $constructor : function () {
-        this.$PageEngineTestFour.constructor.call(this);
+        this.$PageEngineFourBase.constructor.call(this);
         this._navigation = "hash";
     },
     $prototype : {

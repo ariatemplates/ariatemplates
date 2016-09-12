@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 {Template {
-    $classpath : "test.aria.widgets.container.dialog.maximizable.MaximizableDialogTestTpl",
+    $classpath : "test.aria.widgets.container.dialog.maximizable.MaximizableDialogTestCaseTpl",
     $hasScript : true
 }}
 

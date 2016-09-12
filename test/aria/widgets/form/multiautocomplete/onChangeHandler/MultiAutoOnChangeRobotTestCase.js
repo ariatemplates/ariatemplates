@@ -14,8 +14,8 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.multiautocomplete.onChangeHandler.MultiAutoOnChangeTest",
-    $extends : "test.aria.widgets.form.multiautocomplete.BaseMultiAutoCompleteTestCase",
+    $classpath : "test.aria.widgets.form.multiautocomplete.onChangeHandler.MultiAutoOnChangeRobotTestCase",
+    $extends : "test.aria.widgets.form.multiautocomplete.MultiAutoCompleteRobotBase",
     $prototype : {
         runTemplateTest : function () {
             this.clickAndType(["sca", this.dropdownOpenCondition, "[down][enter]", this.dropdownCloseCondition], {

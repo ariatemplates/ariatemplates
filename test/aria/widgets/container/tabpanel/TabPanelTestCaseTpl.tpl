@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath : "test.aria.widgets.container.tabpanel.TabPanelTestTpl"
+    $classpath : "test.aria.widgets.container.tabpanel.TabPanelTestCaseTpl"
 }}
     {macro main()}
         {@aria:TabPanel {

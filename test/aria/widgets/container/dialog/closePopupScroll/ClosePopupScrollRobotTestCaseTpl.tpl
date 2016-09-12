@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath:"test.aria.widgets.container.dialog.closePopupScroll.ClosePopupScrollTestTpl"
+    $classpath:"test.aria.widgets.container.dialog.closePopupScroll.ClosePopupScrollRobotTestCaseTpl"
 }}
     {macro main()}
         {@aria:Dialog {

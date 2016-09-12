@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath:'test.aria.widgets.form.multiselect.issue312.SelectBoxTpl'
+    $classpath:'test.aria.widgets.form.multiselect.issue312.SelectBoxTestCaseTpl'
 }}
 
     {macro main()}

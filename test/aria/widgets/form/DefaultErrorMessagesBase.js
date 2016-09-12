@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.BaseDefaultErrorMessagesTest",
+    $classpath : "test.aria.widgets.form.DefaultErrorMessagesBase",
     $extends : "aria.jsunit.TemplateTestCase",
     $resources : {
         res : "aria.widgets.WidgetsRes"

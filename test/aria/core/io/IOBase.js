@@ -17,7 +17,7 @@
   * Base class for IO tests
   */
  Aria.classDefinition({
-     $classpath : "test.aria.core.io.BaseIOTest",
+     $classpath : "test.aria.core.io.IOBase",
      $extends : "aria.jsunit.TestCase",
      $prototype : {
          tearDown : function () {

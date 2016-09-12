@@ -17,7 +17,7 @@
  * Test case for aria.widgets.Icon
  */
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.skin.ExternalCSSTest",
+    $classpath : "test.aria.widgets.skin.ExternalCSSTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.widgets.AriaSkinInterface"],
     $constructor : function () {

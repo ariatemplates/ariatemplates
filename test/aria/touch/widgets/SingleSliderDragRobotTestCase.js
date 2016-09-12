@@ -14,8 +14,8 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.touch.widgets.SingleSliderDrag",
-    $extends : "test.aria.touch.widgets.SliderHelper",
+    $classpath : "test.aria.touch.widgets.SingleSliderDragRobotTestCase",
+    $extends : "test.aria.touch.widgets.SliderHelperRobotBase",
     $dependencies : ["aria.utils.Dom"],
     $prototype : {
         runTemplateTest : function () {

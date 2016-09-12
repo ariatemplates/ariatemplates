@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.textinput.onchange.OnChangeTestCase",
+    $classpath : "test.aria.widgets.form.textinput.onchange.OnChangeRobotTestCase",
     $extends : "aria.jsunit.RobotTestCase",
     $constructor : function () {
         this.$RobotTestCase.constructor.call(this);

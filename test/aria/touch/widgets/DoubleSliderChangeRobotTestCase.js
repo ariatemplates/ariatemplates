@@ -14,8 +14,8 @@
  */
 
 Aria.classDefinition({
-    $classpath: "test.aria.touch.widgets.DoubleSliderChange",
-    $extends: "test.aria.touch.widgets.BaseRobotTest",
+    $classpath: "test.aria.touch.widgets.DoubleSliderChangeRobotTestCase",
+    $extends: "test.aria.touch.widgets.RobotBase",
     $prototype: {
         runTemplateTest: function () {
             this.widget = this.getWidgetInstance("slider");

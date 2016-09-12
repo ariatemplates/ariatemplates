@@ -18,9 +18,9 @@ var Aria = require('ariatemplates/Aria');
 
 
 module.exports = Aria.classDefinition({
-    $classpath : 'test.aria.widgets.wai.dropdown.MultiAutoCompleteDropdownTogglingTest',
+    $classpath : 'test.aria.widgets.wai.dropdown.MultiAutoCompleteDropdownTogglingRobotTestCase',
 
-    $extends : require('./Base'),
+    $extends : require('./RobotBase'),
 
     $statics : {
         idOfWidgetToTest: 'multiAutoComplete'

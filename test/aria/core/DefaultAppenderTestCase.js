@@ -17,7 +17,7 @@
  * Test case for the logger
  */
 Aria.classDefinition({
-    $classpath : "test.aria.core.DefaultAppenderTest",
+    $classpath : "test.aria.core.DefaultAppenderTestCase",
     $extends : "aria.jsunit.TestCase",
     $prototype : {
         setUp : function () {

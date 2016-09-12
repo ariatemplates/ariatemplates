@@ -17,7 +17,7 @@
  * Check that the contextual menu can be used both outside of a popup and inside a popup.
  */
 Aria.classDefinition({
-    $classpath : "test.aria.tools.contextualMenu.popup.PopupTest",
+    $classpath : "test.aria.tools.contextualMenu.popup.PopupTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $dependencies : ["aria.tools.contextual.ContextualMenu",
             "test.aria.tools.contextualMenu.ContextualMenuHelper", "aria.utils.Json", "aria.tools.contextual.environment.ContextualMenu"],
@@ -29,7 +29,7 @@ Aria.classDefinition({
             dialogVisible : false
         };
         this.setTestEnv({
-            template : "test.aria.tools.contextualMenu.popup.PopupTestTpl",
+            template : "test.aria.tools.contextualMenu.popup.PopupTestCaseTpl",
             data : this.data
         });
     },

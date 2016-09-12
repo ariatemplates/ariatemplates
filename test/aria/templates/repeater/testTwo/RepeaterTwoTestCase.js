@@ -17,7 +17,7 @@
  * Test dynamic sections
  */
 Aria.classDefinition({
-    $classpath : "test.aria.templates.repeater.testTwo.RepeaterTwo",
+    $classpath : "test.aria.templates.repeater.testTwo.RepeaterTwoTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $dependencies : ["aria.utils.Json"],
     $constructor : function () {

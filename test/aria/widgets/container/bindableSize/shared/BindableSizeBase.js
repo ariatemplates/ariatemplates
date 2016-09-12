@@ -18,7 +18,7 @@
  * class and override the methods _testNoConstraints and _testWithConstraints with your test code.
  */
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.container.bindableSize.shared.BindableSizeTestCase",
+    $classpath : "test.aria.widgets.container.bindableSize.shared.BindableSizeBase",
     $extends : "aria.jsunit.TemplateTestCase",
     $constructor : function () {
         this.$TemplateTestCase.constructor.call(this);

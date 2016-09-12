@@ -19,7 +19,7 @@
  * element is not visible in the viewport
  */
 Aria.classDefinition({
-    $classpath : 'test.aria.dom.getGeometry.AbsoluteParentGeometryTest',
+    $classpath : 'test.aria.dom.getGeometry.AbsoluteParentGeometryTestCase',
     $extends : 'aria.jsunit.TestCase',
     $dependencies : ['aria.utils.Dom'],
     $constructor : function () {

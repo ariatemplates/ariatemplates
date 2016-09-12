@@ -18,15 +18,15 @@ Aria.classDefinition({
     $extends : "aria.jsunit.TestSuite",
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
-        this.addTests("test.aria.widgets.wai.popup.errortooltip.ErrorTooltipJawsTestCaseTextField");
-        this.addTests("test.aria.widgets.wai.popup.errortooltip.ErrorTooltipJawsTestCaseTextarea");
-        this.addTests("test.aria.widgets.wai.popup.errortooltip.ErrorTooltipJawsTestCaseNumberField");
-        this.addTests("test.aria.widgets.wai.popup.errortooltip.ErrorTooltipJawsTestCaseDateField");
-        this.addTests("test.aria.widgets.wai.popup.errortooltip.ErrorTooltipJawsTestCaseTimeField");
-        this.addTests("test.aria.widgets.wai.popup.errortooltip.ErrorTooltipJawsTestCaseDatePicker");
-        this.addTests("test.aria.widgets.wai.popup.errortooltip.ErrorTooltipJawsTestCaseAutoComplete");
-        this.addTests("test.aria.widgets.wai.popup.errortooltip.ErrorTooltipJawsTestCaseMultiSelect");
-        this.addTests("test.aria.widgets.wai.popup.errortooltip.ErrorTooltipJawsTestCaseSelectBox");
-        this.addTests("test.aria.widgets.wai.popup.errortooltip.ErrorTooltipJawsTestCaseMultiAutoComplete");
+        this.addTests("test.aria.widgets.wai.popup.errortooltip.ErrorTooltipTextFieldJawsTestCase");
+        this.addTests("test.aria.widgets.wai.popup.errortooltip.ErrorTooltipTextareaJawsTestCase");
+        this.addTests("test.aria.widgets.wai.popup.errortooltip.ErrorTooltipNumberFieldJawsTestCase");
+        this.addTests("test.aria.widgets.wai.popup.errortooltip.ErrorTooltipDateFieldJawsTestCase");
+        this.addTests("test.aria.widgets.wai.popup.errortooltip.ErrorTooltipTimeFieldJawsTestCase");
+        this.addTests("test.aria.widgets.wai.popup.errortooltip.ErrorTooltipDatePickerJawsTestCase");
+        this.addTests("test.aria.widgets.wai.popup.errortooltip.ErrorTooltipAutoCompleteJawsTestCase");
+        this.addTests("test.aria.widgets.wai.popup.errortooltip.ErrorTooltipMultiSelectJawsTestCase");
+        this.addTests("test.aria.widgets.wai.popup.errortooltip.ErrorTooltipSelectBoxJawsTestCase");
+        this.addTests("test.aria.widgets.wai.popup.errortooltip.ErrorTooltipMultiAutoCompleteJawsTestCase");
     }
 });

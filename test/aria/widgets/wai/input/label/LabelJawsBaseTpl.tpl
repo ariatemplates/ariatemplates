@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath : "test.aria.widgets.wai.input.label.LabelJawsTestCaseTpl"
+    $classpath : "test.aria.widgets.wai.input.label.LabelJawsBaseTpl"
 }}
     {macro main()}
         <span id="label-for-described-by">aria label described by</span>

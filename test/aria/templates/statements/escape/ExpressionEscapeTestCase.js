@@ -16,8 +16,8 @@
 
 
 Aria.classDefinition({
-    $classpath: "test.aria.templates.statements.escape.ExpressionEscapeTest",
-    $extends: "test.aria.templates.statements.escape.ExpressionEscapeTestBase",
+    $classpath: "test.aria.templates.statements.escape.ExpressionEscapeTestCase",
+    $extends: "test.aria.templates.statements.escape.ExpressionEscapeBase",
     $dependencies: ["aria.utils.Date"],
 
     $constructor : function() {
@@ -26,7 +26,7 @@ Aria.classDefinition({
 
         // ---------------------------------------------------------------------
 
-        this.$ExpressionEscapeTestBase.constructor.call(this, arguments);
+        this.$ExpressionEscapeBase.constructor.call(this, arguments);
 
         // ---------------------------------------------------------------------
 

@@ -14,10 +14,10 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.core.resProviders.ResProvidersConvertedClassTest",
-    $extends : "test.aria.core.resProviders.ResProvidersOldSyntaxTest",
+    $classpath : "test.aria.core.resProviders.ResProvidersConvertedClassTestCase",
+    $extends : "test.aria.core.resProviders.ResProvidersOldSyntaxBase",
     $constructor : function () {
-        this.$ResProvidersOldSyntaxTest.$constructor.apply(this, arguments);
+        this.$ResProvidersOldSyntaxBase.$constructor.apply(this, arguments);
         this._classWithProvidersName = "./ConvertedClassWithProviders";
     }
 });

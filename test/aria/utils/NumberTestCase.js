@@ -17,7 +17,7 @@
  * Test case for aria.utils.Time
  */
 Aria.classDefinition({
-    $classpath : "test.aria.utils.Number",
+    $classpath : "test.aria.utils.NumberTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.utils.Number"],
     $prototype : {

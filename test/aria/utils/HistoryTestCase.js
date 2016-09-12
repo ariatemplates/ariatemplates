@@ -18,7 +18,7 @@
     var logs = [];
 
     Aria.classDefinition({
-        $classpath : "test.aria.utils.History",
+        $classpath : "test.aria.utils.HistoryTestCase",
         $extends : "aria.jsunit.TestCase",
         $dependencies : ["aria.utils.FrameATLoader"],
         $constructor : function () {

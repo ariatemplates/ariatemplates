@@ -14,7 +14,7 @@
  */
 
 {Template {
-	$classpath:"test.aria.widgets.container.splitter.move.SplitterTestMoveUpDownTpl",
+	$classpath:"test.aria.widgets.container.splitter.move.SplitterMoveUpDownRobotTestCaseTpl",
 	$hasScript : true,
 	$width : {min: 300, max: 580}
 }}

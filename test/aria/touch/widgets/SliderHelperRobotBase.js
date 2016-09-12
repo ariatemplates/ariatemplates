@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.touch.widgets.SliderHelper",
+    $classpath : "test.aria.touch.widgets.SliderHelperRobotBase",
     $extends : "aria.jsunit.RobotTestCase",
     $dependencies : ["aria.utils.Dom", "aria.utils.Device", "aria.utils.FireDomEvent"],
     $constructor : function () {

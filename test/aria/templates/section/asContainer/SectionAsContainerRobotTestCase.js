@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.templates.section.asContainer.SectionAsContainerTest",
+    $classpath : "test.aria.templates.section.asContainer.SectionAsContainerRobotTestCase",
     $extends : "aria.jsunit.RobotTestCase",
     dependencies : ["aria.utils.Dom", "aria.utils.Json"],
     $constructor : function () {

@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.autocomplete.expandbutton.test3.ExpandButtonCheck",
+    $classpath : "test.aria.widgets.form.autocomplete.expandbutton.test3.ExpandButtonCheckRobotTestCase",
     $extends : "aria.jsunit.RobotTestCase",
     $dependencies : ["aria.core.Timer"],
     $constructor : function () {

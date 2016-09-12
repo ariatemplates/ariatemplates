@@ -18,9 +18,9 @@
  * listened to.
  */
 Aria.classDefinition({
-    $classpath : "test.aria.storage.localStorage.EventIssue",
+    $classpath : "test.aria.storage.localStorage.EventIssueTestCase",
     $dependencies : ["aria.storage.LocalStorage"],
-    $extends : "test.aria.storage.base.BaseTests",
+    $extends : "test.aria.storage.base.Base",
     $prototype : {
         storageLocation : "localStorage",
 
@@ -35,11 +35,11 @@ Aria.classDefinition({
                 self._browserEventCalled++;
                 return self._browserEventOriginal.apply(this, arguments);
             };
-            this.$BaseTests.setUp.call(this);
+            this.$Base.setUp.call(this);
         },
 
         tearDown : function () {
-            this.$BaseTests.tearDown.call(this);
+            this.$Base.tearDown.call(this);
             aria.storage.LocalStorage.prototype._browserEvent = this._browserEventOriginal;
         },
 

@@ -18,11 +18,11 @@ Aria.classDefinition({
     $extends : "aria.jsunit.TestSuite",
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
-        this.addTests("test.aria.widgets.action.link.LinkClick");
-        this.addTests("test.aria.widgets.action.link.disabled.LinkDisabled");
-        this.addTests("test.aria.widgets.action.sortindicator.SortIndicatorTest");
-        this.addTests("test.aria.widgets.action.sortindicator.onclick.OnclickCallback");
-        this.addTests("test.aria.widgets.action.sortindicator.block.SortIndicatorBlockTest");
-        this.addTests("test.aria.widgets.action.sortindicator.fixSortKeyGetter.SortIndicatorSortKeyGetterTest");
+        this.addTests("test.aria.widgets.action.link.LinkClickTestCase");
+        this.addTests("test.aria.widgets.action.link.disabled.LinkDisabledTestCase");
+        this.addTests("test.aria.widgets.action.sortindicator.SortIndicatorTestCase");
+        this.addTests("test.aria.widgets.action.sortindicator.onclick.OnclickCallbackTestCase");
+        this.addTests("test.aria.widgets.action.sortindicator.block.SortIndicatorBlockTestCase");
+        this.addTests("test.aria.widgets.action.sortindicator.fixSortKeyGetter.SortIndicatorSortKeyGetterRobotTestCase");
     }
 });

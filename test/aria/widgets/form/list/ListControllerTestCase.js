@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.list.ListControllerTest",
+    $classpath : "test.aria.widgets.form.list.ListControllerTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.widgets.form.list.ListController", "aria.DomEvent"],
     $constructor : function () {

@@ -17,10 +17,10 @@
  * Test that the dialog is kept in the viewport
  */
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.container.dialog.bindPosition.DialogInViewportTestCase",
-    $extends : "test.aria.widgets.container.dialog.MovableDialogBaseTestCase",
+    $classpath : "test.aria.widgets.container.dialog.bindPosition.DialogInViewportRobotTestCase",
+    $extends : "test.aria.widgets.container.dialog.MovableDialogRobotBase",
     $constructor : function () {
-        this.$MovableDialogBaseTestCase.constructor.call(this);
+        this.$MovableDialogRobotBase.constructor.call(this);
 
         this.data = {
             firstDialog : {

@@ -17,7 +17,7 @@
  * Test cases for generic aria.utils.validators.Validator
  */
 Aria.classDefinition({
-    $classpath : "test.aria.utils.validators.Validator",
+    $classpath : "test.aria.utils.validators.ValidatorTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.utils.validators.Validator", "aria.utils.validators.Mandatory", "aria.utils.validators.Alpha"],
     $prototype : {

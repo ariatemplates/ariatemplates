@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.container.dialog.dynamicZIndex.BaseDynamicZIndexTestCase",
+    $classpath : "test.aria.widgets.container.dialog.dynamicZIndex.DynamicZIndexRobotBase",
     $extends : "aria.jsunit.RobotTestCase",
     $dependencies : ["aria.popups.PopupManager", "aria.utils.Dom"],
     $constructor : function () {

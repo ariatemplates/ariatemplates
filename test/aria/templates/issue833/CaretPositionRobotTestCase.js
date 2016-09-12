@@ -18,7 +18,7 @@
  * @class test.aria.widgets.form.textinput.onfocus.Issue833
  */
 Aria.classDefinition({
-    $classpath : "test.aria.templates.issue833.CaretPositionTestCase",
+    $classpath : "test.aria.templates.issue833.CaretPositionRobotTestCase",
     $extends : "aria.jsunit.RobotTestCase",
     $constructor : function () {
         this.$RobotTestCase.constructor.call(this);

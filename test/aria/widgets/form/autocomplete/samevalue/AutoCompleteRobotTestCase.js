@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.autocomplete.samevalue.AutoComplete",
+    $classpath : "test.aria.widgets.form.autocomplete.samevalue.AutoCompleteRobotTestCase",
     $extends : "aria.jsunit.RobotTestCase",
     $prototype : {
         runTemplateTest : function () {

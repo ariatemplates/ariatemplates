@@ -18,7 +18,7 @@ var AppEnvironment = require("ariatemplates/core/AppEnvironment");
 var liHelper = require("test/aria/utils/overlay/loadingIndicator/IndicatorHelper");
 
 module.exports = Aria.classDefinition({
-    $classpath : "test.aria.utils.overlay.loadingIndicator.wai.WaiAriaTest",
+    $classpath : "test.aria.utils.overlay.loadingIndicator.wai.WaiAriaTestCase",
     $extends : require("ariatemplates/jsunit/TemplateTestCase"),
     $constructor: function() {
         this.$TemplateTestCase.constructor.call(this);
@@ -26,7 +26,7 @@ module.exports = Aria.classDefinition({
             processing: false
         };
         this.setTestEnv({
-            template : "test.aria.utils.overlay.loadingIndicator.wai.WaiAriaTestTpl",
+            template : "test.aria.utils.overlay.loadingIndicator.wai.WaiAriaTestCaseTpl",
             data : this.data
         });
     },

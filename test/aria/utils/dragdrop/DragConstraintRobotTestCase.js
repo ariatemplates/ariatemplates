@@ -17,8 +17,8 @@
  * Template Test case for aria.utils.dragdrop.Drag in case the movement is constrained
  */
 Aria.classDefinition({
-    $classpath : "test.aria.utils.dragdrop.DragConstraintTest",
-    $extends : "test.aria.utils.dragdrop.AbstractDragTestCase",
+    $classpath : "test.aria.utils.dragdrop.DragConstraintRobotTestCase",
+    $extends : "test.aria.utils.dragdrop.AbstractDragRobotBase",
     $prototype : {
 
         /**

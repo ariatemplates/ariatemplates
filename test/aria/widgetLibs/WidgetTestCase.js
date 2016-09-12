@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : 'test.aria.widgetLibs.BaseWidgetTest',
+    $classpath : 'test.aria.widgetLibs.WidgetTestCase',
     $extends : 'aria.jsunit.TestCase',
     $dependencies : ['aria.widgetLibs.BaseWidget', 'test.aria.widgetLibs.helpers.IdManagerSpy'],
     $prototype : {

@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath: "test.aria.widgets.form.checkbox.SetDisabledTestTpl"
+    $classpath: "test.aria.widgets.form.checkbox.SetDisabledTestCaseTpl"
 }}
 {macro main()}
     <div style="color:red">

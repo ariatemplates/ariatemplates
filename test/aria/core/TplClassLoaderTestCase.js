@@ -17,7 +17,7 @@
  * Test case for the TplClassLoader
  */
 Aria.classDefinition({
-    $classpath : "test.aria.core.TplClassLoaderTest",
+    $classpath : "test.aria.core.TplClassLoaderTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.utils.Dom", "aria.core.MultiLoader"],
     $prototype : {

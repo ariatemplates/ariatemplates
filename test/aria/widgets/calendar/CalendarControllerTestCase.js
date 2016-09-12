@@ -17,7 +17,7 @@
  * Test case for the calendar controller.
  */
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.calendar.CalendarControllerTest",
+    $classpath : "test.aria.widgets.calendar.CalendarControllerTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.templates.ModuleCtrlFactory", "aria.utils.Date"],
     $prototype : {

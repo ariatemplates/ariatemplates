@@ -24,11 +24,11 @@ module.exports = Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
-        this.addTests('test.aria.templates.keyboardNavigation.dialog.escape.DialogEscapeAutoComplete');
-        this.addTests('test.aria.templates.keyboardNavigation.dialog.escape.DialogEscapeDatePicker');
-        this.addTests('test.aria.templates.keyboardNavigation.dialog.escape.DialogEscapeMultiAutoComplete');
-        this.addTests('test.aria.templates.keyboardNavigation.dialog.escape.DialogEscapeMultiSelect');
-        this.addTests('test.aria.templates.keyboardNavigation.dialog.escape.DialogEscapeSelect');
-        this.addTests('test.aria.templates.keyboardNavigation.dialog.escape.DialogEscapeSelectBox');
+        this.addTests('test.aria.templates.keyboardNavigation.dialog.escape.DialogEscapeAutoCompleteRobotTestCase');
+        this.addTests('test.aria.templates.keyboardNavigation.dialog.escape.DialogEscapeDatePickerRobotTestCase');
+        this.addTests('test.aria.templates.keyboardNavigation.dialog.escape.DialogEscapeMultiAutoCompleteRobotTestCase');
+        this.addTests('test.aria.templates.keyboardNavigation.dialog.escape.DialogEscapeMultiSelectRobotTestCase');
+        this.addTests('test.aria.templates.keyboardNavigation.dialog.escape.DialogEscapeSelectRobotTestCase');
+        this.addTests('test.aria.templates.keyboardNavigation.dialog.escape.DialogEscapeSelectBoxRobotTestCase');
     }
 });

@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.utils.validators.MinMaxLength",
+    $classpath : "test.aria.utils.validators.MinMaxLengthTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.utils.validators.MinMaxLength"],
     $prototype : {

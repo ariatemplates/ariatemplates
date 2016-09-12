@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.autocomplete.onchange.AutocompleteOnChangeTest",
+    $classpath : "test.aria.widgets.form.autocomplete.onchange.AutocompleteOnChangeTestCase",
     $dependencies : ['aria.resources.handlers.LCResourcesHandler'],
     $extends : "aria.jsunit.TemplateTestCase",
     $constructor : function () {

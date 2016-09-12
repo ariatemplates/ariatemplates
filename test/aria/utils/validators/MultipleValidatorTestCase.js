@@ -17,7 +17,7 @@
  * Multiple validator unit test
  */
 Aria.classDefinition({
-    $classpath : "test.aria.utils.validators.MultipleValidator",
+    $classpath : "test.aria.utils.validators.MultipleValidatorTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.utils.validators.MultipleValidator", "aria.utils.validators.Number",
             "aria.utils.validators.Alpha", "aria.utils.Data"],

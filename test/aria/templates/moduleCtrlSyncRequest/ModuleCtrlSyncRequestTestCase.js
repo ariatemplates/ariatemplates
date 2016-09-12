@@ -17,7 +17,7 @@
  * Module Controller test class
  */
 Aria.classDefinition({
-    $classpath : "test.aria.templates.moduleCtrlSyncRequest.ModuleCtrlSyncRequestTest",
+    $classpath : "test.aria.templates.moduleCtrlSyncRequest.ModuleCtrlSyncRequestTestCase",
     $extends : "aria.jsunit.ModuleCtrlTestCase",
     $dependencies : ["test.aria.modules.IoFilter"],
     $constructor : function () {

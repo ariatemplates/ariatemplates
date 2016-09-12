@@ -14,10 +14,10 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.multiautocomplete.popupGeometry.PopupLeftPositionTest",
-    $extends : "test.aria.widgets.form.multiautocomplete.BaseMultiAutoCompleteTestCase",
+    $classpath : "test.aria.widgets.form.multiautocomplete.popupGeometry.PopupLeftPositionRobotTestCase",
+    $extends : "test.aria.widgets.form.multiautocomplete.MultiAutoCompleteRobotBase",
     $constructor : function () {
-        this.$BaseMultiAutoCompleteTestCase.$constructor.call(this);
+        this.$MultiAutoCompleteRobotBase.$constructor.call(this);
         this.data.expandButton = true;
     },
     $prototype : {

@@ -21,14 +21,14 @@ Aria.classDefinition({
 
         this.addTests("test.aria.utils.overlay.loadingIndicator.automatic.AutomaticTestCase");
         this.addTests("test.aria.utils.overlay.loadingIndicator.manual.ManualTestCase");
-        this.addTests("test.aria.utils.overlay.loadingIndicator.scrollbar.ScrollbarTest");
-        this.addTests("test.aria.utils.overlay.loadingIndicator.zindex.IndexTest");
-        this.addTests("test.aria.utils.overlay.loadingIndicator.refresh.RefreshTest");
-        this.addTests("test.aria.utils.overlay.loadingIndicator.scrollableBody.ScrollableBodyTest");
-        this.addTests("test.aria.utils.overlay.loadingIndicator.ieScrollIssue.IEScrollIssueTest");
-        this.addTests("test.aria.utils.overlay.loadingIndicator.ieScrollIssue2.IEScrollIssue2EltTest");
-        this.addTests("test.aria.utils.overlay.loadingIndicator.ieScrollIssue2.IEScrollIssue2SectionTest");
+        this.addTests("test.aria.utils.overlay.loadingIndicator.scrollbar.ScrollbarTestCase");
+        this.addTests("test.aria.utils.overlay.loadingIndicator.zindex.IndexTestCase");
+        this.addTests("test.aria.utils.overlay.loadingIndicator.refresh.RefreshTestCase");
+        this.addTests("test.aria.utils.overlay.loadingIndicator.scrollableBody.ScrollableBodyTestCase");
+        this.addTests("test.aria.utils.overlay.loadingIndicator.ieScrollIssue.IEScrollIssueTestCase");
+        this.addTests("test.aria.utils.overlay.loadingIndicator.ieScrollIssue2.IEScrollIssue2EltTestCase");
+        this.addTests("test.aria.utils.overlay.loadingIndicator.ieScrollIssue2.IEScrollIssue2SectionTestCase");
 
-        this.addTests("test.aria.utils.overlay.loadingIndicator.wai.WaiAriaTest");
+        this.addTests("test.aria.utils.overlay.loadingIndicator.wai.WaiAriaTestCase");
     }
 });

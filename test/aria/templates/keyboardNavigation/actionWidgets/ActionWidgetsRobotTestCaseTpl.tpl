@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath: 'test.aria.templates.keyboardNavigation.actionWidgets.ActionWidgetsTestTpl',
+    $classpath: 'test.aria.templates.keyboardNavigation.actionWidgets.ActionWidgetsRobotTestCaseTpl',
     $hasScript: true
 }}
     {macro main()}

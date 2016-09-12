@@ -20,7 +20,7 @@ var Aria = require('ariatemplates/Aria');
 module.exports = Aria.classDefinition({
     $classpath : 'test.aria.widgets.wai.input.actionWidget.SortIndicatorJawsTestCase',
 
-    $extends : require('./Base'),
+    $extends : require('./JawsBase'),
 
     $statics : {
         widgetTypeName: 'sort_indicator'

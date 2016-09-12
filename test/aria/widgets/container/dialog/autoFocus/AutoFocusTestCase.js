@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.container.dialog.autoFocus.AutoFocusTest",
+    $classpath : "test.aria.widgets.container.dialog.autoFocus.AutoFocusTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $dependencies : ["aria.utils.Json", "aria.core.Timer"],
     $constructor : function () {

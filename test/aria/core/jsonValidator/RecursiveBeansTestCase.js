@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.core.jsonValidator.RecursiveBeansTest",
+    $classpath : "test.aria.core.jsonValidator.RecursiveBeansTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.core.JsonValidator", "test.aria.core.jsonValidator.RecursiveBeans"],
     $prototype : {

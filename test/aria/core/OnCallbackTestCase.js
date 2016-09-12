@@ -17,7 +17,7 @@
  * Test for the $on callback
  */
 Aria.classDefinition({
-    $classpath : "test.aria.core.OnCallbackTest",
+    $classpath : "test.aria.core.OnCallbackTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.utils.Callback", "test.aria.core.FakeEvent"],
     $constructor : function () {

@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath : "test.aria.widgets.form.autocomplete.promised.PromisedTpl"
+    $classpath : "test.aria.widgets.form.autocomplete.promised.PromisedRobotTestCaseTpl"
 }}
 
 {macro main()}

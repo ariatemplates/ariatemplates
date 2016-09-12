@@ -14,7 +14,7 @@
  */
 
 {Template {
-   $classpath: "test.aria.utils.overlay.loadingIndicator.wai.WaiAriaTestTpl"
+   $classpath: "test.aria.utils.overlay.loadingIndicator.wai.WaiAriaTestCaseTpl"
 }}
     {macro main()}
         {section {

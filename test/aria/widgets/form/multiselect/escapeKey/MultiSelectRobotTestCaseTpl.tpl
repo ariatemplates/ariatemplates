@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath: 'test.aria.widgets.form.multiselect.escapeKey.MultiSelectTpl',
+    $classpath: 'test.aria.widgets.form.multiselect.escapeKey.MultiSelectRobotTestCaseTpl',
     $hasScript: false
 }}
     {macro main()}

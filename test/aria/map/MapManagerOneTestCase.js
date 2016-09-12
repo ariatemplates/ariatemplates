@@ -18,7 +18,7 @@
  * information on a map that is not available
  */
 Aria.classDefinition({
-    $classpath : "test.aria.map.MapManagerTestOne",
+    $classpath : "test.aria.map.MapManagerOneTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.map.MapManager", "aria.core.JsonValidator"],
     $constructor : function () {

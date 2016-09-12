@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath : "test.aria.widgets.form.selectbox.emptyOption.EmptyOptionTestCaseTpl",
+    $classpath : "test.aria.widgets.form.selectbox.emptyOption.EmptyOptionRobotTestCaseTpl",
     $hasScript : true
 }}
     {var options = [

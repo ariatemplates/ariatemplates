@@ -14,8 +14,8 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.multiselect.issue312.SelectBox",
-    $extends : "test.aria.widgets.form.multiselect.issue312.Common",
+    $classpath : "test.aria.widgets.form.multiselect.issue312.SelectBoxTestCase",
+    $extends : "test.aria.widgets.form.multiselect.issue312.CommonBase",
     $dependencies : ["aria.widgets.form.list.List"],
     $prototype : {
         innerWidgetClasspath : "aria.widgets.form.list.List",

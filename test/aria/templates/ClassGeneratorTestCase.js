@@ -37,7 +37,7 @@ var getGeneratedClassDef = function (classDef) {
 };
 
 Aria.classDefinition({
-    $classpath : "test.aria.templates.ClassGeneratorTest",
+    $classpath : "test.aria.templates.ClassGeneratorTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.templates.TplClassGenerator", "aria.templates.Template", "aria.templates.BaseTemplate",
             "aria.templates.Statements"],

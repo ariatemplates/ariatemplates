@@ -17,7 +17,7 @@
  * Test case for aria.modules.requestHandler.environment.RequestHandler.js
  */
 Aria.classDefinition({
-    $classpath : 'test.aria.modules.requestHandler.environment.RequestHandler',
+    $classpath : 'test.aria.modules.requestHandler.environment.RequestHandlerTestCase',
     $extends : 'aria.jsunit.TestCase',
     $dependencies : ["aria.modules.requestHandler.environment.RequestHandler",
             "test.aria.modules.test.jsonSerializers.FirstJsonSerializer"],

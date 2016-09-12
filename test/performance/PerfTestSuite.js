@@ -25,6 +25,6 @@ Aria.classDefinition({
         this.addTests("test.performance.interceptors.DisableMethodEventsPrefTestCase");
         this.addTests("test.performance.subTemplateLoop.PerfTestCase");
         this.addTests("test.performance.leakOnRefresh.TemplateRefreshTestCase");
-        this.addTests("test.performance.tabbar.ChangeState");
+        this.addTests("test.performance.tabbar.ChangeStateTestCase");
     }
 });

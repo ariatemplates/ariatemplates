@@ -14,8 +14,8 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.storage.base.GeneralAPI",
-    $extends : "test.aria.storage.base.BaseTests",
+    $classpath : "test.aria.storage.base.GeneralAPIBase",
+    $extends : "test.aria.storage.base.Base",
     $prototype : {
         /**
          * Test how the API work on a single instance

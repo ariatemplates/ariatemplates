@@ -17,7 +17,7 @@
  * Test case for aria.utils.Date.compare method
  */
 Aria.classDefinition({
-    $classpath : "test.aria.utils.DateCompare",
+    $classpath : "test.aria.utils.DateCompareTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.utils.Date"],
     $prototype : {

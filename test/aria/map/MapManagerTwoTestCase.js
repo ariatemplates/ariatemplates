@@ -17,7 +17,7 @@
  * Test the creation of a microsoft7 map
  */
 Aria.classDefinition({
-    $classpath : "test.aria.map.MapManagerTestTwo",
+    $classpath : "test.aria.map.MapManagerTwoTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.map.MapManager"],
     $constructor : function () {

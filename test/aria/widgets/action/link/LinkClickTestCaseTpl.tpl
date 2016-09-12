@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath: "test.aria.widgets.action.link.LinkClickTpl",
+    $classpath: "test.aria.widgets.action.link.LinkClickTestCaseTpl",
     $hasScript: true
 }}
 

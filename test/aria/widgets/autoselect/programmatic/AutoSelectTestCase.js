@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.autoselect.programmatic.AutoSelect",
+    $classpath : "test.aria.widgets.autoselect.programmatic.AutoSelectTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $dependencies : ["aria.utils.Type"],
     $prototype : {

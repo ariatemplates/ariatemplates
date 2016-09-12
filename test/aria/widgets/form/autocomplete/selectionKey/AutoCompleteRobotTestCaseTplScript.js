@@ -14,7 +14,7 @@
  */
 
 Aria.tplScriptDefinition({
-    $classpath : "test.aria.widgets.form.autocomplete.selectionKey.AutoCompleteTplScript",
+    $classpath : "test.aria.widgets.form.autocomplete.selectionKey.AutoCompleteRobotTestCaseTplScript",
     $dependencies : ["test.aria.widgets.form.autocomplete.selectionKey.BaseScript"],
     $constructor : function () {
         this.airlinesHandler = new test.aria.widgets.form.autocomplete.selectionKey.BaseScript.newAirLinesHandler();

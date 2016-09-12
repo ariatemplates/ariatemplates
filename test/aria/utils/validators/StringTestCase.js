@@ -18,7 +18,7 @@
  * Test cases for aria.utils.validators.String
  */
 Aria.classDefinition({
-    $classpath : "test.aria.utils.validators.String",
+    $classpath : "test.aria.utils.validators.StringTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.utils.validators.String"],
     $prototype : {

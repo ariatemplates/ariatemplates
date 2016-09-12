@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : 'test.aria.templates.TxtClassGeneratorTest',
+    $classpath : 'test.aria.templates.TxtClassGeneratorTestCase',
     $extends : 'aria.jsunit.TestCase',
     $dependencies : ['aria.templates.TxtClassGenerator', 'aria.templates.Statements'],
     $constructor : function () {

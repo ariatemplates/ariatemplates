@@ -17,7 +17,7 @@
  * Test case for aria.utils.Xml
  */
 Aria.classDefinition({
-    $classpath : "test.aria.utils.Xml",
+    $classpath : "test.aria.utils.XmlTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.utils.Xml"],
     $prototype : {

@@ -14,7 +14,7 @@
  */
 
 Aria.tplScriptDefinition({
-    $classpath: "test.aria.touch.widgets.DoubleSliderTplScript",
+    $classpath: "test.aria.touch.widgets.DoubleSliderRobotTestCaseTplScript",
     $prototype: {
         valueChange : function () {
             this.data.callbacks += 1;

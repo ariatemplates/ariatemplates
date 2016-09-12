@@ -19,10 +19,10 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
         this.addTests("test.aria.widgets.form.selectbox.SelectboxTestCase");
-        this.addTests("test.aria.widgets.form.selectbox.checkValue.MainTemplateTestCase");
-        this.addTests("test.aria.widgets.form.selectbox.checkTypeLetters.SelectBoxTypeAllLetters");
-        this.addTests("test.aria.widgets.form.selectbox.emptyOption.EmptyOptionTestCase");
-        this.addTests("test.aria.widgets.form.selectbox.preselect.PreselectTestCase");
+        this.addTests("test.aria.widgets.form.selectbox.checkValue.MainTemplateRobotTestCase");
+        this.addTests("test.aria.widgets.form.selectbox.checkTypeLetters.SelectBoxTypeAllLettersTestCase");
+        this.addTests("test.aria.widgets.form.selectbox.emptyOption.EmptyOptionRobotTestCase");
+        this.addTests("test.aria.widgets.form.selectbox.preselect.PreselectRobotTestCase");
         this.addTests("test.aria.widgets.form.selectbox.optionhighlight.SelectboxOptionHighlightTestCase");
     }
 });

@@ -17,8 +17,8 @@
  * Test for the disposal of templates after navigation with animations
  */
 Aria.classDefinition({
-    $classpath : "test.aria.pageEngine.pageEngine.PageEngineTemplateDisposalTestWithAnimations",
-    $extends : "test.aria.pageEngine.pageEngine.PageEngineTemplateDisposalTest",
+    $classpath : "test.aria.pageEngine.pageEngine.PageEngineTemplateDisposalWithAnimationsTestCase",
+    $extends : "test.aria.pageEngine.pageEngine.PageEngineTemplateDisposalBase",
     $prototype : {
         _animations : true
     }

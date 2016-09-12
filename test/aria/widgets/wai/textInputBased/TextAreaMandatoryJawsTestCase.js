@@ -17,7 +17,7 @@ var Aria = require("ariatemplates/Aria");
 
 module.exports = Aria.classDefinition({
     $classpath : "test.aria.widgets.wai.textInputBased.TextAreaMandatoryJawsTestCase",
-    $extends : require("./MandatoryJawsTestCase"),
+    $extends : require("./MandatoryJawsBase"),
     $prototype : {
         elementsToTest : "taWaiEnabledStart"
     }

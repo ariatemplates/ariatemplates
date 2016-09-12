@@ -26,7 +26,7 @@ var ariaCoreIOFiltersMgr = require("ariatemplates/core/IOFiltersMgr");
  * Test case for the class manager.
  */
 module.exports = Aria.classDefinition({
-    $classpath : "test.aria.core.ClassMgrTest",
+    $classpath : "test.aria.core.ClassMgrTestCase",
     $extends : ariaJsunitTestCase,
     $prototype : {
 

@@ -17,8 +17,8 @@
  * Test that resizable dialog is actually resized in the DOM by dragging its edges.
  */
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.container.dialog.resize.test2.ResizableDialogTestCase",
-    $extends : "test.aria.widgets.container.dialog.resize.AbstractResizableDialogTestCase",
+    $classpath : "test.aria.widgets.container.dialog.resize.test2.ResizableDialogRobotTestCase",
+    $extends : "test.aria.widgets.container.dialog.resize.AbstractResizableDialogRobotBase",
     $prototype : {
 
         runTemplateTest : function () {

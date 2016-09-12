@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.html.textarea.TextAreaTest",
+    $classpath : "test.aria.html.textarea.TextAreaTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.html.TextArea"],
     $prototype : {

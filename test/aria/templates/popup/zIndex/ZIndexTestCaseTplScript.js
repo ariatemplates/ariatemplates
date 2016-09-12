@@ -14,12 +14,12 @@
  */
 
 Aria.tplScriptDefinition({
-    $classpath : "test.aria.templates.popup.zIndex.ZIndexTplScript",
+    $classpath : "test.aria.templates.popup.zIndex.ZIndexTestCaseTplScript",
     $prototype : {
         dialogOpen : function () {
             if (!this.after) {
                 // tell the test to get the first zIndex
-                test.aria.templates.popup.zIndex.ZIndex.firstZIndex();
+                test.aria.templates.popup.zIndex.ZIndexTestCase.firstZIndex();
 
                 // Partial refresh inside the dialog
                 this.$refresh({
@@ -27,7 +27,7 @@ Aria.tplScriptDefinition({
                 });
 
                 // compare with the second zIndex
-                test.aria.templates.popup.zIndex.ZIndex.secondZIndex();
+                test.aria.templates.popup.zIndex.ZIndexTestCase.secondZIndex();
             }
         }
     }

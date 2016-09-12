@@ -14,11 +14,11 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.container.dialog.dynamicZIndex.innerPopup.DynamicZIndexInnerPopupTestCase",
-    $extends : "test.aria.widgets.container.dialog.dynamicZIndex.BaseDynamicZIndexTestCase",
+    $classpath : "test.aria.widgets.container.dialog.dynamicZIndex.innerPopup.DynamicZIndexInnerPopupRobotTestCase",
+    $extends : "test.aria.widgets.container.dialog.dynamicZIndex.DynamicZIndexRobotBase",
     $dependencies : ["aria.utils.Dom"],
     $constructor : function () {
-        this.$BaseDynamicZIndexTestCase.constructor.call(this);
+        this.$DynamicZIndexRobotBase.constructor.call(this);
         this.setTestEnv({
             template: "test.aria.widgets.container.dialog.dynamicZIndex.innerPopup.DynamicZIndexInnerPopupTestTpl"
         });

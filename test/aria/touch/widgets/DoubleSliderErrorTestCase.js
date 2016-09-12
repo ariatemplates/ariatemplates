@@ -17,7 +17,7 @@
  * Create and invalid widget and check that errors are reported correctly
  */
 Aria.classDefinition({
-    $classpath : "test.aria.touch.widgets.DoubleSliderError",
+    $classpath : "test.aria.touch.widgets.DoubleSliderErrorTestCase",
     $extends : "aria.jsunit.WidgetTestCase",
     $dependencies : ["aria.touch.widgets.DoubleSlider", "aria.core.JsonValidator"],
     $prototype : {

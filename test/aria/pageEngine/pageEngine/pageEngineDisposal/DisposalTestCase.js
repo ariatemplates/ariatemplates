@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.pageEngine.pageEngine.pageEngineDisposal.DisposalTest",
+    $classpath : "test.aria.pageEngine.pageEngine.pageEngineDisposal.DisposalTestCase",
     $dependencies : ["aria.pageEngine.PageEngine", "test.aria.pageEngine.pageEngine.pageEngineDisposal.PageProvider"],
     $extends : "aria.jsunit.TestCase",
     $prototype : {

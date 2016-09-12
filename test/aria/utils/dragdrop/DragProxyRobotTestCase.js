@@ -17,8 +17,8 @@
  * Template Test case for different types of proxies available for dragging
  */
 Aria.classDefinition({
-    $classpath : "test.aria.utils.dragdrop.DragProxyTest",
-    $extends : "test.aria.utils.dragdrop.AbstractDragTestCase",
+    $classpath : "test.aria.utils.dragdrop.DragProxyRobotTestCase",
+    $extends : "test.aria.utils.dragdrop.AbstractDragRobotBase",
     $prototype : {
 
         /**

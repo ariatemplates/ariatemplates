@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath : "test.aria.widgets.container.dialog.autoFocus.AutoFocusTestTpl"
+    $classpath : "test.aria.widgets.container.dialog.autoFocus.AutoFocusTestCaseTpl"
 }}
     {macro main()}
         <input {id "fieldOutsideDialog" /} />

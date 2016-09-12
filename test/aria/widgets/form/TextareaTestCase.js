@@ -17,7 +17,7 @@
  * Test case for aria.widgets.form.Textarea
  */
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.TextareaTest",
+    $classpath : "test.aria.widgets.form.TextareaTestCase",
     $extends : "aria.jsunit.WidgetTestCase",
     $dependencies : ["aria.widgets.form.Textarea", "aria.core.Browser"],
     $prototype : {

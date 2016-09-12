@@ -22,7 +22,7 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
-        this.addTests("test.aria.templates.statements.StatementParserTest");
+        this.addTests("test.aria.templates.statements.StatementParserTestCase");
         this.addTests("test.aria.templates.statements.escape.ExpressionEscapeTestSuite");
     }
 });

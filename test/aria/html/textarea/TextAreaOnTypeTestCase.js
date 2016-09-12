@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.html.textarea.TextAreaOnTypeTest",
+    $classpath : "test.aria.html.textarea.TextAreaOnTypeTestCase",
     $extends : "aria.jsunit.WidgetTestCase",
     $dependencies : ["aria.html.TextArea", "aria.utils.FireDomEvent"],
     $prototype : {

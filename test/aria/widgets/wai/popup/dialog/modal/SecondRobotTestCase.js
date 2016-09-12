@@ -18,9 +18,9 @@ var Aria = require('ariatemplates/Aria');
 
 
 module.exports = Aria.classDefinition({
-    $classpath : 'test.aria.widgets.wai.popup.dialog.modal.SecondTest',
+    $classpath : 'test.aria.widgets.wai.popup.dialog.modal.SecondRobotTestCase',
 
-    $extends : require('./Base'),
+    $extends : require('./RobotBase'),
 
     $statics : {
         indexOfWidgetToTest: 1

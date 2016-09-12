@@ -19,13 +19,13 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
-        this._tests = ["test.aria.widgets.form.textinput.onchange.OnChangeTestCase",
+        this._tests = ["test.aria.widgets.form.textinput.onchange.OnChangeRobotTestCase",
                 "test.aria.widgets.form.textinput.helpText.HelpTextTestCase",
-                "test.aria.widgets.form.textinput.onblur.OnBlurTest",
+                "test.aria.widgets.form.textinput.onblur.OnBlurTestCase",
                 "test.aria.widgets.form.textinput.blurvalidation.BlurValidationTestCase",
                 "test.aria.widgets.form.textinput.quotes.QuotesTestCase",
-                "test.aria.widgets.form.textinput.onclick.OnClickTest",
-                "test.aria.widgets.form.textinput.onfocus.OnFocusTest",
-                "test.aria.widgets.form.textinput.blurOnDestroy.ClickButtonAfterDestroyTest"];
+                "test.aria.widgets.form.textinput.onclick.OnClickBase",
+                "test.aria.widgets.form.textinput.onfocus.OnFocusTestCase",
+                "test.aria.widgets.form.textinput.blurOnDestroy.ClickButtonAfterDestroyRobotTestCase"];
     }
 });

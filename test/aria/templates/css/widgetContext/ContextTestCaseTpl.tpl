@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath: "test.aria.templates.css.widgetContext.ContextTestTpl"
+    $classpath: "test.aria.templates.css.widgetContext.ContextTestCaseTpl"
 }}
 
     {macro main()}

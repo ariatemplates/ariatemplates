@@ -19,8 +19,8 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
-        this.addTests("test.aria.widgets.form.radiobutton.checkBind.test1.RadioButtonTest");
-        this.addTests("test.aria.widgets.form.radiobutton.checkBind.test2.RadioButtonTest");
+        this.addTests("test.aria.widgets.form.radiobutton.checkBind.test1.RadioButtonTestCase");
+        this.addTests("test.aria.widgets.form.radiobutton.checkBind.test2.RadioButtonTestCase");
         this.addTests("test.aria.widgets.form.radiobutton.multiLine.MultiLineTestCase");
     }
 });

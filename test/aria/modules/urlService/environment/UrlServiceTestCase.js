@@ -17,7 +17,7 @@
  * Test case for aria.modules.environment.IUrlService
  */
 Aria.classDefinition({
-    $classpath : 'test.aria.modules.urlService.environment.UrlService',
+    $classpath : 'test.aria.modules.urlService.environment.UrlServiceTestCase',
     $extends : 'aria.jsunit.TestCase',
     $dependencies : ["aria.modules.urlService.environment.UrlService"],
     $constructor : function () {

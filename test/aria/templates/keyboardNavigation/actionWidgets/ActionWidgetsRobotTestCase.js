@@ -22,12 +22,12 @@ var ariaUtilsArray = require('ariatemplates/utils/Array');
 
 
 module.exports = Aria.classDefinition({
-    $classpath : 'test.aria.templates.keyboardNavigation.actionWidgets.ActionWidgetsTest',
+    $classpath : 'test.aria.templates.keyboardNavigation.actionWidgets.ActionWidgetsRobotTestCase',
 
-    $extends : require('test/EnhancedRobotTestCase'),
+    $extends : require('test/EnhancedRobotBase'),
 
     $constructor : function () {
-        this.$EnhancedRobotTestCase.constructor.call(this);
+        this.$EnhancedRobotBase.constructor.call(this);
 
         var data = {
             countersIds: [

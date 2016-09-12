@@ -20,11 +20,11 @@ Aria.classDefinition({
         this.$TestSuite.constructor.call(this);
 
         this._tests = [
-            "test.aria.widgets.container.dialog.container.FocusDialogContainerTestCase",
-            "test.aria.widgets.container.dialog.container.MoveDialogContainerTestCase",
-            "test.aria.widgets.container.dialog.container.MaximizeDialogContainerTestCase",
-            "test.aria.widgets.container.dialog.container.ResizeDialogContainerTestCase",
-            "test.aria.widgets.container.dialog.container.HideResizeDialogContainerTestCase"
+            "test.aria.widgets.container.dialog.container.FocusDialogContainerRobotTestCase",
+            "test.aria.widgets.container.dialog.container.MoveDialogContainerRobotTestCase",
+            "test.aria.widgets.container.dialog.container.MaximizeDialogContainerRobotTestCase",
+            "test.aria.widgets.container.dialog.container.ResizeDialogContainerRobotTestCase",
+            "test.aria.widgets.container.dialog.container.HideResizeDialogContainerRobotTestCase"
         ];
     }
 });

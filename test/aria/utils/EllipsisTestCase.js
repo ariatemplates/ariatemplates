@@ -17,7 +17,7 @@
  * Test case for aria.utils.Text
  */
 Aria.classDefinition({
-    $classpath : "test.aria.utils.Ellipsis",
+    $classpath : "test.aria.utils.EllipsisTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.utils.Ellipsis"],
     $prototype : {

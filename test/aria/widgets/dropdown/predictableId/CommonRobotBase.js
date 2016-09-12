@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.dropdown.predictableId.CommonTestCase",
+    $classpath : "test.aria.widgets.dropdown.predictableId.CommonRobotBase",
     $extends : "aria.jsunit.RobotTestCase",
     $constructor : function () {
         this.$RobotTestCase.constructor.call(this);

@@ -17,7 +17,7 @@
  * test.aria.pageEngine.contentProcessors.MarkdownProcessor test
  */
 Aria.classDefinition({
-    $classpath : "test.aria.pageEngine.contentProcessors.MarkdownProcessorTest",
+    $classpath : "test.aria.pageEngine.contentProcessors.MarkdownProcessorTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.pageEngine.contentProcessors.MarkdownProcessor"],
     $prototype : {

@@ -17,7 +17,7 @@
  * Test case for aria.widgets.form.TextInput
  */
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.TextInputTest",
+    $classpath : "test.aria.widgets.form.TextInputTestCase",
     $extends : "aria.jsunit.WidgetTestCase",
     $dependencies : ["aria.widgets.form.TextField"],
     $prototype : {

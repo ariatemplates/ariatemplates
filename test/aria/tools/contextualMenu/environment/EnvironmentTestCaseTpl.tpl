@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath : "test.aria.tools.contextualMenu.environment.EnvironmentTestTpl" } }
+    $classpath : "test.aria.tools.contextualMenu.environment.EnvironmentTestCaseTpl" } }
 
     {macro main()}
         <div {id "myDiv"/} style="margin:10px;width:100px;height:100px;border:1px solid black;"></div>

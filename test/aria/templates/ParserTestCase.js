@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.templates.ParserTest",
+    $classpath : "test.aria.templates.ParserTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.templates.TplParser", "aria.templates.TreeBeans"],
     $constructor : function () {

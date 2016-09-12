@@ -14,7 +14,7 @@
  */
 
 Aria.tplScriptDefinition({
-    $classpath : "test.aria.widgets.form.autocomplete.samevalue.AutoCompleteTplScript",
+    $classpath : "test.aria.widgets.form.autocomplete.samevalue.AutoCompleteRobotTestCaseTplScript",
     $dependencies : ["aria.resources.handlers.LCResourcesHandler"],
     $constructor : function () {
         this._lcHandler = new aria.resources.handlers.LCResourcesHandler();

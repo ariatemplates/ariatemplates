@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath: "test.aria.jsunit.load.TemplateTestTpl"
+    $classpath: "test.aria.jsunit.load.TemplateATestCaseTpl"
 }}
 {macro main()}
     Hello!

@@ -19,7 +19,7 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
-        this.addTests("test.aria.utils.css.Animations");
-        this.addTests("test.aria.utils.css.AnimationsBean");
+        this.addTests("test.aria.utils.css.AnimationsTestCase");
+        this.addTests("test.aria.utils.css.AnimationsBeanTestCase");
     }
 });

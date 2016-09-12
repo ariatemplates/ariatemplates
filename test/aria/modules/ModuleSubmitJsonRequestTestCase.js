@@ -18,7 +18,7 @@
  * the desired effects.
  */
 Aria.classDefinition({
-    $classpath : "test.aria.modules.ModuleSubmitJsonRequestTest",
+    $classpath : "test.aria.modules.ModuleSubmitJsonRequestTestCase",
     $extends : "aria.jsunit.ModuleCtrlTestCase",
     $dependencies : ["aria.core.IOFilter", "aria.core.IOFiltersMgr", "aria.utils.Function"],
     $prototype : {

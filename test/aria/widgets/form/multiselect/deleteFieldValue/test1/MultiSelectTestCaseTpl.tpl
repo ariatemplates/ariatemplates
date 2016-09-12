@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath:"test.aria.widgets.form.multiselect.deleteFieldValue.test1.MultiSelectTpl",
+    $classpath:"test.aria.widgets.form.multiselect.deleteFieldValue.test1.MultiSelectTestCaseTpl",
     $hasScript:false
 }}
 

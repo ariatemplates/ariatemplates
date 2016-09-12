@@ -14,7 +14,7 @@
  */
 
 Aria.tplScriptDefinition({
-    $classpath : "test.aria.html.textarea.autoselect.AutoselectTestCaseTplScript",
+    $classpath : "test.aria.html.textarea.autoselect.AutoselectRobotTestCaseTplScript",
     $prototype : {
         $dataReady : function () {
             this.data = {

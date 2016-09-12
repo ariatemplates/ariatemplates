@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath : "test.aria.templates.popup.zIndex.ZIndexTpl",
+    $classpath : "test.aria.templates.popup.zIndex.ZIndexTestCaseTpl",
     $hasScript : true
 }}
 

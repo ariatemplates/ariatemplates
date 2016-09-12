@@ -14,7 +14,7 @@
  */
 
 {Template {
-   $classpath: "test.aria.utils.overlay.loadingIndicator.scrollbar.ScrollbarTestTpl"
+   $classpath: "test.aria.utils.overlay.loadingIndicator.scrollbar.ScrollbarTestCaseTpl"
 }}
     {macro main()}
         <div {id "myParentDiv"/} style="padding:20px;border:solid 2px black;width:500px;height:400px;background-color:orange;left:10px;top:10px;position:absolute;overflow:auto;">

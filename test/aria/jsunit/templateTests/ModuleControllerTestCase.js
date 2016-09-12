@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath: "test.aria.jsunit.templateTests.TestCaseModuleController",
+    $classpath: "test.aria.jsunit.templateTests.ModuleControllerTestCase",
     $extends: "aria.jsunit.TemplateTestCase",
     $dependencies : ["aria.core.Browser"],
     $constructor : function () {

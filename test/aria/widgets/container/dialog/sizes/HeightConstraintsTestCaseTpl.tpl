@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath : "test.aria.widgets.container.dialog.sizes.HeightConstraintsTestTpl"
+    $classpath : "test.aria.widgets.container.dialog.sizes.HeightConstraintsTestCaseTpl"
 }}
 
 	{macro main()}

@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.container.dialog.wrongCfg.ValidationTest",
+    $classpath : "test.aria.widgets.container.dialog.wrongCfg.ValidationTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $dependencies : ["aria.core.JsonValidator"],
     $prototype : {

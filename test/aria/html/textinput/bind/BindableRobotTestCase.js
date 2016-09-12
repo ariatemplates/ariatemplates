@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.html.textinput.bind.BindableTestCase",
+    $classpath : "test.aria.html.textinput.bind.BindableRobotTestCase",
     $extends : "aria.jsunit.RobotTestCase",
     $dependencies : ["aria.utils.Dom"],
     $constructor : function () {

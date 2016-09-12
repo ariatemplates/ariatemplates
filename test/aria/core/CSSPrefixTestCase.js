@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 Aria.classDefinition({
-    $classpath : "test.aria.core.CSSPrefixTest",
+    $classpath : "test.aria.core.CSSPrefixTestCase",
     $dependencies : ["aria.core.Browser", "aria.utils.Delegate"],
     $extends : "aria.jsunit.TestCase",
     $prototype : {

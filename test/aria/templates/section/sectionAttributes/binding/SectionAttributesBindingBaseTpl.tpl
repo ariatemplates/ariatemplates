@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath : "test.aria.templates.section.sectionAttributes.binding.SectionAttributesBindingTpl"
+    $classpath : "test.aria.templates.section.sectionAttributes.binding.SectionAttributesBindingBaseTpl"
 }}
 
     {macro main()}

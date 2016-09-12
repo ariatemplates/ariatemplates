@@ -16,7 +16,7 @@
  * Test case for aria.touch.gestures.Tap
  */
 Aria.classDefinition({
-    $classpath : "test.aria.templates.issue348.animation.AnimationTestcase",
+    $classpath : "test.aria.templates.issue348.animation.AnimationcaseTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $dependencies : ["aria.utils.Dom", "aria.utils.FireDomEvent", "aria.core.Browser", "aria.touch.Event",
             "aria.utils.Delegate"],

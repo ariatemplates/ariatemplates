@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.autocomplete.selectionKey.AutoCompleteModifier",
+    $classpath : "test.aria.widgets.form.autocomplete.selectionKey.AutoCompleteModifierRobotTestCase",
     $extends : "aria.jsunit.RobotTestCase",
     $constructor : function () {
         this.$RobotTestCase.constructor.call(this);

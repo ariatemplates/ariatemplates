@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.icon.notooltip.NoTooltipIconTest",
+    $classpath : "test.aria.widgets.icon.notooltip.NoTooltipIconTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $constructor : function () {
         this.$TemplateTestCase.constructor.call(this);

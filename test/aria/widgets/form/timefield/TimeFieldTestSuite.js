@@ -19,8 +19,8 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
-        this.addTests("test.aria.widgets.form.timefield.checkFormat.TimeField");
-        this.addTests("test.aria.widgets.form.timefield.checkValue.TimeField");
-        this.addTests("test.aria.widgets.form.timefield.defaultErrorMessages.DefaultErrorMessagesTest");
+        this.addTests("test.aria.widgets.form.timefield.checkFormat.TimeFieldTestCase");
+        this.addTests("test.aria.widgets.form.timefield.checkValue.TimeFieldTestCase");
+        this.addTests("test.aria.widgets.form.timefield.defaultErrorMessages.DefaultErrorMessagesTestCase");
     }
 });

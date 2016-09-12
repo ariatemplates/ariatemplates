@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath:"test.aria.widgets.form.autocomplete.expandbutton.test1.ExpandButtonCheckTpl",
+    $classpath:"test.aria.widgets.form.autocomplete.expandbutton.test1.ExpandButtonCheckTestCaseTpl",
     $hasScript:true,
     $width: {min: 500},
     $dependencies : ["aria.resources.handlers.LCResourcesHandler"]

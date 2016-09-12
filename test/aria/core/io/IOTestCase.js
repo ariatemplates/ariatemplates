@@ -17,11 +17,11 @@
  * Test for the IO class
  */
 Aria.classDefinition({
-    $classpath : "test.aria.core.io.IOTest",
-    $extends : "test.aria.core.io.BaseIOTest",
+    $classpath : "test.aria.core.io.IOTestCase",
+    $extends : "test.aria.core.io.IOBase",
     $dependencies : ["aria.utils.Object"],
     $constructor : function () {
-        this.$BaseIOTest.constructor.call(this);
+        this.$IOBase.constructor.call(this);
         this.urlRoot = Aria.rootFolderPath + 'test/';
     },
     $prototype : {
@@ -45,7 +45,7 @@ Aria.classDefinition({
 
             aria.core.IO.$unregisterListeners(this);
             this.url = null;
-            this.$BaseIOTest.tearDown.call(this);
+            this.$IOBase.tearDown.call(this);
         },
         onEvent : function (evt) {
             if (evt.req.url == this.url) {

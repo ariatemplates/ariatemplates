@@ -21,15 +21,15 @@ Aria.classDefinition({
     $extends : "aria.jsunit.TestSuite",
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
-        this.addTests("test.aria.pageEngine.siteRootModule.SubModuleTestOne");
-        this.addTests("test.aria.pageEngine.siteRootModule.SubModuleTestTwo");
-        this.addTests("test.aria.pageEngine.siteRootModule.ModuleNavigationTest");
-        this.addTests("test.aria.pageEngine.siteRootModule.ModelBindingTestOne");
-        this.addTests("test.aria.pageEngine.siteRootModule.ModelBindingTestTwo");
-        this.addTests("test.aria.pageEngine.siteRootModule.ModelBindingTestThree");
-        this.addTests("test.aria.pageEngine.siteRootModule.ModelBindingTestFour");
-        this.addTests("test.aria.pageEngine.siteRootModule.ModelBindingTestFive");
-        this.addTests("test.aria.pageEngine.siteRootModule.ModuleUnloadTest");
-        this.addTests("test.aria.pageEngine.siteRootModule.ModuleInitArgsTest");
+        this.addTests("test.aria.pageEngine.siteRootModule.SubModuleOneTestCase");
+        this.addTests("test.aria.pageEngine.siteRootModule.SubModuleTwoTestCase");
+        this.addTests("test.aria.pageEngine.siteRootModule.ModuleNavigationTestCase");
+        this.addTests("test.aria.pageEngine.siteRootModule.ModelBindingOneTestCase");
+        this.addTests("test.aria.pageEngine.siteRootModule.ModelBindingTwoBase");
+        this.addTests("test.aria.pageEngine.siteRootModule.ModelBindingThreeTestCase");
+        this.addTests("test.aria.pageEngine.siteRootModule.ModelBindingFourTestCase");
+        this.addTests("test.aria.pageEngine.siteRootModule.ModelBindingFiveTestCase");
+        this.addTests("test.aria.pageEngine.siteRootModule.ModuleUnloadTestCase");
+        this.addTests("test.aria.pageEngine.siteRootModule.ModuleInitArgsTestCase");
     }
 });

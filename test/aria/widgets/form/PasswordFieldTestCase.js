@@ -18,7 +18,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.PasswordFieldTest",
+    $classpath : "test.aria.widgets.form.PasswordFieldTestCase",
     $extends : "aria.jsunit.WidgetTestCase",
     $dependencies : ["aria.widgets.form.PasswordField"],
     $prototype : {

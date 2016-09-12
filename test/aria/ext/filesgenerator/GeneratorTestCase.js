@@ -23,7 +23,7 @@ var ariaCoreDownloadMgr = require("ariatemplates/core/DownloadMgr");
  * Test case for aria.ext.filesgenerator.Generator
  */
 module.exports = Aria.classDefinition({
-    $classpath : "test.aria.ext.filesgenerator.GeneratorTest",
+    $classpath : "test.aria.ext.filesgenerator.GeneratorTestCase",
     $extends : require("ariatemplates/jsunit/TestCase"),
     $prototype : {
         /**

@@ -17,13 +17,13 @@
  * Test case for aria.touch.gestures.Tap
  */
 Aria.classDefinition({
-    $classpath : "test.aria.touch.gestures.Pinch",
+    $classpath : "test.aria.touch.gestures.PinchTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $dependencies : ["aria.utils.Dom", "aria.utils.FireDomEvent", "aria.core.Browser", "aria.touch.Event"],
     $constructor : function () {
         this.$TemplateTestCase.constructor.call(this);
         this.setTestEnv({
-            template : "test.aria.touch.gestures.PinchTpl"
+            template : "test.aria.touch.gestures.PinchTestCaseTpl"
         });
         this.domUtil = aria.utils.Dom;
         this.fireEvent = aria.utils.FireDomEvent;

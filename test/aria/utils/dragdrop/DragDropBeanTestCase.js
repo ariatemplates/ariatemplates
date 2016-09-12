@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.utils.dragdrop.DragDropBean",
+    $classpath : "test.aria.utils.dragdrop.DragDropBeanTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.utils.dragdrop.DragDropBean", "aria.utils.Dom"],
     $prototype : {

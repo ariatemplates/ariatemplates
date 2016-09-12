@@ -17,7 +17,7 @@
  * Test case for binding transforms
  */
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.WidgetTest",
+    $classpath : "test.aria.widgets.WidgetATestCase",
     $dependencies : ["aria.widgets.controllers.TextDataController"],
     $extends : "aria.jsunit.WidgetTestCase",
     $prototype : {

@@ -19,7 +19,7 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
-        this._tests = ["test.aria.widgets.container.dialog.sizes.HeightConstraintsTest",
+        this._tests = ["test.aria.widgets.container.dialog.sizes.HeightConstraintsTestCase",
                 "test.aria.widgets.container.dialog.sizes.DialogMaxWidthTestCase",
                 "test.aria.widgets.container.dialog.sizes.DialogWidthTestCase"];
     }

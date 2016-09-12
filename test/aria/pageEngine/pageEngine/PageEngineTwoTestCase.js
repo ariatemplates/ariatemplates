@@ -14,10 +14,10 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.pageEngine.pageEngine.PageEngineTestTwo",
-    $extends : "test.aria.pageEngine.pageEngine.PageEngineBaseTestCase",
+    $classpath : "test.aria.pageEngine.pageEngine.PageEngineTwoTestCase",
+    $extends : "test.aria.pageEngine.pageEngine.PageEngineBase",
     $constructor : function () {
-        this.$PageEngineBaseTestCase.constructor.call(this);
+        this.$PageEngineBase.constructor.call(this);
         this._dependencies.push("test.aria.pageEngine.pageEngine.site.PageProvider");
         this._pageReadyListener = {
             fn : this._onPageReady,
@@ -130,7 +130,7 @@ Aria.classDefinition({
 
         end : function () {
             this._disposePageEngine();
-            this.$PageEngineBaseTestCase.end.call(this);
+            this.$PageEngineBase.end.call(this);
         },
 
         _disposePageEngine : function () {

@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.skin.button.verticalAlign.VerticalAlignParent",
+    $classpath : "test.aria.widgets.skin.button.verticalAlign.VerticalAlignParentBase",
     $extends : "aria.jsunit.TemplateTestCase",
     $dependencies : ["aria.utils.Dom", "aria.widgets.AriaSkinInterface"],
     $constructor : function () {

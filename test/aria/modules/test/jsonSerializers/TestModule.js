@@ -14,7 +14,7 @@
  */
 
 /**
- * Test module for test.aria.modules.RequestMgrJsonSerializerTest
+ * Test module for test.aria.modules.RequestMgrJsonSerializerTestCase
  */
 Aria.classDefinition({
   $classpath : "test.aria.modules.test.jsonSerializers.TestModule",

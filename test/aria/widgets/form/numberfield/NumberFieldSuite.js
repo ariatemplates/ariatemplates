@@ -19,9 +19,9 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
-        this.addTests("test.aria.widgets.form.numberfield.NumberFieldTest");
-        this.addTests("test.aria.widgets.form.numberfield.inputPattern.InputPattern");
-        this.addTests("test.aria.widgets.form.numberfield.inputPattern.SeparatedInputPattern");
-        this.addTests("test.aria.widgets.form.numberfield.defaultErrorMessages.DefaultErrorMessagesTest");
+        this.addTests("test.aria.widgets.form.numberfield.NumberFieldTestCase");
+        this.addTests("test.aria.widgets.form.numberfield.inputPattern.InputPatternTestCase");
+        this.addTests("test.aria.widgets.form.numberfield.inputPattern.SeparatedInputPatternTestCase");
+        this.addTests("test.aria.widgets.form.numberfield.defaultErrorMessages.DefaultErrorMessagesTestCase");
     }
 });

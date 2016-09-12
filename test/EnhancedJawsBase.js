@@ -15,7 +15,7 @@
 
 var Aria = require('ariatemplates/Aria');
 
-var EnhancedRobotTestCase = require('test/EnhancedRobotTestCase');
+var EnhancedRobotTestCase = require('test/EnhancedRobotBase');
 var ariaJsunitJawsTestCase = require('ariatemplates/jsunit/JawsTestCase');
 
 var ariaUtilsFunction = require('ariatemplates/utils/Function');
@@ -42,7 +42,7 @@ function objectAssignDefault(destination, source) {
 ////////////////////////////////////////////////////////////////////////////////
 
 module.exports = Aria.classDefinition({
-    $classpath : 'test.EnhancedJawsTestCase',
+    $classpath : 'test.EnhancedJawsBase',
     $extends : ariaJsunitJawsTestCase,
 
     $constructor : function () {

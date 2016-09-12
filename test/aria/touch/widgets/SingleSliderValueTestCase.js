@@ -17,7 +17,7 @@
  * Check the initialization of a SliderWidget
  */
 Aria.classDefinition({
-    $classpath : "test.aria.touch.widgets.SingleSliderValue",
+    $classpath : "test.aria.touch.widgets.SingleSliderValueTestCase",
     $extends : "aria.jsunit.WidgetTestCase",
     // Depend on drag to have synchronous creation of the widget
     $dependencies : ["aria.touch.widgets.Slider", "aria.utils.Dom", "aria.utils.dragdrop.Drag"],

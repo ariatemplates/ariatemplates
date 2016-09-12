@@ -134,7 +134,7 @@ Aria.load({
                 }
 
                 if (qs.getKeyValue("flash") === "false") {
-                    skipTests.push("test.aria.core.io.IOXDRTest");
+                    skipTests.push("test.aria.core.io.IOXDRTestCase");
                 }
 
                 aria.jsunit.TestRunner.getEngine().runIsolated = runIsolated;

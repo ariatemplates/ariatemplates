@@ -17,7 +17,7 @@ var Aria = require("ariatemplates/Aria");
 var eventUtils = require("ariatemplates/utils/Event");
 
 module.exports = Aria.classDefinition({
-    $classpath : "test.aria.templates.robotCalibrationTest.RobotCalibrationTest",
+    $classpath : "test.aria.templates.robotCalibrationTest.CalibrationRobotTestCase",
     $extends : require("ariatemplates/jsunit/RobotTestCase"),
     $prototype : {
         runTemplateTest : function () {

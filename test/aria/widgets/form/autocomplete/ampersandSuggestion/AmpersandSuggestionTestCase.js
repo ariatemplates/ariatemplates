@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.autocomplete.ampersandSuggestion.AmpersandSuggestion",
+    $classpath : "test.aria.widgets.form.autocomplete.ampersandSuggestion.AmpersandSuggestionTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $dependencies : ["aria.utils.String"],
     $prototype : {

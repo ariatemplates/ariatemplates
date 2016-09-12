@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.core.CacheTest",
+    $classpath : "test.aria.core.CacheTestCase",
     $extends : "aria.jsunit.TestCase",
     $prototype : {
         testAsyncGetFileName : function () {

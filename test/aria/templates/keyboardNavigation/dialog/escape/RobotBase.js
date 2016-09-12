@@ -21,13 +21,13 @@ var ariaResourcesHandlersLCRangeResourceHandler = require('ariatemplates/resourc
 
 
 module.exports = Aria.classDefinition({
-    $classpath : 'test.aria.templates.keyboardNavigation.dialog.escape.Base',
-    $extends : require('test/EnhancedRobotTestCase'),
+    $classpath : 'test.aria.templates.keyboardNavigation.dialog.escape.RobotBase',
+    $extends : require('test/EnhancedRobotBase'),
 
     $constructor : function () {
         // ------------------------------------------------------ initialization
 
-        this.$EnhancedRobotTestCase.constructor.call(this);
+        this.$EnhancedRobotBase.constructor.call(this);
 
         // ---------------------------------------------------------- processing
 

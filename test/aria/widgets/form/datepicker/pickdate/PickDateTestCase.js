@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.datepicker.pickdate.PickDate",
+    $classpath : "test.aria.widgets.form.datepicker.pickdate.PickDateTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $dependencies : ["aria.utils.Date"],
     $constructor : function () {

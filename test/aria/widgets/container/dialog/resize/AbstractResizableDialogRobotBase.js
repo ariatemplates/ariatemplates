@@ -17,7 +17,7 @@
  * Abstract class for resize dialog test.
  */
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.container.dialog.resize.AbstractResizableDialogTestCase",
+    $classpath : "test.aria.widgets.container.dialog.resize.AbstractResizableDialogRobotBase",
     $extends : "aria.jsunit.RobotTestCase",
     $dependencies : ["aria.utils.Dom"],
     $constructor : function () {

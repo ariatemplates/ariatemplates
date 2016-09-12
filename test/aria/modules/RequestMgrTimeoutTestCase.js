@@ -19,7 +19,7 @@
  * the former method.
  */
 Aria.classDefinition({
-    $classpath : "test.aria.modules.RequestMgrTimeoutTest",
+    $classpath : "test.aria.modules.RequestMgrTimeoutTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.modules.RequestMgr", "aria.core.IOFiltersMgr",
             "aria.modules.requestHandler.JSONRequestHandler"],

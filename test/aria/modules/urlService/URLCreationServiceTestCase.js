@@ -17,7 +17,7 @@
  * Test case for the default module creation implementation
  */
 Aria.classDefinition({
-    $classpath : "test.aria.modules.urlService.URLCreationServiceTest",
+    $classpath : "test.aria.modules.urlService.URLCreationServiceTestCase",
     $dependencies : ["aria.modules.RequestMgr", "test.aria.modules.urlService.ModuleURLCreationImpl",
             "test.aria.modules.test.MockRequestHandler", "test.aria.modules.urlService.SearchURLCreationImpl",
             "aria.templates.ModuleCtrl"],

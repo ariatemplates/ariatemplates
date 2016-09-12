@@ -14,24 +14,24 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.storage.localStorage.Events",
+    $classpath : "test.aria.storage.localStorage.EventsTestCase",
     $dependencies : ["aria.storage.LocalStorage"],
-    $extends : "test.aria.storage.base.GeneralEvents",
+    $extends : "test.aria.storage.base.GeneralEventsBase",
     $constructor : function () {
         this.storageLocation = "localStorage";
 
-        this.$GeneralEvents.constructor.call(this);
+        this.$GeneralEventsBase.constructor.call(this);
     },
     $prototype : {
         testEvents : function () {
             if (this.canRunHTML5Tests(false) || this.canRunUserDataTests()) {
-                this.$GeneralEvents.testEvents.call(this);
+                this.$GeneralEventsBase.testEvents.call(this);
             }
         },
 
         testSerializedEvent : function () {
             if (this.canRunHTML5Tests(false) || this.canRunUserDataTests()) {
-                this.$GeneralEvents.testSerializedEvent.call(this);
+                this.$GeneralEventsBase.testSerializedEvent.call(this);
             }
         }
     }

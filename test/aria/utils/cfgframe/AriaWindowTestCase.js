@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.utils.cfgframe.AriaWindowTest",
+    $classpath : "test.aria.utils.cfgframe.AriaWindowTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.utils.AriaWindow", "aria.utils.Dom"],
     $statics : {

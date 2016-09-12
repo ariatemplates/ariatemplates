@@ -22,7 +22,7 @@ var ariaCoreMultiLoader = require("ariatemplates/core/MultiLoader");
 var ariaCoreResMgr = require("ariatemplates/core/ResMgr");
 
 module.exports = Aria.classDefinition({
-    $classpath : "test.aria.core.TplClassLoaderErrorTest",
+    $classpath : "test.aria.core.TplClassLoaderErrorTestCase",
     $extends : ariaJsunitTestCase,
     $prototype : {
         setUp : function () {

@@ -17,13 +17,13 @@
  * Test case for aria.touch.gestures.Swipe
  */
 Aria.classDefinition({
-    $classpath : "test.aria.touch.gestures.Swipe",
+    $classpath : "test.aria.touch.gestures.SwipeTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $dependencies : ["aria.utils.Dom", "aria.utils.FireDomEvent", "aria.core.Browser", "aria.touch.Event"],
     $constructor : function () {
         this.$TemplateTestCase.constructor.call(this);
         this.setTestEnv({
-            template : "test.aria.touch.gestures.SwipeTpl"
+            template : "test.aria.touch.gestures.SwipeTestCaseTpl"
         });
         this.domUtil = aria.utils.Dom;
         this.fireEvent = aria.utils.FireDomEvent;

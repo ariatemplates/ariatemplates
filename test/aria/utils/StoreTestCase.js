@@ -17,7 +17,7 @@
  * Test case for aria.utils.Store
  */
 Aria.classDefinition({
-    $classpath : "test.aria.utils.Store",
+    $classpath : "test.aria.utils.StoreTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.utils.Store", "aria.utils.Array"],
     $prototype : {

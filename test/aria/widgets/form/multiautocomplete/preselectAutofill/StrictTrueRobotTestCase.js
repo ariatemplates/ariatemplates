@@ -14,8 +14,8 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.multiautocomplete.preselectAutofill.StrictTrueTest",
-    $extends : "test.aria.widgets.form.multiautocomplete.preselectAutofill.MACPreselectAutofillBaseTest",
+    $classpath : "test.aria.widgets.form.multiautocomplete.preselectAutofill.StrictTrueRobotTestCase",
+    $extends : "test.aria.widgets.form.multiautocomplete.preselectAutofill.MACPreselectAutofillRobotBase",
     $constructor : function () {
         this.allTestValues = {
             freetext : {
@@ -66,6 +66,6 @@ Aria.classDefinition({
             }
         };
 
-        this.$MACPreselectAutofillBaseTest.constructor.call(this);
+        this.$MACPreselectAutofillRobotBase.constructor.call(this);
     }
 });

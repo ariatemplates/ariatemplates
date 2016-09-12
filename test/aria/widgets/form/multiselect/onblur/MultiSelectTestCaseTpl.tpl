@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath:"test.aria.widgets.form.multiselect.onblur.MultiSelectTpl",
+    $classpath:"test.aria.widgets.form.multiselect.onblur.MultiSelectTestCaseTpl",
     $hasScript:false
 }}
 

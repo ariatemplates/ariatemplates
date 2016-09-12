@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.controllers.SelectBoxControllerTest",
+    $classpath : "test.aria.widgets.controllers.SelectBoxControllerTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.widgets.controllers.SelectBoxController", "aria.DomEvent"],
     $prototype : {

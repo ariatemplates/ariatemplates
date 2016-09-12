@@ -1,5 +1,5 @@
 {Template {
-	$classpath : "test.aria.templates.section.processingIndicator.ProcessingIndicatorOnSectionTpl"
+	$classpath : "test.aria.templates.section.processingIndicator.ProcessingIndicatorOnSectionTestCaseTpl"
 }}
 
 	{macro main()}

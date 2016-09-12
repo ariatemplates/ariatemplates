@@ -17,7 +17,7 @@
  * aria.pageEngine.utils.SiteConfigHelper test
  */
 Aria.classDefinition({
-    $classpath : "test.aria.pageEngine.utils.SiteConfigHelperTest",
+    $classpath : "test.aria.pageEngine.utils.SiteConfigHelperTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.pageEngine.utils.SiteConfigHelper", "aria.pageEngine.contentProcessors.MarkdownProcessor",
             "test.aria.pageEngine.utils.test.ProcessorwithoutProcessContent",

@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.pageEngine.pageProviders.BaseProviderOverrideTest",
+    $classpath : "test.aria.pageEngine.pageProviders.ProviderOverrideTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["test.aria.pageEngine.pageProviders.AnotherProvider"],
     $prototype : {

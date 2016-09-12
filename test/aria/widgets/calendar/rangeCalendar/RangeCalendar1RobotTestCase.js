@@ -17,8 +17,8 @@ var domUtils = require("ariatemplates/utils/Dom");
 var jsonUtils = require("ariatemplates/utils/Json");
 
 module.exports = Aria.classDefinition({
-    $classpath : "test.aria.widgets.calendar.rangeCalendar.RangeCalendar1",
-    $extends : require("./BaseCalendarTest"),
+    $classpath : "test.aria.widgets.calendar.rangeCalendar.RangeCalendar1RobotTestCase",
+    $extends : require("./CalendarRobotBase"),
     $prototype : {
         runTemplateTest : function () {
             var data = this.templateCtxt.data;

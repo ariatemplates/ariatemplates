@@ -17,7 +17,7 @@
  * Test for the Microsoft 7 map provider
  */
 Aria.classDefinition({
-    $classpath : "test.aria.map.Microsoft7MapProviderTest",
+    $classpath : "test.aria.map.Microsoft7MapProviderTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.map.providers.Microsoft7MapProvider"],
     $constructor : function () {

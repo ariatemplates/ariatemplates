@@ -15,7 +15,7 @@
 var Aria = require("ariatemplates/Aria");
 
 module.exports = Aria.tplScriptDefinition({
-    $classpath : "test.aria.widgets.calendar.rangeCalendar.RangeCalendar2TplScript",
+    $classpath : "test.aria.widgets.calendar.rangeCalendar.RangeCalendar2RobotTestCaseTplScript",
     $prototype : {
         $dataReady : function () {
             if (!this.data.activeDate) {

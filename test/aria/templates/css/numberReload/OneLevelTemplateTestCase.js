@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.templates.css.numberReload.OneLevelTemplate",
+    $classpath : "test.aria.templates.css.numberReload.OneLevelTemplateTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $dependencies : ["aria.templates.CSSMgr", "aria.utils.Array"],
     $constructor : function () {

@@ -14,7 +14,7 @@
  */
 
  {Template {
-  $classpath : "test.aria.touch.gestures.DragTpl",
+  $classpath : "test.aria.touch.gestures.DragTestCaseTpl",
   $css : ["test.aria.touch.gestures.TouchEventsCSS"],
   $hasScript : true
 } }

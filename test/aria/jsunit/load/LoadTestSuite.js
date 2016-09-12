@@ -19,9 +19,9 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
-        this.addTests("test.aria.jsunit.load.CompleteLoad");
-        this.addTests("test.aria.jsunit.load.IgnoreCallbacks");
-        this.addTests("test.aria.jsunit.load.Synchronous");
-        this.addTests("test.aria.jsunit.load.TemplateTest");
+        this.addTests("test.aria.jsunit.load.CompleteLoadTestCase");
+        this.addTests("test.aria.jsunit.load.IgnoreCallbacksTestCase");
+        this.addTests("test.aria.jsunit.load.SynchronousTestCase");
+        this.addTests("test.aria.jsunit.load.TemplateATestCase");
     }
 });

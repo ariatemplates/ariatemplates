@@ -14,8 +14,8 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.container.dialog.container.MoveDialogContainerTestCase",
-    $extends : "test.aria.widgets.container.dialog.container.BaseDialogContainerTestCase",
+    $classpath : "test.aria.widgets.container.dialog.container.MoveDialogContainerRobotTestCase",
+    $extends : "test.aria.widgets.container.dialog.container.DialogContainerRobotBase",
     $dependencies : ["aria.utils.dragdrop.Drag"], // Required to have the dialog quickly ready
     $prototype : {
         start: function () {

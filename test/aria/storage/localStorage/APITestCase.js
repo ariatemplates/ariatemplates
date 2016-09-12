@@ -14,13 +14,13 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.storage.localStorage.API",
+    $classpath : "test.aria.storage.localStorage.APITestCase",
     $dependencies : ["aria.storage.LocalStorage"],
-    $extends : "test.aria.storage.base.GeneralAPI",
+    $extends : "test.aria.storage.base.GeneralAPIBase",
     $constructor : function () {
         this.storageLocation = "localStorage";
 
-        this.$GeneralAPI.constructor.call(this);
+        this.$GeneralAPIBase.constructor.call(this);
     },
     $prototype : {
         /**
@@ -28,7 +28,7 @@ Aria.classDefinition({
          */
         testOneInstanceStrings : function () {
             if (this.canRunHTML5Tests(false) || this.canRunUserDataTests()) {
-                this.$GeneralAPI.testOneInstanceStrings.call(this);
+                this.$GeneralAPIBase.testOneInstanceStrings.call(this);
             }
         },
 
@@ -37,7 +37,7 @@ Aria.classDefinition({
          */
         testTwoInstancesStrings : function () {
             if (this.canRunHTML5Tests(false) || this.canRunUserDataTests()) {
-                this.$GeneralAPI.testTwoInstancesStrings.call(this);
+                this.$GeneralAPIBase.testTwoInstancesStrings.call(this);
             }
         }
     }

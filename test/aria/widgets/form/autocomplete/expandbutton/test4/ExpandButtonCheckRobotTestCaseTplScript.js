@@ -14,7 +14,7 @@
  */
 
 Aria.tplScriptDefinition({
-    $classpath : "test.aria.widgets.form.autocomplete.expandbutton.test4.ExpandButtonCheckTplScript",
+    $classpath : "test.aria.widgets.form.autocomplete.expandbutton.test4.ExpandButtonCheckRobotTestCaseTplScript",
     $dependencies : ["aria.resources.handlers.LCResourcesHandler"],
     $constructor : function () {
         this._lcHandler = new aria.resources.handlers.LCResourcesHandler();

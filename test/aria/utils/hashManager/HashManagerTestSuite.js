@@ -19,7 +19,7 @@ Aria.classDefinition({
     $constructor: function () {
         this.$TestSuite.constructor.call(this);
 
-        this.addTests("test.aria.utils.hashManager.HashManagerTestOne");
-        this.addTests("test.aria.utils.hashManager.HashManagerTestTwo");
+        this.addTests("test.aria.utils.hashManager.HashManagerOneTestCase");
+        this.addTests("test.aria.utils.hashManager.HashManagerTwoTestCase");
     }
 });

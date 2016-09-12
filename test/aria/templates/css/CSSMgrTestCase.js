@@ -17,7 +17,7 @@
  * Test for the CSS Manager
  */
 Aria.classDefinition({
-    $classpath : "test.aria.templates.css.CSSMgrTest",
+    $classpath : "test.aria.templates.css.CSSMgrTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.templates.CSSMgr", "aria.utils.Type", "aria.utils.Json", "aria.utils.Dom"],
     $prototype : {

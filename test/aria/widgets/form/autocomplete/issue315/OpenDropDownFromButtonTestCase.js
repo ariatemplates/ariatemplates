@@ -1,11 +1,11 @@
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.autocomplete.issue315.OpenDropDownFromButtonTest",
+    $classpath : "test.aria.widgets.form.autocomplete.issue315.OpenDropDownFromButtonTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $dependencies : ["aria.utils.FireDomEvent"],
     $constructor : function () {
         this.$TemplateTestCase.constructor.call(this);
         this.setTestEnv({
-            template : "test.aria.widgets.form.autocomplete.issue315.OpenDropDownFromButtonTestTpl",
+            template : "test.aria.widgets.form.autocomplete.issue315.OpenDropDownFromButtonTestCaseTpl",
             data : {
                 email : "" // must be an empty string && res handler must return empty array in this test
             }

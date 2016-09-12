@@ -17,7 +17,7 @@
  * Test case for aria.utils.json.JsonSerializer
  */
 Aria.classDefinition({
-    $classpath : "test.aria.utils.json.JsonSerializerPerf",
+    $classpath : "test.aria.utils.json.JsonSerializerPerfTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.utils.json.JsonSerializer", "aria.core.IO"],
     $prototype : {

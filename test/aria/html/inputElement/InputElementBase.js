@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.html.inputElement.InputElementBaseTest",
+    $classpath : "test.aria.html.inputElement.InputElementBase",
     $extends : "aria.jsunit.WidgetTestCase",
     $dependencies : ["aria.html.InputElement", "aria.utils.Json"],
     $statics : {

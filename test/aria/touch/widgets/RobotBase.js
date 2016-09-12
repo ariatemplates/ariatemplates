@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.touch.widgets.BaseRobotTest",
+    $classpath : "test.aria.touch.widgets.RobotBase",
     $extends : "aria.jsunit.RobotTestCase",
     $dependencies : ["aria.utils.Dom"],
     $constructor : function () {
@@ -32,7 +32,7 @@ Aria.classDefinition({
         this.widget = null;
 
         this.setTestEnv({
-            template : "test.aria.touch.widgets.DoubleSliderTpl",
+            template : "test.aria.touch.widgets.DoubleSliderRobotTestCaseTpl",
             data : this.data
         });
     },

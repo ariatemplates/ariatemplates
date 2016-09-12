@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.utils.overlay.loadingIndicator.zindex.IndexTest",
+    $classpath : "test.aria.utils.overlay.loadingIndicator.zindex.IndexTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $prototype : {
         runTemplateTest : function () {

@@ -14,10 +14,10 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.multiautocomplete.preselectAutofill.StrictTrueWithTabTest",
-    $extends : "test.aria.widgets.form.multiautocomplete.preselectAutofill.MACPreselectAutofillBaseTest",
+    $classpath : "test.aria.widgets.form.multiautocomplete.preselectAutofill.StrictTrueWithTabRobotTestCase",
+    $extends : "test.aria.widgets.form.multiautocomplete.preselectAutofill.MACPreselectAutofillRobotBase",
     $constructor : function () {
-        this.$MACPreselectAutofillBaseTest.constructor.call(this);
+        this.$MACPreselectAutofillRobotBase.constructor.call(this);
         this.allTestValues = {
             freetext : {
                 input : ["p", "", "p1", "", "P4. TESTER D", "", "p1-4", ""],

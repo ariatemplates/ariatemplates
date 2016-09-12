@@ -18,7 +18,7 @@
  * Resources Handler, so it's enough to check that the correct class is loaded.
  */
 Aria.classDefinition({
-    $classpath : "test.aria.html.controllers.suggestions.ResourcesHandlerTest",
+    $classpath : "test.aria.html.controllers.suggestions.ResourcesHandlerTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.html.controllers.Suggestions", "test.aria.html.controllers.suggestions.mocks.ByClasspath",
             "test.aria.html.controllers.suggestions.mocks.ByInstance"],

@@ -18,7 +18,7 @@
  * after a DomOverlay is displayed
  */
 Aria.classDefinition({
-    $classpath : "test.aria.utils.hashManager.HashManagerTestTwo",
+    $classpath : "test.aria.utils.hashManager.HashManagerTwoTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.utils.DomOverlay"],
     $constructor : function () {

@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath : "test.aria.widgets.form.datepicker.validation.DatePickerWithValidatorTestTpl"
+    $classpath : "test.aria.widgets.form.datepicker.validation.DatePickerWithValidatorTestCaseTpl"
 }}
     {macro main()}
         {@aria:DatePicker {

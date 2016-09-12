@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.storage.base.BaseTests",
+    $classpath : "test.aria.storage.base.Base",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.core.Browser"],
     $prototype : {

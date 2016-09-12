@@ -17,8 +17,8 @@
  * Template Test case for aria.utils.dragdrop.Drag
  */
 Aria.classDefinition({
-    $classpath : "test.aria.utils.dragdrop.DragBasicTest",
-    $extends : "test.aria.utils.dragdrop.AbstractDragTestCase",
+    $classpath : "test.aria.utils.dragdrop.DragBasicRobotTestCase",
+    $extends : "test.aria.utils.dragdrop.AbstractDragRobotBase",
     $prototype : {
         startDragTest : function () {
             this._testGetDraggable();

@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.container.checkContent.DivTest",
+    $classpath : "test.aria.widgets.container.checkContent.DivTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $dependencies : ["aria.utils.Json", "aria.templates.Layout"],
     $prototype : {

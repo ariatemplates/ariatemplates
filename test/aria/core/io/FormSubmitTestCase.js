@@ -14,11 +14,11 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.core.io.FormSubmit",
-    $extends : "test.aria.core.io.BaseIOTest",
+    $classpath : "test.aria.core.io.FormSubmitTestCase",
+    $extends : "test.aria.core.io.IOBase",
     $dependencies : ["test.aria.core.test.IOFilterSample", "aria.utils.Dom", "aria.utils.String", "aria.utils.Xml"],
     $constructor : function () {
-        this.$BaseIOTest.constructor.call(this);
+        this.$IOBase.constructor.call(this);
         this.request = {};
     },
     $prototype : {
@@ -45,7 +45,7 @@ Aria.classDefinition({
             aria.core.IO.$unregisterListeners(this);
             this.url = null;
             this.request = {};
-            this.$BaseIOTest.tearDown.call(this);
+            this.$IOBase.tearDown.call(this);
         },
 
         /**

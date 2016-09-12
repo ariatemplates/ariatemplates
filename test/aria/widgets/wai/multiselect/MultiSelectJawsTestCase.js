@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.wai.multiselect.MultiSelectJawsTest",
+    $classpath : "test.aria.widgets.wai.multiselect.MultiSelectJawsTestCase",
     $extends : "aria.jsunit.JawsTestCase",
     $constructor : function () {
         this.$JawsTestCase.constructor.call(this);

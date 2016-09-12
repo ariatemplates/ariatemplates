@@ -14,10 +14,10 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.container.dialog.resize.test4.DialogOnResizeScrollTestCase",
-    $extends : "test.aria.widgets.container.dialog.resize.AbstractResizableDialogTestCase",
+    $classpath : "test.aria.widgets.container.dialog.resize.test4.DialogOnResizeScrollRobotTestCase",
+    $extends : "test.aria.widgets.container.dialog.resize.AbstractResizableDialogRobotBase",
     $constructor : function () {
-        this.$AbstractResizableDialogTestCase.constructor.call(this);
+        this.$AbstractResizableDialogRobotBase.constructor.call(this);
 
         this.setTestEnv({
             css : "position:relative;top:400px;border:15px solid blue;"

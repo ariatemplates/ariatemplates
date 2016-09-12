@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.core.TimerTest",
+    $classpath : "test.aria.core.TimerTestCase",
     $extends : "aria.jsunit.TestCase",
 
     $constructor : function () {

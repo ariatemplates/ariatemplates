@@ -19,12 +19,12 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
-        this.addTests("test.aria.html.textarea.TextAreaTest");
-        this.addTests("test.aria.html.textarea.TextAreaOnTypeTest");
+        this.addTests("test.aria.html.textarea.TextAreaTestCase");
+        this.addTests("test.aria.html.textarea.TextAreaOnTypeTestCase");
         this.addTests("test.aria.html.textarea.focus.FocusTestCase");
-        this.addTests("test.aria.html.textarea.autoselect.AutoselectTestCase");
-        this.addTests("test.aria.html.textarea.bind.BindableTestCase");
-        this.addTests("test.aria.html.textarea.bind.TextAreaBindTest");
-        this.addTests("test.aria.html.textarea.DisabledTextAreaTest");
+        this.addTests("test.aria.html.textarea.autoselect.AutoselectRobotTestCase");
+        this.addTests("test.aria.html.textarea.bind.BindableRobotTestCase");
+        this.addTests("test.aria.html.textarea.bind.TextAreaBindTestCase");
+        this.addTests("test.aria.html.textarea.DisabledTextAreaTestCase");
     }
 });

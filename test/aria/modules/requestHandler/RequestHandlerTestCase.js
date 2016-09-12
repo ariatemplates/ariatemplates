@@ -17,7 +17,7 @@
  * Test for the RequestHandler
  */
 Aria.classDefinition({
-    $classpath : 'test.aria.modules.requestHandler.RequestHandlerTest',
+    $classpath : 'test.aria.modules.requestHandler.RequestHandlerTestCase',
     $extends : 'aria.jsunit.TestCase',
     $dependencies : ["aria.modules.requestHandler.RequestHandler", "aria.modules.RequestBeans"],
     $prototype : {

@@ -20,7 +20,7 @@ var IOFiltersMgr = require("ariatemplates/core/IOFiltersMgr");
 var AppEnvironment = require("ariatemplates/core/AppEnvironment");
 
 module.exports = Aria.classDefinition({
-    $classpath : "test.aria.utils.environment.VisualFocusDependency",
+    $classpath : "test.aria.utils.environment.VisualFocusDependencyTestCase",
     $extends : require("ariatemplates/jsunit/TestCase"),
     $prototype : {
         testAsyncCheck : function () {

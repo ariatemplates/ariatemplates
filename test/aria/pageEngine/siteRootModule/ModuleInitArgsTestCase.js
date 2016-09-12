@@ -17,16 +17,16 @@
  * aria.pageEngine.SiteRootModule test
  */
 Aria.classDefinition({
-    $classpath : "test.aria.pageEngine.siteRootModule.ModuleInitArgsTest",
-    $extends : "test.aria.pageEngine.siteRootModule.SiteRootModuleBaseTestCase",
+    $classpath : "test.aria.pageEngine.siteRootModule.ModuleInitArgsTestCase",
+    $extends : "test.aria.pageEngine.siteRootModule.SiteRootModuleBase",
     $constructor : function () {
-        this.$SiteRootModuleBaseTestCase.constructor.call(this);
+        this.$SiteRootModuleBase.constructor.call(this);
         this._navigateCalls = [];
         this._pageEngine = null;
     },
     $destructor : function () {
         this._pageEngine = null;
-        this.$SiteRootModuleBaseTestCase.$destructor.call(this);
+        this.$SiteRootModuleBase.$destructor.call(this);
     },
     $prototype : {
 

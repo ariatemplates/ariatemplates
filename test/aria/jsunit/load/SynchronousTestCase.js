@@ -15,7 +15,7 @@
 
 // See what happens when Aria.load is called inside a synchronous test
 Aria.classDefinition({
-    $classpath : "test.aria.jsunit.load.Synchronous",
+    $classpath : "test.aria.jsunit.load.SynchronousTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["test.aria.jsunit.load.dependencies.Met"],
     $prototype : {

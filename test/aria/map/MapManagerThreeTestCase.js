@@ -17,7 +17,7 @@
  * Test the methods related to the creation of a custom provider and to the creation of maps with different providers
  */
 Aria.classDefinition({
-    $classpath : "test.aria.map.MapManagerTestThree",
+    $classpath : "test.aria.map.MapManagerThreeTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.map.MapManager"],
     $constructor : function () {

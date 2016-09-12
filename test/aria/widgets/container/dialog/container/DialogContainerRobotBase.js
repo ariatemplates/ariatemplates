@@ -17,7 +17,7 @@ var Browser = require("ariatemplates/core/Browser");
 var TypeUtils = require("ariatemplates/utils/Type");
 
 module.exports = Aria.classDefinition({
-    $classpath : "test.aria.widgets.container.dialog.container.BaseDialogContainerTestCase",
+    $classpath : "test.aria.widgets.container.dialog.container.DialogContainerRobotBase",
     $extends : require("ariatemplates/jsunit/RobotTestCase"),
     $constructor : function () {
         this.$RobotTestCase.constructor.call(this);

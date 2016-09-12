@@ -17,7 +17,7 @@
  * Test for the SimpleSessionQueuing class
  */
 Aria.classDefinition({
-    $classpath : 'test.aria.modules.queuing.SimpleSessionQueuingTest',
+    $classpath : 'test.aria.modules.queuing.SimpleSessionQueuingTestCase',
     $extends : 'aria.jsunit.TestCase',
     $dependencies : ['aria.modules.queuing.SimpleSessionQueuing', 'test.aria.core.mock.IOMock',
             'aria.modules.urlService.PatternURLCreationImpl', 'aria.modules.RequestMgr',

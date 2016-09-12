@@ -22,7 +22,7 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
-        this._tests = ["test.aria.utils.mouse.MouseDragKo",
-                "test.aria.utils.mouse.MouseDragOk"];
+        this._tests = ["test.aria.utils.mouse.MouseDragKoRobotTestCase",
+                "test.aria.utils.mouse.MouseDragOkRobotTestCase"];
     }
 });

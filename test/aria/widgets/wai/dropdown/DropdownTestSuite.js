@@ -24,11 +24,11 @@ module.exports = Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
-        this.addTests('test.aria.widgets.wai.dropdown.AutoCompleteDropdownTogglingTest');
-        this.addTests('test.aria.widgets.wai.dropdown.DatePickerDropdownTogglingTest');
-        this.addTests('test.aria.widgets.wai.dropdown.MultiAutoCompleteDropdownTogglingTest');
-        this.addTests('test.aria.widgets.wai.dropdown.MultiSelectDropdownTogglingTest');
-        this.addTests('test.aria.widgets.wai.dropdown.SelectDropdownTogglingTest');
-        this.addTests('test.aria.widgets.wai.dropdown.SelectBoxDropdownTogglingTest');
+        this.addTests('test.aria.widgets.wai.dropdown.AutoCompleteDropdownTogglingRobotTestCase');
+        this.addTests('test.aria.widgets.wai.dropdown.DatePickerDropdownTogglingRobotTestCase');
+        this.addTests('test.aria.widgets.wai.dropdown.MultiAutoCompleteDropdownTogglingRobotTestCase');
+        this.addTests('test.aria.widgets.wai.dropdown.MultiSelectDropdownTogglingRobotTestCase');
+        this.addTests('test.aria.widgets.wai.dropdown.SelectDropdownTogglingRobotTestCase');
+        this.addTests('test.aria.widgets.wai.dropdown.SelectBoxDropdownTogglingRobotTestCase');
     }
 });

@@ -14,30 +14,30 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.storage.localStorage.Serialize",
+    $classpath : "test.aria.storage.localStorage.SerializeTestCase",
     $dependencies : ["aria.storage.LocalStorage"],
-    $extends : "test.aria.storage.base.GeneralSerialize",
+    $extends : "test.aria.storage.base.GeneralSerializeBase",
     $constructor : function () {
         this.storageLocation = "localStorage";
 
-        this.$GeneralSerialize.constructor.call(this);
+        this.$GeneralSerializeBase.constructor.call(this);
     },
     $prototype : {
         testDefaultCorrectSerialization : function () {
             if (this.canRunHTML5Tests(false) || this.canRunUserDataTests()) {
-                this.$GeneralSerialize.testDefaultCorrectSerialization.call(this);
+                this.$GeneralSerializeBase.testDefaultCorrectSerialization.call(this);
             }
         },
 
         testCustomSerializer : function () {
             if (this.canRunHTML5Tests(false) || this.canRunUserDataTests()) {
-                this.$GeneralSerialize.testCustomSerializer.call(this);
+                this.$GeneralSerializeBase.testCustomSerializer.call(this);
             }
         },
 
         testErrorCondition : function () {
             if (this.canRunHTML5Tests(false) || this.canRunUserDataTests()) {
-                this.$GeneralSerialize.testErrorCondition.call(this);
+                this.$GeneralSerializeBase.testErrorCondition.call(this);
             }
         }
     }

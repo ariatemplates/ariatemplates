@@ -14,7 +14,7 @@
  */
 
  {Template {
-  $classpath : "test.aria.touch.gestures.DoubleTapTpl",
+  $classpath : "test.aria.touch.gestures.DoubleTapTestCaseTpl",
   $css : ["test.aria.touch.gestures.TouchEventsCSS"],
   $hasScript : true
 } }

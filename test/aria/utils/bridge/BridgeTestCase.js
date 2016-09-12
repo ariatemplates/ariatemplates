@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.utils.bridge.BridgeTest",
+    $classpath : "test.aria.utils.bridge.BridgeTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.utils.Bridge"],
     $prototype : {

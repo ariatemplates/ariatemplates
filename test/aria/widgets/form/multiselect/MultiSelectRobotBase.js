@@ -17,7 +17,7 @@ var Aria = require("ariatemplates/Aria");
 var MultiSelectTemplateTestCase = require("ariatemplates/jsunit/MultiSelectTemplateTestCase");
 
 module.exports = Aria.classDefinition({
-    $classpath: "test.aria.widgets.form.multiselect.MultiSelectRobotTestCase",
+    $classpath: "test.aria.widgets.form.multiselect.MultiSelectRobotBase",
     $extends: require("ariatemplates/jsunit/RobotTestCase"),
     $prototype: {
         $init : function (prototype) {

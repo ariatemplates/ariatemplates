@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.templates.repeater.testFour.RepeaterFour",
+    $classpath : "test.aria.templates.repeater.testFour.RepeaterFourTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $constructor : function () {
         this.$TemplateTestCase.constructor.call(this);

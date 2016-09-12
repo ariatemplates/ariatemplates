@@ -14,7 +14,7 @@
  */
 
 {Template {
-	$classpath : "test.aria.widgets.form.autocomplete.checkfocus.CheckFocusTpl",
+	$classpath : "test.aria.widgets.form.autocomplete.checkfocus.CheckFocusTestCaseTpl",
 	$hasScript : false
 }}
 

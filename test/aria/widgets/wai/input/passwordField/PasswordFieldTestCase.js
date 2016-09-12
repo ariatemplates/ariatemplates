@@ -17,7 +17,7 @@ var Aria = require("ariatemplates/Aria");
 
 module.exports = Aria.classDefinition({
     $classpath : "test.aria.widgets.wai.input.passwordField.PasswordFieldTestCase",
-    $extends : require("../InputBaseTestCase"),
+    $extends : require("../InputBase"),
     $prototype : {
         myTemplate : "test.aria.widgets.wai.input.passwordField.PasswordFieldTestCaseTpl"
     }

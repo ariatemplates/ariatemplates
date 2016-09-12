@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.environment.WidgetSettings",
+    $classpath : "test.aria.widgets.environment.WidgetSettingsTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.widgets.environment.WidgetSettings"],
     $prototype : {

@@ -22,24 +22,24 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
-        this.addTests("test.aria.modules.RequestFilterTest");
-        this.addTests("test.aria.modules.RequestMgrI18nTest");
-        this.addTests("test.aria.modules.RequestMgrJsonSerializerTest");
-        this.addTests("test.aria.modules.RequestMgrTest");
-        this.addTests("test.aria.modules.requestMgrSyncTest.SyncTest");
-        this.addTests("test.aria.modules.RequestMgrSyncErrorTest");
+        this.addTests("test.aria.modules.RequestFilterTestCase");
+        this.addTests("test.aria.modules.RequestMgrI18nTestCase");
+        this.addTests("test.aria.modules.RequestMgrJsonSerializerTestCase");
+        this.addTests("test.aria.modules.RequestMgrTestCase");
+        this.addTests("test.aria.modules.requestMgrSyncTest.SyncTestCase");
+        this.addTests("test.aria.modules.RequestMgrSyncErrorTestCase");
 
-        this.addTests("test.aria.modules.queuing.SimpleSessionQueuingTest");
+        this.addTests("test.aria.modules.queuing.SimpleSessionQueuingTestCase");
 
-        this.addTests("test.aria.modules.urlService.PatternURLCreationImplTest");
-        this.addTests("test.aria.modules.urlService.URLCreationServiceTest");
-        this.addTests("test.aria.modules.urlService.environment.UrlService");
+        this.addTests("test.aria.modules.urlService.PatternURLCreationImplTestCase");
+        this.addTests("test.aria.modules.urlService.URLCreationServiceTestCase");
+        this.addTests("test.aria.modules.urlService.environment.UrlServiceTestCase");
 
         this.addTests("test.aria.modules.requestHandler.RequestHandlersTestSuite");
 
-        this.addTests("test.aria.modules.moduleReload.ModuleReloadTestCase1");
-        this.addTests("test.aria.modules.moduleReload.ModuleReloadTestCase2");
+        this.addTests("test.aria.modules.moduleReload.ModuleReload1Base");
+        this.addTests("test.aria.modules.moduleReload.ModuleReload2TestCase");
 
-        this.addTests("test.aria.modules.ModuleSubmitJsonRequestTest");
+        this.addTests("test.aria.modules.ModuleSubmitJsonRequestTestCase");
     }
 });

@@ -14,7 +14,7 @@
  */
 
 {Template{
-	$classpath : "test.aria.widgets.form.multiselect.labelsToTrim.LabelsToTrimTpl"
+	$classpath : "test.aria.widgets.form.multiselect.labelsToTrim.LabelsToTrimTestCaseTpl"
 }}
 
 	{macro main()}

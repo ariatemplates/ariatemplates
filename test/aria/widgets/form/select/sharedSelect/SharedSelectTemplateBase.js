@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.select.sharedSelect.SharedSelectTemplateTestCase",
+    $classpath : "test.aria.widgets.form.select.sharedSelect.SharedSelectTemplateBase",
     $extends : "aria.jsunit.TemplateTestCase",
     $dependencies : ["aria.utils.Json"],
     $constructor : function () {

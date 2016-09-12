@@ -19,10 +19,10 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
-        this.addTests("test.aria.html.element.ElementTest");
-        this.addTests("test.aria.html.element.ElementBindingsTest");
-        this.addTests("test.aria.html.element.ElementEventsTest");
-        this.addTests("test.aria.html.element.EventsArrayTest");
-        this.addTests("test.aria.html.element.ChainListenerTest");
+        this.addTests("test.aria.html.element.ElementTestCase");
+        this.addTests("test.aria.html.element.ElementBindingsTestCase");
+        this.addTests("test.aria.html.element.ElementEventsTestCase");
+        this.addTests("test.aria.html.element.EventsArrayTestCase");
+        this.addTests("test.aria.html.element.ChainListenerTestCase");
     }
 });

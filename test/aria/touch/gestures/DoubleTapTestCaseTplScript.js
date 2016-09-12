@@ -14,7 +14,7 @@
  */
 
 Aria.tplScriptDefinition({
-    $classpath : "test.aria.touch.gestures.DoubleTapTplScript",
+    $classpath : "test.aria.touch.gestures.DoubleTapTestCaseTplScript",
     $constructor : function () {
         this.data = {};
     },

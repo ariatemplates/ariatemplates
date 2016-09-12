@@ -17,7 +17,7 @@
  * Test for the ResMgr class
  */
 Aria.classDefinition({
-    $classpath : "test.aria.core.ResMgrTest",
+    $classpath : "test.aria.core.ResMgrTestCase",
     $extends : "aria.jsunit.TestCase",
     $prototype : {
         setUp : function () {

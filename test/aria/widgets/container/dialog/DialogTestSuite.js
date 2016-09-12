@@ -19,10 +19,10 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
-        this.addTests("test.aria.widgets.container.dialog.maximizable.MaximizableDialogTest");
-        this.addTests("test.aria.widgets.container.dialog.closeOutside.Issue389TestCase");
+        this.addTests("test.aria.widgets.container.dialog.maximizable.MaximizableDialogTestCase");
+        this.addTests("test.aria.widgets.container.dialog.closeOutside.Issue389RobotTestCase");
         this.addTests("test.aria.widgets.container.dialog.MovableDialogTestSuite");
-        this.addTests("test.aria.widgets.container.dialog.closeOrDrag.CloseOrDragTest");
+        this.addTests("test.aria.widgets.container.dialog.closeOrDrag.CloseOrDragRobotTestCase");
 
         this.addTests("test.aria.widgets.container.dialog.resize.DialogResizeTestSuite");
         this.addTests("test.aria.widgets.container.dialog.closeOnClick.CloseDialogOnClickTestCase");
@@ -30,21 +30,21 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.container.dialog.sizes.DialogSizesTestSuite");
         this.addTests("test.aria.widgets.container.dialog.scroll.SetScrollTestCase");
         this.addTests("test.aria.widgets.container.dialog.scroll.OnScrollTestCase");
-        this.addTests("test.aria.widgets.container.dialog.focus.FocusInsideModalDialog");
-        this.addTests("test.aria.widgets.container.dialog.autoFocus.AutoFocusTest");
+        this.addTests("test.aria.widgets.container.dialog.focus.FocusInsideModalDialogTestCase");
+        this.addTests("test.aria.widgets.container.dialog.autoFocus.AutoFocusTestCase");
 
         this.addTests("test.aria.widgets.container.dialog.checkStyle.DialogTestCase");
         this.addTests("test.aria.widgets.container.dialog.escKey.DialogTemplateTestCase");
-        this.addTests("test.aria.widgets.container.dialog.escKey.multipleDialogs.EscapeOnModalTest");
-        this.addTests("test.aria.widgets.container.dialog.escKey.multipleDialogs.EscapeOnModalAndNonModalTest");
+        this.addTests("test.aria.widgets.container.dialog.escKey.multipleDialogs.EscapeOnModalBase");
+        this.addTests("test.aria.widgets.container.dialog.escKey.multipleDialogs.EscapeOnModalAndNonModalTestCase");
         this.addTests("test.aria.widgets.container.dialog.indicators.DialogTestCase");
         this.addTests("test.aria.widgets.container.dialog.keymap.DialogTestCase");
         this.addTests("test.aria.widgets.container.dialog.missingMacro.DialogTestCase");
-        this.addTests("test.aria.widgets.container.dialog.wrongCfg.ValidationTest");
+        this.addTests("test.aria.widgets.container.dialog.wrongCfg.ValidationTestCase");
         this.addTests("test.aria.widgets.container.dialog.configContainer.DialogTestCase");
         this.addTests("test.aria.widgets.container.dialog.container.DialogContainerTestSuite");
         this.addTests("test.aria.widgets.container.dialog.dynamicZIndex.DynamicZIndexTestSuite");
-        this.addTests("test.aria.widgets.container.dialog.closePopupScroll.ClosePopupScrollTest");
+        this.addTests("test.aria.widgets.container.dialog.closePopupScroll.ClosePopupScrollRobotTestCase");
         this.addTests("test.aria.widgets.container.dialog.refresh.DialogRefreshTestCase");
     }
 });

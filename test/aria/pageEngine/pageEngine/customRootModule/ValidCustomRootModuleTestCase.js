@@ -14,8 +14,8 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.pageEngine.pageEngine.customRootModule.ValidCustomRootModuleTest",
-    $extends : "test.aria.pageEngine.pageEngine.customRootModule.CustomRootModuleBaseTestCase",
+    $classpath : "test.aria.pageEngine.pageEngine.customRootModule.ValidCustomRootModuleTestCase",
+    $extends : "test.aria.pageEngine.pageEngine.customRootModule.CustomRootModuleBase",
     $constructor : function () {
         this._testData = {
             eventLogs : [],
@@ -33,7 +33,7 @@ Aria.classDefinition({
                 }
             }
         };
-        this.$CustomRootModuleBaseTestCase.constructor.call(this);
+        this.$CustomRootModuleBase.constructor.call(this);
     },
     $prototype : {
 

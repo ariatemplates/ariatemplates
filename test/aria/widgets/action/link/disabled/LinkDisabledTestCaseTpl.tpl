@@ -14,7 +14,7 @@
  */
 
 {Template {
-	$classpath: "test.aria.widgets.action.link.disabled.LinkDisabledTpl",
+	$classpath: "test.aria.widgets.action.link.disabled.LinkDisabledTestCaseTpl",
 	$hasScript: true
 }}
 	{var data = {link1Disabled : false, link2Disabled : true, clicksNumber1: 0, clicksNumber2: 0}/}

@@ -14,7 +14,7 @@
  */
 
 {Template {
-   $classpath: "test.aria.utils.overlay.loadingIndicator.zindex.IndexTestTpl"
+   $classpath: "test.aria.utils.overlay.loadingIndicator.zindex.IndexTestCaseTpl"
 }}
     {macro main()}
 

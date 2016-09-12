@@ -65,7 +65,7 @@
      * Test case for the select controller.
      */
     Aria.classDefinition({
-        $classpath : "test.aria.widgets.controllers.SelectControllerTest",
+        $classpath : "test.aria.widgets.controllers.SelectControllerTestCase",
         $extends : "aria.jsunit.TestCase",
         $dependencies : ["aria.widgets.controllers.SelectController", "aria.DomEvent"],
         $prototype : {

@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.container.dialog.resize.test5.OverlayOnResizeScrollTestCase",
+    $classpath : "test.aria.widgets.container.dialog.resize.test5.OverlayOnResizeScrollRobotTestCase",
     $extends : "aria.jsunit.RobotTestCase",
     $dependencies : ["aria.utils.Dom"],
     $constructor : function () {

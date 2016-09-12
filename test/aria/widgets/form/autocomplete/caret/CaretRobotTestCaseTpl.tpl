@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath : "test.aria.widgets.form.autocomplete.caret.CaretTestCaseTpl",
+    $classpath : "test.aria.widgets.form.autocomplete.caret.CaretRobotTestCaseTpl",
     $hasScript : true
 }}
 

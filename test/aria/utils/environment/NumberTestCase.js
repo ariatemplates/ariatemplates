@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.utils.environment.Number",
+    $classpath : "test.aria.utils.environment.NumberTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.utils.Number"],
     $prototype : {

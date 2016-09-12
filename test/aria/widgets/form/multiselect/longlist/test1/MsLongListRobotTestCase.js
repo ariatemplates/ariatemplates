@@ -14,11 +14,11 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.multiselect.longlist.test1.MsLongList",
-    $extends : "test.aria.widgets.form.multiselect.MultiSelectRobotTestCase",
+    $classpath : "test.aria.widgets.form.multiselect.longlist.test1.MsLongListRobotTestCase",
+    $extends : "test.aria.widgets.form.multiselect.MultiSelectRobotBase",
     $dependencies : ["aria.utils.FireDomEvent", "aria.DomEvent"],
     $constructor : function () {
-        this.$MultiSelectRobotTestCase.constructor.call(this);
+        this.$MultiSelectRobotBase.constructor.call(this);
         this.inputField = null;
     },
     $prototype : {

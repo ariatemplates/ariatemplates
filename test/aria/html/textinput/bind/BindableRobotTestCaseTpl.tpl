@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath : "test.aria.html.textinput.bind.BindableTestCaseTpl",
+    $classpath : "test.aria.html.textinput.bind.BindableRobotTestCaseTpl",
     $wlibs : {
         html : "aria.html.HtmlLibrary"
     },

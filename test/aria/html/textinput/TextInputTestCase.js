@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.html.textinput.TextInputTest",
+    $classpath : "test.aria.html.textinput.TextInputTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.html.TextInput"],
     $prototype : {

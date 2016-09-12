@@ -18,8 +18,8 @@ Aria.classDefinition({
     $extends : "aria.jsunit.TestSuite",
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
-        this.addTests("test.aria.pageEngine.pageEngine.customRootModule.NonExistentRootModuleClassTest");
-        this.addTests("test.aria.pageEngine.pageEngine.customRootModule.RootModuleWrongInheritanceTest");
-        this.addTests("test.aria.pageEngine.pageEngine.customRootModule.ValidCustomRootModuleTest");
+        this.addTests("test.aria.pageEngine.pageEngine.customRootModule.NonExistentRootModuleClassTestCase");
+        this.addTests("test.aria.pageEngine.pageEngine.customRootModule.RootModuleWrongInheritanceTestCase");
+        this.addTests("test.aria.pageEngine.pageEngine.customRootModule.ValidCustomRootModuleTestCase");
     }
 });

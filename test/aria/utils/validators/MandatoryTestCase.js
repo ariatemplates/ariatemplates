@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.utils.validators.Mandatory",
+    $classpath : "test.aria.utils.validators.MandatoryTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.utils.validators.Mandatory"],
     $prototype : {

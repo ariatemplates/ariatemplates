@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath:'test.aria.widgets.form.autocomplete.handler.test1.LCHandlerTestCaseTpl',
+    $classpath:'test.aria.widgets.form.autocomplete.handler.test1.LCHandlerRobotTestCaseTpl',
     $hasScript : true
 }}
 

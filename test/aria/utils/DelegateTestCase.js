@@ -17,7 +17,7 @@
  * Test case for aria.utils.Delegate
  */
 Aria.classDefinition({
-    $classpath : "test.aria.utils.Delegate",
+    $classpath : "test.aria.utils.DelegateTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.utils.Delegate", "aria.utils.Dom", "aria.utils.Function"],
     $constructor : function () {
@@ -82,10 +82,10 @@ Aria.classDefinition({
             this._testArea.innerHTML = "<div " + aria.utils.Delegate.getMarkup(delegationId1) + ">" + "<div "
                     + aria.utils.Delegate.getMarkup(delegationId2) + ">" + "<div "
                     + aria.utils.Delegate.getMarkup(delegationId3) + ">"
-                    + "<input type='button' id='test.aria.utils.Delegate.test_delegate' />" + "</div></div></div>";
+                    + "<input type='button' id='test.aria.utils.DelegateTestCase.test_delegate' />" + "</div></div></div>";
 
             // Check delegation -> markup is ok
-            var input = aria.utils.Dom.getElementById("test.aria.utils.Delegate.test_delegate");
+            var input = aria.utils.Dom.getElementById("test.aria.utils.DelegateTestCase.test_delegate");
             input.click();
 
             this.assertEquals(this._delegateFlag1, 0);

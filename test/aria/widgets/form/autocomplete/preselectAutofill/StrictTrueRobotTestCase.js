@@ -17,10 +17,10 @@
  * Test the defautl values for the preselect and autoFill properties, namely 'strict' and true, respectively.
  */
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.autocomplete.preselectAutofill.StrictTrueTest",
-    $extends : "test.aria.widgets.form.autocomplete.preselectAutofill.PreselectAutofillBaseTest",
+    $classpath : "test.aria.widgets.form.autocomplete.preselectAutofill.StrictTrueRobotTestCase",
+    $extends : "test.aria.widgets.form.autocomplete.preselectAutofill.PreselectAutofillRobotBase",
     $constructor : function () {
-        this.$PreselectAutofillBaseTest.constructor.call(this);
+        this.$PreselectAutofillRobotBase.constructor.call(this);
         this.allTestValues = {
             freetext : {
                 input : ["p", "p", "p1", "P1. TESTER A", "P4. TESTER D", "P4. TESTER D"],

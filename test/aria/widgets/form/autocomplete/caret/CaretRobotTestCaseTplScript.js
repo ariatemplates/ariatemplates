@@ -14,7 +14,7 @@
  */
 
 Aria.tplScriptDefinition({
-    $classpath : "test.aria.widgets.form.autocomplete.caret.CaretTestCaseTplScript",
+    $classpath : "test.aria.widgets.form.autocomplete.caret.CaretRobotTestCaseTplScript",
     $dependencies : ["aria.resources.handlers.LCResourcesHandler"],
     $destructor : function () {
         this.handler.$dispose();

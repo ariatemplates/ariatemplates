@@ -14,14 +14,14 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.multiautocomplete.navigation.BaseTestCase",
-    $extends : "test.aria.widgets.form.multiautocomplete.BaseMultiAutoCompleteTestCase",
+    $classpath : "test.aria.widgets.form.multiautocomplete.navigation.RobotBase",
+    $extends : "test.aria.widgets.form.multiautocomplete.MultiAutoCompleteRobotBase",
     $dependencies : ["aria.utils.Type", "aria.utils.Array", "aria.core.Timer", "aria.utils.Caret",
             "test.aria.widgets.form.multiautocomplete.navigation.Sequencer",
             "test.aria.widgets.form.multiautocomplete.navigation.Helpers"],
     $constructor : function (name) {
 
-        this.$BaseMultiAutoCompleteTestCase.constructor.call(this);
+        this.$MultiAutoCompleteRobotBase.constructor.call(this);
         this.HELPERS = test.aria.widgets.form.multiautocomplete.navigation.Helpers;
 
         this.name = name;
@@ -72,7 +72,7 @@ Aria.classDefinition({
         for (var i = 0, len = toDispose.length; i < len; i++) {
             toDispose[i].$dispose();
         }
-        this.$BaseMultiAutoCompleteTestCase.$destructor.call(this);
+        this.$MultiAutoCompleteRobotBase.$destructor.call(this);
     },
 
     $prototype : {
@@ -440,7 +440,7 @@ Aria.classDefinition({
          * @param[in] {Boolean} open Whether we want the dropdown to be closed or open before going on with the task.
          */
         waitForDropdownState : function (task, open) {
-            this.$BaseMultiAutoCompleteTestCase.waitForDropdownState.call(this, open, {
+            this.$MultiAutoCompleteRobotBase.waitForDropdownState.call(this, open, {
                 fn : task.end,
                 scope : task
             });

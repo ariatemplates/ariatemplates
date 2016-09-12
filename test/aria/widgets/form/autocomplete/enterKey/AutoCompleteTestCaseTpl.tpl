@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath:"test.aria.widgets.form.autocomplete.enterKey.AutoCompleteTpl",
+    $classpath:"test.aria.widgets.form.autocomplete.enterKey.AutoCompleteTestCaseTpl",
     $hasScript:true,
     $width: {min: 500}
 }}

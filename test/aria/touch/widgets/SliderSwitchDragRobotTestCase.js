@@ -13,8 +13,8 @@
  * limitations under the License.
  */
 Aria.classDefinition({
-    $classpath : "test.aria.touch.widgets.SliderSwitchDrag",
-    $extends : "test.aria.touch.widgets.SliderHelper",
+    $classpath : "test.aria.touch.widgets.SliderSwitchDragRobotTestCase",
+    $extends : "test.aria.touch.widgets.SliderHelperRobotBase",
     $dependencies : ["aria.utils.Dom"],
     $prototype : {
         runTemplateTest : function () {

@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.templates.ModifiersTest",
+    $classpath : "test.aria.templates.ModifiersTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.templates.Modifiers", "aria.utils.String", "aria.utils.Type"],
     $prototype : {

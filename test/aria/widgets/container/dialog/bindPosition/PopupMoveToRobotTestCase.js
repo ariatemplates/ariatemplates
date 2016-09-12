@@ -17,10 +17,10 @@
  * Test the moveTo method for popups
  */
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.container.dialog.bindPosition.PopupMoveToTestCase",
-    $extends : "test.aria.widgets.container.dialog.MovableDialogBaseTestCase",
+    $classpath : "test.aria.widgets.container.dialog.bindPosition.PopupMoveToRobotTestCase",
+    $extends : "test.aria.widgets.container.dialog.MovableDialogRobotBase",
     $constructor : function () {
-        this.$MovableDialogBaseTestCase.constructor.call(this);
+        this.$MovableDialogRobotBase.constructor.call(this);
 
         this.data = {
             firstDialog : {

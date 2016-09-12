@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath : "test.aria.widgets.form.multiselect.emptyMultiSelect.MultiSelectTpl"
+    $classpath : "test.aria.widgets.form.multiselect.emptyMultiSelect.MultiSelectRobotTestCaseTpl"
 }}
 
     {macro main()}

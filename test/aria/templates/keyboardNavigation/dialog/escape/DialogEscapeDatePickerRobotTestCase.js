@@ -18,9 +18,9 @@ var Aria = require('ariatemplates/Aria');
 
 
 module.exports = Aria.classDefinition({
-    $classpath : 'test.aria.templates.keyboardNavigation.dialog.escape.DialogEscapeDatePicker',
+    $classpath : 'test.aria.templates.keyboardNavigation.dialog.escape.DialogEscapeDatePickerRobotTestCase',
 
-    $extends : require('./Base'),
+    $extends : require('./RobotBase'),
 
     $statics : {
         idOfWidgetToTest: 'datePicker'

@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.utils.scriptloader.ScriptLoader",
+    $classpath : "test.aria.utils.scriptloader.ScriptLoaderTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.utils.ScriptLoader", "aria.core.DownloadMgr"],
     $prototype : {

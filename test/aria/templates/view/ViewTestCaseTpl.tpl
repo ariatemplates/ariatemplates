@@ -14,7 +14,7 @@
  */
 
 {Template {
-	$classpath : "test.aria.templates.view.ViewTestTpl"
+	$classpath : "test.aria.templates.view.ViewTestCaseTpl"
 }}
 
 	// the extra comma creates a 3rd null element in IE

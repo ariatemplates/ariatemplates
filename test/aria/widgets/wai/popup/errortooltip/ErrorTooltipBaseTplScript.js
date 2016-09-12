@@ -14,7 +14,7 @@
  */
 
 Aria.tplScriptDefinition({
-    $classpath : "test.aria.widgets.wai.popup.errortooltip.ErrorTooltipTestCaseTplScript",
+    $classpath : "test.aria.widgets.wai.popup.errortooltip.ErrorTooltipBaseTplScript",
     $dependencies : ["aria.utils.Data", "aria.utils.validators.Mandatory", "aria.resources.handlers.LCResourcesHandler"],
     $constructor : function () {
         this.fieldIds = ["tf","ta","nf","df","time","dp","ac","ms","sb","mac"];

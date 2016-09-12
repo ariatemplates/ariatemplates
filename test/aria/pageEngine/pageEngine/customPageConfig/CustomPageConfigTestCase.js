@@ -14,10 +14,10 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.pageEngine.pageEngine.customPageConfig.CustomPageConfigTest",
-    $extends : "test.aria.pageEngine.pageEngine.PageEngineBaseTestCase",
+    $classpath : "test.aria.pageEngine.pageEngine.customPageConfig.CustomPageConfigTestCase",
+    $extends : "test.aria.pageEngine.pageEngine.PageEngineBase",
     $constructor : function () {
-        this.$PageEngineBaseTestCase.constructor.call(this);
+        this.$PageEngineBase.constructor.call(this);
         this._dependencies.push("test.aria.pageEngine.pageEngine.site.PageProvider");
         this._dependencies.push("test.aria.pageEngine.pageEngine.customPageConfig.CustomPageEngine");
     },
@@ -56,7 +56,7 @@ Aria.classDefinition({
         end : function () {
             this.pageEngine.$dispose();
             this.pageProvider.$dispose();
-            this.$PageEngineBaseTestCase.end.call(this);
+            this.$PageEngineBase.end.call(this);
         }
     }
 });

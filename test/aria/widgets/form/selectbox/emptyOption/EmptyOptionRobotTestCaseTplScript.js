@@ -14,7 +14,7 @@
  */
 
 Aria.tplScriptDefinition({
-    $classpath : 'test.aria.widgets.form.selectbox.emptyOption.EmptyOptionTestCaseTplScript',
+    $classpath : 'test.aria.widgets.form.selectbox.emptyOption.EmptyOptionRobotTestCaseTplScript',
     $constructor : function () {
         this.onChangeCalled = 0;
     },

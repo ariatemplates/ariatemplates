@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.textinput.blurOnDestroy.ClickButtonAfterDestroyTest",
+    $classpath : "test.aria.widgets.form.textinput.blurOnDestroy.ClickButtonAfterDestroyRobotTestCase",
     $extends : "aria.jsunit.RobotTestCase",
     $dependencies : ["aria.utils.Json"],
     $constructor : function () {

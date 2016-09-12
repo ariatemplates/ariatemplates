@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : 'test.aria.widgets.errorTip.LinkErrorTipsTest',
+    $classpath : 'test.aria.widgets.errorTip.LinkErrorTipsTestCase',
     $extends : 'aria.jsunit.TemplateTestCase',
     $constructor : function () {
         this.$TemplateTestCase.constructor.call(this);

@@ -21,22 +21,22 @@ Aria.classDefinition({
     $extends : "aria.jsunit.TestSuite",
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
-        this.addTests("test.aria.pageEngine.pageEngine.PageEngineTestOne");
-        this.addTests("test.aria.pageEngine.pageEngine.PageEngineTestTwo");
-        this.addTests("test.aria.pageEngine.pageEngine.PageEngineTestThree");
-        this.addTests("test.aria.pageEngine.pageEngine.PageEngineTestFour");
-        this.addTests("test.aria.pageEngine.pageEngine.PageEngineTestFive");
-        this.addTests("test.aria.pageEngine.pageEngine.PageEngineTestSix");
-        this.addTests("test.aria.pageEngine.pageEngine.PageEngineTestSeven");
-        this.addTests("test.aria.pageEngine.pageEngine.PageDefinitionChangeTest");
-        this.addTests("test.aria.pageEngine.pageEngine.PageEngineTemplateDisposalTest");
-        this.addTests("test.aria.pageEngine.pageEngine.PageEngineTemplateDisposalTestWithAnimations");
-        this.addTests("test.aria.pageEngine.pageEngine.issue626.PageReadyEventTest");
-        this.addTests("test.aria.pageEngine.pageEngine.issue770.GetContentTest");
+        this.addTests("test.aria.pageEngine.pageEngine.PageEngineOneTestCase");
+        this.addTests("test.aria.pageEngine.pageEngine.PageEngineTwoTestCase");
+        this.addTests("test.aria.pageEngine.pageEngine.PageEngineThreeTestCase");
+        this.addTests("test.aria.pageEngine.pageEngine.PageEngineFourBase");
+        this.addTests("test.aria.pageEngine.pageEngine.PageEngineFiveBase");
+        this.addTests("test.aria.pageEngine.pageEngine.PageEngineSixTestCase");
+        this.addTests("test.aria.pageEngine.pageEngine.PageEngineSevenTestCase");
+        this.addTests("test.aria.pageEngine.pageEngine.PageDefinitionChangeTestCase");
+        this.addTests("test.aria.pageEngine.pageEngine.PageEngineTemplateDisposalBase");
+        this.addTests("test.aria.pageEngine.pageEngine.PageEngineTemplateDisposalWithAnimationsTestCase");
+        this.addTests("test.aria.pageEngine.pageEngine.issue626.PageReadyEventTestCase");
+        this.addTests("test.aria.pageEngine.pageEngine.issue770.GetContentTestCase");
         this.addTests("test.aria.pageEngine.pageEngine.customRootModule.CustomRootModuleTestSuite");
-        this.addTests("test.aria.pageEngine.pageEngine.externalHashNavigation.ExternalHashNavigationTest");
-        this.addTests("test.aria.pageEngine.pageEngine.pageEngineDisposal.DisposalTest");
-        this.addTests("test.aria.pageEngine.pageEngine.customPageConfig.CustomPageConfigTest");
+        this.addTests("test.aria.pageEngine.pageEngine.externalHashNavigation.ExternalHashNavigationTestCase");
+        this.addTests("test.aria.pageEngine.pageEngine.pageEngineDisposal.DisposalTestCase");
+        this.addTests("test.aria.pageEngine.pageEngine.customPageConfig.CustomPageConfigTestCase");
         this.addTests("test.aria.pageEngine.pageEngine.placeholderTemplateData.PlaceholderTemplateDataTestCase");
     }
 });

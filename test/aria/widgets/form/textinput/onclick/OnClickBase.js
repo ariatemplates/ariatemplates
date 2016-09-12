@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.textinput.onclick.OnClickTest",
+    $classpath : "test.aria.widgets.form.textinput.onclick.OnClickBase",
     $extends : "aria.jsunit.TemplateTestCase",
     $constructor : function () {
         this.$TemplateTestCase.constructor.call(this);

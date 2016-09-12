@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 {Template {
-    $classpath:"test.aria.widgets.calendar.rangeCalendar.RangeCalendar2Tpl",
+    $classpath:"test.aria.widgets.calendar.rangeCalendar.RangeCalendar2RobotTestCaseTpl",
     $css: ["test.aria.widgets.calendar.rangeCalendar.RangeDatePickerStyle"],
     $hasScript: true
 }}

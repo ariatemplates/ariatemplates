@@ -14,10 +14,10 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.pageEngine.utils.HashManagerTest",
-    $extends : "test.aria.pageEngine.utils.BaseNavigationManagerTest",
+    $classpath : "test.aria.pageEngine.utils.HashManagerTestCase",
+    $extends : "test.aria.pageEngine.utils.NavigationManagerBase",
     $constructor : function () {
-        this.$BaseNavigationManagerTest.constructor.call(this);
+        this.$NavigationManagerBase.constructor.call(this);
         this._dependencies = ["aria.pageEngine.utils.HashManager"];
     },
     $prototype : {

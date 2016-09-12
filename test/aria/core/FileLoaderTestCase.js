@@ -17,7 +17,7 @@
  * Test for the FileLoader class
  */
 Aria.classDefinition({
-    $classpath : "test.aria.core.FileLoaderTest",
+    $classpath : "test.aria.core.FileLoaderTestCase",
     $dependencies : ["test.aria.core.DownloadMgrMock"],
     $extends : "aria.jsunit.TestCase",
     $constructor : function () {

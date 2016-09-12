@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.utils.DomScrollIntoView",
+    $classpath : "test.aria.utils.DomScrollIntoViewTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.utils.Dom"],
     $prototype: {

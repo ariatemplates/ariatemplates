@@ -17,7 +17,7 @@
  * Test case for the fieldset.
  */
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.container.FieldsetTest",
+    $classpath : "test.aria.widgets.container.FieldsetTestCase",
     $extends : "aria.jsunit.WidgetTestCase",
     $dependencies : ["aria.utils.FireDomEvent", "aria.utils.Dom", "aria.widgets.container.Fieldset"],
     $prototype : {

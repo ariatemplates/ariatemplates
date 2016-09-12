@@ -17,7 +17,7 @@
  * Test for the RequestHandler Request Headers
  */
 Aria.classDefinition({
-    $classpath : "test.aria.modules.requestHandler.issue459.RequestHandlerHeadersTest",
+    $classpath : "test.aria.modules.requestHandler.issue459.RequestHandlerHeadersTestCase",
     $extends : "aria.jsunit.TestCase",
     $constructor : function () {
         this.$TestCase.constructor.call(this);

@@ -14,8 +14,8 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.html.select.SelectTest",
-    $extends : "test.aria.html.inputElement.InputElementBaseTest",
+    $classpath : "test.aria.html.select.SelectTestCase",
+    $extends : "test.aria.html.inputElement.InputElementBase",
     $dependencies : ["aria.html.Select", "aria.utils.Json", "aria.utils.FireDomEvent", "aria.utils.SynEvents"],
     $prototype : {
 

@@ -17,7 +17,7 @@ var Aria = require("ariatemplates/Aria");
 var AppEnvironment = require("ariatemplates/core/AppEnvironment");
 
 module.exports = Aria.classDefinition({
-    $classpath : "test.aria.widgets.defaults.CheckDefaultsTest",
+    $classpath : "test.aria.widgets.defaults.CheckDefaultsTestCase",
     $extends : require("ariatemplates/jsunit/TemplateTestCase"),
     $prototype : {
         run : function () {

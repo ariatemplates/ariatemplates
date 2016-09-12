@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.templates.section.sectionWithoutMacro.SectionWithoutMacro",
+    $classpath : "test.aria.templates.section.sectionWithoutMacro.SectionWithoutMacroTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $prototype : {
 

@@ -16,7 +16,7 @@
 /**
  * <pre>
  * This is a base class to extend for all tests dealing with preselect and autofill options in the MultiAutoComplete. It extends from
- * 'test.aria.widgets.form.autocomplete.preselectAutofill.PreselectAutofillBaseTest', thus performing the same scenario, but it also adds the following two steps
+ * 'test.aria.widgets.form.autocomplete.preselectAutofill.PreselectAutofillRobotBase', thus performing the same scenario, but it also adds the following two steps
  *
  * 9 - type 'p1-4'  in the field. No matter what the preselect, autoFill, or freeText options are, 4 items have to be highlighted in the dropdown.
  * 10 - type the selection key. No matter what the preselect, autoFill, or freeText options are, 4 suggestions have to be selected.
@@ -25,8 +25,8 @@
  * </pre>
  */
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.multiautocomplete.preselectAutofill.MACPreselectAutofillBaseTest",
-    $extends : "test.aria.widgets.form.autocomplete.preselectAutofill.PreselectAutofillBaseTest",
+    $classpath : "test.aria.widgets.form.multiautocomplete.preselectAutofill.MACPreselectAutofillRobotBase",
+    $extends : "test.aria.widgets.form.autocomplete.preselectAutofill.PreselectAutofillRobotBase",
     $dependencies : ["aria.resources.handlers.LCRangeResourceHandler"],
     $constructor : function () {
         this.testTemplate = "test.aria.widgets.form.multiautocomplete.preselectAutofill.PreselectAutofillCommonTemplate";
@@ -60,7 +60,7 @@ Aria.classDefinition({
             };
         }
 
-        this.$PreselectAutofillBaseTest.constructor.call(this);
+        this.$PreselectAutofillRobotBase.constructor.call(this);
         this.data.value = [];
     },
     $prototype : {
@@ -99,7 +99,7 @@ Aria.classDefinition({
 
         _testAll : function (index) {
             this.field = this.getInputField("ac");
-            this.$PreselectAutofillBaseTest._testAll.call(this, index);
+            this.$PreselectAutofillRobotBase._testAll.call(this, index);
             this._testSelectedItems(this.testValues.dataModel[index]);
         },
 

@@ -2,12 +2,12 @@
  * UI template test for Github Issue 440
  */
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.autocomplete.selectionKey.AutoComplete",
+    $classpath : "test.aria.widgets.form.autocomplete.selectionKey.AutoCompleteRobotTestCase",
     $extends : "aria.jsunit.RobotTestCase",
     $constructor : function () {
         this.$RobotTestCase.constructor.call(this);
         this.setTestEnv({
-            template : "test.aria.widgets.form.autocomplete.selectionKey.AutoCompleteTpl",
+            template : "test.aria.widgets.form.autocomplete.selectionKey.AutoCompleteRobotTestCaseTpl",
             data : {
                 ac_air_value : null
             }

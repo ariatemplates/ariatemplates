@@ -17,7 +17,7 @@
  * Test case for aria.utils.dragdrop.Drag
  */
 Aria.classDefinition({
-    $classpath : "test.aria.utils.mouse.MouseDragKo",
+    $classpath : "test.aria.utils.mouse.MouseDragKoRobotTestCase",
     $extends : "aria.jsunit.RobotTestCase",
     $dependencies : ["aria.utils.dragdrop.Drag", "aria.utils.Dom", "aria.utils.overlay.Overlay"],
     $constructor : function () {

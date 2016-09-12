@@ -21,6 +21,6 @@ Aria.classDefinition({
 
         this.addTests("test.aria.widgets.skin.dialogTitleBar.DialogTitleBarTestCase");
         this.addTests("test.aria.widgets.skin.AllSkinTestSuite");
-        this.addTests("test.aria.widgets.form.autocomplete.popupWidth.AdaptToContentWidthTest");
+        this.addTests("test.aria.widgets.form.autocomplete.popupWidth.AdaptToContentWidthRobotTestCase");
     }
 });

@@ -14,7 +14,7 @@
  */
 
 {Template {
-	$classpath:"test.aria.widgets.form.autocomplete.samevalue.AutoCompleteTpl",
+	$classpath:"test.aria.widgets.form.autocomplete.samevalue.AutoCompleteRobotTestCaseTpl",
 	$hasScript:true,
 	$width: {min: 500}
 }}

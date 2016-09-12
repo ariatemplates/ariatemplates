@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath: "test.aria.widgets.form.issue1569.FocusableSpanIssueTpl"
+    $classpath: "test.aria.widgets.form.issue1569.FocusableSpanIssueRobotTestCaseTpl"
 }}
 
     {macro main()}

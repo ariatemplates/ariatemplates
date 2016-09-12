@@ -20,13 +20,13 @@ Aria.classDefinition({
         this.$TestSuite.constructor.call(this);
 
         this.addTests("test.aria.templates.section.SectionTestCase");
-        this.addTests("test.aria.templates.section.sectionAttributes.SectionAttributes");
+        this.addTests("test.aria.templates.section.sectionAttributes.SectionAttributesTestCase");
         this.addTests("test.aria.templates.section.autorefresh.SectionAutorefreshTestCase");
-        this.addTests("test.aria.templates.section.processingIndicator.ProcessingIndicatorOnSection");
-        this.addTests("test.aria.templates.section.sectionWithoutMacro.SectionWithoutMacro");
-        this.addTests("test.aria.templates.section.sectionAttributes.binding.SectionAttributesBinding");
-        this.addTests("test.aria.templates.section.sectionAttributes.binding.SectionAttributesBindingNonRecursive");
-        this.addTests("test.aria.templates.section.animations.SectionAnimations");
-        this.addTests("test.aria.templates.section.asContainer.SectionAsContainerTest");
+        this.addTests("test.aria.templates.section.processingIndicator.ProcessingIndicatorOnSectionTestCase");
+        this.addTests("test.aria.templates.section.sectionWithoutMacro.SectionWithoutMacroTestCase");
+        this.addTests("test.aria.templates.section.sectionAttributes.binding.SectionAttributesBindingBase");
+        this.addTests("test.aria.templates.section.sectionAttributes.binding.SectionAttributesBindingNonRecursiveTestCase");
+        this.addTests("test.aria.templates.section.animations.SectionAnimationsTestCase");
+        this.addTests("test.aria.templates.section.asContainer.SectionAsContainerRobotTestCase");
     }
 });

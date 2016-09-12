@@ -17,7 +17,7 @@
  * Test case for the sequencer
  */
 Aria.classDefinition({
-    $classpath : "test.aria.core.SequencerTest",
+    $classpath : "test.aria.core.SequencerTestCase",
     $extends : "aria.jsunit.TestCase",
     $destructor : function () {
         if (this.seq != null) {

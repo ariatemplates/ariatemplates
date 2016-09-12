@@ -17,7 +17,7 @@
  * Test case for aria.utils.HashManager
  */
 Aria.classDefinition({
-    $classpath : "test.aria.utils.hashManager.HashManagerTestOne",
+    $classpath : "test.aria.utils.hashManager.HashManagerOneTestCase",
     $extends : "aria.jsunit.TestCase",
     $constructor : function () {
         this.$TestCase.constructor.call(this);

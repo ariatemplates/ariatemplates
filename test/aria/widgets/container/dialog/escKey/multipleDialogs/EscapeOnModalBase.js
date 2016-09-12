@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.container.dialog.escKey.multipleDialogs.EscapeOnModalTest",
+    $classpath : "test.aria.widgets.container.dialog.escKey.multipleDialogs.EscapeOnModalBase",
     $extends : "aria.jsunit.TemplateTestCase",
     $dependencies : ["aria.utils.FireDomEvent", "aria.utils.Dom"],
     $constructor : function () {

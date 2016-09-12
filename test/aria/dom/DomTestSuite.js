@@ -23,12 +23,12 @@ Aria.classDefinition({
         this.$TestSuite.constructor.call(this);
 
         this.addTests("test.aria.dom.basic.DomTestCase");
-        this.addTests("test.aria.dom.DomReadyTest");
+        this.addTests("test.aria.dom.DomReadyTestCase");
         this.addTests("test.aria.dom.domcheck.PTRTemplateTestCase");
         this.addTests("test.aria.dom.logscheck.LogsCheckTestCase");
         this.addTests("test.aria.dom.getid.GetIdTestCase");
-        this.addTests("test.aria.dom.getGeometry.PartiallyOverflowingFromParentTest");
-        this.addTests("test.aria.dom.getGeometry.AbsoluteParentGeometryTest");
+        this.addTests("test.aria.dom.getGeometry.PartiallyOverflowingFromParentTestCase");
+        this.addTests("test.aria.dom.getGeometry.AbsoluteParentGeometryTestCase");
 
     }
 });

@@ -22,14 +22,14 @@
  * This test verifies that the keydown event is correctly handled by the Select widget
  */
 Aria.classDefinition({
-    $classpath : "test.aria.templates.keyboardNavigation.bingCompatibility.KeyMapBingCompatibility",
+    $classpath : "test.aria.templates.keyboardNavigation.bingCompatibility.KeyMapBingCompatibilityTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $dependencies : ["aria.map.MapManager", "aria.utils.FireDomEvent", "aria.core.Browser"],
     $constructor : function () {
         this.$TemplateTestCase.constructor.call(this);
         this.mapMgr = aria.map.MapManager;
         this.setTestEnv({
-            template : "test.aria.templates.keyboardNavigation.bingCompatibility.KeyMapBingCompatibilityTpl",
+            template : "test.aria.templates.keyboardNavigation.bingCompatibility.KeyMapBingCompatibilityTestCaseTpl",
             data : {
                 countries : [
                     {

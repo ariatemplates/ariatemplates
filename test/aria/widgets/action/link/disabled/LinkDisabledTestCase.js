@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.action.link.disabled.LinkDisabled",
+    $classpath : "test.aria.widgets.action.link.disabled.LinkDisabledTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $dependencies : ["aria.utils.Dom", "aria.widgets.AriaSkinNormalization"],
     $constructor : function () {

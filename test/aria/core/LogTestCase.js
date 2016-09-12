@@ -17,7 +17,7 @@
  * Test case for the logger
  */
 Aria.classDefinition({
-    $classpath : "test.aria.core.LogTest",
+    $classpath : "test.aria.core.LogTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.core.Log"],
     $prototype : {

@@ -23,6 +23,6 @@ Aria.classDefinition({
         this.$TestSuite.constructor.call(this);
         this.addTests("test.aria.touch.gestures.GesturesTestSuite");
         this.addTests("test.aria.touch.widgets.WidgetsTestSuite");
-        this.addTests("test.aria.touch.EventTest");
+        this.addTests("test.aria.touch.EventTestCase");
     }
 });

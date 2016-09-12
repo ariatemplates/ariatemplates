@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.pageEngine.pageProviders.BaseProviderSiteTest",
+    $classpath : "test.aria.pageEngine.pageProviders.ProviderSiteTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.pageEngine.pageProviders.BasePageProvider",
             "aria.pageEngine.pageProviders.BasePageProviderBeans"],

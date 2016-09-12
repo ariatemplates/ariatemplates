@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath:"test.aria.widgets.form.multiselect.downArrowKeyPreventDef.MSDownArrowKeyTpl",
+    $classpath:"test.aria.widgets.form.multiselect.downArrowKeyPreventDef.MSDownArrowKeyRobotTestCaseTpl",
     $hasScript:false
 }}
 

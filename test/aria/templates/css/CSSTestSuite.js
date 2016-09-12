@@ -22,23 +22,23 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
-        this.addTests("test.aria.templates.css.CSSCtxtManagerTest");
-        this.addTests("test.aria.templates.css.CSSCtxtTest");
-        this.addTests("test.aria.templates.css.CSSMgrTest");
-        this.addTests("test.aria.templates.css.CSSParserTest");
+        this.addTests("test.aria.templates.css.CSSCtxtManagerTestCase");
+        this.addTests("test.aria.templates.css.CSSCtxtTestCase");
+        this.addTests("test.aria.templates.css.CSSMgrTestCase");
+        this.addTests("test.aria.templates.css.CSSParserTestCase");
         this.addTests("test.aria.templates.css.cssFolderPath.CSSFolderPathTestCase");
         this.addTests("test.aria.templates.css.cssMgr.CSSMgrTestCase");
         this.addTests("test.aria.templates.css.cssMgr.issue722.CSSMgrIssue722TestCase");
         this.addTests("test.aria.templates.css.cssMgr.tagReuse.TagReuseTestCase");
         this.addTests("test.aria.templates.css.ctxtMgr.CtxtMgrTestCase");
         this.addTests("test.aria.templates.css.cssScripts.CSSScriptTestCase");
-        this.addTests("test.aria.templates.css.dataReadyRefresh.RefreshTest");
-        this.addTests("test.aria.templates.css.widget.DependencyTest");
-        this.addTests("test.aria.templates.css.widgetContext.ContextTest");
+        this.addTests("test.aria.templates.css.dataReadyRefresh.RefreshTestCase");
+        this.addTests("test.aria.templates.css.widget.DependencyTestCase");
+        this.addTests("test.aria.templates.css.widgetContext.ContextTestCase");
         this.addTests("test.aria.templates.css.events.EventsTestCase");
         this.addTests("test.aria.templates.css.global.GlobalCssTemplateTestCase");
         this.addTests("test.aria.templates.css.imgprefix.ImgPrefixTemplateTestCase");
         this.addTests("test.aria.templates.css.inheritance.InheritTestCase");
-        this.addTests("test.aria.templates.css.numberReload.OneLevelTemplate");
+        this.addTests("test.aria.templates.css.numberReload.OneLevelTemplateTestCase");
     }
 });

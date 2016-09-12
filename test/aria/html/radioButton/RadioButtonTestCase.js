@@ -14,8 +14,8 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.html.radioButton.RadioButtonTest",
-    $extends : "test.aria.html.inputElement.InputElementBaseTest",
+    $classpath : "test.aria.html.radioButton.RadioButtonTestCase",
+    $extends : "test.aria.html.inputElement.InputElementBase",
     $dependencies : ["aria.html.RadioButton", "aria.utils.Json", "aria.utils.FireDomEvent"],
     $prototype : {
 

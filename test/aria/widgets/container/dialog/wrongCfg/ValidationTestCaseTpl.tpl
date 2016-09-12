@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath : "test.aria.widgets.container.dialog.wrongCfg.ValidationTestTpl"
+    $classpath : "test.aria.widgets.container.dialog.wrongCfg.ValidationTestCaseTpl"
 }}
 {macro main()}
 

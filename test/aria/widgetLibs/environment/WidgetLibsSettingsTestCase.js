@@ -17,7 +17,7 @@
  * Test the environment settings related to widget libraries.
  */
 Aria.classDefinition({
-    $classpath : 'test.aria.widgetLibs.environment.WidgetLibsSettingsTest',
+    $classpath : 'test.aria.widgetLibs.environment.WidgetLibsSettingsTestCase',
     $dependencies : ['aria.widgetLibs.environment.WidgetLibsSettings'],
     $extends : 'aria.jsunit.TestCase',
     $prototype : {

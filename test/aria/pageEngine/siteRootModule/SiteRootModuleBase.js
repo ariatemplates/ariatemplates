@@ -17,7 +17,7 @@
  * aria.pageEngine.SiteRootModule base test case
  */
 Aria.classDefinition({
-    $classpath : "test.aria.pageEngine.siteRootModule.SiteRootModuleBaseTestCase",
+    $classpath : "test.aria.pageEngine.siteRootModule.SiteRootModuleBase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.pageEngine.SiteRootModule", "aria.templates.ModuleCtrlFactory", "aria.utils.Json",
             "test.aria.pageEngine.testContents.modules.BoundModule1",

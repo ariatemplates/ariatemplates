@@ -1,5 +1,5 @@
 {Template {
-  $classpath : "test.aria.templates.keyboardNavigation.bingCompatibility.KeyMapBingCompatibilityTpl",
+  $classpath : "test.aria.templates.keyboardNavigation.bingCompatibility.KeyMapBingCompatibilityTestCaseTpl",
   $wlibs: {
           "embed": "aria.embed.EmbedLib"
   }

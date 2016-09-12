@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.templates.section.sectionAttributes.binding.SectionAttributesBinding",
+    $classpath : "test.aria.templates.section.sectionAttributes.binding.SectionAttributesBindingBase",
     $extends : "aria.jsunit.TemplateTestCase",
     $dependencies : ["aria.utils.Json"],
     $constructor : function () {
@@ -36,7 +36,7 @@ Aria.classDefinition({
         };
 
         this.setTestEnv({
-            template : "test.aria.templates.section.sectionAttributes.binding.SectionAttributesBindingTpl",
+            template : "test.aria.templates.section.sectionAttributes.binding.SectionAttributesBindingBaseTpl",
             data : this.testData
         });
 

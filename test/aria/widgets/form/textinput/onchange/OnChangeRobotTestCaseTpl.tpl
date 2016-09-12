@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath: "test.aria.widgets.form.textinput.onchange.OnChangeTestCaseTpl"
+    $classpath: "test.aria.widgets.form.textinput.onchange.OnChangeRobotTestCaseTpl"
 }}
     {macro main()}
         {@aria:TextField {

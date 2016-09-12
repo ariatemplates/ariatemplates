@@ -17,7 +17,7 @@ var Aria = require("ariatemplates/Aria");
 
 module.exports = Aria.classDefinition({
     $classpath : "test.aria.widgets.wai.popup.errortooltip.WaiErrorTooltipTestCase",
-    $extends : require("./ErrorTooltipTestCase"),
+    $extends : require("./ErrorTooltipBase"),
     $prototype : {
         runTemplateTest : function () {
             this.checkAttributes(true);

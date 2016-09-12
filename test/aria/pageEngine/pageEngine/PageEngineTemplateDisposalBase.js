@@ -17,10 +17,10 @@
  * Test for the disposal of templates after navigation
  */
 Aria.classDefinition({
-    $classpath : "test.aria.pageEngine.pageEngine.PageEngineTemplateDisposalTest",
-    $extends : "test.aria.pageEngine.pageEngine.PageEngineBaseTestCase",
+    $classpath : "test.aria.pageEngine.pageEngine.PageEngineTemplateDisposalBase",
+    $extends : "test.aria.pageEngine.pageEngine.PageEngineBase",
     $constructor : function () {
-        this.$PageEngineBaseTestCase.constructor.call(this);
+        this.$PageEngineBase.constructor.call(this);
         this._dependencies.push("test.aria.pageEngine.pageEngine.site.PageProviderFour");
         this._headChildCount = -1;
     },
@@ -160,7 +160,7 @@ Aria.classDefinition({
             this._testInstanceCount("Template5", 2, 2);
             this._testInstanceCount("Template6", 2, 2);
 
-            this.$PageEngineBaseTestCase.end.call(this);
+            this.$PageEngineBase.end.call(this);
         },
 
         _disposePageEngine : function () {

@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.action.sortindicator.fixSortKeyGetter.SortIndicatorSortKeyGetterTest",
+    $classpath : "test.aria.widgets.action.sortindicator.fixSortKeyGetter.SortIndicatorSortKeyGetterRobotTestCase",
     $extends : "aria.jsunit.RobotTestCase",
     $prototype : {
         getCurrentOrder : function() {

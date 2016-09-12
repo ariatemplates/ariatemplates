@@ -15,7 +15,7 @@
 
 
 {Template {
-    $classpath:"test.aria.widgets.form.datefield.checkDate.DateFieldTpl",
+    $classpath:"test.aria.widgets.form.datefield.checkDate.DateFieldTestCaseTpl",
     $dependencies:["aria.utils.environment.Date"]
 }}
 

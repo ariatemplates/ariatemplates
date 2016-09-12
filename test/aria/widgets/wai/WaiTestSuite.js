@@ -21,12 +21,12 @@ Aria.classDefinition({
 
         this.addTests("test.aria.widgets.wai.dropdown.DropdownTestSuite");
         this.addTests("test.aria.widgets.wai.autoComplete.WaiAutoCompleteTestSuite");
-        this.addTests("test.aria.widgets.wai.datePicker.DatePickerTest");
+        this.addTests("test.aria.widgets.wai.datePicker.DatePickerRobotTestCase");
         this.addTests("test.aria.widgets.wai.textInputBased.WaiTextInputBasedTestSuite");
         this.addTests("test.aria.widgets.wai.input.WaiInputTestSuite");
         this.addTests("test.aria.widgets.wai.popup.WaiPopupTestSuite");
         this.addTests("test.aria.widgets.wai.errorlist.ListErrorTestCase");
-        this.addTests("test.aria.widgets.wai.icon.IconTest");
+        this.addTests("test.aria.widgets.wai.icon.IconRobotTestCase");
         this.addTests("test.aria.widgets.wai.tabs.Suite");
     }
 });

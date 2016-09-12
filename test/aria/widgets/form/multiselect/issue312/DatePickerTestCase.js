@@ -14,8 +14,8 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.multiselect.issue312.DatePicker",
-    $extends : "test.aria.widgets.form.multiselect.issue312.Common",
+    $classpath : "test.aria.widgets.form.multiselect.issue312.DatePickerTestCase",
+    $extends : "test.aria.widgets.form.multiselect.issue312.CommonBase",
     $dependencies : ["aria.widgets.calendar.Calendar", "aria.utils.Json"],
     $prototype : {
         innerWidgetClasspath : "aria.widgets.calendar.Calendar",

@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.html.textinput.autoselect.AutoselectTestCase",
+    $classpath : "test.aria.html.textinput.autoselect.AutoselectRobotTestCase",
     $extends : "aria.jsunit.RobotTestCase",
     $dependencies : ["aria.html.TextInput", "aria.utils.Dom"],
     $destructor : function () {

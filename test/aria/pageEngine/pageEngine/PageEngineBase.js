@@ -14,11 +14,11 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.pageEngine.pageEngine.PageEngineBaseTestCase",
-    $extends : "test.aria.pageEngine.IframeTestCase",
+    $classpath : "test.aria.pageEngine.pageEngine.PageEngineBase",
+    $extends : "test.aria.pageEngine.IframeBase",
     $dependencies : ["aria.utils.CSSLoader", "aria.utils.String", "aria.storage.LocalStorage"],
     $constructor : function () {
-        this.$IframeTestCase.constructor.call(this);
+        this.$IframeBase.constructor.call(this);
         this._dependencies = ["aria.pageEngine.PageEngine"];
     },
     $prototype : {
@@ -46,7 +46,7 @@ Aria.classDefinition({
             var storage = new aria.storage.LocalStorage();
             storage.clear();
             storage.$dispose();
-            this.$IframeTestCase.end.call(this);
+            this.$IframeBase.end.call(this);
         }
 
     }

@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath : "test.aria.utils.overlay.loadingIndicator.ieScrollIssue2.IEScrollIssue2SectionTestTpl"
+    $classpath : "test.aria.utils.overlay.loadingIndicator.ieScrollIssue2.IEScrollIssue2SectionTestCaseTpl"
 }}
 
     {macro main()}

@@ -14,7 +14,7 @@
  */
 
 Aria.tplScriptDefinition({
-    $classpath : "test.aria.widgets.form.datepicker.checkBind.DatePickerTplScript",
+    $classpath : "test.aria.widgets.form.datepicker.checkBind.DatePickerTestCaseTplScript",
     $prototype : {
         domKeyDown : function (evt) {
             if (evt.keyCode == evt.KC_ENTER) {

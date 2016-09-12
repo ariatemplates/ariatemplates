@@ -17,7 +17,7 @@
  * Test case for aria.utils.Dom
  */
 Aria.classDefinition({
-    $classpath : "test.aria.utils.Dom",
+    $classpath : "test.aria.utils.DomTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.utils.Dom", "aria.utils.Type", "aria.utils.DomBeans", "aria.popups.Beans",
             "aria.utils.Math", "aria.core.JsonValidator", "aria.templates.Layout"],

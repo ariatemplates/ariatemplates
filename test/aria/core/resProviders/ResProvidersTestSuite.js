@@ -19,7 +19,7 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
-        this.addTests("test.aria.core.resProviders.ResProvidersOldSyntaxTest");
-        this.addTests("test.aria.core.resProviders.ResProvidersConvertedClassTest");
+        this.addTests("test.aria.core.resProviders.ResProvidersOldSyntaxBase");
+        this.addTests("test.aria.core.resProviders.ResProvidersConvertedClassTestCase");
     }
 });

@@ -14,7 +14,7 @@
  */
 
 Aria.tplScriptDefinition({
-    $classpath : 'test.aria.widgets.form.autocomplete.handler.test1.LCHandlerTestCaseTplScript',
+    $classpath : 'test.aria.widgets.form.autocomplete.handler.test1.LCHandlerRobotTestCaseTplScript',
     $dependencies : ['aria.resources.handlers.LCResourcesHandler'],
     $constructor : function () {
         this.iatacityHandler = new aria.resources.handlers.LCResourcesHandler({

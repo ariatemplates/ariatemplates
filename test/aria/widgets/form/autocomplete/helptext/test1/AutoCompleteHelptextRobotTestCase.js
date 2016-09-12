@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.autocomplete.helptext.test1.AutoCompleteHelptextTestCase",
+    $classpath : "test.aria.widgets.form.autocomplete.helptext.test1.AutoCompleteHelptextRobotTestCase",
     $extends : "aria.jsunit.RobotTestCase",
     $constructor : function () {
         this.$RobotTestCase.constructor.call(this);

@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.selectbox.checkValue.MainTemplateTestCase",
+    $classpath : "test.aria.widgets.form.selectbox.checkValue.MainTemplateRobotTestCase",
     $extends : "aria.jsunit.RobotTestCase",
     $dependencies : ["aria.utils.Json"],
     $constructor : function () {

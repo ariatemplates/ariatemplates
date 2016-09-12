@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath:"test.aria.widgets.form.autocomplete.autoedit.AutoEditInputTpl",
+    $classpath:"test.aria.widgets.form.autocomplete.autoedit.AutoEditInputTestCaseTpl",
     $hasScript:true
 }}
 

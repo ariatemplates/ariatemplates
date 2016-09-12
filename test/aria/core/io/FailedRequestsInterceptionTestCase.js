@@ -18,7 +18,7 @@
  * error code) or timed out.
  */
 Aria.classDefinition({
-    $classpath : "test.aria.core.io.FailedRequestsInterceptionTest",
+    $classpath : "test.aria.core.io.FailedRequestsInterceptionTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.core.IO"],
     $prototype : {

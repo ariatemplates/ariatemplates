@@ -20,27 +20,27 @@ Aria.classDefinition({
         this.$TestSuite.constructor.call(this);
 
         this._tests = [
-            "test.aria.widgets.form.multiselect.checkFeatures.MultiSelect",
-            "test.aria.widgets.form.multiselect.emptyMultiSelect.MultiSelect",
-            "test.aria.widgets.form.multiselect.deleteFieldValue.test1.MultiSelect",
-            "test.aria.widgets.form.multiselect.deleteFieldValue.test2.MultiSelect",
-            "test.aria.widgets.form.multiselect.downArrowKey.MultiSelect",
-            "test.aria.widgets.form.multiselect.downArrowKeyPreventDef.MSDownArrowKey",
+            "test.aria.widgets.form.multiselect.checkFeatures.MultiSelectTestCase",
+            "test.aria.widgets.form.multiselect.emptyMultiSelect.MultiSelectRobotTestCase",
+            "test.aria.widgets.form.multiselect.deleteFieldValue.test1.MultiSelectTestCase",
+            "test.aria.widgets.form.multiselect.deleteFieldValue.test2.MultiSelectTestCase",
+            "test.aria.widgets.form.multiselect.downArrowKey.MultiSelectARobotTestCase",
+            "test.aria.widgets.form.multiselect.downArrowKeyPreventDef.MSDownArrowKeyRobotTestCase",
             "test.aria.widgets.form.multiselect.instantbind.InstantBindTestCase",
-            "test.aria.widgets.form.multiselect.invalidcontent.MultiSelect",
-            "test.aria.widgets.form.multiselect.issue223.MultiSelect",
+            "test.aria.widgets.form.multiselect.invalidcontent.MultiSelectTestCase",
+            "test.aria.widgets.form.multiselect.issue223.MultiSelectTestCase",
             "test.aria.widgets.form.multiselect.issue312.Issue312TestSuite",
-            "test.aria.widgets.form.multiselect.issue470.MultiSelect",
-            "test.aria.widgets.form.multiselect.longlist.test1.MsLongList",
-            "test.aria.widgets.form.multiselect.longlist.test2.MsLongList",
-            "test.aria.widgets.form.multiselect.onblur.MultiSelect",
-            "test.aria.widgets.form.multiselect.toggleMultiSelect.MultiSelect",
-            "test.aria.widgets.form.multiselect.upArrowKey.test1.MultiSelect",
-            "test.aria.widgets.form.multiselect.upArrowKey.test2.MultiSelect",
-            "test.aria.widgets.form.multiselect.labelsToTrim.LabelsToTrim",
-            "test.aria.widgets.form.multiselect.focusMove.Issue968TestCase",
-            "test.aria.widgets.form.multiselect.popupReposition.MultiSelect",
-            "test.aria.widgets.form.multiselect.escapeKey.MultiSelect"
+            "test.aria.widgets.form.multiselect.issue470.MultiSelectTestCase",
+            "test.aria.widgets.form.multiselect.longlist.test1.MsLongListRobotTestCase",
+            "test.aria.widgets.form.multiselect.longlist.test2.MsLongListRobotTestCase",
+            "test.aria.widgets.form.multiselect.onblur.MultiSelectTestCase",
+            "test.aria.widgets.form.multiselect.toggleMultiSelect.MultiSelectTestCase",
+            "test.aria.widgets.form.multiselect.upArrowKey.test1.MultiSelectTestCase",
+            "test.aria.widgets.form.multiselect.upArrowKey.test2.MultiSelectTestCase",
+            "test.aria.widgets.form.multiselect.labelsToTrim.LabelsToTrimTestCase",
+            "test.aria.widgets.form.multiselect.focusMove.Issue968RobotTestCase",
+            "test.aria.widgets.form.multiselect.popupReposition.MultiSelectTestCase",
+            "test.aria.widgets.form.multiselect.escapeKey.MultiSelectRobotTestCase"
         ];
     }
 });

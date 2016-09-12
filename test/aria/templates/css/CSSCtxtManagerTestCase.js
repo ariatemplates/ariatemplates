@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.templates.css.CSSCtxtManagerTest",
+    $classpath : "test.aria.templates.css.CSSCtxtManagerTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["aria.templates.CSSCtxtManager"],
     $prototype : {

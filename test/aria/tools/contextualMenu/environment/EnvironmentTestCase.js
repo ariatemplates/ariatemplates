@@ -17,7 +17,7 @@
  * Check that setting the environment correctly enables or disables the contextual menu.
  */
 Aria.classDefinition({
-    $classpath : "test.aria.tools.contextualMenu.environment.EnvironmentTest",
+    $classpath : "test.aria.tools.contextualMenu.environment.EnvironmentTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $dependencies : ["aria.tools.contextual.ContextualMenu",
             "test.aria.tools.contextualMenu.ContextualMenuHelper"],

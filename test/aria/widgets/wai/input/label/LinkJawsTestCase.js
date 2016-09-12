@@ -17,7 +17,7 @@ var Aria = require("ariatemplates/Aria");
 
 module.exports = Aria.classDefinition({
     $classpath : "test.aria.widgets.wai.input.label.LinkJawsTestCase",
-    $extends : require("./LabelJawsTestCase"),
+    $extends : require("./LabelJawsBase"),
     $prototype : {
         elementsToTest : "lWaiEnabledStart"
     }

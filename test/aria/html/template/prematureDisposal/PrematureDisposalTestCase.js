@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.html.template.prematureDisposal.PrematureDisposalTest",
+    $classpath : "test.aria.html.template.prematureDisposal.PrematureDisposalTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
 
     $constructor : function () {

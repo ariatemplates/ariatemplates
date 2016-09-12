@@ -19,13 +19,13 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
-        this.addTests("test.aria.widgets.form.datepicker.errorstate.DatePicker");
-        this.addTests("test.aria.widgets.form.datepicker.issue303.InfiniteLoop");
+        this.addTests("test.aria.widgets.form.datepicker.errorstate.DatePickerRobotTestCase");
+        this.addTests("test.aria.widgets.form.datepicker.issue303.InfiniteLoopTestCase");
         this.addTests("test.aria.widgets.form.datepicker.issue429.DateFormatTestCase");
-        this.addTests("test.aria.widgets.form.datepicker.checkValue.DatePicker");
-        this.addTests("test.aria.widgets.form.datepicker.checkFormat.DatePicker");
-        this.addTests("test.aria.widgets.form.datepicker.checkBind.DatePicker");
-        this.addTests("test.aria.widgets.form.datepicker.pickdate.PickDate");
-        this.addTests("test.aria.widgets.form.datepicker.validation.DatePickerWithValidatorTest");
+        this.addTests("test.aria.widgets.form.datepicker.checkValue.DatePickerTestCase");
+        this.addTests("test.aria.widgets.form.datepicker.checkFormat.DatePickerTestCase");
+        this.addTests("test.aria.widgets.form.datepicker.checkBind.DatePickerTestCase");
+        this.addTests("test.aria.widgets.form.datepicker.pickdate.PickDateTestCase");
+        this.addTests("test.aria.widgets.form.datepicker.validation.DatePickerWithValidatorTestCase");
     }
 });

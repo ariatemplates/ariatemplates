@@ -14,7 +14,7 @@
  */
 
 {Template {
-    $classpath : "test.aria.widgets.form.selectbox.preselect.PreselectTestCaseTpl"
+    $classpath : "test.aria.widgets.form.selectbox.preselect.PreselectRobotTestCaseTpl"
 }}
 
     {macro main()}

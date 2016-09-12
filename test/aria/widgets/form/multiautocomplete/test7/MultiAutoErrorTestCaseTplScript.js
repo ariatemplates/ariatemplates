@@ -3,7 +3,7 @@
  * @class samples.widgets.form.templates.AutoCompleteSampleScript
  */
 Aria.tplScriptDefinition({
-    $classpath : 'test.aria.widgets.form.multiautocomplete.test7.MultiAutoErrorTplScript',
+    $classpath : 'test.aria.widgets.form.multiautocomplete.test7.MultiAutoErrorTestCaseTplScript',
     $dependencies : ['aria.resources.handlers.LCRangeResourceHandler'],
     $constructor : function () {
 

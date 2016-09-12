@@ -18,7 +18,7 @@
  * see commented asserts
  */
 Aria.classDefinition({
-    $classpath : "test.aria.popups.focus.FocusTest",
+    $classpath : "test.aria.popups.focus.FocusTestCase",
     $dependencies : ['aria.utils.Delegate'],
     $extends : "aria.jsunit.TemplateTestCase",
     $constructor : function () {

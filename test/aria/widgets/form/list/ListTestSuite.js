@@ -18,7 +18,7 @@ Aria.classDefinition({
     $extends : "aria.jsunit.TestSuite",
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
-        this.addTests("test.aria.widgets.form.list.ListControllerTest");
+        this.addTests("test.aria.widgets.form.list.ListControllerTestCase");
         this.addTests("test.aria.widgets.form.list.ListTestCase");
     }
 });

@@ -21,10 +21,10 @@ Aria.classDefinition({
     $extends : "aria.jsunit.TestSuite",
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
-        this.addTests("test.aria.pageEngine.pageProviders.BaseProviderSiteTest");
-        this.addTests("test.aria.pageEngine.pageProviders.BaseProviderPageCacheTest");
-        this.addTests("test.aria.pageEngine.pageProviders.BaseProviderPageNoCacheTest");
-        this.addTests("test.aria.pageEngine.pageProviders.BaseProviderOverrideTest");
-        this.addTests("test.aria.pageEngine.pageProviders.BaseProviderWithBundlesTest");
+        this.addTests("test.aria.pageEngine.pageProviders.ProviderSiteTestCase");
+        this.addTests("test.aria.pageEngine.pageProviders.ProviderPageCacheTestCase");
+        this.addTests("test.aria.pageEngine.pageProviders.ProviderPageNoCacheTestCase");
+        this.addTests("test.aria.pageEngine.pageProviders.ProviderOverrideTestCase");
+        this.addTests("test.aria.pageEngine.pageProviders.ProviderWithBundlesTestCase");
     }
 });

@@ -17,7 +17,7 @@
  * Test case for the RequestFilter class.
  */
 Aria.classDefinition({
-    $classpath : "test.aria.modules.RequestFilterTest",
+    $classpath : "test.aria.modules.RequestFilterTestCase",
     $extends : "aria.jsunit.TestCase",
     $dependencies : ["test.aria.modules.test.RequestFilterTester", "aria.modules.RequestMgr", "aria.core.IOFiltersMgr"],
     $constructor : function () {

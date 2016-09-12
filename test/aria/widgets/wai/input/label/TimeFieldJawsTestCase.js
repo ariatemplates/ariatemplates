@@ -17,7 +17,7 @@ var Aria = require("ariatemplates/Aria");
 
 module.exports = Aria.classDefinition({
     $classpath : "test.aria.widgets.wai.input.label.TimeFieldJawsTestCase",
-    $extends : require("./LabelJawsTestCase"),
+    $extends : require("./LabelJawsBase"),
     $prototype : {
         elementsToTest : "tifWaiEnabledStart"
     }

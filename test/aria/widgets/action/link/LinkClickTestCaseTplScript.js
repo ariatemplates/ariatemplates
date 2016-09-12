@@ -14,7 +14,7 @@
  */
 
 Aria.tplScriptDefinition({
-    $classpath : "test.aria.widgets.action.link.LinkClickTplScript",
+    $classpath : "test.aria.widgets.action.link.LinkClickTestCaseTplScript",
     $prototype : {
 
         divClick : function (evt) {

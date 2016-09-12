@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.templates.css.dataReadyRefresh.RefreshTest",
+    $classpath : "test.aria.templates.css.dataReadyRefresh.RefreshTestCase",
     $extends : "aria.jsunit.TemplateTestCase",
     $dependencies : ["aria.utils.Dom"],
     $constructor : function () {

@@ -14,7 +14,7 @@
  */
 
 {Template {
-  $classpath:"test.aria.widgets.form.autocomplete.ampersandSuggestion.AmpersandSuggestionTpl",
+  $classpath:"test.aria.widgets.form.autocomplete.ampersandSuggestion.AmpersandSuggestionTestCaseTpl",
   $hasScript:true
 }}
 

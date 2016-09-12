@@ -14,7 +14,7 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.container.dialog.closePopupScroll.ClosePopupScrollTest",
+    $classpath : "test.aria.widgets.container.dialog.closePopupScroll.ClosePopupScrollRobotTestCase",
     $extends : "aria.jsunit.RobotTestCase",
     $dependencies : ["aria.utils.Dom"],
     $prototype : {

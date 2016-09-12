@@ -20,20 +20,20 @@ Aria.classDefinition({
         this.$TestSuite.constructor.call(this);
 
         this.addTests("test.aria.html.element.ElementTestSuite");
-        this.addTests("test.aria.html.controllers.suggestions.ResourcesHandlerTest");
+        this.addTests("test.aria.html.controllers.suggestions.ResourcesHandlerTestCase");
         this.addTests("test.aria.html.textinput.TextInputTestSuite");
-        this.addTests("test.aria.html.checkbox.CheckBoxTest");
+        this.addTests("test.aria.html.checkbox.CheckBoxTestCase");
         this.addTests("test.aria.html.template.basic.HtmlTemplateTestCase");
         this.addTests("test.aria.html.template.submodule.SubModuleTestCase");
-        this.addTests("test.aria.html.radioButton.RadioButtonTest");
-        this.addTests("test.aria.html.select.SelectTest");
+        this.addTests("test.aria.html.radioButton.RadioButtonTestCase");
+        this.addTests("test.aria.html.select.SelectTestCase");
         this.addTests("test.aria.html.select.bodycontent.BodyContentTestCase");
-        this.addTests("test.aria.html.select.onchange.DataModelOnChangeTestCase");
-        this.addTests("test.aria.html.DisabledTraitTest");
-        this.addTests("test.aria.html.radioButton.ieBug.RadioButtonTestCase");
+        this.addTests("test.aria.html.select.onchange.DataModelOnChangeRobotTestCase");
+        this.addTests("test.aria.html.DisabledTraitTestCase");
+        this.addTests("test.aria.html.radioButton.ieBug.RadioButtonRobotTestCase");
         this.addTests("test.aria.html.textarea.TextAreaTestSuite");
-        this.addTests("test.aria.html.template.prematureDisposal.PrematureDisposalTest");
-        this.addTests("test.aria.html.radioButton.listenerAfterDestruction.ListenerCalledAfterDestructionTest");
-        this.addTests("test.aria.html.radioButton.disabled.DisabledStateTest");
+        this.addTests("test.aria.html.template.prematureDisposal.PrematureDisposalTestCase");
+        this.addTests("test.aria.html.radioButton.listenerAfterDestruction.ListenerCalledAfterDestructionTestCase");
+        this.addTests("test.aria.html.radioButton.disabled.DisabledStateTestCase");
     }
 });

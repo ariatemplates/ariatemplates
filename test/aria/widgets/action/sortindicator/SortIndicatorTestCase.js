@@ -14,10 +14,10 @@
  */
 
 /**
- * Test case for test.aria.widgets.action.sortindicator.SortIndicatorTest
+ * Test case for test.aria.widgets.action.sortindicator.SortIndicatorTestCase
  */
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.action.sortindicator.SortIndicatorTest",
+    $classpath : "test.aria.widgets.action.sortindicator.SortIndicatorTestCase",
     $dependencies : ["aria.templates.View", "aria.widgets.action.SortIndicator"],
     $extends : "aria.jsunit.WidgetTestCase",
     $prototype : {

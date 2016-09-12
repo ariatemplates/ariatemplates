@@ -17,8 +17,8 @@
  * Test for transports used by IO
  */
 Aria.classDefinition({
-    $classpath : "test.aria.core.io.IOTransportTest",
-    $extends : "test.aria.core.io.BaseIOTest",
+    $classpath : "test.aria.core.io.IOTransportTestCase",
+    $extends : "test.aria.core.io.IOBase",
     $dependencies : ["test.aria.core.test.IOFilterSample", "aria.utils.Dom", "aria.utils.String", "aria.utils.Xml"],
     $prototype : {
 
@@ -33,7 +33,7 @@ Aria.classDefinition({
                 "local" : "aria.core.transport.Local",
                 "iframe" : "aria.core.transport.IFrame"
             });
-            this.$BaseIOTest.tearDown.call(this);
+            this.$IOBase.tearDown.call(this);
         },
 
         /**
