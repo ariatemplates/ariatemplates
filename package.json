@@ -12,7 +12,6 @@
   "main": "src/aria/node.js",
   "config": {
     "port": "8080",
-    "phantomjsInstances": 2,
     "attesterLauncherConfig": ""
   },
   "scripts": {
@@ -23,13 +22,9 @@
     "lint-test": "node build/grunt-cli.js checkStyleTest",
     "lint": "node build/grunt-cli.js checkStyle checkStyleTest",
     "grunt": "node build/grunt-cli.js",
-    "attester": "node scripts/attester.js test/attester.yml --env package.json",
-    "attester-nophantom": "sh ./scripts/attester-nophantom.sh",
-    "attester-flatskin": "node scripts/attester.js test/attester-flatskin.yml --env package.json",
-    "attester-packaged": "node scripts/attester.js test/attester-packaged.yml --env package.json",
-    "attester-testskin": "node scripts/attester.js test/attester-testskin.yml --env package.json",
+    "attester": "node scripts/ciCampaigns.js",
     "mocha": "mocha --recursive test/node",
-    "test-suites": "npm run mocha && npm run attester && npm run attester-packaged && npm run attester-flatskin && npm run attester-testskin && npm run attester-nophantom",
+    "test-suites": "npm run mocha && npm run attester",
     "test": "npm run lint && npm run grunt && npm run test-suites",
     "attest": "node scripts/attest.js",
     "ci": "npm run lint-test && npm run test-suites"
@@ -42,7 +37,7 @@
   },
   "devDependencies": {
     "at-diff": "0.0.7",
-    "attester": "2.4.3",
+    "attester": "2.5.0",
     "express": "3.4.8",
     "grunt": "0.4.2",
     "grunt-contrib-jshint": "0.8.0",
@@ -50,6 +45,7 @@
     "grunt-verifylowercase": "0.2.0",
     "jade": "1.1.5",
     "mocha": "2.3.3",
+    "robot-server": "0.0.4",
     "ua-parser-js": "git+https://github.com/ariatemplates/ua-parser-js#latest"
   }
 }
