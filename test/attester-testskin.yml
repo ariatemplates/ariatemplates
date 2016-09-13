@@ -1,6 +1,6 @@
 resources:
  '/':
-  - 'build/target/bootstrap'
+  - 'build/target/production'
  '/test':
   - 'test'
 tests:

@@ -8,6 +8,13 @@ tests:
   bootstrap: '/aria/<%= env.name %>-<%= env.version %>.js'
   extraScripts:
     - /aria/css/atflatskin-<%= env.version %>.js
+  files:
+    rootDirectory: .
+    includes:
+      - test/aria/widgets/skin/**/*TestCase.js
   classpaths:
    includes:
-    - test.aria.widgets.skin.FlatSkinTestSuite
+    - test.aria.widgets.form.autocomplete.popupWidth.AdaptToContentWidthRobotTestCase
+   excludes:
+    # Included and only works in attester-testskin.yml:
+    - test.aria.widgets.skin.ExternalCSSTestCase
