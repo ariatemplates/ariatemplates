@@ -1,6 +1,6 @@
 resources:
  '/':
-  - 'build/target/bootstrap'
+  - 'build/target/production'
  '/test':
   - 'test'
 tests:
@@ -8,22 +8,24 @@ tests:
   bootstrap: '/aria/<%= env.name %>-<%= env.version %>.js'
   extraScripts:
     - /aria/css/atskin-<%= env.version %>.js
+  files:
+    rootDirectory: .
+    includes:
+      - test/aria/widgets/container/dialog/container/**TestCase.js
   classpaths:
-   includes:
-   # PhantomJS does not support flash (this test is removed in .travis.yml):
-    - test.aria.core.io.IOXDRTestCase
-   # PhantomJS has random issues with history management:
-   # (to be investigated)
-    - test.aria.utils.HistoryTestCase
-   # PhantomJS has random issues with the viewport
-    - test.aria.widgets.container.dialog.scroll.OnScrollTestCase
-    - test.aria.widgets.container.dialog.resize.test3.DialogOnResizeRobotTestCase
-    - test.aria.widgets.container.dialog.resize.test4.DialogOnResizeScrollRobotTestCase
-    - test.aria.widgets.container.dialog.resize.test5.OverlayOnResizeScrollRobotTestCase
-    - test.aria.utils.overlay.loadingIndicator.scrollableBody.ScrollableBodyTestCase
-    - test.aria.utils.DomScrollIntoViewTestCase
-    - test.aria.widgets.form.multiselect.downArrowKeyPreventDef.MSDownArrowKeyRobotTestCase
-    - test.aria.widgets.container.dialog.container.DialogContainerTestSuite
-    - test.aria.widgets.container.dialog.indicators.DialogTestCase
-  # This test works in Firefox and Chrome locally but not on Travis... It is removed in .travis.yml
-    - test.aria.widgets.container.dialog.movable.test5.MovableDialogFiveRobotTestCase
+    includes:
+      # PhantomJS does not support flash (this test is removed in .travis.yml):
+      - test.aria.core.io.IOXDRTestCase
+      # PhantomJS has random issues with history management:
+      # (to be investigated)
+      - test.aria.utils.HistoryTestCase
+      # PhantomJS has random issues with the viewport
+      - test.aria.widgets.container.dialog.scroll.OnScrollTestCase
+      - test.aria.widgets.container.dialog.resize.test3.DialogOnResizeRobotTestCase
+      - test.aria.widgets.container.dialog.resize.test4.DialogOnResizeScrollRobotTestCase
+      - test.aria.widgets.container.dialog.resize.test5.OverlayOnResizeScrollRobotTestCase
+      - test.aria.utils.overlay.loadingIndicator.scrollableBody.ScrollableBodyTestCase
+      - test.aria.utils.DomScrollIntoViewTestCase
+      - test.aria.widgets.form.multiselect.downArrowKeyPreventDef.MSDownArrowKeyRobotTestCase
+      - test.aria.widgets.container.dialog.indicators.DialogTestCase
+      - test.aria.widgets.container.dialog.movable.test5.MovableDialogFiveRobotTestCase

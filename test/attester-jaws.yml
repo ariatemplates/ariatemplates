@@ -1,0 +1,16 @@
+resources:
+ '/':
+  - 'build/target/production'
+ '/test':
+  - 'test'
+tests:
+ aria-templates:
+  bootstrap: '/aria/<%= env.name %>-<%= env.version %>.js'
+  extraScripts:
+    - /aria/css/atskin-<%= env.version %>.js
+  files:
+    rootDirectory: .
+    includes:
+      - test/**/*JawsTestCase.js
+browsers:
+  - IE 11 with JAWS
