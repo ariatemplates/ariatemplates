@@ -804,6 +804,10 @@ module.exports = Aria.beanDefinitions({
                 "displayOptions" : {
                     $type : "FormListCfg:displayOptions",
                     $description : "Display options that are not interpreted by the list controller."
+                },
+                "readOnlyTextField" : {
+                    $type: "json:Boolean",
+                    $description : "If true, the user can only modify the value of the widget by opening the popup (the text field is not modifiable)."
                 }
             }
         },

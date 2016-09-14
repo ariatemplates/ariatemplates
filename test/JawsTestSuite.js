@@ -51,6 +51,7 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.wai.input.selectBox.SelectBoxSuggestionsJawsTestCase");
 
         this.addTests("test.aria.widgets.wai.multiselect.MultiSelectJawsTestCase");
+        this.addTests("test.aria.widgets.wai.multiselect.readOnlyTextField.ReadOnlyTextFieldJawsTestCase");
 
         this.addTests("test.aria.widgets.wai.popup.errortooltip.ErrorTooltipJawsTestSuite");
         this.addTests("test.aria.widgets.wai.popup.dialog.focusableItems.FocusableItemsJawsTestSuite");
