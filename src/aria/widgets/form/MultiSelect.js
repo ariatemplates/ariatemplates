@@ -396,6 +396,15 @@ module.exports = Aria.classDefinition({
         },
 
         /**
+         * Returns whether the text input is read-only.
+         * @return {Boolean} true if the text input should be read-only.
+         * @override
+         */
+        isTextInputReadOnly : function () {
+            return this._cfg.readOnlyTextField || this.$DropDownTextInput.isTextInputReadOnly.call(this);
+        },
+
+        /**
          * Return the caret position in the DatePicker. It works also if the focus is on the expand icon.
          * @return {Object} the caret position (start end end)
          */
