@@ -63,7 +63,11 @@ Aria.classDefinition({
                         "Checkbox A check box not checked\nCheckbox A check box checked\nCheckbox A\nCheckbox B check box not checked\nCheckbox B\nCheckbox B check box checked\nCheckbox B\nCheckbox C check box not checked\nCheckbox C check box checked\nCheckbox C\nLast textfield\nCheckbox C check box not checked\nCheckbox B\nCheckbox B check box checked\nCheckbox B check box not checked",
                     this.end,
                     function(response) {
-                        return this.removeDuplicates(response.replace(newLineBeforeCheckbox, " ").replace(checkedRegExp, "checked").replace(notCheckedRegExp, "not checked"));
+                        return this.removeDuplicates(
+                            response.replace(newLineBeforeCheckbox, " ")
+                                .replace(checkedRegExp, "checked")
+                                .replace(notCheckedRegExp, "not checked")
+                        );
                     });
                 },
                 scope: this
