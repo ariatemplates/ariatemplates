@@ -48,7 +48,7 @@ Aria.classDefinition({
             ], {
                 fn: function () {
                     this.assertJawsHistoryEquals(
-                        "radio button not checked\nRadio A radio button checked\nRadio A\nradio button not checked\nRadio B\nradio button not checked\nRadio C\nRadio C radio button checked\nRadio B\nradio button not checked\nRadio B radio button checked\nRadio B\nradio button not checked\nRadio C\nLast textfield\nEdit\nList box Radio B radio button checked\nTo change the selection press Up or Down Arrow.",
+                        "radio button not checked Radio A\nRadio A radio button checked\nRadio A\nradio button not checked Radio B\nRadio B\nradio button not checked Radio C\nRadio C\nRadio C radio button checked\nRadio B\nradio button not checked Radio B\nRadio B radio button checked\nRadio B\nradio button not checked Radio C\nRadio C\nLast textfield\nEdit\nList box Radio B radio button checked\nTo change the selection press Up or Down Arrow.",
                         this.end
                     );
                 },
