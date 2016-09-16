@@ -73,7 +73,7 @@ Aria.classDefinition({
             // Event handler for the success event
             this.handleSuccess = function (o) {
                 try {
-                    oScope.assertTrue(o.responseText !== null);
+                    oScope.assertTrue(o.responseText === "OK");
 
                     // There shouln't be pending requests
                     var pending = aria.utils.Object.keys(aria.core.IO.pendingRequests);
@@ -102,7 +102,7 @@ Aria.classDefinition({
             // Make request
             aria.core.IO.asyncRequest({
                 method : 'GET',
-                url : "http://pipes.yahooapis.com/pipes/pipe.run?_id=giWz8Vc33BG6rQEQo_NLYQ&_render=json",
+                url : "http://echo.ariatemplates.com/?testheader=user-agent",
                 callback : this.callback
             });
 
