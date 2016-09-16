@@ -173,6 +173,30 @@ var Aria = require("../Aria");
                     }
                 }
                 return output;
+            },
+            /**
+             * This tests whether all elements in the array pass the test implemented by the provided function. 
+             * As long as the elements return truthy values, the loop will continue. However, as soon as a falsy
+             * value is returns, the answer will be returned without analyzed the rest of the elements.
+             * @param {Array} array Array to filter.
+             * @param {Function} Function to test each element of the array. This function receive as arguments the
+             * value, the index and the array.
+             * @param {Object} thisObject Object to use as this when executing callback.
+             */
+            every : (!arrayPrototype.every) ? function(array, callback, thisObject) {
+                // clone array to avoid mutation when executing the callback
+                var workArray = arrayUtils.clone(array);
+
+                thisObject = thisObject || array;
+                var len = workArray.length;
+                for (var i = 0; i < len; i++) {
+                    if(!callback.call(thisObject, workArray[i], i, array)) {
+                        return false;
+                    }
+                }
+                return true;
+            } : function(array, callback, thisObject) {
+                return array.every(callback, thisObject);
             }
         }
     });

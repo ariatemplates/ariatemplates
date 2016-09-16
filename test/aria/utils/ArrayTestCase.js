@@ -237,6 +237,46 @@ Aria.classDefinition({
                 result += value;
             }, this);
             this.assertTrue(result === "123459");
+        },
+
+        testEvery : function () {
+            // shortcut
+            var every = aria.utils.Array.every;
+
+            // doing stuff on empty array should do nothing
+            var count = 0;
+            every([], function () {
+                count++;
+            });
+            this.assertTrue(count === 0);
+
+            // forEach simple test
+            var testArray = [1, 2, 3, 4, 5, 9], result = "";
+            every(testArray, function (value, index, array) {
+                // changing the array should not break
+                testArray = [];
+                result += value;
+                return value !== 4;
+            }, this);
+            this.assertTrue(result === "1234");
+
+            testArray = [1, 2, 3, 4, 5, 9], result = "";
+            every(testArray, function (value, index, array) {
+                // changing the array should not break
+                testArray = [];
+                result += value;
+                return false;
+            }, this);
+            this.assertTrue(result === "1");
+
+            testArray = [1, 2, 3, 4, 5, 9], result = "";
+            every(testArray, function (value, index, array) {
+                // changing the array should not break
+                testArray = [];
+                result += value;
+                return true;
+            }, this);
+            this.assertTrue(result === "123459");
         }
     }
 });
