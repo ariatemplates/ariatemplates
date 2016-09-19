@@ -182,6 +182,7 @@ var Aria = require("../Aria");
              * @param {Function} Function to test each element of the array. This function receives as arguments the
              * value, the index and the array.
              * @param {Object} thisObject Object to use as this when executing callback.
+             * @return {Boolean} true if every element in the given array returns truthy values for the predicate (callback).
              */
             every : (!arrayPrototype.every) ? function(array, callback, thisObject) {
                 // clone array to avoid mutation when executing the callback
