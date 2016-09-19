@@ -175,11 +175,11 @@ var Aria = require("../Aria");
                 return output;
             },
             /**
-             * This tests whether all elements in the array pass the test implemented by the provided function. 
-             * As long as the elements return truthy values, the loop will continue. However, as soon as a falsy
-             * value is returns, the answer will be returned without analyzed the rest of the elements.
-             * @param {Array} array Array to filter.
-             * @param {Function} Function to test each element of the array. This function receive as arguments the
+             * This tests whether all elements in the array pass the test given by the predicate callback function. 
+             * As long as the predicate (callback) returns truthy values, the loop will continue. However, as soon as a falsy
+             * value is returned, the function will return without analyzing the rest of the elements.
+             * @param {Array} array Array to analyze.
+             * @param {Function} Function to test each element of the array. This function receives as arguments the
              * value, the index and the array.
              * @param {Object} thisObject Object to use as this when executing callback.
              */
@@ -188,9 +188,9 @@ var Aria = require("../Aria");
                 var workArray = arrayUtils.clone(array);
 
                 thisObject = thisObject || array;
-                var len = workArray.length;
-                for (var i = 0; i < len; i++) {
-                    if(!callback.call(thisObject, workArray[i], i, array)) {
+                var arrayLength = workArray.length;
+                for (var arrayIndex = 0; arrayIndex < arrayLength; arrayIndex++) {
+                    if(!callback.call(thisObject, workArray[arrayIndex], arrayIndex, array)) {
                         return false;
                     }
                 }
