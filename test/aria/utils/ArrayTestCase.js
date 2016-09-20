@@ -250,7 +250,7 @@ Aria.classDefinition({
             });
             this.assertTrue(count === 0);
 
-            // forEach simple test
+            // every test when specific item false
             var testArray = [1, 2, 3, 4, 5, 9], result = "";
             every(testArray, function (value, index, array) {
                 // changing the array should not break
@@ -260,6 +260,7 @@ Aria.classDefinition({
             }, this);
             this.assertTrue(result === "1234");
 
+            // every test when all false
             testArray = [1, 2, 3, 4, 5, 9], result = "";
             every(testArray, function (value, index, array) {
                 // changing the array should not break
@@ -269,6 +270,7 @@ Aria.classDefinition({
             }, this);
             this.assertTrue(result === "1");
 
+            // every test when all true
             testArray = [1, 2, 3, 4, 5, 9], result = "";
             every(testArray, function (value, index, array) {
                 // changing the array should not break

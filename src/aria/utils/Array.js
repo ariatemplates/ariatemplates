@@ -175,17 +175,19 @@ var Aria = require("../Aria");
                 return output;
             },
             /**
-             * This tests whether all elements in the array pass the test given by the predicate callback function. 
+             * This tests whether all elements in the array pass the predicate given by the callback function. 
              * As long as the predicate (callback) returns truthy values, the loop will continue. However, as soon as a falsy
              * value is returned, the function will return without analyzing the rest of the elements.
-             * @param {Array} array Array to analyze.
-             * @param {Function} Function to test each element of the array. This function receives as arguments the
-             * value, the index and the array.
-             * @param {Object} thisObject Object to use as this when executing callback.
-             * @return {Boolean} true if every element in the given array returns truthy values for the predicate (callback).
+             * @param {Array}    array      - Array to process.
+             * @param {Function} callback   - Function to test each element of the array. This function receives as arguments 
+             *                                value, the index and the array.
+             * @param {Object}   thisObject - Object to use as this when executing callback. The default value, when thisObject 
+             *                                is falsy, will be the given array.
+             * @return {Boolean} true if every element in the given array returns truthy values for the predicate (callback) 
+             *                   false if at least one element returns a falsy value for the predicate (callback)
              */
             every : (!arrayPrototype.every) ? function(array, callback, thisObject) {
-                // clone array to avoid mutation when executing the callback
+                // clone array to prevent being impacted by possible mutations of the array in the callback
                 var workArray = arrayUtils.clone(array);
 
                 thisObject = thisObject || array;
