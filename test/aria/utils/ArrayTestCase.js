@@ -261,7 +261,8 @@ Aria.classDefinition({
             this.assertTrue(result === "1234");
 
             // simple test true
-            testArray = [1, 2, 3, 4, 5, 9], result = "";
+            testArray = [1, 2, 3, 4, 5, 9];
+            result = "";
             this.assertTrue(every(testArray, function (value, index, array) {
                 // changing the array should not break
                 testArray = [];
