@@ -183,8 +183,8 @@ var Aria = require("../Aria");
              *                                value, the index and the array.
              * @param {Object}   thisObject - Object to use as this when executing callback. The default value, when thisObject 
              *                                is falsy, will be the given array.
-             * @return {Boolean} true if every element in the given array returns truthy values for the predicate (callback). 
-             *                   false if at least one element returns a falsy value for the predicate (callback).
+             * @return {Boolean} true if every element in the given array returns truthy values for the predicate (callback) 
+             *                   false if at least one element returns a falsy value for the predicate (callback)
              */
             every : (!arrayPrototype.every) ? function(array, callback, thisObject) {
                 // clone array to prevent being impacted by possible mutations of the array in the callback
@@ -193,7 +193,7 @@ var Aria = require("../Aria");
                 thisObject = thisObject || array;
                 var arrayLength = workArray.length;
                 for (var arrayIndex = 0; arrayIndex < arrayLength; arrayIndex++) {
-                    if(!callback.call(thisObject, workArray[arrayIndex], arrayIndex, array)) {
+                    if ( !callback.call(thisObject, workArray[arrayIndex], arrayIndex, array) ) {
                         return false;
                     }
                 }
