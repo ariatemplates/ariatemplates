@@ -142,22 +142,14 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         _getWaiAriaMarkup : function () {
-            // --------------------------------------------------- destructuring
-
             var cfg = this._cfg;
-
-            var waiAria = cfg.waiAria;
-
-            var waiLabel = cfg.waiLabel;
-            var waiLabelledBy = cfg.waiLabelledBy;
-            var waiDescribedBy = cfg.waiDescribedBy;
-
-            // ------------------------------------------------------ processing
-
             var markup = '';
 
-            if (waiAria) {
+            if (cfg.waiAria) {
                 markup = [];
+                var waiLabel = cfg.waiLabel;
+                var waiLabelledBy = cfg.waiLabelledBy;
+                var waiDescribedBy = cfg.waiDescribedBy;
 
                 if (waiLabel) {
                     markup.push('aria-label="' + ariaUtilsString.encodeForQuotedHTMLAttribute(waiLabel) + '"');
@@ -171,6 +163,10 @@ module.exports = Aria.classDefinition({
                     markup.push('aria-describedby="' + ariaUtilsString.encodeForQuotedHTMLAttribute(waiDescribedBy) + '"');
                 }
 
+                if (cfg.waiHasPopup) {
+                    markup.push('aria-haspopup="true"');
+                }
+
                 if (markup.length > 0) {
                     markup.unshift('');
                     markup.push('');
@@ -178,9 +174,6 @@ module.exports = Aria.classDefinition({
 
                 markup = markup.join(' ');
             }
-
-            // ---------------------------------------------------------- return
-
             return markup;
         }
     }
