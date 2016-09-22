@@ -560,7 +560,11 @@ module.exports = Aria.classDefinition({
                         if (ariaCoreBrowser.isModernIE && !caretPosition) {
                             caretPosition = this.getCaretPosition();
                         }
-                        this.getTextInputField().value = text;
+                        var input = this.getTextInputField();
+                        // This test prevents the normal autofocus from being lost with tab, in some browsers
+                        if (input.value != text) {
+                            input.value = text;
+                        }
                         if (caretPosition) {
                             this.setCaretPosition(caretPosition.start, caretPosition.end);
                         }
