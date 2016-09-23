@@ -76,6 +76,8 @@ Aria.classDefinition({
             }
         }
         keys.VK_CTRL = robotKeys.Control;
+        keys.VK_BACK_SPACE = robotKeys.Backspace;
+        keys.VK_BACKSPACE = robotKeys.Backspace;
     },
     $statics : {
         MOUSEWHEEL_NOT_IMPLEMENTED : "mouseWheel is not implemented",
@@ -92,7 +94,6 @@ Aria.classDefinition({
          */
         KEYS : {
             "VK_SPACE" : " ",
-            "VK_BACK_SPACE" : "\b",
             "VK_MULTIPLY" : "*",
             "VK_PLUS" : "+",
             "VK_MINUS" : "-",
