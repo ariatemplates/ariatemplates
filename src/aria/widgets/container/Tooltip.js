@@ -115,6 +115,8 @@
                     minHeight : cfg.minHeight,
                     maxWidth : aria.utils.Math.min(cfg.maxWidth, viewport.width),
                     maxHeight : aria.utils.Math.min(cfg.maxHeight, viewport.height),
+                    scrollBarX : cfg.scrollBarX,
+                    scrollBarY : cfg.scrollBarY,
                     printOptions : cfg.printOptions,
                     cssClass : this._context.getCSSClassNames(true)
                 }, this._context, this._lineNumber);
