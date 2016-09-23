@@ -17,14 +17,15 @@
     "start": "node scripts/server.js",
     "prestart": "npm install && npm run-script grunt",
     "grunt": "node build/grunt-cli.js",
-    "attester": "node node_modules/attester/bin/attester.js test/attester.yml",
+    "attester": "node scripts/attester.js test/attester.yml",
     "lint": "node build/grunt-cli.js checkStyle",
     "mocha": "mocha --recursive test/node",
+    "attest": "node scripts/attest.js",
     "test": "npm run-script lint && npm run-script grunt && npm run-script mocha && npm run-script attester"
   },
   "devDependencies": {
     "atpackager": "0.2.2",
-    "attester": "1.3.0",
+    "attester": "1.5.0",
     "express": "3.4.8",
     "grunt": "0.4.2",
     "grunt-contrib-jshint": "0.8.0",

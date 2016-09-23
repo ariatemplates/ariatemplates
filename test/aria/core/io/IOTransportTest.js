@@ -18,7 +18,7 @@
  */
 Aria.classDefinition({
     $classpath : "test.aria.core.io.IOTransportTest",
-    $extends : "aria.jsunit.TestCase",
+    $extends : "test.aria.core.io.BaseIOTest",
     $dependencies : ["test.aria.core.test.IOFilterSample", "aria.utils.Dom", "aria.utils.String", "aria.utils.Xml"],
     $prototype : {
 
@@ -33,21 +33,7 @@ Aria.classDefinition({
                 "local" : "aria.core.transport.Local",
                 "iframe" : "aria.core.transport.IFrame"
             });
-
-            // Check that we didn't forget any timer on IO
-            var timers = 0, id;
-            for (id in aria.core.IO._poll) {
-                if (aria.core.IO._poll.hasOwnProperty(id)) {
-                    timers += 1;
-                }
-            }
-            for (id in aria.core.IO._timeOut) {
-                if (aria.core.IO._timeOut.hasOwnProperty(id)) {
-                    timers += 1;
-                }
-            }
-
-            this.assertEquals(timers, 0, "Undisposed timers on aria.core.IO");
+            this.$BaseIOTest.tearDown.call(this);
         },
 
         /**

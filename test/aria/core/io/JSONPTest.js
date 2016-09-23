@@ -18,39 +18,16 @@
  */
 Aria.classDefinition({
     $classpath : "test.aria.core.io.JSONPTest",
-    $extends : "aria.jsunit.TestCase",
+    $extends : "test.aria.core.io.BaseIOTest",
     $dependencies : ["test.aria.core.test.IOFilterSample"],
     $constructor : function () {
-        this.$TestCase.constructor.call(this);
+        this.$BaseIOTest.constructor.call(this);
         this.defaultTestTimeout = 10000;
     },
     $prototype : {
         tearDown : function () {
             aria.core.IO.$unregisterListeners(this);
-
-            // Check that we didn't forget any timer on IO
-            var timers = 0, id;
-            for (id in aria.core.IO._poll) {
-                if (aria.core.IO._poll.hasOwnProperty(id)) {
-                    timers += 1;
-                }
-            }
-            for (id in aria.core.IO._timeOut) {
-                if (aria.core.IO._timeOut.hasOwnProperty(id)) {
-                    timers += 1;
-                }
-            }
-            this.assertEquals(timers, 0, "Undisposed pending timers on aria.core.IO");
-
-            // Check that we don't have pending requests
-            var requests = 0;
-            for (id in aria.core.IO.pendingRequests) {
-                if (aria.core.IO.pendingRequests.hasOwnProperty(id)) {
-                    requests += 1;
-                }
-            }
-
-            this.assertEquals(requests, 0, "Undisposed pending requests on aria.core.IO");
+            this.$BaseIOTest.tearDown.call(this);
         },
 
         /**

@@ -22,13 +22,6 @@ Aria.classDefinition({
     $implements : ["aria.core.transport.ITransports"],
     $prototype : {
         /**
-         * Polling interval for the handle ready state in milliseconds.
-         * @type Number
-         * @protected
-         */
-        _pollingInterval : 50,
-
-        /**
          * Tells if the transport object is ready or requires an initialization phase
          * @type Boolean
          */
@@ -103,29 +96,28 @@ Aria.classDefinition({
         },
 
         /**
-         * A timer that polls the XHR object's readyState property during a transaction, instead of binding a callback
-         * to the onreadystatechange event. Upon readyState 4, handleTransactionResponse will process the response, and
-         * the timer will be cleared.
+         * A timer that binds a callback to the onreadystatechange event.
+         * Upon readyState 4, handleTransactionResponse will process the response.
          * @param {Number} reqId Requst identifier
          * @param {Object} connection The connection object (XHR or ActiveX)
          * @param {aria.core.CfgBeans:Callback} callback Callback from aria.core.IO
          * @private
          */
         _handleReadyState : function (reqId, connection, callback) {
-            var ariaIO = aria.core.IO;
-
             // Interval for processing the response from the server
             var scope = this;
-            ariaIO._poll[reqId] = setInterval(function () {
+            connection.onreadystatechange = function () {
                 if (connection && connection.readyState === 4) {
+                    connection.onreadystatechange = Aria.empty;
+                    if (!aria.core.IO.pendingRequests[reqId]) {
+                        return;
+                    }
                     aria.core.IO.clearTimeout(reqId);
 
-                    clearInterval(ariaIO._poll[reqId]);
-                    delete ariaIO._poll[reqId];
-
                     scope._handleTransactionResponse(reqId, connection, callback);
+                    connection = callback = scope = null;
                 }
-            }, this._pollingInterval);
+            };
         },
 
         /**
@@ -219,8 +211,8 @@ Aria.classDefinition({
          * @return {Boolean} Whether the connection was aborted or not
          */
         onAbort : function (reqId, connection) {
-            clearInterval(aria.core.IO._poll[reqId]);
-            delete aria.core.IO._poll[reqId];
+            connection.onreadystatechange = Aria.empty;
+            aria.core.IO.clearTimeout(reqId);
 
             if (this._inProgress(connection)) {
                 connection.abort();

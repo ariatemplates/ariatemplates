@@ -16,6 +16,7 @@
 var path = require("path");
 var express = require("express");
 var app = express();
+var middleware = require("./middleware");
 
 // Render views with Jade
 app.set('views', __dirname + '/assets/views');
@@ -89,6 +90,10 @@ app.use("/aria-templates", express.static(__dirname + "/../build/target/producti
 app.all(/^\/aria-templates\/test\/(.*)$/, function (req, res, next) {
     var file = path.normalize(__dirname + "/../test/" + req.params[0]);
     res.sendfile(file);
+});
+
+middleware.forEach(function (fn) {
+    app.use(fn);
 });
 
 // Default to 8080 if we're not using npm
