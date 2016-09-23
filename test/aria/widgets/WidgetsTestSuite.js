@@ -45,5 +45,6 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.icon.IconTest");
         this.addTests("test.aria.widgets.splitter.scrollbars.ScrollbarTestCase");
         this.addTests("test.aria.widgets.issue746.SkinClassFallbackTestCase");
+        this.addTests("test.aria.widgets.autoselect.tab.NoAutoSelectTabRobotTestCase");
     }
 });
