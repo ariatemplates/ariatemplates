@@ -958,15 +958,16 @@ module.exports = Aria.classDefinition({
                     case "androidbrowser":
                         this._setFlag(output, "AndroidBrowser");
                         break;
+                    case "iemobile":
+                        this._setFlag(output, "IEMobile");
+                        this._setFlag(output, "IE");
+                        break;
                     default:
                         maybeOtherBrowser = true;
                 }
 
-                if (ariaUtilsArray.contains(["Firefox", "Chrome", "IE", "Opera", "IEMobile", "Edge", "PhantomJS"], name)) {
+                if (ariaUtilsArray.contains(["Firefox", "Chrome", "IE", "Opera", "Edge", "PhantomJS"], name)) {
                     this._setFlag(output, name);
-                    if (name === "IEMobile") {
-                        this._setFlag(output, "IE");
-                    }
                     maybeOtherBrowser = false;
                 }
             } else {

@@ -361,8 +361,8 @@ Aria.classDefinition({
                 // ------------------------------------------------------- tests
 
                 var checkFunction = function(expectedValue) {
-                    return function(falseFlag) {
-                        var propertyName = Browser._buildFlagName(falseFlag);
+                    return function(flag) {
+                        var propertyName = Browser._buildFlagName(flag);
                         var message = 'Flag "' + propertyName + '" should be ' + expectedValue + '. ' +
                         'Additional information: ' + useCase.id + ', ua: ' + useCase.ua;
                         this.assertEquals(actualValues[propertyName], expectedValue, message);
