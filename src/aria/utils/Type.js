@@ -66,12 +66,32 @@ Aria.classDefinition({
         },
 
         /**
+         * Check if the value is an integer.
+         * @param {Object} value
+         * @return {Boolean} isInteger
+         */
+        isInteger : function (value) {
+            return this.isNumber(value) &&
+                    (Math.floor(value) === value) &&
+                    (value + 1) !== value; // is finite and precise
+        },
+
+        /**
          * Check if the value is a js Date
          * @param {Object} value
          * @return {Boolean} isDate
          */
         isDate : function (value) {
             return Object.prototype.toString.apply(value) === "[object Date]";
+        },
+
+        /**
+         * Check if the value is a valid js Date
+         * @param {Object} value
+         * @param {Boolean} isValidDate
+         */
+        isValidDate : function (date) {
+            return this.isDate(date) && this.isInteger(date.valueOf());
         },
 
         /**

@@ -64,28 +64,22 @@ Aria.classDefinition({
             for (var index = -366; index < 367; index++) {
                 testDate = new Date(date.getTime() + index * 3600 * 1000 * 24);
 
-                if (index === 366) {
-                    this.assertTrue(ariaDateUtil.interpret("+" + index) === null);
-                } else if (index === -366) {
-                    this.assertTrue(ariaDateUtil.interpret("" + index) === null);
+                if (index >= 0) {
+                    this.assertTrue(ariaDateUtil.isSameDay(ariaDateUtil.interpret("+" + index), testDate), " + special case  2 failed for +"
+                            + index);
+                    this.assertTrue(ariaDateUtil.isSameDay(ariaDateUtil.interpret("-" + index, testDate), date), " + special case  2 failed for +"
+                            + index + " with reference date passed");
                 } else {
-                    if (index >= 0) {
-                        this.assertTrue(ariaDateUtil.isSameDay(ariaDateUtil.interpret("+" + index), testDate), " + special case  2 failed for +"
-                                + index);
-                        this.assertTrue(ariaDateUtil.isSameDay(ariaDateUtil.interpret("-" + index, testDate), date), " + special case  2 failed for +"
-                                + index + " with reference date passed");
-                    } else {
-                        this.assertTrue(ariaDateUtil.isSameDay(ariaDateUtil.interpret("" + index), testDate), " - special case  2 failed for "
-                                + index);
-                        this.assertTrue(ariaDateUtil.isSameDay(ariaDateUtil.interpret("+" + Math.abs(index), testDate), date), " - special case  2 failed for -"
-                                + index + " with reference date passed");
-                    }
+                    this.assertTrue(ariaDateUtil.isSameDay(ariaDateUtil.interpret("" + index), testDate), " - special case  2 failed for "
+                            + index);
+                    this.assertTrue(ariaDateUtil.isSameDay(ariaDateUtil.interpret("+" + Math.abs(index), testDate), date), " - special case  2 failed for -"
+                            + index + " with reference date passed");
                 }
 
             }
 
             // special case 3: 12DEC/+10
-            this.assertTrue(!ariaDateUtil.interpret("12DEC/-370"));
+            this.assertTrue(!ariaDateUtil.interpret("12DEC/-37000000000000"));
             var dec12 = ariaDateUtil.interpret("12DEC/-10");
             var dec2 = ariaDateUtil.interpret("2DEC");
             this.assertEquals(dec12.getDate(), dec2.getDate());
