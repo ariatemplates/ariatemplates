@@ -181,7 +181,32 @@ Aria.classDefinition({
             this.assertTrue(typeUtils.isNumber(21.21));
             this.assertTrue(typeUtils.isNumber(Infinity));
         },
-
+        testIsInteger : function () {
+            var typeUtils = aria.utils.Type;
+            this.assertTrue(typeUtils.isInteger(0));
+            this.assertTrue(typeUtils.isInteger(-1));
+            this.assertTrue(typeUtils.isInteger(1));
+            this.assertTrue(typeUtils.isInteger(-5));
+            this.assertTrue(typeUtils.isInteger(5));
+            this.assertTrue(typeUtils.isInteger(-21));
+            this.assertTrue(typeUtils.isInteger(21));
+            this.assertFalse(typeUtils.isInteger(NaN));
+            this.assertFalse(typeUtils.isInteger(Infinity));
+            this.assertFalse(typeUtils.isInteger(-Infinity));
+            this.assertFalse(typeUtils.isInteger(21.21));
+            this.assertFalse(typeUtils.isInteger(-21.21));
+            this.assertFalse(typeUtils.isInteger(true));
+            this.assertFalse(typeUtils.isInteger(undefined));
+            this.assertFalse(typeUtils.isInteger(false));
+            this.assertFalse(typeUtils.isInteger(1e+50));
+            this.assertFalse(typeUtils.isInteger(-1e+50));
+        },
+        testIsValidDate: function () {
+            var typeUtils = aria.utils.Type;
+            this.assertTrue(typeUtils.isValidDate(new Date()));
+            this.assertTrue(typeUtils.isValidDate(new Date(2016,8,26)));
+            this.assertFalse(typeUtils.isValidDate(new Date(1e+50)));
+        },
         _myTestMethod : function () {}
     }
 });

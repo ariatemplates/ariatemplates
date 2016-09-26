@@ -375,7 +375,7 @@ var ariaUtilsDate = module.exports = Aria.classDefinition({
          * @private
          * @type RegExp
          */
-        this._interpret_specialCase2 = /^[+\-]\d{1,3}$/;
+        this._interpret_specialCase2 = /^[+\-]\d+$/;
 
         /**
          * special case 3 RegExp : 10DEC/+-5 -> 10DEC +-5 days. Localized regexp.It is set in method
@@ -1081,12 +1081,6 @@ var ariaUtilsDate = module.exports = Aria.classDefinition({
          */
         interpretWithRefDate : function (dateStr, referenceDate) {
             var shift = parseInt(dateStr, 10), jsdate;
-
-            // format valid only if number of days <= 365
-            if (Math.abs(shift) > 365) {
-                return null;
-            }
-
             // When a reference date is set, the shift needs to be added to the reference date.
             if (referenceDate != null) {
                 jsdate = new Date(referenceDate.getTime());
@@ -1094,6 +1088,10 @@ var ariaUtilsDate = module.exports = Aria.classDefinition({
                 jsdate = new Date();
             }
             jsdate.setDate(jsdate.getDate() + shift);
+            if (!ariaUtilsType.isValidDate(jsdate)) {
+                // too large shift values (such as +100000000) lead to an invalid date
+                return null;
+            }
             return jsdate;
 
         },
@@ -1108,13 +1106,13 @@ var ariaUtilsDate = module.exports = Aria.classDefinition({
             var execResult = this._interpret_specialCase3.exec(dateStr), jsdate;
             var newEntry = execResult[1];
             var shift = parseInt(execResult[3], 10);
-            // format valid only if number of days <= 365
-            if (Math.abs(shift) > 365) {
-                return null;
-            }
             jsdate = this.interpretDateAndMonth(newEntry, options);
             if (jsdate) {
                 jsdate.setDate(jsdate.getDate() + shift);
+                if (!ariaUtilsType.isValidDate(jsdate)) {
+                    // too large shift values (such as +100000000) lead to an invalid date
+                    return null;
+                }
             }
             return jsdate;
 
@@ -1779,7 +1777,7 @@ var ariaUtilsDate = module.exports = Aria.classDefinition({
             this._interpret_monthTexts = monthTexts;
             var source = monthTexts.join("|").replace("\\", "\\\\").replace(/\s/g, "\\s").replace(/\./g, "\\.");
             this._interpret_isMonth = new RegExp("(" + source + ")", "i");
-            this._interpret_specialCase3 = new RegExp("^(\\d{1,2}\\s*(" + source + ")\\s*\\d{0,4})\\/([+\\-]\\d{1,3})$", "i");
+            this._interpret_specialCase3 = new RegExp("^(\\d{1,2}\\s*(" + source + ")\\s*\\d{0,4})\\/([+\\-]\\d+)$", "i");
         },
 
         /**
