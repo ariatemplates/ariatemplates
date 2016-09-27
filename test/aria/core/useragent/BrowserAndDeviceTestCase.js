@@ -330,6 +330,7 @@ Aria.classDefinition({
 
         _testFlags : function (spec) {
             var forEach = aria.utils.Array.forEach;
+            var isArray = aria.utils.Type.isArray;
             var Browser = aria.core.Browser;
 
             // ----------------------------------------- arguments destructuring
@@ -346,30 +347,30 @@ Aria.classDefinition({
             forEach(specifications, function(specification) {
                 // -------------------------------------------------- flags sets
 
-                var trueFlag;
+                var trueFlags = [];
                 var falseFlags = [].concat(specification.flags);
 
                 var expectedFlagName = expectedValues[specification.category];
                 if (expectedFlagName != null) {
-                    trueFlag = expectedFlagName;
-                    falseFlags.splice(aria.utils.Array.indexOf(falseFlags, trueFlag), 1);
+                    trueFlags = isArray(expectedFlagName) ? expectedFlagName : [expectedFlagName];
+                    forEach(trueFlags, function(trueFlag) {
+                        falseFlags.splice(aria.utils.Array.indexOf(falseFlags, trueFlag), 1);
+                    });
                 }
 
                 // ------------------------------------------------------- tests
 
-                if (trueFlag != null) {
-                    var propertyName = Browser._buildFlagName(trueFlag);
-                    var message = 'Flag "' + propertyName + '" should be true. ' +
-                    'Browser: ' + useCase.id + ', ua: ' + useCase.ua;
-                    this.assertTrue(actualValues[propertyName], message);
-                }
+                var checkFunction = function(expectedValue) {
+                    return function(flag) {
+                        var propertyName = Browser._buildFlagName(flag);
+                        var message = 'Flag "' + propertyName + '" should be ' + expectedValue + '. ' +
+                        'Additional information: ' + useCase.id + ', ua: ' + useCase.ua;
+                        this.assertEquals(actualValues[propertyName], expectedValue, message);
+                    };
+                };
 
-                forEach(falseFlags, function(falseFlag) {
-                    var propertyName = Browser._buildFlagName(falseFlag);
-                    var message = 'Flag "' + propertyName + '" should be false. ' +
-                    'Additional information: ' + useCase.id + ', ua: ' + useCase.ua;
-                    this.assertFalse(actualValues[propertyName], message);
-                }, this);
+                forEach(trueFlags, checkFunction(true), this);
+                forEach(falseFlags, checkFunction(false), this);
             }, this);
         }
         /* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1397) */
