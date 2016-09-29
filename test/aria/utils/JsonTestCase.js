@@ -1452,6 +1452,36 @@ Aria.classDefinition({
                 fn : function () {}
             });
             this.assertJsonEquals(['mykey'], aria.utils.Json.keys(listened));
+        },
+
+        testRemoveBackRefs : function () {
+            var jsonUtils = aria.utils.Json;
+            var parProp = jsonUtils.OBJECT_PARENT_PROPERTY;
+            var d = {};
+            var b = {
+                d: d
+            };
+            var c = {};
+            var a = {
+                b: b,
+                c: c
+            };
+            var listener = {
+                fn: function () {},
+                scope: this
+            };
+            jsonUtils.addListener(a, null, listener, false, true);
+            this.assertTrue(b[parProp] != null);
+            this.assertTrue(c[parProp] != null);
+            this.assertTrue(d[parProp] != null);
+            jsonUtils.setValue(a, "b", null);
+            this.assertTrue(b[parProp] == null);
+            this.assertTrue(c[parProp] != null);
+            this.assertTrue(d[parProp] == null);
+            jsonUtils.removeListener(a, null, listener, true);
+            this.assertTrue(b[parProp] == null);
+            this.assertTrue(c[parProp] == null);
+            this.assertTrue(d[parProp] == null);
         }
     }
 });
