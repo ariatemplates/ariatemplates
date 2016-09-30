@@ -13,7 +13,15 @@
  * limitations under the License.
  */
 
-Aria.tplScriptDefinition({
+var Aria = require('ariatemplates/Aria');
+
+var ariaUtilsArray = require('ariatemplates/utils/Array');
+var ariaUtilsString = require('ariatemplates/utils/String');
+var subst = ariaUtilsString.substitute;
+
+
+
+module.exports = Aria.tplScriptDefinition({
     $classpath: 'test.aria.widgets.wai.datePicker.readDate.TplScript',
 
     $prototype: {
@@ -48,35 +56,21 @@ Aria.tplScriptDefinition({
             var confirmDateDelay = data.confirmDateDelay;
             var confirmDateFormat = 'EEEE d MMMM yyyy';
 
-            var widgets = this.map([
+            var widgets = ariaUtilsArray.map([
                 'one',
                 'two'
             ], function (name) {
                 return {
-                    label: 'calendar ' + name + ' label',
+                    label: subst('calendar %1 label', name),
                     waiAria: true,
-                    waiAriaCalendarLabel: 'calendar ' + name,
-                    waiIconLabel: 'calendar ' + name + ' button',
+                    waiAriaCalendarLabel: subst('calendar %1', name),
+                    waiIconLabel: subst('calendar %1 button', name),
                     bind: {value: binding},
                     waiAriaConfirmDateDelay: confirmDateDelay,
                     waiAriaConfirmDateFormat: confirmDateFormat
                 };
             });
             data.widgets = widgets;
-        },
-
-
-
-        ////////////////////////////////////////////////////////////////////////
-        // Helpers
-        ////////////////////////////////////////////////////////////////////////
-
-        map : function (array, callback, thisArg) {
-            var result = [];
-            for (var index = 0, length = array.length; index < length; index++) {
-                result.push(callback(array[index], index, array));
-            }
-            return result;
         }
     }
 });

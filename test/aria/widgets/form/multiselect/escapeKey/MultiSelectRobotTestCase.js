@@ -16,6 +16,7 @@
 var Aria = require('ariatemplates/Aria');
 
 var ariaUtilsString = require('ariatemplates/utils/String');
+var subst = ariaUtilsString.substitute;
 
 
 
@@ -41,9 +42,10 @@ module.exports = Aria.classDefinition({
             var isOpen = this._createPredicate(function () {
                 return this.isWidgetDropDownPopupOpened(id);
             }, function (shouldBeTrue) {
-                return ariaUtilsString.substitute(
+                return subst(
                     'Widget "%1" should have its dropdown %2',
-                    [id, shouldBeTrue ? 'open' : 'closed']
+                    id,
+                    shouldBeTrue ? 'open' : 'closed'
                 );
             }, this);
 

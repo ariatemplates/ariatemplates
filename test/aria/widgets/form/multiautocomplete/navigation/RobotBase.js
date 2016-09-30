@@ -13,27 +13,40 @@
  * limitations under the License.
  */
 
-Aria.classDefinition({
+var Aria = require('ariatemplates/Aria');
+
+var ariaCoreTimer = require('ariatemplates/core/Timer');
+
+var ariaUtilsType = require('ariatemplates/utils/Type');
+var ariaUtilsArray = require('ariatemplates/utils/Array');
+var ariaUtilsCaret = require('ariatemplates/utils/Caret');
+
+var MultiAutoCompleteRobotBase = require('../MultiAutoCompleteRobotBase');
+var Sequencer = require('./Sequencer');
+
+
+
+module.exports = Aria.classDefinition({
     $classpath : "test.aria.widgets.form.multiautocomplete.navigation.RobotBase",
-    $extends : "test.aria.widgets.form.multiautocomplete.MultiAutoCompleteRobotBase",
-    $dependencies : ["aria.utils.Type", "aria.utils.Array", "aria.core.Timer", "aria.utils.Caret",
-            "test.aria.widgets.form.multiautocomplete.navigation.Sequencer",
-            "test.aria.widgets.form.multiautocomplete.navigation.Helpers"],
+    $extends : MultiAutoCompleteRobotBase,
     $constructor : function (name) {
+        // ------------------------------------------------------ initialization
 
         this.$MultiAutoCompleteRobotBase.constructor.call(this);
-        this.HELPERS = test.aria.widgets.form.multiautocomplete.navigation.Helpers;
+
+        // ---------------------------------------------------------- properties
 
         this.name = name;
 
-        // Configuration -------------------------------------------------------
+        // ------------------------------------------------------- configuration
 
         this.defaultDelay = 300;
         this.enableTracing = false;
+        this.logTaskInTrace = false;
 
-        // Main sequence -------------------------------------------------------
+        // ---------------------------------------------------------- attributes
 
-        this.sequencer = new test.aria.widgets.form.multiautocomplete.navigation.Sequencer({
+        var sequencer = new Sequencer({
             scope : this,
             onend : 'end',
 
@@ -41,64 +54,73 @@ Aria.classDefinition({
             trace : {
                 enable : this.enableTracing,
                 collapsed : false,
-                logTask : false,
+                logTask : this.logTaskInTrace,
                 color : 'blue'
             }
         });
+        this.sequencer = sequencer;
 
-        // ---------------------------------------------------------------------
+        // ---------------------------------------------------------- processing
 
         // Registers methods that are synchronous
         // The other ones will be considered asynchronous by default regarding the property set above
         // Also, not all methods need that, only those that are going to be used directly in task definitions
-        var synchronousMethods = ['checkCaretAndFocus', 'checkHighlightedOption', 'checkInsertedOptionsCount',
-                'shouldBeInHighlightedMode', 'shouldInputFieldBeFocused'];
-
-        synchronousMethods = this.HELPERS.map(synchronousMethods, function (name) {
+        sequencer.registerMethodsProperties(ariaUtilsArray.map([
+            'checkCaretAndFocus',
+            'checkHighlightedOption',
+            'checkInsertedOptionsCount',
+            'shouldBeInHighlightedMode',
+            'shouldInputFieldBeFocused'
+        ], function (name) {
             return {
                 name : name,
                 asynchronous : false
             };
-        });
+        }));
 
-        this.sequencer.registerMethodsProperties(synchronousMethods);
+        // ------------------------------------------------- internal attributes
 
         this._toDispose = [];
     },
 
     $destructor : function () {
         this.sequencer.$dispose();
-        var toDispose = this._toDispose;
-        for (var i = 0, len = toDispose.length; i < len; i++) {
-            toDispose[i].$dispose();
-        }
+
+        ariaUtilsArray.forEach(this._toDispose, function (instance) {
+            instance.$dispose();
+        });
+
         this.$MultiAutoCompleteRobotBase.$destructor.call(this);
     },
 
     $prototype : {
         runTemplateTest : function () {
             this.sequencer.run({
-                tasks : [{
-                            name : this.name,
-                            children : [{
-                                        name : 'Initialization',
-                                        children : '_initialization'
-                                    },
-
-                                    {
-                                        name : 'Test',
-                                        children : '_test'
-                                    }]
-                        }]
+                tasks : [
+                    {
+                        name : this.name,
+                        children : [
+                            {
+                                name : 'Initialization',
+                                children : '_initialization'
+                            },
+                            {
+                                name : 'Test',
+                                children : '_test'
+                            }
+                        ]
+                    }
+                ]
             });
         },
 
-        /***************************************************************************************************************
-         * Actions User actions: keyboard, clicks.
-         **************************************************************************************************************/
+        ////////////////////////////////////////////////////////////////////////
+        // User actions: keyboard, clicks.
+        ////////////////////////////////////////////////////////////////////////
 
         /**
          * Types given keys in one shot into the currently focused element in the page.
+         *
          * @param[in] task The task context in which this method is being called.
          * @param[in] {String} keys Key identifiers
          */
@@ -111,6 +133,7 @@ Aria.classDefinition({
 
         /**
          * Enters given sequence of text.
+         *
          * @param[in] task The task context in which this method is being called.
          * @param[in] {String|Array{String}} textSequence An array of input or a simple string (corresponding to a
          * sequence with one item)
@@ -118,26 +141,26 @@ Aria.classDefinition({
          * sequence.
          */
         typeSequence : function (task, textSequence, delay) {
-            // Input arguments processing --------------------------------------
+            // -------------------------------------- input arguments processing
 
-            // ---------------------------------------------------- textSequence
+            // textSequence ----------------------------------------------------
 
-            if (aria.utils.Type.isString(textSequence)) {
+            if (ariaUtilsType.isString(textSequence)) {
                 textSequence = [textSequence];
-            } else if (!aria.utils.Type.isArray(textSequence)) {
+            } else if (!ariaUtilsType.isArray(textSequence)) {
                 throw new Error('Invalid given textSequence. Should be an array or a string, got: ' + textSequence);
             }
 
-            // ----------------------------------------------------------- delay
+            // delay -----------------------------------------------------------
 
             if (delay == null) {
                 delay = this.defaultDelay;
             }
 
-            // Processing ------------------------------------------------------
+            // ------------------------------------------------------ processing
 
             var tasks = [];
-            aria.utils.Array.forEach(textSequence, function (text) {
+            ariaUtilsArray.forEach(textSequence, function (text) {
                 tasks.push({
                     name : 'Type...',
                     method : 'type',
@@ -150,14 +173,14 @@ Aria.classDefinition({
                 });
             });
 
-            var sequencer = new test.aria.widgets.form.multiautocomplete.navigation.Sequencer({
+            var sequencer = new Sequencer({
                 scope : this,
 
                 asynchronous : true,
                 trace : {
                     enable : this.enableTracing,
                     collapsed : false,
-                    logTask : false,
+                    logTask : this.logTaskInTrace,
                     color : 'green'
                 }
             });
@@ -169,11 +192,12 @@ Aria.classDefinition({
 
         /**
          * Waits for a given time.
+         *
          * @param[in] task The task context in which this method is being called.
          * @param[in] {Number} delay The duration to wait.
          */
         wait : function (task, delay) {
-            aria.core.Timer.addCallback({
+            ariaCoreTimer.addCallback({
                 fn : task.end,
                 scope : task,
                 delay : delay
@@ -182,22 +206,21 @@ Aria.classDefinition({
 
         /**
          * Presses the key corresponding to the given name.
+         *
          * @param[in] task The task context in which this method is being called.
          * @param[in] {String} keyName The name of the key to press.
          * @param[in] {Number} times The number of times to press the key. Defaults to 1.
          */
         pressKey : function (task, keyName, times) {
-            // Input arguments processing --------------------------------------
-
-            // ----------------------------------------------------------- times
+            // -------------------------------------- input arguments processing
 
             if (times == null) {
                 times = 1;
             }
 
-            // Processing ------------------------------------------------------
+            // ------------------------------------------------------ processing
 
-            var keySequence = this.HELPERS.repeat("[" + keyName + "]", times);
+            var keySequence = ariaUtilsArray.repeatValue("[" + keyName + "]", times);
 
             this.typeSequence(task, keySequence);
         },
@@ -207,29 +230,32 @@ Aria.classDefinition({
          * @see pressKey
          */
         pressLeftArrow : function () {
-            this.pressKey.apply(this, this.HELPERS.insertInArray(arguments, 'left', 1));
+            this.pressKey.apply(this, ariaUtilsArray.insert(arguments, 'left', 1));
         },
         /**
          * Presses the right arrow key.
          * @see pressKey
          */
         pressRightArrow : function () {
-            this.pressKey.apply(this, this.HELPERS.insertInArray(arguments, 'right', 1));
+            this.pressKey.apply(this, ariaUtilsArray.insert(arguments, 'right', 1));
         },
         /**
          * Presses the tab key.
          * @see pressKey
          */
         pressTab : function () {
-            this.pressKey.apply(this, this.HELPERS.insertInArray(arguments, 'tab', 1));
+            this.pressKey.apply(this, ariaUtilsArray.insert(arguments, 'tab', 1));
         },
 
-        /***************************************************************************************************************
-         * Specific actions User actions which interact specifically with components of the widget.
-         **************************************************************************************************************/
+
+
+        ////////////////////////////////////////////////////////////////////////
+        // Specific user actions which interact specifically with components of the widget.
+        ////////////////////////////////////////////////////////////////////////
 
         /**
          * Focuses the input field.
+         *
          * @param[in] task The task context in which this method is being called.
          */
         focusInputField : function (task) {
@@ -241,6 +267,7 @@ Aria.classDefinition({
 
         /**
          * Inserts text into the input field.
+         *
          * @param[in] task The task context in which this method is being called.
          * @param[in] {String} text The text to enter in the input
          */
@@ -251,22 +278,25 @@ Aria.classDefinition({
         /**
          * Executes all the necessary events in order to select a suggestion from the dropdown list and insert it into
          * the widget.
+         *
          * @param[in] task The task context in which this method is being called.
-         * @param[in] {Array{String}} inputs A list of text input values to use to match available suggestions. Only the
-         * first matching selection gets inserted.
+         * @param[in] {Array{String}} inputs A list of text input values to use to match available suggestions. Only the first matching selection gets inserted.
          * @param[in] {Boolean} Whether the current state has to be restored after the selection
          */
         selectSuggestions : function (task, inputs, restore) {
-            // Backup state ----------------------------------------------------
+            // ------------------------------------------------------ processing
+
+            // backup state ----------------------------------------------------
 
             var field = this._getField();
             var backup = {
                 focused : this.getFocusedElement(),
                 value : field.value,
-                caret : aria.utils.Caret.getPosition(field)
+                caret : ariaUtilsCaret.getPosition(field)
             };
 
-            // Insert options --------------------------------------------------
+            // insert options --------------------------------------------------
+
             if (restore) {
                 field.value = "";
             }
@@ -279,8 +309,7 @@ Aria.classDefinition({
                         asynchronous : true
                     }];
 
-            aria.utils.Array.forEach(inputs, function (input) {
-
+            ariaUtilsArray.forEach(inputs, function (input) {
                 tasks.push({
                     name : 'Type sequence',
                     method : 'typeSequence',
@@ -308,19 +337,19 @@ Aria.classDefinition({
                     name : 'Restore state',
                     fn : function () {
                         field.value = backup.value;
-                        aria.utils.Caret.setPosition(field, backup.caret);
+                        ariaUtilsCaret.setPosition(field, backup.caret);
                         backup.focused.focus();
                     },
                     asynchronous : false
                 });
             }
 
-            var sequencer = new test.aria.widgets.form.multiautocomplete.navigation.Sequencer({
+            var sequencer = new Sequencer({
                 scope : this,
 
                 trace : {
                     enable : this.enableTracing,
-                    logTask : false,
+                    logTask : this.logTaskInTrace,
                     collapsed : false,
                     color : 'orange'
                 }
@@ -331,11 +360,16 @@ Aria.classDefinition({
             sequencer.root(tasks).runAsTask(task);
         },
 
-        /***************************************************************************************************************
-         * States tests
-         **************************************************************************************************************/
 
-        // Helpers -------------------------------------------------------------
+
+        ////////////////////////////////////////////////////////////////////////
+        // States tests
+        ////////////////////////////////////////////////////////////////////////
+
+        ////////////////////////////////////////////////////////////////////////
+        // States tests > Helpers
+        ////////////////////////////////////////////////////////////////////////
+
         /**
          * Tells whether the input field is focused or not.
          * @see aria.widgets.form.MultiAutoComplete.isInputFieldFocused
@@ -360,9 +394,11 @@ Aria.classDefinition({
             return this._getWidgetInstance().insertedOptionsCount();
         },
 
-        // Tasks ---------------------------------------------------------------
+        ////////////////////////////////////////////////////////////////////////
+        // States tests > Tasks
+        ////////////////////////////////////////////////////////////////////////
 
-        // ---------------------------------------------------- Selected options
+        // selected options ----------------------------------------------------
 
         /**
          * Checks the number of inserted options.
@@ -377,7 +413,7 @@ Aria.classDefinition({
                     + " instead of " + count);
         },
 
-        // -------------------------------------------------------- Highlighting
+        // highlighting --------------------------------------------------------
 
         /**
          * Checks if the widget highlighted mode is in proper state.
@@ -403,12 +439,14 @@ Aria.classDefinition({
             this.checkHighlightedElementsIndices([index]);
         },
 
-        // --------------------------------------------------------- Input field
+        // input field ---------------------------------------------------------
 
         /**
          * Checks if the input field focus is in proper state.
+         *
          * @param[in] task The task context in which this method is being called.
          * @param[in] {Boolean} should <code>true</code> if it should be focused, <code>false</code> otherwise.
+         *
          * @see isInputFieldFocused
          */
         shouldInputFieldBeFocused : function (task, should) {
@@ -422,20 +460,26 @@ Aria.classDefinition({
 
         /**
          * Checks the position of the caret in the input field, and also that the latter is focused.
+         *
          * @param[in] task The task context in which this method is being called.
          * @param[in] {Number} expectedPosition The expected position of the caret. Only the start index. 0-based.
+         *
          * @see shouldInputFieldBeFocused
          */
         checkCaretAndFocus : function (task, expectedPosition) {
             this.shouldInputFieldBeFocused(null, true);
 
-            var position = aria.utils.Caret.getPosition(this._getField()).start;
-            this.assertEquals(position, expectedPosition, "Actual caret position: " + position + ". Expected: "
-                    + expectedPosition);
+            var position = ariaUtilsCaret.getPosition(this._getField()).start;
+            this.assertEquals(
+                position,
+                expectedPosition,
+                "Actual caret position: " + position + ". Expected: " + expectedPosition
+            );
         },
 
         /**
          * Check that the dropdown is open or closed.
+         *
          * @param[in] task The task context in which this method is being called.
          * @param[in] {Boolean} open Whether we want the dropdown to be closed or open before going on with the task.
          */
@@ -444,7 +488,6 @@ Aria.classDefinition({
                 fn : task.end,
                 scope : task
             });
-
         }
     }
 });

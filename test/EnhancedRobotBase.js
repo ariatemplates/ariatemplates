@@ -18,6 +18,7 @@ var Aria = require('ariatemplates/Aria');
 var ariaUtilsJson = require('ariatemplates/utils/Json');
 var ariaUtilsArray = require('ariatemplates/utils/Array');
 var ariaUtilsString = require('ariatemplates/utils/String');
+var subst = ariaUtilsString.substitute;
 var ariaUtilsType = require('ariatemplates/utils/Type');
 var ariaUtilsDom = require('ariatemplates/utils/Dom');
 
@@ -30,10 +31,6 @@ var ariaJsunitRobotTestCase = require('ariatemplates/jsunit/RobotTestCase');
 ////////////////////////////////////////////////////////////////////////////////
 // Helpers
 ////////////////////////////////////////////////////////////////////////////////
-
-function _string_capitalize(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-}
 
 function createAsyncWrapper(fn) {
     function wrapper(callback) {
@@ -123,10 +120,10 @@ var prototype = {
         return this._createPredicate(function () {
             return this.getWidgetInstance(id)._popup != null;
         }, function (shouldBeTrue) {
-            return ariaUtilsString.substitute('Dialog with id "%1" should be %2.', [
+            return subst('Dialog with id "%1" should be %2.',
                 id,
                 shouldBeTrue ? 'opened' : 'closed'
-            ]);
+            );
         }, this);
     },
 
@@ -403,12 +400,12 @@ var prototype = {
         }
 
         var message = 'Widget "%1" should have attribute "%2" set to "%3", it has value "%4" instead';
-        message = ariaUtilsString.substitute(message, [
+        message = subst(message,
             id,
             attributeName,
             expected,
             attribute
-        ]);
+        );
 
         this.assertTrue(condition, message);
     },
@@ -618,7 +615,7 @@ ariaUtilsArray.forEach(commonKeys, function (keySpec) {
 
     // -------------------------------------------------------------- processing
 
-    var capitalizedName = _string_capitalize(name);
+    var capitalizedName = ariaUtilsString.capitalize(name);
 
     function addMethod(baseName, method) {
         var methodName = '_' + baseName + capitalizedName;

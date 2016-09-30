@@ -13,16 +13,26 @@
  * limitations under the License.
  */
 
+var Aria = require('ariatemplates/Aria');
+
+var ariaCoreBrowser = require('ariatemplates/core/Browser');
+
+var ariaUtilsType = require('ariatemplates/utils/Type');
+var ariaUtilsArray = require('ariatemplates/utils/Array');
+
+
+
+
 /**
  * A task is a processing run and managed by a sequence.
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "test.aria.widgets.form.multiautocomplete.navigation.Task",
-    $dependencies : ["aria.utils.Type", "aria.core.Browser",
-            "test.aria.widgets.form.multiautocomplete.navigation.Helpers"],
+
     /**
      * Builds a new Task. The specifications object is more or less the same as what
      * <code>aria.core.Sequencer.addTask</code> expects. General properties:
+     *
      * <ul>
      * <li><code>parent</code> /
      * <code>test.aria.widgets.form.multiautocomplete.navigation.Sequence</code>: the container of the
@@ -56,18 +66,18 @@ Aria.classDefinition({
      * @param[in] {Object} spec Specifications of the task. See full description for more information.
      */
     $constructor : function (spec) {
-        this.HELPERS = test.aria.widgets.form.multiautocomplete.navigation.Helpers;
+        // ---------------------------------------------------------- properties
 
-        // -------------------------------------------------------------- parent
+        // parent --------------------------------------------------------------
 
         var parent = spec.parent;
         if (parent != null) {
             this.parent = parent;
         }
 
-        // Description ---------------------------------------------------------
+        // description ---------------------------------------------------------
 
-        // ---------------------------------------------------------------- name
+        // description > name --------------------------------------------------
 
         var name = spec.name;
         if (name == null) {
@@ -76,9 +86,9 @@ Aria.classDefinition({
         name = "" + name;
         this.name = name;
 
-        // Callback ------------------------------------------------------------
+        // callback ------------------------------------------------------------
 
-        // --------------------------------------------------------------- scope
+        // callback > scope ----------------------------------------------------
 
         var scope = spec.scope;
         if (scope == null) {
@@ -89,13 +99,13 @@ Aria.classDefinition({
         }
         this.scope = scope;
 
-        // ---------------------------------------------------------------- args
+        // callback > args -----------------------------------------------------
 
         var args = spec.args;
-        args = this.HELPERS.arrayFactory(args);
+        args = ariaUtilsArray.ensureWrap(args);
         this.args = args;
 
-        // -------------------------------------------------------- asynchronous
+        // callback > asynchronous ---------------------------------------------
 
         var asynchronous = spec.asynchronous;
         if (asynchronous == null) {
@@ -104,38 +114,44 @@ Aria.classDefinition({
         asynchronous = !!asynchronous;
         this.asynchronous = asynchronous;
 
-        // ------------------------------------------------------------------ fn
+        // fn ------------------------------------------------------------------
 
         var fn = spec.fn;
-        if (!aria.utils.Type.isFunction(fn)) {
+
+        if (!ariaUtilsType.isFunction(fn)) {
             throw Error('The function to be used by the task is not properly specified. Got: ' + fn);
         }
+
         this.fn = fn;
 
-        // --------------------------------------------------------------- trace
+        // trace ---------------------------------------------------------------
 
         var trace = spec.trace;
         this.trace = {};
-        if (aria.utils.Type.isObject(trace)) {
-            // ---------------------------------------------------------- enable
+        if (ariaUtilsType.isObject(trace)) {
+            // trace > enable --------------------------------------------------
 
             var enable = trace.enable;
+
             if (enable == null) {
                 enable = trace.activate;
             }
             enable = !!enable;
+
             this.trace.enable = enable;
 
-            // --------------------------------------------------------collapsed
+            // trace > collapsed------------------------------------------------
 
             var collapsed = trace.collapsed;
+
             if (collapsed == null) {
                 collapsed = false;
             }
             collapsed = !!collapsed;
+
             this.trace.collapsed = collapsed;
 
-            // --------------------------------------------------------- logTask
+            // trace > logTask -------------------------------------------------
 
             var logTask = trace.logTask;
             if (logTask == null) {
@@ -144,30 +160,34 @@ Aria.classDefinition({
             logTask = !!logTask;
             this.trace.logTask = logTask;
 
-            // ----------------------------------------------------------- color
+            // trace > color ---------------------------------------------------
 
             var color = spec.color;
+
             if (color == null) {
                 color = 'black';
             }
             color = "" + color;
+
             this.trace.color = color;
         }
 
-        // --------------------------------------------------------- hasChildren
+        // hasChildren ---------------------------------------------------------
 
         var hasChildren = spec.hasChildren;
+
         if (hasChildren == null) {
             hasChildren = false;
         }
         hasChildren = !!hasChildren;
+
         this.hasChildren = hasChildren;
     },
     $prototype : {
         /**
-         * Returns the function to be passed the actual underlying task. Behind the scenes a task definition as expected
-         * by <code>aria.core.Sequencer.addTask</code> is used. This method return a wrapper function around the one
+         * Returns the function to be passed the actual underlying task. Behind the scenes a task definition as expected by <code>aria.core.Sequencer.addTask</code> is used. This method return a wrapper function around the one
          * given in the specifications of the task, in order to take care of things such as:
+         *
          * <ul>
          * <li>proper arguments passing</li>
          * <li>tracing</li>
@@ -178,21 +198,23 @@ Aria.classDefinition({
             var self = this;
 
             return function (task) {
-                // Tracing -----------------------------------------------------
+                // -------------------------------------------------- processing
+
+                // tracing -----------------------------------------------------
 
                 if (self.trace.enable) {
                     var console = Aria.$window.console;
 
-                    // ------------------------------------------------- message
+                    // message -------------------------------------------------
 
                     var message;
-                    if (aria.core.Browser.isWebkit) {
+                    if (ariaCoreBrowser.isWebkit) {
                         message = ['%c' + self.name, 'color: ' + self.trace.color];
                     } else {
                         message = [self.name];
                     }
 
-                    // ---------------------------------------------- Log method
+                    // log method ----------------------------------------------
 
                     var logMethod;
                     if (!self.hasChildren) {
@@ -205,7 +227,7 @@ Aria.classDefinition({
                         }
                     }
 
-                    // ----------------------------------------------------- Log
+                    // log -----------------------------------------------------
 
                     logMethod.apply(console, message);
 
@@ -214,31 +236,31 @@ Aria.classDefinition({
                     }
                 }
 
-                // State update ------------------------------------------------
+                // state update ------------------------------------------------
 
                 self.__isRunning = true;
                 self.task = task;
 
-                // Callback call -----------------------------------------------
+                // callback call -----------------------------------------------
 
                 var args = [self].concat(self.args);
                 var result = self.fn.apply(self.scope, args);
 
-                // Synchronous tasks: automatic end call -----------------------
+                // synchronous tasks: automatic end call -----------------------
 
                 if (!self.asynchronous) {
                     self.end();
                 }
 
-                // Return ------------------------------------------------------
+                // ------------------------------------------------------ return
 
                 return result;
             };
         },
 
         /**
-         * Tells whether the task is running or not. A task is considered being running as soon as the function returned
-         * by <code>getFn</code> has been invoked and until the method <code>end</code> has not been called.
+         * Tells whether the task is running or not. A task is considered being running as soon as the function returned by <code>getFn</code> has been invoked and until the method <code>end</code> has not been called.
+         *
          * @return {Boolean} <code>true</code> if the task is running, <code>false</code> otherwise.
          */
         isRunning : function () {

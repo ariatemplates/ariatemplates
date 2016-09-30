@@ -13,7 +13,15 @@
  * limitations under the License.
  */
 
-Aria.tplScriptDefinition({
+var Aria = require('ariatemplates/Aria');
+
+var ariaUtilsArray = require('ariatemplates/utils/Array');
+var ariaUtilsObject = require('ariatemplates/utils/Object');
+var ariaUtilsFunction = require('ariatemplates/utils/Function');
+
+
+
+module.exports = Aria.tplScriptDefinition({
     $classpath: 'test.aria.widgets.wai.input.actionWidget.TplScript',
     $destructor: function () {
         this.view.$dispose();
@@ -180,19 +188,19 @@ Aria.tplScriptDefinition({
         _createWidget : function(common, spec) {
             // --------------------------------------------------- destructuring
 
-            // -----------------------------------------------------------------
+            // common ----------------------------------------------------------
 
             var supportsLabel = common.supportsLabel;
             var commonWidgetConfiguration = common.commonWidgetConfiguration;
 
-            // -----------------------------------------------------------------
+            // spec ------------------------------------------------------------
 
             var content = spec.content;
             var configuration = spec.configuration;
 
             // ------------------------------------------------------ processing
 
-            this.assign(configuration, commonWidgetConfiguration);
+            ariaUtilsObject.assign(configuration, commonWidgetConfiguration);
 
             if (configuration.waiAria == null) {
                 configuration.waiAria = true;
@@ -210,37 +218,16 @@ Aria.tplScriptDefinition({
             };
         },
 
-        assign: function(destination, source) {
-            for (var property in source) {
-                if (source.hasOwnProperty(property)) {
-                    destination[property] = source[property];
-                }
-            }
-
-            return destination;
-        },
-
         _filterWidgetsTypes: function(widgetsTypes) {
-            var result = [];
-            for (var index = 0, length = widgetsTypes.length; index < length; index++) {
-                var widgetType = widgetsTypes[index];
-
-                if (this._keepWidgetTypePredicate(widgetType)) {
-                    result.push(widgetType);
-                }
-            }
-
-            return result;
+            return ariaUtilsArray.filter(
+                widgetsTypes,
+                ariaUtilsFunction.bind(this._keepWidgetTypePredicate, this)
+            );
         },
 
         _keepWidgetTypePredicate: function(widgetType) {
             var selectedWidgetTypeName = this.data.selectedWidgetTypeName;
-
-            if (selectedWidgetTypeName == null) {
-                return true;
-            }
-
-            return widgetType.name === selectedWidgetTypeName;
+            return selectedWidgetTypeName == null || widgetType.name === selectedWidgetTypeName;
         }
     }
 });

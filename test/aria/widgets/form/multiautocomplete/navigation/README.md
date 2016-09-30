@@ -14,9 +14,9 @@ After a user action has been simulated, some checks have to be done. This is usu
 
 It is usually quite painful to handle mix of synchronous and asynchronous from a pure programming point of view. However, there is a class in the framework which handles the two in a quite nice way: `aria.core.Sequencer`. The thing is that I think it would have been enhanced, so I rebuilt a sequencing system based on this one. Here are the files:
 
-* [`Sequencer.js`](./Sequencer.js)
-* [`Sequence.js`](./Sequence.js)
-* [`Task.js`](./Task.js)
+- [`Sequencer.js`](./Sequencer.js)
+- [`Sequence.js`](./Sequence.js)
+- [`Task.js`](./Task.js)
 
 Please refer to those files for embedded documentation.
 
@@ -26,9 +26,9 @@ Concerning [`Helpers.js`](./Helpers.js), as its name suggests, it holds a set of
 
 There is one base class which sets up multiple things ([`BaseTestCase.js`](./RobotBase.js)):
 
-* helpers, shortcuts are put in place
-* utility methods are defined: to simulate user actions and to do checks for the tests. They all support the invocation through the sequencing system invoked above (proper synchronization is done).
-* the main sequence is instantiated, ready to be used directly by actual tests
+- helpers, shortcuts are put in place
+- utility methods are defined: to simulate user actions and to do checks for the tests. They all support the invocation through the sequencing system invoked above (proper synchronization is done).
+- the main sequence is instantiated, ready to be used directly by actual tests
 
 Then actual tests are defined in subfolders. They all define their own hierarchy of tasks to be executed to play the test, according to how the sequencing system works. It's quite straightforward to understand.
 

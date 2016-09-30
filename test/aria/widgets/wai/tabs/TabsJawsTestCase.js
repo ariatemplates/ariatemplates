@@ -15,6 +15,7 @@
 
 var Aria = require('ariatemplates/Aria');
 
+var ariaUtilsAlgo = require('ariatemplates/utils/Algo');
 var ariaUtilsArray = require('ariatemplates/utils/Array');
 var ariaUtilsFunction = require('ariatemplates/utils/Function');
 
@@ -172,17 +173,11 @@ module.exports = Aria.classDefinition({
                 }
 
                 function goThroughTabs(selectedTabIndex) {
-                    ariaUtilsArray.forEach(tabs, function (tab, index) {
-                        down();
-                    });
+                    ariaUtilsArray.forEach(tabs, down);
                 }
 
                 function goThroughTabpanel() {
-                    down();
-                    down();
-                    down();
-                    down();
-                    down();
+                    ariaUtilsAlgo.times(5, down);
                 }
 
                 // -------------------------------------------------- processing

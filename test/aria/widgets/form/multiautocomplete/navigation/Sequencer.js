@@ -13,40 +13,51 @@
  * limitations under the License.
  */
 
+var Aria = require('ariatemplates/Aria');
+
+var ariaUtilsType = require('ariatemplates/utils/Type');
+var ariaUtilsArray = require('ariatemplates/utils/Array');
+
+var Sequence = require('./Sequence');
+var Task = require('./Task');
+
+
+
 /**
- * Helper to build a hierarchy of tasks. Tasks are instance of
- * <code>test.aria.widgets.form.multiautocomplete.navigation.Task</code>. A tree of tasks can be built
- * using tasks containers, which are instances of
- * <code>test.aria.widgets.form.multiautocomplete.navigation.Sequence</code>. What this current class
- * does if acting like a factory. It holds default properties for the tasks to be created. Thanks to the specification
- * of the scope, the way functions are passed to the tasks can be improved: the name of the corresponding property can
- * be used instead of the actual reference to the function. It is able to build a hierarchy of tasks from a hierarchy of
- * objects: when an object has a <code>children</code> property it builds a list of children tasks (a sequence). This
- * property can directly hold the subgraph of task or be the name of a property inside the default scope. In turns, this
- * property can either directly hold the subgraph, or be a method that return it (allows scoping).
+ * Helper to build a hierarchy of tasks.
+ *
+ * Tasks are instance of <code>test.aria.widgets.form.multiautocomplete.navigation.Task</code>. A tree of tasks can be built using tasks containers, which are instances of <code>test.aria.widgets.form.multiautocomplete.navigation.Sequence</code>.
+ *
+ * What this current class does if acting like a factory. It holds default properties for the tasks to be created.
+ *
+ * Thanks to the specification of the scope, the way functions are passed to the tasks can be improved: the name of the corresponding property can be used instead of the actual reference to the function.
+ *
+ * It is able to build a hierarchy of tasks from a hierarchy of objects: when an object has a <code>children</code> property it builds a list of children tasks (a sequence). This property can directly hold the subgraph of task or be the name of a property inside the default scope. In turns, this property can either directly hold the subgraph, or be a method that return it (allows scoping).
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "test.aria.widgets.form.multiautocomplete.navigation.Sequencer",
-    $dependencies : ["aria.utils.Type", "aria.utils.Array",
-            "test.aria.widgets.form.multiautocomplete.navigation.Sequence",
-            "test.aria.widgets.form.multiautocomplete.navigation.Task",
-            "test.aria.widgets.form.multiautocomplete.navigation.Helpers"],
+
     /**
      * Builds a new Sequencer. Default properties for tasks added to this sequencer:
+     *
      * <ul>
      * <li><code>scope</code>: default to an empty object</li>
      * <li><code>asynchronous</code> / <code>Boolean</code>: whether tasks have to be considered asynchronous by default or not</li>
      * <li><code>trace</code>: tracing configuration</li>
      * </ul>
+     *
      * @param[in] defaults {Object} Default properties. See full description for more information.
      */
     $constructor : function (defaults) {
-        this.HELPERS = test.aria.widgets.form.multiautocomplete.navigation.Helpers;
+        // ------------------------------------------------- internal attributes
+
         this.__methods = {};
+
+        // ---------------------------------------------------------- attributes
 
         // defaults ------------------------------------------------------------
 
-        // --------------------------------------------------------------- scope
+        // defaults > scope ----------------------------------------------------
 
         var scope = defaults.scope;
         if (scope == null) {
@@ -54,7 +65,7 @@ Aria.classDefinition({
         }
         this.scope = scope;
 
-        // -------------------------------------------------------- asynchronous
+        // defaults > asynchronous ---------------------------------------------
 
         var asynchronous = defaults.asynchronous;
         if (asynchronous != null) {
@@ -62,11 +73,11 @@ Aria.classDefinition({
             this.asynchronous = asynchronous;
         }
 
-        // --------------------------------------------------------------- trace
+        // defaults > trace ----------------------------------------------------
 
         this.trace = defaults.trace;
 
-        // --------------------------------------------------------------- onend
+        // defaults > onend ----------------------------------------------------
 
         var onend = defaults.onend;
 
@@ -76,15 +87,17 @@ Aria.classDefinition({
         }
         this._toDispose = [];
     },
+
     $destructor : function () {
-        var toDispose = this._toDispose;
-        for (var i = 0, len = toDispose.length; i < len; i++) {
-            toDispose[i].$dispose();
-        }
+        ariaUtilsArray.forEach(this._toDispose, function (instance) {
+            instance.$dispose();
+        });
     },
+
     $prototype : {
         /**
          * Builds and runs the whole tree of tasks. Specifications:
+         *
          * <ul>
          * <li> <code>onend</code> / <code>Object</code>: arguments corresponding to
          * <code>test.aria.widgets.form.multiautocomplete.navigation.Sequence.run</code>
@@ -97,11 +110,15 @@ Aria.classDefinition({
          * </ul>
          * @param[in] spec {Object} The specifications to build to root sequence and how to run it. See full description
          * for more details.
+         *
          * @return The root sequence.
+         *
          * @see root
          */
         run : function (spec) {
-            // ----------------------------------------------------------- onend
+            // -------------------------------------- input arguments processing
+
+            // onend -----------------------------------------------------------
 
             var onend = spec.onend;
 
@@ -115,24 +132,27 @@ Aria.classDefinition({
                 onend = this.resolveMethod(onend);
             }
 
-            // ----------------------------------------------------------- tasks
+            // tasks -----------------------------------------------------------
 
             var tasks = spec.tasks;
 
-            // Run -------------------------------------------------------------
+            // ------------------------------------------------------ processing
 
             var sequence = this.root(tasks);
             sequence.run(onend.fn, onend.scope);
 
-            // Return -------------------------------------------------------------
+            // ---------------------------------------------------------- return
 
             return sequence;
         },
 
         /**
          * Builds the whole tree of tasks.
+         *
          * @param[in] {Array} tasks The list of root tasks as expected by the method <code>sequence</code>.
+         *
          * @return The root sequence.
+         *
          * @see sequence
          */
         root : function (tasks) {
@@ -141,6 +161,7 @@ Aria.classDefinition({
 
         /**
          * Sequence factory. A sequence contains a list of tasks. There are two types of tasks:
+         *
          * <ul>
          * <li>the normal task let's say</li>
          * <li>the sequence itself: this enables to build a hierarchy to be able to build a hierarchy of tasks, some of
@@ -156,34 +177,37 @@ Aria.classDefinition({
          * <li>the name of the property (<code>String</code>) in the <code>scope</code> that contains either
          * directly the task spec or a function that will return it (as above)</li>
          * </ul>
+         *
          * @param[in] {String} name The name of the sequence.
          * @param[in] {Array} specs The list of elements to populate the sequence. It can be either a sequence
          * specifications or a task specifications. See full description for more details.
          */
         sequence : function (name, specs) {
-            // Sequence creation -----------------------------------------------
+            // sequence creation -----------------------------------------------
 
-            var sequence = new test.aria.widgets.form.multiautocomplete.navigation.Sequence({
+            var sequence = new Sequence({
                 name : name,
                 trace : this.trace
             });
             this._toDispose.push(sequence);
 
-            // Children addition -----------------------------------------------
+            // children addition -----------------------------------------------
 
-            aria.utils.Array.forEach(specs, function (spec) {
-                // -------------------------------------------------------- Task
+            ariaUtilsArray.forEach(specs, function (spec) {
                 if (spec.children == null) {
+                // task --------------------------------------------------------
+
                     sequence.addTask(this.task(spec));
                 } else {
-                    // ---------------------------------------------------- Sequence
+                // sequence ----------------------------------------------------
+
                     var children = spec.children;
 
-                    if (aria.utils.Type.isString(children)) {
+                    if (ariaUtilsType.isString(children)) {
                         children = this.scope[children];
                     }
 
-                    if (aria.utils.Type.isFunction(children)) {
+                    if (ariaUtilsType.isFunction(children)) {
                         children = children.apply(this.scope, spec.args || []);
                     }
 
@@ -191,13 +215,14 @@ Aria.classDefinition({
                 }
             }, this);
 
-            // Return ----------------------------------------------------------
+            // ---------------------------------------------------------- return
 
             return sequence;
         },
 
         /**
          * Task factory. Non processed properties:
+         *
          * <ul>
          * <li><code>name</code></li>
          * <li><code>args</code></li>
@@ -213,13 +238,14 @@ Aria.classDefinition({
          * <li><code>scope</code></li>
          * <li><code>trace</code></li>
          * </ul>
+         *
          * @param[in] spec Enhanced task specifications. Defaults and method resolution can be applied. See full
          * description for more details.
          */
         task : function (spec) {
             var cb = this.resolveMethod(spec);
 
-            var task = new test.aria.widgets.form.multiautocomplete.navigation.Task({
+            var task = new Task({
                 name : spec.name,
 
                 fn : cb.fn,
@@ -237,22 +263,23 @@ Aria.classDefinition({
 
         /**
          * Gives a "normalized" callback specifications from the input specifications. Defaults and so on are applied.
+         *
          * @param[in] {Object} spec The specifications of a task, or anything embedding a callback specifications
          */
         resolveMethod : function (spec) {
-            if (aria.utils.Type.isString(spec)) {
+            // ------------------------------------------------------ processing
+
+            if (ariaUtilsType.isString(spec)) {
                 spec = {
                     fn : spec
                 };
             }
 
-            // Input arguments processing --------------------------------------
-
-            // ------------------------------------------------------------ args
+            // args ------------------------------------------------------------
 
             var args = spec.args;
 
-            // -------------------------------------- fn (registered properties)
+            // fn (registered properties) --------------------------------------
 
             var fn = spec.fn;
 
@@ -261,7 +288,7 @@ Aria.classDefinition({
             }
 
             var registeredProperties;
-            if (aria.utils.Type.isString(fn)) {
+            if (ariaUtilsType.isString(fn)) {
                 registeredProperties = this.__methods[fn];
             }
 
@@ -269,7 +296,7 @@ Aria.classDefinition({
                 registeredProperties = {};
             }
 
-            // ----------------------------------------------------------- scope
+            // scope -----------------------------------------------------------
 
             var scope = spec.scope;
 
@@ -280,17 +307,17 @@ Aria.classDefinition({
                 scope = this.scope;
             }
 
-            // -------------------------------------------- fn (actual callback)
+            // fn (actual callback) --------------------------------------------
 
-            if (aria.utils.Type.isString(fn)) {
+            if (ariaUtilsType.isString(fn)) {
                 fn = scope[fn];
             }
 
-            if (!aria.utils.Type.isFunction(fn)) {
+            if (!ariaUtilsType.isFunction(fn)) {
                 throw new Error('Wrong function definition, got: ' + fn);
             }
 
-            // ---------------------------------------------------- asynchronous
+            // asynchronous ----------------------------------------------------
 
             var asynchronous = spec.asynchronous;
 
@@ -304,7 +331,7 @@ Aria.classDefinition({
 
             asynchronous = !!asynchronous;
 
-            // Return ----------------------------------------------------------
+            // ---------------------------------------------------------- return
 
             return {
                 fn : fn,
@@ -315,9 +342,9 @@ Aria.classDefinition({
         },
 
         registerMethodsProperties : function (specs) {
-            specs = this.HELPERS.arrayFactory(specs);
+            specs = ariaUtilsArray.ensureWrap(specs);
 
-            aria.utils.Array.forEach(specs, function (spec) {
+            ariaUtilsArray.forEach(specs, function (spec) {
                 var name = spec.name;
                 var asynchronous = spec.asynchronous;
                 var scope = spec.scope;

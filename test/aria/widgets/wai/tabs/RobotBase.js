@@ -17,6 +17,7 @@ var Aria = require('ariatemplates/Aria');
 
 var ariaUtilsArray = require('ariatemplates/utils/Array');
 var ariaUtilsString = require('ariatemplates/utils/String');
+var subst = ariaUtilsString.substitute;
 
 var Model = require('./Model');
 
@@ -215,7 +216,7 @@ module.exports = Aria.classDefinition({
                     message = 'The wrong tab is selected: "%1" instead of "%2".';
                 }
 
-                return ariaUtilsString.substitute(message, [selectedTab, id]);
+                return subst(message, selectedTab, id);
             });
         },
 

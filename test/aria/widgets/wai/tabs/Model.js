@@ -13,7 +13,10 @@
  * limitations under the License.
  */
 
+var ariaUtilsAlgo = require('ariatemplates/utils/Algo');
 var ariaUtilsArray = require('ariatemplates/utils/Array');
+var ariaUtilsString = require('ariatemplates/utils/String');
+var subst = ariaUtilsString.substitute;
 
 
 
@@ -26,7 +29,7 @@ function Group(waiAria, id, bindingContainer, macro, tabsUnder) {
 
     this.waiAria = waiAria;
     this.id = id;
-    this.elementBeforeId = 'before_' + id;
+    this.elementBeforeId = subst('before_%1', id);
 
     if (tabsUnder == null) {
         tabsUnder = false;
@@ -44,18 +47,16 @@ function Group(waiAria, id, bindingContainer, macro, tabsUnder) {
     var tabPanel = new TabPanel(waiAria, id, binding, macro);
     this.tabPanel = tabPanel;
 
-    var tabs = [];
-    this.tabs = tabs;
-
-    for (var index = 0, length = 3; index < length; index++) {
-        var label = 'Tab ' + index;
-        var tabId = id + '_tab_' + index;
+    var tabs = ariaUtilsAlgo.times(3, function (index) {
+        var label = subst('Tab %1', index);
+        var tabId = subst('%1_tab_%2', id, index);
         var disabled = index === 1 ? true : false;
 
         var tab = new Tab(waiAria, tabId, binding, label, disabled);
 
-        tabs.push(tab);
-    }
+        return tab;
+    });
+    this.tabs = tabs;
 }
 
 function TabPanel(waiAria, id, binding, macro) {
@@ -114,9 +115,7 @@ function buildData(index) {
     var macro = 'displayTabPanel';
     var bindingContainer = {};
 
-    var groups = [];
-
-    ariaUtilsArray.forEach([
+    var groups = ariaUtilsArray.map([
         {
             id: 'up',
             waiAria: false,
@@ -138,13 +137,13 @@ function buildData(index) {
             tabsUnder: true
         }
     ], function (spec) {
-        groups.push(new Group(
+        return new Group(
             spec.waiAria,
             spec.id,
             bindingContainer,
             macro,
             spec.tabsUnder
-        ));
+        );
     });
 
     return {

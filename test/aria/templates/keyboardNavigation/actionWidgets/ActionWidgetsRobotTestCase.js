@@ -16,6 +16,7 @@
 var Aria = require('ariatemplates/Aria');
 
 var ariaUtilsString = require('ariatemplates/utils/String');
+var subst = ariaUtilsString.substitute;
 var ariaUtilsJson = require('ariatemplates/utils/Json');
 var ariaUtilsArray = require('ariatemplates/utils/Array');
 
@@ -209,9 +210,9 @@ module.exports = Aria.classDefinition({
 
             var condition = count === expected;
 
-            var message = ariaUtilsString.substitute(
+            var message = subst(
                 'Widget "%1" has not be actioned the expected number of times: %2 instead of %3',
-                [id, count, expected]
+                id, count, expected
             );
 
             this.assertTrue(condition, message);

@@ -16,6 +16,7 @@
 var Aria = require('ariatemplates/Aria');
 
 var ariaUtilsString = require('ariatemplates/utils/String');
+var subst = ariaUtilsString.substitute;
 var ariaUtilsJson = require('ariatemplates/utils/Json');
 
 
@@ -140,15 +141,15 @@ module.exports = Aria.classDefinition({
                 var expectedValue = data.label;
 
                 condition = attributeValue === expectedValue;
-                message = ariaUtilsString.substitute(
+                message = subst(
                     'The icon should have a label with value "%1", instead it has the value "%2"',
-                    [expectedValue, attributeValue]
+                    expectedValue, attributeValue
                 );
             } else {
                 condition = !attributeValue;
-                message = ariaUtilsString.substitute(
+                message = subst(
                     'The icon should not have a label value, instead it has the value "%1"',
-                    [attributeValue]
+                    attributeValue
                 );
             }
 
@@ -176,15 +177,15 @@ module.exports = Aria.classDefinition({
                 var expectedValue = 'button';
 
                 condition = attributeValue === expectedValue;
-                message = ariaUtilsString.substitute(
+                message = subst(
                     'The icon should have a role with value "%1", instead it has the value "%2"',
-                    [expectedValue, attributeValue]
+                    expectedValue, attributeValue
                 );
             } else {
                 condition = !attributeValue;
-                message = ariaUtilsString.substitute(
+                message = subst(
                     'The icon should not have a role, instead it has the value "%1"',
-                    [attributeValue]
+                    attributeValue
                 );
             }
 
@@ -206,9 +207,7 @@ module.exports = Aria.classDefinition({
             var isIconFocused = this._createPredicate(function () {
                 return this._isWidgetFocused(id);
             }, function (shouldBeTrue) {
-                return ariaUtilsString.substitute('Icon should%1be focused.', [
-                    shouldBeTrue ? ' ' : ' not '
-                ]);
+                return subst('Icon should%1be focused.', shouldBeTrue ? ' ' : ' not ');
             });
 
             this._localAsyncSequence(function (add) {

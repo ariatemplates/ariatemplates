@@ -15,7 +15,9 @@
 
 var Aria = require('ariatemplates/Aria');
 
+var ariaUtilsAlgo = require('ariatemplates/utils/Algo');
 var ariaUtilsArray = require('ariatemplates/utils/Array');
+var ariaUtilsFunction = require('ariatemplates/utils/Function');
 
 var EnhancedJawsTestCase = require('test/EnhancedJawsBase');
 
@@ -310,10 +312,7 @@ module.exports = Aria.classDefinition({
                     var expectedOutput = traversalTestData.expectedOutput;
 
                     selectStartPoint();
-                    while (actionsCount > 0) {
-                        specialKey(key);
-                        actionsCount--;
-                    }
+                    ariaUtilsAlgo.times(actionsCount, ariaUtilsFunction.bind(specialKey, null, key));
                     says(expectedOutput.join('\n'));
                 });
             });

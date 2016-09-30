@@ -16,6 +16,7 @@
 var Aria = require('ariatemplates/Aria');
 
 var ariaUtilsString = require('ariatemplates/utils/String');
+var subst = ariaUtilsString.substitute;
 var ariaUtilsArray = require('ariatemplates/utils/Array');
 
 var ariaResourcesHandlersLCResourcesHandler = require('ariatemplates/resources/handlers/LCResourcesHandler');
@@ -338,9 +339,10 @@ module.exports = Aria.classDefinition({
             return this._createPredicate(function () {
                 return this.isWidgetDropDownPopupOpened(id);
             }, function (shouldBeTrue) {
-                return ariaUtilsString.substitute(
+                return subst(
                     'Widget "%1" should have its dropdown %2',
-                    [id, shouldBeTrue ? 'open' : 'closed']
+                    id,
+                    shouldBeTrue ? 'open' : 'closed'
                 );
             }, this);
         }

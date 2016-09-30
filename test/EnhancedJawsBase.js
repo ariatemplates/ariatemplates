@@ -20,20 +20,7 @@ var ariaJsunitJawsTestCase = require('ariatemplates/jsunit/JawsTestCase');
 
 var ariaUtilsFunction = require('ariatemplates/utils/Function');
 var ariaUtilsArray = require('ariatemplates/utils/Array');
-
-
-
-////////////////////////////////////////////////////////////////////////////////
-// Library
-////////////////////////////////////////////////////////////////////////////////
-
-function objectAssignDefault(destination, source) {
-    for (var key in source) {
-        if (source.hasOwnProperty(key) && !destination.hasOwnProperty(key)) {
-            destination[key] = source[key];
-        }
-    }
-}
+var ariaUtilsObject = require('ariatemplates/utils/Object');
 
 
 
@@ -60,7 +47,7 @@ module.exports = Aria.classDefinition({
 
     $prototype : {
         $init : function (prototype) {
-            objectAssignDefault(prototype, EnhancedRobotTestCase.prototype);
+            ariaUtilsObject.defaults(prototype, EnhancedRobotTestCase.prototype);
         },
 
 
@@ -117,13 +104,9 @@ module.exports = Aria.classDefinition({
         },
 
         _applyRegExps : function (regexps, content) {
-            for (var index = 0, length = regexps.length; index < length; index++) {
-                var regexp = regexps[index];
-
-                content = content.replace(regexp, '');
-            }
-
-            return content;
+            return ariaUtilsArray.reduce(regexps, function (content, regexp) {
+                return content.replace(regexp, '');
+            }, content);
         }
     }
 });
@@ -156,23 +139,31 @@ function ScenarioAPI() {
 
     // -------------------------------------------------------------------------
 
-    autoBindAndAlias(this, 'addStep', 'step');
-    autoBindAndAlias(this, 'addToHistory', 'entry', 'says');
-    autoBindAndAlias(this, 'addDelay', 'delay');
-    autoBindAndAlias(this, 'pressKey', 'key');
-    autoBindAndAlias(this, 'pressSpecialKey', 'specialKey');
+    ariaUtilsArray.forEach([
+        ['addStep', 'step'],
+        ['addToHistory', 'entry', 'says'],
+        ['addDelay', 'delay'],
+        ['pressKey', 'key'],
+        ['pressSpecialKey', 'specialKey']
+    ], function (args) {
+        autoBindAndAlias.apply(null, [this].concat(args));
+    }, this);
 
     // -------------------------------------------------------------------------
 
-    this.createAndStoreSpecialKeyFunction('down');
-    this.createAndStoreSpecialKeyFunction('up');
-    this.createAndStoreSpecialKeyFunction('right');
-    this.createAndStoreSpecialKeyFunction('left');
-    this.createAndStoreSpecialKeyFunction('tab', 'tabulation');
-    this.createAndStoreSpecialKeyFunction('escape');
-    this.createAndStoreSpecialKeyFunction('enter');
-    this.createAndStoreSpecialKeyFunction('space');
-    this.createAndStoreSpecialKeyFunction('backspace');
+    ariaUtilsArray.forEach([
+        'down',
+        'up',
+        'right',
+        'left',
+        ['tab', 'tabulation'],
+        'escape',
+        'enter',
+        'space',
+        'backspace'
+    ], function (args) {
+        this.createAndStoreSpecialKeyFunction.apply(this, ariaUtilsArray.ensureWrap(args));
+    }, this);
 }
 
 ScenarioAPI.prototype.addStep = function (step, delay) {

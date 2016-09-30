@@ -15,6 +15,8 @@
 var Aria = require("../../Aria");
 
 var ariaUtilsArray = require("../../utils/Array");
+var ariaUtilsString = require("../../utils/String");
+var subst = ariaUtilsString.substitute;
 var ariaUtilsDom = require("../../utils/Dom");
 
 var ariaWidgetsFramesFrameFactory = require("../frames/FrameFactory");
@@ -209,16 +211,11 @@ module.exports = Aria.classDefinition({
 
             // ---------------------------------------------------------- return
 
-            var waiAttributesString = '';
-            ariaUtilsArray.forEach(waiAttributes, function (attribute) {
-                var key = attribute[0];
-                var value = attribute[1];
-
-                waiAttributesString += ' ' + key + '="' + value + '"';
+            waiAttributes = ariaUtilsArray.map(waiAttributes, function (attribute) {
+                return subst('%1="%2"', attribute[0], attribute[1]);
             });
-            waiAttributesString += ' ';
 
-            return waiAttributesString;
+            return ariaUtilsString.wrap(waiAttributes.join(' '), ' ');
         },
 
 
@@ -248,8 +245,7 @@ module.exports = Aria.classDefinition({
                 return null;
             }
 
-            var to = configurationOfCommonBinding.to;
-            return 'aria:' + to + '_' + name;
+            return subst('aria:%1_%2', configurationOfCommonBinding.to, name);
         },
 
 

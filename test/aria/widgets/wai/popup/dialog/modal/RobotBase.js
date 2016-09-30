@@ -17,6 +17,7 @@ var Aria = require('ariatemplates/Aria');
 
 var ariaCoreBrowser = require('ariatemplates/core/Browser');
 var ariaUtilsString = require('ariatemplates/utils/String');
+var subst = ariaUtilsString.substitute;
 var ariaUtilsDom = require('ariatemplates/utils/Dom');
 
 var ariaPopupsPopupManager = require('ariatemplates/popups/PopupManager');
@@ -118,10 +119,7 @@ module.exports = Aria.classDefinition({
 
                     this.assertTrue(
                         labelElement != null,
-                        ariaUtilsString.substitute(
-                            'Label element should exist, id: %1', [
-                            labelId
-                        ])
+                        subst('Label element should exist, id: %1', labelId)
                     );
 
                     var actual = labelElement.textContent;
@@ -133,11 +131,10 @@ module.exports = Aria.classDefinition({
 
                     this.assertTrue(
                         actual === expected,
-                        ariaUtilsString.substitute(
-                            'Label content is not the expected one: "%1" instead of "%2"', [
+                        subst('Label content is not the expected one: "%1" instead of "%2"',
                             actual,
                             expected
-                        ])
+                        )
                     );
                 }
             }
@@ -268,10 +265,10 @@ module.exports = Aria.classDefinition({
                 var dialogInstance = this.getWidgetInstance(dialog.id);
                 return dialogInstance._cfg.maximized;
             }, function (shouldBeTrue) {
-                return ariaUtilsString.substitute('Dialog with id "%1" should%2be maximized.', [
+                return subst('Dialog with id "%1" should%2be maximized.',
                     dialog.id,
                     shouldBeTrue ? ' ' : ' not '
-                ]);
+                );
             });
 
             this._localAsyncSequence(function (add) {

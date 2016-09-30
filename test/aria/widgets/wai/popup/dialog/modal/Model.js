@@ -14,6 +14,9 @@
  */
 
 var ariaUtilsJson = require('ariatemplates/utils/Json');
+var ariaUtilsArray = require('ariatemplates/utils/Array');
+var ariaUtilsString = require('ariatemplates/utils/String');
+var subst = ariaUtilsString.substitute;
 
 
 
@@ -53,55 +56,46 @@ function Dialog(options) {
     this.displayInContainer = displayInContainer;
 
     var titlePart = '';
-    if (wai) {
-        titlePart += ' (wai)';
-    }
-    if (fullyEmpty) {
-        titlePart += ' (fully empty)';
-    }
-    if (displayInContainer) {
-        titlePart += ' (in container)';
-    }
+    titlePart = subst('%1%2%3',
+        wai ? ' (wai)' : '',
+        fullyEmpty ? ' (fully empty)' : '',
+        displayInContainer ? ' (in container)' : ''
+    );
 
     var buttonLabel = options.buttonLabel;
     if (buttonLabel == null) {
-        buttonLabel = 'Open dialog' + titlePart;
+        buttonLabel = subst('Open dialog%1', titlePart);
     }
     this.buttonLabel = buttonLabel;
 
     // -------------------------------------------------------------- attributes
 
-    var id = 'dialog';
-    if (wai) {
-        id += '_wai';
-    }
-    if (fullyEmpty) {
-        id += '_fullyEmpty';
-    }
-    if (displayInContainer) {
-        id += '_displayInContainer';
-    }
+    var id = subst('dialog%1%2%3',
+        wai ? '_wai' : '',
+        fullyEmpty ? '_fullyEmpty' : '',
+        displayInContainer ? '_displayInContainer' : ''
+    );
     this.id = id;
 
-    var buttonId = id + '_button';
+    var buttonId = subst('%1_button', id);
     this.buttonId = buttonId;
 
-    var elementBeforeId = 'before_' + buttonId;
+    var elementBeforeId = subst('before_%1', buttonId);
     this.elementBeforeId = elementBeforeId;
 
     var firstInputId = null;
     if (fill) {
-        firstInputId = id + '_firstInput';
+        firstInputId = subst('%1_firstInput', id);
     }
     this.firstInputId = firstInputId;
 
     var secondInputId = null;
     if (fill) {
-        secondInputId = id + '_secondInput';
+        secondInputId = subst('%1_secondInput', id);
     }
     this.secondInputId = secondInputId;
 
-    var title = 'Dialog' + titlePart;
+    var title = subst('Dialog%1', titlePart);
     this.title = title;
 
     var visible = false;
@@ -161,24 +155,25 @@ Dialog.prototype.open = function () {
 ////////////////////////////////////////////////////////////////////////////////
 
 function buildData(index) {
-    var dialogs = [];
-
-    dialogs.push(new Dialog({
-        wai: false
-    }));
-
-    dialogs.push(new Dialog({
-        wai: true,
-        fill: true
-    }));
-    dialogs.push(new Dialog({
-        wai: true,
-        fullyEmpty: true
-    }));
-    dialogs.push(new Dialog({
-        wai: true,
-        displayInContainer: true
-    }));
+    var dialogs = ariaUtilsArray.map([
+        {
+            wai: false
+        },
+        {
+            wai: true,
+            fill: true
+        },
+        {
+            wai: true,
+            fullyEmpty: true
+        },
+        {
+            wai: true,
+            displayInContainer: true
+        }
+    ], function (spec) {
+        return new Dialog(spec);
+    });
 
     if (index != null) {
         dialogs = [dialogs[index]];
