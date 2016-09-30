@@ -14,10 +14,17 @@
  * limitations under the License.
  */
 
-Aria.classDefinition({
+var Aria = require('ariatemplates/Aria');
+var TestCase = require('ariatemplates/jsunit/TestCase');
+
+var ariaUtilsObject = require('ariatemplates/utils/Object');
+var ariaUtilsJson = require('ariatemplates/utils/Json');
+
+
+
+module.exports = Aria.classDefinition({
     $classpath : "test.aria.utils.ObjectTestCase",
-    $dependencies : ["aria.utils.Object", "aria.utils.Json"],
-    $extends : "aria.jsunit.TestCase",
+    $extends : TestCase,
     $prototype : {
         /**
          * Test case on the aria.utils.Object.keys method
@@ -51,8 +58,8 @@ Aria.classDefinition({
             var results = [[], [], [], [], ["1"], ["1"], ["1", "2"], ["1", "3"], ["abc", "defg", "hj"],
                     ["fun", "null"], ["nested"], []];
 
-            var object = aria.utils.Object;
-            var json = aria.utils.Json;
+            var object = ariaUtilsObject;
+            var json = ariaUtilsJson;
 
             for (var i = 0, len = objects.length; i < len; i += 1) {
                 this.assertTrue(json.equals(object.keys(objects[i]), results[i]), "Array " + i
@@ -71,15 +78,125 @@ Aria.classDefinition({
         },
 
         test_isEmpty : function () {
-            var objUtil = aria.utils.Object;
+            var isEmpty = ariaUtilsObject.isEmpty;
             var obj = {};
-            this.assertTrue(objUtil.isEmpty(obj), "Empty object not recognized as such.");
+            this.assertTrue(isEmpty(obj), "Empty object not recognized as such.");
             var str = "justAString";
-            this.assertTrue(objUtil.isEmpty(str), "String recognized as a non-empty object.");
+            this.assertTrue(isEmpty(str), "String recognized as a non-empty object.");
             obj = {
                 just : "anObject"
             };
-            this.assertFalse(objUtil.isEmpty(obj), "Non-empty object recognized as empty");
+            this.assertFalse(isEmpty(obj), "Non-empty object recognized as empty");
+        },
+
+        test_forOwnKeys : function () {
+            // common ----------------------------------------------------------
+
+            var forOwnKeys = ariaUtilsObject.forOwnKeys;
+
+            var self = this;
+
+            var callback = function (key, index, object) {
+                self.assertTrue(this.object === object, 'thisArg is not properly set or 3rd parameter is not the given object');
+                this.result.push(key);
+            };
+
+            var test = function(object, expectedResult) {
+                var result = [];
+                var thisArg = {
+                    object: object,
+                    result: result
+                };
+
+                var returned = forOwnKeys(object, callback, thisArg);
+
+                result.sort();
+
+                self.assertTrue(returned === object, 'Returned result should be the original object');
+                self.assertJsonEquals(result, expectedResult);
+            };
+
+            // tests -----------------------------------------------------------
+
+            test({}, []);
+            test({a: 'a'}, ['a']);
+            test({a: 'a', b: 'b'}, ['a', 'b']);
+
+            function base() {
+                this.a = 'a';
+            }
+            base.prototype.base = 'base';
+            test(new base(), ['a']);
+        },
+
+        test_assign : function () {
+            // common ----------------------------------------------------------
+
+            var assign = ariaUtilsObject.assign;
+
+            var self = this;
+
+            var test = function(destination, sources, expectedResult) {
+                var result = assign.apply(null, [destination].concat(sources));
+
+                self.assertTrue(result === destination, 'Returned result should be the destination object');
+                self.assertJsonEquals(result, expectedResult);
+            };
+
+            // tests -----------------------------------------------------------
+
+            test({
+                destinationOnly: 'destination',
+                replaced: 'destination',
+                sourceOnly: undefined
+            }, [{
+                replaced: 'source1',
+                sourceOnly: 'source1',
+                allSources: 'source1'
+            }, {
+                allSources: 'source2'
+            }], {
+                destinationOnly: 'destination',
+                replaced: 'source1',
+                sourceOnly: 'source1',
+                allSources: 'source2'
+            });
+        },
+
+        test_defaults : function () {
+            // common ----------------------------------------------------------
+
+            var defaults = ariaUtilsObject.defaults;
+
+            var self = this;
+
+            var test = function(destination, sources, expectedResult) {
+                var result = defaults.apply(null, [destination].concat(sources));
+
+                self.assertTrue(result === destination, 'Returned result should be the destination object');
+                self.assertJsonEquals(result, expectedResult);
+            };
+
+            // tests -----------------------------------------------------------
+
+            test({
+                destinationOnly: 'destination',
+                alreadySpecified: 'destination',
+                sourceOnly: undefined
+            }, [{
+                alreadySpecified: 'source1',
+                sourceOnly: 'source1',
+                allSources: 'source1'
+            }, {
+                allSources: 'source2',
+                secondSourceOnly: 'source2'
+            }], {
+                destinationOnly: 'destination',
+                alreadySpecified: 'destination',
+                sourceOnly: 'source1',
+                allSources: 'source1',
+                secondSourceOnly: 'source2'
+            });
         }
     }
 });

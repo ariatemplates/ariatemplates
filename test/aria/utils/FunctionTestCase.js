@@ -13,13 +13,16 @@
  * limitations under the License.
  */
 
+var Aria = require('ariatemplates/Aria');
+var TestCase = require('ariatemplates/jsunit/TestCase');
+var ariaUtilsFunction = require('ariatemplates/utils/Function');
+
 /**
  * Test case for aria.utils.Function
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "test.aria.utils.FunctionTestCase",
-    $extends : "aria.jsunit.TestCase",
-    $dependencies : ["aria.utils.Function"],
+    $extends : TestCase,
     $prototype : {
 
         /**
@@ -47,13 +50,35 @@ Aria.classDefinition({
             };
 
             // creates the binded function
-            var binded = aria.utils.Function.bind(myFunction, scope, 1, 2);
+            var binded = ariaUtilsFunction.bind(myFunction, scope, 1, 2);
 
             // call it several time to be sure parameters are still ok
             binded(3, 4);
             binded(3, 4);
 
             this.assertTrue(executed);
+        },
+
+        test_call : function () {
+            // -----------------------------------------------------------------
+
+            var call = ariaUtilsFunction.call;
+
+            var expectedResult = {};
+            var expectedSideEffect = {};
+
+            var sideEffect = null;
+            var callback = function () {
+                sideEffect = expectedSideEffect;
+                return expectedResult;
+            };
+
+            // -----------------------------------------------------------------
+
+            var result = call(callback);
+
+            this.assertTrue(sideEffect === expectedSideEffect, 'The function was not properly called');
+            this.assertTrue(result === expectedResult, "The function's return value was not properly returned");
         }
     }
 });

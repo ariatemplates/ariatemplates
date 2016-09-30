@@ -14,6 +14,7 @@
  */
 var Aria = require("../Aria");
 var ariaUtilsType = require("./Type");
+var ariaUtilsArray = require("./Array");
 
 
 /**
@@ -25,15 +26,13 @@ module.exports = Aria.classDefinition({
     $prototype : {
         /**
          * Substitute %n parameters in a string
-         * @param {String} string The source string to substitue %n occurences in
-         * @param {Array|String} params The parameters to use for the substitution. Index 0 will replace %1, index 1, %2
-         * and so on. If a string is passed, only %1 will be replaced
-         * @return {String} The final string, with %n occurences replaced with their equivalent
+         * @param {String} string The source string to substitute %n occurrences in
+         * @param {Array|String} ...params All the remaining parameters, that can form from one simple string to deeply nested arrays of strings, will be resolved to a single list of strings. These strings will be used for the substitutions. Index 0 will replace %1, index 1, %2 and so on.
+         * @return {String} The final string, with %n occurrences replaced with their equivalent
          */
-        substitute : function (string, params) {
-            if (!ariaUtilsType.isArray(params)) {
-                params = [params];
-            }
+        substitute : function (string) {
+            var params = Array.prototype.slice.call(arguments, 1);
+            params = ariaUtilsArray.flattenDeep(params);
 
             string = string.replace(/%[0-9]+/g, function (token) {
                 var replacement = params[parseInt(token.substring(1), 10) - 1];
@@ -466,6 +465,18 @@ module.exports = Aria.classDefinition({
             return str.replace(/-([a-z])/ig, function (match, letter) {
                 return letter.toUpperCase();
             });
+        },
+
+        /**
+         * Wraps the given string with the given wrapper. This concretely means that the wrapper is put before and after the given string.
+         *
+         * @param {String} The string to wrap with the given wrapper
+         * @param {String} The wrapper string
+         *
+         * @return {String} The wrapped string
+         */
+        wrap : function (string, wrapper) {
+            return wrapper + string + wrapper;
         }
     }
 });
