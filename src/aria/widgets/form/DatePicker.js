@@ -13,15 +13,17 @@
  * limitations under the License.
  */
 var Aria = require("../../Aria");
+
+var ariaUtilsAsyncDebouncer = require("../../utils/async/Debouncer");
+var ariaUtilsDate = require("../../utils/Date");
+var ariaUtilsEnvironmentDate = require("../../utils/environment/Date");
+
 var ariaWidgetsCalendarCalendar = require("../calendar/Calendar");
 var ariaWidgetsControllersDatePickerController = require("../controllers/DatePickerController");
 var ariaWidgetsFormDatePickerStyle = require("./DatePickerStyle.tpl.css");
 var ariaWidgetsCalendarCalendarStyle = require("../calendar/CalendarStyle.tpl.css");
 var ariaWidgetsContainerDivStyle = require("../container/DivStyle.tpl.css");
 var ariaWidgetsFormDropDownTextInput = require("./DropDownTextInput");
-var ariaUtilsDate = require("../../utils/Date");
-var ariaUtilsEnvironmentDate = require("../../utils/environment/Date");
-var ariaUtilsFunction = require("../../utils/Function");
 
 /**
  * DatePicker widget, which is a template-based widget.
@@ -61,7 +63,7 @@ module.exports = Aria.classDefinition({
             var waiAriaConfirmDateDelay = cfg.waiAriaConfirmDateDelay;
 
             var self = this;
-            this._waiReadDateOnKeyDown = new Debouncer({
+            this._waiReadDateOnKeyDown = new ariaUtilsAsyncDebouncer({
                 delay: waiAriaConfirmDateDelay,
                 state: {
                     previousText: null
@@ -86,6 +88,9 @@ module.exports = Aria.classDefinition({
     },
     $destructor : function () {
         this._dropDownIcon = null;
+        if (this._waiReadDateOnKeyDown != null) {
+            this._waiReadDateOnKeyDown.$dispose();
+        }
         this.$DropDownTextInput.$destructor.call(this);
     },
     $prototype : {
@@ -461,74 +466,3 @@ module.exports = Aria.classDefinition({
         }
     }
 });
-
-
-
-////////////////////////////////////////////////////////////////////////////////
-// Helpers
-////////////////////////////////////////////////////////////////////////////////
-
-// -----------------------------------------------------------------------------
-
-function nop() {}
-
-function assignPropertyWithDefault(destination, source, property, defaultValue) {
-    var value = source[property];
-
-    if (value == null) {
-        value = defaultValue;
-    }
-
-    destination[property] = value;
-
-    return value;
-}
-
-// -----------------------------------------------------------------------------
-
-function Debouncer(spec) {
-    this.delay = spec.delay;
-    this.state = spec.state;
-
-    assignPropertyWithDefault(this, spec, 'onStart', nop);
-    assignPropertyWithDefault(this, spec, 'onEnd', nop);
-
-    this._currentTimeout = null;
-}
-
-Debouncer.prototype.run = function () {
-    var state = this.state;
-    var onStart = this.onStart;
-
-    if (!this._isWaitingForTimeout()) {
-        onStart(state);
-    }
-
-    this._stopWaitingForTimeout();
-    this._startWaitingForTimeout();
-};
-
-Debouncer.prototype._isWaitingForTimeout = function () {
-    return this._currentTimeout != null;
-};
-
-Debouncer.prototype._stopWaitingForTimeout = function () {
-    if (this._isWaitingForTimeout()) {
-        clearTimeout(this._currentTimeout);
-    }
-};
-
-Debouncer.prototype._startWaitingForTimeout = function () {
-    this._currentTimeout = setTimeout(
-        ariaUtilsFunction.bind(this._afterTimeout, this),
-        this.delay
-    );
-};
-
-Debouncer.prototype._afterTimeout = function () {
-    var state = this.state;
-    var onEnd = this.onEnd;
-
-    onEnd(state);
-    this._currentTimeout = null;
-};

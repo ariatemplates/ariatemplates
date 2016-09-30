@@ -14,20 +14,27 @@
  * limitations under the License.
  */
 
+var Aria = require('ariatemplates/Aria');
+var TestCase = require('ariatemplates/jsunit/TestCase');
+var ariaUtilsString = require('ariatemplates/utils/String');
+
+var ariaUtilsJson = require('ariatemplates/utils/Json');
+
+
+
 /**
  * Test case for aria.utils.String
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "test.aria.utils.StringTestCase",
-    $dependencies : ["aria.utils.String", "aria.utils.Json"],
-    $extends : "aria.jsunit.TestCase",
+    $extends : TestCase,
     $prototype : {
 
         /**
          * Test trim method
          */
         testTrim : function () {
-            var trimResult = aria.utils.String.trim("   \tthis is a test   \n");
+            var trimResult = ariaUtilsString.trim("   \tthis is a test   \n");
             this.assertTrue(trimResult === "this is a test", "Expected 'this is a test', Found '" + trimResult + "'");
         },
 
@@ -35,15 +42,15 @@ Aria.classDefinition({
          * Test trim method with null argument
          */
         testNullTrim : function () {
-            var trimResult = aria.utils.String.trim(null);
+            var trimResult = ariaUtilsString.trim(null);
             this.assertTrue(trimResult === null);
         },
-        
+
         /**
          * Test case for the isEscaped method
          */
         testIsEscaped : function () {
-            var pkg = aria.utils.String;
+            var pkg = ariaUtilsString;
             this.assertFalse(pkg.isEscaped("{", 0));
             this.assertTrue(pkg.isEscaped("\\{", 1));
             this.assertFalse(pkg.isEscaped("\\\\{", 2));
@@ -59,24 +66,24 @@ Aria.classDefinition({
          */
         testIndexOfNotEscaped : function () {
             var test = "abc \\\d \d de\fg";
-            this.assertTrue(aria.utils.String.indexOfNotEscaped(test, "a") === 0);
-            this.assertTrue(aria.utils.String.indexOfNotEscaped(test, "\\") === 4);
-            this.assertTrue(aria.utils.String.indexOfNotEscaped(test, "d") === 7);
-            this.assertTrue(aria.utils.String.indexOfNotEscaped(test, "f") === -1);
-            this.assertTrue(aria.utils.String.indexOfNotEscaped(test, "h") === -1);
+            this.assertTrue(ariaUtilsString.indexOfNotEscaped(test, "a") === 0);
+            this.assertTrue(ariaUtilsString.indexOfNotEscaped(test, "\\") === 4);
+            this.assertTrue(ariaUtilsString.indexOfNotEscaped(test, "d") === 7);
+            this.assertTrue(ariaUtilsString.indexOfNotEscaped(test, "f") === -1);
+            this.assertTrue(ariaUtilsString.indexOfNotEscaped(test, "h") === -1);
         },
 
         /**
          * Test escapeHTML method
          */
         testEscapeHTML : function () {
-            this.assertTrue(aria.utils.String.escapeHTML("<div> a & b </div>", "a") === "&lt;div&gt; a &amp; b &lt;/div&gt;", "Escape failed.");
+            this.assertTrue(ariaUtilsString.escapeHTML("<div> a & b </div>", "a") === "&lt;div&gt; a &amp; b &lt;/div&gt;", "Escape failed.");
         },
 
         testEscapeHTMLAttr : function () {
-            this.assertTrue(aria.utils.String.escapeHTMLAttr("'") === "&#x27;", "Attribute escape failed.");
-            this.assertTrue(aria.utils.String.escapeHTMLAttr('"') === "&quot;", "Attribute escape failed.");
-            this.assertTrue(aria.utils.String.escapeHTMLAttr("'\"") === "&#x27;&quot;", "Attribute escape failed.");
+            this.assertTrue(ariaUtilsString.escapeHTMLAttr("'") === "&#x27;", "Attribute escape failed.");
+            this.assertTrue(ariaUtilsString.escapeHTMLAttr('"') === "&quot;", "Attribute escape failed.");
+            this.assertTrue(ariaUtilsString.escapeHTMLAttr("'\"") === "&#x27;&quot;", "Attribute escape failed.");
         },
 
         testEscapeForHTML : function () {
@@ -85,27 +92,27 @@ Aria.classDefinition({
             var escapedForHTMLString = "&lt;div id='id' class=\"class\"&gt;&#x2F;&lt;&#x2F;div&gt;";
             var escapedForAllString = "&lt;div id=&#x27;id&#x27; class=&quot;class&quot;&gt;&#x2F;&lt;&#x2F;div&gt;";
 
-            this.assertTrue(aria.utils.String.escapeForHTML(originalString) === escapedForAllString, "Full HTML escape failed.");
-            this.assertTrue(aria.utils.String.escapeForHTML(originalString, null) === escapedForAllString, "Full HTML escape failed.");
-            this.assertTrue(aria.utils.String.escapeForHTML(originalString, 5) === escapedForAllString, "Full HTML escape failed.");
-            this.assertTrue(aria.utils.String.escapeForHTML(originalString, '5') === escapedForAllString, "Full HTML escape failed.");
-            this.assertTrue(aria.utils.String.escapeForHTML(originalString, true) === escapedForAllString, "Full HTML escape failed.");
-            this.assertTrue(aria.utils.String.escapeForHTML(originalString, {
+            this.assertTrue(ariaUtilsString.escapeForHTML(originalString) === escapedForAllString, "Full HTML escape failed.");
+            this.assertTrue(ariaUtilsString.escapeForHTML(originalString, null) === escapedForAllString, "Full HTML escape failed.");
+            this.assertTrue(ariaUtilsString.escapeForHTML(originalString, 5) === escapedForAllString, "Full HTML escape failed.");
+            this.assertTrue(ariaUtilsString.escapeForHTML(originalString, '5') === escapedForAllString, "Full HTML escape failed.");
+            this.assertTrue(ariaUtilsString.escapeForHTML(originalString, true) === escapedForAllString, "Full HTML escape failed.");
+            this.assertTrue(ariaUtilsString.escapeForHTML(originalString, {
                 text : true,
                 attr : true
             }) === escapedForAllString, "Full HTML escape failed.");
 
-            this.assertTrue(aria.utils.String.escapeForHTML(originalString, false) === originalString, "Full HTML escape failed.");
-            this.assertTrue(aria.utils.String.escapeForHTML(originalString, {
+            this.assertTrue(ariaUtilsString.escapeForHTML(originalString, false) === originalString, "Full HTML escape failed.");
+            this.assertTrue(ariaUtilsString.escapeForHTML(originalString, {
                 text : false,
                 attr : false
             }) === originalString, "Full HTML escape failed.");
 
-            this.assertTrue(aria.utils.String.escapeForHTML(originalString, {
+            this.assertTrue(ariaUtilsString.escapeForHTML(originalString, {
                 text : false,
                 attr : true
             }) === escapedForAttrString, "Full HTML escape failed.");
-            this.assertTrue(aria.utils.String.escapeForHTML(originalString, {
+            this.assertTrue(ariaUtilsString.escapeForHTML(originalString, {
                 text : true,
                 attr : false
             }) === escapedForHTMLString, "Full HTML escape failed.");
@@ -115,7 +122,7 @@ Aria.classDefinition({
          * Test stripAccents method
          */
         testStripAccents : function () {
-            this.assertTrue(aria.utils.String.stripAccents("àébïuô") === "aebiuo", "Strip Accents failed failed.");
+            this.assertTrue(ariaUtilsString.stripAccents("àébïuô") === "aebiuo", "Strip Accents failed failed.");
         },
 
         /**
@@ -123,49 +130,49 @@ Aria.classDefinition({
          */
         testNextWhiteSpace : function () {
             var test = " abc def\tghi";
-            this.assertTrue(aria.utils.String.nextWhiteSpace(test, 0, 5) === 0);
-            this.assertTrue(aria.utils.String.nextWhiteSpace(test, 1, 5) === 4);
-            this.assertTrue(aria.utils.String.nextWhiteSpace(test, 5, 9) === 8);
-            this.assertTrue(aria.utils.String.nextWhiteSpace(test, 1, 3) === -1);
-            this.assertTrue(aria.utils.String.nextWhiteSpace('', 2, 5) === -1);
+            this.assertTrue(ariaUtilsString.nextWhiteSpace(test, 0, 5) === 0);
+            this.assertTrue(ariaUtilsString.nextWhiteSpace(test, 1, 5) === 4);
+            this.assertTrue(ariaUtilsString.nextWhiteSpace(test, 5, 9) === 8);
+            this.assertTrue(ariaUtilsString.nextWhiteSpace(test, 1, 3) === -1);
+            this.assertTrue(ariaUtilsString.nextWhiteSpace('', 2, 5) === -1);
         },
 
         /**
          * Test encodeForQuotedHTMLAttribute method
          */
         testEncodeForQuotedHTMLAttribute : function () {
-            this.assertEquals(aria.utils.String.encodeForQuotedHTMLAttribute(undefined), "");
-            this.assertEquals(aria.utils.String.encodeForQuotedHTMLAttribute(""), "");
-            this.assertEquals(aria.utils.String.encodeForQuotedHTMLAttribute("abc"), "abc");
-            this.assertEquals(aria.utils.String.encodeForQuotedHTMLAttribute('"'), '&quot;');
-            this.assertEquals(aria.utils.String.encodeForQuotedHTMLAttribute('"abc'), '&quot;abc');
-            this.assertEquals(aria.utils.String.encodeForQuotedHTMLAttribute('a"b'), 'a&quot;b');
-            this.assertEquals(aria.utils.String.encodeForQuotedHTMLAttribute('a"b"c"d'), 'a&quot;b&quot;c&quot;d');
-            this.assertEquals(aria.utils.String.encodeForQuotedHTMLAttribute('"""'), '&quot;&quot;&quot;');
-            this.assertEquals(aria.utils.String.encodeForQuotedHTMLAttribute('&quot;'), '&quot;');
+            this.assertEquals(ariaUtilsString.encodeForQuotedHTMLAttribute(undefined), "");
+            this.assertEquals(ariaUtilsString.encodeForQuotedHTMLAttribute(""), "");
+            this.assertEquals(ariaUtilsString.encodeForQuotedHTMLAttribute("abc"), "abc");
+            this.assertEquals(ariaUtilsString.encodeForQuotedHTMLAttribute('"'), '&quot;');
+            this.assertEquals(ariaUtilsString.encodeForQuotedHTMLAttribute('"abc'), '&quot;abc');
+            this.assertEquals(ariaUtilsString.encodeForQuotedHTMLAttribute('a"b'), 'a&quot;b');
+            this.assertEquals(ariaUtilsString.encodeForQuotedHTMLAttribute('a"b"c"d'), 'a&quot;b&quot;c&quot;d');
+            this.assertEquals(ariaUtilsString.encodeForQuotedHTMLAttribute('"""'), '&quot;&quot;&quot;');
+            this.assertEquals(ariaUtilsString.encodeForQuotedHTMLAttribute('&quot;'), '&quot;');
         },
 
         /**
          * Test endsWith method
          */
         testEndsWith : function () {
-            this.assertTrue(aria.utils.String.endsWith("", ""));
-            this.assertFalse(aria.utils.String.endsWith("", "a"));
-            this.assertTrue(aria.utils.String.endsWith("a", "a"));
-            this.assertFalse(aria.utils.String.endsWith("ab", "a"));
-            this.assertTrue(aria.utils.String.endsWith("aba", "a"));
-            this.assertFalse(aria.utils.String.endsWith("aba", "b"));
-            this.assertTrue(aria.utils.String.endsWith("abc", ""));
-            this.assertTrue(aria.utils.String.endsWith("abc", "bc"));
-            this.assertTrue(aria.utils.String.endsWith("a b", " b"));
-            this.assertFalse(aria.utils.String.endsWith("a b", "a"));
+            this.assertTrue(ariaUtilsString.endsWith("", ""));
+            this.assertFalse(ariaUtilsString.endsWith("", "a"));
+            this.assertTrue(ariaUtilsString.endsWith("a", "a"));
+            this.assertFalse(ariaUtilsString.endsWith("ab", "a"));
+            this.assertTrue(ariaUtilsString.endsWith("aba", "a"));
+            this.assertFalse(ariaUtilsString.endsWith("aba", "b"));
+            this.assertTrue(ariaUtilsString.endsWith("abc", ""));
+            this.assertTrue(ariaUtilsString.endsWith("abc", "bc"));
+            this.assertTrue(ariaUtilsString.endsWith("a b", " b"));
+            this.assertFalse(ariaUtilsString.endsWith("a b", "a"));
         },
 
         /**
          * Test capitalize method
          */
         testCapitalize : function () {
-            var result = aria.utils.String.capitalize("this is a test");
+            var result = ariaUtilsString.capitalize("this is a test");
             this.assertTrue(result === "This is a test", "Expected 'This is a test', Found '" + result + "'");
         },
 
@@ -203,7 +210,7 @@ Aria.classDefinition({
                     for (size in toTest[initial]) {
                         if (toTest[initial].hasOwnProperty(size)) {
                             expected = toTest[initial][size];
-                            got = aria.utils.String.pad(initial, size, "a", true);
+                            got = ariaUtilsString.pad(initial, size, "a", true);
 
                             this.assertEquals(got, expected, "Padding " + initial + " size " + size
                                     + " got %1 expected %2");
@@ -239,7 +246,7 @@ Aria.classDefinition({
                     for (size in toTest[initial]) {
                         if (toTest[initial].hasOwnProperty(size)) {
                             expected = toTest[initial][size];
-                            got = aria.utils.String.pad(initial, size, "a", false);
+                            got = ariaUtilsString.pad(initial, size, "a", false);
 
                             this.assertEquals(got, expected, "Padding " + initial + " size " + size
                                     + " got %1 expected %2");
@@ -298,7 +305,7 @@ Aria.classDefinition({
                     for (var size in toTest[initial]) {
                         if (toTest[initial].hasOwnProperty(size)) {
                             var expected = toTest[initial][size];
-                            var got = aria.utils.String.crop(initial, size, "a", true);
+                            var got = ariaUtilsString.crop(initial, size, "a", true);
 
                             this.assertEquals(got, expected, "Cropping " + initial + " size " + size
                                     + " got %1 expected %2");
@@ -358,7 +365,7 @@ Aria.classDefinition({
                     for (var size in toTest[initial]) {
                         if (toTest[initial].hasOwnProperty(size)) {
                             var expected = toTest[initial][size];
-                            var got = aria.utils.String.crop(initial, size, "a", false);
+                            var got = ariaUtilsString.crop(initial, size, "a", false);
 
                             this.assertEquals(got, expected, "Cropping " + initial + " size " + size
                                     + " got %1 expected %2");
@@ -390,7 +397,7 @@ Aria.classDefinition({
                         var size = fromBegin[testing][i][0];
                         var expected = aria.utils.Json.convertToJsonString(fromBegin[testing][i][1]);
 
-                        var got = aria.utils.Json.convertToJsonString(aria.utils.String.chunk(testing, size, true));
+                        var got = aria.utils.Json.convertToJsonString(ariaUtilsString.chunk(testing, size, true));
 
                         this.assertEquals(expected, got, "Testing -" + testing + "- size " + size
                                 + " expected %1 got %2");
@@ -420,7 +427,7 @@ Aria.classDefinition({
                         var size = fromEnd[testing][i][0];
                         var expected = aria.utils.Json.convertToJsonString(fromEnd[testing][i][1]);
 
-                        var got = aria.utils.Json.convertToJsonString(aria.utils.String.chunk(testing, size, false));
+                        var got = aria.utils.Json.convertToJsonString(ariaUtilsString.chunk(testing, size, false));
 
                         this.assertEquals(expected, got, "Testing -" + testing + "- size " + size
                                 + " expected %1 got %2");
@@ -433,15 +440,15 @@ Aria.classDefinition({
          * Call chunk with the wrong parameters
          */
         testWrongChunk : function () {
-            var got = aria.utils.String.chunk(12, 2);
+            var got = ariaUtilsString.chunk(12, 2);
             this.assertEquals(got, null, "Cannot chunk numbers");
 
-            got = aria.utils.String.chunk(null, 3);
+            got = ariaUtilsString.chunk(null, 3);
             this.assertEquals(got, null, "Cannot chunk null");
         },
 
         /**
-         * Substitue a string using a string
+         * Substitute a string using a string
          */
         testSubstituteString : function () {
             var holders = {
@@ -456,7 +463,7 @@ Aria.classDefinition({
             var epxected = [];
             for (var key in holders) {
                 if (holders.hasOwnProperty(key)) {
-                    got = aria.utils.String.substitute(holders[key], "thisString");
+                    got = ariaUtilsString.substitute(holders[key], "thisString");
 
                     this.assertEquals(got, holders[key], "Expecting %2, got %1");
                 }
@@ -479,7 +486,7 @@ Aria.classDefinition({
             var epxected = [];
             for (var key in holders) {
                 if (holders.hasOwnProperty(key)) {
-                    got = aria.utils.String.substitute(holders[key], ["thisString", "another"]);
+                    got = ariaUtilsString.substitute(holders[key], ["thisString", "another"]);
 
                     this.assertEquals(got, holders[key], "Expecting %2, got %1");
                 }
@@ -501,15 +508,36 @@ Aria.classDefinition({
             var epxected = [];
             for (var key in holders) {
                 if (holders.hasOwnProperty(key)) {
-                    got = aria.utils.String.substitute(holders[key], ["one", "two"]);
+                    got = ariaUtilsString.substitute(holders[key], ["one", "two"]);
 
                     this.assertEquals(got, holders[key], "Expecting %2, got %1");
                 }
             }
         },
 
+        testSubstituteVarArgs : function () {
+            // common ----------------------------------------------------------
+
+            var substitute = ariaUtilsString.substitute;
+
+            var self = this;
+
+            var test = function(string, args, expectedResult) {
+                var result = substitute.apply(null, [string].concat(args));
+
+                self.assertEquals(result, expectedResult);
+            };
+
+            // tests -----------------------------------------------------------
+
+            test('%1%2%3%4', [[1, 2, 3, 4]], '1234');
+            test('%1%2%3%4', [[1, 2], [3, 4]], '1234');
+            test('%1%2%3%4', [1, [2], 3, [4]], '1234');
+            test('%1%2%3%4', [1, [2, [3], 4]], '1234');
+        },
+
         testCamelToDashed : function () {
-            var cc2d = aria.utils.String.camelToDashed;
+            var cc2d = ariaUtilsString.camelToDashed;
 
             // standard
             this.assertEquals(cc2d("fooBarBaz"), "foo-bar-baz");
@@ -524,12 +552,37 @@ Aria.classDefinition({
         },
 
         testDashedToCamel : function () {
-            var d2cc = aria.utils.String.dashedToCamel;
+            var d2cc = ariaUtilsString.dashedToCamel;
 
             this.assertEquals(d2cc("foo-bar-baz"), "fooBarBaz");
             this.assertEquals(d2cc("foo-bar-baz-n"), "fooBarBazN");
             this.assertEquals(d2cc("foo-a-bar-a-c-baz"), "fooABarACBaz");
             this.assertEquals(d2cc("a-b-c"), "aBC");
+        },
+
+        testWrap : function () {
+            // common ----------------------------------------------------------
+
+            var wrap = ariaUtilsString.wrap;
+
+            var self = this;
+
+            var test = function(string, wrapper, expectedResult) {
+                var result = wrap(string, wrapper);
+
+                self.assertEquals(result, expectedResult);
+            };
+
+            // tests -----------------------------------------------------------
+
+            test('', '', '');
+
+            test('base', '', 'base');
+            test('', '|', '||');
+
+            test('base', '|', '|base|');
+
+            test('base', 0, '0base0');
         }
     }
 });

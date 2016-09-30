@@ -13,21 +13,50 @@
  * limitations under the License.
  */
 
+var Aria = require('ariatemplates/Aria');
+var TestCase = require('ariatemplates/jsunit/TestCase');
+var ariaUtilsArray = require('ariatemplates/utils/Array');
+
+
+
 /**
- * Test case for aria.widgets.form.Input
+ * Test case for aria.utils.Array
  */
-Aria.classDefinition({
+module.exports = Aria.classDefinition({
     $classpath : "test.aria.utils.ArrayTestCase",
-    $extends : "aria.jsunit.TestCase",
-    $dependencies : ["aria.utils.Array"],
+    $extends : TestCase,
     $prototype : {
+        testEnsureWrap : function () {
+            // common ----------------------------------------------------------
+
+            var ensureWrap = ariaUtilsArray.ensureWrap;
+
+            var self = this;
+
+            var test = function(input, expectedResult) {
+                var result = ensureWrap(input);
+
+                self.assertJsonEquals(result, expectedResult);
+            };
+
+            // tests -----------------------------------------------------------
+
+            test(null, []);
+            test(undefined, []);
+
+            test(1, [1]);
+            test('1', ['1']);
+
+            test([], []);
+            test(['1'], ['1']);
+        },
 
         /**
          * Test case on the aria.utils.Array.indexOf method
          */
         testIndexOf : function () {
             // Shortcut on indexOf
-            var arrayIndexOf = aria.utils.Array.indexOf;
+            var arrayIndexOf = ariaUtilsArray.indexOf;
 
             var obj = {
                 a : "a"
@@ -45,7 +74,7 @@ Aria.classDefinition({
          */
         testContains : function () {
             // Shortcut on contains
-            var arrayContains = aria.utils.Array.contains;
+            var arrayContains = ariaUtilsArray.contains;
 
             var obj = {
                 a : "a"
@@ -60,7 +89,7 @@ Aria.classDefinition({
 
         testIsEmpty : function () {
             // Shortcut on isEmpty
-            var arrayIsEmpty = aria.utils.Array.isEmpty;
+            var arrayIsEmpty = ariaUtilsArray.isEmpty;
 
             var emptyArray = [];
             var filledArray = [0];
@@ -76,13 +105,13 @@ Aria.classDefinition({
          */
         testRemoveAt : function () {
             // Shortcut on indexOf
-            var arrayIndexOf = aria.utils.Array.indexOf;
+            var arrayIndexOf = ariaUtilsArray.indexOf;
             // Shortcut on contains
-            var arrayContains = aria.utils.Array.contains;
+            var arrayContains = ariaUtilsArray.contains;
             // Shortcut on remove
-            var arrayRemoveAt = aria.utils.Array.removeAt;
+            var arrayRemoveAt = ariaUtilsArray.removeAt;
             // Shortcut on isEmpty
-            var arrayIsEmpty = aria.utils.Array.isEmpty;
+            var arrayIsEmpty = ariaUtilsArray.isEmpty;
 
             var obj = {
                 a : "a"
@@ -129,13 +158,13 @@ Aria.classDefinition({
          */
         testRemove : function () {
             // Shortcut on indexOf
-            var arrayIndexOf = aria.utils.Array.indexOf;
+            var arrayIndexOf = ariaUtilsArray.indexOf;
             // Shortcut on contains
-            var arrayContains = aria.utils.Array.contains;
+            var arrayContains = ariaUtilsArray.contains;
             // Shortcut on remove
-            var arrayRemove = aria.utils.Array.remove;
+            var arrayRemove = ariaUtilsArray.remove;
             // Shortcut on isEmpty
-            var arrayIsEmpty = aria.utils.Array.isEmpty;
+            var arrayIsEmpty = ariaUtilsArray.isEmpty;
 
             var obj = {
                 a : "a"
@@ -173,13 +202,13 @@ Aria.classDefinition({
          */
         testClone : function () {
             // Shortcut on indexOf
-            var arrayIndexOf = aria.utils.Array.indexOf;
+            var arrayIndexOf = ariaUtilsArray.indexOf;
             // Shortcut on contains
-            var arrayContains = aria.utils.Array.contains;
+            var arrayContains = ariaUtilsArray.contains;
             // Shortcut on remove
-            var arrayRemove = aria.utils.Array.remove;
+            var arrayRemove = ariaUtilsArray.remove;
             // Shortcut on clone
-            var arrayClone = aria.utils.Array.clone;
+            var arrayClone = ariaUtilsArray.clone;
 
             var obj = {
                 a : "a"
@@ -201,9 +230,57 @@ Aria.classDefinition({
             this.assertTrue(arrayContains(clonedArray, 0), "clonedArray has been changed by a modification on the original array");
         },
 
+        testRepeatValue : function () {
+            // common ----------------------------------------------------------
+
+            var repeatValue = ariaUtilsArray.repeatValue;
+
+            var self = this;
+
+            var test = function(input, times, expectedResult) {
+                var result = repeatValue(input, times);
+
+                self.assertJsonEquals(result, expectedResult);
+            };
+
+            // tests -----------------------------------------------------------
+
+            test(1, -1, []);
+            test(1, 0, []);
+            test(1, 1, [1]);
+            test(1, 3, [1, 1, 1]);
+            test([1, 2], 2, [[1, 2], [1, 2]]);
+        },
+
+        testRepeatArray : function () {
+            // common ----------------------------------------------------------
+
+            var repeatArray = ariaUtilsArray.repeatArray;
+
+            var self = this;
+
+            var test = function(input, times, expectedResult) {
+                var result = repeatArray(input, times);
+
+                self.assertJsonEquals(result, expectedResult);
+            };
+
+            // tests -----------------------------------------------------------
+
+            test(1, -1, []);
+            test(1, 0, []);
+            test(1, 1, [1]);
+
+            test([1], 1, [1]);
+            test([1], 3, [1, 1, 1]);
+
+            test([1, 2], 2, [1, 2, 1, 2]);
+            test([[1, 2]], 2, [[1, 2], [1, 2]]);
+        },
+
         testFilter : function () {
             // shortcut
-            var filter = aria.utils.Array.filter;
+            var filter = ariaUtilsArray.filter;
 
             // doing nothing returns empty array
             this.assertTrue(filter([], function () {}) !== null);
@@ -220,7 +297,7 @@ Aria.classDefinition({
 
         testForEach : function () {
             // shortcut
-            var forEach = aria.utils.Array.forEach;
+            var forEach = ariaUtilsArray.forEach;
 
             // doing stuff on empty array should do nothing
             var count = 0;
@@ -241,7 +318,7 @@ Aria.classDefinition({
 
         testEvery : function () {
             // shortcut
-            var every = aria.utils.Array.every;
+            var every = ariaUtilsArray.every;
 
             // doing stuff on empty array should do nothing
             var count = 0;
@@ -270,6 +347,161 @@ Aria.classDefinition({
                 return true;
             }, this));
             this.assertTrue(result === "123459");
+        },
+
+        testMap : function () {
+            // common ----------------------------------------------------------
+
+            var map = ariaUtilsArray.map;
+
+            var self = this;
+
+            var callback = function (item) {
+                return item * 2;
+            };
+            var test = function(input, expectedResult) {
+                var result = map(input, callback);
+
+                self.assertJsonEquals(result, expectedResult);
+            };
+
+            // tests -----------------------------------------------------------
+
+            test([], []);
+            test([1], [2]);
+            test([1, 2, 3, 4], [2, 4, 6, 8]);
+        },
+
+        testFlatten : function () {
+            // common ----------------------------------------------------------
+
+            var flatten = ariaUtilsArray.flatten;
+
+            var self = this;
+
+            var test = function(input, expectedResult) {
+                var result = flatten(input);
+
+                self.assertJsonEquals(result, expectedResult);
+            };
+
+            // tests -----------------------------------------------------------
+
+            test([], []);
+            test([1], [1]);
+            test([1, 2], [1, 2]);
+
+            test([1, [2], 3], [1, 2, 3]);
+            test([1, [[2]], 3], [1, [2], 3]);
+        },
+
+        testFlattenDeep : function () {
+            // common ----------------------------------------------------------
+
+            var flattenDeep = ariaUtilsArray.flattenDeep;
+
+            var self = this;
+
+            var test = function(input, expectedResult) {
+                var result = flattenDeep(input);
+
+                self.assertJsonEquals(result, expectedResult);
+            };
+
+            // tests -----------------------------------------------------------
+
+            test(1, [1]);
+
+            test([], []);
+            test([1], [1]);
+            test([1, 2], [1, 2]);
+
+            test([1, [2], 3], [1, 2, 3]);
+            test([1, [[2]], 3], [1, 2, 3]);
+        },
+
+        testReduce : function () {
+            // common ----------------------------------------------------------
+
+            var reduce = ariaUtilsArray.reduce;
+
+            var self = this;
+
+            var callback = function (a, b) {
+                return a + b;
+            };
+            var test = function(array, initialResult, expectedResult) {
+                var result = reduce(array, callback, initialResult);
+
+                self.assertJsonEquals(result, expectedResult);
+            };
+
+            // tests -----------------------------------------------------------
+
+            test([], undefined, undefined);
+            test([], null, null);
+            test([], 1, 1);
+
+            test([1], undefined, 1);
+            test([1], 2, 3);
+
+            test([1, 2], undefined, 3);
+            test([1, 2], 3, 6);
+        },
+
+        testPushAll : function () {
+            // common ----------------------------------------------------------
+
+            var pushAll = ariaUtilsArray.pushAll;
+
+            var self = this;
+
+            var test = function(array, addition, expectedResult) {
+                var result = pushAll(array, addition);
+
+                self.assertTrue(result === array, 'The original array instance should be returned');
+
+                self.assertJsonEquals(array, expectedResult);
+            };
+
+            // tests -----------------------------------------------------------
+
+            test([], [], []);
+
+            test([], [1], [1]);
+            test([1], [], [1]);
+
+            test([], [1, 2], [1, 2]);
+            test([1, 2], [], [1, 2]);
+
+            test([1], [2, 3], [1, 2, 3]);
+            test([1, 2], [3], [1, 2, 3]);
+        },
+
+        testInsert : function () {
+            // common ----------------------------------------------------------
+
+            var insert = ariaUtilsArray.insert;
+
+            var self = this;
+
+            var test = function(array, item, index, expectedResult) {
+                var result = insert(array, item, index);
+
+                self.assertTrue(result === array, 'The original array instance should be returned');
+
+                self.assertJsonEquals(array, expectedResult);
+            };
+
+            // tests -----------------------------------------------------------
+
+            test([1, 2], 0, 0, [0, 1, 2]);
+            test([0, 2], 1, 1, [0, 1, 2]);
+            test([0, 1], 2, 2, [0, 1, 2]);
+
+            test([0, 1], 2, -1, [0, 1, 2]);
+
+            test([0, 1], 3, 3, [0, 1, undefined, 3]);
         }
     }
 });

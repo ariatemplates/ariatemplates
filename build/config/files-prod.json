@@ -6,6 +6,7 @@
             "aria/core/log/*",
             "!aria/core/log/DefaultAppender.js",
             "aria/utils/**/*",
+            "!aria/utils/Algo.js",
             "!aria/utils/Array.js",
             "!aria/utils/Json.js",
             "!aria/utils/Object.js",

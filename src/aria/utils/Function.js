@@ -75,7 +75,17 @@ module.exports = Aria.classDefinition({
             return function () {
                 return self.$callback(cb, arguments);
             };
-        }
+        },
 
+        /**
+         * Calls the given function. This is mainly useful for functional programming.
+         *
+         * @param callback {Function} The function to call
+         *
+         * @return {Any} The return value of the callback
+         */
+        call : function (callback) {
+            return callback();
+        }
     }
 });
