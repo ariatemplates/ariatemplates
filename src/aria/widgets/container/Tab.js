@@ -527,24 +527,24 @@ module.exports = Aria.classDefinition({
         },
 
         /**
-         * Internal method to handle the mouse over event
+         * Internal method to handle the mouse enter event
          * @protected
          * @param {aria.DomEvent} domEvt
          */
-        _dom_onmouseover : function (domEvt) {
-            this.$Container._dom_onmouseover.call(this, domEvt);
+        _dom_onmouseenter : function (domEvt) {
+            this.$Container._dom_onmouseenter.call(this, domEvt);
             this._mouseOver = true;
             this._updateState();
 
         },
 
         /**
-         * Internal method to handle the mouse out event
+         * Internal method to handle the mouse leave event
          * @protected
          * @param {aria.DomEvent} domEvt
          */
-        _dom_onmouseout : function (domEvt) {
-            this.$Container._dom_onmouseout.call(this, domEvt);
+        _dom_onmouseleave : function (domEvt) {
+            this.$Container._dom_onmouseleave.call(this, domEvt);
             this._mouseOver = false;
             this._updateState();
 

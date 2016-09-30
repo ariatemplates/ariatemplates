@@ -20,7 +20,7 @@ var ariaUtilsString = require("../../utils/String");
 var ariaWidgetsActionButtonStyle = require("./ButtonStyle.tpl.css");
 var ariaWidgetsActionActionWidget = require("./ActionWidget");
 var ariaCoreBrowser = require("../../core/Browser");
-
+var actionOnMouseUp = ariaCoreBrowser.isWebkit;
 
 /**
  * Class definition for the button widget.
@@ -76,12 +76,6 @@ module.exports = Aria.classDefinition({
         this._customTabIndexProvided = true;
 
         /**
-         * Pointer used to store the target on mousedown/mouseup
-         * @type HTMLElement
-         */
-        this.currTarget = null;
-
-        /**
          * Skin configutation for simpleHTML
          * @type Object
          * @protected
@@ -107,7 +101,6 @@ module.exports = Aria.classDefinition({
         }
     },
     $destructor : function () {
-        this.currTarget = null;
         if (this._frame) {
             this._frame.$dispose();
             this._frame = null;
@@ -286,23 +279,23 @@ module.exports = Aria.classDefinition({
         },
 
         /**
-         * React to delegated mouse over events
+         * React to delegated mouse enter events
          * @protected
          * @param {aria.DomEvent} domEvt Event
          */
-        _dom_onmouseover : function (domEvt) {
-            this.$ActionWidget._dom_onmouseover.call(this, domEvt);
+        _dom_onmouseenter : function (domEvt) {
+            this.$ActionWidget._dom_onmouseenter.call(this, domEvt);
             this._mouseOver = true;
             this._updateState();
         },
 
         /**
-         * React to delegated mouse out events
+         * React to delegated mouse leave events
          * @protected
          * @param {aria.DomEvent} domEvt Event
          */
-        _dom_onmouseout : function (domEvt) {
-            this.$ActionWidget._dom_onmouseout.call(this, domEvt);
+        _dom_onmouseleave : function (domEvt) {
+            this.$ActionWidget._dom_onmouseleave.call(this, domEvt);
             this._mouseOver = false;
             this._mousePressed = false;
             this._updateState();
@@ -318,10 +311,6 @@ module.exports = Aria.classDefinition({
             this._mouseOver = true;
             this._mousePressed = true;
             this._updateState();
-
-            if (ariaCoreBrowser.isChrome || ariaCoreBrowser.isOpera || ariaCoreBrowser.isSafari) {
-                this.currTarget = domEvt.currentTarget;
-            }
         },
 
         /**
@@ -333,12 +322,9 @@ module.exports = Aria.classDefinition({
             // TODO: this method should also be called when the mouse button is released, not depending on where it is
             // released
 
-            if (ariaCoreBrowser.isChrome || ariaCoreBrowser.isOpera || ariaCoreBrowser.isSafari) {
-                if (this._mousePressed && domEvt.currentTarget == this.currTarget) {
-                    // handle an onclick event
-                    this._performAction(domEvt);
-                }
-                this.currTarget = null;
+            if (this._mousePressed && actionOnMouseUp) {
+                // handle an onclick event
+                this._performAction(domEvt);
             }
 
             if (this._cfg) { // this._cfg can become null if e.g. the button triggers a template substitution
@@ -371,7 +357,7 @@ module.exports = Aria.classDefinition({
          * @method
          * @private
          */
-        _dom_onclick : (ariaCoreBrowser.isChrome || ariaCoreBrowser.isOpera || ariaCoreBrowser.isSafari) ? function (domEvent) {
+        _dom_onclick : actionOnMouseUp ? function (domEvent) {
             // we don't catch onclick's for buttons on chrome & safari. we catch mouseup's instead
         } : function (domEvent) {
             if (!this._keyPressed) {

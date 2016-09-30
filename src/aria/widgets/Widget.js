@@ -515,12 +515,17 @@ module.exports = Aria.classDefinition({
             }
         },
 
+        // Those two methods are kept there (even if they are empty) in order to
+        // avoid failures in case child classes still call them:
+        _dom_onmouseover : function () {},
+        _dom_onmouseout : function () {},
+
         /**
-         * Handler for mouse over event, to deal with tooltip.
+         * Handler for mouse enter event, to deal with tooltip.
          * @protected
          * @param {aria.DomEvent} domEvt
          */
-        _dom_onmouseover : function (domEvt) {
+        _dom_onmouseenter : function (domEvt) {
             if (this._tooltipWidget) {
                 this._tooltipWidget.associatedWidgetMouseOver(this, domEvt);
                 domEvt.$dispose();
@@ -528,11 +533,11 @@ module.exports = Aria.classDefinition({
         },
 
         /**
-         * Handler for mouse out event, to deal with tooltip.
+         * Handler for mouse leave event, to deal with tooltip.
          * @protected
          * @param {aria.DomEvent} domEvt
          */
-        _dom_onmouseout : function (domEvt) {
+        _dom_onmouseleave : function (domEvt) {
             if (this._tooltipWidget) {
                 this._tooltipWidget.associatedWidgetMouseOut(this, domEvt);
                 domEvt.$dispose();
@@ -770,18 +775,45 @@ module.exports = Aria.classDefinition({
             var target = evt.delegateTarget;
 
             if (!(this._cfg.disabled || this._cfg.readOnly)) {
+                var evtType = evt.type;
+                if (evtType === "mouseenter" || evtType === "mouseleave") {
+                    // those types are simulated from mouseover and mouseout
+                    // we do not want to have them twice
+                    return;
+                }
                 if (!this._initDone) {
-                    if (evt.type == "contentchange") {
+                    if (evtType == "contentchange") {
                         this.__initWhileContentChange = true;
                     }
                     this.initWidgetDom(target);
                 }
-                var handlerName = "_dom_on" + evt.type;
+                var handlerName = "_dom_on" + evtType;
+                var res = true;
                 if (this[handlerName]) {
                     // false return false, everything else return true
-                    return this[handlerName](evt) !== false;
+                    res = this[handlerName](evt) !== false;
                 }
-                return true;
+                if (res) {
+                    var isMouseOver = evtType === "mouseover";
+                    var isMouseOut = evtType === "mouseout";
+                    var isMouseEnterOrLeave = (isMouseOver || isMouseOut) && !ariaUtilsDom.isAncestor(evt.relatedTarget, target);
+                    if (isMouseEnterOrLeave) {
+                        var newEvtType = isMouseOver ? "mouseenter" : "mouseleave";
+                        handlerName = "_dom_on" + newEvtType;
+                        if (this[handlerName]) {
+                            var savedTarget = evt.target;
+                            try {
+                                evt.type = newEvtType;
+                                evt.target = target;
+                                res = this[handlerName](evt) !== false; // false return false, everything else return true
+                            } finally {
+                                evt.type = evtType;
+                                evt.target = savedTarget;
+                            }
+                        }
+                    }
+                }
+                return res;
             }
         },
 

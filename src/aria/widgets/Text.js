@@ -173,12 +173,12 @@ module.exports = Aria.classDefinition({
         },
 
         /**
-         * Internal method to handle the mouse over event
+         * Internal method to handle the mouse enter event
          * @protected
          * @param {aria.DomEvent} event
          */
-        _dom_onmouseover : function (event) {
-            this.$Widget._dom_onmouseover.call(this, event);
+        _dom_onmouseenter : function (event) {
+            this.$Widget._dom_onmouseenter.call(this, event);
             if (this._ellipsis && this._ellipsis.ellipsesNeeded) {
                 this._hasMouseOver = true;
                 this._ellipsis.displayFullText({
@@ -193,8 +193,8 @@ module.exports = Aria.classDefinition({
          * @param {aria.DomEvent} event
          * @protected
          */
-        _dom_onmouseout : function (event) {
-            this.$Widget._dom_onmouseout.call(this, event);
+        _dom_onmouseleave : function (event) {
+            this.$Widget._dom_onmouseleave.call(this, event);
             if (this._ellipsis && this._ellipsis.ellipsesNeeded) {
                 if (this._hasFocus === false && this._hasMouseOver === true) {
                     this._hasMouseOver = false;
