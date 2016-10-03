@@ -144,7 +144,8 @@ function ScenarioAPI() {
         ['addToHistory', 'entry', 'says'],
         ['addDelay', 'delay'],
         ['pressKey', 'key'],
-        ['pressSpecialKey', 'specialKey']
+        ['pressSpecialKey', 'specialKey'],
+        ['clickLeft', 'leftClick', 'click']
     ], function (args) {
         autoBindAndAlias.apply(null, [this].concat(args));
     }, this);
@@ -193,6 +194,10 @@ ScenarioAPI.prototype.addDelay = function (delay) {
     }
 
     return this;
+};
+
+ScenarioAPI.prototype.clickLeft = function (element) {
+    return this.addStep(['click', element]);
 };
 
 ScenarioAPI.prototype.pressKey = function (key) {

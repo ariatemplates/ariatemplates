@@ -16,6 +16,7 @@ var Aria = require("../../Aria");
 var ariaWidgetsContainerDiv = require("./Div");
 var ariaPopupsPopup = require("../../popups/Popup");
 var PopupContainerManager = require("../../popups/container/Manager");
+var PopupNavigationManager = require("../../popups/PopupNavigationManager");
 var ariaWidgetsIcon = require("../Icon");
 var ariaUtilsDom = require("../../utils/Dom");
 var ariaUtilsDelegate = require("../../utils/Delegate");
@@ -747,24 +748,7 @@ module.exports = Aria.classDefinition({
             // hiddenElements --------------------------------------------------
 
             if (modal && waiAria) {
-                var attributeName = 'aria-hidden';
-                var attributeValue = 'true';
-
-                var hiddenElements = this._hiddenElements || [];
-                this._hiddenElements = hiddenElements;
-
-                var container = popupContainer.getContainerElt();
-                var children = container.children;
-
-                for (var index = 0, length = children.length; index < length; index++) {
-                    var child = children[index];
-
-                    var attributeNode = child.getAttributeNode(attributeName);
-                    if (attributeNode == null || attributeNode.nodeValue == null) {
-                        child.setAttribute(attributeName, attributeValue);
-                        hiddenElements.push(child);
-                    }
-                }
+                this._showBack = PopupNavigationManager.hidingManager.hideOthers(this._domElt);
             }
 
             // optionsBeforeMaximize -------------------------------------------
@@ -930,18 +914,10 @@ module.exports = Aria.classDefinition({
         close : function () {
             var cfg = this._cfg;
             var modal = cfg.modal;
-            var hiddenElements = this._hiddenElements;
 
-            if (hiddenElements != null) {
-                var attributeName = 'aria-hidden';
-
-                for (var index = 0, length = hiddenElements.length; index < length; index++) {
-                    var element = hiddenElements[index];
-
-                    element.removeAttribute(attributeName);
-                }
-
-                this._hiddenElements = null;
+            if (this._showBack != null) {
+                this._showBack();
+                this._showBack = null;
             }
 
             if (this._popup) {

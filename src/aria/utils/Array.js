@@ -310,35 +310,60 @@ module.exports = Aria.classDefinition({
         /**
          * Reduces the given array to a single value, by applying the given binary function.
          *
-         * The binary function takes the accumulated result as first parameter, and the current array item as second parameter. It must return the new accumulated result.
+         * The binary function takes the accumulated result as first parameter, and the current array item as second parameter. It must return the new accumulated result. It additionally takes the current item index and the array.
          *
-         * @param {Array} array
-         * @param {Function} callback
-         * @param {Any} initialResult
+         * @param {Array} array The array to reduce to one element: an accumulated result
+         * @param {Function} callback The reducer function
+         * @param {Any} initialResult The initial accumulated value - first item if none provided
+         *
+         * @return {Any} The accumulated result (can be the initialResult if array is empty)
          */
-        reduce : function (array, callback, initialResult) {
-            // ------------------------------------------- early termination
+        reduce : (arrayPrototype.reduce == null) ? function (array, callback, initialResult) {
+            // -------------------------------------- input arguments processing
+
+            var hasInitialResult = !!(arguments.length >= 3);
+
+            // ----------------------------------------------- early termination
+
+            var TypeError = Aria.$window.TypeError;
+
+            if (this === null) {
+                throw new TypeError('Array.prototype.reduce called on null or undefined');
+            }
+
+            if (typeof callback !== 'function') {
+                throw new TypeError(callback + ' is not a function');
+            }
 
             if (array.length === 0) {
-                return initialResult;
+                if (!hasInitialResult) {
+                    throw new TypeError('Reduce of empty array with no initial value');
+                }
+
             }
 
-            // ---------------------------------- input arguments processing
+            // -------------------------------------- input arguments processing
 
-            if (initialResult === undefined) {
-                initialResult = array.shift();
+            var valuesToReduce;
+            if (hasInitialResult) {
+                valuesToReduce = array;
+            } else {
+                valuesToReduce = arrayUtils.clone(array);
+                initialResult = valuesToReduce.shift();
             }
 
-            // -------------------------------------------------- processing
+            // ------------------------------------------------------ processing
 
             var currentResult = initialResult;
-            arrayUtils.forEach(array, function (item) {
-                currentResult = callback(currentResult, item);
+            arrayUtils.forEach(valuesToReduce, function (item, index) {
+                currentResult = callback(currentResult, item, index, array);
             });
 
-            // ------------------------------------------------------ return
+            // ---------------------------------------------------------- return
 
             return currentResult;
+        } : function (array) {
+            return array.reduce.apply(array, Array.prototype.slice.call(arguments, 1));
         },
 
         /**

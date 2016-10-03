@@ -430,22 +430,44 @@ module.exports = Aria.classDefinition({
             var callback = function (a, b) {
                 return a + b;
             };
-            var test = function(array, initialResult, expectedResult) {
-                var result = reduce(array, callback, initialResult);
+            var test = function(array) {
+                var originalArray = ariaUtilsArray.clone(array);
+
+                var expectedResult;
+                var args = [array, callback];
+                if (arguments.length === 2) {
+                    expectedResult = arguments[1];
+                } else if (arguments.length === 3) {
+                    args.push(arguments[1]);
+                    expectedResult = arguments[2];
+                }
+                var result = reduce.apply(null, args);
 
                 self.assertJsonEquals(result, expectedResult);
+                self.assertJsonEquals(array, originalArray);
             };
 
             // tests -----------------------------------------------------------
 
+            // No value at all
+            try {
+                test([]);
+                this.assertTrue(false, 'Calling reduce with no value should fail with a TypeError');
+            } catch (exception) {
+                this.assertTrue(exception instanceof TypeError, 'Calling reduce with no value has failed but with the wrong exception type: expected a TypeError.');
+            }
+
+            // Initial value only
             test([], undefined, undefined);
             test([], null, null);
             test([], 1, 1);
 
-            test([1], undefined, 1);
-            test([1], 2, 3);
+            // No initial value and only 1 item
+            test([1], 1);
 
-            test([1, 2], undefined, 3);
+            // Other cases
+            test([1], 2, 3);
+            test([1, 2], 3);
             test([1, 2], 3, 6);
         },
 
