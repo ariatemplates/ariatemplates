@@ -20,14 +20,6 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TemplateTestCase.constructor.call(this);
 
-        // the customization descriptor below substitutes TemplateA for TemplateB
-        aria.core.AppEnvironment.setEnvironment({
-            customization : {
-                // use resolveURL so that the test can be run from anywhere
-                descriptor : aria.core.DownloadMgr.resolveURL("test/aria/templates/customization/descriptorAB.json")
-            }
-        });
-
         // we declare we'll load TemplateA, but the customization environment will actually load Template B
         this.setTestEnv({
             template : "test.aria.templates.customization.CustomTemplateA"
@@ -37,6 +29,22 @@ Aria.classDefinition({
         this._lastTest = false;
     },
     $prototype : {
+        run: function () {
+            // the customization descriptor below substitutes TemplateA for TemplateB
+            aria.core.AppEnvironment.setEnvironment({
+                customization : {
+                    // use resolveURL so that the test can be run from anywhere
+                    descriptor : aria.core.DownloadMgr.resolveURL("test/aria/templates/customization/descriptorAB.json")
+                }
+            });
+            aria.core.environment.Customizations.$onOnce({
+                "descriptorLoaded" : {
+                    fn : this.$TemplateTestCase.run,
+                    scope : this
+                }
+            });
+        },
+
         _getTemplateCtxt : function (classPath) {
             // we use the TemplateContextManager because this.templateCtxt is not reliable
             var tcm = aria.templates.TemplateCtxtManager;
@@ -86,7 +94,7 @@ Aria.classDefinition({
             this.assertTrue(contextC._cfg.origClasspath == "test.aria.templates.customization.CustomTemplateA");
 
             // now let's customize again trying a different path
-            aria.core.environment.Customizations.$on({
+            aria.core.environment.Customizations.$onOnce({
                 "descriptorLoaded" : {
                     fn : this._anotherPath,
                     scope : this
@@ -119,7 +127,6 @@ Aria.classDefinition({
             // after testing passing descriptors as a path to descriptor file test passing a Json object containing
             // descriptor info
             if (this._lastTest) {
-                aria.core.environment.Customizations.$unregisterListeners(this);
                 this.notifyTemplateTestEnd();
             } else {
                 this._jsonParamTest();
@@ -128,8 +135,7 @@ Aria.classDefinition({
 
         _jsonParamTest : function () {
             // test passing the descriptor as a Json object
-            aria.core.environment.Customizations.$unregisterListeners(this);
-            aria.core.environment.Customizations.$on({
+            aria.core.environment.Customizations.$onOnce({
                 "descriptorLoaded" : {
                     fn : this._jsonParam,
                     scope : this
@@ -168,8 +174,7 @@ Aria.classDefinition({
             this.assertTrue(contextC._cfg.origClasspath == "test.aria.templates.customization.CustomTemplateA");
 
             // now let's customize again trying a different path
-            aria.core.environment.Customizations.$unregisterListeners(this);
-            aria.core.environment.Customizations.$on({
+            aria.core.environment.Customizations.$onOnce({
                 "descriptorLoaded" : {
                     fn : this._anotherPath,
                     scope : this
@@ -186,6 +191,10 @@ Aria.classDefinition({
                     }
                 }
             });
-        }
+        },
+
+        // Replacing _restoreAppEnvironment by an empty function,
+        // to avoid restoring the environment which triggers an XHR
+        _restoreAppEnvironment : function () {}
     }
 });
