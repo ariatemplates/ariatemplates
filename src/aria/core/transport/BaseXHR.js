@@ -107,7 +107,7 @@ Aria.classDefinition({
             // Interval for processing the response from the server
             var scope = this;
             connection.onreadystatechange = function () {
-                if (connection && connection.readyState === 4) {
+                if (connection && connection.readyState === 4 && Aria) {
                     connection.onreadystatechange = Aria.empty;
                     if (!aria.core.IO.pendingRequests[reqId]) {
                         return;
