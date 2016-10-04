@@ -16,7 +16,7 @@ var Aria = require("../../Aria");
 var ariaWidgetsContainerDiv = require("./Div");
 var ariaPopupsPopup = require("../../popups/Popup");
 var PopupContainerManager = require("../../popups/container/Manager");
-var PopupNavigationManager = require("../../popups/PopupNavigationManager");
+var DomNavigationManager = require("../../utils/DomNavigationManager");
 var ariaWidgetsIcon = require("../Icon");
 var ariaUtilsDom = require("../../utils/Dom");
 var ariaUtilsDelegate = require("../../utils/Delegate");
@@ -748,7 +748,7 @@ module.exports = Aria.classDefinition({
             // hiddenElements --------------------------------------------------
 
             if (modal && waiAria) {
-                this._showBack = PopupNavigationManager.hidingManager.hideOthers(this._domElt);
+                this._showBack = DomNavigationManager.hidingManager.hideOthers(this._domElt);
             }
 
             // optionsBeforeMaximize -------------------------------------------

@@ -22,7 +22,7 @@ var subst = ariaUtilsString.substitute;
 
 
 module.exports = Aria.tplScriptDefinition({
-    $classpath: 'test.aria.popups.popupNavigationManager.TplScript',
+    $classpath: 'test.aria.utils.domNavigationManager.TplScript',
 
     $prototype: {
         ////////////////////////////////////////////////////////////////////////

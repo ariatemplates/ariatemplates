@@ -22,7 +22,7 @@ var ariaWidgetsContainerDivStyle = require("../container/DivStyle.tpl.css");
 var ariaWidgetsFormCheckBoxStyle = require("./CheckBoxStyle.tpl.css");
 var ariaWidgetsFormDropDownTextInput = require("./DropDownTextInput");
 var ariaUtilsString = require("../../utils/String");
-var popupNavigationManager = require("../../popups/PopupNavigationManager");
+var DomNavigationManager = require("../../utils/DomNavigationManager");
 
 /**
  * Multi-select widget which is a list of checkboxes and labels passed in an array of predefined values
@@ -316,7 +316,7 @@ module.exports = Aria.classDefinition({
         _afterDropdownOpen : function () {
 
             var waiAria = this._cfg.waiAria;
-            this.navigationInterceptor = popupNavigationManager.ElementNavigationInterceptor(this._dropdownPopup.domElement, !waiAria);
+            this.navigationInterceptor = DomNavigationManager.ElementNavigationInterceptor(this._dropdownPopup.domElement, !waiAria);
             this.navigationInterceptor.ensureElements();
 
             this._setPopupOpenProperty(true);

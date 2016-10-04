@@ -15,9 +15,9 @@
 
 
 {Template {
-	$classpath: 'test.aria.popups.popupNavigationManager.Tpl',
+	$classpath: 'test.aria.utils.domNavigationManager.Tpl',
 	$hasScript: true,
-	$css: ['test.aria.popups.popupNavigationManager.CSS']
+	$css: ['test.aria.utils.domNavigationManager.CSS']
 }}
 
 {macro main()}

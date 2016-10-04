@@ -15,7 +15,7 @@
 
 var Aria = require('ariatemplates/Aria');
 var EnhancedRobotBase = require('test/EnhancedRobotBase');
-var PopupNavigationManager = require('ariatemplates/popups/PopupNavigationManager');
+var DomNavigationManager = require('ariatemplates/utils/DomNavigationManager');
 
 var ariaUtilsString = require('ariatemplates/utils/String');
 var subst = ariaUtilsString.substitute;
@@ -24,14 +24,14 @@ var ariaUtilsDom = require('ariatemplates/utils/Dom');
 
 
 module.exports = Aria.classDefinition({
-    $classpath : 'test.aria.popups.popupNavigationManager.PopupNavigationManagerRobotTestCase',
+    $classpath : 'test.aria.utils.domNavigationManager.DomNavigationManagerRobotTestCase',
     $extends : EnhancedRobotBase,
 
     $constructor : function () {
         this.$EnhancedRobotBase.constructor.call(this);
 
         this.setTestEnv({
-            template : 'test.aria.popups.popupNavigationManager.Tpl',
+            template : 'test.aria.utils.domNavigationManager.Tpl',
             data: {}
         });
     },
@@ -118,7 +118,7 @@ module.exports = Aria.classDefinition({
 
             // -----------------------------------------------------------------
 
-            var interceptor = PopupNavigationManager.ElementNavigationInterceptor(node, loop);
+            var interceptor = DomNavigationManager.ElementNavigationInterceptor(node, loop);
             this._currentInterceptor = interceptor;
             interceptor.ensureElements();
 

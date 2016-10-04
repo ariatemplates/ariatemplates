@@ -14,7 +14,7 @@
  */
 
 {CSSTemplate {
-	$classpath: 'test.aria.popups.popupNavigationManager.CSS',
+	$classpath: 'test.aria.utils.domNavigationManager.CSS',
 }}
 
 {macro main()}

@@ -21,13 +21,13 @@
 
 var Aria = require('../Aria');
 
-var ariaUtilsType = require('../utils/Type');
-var ariaUtilsArray = require('../utils/Array');
-var ariaUtilsObject = require('../utils/Object');
-var ariaUtilsFunction = require('../utils/Function');
+var ariaUtilsType = require('./Type');
+var ariaUtilsArray = require('./Array');
+var ariaUtilsObject = require('./Object');
+var ariaUtilsFunction = require('./Function');
 
-var ariaUtilsEvent = require('../utils/Event');
-var ariaUtilsDom = require('../utils/Dom');
+var ariaUtilsEvent = require('./Event');
+var ariaUtilsDom = require('./Dom');
 
 var ariaTemplatesNavigationManager = require('../templates/NavigationManager');
 

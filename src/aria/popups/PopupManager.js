@@ -21,7 +21,7 @@ var ariaTemplatesNavigationManager = require("../templates/NavigationManager");
 var ariaUtilsAriaWindow = require("../utils/AriaWindow");
 var ariaCoreBrowser = require("../core/Browser");
 var ariaCoreTimer = require("../core/Timer");
-var ViewportNavigationInterceptor = require('./PopupNavigationManager').ViewportNavigationInterceptor;
+var ViewportNavigationInterceptor = require('../utils/DomNavigationManager').ViewportNavigationInterceptor;
 
 (function () {
 

@@ -15,7 +15,7 @@
 
 var Aria = require('ariatemplates/Aria');
 var EnhancedJawsBase = require('test/EnhancedJawsBase');
-var PopupNavigationManager = require('ariatemplates/popups/PopupNavigationManager');
+var DomNavigationManager = require('ariatemplates/utils/DomNavigationManager');
 
 var ariaUtilsArray = require('ariatemplates/utils/Array');
 var ariaUtilsFunction = require('ariatemplates/utils/Function');
@@ -23,7 +23,7 @@ var ariaUtilsFunction = require('ariatemplates/utils/Function');
 
 
 module.exports = Aria.classDefinition({
-    $classpath : 'test.aria.popups.popupNavigationManager.PopupNavigationManagerJawsTestCase',
+    $classpath : 'test.aria.utils.domNavigationManager.DomNavigationManagerJawsTestCase',
     $extends : EnhancedJawsBase,
 
     $constructor : function () {
@@ -46,7 +46,7 @@ module.exports = Aria.classDefinition({
         this.noiseRegExps = [/^(Aria Templates tests frame|New tab page)$/i];
 
         this.setTestEnv({
-            template : 'test.aria.popups.popupNavigationManager.Tpl',
+            template : 'test.aria.utils.domNavigationManager.Tpl',
             data: {}
         });
     },
