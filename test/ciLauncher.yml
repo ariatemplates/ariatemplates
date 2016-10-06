@@ -6,7 +6,7 @@ launchers:
 browsers:
     PhantomJS:
         $launcher: $phantomjs
-        $maxInstances: 6
+        $maxInstances: 4
     Firefox:
         $launcher: localWebdriver
         capabilities:
