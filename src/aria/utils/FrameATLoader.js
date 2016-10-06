@@ -139,6 +139,10 @@ module.exports = Aria.classDefinition({
             iFrameAria.rootFolderPath = this.bootRootFolderPath;
             iFrameAria.debug = Aria.debug;
             iFrameAria.memCheckMode = Aria.memCheckMode;
+            var attester = Aria.$frameworkWindow.attester;
+            if (attester && attester.installConsole) {
+                attester.installConsole(window);
+            }
             window.Aria["eval"](this.frameworkJS); // note that using window.eval leads to strange errors in FF
             // If the framework is loaded inside a new window, opener has to be used instead of parent
             document.write('<script type="text/javascript">(opener || parent).aria.utils.FrameATLoader.callFromFrame('
