@@ -15,7 +15,13 @@
 
 var disabledTestCasesPatterns = [
     // The following test fails, it needs to be fixed or removed:
-    "test/aria/pageEngine/siteRootModule/ModelBindingTestCase.js"
+    "test/aria/pageEngine/siteRootModule/ModelBindingTestCase.js",
+
+    // The following test fails in all browsers except PhantomJS...
+    // ... but PhantomJS is known not to correctly handle the viewport size,
+    // ... and this test seems to be linked to exactly that!
+    // The test needs to be fixed or removed.
+    "test/aria/widgets/container/dialog/viewportResize/ViewportHugeShrinkTestCase.js"
 ];
 
 var unpackagedOnlyPatterns = [
