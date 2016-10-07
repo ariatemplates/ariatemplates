@@ -17,6 +17,16 @@ var ariaCoreLogDefaultAppender = require("./log/DefaultAppender");
 var ariaUtilsString = require("../utils/String");
 var ariaCoreJsObject = require("./JsObject");
 
+var afterDisposeLog = function (logType) {
+    var console = Aria.$window.console;
+    if (!console) {
+        return Aria.empty;
+    }
+    var consoleFn = console[logType] || console.log;
+    return function (msg, msgArgs, err) {
+        consoleFn.call(console, [logType, " after aria.core.Log is disposed:\nin:", this.$classpath, "\nmsg:", msg].join(''));
+    };
+};
 
 /**
  * Singleton to be used to log messages from any class. This object should probably not be used
@@ -142,19 +152,10 @@ module.exports = Aria.classDefinition({
         // remove functions on JsObject and Aria (added in the constructor):
 
         var jsObjectProto = ariaCoreJsObject.prototype;
-        var alert = Aria.$window.alert;
-        jsObjectProto.$logError = function (msg, msgArgs, err) {
-            alert(["Error after aria.core.Log is disposed:\nin:", this.$classpath, "\nmsg:", msg].join(''));
-        };
-        Aria.$logError = jsObjectProto.$logError;
-
-        var emptyFunction = function () {};
-        jsObjectProto.$logDebug = emptyFunction;
-        Aria.$logDebug = emptyFunction;
-        jsObjectProto.$logInfo = emptyFunction;
-        Aria.$logInfo = emptyFunction;
-        jsObjectProto.$logWarn = emptyFunction;
-        Aria.$logWarn = emptyFunction;
+        Aria.$logError = jsObjectProto.$logError = afterDisposeLog("error");
+        Aria.$logDebug = jsObjectProto.$logDebug = afterDisposeLog("debug");
+        Aria.$logInfo = jsObjectProto.$logInfo = afterDisposeLog("info");
+        Aria.$logWarn = jsObjectProto.$logWarn = afterDisposeLog("warn");
     },
     $prototype : {
 
