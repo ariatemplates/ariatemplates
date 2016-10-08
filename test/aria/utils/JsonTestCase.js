@@ -1493,16 +1493,16 @@ Aria.classDefinition({
             this.assertJsonEquals(aria.utils.Json.diff([1,2], [2]), {0 : 1, 1 :2});
             this.assertJsonEquals(aria.utils.Json.diff(false, true), false);
 
-            object = {};
-            referenceObject = {
-                a : 1,
-                b : "two",
-                c : true,
-                d : {
-                    sub : 1
-                },
-                e : [1,2]
-            };
+            var object = {},
+                referenceObject = {
+                    a : 1,
+                    b : "two",
+                    c : true,
+                    d : {
+                        sub : 1
+                    },
+                    e : [1,2]
+                };
             this.assertJsonEquals(aria.utils.Json.diff(object, referenceObject), {});
             
             object = {
@@ -1559,7 +1559,7 @@ Aria.classDefinition({
                 cc : false,
                 d : {
                     sub : 1
-                }, 
+                },
                 e : 'string',
                 f : {
                     'object' : true
