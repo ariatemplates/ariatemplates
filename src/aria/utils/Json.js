@@ -1042,17 +1042,30 @@ var ariaUtilsObject = require("./Object");
                             var item = _obj[property],
                                 refItem = _refObj[property],
                                 isContainer = typeUtils.isContainer(item),
+                                isArray = typeUtils.isArray(item),
+                                isArrayRef = typeUtils.isArray(refItem),
                                 originalWasEmpty;
+                            
+                            // if the types are not the same return
+                            if (typeof item !== typeof refItem || (isArray && !isArrayRef) || (!isArray && isArrayRef)) {
+                                return;
+                            }
+                            // handle dates
+                            else if (typeUtils.isDate(item) && typeUtils.isDate(refItem)) {
+                                if (item.getTime() === refItem.getTime()) {
+                                    delete(_obj[property]);
+                                }
+                            }
                             // if it an object or an array...
-                            if (isContainer) {
+                            else if (isContainer) {
                                 // if it is an array, transform it to an object. This is so that only those indices
                                 // that have changed can be kept in the diff object.
-                                if (typeUtils.isArray(item)) {
+                                if (isArray) {
                                     // convert the array to an object.
                                     _obj[property] = __arrayToObject(item);
                                     item = _obj[property];
                                     // if the reference item is also an array, then convert that to an object.
-                                    if (typeUtils.isArray(refItem)) {
+                                    if (isArrayRef) {
                                         _refObj[property] = __arrayToObject(refItem);
                                         refItem = _refObj[property];
                                     }

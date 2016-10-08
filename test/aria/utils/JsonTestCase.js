@@ -1489,6 +1489,7 @@ Aria.classDefinition({
             this.assertJsonEquals(aria.utils.Json.diff({}, undefined), {});
             this.assertJsonEquals(aria.utils.Json.diff(1, 1), undefined);
             this.assertJsonEquals(aria.utils.Json.diff(1, 2), 1);
+            this.assertJsonEquals(aria.utils.Json.diff(1, '1'), 1);
             this.assertJsonEquals(aria.utils.Json.diff([1,2,3], [1,2,3]), undefined);
             this.assertJsonEquals(aria.utils.Json.diff([1,2], [2]), {0 : 1, 1 :2});
             this.assertJsonEquals(aria.utils.Json.diff(false, true), false);
@@ -1527,7 +1528,9 @@ Aria.classDefinition({
                 h : [],
                 hh : [1,2,3,4],
                 hhh : [{a:1}, {b:2}, {c:3}],
-                hhhh : {}
+                hhhh : {},
+                i : new Date(2010, 5, 15, 10, 32, 45, 3),
+                ii : new Date(2011, 6, 16, 12, 33, 46, 4)
             };
             referenceObject = {
                 a : 1,
@@ -1551,7 +1554,9 @@ Aria.classDefinition({
                 h : [1,2,3],
                 hh : [1,2,3,4],
                 hhh : [{a:1}, {b:4}, {c:3}],
-                hhhh : []
+                hhhh : [],
+                i : new Date(2010, 5, 15, 10, 32, 45, 3),
+                ii : new Date(2010, 5, 15, 10, 32, 45, 3)
             };
             this.assertJsonEquals(aria.utils.Json.diff(object, referenceObject), {
                 aa : 2,
@@ -1566,7 +1571,9 @@ Aria.classDefinition({
                 },
                 g : 0,
                 h: {},
-                hhh : {1 : {b:2}}
+                hhh : {1 : {b:2}},
+                hhhh : {},
+                ii : new Date(2011, 6, 16, 12, 33, 46, 4)
             });
         }
     }
