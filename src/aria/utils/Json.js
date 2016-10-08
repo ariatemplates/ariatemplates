@@ -1061,7 +1061,7 @@ var ariaUtilsObject = require("./Object");
                                 if (refItem) {
                                     // remember whether the original was an empty object or not
                                     originalWasEmpty = ariaUtilsObject.isEmpty(item);
-                                    // recursively create the diff for the sub class
+                                    // recursively create the diff for the sub object
                                     __diff.call(this, item, refItem);
                                     // if the object has now become empty, then delete it. This takes into account whether the original
                                     // was empty and whether the referenceItem is empty.                                      

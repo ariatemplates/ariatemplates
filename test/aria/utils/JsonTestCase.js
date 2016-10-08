@@ -1518,12 +1518,12 @@ Aria.classDefinition({
                 dd : {
                     sub : 1
                 },
+                ddd: {},
                 e : 'string',
                 f : {
                     'object' : true
                 },
                 g : 0,
-                gg: {},
                 h : [],
                 hh : [1,2,3,4],
                 hhh : [{a:1}, {b:2}, {c:3}],
@@ -1542,12 +1542,12 @@ Aria.classDefinition({
                 dd : {
                     sub : 1
                 },
+                ddd : {},
                 e : {
                     sub2 : true
                 },
                 f : 'notanobject',
                 g : null,
-                gg : {},
                 h : [1,2,3],
                 hh : [1,2,3,4],
                 hhh : [{a:1}, {b:4}, {c:3}],
