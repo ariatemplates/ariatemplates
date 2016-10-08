@@ -985,6 +985,73 @@ var ariaUtilsObject = require("./Object");
                     }
                 }
                 return clone;
+            },
+            /**
+             * Creates a diff object of all those items in an object that are different from the referenceObject. It will not
+             * take into account any extra properties that are found in the referenceObject but not in the object. Also any
+             * Array sub objects will be converted to Objects and only those indicies that have changed will be present in the Object.  
+             * 
+             * @param {Object} object - creates a diff of this object
+             * @param {Object} referenceObject - the reference object to be used to check against 
+             * @return {Object} 
+             */
+            diff : function( object, referenceObject ) {
+                // this private function will convert an Array to an Object, with the object keys being the Array indices.
+                var __arrayToObject = function(array) {
+                        var object = {};
+                        arrayUtils.forEach(array, function(item, index) {
+                            object[index] = item;
+                        });
+                        return object;
+                    },
+                    // this will create a diff on a given object compared against a reference object.
+                    __diff = function(_obj, _refObj) {
+                        arrayUtils.forEach(ariaUtilsObject.keys(_obj), function(property) {
+                            var item = _obj[property],
+                                refItem = _refObj[property],
+                                isContainer = typeUtils.isContainer(item),
+                                originalWasEmpty;
+                            // if it an object or an array...
+                            if (isContainer) {
+                                // if it is an array, transform it to an object. This is so that only those indices
+                                // that have changed can be kept in the diff object.
+                                if (typeUtils.isArray(item)) {
+                                    // convert the array to an object.
+                                    _obj[property] = __arrayToObject(item);
+                                    item = _obj[property];
+                                    // if the reference item is also an array, then convert that to an object.
+                                    if (typeUtils.isArray(refItem)) {
+                                        _refObj[property] = __arrayToObject(refItem);
+                                        refItem = _refObj[property];
+                                    }
+                                }
+                                // if there is no refItem then we know something has changed, so do nothing.
+                                if (refItem) {
+                                    // remember whether the original was an empty object or not
+                                    originalWasEmpty = ariaUtilsObject.isEmpty(item);
+                                    // recursively create the diff for the sub class
+                                    __diff.call(this, item, refItem);
+                                    // if the object has now become empty, then delete it. This takes into account whether the original
+                                    // was empty and whether the referenceItem is empty.                                      
+                                    if (ariaUtilsObject.isEmpty(item) && (!originalWasEmpty || ariaUtilsObject.isEmpty(refItem))) {
+                                        delete(_obj[property]);
+                                    }
+                                }
+                            } else if (item === refItem) {
+                                // if the items are simple types: dates, strings, integers, etc
+                                // and they are the same, then delete them from the diff object.
+                                delete(_obj[property]);
+                            }
+                        }, this);
+                    },
+                    // create a copy that can be modified into the diff and nest this inside and object with key OBJECT. 
+                    // This OBJECT nesting is so that this works for any type of input.
+                    copy = {'OBJECT' : this.copy(object)};
+                // create the diff of the copy. Also nest and take a copy of the referenceObject. A copy is needed for the referenceObject
+                // as arrays can be converted to objects.
+                __diff.call(this, copy, {'OBJECT' : this.copy(referenceObject)});
+                //remember to return the nested OBJECT
+                return copy.OBJECT;
             }
         }
     });

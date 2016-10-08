@@ -438,8 +438,8 @@ var ariaUtilsJson = require("../utils/Json");
                     var jsonOptions = {
                         indent : "   "
                     };
-                    var s1 = ariaUtilsJson.convertToJsonString(obj1, jsonOptions);
-                    var s2 = ariaUtilsJson.convertToJsonString(obj2, jsonOptions);
+                    var s1 = ariaUtilsJson.convertToJsonString(ariaUtilsJson.diff(obj1, obj2), jsonOptions);
+                    var s2 = ariaUtilsJson.convertToJsonString(ariaUtilsJson.diff(obj2, obj1), jsonOptions);
                     optMsg = "JSON comparison failed. First object:<br><code><pre>" + s1
                             + "</pre></code> differs from the second:<br><code><pre>" + s2 + "</pre></code>";
                 }

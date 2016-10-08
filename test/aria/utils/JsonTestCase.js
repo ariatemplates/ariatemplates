@@ -1452,6 +1452,92 @@ Aria.classDefinition({
                 fn : function () {}
             });
             this.assertJsonEquals(['mykey'], aria.utils.Json.keys(listened));
+        },
+
+        testDiff : function() {
+            this.assertJsonEquals(aria.utils.Json.diff(undefined, undefined), undefined);
+            this.assertJsonEquals(aria.utils.Json.diff({}, undefined), {});
+            this.assertJsonEquals(aria.utils.Json.diff(1, 1), undefined);
+            this.assertJsonEquals(aria.utils.Json.diff(1, 2), 1);
+            this.assertJsonEquals(aria.utils.Json.diff([1,2,3], [1,2,3]), undefined);
+            this.assertJsonEquals(aria.utils.Json.diff([1,2], [2]), {0 : 1, 1 :2});
+            this.assertJsonEquals(aria.utils.Json.diff(false, true), false);
+
+            object = {};
+            referenceObject = {
+                a : 1,
+                b : "two",
+                c : true,
+                d : {
+                    sub : 1
+                },
+                e : [1,2]
+            };
+            this.assertJsonEquals(aria.utils.Json.diff(object, referenceObject), {});
+            
+            object = {
+                a : 1,
+                aa : 2,
+                b : 'two',
+                bb : 'twotwo',
+                c : true,
+                cc : false,
+                d : {
+                    sub : 1
+                },
+                dd : {
+                    sub : 1
+                },
+                e : 'string',
+                f : {
+                    'object' : true
+                },
+                g : 0,
+                gg: {},
+                h : [],
+                hh : [1,2,3,4],
+                hhh : [{a:1}, {b:2}, {c:3}],
+                hhhh : {}
+            };
+            referenceObject = {
+                a : 1,
+                aa : 1,
+                b : 'two',
+                bb : 'two',
+                c : true,
+                cc : 1,
+                d : {
+                    sub : 2
+                },
+                dd : {
+                    sub : 1
+                },
+                e : {
+                    sub2 : true
+                },
+                f : 'notanobject',
+                g : null,
+                gg : {},
+                h : [1,2,3],
+                hh : [1,2,3,4],
+                hhh : [{a:1}, {b:4}, {c:3}],
+                hhhh : []
+            };
+            this.assertJsonEquals(aria.utils.Json.diff(object, referenceObject), {
+                aa : 2,
+                bb : 'twotwo',
+                cc : false,
+                d : {
+                    sub : 1
+                }, 
+                e : 'string',
+                f : {
+                    'object' : true
+                },
+                g : 0,
+                h: {},
+                hhh : {1 : {b:2}}
+            });
         }
     }
 });
