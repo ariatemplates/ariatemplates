@@ -1096,7 +1096,7 @@ var ariaUtilsObject = require("./Object");
                 // as arrays can be converted to objects.
                 __diff.call(this, copy, {'OBJECT' : this.copy(referenceObject)});
                 //remember to return the nested OBJECT
-                return copy.OBJECT;
+                return copy.OBJECT === undefined ? null : copy.OBJECT;
             }
         }
     });

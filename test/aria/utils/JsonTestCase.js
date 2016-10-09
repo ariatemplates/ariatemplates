@@ -1485,12 +1485,12 @@ Aria.classDefinition({
         },
         
         testDiff : function() {
-            this.assertJsonEquals(aria.utils.Json.diff(undefined, undefined), undefined);
+            this.assertJsonEquals(aria.utils.Json.diff(undefined, undefined), null);
             this.assertJsonEquals(aria.utils.Json.diff({}, undefined), {});
-            this.assertJsonEquals(aria.utils.Json.diff(1, 1), undefined);
+            this.assertJsonEquals(aria.utils.Json.diff(1, 1), null);
             this.assertJsonEquals(aria.utils.Json.diff(1, 2), 1);
             this.assertJsonEquals(aria.utils.Json.diff(1, '1'), 1);
-            this.assertJsonEquals(aria.utils.Json.diff([1,2,3], [1,2,3]), undefined);
+            this.assertJsonEquals(aria.utils.Json.diff([1,2,3], [1,2,3]), null);
             this.assertJsonEquals(aria.utils.Json.diff([1,2], [2]), {0 : 1, 1 :2});
             this.assertJsonEquals(aria.utils.Json.diff(false, true), false);
 
