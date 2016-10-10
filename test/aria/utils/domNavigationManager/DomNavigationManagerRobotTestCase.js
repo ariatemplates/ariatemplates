@@ -124,7 +124,7 @@ module.exports = Aria.classDefinition({
 
             // -----------------------------------------------------------------
 
-            var nodeName = node.getElementsByClassName('node_name')[0];
+            var nodeName = ariaUtilsDom.getElementsByClassName(node, 'node_name')[0];
             nodeName.focus();
 
             // ---------------------------------------------------------- return
@@ -173,7 +173,7 @@ module.exports = Aria.classDefinition({
 
             var document = Aria.$window.document;
             var focusedElement = document.activeElement;
-            var textContent = focusedElement.textContent;
+            var textContent = focusedElement.textContent || focusedElement.innerText;
 
             // ------------------------------------------------------ processing
 
@@ -187,9 +187,9 @@ module.exports = Aria.classDefinition({
 
             var subtitution;
             if (shouldBeContained) {
-                subtitution = '';
+                subtitution = ' ';
             } else {
-                subtitution = 'not';
+                subtitution = ' not ';
                 result = !result;
             }
 

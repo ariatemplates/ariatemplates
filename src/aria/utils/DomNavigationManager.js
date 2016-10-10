@@ -688,6 +688,9 @@ function ElementNavigationInterceptor(element, loop) {
             // --------------------------------------------------- destructuring
 
             var target = event.target;
+            if (target == null) {
+                target = event.srcElement;
+            }
 
             // ------------------------------------------------------ processing
 
