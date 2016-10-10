@@ -18,17 +18,19 @@ Aria.classDefinition({
     $extends : "aria.jsunit.TestCase",
     $prototype : {
         testAgainstBrowser : function () {
+            var vendorPrefix = aria.utils.Delegate.vendorPrefix;
+            Aria.$global.console.log("Vendor prefix: " + vendorPrefix);
             if (aria.core.Browser.isChrome) {
-                this.assertEquals(aria.utils.Delegate.vendorPrefix, "Webkit", "The CSS Prefix went wrong for Chrome");
+                this.assertEquals(vendorPrefix, "Webkit", "The CSS Prefix went wrong for Chrome");
             }
             if (aria.core.Browser.isFirefox) {
                 // FF3 doesn't support animations
                 if (aria.core.Browser.majorVersion !== 3) {
-                    this.assertEquals(aria.utils.Delegate.vendorPrefix, "Moz", "The CSS Prefix went wrong for FireFox");
+                    this.assertEquals(vendorPrefix, "Moz", "The CSS Prefix went wrong for FireFox");
                 }
             }
-            if (aria.core.Browser.isIE10) {
-                this.assertEquals(aria.utils.Delegate.vendorPrefix, "ms", "The CSS Prefix went wrong for IE10");
+            if (aria.core.Browser.isIE10 || aria.core.Browser.isIE11) {
+                this.assertEquals(vendorPrefix, "ms", "The CSS Prefix went wrong for IE");
             }
         }
     }
