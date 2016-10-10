@@ -59,7 +59,9 @@ var phantomjsExcludesPatterns = [
     "test/aria/widgets/container/dialog/indicators/DialogTestCase.js",
     "test/aria/widgets/container/dialog/movable/test5/MovableDialogFiveRobotTestCase.js",
     "test/aria/widgets/container/dialog/container/*TestCase.js",
-    "test/aria/widgets/wai/popup/dialog/modal/SecondRobotTestCase.js"
+    "test/aria/widgets/wai/popup/dialog/modal/SecondRobotTestCase.js",
+    // Excluded because it often randomly fails with PhantomJS on travis-ci:
+    "test/aria/widgets/container/tooltip/TooltipRobotTestCase.js"
 ];
 
 var testSkinOnlyPatterns = [
