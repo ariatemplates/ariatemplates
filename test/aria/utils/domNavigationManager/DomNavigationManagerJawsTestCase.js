@@ -19,6 +19,7 @@ var DomNavigationManager = require('ariatemplates/utils/DomNavigationManager');
 
 var ariaUtilsArray = require('ariatemplates/utils/Array');
 var ariaUtilsFunction = require('ariatemplates/utils/Function');
+var ariaUtilsDom = require('ariatemplates/utils/Dom');
 
 
 
@@ -210,7 +211,7 @@ module.exports = Aria.classDefinition({
         },
 
         _getNodeNameElement : function (node) {
-            return node.getElementsByClassName('node_name')[0];
+            return ariaUtilsDom.getElementsByClassName(node, 'node_name')[0];
         },
 
         _getClickTargets : function () {

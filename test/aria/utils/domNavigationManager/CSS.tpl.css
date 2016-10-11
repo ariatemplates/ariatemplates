@@ -14,11 +14,11 @@
  */
 
 {CSSTemplate {
-	$classpath: 'test.aria.utils.domNavigationManager.CSS',
+	$classpath: 'test.aria.utils.domNavigationManager.CSS'
 }}
 
 {macro main()}
-	:focus {
+	*:focus {
 		outline: 1px red solid !important;
 	}
 
@@ -41,7 +41,6 @@
 	.node[aria-hidden][data-hide-requests-count] {
 		border-color: red;
 	}
-
 {/macro}
 
 {/CSSTemplate}
