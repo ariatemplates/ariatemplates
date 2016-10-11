@@ -36,14 +36,25 @@ Aria.classDefinition({
 
             this.assertEquals(selectWidget.selectedIndex, 0, "The selected Index should be %2 but was %1");
 
-            this.synEvent.execute([["click", selectWidget], ["type", null, "[down][down][enter]\t"]], {
-                fn : this.afterChange,
+            this.synEvent.execute([
+                ["click", selectWidget],
+                ["waitFocus", selectWidget],
+                ["type", null, "[down][down][enter]\t"]
+            ], {
+                fn : function () {
+                    this.waitFor({
+                        condition: function () {
+                            return this.data.onChangeCalls > 0;
+                        },
+                        callback: this.afterChange
+                    });
+                },
                 scope : this
             });
         },
 
         afterChange : function () {
-            this.assertEquals(this.data.onChangeCalls, 1, "onchange should have been called exactly once");
+            this.assertEquals(this.data.onChangeCalls, 1, "onchange should have been called exactly once, but was called %1 time(s)");
             this.assertEquals(this.data.selectedOption, "POUND", "Selected Option should be %2  but was %1");
             this.assertEquals(this.data.onChangeOption, "POUND", "Changed Option should be %2  but was %1");
             this.end();
