@@ -745,12 +745,6 @@ module.exports = Aria.classDefinition({
                 this._previouslyFocusedElement = Aria.$window.document.activeElement;
             }
 
-            // hiddenElements --------------------------------------------------
-
-            if (modal && waiAria) {
-                this._showBack = DomNavigationManager.hidingManager.hideOthers(this._domElt);
-            }
-
             // optionsBeforeMaximize -------------------------------------------
             // store current options to reapply them when unmaximized
 
@@ -801,6 +795,15 @@ module.exports = Aria.classDefinition({
                 labelId: modal ? this.__getLabelId() : null,
                 waiAria: waiAria
             });
+
+            // hiddenElements --------------------------------------------------
+
+            if (modal && waiAria) {
+                var container = popupContainer.getContainerElt();
+                this._showBack = DomNavigationManager.hidingManager.hideOthers(popup.domElement, function (element) {
+                     return element != null && element !== container;
+                });
+            }
 
             // -----------------------------------------------------------------
 

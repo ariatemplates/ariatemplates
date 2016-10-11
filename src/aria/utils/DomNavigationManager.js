@@ -209,7 +209,7 @@ exports.getSiblings = getSiblings;
  *
  * @param {HTMLElement} element The starting point element
  * @param {Function} callback Description the function to be called for each traversed element
- * @param {Function} predicate Optional function that tells whether the current element is the limit (root) or not; defaults to a function identifying the first void element or the document's body element
+ * @param {Function} predicate Optional function that tells whether the current element is not yet the limit (root); defaults to a function checking that the element exists and is not the document's body element
  *
  * @return {Array} The collection of results for the traversal at each depth
  */
@@ -754,16 +754,17 @@ var prototype = HidingManager.prototype;
  * Hides all elements around the given element, by hiding the nodes as close as possible to the root, avoiding any ancestor of the current node.
  *
  * @param {HTMLElement} element The element to keep visible
+ * @param {Function} predicate Same as for traverseSiblingsUntilRootOfBranch: tells if should continue to the next parent node
  *
  * @return {Function} A function that can revert the operation done by this method.
  */
-prototype.hideOthers = function(element) {
+prototype.hideOthers = function(element, predicate) {
     // -------------------------------------------------------------- processing
 
     var self = this;
     var reverters = traverseSiblingsUntilRootOfBranch(element, function(element) {
         return self.hide(element);
-    });
+    }, predicate);
 
     reverters = ariaUtilsArray.flatten(reverters);
     var reverter = ariaUtilsFunction.bind(
@@ -784,6 +785,9 @@ prototype.hideOthers = function(element) {
  * <p>
  * The current implementation uses an attribute "data-hide-requests-count" to store the number of requests.
  * </p>
+ * <p>
+ * If the element has already a "aria-hidden" attribute but no request registered, it is left as is, unmanaged. Thus the revert function won't do anything either.
+ * </p>
  *
  * @param {HTMLElement} element The element to hide
  *
@@ -796,46 +800,52 @@ prototype.hide = function(element) {
 
     // -------------------------------------------------------------- processing
 
+    var revert;
+
     // -------------------------------------------------------------------------
 
     var hideRequestsCount = element.getAttribute(attributeName);
 
     if (hideRequestsCount == null) {
-        hideRequestsCount = 0;
-        element.setAttribute('aria-hidden', 'true');
+        if (element.getAttribute('aria-hidden') != null) {
+            revert = function () {};
+        } else {
+            element.setAttribute('aria-hidden', 'true');
+            hideRequestsCount = 0;
+        }
     }
 
-    hideRequestsCount++;
-    element.setAttribute(attributeName, hideRequestsCount);
+    if (hideRequestsCount != null) {
+        hideRequestsCount++;
+        element.setAttribute(attributeName, hideRequestsCount);
 
-    // -------------------------------------------------------------------------
+        revert = function () {
+            // ----------------------------------------------- early termination
 
-    var revert = function () {
-        // --------------------------------------------------- early termination
-
-        if (element == null) {
-            return;
-        }
-
-        // ---------------------------------------------------------- processing
-
-        var hideRequestsCount = element.getAttribute(attributeName);
-
-        if (hideRequestsCount != null) {
-            hideRequestsCount--;
-
-            if (hideRequestsCount !== 0) {
-                element.setAttribute(attributeName, hideRequestsCount);
-            } else {
-                element.removeAttribute('aria-hidden', 'true');
-                element.removeAttribute(attributeName);
+            if (element == null) {
+                return;
             }
-        }
 
-        // --------------------------------------------------------- termination
+            // ------------------------------------------------------ processing
 
-        element = null;
-    };
+            var hideRequestsCount = element.getAttribute(attributeName);
+
+            if (hideRequestsCount != null) {
+                hideRequestsCount--;
+
+                if (hideRequestsCount !== 0) {
+                    element.setAttribute(attributeName, hideRequestsCount);
+                } else {
+                    element.removeAttribute('aria-hidden', 'true');
+                    element.removeAttribute(attributeName);
+                }
+            }
+
+            // ----------------------------------------------------- termination
+
+            element = null;
+        };
+    }
 
     // ------------------------------------------------------------------ return
 

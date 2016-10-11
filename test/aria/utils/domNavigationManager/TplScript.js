@@ -55,26 +55,27 @@ module.exports = Aria.tplScriptDefinition({
                         children: [
                             {
                                 name: '1.1',
+                                insertIndependentHiddenElement: true,
                                 children: [
-                                    {name: '1.1.1', children: []},
-                                    {name: '1.1.2', children: []},
-                                    {name: '1.1.3', children: []}
+                                    {name: '1.1.1'},
+                                    {name: '1.1.2'},
+                                    {name: '1.1.3'}
                                 ]
                             },
                             {
                                 name: '1.2',
                                 children: [
-                                    {name: '1.2.1', children: []},
-                                    {name: '1.2.2', children: []},
-                                    {name: '1.2.3', children: []}
+                                    {name: '1.2.1'},
+                                    {name: '1.2.2'},
+                                    {name: '1.2.3'}
                                 ]
                             },
                             {
                                 name: '1.3',
                                 children: [
-                                    {name: '1.3.1', children: []},
-                                    {name: '1.3.2', children: []},
-                                    {name: '1.3.3', children: []}
+                                    {name: '1.3.1'},
+                                    {name: '1.3.2'},
+                                    {name: '1.3.3'}
                                 ]
                             }
                         ]
@@ -85,54 +86,25 @@ module.exports = Aria.tplScriptDefinition({
                             {
                                 name: '2.1',
                                 children: [
-                                    {name: '2.1.1', children: []},
-                                    {name: '2.1.2', children: []},
-                                    {name: '2.1.3', children: []}
+                                    {name: '2.1.1'},
+                                    {name: '2.1.2'},
+                                    {name: '2.1.3'}
                                 ]
                             },
                             {
                                 name: '2.2',
                                 children: [
-                                    {name: '2.2.1', children: []},
-                                    {name: '2.2.2', children: []},
-                                    {name: '2.2.3', children: []}
+                                    {name: '2.2.1'},
+                                    {name: '2.2.2'},
+                                    {name: '2.2.3'}
                                 ]
                             },
                             {
                                 name: '2.3',
                                 children: [
-                                    {name: '2.3.1', children: []},
-                                    {name: '2.3.2', children: []},
-                                    {name: '2.3.3', children: []}
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        name: '3',
-                        children: [
-                            {
-                                name: '3.1',
-                                children: [
-                                    {name: '3.1.1', children: []},
-                                    {name: '3.1.2', children: []},
-                                    {name: '3.1.3', children: []}
-                                ]
-                            },
-                            {
-                                name: '3.2',
-                                children: [
-                                    {name: '3.2.1', children: []},
-                                    {name: '3.2.2', children: []},
-                                    {name: '3.2.3', children: []}
-                                ]
-                            },
-                            {
-                                name: '3.3',
-                                children: [
-                                    {name: '3.3.1', children: []},
-                                    {name: '3.3.2', children: []},
-                                    {name: '3.3.3', children: []}
+                                    {name: '2.3.1'},
+                                    {name: '2.3.2'},
+                                    {name: '2.3.3'}
                                 ]
                             }
                         ]
