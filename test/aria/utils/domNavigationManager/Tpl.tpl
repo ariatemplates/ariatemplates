@@ -27,6 +27,12 @@
 {/macro}
 
 {macro buildElement(node)}
+	{if node.insertIndependentHiddenElement}
+		<div aria-hidden='true'>
+			Must not say this (above ${node.name})
+		</div>
+	{/if}
+
 	<div {id node.name /} class='node'>
 		<span class='node_name' tabindex='0'>${node.name}</span>
 
