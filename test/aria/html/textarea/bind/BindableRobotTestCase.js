@@ -43,7 +43,14 @@ Aria.classDefinition({
         },
 
         afterFirstClick : function (_, element) {
-            this.synEvent.type(element, "japan", {
+            this.synEvent.execute([
+                ["waitFocus", element],
+                ["type", null, "j"], ["pause", 50],
+                ["type", null, "a"], ["pause", 50],
+                ["type", null, "p"], ["pause", 50],
+                ["type", null, "a"], ["pause", 50],
+                ["type", null, "n"], ["pause", 50]
+            ], {
                 fn : this.afterType,
                 scope : this,
                 args : element
