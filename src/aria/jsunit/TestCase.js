@@ -480,6 +480,10 @@ module.exports = Aria.classDefinition({
             }
         },
 
+        end : function () {
+            this.notifyTestEnd();
+        },
+
         /**
          * This function should be called when testing an asynchronous method i.e. one that takes as input a callback
          * object

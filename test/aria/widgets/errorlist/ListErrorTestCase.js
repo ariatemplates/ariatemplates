@@ -15,8 +15,10 @@
 
 var Aria = require("ariatemplates/Aria");
 
-var stringUtils = require("ariatemplates/utils/String");
-var dataUtils = require("ariatemplates/utils/Data");
+var ariaUtilsString = require("ariatemplates/utils/String");
+var subst = ariaUtilsString.substitute;
+var ariaUtilsArray = require("ariatemplates/utils/Array");
+var ariaUtilsData = require("ariatemplates/utils/Data");
 
 var TemplateTestCase = require("ariatemplates/jsunit/TemplateTestCase");
 
@@ -34,7 +36,7 @@ module.exports = Aria.classDefinition({
 
         // ------------------------------------ template data & test environment
 
-        var type = dataUtils.TYPE_CONFIRMATION;
+        var type = ariaUtilsData.TYPE_CONFIRMATION;
         this.data = {
             errorMessages: [
                 {
@@ -82,7 +84,7 @@ module.exports = Aria.classDefinition({
 
         var textComparator = function(errorMessage, domElement) {
             var expected = errorMessage.localizedMessage;
-            expected = stringUtils.escapeForHTML(expected, errorMessage.escape);
+            expected = ariaUtilsString.escapeForHTML(expected, errorMessage.escape);
 
             var actual = getElementHTML(domElement);
             return compareCaseInsensitive(actual, expected);
@@ -105,19 +107,25 @@ module.exports = Aria.classDefinition({
     $prototype : {
         runTemplateTest : function () {
             var errorMessages = this.data.errorMessages;
-            var messagesElements = this.templateCtxt.getContainerDiv().getElementsByTagName("ul").item(0).getElementsByTagName("li");
+
+            var messagesElements = this
+            .templateCtxt
+            .getContainerDiv()
+            .getElementsByTagName("ul")
+            .item(0)
+            .getElementsByTagName("li");
+
             var extraData = this.messagesExtraData;
 
-            for (var index = 0, length = errorMessages.length; index < length; index++) {
-                var errorMessage = errorMessages[index];
+            ariaUtilsArray.forEach(errorMessages, function (errorMessage, index) {
                 var domElement = messagesElements.item(index);
                 var comparator = extraData[index].comparator;
 
                 this.assertTrue(
                     comparator(errorMessage, domElement),
-                    "Message number " + (index + 1) + " content is different than expected."
+                    subst("Message number %1 content is different than expected.", index + 1)
                 );
-            }
+            }, this);
 
             this.notifyTemplateTestEnd();
         }

@@ -15,9 +15,9 @@
 
 Aria.classDefinition({
     $classpath : "test.aria.pageEngine.pageEngine.placeholderTemplateData.PlaceholderTemplateDataTestCase",
-    $extends : "test.aria.pageEngine.pageEngine.PageEngineBaseTestCase",
+    $extends : "test.aria.pageEngine.pageEngine.PageEngineBase",
     $constructor : function () {
-        this.$PageEngineBaseTestCase.constructor.call(this);
+        this.$PageEngineBase.constructor.call(this);
         this._dependencies.push("test.aria.pageEngine.pageEngine.placeholderTemplateData.MyPageProvider");
     },
     $prototype : {
@@ -49,7 +49,7 @@ Aria.classDefinition({
         end : function () {
             this.pageEngine.$dispose();
             this.pageProvider.$dispose();
-            this.$PageEngineBaseTestCase.end.call(this);
+            this.$PageEngineBase.end.call(this);
         }
     }
 });

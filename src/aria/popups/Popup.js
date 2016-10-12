@@ -27,7 +27,7 @@ var ariaCoreTimer = require("../core/Timer");
 var ariaCoreJsonValidator = require("../core/JsonValidator");
 var ViewportPopupContainer = require("./container/Viewport");
 var environment = require("../core/environment/Environment");
-var DialogNavigationInterceptor = require('./PopupNavigationManager').DialogNavigationInterceptor;
+var DialogNavigationInterceptor = require('../utils/DomNavigationManager').DialogNavigationInterceptor;
 
 /**
  * Popup instance

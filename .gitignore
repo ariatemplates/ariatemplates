@@ -9,6 +9,7 @@ node_modules
 /src/aria/jsunit/robot-applet*
 
 /build/target/
+/test/target/
 /src/aria/bootstrap.js
 /src/aria/bootstrap-node.js
 /src/aria/noderError/

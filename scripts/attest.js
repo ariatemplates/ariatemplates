@@ -14,21 +14,21 @@
  */
 
 var attester = require("attester");
-var middleware = require("./middleware");
-
-middleware.forEach(function (fn) {
-    attester.server.use(fn);
-});
 
 var optionRegExp = /^--([^=]+)=(.*)$/;
+var classpathRegExp = /^\w+(\.\w+)*$/;
 var commandLineOptions = {};
-var testsToExecute = process.argv.slice(2).filter(function (arg) {
+var classpathsToExecute = [];
+var patternsToExecute = [];
+process.argv.slice(2).forEach(function (arg) {
     var match = optionRegExp.exec(arg);
     if (match) {
         commandLineOptions[match[1]] = match[2];
-        return false;
+    } else if (classpathRegExp.test(arg)) {
+        classpathsToExecute.push(arg);
+    } else {
+        patternsToExecute.push(arg);
     }
-    return true;
 });
 
 var attesterOptions = {
@@ -47,11 +47,18 @@ var campaign = {
             bootstrap : "/aria/bootstrap.js",
             extraScripts : "/aria/css/atskin.js",
             classpaths : {
-                includes : testsToExecute
+                includes : classpathsToExecute
             }
         }
     }
 };
+
+if (patternsToExecute.length > 0) {
+    campaign.tests["aria-templates"].files = {
+        rootDirectory : ".",
+        includes : patternsToExecute
+    };
+}
 
 var browsers = commandLineOptions.browsers;
 var browser = commandLineOptions.browser;
@@ -67,23 +74,9 @@ if (browsers) {
     attesterOptions["robot-browser"] = browser;
 }
 
-// Called when the campaign completes successfully
-attester.event.once("attester.core.idle", function () {
-    attester.dispose().then(function () {
-        process.exit(0);
-    });
-});
-
-// Called when the campaign fails
-attester.event.once("attester.core.fail", function () {
-    attester.dispose().then(function () {
-        process.exit(1);
-    });
-});
-
 console.log("Using the following options:");
 console.log(JSON.stringify(attesterOptions, null, " "));
 attester.config.set(attesterOptions);
 attester.campaign.create(campaign, {}, 1);
 
-attester.start();
+require("./startAttester");

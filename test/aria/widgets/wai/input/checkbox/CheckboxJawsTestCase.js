@@ -21,13 +21,16 @@ Aria.classDefinition({
         this.setTestEnv({
             template : "test.aria.widgets.wai.input.checkbox.CheckboxTestCaseTpl"
         });
+        this.noiseRegExps.push(/(First textfield Edit|Type in text\.)$/i);
     },
     $prototype : {
-        runTemplateTest : function () {
+        // We call removeDuplicates ourselves after applying some replacements
+        skipRemoveDuplicates: true,
 
-            var filterRegExp = /(First textfield Edit|Type in text\.)\n/gi;
+        runTemplateTest : function () {
             var checkedRegExp = /not checked\nchecked/g;
             var notCheckedRegExp = /checked\nnot checked/g;
+            var newLineBeforeCheckbox = /\n(?=check box)/g;
 
             this.synEvent.execute([
                 ["click", this.getElementById("tf1")],
@@ -60,9 +63,11 @@ Aria.classDefinition({
                         "Checkbox A check box not checked\nCheckbox A check box checked\nCheckbox A\nCheckbox B check box not checked\nCheckbox B\nCheckbox B check box checked\nCheckbox B\nCheckbox C check box not checked\nCheckbox C check box checked\nCheckbox C\nLast textfield\nCheckbox C check box not checked\nCheckbox B\nCheckbox B check box checked\nCheckbox B check box not checked",
                     this.end,
                     function(response) {
-                        return response.replace(filterRegExp, "").
-                            replace(checkedRegExp, "checked").
-                            replace(notCheckedRegExp, "not checked");
+                        return this.removeDuplicates(
+                            response.replace(newLineBeforeCheckbox, " ")
+                                .replace(checkedRegExp, "checked")
+                                .replace(notCheckedRegExp, "not checked")
+                        );
                     });
                 },
                 scope: this

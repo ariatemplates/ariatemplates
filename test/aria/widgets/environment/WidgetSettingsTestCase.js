@@ -1,0 +1,95 @@
+/*
+ * Copyright 2012 Amadeus s.a.s.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+Aria.classDefinition({
+    $classpath : "test.aria.widgets.environment.WidgetSettingsTestCase",
+    $extends : "aria.jsunit.TestCase",
+    $dependencies : ["aria.widgets.environment.WidgetSettings"],
+    $prototype : {
+        testGetSetWidgetSettings : function () {
+            aria.core.AppEnvironment.setEnvironment({
+                widgetSettings : {
+                    directOnBlurValidation : false,
+                    autoselect : true
+                }
+            });
+
+            var settings = aria.widgets.environment.WidgetSettings.getWidgetSettings();
+            this.assertTrue(settings.autoselect);
+            this.assertFalse(settings.directOnBlurValidation);
+
+            aria.core.AppEnvironment.setEnvironment({});
+
+            settings = aria.widgets.environment.WidgetSettings.getWidgetSettings();
+            this.assertFalse(settings.autoselect);
+            this.assertTrue(settings.directOnBlurValidation);
+        },
+
+        testGetSetDialogWidgetSettings : function () {
+            var settings = aria.widgets.environment.WidgetSettings.getWidgetSettings().dialog;
+            this.assertTrue(settings.movable === false);
+            this.assertFalse("movableProxy" in settings);
+
+            aria.core.AppEnvironment.setEnvironment({
+                widgetSettings : {
+                    dialog : {
+                        movable : true
+                    }
+                }
+            });
+
+            settings = aria.widgets.environment.WidgetSettings.getWidgetSettings().dialog;
+            this.assertTrue(settings.movable === true);
+            this.assertFalse("movableProxy" in settings);
+
+            aria.core.AppEnvironment.setEnvironment({
+                widgetSettings : {
+                    dialog : {
+                        movableProxy : {
+                            type : "Overlay"
+                        }
+                    }
+                }
+            });
+
+            settings = aria.widgets.environment.WidgetSettings.getWidgetSettings().dialog;
+            this.assertTrue(settings.movable === false);
+            this.assertTrue(settings.movableProxy.type == "Overlay");
+
+            aria.core.AppEnvironment.setEnvironment({
+                widgetSettings : {
+                    dialog : {
+                        movable : true,
+                        movableProxy : {
+                            type : "CloneOverlay",
+                            cfg : {
+                                opacity : 0.8
+                            }
+                        }
+                    }
+                }
+            });
+
+            settings = aria.widgets.environment.WidgetSettings.getWidgetSettings().dialog;
+            this.assertTrue(settings.movable === true);
+            this.assertJsonEquals(settings.movableProxy, {
+                type : "CloneOverlay",
+                cfg : {
+                    opacity : 0.8
+                }
+            });
+        }
+    }
+});

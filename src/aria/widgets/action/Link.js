@@ -64,10 +64,19 @@ module.exports = Aria.classDefinition({
             if (cfg.disabled) {
                 linkClass = "xLink_" + cfg.sclass + "_disabled xLink_disabled";
             }
-            out.write(['<a', Aria.testMode ? ' id="' + this._domId + '_link"' : '', ' class="', linkClass,
-                    '" href="javascript:(function(){})()"',
-                    (cfg.tabIndex != null ? ' tabindex=' + this._calculateTabIndex() + '"' : ''), this._getAriaLabelMarkup(), '>',
-                    ariaUtilsString.escapeHTML(cfg.label), '</a>'].join(''));
+
+            out.write([
+                '<a',
+                    Aria.testMode ? ' id="' + this._domId + '_link"' : '',
+                    ' class="', linkClass, '"',
+                    ' href="javascript:(function(){})()"',
+                    (cfg.tabIndex != null ? ' tabindex=' + this._calculateTabIndex() + '"' : ''),
+                    this._getWaiAriaMarkup(),
+                    cfg.disabled ? ' disabled ' : '',
+                '>',
+                    ariaUtilsString.escapeHTML(cfg.label),
+                '</a>'
+            ].join(''));
             cfg = null;
         },
 
@@ -81,20 +90,6 @@ module.exports = Aria.classDefinition({
         },
 
         /**
-
-        /**
-         * Returns the markup for the aria-label related attributes on a DOM element if accessibility is enabled.
-         * @protected
-         */
-        _getAriaLabelMarkup : function () {
-            var markup = [];
-            if (this._cfg.waiAria) {
-              if (this._cfg.waiLabel) {markup.push(' aria-label="' + ariaUtilsString.encodeForQuotedHTMLAttribute(this._cfg.waiLabel) + '" ');}
-              if (this._cfg.waiLabelledBy) {markup.push(' aria-labelledby="' + ariaUtilsString.encodeForQuotedHTMLAttribute(this._cfg.waiLabelledBy) + '" ');}
-              if (this._cfg.waiDescribedBy) {markup.push(' aria-describedby="' + ariaUtilsString.encodeForQuotedHTMLAttribute(this._cfg.waiDescribedBy) + '" ');}
-            }
-            return markup.join('');
-        },
 
         /**
          * React to delegated key down events
@@ -170,12 +165,19 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         _updateState : function () {
-            if (this._focusElt) {
-                var cfg = this._cfg, linkClass = "xLink_" + cfg.sclass;
+            var cfg = this._cfg;
+
+            var focusedElement = this._focusElt;
+
+            if (focusedElement) {
+                var linkClass = "xLink_" + cfg.sclass;
                 if (cfg.disabled) {
                     linkClass = "xLink_" + cfg.sclass + "_disabled xLink_disabled";
+                    focusedElement.setAttribute('disabled', '');
+                } else {
+                    focusedElement.removeAttribute('disabled');
                 }
-                this._focusElt.className = linkClass;
+                focusedElement.className = linkClass;
             }
         }
     }

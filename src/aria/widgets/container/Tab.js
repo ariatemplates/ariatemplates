@@ -15,10 +15,14 @@
 var Aria = require("../../Aria");
 
 var ariaUtilsArray = require("../../utils/Array");
+var ariaUtilsString = require("../../utils/String");
+var subst = ariaUtilsString.substitute;
+var ariaUtilsDom = require("../../utils/Dom");
 
 var ariaWidgetsFramesFrameFactory = require("../frames/FrameFactory");
 var ariaWidgetsContainerTabStyle = require("./TabStyle.tpl.css");
 var ariaWidgetsContainerContainer = require("./Container");
+var ariaTemplatesNavigationManager = require("../../templates/NavigationManager");
 
 
 /**
@@ -52,6 +56,10 @@ module.exports = Aria.classDefinition({
                 inside: inside,
                 to: this._getLabelIdPropertyName(cfg)
             };
+        }
+
+        if (cfg.waiAria) {
+            this._customTabIndexProvided = true;
         }
 
         // ---------------------------------------------------------------------
@@ -97,50 +105,6 @@ module.exports = Aria.classDefinition({
          * @override
          */
         this._spanStyle = "z-index:100;vertical-align:top;";
-
-        // ---------------------------------------------------------------------
-
-        var extraAttributes = [];
-
-        if (cfg.waiAria) {
-            extraAttributes.push(['role', 'tab']);
-
-            var bind = cfg.bind;
-            if (bind != null) {
-                var binding = bind.selectedTab;
-
-                if (binding != null) {
-                    var inside = binding.inside;
-                    var to = binding.to;
-
-                    var selected = inside[to] === cfg.tabId;
-                    var value = selected ? 'true' : 'false';
-
-                    extraAttributes.push(['aria-selected', value]);
-                    extraAttributes.push(['aria-expanded', value]);
-                }
-            }
-
-            var value = cfg.disabled ? 'true' : 'false';
-            extraAttributes.push(['aria-disabled', value]);
-
-            this._updateLabelId();
-
-            var id = this._getControlledTabPanelId();
-            if (id != null) {
-                extraAttributes.push(['aria-controls', id]);
-            }
-        }
-
-        var _extraAttributes = '';
-        ariaUtilsArray.forEach(extraAttributes, function (attribute) {
-            var key = attribute[0];
-            var value = attribute[1];
-
-            _extraAttributes += ' ' + key + '="' + value + '"';
-        });
-        _extraAttributes += ' ';
-        this._extraAttributes = _extraAttributes;
     },
 
     $destructor : function () {
@@ -175,6 +139,85 @@ module.exports = Aria.classDefinition({
             aria.widgets.container.Tab.superclass._init.call(this);
         },
 
+        _getWaiAriaElement : function () {
+            return ariaUtilsDom.getElementById(this._waiElementId);
+        },
+
+        _getWaiAriaAttributesMarkup: function () {
+            // --------------------------------------------------- destructuring
+
+            var cfg = this._cfg;
+
+            var tabIndex = cfg.tabIndex;
+            var disabled = cfg.disabled;
+            var waiHidden = cfg.waiHidden;
+            var waiLabel = cfg.waiLabel;
+            var waiLabelledBy = cfg.waiLabelledBy;
+            var waiDescribedBy = cfg.waiDescribedBy;
+
+            var bind = cfg.bind;
+            var tabId = cfg.tabId;
+
+            // ------------------------------------------------------ processing
+
+            var waiAttributes = [];
+
+            if (tabIndex != null && !disabled) {
+                waiAttributes.push(['tabindex', this._calculateTabIndex()]);
+            }
+
+            waiAttributes.push(['role', 'tab']);
+
+            if (waiHidden) {
+                waiAttributes.push(['aria-hidden', 'true']);
+            }
+
+            if (waiLabel) {
+                waiAttributes.push(['aria-label', waiLabel]);
+            }
+
+            if (waiLabelledBy) {
+                waiAttributes.push(['aria-labelledby', waiLabelledBy]);
+            }
+
+            if (waiDescribedBy) {
+                waiAttributes.push(['aria-describedby', waiDescribedBy]);
+            }
+
+            if (bind != null) {
+                var binding = bind.selectedTab;
+
+                if (binding != null) {
+                    var inside = binding.inside;
+                    var to = binding.to;
+
+                    var selected = inside[to] === tabId;
+                    var value = selected ? 'true' : 'false';
+
+                    waiAttributes.push(['aria-selected', value]);
+                    waiAttributes.push(['aria-expanded', value]);
+                }
+            }
+
+            var value = disabled ? 'true' : 'false';
+            waiAttributes.push(['aria-disabled', value]);
+
+            this._updateLabelId();
+
+            var id = this._getControlledTabPanelId();
+            if (id != null) {
+                waiAttributes.push(['aria-controls', id]);
+            }
+
+            // ---------------------------------------------------------- return
+
+            waiAttributes = ariaUtilsArray.map(waiAttributes, function (attribute) {
+                return subst('%1="%2"', attribute[0], attribute[1]);
+            });
+
+            return ariaUtilsString.wrap(waiAttributes.join(' '), ' ');
+        },
+
 
 
         ////////////////////////////////////////////////////////////////////////
@@ -202,8 +245,7 @@ module.exports = Aria.classDefinition({
                 return null;
             }
 
-            var to = configurationOfCommonBinding.to;
-            return 'aria:' + to + '_' + name;
+            return subst('aria:%1_%2', configurationOfCommonBinding.to, name);
         },
 
 
@@ -219,7 +261,7 @@ module.exports = Aria.classDefinition({
         _updateLabelId : function (selectedTab) {
             // --------------------------------------------------- destructuring
 
-            var id = this._domId;
+            var id = this._waiElementId;
             var cfg = this._cfg;
 
             var tabId = cfg.tabId;
@@ -279,7 +321,7 @@ module.exports = Aria.classDefinition({
 
             var attributeName = 'aria-controls';
 
-            var element = this.getDom();
+            var element = this._getWaiAriaElement();
             if (!id) {
                 element.removeAttribute(attributeName);
             } else {
@@ -315,8 +357,6 @@ module.exports = Aria.classDefinition({
         _onBoundPropertyChange : function (propertyName, newValue, oldValue) {
             // --------------------------------------------------- destructuring
 
-            var element = this.getDom();
-
             var cfg = this._cfg;
             var tabId = cfg.tabId;
             var waiAria = cfg.waiAria;
@@ -342,6 +382,7 @@ module.exports = Aria.classDefinition({
                 this._updateState();
 
                 if (waiAria) {
+                    var element = this._getWaiAriaElement();
                     var value = isSelected ? 'true' : 'false';
                     element.setAttribute('aria-selected', value);
                     element.setAttribute('aria-expanded', value);
@@ -363,7 +404,26 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         _widgetMarkupBegin : function (out) {
+            // --------------------------------------------------- destructuring
+
+            var cfg = this._cfg;
+
+            var waiAria = cfg.waiAria;
+            var waiTitleTag = cfg.waiTitleTag;
+
+            // ------------------------------------------------------ processing
+
             this._frame.writeMarkupBegin(out);
+
+            if (waiAria) {
+                var waiElementId = this._createDynamicId();
+                this._waiElementId = waiElementId;
+
+                if (waiTitleTag) {
+                    out.write('<' + waiTitleTag + '>');
+                }
+                out.write('<a id="' + waiElementId + '" ' + this._getWaiAriaAttributesMarkup() + '>');
+            }
         },
 
         /**
@@ -372,6 +432,22 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         _widgetMarkupEnd : function (out) {
+            // --------------------------------------------------- destructuring
+
+            var cfg = this._cfg;
+
+            var waiAria = cfg.waiAria;
+            var waiTitleTag = cfg.waiTitleTag;
+
+            // ------------------------------------------------------ processing
+
+            if (waiAria) {
+                out.write('</a>');
+                if (waiTitleTag) {
+                    out.write('</' + waiTitleTag + '>');
+                }
+            }
+
             this._frame.writeMarkupEnd(out);
         },
 
@@ -422,6 +498,16 @@ module.exports = Aria.classDefinition({
          */
         _selectTab : function () {
             this.changeProperty("selectedTab", this._cfg.tabId);
+            if (this._cfg.waiAria) {
+                // Focusing the Tab before focusing the TabPanel is not enough to make the screen reader read the tab's title first
+                // A sufficient timeout would be necessary, but we can't program that way safely
+                // this._focus();
+                var controlledTabPanelId = this._getControlledTabPanelId();
+                if (controlledTabPanelId != null) {
+                    var tabPanelElement = ariaUtilsDom.getElementById(controlledTabPanelId);
+                    ariaTemplatesNavigationManager.focusFirst(tabPanelElement);
+                }
+            }
         },
 
         /**
@@ -431,30 +517,30 @@ module.exports = Aria.classDefinition({
          */
         _dom_onclick : function (domEvt) {
             this._selectTab();
-            if (this._cfg && !this._hasFocus) {
+            if (this._cfg && !this._hasFocus && !this._cfg.waiAria) {
                 this._focus();
             }
         },
 
         /**
-         * Internal method to handle the mouse over event
+         * Internal method to handle the mouse enter event
          * @protected
          * @param {aria.DomEvent} domEvt
          */
-        _dom_onmouseover : function (domEvt) {
-            this.$Container._dom_onmouseover.call(this, domEvt);
+        _dom_onmouseenter : function (domEvt) {
+            this.$Container._dom_onmouseenter.call(this, domEvt);
             this._mouseOver = true;
             this._updateState();
 
         },
 
         /**
-         * Internal method to handle the mouse out event
+         * Internal method to handle the mouse leave event
          * @protected
          * @param {aria.DomEvent} domEvt
          */
-        _dom_onmouseout : function (domEvt) {
-            this.$Container._dom_onmouseout.call(this, domEvt);
+        _dom_onmouseleave : function (domEvt) {
+            this.$Container._dom_onmouseleave.call(this, domEvt);
             this._mouseOver = false;
             this._updateState();
 

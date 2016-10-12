@@ -38,7 +38,7 @@ Aria.classDefinition({
         },
         _testValue : function () {
             this.assertJawsHistoryEquals(true, this._resetTest, function (response) {
-                return /Group A\nradio button not checked\nOption A\nEnd of template/.test(response);
+                return /Group A\nradio button not checked Option A\nOption A\nEnd of template/.test(response);
             });
         },
         _resetTest : function () {

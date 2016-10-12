@@ -14,7 +14,7 @@
  */
 var Aria = require("../Aria");
 var ariaUtilsString = require("../utils/String");
-var ariaUtilsJson = require("../utils/Json");
+var ariaUtilsArray = require("../utils/Array");
 
 /**
  * Class to be extended to create a template test case which checks the behavior with
@@ -23,7 +23,30 @@ var ariaUtilsJson = require("../utils/Json");
 module.exports = Aria.classDefinition({
     $classpath : "aria.jsunit.JawsTestCase",
     $extends : require("./RobotTestCase"),
+    $constructor : function () {
+        this.$RobotTestCase.constructor.call(this);
+
+        /**
+         * Lines matching one of those regular expressions are considered noise and will be removed by removeNoise.
+         */
+        this.noiseRegExps = [/^(Aria Templates tests frame|Aria Templates tests document|New tab page)$/i];
+    },
     $prototype : {
+        /**
+         * If set to true, normalizeSpaces is not called in filterJawsHistory.
+         */
+        skipNormalizeSpaces: false,
+
+        /**
+         * If set to true, removeNoise is not called in filterJawsHistory
+         */
+        skipRemoveNoise: false,
+
+        /**
+         * If set to true, removeDuplicates is not called in filterJawsHistory.
+         */
+        skipRemoveDuplicates: false,
+
         /**
          * Private helper function, starts the tests once the template has been successfully loaded and rendered
          */
@@ -84,8 +107,7 @@ module.exports = Aria.classDefinition({
 
         /**
          * Sends the keyboard/mouse events necessary to retrieve Jaws history.
-         * The raw history is processed to make it easier to compare between
-         * several executions.
+         * The raw history is returned without any processing.
          * @param {aria.core.CfgBeans:Callback} cb
          */
         retrieveJawsHistory : function (cb) {
@@ -102,30 +124,32 @@ module.exports = Aria.classDefinition({
             ], {
                 fn: function () {
                     textArea.parentNode.removeChild(textArea);
-                    var textAreaContent = textArea.value;
-                    var globalFilterRegExp = /^(Aria Templates tests frame|Aria Templates tests document|New tab page)$/gi;
-                    var lines = ariaUtilsString.trim(textAreaContent).split("\n");
-                    for (var i = lines.length - 1; i >= 0; i--) {
-                        var curLine = lines[i];
-                        curLine = curLine.replace(/\s+/g, " ");
-                        curLine = ariaUtilsString.trim(curLine);
-                        if (curLine && !globalFilterRegExp.test(curLine)) {
-                            lines[i] = curLine;
-                        } else {
-                            lines.splice(i, 1);
-                        }
-                    }
-
-                    textAreaContent = lines.join("\n");
-                    this.$callback(cb, textAreaContent);
+                    this.$callback(cb, textArea.value);
                 },
                 scope: this
             });
         },
 
         /**
-         * Retrieves Jaws history (with this.retrieveJawsHistory) and
-         * asserts that it is equal to the expected string.
+         * Applies usual Jaws history filters.
+         */
+        filterJawsHistory: function (response) {
+            if (!this.skipNormalizeSpaces) {
+                response = this.normalizeSpaces(response);
+            }
+            if (!this.skipRemoveNoise) {
+                response = this.removeNoise(response);
+            }
+            if (!this.skipRemoveDuplicates) {
+                response = this.removeDuplicates(response);
+            }
+            return response;
+        },
+
+        /**
+         * Retrieves Jaws history (with this.retrieveJawsHistory), filters it with
+         * both filterJawsHistory and the provided filter function and asserts that
+         * the result is equal to the expected string.
          * @param {aria.core.CfgBeans:Callback} cb
          * @param {function} filterFn optionnal. The filter function to apply to the response.
          */
@@ -134,6 +158,7 @@ module.exports = Aria.classDefinition({
                 fn: function (response) {
                     var originalResponse = response;
 
+                    response = this.filterJawsHistory(response);
                     if (filterFn) {
                         response = filterFn.call(this, response);
                     }
@@ -145,13 +170,13 @@ module.exports = Aria.classDefinition({
                     } else {
                         message.push('History was not filtered');
                     }
-                    message.push("JAWS history" + (changed ? ' (filtered)' : '') + ": " + ariaUtilsJson.convertToJsonString(response));
-                    message.push("Expected history: " + ariaUtilsJson.convertToJsonString(expectedOutput));
+                    message.push("JAWS history" + (changed ? ' (filtered)' : '') + ":", "", response, "");
+                    message.push("Expected history:", "", expectedOutput, "");
 
                     if (changed) {
-                        message.push("JAWS history (original): " + ariaUtilsJson.convertToJsonString(originalResponse));
+                        message.push("JAWS history (original): ", "", originalResponse, "");
                     }
-                    message = message.join('.\n') + '.';
+                    message = message.join('\n');
 
                     this.assertEquals(response, expectedOutput, message);
                     this.$callback(callback);
@@ -161,19 +186,64 @@ module.exports = Aria.classDefinition({
         },
 
         /**
-         * Remove duplicate sentences
+         * Removes lines which introduce noise in the Jaws history.
          * @param {String} response JAWS response to be processed
+         * @return {String}
          */
-        removeDuplicates : function (response) {
-            var lines = response.split("\n");
-            var newLines = [lines[0]];
-            for(var i = 1, ii = lines.length; i < ii; i++) {
-                var line = lines[i];
-                if (line != lines[i - 1]) {
-                    newLines.push(line);
+        removeNoise : function (response) {
+            return this.removeMatchingLines(response, this.noiseRegExps);
+        },
+
+        /**
+         * Removes lines which match the given regular expressions.
+         * @param {String} response JAWS response to be processed
+         * @param {Array} regExps array of regular expressions
+         * @return {String}
+         */
+        removeMatchingLines : function (response, regExps) {
+            var l = regExps.length;
+            var lines = ariaUtilsString.trim(response).split("\n");
+            lines = ariaUtilsArray.filter(lines, function (line) {
+                for (var i = 0; i < l; i++) {
+                    if (regExps[i].test(line)) {
+                        return false;
+                    }
+                }
+                return true;
+            });
+            return lines.join("\n");
+        },
+
+        /**
+         * Normalizes spaces in Jaws history, including:
+         * - removing spaces at the beginning and the end of each line
+         * - replacing multiples consecutive spaces by a single one
+         * - removing blank lines
+         * @param {String} response JAWS response to be processed
+         * @return {String}
+         */
+        normalizeSpaces : function (response) {
+            var lines = ariaUtilsString.trim(response).split("\n");
+            for (var i = lines.length - 1; i >= 0; i--) {
+                var curLine = lines[i];
+                curLine = curLine.replace(/\s+/g, " ");
+                curLine = ariaUtilsString.trim(curLine);
+                if (curLine) {
+                    lines[i] = curLine;
+                } else {
+                    lines.splice(i, 1);
                 }
             }
-            return newLines.join("\n");
+            return lines.join("\n");
+        },
+
+        /**
+         * Removes duplicate lines
+         * @param {String} response JAWS response to be processed
+         * @return {String}
+         */
+        removeDuplicates : function (response) {
+            return response.replace(/(^|\n)(.*)(\n\2)+(?=\n|$)/ig, "$1$2");
         }
     }
 });

@@ -167,9 +167,18 @@ module.exports = Aria.classDefinition({
         _getAriaLabelMarkup : function () {
             var markup = [];
             if (this._cfg.waiAria) {
-              if (this._cfg.waiLabel) {markup.push(' aria-label="' + ariaUtilsString.encodeForQuotedHTMLAttribute(this._cfg.waiLabel) + '" ');}
-              if (this._cfg.waiLabelledBy) {markup.push(' aria-labelledby="' + ariaUtilsString.encodeForQuotedHTMLAttribute(this._cfg.waiLabelledBy) + '" ');}
-              if (this._cfg.waiDescribedBy) {markup.push(' aria-describedby="' + ariaUtilsString.encodeForQuotedHTMLAttribute(this._cfg.waiDescribedBy) + '" ');}
+                var labelledBy = this._cfg.waiLabelledBy;
+                if (this._cfg.waiLabel) {
+                    markup.push(' aria-label="' + ariaUtilsString.encodeForQuotedHTMLAttribute(this._cfg.waiLabel) + '" ');}
+                else if (!labelledBy) {
+                    labelledBy = this._labelId;
+                }
+                if (labelledBy) {
+                    markup.push(' aria-labelledby="' + ariaUtilsString.encodeForQuotedHTMLAttribute(labelledBy) + '" ');
+                }
+                if (this._cfg.waiDescribedBy) {
+                    markup.push(' aria-describedby="' + ariaUtilsString.encodeForQuotedHTMLAttribute(this._cfg.waiDescribedBy) + '" ');
+                }
             }
             return markup.join('');
         },

@@ -357,6 +357,10 @@ module.exports = Aria.beanDefinitions({
                     $description : "Value associated to the widget representing the selected state",
                     $default : false
                 },
+                "onfocus" : {
+                    $type : "common:Callback",
+                    $description : "Function to be called when the widget gets the focus"
+                },
                 "onchange" : {
                     $type : "common:Callback",
                     $description : "Function to be called when the state of the widget changes due to user action(click)"
@@ -800,6 +804,10 @@ module.exports = Aria.beanDefinitions({
                 "displayOptions" : {
                     $type : "FormListCfg:displayOptions",
                     $description : "Display options that are not interpreted by the list controller."
+                },
+                "readOnlyTextField" : {
+                    $type: "json:Boolean",
+                    $description : "If true, the user can only modify the value of the widget by opening the popup (the text field is not modifiable)."
                 }
             }
         },
@@ -819,6 +827,15 @@ module.exports = Aria.beanDefinitions({
                 "waiAriaDateFormat" : {
                     $type : "environmentBase:inputFormatTypes",
                     $description : "Date pattern used by screen readers to read the selected date in the calendar (only used when waiAria is true)."
+                },
+                "waiAriaConfirmDateFormat" : {
+                    $type : "environmentBase:inputFormatTypes",
+                    $description : "Date pattern used by screen readers to read the input date in the text field (only used when waiAria is true)."
+                },
+                "waiAriaConfirmDateDelay" : {
+                    $type : "json:Integer",
+                    $description : "Delay (in milliseconds) for the debouncing of key events used to make the date read when the user types it in.",
+                    $default: 50
                 },
                 "minValue" : {
                     $type : "json:Date",
@@ -1171,6 +1188,22 @@ module.exports = Aria.beanDefinitions({
                     $type : "json:String",
                     $description : "Possible values are: 'bottom left', 'bottom right', 'top left', 'top right'.",
                     $default : "top right"
+                },
+                "waiLabel" : {
+                    $type : "json:String",
+                    $description : "Sets aria-label on the widget, value will be used as the attribute's value"
+                },
+                "waiDescribedBy" : {
+                    $type : "json:String",
+                    $description : "Sets aria-describedby on the widget, value will be used as the attribute's value"
+                },
+                "waiLabelledBy" : {
+                    $type : "json:String",
+                    $description : "Sets aria-labelledby on the widget, value will be used as the attribute's value"
+                },
+                "waiHasPopup" : {
+                    $type : "json:Boolean",
+                    $description : "If true, sets aria-haspopup=\"true\" on the widget. Only used if waiAria is true."
                 }
             }
         },
@@ -1299,18 +1332,6 @@ module.exports = Aria.beanDefinitions({
                     $type : "json:Boolean",
                     $description : "A boolean whether the button is disabled or not",
                     $default : false
-                },
-                "waiLabel" : {
-                    $type : "json:String",
-                    $description : "Sets aria-label on the link, value will be used as the attributes value"
-                },
-                "waiDescribedBy" : {
-                    $type : "json:String",
-                    $description : "Sets aria-describedby on the link, value will be used as the attributes value"
-                },
-                "waiLabelledBy" : {
-                    $type : "json:String",
-                    $description : "Sets aria-labelledby on the link, value will be used as the attributes value"
                 }
             }
         },
@@ -2223,6 +2244,27 @@ module.exports = Aria.beanDefinitions({
                 "selectedTab" : {
                     $type : "json:String",
                     $description : "The id of the currently selected tab"
+                },
+                "waiHidden" : {
+                    $type : "json:Boolean",
+                    $description : "Sets aria-hidden on the tab when set to true",
+                    $default : false
+                },
+                "waiLabel" : {
+                    $type : "json:String",
+                    $description : "Sets aria-label on the widget, value will be used as the attribute's value"
+                },
+                "waiLabelledBy" : {
+                    $type : "json:String",
+                    $description : "Sets aria-labelledby on the widget, value will be used as the attribute's value"
+                },
+                "waiDescribedBy" : {
+                    $type : "json:String",
+                    $description : "Sets aria-describedby on the widget, value will be used as the attribute's value"
+                },
+                "waiTitleTag" : {
+                    $type : "json:String",
+                    $description : "Adds a wrapper element around the widget element if specified, value sets the tag name of the element"
                 }
             }
         },

@@ -25,6 +25,7 @@ var ariaWidgetLibsBindableWidget = require("../widgetLibs/BindableWidget");
 var ariaCoreTplClassLoader = require("../core/TplClassLoader");
 var ariaCoreJsonValidator = require("../core/JsonValidator");
 var environment = require("../core/environment/Environment");
+var ariaWidgetsEnvironmentWidgetSettings = require("./environment/WidgetSettings");
 
 /**
  * Base Widget class from which all widgets must derive
@@ -137,6 +138,7 @@ module.exports = Aria.classDefinition({
          */
         this.__initWhileContentChange = false;
 
+        this.applyWidgetDefaults(cfg);
         this._cfgOk = ariaCoreJsonValidator.validateCfg(this._cfgBean || this._cfgPackage + "." + this.$class + "Cfg", cfg);
 
         // Check if the defined skinClass exists for this widget, if not set it to 'std'
@@ -224,6 +226,26 @@ module.exports = Aria.classDefinition({
          * @type String
          */
         _skinnableClass : null,
+
+        /**
+         * Apply the default configuration from the environment for the specified widget.
+         * @param {Object} cfg widget configuration (which has to be completed with defaults from the environment)
+         * @param {String} widgetName name of the widget. If omitted, this.$class is used.
+         */
+        applyWidgetDefaults : function (cfg, widgetName) {
+            if (!widgetName) {
+                widgetName = this.$class;
+            }
+            var allDefaults = ariaWidgetsEnvironmentWidgetSettings.getWidgetDefaults();
+            var widgetDefaults = allDefaults[widgetName];
+            if (widgetDefaults) {
+                for (var property in widgetDefaults) {
+                    if (widgetDefaults.hasOwnProperty(property) && !cfg.hasOwnProperty(property)) {
+                        cfg[property] = widgetDefaults[property];
+                    }
+                }
+            }
+        },
 
         /**
          * Initialize the binding description.
@@ -493,12 +515,17 @@ module.exports = Aria.classDefinition({
             }
         },
 
+        // Those two methods are kept there (even if they are empty) in order to
+        // avoid failures in case child classes still call them:
+        _dom_onmouseover : function () {},
+        _dom_onmouseout : function () {},
+
         /**
-         * Handler for mouse over event, to deal with tooltip.
+         * Handler for mouse enter event, to deal with tooltip.
          * @protected
          * @param {aria.DomEvent} domEvt
          */
-        _dom_onmouseover : function (domEvt) {
+        _dom_onmouseenter : function (domEvt) {
             if (this._tooltipWidget) {
                 this._tooltipWidget.associatedWidgetMouseOver(this, domEvt);
                 domEvt.$dispose();
@@ -506,11 +533,11 @@ module.exports = Aria.classDefinition({
         },
 
         /**
-         * Handler for mouse out event, to deal with tooltip.
+         * Handler for mouse leave event, to deal with tooltip.
          * @protected
          * @param {aria.DomEvent} domEvt
          */
-        _dom_onmouseout : function (domEvt) {
+        _dom_onmouseleave : function (domEvt) {
             if (this._tooltipWidget) {
                 this._tooltipWidget.associatedWidgetMouseOut(this, domEvt);
                 domEvt.$dispose();
@@ -748,18 +775,45 @@ module.exports = Aria.classDefinition({
             var target = evt.delegateTarget;
 
             if (!(this._cfg.disabled || this._cfg.readOnly)) {
+                var evtType = evt.type;
+                if (evtType === "mouseenter" || evtType === "mouseleave") {
+                    // those types are simulated from mouseover and mouseout
+                    // we do not want to have them twice
+                    return;
+                }
                 if (!this._initDone) {
-                    if (evt.type == "contentchange") {
+                    if (evtType == "contentchange") {
                         this.__initWhileContentChange = true;
                     }
                     this.initWidgetDom(target);
                 }
-                var handlerName = "_dom_on" + evt.type;
+                var handlerName = "_dom_on" + evtType;
+                var res = true;
                 if (this[handlerName]) {
                     // false return false, everything else return true
-                    return this[handlerName](evt) !== false;
+                    res = this[handlerName](evt) !== false;
                 }
-                return true;
+                if (res) {
+                    var isMouseOver = evtType === "mouseover";
+                    var isMouseOut = evtType === "mouseout";
+                    var isMouseEnterOrLeave = (isMouseOver || isMouseOut) && !ariaUtilsDom.isAncestor(evt.relatedTarget, target);
+                    if (isMouseEnterOrLeave) {
+                        var newEvtType = isMouseOver ? "mouseenter" : "mouseleave";
+                        handlerName = "_dom_on" + newEvtType;
+                        if (this[handlerName]) {
+                            var savedTarget = evt.target;
+                            try {
+                                evt.type = newEvtType;
+                                evt.target = target;
+                                res = this[handlerName](evt) !== false; // false return false, everything else return true
+                            } finally {
+                                evt.type = evtType;
+                                evt.target = savedTarget;
+                            }
+                        }
+                    }
+                }
+                return res;
             }
         },
 

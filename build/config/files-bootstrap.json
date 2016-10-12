@@ -1,6 +1,7 @@
 [
     "aria/Aria.js",
     "aria/core/JsObject.js",
+    "aria/utils/Algo.js",
     "aria/utils/Type.js",
     "aria/utils/String.js",
     "aria/core/log/DefaultAppender.js",

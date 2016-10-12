@@ -937,13 +937,16 @@ module.exports = Aria.classDefinition({
                             this._setFlag(output, "BlackBerryBrowser");
                         } else {
                             this._setFlag(output, "SafariMobile");
+                            this._setFlag(output, "Safari");
                         }
                         break;
                     case "operamini":
                         this._setFlag(output, "OperaMini");
+                        this._setFlag(output, "Opera");
                         break;
                     case "operamobi":
                         this._setFlag(output, "OperaMobile");
+                        this._setFlag(output, "Opera");
                         break;
                     case "safari":
                         if (output.isSymbian) {
@@ -955,11 +958,15 @@ module.exports = Aria.classDefinition({
                     case "androidbrowser":
                         this._setFlag(output, "AndroidBrowser");
                         break;
+                    case "iemobile":
+                        this._setFlag(output, "IEMobile");
+                        this._setFlag(output, "IE");
+                        break;
                     default:
                         maybeOtherBrowser = true;
                 }
 
-                if (ariaUtilsArray.contains(["Firefox", "Chrome", "IE", "Opera", "IEMobile", "Edge", "PhantomJS"], name)) {
+                if (ariaUtilsArray.contains(["Firefox", "Chrome", "IE", "Opera", "Edge", "PhantomJS"], name)) {
                     this._setFlag(output, name);
                     maybeOtherBrowser = false;
                 }

@@ -1,6 +1,7 @@
 [
     "aria/Aria.js",
     "aria/core/JsObject.js",
+    "aria/utils/Algo.js",
     "aria/utils/Type.js",
     "aria/utils/String.js",
     "aria/core/log/DefaultAppender.js",
@@ -10,6 +11,8 @@
     "aria/utils/json/JsonSerializer.js",
     "aria/utils/Json.js",
     "aria/utils/Object.js",
+    "aria/core/useragent/ua-parser.js",
+    "aria/core/useragent/UserAgent.js",
     "aria/core/Browser.js",
     "aria/dom/DomReady.js",
     "aria/core/Cache.js",

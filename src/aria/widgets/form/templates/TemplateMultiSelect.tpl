@@ -42,7 +42,7 @@
                     <tr>
                 {/if}
 
-                <td>{call renderItem(item, item_info.initIndex)/}</td>
+                <td>{call renderItem(item, item_index)/}</td>
                 {if (data.displayOptions.tableMode == true)}
                     {var checkboxLabelSplit = item.label.split('|')/}
                     <td {on click {fn: "itemTableClick", args: {    item : item, itemIdx : item.index }}/}>${checkboxLabelSplit[0]|escapeForHTML:{text: true}}</td>
@@ -81,18 +81,25 @@
             </table>
         {else/}
             {foreach item inView data.itemsView}
-                {call renderItem(item, item_info.initIndex)/}
+                {call renderItem(item, item_index)/}
             {/foreach}
         {/if}
     {/macro}
 
-    {macro renderItem(item)}
+    {macro renderItem(item, sortedIndex)}
         {call renderCheckboxLabel(item)/}
         {@aria:CheckBox {
             label: checkboxLabel,
             waiAria: data.waiAria,
             waiLabelHidden: true,
             waiLabel: checkboxLabel,
+            onfocus: {
+                fn: "itemFocus",
+                args: {
+                    item : item,
+                    sortedIndex : sortedIndex
+                }
+            },
             onchange: {
                 fn: "itemClick",
                 args: {
@@ -133,28 +140,31 @@
                 {@aria:Link {
                     label : footerRes.selectAll,
                     sclass : 'multiSelectFooter',
+                    tabIndex: 0,
                     onclick : {
                         fn : "selectAll",
                         scope : moduleCtrl
                     }
                 }/}
             </div>
-            <span style="position:absolute;right:2px;text-align:right;">
-                {@aria:Link {
-                    label:footerRes.close,
-                    sclass : 'multiSelectFooter',
-                    onclick: {
-                        fn: "close",
-                        scope: moduleCtrl
-                    }
-                }/}
-            </span>
             <span>
                 {@aria:Link {
                     label:footerRes.deselectAll,
                     sclass : 'multiSelectFooter',
+                    tabIndex: 0,
                     onclick: {
                         fn: "deselectAll",
+                        scope: moduleCtrl
+                    }
+                }/}
+            </span>
+            <span style="position:absolute;right:2px;text-align:right;">
+                {@aria:Link {
+                    label:footerRes.close,
+                    sclass : 'multiSelectFooter',
+                    tabIndex: 0,
+                    onclick: {
+                        fn: "close",
                         scope: moduleCtrl
                     }
                 }/}

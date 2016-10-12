@@ -15,18 +15,18 @@
 
 Aria.classDefinition({
     $classpath : "test.aria.widgets.form.select.sharedSelect.MainTemplateTestCase",
-    $extends : "test.aria.widgets.form.select.sharedSelect.SharedSelectTemplateTestCase",
+    $extends : "test.aria.widgets.form.select.sharedSelect.SharedSelectTemplateBase",
     $dependencies : ["aria.utils.Json"],
     $constructor : function () {
 
-        this.$SharedSelectTemplateTestCase.constructor.call(this);
+        this.$SharedSelectTemplateBase.constructor.call(this);
         this.setTestEnv({
             template : "test.aria.widgets.form.select.sharedSelect.MainTemplate",
             data : this.data
         });
     },
     $destructor : function () {
-        this.$SharedSelectTemplateTestCase.$destructor.call(this);
+        this.$SharedSelectTemplateBase.$destructor.call(this);
     },
     $prototype : {
         // look up the parent class to see the tests

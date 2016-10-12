@@ -343,7 +343,7 @@ module.exports = Aria.classDefinition({
 
             if (this._isTextarea) {
                 out.write(['<textarea class="', className, '"', Aria.testMode ? ' id="' + this._domId + '_textarea"' : '',
-                        cfg.disabled ? ' disabled="disabled"' : cfg.readOnly ? ' readonly="readonly"' : '',
+                        cfg.disabled ? ' disabled="disabled"' : this.isTextInputReadOnly() ? ' readonly="readonly"' : '',
                         ariaRequired, ' type="', type, '" style="color:', color,
                         ';overflow:auto;resize:none;height: ' + this._frame.innerHeight + 'px; width:', inputWidth,
                         'px;"', 'value=""', (cfg.maxlength > -1 ? 'maxlength="' + cfg.maxlength + '" ' : ' '),
@@ -354,7 +354,7 @@ module.exports = Aria.classDefinition({
                 ].join(''));
             } else {
                 out.write(['<input class="', className, '"', Aria.testMode ? ' id="' + this._domId + '_input"' : '',
-                        cfg.disabled ? ' disabled="disabled"' : cfg.readOnly ? ' readonly="readonly"' : '',
+                        cfg.disabled ? ' disabled="disabled"' : this.isTextInputReadOnly() ? ' readonly="readonly"' : '',
                         ariaRequired, ' type="', type, '" style="color:', color, ';width:',
                         inputWidth, 'px;"', 'value="',
                         stringUtils.encodeForQuotedHTMLAttribute((this._helpTextSet) ? cfg.helptext : text), '" ',
@@ -560,7 +560,11 @@ module.exports = Aria.classDefinition({
                         if (ariaCoreBrowser.isModernIE && !caretPosition) {
                             caretPosition = this.getCaretPosition();
                         }
-                        this.getTextInputField().value = text;
+                        var input = this.getTextInputField();
+                        // This test prevents the normal autofocus from being lost with tab, in some browsers
+                        if (input.value != text) {
+                            input.value = text;
+                        }
                         if (caretPosition) {
                             this.setCaretPosition(caretPosition.start, caretPosition.end);
                         }
@@ -843,6 +847,16 @@ module.exports = Aria.classDefinition({
         },
 
         /**
+         * Returns whether the text input is read-only.
+         * Note that having a read-only text input does not necessarily mean that the whole widget is read-only.
+         * Depending on the widget, it may be possible to change the value through its drop-down popup, for example.
+         * @return {Boolean} true if the text input should be read-only.
+         */
+        isTextInputReadOnly : function () {
+            return this._cfg.readOnly;
+        },
+
+        /**
          * This is called when the bindings are updated. It will update the textfield when either the error, mandatory,
          * readOnly or disabled settings change.
          * @protected
@@ -854,7 +868,7 @@ module.exports = Aria.classDefinition({
                 this._updateState();
                 // sets the readOnly disabled flags in the input according to
                 // the recently changed cfg object
-                inputElm.readOnly = this._cfg.readOnly;
+                inputElm.readOnly = this.isTextInputReadOnly();
                 inputElm.disabled = this._cfg.disabled;
 
                 if (this._cfg.waiAria) {

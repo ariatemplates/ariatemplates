@@ -64,7 +64,7 @@ module.exports = Aria.classDefinition({
             // In non-browser environment document might be null
             if (Aria.$window && Aria.$window.document) {
                 var div = Aria.$window.document.createElement("div");
-                var prefixes = ["ms", "O", "Webkit", "Moz", ""];
+                var prefixes = ["ms", "O", "Moz", "Webkit", ""];
                 for (var i = 0; i < prefixes.length; i += 1) {
                     var prefix = prefixes[i];
                     if (div.style[prefix + "Transition"] !== undefined) {

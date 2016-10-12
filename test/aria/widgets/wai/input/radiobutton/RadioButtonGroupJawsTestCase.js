@@ -21,11 +21,10 @@ Aria.classDefinition({
         this.setTestEnv({
             template : "test.aria.widgets.wai.input.radiobutton.RadioButtonGroupTestCaseTpl"
         });
+        this.noiseRegExps.push(/(First textfield Edit|Type in text\.)$/i);
     },
     $prototype : {
         runTemplateTest : function () {
-
-            var filterRegExp = /(First textfield Edit|Type in text\.)\n/gi;
 
             this.synEvent.execute([
                 ["click", this.getElementById("tf1")],
@@ -49,11 +48,9 @@ Aria.classDefinition({
             ], {
                 fn: function () {
                     this.assertJawsHistoryEquals(
-                        "radio button not checked\nRadio A radio button checked\nRadio A\nradio button not checked\nRadio B\nradio button not checked\nRadio C\nRadio C radio button checked\nRadio B\nradio button not checked\nRadio B radio button checked\nRadio B\nradio button not checked\nRadio C\nLast textfield\nEdit\nList box Radio B radio button checked\nTo change the selection press Up or Down Arrow.",
-                    this.end,
-                    function(response) {
-                        return response.replace(filterRegExp, "");
-                    });
+                        "radio button not checked Radio A\nRadio A radio button checked\nRadio A\nradio button not checked Radio B\nRadio B\nradio button not checked Radio C\nRadio C\nRadio C radio button checked\nRadio B\nradio button not checked Radio B\nRadio B radio button checked\nRadio B\nradio button not checked Radio C\nRadio C\nLast textfield\nEdit\nList box Radio B radio button checked\nTo change the selection press Up or Down Arrow.",
+                        this.end
+                    );
                 },
                 scope: this
             });

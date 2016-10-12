@@ -14,6 +14,7 @@
  */
 var Aria = require("../Aria");
 var ariaUtilsType = require("./Type");
+var ariaUtilsArray = require("./Array");
 
 
 /**
@@ -25,15 +26,13 @@ module.exports = Aria.classDefinition({
     $prototype : {
         /**
          * Substitute %n parameters in a string
-         * @param {String} string The source string to substitue %n occurences in
-         * @param {Array|String} params The parameters to use for the substitution. Index 0 will replace %1, index 1, %2
-         * and so on. If a string is passed, only %1 will be replaced
-         * @return {String} The final string, with %n occurences replaced with their equivalent
+         * @param {String} string The source string to substitute %n occurrences in
+         * @param {Array|String} ...params All the remaining parameters, that can form from one simple string to deeply nested arrays of strings, will be resolved to a single list of strings. These strings will be used for the substitutions. Index 0 will replace %1, index 1, %2 and so on.
+         * @return {String} The final string, with %n occurrences replaced with their equivalent
          */
-        substitute : function (string, params) {
-            if (!ariaUtilsType.isArray(params)) {
-                params = [params];
-            }
+        substitute : function (string) {
+            var params = Array.prototype.slice.call(arguments, 1);
+            params = ariaUtilsArray.flattenDeep(params);
 
             string = string.replace(/%[0-9]+/g, function (token) {
                 var replacement = params[parseInt(token.substring(1), 10) - 1];
@@ -119,7 +118,7 @@ module.exports = Aria.classDefinition({
          *
          * @param {String} str Input string
          *
-         * @param options In its more comprehensive form, it is an object in which each property correspond to a context that can be set to a truthy value to activate escaping (a falsy value, thus including null or undefined, will disable it).
+         * @param options In its more comprehensive form, it is an object in which each property correspond to a context that can be set to a truthy value to activate escaping (a falsy value, thus including null and undefined, will disable it).
          * <pre>
          * {
          *     attr: true, // will escape the string for safe insertion inside the value of an attribute
@@ -129,31 +128,24 @@ module.exports = Aria.classDefinition({
          *
          * There are however two shortcuts that can be used:
          * <ul>
-         * <li>if nothing is passed, it is equivalent as passing true for all contexts</li>
-         * <li>if something is passed but it's not an object, the value is converted to a boolean, and this boolean value will be used for all contexts.</li>
+         * <li>if nothing is passed, it is equivalent to passing true for all contexts</li>
+         * <li>if something is passed but it's not an object, the value is converted to a boolean (with standard JavaScript coercion), and this boolean value will be used for all contexts.</li>
          * </ul>
-         *
-         * Therefore, you can also pass those kinds of values:
-         * <pre>
-         * 1, "1", true // escapes all
-         * null, undefined // escapes all too
-         * 0, "", false // escapes nothing
-         * </pre>
          *
          * @param {Object} infos An optional object for additional infos on what has been done. For now, tells if it has actually been escaped or not, and for which contexts.
          *
          * @return {String} processed string
          */
         escapeForHTML : function (str, options, infos) {
-            // Input arguments processing --------------------------------------
+            // -------------------------------------- input arguments processing
 
-            // --------------------------------------------------------- options
+            // options ---------------------------------------------------------
+
+            if (options == null) {
+                options = true;
+            }
 
             if (!ariaUtilsType.isObject(options)) {
-                if (options == null) {
-                    options = true;
-                }
-
                 options = !!options;
                 options = {
                     text: options,
@@ -164,29 +156,30 @@ module.exports = Aria.classDefinition({
             var escapeForHTMLText = !!(options.text);
             var escapeForHTMLAttr = !!(options.attr);
 
-            // ----------------------------------------------------------- infos
+            // ------------------------------------------------------ processing
 
-            // Creates a dummy object for simplicity
-            if (infos == null) {
-                infos = {};
-            }
-
-            infos.escaped = false;
-            infos.text = false;
-            infos.attr = false;
-
-            // Processing ------------------------------------------------------
+            var escaped = false;
+            var textEscaped = false;
+            var attrEscaped = false;
 
             if (escapeForHTMLText) {
-                infos.escaped = true;
-                infos.text = true;
+                escaped = true;
+                textEscaped = true;
                 str = this.escapeHTML(str).replace(/\//g, "&#x2F;");
             }
 
             if (escapeForHTMLAttr) {
-                infos.escaped = true;
-                infos.attr = true;
+                escaped = true;
+                attrEscaped = true;
                 str = this.escapeHTMLAttr(str);
+            }
+
+            // ---------------------------------------------------------- return
+
+            if (infos != null) {
+                infos.escaped = escaped;
+                infos.text = textEscaped;
+                infos.attr = attrEscaped;
             }
 
             return str;
@@ -472,6 +465,18 @@ module.exports = Aria.classDefinition({
             return str.replace(/-([a-z])/ig, function (match, letter) {
                 return letter.toUpperCase();
             });
+        },
+
+        /**
+         * Wraps the given string with the given wrapper. This concretely means that the wrapper is put before and after the given string.
+         *
+         * @param {String} The string to wrap with the given wrapper
+         * @param {String} The wrapper string
+         *
+         * @return {String} The wrapped string
+         */
+        wrap : function (string, wrapper) {
+            return wrapper + string + wrapper;
         }
     }
 });

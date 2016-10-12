@@ -21,6 +21,7 @@ Aria.classDefinition({
         this.setTestEnv({
             template : "test.aria.widgets.wai.input.radiobutton.initiallyDisabled.InitiallyDisabledRadioButtonsTpl"
         });
+        this.noiseRegExps.push(/(edit|text)/i);
     },
     $prototype : {
         runTemplateTest : function () {
@@ -51,10 +52,7 @@ Aria.classDefinition({
                         "To change the selection press Up or Down Arrow.",
                         "List box Manual radio button checked",
                         "To change the selection press Up or Down Arrow."
-                    ].join("\n"),
-                    this.end, function (response) {
-                        return response.replace(/.*(edit|text).*\n?/gi, "");
-                    });
+                    ].join("\n"), this.end);
                 },
                 scope: this
             });

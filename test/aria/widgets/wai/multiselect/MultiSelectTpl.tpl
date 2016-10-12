@@ -28,12 +28,7 @@
                 {value:'AC', label:'Air Canada', disabled:false},
                 {value:'BA', label:'British Airways', disabled:false},
                 {value:'NZ', label:'Air New Zealand', disabled:false},
-                {value:'DL', label:'Delta Airlines', disabled:false},
-                {value:'AY', label:'Finnair', disabled:false},
-                {value:'IB', label:'Iberia', disabled:false},
-                {value:'LH', label:'Lufthansa', disabled:false},
-                {value:'MX', label:'Mexicana', disabled:false},
-                {value:'QF', label:'Quantas', disabled:false}
+                {value:'DL', label:'Delta Airlines', disabled:false}
             ]/}
         <div>
         <input {id "tf"/}><br><br>
@@ -53,7 +48,8 @@
             displayOptions : {
                 flowOrientation:'horizontal',
                 tableMode:true,
-                listDisplay: "label"
+                listDisplay: "label",
+                displayFooter : true
             },
             items:testItems,
             bind:{

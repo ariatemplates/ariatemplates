@@ -17,7 +17,7 @@ var Aria = require("ariatemplates/Aria");
 
 module.exports = Aria.classDefinition({
     $classpath : "test.aria.widgets.wai.input.timeField.TimeFieldTestCase",
-    $extends : require("../InputBaseTestCase"),
+    $extends : require("../InputBase"),
     $prototype : {
         myTemplate : "test.aria.widgets.wai.input.timeField.TimeFieldTestCaseTpl"
     }

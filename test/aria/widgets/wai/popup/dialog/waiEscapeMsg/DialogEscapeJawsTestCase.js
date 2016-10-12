@@ -24,6 +24,7 @@ module.exports = Aria.classDefinition({
         this.setTestEnv({
             template : "test.aria.widgets.wai.popup.dialog.waiEscapeMsg.DialogEscapeTpl"
         });
+        this.noiseRegExps.push(/Edit|Type/);
      },
 
     $prototype : {
@@ -43,13 +44,7 @@ module.exports = Aria.classDefinition({
                 fn: function () {
                     this.assertJawsHistoryEquals(
                         "Open dialog Button\nMyDialogTitle dialog\nMyDialogTitle heading level 1\nPress escape again to close the dialog.\nOpen dialog Button\nMyDialog is closed.",
-                        this.end,
-                        function (response) {
-                            return response.split("\n").filter(function (line) {
-                                return line.indexOf("Edit") == -1 &&
-                                    line.indexOf("Type") == -1 ;
-                            }).join("\n");
-                        }
+                        this.end
                     );
                 },
                 scope: this

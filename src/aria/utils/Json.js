@@ -72,6 +72,9 @@ var ariaUtilsObject = require("./Object");
                     break;
                 }
             }
+            if (oldChildParents.length === 0) {
+                __checkAndRemoveBackRefs(oldChild);
+            }
         }
     };
 
@@ -124,6 +127,34 @@ var ariaUtilsObject = require("./Object");
     var __includePropForBackRef = function (propertyName) {
         // which property names are included for back references
         return (propertyName != jsonUtils.OBJECT_PARENT_PROPERTY && propertyName != jsonUtils.META_FOR_LISTENERS && propertyName != jsonUtils.META_FOR_RECLISTENERS);
+    };
+
+    /**
+     * Check if the container has no parent and no recursive listener.
+     * In that case, its references in the aria:parent property of its
+     * children are removed.
+     */
+    var __checkAndRemoveBackRefs = function (container) {
+        var ariaParents = container[parProp];
+        if (!ariaParents || ariaParents.length > 0) {
+            return;
+        }
+        var recListenersPrefix = jsonUtils.META_FOR_RECLISTENERS;
+        var recListenersPrefixLength = recListenersPrefix.length;
+        for (var childName in container) {
+            if (container.hasOwnProperty(childName) && childName.substr(0, recListenersPrefixLength) === recListenersPrefix) {
+                // we found a recursive listener, we cannot remove aria:parent in children!
+                return;
+            }
+        }
+        // no recursive listener in this object and no parent, we can safely remove the aria:parent link
+        // and do the same in children
+        delete container[parProp];
+        for (var childName in container) {
+            if (container.hasOwnProperty(childName) && __includePropForBackRef(childName)) {
+                __removeLinkToParent(container[childName], container, childName);
+            }
+        }
     };
 
     /**
@@ -700,6 +731,7 @@ var ariaUtilsObject = require("./Object");
                     if (listeners.length == 1) {
                         container[meta] = null;
                         delete container[meta];
+                        __checkAndRemoveBackRefs(container);
                     } else {
                         listeners.splice(idx, 1);
                     }

@@ -171,7 +171,6 @@ module.exports = Aria.classDefinition({
          * @return {aria.widgets.controllers.reports.ControllerReport}
          */
         checkText : function (text, hasErrors) {
-
             // return object
             var report;
             // an empty field is usually not considered as an error
@@ -182,12 +181,7 @@ module.exports = Aria.classDefinition({
                     report = new ariaWidgetsControllersReportsControllerReport();
                     report.ok = true;
                 } else {
-                    var options = {
-                        referenceDate : this._referenceDate,
-                        inputPattern : this._inputPattern,
-                        outputPattern : this._pattern
-                    };
-                    var date = ariaUtilsDate.interpret(text, options);
+                    var date = this.interpretText(text);
                     if (date) {
                         report = this.checkValue(date);
                     } else {
@@ -199,6 +193,17 @@ module.exports = Aria.classDefinition({
             }
 
             return report;
+        },
+
+        interpretText : function(text) {
+            var options = {
+                referenceDate : this._referenceDate,
+                inputPattern : this._inputPattern,
+                outputPattern : this._pattern
+            };
+            var date = ariaUtilsDate.interpret(text, options);
+
+            return date;
         },
 
         /**

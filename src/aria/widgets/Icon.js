@@ -14,6 +14,7 @@
  */
 var Aria = require("../Aria");
 var ariaUtilsString = require("../utils/String");
+var subst = ariaUtilsString.substitute;
 var ariaWidgetsIconStyle = require("./IconStyle.tpl.css");
 var ariaWidgetsWidget = require("./Widget");
 var ariaCoreTplClassLoader = require("../core/TplClassLoader");
@@ -98,6 +99,8 @@ module.exports = Aria.classDefinition({
                 value = '' + value;
                 value = ariaUtilsString.escapeForHTML(value, {attr: true});
                 attributes.push(key + '="' + value + '"');
+
+                attributes.push(subst('%1="%2"', key, value));
             }
 
             // delegationMarkup ------------------------------------------------

@@ -15,7 +15,7 @@
 
 Aria.classDefinition({
     $classpath : "test.aria.widgets.skin.button.verticalAlign.VerticalAlignTopTestCase",
-    $extends : "test.aria.widgets.skin.button.verticalAlign.VerticalAlignParent",
+    $extends : "test.aria.widgets.skin.button.verticalAlign.VerticalAlignParentBase",
     $dependencies : ["aria.core.Browser"],
 
     $prototype : {

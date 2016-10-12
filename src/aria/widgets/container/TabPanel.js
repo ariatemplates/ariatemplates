@@ -15,6 +15,8 @@
 var Aria = require("../../Aria");
 
 var ariaUtilsArray = require("../../utils/Array");
+var ariaUtilsString = require("../../utils/String");
+var subst = ariaUtilsString.substitute;
 
 var ariaWidgetsFramesFrameFactory = require("../frames/FrameFactory");
 var ariaWidgetsContainerTabPanelStyle = require("./TabPanelStyle.tpl.css");
@@ -77,6 +79,10 @@ module.exports = Aria.classDefinition({
         var extraAttributes = [];
 
         if (cfg.waiAria) {
+            if (cfg.tabIndex == null) {
+                cfg.tabIndex = -1;
+            }
+
             extraAttributes.push(['role', 'tabpanel']);
 
             this._updateControlledTabPanelId();
@@ -87,15 +93,10 @@ module.exports = Aria.classDefinition({
             }
         }
 
-        var _extraAttributes = '';
-        ariaUtilsArray.forEach(extraAttributes, function (attribute) {
-            var key = attribute[0];
-            var value = attribute[1];
-
-            _extraAttributes += ' ' + key + '="' + value + '"';
+        extraAttributes = ariaUtilsArray.map(extraAttributes, function (attribute) {
+            return subst('%1="%2"', attribute[0], attribute[1]);
         });
-        _extraAttributes += ' ';
-        this._extraAttributes = _extraAttributes;
+        this._extraAttributes = ariaUtilsString.wrap(extraAttributes.join(' '), ' ');
     },
     /**
      * TabPanel destructor
@@ -177,7 +178,7 @@ module.exports = Aria.classDefinition({
                 return null;
             }
 
-            return 'aria:' + configurationOfCommonBinding.to + '_' + name;
+            return subst('aria:%1_%2', configurationOfCommonBinding.to, name);
         },
 
 

@@ -24,6 +24,7 @@ module.exports = Aria.classDefinition({
         this.setTestEnv({
             template : "test.aria.widgets.wai.popup.dialog.titleTag.DialogTitleTagTpl"
         });
+        this.noiseRegExps.push(/page|Arrow/);
      },
 
     $prototype : {
@@ -58,16 +59,8 @@ module.exports = Aria.classDefinition({
             ], {
                 fn: function () {
                     this.assertJawsHistoryEquals(
-                        // This test is intended to be run in attester only.
-                        // The list of links takes into account the "Pause" link displayed by attester
-                        "Heading List dialog\nheadings List view\nMyDialogTitle : 1\n1 of 1\nheading level 1 MyDialogTitle\nMyDialogTitle heading level 1\nLinks List dialog\nlinks List view\nLinkInTheDialog\n2 of 2\nPause\nLinkInTheDialog\nLink LinkInTheDialog\nLinkInTheDialog Link\nHeading List dialog\nheadings List view\nBackgroundTitle : 1\n1 of 1\nheading level 1 BackgroundTitle\nBackgroundTitle\nheading level 1\nLinks List dialog\nlinks List view\nBackgroundLink\n2 of 2\nPause\nBackgroundLink\nLink BackgroundLink\nBackgroundLink Link",
-                        this.end,
-                        function (response) {
-                            return response.split("\n").filter(function (line) {
-                                return line.indexOf("page") == -1 &&
-                                    line.indexOf("Arrow") == -1 ;
-                            }).join("\n");
-                        }
+                        "Heading List dialog\nheadings List view\nMyDialogTitle : 1\n1 of 1\nheading level 1 MyDialogTitle\nMyDialogTitle heading level 1\nLinks List dialog\nlinks List view\nLinkInTheDialog\n1 of 1\nLink LinkInTheDialog\nLinkInTheDialog Link\nHeading List dialog\nheadings List view\nBackgroundTitle : 1\n1 of 1\nheading level 1 BackgroundTitle\nBackgroundTitle\nheading level 1\nLinks List dialog\nlinks List view\nBackgroundLink\n1 of 1\nLink BackgroundLink\nBackgroundLink Link",
+                        this.end
                     );
                 },
                 scope: this

@@ -13,23 +13,29 @@
  * limitations under the License.
  */
 
+var Aria = require('ariatemplates/Aria');
+
+var ariaCoreSequencer = require('ariatemplates/core/Sequencer');
+
+var ariaUtilsType = require('ariatemplates/utils/Type');
+var ariaUtilsArray = require('ariatemplates/utils/Array');
+
+var Task = require('./Task');
+
+
+
 /**
  * A sequence is a list of tasks. It can automatically be run itself as a task when it is added to another sequence.
  * Otherwise it can be run as is, with a classical callback definition to be invoked when the sequence has finished.
  */
-Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.multiautocomplete.navigation.Sequence",
-    $dependencies : ["aria.utils.Type", "aria.utils.Array", "aria.core.Sequencer",
-            "test.aria.widgets.form.multiautocomplete.navigation.Task",
-            "test.aria.widgets.form.multiautocomplete.navigation.Helpers"],
+module.exports = Aria.classDefinition({
+    $classpath : 'test.aria.widgets.form.multiautocomplete.navigation.Sequence',
     $constructor : function (input) {
-        this.HELPERS = test.aria.widgets.form.multiautocomplete.navigation.Helpers;
-
-        // Factory -------------------------------------------------------------
+        // ------------------------------------------ input arguments processing
 
         var spec;
 
-        if (aria.utils.Type.isString(input)) {
+        if (ariaUtilsType.isString(input)) {
             spec = {
                 name : input
             };
@@ -37,47 +43,49 @@ Aria.classDefinition({
             spec = input;
         }
 
-        // Properties ----------------------------------------------------------
+        // ---------------------------------------------------------- properties
 
         this.parent = spec.parent;
         this.name = spec.name;
         this.trace = spec.trace;
 
-        // Internal properties -------------------------------------------------
+        // ------------------------------------------------- internal attributes
 
         this.__tasks = [];
         this._toDispose = [];
     },
     $destructor : function () {
-        var toDispose = this._toDispose;
-        for (var i = 0, len = toDispose.length; i < len; i++) {
-            toDispose[i].$dispose();
-        }
+        ariaUtilsArray.forEach(this._toDispose, function (instance) {
+            instance.$dispose();
+        });
     },
     $prototype : {
         /**
          * Adds a child task. If it's not already one, builds it.
+         *
          * @return The given or built task
          */
         addTask : function (input) {
-            // Task creation ---------------------------------------------------
+            // ------------------------------------------------------ processing
+
+            // task creation ---------------------------------------------------
 
             var task;
-            if (!aria.utils.Type.isInstanceOf(input, "test.aria.widgets.form.multiautocomplete.navigation.Task")) {
-                task = new test.aria.widgets.form.multiautocomplete.navigation.Task(input);
-                this._toDispose.push(task);
-            } else {
+            if (ariaUtilsType.isInstanceOf(input, Task)) {
                 task = input;
+            } else {
+                task = new Task(input);
+                this._toDispose.push(task);
             }
 
-            // Update & Push ---------------------------------------------------
+            // update & Push ---------------------------------------------------
 
             task.parent = this;
             task.trace = this.trace;
 
             this.__tasks.push(task);
 
-            // Return ----------------------------------------------------------
+            // ---------------------------------------------------------- return
 
             return task;
         },
@@ -88,7 +96,7 @@ Aria.classDefinition({
          * @return An array containing the results of the calls to <code>addTask</code>.
          */
         addTasks : function (input) {
-            return this.HELPERS.map(this.HELPERS.arrayFactory(input), function (item) {
+            return ariaUtilsArray.map(ariaUtilsArray.ensureWrap(input), function (item) {
                 return this.addTask(item);
             });
         },
@@ -100,17 +108,13 @@ Aria.classDefinition({
          * @return The given or built sequence
          */
         addSequence : function (input) {
-            // Factory ---------------------------------------------------------
-
             var sequence;
-            if (!aria.utils.Type.isInstanceOf(input, "test.aria.widgets.form.multiautocomplete.navigation.Sequence")) {
-                sequence = new test.aria.widgets.form.multiautocomplete.navigation.Sequence(input);
-                this._toDispose.push(sequence);
-            } else {
+            if (ariaUtilsType.isInstanceOf(input, this.constructor)) {
                 sequence = input;
+            } else {
+                sequence = new this.constructor(input);
+                this._toDispose.push(sequence);
             }
-
-            // Push ------------------------------------------------------------
 
             this.addTask({
                 name : sequence.name,
@@ -120,8 +124,6 @@ Aria.classDefinition({
                 trace : this.trace,
                 hasChildren : true
             });
-
-            // Return ----------------------------------------------------------
 
             return sequence;
         },
@@ -137,6 +139,7 @@ Aria.classDefinition({
 
         /**
          * Runs the sequence of tasks.
+         *
          * @param[in] {Function} onEnd The callback to be called when the sequence has completely finished. Defaults to
          * a non-op.
          * @param[in] scope The scope of the callback. Defaults to <code>this</code>.
@@ -144,27 +147,25 @@ Aria.classDefinition({
          * multiple manage yourself the use of an array or an object.
          */
         run : function (onEnd, scope, arg) {
-            // Input arguments processing --------------------------------------
+            // -------------------------------------- input arguments processing
 
-            // ----------------------------------------------------------- onEnd
-
-            if (!aria.utils.Type.isFunction(onEnd)) {
+            if (!ariaUtilsType.isFunction(onEnd)) {
                 onEnd = Aria.empty;
             }
-
-            // ----------------------------------------------------------- scope
 
             if (scope == null) {
                 scope = this;
             }
 
-            // Actual sequence creation ----------------------------------------
+            // ------------------------------------------------------ processing
 
-            var sequence = new aria.core.Sequencer();
+            // actual sequence creation ----------------------------------------
+
+            var sequence = new ariaCoreSequencer();
             this._toDispose.push(sequence);
             this.__sequence = sequence;
 
-            aria.utils.Array.forEach(this.__tasks, function (task) {
+            ariaUtilsArray.forEach(this.__tasks, function (task) {
                 sequence.addTask({
                     name : task.name,
                     fn : task.getFn(),
@@ -173,7 +174,7 @@ Aria.classDefinition({
                 });
             }, this);
 
-            // On end callback registration ------------------------------------
+            // on end callback registration ------------------------------------
 
             var cb = {
                 fn : onEnd,
@@ -188,14 +189,15 @@ Aria.classDefinition({
                 end : cb
             });
 
-            // Run -------------------------------------------------------------
+            // run -------------------------------------------------------------
 
             sequence.start();
         },
 
         /**
-         * A method to be called by the asynchronous tasks conatined in this sequence to tell that they have finished.
-         * This should be called only when the sequence is actually running, but anyway a chack is made for this.
+         * A method to be called by the asynchronous tasks contained in this sequence to tell that they have finished.
+         * This should be called only when the sequence is actually running, but anyway a check is made for this.
+         *
          * @param[in] task The task that has ended.
          */
         notifyEnd : function (task) {

@@ -14,7 +14,7 @@
  */
 
 /**
- * Test class used in test.aria.utils.JsonTest test in order to check the correct inheritance from the base JSON
+ * Test class used in test.aria.utils.JsonTestCase test in order to check the correct inheritance from the base JSON
  * serializer aria.utils.json.json.JsonSerializer
  */
 Aria.classDefinition({

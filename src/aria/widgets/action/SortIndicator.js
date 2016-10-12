@@ -221,7 +221,7 @@ module.exports = Aria.classDefinition({
             var cfg = this._cfg;
             var tabString = (cfg.tabIndex != null ? ' tabindex="' + this._calculateTabIndex() + '" ' : ' ');
             out.write(['<a', Aria.testMode ? ' id="' + this._domId + '_link"' : '',
-                    ' class="sortIndicatorLink" href="#"' + tabString + '>' + ariaUtilsString.escapeHTML(cfg.label)].join(""));
+                    ' class="sortIndicatorLink" href="#"' + tabString + this._getWaiAriaMarkup() + '>' + ariaUtilsString.escapeHTML(cfg.label)].join(""));
             this._icon.writeMarkup(out);
             out.write('</a>');
         },
@@ -315,12 +315,12 @@ module.exports = Aria.classDefinition({
         },
 
         /**
-         * Internal method to handle the mouse over event
+         * Internal method to handle the mouse enter event
          * @protected
          * @param {aria.DomEvent} domEvt Mouse over event
          */
-        _dom_onmouseover : function (domEvt) {
-            this.$ActionWidget._dom_onmouseover.call(this, domEvt);
+        _dom_onmouseenter : function (domEvt) {
+            this.$ActionWidget._dom_onmouseenter.call(this, domEvt);
             if (this._ellipsis) {
                 var mouseOverTime = new Date();
 
@@ -364,8 +364,8 @@ module.exports = Aria.classDefinition({
          * @param {aria.DomEvent} domEvt Mouse out event
          * @protected
          */
-        _dom_onmouseout : function (domEvt) {
-            this.$ActionWidget._dom_onmouseout.call(this, domEvt);
+        _dom_onmouseleave : function (domEvt) {
+            this.$ActionWidget._dom_onmouseleave.call(this, domEvt);
             if (this._ellipsis) {
 
                 if (this._hasFocus === false && this._hasMouseOver === true) {

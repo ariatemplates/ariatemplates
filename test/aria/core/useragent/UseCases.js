@@ -284,7 +284,7 @@ Aria.classDefinition({
                 osVersion : "WCE"
             },
             flags: {
-                browser: "OperaMobile",
+                browser: ["OperaMobile", "Opera"],
                 os: "WindowsPhone"
             }
         },
@@ -312,7 +312,7 @@ Aria.classDefinition({
                 osVersion : ""
             },
             flags: {
-                browser: "OperaMobile",
+                browser: ["OperaMobile", "Opera"],
                 os: "Symbian"
             }
         },
@@ -340,7 +340,7 @@ Aria.classDefinition({
                 osVersion : ""
             },
             flags: {
-                browser: "OperaMini",
+                browser: ["OperaMini", "Opera"],
                 os: "BlackBerry"
             }
         },
@@ -435,7 +435,7 @@ Aria.classDefinition({
             },
             flags: {
                 engine: "Webkit",
-                browser: "SafariMobile",
+                browser: ["SafariMobile", "Safari"],
                 os: "IOS"
             }
         },
@@ -464,7 +464,7 @@ Aria.classDefinition({
             },
             flags: {
                 engine: "Webkit",
-                browser: "SafariMobile",
+                browser: ["SafariMobile", "Safari"],
                 os: "IOS"
             }
         },
@@ -496,7 +496,7 @@ Aria.classDefinition({
                 osVersion : "7.5"
             },
             flags: {
-                browser: "IEMobile",
+                browser: ["IEMobile", "IE"],
                 os: "WindowsPhone"
             }
         },
@@ -524,7 +524,7 @@ Aria.classDefinition({
                 osVersion : "CE"
             },
             flags: {
-                browser: "IEMobile",
+                browser: ["IEMobile", "IE"],
                 os: "Windows"
             }
         },
@@ -552,7 +552,7 @@ Aria.classDefinition({
                 osVersion : "7.0"
             },
             flags: {
-                browser: "IEMobile",
+                browser: ["IEMobile", "IE"],
                 os: "WindowsPhone"
             }
         },

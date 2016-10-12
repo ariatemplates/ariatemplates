@@ -43,6 +43,7 @@ module.exports = Aria.classDefinition({
             }
         });
 
+        this.noiseRegExps.push(/\\$/, /^Email Address:$/i);
      },
 
     $prototype : {
@@ -58,10 +59,6 @@ module.exports = Aria.classDefinition({
         },
 
         runTemplateTest : function () {
-
-            var doubleSlashRegExp = /\\\n/gi;
-            var removeInsertedEmail = /\nEmail Address:\n/gi;
-
             this.synEvent.execute([
                 ["click", this.getInputField("email")],
                 ["pause", 1000],
@@ -86,14 +83,11 @@ module.exports = Aria.classDefinition({
             ], {
                 fn: function () {
                     this.assertJawsHistoryEquals(
-                        "Email Address: Edit\nType in text.\nSubmit\nButton\nError\nError • The first name is a required field using a mandatory validator.• The last name is a required field using a mandatory validator.• The phone number is a required field using a mandatory validator.• The email is a required field using a mandatory validator.\nlist of 4 items\n• Link The first name is a required field using a mandatory validator.\n• Link The last name is a required field using a mandatory validator.\nAlert!\nThe last name is a required field using a mandatory validator.\nPhone Number:\nEdit\nAlert!\nThe phone number is a required field using a mandatory validator.",
+                        "Email Address: Edit\nType in text.\nSubmit Button\nError\nError • The first name is a required field using a mandatory validator.• The last name is a required field using a mandatory validator.• The phone number is a required field using a mandatory validator.• The email is a required field using a mandatory validator.\nlist of 4 items\n• Link The first name is a required field using a mandatory validator.\n• Link The last name is a required field using a mandatory validator.\nAlert!\nThe last name is a required field using a mandatory validator.\nLast Name: Edit\nType in text.\nPhone Number:\nEdit\nAlert!\nThe phone number is a required field using a mandatory validator.",
                         this.end,
-                        function (response) {
-                            return this.removeDuplicates(
-                                response
-                                    .replace(doubleSlashRegExp, "\n")
-                                    .replace(removeInsertedEmail, "\n")
-                            );
+                        function filter(content) {
+                            content = content.replace(/(Submit)\n(Button)/gi, '$1 $2');
+                            return content;
                         }
                     );
                 },

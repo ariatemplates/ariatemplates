@@ -28,25 +28,28 @@
 {/macro}
 
 {macro writeState(info)}
-	{var pseudoclass=""/}
-	{if info.stateName != "normal"}
-	{set pseudoclass=":"+info.stateName/}
-	{/if}
+    {var pseudoclass=""/}
+    {if info.stateName != "normal"}
+    {set pseudoclass=":"+info.stateName/}
+    {/if}
 
-	a${pseudoclass}.xLink_${info.skinClassName} {
-	color:${info.state.color};
-	{if info.state.textDecoration}
-		text-decoration:${info.state.textDecoration};
-	{/if}
-	}
+    a${pseudoclass}.xLink_${info.skinClassName} {
+    color:${info.state.color};
+    {if info.state.textDecoration}
+        text-decoration:${info.state.textDecoration};
+    {/if}
+    }
 {/macro}
 
 {macro writeSkinClass(info)}
-	{var skinClassName=info.skinClassName/}
-	{var skinClass=info.skinClass/}
-	a.xLink_${skinClassName}_disabled {
-		color:${skinClass.disabledColor};
-	}
+    {var skinClassName=info.skinClassName/}
+    {var skinClass=info.skinClass/}
+    a.xLink_${skinClassName}_disabled {
+        color:${skinClass.disabledColor};
+    }
+    a.xLink_${skinClassName}:focus {
+        outline-width: initial;
+    }
 {/macro}
 
 {/CSSTemplate}

@@ -14,7 +14,7 @@
  */
 
 /**
- * Test class used in test.aria.utils.JsonTest test in order to check that an error is raised when an invalid serializer
+ * Test class used in test.aria.utils.JsonTestCase test in order to check that an error is raised when an invalid serializer
  * instance is provided
  */
 Aria.classDefinition({

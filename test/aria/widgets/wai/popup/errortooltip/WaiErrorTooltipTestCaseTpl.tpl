@@ -14,7 +14,7 @@
  */
 {Template {
     $classpath : "test.aria.widgets.wai.popup.errortooltip.WaiErrorTooltipTestCaseTpl",
-    $extends: "test.aria.widgets.wai.popup.errortooltip.ErrorTooltipTestCaseTpl"
+    $extends: "test.aria.widgets.wai.popup.errortooltip.ErrorTooltipBaseTpl"
 }}
 
     {macro main()}

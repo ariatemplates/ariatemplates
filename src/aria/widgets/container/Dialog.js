@@ -16,6 +16,7 @@ var Aria = require("../../Aria");
 var ariaWidgetsContainerDiv = require("./Div");
 var ariaPopupsPopup = require("../../popups/Popup");
 var PopupContainerManager = require("../../popups/container/Manager");
+var DomNavigationManager = require("../../utils/DomNavigationManager");
 var ariaWidgetsIcon = require("../Icon");
 var ariaUtilsDom = require("../../utils/Dom");
 var ariaUtilsDelegate = require("../../utils/Delegate");
@@ -744,29 +745,6 @@ module.exports = Aria.classDefinition({
                 this._previouslyFocusedElement = Aria.$window.document.activeElement;
             }
 
-            // hiddenElements --------------------------------------------------
-
-            if (modal && waiAria) {
-                var attributeName = 'aria-hidden';
-                var attributeValue = 'true';
-
-                var hiddenElements = this._hiddenElements || [];
-                this._hiddenElements = hiddenElements;
-
-                var container = popupContainer.getContainerElt();
-                var children = container.children;
-
-                for (var index = 0, length = children.length; index < length; index++) {
-                    var child = children[index];
-
-                    var attributeNode = child.getAttributeNode(attributeName);
-                    if (attributeNode == null || attributeNode.nodeValue == null) {
-                        child.setAttribute(attributeName, attributeValue);
-                        hiddenElements.push(child);
-                    }
-                }
-            }
-
             // optionsBeforeMaximize -------------------------------------------
             // store current options to reapply them when unmaximized
 
@@ -817,6 +795,15 @@ module.exports = Aria.classDefinition({
                 labelId: modal ? this.__getLabelId() : null,
                 waiAria: waiAria
             });
+
+            // hiddenElements --------------------------------------------------
+
+            if (modal && waiAria) {
+                var container = popupContainer.getContainerElt();
+                this._showBack = DomNavigationManager.hidingManager.hideOthers(popup.domElement, function (element) {
+                     return element != null && element !== container;
+                });
+            }
 
             // -----------------------------------------------------------------
 
@@ -930,18 +917,10 @@ module.exports = Aria.classDefinition({
         close : function () {
             var cfg = this._cfg;
             var modal = cfg.modal;
-            var hiddenElements = this._hiddenElements;
 
-            if (hiddenElements != null) {
-                var attributeName = 'aria-hidden';
-
-                for (var index = 0, length = hiddenElements.length; index < length; index++) {
-                    var element = hiddenElements[index];
-
-                    element.removeAttribute(attributeName);
-                }
-
-                this._hiddenElements = null;
+            if (this._showBack != null) {
+                this._showBack();
+                this._showBack = null;
             }
 
             if (this._popup) {

@@ -26,6 +26,7 @@ module.exports = Aria.classDefinition({
         this.setTestEnv({
             template : "test.aria.widgets.wai.errorlist.titleTag.ErrorListTitleTagTpl"
         });
+        this.noiseRegExps.push(/page|Arrow/);
      },
 
     $prototype : {
@@ -56,13 +57,7 @@ module.exports = Aria.classDefinition({
                 fn: function () {
                     this.assertJawsHistoryEquals(
                         "Heading List dialog\nheadings List view\nMyErrorListTitleWithFirstHeadingLevel : 1\n1 of 3\nMyErrorListTitleWithSecondHeadingLevel : 2\nMyErrorListTitleWithThirdHeadingLevel : 3\nheading level 3 MyErrorListTitleWithThirdHeadingLevel\nMyErrorListTitleWithThirdHeadingLevel\nheading level 3\nlist of 1 items\n• MyError3Description\nlist end\nMyErrorListTitleWithNoHTag",
-                        this.end,
-                        function (response) {
-                            return response.split("\n").filter(function (line) {
-                                return line.indexOf("page") == -1 &&
-                                    line.indexOf("Arrow") == -1 ;
-                            }).join("\n");
-                        }
+                        this.end
                     );
                 },
                 scope: this

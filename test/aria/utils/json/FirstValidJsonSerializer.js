@@ -14,7 +14,7 @@
  */
 
 /**
- * Test class used in test.aria.utils.JsonTest test in order to check that an instance of a class defining a serialize
+ * Test class used in test.aria.utils.JsonTestCase test in order to check that an instance of a class defining a serialize
  * method is accepted as a JSON serializer
  */
 Aria.classDefinition({

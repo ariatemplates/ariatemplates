@@ -1,0 +1,53 @@
+/*
+ * Copyright 2012 Amadeus s.a.s.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+Aria.classDefinition({
+    $classpath : "test.aria.pageEngine.pageEngine.PageEngineBase",
+    $extends : "test.aria.pageEngine.IframeBase",
+    $dependencies : ["aria.utils.CSSLoader", "aria.utils.String", "aria.storage.LocalStorage"],
+    $constructor : function () {
+        this.$IframeBase.constructor.call(this);
+        this._dependencies = ["aria.pageEngine.PageEngine"];
+    },
+    $prototype : {
+
+        _testCSSLinkTag : function (href, value, limit) {
+            value = (value === false) ? false : true;
+            limit = limit || 10;
+            var prefix = aria.utils.CSSLoader.TAG_PREFIX;
+            var id, element, counter = 0;
+            for (var i = 0; i < limit; i++) {
+                id = prefix + i;
+                element = this._testWindow.aria.utils.Dom.getElementById(id);
+                if (element && aria.utils.String.endsWith(element.href, href)) {
+                    counter++;
+                }
+            }
+            if (value) {
+                this.assertTrue(counter == 1, href + " file has not been added.");
+            } else {
+                this.assertTrue(counter === 0, href + " file has been added. It should not.");
+            }
+        },
+
+        end : function () {
+            var storage = new aria.storage.LocalStorage();
+            storage.clear();
+            storage.$dispose();
+            this.$IframeBase.end.call(this);
+        }
+
+    }
+});
