@@ -115,6 +115,7 @@ var ariaUtilsObject = require("./Object");
                 parent : parent,
                 property : property
             });
+            aria.utils.Json.ON_PARENT_METADATA_ADDED(child, parent, property);
         }
     };
 
@@ -180,6 +181,7 @@ var ariaUtilsObject = require("./Object");
                         parent : container,
                         property : childName
                     });
+                    aria.utils.Json.ON_PARENT_METADATA_ADDED(childValue, container, childName);
                 }
             }
         }
@@ -412,7 +414,15 @@ var ariaUtilsObject = require("./Object");
             INVALID_JSON_CONTENT : "An error occured while loading an invalid JSON content:\ncontext: %1\nJSON content:\n%2",
             NOT_OF_SPECIFIED_DH_TYPE : "Invalid data holder type: expected to be an object or an array. Data holder provided: ",
             INVALID_SPLICE_PARAMETERS : "Invalid splice parameters.",
-            INVALID_JSON_SERIALIZER_INSTANCE : "The provided instance of JSON serializer does not have a serialize method."
+            INVALID_JSON_SERIALIZER_INSTANCE : "The provided instance of JSON serializer does not have a serialize method.",
+
+            /**
+             * Callback executed when an 'aria:parent' property is added to one node of the datamodel
+             * Does nothing by default, to be overridden by the application
+             * Can be used to raise warnings in case a node references too many parents (which may indicate a potential memory leak)
+             * @type Function
+             */
+            ON_PARENT_METADATA_ADDED : function (child, parent, property) {}
         },
         $prototype : {
             /**
