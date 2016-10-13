@@ -108,6 +108,9 @@ var generalBrowserExcludes = {
         "test/aria/utils/mouse/MouseDragKoRobotTestCase.js"
     ],
     "Safari": [],
+    "IE 7": [
+        "test/aria/utils/domNavigationManager/DomNavigationManagerRobotTestCase.js"
+    ],
     "IE 8": [
         "test/aria/html/textinput/placeholder/PlaceholderTestCase.js",
         "test/aria/map/Google3MapProviderTestCase.js",
@@ -126,7 +129,6 @@ var generalBrowserExcludes = {
     ],
     "IE 9": [
         "test/aria/utils/bridge/BridgeTestCase.js",
-        "test/aria/utils/domNavigationManager/DomNavigationManagerRobotTestCase.js",
         "test/aria/utils/hashManager/HashManagerOneTestCase.js",
         "test/aria/utils/mouse/MouseDragKoRobotTestCase.js",
         "test/aria/widgets/wai/dropdown/DatePickerDropdownTogglingRobotTestCase.js",

@@ -125,11 +125,7 @@ module.exports = Aria.classDefinition({
             // -----------------------------------------------------------------
 
             var nodeName = ariaUtilsDom.getElementsByClassName(node, 'node_name')[0];
-            nodeName.focus();
-
-            // ---------------------------------------------------------- return
-
-            next();
+            this._focusElement(next, nodeName);
         },
 
         _destroy : function (next) {

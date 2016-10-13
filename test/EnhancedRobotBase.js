@@ -86,6 +86,14 @@ var prototype = {
     // DOM
     ////////////////////////////////////////////////////////////////////////////
 
+    _ensureElementReference : function (element) {
+        if (!ariaUtilsType.isHTMLElement(element)) {
+            element = this.getElementById('' + element);
+        }
+
+        return element;
+    },
+
     _getActiveElement : function () {
         return this.testDocument.activeElement;
     },
@@ -320,13 +328,13 @@ var prototype = {
     // Robot: navigation
     ////////////////////////////////////////////////////////////////////////////
 
-    _focusElement : function (callback, id) {
-        var element = this.getElementById(id);
+    _focusElement : function (callback, element) {
+        element = this._ensureElementReference(element);
 
         this._localAsyncSequence(function (add) {
             add('_delay');
             add('_click', element);
-            add('_waitForElementFocus', id);
+            add('_waitForElementFocus', element);
         }, callback);
     },
 
@@ -342,8 +350,8 @@ var prototype = {
         }, callback);
     },
 
-    _waitForElementFocus : function (callback, id) {
-        var element = this.getElementById(id);
+    _waitForElementFocus : function (callback, element) {
+        element = this._ensureElementReference(element);
         this._waitForFocus(callback, element);
     },
 
@@ -415,8 +423,9 @@ var prototype = {
         this._checkAttribute(id, element, attributeName, expected, strict);
     },
 
-    _checkElementAttribute : function (id, attributeName, expected, strict) {
-        var element = this.getElementById(id);
+    _checkElementAttribute : function (element, attributeName, expected, strict) {
+        element = this._ensureElementReference(element);
+        var id = element.id;
         this._checkAttribute(id, element, attributeName, expected, strict);
     },
 
@@ -448,8 +457,8 @@ var prototype = {
         return this._isFocused(element, false);
     },
 
-    _checkElementIsFocused : function (callback, id) {
-        var element = this.getElementById(id);
+    _checkElementIsFocused : function (callback, element) {
+        element = this._ensureElementReference(element);
 
         this.waitFor({
             callback: callback,
