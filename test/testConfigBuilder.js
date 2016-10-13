@@ -64,6 +64,96 @@ var phantomjsExcludesPatterns = [
     "test/aria/widgets/container/tooltip/TooltipRobotTestCase.js"
 ];
 
+// Some tests do not succeed in some browsers, and are listed here.
+// They should be investigated and fixed.
+var generalBrowserExcludes = {
+    "PhantomJS": phantomjsExcludesPatterns,
+    "Firefox 3": [
+        "test/aria/core/io/JSONPTestCase.js",
+        "test/aria/pageEngine/pageEngine/externalHashNavigation/ExternalHashNavigationTestCase.js",
+        "test/aria/pageEngine/pageEngine/PageEngineFiveTestCase.js",
+        "test/aria/pageEngine/pageEngine/PageEngineFourTestCase.js",
+        "test/aria/pageEngine/utils/HashManagerTestCase.js",
+        "test/aria/pageEngine/utils/HistoryManagerTestCase.js",
+        "test/aria/storage/localStorage/EventIssueTestCase.js",
+        "test/aria/utils/hashManager/HashManagerOneTestCase.js"
+    ],
+    "Firefox 11": [
+        "test/aria/core/io/JSONPTestCase.js",
+        "test/aria/pageEngine/pageEngine/PageEngineSixTestCase.js",
+        "test/aria/pageEngine/pageEngine/PageEngineTemplateDisposalWithAnimationsTestCase.js",
+        "test/aria/pageEngine/utils/HashManagerTestCase.js",
+        "test/aria/pageEngine/utils/HistoryManagerTestCase.js",
+        "test/aria/utils/css/AnimationsTestCase.js"
+    ],
+    "Firefox 49": [
+        "test/aria/utils/events/scroll/OnscrollRobotTestCase.js",
+
+        // The following tests fail on Firefox 49 because the default action for SHIFT-F10 can no longer be prevented:
+        "test/aria/widgets/wai/dropdown/AutoCompleteDropdownTogglingRobotTestCase.js",
+        "test/aria/widgets/wai/dropdown/DatePickerDropdownTogglingRobotTestCase.js",
+        "test/aria/widgets/wai/dropdown/MultiAutoCompleteDropdownTogglingRobotTestCase.js",
+        "test/aria/widgets/wai/dropdown/SelectBoxDropdownTogglingRobotTestCase.js",
+        "test/aria/widgets/wai/dropdown/SelectDropdownTogglingRobotTestCase.js",
+        "test/aria/widgets/wai/dropdown/MultiSelectDropdownTogglingRobotTestCase.js",
+        "test/aria/templates/keyboardNavigation/dialog/escape/DialogEscapeAutoCompleteRobotTestCase.js",
+        "test/aria/templates/keyboardNavigation/dialog/escape/DialogEscapeDatePickerRobotTestCase.js",
+        "test/aria/templates/keyboardNavigation/dialog/escape/DialogEscapeMultiAutoCompleteRobotTestCase.js",
+        "test/aria/templates/keyboardNavigation/dialog/escape/DialogEscapeMultiSelectRobotTestCase.js",
+        "test/aria/templates/keyboardNavigation/dialog/escape/DialogEscapeSelectBoxRobotTestCase.js",
+        "test/aria/templates/keyboardNavigation/dialog/escape/DialogEscapeSelectRobotTestCase.js",
+        "test/aria/widgets/form/multiselect/escapeKey/MultiSelectRobotTestCase.js"
+    ],
+    "Chrome 53": [
+        "test/aria/utils/mouse/MouseDragKoRobotTestCase.js"
+    ],
+    "Safari": [],
+    "IE 8": [
+        "test/aria/html/textinput/placeholder/PlaceholderTestCase.js",
+        "test/aria/map/Google3MapProviderTestCase.js",
+        "test/aria/modules/RequestMgrTimeoutTestCase.js",
+        "test/aria/storage/localStorage/EventIssueTestCase.js",
+        "test/aria/utils/dragdrop/DragConstraintRobotTestCase.js",
+        "test/aria/utils/dragdrop/DragProxyRobotTestCase.js",
+        "test/aria/utils/hashManager/HashManagerOneTestCase.js",
+        "test/aria/utils/mouse/MouseDragKoRobotTestCase.js",
+        "test/aria/widgets/form/labelClick/FocusTestCase.js",
+        "test/aria/widgets/wai/tabs/Group3RobotTestCase.js",
+        "test/aria/widgets/wai/tabs/Group4RobotTestCase.js",
+        "test/aria/widgets/action/link/disabled/LinkDisabledTestCase.js",
+        "test/aria/widgets/form/multiselect/downArrowKeyPreventDef/MSDownArrowKeyRobotTestCase.js",
+        "test/aria/widgets/form/textinput/helpText/HelpTextTestCase.js"
+    ],
+    "IE 9": [
+        "test/aria/utils/bridge/BridgeTestCase.js",
+        "test/aria/utils/domNavigationManager/DomNavigationManagerRobotTestCase.js",
+        "test/aria/utils/hashManager/HashManagerOneTestCase.js",
+        "test/aria/utils/mouse/MouseDragKoRobotTestCase.js",
+        "test/aria/widgets/wai/dropdown/DatePickerDropdownTogglingRobotTestCase.js",
+        "test/aria/templates/keyboardNavigation/dialog/escape/DialogEscapeDatePickerRobotTestCase.js",
+        "test/aria/widgets/wai/popup/dialog/modal/ThirdRobotTestCase.js",
+        "test/aria/widgets/wai/popup/dialog/modal/FourthRobotTestCase.js",
+        "test/aria/widgets/wai/popup/dialog/modal/SecondRobotTestCase.js"
+    ],
+    "IE 10": [
+        "test/aria/utils/mouse/MouseDragKoRobotTestCase.js",
+        "test/aria/widgets/dropdown/touchDevices/MultiSelectPopupTouchRobotTestCase.js"
+    ],
+    "IE 11": [
+        "test/aria/storage/localStorage/EventIssueTestCase.js",
+        "test/aria/utils/mouse/MouseDragKoRobotTestCase.js",
+        "test/aria/widgets/form/selectbox/SelectboxTestCase.js",
+        "test/aria/widgets/form/multiautocomplete/navigation/input/InputFieldRobotTestCase.js"
+    ],
+    "Edge": [
+        "test/aria/storage/localStorage/EventIssueTestCase.js",
+        "test/aria/widgets/container/dialog/container/FocusDialogContainerRobotTestCase.js",
+        "test/aria/widgets/form/multiselect/downArrowKeyPreventDef/MSDownArrowKeyRobotTestCase.js",
+        "test/aria/widgets/form/multiselect/focusMove/Issue968RobotTestCase.js",
+        "test/aria/widgets/container/dialog/resize/test3/DialogOnResizeRobotTestCase.js"
+    ]
+};
+
 var testSkinOnlyPatterns = [
     "test/aria/widgets/skin/ExternalCSSTestCase.js",
     "test/aria/widgets/icon/fontIcon/FontIconTestCase.js",
@@ -104,6 +194,8 @@ exports.buildTestConfig = function (config) {
     var extraScripts = [];
     var filesIncludes = [];
     var filesExcludes = [];
+    var browserExcludes;
+    var browsers = config.browsers;
     var rootFilePath = exports.packagedRootDirectory;
     var unpackaged = config.unpackaged;
     var noFlash = config.noFlash;
@@ -112,7 +204,35 @@ exports.buildTestConfig = function (config) {
 
     append(filesIncludes, config.includes);
     append(filesExcludes, config.excludes);
-    append(filesExcludes, disabledTestCasesPatterns);
+
+    if (campaign === "failing") {
+        browserExcludes = {};
+        browsers.forEach(function (browserName) {
+            var failingInCurBrowser = generalBrowserExcludes[browserName];
+            if (!failingInCurBrowser) {
+                return;
+            }
+            append(filesIncludes, failingInCurBrowser);
+            failingInCurBrowser.forEach(function (failingPattern) {
+                browsers.forEach(function (browserName) {
+                    var generalBrowserExcludesForCurBrowser = generalBrowserExcludes[browserName];
+                    if (generalBrowserExcludesForCurBrowser && generalBrowserExcludesForCurBrowser.indexOf(failingPattern) > -1) {
+                        return;
+                    }
+                    var curBrowserExcludes = browserExcludes[browserName];
+                    if (!curBrowserExcludes) {
+                        curBrowserExcludes = browserExcludes[browserName] = [];
+                    }
+                    curBrowserExcludes.push(failingPattern);
+                });
+            });
+        });
+        append(filesIncludes, disabledTestCasesPatterns);
+        extraScripts.push(exports.atSkinPath);
+    } else {
+        browserExcludes = generalBrowserExcludes;
+        append(filesExcludes, disabledTestCasesPatterns);
+    }
 
     if (campaign === "unpackaged") {
         unpackaged = true;
@@ -181,12 +301,12 @@ exports.buildTestConfig = function (config) {
                 files: {
                     rootDirectory: path.join(exports.testsRootDirectory, ".."),
                     includes: filesIncludes,
-                    excludes: filesExcludes
+                    excludes: filesExcludes,
+                    browserExcludes: browserExcludes
                 }
             }
         }
     };
-    var browsers = config.browsers;
     if (browsers) {
         res.browsers = browsers;
     }
