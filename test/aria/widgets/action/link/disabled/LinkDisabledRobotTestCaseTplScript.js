@@ -14,7 +14,7 @@
  */
 
 Aria.tplScriptDefinition({
-    $classpath : "test.aria.widgets.action.link.disabled.LinkDisabledTestCaseTplScript",
+    $classpath : "test.aria.widgets.action.link.disabled.LinkDisabledRobotTestCaseTplScript",
     $prototype : {
 
         onToggleDisabledClick : function (evt) {
