@@ -28,7 +28,7 @@ Aria.classDefinition({
         tearDown : function () {
             aria.core.IO.updateTransports({
                 "sameDomain" : "aria.core.transport.XHR",
-                "crossDomain" : "aria.core.transport.XDR",
+                "crossDomain" : "aria.core.transport.XHR",
                 "jsonp" : "aria.core.transport.JsonP",
                 "local" : "aria.core.transport.Local",
                 "iframe" : "aria.core.transport.IFrame"
@@ -123,7 +123,7 @@ Aria.classDefinition({
             // Test the default settings for transports in IO.
             var transports = aria.core.IO.getTransports();
             this.assertTrue(transports.sameDomain === "aria.core.transport.XHR");
-            this.assertTrue(transports.crossDomain === "aria.core.transport.XDR");
+            this.assertTrue(transports.crossDomain === "aria.core.transport.XHR");
             this.assertTrue(transports.jsonp === "aria.core.transport.JsonP");
             this.assertTrue(transports.local === "aria.core.transport.Local");
             this.assertTrue(transports.iframe === "aria.core.transport.IFrame");
