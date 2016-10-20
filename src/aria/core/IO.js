@@ -178,7 +178,7 @@ module.exports = Aria.classDefinition({
          * @type String class name and path.
          * @private
          */
-        this.__crossDomain = "aria.core.transport.XDR";
+        this.__crossDomain = "aria.core.transport.XHR";
 
         /**
          * Contains the transport to be used for JsonP requests.

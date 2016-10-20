@@ -33,6 +33,10 @@ Aria.classDefinition({
         needVisibleDocument : true,
 
         setUp : function () {
+            this.savedTransports = aria.core.IO.getTransports();
+            aria.core.IO.updateTransports({
+                crossDomain: 'aria.core.transport.XDR'
+            });
             aria.core.IO.$on({
                 '*' : this.checkEvent,
                 'request' : this.onEvent,
@@ -46,6 +50,7 @@ Aria.classDefinition({
         },
         tearDown : function () {
             aria.core.IO.$unregisterListeners(this);
+            aria.core.IO.updateTransports(this.savedTransports);
             this.url = null;
             this.$IOBase.tearDown.call(this);
         },
