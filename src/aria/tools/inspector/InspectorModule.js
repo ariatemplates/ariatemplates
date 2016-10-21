@@ -93,6 +93,7 @@ module.exports = Aria.classDefinition({
         this._insertAdjacentHtmlOriginal = null;
         mainUtilDom.removeElement = this._removeElementOriginal;
         this._removeElementOriginal = null;
+        mainUtilDom.removeElement(this._holder);
 
         this.$ModuleCtrl.$destructor.call(this);
     },
