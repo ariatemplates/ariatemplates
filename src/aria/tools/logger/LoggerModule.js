@@ -56,6 +56,7 @@ module.exports = Aria.classDefinition({
 
     },
     $destructor : function () {
+        this.$dispose = Aria.empty; // because removeAppender calls $dispose
         this.bridge.getAriaPackage().core.Log.removeAppender(this);
         this.$ModuleCtrl.$destructor.call(this);
     },

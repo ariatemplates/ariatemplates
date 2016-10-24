@@ -14,8 +14,8 @@
  */
 var Aria = require("../Aria");
 var ariaUtilsAriaWindow = require("./AriaWindow");
-var ariaUtilsJson = require("./Json");
 var ariaCoreDownloadMgr = require("../core/DownloadMgr");
+var ariaUtilsFrameATLoader = require("./FrameATLoader");
 
 /**
  * Creates a subwindow and load a module inside
@@ -53,6 +53,7 @@ module.exports = Aria.classDefinition({
          *     {
          *         moduleCtrlClasspath : ...
          *         displayClasspath : ...
+         *         skinPath : ...
          *         title : ...
          *     }
          * </pre>
@@ -75,30 +76,39 @@ module.exports = Aria.classDefinition({
          * @type aria.templates.TemplateCtxt
          */
         this._rootTplCtxtRef = null;
-
-        /**
-         * setInterval id for attaching bridge into subwindow
-         * @type Number
-         */
-        this._bridgeAttachedInterval = false;
-
     },
     $destructor : function () {
         this.close();
-        this._subWindow = null;
     },
     $prototype : {
 
         /**
          * Create external display with given module controller classpath
-         * @param {Object} config moduleControllerClasspath & displayClasspath
+         * @param {Object} config moduleControllerClasspath, displayClasspath, skinPath and title
          * @param {String} options for opening the subwindow. Default is "width=1024, height=800"
          */
         open : function (config, options) {
-
             if (this._subWindow) {
-                // TODO: log error
-                return;
+                if (this._subWindow.closed) {
+                    // we probably did not catch correctly the unload event
+                    this.close();
+                } else {
+                    // TODO: log error
+                    return;
+                }
+            }
+
+            var skinPath = config.skinPath;
+            if (!skinPath && !(aria.widgets && aria.widgets.AriaSkin)) {
+                var frameworkHref = ariaUtilsFrameATLoader.getFrameworkHref();
+                var urlMatch = /aria\/aria-?templates-([^\/]+)\.js/.exec(frameworkHref);
+                if (urlMatch && urlMatch.length > 1) {
+                    skinPath = ariaCoreDownloadMgr.resolveURL("aria/css/atskin-" + urlMatch[1] + ".js", true);
+                } else if (/aria\/bootstrap.js/.test(frameworkHref)) {
+                    skinPath = ariaCoreDownloadMgr.resolveURL("aria/css/atskin.js", true);
+                } else {
+                    return;
+                }
             }
 
             // default options
@@ -108,84 +118,13 @@ module.exports = Aria.classDefinition({
 
             // create sub window. Use date to create a new one each time
             this._subWindow = Aria.$frameworkWindow.open("", config.title + ("" + (new Date()).getTime()), options);
+            // this is for creating the same window (usefull for debugging)
+            //this._subWindow = Aria.$frameworkWindow.open("", config.title, options);
 
             // The _subWindow can be null if the popup blocker is enabled in the browser
             if (this._subWindow == null) {
                 return;
             }
-            // this is for creating the same window (usefull for debugging)
-            // this._subWindow = window.open("", config.title, options);
-
-            // retrieve current AT version to load the same on the subwindow
-            var scripts = Aria.$frameworkWindow.document.getElementsByTagName("script"), script, src, urlMatch, atJsName, atSkinName;
-            for (var i = 0, l = scripts.length; i < l; i++) {
-                script = scripts[i];
-                if (script.attributes && script.attributes["src"]) {
-                    src = script.attributes["src"].nodeValue;
-                    urlMatch = /aria\/(aria-?templates-([^\/]+)\.js)/.exec(src);
-                    if (urlMatch && urlMatch.length > 1) {
-                        atJsName = script.src; // retrieves the full url to Aria Templates
-                        atSkinName = ariaCoreDownloadMgr.resolveURL("aria/css/atskin-" + urlMatch[2] + ".js", true);
-                        break;
-                    }
-                    if (/aria\/bootstrap.js/.test(src)) {
-                        // not packaged
-                        atJsName = script.src; // retrieves the full url to Aria Templates
-                        atSkinName = ariaCoreDownloadMgr.resolveURL("aria/css/atskin.js", true);
-                        break;
-                    }
-                }
-            }
-
-            if (!atJsName) {
-                // FIXME log Error
-                return false;
-            }
-
-            // create subwindow content
-            var pullTimeout = 500; // ms to wait between each check of Aria.loadTemplate
-
-            var sourceCode = [
-                    '<!DOCTYPE html>\n',
-                    "<html><head><title>" + config.title + "</title>", // HEAD
-
-                    "<script type='text/javascript'>Aria = { _xxDebug: true };</script>",
-                    "<script language='JavaScript' src='", // AT script
-                    atJsName, // AT script
-                    "'></script>", // AT script
-
-                    (aria.widgets && aria.widgets.AriaSkin) ? ["<script type='text/javascript'>",
-                            "Aria['classDefinition']({$classpath : 'aria.widgets.AriaSkin',", "$singleton : true,",
-                            "$prototype : window.aria.utils.Json.copy(",
-                            ariaUtilsJson.convertToJsonString(aria.widgets.AriaSkin.classDefinition.$prototype), ")",
-                            "});</script>"].join("") : ["<script language='JavaScript' src='", // AT Skin script
-                            atSkinName, // AT Skin script
-                            "'></script>" // AT Skin script
-                    ].join(""),
-
-                    "</head>", // END HEAD
-                    "<body onUnload='window.__atBridge&&__atBridge.close()' style='overflow:hidden;'>", // used to
-                    // restore environment
-                    "<div id='main'><h3 id='main_title' style='text-align:center;margin-top:200px;'>Starting.</h3></div>",
-                    "<script type='text/javascript'>var appStart = function () {", // START ToolsModule
-                    "if (window.Aria && window.Aria.loadTemplate && window.__atBridge) { window.__atBridge.moduleStart.call(window.__atBridge);}",
-                    "else { document.getElementById('main_title').innerHTML += '.'; setTimeout(appStart, "
-                            + pullTimeout + ");}}; appStart();", "</script>", // START ToolsModule
-                    "</body></html>"].join(""); // BODY
-
-            this._subWindow.document.write(sourceCode);
-            this._subWindow.document.close();
-
-            // double pulling mandatory for IE
-            var oSelf = this;
-            this._bridgeAttachedInterval = setInterval(function () {
-                // add bridge to subwindow
-                if (oSelf._subWindow) {
-                    oSelf._subWindow.__atBridge = oSelf;
-                } else {
-                    clearInterval(oSelf._bridgeAttachedInterval);
-                }
-            }, 2000);
 
             this._config = config;
             ariaUtilsAriaWindow.attachWindow();
@@ -193,6 +132,46 @@ module.exports = Aria.classDefinition({
                 "unloadWindow" : this._onMainWindowUnload,
                 scope : this
             });
+
+            ariaUtilsFrameATLoader.loadAriaTemplatesInFrame(this._subWindow, {
+                fn: this._onFrameLoaded,
+                scope: this
+            }, {
+                crossDomain: true,
+                skipSkinCopy: !!skinPath,
+                extraScripts: skinPath ? [skinPath] : [],
+                keepLoadingIndicator: true,
+                onBeforeLoadingAria: {
+                    fn: this._registerOnPopupUnload,
+                    scope: this
+                }
+            });
+        },
+
+        _registerOnPopupUnload: function () {
+            var self = this;
+            this._subWindow.onunload = function () {
+                self.close();
+                self = null;
+            };
+        },
+
+        _onFrameLoaded: function (result) {
+            if (!result.success) {
+                this.close();
+                return;
+            }
+            var window = this._subWindow;
+            var document = window.document;
+            document.title = this._config.title;
+            var bodyStyle = document.body.style;
+            bodyStyle.overflow = "hidden";
+            bodyStyle.margin = "0px";
+            var mainDiv = document.createElement("div");
+            mainDiv.setAttribute("id", "main");
+            document.body.appendChild(mainDiv);
+            mainDiv.appendChild(document.getElementById("loadingIndicator"));
+            this.moduleStart();
         },
 
         /**
@@ -208,18 +187,13 @@ module.exports = Aria.classDefinition({
          * Function called from the sub window to start the module
          */
         moduleStart : function () {
-
             // start working in subwindow
             var Aria = this._subWindow.Aria, aria = this._subWindow.aria;
-
-            clearInterval(this._bridgeAttachedInterval);
-
             // link the url map and the root map in the sub-window
             // to the corresponding maps in the main window:
             Aria.rootFolderPath = this.getAria().rootFolderPath;
             aria.core.DownloadMgr._urlMap = ariaCoreDownloadMgr._urlMap;
             aria.core.DownloadMgr._rootMap = ariaCoreDownloadMgr._rootMap;
-
             Aria.setRootDim({
                 width : {
                     min : 16
@@ -228,7 +202,6 @@ module.exports = Aria.classDefinition({
                     min : 16
                 }
             });
-
             Aria.load({
                 classes : ['aria.templates.ModuleCtrlFactory'],
                 oncomplete : {
@@ -236,7 +209,6 @@ module.exports = Aria.classDefinition({
                     scope : this
                 }
             });
-
         },
 
         /**
@@ -244,12 +216,11 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         _templatesReady : function () {
-
             // continue working in subwindow
             // var Aria = this._subWindow.Aria;
             var aria = this._subWindow.aria;
-
             // creates module instance first to be able to dispose it when window close
+            var self = this;
             aria.templates.ModuleCtrlFactory.createModuleCtrl({
                 classpath : this._config.moduleCtrlClasspath,
                 autoDispose : false,
@@ -257,7 +228,12 @@ module.exports = Aria.classDefinition({
                     bridge : this
                 }
             }, {
-                fn : this._moduleLoaded,
+                fn : function (res) {
+                    // For some obscure reason on IE 9 only, it is needed to put
+                    // this closure here in order to call _moduleLoaded with
+                    // the right scope:
+                    self._moduleLoaded(res);
+                },
                 scope : this
             }, false);
         },
@@ -268,7 +244,6 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         _moduleLoaded : function (moduleCtrlObject) {
-
             // finish working in subwindow
             var Aria = this._subWindow.Aria; // , aria = this._subWindow.aria;
             var moduleCtrl = moduleCtrlObject.moduleCtrlPrivate;
@@ -295,31 +270,31 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         _displayLoaded : function (status) {
-            this._rootTplCtxtRef = status.templateCtxt;
+            this._rootTplCtxtRef = status.tplCtxt;
         },
 
         /**
-         * Close subwindow and restaure environment
+         * Close subwindow and restore environment
          */
         close : function () {
-
-            if (this.isOpen) {
-                if (this._moduleCtrlRef) {
-                    this._moduleCtrlRef.$dispose();
-                    this._moduleCtrlRef = null;
-                }
-                if (this._rootTplCtxtRef) {
-                    this._rootTplCtxtRef.$dispose();
-                    this._rootTplCtxtRef = null;
-                }
-
-                this._subWindow.close();
+            var subWindow = this._subWindow;
+            if (subWindow) {
                 this._subWindow = null;
+                if (!subWindow.closed) {
+                    if (this._rootTplCtxtRef) {
+                        this._rootTplCtxtRef.$dispose();
+                    }
+                    if (this._moduleCtrlRef) {
+                        this._moduleCtrlRef.$dispose();
+                    }
+                    subWindow.close();
+                }
+                this._moduleCtrlRef = null;
+                this._rootTplCtxtRef = null;
 
                 ariaUtilsAriaWindow.$unregisterListeners(this);
                 ariaUtilsAriaWindow.detachWindow();
 
-                // restaure hijacked function
                 this.isOpen = false;
             }
         },

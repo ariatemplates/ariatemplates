@@ -16,7 +16,7 @@ var Aria = require("../Aria");
 var ariaCoreCache = require("../core/Cache");
 var ariaCoreDownloadMgr = require("../core/DownloadMgr");
 var ariaCoreIO = require("../core/IO");
-
+var ariaUtilsScriptLoader = require("./ScriptLoader");
 
 /**
  * Utility class used to load Aria Templates in an iframe or in a new window. This is used by aria.jsunit.TestWrapper to
@@ -54,6 +54,49 @@ module.exports = Aria.classDefinition({
         this.frameworkJS = null;
 
         /**
+         * Html source code to be loaded in the frame.
+         * @type String
+         */
+        this.frameHtml = [
+            '<!DOCTYPE html>',
+            '<html lang="en">',
+            '<head>',
+                '<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />',
+                '<meta http-equiv="X-UA-Compatible" content="IE=edge" />',
+            '</head>',
+            '<body>',
+                '<h3 id="loadingIndicator" style="text-align:center;margin-top:200px;">Starting</h3>',
+                '<script type="text/javascript">',
+                    'Aria = {',
+                        'eval : function(src) {',
+                            'return eval(src);',
+                        '}',
+                    '};',
+                    '(function() {',
+                        'var callbackId = window.location.search.substring(1);',
+                        'var loadingIndicator = document.getElementById("loadingIndicator");',
+                        'function addDot() {',
+                            'if (loadingIndicator && loadingIndicator.parentNode) {',
+                                'loadingIndicator.firstChild.nodeValue += ".";',
+                                'setTimeout(addDot,500)',
+                            '} else {',
+                                'loadingIndicator = null;',
+                            '}',
+                        '}',
+                        'try {',
+                            '(opener || parent).aria.utils.FrameATLoader.callFromFrame(/*-*/callbackId/*-*/);',
+                            'addDot();',
+                        '} catch (e) {',
+                            'loadingIndicator.firstChild.nodeValue = String(e);',
+                            'loadingIndicator = null;',
+                        '}',
+                    '})();',
+                '</script>',
+            '</body>',
+            '</html>'
+        ].join("");
+
+        /**
          * rootFolderPath to be used when loading the framework.
          * @type String
          */
@@ -82,8 +125,16 @@ module.exports = Aria.classDefinition({
          * @param {HTMLElement} frame frame
          * @param {aria.core.CfgBeans:Callback} cb callback. The first argument is an object containing success
          * information.
-         * @param {Object} options So far one option supported: iframePageCss:String which injects CSS text to the
-         * iframe. E.g. {iframePageCss : "body {font-family:Arial}"}
+         * @param {Object} options The following options are supported:<ul>
+         * <li>iframePageCss {String} CSS text to be injected in the frame. E.g. {iframePageCss : "body {font-family:Arial}"}</li>
+         * <li>crossDomain {Boolean} when true, FrameATLoader works even when Aria Templates is loaded from a different domain (uses
+         * document.write instead of loading a URL)</li>
+         * <li>onBeforeLoadingAria {aria.core.CfgBeans:Callback} callback called just before loading Aria Templates in the frame</li>
+         * <li>skipSkinCopy {Boolean} whether to skip the copy of the skin from the current page</li>
+         * <li>keepLoadingIndicator {Boolean} whether to keep the loading indicator (DOM element with the "loadingIndicator" id) at
+         * the end</li>
+         * <li>extraScripts {Array of String} list of scripts to load in the page (inserted with the ScriptLoader at the end)</li>
+         * </ul>
          */
         loadAriaTemplatesInFrame : function (frame, cb, options) {
             this.loadBootstrap({
@@ -116,15 +167,18 @@ module.exports = Aria.classDefinition({
                 args : args
             });
 
-            var href = Aria.$frameworkWindow.location.href.replace(/(\?|\#).*$/, "").replace(/[^\/.]+\.[^\/.]+$/, "").replace(/\/$/, "")
-                    + "/";
-            var docUrl = [ariaCoreDownloadMgr.resolveURL("aria/utils/FrameATLoaderHTML.html"), '?',
-                    encodeURIComponent(href), '#', callbackId].join('');
             // args.frame.contentWindow is defined only if the framework is loaded in an iframe. In the case of a new
             // window, args.frame is already the correct window object
-
             var window = args.frame.contentWindow || args.frame;
-            window.location = docUrl;
+
+            if (!args.options.crossDomain) {
+                window.location = [ariaCoreDownloadMgr.resolveURL("aria/utils/FrameATLoaderHTML.html"), '?', callbackId].join('');
+            } else {
+                var document = window.document;
+                document.open();
+                document.write(this.frameHtml.replace("/*-*/callbackId/*-*/", callbackId));
+                document.close();
+            }
         },
 
         /**
@@ -133,6 +187,7 @@ module.exports = Aria.classDefinition({
          * @param {Object} args object containing the frame and callback
          */
         _loadATInFrameCb2 : function (res, args) {
+            var options = args.options;
             var window = args.frame.contentWindow || args.frame;
             var document = window.document;
             var iFrameAria = window.Aria;
@@ -143,61 +198,24 @@ module.exports = Aria.classDefinition({
             if (attester && attester.installConsole) {
                 attester.installConsole(window);
             }
+            document.getElementById("loadingIndicator").innerHTML = "Loading";
+            var href = Aria.$frameworkWindow.location.href.replace(/(\?|\#).*$/, "").replace(/[^\/.]+\.[^\/.]+$/, "").replace(/\/$/, "") + "/";
+            var head = document.getElementsByTagName('head')[0];
+            var base = document.createElement('base');
+            base.setAttribute('href', href);
+            head.appendChild(base);
+            this.$callback(args.options.onBeforeLoadingAria, window);
             window.Aria["eval"](this.frameworkJS); // note that using window.eval leads to strange errors in FF
             // If the framework is loaded inside a new window, opener has to be used instead of parent
-            document.write('<script type="text/javascript">(opener || parent).aria.utils.FrameATLoader.callFromFrame('
-                    + this._createCallbackId({
-                        fn : this._loadATInFrameCb3,
-                        scope : this,
-                        args : args
-                    }) + ');</script>');
-        },
 
-        /**
-         * Third part of the load of Aria Templates in the iframe: wait for aria to be loaded.
-         * @param {Object} res unused
-         * @param {Object} args object containing the frame and callback
-         */
-        _loadATInFrameCb3 : function (res, args) {
-            // In IE7 the callback might get called before Aria is available in the frame, poll
-            var window = args.frame.contentWindow || args.frame;
-            var maxTimes = 5;
-
-            var self = this;
-            var waitFunction = function () {
-                maxTimes -= 1;
-                if (maxTimes >= 0) {
-                    if (window.aria == null) {
-                        setTimeout(waitFunction, 30);
-                    } else {
-                        self._loadATInFrameCb4(res, args);
-                    }
-                } else {
-                    return self.$callback(args.cb, {
-                        success : false,
-                        reason : this.WAIT
-                    });
-                }
-            };
-
-            setTimeout(waitFunction, 30);
-        },
-
-        /**
-         * Fourth part of the load of Aria Templates in the iframe: copy the skin, rootmap and cache.
-         * @param {Object} res unused
-         * @param {Object} args object containing the frame and callback
-         */
-        _loadATInFrameCb4 : function (res, args) {
-            var window = args.frame.contentWindow || args.frame;
-            if (args.options.iframePageCss) {
-                this._injectGlobalCss(window, args.options.iframePageCss);
+            if (options.iframePageCss) {
+                this._injectGlobalCss(window, options.iframePageCss);
             }
 
             window.Aria.rootFolderPath = Aria.rootFolderPath;
             var rootMap = window.aria.utils.Json.copy(ariaCoreDownloadMgr._rootMap);
             window.aria.core.DownloadMgr.updateRootMap(rootMap);
-            if (aria.widgets && aria.widgets.AriaSkin) {
+            if (!options.skipSkinCopy && aria.widgets && aria.widgets.AriaSkin) {
                 var skin = aria.widgets.AriaSkin.classDefinition;
                 window.Aria['classDefinition']({
                     $classpath : 'aria.widgets.AriaSkin',
@@ -235,6 +253,21 @@ module.exports = Aria.classDefinition({
                     }
                 }
             }
+            if (!options.keepLoadingIndicator) {
+                var loadingIndicator = window.document.getElementById("loadingIndicator");
+                loadingIndicator.parentNode.removeChild(loadingIndicator);
+            }
+            
+            ariaUtilsScriptLoader.load(options.extraScripts || [], {
+                fn: this._loadATInFrameCb3,
+                scope: this,
+                args: args
+            }, {
+                document: document
+            });
+        },
+
+        _loadATInFrameCb3 : function (res, args) {
             this.$callback(args.cb, {
                 success : true
             });

@@ -128,7 +128,6 @@ var generalBrowserExcludes = {
         "test/aria/widgets/form/textinput/helpText/HelpTextTestCase.js"
     ],
     "IE 9": [
-        "test/aria/utils/bridge/BridgeTestCase.js",
         "test/aria/utils/hashManager/HashManagerOneTestCase.js",
         "test/aria/utils/mouse/MouseDragKoRobotTestCase.js",
         "test/aria/widgets/wai/dropdown/DatePickerDropdownTogglingRobotTestCase.js",

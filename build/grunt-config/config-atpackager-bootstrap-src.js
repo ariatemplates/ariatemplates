@@ -76,35 +76,76 @@ module.exports = function (grunt) {
         };
     }
 
+    function frameATLoaderHTMLVisitor() {
+        return {
+            onInit: function(packaging) {
+                var jsPath = 'src/aria/utils/FrameATLoader.js';
+                var htmlLogicalPath = 'aria/utils/FrameATLoaderHTML.html';
+                var jsFileContent = grunt.file.read(jsPath, {encoding: 'utf8'});
+                var htmlFileContent;
+                require("vm").runInNewContext(jsFileContent, {
+                    module: {},
+                    require: function (name) {
+                        if (name === "../Aria") {
+                            return {
+                                classDefinition: function (classDef) {
+                                    classDef.$constructor();
+                                    htmlFileContent = classDef.frameHtml;
+                                }
+                            };
+                        } else {
+                            return {};
+                        }
+                    }
+                }, {
+                    filename: jsPath
+                });
+
+                if (!htmlFileContent) {
+                    throw new Error("Could not extract FrameATLoaderHTML.html from FrameATLoader.js.");
+                }
+                var sourceFile = packaging.addSourceFile(htmlLogicalPath);
+                sourceFile.setTextContent(htmlFileContent);
+
+                var targetFile = packaging.addOutputFile(htmlLogicalPath, true);
+                targetFile.builder = packaging.createObject('Concat', targetFile.builtinBuilders);
+                sourceFile.setOutputFile(targetFile);
+            }
+        };
+    }
+
     grunt.config.set('atpackager.bootstrapSrc', {
         options : {
             sourceDirectories : ['src'],
             sourceFiles : [],
             outputDirectory : 'src',
-            visitors : [uaparserVisitor,
-                        'CopyUnpackaged', {
-                        type : 'NoderPlugins',
-                        cfg : {
-                            targetBaseLogicalPath : "aria",
-                            targetFiles : "aria/noderError/**"
-                        }
-                    }, {
-                        type : 'NoderRequiresGenerator',
-                        cfg : {
-                            requireFunction : "syncRequire",
-                            wrapper : "<%= grunt.file.read('src/aria/bootstrap.tpl.js') %>",
-                            targetLogicalPath : 'aria/bootstrap.js',
-                            requires : packagingSettings.bootstrap.files
-                        }
-                    }, {
-                        type : 'NoderRequiresGenerator',
-                        cfg : {
-                            requireFunction : "syncRequire",
-                            wrapper : "<%= grunt.file.read('src/aria/bootstrap.tpl.js') %>",
-                            targetLogicalPath : 'aria/bootstrap-node.js',
-                            requires : packagingSettings.bootstrap.files
-                        }
-                    }],
+            visitors : [
+                uaparserVisitor,
+                frameATLoaderHTMLVisitor,
+                'CopyUnpackaged', {
+                    type : 'NoderPlugins',
+                    cfg : {
+                        targetBaseLogicalPath : "aria",
+                        targetFiles : "aria/noderError/**"
+                    }
+                }, {
+                    type : 'NoderRequiresGenerator',
+                    cfg : {
+                        requireFunction : "syncRequire",
+                        wrapper : "<%= grunt.file.read('src/aria/bootstrap.tpl.js') %>",
+                        targetLogicalPath : 'aria/bootstrap.js',
+                        requires : packagingSettings.bootstrap.files
+                    }
+                }, {
+                    type : 'NoderRequiresGenerator',
+                    cfg : {
+                        requireFunction : "syncRequire",
+                        wrapper : "<%= grunt.file.read('src/aria/bootstrap.tpl.js') %>",
+                        targetLogicalPath : 'aria/bootstrap-node.js',
+                        requires : packagingSettings.bootstrap.files
+                    }
+                }
+            ],
             packages : [getNoderPackage("aria/bootstrap.js", "aria/bootstrap.js", "browser"),
                     getNoderPackage("aria/bootstrap-node.js", "aria/bootstrap-node.js", "node")]
         }
