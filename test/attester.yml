@@ -24,3 +24,4 @@ tests:
     - test.aria.utils.overlay.loadingIndicator.scrollableBody.ScrollableBodyTest
     - test.aria.widgets.container.dialog.container.DialogContainerTestSuite
     - test.aria.widgets.container.dialog.indicators.DialogTestCase
+    - test.aria.widgets.container.dialog.hiddenViewportResize.HiddenDialogViewportResizeTestCase
