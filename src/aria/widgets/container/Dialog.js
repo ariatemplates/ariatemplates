@@ -187,8 +187,9 @@ module.exports = Aria.classDefinition({
          */
         _onViewportResized : function (event) {
             var containerSize = this._popupContainer.getClientSize();
-            if (containerSize.width <= 0 || containerSize.height <= 0) {
+            if (!this._popup.isOpen || containerSize.width <= 0 || containerSize.height <= 0) {
                 // do nothing if the container is not visible
+                // or if the popup was manually hidden from external code
                 return;
             }
 
