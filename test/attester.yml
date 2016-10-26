@@ -25,3 +25,5 @@ tests:
     - test.aria.widgets.container.dialog.container.DialogContainerTestSuite
     - test.aria.widgets.container.dialog.indicators.DialogTestCase
     - test.aria.widgets.container.dialog.hiddenViewportResize.HiddenDialogViewportResizeTestCase
+    #Excluded because it randomly fails on PhantomJS:
+    - test.aria.widgets.container.tooltip.TooltipTestCase
