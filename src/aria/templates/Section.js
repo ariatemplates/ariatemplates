@@ -219,6 +219,24 @@ var ariaUtilsDomOverlay = require("../utils/DomOverlay");
             this.id = id || "_gen_" + this._domId;
 
             /**
+             * Whether waiAria should be activated or not
+             * @type Boolean
+             */
+            this.waiAria = cfg.waiAria;
+
+            /**
+             * When waiAria is activated and processingLabel is defined, specifies the interval at which this label is read
+             * @type Number
+             */
+            this.waiAriaProcessingLabelReadInterval = cfg.waiAriaProcessingLabelReadInterval;
+
+            /**
+            When waiAria is activated and processingLabel is defined, specifies if this label should be read once first (without having to wait for the first interval occurrence).
+             * @type Boolean
+             */
+            this.waiAriaProcessingLabelReadOnceFirst = cfg.waiAriaProcessingLabelReadOnceFirst;
+
+            /**
              * Configuration for keyboard shortcuts
              * @type Object
              */
@@ -687,15 +705,15 @@ var ariaUtilsDomOverlay = require("../utils/DomOverlay");
              * Set the state of the processing indicator. It updates the datamodel if the section has a processing
              * binding
              * @param {Boolean} visible True if the loading indicator should be visible
-             * @param {String} message Text message to display inside the loading indicator
+             * @param {Object|String} options The options (see aria.utils.DomOverlay.create / aria.utils.DomOverlay.detachFrom)
              */
-            setProcessingIndicator : function (visible, message) {
+            setProcessingIndicator : function (visible, options) {
                 visible = !!visible;
                 var alreadyVisible = !!this._overlayId;
 
                 if (visible !== alreadyVisible) {
                     if (visible) {
-                        this._overlayId = ariaUtilsDomOverlay.create(this.getDom(), message);
+                        this._overlayId = ariaUtilsDomOverlay.create(this.getDom(), options);
                     } else {
                         this.disposeProcessingIndicator();
                     }
@@ -711,6 +729,15 @@ var ariaUtilsDomOverlay = require("../utils/DomOverlay");
                     // refresh the overlay
                     ariaUtilsDomOverlay.overlays[this._overlayId].refresh();
                 }
+            },
+
+            _setProcessingIndicatorWithDefaultOptions : function (value) {
+                return this.setProcessingIndicator(value, {
+                    message: this.processingLabel,
+                    waiAria: this.waiAria,
+                    waiAriaReadInterval: this.waiAriaProcessingLabelReadInterval,
+                    waiAriaReadOnceFirst: this.waiAriaProcessingLabelReadOnceFirst
+                });
             },
 
             /**
@@ -733,7 +760,7 @@ var ariaUtilsDomOverlay = require("../utils/DomOverlay");
 
                 if (isBound && processing.inside[processing.to]) {
                     // Display the loading indicator
-                    this.setProcessingIndicator(true, this.processingLabel);
+                    this._setProcessingIndicatorWithDefaultOptions(true);
                 }
             },
 
@@ -878,7 +905,7 @@ var ariaUtilsDomOverlay = require("../utils/DomOverlay");
                 }
 
                 // set/unset the loading indicator
-                this.setProcessingIndicator(res.newValue, this.processingLabel);
+                this._setProcessingIndicatorWithDefaultOptions(res.newValue);
             },
 
             /**

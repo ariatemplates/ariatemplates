@@ -230,14 +230,14 @@ module.exports = Aria.classDefinition({
         /**
          * Set the state of the processing indicator
          * @param {Boolean} visible True if the loading indicator should be visible
-         * @param {String} message Text message to display inside the loading indicator
+         * @param {Object|String} options The options (see aria.utils.DomOverlay.create / aria.utils.DomOverlay.detachFrom)
          */
-        this.setProcessingIndicator = function (visible, message) {
+        this.setProcessingIndicator = function (visible, options) {
             var overlay, doRegistration = true;
             if (visible) {
-                overlay = ariaUtilsDomOverlay.create(domElt, message);
+                overlay = ariaUtilsDomOverlay.create(domElt, options);
             } else {
-                overlay = ariaUtilsDomOverlay.detachFrom(domElt, message);
+                overlay = ariaUtilsDomOverlay.detachFrom(domElt, options);
 
                 if (!overlay) {
                     // Trying to remove an overlay from an element that has no overlay attached

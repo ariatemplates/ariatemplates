@@ -105,12 +105,12 @@ module.exports = Aria.classDefinition({
         },
 
         /**
-         * Create a DomOverlay above a DOM Element. This function should only be used for elements outside a template or
-         * a section
-         * @param {HTMLElement} element The element that should be hidden by an overlay
-         * @param {String} message Optional text message to display in the overlay
+         * Create a DomOverlay above a DOM Element. This function should only be used for elements outside a template or a section.
+         *
+         * @param {HTMLElement} element See aria.utils.overlay.LoadingOverlay
+         * @param {Object|String} options See aria.utils.overlay.LoadingOverlay
          */
-        create : function (element, message) {
+        create : function (element, options) {
             // Check if there is already an overlay on this element
             var overlay = this.__getOverlay(element);
             if (overlay) {
@@ -122,7 +122,7 @@ module.exports = Aria.classDefinition({
             var id = ++this.UNIQUE_ID_GENERATOR;
 
             // Create the overlay
-            overlay = new ariaUtilsOverlayLoadingOverlay(element, id, message);
+            overlay = new ariaUtilsOverlayLoadingOverlay(element, id, options);
 
             this._init(); // check it is initialized
 

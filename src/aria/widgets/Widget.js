@@ -17,6 +17,8 @@ require("./CfgBeans");
 var ariaUtilsJson = require("../utils/Json");
 var ariaUtilsDom = require("../utils/Dom");
 var ariaUtilsDelegate = require("../utils/Delegate");
+var ariaUtilsObject = require("../utils/Object");
+var ariaUtilsAccessibility = require("../utils/Accessibility");
 var ariaWidgetsAriaSkinInterface = require("./AriaSkinInterface");
 var ariaTemplatesRefreshManager = require("../templates/RefreshManager");
 var ariaUtilsString = require("../utils/String");
@@ -838,31 +840,23 @@ module.exports = Aria.classDefinition({
             }
         },
 
+        /**
+         * Delegates most of its work to aria.utils.Accessibility.readText However, this method:
+         *
+         * <ul>
+         *  <li>adds a guard condition: if waiAra is not activated or no text is actually passed, nothing will be done</li>
+         *  <li>if not already provided, sets the "parent" option to the widget's root element</li>
+         * </ul>
+         *
+         * @param {String} text See aria.utils.Accessibility.readText
+         * @param {Object} options See aria.utils.Accessibility.readText
+         */
         waiReadText : function (text, options) {
             if (this._cfg && this._cfg.waiAria && text) {
-                var isAlert = options && options.alert;
-                var document = Aria.$window.document;
-                var waiReadTextElt = document.createElement("span");
-                waiReadTextElt.className = "xSROnly";
-                waiReadTextElt.setAttribute("role", isAlert ? "alert" : "status");
-                waiReadTextElt.setAttribute("aria-live", "assertive");
-                waiReadTextElt.setAttribute("aria-relevant", "additions");
-                if (isAlert) {
-                    waiReadTextElt.style.visibility = "hidden";
-                }
-                this.getDom().appendChild(waiReadTextElt);
-
-                var textChild = document.createElement("span");
-                var textNode = document.createTextNode(text);
-                textChild.appendChild(textNode);
-                waiReadTextElt.appendChild(textChild);
-                if (isAlert) {
-                    waiReadTextElt.style.visibility = "visible";
-                }
-                setTimeout(function () {
-                    // remove the node after 10ms
-                    waiReadTextElt.parentNode.removeChild(waiReadTextElt);
-                }, 10);
+                var finalOptions = ariaUtilsObject.assign({}, {
+                    parent: this.getDom()
+                }, options || {});
+                ariaUtilsAccessibility.readText(text, finalOptions);
             }
         }
     }

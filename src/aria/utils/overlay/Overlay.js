@@ -14,7 +14,10 @@
  */
 var Aria = require("../../Aria");
 var ariaUtilsDom = require("../Dom");
-var environment = require("../../core/environment/Environment");
+
+var Environment = require("../../core/environment/Environment");
+
+
 
 /**
  * This class creates an overlay and keeps it positioned above a given HTML element
@@ -22,19 +25,33 @@ var environment = require("../../core/environment/Environment");
  */
 module.exports = Aria.classDefinition({
     $classpath : 'aria.utils.overlay.Overlay',
-    $constructor : function (element, params) {
+
+    /**
+     * <p>The options object contains the following properties: </p>
+     * <ul>
+     *  <li><em>waiAria</em>: activate waiAria or not; global setting is also taken into account</li>
+     * </ul>
+     *
+     * @param {HTMLElement} element The element to put the overlay on
+     * @param {Object} params Object to forward to the _createOverlay method, called by this constructor
+     * @param {Object} options The optional options, see description for more details.
+     */
+    $constructor : function (element, params, options) {
         /**
          * Element on which the overlay is applied
          * @type HTMLElement
          */
         this.element = element;
 
-        /**
-         * Environment variable related to WAI-ARIA activation
-         @ @protected
-         * @type Boolean
-         */
-        this._waiAria = environment.isWaiAria();
+        if (options == null) {
+            options = {};
+        }
+
+        var waiAria = options.waiAria;
+        if (waiAria == null) {
+            waiAria = Environment.isWaiAria();
+        }
+        this._waiAria = waiAria;
 
         var overlay = this._createOverlay(params);
 
