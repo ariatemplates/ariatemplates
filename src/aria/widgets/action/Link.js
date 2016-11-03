@@ -60,6 +60,8 @@ module.exports = Aria.classDefinition({
          */
         _widgetMarkup : function (out) {
             var cfg = this._cfg;
+            var waiLabelHidden = cfg.waiLabelHidden;
+
             var linkClass = "xLink_" + cfg.sclass;
             if (cfg.disabled) {
                 linkClass = "xLink_" + cfg.sclass + "_disabled xLink_disabled";
@@ -74,7 +76,9 @@ module.exports = Aria.classDefinition({
                     this._getWaiAriaMarkup(),
                     cfg.disabled ? ' disabled ' : '',
                 '>',
-                    ariaUtilsString.escapeHTML(cfg.label),
+                    (waiLabelHidden ? '<span aria-hidden="true">' : ''),
+                        ariaUtilsString.escapeHTML(cfg.label),
+                    (waiLabelHidden ? '</span>' : ''),
                 '</a>'
             ].join(''));
             cfg = null;
