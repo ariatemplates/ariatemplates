@@ -215,48 +215,30 @@ module.exports = Aria.classDefinition({
                 }
 
                 function getTabDescription(tab, useJawsNavigation) {
-                    // ---------------------------------------------------------
-
                     var description = [];
-
-                    // ---------------------------------------------------------
-
                     if (useJawsNavigation) {
                         if (tab.wrapper != null) {
                             description.push(tab.wrapperText);
+                        }
+                        description.push('Link collapsed');
+                        if (!tab.labelId) {
+                            description.push(tab.title);
                         } else {
-                            says(tab.textContent);
+                            description.push(tab.textContent);
                         }
                     } else {
                         description.push(tab.title);
-                    }
-
-                    // ---------------------------------------------------------
-
-                    description.push('Tab');
-                    if (useJawsNavigation) {
-                        description.push('closed');
-                    }
-                    description.push('collapsed');
-                    if (!useJawsNavigation) {
-                        description.push('Use JawsKey+Alt+R to read descriptive text');
-                    }
-                    if (useJawsNavigation && tab.wrapper != null) {
-                        description.push(tab.textContent);
+                        if (tab.wrapper != null) {
+                            description.push(tab.wrapperText);
+                            description.push('Link collapsed');
+                        } else {
+                            description.push('collapsed Link');
+                        }
                     }
                     says(description.join(' '));
-
-                    // ---------------------------------------------------------
-
-                    if (!useJawsNavigation) {
-                        if (tab.labelId) {
-                            says(tab.textContent);
-                        }
-
-                        if (tab.description != null) {
-                            says(tab.description);
-                        }
-                        says('To activate tab page press Spacebar.');
+                    
+                    if (!useJawsNavigation && tab.description != null) {
+                        says(tab.description);
                     }
                 }
 
@@ -264,7 +246,10 @@ module.exports = Aria.classDefinition({
                     var stepForward = useJawsNavigation ? down : tabulation;
 
                     ariaUtilsArray.forEach(tabs, function (tab, index) {
-                        if (useJawsNavigation && tab.hidden) {
+                        if (tab.hidden) {
+                            if (!useJawsNavigation) {
+                                stepForward();
+                            }
                             return;
                         }
 
