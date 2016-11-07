@@ -46,16 +46,13 @@ module.exports = Aria.classDefinition({
             // simple traversal with no selection ------------------------------
 
             // Tab 0
-            'Tab 0',
-            'Tab closed collapsed',
+            'Link collapsed Tab 0',
 
             // Tab 1
-            'Tab 1',
-            'Tab Unavailable closed collapsed',
+            'Link Unavailable collapsed Tab 1',
 
             // Tab 2
-            'Tab 2',
-            'Tab closed collapsed',
+            'Link collapsed Tab 2',
 
             // TabPanel
             'tab panel start',
@@ -66,16 +63,13 @@ module.exports = Aria.classDefinition({
             // selecting last Tab ----------------------------------------------
 
             // Tab 0
-            'Tab 0',
-            'Tab closed collapsed',
+            'Link collapsed Tab 0',
 
             // Tab 1
-            'Tab 1',
-            'Tab Unavailable closed collapsed',
+            'Link Unavailable collapsed Tab 1',
 
             // Tab 2
-            'Tab 2',
-            'Tab closed collapsed',
+            'Link collapsed Tab 2',
             // glitch: since the focus is immediately moved (see next comment), the state of the Tab can not be read
 
             // selecting a Tab means focusing the first element inside the TabPanel
@@ -85,16 +79,13 @@ module.exports = Aria.classDefinition({
             // simple traversal with a Tab selected ----------------------------
 
             // Tab 0
-            'Tab 0',
-            'Tab closed collapsed',
+            'Link collapsed Tab 0',
 
             // Tab 1
-            'Tab 1',
-            'Tab Unavailable closed collapsed',
+            'Link Unavailable collapsed Tab 1',
 
             // Tab 2
-            'Tab 2',
-            'Tab open expanded',
+            'Link expanded Tab 2',
 
             // TabPanel: now the title of the controlling Tab is read
             'tab panel start Tab 2',
