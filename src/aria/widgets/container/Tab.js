@@ -162,11 +162,18 @@ module.exports = Aria.classDefinition({
 
             var waiAttributes = [];
 
-            if (tabIndex != null && !disabled) {
+            waiAttributes.push(['class', 'xTabLink']);
+            waiAttributes.push(['href', 'javascript:(function(){})()']);
+
+            if (disabled) {
+                waiAttributes.push(['tabindex', '-1']);
+            } else if (tabIndex != null) {
                 waiAttributes.push(['tabindex', this._calculateTabIndex()]);
             }
 
-            waiAttributes.push(['role', 'tab']);
+            // Blind users do not like the "tab" role because, just as the "application" role,
+            // it prevents them from using their navigation shortcuts:
+            // waiAttributes.push(['role', 'tab']);
 
             if (waiHidden) {
                 waiAttributes.push(['aria-hidden', 'true']);
@@ -517,8 +524,12 @@ module.exports = Aria.classDefinition({
          */
         _dom_onclick : function (domEvt) {
             this._selectTab();
-            if (this._cfg && !this._hasFocus && !this._cfg.waiAria) {
-                this._focus();
+            if (this._cfg) {
+                if (this._cfg.waiAria) {
+                    domEvt.preventDefault();
+                } else if (!this._hasFocus) {
+                    this._focus();
+                }
             }
         },
 
@@ -584,6 +595,23 @@ module.exports = Aria.classDefinition({
                 this._selectTab();
                 domEvt.preventDefault();
             }
+        },
+
+        /**
+         * Delegate an incoming event
+         * @param {aria.DomEvent} evt
+         * @return {Boolean} event bubbles ?
+         * @override
+         */
+        delegate : function (evt) {
+            var evtType = evt.type;
+            if (this._cfg.disabled && this._cfg.waiAria && (evtType === "mousedown" || evtType === "click")) {
+                // When the tab is disabled it is necessary to prevent the default action when clicking on the link
+                // both to prevent the focus (on mousedown) and the navigation (on click)
+                evt.target.unselectable = true; // for old IE versions for which preventDefault on mousedown does not prevent the focus
+                evt.preventDefault();
+            }
+            return this.$Container.delegate.apply(this, arguments);
         }
 
     }

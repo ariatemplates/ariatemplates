@@ -20,6 +20,15 @@
     {var skinnableClassName="Tab"/}
     {var useFrame=true/}
 
+    {macro main()}
+        a.xTabLink {
+            text-decoration: inherit;
+            color: inherit;
+            cursor: inherit;
+        }
+        {call $WidgetStyle.main()/}
+    {/macro}
+
     {macro writeStateOfTableFrame(info)}
         {call $WidgetStyle.writeStateOfTableFrame(info) /}
         {var prefix = cssPrefix(info)/}
