@@ -208,6 +208,7 @@ module.exports = Aria.classDefinition({
          */
         _widgetMarkup : function (out) {
             var cfg = this._cfg;
+
             var tabIndexString = (cfg.tabIndex != null ? ' tabindex="' + this._calculateTabIndex() + '" ' : '');
             var isIE7 = ariaCoreBrowser.isIE7;
             var ariaTestMode = (Aria.testMode) ? ' id="' + this._domId + '_button" ' : '';
@@ -215,6 +216,7 @@ module.exports = Aria.classDefinition({
 
             var waiAriaAttributes = this._getWaiAriaMarkup();
             var disableMarkup = cfg.disabled ? " disabled='disabled' " : "";
+
             if (this._simpleHTML) {
                 var styleMarkup = cfg.width != "-1" ? " style='width:" + cfg.width + "px;' " : "";
 
@@ -275,7 +277,14 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         _widgetMarkupContent : function (out) {
-            out.write(ariaUtilsString.escapeHTML(this._cfg.label));
+            var cfg = this._cfg;
+            var waiLabelHidden = cfg.waiLabelHidden;
+
+            out.write([
+                (waiLabelHidden ? '<span aria-hidden="true">' : ''),
+                    ariaUtilsString.escapeHTML(this._cfg.label),
+                (waiLabelHidden ? '</span>' : '')
+            ].join(''));
         },
 
         /**
