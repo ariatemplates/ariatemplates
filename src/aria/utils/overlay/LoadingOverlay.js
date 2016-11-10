@@ -12,10 +12,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 var Aria = require("../../Aria");
+
 var ariaUtilsOverlayOverlay = require("./Overlay");
 var ariaCoreBrowser = require("../../core/Browser");
 var ariaUtilsEvent = require("../Event");
+var ariaUtilsType = require("../Type");
+var ariaUtilsFunction = require("../Function");
+var ariaUtilsAccessibility = require("../Accessibility");
+var ariaUtilsDomNavigationManager = require("../DomNavigationManager");
+
+
 
 /**
  * This class creates an overlay and keeps it positioned above a given HTML element
@@ -23,13 +31,56 @@ var ariaUtilsEvent = require("../Event");
 module.exports = Aria.classDefinition({
     $classpath : "aria.utils.overlay.LoadingOverlay",
     $extends : ariaUtilsOverlayOverlay,
-    $constructor : function (element, overlayId, text) {
-        // This is used by the parent constructor.
-        this.__text = text;
+    /**
+     * Creates a loading overlay above a DOM Element.
+     *
+     * <p>The options object contains the following properties: </p>
+     * <ul>
+     *  <li><em>message</em>: the message to display</li>
+     *  <li><em>waiAria</em>: forwarded to the parent constructor</li>
+     *  <li><em>waiAriaReadInterval</em>: when waiAria is activated, the interval (in milliseconds) at which to read the message. Defaults to 2000.</li>
+     *  <li><em>waiAriaReadOnceFirst</em>: when waiAria is activated, whether to read the message once first or not. Defaults to <em>true</em>.</li>
+     * </ul>
+     *
+     * @param {HTMLElement} element The element that should be hidden by an overlay
+     * @param {String} overlayId The id of the overlay
+     * @param {Object|String} options The optional options, see description for more details. If a string is passed directly it is assumed to be the message.
+     */
+    $constructor : function (element, overlayId, options) {
+        // ------------------------------------------ input arguments processing
+
+        if (options == null) {
+            options = {};
+        }
+
+        if (ariaUtilsType.isString(options)) {
+            options = {message: options};
+        }
+
+        var waiAria = options.waiAria;
+
+        var message = options.message;
+        this.__text = message;
+
+        var waiAriaReadInterval = options.waiAriaReadInterval;
+        if (waiAriaReadInterval == null) {
+            waiAriaReadInterval = 2000;
+        }
+        this._waiAriaReadInterval = waiAriaReadInterval;
+
+        var waiAriaReadOnceFirst = options.waiAriaReadOnceFirst;
+        if (waiAriaReadOnceFirst == null) {
+            waiAriaReadOnceFirst = true;
+        }
+        this._waiAriaReadOnceFirst = waiAriaReadOnceFirst;
+
+        // ---------------------------------------------------------- processing
 
         this.$Overlay.constructor.call(this, element, {
             id : overlayId,
             className : "xLDI"
+        }, {
+            waiAria: waiAria
         });
 
         var browser = aria.core.Browser;
@@ -53,6 +104,17 @@ module.exports = Aria.classDefinition({
             });
             this._scrollRecListener = false;
         }
+
+        if (this._waiAriaReadIntervalId != null) {
+            clearInterval(this._waiAriaReadIntervalId);
+            this._waiAriaReadIntervalId = null;
+        }
+
+        if (this._showElementBack != null) {
+            this._showElementBack();
+            this._showElementBack = null;
+        }
+
         this.$Overlay.$destructor.call(this);
     },
     $prototype : {
@@ -64,15 +126,38 @@ module.exports = Aria.classDefinition({
          * @override
          */
         _createOverlay : function (params) {
+            var element = this.element;
+            var text = this.__text;
+            var waiAria = this._waiAria;
+            var waiAriaReadInterval = this._waiAriaReadInterval;
+            var waiAriaReadOnceFirst = this._waiAriaReadOnceFirst;
+
             var overlay = this.$Overlay._createOverlay.call(this, params);
 
-            if (this.__text) {
-                overlay.innerHTML = this._waiAria ?
-                    "<span class='xLDI-text' aria-live='polite'>" + this.__text + "</span>" :
-                    "<span class='xLDI-text'>" + this.__text + "</span>";
+            if (waiAria) {
+                this._showElementBack = ariaUtilsDomNavigationManager.hidingManager.hide(element);
+            }
+
+            if (text) {
+                overlay.innerHTML = waiAria ?
+                    "<span class='xLDI-text' aria-live='polite'>" + text + "</span>" :
+                    "<span class='xLDI-text'>" + text + "</span>";
+
+                if (waiAria) {
+                    if (waiAriaReadOnceFirst) {
+                        this._readText();
+                    }
+                    this._waiAriaReadIntervalId = setInterval(ariaUtilsFunction.bind(this._readText, this), waiAriaReadInterval);
+                }
             }
 
             return overlay;
+        },
+
+        _readText : function () {
+            ariaUtilsAccessibility.readText(this.__text, {
+                parent: this.element
+            });
         },
 
         /**

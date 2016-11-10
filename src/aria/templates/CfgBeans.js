@@ -871,6 +871,18 @@ module.exports = Aria.beanDefinitions({
                             $type : "json:String"
                         }
                     }
+                },
+                "waiAria" : {
+                    $type : "json:Boolean",
+                    $description : "If true, accessibility-related DOM attributes are enabled on this section, to comply with WAI-ARIA specifications. This allows screen readers and other accessibility tools to work better."
+                },
+                "waiAriaProcessingLabelReadInterval" : {
+                    $type : "json:Integer",
+                    $description : "When waiAria is activated and processingLabel is defined, specifies the interval at which this label is read."
+                },
+                "waiAriaProcessingLabelReadOnceFirst" : {
+                    $type : "json:Boolean",
+                    $description : "When waiAria is activated and processingLabel is defined, specifies if this label should be read once first (without having to wait for the first interval occurrence)."
                 }
             }
         },
