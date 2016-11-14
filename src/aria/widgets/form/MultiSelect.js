@@ -21,7 +21,6 @@ var ariaWidgetsFormListListStyle = require("./list/ListStyle.tpl.css");
 var ariaWidgetsContainerDivStyle = require("../container/DivStyle.tpl.css");
 var ariaWidgetsFormCheckBoxStyle = require("./CheckBoxStyle.tpl.css");
 var ariaWidgetsFormDropDownTextInput = require("./DropDownTextInput");
-var ariaUtilsString = require("../../utils/String");
 var DomNavigationManager = require("../../utils/DomNavigationManager");
 
 /**
@@ -86,19 +85,6 @@ module.exports = Aria.classDefinition({
          * @type aria.widgets.form.list.List
          */
         this._dropDownList = null;
-
-        var isWaiAria = cfg.waiAria;
-        var iconTooltip = cfg.iconTooltip ? ' title="' + ariaUtilsString.escapeForHTML(cfg.iconTooltip) + '"' : '';
-        var tabIndex = isWaiAria ? (cfg.tabIndex != null ? this._calculateTabIndex() : "0") : "-1";
-        this._iconsAttributes = {
-            "dropdown": 'tabindex="' + tabIndex + '"' + iconTooltip
-        };
-
-        if (isWaiAria) {
-            var waiIconLabel = cfg.waiIconLabel;
-            this._iconsAttributes.dropdown += ' role="button" aria-expanded="false" aria-haspopup="true"  ' +
-               (waiIconLabel ? 'aria-label="' + waiIconLabel + '" ' : "");
-        }
     },
     $destructor : function () {
         this._dropDownOpen = null;
@@ -181,7 +167,7 @@ module.exports = Aria.classDefinition({
         _toggleDropdown : function () {
             this._updateFocusNoKeyboard(true);
             if (!this._hasFocus) {
-                this.focus();
+                this.focus(null, true);
             }
             this._keepFocus = false;
 

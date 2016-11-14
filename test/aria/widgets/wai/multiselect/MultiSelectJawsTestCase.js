@@ -64,7 +64,7 @@ Aria.classDefinition({
             ], {
                 fn: function () {
                     this.assertJawsHistoryEquals(
-                        "Here is the default Multi-Select: Edit\nType in text.\nMy Multi-select:\nEdit\nAir Canada check box checked\nAir France check box not checked\nAir France check box checked\nAir New Zealand check box not checked\nBritish Airways check box not checked\nBritish Airways check box checked\nDelta Airlines check box not checked Unavailable\nMy Multi-select: Edit\nAir Canada,Air France,British Airways\nType in text.\nPress space to open the selection list button menu collapsed\nAir Canada check box checked",
+                        "Here is the default Multi-Select: Edit\nType in text.\nMy Multi-select:\nEdit\nAir Canada check box checked\nAir France check box not checked\nAir France check box checked\nAir New Zealand check box not checked\nBritish Airways check box not checked\nBritish Airways check box checked\nDelta Airlines check box not checked Unavailable\nMy Multi-select: Edit\nAir Canada,Air France,British Airways\nType in text.\nPress space to open the selection list\nAir Canada check box checked",
                     this.end,
                     function(response) {
                         return this.removeDuplicates(response.

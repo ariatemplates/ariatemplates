@@ -43,8 +43,11 @@ module.exports = Aria.classDefinition({
             "dropdown": 'unselectable="on"' + iconTooltip
         };
         if (cfg.waiAria) {
-            this._iconsAttributes.dropdown += ' role="button" aria-expanded="false" aria-haspopup="true"' +
-                (cfg.waiIconLabel ? ' aria-label="' + cfg.waiIconLabel + '"' : "");
+            var tabIndex = cfg.tabIndex != null ? this._calculateTabIndex() : "0";
+            this._iconsAttributes.dropdown += ' tabindex="' + tabIndex + '" aria-expanded="false" aria-haspopup="true"';
+            this._iconsWaiLabel = {
+                "dropdown": cfg.waiIconLabel || cfg.iconTooltip
+            };
         }
     },
     $destructor : function () {
@@ -240,7 +243,9 @@ module.exports = Aria.classDefinition({
         setCaretPosition : function () {
             this._updateFocusNoKeyboard();
             if (!this._focusNoKeyboard) {
-                this.$TextInput.setCaretPosition.apply(this, arguments);
+                if (Aria.$window.document.activeElement !== this._getDropdownIcon()) {
+                    this.$TextInput.setCaretPosition.apply(this, arguments);
+                }
             }
         },
 

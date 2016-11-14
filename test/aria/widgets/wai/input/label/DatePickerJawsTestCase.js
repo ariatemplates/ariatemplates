@@ -19,6 +19,9 @@ module.exports = Aria.classDefinition({
     $classpath : "test.aria.widgets.wai.input.label.DatePickerJawsTestCase",
     $extends : require("./LabelJawsBase"),
     $prototype : {
-        elementsToTest : "dpWaiEnabledStart"
+        elementsToTest : "dpWaiEnabledStart",
+
+        // The DatePicker needs extra tabs now that the icon is focusable:
+        nbTabs: 4
     }
 });

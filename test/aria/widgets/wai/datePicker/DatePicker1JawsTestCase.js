@@ -42,7 +42,7 @@ Aria.classDefinition({
                 ["pause", 1000]
             ], {
                 fn: function () {
-                    this.assertJawsHistoryEquals("Next field Edit\nType in text.\nNext field\nDisplay calendar button menu collapsed\nCalendar table. Use arrow keys to navigate and space to validate.\nFriday 1 January 2016\nFriday 8 January 2016\nFriday 15 January 2016\nTravel date Edit\n15/1/16\nType in text.", this.end);
+                    this.assertJawsHistoryEquals("Next field Edit\nType in text.\nNext field\nDisplay calendar\nCalendar table. Use arrow keys to navigate and space to validate.\nFriday 1 January 2016\nFriday 8 January 2016\nFriday 15 January 2016\nTravel date Edit\n15/1/16\nType in text.", this.end);
                 },
                 scope: this
             });

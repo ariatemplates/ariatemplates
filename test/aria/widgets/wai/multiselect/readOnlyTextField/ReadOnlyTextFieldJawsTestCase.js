@@ -30,8 +30,6 @@ Aria.classDefinition({
          * This method is always the first entry point to a template test Start the test by focusing the first field
          */
         runTemplateTest : function () {
-            var checkedRegExp = /not checked\nchecked/g;
-            var notCheckedRegExp = /checked\nnot checked/g;
             var chechBoxStartingLineRegExp = /\ncheck box/g;
 
             this.synEvent.execute([
@@ -49,20 +47,15 @@ Aria.classDefinition({
                         "What do you need to be happy? read only edit",
                         "Press down then space to open the list of check boxes.",
                         "Press space to open the list of check boxes",
-                        "button menu collapsed",
                         "God check box not checked",
-                        "God check box checked",
+                        "checked",
                         "What do you need to be happy? read only edit",
                         "God",
                         "Press down then space to open the list of check boxes."
                     ].join("\n"),
                     this.end,
                     function(response) {
-                        return this.removeDuplicates(response.
-                            replace(chechBoxStartingLineRegExp, " check box").
-                            replace(checkedRegExp, "checked").
-                            replace(notCheckedRegExp, "not checked")
-                        );
+                        return this.removeDuplicates(response.replace(chechBoxStartingLineRegExp, " check box"));
                     });
                 },
                 scope: this

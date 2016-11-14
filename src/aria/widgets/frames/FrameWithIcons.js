@@ -54,6 +54,7 @@ module.exports = Aria.classDefinition({
         this._tooltipLabels = cfg.tooltipLabels;
 
         this._iconsAttributes = cfg.iconsAttributes;
+        this._iconsWaiLabel = cfg.iconsWaiLabel;
 
         ariaUtilsArray.forEach(this._iconsLeft, this._initIcon, this);
         ariaUtilsArray.forEach(this._iconsRight, this._initIcon, this);
@@ -455,10 +456,14 @@ module.exports = Aria.classDefinition({
 
             var title = icon.tooltip ? ' title="' + ariaUtilsString.escapeForHTML(icon.tooltip) + '"' : '';
             var attributes = this._iconsAttributes[iconName] || 'tabIndex="-1"';
+            var waiLabel = this._iconsWaiLabel[iconName] || "";
+            if (waiLabel) {
+                waiLabel = '<span class="xSROnly">' + ariaUtilsString.escapeForHTML(waiLabel) + '</span>';
+            }
 
             out.write(['<span', Aria.testMode && this._baseId ? ' id="' + this._baseId + '_' + iconName + '"' : '',
                     ' class="', iconInfo.cssClass, '" style="', iconStyle,
-                    '" ', utilDelegate.getMarkup(delegateId), title, ' ', attributes, '>&nbsp;</span>'].join(''));
+                    '" ', utilDelegate.getMarkup(delegateId), title, ' ', attributes, '>', waiLabel, '&nbsp;</span>'].join(''));
         },
 
         _linkIconToDom : function (icon, param) {
