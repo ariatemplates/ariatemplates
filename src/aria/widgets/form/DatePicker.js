@@ -69,7 +69,7 @@ module.exports = Aria.classDefinition({
                     previousText: null
                 },
                 onStart: function (state) {
-                    state.inputText = self.getTextInputField().value;
+                    state.previousText = self.getTextInputField().value;
                 },
                 onEnd: function (state) {
                     var text = self.getTextInputField().value;
