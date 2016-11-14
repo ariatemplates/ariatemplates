@@ -1201,11 +1201,6 @@ module.exports = Aria.beanDefinitions({
                     $type : "json:String",
                     $description : "Sets aria-labelledby on the widget, value will be used as the attribute's value"
                 },
-                "waiLabelHidden" : {
-                    $type : "json:Boolean",
-                    $description : "Sets aria-hidden on the label when set to true",
-                    $default : false
-                },
                 "waiHasPopup" : {
                     $type : "json:Boolean",
                     $description : "If true, sets aria-haspopup=\"true\" on the widget. Only used if waiAria is true."
