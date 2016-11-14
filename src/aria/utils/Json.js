@@ -293,7 +293,7 @@ var ariaUtilsObject = require("./Object");
                     parent : "Parent of the child node.",
                     property : "Property of the parent node referencing the child node."
                 }
-            },
+            }
         },
         $constructor : function () {
             jsonUtils = this;
