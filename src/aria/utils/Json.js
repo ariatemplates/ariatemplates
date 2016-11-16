@@ -1032,7 +1032,7 @@ var ariaUtilsObject = require("./Object");
                 var __arrayToObject = function(array) {
                         var object = {};
                         arrayUtils.forEach( array, function( item, index ) {
-                            object[index] = item;
+                            object[ index ] = this.copy( item );
                         });
                         return object;
                     },
@@ -1091,7 +1091,7 @@ var ariaUtilsObject = require("./Object");
                                 // if either the item or refItem is empty.
                                 if ( isOneEmpty( arrayUtils ) ) {
                                     // then transform the item array into an object with the keys being the indices.
-                                    _result[ property ] = __arrayToObject( this.copy( item ) );
+                                    _result[ property ] = __arrayToObject.call( this, item );
                                 } else {
                                     // process the array providing a function that will perform the loop.
                                     arrayOrObject.call(this, function( eachItemFn ) {
