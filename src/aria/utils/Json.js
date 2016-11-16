@@ -1123,8 +1123,7 @@ var ariaUtilsObject = require("./Object");
                     // create a result object that will be populated with any differences. It is initialized to {'OBJECT':undefined}.  
                     // This OBJECT nesting is so that this works for any type of input.
                     result = __nest();
-                // create the diff of the copy. Also nest and take a copy of the referenceObject. A copy is needed for the referenceObject
-                // as arrays can be converted to objects.
+                // populate the result object with any differences. Need to nest them both so that any type of input is valid.
                 __diff.call( this, __nest( object ), __nest( referenceObject ), result );
                 //remember to return the nested OBJECT
                 return result.OBJECT === undefined ? null : result.OBJECT;
