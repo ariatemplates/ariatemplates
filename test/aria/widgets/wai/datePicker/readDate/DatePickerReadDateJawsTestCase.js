@@ -88,6 +88,7 @@ module.exports = Aria.classDefinition({
                 var says = api.says;
                 var delay = api.delay;
                 var key = api.key;
+                var specialKey = api.specialKey;
 
                 var down = api.down;
                 var enter = api.enter;
@@ -141,6 +142,12 @@ module.exports = Aria.classDefinition({
                 key('[backspace]5');
                 says('6'); // says removed letter, but not the one typed in
                 says('Monday 7 September 2015'); // date is read
+
+                // -------------------------------------------------------------
+                // Checking that keystrokes not changing text don't trigger a read
+
+                specialKey('left');
+                says('5');
             });
         }
     }
