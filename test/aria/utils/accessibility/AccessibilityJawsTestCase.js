@@ -97,6 +97,7 @@ module.exports = Aria.classDefinition({
             this._localAsyncSequence(function (add) {
                 add(readText('Hello', true));
                 add(readText('World', false));
+                add('_delay', 3000);
             }, callback);
         }
     }
