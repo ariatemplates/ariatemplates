@@ -23,13 +23,22 @@ Aria.classDefinition({
         });
     },
     $prototype : {
+        nbTabs: 2,
+
         runTemplateTest : function () {
             this._testElement();
         },
         _testElement : function () {
             var domElement = this.getElementById(this.elementsToTest);
-            this.synEvent.execute([["ensureVisible", domElement], ["click", domElement], ["pause", 1000],
-                    ["type", null, "[tab]"], ["pause", 1000], ["type", null, "[tab]"], ["pause", 1000]], {
+            var actions = [
+                ["ensureVisible", domElement],
+                ["click", domElement], ["pause", 1000]
+            ];
+            var nbTabs = this.nbTabs;
+            for (var i = 0 ; i < nbTabs ; i++) {
+                actions.push(["type", null, "[tab]"], ["pause", 1000]);
+            }
+            this.synEvent.execute(actions, {
                 fn : this._testValue,
                 scope : this
             });

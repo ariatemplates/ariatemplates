@@ -55,6 +55,11 @@ module.exports = Aria.classDefinition({
         this._iconsAttributes = null;
 
         /**
+         * Map of wai label for each icon name.
+         */
+        this._iconsWaiLabel = null;
+
+        /**
          * Flag for input that has to be displayed in full width
          * @type Boolean
          * @protected
@@ -126,6 +131,7 @@ module.exports = Aria.classDefinition({
                 scrollBarX : false,
                 scrollBarY : false,
                 iconsAttributes : this._iconsAttributes,
+                iconsWaiLabel : this._iconsWaiLabel,
                 hideIconNames : this._hideIconNames,
                 inlineBlock : true,
                 // used for table frame, defaults to false

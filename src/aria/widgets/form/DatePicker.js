@@ -109,6 +109,13 @@ module.exports = Aria.classDefinition({
         _frame_events : function (evt) {
             if (evt.iconName == "dropdown" && !this._cfg.disabled) {
                 var evtName = evt.name;
+                if (evtName == "iconKeyDown") {
+                    var keyCode = evt.event.keyCode;
+                    if (keyCode == 13 || keyCode == 32) {
+                        evtName = "iconClick";
+                    }
+                }
+
                 if (evtName == "iconMouseDown") {
                     evt.event.preventDefault(true);
                 } else if (evtName == "iconClick") {

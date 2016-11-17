@@ -114,7 +114,7 @@ module.exports = Aria.classDefinition({
                 down();
                 says('Edit 6/9/16');
                 down();
-                says('calendar one button', 'button menu collapsed');
+                says('calendar one button');
 
                 // -------------------------------------------------------------
                 // Opening calendar and selecting the next date

@@ -19,6 +19,9 @@ module.exports = Aria.classDefinition({
     $classpath : "test.aria.widgets.wai.input.label.SelectBoxJawsTestCase",
     $extends : require("./LabelJawsBase"),
     $prototype : {
-        elementsToTest : "sbWaiEnabledStart"
+        elementsToTest : "sbWaiEnabledStart",
+
+        // The SelectBox needs extra tabs now that the icon is focusable:
+        nbTabs: 4
     }
 });
