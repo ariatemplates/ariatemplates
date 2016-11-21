@@ -79,6 +79,8 @@ module.exports = Aria.classDefinition({
         var extraAttributes = [];
 
         if (cfg.waiAria) {
+            this._customTabIndexProvided = true;
+
             if (cfg.tabIndex == null) {
                 cfg.tabIndex = -1;
             }
@@ -94,7 +96,7 @@ module.exports = Aria.classDefinition({
         }
 
         extraAttributes = ariaUtilsArray.map(extraAttributes, function (attribute) {
-            return subst('%1="%2"', attribute[0], attribute[1]);
+            return subst('%1="%2"', attribute[0], ariaUtilsString.escapeForHTML(attribute[1]));
         });
         this._extraAttributes = ariaUtilsString.wrap(extraAttributes.join(' '), ' ');
     },
@@ -106,7 +108,7 @@ module.exports = Aria.classDefinition({
             this._frame.$dispose();
             this._frame = null;
         }
-
+        this._focusElt = null;
         this.$Container.$destructor.call(this);
     },
 
@@ -123,7 +125,15 @@ module.exports = Aria.classDefinition({
          * @private
          */
         _init : function () {
-            var frameDom = aria.utils.Dom.getDomElementChild(this.getDom(), 0);
+            var domElt = this.getDom();
+            var curIndex = 0;
+            if (this._cfg.waiAria) {
+                this._focusElt = aria.utils.Dom.getDomElementChild(domElt, curIndex);
+                curIndex++;
+            } else {
+                this._focusElt = domElt;
+            }
+            var frameDom = aria.utils.Dom.getDomElementChild(domElt, curIndex);
 
             if (frameDom) {
                 this._frame.linkToDom(frameDom);
@@ -225,30 +235,21 @@ module.exports = Aria.classDefinition({
 
             var attributeName = 'aria-labelledby';
 
-            var element = this.getDom();
+            var rootElt = this.getDom();
+            var focusElt = this._focusElt;
 
             if (!id) {
-                element.removeAttribute(attributeName);
+                rootElt.removeAttribute(attributeName);
+                focusElt.removeAttribute(attributeName);
             } else {
-                element.setAttribute(attributeName, id);
+                rootElt.setAttribute(attributeName, id);
+                focusElt.setAttribute(attributeName, id);
             }
         },
-
-
-
-        ////////////////////////////////////////////////////////////////////////
-        //
-        ////////////////////////////////////////////////////////////////////////
 
         _getSectionId : function () {
             return "__tabPanel_" + this._domId;
         },
-
-
-
-        ////////////////////////////////////////////////////////////////////////
-        //
-        ////////////////////////////////////////////////////////////////////////
 
         /**
          * Internal function to generate the internal widget markup
@@ -256,6 +257,16 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         _widgetMarkup : function (out) {
+            var waiAria = this._cfg.waiAria;
+            if (waiAria) {
+                var content = ['<span tabindex="', this._calculateTabIndex(), '" class="xTabPanelZone"'];
+                var labelId = this._getLabelId();
+                if (labelId) {
+                    content.push(' aria-labelledby="', ariaUtilsString.escapeForHTML(labelId), '"');
+                }
+                content.push('></span>');
+                out.write(content.join(""));
+            }
             this._frame.writeMarkupBegin(out);
             out.beginSection({
                 id : this._getSectionId(),
@@ -285,7 +296,16 @@ module.exports = Aria.classDefinition({
          */
         _setSkinObj : function (widgetName) {
             this._skinObj = aria.widgets.AriaSkinInterface.getSkinObject(widgetName, this._cfg.sclass);
-        }
+        },
 
+        /**
+         * Focus the Element
+         */
+        focus : function () {
+            if (!this._focusElt) {
+                this.getDom();
+            }
+            this._focusElt.focus();
+        }
     }
 });
