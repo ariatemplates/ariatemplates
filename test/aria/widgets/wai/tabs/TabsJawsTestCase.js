@@ -73,8 +73,7 @@ module.exports = Aria.classDefinition({
             // glitch: since the focus is immediately moved (see next comment), the state of the Tab can not be read
 
             // selecting a Tab means focusing the first element inside the TabPanel
-            'Edit',
-            'Type in text.',
+            'Tab 2',
 
             // simple traversal with a Tab selected ----------------------------
 
@@ -89,6 +88,7 @@ module.exports = Aria.classDefinition({
 
             // TabPanel: now the title of the controlling Tab is read
             'tab panel start Tab 2',
+            'Tab 2',
             'WaiAria activated: true',
             'Edit',
             'tab panel end'
@@ -168,7 +168,7 @@ module.exports = Aria.classDefinition({
                 }
 
                 function goThroughTabpanel() {
-                    ariaUtilsAlgo.times(5, down);
+                    ariaUtilsAlgo.times(7, down);
                 }
 
                 // -------------------------------------------------- processing

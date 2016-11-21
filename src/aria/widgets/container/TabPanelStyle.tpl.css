@@ -19,5 +19,17 @@
 }}
     {var skinnableClassName="TabPanel"/}
     {var useFrame=true/}
+
+    {macro main()}
+        .xTabPanelZone {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            right: 0px;
+            bottom: 0px;
+        }
+
+        {call $WidgetStyle.main()/}
+    {/macro}
     
 {/CSSTemplate}
