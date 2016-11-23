@@ -144,25 +144,19 @@ module.exports = Aria.classDefinition({
                 this.getDom();
                 if (!this._simpleHTML) {
                     this._frame.changeState(this._state);
-                    var ie8plus = ariaCoreBrowser.isOldIE && ariaCoreBrowser.majorVersion >= 8;
                     if (state == "disabled") {
                         this._focusElt.className = "xButton xButtonDisabled";
-                        if (ie8plus) {
-                            this._focusElt.onfocusin = function () {
-                                this.blur();
-                            };
-                        }
                     } else {
                         this._focusElt.className = "xButton";
-                        if (ie8plus) {
-                            this._focusElt.onfocusin = null;
-                        }
                     }
                 }
-                if (state == "disabled") {
-                    this._focusElt.setAttribute("disabled", "disabled");
-                } else {
-                    this._focusElt.removeAttribute("disabled");
+                var disabledAttribute = cfg.focusableWhenDisabled ? (cfg.waiAria ? "aria-disabled" : null) : "disabled";
+                if (disabledAttribute) {
+                    if (state == "disabled") {
+                        this._focusElt.setAttribute(disabledAttribute, "true");
+                    } else {
+                        this._focusElt.removeAttribute(disabledAttribute);
+                    }
                 }
             }
         },
@@ -214,7 +208,14 @@ module.exports = Aria.classDefinition({
             var buttonClass = cfg.disabled ? "xButton xButtonDisabled" : "xButton";
 
             var waiAriaAttributes = this._getWaiAriaMarkup();
-            var disableMarkup = cfg.disabled ? " disabled='disabled' " : "";
+            var disableMarkup = "";
+            if (cfg.disabled) {
+                if (!cfg.focusableWhenDisabled) {
+                    disableMarkup = " disabled ";
+                } else if (cfg.waiAria) {
+                    disableMarkup = " aria-disabled='true' ";
+                }
+            }
             if (this._simpleHTML) {
                 var styleMarkup = cfg.width != "-1" ? " style='width:" + cfg.width + "px;' " : "";
 
@@ -239,17 +240,11 @@ module.exports = Aria.classDefinition({
                     out.write(['<span class="' + buttonClass + '" style="margin: 0;"', waiAriaAttributes, tabIndexString, ariaTestMode,
                             '>'].join(''));
                 } else {
-                    // PTR 05613372: prevent 'clickability' of greyed out button. Adding "disabled" makes adjusting the
-                    // text color impossible in IE, thus onfocusin used (more suitable for this use case than onfocus)
-                    var onFocusInString = (ariaCoreBrowser.isOldIE && cfg.disabled)
-                            ? " onfocusin='this.blur()' "
-                            : "";
                     out.write([
                         '<button',
                         ' type="button"',
                         ' class="' + buttonClass + '"',
                         waiAriaAttributes,
-                        onFocusInString,
                         tabIndexString,
                         ariaTestMode,
                         disableMarkup,
