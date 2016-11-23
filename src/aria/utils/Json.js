@@ -287,9 +287,9 @@ var ariaUtilsObject = require("./Object");
         $singleton : true,
         $events : {
             "aria-parent-metadata-added" : {
-                description : "Notifies that an 'aria:parent' property has been added to one node of the datamodel.",
+                description : "Notifies that a new parent has been added in the 'aria:parent' property of a node of the datamodel.",
                 properties : {
-                    child : "Node to which the 'aria:parent' property has been added.",
+                    child : "Node to which the parent has been added in the 'aria:parent' property.",
                     parent : "Parent of the child node.",
                     property : "Property of the parent node referencing the child node."
                 }
