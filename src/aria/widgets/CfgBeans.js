@@ -1239,6 +1239,11 @@ module.exports = Aria.beanDefinitions({
                 "tabIndex" : {
                     $type : "WidgetCfg.tabIndex",
                     $default : 0
+                },
+                "focusableWhenDisabled" : {
+                    $type : "json:Boolean",
+                    $description : "Whether the button can be focused when it is disabled.",
+                    $default : false
                 }
             }
         },

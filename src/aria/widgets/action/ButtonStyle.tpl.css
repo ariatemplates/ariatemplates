@@ -49,6 +49,10 @@
             cursor:default;
         }
 
+        .xButtonDisabled:focus {
+            outline: 1px dotted black;
+        }
+
         {call startLooping()/}
     {/macro}
 
