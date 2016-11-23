@@ -100,25 +100,6 @@ var ariaUtilsObject = require("./Object");
     };
 
     /**
-     * Add a back-reference link from child to parent (knowing parent[property] = child). Recursively add
-     * back-references in child if not already done.
-     * @param {Object} child Child. (this method does nothing if the child is not a container)
-     * @param {Object} parent
-     * @param {String} property
-     * @private
-     */
-    var __addLinkToParent = function (child, parent, property) {
-        if (__isValidContainer(child)) {
-            __checkBackRefs(child);
-            // add a reference to the parent in the new property
-            child[parProp].push({
-                parent : parent,
-                property : property
-            });
-        }
-    };
-
-    /**
      * Returns whether back references recursive methods will go down through links with that name.
      * @param {String} propertyName Property name.
      * @return {Boolean}
@@ -153,34 +134,6 @@ var ariaUtilsObject = require("./Object");
         for (var childName in container) {
             if (container.hasOwnProperty(childName) && __includePropForBackRef(childName)) {
                 __removeLinkToParent(container[childName], container, childName);
-            }
-        }
-    };
-
-    /**
-     * This method checks that back references up to container are present in the data model. If not, they are added
-     * recursively.
-     * @param {Object} container Must already be checked as a container according to __isValidContainer.
-     * @private
-     */
-    var __checkBackRefs = function (container) {
-        if (container[parProp]) {
-            // back references already present, nothing to do
-            return;
-        }
-        // back references are not present yet
-        container[parProp] = [];
-        for (var childName in container) {
-            if (container.hasOwnProperty(childName) && __includePropForBackRef(childName)) {
-                var childValue = container[childName];
-                if (__isValidContainer(childValue)) {
-                    __checkBackRefs(childValue);
-                    // Add the container reference and property name to the child 'aria:parent' array
-                    childValue[parProp].push({
-                        parent : container,
-                        property : childName
-                    });
-                }
             }
         }
     };
@@ -332,6 +285,16 @@ var ariaUtilsObject = require("./Object");
     module.exports = Aria.classDefinition({
         $classpath : "aria.utils.Json",
         $singleton : true,
+        $events : {
+            "aria-parent-metadata-added" : {
+                description : "Notifies that a new parent has been added in the 'aria:parent' property of a node of the datamodel.",
+                properties : {
+                    child : "Node to which the parent has been added in the 'aria:parent' property.",
+                    parent : "Parent of the child node.",
+                    property : "Property of the parent node referencing the child node."
+                }
+            }
+        },
         $constructor : function () {
             jsonUtils = this;
             arrayUtils = ariaUtilsArray;
@@ -416,6 +379,65 @@ var ariaUtilsObject = require("./Object");
         },
         $prototype : {
             /**
+             * Add a back-reference link from child to parent (knowing parent[property] = child). Recursively add
+             * back-references in child if not already done.
+             * @param {Object} child Child. (this method does nothing if the child is not a container)
+             * @param {Object} parent
+             * @param {String} property
+             * @private
+             */
+            __addLinkToParent: function (child, parent, property) {
+                if (__isValidContainer(child)) {
+                    this.__checkBackRefs(child);
+                    // add a reference to the parent in the new property
+                    child[parProp].push({
+                        parent : parent,
+                        property : property
+                    });
+                    this.$raiseEvent({
+                        name : 'aria-parent-metadata-added',
+                        child: child,
+                        parent: parent,
+                        property: property
+                    });
+                }
+            },
+
+            /**
+             * This method checks that back references up to container are present in the data model. If not, they are added
+             * recursively.
+             * @param {Object} container Must already be checked as a container according to __isValidContainer.
+             * @private
+             */
+            __checkBackRefs: function (container) {
+                if (container[parProp]) {
+                    // back references already present, nothing to do
+                    return;
+                }
+                // back references are not present yet
+                container[parProp] = [];
+                for (var childName in container) {
+                    if (container.hasOwnProperty(childName) && __includePropForBackRef(childName)) {
+                        var childValue = container[childName];
+                        if (__isValidContainer(childValue)) {
+                            this.__checkBackRefs(childValue);
+                            // Add the container reference and property name to the child 'aria:parent' array
+                            childValue[parProp].push({
+                                parent : container,
+                                property : childName
+                            });
+                            this.$raiseEvent({
+                                name : 'aria-parent-metadata-added',
+                                child: childValue,
+                                parent: container,
+                                property: childName
+                            });
+                        }
+                    }
+                }
+            },
+
+            /**
              * Converts an object to a JSON string
              * @param {Object|Array|String|Number|Boolean|Date|RegExp|Function} item item to serialize
              * @param {Object} options options for the serialize method of the serializer - optional
@@ -498,7 +520,7 @@ var ariaUtilsObject = require("./Object");
                     if (howManyAdded > 0) {
                         // add the parent info to the added items:
                         for (var i = index + howManyAdded - 1; i >= index; i--) {
-                            __addLinkToParent(container[i], container, i);
+                            this.__addLinkToParent(container[i], container, i);
                         }
                     }
                     if (howManyAdded != howManyRemoved) {
@@ -630,7 +652,7 @@ var ariaUtilsObject = require("./Object");
 
                         // if the new child is a container, add the reference back to container in the child after
                         // checking the child has back-references in its sub-tree
-                        __addLinkToParent(val, container, property);
+                        this.__addLinkToParent(val, container, property);
                     }
 
                     __notifyListeners(container, property, {
@@ -700,7 +722,7 @@ var ariaUtilsObject = require("./Object");
                     listeners.push(callback);
                 }
                 if (recursive) {
-                    __checkBackRefs(container);
+                    this.__checkBackRefs(container);
                 }
             },
 
