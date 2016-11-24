@@ -87,10 +87,10 @@ var generalBrowserExcludes = {
         "test/aria/pageEngine/utils/HistoryManagerTestCase.js",
         "test/aria/utils/css/AnimationsTestCase.js"
     ],
-    "Firefox 49": [
+    "Firefox": [
         "test/aria/utils/events/scroll/OnscrollRobotTestCase.js",
 
-        // The following tests fail on Firefox 49 because the default action for SHIFT-F10 can no longer be prevented:
+        // The following tests fail on Firefox >= 49 because the default action for SHIFT-F10 can no longer be prevented:
         "test/aria/widgets/wai/dropdown/AutoCompleteDropdownTogglingRobotTestCase.js",
         "test/aria/widgets/wai/dropdown/DatePickerDropdownTogglingRobotTestCase.js",
         "test/aria/widgets/wai/dropdown/MultiAutoCompleteDropdownTogglingRobotTestCase.js",
@@ -105,7 +105,7 @@ var generalBrowserExcludes = {
         "test/aria/templates/keyboardNavigation/dialog/escape/DialogEscapeSelectRobotTestCase.js",
         "test/aria/widgets/form/multiselect/escapeKey/MultiSelectRobotTestCase.js"
     ],
-    "Chrome 53": [
+    "Chrome": [
         "test/aria/utils/mouse/MouseDragKoRobotTestCase.js"
     ],
     "Safari": [],
