@@ -6,7 +6,7 @@ cache:
   directories:
     - node_modules
 addons:
-  firefox: "48.0"
+  firefox: "50.0"
 before_install:
 # Settings needed for graphic output in Firefox
   - export DISPLAY=:99.0
