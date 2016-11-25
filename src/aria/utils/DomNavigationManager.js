@@ -21,6 +21,8 @@
 
 var Aria = require('../Aria');
 
+var ariaCoreJsObject = require('../core/JsObject');
+
 var ariaUtilsType = require('./Type');
 var ariaUtilsArray = require('./Array');
 var ariaUtilsObject = require('./Object');
@@ -32,6 +34,8 @@ var ariaUtilsDom = require('./Dom');
 var ariaTemplatesNavigationManager = require('../templates/NavigationManager');
 
 var document = Aria.$window.document;
+
+var DOM_NAVIGATION_MANAGER_CLASSPATH = 'aria.utils.DomNavigationManager';
 
 
 
@@ -227,6 +231,7 @@ function traverseSiblingsUntilRootOfBranch(element, callback, predicate) {
     var currentElement = element;
     var results = [];
 
+    /* eslint-disable no-loop-func */
     while (predicate(currentElement)) {
         var siblings = getSiblings(currentElement).siblings;
         results.push(ariaUtilsArray.map(siblings, function(sibling) {
@@ -235,6 +240,7 @@ function traverseSiblingsUntilRootOfBranch(element, callback, predicate) {
 
         currentElement = currentElement.parentElement;
     }
+    /* eslint-enable no-loop-func */
 
     // ------------------------------------------------------------------ return
 
@@ -371,11 +377,11 @@ exports.createInterceptorElement = createInterceptorElement;
  * A navigation interception manager.
  *
  * <p>
- *   This manages a set of elements to be inserted relatively to a reference element. It can ensure those elements are created and properly inserted, and when so, it can check if an element corresponds to one of its interceptors. The manager has an origin, and the direction is inferred from the interceptor.
+ *   This manages a set of elements to be inserted relatively to a reference element. It can ensure those elements are created and properly inserted, and when so, it can check if an element corresponds to one of its focus traps. The manager has an origin, and the direction is inferred from the interceptor.
  * </p>
  *
  * <p>
- *   Interceptors are defined with these properties:
+ *   Focus traps are defined with these properties:
  *   <ul>
  *     <li>direction: the name of the direction of the tab navigation when intercepted by this manager. Usually "backward" or "forward", but you can choose any convention.</li>
  *     <li>insert: a callback to insert the element. It will be passed the following arguments: the element to insert, the reference element.</li>
@@ -387,46 +393,101 @@ exports.createInterceptorElement = createInterceptorElement;
  * <ul>
  *   <li>origin: the name of the origin of the tab navigation when intercepted by this manager (can be the reference element, but any other depending on the use cases)</li>
  *   <li>getReferenceElement: a callback to get the reference element</li>
- *   <li>interceptors: a list of interceptors (see detailed description)</li>
- *   <li>onfocus: callback called when focusing interceptors</li>
+ *   <li>focusTraps: a list of focus traps (see detailed description)</li>
+ *   <li>onfocus: callback called when focusing focus traps</li>
+ *   <li>oncatch: callback called when a focus trap's element has been focused and navigation information retrieved</li>
  * </ul>
  */
 var NavigationInterceptor = createConstructor(function(spec) {
+    // -------------------------------------------------------------- properties
+
     this.origin = spec.origin;
     this.getReferenceElement = spec.getReferenceElement;
-    this.interceptors = spec.interceptors;
+
+    this.focusTraps = spec.focusTraps;
+    /* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1735) */
+    var focusTraps = spec.focusTraps;
+    if (focusTraps == null) {
+        focusTraps = spec.interceptors;
+    }
+    this.focusTraps = focusTraps;
+    this.interceptors = focusTraps;
+    /* BACKWARD-COMPATIBILITY-END (GitHub #1735) */
+
     this.onfocus = spec.onfocus;
+    this.oncatch = spec.oncatch;
+
+    // ----------------------------------------------------- internal attributes
+
+    this._oncatch = null;
 });
 exports.NavigationInterceptor = NavigationInterceptor;
 var prototype = NavigationInterceptor.prototype;
 
+prototype.$callback = ariaCoreJsObject.prototype.$callback;
+prototype.$logError = ariaCoreJsObject.prototype.$logError;
+prototype.CALLBACK_ERROR = ariaCoreJsObject.prototype.CALLBACK_ERROR;
+prototype.$classpath = DOM_NAVIGATION_MANAGER_CLASSPATH;
+
+prototype._getOnCatch = function() {
+    if (this._oncatch == null && this.oncatch != null) {
+        this._oncatch = {
+            scope: this,
+            fn: function (event) {
+                var target = event.target;
+                if (target == null) {
+                    target = event.srcElement;
+                }
+
+                var navigationInformation = this.getNavigationInformation(target);
+                if (navigationInformation != null) {
+                    this.$callback(this.oncatch, {
+                        navigationInformation: navigationInformation,
+                        interceptor: this,
+                        target: target,
+                        event: event
+                    });
+                }
+            }
+        };
+    }
+
+    return this._oncatch;
+};
+
 /**
- * Ensures interceptor element are actually created, and inserted at the right position in the rendered DOM.
+ * Ensures focus traps' elements are actually created, and inserted at the right position in the rendered DOM.
  *
  * <p>
- *   Created elements are put under property "element" inside the interceptor spec object. This is how their existence is checked.
+ *   Created elements are put under property "element" inside the focus trap's spec object. This is how their existence is checked.
  * </p>
  */
 prototype.ensureElements = function () {
     // ----------------------------------------------------------- destructuring
 
     var getReferenceElement = this.getReferenceElement;
-    var interceptors = this.interceptors;
+    var focusTraps = this.focusTraps;
     var onfocus = this.onfocus;
+    var oncatch = this._getOnCatch();
 
     // -------------------------------------------------------------- processing
 
     var referenceElement = getReferenceElement();
 
-    ariaUtilsArray.forEach(interceptors, function (interceptor) {
-        var insert = interceptor.insert;
-        var element = interceptor.element;
+    ariaUtilsArray.forEach(focusTraps, function (focusTrap) {
+        var insert = focusTrap.insert;
+        var element = focusTrap.element;
 
         if (element == null) {
             element = createInterceptorElement();
-            interceptor.element = element;
+            focusTrap.element = element;
+
             if (onfocus != null) {
                 ariaUtilsEvent.addListener(element, 'focus', onfocus);
+            }
+
+            if (oncatch != null) {
+                ariaUtilsEvent.addListener(element, 'focus', oncatch);
             }
         }
 
@@ -435,28 +496,32 @@ prototype.ensureElements = function () {
 };
 
 /**
- * Removes and forgets about the interceptor elements, if ever they had been created.
+ * Removes and forgets about the focus traps' elements, if ever they had been created.
  *
  * <p>
- *   This sets to "null" the "element" property inside the interceptor spec object.
+ *   This sets to "null" the "element" property inside the focus trap's spec object.
  * </p>
  */
 prototype.destroyElements = function () {
     // ----------------------------------------------------------- destructuring
 
     var onfocus = this.onfocus;
+    var oncatch = this._getOnCatch();
 
     // -------------------------------------------------------------- processing
 
-    ariaUtilsArray.forEach(this.interceptors, function (interceptor) {
-        var element = interceptor.element;
+    ariaUtilsArray.forEach(this.focusTraps, function (focusTrap) {
+        var element = focusTrap.element;
 
         if (element != null) {
             if (onfocus != null) {
                 ariaUtilsEvent.removeListener(element, 'focus', onfocus);
             }
+            if (oncatch != null) {
+                ariaUtilsEvent.removeListener(element, 'focus', oncatch);
+            }
             ariaUtilsDom.removeElement(element);
-            interceptor.element = null;
+            focusTrap.element = null;
         }
     }, this);
 };
@@ -465,23 +530,23 @@ prototype.destroyElements = function () {
  * Returns information about the navigation that can be inferred from the knowledge of the focused element.
  *
  * <p>
- *   It will compare the given element with the interceptor objects to infer a "direction" of navigation (the one specified in the interceptor spec).
+ *   It will compare the given element with the focus traps' elements to infer a "direction" of navigation (the one specified in the focus trap's spec).
  * </p>
  * <p>
  *   It will add the "origin" piece of information, as specified when instantiating the class.
  * </p>
  * <p>
- *   If the element doesn't match any interceptor, no information will be returned.
+ *   If the element doesn't match any focus trap, no information will be returned.
  * </p>
  *
- * @param {HTMLElement} focusedElement The element that has focus (or any other if you want), with which interceptors will be compared
+ * @param {HTMLElement} focusedElement The element that has focus (or any other if you want), with which focus traps will be compared
  *
  * @return {Object} Information navigation in the form of {origin, direction} or "null".
  */
 prototype.getNavigationInformation = function(focusedElement) {
     // ----------------------------------------------------------- destructuring
 
-    var interceptors = this.interceptors;
+    var focusTraps = this.focusTraps;
     var origin = this.origin;
 
     // -------------------------------------------------------------- processing
@@ -490,11 +555,11 @@ prototype.getNavigationInformation = function(focusedElement) {
 
     var direction = null;
 
-    for (var index = 0, length = interceptors.length; index < length; index++) {
-        var interceptor = interceptors[index];
+    for (var index = 0, length = focusTraps.length; index < length; index++) {
+        var focusTrap = focusTraps[index];
 
-        if (focusedElement === interceptor.element) {
-            direction = interceptor.direction;
+        if (focusedElement === focusTrap.element) {
+            direction = focusTrap.direction;
             break;
         }
     }
@@ -522,10 +587,36 @@ prototype.getNavigationInformation = function(focusedElement) {
 /**
  * A composite interceptor, implementing the NavigationInterceptor interface and delegating to multiple interceptors underneath.
  *
+ * <p><em>commonSpec</em> is an object which accepts the following properties: </p>
+ * </ul>
+ *   <li><em>onfocus</em>: when the value is not void, will set <em>onfocus</em> on each interceptor with the given value</li>
+ * </ul>
+ *
  * @param {Array} interceptors The collection of actual navigation interceptor instances
+ * @param {Object} commonSpec Optional object with properties that can be applied to each given interceptor. See description for more information.
  */
-var CompositeInterceptor = createConstructor(function(interceptors) {
+var CompositeInterceptor = createConstructor(function(interceptors, commonSpec) {
+    // -------------------------------------------------------------- properties
+
     this.interceptors = interceptors;
+
+    // -------------------------------------------------------------- processing
+
+    if (commonSpec == null) {
+        commonSpec = {};
+    }
+
+    ariaUtilsArray.forEach([
+        'onfocus',
+        'oncatch'
+    ], function (property) {
+        var value = commonSpec[property];
+        if (value != null) {
+            ariaUtilsArray.forEach(interceptors, function(interceptor) {
+                interceptor[property] = value;
+            });
+        }
+    });
 });
 var prototype = CompositeInterceptor.prototype;
 
@@ -575,21 +666,21 @@ prototype.ensureElements = function () {
 
 
 ////////////////////////////////////////////////////////////////////////////////
-//
+// Specific navigation interceptors
 ////////////////////////////////////////////////////////////////////////////////
 
 /**
  * Creates a NavigationInterceptor for a Popup.
  *
  * <p>
- *   Interceptor elements will be inserted right before and right after the Popup element, corresponding respectively to a navigation direction "backward" or "forward".
+ *   Focus traps' elements will be inserted right before and right after the Popup element, corresponding respectively to a navigation direction "backward" or "forward".
  * </p>
  *
- * @param {Function} getReferenceElement A callback to get the Popup element
+ * @param {Object|Function} spec Part of the input spec for NavigationInterceptor, excluding "origin" and "focusTraps" which are set specifically by this current constructor. If no object is passed, the function "getReferenceElement" can be passed directly.
  *
  * @return {NavigationInterceptor} an instance of NavigationInterceptor
  */
-function DialogNavigationInterceptor(spec) {
+function ModalNavigationInterceptor(spec) {
     // ---------------------------------------------- input arguments processing
 
     if (!ariaUtilsType.isObject(spec)) {
@@ -601,7 +692,7 @@ function DialogNavigationInterceptor(spec) {
     var finalSpec = ariaUtilsObject.assign({}, spec, {
         origin: 'popup',
 
-        interceptors: [
+        focusTraps: [
             // before
             {
                 direction: 'backward',
@@ -619,14 +710,62 @@ function DialogNavigationInterceptor(spec) {
 
     return NavigationInterceptor(finalSpec);
 }
-exports.DialogNavigationInterceptor = DialogNavigationInterceptor;
+exports.ModalNavigationInterceptor = ModalNavigationInterceptor;
+/* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1735) */
+exports.DialogNavigationInterceptor = ModalNavigationInterceptor;
+/* BACKWARD-COMPATIBILITY-END (GitHub #1735) */
+
+/**
+ * Creates a NavigationInterceptor for an element to be skipped.
+ *
+ * <p>
+ *   Focus traps' elements will be inserted right before and right after the element, corresponding respectively to a navigation direction "forward" or "backward".
+ * </p>
+ *
+ * @param {Object|Function} spec Part of the input spec for NavigationInterceptor, excluding "origin" and "focusTraps" which are set specifically by this current constructor. If no object is passed, the function "getReferenceElement" can be passed directly.
+ *
+ * @return {NavigationInterceptor} an instance of NavigationInterceptor
+ */
+function SkippedElementNavigationInterceptor(spec) {
+    // ---------------------------------------------- input arguments processing
+
+    if (!ariaUtilsType.isObject(spec)) {
+        spec = {getReferenceElement: spec};
+    }
+
+    // -------------------------------------------------------------- processing
+
+    var finalSpec = ariaUtilsObject.assign({}, spec, {
+        origin: 'outside',
+
+        focusTraps: [
+            // before
+            {
+                direction: 'forward',
+                insert: insertBefore
+            },
+            // after
+            {
+                direction: 'backward',
+                insert: insertAfter
+            }
+        ]
+    });
+
+    // ------------------------------------------------------------------ return
+
+    return NavigationInterceptor(finalSpec);
+}
+exports.SkippedElementNavigationInterceptor = SkippedElementNavigationInterceptor;
 
 /**
  * Creates a NavigationInterceptor for the browser/viewport.
  *
  * <p>
- *   Interceptor elements will be inserted at the very beginning and at the very end of the viewport ("document.body"), corresponding respectively to a navigation direction "forward" or "backward".
+ *   Focus traps' elements will be inserted at the very beginning and at the very end of the viewport ("document.body"), corresponding respectively to a navigation direction "forward" or "backward".
  * </p>
+ *
+ * @param {Object} spec Part of the input spec for NavigationInterceptor, excluding "origin", "focusTraps" and "getReferenceElement".
  *
  * @return {NavigationInterceptor} an instance of NavigationInterceptor
  */
@@ -646,7 +785,7 @@ function ViewportNavigationInterceptor(spec) {
             return document.body;
         },
 
-        interceptors: [
+        focusTraps: [
             // first
             {
                 direction: 'forward',
@@ -666,70 +805,101 @@ function ViewportNavigationInterceptor(spec) {
 }
 exports.ViewportNavigationInterceptor = ViewportNavigationInterceptor;
 
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Navigation handlers
+////////////////////////////////////////////////////////////////////////////////
+
 /**
- * Creates a NavigationInterceptor for a Popup.
+ * Handles navigation for a modal element.
  *
  * <p>
- *   Interceptor elements will be inserted right before and right after the Popup element, corresponding respectively to a navigation direction "backward" or "forward".
+ *   Behavior is to fully contain the navigation inside the modal element, both:
  * </p>
+ * <ul>
+ *   <li>preventing from going out of the page</li>
+ *   <li>going directly into the modal element when coming from outside of the page</li>
+ * </ul>
  *
- * @param {HtmlElement} element The reference HTML element
- * @param {Boolean} loop True if the tab key must loop through the list, false if the navigation must stop at the edges.
+ * @param {HtmlElement} element The reference DOM element
+ * @param {Boolean} loop When true, it will make the focus cycle inside the given element. Otherwise, it will block at the edges. Defaults to false.
  *
  * @return {NavigationInterceptor} an instance of NavigationInterceptor
  */
-function ElementNavigationInterceptor(element, loop) {
+function ModalNavigationHandler(element, loop) {
+    // ---------------------------------------------- input arguments processing
+
+    if (loop == null) {
+        loop = false;
+    }
+    loop = !!loop;
+
     // -------------------------------------------------------------- processing
 
     // -------------------------------------------------------------------------
 
-    var onfocus = {
-        fn: function(event) {
-            // --------------------------------------------------- destructuring
+    var oncatch = function(arg) {
+        var navigationInformation = arg.navigationInformation;
+        var direction = navigationInformation.direction;
+        var origin = navigationInformation.origin;
 
-            var target = event.target;
-            if (target == null) {
-                target = event.srcElement;
-            }
-
-            // ------------------------------------------------------ processing
-
-            var navigationInformation = compositeInterceptor.getNavigationInformation(target);
-
-            if (navigationInformation != null) {
-                var direction = navigationInformation.direction;
-                var origin = navigationInformation.origin;
-
-                var reverse = (direction === 'forward' && origin === 'popup') || (direction === 'backward' && origin === 'browser');
-                if (loop) {
-                    reverse = !reverse;
-                }
-                ariaTemplatesNavigationManager.focusFirst(element, reverse);
-            }
+        var reverse = (direction === 'forward' && origin === 'popup') || (direction === 'backward' && origin === 'browser');
+        if (loop) {
+            reverse = !reverse;
         }
+        ariaTemplatesNavigationManager.focusFirst(element, reverse);
     };
 
     // -------------------------------------------------------------------------
 
-    var elementInterceptor = DialogNavigationInterceptor({
-        onfocus: onfocus,
+    var elementInterceptor = ModalNavigationInterceptor({
         getReferenceElement: function() {return element;}
     });
 
-    var viewportInterceptor = ViewportNavigationInterceptor({
-        onfocus: onfocus
-    });
-
-    var compositeInterceptor = CompositeInterceptor([
-        elementInterceptor,
-        viewportInterceptor
-    ]);
+    var viewportInterceptor = ViewportNavigationInterceptor();
 
     // ------------------------------------------------------------------ return
 
-    return compositeInterceptor;
+    return CompositeInterceptor([
+        elementInterceptor,
+        viewportInterceptor
+    ], {
+        oncatch: oncatch
+    });
 }
-exports.ElementNavigationInterceptor = ElementNavigationInterceptor;
+exports.ModalNavigationHandler = ModalNavigationHandler;
+/* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1735) */
+exports.ElementNavigationInterceptor = ModalNavigationHandler;
+/* BACKWARD-COMPATIBILITY-END (GitHub #1735) */
+
+/**
+ * Handles navigation for a skipped element.
+ *
+ * <p>
+ *   Behavior is to skip navigation through the element.
+ * </p>
+ *
+ * @param {HtmlElement} element The reference DOM element
+ *
+ * @return {NavigationInterceptor} an instance of NavigationInterceptor
+ */
+function SkippedElementNavigationHandler(element) {
+    return SkippedElementNavigationInterceptor({
+        getReferenceElement: function() {return element;},
+        oncatch: function (arg) {
+            var interceptor = arg.interceptor;
+            var navigationInformation = arg.navigationInformation;
+            var direction = navigationInformation.direction;
+
+            var reverse = direction === 'backward';
+            var element = interceptor.focusTraps[reverse ? 0 : 1].element;
+
+            ariaTemplatesNavigationManager.focusNext(element, reverse);
+        }
+    });
+}
+exports.SkippedElementNavigationHandler = SkippedElementNavigationHandler;
 
 
 

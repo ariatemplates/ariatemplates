@@ -20,49 +20,93 @@
 }}
 
 {macro main()}
+	////////////////////////////////////////////////////////////////////////////
+	//
+	////////////////////////////////////////////////////////////////////////////
+
 	{@aria:Button {
-		id: this.data.elements.toggleDivOverlay.id,
-		label: this.data.elements.toggleDivOverlay.content,
+		id: this.data.elements.toggleOverlay.id,
+		label: this.data.elements.toggleOverlay.content,
 		onclick: {
-			fn: this.setOverlayOnDiv,
-			scope: this
-		}
-	}/}
-	{@aria:Button {
-		id: this.data.elements.toggleSectionOverlay.id,
-		label: this.data.elements.toggleSectionOverlay.content,
-		onclick: {
-			fn: this.setOverlayOnSection,
+			fn: this.toggleOverlay,
 			scope: this
 		}
 	}/}
 
 
-	<div class='user_focus' tabindex='0' id='${this.data.elements.before.id}'>${this.data.elements.before.content}</div>
 
-	<div class='container' {id this.data.elements.div.id /}>${this.data.elements.div.content}</div>
+	////////////////////////////////////////////////////////////////////////////
+	//
+	////////////////////////////////////////////////////////////////////////////
 
-	{section {
-		waiAria: true,
-		id: this.data.elements.section.id,
-		macro: 'section',
-		bindProcessingTo: {
-			inside: this.data.elements.section,
-			to: 'overlaySet'
-		},
-		processingLabel: this.data.elements.section.message,
-		waiAriaProcessingLabelReadInterval: this.data.readInterval,
-		waiAriaProcessingLabelReadOnceFirst: this.data.readOnceFirst,
-		attributes: {
-			classList: [
-				'container'
-			]
-		}
-	}/}
+	{call displayFocusableElement('before') /}
+
+	{call displayContainerElement('previous') /}
+	{call displayLoadingElement() /}
+	{call displayContainerElement('next') /}
+
+	{call displayFocusableElement('after') /}
+
 {/macro}
 
-{macro section()}
-	${this.data.elements.section.content}
+{macro displayLoadingElement()}
+	{if !this.data.section}
+		{call _displayLoadingElement() /}
+	{else /}
+		{section {
+			waiAria: true,
+			macro: {
+				name: '_displayLoadingElement',
+				args: [true]
+			},
+			attributes: {classList: ['container']},
+
+			id: this.data.elements.loading.id,
+			bindProcessingTo: {
+				inside: this.data.elements.loading,
+				to: 'overlaySet'
+			},
+			processingLabel: this.data.elements.loading.message,
+
+			waiAriaProcessingLabelReadInterval: this.data.readInterval,
+			waiAriaProcessingLabelReadOnceFirst: this.data.readOnceFirst
+		}/}
+	{/if}
+{/macro}
+
+{macro _displayLoadingElement(noClass)}
+	{call displayContainerElement('loading', noClass) /}
+{/macro}
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+//
+////////////////////////////////////////////////////////////////////////////////
+
+{macro displayFocusableElement(elementKey)}
+	<div
+		class='user_focus'
+		tabindex='0'
+		id='${this.data.elements[elementKey].id}'
+	>
+		${this.data.elements[elementKey].content}
+	</div>
+{/macro}
+
+{macro displayContainerElement(elementKey, noClass)}
+	<div
+		{if !noClass}
+			class='container'
+		{/if}
+		{if this.data.elements[elementKey].id != null}
+			{id this.data.elements[elementKey].id /}
+		{/if}
+	>
+		<div tabindex='0'>
+			${this.data.elements[elementKey].content}
+		</div>
+	</div>
 {/macro}
 
 {/Template}

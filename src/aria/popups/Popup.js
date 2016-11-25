@@ -27,7 +27,7 @@ var ariaCoreTimer = require("../core/Timer");
 var ariaCoreJsonValidator = require("../core/JsonValidator");
 var ViewportPopupContainer = require("./container/Viewport");
 var environment = require("../core/environment/Environment");
-var DialogNavigationInterceptor = require('../utils/DomNavigationManager').DialogNavigationInterceptor;
+var ModalNavigationInterceptor = require('../utils/DomNavigationManager').ModalNavigationInterceptor;
 
 /**
  * Popup instance
@@ -190,7 +190,7 @@ module.exports = Aria.classDefinition({
         this._document = Aria.$window.document;
 
         var self = this;
-        this._dialogNavigationInterceptor = DialogNavigationInterceptor(function() {
+        this._modalNavigationInterceptor = ModalNavigationInterceptor(function() {
             return self.domElement;
         });
 
@@ -800,12 +800,12 @@ module.exports = Aria.classDefinition({
             }
 
             if (modalMaskDomElement && waiAria && popupContainer.getContainerRef() === ariaUtilsDom.VIEWPORT) {
-                this._dialogNavigationInterceptor.ensureElements();
+                this._modalNavigationInterceptor.ensureElements();
             }
         },
 
         getNavigationInformation : function(focusedElement) {
-            return this._dialogNavigationInterceptor.getNavigationInformation(focusedElement);
+            return this._modalNavigationInterceptor.getNavigationInformation(focusedElement);
         },
 
         /**
@@ -862,7 +862,7 @@ module.exports = Aria.classDefinition({
                 if (!event.cancelClose) {
                     this._hide();
 
-                    this._dialogNavigationInterceptor.destroyElements();
+                    this._modalNavigationInterceptor.destroyElements();
 
                     this.isOpen = false;
                     // Notify the popup manager this popup was closed

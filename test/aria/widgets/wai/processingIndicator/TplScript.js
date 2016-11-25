@@ -15,7 +15,6 @@
 
 var Aria = require('ariatemplates/Aria');
 
-var ariaUtilsArray = require('ariatemplates/utils/Array');
 var ariaUtilsString = require('ariatemplates/utils/String');
 var subst = ariaUtilsString.substitute;
 
@@ -36,75 +35,112 @@ module.exports = Aria.tplScriptDefinition({
 
             // -----------------------------------------------------------------
 
+            var loadingElementName = this.data.section ? 'section' : 'div';
+
             data.elements = {
+                // -------------------------------------------------------------
+
                 before: {
                     id: 'element_before',
                     content: 'focus me'
                 },
-                div: {
-                    content: 'Div',
-                    id: 'div',
-                    message: 'Loading div',
-                    overlaySet: false
+
+                after: {
+                    id: 'element_after',
+                    content: 'focus me'
                 },
-                section: {
-                    content: 'Section',
-                    id: 'section',
-                    message: 'Loading section',
+
+                // -------------------------------------------------------------
+
+                previous: {
+                    id: 'previous_element',
+                    content: 'previous element'
+                },
+
+                loading: {
+                    id: 'loading_element',
+                    content: subst('loading %1', loadingElementName),
+                    message: subst('loading %1 message', loadingElementName),
                     overlaySet: false
                 },
 
-                toggleDivOverlay: {
-                    content: 'Toggle Div overlay',
-                    id: 'toggle_div_overlay'
+                next: {
+                    id: 'next_element',
+                    content: 'next element'
                 },
 
-                toggleSectionOverlay: {
-                    content: 'Toggle Section overlay',
-                    id: 'toggle_section_overlay'
+                // -------------------------------------------------------------
+
+                toggleOverlay: {
+                    id: 'toggle_overlay',
+                    content: 'toggle overlay'
                 }
             };
 
             // -----------------------------------------------------------------
 
-            // Timing is important in this test, so let's calculate.
-            // By default, each user step in the test scenario introduces a delay after. This delay time is set by the property "stepsDefaultDelay" below.
-            // By looking at the scenario, we can see four steps (involving some content to be read by the screen reader) between the moment we activate the processing indicator and the one we are simply waiting for its message to be read periodically.
-            // To make things more predictive, we don't want the processing indicator's message to be read once first, that is when we are doing the additional steps mentioned above (where other things should be read). Hence the property below "readOnceFirst" set to "false".
-            // Now, we would like to hear the message twice. Let's compute:
-            // - there are four steps, with a delay of "stepsDefaultDelay", so 4 * stepsDefaultDelay, before we simply wait
-            // Then the read interval is "readInterval" and we want to hear it twice, so we need to have a total delay of readInterval * 2 + some spare time
-            // Therefore the remaining, additional delay should be of "readInterval * 2 + some spare time - 4 * stepsDefaultDelay"
-            // With current values below, it makes (assuming some spare time to be 500): 2500 * 2 + 500 - 4 * 500 = 3500
-
             data.readInterval = 2500;
             data.readOnceFirst = false;
 
             data.stepsDefaultDelay = 500;
-            data.listeningTime = 3500;
+            data.listeningTime = 4000;
         },
 
-        setOverlayOnDiv: function () {
+
+
+        ////////////////////////////////////////////////////////////////////////
+        // Actions
+        ////////////////////////////////////////////////////////////////////////
+
+        toggleOverlay: function () {
+            if (this.data.section) {
+                this.toggleOverlayOnSection();
+            } else {
+                this.toggleOverlayOnDiv();
+            }
+        },
+
+        toggleOverlayOnDiv: function () {
+            // --------------------------------------------------- destructuring
+
             var data = this.data;
-            var div = data.elements.div;
 
-            var value = !div.overlaySet;
-            div.overlaySet = value;
+            // options ---------------------------------------------------------
 
-            var element = this.$getElementById(div.id);
-            element.setProcessingIndicator(value, {
-                message: div.message,
+            var readInterval = data.readInterval;
+            var readOnceFirst = data.readOnceFirst;
+
+            // element ---------------------------------------------------------
+
+            var element = data.elements.loading;
+            var id = element.id;
+            var message = element.message;
+            var overlaySet = element.overlaySet;
+
+            // ------------------------------------------------------ processing
+
+            var value = !overlaySet;
+            element.overlaySet = value;
+
+            var domElement = this.$getElementById(id);
+            domElement.setProcessingIndicator(value, {
+                message: message,
                 waiAria: true,
-                waiAriaReadInterval: data.readInterval,
-                waiAriaReadOnceFirst: data.readOnceFirst
+                waiAriaReadInterval: readInterval,
+                waiAriaReadOnceFirst: readOnceFirst
             });
         },
 
-        setOverlayOnSection: function () {
-            var section = this.data.elements.section;
+        toggleOverlayOnSection: function () {
+            // --------------------------------------------------- destructuring
 
-            var value = !section.overlaySet;
-            this.$json.setValue(section, 'overlaySet', value);
+            var element = this.data.elements.loading;
+            var overlaySet = element.overlaySet;
+
+            // ------------------------------------------------------ processing
+
+            var value = !overlaySet;
+            this.$json.setValue(element, 'overlaySet', value);
         }
     }
 });

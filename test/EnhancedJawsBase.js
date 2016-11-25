@@ -18,9 +18,10 @@ var Aria = require('ariatemplates/Aria');
 var EnhancedRobotTestCase = require('test/EnhancedRobotBase');
 var ariaJsunitJawsTestCase = require('ariatemplates/jsunit/JawsTestCase');
 
-var ariaUtilsFunction = require('ariatemplates/utils/Function');
+var ariaUtilsType = require('ariatemplates/utils/Type');
 var ariaUtilsArray = require('ariatemplates/utils/Array');
 var ariaUtilsObject = require('ariatemplates/utils/Object');
+var ariaUtilsFunction = require('ariatemplates/utils/Function');
 
 
 
@@ -117,13 +118,10 @@ module.exports = Aria.classDefinition({
 // API for test scenario
 ////////////////////////////////////////////////////////////////////////////////
 
-function autoBindAndAlias(container, name) {
-    var aliases = Array.prototype.slice.call(arguments, 2);
+function autoBindAndAlias(container, spec) {
+    var method = ariaUtilsFunction.bind(container[spec.name], container);
 
-    var method = container[name];
-    method = ariaUtilsFunction.bind(method, container);
-
-    ariaUtilsArray.forEach(aliases, function(alias) {
+    ariaUtilsArray.forEach(spec.aliases, function(alias) {
         container[alias] = method;
     });
 
@@ -140,14 +138,14 @@ function ScenarioAPI() {
     // -------------------------------------------------------------------------
 
     ariaUtilsArray.forEach([
-        ['addStep', 'step'],
-        ['addToHistory', 'entry', 'says'],
-        ['addDelay', 'delay'],
-        ['pressKey', 'key'],
-        ['pressSpecialKey', 'specialKey'],
-        ['clickLeft', 'leftClick', 'click']
-    ], function (args) {
-        autoBindAndAlias.apply(null, [this].concat(args));
+        {name: 'addStep', aliases: ['step']},
+        {name: 'addToHistory', aliases: ['entry', 'says']},
+        {name: 'addDelay', aliases: ['delay']},
+        {name: 'pressKey', aliases: ['key']},
+        {name: 'pressSpecialKey', aliases: ['specialKey']},
+        {name: 'clickLeft', aliases: ['leftClick', 'click']}
+    ], function (spec) {
+        autoBindAndAlias(this, spec);
     }, this);
 
     // -------------------------------------------------------------------------
@@ -157,13 +155,13 @@ function ScenarioAPI() {
         'up',
         'right',
         'left',
-        ['tab', 'tabulation'],
-        'escape',
+        {key: 'tab', aliases: ['tabulation']},
+        {key: 'escape', aliases: ['esc']},
         'enter',
         'space',
-        'backspace'
-    ], function (args) {
-        this.createAndStoreSpecialKeyFunction.apply(this, ariaUtilsArray.ensureWrap(args));
+        {key: 'backspace', aliases: ['back']}
+    ], function (spec) {
+        this.createAndStoreSpecialKeyFunction(spec);
     }, this);
 }
 
@@ -200,6 +198,10 @@ ScenarioAPI.prototype.clickLeft = function (element) {
     return this.addStep(['click', element]);
 };
 
+ScenarioAPI.prototype.shiftTab = function (element) {
+    return this.pressKey('[<shift>][tab][>shift<]');
+};
+
 ScenarioAPI.prototype.pressKey = function (key) {
     return this.addStep(['type', null, key]);
 };
@@ -209,17 +211,43 @@ ScenarioAPI.prototype.pressSpecialKey = function (key) {
 };
 
 ScenarioAPI.prototype.createSpecialKeyFunction = function (key) {
-    return ariaUtilsFunction.bind(this.pressSpecialKey, this, key);
+    var self = this;
+    return function () {
+        self.specialKey(key);
+    };
 };
 
-ScenarioAPI.prototype.createAndStoreSpecialKeyFunction = function (key) {
-    var aliases = Array.prototype.slice.call(arguments, 1);
+ScenarioAPI.prototype.createAndStoreSpecialKeyFunction = function (spec) {
+    // ---------------------------------------------- input arguments processing
+
+    if (!ariaUtilsType.isObject(spec)) {
+        spec = {key: spec};
+    }
+
+    var key = spec.key;
+    key = '' + key;
+
+    var name = spec.name;
+    if (name == null) {
+        name = key;
+    }
+    name = '' + name;
+
+    var aliases = spec.aliases;
+    if (aliases == null) {
+        aliases = [];
+    }
+
+    // -------------------------------------------------------------- processing
 
     var method = this.createSpecialKeyFunction(key);
-    var names = [key].concat(aliases);
+
+    var names = [name].concat(aliases);
     ariaUtilsArray.forEach(names, function(name) {
         this[name] = method;
     }, this);
+
+    // ------------------------------------------------------------------ return
 
     return method;
 };
