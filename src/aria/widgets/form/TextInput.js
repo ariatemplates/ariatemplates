@@ -23,6 +23,7 @@ var ariaUtilsType = require("../../utils/Type");
 var ariaUtilsArray = require("../../utils/Array");
 var ariaCoreBrowser = require("../../core/Browser");
 var ariaCoreTimer = require("../../core/Timer");
+var ariaTemplatesDomEventWrapper = require("../../templates/DomEventWrapper");
 
 /**
  * Specialize the input classes for Text input and manage the HTML input element
@@ -924,9 +925,16 @@ module.exports = Aria.classDefinition({
          * input widget if the autoselect property has been set to true.
          * @protected
          */
-        _dom_onclick : function () {
+        _dom_onclick : function (domEvent) {
             if (!!this._cfg.onclick) {
-                this.evalCallback(this._cfg.onclick);
+                var domEvtWrapper;
+                if (domEvent) {
+                    domEvtWrapper = new ariaTemplatesDomEventWrapper(domEvent);
+                }
+                this.evalCallback(this._cfg.onclick, domEvtWrapper);
+                if (domEvtWrapper) {
+                    domEvtWrapper.$dispose();
+                }
             }
         },
 
