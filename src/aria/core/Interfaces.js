@@ -40,6 +40,28 @@
         return key;
     };
 
+    var __weakMap = Aria.$global.WeakMap || (function () {
+        // mini weak map implementation for our needs
+        var WeakMap = function () {
+            this._key = "__iid" + __getNextCpt();
+        };
+        var defFn = function () {};
+        WeakMap.prototype = {
+            'get': function (obj) {
+                return (obj[this._key] || defFn)();
+            },
+            'set': function (obj, value) {
+                obj[this._key] = function () {
+                    return value;
+                };
+            },
+            'delete': function (obj) {
+                delete obj[this._key];
+            }
+        };
+        return WeakMap;
+    })();
+
     /**
      * Map of accepted types for interface members.
      * @type Object
@@ -284,7 +306,6 @@
                     proto.$interfaces = {};
                 }
                 proto.$classpath = classpath; // classpath of the interface
-                var keyProperty = "__iid" + __getNextCpt();
                 // Look into the members of the interface, and divide them into functions or properties
                 var itf = def.$interface;
                 var methods = []; // builds the string containing the methods of the interface
@@ -308,7 +329,7 @@
                                 if (asyncParam == null) {
                                     asyncParam = "null";
                                 }
-                                methods.push("p.", member, "=function(){\nreturn i[this.", keyProperty, "].$call('", classpath, "','", member, "',arguments,", asyncParam, ");\n}\n");
+                                methods.push("p.", member, "=function(){\nreturn i.get(this).$call('", classpath, "','", member, "',arguments,", asyncParam, ");\n}\n");
                             } else if (memberValue.$type == "Interface") {
                                 initProperties.push("this.", member, "=obj.", member, "?obj.", member, ".$interface('", memberValue.$classpath, "'):null;\n");
                                 deleteProperties.push("this.", member, "=null;\n");
@@ -329,31 +350,31 @@
                 if (superInterface) {
                     parentEvents = __mergeEvents(proto.$events, superInterface.prototype.$events, classpath);
                 } else {
-                    methods.push("p.$interface=function(a){\nreturn aria.core.Interfaces.getInterface(i[this.", keyProperty, "],a,this);\n};\n");
+                    methods.push("p.$interface=function(a){\nreturn aria.core.Interfaces.getInterface(i.get(this),a,this);\n};\n");
                 }
                 if (__mergeEvents(proto.$events, def.$events, classpath) && !parentEvents) {
                     // The parent interface has no event but this interface has events!
                     // We have to add special wrappers for event handling
-                    methods.push("p.$addListeners=function(a){\nreturn i[this.", keyProperty, "].$addListeners(a,this);\n};\n");
-                    methods.push("p.$onOnce=function(a){\nreturn i[this.", keyProperty, "].$onOnce(a,this);\n};\n");
-                    methods.push("p.$removeListeners=function(a){\nreturn i[this.", keyProperty, "].$removeListeners(a,this);\n};\n");
-                    methods.push("p.$unregisterListeners=function(a){\nreturn i[this.", keyProperty, "].$unregisterListeners(a,this);\n};\n");
+                    methods.push("p.$addListeners=function(a){\nreturn i.get(this).$addListeners(a,this);\n};\n");
+                    methods.push("p.$onOnce=function(a){\nreturn i.get(this).$onOnce(a,this);\n};\n");
+                    methods.push("p.$removeListeners=function(a){\nreturn i.get(this).$removeListeners(a,this);\n};\n");
+                    methods.push("p.$unregisterListeners=function(a){\nreturn i.get(this).$unregisterListeners(a,this);\n};\n");
                     methods.push("p.$on=p.$addListeners;\n");
                 }
-                methods.push("p.$destructor=function(){\n", deleteProperties.join(''), "i[this.", keyProperty, "]=null;\ndelete i[this.", keyProperty, "];\nthis.", keyProperty, "=null;\n", superInterface
+                methods.push("p.$destructor=function(){\n", deleteProperties.join(''), "i['delete'](this);\n", superInterface
                         ? "e.prototype.$destructor.call(this);\n" /* call super interface at the end of the destructor */
                         : "", "};\n");
                 var out = [];
                 var evalContext = {
-                    g : __generateKey,
+                    i : new __weakMap(),
                     p : proto, // prototype
                     c : null, // constructor (will be set by the evaluated code)
                     e : superInterface
                 };
                 Aria.nspace(classpath, true);
-                out.push("var i={};\nvar evalContext=arguments[2];\nvar g=evalContext.g;\nvar p=evalContext.p;\nvar e=evalContext.e;\nevalContext.c=function(obj){\n", (superInterface
+                out.push("var evalContext=arguments[2];\nvar i=evalContext.i;\nvar p=evalContext.p;\nvar e=evalContext.e;\nevalContext.c=function(obj){\n", (superInterface
                         ? 'e.call(this,obj);\n'
-                        : ''), 'var k=g(i);\ni[k]=obj;\nthis.', keyProperty, '=k;\n', initProperties.join(''), '};\n', methods.join(''), 'Aria.$global.', classpath, '=evalContext.c;\n', 'p=null;\nevalContext=null;\n');
+                        : ''), 'i.set(this,obj);\n', initProperties.join(''), '};\n', methods.join(''), 'Aria.$global.', classpath, '=evalContext.c;\n', 'p=null;\nevalContext=null;\n');
                 out = out.join('');
                 // alert(out);
                 Aria["eval"](out, classpath.replace(/\./g, "/") + "-wrapper.js", evalContext);
