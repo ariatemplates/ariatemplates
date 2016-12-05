@@ -16,14 +16,15 @@
 var path = require('path');
 var configuration = require('./easypackage/configuration');
 
-var getModulePath = function (name) {
-    return path.join(__dirname, '../node_modules', name);
+var getModulePath = function (pkgName, pathInPkg) {
+    var pkgJsonPath = require.resolve(pkgName + "/package.json");
+    return path.join(path.dirname(pkgJsonPath), pathInPkg || ".");
 };
 
 module.exports = function (grunt) {
-    grunt.loadTasks(getModulePath('atpackager/tasks'));
-    require(getModulePath('atpackager')).loadPlugin(getModulePath('noder-js/atpackager'));
-    require(getModulePath('atpackager')).loadPlugin(getModulePath('at-noder-converter/atpackager'));
+    grunt.loadTasks(getModulePath('atpackager', 'tasks'));
+    require(getModulePath('atpackager')).loadPlugin(getModulePath('noder-js', 'atpackager'));
+    require(getModulePath('atpackager')).loadPlugin(getModulePath('at-noder-converter', 'atpackager'));
 
     grunt.registerMultiTask('easypackage', 'Packaging for Aria Templates application', function () {
 
