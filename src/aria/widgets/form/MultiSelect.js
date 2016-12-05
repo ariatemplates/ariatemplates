@@ -302,7 +302,7 @@ module.exports = Aria.classDefinition({
         _afterDropdownOpen : function () {
 
             var waiAria = this._cfg.waiAria;
-            this.navigationInterceptor = DomNavigationManager.ElementNavigationInterceptor(this._dropdownPopup.domElement, !waiAria);
+            this.navigationInterceptor = DomNavigationManager.ModalNavigationHandler(this._dropdownPopup.domElement, !waiAria);
             this.navigationInterceptor.ensureElements();
 
             this._setPopupOpenProperty(true);

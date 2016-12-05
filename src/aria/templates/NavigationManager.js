@@ -177,13 +177,13 @@ module.exports = Aria.classDefinition({
             this._hasModalBehaviour = value;
         },
         /**
-         * Focus the next element in the dom after / before current element
-         * @protected
-         * @param {HTMLElement} target
-         * @param {Boolean} reverse look backward. default is false
-         * @return {Boolean} true if something get focused
+         * Focus the next element in the dom after / before current element.
+         *
+         * @param {HTMLElement} target The reference element from which to reach the element to focus.
+         * @param {Boolean} reverse Go backward. Default is false.
+         * @return {Boolean} true if something got focused, false otherwise.
          */
-        _focusNext : function (target, reverse) {
+        focusNext : function (target, reverse) {
             var body = Aria.$window.document.body;
             var next;
             // find next node to inspect : either a sibling, or a parent sibling, ...
@@ -207,6 +207,13 @@ module.exports = Aria.classDefinition({
             } else {
                 return true;
             }
+        },
+
+        /**
+         * Backward compatibility. Delegates to focusNext.
+         */
+        _focusNext: function () {
+            return this.focusNext.apply(this, arguments);
         },
 
         /**

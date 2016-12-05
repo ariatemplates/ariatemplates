@@ -115,6 +115,11 @@ module.exports = Aria.classDefinition({
             this._showElementBack = null;
         }
 
+        if (this._navigationInterceptor != null) {
+            this._navigationInterceptor.destroyElements();
+            this._navigationInterceptor = null;
+        }
+
         this.$Overlay.$destructor.call(this);
     },
     $prototype : {
@@ -136,6 +141,8 @@ module.exports = Aria.classDefinition({
 
             if (waiAria) {
                 this._showElementBack = ariaUtilsDomNavigationManager.hidingManager.hide(element);
+                this._navigationInterceptor = ariaUtilsDomNavigationManager.SkippedElementNavigationHandler(element);
+                this._navigationInterceptor.ensureElements();
             }
 
             if (text) {
