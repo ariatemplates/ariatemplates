@@ -15,15 +15,16 @@
 
 var path = require('path');
 
-var getModulePath = function (name) {
-    return path.join(__dirname, '../node_modules', name);
+var getModulePath = function (pkgName, pathInPkg) {
+    var pkgJsonPath = require.resolve(pkgName + "/package.json");
+    return path.join(path.dirname(pkgJsonPath), pathInPkg || ".");
 };
 
 module.exports = function (grunt) {
     var packagingSettings = require('../build/grunt-config/config-packaging')(grunt);
 
-    grunt.loadTasks(getModulePath('atpackager/tasks'));
-    require(getModulePath('atpackager')).loadPlugin(getModulePath('noder-js/atpackager'));
+    grunt.loadTasks(getModulePath('atpackager', 'tasks'));
+    require(getModulePath('atpackager')).loadPlugin(getModulePath('noder-js', 'atpackager'));
     grunt.registerMultiTask('atbuild', 'Aria Templates framework build', function () {
 
         var options = this.options({
