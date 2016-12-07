@@ -75,7 +75,8 @@
         "setTimeout" : false,
         "setInterval" : false,
         "clearTimeout" : false,
-        "clearInterval" : false
+        "clearInterval" : false,
+        "JSON" : false
     },
     "maxerr" : 150,
 

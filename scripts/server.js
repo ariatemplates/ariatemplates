@@ -19,18 +19,17 @@ var app = express();
 var pkg = require('../package.json');
 var middleware = require("./middleware");
 
-app.use(express.compress());
-// Render views with Jade
+// Render views with pug
 app.set('views', __dirname + '/assets/views');
-app.set('view engine', 'jade');
+app.set('view engine', 'pug');
 
 // Base path goes to the list of tools
 app.get("/", function (req, res) {
-    res.sendfile(__dirname + "/index.html");
+    res.sendFile(__dirname + "/index.html");
 });
 // Configure the options for Aria Tester
 app.get("/test/options", function (req, res) {
-    res.sendfile(path.normalize(__dirname + "/../test/options.html"));
+    res.sendFile(path.normalize(__dirname + "/../test/options.html"));
 });
 // Aria Tester - minified
 app.get("/test", function (req, res) {
@@ -54,7 +53,7 @@ app.get("/test/dev", function (req, res) {
 });
 // Playground area
 app.get("/playground/options", function (req, res) {
-    res.sendfile(path.normalize(__dirname + "/assets/playground.html"));
+    res.sendFile(path.normalize(__dirname + "/assets/playground.html"));
 });
 app.get("/playground", function (req, res) {
     res.render('playground', {
@@ -80,7 +79,7 @@ app.get("/playground/dev", function (req, res) {
 });
 // Rename bootstrap prefixing with ariatemplates- this fixes runIsolated in dev mode
 app.get("/aria-templates/dev/aria/ariatemplates-bootstrap.js", function (req, res) {
-    res.sendfile(path.normalize(__dirname + "/../src/aria/bootstrap.js"));
+    res.sendFile(path.normalize(__dirname + "/../src/aria/bootstrap.js"));
 });
 // Static CSS files for views and tools
 app.use("/css", express.static(__dirname + "/assets/css"));
@@ -91,7 +90,7 @@ app.use("/aria-templates", express.static(__dirname + "/../build/target/producti
 // Test classpath redirects to test folder
 app.all(/^\/aria-templates\/test\/(.*)$/, function (req, res, next) {
     var file = path.normalize(__dirname + "/../test/" + req.params[0]);
-    res.sendfile(file);
+    res.sendFile(file);
 });
 
 middleware.forEach(function (fn) {

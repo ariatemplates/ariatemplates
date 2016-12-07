@@ -30,22 +30,22 @@
     "ci": "npm run lint-test && npm run test-suites"
   },
   "dependencies": {
-    "at-noder-converter": "1.0.1",
-    "atpackager": "0.2.7",
+    "at-noder-converter": "1.1.1",
+    "atpackager": "0.2.9",
     "gzip-js": "0.3.2",
     "noder-js": "1.6.2"
   },
   "devDependencies": {
-    "at-diff": "0.0.7",
+    "at-diff": "0.0.9",
     "attester": "2.6.0",
-    "express": "3.4.8",
-    "grunt": "0.4.2",
-    "grunt-contrib-jshint": "0.8.0",
-    "grunt-leading-indent": "0.1.0",
+    "express": "4.14.0",
+    "grunt": "1.0.1",
+    "grunt-contrib-jshint": "1.1.0",
+    "grunt-leading-indent": "0.2.0",
     "grunt-verifylowercase": "0.2.0",
-    "jade": "1.1.5",
-    "mocha": "2.3.3",
+    "pug": "2.0.0-beta6",
+    "mocha": "3.2.0",
     "robot-server": "0.0.4",
-    "ua-parser-js": "0.7.10"
+    "ua-parser-js": "0.7.12"
   }
 }
