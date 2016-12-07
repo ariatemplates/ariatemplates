@@ -25,11 +25,11 @@ var testProjectPath = getPath("../nodeTestResources/testProject/");
 var srcPath = getPath("../../src/");
 
 var testBuild = function (index, callback) {
-    var gruntBuild = fork(getPath("../../build/grunt-cli.js"), ["--gruntfile", testProjectPath + "gruntfiles/Gruntfile" + index + ".js"]);
+    var gruntBuild = fork(getPath("../../build/grunt-cli.js"), ["--color", "--gruntfile", testProjectPath + "gruntfiles/Gruntfile" + index + ".js"]);
 
     gruntBuild.on("exit", function (exitCode) {
         assert.strictEqual(exitCode, 0, "The packaging failed");
-        var attesterProcess = fork(getPath("../../node_modules/attester/bin/attester.js"), [testProjectPath + "attester/attester" + index + ".yml", "--phantomjs-instances", "1"]);
+        var attesterProcess = fork(getPath("../../node_modules/attester/bin/attester.js"), ["--colors", testProjectPath + "attester/attester" + index + ".yml", "--phantomjs-instances", "1"]);
 
         attesterProcess.on("exit", function (exitCode) {
             assert.strictEqual(exitCode, 0, "The test campaign on the packaged code failed");
@@ -70,7 +70,7 @@ var verifyImgFiles = function (outputFolder) {
 describe("easypackage grunt task", function () {
     this.timeout(120000);
     it("should re-package Aria Templates correcly", function (callback) {
-        var gruntBuild = fork(getPath("../../build/grunt-cli.js"), ["--gruntfile", testProjectPath + "gruntfiles/Gruntfile.js"]);
+        var gruntBuild = fork(getPath("../../build/grunt-cli.js"), ["--color", "--gruntfile", testProjectPath + "gruntfiles/Gruntfile.js"]);
 
         gruntBuild.on("exit", function (exitCode) {
             assert.strictEqual(exitCode, 0, "The re-packaging of the framework failed");
