@@ -291,7 +291,6 @@ module.exports = Aria.classDefinition({
          * @private
          */
         this._dispose = function () {
-            this.setProcessingIndicator(false);
             domElt = null;
             tplCtxt = null;
             this.getChild = null;

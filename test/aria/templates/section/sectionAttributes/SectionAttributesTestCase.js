@@ -69,10 +69,11 @@ Aria.classDefinition({
             this.assertEquals(dom.getData("foo1"), "Foo 1", "The expando attribute 'foo1' should be set to 'Foo 1'");
             this.assertEquals(dom.getData("foo2"), "Foo 2", "The expando attribute 'foo2' should be set to 'Foo 2'");
 
-            this.testEnd();
+            this.endTest();
         },
 
-        testEnd : function () {
+        endTest : function () {
+            this.dom.$dispose();
             this.notifyTemplateTestEnd();
         }
     }

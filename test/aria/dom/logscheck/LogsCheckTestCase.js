@@ -35,6 +35,7 @@ Aria.classDefinition({
             // this shall not fail on IE
             var hiddenTarget = this.templateCtxt.$getElementById('target');
             hiddenTarget.focus();
+            hiddenTarget.$dispose();
 
             this.templateCtxt.$refresh();
             this.assertErrorInLogs(aria.templates.TemplateCtxt.BEFORE_REFRESH_EXCEPTION, "Missing error in log: BEFORE_REFRESH_EXCEPTION");

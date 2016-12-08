@@ -127,6 +127,8 @@ Aria.classDefinition({
             // Remove it for the last time
             span.setProcessingIndicator(false);
 
+            span.$dispose();
+
             // Check for leaks
             var overlays = this.helper.totalOverlays();
             this.assertTrue(overlays === 0, "Overlays not disposed: " + overlays);
@@ -158,6 +160,8 @@ Aria.classDefinition({
 
             // Remove it for the last time
             div.setProcessingIndicator(false);
+
+            div.$dispose();
 
             // Check for leaks
             var overlays = this.helper.totalOverlays();
@@ -250,6 +254,8 @@ Aria.classDefinition({
             // Remove it for the last time
             section.setProcessingIndicator(false);
 
+            section.$dispose();
+
             // Check for leaks
             var overlays = this.helper.totalOverlays();
             this.assertTrue(overlays === 0, "Overlays not disposed: " + overlays);
@@ -298,6 +304,7 @@ Aria.classDefinition({
             section.setProcessingIndicator(false);
             this.assertFalse(data.processing);
 
+            section.$dispose();
             // Check for leaks
             var overlays = this.helper.totalOverlays();
             this.assertTrue(overlays === 0, "Overlays not disposed: " + overlays);
@@ -309,19 +316,25 @@ Aria.classDefinition({
             });
         },
 
+        setProcessingIndicator : function (id, value) {
+            var wrapper = this.templateCtxt.$getElementById(id);
+            wrapper.setProcessingIndicator(value);
+            wrapper.$dispose();
+        },
+
         _Twice : function () {
-            // Set and unset the process indicator twice on the same wrapper
-            this.templateCtxt.$getElementById("s1").setProcessingIndicator(false);
-            this.templateCtxt.$getElementById("s1").setProcessingIndicator(false);
+            // Set and unset the process indicator twice on the same element
+            this.setProcessingIndicator("s1", false);
+            this.setProcessingIndicator("s1", false);
 
-            this.templateCtxt.$getElementById("d1").setProcessingIndicator(false);
-            this.templateCtxt.$getElementById("d1").setProcessingIndicator(false);
+            this.setProcessingIndicator("d1", false);
+            this.setProcessingIndicator("d1", false);
 
-            this.templateCtxt.$getElementById("s1").setProcessingIndicator(true);
-            this.templateCtxt.$getElementById("s1").setProcessingIndicator(true);
+            this.setProcessingIndicator("s1", true);
+            this.setProcessingIndicator("s1", true);
 
-            this.templateCtxt.$getElementById("d1").setProcessingIndicator(true);
-            this.templateCtxt.$getElementById("d1").setProcessingIndicator(true);
+            this.setProcessingIndicator("d1", true);
+            this.setProcessingIndicator("d1", true);
 
             // There should be only two loading indicators
             this.assertTrue(this.helper.countInDom() === 2);

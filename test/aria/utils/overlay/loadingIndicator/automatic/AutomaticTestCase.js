@@ -57,6 +57,12 @@ Aria.classDefinition({
             this._Body();
         },
 
+        setProcessingIndicator : function (id, value) {
+            var wrapper = this.templateCtxt.$getElementById(id);
+            wrapper.setProcessingIndicator(value);
+            wrapper.$dispose();
+        },
+
         __getSubTemplateContext : function () {
             // Go backward because I think that the template widget is at the end
             for (var i = this.templateCtxt._mainSection._content.length; i--;) {
@@ -74,6 +80,12 @@ Aria.classDefinition({
             if (context) {
                 return context.$getElementById(name);
             }
+        },
+
+        setSubTemplateProcessingIndicator : function (id, value) {
+            var wrapper = this.__getSubTemplateSectionWrapper(id);
+            wrapper.setProcessingIndicator(value);
+            wrapper.$dispose();
         },
 
         _Body : function () {
@@ -138,13 +150,12 @@ Aria.classDefinition({
             document.body.insertBefore(div, document.body.firstChild);
 
             // Put a loading indicator on all the elements except the body
-            this.templateCtxt.$getElementById("s1").setProcessingIndicator(true);
-            this.templateCtxt.$getElementById("s2").setProcessingIndicator(true);
-            this.templateCtxt.$getElementById("d1").setProcessingIndicator(true);
-            this.templateCtxt.$getElementById("d2").setProcessingIndicator(true);
+            this.setProcessingIndicator("s1", true);
+            this.setProcessingIndicator("s2", true);
+            this.setProcessingIndicator("d1", true);
+            this.setProcessingIndicator("d2", true);
             aria.utils.DomOverlay.create(div);
-            var subsection = this.__getSubTemplateSectionWrapper("subSection");
-            subsection.setProcessingIndicator(true);
+            this.setSubTemplateProcessingIndicator("subSection", true);
 
             // Check that now it's in the DOM
             this.assertTrue(this.helper.countInDom() === 6);
@@ -165,13 +176,12 @@ Aria.classDefinition({
             this.assertTrue(overlays === 1, "Overlays not disposed: " + overlays);
 
             // Put again loading a indicator on all the elements including the body
-            this.templateCtxt.$getElementById("s1").setProcessingIndicator(true);
-            this.templateCtxt.$getElementById("s2").setProcessingIndicator(true);
-            this.templateCtxt.$getElementById("d1").setProcessingIndicator(true);
-            this.templateCtxt.$getElementById("d2").setProcessingIndicator(true);
+            this.setProcessingIndicator("s1", true);
+            this.setProcessingIndicator("s2", true);
+            this.setProcessingIndicator("d1", true);
+            this.setProcessingIndicator("d2", true);
             aria.utils.DomOverlay.create(div);
-            subsection = this.__getSubTemplateSectionWrapper("subSection");
-            subsection.setProcessingIndicator(true);
+            this.setSubTemplateProcessingIndicator("subSection", true);
             aria.utils.DomOverlay.create(document.body);
 
             // Check that now it's in the DOM
@@ -205,10 +215,9 @@ Aria.classDefinition({
             this.assertTrue(overlays === 4, "Overlays not disposed: " + overlays);
 
             // Destroy all of them
-            this.templateCtxt.$getElementById("s1").setProcessingIndicator(false);
-            this.templateCtxt.$getElementById("s2").setProcessingIndicator(false);
-            subsection = this.__getSubTemplateSectionWrapper("subSection");
-            subsection.setProcessingIndicator(false);
+            this.setProcessingIndicator("s1", false);
+            this.setProcessingIndicator("s2", false);
+            this.setSubTemplateProcessingIndicator("subSection", false);
             aria.utils.DomOverlay.detachFrom(div);
 
             // Check for leaks
@@ -228,16 +237,15 @@ Aria.classDefinition({
 
         _SectionBind : function () {
             // Put a loading indicator on all the sections (s1 and s2 are bound to the same value)
-            this.templateCtxt.$getElementById("s1").setProcessingIndicator(true);
+            this.setProcessingIndicator("s1", true);
 
             // There should be two indicator already
             this.assertTrue(this.helper.countInDom() === 2);
 
             // This one should do nothing, the indicator is already there
-            this.templateCtxt.$getElementById("s2").setProcessingIndicator(true);
+            this.setProcessingIndicator("s2", true);
 
-            var subsection = this.__getSubTemplateSectionWrapper("subSection");
-            subsection.setProcessingIndicator(true);
+            this.setSubTemplateProcessingIndicator("subSection", true);
 
             // Check that now it's in the DOM
             this.assertTrue(this.helper.countInDom() === 3);
@@ -263,11 +271,10 @@ Aria.classDefinition({
             this.assertTrue(overlays === 3, "Overlays not disposed: " + overlays);
 
             // Close them
-            subsection = this.__getSubTemplateSectionWrapper("subSection");
-            subsection.setProcessingIndicator(false);
+            this.setSubTemplateProcessingIndicator("subSection", false);
 
             // This should close also the indicator on s1
-            this.templateCtxt.$getElementById("s2").setProcessingIndicator(false);
+            this.setProcessingIndicator("s2", false);
 
             // Check that there are no overlays
             this.assertFalse(this.helper.isInDom());
@@ -277,13 +284,12 @@ Aria.classDefinition({
             this.assertTrue(overlays === 0, "Overlays not disposed: " + overlays);
 
             // Close also s1 that shouldn't give errors
-            this.templateCtxt.$getElementById("s1").setProcessingIndicator(false);
+            this.setProcessingIndicator("s1", false);
 
             // Put again loading a indicator on all the sections
-            this.templateCtxt.$getElementById("s1").setProcessingIndicator(true);
-            this.templateCtxt.$getElementById("s2").setProcessingIndicator(true);
-            subsection = this.__getSubTemplateSectionWrapper("subSection");
-            subsection.setProcessingIndicator(true);
+            this.setProcessingIndicator("s1", true);
+            this.setProcessingIndicator("s2", true);
+            this.setSubTemplateProcessingIndicator("subSection", true);
 
             // Check that now it's in the DOM
             this.assertTrue(this.helper.countInDom() === 3);
@@ -303,11 +309,10 @@ Aria.classDefinition({
             this.assertTrue(this.helper.countInDom() === 3);
 
             // Destroy them
-            subsection = this.__getSubTemplateSectionWrapper("subSection");
-            subsection.setProcessingIndicator(false);
+            this.setSubTemplateProcessingIndicator("subSection", false);
 
             // This should close also the indicator on s2
-            this.templateCtxt.$getElementById("s1").setProcessingIndicator(false);
+            this.setProcessingIndicator("s1", false);
 
             // Check that there are no overlays
             this.assertFalse(this.helper.isInDom());
@@ -326,7 +331,7 @@ Aria.classDefinition({
 
         _Nasty : function () {
             // Try a combination of nasty bindings
-            this.templateCtxt.$getElementById("s1").setProcessingIndicator(true);
+            this.setProcessingIndicator("s1", true);
 
             // Four sections are bound
             this.assertTrue(this.helper.countInDom() === 4);
@@ -345,7 +350,7 @@ Aria.classDefinition({
             this.assertTrue(overlays === 4, "Overlays not disposed: " + overlays);
 
             // Close one that was not opened directly
-            this.templateCtxt.$getElementById("s4").setProcessingIndicator(false);
+            this.setProcessingIndicator("s4", false);
 
             // The four sections should be disposed
             this.assertFalse(this.helper.isInDom());

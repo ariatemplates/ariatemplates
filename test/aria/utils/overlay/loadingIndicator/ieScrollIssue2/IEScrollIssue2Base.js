@@ -38,7 +38,9 @@ Aria.classDefinition({
 
         runTemplateTest : function () {
             this.refreshPositionCalled = 0;
-            this.templateCtxt.$getElementById("mySpan").setProcessingIndicator(true, "Loading...");
+            var wrapper = this.templateCtxt.$getElementById("mySpan");
+            wrapper.setProcessingIndicator(true, "Loading...");
+            wrapper.$dispose();
             this.assertSameGeometry(this.getElementById("mySpan"), this.getUniqueOverlay());
             this.getElementById("container").scrollTop = 50;
             this.waitFor({
@@ -91,7 +93,9 @@ Aria.classDefinition({
             this.assertEquals(this.refreshPositionCalled, 0);
             var container = this.getElementById("container");
             this.assertEquals(container.scrollTop, 75);
-            this.templateCtxt.$getElementById("mySpan").setProcessingIndicator(true, "Loading...");
+            var wrapper = this.templateCtxt.$getElementById("mySpan");
+            wrapper.setProcessingIndicator(true, "Loading...");
+            wrapper.$dispose();
             this.assertSameGeometry(this.getElementById("mySpan"), this.getUniqueOverlay());
             container.scrollTop = 25;
             this.waitFor({

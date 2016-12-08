@@ -132,7 +132,9 @@ Aria.classDefinition({
             this.assertTrue(this.templateCtxt.data.macroParam === "newParam", "mySectionWithMacro2: the parameter for macroForSection was wrong");
 
             // check that the cssClass statement was correctly set on the section wrapper
-            var sClass = this.templateCtxt.$getElementById("mySectionWithMacro1").classList.getClassName();
+            var mySectionWithMacro1 = this.templateCtxt.$getElementById("mySectionWithMacro1");
+            var sClass = mySectionWithMacro1.classList.getClassName();
+            mySectionWithMacro1.$dispose();
             this.assertTrue(sClass === "mySectionClass");
 
             // clean

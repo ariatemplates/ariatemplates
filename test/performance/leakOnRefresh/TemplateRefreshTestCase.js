@@ -31,10 +31,8 @@ Aria.classDefinition({
 
         doRefresh : function (iteration) {
             var wrapper = this.templateCtxt.$getElementById("container");
+            wrapper.$dispose();
             this.templateCtxt.$refresh();
-
-            // after a refresh the variables containing DOM references should be empty
-            this.assertEquals(this.templateCtxt.__wrappers.length, 0);
 
             if (iteration > 0) {
                 aria.core.Timer.addCallback({
