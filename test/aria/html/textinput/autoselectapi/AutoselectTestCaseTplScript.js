@@ -19,6 +19,7 @@ Aria.tplScriptDefinition({
         focus : function () {
             var textinput = this.$getElementById("textinput");
             textinput.focus();
+            textinput.$dispose();
         }
     }
 });

@@ -41,7 +41,7 @@ Aria.classDefinition({
             this.assertEquals(this._indHelper.totalOverlays(), 0);
 
             // create explicitly an overlay
-            this.templateCtxt.$getElementById("testSectionInDialog").setProcessingIndicator(true);
+            this.setTestSectionInDialogProcessingIndicator(true);
             this.assertEquals(this._indHelper.totalOverlays(), 1);
             this.__checkOverlayOnSection("testSectionInDialog");
 
@@ -58,16 +58,16 @@ Aria.classDefinition({
             this.assertEquals(this._indHelper.totalOverlays(), 0);
 
             // check that the status of the overaly can be changed on the wrapper
-            this.templateCtxt.$getElementById("testSectionInDialog").setProcessingIndicator(true);
+            this.setTestSectionInDialogProcessingIndicator(true);
             this.assertEquals(this._indHelper.totalOverlays(), 1);
             this.__checkOverlayOnSection("testSectionInDialog");
-            this.templateCtxt.$getElementById("testSectionInDialog").setProcessingIndicator(false);
+            this.setTestSectionInDialogProcessingIndicator(false);
             this.assertEquals(this._indHelper.totalOverlays(), 0);
             this._json.setValue(this.data, "xpos", 25);
             this.assertEquals(this._indHelper.totalOverlays(), 0);
 
             // check that the refresh of the section makes the overlay stay
-            this.templateCtxt.$getElementById("testSectionInDialog").setProcessingIndicator(true);
+            this.setTestSectionInDialogProcessingIndicator(true);
             this.assertEquals(this._indHelper.totalOverlays(), 1);
             this.__checkOverlayOnSection("testSectionInDialog");
             this.templateCtxt.$refresh({
@@ -81,6 +81,12 @@ Aria.classDefinition({
                 scope : this,
                 delay : 100
             });
+        },
+
+        setTestSectionInDialogProcessingIndicator : function (value) {
+            var sectionWrapper = this.templateCtxt.$getElementById("testSectionInDialog");
+            sectionWrapper.setProcessingIndicator(value);
+            sectionWrapper.$dispose();
         },
 
         _finishTest : function () {

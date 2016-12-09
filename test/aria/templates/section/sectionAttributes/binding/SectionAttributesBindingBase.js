@@ -211,6 +211,7 @@ Aria.classDefinition({
             jsonUtil.removeListener(this.testData, "attributes", changeListener, false, true);
             changeListener = null;
 
+            this._domWrapper.$dispose();
             this.end();
         },
 

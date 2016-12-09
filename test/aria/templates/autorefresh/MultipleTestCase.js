@@ -39,14 +39,17 @@ Aria.classDefinition({
             // The first value should be updated
             var value1 = tpl.$getElementById("v1");
             this.assertTrue(value1.getValue() === "A");
+            value1.$dispose();
 
             // Not the second value
             var value2 = tpl.$getElementById("v2");
             this.assertTrue(value2.getValue() === "a");
+            value2.$dispose();
 
             // Not the third value
             var value3 = tpl.$getElementById("v3");
             this.assertTrue(value3.getValue() === "a");
+            value3.$dispose();
 
             this.notifyTemplateTestEnd();
         }

@@ -161,6 +161,7 @@ Aria.classDefinition({
 
             var div = this.templateCtxt.$getElementById('div');
             this.assertTrue(!!div, "Div cannot be retrieved with it id.");
+            div.$dispose();
 
             this._replaceTestTemplate(this._templatesEnv, {
                 fn : this.myTestTemplates,
