@@ -95,6 +95,10 @@ Aria.classDefinition({
                 this.assertTrue(tpl.data.refCount["section" + i] == 1);
             }
 
+            section1.$dispose();
+            section2.$dispose();
+            section3.$dispose();
+            section4.$dispose();
             this._replaceTestTemplate(this._testEnv2, {
                 fn : this.runTestTwo,
                 scope : this
@@ -165,7 +169,9 @@ Aria.classDefinition({
                 this.assertTrue(tpl.data.refCount["section" + i] == 1);
             }
             this.assertTrue(tpl.data.refCount["section4"] == 2);
-
+            section1.$dispose();
+            section2.$dispose();
+            section3.$dispose();
             this.notifyTemplateTestEnd();
         }
     }

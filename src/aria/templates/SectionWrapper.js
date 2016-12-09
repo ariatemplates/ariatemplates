@@ -96,9 +96,6 @@ Aria.classDefinition({
          * @private
          */
         this._dispose = function () {
-            // Prevents the call to setProcessingIndicator done in DomElementWrapper,
-            // because processing indicators on sections should keep their state on refresh:
-            this.setProcessingIndicator = Aria.empty;
             parentDispose.call(this);
             sectionObject = null;
             parentDispose = null;

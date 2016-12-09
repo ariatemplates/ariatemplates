@@ -100,15 +100,6 @@
             this.__dataGround = null;
 
             /**
-             * Keep a list of wrappers retrieved either by $getElementById. These objects contain a reference to the
-             * DOM, and since I'm confident that the users will forget to dispose them, keep here a reference and
-             * they'll be disposed when the template is disposed
-             * @type Array
-             * @private
-             */
-            this.__wrappers = [];
-
-            /**
              * List of loading overlay registered to this template context
              * @type Array
              * @private
@@ -179,8 +170,6 @@
 
             // Dispose overlays
             this.__disposeProcessingIndicators();
-            // and wrappers
-            this.__disposeWrappers();
 
             var tpl = this._tpl;
             if (tpl) {
@@ -446,11 +435,6 @@
 
                     // Before removing the content from the DOM dispose any processing indicators to avoid leaks
                     this.__disposeProcessingIndicators();
-
-                    if (section && !section.id) {
-                        // remove also any html wrapper, in case it is a complete refresh
-                        this.__disposeWrappers();
-                    }
 
                     // Inserting a section will add the html in the page, resume the CSSMgr before
                     aria.templates.CSSMgr.resume();
@@ -1391,9 +1375,6 @@
                     // dom element
                     wrapper = new aria.templates.DomElementWrapper(oElm, this);
                 }
-                if (this.__wrappers) {
-                    this.__wrappers.push(wrapper);
-                }
                 return wrapper;
             },
 
@@ -1412,9 +1393,6 @@
                 }
                 if (oElm) {
                     var wrapper = new aria.templates.DomElementWrapper(oElm, this);
-                    if (this.__wrappers) {
-                        this.__wrappers.push(wrapper);
-                    }
                     return wrapper;
                 }
                 return null;
@@ -1786,18 +1764,6 @@
                 // Dispose all the overlays that are not bound to a section
                 aria.utils.DomOverlay.disposeOverlays(this.__loadingOverlays);
                 this.__loadingOverlays = [];
-            },
-
-            /**
-             * Dispose all DOMElement wrappers linked to this template context. This avoids memory leaks.
-             * @private
-             */
-            __disposeWrappers : function () {
-                // backward because we call splice)
-                for (var i = this.__wrappers.length; i--;) {
-                    this.__wrappers[i].$dispose();
-                    this.__wrappers.splice(i, 1);
-                }
             },
 
             /**

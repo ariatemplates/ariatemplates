@@ -34,6 +34,7 @@ Aria.tplScriptDefinition({
                     args: ["newSection"]
                 }
             });
+            refSection.$dispose();
         }
     }
 });

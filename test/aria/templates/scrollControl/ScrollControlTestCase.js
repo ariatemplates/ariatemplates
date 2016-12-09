@@ -64,6 +64,8 @@ Aria.classDefinition({
             scrPos = myDiv.getScroll();
             this.assertTrue(scrPos.scrollTop === 0 && scrPos.scrollLeft === 0);
 
+            mySection.$dispose();
+            myDiv.$dispose();
             this._replaceTestTemplate(this._testEnv2);
 
         },

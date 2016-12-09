@@ -28,9 +28,11 @@ Aria.classDefinition({
             // Try to get the elements in the page
             var something = this.templateCtxt.$getElementById("something");
             this.assertTrue(something.tagName.toLowerCase() == "div");
+            something.$dispose();
 
             var another = this.templateCtxt.$getElementById("another");
             this.assertTrue(another.tagName.toLowerCase() == "span");
+            another.$dispose();
 
             this.notifyTemplateTestEnd();
         }
