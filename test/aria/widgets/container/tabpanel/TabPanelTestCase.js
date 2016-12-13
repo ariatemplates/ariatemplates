@@ -29,7 +29,10 @@ Aria.classDefinition({
     $prototype : {
         runTemplateTest : function () {
             this.assertErrorInLogs(this.testWindow.aria.widgets.container.Container.INVALID_USAGE_AS_CONTAINER, 1);
-            this.assertErrorInLogs(aria.core.JsonValidator.INVALID_CONFIGURATION, 1);
+            this.assertErrorInLogs([
+                aria.core.JsonValidator.INVALID_CONFIGURATION,
+                'Missing mandatory attribute in ROOT["macro"] for definition aria.widgets.CfgBeans.TabPanelCfg.$properties.macro'
+            ].join('\n'), 1);
             // check that the content inside the TabPanel used as a container has not been output
             this.assertNull(this.testDiv.innerHTML.match(/cccccc/));
 

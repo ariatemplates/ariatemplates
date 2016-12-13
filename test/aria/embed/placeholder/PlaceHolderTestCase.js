@@ -1,4 +1,4 @@
-/*
++/*
  * Copyright 2013 Amadeus s.a.s.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -93,7 +93,12 @@ Aria.classDefinition({
         },
 
         _testInvalidConfiguration : function () {
-            this.assertErrorInLogs(aria.core.JsonValidator.INVALID_CONFIGURATION);
+            var expectedErrors = [
+                aria.core.JsonValidator.INVALID_CONFIGURATION,
+                'Missing mandatory attribute in ROOT["name"] for definition aria.embed.CfgBeans.PlaceholderCfg.$properties.name',
+                'Property \'id\', used in ROOT, is not defined in aria.embed.CfgBeans.PlaceholderCfg'
+            ];
+            this.assertErrorInLogs(expectedErrors.join('\n'));
             this.end();
         }
     }
