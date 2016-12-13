@@ -803,14 +803,20 @@ var Aria = require("../Aria");
                     // aria.core.Log may not be available
                     var logs = aria.core.Log;
                     if (logs) {
-                        var error, errors = e.errors;
+                        var error, errors = e.errors,
+                            extraMessages = [];
                         for (var index = 0, l = errors.length; index < l; index++) {
                             error = errors[index];
                             error.message = logs.prepareLoggedMessage(error.msgId, error.msgArgs);
+                            extraMessages.push(error.message);
                         }
 
+                        var message = this.INVALID_CONFIGURATION;
+                        if(extraMessages.length) {
+                            message += '\n' + extraMessages.join('\n');
+                        }
                         errorToLog = errorToLog || {
-                            msg : this.INVALID_CONFIGURATION,
+                            msg : message,
                             params : [cfgBeanName]
                         };
                         this.$logError(errorToLog.msg, errorToLog.params, e);
