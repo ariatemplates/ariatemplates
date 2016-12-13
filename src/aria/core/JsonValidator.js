@@ -237,8 +237,14 @@ var Aria = require("../Aria");
                         this.$logError(errors[i].msgId, errors[i].msgArgs);
                     }
                 } else {
-                    var error = new Error();
+                    var error = new Error(),
+                        messages = [];
                     error.errors = errors;
+                    for (var i = 0; i < errors.length; i++) {
+                        errors[i].message = aria.core.Log.prepareLoggedMessage(errors[i].msgId, errors[i].msgArgs);
+                        messages.push(errors[i].message);
+                    }
+                    error.message = messages.join('\n');
                     throw error;
                 }
                 return false;
@@ -803,17 +809,9 @@ var Aria = require("../Aria");
                     // aria.core.Log may not be available
                     var logs = aria.core.Log;
                     if (logs) {
-                        var error, errors = e.errors,
-                            extraMessages = [];
-                        for (var index = 0, l = errors.length; index < l; index++) {
-                            error = errors[index];
-                            error.message = logs.prepareLoggedMessage(error.msgId, error.msgArgs);
-                            extraMessages.push(error.message);
-                        }
-
                         var message = this.INVALID_CONFIGURATION;
-                        if(extraMessages.length) {
-                            message += '\n' + extraMessages.join('\n');
+                        if(e.message) {
+                            message += '\n' + e.message;
                         }
                         errorToLog = errorToLog || {
                             msg : message,
