@@ -104,7 +104,7 @@ Aria.classDefinition({
                 }
             });
             myJsObject.$callback(myCallback);
-            this.assertErrorInLogs(myJsObject.CALLBACK_ERROR);
+            this.assertErrorInLogs(myJsObject.CALLBACK_ERROR + '\nCannot read property \'0\' of undefined');            
             myJsObject.$dispose();
             myCallback.$dispose();
         },
