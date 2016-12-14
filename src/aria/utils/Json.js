@@ -1033,7 +1033,7 @@ var ariaUtilsObject = require("./Object");
                     isObjectObject = typeUtils.isObject(object),
                     isReferenceArray = typeUtils.isArray(referenceObject),
                     isReferenceObject = typeUtils.isObject(referenceObject),
-                    result = null, diff,
+                    result = null,
                     __processContainer = function(list, __getKey) {
                         var key, diff;
                         for(var i = 0, l = list.length; i < l; i++) {
@@ -1057,8 +1057,8 @@ var ariaUtilsObject = require("./Object");
                     }
                     return result;
                 } else if (isReferenceObject && isObjectObject) {
-                    var keys = this.keys(object);
-                    __processContainer.call(this, keys, function(i) {return keys[i]});
+                    var keys = this.keys(object), key;
+                    __processContainer.call(this, keys, function(i) {return keys[i];});
                     keys = this.keys(referenceObject);
                     for (var i = 0, l = keys.length; i < l; i++) {
                         key = keys[i];
