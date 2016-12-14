@@ -1019,10 +1019,11 @@ var ariaUtilsObject = require("./Object");
                 return clone;
             },
             /**
-             * Creates a diff object of all those items in an left that are different from the right. If there are any
-             * extra properties that are found in the right but not in the left, the left will have those properties set 
-             * to null. Also any Array sub lefts will be converted to lefts and only those indicies that have changed will be 
-             * present in the left.  
+             * Will determine whether two objects are equal and if not will provide the differences between the two.
+             * A return object contains three properties, a boolean equals, an object left and an object right. If the
+             * equals is true, the left and right objects will be null. If not, it will provide all the properties that
+             * are in the left object and not in the right under the left property, and the similarly for right. If comparing
+             * Arrays, they will be converted to Objects and only those indices that are different will be present in the results.  
              * 
              * @param {Object} left - creates a diff of this object
              * @param {Object} right - the reference object to be used to check against 
@@ -1042,11 +1043,11 @@ var ariaUtilsObject = require("./Object");
                         var key, diff;
                         for (var i = 0, l = list.length; i < l; i++) {
                             key = __getKey(i, list);
-                            if (left[key] !== undefined || right[key] !== undefined) {
-                                diff = this.equalsDiff(left[key], right[key]);
-                                if (diff.equals) {
-                                    continue;
-                                }
+                            if ( key.match(/:/) || (left[key] === undefined && right[key] === undefined) ) {
+                                continue;
+                            }
+                            diff = this.equalsDiff(left[key], right[key]);
+                            if (!diff.equals) {
                                 if (!leftDiff && !rightDiff) {
                                     leftDiff = {};
                                     rightDiff = {};
@@ -1065,7 +1066,8 @@ var ariaUtilsObject = require("./Object");
                     };
                 }
                 else if (isLeftArray && isRightArray) {
-                    __processContainer.call(this, left.length > right.length ? left : right, function(i) { return i; });
+                    var longerList = left.length > right.length ? left : right;
+                    __processContainer.call(this, longerList, function(i) { return i; });
                     return {
                         equals : leftDiff === null && rightDiff === null,
                         left : leftDiff,
@@ -1073,10 +1075,12 @@ var ariaUtilsObject = require("./Object");
                     };
                 } else if (isLeftObject && isRightObject) {
                     var allKeys = this.keys(left),
-                        rightKeys = this.keys(right);
+                        rightKeys = this.keys(right),
+                        key;
                     for (var i = 0, l = rightKeys.length; i < l; i++) {
-                        if (left[rightKeys[i]] === undefined) {
-                            allKeys.push(rightKeys[i]);
+                        key = rightKeys[i];
+                        if (left[key] === undefined) {
+                            allKeys.push(key);
                         }
                     }
                     __processContainer.call(this, allKeys, function(i, keys) { return keys[i]; } );
