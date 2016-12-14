@@ -437,7 +437,7 @@ var Aria = require("../Aria");
 
                     return Function.prototype.apply.call(callback, scope, args);
                 } catch (ex) {
-                    this.$logError(errorId || this.CALLBACK_ERROR, [ this.$classpath, ( scope ) ? scope.$classpath : "" ], ex );
+                    this.$logError(errorId || this.CALLBACK_ERROR, [this.$classpath, (scope) ? scope.$classpath : ""], ex);
                 }
             },
 
