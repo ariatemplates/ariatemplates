@@ -39,14 +39,7 @@ Aria.classDefinition({
             };
 
             this.mapMgr.createMap(invalidCfg);
-            var expectedErrors = [
-                aria.core.JsonValidator.INVALID_CONFIGURATION,
-                'Missing mandatory attribute in ROOT["provider"] for definition aria.map.CfgBeans.CreateMapCfg.$properties.provider',
-                'Missing mandatory attribute in ROOT["id"] for definition aria.map.CfgBeans.MapCfg.$properties.id',
-                'Missing mandatory attribute in ROOT["domElement"] for definition aria.map.CfgBeans.MapCfg.$properties.domElement',
-                'Property \'ind\', used in ROOT, is not defined in aria.map.CfgBeans.CreateMapCfg'
-            ];
-            this.assertErrorInLogs(expectedErrors.join('\n'));
+            this.assertErrorInLogs(aria.core.JsonValidator.INVALID_CONFIGURATION);
         },
 
         testAsyncInexistentProvider : function () {

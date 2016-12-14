@@ -93,12 +93,7 @@ Aria.classDefinition({
         },
 
         _testInvalidConfiguration : function () {
-            var expectedErrors = [
-                aria.core.JsonValidator.INVALID_CONFIGURATION,
-                'Missing mandatory attribute in ROOT["name"] for definition aria.embed.CfgBeans.PlaceholderCfg.$properties.name',
-                'Property \'id\', used in ROOT, is not defined in aria.embed.CfgBeans.PlaceholderCfg'
-            ];
-            this.assertErrorInLogs(expectedErrors.join('\n'));
+            this.assertErrorInLogs(aria.core.JsonValidator.INVALID_CONFIGURATION);
             this.end();
         }
     }

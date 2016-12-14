@@ -24,12 +24,8 @@ Aria.classDefinition({
         testErrors : function () {
             var widget = this.createAndInit("aria.touch.widgets.DoubleSlider", {
                 iDontExist : true
-            }),
-            expectedErrors = [
-                aria.core.JsonValidator.INVALID_CONFIGURATION,
-                'Property \'iDontExist\', used in ROOT, is not defined in aria.touch.widgets.SliderCfgBeans.DoubleSliderCfg'
-            ];
-            this.assertErrorInLogs(expectedErrors.join('\n'));
+            });
+            this.assertErrorInLogs(aria.core.JsonValidator.INVALID_CONFIGURATION);
             widget.$dispose();
         }
     }

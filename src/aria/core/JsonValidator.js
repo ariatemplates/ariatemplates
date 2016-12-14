@@ -238,13 +238,17 @@ var Aria = require("../Aria");
                     }
                 } else {
                     var error = new Error(),
-                        messages = [];
+                        logs = aria.core.Log;
                     error.errors = errors;
-                    for (var i = 0; i < errors.length; i++) {
-                        errors[i].message = aria.core.Log.prepareLoggedMessage(errors[i].msgId, errors[i].msgArgs);
-                        messages.push(errors[i].message);
+                    // aria.core.Log may not be available
+                    if (logs) {
+                        var messages = [];
+                        for (var i = 0; i < errors.length; i++) {
+                            errors[i].message = logs.prepareLoggedMessage(errors[i].msgId, errors[i].msgArgs);
+                            messages.push(errors[i].message);
+                        }
+                        error.message = messages.join('\n');
                     }
-                    error.message = messages.join('\n');
                     throw error;
                 }
                 return false;
@@ -806,19 +810,11 @@ var Aria = require("../Aria");
                         beanName : cfgBeanName
                     }, true);
                 } catch (e) {
-                    // aria.core.Log may not be available
-                    var logs = aria.core.Log;
-                    if (logs) {
-                        var message = this.INVALID_CONFIGURATION;
-                        if(e.message) {
-                            message += '\n' + e.message;
-                        }
-                        errorToLog = errorToLog || {
-                            msg : message,
-                            params : [cfgBeanName]
-                        };
-                        this.$logError(errorToLog.msg, errorToLog.params, e);
-                    }
+                    errorToLog = errorToLog || {
+                        msg : this.INVALID_CONFIGURATION,
+                        params : [cfgBeanName]
+                    };
+                    this.$logError(errorToLog.msg, errorToLog.params, e);
                 }
                 return cfgOk;
             },

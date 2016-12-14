@@ -19,11 +19,7 @@ Aria.classDefinition({
     $dependencies : ["aria.core.JsonValidator"],
     $prototype : {
         runTemplateTest : function () {
-            this.assertErrorInLogs([
-                aria.core.JsonValidator.INVALID_CONFIGURATION,
-                'Property \'missingProperty\', used in ROOT, is not defined in aria.widgets.CfgBeans.DialogCfg'
-            ].join('\n'));
-
+            this.assertErrorInLogs(aria.core.JsonValidator.INVALID_CONFIGURATION);
             this.end();
         }
     }

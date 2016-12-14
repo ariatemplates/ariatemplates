@@ -327,7 +327,7 @@ Aria.classDefinition({
                 fn : "missingCallback"
             }, "useless", errorMsg);
 
-            this.assertErrorInLogs(errorMsg + '\nFunction.prototype.apply was called on undefined, which is a undefined and not a function');
+            this.assertErrorInLogs(errorMsg);
         }
     }
 });
