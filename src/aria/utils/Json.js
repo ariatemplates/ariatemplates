@@ -1019,61 +1019,86 @@ var ariaUtilsObject = require("./Object");
                 return clone;
             },
             /**
-             * Creates a diff object of all those items in an object that are different from the referenceObject. If there are any
-             * extra properties that are found in the referenceObject but not in the object, the object will have those properties set 
-             * to null. Also any Array sub objects will be converted to Objects and only those indicies that have changed will be 
-             * present in the Object.  
+             * Creates a diff object of all those items in an left that are different from the right. If there are any
+             * extra properties that are found in the right but not in the left, the left will have those properties set 
+             * to null. Also any Array sub lefts will be converted to lefts and only those indicies that have changed will be 
+             * present in the left.  
              * 
-             * @param {Object} object - creates a diff of this object
-             * @param {Object} referenceObject - the reference object to be used to check against 
-             * @return {Object} either null if there is no difference or an object containing just the differences
+             * @param {Object} left - creates a diff of this object
+             * @param {Object} right - the reference object to be used to check against 
+             * @return {Object} a report object containing the following properties:
+             *             {Boolean} equals - true or false whether these two objects are the same 
+             *             {Object}  left   - the differences that are only in the left object
+             *             {Object}  right  - the differences that are only in the right object
              */
-            diff : function( object, referenceObject) {
-                var isObjectArray = typeUtils.isArray(object),
-                    isObjectObject = typeUtils.isObject(object),
-                    isReferenceArray = typeUtils.isArray(referenceObject),
-                    isReferenceObject = typeUtils.isObject(referenceObject),
-                    result = null,
+            equalsDiff : function( left, right) {
+                var isLeftArray = typeUtils.isArray(left),
+                    isLeftObject = typeUtils.isObject(left),
+                    isRightArray = typeUtils.isArray(right),
+                    isRightObject = typeUtils.isObject(right),
+                    leftDiff = null,
+                    rightDiff = null,
                     __processContainer = function(list, __getKey) {
                         var key, diff;
-                        for(var i = 0, l = list.length; i < l; i++) {
-                            key = __getKey(i);
-                            diff = this.diff(object[key], referenceObject[key]);
-                            if(diff !== null) {
-                                if(!result) result = {};
-                                result[key] = diff;
+                        for (var i = 0, l = list.length; i < l; i++) {
+                            key = __getKey(i, list);
+                            if (left[key] !== undefined || right[key] !== undefined) {
+                                diff = this.equalsDiff(left[key], right[key]);
+                                if (diff.equals) {
+                                    continue;
+                                }
+                                if (!leftDiff && !rightDiff) {
+                                    leftDiff = {};
+                                    rightDiff = {};
+                                }
+                                leftDiff[key] = diff.left;
+                                rightDiff[key] = diff.right;
                             }
                         }
                     };
                 
-                if(object === referenceObject) {
-                    return null;
+                if (left === right) {
+                    return {
+                        equals : true,
+                        left : null,
+                        right : null
+                    };
                 }
-                else if (isObjectArray && isReferenceArray) {
-                    __processContainer.call(this, object, function(i) {return i;});
-                    for(var i = object.length, l = referenceObject.length; i < l; i++) {
-                        if(!result) result = {};
-                        result[i] = null;
-                    }
-                    return result;
-                } else if (isReferenceObject && isObjectObject) {
-                    var keys = this.keys(object), key;
-                    __processContainer.call(this, keys, function(i) {return keys[i];});
-                    keys = this.keys(referenceObject);
-                    for (var i = 0, l = keys.length; i < l; i++) {
-                        key = keys[i];
-                        if(object[key] === undefined) {
-                            if(!result) result = {};
-                            result[key] = null;
+                else if (isLeftArray && isRightArray) {
+                    __processContainer.call(this, left.length > right.length ? left : right, function(i) { return i; });
+                    return {
+                        equals : leftDiff === null && rightDiff === null,
+                        left : leftDiff,
+                        right : rightDiff
+                    };
+                } else if (isLeftObject && isRightObject) {
+                    var allKeys = this.keys(left),
+                        rightKeys = this.keys(right);
+                    for (var i = 0, l = rightKeys.length; i < l; i++) {
+                        if (left[rightKeys[i]] === undefined) {
+                            allKeys.push(rightKeys[i]);
                         }
                     }
-                    return result;
-                } else if (typeUtils.isDate(referenceObject) && typeUtils.isDate(object)) {
-                    if(object.getTime() === referenceObject.getTime()) {
-                        return null;
+                    __processContainer.call(this, allKeys, function(i, keys) { return keys[i]; } );
+                    return {
+                        equals : leftDiff === null && rightDiff === null,
+                        left : leftDiff,
+                        right : rightDiff
+                    };
+                } else if (typeUtils.isDate(right) && typeUtils.isDate(left)) {
+                    if (left.getTime() === right.getTime()) {
+                        return {
+                            equals : true,
+                            left : null,
+                            right : null
+                        };
                     }
                 }
-                return object;
+                return {
+                    equals : false,
+                    left : left,
+                    right : right
+                };
             }
         }
     });

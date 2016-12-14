@@ -434,19 +434,18 @@ var ariaUtilsJson = require("../utils/Json");
              * @param {String} optMsg optional message to add to the failure description
              */
             assertJsonEquals : function (obj1, obj2, optMsg) {
-                var diff1 = ariaUtilsJson.diff(obj1, obj2);
-                var diff2 = ariaUtilsJson.diff(obj2, obj1);
-                var equal = (diff1 === null && diff2 === null);
-                if (!equal && !optMsg) {
+                var diff = ariaUtilsJson.equalsDiff(obj1, obj2);
+                var equals = diff.equals;
+                if (!equals && !optMsg) {
                     var jsonOptions = {
                         indent : "   "
                     };
-                    var s1 = ariaUtilsJson.convertToJsonString(diff1, jsonOptions);
-                    var s2 = ariaUtilsJson.convertToJsonString(diff2, jsonOptions);
+                    var s1 = ariaUtilsJson.convertToJsonString(diff.left, jsonOptions);
+                    var s2 = ariaUtilsJson.convertToJsonString(diff.right, jsonOptions);
                     optMsg = "JSON comparison failed. First object diff:<br><code><pre>" + s1
                             + "</pre></code><br>Second object diff:<br><code><pre>" + s2 + "</pre></code>";
                 }
-                this.assertTrue(equal, optMsg);
+                this.assertTrue(equals, optMsg);
             },
 
             /**
