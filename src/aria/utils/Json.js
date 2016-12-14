@@ -1043,7 +1043,7 @@ var ariaUtilsObject = require("./Object");
                         var key, diff;
                         for (var i = 0, l = list.length; i < l; i++) {
                             key = __getKey(i, list);
-                            if ( key.match(/:/) || (left[key] === undefined && right[key] === undefined) ) {
+                            if ( (key.match && key.match(/:/)) || (left[key] === undefined && right[key] === undefined) ) {
                                 continue;
                             }
                             diff = this.equalsDiff(left[key], right[key]);
