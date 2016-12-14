@@ -2070,6 +2070,10 @@ module.exports = Aria.beanDefinitions({
                     $type : "json:String",
                     $description : "The label to use for the close icon (can be used in various ways such as for tooltip or accessibility)."
                 },
+                "waiOpenMsg" : {
+                    $type : "json:String",
+                    $description : "When waiAria is activated, this property specifies the message to read when the modal dialog is opened."
+                },
                 "waiEscapeMsg" : {
                     $type : "json:String",
                     $description : "If this property is defined and if waiAria is activated, the user has to press escape twice (instead of only once) to close the dialog. This property specifies the message to read after the user pressed escape the first time."

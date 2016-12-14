@@ -850,7 +850,11 @@ module.exports = Aria.classDefinition({
 
             ariaCoreTimer.addCallback({
                 fn : function () {
-                    this.evalCallback(cfg.onOpen);
+                    // check that the dialog was not disposed
+                    if (this._cfg) {
+                        this.waiReadText(cfg.waiOpenMsg);
+                        this.evalCallback(cfg.onOpen);
+                    }
                 },
                 scope : this,
                 delay : 4
