@@ -237,9 +237,7 @@ var Aria = require("../Aria");
                         this.$logError(errors[i].msgId, errors[i].msgArgs);
                     }
                 } else {
-                    var error = new Error(),
-                        logs = aria.core.Log;
-                    error.errors = errors;
+                    var error, logs = aria.core.Log;
                     // aria.core.Log may not be available
                     if (logs) {
                         var messages = [];
@@ -247,8 +245,11 @@ var Aria = require("../Aria");
                             errors[i].message = logs.prepareLoggedMessage(errors[i].msgId, errors[i].msgArgs);
                             messages.push(errors[i].message);
                         }
-                        error.message = messages.join('\n');
+                        error = new Error(messages.join('\n'));
+                    } else {
+                        error = new Error();
                     }
+                    error.errors = errors;
                     throw error;
                 }
                 return false;
