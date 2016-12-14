@@ -237,7 +237,18 @@ var Aria = require("../Aria");
                         this.$logError(errors[i].msgId, errors[i].msgArgs);
                     }
                 } else {
-                    var error = new Error();
+                    var error, logs = aria.core.Log;
+                    // aria.core.Log may not be available
+                    if (logs) {
+                        var messages = [];
+                        for (var i = 0; i < errors.length; i++) {
+                            errors[i].message = logs.prepareLoggedMessage(errors[i].msgId, errors[i].msgArgs);
+                            messages.push(errors[i].message);
+                        }
+                        error = new Error(messages.join('\n'));
+                    } else {
+                        error = new Error();
+                    }
                     error.errors = errors;
                     throw error;
                 }
@@ -800,21 +811,11 @@ var Aria = require("../Aria");
                         beanName : cfgBeanName
                     }, true);
                 } catch (e) {
-                    // aria.core.Log may not be available
-                    var logs = aria.core.Log;
-                    if (logs) {
-                        var error, errors = e.errors;
-                        for (var index = 0, l = errors.length; index < l; index++) {
-                            error = errors[index];
-                            error.message = logs.prepareLoggedMessage(error.msgId, error.msgArgs);
-                        }
-
-                        errorToLog = errorToLog || {
-                            msg : this.INVALID_CONFIGURATION,
-                            params : [cfgBeanName]
-                        };
-                        this.$logError(errorToLog.msg, errorToLog.params, e);
-                    }
+                    errorToLog = errorToLog || {
+                        msg : this.INVALID_CONFIGURATION,
+                        params : [cfgBeanName]
+                    };
+                    this.$logError(errorToLog.msg, errorToLog.params, e);
                 }
                 return cfgOk;
             },
