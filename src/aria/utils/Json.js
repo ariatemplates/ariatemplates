@@ -1019,114 +1019,61 @@ var ariaUtilsObject = require("./Object");
                 return clone;
             },
             /**
-             * Creates a diff object of all those items in an object that are different from the referenceObject. It will not
-             * take into account any extra properties that are found in the referenceObject but not in the object. Also any
-             * Array sub objects will be converted to Objects and only those indicies that have changed will be present in the Object.  
+             * Creates a diff object of all those items in an object that are different from the referenceObject. If there are any
+             * extra properties that are found in the referenceObject but not in the object, the object will have those properties set 
+             * to null. Also any Array sub objects will be converted to Objects and only those indicies that have changed will be 
+             * present in the Object.  
              * 
              * @param {Object} object - creates a diff of this object
              * @param {Object} referenceObject - the reference object to be used to check against 
-             * @return {Object} 
+             * @return {Object} either null if there is no difference or an object containing just the differences
              */
-            diff : function( object, referenceObject ) {
-                // transform an array into an object with each key being the index. Ie ['a','b'] yields {0:'a',1:'b'}.
-                var __arrayToObject = function(array) {
-                        var object = {};
-                        arrayUtils.forEach( array, function( item, index ) {
-                            object[ index ] = this.copy( item );
-                        });
-                        return object;
-                    },
-                    // nest any input in an object under the key 'OBJECT'.
-                    __nest = function(item) {
-                        return { 'OBJECT' : item };
-                    },
-                    // create a diff on a given object compared against a reference object.
-                    __diff = function(_obj, _refObj, _result) {
-                        arrayUtils.forEach(ariaUtilsObject.keys( _obj ), function( property ) {
-                            var item = _obj[ property ],
-                                refItem = _refObj[ property ],
-                                isArray = typeUtils.isArray( item ),
-                                isArrayRef = typeUtils.isArray( refItem ),
-                                // function to test whether either the item or refItem are empty provided that they are
-                                // objects or arrays, an object containing an isEmpty method is needed.
-                                isOneEmpty = function(isEmptyProvider) {
-                                    var isEmpty = isEmptyProvider.isEmpty(item),
-                                        isRefEmpty = isEmptyProvider.isEmpty(refItem);
-                                    return ( isEmpty && !isRefEmpty ) || ( !isEmpty && isRefEmpty );
-                                },
-                                // this will process either an array or an object.
-                                arrayOrObject = function( loopFn ) {
-                                    var result = {},
-                                        hasDifferent = false;
-                                    // this loopFn will depend on whether the item is an array or an object.
-                                    // In both cases, the same function can process each.
-                                    loopFn.call(this, function( subitem, key ) {
-                                        var subresult = __nest();
-                                        // attempt to perform a diff on the subitem.
-                                        __diff.call(this, __nest(subitem), __nest(refItem[key]), subresult);
-                                        // if this is true it means that the subitem and refItem are not the same
-                                        if( subresult.OBJECT !== undefined ) {
-                                            // key can either be an index or a key.
-                                            result[ key ] = subresult.OBJECT;
-                                            hasDifferent = true;
-                                        }
-                                    });
-                                    if ( hasDifferent ) {
-                                        _result[ property ] = result;
-                                    }
-                                };
-                            
-                            // if the types are not the same return
-                            if ( typeof item !== typeof refItem || ( isArray && !isArrayRef ) || ( !isArray && isArrayRef ) || ( item != null && refItem == null )) {
-                                _result[ property ] = this.copy( item );
+            diff : function( object, referenceObject) {
+                var isObjectArray = typeUtils.isArray(object),
+                    isObjectObject = typeUtils.isObject(object),
+                    isReferenceArray = typeUtils.isArray(referenceObject),
+                    isReferenceObject = typeUtils.isObject(referenceObject),
+                    result = null, diff,
+                    __processContainer = function(list, __getKey) {
+                        var key, diff;
+                        for(var i = 0, l = list.length; i < l; i++) {
+                            key = __getKey(i);
+                            diff = this.diff(object[key], referenceObject[key]);
+                            if(diff !== null) {
+                                if(!result) result = {};
+                                result[key] = diff;
                             }
-                            // handle dates
-                            else if ( typeUtils.isDate( item ) && typeUtils.isDate( refItem ) ) {
-                                if (item.getTime() !== refItem.getTime()) {
-                                    _result[property] = this.copy(item);
-                                }
-                            }
-                            // handle the arrays
-                            else if ( isArray ) {
-                                // if either the item or refItem is empty.
-                                if ( isOneEmpty( arrayUtils ) ) {
-                                    // then transform the item array into an object with the keys being the indices.
-                                    _result[ property ] = __arrayToObject.call( this, item );
-                                } else {
-                                    // process the array providing a function that will perform the loop.
-                                    arrayOrObject.call(this, function( eachItemFn ) {
-                                        arrayUtils.forEach( item, eachItemFn, this );
-                                    });
-                                }
-                            }
-                            // handle the objects
-                            else if ( typeUtils.isObject( item ) ) {
-                                // if either the item or refItem is empty  
-                                if ( isOneEmpty( ariaUtilsObject ) ) {
-                                    // then add a copy of the item to the result
-                                    _result[ property ] = this.copy( item );
-                                } else {
-                                    // process the object providing a function that will perform the loop.
-                                    arrayOrObject.call(this, function( eachItemFn ) {
-                                        arrayUtils.forEach(ariaUtilsObject.keys( item ), function( key ) {
-                                            eachItemFn.call( this, item[ key ], key );
-                                        }, this);
-                                    });
-                                }
-                            } else if ( item !== refItem ) {
-                                // if the items are simple types: dates, strings, integers, etc
-                                // and they are the same, then delete them from the diff object.
-                                _result[ property ] = this.copy( item );
-                            }
-                        }, this);
-                    },
-                    // create a result object that will be populated with any differences. It is initialized to {'OBJECT':undefined}.  
-                    // This OBJECT nesting is so that this works for any type of input.
-                    result = __nest();
-                // populate the result object with any differences. Need to nest them both so that any type of input is valid.
-                __diff.call( this, __nest( object ), __nest( referenceObject ), result );
-                //remember to return the nested OBJECT
-                return result.OBJECT === undefined ? null : result.OBJECT;
+                        }
+                    };
+                
+                if(object === referenceObject) {
+                    return null;
+                }
+                else if (isObjectArray && isReferenceArray) {
+                    __processContainer.call(this, object, function(i) {return i;});
+                    for(var i = object.length, l = referenceObject.length; i < l; i++) {
+                        if(!result) result = {};
+                        result[i] = null;
+                    }
+                    return result;
+                } else if (isReferenceObject && isObjectObject) {
+                    var keys = this.keys(object);
+                    __processContainer.call(this, keys, function(i) {return keys[i]});
+                    keys = this.keys(referenceObject);
+                    for (var i = 0, l = keys.length; i < l; i++) {
+                        key = keys[i];
+                        if(object[key] === undefined) {
+                            if(!result) result = {};
+                            result[key] = null;
+                        }
+                    }
+                    return result;
+                } else if (typeUtils.isDate(referenceObject) && typeUtils.isDate(object)) {
+                    if(object.getTime() === referenceObject.getTime()) {
+                        return null;
+                    }
+                }
+                return object;
             }
         }
     });
