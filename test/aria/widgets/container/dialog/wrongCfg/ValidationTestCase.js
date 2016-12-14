@@ -20,7 +20,7 @@ Aria.classDefinition({
     $prototype : {
         runTemplateTest : function () {
             this.assertErrorInLogs(aria.core.JsonValidator.INVALID_CONFIGURATION);
-            
+
             this.end();
         }
     }
