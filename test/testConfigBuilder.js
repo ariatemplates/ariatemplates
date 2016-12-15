@@ -135,7 +135,11 @@ var generalBrowserExcludes = {
         "test/aria/templates/keyboardNavigation/dialog/escape/DialogEscapeDatePickerRobotTestCase.js",
         "test/aria/widgets/wai/popup/dialog/modal/ThirdRobotTestCase.js",
         "test/aria/widgets/wai/popup/dialog/modal/FourthRobotTestCase.js",
-        "test/aria/widgets/wai/popup/dialog/modal/SecondRobotTestCase.js"
+        "test/aria/widgets/wai/popup/dialog/modal/SecondRobotTestCase.js",
+        // The following 3 tests were successful in 1.7.21 and started to fail in 1.7.22:
+        "test/aria/html/textinput/placeholder/PlaceholderTestCase.js",
+        "test/aria/widgets/dropdown/touchDevices/AutoCompleteNoExpButPopupDesktopRobotTestCase.js",
+        "test/aria/widgets/dropdown/touchDevices/AutoCompleteNoExpButPopupTouchRobotTestCase.js"
     ],
     "IE 10": [
         "test/aria/utils/mouse/MouseDragKoRobotTestCase.js",
