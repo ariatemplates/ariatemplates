@@ -329,7 +329,7 @@ var Aria = require("../Aria");
                                 if (asyncParam == null) {
                                     asyncParam = "null";
                                 }
-                                methods.push("p.", member, "=function(){\nreturn i.get(this).$call('", classpath, "','", member, "',arguments,", asyncParam, ");\n}\n");
+                                methods.push("p.", member, "=function(){\nreturn i.get(this.__$me).$call('", classpath, "','", member, "',arguments,", asyncParam, ");\n}\n");
                             } else if (memberValue.$type == "Interface") {
                                 initProperties.push("this.", member, "=obj.", member, "?obj.", member, ".$interface('", memberValue.$classpath, "'):null;\n");
                                 deleteProperties.push("this.", member, "=null;\n");
@@ -350,18 +350,18 @@ var Aria = require("../Aria");
                 if (superInterface) {
                     parentEvents = __mergeEvents(proto.$events, superInterface.prototype.$events, classpath);
                 } else {
-                    methods.push("p.$interface=function(a){\nreturn aria.core.Interfaces.getInterface(i.get(this),a,this);\n};\n");
+                    methods.push("p.$interface=function(a){\nreturn aria.core.Interfaces.getInterface(i.get(this.__$me),a,this);\n};\n");
                 }
                 if (__mergeEvents(proto.$events, def.$events, classpath) && !parentEvents) {
                     // The parent interface has no event but this interface has events!
                     // We have to add special wrappers for event handling
-                    methods.push("p.$addListeners=function(a){\nreturn i.get(this).$addListeners(a,this);\n};\n");
-                    methods.push("p.$onOnce=function(a){\nreturn i.get(this).$onOnce(a,this);\n};\n");
-                    methods.push("p.$removeListeners=function(a){\nreturn i.get(this).$removeListeners(a,this);\n};\n");
-                    methods.push("p.$unregisterListeners=function(a){\nreturn i.get(this).$unregisterListeners(a,this);\n};\n");
+                    methods.push("p.$addListeners=function(a){\nreturn i.get(this.__$me).$addListeners(a,this);\n};\n");
+                    methods.push("p.$onOnce=function(a){\nreturn i.get(this.__$me).$onOnce(a,this);\n};\n");
+                    methods.push("p.$removeListeners=function(a){\nreturn i.get(this.__$me).$removeListeners(a,this);\n};\n");
+                    methods.push("p.$unregisterListeners=function(a){\nreturn i.get(this.__$me).$unregisterListeners(a,this);\n};\n");
                     methods.push("p.$on=p.$addListeners;\n");
                 }
-                methods.push("p.$destructor=function(){\n", deleteProperties.join(''), "i['delete'](this);\n", superInterface
+                methods.push("p.$destructor=function(){\n", deleteProperties.join(''), "if(this.__$me){\ni['delete'](this.__$me);\n}\nthis.__$me=null;\n", superInterface
                         ? "e.prototype.$destructor.call(this);\n" /* call super interface at the end of the destructor */
                         : "", "};\n");
                 var out = [];
@@ -374,7 +374,7 @@ var Aria = require("../Aria");
                 Aria.nspace(classpath, true);
                 out.push("var evalContext=arguments[2];\nvar i=evalContext.i;\nvar p=evalContext.p;\nvar e=evalContext.e;\nevalContext.c=function(obj){\n", (superInterface
                         ? 'e.call(this,obj);\n'
-                        : ''), 'i.set(this,obj);\n', initProperties.join(''), '};\n', methods.join(''), 'Aria.$global.', classpath, '=evalContext.c;\n', 'p=null;\nevalContext=null;\n');
+                        : ''), 'this.__$me=this.__$me||this;\ni.set(this.__$me,obj);\n', initProperties.join(''), '};\n', methods.join(''), 'Aria.$global.', classpath, '=evalContext.c;\n', 'p=null;\nevalContext=null;\n');
                 out = out.join('');
                 // alert(out);
                 Aria["eval"](out, classpath.replace(/\./g, "/") + "-wrapper.js", evalContext);
