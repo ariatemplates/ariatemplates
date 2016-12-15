@@ -129,6 +129,7 @@ module.exports = Aria.tplScriptDefinition({
                 waiAriaReadInterval: readInterval,
                 waiAriaReadOnceFirst: readOnceFirst
             });
+            domElement.$dispose();
         },
 
         toggleOverlayOnSection: function () {
