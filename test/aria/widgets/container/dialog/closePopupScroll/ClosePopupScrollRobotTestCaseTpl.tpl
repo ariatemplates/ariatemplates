@@ -35,7 +35,7 @@
         <div style="height: 900px;">
             This dialog contains a lot of things, so there is a scrollbar...
         </div>
-        <div {id "outsideSelect" /}>
+        <div  style="height: 75px;" {id "outsideSelect" /}>
             Here is the part that really matters:<br>
         </div>
         {@aria:Select {
