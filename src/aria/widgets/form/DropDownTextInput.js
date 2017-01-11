@@ -43,8 +43,13 @@ module.exports = Aria.classDefinition({
             "dropdown": 'unselectable="on"' + iconTooltip
         };
         if (cfg.waiAria) {
-            var tabIndex = cfg.tabIndex != null ? this._calculateTabIndex() : "0";
-            this._iconsAttributes.dropdown += ' tabindex="' + tabIndex + '" aria-expanded="false" aria-haspopup="true"';
+            this._iconsAttributes.dropdown += ' aria-expanded="false" aria-haspopup="true"';
+            if (cfg.disabled) {
+                this._iconsAttributes.dropdown += ' aria-hidden="true"';
+            } else {
+                var tabIndex = cfg.tabIndex != null ? this._calculateTabIndex() : "0";
+                this._iconsAttributes.dropdown += ' tabindex="' + tabIndex + '"';
+            }
             this._iconsWaiLabel = {
                 "dropdown": cfg.waiIconLabel || cfg.iconTooltip
             };
@@ -52,6 +57,7 @@ module.exports = Aria.classDefinition({
     },
     $destructor : function () {
         this._closeDropdown();
+        this._dropDownIcon = null;
         this._touchFocusSpan = null;
         this.$TextInput.$destructor.call(this);
     },
@@ -226,6 +232,29 @@ module.exports = Aria.classDefinition({
                 this.$TextInput._onBoundPropertyChange.apply(this, arguments);
             }
         },
+
+        /**
+         * This is called when the bindings are updated. It will update the textfield when either the error, mandatory,
+         * readOnly or disabled settings change.
+         * @protected
+         * @override
+         */
+        _reactToChange : function () {
+            this.$TextInput._reactToChange.apply(this, arguments);
+            var cfg = this._cfg;
+            var dropDownIcon = this._getDropdownIcon();
+            if (cfg.waiAria && dropDownIcon) {
+                if (cfg.disabled) {
+                    dropDownIcon.setAttribute("aria-hidden", "true");
+                    dropDownIcon.removeAttribute("tabindex");
+                } else {
+                    dropDownIcon.removeAttribute("aria-hidden");
+                    var tabIndex = cfg.tabIndex != null ? this._calculateTabIndex() : "0";
+                    dropDownIcon.setAttribute("tabindex", tabIndex);
+                }
+            }
+        },
+
         /**
          * Initialization method called by the delegate engine when the DOM is loaded
          */
@@ -293,9 +322,9 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         _getDropdownIcon : function () {
-            var dropDownIcon = this._dropdownIcon;
-            if (!dropDownIcon && this._frame.getIcon) {
-                dropDownIcon = this._frame.getIcon("dropdown");
+            var dropDownIcon = this._dropDownIcon;
+            if (!dropDownIcon && this._frame && this._frame.getIcon) {
+                dropDownIcon = this._dropDownIcon = this._frame.getIcon("dropdown");
             }
             return dropDownIcon;
         },
