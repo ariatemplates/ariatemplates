@@ -87,7 +87,6 @@ module.exports = Aria.classDefinition({
         }
     },
     $destructor : function () {
-        this._dropDownIcon = null;
         if (this._waiReadDateOnKeyDown != null) {
             this._waiReadDateOnKeyDown.$dispose();
         }
@@ -139,12 +138,8 @@ module.exports = Aria.classDefinition({
 
         _initInputMarkup : function () {
             this.$DropDownTextInput._initInputMarkup.apply(this, arguments);
-            var dropDownIcon = null;
-            if (this._frame.getIcon) {
-                dropDownIcon = this._frame.getIcon("dropdown");
-            }
+            var dropDownIcon = this._getDropdownIcon();
             this.$assert(54, dropDownIcon);
-            this._dropDownIcon = dropDownIcon;
         },
 
         /**
@@ -397,7 +392,7 @@ module.exports = Aria.classDefinition({
                 // it is important to set aria-owns and aria-expanded attributes before
                 // calling the parent _afterDropdownOpen method (which gives focus to
                 // the calendar)
-                var dropDownIcon = this._dropDownIcon;
+                var dropDownIcon = this._getDropdownIcon();
                 var calendarId = this.controller.getCalendar().getCalendarDomId();
                 dropDownIcon.setAttribute("aria-owns", calendarId);
                 dropDownIcon.setAttribute("aria-activedescendant", calendarId);
@@ -414,7 +409,7 @@ module.exports = Aria.classDefinition({
 
         _afterDropdownClose : function () {
             this._calendarFocus = false;
-            var dropDownIcon = this._dropDownIcon;
+            var dropDownIcon = this._getDropdownIcon();
             if (this._cfg.waiAria && dropDownIcon) {
                 dropDownIcon.removeAttribute("aria-owns");
                 dropDownIcon.removeAttribute("aria-activedescendant");

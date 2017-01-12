@@ -77,12 +77,8 @@ module.exports = Aria.classDefinition({
 
         _initInputMarkup : function () {
             this.$DropDownTextInput._initInputMarkup.apply(this, arguments);
-            var dropDownIcon = null;
-            if (this._frame.getIcon) {
-                dropDownIcon = this._frame.getIcon("dropdown");
-            }
+            var dropDownIcon = this._getDropdownIcon();
             this.$assert(54, dropDownIcon);
-            this._dropDownIcon = dropDownIcon;
         },
 
         /**
@@ -137,14 +133,14 @@ module.exports = Aria.classDefinition({
          */
         _afterDropdownOpen : function () {
             if (this._cfg.waiAria) {
-                this._dropDownIcon.setAttribute("aria-expanded", "true");
+                this._getDropdownIcon().setAttribute("aria-expanded", "true");
             }
             this.$DropDownListTrait._afterDropdownOpen.apply(this, arguments);
         },
 
         _afterDropdownClose : function () {
             if (this._cfg.waiAria) {
-                this._dropDownIcon.setAttribute("aria-expanded", "false");
+                this._getDropdownIcon().setAttribute("aria-expanded", "false");
             }
             this.$DropDownListTrait._afterDropdownClose.call(this);
         }
