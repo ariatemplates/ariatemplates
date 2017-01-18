@@ -500,9 +500,7 @@ Aria.classDefinition({
             }
 
             this._updateDivSize(this._popupContainer.getClientSize());
-            if (this._cfg.center) {
-                this.updatePosition();
-            }
+            this.updatePosition();
         },
 
         /**
@@ -1023,6 +1021,14 @@ Aria.classDefinition({
                 }
             });
         },
+
+        /**
+         * Gets the resize handle DOM element by index (0 = the first handle defined in cfg.handles).
+         */
+        getResizeHandle : function (index) {
+            return aria.utils.Dom.getDomElementChild(this._domElt, 1 + index, false);
+        },
+
         /**
          * Creates the Resize element with all the resize handle element.
          * @protected
@@ -1030,9 +1036,9 @@ Aria.classDefinition({
         _createResize : function () {
             if (this._handlesArr) {
                 this._resizable = {};
-                var handleArr = this._handlesArr, index = 0, parent = this._domElt, getDomElementChild = aria.utils.Dom.getDomElementChild;
+                var handleArr = this._handlesArr;
                 for (var i = 0, ii = handleArr.length; i < ii; i++) {
-                    var handleElement = getDomElementChild(parent, ++index, false), axis = null, cursor;
+                    var handleElement = this.getResizeHandle(i), axis = null, cursor;
                     cursor = handleArr[i];
                     if (cursor == "n-resize" || cursor == "s-resize") {
                         axis = "y";
@@ -1128,8 +1134,7 @@ Aria.classDefinition({
             this._calculateSize();
             this.setProperty("center", false);
             if (this._popup) {
-                this.close();
-                this.open();
+                this._onDimensionsChanged();
                 this._popup.refreshProcessingIndicators();
             }
             this.evalCallback(this._cfg.resizeend);
