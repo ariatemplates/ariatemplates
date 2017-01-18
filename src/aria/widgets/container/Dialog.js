@@ -607,9 +607,7 @@ module.exports = Aria.classDefinition({
             }
 
             this._updateDivSize(this._popupContainer.getClientSize());
-            if (this._cfg.center) {
-                this.updatePosition();
-            }
+            this.updatePosition();
         },
 
         /**
@@ -1372,8 +1370,7 @@ module.exports = Aria.classDefinition({
             this._calculateSize();
             this.setProperty("center", false);
             if (this._popup) {
-                this.close();
-                this.open();
+                this._onDimensionsChanged();
                 this._popup.refreshProcessingIndicators();
             }
             this.evalCallback(this._cfg.resizeend);
