@@ -236,6 +236,13 @@ module.exports = Aria.classDefinition({
                 }
             }
             this._updateValue(true);
+            // _updateValue can change the value in the data model, which could make the widget be disposed
+            // (for example during a refresh of a section bound to that part of the data model)
+            // That's why we are checking if this._cfg is defined here:
+            var onblur = this._cfg ? this._cfg.onblur : null;
+            if (onblur) {
+                this.evalCallback(onblur);
+            }
         },
 
         /**

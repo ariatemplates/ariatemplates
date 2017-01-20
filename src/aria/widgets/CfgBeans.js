@@ -996,6 +996,10 @@ module.exports = Aria.beanDefinitions({
                     $type : "common:Callback",
                     $description : "Function to be called when the state of the widget changes."
                 },
+                "onblur" : {
+                    $type : "common:Callback",
+                    $description : "Function to be called when the widget loses focus."
+                },
                 "bind" : {
                     $type : "DropDownInputCfg.bind",
                     $properties : {
