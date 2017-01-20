@@ -413,6 +413,36 @@ var ariaUtilsJson = require("../utils/Json");
             },
 
             /**
+             * Asserts that an error is thrown in the given block (function)
+             * @param {Function} block the function to invoke and detect errors in
+             * @param {String} optMsg optional message to add to the failure description
+             * @return {*}
+             */
+            assertError: function(block, optMsg) {
+                var ex = null;
+                try {
+                    block.apply(this);
+                } catch (e) {
+                    ex = e;
+                }
+                this.assertNotNull(ex, optMsg || "No error has been thrown!");
+                return ex;
+            },
+
+            /**
+             * Asserts that a certain type of error / exception is thrown in the given block (function)
+             * @param {Object} proto the base type of the expected error
+             * @param {Function} block the function to invoke and detect errors in
+             * @param {String} optMsg optional message to add to the failure description
+             * @return {*}
+             */
+            assertThrownIs: function(proto, block, optMsg) {
+                var e = this.assertError(block);
+                this.assertTrue(e && e instanceof proto, optMsg || "Thrown error is not an instance of the prototype");
+                return e;
+            },
+
+            /**
              * Asserts that a JSON structure is contained inside another
              * @param {Object} bigJ the container structure
              * @param {Object} smallJ the contained structure
