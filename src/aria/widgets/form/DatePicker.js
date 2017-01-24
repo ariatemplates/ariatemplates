@@ -102,25 +102,14 @@ module.exports = Aria.classDefinition({
 
         /**
          * Handle events raised by the frame
-         * @param {Object} evt
+         * @protected
          * @override
+         * @param {Object} evt
          */
         _frame_events : function (evt) {
-            if (evt.iconName == "dropdown" && !this._cfg.disabled) {
-                var evtName = evt.name;
-                if (evtName == "iconKeyDown") {
-                    var keyCode = evt.event.keyCode;
-                    if (keyCode == 13 || keyCode == 32) {
-                        evtName = "iconClick";
-                    }
-                }
-
-                if (evtName == "iconMouseDown") {
-                    evt.event.preventDefault(true);
-                } else if (evtName == "iconClick") {
-                    this._toggleDropdown();
-                    evt.event.preventDefault(true);
-                }
+            this.$DropDownTextInput._frame_events.apply(this, arguments);
+            if (evt.event.hasPreventDefault) {
+                evt.event.stopPropagation();
             }
         },
 

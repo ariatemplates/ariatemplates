@@ -38,9 +38,7 @@ module.exports = Aria.classDefinition({
         this.$TextInput.constructor.call(this, cfg, ctxt, lineNumber, controller);
         var iconTooltip = cfg.iconTooltip ? ' title="' + ariaUtilsString.escapeForHTML(cfg.iconTooltip) + '"' : '';
         this._iconsAttributes = {
-            // unselectable is necessary on IE so that, on mouse down, there is no blur of the active element
-            // (preventing the default action on mouse down does not help on IE)
-            "dropdown": 'unselectable="on"' + iconTooltip
+            "dropdown": iconTooltip
         };
         if (cfg.waiAria) {
             this._iconsAttributes.dropdown += ' aria-expanded="false" aria-haspopup="true"';

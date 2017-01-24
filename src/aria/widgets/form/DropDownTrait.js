@@ -110,17 +110,16 @@ module.exports = Aria.classDefinition({
         /**
          * Handle events raised by the frame
          * @protected
+         * @override
          * @param {Object} evt
          */
         _frame_events : function (evt) {
             if (evt.iconName == "dropdown" && !this._cfg.disabled) {
-
                 var evtName = evt.name;
                 if (evtName == "iconKeyDown") {
                     var keyCode = evt.event.keyCode;
                     if (keyCode == 13 || keyCode == 32) {
                         evtName = "iconClick";
-                        evt.event.stopPropagation();
                     }
                 }
 
@@ -128,8 +127,14 @@ module.exports = Aria.classDefinition({
                     if (this._hasFocus) {
                         this._keepFocus = true;
                     }
+
+                    // unselectable is necessary on IE so that, on mouse down, there is no blur of the active element
+                    // (preventing the default action on mouse down does not help on IE)
+                    evt.event.target.setAttribute("unselectable", "on");
+                    evt.event.preventDefault();
                 } else if (evtName == "iconClick") {
                     this._toggleDropdown();
+                    evt.event.preventDefault();
                 }
             }
         },
