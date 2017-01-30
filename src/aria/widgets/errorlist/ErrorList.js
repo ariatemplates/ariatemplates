@@ -40,7 +40,6 @@ Aria.classDefinition({
         divCfg.margins = "0 0 0 0";
         divCfg.id = cfg.id + "_div";
         this._initTemplate({
-            defaultTemplate : this._cfg.defaultTemplate,
             moduleCtrl : {
                 classpath : "aria.widgets.errorlist.ErrorListController",
                 initArgs : {
@@ -48,7 +47,8 @@ Aria.classDefinition({
                     filterTypes : cfg.filterTypes,
                     displayCodes : cfg.displayCodes,
                     title : cfg.title,
-                    messages : cfg.messages
+                    messages : cfg.messages,
+                    displayOptions : cfg.displayOptions
                 }
             }
         });

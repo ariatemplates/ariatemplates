@@ -40,6 +40,7 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.environment.WidgetSettings");
         this.addTests("test.aria.widgets.errorlist.ErrorListControllerTest");
         this.addTests("test.aria.widgets.errorlist.ListErrorTestCase");
+        this.addTests("test.aria.widgets.errorlist.displayOptions.ErrorListDisplayOptionsTestCase");
         this.addTests("test.aria.widgets.action.iconbutton.issue276.IconButtonTestCase");
         this.addTests("test.aria.widgets.verticalAlign.VerticalAlignTestCase");
         this.addTests("test.aria.widgets.icon.IconTest");
