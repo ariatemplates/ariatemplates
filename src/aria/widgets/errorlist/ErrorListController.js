@@ -49,7 +49,8 @@ module.exports = Aria.classDefinition({
                 titleClassName : args.titleClassName,
                 divCfg : args.divCfg,
                 filterTypes : args.filterTypes,
-                displayCodes : args.displayCodes
+                displayCodes : args.displayCodes,
+                displayOptions : args.displayOptions
             };
             this.setMessages(args.messages);
             this.$callback(cb);

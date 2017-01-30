@@ -49,7 +49,6 @@ module.exports = Aria.classDefinition({
         }
 
         this._initTemplate({
-            defaultTemplate : this._cfg.defaultTemplate,
             moduleCtrl : {
                 classpath : "aria.widgets.errorlist.ErrorListController",
                 initArgs : {
@@ -60,7 +59,8 @@ module.exports = Aria.classDefinition({
                     title : cfg.title,
                     titleTag : cfg.titleTag,
                     titleClassName : cfg.titleClassName,
-                    messages : cfg.messages
+                    messages : cfg.messages,
+                    displayOptions : cfg.displayOptions
                 }
             }
         });
