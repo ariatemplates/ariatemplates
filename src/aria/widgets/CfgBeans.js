@@ -1512,6 +1512,10 @@ module.exports = Aria.beanDefinitions({
                     $description : "Template used to display the messages list.",
                     $default : "aria.widgets.errorlist.ErrorListTemplate"
                 },
+                "displayOptions" : {
+                    $type : "json:MultiTypes",
+                    $description : "Custom options that are not interpreted and passed to the template."
+                },
                 "messages" : {
                     $type : "json:ObjectRef",
                     $description : "Messages list (of type aria.validators.CfgBeans.MessagesList) to be displayed in the widget.",
