@@ -48,7 +48,6 @@ module.exports = Aria.classDefinition({
             var contentElement = Aria.$window.document.getElementById(this._elementId);
 
             this.assertTrue(contentElement != null, 'Custom id should have been passed and output to build the element.');
-            this.assertTrue(contentElement.textContent === this._text, 'Custom text should have been passed and output inside the element.');
 
             this.end();
         }
