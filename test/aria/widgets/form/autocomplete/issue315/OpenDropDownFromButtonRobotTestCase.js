@@ -1,9 +1,9 @@
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.autocomplete.issue315.OpenDropDownFromButtonTestCase",
-    $extends : "aria.jsunit.TemplateTestCase",
+    $classpath : "test.aria.widgets.form.autocomplete.issue315.OpenDropDownFromButtonRobotTestCase",
+    $extends : "aria.jsunit.RobotTestCase",
     $dependencies : ["aria.utils.FireDomEvent"],
     $constructor : function () {
-        this.$TemplateTestCase.constructor.call(this);
+        this.$RobotTestCase.constructor.call(this);
         this.setTestEnv({
             template : "test.aria.widgets.form.autocomplete.issue315.OpenDropDownFromButtonTestCaseTpl",
             data : {

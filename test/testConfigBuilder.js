@@ -110,7 +110,11 @@ var generalBrowserExcludes = {
     "Chrome": [
         "test/aria/utils/mouse/MouseDragKoRobotTestCase.js"
     ],
-    "Safari": [],
+    "Safari": [
+        // Excluded because a <select> in Safari behaves differently (pressing the down arrow key opens the
+        // dropdown instead of changing the selection):
+        "test/aria/widgets/form/select/onBlur/SelectOnBlurSimpleRobotTestCase.js"
+    ],
     "IE 7": [
         "test/aria/utils/domNavigationManager/DomNavigationManagerRobotTestCase.js"
     ],
