@@ -106,6 +106,10 @@ var ariaUtilsObject = require("./Object");
      * @private
      */
     var __includePropForBackRef = function (propertyName) {
+        if (!ariaUtilsType.isString(propertyName)) {
+            return true;
+        }
+
         // which property names are included for back references
         return (propertyName != jsonUtils.OBJECT_PARENT_PROPERTY &&
             propertyName.substr(0, jsonUtils.META_FOR_LISTENERS.length) != jsonUtils.META_FOR_LISTENERS &&
