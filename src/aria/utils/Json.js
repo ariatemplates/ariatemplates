@@ -107,7 +107,9 @@ var ariaUtilsObject = require("./Object");
      */
     var __includePropForBackRef = function (propertyName) {
         // which property names are included for back references
-        return (propertyName != jsonUtils.OBJECT_PARENT_PROPERTY && propertyName != jsonUtils.META_FOR_LISTENERS && propertyName != jsonUtils.META_FOR_RECLISTENERS);
+        return (propertyName != jsonUtils.OBJECT_PARENT_PROPERTY &&
+            propertyName.substr(0, jsonUtils.META_FOR_LISTENERS.length) != jsonUtils.META_FOR_LISTENERS &&
+            propertyName.substr(0, jsonUtils.META_FOR_RECLISTENERS.length) != jsonUtils.META_FOR_RECLISTENERS);
     };
 
     /**
