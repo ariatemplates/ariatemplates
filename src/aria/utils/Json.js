@@ -1045,6 +1045,92 @@ var ariaUtilsObject = require("./Object");
                     }
                 }
                 return clone;
+            },
+            /**
+             * Will determine whether two objects are equal and if not will provide the differences between the two.
+             * A return object contains three properties, a boolean equals, an object left and an object right. If the
+             * equals is true, the left and right objects will be null. If not, it will provide all the properties that
+             * are in the left object and not in the right under the left property, and the similarly for right. If comparing
+             * Arrays, they will be converted to Objects and only those indices that are different will be present in the results.  
+             * 
+             * @param {Object} left - creates a diff of this object
+             * @param {Object} right - the reference object to be used to check against 
+             * @return {Object} a report object containing the following properties:
+             *             {Boolean} equals - true or false whether these two objects are the same 
+             *             {Object}  left   - the differences that are only in the left object
+             *             {Object}  right  - the differences that are only in the right object
+             */
+            equalsDiff : function( left, right) {
+                var isLeftArray = typeUtils.isArray(left),
+                    isLeftObject = typeUtils.isObject(left),
+                    isRightArray = typeUtils.isArray(right),
+                    isRightObject = typeUtils.isObject(right),
+                    leftDiff = null,
+                    rightDiff = null,
+                    __processContainer = function(list, __getKey) {
+                        var key, diff;
+                        for (var i = 0, l = list.length; i < l; i++) {
+                            key = __getKey(i, list);
+                            if ( (key.match && key.match(/:/)) || (left[key] === undefined && right[key] === undefined) ) {
+                                continue;
+                            }
+                            diff = this.equalsDiff(left[key], right[key]);
+                            if (!diff.equals) {
+                                if (!leftDiff && !rightDiff) {
+                                    leftDiff = {};
+                                    rightDiff = {};
+                                }
+                                leftDiff[key] = diff.left;
+                                rightDiff[key] = diff.right;
+                            }
+                        }
+                    };
+                
+                if (left === right) {
+                    return {
+                        equals : true,
+                        left : null,
+                        right : null
+                    };
+                }
+                else if (isLeftArray && isRightArray) {
+                    var longerList = left.length > right.length ? left : right;
+                    __processContainer.call(this, longerList, function(i) { return i; });
+                    return {
+                        equals : leftDiff === null && rightDiff === null,
+                        left : leftDiff,
+                        right : rightDiff
+                    };
+                } else if (isLeftObject && isRightObject) {
+                    var allKeys = this.keys(left),
+                        rightKeys = this.keys(right),
+                        key;
+                    for (var i = 0, l = rightKeys.length; i < l; i++) {
+                        key = rightKeys[i];
+                        if (left[key] === undefined) {
+                            allKeys.push(key);
+                        }
+                    }
+                    __processContainer.call(this, allKeys, function(i, keys) { return keys[i]; } );
+                    return {
+                        equals : leftDiff === null && rightDiff === null,
+                        left : leftDiff,
+                        right : rightDiff
+                    };
+                } else if (typeUtils.isDate(right) && typeUtils.isDate(left)) {
+                    if (left.getTime() === right.getTime()) {
+                        return {
+                            equals : true,
+                            left : null,
+                            right : null
+                        };
+                    }
+                }
+                return {
+                    equals : false,
+                    left : left,
+                    right : right
+                };
             }
         }
     });

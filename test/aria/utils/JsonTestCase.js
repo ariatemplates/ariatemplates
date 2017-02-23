@@ -1482,6 +1482,133 @@ Aria.classDefinition({
             this.assertTrue(b[parProp] == null);
             this.assertTrue(c[parProp] == null);
             this.assertTrue(d[parProp] == null);
+        },
+        
+        testEqualsDiff : function() {
+            this.assertJsonEquals(aria.utils.Json.equalsDiff(undefined, undefined), {equals : true, left: null, right : null});
+            this.assertJsonEquals(aria.utils.Json.equalsDiff({}, undefined), {equals : false, left : {}, right : undefined});
+            this.assertJsonEquals(aria.utils.Json.equalsDiff(1, 1), {equals : true, left : null, right : null});
+            this.assertJsonEquals(aria.utils.Json.equalsDiff(1, 2), {equals : false, left : 1, right : 2});
+            this.assertJsonEquals(aria.utils.Json.equalsDiff(1, '1'), {equals : false, left : 1, right : '1'});
+            this.assertJsonEquals(aria.utils.Json.equalsDiff([1,2,3], [1,2,3]), {equals : true, left : null, right : null});
+            this.assertJsonEquals(aria.utils.Json.equalsDiff([1,2], [2]), {equals : false, left : {0:1, 1:2}, right : {0:2}});
+            this.assertJsonEquals(aria.utils.Json.equalsDiff([1], [1,2]), {equals : false, left : {}, right : {1 : 2}});
+            this.assertJsonEquals(aria.utils.Json.equalsDiff(false, true),{equals : false, left : false, right : true});
+            this.assertJsonEquals(aria.utils.Json.equalsDiff(null, 2), {equals : false, left : null, right : 2});
+
+            var object = {},
+                referenceObject = {
+                    a : 1,
+                    b : "two",
+                    c : true,
+                    d : {
+                        sub : 1
+                    },
+                    e : [1,2]
+                };
+            this.assertJsonEquals(aria.utils.Json.equalsDiff(object, referenceObject), {
+                equals : false,
+                left : {},
+                right : {
+                    a : 1,
+                    b : "two",
+                    c : true,
+                    d : {
+                        sub : 1
+                    },
+                    e : [1,2]
+                }
+            });
+            
+            object = {
+                a : 1,
+                aa : 2,
+                b : 'two',
+                bb : 'twotwo',
+                c : true,
+                cc : false,
+                d : {
+                    sub : 1
+                },
+                dd : {
+                    sub : 1
+                },
+                ddd: {},
+                e : 'string',
+                f : {
+                    'object' : true
+                },
+                g : 0,
+                h : [],
+                hh : [1,2,3,4],
+                hhh : [{a:1}, {b:2}, {c:3}],
+                hhhh : {},
+                i : new Date(2010, 5, 15, 10, 32, 45, 3),
+                ii : new Date(2011, 6, 16, 12, 33, 46, 4)
+            };
+            referenceObject = {
+                a : 1,
+                aa : 1,
+                b : 'two',
+                bb : 'two',
+                c : true,
+                cc : 1,
+                d : {
+                    sub : 2
+                },
+                dd : {
+                    sub : 1
+                },
+                ddd : {},
+                e : {
+                    sub2 : true
+                },
+                f : 'notanobject',
+                g : null,
+                h : [1,2,3],
+                hh : [1,2,3,4],
+                hhh : [{a:1}, {b:4}, {c:3}],
+                hhhh : [],
+                i : new Date(2010, 5, 15, 10, 32, 45, 3),
+                ii : new Date(2010, 5, 15, 10, 32, 45, 3)
+            };
+            this.assertJsonEquals(aria.utils.Json.equalsDiff(object, referenceObject), {
+                equals : false,
+                left : {
+                    aa : 2,
+                    bb : 'twotwo',
+                    cc : false,
+                    d : {
+                        sub : 1
+                    },
+                    e : 'string',
+                    f : {
+                        'object' : true
+                    },
+                    g : 0,
+                    h : {},
+                    hhh : { 1 : {b:2} },
+                    hhhh : {},
+                    ii : new Date(2011, 6, 16, 12, 33, 46, 4)
+                },
+                right : {
+                    aa : 1,
+                    bb : 'two',
+                    cc : 1,
+                    d : {
+                        sub : 2
+                    },
+                    e : {
+                        sub2 : true
+                    },
+                    f : 'notanobject',
+                    g : null,
+                    h : {0 : 1,1 : 2, 2: 3},
+                    hhh : {1: {b:4}},
+                    hhhh : [],
+                    ii : new Date(2010, 5, 15, 10, 32, 45, 3)
+                }
+            });
         }
     }
 });
