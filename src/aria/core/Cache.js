@@ -36,9 +36,7 @@ module.exports = Aria.classDefinition({
             "CML" : ".cml",
             "TXT" : ".tpl.txt",
             "RES" : ".js"
-        },
-
-        DEPRECATED_METHOD : "%1 is deprecated."
+        }
     },
     $prototype : {
         /**
@@ -118,7 +116,6 @@ module.exports = Aria.classDefinition({
          * @return {String} logical path e.g x/y/MyClass.tpl
          */
         getFilename : function (classpath) {
-            this.$logWarn(this.DEPRECATED_METHOD, ["getFilename"]);
             var basePath = Aria.getLogicalPath(classpath);
             for (var i = 0, l = atExtensions.length; i < l; i++) {
                 try {

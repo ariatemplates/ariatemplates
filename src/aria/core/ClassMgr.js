@@ -34,7 +34,7 @@ module.exports = Aria.classDefinition({
     },
     $statics : {
         NODER_MIGRATION : "With the migration to noder-js, aria.core.ClassMgr.%1 is no longer supported.",
-        DEPRECATED_METHOD : "aria.core.ClassMgr.%1 is deprecated."
+        DEPRECATED_METHOD : "aria.core.ClassMgr.%1 is deprecated. Please use %2 instead."
     },
     $prototype : {
         /**
@@ -110,8 +110,6 @@ module.exports = Aria.classDefinition({
          * be bypassed by adding a timestamp to the url
          */
         unloadClass : function (classpath, timestampNextTime) {
-            this.$logWarn(this.DEPRECATED_METHOD, ["unloadClass"]);
-
             var classRef = Aria.getClassRef(classpath);
             // no class ref for beans
             if (classRef) {
