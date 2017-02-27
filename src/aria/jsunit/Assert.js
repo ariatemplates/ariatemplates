@@ -92,23 +92,12 @@ var ariaUtilsJson = require("../utils/Json");
              */
             this._expectedErrorList = null;
 
-            ariaCoreLog.clearAppenders();
-            ariaCoreLog.addAppender(new (require("../core/log/SilentArrayAppender"))());
-            if (Aria.verbose) {
-                // Readd the default appender in verbose mode to log things also to the browser console.
-                // The order of appenders matters due to getAppenders()[0] used in assertErrorInLogs|assertLogsEmpty.
-                // Not using Aria.debug not to have a message flood in Attester.
-                ariaCoreLog.addAppender(new (require("../core/log/DefaultAppender"))());
-            }
-
-            ariaCoreLog.resetLoggingLevels();
-            ariaCoreLog.setLoggingLevel("*", 1);
+            this._logAppender = ariaCoreLog.addAppender(new (require("../core/log/SilentArrayAppender"))());
         },
         $destructor : function () {
             this._expectedEventsList = null;
             this.$Test.$destructor.call(this);
-
-            // appenders are cleared after the destroy so we can check for error in $dispose
+            ariaCoreLog.removeAppender(this._logAppender);
         },
         $prototype : {
             /**
@@ -328,7 +317,7 @@ var ariaUtilsJson = require("../utils/Json");
                     this._assertCount++;
                     this._totalAssertCount++;
                 }
-                var logAppender = ariaCoreLog.getAppenders()[0];
+                var logAppender = this._logAppender;
 
                 if (!logAppender.isEmpty()) {
                     var logs = logAppender.getLogs(), errFound = false, msg = '';
@@ -378,7 +367,7 @@ var ariaUtilsJson = require("../utils/Json");
              */
             assertErrorInLogs : function (errorMsg, count) {
                 var res = null;
-                var logAppender = ariaCoreLog.getAppenders()[0];
+                var logAppender = this._logAppender;
                 var logs = logAppender.getLogs(), errFound = false, newLogs = [];
                 if (!errorMsg) {
                     this.assertTrue(false, "assertErrorInLogs was called with a null error message.");

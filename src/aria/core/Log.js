@@ -254,6 +254,7 @@ module.exports = Aria.classDefinition({
          */
         addAppender : function (appender) {
             this._appenders.push(appender);
+            return appender;
         },
 
         /**

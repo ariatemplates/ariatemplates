@@ -31,7 +31,7 @@ Aria.classDefinition({
 
         runTemplateTest : function () {
 
-            var logAppender = aria.core.Log.getAppenders()[0];
+            var logAppender = this._logAppender;
             var logs = logAppender.getLogs();
 
             var expectedErrorsNb = 2;

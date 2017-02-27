@@ -86,7 +86,7 @@ Aria.classDefinition({
         },
 
         _waitForAriaLoad : function (cb) {
-            this._testWindow.aria.core.Log.addAppender(aria.core.Log.getAppenders()[0]);
+            this._testWindow.aria.core.Log.addAppender(this._logAppender);
             if (this._dependencies.length > 0) {
                 this._testWindow.Aria.load({
                     classes : this._dependencies,

@@ -18,8 +18,6 @@ var ariaJsunitTestCase = require("./TestCase");
 var ariaJsunitTestWrapper = require("./TestWrapper");
 var ariaUtilsType = require("../utils/Type");
 var ariaJsunitTest = require("./Test");
-var ariaCoreLog = require("../core/Log");
-
 
 /**
  * The testsuite class
@@ -581,9 +579,6 @@ module.exports = Aria.classDefinition({
                     description : "Uncaught exception while destroying " + classpath + "\nMessage : " + er.message
                 });
             }
-
-            ariaCoreLog.clearAppenders();
-            ariaCoreLog.resetLoggingLevels();
 
             this.__runningTest = null;
         },

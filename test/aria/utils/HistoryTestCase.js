@@ -70,7 +70,7 @@
                 if (this._testInIframe) {
                     this._newWindow = this._iframe.contentWindow;
                 }
-                this._newWindow.aria.core.Log.addAppender(aria.core.Log.getAppenders()[0]);
+                this._newWindow.aria.core.Log.addAppender(this._logAppender);
                 this._newWindow.document.title = "HistoryTest";
 
                 this.waitFor({

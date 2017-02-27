@@ -13,7 +13,7 @@ Aria.classDefinition({
     },
     $prototype : {
         runTemplateTest : function () {
-            aria.core.Log.getAppenders()[0].setLogs([]);
+            this._logAppender.setLogs([]);
             var expandButton = this.getExpandButton("ac1");
             this.synEvent.click(expandButton, {
                 fn : function () {
@@ -32,7 +32,7 @@ Aria.classDefinition({
         },
 
         _openAc : function (evt, args) {
-            var logs = aria.core.Log.getAppenders()[0].getLogs();
+            var logs = this._logAppender.getLogs();
             this.assertEquals(logs.length, 1);
             this.assertEquals(logs[0].msg, "OpenDropDownFromButtonTest handler message");
             this.notifyTemplateTestEnd();
