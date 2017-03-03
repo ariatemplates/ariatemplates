@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "at-noder-converter": "1.1.1",
-    "atpackager": "0.2.9",
+    "atpackager": "0.2.10",
     "gzip-js": "0.3.2",
     "noder-js": "1.6.2"
   },

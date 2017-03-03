@@ -1,0 +1,15 @@
+resources:
+ '/':
+  - 'test/nodeTestResources/testProject/target/beans/app'
+  - 'test/nodeTestResources/testProject/target/beans/fwk'
+  - 'test/nodeTestResources/testProject/test'
+tests:
+ aria-templates:
+  bootstrap: '/ariatemplates.js'
+  extraScripts:
+   - /map.js
+   - /extraScript.js
+  classpaths:
+   includes:
+    - AppTemplateTest
+    - SampleBeanTest

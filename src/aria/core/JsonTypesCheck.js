@@ -622,7 +622,8 @@ var ariaCoreJsonValidator = require("./JsonValidator");
         $classpath : "aria.core.JsonTypesCheck",
         $singleton : true,
         $statics : {
-            baseTypes : baseTypes
+            baseTypes : baseTypes,
+            fastNormalizers : fastNormalizers
         },
         $prototype : {}
     });

@@ -40,6 +40,7 @@ module.exports = function (grunt) {
 
     grunt.config.set('atpackager.prod', {
         options : {
+            ATDebug : true,
             ATBootstrapFile : packagingSettings.bootstrap.bootstrapFileName,
             sourceDirectories : packagingSettings.prod.sourceDirectories,
             sourceFiles : ['**/*', '!aria/node.js', '!' + packagingSettings.bootstrap.bootstrapFileName],
@@ -68,7 +69,7 @@ module.exports = function (grunt) {
                             noCircularDependencies : false,
                             checkPackagesOrder : false
                         }
-                    }, 'ATValidateTemplates', 'ATCompileTemplates', 'ATRemoveDoc', {
+                    }, 'ATValidateTemplates', 'ATCompileTemplates', 'ATRemoveDoc', '<%= atbuildOptions.compileBeansVisitor %>', {
                         type : 'JSMinify',
                         cfg : {
                             files : atExtensions,

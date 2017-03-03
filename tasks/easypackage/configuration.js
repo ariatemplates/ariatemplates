@@ -61,7 +61,10 @@ module.exports = function (grunt, args) {
                         checkPackagesOrder : false
                     }
                 } : null, args.validateTemplates ? 'ATValidateTemplates' : null,
-                args.compileTemplates ? 'ATCompileTemplates' : null, 'ATRemoveDoc', args.convertToNoderjs ? {
+                args.compileTemplates ? 'ATCompileTemplates' : null, 'ATRemoveDoc', args.compileBeans ? {
+                    type: "ATCompileBeans",
+                    cfg: args.compileBeans
+                } : null, args.convertToNoderjs ? {
                     type : 'ATNoderConverter',
                     cfg : {
                         files : args.convertToNoderjs

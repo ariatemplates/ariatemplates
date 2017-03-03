@@ -19,6 +19,22 @@ var Aria = require("../Aria");
     var jsonUtils = (require("../utils/Json"));
     var typeUtils = (require("../utils/Type"));
 
+    var registerBean = function (packageName) {
+        return function (name, parentType, bean) {
+            var fullName = packageName + "." + name;
+            bean = bean || {};
+            bean[jv._MD_TYPENAME] = fullName;
+            bean[jv._MD_PARENTDEF] = parentType;
+            bean[jv._MD_BASETYPE] = parentType[jv._MD_BASETYPE];
+            jv.__processedBeans[fullName] = bean;
+            return bean;
+        };
+    };
+
+    var getBean = function (strType) {
+        return jv.__processedBeans[strType] || null;
+    };
+
     /**
      * The JSON Validator does two main operations:
      * <ul>
@@ -35,7 +51,7 @@ var Aria = require("../Aria");
      * called from JsonTypesCheck. Private methods (starting with two underscores) are not called from JsonTypesCheck.
      * @dependencies ["aria.utils.Type", "aria.utils.Json", "aria.core.JsonTypesCheck"]
      */
-    module.exports = Aria.classDefinition({
+    var jv = module.exports = Aria.classDefinition({
         $classpath : "aria.core.JsonValidator",
         $singleton : true,
 
@@ -164,6 +180,7 @@ var Aria = require("../Aria");
 
             /* Pre-processing errors (errors in bean definition): */
             INVALID_TYPE_NAME : "Invalid or missing $type in %1: %2",
+            ONLY_FASTNORM_PARENT : "Type %1 is not precompiled and extends %2 which was precompiled with the onlyFastNorm option. This is not supported.",
             INVALID_TYPE_REF : "Type %1, found in %2, is not defined in package %3",
             UNDEFINED_PREFIX : "Prefix %1, found in %2, is not defined",
             MISSING_BEANSPACKAGE : "Beans package %1, referenced in %2, was not found",
@@ -368,10 +385,13 @@ var Aria = require("../Aria");
                 // check if this is valid declared type
                 if (typeof(typeName) != "string" || !typeName) {
                     this._logError(this.INVALID_TYPE_NAME, [beanDef[this._MD_TYPENAME], typeName]);
-                    return this._typeError;
                 } else {
                     // retrieve type reference
                     typeRef = this.__getTypeRef(typeName, packageDef);
+                    if (typeRef[this._MD_BASETYPE] !== this._typeError && !typeRef.$type) {
+                        this._logError(this.ONLY_FASTNORM_PARENT, [typeRef[this._MD_TYPENAME], beanDef[this._MD_TYPENAME]]);
+                        typeRef = this._typeRefError;
+                    }
                 }
 
                 // store parent type
@@ -496,7 +516,7 @@ var Aria = require("../Aria");
                         });
                         // getDefault is only used for types providing fast normalization
                         if (beanDef.$fastNorm) {
-                            beanDef.$getDefault = new Function("return " + beanDef.$strDefault + ";");
+                            beanDef.$getDefault = defaultValue === null ? Aria.returnNull : new Function("return " + beanDef.$strDefault + ";");
                         }
                     }
                 }
@@ -540,7 +560,9 @@ var Aria = require("../Aria");
                 this.$assert(298, typeDef != null);
                 beanDef[this._MD_BUILTIN] = true;
                 beanDef[this._MD_BASETYPE] = typeDef;
-                beanDef[this._MD_TYPENAME] = [this._BASE_TYPES_PACKAGE, typeDef.typeName].join('.');
+                var beanName = beanDef[this._MD_TYPENAME] = [this._BASE_TYPES_PACKAGE, typeDef.typeName].join('.');
+                this.__processedBeans[beanName] = beanDef;
+                return typeDef;
             },
 
             /**
@@ -574,6 +596,14 @@ var Aria = require("../Aria");
             _checkType : function (args) {
                 var beanDef = args.beanDef;
                 var baseType = beanDef[this._MD_BASETYPE];
+                // $type can be missing if the bean was precompiled, with the onlyFastNorm option set to true
+                if (!this._options.checkEnabled || !beanDef.$type) {
+                    if (this._options.addDefaults && beanDef.$fastNorm) {
+                        args.dataHolder[args.dataName] = args.value = beanDef.$fastNorm(args.value);
+                    }
+                    return;
+                }
+                // default slow behaviour
                 if (args.value == null) {
                     if (beanDef.$mandatory) {
                         this._logError(this.MISSING_MANDATORY, [args.path, beanDef[this._MD_TYPENAME]]);
@@ -600,9 +630,7 @@ var Aria = require("../Aria");
              * aria.widgets.calendar.CfgBeans.CalendarSettings
              * @return {aria.core.BaseTypes:Bean} The bean definition if strType is valid, or null otherwise.
              */
-            _getBean : function (strType) {
-                return this.__processedBeans[strType] || null;
-            },
+            _getBean : getBean,
 
             /**
              * Process the validation of a Json object with the given bean definition.
@@ -617,25 +645,16 @@ var Aria = require("../Aria");
                     return this._errors;
                 }
 
-                // default slow behaviour
-                if (this._options.checkEnabled) {
-                    this._errors = [];
-                    // launching the validation process
-                    this._checkType({
-                        dataHolder : args,
-                        dataName : 'json',
-                        path : 'ROOT',
-                        value : args.json,
-                        beanDef : beanDef
-                    });
-                    var res = this._errors;
-                    return res;
-                } else {
-                    if (beanDef.$fastNorm) {
-                        args.json = beanDef.$fastNorm(args.json);
-                    }
-                    return [];
-                }
+                this._errors = [];
+                // launching the validation process
+                this._checkType({
+                    dataHolder : args,
+                    dataName : 'json',
+                    path : 'ROOT',
+                    value : args.json,
+                    beanDef : beanDef
+                });
+                return this._errors;
             },
 
             /**
@@ -685,18 +704,23 @@ var Aria = require("../Aria");
 
                 this.$assert(58, def);
 
-                // validate incoming definition
-                if (this._options.checkBeans && this.__loadedBeans[this._BEANS_SCHEMA_PACKAGE]) {
-                    var bean = this._getBean(this._BEANS_SCHEMA_PACKAGE + '.Package');
-                    this.$assert(428, bean != null);
-                    noerrors = noerrors && this.__logAllErrors(this._processJsonValidation({
-                        beanDef : bean,
-                        json : def
-                    }));
-                }
+                var compiled = def.$compiled;
+                if (compiled) {
+                    def.$beans = compiled(registerBean(def.$package), getBean, require("./JsonTypesCheck").fastNormalizers);
+                } else {
+                    // validate incoming definition
+                    if (this._options.checkBeans && this.__loadedBeans[this._BEANS_SCHEMA_PACKAGE]) {
+                        var bean = this._getBean(this._BEANS_SCHEMA_PACKAGE + '.Package');
+                        this.$assert(428, bean != null);
+                        noerrors = noerrors && this.__logAllErrors(this._processJsonValidation({
+                            beanDef : bean,
+                            json : def
+                        }));
+                    }
 
-                this._options.addDefaults = true;
-                noerrors = noerrors && this.__logAllErrors(this.__preprocessBP(def));
+                    this._options.addDefaults = true;
+                    noerrors = noerrors && this.__logAllErrors(this.__preprocessBP(def));
+                }
                 if (noerrors) {
                     this.__loadedBeans[bp] = def;
                     return def;
@@ -825,17 +849,12 @@ var Aria = require("../Aria");
              * @param {String} The fully qualified bean name, ex: aria.widgets.calendar.CfgBeans.CalendarSettings
              * @return {MultiTypes} The bean definition if it exists and is loaded, or null otherwise.
              */
-            getBean : function (beanName) {
-                return this._getBean(beanName);
-            }
+            getBean : getBean
         }
     });
-})();
 
-(function () {
     // augment JsonValidator with base types from JsonTypesCheck
     var baseTypes = require("./JsonTypesCheck").baseTypes;
-    var jv = module.exports;
     for (var i = 0, length = baseTypes.length; i < length; i++) {
         jv._addBaseType(baseTypes[i]);
     }

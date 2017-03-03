@@ -41,6 +41,7 @@ module.exports = function (grunt) {
             includeDependencies : true,
             validateTemplates : false,
             compileTemplates : true,
+            compileBeans : false,
             minify : true,
             hash : true,
             checkPackaged : false,

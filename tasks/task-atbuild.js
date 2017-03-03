@@ -32,6 +32,7 @@ module.exports = function (grunt) {
             packages : require('../build/config/files-prod.json'),
             outputDirectory : packagingSettings.prod.outputDirectory,
             outputBootstrapFile : packagingSettings.bootstrap.bootstrapFileName,
+            compileBeans : false,
             clean : true,
             gzipStats : false,
             checkPackaged : true
@@ -41,6 +42,10 @@ module.exports = function (grunt) {
         grunt.config.set('atbuildOptions.allow_unpackaged_files', options.checkPackaged
                 ? packagingSettings.prod.allowUnpackagedFiles
                 : ['**/*']);
+        grunt.config.set('atbuildOptions.compileBeansVisitor', options.compileBeans ? {
+            type: "ATCompileBeans",
+            cfg: options.compileBeans
+        } : null);
         grunt.config.set('atbuildOptions.localization_files', require('../build/config/files-prod-localization.json'));
         grunt.config.set('atbuildOptions.license_min', packagingSettings.licenseMin);
         grunt.config.set('atbuildOptions.license', packagingSettings.license);

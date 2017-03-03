@@ -15,6 +15,7 @@
 var assert = require("assert");
 var path = require("path");
 var fs = require("fs");
+var vm = require("vm");
 var fork = require("./util/fork");
 
 var getPath = function (end) {
@@ -65,6 +66,44 @@ var verifyImgFiles = function (outputFolder) {
         assert.strictEqual(outputFile, originalFile, fileName + " was modified by the build.");
     });
     assert.strictEqual(checks, 2, "Wrong number of files in app/css/img");
+};
+
+var verifyBeanFile = function (outputFolder, expectsCompiled) {
+    try {
+        var fileName = testProjectPath + "target/" + outputFolder + "/app/SampleBean.js";
+        var fileContent = fs.readFileSync(fileName, 'utf8');
+        var beanDefinition = null;
+        var beanDefinitionsCalls = 0;
+        var definedModule = {};
+        var beanDefinitionsResult = {};
+        var Aria = {
+            beanDefinitions: function (arg) {
+                beanDefinitionsCalls++;
+                beanDefinition = arg;
+                return beanDefinitionsResult;
+            }
+        };
+        vm.runInNewContext(fileContent, {
+            Aria: Aria,
+            module: definedModule,
+            require: function (file) {
+                return Aria;
+            }
+        }, {
+            filename: fileName
+        });
+        assert.equal(beanDefinitionsCalls, 1, "SampleBean.js should have called Aria.beanDefinitions once.");
+        if (expectsCompiled) {
+            assert.strictEqual(beanDefinition.$beans, undefined, "SampleBean.js is not compiled correctly: $beans is present.");
+            assert.strictEqual(definedModule.exports, beanDefinitionsResult, "SampleBean.js is not compiled correctly: module.exports is not defined correctly.");
+            assert.notStrictEqual(beanDefinition.$compiled, undefined, "SampleBean.js is not compiled correctly: $compiled is undefined.");
+        } else {
+            assert.notStrictEqual(beanDefinition.$beans, undefined, "SampleBean.js problem: $beans is undefined.");
+            assert.strictEqual(beanDefinition.$compiled, undefined, "SampleBean.js problem: $compiled is defined.");
+        }
+    } catch (ex) {
+        assert.ok(false, "Failed to execute SampleBean.js: " + ex);
+    }
 };
 
 describe("easypackage grunt task", function () {
@@ -164,6 +203,13 @@ describe("easypackage grunt task", function () {
             assert.ok(/loadFileContent\("app\/css\/CalendarSkin\.js","/.test(calendarPkg), "Package app/css/calendar.js does not include CalendarSkin.js");
             assert.ok(/loadFileContent\("app\/css\/CalendarStyle\.tpl\.css","/.test(calendarPkg), "Package app/css/calendar.js does not include CalendarStyle.tpl.css");
             verifyImgFiles("three");
+            verifyBeanFile("three", false);
+            callback();
+        });
+    });
+    it("should compile beans correctly - fourth config", function (callback) {
+        testBuild(4, function () {
+            verifyBeanFile("beans/app", true);
             callback();
         });
     });
