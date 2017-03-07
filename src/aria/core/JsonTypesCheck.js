@@ -182,6 +182,16 @@ var ariaCoreJsonValidator = require("./JsonValidator");
     };
 
     /**
+     * Return true if the given bean has a fast normalization function.
+     * @private
+     * @param {aria.core.BaseTypes:Bean} beanDef
+     * @return {Boolean}
+     */
+    var hasFastNorm = function (beanDef) {
+        return beanDef[jv._MD_BASETYPE].makeFastNorm;
+    };
+
+    /**
      * List of base types. Contains object like
      * @type Array
      * @private
@@ -316,17 +326,19 @@ var ariaCoreJsonValidator = require("./JsonValidator");
                 dontSkip : true,
                 preprocess : function (beanDef, beanName, packageDef) {
                     /* this function is used for the inheritance of properties */
-                    /* at this stage, the parent has already bean processed */
-                    var prop = beanDef.$properties;
-                    if (!prop) {
-                        prop = {};
-                        beanDef.$properties = prop;
-                    }
+                    /* at this stage, the parent has already been processed */
                     var parentBean = beanDef[jv._MD_PARENTDEF];
 
                     // normalize properties based on parent properties
                     beanDef.$restricted = (beanDef.$restricted === false) ? false : (parentBean.$restricted !== false);
                     var parentProp = parentBean.$properties;
+
+                    var prop = beanDef.$properties;
+                    if (!prop) {
+                        // reuse all properties from parent: no need to preprocess further
+                        beanDef.$properties = parentProp || {};
+                        return;
+                    }
 
                     // apply parent properties on this child properties
                     for (var i in parentProp) {
@@ -349,7 +361,7 @@ var ariaCoreJsonValidator = require("./JsonValidator");
                         }
                     }
 
-                    // process all childs of object
+                    // process all children of object
                     for (var key in prop) {
                         if (!prop.hasOwnProperty(key) || key.indexOf(':') != -1 || key.charAt(0) == '_') {
                             continue;
@@ -403,10 +415,15 @@ var ariaCoreJsonValidator = require("./JsonValidator");
                     }
                 },
                 makeFastNorm : function (beanDef) {
+                    var properties = beanDef.$properties;
+                    var parentBean = beanDef[jv._MD_PARENTDEF];
+                    if (properties === parentBean.$properties) {
+                        // shortcut: reuse parent $fastNorm bean when possible
+                        beanDef.$fastNorm = parentBean.$fastNorm;
+                        return;
+                    }
                     var strBuffer = ["var beanProperties = this.$properties;"];
                     strBuffer.push("if (!obj) { return this.$getDefault(); }");
-
-                    var properties = beanDef.$properties;
 
                     // loop over properties to generate normalizers
                     var hasProperties = false;
@@ -416,23 +433,16 @@ var ariaCoreJsonValidator = require("./JsonValidator");
                             continue;
                         }
                         var property = properties[propertyName];
-                        var strDefault = null;
-                        if ("$strDefault" in property) {
-                            strDefault = property.$strDefault;
-                        } else if (("$default" in property) && property.$getDefault) {
-                            // $strDefault may not be already defined at the time makeFastNorm is called,
-                            // even if a default value does exist. In that case, let's generate a call to $getDefault.
-                            strDefault = "beanProperties['" + propertyName + "'].$getDefault()";
-                        }
+                        var strDefault = property.$strDefault;
                         if (strDefault) {
                             hasProperties = true;
                             strBuffer.push("if (obj['" + propertyName + "'] == null) { obj['" + propertyName + "'] = "
                                     + strDefault + "; }");
-                            if (property.$fastNorm) {
+                            if (hasFastNorm(property)) {
                                 strBuffer.push("else { beanProperties['" + propertyName + "'].$fastNorm(obj['"
                                         + propertyName + "']); }");
                             }
-                        } else if (property.$fastNorm) {
+                        } else if (hasFastNorm(property)) {
                             hasProperties = true;
                             // PTR 04546401 : Even if they have no default values, Objects might have subproperties with
                             // default values
@@ -443,11 +453,7 @@ var ariaCoreJsonValidator = require("./JsonValidator");
                     }
                     strBuffer.push("return obj;");
 
-                    if (hasProperties) {
-                        beanDef.$fastNorm = new Function("obj", strBuffer.join("\n"));
-                    } else {
-                        beanDef.$fastNorm = fastNormalizers.emptyObject;
-                    }
+                    beanDef.$fastNorm = hasProperties ? new Function("obj", strBuffer.join("\n")) : fastNormalizers.emptyObject;
                 }
             }, {
                 typeName : "Array",
@@ -470,11 +476,7 @@ var ariaCoreJsonValidator = require("./JsonValidator");
                     }
                 },
                 makeFastNorm : function (beanDef) {
-                    // if content type is simple, no fast normalization is required
-                    if (!beanDef.$contentType.$fastNorm) {
-                        return;
-                    }
-                    beanDef.$fastNorm = fastNormalizers.array;
+                    beanDef.$fastNorm = hasFastNorm(beanDef.$contentType) ? fastNormalizers.array : Aria.returnArg;
                 }
             }, {
                 typeName : "Map",
@@ -513,11 +515,7 @@ var ariaCoreJsonValidator = require("./JsonValidator");
                     }
                 },
                 makeFastNorm : function (beanDef) {
-                    // if content type is simple, no fast normalization is required
-                    if (!beanDef.$contentType.$fastNorm) {
-                        return;
-                    }
-                    beanDef.$fastNorm = fastNormalizers.map;
+                    beanDef.$fastNorm = hasFastNorm(beanDef.$contentType) ? fastNormalizers.map : Aria.returnArg;
                 }
             }, {
                 typeName : "MultiTypes",

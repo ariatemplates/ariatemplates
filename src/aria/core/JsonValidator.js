@@ -78,6 +78,11 @@ var Aria = require("../Aria");
             this.__processedBeans = {};
 
             /**
+             * Queue of beans waiting for their fast normalization functions to be created.
+             */
+            this.__toGenerateFastNorm = [];
+
+            /**
              * Map of all base types. The key in the map is the short type name (e.g.: String, does not include package
              * name).
              * @type Object
@@ -444,13 +449,11 @@ var Aria = require("../Aria");
                     // beanDef.$strDefault = typeRef.$strDefault;
                 }
 
-                var tempFastNorm = baseType && baseType.makeFastNorm && !beanDef.$fastNorm;
-                if (tempFastNorm) {
-                    // Prepare with empty $fastNorm and $getDefault functions because the existence of those functions
-                    // can be checked during the call to baseType.preprocess.
-                    // This happens especially in case the bean structure is recursive.
-                    beanDef.$fastNorm = Aria.returnNull;
-                    beanDef.$getDefault = Aria.returnNull;
+                if (baseType && baseType.makeFastNorm && !beanDef.$fastNorm) {
+                    // the order in which fast normalization is done is important:
+                    // a parent bean should be done before its children (so that the parent $fastNorm can be reused when possible),
+                    // and so even when properties reference a parent bean (e.g. to describe a recursive structure)
+                    this.__toGenerateFastNorm.push(beanDef);
                 }
 
                 // apply baseType preprocessing if any
@@ -463,11 +466,6 @@ var Aria = require("../Aria");
                     return this._typeError;
                 }
 
-                if (tempFastNorm) {
-                    // generate fast normalizer
-                    baseType.makeFastNorm(beanDef);
-                }
-
                 // apply default configuration.
                 if ("$default" in beanDef) {
 
@@ -477,7 +475,7 @@ var Aria = require("../Aria");
                         return this._typeError;
                     }
 
-                    // normalize default values in needed
+                    // normalize default values as needed
                     if (this._options.checkDefaults) {
 
                         // save error state as normalization will erase it
@@ -489,7 +487,7 @@ var Aria = require("../Aria");
                             json : beanDef.$default
                         });
 
-                        // restaure errors
+                        // restore errors
                         this._errors = currentErrors;
 
                         if (errors.length > 0) {
@@ -514,10 +512,10 @@ var Aria = require("../Aria");
                         beanDef.$strDefault = jsonUtils.convertToJsonString(defaultValue, {
                             reversible : true
                         });
-                        // getDefault is only used for types providing fast normalization
-                        if (beanDef.$fastNorm) {
-                            beanDef.$getDefault = defaultValue === null ? Aria.returnNull : new Function("return " + beanDef.$strDefault + ";");
-                        }
+                    }
+
+                    if (beanDef.$strDefault && !beanDef.$getDefault && baseType.makeFastNorm) {
+                        beanDef.$getDefault = new Function("return " + beanDef.$strDefault + ";");
                     }
                 }
 
@@ -546,6 +544,18 @@ var Aria = require("../Aria");
                         this._logError(this.INVALID_NAME, [beanName, this._currentBeanName]);
                     }
                     this._preprocessBean(beans[beanName], def.$package + "." + beanName, def);
+                }
+
+                // Generate fast normalization functions at the end:
+                var toGenerateFastNorm = this.__toGenerateFastNorm;
+                while (toGenerateFastNorm.length > 0) {
+                    var beanDef = toGenerateFastNorm.shift();
+                    var baseType = beanDef[this._MD_BASETYPE];
+
+                    if (baseType.makeFastNorm) {
+                        // generate fast normalizer
+                        baseType.makeFastNorm(beanDef);
+                    }
                 }
 
                 return this._errors;
