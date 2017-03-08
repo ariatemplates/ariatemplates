@@ -36,6 +36,22 @@ Aria.beanDefinitions({
                 "value2" : {
                     $type : "json:Integer",
                     $default : 7
+                },
+                "structure" : {
+                    $type : "json:Object",
+                    $default : {
+                        value4 : 50
+                    },
+                    $properties : {
+                        "value3" : {
+                            $type : "json:Integer",
+                            $default : 12
+                        },
+                        "value4" : {
+                            $type : "json:Integer",
+                            $default : 70
+                        }
+                    }
                 }
             }
         }

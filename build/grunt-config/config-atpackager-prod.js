@@ -40,7 +40,6 @@ module.exports = function (grunt) {
 
     grunt.config.set('atpackager.prod', {
         options : {
-            ATDebug : true,
             ATBootstrapFile : packagingSettings.bootstrap.bootstrapFileName,
             sourceDirectories : packagingSettings.prod.sourceDirectories,
             sourceFiles : ['**/*', '!aria/node.js', '!' + packagingSettings.bootstrap.bootstrapFileName],

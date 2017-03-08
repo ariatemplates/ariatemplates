@@ -1621,6 +1621,20 @@ var Aria = module.exports = global.Aria;
         return arg;
     };
 
+    /**
+     * Returns an empty object. To be used in order to avoid closures.
+     */
+    Aria.returnObject = function () {
+        return {};
+    };
+
+    /**
+     * Returns an empty array. To be used in order to avoid closures.
+     */
+    Aria.returnArray = function () {
+        return [];
+    };
+
 })();
 var jsEval = require("noder-js/jsEval");
 

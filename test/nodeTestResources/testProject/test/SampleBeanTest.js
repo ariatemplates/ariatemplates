@@ -26,11 +26,15 @@ Aria.classDefinition({
                             value2 : 0
                         }, {
                             value1 : 4,
+                            structure : {},
                             subTrees : [{
                                         subTrees : [{
                                                     subTrees : []
                                                 }, {
-                                                    value1 : 2
+                                                    value1 : 2,
+                                                    structure : {
+                                                        value3 : 777
+                                                    }
                                                 }]
                                     }]
                         }]
@@ -41,23 +45,47 @@ Aria.classDefinition({
             return {
                 value1 : 1,
                 value2 : 7,
+                structure : {
+                    value3 : 12,
+                    value4 : 50
+                },
                 subTrees : [{
                             value1 : 3,
                             value2 : 0,
+                            structure : {
+                                value3 : 12,
+                                value4 : 50
+                            },
                             subTrees : []
                         }, {
                             value1 : 4,
                             value2 : 7,
+                            structure : {
+                                value3 : 12,
+                                value4 : 70
+                            },
                             subTrees : [{
                                         value1 : 3,
                                         value2 : 7,
+                                        structure : {
+                                            value3 : 12,
+                                            value4 : 50
+                                        },
                                         subTrees : [{
                                                     value1 : 3,
                                                     value2 : 7,
+                                                    structure : {
+                                                        value3 : 12,
+                                                        value4 : 50
+                                                    },
                                                     subTrees : []
                                                 }, {
                                                     value1 : 2,
                                                     value2 : 7,
+                                                    structure : {
+                                                        value3 : 777,
+                                                        value4 : 70
+                                                    },
                                                     subTrees : []
                                                 }]
                                     }]

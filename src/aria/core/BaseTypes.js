@@ -251,6 +251,10 @@ module.exports = Aria.beanDefinitions({
                     $type : "json:FunctionRef",
                     $description : "Fast normalization function for this type. Automatically added by the framework."
                 },
+                "$fastNormParent" : {
+                    $type : "json:ObjectRef",
+                    $description : "Reference to the parent bean used when calling a parent $fastNorm method. Automatically added by the framework."
+                },
                 "$getDefault" : {
                     $type : "json:FunctionRef",
                     $description : "Return default value. Automatically added by the framework."

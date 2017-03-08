@@ -35,6 +35,12 @@ var Aria = require("../Aria");
         return jv.__processedBeans[strType] || null;
     };
 
+    var commonGetDefault = {
+        "null": Aria.returnNull,
+        "{}": Aria.returnObject,
+        "[]": Aria.returnArray
+    };
+
     /**
      * The JSON Validator does two main operations:
      * <ul>
@@ -475,6 +481,20 @@ var Aria = require("../Aria");
                         return this._typeError;
                     }
 
+                    // strDefault is a string representation of the default value, used in fast normalization
+                    // it is not normalized yet, so that the output of beans pre-compilation does not take too much space
+                    if (!beanDef.$strDefault) {
+                        // make a string with "reversible" set to true, or null if cannot convert
+                        beanDef.$strDefault = jsonUtils.convertToJsonString(beanDef.$default, {
+                            reversible : true
+                        });
+                    }
+
+                    var strDefault = beanDef.$strDefault;
+                    if (strDefault && !beanDef.$getDefault && baseType.makeFastNorm) {
+                        beanDef.$getDefault = commonGetDefault.hasOwnProperty(strDefault) ? commonGetDefault[strDefault] : new Function("return " + strDefault + ";");
+                    }
+
                     // normalize default values as needed
                     if (this._options.checkDefaults) {
 
@@ -504,18 +524,6 @@ var Aria = require("../Aria");
                     if (!("$simpleCopyType" in beanDef)) {
                         beanDef.$simpleCopyType = !defaultValue || typeUtils.isString(defaultValue)
                                 || typeUtils.isNumber(defaultValue) || defaultValue === true;
-                    }
-
-                    // strDefault is a string representation of the default value, used in fast normalization
-                    if (!beanDef.$strDefault) {
-                        // make a string with "reversible" set to true, or null if cannot convert
-                        beanDef.$strDefault = jsonUtils.convertToJsonString(defaultValue, {
-                            reversible : true
-                        });
-                    }
-
-                    if (beanDef.$strDefault && !beanDef.$getDefault && baseType.makeFastNorm) {
-                        beanDef.$getDefault = new Function("return " + beanDef.$strDefault + ";");
                     }
                 }
 
