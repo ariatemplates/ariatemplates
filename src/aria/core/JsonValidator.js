@@ -446,13 +446,11 @@ var Aria = require("../Aria");
                 }
                 if (hasNoDefault && ("$default" in typeRef) && !beanDef.$mandatory) {
                     beanDef.$default = jsonUtils.copy(typeRef.$default);
-                    // Even if the child does not redefine the default value, the child default value may end up being
-                    // different from the parent default value
-                    // e.g. if the child defines more sub-properties with default values
-                    // so it's important to compute $strDefault again for each bean, and NOT to uncomment the following
-                    // WRONG shortcut:
-                    // beanDef.$simpleCopyType = typeRef.$simpleCopyType;
-                    // beanDef.$strDefault = typeRef.$strDefault;
+                    beanDef.$simpleCopyType = typeRef.$simpleCopyType;
+                    beanDef.$strDefault = typeRef.$strDefault;
+                    if (typeRef.$getDefault) {
+                        beanDef.$getDefault = typeRef.$getDefault;
+                    }
                 }
 
                 if (baseType && baseType.makeFastNorm && !beanDef.$fastNorm) {
@@ -481,21 +479,10 @@ var Aria = require("../Aria");
                         return this._typeError;
                     }
 
-                    // strDefault is a string representation of the default value, used in fast normalization
-                    // it is not normalized yet, so that the output of beans pre-compilation does not take too much space
-                    if (!beanDef.$strDefault) {
-                        // make a string with "reversible" set to true, or null if cannot convert
-                        beanDef.$strDefault = jsonUtils.convertToJsonString(beanDef.$default, {
-                            reversible : true
-                        });
-                    }
+                    var defaultValue = beanDef.$default;
 
-                    var strDefault = beanDef.$strDefault;
-                    if (strDefault && !beanDef.$getDefault && baseType.makeFastNorm) {
-                        beanDef.$getDefault = commonGetDefault.hasOwnProperty(strDefault) ? commonGetDefault[strDefault] : new Function("return " + strDefault + ";");
-                    }
-
-                    // normalize default values as needed
+                    // check the default value, this will not change it
+                    // (as addDefaults is false when preprocessing beans)
                     if (this._options.checkDefaults) {
 
                         // save error state as normalization will erase it
@@ -504,26 +491,38 @@ var Aria = require("../Aria");
 
                         var errors = this._processJsonValidation({
                             beanDef : beanDef,
-                            json : beanDef.$default
+                            json : defaultValue
                         });
 
                         // restore errors
                         this._errors = currentErrors;
 
                         if (errors.length > 0) {
-                            this._logError(this.INVALID_DEFAULTVALUE, [beanDef.$default, beanDef[this._MD_TYPENAME],
+                            this._logError(this.INVALID_DEFAULTVALUE, [defaultValue, beanDef[this._MD_TYPENAME],
                                     errors]);
 
                             return this._typeError;
                         }
                     }
 
-                    var defaultValue = beanDef.$default;
-
                     // simpleCopyType help to fasten copy of element
                     if (!("$simpleCopyType" in beanDef)) {
                         beanDef.$simpleCopyType = !defaultValue || typeUtils.isString(defaultValue)
                                 || typeUtils.isNumber(defaultValue) || defaultValue === true;
+                    }
+
+                    // strDefault is a string representation of the default value, used in fast normalization
+                    // it is not normalized yet, so that the output of beans pre-compilation does not take too much space
+                    if (!beanDef.$strDefault) {
+                        // make a string with "reversible" set to true, or null if cannot convert
+                        beanDef.$strDefault = jsonUtils.convertToJsonString(defaultValue, {
+                            reversible : true
+                        });
+                    }
+
+                    var strDefault = beanDef.$strDefault;
+                    if (strDefault && !beanDef.$getDefault && baseType.makeFastNorm) {
+                        beanDef.$getDefault = commonGetDefault.hasOwnProperty(strDefault) ? commonGetDefault[strDefault] : new Function("return " + strDefault + ";");
                     }
                 }
 
@@ -633,11 +632,8 @@ var Aria = require("../Aria");
                         }
                         args.dataHolder[args.dataName] = args.value;
                     }
-                    // if there is no value originally provided, we do not check it
-                    // the default value should already have been checked in preprocessing
-                    return;
                 }
-                if (baseType.process) {
+                if (args.value != null && baseType.process) {
                     baseType.process(args);
                 }
             },
@@ -736,7 +732,8 @@ var Aria = require("../Aria");
                         }));
                     }
 
-                    this._options.addDefaults = true;
+                    // do not add defaults to default values (to be consistent with fast normalization)
+                    this._options.addDefaults = false;
                     noerrors = noerrors && this.__logAllErrors(this.__preprocessBP(def));
                 }
                 if (noerrors) {

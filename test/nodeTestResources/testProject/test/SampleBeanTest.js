@@ -23,7 +23,11 @@ Aria.classDefinition({
             return {
                 value1 : 1,
                 subTrees : [{
-                            value2 : 0
+                            value2 : 0,
+                            child : {},
+                            ancestor3 : {},
+                            ancestor2 : {},
+                            ancestor1 : {}
                         }, {
                             value1 : 4,
                             structure : {},
@@ -52,6 +56,39 @@ Aria.classDefinition({
                 subTrees : [{
                             value1 : 3,
                             value2 : 0,
+                            child : {
+                                text1: "defChildTextV1",
+                                text3: "defChildTextV3",
+                                obj: {
+                                    subProperty1: "defChildV1",
+                                    subProperty2: "defChildV2"
+                                },
+                                text4: "defValue4",
+                                text2: "defValue2"
+                            },
+                            ancestor3 : {
+                                text1: "defValue1",
+                                text3: "defValue3",
+                                obj: {
+                                    subProperty1: "defV1"
+                                },
+                                text4: "defValue4",
+                                text2: "defValue2"
+                            },
+                            ancestor2 : {
+                                text1: "defValue1",
+                                text2: "defValue2",
+                                obj: {
+                                    subProperty1: "defV1"
+                                }
+                            },
+                            ancestor1 : {
+                                text1: "defValue1",
+                                text2: "defValue2",
+                                obj: {
+                                    subProperty1: "defV1"
+                                }
+                            },
                             structure : {
                                 value3 : 12,
                                 value4 : 50

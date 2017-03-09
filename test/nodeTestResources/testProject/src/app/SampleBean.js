@@ -19,6 +19,72 @@ Aria.beanDefinitions({
         "json" : "aria.core.JsonTypes"
     },
     $beans : {
+        "Ancestor1" : {
+            $type : "json:Object",
+            $properties : {
+                "text1" : {
+                    $type : "json:String",
+                    $default : "defValue1"
+                },
+                "text2" : {
+                    $type : "json:String",
+                    $default : "defValue2"
+                },
+                "obj" : {
+                    $type : "json:Object",
+                    $default : {},
+                    $properties : {
+                        "subProperty1" : {
+                            $type : "json:String",
+                            $default : "defV1"
+                        }
+                    }
+                }
+            }
+        },
+        "Ancestor2" : {
+            $type : "Ancestor1"
+        },
+        "Ancestor3" : {
+            $type : "Ancestor2",
+            $properties : {
+                "text3" : {
+                    $type : "json:String",
+                    $default : "defValue3"
+                },
+                "text4" : {
+                    $type : "json:String",
+                    $default : "defValue4"
+                }
+            }
+        },
+        "Child" : {
+            $type : "Ancestor3",
+            $properties : {
+                "text1" : {
+                    $type : "Ancestor3.text1",
+                    $default : "defChildTextV1"
+                },
+                "text3" : {
+                    $type : "Ancestor3.text3",
+                    $default : "defChildTextV3"
+                },
+                "obj": {
+                    $type : "Ancestor3.obj",
+                    $default : {},
+                    $properties : {
+                        "subProperty1" : {
+                            $type: "Ancestor3.obj.subProperty1",
+                            $default : "defChildV1"
+                        },
+                        "subProperty2" : {
+                            $type: "json:String",
+                            $default : "defChildV2"
+                        }
+                    }
+                }
+            }
+        },
         "Tree" : {
             $type : "json:Object",
             $properties : {
@@ -52,6 +118,18 @@ Aria.beanDefinitions({
                             $default : 70
                         }
                     }
+                },
+                "child" : {
+                    $type : "Child"
+                },
+                "ancestor3" : {
+                    $type : "Ancestor3"
+                },
+                "ancestor2" : {
+                    $type : "Ancestor2"
+                },
+                "ancestor1" : {
+                    $type : "Ancestor1"
                 }
             }
         }

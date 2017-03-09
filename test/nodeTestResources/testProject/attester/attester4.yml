@@ -5,6 +5,7 @@ resources:
   - 'test/nodeTestResources/testProject/test'
 tests:
  aria-templates:
+  debug: false
   bootstrap: '/ariatemplates.js'
   extraScripts:
    - /map.js
