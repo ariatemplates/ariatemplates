@@ -37,7 +37,7 @@ module.exports = Aria.classDefinition({
     $extends : ariaWidgetLibsBindableWidget,
     $css : [ariaWidgetsGlobalStyle],
     $onload : function () {
-        // check for skin existency
+        // check for skin existence
         if (!aria.widgets.AriaSkin) {
             this.$JsObject.$logError.call(this, this.SKIN_NOT_READY);
         }
@@ -429,7 +429,7 @@ module.exports = Aria.classDefinition({
             } else {
                 out.write('margin:' + this._defaultMargin + 'px;" ');
             }
-            if (cfg.tooltip) {
+            if (cfg.tooltip && !this._customTooltipMgt) {
                 out.write('title="' + ariaUtilsString.escapeHTMLAttr(cfg.tooltip) + '" ');
             }
             if (cfg.tabIndex != null && !this._customTabIndexProvided && !cfg.disabled) {
@@ -747,7 +747,7 @@ module.exports = Aria.classDefinition({
          */
         _onBoundPropertyChange : function (propertyName, newValue, oldValue) {
             var domElt = this.getDom();
-            if (propertyName == 'tooltip') {
+            if (propertyName == 'tooltip' && !this._customTooltipMgt) {
                 domElt.title = newValue;
             }
             if (propertyName == 'disabled') {

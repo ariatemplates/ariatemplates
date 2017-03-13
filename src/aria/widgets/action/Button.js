@@ -116,6 +116,14 @@ module.exports = Aria.classDefinition({
         _skinnableClass : "Button",
 
         /**
+         * The tooltip is managed by this class rather than by the Widget base class,
+         * because the title attribute is supposed to be on the &lt;button&gt; html tag
+         * and not the root &lt;span&gt; of the widget (especially for screen readers).
+         * @type Boolean
+         */
+        _customTooltipMgt : true,
+
+        /**
          * Internal method to update the state of the widget
          * @param {Boolean} skipChangeState If true the internal state won't change
          * @protected
@@ -173,6 +181,10 @@ module.exports = Aria.classDefinition({
         _onBoundPropertyChange : function (propertyName, newValue, oldValue) {
             this.$ActionWidget._onBoundPropertyChange.apply(this, arguments);
             var changedState = false;
+            if (propertyName === "tooltip") {
+                this.getDom(); // makes sure _focusElt is defined
+                this._focusElt.title = newValue;
+            }
             if (propertyName === "disabled") {
                 changedState = true;
                 this._isDisabled = !!newValue;
@@ -203,6 +215,7 @@ module.exports = Aria.classDefinition({
         _widgetMarkup : function (out) {
             var cfg = this._cfg;
             var tabIndexString = (cfg.tabIndex != null ? ' tabindex="' + this._calculateTabIndex() + '" ' : '');
+            var titleString = cfg.tooltip ? ' title="' + ariaUtilsString.escapeHTMLAttr(cfg.tooltip) + '" ' : '';
             var isIE7 = ariaCoreBrowser.isIE7;
             var ariaTestMode = (Aria.testMode) ? ' id="' + this._domId + '_button" ' : '';
             var buttonClass = cfg.disabled ? "xButton xButtonDisabled" : "xButton";
@@ -227,6 +240,7 @@ module.exports = Aria.classDefinition({
                     waiAriaAttributes,
                     ariaTestMode,
                     tabIndexString,
+                    titleString,
                     disableMarkup,
                     styleMarkup,
                     !cfg.waiAria
@@ -237,7 +251,7 @@ module.exports = Aria.classDefinition({
                 if (isIE7) {
                     // FIXME: find a way to put a button also on IE7
                     // on IE7 the button is having display issues the current frame implementation inside it
-                    out.write(['<span class="' + buttonClass + '" style="margin: 0;"', waiAriaAttributes, tabIndexString, ariaTestMode,
+                    out.write(['<span class="' + buttonClass + '" style="margin: 0;"', waiAriaAttributes, tabIndexString, titleString, ariaTestMode,
                             '>'].join(''));
                 } else {
                     out.write([
@@ -246,6 +260,7 @@ module.exports = Aria.classDefinition({
                         ' class="' + buttonClass + '"',
                         waiAriaAttributes,
                         tabIndexString,
+                        titleString,
                         ariaTestMode,
                         disableMarkup,
                         '>'
