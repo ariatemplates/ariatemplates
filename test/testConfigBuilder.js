@@ -72,6 +72,7 @@ var phantomjsExcludesPatterns = [
 var generalBrowserExcludes = {
     "PhantomJS": phantomjsExcludesPatterns,
     "Firefox 3": [
+        "test/aria/utils/HistoryTestCase.js",
         "test/aria/core/io/JSONPTestCase.js",
         "test/aria/pageEngine/pageEngine/externalHashNavigation/ExternalHashNavigationTestCase.js",
         "test/aria/pageEngine/pageEngine/PageEngineFiveTestCase.js",
@@ -156,6 +157,9 @@ var generalBrowserExcludes = {
         "test/aria/utils/mouse/MouseDragKoRobotTestCase.js",
         "test/aria/widgets/form/selectbox/SelectboxTestCase.js",
         "test/aria/widgets/form/multiautocomplete/navigation/input/InputFieldRobotTestCase.js"
+    ],
+    "IE 11 [JAWS]": [
+        "test/aria/widgets/wai/errorlist/binding/ErrorListBindingJawsTestCase.js"
     ],
     "Edge": [
         "test/aria/storage/localStorage/EventIssueTestCase.js",
