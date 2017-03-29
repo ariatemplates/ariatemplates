@@ -347,10 +347,15 @@ module.exports = Aria.classDefinition({
          */
         _focus : function () {
             try {
-                this.getDom().focus();
+                var eltToFocus = this._cfg.waiAria ? this._getWaiAriaElement() : this.getDom();
+                eltToFocus.focus();
             } catch (ex) {
                 // FIXME: fix for IE7, investigate why it may fail, actually, why should this work???
             }
+        },
+
+        focus : function () {
+            this._focus();
         },
 
         /**
