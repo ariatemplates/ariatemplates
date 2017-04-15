@@ -1444,6 +1444,7 @@ var Aria = module.exports = global.Aria;
      * }
      * </pre>
      *
+     *
      * If there is no need to specify the <code>scope</code> and <code>args</code>, the callbacks can be passed
      * directly as functions: e.g. <code>oncomplete: function () {...}</code> instead of
      * <code>oncomplete: {fn: function () {...}}</code>
