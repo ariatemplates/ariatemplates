@@ -486,6 +486,24 @@ module.exports = Aria.classDefinition({
             }
         },
 
+
+        /**
+         * Set the 'selected' attribut on each options to true or false depending on the value
+         * @param {String} value The value to compare
+         * @private
+         */
+        _selectValue : function(value) {
+            var selectField = this.getSelectField();
+            var options = selectField.options;
+            for (var i = 0; i < options.length; i++) {
+                var option = options[i];
+                if (option.value === value) {
+                    option.selected = true;
+                    break;
+                }
+            }
+        },
+
         /**
          * Set the 'selected' attribut on each options to true or false depending on the value
          * @param {String} value The value to compare
