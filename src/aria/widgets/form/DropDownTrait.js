@@ -99,6 +99,15 @@ module.exports = Aria.classDefinition({
         },
 
         /**
+         * Internal method to handle the left offset of the popup
+         * @protected
+         * @return {Integer} Left offset
+         */
+        _getPopupLeftOffset : function () {
+            return 0;
+        },
+
+        /**
          * Raised when the viewport is resized. Needed to fix the position of the popup after the resize.
          * @param {Object} evt
          */
