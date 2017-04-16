@@ -191,6 +191,13 @@
         border-bottom-left-radius: ${state.borderBottomLeftRadius}px;
     {/macro}
 
+    {macro writeBorderRadius(state)}
+        border-top-right-radius: ${state.borderTopRightRadius}px;
+        border-top-left-radius: ${state.borderTopLeftRadius}px;
+        border-bottom-right-radius: ${state.borderBottomRightRadius}px;
+        border-bottom-left-radius: ${state.borderBottomLeftRadius}px;
+    {/macro}
+
     {macro writeStateOfTableFrame(info)}
         {var state=info.state.frame/}
         {var fontStyle=state.font/}
