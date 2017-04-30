@@ -291,6 +291,11 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         _registerSingleProperty : function (property) {
+
+            if (this._bindingListeners[property]) {
+                return;
+            }
+
             var bindings = this._cfg.bind, bind = bindings[property];
 
             if (bindings && bind && bindings.hasOwnProperty(property) && property === "items") {
@@ -309,13 +314,22 @@ module.exports = Aria.classDefinition({
                     };
 
                     var newValue = this._transform(bind.transform, bind.inside[bind.to], "toWidget");
-                    this._cfg[property] = newValue;
+                    this.setWidgetProperty(property, newValue);
                 } catch (ex) {
                     this.$logError(this.INVALID_BEAN, [property, "bind"]);
                 }
             } else {
                 this.$TemplateBasedWidget._registerSingleProperty.apply(this, arguments);
             }
+        },
+
+        /**
+         * Register listeners for the bindings associated to this widget
+         * @protected
+         */
+        _registerBindings : function () {
+            this._registerSingleProperty("multipleSelect");
+            this.$TemplateBasedWidget._registerBindings.call(this);
         },
 
         /**
