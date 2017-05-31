@@ -579,12 +579,6 @@ module.exports = Aria.classDefinition({
                 removedSuggestionIndex : removedSuggestionIndex
             };
         },
-        /**
-         * Method used to get a dom reference for positioning the popup
-         */
-        getValidationPopupReference : function () {
-            return this.getTextInputField();
-        },
 
         // Highlighting management ---------------------------------------------
 
