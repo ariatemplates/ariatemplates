@@ -117,7 +117,7 @@ var ariaWidgetsFormCheckBox = require("./CheckBox");
                 this._setRadioValue();
                 this._focus();
                 if (event.target.tagName.toLowerCase() != "input") {
-                    event.preventDefault(true);
+                    event.preventDefault(false);
                 }
             },
 
