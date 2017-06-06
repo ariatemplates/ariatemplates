@@ -232,9 +232,6 @@ module.exports = Aria.classDefinition({
                     this.sendKey(event);
                 }
             }
-            if (event.keyCode != event.KC_TAB) {
-                event.preventDefault(); // Removing due to PTR:05164409
-            }
             return false;
         },
 
