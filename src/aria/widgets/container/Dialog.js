@@ -1227,8 +1227,10 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         _createDraggable : function () {
-            if (!this._cfg) {
-                // maybe the widget was disposed while loading aria.utils.dragdrop.Drag
+            if (!this._popup || !this._popup.isOpen || this._draggable) {
+                // maybe the popup was closed while loading aria.utils.dragdrop.Drag,
+                // or it was closed and re-opened very quickly (and we should avoid
+                // creating the _draggable object twice)
                 return;
             }
             this._draggable = new aria.utils.dragdrop.Drag(this._domElt, {
@@ -1266,13 +1268,15 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         _createResize : function () {
-            if (!this._cfg) {
-                // maybe the widget was disposed while loading aria.utils.resize.Resize
+            if (!this._popup || !this._popup.isOpen || this._resizable) {
+                // maybe the popup was closed while loading aria.utils.resize.Resize,
+                // or it was closed and re-opened very quickly (and we should avoid
+                // creating the _resizable object twice)
                 return;
             }
-            if (this._handlesArr) {
+            var handleArr = this._handlesArr;
+            if (handleArr) {
                 this._resizable = {};
-                var handleArr = this._handlesArr;
                 for (var i = 0, ii = handleArr.length; i < ii; i++) {
                     var handleElement = this.getResizeHandle(i), axis = null, cursor;
                     cursor = handleArr[i];
@@ -1407,11 +1411,11 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         _destroyResizable : function () {
-            if (!this._cfg.resizable || !this._resizable) {
+            var handleArr = this._handlesArr;
+            if (!handleArr || !this._resizable) {
                 return;
             }
 
-            var handleArr = this._handlesArr;
             for (var i = 0, ii = handleArr.length; i < ii; i++) {
                 var cursor = handleArr[i];
                 if (this._resizable[cursor]) {
