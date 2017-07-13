@@ -18,7 +18,7 @@
 }}
     {macro main()}
 
-        <div style="z-index:40000;background:purple;padding:10px;">
+        <div style="z-index:40000;background:purple;padding:10px;position:relative;">
             <div style="z-index:30000;background:yellow;padding:10px;">
                 <div style="background:orange;padding:10px;">
 

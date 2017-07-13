@@ -23,6 +23,11 @@ Aria.classDefinition({
         this.addTests("test.aria.utils.overlay.loadingIndicator.manual.ManualTestCase");
         this.addTests("test.aria.utils.overlay.loadingIndicator.scrollbar.ScrollbarTest");
         this.addTests("test.aria.utils.overlay.loadingIndicator.zindex.IndexTest");
+        this.addTests("test.aria.utils.overlay.loadingIndicator.zindex.newAlgorithm.newStackingContext.asDescendant.IndexTestCase");
+        this.addTests("test.aria.utils.overlay.loadingIndicator.zindex.newAlgorithm.newStackingContext.asNestedParent.IndexTestCase");
+        this.addTests("test.aria.utils.overlay.loadingIndicator.zindex.newAlgorithm.newStackingContext.opacity.IndexTestCase");
+        this.addTests("test.aria.utils.overlay.loadingIndicator.zindex.newAlgorithm.noStackingContext.bare.IndexTestCase");
+        this.addTests("test.aria.utils.overlay.loadingIndicator.zindex.newAlgorithm.noStackingContext.zIndexOnly.IndexTestCase");
         this.addTests("test.aria.utils.overlay.loadingIndicator.refresh.RefreshTest");
         this.addTests("test.aria.utils.overlay.loadingIndicator.scrollableBody.ScrollableBodyTest");
         this.addTests("test.aria.utils.overlay.loadingIndicator.ieScrollIssue.IEScrollIssueTest");

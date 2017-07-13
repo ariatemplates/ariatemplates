@@ -16,9 +16,18 @@
 Aria.classDefinition({
     $classpath : "test.aria.utils.overlay.loadingIndicator.zindex.IndexTest",
     $extends : "aria.jsunit.TemplateTestCase",
+
+    $constructor: function () {
+        this.$TemplateTestCase.constructor.apply(this, arguments);
+
+        this.setTestEnv({
+            iframe : true
+        });
+    },
+
     $prototype : {
         runTemplateTest : function () {
-            var document = Aria.$window.document;
+            var document = this.testDocument;
             // overlay is last element inserted in DOM
             var bodyChilds = document.body.childNodes;
             var overlay = bodyChilds[bodyChilds.length - 1];
@@ -26,7 +35,8 @@ Aria.classDefinition({
             if (overlay.nodeType != 1) {
                 overlay = overlay.previousSibling;
             }
-            this.assertTrue(parseInt(overlay.style.zIndex, 10) > 40000, "overlay zIndex makes it non visible");
+            overlay.style.backgroundColor = '#000'; // to make it visible for manual testing
+            this.assertTrue(parseInt(overlay.style.zIndex, 10) >= 40000, "overlay zIndex is not high enough and thus not visible, should be more than 40000 but has " + overlay.style.zIndex + " instead");
 
             this.notifyTemplateTestEnd();
         }

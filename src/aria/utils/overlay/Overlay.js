@@ -111,29 +111,117 @@ Aria.classDefinition({
 
         /**
          * Apply a zIndex to the overlay
+         *
+         * <p>Resources: </p>
+         * <ul>
+         *   <li><a href="http://www.cssmojo.com/everything_you_always_wanted_to_know_about_z-index_but_were_afraid_to_ask/">Find out how elements stack and start using low z-index values</a></li>
+         *   <li><a href="https://philipwalton.com/articles/what-no-one-told-you-about-z-index/">What No One Told You About Z-Index — Philip Walton</a></li>
+         * </ul>
          * @param {HTMLElement} element Reference zIndex
          * @param {HTMLElement} overlay DOM element of the overlay
          * @protected
          */
         _computeZIndex : function (element, overlay) {
-            var document = Aria.$window.document;
-            var zIndex = 20000, stopper = document.body;
+            // --------------------------------------------------- destructuring
 
-            // inspect parent z-Indexes
-            while (element && element != stopper) {
-                var style = element.style, elementZIndex = style.zIndex;
-                if (elementZIndex) {
-                    var intZIndex = parseInt(elementZIndex, 10);
-                    if (intZIndex > zIndex) {
-                        zIndex = intZIndex + 1;
-                    }
-                }
-                element = element.parentNode;
+            var window = Aria.$window;
+            var document = window.document;
+            var body = document.body;
+
+            // ------------------------------------------------- local functions
+
+            function getStyle(element, property) {
+                return aria.utils.Dom.getStyle(element, property);
             }
 
-            // set zindex to maximum value from parents
-            overlay.style.zIndex = "" + zIndex;
+            function getZIndex(element) {
+                return getStyle(element, 'zIndex');
+            }
 
+            function createsANewStackingContext(element) {
+                var zIndex = getZIndex(element);
+                var position = getStyle(element, 'position');
+                var opacity = getStyle(element, 'opacity');
+
+                return (opacity < 1) || ((zIndex !== 'auto') && (position !== 'static'));
+            }
+
+            // ------------------------------------------------------ processing
+
+            var zIndexToBeat = null;
+
+            // building parent branch ------------------------------------------
+
+            var ancestors = [];
+            var currentElement = element;
+            while (currentElement !== body && currentElement != null) {
+                ancestors.unshift(currentElement);
+                currentElement = currentElement.parentNode;
+            }
+
+            // checking parent branch ------------------------------------------
+            // only the first (top-most) parent has to be taken into account, further children then being contained in its new stacking context
+
+            for (var index = 0, length = ancestors.length; index < length; index++) {
+                var potentialStackingContextRoot = ancestors[index];
+
+                if (createsANewStackingContext(potentialStackingContextRoot)) {
+                    zIndexToBeat = getZIndex(potentialStackingContextRoot);
+                    break;
+                }
+            }
+
+            // checking children if necessary ----------------------------------
+
+            // NB 2017-07-10T12:12:54+02:00
+            // This section has been commented since I (https://github.com/ymeine) wrote the algorithm to also check all descendants of the covered element. However, the feature itself can be discussed: it can sometimes be the desired behavior, sometimes not. So we had to choose, and considering the higher complexity of this algorithm compared to the one above (in the former we are potentially analyzing ALL the descendants instead of a single upper portion of a branch in the latter) we decided not to tun this feature. However, in case it's wanted one day, I prefer leaving the algorithm written here at least for now.
+
+            // if (zIndexToBeat == null) {
+            //     var getMax = function(values) {
+            //         return values.length === 0 ? null : Math.max.apply(Math, values);
+            //     }
+
+            //     var isANumber = function(value) {
+            //         return !isNaN(value);
+            //     }
+
+            //     var stackingContexts = [];
+
+            //     var findChildrenCreatingANewStackingContext = function(root) {
+            //         var children = root.children;
+
+            //         for (var index = 0, length = children.length; index < length; index++) {
+            //             var child = children[index];
+
+            //             if (createsANewStackingContext(child)) {
+            //                 stackingContexts.push(child);
+            //             } else {
+            //                 findChildrenCreatingANewStackingContext(child);
+            //             }
+            //         }
+            //     };
+
+            //     findChildrenCreatingANewStackingContext(element);
+
+            //     var zIndexes = [];
+            //     for (var index = 0, length = stackingContexts.length; index < length; index++) {
+            //         var stackingContext = stackingContexts[index];
+
+            //         var currentZIndex = getZIndex(stackingContext);
+            //         if (isANumber(currentZIndex)) {
+            //             zIndexes.push(currentZIndex);
+            //         }
+            //     }
+            //     zIndexToBeat = getMax(zIndexes);
+            // }
+
+            // final zindex application ----------------------------------------
+            // Our overlay element is put at last in the DOM, so if there is no other stacking context found, there is no need to put a zIndex ourselves since the natural stacking order will apply.
+            // However, still due to the natural stacking order applied within a same stacking context, there's no need to put a higher zIndex than the top-most stacking context's root, putting the same is sufficient
+
+            if (zIndexToBeat !== null) {
+                overlay.style.zIndex = '' + zIndexToBeat;
+            }
         },
 
         /**
