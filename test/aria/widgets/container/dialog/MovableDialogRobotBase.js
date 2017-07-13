@@ -65,7 +65,7 @@ Aria.classDefinition({
             var overlayZIndex = this.computeZIndex(overlay);
             this.assertJsonEquals(sectionGeo, overlayGeo, "The overlay was not positioned correctly on section "
                     + sectionId + ".");
-            this.assertTrue(overlayZIndex > sectionZIndex, "The overlay is behind the corresponding element.");
+            this.assertTrue(overlayZIndex >= sectionZIndex, "The overlay is behind the corresponding element.");
         },
 
         /**
