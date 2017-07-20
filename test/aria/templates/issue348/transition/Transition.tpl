@@ -17,27 +17,15 @@
 	$classpath:'test.aria.templates.issue348.transition.Transition',
 	$hasScript: true,
 	$css: ['test.aria.templates.issue348.transition.TransitionCSS']
-
 }}
 
-
-	{macro main()}
-		{call sectionBinding()/}
-
-	{/macro}
-
-
-	
-	{macro sectionBinding()}
-	 <div id="scoreTime" class="largeText">
-        Transition: {@aria:NumberField {bind:{value:{to:"transition",inside:data}}}/}
-    </div>
-			<div class="title" id="title"  {on transitionend {
-            fn: this.transitionEndHandler,
-            scope: this
-        } /}>Transition</div>
-		
-		
-			{/macro}
+{macro main()}
+	<div>Transition: {@aria:NumberField {bind:{value:{to:"transitionEndCount",inside:data}}}/}</div>
+	<div id="title"
+		{on transitionend {
+			fn: this.transitionEndHandler,
+			scope: this
+		} /}>Transition</div>
+{/macro}
 
 {/Template}

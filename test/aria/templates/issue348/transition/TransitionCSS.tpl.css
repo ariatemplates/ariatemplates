@@ -16,77 +16,21 @@
 	$classpath : 'test.aria.templates.issue348.transition.TransitionCSS'
 }}
 
-	/** Colors **/
-	{var blue = "#7aa1c9" /}
-	{var green = "#bacd81" /}
-
-	/** Font properties **/
-	{var font = {
-		size : "14pt",
-		weight : "bold",
-		family : "helvetica"
-	} /}
-
-
-	{macro main()}
-
-	.evenRow {
-		background-color : ${blue};
-		{call printStandardRowProperties() /}
-	}
-
-	.oddRow {
-		background-color : ${green};
-		{call printStandardRowProperties() /}
-	}
+{macro main()}
 
 	#title {
-		{if !aria.core.Browser.isOldIE}
-			color : ${blue};
-		{else /}
-			color : ${green};
-		{/if}
-		{for property in font}
-			font-${property} : ${font[property]};
-		{/for}
-		margin-top : 20px;
-
 		background-color:yellow;
 		width:300px;
-		heiight:100px;
 		transition: width 2s;
 		-moz-transition: width 2s; /* Firefox 4 */
 		-webkit-transition: width 2s; /* Safari and Chrome */
 		-o-transition: width 2s; /* Opera */
 	}
 
-	.largeText {
-      font-size: 14pt;
-      font-weight: bold;
-      color: #4776A7;
-    }
-
-	div#title:hover {
+	#title:hover {
 		width : 700px;
 	}
 
-	.mySectionClass {
-		width : 400px;
-		height : 200px;
-		background-color : #eeeeee;
-		padding : 20px;
-		float : right;
-		border : 1px solid #cccccc;
-		margin-right : 20px;
-	}
-
-	{/macro}
-
-	{macro printStandardRowProperties()}
-		padding : 10px;
-		width: 300px;
-		color: white;
-		font-size: 20px;
-	{/macro}
+{/macro}
 
 {/CSSTemplate}

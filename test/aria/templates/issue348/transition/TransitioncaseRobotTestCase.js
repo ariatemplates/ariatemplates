@@ -18,118 +18,68 @@
 Aria.classDefinition({
     $classpath : "test.aria.templates.issue348.transition.TransitioncaseRobotTestCase",
     $extends : "aria.jsunit.RobotTestCase",
-    $dependencies : ["aria.utils.Dom", "aria.utils.FireDomEvent", "aria.core.Browser", "aria.touch.Event",
-            "aria.utils.Delegate"],
+    $dependencies : ["aria.utils.Dom", "aria.utils.Json", "aria.utils.Delegate"],
     $constructor : function () {
         this.$RobotTestCase.constructor.call(this);
-        this.domUtil = aria.utils.Dom;
-        this.fireEvent = aria.utils.FireDomEvent;
-        this.target = {};
-        this.isSupported = aria.utils.Delegate.vendorPrefix;
-
-        if (this.isSupported === null) {
-            this.setTestEnv({
-                template : 'test.aria.templates.issue348.transition.FakeTransition'
-            });
-        } else {
-            this.setTestEnv({
-                template : 'test.aria.templates.issue348.transition.Transition'
-            });
+        var isSupported = !!aria.utils.Delegate.vendorPrefix;
+        if (!isSupported) {
+            this.skipTest = true;
         }
-    },
-    $destructor : function () {
-        this.domUtil = null;
-        this.fireEvent = null;
-        this.target = null;
-        this.isSupported = null;
-        this.$RobotTestCase.$destructor.call(this);
+        this.data = {};
+        this.setTestEnv({
+            template : 'test.aria.templates.issue348.transition.Transition',
+            data: this.data
+        });
     },
 
     $prototype : {
-        /**
-         * Start the template test suite for the Tap event.
-         */
         runTemplateTest : function () {
-            if (this.isSupported !== null) {
-                this.target = this.domUtil.getElementById("title");
+            var self = this;
+            var mousePosition = {x: 0, y: 0};
+            var element = aria.utils.Dom.getElementById('title');
 
-                var dom = aria.utils.Dom;
-                this.element = dom.getElementById("title");
-
-                var geometry = dom.getGeometry(this.element);
-                this.geometry = geometry;
-                var from = {
-                    x : geometry.x + geometry.width / 2,
-                    y : geometry.y + geometry.height / 2
-                };
-                var args = {
-                    "animationIteration" : 0
-                };
-                var options = {
-                    duration : 7000,
-                    to : {
-                        x : geometry.x + geometry.width / 2,
-                        y : geometry.y + geometry.height / 2
-                    }
-                };
-                this.from = from;
-                this.options = options;
-                this.synEvent.execute([["move", options, this.from]], {
-                    fn : this._MoveMouseAway,
-                    scope : this,
-                    args : args
-                });
-            } else {
-                this._endTransition();
+            function step0() {
+                // move the mouse out and wait enough time to be sure that the transition end was called
+                // (in case the mouse was positioned on the element):
+                self.synEvent.execute([
+                    ["mouseMove", mousePosition],
+                    ["pause", 3000]
+                ], step1);
             }
-        },
+            function step1() {
+                // reset the counter, move the mouse in, and wait for the end of the transition:
+                aria.utils.Json.setValue(self.data, 'transitionEndCount', 0);
+                var geometry = aria.utils.Dom.getGeometry(element);
+                self.assertEquals(geometry.width, 300);
+                var curMousePosition = mousePosition;
+                mousePosition = {
+                    x: geometry.x + geometry.width / 2,
+                    y: geometry.y + geometry.height / 2
+                };
+                self.synEvent.execute([
+                    ["move", {
+                        duration: 1000,
+                        to: mousePosition
+                    }, curMousePosition],
+                    ["pause", 3000]
+                ], step2);
+            }
+            function step2() {
+                // check that the transitionend event was called, and that the final width is correct.
 
-        /**
-         * Testing the event occured once the transition is ended.
-         * @param {Object} args
-         */
-        _MoveMouseAway : function (args) {
-            this.target = this.domUtil.getElementById("title");
-            var geometry = aria.utils.Dom.getGeometry(this.target);
-            var options = {
-                duration : 5000,
-                to : {
-                    x : 700,
-                    y : 400
-                }
-            };
-            var args = {
-                "animationIteration" : 0
-            };
-            var Transition = this.templateCtxt.data.transition;
-            this.assertFalse(Transition === args.animationIteration);
-            this.synEvent.execute([["move", options, this.from]], {
-                fn : this._endTransition,
-                scope : this,
-                args : args
-            });
-        },
-        /**
-         * Utility to add delay.
-         * @param {Number} delay
-         * @param {Object} callback
-         * @param {Object} args
-         */
-        _delay : function (delay, callback, args) {
-            var callback = (callback) ? callback : args.callback;
-            aria.core.Timer.addCallback({
-                fn : callback,
-                scope : this,
-                delay : delay,
-                args : args
-            });
-        },
+                var transitionEndCount = self.data.transitionEndCount;
+                console.log('Number of transitionend calls: ' + transitionEndCount);
 
-        /**
-         * Wrapper to end the tests.
-         */
-        _endTransition : function () {
-            this.end();
+                // TODO: check why the transitionend event is called twice on IE 10 and IE 11
+                // self.assertEquals(transitionEndCount, 1);
+                self.assertTrue(transitionEndCount === 1 || transitionEndCount === 2);
+
+                var geometry = aria.utils.Dom.getGeometry(element);
+                self.assertEquals(geometry.width, 700);
+                self.end();
+            }
+
+            step0();
         }
     }
 });

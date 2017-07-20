@@ -16,12 +16,12 @@ Aria.tplScriptDefinition({
     $classpath : 'test.aria.templates.issue348.transition.TransitionScript',
     $prototype : {
         $dataReady : function () {
-            this.data['transition'] = 0;
-
+            this.data.transitionEndCount = 0;
         },
-        transitionEndHandler : function (index) {
-            var transition = this.data.transition + 1;
-            this.$json.setValue(this.data, "transition", transition);
+
+        transitionEndHandler : function () {
+            var transitionEndCount = this.data.transitionEndCount + 1;
+            this.$json.setValue(this.data, "transitionEndCount", transitionEndCount);
         }
     }
 });
