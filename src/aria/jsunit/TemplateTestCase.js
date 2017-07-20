@@ -15,6 +15,7 @@
 var Aria = require("../Aria");
 var ariaUtilsSynEvents = require("../utils/SynEvents");
 require("../templates/RefreshManager");
+var ariaUtilsObject = require("../utils/Object");
 var ariaUtilsDom = require("../utils/Dom");
 var ariaJsunitTestCase = require("./TestCase");
 var ariaCoreLog = require("../core/Log");
@@ -49,7 +50,8 @@ module.exports = Aria.classDefinition({
             data : {},
             iframe : false,
             baseCss : this.IFRAME_BASE_CSS_TEXT, // css that will be set on the <iframe> itself
-            iframePageCss : "" // css that will be injected into iframe as <style> tag
+            iframePageCss : "", // css that will be injected into iframe as <style> tag,
+            templateLoadingExtraOptions: {}
         };
 
         /**
@@ -130,7 +132,7 @@ module.exports = Aria.classDefinition({
          * By default, a template test case with classpath a.b.c will automatically load the test template a/b/cTpl.tpl.
          * However, if needed, this method can be called to configure which template classpath to be loaded.
          * Additionally, it can also be used to pass some data and/or module controller. To be called in the constructor
-         * of a template test case: this.setTestEnv({template: "...", moduleCtrl: "...", data: {...}});
+         * of a template test case: this.setTestEnv({template: "...", moduleCtrl: "...", data: {...}, templateLoadingExtraOptions: {...}});
          * @param {Object} env
          */
         setTestEnv : function (env) {
@@ -189,13 +191,13 @@ module.exports = Aria.classDefinition({
             }
 
             this.testWindow.scroll(0, 0);
-            Aria.loadTemplate({
+            Aria.loadTemplate(ariaUtilsObject.assign({}, this.env.templateLoadingExtraOptions, {
                 classpath : this.env.template,
                 div : this.testDiv,
                 data : this.env.data,
                 moduleCtrl : this.env.moduleCtrl,
                 provideContext : true
-            }, {
+            }), {
                 fn : this._templateLoadCB,
                 scope : this,
                 args : {
@@ -823,6 +825,7 @@ module.exports = Aria.classDefinition({
          * <li>cssText Any inline style to be added on the iframe</li>
          * <li>data Data model</li>
          * <li>moduleCtrl Module controller definition</li>
+         * <li>templateLoadingExtraOptions Extra options for template loading not already set by other configurations</li>
          * </ul>
          * <br>
          * The callback receive an object containing
@@ -938,7 +941,7 @@ module.exports = Aria.classDefinition({
                 window : window,
                 document : document
             });
-            window.Aria.loadTemplate({
+            window.Aria.loadTemplate(ariaUtilsObject.assign({}, this.env.templateLoadingExtraOptions, {
                 classpath : definition.template,
                 div : div,
                 data : definition.data,
@@ -947,7 +950,7 @@ module.exports = Aria.classDefinition({
                 width : definition.width,
                 height : definition.height,
                 rootDim : definition.rootDim
-            }, {
+            }), {
                 fn : this._iframeDone,
                 scope : this,
                 args : args
