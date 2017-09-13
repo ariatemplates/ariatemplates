@@ -24,7 +24,7 @@ require("ariatemplates/utils/validators/CfgBeans"); // just to make sure it is c
 require("ariatemplates/widgets/errorlist/ErrorListTemplate.tpl"); // just to be sure the template is loaded when the test is run, since it depends on its (DOM) content
 
 module.exports = Aria.classDefinition({
-    $classpath : "test.aria.widgets.wai.errorlist.binding.ErrorListBindingJawsTestCase",
+    $classpath : "test.aria.widgets.wai.errorlist.binding.ErrorListNoAriaLiveJawsTestCase",
     $extends : JawsTestCase,
 
     $constructor : function() {
@@ -37,7 +37,11 @@ module.exports = Aria.classDefinition({
         this.setTestEnv({
             template : "test.aria.widgets.wai.errorlist.binding.ErrorListBindingTpl",
             moduleCtrl : {
-                classpath : 'test.aria.widgets.wai.errorlist.binding.ErrorListBindingCtrl'
+                classpath : 'test.aria.widgets.wai.errorlist.binding.ErrorListBindingCtrl',
+                initArgs: {
+                    ariaLive : false,
+                    focusOnError : false
+                }
             }
         });
 
@@ -63,25 +67,11 @@ module.exports = Aria.classDefinition({
                 ["type", null, "[down][down]"],
                 ["pause", 1000],
                 ["type", null, "[space]"],
-                ["pause", 1000],
-                ["type", null, "[down]"],
-                ["pause", 1000],
-                ["type", null, "[down]"],
-                ["pause", 1000],
-                ["type", null, "[down]"],
-                ["pause", 1000],
-                ["type", null, "[space]"],
-                ["pause", 2000],
-                ["type", null, "[down]"],
-                ["pause", 1000],
-                ["type", null, "[down]"],
-                ["pause", 1000],
-                ["type", null, "[down]"],
-                ["pause", 5000]
+                ["pause", 3000] // check that nothing is said when errors are displayed
             ], {
                 fn: function () {
                     this.assertJawsHistoryEquals(
-                        "Email Address: Edit\nType in text.\nSubmit Button\nError\nError • The first name is a required field using a mandatory validator.• The last name is a required field using a mandatory validator.• The phone number is a required field using a mandatory validator.• The email is a required field using a mandatory validator.\nlist of 4 items\n• Link The first name is a required field using a mandatory validator.\n• Link The last name is a required field using a mandatory validator.\nAlert!\nThe last name is a required field using a mandatory validator.\nLast Name: Edit\nType in text.\nPhone Number:\nEdit\nAlert!\nThe phone number is a required field using a mandatory validator.",
+                        "Email Address: Edit\nType in text.\nSubmit Button",
                         this.end,
                         function filter(content) {
                             content = content.replace(/(Submit)\n(Button)/gi, '$1 $2');
