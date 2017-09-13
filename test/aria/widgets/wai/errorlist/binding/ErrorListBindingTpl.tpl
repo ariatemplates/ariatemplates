@@ -11,6 +11,7 @@
         margins: "10 1 10 1",
         title: "Error",
         filterTypes: ['E'],
+        ariaLive: data.ariaLive,
         bind: {
             messages: {
                 to: "errorMessages",

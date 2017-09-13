@@ -1656,6 +1656,11 @@ module.exports = Aria.beanDefinitions({
                     $type : "json:Boolean",
                     $description : "Set this bindable property to true to put the focus on the first item. As soon as the focus has been set, the property will be set back to false.",
                     $default : false
+                },
+                "ariaLive" : {
+                    $type : "json:Boolean",
+                    $description : "Specifies whether role=alert and aria-live=assertive are included (true) or omitted (false) on the container element (defaults to true, only used if waiAria is true)",
+                    $default : true
                 }
             }
         },
