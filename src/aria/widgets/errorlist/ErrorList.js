@@ -44,7 +44,7 @@ module.exports = Aria.classDefinition({
         divCfg.margins = "0 0 0 0";
         divCfg.id = cfg.id + "_div";
 
-        if (cfg.waiAria) {
+        if (cfg.waiAria && cfg.ariaLive) {
             this._extraAttributes = ' role="alert" aria-live="assertive" ';
         }
 

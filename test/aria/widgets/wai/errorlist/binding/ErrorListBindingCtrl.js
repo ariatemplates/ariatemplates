@@ -12,7 +12,8 @@ Aria.classDefinition({
             phoneNumber : "",
             email : "",
             errorMessages : [],
-            focus: false
+            focus: false,
+            focusOnError: true
         };
         this.myDataUtil = aria.utils.Data;
         this.validators = [];
@@ -30,6 +31,12 @@ Aria.classDefinition({
         $publicInterfaceName : "test.aria.widgets.wai.errorlist.binding.IErrorListBindingCtrl",
         init : function (arg, cb) {
             var validatorPkg = aria.utils.validators;
+            if ("ariaLive" in arg) {
+                this.json.setValue(this._data, "ariaLive", arg.ariaLive);
+            }
+            if ("focusOnError" in arg) {
+                this.json.setValue(this._data, "focusOnError", arg.focusOnError);
+            }
 
             var firstNameValidator = new validatorPkg.Mandatory("The first name is a required field using a mandatory validator.");
             this.myDataUtil.setValidatorProperties(firstNameValidator, null, "onblur");
@@ -58,7 +65,7 @@ Aria.classDefinition({
             var messages = {};
             this.myDataUtil.validateModel(this._data, messages);
             this.json.setValue(this._data, "errorMessages", messages.listOfMessages);
-            if (messages.listOfMessages && messages.listOfMessages.length) {
+            if (messages.listOfMessages && messages.listOfMessages.length && this._data.focusOnError) {
                 this.json.setValue(this._data, "focus", true);
             }
         }
