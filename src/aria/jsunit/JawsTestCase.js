@@ -114,12 +114,20 @@ module.exports = Aria.classDefinition({
             var textArea = this._createFullScreenTextArea();
             this.synEvent.execute([
                 ["type", null, "[<insert>][space][>insert<]h"], // displays history window
-                ["pause", 2000],
-                ["type", null, "[<ctrl>]a[>ctrl<][<ctrl>]c[>ctrl<]"], // copies the whole history in the clipboard
+                ["pause", 3000],
+                ["type", null, "[<ctrl>]a[>ctrl<]"], // selects the whole text
+                ["pause", 1000],
+                ["type", null, "[<ctrl>]c[>ctrl<]"], // copies the history to the clipboard
+                ["pause", 1000],
+                ["type", null, "[<ctrl>]a[>ctrl<]"], // selects the whole text
+                ["pause", 1000],
+                ["type", null, "[<ctrl>]c[>ctrl<]"], // copies the history to the clipboard
                 ["pause", 1000],
                 ["type", null, "[<alt>][F4][>alt<]"], // closes history window
-                ["click", textArea],
-                ["type", null, "[<ctrl>]v[>ctrl<]"], // pastes history in our text area
+                ["pause", 2000],
+                ["click", textArea], // clicks on the text area
+                ["pause", 2000],
+                ["type", null, "[<ctrl>]v[>ctrl<]"], // pastes the whole history in our text area
                 ["pause", 2000]
             ], {
                 fn: function () {
