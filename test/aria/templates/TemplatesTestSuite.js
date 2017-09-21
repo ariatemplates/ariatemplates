@@ -19,6 +19,7 @@ Aria.classDefinition({
     $constructor : function () {
         this.$TestSuite.constructor.call(this);
 
+        this.addTests("test.aria.templates.EmptyTestCase");
         this.addTests("test.aria.templates.issue1413.RefreshDisposedTemplateTestCase");
         this.addTests("test.aria.templates.autorefresh.AutorefreshTestSuite");
         this.addTests("test.aria.templates.beforeRefresh.BeforeRefreshTestCase");
