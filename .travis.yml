@@ -3,6 +3,7 @@ node_js:
   - 0.10
 before_install:
   - npm --version
+  - npm install -g phantomjs@1.9.17
   - npm config set spin false
   - phantomjs --version
 script:
