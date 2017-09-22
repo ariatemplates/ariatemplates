@@ -1224,9 +1224,13 @@ module.exports = Aria.classDefinition({
             if (document == null) {
                 document = Aria.$window.document;
             }
-            return ((!(ariaCoreBrowser.isSafari || ariaCoreBrowser.isChrome || ariaCoreBrowser.isEdge || ariaCoreBrowser.isOpera) && (document.compatMode == "CSS1Compat"))
-                    ? document.documentElement
-                    : document.body);
+            var result = document.scrollingElement;
+            if (!result) {
+                result = ((!(ariaCoreBrowser.isSafari || ariaCoreBrowser.isChrome || ariaCoreBrowser.isEdge || ariaCoreBrowser.isOpera) && (document.compatMode == "CSS1Compat"))
+                        ? document.documentElement
+                        : document.body);
+            }
+            return result;
         },
 
         /**
