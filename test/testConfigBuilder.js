@@ -64,7 +64,9 @@ var phantomjsExcludesPatterns = [
     // Excluded because clicking on a <select> on PhantomJS does not open it:
     "test/aria/widgets/form/select/onBlur/SelectOnBlurSimpleRobotTestCase.js",
     // Excluded because it often randomly fails with PhantomJS on travis-ci:
-    "test/aria/widgets/container/tooltip/TooltipRobotTestCase.js"
+    "test/aria/widgets/container/tooltip/TooltipRobotTestCase.js",
+    // Advanced robot test (using dragging, text selection, etc.) which not necessarily makes sense for PhantomJS
+    "test/aria/widgets/container/dialog/resize/dontSelectOnResize/DialogResizeDontSelectRobotTestCase.js"
 ];
 
 // Some tests do not succeed in some browsers, and are listed here.
