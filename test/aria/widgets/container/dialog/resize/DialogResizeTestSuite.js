@@ -24,6 +24,7 @@ Aria.classDefinition({
                 "test.aria.widgets.container.dialog.resize.test2.ResizableDialogTestCase",
                 "test.aria.widgets.container.dialog.resize.test3.DialogOnResizeTestCase",
                 "test.aria.widgets.container.dialog.resize.test4.DialogOnResizeScrollTestCase",
-                "test.aria.widgets.container.dialog.resize.test5.OverlayOnResizeScrollTestCase"];
+                "test.aria.widgets.container.dialog.resize.test5.OverlayOnResizeScrollTestCase",
+                "test.aria.widgets.container.dialog.resize.dontSelectOnResize.DialogResizeDontSelectRobotTestCase"];
     }
 });
