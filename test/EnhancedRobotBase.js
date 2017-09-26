@@ -55,13 +55,11 @@ var prototype = {
     // Debug
     ////////////////////////////////////////////////////////////////////////////
 
-    _log : function (next) {
-        var args = Array.prototype.slice.call(arguments, 1);
+    _log : function () {
+        var args = Array.prototype.slice.call(arguments);
 
         // IE < 9 compatible: http://stackoverflow.com/questions/5538972/console-log-apply-not-working-in-ie9#comment8444540_5539378
         Function.prototype.apply.call(console.log, console, args);
-
-        next();
     },
 
     _logLazy : function (next, getValues) {
@@ -71,13 +69,12 @@ var prototype = {
         args.push(next);
         args.push.apply(args, values);
 
-        this._log.apply(this, args);
+        this._log.async.apply(this, args);
     },
 
-    _debugger : function (next) {
+    _debugger : function () {
         /* jshint debug: true */
         debugger;
-        next();
     },
 
 
@@ -126,7 +123,8 @@ var prototype = {
 
     _createIsDialogOpenedPredicate : function (id) {
         return this._createPredicate(function () {
-            return this.getWidgetInstance(id)._popup != null;
+            var instance = this.getWidgetInstance(id);
+            return instance._popup != null && (!instance._cfg.resizable || instance._resizable != null);
         }, function (shouldBeTrue) {
             return subst('Dialog with id "%1" should be %2.',
                 id,
@@ -295,6 +293,31 @@ var prototype = {
     _click : function (callback, element) {
         this.synEvent.click(element, callback);
     },
+
+    _drag : function (callback, options) {
+        // ------------------------------------------ input arguments processing
+
+        var from_ = options.from;
+
+        var to = options.to;
+
+        var duration = options.duration;
+        if (duration == null) {
+            duration = 500;
+        }
+
+        // ---------------------------------------------------------- processing
+
+        this.synEvent.execute([[
+            'drag',
+            {
+                duration: duration,
+                to: to
+            },
+            from_
+        ]], callback);
+    },
+
 
     // keyboard ----------------------------------------------------------------
 
@@ -576,6 +599,9 @@ var prototype = {
 ////////////////////////////////////////////////////////////////////////////////
 // Sync to async
 ////////////////////////////////////////////////////////////////////////////////
+
+createAsyncWrapper(prototype._log);
+createAsyncWrapper(prototype._debugger);
 
 createAsyncWrapper(prototype._refresh);
 

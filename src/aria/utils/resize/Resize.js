@@ -141,6 +141,8 @@ module.exports = Aria.classDefinition({
          */
         end : function () {
             var element = this.getElement();
+            var document = Aria.$window.document;
+            document.onselectstart = Aria.returnTrue;
             element.onselectstart = Aria.returnTrue;
 
             if (this.proxy && this.proxy.overlay) {
