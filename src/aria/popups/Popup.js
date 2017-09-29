@@ -707,6 +707,25 @@ module.exports = Aria.classDefinition({
             this.close();
         },
 
+        _computeAndApplyStyle : function () {
+            this.computedStyle = this._getComputedStyle();
+            var popupPosition = [];
+            if (this.computedStyle.left != null) {
+                popupPosition = popupPosition.concat('left:', this.computedStyle.left, 'px;');
+            }
+            if (this.computedStyle.right != null) {
+                popupPosition = popupPosition.concat('right:', this.computedStyle.right, 'px;');
+            }
+            if (this.computedStyle.top != null) {
+                popupPosition = popupPosition.concat('top:', this.computedStyle.top, 'px;');
+            }
+            if (this.computedStyle.bottom != null) {
+                popupPosition = popupPosition.concat('bottom:', this.computedStyle.bottom, 'px;');
+            }
+            this.domElement.style.cssText = popupPosition.concat(['z-index:', this.computedStyle.zIndex, ';',
+                    'position:absolute;display:inline-block;']).join('');
+        },
+
         /**
          * Compute the popup style (size, position, zIndex) and show it.
          * @protected
@@ -731,11 +750,16 @@ module.exports = Aria.classDefinition({
                     this._containerOverflow = popupContainer.changeContainerOverflow("hidden");
                 }
 
-                var containerSize = popupContainer.getScrollSize();
+                // temporarily hides the modal mask so that it does not have an influence on the size of the container
+                modalMaskDomElement.style.display = "none";
 
                 // Compute the style after scrollbars are removed from the
                 // container. Thus the dialog can be properly centered.
-                this.computedStyle = this._getComputedStyle();
+                this._computeAndApplyStyle();
+
+                // only get the container size after having applied the new position of the dialog:
+                var containerSize = popupContainer.getScrollSize();
+
                 var modalMaskZIndex = this.modalMaskZIndex;
                 if (!modalMaskZIndex) {
                     modalMaskZIndex = this.modalMaskZIndex = this.computedStyle.zIndex;
@@ -768,24 +792,8 @@ module.exports = Aria.classDefinition({
                 }
 
             } else {
-                this.computedStyle = this._getComputedStyle();
+                this._computeAndApplyStyle();
             }
-
-            var popupPosition = [];
-            if (this.computedStyle.left != null) {
-                popupPosition = popupPosition.concat('left:', this.computedStyle.left, 'px;');
-            }
-            if (this.computedStyle.right != null) {
-                popupPosition = popupPosition.concat('right:', this.computedStyle.right, 'px;');
-            }
-            if (this.computedStyle.top != null) {
-                popupPosition = popupPosition.concat('top:', this.computedStyle.top, 'px;');
-            }
-            if (this.computedStyle.bottom != null) {
-                popupPosition = popupPosition.concat('bottom:', this.computedStyle.bottom, 'px;');
-            }
-            domElement.style.cssText = popupPosition.concat(['z-index:', this.computedStyle.zIndex, ';',
-                    'position:absolute;display:inline-block;']).join('');
 
             if (animateIn) {
                 this._startAnimation(animateIn, {
