@@ -29,15 +29,27 @@ Aria.classDefinition({
     },
     $prototype : {
 
-        testAsyncValidCreateMap : function () {
+        setUp : function() {
             var document = Aria.$window.document;
             this._testDomElement = document.createElement("DIV");
-            var validCfg = {
+            document.body.appendChild(this._testDomElement);
+        },
+
+        tearDown : function() {
+            var document = Aria.$window.document;
+            if (this._testDomElement.parentNode) {
+                document.body.removeChild(this._testDomElement);
+            }
+            this._testDomElement = null;
+        },
+
+        testAsyncValidCreateMap : function () {
+             var validCfg = {
                 id : "ms7MapId",
                 provider : "microsoft7",
                 domElement : this._testDomElement,
                 afterCreate : {
-                    fn : this._createCallbackOne,
+                    fn : this._timeout,
                     scope : this,
                     args : {
                         testArgs : "test"
@@ -52,6 +64,13 @@ Aria.classDefinition({
                 this.assertTrue(this.mapMgr.getMapStatus("ms7MapId") == this.mapMgr.LOADING);
             }
 
+        },
+
+        _timeout : function(map, args) {
+            var that = this;
+            setTimeout(function() {
+                that._createCallbackOne(map, args);
+            }, 250);
         },
 
         _createCallbackOne : function (map, args) {
@@ -81,9 +100,9 @@ Aria.classDefinition({
             this.assertTrue(this.mapMgr.getMapDom("ms7MapId") == null);
             this.mapMgr.destroyMap("ms7MapId");
 
-            this._testDomElement = null;
+            this.tearDown();
+            this.setUp();
 
-            this._testDomElement = Aria.$window.document.createElement("DIV");
             var validCfg = {
                 id : "anotherMs7MapId",
                 provider : "microsoft7",
@@ -93,15 +112,15 @@ Aria.classDefinition({
             // this time it should be synchronous
             this.mapMgr.createMap(validCfg);
             this.assertTrue(this.mapMgr.getMap("anotherMs7MapId") !== null);
-            this.mapMgr.destroyMap("anotherMs7MapId");
-            this.assertTrue(this.mapMgr.getMap("anotherMs7MapId") === null);
-            this._testDomElement = null;
+            var that = this;
+            setTimeout(function() {
+                that.mapMgr.destroyMap("anotherMs7MapId");
+                that.assertTrue(that.mapMgr.getMap("anotherMs7MapId") === null);
 
-            this.notifyTestEnd("testAsyncValidCreateMap");
+                that.notifyTestEnd("testAsyncValidCreateMap");
+            }, 250);
         },
         testAsyncValidCreateMapTwo : function () {
-            var document = Aria.$window.document;
-            this._testDomElement = document.createElement("div");
             var that = this;
             this.mapMgr.addProvider("anotherProvider", {
                 load : function (cb) {
@@ -119,7 +138,7 @@ Aria.classDefinition({
                 provider : "anotherProvider",
                 domElement : this._testDomElement,
                 afterCreate : {
-                    fn : this._createCallbackOneTwo,
+                    fn : this._timeout2,
                     scope : this,
                     args : {
                         testArgs : "test"
@@ -129,6 +148,13 @@ Aria.classDefinition({
 
             this.mapMgr.createMap(validCfg);
 
+        },
+
+        _timeout2 : function(map, args) {
+            var that = this;
+            setTimeout(function() {
+                that._createCallbackOneTwo(map, args);
+            }, 250);
         },
 
         _createCallbackOneTwo : function (map, args) {
@@ -151,13 +177,10 @@ Aria.classDefinition({
             this.assertTrue(this.mapMgr.hasProvider("anotherProvider"));
             this.mapMgr.removeProvider("anotherProvider");
             this.assertFalse(this.mapMgr.hasProvider("anotherProvider"));
-            this._testDomElement = null;
 
             this.notifyTestEnd("testAsyncValidCreateMapTwo");
         },
         testAsyncValidCreateMapThree : function () {
-            var document = Aria.$window.document;
-            this._testDomElement = document.createElement("div");
             var that = this;
 
             var validCfg = {
@@ -165,7 +188,7 @@ Aria.classDefinition({
                 provider : "anotherAnotherProvider",
                 domElement : this._testDomElement,
                 afterCreate : {
-                    fn : this._createCallbackOneThree,
+                    fn : this._timeout3,
                     scope : this,
                     args : {
                         testArgs : "test"
@@ -175,6 +198,13 @@ Aria.classDefinition({
 
             this.mapMgr.createMap(validCfg);
 
+        },
+
+        _timeout3 : function(map, args) {
+            var that = this;
+            setTimeout(function() {
+                that._createCallbackOneThree(map, args);
+            }, 250);
         },
 
         _createCallbackOneThree : function (map, args) {

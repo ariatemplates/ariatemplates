@@ -14,15 +14,15 @@
  */
 
 /**
- * Test for the Microsoft 7 map provider
+ * Test for the Microsoft 8 map provider
  */
 Aria.classDefinition({
-    $classpath : "test.aria.map.Microsoft7MapProviderTestCase",
+    $classpath : "test.aria.map.Microsoft8MapProviderTestCase",
     $extends : "aria.jsunit.TestCase",
-    $dependencies : ["aria.map.providers.Microsoft7MapProvider"],
+    $dependencies : ["aria.map.providers.Microsoft8MapProvider"],
     $constructor : function () {
         this.$TestCase.constructor.call(this);
-        this.provider = aria.map.providers.Microsoft7MapProvider;
+        this.provider = aria.map.providers.Microsoft8MapProvider;
         this.defaultTestTimeout = 15000;
         this._syncFlag = false;
     },
@@ -58,6 +58,14 @@ Aria.classDefinition({
 
             var map = this.provider.getMap(cfg);
             this.assertTrue(map !== null);
+            var that = this;
+            setTimeout(function() {
+                that._testDestroy(map);
+            }, 250);
+
+        },
+
+        _testDestroy : function (map) {
             this.provider.disposeMap(map);
 
             this._testDomElement = null;
