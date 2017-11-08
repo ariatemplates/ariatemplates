@@ -9,12 +9,13 @@
     <div class="mapSampleContainer">
     {@embed:Map {
         id : "map",
-        provider : "microsoft7",
+        provider : "microsoft8",
         loadingIndicator : true,
         type : "DIV",
         attributes : {
-          classList : ["mapContainer"]
-        }
+          classList : ["mapContainer"],
+          style : "height: 500px"
+         }
     }/}
 
 
