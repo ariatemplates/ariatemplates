@@ -36,8 +36,8 @@
         {/if}
         >
         <a href="#" style="display: none;">&nbsp;</a> //IE6 does not highlight the 1 elm in list
-        {foreach item inArray data.items}
-            {call renderItem(item, item_index)/}
+        {foreach item inView data.itemsView}
+            {call renderItem(item, item.index)/}
         {/foreach}
         </div>
     {/macro}
