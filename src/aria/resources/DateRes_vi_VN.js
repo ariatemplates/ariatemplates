@@ -23,7 +23,7 @@ Aria.resourcesDefinition({
             "Thứ tư",
             "Thứ năm",
             "Thứ sáu",
-            "Thứ bẩy"
+            "Thứ bảy"
         ],
         // a false value for the following items mean: use substring
         // to generate the short versions of days or months
