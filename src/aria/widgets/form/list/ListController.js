@@ -575,7 +575,7 @@ Aria.classDefinition({
                 var moveFocus, itemsView = data.itemsView;
                 if (aria.DomEvent.isNavigationKey(evt.keyCode)) {
                     this._navigationEvent = true;
-                    var startIndex = data.multipleSelect ? data.focusIndex : data.selectedIndex, isFocusable = false, oldFocus = startIndex;
+                    var startIndex = data.multipleSelect ? data.focusIndex : data.selectedIndex > -1 ? itemsView.getNewIndex(itemsView.items, data.selectedIndex) : data.selectedIndex, isFocusable = false, oldFocus = startIndex;
                     moveFocus = startIndex;
                     while (!isFocusable) {
                         moveFocus = this.calcMoveFocus(data.displayOptions.flowOrientation, moveFocus, data.numberOfRows, data.numberOfColumns, evt.keyCode, data.itemsView.items.length);
@@ -600,7 +600,7 @@ Aria.classDefinition({
                 if (data.multipleSelect) {
                     evt.cancelDefault = this.setFocusedIndex(moveFocus);
                 } else if (data.selectedIndex != null) {
-                    this.setSelectedIndex(moveFocus);
+                    this.setSelectedIndex(moveFocus > -1 ? itemsView.items[moveFocus].initIndex : moveFocus);
                 }
                 evt.cancelDefault = true;
             }
