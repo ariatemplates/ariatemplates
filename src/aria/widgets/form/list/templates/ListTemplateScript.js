@@ -45,6 +45,17 @@ module.exports = Aria.tplScriptDefinition({
     $prototype : {
 
         /**
+         * Returns the DOM element wrapper corresponding to the element with the given index (in the data.items array).
+         * @param {Number} indexInDataItems index in data.items
+         * @return {aria.templates.DomElementWrapper}
+         */
+        getItemDom : function (indexInDataItems) {
+            var itemsView = this.data.itemsView;
+            var sortedIndex = itemsView.getNewIndex(itemsView.items, indexInDataItems);
+            return this.$getChild(this._refContainer, sortedIndex + this._itemShift);
+        },
+
+        /**
          * This method (called as a timer callback) changes scrollbar position for the selected item to be displayed (if
          * there is only one item selected).
          * @protected
@@ -53,7 +64,7 @@ module.exports = Aria.tplScriptDefinition({
             this._scrollToSelectedItemCb = null;
             var idx = this.data.selectedIndex;
             if (idx != null && idx > -1) {
-                var wrapper = this.$getChild(this._refContainer, idx + this._itemShift);
+                var wrapper = this.getItemDom(idx);
                 wrapper.scrollIntoView();
                 wrapper.$dispose();
             }
@@ -96,7 +107,7 @@ module.exports = Aria.tplScriptDefinition({
                     if (evt.unselectedIndexes.length > 0) {
                         for (var i = 0, len = evt.unselectedIndexes.length; i < len; i += 1) {
                             var idx = evt.unselectedIndexes[i];
-                            var wrapper = this.$getChild(this._refContainer, idx + this._itemShift);
+                            var wrapper = this.getItemDom(idx);
                             wrapper.classList.setClassName(this._getClassForItem(items[idx], false));
                             wrapper.$dispose();
                         }
@@ -105,7 +116,7 @@ module.exports = Aria.tplScriptDefinition({
                     if (evt.selectedIndexes.length > 0) {
                         for (var i = 0, len = evt.selectedIndexes.length; i < len; i += 1) {
                             var idx = evt.selectedIndexes[i];
-                            var wrapper = this.$getChild(this._refContainer, idx + this._itemShift);
+                            var wrapper = this.getItemDom(idx);
                             wrapper.classList.setClassName(this._getClassForItem(items[idx], false));
                             if (i === 0) {
                                 wrapper.scrollIntoView();
