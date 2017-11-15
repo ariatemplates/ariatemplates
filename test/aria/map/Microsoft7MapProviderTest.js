@@ -22,6 +22,7 @@ Aria.classDefinition({
     $dependencies : ["aria.map.providers.Microsoft7MapProvider"],
     $constructor : function () {
         this.$TestCase.constructor.call(this);
+        this.skipTest = true;
         this.provider = aria.map.providers.Microsoft7MapProvider;
         this.defaultTestTimeout = 15000;
         this._syncFlag = false;
