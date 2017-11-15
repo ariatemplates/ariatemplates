@@ -22,6 +22,7 @@ Aria.classDefinition({
     $dependencies : ["aria.map.MapManager"],
     $constructor : function () {
         this.$TestCase.constructor.call(this);
+        this.skipTest = true;
         this.mapMgr = aria.map.MapManager;
         this.mapMgr.addProvider("anotherAnotherProvider", "test.aria.map.AnotherAnotherFakeMapProvider");
 
