@@ -208,47 +208,44 @@ module.exports = Aria.classDefinition({
 
             // checking children if necessary ----------------------------------
 
-            // NB 2017-07-10T12:12:54+02:00
-            // This section has been commented since I (https://github.com/ymeine) wrote the algorithm to also check all descendants of the covered element. However, the feature itself can be discussed: it can sometimes be the desired behavior, sometimes not. So we had to choose, and considering the higher complexity of this algorithm compared to the one above (in the former we are potentially analyzing ALL the descendants instead of a single upper portion of a branch in the latter) we decided not to tun this feature. However, in case it's wanted one day, I prefer leaving the algorithm written here at least for now.
+            if (zIndexToBeat == null) {
+                var getMax = function(values) {
+                    return values.length === 0 ? null : Math.max.apply(Math, values);
+                };
 
-            // if (zIndexToBeat == null) {
-            //     var getMax = function(values) {
-            //         return values.length === 0 ? null : Math.max.apply(Math, values);
-            //     }
+                var isANumber = function(value) {
+                    return !isNaN(value);
+                };
 
-            //     var isANumber = function(value) {
-            //         return !isNaN(value);
-            //     }
+                var stackingContexts = [];
 
-            //     var stackingContexts = [];
+                var findChildrenCreatingANewStackingContext = function(root) {
+                    var children = root.children;
 
-            //     var findChildrenCreatingANewStackingContext = function(root) {
-            //         var children = root.children;
+                    for (var index = 0, length = children.length; index < length; index++) {
+                        var child = children[index];
 
-            //         for (var index = 0, length = children.length; index < length; index++) {
-            //             var child = children[index];
+                        if (createsANewStackingContext(child)) {
+                            stackingContexts.push(child);
+                        } else {
+                            findChildrenCreatingANewStackingContext(child);
+                        }
+                    }
+                };
 
-            //             if (createsANewStackingContext(child)) {
-            //                 stackingContexts.push(child);
-            //             } else {
-            //                 findChildrenCreatingANewStackingContext(child);
-            //             }
-            //         }
-            //     };
+                findChildrenCreatingANewStackingContext(element);
 
-            //     findChildrenCreatingANewStackingContext(element);
+                var zIndexes = [];
+                for (var index = 0, length = stackingContexts.length; index < length; index++) {
+                    var stackingContext = stackingContexts[index];
 
-            //     var zIndexes = [];
-            //     for (var index = 0, length = stackingContexts.length; index < length; index++) {
-            //         var stackingContext = stackingContexts[index];
-
-            //         var currentZIndex = getZIndex(stackingContext);
-            //         if (isANumber(currentZIndex)) {
-            //             zIndexes.push(currentZIndex);
-            //         }
-            //     }
-            //     zIndexToBeat = getMax(zIndexes);
-            // }
+                    var currentZIndex = getZIndex(stackingContext);
+                    if (isANumber(currentZIndex)) {
+                        zIndexes.push(currentZIndex);
+                    }
+                }
+                zIndexToBeat = getMax(zIndexes);
+            }
 
             // final zindex application ----------------------------------------
             // Our overlay element is put at last in the DOM, so if there is no other stacking context found, there is no need to put a zIndex ourselves since the natural stacking order will apply.

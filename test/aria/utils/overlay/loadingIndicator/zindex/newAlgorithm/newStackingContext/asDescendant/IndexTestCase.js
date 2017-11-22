@@ -24,8 +24,8 @@ module.exports = Aria.classDefinition({
     $prototype : {
         generateTestData: function () {
             return {
-                expectedZIndex: null,
-                overlayShouldBeOnTop: false
+                expectedZIndex: 10000,
+                overlayShouldBeOnTop: true
             };
         }
     }
