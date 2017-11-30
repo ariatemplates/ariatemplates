@@ -67,6 +67,11 @@ var phantomjsExcludesPatterns = [
     "test/aria/widgets/container/tooltip/TooltipRobotTestCase.js"
 ];
 
+var nophantomExcludesPatterns = [
+    // Excluded on travis-ci because there is no window manager (and a <select> needs one):
+    "test/aria/widgets/form/select/onBlur/SelectOnBlurSimpleRobotTestCase.js"
+];
+
 // Some tests do not succeed in some browsers, and are listed here.
 // They should be investigated and fixed.
 var generalBrowserExcludes = {
@@ -270,6 +275,7 @@ exports.buildTestConfig = function (config) {
 
     if (campaign === "nophantom") {
         append(filesIncludes, phantomjsExcludesPatterns);
+        append(filesExcludes, nophantomExcludesPatterns);
         extraScripts.push(exports.atSkinPath);
         if (!noFlash) {
             append(filesIncludes, noFlashExcludesPatterns);
