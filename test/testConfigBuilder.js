@@ -24,6 +24,13 @@ var disabledTestCasesPatterns = [
     "test/aria/widgets/container/dialog/viewportResize/ViewportHugeShrinkTestCase.js"
 ];
 
+var microsoftMapsTests = [
+    "test/aria/map/MapManagerThreeTestCase.js",
+    "test/aria/map/MapManagerTwoTestCase.js",
+    "test/aria/map/Microsoft8MapProviderTestCase.js",
+    "test/aria/templates/keyboardNavigation/bingCompatibility/KeyMapBingCompatibilityTestCase.js"
+];
+
 var unpackagedOnlyPatterns = [
     // The following test does not work in packaged mode (because it tries to open a file from
     // the bootstrap, but it is packaged, and bootstrap files are not in the map)
@@ -88,7 +95,7 @@ var generalBrowserExcludes = {
         "test/aria/pageEngine/utils/HistoryManagerTestCase.js",
         "test/aria/storage/localStorage/EventIssueTestCase.js",
         "test/aria/utils/hashManager/HashManagerOneTestCase.js"
-    ],
+    ].concat(microsoftMapsTests),
     "Firefox 11": [
         "test/aria/core/io/JSONPTestCase.js",
         "test/aria/pageEngine/pageEngine/PageEngineSixTestCase.js",
@@ -141,7 +148,7 @@ var generalBrowserExcludes = {
         "test/aria/widgets/action/link/disabled/LinkDisabledTestCase.js",
         "test/aria/widgets/form/multiselect/downArrowKeyPreventDef/MSDownArrowKeyRobotTestCase.js",
         "test/aria/widgets/form/textinput/helpText/HelpTextTestCase.js"
-    ],
+    ].concat(microsoftMapsTests),
     "IE 9": [
         "test/aria/utils/hashManager/HashManagerOneTestCase.js",
         "test/aria/utils/mouse/MouseDragKoRobotTestCase.js",
@@ -154,7 +161,7 @@ var generalBrowserExcludes = {
         "test/aria/html/textinput/placeholder/PlaceholderTestCase.js",
         "test/aria/widgets/dropdown/touchDevices/AutoCompleteNoExpButPopupDesktopRobotTestCase.js",
         "test/aria/widgets/dropdown/touchDevices/AutoCompleteNoExpButPopupTouchRobotTestCase.js"
-    ],
+    ].concat(microsoftMapsTests),
     "IE 10": [
         "test/aria/utils/mouse/MouseDragKoRobotTestCase.js",
         "test/aria/widgets/dropdown/touchDevices/MultiSelectPopupTouchRobotTestCase.js"

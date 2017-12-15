@@ -51,15 +51,6 @@ Aria.classDefinition({
     $prototype : {
 
         runTemplateTest : function () {
-        /*
-         * The test is not working on FF3 because only on FF3, if focus is not on an element, event are not caught by the
-         * body but the window. So the keydown, keyup and keypress are delegated to the window making Bing map incompatible with AT
-         * (Bing map prevent the propagation of all the events to the window)
-         */
-            if (aria.core.Browser.isFirefox && aria.core.Browser.majorVersion == 3) {
-                this.end();
-                return;
-            }
             this.mapMgr.$onOnce({
                 "mapReady" : {
                     fn : this._changeSelected,
