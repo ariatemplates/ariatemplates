@@ -109,7 +109,11 @@ Aria.classDefinition({
             var initialTopMostPopup = this.getPopupNameFromElement(document.elementFromPoint(124, 223));
             this.waitFor({
                 condition: function () {
-                    return initialTopMostPopup !== this.getPopupNameFromElement(document.elementFromPoint(124, 223));
+                    var newTopMostPopup = this.getPopupNameFromElement(document.elementFromPoint(124, 223));
+                    // depending on how the click is done by the robot, there can be the beginning of a drag
+                    // in which case an overlay is displayed on top of everything for a short time, during which
+                    // newTopMostPopup = "none"
+                    return initialTopMostPopup !== newTopMostPopup && newTopMostPopup !== "none";
                 },
                 callback: cb
             });
