@@ -103,7 +103,18 @@ module.exports = Aria.classDefinition({
          * @param {Object} evt
          */
         _onViewportResized : function (evt) {
+            this._reopenDropdown();
+        },
+
+        /**
+         * Close and reopen the dropdown.
+         */
+        _reopenDropdown : function () {
+            var savedKeepFocus = this._keepFocus;
             this._closeDropdown();
+            if (savedKeepFocus) {
+                this._keepFocus = true;
+            }
             this._openDropdown();
         },
 
@@ -165,7 +176,9 @@ module.exports = Aria.classDefinition({
         _afterDropdownOpen : function () {
             this._setPopupOpenProperty(true);
             // when the popup is clicked, keep the focus on the right element:
-            this._keepFocus = true;
+            if (this._hasFocus) {
+                this._keepFocus = true;
+            }
             this.focus(null, true);
         },
 

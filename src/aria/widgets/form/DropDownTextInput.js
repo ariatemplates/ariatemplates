@@ -212,8 +212,7 @@ module.exports = Aria.classDefinition({
                     } else if (openDropdown === false && this._dropdownPopup) {
                         this._closeDropdown();
                     } else if (repositionDropDown && this._dropdownPopup) {
-                        this._closeDropdown();
-                        this._openDropdown();
+                        this._reopenDropdown();
                         // Note: an alternative here would be to call this._dropdownPopup.updatePosition()
                         // instead of closing and re-opening the popup. This would avoid loosing
                         // the current scrolling position in some cases, but, it could perhaps introduce

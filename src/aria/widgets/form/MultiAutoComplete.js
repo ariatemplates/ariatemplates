@@ -13,6 +13,7 @@
  * limitations under the License.
  */
 var Aria = require("../../Aria");
+var ariaDomEvent = require("../../DomEvent");
 var ariaWidgetsControllersMultiAutoCompleteController = require("../controllers/MultiAutoCompleteController");
 var ariaUtilsDom = require("../../utils/Dom");
 var ariaUtilsType = require("../../utils/Type");
@@ -117,8 +118,7 @@ module.exports = Aria.classDefinition({
                 ariaUtilsDom.refreshDomElt(this._domElt);
             }
             if (repositionDropDown && this._dropdownPopup) {
-                this._closeDropdown();
-                this._openDropdown();
+                this._reopenDropdown();
             }
         },
 
@@ -853,6 +853,21 @@ module.exports = Aria.classDefinition({
                 this.removeHighlight();
                 this._enterInputField();
             }
+        },
+
+        /**
+         * Cf the documentation of this method in the parent class.
+         * @override
+         */
+        _keyPressed : function (evt) {
+            var keyCode = evt.keyCode;
+            if (this.controller._isExpanded && (keyCode == ariaDomEvent.KC_ARROW_UP || keyCode == ariaDomEvent.KC_ARROW_DOWN)) {
+                // in expanded mode (similar to the multiselect), for arrow keys, do not bring the focus
+                // back to the field and let the event be processed in the list, otherwise the focus
+                // (which is updated asynchronously in IE) will not be on a check box
+                return false;
+            }
+            return this.$AutoComplete._keyPressed.apply(this, arguments);
         }
     }
 });

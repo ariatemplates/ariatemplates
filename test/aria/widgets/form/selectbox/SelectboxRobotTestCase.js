@@ -14,11 +14,12 @@
  */
 
 Aria.classDefinition({
-    $classpath : "test.aria.widgets.form.selectbox.SelectboxTestCase",
-    $extends : "aria.jsunit.TemplateTestCase",
+    $classpath : "test.aria.widgets.form.selectbox.SelectboxRobotTestCase",
+    $extends : "aria.jsunit.RobotTestCase",
     $dependencies : ["aria.utils.Dom"],
+    $templates: ["aria.widgets.form.list.templates.ListTemplate"],
     $constructor : function () {
-        this.$TemplateTestCase.constructor.call(this);
+        this.$RobotTestCase.constructor.call(this);
 
         this.cont = 0;
         this.selectbox = null;
@@ -43,7 +44,7 @@ Aria.classDefinition({
         this.expandButton = null;
         this.dropdown = null;
         this.options = null;
-        this.$TemplateTestCase.$destructor.call(this);
+        this.$RobotTestCase.$destructor.call(this);
     },
     $prototype : {
         runTemplateTest : function () {

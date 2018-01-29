@@ -169,7 +169,6 @@ var generalBrowserExcludes = {
     "IE 11": [
         "test/aria/storage/localStorage/EventIssueTestCase.js",
         "test/aria/utils/mouse/MouseDragKoRobotTestCase.js",
-        "test/aria/widgets/form/selectbox/SelectboxTestCase.js",
         "test/aria/widgets/form/multiautocomplete/navigation/input/InputFieldRobotTestCase.js"
     ],
     "IE 11 [JAWS]": [
