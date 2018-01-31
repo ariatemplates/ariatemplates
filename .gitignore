@@ -10,6 +10,7 @@ node_modules
 
 /build/target/
 /test/target/
+/test/logs/
 /src/aria/bootstrap.js
 /src/aria/bootstrap-node.js
 /src/aria/noderError/

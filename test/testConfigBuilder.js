@@ -212,6 +212,7 @@ var append = function (array, extraArray) {
 exports.unpackagedRootDirectory = "build/target/bootstrap";
 exports.packagedRootDirectory = "build/target/production";
 exports.testsRootDirectory = "test";
+exports.reportsDirectory = "test/logs";
 exports.bootstrapPath = "/aria/<%= env.name %>-<%= env.version %>.js";
 exports.atSkinPath = "/aria/css/atskin-<%= env.version %>.js";
 exports.flatSkinPath = "/aria/css/atflatskin-<%= env.version %>.js";
@@ -230,6 +231,10 @@ exports.buildTestConfig = function (config) {
     var noFlash = config.noFlash;
 
     var campaign = config.campaign;
+    var reportName = config.reportName;
+    if (!reportName && reportName !== false) {
+        reportName = campaign;
+    }
 
     append(filesIncludes, config.includes);
     append(filesExcludes, config.excludes);
@@ -337,6 +342,11 @@ exports.buildTestConfig = function (config) {
             }
         }
     };
+    if (reportName !== false) {
+        res["test-reports"] = {
+            "json-log-file": path.join(exports.reportsDirectory, reportName + ".json")
+        };
+    }
     if (browsers) {
         res.browsers = browsers;
     }

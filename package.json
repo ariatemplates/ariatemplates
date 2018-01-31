@@ -23,6 +23,7 @@
     "lint": "node build/grunt-cli.js checkStyle checkStyleTest",
     "grunt": "node build/grunt-cli.js",
     "attester": "node scripts/ciCampaigns.js",
+    "attester-browsers": "node scripts/browsersCampaigns.js",
     "mocha": "mocha --recursive test/node",
     "test-suites": "npm run mocha && npm run attester",
     "test": "npm run lint && npm run grunt && npm run test-suites",
