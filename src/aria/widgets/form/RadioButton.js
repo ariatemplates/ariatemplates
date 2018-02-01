@@ -189,10 +189,13 @@
                 var newValue = this._cfg.keyValue;
                 this._cfg.value = newValue;
                 this.setProperty("value", newValue);
-                this._setState();
-                this._updateDomForState();
-                if (this._cfg.onchange) {
-                    this.evalCallback(this._cfg.onchange);
+                // setProperty on value might destroy the widget
+                if (this._cfg) {
+                    this._setState();
+                    this._updateDomForState();
+                    if (this._cfg.onchange) {
+                        this.evalCallback(this._cfg.onchange);
+                    }
                 }
             }
         }

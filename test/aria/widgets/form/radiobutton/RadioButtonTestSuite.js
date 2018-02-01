@@ -22,5 +22,6 @@ Aria.classDefinition({
         this.addTests("test.aria.widgets.form.radiobutton.checkBind.test1.RadioButtonTest");
         this.addTests("test.aria.widgets.form.radiobutton.checkBind.test2.RadioButtonTest");
         this.addTests("test.aria.widgets.form.radiobutton.multiLine.MultiLineTestCase");
+        this.addTests("test.aria.widgets.form.radiobutton.disposeOnValueChange.RadioButtonRobotTestCase");
     }
 });
