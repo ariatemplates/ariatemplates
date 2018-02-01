@@ -414,10 +414,14 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         _focus : function () {
-            try {
-                this._getFocusableElement().focus();
-            } catch (ex) {
-                // FIXME: fix for IE7, investigate why it may fail
+            // the _focus method can be called after the widget has been disposed
+            // do nothing in that case
+            if (this._cfg) {
+                try {
+                    this._getFocusableElement().focus();
+                } catch (ex) {
+                    // FIXME: fix for IE7, investigate why it may fail
+                }
             }
         },
 

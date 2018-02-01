@@ -152,6 +152,10 @@ var ariaWidgetsFormCheckBox = require("./CheckBox");
             _dom_onfocus : function (event) {
                 if (!this.getProperty("value")) {
                     this._setRadioValue();
+                    // _setRadioValue might destroy the widget
+                    if (!this._cfg) {
+                        return;
+                    }
                 }
                 this.$CheckBox._dom_onfocus.call(this, event);
             },
@@ -231,10 +235,13 @@ var ariaWidgetsFormCheckBox = require("./CheckBox");
                 var newValue = this._cfg.keyValue;
                 this._cfg.value = newValue;
                 this.setProperty("value", newValue);
-                this._setState();
-                this._updateDomForState();
-                if (this._cfg.onchange) {
-                    this.evalCallback(this._cfg.onchange);
+                // setProperty on value might destroy the widget
+                if (this._cfg) {
+                    this._setState();
+                    this._updateDomForState();
+                    if (this._cfg.onchange) {
+                        this.evalCallback(this._cfg.onchange);
+                    }
                 }
             }
 
