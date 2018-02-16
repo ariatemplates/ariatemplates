@@ -147,7 +147,8 @@ var generalBrowserExcludes = {
         "test/aria/widgets/wai/tabs/Group4RobotTestCase.js",
         "test/aria/widgets/action/link/disabled/LinkDisabledTestCase.js",
         "test/aria/widgets/form/multiselect/downArrowKeyPreventDef/MSDownArrowKeyRobotTestCase.js",
-        "test/aria/widgets/form/textinput/helpText/HelpTextTestCase.js"
+        "test/aria/widgets/form/textinput/helpText/HelpTextTestCase.js",
+        "test/aria/widgets/container/dialog/restoreFocusOnClose/*.js"
     ].concat(microsoftMapsTests),
     "IE 9": [
         "test/aria/utils/hashManager/HashManagerOneTestCase.js",
