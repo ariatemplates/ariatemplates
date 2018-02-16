@@ -586,6 +586,8 @@ module.exports = Aria.classDefinition({
                 this._toggleMaximize(newValue);
             } else if (propertyName === "width" || propertyName === "height") {
                 this._onDimensionsChanged(false);
+            } else if (propertyName === "restoreFocusOnClose") {
+                this._cfg[propertyName] = newValue;
             } else {
                 // delegate to parent class
                 this.$Container._onBoundPropertyChange.apply(this, arguments);
@@ -960,7 +962,7 @@ module.exports = Aria.classDefinition({
 
                 if (modal) {
                     var previouslyFocusedElement = this._previouslyFocusedElement;
-                    if (previouslyFocusedElement != null) {
+                    if (cfg.restoreFocusOnClose && ariaUtilsDom.isInDom(previouslyFocusedElement) && !/^body$/i.test(previouslyFocusedElement.tagName)) {
                         setTimeout(function () {
                             try {
                                 // On IE 7 and 8, focusing an element which is no longer in the DOM
