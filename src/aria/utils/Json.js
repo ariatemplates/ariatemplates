@@ -835,21 +835,46 @@ var ariaUtilsObject = require("./Object");
              * aria.utils.Json.INVALID_JSON_CONTENT
              * @return {Object}
              */
-            load : function (str, ctxt, errMsg) {
+            load: function (str, ctxt, errMsg) {
+                if (JSON && typeof JSON.parse === "function") {
+                    try {
+                        return JSON.parse(str);
+                    } catch (ex) {
+                        // Fallback to eval
+                        this.$logWarn("Cannot parse string with native JSON.parse. Defaulting to eval.\ncontext: %1\nJSON string:\n%2", [ctxt, str]);
+                        return this._loadWithEval(str, ctxt, errMsg);
+                    }
+                }
+                
+                return this._loadWithEval(str, ctxt, errMsg);
+            },
+
+            /**
+             * Load a JSON string and return the corresponding object using eval
+             * @param {String} str the JSON string
+             * @param {Object} ctxt caller object - optional - used to retrieve the caller classpath in case of error
+             * @param {String} errMsg the error message to use in case of problem - optional - default:
+             * aria.utils.Json.INVALID_JSON_CONTENT
+             * @return {Object} 
+             * @private
+             */
+            _loadWithEval: function (str, ctxt, errMsg) {
                 var res = null;
+
+                if (ctxt && ctxt.$classpath) {
+                    ctxt = ctxt.$classpath;
+                }
+                if (!errMsg) {
+                    errMsg = this.INVALID_JSON_CONTENT;
+                }
+
                 try {
                     str = ('' + str).replace(/^\s/, ''); // remove first spaces
                     res = Aria["eval"]('return (' + str + ');');
                 } catch (ex) {
-                    res = null;
-                    if (!errMsg) {
-                        errMsg = this.INVALID_JSON_CONTENT;
-                    }
-                    if (ctxt && ctxt.$classpath) {
-                        ctxt = ctxt.$classpath;
-                    }
                     this.$logError(errMsg, [ctxt, str], ex);
                 }
+
                 return res;
             },
 
