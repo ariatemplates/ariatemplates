@@ -836,7 +836,8 @@ var ariaUtilsObject = require("./Object");
              * @return {Object}
              */
             load: function (str, ctxt, errMsg) {
-                if (JSON && typeof JSON.parse === "function") {
+                var JSON = Aria.$global.JSON;
+                if (typeof JSON !== "undefined" && typeof JSON.parse === "function") {
                     try {
                         return JSON.parse(str);
                     } catch (ex) {
@@ -845,7 +846,7 @@ var ariaUtilsObject = require("./Object");
                         return this._loadWithEval(str, ctxt, errMsg);
                     }
                 }
-                
+
                 return this._loadWithEval(str, ctxt, errMsg);
             },
 

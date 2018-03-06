@@ -590,8 +590,8 @@ module.exports = Aria.classDefinition({
              */
             parse: function (string) {
                 var text = String(string);
-
-                if (JSON && typeof JSON.parse === "function") {
+                var JSON = Aria.$global.JSON;
+                if (typeof JSON !== "undefined" && typeof JSON.parse === "function") {
                     try {
                         return JSON.parse(text);
                     } catch (ex) {
