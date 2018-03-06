@@ -27,6 +27,12 @@ module.exports = Aria.classDefinition({
     $constructor : function (optimized) {
         this._optimized = optimized || false;
     },
+
+    $statics : {
+        // MESSAGES:
+        INVALID_JSON_SYNTAX : "Cannot parse string with native JSON.parse. Defaulting to eval.\nJSON string:\n%1"
+    },
+
     $prototype : function () {
         var escapable = /[\\\"\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g, meta = {
             // table of character substitutions
@@ -596,7 +602,7 @@ module.exports = Aria.classDefinition({
                         return JSON.parse(text);
                     } catch (ex) {
                         // Fallback to eval
-                        this.$logWarn("Cannot parse string with native JSON.parse. Defaulting to eval.\nJSON string:\n%1", [text]);
+                        this.$logWarn(this.INVALID_JSON_SYNTAX, [text]);
                         return this._parseWithEval(text);
                     }
                 }

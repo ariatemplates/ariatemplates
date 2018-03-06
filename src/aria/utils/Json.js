@@ -377,7 +377,8 @@ var ariaUtilsObject = require("./Object");
              */
             SPLICE : 3,
 
-            // ERROR MESSAGES:
+            // MESSAGES:
+            INVALID_JSON_SYNTAX : "Cannot parse string with native JSON.parse. Defaulting to eval.\ncontext: %1\nJSON string:\n%2",
             INVALID_JSON_CONTENT : "An error occured while loading an invalid JSON content:\ncontext: %1\nJSON content:\n%2",
             NOT_OF_SPECIFIED_DH_TYPE : "Invalid data holder type: expected to be an object or an array. Data holder provided: ",
             INVALID_SPLICE_PARAMETERS : "Invalid splice parameters.",
@@ -837,12 +838,17 @@ var ariaUtilsObject = require("./Object");
              */
             load: function (str, ctxt, errMsg) {
                 var JSON = Aria.$global.JSON;
+                
+                if (ctxt && ctxt.$classpath) {
+                    ctxt = ctxt.$classpath;
+                }
+                
                 if (typeof JSON !== "undefined" && typeof JSON.parse === "function") {
                     try {
                         return JSON.parse(str);
                     } catch (ex) {
                         // Fallback to eval
-                        this.$logWarn("Cannot parse string with native JSON.parse. Defaulting to eval.\ncontext: %1\nJSON string:\n%2", [ctxt, str]);
+                        this.$logWarn(this.INVALID_JSON_SYNTAX, [ctxt, str]);
                         return this._loadWithEval(str, ctxt, errMsg);
                     }
                 }
@@ -862,17 +868,13 @@ var ariaUtilsObject = require("./Object");
             _loadWithEval: function (str, ctxt, errMsg) {
                 var res = null;
 
-                if (ctxt && ctxt.$classpath) {
-                    ctxt = ctxt.$classpath;
-                }
-                if (!errMsg) {
-                    errMsg = this.INVALID_JSON_CONTENT;
-                }
-
                 try {
                     str = ('' + str).replace(/^\s/, ''); // remove first spaces
                     res = Aria["eval"]('return (' + str + ');');
                 } catch (ex) {
+                    if (!errMsg) {
+                        errMsg = this.INVALID_JSON_CONTENT;
+                    }
                     this.$logError(errMsg, [ctxt, str], ex);
                 }
 
