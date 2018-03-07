@@ -27,6 +27,12 @@ module.exports = Aria.classDefinition({
     $constructor : function (optimized) {
         this._optimized = optimized || false;
     },
+
+    $statics : {
+        // MESSAGES:
+        INVALID_JSON_SYNTAX : "Cannot parse string with native JSON.parse. Defaulting to eval.\nJSON string:\n%1"
+    },
+
     $prototype : function () {
         var escapable = /[\\\"\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g, meta = {
             // table of character substitutions
@@ -580,7 +586,7 @@ module.exports = Aria.classDefinition({
             },
 
             /**
-             * Parse a string as JSON. This uses a partial implementation of <a
+             * Parse a string as JSON. This uses a by default the native JSON.parse and when in case of failure uses partial implementation of <a
              * href="https://github.com/douglascrockford/JSON-js/blob/master/json.js">Douglas Crockford's algorithm</a>
              * to parse JSON strings.<br />
              * It provides some security around the eval and resembles what was done in aria.utils.json.load()
@@ -588,9 +594,33 @@ module.exports = Aria.classDefinition({
              * @return {Object} JSON object
              * @throws SyntaxError
              */
-            parse : function (string) {
+            parse: function (string) {
                 var text = String(string);
+                var JSON = Aria.$global.JSON;
+                if (typeof JSON !== "undefined" && typeof JSON.parse === "function") {
+                    try {
+                        return JSON.parse(text);
+                    } catch (ex) {
+                        // Fallback to eval
+                        this.$logWarn(this.INVALID_JSON_SYNTAX, [text]);
+                        return this._parseWithEval(text);
+                    }
+                }
 
+                return this._parseWithEval(text);
+            },
+
+            /**
+             * Parse a string as JSON. This uses a partial implementation of <a
+             * href="https://github.com/douglascrockford/JSON-js/blob/master/json.js">Douglas Crockford's algorithm</a>
+             * to parse JSON strings.<br />
+             * It provides some security around the eval and resembles what was done in aria.utils.json.load()
+             * @param {String} string The string to parse as JSON
+             * @return {Object} JSON object
+             * @throws SyntaxError
+             * @private
+             */
+            _parseWithEval: function (text) {
                 // Run the text against regular expressions that look
                 // for non-JSON patterns. We are especially concerned with '()' and 'new'
                 // because they can cause invocation, and '=' because it can cause mutation.
@@ -604,7 +634,9 @@ module.exports = Aria.classDefinition({
                 // open brackets that follow a colon or comma or that begin the text. Finally,
                 // we look to see that the remaining characters are only whitespace or ']' or
                 // ',' or ':' or '{' or '}' or 'new Date(])'. If that is so, then the text is safe for eval.
-                if (/^((new Date\((\])?\))|([\],:{}\s]))*$/.test(text.replace(/\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g, '@').replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
+                if (/^((new Date\((\])?\))|([\],:{}\s]))*$/.test(text.replace(/\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g, '@')
+                    .replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']')
+                    .replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
                     // this might throw a SyntaxError
                     return Aria["eval"]('return (' + text + ');');
                 } else {

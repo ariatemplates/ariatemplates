@@ -377,7 +377,8 @@ var ariaUtilsObject = require("./Object");
              */
             SPLICE : 3,
 
-            // ERROR MESSAGES:
+            // MESSAGES:
+            INVALID_JSON_SYNTAX : "Cannot parse string with native JSON.parse. Defaulting to eval.\ncontext: %1\nJSON string:\n%2",
             INVALID_JSON_CONTENT : "An error occured while loading an invalid JSON content:\ncontext: %1\nJSON content:\n%2",
             NOT_OF_SPECIFIED_DH_TYPE : "Invalid data holder type: expected to be an object or an array. Data holder provided: ",
             INVALID_SPLICE_PARAMETERS : "Invalid splice parameters.",
@@ -835,21 +836,48 @@ var ariaUtilsObject = require("./Object");
              * aria.utils.Json.INVALID_JSON_CONTENT
              * @return {Object}
              */
-            load : function (str, ctxt, errMsg) {
+            load: function (str, ctxt, errMsg) {
+                var JSON = Aria.$global.JSON;
+                
+                if (ctxt && ctxt.$classpath) {
+                    ctxt = ctxt.$classpath;
+                }
+                
+                if (typeof JSON !== "undefined" && typeof JSON.parse === "function") {
+                    try {
+                        return JSON.parse(str);
+                    } catch (ex) {
+                        // Fallback to eval
+                        this.$logWarn(this.INVALID_JSON_SYNTAX, [ctxt, str]);
+                        return this._loadWithEval(str, ctxt, errMsg);
+                    }
+                }
+
+                return this._loadWithEval(str, ctxt, errMsg);
+            },
+
+            /**
+             * Load a JSON string and return the corresponding object using eval
+             * @param {String} str the JSON string
+             * @param {Object} ctxt caller object - optional - used to retrieve the caller classpath in case of error
+             * @param {String} errMsg the error message to use in case of problem - optional - default:
+             * aria.utils.Json.INVALID_JSON_CONTENT
+             * @return {Object} 
+             * @private
+             */
+            _loadWithEval: function (str, ctxt, errMsg) {
                 var res = null;
+
                 try {
                     str = ('' + str).replace(/^\s/, ''); // remove first spaces
                     res = Aria["eval"]('return (' + str + ');');
                 } catch (ex) {
-                    res = null;
                     if (!errMsg) {
                         errMsg = this.INVALID_JSON_CONTENT;
                     }
-                    if (ctxt && ctxt.$classpath) {
-                        ctxt = ctxt.$classpath;
-                    }
                     this.$logError(errMsg, [ctxt, str], ex);
                 }
+
                 return res;
             },
 
