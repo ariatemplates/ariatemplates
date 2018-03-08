@@ -17,6 +17,8 @@ var Aria = require("../Aria");
 (function () {
 
     var typeUtils = (require("../utils/Type"));
+    var downloadMgr = (require("./DownloadMgr"));
+
     var __mergeEvents = Aria.__mergeEvents;
 
     var __cpt = -1; // last used number to store the key inside the interface
@@ -343,7 +345,7 @@ var Aria = require("../Aria");
                 methods.push("p.$destructor=function(){\n", deleteProperties.join(''), "i[this.", keyProperty, "]=null;\ndelete i[this.", keyProperty, "];\nthis.", keyProperty, "=null;\n", superInterface
                         ? "e.prototype.$destructor.call(this);\n" /* call super interface at the end of the destructor */
                         : "", "};\n");
-                var out = [];
+                var srcContent = [];
                 var evalContext = {
                     g : __generateKey,
                     p : proto, // prototype
@@ -351,12 +353,18 @@ var Aria = require("../Aria");
                     e : superInterface
                 };
                 Aria.nspace(classpath, true);
-                out.push("var i={};\nvar evalContext=arguments[2];\nvar g=evalContext.g;\nvar p=evalContext.p;\nvar e=evalContext.e;\nevalContext.c=function(obj){\n", (superInterface
+                srcContent.push("var i={};\nvar evalContext=arguments[2];\nvar g=evalContext.g;\nvar p=evalContext.p;\nvar e=evalContext.e;\nevalContext.c=function(obj){\n", (superInterface
                         ? 'e.call(this,obj);\n'
                         : ''), 'var k=g(i);\ni[k]=obj;\nthis.', keyProperty, '=k;\n', initProperties.join(''), '};\n', methods.join(''), 'Aria.$global.', classpath, '=evalContext.c;\n', 'p=null;\nevalContext=null;\n');
-                out = out.join('');
-                // alert(out);
-                Aria["eval"](out, classpath.replace(/\./g, "/") + "-wrapper.js", evalContext);
+                srcContent = srcContent.join('');
+
+                // Get original sourceURL of the interface
+                var interfaceSrcURL = downloadMgr.resolveURL( Aria.getLogicalPath(classpath, ".js"), true );
+                // Remove extension and add wrapper extension
+                var indexOfExtension = interfaceSrcURL.lastIndexOf(".");
+                var srcURL = interfaceSrcURL.substring(0,indexOfExtension) + "-wrapper.js";
+                // Generate the interface wrapper
+                Aria["eval"](srcContent, srcURL, evalContext);
                 var constructor = evalContext.c;
                 proto.$interfaces[classpath] = constructor;
                 constructor.prototype = proto;
