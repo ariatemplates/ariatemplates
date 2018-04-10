@@ -2043,6 +2043,9 @@ module.exports = Aria.beanDefinitions({
                         },
                         "center" : {
                             $type : "common:BindingRef"
+                        },
+                        "restoreFocusOnClose": {
+                            $type : "common:BindingRef"
                         }
                     }
                 },
@@ -2180,6 +2183,11 @@ module.exports = Aria.beanDefinitions({
                 "resizeend" : {
                     $type : "common:Callback",
                     $description : "Callback called after the dialog resizing ends."
+                },
+                "restoreFocusOnClose" : {
+                    $type : "json:Boolean",
+                    $description : "If the dialog is modal and this parameter is true, the element which was focused before the dialog was displayed will be focused back when the dialog is closed. This parameter is ignored for non-modal dialogs.",
+                    $default : true
                 },
                 "container" : {
                     $type : "json:MultiTypes",
