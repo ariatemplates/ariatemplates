@@ -324,6 +324,29 @@ module.exports = Aria.classDefinition({
         },
 
         /**
+         * Cf the documentation of this method in the parent class.
+         * @override
+         */
+        _performAction : function (domEvt) {
+            if (this._cfg.blurBeforeAction) {
+                var document = Aria.$window.document;
+                var activeElement = document.activeElement;
+                this.getDom(); // makes sure _focusElt is defined
+                if (activeElement && activeElement !== document.body && activeElement !== this._focusElt) {
+                    activeElement.blur();
+                    var self = this;
+                    setTimeout(function () {
+                        // executes the action a bit later, when the blur has been fully taken into account
+                        // (especially by IE)
+                        self._performAction(domEvt);
+                    });
+                    return true;
+                }
+            }
+            return this.$ActionWidget._performAction.call(this, domEvt);
+        },
+
+        /**
          * React to delegated mouse up events
          * @protected
          * @param {aria.DomEvent} domEvt Event
