@@ -1224,6 +1224,10 @@ module.exports = Aria.beanDefinitions({
                         }
                     }
                 },
+                "blurBeforeAction" : {
+                    $type : "json:Boolean",
+                    $description : "If true, the button blurs any other focused element on the page before calling the onclick handler."
+                },
                 "height" : {
                     $type : "json:Integer",
                     $description : "The height of the button",
