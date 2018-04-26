@@ -114,7 +114,7 @@ module.exports = Aria.classDefinition({
             var textArea = this._createFullScreenTextArea();
             this.synEvent.execute([
                 ["type", null, "[<insert>][space][>insert<]h"], // displays history window
-                ["pause", 2000],
+                ["pause", 4000],
                 ["type", null, "[<ctrl>]a[>ctrl<][<ctrl>]c[>ctrl<]"], // copies the whole history in the clipboard
                 ["pause", 1000],
                 ["type", null, "[<alt>][F4][>alt<]"], // closes history window
