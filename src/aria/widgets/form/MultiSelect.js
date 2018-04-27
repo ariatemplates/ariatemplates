@@ -265,17 +265,25 @@ module.exports = Aria.classDefinition({
 
             this._setPopupOpenProperty(false);
             this.controller.setListWidget(null);
+            var report = null;
+
             // Check _toggleDropdown already triggered
             if (!this._hasFocus) {
                 // Added to keep the behaviour similar to click on close button click PTR 04661445
-                var report = this.controller.toggleDropdown(this.getTextInputField().value, this._dropdownPopup != null);
+                report = this.controller.toggleDropdown(this.getTextInputField().value, this._dropdownPopup != null);
                 // to reset the dropdown display
                 report.displayDropDown = false;
+            }
+
+            this.$DropDownTextInput._afterDropdownClose.call(this);
+
+            if (report) {
                 this._reactToControllerReport(report, {
                     hasFocus : false
                 });
+                // note that _reactToControllerReport might destroy the widget (this._cfg may be null here)
             }
-            this.$DropDownTextInput._afterDropdownClose.call(this);
+
             this._dropDownOpen = false;
             this.refreshPopup = false;
             this._keepFocus = false;
