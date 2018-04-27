@@ -15,8 +15,6 @@
 var Aria = require("../../Aria");
 var DomEvent = require("../../DomEvent");
 var ariaPopupsPopup = require("../../popups/Popup");
-var ariaUtilsJson = require("../../utils/Json");
-
 
 /**
  * Class whose prototype is intended to be imported for all widgets that use a drop-down popup
@@ -306,12 +304,7 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         _setPopupOpenProperty : function (value) {
-            var cfg = this._cfg;
-            cfg.popupOpen = value;
-            if (cfg.bind && cfg.bind.popupOpen) {
-                var binding = cfg.bind.popupOpen;
-                ariaUtilsJson.setValue(binding.inside, binding.to, value);
-            }
+            this.setProperty("popupOpen", value);
         }
     }
 });
