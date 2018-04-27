@@ -22,6 +22,7 @@ Aria.classDefinition({
         this._tests = ["test.aria.widgets.form.multiselect.checkFeatures.MultiSelect",
                 "test.aria.widgets.form.multiselect.deleteFieldValue.test1.MultiSelect",
                 "test.aria.widgets.form.multiselect.deleteFieldValue.test2.MultiSelect",
+                "test.aria.widgets.form.multiselect.disposeOnValueChange.MultiSelectDisposeOnValueChangeRobotTestCase",
                 "test.aria.widgets.form.multiselect.downArrowKey.MultiSelect",
                 "test.aria.widgets.form.multiselect.instantbind.InstantBindTestCase",
                 "test.aria.widgets.form.multiselect.invalidcontent.MultiSelect",
