@@ -39,5 +39,6 @@ Aria.classDefinition({
     $destructor : function () {
         this.data.resourcesHandler.$dispose();
         this.data.resourcesHandler = null;
+        this.$DefaultErrorMessagesBase.$destructor.call(this);
     }
 });

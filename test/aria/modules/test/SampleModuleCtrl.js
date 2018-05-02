@@ -31,5 +31,6 @@ Aria.classDefinition({
             this.$urlService.$dispose();
             this.$urlService = null;
         }
+        this.$ModuleCtrl.$destructor.call(this);
     }
 });
