@@ -1112,7 +1112,8 @@ module.exports = Aria.classDefinition({
          * @return {Boolean} true if the HTML element is in the DOM hierarchy
          */
         isInDom : function (element) {
-            return element ? this.isAncestor(element, element.ownerDocument.body) : false;
+            var ownerDocument = element ? element.ownerDocument : null;
+            return ownerDocument ? this.isAncestor(element, ownerDocument.body) : false;
         },
 
         /**
