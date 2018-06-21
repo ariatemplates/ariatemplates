@@ -48,7 +48,7 @@ Aria.classDefinition({
             this.from = from;
             this.options = options;
             this.synEvent.execute([["mouseMove", from], ["mousePress", aria.jsunit.Robot.BUTTON1_MASK],
-                    ["move", options, from]], {
+                    ["move", options, from], ["pause", 1000]], {
                 fn : this._testGetMovableOne,
                 scope : this
             });
@@ -82,7 +82,7 @@ Aria.classDefinition({
             this.from = from;
             this.options = options;
             this.synEvent.execute([["mouseMove", from], ["mousePress", aria.jsunit.Robot.BUTTON1_MASK],
-                    ["move", options, from]], {
+                    ["move", options, from], ["pause", 1000]], {
                 fn : this._testGetMovableThree,
                 scope : this
             });
@@ -123,7 +123,7 @@ Aria.classDefinition({
             this.from = from;
             this.options = options;
             this.synEvent.execute([["mouseMove", from], ["mousePress", aria.jsunit.Robot.BUTTON1_MASK],
-                    ["move", options, from]], {
+                    ["move", options, from], ["pause", 1000]], {
                 fn : this._testGetMovableFive,
                 scope : this
             });

@@ -64,7 +64,7 @@ Aria.classDefinition({
             this.from = from;
             this.options = options;
             this.synEvent.execute([["mouseMove", from], ["mousePress", aria.jsunit.Robot.BUTTON1_MASK],
-                    ["move", options, from]], {
+                    ["move", options, from], ["pause", 1000]], {
                 fn : this._testOutOfBoundaryCbOne,
                 scope : this
             });
@@ -79,7 +79,7 @@ Aria.classDefinition({
 
             this.from = aria.utils.Json.copy(this.options.to);
             this.options.to.x += 200;
-            this.synEvent.execute([["move", this.options, this.from]], {
+            this.synEvent.execute([["move", this.options, this.from], ["pause", 1000]], {
                 fn : this._testOutOfBoundaryCbTwo,
                 scope : this
             });
@@ -98,7 +98,7 @@ Aria.classDefinition({
 
             this.from = aria.utils.Json.copy(this.options.to);
             this.options.to.y += 110;
-            this.synEvent.execute([["move", this.options, this.from]], {
+            this.synEvent.execute([["move", this.options, this.from], ["pause", 1000]], {
                 fn : this._testOutOfBoundaryCbThree,
                 scope : this
             });
@@ -114,7 +114,7 @@ Aria.classDefinition({
 
             this.from = aria.utils.Json.copy(this.options.to);
             this.options.to.x = this.geometry.x + this.geometry.width / 2;
-            this.synEvent.execute([["move", this.options, this.from]], {
+            this.synEvent.execute([["move", this.options, this.from], ["pause", 1000]], {
                 fn : this._testOutOfBoundaryCbFour,
                 scope : this
             });
@@ -130,7 +130,7 @@ Aria.classDefinition({
             this.from = aria.utils.Json.copy(this.options.to);
             this.options.to.x -= 50;
             this.options.to.y -= 50;
-            this.synEvent.execute([["move", this.options, this.from]], {
+            this.synEvent.execute([["move", this.options, this.from], ["pause", 1000]], {
                 fn : this._testOutOfBoundaryCbFive,
                 scope : this
             });
