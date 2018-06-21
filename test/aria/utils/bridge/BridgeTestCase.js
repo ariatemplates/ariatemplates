@@ -45,6 +45,7 @@ Aria.classDefinition({
             });
 
             this.waitFor({
+                timeout: 30000,
                 condition: function () {
                     return !! bridge._subWindow.document && bridge._subWindow.document.getElementById("myElementIsThere");
                 },
