@@ -86,6 +86,7 @@ var nophantomExcludesPatterns = [
 var generalBrowserExcludes = {
     "PhantomJS": phantomjsExcludesPatterns,
     "Firefox 3": [
+        "test/aria/map/Google3MapProviderTestCase.js",
         "test/aria/utils/HistoryTestCase.js",
         "test/aria/core/io/JSONPTestCase.js",
         "test/aria/pageEngine/pageEngine/externalHashNavigation/ExternalHashNavigationTestCase.js",
