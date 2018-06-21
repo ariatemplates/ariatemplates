@@ -133,6 +133,7 @@ module.exports = Aria.classDefinition({
                         y: y
                     }
                 });
+                add('_delay');
             }, cb);
         },
 

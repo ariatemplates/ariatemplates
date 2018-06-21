@@ -29,7 +29,7 @@
 {macro displayMain()}
     {var commonData = this.getCommonData() /}
 
-    <div><span {id commonData.textId /} >${commonData.textSample}</span></div>
+    <div><span {id commonData.textId /} style="padding-left: 5px;">${commonData.textSample}</span></div>
     <div><input {id commonData.inputId /} type='text' value='${commonData.textSample}' /></div>
 
     {@aria:Dialog this.getDialogConfiguration() /}
