@@ -64,7 +64,7 @@ Aria.classDefinition({
                 }
             };
 
-            var seq = [["mouseMove", from], ["mousePress", this._robot.BUTTON1_MASK], ["move", options, from]];
+            var seq = [["mouseMove", from], ["mousePress", this._robot.BUTTON1_MASK], ["move", options, from], ["pause", 1000]];
 
             this.synEvent.execute(seq, {
                 fn : this._afterFirstDrag,
