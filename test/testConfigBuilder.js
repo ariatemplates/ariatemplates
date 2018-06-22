@@ -135,6 +135,7 @@ var generalBrowserExcludes = {
         "test/aria/utils/domNavigationManager/DomNavigationManagerRobotTestCase.js"
     ],
     "IE 8": [
+        "test/aria/widgets/container/dialog/container/ResizeDialogContainerRobotTestCase.js",
         "test/aria/html/textinput/placeholder/PlaceholderTestCase.js",
         "test/aria/map/Google3MapProviderTestCase.js",
         "test/aria/modules/RequestMgrTimeoutTestCase.js",
@@ -152,6 +153,7 @@ var generalBrowserExcludes = {
         "test/aria/widgets/container/dialog/restoreFocusOnClose/*.js"
     ].concat(microsoftMapsTests),
     "IE 9": [
+        "test/aria/widgets/container/dialog/resize/dontSelectOnResize/DialogResizeDontSelectRobotTestCase.js",
         "test/aria/utils/hashManager/HashManagerOneTestCase.js",
         "test/aria/utils/mouse/MouseDragKoRobotTestCase.js",
         "test/aria/widgets/wai/dropdown/DatePickerDropdownTogglingRobotTestCase.js",
@@ -177,6 +179,7 @@ var generalBrowserExcludes = {
         "test/aria/widgets/wai/errorlist/binding/ErrorListBindingJawsTestCase.js"
     ],
     "Edge": [
+        "test/aria/utils/bridge/BridgeTestCase.js",
         "test/aria/storage/localStorage/EventIssueTestCase.js",
         "test/aria/widgets/container/dialog/container/FocusDialogContainerRobotTestCase.js",
         "test/aria/widgets/form/multiselect/downArrowKeyPreventDef/MSDownArrowKeyRobotTestCase.js",
