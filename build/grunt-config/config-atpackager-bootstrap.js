@@ -32,7 +32,7 @@ module.exports = function (grunt) {
     grunt.config.set('atpackager.bootstrap', {
         options : {
             sourceDirectories : ['src'],
-            sourceFiles : ['aria/**/*', '!aria/node.js', '!aria/bootstrap.js'],
+            sourceFiles : ['aria/**/*', '!aria/node.js', '!aria/bootstrap.js', 'aria-tester.html'],
             defaultBuilder : {
                 type : 'ATMultipart',
                 cfg : {
@@ -61,6 +61,19 @@ module.exports = function (grunt) {
                                     }]
                         }
                     }, {
+                        type : "TextReplace",
+                        cfg : {
+                            files : ['aria-tester.html'],
+                            replacements : [{
+                                        find : "aria/bootstrap.js",
+                                        replace : mainATFile
+                                    }, {
+                                        find : "aria/css/atskin.js",
+                                        replace : "aria/css/atskin-<%= pkg.version %>.js"
+                                    }]
+                        }
+                    }, {
+                    }, {
                         type : 'ATNormalizeSkin',
                         cfg : {
                             files : ['aria/css/*.js']
@@ -75,6 +88,12 @@ module.exports = function (grunt) {
                                     header : '<%= packaging.license %>'
                                 }
                             }
+                        }
+                    }, {
+                        type : 'CopyUnpackaged',
+                        cfg : {
+                            files : ['aria-tester.html'],
+                            builder: 'Concat'
                         }
                     }, 'CopyUnpackaged'],
             packages : [{
