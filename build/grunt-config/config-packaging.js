@@ -48,6 +48,17 @@ module.exports = function (grunt) {
         license : grunt.file.read(getPath('../templates/LICENSE')),
         licenseMin : grunt.file.read(getPath('../templates/LICENSE-MIN')),
         pkg : pkg,
+        coverage : process.env.ENABLE_COVERAGE === "1" ? {
+            files : ['**/*.js', '!aria/noderError/**', '!aria/core/useragent/ua-parser.js'],
+            infoFile : 'coverage-instrumentation.json',
+            pathPrefix: 'src',
+            nodeCoverageOptions: {
+                "condition": true,
+                "function": true,
+                "staticInfo": false,
+                "submit": false
+            }
+        } : false,
         atExtensions : atExtensions
 
     };

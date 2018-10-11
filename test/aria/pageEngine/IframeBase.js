@@ -49,6 +49,7 @@ Aria.classDefinition({
         },
 
         removeIframe : function () {
+            this.reportCoverage(this._testWindow);
             this._iframe.parentNode.removeChild(this._iframe);
             this._iframe = null;
             this._testWindow = null;

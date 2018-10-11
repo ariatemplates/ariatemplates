@@ -108,6 +108,7 @@ module.exports = Aria.classDefinition({
         this.__cleanEnv(true);
         this.__removeTestDiv();
         if (this.testIframe) {
+            this.reportCoverage(this.testWindow);
             this.testIframe.parentNode.removeChild(this.testIframe);
             this.testIframe = null;
         }

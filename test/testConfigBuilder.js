@@ -231,7 +231,6 @@ exports.buildTestConfig = function (config) {
     var filesExcludes = [];
     var browserExcludes;
     var browsers = config.browsers;
-    var rootFilePath = exports.packagedRootDirectory;
     var unpackaged = config.unpackaged;
     var noFlash = config.noFlash;
 
@@ -325,10 +324,11 @@ exports.buildTestConfig = function (config) {
         append(filesExcludes, noFlashExcludesPatterns);
     }
 
+    var rootFilePath = unpackaged ? exports.unpackagedRootDirectory : exports.packagedRootDirectory;
     var res = {
         resources: {
             "/": [
-                unpackaged ? exports.unpackagedRootDirectory : exports.packagedRootDirectory
+                rootFilePath
             ],
             "/test": [
                 exports.testsRootDirectory
@@ -345,11 +345,19 @@ exports.buildTestConfig = function (config) {
                     browserExcludes: browserExcludes
                 }
             }
+        },
+        coverage: {
+            infoFiles: [path.join(rootFilePath, "coverage-instrumentation.json")]
         }
     };
     if (reportName !== false) {
+        var reportBaseName = path.join(exports.reportsDirectory, reportName);
         res["test-reports"] = {
-            "json-log-file": path.join(exports.reportsDirectory, reportName + ".json")
+            "json-log-file": reportBaseName + ".json"
+        };
+        res["coverage-reports"] = {
+            "json-file": reportBaseName + ".coverage.json",
+            "lcov-file": reportBaseName + ".coverage.lcov"
         };
     }
     if (browsers) {

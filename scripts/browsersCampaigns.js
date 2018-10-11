@@ -19,8 +19,8 @@ var testConfigBuilder = require("../test/testConfigBuilder");
 var browsers = [
     "Firefox 3",
     "Firefox 11",
-    "Firefox 58 as Firefox",
-    "Chrome 64 as Chrome",
+    "Firefox >=62 as Firefox",
+    "Chrome >=69 as Chrome",
     "Safari",
     "IE 8",
     "IE 9",

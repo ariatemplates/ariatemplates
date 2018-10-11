@@ -32,13 +32,13 @@
   },
   "dependencies": {
     "at-noder-converter": "1.1.1",
-    "atpackager": "0.2.10",
+    "atpackager": "0.3.0",
     "gzip-js": "0.3.2",
     "noder-js": "1.6.2"
   },
   "devDependencies": {
     "at-diff": "0.0.9",
-    "attester": "3.0.4",
+    "attester": "3.1.0",
     "express": "4.15.4",
     "grunt": "1.0.1",
     "grunt-contrib-jshint": "1.1.0",

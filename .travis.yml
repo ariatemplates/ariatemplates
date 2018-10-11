@@ -7,6 +7,9 @@ cache:
     - node_modules
 addons:
   firefox: "55.0"
+env:
+  - ENABLE_COVERAGE=1
+  - ENABLE_COVERAGE=0
 before_install:
 # Settings needed for graphic output in Firefox
   - export DISPLAY=:99.0
@@ -20,6 +23,7 @@ before_install:
   - phantomjs --version
 script:
   - npm run ci
+  - '[ "$ENABLE_COVERAGE" != "1" ] || (npm install -g codecov && for file in test/logs/*.lcov; do codecov --disable=gcov -f "$file"; done)'
 notifications:
   email:
     - build@ariatemplates.com

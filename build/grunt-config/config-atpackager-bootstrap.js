@@ -49,7 +49,10 @@ module.exports = function (grunt) {
                     allowedGlobals : ["aria", "Aria", "setTimeout", "clearTimeout", "setInterval", "clearInterval",
                             "global"]
                 }
-            }, {
+            }, packagingSettings.coverage ? {
+                type : 'NodeCoverageInstrument',
+                cfg : packagingSettings.coverage
+             } : null, {
                 type : 'JSStripBanner',
                 cfg : {
                     files : stripBannerFiles

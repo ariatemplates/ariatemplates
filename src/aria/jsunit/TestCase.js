@@ -161,6 +161,19 @@ module.exports = Aria.classDefinition({
         },
 
         /**
+         * Reports code coverage results for a different window than the main one, if attester is used and
+         * coverage is enabled.
+         * @param {Window} subWindow The window for which coverage results have to be sent.
+         */
+        reportCoverage : function (subWindow) {
+            var topWindow = Aria.$global.top;
+            var attester = topWindow ? topWindow.attester : null;
+            if (attester && attester.coverage) {
+                attester.coverage(subWindow);
+            }
+        },
+
+        /**
          * Wrap original test methods inside a try catch that if failed logs an error and ends the test
          * @param {Array} methods List of functions on the test prototype
          * @private
