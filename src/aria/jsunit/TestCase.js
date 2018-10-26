@@ -18,7 +18,6 @@ var ariaUtilsJson = require("../utils/Json");
 var ariaUtilsType = require("../utils/Type");
 var ariaUtilsObject = require("../utils/Object");
 var ariaUtilsArray = require("../utils/Array");
-var ariaCoreBrowser = require("../core/Browser");
 var ariaJsunitAssert = require("./Assert");
 var ariaCoreTimer = require("../core/Timer");
 var ariaCoreAppEnvironment = require("../core/AppEnvironment");
@@ -37,7 +36,7 @@ module.exports = Aria.classDefinition({
     $classpath : "aria.jsunit.TestCase",
     $extends : ariaJsunitAssert,
     $statics : {
-        "defaultTestTimeout" : ariaCoreBrowser.isIE7 ? 30000 : 20000,
+        "defaultTestTimeout" : 30000,
 
         IFRAME_BASE_CSS_TEXT : "position:fixed;top:20px;left:20px;z-index:10000;width:1000px;height:700px;border:1px solid blue;background:aliceblue;opacity:0.8;-ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=80)';filter: alpha(opacity=80);",
 
