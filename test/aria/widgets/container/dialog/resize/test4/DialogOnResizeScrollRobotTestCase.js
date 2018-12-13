@@ -20,14 +20,24 @@ Aria.classDefinition({
         this.$AbstractResizableDialogRobotBase.constructor.call(this);
 
         this.setTestEnv({
-            css : "position:relative;top:400px;border:15px solid blue;"
+            css : "position:relative;top:400px;height:50000px;border:15px solid blue;"
         });
     },
     $prototype : {
 
         runTemplateTest : function () {
             Aria.$window.scrollBy(0,150);
-            this.startResizeTest();
+            aria.core.Timer.addCallback({
+                fn : this.startResizeTest,
+                scope : this,
+                delay : 1000
+            });
+        },
+
+        startResizeTest : function () {
+            var dom = aria.utils.Dom;
+            this.assertEquals(dom.getDocumentScrollElement().scrollTop, 150, "The page should have %2 px of scroll, but it has %1 px instead");
+            this.$AbstractResizableDialogRobotBase.startResizeTest.call(this);
         }
     }
 });
