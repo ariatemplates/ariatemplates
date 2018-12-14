@@ -25,7 +25,7 @@ Aria.classDefinition({
 
         this.setTestEnv({
             template : "test.aria.widgets.container.dialog.resize.test5.OverlayOnResizeScrollTemplate",
-            css : "position:relative;top:400px;border:15px solid blue;",
+            css : "position:relative;top:400px;height:50000px;border:15px solid blue;",
             data : this.data
         });
     },

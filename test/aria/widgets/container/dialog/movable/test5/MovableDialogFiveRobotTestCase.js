@@ -24,7 +24,7 @@ Aria.classDefinition({
 
         this.setTestEnv({
             template : "test.aria.widgets.container.dialog.movable.test5.MovableDialogTemplateFive",
-            css : "position:relative;top:400px;border:15px solid blue;",
+            css : "position:relative;top:400px;height:50000px;border:15px solid blue;",
             data : this.data
         });
     },
