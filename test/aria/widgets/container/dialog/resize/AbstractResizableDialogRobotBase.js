@@ -83,7 +83,7 @@ Aria.classDefinition({
             this.data.firstDialog.height -= 10;
             this.data.firstDialog.y += 10;
 
-            this.synEvent.execute([["drag", options, from]], {
+            this.synEvent.execute([["drag", options, from], ["pause", 100]], {
                 fn : this._NResize,
                 scope : this
             });
@@ -110,7 +110,7 @@ Aria.classDefinition({
             this.data.firstDialog.height += 10;
             this.data.firstDialog.y -= 10;
 
-            this.synEvent.execute([["drag", options, from]], {
+            this.synEvent.execute([["drag", options, from], ["pause", 100]], {
                 fn : this._checkNSize,
                 scope : this
             });
@@ -149,7 +149,7 @@ Aria.classDefinition({
             this.data.firstDialog.y += 10;
             this.data.firstDialog.x += 10;
 
-            this.synEvent.execute([["drag", options, from]], {
+            this.synEvent.execute([["drag", options, from], ["pause", 100]], {
                 fn : this._checkNWSize,
                 scope : this
             });
@@ -188,7 +188,7 @@ Aria.classDefinition({
             this.data.firstDialog.width -= 10;
             this.data.firstDialog.y += 10;
 
-            this.synEvent.execute([["drag", options, from]], {
+            this.synEvent.execute([["drag", options, from], ["pause", 100]], {
                 fn : this._checkNESize,
                 scope : this
             });
@@ -226,7 +226,7 @@ Aria.classDefinition({
             this.data.firstDialog.height -= 8;
             this.data.firstDialog.width -= 8;
 
-            this.synEvent.execute([["drag", options, from]], {
+            this.synEvent.execute([["drag", options, from], ["pause", 100]], {
                 fn : this._checkSESize,
                 scope : this
             });
@@ -264,7 +264,7 @@ Aria.classDefinition({
             this.data.firstDialog.width -= 10;
             this.data.firstDialog.x += 10;
 
-            this.synEvent.execute([["drag", options, from]], {
+            this.synEvent.execute([["drag", options, from], ["pause", 100]], {
                 fn : this._checkSWSize,
                 scope : this
             });
@@ -301,7 +301,7 @@ Aria.classDefinition({
             // for shadow
             this.data.firstDialog.width -= 8;
 
-            this.synEvent.execute([["drag", options, from]], {
+            this.synEvent.execute([["drag", options, from], ["pause", 100]], {
                 fn : this._checkWSize,
                 scope : this
             });
@@ -333,7 +333,7 @@ Aria.classDefinition({
             };
             this.data.firstDialog.width -= 10;
 
-            this.synEvent.execute([["drag", options, from]], {
+            this.synEvent.execute([["drag", options, from], ["pause", 100]], {
                 fn : this._checkESize,
                 scope : this
             });
@@ -367,7 +367,7 @@ Aria.classDefinition({
             // for shadow
             this.data.firstDialog.height -= 8;
 
-            this.synEvent.execute([["drag", options, from]], {
+            this.synEvent.execute([["drag", options, from], ["pause", 100]], {
                 fn : this._checkSSize,
                 scope : this
             });
