@@ -275,7 +275,7 @@ module.exports = Aria.beanDefinitions({
                 // property
                 "name" : {
                     $type : "json:String",
-                    $description : "name of the input in current language - useful to describe the error location to the user",
+                    $description : "This property is only used for text input widgets.",
                     $mandatory : false
                 },
                 "disabled" : {
@@ -444,6 +444,14 @@ module.exports = Aria.beanDefinitions({
                 "autoselect" : {
                     $type : "json:Boolean",
                     $description : "Specifies whether display text should be highlighted when the field gains focus."
+                },
+                "name" : {
+                    $type : "InputCfg.name",
+                    $description : "Specifies the value of the name attribute to use on the <input> element. If not defined or empty, the name attribute is not set."
+                },
+                "autocomplete" : {
+                    $type : "json:String",
+                    $description : "Specifies the value of the autocomplete attribute to use on the <input> element. If not defined or empty, the autocomplete attribute is not set."
                 },
                 "fullWidth" : {
                     $type : "json:Boolean",
@@ -693,6 +701,10 @@ module.exports = Aria.beanDefinitions({
                 "waiIconLabel" : {
                     $type : "json:String",
                     $description : "aria-label attribute on the icon, when waiAria is activated"
+                },
+                "autocomplete" : {
+                    $type : "TextInputCfg.autocomplete",
+                    $default : "off"
                 }
             }
         },
