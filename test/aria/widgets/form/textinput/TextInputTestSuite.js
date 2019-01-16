@@ -21,6 +21,7 @@ Aria.classDefinition({
 
         this._tests = ["test.aria.widgets.form.textinput.onchange.OnChangeTestCase",
                 "test.aria.widgets.form.textinput.errorTooltipPosition.ErrorTooltipPositionTestCase",
+                "test.aria.widgets.form.textinput.autocomplete.AutocompleteTestCase",
                 "test.aria.widgets.form.textinput.onblur.OnBlurTest",
                 "test.aria.widgets.form.textinput.blurvalidation.BlurValidationTestCase",
                 "test.aria.widgets.form.textinput.quotes.QuotesTestCase",

@@ -307,6 +307,14 @@ Aria.classDefinition({
                 // corresponding attribute in the HTML
                 spellCheck = ' spellcheck="' + (cfg.spellCheck ? "true" : "false") + '"';
             }
+            var autocomplete = "";
+            if (cfg.autocomplete) {
+                autocomplete = ' autocomplete="' + stringUtils.escapeHTML(cfg.autocomplete) + '"';
+            }
+            var name = "";
+            if (cfg.name) {
+                name = ' name="' + stringUtils.escapeHTML(cfg.name) + '"';
+            }
 
             if (this._isTextarea) {
                 out.write(['<textarea', Aria.testMode ? ' id="' + this._domId + '_textarea"' : '',
@@ -315,6 +323,7 @@ Aria.classDefinition({
                         ';overflow:auto;resize:none;height: ' + this._frame.innerHeight + 'px; width:', inputWidth,
                         'px;"', 'value=""', (cfg.maxlength > -1 ? 'maxlength="' + cfg.maxlength + '" ' : ' '),
                         (cfg.tabIndex != null ? 'tabindex="' + this._calculateTabIndex() + '" ' : ' '), spellCheck,
+                        autocomplete, name,
                         '>', stringUtils.escapeHTML(((this._helpTextSet) ? cfg.helptext : text) || ""),
                         '</textarea>'
 
@@ -326,7 +335,7 @@ Aria.classDefinition({
                         'value="', stringUtils.encodeForQuotedHTMLAttribute((this._helpTextSet) ? cfg.helptext : text),
                         '" ', (cfg.maxlength > -1 ? 'maxlength="' + cfg.maxlength + '" ' : ' '),
                         (cfg.tabIndex != null ? 'tabindex="' + this._calculateTabIndex() + '" ' : ' '), spellCheck,
-                        ' _ariaInput="1"/>'
+                        autocomplete, name, ' _ariaInput="1"/>'
                 // the _ariaInput attribute is present so that pressing
                 // ENTER on this widget raises the onSubmit event of
                 // the fieldset:
