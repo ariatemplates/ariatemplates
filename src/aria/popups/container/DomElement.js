@@ -186,10 +186,10 @@ module.exports = Aria.classDefinition({
             if (base) {
                 this.$logError(this.BASE_NOT_IMPLEMENTED, ["centerInside"]);
             }
-            var container = this.container;
+            var geometry = this._getGeometry();
             return {
-                left : Math.floor(container.scrollLeft + (container.clientWidth - size.width) / 2),
-                top : Math.floor(container.scrollTop + (container.clientHeight - size.height) / 2)
+                left : Math.floor(geometry.x + (geometry.width - size.width) / 2),
+                top : Math.floor(geometry.y + (geometry.height - size.height) / 2)
             };
         }
 
