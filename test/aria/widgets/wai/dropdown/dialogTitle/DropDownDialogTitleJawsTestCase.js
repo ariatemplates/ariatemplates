@@ -78,13 +78,11 @@ Aria.classDefinition({
                         "DropDownLabelForDatePicker",
                         "Calendar table. Use arrow keys to navigate and space to validate.",
                         "DatePickerLabel Edit",
-                        "MyDialogTitle dialog", // must be after "DatePickerLabel Edit"
                         "DropDownLabelForDatePicker",
                         "AutoCompleteLabel Edit",
                         "List view Desktop device",
                         "AutoCompleteLabel Edit",
                         "Desktop device",
-                        "MyDialogTitle dialog", // must be after "AutoCompleteLabel Edit"
                         "DropDownLabelForAutoComplete",
                         "MultiSelectLabel Edit",
                         "DropDownLabelForMultiSelect",
@@ -93,7 +91,6 @@ Aria.classDefinition({
                         "Desktop device check box checked",
                         "MultiSelectLabel Edit",
                         "Desktop device",
-                        "MyDialogTitle dialog", // must be after "MultiSelectLabel Edit"
                         "DropDownLabelForMultiSelect",
                         "LastFieldLabel Edit"
                     ].join("\n"), this.end, function (response) {

@@ -15,6 +15,7 @@
 var Aria = require("../../Aria");
 var DomEvent = require("../../DomEvent");
 var ariaPopupsPopup = require("../../popups/Popup");
+var ViewportElement = require("../../popups/container/ViewportElement");
 
 /**
  * Class whose prototype is intended to be imported for all widgets that use a drop-down popup
@@ -47,6 +48,7 @@ module.exports = Aria.classDefinition({
 
             var popup = new ariaPopupsPopup();
             this._dropdownPopup = popup;
+            this._popupContainer = this._getPopupContainer();
 
             var onDescription = {
                 "onAfterOpen" : this._afterDropdownOpen,
@@ -65,6 +67,7 @@ module.exports = Aria.classDefinition({
             });
             popup.open({
                 section : section,
+                popupContainer: this._popupContainer,
                 domReference : this._getInputMarkupDomElt(),
                 preferredPositions : [{
                             reference : "bottom left",
@@ -168,44 +171,21 @@ module.exports = Aria.classDefinition({
         },
 
         /**
-         * Removes role="dialog" from all parent elements and stores those elements in this._waiDialogRoleRemoved.
+         * Returns the value to be passed to the popupContainer property of the popup configuration.
+         * @return {IPopupContainer|null} IPopupContainer
          */
-        _removeDialogRole : function () {
-            if (!this._cfg.waiAria) {
-                return;
-            }
-            var waiDialogRoleRemoved = this._waiDialogRoleRemoved;
-            if (!waiDialogRoleRemoved) {
-                this._waiDialogRoleRemoved = waiDialogRoleRemoved = [];
-            }
-            var domElt = this.getDom().parentElement;
-            while (domElt) {
-                if (domElt.getAttribute("role") === "dialog") {
-                    domElt.removeAttribute("role");
-                    waiDialogRoleRemoved.push(domElt);
-                }
-                domElt = domElt.parentElement;
-            }
-        },
-
-        /**
-         * Asynchronously restores role="dialog" on all elements in this._waiDialogRoleRemoved
-         * (and removes those elements from this array).
-         */
-        _restoreDialogRole : function () {
-            var waiDialogRoleRemoved = this._waiDialogRoleRemoved;
-            if (!waiDialogRoleRemoved || waiDialogRoleRemoved.length === 0) {
-                return;
-            }
-            setTimeout(function () {
-                while (waiDialogRoleRemoved.length > 0) {
-                    var domElt = waiDialogRoleRemoved.pop();
-                    // don't restore the attribute if it changed in the mean time:
-                    if (!domElt.hasAttribute("role")) {
-                        domElt.setAttribute("role", "dialog");
+        _getPopupContainer : function () {
+            if (this._cfg.waiAria) {
+                var domElt = this.getDom().parentElement;
+                while (domElt) {
+                    if (domElt.getAttribute("role") === "dialog") {
+                        // uses the closest parent with role=dialog as the popup container
+                        return new ViewportElement(domElt);
                     }
+                    domElt = domElt.parentElement;
                 }
-            }, 1000);
+            }
+            return null;
         },
 
         /**
@@ -213,7 +193,6 @@ module.exports = Aria.classDefinition({
          * @protected
          */
         _afterDropdownOpen : function () {
-            this._removeDialogRole();
             this._setPopupOpenProperty(true);
             // when the popup is clicked, keep the focus on the right element:
             if (this._hasFocus) {
@@ -230,6 +209,10 @@ module.exports = Aria.classDefinition({
             this._setPopupOpenProperty(false);
             this._dropdownPopup.$dispose();
             this._dropdownPopup = null;
+            if (this._popupContainer) {
+                this._popupContainer.$dispose();
+                this._popupContainer = null;
+            }
             aria.templates.Layout.$unregisterListeners(this);
             if (this._keepFocusOnPopupClose) {
                 this.focus(null, true);
@@ -243,7 +226,6 @@ module.exports = Aria.classDefinition({
 
             }
             this._keepFocus = false;
-            this._restoreDialogRole();
         },
 
         /**
