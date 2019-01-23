@@ -324,7 +324,6 @@ module.exports = Aria.classDefinition({
                 if (dropDownIcon) {
                     dropDownIcon.setAttribute("aria-expanded", "true");
                 }
-                this._removeDialogRole();
             }
         },
 

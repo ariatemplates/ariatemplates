@@ -23,6 +23,9 @@
             waiAria: true,
             title: "MyDialogTitle",
             modal: true,
+            movable: true,
+            resizable: true,
+            maximizable: true,
             macro: "dialogContent",
             bind: {
                 visible: {
