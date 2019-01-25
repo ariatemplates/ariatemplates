@@ -426,7 +426,6 @@ Aria.classDefinition({
         INVALID_FORMAT_TYPE : "Application config format can only be a string or a function",
         INVALID_INPUT_PATTERN_TYPE : "Defined pattern : %1 inputPattern can only be a string, a function or an array of strings and/or functions",
         INVALID_INPUT_PATTERN_DUPLICATE : "Invalid pattern in inputPattern property definition: %1 year, month or day is duplicated",
-        INVALID_FIRST_DAY_OF_WEEK : "Invalid first day of week. Received: %1 while allowed values are: 0, 1, 6.",
 
         // DAYS OF WEEK FOR WEEK-START:
         SUNDAY : 0,
@@ -1691,6 +1690,20 @@ Aria.classDefinition({
         },
 
         /**
+         * Returns the position of the date in the week.
+         * @param {Date} date
+         * @param {Number} firstDayOfWeek [optional, default depending on the regional settings] day to be defined as
+         * the first in the week, 0 = sunday, 1 = monday ...
+         * @returns 0 if the date is the first day in its week
+         */
+        getDayInWeek: function (date, firstDayOfWeek) {
+            if (firstDayOfWeek == null) {
+                firstDayOfWeek = this._environment.getFirstDayOfWeek();
+            }
+            return (7 + date.getDay() - firstDayOfWeek) % 7;
+        },
+
+        /**
          * Return the first day of the week which contains date.
          * @public
          * @param {Date} date
@@ -1699,15 +1712,8 @@ Aria.classDefinition({
          * @return {Date} the first day of the week which contains date.
          */
         getStartOfWeek : function (date, firstDayOfWeek) {
-            if (firstDayOfWeek == null) {
-                firstDayOfWeek = this._environment.getFirstDayOfWeek();
-            }
             var res = new Date(date);
-            var difference = date.getDay() - firstDayOfWeek;
-            if (difference < 0) {
-                difference += 7;
-            }
-            res.setDate(res.getDate() - difference);
+            res.setDate(res.getDate() - this.getDayInWeek(date, firstDayOfWeek));
             return res;
         },
 
@@ -1725,7 +1731,7 @@ Aria.classDefinition({
             // in the summer
             var d1 = Date.UTC(date1.getFullYear(), date1.getMonth(), date1.getDate());
             var d2 = Date.UTC(date2.getFullYear(), date2.getMonth(), date2.getDate());
-            var res = (d2 - d1) / (1000 * 60 * 60 * 24);
+            var res = (d2 - d1) / this.MS_IN_A_DAY;
             this.$assert(949, res == Math.round(res));
             return res;
         },
@@ -1761,7 +1767,7 @@ Aria.classDefinition({
         dayOfWeekNbrSinceStartOfYear : function (date) {
             var d1 = Date.UTC(date.getFullYear(), 0, 1);
             var d2 = Date.UTC(date.getFullYear(), date.getMonth(), date.getDate());
-            var nbOfDays = (d2 - d1) / (1000 * 60 * 60 * 24); // number of days since
+            var nbOfDays = (d2 - d1) / this.MS_IN_A_DAY; // number of days since
             // the begining of the
             // year
             this.$assert(981, nbOfDays == Math.round(nbOfDays));
@@ -1769,13 +1775,12 @@ Aria.classDefinition({
         },
 
         /**
-         * Computes the week number for given date. It is locale-aware (week can start on Monday, Saturday or Sunday)
-         * and follows standards about week calculations for different cultures. Use this function in preference to
+         * Computes the week number for given date. It is locale-aware and follows standards
+         * about week calculations for different cultures. Use this function in preference to
          * <code>dayOfWeekNbrSinceStartOfYear</code>.
          * @param {Date} date The date you want to operate on.
-         * @param {Integer} firstDayOfWeek [optional] first day of week in the locale. Allowed values:
-         * <code>aria.utils.Date.{MONDAY|SUNDAY|SATURDAY}</code>. If not provided, it is read from the configuration
-         * environment. If disallowed value provided, an error is logged and the function returns.
+         * @param {Integer} firstDayOfWeek [optional] first day of week in the locale.
+         * If not provided, it is read from the configuration environment.
          * @return {Integer} standardized week number for given inputs.
          */
         getWeekNumber : function (date, firstDayOfWeek) {
@@ -1788,37 +1793,20 @@ Aria.classDefinition({
                 firstDayOfWeek = this._environment.getFirstDayOfWeek();
             }
 
-            var refDay;
-            var refDate = new Date(date.getTime());
+            var isISO8601 = firstDayOfWeek === this.MONDAY;
+            // In ISO 8601 standard (i.e. the first day of the week is Monday), the first week of the year is the
+            // week containing January 4th, so the Thursday of a week determines the year the week belongs to.
+            // In other cases (non-ISO), the first week of the year is the week containing January 1st, so the last
+            // day of the week determines the year the week belongs to.
 
-            // we subtract certain amount of days, and then add fixed number to
-            // get reference day of the week
-            switch (firstDayOfWeek) {
-                case this.MONDAY :
-                    // week starts on MON, we look for the following THU
-                    refDay = refDate.getDate() + 4 - (refDate.getDay() || 7);
-                    break;
-
-                case this.SUNDAY :
-                    // week starts on SUN, we look for the following SAT
-                    refDay = refDate.getDate() + 6 - (refDate.getDay());
-                    break;
-
-                case this.SATURDAY :
-                    // week starts on SAT, we look for the following FRI
-                    refDay = refDate.getDate() + 6 - (refDate.getDay() + 1) % 7;
-                    break;
-
-                default :
-                    this.$logError(this.INVALID_FIRST_DAY_OF_WEEK, [firstDayOfWeek]);
-                    return;
-            }
-            refDate.setDate(refDay); // can be negative, but JS handles it nicely
-            var refTime = refDate.getTime();
-
-            var january1 = new Date(refDate.getFullYear(), 0, 1);
-
-            return Math.floor(Math.round((refTime - january1) / this.MS_IN_A_DAY) / 7) + 1;
+            var dayInWeek = this.getDayInWeek(date, firstDayOfWeek);
+            var dayToDecideYear = isISO8601 ?
+                  3 /* Thursday (0 is Monday in this case) */
+                : 6 /* Last day of the week */;
+            var dateToDecideYear = new Date(date.getFullYear(), date.getMonth(), date.getDate() - dayInWeek + dayToDecideYear, 12);
+            var firstWeekOfYear = new Date(dateToDecideYear.getFullYear(), 0, isISO8601 ? 4 /* January 4th*/ : 1 /* January 1st*/, 12);
+            var daysFromStartOfFirstWeek = this.dayDifference(this.getStartOfWeek(firstWeekOfYear, firstDayOfWeek), date);
+            return Math.floor(daysFromStartOfFirstWeek / 7) + 1;
         },
 
         /**

@@ -517,7 +517,7 @@
                 var res = {
                     days : days,
                     indexInMonth : 1 + Math.floor((currentDate.getDate() - 2) / 7),
-                    weekNumber : dateUtils.dayOfWeekNbrSinceStartOfYear(currentDate)
+                    weekNumber : dateUtils.getWeekNumber(currentDate, currentDate.getDay())
                 };
                 for (var i = 0; i < 7; i++) {
                     var day = this._createDay(currentDate);
