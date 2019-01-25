@@ -472,26 +472,27 @@ Aria.classDefinition({
             };
             var monday = aria.utils.Date.MONDAY; // firstDayOdWeek
 
-            for (var year = 2010; year < 2022; year++) { // Test for 12 years
+            for (var hour = 0; hour < 24; hour++) { // Test for different hours in the day
+                for (var year = 2010; year < 2022; year++) { // Test for 12 years
+                    var firstJan = new Date(year, 0, 1, hour, 0, 0, 0); // Create the 1st January for each year
+                    var first = aria.utils.Date.getWeekNumber(firstJan, monday);
+                    this.assertEquals(firstIso[year], first, "Test 1st Jan " + year + " failed: " + firstIso[year] + " = "
+                            + first);
 
-                var firstJan = new Date(year, 0, 1, 0, 0, 0, 0); // Create the 1st January for each year
-                var first = aria.utils.Date.getWeekNumber(firstJan, monday);
-                this.assertEquals(firstIso[year], first, "Test 1st Jan " + year + " failed: " + firstIso[year] + " = "
-                        + first);
+                    var fourthJan = new Date(year, 0, 4, hour, 0, 0, 0); // Create the 4th January for each year
+                    var fourth = aria.utils.Date.getWeekNumber(fourthJan, monday);
+                    this.assertEquals(1, fourth, "Test 4th Jan " + year + " failed: " + 1 + " = " + fourth);
 
-                var fourthJan = new Date(year, 0, 4, 0, 0, 0, 0); // Create the 4th January for each year
-                var fourth = aria.utils.Date.getWeekNumber(fourthJan, monday);
-                this.assertEquals(1, fourth, "Test 4th Jan " + year + " failed: " + 1 + " = " + fourth);
+                    var endYear = new Date(year, 11, 31, hour, 0, 0, 0); // Create the 31st December for each year
+                    var end = aria.utils.Date.getWeekNumber(endYear, monday);
+                    this.assertEquals(endIso[year], end, "Test end of the year " + year + " failed: " + endIso[year]
+                            + " = " + end);
 
-                var endYear = new Date(year, 11, 31, 0, 0, 0, 0); // Create the 31st December for each year
-                var end = aria.utils.Date.getWeekNumber(endYear, monday);
-                this.assertEquals(endIso[year], end, "Test end of the year " + year + " failed: " + endIso[year]
-                        + " = " + end);
-
-                var randomDate = new Date(year, 9, 28, 0, 0, 0, 0); // Create the 28th October for each year
-                var rand = aria.utils.Date.getWeekNumber(randomDate, monday);
-                this.assertEquals(random[year], rand, "Test random date " + year + " failed: " + random[year] + " = "
-                        + rand);
+                    var randomDate = new Date(year, 9, 28, hour, 0, 0, 0); // Create the 28th October for each year
+                    var rand = aria.utils.Date.getWeekNumber(randomDate, monday);
+                    this.assertEquals(random[year], rand, "Test random date " + year + " failed: " + random[year] + " = "
+                            + rand);
+                }
             }
         },
 
@@ -529,21 +530,22 @@ Aria.classDefinition({
                 "2020" : 44,
                 "2021" : 44
             }; // Values for the week number of Oct 28th
+            for (var hour = 0; hour < 24; hour++) { // Test for different hours in the day
+                for (var year = 2010; year < 2022; year++) { // Test for 12 years
+                    var firstJan = new Date(year, 0, 1, hour, 0, 0, 0); // Create the 1st January for each year
+                    var first = aria.utils.Date.getWeekNumber(firstJan, sunday);
+                    this.assertEquals(1, first, "Test 1st Jan " + year + " failed: " + 1 + " = " + first);
 
-            for (var year = 2010; year < 2022; year++) { // Test for 12 years
-                var firstJan = new Date(year, 0, 1, 0, 0, 0, 0); // Create the 1st January for each year
-                var first = aria.utils.Date.getWeekNumber(firstJan, sunday);
-                this.assertEquals(1, first, "Test 1st Jan " + year + " failed: " + 1 + " = " + first);
+                    var endYear = new Date(year, 11, 31, hour, 0, 0, 0); // Create the 31st December for each year
+                    var end = aria.utils.Date.getWeekNumber(endYear, sunday);
+                    this.assertEquals(endUs[year], end, "Test end of the year " + year + " failed: " + endUs[year] + " = "
+                            + end);
 
-                var endYear = new Date(year, 11, 31, 0, 0, 0, 0); // Create the 31st December for each year
-                var end = aria.utils.Date.getWeekNumber(endYear, sunday);
-                this.assertEquals(endUs[year], end, "Test end of the year " + year + " failed: " + endUs[year] + " = "
-                        + end);
-
-                var randomDate = new Date(year, 9, 28, 0, 0, 0, 0); // Create the 28th October for each year
-                var rand = aria.utils.Date.getWeekNumber(randomDate, sunday);
-                this.assertEquals(random[year], rand, "Test random date " + year + " failed: " + random[year] + " = "
-                        + rand);
+                    var randomDate = new Date(year, 9, 28, hour, 0, 0, 0); // Create the 28th October for each year
+                    var rand = aria.utils.Date.getWeekNumber(randomDate, sunday);
+                    this.assertEquals(random[year], rand, "Test random date " + year + " failed: " + random[year] + " = "
+                            + rand);
+                }
             }
         },
 
@@ -582,20 +584,22 @@ Aria.classDefinition({
                 "2021" : 44
             }; // Values for the week number of Oct 28th
 
-            for (var year = 2010; year < 2022; year++) { // Test for 12 years
-                var firstJan = new Date(year, 0, 1, 0, 0, 0, 0); // Create the 1st January for each year
-                var first = aria.utils.Date.getWeekNumber(firstJan, saturday);
-                this.assertEquals(1, first, "Test 1st Jan " + year + " failed: " + 1 + " = " + first);
+            for (var hour = 0; hour < 24; hour++) { // Test for different hours in the day
+                for (var year = 2010; year < 2022; year++) { // Test for 12 years
+                    var firstJan = new Date(year, 0, 1, hour, 0, 0, 0); // Create the 1st January for each year
+                    var first = aria.utils.Date.getWeekNumber(firstJan, saturday);
+                    this.assertEquals(1, first, "Test 1st Jan " + year + " failed: " + 1 + " = " + first);
 
-                var endYear = new Date(year, 11, 31, 0, 0, 0, 0); // Create the 31st December for each year
-                var end = aria.utils.Date.getWeekNumber(endYear, saturday);
-                this.assertEquals(endMe[year], end, "Test end of the year " + year + " failed: " + endMe[year] + " = "
-                        + end);
+                    var endYear = new Date(year, 11, 31, hour, 0, 0, 0); // Create the 31st December for each year
+                    var end = aria.utils.Date.getWeekNumber(endYear, saturday);
+                    this.assertEquals(endMe[year], end, "Test end of the year " + year + " failed: " + endMe[year] + " = "
+                            + end);
 
-                var randomDate = new Date(year, 9, 28, 0, 0, 0, 0); // Create the 28th October for each year
-                var rand = aria.utils.Date.getWeekNumber(randomDate, saturday);
-                this.assertEquals(random[year], rand, "Test random date " + year + " failed: " + random[year] + " = "
-                        + rand);
+                    var randomDate = new Date(year, 9, 28, hour, 0, 0, 0); // Create the 28th October for each year
+                    var rand = aria.utils.Date.getWeekNumber(randomDate, saturday);
+                    this.assertEquals(random[year], rand, "Test random date " + year + " failed: " + random[year] + " = "
+                            + rand);
+                }
             }
         },
 
@@ -724,19 +728,6 @@ Aria.classDefinition({
                 this.assertEquals(random[year], rand, "Test random date " + year + " failed: " + random[year] + " = "
                         + rand);
             }
-
-            // Check the log error for a wrong firstDayOfWeekParam
-            aria.core.AppEnvironment.setEnvironment({
-                "firstDayOfWeek" : 10
-            });
-            aria.utils.Date.getWeekNumber(new Date(year, 0, 1, 0, 0, 0, 0));
-            this.assertErrorInLogs(aria.utils.Date.INVALID_FIRST_DAY_OF_WEEK);
-
-            aria.core.AppEnvironment.setEnvironment({
-                "firstDayOfWeek" : 3
-            });
-            aria.utils.Date.getWeekNumber(new Date(year, 0, 1, 0, 0, 0, 0));
-            this.assertErrorInLogs(aria.utils.Date.INVALID_FIRST_DAY_OF_WEEK);
 
             try {
                 aria.core.AppEnvironment.setEnvironment({
