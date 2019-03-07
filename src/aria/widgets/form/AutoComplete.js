@@ -285,7 +285,6 @@ module.exports = Aria.classDefinition({
         _afterDropdownClose : function () {
             if (this._cfg.waiAria) {
                 var field = this.getTextInputField();
-                field.removeAttribute("aria-activedescendant");
                 field.removeAttribute("aria-owns");
 
                 var dropDownIcon = this._getDropdownIcon();
