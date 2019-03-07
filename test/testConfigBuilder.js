@@ -68,6 +68,8 @@ var phantomjsExcludesPatterns = [
     "test/aria/widgets/container/dialog/container/*TestCase.js",
     "test/aria/widgets/wai/popup/dialog/modal/SecondRobotTestCase.js",
     "test/aria/widgets/container/dialog/hiddenViewportResize/HiddenDialogViewportResizeTestCase.js",
+    // Google Maps raises an error on PhantomJS:
+    "test/aria/map/Google3MapProviderTestCase.js",
     // Excluded because clicking on a <select> on PhantomJS does not open it:
     "test/aria/widgets/form/select/onBlur/SelectOnBlurSimpleRobotTestCase.js",
     // Excluded because it often randomly fails with PhantomJS on travis-ci:
