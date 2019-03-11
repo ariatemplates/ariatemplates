@@ -16,7 +16,7 @@ var Aria = require("../Aria");
 var ariaJsunitRobot = require("./Robot");
 var ariaUtilsType = require("../utils/Type");
 var ariaCoreTimer = require("../core/Timer");
-
+var ariaJsunitHelpersExecuteFactory = require("./helpers/ExecuteFactory");
 
 /**
  * Layer on top of aria.jsunit.Robot to allow higher-level input (involving DOM elements). (This class is still
@@ -83,47 +83,17 @@ module.exports = Aria.classDefinition({
             "execute" : 1
         },
 
-        execute : function (array, cb) {
-            this._executeCb(0, {
-                array : array,
-                curIdx : 0,
-                cb : cb
-            });
-        },
-
-        _executeCb : function (unused, args) {
-            var array = args.array;
-            var curIdx = args.curIdx;
-            if (args.curIdx >= array.length) {
-                this.$callback(args.cb);
-            } else {
-                var callParams = array[curIdx];
-                args.curIdx++;
-                if (!ariaUtilsType.isArray(callParams)) {
-                    this.$logError("Not an array");
-                    return;
-                }
-                var methodName = callParams.shift();
-                var nbParams = this._methods[methodName];
-                if (nbParams == null) {
-                    this.$logError("Bad action");
-                    return;
-                }
-                if (nbParams != callParams.length) {
-                    // FIXME: log error correctly
-                    this.$logError("Bad number of parameters");
-                    return;
-                }
-                // add the callback parameter before calling the method:
-                callParams[nbParams] = {
-                    fn : this._executeCb,
-                    scope : this,
-                    args : args
-                };
+        execute : ariaJsunitHelpersExecuteFactory.createExecuteFunction(function (methodName) {
+            var args = this._methods[methodName];
+            if (args != null) {
                 var scope = this[methodName] ? this : (this._robot[methodName] ? this._robot : this._robot.robot);
-                scope[methodName].apply(scope, callParams);
+                return {
+                    args: args,
+                    scope: scope,
+                    fn: scope[methodName]
+                };
             }
-        },
+        }),
 
         ensureVisible : function (domElt, cb) {
             domElt = this._resolveHTMLElement(domElt);
