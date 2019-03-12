@@ -34,7 +34,7 @@ Aria.classDefinition({
             var notCheckedRegExp = /checked\nnot checked/g;
             var checkBoxStartingLineRegExp = /\ncheck box/g;
 
-            this.synEvent.execute([
+            this.execute([
                 ["click", this.getElementById("tf")],
                 ["pause", 2000],
                 ["type", null, "[down][down]"],

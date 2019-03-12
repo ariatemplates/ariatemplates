@@ -88,7 +88,7 @@ module.exports = Aria.classDefinition({
             history.push.apply(history, api.history);
 
             var steps = api.steps;
-            this.synEvent.execute(steps, {
+            this.execute(steps, {
                 scope: this,
                 fn: callback
             });

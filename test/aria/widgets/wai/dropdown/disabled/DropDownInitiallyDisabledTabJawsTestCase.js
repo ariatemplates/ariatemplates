@@ -38,7 +38,7 @@ Aria.classDefinition({
             for (var i = 0; i < 10; i++) {
                 actions.push(["type", null, "[tab]"], ["pause", 500]);
             }
-            this.synEvent.execute(actions, {
+            this.execute(actions, {
                 fn: function () {
                     this.assertJawsHistoryEquals([
                         "FirstFieldLabel Edit",

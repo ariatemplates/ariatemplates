@@ -28,7 +28,7 @@ Aria.classDefinition({
          * This method is always the first entry point to a template test Start the test by focusing the first field
          */
         runTemplateTest : function () {
-            this.synEvent.execute([
+            this.execute([
                 ["click", this.getElementById("tf")],
                 ["pause", 2000],
 

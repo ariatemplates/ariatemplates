@@ -20,7 +20,7 @@ module.exports = Aria.classDefinition({
     $extends : require("ariatemplates/jsunit/JawsTestCase"),
     $prototype : {
         runTemplateTest : function () {
-            this.synEvent.execute([
+            this.execute([
                 ["click", this.getElementById("tf1")], ["pause", 1000],
                 ["type", null, "[down]"], ["pause", 1000],
                 ["type", null, "[down]"], ["pause", 1000],

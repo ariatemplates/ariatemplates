@@ -21,7 +21,7 @@ module.exports = Aria.classDefinition({
     $prototype : {
         runTemplateTest : function () {
             this.noiseRegExps.push(/^Type/i);
-            this.synEvent.execute([
+            this.execute([
                 ["click", this.getElementById("tf1")], ["pause", 100],
                 ["type", null, "[tab]"], ["pause", 200],
                 ["type", null, "[tab]"], ["pause", 200],

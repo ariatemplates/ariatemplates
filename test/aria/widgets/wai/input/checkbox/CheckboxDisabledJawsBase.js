@@ -77,7 +77,7 @@ Aria.classDefinition({
         },
 
         checkAllCheckedUnavailable : function (cb) {
-            this.synEvent.execute([
+            this.execute([
                 ["click", this.getElementById("tf1")], ["pause", 500],
                 ["type", null, "[tab]"], ["pause", 500],
                 ["type", null, "[<shift>][tab][>shift<]"], ["pause", 500],
@@ -103,7 +103,7 @@ Aria.classDefinition({
         },
 
         checkDontReact : function (cb) {
-            this.synEvent.execute([
+            this.execute([
                 ["click", this.getElementById("tf1")], ["pause", 500],
                 ["type", null, "[down]"], ["pause", 500],
                 ["type", null, "[space]"], ["pause", 1500],
@@ -131,7 +131,7 @@ Aria.classDefinition({
         },
 
         checkAllEnabled : function (cb) {
-            this.synEvent.execute([
+            this.execute([
                 ["click", this.getElementById("tf1")], ["pause", 500],
                 ["type", null, "[down]"], ["pause", 500],
                 ["type", null, "[down]"], ["pause", 500],

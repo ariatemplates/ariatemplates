@@ -40,7 +40,7 @@ Aria.classDefinition({
     },
     $prototype : {
         runTemplateTest : function () {
-            this.synEvent.execute([
+            this.execute([
                 ["click", this.getElementById("button0")],
                 ["pause", 2000],
                 ["type", null, "[down][down][down]"],

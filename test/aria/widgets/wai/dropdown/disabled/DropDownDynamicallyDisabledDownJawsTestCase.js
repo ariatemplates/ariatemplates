@@ -42,7 +42,7 @@ Aria.classDefinition({
             for (var i = 0; i < 13; i++) {
                 actions.push(["type", null, "[down]"], ["pause", 500]);
             }
-            this.synEvent.execute(actions, {
+            this.execute(actions, {
                 fn: function () {
                     this.assertJawsHistoryEquals([
                         "FirstFieldLabel Edit",

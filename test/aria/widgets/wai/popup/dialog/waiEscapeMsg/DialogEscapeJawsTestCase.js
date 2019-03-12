@@ -29,7 +29,7 @@ module.exports = Aria.classDefinition({
 
     $prototype : {
         runTemplateTest : function () {
-            this.synEvent.execute([
+            this.execute([
                 ["click", this.getElementById("myInput")],
                 ["pause", 1000],
                 ["type", null, "[tab]"],

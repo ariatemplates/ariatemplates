@@ -32,7 +32,7 @@ Aria.classDefinition({
         runTemplateTest : function () {
             var chechBoxStartingLineRegExp = /\ncheck box/g;
 
-            this.synEvent.execute([
+            this.execute([
                 ["click", this.getElementById("tf")], ["pause", 2000],
                 ["type", null, "[tab]"], ["pause", 2000],
                 ["type", null, "[down]"], ["pause", 2000],

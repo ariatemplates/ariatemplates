@@ -25,7 +25,7 @@ Aria.classDefinition({
     },
     $prototype : {
         runTemplateTest : function () {
-            this.synEvent.execute([
+            this.execute([
                 ["click", this.getInputField("country")], ["pause", 1000],
                 ["type", null, "+"], ["pause", 5000],
                 ["type", null, "4"], ["pause", 5000],

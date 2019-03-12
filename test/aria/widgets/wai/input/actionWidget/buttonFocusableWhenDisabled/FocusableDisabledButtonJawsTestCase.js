@@ -29,7 +29,7 @@ module.exports = Aria.classDefinition({
             this.assertFalsy(data.thirdButtonNbClicks),
             this.assertFalsy(data.fourthButtonNbClicks),
 
-            this.synEvent.execute([
+            this.execute([
                 ["click", this.getElementById("tf1")], ["pause", 100],
                 ["type", null, "[tab]"], ["pause", 200], ["type", null, "[space]"], ["pause", 200],
                 ["type", null, "[tab]"], ["pause", 200], ["type", null, "[space]"], ["pause", 200],
@@ -46,7 +46,7 @@ module.exports = Aria.classDefinition({
                     ariaUtilsJson.setValue(data, "secondButtonDisabled", true);
                     ariaUtilsJson.setValue(data, "thirdButtonDisabled", false);
                     ariaUtilsJson.setValue(data, "fourthButtonDisabled", true);
-                    this.synEvent.execute([
+                    this.execute([
                         ["click", this.getElementById("tf1")], ["pause", 100],
                         ["type", null, "[tab]"], ["pause", 200], ["type", null, "[space]"], ["pause", 200],
                         ["type", null, "[tab]"], ["pause", 200], ["type", null, "[space]"], ["pause", 200],

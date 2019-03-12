@@ -61,7 +61,7 @@ module.exports = Aria.classDefinition({
         },
 
         runTemplateTest : function () {
-            this.synEvent.execute([
+            this.execute([
                 ["click", this.getInputField("email")],
                 ["pause", 1000],
                 ["type", null, "[down][down]"],

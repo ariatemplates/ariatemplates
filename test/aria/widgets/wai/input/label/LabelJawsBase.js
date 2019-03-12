@@ -38,7 +38,7 @@ Aria.classDefinition({
             for (var i = 0 ; i < nbTabs ; i++) {
                 actions.push(["type", null, "[tab]"], ["pause", 1000]);
             }
-            this.synEvent.execute(actions, {
+            this.execute(actions, {
                 fn : this._testValue,
                 scope : this
             });
