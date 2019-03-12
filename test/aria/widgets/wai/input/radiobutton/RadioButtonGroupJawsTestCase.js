@@ -26,7 +26,7 @@ Aria.classDefinition({
     $prototype : {
         runTemplateTest : function () {
 
-            this.synEvent.execute([
+            this.execute([
                 ["click", this.getElementById("tf1")],
                 ["pause", 1500],
                 ["type", null, "[down]"],

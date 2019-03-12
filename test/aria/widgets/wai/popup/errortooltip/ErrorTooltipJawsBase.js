@@ -27,7 +27,7 @@ Aria.classDefinition({
     },
     $prototype : {
         runTemplateTest : function () {
-            this.synEvent.execute([
+            this.execute([
                 ["click", this.getElementById("before")],
                 ["pause", 1000],
                 ["type", null, "[tab]"],

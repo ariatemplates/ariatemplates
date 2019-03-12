@@ -24,7 +24,7 @@ Aria.classDefinition({
     },
     $prototype : {
         runTemplateTest : function () {
-            this.synEvent.execute([
+            this.execute([
                 ["click", this.getElementById("inputBeforeAutoComplete")],
                 ["pause", 1000],
                 ["type", null, "[down][down][down]"],

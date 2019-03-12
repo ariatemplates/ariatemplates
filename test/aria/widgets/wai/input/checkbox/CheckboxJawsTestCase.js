@@ -32,7 +32,7 @@ Aria.classDefinition({
             var notCheckedRegExp = /checked\nnot checked/g;
             var newLineBeforeCheckbox = /\n(?=check box)/g;
 
-            this.synEvent.execute([
+            this.execute([
                 ["click", this.getElementById("tf1")],
                 ["pause", 1000],
                 ["type", null, "[down]"],

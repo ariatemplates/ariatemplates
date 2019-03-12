@@ -69,7 +69,7 @@ Aria.classDefinition({
                 // closes the dialog:
                 ["type", null, "[escape]"], ["pause", 1000]
             ];
-            this.synEvent.execute(actions, {
+            this.execute(actions, {
                 fn: function () {
                     this.assertJawsHistoryEquals([
                         "MyDialogTitle dialog",

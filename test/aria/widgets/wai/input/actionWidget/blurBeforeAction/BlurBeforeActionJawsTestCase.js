@@ -31,7 +31,7 @@ module.exports = Aria.classDefinition({
             var data = this.templateCtxt.data;
             this.noiseRegExps.push(/type/i);
 
-            this.synEvent.execute([
+            this.execute([
                 ["click", this.getElementById("tf1")], ["pause", 100],
                 ["type", null, "[tab]"], ["pause", 200], ["type", null, "hello"], ["pause", 200],
                 ["type", null, "[escape]"], ["pause", 200], ["type", null, "b"], ["pause", 200],

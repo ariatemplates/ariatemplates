@@ -29,7 +29,7 @@ module.exports = Aria.classDefinition({
 
     $prototype : {
         runTemplateTest : function () {
-            this.synEvent.execute([
+            this.execute([
                 ["type", null, "[<insert>][F6][>insert<]"],
                 ["pause", 1000],
                 ["type", null, "[enter]"],

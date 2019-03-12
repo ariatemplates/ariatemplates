@@ -36,7 +36,7 @@ module.exports = Aria.classDefinition({
             this.assertEquals(classNameCheck[0].tagName.toLowerCase(), "h1", "Unexpected element with the myErrorListH1ClassName class: %1");
             this.assertTrue(classNameCheck[0].innerHTML.indexOf("MyErrorListTitleWithFirstHeadingLevel") > -1, "The element with the myErrorListH1ClassName class does not have the expected content.");
 
-            this.synEvent.execute([
+            this.execute([
                 ["type", null, "[<insert>][F6][>insert<]"],
                 ["pause", 1000],
                 ["type", null, "[down]"],
