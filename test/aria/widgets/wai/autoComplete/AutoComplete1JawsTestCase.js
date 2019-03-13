@@ -23,27 +23,32 @@ Aria.classDefinition({
         });
     },
     $prototype : {
+        skipClearHistory : true,
+
         runTemplateTest : function () {
             this.execute([
-                ["click", this.getElementById("inputBeforeAutoComplete")],
+                ["click",this.getElementById("inputBeforeAutoComplete")],
+                ["waitForJawsToSay","Type in text."],
+                ["type",null,"[down][down][down]"],
                 ["pause", 1000],
-                ["type", null, "[down][down][down]"],
-                ["pause", 1000],
-                ["type", null, "p"],
-                ["pause", 1000],
-                ["type", null, "a"],
-                ["pause", 1000],
-                ["type", null, "[down]"],
-                ["pause", 1000],
-                ["type", null, "[down]"],
-                ["pause", 1000],
-                ["type", null, "[enter]"],
-                ["pause", 1000]
+                ["type",null,"p"],
+                ["waitForJawsToSay","p"],
+                ["waitForJawsToSay","There are 8 suggestions, use up and down arrow keys to navigate and enter to validate."],
+                ["type",null,"a"],
+                ["waitForJawsToSay","a"],
+                ["waitForJawsToSay","There are 2 suggestions, use up and down arrow keys to navigate and enter to validate."],
+                ["type",null,"[down]"],
+                ["waitForJawsToSay","List view Pau 1 of 2"],
+                ["type",null,"[down]"],
+                ["waitForJawsToSay","List view Paris 2 of 2"],
+                ["type",null,"[enter]"],
+                ["waitForJawsToSay","Enter"],
+                ["waitForJawsToSay","City 2 Edit"],
+                ["waitForJawsToSay","Paris"],
+                ["waitForJawsToSay","Type in text."]
             ], {
-                fn: function () {
-                    this.assertJawsHistoryEquals("Edit\nType in text.\nWith accessibility enabled:\nCity 2\nEdit\nThere are 8 suggestions, use up and down arrow keys to navigate and enter to validate.\nThere are 2 suggestions, use up and down arrow keys to navigate and enter to validate.\nList view Pau 1 of 2\nList view Paris 2 of 2\nCity 2 Edit\nParis\nType in text.", this.end);
-                },
-                scope: this
+                scope: this,
+                fn: this.end
             });
         }
     }

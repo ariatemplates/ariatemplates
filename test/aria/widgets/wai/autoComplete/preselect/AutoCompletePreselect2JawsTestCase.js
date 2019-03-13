@@ -27,7 +27,7 @@ Aria.classDefinition({
         runTemplateTest : function () {
             this.execute([
                 ["click", this.getInputField("country")], ["pause", 1000],
-                ["type", null, "+"], ["pause", 5000],
+                ["type", null, "0"], ["pause", 5000],
                 ["type", null, "3"], ["pause", 5000],
                 ["type", null, "[<shift>][home][>shift<]"], ["pause", 1000],
                 ["type", null, "i"], ["pause", 5000],
@@ -37,16 +37,16 @@ Aria.classDefinition({
                 fn: function () {
                     this.assertJawsHistoryEquals(                    [
                         "Country Edit",
-                        "List view Austria +43 1 of 4",
+                        "List view Austria 043 1 of 4",
                         "There are 3 other suggestions, use up and down arrow keys to navigate and enter to validate.",
-                        "List view France +33 1 of 1",
+                        "List view France 033 1 of 1",
                         "There is no other suggestion. Press enter to accept it or change your entry.",
-                        "List view Israel +972 1 of 1",
+                        "List view Israel 0972 1 of 1",
                         "There is no other suggestion. Press enter to accept it or change your entry.",
-                        "List view Israel +972 1 of 1",
+                        "List view Israel 0972 1 of 1",
                         "There is no other suggestion. Press enter to accept it or change your entry.",
                         "Country Edit",
-                        "Israel +972"
+                        "Israel 0972"
                     ].join("\n"), this.end);
                 },
                 scope: this

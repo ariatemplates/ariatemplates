@@ -27,14 +27,14 @@ Aria.classDefinition({
         runTemplateTest : function () {
             this.execute([
                 ["click", this.getInputField("country")], ["pause", 1000],
-                ["type", null, "+"], ["pause", 5000],
+                ["type", null, "0"], ["pause", 5000],
                 ["type", null, "4"], ["pause", 5000],
                 ["type", null, "[down]"], ["pause", 1000],
                 ["type", null, "[up]"], ["pause", 1000],
                 ["type", null, "[enter]"], ["pause", 1000]
             ], {
                 fn: function () {
-                    this.assertJawsHistoryEquals("Country Edit\nList view Austria +43 1 of 4\nThere are 3 other suggestions, use up and down arrow keys to navigate and enter to validate.\nList view Austria +43 1 of 2\nThere is 1 other suggestion, use up and down arrow keys to navigate and enter to validate.\nList view United Kingdom +44 2 of 2\nList view Austria +43 1 of 2\nCountry Edit\nAustria +43", this.end);
+                    this.assertJawsHistoryEquals("Country Edit\nList view Austria 043 1 of 4\nThere are 3 other suggestions, use up and down arrow keys to navigate and enter to validate.\nList view Austria 043 1 of 2\nThere is 1 other suggestion, use up and down arrow keys to navigate and enter to validate.\nList view United Kingdom 044 2 of 2\nList view Austria 043 1 of 2\nCountry Edit\nAustria 043", this.end);
                 },
                 scope: this
             });
