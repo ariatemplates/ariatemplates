@@ -24,29 +24,31 @@ module.exports = Aria.classDefinition({
         this.setTestEnv({
             template : "test.aria.widgets.wai.popup.dialog.waiEscapeMsg.DialogEscapeTpl"
         });
-        this.noiseRegExps.push(/Edit|Type/);
      },
 
     $prototype : {
+        skipClearHistory : true,
+
         runTemplateTest : function () {
             this.execute([
                 ["click", this.getElementById("myInput")],
-                ["pause", 1000],
-                ["type", null, "[tab]"],
-                ["pause", 1000],
-                ["type", null, "[space]"],
-                ["pause", 1000],
-                ["type", null, "[escape]"],
-                ["pause", 1000],
-                ["type", null, "[escape]"],
-                ["pause", 5000]
+                ["waitForJawsToSay","Type in text."],
+                ["type",null,"[tab]"],
+                ["waitForJawsToSay","Tab"],
+                ["waitForJawsToSay","Open dialog Button"],
+                ["type",null,"[space]"],
+                ["waitForJawsToSay","Space"],
+                ["waitForJawsToSay","My Dialog Title dialog"],
+                ["waitForJawsToSay","My Dialog Title heading level  1"],
+                ["type",null,"[escape]"],
+                ["waitForJawsToSay","Escape"],
+                ["waitForJawsToSay","Press escape again to close the dialog."],
+                ["type",null,"[escape]"],
+                ["waitForJawsToSay","Escape"],
+                ["waitForJawsToSay","My Dialog is closed."],
+                ["waitForJawsToSay","Open dialog Button"]
             ], {
-                fn: function () {
-                    this.assertJawsHistoryEquals(
-                        "Open dialog Button\nMyDialogTitle dialog\nMyDialogTitle heading level 1\nPress escape again to close the dialog.\nOpen dialog Button\nMyDialog is closed.",
-                        this.end
-                    );
-                },
+                fn: this.end,
                 scope: this
             });
         }

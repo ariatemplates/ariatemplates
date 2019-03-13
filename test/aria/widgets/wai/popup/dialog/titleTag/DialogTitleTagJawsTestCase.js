@@ -24,45 +24,65 @@ module.exports = Aria.classDefinition({
         this.setTestEnv({
             template : "test.aria.widgets.wai.popup.dialog.titleTag.DialogTitleTagTpl"
         });
-        this.noiseRegExps.push(/page|Arrow/);
      },
 
     $prototype : {
+
+        skipClearHistory: true,
+
         runTemplateTest : function () {
             this.execute([
-                ["type", null, "[<insert>][F6][>insert<]"],
-                ["pause", 1000],
-                ["type", null, "[enter]"],
-                ["pause", 1000],
-                ["type", null, "[<insert>][F7][>insert<]"],
-                ["pause", 1000],
-                ["type", null, "[up]"],
-                ["pause", 1000],
-                ["type", null, "[down]"],
-                ["pause", 1000],
-                ["type", null, "[<alt>]m[>alt<]"],
-                ["pause", 1000],
-                ["type", null, "[escape]"],
-                ["pause", 1000],
-                ["type", null, "[<insert>][F6][>insert<]"],
-                ["pause", 1000],
-                ["type", null, "[enter]"],
-                ["pause", 1000],
-                ["type", null, "[<insert>][F7][>insert<]"],
-                ["pause", 1000],
-                ["type", null, "[up]"],
-                ["pause", 1000],
-                ["type", null, "[down]"],
-                ["pause", 1000],
-                ["type", null, "[<alt>]m[>alt<]"],
-                ["pause", 1000]
+                ["waitForJawsToSay","My Dialog Title heading level  1"],
+                ["type",null,"[<insert>][F6][>insert<]"],
+                ["waitForJawsToSay","Heading List dialog"],
+                ["waitForJawsToSay","headings List view"],
+                ["waitForJawsToSay","My Dialog Title colon  1"],
+                ["waitForJawsToSay","1 of 1"],
+                ["type",null,"[enter]"],
+                ["waitForJawsToSay","Enter"],
+                ["waitForJawsToSay","heading level  1   My Dialog Title"],
+                ["waitForJawsToSay","My Dialog Title heading level  1"],
+                ["type",null,"[<insert>][F7][>insert<]"],
+                ["waitForJawsToSay","Links List dialog"],
+                ["waitForJawsToSay","links List view"],
+                ["waitForJawsToSay","Link In The Dialog"],
+                ["waitForJawsToSay","1 of 1"],
+                ["type",null,"[up]"],
+                ["pause",1000],
+                ["type",null,"[down]"],
+                ["pause",1000],
+                ["type",null,"[<alt>]m[>alt<]"],
+                ["pause",1000],
+                ["waitForJawsToSay","Alt m"],
+                ["waitForJawsToSay","Link   Link In The Dialog"],
+                ["waitForJawsToSay","Link In The Dialog Link"],
+                ["type",null,"[escape]"],
+                ["waitForJawsToSay","Escape"],
+                ["type",null,"[<insert>][F6][>insert<]"],
+                ["waitForJawsToSay","Heading List dialog"],
+                ["waitForJawsToSay","headings List view"],
+                ["waitForJawsToSay","Background Title colon  1"],
+                ["waitForJawsToSay","1 of 1"],
+                ["type",null,"[enter]"],
+                ["waitForJawsToSay","Enter"],
+                ["waitForJawsToSay","heading level  1   Background Title"],
+                ["waitForJawsToSay","Background Title heading level  1"],
+                ["type",null,"[<insert>][F7][>insert<]"],
+                ["waitForJawsToSay","Links List dialog"],
+                ["waitForJawsToSay","links List view"],
+                ["waitForJawsToSay","Background Link"],
+                ["waitForJawsToSay","1 of 1"],
+                ["type",null,"[up]"],
+                ["pause",1000],
+                ["type",null,"[down]"],
+                ["pause",1000],
+                ["type",null,"[<alt>]m[>alt<]"],
+                ["pause",1000],
+                ["waitForJawsToSay","Alt m"],
+                ["waitForJawsToSay","Link   Background Link"],
+                ["waitForJawsToSay","Background Link Link"]
             ], {
-                fn: function () {
-                    this.assertJawsHistoryEquals(
-                        "Heading List dialog\nheadings List view\nMyDialogTitle : 1\n1 of 1\nheading level 1 MyDialogTitle\nMyDialogTitle heading level 1\nLinks List dialog\nlinks List view\nLinkInTheDialog\n1 of 1\nLink LinkInTheDialog\nLinkInTheDialog Link\nHeading List dialog\nheadings List view\nBackgroundTitle : 1\n1 of 1\nheading level 1 BackgroundTitle\nBackgroundTitle\nheading level 1\nLinks List dialog\nlinks List view\nBackgroundLink\n1 of 1\nLink BackgroundLink\nBackgroundLink Link",
-                        this.end
-                    );
-                },
+                fn: this.end,
                 scope: this
             });
         }

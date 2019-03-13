@@ -28,16 +28,16 @@ module.exports = Aria.tplScriptDefinition({
             }
         });
         this.acHandler.setSuggestions([{
-                label : 'Austria +43',
+                label : 'Austria 043',
                 code : 'AT'
             }, {
-                label : 'France +33',
+                label : 'France 033',
                 code : 'FR'
             }, {
-                label : 'United Kingdom +44',
+                label : 'United Kingdom 044',
                 code : 'GB'
             }, {
-                label : 'Israel +972',
+                label : 'Israel 0972',
                 code : 'IL'
             }]);
     },

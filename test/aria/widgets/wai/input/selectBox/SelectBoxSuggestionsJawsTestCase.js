@@ -21,27 +21,27 @@ Aria.classDefinition({
         this.setTestEnv({
             template : "test.aria.widgets.wai.input.selectBox.SelectBoxSuggestionsJawsTestCaseTpl"
         });
-        this.elementsToTest = "sbWaiEnabledStart";
     },
     $prototype : {
+        skipClearHistory : true,
+
         runTemplateTest : function () {
-            this._testElement();
-        },
-        _testElement : function () {
-            var domElement = this.getElementById(this.elementsToTest);
-            this.execute([["ensureVisible", domElement], ["click", domElement], ["pause", 1000],
-                    ["type", null, "[tab]"], ["pause", 1000], ["type", null, "f"], ["pause", 1000]], {
-                fn : this._testValue,
+            var domElement = this.getElementById("sbWaiEnabledStart");
+            this.execute([
+                ["ensureVisible",domElement],
+                ["click",domElement],
+                ["waitForJawsToSay","Type in text."],
+                ["type",null,"[tab]"],
+                ["waitForJawsToSay","Tab"],
+                ["waitForJawsToSay","All Countries Edit"],
+                ["waitForJawsToSay","Type in text."],
+                ["type",null,"f"],
+                ["waitForJawsToSay","f"],
+                ["waitForJawsToSay","There is one suggestion, use up and down arrow keys to navigate and enter to validate."]
+            ], {
+                fn : this.end,
                 scope : this
             });
-        },
-        _testValue : function () {
-            this.assertJawsHistoryEquals(true, this._resetTest, function (response) {
-                return /There is one suggestion/.test(response);
-            });
-        },
-        _resetTest : function () {
-            this.end();
         }
     }
 });

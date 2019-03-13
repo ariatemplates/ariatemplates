@@ -29,21 +29,25 @@ Aria.classDefinition({
         runTemplateTest : function () {
             this.execute([
                 ["click", this.getElementById("dpWaiEnabledNextInput")],
-                ["pause", 1000],
-                ["type", null, "[up][up][up]"],
-                ["pause", 1000],
-                ["type", null, "[space]"],
-                ["pause", 1000],
-                ["type", null, "[down]"],
-                ["pause", 1000],
-                ["type", null, "[down]"],
-                ["pause", 1000],
-                ["type", null, "[space]"],
-                ["pause", 1000]
+                ["waitForJawsToSay","Next field Edit"],
+                ["waitForJawsToSay","Type in text."],
+                ["type",null,"[up][up][up]"],
+                ["waitForJawsToSay","Display calendar"],
+                ["type",null,"[space]"],
+                ["waitForJawsToSay","Space"],
+                ["waitForJawsToSay","Calendar table. Use arrow keys to navigate and space to validate. Friday 1 January 2016"],
+                ["type",null,"[down]"],
+                ["waitForJawsToSay","Friday 8 January 2016"],
+                ["type",null,"[down]"],
+                ["waitForJawsToSay","Friday 15 January 2016"],
+                ["type",null,"[space]"],
+                ["waitForJawsToSay","Space"],
+                ["waitForJawsToSay","Travel date Edit"],
+                ["waitForJawsToSay","15 slash 1 slash 16"],
+                ["waitForJawsToSay","Type in text."],
+                ["waitForJawsToSay","Friday 15 January 2016"]
             ], {
-                fn: function () {
-                    this.assertJawsHistoryEquals("Next field Edit\nType in text.\nNext field\nDisplay calendar\nCalendar table. Use arrow keys to navigate and space to validate.\nFriday 1 January 2016\nFriday 8 January 2016\nFriday 15 January 2016\nTravel date Edit\n15/1/16\nType in text.", this.end);
-                },
+                fn: this.end,
                 scope: this
             });
         }
