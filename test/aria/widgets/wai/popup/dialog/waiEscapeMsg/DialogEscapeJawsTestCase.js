@@ -30,9 +30,10 @@ module.exports = Aria.classDefinition({
         skipClearHistory : true,
 
         runTemplateTest : function () {
+            var myInput = this.getElementById("myInput");
             this.execute([
-                ["click", this.getElementById("myInput")],
-                ["waitForJawsToSay","Type in text."],
+                ["click",myInput],
+                ["waitFocus",myInput],
                 ["type",null,"[tab]"],
                 ["waitForJawsToSay","Tab"],
                 ["waitForJawsToSay","Open dialog Button"],
@@ -45,8 +46,11 @@ module.exports = Aria.classDefinition({
                 ["waitForJawsToSay","Press escape again to close the dialog."],
                 ["type",null,"[escape]"],
                 ["waitForJawsToSay","Escape"],
-                ["waitForJawsToSay","My Dialog is closed."],
-                ["waitForJawsToSay","Open dialog Button"]
+                ["waitForJawsToSay", {
+                    find: "Open dialog Button",
+                    skipClear: true // because JAWS 16 says "MyDialog is closed" before "Open dialog Button"
+                }],
+                ["waitForJawsToSay","My Dialog is closed."]
             ], {
                 fn: this.end,
                 scope: this

@@ -21,6 +21,12 @@
 
         <a href="http://ariatemplates.com">BackgroundLink</a>
 
+        <br><br>
+        <div
+            {id "showDialogButton"/}
+            {on click function () { this.$json.setValue(data, "dialogVisible", true) } /}
+        >Show dialog</div>
+
         {@aria:Dialog {
             waiAria: true,
             modal: true,
@@ -28,7 +34,7 @@
             macro: "dialogContent",
             width: 500,
             height: 200,
-            visible: true,
+            visible: false,
             bind: {
                 visible: {
                     to: "dialogVisible",

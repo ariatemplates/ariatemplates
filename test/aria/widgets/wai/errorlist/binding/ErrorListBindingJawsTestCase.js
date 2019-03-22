@@ -15,8 +15,6 @@
 
 var Aria = require("ariatemplates/Aria");
 
-var dataUtils = require("ariatemplates/utils/Data");
-
 var JawsTestCase = require("ariatemplates/jsunit/JawsTestCase");
 var AppEnvironment = require("ariatemplates/core/AppEnvironment");
 
@@ -28,23 +26,18 @@ module.exports = Aria.classDefinition({
     $extends : JawsTestCase,
 
     $constructor : function() {
-        // ---------------------------------------------------------------------
-
         this.$JawsTestCase.constructor.call(this);
-
-        // ------------------------------------ template data & test environment
-
         this.setTestEnv({
             template : "test.aria.widgets.wai.errorlist.binding.ErrorListBindingTpl",
             moduleCtrl : {
                 classpath : 'test.aria.widgets.wai.errorlist.binding.ErrorListBindingCtrl'
             }
         });
-
-        this.noiseRegExps.push(/\\$/, /^Email Address:$/i);
-     },
+    },
 
     $prototype : {
+        skipClearHistory: true,
+
         run : function () {
             AppEnvironment.setEnvironment({
                 appSettings: {
@@ -57,38 +50,36 @@ module.exports = Aria.classDefinition({
         },
 
         runTemplateTest : function () {
+            var emailField = this.getInputField("email");
             this.execute([
-                ["click", this.getInputField("email")],
-                ["pause", 1000],
-                ["type", null, "[down][down]"],
-                ["pause", 1000],
-                ["type", null, "[space]"],
-                ["pause", 1000],
-                ["type", null, "[down]"],
-                ["pause", 1000],
-                ["type", null, "[down]"],
-                ["pause", 1000],
-                ["type", null, "[down]"],
-                ["pause", 1000],
-                ["type", null, "[space]"],
-                ["pause", 2000],
-                ["type", null, "[down]"],
-                ["pause", 1000],
-                ["type", null, "[down]"],
-                ["pause", 1000],
-                ["type", null, "[down]"],
-                ["pause", 5000]
+                ["click", emailField],
+                ["waitFocus", emailField],
+                ["waitForJawsToSay","Email Address colon  Edit"],
+                ["type",null,"[down][down]"],
+                ["waitForJawsToSay","Submit Button"],
+                ["type",null,"[space]"],
+                ["waitForJawsToSay","Space"],
+                ["waitForJawsToSay",/Error.*The first name is a required field using a mandatory validator.*The last name is a required field using a mandatory validator.*The phone number is a required field using a mandatory validator.*The email is a required field using a mandatory validator/],
+                ["type",null,"[down]"],
+                ["waitForJawsToSay","list of 4 items"],
+                ["type",null,"[down]"],
+                ["waitForJawsToSay",/bullet Link\s+The first name is a required field using a mandatory validator./],
+                ["type",null,"[down]"],
+                ["waitForJawsToSay",/bullet Link\s+The last name is a required field using a mandatory validator./],
+                ["type",null,"[space]"],
+                ["waitForJawsToSay","Space"],
+                ["waitForJawsToSay","Last Name colon"],
+                ["waitForJawsToSay","Alert!"],
+                ["waitForJawsToSay","The last name is a required field using a mandatory validator."],
+                ["type",null,"[down]"],
+                ["waitForJawsToSay","Phone Number colon"],
+                ["type",null,"[down]"],
+                ["waitForJawsToSay","Edit"],
+                ["waitForJawsToSay","Alert!"],
+                ["waitForJawsToSay","The phone number is a required field using a mandatory validator."],
+                ["type",null,"[down]"]
             ], {
-                fn: function () {
-                    this.assertJawsHistoryEquals(
-                        "Email Address: Edit\nType in text.\nSubmit Button\nError\nError • The first name is a required field using a mandatory validator.• The last name is a required field using a mandatory validator.• The phone number is a required field using a mandatory validator.• The email is a required field using a mandatory validator.\nlist of 4 items\n• Link The first name is a required field using a mandatory validator.\n• Link The last name is a required field using a mandatory validator.\nAlert!\nThe last name is a required field using a mandatory validator.\nLast Name: Edit\nType in text.\nPhone Number:\nEdit\nAlert!\nThe phone number is a required field using a mandatory validator.",
-                        this.end,
-                        function filter(content) {
-                            content = content.replace(/(Submit)\n(Button)/gi, '$1 $2');
-                            return content;
-                        }
-                    );
-                },
+                fn: this.end,
                 scope: this
             });
         }

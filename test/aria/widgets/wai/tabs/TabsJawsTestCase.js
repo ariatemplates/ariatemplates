@@ -111,6 +111,7 @@ module.exports = Aria.classDefinition({
             regexps.push(this._createLineRegExp('Element before .*'));
             regexps.push(this._createLineRegExp('separator'));
             regexps.push(this._createLineRegExp('AT test*'));
+            regexps.push(/Use JawsKey\+Alt\+M to move to controlled element\s*/g);
 
             this._filter = ariaUtilsFunction.bind(this._applyRegExps, this, regexps);
 

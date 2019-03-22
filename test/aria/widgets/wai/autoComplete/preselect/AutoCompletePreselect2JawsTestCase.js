@@ -24,31 +24,37 @@ Aria.classDefinition({
         this.noiseRegExps.push(/type in text/i, /^i$/i);
     },
     $prototype : {
+        skipClearHistory : true,
+
         runTemplateTest : function () {
             this.execute([
-                ["click", this.getInputField("country")], ["pause", 1000],
-                ["type", null, "0"], ["pause", 5000],
-                ["type", null, "3"], ["pause", 5000],
-                ["type", null, "[<shift>][home][>shift<]"], ["pause", 1000],
-                ["type", null, "i"], ["pause", 5000],
-                ["type", null, "s"], ["pause", 5000],
-                ["type", null, "[enter]"], ["pause", 3000]
+                ["click", this.getInputField("country")],
+                ["waitForJawsToSay","Country Edit"],
+                ["type",null,"0"],
+                ["waitForJawsToSay","0"],
+                ["waitForJawsToSay","List view Austria 043 1 of 4"],
+                ["waitForJawsToSay","There are 3 other suggestions, use up and down arrow keys to navigate and enter to validate."],
+                ["type",null,"3"],
+                ["waitForJawsToSay","3"],
+                ["waitForJawsToSay","France 033 1 of 1"],
+                ["waitForJawsToSay","There is no other suggestion. Press enter to accept it or change your entry."],
+                ["pause", 500],
+                ["type",null,"[<shift>][home][>shift<]"],
+                ["type",null,"i"],
+                ["waitForJawsToSay","i"],
+                ["waitForJawsToSay","Israel 0972 1 of 1"],
+                ["waitForJawsToSay","There is no other suggestion. Press enter to accept it or change your entry."],
+                ["pause", 500],
+                ["type",null,"s"],
+                ["waitForJawsToSay","s"],
+                ["waitForJawsToSay","Israel 0972 1 of 1"],
+                ["waitForJawsToSay","There is no other suggestion. Press enter to accept it or change your entry."],
+                ["type",null,"[enter]"],
+                ["waitForJawsToSay","Enter"],
+                ["waitForJawsToSay","Country Edit"],
+                ["waitForJawsToSay","Israel 0972"]
             ], {
-                fn: function () {
-                    this.assertJawsHistoryEquals(                    [
-                        "Country Edit",
-                        "List view Austria 043 1 of 4",
-                        "There are 3 other suggestions, use up and down arrow keys to navigate and enter to validate.",
-                        "List view France 033 1 of 1",
-                        "There is no other suggestion. Press enter to accept it or change your entry.",
-                        "List view Israel 0972 1 of 1",
-                        "There is no other suggestion. Press enter to accept it or change your entry.",
-                        "List view Israel 0972 1 of 1",
-                        "There is no other suggestion. Press enter to accept it or change your entry.",
-                        "Country Edit",
-                        "Israel 0972"
-                    ].join("\n"), this.end);
-                },
+                fn: this.end,
                 scope: this
             });
         }

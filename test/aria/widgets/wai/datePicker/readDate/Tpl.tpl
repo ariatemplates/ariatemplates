@@ -20,7 +20,7 @@
 }}
 
 {macro main()}
-	<div class='user_focus' tabindex='0' id='${this.data.elements.before.id}'>${this.data.elements.before.content}</div>
+	<div class='user_focus' tabindex='0' {id data.elements.before.id/}>${this.data.elements.before.content}</div>
 
 	<div>
 		{foreach widget inArray this.data.widgets}

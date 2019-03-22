@@ -26,60 +26,80 @@ Aria.classDefinition({
         });
     },
     $prototype : {
+        skipClearHistory : true,
+
         runTemplateTest : function () {
-            this.noiseRegExps.push(/type/i);
-            var actions = [
-                ["click", this.getElementById("firstItem")], ["pause", 500]
-            ];
-            for (var i = 0; i < 10; i++) {
-                actions.push(["type", null, "[down]"], ["pause", 500]);
-            }
-            actions.push(["click", this.getElementById("firstItem")], ["pause", 500]);
-            for (var i = 0; i < 3; i++) {
-                actions.push(["type", null, "[up]"], ["pause", 500]);
-            }
-            actions.push(["type", null, "[space]"], ["pause", 500]);
-            for (var i = 0; i < 17; i++) {
-                actions.push(["type", null, "[down]"], ["pause", 500]);
-            }
-            this.execute(actions, {
-                fn: function () {
-                    this.assertJawsHistoryEquals([
-                        "FirstFieldLabel Edit",
-                        "DatePickerLabel",
-                        "Edit Unavailable",
-                        "AutoCompleteLabel",
-                        "Edit Unavailable",
-                        "SelectBoxLabel",
-                        "Edit Unavailable",
-                        "MultiSelectLabel",
-                        "Edit Unavailable",
-                        "LastFieldLabel",
-                        "Edit",
-                        "FirstFieldLabel Edit",
-                        "FirstFieldLabel",
-                        "Disabled widgets",
-                        "check box checked",
-                        "Disabled widgets check box not checked",
-                        "Disabled widgets",
-                        "FirstFieldLabel",
-                        "Edit",
-                        "DatePickerLabel",
-                        "Edit",
-                        "DropDownLabelForDatePicker",
-                        "AutoCompleteLabel",
-                        "Edit",
-                        "DropDownLabelForAutoComplete",
-                        "SelectBoxLabel",
-                        "Edit",
-                        "DropDownLabelForSelectBox",
-                        "MultiSelectLabel",
-                        "Edit",
-                        "DropDownLabelForMultiSelect",
-                        "LastFieldLabel",
-                        "Edit"
-                    ].join("\n"), this.end);
-                },
+            var firstItem = this.getElementById("firstItem");
+            this.execute([
+                ["click", firstItem],
+                ["waitFocus", firstItem],
+                ["type",null,"[down]"],
+                ["waitForJawsToSay","Date Picker Label"],
+                ["type",null,"[down]"],
+                ["waitForJawsToSay", /Edit\s+Unavailable/],
+                ["type",null,"[down]"],
+                ["waitForJawsToSay","Auto Complete Label"],
+                ["type",null,"[down]"],
+                ["waitForJawsToSay", /Edit\s+Unavailable/],
+                ["type",null,"[down]"],
+                ["waitForJawsToSay","Select Box Label"],
+                ["type",null,"[down]"],
+                ["waitForJawsToSay", /Edit\s+Unavailable/],
+                ["type",null,"[down]"],
+                ["waitForJawsToSay","Multi Select Label"],
+                ["type",null,"[down]"],
+                ["waitForJawsToSay", /Edit\s+Unavailable/],
+                ["type",null,"[down]"],
+                ["waitForJawsToSay","Last Field Label"],
+                ["type",null,"[down]"],
+                ["waitForJawsToSay","Edit"],
+                ["click", firstItem],
+                ["waitFocus", firstItem],
+                ["type",null,"[up]"],
+                ["waitForJawsToSay","First Field Label"],
+                ["type",null,"[up]"],
+                ["waitForJawsToSay","Disabled widgets"],
+                ["type",null,"[up]"],
+                ["waitForJawsToSay","Disabled widgets check box  checked"],
+                ["type",null,"[space]"],
+                ["waitForJawsToSay","Space"],
+                ["waitForJawsToSay","Disabled widgets check box  not checked"],
+                ["type",null,"[down]"],
+                ["waitForJawsToSay","Disabled widgets"],
+                ["type",null,"[down]"],
+                ["waitForJawsToSay","First Field Label"],
+                ["type",null,"[down]"],
+                ["waitForJawsToSay","Edit"],
+                ["type",null,"[down]"],
+                ["waitForJawsToSay","Date Picker Label"],
+                ["type",null,"[down]"],
+                ["waitForJawsToSay","Edit"],
+                ["type",null,"[down]"],
+                ["waitForJawsToSay","Drop Down Label For Date Picker"],
+                ["type",null,"[down]"],
+                ["waitForJawsToSay","Auto Complete Label"],
+                ["type",null,"[down]"],
+                ["waitForJawsToSay","Edit"],
+                ["type",null,"[down]"],
+                ["waitForJawsToSay","Drop Down Label For Auto Complete"],
+                ["type",null,"[down]"],
+                ["waitForJawsToSay","Select Box Label"],
+                ["type",null,"[down]"],
+                ["waitForJawsToSay","Edit"],
+                ["type",null,"[down]"],
+                ["waitForJawsToSay","Drop Down Label For Select Box"],
+                ["type",null,"[down]"],
+                ["waitForJawsToSay","Multi Select Label"],
+                ["type",null,"[down]"],
+                ["waitForJawsToSay","Edit"],
+                ["type",null,"[down]"],
+                ["waitForJawsToSay","Drop Down Label For Multi Select"],
+                ["type",null,"[down]"],
+                ["waitForJawsToSay","Last Field Label"],
+                ["type",null,"[down]"],
+                ["waitForJawsToSay","Edit"]
+            ], {
+                fn: this.end,
                 scope: this
             });
         }

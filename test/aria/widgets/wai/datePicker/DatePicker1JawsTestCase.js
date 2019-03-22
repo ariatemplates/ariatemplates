@@ -26,6 +26,8 @@ Aria.classDefinition({
         });
     },
     $prototype : {
+        skipClearHistory : true,
+
         runTemplateTest : function () {
             this.execute([
                 ["click", this.getElementById("dpWaiEnabledNextInput")],

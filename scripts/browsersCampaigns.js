@@ -50,7 +50,7 @@ var campaigns = [
     }),
     testConfigBuilder.buildTestConfig({
         campaign: "jawsTests",
-        browsers: ["IE 11 with JAWS"]
+        browsers: ["IE 11 with JAWS18", "IE 11 with JAWS16"]
     })
 ];
 

@@ -24,36 +24,39 @@ Aria.classDefinition({
         this.noiseRegExps.push(/(edit|text)/i);
     },
     $prototype : {
+        skipClearHistory : true,
+
         runTemplateTest : function () {
 
             this.execute([
-                ["click", this.getElementById("tf1")], ["pause", 1000],
-                ["type", null, "[tab]"], ["pause", 1000],
-                ["type", null, "[down]"], ["pause", 1000],
-                ["type", null, "[tab]"], ["pause", 1000],
-                ["type", null, "[down]"], ["pause", 1000],
-                ["type", null, "[down]"], ["pause", 1000],
-                ["type", null, "[up]"], ["pause", 1000],
-                ["type", null, "[<shift>][tab][>shift<]"], ["pause", 1000]
+                ["click", this.getElementById("tf1")],
+                ["waitForJawsToSay","Type in text."],
+                ["type",null,"[tab]"],
+                ["waitForJawsToSay","Tab"],
+                ["waitForJawsToSay","Automatic radio button  checked"],
+                ["waitForJawsToSay","To change the selection press Up or Down Arrow."],
+                ["type",null,"[down]"],
+                ["waitForJawsToSay","Manual radio button  checked"],
+                ["waitForJawsToSay","To change the selection press Up or Down Arrow."],
+                ["type",null,"[tab]"],
+                ["waitForJawsToSay","Tab"],
+                ["waitForJawsToSay","Manual option 1 radio button  checked"],
+                ["waitForJawsToSay","To change the selection press Up or Down Arrow."],
+                ["type",null,"[down]"],
+                ["waitForJawsToSay","Manual option 2 radio button  checked"],
+                ["waitForJawsToSay","To change the selection press Up or Down Arrow."],
+                ["type",null,"[down]"],
+                ["waitForJawsToSay","Manual option 4 radio button  checked"],
+                ["waitForJawsToSay","To change the selection press Up or Down Arrow."],
+                ["type",null,"[up]"],
+                ["waitForJawsToSay","Manual option 2 radio button  checked"],
+                ["waitForJawsToSay","To change the selection press Up or Down Arrow."],
+                ["type",null,"[<shift>][tab][>shift<]"],
+                ["waitForJawsToSay","Shift Tab"],
+                ["waitForJawsToSay","Manual radio button  checked"],
+                ["waitForJawsToSay","To change the selection press Up or Down Arrow."]
             ], {
-                fn: function () {
-                    this.assertJawsHistoryEquals([
-                        "List box Automatic radio button checked",
-                        "To change the selection press Up or Down Arrow.",
-                        "List box Manual radio button checked",
-                        "To change the selection press Up or Down Arrow.",
-                        "List box Manual option 1 radio button checked",
-                        "To change the selection press Up or Down Arrow.",
-                        "List box Manual option 2 radio button checked",
-                        "To change the selection press Up or Down Arrow.",
-                        "List box Manual option 4 radio button checked",
-                        "To change the selection press Up or Down Arrow.",
-                        "List box Manual option 2 radio button checked",
-                        "To change the selection press Up or Down Arrow.",
-                        "List box Manual radio button checked",
-                        "To change the selection press Up or Down Arrow."
-                    ].join("\n"), this.end);
-                },
+                fn: this.end,
                 scope: this
             });
         }
