@@ -66,7 +66,7 @@
     {/macro}
 
     {macro renderMonth(month,first,last)}
-        <table class="${skin.baseCSS}month" cellspacing="0" style="width: ${settings.showWeekNumbers?138:128}px;" {if settings.waiAria}role="grid"{/if}>
+        <table class="${skin.baseCSS}month" cellspacing="0" style="width: ${settings.showWeekNumbers?138:128}px;">
             <thead>
                 <tr>
                     <th colspan="8">
@@ -84,7 +84,7 @@
                 <tr>
                     {if settings.showWeekNumbers}<th class="${skin.baseCSS}weekNumber">&nbsp;</th>{/if}
                     {foreach day inArray calendar.daysOfWeek}
-                        <th class="${skin.baseCSS}weekDaysLabel" {if settings.waiAria}role="presentation"{/if}>${day.label}</th>
+                        <td class="${skin.baseCSS}weekDaysLabel" {if settings.waiAria}aria-hidden="true"{/if}>${day.label}</td>
                     {/foreach}
                 </tr>
             </thead>
@@ -92,8 +92,8 @@
                 {var nbweeks=0/}
                 {foreach week inArray month.weeks}
                     {set nbweeks+=1/}
-                    <tr {if settings.waiAria}role="row"{/if}>
-                        {if settings.showWeekNumbers}<td class="${skin.baseCSS}weekNumber" {if settings.waiAria}role="presentation"{/if}>{if week.overlappingDays == 0 || week.monthEnd == month.monthKey}${week.weekNumber}{else/}&nbsp;{/if}</td>{/if}
+                    <tr>
+                        {if settings.showWeekNumbers}<td class="${skin.baseCSS}weekNumber" {if settings.waiAria}aria-hidden="true"{/if}>{if week.overlappingDays == 0 || week.monthEnd == month.monthKey}${week.weekNumber}{else/}&nbsp;{/if}</td>{/if}
                         {foreach day inArray week.days}
                             {call renderDay(day,month)/}
                         {/foreach}
@@ -114,7 +114,6 @@
         {if day.monthKey==month.monthKey}
             <td {if day.isSelectable} data-date="${jsDate.getTime()}" {/if}
                 {if settings.waiAria}
-                    role="gridcell"
                     {id settings.dayDomIdPrefix + jsDate.getTime()/}
                     aria-selected="${!!day.isSelected}"
                     aria-label="${jsDate|dateformat:settings.waiAriaDateFormat}"

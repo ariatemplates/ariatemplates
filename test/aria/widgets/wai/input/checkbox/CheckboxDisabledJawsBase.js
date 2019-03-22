@@ -27,16 +27,38 @@ Aria.classDefinition({
         this.defaultTestTimeout = 120000;
     },
     $prototype : {
-        EXPECTED_OUTPUT_DISABLED: "First textfield Edit\nstd input 1 check box checked Unavailable\nstd input 1\nstd input 2 check box checked Unavailable\nstd input 3 check box checked Unavailable\nsimple input 1 check box checked Unavailable\nsimple input 1\nsimple input 2 check box checked Unavailable\nsimple input 3 check box checked Unavailable\nLast textfield",
+        skipClearHistory: true,
+
+        expectedChecked: false,
+        expectedDisabled: false,
+
+        jawsTextForCheckbox: function (checkboxName) {
+            var res = checkboxName + "\\s+check box\\s+" + (this.expectedChecked ? "checked" : "not checked");
+            if (this.expectedDisabled) {
+                res += "\\s+Unavailable";
+            }
+            return new RegExp(res);
+        },
 
         setupCheckedDisabledState: function () {
             var data = this.data;
             aria.utils.Json.setValue(data, "checkboxChecked", true);
             aria.utils.Json.setValue(data, "checkboxDisabled", true);
+            this.expectedChecked = true;
+            this.expectedDisabled = true;
+        },
+
+        setupUncheckedDisabledState: function () {
+            var data = this.data;
+            aria.utils.Json.setValue(data, "checkboxChecked", false);
+            aria.utils.Json.setValue(data, "checkboxDisabled", true);
+            this.expectedChecked = false;
+            this.expectedDisabled = true;
         },
 
         removeCheckedDisabledState: function () {
             aria.utils.Json.setValue(this.data, "checkboxDisabled", false);
+            this.expectedDisabled = false;
         },
 
         runTemplateTest : function () {
@@ -45,18 +67,10 @@ Aria.classDefinition({
             }
 
             function step2() {
-                this.clearJawsHistory(step3);
+                this.checkDontReact(step3);
             }
 
             function step3() {
-                this.checkDontReact(step4);
-            }
-
-            function step4() {
-                this.clearJawsHistory(step5);
-            }
-
-            function step5() {
                 this.removeCheckedDisabledState();
                 this.checkAllEnabled(this.end);
             }
@@ -64,88 +78,117 @@ Aria.classDefinition({
             step1.call(this);
         },
 
-        // skips removeDuplicates in assertJawsHistoryEquals, as we call it ourselves from filterResponse
-        skipRemoveDuplicates: true,
-
-        filterResponse: function (response) {
-            response = response.replace(/(^|\n).*type.*(?=\n)/gi, "").trim();
-            response = response.replace(/\n(?=check box)/gi, " "); // replaces the new line before "check box" by a space
-            // sometimes Jaws says something and immediately correct himself, we only take into account the correction:
-            response = response.replace(/not checked Unavailable\n(?=checked Unavailable\n)/gi, "");
-            response = this.removeDuplicates(response);
-            return response;
-        },
-
         checkAllCheckedUnavailable : function (cb) {
+            var field = this.getInputField("tf1");
             this.execute([
-                ["click", this.getElementById("tf1")], ["pause", 500],
-                ["type", null, "[tab]"], ["pause", 500],
-                ["type", null, "[<shift>][tab][>shift<]"], ["pause", 500],
-                ["type", null, "[down]"], ["pause", 500],
-                ["type", null, "[down]"], ["pause", 500],
-                ["type", null, "[down]"], ["pause", 500],
-                ["type", null, "[down]"], ["pause", 500],
-                ["type", null, "[down]"], ["pause", 500],
-                ["type", null, "[down]"], ["pause", 500],
-                ["type", null, "[down]"], ["pause", 500],
-                ["type", null, "[down]"], ["pause", 500],
-                ["type", null, "[down]"], ["pause", 500]
+                ["click", field],
+                ["waitFocus", field],
+                ["type", null, "[tab]"],
+                ["waitForJawsToSay","Tab"],
+                ["waitForJawsToSay","Last textfield"],
+                ["type", null, "[<shift>][tab][>shift<]"],
+                ["waitForJawsToSay","Shift Tab"],
+                ["waitForJawsToSay","First textfield"],
+                ["type", null, "[down]"],
+                ["waitForJawsToSay", this.jawsTextForCheckbox("std input 1")],
+                ["type", null, "[down]"],
+                ["waitForJawsToSay","std input 1"],
+                ["type", null, "[down]"],
+                ["waitForJawsToSay", this.jawsTextForCheckbox("std input 2")],
+                ["type", null, "[down]"],
+                ["waitForJawsToSay", this.jawsTextForCheckbox("std input 3")],
+                ["type", null, "[down]"],
+                ["waitForJawsToSay", this.jawsTextForCheckbox("simple input 1")],
+                ["type", null, "[down]"],
+                ["waitForJawsToSay","simple input 1"],
+                ["type", null, "[down]"],
+                ["waitForJawsToSay", this.jawsTextForCheckbox("simple input 2")],
+                ["type", null, "[down]"],
+                ["waitForJawsToSay", this.jawsTextForCheckbox("simple input 3")],
+                ["type", null, "[down]"],
+                ["waitForJawsToSay","Last textfield"]
             ], {
-                fn: function () {
-                    this.assertJawsHistoryEquals(
-                        "First textfield Edit\nLast textfield Edit\n" + this.EXPECTED_OUTPUT_DISABLED,
-                        cb,
-                        this.filterResponse
-                    );
-                },
+                fn: cb,
                 scope: this
             });
         },
 
         checkDontReact : function (cb) {
+            var field = this.getInputField("tf1");
+            var changeCheckboxStateListener = {
+                match: this.expectedChecked ? /(check\s+box|^)\s+not\s+checked/i : /(check\s+box|^)\s+checked/i,
+                fn: this.lastJawsTextFailure,
+                scope: this
+            };
             this.execute([
-                ["click", this.getElementById("tf1")], ["pause", 500],
-                ["type", null, "[down]"], ["pause", 500],
-                ["type", null, "[space]"], ["pause", 1500],
-                ["type", null, "[down]"], ["pause", 500],
-                ["type", null, "[space]"], ["pause", 1500],
-                ["type", null, "[down]"], ["pause", 500],
-                ["type", null, "[space]"], ["pause", 1500],
-                ["type", null, "[down]"], ["pause", 500],
-                ["type", null, "[space]"], ["pause", 1500],
-                ["type", null, "[down]"], ["pause", 500],
-                ["type", null, "[space]"], ["pause", 1500],
-                ["type", null, "[down]"], ["pause", 500],
-                ["type", null, "[space]"], ["pause", 1500],
-                ["type", null, "[down]"], ["pause", 500],
-                ["type", null, "[space]"], ["pause", 1500],
-                ["type", null, "[down]"], ["pause", 500],
-                ["type", null, "[space]"], ["pause", 1500],
-                ["type", null, "[down]"], ["pause", 500]
+                ["click", field],
+                ["waitFocus", field],
+                ["registerJawsListener", changeCheckboxStateListener],
+                ["type", null, "[down]"],
+                ["waitForJawsToSay", this.jawsTextForCheckbox("std input 1")],
+                ["type", null, "[space]"], ["waitForJawsToSay","Space"], ["pause", 1500],
+                ["type", null, "[down]"],
+                ["waitForJawsToSay", "std input 1"],
+                ["type", null, "[space]"], ["waitForJawsToSay","Space"], ["pause", 1500],
+                ["type", null, "[down]"],
+                ["waitForJawsToSay", this.jawsTextForCheckbox("std input 2")],
+                ["type", null, "[space]"], ["waitForJawsToSay","Space"], ["pause", 1500],
+                ["type", null, "[down]"],
+                ["waitForJawsToSay", this.jawsTextForCheckbox("std input 3")],
+                ["type", null, "[space]"], ["waitForJawsToSay","Space"], ["pause", 1500],
+                ["type", null, "[down]"],
+                ["waitForJawsToSay", this.jawsTextForCheckbox("simple input 1")],
+                ["type", null, "[space]"], ["waitForJawsToSay","Space"], ["pause", 1500],
+                ["type", null, "[down]"],
+                ["waitForJawsToSay", "simple input 1"],
+                ["type", null, "[space]"], ["waitForJawsToSay","Space"], ["pause", 1500],
+                ["type", null, "[down]"],
+                ["waitForJawsToSay", this.jawsTextForCheckbox("simple input 2")],
+                ["type", null, "[space]"], ["waitForJawsToSay","Space"], ["pause", 1500],
+                ["type", null, "[down]"],
+                ["waitForJawsToSay", this.jawsTextForCheckbox("simple input 3")],
+                ["type", null, "[space]"], ["waitForJawsToSay","Space"], ["pause", 1500],
+                ["type", null, "[down]"],
+                ["waitForJawsToSay","Last textfield"],
+                ["unregisterJawsListener", changeCheckboxStateListener]
             ], {
-                fn: function () {
-                    this.assertJawsHistoryEquals(this.EXPECTED_OUTPUT_DISABLED, cb, this.filterResponse);
-                },
+                fn: cb,
                 scope: this
             });
         },
 
         checkAllEnabled : function (cb) {
+            var field = this.getInputField("tf1");
+            var unavailableTextListener = {
+                match: /unavailable/i,
+                fn: this.lastJawsTextFailure,
+                scope: this
+            };
             this.execute([
-                ["click", this.getElementById("tf1")], ["pause", 500],
-                ["type", null, "[down]"], ["pause", 500],
-                ["type", null, "[down]"], ["pause", 500],
-                ["type", null, "[down]"], ["pause", 500],
-                ["type", null, "[down]"], ["pause", 500],
-                ["type", null, "[down]"], ["pause", 500],
-                ["type", null, "[down]"], ["pause", 500],
-                ["type", null, "[down]"], ["pause", 500],
-                ["type", null, "[down]"], ["pause", 500],
-                ["type", null, "[down]"], ["pause", 500]
+                ["click", field],
+                ["waitFocus", field],
+                ["registerJawsListener", unavailableTextListener],
+                ["type", null, "[down]"],
+                ["waitForJawsToSay", this.jawsTextForCheckbox("std input 1")],
+                ["type", null, "[down]"],
+                ["waitForJawsToSay","std input 1"],
+                ["type", null, "[down]"],
+                ["waitForJawsToSay", this.jawsTextForCheckbox("std input 2")],
+                ["type", null, "[down]"],
+                ["waitForJawsToSay", this.jawsTextForCheckbox("std input 3")],
+                ["type", null, "[down]"],
+                ["waitForJawsToSay", this.jawsTextForCheckbox("simple input 1")],
+                ["type", null, "[down]"],
+                ["waitForJawsToSay","simple input 1"],
+                ["type", null, "[down]"],
+                ["waitForJawsToSay", this.jawsTextForCheckbox("simple input 2")],
+                ["type", null, "[down]"],
+                ["waitForJawsToSay", this.jawsTextForCheckbox("simple input 3")],
+                ["type", null, "[down]"],
+                ["waitForJawsToSay","Last textfield"],
+                ["unregisterJawsListener", unavailableTextListener]
             ], {
-                fn: function () {
-                    this.assertJawsHistoryEquals(this.EXPECTED_OUTPUT_DISABLED.replace(/ unavailable/gi, ""), cb, this.filterResponse);
-                },
+                fn: cb,
                 scope: this
             });
         }

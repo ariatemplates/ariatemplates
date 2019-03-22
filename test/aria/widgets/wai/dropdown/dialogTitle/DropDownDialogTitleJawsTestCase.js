@@ -26,77 +26,88 @@ Aria.classDefinition({
         });
     },
     $prototype : {
-        runTemplateTest : function () {
-            aria.utils.Json.setValue(this.data, "dialogVisible", true);
-            this.waitFor({
-                condition : function () {
-                    return !!this.getElementById("firstItem");
-                },
-                callback : this.afterDialogDisplayed
-            });
-        },
+        skipClearHistory : true,
 
-        afterDialogDisplayed : function () {
-            this.noiseRegExps.push(/type|thisisadate/i, /^MyDialogTitle Edit$/);
-            var actions = [
-                ["click", this.getElementById("firstItem")], ["pause", 500],
-                ["type", null, "[tab]"], ["pause", 500],
+        runTemplateTest : function () {
+            var forbidDialogTitle = {
+                match: /my\s*dialog\s*title/i,
+                fn: this.lastJawsTextFailure,
+                scope: this
+            };
+
+            this.execute([
+                ["click", this.getElementById("openDialogButton")],
+                ["waitForJawsToSay", "My Dialog Title heading level  1"],
+                ["registerJawsListener", forbidDialogTitle],
+                ["type", null, "[tab]"],
+                ["waitForJawsToSay", "Tab"],
+                ["waitForJawsToSay", "First Field Label Edit"],
+                ["type", null, "[tab]"],
+                ["waitForJawsToSay", "Tab"],
                 
                 // DatePicker:
-                ["type", null, "[down]"], ["pause", 100],
-                ["type", null, "[space]"], ["pause", 2000],
-                ["type", null, "[down]"], ["pause", 1000],
-                ["type", null, "[enter]"], ["pause", 2000],
-                ["type", null, "[tab]"], ["pause", 100],
-                ["type", null, "[tab]"], ["pause", 100],
+                ["waitForJawsToSay", "Date Picker Label Edit"],
+                ["type", null, "[down]"],
+                ["waitForJawsToSay", "Drop Down Label For Date Picker"],
+                ["type", null, "[space]"],
+                ["waitForJawsToSay", "Space"],
+                ["waitForJawsToSay", "Calendar table. Use arrow keys to navigate and space to validate."],
+                ["type", null, "[down]"],
+                ["waitForJawsToSay", "thisisadate"],
+                ["type", null, "[enter]"],
+                ["waitForJawsToSay", "Enter"],
+                ["waitForJawsToSay", "Date Picker Label Edit"],
+                ["waitForJawsToSay", "thisisadate"],
+                ["type", null, "[tab]"],
+                ["waitForJawsToSay", "Tab"],
+                ["waitForJawsToSay", "Drop Down Label For Date Picker"],
+                ["type", null, "[tab]"],
+                ["waitForJawsToSay", "Tab"],
 
                 // AutoComplete:
-                ["type", null, "d"], ["pause", 100],
-                ["type", null, "[down]"], ["pause", 1000],
-                ["type", null, "[enter]"], ["pause", 2000],
-                ["type", null, "[tab]"], ["pause", 100],
-                ["type", null, "[tab]"], ["pause", 100],
+                ["waitForJawsToSay", "Auto Complete Label Edit"],
+                ["type", null, "d"],
+                ["waitForJawsToSay", "d"],
+                ["type", null, "[down]"],
+                ["waitForJawsToSay", "List view Desktop device"],
+                ["type", null, "[enter]"],
+                ["waitForJawsToSay", "Enter"],
+                ["waitForJawsToSay", "Auto Complete Label Edit"],
+                ["waitForJawsToSay", "Desktop device"],
+                ["type", null, "[tab]"],
+                ["waitForJawsToSay", "Tab"],
+                ["waitForJawsToSay", "Drop Down Label For Auto Complete"],
+                ["type", null, "[tab]"],
+                ["waitForJawsToSay", "Tab"],
 
                 // MultiSelect:
-                ["type", null, "[down]"], ["pause", 100],
-                ["type", null, "[space]"], ["pause", 2000],
-                ["type", null, "[down]"], ["pause", 1000],
-                ["type", null, "[space]"], ["pause", 2000],
-                ["type", null, "[escape]"], ["pause", 2000],
-                ["type", null, "[tab]"], ["pause", 100],
-                ["type", null, "[tab]"], ["pause", 100],
+                ["waitForJawsToSay", "Multi Select Label Edit"],
+                ["type", null, "[down]"],
+                ["type", null, "[space]"],
+                ["waitForJawsToSay", "Space"],
+                ["waitForJawsToSay", "Touch device check box  not checked"],
+                ["type", null, "[down]"],
+                ["waitForJawsToSay", "Desktop device check box  not checked"],
+                ["type", null, "[space]"],
+                ["waitForJawsToSay", "Space"],
+                ["waitForJawsToSay", "Desktop device check box  checked"],
+                ["type", null, "[escape]"],
+                ["waitForJawsToSay", "Escape"],
+                ["waitForJawsToSay", "Multi Select Label Edit"],
+                ["waitForJawsToSay", "Desktop device"],
+                ["type", null, "[tab]"],
+                ["waitForJawsToSay", "Tab"],
+                ["waitForJawsToSay", "Drop Down Label For Multi Select"],
+                ["type", null, "[tab]"],
+                ["waitForJawsToSay", "Tab"],
+                ["waitForJawsToSay", "Last Field Label Edit"],
 
                 // closes the dialog:
-                ["type", null, "[escape]"], ["pause", 1000]
-            ];
-            this.execute(actions, {
-                fn: function () {
-                    this.assertJawsHistoryEquals([
-                        "MyDialogTitle dialog",
-                        "FirstFieldLabel Edit",
-                        "DatePickerLabel Edit",
-                        "DropDownLabelForDatePicker",
-                        "Calendar table. Use arrow keys to navigate and space to validate.",
-                        "DatePickerLabel Edit",
-                        "DropDownLabelForDatePicker",
-                        "AutoCompleteLabel Edit",
-                        "List view Desktop device",
-                        "AutoCompleteLabel Edit",
-                        "Desktop device",
-                        "DropDownLabelForAutoComplete",
-                        "MultiSelectLabel Edit",
-                        "DropDownLabelForMultiSelect",
-                        "Touch device check box not checked",
-                        "Desktop device check box not checked",
-                        "Desktop device check box checked",
-                        "MultiSelectLabel Edit",
-                        "Desktop device",
-                        "DropDownLabelForMultiSelect",
-                        "LastFieldLabel Edit"
-                    ].join("\n"), this.end, function (response) {
-                        return response.replace(/\n(check box)/g, " $1").replace(/not checked\n(checked)/g, "$1");
-                    });
-                },
+                ["type", null, "[escape]"],
+                ["waitForJawsToSay", "Escape"],
+                ["waitForJawsToSay", "Open dialog Button"]
+            ], {
+                fn: this.end,
                 scope: this
             });
         }

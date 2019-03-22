@@ -19,26 +19,28 @@ module.exports = Aria.classDefinition({
     $classpath : "test.aria.widgets.wai.input.actionWidget.hasPopup.ButtonJawsTestCase",
     $extends : require("ariatemplates/jsunit/JawsTestCase"),
     $prototype : {
+        skipClearHistory : true,
+
         runTemplateTest : function () {
             this.execute([
-                ["click", this.getElementById("tf1")], ["pause", 1000],
-                ["type", null, "[down]"], ["pause", 1000],
-                ["type", null, "[down]"], ["pause", 1000],
-                ["type", null, "[down]"], ["pause", 1000],
-                ["type", null, "[<shift>][tab][>shift<]"], ["pause", 1000],
-                ["type", null, "[<shift>][tab][>shift<]"], ["pause", 1000]
+                ["click", this.getElementById("tf1")],
+                ["waitForJawsToSay","Edit"],
+                ["type",null,"[down]"],
+                ["waitForJawsToSay","More info button menu"],
+                ["type",null,"[down]"],
+                ["waitForJawsToSay","Normal  Button"],
+                ["type",null,"[down]"],
+                ["waitForJawsToSay","Edit"],
+                ["type",null,"[<shift>][tab][>shift<]"],
+                ["waitForJawsToSay","Shift Tab"],
+                ["waitForJawsToSay","Normal Button"],
+                ["type",null,"[<shift>][tab][>shift<]"],
+                ["waitForJawsToSay","Shift Tab"],
+                ["waitForJawsToSay","More info button menu"]
+                // Note that JAWS 18 also says:
+                // ["waitForJawsToSay","Press space to activate the menu, then navigate with arrow keys"]
             ], {
-                fn: function () {
-                    this.noiseRegExps.push(/^Type/i);
-                    this.assertJawsHistoryEquals([
-                        "Edit",
-                        "More info button menu",
-                        "Normal Button",
-                        "Edit",
-                        "Normal Button",
-                        "More info button menu"
-                    ].join("\n"), this.end);
-                },
+                fn: this.end,
                 scope: this
             });
         }

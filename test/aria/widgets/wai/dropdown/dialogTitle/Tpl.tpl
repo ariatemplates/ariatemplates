@@ -35,6 +35,7 @@
             }
         }/}
         {@aria:Button {
+            id: "openDialogButton",
             waiAria: true,
             label: "Open dialog",
             onclick: openDialog

@@ -37,29 +37,29 @@ module.exports = Aria.classDefinition({
             this.assertTrue(classNameCheck[0].innerHTML.indexOf("MyErrorListTitleWithFirstHeadingLevel") > -1, "The element with the myErrorListH1ClassName class does not have the expected content.");
 
             this.execute([
-                ["type", null, "[<insert>][F6][>insert<]"],
-                ["pause", 1000],
-                ["type", null, "[down]"],
-                ["pause", 1000],
-                ["type", null, "[down]"],
-                ["pause", 1000],
-                ["type", null, "[enter]"],
-                ["pause", 1000],
-                ["type", null, "[down]"],
-                ["pause", 1000],
-                ["type", null, "[down]"],
-                ["pause", 1000],
-                ["type", null, "[down]"],
-                ["pause", 1000],
-                ["type", null, "[down]"],
-                ["pause", 1000]
+                ["type",null,"[<insert>][F6][>insert<]"],
+                ["waitForJawsToSay","Heading List dialog"],
+                ["waitForJawsToSay","headings List view"],
+                ["waitForJawsToSay","My Error List Title With First Heading Level colon  1"],
+                ["waitForJawsToSay","1 of 3"],
+                ["type",null,"[down]"],
+                ["waitForJawsToSay","My Error List Title With Second Heading Level colon  2"],
+                ["type",null,"[down]"],
+                ["waitForJawsToSay","My Error List Title With Third Heading Level colon  3"],
+                ["type",null,"[enter]"],
+                ["waitForJawsToSay","Enter"],
+                ["waitForJawsToSay","heading level  3   My Error List Title With Third Heading Level"],
+                ["waitForJawsToSay","My Error List Title With Third Heading Level heading level  3"],
+                ["type",null,"[down]"],
+                ["waitForJawsToSay","list of 1 items"],
+                ["type",null,"[down]"],
+                ["waitForJawsToSay","bullet My Error 3  Description"],
+                ["type",null,"[down]"],
+                ["waitForJawsToSay","list end"],
+                ["type",null,"[down]"],
+                ["waitForJawsToSay","My Error List Title With No H Tag"]
             ], {
-                fn: function () {
-                    this.assertJawsHistoryEquals(
-                        "Heading List dialog\nheadings List view\nMyErrorListTitleWithFirstHeadingLevel : 1\n1 of 3\nMyErrorListTitleWithSecondHeadingLevel : 2\nMyErrorListTitleWithThirdHeadingLevel : 3\nheading level 3 MyErrorListTitleWithThirdHeadingLevel\nMyErrorListTitleWithThirdHeadingLevel\nheading level 3\nlist of 1 items\n• MyError3Description\nlist end\nMyErrorListTitleWithNoHTag",
-                        this.end
-                    );
-                },
+                fn: this.end,
                 scope: this
             });
         }

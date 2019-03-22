@@ -172,6 +172,9 @@ module.exports = Aria.classDefinition({
 
         runTemplateTest : function () {
             var regexps = [];
+            regexps.push(/Use JawsKey\+Alt\+M to move to controlled element/g);
+            regexps.push(this._createLineRegExp(' *')); // empty line
+            regexps.push(/ +(?=\s)/g); // multiple consecutive spaces
             regexps.push(this._createLineRegExp(this._getData().elementBefore.textContent));
 
             this._filter = ariaUtilsFunction.bind(this._applyRegExps, this, regexps);

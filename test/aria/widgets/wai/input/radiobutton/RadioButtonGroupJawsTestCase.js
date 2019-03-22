@@ -24,34 +24,45 @@ Aria.classDefinition({
         this.noiseRegExps.push(/(First textfield Edit|Type in text\.)$/i);
     },
     $prototype : {
+        skipClearHistory: false,
+
         runTemplateTest : function () {
 
             this.execute([
                 ["click", this.getElementById("tf1")],
-                ["pause", 1500],
-                ["type", null, "[down]"],
-                ["pause", 1000],
-                ["type", null, "[space]"],
-                ["pause", 1000],
-                ["type", null, "[down][down][down][down][down]"],
-                ["pause", 1000],
-                ["type", null, "[space]"],
-                ["pause", 1000],
-                ["type", null, "[up][up]"],
-                ["pause", 1000],
-                ["type", null, "[space]"],
-                ["pause", 1000],
-                ["type", null, "[down][down][down][down][down]"],
-                ["pause", 1000],
-                ["type", null, "[<shift>][tab][>shift<]"],
-                ["pause", 1000]
+                ["waitForJawsToSay","First textfield Edit"],
+                ["type",null,"[down]"],
+                ["waitForJawsToSay",/radio button\s+not checked\s+Radio A/],
+                ["type",null,"[space]"],
+                ["waitForJawsToSay","Space"],
+                ["waitForJawsToSay","Radio A radio button  checked"],
+                ["type",null,"[down][down][down][down][down]"],
+                ["waitForJawsToSay","Radio A"],
+                ["waitForJawsToSay",/radio button\s+not checked\s+Radio B/],
+                ["waitForJawsToSay","Radio B"],
+                ["waitForJawsToSay",/radio button\s+not checked\s+Radio C/],
+                ["waitForJawsToSay","Radio C"],
+                ["type",null,"[space]"],
+                ["waitForJawsToSay","Space"],
+                ["waitForJawsToSay","Radio C radio button  checked"],
+                ["type",null,"[up][up]"],
+                ["waitForJawsToSay","Radio B"],
+                ["waitForJawsToSay",/radio button\s+not checked\s+Radio B/],
+                ["type",null,"[space]"],
+                ["waitForJawsToSay","Space"],
+                ["waitForJawsToSay","Radio B radio button  checked"],
+                ["type",null,"[down][down][down][down][down]"],
+                ["waitForJawsToSay","Radio B"],
+                ["waitForJawsToSay",/radio button\s+not checked\s+Radio C/],
+                ["waitForJawsToSay","Radio C"],
+                ["waitForJawsToSay","Last textfield"],
+                ["waitForJawsToSay","Edit"],
+                ["type",null,"[<shift>][tab][>shift<]"],
+                ["waitForJawsToSay","Shift Tab"],
+                ["waitForJawsToSay","Radio B radio button  checked"],
+                ["waitForJawsToSay","To change the selection press Up or Down Arrow."]
             ], {
-                fn: function () {
-                    this.assertJawsHistoryEquals(
-                        "radio button not checked Radio A\nRadio A radio button checked\nRadio A\nradio button not checked Radio B\nRadio B\nradio button not checked Radio C\nRadio C\nRadio C radio button checked\nRadio B\nradio button not checked Radio B\nRadio B radio button checked\nRadio B\nradio button not checked Radio C\nRadio C\nLast textfield\nEdit\nList box Radio B radio button checked\nTo change the selection press Up or Down Arrow.",
-                        this.end
-                    );
-                },
+                fn: this.end,
                 scope: this
             });
         }

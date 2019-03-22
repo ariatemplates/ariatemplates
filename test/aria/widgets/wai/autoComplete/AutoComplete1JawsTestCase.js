@@ -40,7 +40,7 @@ Aria.classDefinition({
                 ["type",null,"[down]"],
                 ["waitForJawsToSay","List view Pau 1 of 2"],
                 ["type",null,"[down]"],
-                ["waitForJawsToSay","List view Paris 2 of 2"],
+                ["waitForJawsToSay","Paris 2 of 2"],
                 ["type",null,"[enter]"],
                 ["waitForJawsToSay","Enter"],
                 ["waitForJawsToSay","City 2 Edit"],
