@@ -15,6 +15,7 @@
 var Aria = require("../Aria");
 var ariaJsunitRobot = require("./Robot");
 var ariaUtilsType = require("../utils/Type");
+var ariaUtilsJson = require("../utils/Json");
 var ariaCoreTimer = require("../core/Timer");
 var ariaJsunitHelpersExecuteFactory = require("./helpers/ExecuteFactory");
 
@@ -146,6 +147,7 @@ module.exports = Aria.classDefinition({
             if (where == null) {
                 return;
             }
+            this.$logDebug("click: %1,%2", [where.x, where.y]);
             this.execute([["mouseMove", where], ["mousePress", this._robot.BUTTON1_MASK], ["pause", 100],
                     ["mouseRelease", this._robot.BUTTON1_MASK]], cb);
         },
@@ -203,6 +205,7 @@ module.exports = Aria.classDefinition({
                     seq.push(["keyRelease", this._robot.robot.KEYS.VK_SHIFT]);
                 }
             }
+            this.$logDebug("type: %1", [ariaUtilsJson.convertToJsonString(text)]);
             this.execute(seq, cb);
         },
 
@@ -215,6 +218,7 @@ module.exports = Aria.classDefinition({
                 // error is already logged
                 return;
             }
+            this.$logDebug("move: %1,%2 -> %3,%4", [from.x, from.y, to.x, to.y]);
             this._robot.robot.smoothMouseMove(from, to, duration, cb);
         },
 
@@ -228,6 +232,7 @@ module.exports = Aria.classDefinition({
             }
             var seq = [["mouseMove", from], ["mousePress", this._robot.BUTTON1_MASK], ["move", options, from],
                     ["mouseRelease", this._robot.BUTTON1_MASK]];
+            this.$logDebug("drag");
             this.execute(seq, cb);
 
         },

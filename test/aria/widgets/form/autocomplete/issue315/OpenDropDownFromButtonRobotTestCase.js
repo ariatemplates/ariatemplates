@@ -33,8 +33,8 @@ Aria.classDefinition({
 
         _openAc : function (evt, args) {
             var logs = this._logAppender.getLogs();
-            this.assertEquals(logs.length, 1);
-            this.assertEquals(logs[0].msg, "OpenDropDownFromButtonTest handler message");
+            this.assertEquals(logs.length, 2);
+            this.assertEquals(logs[1].msg, "OpenDropDownFromButtonTest handler message");
             this.notifyTemplateTestEnd();
         }
     }
