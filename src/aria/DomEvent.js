@@ -78,7 +78,7 @@ var ariaCoreBrowser = require("./core/Browser");
     };
 
     // browsers shortcut
-    var isIE8orLess, isGecko;
+    var isIE8orLess, isGeckoBefore66;
 
     /**
      * Event wrapper to normalize DOM event handling on all browsers
@@ -88,7 +88,7 @@ var ariaCoreBrowser = require("./core/Browser");
         $onload : function () {
             // Browser shortcuts are done in the $onload which is executed only once
             isIE8orLess = (ariaCoreBrowser.isIE7 || ariaCoreBrowser.isIE8);
-            isGecko = ariaCoreBrowser.isGecko;
+            isGeckoBefore66 = ariaCoreBrowser.isGecko && ariaCoreBrowser.majorVersion < 66;
         },
         /**
          * DomEvent constructor. It is advised to use the getWrapper static method instead of the constructor,
@@ -147,7 +147,7 @@ var ariaCoreBrowser = require("./core/Browser");
                  * applied. So if evt.keyCode is defined on gecko browsers we have to skip applying an offset to the
                  * keycode
                  */
-                var skipOffset = isGecko && evt.keyCode;
+                var skipOffset = isGeckoBefore66 && evt.keyCode;
                 this.keyCode = baseKeyCode;
 
                 if (!skipOffset) {
