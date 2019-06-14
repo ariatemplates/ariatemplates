@@ -100,6 +100,7 @@ var generalBrowserExcludes = {
         "test/aria/utils/hashManager/HashManagerOneTestCase.js"
     ].concat(microsoftMapsTests),
     "Firefox 11": [
+        "test/aria/map/Google3MapProviderTestCase.js",
         "test/aria/core/io/JSONPTestCase.js",
         "test/aria/pageEngine/pageEngine/PageEngineSixTestCase.js",
         "test/aria/pageEngine/pageEngine/PageEngineTemplateDisposalWithAnimationsTestCase.js",
@@ -155,6 +156,7 @@ var generalBrowserExcludes = {
         "test/aria/widgets/container/dialog/restoreFocusOnClose/*.js"
     ].concat(microsoftMapsTests),
     "IE 9": [
+        "test/aria/map/Google3MapProviderTestCase.js",
         "test/aria/widgets/container/dialog/resize/dontSelectOnResize/DialogResizeDontSelectRobotTestCase.js",
         "test/aria/utils/hashManager/HashManagerOneTestCase.js",
         "test/aria/utils/mouse/MouseDragKoRobotTestCase.js",
