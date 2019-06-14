@@ -17,8 +17,8 @@ var Aria = require('ariatemplates/Aria');
 
 var ariaUtilsString = require('ariatemplates/utils/String');
 var subst = ariaUtilsString.substitute;
-var ariaUtilsFunction = require('ariatemplates/utils/Function');
 var Dom = require('ariatemplates/utils/Dom');
+var Browser = require('ariatemplates/core/Browser');
 var Caret = require('ariatemplates/utils/Caret');
 
 var EnhancedRobotBase = require('test/EnhancedRobotBase');
@@ -60,7 +60,10 @@ module.exports = Aria.classDefinition({
             var textSampleLength = textSample.length;
 
             var window = this.testWindow;
-            var canCheckSelectionInText = window.getSelection != null;
+            // With Microsoft EdgeHTML (at least version 18.17763),
+            // the text selection with the robot has an issue
+            // (it selects much more than expected)
+            var canCheckSelectionInText = !Browser.isEdge && window.getSelection != null;
 
             function selectAndCheckAll(add) {
                 if (canCheckSelectionInText) {
