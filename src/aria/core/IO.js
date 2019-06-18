@@ -225,7 +225,7 @@ module.exports = Aria.classDefinition({
             this.__serializer = null;
         }
 
-        this._timeOut = null;
+        this._timeOut = {};
     },
     $prototype : {
         /**
