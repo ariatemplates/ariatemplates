@@ -38,7 +38,7 @@
   },
   "devDependencies": {
     "at-diff": "0.0.9",
-    "attester": "3.2.2",
+    "attester": "3.3.0",
     "express": "4.15.4",
     "grunt": "1.0.1",
     "grunt-contrib-jshint": "1.1.0",
@@ -46,6 +46,7 @@
     "grunt-verifylowercase": "0.2.0",
     "mocha": "3.5.2",
     "pug": "2.0.0-rc.4",
+    "puppeteer": "1.17.0",
     "robot-server": "0.0.4",
     "ua-parser-js": "0.7.14"
   }

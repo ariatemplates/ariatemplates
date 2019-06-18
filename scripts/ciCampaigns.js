@@ -18,28 +18,34 @@ var testConfigBuilder = require("../test/testConfigBuilder");
 var robotServer = require("robot-server");
 var travis = process.env.TRAVIS === "true";
 
+process.env.PUPPETEER_INSTANCES = process.env.PUPPETEER_INSTANCES || "4";
+
+var puppeteerBrowser = "Chrome with Puppeteer";
+var nopuppeteerBrowser = "Firefox";
+
 var campaigns = [
     testConfigBuilder.buildTestConfig({
         campaign: "classic",
-        browsers: ["PhantomJS"],
-        phantomjs: true
+        browsers: [puppeteerBrowser],
+        noFlash: true,
+        puppeteer: true
     }),
     testConfigBuilder.buildTestConfig({
         campaign: "unpackaged",
-        browsers: ["PhantomJS"]
+        browsers: [puppeteerBrowser]
     }),
     testConfigBuilder.buildTestConfig({
         campaign: "testSkin",
-        browsers: ["PhantomJS"]
+        browsers: [puppeteerBrowser]
     }),
     testConfigBuilder.buildTestConfig({
         campaign: "flatSkin",
-        browsers: ["PhantomJS"]
+        browsers: [puppeteerBrowser]
     }),
     testConfigBuilder.buildTestConfig({
-        campaign: "nophantom",
+        campaign: "nopuppeteer",
         noFlash: travis,
-        browsers: ["Firefox"]
+        browsers: [nopuppeteerBrowser]
     })
 ];
 
@@ -49,9 +55,10 @@ process.on("exit", function () {
 });
 
 var options = {
+    "max-task-restarts": 3,
+    "task-restart-on-failure": true,
     "colors": true,
     "env": attester.config.readFile("package.json"),
-    "phantomjs-instances": 0,
     "launcher-config": "test/ciLauncher.yml"
 };
 attester.config.set(options);
