@@ -75,7 +75,9 @@ var phantomjsExcludesPatterns = [
     // Excluded because it often randomly fails with PhantomJS on travis-ci:
     "test/aria/widgets/container/tooltip/TooltipRobotTestCase.js",
     // Advanced robot test (using dragging, text selection, etc.) which not necessarily makes sense for PhantomJS
-    "test/aria/widgets/container/dialog/resize/dontSelectOnResize/DialogResizeDontSelectRobotTestCase.js"
+    "test/aria/widgets/container/dialog/resize/dontSelectOnResize/DialogResizeDontSelectRobotTestCase.js",
+    // Randomly failing on PhantomJS:
+    "test/aria/templates/issue353/Issue353RobotTestCase.js"
 ];
 
 var nophantomExcludesPatterns = [
