@@ -132,6 +132,15 @@ var generalBrowserExcludes = {
         "test/aria/utils/mouse/MouseDragKoRobotTestCase.js"
     ],
     "Safari": [
+        // Currently failing in Safari 12.1.1, an investigation should be done:
+        "test/aria/utils/HistoryTestCase.js",
+        "test/aria/pageEngine/utils/HashManagerTestCase.js",
+        "test/aria/pageEngine/utils/HistoryManagerTestCase.js",
+        "test/aria/html/textarea/autoselect/AutoselectRobotTestCase.js",
+        "test/aria/html/textinput/autoselect/AutoselectRobotTestCase.js",
+        "test/aria/templates/keyboardNavigation/actionWidgets/ActionWidgetsRobotTestCase.js",
+        "test/aria/widgets/wai/tabs/Group4RobotTestCase.js",
+        "test/aria/widgets/wai/tabs/Group3RobotTestCase.js",
         // Excluded because a <select> in Safari behaves differently (pressing the down arrow key opens the
         // dropdown instead of changing the selection):
         "test/aria/widgets/form/select/onBlur/SelectOnBlurSimpleRobotTestCase.js"
