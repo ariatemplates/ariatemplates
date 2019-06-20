@@ -51,36 +51,24 @@ var noFlashExcludesPatterns = [
     "test/aria/core/io/IOXDRTestCase.js"
 ];
 
-var phantomjsExcludesPatterns = [
-    // Excluded because PhantomJS has random issues with history management:
-    // (to be investigated)
-    "test/aria/utils/HistoryTestCase.js",
-    // Excluded because PhantomJS has random issues with the viewport:
-    "test/aria/widgets/container/dialog/scroll/OnScrollTestCase.js",
-    "test/aria/widgets/container/dialog/resize/test3/DialogOnResizeRobotTestCase.js",
-    "test/aria/widgets/container/dialog/resize/test4/DialogOnResizeScrollRobotTestCase.js",
-    "test/aria/widgets/container/dialog/resize/test5/OverlayOnResizeScrollRobotTestCase.js",
-    "test/aria/utils/overlay/loadingIndicator/scrollableBody/ScrollableBodyTestCase.js",
-    "test/aria/utils/DomScrollIntoViewTestCase.js",
-    "test/aria/widgets/form/multiselect/downArrowKeyPreventDef/MSDownArrowKeyRobotTestCase.js",
+var puppeteerExcludesPatterns = [
+    "test/aria/dom/basic/DomTestCase.js",
+    "test/aria/templates/events/delegate/DelegateTestCase.js",
+    "test/aria/widgets/container/dialog/container/MoveDialogContainerRobotTestCase.js",
+    "test/aria/widgets/container/dialog/container/ResizeDialogContainerRobotTestCase.js",
     "test/aria/widgets/container/dialog/indicators/DialogTestCase.js",
-    "test/aria/widgets/container/dialog/movable/test5/MovableDialogFiveRobotTestCase.js",
-    "test/aria/widgets/container/dialog/container/*TestCase.js",
-    "test/aria/widgets/wai/popup/dialog/modal/SecondRobotTestCase.js",
-    "test/aria/widgets/container/dialog/hiddenViewportResize/HiddenDialogViewportResizeTestCase.js",
-    // Google Maps raises an error on PhantomJS:
-    "test/aria/map/Google3MapProviderTestCase.js",
-    // Excluded because clicking on a <select> on PhantomJS does not open it:
     "test/aria/widgets/form/select/onBlur/SelectOnBlurSimpleRobotTestCase.js",
-    // Excluded because it often randomly fails with PhantomJS on travis-ci:
-    "test/aria/widgets/container/tooltip/TooltipRobotTestCase.js",
-    // Advanced robot test (using dragging, text selection, etc.) which not necessarily makes sense for PhantomJS
-    "test/aria/widgets/container/dialog/resize/dontSelectOnResize/DialogResizeDontSelectRobotTestCase.js",
-    // Randomly failing on PhantomJS:
-    "test/aria/templates/issue353/Issue353RobotTestCase.js"
+    "test/aria/widgets/form/selectbox/optionhighlight/SelectboxOptionHighlightTestCase.js",
+    "test/aria/utils/overlay/loadingIndicator/scrollbar/ScrollbarTestCase.js",
+    "test/aria/widgets/container/dialog/movable/test5/MovableDialogFiveRobotTestCase.js",
+    "test/aria/widgets/verticalAlign/VerticalAlignTestCase.js",
+    "test/aria/widgets/dropdown/fixedWidth/MultiSelectTestCase.js",
+    "test/aria/utils/DeviceTestCase.js",
+    "test/aria/widgets/form/autocomplete/expandbutton/test1/ExpandButtonCheckTestCase.js",
+    "test/aria/core/io/FormSubmitTestCase.js"
 ];
 
-var nophantomExcludesPatterns = [
+var nopuppeteerExcludesPatterns = [
     // Excluded on travis-ci because there is no window manager (and a <select> needs one):
     "test/aria/widgets/form/select/onBlur/SelectOnBlurSimpleRobotTestCase.js"
 ];
@@ -88,7 +76,6 @@ var nophantomExcludesPatterns = [
 // Some tests do not succeed in some browsers, and are listed here.
 // They should be investigated and fixed.
 var generalBrowserExcludes = {
-    "PhantomJS": phantomjsExcludesPatterns,
     "Firefox 3": [
         "test/aria/map/Google3MapProviderTestCase.js",
         "test/aria/utils/HistoryTestCase.js",
@@ -300,15 +287,14 @@ exports.buildTestConfig = function (config) {
         append(filesIncludes, ["test/**/*TestCase.js"]);
         extraScripts.push(exports.atSkinPath);
 
-        if (config.phantomjs) {
-            noFlash = true;
-            append(filesExcludes, phantomjsExcludesPatterns);
+        if (config.puppeteer) {
+            append(filesExcludes, puppeteerExcludesPatterns);
         }
     }
 
-    if (campaign === "nophantom") {
-        append(filesIncludes, phantomjsExcludesPatterns);
-        append(filesExcludes, nophantomExcludesPatterns);
+    if (campaign === "nopuppeteer") {
+        append(filesIncludes, puppeteerExcludesPatterns);
+        append(filesExcludes, nopuppeteerExcludesPatterns);
         extraScripts.push(exports.atSkinPath);
         if (!noFlash) {
             append(filesIncludes, noFlashExcludesPatterns);

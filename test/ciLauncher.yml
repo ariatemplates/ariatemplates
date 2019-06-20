@@ -4,9 +4,15 @@ launchers:
         $maxInstances: 1
         $urlExtraParameters: plugin=http://127.0.0.1:7778/robot
 browsers:
-    PhantomJS:
-        $launcher: $phantomjs
-        $maxInstances: 4
+    'Chrome [Puppeteer]':
+        $launcher: $puppeteer
+        $urlExtraParameters: 'flags=Puppeteer'
+        $maxInstances: <%= env.PUPPETEER_INSTANCES %>
+        robot: true
+        puppeteerOptions:
+            defaultViewport:
+                width: 1016
+                height: 612
     Firefox:
         $launcher: localWebdriver
         capabilities:
