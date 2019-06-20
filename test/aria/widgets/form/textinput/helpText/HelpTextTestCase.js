@@ -90,7 +90,8 @@ Aria.classDefinition({
                 self.end();
             }
 
-            step1();
+            Aria.$window.focus();
+            setTimeout(step1);
         },
 
         focusAllFields : function (fnName, cb) {
