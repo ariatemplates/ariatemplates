@@ -33,8 +33,7 @@ process.argv.slice(2).forEach(function (arg) {
 
 var attesterOptions = {
 //    "task-restart-on-failure": true,
-//    "max-task-restarts": 5,
-    "phantomjs-instances": 0
+//    "max-task-restarts": 5
 };
 
 var campaign = {
@@ -68,8 +67,10 @@ if (browsers) {
     if (launcherConfig) {
         attesterOptions["launcher-config"] = launcherConfig;
     }
-} else if (browser == "phantomjs" || browser == null) {
-    attesterOptions["phantomjs-instances"] = commandLineOptions["phantomjs-instances"] || 1;
+} else if (browser == null) {
+    process.env.PUPPETEER_INSTANCES = commandLineOptions["puppeteer-instances"] || process.env.PUPPETEER_INSTANCES || '1';
+    attesterOptions["launcher-config"] = "test/ciLauncher.yml";
+    campaign.browsers = ["Chrome with Puppeteer"];
 } else if (browser != "none") {
     attesterOptions["robot-browser"] = browser;
 }
