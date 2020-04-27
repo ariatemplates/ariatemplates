@@ -27,7 +27,7 @@ Aria.classDefinition({
          * Credentials for bing7 maps
          * @type String
          */
-        this.credentials = "";
+        this.credentials = "[YOUR_BING_MAPS_KEY]";
 
         /**
          * @type aria.core.CfgBeans:Callback
