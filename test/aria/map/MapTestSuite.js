@@ -23,6 +23,7 @@ Aria.classDefinition({
         this.$TestSuite.constructor.call(this);
 
         this._tests = ["test.aria.map.Microsoft7MapProviderTest", "test.aria.map.MapManagerTestOne",
+                "test.aria.map.MapManagerTwoBisTestCase",
                 "test.aria.map.MapManagerTestTwo", "test.aria.map.MapManagerTestThree"];
     }
 });
