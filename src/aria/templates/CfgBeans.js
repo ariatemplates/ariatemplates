@@ -29,6 +29,10 @@ Aria.beanDefinitions({
             $type : "json:Object",
             $description : "Base configuration for all types of templates.",
             $properties : {
+                "$escapeHtmlByDefault" : {
+                    $type : "json:Boolean",
+                    $description : "Whether to enable or disable auto-escaping for this template. This overrides, for this specific template, the global setting defined in the environment."
+                },
                 "$classpath" : {
                     $type : "json:PackageName",
                     $description : "Classpath of the generated class.",

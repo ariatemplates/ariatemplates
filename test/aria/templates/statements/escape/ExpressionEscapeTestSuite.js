@@ -24,5 +24,12 @@ Aria.classDefinition({
 
         this.addTests("test.aria.templates.statements.escape.ExpressionEscapeTest");
         this.addTests("test.aria.templates.statements.escape.ExpressionEscapeEnvironmentTest");
+
+        this.addTests("test.aria.templates.statements.escape.templateOverride.AutoEscapeDefaultFalseTestCase");
+        this.addTests("test.aria.templates.statements.escape.templateOverride.AutoEscapeDefaultTrueTestCase");
+        this.addTests("test.aria.templates.statements.escape.templateOverride.AutoEscapeFalseFalseTestCase");
+        this.addTests("test.aria.templates.statements.escape.templateOverride.AutoEscapeFalseTrueTestCase");
+        this.addTests("test.aria.templates.statements.escape.templateOverride.AutoEscapeTrueFalseTestCase");
+        this.addTests("test.aria.templates.statements.escape.templateOverride.AutoEscapeTrueTrueTestCase");
     }
 });
