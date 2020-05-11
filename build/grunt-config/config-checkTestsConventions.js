@@ -46,6 +46,11 @@ module.exports = function (grunt) {
         "test/aria/templates/issue400/AlreadyCompiledTpl*.tpl", // already compiled templates are not supported by at-diff
         "test/aria/widgetLibs/sampleWidget/WidgetLibsTestCaseTpl.tpl", // uses the libB widget library which is expected to be defined globally
 
+        // Those files use $escapeHtmlByDefault in template headers, which is not supported
+        // in at-diff because it still uses an old version of Aria Templates:
+        "test/aria/templates/statements/escape/templateOverride/AutoEscapeTrue.tpl",
+        "test/aria/templates/statements/escape/templateOverride/AutoEscapeFalse.tpl",
+
         // those files have syntax errors (for test purposes):
         "test/aria/templates/templateSyntaxError/*.tpl",
         "test/aria/templates/mock/CSSTemplate.tpl",
