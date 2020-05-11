@@ -144,21 +144,25 @@ module.exports = Aria.classDefinition({
                     // Automatic escape ----------------------------------------
 
                     var autoEscape = false;
-                    if (ariaCoreEnvironmentEnvironment.hasEscapeHtmlByDefault()) {
 
-                        // We automatically escape expressions if needed, using the feature of modifiers, since the
-                        // escape is already handled by a modifier itself.
-                        // For safety and logical reasons, the escaping is done at the end, so the modifier is added as
-                        // the last one.
-                        // There are two cases where we don't do it automatically:
-                        // - in CSS templates
-                        // - if the modifier is already present at the end of the list, in which case the user gets
-                        // control back on how to apply the final escape
+                    // We automatically escape expressions if needed, using the feature of modifiers, since the
+                    // escape is already handled by a modifier itself.
+                    // For safety and logical reasons, the escaping is done at the end, so the modifier is added as
+                    // the last one.
+                    // There are two cases where we don't do it automatically:
+                    // - in CSS templates
+                    // - if the modifier is already present at the end of the list, in which case the user gets
+                    // control back on how to apply the final escape
 
-                        var escapeModifierName = classGenerator.escapeModifier; // Gets the actual name of the modifier
-                        // in this context
+                    var escapeModifierName = classGenerator.escapeModifier; // Gets the actual name of the modifier
+                    // in this context
 
-                        if (escapeModifierName != null) {
+                    if (escapeModifierName != null) {
+                        var escapeByDefault = out.templateParam.$escapeHtmlByDefault;
+                        if (escapeByDefault == null) {
+                            escapeByDefault = ariaCoreEnvironmentEnvironment.hasEscapeHtmlByDefault();
+                        }
+                        if (escapeByDefault) {
                             escapeModifierName = escapeModifierName.toLowerCase();
 
                             if (parts[parts.length - 1].toLowerCase().indexOf(escapeModifierName) < 0) {
