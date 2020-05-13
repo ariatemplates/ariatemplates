@@ -160,7 +160,7 @@ module.exports = Aria.classDefinition({
                     if (escapeModifierName != null) {
                         var escapeByDefault = out.templateParam.$escapeHtmlByDefault;
                         if (escapeByDefault == null) {
-                            escapeByDefault = ariaCoreEnvironmentEnvironment.hasEscapeHtmlByDefault();
+                            escapeByDefault = ariaCoreEnvironmentEnvironment.hasEscapeHtmlByDefault(out.templateParam.$classpath);
                         }
                         if (escapeByDefault) {
                             escapeModifierName = escapeModifierName.toLowerCase();
