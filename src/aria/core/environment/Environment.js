@@ -215,12 +215,26 @@ module.exports = Aria.classDefinition({
         /**
          * Return true if auto-escaping of HTML is enabled.
          * @public
+         * @param {String} templateClasspath [optional] Classpath of the template
+         * the setting should apply to
          * @return {Boolean}
          */
-        hasEscapeHtmlByDefault : function () {
+        hasEscapeHtmlByDefault : function (templateClasspath) {
             var settings = this.checkApplicationSettings("templateSettings");
-            if (settings && settings.escapeHtmlByDefault) {
-                return true;
+            if (settings) {
+                var perPackage = settings.escapeHtmlByDefaultPerPackage;
+                if (templateClasspath && perPackage) {
+                    var parts = templateClasspath.split(".");
+                    while (parts.length > 0) {
+                        var namespace = parts.join(".");
+                        var value = perPackage[namespace];
+                        if (value != null) {
+                            return !!value;
+                        }
+                        parts.pop();
+                    }
+                }
+                return !!settings.escapeHtmlByDefault;
             }
             return false;
         }

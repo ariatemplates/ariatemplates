@@ -107,6 +107,14 @@ module.exports = Aria.beanDefinitions({
                     $description : "Indicates if markup should be automatically escaped in ${} statements",
                     $default : true
                 },
+                "escapeHtmlByDefaultPerPackage" : {
+                    $type : "json:Map",
+                    $description : "Allows to specify a different value of escapeHtmlByDefault depending on the package to which the template belongs. The key in the map is a package classpath. The value is the setting of escapeHtmlByDefault for that package. If different values are specified for nested packages, the value for the most specific package for a template is used.",
+                    $contentType : {
+                        $type : "json:Boolean",
+                        $description : "Value of escapeHtmlByDefault for the package."
+                    }
+                },
                 "allowSectionsAsContainers" : {
                     $type : "json:Boolean",
                     $description : "Indicates whether sections can be used as containers ({section {...}}...{/section}) in templates",
