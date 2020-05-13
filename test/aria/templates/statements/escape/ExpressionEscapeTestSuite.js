@@ -31,5 +31,14 @@ Aria.classDefinition({
         this.addTests("test.aria.templates.statements.escape.templateOverride.AutoEscapeFalseTrueTestCase");
         this.addTests("test.aria.templates.statements.escape.templateOverride.AutoEscapeTrueFalseTestCase");
         this.addTests("test.aria.templates.statements.escape.templateOverride.AutoEscapeTrueTrueTestCase");
+
+        this.addTests("test.aria.templates.statements.escape.packageOverride.PackageOverride1TestCase");
+        this.addTests("test.aria.templates.statements.escape.packageOverride.PackageOverride1RevTestCase");
+        this.addTests("test.aria.templates.statements.escape.packageOverride.PackageOverride2TestCase");
+        this.addTests("test.aria.templates.statements.escape.packageOverride.PackageOverride2RevTestCase");
+        this.addTests("test.aria.templates.statements.escape.packageOverride.PackageOverride3TestCase");
+        this.addTests("test.aria.templates.statements.escape.packageOverride.PackageOverride3RevTestCase");
+        this.addTests("test.aria.templates.statements.escape.packageOverride.PackageOverride4TestCase");
+        this.addTests("test.aria.templates.statements.escape.packageOverride.PackageOverride4RevTestCase");
     }
 });

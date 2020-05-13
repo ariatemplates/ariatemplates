@@ -115,7 +115,7 @@ Aria.classDefinition({
                     if (escapeModifierName != null) {
                         var escapeByDefault = out.templateParam.$escapeHtmlByDefault;
                         if (escapeByDefault == null) {
-                            escapeByDefault = aria.core.environment.Environment.hasEscapeHtmlByDefault();
+                            escapeByDefault = aria.core.environment.Environment.hasEscapeHtmlByDefault(out.templateParam.$classpath);
                         }
                         if (escapeByDefault) {
                             escapeModifierName = escapeModifierName.toLowerCase();
