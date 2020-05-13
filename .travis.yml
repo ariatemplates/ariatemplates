@@ -3,7 +3,10 @@ node_js:
   - 0.10
 before_install:
   - npm install -g npm@3
-  - npm install -g phantomjs@1.9.17
+  - which phantomjs
+  - curl -L -o phantomjs.tar.bz2 https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-1.9.8-linux-x86_64.tar.bz2
+  - tar -xf phantomjs.tar.bz2 --exclude='*.js' --exclude='*.coffee' --strip-components=2
+  - sudo cp phantomjs /usr/local/bin/phantomjs
   - npm --version
   - npm config set ca ""
   - npm config set spin false
