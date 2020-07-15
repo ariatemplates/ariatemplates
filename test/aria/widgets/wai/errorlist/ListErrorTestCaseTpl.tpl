@@ -44,6 +44,34 @@
                 }
             }
         }/}
+        {@aria:ErrorList {
+            id: "e3",
+            waiAria: true,
+            role: "alert",
+            width: 650,
+            margins: "10 1 10 1",
+            title: "Success",
+            bind: {
+                messages: {
+                    to: "errorMessages",
+                    inside: data
+                }
+            }
+        }/}
+        {@aria:ErrorList {
+            id: "e4",
+            waiAria: true,
+            ariaLive: false,
+            width: 650,
+            margins: "10 1 10 1",
+            title: "Success",
+            bind: {
+                messages: {
+                    to: "errorMessages",
+                    inside: data
+                }
+            }
+        }/}
     {/macro}
 
 {/Template}

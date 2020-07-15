@@ -16,6 +16,7 @@ var Aria = require("../../Aria");
 require("./ErrorListController");
 var ariaWidgetsTemplateBasedWidget = require("../TemplateBasedWidget");
 var ariaUtilsJson = require("../../utils/Json");
+var ariaUtilsString = require("../../utils/String");
 
 
 /**
@@ -44,8 +45,16 @@ module.exports = Aria.classDefinition({
         divCfg.margins = "0 0 0 0";
         divCfg.id = cfg.id + "_div";
 
-        if (cfg.waiAria && cfg.ariaLive) {
-            this._extraAttributes = ' role="alert" aria-live="assertive" ';
+        if (cfg.waiAria) {
+            if (cfg.ariaLive) {
+                if (!cfg.role) {
+                    cfg.role = "status";
+                }
+                this._extraAttributes = ' aria-live="assertive" ';
+            }
+            if (cfg.role) {
+                this._extraAttributes += ' role="' + ariaUtilsString.escapeHTML(cfg.role) + '" ';
+            }
         }
 
         this._initTemplate({

@@ -1675,8 +1675,12 @@ module.exports = Aria.beanDefinitions({
                 },
                 "ariaLive" : {
                     $type : "json:Boolean",
-                    $description : "Specifies whether role=alert and aria-live=assertive are included (true) or omitted (false) on the container element (defaults to true, only used if waiAria is true)",
+                    $description : "Specifies whether the aria-live=assertive property is included (true) or omitted (false) on the container element (defaults to true, only used if waiAria is true)",
                     $default : true
+                },
+                "role": {
+                    $type : "json:String",
+                    $description : "If this property is defined and not an empty string, it specifies the role to use on the container of the ErrorList. Otherwise, it defaults to 'status' if ariaLive is true, and no role otherwise. This property is only used if waiAria is true."
                 }
             }
         },
