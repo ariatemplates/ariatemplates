@@ -39,7 +39,7 @@ module.exports = Aria.classDefinition({
         this.$Validator.$destructor.call(this);
     },
     $statics : {
-        DEFAULT_LOCALIZED_MESSAGE : "The value must be more than %1 and less than %2 characters long.",
+        DEFAULT_LOCALIZED_MESSAGE : "The value must be between %1 and %2 characters long.",
 
         // ERROR MESSAGES:
         MISSING_MIN_MAX_VALUES : "There was a problem loading the MinMaxLength validator, MIN and MAX values must be passed into the validators constructor."
