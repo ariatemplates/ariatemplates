@@ -37,7 +37,7 @@ Aria.classDefinition({
                 test = validator.validate(badItem);
                 this.assertFalse(test == null, "testing:" + badItem + ":");
             }
-            this.assertTrue(test[0].errorMessage === "The value must be more than 2 and less than 4 characters long.");
+            this.assertTrue(test[0].errorMessage === "The value must be between 2 and 4 characters long.");
 
             validator.$dispose();
         }
