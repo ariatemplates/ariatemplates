@@ -14,6 +14,7 @@
  */
 var Aria = require("../../Aria");
 
+var ariaCoreBrowser = require("../../core/Browser");
 var ariaUtilsArray = require("../../utils/Array");
 var ariaUtilsString = require("../../utils/String");
 var subst = ariaUtilsString.substitute;
@@ -523,6 +524,19 @@ module.exports = Aria.classDefinition({
         },
 
         /**
+         * Internal method to handle the mouse down event
+         * @param {aria.DomEvent} domEvt
+         * @protected
+         */
+        _dom_onmousedown : ariaCoreBrowser.isIE ? function (domEvt) {
+            var target = domEvt.target;
+            if (!ariaTemplatesNavigationManager.canBeFocused(target)) {
+                // prevent IE from focusing any element
+                domEvt.preventDefault();
+            }
+        } : Aria.empty,
+
+        /**
          * The method called when the markup is clicked
          * @param {aria.DomEvent} domEvt
          * @protected
@@ -532,8 +546,6 @@ module.exports = Aria.classDefinition({
             if (this._cfg) {
                 if (this._cfg.waiAria) {
                     domEvt.preventDefault();
-                } else if (!this._hasFocus) {
-                    this._focus();
                 }
             }
         },
