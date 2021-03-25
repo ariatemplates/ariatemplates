@@ -77,7 +77,12 @@ var phantomjsExcludesPatterns = [
     // Advanced robot test (using dragging, text selection, etc.) which not necessarily makes sense for PhantomJS
     "test/aria/widgets/container/dialog/resize/dontSelectOnResize/DialogResizeDontSelectRobotTestCase.js",
     // Randomly failing on PhantomJS:
-    "test/aria/templates/issue353/Issue353RobotTestCase.js"
+    "test/aria/templates/issue353/Issue353RobotTestCase.js",
+    // Bing maps failing on PhantomJS ("Script Error."):
+    "test/aria/map/MapManagerThreeTestCase.js",
+    "test/aria/map/MapManagerTwoTestCase.js",
+    "test/aria/map/Microsoft8MapProviderTestCase.js",
+    "test/aria/templates/keyboardNavigation/bingCompatibility/KeyMapBingCompatibilityTestCase.js"
 ];
 
 var nophantomExcludesPatterns = [
