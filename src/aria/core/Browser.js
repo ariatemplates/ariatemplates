@@ -951,6 +951,8 @@ module.exports = Aria.classDefinition({
                     case "safari":
                         if (output.isSymbian) {
                             this._setFlag(output, "S60");
+                        } else if (output.isBlackBerry) {
+                            this._setFlag(output, "BlackBerryBrowser");
                         } else {
                             this._setFlag(output, "Safari");
                         }

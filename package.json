@@ -48,6 +48,6 @@
     "pug": "2.0.0-rc.4",
     "puppeteer": "1.17.0",
     "robot-server": "0.0.4",
-    "ua-parser-js": "0.7.14"
+    "ua-parser-js": "0.7.25"
   }
 }
