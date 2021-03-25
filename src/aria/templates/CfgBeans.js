@@ -775,6 +775,18 @@ module.exports = Aria.beanDefinitions({
                 "aria" : {
                     $type : "json:ObjectRef",
                     $description : "Set of WAI aria attributes for the element"
+                },
+                "min" : {
+                    $type : "json:String",
+                    $description : "the minimum value that is acceptable and valid for the input"
+                },
+                "max" : {
+                    $type : "json:String",
+                    $description : "the maximum value that is acceptable and valid for the input"
+                },
+                "step" : {
+                    $type : "json:String",
+                    $description : "the granularity that the value of the input must adhere to"
                 }
             }
         },

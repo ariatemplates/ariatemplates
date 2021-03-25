@@ -314,7 +314,7 @@ module.exports = Aria.classDefinition({
     },
     $statics : {
 
-        attributesWhiteList : /^(data\-\w+(?:\-\w+)*|aria\-[a-z]+|name|title|style|dir|lang|abbr|height|width|size|cols|rows|rowspan|colspan|nowrap|valign|align|border|cellpadding|cellspacing|disabled|readonly|checked|selected|multiple|value|alt|maxlength|type|accesskey|tabindex|placeholder|autocomplete|autofocus|autocorrect|autocapitalize|spellcheck)$/,
+        attributesWhiteList : /^(data\-\w+(?:\-\w+)*|aria\-[a-z]+|name|title|style|dir|lang|abbr|height|width|size|cols|rows|rowspan|colspan|nowrap|valign|align|border|cellpadding|cellspacing|disabled|readonly|checked|selected|multiple|value|alt|maxlength|type|accesskey|tabindex|placeholder|autocomplete|autofocus|autocorrect|autocapitalize|spellcheck|min|max|step)$/,
         expandoNameRegex : /^\w+(?:\-\w+)*$/,
 
         // ERROR MESSAGE:
