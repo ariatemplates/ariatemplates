@@ -578,7 +578,7 @@ Aria.classDefinition({
     values: {
         browser: {
             properties: {
-                name : "Mobile Safari",
+                name : "Safari",
                 version : "6.0.0.466",
                 osName : "BlackBerry",
                 osVersion : ""
