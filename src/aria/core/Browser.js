@@ -178,11 +178,24 @@ module.exports = Aria.classDefinition({
         this.isFirefox = false;
 
         /**
-         * <em>true</em> if the browser is any version of Microsoft Edge.
+         * <em>true</em> if the browser is any version of Microsoft Edge,
+         * either the old Microsoft Edge Legacy or the new Microsoft Edge Chromium.
          * Some reference: https://msdn.microsoft.com/en-us/library/hh869301%28v=vs.85%29.aspx#edge
          * @type Boolean
          */
         this.isEdge = false;
+
+        /**
+         * <em>true</em> if the browser is any version of Microsoft Edge Legacy (based on EdgeHTML).
+         * @type Boolean
+         */
+        this.isEdgeLegacy = false;
+
+        /**
+         * <em>true</em> if the browser is any version of Microsoft Edge based on Chromium.
+         * @type Boolean
+         */
+        this.isEdgeChromium = false;
 
         /* BACKWARD-COMPATIBILITY-BEGIN (GitHub #1397) */
         /**
@@ -909,6 +922,9 @@ module.exports = Aria.classDefinition({
                 default:
                     if (ariaUtilsArray.contains(["Android", "BlackBerry", "Symbian"], osName)) {
                         this._setFlag(output, osName);
+                    } else if (!osName && uaInfo.device.vendor === "BlackBerry") {
+                        osName = "BlackBerry";
+                        this._setFlag(output, osName);
                     } else {
                         this._setFlag(output, "OtherOS");
                     }
@@ -1073,6 +1089,10 @@ module.exports = Aria.classDefinition({
                         }
                     }
                 }
+            }
+
+            if (output.isEdge) {
+                this._setFlag(output, majorVersion >= 79 ? "EdgeChromium" : "EdgeLegacy");
             }
 
             // ------------------------------------------------ full version (2)
