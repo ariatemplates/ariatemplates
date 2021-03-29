@@ -147,6 +147,67 @@ Aria.classDefinition({
 },
 
 ////////////////////////////////////////////////////////////////////////////////
+// Edge
+////////////////////////////////////////////////////////////////////////////////
+
+{
+    id: "Microsoft Edge (chromium)",
+    // cf https://docs.microsoft.com/en-us/microsoft-edge/web-platform/user-agent-string
+    ua: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.74 Safari/537.36 Edg/79.0.309.43",
+    values: {
+        browser: {
+            properties: {
+                name : "Edge",
+                version : "79.0.309.43",
+                osName : "Windows",
+                osVersion : "10"
+            },
+            flags: {
+                browser: ["Edge", "EdgeChromium"],
+                os: "Windows"
+            }
+        },
+        device: {
+            properties: {
+                isDevice : false,
+                isPhone : false,
+                isDesktop : true,
+                isTablet : false,
+                deviceName : ""
+            }
+        }
+    }
+},
+{
+    id: "Microsoft Edge (legacy)",
+    // cf https://docs.microsoft.com/en-us/microsoft-edge/web-platform/user-agent-string
+    ua: "Mozilla/5.0 (Windows NT 10.0; Win64; x64; ServiceUI 14) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.140 Safari/537.36 Edge/18.17763",
+    values: {
+        browser: {
+            properties: {
+                name : "Edge",
+                version : "44",
+                osName : "Windows",
+                osVersion : "10"
+            },
+            flags: {
+                browser: ["Edge", "EdgeLegacy"],
+                os: "Windows"
+            }
+        },
+        device: {
+            properties: {
+                isDevice : false,
+                isPhone : false,
+                isDesktop : true,
+                isTablet : false,
+                deviceName : ""
+            }
+        }
+    }
+},
+
+////////////////////////////////////////////////////////////////////////////////
 // IE
 ////////////////////////////////////////////////////////////////////////////////
 
