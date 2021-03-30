@@ -70,7 +70,7 @@ module.exports = function (grunt) {
                 sourceFile.setTextContent(content);
 
                 var targetFile = packaging.addOutputFile(logicalPath, true);
-                targetFile.builder = packaging.createObject('Concat', targetFile.builtinBuilders);
+                targetFile.builder = packaging.createObject('JSConcat', targetFile.builtinBuilders);
                 sourceFile.setOutputFile(targetFile);
             }
         };
