@@ -70,7 +70,7 @@ if (browsers) {
 } else if (browser == null) {
     process.env.PUPPETEER_INSTANCES = commandLineOptions["puppeteer-instances"] || process.env.PUPPETEER_INSTANCES || '1';
     attesterOptions["launcher-config"] = "test/ciLauncher.yml";
-    campaign.browsers = ["Chrome with Puppeteer"];
+    campaign.browsers = ["Chrome Headless with Puppeteer"];
 } else if (browser != "none") {
     attesterOptions["robot-browser"] = browser;
 }

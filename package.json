@@ -38,7 +38,7 @@
   },
   "devDependencies": {
     "at-diff": "0.0.9",
-    "attester": "3.3.0",
+    "attester": "4.0.1",
     "express": "4.15.4",
     "grunt": "1.0.1",
     "grunt-contrib-jshint": "1.1.0",

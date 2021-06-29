@@ -4,7 +4,7 @@ launchers:
         $maxInstances: 1
         $urlExtraParameters: plugin=http://127.0.0.1:7778/robot
 browsers:
-    'Chrome [Puppeteer]':
+    'Chrome Headless [Puppeteer]':
         $launcher: $puppeteer
         $urlExtraParameters: 'flags=Puppeteer'
         $maxInstances: <%= env.PUPPETEER_INSTANCES %>

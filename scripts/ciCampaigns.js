@@ -20,7 +20,7 @@ var ci = process.env.CI === "true";
 
 process.env.PUPPETEER_INSTANCES = process.env.PUPPETEER_INSTANCES || "4";
 
-var puppeteerBrowser = "Chrome with Puppeteer";
+var puppeteerBrowser = "Chrome Headless with Puppeteer";
 var nopuppeteerBrowser = "Firefox";
 
 var campaigns = [
