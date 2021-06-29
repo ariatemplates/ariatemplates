@@ -192,6 +192,9 @@ module.exports = Aria.classDefinition({
                         }
                         report.text = dataModel.text;
                     }
+                    if (keyCode == domEvent.KC_ARROW_DOWN || keyCode == domEvent.KC_ARROW_UP) {
+                        report.cancelKeyStroke = true;
+                    }
                     return report;
                 }
             } else {
