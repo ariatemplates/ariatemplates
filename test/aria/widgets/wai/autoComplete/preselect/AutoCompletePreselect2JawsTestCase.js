@@ -32,7 +32,7 @@ Aria.classDefinition({
                 ["waitForJawsToSay","Country Edit"],
                 ["type",null,"0"],
                 ["waitForJawsToSay","0"],
-                ["waitForJawsToSay","List view Austria 043 1 of 4"],
+                ["waitForJawsToSay","Austria 043 1 of 4"],
                 ["waitForJawsToSay","There are 3 other suggestions, use up and down arrow keys to navigate and enter to validate."],
                 ["type",null,"3"],
                 ["waitForJawsToSay","3"],

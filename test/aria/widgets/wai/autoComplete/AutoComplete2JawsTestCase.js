@@ -23,32 +23,32 @@ Aria.classDefinition({
         });
     },
     $prototype : {
+        skipClearHistory : true,
+
         runTemplateTest : function () {
             this.execute([
                 ["click", this.getElementById("inputBeforeAutoComplete")],
-                ["pause", 1000],
-                ["type", null, "[down][down][down]"],
-                ["pause", 1000],
+                ["waitForJawsToSay", "Type in text."],
+                ["type", null, "[down][down][down][down]"],
+                ["waitForJawsToSay", "Edit"],
                 ["type", null, "p"],
-                ["pause", 1000],
+                ["waitForJawsToSay", "There are 8 suggestions, use up and down arrow keys to navigate and enter to validate."],
                 ["type", null, "l"],
-                ["pause", 1000],
+                ["waitForJawsToSay", "There is one suggestion, use up and down arrow keys to navigate and enter to validate."],
                 ["type", null, "u"],
-                ["pause", 1000],
+                ["waitForJawsToSay", "There is no suggestion."],
                 ["type", null, "s"],
-                ["pause", 1000],
+                ["waitForJawsToSay", /^s$/],
                 ["type", null, "\b"],
-                ["pause", 1000],
+                ["waitForJawsToSay", /^s$/],
                 ["type", null, "\b"],
-                ["pause", 1000],
+                ["waitForJawsToSay", "There is one suggestion, use up and down arrow keys to navigate and enter to validate."],
                 ["type", null, "\b"],
-                ["pause", 1000],
+                ["waitForJawsToSay", "There are 8 suggestions, use up and down arrow keys to navigate and enter to validate."],
                 ["type", null, "\b"],
-                ["pause", 1000]
+                ["waitForJawsToSay", "There is no suggestion."]
             ], {
-                fn: function () {
-                    this.assertJawsHistoryEquals("Edit\nType in text.\nWith accessibility enabled:\nCity 2\nEdit\nThere are 8 suggestions, use up and down arrow keys to navigate and enter to validate.\nThere is one suggestion, use up and down arrow keys to navigate and enter to validate.\nThere is no suggestion.\ns\nu\nThere is one suggestion, use up and down arrow keys to navigate and enter to validate.\nl\nThere are 8 suggestions, use up and down arrow keys to navigate and enter to validate.\np\nThere is no suggestion.", this.end);
-                },
+                fn: this.end,
                 scope: this
             });
         }
