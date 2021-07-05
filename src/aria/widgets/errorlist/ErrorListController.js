@@ -53,7 +53,14 @@ module.exports = Aria.classDefinition({
                 displayOptions : args.displayOptions
             };
             this.setMessages(args.messages);
-            this.$callback(cb);
+            if (args.delay != false) {
+                var self = this;
+                setTimeout(function () {
+                    self.$callback(cb);
+                }, args.delay);
+            } else {
+                this.$callback(cb);
+            }
         },
 
         /**

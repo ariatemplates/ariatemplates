@@ -51,12 +51,19 @@ module.exports = Aria.classDefinition({
 
     $prototype : {
         runTemplateTest : function () {
-            this.assertEquals(this.getWidgetInstance("e1").getDom().getAttribute("role"), "status", "The role attribute should be %2 instead of %1");
-            this.assertNull(this.getWidgetInstance("e2").getDom().getAttribute("role"), "The role attribute shouldn't be set");
-            this.assertEquals(this.getWidgetInstance("e3").getDom().getAttribute("role"), "alert", "The role attribute should be %2 instead of %1");
-            this.assertNull(this.getWidgetInstance("e4").getDom().getAttribute("role"), "The role attribute shouldn't be set");
+            this.waitFor({
+                condition : function () {
+                    return this.getWidgetInstance("e1")._domElt;
+                },
+                callback : function () {
+                    this.assertEquals(this.getWidgetInstance("e1").getDom().getAttribute("role"), "status", "The role attribute should be %2 instead of %1");
+                    this.assertNull(this.getWidgetInstance("e2").getDom().getAttribute("role"), "The role attribute shouldn't be set");
+                    this.assertEquals(this.getWidgetInstance("e3").getDom().getAttribute("role"), "alert", "The role attribute should be %2 instead of %1");
+                    this.assertNull(this.getWidgetInstance("e4").getDom().getAttribute("role"), "The role attribute shouldn't be set");
 
-            this.end();
+                    this.end();
+                }
+            });
         }
     }
 });
