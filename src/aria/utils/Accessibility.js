@@ -71,19 +71,25 @@ module.exports = Aria.classDefinition({
             }
             parent.appendChild(waiReadTextElt);
 
-            var textChild = document.createElement("span");
-            var textNode = document.createTextNode(text);
-            textChild.appendChild(textNode);
-            waiReadTextElt.appendChild(textChild);
+            var nextStep = function () {
+                var textChild = document.createElement("span");
+                var textNode = document.createTextNode(text);
+                textChild.appendChild(textNode);
+                waiReadTextElt.appendChild(textChild);
 
+                if (alert) {
+                    waiReadTextElt.style.visibility = "visible";
+                }
+
+                setTimeout(function () {
+                    ariaUtilsDom.removeElement(waiReadTextElt);
+                }, 500);
+            };
             if (alert) {
-                waiReadTextElt.style.visibility = "visible";
+                nextStep();
+            } else {
+                setTimeout(nextStep, 10);
             }
-
-            setTimeout(function () {
-                // remove the node after 10ms
-                ariaUtilsDom.removeElement(waiReadTextElt);
-            }, 10);
         }
     }
 });
