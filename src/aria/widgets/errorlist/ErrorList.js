@@ -45,10 +45,14 @@ module.exports = Aria.classDefinition({
         divCfg.margins = "0 0 0 0";
         divCfg.id = cfg.id + "_div";
 
+        var delay = false;
         if (cfg.waiAria) {
             if (cfg.ariaLive) {
                 if (!cfg.role) {
                     cfg.role = "status";
+                }
+                if (cfg.role != "alert") {
+                    delay = 1;
                 }
                 this._extraAttributes = ' aria-live="assertive" ';
             }
@@ -61,7 +65,8 @@ module.exports = Aria.classDefinition({
             moduleCtrl : {
                 classpath : "aria.widgets.errorlist.ErrorListController",
                 initArgs : {
-                    waiAria: cfg.waiAria,
+                    waiAria : cfg.waiAria,
+                    delay : delay,
                     divCfg : divCfg,
                     filterTypes : cfg.filterTypes,
                     displayCodes : cfg.displayCodes,
