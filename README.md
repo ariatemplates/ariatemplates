@@ -7,9 +7,7 @@
 
 [![npm](https://nodei.co/npm/ariatemplates.png?compact=true)](https://www.npmjs.com/package/ariatemplates)
 
-![Aria Templates logo](http://ariatemplates.com/images/logo-forum.png)
-
-[Aria Templates](http://ariatemplates.com/) (aka AT) is an application framework written in JavaScript for building rich and **large-scaled enterprise web applications**. Developed since 2009 by [Amadeus](http://www.amadeus.com) for its professional products, it has been designed to build web apps used intensively that need to display and process a **high amount of data** with a **minimum of bandwidth consumption**.
+Aria Templates (aka AT) is an application framework written in JavaScript for building rich and **large-scaled enterprise web applications**. Developed since 2009 by [Amadeus](http://www.amadeus.com) for its professional products, it has been designed to build web apps used intensively that need to display and process a **high amount of data** with a **minimum of bandwidth consumption**.
 
 Some details
 ==============
@@ -30,12 +28,6 @@ The MVC's terminology in AT:
 
 Templates can either be evaluated client-side or precompiled at build time.
 
-- See [TodoMVC example done in Aria Templates](http://todomvc.com/labs/architecture-examples/ariatemplates/) and a [step-by-step guide](http://ariatemplates.com/guides/todo/) for it.
-- Want to see some code of the templates? Have a look at [list of samples](http://ariatemplates.com/samples).
-- If you're developing for mobile, see [Aria Templates Mobile Kitchen Sink](http://ariatemplates.com/mobile/kitchensink/).
-
-Read more in [About](http://ariatemplates.com/about/) and [FAQ](http://ariatemplates.com/faq/).
-
 Getting started
 ===============
 
@@ -46,11 +38,6 @@ To get started with Aria Templates, you have several options:
 - or to use the framework in your NodeJS application, issue `npm install ariatemplates` in the command line, then call `require('ariatemplates')` from your code to load the framework.
 
 Head to README.md files in [src](src) and [build](build) folders to read more.
-
-Play with it in the browser
-===========================
-
-You can use jsFiddle-like [InstantAT](http://instant.ariatemplates.com/), where you can play with Aria Templates in your browser (requires a reasonably modern browser).
 
 License
 =======
@@ -72,20 +59,8 @@ The framework itself doesn't have any external dependencies.
 
 We use Grunt, JSHint, UglifyJS, attester and a couple of other tools for building and testing.
 
-Documentation
-=============
-
- - [User manual](http://ariatemplates.com/usermanual)
- - [API docs](http://ariatemplates.com/aria/guide/apps/apidocs/)
- - [Our blog](http://ariatemplates.com/blog/)
-
 Tools & apps
 ============
-
-Web apps & services:
-
-- [InstantAT](http://instant.ariatemplates.com/) is the Aria Templates playground
-- [AT CDN](http://cdn.ariatemplates.com/) is a CDN that serves any version of Aria Templates >= 1.4.2. Both minified and non-minified builds are served. You might use it for prototyping, but don't use it on production servers.
 
 Syntax highlighters:
 
@@ -121,10 +96,6 @@ Before removal, items are **marked as deprecated for at least 9 weeks** (usually
 Support & contributing
 ======================
 
-Visit our **[forum](http://ariatemplates.com/forum/)** to ask questions.
-
 If you spotted some **code problems** in the framework, please open [an AT issue](https://github.com/ariatemplates/ariatemplates/issues?state=open) or ideally, a pull request with the fix and a test.
-
-If you spotted some issue with **missing / incorrect documentation** on ariatemplates.com, please open a [usermanual issue](https://github.com/ariatemplates/usermanual/issues?state=open).
 
 See more in [CONTRIBUTING.md](CONTRIBUTING.md) and [TDD guide for Aria Templates](http://ariatemplates.github.io/Test-Driven-Development/).
