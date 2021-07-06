@@ -16,7 +16,7 @@
 var attester = require("attester");
 var testConfigBuilder = require("../test/testConfigBuilder");
 var robotServer = require("robot-server");
-var travis = process.env.TRAVIS === "true";
+var ci = process.env.CI === "true";
 
 process.env.PUPPETEER_INSTANCES = process.env.PUPPETEER_INSTANCES || "4";
 
@@ -44,7 +44,7 @@ var campaigns = [
     }),
     testConfigBuilder.buildTestConfig({
         campaign: "nopuppeteer",
-        noFlash: travis,
+        noFlash: ci,
         browsers: [nopuppeteerBrowser]
     })
 ];

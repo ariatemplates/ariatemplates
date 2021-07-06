@@ -1,0 +1,41 @@
+name: ci
+on:
+  push:
+    branches: [master]
+    tags: ["**"]
+  pull_request:
+    branches: [master]
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        coverage: [0, 1]
+    env:
+      ENABLE_COVERAGE: ${{ matrix.coverage }}
+      PUPPETEER_INSTANCES: "8"
+      DISPLAY: ":99.0"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set Node.js version
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14.17.3"
+      - uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: npm-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            npm-
+      - run: npm ci
+      - run: /sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x16
+      - run: npm run ci
+      - uses: actions/upload-artifact@v2
+        with:
+          name: test-results-${{ matrix.coverage }}
+          path: test/logs/*.json
+        if: ${{ always() }}
+      - uses: codecov/codecov-action@v1
+        with:
+          directory: test/logs
+        if: matrix.coverage == 1
