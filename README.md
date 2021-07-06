@@ -1,6 +1,6 @@
 # Aria Templates - JavaScript Framework
 
-[![Build Status](https://secure.travis-ci.org/ariatemplates/ariatemplates.png?branch=master)](http://travis-ci.org/ariatemplates/ariatemplates)
+[![ci](https://github.com/ariatemplates/ariatemplates/actions/workflows/ci.yml/badge.svg)](https://github.com/ariatemplates/ariatemplates/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/ariatemplates/ariatemplates/branch/master/graph/badge.svg)](https://codecov.io/gh/ariatemplates/ariatemplates)
 [![Dependencies](https://david-dm.org/ariatemplates/ariatemplates.svg?style=flat)](https://david-dm.org/ariatemplates/ariatemplates)
 [![devDependencies](https://david-dm.org/ariatemplates/ariatemplates/dev-status.svg?style=flat)](https://david-dm.org/ariatemplates/ariatemplates#info=devDependencies)

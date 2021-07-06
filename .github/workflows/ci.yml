@@ -13,7 +13,7 @@ jobs:
         coverage: [0, 1]
     env:
       ENABLE_COVERAGE: ${{ matrix.coverage }}
-      PUPPETEER_INSTANCES: "8"
+      PUPPETEER_INSTANCES: "7"
       DISPLAY: ":99.0"
     steps:
       - uses: actions/checkout@v2
