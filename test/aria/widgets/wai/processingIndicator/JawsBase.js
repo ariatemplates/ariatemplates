@@ -14,179 +14,102 @@
  */
 
 var Aria = require('ariatemplates/Aria');
-var times = require('ariatemplates/utils/Algo').times;
-
-var EnhancedJawsTestCase = require('test/EnhancedJawsBase');
-
-
 
 module.exports = Aria.classDefinition({
     $classpath : 'test.aria.widgets.wai.processingIndicator.JawsBase',
-    $extends : EnhancedJawsTestCase,
+    $extends : require('aria/jsunit/JawsTestCase'),
 
     $constructor : function () {
-        this.$EnhancedJawsBase.constructor.call(this);
+        this.$JawsTestCase.constructor.call(this);
 
         var useCase = this.useCase;
-        if (this.useCase)
-
-        this.setTestEnv({
-            template : 'test.aria.widgets.wai.processingIndicator.Tpl',
-            data: this.useCase
-        });
+        if (useCase) {
+            this.setTestEnv({
+                template : 'test.aria.widgets.wai.processingIndicator.Tpl',
+                data: useCase
+            });
+        }
     },
 
-
-
-    ////////////////////////////////////////////////////////////////////////////
-    //
-    ////////////////////////////////////////////////////////////////////////////
-
     $prototype : {
-        skipRemoveDuplicates: true,
-
-
-
-        ////////////////////////////////////////////////////////////////////////
-        // Tests
-        ////////////////////////////////////////////////////////////////////////
+        skipClearHistory : true,
 
         runTemplateTest : function () {
-            var data = this._getData();
-            var elements = data.elements;
-            var toggleOverlay = elements.toggleOverlay;
-
-            var regexps = [];
-            regexps.push(this._createLineRegExp('focus me*'));
-            regexps.push(this._createLineRegExp('AT tests.*'));
-            regexps.push(this._createLineRegExp(toggleOverlay.content + '.*'));
-
-            this._filter = function (content) {
-                return this._applyRegExps(regexps, content);
-            };
-
-            this._localAsyncSequence(function (add) {
-                add('_test');
-                add('_checkHistory');
-            }, this.end);
-        },
-
-
-
-        ////////////////////////////////////////////////////////////////////////
-        //
-        ////////////////////////////////////////////////////////////////////////
-
-        _test : function (callback) {
-            // --------------------------------------------------- destructuring
-
-            // global ----------------------------------------------------------
-
             var document = Aria.$window.document;
-
-            // data ------------------------------------------------------------
-
-            var data = this._getData();
-
-            // data > configuration --------------------------------------------
-
+            var data = this.useCase;
             var listeningTime = data.listeningTime;
-
-            // data > options --------------------------------------------------
-
             var reverse = data.reverse;
-            // var section = data.section;
             var navigationKey = data.navigationKey;
-
-            // data > elements -------------------------------------------------
-
             var elements = data.elements;
             var toggleOverlay = elements.toggleOverlay;
             var previous = elements.previous;
             var loading = elements.loading;
             var next = elements.next;
             var startingPoint = elements[reverse ? 'after' : 'before'];
-
-            // ------------------------------------------------------ processing
-
             var startingPointElement = document.getElementById(startingPoint.id);
             var toggleOverlayElement = this.getElementById(toggleOverlay.id);
+            var first = reverse ? next : previous;
+            var last = reverse ? previous : next;
 
-            var traversedElements = [previous, next];
-            if (reverse) {
-                traversedElements.reverse();
-            }
-            var first = traversedElements[0];
-            var last = traversedElements[1];
+            var actions = [];
 
-            function scenario(api) {
-                // ----------------------------------------------- destructuring
-
-                var click = api.click;
-                var says = api.says;
-                var delay = api.delay;
-
-                // --------------------------------------------- local functions
-
-                // individual actions ------------------------------------------
-
-                function focusStartingPoint() {
-                    click(startingPointElement);
-                }
-
-                function pressAction() {
-                    click(toggleOverlayElement);
-                }
-
-                function pressNavigationKey() {
-                    api[navigationKey]();
-                }
-
-                // isolated sequences ------------------------------------------
-
-                function normalPass() {
-                    focusStartingPoint();
-
-                    times(3, pressNavigationKey);
-                    says(first.content);
-                    says(loading.content);
-                    says(last.content);
-                }
-
-                function loadingPass() {
-                    focusStartingPoint();
-
-                    times(2, pressNavigationKey);
-                    says(first.content);
-                    says(last.content);
-
-                    delay(listeningTime);
-                    says(loading.message);
-                    says(loading.message);
-                }
-
-                // full scenario -----------------------------------------------
-
-                function fullPass() {
-                    normalPass();
-
-                    pressAction();
-                    loadingPass();
-
-                    pressAction();
-                    normalPass();
-                }
-
-                // -------------------------------------------------- processing
-
-                fullPass();
+            function focusStartingPoint() {
+                actions.push(
+                    ["click", startingPointElement],
+                    ["waitFocus", startingPointElement]
+                );
             }
 
-            // execution -------------------------------------------------------
+            function pressAction() {
+                actions.push(
+                    ["click", toggleOverlayElement],
+                    ["waitForJawsToSay", "toggle overlay"]
+                );
+            }
 
-            this._executeStepsAndWriteHistory(callback, function (api) {
-                api.defaultDelay = data.stepsDefaultDelay;
-                scenario(api);
+            function normalPass() {
+                focusStartingPoint();
+
+                actions.push(
+                    ["type", null, navigationKey],
+                    ["waitForJawsToSay", first.content],
+                    ["type", null, navigationKey],
+                    ["waitForJawsToSay", loading.content],
+                    ["type", null, navigationKey],
+                    ["waitForJawsToSay", last.content]
+                );
+            }
+
+            function loadingPass() {
+                focusStartingPoint();
+
+                actions.push(
+                    ["type", null, navigationKey],
+                    ["waitForJawsToSay", first.content],
+                    ["type", null, navigationKey],
+                    ["waitForJawsToSay", last.content],
+                    ["pause", listeningTime],
+                    ["waitForJawsToSay", loading.message],
+                    ["pause", listeningTime],
+                    ["waitForJawsToSay", loading.message]
+                );
+            }
+
+            function fullPass() {
+                normalPass();
+
+                pressAction();
+                loadingPass();
+
+                pressAction();
+                normalPass();
+            }
+
+            fullPass();
+
+            this.execute(actions, {
+                fn: this.end,
+                scope: this
             });
         }
     }

@@ -15,8 +15,6 @@
 
 var Aria = require("ariatemplates/Aria");
 
-var dataUtils = require("ariatemplates/utils/Data");
-
 var JawsTestCase = require("ariatemplates/jsunit/JawsTestCase");
 var AppEnvironment = require("ariatemplates/core/AppEnvironment");
 
@@ -28,12 +26,7 @@ module.exports = Aria.classDefinition({
     $extends : JawsTestCase,
 
     $constructor : function() {
-        // ---------------------------------------------------------------------
-
         this.$JawsTestCase.constructor.call(this);
-
-        // ------------------------------------ template data & test environment
-
         this.setTestEnv({
             template : "test.aria.widgets.wai.errorlist.binding.ErrorListBindingTpl",
             moduleCtrl : {
@@ -44,11 +37,11 @@ module.exports = Aria.classDefinition({
                 }
             }
         });
-
-        this.noiseRegExps.push(/\\$/, /^Email Address:$/i);
      },
 
     $prototype : {
+        skipClearHistory: true,
+
         run : function () {
             AppEnvironment.setEnvironment({
                 appSettings: {
@@ -61,24 +54,17 @@ module.exports = Aria.classDefinition({
         },
 
         runTemplateTest : function () {
+            var field = this.getInputField("email");
             this.execute([
-                ["click", this.getInputField("email")],
-                ["pause", 1000],
-                ["type", null, "[down][down]"],
-                ["pause", 1000],
+                ["click", field],
+                ["waitFocus", field],
+                ["pause", 500],
+                ["type", null, "[down]"],
+                ["waitForJawsToSay", "Submit"],
                 ["type", null, "[space]"],
                 ["pause", 3000] // check that nothing is said when errors are displayed
             ], {
-                fn: function () {
-                    this.assertJawsHistoryEquals(
-                        "Email Address: Edit\nType in text.\nSubmit Button",
-                        this.end,
-                        function filter(content) {
-                            content = content.replace(/(Submit)\n(Button)/gi, '$1 $2');
-                            return content;
-                        }
-                    );
-                },
+                fn: this.end,
                 scope: this
             });
         }

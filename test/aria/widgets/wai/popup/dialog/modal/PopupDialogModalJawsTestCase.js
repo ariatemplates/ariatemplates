@@ -14,19 +14,14 @@
  */
 
 var Aria = require('ariatemplates/Aria');
-
-var EnhancedJawsTestCase = require('test/EnhancedJawsBase');
-
 var Model = require('./Model');
-
-
 
 module.exports = Aria.classDefinition({
     $classpath : 'test.aria.widgets.wai.popup.dialog.modal.PopupDialogModalJawsTestCase',
-    $extends : EnhancedJawsTestCase,
+    $extends : require('ariatemplates/jsunit/JawsTestCase'),
 
     $constructor : function () {
-        this.$EnhancedJawsBase.constructor.call(this);
+        this.$JawsTestCase.constructor.call(this);
 
         this.setTestEnv({
             template : 'test.aria.widgets.wai.popup.dialog.modal.Tpl',
@@ -34,83 +29,52 @@ module.exports = Aria.classDefinition({
         });
     },
 
-
-
-    ////////////////////////////////////////////////////////////////////////////
-    //
-    ////////////////////////////////////////////////////////////////////////////
-
     $prototype : {
-        ////////////////////////////////////////////////////////////////////////
-        // Tests
-        ////////////////////////////////////////////////////////////////////////
+        skipClearHistory : true,
 
         runTemplateTest : function () {
-            this._localAsyncSequence(function (add) {
-                add('_testDialogs');
-                add('_checkHistory');
-            }, this.end);
-        },
+            var data = this.templateCtxt.data;
+            var actions = [];
 
-
-
-        ////////////////////////////////////////////////////////////////////////
-        //
-        ////////////////////////////////////////////////////////////////////////
-
-        _testDialogs : function (callback) {
-            this._asyncIterate(
-                this._getData().dialogs,
-                this._testDialog,
-                callback,
-                this
-            );
-        },
-
-        _testDialog : function (callback, dialog) {
-            // ----------------------------------------------- early termination
-
-            if (!dialog.wai) {
-                callback();
-                return;
+            function labelToJawsSay(label) {
+                return label.replace(/\(/g, ' left paren ').replace(/\)/g, ' right paren ');
             }
 
-            // ------------------------------------------------------ processing
-
-            this._executeStepsAndWriteHistory(callback, function (api) {
-                // ----------------------------------------------- destructuring
-
-                var step = api.step;
-                var says = api.says;
-
-                var tab = api.tab;
-                var enter = api.enter;
-                var escape = api.escape;
-
-                // -------------------------------------------------- processing
-
-                step(['click', this.getElementById(dialog.elementBeforeId)]);
-                says('Element before');
-
-                tab();
-                says(dialog.buttonLabel + ' Button');
-
-                enter();
-
-                says(dialog.title + ' dialog');
-                says(dialog.title + ' heading level 1');
-
-                if (!dialog.fullyEmpty) {
-                    tab();
-                    says(dialog.closeLabel + ' Button');
-
-                    tab();
-                    says(dialog.maximizeLabel + ' Button');
+            function processDialog(dialog) {
+                if (!dialog.wai) {
+                    return;
                 }
 
-                escape();
+                actions.push(
+                    ['click', this.getElementById(dialog.elementBeforeId)],
+                    ['waitForJawsToSay', 'Element before'],
+                    ['type', null, '[tab]'],
+                    ['waitForJawsToSay', labelToJawsSay(dialog.buttonLabel) + ' Button'],
+                    ['type', null, '[enter]'],
+                    ['waitForJawsToSay', labelToJawsSay(dialog.title) + ' dialog'],
+                    ['waitForJawsToSay', labelToJawsSay(dialog.title) + ' heading level 1']
+                );
 
-                says(dialog.buttonLabel + ' Button');
+                if (!dialog.fullyEmpty) {
+                    actions.push(
+                        ['type', null, '[tab]'],
+                        ['waitForJawsToSay', labelToJawsSay(dialog.closeLabel) + ' Button'],
+                        ['type', null, '[tab]'],
+                        ['waitForJawsToSay', labelToJawsSay(dialog.maximizeLabel) + ' Button']
+                    );
+                }
+
+                actions.push(
+                    ['type', null, '[escape]'],
+                    ['waitForJawsToSay', labelToJawsSay(dialog.buttonLabel) + ' Button']
+                );
+            }
+
+            data.dialogs.forEach(processDialog.bind(this));
+
+            this.execute(actions, {
+                fn: this.end,
+                scope: this
             });
         }
     }

@@ -23,14 +23,18 @@ Aria.classDefinition({
         });
     },
     $prototype : {
+        skipClearHistory: true,
         nbTabs: 2,
 
         runTemplateTest : function () {
-            this._testElement();
-        },
-        _testElement : function () {
             var domElement = this.getElementById(this.elementsToTest);
+            var forbidLabelHidden = {
+                match: /with\s+aria\s+label\s+hidden/i,
+                fn: this.lastJawsTextFailure,
+                scope: this
+            };
             var actions = [
+                ["registerJawsListener", forbidLabelHidden],
                 ["ensureVisible", domElement],
                 ["click", domElement], ["pause", 1000]
             ];
@@ -38,23 +42,15 @@ Aria.classDefinition({
             for (var i = 0 ; i < nbTabs ; i++) {
                 actions.push(["type", null, "[tab]"], ["pause", 1000]);
             }
+            actions.push(
+                ["waitForJawsToSay", { find: "wai Label", skipClear: true }],
+                ["waitForJawsToSay", { find: "aria label described by", skipClear: true }],
+                ["waitForJawsToSay", { find: "aria label labelled by", skipClear: true }]
+            );
             this.execute(actions, {
-                fn : this._testValue,
+                fn : this.end,
                 scope : this
             });
-        },
-        _testValue : function () {
-            this.assertJawsHistoryEquals(true, this._resetTest, function (response) {
-                if (!/waiLabel/.test(response) || !/aria label described by/.test(response)
-                        || !/aria label labelled by/.test(response)
-                        || /enabled - with aria label hidden/.test(response)) {
-                    return false;
-                }
-                return true;
-            });
-        },
-        _resetTest : function () {
-            this.end();
         }
     }
 });

@@ -24,6 +24,7 @@
 
 	.user_focus {
 		color: red;
+		display: inline;
 	}
 
 	.container {

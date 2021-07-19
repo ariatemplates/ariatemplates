@@ -30,6 +30,7 @@
 
         {@aria:TextField {
           label: "First Name:",
+          waiLabelHidden: true,
           labelWidth: 100,
           bind: {
             value: {
@@ -41,6 +42,7 @@
         <br/>
         {@aria:TextField {
           label: "Last Name:",
+          waiLabelHidden: true,
           labelWidth: 100,
           bind: {
             value: {
@@ -52,6 +54,7 @@
         <br/>
         {@aria:TextField {
           label: "Phone Number:",
+          waiLabelHidden: true,
           labelWidth: 100,
           bind: {
             value: {
@@ -64,6 +67,7 @@
         {@aria:TextField {
           id: "email",
           label: "Email Address:",
+          waiLabelHidden: true,
           labelWidth: 100,
           bind: {
             value: {

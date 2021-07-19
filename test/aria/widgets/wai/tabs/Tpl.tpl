@@ -45,7 +45,7 @@
             WaiAria activated: ${tabPanel.waiAria ? 'true' : 'false'}
         </p>
         <p>
-            <input type='text' {id 'inside_' + tabPanel.id /}></input>
+            <input type='text' {id 'inside_' + tabPanel.id /} aria-label="my input"></input>
         </p>
     {/macro}
 

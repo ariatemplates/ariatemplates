@@ -61,7 +61,6 @@ module.exports = Aria.classDefinition({
             this.execute([
                 ["click", emailField],
                 ["waitFocus", emailField],
-                ["waitForJawsToSay","Email Address colon  Edit"],
                 ["type",null,"[down][down]"],
                 ["waitForJawsToSay","Submit Button"],
                 ["type",null,"[space]"],

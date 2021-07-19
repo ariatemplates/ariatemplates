@@ -23,17 +23,19 @@ Aria.classDefinition({
         });
     },
     $prototype : {
+        skipClearHistory : true,
+
         runTemplateTest : function () {
             this.execute([
                 ["click", this.getElementById("firstField")],
-                ["type", null, "[tab][space]"],
-                ["pause", 5000]
+                ["waitForJawsToSay", "First field"],
+                ["type", null, "[tab]"],
+                ["waitForJawsToSay", "Show dialog"],
+                ["type", null, "[space]"],
+                ["waitForJawsToSay", "My dialog"],
+                ["waitForJawsToSay", "This is the wai open message!"]
             ], {
-                fn: function () {
-                    this.assertJawsHistoryEquals(true, this.end, function (text) {
-                        return /My dialog heading level 1\nThis is the wai open message!/.test(text);
-                    });
-                },
+                fn: this.end,
                 scope: this
             });
         }

@@ -19,26 +19,27 @@ module.exports = Aria.classDefinition({
     $classpath : "test.aria.widgets.wai.input.actionWidget.hasPopup.LinkJawsTestCase",
     $extends : require("ariatemplates/jsunit/JawsTestCase"),
     $prototype : {
+        skipClearHistory: true,
+
         runTemplateTest : function () {
+            var tf1 = this.getElementById("tf1");
             this.execute([
-                ["click", this.getElementById("tf1")], ["pause", 1000],
-                ["type", null, "[down]"], ["pause", 1000],
-                ["type", null, "[down]"], ["pause", 1000],
-                ["type", null, "[down]"], ["pause", 1000],
-                ["type", null, "[<shift>][tab][>shift<]"], ["pause", 1000],
-                ["type", null, "[<shift>][tab][>shift<]"], ["pause", 1000]
+                ["click", tf1],
+                ["waitFocus", tf1],
+                ["pause", 500],
+                ["type", null, "[down]"],
+                ["waitForJawsToSay", "Link Has Popup menu More info"],
+                ["type", null, "[down]"],
+                ["waitForJawsToSay", "Link Normal"],
+                ["type", null, "[down]"],
+                ["waitForJawsToSay", "Edit"],
+                ["type", null, "[<shift>][tab][>shift<]"],
+                ["waitForJawsToSay", "Normal Link"],
+                ["type", null, "[<shift>][tab][>shift<]"],
+                ["waitForJawsToSay", "More info Has Popup menu Link"],
+                ["pause", 1000]
             ], {
-                fn: function () {
-                    this.noiseRegExps.push(/^Type/i);
-                    this.assertJawsHistoryEquals([
-                        "Edit",
-                        "Link Has Popup More info",
-                        "Link Normal",
-                        "Edit",
-                        "Normal Link",
-                        "More info Has Popup Link"
-                    ].join("\n"), this.end);
-                },
+                fn: this.end,
                 scope: this
             });
         }

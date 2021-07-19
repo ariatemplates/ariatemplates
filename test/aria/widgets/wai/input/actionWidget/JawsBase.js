@@ -52,7 +52,7 @@ module.exports = Aria.classDefinition({
         this.testData = {
             'link': {
                 withTabKey: {
-                    actionsCount: 4,
+                    actionsCount: 5,
                     expectedOutput: [
                         'this is the link label Link',
 
@@ -61,15 +61,17 @@ module.exports = Aria.classDefinition({
                         'link with external description Link',
                         'this is the link external description',
 
+                        'disabled link Unavailable Link',
+
                         'link: no wai ARIA Link'
                     ]
                 },
                 withDownKey: {
-                    actionsCount: 5 * 2,
+                    actionsCount: 5,
                     expectedOutput: [
                         'Link this is the link label',
 
-                        'Link link with external label',
+                        'Link this is the link external label',
 
                         'Link link with external description',
 
@@ -94,7 +96,7 @@ module.exports = Aria.classDefinition({
                     ]
                 },
                 withDownKey: {
-                    actionsCount: 5 * 2,
+                    actionsCount: 5,
                     expectedOutput: [
                         'this is the button label',
                         'Button',
@@ -201,11 +203,11 @@ module.exports = Aria.classDefinition({
                     ]
                 },
                 withDownKey: {
-                    actionsCount: 4 * 2,
+                    actionsCount: 4,
                     expectedOutput: [
                         'Link this is the sort_indicator label',
 
-                        'Link sort_indicator with external label', // FIXME why is this label not read?
+                        'Link this is the sort_indicator external label',
 
                         'Link sort_indicator with external description',
 
@@ -229,11 +231,15 @@ module.exports = Aria.classDefinition({
 
         runTemplateTest : function () {
             var regexps = [];
+            regexps.push(this._createLineRegExp('To activate press.*'));
             regexps.push(this._createLineRegExp('AT tests.*'));
+            regexps.push(this._createLineRegExp('Aria Templates tests.*'));
             regexps.push(this._createLineRegExp('focus me'));
             regexps.push(this._createLineRegExp('stop here'));
             regexps.push(this._createLineRegExp('edit'));
+            regexps.push(/[\x1d\x1e]/gi);
             regexps.push(/^\n/gi);
+            regexps.push(/\n$/gi);
 
             this._filter = function (content) {
                 content = content.replace(/\s*\n/gi, '\n');

@@ -32,7 +32,6 @@ Aria.classDefinition({
                 ["click",domElement],
                 ["waitForJawsToSay","Type in text."],
                 ["type",null,"[tab]"],
-                ["waitForJawsToSay","Tab"],
                 ["waitForJawsToSay","All Countries Edit"],
                 ["waitForJawsToSay","Type in text."],
                 ["type",null,"f"],

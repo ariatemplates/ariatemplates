@@ -27,6 +27,8 @@ module.exports = Aria.classDefinition({
         });
     },
     $prototype : {
+        skipClearHistory: true,
+
         runTemplateTest : function () {
             Accessibility.readText("Hello", {
                 alert: true

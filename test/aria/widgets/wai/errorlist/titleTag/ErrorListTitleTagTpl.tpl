@@ -46,6 +46,9 @@
                     localizedMessage: "MyError4Description"
                 }]
             }/}
+
+            <br>
+            <input {id "tf"/}/>
         </div>
   {/macro}
 {/Template}

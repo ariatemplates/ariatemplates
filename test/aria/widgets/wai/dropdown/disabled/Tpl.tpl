@@ -22,6 +22,7 @@
         <div class="root">
             {@aria:CheckBox {
                 waiAria: true,
+                waiLabelHidden: true,
                 label: "Disabled widgets",
                 bind: {
                     value: {
@@ -33,6 +34,7 @@
             <input {id "firstItem"/} aria-label="FirstFieldLabel"> <br>
             {@aria:DatePicker {
                 waiAria: true,
+                waiLabelHidden: true,
                 label: "DatePickerLabel",
                 waiIconLabel: "DropDownLabelForDatePicker",
                 id: "myDatePicker",
@@ -45,6 +47,7 @@
             }/} <br>
             {@aria:AutoComplete {
                 waiAria: true,
+                waiLabelHidden: true,
                 label: "AutoCompleteLabel",
                 waiIconLabel: "DropDownLabelForAutoComplete",
                 id: "myAutoCompleteWithExpandButton",
@@ -59,6 +62,7 @@
             }/} <br>
             {@aria:SelectBox {
                 waiAria: true,
+                waiLabelHidden: true,
                 label: "SelectBoxLabel",
                 waiIconLabel: "DropDownLabelForSelectBox",
                 id: "mySelectBox",
@@ -72,6 +76,7 @@
             }/} <br>
             {@aria:MultiSelect {
                 waiAria: true,
+                waiLabelHidden: true,
                 label: "MultiSelectLabel",
                 waiIconLabel: "DropDownLabelForMultiSelect",
                 id: "myMultiSelect",

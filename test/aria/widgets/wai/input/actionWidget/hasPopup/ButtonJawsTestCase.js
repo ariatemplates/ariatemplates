@@ -22,9 +22,10 @@ module.exports = Aria.classDefinition({
         skipClearHistory : true,
 
         runTemplateTest : function () {
+            var tf1 = this.getElementById("tf1");
             this.execute([
-                ["click", this.getElementById("tf1")],
-                ["waitForJawsToSay","Edit"],
+                ["click", tf1],
+                ["waitFocus", tf1],
                 ["type",null,"[down]"],
                 ["waitForJawsToSay","More info button menu"],
                 ["type",null,"[down]"],
@@ -32,10 +33,8 @@ module.exports = Aria.classDefinition({
                 ["type",null,"[down]"],
                 ["waitForJawsToSay","Edit"],
                 ["type",null,"[<shift>][tab][>shift<]"],
-                ["waitForJawsToSay","Shift Tab"],
                 ["waitForJawsToSay","Normal Button"],
                 ["type",null,"[<shift>][tab][>shift<]"],
-                ["waitForJawsToSay","Shift Tab"],
                 ["waitForJawsToSay","More info button menu"]
                 // Note that JAWS 18 also says:
                 // ["waitForJawsToSay","Press space to activate the menu, then navigate with arrow keys"]

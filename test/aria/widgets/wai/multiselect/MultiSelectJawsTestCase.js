@@ -23,57 +23,45 @@ Aria.classDefinition({
         });
     },
     $prototype : {
-        // skips removeDuplicates in assertJawsHistoryEquals, as we call it ourselves from our filter function
-        skipRemoveDuplicates: true,
+        skipClearHistory : true,
 
-        /**
-         * This method is always the first entry point to a template test Start the test by focusing the first field
-         */
         runTemplateTest : function () {
-            var checkedRegExp = /not checked\nchecked/g;
-            var notCheckedRegExp = /checked\nnot checked/g;
-            var chechBoxStartingLineRegExp = /\ncheck box/g;
-
+            var tf = this.getElementById("tf");
             this.execute([
-                ["click", this.getElementById("tf")],
-                ["pause", 2000],
-                ["type", null, "[down][down]"],
-                ["pause", 1000],
+                ["click", tf],
+                ["waitFocus", tf],
+                ["type", null, "[down]"],
+                ["waitForJawsToSay", "My Multi dash select"],
+                ["type", null, "[down]"],
+                ["waitForJawsToSay", "Edit"],
+                // extra check to avoid opening the browser context menu with shift+f10:
+                ["waitFocus", this.getInputField("ms")],
                 ["type", null, "[<shift>][F10][>shift<]"],
-                ["pause", 1000],
+                ["waitForJawsToSay", "Air Canada check box not checked"],
                 ["type", null, "[space]"],
-                ["pause", 500],
+                ["waitForJawsToSay", "checked"],
                 ["type", null, "[down]"],
-                ["pause", 500],
+                ["waitForJawsToSay", "Air France check box not checked"],
                 ["type", null, "[space]"],
-                ["pause", 500],
-                ["type", null, "[down][down]"],
-                ["pause", 500],
-                ["type", null, "[space]"],
-                ["pause", 500],
+                ["waitForJawsToSay", "Air France check box checked"],
                 ["type", null, "[down]"],
-                ["pause", 500],
+                ["waitForJawsToSay", "Air New Zealand check box not checked"],
+                ["type", null, "[down]"],
+                ["waitForJawsToSay", "British Airways check box not checked"],
+                ["type", null, "[space]"],
+                ["waitForJawsToSay", "British Airways check box checked"],
+                ["type", null, "[down]"],
+                ["waitForJawsToSay", "Delta Airlines check box not checked Unavailable"],
                 ["type", null, "[space]"],
                 ["pause", 500],
                 ["type", null, "[escape]"],
-                ["pause", 500],
+                ["waitForJawsToSay", "Air Canada, Air France, British Airways"],
                 ["type", null, "[tab]"],
-                ["pause", 500],
+                ["waitForJawsToSay", "Press space to open the selection list"],
                 ["type", null, "[space]"],
-                ["pause", 1000]
+                ["waitForJawsToSay", "Air Canada check box checked"]
             ], {
-                fn: function () {
-                    this.assertJawsHistoryEquals(
-                        "Here is the default Multi-Select: Edit\nType in text.\nMy Multi-select:\nEdit\nAir Canada check box checked\nAir France check box not checked\nAir France check box checked\nAir New Zealand check box not checked\nBritish Airways check box not checked\nBritish Airways check box checked\nDelta Airlines check box not checked Unavailable\nMy Multi-select: Edit\nAir Canada,Air France,British Airways\nType in text.\nPress space to open the selection list\nAir Canada check box checked",
-                    this.end,
-                    function(response) {
-                        return this.removeDuplicates(response.
-                            replace(chechBoxStartingLineRegExp, " check box").
-                            replace(checkedRegExp, "checked").
-                            replace(notCheckedRegExp, "not checked")
-                        );
-                    });
-                },
+                fn: this.end,
                 scope: this
             });
         }

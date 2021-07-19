@@ -20,6 +20,7 @@
     {macro main()}
         <input {id "tf1"/} aria-label="First field"><br>
         {@aria:TextField {
+            waiAria: true,
             label: "Query",
             bind: {
                 "value": {
@@ -29,6 +30,7 @@
             }
         }/}<br>
         {@aria:Text {
+            waiAria: true,
             bind: {
                 "text": {
                     to: "query",
@@ -37,6 +39,7 @@
             }
         }/}<br>
         {@aria:Button {
+            waiAria: true,
             label: "Search",
             blurBeforeAction: true,
             onclick: {
@@ -46,6 +49,7 @@
         }/}<br><br>
         Last search:
         {@aria:Text {
+            waiAria: true,
             bind: {
                 "text": {
                     to: "lastSearchedQuery",

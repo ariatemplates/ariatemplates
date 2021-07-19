@@ -24,7 +24,7 @@ module.exports = Aria.classDefinition({
 
     $statics : {
         useCase : {
-            navigationKey : 'down',
+            navigationKey : '[down]',
             reverse : false,
             section : true
         }

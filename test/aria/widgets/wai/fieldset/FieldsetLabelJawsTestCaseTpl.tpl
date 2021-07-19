@@ -36,7 +36,8 @@
           label: "Option A",
           keyValue: "a",
           block: true,
-          waiAria : true
+          waiAria : true,
+          waiLabelHidden : true
         }/}
        {/@aria:Fieldset}
        <span>End of template</span>

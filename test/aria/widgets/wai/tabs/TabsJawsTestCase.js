@@ -14,23 +14,14 @@
  */
 
 var Aria = require('ariatemplates/Aria');
-
-var ariaUtilsAlgo = require('ariatemplates/utils/Algo');
-var ariaUtilsArray = require('ariatemplates/utils/Array');
-var ariaUtilsFunction = require('ariatemplates/utils/Function');
-
-var EnhancedJawsTestCase = require('test/EnhancedJawsBase');
-
 var Model = require('./Model');
-
-
 
 module.exports = Aria.classDefinition({
     $classpath : 'test.aria.widgets.wai.tabs.TabsJawsTestCase',
-    $extends : EnhancedJawsTestCase,
+    $extends : require('ariatemplates/jsunit/JawsTestCase'),
 
     $constructor : function () {
-        this.$EnhancedJawsBase.constructor.call(this);
+        this.$JawsTestCase.constructor.call(this);
 
         var data = Model.buildData();
         var groups = data.groups;
@@ -41,159 +32,64 @@ module.exports = Aria.classDefinition({
             template : 'test.aria.widgets.wai.tabs.Tpl',
             data : data
         });
-
-        this.expectedOutput = [
-            // simple traversal with no selection ------------------------------
-
-            // Tab 0
-            'Link collapsed Tab 0',
-
-            // Tab 1
-            'Link Unavailable collapsed Tab 1',
-
-            // Tab 2
-            'Link collapsed Tab 2',
-
-            // TabPanel
-            'tab panel start',
-            'WaiAria activated: true',
-            'Edit',
-            'tab panel end',
-
-            // selecting last Tab ----------------------------------------------
-
-            // Tab 0
-            'Link collapsed Tab 0',
-
-            // Tab 1
-            'Link Unavailable collapsed Tab 1',
-
-            // Tab 2
-            'Link collapsed Tab 2',
-            // glitch: since the focus is immediately moved (see next comment), the state of the Tab can not be read
-
-            // selecting a Tab means focusing the first element inside the TabPanel
-            'Tab 2',
-
-            // simple traversal with a Tab selected ----------------------------
-
-            // Tab 0
-            'Link collapsed Tab 0',
-
-            // Tab 1
-            'Link Unavailable collapsed Tab 1',
-
-            // Tab 2
-            'Link expanded Tab 2',
-
-            // TabPanel: now the title of the controlling Tab is read
-            'tab panel start Tab 2',
-            'Tab 2',
-            'WaiAria activated: true',
-            'Edit',
-            'tab panel end'
-        ].join('\n');
     },
 
-
-
-    ////////////////////////////////////////////////////////////////////////////
-    //
-    ////////////////////////////////////////////////////////////////////////////
-
     $prototype : {
-        ////////////////////////////////////////////////////////////////////////
-        // Tests
-        ////////////////////////////////////////////////////////////////////////
+        skipClearHistory : true,
 
         runTemplateTest : function () {
-            var regexps = [];
-            regexps.push(this._createLineRegExp('Element before .*'));
-            regexps.push(this._createLineRegExp('separator'));
-            regexps.push(this._createLineRegExp('AT test*'));
-            regexps.push(/Use JawsKey\+Alt\+M to move to controlled element\s*/g);
-
-            this._filter = ariaUtilsFunction.bind(this._applyRegExps, this, regexps);
-
-            this._localAsyncSequence(function (add) {
-                add('_testGroups');
-                add('_checkHistory');
-            }, this.end);
-        },
-
-
-
-        ////////////////////////////////////////////////////////////////////////
-        //
-        ////////////////////////////////////////////////////////////////////////
-
-        _testGroups : function (callback) {
-            var groups = this._getData().groups;
-
-            this._asyncIterate(
-                groups,
-                this._testGroup,
-                callback,
-                this
-            );
-        },
-
-        _testGroup : function (callback, group) {
-            if (!group.waiAria || group.tabsUnder) {
-                callback();
-                return;
-            }
-
-            var expectedOutput = this.expectedOutput;
-
-            var tabs = group.tabs;
+            var group = this.templateCtxt.data.groups[0];
             var elementBefore = this.getElementById(group.elementBeforeId);
 
-            this._executeStepsAndWriteHistory(callback, function (api) {
-                // ----------------------------------------------- destructuring
+            this.execute([
+                // no tab selected
+                ['click', elementBefore],
+                ['waitFocus', elementBefore],
+                ['type', null, '[down]'],
+                ['waitForJawsToSay', 'Link collapsed Tab 0'],
+                ['type', null, '[down]'],
+                ['waitForJawsToSay', 'Link Unavailable collapsed Tab 1'],
+                ['type', null, '[down]'],
+                ['waitForJawsToSay', 'Link collapsed Tab 2'],
+                ['type', null, '[down]'],
+                ['waitForJawsToSay', 'Wai Aria activated colon true'],
+                ['type', null, '[down]'],
+                ['waitForJawsToSay', 'my input'],
 
-                var step = api.step;
-                var says = api.says;
+                // selecting one tab
+                ['click', elementBefore],
+                ['waitFocus', elementBefore],
+                ['type', null, '[down]'],
+                ['waitForJawsToSay', 'Link collapsed Tab 0'],
+                ['type', null, '[down]'],
+                ['waitForJawsToSay', 'Link Unavailable collapsed Tab 1'],
+                ['type', null, '[down]'],
+                ['waitForJawsToSay', 'Link collapsed Tab 2'],
+                ['type', null, '[space]'],
+                // glitch: since the focus is immediately moved (see next comment), the state of the Tab can not be read
+                ['type', null, '[space]'],
+                // selecting a Tab means focusing the first element inside the TabPanel
+                ['waitForJawsToSay', 'Tab 2'],
 
-                var space = api.space;
-                var down = api.down;
+                // simple traversal with a Tab selected
+                ['click', elementBefore],
+                ['waitFocus', elementBefore],
+                ['type', null, '[down]'],
+                ['waitForJawsToSay', 'Link collapsed Tab 0'],
+                ['type', null, '[down]'],
+                ['waitForJawsToSay', 'Link Unavailable collapsed Tab 1'],
+                ['type', null, '[down]'],
+                ['waitForJawsToSay', 'Link expanded Tab 2'],
+                ['type', null, '[down]'],
+                ['waitForJawsToSay', 'Tab 2'],
+                ['type', null, '[down]'],
+                ['waitForJawsToSay', 'Wai Aria activated colon true'],
+                ['type', null, '[down]'],
+                ['waitForJawsToSay', 'my input']
 
-                // --------------------------------------------- local functions
-
-                function selectStartPoint() {
-                    step(['click', elementBefore]);
-                }
-
-                function goThroughTabs(selectedTabIndex) {
-                    ariaUtilsArray.forEach(tabs, down);
-                }
-
-                function goThroughTabpanel() {
-                    ariaUtilsAlgo.times(7, down);
-                }
-
-                // -------------------------------------------------- processing
-
-                // no tab selected ---------------------------------------------
-
-                selectStartPoint();
-
-                goThroughTabs();
-                goThroughTabpanel();
-
-                // selecting one tab -------------------------------------------
-
-                selectStartPoint();
-                goThroughTabs();
-                space();
-
-                selectStartPoint();
-                goThroughTabs();
-                goThroughTabpanel();
-
-                // -------------------------------------------------------------
-
-                says(expectedOutput);
+            ], {
+                fn: this.end,
+                scope: this
             });
         }
     }
