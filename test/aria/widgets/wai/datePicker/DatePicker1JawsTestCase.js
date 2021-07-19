@@ -29,10 +29,10 @@ Aria.classDefinition({
         skipClearHistory : true,
 
         runTemplateTest : function () {
+            var input = this.getElementById("dpWaiEnabledNextInput");
             this.execute([
-                ["click", this.getElementById("dpWaiEnabledNextInput")],
-                ["waitForJawsToSay","Next field Edit"],
-                ["waitForJawsToSay","Type in text."],
+                ["click", input],
+                ["waitFocus", input],
                 ["type",null,"[up][up][up]"],
                 ["waitForJawsToSay","Display calendar"],
                 ["type",null,"[space]"],

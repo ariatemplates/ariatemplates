@@ -22,6 +22,7 @@
             <legend>State of the checkboxes</legend>
             {@aria:CheckBox {
                 waiAria : true,
+                waiLabelHidden : true,
                 label : "Checked",
                 labelWidth: 100,
                 bind: {
@@ -33,6 +34,7 @@
             }/}<br>
             {@aria:CheckBox {
                 waiAria : true,
+                waiLabelHidden : true,
                 label : "Disabled",
                 labelWidth: 100,
                 bind: {
@@ -46,6 +48,8 @@
 
         {@aria:TextField {
             id : "tf1",
+            waiAria : true,
+            waiLabelHidden : true,
             label : "First textfield",
             labelWidth: 100,
             value: "",
@@ -57,6 +61,8 @@
 
         {@aria:TextField {
             id : "tf2",
+            waiAria : true,
+            waiLabelHidden : true,
             label : "Last textfield",
             labelWidth: 100,
             value: "",
@@ -69,6 +75,7 @@
         <div style="margin:10px;">
             {@aria:CheckBox {
                 waiAria : true,
+                waiLabelHidden : true,
                 label : sclass + " input 1",
                 labelWidth: 100,
                 sclass: sclass,
@@ -85,6 +92,7 @@
             }/}
             {@aria:CheckBox {
                 waiAria : true,
+                waiLabelHidden : true,
                 label : sclass + " input 2",
                 waiLabelHidden: true,
                 waiLabel : sclass + " input 2",
@@ -104,6 +112,7 @@
             <span class="xSROnly" id="${sclass+"input3Label"}" aria-hidden="true">${sclass} input 3</span>
             {@aria:CheckBox {
                 waiAria : true,
+                waiLabelHidden : true,
                 label: sclass + " input 3",
                 waiLabelHidden: true,
                 waiLabelledBy: sclass + "input3Label",

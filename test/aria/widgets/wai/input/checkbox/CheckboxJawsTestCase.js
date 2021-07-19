@@ -21,55 +21,39 @@ Aria.classDefinition({
         this.setTestEnv({
             template : "test.aria.widgets.wai.input.checkbox.CheckboxTestCaseTpl"
         });
-        this.noiseRegExps.push(/(First textfield Edit|Type in text\.)$/i);
     },
     $prototype : {
-        // We call removeDuplicates ourselves after applying some replacements
-        skipRemoveDuplicates: true,
+        skipClearHistory: true,
 
         runTemplateTest : function () {
-            var checkedRegExp = /not checked\nchecked/g;
-            var notCheckedRegExp = /checked\nnot checked/g;
-            var newLineBeforeCheckbox = /\n(?=check box)/g;
-
+            var tf1 = this.getInputField("tf1");
             this.execute([
-                ["click", this.getElementById("tf1")],
-                ["pause", 1000],
+                ["click", tf1],
+                ["waitFocus", tf1],
                 ["type", null, "[down]"],
-                ["pause", 1000],
+                ["waitForJawsToSay", "Checkbox A check box not checked"],
                 ["type", null, "[space]"],
-                ["pause", 1000],
-                ["type", null, "[down][down][down]"],
-                ["pause", 1000],
+                ["waitForJawsToSay", "checked"],
+                ["type", null, "[down]"],
+                ["waitForJawsToSay", "Checkbox B check box not checked"],
                 ["type", null, "[space]"],
-                ["pause", 1000],
-                ["type", null, "[down][down]"],
-                ["pause", 1000],
+                ["waitForJawsToSay", "checked"],
+                ["type", null, "[down]"],
+                ["waitForJawsToSay", "Checkbox C check box not checked"],
                 ["type", null, "[space]"],
-                ["pause", 1000],
-                ["type", null, "[down][down]"],
-                ["pause", 1000],
+                ["waitForJawsToSay", "checked"],
+                ["type", null, "[down]"],
+                ["waitForJawsToSay", "Last textfield"],
                 ["type", null, "[<shift>][tab][>shift<]"],
-                ["pause", 1000],
+                ["waitForJawsToSay", "Checkbox C check box checked"],
                 ["type", null, "[space]"],
-                ["pause", 1000],
-                ["type", null, "[up][up]"],
-                ["pause", 1000],
+                ["waitForJawsToSay", "not checked"],
+                ["type", null, "[up]"],
+                ["waitForJawsToSay", "Checkbox B check box checked"],
                 ["type", null, "[space]"],
-                ["pause", 1000]
+                ["waitForJawsToSay", "not checked"]
             ], {
-                fn: function () {
-                    this.assertJawsHistoryEquals(
-                        "Checkbox A check box not checked\nCheckbox A check box checked\nCheckbox A\nCheckbox B check box not checked\nCheckbox B\nCheckbox B check box checked\nCheckbox B\nCheckbox C check box not checked\nCheckbox C check box checked\nCheckbox C\nLast textfield\nCheckbox C check box not checked\nCheckbox B\nCheckbox B check box checked\nCheckbox B check box not checked",
-                    this.end,
-                    function(response) {
-                        return this.removeDuplicates(
-                            response.replace(newLineBeforeCheckbox, " ")
-                                .replace(checkedRegExp, "checked")
-                                .replace(notCheckedRegExp, "not checked")
-                        );
-                    });
-                },
+                fn: this.end,
                 scope: this
             });
         }

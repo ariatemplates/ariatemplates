@@ -32,14 +32,12 @@ Aria.classDefinition({
                 ["click", this.getElementById("tf1")],
                 ["waitForJawsToSay","Type in text."],
                 ["type",null,"[tab]"],
-                ["waitForJawsToSay","Tab"],
                 ["waitForJawsToSay","Automatic radio button  checked"],
                 ["waitForJawsToSay","To change the selection press Up or Down Arrow."],
                 ["type",null,"[down]"],
                 ["waitForJawsToSay","Manual radio button  checked"],
                 ["waitForJawsToSay","To change the selection press Up or Down Arrow."],
                 ["type",null,"[tab]"],
-                ["waitForJawsToSay","Tab"],
                 ["waitForJawsToSay","Manual option 1 radio button  checked"],
                 ["waitForJawsToSay","To change the selection press Up or Down Arrow."],
                 ["type",null,"[down]"],
@@ -52,7 +50,6 @@ Aria.classDefinition({
                 ["waitForJawsToSay","Manual option 2 radio button  checked"],
                 ["waitForJawsToSay","To change the selection press Up or Down Arrow."],
                 ["type",null,"[<shift>][tab][>shift<]"],
-                ["waitForJawsToSay","Shift Tab"],
                 ["waitForJawsToSay","Manual radio button  checked"],
                 ["waitForJawsToSay","To change the selection press Up or Down Arrow."]
             ], {

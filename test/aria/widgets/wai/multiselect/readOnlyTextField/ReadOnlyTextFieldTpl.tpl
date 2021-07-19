@@ -8,6 +8,7 @@
             {@aria:MultiSelect {
                 id :"happyMS",
                 waiAria: true,
+                waiLabelHidden: true,
                 waiDescribedBy: "happyMSDescription",
                 iconTooltip: "Press space to open the list of check boxes",
                 readOnlyTextField: true,

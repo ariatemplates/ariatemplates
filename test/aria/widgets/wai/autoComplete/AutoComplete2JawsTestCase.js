@@ -26,10 +26,15 @@ Aria.classDefinition({
         skipClearHistory : true,
 
         runTemplateTest : function () {
+            var input = this.getElementById("inputBeforeAutoComplete");
             this.execute([
-                ["click", this.getElementById("inputBeforeAutoComplete")],
-                ["waitForJawsToSay", "Type in text."],
-                ["type", null, "[down][down][down][down]"],
+                ["click", input],
+                ["waitFocus", input],
+                ["type", null, "[down]"],
+                ["pause", 100],
+                ["type", null, "[down]"],
+                ["pause", 100],
+                ["type", null, "[down]"],
                 ["waitForJawsToSay", "Edit"],
                 ["type", null, "p"],
                 ["waitForJawsToSay", "There are 8 suggestions, use up and down arrow keys to navigate and enter to validate."],

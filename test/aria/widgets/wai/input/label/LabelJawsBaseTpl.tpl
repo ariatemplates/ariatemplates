@@ -20,7 +20,7 @@
         <span id="label-for-described-by">aria label described by</span>
         <span id="label-for-labelled-by">aria label labelled by</span>
         <div style="margin:10px;font-size:+3;font-weight:bold;">Label accessibility sample</div>
-        <div style="margin:10px; overflow: auto; height: 600px;">
+        <div style="margin:10px; overflow: auto; height: 400px;">
             With accessibility enabled: <br><br>
             {call checkBox("cbWaiEnabledStart") /}<br>
             {call dateField("dfWaiEnabledStart") /}<br>

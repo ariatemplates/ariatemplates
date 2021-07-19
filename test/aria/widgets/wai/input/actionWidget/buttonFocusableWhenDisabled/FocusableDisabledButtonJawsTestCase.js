@@ -20,21 +20,34 @@ module.exports = Aria.classDefinition({
     $classpath : "test.aria.widgets.wai.input.actionWidget.buttonFocusableWhenDisabled.FocusableDisabledButtonJawsTestCase",
     $extends : require("ariatemplates/jsunit/JawsTestCase"),
     $prototype : {
+        skipClearHistory: true,
+
         runTemplateTest : function () {
             var data = this.templateCtxt.data;
-            this.noiseRegExps.push(/^Type/i);
 
-            this.assertFalsy(data.firstButtonNbClicks),
-            this.assertFalsy(data.secondButtonNbClicks),
-            this.assertFalsy(data.thirdButtonNbClicks),
-            this.assertFalsy(data.fourthButtonNbClicks),
+            this.assertFalsy(data.firstButtonNbClicks);
+            this.assertFalsy(data.secondButtonNbClicks);
+            this.assertFalsy(data.thirdButtonNbClicks);
+            this.assertFalsy(data.fourthButtonNbClicks);
 
+            var tf = this.getElementById("tf1");
             this.execute([
-                ["click", this.getElementById("tf1")], ["pause", 100],
-                ["type", null, "[tab]"], ["pause", 200], ["type", null, "[space]"], ["pause", 200],
-                ["type", null, "[tab]"], ["pause", 200], ["type", null, "[space]"], ["pause", 200],
-                ["type", null, "[tab]"], ["pause", 200], ["type", null, "[space]"], ["pause", 200],
-                ["type", null, "[tab]"], ["pause", 200]
+                ["click", tf],
+                ["waitFocus", tf],
+                ["type", null, "[tab]"],
+                ["waitForJawsToSay", "First button Button Unavailable"],
+                ["type", null, "[space]"],
+                ["pause", 200],
+                ["type", null, "[tab]"],
+                ["waitForJawsToSay", "Second button"],
+                ["type", null, "[space]"],
+                ["pause", 200],
+                ["type", null, "[tab]"],
+                ["waitForJawsToSay", "Fourth button"],
+                ["type", null, "[space]"],
+                ["pause", 200],
+                ["type", null, "[tab]"],
+                ["waitForJawsToSay", "Last field"]
             ], {
                 fn: function () {
                     this.assertEquals(Aria.$window.document.activeElement, this.getElementById("tf2"));
@@ -47,11 +60,22 @@ module.exports = Aria.classDefinition({
                     ariaUtilsJson.setValue(data, "thirdButtonDisabled", false);
                     ariaUtilsJson.setValue(data, "fourthButtonDisabled", true);
                     this.execute([
-                        ["click", this.getElementById("tf1")], ["pause", 100],
-                        ["type", null, "[tab]"], ["pause", 200], ["type", null, "[space]"], ["pause", 200],
-                        ["type", null, "[tab]"], ["pause", 200], ["type", null, "[space]"], ["pause", 200],
-                        ["type", null, "[tab]"], ["pause", 200], ["type", null, "[space]"], ["pause", 200],
-                        ["type", null, "[tab]"], ["pause", 200]
+                        ["click", tf],
+                        ["waitFocus", tf],
+                        ["type", null, "[tab]"],
+                        ["waitForJawsToSay", "First button"],
+                        ["type", null, "[space]"],
+                        ["pause", 200],
+                        ["type", null, "[tab]"],
+                        ["waitForJawsToSay", "Second button Button Unavailable"],
+                        ["type", null, "[space]"],
+                        ["pause", 200],
+                        ["type", null, "[tab]"],
+                        ["waitForJawsToSay", "Third button"],
+                        ["type", null, "[space]"],
+                        ["pause", 200],
+                        ["type", null, "[tab]"],
+                        ["waitForJawsToSay", "Last field"]
                     ], {
                         fn: function () {
                             this.assertEquals(Aria.$window.document.activeElement, this.getElementById("tf2"));
@@ -59,18 +83,7 @@ module.exports = Aria.classDefinition({
                             this.assertEquals(data.secondButtonNbClicks, 1),
                             this.assertEquals(data.thirdButtonNbClicks, 1),
                             this.assertEquals(data.fourthButtonNbClicks, 1),
-                            this.assertJawsHistoryEquals([
-                                "First field Edit",
-                                "First button Button Unavailable",
-                                "Second button Button",
-                                "Fourth button Button",
-                                "Last field Edit",
-                                "First field Edit",
-                                "First button Button",
-                                "Second button Button Unavailable",
-                                "Third button Button",
-                                "Last field Edit"
-                            ].join("\n"), this.end);
+                            this.end();
                         },
                         scope: this
                     });

@@ -16,18 +16,13 @@
 var Aria = require('ariatemplates/Aria');
 
 var ariaUtilsArray = require('ariatemplates/utils/Array');
-var ariaUtilsFunction = require('ariatemplates/utils/Function');
-
-var EnhancedJawsTestCase = require('test/EnhancedJawsBase');
-
-
 
 module.exports = Aria.classDefinition({
     $classpath : 'test.aria.widgets.wai.tabs.update1.TabsUpdate1JawsTestCase',
-    $extends : EnhancedJawsTestCase,
+    $extends : require('ariatemplates/jsunit/JawsTestCase'),
 
     $constructor : function () {
-        this.$EnhancedJawsBase.constructor.call(this);
+        this.$JawsTestCase.constructor.call(this);
 
         var data = {};
 
@@ -159,133 +154,40 @@ module.exports = Aria.classDefinition({
         });
     },
 
-
-
-    ////////////////////////////////////////////////////////////////////////////
-    //
-    ////////////////////////////////////////////////////////////////////////////
-
     $prototype : {
-        ////////////////////////////////////////////////////////////////////////
-        // Tests
-        ////////////////////////////////////////////////////////////////////////
+        skipClearHistory : true,
 
         runTemplateTest : function () {
-            var regexps = [];
-            regexps.push(/Use JawsKey\+Alt\+M to move to controlled element/g);
-            regexps.push(this._createLineRegExp(' *')); // empty line
-            regexps.push(/ +(?=\s)/g); // multiple consecutive spaces
-            regexps.push(this._createLineRegExp(this._getData().elementBefore.textContent));
+            var data = this.templateCtxt.data;
+            var elementBefore = this.getElementById(data.elementBefore.id);
 
-            this._filter = ariaUtilsFunction.bind(this._applyRegExps, this, regexps);
-
-            this._localAsyncSequence(function (add) {
-                add('_test');
-                add('_checkHistory');
-            }, this.end);
-        },
-
-
-
-        ////////////////////////////////////////////////////////////////////////
-        //
-        ////////////////////////////////////////////////////////////////////////
-
-        _test : function (callback) {
-            var data = this._getData();
-
-            var tabs = data.tabs;
-            var tabPanel = data.tabPanel;
-            var elementBefore = data.elementBefore;
-            var elementInside = data.elementInside;
-
-            this._executeStepsAndWriteHistory(callback, function (api) {
-                // ----------------------------------------------- destructuring
-
-                var step = api.step;
-                var says = api.says;
-
-                var down = api.down;
-                var space = api.space;
-                var tabulation = api.tabulation;
-
-                // --------------------------------------------- local functions
-
-                var self = this;
-
-                function selectStartPoint() {
-                    step(['click', self.getElementById(elementBefore.id)]);
-                }
-
-                function getTabDescription(tab, useJawsNavigation) {
-                    var description = [];
-                    if (useJawsNavigation) {
-                        if (tab.wrapper != null) {
-                            description.push(tab.wrapperText);
-                        }
-                        description.push('Link collapsed');
-                        if (!tab.labelId) {
-                            description.push(tab.title);
-                        } else {
-                            description.push(tab.textContent);
-                        }
-                    } else {
-                        description.push(tab.title);
-                        if (tab.wrapper != null) {
-                            description.push(tab.wrapperText);
-                            description.push('Link collapsed');
-                        } else {
-                            description.push('collapsed Link');
-                        }
-                    }
-                    says(description.join(' '));
-                    
-                    if (!useJawsNavigation && tab.description != null) {
-                        says(tab.description);
-                    }
-                }
-
-                function goThroughTabs(useJawsNavigation) {
-                    var stepForward = useJawsNavigation ? down : tabulation;
-
-                    ariaUtilsArray.forEach(tabs, function (tab, index) {
-                        if (tab.hidden) {
-                            if (!useJawsNavigation) {
-                                stepForward();
-                            }
-                            return;
-                        }
-
-                        if (useJawsNavigation && tab.wrapper != null) {
-                            stepForward();
-                        }
-
-                        stepForward();
-                        getTabDescription(tab, useJawsNavigation);
-                    });
-                }
-
-                // -------------------------------------------------- processing
-
-                // -------------------------------------------------------------
-
-                selectStartPoint();
-
-                goThroughTabs(false);
-
-                tabulation();
-                says(elementInside.textContent);
-
-                // -------------------------------------------------------------
-
-                selectStartPoint();
-
-                goThroughTabs(true);
-
-                // -------------------------------------------------------------
-
-                space();
-                says(elementInside.textContent);
+            this.execute([
+                ['click', elementBefore],
+                ['waitFocus', elementBefore],
+                ['type', null, '[tab]'],
+                ['pause', 200],
+                ['type', null, '[tab]'],
+                ['waitForJawsToSay', 'Two as internal label collapsed Link'],
+                ['type', null, '[tab]'],
+                ['waitForJawsToSay', 'Three as external label collapsed Link'],
+                ['type', null, '[tab]'],
+                ['waitForJawsToSay', /Four heading level\s+6.*Link\s+collapsed/],
+                ['waitForJawsToSay', 'Fourth tab description'],
+                ['type', null, '[tab]'],
+                ['waitForJawsToSay', 'Element inside'],
+                ['click', elementBefore],
+                ['waitFocus', elementBefore],
+                ['type', null, '[down]'],
+                ['waitForJawsToSay', 'Link collapsed Two as internal label'],
+                ['type', null, '[down]'],
+                ['waitForJawsToSay', 'Link collapsed Three as external label'],
+                ['type', null, '[down]'],
+                ['waitForJawsToSay', /heading level\s+6.*Link\s+collapsed\s+Four/],
+                ['type', null, '[space]'],
+                ['waitForJawsToSay', 'Element inside']
+            ], {
+                fn: this.end,
+                scope: this
             });
         }
     }

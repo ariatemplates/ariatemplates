@@ -46,6 +46,7 @@
         <input {id "firstItem"/} aria-label="FirstFieldLabel"> <br>
         {@aria:DatePicker {
             waiAria: true,
+            waiLabelHidden: true,
             label: "DatePickerLabel",
             waiIconLabel: "DropDownLabelForDatePicker",
             waiAriaCalendarLabel: "Calendar table. Use arrow keys to navigate and space to validate.",
@@ -55,6 +56,7 @@
         }/} <br>
         {@aria:AutoComplete {
             waiAria: true,
+            waiLabelHidden: true,
             label: "AutoCompleteLabel",
             waiIconLabel: "DropDownLabelForAutoComplete",
             id: "myAutoCompleteWithExpandButton",
@@ -63,6 +65,7 @@
         }/} <br>
         {@aria:MultiSelect {
             waiAria: true,
+            waiLabelHidden: true,
             label: "MultiSelectLabel",
             waiIconLabel: "DropDownLabelForMultiSelect",
             id: "myMultiSelect",

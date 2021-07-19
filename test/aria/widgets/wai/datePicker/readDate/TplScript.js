@@ -62,6 +62,7 @@ module.exports = Aria.tplScriptDefinition({
             ], function (name) {
                 return {
                     label: subst('calendar %1 label', name),
+                    waiLabelHidden: true,
                     waiAria: true,
                     waiAriaCalendarLabel: subst('calendar %1', name),
                     waiIconLabel: subst('calendar %1 button', name),

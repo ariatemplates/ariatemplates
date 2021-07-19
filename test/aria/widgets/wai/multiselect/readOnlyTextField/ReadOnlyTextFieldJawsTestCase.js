@@ -23,41 +23,31 @@ Aria.classDefinition({
         });
     },
     $prototype : {
-        // skips removeDuplicates in assertJawsHistoryEquals, as we call it ourselves from our filter function
-        skipRemoveDuplicates: true,
+        skipClearHistory : true,
 
         /**
          * This method is always the first entry point to a template test Start the test by focusing the first field
          */
         runTemplateTest : function () {
-            var chechBoxStartingLineRegExp = /\ncheck box/g;
-
+            var tf = this.getElementById("tf");
             this.execute([
-                ["click", this.getElementById("tf")], ["pause", 2000],
-                ["type", null, "[tab]"], ["pause", 2000],
-                ["type", null, "[down]"], ["pause", 2000],
-                ["type", null, "[space]"], ["pause", 2000],
-                ["type", null, "[space]"], ["pause", 2000],
-                ["type", null, "[escape]"], ["pause", 2000]
+                ["click", tf],
+                ["waitFocus", tf],
+                ["type", null, "[tab]"],
+                ["waitForJawsToSay", "What do you need to be happy?"],
+                ["waitForJawsToSay", "Press down then space to open the list of check boxes."],
+                ["type", null, "[down]"],
+                ["waitForJawsToSay", "Press space to open the list of check boxes"],
+                ["type", null, "[space]"],
+                ["waitForJawsToSay", "God check box not checked"],
+                ["type", null, "[space]"],
+                ["waitForJawsToSay", "checked"],
+                ["type", null, "[escape]"],
+                ["waitForJawsToSay", "What do you need to be happy?"],
+                ["waitForJawsToSay", "God"],
+                ["waitForJawsToSay", "Press down then space to open the list of check boxes."]
             ], {
-                fn: function () {
-                    this.assertJawsHistoryEquals([
-                        "Edit",
-                        "Type in text.",
-                        "What do you need to be happy? read only edit",
-                        "Press down then space to open the list of check boxes.",
-                        "Press space to open the list of check boxes",
-                        "God check box not checked",
-                        "checked",
-                        "What do you need to be happy? read only edit",
-                        "God",
-                        "Press down then space to open the list of check boxes."
-                    ].join("\n"),
-                    this.end,
-                    function(response) {
-                        return this.removeDuplicates(response.replace(chechBoxStartingLineRegExp, " check box"));
-                    });
-                },
+                fn: this.end,
                 scope: this
             });
         }

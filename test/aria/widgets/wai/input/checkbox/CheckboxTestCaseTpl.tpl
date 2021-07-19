@@ -21,6 +21,8 @@
         <div style="margin:10px;font-size:+3;font-style:bold;">This test needs focus.</div>
         {@aria:TextField {
             id : "tf1",
+            waiAria : true,
+            waiLabelHidden : true,
             label : "First textfield",
             labelWidth: 100,
             value: ""
@@ -30,6 +32,7 @@
             {@aria:CheckBox {
                 id : "checkboxA",
                 waiAria : true,
+                waiLabelHidden : true,
                 label : "Checkbox A",
                 labelWidth: 100,
                 sclass: data.sclass,
@@ -43,6 +46,7 @@
             {@aria:CheckBox {
                 id : "checkboxB",
                 waiAria : true,
+                waiLabelHidden : true,
                 label : "Checkbox B",
                 labelWidth: 100,
                 sclass: data.sclass,
@@ -56,6 +60,7 @@
             {@aria:CheckBox {
                 id : "checkboxC",
                 waiAria : true,
+                waiLabelHidden : true,
                 label : "Checkbox C",
                 labelWidth: 100,
                 sclass: data.sclass,
@@ -68,6 +73,8 @@
             }/}
         </div>
         {@aria:TextField {
+            waiAria : true,
+            waiLabelHidden : true,
             id : "tf2",
             label : "Last textfield",
             labelWidth: 100,

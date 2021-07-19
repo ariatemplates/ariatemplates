@@ -33,6 +33,7 @@
             label: "Travel date",
             iconTooltip: "Display calendar",
             waiAria: waiAria,
+            waiLabelHidden: true,
             waiAriaCalendarLabel: "Calendar table. Use arrow keys to navigate and space to validate.",
             waiAriaDateFormat: "EEEE d MMMM yyyy",
             calendarShowShortcuts: false,

@@ -23,34 +23,40 @@ Aria.classDefinition({
         });
     },
     $prototype : {
+        skipClearHistory: true,
+
         runTemplateTest : function () {
-            this.noiseRegExps.push(/type/i);
+            var firstItem = this.getElementById("firstItem");
             var actions = [
-                ["click", this.getElementById("firstItem")], ["pause", 500]
+                ["click", firstItem],
+                ["waitFocus", firstItem],
+                ["type", null, "[tab]"],
+                ["waitForJawsToSay", "Date Picker Label"],
+                ["type", null, "[tab]"],
+                ["waitForJawsToSay", "Drop Down Label For Date Picker"],
+                ["type", null, "[tab]"],
+                ["waitForJawsToSay", "Auto Complete Label"],
+                ["type", null, "[tab]"],
+                ["waitForJawsToSay", "Drop Down Label For Auto Complete"],
+                ["type", null, "[tab]"],
+                ["waitForJawsToSay", "Select Box Label"],
+                ["type", null, "[tab]"],
+                ["waitForJawsToSay", "Drop Down Label For Select Box"],
+                ["type", null, "[tab]"],
+                ["waitForJawsToSay", "Multi Select Label"],
+                ["type", null, "[tab]"],
+                ["waitForJawsToSay", "Drop Down Label For Multi Select"],
+                ["type", null, "[tab]"],
+                ["waitForJawsToSay", "Last Field Label"],
+                ["type", null, "[escape]"],
+                ["waitForJawsToSay", "virtual PC Cursor"],
+                ["type", null, "b"], // buttons
+                ["waitForJawsToSay", "There are no Buttons on this page."],
+                ["type", null, "c"], // controls
+                ["waitForJawsToSay", "There are no Selectable ARIA controls, comboboxes, listboxes or treeviews on this page."]
             ];
-            for (var i = 0; i < 9; i++) {
-                actions.push(["type", null, "[tab]"], ["pause", 500]);
-            }
-            actions.push(["type", null, "[enter]"], ["pause", 500]);
-            actions.push(["type", null, "b"], ["pause", 500]); // buttons
-            actions.push(["type", null, "c"], ["pause", 500]); // controls
             this.execute(actions, {
-                fn: function () {
-                    this.assertJawsHistoryEquals([
-                        "FirstFieldLabel Edit",
-                        "DatePickerLabel Edit",
-                        "DropDownLabelForDatePicker",
-                        "AutoCompleteLabel Edit",
-                        "DropDownLabelForAutoComplete",
-                        "SelectBoxLabel Edit",
-                        "DropDownLabelForSelectBox",
-                        "MultiSelectLabel Edit",
-                        "DropDownLabelForMultiSelect",
-                        "LastFieldLabel Edit",
-                        "There are no Buttons on this page.",
-                        "There are no Selectable ARIA controls, comboboxes, listboxes or treeviews on this page."
-                    ].join("\n"), this.end);
-                },
+                fn: this.end,
                 scope: this
             });
         }

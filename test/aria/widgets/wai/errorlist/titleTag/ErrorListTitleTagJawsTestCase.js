@@ -26,17 +26,30 @@ module.exports = Aria.classDefinition({
         this.setTestEnv({
             template : "test.aria.widgets.wai.errorlist.titleTag.ErrorListTitleTagTpl"
         });
-        this.noiseRegExps.push(/page|Arrow/);
      },
 
     $prototype : {
+        skipClearHistory: true,
+
         runTemplateTest : function () {
+            this.waitFor({
+                condition: function () {
+                    return this.getElementsByClassName(this.testDiv, "xICNstd").length == 4;
+                },
+                callback: this.afterErrorListDisplayed
+            });
+        },
+
+        afterErrorListDisplayed : function () {
             var classNameCheck = this.getElementsByClassName(this.testDiv, "myErrorListH1ClassName");
             this.assertEquals(classNameCheck.length, 1, "Unexpected number of tags with the myErrorListH1ClassName class: %1");
             this.assertEquals(classNameCheck[0].tagName.toLowerCase(), "h1", "Unexpected element with the myErrorListH1ClassName class: %1");
             this.assertTrue(classNameCheck[0].innerHTML.indexOf("MyErrorListTitleWithFirstHeadingLevel") > -1, "The element with the myErrorListH1ClassName class does not have the expected content.");
 
+            var tf = this.getElementById("tf");
             this.execute([
+                ["click", tf],
+                ["waitFocus", tf],
                 ["type",null,"[<insert>][F6][>insert<]"],
                 ["waitForJawsToSay","Heading List dialog"],
                 ["waitForJawsToSay","headings List view"],
@@ -48,12 +61,11 @@ module.exports = Aria.classDefinition({
                 ["waitForJawsToSay","My Error List Title With Third Heading Level colon  3"],
                 ["type",null,"[enter]"],
                 ["waitForJawsToSay","Enter"],
-                ["waitForJawsToSay","heading level  3   My Error List Title With Third Heading Level"],
-                ["waitForJawsToSay","My Error List Title With Third Heading Level heading level  3"],
+                ["waitForJawsToSay","My Error List Title With Third Heading Level"],
                 ["type",null,"[down]"],
                 ["waitForJawsToSay","list of 1 items"],
                 ["type",null,"[down]"],
-                ["waitForJawsToSay","bullet My Error 3  Description"],
+                ["waitForJawsToSay","My Error 3  Description"],
                 ["type",null,"[down]"],
                 ["waitForJawsToSay","list end"],
                 ["type",null,"[down]"],

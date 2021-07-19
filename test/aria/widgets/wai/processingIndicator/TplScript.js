@@ -82,7 +82,6 @@ module.exports = Aria.tplScriptDefinition({
             data.readInterval = 2500;
             data.readOnceFirst = false;
 
-            data.stepsDefaultDelay = 500;
             data.listeningTime = 4000;
         },
 

@@ -19,9 +19,11 @@
 
     {macro main()}
         <div style="margin: 10px;">
+            <input type="text" {id "tf"/}>
             {foreach dlg in data.dialogs}
                 {separator}<br><br>{/separator}
                 {@aria:Button {
+                    waiAria: true,
                     id: "button" + dlg_index,
                     label: "Show dialog " + dlg_index + " (" + dlg.title + ")",
                     onclick: {
@@ -37,6 +39,7 @@
     {macro dialogContent()}
         <p>This is the content of my dialog!</p>
         {@aria:Button {
+            waiAria: true,
             label: "Do nothing"
         }/}
     {/macro}

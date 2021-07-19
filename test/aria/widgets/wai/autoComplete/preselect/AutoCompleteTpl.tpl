@@ -24,6 +24,7 @@
             {@aria:AutoComplete {
                 id : "country",
                 waiAria : true,
+                waiLabelHidden : true,
                 label : "Country",
                 labelWidth: 100,
                 autoFill : true,

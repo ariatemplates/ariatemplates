@@ -35,21 +35,14 @@ module.exports = Aria.classDefinition({
                 ["click",myInput],
                 ["waitFocus",myInput],
                 ["type",null,"[tab]"],
-                ["waitForJawsToSay","Tab"],
                 ["waitForJawsToSay","Open dialog Button"],
                 ["type",null,"[space]"],
                 ["waitForJawsToSay","Space"],
-                ["waitForJawsToSay","My Dialog Title dialog"],
-                ["waitForJawsToSay","My Dialog Title heading level  1"],
+                ["waitForJawsToSay","My Dialog Title"],
                 ["type",null,"[escape]"],
-                ["waitForJawsToSay","Escape"],
                 ["waitForJawsToSay","Press escape again to close the dialog."],
                 ["type",null,"[escape]"],
-                ["waitForJawsToSay","Escape"],
-                ["waitForJawsToSay", {
-                    find: "Open dialog Button",
-                    skipClear: true // because JAWS 16 says "MyDialog is closed" before "Open dialog Button"
-                }],
+                ["waitForJawsToSay","Open dialog Button"],
                 ["waitForJawsToSay","My Dialog is closed."]
             ], {
                 fn: this.end,

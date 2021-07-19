@@ -21,6 +21,8 @@
         <div style="margin:10px;font-size:+3;font-style:bold;">This test needs focus.</div>
         {@aria:TextField {
             id : "tf1",
+            waiAria : true,
+            waiLabelHidden : true,
             label : "First textfield",
             labelWidth: 100,
             value: ""
@@ -31,6 +33,7 @@
                 id : "radioA",
                 keyValue: "a",
                 waiAria : true,
+                waiLabelHidden : true,
                 label : "Radio A",
                 labelWidth: 100,
                 sclass: data.sclass,
@@ -45,6 +48,7 @@
                 id : "radioB",
                 keyValue: "b",
                 waiAria : true,
+                waiLabelHidden : true,
                 label : "Radio B",
                 labelWidth: 100,
                 sclass: data.sclass,
@@ -59,6 +63,7 @@
                 id : "radioC",
                 keyValue: "c",
                 waiAria : true,
+                waiLabelHidden : true,
                 label : "Radio C",
                 labelWidth: 100,
                 sclass: data.sclass,
@@ -72,6 +77,8 @@
         </div>
         {@aria:TextField {
             id : "tf2",
+            waiAria : true,
+            waiLabelHidden : true,
             label : "Last textfield",
             labelWidth: 100,
             value: ""

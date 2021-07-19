@@ -34,6 +34,7 @@
             {@aria:AutoComplete {
                 id : "city2",
                 waiAria : true,
+                waiLabelHidden : true,
                 label : "City 2",
                 labelWidth: 100,
                 autoFill : false,

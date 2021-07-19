@@ -23,42 +23,36 @@ Aria.classDefinition({
         });
     },
     $prototype : {
+        skipClearHistory : true,
 
-        /**
-         * This method is always the first entry point to a template test Start the test by focusing the first field
-         */
         runTemplateTest : function () {
+            var tf = this.getInputField("tf");
             this.execute([
-                ["click", this.getElementById("tf")],
-                ["pause", 2000],
+                ["click", tf],
+                ["waitFocus", tf],
 
                 ["type", null, "[tab]"],
-                ["pause", 500],
+                ["waitForJawsToSay", "City"],
                 ["type", null, "[down]"],
-                ["pause", 500],
+                ["waitForJawsToSay", "Press space to open the autocomplete list"],
 
                 ["type", null, "[tab]"],
-                ["pause", 500],
+                ["waitForJawsToSay", "Travel date"],
                 ["type", null, "[down]"],
-                ["pause", 500],
+                ["waitForJawsToSay", "Press space to open the calendar"],
 
                 ["type", null, "[tab]"],
-                ["pause", 500],
+                ["waitForJawsToSay", "Multi dash select"],
                 ["type", null, "[down]"],
-                ["pause", 500],
+                ["waitForJawsToSay", "Press space to open the selection list"],
 
                 ["type", null, "[tab]"],
-                ["pause", 500],
+                ["waitForJawsToSay", "All Countries"],
                 ["type", null, "[down]"],
-                ["pause", 500]
+                ["waitForJawsToSay", "Press space to open the selection list"]
 
             ], {
-                fn: function () {
-                    this.assertJawsHistoryEquals(
-                        "First textfield Edit\nType in text.\nCity Edit\nType in text.\nPress space to open the autocomplete list\nTravel date Edit\nType in text.\nPress space to open the calendar\nMulti-select: Edit\nType in text.\nPress space to open the selection list\nAll Countries: Edit\nType in text.\nPress space to open the selection list",
-                        this.end
-                    );
-                },
+                fn: this.end,
                 scope: this
             });
         }

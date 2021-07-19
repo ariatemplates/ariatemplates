@@ -26,20 +26,20 @@ Aria.classDefinition({
         });
     },
     $prototype : {
+        skipClearHistory : true,
+
         runTemplateTest : function () {
+            var input = this.getElementById("before");
             this.execute([
-                ["click", this.getElementById("before")],
-                ["pause", 1000],
+                ["click", input],
+                ["waitFocus", input],
                 ["type", null, "[tab]"],
                 ["pause", 1000],
                 ["type", null, "[tab]"],
-                ["pause", 1000]
+                ["waitForJawsToSay", "Alert!"],
+                ["waitForJawsToSay", "This field is mandatory"]
             ], {
-                fn: function () {
-                    this.assertJawsHistoryEquals(true, this.end, function (result) {
-                        return result.indexOf("Alert!\nThis field is mandatory\n") > -1;
-                    });
-                },
+                fn: this.end,
                 scope: this
             });
         }

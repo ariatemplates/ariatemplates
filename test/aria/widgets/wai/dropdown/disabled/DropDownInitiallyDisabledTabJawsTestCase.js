@@ -26,38 +26,43 @@ Aria.classDefinition({
         });
     },
     $prototype : {
+        skipClearHistory : true,
+
         runTemplateTest : function () {
-            this.noiseRegExps.push(/type/i);
-            var actions = [
-                ["click", this.getElementById("firstItem")], ["pause", 500],
-                ["type", null, "[tab]"], ["pause", 500],
-                ["click", this.getElementById("firstItem")], ["pause", 500],
-                ["type", null, "[<shift>][tab][>shift<]"], ["pause", 500],
-                ["type", null, "[space]"], ["pause", 500]
-            ];
-            for (var i = 0; i < 10; i++) {
-                actions.push(["type", null, "[tab]"], ["pause", 500]);
-            }
-            this.execute(actions, {
-                fn: function () {
-                    this.assertJawsHistoryEquals([
-                        "FirstFieldLabel Edit",
-                        "LastFieldLabel Edit",
-                        "FirstFieldLabel Edit",
-                        "Disabled widgets check box checked",
-                        "not checked",
-                        "FirstFieldLabel Edit",
-                        "DatePickerLabel Edit",
-                        "DropDownLabelForDatePicker",
-                        "AutoCompleteLabel Edit",
-                        "DropDownLabelForAutoComplete",
-                        "SelectBoxLabel Edit",
-                        "DropDownLabelForSelectBox",
-                        "MultiSelectLabel Edit",
-                        "DropDownLabelForMultiSelect",
-                        "LastFieldLabel Edit"
-                    ].join("\n"), this.end);
-                },
+            var firstItem = this.getElementById("firstItem");
+            this.execute([
+                ["click", firstItem],
+                ["waitFocus", firstItem],
+                ["type", null, "[tab]"],
+                ["waitForJawsToSay", "Last Field Label Edit"],
+                ["click", firstItem],
+                ["waitFocus", firstItem],
+                ["type", null, "[<shift>][tab][>shift<]"],
+                ["waitForJawsToSay", "Disabled widgets check box checked"],
+                ["type", null, "[space]"],
+                ["waitForJawsToSay", "not checked"],
+                ["type", null, "[tab]"],
+                ["waitForJawsToSay", "First Field Label Edit"],
+                ["type", null, "[tab]"],
+                ["waitForJawsToSay", "Date Picker Label Edit"],
+                ["type", null, "[tab]"],
+                ["waitForJawsToSay", "Drop Down Label For Date Picker"],
+                ["type", null, "[tab]"],
+                ["waitForJawsToSay", "Auto Complete Label Edit"],
+                ["type", null, "[tab]"],
+                ["waitForJawsToSay", "Drop Down Label For Auto Complete"],
+                ["type", null, "[tab]"],
+                ["waitForJawsToSay", "Select Box Label Edit"],
+                ["type", null, "[tab]"],
+                ["waitForJawsToSay", "Drop Down Label For Select Box"],
+                ["type", null, "[tab]"],
+                ["waitForJawsToSay", "Multi Select Label Edit"],
+                ["type", null, "[tab]"],
+                ["waitForJawsToSay", "Drop Down Label For Multi Select"],
+                ["type", null, "[tab]"],
+                ["waitForJawsToSay", "Last Field Label Edit"]
+            ], {
+                fn: this.end,
                 scope: this
             });
         }

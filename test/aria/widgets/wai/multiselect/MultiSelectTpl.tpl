@@ -37,6 +37,7 @@
             waiAria : true,
             iconTooltip: "Press space to open the selection list",
             activateSort: true,
+            waiLabelHidden: true,
             label: "My Multi-select:",
             labelWidth:150,
             width:400,

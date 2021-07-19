@@ -21,28 +21,25 @@ Aria.classDefinition({
         this.setTestEnv({
             template : "test.aria.widgets.wai.fieldset.FieldsetLabelJawsTestCaseTpl"
         });
-        this.elementsToTest = "fsWaiEnabledStart";
     },
     $prototype : {
+        skipClearHistory : true,
+
         runTemplateTest : function () {
-            this._testElement();
-        },
-        _testElement : function () {
-            var domElement = this.getElementById(this.elementsToTest);
-            this.execute([["ensureVisible", domElement], ["click", domElement], ["pause", 1000],
-                    ["type", null, "[down]"], ["pause", 1000], ["type", null, "[down]"], ["pause", 1000],
-                    ["type", null, "[down]"], ["pause", 1000], ["type", null, "[down]"], ["pause", 1000]], {
-                fn : this._testValue,
+            var domElement = this.getElementById("fsWaiEnabledStart");
+            this.execute([
+                ["click", domElement],
+                ["waitFocus", domElement],
+                ["type", null, "[down]"],
+                ["waitForJawsToSay", "Group A"],
+                ["type", null, "[down]"],
+                ["waitForJawsToSay", "Option A radio button not checked"],
+                ["type", null, "[down]"],
+                ["waitForJawsToSay", "End of template"]
+            ], {
+                fn : this.end,
                 scope : this
             });
-        },
-        _testValue : function () {
-            this.assertJawsHistoryEquals(true, this._resetTest, function (response) {
-                return /Group A\nradio button not checked Option A\nOption A\nEnd of template/.test(response);
-            });
-        },
-        _resetTest : function () {
-            this.end();
         }
     }
 });
