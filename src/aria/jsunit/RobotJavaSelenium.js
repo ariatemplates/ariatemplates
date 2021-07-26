@@ -61,7 +61,8 @@ module.exports = Aria.classDefinition({
         "robotInitialized" : "Raised when the robot initialization has been done."
     },
     $statics : {
-        ROBOT_ERROR : "An error occurred in the robot: %1"
+        ROBOT_ERROR : "An error occurred in the robot: %1",
+        POSITION_OUTSIDE_VIEWPORT_ERROR: "Position outside of the viewport"
     },
     $prototype : {
 
@@ -155,9 +156,9 @@ module.exports = Aria.classDefinition({
         mouseMove : function (position, cb) {
             var viewport = ariaUtilsDom._getViewportSize();
             if (position.x < 0 || position.y < 0 || position.x > viewport.width || position.y > viewport.height) {
-                // FIXME: log error correctly
-                this.$logWarn("MouseMove position outside of the viewport.");
-                // return;
+                this.$logError(this.POSITION_OUTSIDE_VIEWPORT_ERROR);
+                this.$callback(cb);
+                return;
             }
             this.absoluteMouseMove(this.viewportToAbsolute(position), cb);
         },
@@ -166,9 +167,9 @@ module.exports = Aria.classDefinition({
             var viewport = ariaUtilsDom._getViewportSize();
             if (from.x < 0 || from.y < 0 || from.x > viewport.width || from.y > viewport.height || to.x < 0 || to.y < 0
                     || to.x > viewport.width || to.y > viewport.height) {
-                // FIXME: log error correctly
-                this.$logWarn("smoothMouseMove from or to position outside of the viewport.");
-                // return;
+                this.$logError(this.POSITION_OUTSIDE_VIEWPORT_ERROR);
+                this.$callback(cb);
+                return;
             }
             this.absoluteSmoothMouseMove(this.viewportToAbsolute(from), this.viewportToAbsolute(to), duration, cb);
         },
