@@ -51,7 +51,7 @@ module.exports = Aria.classDefinition({
                 if (!cfg.role) {
                     cfg.role = "status";
                 }
-                if (cfg.role != "alert") {
+                if (cfg.role != "alert" && cfg.messages && cfg.messages.length > 0) {
                     delay = 1;
                 }
                 this._extraAttributes = ' aria-live="assertive" ';
