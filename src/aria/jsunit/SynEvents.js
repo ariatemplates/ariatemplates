@@ -262,27 +262,6 @@ module.exports = Aria.classDefinition({
             return res;
         },
 
-        _resolveGeometry : function (geometry) {
-            var domUtils = aria.utils.Dom;
-            var res;
-            if (ariaUtilsType.isString(geometry)) {
-                // it is a string, resolve it to an HTML element
-                geometry = this._resolveHTMLElement(geometry);
-            }
-            if (ariaUtilsType.isHTMLElement(geometry)) {
-                res = domUtils.getGeometry(geometry);
-                // TODO: check if the item is really visible
-            } else if (geometry.hasOwnProperty("x") && geometry.hasOwnProperty("y") &&
-                    geometry.hasOwnProperty("width") && geometry.hasOwnProperty("height")) {
-                res = geometry;
-            } else {
-                // FIXME: log error correctly
-                this.$logError("Invalid position.");
-                return null;
-            }
-            return res;
-        },
-
         _resolveHTMLElement : function (element) {
             var res;
             if (ariaUtilsType.isString(element)) {
