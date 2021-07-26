@@ -281,7 +281,7 @@ module.exports = Aria.classDefinition({
                 }
                 return false;
             } else if (ariaUtilsType.isString(expected)) {
-                return jawsText.indexOf(expected) > -1;
+                return this.normalizeSpaces(jawsText).indexOf(this.normalizeSpaces(expected)) > -1;
             } else if (ariaUtilsType.isRegExp(expected)) {
                 return expected.test(jawsText);
             } else if (ariaUtilsType.isFunction(expected)) {
