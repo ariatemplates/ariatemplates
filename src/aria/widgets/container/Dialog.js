@@ -929,7 +929,7 @@ module.exports = Aria.classDefinition({
             }
 
             if (this._popup) {
-                this.waiReadText(cfg.waiCloseMsg);
+                this.waiReadText(cfg.waiCloseMsg, {parent: null});
 
                 this._destroyDraggable();
                 this._destroyResizable();
