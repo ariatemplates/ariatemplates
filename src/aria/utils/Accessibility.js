@@ -88,7 +88,7 @@ module.exports = Aria.classDefinition({
             if (alert) {
                 nextStep();
             } else {
-                setTimeout(nextStep, 10);
+                setTimeout(nextStep, 200);
             }
         }
     }
