@@ -73,6 +73,7 @@ module.exports = Aria.classDefinition({
                     (cfg.tabIndex != null ? ' tabindex=' + this._calculateTabIndex() + '"' : ''),
                     this._getWaiAriaMarkup(),
                     cfg.disabled ? ' disabled ' : '',
+                    cfg.waiAria && cfg.disabled ? ' aria-disabled="true" ' : '',
                 '>',
                     ariaUtilsString.escapeHTML(cfg.label),
                 '</a>'
@@ -174,8 +175,14 @@ module.exports = Aria.classDefinition({
                 if (cfg.disabled) {
                     linkClass = "xLink_" + cfg.sclass + "_disabled xLink_disabled";
                     focusedElement.setAttribute('disabled', '');
+                    if (cfg.waiAria) {
+                        focusedElement.setAttribute('aria-disabled', 'true');
+                    }
                 } else {
                     focusedElement.removeAttribute('disabled');
+                    if (cfg.waiAria) {
+                        focusedElement.removeAttribute('aria-disabled');
+                    }
                 }
                 focusedElement.className = linkClass;
             }
