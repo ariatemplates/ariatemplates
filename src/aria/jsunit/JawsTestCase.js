@@ -440,7 +440,6 @@ module.exports = Aria.classDefinition({
                 ["waitForJawsToSay", "Copied selection to clipboard"],
                 ["unregisterJawsListener", nothingSelectedListener],
                 ["type", null, "[<alt>][F4][>alt<]"], // closes history window
-                ["waitForJawsToSay", "Alt F 4"],
                 ["pause", 500],
                 ["click", textArea],
                 ["waitFocus", textArea],
