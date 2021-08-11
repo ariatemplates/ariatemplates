@@ -101,6 +101,7 @@ module.exports = Aria.classDefinition({
          * @param {Boolean} true if the work-around is needed
          */
         _needWaiWorkaroundMarkup : function () {
+            // TODO TOREMOVE: this code could be removed, as IE11 with JAWS is no longer supported
             var cfg = this._cfg;
             return ariaCoreBrowser.isIE11 && cfg.waiAria && cfg.disabled && this._isChecked() && cfg._inputType === "checkbox";
         },
