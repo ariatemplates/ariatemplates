@@ -163,7 +163,7 @@ module.exports = Aria.classDefinition({
 
         _readText : function () {
             ariaUtilsAccessibility.readText(this.__text, {
-                parent: this.element
+                parent: this.overlay
             });
         },
 
