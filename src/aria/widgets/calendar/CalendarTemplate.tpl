@@ -66,8 +66,8 @@
     {/macro}
 
     {macro renderMonth(month,first,last)}
-        <table class="${skin.baseCSS}month" cellspacing="0" style="width: ${settings.showWeekNumbers?138:128}px;">
-            <thead>
+        <table {if settings.waiAria}role="presentation"{/if} class="${skin.baseCSS}month" cellspacing="0" style="width: ${settings.showWeekNumbers?138:128}px;">
+            <thead {if settings.waiAria}aria-hidden="true"{/if}>
                 <tr>
                     <th colspan="8">
                         <div class="${skin.baseCSS}monthTitle" style="position: relative;">
@@ -84,15 +84,15 @@
                 <tr>
                     {if settings.showWeekNumbers}<th class="${skin.baseCSS}weekNumber">&nbsp;</th>{/if}
                     {foreach day inArray calendar.daysOfWeek}
-                        <td class="${skin.baseCSS}weekDaysLabel" {if settings.waiAria}aria-hidden="true"{/if}>${day.label}</td>
+                        <td class="${skin.baseCSS}weekDaysLabel">${day.label}</td>
                     {/foreach}
                 </tr>
             </thead>
-            <tbody {on click clickDay/} {on mouseover mouseOverDay/} {on mouseout mouseOutDay/} {id "month_"+month.monthKey/}>
+            <tbody {if settings.waiAria}role="presentation"{/if} {on click clickDay/} {on mouseover mouseOverDay/} {on mouseout mouseOutDay/} {id "month_"+month.monthKey/}>
                 {var nbweeks=0/}
                 {foreach week inArray month.weeks}
                     {set nbweeks+=1/}
-                    <tr>
+                    <tr {if settings.waiAria}role="presentation"{/if}>
                         {if settings.showWeekNumbers}<td class="${skin.baseCSS}weekNumber" {if settings.waiAria}aria-hidden="true"{/if}>{if week.overlappingDays == 0 || week.monthEnd == month.monthKey}${week.weekNumber}{else/}&nbsp;{/if}</td>{/if}
                         {foreach day inArray week.days}
                             {call renderDay(day,month)/}
@@ -114,6 +114,7 @@
         {if day.monthKey==month.monthKey}
             <td {if day.isSelectable} data-date="${jsDate.getTime()}" {/if}
                 {if settings.waiAria}
+                    role="option"
                     {id settings.dayDomIdPrefix + jsDate.getTime()/}
                     aria-selected="${!!day.isSelected}"
                     aria-label="${jsDate|dateformat:settings.waiAriaDateFormat}"
