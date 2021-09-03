@@ -38,7 +38,7 @@
                 ]
             }/}
         </div>
-        <span id="happyMSDescription" style="display:none;">Press down then space to open the list of check boxes.</div>
+        <span id="happyMSDescription" style="display:none;">Press tab then space to open the list of check boxes.</div>
     {/macro}
 
 {/Template}

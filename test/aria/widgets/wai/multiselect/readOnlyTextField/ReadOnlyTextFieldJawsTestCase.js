@@ -35,8 +35,8 @@ Aria.classDefinition({
                 ["waitFocus", tf],
                 ["type", null, "[tab]"],
                 ["waitForJawsToSay", "What do you need to be happy?"],
-                ["waitForJawsToSay", "Press down then space to open the list of check boxes."],
-                ["type", null, "[down]"],
+                ["waitForJawsToSay", "Press tab then space to open the list of check boxes."],
+                ["type", null, "[tab]"],
                 ["waitForJawsToSay", "Press space to open the list of check boxes"],
                 ["type", null, "[space]"],
                 ["waitForJawsToSay", "God check box not checked"],
@@ -45,7 +45,7 @@ Aria.classDefinition({
                 ["type", null, "[escape]"],
                 ["waitForJawsToSay", "What do you need to be happy?"],
                 ["waitForJawsToSay", "God"],
-                ["waitForJawsToSay", "Press down then space to open the list of check boxes."]
+                ["waitForJawsToSay", "Press tab then space to open the list of check boxes."]
             ], {
                 fn: this.end,
                 scope: this
