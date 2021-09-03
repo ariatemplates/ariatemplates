@@ -37,7 +37,7 @@ module.exports = Aria.classDefinition({
         var skinObj = aria.widgets.AriaSkinInterface.getSkinObject(this._skinnableClass, sclass);
         if (cfg.waiAria) {
             var waiAriaLabel = cfg.waiAriaLabel ? ' aria-label="' + ariaUtilsString.escapeForHTML(cfg.waiAriaLabel) + '"' : '';
-            this._extraAttributes += ' role="application"' + waiAriaLabel;
+            this._extraAttributes += ' role="listbox"' + waiAriaLabel;
         }
         this._hasFocus = false;
         this._initTemplate({
