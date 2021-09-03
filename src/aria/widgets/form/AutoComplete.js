@@ -272,6 +272,7 @@ module.exports = Aria.classDefinition({
          */
         _waiSuggestionsChanged : function () {
             var self = this;
+            this.getTextInputField().removeAttribute("aria-activedescendant");
             setTimeout(function () {
                 self._updateAriaActiveDescendant();
             }, 0);
