@@ -413,33 +413,13 @@ module.exports = Aria.classDefinition({
          * @param {aria.core.CfgBeans:Callback} cb
          */
         retrieveJawsHistory : function (cb) {
-            var nothingSelectedListener = {
-                match: /^Nothing\s+selected/i,
-                scope: this,
-                fn: function () {
-                    this.$logInfo("'Nothing selected' detected! Trying again to send CTRL+A and CTRL+C!");
-                    this.execute([
-                        ["type", null, "[<ctrl>]a[>ctrl<]"], // selects the whole history
-                        ["waitForJawsToSay", "selected"],
-                        ["type", null, "[<ctrl>]c[>ctrl<]"] // copies the whole history in the clipboard
-                    ]);
-                }
-            };
             var savedRecordedActions = this.recordedActions;
             this.recordedActions = null;
             var textArea = this._createFullScreenTextArea();
             this.execute([
                 ["forgetJawsHistory"],
-                ["type", null, "[<insert>][space][>insert<]h"], // displays history window
-                ["waitForJawsToSay", "Speech History"],
-                ["pause", 500],
-                ["type", null, "[<ctrl>]a[>ctrl<]"], // selects the whole history
-                ["waitForJawsToSay", "selected"],
-                ["registerJawsListener", nothingSelectedListener],
-                ["type", null, "[<ctrl>]c[>ctrl<]"], // copies the whole history in the clipboard
-                ["waitForJawsToSay", "Copied selection to clipboard"],
-                ["unregisterJawsListener", nothingSelectedListener],
-                ["type", null, "[<alt>][F4][>alt<]"], // closes history window
+                ["type", null, "[<insert>][space][>insert<][<ctrl>]h[>ctrl<]"], // Copy Speech History to Clipboard
+                ["waitForJawsToSay", "Copy speech history to clipboard"],
                 ["pause", 500],
                 ["click", textArea],
                 ["waitFocus", textArea],
