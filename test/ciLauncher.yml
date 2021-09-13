@@ -4,12 +4,12 @@ launchers:
         $maxInstances: 1
         $urlExtraParameters: plugin=http://127.0.0.1:7778/robot
 browsers:
-    'Chrome Headless [Puppeteer]':
-        $launcher: $puppeteer
-        $urlExtraParameters: 'flags=Puppeteer'
-        $maxInstances: <%= env.PUPPETEER_INSTANCES %>
+    'Chrome Headless [Playwright]':
+        $launcher: $playwright
+        $urlExtraParameters: 'flags=Playwright'
+        $maxInstances: <%= env.PLAYWRIGHT_INSTANCES %>
         robot: true
-        puppeteerOptions:
+        launchOptions:
             defaultViewport:
                 width: 1016
                 height: 612

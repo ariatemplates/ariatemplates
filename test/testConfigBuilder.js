@@ -51,24 +51,17 @@ var noFlashExcludesPatterns = [
     "test/aria/core/io/IOXDRTestCase.js"
 ];
 
-var puppeteerExcludesPatterns = [
+var playwrightExcludesPatterns = [
     "test/aria/dom/basic/DomTestCase.js",
     "test/aria/templates/events/delegate/DelegateTestCase.js",
-    "test/aria/widgets/container/dialog/container/MoveDialogContainerRobotTestCase.js",
     "test/aria/widgets/container/dialog/container/ResizeDialogContainerRobotTestCase.js",
     "test/aria/widgets/container/dialog/indicators/DialogTestCase.js",
     "test/aria/widgets/form/select/onBlur/SelectOnBlurSimpleRobotTestCase.js",
-    "test/aria/widgets/form/selectbox/optionhighlight/SelectboxOptionHighlightTestCase.js",
-    "test/aria/utils/overlay/loadingIndicator/scrollbar/ScrollbarTestCase.js",
-    "test/aria/widgets/container/dialog/movable/test5/MovableDialogFiveRobotTestCase.js",
     "test/aria/widgets/verticalAlign/VerticalAlignTestCase.js",
-    "test/aria/widgets/dropdown/fixedWidth/MultiSelectTestCase.js",
-    "test/aria/utils/DeviceTestCase.js",
-    "test/aria/widgets/form/autocomplete/expandbutton/test1/ExpandButtonCheckTestCase.js",
-    "test/aria/core/io/FormSubmitTestCase.js"
+    "test/aria/utils/overlay/loadingIndicator/scrollbar/ScrollbarTestCase.js"
 ];
 
-var nopuppeteerExcludesPatterns = [
+var noplaywrightExcludesPatterns = [
     // Excluded on travis-ci because there is no window manager (and a <select> needs one):
     "test/aria/widgets/form/select/onBlur/SelectOnBlurSimpleRobotTestCase.js"
 ];
@@ -287,14 +280,14 @@ exports.buildTestConfig = function (config) {
         append(filesIncludes, ["test/**/*TestCase.js"]);
         extraScripts.push(exports.atSkinPath);
 
-        if (config.puppeteer) {
-            append(filesExcludes, puppeteerExcludesPatterns);
+        if (config.playwright) {
+            append(filesExcludes, playwrightExcludesPatterns);
         }
     }
 
-    if (campaign === "nopuppeteer") {
-        append(filesIncludes, puppeteerExcludesPatterns);
-        append(filesExcludes, nopuppeteerExcludesPatterns);
+    if (campaign === "noplaywright") {
+        append(filesIncludes, playwrightExcludesPatterns);
+        append(filesExcludes, noplaywrightExcludesPatterns);
         extraScripts.push(exports.atSkinPath);
         if (!noFlash) {
             append(filesIncludes, noFlashExcludesPatterns);
