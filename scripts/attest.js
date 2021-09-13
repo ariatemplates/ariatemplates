@@ -68,9 +68,9 @@ if (browsers) {
         attesterOptions["launcher-config"] = launcherConfig;
     }
 } else if (browser == null) {
-    process.env.PUPPETEER_INSTANCES = commandLineOptions["puppeteer-instances"] || process.env.PUPPETEER_INSTANCES || '1';
+    process.env.PLAYWRIGHT_INSTANCES = commandLineOptions["playwright-instances"] || process.env.PLAYWRIGHT_INSTANCES || '1';
     attesterOptions["launcher-config"] = "test/ciLauncher.yml";
-    campaign.browsers = ["Chrome Headless with Puppeteer"];
+    campaign.browsers = ["Chrome Headless with Playwright"];
 } else if (browser != "none") {
     attesterOptions["robot-browser"] = browser;
 }

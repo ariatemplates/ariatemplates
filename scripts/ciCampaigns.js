@@ -18,34 +18,34 @@ var testConfigBuilder = require("../test/testConfigBuilder");
 var robotServer = require("robot-server");
 var ci = process.env.CI === "true";
 
-process.env.PUPPETEER_INSTANCES = process.env.PUPPETEER_INSTANCES || "4";
+process.env.PLAYWRIGHT_INSTANCES = process.env.PLAYWRIGHT_INSTANCES || "4";
 
-var puppeteerBrowser = "Chrome Headless with Puppeteer";
-var nopuppeteerBrowser = "Firefox";
+var playwrightBrowser = "Chrome Headless with Playwright";
+var noplaywrightBrowser = "Firefox";
 
 var campaigns = [
     testConfigBuilder.buildTestConfig({
         campaign: "classic",
-        browsers: [puppeteerBrowser],
+        browsers: [playwrightBrowser],
         noFlash: true,
-        puppeteer: true
+        playwright: true
     }),
     testConfigBuilder.buildTestConfig({
         campaign: "unpackaged",
-        browsers: [puppeteerBrowser]
+        browsers: [playwrightBrowser]
     }),
     testConfigBuilder.buildTestConfig({
         campaign: "testSkin",
-        browsers: [puppeteerBrowser]
+        browsers: [playwrightBrowser]
     }),
     testConfigBuilder.buildTestConfig({
         campaign: "flatSkin",
-        browsers: [puppeteerBrowser]
+        browsers: [playwrightBrowser]
     }),
     testConfigBuilder.buildTestConfig({
-        campaign: "nopuppeteer",
+        campaign: "noplaywright",
         noFlash: ci,
-        browsers: [nopuppeteerBrowser]
+        browsers: [noplaywrightBrowser]
     })
 ];
 
