@@ -47,10 +47,11 @@ License
 Browser support
 ==============
 
- - Firefox latest, 11, 3.6
+ - Firefox latest
  - Chrome latest
- - IE 11, 10, 9, 8, 7
- - Safari 6
+ - Edge latest
+
+For accessibility, we support the combination of Edge (latest) with Jaws 2021.
 
 Dependencies
 ============
