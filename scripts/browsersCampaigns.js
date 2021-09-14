@@ -17,15 +17,8 @@ var attester = require("attester");
 var testConfigBuilder = require("../test/testConfigBuilder");
 
 var browsers = [
-    "Firefox 3",
-    "Firefox 11",
-    "Firefox >=62 as Firefox",
-    "Chrome >=69 as Chrome",
-    "Safari",
-    "IE 8",
-    "IE 9",
-    "IE 10",
-    "IE 11",
+    "Firefox",
+    "Chrome",
     "Edge"
 ];
 
