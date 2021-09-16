@@ -53,7 +53,6 @@ var noFlashExcludesPatterns = [
 
 var playwrightExcludesPatterns = [
     "test/aria/dom/basic/DomTestCase.js",
-    "test/aria/widgets/container/dialog/container/ResizeDialogContainerRobotTestCase.js",
     "test/aria/widgets/form/select/onBlur/SelectOnBlurSimpleRobotTestCase.js",
     "test/aria/widgets/verticalAlign/VerticalAlignTestCase.js",
     "test/aria/utils/overlay/loadingIndicator/scrollbar/ScrollbarTestCase.js"
