@@ -135,7 +135,7 @@ Aria.classDefinition({
                 autocomplete : "off",
                 autofocus : "autofocus",
                 autocorrect : "on",
-                autocapitalize : "off",
+                autocapitalize : "none",
                 spellcheck : "true",
                 aria : {
                     labelledby : "abcd",
