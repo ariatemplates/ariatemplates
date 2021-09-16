@@ -175,12 +175,7 @@ var generalBrowserExcludes = {
     ],
     "IE 11 [JAWS18]": [],
     "Edge": [
-        "test/aria/utils/bridge/BridgeTestCase.js",
-        "test/aria/storage/localStorage/EventIssueTestCase.js",
-        "test/aria/widgets/container/dialog/container/FocusDialogContainerRobotTestCase.js",
-        "test/aria/widgets/form/multiselect/downArrowKeyPreventDef/MSDownArrowKeyRobotTestCase.js",
-        "test/aria/widgets/form/multiselect/focusMove/Issue968RobotTestCase.js",
-        "test/aria/widgets/container/dialog/resize/test3/DialogOnResizeRobotTestCase.js"
+        "test/aria/utils/mouse/MouseDragKoRobotTestCase.js"
     ]
 };
 
