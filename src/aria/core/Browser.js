@@ -301,7 +301,11 @@ module.exports = Aria.classDefinition({
          */
         this.isGecko = false;
 
-
+        /**
+         * <em>true</em> if the rendering engine is Blink.
+         * @type Boolean
+         */
+        this.isBlink = false;
 
         ////////////////////////////////////////////////////////////////////////
         // OS
@@ -980,6 +984,9 @@ module.exports = Aria.classDefinition({
                         this._setFlag(output, "IEMobile");
                         this._setFlag(output, "IE");
                         break;
+                    case "chromeheadless":
+                        name = "Chrome";
+                        break;
                     default:
                         maybeOtherBrowser = true;
                 }
@@ -1123,6 +1130,10 @@ module.exports = Aria.classDefinition({
 
                     case 'gecko':
                         this._setFlag(output, "Gecko");
+                        break;
+
+                    case 'blink':
+                        this._setFlag(output, "Blink");
                         break;
                 }
             }
