@@ -9,10 +9,10 @@ browsers:
         $urlExtraParameters: 'flags=Playwright'
         $maxInstances: <%= env.PLAYWRIGHT_INSTANCES %>
         robot: true
-        launchOptions:
-            defaultViewport:
-                width: 1016
-                height: 612
+        contextOptions:
+            viewport:
+                width: 1920
+                height: 920
     Firefox:
         $launcher: localWebdriver
         capabilities:
