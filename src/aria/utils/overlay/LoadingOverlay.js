@@ -140,7 +140,9 @@ module.exports = Aria.classDefinition({
             var overlay = this.$Overlay._createOverlay.call(this, params);
 
             if (waiAria) {
-                this._showElementBack = ariaUtilsDomNavigationManager.hidingManager.hide(element);
+                this._showElementBack = element == Aria.$window.document.body ?
+                    ariaUtilsDomNavigationManager.hidingManager.hideOthers(overlay) :
+                    ariaUtilsDomNavigationManager.hidingManager.hide(element);
                 this._navigationInterceptor = ariaUtilsDomNavigationManager.SkippedElementNavigationHandler(element);
                 this._navigationInterceptor.ensureElements();
             }
