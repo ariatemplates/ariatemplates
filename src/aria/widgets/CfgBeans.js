@@ -847,7 +847,7 @@ module.exports = Aria.beanDefinitions({
                 "waiAriaConfirmDateDelay" : {
                     $type : "json:Integer",
                     $description : "Delay (in milliseconds) for the debouncing of key events used to make the date read when the user types it in.",
-                    $default: 50
+                    $default: 200
                 },
                 "minValue" : {
                     $type : "json:Date",
