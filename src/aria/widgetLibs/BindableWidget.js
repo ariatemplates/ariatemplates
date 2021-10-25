@@ -81,7 +81,9 @@ module.exports = Aria.classDefinition({
             if (bindings) {
                 for (var property in bindings) {
                     if (bindings.hasOwnProperty(property)) {
-                        this._registerSingleProperty(property);
+                        if (!ariaUtilsJson.isMetadata(property)) {
+                            this._registerSingleProperty(property);
+                        }
                     }
                 }
             }
