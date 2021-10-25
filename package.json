@@ -45,7 +45,7 @@
     "grunt-leading-indent": "0.2.0",
     "grunt-verifylowercase": "0.2.0",
     "mocha": "3.5.2",
-    "pug": "2.0.0-rc.4",
+    "pug": "3.0.1",
     "playwright": "1.14.1",
     "robot-server": "0.0.4",
     "ua-parser-js": "0.7.26"
