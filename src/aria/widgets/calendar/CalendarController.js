@@ -597,7 +597,7 @@ module.exports = Aria.classDefinition({
                     realEndDate.setDate(32);
                     realEndDate.setDate(1);
                 } else /* if (settings.displayUnit == "M") */{
-                    startDate = new Date(startDate.getFullYear(), startDate.getMonth(), 1, 12);
+                    startDate = new Date(startDate.getFullYear(), startDate.getMonth(), 1); // RGHOSN : Remove hours parameter since its causing the date comparaison to fail
                     realStartDate = dateUtils.getStartOfWeek(startDate, settings.firstDayOfWeek);
                     endDate = new Date(startDate.getTime());
                     endDate.setMonth(endDate.getMonth() + settings.numberOfUnits);
@@ -624,8 +624,8 @@ module.exports = Aria.classDefinition({
                 this.$assert(129, calendar.endWeekIndex < weeks.length);
                 var minValue = settings.minValue;
                 var maxValue = settings.maxValue;
-                json.setValue(calendar, "previousPageEnabled", !minValue || minValue < startDate);
-                json.setValue(calendar, "nextPageEnabled", !maxValue || maxValue > endDate);
+                json.setValue(calendar, "previousPageEnabled", !minValue || minValue < dateUtils.removeTime(startDate)); // RGHOSN : extras layer of time controle
+                json.setValue(calendar, "nextPageEnabled", !maxValue || maxValue > dateUtils.removeTime(endDate)); // RGHOSN : extras layer of time controle
                 this._realStartDate = realStartDate; // save the start date for future use
                 this._realEndDate = realEndDate;
                 this._updateRanges();

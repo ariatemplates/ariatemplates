@@ -1,0 +1,45 @@
+#!/bin/sh
+
+#echo "Pre-commit hook" >> ./pre-commit.log
+if git-rev-parse --verify HEAD >/dev/null 2>&1 ; then
+	 against=HEAD
+else
+	 # Initial commit: diff against an empty tree object
+	 against=4b825dc642cb6eb9a060e54bf8d69288fbee4904
+fi
+
+
+# 1. Find files with trailing whitespace and strip it.
+for FILE in `exec git diff-index --check --cached $against -- | sed '/^[+-]/d' | sed -r 's/:[0-9]+:.*//' | uniq` ; do
+	 # echo "$FILE whitespace cleaned" >> ./pre-commit.log
+	 # Fix them!
+	 sed -i 's/[[:space:]]*$//' "$FILE"
+	 # sed replaces all CRLF to LF (mixed newlines in the input won't break the file)
+	 # as we are on Windows, we want CRLF back (see the next loop)
+done
+
+# 2. For non-binary modified files, add trailing newline if not there, and convert LF to CRLF
+for FILE in `exec git diff --cached --name-only $against`; do
+    # filter out files that 1) are on "to be deleted" list and 2) binary files
+    if [[ -f $FILE && $FILE != *.gif && $FILE != *.jpg && $FILE != *.jpeg && $FILE != *.png && $FILE != *.bmp && $FILE != *.swf ]]; then
+        # do not use 'dos2unix -D' as it misbehaves when input contains UTF-8 characters (duplicates the newlines)
+
+        # -i = do changes in-place;
+        # First, add trailing newline if not present yet: http://unix.stackexchange.com/a/31955/10745
+        # Then, perform newline normalization LF/CRLF to CRLF.
+        # That way, each file is guaranteed to have CRLF only and to have trailing CRLF.
+
+        # The only pathological case not handled here is to have CR-only as line ending which should
+        # never happen unless you explicitly insert it manually (Alt-0013), or use an ancient Mac.
+
+        # Important note: it seems tempting to pipe the two instructions below as a one,
+        # but then, for mixed input (some LF, some CRLF) it acts not as expected!
+
+        # echo -e "\nLF to CRLF conversion with SED on $FILE\n"
+        sed -i -e '$a\' "$FILE"      # add trailing newline if not present
+        sed -i -e 's/$/\r/' "$FILE"  # match end of line, and append CR; LF is added automatically by sed.
+        git add "$FILE"
+    fi
+done
+
+exit
