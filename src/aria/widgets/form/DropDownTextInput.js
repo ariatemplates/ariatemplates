@@ -41,7 +41,7 @@ module.exports = Aria.classDefinition({
             "dropdown": iconTooltip
         };
         if (cfg.waiAria) {
-            this._iconsAttributes.dropdown += ' aria-expanded="false" aria-haspopup="true"';
+            this._iconsAttributes.dropdown += ' role="button" aria-expanded="false" aria-haspopup="true"';
             if (cfg.disabled) {
                 this._iconsAttributes.dropdown += ' aria-hidden="true"';
             } else {
