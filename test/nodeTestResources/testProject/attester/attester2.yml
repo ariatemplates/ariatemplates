@@ -12,3 +12,5 @@ tests:
   classpaths:
    includes:
     - AppTemplateTest
+browsers:
+ - Chrome Headless

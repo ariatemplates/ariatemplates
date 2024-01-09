@@ -1,21 +1,17 @@
-launchers:
-    localWebdriver:
-        $launcher: $webdriver
-        $maxInstances: 1
-        $urlExtraParameters: plugin=http://127.0.0.1:7778/robot
 browsers:
-    'Chrome Headless [Playwright]':
+    'Chrome Headless':
         $launcher: $playwright
-        $urlExtraParameters: 'flags=Playwright'
         $maxInstances: <%= env.PLAYWRIGHT_INSTANCES %>
         robot: true
         contextOptions:
             viewport:
                 width: 1920
                 height: 920
-    Firefox:
-        $launcher: localWebdriver
-        capabilities:
-            browserName: firefox
+    'Chrome':
+        $launcher: $playwright
+        $maxInstances: 1
+        $urlExtraParameters: plugin=http://127.0.0.1:7778/robot
+        launchOptions:
+           headless: false
 maxInstances:
-    Launcher_localWebdriver: 1
+    Launcher_Chrome: 1

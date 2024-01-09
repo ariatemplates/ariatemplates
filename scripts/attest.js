@@ -70,7 +70,7 @@ if (browsers) {
 } else if (browser == null) {
     process.env.PLAYWRIGHT_INSTANCES = commandLineOptions["playwright-instances"] || process.env.PLAYWRIGHT_INSTANCES || '1';
     attesterOptions["launcher-config"] = "test/ciLauncher.yml";
-    campaign.browsers = ["Chrome Headless with Playwright"];
+    campaign.browsers = ["Chrome Headless"];
 } else if (browser != "none") {
     attesterOptions["robot-browser"] = browser;
 }

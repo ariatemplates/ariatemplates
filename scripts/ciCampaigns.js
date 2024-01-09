@@ -20,32 +20,32 @@ var ci = process.env.CI === "true";
 
 process.env.PLAYWRIGHT_INSTANCES = process.env.PLAYWRIGHT_INSTANCES || "4";
 
-var playwrightBrowser = "Chrome Headless with Playwright";
-var noplaywrightBrowser = "Firefox";
+var headlessBrowser = "Chrome Headless";
+var visibleBrowser = "Chrome";
 
 var campaigns = [
     testConfigBuilder.buildTestConfig({
         campaign: "classic",
-        browsers: [playwrightBrowser],
+        browsers: [headlessBrowser],
         noFlash: true,
-        playwright: true
+        headless: true
     }),
     testConfigBuilder.buildTestConfig({
         campaign: "unpackaged",
-        browsers: [playwrightBrowser]
+        browsers: [headlessBrowser]
     }),
     testConfigBuilder.buildTestConfig({
         campaign: "testSkin",
-        browsers: [playwrightBrowser]
+        browsers: [headlessBrowser]
     }),
     testConfigBuilder.buildTestConfig({
         campaign: "flatSkin",
-        browsers: [playwrightBrowser]
+        browsers: [headlessBrowser]
     }),
     testConfigBuilder.buildTestConfig({
-        campaign: "noplaywright",
+        campaign: "visible",
         noFlash: ci,
-        browsers: [noplaywrightBrowser]
+        browsers: [visibleBrowser]
     })
 ];
 
