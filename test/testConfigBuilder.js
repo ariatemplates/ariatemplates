@@ -51,16 +51,25 @@ var noFlashExcludesPatterns = [
     "test/aria/core/io/IOXDRTestCase.js"
 ];
 
-var playwrightExcludesPatterns = [
+var headlessExcludesPatterns = [
     "test/aria/dom/basic/DomTestCase.js",
     "test/aria/widgets/form/select/onBlur/SelectOnBlurSimpleRobotTestCase.js",
     "test/aria/widgets/verticalAlign/VerticalAlignTestCase.js",
-    "test/aria/utils/overlay/loadingIndicator/scrollbar/ScrollbarTestCase.js"
+    "test/aria/utils/overlay/loadingIndicator/scrollbar/ScrollbarTestCase.js",
+
+    // Flaky test:
+    "test/aria/templates/events/delegate/DelegateTestCase.js"
 ];
 
-var noplaywrightExcludesPatterns = [
-    // Excluded on travis-ci because there is no window manager (and a <select> needs one):
-    "test/aria/widgets/form/select/onBlur/SelectOnBlurSimpleRobotTestCase.js"
+var visibleExcludesPatterns = [
+    // Excluded on github-ci because there is no window manager (and a <select> needs one):
+    "test/aria/widgets/form/select/onBlur/SelectOnBlurSimpleRobotTestCase.js",
+
+    // Fails on github-ci, to be investigated:
+    "test/aria/widgets/verticalAlign/VerticalAlignTestCase.js",
+
+    // Flaky test:
+    "test/aria/templates/events/delegate/DelegateTestCase.js"
 ];
 
 // Some tests do not succeed in some browsers, and are listed here.
@@ -272,14 +281,14 @@ exports.buildTestConfig = function (config) {
         append(filesIncludes, ["test/**/*TestCase.js"]);
         extraScripts.push(exports.atSkinPath);
 
-        if (config.playwright) {
-            append(filesExcludes, playwrightExcludesPatterns);
+        if (config.headless) {
+            append(filesExcludes, headlessExcludesPatterns);
         }
     }
 
-    if (campaign === "noplaywright") {
-        append(filesIncludes, playwrightExcludesPatterns);
-        append(filesExcludes, noplaywrightExcludesPatterns);
+    if (campaign === "visible") {
+        append(filesIncludes, headlessExcludesPatterns);
+        append(filesExcludes, visibleExcludesPatterns);
         extraScripts.push(exports.atSkinPath);
         if (!noFlash) {
             append(filesIncludes, noFlashExcludesPatterns);

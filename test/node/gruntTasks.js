@@ -30,7 +30,7 @@ var testBuild = function (index, callback) {
 
     gruntBuild.on("exit", function (exitCode) {
         assert.strictEqual(exitCode, 0, "The packaging failed");
-        var attesterProcess = fork(getPath("../../node_modules/attester/bin/attester.js"), ["--colors", testProjectPath + "attester/attester" + index + ".yml", "--phantomjs-instances", "1"]);
+        var attesterProcess = fork(getPath("../../node_modules/attester/bin/attester.js"), ["--colors", testProjectPath + "attester/attester" + index + ".yml", "--launcher-config", getPath("../../test/ciLauncher.yml")]);
 
         attesterProcess.on("exit", function (exitCode) {
             assert.strictEqual(exitCode, 0, "The test campaign on the packaged code failed");

@@ -29,4 +29,19 @@ function echo(req, res, next) {
     }
 }
 
-module.exports = [echo];
+var echoJsonpUrlRegExp = /^\/middleware\/echojsonp(\?|$)/;
+function echoJsonp(req, res, next) {
+    if (echoJsonpUrlRegExp.test(req.url)) {
+        var query = url.parse(req.url, true).query;
+        var callback = query.callback;
+        delete query.callback;
+        var jsonQuery = JSON.stringify(query);
+        var content = callback ? callback + "(" + jsonQuery + ");" : jsonQuery;
+        res.status(200);
+        res.end(content);
+    } else {
+        next();
+    }
+}
+
+module.exports = [echo, echoJsonp];

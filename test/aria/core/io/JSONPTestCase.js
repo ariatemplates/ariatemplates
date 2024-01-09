@@ -157,7 +157,7 @@ Aria.classDefinition({
          */
         testAsyncRemote : function () {
             aria.core.IO.jsonp({
-                url : "http://jsfiddle.net/echo/jsonp/?query=ariatemplates",
+                url : "/middleware/echojsonp?query=ariatemplates",
                 timeout : 5000,
                 callback : {
                     fn : this._onTestRemoteSuccess,
@@ -170,7 +170,7 @@ Aria.classDefinition({
         },
         _onTestRemoteSuccess : function (response, testName) {
             try {
-                this.assertTrue(response.url.indexOf("http://jsfiddle.net/echo/jsonp/?query=ariatemplates") === 0, "Wrong URL: "
+                this.assertTrue(response.url.indexOf("/middleware/echojsonp?query=ariatemplates") === 0, "Wrong URL: "
                         + response.url);
                 this.assertEquals(response.responseJSON.query, "ariatemplates");
             } catch (er) {}
@@ -201,7 +201,7 @@ Aria.classDefinition({
             };
             aria.core.IOFiltersMgr.addFilter(filterParam);
             request = {
-                url : "http://jsfiddle.net/echo/jsonp/?query=ariatemplates",
+                url : "/middleware/echojsonp?query=ariatemplates",
                 timeout : 5000,
                 callback : {
                     fn : function (res) {
@@ -242,7 +242,7 @@ Aria.classDefinition({
                         try {
                             oSelf.assertTrue(req == request);
                             oSelf.assertTrue(req.jsonp == null);
-                            req.url = "http://jsfiddle.net/echo/jsonp/?query=ariatemplates";
+                            req.url = "/middleware/echojsonp?query=ariatemplates";
                             req.jsonp = "callback";
                         } catch (e) {
                             this.handleAsyncTestError(e, false);
