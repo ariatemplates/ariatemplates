@@ -12,3 +12,5 @@ tests:
   classpaths:
    includes:
     - SampleBeanTest
+browsers:
+ - Chrome Headless
