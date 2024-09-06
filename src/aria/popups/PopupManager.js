@@ -304,9 +304,13 @@ var ViewportNavigationInterceptor = require('../utils/DomNavigationManager').Vie
             /**
              * Updates the position of all opened popups.
              */
-            updatePositions : function () {
+            updatePositions : function (target) {
                 for (var i = this.openedPopups.length - 1; i >= 0; i--) {
                     var popup = this.openedPopups[i];
+                    if (target && utilsDom.isAncestor(target, popup.domElement)) {
+                        // avoid updating the popup position when scrolling inside the popup
+                        continue;
+                    }
                     popup.updatePosition();
                 }
             },
@@ -322,7 +326,7 @@ var ViewportNavigationInterceptor = require('../utils/DomNavigationManager').Vie
                         scope : this
                     });
                 } else if (event.type === "scroll") {
-                    this.updatePositions();
+                    this.updatePositions(event.target);
                 }
             },
 
