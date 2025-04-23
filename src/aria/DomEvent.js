@@ -26,6 +26,7 @@ var ariaCoreBrowser = require("./core/Browser");
         "altKey" : "altKey",
         "ctrlKey" : "ctrlKey",
         "shiftKey" : "shiftKey",
+        "metaKey" : "metaKey",
         "pageX" : "pageX",
         "pageY" : "pageY",
         "relatedTarget" : "relatedTarget",
