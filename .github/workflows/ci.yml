@@ -8,6 +8,9 @@ on:
 jobs:
   ci:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
     strategy:
       matrix:
         coverage: [0, 1]
@@ -16,12 +19,12 @@ jobs:
       PLAYWRIGHT_INSTANCES: "12"
       DISPLAY: ":99.0"
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v5
       - name: Set Node.js version
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v6
         with:
           node-version: "14.17.3"
-      - uses: actions/cache@v2
+      - uses: actions/cache@v4
         with:
           path: ~/.npm
           key: npm-${{ hashFiles('package-lock.json') }}
@@ -30,12 +33,13 @@ jobs:
       - run: npm ci
       - run: /sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x16
       - run: npm run ci
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v5
         with:
           name: test-results-${{ matrix.coverage }}
           path: test/logs/*.json
         if: ${{ always() }}
-      - uses: codecov/codecov-action@v1
+      - uses: codecov/codecov-action@5a1091511ad55cbe89839c7260b706298ca349f7 #v5.5.1
         with:
+          use_oidc: true
           directory: test/logs
         if: matrix.coverage == 1
