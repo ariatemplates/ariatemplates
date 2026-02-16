@@ -39,7 +39,7 @@
   "devDependencies": {
     "at-diff": "0.0.9",
     "attester": "4.1.0",
-    "express": "4.15.4",
+    "express": "4.17.3",
     "grunt": "1.0.1",
     "grunt-contrib-jshint": "1.1.0",
     "grunt-leading-indent": "0.2.0",
