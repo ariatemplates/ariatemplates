@@ -172,7 +172,7 @@ var Aria = module.exports = global.Aria;
     };
 
     /**
-     * Log an info message to the logger
+     * Log an info message to the logger depending on the configuration of aria.core.Log
      * @param {String} msg the message text
      * @param {Array} msgArgs An array of arguments to be used for string replacement in the message text
      * @param {Object} obj An optional object to be inspected in the logged message
@@ -182,7 +182,7 @@ var Aria = module.exports = global.Aria;
     };
 
     /**
-     * Log a warning message to the logger
+     * Log a warning message to the logger depending on the configuration of aria.core.Log
      * @param {String} msg the message text
      * @param {Array} msgArgs An array of arguments to be used for string replacement in the message text
      * @param {Object} obj An optional object to be inspected in the logged message

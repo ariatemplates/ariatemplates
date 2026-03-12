@@ -787,7 +787,8 @@ var Aria = require("../Aria");
             },
 
             /**
-             * Check that the json structure complies with the given bean and add default values. All errors are logged.
+             * Check that the json structure complies with the given bean(when Aria.debug is equal to true) and adds
+             * default values.
              * @param {Object} args
              *
              * <pre>
@@ -809,7 +810,7 @@ var Aria = require("../Aria");
             },
 
             /**
-             * Check that the json structure complies with the given bean. All errors are logged.
+             * Check that the json structure complies with the given bean(when Aria.debug is equal to true).
              * @param {Object} json json to check;
              * @param {String} bean bean to use
              * @param {Boolean} throwsErrors (default false)
@@ -827,7 +828,8 @@ var Aria = require("../Aria");
             },
 
             /**
-             * Validate a configuration object compared to its definition. All errors are logged.
+             * Validate a configuration object compared to its bean definition(when Aria.debug is equal to true) and
+             * adds default values.
              * @param {String} cfgBeanName The configuration classpath;
              * @param {Object} cfg The configuration bean to validate
              * @param {Object} errorToLog Optional json. By default, the INVALID_CONFIGURATION message is used with the
